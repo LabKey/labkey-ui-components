@@ -126,7 +126,7 @@ $circle-size: 12 * $scale;
 
 .filter-cards {
     display: flex;
-    overflow-x: scroll;
+    overflow-x: auto;
     padding-left: 1px;
     padding-bottom: 20px;
     justify-content: left;

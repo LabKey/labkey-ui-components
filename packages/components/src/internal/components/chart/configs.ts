@@ -17,10 +17,10 @@ const CHART_SELECTORS: Record<string, BarChartSelector> = {
 
 const getExclusionFilter = (
     dataTypes: string[]
-): ((projectExclusions: { [key: string]: number[] }) => Filter.IFilter) => {
-    return (projectExclusions: { [key: string]: number[] }): Filter.IFilter => {
+): ((containerExclusions: { [key: string]: number[] }) => Filter.IFilter) => {
+    return (containerExclusions: { [key: string]: number[] }): Filter.IFilter => {
         const exclusions = dataTypes.reduce((acc, dataType) => {
-            const dataTypeExclusions = projectExclusions?.[dataType];
+            const dataTypeExclusions = containerExclusions?.[dataType];
             if (dataTypeExclusions?.length > 0) {
                 acc.push(...dataTypeExclusions);
             }
@@ -48,7 +48,7 @@ export const CHART_GROUPS: Record<string, BarChartConfig> = {
         label: 'Assay Run Count by Assay',
         queryName: 'AssayRunCounts',
         schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
-        getProjectExclusionFilter: getExclusionFilter(['AssayDesign']),
+        getContainerExclusionFilter: getExclusionFilter(['AssayDesign']),
     },
     Samples: {
         charts: [
@@ -66,7 +66,7 @@ export const CHART_GROUPS: Record<string, BarChartConfig> = {
         label: 'Sample Count by Sample Type',
         queryName: 'SampleSetCounts',
         schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
-        getProjectExclusionFilter: getExclusionFilter(['SampleType', 'DashboardSampleType']),
+        getContainerExclusionFilter: getExclusionFilter(['SampleType', 'DashboardSampleType']),
     },
     SampleStatuses: {
         charts: [
@@ -94,6 +94,6 @@ export const CHART_GROUPS: Record<string, BarChartConfig> = {
         label: 'Sample Count by Status',
         queryName: SCHEMAS.SAMPLE_MANAGEMENT.SAMPLE_STATUS_COUNTS.queryName,
         schemaName: SCHEMAS.SAMPLE_MANAGEMENT.SAMPLE_STATUS_COUNTS.schemaName,
-        getProjectExclusionFilter: getExclusionFilter(['SampleType', 'DashboardSampleType']),
+        getContainerExclusionFilter: getExclusionFilter(['SampleType', 'DashboardSampleType']),
     },
 };

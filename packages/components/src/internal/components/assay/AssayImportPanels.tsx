@@ -59,7 +59,7 @@ import { getOperationNotAllowedMessage } from '../samples/utils';
 
 import { EditableGridChange } from '../editable/EditableGrid';
 
-import { applyEditorModelChanges } from '../editable/utils';
+import { applyEditorModelChanges, incrementRowCountMetric } from '../editable/utils';
 
 import { CommentTextArea } from '../forms/input/CommentTextArea';
 
@@ -627,6 +627,9 @@ class AssayImportPanelsBody extends Component<BodyProps, State> {
                 auditUserComment: comment,
                 containerPath: container.path,
             });
+            if (data.dataRows?.length) {
+                incrementRowCountMetric('assayData', data.dataRows?.length, false);
+            }
 
             this.props.setIsDirty?.(false);
             if (importAgain && onSave) {
@@ -773,15 +776,14 @@ class AssayImportPanelsBody extends Component<BodyProps, State> {
         const isReimport = this.isReimport();
         const operation = isReimport ? Operation.update : Operation.insert;
         const runContainerId = runPropsModel.getRowValue('Folder');
-        const folderNoun = isPremiumProductEnabled(moduleContext) ? 'project' : 'folder';
         const plateSupportEnabled = this.plateSupportEnabled;
 
         if (isReimport && !allowReimportAssayRun(user, runContainerId, container.id)) {
             const runName = runPropsModel.getRowValue('Name');
             return (
                 <Alert>
-                    The run "{runName}" cannot be re-imported into this ${folderNoun}. This run is declared in a
-                    different ${folderNoun} and re-import of runs is only supported within the same ${folderNoun}.
+                    The run "{runName}" cannot be re-imported into this folder. This run is declared in a
+                    different folder and re-import of runs is only supported within the same folder.
                 </Alert>
             );
         }

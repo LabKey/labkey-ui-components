@@ -7,6 +7,26 @@ Components, models, actions, and utility functions for LabKey applications and p
   - updates to chart margins and sizes for chart builder and dashboard
   - only show 'x' grid lines for bar and box plots
 
+### version 5.7.0
+*Released*: 27 September 2024
+- Change "Project" to "Folder" throughout the application
+- Remove warning banner about shared domains except for domains coming from /Shared
+
+### version 5.6.1
+*Released*: 27 September 2024
+- Issue 51227: Add metric for number of rows used in editable grid
+
+### version 5.6.0
+*Released*: 25 September 2024
+- Wire up onBlur for LookupCell
+- Export Help component
+- Export CellMessages type
+
+### version 5.5.11
+*Released*: 25 September 2024
+- Issue 51337: LKSM: Can't edit samples where source ID has a comma
+  - Check quoted parent value with comma before calling JSON.parse, which would remove the quotes
+
 ### version 5.5.10
 *Released*: 24 September 2024
 - Update `fileMatchesAcceptedFormat` utility to check file extension casing in a case-insensitive manner. Refactor away from using `Immutable`.

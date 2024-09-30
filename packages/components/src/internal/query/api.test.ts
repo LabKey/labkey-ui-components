@@ -5,7 +5,7 @@ import { TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER } from '../containerFixtu
 
 import {
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
-    EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED,
+    EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED,
 } from '../app/constants';
 
 import { ModuleContext } from '../components/base/ServerContext';
@@ -70,23 +70,23 @@ describe('api', () => {
 
         interface ModuleContextOptions {
             allFolderLookups?: boolean;
-            isProductProjectsEnabled?: boolean;
-            projectDataScoped?: boolean;
+            isProductFoldersEnabled?: boolean;
+            folderDataScoped?: boolean;
         }
 
         function moduleContext(options?: ModuleContextOptions): ModuleContext {
             return {
                 query: {
                     [EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS]: options?.allFolderLookups ?? false,
-                    [EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED]: options?.projectDataScoped ?? false,
-                    isProductProjectsEnabled: options?.isProductProjectsEnabled ?? true,
+                    [EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED]: options?.folderDataScoped ?? false,
+                    isProductFoldersEnabled: options?.isProductFoldersEnabled ?? true,
                 },
             };
         }
 
         test('getContainerFilter', () => {
             expect(
-                getContainerFilter(topFolderPath, moduleContext({ isProductProjectsEnabled: false }))
+                getContainerFilter(topFolderPath, moduleContext({ isProductFoldersEnabled: false }))
             ).toBeUndefined();
             expect(getContainerFilter(topFolderPath, moduleContext())).toEqual(
                 Query.ContainerFilter.currentAndSubfoldersPlusShared
@@ -104,7 +104,7 @@ describe('api', () => {
 
         test('getContainerFilterForFolder', () => {
             expect(
-                getContainerFilterForFolder(topFolderPath, moduleContext({ isProductProjectsEnabled: false }))
+                getContainerFilterForFolder(topFolderPath, moduleContext({ isProductFoldersEnabled: false }))
             ).toBeUndefined();
             expect(getContainerFilterForFolder(topFolderPath, moduleContext())).toEqual(
                 Query.ContainerFilter.currentAndSubfoldersPlusShared
@@ -115,19 +115,19 @@ describe('api', () => {
             expect(
                 getContainerFilterForFolder(
                     topFolderPath,
-                    moduleContext({ allFolderLookups: true, projectDataScoped: true })
+                    moduleContext({ allFolderLookups: true, folderDataScoped: true })
                 )
             ).toEqual(Query.ContainerFilter.allInProjectPlusShared);
-            expect(getContainerFilterForFolder(topFolderPath, moduleContext({ projectDataScoped: true }))).toEqual(
+            expect(getContainerFilterForFolder(topFolderPath, moduleContext({ folderDataScoped: true }))).toEqual(
                 Query.ContainerFilter.currentAndSubfoldersPlusShared
             );
-            expect(getContainerFilterForFolder(subFolderPath, moduleContext({ projectDataScoped: true }))).toEqual(
+            expect(getContainerFilterForFolder(subFolderPath, moduleContext({ folderDataScoped: true }))).toEqual(
                 Query.ContainerFilter.current
             );
         });
 
         test('getContainerFilterForLookups', () => {
-            expect(getContainerFilterForLookups(moduleContext({ isProductProjectsEnabled: false }))).toBeUndefined();
+            expect(getContainerFilterForLookups(moduleContext({ isProductFoldersEnabled: false }))).toBeUndefined();
             expect(getContainerFilterForLookups(moduleContext())).toEqual(
                 Query.ContainerFilter.currentPlusProjectAndShared
             );

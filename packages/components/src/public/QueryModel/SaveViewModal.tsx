@@ -9,7 +9,7 @@ import { Alert } from '../../internal/components/base/Alert';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 import { CUSTOM_VIEW, HelpLink } from '../../internal/util/helpLinks';
 import { RequiresPermission } from '../../internal/components/base/Permissions';
-import { isAppHomeFolder, isProductProjectsEnabled, userCanEditSharedViews } from '../../internal/app/utils';
+import { isAppHomeFolder, isProductFoldersEnabled, userCanEditSharedViews } from '../../internal/app/utils';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 import { ViewInfo } from '../../internal/ViewInfo';
 
@@ -235,7 +235,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                             <span className="margin-left">Make this grid view available to all users</span>
                         </div>
                     )}
-                    {isProductProjectsEnabled(moduleContext) &&
+                    {isProductFoldersEnabled(moduleContext) &&
                         isAppHomeFolder(container, moduleContext) &&
                         canEditShared && (
                             <div className="form-check">
@@ -246,7 +246,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                                     onChange={toggleInherit}
                                     checked={canInherit}
                                 />
-                                <span className="margin-left">Make this grid view available in all Projects</span>
+                                <span className="margin-left">Make this grid view available in all Folders</span>
                             </div>
                         )}
                     <div className="top-spacing">

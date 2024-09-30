@@ -37,7 +37,7 @@ import {
     IParentAlias,
     IParentOption,
     OperationConfirmationData,
-    ProjectConfigurableDataType,
+    FolderConfigurableDataType,
 } from './models';
 
 export interface EntityAPIWrapper {
@@ -118,7 +118,7 @@ export interface EntityAPIWrapper {
         parentOptions: IParentOption[];
     }>;
     isDataTypeEmpty: (
-        dataType: ProjectConfigurableDataType,
+        dataType: FolderConfigurableDataType,
         lsid?: string,
         rowId?: number,
         containerPath?: string

@@ -10,7 +10,7 @@ import { ColorIcon } from '../base/ColorIcon';
 
 import { Container } from '../base/models/Container';
 
-import { DataTypeEntity, EntityDataType, ProjectConfigurableDataType } from './models';
+import { DataTypeEntity, EntityDataType, FolderConfigurableDataType } from './models';
 
 export const filterDataTypeHiddenEntity = (dataType: DataTypeEntity, hiddenEntities?: any[]): boolean => {
     return !hiddenEntities || hiddenEntities?.indexOf(dataType.rowId ?? dataType.lsid) === -1;
@@ -21,6 +21,7 @@ export interface DataTypeSelectorProps {
     allDataTypes?: DataTypeEntity[]; // either use allDataTypes to pass in dataTypes, or specify entityDataType to query dataTypes
     api?: ComponentsAPIWrapper;
     columns?: number; // partition list to N columns
+    container?: Container;
     dataTypeKey?: string;
     dataTypeLabel?: string;
     dataTypePrefix?: string;
@@ -29,7 +30,6 @@ export interface DataTypeSelectorProps {
     hiddenEntities?: any[]; // number[] | string[]
     isNewFolder?: boolean;
     noHeader?: boolean;
-    project?: Container;
     showUncheckedWarning?: boolean;
     toggleSelectAll?: boolean;
     uncheckedEntitiesDB: any[]; // number[] | string[]
@@ -55,7 +55,7 @@ export const getUncheckedEntityWarning = (
         const nounSingular = entityDataType?.nounSingular?.toLowerCase() ?? 'sample';
         return (
             <Alert bsStyle="warning" className="margin-left-more">
-                {dataCount} {dataCount > 1 ? nounPlural : nounSingular} will no longer be visible in this project. They
+                {dataCount} {dataCount > 1 ? nounPlural : nounSingular} will no longer be visible in this folder. They
                 won't be deleted and lineage relationships won't change.{' '}
             </Alert>
         );
@@ -79,13 +79,13 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
         columns,
         noHeader,
         isNewFolder,
-        project,
+        container,
         showUncheckedWarning = true,
         dataTypePrefix = '',
     } = props;
 
     const [dataTypes, setDataTypes] = useState<DataTypeEntity[]>();
-    const [dataType, setDataType] = useState<ProjectConfigurableDataType>();
+    const [dataType, setDataType] = useState<FolderConfigurableDataType>();
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<boolean>(false);
     const [dataCounts, setDataCounts] = useState<Record<string, number>>();
@@ -96,7 +96,7 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
             setLoading(true);
             setError(undefined);
 
-            const results = await api.query.getProjectConfigurableEntityTypeOptions(entityDataType, project?.path);
+            const results = await api.query.getFolderConfigurableEntityTypeOptions(entityDataType, container?.path);
 
             // the Dashboard related data type exclusions should hide entities from the parent/related exclusion
             const results_ = results?.filter(type => filterDataTypeHiddenEntity(type, hiddenEntities));
@@ -108,7 +108,7 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
         } finally {
             setLoading(false);
         }
-    }, [api.query, entityDataType, hiddenEntities, project?.path]);
+    }, [api.query, entityDataType, hiddenEntities, container?.path]);
 
     useEffect(() => {
         if (dataTypes !== undefined && allDataTypes) {
@@ -124,7 +124,7 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
                 setDataTypes(allDataTypes.filter(type => filterDataTypeHiddenEntity(type, hiddenEntities)));
             else if (entityDataType) loadDataTypes(); // use entitydatatype
 
-            setDataType((dataTypePrefix + entityDataType?.projectConfigurableDataType) as ProjectConfigurableDataType);
+            setDataType((dataTypePrefix + entityDataType?.folderConfigurableDataType) as FolderConfigurableDataType);
 
             setUncheckedEntities(uncheckedEntitiesDB ?? []);
         },
@@ -136,9 +136,9 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
     const ensureCount = useCallback(async () => {
         if (dataCounts) return;
 
-        const results = await api.query.getProjectDataTypeDataCount(dataType, project?.path, dataTypes, isNewFolder);
+        const results = await api.query.getFolderDataTypeDataCount(dataType, container?.path, dataTypes, isNewFolder);
         setDataCounts(results);
-    }, [api.query, dataCounts, dataType, dataTypes, isNewFolder, project?.path]);
+    }, [api.query, dataCounts, dataType, dataTypes, isNewFolder, container?.path]);
 
     const onChange = useCallback(
         (entityId: number | string, toggle: boolean, check?: boolean) => {
@@ -203,7 +203,7 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
                         const entityId = type.rowId ?? type.lsid;
                         // FIXME: This should be a component so we can use useCallback for the onChange/onClick below
                         return (
-                            <li key={entityId} className="project-faceted-data-type">
+                            <li key={entityId} className="folder-faceted-data-type">
                                 <div className="form-check">
                                     <input
                                         className="form-check-input filter-faceted__checkbox"
@@ -214,7 +214,7 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
                                         disabled={disabled}
                                     />
                                     <div
-                                        className="margin-left-more project-datatype-faceted__value"
+                                        className="margin-left-more folder-datatype-faceted__value"
                                         onClick={() => onChange(entityId, true)}
                                     >
                                         {type.labelColor && (

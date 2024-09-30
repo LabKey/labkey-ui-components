@@ -20,7 +20,7 @@ const SERVER_CONTEXT = {
     moduleContext: {
         api: { moduleNames: ['assay', 'study'] },
         core: { productFeatures: [ProductFeature.AssayQC] },
-        query: { hasProductProjects: true },
+        query: { hasProductFolders: true },
     },
 };
 
@@ -213,7 +213,7 @@ describe('AssayDesignerPanels', () => {
     //                 submitting={false}
     //                 validatePanel={0}
     //                 visitedPanels={List()}
-    //                 allowProjectExclusion={true}
+    //                 allowFolderExclusion={true}
     //             />,
     //             {
     //                 serverContext: SERVER_CONTEXT,
@@ -223,7 +223,7 @@ describe('AssayDesignerPanels', () => {
     //     expect(container).toMatchSnapshot();
     // });
     //
-    // test('appPropertiesOnly, allowProjectExclusion false', async () => {
+    // test('appPropertiesOnly, allowFolderExclusion false', async () => {
     //     let container;
     //     await act(async () => {
     //         container = renderWithAppContext(
@@ -238,7 +238,7 @@ describe('AssayDesignerPanels', () => {
     //                 submitting={false}
     //                 validatePanel={0}
     //                 visitedPanels={List()}
-    //                 allowProjectExclusion={false}
+    //                 allowFolderExclusion={false}
     //             />,
     //             {
     //                 serverContext: SERVER_CONTEXT,
@@ -264,7 +264,7 @@ describe('AssayDesignerPanels', () => {
     //                 submitting={false}
     //                 validatePanel={0}
     //                 visitedPanels={List()}
-    //                 allowProjectExclusion={true}
+    //                 allowFolderExclusion={true}
     //             />,
     //             {
     //                 serverContext: SERVER_CONTEXT,

@@ -20,12 +20,13 @@ import { getQueryColumnRenderers } from '../../global';
 
 import { QuerySelectOwnProps } from '../forms/QuerySelect';
 
-import { isBoolean, isFloat, isInteger } from '../../util/utils';
+import { isBoolean, isFloat, isInteger, isQuotedWithDelimiters } from '../../util/utils';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { EditorModel, CellMessage } from './models';
 import { CellActions, MODIFICATION_TYPES } from './constants';
+import { incrementClientSideMetricCount } from '../../actions';
 
 export function applyEditorModelChanges(
     models: EditorModel[],
@@ -153,7 +154,8 @@ export function getUpdatedDataFromGrid(
                 // updated values. This is not the final type check.
                 if (typeof originalValue === 'number' || typeof originalValue === 'boolean') {
                     try {
-                        value = JSON.parse(value);
+                        if (!isQuotedWithDelimiters(value, ','))
+                            value = JSON.parse(value);
                     } catch (e) {
                         // Incorrect types are handled by API and user feedback created from that response. Don't need
                         // to handle that here.
@@ -469,4 +471,19 @@ export function computeRangeChange(selectedIdx: number, min: number, max: number
     }
 
     return [Math.max(0, min), max];
+}
+
+export function incrementRowCountMetric(dataType: string, rowCount: number, isUpdate: boolean): void {
+    if (!rowCount) return;
+
+    const metricFeatureArea = isUpdate ? 'gridUpdateCounts' : 'gridInsertCounts';
+    if (rowCount <= 50) {
+        incrementClientSideMetricCount(metricFeatureArea, dataType + '1To50');
+    } else if (rowCount <= 100) {
+        incrementClientSideMetricCount(metricFeatureArea, dataType + '51To100');
+    } else if (rowCount <= 250) {
+        incrementClientSideMetricCount(metricFeatureArea, dataType + '101To250');
+    } else {
+        incrementClientSideMetricCount(metricFeatureArea, dataType + 'GT250');
+    }
 }

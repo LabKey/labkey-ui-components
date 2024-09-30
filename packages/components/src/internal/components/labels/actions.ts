@@ -18,7 +18,7 @@ export const updateCustomLabels = (
             success: Utils.getCallbackWrapper(() => {
                 resolve();
             }),
-            failure: handleRequestFailure(reject, 'Failed to update project custom labels.'),
+            failure: handleRequestFailure(reject, 'Failed to update folder custom labels.'),
         });
     });
 };

@@ -37,7 +37,7 @@ export const AssayRunDataType: EntityDataType = {
     descriptionPlural: 'assay runs',
     uniqueFieldKey: 'RowId',
     dependencyText: undefined,
-    projectConfigurableDataType: 'AssayDesign',
+    folderConfigurableDataType: 'AssayDesign',
 };
 
 export const AssayResultDataType: EntityDataType = {
@@ -66,7 +66,7 @@ export const AssayResultDataType: EntityDataType = {
     dependencyText: undefined,
     filterCardHeaderClass: 'filter-card__header-purple',
     sampleFinderCardType: 'assaydata',
-    projectConfigurableDataType: 'AssayDesign',
+    folderConfigurableDataType: 'AssayDesign',
 };
 
 export enum AssayRunOperation {
@@ -103,7 +103,7 @@ export const SamplePropertyDataType: EntityDataType = {
     deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC,
     filterCardHeaderClass: 'filter-card__header-orange',
     sampleFinderCardType: 'sampleproperty',
-    projectConfigurableDataType: 'SampleType',
+    folderConfigurableDataType: 'SampleType',
 };
 
 export const SampleTypeDataType: EntityDataType = {
@@ -137,7 +137,7 @@ export const SampleTypeDataType: EntityDataType = {
     typeIcon: 'sample_set',
     sampleFinderCardType: 'sampleparent',
     supportsCrossTypeImport: true,
-    projectConfigurableDataType: 'SampleType',
+    folderConfigurableDataType: 'SampleType',
     labelColorCol: 'labelcolor',
 };
 
@@ -167,7 +167,7 @@ export const DataClassDataType: EntityDataType = {
     filterCardHeaderClass: 'filter-card__header-primary',
     typeIcon: 'source_type',
     sampleFinderCardType: 'dataclassparent',
-    projectConfigurableDataType: 'DataClass',
+    folderConfigurableDataType: 'DataClass',
 };
 
 export const ParentEntityLineageColumns = List.of('Inputs/Materials/First', 'Inputs/Data/First');

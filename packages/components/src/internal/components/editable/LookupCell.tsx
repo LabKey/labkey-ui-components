@@ -47,6 +47,7 @@ export interface LookupCellProps {
     forUpdate: boolean;
     lookupValueFilters?: Filter.IFilter[];
     modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
+    onBlur: () => void;
     onKeyDown?: (event: KeyboardEvent<HTMLElement>) => void;
     rowIdx: number;
     select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
@@ -68,6 +69,7 @@ const QueryLookupCell: FC<QueryLookupCellProps> = memo(props => {
         filteredLookupValues,
         forUpdate,
         lookupValueFilters,
+        onBlur,
         onKeyDown,
         onSelectChange,
         rawValues,
@@ -113,6 +115,7 @@ const QueryLookupCell: FC<QueryLookupCellProps> = memo(props => {
             disabled={disabled}
             maxRows={LOOKUP_DEFAULT_SIZE}
             multiple={isMultiple}
+            onBlur={onBlur}
             onKeyDown={onKeyDown}
             onQSChange={onSelectChange}
             preLoad
@@ -126,7 +129,7 @@ const QueryLookupCell: FC<QueryLookupCellProps> = memo(props => {
 QueryLookupCell.displayName = 'QueryLookupCell';
 
 export const LookupCell: FC<LookupCellProps> = memo(props => {
-    const { col, colIdx, disabled, modifyCell, onKeyDown, rowIdx, select, values, containerPath } = props;
+    const { col, colIdx, disabled, modifyCell, onBlur, onKeyDown, rowIdx, select, values, containerPath } = props;
 
     const onSelectChange = useCallback<SelectInputChange>(
         (fieldName, formValue, options, props_) => {
@@ -150,6 +153,7 @@ export const LookupCell: FC<LookupCellProps> = memo(props => {
                 {...gridCellSelectInputProps}
                 autoFocus
                 disabled={disabled}
+                onBlur={onBlur}
                 onChange={onSelectChange}
                 onKeyDown={onKeyDown}
                 queryColumn={col}

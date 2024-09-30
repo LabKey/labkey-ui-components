@@ -101,6 +101,7 @@ describe('APIKeysPanel', () => {
         }
         let expectedButtonCount = 0;
         if (!isImpersonating) {
+            expectedButtonCount += 1;
             if (apiKeysEnabled) expectedButtonCount += 2;
             if (sessionKeysEnabled) expectedButtonCount += 2;
         }

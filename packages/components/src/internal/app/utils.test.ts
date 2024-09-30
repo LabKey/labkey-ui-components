@@ -785,7 +785,7 @@ describe('utils', () => {
             isLIMSEnabled(
                 {
                     inventory: {},
-                    samplemanagement: { EXPERIMENTAL_CHART_BUILDER: true },
+                    samplemanagement: {},
                     core: { productFeatures: [ProductFeature.ChartBuilding] },
                 },
                 new Container({ folderType: 'LIMS' })
@@ -796,7 +796,7 @@ describe('utils', () => {
             isLIMSEnabled(
                 {
                     biologics: {},
-                    samplemanagement: { EXPERIMENTAL_CHART_BUILDER: true },
+                    samplemanagement: {},
                     inventory: {},
                     core: { productFeatures: [ProductFeature.ChartBuilding] },
                 },

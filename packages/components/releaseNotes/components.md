@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - only show 'x' grid lines for bar and box plots
   - Issue 48860: Show "inheritable" checkbox in chart builder for users with proper perm (and if in app home)
   - use getContainerFilterForFolder() for chart getQuery request (related to issue 48860)
+  - remove Chart Builder experimental feature flag
 
 ### version 5.7.0
 *Released*: 27 September 2024

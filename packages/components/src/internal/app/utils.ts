@@ -22,7 +22,6 @@ import {
     BIOLOGICS_APP_PROPERTIES,
     EXPERIMENTAL_APP_PLATE_SUPPORT,
     EXPERIMENTAL_CALCULATED_FIELDS,
-    EXPERIMENTAL_CHART_BUILDER,
     EXPERIMENTAL_IDENTIFYING_FIELDS,
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
     EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED,
@@ -363,10 +362,7 @@ export function isPlatesEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isChartBuilderEnabled(moduleContext?: ModuleContext): boolean {
-    return (
-        isFeatureEnabled(ProductFeature.ChartBuilding, moduleContext) &&
-        resolveModuleContext(moduleContext)?.samplemanagement?.[EXPERIMENTAL_CHART_BUILDER] === true
-    );
+    return isFeatureEnabled(ProductFeature.ChartBuilding, moduleContext);
 }
 
 export function isIdentifyingFieldsEnabled(moduleContext?: ModuleContext): boolean {

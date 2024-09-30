@@ -74,6 +74,18 @@ const matchesAllEmptyFilter = {
     jsonType: 'string',
 } as FieldFilter;
 
+
+const containsOneOfBadFilter = {
+    fieldKey: 'textField',
+    fieldCaption: 'textField',
+    filter: Filter.create(
+        'textField',
+        ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'],
+        Filter.Types.CONTAINS_ONE_OF
+    ),
+    jsonType: 'string',
+} as FieldFilter;
+
 const intEqFilter = {
     fieldKey: 'intField',
     fieldCaption: 'intField',
@@ -248,13 +260,17 @@ describe('getFieldFiltersValidationResult', () => {
         ).toEqual('Missing filter values for: textField.');
     });
 
-    test('exceed max allowed', () => {
+    test('exceed max allowed, matchesAll', () => {
         expect(
             getFieldFiltersValidationResult({
                 sampleType1: [matchesAllBadFilter, stringBetweenFilter],
                 sampleType2: [intEqFilter],
             })
         ).toEqual("At most 10 values can be selected for 'Equals All Of' filter type for 'textField'.");
+    });
+
+    test('exceed max allowed for multi-value', () => {
+        expect("TODO").toEqual("Tests still to be written.");
     });
 });
 

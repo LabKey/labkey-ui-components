@@ -91,7 +91,13 @@ const btTestConnectionTemplate = (): string => {
 
 // exported for jest testing
 export const BarTenderSettingsForm: FC<Props> = memo(props => {
-    const { api = getDefaultAPIWrapper(), container, title = BARTENDER_CONFIGURATION_TITLE, onChange, onSuccess } = props;
+    const {
+        api = getDefaultAPIWrapper(),
+        container,
+        title = BARTENDER_CONFIGURATION_TITLE,
+        onChange,
+        onSuccess,
+    } = props;
     const [btServiceURL, setBtServiceURL] = useState<string>();
     const [error, setError] = useState<string>();
     const [defaultLabel, setDefaultLabel] = useState<number>();
@@ -102,6 +108,7 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
     const [connectionValidated, setConnectionValidated] = useState<boolean>();
     const [failureMessage, setFailureMessage] = useState<string>();
     const [loading, setLoading] = useState<boolean>(true);
+    const [isTestable, setIsTestable] = useState<boolean>(false);
     const containerPath = container?.path;
 
     useEffect(() => {
@@ -109,6 +116,9 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
             try {
                 const btConfiguration = await api.labelprinting.fetchBarTenderConfiguration(containerPath);
                 setBtServiceURL(btConfiguration.serviceURL);
+                if (btConfiguration.serviceURL?.length > 0) {
+                    setIsTestable(true);
+                }
                 setDefaultLabel(btConfiguration.defaultLabel);
                 setError(undefined);
             } catch (e) {
@@ -123,6 +133,7 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
         (name: string, value: string): void => {
             setBtServiceURL(value);
             setDirty(true);
+            setIsTestable(false);
             setConnectionValidated(undefined);
             onChange?.();
         },
@@ -137,6 +148,7 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
         try {
             const btConfig = await api.labelprinting.saveBarTenderURLConfiguration(config, containerPath);
             setBtServiceURL(btConfig.serviceURL);
+            setIsTestable(btConfig.serviceURL?.length > 0);
             setDirty(false);
             onSuccess?.();
         } catch (e) {
@@ -205,23 +217,27 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
                         </SettingsInput>
 
                         <div className="bt-service-buttons">
-                            <button
-                                className="pull-right alert-button btn btn-success"
-                                disabled={submitting || !dirty || testing}
-                                onClick={onSave}
-                                type="button"
-                            >
-                                Save
-                            </button>
+                            {!isTestable && (
+                                <button
+                                    className="pull-right alert-button btn btn-success"
+                                    disabled={submitting || !dirty || testing}
+                                    onClick={onSave}
+                                    type="button"
+                                >
+                                    Save
+                                </button>
+                            )}
 
-                            <button
-                                className="button-right-spacing pull-right btn btn-default"
-                                disabled={!btServiceURL || btServiceURL.trim() === ''}
-                                onClick={onVerifyBarTenderConfiguration}
-                                type="button"
-                            >
-                                Test Connection
-                            </button>
+                            {isTestable && (
+                                <button
+                                    className="button-right-spacing pull-right btn btn-success"
+                                    onClick={onVerifyBarTenderConfiguration}
+                                    disabled={testing}
+                                    type="button"
+                                >
+                                    Test Connection
+                                </button>
+                            )}
                         </div>
                         {isAppHomeFolder(container, moduleContext) && (
                             <div className="label-templates-panel">

@@ -631,7 +631,7 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
     const [selectedType, setSelectedChartType] = useState<ChartTypeInfo>(chartTypes[0]);
     const [name, setName] = useState<string>('');
     const [shared, setShared] = useState<boolean>(canShare);
-    const [inheritable, setInheritable] = useState<boolean>(allowInherit);
+    const [inheritable, setInheritable] = useState<boolean>(false);
     const [fieldValues, setFieldValues] = useState<Record<string, SelectInputOption>>({});
 
     useEffect(

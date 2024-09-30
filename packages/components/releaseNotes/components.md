@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.8.1
+*Released*: 30 September 2024
+- Issue 51253: Require saving before testing of BarTender connection
+
 ### version 5.8.0
 *Released*: 30 September 2024
 - Lineage Relationships: Optionally Require during Sample Registration

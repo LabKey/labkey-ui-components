@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 51254: Limit number of values for multi-valued filter types
+
 ### version 5.8.1
 *Released*: 30 September 2024
 - Issue 51253: Require saving before testing of BarTender connection

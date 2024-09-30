@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Chart builder in app (part 3)
   - updates to chart margins and sizes for chart builder and dashboard
   - only show 'x' grid lines for bar and box plots
+  - use getContainerFilterForFolder() for chart getQuery request (related to issue 48860)
 
 ### version 5.7.0
 *Released*: 27 September 2024

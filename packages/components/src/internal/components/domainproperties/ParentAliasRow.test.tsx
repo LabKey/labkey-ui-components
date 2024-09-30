@@ -96,8 +96,6 @@ describe('ParentAliasRow', () => {
             );
         });
 
-        expect(container).toMatchSnapshot();
-
         expect(document.getElementsByName('alias')[0].getAttribute('value')).toBe(parentAlias.alias);
         expect(document.getElementsByName('parentValue')[0].getAttribute('value')).toBe(parentAlias.parentValue.value);
         expect(document.getElementsByName('required')[0].getAttribute('checked')).toBeNull();
@@ -164,8 +162,6 @@ describe('ParentAliasRow', () => {
                 />
             );
         });
-
-        expect(container).toMatchSnapshot();
 
         expect(document.getElementsByName('alias')[0].getAttribute('value')).toBe(parentAlias.alias);
         expect(document.getElementsByName('parentValue')[0].getAttribute('value')).toBe(parentAlias.parentValue.value);

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 5.X
-*Released*: X September 2024
+### version 5.8.0
+*Released*: 30 September 2024
 - Lineage Relationships: Optionally Require during Sample Registration
   - add 'required' prop to various alias and parent input related models
   - add api.domain.getRequiredParentTypes and api.entity.getDataTypesWithRequiredLineage

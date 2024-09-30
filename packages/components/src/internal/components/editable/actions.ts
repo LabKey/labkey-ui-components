@@ -863,7 +863,7 @@ export function parsePastedLookup(
     column: QueryColumn,
     descriptors: ValueDescriptor[],
     value: string[] | string
-): ParseLookupPayload {
+): CellData {
     const originalValues = List([
         {
             display: value,
@@ -873,7 +873,7 @@ export function parsePastedLookup(
 
     if (column.required && (value == null || value === '')) {
         return {
-            values: originalValues,
+            valueDescriptors: originalValues,
             message: {
                 message: column.caption + ' is required.',
             },
@@ -881,7 +881,7 @@ export function parsePastedLookup(
     }
 
     if (value === undefined || value === null || value.toString().trim() === '' || typeof value !== 'string') {
-        return { values: originalValues };
+        return { valueDescriptors: originalValues };
     }
 
     let message: CellMessage;
@@ -915,7 +915,7 @@ export function parsePastedLookup(
 
     return {
         message,
-        values: List(values),
+        valueDescriptors: List(values),
     };
 }
 
@@ -928,7 +928,7 @@ async function getParsedLookup(
     forUpdate: boolean,
     targetContainerPath: string,
     editorModel: EditorModel
-): Promise<ParseLookupPayload> {
+): Promise<CellData> {
     const containerPath = forUpdate ? editorModel.getFolderValueForCell(cellKey) : targetContainerPath;
     const cacheKey = `${column.fieldKey}||${containerPath}`;
     let descriptors = lookupColumnContainerCache[cacheKey];
@@ -1024,7 +1024,7 @@ export async function fillColumnCells(
                 .map(v => v.display)
                 .toArray();
 
-            const { message, values } = await getParsedLookup(
+            const { message, valueDescriptors } = await getParsedLookup(
                 column,
                 lookupColumnContainerCache,
                 display,
@@ -1034,7 +1034,7 @@ export async function fillColumnCells(
                 targetContainerPath,
                 editorModel
             );
-            cellValues = cellValues.set(cellKey, values);
+            cellValues = cellValues.set(cellKey, valueDescriptors);
             cellMessages = cellMessages.set(cellKey, message);
         } else {
             const { message } = getValidatedEditableGridValue(cellValues.get(cellKey)?.get(0)?.display, column);
@@ -1255,11 +1255,6 @@ function parsePaste(value: string): ParsePastePayload {
     };
 }
 
-interface ParseLookupPayload {
-    message?: CellMessage;
-    values: List<ValueDescriptor>;
-}
-
 async function insertPastedData(
     editorModel: EditorModel,
     paste: PasteModel,
@@ -1319,7 +1314,7 @@ async function insertPastedData(
                     // If the column is a lookup and forUpdate is true, then we need to query for the rowIds so we can set the correct raw values,
                     // otherwise insert will fail. This is most common for cross-folder sample selection (Issue 50363)
                     const display = byColumnValues.get(cn)?.toArray();
-                    const { message, values } = await getParsedLookup(
+                    const { message, valueDescriptors } = await getParsedLookup(
                         col,
                         lookupColumnContainerCache,
                         display,
@@ -1329,7 +1324,7 @@ async function insertPastedData(
                         targetContainerPath,
                         editorModel
                     );
-                    cv = values;
+                    cv = valueDescriptors;
                     msg = message;
                 } else {
                     const { message, value } = getValidatedEditableGridValue(val, col);

@@ -21,12 +21,11 @@ import { getQueryColumnRenderers } from '../../global';
 import { QuerySelectOwnProps } from '../forms/QuerySelect';
 
 import { isBoolean, isFloat, isInteger, isQuotedWithDelimiters } from '../../util/utils';
-
 import { SchemaQuery } from '../../../public/SchemaQuery';
+import { incrementClientSideMetricCount } from '../../actions';
 
 import { EditorModel, CellMessage } from './models';
 import { CellActions, MODIFICATION_TYPES } from './constants';
-import { incrementClientSideMetricCount } from '../../actions';
 
 export function applyEditorModelChanges(
     models: EditorModel[],
@@ -50,17 +49,18 @@ export function applyEditorModelChanges(
     return updatedModels;
 }
 
-export const getValidatedEditableGridValue = (
-    origValue: any,
-    col: QueryColumn
-): { message: CellMessage; value: any } => {
+interface ValidatedValue {
+    message: CellMessage;
+    value: any;
+}
+
+export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn): ValidatedValue => {
     // col ?? {} so it's safe to destructure
     const { caption, isDateOnlyColumn, jsonType, required, scale, validValues } = col ?? {};
     const isDateTimeType = jsonType === 'date';
     const isDateType = isDateTimeType && isDateOnlyColumn;
     let message;
     let value = origValue;
-    const trimmed = origValue?.toString().trim();
 
     // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
     // Issue 45140: use QueryColumn date format for parseDate()
@@ -75,6 +75,7 @@ export const getValidatedEditableGridValue = (
         value = dateStrVal ?? origValue;
     } else if (value != null && value !== '' && !col?.isPublicLookup()) {
         if (validValues) {
+            const trimmed = origValue?.toString().trim();
             if (validValues.indexOf(trimmed) === -1) message = `'${trimmed}' is not a valid choice`;
         } else if (jsonType === 'time') {
             const time = parseTime(value);
@@ -92,11 +93,7 @@ export const getValidatedEditableGridValue = (
         }
     }
 
-    if (
-        required &&
-        (value == null || value === '' || value.toString().trim() === '') &&
-        jsonType !== 'boolean'
-    ) {
+    if (required && (value == null || value === '' || value.toString().trim() === '') && jsonType !== 'boolean') {
         message = (message ? message + '. ' : '') + caption + ' is required.';
     }
 

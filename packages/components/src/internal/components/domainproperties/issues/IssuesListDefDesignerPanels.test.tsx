@@ -1,4 +1,4 @@
-import React, { act } from 'react';
+import React from 'react';
 
 import { userEvent } from '@testing-library/user-event';
 
@@ -22,52 +22,43 @@ describe('IssuesListDefDesignerPanel', () => {
         onCancel: jest.fn(),
     };
 
-    // FIXME: these test cases are disabled for several reasons. They can be re-enabled when:
-    //  1. We have a replacement for react-beautiful-dnd that is compatible with our test environment
-    //  2. We have a way to inject mock methods for LookupProvider and similar components making network requests
-    //  (so, convert these components to use APIWrappers)
-    //  3. We have test cases in mind that actually test the IssuesListDefDesignerPanel, the test cases here don't test
-    //  anything that is specific to this component, and we'd be better served with test cases for components lower in
-    //  the component tree.
-    test('FIXME', () => {});
+    test('visible properties', async () => {
+        renderWithAppContext(
+            <MockLookupProvider>
+                <IssuesListDefDesignerPanels {...BASE_PROPS} initModel={emptyNewModel} />
+            </MockLookupProvider>
+        );
 
-    // test('visible properties', async () => {
-    //     act(() => {
-    //         renderWithAppContext(
-    //             <MockLookupProvider>
-    //                 <IssuesListDefDesignerPanels {...BASE_PROPS} initModel={emptyNewModel} />
-    //             </MockLookupProvider>
-    //         );
-    //     });
-    //     await waitFor(() => {
-    //         act(() => {
-    //             const panels = document.getElementsByClassName('domain-form-panel');
-    //             expect(panels).toHaveLength(2);
-    //             expect(panels[0].querySelector('.domain-panel-title').textContent).toBe(
-    //                 'Issues List For Jest - Issues List Properties'
-    //             );
-    //             expect(panels[1].querySelector('.domain-panel-title').textContent).toBe('Fields');
-    //         });
-    //     });
-    // });
-    //
-    // test('open fields panel', async () => {
-    //     renderWithAppContext(
-    //         <MockLookupProvider>
-    //             <IssuesListDefDesignerPanels {...BASE_PROPS} />
-    //         </MockLookupProvider>
-    //     );
-    //     expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(1);
-    //     expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(1);
-    //
-    //     await userEvent.click(document.querySelector('.domain-panel-header'));
-    //
-    //     expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(0);
-    //     expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(2);
-    //
-    //     const alerts = document.getElementsByClassName('alert');
-    //     expect(alerts).toHaveLength(2);
-    //     expect(alerts[0].textContent).toEqual(PROPERTIES_PANEL_ERROR_MSG);
-    //     expect(alerts[1].textContent).toEqual('Please correct errors in the properties panel before saving.');
-    // });
+        await waitFor(() => {
+            const panels = document.getElementsByClassName('domain-form-panel');
+            expect(panels).toHaveLength(2);
+            expect(panels[0].querySelector('.domain-panel-title').textContent).toBe(
+                'Issues List For Jest - Issues List Properties'
+            );
+            expect(panels[1].querySelector('.domain-panel-title').textContent).toBe('Fields');
+        });
+    });
+
+    test('open fields panel', async () => {
+        renderWithAppContext(
+            <MockLookupProvider>
+                <IssuesListDefDesignerPanels {...BASE_PROPS} />
+            </MockLookupProvider>
+        );
+
+        await waitFor(() => {
+            expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(1);
+            expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(1);
+        });
+
+        await userEvent.click(document.querySelector('.domain-panel-header'));
+
+        expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(0);
+        expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(2);
+
+        const alerts = document.getElementsByClassName('alert');
+        expect(alerts).toHaveLength(2);
+        expect(alerts[0].textContent).toEqual(PROPERTIES_PANEL_ERROR_MSG);
+        expect(alerts[1].textContent).toEqual('Please correct errors in the properties panel before saving.');
+    });
 });

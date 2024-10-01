@@ -707,7 +707,7 @@ describe('parsePastedLookup', () => {
     test('empty', () => {
         [undefined, null, '', ' '].forEach(val => {
             expect(parsePastedLookup(intLookupCol, intLookupValues, val)).toStrictEqual({
-                values: List([
+                valueDescriptors: List([
                     {
                         display: val,
                         raw: val,
@@ -717,7 +717,7 @@ describe('parsePastedLookup', () => {
         });
         [undefined, null, '', ' '].forEach(val => {
             expect(parsePastedLookup(stringLookupCol, stringLookupValues, val)).toStrictEqual({
-                values: List([
+                valueDescriptors: List([
                     {
                         display: val,
                         raw: val,
@@ -730,19 +730,19 @@ describe('parsePastedLookup', () => {
     test('string value', () => {
         expect(parsePastedLookup(stringLookupCol, stringLookupValues, 'A')).toStrictEqual({
             message: undefined,
-            values: List([{ display: 'A', raw: 'a' }]),
+            valueDescriptors: List([{ display: 'A', raw: 'a' }]),
         });
         expect(parsePastedLookup(stringLookupCol, stringLookupValues, 'a')).toStrictEqual({
             message: undefined,
-            values: List([{ display: 'A', raw: 'a' }]),
+            valueDescriptors: List([{ display: 'A', raw: 'a' }]),
         });
         expect(parsePastedLookup(stringLookupCol, stringLookupValues, 'value D')).toStrictEqual({
             message: undefined,
-            values: List([{ display: 'value D', raw: 'd' }]),
+            valueDescriptors: List([{ display: 'value D', raw: 'd' }]),
         });
         expect(parsePastedLookup(stringLookupCol, stringLookupValues, 'b,C,value D')).toStrictEqual({
             message: undefined,
-            values: List([
+            valueDescriptors: List([
                 { display: 'b', raw: 'B' },
                 { display: 'C', raw: 'C' },
                 { display: 'value D', raw: 'd' },
@@ -751,11 +751,11 @@ describe('parsePastedLookup', () => {
 
         expect(parsePastedLookup(stringLookupCol, stringLookupValues, 'abc')).toStrictEqual({
             message: { message: 'Could not find "abc"' },
-            values: List([{ display: 'abc', raw: 'abc' }]),
+            valueDescriptors: List([{ display: 'abc', raw: 'abc' }]),
         });
         expect(parsePastedLookup(stringLookupCol, stringLookupValues, 'abc, valueD')).toStrictEqual({
             message: { message: 'Could not find "abc", "valueD"' },
-            values: List([
+            valueDescriptors: List([
                 { display: 'abc', raw: 'abc' },
                 { display: 'valueD', raw: 'valueD' },
             ]),
@@ -765,15 +765,15 @@ describe('parsePastedLookup', () => {
     test('int value', () => {
         expect(parsePastedLookup(intLookupCol, intLookupValues, 'A')).toStrictEqual({
             message: undefined,
-            values: List([{ display: 'A', raw: 1 }]),
+            valueDescriptors: List([{ display: 'A', raw: 1 }]),
         });
         expect(parsePastedLookup(intLookupCol, intLookupValues, 'a')).toStrictEqual({
             message: undefined,
-            values: List([{ display: 'A', raw: 1 }]),
+            valueDescriptors: List([{ display: 'A', raw: 1 }]),
         });
         expect(parsePastedLookup(intLookupCol, intLookupValues, 'A,B,b')).toStrictEqual({
             message: undefined,
-            values: List([
+            valueDescriptors: List([
                 { display: 'A', raw: 1 },
                 { display: 'b', raw: 2 },
                 { display: 'b', raw: 2 },
@@ -782,11 +782,11 @@ describe('parsePastedLookup', () => {
 
         expect(parsePastedLookup(intLookupCol, intLookupValues, 'abc')).toStrictEqual({
             message: { message: 'Could not find "abc"' },
-            values: List([{ display: 'abc', raw: 'abc' }]),
+            valueDescriptors: List([{ display: 'abc', raw: 'abc' }]),
         });
         expect(parsePastedLookup(intLookupCol, intLookupValues, 'abc, valueD')).toStrictEqual({
             message: { message: 'Could not find "abc", "valueD"' },
-            values: List([
+            valueDescriptors: List([
                 { display: 'abc', raw: 'abc' },
                 { display: 'valueD', raw: 'valueD' },
             ]),
@@ -796,14 +796,14 @@ describe('parsePastedLookup', () => {
     test('required column', () => {
         expect(parsePastedLookup(requiredLookupCol, stringLookupValues, 'A')).toStrictEqual({
             message: undefined,
-            values: List([{ display: 'A', raw: 'a' }]),
+            valueDescriptors: List([{ display: 'A', raw: 'a' }]),
         });
         [undefined, null, ''].forEach(val => {
             expect(parsePastedLookup(requiredLookupCol, stringLookupValues, val)).toStrictEqual({
                 message: {
                     message: 'ReqLookCol is required.',
                 },
-                values: List([
+                valueDescriptors: List([
                     {
                         display: val,
                         raw: val,

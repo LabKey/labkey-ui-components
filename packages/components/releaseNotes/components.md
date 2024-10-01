@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.10.0
+*Released*: 1 October 2024
+- Editable Grid: improve validation messages
+
 ### version 5.9.0
 *Released*: 1 October 2024
 - Issue 51254: Limit number of values for multi-valued filter types

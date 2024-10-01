@@ -21,7 +21,7 @@ import { loadNameExpressionOptions } from '../../settings/actions';
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 import { resolveErrorMessage } from '../../../util/messaging';
 
-import { IParentAlias, IParentOption, FolderConfigurableDataType } from '../../entities/models';
+import { IImportAlias, IParentAlias, IParentOption, FolderConfigurableDataType } from '../../entities/models';
 import { SCHEMAS } from '../../../schemas';
 
 import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from '../utils';
@@ -36,8 +36,8 @@ import { DataClassModel, DataClassModelConfig } from './models';
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 
 interface Props {
-    allowParentAlias?: boolean;
     allowFolderExclusion?: boolean;
+    allowParentAlias?: boolean;
     api?: ComponentsAPIWrapper;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: DataClassModel) => void;
@@ -183,24 +183,27 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
         }
     };
 
-    getImportAliasesAsMap(model: DataClassModel): Map<string, string> {
+    getImportAliasesAsMap(model: DataClassModel): Record<string, IImportAlias> {
         const { name, parentAliases } = model;
         const aliases = {};
 
         if (parentAliases) {
             parentAliases.forEach((alias: IParentAlias) => {
-                const { parentValue } = alias;
+                const { parentValue, required } = alias;
 
-                let value = parentValue && parentValue.value ? (parentValue.value as string) : '';
+                let inputType = parentValue && parentValue.value ? (parentValue.value as string) : '';
                 if (parentValue === NEW_DATA_CLASS_OPTION) {
-                    value = DATA_CLASS_IMPORT_PREFIX + name;
+                    inputType = DATA_CLASS_IMPORT_PREFIX + name;
                 }
 
-                aliases[alias.alias] = value;
+                aliases[alias.alias] = {
+                    inputType,
+                    required,
+                };
             });
         }
 
-        return Map<string, string>(aliases);
+        return aliases;
     }
 
     saveDomain = async (hasConfirmedNameExpression?: boolean): Promise<void> => {

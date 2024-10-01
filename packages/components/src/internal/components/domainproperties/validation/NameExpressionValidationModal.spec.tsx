@@ -33,7 +33,7 @@ describe('NameExpressionValidationModal', () => {
         );
 
         const modal = wrapper.find(Modal);
-        expect(modal.prop('confirmText')).toBe('Save anyways...');
+        expect(modal.prop('confirmText')).toBe('Save anyway');
         expect(modal.find('.modal-title').text()).toBe('Sample and Aliquot Naming Pattern Warning(s)');
         expect(modal.find('.modal-body').text()).toBe(
             "Naming Pattern Warning(s):Example name generated: S-1001No ending parentheses found.Invalid starting value xyz.Aliquot Naming Pattern Warning(s):Example aliquot name generated: S-parentSample-002The 'withCounter' substitution pattern starting at position 27 should be enclosed in ${}."
@@ -45,7 +45,7 @@ describe('NameExpressionValidationModal', () => {
         const wrapper = mount(<NameExpressionValidationModal {...DEFAULT_PROPS} warnings={warnings} />);
 
         const modal = wrapper.find(Modal);
-        expect(modal.prop('confirmText')).toBe('Save anyways...');
+        expect(modal.prop('confirmText')).toBe('Save anyway');
         expect(modal.find('.modal-title').text()).toBe('Naming Pattern Warning(s)');
         expect(modal.find('.modal-body').text()).toBe(
             'Example name generated: S-1001No ending parentheses found.Invalid starting value xyz.'
@@ -57,7 +57,7 @@ describe('NameExpressionValidationModal', () => {
         const wrapper = mount(<NameExpressionValidationModal {...DEFAULT_PROPS} warnings={aliquotWarnings} />);
 
         const modal = wrapper.find(Modal);
-        expect(modal.prop('confirmText')).toBe('Save anyways...');
+        expect(modal.prop('confirmText')).toBe('Save anyway');
         expect(modal.find('.modal-title').text()).toBe('Aliquot Naming Pattern Warning(s)');
         expect(modal.find('.modal-body').text()).toBe(
             "Example aliquot name generated: S-parentSample-002The 'withCounter' substitution pattern starting at position 27 should be enclosed in ${}."
@@ -71,7 +71,7 @@ describe('NameExpressionValidationModal', () => {
         );
 
         const modal = wrapper.find(Modal);
-        expect(modal.prop('confirmText')).toBe('Save anyways...');
+        expect(modal.prop('confirmText')).toBe('Save anyway');
         expect(modal.find('.modal-title').text()).toBe('bad expression!!');
         expect(modal.find('.modal-body').text()).toBe(
             'Example name generated: S-1001No ending parentheses found.Invalid starting value xyz.'

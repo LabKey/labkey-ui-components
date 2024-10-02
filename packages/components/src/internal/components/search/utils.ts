@@ -20,6 +20,7 @@ import { REGISTRY_KEY } from '../../app/constants';
 
 import { SearchCategory, SearchScope } from './constants';
 import { FieldFilter, FieldFilterOption, FilterSelection, SearchResultCardData } from './models';
+import { makeCommaSeparatedString } from '../../util/utils';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
@@ -90,9 +91,14 @@ export function isFilterUrlSuffixMatch(suffix: string, filterType: Filter.IFilte
     return suffix === filterType.getURLSuffix();
 }
 
+const MAX_MULTI_VALUE_FILTER_VALUES = 200;
+
 export function getFilterTypePlaceHolder(suffix: string): string {
     if (suffix === 'in' || suffix === 'notin' || suffix === 'containsoneof' || suffix === 'containsnoneof') {
-        return 'Use new line or semicolon to separate entries';
+        return (
+            'Use new line or semicolon to separate entries. ' +
+            ' Max of ' + MAX_MULTI_VALUE_FILTER_VALUES + ' values.'
+        );
     }
 
     return null;
@@ -128,11 +134,14 @@ export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: stri
 
 export function getFieldFiltersValidationResult(
     dataTypeFilters: { [key: string]: FieldFilter[] },
-    queryLabels?: { [key: string]: string }
+    queryLabels?: { [key: string]: string },
+    maxMultiValuedValues: number = MAX_MULTI_VALUE_FILTER_VALUES
 ): string {
-    let missingValueFields = {},
-        hasMissingError = false,
-        maxMatchAllErrorField = null;
+    const missingValueFields = {};
+    let hasMissingError = false;
+    let maxMatchAllErrorField = null;
+    const multiValueErrorFields = new Set<string>();
+    const multiValueErrorFieldTypes = new Set<string>();
     Object.keys(dataTypeFilters).forEach(parent => {
         const filters = dataTypeFilters[parent];
         filters.forEach(fieldFilter => {
@@ -162,6 +171,11 @@ export function getFieldFiltersValidationResult(
                     if (!Array.isArray(value) || value.length > 10) {
                         maxMatchAllErrorField = fieldFilter.fieldCaption;
                     }
+                } else if (filter.getFilterType().isMultiValued()) {
+                    if (Array.isArray(value) && value.length > maxMultiValuedValues) {
+                        multiValueErrorFields.add("'" + fieldFilter.fieldCaption + "'");
+                        multiValueErrorFieldTypes.add("'" + filter.getFilterType().getDisplayText() + "'");
+                    }
                 }
 
                 if (missingValueError == true) {
@@ -185,12 +199,21 @@ export function getFieldFiltersValidationResult(
         return 'Missing filter values for: ' + parentMsgs.join('; ') + '.';
     }
 
+    let msg = '';
     if (maxMatchAllErrorField)
-        return (
-            "At most 10 values can be selected for 'Equals All Of' filter type for '" + maxMatchAllErrorField + "'."
-        );
+        msg += "At most 10 values can be selected for 'Equals All Of' filter type for '" + maxMatchAllErrorField + "'. ";
 
-    return null;
+    if (multiValueErrorFields.size > 0) {
+        msg +=
+            'Too many values provided for filters on ' +
+            makeCommaSeparatedString(Array.from(multiValueErrorFields).sort()) +
+            '. At most ' +
+            maxMultiValuedValues +
+            ' values may be provided for filters of type ' +
+            makeCommaSeparatedString(Array.from(multiValueErrorFieldTypes).sort()) +
+            '.';
+    }
+    return msg.length > 0 ? msg : null;
 }
 
 export function getFilterForFilterSelection(filterSelection: FilterSelection, field: QueryColumn): Filter.IFilter {

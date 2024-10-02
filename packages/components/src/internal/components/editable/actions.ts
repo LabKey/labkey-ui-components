@@ -308,6 +308,10 @@ async function getLookupValueDescriptors(
     return descriptorMap;
 }
 
+function lookupValidationError(value: string | number | boolean): CellMessage {
+    return { message: `Could not find ${value}` };
+}
+
 async function getLookupDisplayValue(column: QueryColumn, value: any, containerPath: string): Promise<MessageAndValue> {
     if (value === undefined || value === null) {
         return {
@@ -322,15 +326,43 @@ async function getLookupDisplayValue(column: QueryColumn, value: any, containerP
 
     const { descriptors } = await findLookupValues(column, [value], undefined, undefined, false, containerPath);
     if (!descriptors.length) {
-        message = {
-            message: 'Could not find data for ' + value,
-        };
+        message = lookupValidationError(value);
     }
 
     return {
         message,
         valueDescriptor: descriptors[0],
     };
+}
+
+interface CellData {
+    message?: CellMessage;
+    valueDescriptors: List<ValueDescriptor>;
+}
+
+async function convertRowToEditorModelData(
+    data: Map<string, string | number | boolean>,
+    col: QueryColumn,
+    containerPath: string
+): Promise<CellData> {
+    let message: CellMessage;
+    let valueDescriptors = List<ValueDescriptor>();
+
+    if (data && col && col.isPublicLookup()) {
+        // value had better be the rowId here, but it may be several in a comma-separated list.
+        // If it's the display value, which happens to be a number, much confusion will arise.
+        const values = data.toString().split(',');
+
+        for (const val of values) {
+            const messageAndValue = await getLookupDisplayValue(col, parseIntIfNumber(val), containerPath);
+            valueDescriptors = valueDescriptors.push(messageAndValue.valueDescriptor);
+            message = messageAndValue.message;
+        }
+    } else {
+        valueDescriptors = valueDescriptors.push({ display: data, raw: data });
+    }
+
+    return { message, valueDescriptors };
 }
 
 async function prepareInsertRowDataFromBulkForm(
@@ -346,29 +378,10 @@ async function prepareInsertRowDataFromBulkForm(
         const data = rowData.get(cn);
         const colIdx = colMin + cn;
         const col = insertColumns[colIdx];
-        let cv: List<ValueDescriptor>;
+        const { message, valueDescriptors } = await convertRowToEditorModelData(data, col, containerPath);
+        values = values.push(valueDescriptors);
 
-        if (data && col && col.isPublicLookup()) {
-            cv = List<ValueDescriptor>();
-            // value had better be the rowId here, but it may be several in a comma-separated list.
-            // If it's the display value, which happens to be a number, much confusion will arise.
-            const values_ = data.toString().split(',');
-            for (const val of values_) {
-                const { message, valueDescriptor } = await getLookupDisplayValue(
-                    col,
-                    parseIntIfNumber(val),
-                    containerPath
-                );
-                cv = cv.push(valueDescriptor);
-                if (message) {
-                    messages = messages.push(message);
-                }
-            }
-        } else {
-            cv = List([{ display: data, raw: data }]);
-        }
-
-        values = values.push(cv);
+        if (message) messages = messages.push(message);
     }
 
     return {
@@ -572,36 +585,10 @@ async function prepareUpdateRowDataFromBulkForm(
 
     for (const colKey of rowData.keySeq().toArray()) {
         const data = rowData.get(colKey);
-        let col: QueryColumn;
-
-        if (altColumns) {
-            col = queryInfo.getColumn(colKey);
-        } else {
-            col = columns.find(c => c.fieldKey === colKey);
-        }
-        let cv: List<ValueDescriptor>;
-
-        if (data && col && col.isPublicLookup()) {
-            cv = List<ValueDescriptor>();
-            // value had better be the rowId here, but it may be several in a comma-separated list.
-            // If it's the display value, which happens to be a number, much confusion will arise.
-            const rawValues = data.toString().split(',');
-            for (const val of rawValues) {
-                const { message, valueDescriptor } = await getLookupDisplayValue(
-                    col,
-                    parseIntIfNumber(val),
-                    containerPath
-                );
-                cv = cv.push(valueDescriptor);
-                if (message) {
-                    messages = messages.set(col.fieldKey, message);
-                }
-            }
-        } else {
-            cv = List([{ display: data, raw: data }]);
-        }
-
-        values = values.set(col.fieldKey, cv);
+        const col = altColumns ? queryInfo.getColumn(colKey) : columns.find(c => c.fieldKey === colKey);
+        const { message, valueDescriptors } = await convertRowToEditorModelData(data, col, containerPath);
+        values = values.set(col.fieldKey, valueDescriptors);
+        if (message) messages = messages.set(col.fieldKey, message);
     }
 
     return { values, messages };
@@ -876,7 +863,7 @@ export function parsePastedLookup(
     column: QueryColumn,
     descriptors: ValueDescriptor[],
     value: string[] | string
-): ParseLookupPayload {
+): CellData {
     const originalValues = List([
         {
             display: value,
@@ -886,7 +873,7 @@ export function parsePastedLookup(
 
     if (column.required && (value == null || value === '')) {
         return {
-            values: originalValues,
+            valueDescriptors: originalValues,
             message: {
                 message: column.caption + ' is required.',
             },
@@ -894,7 +881,7 @@ export function parsePastedLookup(
     }
 
     if (value === undefined || value === null || value.toString().trim() === '' || typeof value !== 'string') {
-        return { values: originalValues };
+        return { valueDescriptors: originalValues };
     }
 
     let message: CellMessage;
@@ -919,19 +906,16 @@ export function parsePastedLookup(
         .filter(v => v !== undefined);
 
     if (unmatched.length) {
-        message = {
-            message:
-                'Could not find data for ' +
-                unmatched
-                    .slice(0, 4)
-                    .map(u => '"' + u + '"')
-                    .join(', '),
-        };
+        const valueStr = unmatched
+            .slice(0, 4)
+            .map(u => '"' + u + '"')
+            .join(', ');
+        message = lookupValidationError(valueStr);
     }
 
     return {
         message,
-        values: List(values),
+        valueDescriptors: List(values),
     };
 }
 
@@ -944,7 +928,7 @@ async function getParsedLookup(
     forUpdate: boolean,
     targetContainerPath: string,
     editorModel: EditorModel
-): Promise<ParseLookupPayload> {
+): Promise<CellData> {
     const containerPath = forUpdate ? editorModel.getFolderValueForCell(cellKey) : targetContainerPath;
     const cacheKey = `${column.fieldKey}||${containerPath}`;
     let descriptors = lookupColumnContainerCache[cacheKey];
@@ -1040,7 +1024,7 @@ export async function fillColumnCells(
                 .map(v => v.display)
                 .toArray();
 
-            const { message, values } = await getParsedLookup(
+            const { message, valueDescriptors } = await getParsedLookup(
                 column,
                 lookupColumnContainerCache,
                 display,
@@ -1050,7 +1034,7 @@ export async function fillColumnCells(
                 targetContainerPath,
                 editorModel
             );
-            cellValues = cellValues.set(cellKey, values);
+            cellValues = cellValues.set(cellKey, valueDescriptors);
             cellMessages = cellMessages.set(cellKey, message);
         } else {
             const { message } = getValidatedEditableGridValue(cellValues.get(cellKey)?.get(0)?.display, column);
@@ -1271,11 +1255,6 @@ function parsePaste(value: string): ParsePastePayload {
     };
 }
 
-interface ParseLookupPayload {
-    message?: CellMessage;
-    values: List<ValueDescriptor>;
-}
-
 async function insertPastedData(
     editorModel: EditorModel,
     paste: PasteModel,
@@ -1335,7 +1314,7 @@ async function insertPastedData(
                     // If the column is a lookup and forUpdate is true, then we need to query for the rowIds so we can set the correct raw values,
                     // otherwise insert will fail. This is most common for cross-folder sample selection (Issue 50363)
                     const display = byColumnValues.get(cn)?.toArray();
-                    const { message, values } = await getParsedLookup(
+                    const { message, valueDescriptors } = await getParsedLookup(
                         col,
                         lookupColumnContainerCache,
                         display,
@@ -1345,7 +1324,7 @@ async function insertPastedData(
                         targetContainerPath,
                         editorModel
                     );
-                    cv = values;
+                    cv = valueDescriptors;
                     msg = message;
                 } else {
                     const { message, value } = getValidatedEditableGridValue(val, col);
@@ -1517,7 +1496,12 @@ function getCopyValue(model: EditorModel, hideReadOnlyRows: boolean, readonlyRow
     return copyValue;
 }
 
-export function copyEvent(editorModel: EditorModel, event: any, hideReadOnlyRows: boolean, readonlyRows: string[]): boolean {
+export function copyEvent(
+    editorModel: EditorModel,
+    event: any,
+    hideReadOnlyRows: boolean,
+    readonlyRows: string[]
+): boolean {
     if (editorModel && !editorModel.hasFocus && editorModel.hasSelection && !editorModel.isSparseSelection) {
         cancelEvent(event);
         setCopyValue(event, getCopyValue(editorModel, hideReadOnlyRows, readonlyRows));

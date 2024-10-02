@@ -74,6 +74,39 @@ const matchesAllEmptyFilter = {
     jsonType: 'string',
 } as FieldFilter;
 
+const containsOneOfBadFilter = {
+    fieldKey: 'textField',
+    fieldCaption: 'textField',
+    filter: Filter.create(
+        'textField',
+        ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'],
+        Filter.Types.CONTAINS_ONE_OF
+    ),
+    jsonType: 'string',
+} as FieldFilter;
+
+const containsNoneOfBadFilter = {
+    fieldKey: 'otherTextField',
+    fieldCaption: 'otherTextField',
+    filter: Filter.create(
+        'textField',
+        ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'],
+        Filter.Types.CONTAINS_NONE_OF
+    ),
+    jsonType: 'string',
+} as FieldFilter;
+
+const equalsNoneOfBadFilter = {
+    fieldKey: 'textField',
+    fieldCaption: 'textField',
+    filter: Filter.create(
+        'textField',
+        ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'],
+        Filter.Types.EQUALS_NONE_OF
+    ),
+    jsonType: 'string',
+} as FieldFilter;
+
 const intEqFilter = {
     fieldKey: 'intField',
     fieldCaption: 'intField',
@@ -248,13 +281,58 @@ describe('getFieldFiltersValidationResult', () => {
         ).toEqual('Missing filter values for: textField.');
     });
 
-    test('exceed max allowed', () => {
+    test('exceed max allowed, matchesAll', () => {
         expect(
             getFieldFiltersValidationResult({
                 sampleType1: [matchesAllBadFilter, stringBetweenFilter],
                 sampleType2: [intEqFilter],
             })
-        ).toEqual("At most 10 values can be selected for 'Equals All Of' filter type for 'textField'.");
+        ).toEqual("At most 10 values can be selected for 'Equals All Of' filter type for 'textField'. ");
+    });
+
+    test('exceed max allowed for multi-value', () => {
+        expect(
+            getFieldFiltersValidationResult(
+                {
+                    sampleType1: [containsOneOfBadFilter, stringBetweenFilter],
+                    sampleType2: [intEqFilter],
+                },
+                undefined,
+                4
+            )
+        ).toEqual(
+            "Too many values provided for filters on 'textField'. At most 4 values may be provided for filters of type 'Contains One Of'."
+        );
+    });
+
+    test('exceed max allowed for multi-value and matchesAll', () => {
+        expect(
+            getFieldFiltersValidationResult(
+                {
+                    sampleType1: [containsOneOfBadFilter, matchesAllBadFilter],
+                    sampleType2: [intEqFilter],
+                },
+                undefined,
+                4
+            )
+        ).toEqual(
+            "At most 10 values can be selected for 'Equals All Of' filter type for 'textField'. Too many values provided for filters on 'textField'. At most 4 values may be provided for filters of type 'Contains One Of'."
+        );
+    });
+
+    test('exceed max allowed for multiple multi-value fields', () => {
+        expect(
+            getFieldFiltersValidationResult(
+                {
+                    sampleType1: [containsOneOfBadFilter, equalsNoneOfBadFilter],
+                    sampleType2: [containsNoneOfBadFilter],
+                },
+                undefined,
+                10
+            )
+        ).toEqual(
+            "Too many values provided for filters on 'otherTextField' and 'textField'. At most 10 values may be provided for filters of type 'Contains One Of', 'Does Not Contain Any Of' and 'Does Not Equal Any Of'."
+        );
     });
 });
 

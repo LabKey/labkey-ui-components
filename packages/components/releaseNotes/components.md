@@ -10,6 +10,14 @@ Components, models, actions, and utility functions for LabKey applications and p
   - use getContainerFilterForFolder() for chart getQuery request (related to issue 48860)
   - remove Chart Builder experimental feature flag
 
+### version 5.10.0
+*Released*: 1 October 2024
+- Editable Grid: improve validation messages
+
+### version 5.9.0
+*Released*: 1 October 2024
+- Issue 51254: Limit number of values for multi-valued filter types
+
 ### version 5.8.2
 *Released*: 30 September 2024
 - Issue 51173: LKSM/LKB: Improve naming pattern warning when it contains a field name

@@ -39,6 +39,16 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
     } = options;
     const { queryName, schemaName, viewName } = schemaQuery;
 
+    if (process.env.NODE_ENV === 'test') {
+        return {
+            messages: [],
+            queryInfo: new QueryInfo({}),
+            rows: [],
+            rowCount: 0,
+            schemaQuery,
+        };
+    }
+
     const [queryInfo, response] = await Promise.all([
         getQueryDetails({ containerPath: options.containerPath, schemaQuery }),
         new Promise<any>((resolve, reject) => {

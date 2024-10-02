@@ -1,8 +1,34 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 5.10.0
+*Released*: 1 October 2024
+- Editable Grid: improve validation messages
+
+### version 5.9.0
+*Released*: 1 October 2024
+- Issue 51254: Limit number of values for multi-valued filter types
+
+### version 5.8.2
+*Released*: 30 September 2024
+- Issue 51173: LKSM/LKB: Improve naming pattern warning when it contains a field name
+
+### version 5.8.1
+*Released*: 30 September 2024
+- Issue 51253: Require saving before testing of BarTender connection
+
+### version 5.8.0
+*Released*: 30 September 2024
+- Lineage Relationships: Optionally Require during Sample Registration
+  - add 'required' prop to various alias and parent input related models
+  - add api.domain.getRequiredParentTypes and api.entity.getDataTypesWithRequiredLineage
+  - updated DomainParentAliases and ParentAliasRow to use new UI and allow setting required parent
+  - updated ImportAliasRenderer to incorporate required info
+  - updated SampleTypeDesigner and DataClassDesigner to show new Lineage section for alias
+  - remove folder level data exclusion for alias data type selection since designers are edited at Home folder
+
+### version 5.7.0
+*Released*: 27 September 2024
 - Change "Project" to "Folder" throughout the application
 - Remove warning banner about shared domains except for domains coming from /Shared
 

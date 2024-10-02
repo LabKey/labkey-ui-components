@@ -134,9 +134,9 @@ describe('SampleTypePropertiesPanel', () => {
                     parentOptions={[{ schema: 'exp.data' }]}
                     includeDataClasses
                     useSeparateDataClassesAliasMenu
-                    sampleAliasCaption="Parent Alias"
+                    sampleAliasCaption="Parent"
                     sampleTypeCaption="sample type"
-                    dataClassAliasCaption="Source Alias"
+                    dataClassAliasCaption="Source"
                     dataClassTypeCaption="source type"
                     dataClassParentageLabel="source"
                 />

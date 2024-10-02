@@ -1,6 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react';
 
-
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 import {
     DATA_CLASS_NAME_EXPRESSION_TOPIC,
@@ -33,6 +32,8 @@ import { SCHEMAS } from '../../../schemas';
 
 import { DomainParentAliases } from '../DomainParentAliases';
 import { IParentAlias, IParentOption } from '../../entities/models';
+
+import { SectionHeading } from '../SectionHeading';
 
 import { DataClassModel } from './models';
 
@@ -83,7 +84,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
         nameExpressionInfoUrl: getHelpLink(DATA_CLASS_NAME_EXPRESSION_TOPIC),
         nameExpressionPlaceholder: 'Enter a naming pattern (e.g., DC-${now:date}-${genId})',
         appPropertiesOnly: false,
-        dataClassAliasCaption: 'Parent Alias',
+        dataClassAliasCaption: 'Parent',
         parentAliasHelpText: "Column headings used during import to set a data's parentage.",
     };
 
@@ -201,16 +202,19 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                     nameReadOnly={model.isBuiltIn}
                 />
                 {allowParentAlias && (
-                    <DomainParentAliases
-                        {...this.props}
-                        parentAliases={model.parentAliases}
-                        idPrefix="dataclass-parent-import-alias-"
-                        schema={SCHEMAS.DATA_CLASSES.SCHEMA}
-                        addEntityHelp={this.renderAddEntityHelper(nounSingular)}
-                        includeSampleSet={false}
-                        includeDataClass={true}
-                        showAddBtn={true}
-                    />
+                    <>
+                        <SectionHeading title="Lineage Settings" cls="top-spacing bottom-spacing" />
+                        <DomainParentAliases
+                            {...this.props}
+                            parentAliases={model.parentAliases}
+                            idPrefix="dataclass-parent-import-alias-"
+                            schema={SCHEMAS.DATA_CLASSES.SCHEMA}
+                            addEntityHelp={this.renderAddEntityHelper(nounSingular)}
+                            includeSampleSet={false}
+                            includeDataClass={true}
+                            showAddBtn={true}
+                        />
+                    </>
                 )}
                 {!appPropertiesOnly && (
                     <div className="row">

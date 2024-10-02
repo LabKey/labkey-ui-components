@@ -26,8 +26,8 @@ interface Props {
     disabled?: boolean;
     field: QueryColumn;
     fieldFilters: Filter.IFilter[];
-    onFieldFilterUpdate?: (newFilters: Filter.IFilter[], index: number) => void;
     includeAllAncestorFilter?: boolean;
+    onFieldFilterUpdate?: (newFilters: Filter.IFilter[], index: number) => void;
 }
 
 export const FilterExpressionView: FC<Props> = memo(props => {

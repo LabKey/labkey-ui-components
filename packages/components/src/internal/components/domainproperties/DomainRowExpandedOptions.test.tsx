@@ -17,6 +17,7 @@ import {
     TEXT_CHOICE_TYPE,
     TEXT_TYPE,
 } from './PropDescType';
+import {waitFor} from "@testing-library/dom";
 
 const DEFAULT_PROPS = {
     index: 1,
@@ -28,77 +29,87 @@ const DEFAULT_PROPS = {
 };
 
 describe('DomainRowExpandedOptions', () => {
-    test('Integer data type', () => {
+    test('Integer data type', async () => {
         const field = DomainField.create({
             rangeURI: INTEGER_TYPE.rangeURI,
         });
 
         render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
-        const headers = document.querySelectorAll('.domain-field-section-heading');
-        expect(headers.length).toBe(3);
-        expect(headers[0].textContent).toBe('Integer Options');
-        expect(headers[1].textContent).toBe('Name and Linking Options');
-        expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(3);
+            expect(headers[0].textContent).toBe('Integer Options');
+            expect(headers[1].textContent).toBe('Name and Linking Options');
+            expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
+        });
     });
 
-    test('Double data type', () => {
+    test('Double data type', async () => {
         const field = DomainField.create({
             rangeURI: DOUBLE_TYPE.rangeURI,
         });
 
         render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
-        const headers = document.querySelectorAll('.domain-field-section-heading');
-        expect(headers.length).toBe(3);
-        expect(headers[0].textContent).toBe('Decimal Options');
-        expect(headers[1].textContent).toBe('Name and Linking Options');
-        expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(3);
+            expect(headers[0].textContent).toBe('Decimal Options');
+            expect(headers[1].textContent).toBe('Name and Linking Options');
+            expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
+        });
     });
 
-    test('Boolean data type', () => {
+    test('Boolean data type', async () => {
         const field = DomainField.create({
             rangeURI: BOOLEAN_TYPE.rangeURI,
         });
 
         render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
-        const headers = document.querySelectorAll('.domain-field-section-heading');
-        expect(headers.length).toBe(3);
-        expect(headers[0].textContent).toBe('Boolean Field Options');
-        expect(headers[1].textContent).toBe('Name and Linking Options');
-        expect(headers[2].textContent).toBe('Conditional Formatting Options');
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(3);
+            expect(headers[0].textContent).toBe('Boolean Field Options');
+            expect(headers[1].textContent).toBe('Name and Linking Options');
+            expect(headers[2].textContent).toBe('Conditional Formatting Options');
+        });
     });
 
-    test('Date/time data type', () => {
+    test('Date/time data type', async () => {
         const field = DomainField.create({
             rangeURI: DATETIME_TYPE.rangeURI,
         });
 
         render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
-        const headers = document.querySelectorAll('.domain-field-section-heading');
-        expect(headers.length).toBe(3);
-        expect(headers[0].textContent).toBe('Date and Time Options');
-        expect(headers[1].textContent).toBe('Name and Linking Options');
-        expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(3);
+            expect(headers[0].textContent).toBe('Date and Time Options');
+            expect(headers[1].textContent).toBe('Name and Linking Options');
+            expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
+        });
     });
 
-    test('Text data type', () => {
+    test('Text data type', async () => {
         const field = DomainField.create({
             rangeURI: TEXT_TYPE.rangeURI,
         });
 
         render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
-        const headers = document.querySelectorAll('.domain-field-section-heading');
-        expect(headers.length).toBe(3);
-        expect(headers[0].textContent).toBe('Text Options');
-        expect(headers[1].textContent).toBe('Name and Linking Options');
-        expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(3);
+            expect(headers[0].textContent).toBe('Text Options');
+            expect(headers[1].textContent).toBe('Name and Linking Options');
+            expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
+        });
     });
 
-    test('No text options for primary key', () => {
+    test('No text options for primary key', async () => {
         const field = DomainField.create({
             rangeURI: TEXT_TYPE.rangeURI,
             isPrimaryKey: true,
@@ -106,13 +117,15 @@ describe('DomainRowExpandedOptions', () => {
 
         render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
-        const headers = document.querySelectorAll('.domain-field-section-heading');
-        expect(headers.length).toBe(2);
-        expect(headers[0].textContent).toBe('Name and Linking Options');
-        expect(headers[1].textContent).toBe('Conditional Formatting and Validation Options');
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(2);
+            expect(headers[0].textContent).toBe('Name and Linking Options');
+            expect(headers[1].textContent).toBe('Conditional Formatting and Validation Options');
+        });
     });
 
-    test('No text options', () => {
+    test('No text options', async () => {
         const field = DomainField.create({
             rangeURI: TEXT_TYPE.rangeURI,
         });
@@ -127,13 +140,15 @@ describe('DomainRowExpandedOptions', () => {
             />
         );
 
-        const headers = document.querySelectorAll('.domain-field-section-heading');
-        expect(headers.length).toBe(2);
-        expect(headers[0].textContent).toBe('Name and Linking Options');
-        expect(headers[1].textContent).toBe('Conditional Formatting and Validation Options');
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(2);
+            expect(headers[0].textContent).toBe('Name and Linking Options');
+            expect(headers[1].textContent).toBe('Conditional Formatting and Validation Options');
+        });
     });
 
-    test('Flag data type', () => {
+    test('Flag data type', async () => {
         const field = DomainField.create({
             conceptURI: FLAG_TYPE.conceptURI,
             rangeURI: FLAG_TYPE.rangeURI,
@@ -141,28 +156,32 @@ describe('DomainRowExpandedOptions', () => {
 
         render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
-        const headers = document.querySelectorAll('.domain-field-section-heading');
-        expect(headers.length).toBe(3);
-        expect(headers[0].textContent).toBe('Flag Options');
-        expect(headers[1].textContent).toBe('Name and Linking Options');
-        expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(3);
+            expect(headers[0].textContent).toBe('Flag Options');
+            expect(headers[1].textContent).toBe('Name and Linking Options');
+            expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
+        });
     });
 
-    test('Multiline data type', () => {
+    test('Multiline data type', async () => {
         const field = DomainField.create({
             rangeURI: MULTILINE_TYPE.rangeURI,
         });
 
         render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
-        const headers = document.querySelectorAll('.domain-field-section-heading');
-        expect(headers.length).toBe(3);
-        expect(headers[0].textContent).toBe('Multi-line Text Field Options');
-        expect(headers[1].textContent).toBe('Name and Linking Options');
-        expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(3);
+            expect(headers[0].textContent).toBe('Multi-line Text Field Options');
+            expect(headers[1].textContent).toBe('Name and Linking Options');
+            expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
+        });
     });
 
-    test('Ontology data type', () => {
+    test('Ontology data type', async () => {
         // FIXME: This test is disabled because the Ontology lookup components make network requests, which causes
         //  failures. They'll need to be updated to get their API methods from context.
         // const field = DomainField.create({
@@ -172,14 +191,16 @@ describe('DomainRowExpandedOptions', () => {
         //
         // render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
         //
-        // const headers = document.querySelectorAll('.domain-field-section-heading');
-        // expect(headers.length).toBe(3);
-        // expect(headers[0].textContent).toBe('Ontology Lookup Options');
-        // expect(headers[1].textContent).toBe('Name and Linking Options');
-        // expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
+        // await waitFor(() => {
+        //     const headers = document.querySelectorAll('.domain-field-section-heading');
+        //     expect(headers.length).toBe(3);
+        //     expect(headers[0].textContent).toBe('Ontology Lookup Options');
+        //     expect(headers[1].textContent).toBe('Name and Linking Options');
+        //     expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
+        // });
     });
 
-    test('Sample data type', () => {
+    test('Sample data type', async () => {
         const field = DomainField.create({
             conceptURI: SAMPLE_TYPE.conceptURI,
             rangeURI: SAMPLE_TYPE.rangeURI,
@@ -187,14 +208,16 @@ describe('DomainRowExpandedOptions', () => {
 
         render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
-        const headers = document.querySelectorAll('.domain-field-section-heading');
-        expect(headers.length).toBe(3);
-        expect(headers[0].textContent).toBe('Sample Options');
-        expect(headers[1].textContent).toBe('Name and Linking Options');
-        expect(headers[2].textContent).toBe('Conditional Formatting Options');
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(3);
+            expect(headers[0].textContent).toBe('Sample Options');
+            expect(headers[1].textContent).toBe('Name and Linking Options');
+            expect(headers[2].textContent).toBe('Conditional Formatting Options');
+        });
     });
 
-    test('Text Choice data type', () => {
+    test('Text Choice data type', async () => {
         const field = DomainField.create({
             conceptURI: TEXT_CHOICE_TYPE.conceptURI,
             rangeURI: TEXT_CHOICE_TYPE.rangeURI,
@@ -202,14 +225,16 @@ describe('DomainRowExpandedOptions', () => {
 
         render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
-        const headers = document.querySelectorAll('.domain-field-section-heading');
-        expect(headers.length).toBe(3);
-        expect(headers[0].textContent).toBe('Text Choice Options');
-        expect(headers[1].textContent).toBe('Name and Linking Options');
-        expect(headers[2].textContent).toBe('Conditional Formatting Options');
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(3);
+            expect(headers[0].textContent).toBe('Text Choice Options');
+            expect(headers[1].textContent).toBe('Name and Linking Options');
+            expect(headers[2].textContent).toBe('Conditional Formatting Options');
+        });
     });
 
-    test('Calculation data type, text', () => {
+    test('Calculation data type, text', async () => {
         const field = DomainField.create({
             conceptURI: CALCULATED_TYPE.conceptURI,
             rangeURI: TEXT_TYPE.rangeURI,
@@ -217,14 +242,16 @@ describe('DomainRowExpandedOptions', () => {
 
         render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
-        const headers = document.querySelectorAll('.domain-field-section-heading');
-        expect(headers.length).toBe(3);
-        expect(headers[0].textContent).toBe('Expression');
-        expect(headers[1].textContent).toBe('Name and Linking Options');
-        expect(headers[2].textContent).toBe('Conditional Formatting Options');
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(3);
+            expect(headers[0].textContent).toBe('Expression');
+            expect(headers[1].textContent).toBe('Name and Linking Options');
+            expect(headers[2].textContent).toBe('Conditional Formatting Options');
+        });
     });
 
-    test('Calculation data type, non-text', () => {
+    test('Calculation data type, non-text', async () => {
         const field = DomainField.create({
             conceptURI: CALCULATED_TYPE.conceptURI,
             rangeURI: INTEGER_TYPE.rangeURI,
@@ -232,15 +259,17 @@ describe('DomainRowExpandedOptions', () => {
 
         render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
-        const headers = document.querySelectorAll('.domain-field-section-heading');
-        expect(headers.length).toBe(4);
-        expect(headers[0].textContent).toBe('Expression');
-        expect(headers[1].textContent).toBe('Integer Options');
-        expect(headers[2].textContent).toBe('Name and Linking Options');
-        expect(headers[3].textContent).toBe('Conditional Formatting Options');
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(4);
+            expect(headers[0].textContent).toBe('Expression');
+            expect(headers[1].textContent).toBe('Integer Options');
+            expect(headers[2].textContent).toBe('Name and Linking Options');
+            expect(headers[3].textContent).toBe('Conditional Formatting Options');
+        });
     });
 
-    test('Fully locked data type', () => {
+    test('Fully locked data type', async () => {
         const field = DomainField.create({
             rangeURI: TEXT_TYPE.rangeURI,
             lockType: DOMAIN_FIELD_FULLY_LOCKED,
@@ -248,10 +277,12 @@ describe('DomainRowExpandedOptions', () => {
 
         render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
-        const headers = document.querySelectorAll('.domain-field-section-heading');
-        expect(headers.length).toBe(2);
-        expect(headers[0].textContent).toBe('Text Options');
-        expect(headers[1].textContent).toBe('Name and Linking Options');
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(2);
+            expect(headers[0].textContent).toBe('Text Options');
+            expect(headers[1].textContent).toBe('Name and Linking Options');
+        });
     });
 
     test('Include DerivationDataScope', async () => {
@@ -264,10 +295,13 @@ describe('DomainRowExpandedOptions', () => {
         const props = { ...DEFAULT_PROPS, domainFormDisplayOptions: displayOption };
         render(<DomainRowExpandedOptions {...props} field={field} />);
 
-        const headers = document.querySelectorAll('.domain-field-section-heading');
-        expect(headers.length).toBe(4);
-        // expect(headers[0].textContent).toBe('Boolean Field Options');
-        // expect(headers[1].textContent).toBe('Name and Linking Options');
-        // expect(headers[2].textContent).toBe('Conditional Formatting Options');
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(4);
+            expect(headers[0].textContent).toBe(''); // derive / aliquot
+            expect(headers[1].textContent).toBe('Boolean Field Options');
+            expect(headers[2].textContent).toBe('Name and Linking Options');
+            expect(headers[3].textContent).toBe('Conditional Formatting Options');
+        });
     });
 });

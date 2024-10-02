@@ -2,7 +2,7 @@ import React from 'react';
 import { userEvent } from '@testing-library/user-event';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
-import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
+import { TEST_USER_EDITOR, TEST_USER_PROJECT_ADMIN, TEST_USER_READER } from '../../userFixtures';
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { LABKEY_VIS } from '../../constants';
@@ -10,6 +10,12 @@ import { LABKEY_VIS } from '../../constants';
 import { QueryInfo } from '../../../public/QueryInfo';
 
 import { ViewInfo } from '../../ViewInfo';
+
+import {
+    TEST_FOLDER_CONTAINER_ADMIN,
+    TEST_PROJECT_CONTAINER,
+    TEST_PROJECT_CONTAINER_ADMIN,
+} from '../../containerFixtures';
 
 import {
     ChartBuilderModal,
@@ -95,7 +101,7 @@ const SERVER_CONTEXT = {
 };
 
 describe('ChartBuilderModal', () => {
-    function validate(isNew: boolean, canShare = true, canDelete = false) {
+    function validate(isNew: boolean, canShare = true, canDelete = false, allowInherit = false) {
         expect(document.querySelectorAll('.chart-builder-modal')).toHaveLength(1);
         expect(document.querySelector('.modal-title').textContent).toBe(isNew ? 'Create Chart' : 'Edit Chart');
         expect(document.querySelectorAll('.btn')).toHaveLength(canDelete ? 3 : 2);
@@ -112,6 +118,7 @@ describe('ChartBuilderModal', () => {
 
         expect(document.querySelector('input[name="name"]')).not.toBeNull();
         expect(document.querySelectorAll('input[name="shared"]')).toHaveLength(canShare ? 1 : 0);
+        expect(document.querySelectorAll('input[name="inheritable"]')).toHaveLength(allowInherit ? 1 : 0);
 
         expect(document.querySelectorAll('.chart-builder-preview-msg')).toHaveLength(0);
         expect(document.querySelectorAll('.chart-builder-preview-body')).toHaveLength(isNew ? 0 : 1);
@@ -155,6 +162,54 @@ describe('ChartBuilderModal', () => {
 
         validate(true, false);
         expect(document.querySelectorAll('input')).toHaveLength(5);
+    });
+
+    test('allowInherit false, user perm', () => {
+        renderWithAppContext(
+            <ChartBuilderModal actions={actions} model={model} onHide={jest.fn()} savedChartModel={undefined} />,
+            {
+                serverContext: {
+                    user: TEST_USER_EDITOR,
+                    container: TEST_PROJECT_CONTAINER_ADMIN,
+                    moduleContext: { query: { isProductFoldersEnabled: true } },
+                },
+            }
+        );
+
+        validate(true);
+        expect(document.querySelectorAll('input')).toHaveLength(6);
+    });
+
+    test('allowInherit false, non-project', () => {
+        renderWithAppContext(
+            <ChartBuilderModal actions={actions} model={model} onHide={jest.fn()} savedChartModel={undefined} />,
+            {
+                serverContext: {
+                    user: TEST_USER_PROJECT_ADMIN,
+                    container: TEST_FOLDER_CONTAINER_ADMIN,
+                    moduleContext: { query: { isProductFoldersEnabled: true } },
+                },
+            }
+        );
+
+        validate(true);
+        expect(document.querySelectorAll('input')).toHaveLength(6);
+    });
+
+    test('allowInherit true', () => {
+        renderWithAppContext(
+            <ChartBuilderModal actions={actions} model={model} onHide={jest.fn()} savedChartModel={undefined} />,
+            {
+                serverContext: {
+                    user: TEST_USER_PROJECT_ADMIN,
+                    container: TEST_PROJECT_CONTAINER,
+                    moduleContext: { query: { isProductFoldersEnabled: true } },
+                },
+            }
+        );
+
+        validate(true, true, false, true);
+        expect(document.querySelectorAll('input')).toHaveLength(7);
     });
 
     test('field inputs displayed for selected chart type', async () => {

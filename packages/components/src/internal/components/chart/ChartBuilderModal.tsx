@@ -28,10 +28,11 @@ import { SVGIcon } from '../base/SVGIcon';
 
 import { LabelOverlay } from '../forms/LabelOverlay';
 
+import { isAppHomeFolder } from '../../app/utils';
+
 import { deleteChart, saveChart, SaveReportConfig } from './actions';
 
 import { ChartConfig, ChartQueryConfig, GenericChartModel } from './models';
-import {isAppHomeFolder} from "../../app/utils";
 
 interface AggregateFieldInfo {
     name: string;
@@ -342,7 +343,12 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
                     )}
                     {allowInherit && (
                         <div className="checkbox-input">
-                            <input name="inheritable" type="checkbox" checked={inheritable} onChange={onToggleInheritable} />
+                            <input
+                                name="inheritable"
+                                type="checkbox"
+                                checked={inheritable}
+                                onChange={onToggleInheritable}
+                            />
                             <span onClick={onToggleInheritable}>Make this chart available in child folders</span>
                         </div>
                     )}
@@ -615,12 +621,16 @@ interface ChartBuilderModalProps extends RequiresModelAndActions {
 
 export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, model, onHide, savedChartModel }) => {
     const CHART_TYPES = LABKEY_VIS?.GenericChartHelper.getRenderTypes();
-    const { user } = useServerContext();
+    const { user, container, moduleContext } = useServerContext();
     const canShare = useMemo(
         () => savedChartModel?.canShare ?? hasPermissions(user, [PermissionTypes.ShareReportPermission]),
         [savedChartModel, user]
     );
-    const allowInherit = useMemo(() => isAppHomeFolder() && user.isAdmin, [user]); // only allow inheritable charts in app home folder for apps, see chartWizard.jsp for LKS behavior
+    const allowInherit = useMemo(
+        // only allow inheritable charts in app home folder for apps, see chartWizard.jsp for LKS behavior
+        () => isAppHomeFolder(container, moduleContext) && user.isAdmin,
+        [user, container, moduleContext]
+    );
     const chartTypes: ChartTypeInfo[] = useMemo(
         () => CHART_TYPES.filter(type => !type.hidden && !HIDDEN_CHART_TYPES.includes(type.name)),
         [CHART_TYPES]

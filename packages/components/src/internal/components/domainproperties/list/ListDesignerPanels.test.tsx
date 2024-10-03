@@ -21,6 +21,7 @@ import { ListDesignerPanelsProps, ListDesignerPanelsImpl } from './ListDesignerP
 jest.mock('../actions', () => ({
     ...jest.requireActual('../actions'),
     fetchQueries: jest.fn().mockResolvedValue([]),
+    fetchContainers: jest.fn().mockResolvedValue(List()),
 }));
 
 jest.mock('../../../query/selectRows', () => ({

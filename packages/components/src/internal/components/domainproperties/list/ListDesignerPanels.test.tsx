@@ -18,6 +18,11 @@ import { QueryInfo } from '../../../../public/QueryInfo';
 import { ListModel } from './models';
 import { ListDesignerPanelsProps, ListDesignerPanelsImpl } from './ListDesignerPanels';
 
+jest.mock('../actions', () => ({
+    ...jest.requireActual('../actions'),
+    fetchQueries: jest.fn().mockResolvedValue([]),
+}));
+
 jest.mock('../../../query/selectRows', () => ({
     ...jest.requireActual('../../../query/selectRows'),
     selectRows: jest.fn().mockResolvedValue({

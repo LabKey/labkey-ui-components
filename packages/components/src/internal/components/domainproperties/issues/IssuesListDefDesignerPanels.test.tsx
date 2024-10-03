@@ -8,7 +8,7 @@ import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
-import { MockLookupProvider } from '../../../../test/components/Lookup';
+import { MockLookupProvider } from '../../../../test/MockLookupProvider';
 
 import { IssuesListDefDesignerPanels } from './IssuesListDefDesignerPanels';
 import { IssuesListDefModel } from './models';

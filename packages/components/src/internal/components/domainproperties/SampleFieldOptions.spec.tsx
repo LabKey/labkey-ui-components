@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { MockLookupProvider } from '../../../test/components/Lookup';
+import { MockLookupProvider } from '../../../test/MockLookupProvider';
 
 import { ITargetTableSelectImplState, TargetTableSelectProps } from './Lookup/Fields';
 import { DomainField } from './models';

@@ -11,7 +11,7 @@ import getDomainDetailsJSON from '../../../../test/data/list-getDomainDetails.js
 
 import { getTestAPIWrapper } from '../../../APIWrapper';
 
-import { MockLookupProvider } from '../../../../test/components/Lookup';
+import { MockLookupProvider } from '../../../../test/MockLookupProvider';
 
 import { QueryInfo } from '../../../../public/QueryInfo';
 

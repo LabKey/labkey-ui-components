@@ -13,7 +13,7 @@ import { getTestAPIWrapper } from '../../../APIWrapper';
 
 import { MockLookupProvider } from '../../../../test/MockLookupProvider';
 
-import { QueryInfo } from '../../../../public/QueryInfo';
+import { createMockSelectRowsDeprecatedResponse, createMockSelectRowsResponse } from '../../../../test/MockUtils';
 
 import { ListModel } from './models';
 import { ListDesignerPanelsProps, ListDesignerPanelsImpl } from './ListDesignerPanels';
@@ -26,23 +26,12 @@ jest.mock('../actions', () => ({
 
 jest.mock('../../../query/selectRows', () => ({
     ...jest.requireActual('../../../query/selectRows'),
-    selectRows: jest.fn().mockResolvedValue({
-        messages: [],
-        rows: [],
-        rowCount: 0,
-    }),
+    selectRows: () => createMockSelectRowsResponse(),
 }));
 
 jest.mock('../../../query/api', () => ({
     ...jest.requireActual('../../../query/api'),
-    selectRowsDeprecated: () =>
-        Promise.resolve({
-            key: 'test',
-            models: { test: {} },
-            orderedModels: { test: List() },
-            queries: { test: QueryInfo.fromJsonForTests({}) },
-            rowCount: 0,
-        }),
+    selectRowsDeprecated: () => createMockSelectRowsDeprecatedResponse(),
 }));
 
 describe('ListDesignerPanels', () => {

@@ -16,7 +16,7 @@ import { getIssuesTestAPIWrapper } from './actions';
 
 jest.mock('../actions', () => ({
     ...jest.requireActual('../actions'),
-    getMaxPhiLevel: jest.fn(),
+    getMaxPhiLevel: jest.fn().mockResolvedValue('Restricted'),
 }));
 
 describe('IssuesListDefDesignerPanel', () => {

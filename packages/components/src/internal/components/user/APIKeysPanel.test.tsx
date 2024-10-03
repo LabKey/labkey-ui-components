@@ -1,8 +1,6 @@
 import React from 'react';
 import { act } from '@testing-library/react';
 
-import { List } from 'immutable';
-
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR, TEST_USER_SITE_ADMIN } from '../../userFixtures';
@@ -14,21 +12,14 @@ import {
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from '../../productFixtures';
 
-import { QueryInfo } from '../../../public/QueryInfo';
+import {createMockGetQueryDetails, createMockSelectRowsDeprecatedResponse} from '../../../test/MockUtils';
 
 import { APIKeysPanel, KeyGenerator } from './APIKeysPanel';
 
 jest.mock('../../query/api', () => ({
     ...jest.requireActual('../../query/api'),
-    getQueryDetails: () => Promise.resolve(QueryInfo.fromJsonForTests({})),
-    selectRowsDeprecated: () =>
-        Promise.resolve({
-            key: 'test',
-            models: { test: {} },
-            orderedModels: { test: List() },
-            queries: { test: QueryInfo.fromJsonForTests({}) },
-            rowCount: 0,
-        }),
+    getQueryDetails: () => createMockGetQueryDetails(),
+    selectRowsDeprecated: () => createMockSelectRowsDeprecatedResponse(),
 }));
 
 beforeAll(() => {

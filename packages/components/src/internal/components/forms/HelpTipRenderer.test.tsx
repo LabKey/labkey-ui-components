@@ -6,14 +6,14 @@ import { waitFor } from '@testing-library/dom';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import { QueryInfo } from '../../../public/QueryInfo';
+import { createMockGetQueryDetails } from '../../../test/MockUtils';
 
 import { HelpTipRenderer } from './HelpTipRenderer';
 import { DOMAIN_FIELD } from './DomainFieldHelpTipContents';
 
 jest.mock('../../query/api', () => ({
     ...jest.requireActual('../../query/api'),
-    getQueryDetails: () => Promise.resolve(QueryInfo.fromJsonForTests({})),
+    getQueryDetails: () => createMockGetQueryDetails(),
 }));
 
 describe('HelpTipRenderer', () => {

@@ -455,7 +455,7 @@ export interface ISelectRowsResult {
     key: string;
     messages?: List<Map<string, string>>;
     models: any;
-    orderedModels: any; //List<any>;
+    orderedModels: List<any>;
     queries: {
         [key: string]: QueryInfo;
     };

@@ -206,6 +206,7 @@ export function fetchDomainDetails(options: FetchDomainDetailsOptions): Promise<
 
 export function fetchQueries(containerPath: string, schemaName: string): Promise<QueryInfoLite[]> {
     const key = [containerPath, schemaName].join('|').toLowerCase();
+
     return cache<QueryInfoLite[]>(
         'query-cache',
         key,

@@ -847,7 +847,6 @@ export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
     let parentTypeOptions = List<IEntityTypeOption>();
     let validParentTypeOptions = List<IEntityTypeOption>();
     let parentIdData: Record<string, ParentIdData>;
-
     if (parentDataType) {
         const options = await getEntityTypeOptions(
             parentDataType,

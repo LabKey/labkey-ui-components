@@ -127,7 +127,7 @@ const KeyGeneratorModal: FC<ModalProps> = props => {
     }, []);
 
     return (
-        <Modal title={'Generate ' + noun} cancelText="Done" onCancel={onClose}>
+        <Modal title={noun} cancelText="Done" onCancel={onClose}>
             {type === 'apikey' && (
                 <div>
                     <label htmlFor="keyDescription" className="right-spacing">
@@ -214,7 +214,7 @@ export const KeyGenerator: FC<KeyGeneratorProps> = props => {
                 <KeyGeneratorModal
                     afterCreate={afterCreate}
                     noun={noun}
-                    type={'session'}
+                    type={type}
                     keyValue={keyValue}
                     onClose={closeModal}
                 />

@@ -3,10 +3,26 @@ import { render } from '@testing-library/react';
 
 import { waitFor } from '@testing-library/dom';
 
+import { List } from 'immutable';
+
 import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/constants';
+
+import { QueryInfo } from '../../../../public/QueryInfo';
 
 import { AdvancedSettings, DatasetSettingsInput, DatasetSettingsSelect } from './DatasetPropertiesAdvancedSettings';
 import { DatasetModel } from './models';
+
+jest.mock('../../../query/api', () => ({
+    ...jest.requireActual('../../../query/api'),
+    selectRowsDeprecated: () =>
+        Promise.resolve({
+            key: 'test',
+            models: { test: {} },
+            orderedModels: { test: List() },
+            queries: { test: QueryInfo.fromJsonForTests({}) },
+            rowCount: 0,
+        }),
+}));
 
 const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);
 

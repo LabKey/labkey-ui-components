@@ -2,6 +2,8 @@ import React from 'react';
 
 import { userEvent } from '@testing-library/user-event';
 
+import { waitFor } from '@testing-library/dom';
+
 import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
@@ -11,11 +13,14 @@ import { MockLookupProvider } from '../../../../test/components/Lookup';
 import { IssuesListDefDesignerPanels } from './IssuesListDefDesignerPanels';
 import { IssuesListDefModel } from './models';
 import { getIssuesTestAPIWrapper } from './actions';
-import { waitFor } from '@testing-library/dom';
+
+jest.mock('../actions', () => ({
+    ...jest.requireActual('../actions'),
+    getMaxPhiLevel: jest.fn(),
+}));
 
 describe('IssuesListDefDesignerPanel', () => {
     const emptyNewModel = IssuesListDefModel.create(null, { issueDefName: 'Issues List For Jest' });
-
     const BASE_PROPS = {
         api: getIssuesTestAPIWrapper(jest.fn),
         onComplete: jest.fn(),

@@ -1,6 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
+import { waitFor } from '@testing-library/dom';
+
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { DomainField } from './models';
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DOMAIN_FIELD_FULLY_LOCKED } from './constants';
@@ -17,7 +19,11 @@ import {
     TEXT_CHOICE_TYPE,
     TEXT_TYPE,
 } from './PropDescType';
-import {waitFor} from "@testing-library/dom";
+
+jest.mock('./actions', () => ({
+    ...jest.requireActual('./actions'),
+    fetchQueries: jest.fn().mockResolvedValue([]),
+}));
 
 const DEFAULT_PROPS = {
     index: 1,

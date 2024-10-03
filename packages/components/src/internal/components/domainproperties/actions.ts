@@ -205,10 +205,6 @@ export function fetchDomainDetails(options: FetchDomainDetailsOptions): Promise<
 }
 
 export function fetchQueries(containerPath: string, schemaName: string): Promise<QueryInfoLite[]> {
-    if (process.env.NODE_ENV === 'test') {
-        return Promise.resolve([]);
-    }
-
     const key = [containerPath, schemaName].join('|').toLowerCase();
     return cache<QueryInfoLite[]>(
         'query-cache',
@@ -410,10 +406,6 @@ export function fetchOntologies(containerPath?: string): Promise<OntologyModel[]
 }
 
 export function getMaxPhiLevel(containerPath?: string): Promise<string> {
-    if (process.env.NODE_ENV === 'test') {
-        return Promise.resolve('Restricted');
-    }
-
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('security', 'getMaxPhiLevel.api', undefined, { container: containerPath }),

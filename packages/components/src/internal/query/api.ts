@@ -111,10 +111,6 @@ interface GetQueryDetailsSQ extends GetQueryDetailsBasic {
 export type GetQueryDetailsOptions = GetQueryDetailsName | GetQueryDetailsSQ;
 
 export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryInfo> {
-    if (process.env.NODE_ENV === 'test') {
-        return Promise.resolve(new QueryInfo({}));
-    }
-
     const { containerPath, fields, fk } = options;
     const schemaQuery = options.schemaQuery ?? new SchemaQuery(options.schemaName, options.queryName);
     const key = getQueryDetailsCacheKey(schemaQuery, containerPath, fk, fields);
@@ -473,17 +469,6 @@ export interface ISelectRowsResult {
  */
 export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsResult> {
     return new Promise((resolve, reject) => {
-        if (process.env.NODE_ENV === 'test') {
-            resolve({
-                key: 'test',
-                models: { test: {} },
-                orderedModels: { test: List() },
-                queries: { test: new QueryInfo({}) },
-                rowCount: 0,
-            });
-            return;
-        }
-
         let schemaQuery, key;
         if (userConfig.queryName) {
             schemaQuery = new SchemaQuery(userConfig.schemaName, userConfig.queryName, userConfig.viewName);

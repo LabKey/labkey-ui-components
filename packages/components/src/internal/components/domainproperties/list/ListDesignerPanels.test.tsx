@@ -13,8 +13,31 @@ import { getTestAPIWrapper } from '../../../APIWrapper';
 
 import { MockLookupProvider } from '../../../../test/components/Lookup';
 
+import { QueryInfo } from '../../../../public/QueryInfo';
+
 import { ListModel } from './models';
 import { ListDesignerPanelsProps, ListDesignerPanelsImpl } from './ListDesignerPanels';
+
+jest.mock('../../../query/selectRows', () => ({
+    ...jest.requireActual('../../../query/selectRows'),
+    selectRows: jest.fn().mockResolvedValue({
+        messages: [],
+        rows: [],
+        rowCount: 0,
+    }),
+}));
+
+jest.mock('../../../query/api', () => ({
+    ...jest.requireActual('../../../query/api'),
+    selectRowsDeprecated: () =>
+        Promise.resolve({
+            key: 'test',
+            models: { test: {} },
+            orderedModels: { test: List() },
+            queries: { test: QueryInfo.fromJsonForTests({}) },
+            rowCount: 0,
+        }),
+}));
 
 describe('ListDesignerPanels', () => {
     function getDefaultProps(): ListDesignerPanelsProps {

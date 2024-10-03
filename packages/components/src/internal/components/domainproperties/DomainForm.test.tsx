@@ -43,6 +43,11 @@ import { clearFieldDetails, updateDomainField } from './actions';
 import { INT_LIST } from './list/constants';
 import { getDomainPropertiesTestAPIWrapper } from './APIWrapper';
 
+jest.mock('./actions', () => ({
+    ...jest.requireActual('./actions'),
+    fetchQueries: jest.fn().mockResolvedValue([]),
+}));
+
 const API = getDomainPropertiesTestAPIWrapper(jest.fn, {
     getMaxPhiLevel: jest.fn().mockResolvedValue('Restricted'),
 });

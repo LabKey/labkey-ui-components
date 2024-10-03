@@ -848,10 +848,6 @@ export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
     let validParentTypeOptions = List<IEntityTypeOption>();
     let parentIdData: Record<string, ParentIdData>;
 
-    if (process.env.NODE_ENV === 'test') {
-        return { parentTypeOptions, parentIdData, validParentTypeOptions };
-    }
-
     if (parentDataType) {
         const options = await getEntityTypeOptions(
             parentDataType,

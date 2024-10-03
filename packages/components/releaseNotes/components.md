@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 50569: Add description for API keys
+
 ### version 5.10.0
 *Released*: 1 October 2024
 - Editable Grid: improve validation messages

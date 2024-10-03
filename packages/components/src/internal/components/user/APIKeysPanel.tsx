@@ -2,7 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { ChangeEvent, FC, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ActionURL } from '@labkey/api';
 
@@ -82,24 +82,35 @@ interface KeyGeneratorProps {
     afterCreate: (key: string) => void;
     keyValue?: string;
     noun: string;
-    type: string;
+    type: 'session' | 'apikey';
 }
 
-// exported for jest testing
-export const KeyGenerator: FC<KeyGeneratorProps> = props => {
-    const { afterCreate, type, keyValue, noun } = props;
-    const { api } = useAppContext<AppContext>();
+interface ModalProps extends KeyGeneratorProps {
+    onClose: () => void;
+}
 
+const KeyGeneratorModal: FC<ModalProps> = props => {
+    const { type, afterCreate, keyValue, noun, onClose } = props;
+    const [description, setDescription] = useState<string>();
+    const { api } = useAppContext<AppContext>();
     const [error, setError] = useState<boolean>(false);
 
     const onGenerateKey = useCallback(async () => {
         try {
-            const key = await api.security.createApiKey(type);
+            const key = await api.security.createApiKey(type, description);
             afterCreate(key);
         } catch (e) {
             setError(true);
         }
-    }, [type, api]);
+    }, [api.security, type, afterCreate, description]);
+
+    useEffect(() => {
+        (async () => {
+            if (type === 'session') {
+                await onGenerateKey();
+            }
+        })();
+    }, [type, onGenerateKey]);
 
     const onCopyKey = useCallback(() => {
         const handleCopy = (event: ClipboardEvent): void => {
@@ -111,12 +122,38 @@ export const KeyGenerator: FC<KeyGeneratorProps> = props => {
         document.execCommand('copy');
     }, [keyValue]);
 
+    const changeDescription = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        setDescription(event.target.value);
+    }, []);
+
     return (
-        <>
+        <Modal title={'Generate ' + noun} cancelText="Done" onCancel={onClose}>
+            {type === 'apikey' && (
+                <div>
+                    <label htmlFor="keyDescription" className="right-spacing">
+                        Description (optional)
+                    </label>
+                    <input
+                        className="form-control api-key__input"
+                        id="keyDescription"
+                        type="text"
+                        onChange={changeDescription}
+                        autoFocus
+                        disabled={!!keyValue}
+                    />
+                </div>
+            )}
             <div className="top-spacing form-group">
-                <button className="btn btn-success api-key__button" onClick={onGenerateKey} disabled={!!keyValue}>
-                    Generate {noun}
-                </button>
+                {type === 'apikey' && (
+                    <button
+                        type="submit"
+                        className="btn btn-success api-key__button"
+                        onClick={onGenerateKey}
+                        disabled={!!keyValue}
+                    >
+                        Generate {noun}
+                    </button>
+                )}
 
                 <input
                     disabled
@@ -146,6 +183,41 @@ export const KeyGenerator: FC<KeyGeneratorProps> = props => {
                     There was a problem generating your API key. If the problem persists, please contact your system
                     administrator.
                 </Alert>
+            )}
+        </Modal>
+    );
+};
+
+// exported for jest testing
+export const KeyGenerator: FC<KeyGeneratorProps> = props => {
+    const { afterCreate, type, keyValue, noun} = props;
+    const [showModal, setShowModal] = useState<boolean>(false);
+
+    const openModal = useCallback(() => {
+        setShowModal(true);
+    }, []);
+
+    const closeModal = useCallback(() => {
+        setShowModal(false);
+    }, []);
+
+    return (
+        <>
+            <div className="top-spacing">
+                <div className="top-spacing form-group">
+                    <button className="btn btn-success api-key__button" onClick={openModal} disabled={showModal}>
+                        Generate {noun}
+                    </button>
+                </div>
+            </div>
+            {showModal && (
+                <KeyGeneratorModal
+                    afterCreate={afterCreate}
+                    noun={noun}
+                    type={'session'}
+                    keyValue={keyValue}
+                    onClose={closeModal}
+                />
             )}
         </>
     );

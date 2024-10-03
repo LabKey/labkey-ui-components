@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 51291: Assure product menu closes after click on "empty" link
+
 ### version 5.10.0
 *Released*: 1 October 2024
 - Editable Grid: improve validation messages

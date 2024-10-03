@@ -55,7 +55,7 @@ const APIKeysButtonsComponent: FC<ButtonsComponentProps> = props => {
                 'Unable to delete the selected keys. If the problem persists, please contact your system administrator.'
             );
         }
-    }, [model, actions, model.id]);
+    }, [api.security, model.selections, model.id, actions, closeDeleteModal, onDelete]);
 
     const noun = model?.selections?.size > 1 ? 'Keys' : 'Key';
     return (
@@ -79,8 +79,7 @@ const APIKeysButtonsComponent: FC<ButtonsComponentProps> = props => {
 };
 
 interface KeyGeneratorProps {
-    afterCreate: (key: string) => void;
-    keyValue?: string;
+    afterCreate?: () => void;
     noun: string;
     type: 'session' | 'apikey';
 }
@@ -90,15 +89,17 @@ interface ModalProps extends KeyGeneratorProps {
 }
 
 const KeyGeneratorModal: FC<ModalProps> = props => {
-    const { type, afterCreate, keyValue, noun, onClose } = props;
+    const { type, afterCreate, noun, onClose } = props;
     const [description, setDescription] = useState<string>();
     const { api } = useAppContext<AppContext>();
     const [error, setError] = useState<boolean>(false);
+    const [keyValue, setKeyValue ] = useState<string>(undefined);
 
     const onGenerateKey = useCallback(async () => {
         try {
             const key = await api.security.createApiKey(type, description);
-            afterCreate(key);
+            setKeyValue(key);
+            afterCreate?.();
         } catch (e) {
             setError(true);
         }
@@ -127,8 +128,15 @@ const KeyGeneratorModal: FC<ModalProps> = props => {
     }, []);
 
     return (
-        <Modal title={noun} cancelText="Done" onCancel={onClose}>
-            {type === 'apikey' && (
+        <Modal
+            title={noun}
+            cancelText={keyValue ? 'Done' : undefined}
+            onCancel={onClose}
+            canConfirm={!keyValue}
+            confirmText={type === 'apikey' ? 'Generate ' + noun : undefined}
+            onConfirm={!keyValue && type === 'apikey' ? onGenerateKey : undefined}
+        >
+            {type === 'apikey' && !keyValue && (
                 <div>
                     <label htmlFor="keyDescription" className="right-spacing">
                         Description (optional)
@@ -143,35 +151,27 @@ const KeyGeneratorModal: FC<ModalProps> = props => {
                     />
                 </div>
             )}
-            <div className="top-spacing form-group">
-                {type === 'apikey' && (
+            {keyValue && <div>{description}</div>}
+            {!!keyValue && (
+                <div className="top-spacing form-group">
+                    <input
+                        disabled
+                        type="text"
+                        className="form-control api-key__input"
+                        name={type + '_token'}
+                        value={keyValue}
+                    />
                     <button
-                        type="submit"
-                        className="btn btn-success api-key__button"
-                        onClick={onGenerateKey}
-                        disabled={!!keyValue}
+                        className="btn btn-default api-key__button"
+                        title="Copy to clipboard"
+                        name={'copy_' + type + '_token'}
+                        onClick={onCopyKey}
+                        disabled={!keyValue}
                     >
-                        Generate {noun}
+                        <i className="fa fa-clipboard"></i>
                     </button>
-                )}
-
-                <input
-                    disabled
-                    type="text"
-                    className="form-control api-key__input"
-                    name={type + '_token'}
-                    value={keyValue}
-                />
-                <button
-                    className="btn btn-default api-key__button"
-                    title="Copy to clipboard"
-                    name={'copy_' + type + '_token'}
-                    onClick={onCopyKey}
-                    disabled={!keyValue}
-                >
-                    <i className="fa fa-clipboard"></i>
-                </button>
-            </div>
+                </div>
+            )}
             {!!keyValue && (
                 <div id="copy_advice">
                     Copy this key value and save it for use in authenticating to the server. This key value will not be
@@ -190,7 +190,7 @@ const KeyGeneratorModal: FC<ModalProps> = props => {
 
 // exported for jest testing
 export const KeyGenerator: FC<KeyGeneratorProps> = props => {
-    const { afterCreate, type, keyValue, noun} = props;
+    const { afterCreate, type, noun} = props;
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const openModal = useCallback(() => {
@@ -215,7 +215,6 @@ export const KeyGenerator: FC<KeyGeneratorProps> = props => {
                     afterCreate={afterCreate}
                     noun={noun}
                     type={type}
-                    keyValue={keyValue}
                     onClose={closeModal}
                 />
             )}
@@ -231,8 +230,6 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
     const { includeSessionKeys, actions, queryModels } = props;
     const { model } = queryModels;
     const { user, moduleContext, impersonatingUser } = useServerContext();
-    const [apiKey, setApiKey] = useState<string>(''); // start with empty string not undefined to avoid warnings about controlled vs. uncontrolled inputs
-    const [sessionKey, setSessionKey] = useState<string>('');
     const [error, setError] = useState<string>();
     const apiEnabled = isApiKeyGenerationEnabled(moduleContext);
     const sessionEnabled = isSessionKeyGenerationEnabled(moduleContext);
@@ -242,13 +239,11 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
             setError(deleteError);
         } else {
             setError(undefined);
-            setApiKey(''); // undefined and null here will not have the desired effect
         }
     }, []);
 
     const onApiKeyCreate = useCallback(
-        (key: string) => {
-            setApiKey(key);
+        () => {
             actions?.loadModel(model?.id, true, true);
         },
         [actions, model?.id]
@@ -351,7 +346,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
                             </Alert>
                         )}
                         {!impersonatingUser && (
-                            <KeyGenerator type="apikey" keyValue={apiKey} afterCreate={onApiKeyCreate} noun="API Key" />
+                            <KeyGenerator type="apikey" afterCreate={onApiKeyCreate} noun="API Key" />
                         )}
                     </>
                 )}
@@ -380,8 +375,6 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
                                 </p>
                                 <KeyGenerator
                                     type="session"
-                                    keyValue={sessionKey}
-                                    afterCreate={setSessionKey}
                                     noun="Session Key"
                                 />
                             </>

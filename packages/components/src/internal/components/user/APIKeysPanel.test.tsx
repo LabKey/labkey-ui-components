@@ -12,7 +12,15 @@ import {
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from '../../productFixtures';
 
+import {createMockGetQueryDetails, createMockSelectRowsDeprecatedResponse} from '../../../test/MockUtils';
+
 import { APIKeysPanel, KeyGenerator } from './APIKeysPanel';
+
+jest.mock('../../query/api', () => ({
+    ...jest.requireActual('../../query/api'),
+    getQueryDetails: () => createMockGetQueryDetails(),
+    selectRowsDeprecated: () => createMockSelectRowsDeprecatedResponse(),
+}));
 
 beforeAll(() => {
     global.console.error = jest.fn();
@@ -101,6 +109,7 @@ describe('APIKeysPanel', () => {
         }
         let expectedButtonCount = 0;
         if (!isImpersonating) {
+            expectedButtonCount += 1;
             if (apiKeysEnabled) expectedButtonCount += 2;
             if (sessionKeysEnabled) expectedButtonCount += 2;
         }

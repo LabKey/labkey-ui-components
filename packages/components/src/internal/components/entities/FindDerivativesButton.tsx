@@ -23,7 +23,7 @@ import { EntityDataType, FilterProps } from './models';
 
 export const SAMPLE_FINDER_SESSION_PREFIX = 'Searched ';
 
-const MAX_SELECTION = 100;
+const MAX_SELECTION = 200;
 const DISABLED_FIND_DERIVATIVES_MSG =
     'Unable to find derivative samples using search filters or filters on multi-valued lookup fields';
 

@@ -139,45 +139,42 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
         >
             {type === 'apikey' && !keyValue && (
                 <div>
-                    <label htmlFor="keyDescription" className="right-spacing">
-                        Description (optional)
-                    </label>
+                    <label htmlFor="keyDescription">Description</label>
                     <input
                         className="form-control api-key__input"
                         id="keyDescription"
                         type="text"
                         onChange={changeDescription}
                         autoFocus
-                        disabled={!!keyValue}
                     />
                 </div>
             )}
-            {keyValue && <div className="api-key__description">{description}</div>}
             {!!keyValue && (
-                <div className="top-spacing form-group">
-                    <input
-                        disabled
-                        type="text"
-                        className="form-control api-key__input"
-                        name={type + '_token'}
-                        value={keyValue}
-                    />
-                    <button
-                        className="btn btn-default api-key__button"
-                        title="Copy to clipboard"
-                        name={'copy_' + type + '_token'}
-                        onClick={onCopyKey}
-                        disabled={!keyValue}
-                    >
-                        <i className="fa fa-clipboard"></i>
-                    </button>
-                </div>
-            )}
-            {!!keyValue && (
-                <div id="copy_advice">
-                    Copy this key value and save it for use in authenticating to the server. This key value will not be
-                    shown again.
-                </div>
+                <>
+                    <div className="api-key__description">{description}</div>
+                    <div className="top-spacing form-group">
+                        <input
+                            disabled
+                            type="text"
+                            className="form-control api-key__input"
+                            name={type + '_token'}
+                            value={keyValue}
+                        />
+                        <button
+                            className="btn btn-default api-key__button"
+                            title="Copy to clipboard"
+                            name={'copy_' + type + '_token'}
+                            onClick={onCopyKey}
+                            disabled={!keyValue}
+                        >
+                            <i className="fa fa-clipboard"></i>
+                        </button>
+                    </div>
+                    <div id="copy_advice">
+                        Copy this key value and save it for use in authenticating to the server. This key value will not
+                        be shown again.
+                    </div>
+                </>
             )}
             {error && (
                 <Alert className="margin-top">

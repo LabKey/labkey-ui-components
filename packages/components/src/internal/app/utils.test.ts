@@ -1255,7 +1255,6 @@ describe('addAssaySectionConfig', () => {
 });
 
 describe('isSharedContainer', () => {
-
     test('not shared', () => {
         expect(isSharedContainer('/home/other')).toBe(false);
         expect(isSharedContainer('/home')).toBe(false);

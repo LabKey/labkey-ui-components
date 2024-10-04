@@ -16,6 +16,8 @@ import { ModuleContext } from '../components/base/ServerContext';
 
 import { Container } from '../components/base/models/Container';
 
+import { SHARED_CONTAINER_PATH } from '../constants';
+
 import { AppProperties } from './models';
 import {
     ASSAYS_KEY,
@@ -50,7 +52,6 @@ import {
     USER_KEY,
     WORKFLOW_KEY,
 } from './constants';
-import { SHARED_CONTAINER_PATH } from '../constants';
 
 declare var LABKEY: LabKey;
 
@@ -179,7 +180,7 @@ export function setProductFolders(moduleContext: ModuleContext, hasProductFolder
     }
 
     return Object.assign(moduleContext ?? {}, {
-        query: Object.assign(moduleContext?.query ?? {}, { hasProductFolders: hasProductFolders }),
+        query: Object.assign(moduleContext?.query ?? {}, { hasProductFolders }),
     });
 }
 

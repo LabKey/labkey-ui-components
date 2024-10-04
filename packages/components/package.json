@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "5.10.0-fb-charts2410.0",
+  "version": "5.10.0-fb-charts2410.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

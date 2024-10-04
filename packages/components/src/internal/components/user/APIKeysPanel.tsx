@@ -146,6 +146,7 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
                         type="text"
                         onChange={changeDescription}
                         autoFocus
+                        placeholder="Enter description of key usage (optional)"
                     />
                 </div>
             )}

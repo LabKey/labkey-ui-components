@@ -7,6 +7,7 @@ import { Map } from 'immutable';
 
 import {
     isAssayEnabled,
+    isChartBuilderEnabled,
     isELNEnabled,
     isProductFoldersEnabled,
     isRegistryEnabled,
@@ -30,6 +31,7 @@ import {
     REGISTRY_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
+    REPORT_AUDIT_QUERY,
 } from './constants';
 
 export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
@@ -46,6 +48,7 @@ export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
         queries.push(NOTEBOOK_AUDIT_QUERY);
         queries.push(NOTEBOOK_REVIEW_AUDIT_QUERY);
     }
+    if (isChartBuilderEnabled(ctx)) queries.push(REPORT_AUDIT_QUERY);
     return queries.sort(naturalSortByProperty('label'));
 }
 

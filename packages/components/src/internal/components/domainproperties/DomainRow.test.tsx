@@ -54,6 +54,11 @@ import {
 
 import { createFormInputId } from './utils';
 
+jest.mock('./actions', () => ({
+    ...jest.requireActual('./actions'),
+    fetchQueries: jest.fn().mockResolvedValue([]),
+}));
+
 const wrapDraggable = element => {
     return (
         <DragDropContext onDragEnd={jest.fn()}>

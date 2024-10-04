@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.11.0
+*Released*: 4 October 2024
+- Chart builder in app (part 3)
+  - updates to chart margins and sizes for chart builder and dashboard
+  - only show 'x' grid lines for bar and box plots
+  - Issue 48860: Show "inheritable" checkbox in chart builder for users with proper perm (and if in app home)
+  - use getContainerFilterForFolder() for chart getQuery request (related to issue 48860)
+  - remove Chart Builder experimental feature flag
+
 ### version 5.10.0
 *Released*: 1 October 2024
 - Editable Grid: improve validation messages

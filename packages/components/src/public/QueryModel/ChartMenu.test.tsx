@@ -9,7 +9,7 @@ import { ViewInfo } from '../../internal/ViewInfo';
 import { LoadingState } from '../LoadingState';
 import { renderWithAppContext } from '../../internal/test/reactTestLibraryHelpers';
 import { TEST_USER_GUEST, TEST_USER_READER } from '../../internal/userFixtures';
-import { BIOLOGICS_APP_PROPERTIES, EXPERIMENTAL_CHART_BUILDER, ProductFeature } from '../../internal/app/constants';
+import { BIOLOGICS_APP_PROPERTIES, ProductFeature } from '../../internal/app/constants';
 
 import { makeTestActions, makeTestQueryModel } from './testUtils';
 import { ChartMenu, ChartMenuItem } from './ChartMenu';
@@ -70,7 +70,8 @@ describe('ChartMenu', () => {
             },
         });
 
-        expect(document.querySelectorAll('.chart-menu')).toHaveLength(0);
+        expect(document.querySelectorAll('.chart-menu')).toHaveLength(1); // just the create chart item
+        expect(document.querySelectorAll('.chart-menu')[0].textContent).toBe(' ChartsCreate Chart');
     });
 
     test('noCharts showCreateChart', async () => {
@@ -82,9 +83,7 @@ describe('ChartMenu', () => {
                         biologics: {
                             productId: BIOLOGICS_APP_PROPERTIES.productId,
                         },
-                        samplemanagement: {
-                            [EXPERIMENTAL_CHART_BUILDER]: true,
-                        },
+                        samplemanagement: {},
                         core: { productFeatures: [ProductFeature.ChartBuilding] },
                     },
                 },
@@ -107,9 +106,7 @@ describe('ChartMenu', () => {
                         biologics: {
                             productId: BIOLOGICS_APP_PROPERTIES.productId,
                         },
-                        samplemanagement: {
-                            [EXPERIMENTAL_CHART_BUILDER]: true,
-                        },
+                        samplemanagement: {},
                         core: { productFeatures: [ProductFeature.ChartBuilding] },
                     },
                 },

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 5.11.0
+*Released*: 4 October 2024
 - Chart builder in app (part 3)
   - updates to chart margins and sizes for chart builder and dashboard
   - only show 'x' grid lines for bar and box plots

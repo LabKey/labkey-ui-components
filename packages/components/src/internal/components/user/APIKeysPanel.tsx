@@ -88,7 +88,8 @@ interface ModalProps extends KeyGeneratorProps {
     onClose: () => void;
 }
 
-const KeyGeneratorModal: FC<ModalProps> = props => {
+// exported for jest testing
+export const KeyGeneratorModal: FC<ModalProps> = props => {
     const { type, afterCreate, noun, onClose } = props;
     const [description, setDescription] = useState<string>();
     const { api } = useAppContext<AppContext>();
@@ -151,7 +152,7 @@ const KeyGeneratorModal: FC<ModalProps> = props => {
                     />
                 </div>
             )}
-            {keyValue && <div>{description}</div>}
+            {keyValue && <div className="api-key__description">{description}</div>}
             {!!keyValue && (
                 <div className="top-spacing form-group">
                     <input
@@ -210,14 +211,7 @@ export const KeyGenerator: FC<KeyGeneratorProps> = props => {
                     </button>
                 </div>
             </div>
-            {showModal && (
-                <KeyGeneratorModal
-                    afterCreate={afterCreate}
-                    noun={noun}
-                    type={type}
-                    onClose={closeModal}
-                />
-            )}
+            {showModal && <KeyGeneratorModal afterCreate={afterCreate} noun={noun} type={type} onClose={closeModal} />}
         </>
     );
 };

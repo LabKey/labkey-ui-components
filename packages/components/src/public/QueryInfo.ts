@@ -232,7 +232,10 @@ export class QueryInfo {
             return displayColumns;
         }
 
-        console.warn('Unable to find columns on view:', view, '(' + this.schemaName + '.' + this.name + ')');
+        if (process.env.NODE_ENV !== 'test') {
+            console.warn('Unable to find columns on view:', view, '(' + this.schemaName + '.' + this.name + ')');
+        }
+
         return [];
     }
 

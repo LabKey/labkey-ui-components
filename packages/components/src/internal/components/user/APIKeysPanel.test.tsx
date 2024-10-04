@@ -14,6 +14,13 @@ import {
 
 import { APIKeysPanel, KeyGenerator, KeyGeneratorModal } from './APIKeysPanel';
 import { waitFor } from '@testing-library/dom';
+import {createMockGetQueryDetails, createMockSelectRowsDeprecatedResponse} from '../../../test/MockUtils';
+
+jest.mock('../../query/api', () => ({
+    ...jest.requireActual('../../query/api'),
+    getQueryDetails: () => createMockGetQueryDetails(),
+    selectRowsDeprecated: () => createMockSelectRowsDeprecatedResponse(),
+}));
 
 beforeAll(() => {
     global.console.error = jest.fn();
@@ -131,6 +138,7 @@ describe('APIKeysPanel', () => {
         }
         let expectedButtonCount = 0;
         if (!isImpersonating) {
+            expectedButtonCount += 1;
             if (apiKeysEnabled) expectedButtonCount += 1;
             if (sessionKeysEnabled) expectedButtonCount += 1;
         }

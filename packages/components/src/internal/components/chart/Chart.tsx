@@ -20,7 +20,7 @@ import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { DataViewInfoTypes, GENERIC_CHART_REPORTS, LABKEY_VIS } from '../../constants';
 
 import { DataViewInfo } from '../../DataViewInfo';
-import { getContainerFilter } from '../../query/api';
+import { getContainerFilterForFolder } from '../../query/api';
 import { generateId } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -86,7 +86,7 @@ interface Props {
 export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => {
     const { error, reportId } = chart;
     const divId = useMemo(() => generateId('chart-'), []);
-    const containerFilter = useMemo(() => getContainerFilter(container), [container]);
+    const containerFilter = useMemo(() => getContainerFilterForFolder(container), [container]);
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [queryConfig, setQueryConfig] = useState<ChartQueryConfig>(undefined);
     const [chartConfig, setChartConfig] = useState<ChartConfig>(undefined);

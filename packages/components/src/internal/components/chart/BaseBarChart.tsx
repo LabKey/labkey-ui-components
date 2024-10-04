@@ -65,7 +65,7 @@ export class BaseBarChart extends Component<Props> {
             renderTo: this.plotId,
             title,
             height: chartHeight,
-            width: this.getPlotElement().getBoundingClientRect().width + (grouped ? 0 : 50),
+            width: this.getPlotElement().getBoundingClientRect().width,
             defaultFillColor,
             defaultBorderColor,
             onClick,

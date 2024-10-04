@@ -22,11 +22,13 @@ import { hasPermissions } from '../base/models/User';
 import { Alert } from '../base/Alert';
 import { FormButtons } from '../../FormButtons';
 
-import { getContainerFilter } from '../../query/api';
+import { getContainerFilterForFolder } from '../../query/api';
 
 import { SVGIcon } from '../base/SVGIcon';
 
 import { LabelOverlay } from '../forms/LabelOverlay';
+
+import { isAppHomeFolder } from '../../app/utils';
 
 import { deleteChart, saveChart, SaveReportConfig } from './actions';
 
@@ -160,6 +162,7 @@ export const getChartBuilderChartConfig = (
             ...savedConfig?.labels,
         },
         pointType: savedConfig?.pointType ?? 'all',
+        gridLinesVisible: chartType.name === 'bar_chart' || chartType.name === 'box_plot' ? 'x' : 'both',
         geomOptions: {
             binShape: 'hex',
             binSingleColor: '000000',
@@ -277,12 +280,15 @@ const ChartTypeSideBar: FC<ChartTypeSideBarProps> = memo(props => {
 });
 
 interface ChartTypeQueryFormProps {
+    allowInherit: boolean;
     canShare: boolean;
     fieldValues: Record<string, SelectInputOption>;
+    inheritable: boolean;
     model: QueryModel;
     name: string;
     onNameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onSelectFieldChange: (key: string, _: any, selectedOption: SelectInputOption) => void;
+    onToggleInheritable: () => void;
     onToggleShared: () => void;
     savedChartModel: GenericChartModel;
     selectedType: ChartTypeInfo;
@@ -296,6 +302,9 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
         name,
         shared,
         onToggleShared,
+        allowInherit,
+        inheritable,
+        onToggleInheritable,
         selectedType,
         fieldValues,
         model,
@@ -330,6 +339,17 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
                         <div className="checkbox-input">
                             <input name="shared" type="checkbox" checked={shared} onChange={onToggleShared} />
                             <span onClick={onToggleShared}>Make this chart available to all users</span>
+                        </div>
+                    )}
+                    {allowInherit && (
+                        <div className="checkbox-input">
+                            <input
+                                name="inheritable"
+                                type="checkbox"
+                                checked={inheritable}
+                                onChange={onToggleInheritable}
+                            />
+                            <span onClick={onToggleInheritable}>Make this chart available in child folders</span>
                         </div>
                     )}
                 </div>
@@ -409,7 +429,7 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
     const { hasRequiredValues, model, selectedType, fieldValues, savedChartModel, setReportConfig } = props;
     const divId = useMemo(() => generateId('chart-'), []);
     const ref = useRef<HTMLDivElement>(undefined);
-    const containerFilter = useMemo(() => getContainerFilter(model.containerPath), [model.containerPath]);
+    const containerFilter = useMemo(() => getContainerFilterForFolder(model.containerPath), [model.containerPath]);
     const [loadingData, setLoadingData] = useState<boolean>(false);
     const [previewMsg, setPreviewMsg] = useState<string>();
 
@@ -482,7 +502,7 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
                 width,
             };
             if (!savedChartModel || savedChartModel.visualizationConfig.chartConfig.geomOptions.marginTop === 20) {
-                chartConfig_.geomOptions.marginTop = 10;
+                chartConfig_.geomOptions.marginTop = 15;
             }
 
             if (ref?.current) ref.current.innerHTML = ''; // clear again, right before render
@@ -601,10 +621,15 @@ interface ChartBuilderModalProps extends RequiresModelAndActions {
 
 export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, model, onHide, savedChartModel }) => {
     const CHART_TYPES = LABKEY_VIS?.GenericChartHelper.getRenderTypes();
-    const { user } = useServerContext();
+    const { user, container, moduleContext } = useServerContext();
     const canShare = useMemo(
         () => savedChartModel?.canShare ?? hasPermissions(user, [PermissionTypes.ShareReportPermission]),
         [savedChartModel, user]
+    );
+    const allowInherit = useMemo(
+        // only allow inheritable charts in app home folder for apps, see chartWizard.jsp for LKS behavior
+        () => isAppHomeFolder(container, moduleContext) && user.isAdmin,
+        [user, container, moduleContext]
     );
     const chartTypes: ChartTypeInfo[] = useMemo(
         () => CHART_TYPES.filter(type => !type.hidden && !HIDDEN_CHART_TYPES.includes(type.name)),
@@ -616,6 +641,7 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
     const [selectedType, setSelectedChartType] = useState<ChartTypeInfo>(chartTypes[0]);
     const [name, setName] = useState<string>('');
     const [shared, setShared] = useState<boolean>(canShare);
+    const [inheritable, setInheritable] = useState<boolean>(false);
     const [fieldValues, setFieldValues] = useState<Record<string, SelectInputOption>>({});
 
     useEffect(
@@ -626,6 +652,7 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
                 );
                 setName(savedChartModel.name);
                 setShared(savedChartModel.shared);
+                setInheritable(savedChartModel.inheritable);
 
                 const measures = savedChartModel.visualizationConfig?.chartConfig?.measures || {};
                 const fieldValues_ = Object.keys(measures).reduce((result, key) => {
@@ -676,6 +703,10 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
         setShared(prev => !prev);
     }, []);
 
+    const onToggleInheritable = useCallback(() => {
+        setInheritable(prev => !prev);
+    }, []);
+
     const onSelectFieldChange = useCallback((key: string, _, selectedOption: SelectInputOption) => {
         setReportConfig(undefined); // clear report config state, it will be reset after the preview loads
         setFieldValues(prev => ({ ...prev, [key]: selectedOption }));
@@ -687,6 +718,7 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
             reportId: savedChartModel?.reportId,
             name: name?.trim(),
             public: shared,
+            inheritable,
         } as SaveReportConfig;
 
         setSaving(true);
@@ -704,7 +736,7 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
             setError(e.exception ?? e);
             setSaving(false);
         }
-    }, [savedChartModel, reportConfig, name, shared, actions, model.id, onHide]);
+    }, [savedChartModel, reportConfig, name, shared, inheritable, actions, model.id, onHide]);
 
     const afterDelete = useCallback(async () => {
         onHide('Successfully deleted chart: ' + savedChartModel.name + '.');
@@ -747,12 +779,15 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
                 </div>
                 <div className="col-xs-11 col-right">
                     <ChartTypeQueryForm
+                        allowInherit={allowInherit}
                         canShare={canShare}
                         fieldValues={fieldValues}
+                        inheritable={inheritable}
                         model={model}
                         name={name}
                         onNameChange={onNameChange}
                         onSelectFieldChange={onSelectFieldChange}
+                        onToggleInheritable={onToggleInheritable}
                         onToggleShared={onToggleShared}
                         savedChartModel={savedChartModel}
                         shared={shared}

@@ -16,13 +16,14 @@ import { ModuleContext } from '../components/base/ServerContext';
 
 import { Container } from '../components/base/models/Container';
 
+import { SHARED_CONTAINER_PATH } from '../constants';
+
 import { AppProperties } from './models';
 import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
     EXPERIMENTAL_APP_PLATE_SUPPORT,
     EXPERIMENTAL_CALCULATED_FIELDS,
-    EXPERIMENTAL_CHART_BUILDER,
     EXPERIMENTAL_IDENTIFYING_FIELDS,
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
     EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED,
@@ -51,7 +52,6 @@ import {
     USER_KEY,
     WORKFLOW_KEY,
 } from './constants';
-import { SHARED_CONTAINER_PATH } from '../constants';
 
 declare var LABKEY: LabKey;
 
@@ -180,7 +180,7 @@ export function setProductFolders(moduleContext: ModuleContext, hasProductFolder
     }
 
     return Object.assign(moduleContext ?? {}, {
-        query: Object.assign(moduleContext?.query ?? {}, { hasProductFolders: hasProductFolders }),
+        query: Object.assign(moduleContext?.query ?? {}, { hasProductFolders }),
     });
 }
 
@@ -363,10 +363,7 @@ export function isPlatesEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isChartBuilderEnabled(moduleContext?: ModuleContext): boolean {
-    return (
-        isFeatureEnabled(ProductFeature.ChartBuilding, moduleContext) &&
-        resolveModuleContext(moduleContext)?.samplemanagement?.[EXPERIMENTAL_CHART_BUILDER] === true
-    );
+    return isFeatureEnabled(ProductFeature.ChartBuilding, moduleContext);
 }
 
 export function isIdentifyingFieldsEnabled(moduleContext?: ModuleContext): boolean {

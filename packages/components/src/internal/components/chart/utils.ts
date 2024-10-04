@@ -179,6 +179,7 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
         props;
 
     let marginRight,
+        marginBottom = 25,
         legendPos = 'none',
         legendData;
 
@@ -238,18 +239,30 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
             });
     }
 
+    const xLabels = new Set(data.map(d => d.x));
+    if (xLabels.size > 1) {
+        const plotWidth = width - (marginRight ?? 0);
+        const maxLength = Math.max(...Array.from(xLabels).map(text => text.length));
+
+        if (xLabels.size * maxLength * 4 > plotWidth) {
+            marginBottom = Math.min(125, maxLength * 3);
+        }
+    }
+
     return {
         renderTo,
         rendererType: 'd3',
         width,
         height,
         margins: {
-            top: 50,
+            top: 25,
             right: marginRight,
+            bottom: marginBottom,
         },
         labels: {
             yLeft: { value: 'Count' },
         },
+        gridLinesVisible: 'x',
         options: {
             color: defaultBorderColor,
             fill: defaultFillColor,

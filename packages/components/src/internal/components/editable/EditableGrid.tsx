@@ -331,20 +331,12 @@ export interface EditableGridBtnProps {
 }
 
 export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
-    activeTab?: number;
     bsStyle?: any;
     className?: string;
-    getReadOnlyRows?: (tabId?: number) => string[];
-    getTabHeader?: (tabId?: number) => ReactNode;
-    getTabTitle?: (tabId?: number) => string;
     title?: string;
 }
 
-export type EditableGridChange = (
-    event: EditableGridEvent,
-    editorModelChanges: Partial<EditorModelProps>,
-    index?: number
-) => void;
+export type EditableGridChange = (event: EditableGridEvent, editorModelChanges: Partial<EditorModelProps>) => void;
 
 export interface EditableGridProps extends SharedEditableGridProps {
     editorModel: EditorModel;

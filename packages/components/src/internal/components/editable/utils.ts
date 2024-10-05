@@ -20,12 +20,13 @@ import { getQueryColumnRenderers } from '../../global';
 
 import { QuerySelectOwnProps } from '../forms/QuerySelect';
 
-import { isBoolean, isFloat, isInteger, isQuotedWithDelimiters } from '../../util/utils';
+import { caseInsensitive, isBoolean, isFloat, isInteger, isQuotedWithDelimiters } from '../../util/utils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { incrementClientSideMetricCount } from '../../actions';
 
 import { EditorModel, CellMessage } from './models';
 import { CellActions, MODIFICATION_TYPES } from './constants';
+import { hasProductFolders } from '../../app/utils';
 
 export function applyEditorModelChanges(
     models: EditorModel[],
@@ -103,6 +104,10 @@ export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn):
     };
 };
 
+export const FOLDER_COL = 'Folder';
+export type UpdatedRowValue = string | string[] | number | number[] | boolean | boolean[];
+export type UpdatedRow = Record<string, UpdatedRowValue>;
+
 /**
  * Constructs an array of objects (suitable for the rows parameter of updateRows), where each object contains the
  * values in editorRows that are different from the ones in originalGridData
@@ -117,7 +122,7 @@ export function getUpdatedDataFromGrid(
     editorRows: Array<Map<string, any>>,
     idField: string,
     queryInfo: QueryInfo
-): any[] {
+): UpdatedRow[] {
     const updatedRows = [];
     const altIdFields = queryInfo.altUpdateKeys;
     editorRows.forEach(editedRow => {
@@ -199,6 +204,8 @@ export function getUpdatedDataFromGrid(
             if (!Utils.isEmptyObj(row)) {
                 row[idField] = id;
                 Object.assign(row, altIds);
+                const folder = caseInsensitive(editedRow.toJS(), FOLDER_COL);
+                if (hasProductFolders() && folder) row[FOLDER_COL] = folder;
                 updatedRows.push(row);
             }
         } else {

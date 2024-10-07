@@ -213,7 +213,7 @@ export function withAssayModels<Props>(
 
         render = (): ReactNode => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { api, assayName, ...props } = this.props;
+            const { assayName, ...props } = this.props;
             const { context, model } = this.state;
 
             return (

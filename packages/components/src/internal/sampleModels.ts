@@ -82,7 +82,6 @@ export interface SamplesEditableGridProps {
     onGridEditCancel: () => void;
     onGridEditComplete: () => void;
     parentDataTypes: List<EntityDataType>;
-    samplesGridOmittedColumns?: List<string>;
     samplesGridRequiredColumns?: string[];
     selectionData: Map<string, any>;
     setIsDirty?: (isDirty: boolean) => void;

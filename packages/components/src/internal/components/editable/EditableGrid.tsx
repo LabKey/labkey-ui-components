@@ -330,17 +330,17 @@ export interface EditableGridBtnProps {
     show?: boolean;
 }
 
-export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
-    bsStyle?: any;
-    className?: string;
-    title?: string;
-}
-
 export type EditableGridChange = (event: EditableGridEvent, editorModelChanges: Partial<EditorModelProps>) => void;
 
 export interface EditableGridProps extends SharedEditableGridProps {
     editorModel: EditorModel;
     onChange: EditableGridChange;
+}
+
+export interface SharedEditableGridPanelProps extends EditableGridProps {
+    bsStyle?: any;
+    className?: string;
+    title?: string;
 }
 
 export interface EditableGridState {

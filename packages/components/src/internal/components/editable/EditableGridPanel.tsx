@@ -1,14 +1,8 @@
 import React, { FC, memo, PropsWithChildren } from 'react';
 
-import { EditorModel } from './models';
-import { EditableGrid, EditableGridChange, SharedEditableGridPanelProps } from './EditableGrid';
+import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
 
-export interface EditableGridPanelProps extends SharedEditableGridPanelProps, PropsWithChildren {
-    editorModel: EditorModel;
-    getIsDirty?: () => boolean;
-    onChange: EditableGridChange;
-    setIsDirty?: (isDirty: boolean) => void;
-}
+export type EditableGridPanelProps = SharedEditableGridPanelProps & PropsWithChildren;
 
 /**
  * TODO: This docstring really belongs on EditableGrid, but maybe still have a docstring that tells people to look at

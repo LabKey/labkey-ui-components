@@ -293,8 +293,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                             maxRows={this.props.maxRows}
                                             metricFeatureArea="assayResultsEditableGrid"
                                             onChange={this.props.onGridChange}
-                                            getIsDirty={getIsDirty}
-                                            setIsDirty={setIsDirty}
                                         />
                                     </FormStep>
                                     <FormStep stepIndex={AssayUploadTabs.Files}>

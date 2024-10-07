@@ -38,6 +38,7 @@ type InheritedEditableGridPanelProps = Omit<
 interface EditableGridPanelForUpdateProps extends InheritedEditableGridPanelProps {
     columnMetadata?: Map<string, EditableColumnMetadata>;
     editStatusData?: OperationConfirmationData;
+    getIsDirty: () => boolean;
     loader: EditableGridLoader;
     metricFeatureArea?: string;
     onCancel: () => void;
@@ -45,6 +46,7 @@ interface EditableGridPanelForUpdateProps extends InheritedEditableGridPanelProp
     pluralNoun: string;
     queryModel: QueryModel;
     selectionData: Map<string, any>;
+    setIsDirty: (isDirty: boolean) => void;
     singularNoun: string;
     updateRows: (
         schemaQuery: SchemaQuery,

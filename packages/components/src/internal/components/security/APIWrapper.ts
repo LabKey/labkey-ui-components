@@ -52,7 +52,7 @@ export interface RemoveGroupMembersResponse {
 
 export interface SecurityAPIWrapper {
     addGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<AddGroupMembersResponse>;
-    createApiKey: (type?: string) => Promise<string>;
+    createApiKey: (type?: string, description?: string) => Promise<string>;
     deleteApiKeys: (selections: Set<string>) => Promise<QueryCommandResponse>;
     createGroup: (groupName: string, projectPath: string) => Promise<Security.CreateGroupResponse>;
     deleteContainer: (options: DeleteContainerOptions) => Promise<Record<string, unknown>>;
@@ -110,12 +110,12 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    createApiKey = (type = 'apikey'): Promise<string> => {
+    createApiKey = (type = 'apikey', description?: string): Promise<string> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: buildURL('security', 'createApiKey.api'),
                 method: 'POST',
-                jsonData: { type },
+                jsonData: { type, description },
                 success: Utils.getCallbackWrapper(response => {
                     resolve(response.apikey);
                 }),

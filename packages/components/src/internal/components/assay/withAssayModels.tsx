@@ -120,7 +120,11 @@ export function withAssayModels<Props>(
                     definitionsLoadingState: LoadingState.LOADED,
                 });
             } catch (definitionsError) {
-                await this.updateModel({ definitions: [], definitionsError, definitionsLoadingState: LoadingState.LOADED });
+                await this.updateModel({
+                    definitions: [],
+                    definitionsError,
+                    definitionsLoadingState: LoadingState.LOADED,
+                });
             }
         };
 

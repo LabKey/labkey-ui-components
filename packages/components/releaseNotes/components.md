@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD October 2024
+### version 5.12.1
+*Released*: 7 October 2024
 - withAssayModels fix to allow passthrough of ComponentsAPIWrapper
 
 ### version 5.12.0

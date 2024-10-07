@@ -20,6 +20,7 @@ import classNames from 'classnames';
 
 import { FormsyInjectedProps, withFormsy } from '../formsy';
 import { INPUT_WRAPPER_CLASS_NAME } from '../constants';
+import { Help } from './Help';
 
 type LayoutType = 'elementOnly' | 'horizontal' | 'vertical';
 
@@ -85,11 +86,6 @@ const ErrorMessages: FC<ErrorMessageProps> = memo(props => {
         </div>
     );
 });
-
-const Help: FC<PropsWithChildren> = ({ children }) => {
-    if (!children) return null;
-    return <small className="form-text text-muted">{children}</small>;
-};
 
 interface RequiredSymbolProps {
     required: boolean;

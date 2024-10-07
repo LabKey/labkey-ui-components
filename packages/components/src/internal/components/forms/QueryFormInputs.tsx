@@ -252,7 +252,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 preventCrossFolderEnable &&
                                 !col.lookup.containerPath &&
                                 !isAllProductFoldersFilteringEnabled()
-                                    ? `Lookup fields for the selected ${pluralNoun.toLowerCase()} can't be updated because the ${pluralNoun.toLowerCase()} belong to multiple projects.`
+                                    ? `Lookup fields for the selected ${pluralNoun.toLowerCase()} can't be updated because the ${pluralNoun.toLowerCase()} belong to multiple folders.`
                                     : undefined;
 
                             return (
@@ -342,7 +342,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 renderFieldLabel={renderFieldLabel}
                                 toggleDisabledTooltip={
                                     preventCrossFolderEnable
-                                        ? `File fields for the selected ${pluralNoun.toLowerCase()} can't be updated because the ${pluralNoun.toLowerCase()} belong to multiple projects.`
+                                        ? `File fields for the selected ${pluralNoun.toLowerCase()} can't be updated because the ${pluralNoun.toLowerCase()} belong to multiple folders.`
                                         : undefined
                                 }
                                 showLabel

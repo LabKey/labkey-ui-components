@@ -12,34 +12,71 @@ import {
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from '../../productFixtures';
 
-import { APIKeysPanel, KeyGenerator } from './APIKeysPanel';
+import { APIKeysPanel, KeyGenerator, KeyGeneratorModal } from './APIKeysPanel';
+import { waitFor } from '@testing-library/dom';
+import {createMockGetQueryDetails, createMockSelectRowsDeprecatedResponse} from '../../../test/MockUtils';
+
+jest.mock('../../query/api', () => ({
+    ...jest.requireActual('../../query/api'),
+    getQueryDetails: () => createMockGetQueryDetails(),
+    selectRowsDeprecated: () => createMockSelectRowsDeprecatedResponse(),
+}));
 
 beforeAll(() => {
     global.console.error = jest.fn();
 });
 
 describe('KeyGenerator', () => {
-    test('without key value', () => {
-        const { container } = renderWithAppContext(<KeyGenerator type="session" afterCreate={jest.fn()} noun="Keys" />);
-        const buttons = container.querySelectorAll('button');
-        expect(buttons).toHaveLength(2);
-        expect(buttons.item(0).textContent).toBe('Generate Keys');
-        expect(buttons.item(1).name).toBe('copy_session_token');
-        expect(container.querySelector('#copy_advice')).toBeNull();
-        expect(container.querySelector('.alert')).toBeNull();
-    });
-
-    test('with key value', () => {
+    test('text display', () => {
         const { container } = renderWithAppContext(
-            <KeyGenerator type="apikey" afterCreate={jest.fn()} noun="Goodwill" keyValue="mikey" />
+            <KeyGenerator type="apikey" afterCreate={jest.fn()} noun="Goodwill" />
         );
         const buttons = container.querySelectorAll('button');
-        expect(buttons).toHaveLength(2);
+        expect(buttons).toHaveLength(1);
         expect(buttons.item(0).textContent).toBe('Generate Goodwill');
-        expect(buttons.item(1).name).toBe('copy_apikey_token');
-        expect(container.querySelector('input').value).toBe('mikey');
-        expect(container.querySelector('#copy_advice')).not.toBeNull();
-        expect(container.querySelector('.alert')).toBeNull();
+    });
+});
+
+describe('KeyGeneratorModal', () => {
+    test('sessionKey', async () => {
+        const keyValue = 'session_key';
+        const apiKeyFn = jest.fn().mockResolvedValue(keyValue);
+        renderWithAppContext(
+            <KeyGeneratorModal type="session" afterCreate={jest.fn()} noun="Session" onClose={jest.fn()} />,
+            {
+                appContext: {
+                    api: {
+                        security: {
+                            createApiKey: apiKeyFn,
+                        },
+                    },
+                },
+            }
+        );
+        await waitFor(() => {
+            expect(document.querySelector('input[name="session_token"]').getAttribute('value')).toBe(keyValue);
+        });
+        expect(apiKeyFn).toHaveBeenCalledTimes(1);
+    });
+
+    test('apiKey shows description', async () => {
+        const apiKeyFn = jest.fn();
+        renderWithAppContext(
+            <KeyGeneratorModal type="apikey" afterCreate={jest.fn()} noun="Session" onClose={jest.fn()} />,
+            {
+                appContext: {
+                    api: {
+                        security: {
+                            createApiKey: apiKeyFn,
+                        },
+                    },
+                },
+            }
+        );
+        await waitFor(() => {
+            expect(document.querySelector('#keyDescription')).not.toBeNull();
+        });
+        expect(apiKeyFn).not.toHaveBeenCalled();
     });
 });
 
@@ -101,10 +138,11 @@ describe('APIKeysPanel', () => {
         }
         let expectedButtonCount = 0;
         if (!isImpersonating) {
-            if (apiKeysEnabled) expectedButtonCount += 2;
-            if (sessionKeysEnabled) expectedButtonCount += 2;
+            expectedButtonCount += 1;
+            if (apiKeysEnabled) expectedButtonCount += 1;
+            if (sessionKeysEnabled) expectedButtonCount += 1;
         }
-        if (expectedButtonCount == 0) expect(document.querySelector('button')).toBeNull();
+        if (expectedButtonCount === 0) expect(document.querySelector('button')).toBeNull();
         else expect(document.querySelectorAll('button')).toHaveLength(expectedButtonCount);
 
         const configMsg = document.querySelector('#config-msg');

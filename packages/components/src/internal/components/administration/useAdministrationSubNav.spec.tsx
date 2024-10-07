@@ -83,17 +83,17 @@ describe('useAdministrationSubNav', () => {
         expect(tabsContext.tabs.findIndex(t => t.text === 'Application Settings')).toBe(-1);
     });
 
-    test('displays "projects", but not users and groups in sub folder', async () => {
+    test('displays "folders", but not users and groups in sub folder', async () => {
         const wrapper = mountWithAppServerContext(<TestComponent />, getAppContextWithProjectAdmin(), {
             user: TEST_USER_APP_ADMIN,
             container: TEST_FOLDER_CONTAINER,
-            moduleContext: { query: { isProductProjectsEnabled: true } },
+            moduleContext: { query: { isProductFoldersEnabled: true } },
         });
         await waitForLifecycle(wrapper);
         expect(tabsContext.noun).toEqual({ text: 'Dashboard', url: AppURL.create('home') });
         expect(tabsContext.tabs.length).toEqual(4);
         expect(tabsContext.tabs[0].text).toEqual('Application Settings');
-        expect(tabsContext.tabs[1].text).toEqual('Projects');
+        expect(tabsContext.tabs[1].text).toEqual('Folders');
         expect(tabsContext.tabs[2].text).toEqual('Audit Logs');
         // TODO, Users and Groups will be available in project container as part of "User Administration Improvements"
         // expect(tabsContext.tabs[3].text).toEqual('Users');
@@ -104,13 +104,13 @@ describe('useAdministrationSubNav', () => {
         const wrapper = mountWithAppServerContext(<TestComponent />, getAppContextWithProjectAdmin(), {
             user: TEST_USER_APP_ADMIN,
             container: TEST_PROJECT_CONTAINER_ADMIN,
-            moduleContext: { query: { isProductProjectsEnabled: true } },
+            moduleContext: { query: { isProductFoldersEnabled: true } },
         });
         await waitForLifecycle(wrapper);
         expect(tabsContext.noun).toEqual({ text: 'Dashboard', url: AppURL.create('home') });
         expect(tabsContext.tabs.length).toEqual(6);
         expect(tabsContext.tabs[0].text).toEqual('Application Settings');
-        expect(tabsContext.tabs[1].text).toEqual('Projects');
+        expect(tabsContext.tabs[1].text).toEqual('Folders');
         expect(tabsContext.tabs[2].text).toEqual('Audit Logs');
         expect(tabsContext.tabs[3].text).toEqual('Users');
         expect(tabsContext.tabs[4].text).toEqual('Groups');

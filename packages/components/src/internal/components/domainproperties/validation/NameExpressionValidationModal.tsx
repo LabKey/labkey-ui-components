@@ -80,7 +80,7 @@ export class NameExpressionValidationModal extends React.PureComponent<Props> {
                 title={warnTitle}
                 onCancel={onHide}
                 onConfirm={onConfirm}
-                confirmText="Save anyways..."
+                confirmText="Save anyway"
                 confirmClass="btn-danger"
             >
                 {nameWarnDisplay}

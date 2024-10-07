@@ -111,14 +111,13 @@ export const SERVER_NOTIFICATION_MAX_ROWS = 8;
 export const EXPERIMENTAL_APP_PLATE_SUPPORT = 'experimental-app-plate-support';
 
 export const EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS = 'queryProductAllFolderLookups';
-export const EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED = 'queryProductProjectDataListingScoped';
+export const EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED = 'queryProductProjectDataListingScoped';
 export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu';
-export const EXPERIMENTAL_CHART_BUILDER = 'experimental-biologics-chart-builder';
 export const EXPERIMENTAL_IDENTIFYING_FIELDS = 'experimental-identifying-fields';
 export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot-selector';
 export const EXPERIMENTAL_CALCULATED_FIELDS = 'experimental-calculated-fields';
 
-export const PROJECT_DATA_TYPE_EXCLUSIONS = 'dataTypeExclusions';
+export const FOLDER_DATA_TYPE_EXCLUSIONS = 'dataTypeExclusions';
 
 export const BASE_APP_HELP_LINK = 'https://www.labkey.org/SampleManagerHelp/wiki-page.view?name=';
 
@@ -132,10 +131,10 @@ export enum ProductFeature {
     ChartBuilding = 'ChartBuilding',
     DataChangeCommentRequirement = 'DataChangeCommentRequirement',
     ELN = 'ELN',
+    Folders = 'Folders',
     FreezerManagement = 'FreezerManagement',
     Media = 'Media',
     NonstandardAssay = 'NonstandardAssay',
-    Projects = 'Projects',
     SampleManagement = 'SampleManagement',
     TransformScripts = 'TransformScripts',
     Workflow = 'Workflow',

@@ -128,14 +128,14 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     auditUserComment,
                 });
 
-                let projectUrl = buildURL(
+                let containerUrl = buildURL(
                     getPrimaryAppProperties()?.productId,
                     `${ActionURL.getAction() || 'app'}.view`,
                     undefined,
                     { container: targetContainerPath, returnUrl: false }
                 );
                 if (targetAppURL) {
-                    projectUrl = projectUrl + targetAppURL.toHref();
+                    containerUrl = containerUrl + targetAppURL.toHref();
                 }
 
                 const movedCount =
@@ -146,7 +146,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                         {
                             message: (
                                 <>
-                                    Successfully moved {movedCount} {movedNoun} to <a href={projectUrl}>{targetName}</a>
+                                    Successfully moved {movedCount} {movedNoun} to <a href={containerUrl}>{targetName}</a>
                                     .
                                 </>
                             ),
@@ -160,7 +160,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                             message: (
                                 <>
                                     All {(entityDataType.nounPlural ?? 'data').toLowerCase()} are already in the target
-                                    project.
+                                    folder.
                                 </>
                             ),
                             alertClass: 'warning',
@@ -206,7 +206,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
 
     if (isLoading(loading)) {
         return (
-            <Modal title="Move to Project" onCancel={onCancel}>
+            <Modal title="Move to Folder" onCancel={onCancel}>
                 <LoadingSpinner msg="Loading confirmation data..." />
             </Modal>
         );
@@ -214,7 +214,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
 
     if (error) {
         return (
-            <Modal title="Move to Project" onCancel={onCancel} cancelText="Dismiss">
+            <Modal title="Move to Folder" onCancel={onCancel} cancelText="Dismiss">
                 <Alert>{error}</Alert>
             </Modal>
         );
@@ -245,7 +245,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     onConfirm={onConfirm}
                     currentContainer={currentContainer}
                     title={title}
-                    dataType={entityDataType.projectConfigurableDataType}
+                    dataType={entityDataType.folderConfigurableDataType}
                     dataTypeRowId={dataTypeRowId}
                     excludeCurrentAsTarget={maxSelected === 1}
                 >

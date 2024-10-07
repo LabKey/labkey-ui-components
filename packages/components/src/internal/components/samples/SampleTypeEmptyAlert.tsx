@@ -6,8 +6,8 @@ import { NEW_SAMPLE_TYPE_HREF } from '../../app/constants';
 import { useServerContext } from '../base/ServerContext';
 import {
     getAppHomeFolderPath,
-    getProjectDashboardSampleTypeExclusion,
-    getProjectSampleTypeExclusion,
+    getFolderDashboardSampleTypeExclusion,
+    getFolderSampleTypeExclusion,
 } from '../../app/utils';
 import { useContainerUser } from '../container/actions';
 import { hasAllPermissions } from '../base/models/User';
@@ -20,8 +20,8 @@ interface Props extends EmptyAlertWithPermissionsProps {
 export const SampleTypeEmptyAlert: FC<Props> = memo(props => {
     const { message, ...baseProps } = props;
     const { container, moduleContext } = useServerContext();
-    const excludedSampleTypes = getProjectSampleTypeExclusion(moduleContext);
-    const excludedDashboardSampleTypes = getProjectDashboardSampleTypeExclusion(moduleContext);
+    const excludedSampleTypes = getFolderSampleTypeExclusion(moduleContext);
+    const excludedDashboardSampleTypes = getFolderDashboardSampleTypeExclusion(moduleContext);
     const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
     const homeContainer = useContainerUser(homeFolderPath);
 

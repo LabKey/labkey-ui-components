@@ -23,7 +23,7 @@ export interface BarChartConfig {
     emptyStateMsg?: ReactNode;
     filterDataRegionName?: string;
     getAppURL?: (data: BarChartData, evt?: any) => AppURL;
-    getProjectExclusionFilter?: (projectExclusions: { [key: string]: number[] }) => Filter.IFilter;
+    getContainerExclusionFilter?: (containerExclusions: { [key: string]: number[] }) => Filter.IFilter;
     groupPath?: string[];
     itemCountFilters?: Filter.IFilter[];
     itemCountSQ: SchemaQuery;
@@ -38,6 +38,7 @@ export interface BarChartConfig {
 
 export interface ChartConfig {
     geomOptions: any;
+    gridLinesVisible: string;
     height: number;
     labels: any;
     measures: any;

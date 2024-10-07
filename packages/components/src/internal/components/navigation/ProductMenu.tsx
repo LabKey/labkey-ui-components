@@ -101,9 +101,9 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
         menuRef.current.style.height = Math.min(height, maxHeight) + 'px';
 
         // if the selected project is out of view, scrollIntoView
-        const activeProject = menuRef.current.getElementsByClassName('active')?.[0];
-        if (activeProject) {
-            if (activeProject.getBoundingClientRect().bottom > menuRef.current.getBoundingClientRect().bottom) {
+        const activeContainer = menuRef.current.getElementsByClassName('active')?.[0];
+        if (activeContainer) {
+            if (activeContainer.getBoundingClientRect().bottom > menuRef.current.getBoundingClientRect().bottom) {
                 menuRef.current.getElementsByClassName('active')?.[0].scrollIntoView({ behavior: 'smooth' });
             }
         }
@@ -247,7 +247,7 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
 
         (async () => {
             try {
-                const folders = await api.folder.getProjects(container, moduleContext, true, false, true);
+                const folders = await api.folder.getContainers(container, moduleContext, true, false, true);
 
                 const items_: FolderMenuItem[] = [];
                 const topLevelFolderIdx = folders.findIndex(f => f.parentPath === '/');

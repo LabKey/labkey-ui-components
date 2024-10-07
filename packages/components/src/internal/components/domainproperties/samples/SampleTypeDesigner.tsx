@@ -29,7 +29,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 
 import { GENID_SYNTAX_STRING } from '../NameExpressionGenIdBanner';
 
-import { IParentAlias, IParentOption, ProjectConfigurableDataType } from '../../entities/models';
+import { IImportAlias, IParentAlias, IParentOption, FolderConfigurableDataType } from '../../entities/models';
 import { SCHEMAS } from '../../../schemas';
 import {
     getHelpLink,
@@ -45,7 +45,7 @@ import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupe
 
 import { SAMPLE_SET_IMPORT_PREFIX, SampleTypeDataType } from '../../entities/constants';
 
-import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
+import { DataTypeFoldersPanel } from '../DataTypeFoldersPanel';
 
 import { Container } from '../../base/models/Container';
 
@@ -61,7 +61,7 @@ const NEW_SAMPLE_SET_OPTION: IParentOption = {
 
 const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;
-const PROJECTS_PANEL_INDEX = 2;
+const FOLDERS_PANEL_INDEX = 2;
 
 const SAMPLE_TYPE_NAME_EXPRESSION_PLACEHOLDER = 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})';
 const SAMPLE_TYPE_HELP_TOPIC = 'createSampleType';
@@ -90,7 +90,7 @@ const AliquotOptionsHelp: FC<{ helpTopic: string }> = memo(({ helpTopic }) => {
 
 interface Props {
     aliquotNamePatternProps?: AliquotNamePatternProps;
-    allowProjectExclusion?: boolean;
+    allowFolderExclusion?: boolean;
     api?: ComponentsAPIWrapper;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: SampleTypeModel) => void;
@@ -212,22 +212,25 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             : name;
     };
 
-    getImportAliasesAsMap(model: SampleTypeModel): Map<string, string> {
+    getImportAliasesAsMap(model: SampleTypeModel): Record<string, IImportAlias> {
         const { name, parentAliases } = model;
         const aliases = {};
 
         parentAliases?.forEach((alias: IParentAlias) => {
-            const { parentValue } = alias;
+            const { parentValue, required } = alias;
 
-            let value = parentValue && parentValue.value ? (parentValue.value as string) : '';
+            let inputType = parentValue && parentValue.value ? (parentValue.value as string) : '';
             if (parentValue === NEW_SAMPLE_SET_OPTION) {
-                value = SAMPLE_SET_IMPORT_PREFIX + name;
+                inputType = SAMPLE_SET_IMPORT_PREFIX + name;
             }
 
-            aliases[alias.alias] = value;
+            aliases[alias.alias] = {
+                inputType,
+                required,
+            };
         });
 
-        return Map<string, string>(aliases);
+        return aliases;
     }
 
     onFieldChange = (model: SampleTypeModel): void => {
@@ -244,8 +247,8 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         this.props.onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback);
     };
 
-    projectsToggle = (collapsed: boolean, callback: () => void): void => {
-        this.props.onTogglePanel(PROJECTS_PANEL_INDEX, collapsed, callback);
+    foldersToggle = (collapsed: boolean, callback: () => void): void => {
+        this.props.onTogglePanel(FOLDERS_PANEL_INDEX, collapsed, callback);
     };
 
     parentAliasChange = (id: string, field: string, newValue: any): void => {
@@ -280,7 +283,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         this.onFieldChange(newModel);
     };
 
-    onUpdateExcludedProjects = (dataType: ProjectConfigurableDataType, excludedContainerIds: string[]): void => {
+    onUpdateExcludedFolders = (dataType: FolderConfigurableDataType, excludedContainerIds: string[]): void => {
         const { model } = this.state;
         if (dataType === 'SampleType') {
             const newModel = model.set('excludedContainerIds', excludedContainerIds) as SampleTypeModel;
@@ -542,7 +545,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             metricUnit,
             autoLinkTargetContainerId,
             autoLinkCategory,
-            importAliases: this.getImportAliasesAsMap(model).toJS(),
+            importAliases: this.getImportAliasesAsMap(model),
             excludedContainerIds,
             excludedDashboardContainerIds,
         };
@@ -578,7 +581,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
 
     render() {
         const {
-            allowProjectExclusion,
+            allowFolderExclusion,
             api,
             appPropertiesOnly,
             currentPanelIndex,
@@ -756,18 +759,18 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                     }}
                     systemFields={options?.get('systemFields')}
                 />
-                {appPropertiesOnly && allowProjectExclusion && (
+                {appPropertiesOnly && allowFolderExclusion && (
                     // appPropertiesOnly check will prevent this panel from showing in LKS and in LKB media types
-                    <DataTypeProjectsPanel
+                    <DataTypeFoldersPanel
                         controlledCollapse
                         dataTypeRowId={model?.rowId}
                         dataTypeName={model?.name}
                         entityDataType={SampleTypeDataType}
-                        relatedProjectConfigurableDataType="DashboardSampleType"
+                        relatedFolderConfigurableDataType="DashboardSampleType"
                         relatedDataTypeLabel="Include in Dashboard Insights graphs"
-                        initCollapsed={currentPanelIndex !== PROJECTS_PANEL_INDEX}
-                        onToggle={this.projectsToggle}
-                        onUpdateExcludedProjects={this.onUpdateExcludedProjects}
+                        initCollapsed={currentPanelIndex !== FOLDERS_PANEL_INDEX}
+                        onToggle={this.foldersToggle}
+                        onUpdateExcludedFolders={this.onUpdateExcludedFolders}
                     />
                 )}
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}

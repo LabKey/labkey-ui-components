@@ -3,7 +3,7 @@ import { ActionURL, Ajax, Utils } from '@labkey/api';
 import { Container } from '../base/models/Container';
 import { handleRequestFailure } from '../../util/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
-import { ProjectConfigurableDataType } from '../entities/models';
+import { FolderConfigurableDataType } from '../entities/models';
 import { getFolderDataTypeExclusions } from '../entities/actions';
 import { isAppHomeFolder } from '../../app/utils';
 import { fetchContainers } from '../permissions/actions';
@@ -11,7 +11,7 @@ import { ModuleContext } from '../base/ServerContext';
 import { naturalSortByProperty } from '../../../public/sort';
 import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 
-export interface ProjectSettingsOptions {
+export interface FolderSettingsOptions {
     allowUserSpecifiedNames?: boolean;
     disabledAssayDesigns?: number[];
     disabledDashboardSampleTypes?: number[];
@@ -24,7 +24,7 @@ export interface ProjectSettingsOptions {
     title?: string;
 }
 
-export interface UpdateProjectSettingsOptions {
+export interface UpdateContainerSettingsOptions {
     defaultDateFormat?: string;
     defaultDateTimeFormat?: string;
     defaultTimeFormat?: string;
@@ -35,61 +35,56 @@ export interface AuditSettingsResponse {
 }
 
 export interface FolderAPIWrapper {
-    createProject: (options: ProjectSettingsOptions, containerPath?: string) => Promise<Container>;
+    createFolder: (options: FolderSettingsOptions, containerPath?: string) => Promise<Container>;
     getAuditSettings: (containerPath?: string) => Promise<AuditSettingsResponse>;
-    getDataTypeExcludedProjects: (dataType: ProjectConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
+    getDataTypeExcludedContainers: (dataType: FolderConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
     getFolderDataTypeExclusions: (excludedContainer?: string) => Promise<{ [key: string]: number[] }>;
-    getProjects: (
+    getContainers: (
         container?: Container,
         moduleContext?: ModuleContext,
         includeStandardProperties?: boolean,
         includeEffectivePermissions?: boolean,
         includeTopFolder?: boolean
     ) => Promise<Container[]>;
-    renameProject: (options: ProjectSettingsOptions, containerPath?: string) => Promise<Container>;
+    renameFolder: (options: FolderSettingsOptions, containerPath?: string) => Promise<Container>;
     setAuditCommentsRequired: (isRequired: boolean, containerPath?: string) => Promise<void>;
-    updateProjectCustomLabels: (
-        labelProvider: string,
-        labels: Record<string, string>,
-        containerPath?: string
-    ) => Promise<void>;
-    updateProjectDataExclusions: (options: ProjectSettingsOptions, containerPath?: string) => Promise<void>;
-    updateProjectLookAndFeelSettings: (options: UpdateProjectSettingsOptions, containerPath?: string) => Promise<void>;
+    updateContainerDataExclusions: (options: FolderSettingsOptions, containerPath?: string) => Promise<void>;
+    updateContainerLookAndFeelSettings: (options: UpdateContainerSettingsOptions, containerPath?: string) => Promise<void>;
 }
 
 export class ServerFolderAPIWrapper implements FolderAPIWrapper {
-    createProject = (options: ProjectSettingsOptions, containerPath?: string): Promise<Container> => {
+    createFolder = (options: FolderSettingsOptions, containerPath?: string): Promise<Container> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: ActionURL.buildURL(
                     SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
-                    'createProject.api',
+                    'createFolder.api',
                     containerPath
                 ),
                 method: 'POST',
                 jsonData: options,
-                success: Utils.getCallbackWrapper(({ project }) => {
-                    resolve(new Container(project));
+                success: Utils.getCallbackWrapper(({ folder }) => {
+                    resolve(new Container(folder));
                 }),
-                failure: handleRequestFailure(reject, 'Failed to create project'),
+                failure: handleRequestFailure(reject, 'Failed to create folder'),
             });
         });
     };
 
-    renameProject = (options: ProjectSettingsOptions, containerPath?: string): Promise<Container> => {
+    renameFolder = (options: FolderSettingsOptions, containerPath?: string): Promise<Container> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: ActionURL.buildURL(
                     SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
-                    'renameProject.api',
+                    'renameFolder.api',
                     containerPath
                 ),
                 method: 'POST',
                 jsonData: options,
                 success: Utils.getCallbackWrapper(({ data }) => {
-                    resolve(new Container(data.project));
+                    resolve(new Container(data.folder));
                 }),
-                failure: handleRequestFailure(reject, 'Failed to rename project'),
+                failure: handleRequestFailure(reject, 'Failed to rename folder.'),
             });
         });
     };
@@ -121,12 +116,12 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
         });
     };
 
-    updateProjectDataExclusions = (options: ProjectSettingsOptions, containerPath?: string): Promise<void> => {
+    updateContainerDataExclusions = (options: FolderSettingsOptions, containerPath?: string): Promise<void> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: ActionURL.buildURL(
                     SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
-                    'updateProjectDataExclusion.api',
+                    'updateContainerDataExclusion.api',
                     containerPath
                 ),
                 method: 'POST',
@@ -134,13 +129,13 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                 success: Utils.getCallbackWrapper(({ data }) => {
                     resolve();
                 }),
-                failure: handleRequestFailure(reject, 'Failed to update project data type'),
+                failure: handleRequestFailure(reject, 'Failed to update folder data type'),
             });
         });
     };
 
-    updateProjectLookAndFeelSettings = (
-        options: UpdateProjectSettingsOptions,
+    updateContainerLookAndFeelSettings = (
+        options: UpdateContainerSettingsOptions,
         containerPath?: string
     ): Promise<void> => {
         return new Promise((resolve, reject) => {
@@ -148,15 +143,15 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                 url: ActionURL.buildURL('admin', 'updateProjectSettings.api', containerPath),
                 method: 'POST',
                 jsonData: options,
-                success: Utils.getCallbackWrapper(({ data }) => {
+                success: Utils.getCallbackWrapper(() => {
                     resolve();
                 }),
-                failure: handleRequestFailure(reject, 'Failed to update project look and feel settings'),
+                failure: handleRequestFailure(reject, 'Failed to update folder look and feel settings'),
             });
         });
     };
 
-    getDataTypeExcludedProjects = (dataType: ProjectConfigurableDataType, dataTypeRowId: number): Promise<string[]> => {
+    getDataTypeExcludedContainers = (dataType: FolderConfigurableDataType, dataTypeRowId: number): Promise<string[]> => {
         if (!dataType || !dataTypeRowId) {
             return Promise.resolve(undefined);
         }
@@ -169,14 +164,14 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                     dataTypeRowId,
                 },
                 success: Utils.getCallbackWrapper(response => {
-                    resolve(response['excludedProjects']);
+                    resolve(response['excludedContainers']);
                 }),
-                failure: handleRequestFailure(reject, 'Failed to get excluded projects'),
+                failure: handleRequestFailure(reject, 'Failed to get excluded folders'),
             });
         });
     };
 
-    getProjects = (
+    getContainers = (
         container?: Container,
         moduleContext?: ModuleContext,
         includeStandardProperties?: boolean,
@@ -194,23 +189,23 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                 depth: 1,
             })
                 .then(containers => {
-                    const projects = containers
+                    const folders = containers
                         // if user doesn't have permissions to the parent/project, the response will come back with an empty Container object
                         .filter(c => c !== undefined && c.id !== '');
 
-                    const childProjects = projects.filter(c => c.path !== topFolderPath);
+                    const childFolders = folders.filter(c => c.path !== topFolderPath);
                     // Issue 45805: sort folders by title as server-side sorting is insufficient
-                    childProjects.sort(naturalSortByProperty('title'));
+                    childFolders.sort(naturalSortByProperty('title'));
 
                     if (!includeTopFolder) {
-                        resolve(childProjects);
+                        resolve(childFolders);
                     } else {
-                        const top = projects.find(c => c.path === topFolderPath);
-                        const allProject = top
+                        const top = folders.find(c => c.path === topFolderPath);
+                        const allContainers = top
                             ? [{ ...top, title: top.path === HOME_PATH ? HOME_TITLE : top.title } as Container]
                             : [];
-                        allProject.push(...childProjects);
-                        resolve(allProject);
+                        allContainers.push(...childFolders);
+                        resolve(allContainers);
                     }
                 })
                 .catch(error => {
@@ -220,27 +215,6 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
     };
 
     getFolderDataTypeExclusions = getFolderDataTypeExclusions;
-
-    updateProjectCustomLabels = (
-        labelProvider: string,
-        labels: Record<string, string>,
-        containerPath?: string
-    ): Promise<void> => {
-        return new Promise((resolve, reject) => {
-            Ajax.request({
-                url: ActionURL.buildURL('core', 'customLabels.api', containerPath),
-                method: 'POST',
-                jsonData: {
-                    provider: labelProvider,
-                    labelsJson: JSON.stringify(labels),
-                },
-                success: Utils.getCallbackWrapper(({ data }) => {
-                    resolve();
-                }),
-                failure: handleRequestFailure(reject, 'Failed to update project custom labels.'),
-            });
-        });
-    };
 }
 
 /**
@@ -251,16 +225,15 @@ export function getFolderTestAPIWrapper(
     overrides: Partial<FolderAPIWrapper> = {}
 ): FolderAPIWrapper {
     return {
-        createProject: mockFn(),
-        renameProject: mockFn(),
+        createFolder: mockFn(),
+        renameFolder: mockFn(),
         getAuditSettings: mockFn(),
         setAuditCommentsRequired: mockFn(),
-        updateProjectDataExclusions: mockFn(),
-        getDataTypeExcludedProjects: mockFn(),
+        updateContainerDataExclusions: mockFn(),
+        getDataTypeExcludedContainers: mockFn(),
         getFolderDataTypeExclusions: mockFn(),
-        updateProjectLookAndFeelSettings: mockFn(),
-        updateProjectCustomLabels: mockFn(),
-        getProjects: mockFn(),
+        updateContainerLookAndFeelSettings: mockFn(),
+        getContainers: mockFn(),
         ...overrides,
     };
 }

@@ -20,9 +20,9 @@ import { getQueryColumnRenderers } from '../../global';
 
 import { QuerySelectOwnProps } from '../forms/QuerySelect';
 
-import { isBoolean, isFloat, isInteger } from '../../util/utils';
-
+import { isBoolean, isFloat, isInteger, isQuotedWithDelimiters } from '../../util/utils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
+import { incrementClientSideMetricCount } from '../../actions';
 
 import { EditorModel, CellMessage } from './models';
 import { CellActions, MODIFICATION_TYPES } from './constants';
@@ -49,48 +49,52 @@ export function applyEditorModelChanges(
     return updatedModels;
 }
 
-export const getValidatedEditableGridValue = (
-    origValue: any,
-    col: QueryColumn
-): { message: CellMessage; value: any } => {
-    const isDateTimeType = col?.jsonType === 'date';
-    const isDateType = isDateTimeType && col?.isDateOnlyColumn;
+interface ValidatedValue {
+    message: CellMessage;
+    value: any;
+}
+
+export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn): ValidatedValue => {
+    // col ?? {} so it's safe to destructure
+    const { caption, isDateOnlyColumn, jsonType, required, scale, validValues } = col ?? {};
+    const isDateTimeType = jsonType === 'date';
+    const isDateType = isDateTimeType && isDateOnlyColumn;
     let message;
     let value = origValue;
 
     // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
     // Issue 45140: use QueryColumn date format for parseDate()
     if (isDateType || isDateTimeType) {
-        const dateVal = parseDate(origValue, getColDateFormat(col));
+        const dateFormat = getColDateFormat(col);
+        const dateVal = parseDate(origValue, dateFormat);
         const dateStrVal = isDateType ? getJsonDateFormatString(dateVal) : getJsonDateTimeFormatString(dateVal);
-        if (origValue && !dateStrVal) message = isDateType ? 'Invalid date' : 'Invalid date time';
+        if (origValue && !dateStrVal) {
+            const noun = isDateType ? 'date' : 'date time';
+            message = `Invalid ${noun}, use format ${dateFormat}`;
+        }
         value = dateStrVal ?? origValue;
     } else if (value != null && value !== '' && !col?.isPublicLookup()) {
-        if (col?.validValues) {
-            if (col.validValues.indexOf(origValue.toString().trim()) === -1) message = 'Invalid text choice';
-        } else if (col?.jsonType === 'time') {
+        if (validValues) {
+            const trimmed = origValue?.toString().trim();
+            if (validValues.indexOf(trimmed) === -1) message = `'${trimmed}' is not a valid choice`;
+        } else if (jsonType === 'time') {
             const time = parseTime(value);
-            if (time) {
-                value = getFormattedStringFromDate(time, col, false);
-            } else message = 'Invalid time';
-        } else if (col?.jsonType === 'boolean' && !isBoolean(value)) {
+            if (time) value = getFormattedStringFromDate(time, col, false);
+            else message = 'Invalid time';
+        } else if (jsonType === 'boolean' && !isBoolean(value)) {
             message = 'Invalid boolean';
-        } else if (col?.jsonType === 'int' && !isInteger(value)) {
+        } else if (jsonType === 'int' && !isInteger(value)) {
             message = 'Invalid integer';
-        } else if (col?.jsonType === 'float' && !isFloat(value)) {
+        } else if (jsonType === 'float' && !isFloat(value)) {
             message = 'Invalid decimal';
-        } else if (col?.jsonType === 'string' && col?.scale) {
-            if (value.toString().trim().length > col.scale)
-                message = value.toString().trim().length + '/' + col.scale + ' characters';
+        } else if (jsonType === 'string' && scale) {
+            if (value.toString().trim().length > scale)
+                message = value.toString().trim().length + '/' + scale + ' characters';
         }
     }
 
-    if (
-        col?.required &&
-        (value == null || value === '' || value.toString().trim() === '') &&
-        col?.jsonType !== 'boolean'
-    ) {
-        message = (message ? message + '. ' : '') + col.caption + ' is required.';
+    if (required && (value == null || value === '' || value.toString().trim() === '') && jsonType !== 'boolean') {
+        message = (message ? message + '. ' : '') + caption + ' is required.';
     }
 
     return {
@@ -128,7 +132,7 @@ export function getUpdatedDataFromGrid(
                 // We can skip the idField for the diff check, that will be added to the updated rows later
                 if (key === idField) return row;
 
-                let originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
+                let originalValue = originalRow.get(key, undefined);
                 const col = queryInfo.getColumn(key);
 
                 // Convert empty cell to null
@@ -153,7 +157,7 @@ export function getUpdatedDataFromGrid(
                 // updated values. This is not the final type check.
                 if (typeof originalValue === 'number' || typeof originalValue === 'boolean') {
                     try {
-                        value = JSON.parse(value);
+                        if (!isQuotedWithDelimiters(value, ',')) value = JSON.parse(value);
                     } catch (e) {
                         // Incorrect types are handled by API and user feedback created from that response. Don't need
                         // to handle that here.
@@ -188,9 +192,7 @@ export function getUpdatedDataFromGrid(
 
                     // if the value is 'undefined', it will be removed from the update rows, so in order to
                     // erase an existing value we set the value to null in our update data
-                    value = value === undefined ? null : value;
-
-                    row[key] = getValidatedEditableGridValue(value, col).value;
+                    row[key] = value === undefined ? null : value;
                 }
                 return row;
             }, {});
@@ -471,4 +473,19 @@ export function computeRangeChange(selectedIdx: number, min: number, max: number
     }
 
     return [Math.max(0, min), max];
+}
+
+export function incrementRowCountMetric(dataType: string, rowCount: number, isUpdate: boolean): void {
+    if (!rowCount) return;
+
+    const metricFeatureArea = isUpdate ? 'gridUpdateCounts' : 'gridInsertCounts';
+    if (rowCount <= 50) {
+        incrementClientSideMetricCount(metricFeatureArea, dataType + '1To50');
+    } else if (rowCount <= 100) {
+        incrementClientSideMetricCount(metricFeatureArea, dataType + '51To100');
+    } else if (rowCount <= 250) {
+        incrementClientSideMetricCount(metricFeatureArea, dataType + '101To250');
+    } else {
+        incrementClientSideMetricCount(metricFeatureArea, dataType + 'GT250');
+    }
 }

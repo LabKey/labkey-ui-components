@@ -21,14 +21,14 @@ import { loadNameExpressionOptions } from '../../settings/actions';
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 import { resolveErrorMessage } from '../../../util/messaging';
 
-import { IParentAlias, IParentOption, ProjectConfigurableDataType } from '../../entities/models';
+import { IImportAlias, IParentAlias, IParentOption, FolderConfigurableDataType } from '../../entities/models';
 import { SCHEMAS } from '../../../schemas';
 
 import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from '../utils';
 
 import { DATA_CLASS_IMPORT_PREFIX, DataClassDataType } from '../../entities/constants';
 import { initParentOptionsSelects } from '../../entities/actions';
-import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
+import { DataTypeFoldersPanel } from '../DataTypeFoldersPanel';
 
 import { Container } from '../../base/models/Container';
 
@@ -36,8 +36,8 @@ import { DataClassModel, DataClassModelConfig } from './models';
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 
 interface Props {
+    allowFolderExclusion?: boolean;
     allowParentAlias?: boolean;
-    allowProjectExclusion?: boolean;
     api?: ComponentsAPIWrapper;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: DataClassModel) => void;
@@ -80,7 +80,7 @@ const NEW_DATA_CLASS_OPTION: IParentOption = {
 
 const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;
-const PROJECTS_PANEL_INDEX = 2;
+const FOLDERS_PANEL_INDEX = 2;
 
 export type DataClassDesignerProps = Props & InjectedBaseDomainDesignerProps;
 
@@ -183,24 +183,27 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
         }
     };
 
-    getImportAliasesAsMap(model: DataClassModel): Map<string, string> {
+    getImportAliasesAsMap(model: DataClassModel): Record<string, IImportAlias> {
         const { name, parentAliases } = model;
         const aliases = {};
 
         if (parentAliases) {
             parentAliases.forEach((alias: IParentAlias) => {
-                const { parentValue } = alias;
+                const { parentValue, required } = alias;
 
-                let value = parentValue && parentValue.value ? (parentValue.value as string) : '';
+                let inputType = parentValue && parentValue.value ? (parentValue.value as string) : '';
                 if (parentValue === NEW_DATA_CLASS_OPTION) {
-                    value = DATA_CLASS_IMPORT_PREFIX + name;
+                    inputType = DATA_CLASS_IMPORT_PREFIX + name;
                 }
 
-                aliases[alias.alias] = value;
+                aliases[alias.alias] = {
+                    inputType,
+                    required,
+                };
             });
         }
 
-        return Map<string, string>(aliases);
+        return aliases;
     }
 
     saveDomain = async (hasConfirmedNameExpression?: boolean): Promise<void> => {
@@ -417,7 +420,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
         this.saveModel(newModel);
     };
 
-    onUpdateExcludedProjects = (_: ProjectConfigurableDataType, excludedContainerIds: string[]): void => {
+    onUpdateExcludedFolders = (_: FolderConfigurableDataType, excludedContainerIds: string[]): void => {
         const { model } = this.state;
         const newModel = {
             ...model,
@@ -434,8 +437,8 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
         this.props.onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback);
     };
 
-    projectsToggle = (collapsed: boolean, callback: () => void): void => {
-        this.props.onTogglePanel(PROJECTS_PANEL_INDEX, collapsed, callback);
+    foldersToggle = (collapsed: boolean, callback: () => void): void => {
+        this.props.onTogglePanel(FOLDERS_PANEL_INDEX, collapsed, callback);
     };
 
     render(): ReactNode {
@@ -459,7 +462,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
             domainFormDisplayOptions,
             showGenIdBanner,
             allowParentAlias,
-            allowProjectExclusion,
+            allowFolderExclusion,
         } = this.props;
         const { model, nameExpressionWarnings, namePreviews, namePreviewsLoading, parentOptions } = this.state;
 
@@ -539,15 +542,15 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
                     domainFormDisplayOptions={domainFormDisplayOptions}
                     systemFields={model.options.systemFields}
                 />
-                {appPropertiesOnly && !model.isBuiltIn && allowProjectExclusion && (
-                    <DataTypeProjectsPanel
+                {appPropertiesOnly && !model.isBuiltIn && allowFolderExclusion && (
+                    <DataTypeFoldersPanel
                         controlledCollapse
                         dataTypeRowId={model?.rowId}
                         dataTypeName={model?.name}
                         entityDataType={DataClassDataType}
-                        initCollapsed={currentPanelIndex !== PROJECTS_PANEL_INDEX}
-                        onToggle={this.projectsToggle}
-                        onUpdateExcludedProjects={this.onUpdateExcludedProjects}
+                        initCollapsed={currentPanelIndex !== FOLDERS_PANEL_INDEX}
+                        onToggle={this.foldersToggle}
+                        onUpdateExcludedFolders={this.onUpdateExcludedFolders}
                     />
                 )}
                 <NameExpressionValidationModal

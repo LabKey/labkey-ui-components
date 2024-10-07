@@ -164,9 +164,9 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
         appPropertiesOnly: false,
         showLinkToStudy: true,
         helpTopic: DEFINE_SAMPLE_TYPE_TOPIC,
-        sampleAliasCaption: 'Sample Alias',
+        sampleAliasCaption: 'Sample',
         sampleTypeCaption: 'Sample Type',
-        dataClassAliasCaption: 'Data Class Alias',
+        dataClassAliasCaption: 'Data Class',
         dataClassTypeCaption: 'Data Class',
         dataClassParentageLabel: 'data class',
         metricUnitProps: {
@@ -399,16 +399,22 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                         </div>
                     </div>
                 )}
-                <DomainParentAliases
-                    {...this.props}
-                    parentAliases={model.parentAliases}
-                    idPrefix="sampletype-parent-import-alias-"
-                    schema={SCHEMAS.SAMPLE_SETS.SCHEMA}
-                    addEntityHelp={<AddEntityHelpTip />}
-                    includeSampleSet
-                    includeDataClass={includeDataClasses && !useSeparateDataClassesAliasMenu}
-                    showAddBtn={showAddParentAlias}
-                />
+                {showAddParentAlias && (
+                    <>
+                        <SectionHeading title="Lineage Settings" cls="top-spacing bottom-spacing" />
+                        <DomainParentAliases
+                            {...this.props}
+                            parentAliases={model.parentAliases}
+                            idPrefix="sampletype-parent-import-alias-"
+                            schema={SCHEMAS.SAMPLE_SETS.SCHEMA}
+                            addEntityHelp={<AddEntityHelpTip />}
+                            includeSampleSet
+                            includeDataClass={includeDataClasses && !useSeparateDataClassesAliasMenu}
+                            showAddBtn={showAddParentAlias}
+                            hideRequiredCheck={!appPropertiesOnly}
+                        />
+                    </>
+                )}
                 {showDataClass && (
                     <DomainParentAliases
                         {...this.props}

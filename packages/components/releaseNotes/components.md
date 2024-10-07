@@ -7,6 +7,94 @@ Components, models, actions, and utility functions for LabKey applications and p
   - parseCalculatedColumn to first try making an executeSQL call with fake data to catch SQL errors
   - withQueryModel to retry failed query without calculated fields, set viewError on QueryModel for grid display
 
+### version 5.12.1
+*Released*: 7 October 2024
+- withAssayModels fix to allow passthrough of ComponentsAPIWrapper
+
+### version 5.12.0
+*Released*: 7 October 2024
+- Issue 50569: Add description for API keys
+
+### version 5.11.1
+*Released*: 7 October 2024
+- Issue 51291: Assure product menu closes after click on "empty" link
+
+### version 5.11.0
+*Released*: 4 October 2024
+- Chart builder in app (part 3)
+  - updates to chart margins and sizes for chart builder and dashboard
+  - only show 'x' grid lines for bar and box plots
+  - Issue 48860: Show "inheritable" checkbox in chart builder for users with proper perm (and if in app home)
+  - use getContainerFilterForFolder() for chart getQuery request (related to issue 48860)
+  - remove Chart Builder experimental feature flag
+
+### version 5.10.0
+*Released*: 1 October 2024
+- Editable Grid: improve validation messages
+
+### version 5.9.0
+*Released*: 1 October 2024
+- Issue 51254: Limit number of values for multi-valued filter types
+
+### version 5.8.2
+*Released*: 30 September 2024
+- Issue 51173: LKSM/LKB: Improve naming pattern warning when it contains a field name
+
+### version 5.8.1
+*Released*: 30 September 2024
+- Issue 51253: Require saving before testing of BarTender connection
+
+### version 5.8.0
+*Released*: 30 September 2024
+- Lineage Relationships: Optionally Require during Sample Registration
+  - add 'required' prop to various alias and parent input related models
+  - add api.domain.getRequiredParentTypes and api.entity.getDataTypesWithRequiredLineage
+  - updated DomainParentAliases and ParentAliasRow to use new UI and allow setting required parent
+  - updated ImportAliasRenderer to incorporate required info
+  - updated SampleTypeDesigner and DataClassDesigner to show new Lineage section for alias
+  - remove folder level data exclusion for alias data type selection since designers are edited at Home folder
+
+### version 5.7.0
+*Released*: 27 September 2024
+- Change "Project" to "Folder" throughout the application
+- Remove warning banner about shared domains except for domains coming from /Shared
+
+### version 5.6.1
+*Released*: 27 September 2024
+- Issue 51227: Add metric for number of rows used in editable grid
+
+### version 5.6.0
+*Released*: 25 September 2024
+- Wire up onBlur for LookupCell
+- Export Help component
+- Export CellMessages type
+
+### version 5.5.11
+*Released*: 25 September 2024
+- Issue 51337: LKSM: Can't edit samples where source ID has a comma
+  - Check quoted parent value with comma before calling JSON.parse, which would remove the quotes
+
+### version 5.5.10
+*Released*: 24 September 2024
+- Update `fileMatchesAcceptedFormat` utility to check file extension casing in a case-insensitive manner. Refactor away from using `Immutable`.
+  - Fixes Issue 51331
+- Update `FileAttachmentContainer` to use native `Set` rather than `Immutable.Set`.
+
+### version 5.5.9
+*Released*: 24 September 2024
+- EditableGrid: Fix issue with pasteEvent not working if user pasted more rows than the grid has
+  - Fixes issue 51327
+
+### version 5.5.8
+*Released*: 24 September 2024
+- Fix Issue 51265
+    - We now more consistently trim values and use getValidatedEditableGridValue
+- Stop using overflow: scroll
+
+### version 5.5.7
+*Released*: 20 September 2024
+- Issue 50389: Casing of aliased (parent) sample or source type name can be changed in the editable grid
+
 ### version 5.5.6
 *Released*: 18 September 2024
 - Issue 50998: Add container filter when getting samples from a particular transaction id

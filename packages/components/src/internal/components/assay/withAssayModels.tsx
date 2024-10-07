@@ -120,7 +120,11 @@ export function withAssayModels<Props>(
                     definitionsLoadingState: LoadingState.LOADED,
                 });
             } catch (definitionsError) {
-                await this.updateModel({ definitions: [], definitionsError, definitionsLoadingState: LoadingState.LOADED });
+                await this.updateModel({
+                    definitions: [],
+                    definitionsError,
+                    definitionsLoadingState: LoadingState.LOADED,
+                });
             }
         };
 
@@ -213,7 +217,7 @@ export function withAssayModels<Props>(
 
         render = (): ReactNode => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { api, assayName, ...props } = this.props;
+            const { assayName, ...props } = this.props;
             const { context, model } = this.state;
 
             return (

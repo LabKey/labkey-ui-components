@@ -113,7 +113,7 @@ describe('LookupCell', () => {
         wrapper.unmount();
     });
 
-    test('QuerySelect default container filter without projects', () => {
+    test('QuerySelect default container filter without folders', () => {
         const wrapper = mount(<LookupCell {...defaultProps()} />);
         const containerFilter = wrapper.find(QuerySelect).prop('containerFilter');
         expect(containerFilter).toBe(undefined);
@@ -147,9 +147,9 @@ describe('LookupCell', () => {
         expect(containerFilter).toBe(Query.ContainerFilter.current);
     });
 
-    test('QuerySelect default container filter with projects', () => {
+    test('QuerySelect default container filter with folders', () => {
         LABKEY.moduleContext.query = {
-            isProductProjectsEnabled: true,
+            isProductFoldersEnabled: true,
         };
         const wrapper = mount(<LookupCell {...defaultProps()} />);
         const containerFilter = wrapper.find(QuerySelect).prop('containerFilter');

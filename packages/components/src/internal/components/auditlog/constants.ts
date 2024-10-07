@@ -36,9 +36,9 @@ export const GROUP_AUDIT_QUERY: AuditQuery = {
     label: 'Roles and Assignment Events',
     value: 'groupauditevent',
 };
-export const PROJECT_AUDIT_QUERY: AuditQuery = {
+export const CONTAINER_AUDIT_QUERY: AuditQuery = {
     containerFilter: Query.ContainerFilter.allFolders,
-    label: 'Project Events',
+    label: 'Folder Events',
     value: 'containerauditevent',
 };
 export const SAMPLE_TYPE_AUDIT_QUERY: AuditQuery = { label: 'Sample Type Events', value: 'samplesetauditevent' };
@@ -71,6 +71,8 @@ export const NOTEBOOK_REVIEW_AUDIT_QUERY: AuditQuery = {
 };
 
 export const REGISTRY_AUDIT_QUERY: AuditQuery = { label: 'Registry Events', value: 'RegistryEvent' };
+
+export const REPORT_AUDIT_QUERY: AuditQuery = { label: 'Report Events', value: 'ReportEvent' };
 
 export const AUDIT_EVENT_TYPE_PARAM = 'eventType';
 

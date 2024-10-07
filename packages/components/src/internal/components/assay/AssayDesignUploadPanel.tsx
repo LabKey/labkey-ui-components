@@ -16,7 +16,6 @@ interface AssayDesignUploadPanelProps extends PropsWithChildren {
 export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(props => {
     const { onFileChange, onFileRemove, children } = props;
     const { moduleContext } = useServerContext();
-    const folderNoun = isPremiumProductEnabled(moduleContext) ? 'project' : 'folder';
 
     return (
         <div>
@@ -37,7 +36,7 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
             <div className="row">
                 <div className="col-xs-12">
                     <FileAttachmentForm
-                        acceptedFormats=".XAR, .XAR.XML, .xar, .xar.xml"
+                        acceptedFormats=".XAR, .XAR.XML"
                         showAcceptedFormats={false}
                         allowDirectories={false}
                         allowMultiple={false}
@@ -56,7 +55,7 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
                     <div className="margin-top margin-bottom">
                         <p>
                             If you have an existing assay .XAR file on this server, you can directly upload this assay
-                            design using this {folderNoun}'s data pipeline.
+                            design using this folder's data pipeline.
                         </p>
                     </div>
                     <div className="margin-top">

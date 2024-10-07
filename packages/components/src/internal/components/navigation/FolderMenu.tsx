@@ -28,7 +28,7 @@ export const FolderMenu: FC<FolderMenuProps> = memo(props => {
     const primaryProductId = getPrimaryAppProperties(moduleContext).productId;
 
     // TODO: the "user" object here is for the current container, so all of the user.isAdmin checks below are incorrect
-    // TBD if we want to includeEffectivePermissions in the getProjects() call in ProductMenu.tsx or use the
+    // TBD if we want to includeEffectivePermissions in the getContainers() call in ProductMenu.tsx or use the
     // useContainerUser() hook here (need to consider performance implications)
 
     return (
@@ -44,7 +44,7 @@ export const FolderMenu: FC<FolderMenuProps> = memo(props => {
                     const adminURL = createProductUrl(
                         primaryProductId,
                         currentProductId,
-                        AppURL.create('admin', 'projects'),
+                        AppURL.create('admin', 'folders'),
                         item.path
                     );
 

@@ -434,16 +434,13 @@ const TRUE_STRINGS = ['true', 't', 'yes', 'y', 'on', '1'];
 const FALSE_STRINGS = ['false', 'f', 'no', 'n', 'off', '0'];
 
 export function isBoolean(value: any, allowNull: boolean = true): boolean {
-    if (typeof value === "boolean")
-        return true;
+    if (typeof value === 'boolean') return true;
 
     if (!value) return allowNull;
 
     if (TRUE_STRINGS.indexOf(value.toString().toLowerCase()) > -1) return true;
 
     return FALSE_STRINGS.indexOf(value.toString().toLowerCase()) > -1;
-
-
 }
 
 export function isFloat(value: number | string): boolean {
@@ -683,8 +680,7 @@ export function parseCsvString(value: string, delimiter: string, removeQuotes?: 
             while (true) {
                 // find the end of the quoted value
                 end = value.indexOf('"', end + 1);
-                if (end === -1)
-                    break;
+                if (end === -1) break;
                 if (end === value.length - 1 || value[end + 1] !== '"') {
                     // end quote at end of string or without double quote
                     break;
@@ -692,7 +688,7 @@ export function parseCsvString(value: string, delimiter: string, removeQuotes?: 
                 end++; // skip double ""
             }
             // if no ending quote, don't remove quotes;
-            if (end === -1){
+            if (end === -1) {
                 end = value.indexOf(delimiter, start);
                 if (end === -1) end = value.length;
                 parsedValues.push(value.substring(start, end));
@@ -729,6 +725,20 @@ export function quoteValueWithDelimiters(value: any, delimiter: string) {
     return '"' + value + '"';
 }
 
+export function isQuotedWithDelimiters(value: any, delimiter: string): boolean {
+    if (!value || !Utils.isString(value)) {
+        return false;
+    }
+    if (!delimiter) {
+        throw 'Delimiter is required.';
+    }
+
+    const strVal = value + '';
+    if (strVal.indexOf(delimiter) === -1) return false;
+
+    return strVal.startsWith('"') && strVal.endsWith('"');
+}
+
 export function arrayEquals(a: string[], b: string[], ignoreOrder = true, caseInsensitive?: boolean): boolean {
     if (a === b) return true;
     if (a == null && b == null) return true;
@@ -751,4 +761,27 @@ export function getValueFromRow(row: Record<string, any>, col: string): string |
         return val?.value;
     }
     return val;
+}
+
+export function makeCommaSeparatedString<T>(values: T[]): string {
+    if (!values || values.length === 0) return '';
+    if (values.length === 1) return values[0] + '';
+
+    const firsts = values.slice(0, values.length - 1);
+    const last = values[values.length - 1];
+    return firsts.join(', ') + ' and ' + last;
+}
+
+/**
+ * Convert [SampleType1, SampleType2, SampleType3], 'sample type' => '3 sample types (SampleType1, SampleType2 and SampleType3)'
+ * @param values
+ * @param nounSingular
+ * @param nounPlural
+ */
+export function getValuesSummary<T>(values: T[], nounSingular: string, nounPlural?: string): string {
+    if (!values || values.length === 0) return '';
+    if (values.length === 1) return `1 ${nounSingular} (${values[0]})`;
+
+    const plural = nounPlural ?? nounSingular + 's';
+    return `${values.length} ${plural} (${makeCommaSeparatedString(values)})`;
 }

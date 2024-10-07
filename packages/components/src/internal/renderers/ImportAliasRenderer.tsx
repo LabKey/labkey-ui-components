@@ -39,19 +39,22 @@ export const ImportAliasRenderer: FC<RendererProps> = memo(props => {
                 ?.keySeq()
                 .sort()
                 .map(key => {
-                    const splitIndex = aliasMap.get(key).indexOf('/');
+                    const alias = aliasMap.get(key);
+                    const inputType = alias.get('inputType');
+                    const required = alias.get('required');
+                    const splitIndex = inputType.indexOf('/');
                     if (splitIndex === -1) return null;
 
-                    const route = appRouteMap[aliasMap.get(key).substring(0, splitIndex + 1)];
-                    const value = aliasMap.get(key).substring(splitIndex + 1);
+                    const route = appRouteMap[inputType.substring(0, splitIndex + 1)];
+                    const value = inputType.substring(splitIndex + 1);
 
                     return (
-                        <div key={key}>
-                            {key} (Alias for:&nbsp;
+                        <div key={key} className="alias-renderer--details">
+                            {key}, alias for:&nbsp;
                             <a key={key} href={AppURL.create(route, value).toHref()}>
                                 {value}
                             </a>
-                            )
+                            {required && ', required'}
                         </div>
                     );
                 })}

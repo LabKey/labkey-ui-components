@@ -1,20 +1,25 @@
-import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { OrderedMap } from 'immutable';
-
 
 import { IParentAlias, IParentOption } from '../entities/models';
 import { SCHEMAS } from '../../schemas';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { generateId } from '../../util/utils';
 
+import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
+
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
 import { ParentAliasRow } from './ParentAliasRow';
+import { DomainFieldLabel } from './DomainFieldLabel';
 
 interface Props {
     addEntityHelp: ReactNode;
     dataClassAliasCaption?: string;
     dataClassParentageLabel?: string;
     dataClassTypeCaption?: string;
+    hideRequiredCheck?: boolean;
     idPrefix: string;
     includeDataClass?: boolean;
     includeSampleSet?: boolean;
@@ -66,9 +71,9 @@ export const DomainParentAliases: FC<Props> = memo(props => {
         idPrefix,
         onAddParentAlias,
         schema,
-        addEntityHelp,
         parentAliasHelpText,
         useSeparateDataClassesAliasMenu,
+        hideRequiredCheck,
     } = props;
 
     const [aliasCaption, setAliasCaption] = useState<string>();
@@ -106,7 +111,7 @@ export const DomainParentAliases: FC<Props> = memo(props => {
             );
         }
         if (includeSampleSet && !(includeDataClass && useSeparateDataClassesAliasMenu)) {
-            aliasCaption = 'Parent Alias';
+            aliasCaption = 'Parent';
         }
 
         setAliasCaption(aliasCaption);
@@ -132,31 +137,73 @@ export const DomainParentAliases: FC<Props> = memo(props => {
         onAddParentAlias(newId, newParentAlias);
     }, [idPrefix, onAddParentAlias, schema]);
 
+    const getFilteredParentOptions = useCallback(
+        (currentAlias: IParentAlias): IParentOption[] => {
+            const exclude = [];
+            const current = currentAlias?.parentValue?.value;
+            filteredParentAliases?.forEach(usedAlias => {
+                const used = usedAlias.parentValue.value;
+                if (used && current !== used) exclude.push(used);
+            });
+            return filteredParentOptions?.filter(option => exclude.indexOf(option.value) === -1);
+        },
+        [filteredParentOptions, filteredParentAliases]
+    );
+
+    const hasMoreToAdd = useMemo(() => {
+        const added = [];
+        filteredParentAliases?.forEach(usedAlias => {
+            added.push(usedAlias.parentValue.value);
+        });
+
+        return filteredParentOptions?.find(option => added.indexOf(option.value) === -1);
+    }, [filteredParentOptions, filteredParentAliases]);
+
     return (
         <>
-            {filteredParentAliases?.map(alias => (
-                <ParentAliasRow
-                    key={alias.id}
-                    id={alias.id}
-                    parentAlias={alias}
-                    parentOptions={filteredParentOptions}
-                    onAliasChange={onParentAliasChange}
-                    onRemove={onRemoveParentAlias}
-                    updateDupeParentAliases={updateDupeParentAliases}
-                    aliasCaption={aliasCaption}
-                    parentTypeCaption={parentTypeCaption}
-                    helpMsg={helpMsg}
-                />
-            ))}
+            {filteredParentAliases?.length > 0 && (
+                <div className="bottom-spacing">
+                    <div className="row domain-floating-hdr">
+                        <div className="col-xs-2">
+                            <DomainFieldLabel label={aliasCaption + 's'} />
+                        </div>
+                        <div className="col-xs-10">
+                            <div className="col-xs-4 bold-text">{aliasCaption} Type *</div>
+                            <div className="col-xs-4 bold-text">
+                                File Import Column Name *
+                                <LabelHelpTip title={aliasCaption + ' alias'} required={true}>
+                                    {helpMsg ?? PARENT_ALIAS_HELPER_TEXT}
+                                </LabelHelpTip>
+                            </div>
+                            {!hideRequiredCheck && <div className="col-xs-2 bold-text">Required</div>}
+                        </div>
+                    </div>
+                    {filteredParentAliases?.map(alias => (
+                        <ParentAliasRow
+                            key={alias.id}
+                            id={alias.id}
+                            parentAlias={alias}
+                            parentOptions={getFilteredParentOptions(alias)}
+                            onAliasChange={onParentAliasChange}
+                            onRemove={onRemoveParentAlias}
+                            updateDupeParentAliases={updateDupeParentAliases}
+                            aliasCaption={aliasCaption + ' alias'}
+                            parentTypeCaption={parentTypeCaption}
+                            helpMsg={helpMsg}
+                            hideRequiredCheck={hideRequiredCheck}
+                        />
+                    ))}
+                </div>
+            )}
             {showAddBtn && (
                 <div className="row">
                     <div className="col-xs-2" />
                     <div className="col-xs-10">
                         <span>
                             <AddEntityButton
-                                entity={aliasCaption}
+                                entity={'a ' + aliasCaption}
                                 onClick={addParentAlias}
-                                helperBody={addEntityHelp}
+                                disabled={!hasMoreToAdd}
                             />
                         </span>
                     </div>

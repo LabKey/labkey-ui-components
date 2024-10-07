@@ -566,6 +566,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     onSelectChange={this.onSelectChange}
                     selectInputProps={{
                         ...gridCellSelectInputProps,
+                        onBlur: this.handleSelectionBlur,
                         onKeyDown: this.handleFocusedDropdownKeys,
                     }}
                     showLabel={false}
@@ -589,6 +590,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     filteredLookupValues={columnMetadata?.filteredLookupValues}
                     forUpdate={forUpdate}
                     modifyCell={cellActions.modifyCell}
+                    onBlur={this.handleSelectionBlur}
                     onKeyDown={this.handleFocusedDropdownKeys}
                     rowIdx={rowIdx}
                     select={cellActions.selectCell}

@@ -5,8 +5,15 @@ import { waitFor } from '@testing-library/dom';
 
 import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/constants';
 
+import { createMockSelectRowsDeprecatedResponse } from '../../../../test/MockUtils';
+
 import { AdvancedSettings, DatasetSettingsInput, DatasetSettingsSelect } from './DatasetPropertiesAdvancedSettings';
 import { DatasetModel } from './models';
+
+jest.mock('../../../query/api', () => ({
+    ...jest.requireActual('../../../query/api'),
+    selectRowsDeprecated: () => createMockSelectRowsDeprecatedResponse(),
+}));
 
 const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);
 

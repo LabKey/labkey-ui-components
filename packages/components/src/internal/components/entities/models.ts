@@ -74,19 +74,23 @@ export interface DisplayObject {
 export class EntityParentType extends Record({
     index: undefined,
     key: undefined,
+    label: undefined,
     query: undefined,
     schema: undefined,
     value: undefined,
     isParentTypeOnly: false,
     isAliquotParent: false,
+    required: false,
 }) {
     declare index: number;
     declare key: string;
+    declare label: string;
     declare query: string;
     declare schema: string;
     declare value: List<DisplayObject>;
     declare isParentTypeOnly: boolean;
     declare isAliquotParent: boolean;
+    declare required?: boolean;
 
     static create(values: any): EntityParentType {
         if (!values.key) values.key = generateId('parent-type-');
@@ -121,8 +125,7 @@ export class EntityParentType extends Record({
 
     // TODO: We should stop generating this on the client and retrieve the actual ColumnInfo from the server
     generateColumn(displayColumn: string, targetSchema: string): QueryColumn {
-        const parentInputType = this.getInputType();
-        const formattedQueryName = capitalizeFirstChar(this.query);
+        const formattedQueryName = this.label ?? capitalizeFirstChar(this.query);
         const parentColName = this.generateFieldKey();
 
         // Issue 40233: SM app allows for two types of parents, sources and samples, and its confusing if both use
@@ -157,7 +160,7 @@ export class EntityParentType extends Record({
                 viewName: ViewInfo.DETAIL_NAME, // use the details view to assure we see values even if default view is filtered
             }),
             name: parentColName,
-            required: this.isAliquotParent,
+            required: this.isAliquotParent || this.required,
             shownInInsertView: true,
             shownInUpdateView: true,
             type: 'Text (String)',
@@ -170,16 +173,20 @@ export class EntityParentType extends Record({
 export interface IEntityTypeOption extends SelectInputOption {
     entityDataType: EntityDataType;
     lsid: string;
+    query: string;
+    required?: boolean;
     rowId: number;
 }
 
 export class EntityTypeOption implements IEntityTypeOption {
     label: string;
+    query: string;
     lsid: string;
     rowId: number;
     value: any;
     entityDataType: EntityDataType;
     isFromSharedContainer?: boolean;
+    required?: boolean;
 
     constructor(props?: Partial<EntityTypeOption>) {
         if (props) {
@@ -273,7 +280,9 @@ export class EntityIdCreationModel extends Record({
         this.entityParents.forEach(parentList => {
             parentList.forEach(parent => {
                 if (parent.schema && parent.query) {
-                    const column = parent.generateColumn(uniqueFieldKey, targetSchema);
+                    const column = parent
+                        .generateColumn(uniqueFieldKey, targetSchema)
+                        .mutate({ required: parent.required });
                     // Issue 33653: query name is case-sensitive for some data inputs (parents)
                     columns = columns.set(column.name.toLowerCase(), column);
                 }
@@ -365,7 +374,7 @@ export class EntityIdCreationModel extends Record({
         api: ComponentsAPIWrapper,
         editorModel: EditorModel,
         containerPath?: string,
-        extraColumnsToInclude?: QueryColumn[],
+        extraColumnsToInclude?: string[],
         auditUserComment?: string
     ): Promise<QueryCommandResponse> {
         const rows = editorModel
@@ -374,7 +383,7 @@ export class EntityIdCreationModel extends Record({
             .reduce((rows_, row) => {
                 let map = row.toMap();
                 extraColumnsToInclude?.forEach(col => {
-                    map = map.set(col.name, undefined);
+                    map = map.set(col, undefined);
                 });
                 rows_ = rows_.push(map);
                 return rows_;
@@ -450,13 +459,13 @@ export interface IEntityTypeDetails extends IEntityDetails {
 }
 
 export type SampleFinderCardType = 'sampleproperty' | 'sampleparent' | 'dataclassparent' | 'assaydata';
-export type ProjectConfigurableDataType =
+export type FolderConfigurableDataType =
     | 'SampleType'
     | 'DashboardSampleType'
     | 'DataClass'
     | 'AssayDesign'
     | 'StorageLocation'
-    | 'Project';
+    | 'Container';
 
 /**
  *  Avoid inline comment or above line comments for properties due to es-lint's limitation on moving comments:
@@ -484,7 +493,7 @@ export type ProjectConfigurableDataType =
  *     listingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data instances (e.g., all the data class rows) available
  *     operationConfirmationActionName: string; // action in operationConfirmationControllerName used to get the confirmation data for performing operations on entities
  *     typeListingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
- *     projectConfigurableDataType?: string; // the DataTypeExclusion type
+ *     folderConfigurableDataType?: string; // the DataTypeExclusion type
  */
 export interface EntityDataType {
     allowRelativeDateFilter?: boolean;
@@ -500,6 +509,7 @@ export interface EntityDataType {
     exprColumnsWithSubSelect?: string[];
     filterArray?: Filter.IFilter[];
     filterCardHeaderClass?: string;
+    folderConfigurableDataType?: FolderConfigurableDataType;
     getInstanceDataType?: (schemaQuery: SchemaQuery, altQueryName?: string) => string;
     getInstanceSchemaQuery?: (datatype?: string) => SchemaQuery;
     importFileAction?: string;
@@ -509,7 +519,6 @@ export interface EntityDataType {
     insertColumnNamePrefix?: string;
     instanceKey?: string;
     instanceSchemaName: string;
-    isFromSharedContainer?: boolean;
     labelColorCol?: string;
     listingSchemaQuery: SchemaQuery;
     moveNoun?: string;
@@ -519,7 +528,7 @@ export interface EntityDataType {
     nounSingular: string;
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
-    projectConfigurableDataType?: ProjectConfigurableDataType;
+    isFromSharedContainer?: boolean;
     sampleFinderCardType?: SampleFinderCardType;
     supportHasNoValueInQuery?: boolean;
     supportsCrossTypeImport?: boolean;
@@ -624,6 +633,12 @@ export interface CrossFolderSelectionResult {
     title?: string;
 }
 
+export interface IImportAlias {
+    alias?: string;
+    inputType: string;
+    required?: boolean;
+}
+
 export interface IParentAlias {
     alias: string;
     // generated by panel used for removal, not saved
@@ -632,6 +647,7 @@ export interface IParentAlias {
     ignoreSelectError: boolean;
     isDupe?: boolean;
     parentValue: IParentOption;
+    required?: boolean;
 }
 
 export interface DataTypeEntity {
@@ -641,7 +657,7 @@ export interface DataTypeEntity {
     lsid?: string;
     rowId?: number;
     sublabel?: string;
-    type: ProjectConfigurableDataType;
+    type: FolderConfigurableDataType;
 }
 
 export interface FilterProps {

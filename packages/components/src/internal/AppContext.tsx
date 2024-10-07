@@ -94,7 +94,7 @@ export interface SampleTypeAppContext {
     importHelpLinkTopic: string;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
     lineagePagePermissions: string[];
-    parentDataTypes: List<EntityDataType>;
+    parentDataTypes: EntityDataType[];
     readOnlyQueryNames?: string[];
     sampleTypeListingCaption: string;
     samplesGridRequiredColumns: string[];

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.X
+*Released*: X October 2024
+- Issue 51056 Samples with single double quotes in the name will not resolve if added as parent samples.
+
 ### version 5.13.0
 *Released*: 7 October 2024
 - Issue 47087: Find Derivatives in Sample Finder to include a selection in filters

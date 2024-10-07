@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - parseCalculatedColumn to first try making an executeSQL call with fake data to catch SQL errors
   - withQueryModel to retry failed query without calculated fields, set viewError on QueryModel for grid display
 
+### version 5.13.0
+*Released*: 7 October 2024
+- Issue 47087: Find Derivatives in Sample Finder to include a selection in filters
+
 ### version 5.12.1
 *Released*: 7 October 2024
 - withAssayModels fix to allow passthrough of ComponentsAPIWrapper

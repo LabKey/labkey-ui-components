@@ -5,6 +5,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD October 2024
 - Issue 47087: Find Derivatives in Sample Finder to include a selection in filters
 
+### version 5.12.1
+*Released*: 7 October 2024
+- withAssayModels fix to allow passthrough of ComponentsAPIWrapper
+
+### version 5.12.0
+*Released*: 7 October 2024
+- Issue 50569: Add description for API keys
+
+### version 5.11.1
+*Released*: 7 October 2024
+- Issue 51291: Assure product menu closes after click on "empty" link
+
 ### version 5.11.0
 *Released*: 4 October 2024
 - Chart builder in app (part 3)

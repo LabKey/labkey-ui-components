@@ -70,13 +70,27 @@ function resolveDuplicatesAsName(errorMsg: string, noun: string, nounPlural?: st
     return retMsg;
 }
 
+// exported for jest
+export function makePresentParticiple(verb: string): string {
+    if (!verb) {
+        return verb;
+    }
+    if (verb.charAt(verb.length - 1) === 'e') {
+        return verb.substring(0, verb.length - 1) + 'ing';
+    } else {
+        return verb + 'ing';
+    }
+}
+
 export function resolveErrorMessage(
     error: any,
     noun = 'data',
     nounPlural?: string,
-    verb?: string,
-    duplicatesMessageResolver?: (errorMsg: string, noun: string, nounPlural?: string, verb?: string) => string
+    verbPresent?: string,
+    duplicatesMessageResolver?: (errorMsg: string, noun: string, nounPlural?: string, verb?: string) => string,
+    verbParticiple?: string
 ): string {
+    const verbPresParticiple = verbParticiple ?? makePresentParticiple(verbPresent);
     let errorMsg;
     if (!error) {
         return undefined;
@@ -98,33 +112,33 @@ export function resolveErrorMessage(
             lcMessage.indexOf('violation of unique key constraint') >= 0 ||
             lcMessage.indexOf('cannot insert duplicate key row') >= 0
         ) {
-            return duplicatesResolver(errorMsg, noun, nounPlural, verb);
+            return duplicatesResolver(errorMsg, noun, nounPlural, verbPresent);
         } else if (
             lcMessage.indexOf('violates foreign key constraint') >= 0 ||
             lcMessage.indexOf('conflicted with the foreign key constraint') >= 0
         ) {
-            return `There was a problem ${verb || 'creating'} your ${noun || 'data'}. Check the data fields to make
+            return `There was a problem ${verbPresParticiple || 'creating'} your ${noun || 'data'}. Check the data fields to make
             sure they contain or reference valid values.`;
         } else if (lcMessage.indexOf(ClassCastMessage) >= 0) {
-            return `There was a problem ${verb || 'creating'} your ${noun || 'data'}.  Check that the format of the data matches the expected type for each field.`;
+            return `There was a problem ${verbPresParticiple || 'creating'} your ${noun || 'data'}.  Check that the format of the data matches the expected type for each field.`;
         } else if (lcMessage.indexOf('bad sql grammar') >= 0) {
-            return `There was a problem ${verb || 'creating'} your ${noun || 'data'}.  Check that the format of the data matches the expected type for each field. If you are using calculated fields, you might need to add explicit type casts.`;
+            return `There was a problem ${verbPresParticiple || 'creating'} your ${noun || 'data'}.  Check that the format of the data matches the expected type for each field. If you are using calculated fields, you might need to add explicit type casts.`;
         } else if (lcMessage.indexOf('existing row was not found') >= 0) {
             return `We could not find the ${noun || 'data'} ${
-                verb ? 'to ' + verb : ''
+                verbPresent ? 'to ' + verbPresent : ''
             }.  Try refreshing your page to see if it has been deleted.`;
         } else if (
             lcMessage.indexOf('communication failure') >= 0 ||
             lcMessage.match(/query.*in schema.*doesn't exist/) !== null ||
             lcMessage.match(/query.*in schema.*does not exist/) !== null
         ) {
-            return `There was a problem ${verb || 'retrieving'} your ${
+            return `There was a problem ${verbPresParticiple || 'retrieving'} your ${
                 noun || 'data'
             }. Your session may have expired or the ${
                 noun || 'data'
             } may no longer be valid.  Try refreshing your page.`;
         } else if (lcMessage.indexOf('either rowid or lsid is required') >= 0) {
-            return `There was a problem ${verb || 'retrieving or updating'} your ${
+            return `There was a problem ${verbPresParticiple || 'retrieving or updating'} your ${
                 noun || 'data'
             }.  The request did not contain the proper identifiers.  Make sure the ${noun || 'data'} are still valid.`;
         } else if (lcMessage.indexOf('unable to set genid to ') === 0) {
@@ -132,19 +146,19 @@ export function resolveErrorMessage(
             const prefix = 'Unable to set genId to ';
             const numberEndInd = lcMessage.indexOf(' ', prefix.length + 1);
             const numberStr = lcMessage.substring(prefix.length, numberEndInd);
-            return prefix + (parseInt(numberStr) + 1) + lcMessage.substring(numberEndInd);
+            return prefix + (parseInt(numberStr, 10) + 1) + lcMessage.substring(numberEndInd);
         } else if (lcMessage.indexOf(IllegalArgumentMessage) >= 0) {
             return trimExceptionPrefix(IllegalArgumentMessage, errorMsg);
         } else if (lcMessage.indexOf('at least one of "file", "runfilepath", or "datarows" is required') >= 0) {
-            return `No data provided for ${verb || 'import'}.`;
+            return `No data provided to ${verbPresent || 'import'}.`;
         } else if (lcMessage.indexOf(NullPointerExceptionMessage) >= 0) {
-            return `There was a problem ${verb || 'processing'} your ${
+            return `There was a problem ${verbPresParticiple || 'processing'} your ${
                 noun || 'data'
             }. This may be a problem in the application. Contact your administrator.`;
         } else if (lcMessage.indexOf(ExperimentExceptionMessage) >= 0) {
             return trimExceptionPrefix(ExperimentExceptionMessage, errorMsg);
         } else if (lcMessage.indexOf("cannot update data that don't belong to the current container.") >= 0) {
-            return `There was a problem ${verb || 'importing'} your ${noun.toLowerCase() || 'data'}. One or more ${
+            return `There was a problem ${verbPresParticiple || 'importing'} your ${noun.toLowerCase() || 'data'}. One or more ${
                 noun.toLowerCase() || 'data'
             } already exist in a different folder.`;
         } else if (lcMessage.indexOf('inventory:item: row: ') >= 0) {

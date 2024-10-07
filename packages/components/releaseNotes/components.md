@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Fix verb usage in `resolveErrorMessage`, deriving the present participle of the verb when not provided
+
 ### version 5.11.0
 *Released*: 4 October 2024
 - Chart builder in app (part 3)

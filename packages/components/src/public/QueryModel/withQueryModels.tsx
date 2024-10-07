@@ -646,7 +646,7 @@ export function withQueryModels<Props>(
                 this.setState(
                     produce<State>(draft => {
                         const model = draft.queryModels[id];
-                        let rowsError = resolveErrorMessage(error, 'data', undefined, 'loading');
+                        let rowsError = resolveErrorMessage(error, 'data', undefined, 'load');
 
                         if (rowsError === undefined) {
                             rowsError = `Error while loading rows for SchemaQuery: ${model.schemaQuery.toString()}`;

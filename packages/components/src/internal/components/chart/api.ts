@@ -1,6 +1,6 @@
 import { Ajax, Filter, Query, Utils } from '@labkey/api';
 
-import { getContainerFilter } from '../../query/api';
+import { getContainerFilterForFolder } from '../../query/api';
 import { buildURL } from '../../url/AppURL';
 
 import { GenericChartModel } from './models';
@@ -32,7 +32,11 @@ function fetchRReport(
     return new Promise((resolve, reject) => {
         // The getWebPart API honors containerFilterName, not containerFilter.
         const containerFilterPrefix = `${urlPrefix}.containerFilterName`;
-        const params = { reportId, 'webpart.name': 'report', [containerFilterPrefix]: getContainerFilter(container) };
+        const params = {
+            reportId,
+            'webpart.name': 'report',
+            [containerFilterPrefix]: getContainerFilterForFolder(container),
+        };
         if (filters) {
             filters.forEach(filter => (params[filter.getURLParameterName(urlPrefix)] = filter.getURLParameterValue()));
         }

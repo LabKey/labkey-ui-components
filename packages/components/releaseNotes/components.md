@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.??.?
+*Released*: ? October 2024
+- EditableGridPanel: Remove support for tabs
+- SampleTypeAppContext: change parentDataTypes to an array
+
 ### version 5.15.1
 *Released*: 21 October 2024
 - Issue 51422: When not using filters, `clearSelections` can be more efficient

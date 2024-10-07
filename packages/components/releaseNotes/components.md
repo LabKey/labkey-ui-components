@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 5.11.1
+*Released*: 7 October 2024
 - Issue 51291: Assure product menu closes after click on "empty" link
 
 ### version 5.11.0

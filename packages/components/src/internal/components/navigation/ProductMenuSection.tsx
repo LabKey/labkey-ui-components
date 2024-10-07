@@ -120,9 +120,17 @@ export const ProductMenuSection: FC<MenuSectionProps> = memo(props => {
     if (config.emptyAppURL) {
         const emptyURL = createProductUrl(section.productId, currentProductId, config.emptyAppURL, containerPath);
         if (emptyURL instanceof AppURL) {
-            emptyLink = <Link to={emptyURL.toString()}>{config.emptyURLText}</Link>;
+            emptyLink = (
+                <Link className="menu-section-link" to={emptyURL.toString()}>
+                    {config.emptyURLText}
+                </Link>
+            );
         } else {
-            emptyLink = <a href={emptyURL}>{config.emptyURLText}</a>;
+            emptyLink = (
+                <a className="menu-section-link" href={emptyURL}>
+                    {config.emptyURLText}
+                </a>
+            );
         }
     }
 

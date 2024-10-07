@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Remove properties from `EditableGrid` that support bulk updates when adding to storage
+
 ### version 5.13.0
 *Released*: 7 October 2024
 - Issue 47087: Find Derivatives in Sample Finder to include a selection in filters

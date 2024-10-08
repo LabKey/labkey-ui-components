@@ -437,20 +437,7 @@ function getCastStatement(key: string, type: string): string {
             return `CAST(CURDATE() AS DATE) AS "${key}"`;
         case 'TIME':
             return `CAST(CURDATE() AS TIME) AS "${key}"`;
-        case 'TEXT':
-        case 'STRING':
-        case 'TEXTCHOICE':
-        case 'UNIQUEID':
-        case 'MULTILINE':
-        case 'FILELINK':
-        case 'ATTACHMENT':
-        case 'FLAG':
-        case 'ONTOLOGYLOOKUP':
-        case 'PARTICIPANTID':
-        case 'VISITLABEL':
-            return `CAST('Testing' AS VARCHAR) AS "${key}"`;
         default:
-            // console.log(key, type);
             return `CAST('Testing' AS VARCHAR) AS "${key}"`;
     }
 }

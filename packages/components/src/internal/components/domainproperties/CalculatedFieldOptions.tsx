@@ -59,15 +59,8 @@ const HELP_TIP_BODY = (
         <p>Define the SQL expression to use for this calculated field.</p>
         <p>
             The expression must be valid LabKey SQL and can use the default system fields, custom fields, constants, and
-            operators. Learn more: <HelpLink topic={LABKEY_SQL_TOPIC}>LabKey SQL Reference</HelpLink>
+            operators. Learn more about using <HelpLink topic={LABKEY_SQL_TOPIC}>LabKey SQL</HelpLink>.
         </p>
-        Examples:
-        <pre>
-            <p>numericField1 / numericField2 * 100</p>
-            <p>CURDATE()</p>
-            <p>CASE WHEN FreezeThawCount &lt; 2 THEN 'Viable' ELSE 'Questionable' END</p>
-        </pre>
-        <HelpLink topic={FIELD_EDITOR_CALC_COLS_TOPIC}>Click for more examples</HelpLink>
     </div>
 );
 
@@ -89,6 +82,8 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
     const handleChange = useCallback(
         (evt: any): void => {
             onChange(evt.target.id, evt.target.value);
+            setError(undefined);
+            setParsedType(undefined);
         },
         [onChange]
     );
@@ -153,15 +148,11 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
             })}
         >
             <div className="row">
-                <div className="col-xs-12">
+                <div className="col-xs-12 col-md-6">
                     <SectionHeading title="Expression" cls="bottom-spacing" helpTipBody={HELP_TIP_BODY} />
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-xs-12">
                     <textarea
                         className="form-control"
-                        rows={4}
+                        rows={6}
                         value={field.valueExpression || ''}
                         id={createFormInputId(DOMAIN_FIELD_VALUE_EXPRESSION, domainIndex, index)}
                         name={createFormInputName(DOMAIN_FIELD_VALUE_EXPRESSION)}
@@ -177,7 +168,30 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                             </div>
                         )}
                         {loading && <div>Validating expression...</div>}
+                        {!error && !loading && !parsedType && field.valueExpression?.length > 0 && <div className="validate-link">Click to validate</div>}
                     </div>
+                </div>
+                <div className="col-xs-12 col-md-6 domain-field-calc-examples">
+                    <b>Examples</b>
+                    <ul>
+                        <li>
+                            Addition (<span className="code">+</span>)
+                            <div className="code">numericField1 + numericField2</div>
+                        </li>
+                        <li>
+                            Subtraction (<span className="code">-</span>)
+                            <div className="code">numericField1 - numericField2</div>
+                        </li>
+                        <li>
+                            Multiplication (<span className="code">*</span>)
+                            <div className="code">numericField1 * numericField2</div>
+                        </li>
+                        <li>
+                            Division (<span className="code">/</span>)
+                            <div className="code">numericField1 / nonZeroField1</div>
+                        </li>
+                    </ul>
+                    <HelpLink topic={FIELD_EDITOR_CALC_COLS_TOPIC}>Click for more examples</HelpLink>
                 </div>
             </div>
         </div>

@@ -912,8 +912,30 @@
 .domain-field-calc-footer span {
     font-size: 12px;
 }
+.domain-field-calc-footer .validate-link {
+    cursor: pointer;
+    color: $brand-primary;
+}
 .domain-field-calc-footer .error {
     color: $brand-danger;
+}
+
+.domain-field-calc-examples ul {
+    padding: 8px 0 0 0;
+    margin-bottom: 5px;
+}
+.domain-field-calc-examples li {
+    list-style: none;
+    padding: 5px 0;
+}
+.domain-field-calc-examples .code {
+    font-family: monospace;
+    font-size: 13px;
+    padding: 0 2px;
+}
+.domain-field-calc-examples div.code {
+    display: inline-block;
+    padding-left: 10px;
 }
 
 .domain-field-alias--row {

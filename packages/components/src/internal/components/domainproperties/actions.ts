@@ -483,7 +483,11 @@ export async function parseCalculatedColumn(
             includeTotalCount: false,
         });
     } catch (e) {
-        return { error: resolveErrorMessage(e, 'data', undefined, undefined, undefined, true), type: undefined };
+        let error = resolveErrorMessage(e, 'data', undefined, undefined, undefined, true);
+        if (error?.indexOf('Error on line ') === 0) {
+            error = error.substring(error.indexOf(':') + 1);
+        }
+        return { error, type: undefined };
     }
 
     return _parseCalculatedColumn(expression, columnMap, containerPath);

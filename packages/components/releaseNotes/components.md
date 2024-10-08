@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Calculated fields error handling
+  - calculated field expression input width change, show examples inline next to textarea, add "click to validate"
   - parseCalculatedColumn to first try making an executeSQL call with fake data to catch SQL errors
   - withQueryModel to retry failed query without calculated fields, set viewError on QueryModel for grid display
 

@@ -920,21 +920,17 @@
     color: $brand-danger;
 }
 
-.domain-field-calc-examples ul {
-    padding: 8px 0 0 0;
-    margin-bottom: 5px;
+.domain-field-calc-examples table {
+    margin-top: 15px;
 }
-.domain-field-calc-examples li {
-    list-style: none;
-    padding: 5px 0;
+.domain-field-calc-examples td {
+    padding-bottom: 8px;
 }
 .domain-field-calc-examples .code {
     font-family: monospace;
     font-size: 13px;
-    padding: 0 2px;
 }
-.domain-field-calc-examples div.code {
-    display: inline-block;
+.domain-field-calc-examples td.code {
     padding-left: 10px;
 }
 

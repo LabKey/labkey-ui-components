@@ -280,10 +280,10 @@ describe('resolveErrorMessage', () => {
             message: 'bad sql grammar []',
         };
         expect(resolveErrorMessage(error)).toBe(
-            'There was a problem creating your data.  Check that the format of the data matches the expected type for each field. If you are using calculated fields, you might need to add explicit type casts.'
+            'There was a problem creating your data.  Check that the format of the data matches the expected type for each field.'
         );
         expect(resolveErrorMessage(error, 'sample')).toBe(
-            'There was a problem creating your sample.  Check that the format of the data matches the expected type for each field. If you are using calculated fields, you might need to add explicit type casts.'
+            'There was a problem creating your sample.  Check that the format of the data matches the expected type for each field.'
         );
     });
 

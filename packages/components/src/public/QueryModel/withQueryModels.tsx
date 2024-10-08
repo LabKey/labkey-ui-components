@@ -664,7 +664,7 @@ export function withQueryModels<Props>(
                             resetRowsState(model);
                             resetTotalCountState(model);
                             resetSelectionState(model);
-                            model.viewError = rowsError;
+                            model.viewError = rowsError + ' Returning to the default view.';
                         } else if (!model.viewError && calcFieldNames.length > 0) {
                             // Issue 51204: if we have a calculated field, they are likely causing the problem so retry without them
                             viewDoesNotExist = true;

@@ -689,14 +689,14 @@ export function parseCsvString(value: string, delimiter: string, removeQuotes?: 
             }
             // if no ending quote, don't remove quotes;
             if (end === -1 || end !== value.length - 1) {
-                let isNextDelimiterOrQuote = true;
+                let isCurrentDelimiterOrQuote = true;
                 if (end > -1) {
                     const nextChar = value[end + 1];
                     // Issue 51056: "a, "b should be parsed to ["a, "b], not [a, ]
-                    isNextDelimiterOrQuote = nextChar === '"' || nextChar === delimiter;
+                    isCurrentDelimiterOrQuote = nextChar === '"' || nextChar === delimiter;
                 }
 
-                if (end === -1 || !isNextDelimiterOrQuote) {
+                if (end === -1 || !isCurrentDelimiterOrQuote) {
                     end = value.indexOf(delimiter, start);
                     if (end === -1) end = value.length;
                     parsedValues.push(value.substring(start, end));

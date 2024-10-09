@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 5.X
 *Released*: X October 2024
 - Issue 51056 Samples with single double quotes in the name will not resolve if added as parent samples.
+- Issue 51433 Unhandled client side exception when using a parent field in editable grid after clearing the field.
 
 ### version 5.13.0
 *Released*: 7 October 2024

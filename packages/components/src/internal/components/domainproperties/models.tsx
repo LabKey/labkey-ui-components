@@ -1253,7 +1253,7 @@ export class DomainField
     }
 
     isPHI(): boolean {
-        return this.PHI !== PHILEVEL_NOT_PHI;
+        return !!this.PHI && this.PHI !== PHILEVEL_NOT_PHI;
     }
 
     isDeletable(): boolean {

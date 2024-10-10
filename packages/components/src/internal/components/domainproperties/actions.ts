@@ -436,7 +436,7 @@ function getCastStatement(key: string, type: string): string {
         case 'DATE':
             return `CAST(CURDATE() AS DATE) AS "${key}"`;
         case 'TIME':
-            return `CAST(CURDATE() AS TIME) AS "${key}"`;
+            return `CAST('13:00' AS TIME) AS "${key}"`;
         default:
             return `CAST('Testing' AS VARCHAR) AS "${key}"`;
     }

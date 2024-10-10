@@ -54,6 +54,13 @@ export const getColumnTypeMap = (
     return colTypeMap;
 };
 
+export const getPHIColumnNames = (domainFields: List<DomainField>): string[] => {
+    return domainFields
+        .filter(df => df.isPHI())
+        .map(df => df.name)
+        .toArray();
+};
+
 const HELP_TIP_BODY = (
     <div className="domain-field-fixed-tooltip">
         <p>Define the SQL expression to use for this calculated field.</p>
@@ -95,8 +102,9 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
             setParsedType(undefined);
             const { domainFields, systemFields } = getDomainFields();
             const colTypeMap = getColumnTypeMap(domainFields, systemFields);
+            const phiColumns = getPHIColumnNames(domainFields);
             try {
-                const response = await parseCalculatedColumn(value, colTypeMap);
+                const response = await parseCalculatedColumn(value, colTypeMap, phiColumns);
                 setError(response.error);
                 setParsedType(response.type);
 
@@ -168,7 +176,9 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                             </div>
                         )}
                         {loading && <div>Validating expression...</div>}
-                        {!error && !loading && !parsedType && field.valueExpression?.length > 0 && <div className="validate-link">Click to validate</div>}
+                        {!error && !loading && !parsedType && field.valueExpression?.length > 0 && (
+                            <div className="validate-link">Click to validate</div>
+                        )}
                     </div>
                 </div>
                 <div className="col-xs-12 col-md-6 domain-field-calc-examples">

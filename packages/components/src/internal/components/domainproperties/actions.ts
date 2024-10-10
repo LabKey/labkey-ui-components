@@ -445,6 +445,7 @@ function getCastStatement(key: string, type: string): string {
 export async function parseCalculatedColumn(
     expression: string,
     columnMap: Record<string, string>,
+    phiColumns: string[],
     containerPath?: string
 ): Promise<{ error: string; type: string }> {
     if (!expression || expression?.trim()?.length === 0) {
@@ -477,12 +478,13 @@ export async function parseCalculatedColumn(
         return { error, type: undefined };
     }
 
-    return _parseCalculatedColumn(expression, columnMap, containerPath);
+    return _parseCalculatedColumn(expression, columnMap, phiColumns, containerPath);
 }
 
 export function _parseCalculatedColumn(
     expression: string,
     columnMap: Record<string, string>,
+    phiColumns: string[],
     containerPath?: string
 ): Promise<{ error: string; type: string }> {
     return new Promise((resolve, reject) => {
@@ -491,6 +493,7 @@ export function _parseCalculatedColumn(
             jsonData: {
                 expression,
                 columnMap,
+                phiColumns,
             },
             success: Utils.getCallbackWrapper(response => {
                 const type = response.jdbcType;

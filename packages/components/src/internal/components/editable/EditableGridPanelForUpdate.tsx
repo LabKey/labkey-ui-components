@@ -24,7 +24,7 @@ import { EditorModel, EditableGridLoader, EditableColumnMetadata } from './model
 
 import { EditableGridPanel, EditableGridPanelProps } from './EditableGridPanel';
 import { initEditorModel } from './actions';
-import { applyEditorModelChanges, incrementRowCountMetric } from './utils';
+import { incrementRowCountMetric } from './utils';
 import { EditableGridChange } from './EditableGrid';
 
 const ERROR_ALERT_ID = 'editable-grid-error';
@@ -93,12 +93,9 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
     }, []);
 
     const onGridChange: EditableGridChange = useCallback(
-        (event, editorModelChanges, index = 0): void => {
-            setEditorModel(currentModel => {
-                const editorModels = applyEditorModelChanges([currentModel], editorModelChanges, index);
-                const [model] = editorModels;
-                return model;
-            });
+        (event, editorModelChanges): void => {
+            setEditorModel(currentModel => currentModel.applyChanges(editorModelChanges));
+
             if (EditorModel.isDataChangeEvent(event)) {
                 setIsDirty?.(true);
             }

@@ -31,7 +31,7 @@ import { caseInsensitive, isQuotedWithDelimiters, quoteValueWithDelimiters } fro
 import { hasProductFolders } from '../../app/utils';
 
 import { CellCoordinates, EditableGridEvent } from './constants';
-import { genCellKey, getValidatedEditableGridValue, parseCellKey } from './utils';
+import { genCellKey, getValidatedEditableGridValue, isSparseSelection, parseCellKey, sortCellKeys } from './utils';
 
 export interface EditableColumnMetadata {
     align?: string;
@@ -702,6 +702,23 @@ export class EditorModel
     lastSelection(fieldKey: string, rowIdx: number): boolean {
         const cellKeys = this.isMultiSelect ? this.selectionCells : [this.selectionKey];
         return genCellKey(fieldKey, rowIdx) === cellKeys[cellKeys.length - 1];
+    }
+
+    applyChanges(changes: Partial<EditorModel>): EditorModel {
+        let editorModel = this.merge(changes) as EditorModel;
+        // NK: The "selectionCells" property is of type string[]. When merge() is used it utilizes
+        // Immutable.fromJS() which turns the Array into a List. We want to maintain the property
+        // as an Array so here we set it explicitly.
+        if (changes?.selectionCells !== undefined) {
+            const selectionCells = sortCellKeys(editorModel.orderedColumns.toArray(), changes.selectionCells);
+            editorModel = editorModel.set('selectionCells', selectionCells) as EditorModel;
+            editorModel = editorModel.set(
+                'isSparseSelection',
+                isSparseSelection(editorModel.orderedColumns.toArray(), selectionCells)
+            ) as EditorModel;
+        }
+
+        return editorModel;
     }
 
     /**

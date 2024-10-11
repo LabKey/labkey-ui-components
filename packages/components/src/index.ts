@@ -264,7 +264,6 @@ import {
 import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
 import { NOT_ANY_FILTER_TYPE } from './internal/url/NotAnyFilterType';
 import {
-    applyEditorModelChanges,
     genCellKey,
     parseCellKey,
     incrementRowCountMetric,
@@ -1157,7 +1156,6 @@ export {
     processSchemas,
     invalidateFullQueryDetailsCache,
     // editable grid related items
-    applyEditorModelChanges,
     genCellKey,
     parseCellKey,
     initEditorModel,

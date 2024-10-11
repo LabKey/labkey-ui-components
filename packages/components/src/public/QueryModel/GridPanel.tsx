@@ -1165,7 +1165,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                 'grid-panel__lock-left-with-checkboxes': allowSelections,
                             })}
                         >
-                            {/*TODO can this be dismissable*/}
                             {viewError && <Alert>{viewError}</Alert>}
                             {hasError && <Alert>{errorMsg || queryInfoError || rowsError || selectionsError}</Alert>}
 

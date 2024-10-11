@@ -471,14 +471,32 @@ export async function parseCalculatedColumn(
             includeTotalCount: false,
         });
     } catch (e) {
-        let error = resolveErrorMessage(e, 'data', undefined, undefined, undefined, true);
-        if (error?.indexOf('Error on line ') === 0) {
-            error = error.substring(error.indexOf(':') + 1);
-        }
-        return { error, type: undefined };
+        const error = resolveErrorMessage(e, 'data', undefined, undefined, undefined, true);
+        return { error: _sanitizeParseCalculatedColumnError(error), type: undefined };
     }
 
     return _parseCalculatedColumn(expression, columnMap, phiColumns, containerPath);
+}
+
+function _sanitizeParseCalculatedColumnError(originalError: string): string {
+    let error = originalError;
+    if (error?.indexOf('ExecutingSelector; ') === 0) {
+        error = error.substring(error.indexOf('; ') + 2);
+    }
+    if (error?.indexOf('Error on line ') === 0) {
+        error = error.substring(error.indexOf(':') + 1);
+    }
+    if (error?.endsWith(': "Testing"')) {
+        error = error.substring(0, error.lastIndexOf(': "Testing"'));
+    }
+    if (error?.endsWith("Syntax error near 'FROM'")) {
+        error = 'Invalid expression syntax';
+    }
+    if (error === 'bad SQL grammar []') {
+        error =
+            'Invalid expression SQL. No operator matches the given name and argument types. You might need to add explicit type casts.';
+    }
+    return error;
 }
 
 export function _parseCalculatedColumn(

@@ -184,22 +184,24 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                 <div className="col-xs-12 col-md-6 domain-field-calc-examples">
                     <b>Examples</b>
                     <table>
-                        <tr>
-                            <td>Addition:</td>
-                            <td className="code">numericField1 + numericField2</td>
-                        </tr>
-                        <tr>
-                            <td>Subtraction:</td>
-                            <td className="code">numericField1 - numericField2</td>
-                        </tr>
-                        <tr>
-                            <td>Multiplication:</td>
-                            <td className="code">numericField1 * numericField2</td>
-                        </tr>
-                        <tr>
-                            <td>Division:</td>
-                            <td className="code">numericField1 / nonZeroField1</td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <td>Addition:</td>
+                                <td className="code">numericField1 + numericField2</td>
+                            </tr>
+                            <tr>
+                                <td>Subtraction:</td>
+                                <td className="code">numericField1 - numericField2</td>
+                            </tr>
+                            <tr>
+                                <td>Multiplication:</td>
+                                <td className="code">numericField1 * numericField2</td>
+                            </tr>
+                            <tr>
+                                <td>Division:</td>
+                                <td className="code">numericField1 / nonZeroField1</td>
+                            </tr>
+                        </tbody>
                     </table>
                     <HelpLink topic={FIELD_EDITOR_CALC_COLS_TOPIC}>Click for more examples</HelpLink>
                 </div>

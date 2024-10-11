@@ -285,6 +285,9 @@ describe('resolveErrorMessage', () => {
         expect(resolveErrorMessage(error, 'sample')).toBe(
             'There was a problem creating your sample.  Check that the format of the data matches the expected type for each field.'
         );
+        expect(resolveErrorMessage(error, 'sample', 'samples', 'uploading', undefined, true)).toBe(
+            'bad sql grammar []'
+        );
     });
 
     test('Unique constraint exception', () => {

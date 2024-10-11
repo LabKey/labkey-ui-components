@@ -33,6 +33,7 @@ import {
     getAvailableTypes,
     getAvailableTypesForOntology,
     getBannerMessages,
+    getCastStatement,
     getDomainAlertClasses,
     getDomainBottomErrorMessage,
     getDomainHeaderName,
@@ -40,6 +41,7 @@ import {
     getDomainPanelHeaderId,
     getDomainPanelStatus,
     getOntologyUpdatedFieldName,
+    parseCalculatedColumn,
     processJsonImport,
     removeFields,
     setDomainFields,
@@ -825,6 +827,32 @@ describe('domain properties actions', () => {
             value: new ConceptModel({ code: 'test-code' }),
         } as IFieldChange);
         expect(domainDesign.fields.get(0).principalConceptCode).toBe('test-code');
+    });
+
+    test('getCastStatement', () => {
+        expect(getCastStatement('key', 'INTEGER')).toBe('CAST(1 AS INTEGER) AS "key"');
+        expect(getCastStatement('key', 'SAMPLE')).toBe('CAST(1 AS INTEGER) AS "key"');
+        expect(getCastStatement('key', 'USERS')).toBe('CAST(1 AS INTEGER) AS "key"');
+        expect(getCastStatement('key', 'DOUBLE')).toBe('CAST(1.1 AS DOUBLE) AS "key"');
+        expect(getCastStatement('key', 'DECIMAL (FLOATING POINT)')).toBe('CAST(1.1 AS DOUBLE) AS "key"');
+        expect(getCastStatement('key', 'VISITID')).toBe('CAST(1.1 AS DOUBLE) AS "key"');
+        expect(getCastStatement('key', 'BOOLEAN')).toBe('CAST(TRUE AS BOOLEAN) AS "key"');
+        expect(getCastStatement('key', 'DATETIME')).toBe('CAST(CURDATE() AS TIMESTAMP) AS "key"');
+        expect(getCastStatement('key', 'VISITDATE')).toBe('CAST(CURDATE() AS TIMESTAMP) AS "key"');
+        expect(getCastStatement('key', 'DATE')).toBe('CAST(CURDATE() AS DATE) AS "key"');
+        expect(getCastStatement('key', 'TIME')).toBe('CAST(\'13:00\' AS TIME) AS "key"');
+        expect(getCastStatement('key', 'TEXT')).toBe('CAST(\'Testing\' AS VARCHAR) AS "key"');
+        expect(getCastStatement('key', 'OTHER')).toBe('CAST(\'Testing\' AS VARCHAR) AS "key"');
+    });
+
+    test('parseCalculatedColumn', async () => {
+        let response = await parseCalculatedColumn(undefined, {}, []);
+        expect(response.error).toBe('Error: an expression value is required.');
+        expect(response.type).toBeUndefined();
+
+        response = await parseCalculatedColumn('    ', {}, []);
+        expect(response.error).toBe('Error: an expression value is required.');
+        expect(response.type).toBeUndefined();
     });
 
     // TODO more test cases for updateDomainField

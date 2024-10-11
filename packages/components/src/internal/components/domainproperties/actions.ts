@@ -418,7 +418,8 @@ export function getMaxPhiLevel(containerPath?: string): Promise<string> {
     });
 }
 
-function getCastStatement(key: string, type: string): string {
+// exported for jest testing
+export function getCastStatement(key: string, type: string): string {
     switch (type) {
         case 'INTEGER':
         case 'SAMPLE':

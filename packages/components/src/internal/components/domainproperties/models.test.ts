@@ -849,6 +849,8 @@ describe('DomainField', () => {
     });
 
     test('isPHI', () => {
+        expect(DomainField.create({ name: 'foo', PHI: undefined }).isPHI()).toBeFalsy();
+        expect(DomainField.create({ name: 'foo', PHI: null }).isPHI()).toBeFalsy();
         expect(DomainField.create({ name: 'foo', PHI: PHILEVEL_NOT_PHI }).isPHI()).toBeFalsy();
         expect(DomainField.create({ name: 'foo', PHI: PHILEVEL_LIMITED_PHI }).isPHI()).toBeTruthy();
         expect(DomainField.create({ name: 'foo', PHI: PHILEVEL_FULL_PHI }).isPHI()).toBeTruthy();

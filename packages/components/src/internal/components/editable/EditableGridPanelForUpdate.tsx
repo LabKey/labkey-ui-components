@@ -4,7 +4,6 @@ import { Map } from 'immutable';
 import { capitalizeFirstChar } from '../../util/utils';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -25,7 +24,7 @@ import { EditorModel, EditableGridLoader, EditableColumnMetadata } from './model
 
 import { EditableGridPanel, EditableGridPanelProps } from './EditableGridPanel';
 import { initEditorModel } from './actions';
-import { applyEditorModelChanges, getUpdatedDataFromEditableGrid, incrementRowCountMetric } from './utils';
+import { applyEditorModelChanges, incrementRowCountMetric } from './utils';
 import { EditableGridChange } from './EditableGrid';
 
 const ERROR_ALERT_ID = 'editable-grid-error';
@@ -48,12 +47,7 @@ interface EditableGridPanelForUpdateProps extends InheritedEditableGridPanelProp
     selectionData: Map<string, any>;
     setIsDirty: (isDirty: boolean) => void;
     singularNoun: string;
-    updateRows: (
-        schemaQuery: SchemaQuery,
-        rows: Array<Record<string, any>>,
-        comment: string,
-        originalRows: Record<string, any>
-    ) => Promise<any>;
+    updateRows: (rows: Array<Record<string, any>>, comment: string) => Promise<any>;
 }
 
 // Note: presently this is only used by AssayGridPanel. We should consider moving it to premium and integrating it into
@@ -102,8 +96,8 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
         (event, editorModelChanges, index = 0): void => {
             setEditorModel(currentModel => {
                 const editorModels = applyEditorModelChanges([currentModel], editorModelChanges, index);
-                const [editorModel] = editorModels;
-                return editorModel;
+                const [model] = editorModels;
+                return model;
             });
             if (EditorModel.isDataChangeEvent(event)) {
                 setIsDirty?.(true);
@@ -113,18 +107,11 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
     );
 
     const onSubmit = useCallback(async (): Promise<void> => {
-        const gridData = getUpdatedDataFromEditableGrid([editorModel], selectionData);
-
-        if (!gridData) {
-            onComplete();
-            return;
-        }
-
+        const updatedRows = editorModel.getUpdatedData(selectionData);
         setIsSubmitting(true);
 
         try {
-            // TODO: I suspect we can skip passing originalRows since getDataForServerUpload appends folder/container
-            await updateRows(gridData.schemaQuery, gridData.updatedRows, comment, gridData.originalRows);
+            await updateRows(updatedRows, comment);
             incrementRowCountMetric(metricFeatureArea, editorModel.rowCount, true);
             setIsSubmitting(false);
             onComplete();
@@ -133,7 +120,7 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
             setIsSubmitting(false);
             document.querySelector('#' + ERROR_ALERT_ID)?.scrollIntoView({ behavior: 'smooth' });
         }
-    }, [comment, editorModel, onComplete, selectionData, singularNoun, updateRows]);
+    }, [comment, editorModel, metricFeatureArea, onComplete, selectionData, singularNoun, updateRows]);
 
     const onCommentChange = useCallback((_comment: string): void => {
         setComment(_comment);

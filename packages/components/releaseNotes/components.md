@@ -7,7 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - SampleTypeAppContext: change parentDataTypes to an array
 - SamplesTabbedGridPanelComponentProps: remove withTitle, title props
 - Remove getUpdatedDataFromEditableGrid
-- EditorModel: add getUpdatedData
+- Remove applyEditorModelChanges
+- EditorModel:
+  - add getUpdatedData
+  - add applyChanges
 
 ### version 5.15.1
 *Released*: 21 October 2024

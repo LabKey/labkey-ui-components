@@ -20,12 +20,30 @@ import { Container, getServerContext } from '@labkey/api';
 import { QueryColumn } from '../../public/QueryColumn';
 
 import { TIME_RANGE_URI } from '../components/domainproperties/constants';
+import { SelectInputOption } from '../components/forms/input/SelectInput';
 
 // These constants align with the formats declared in DateUtil.java
 const ISO_DATE_FORMAT_STRING = 'yyyy-MM-dd';
 const ISO_SHORT_TIME_FORMAT_STRING = 'HH:mm';
 const ISO_TIME_FORMAT_STRING = 'HH:mm:ss';
 const ISO_DATE_TIME_FORMAT_STRING = `${ISO_DATE_FORMAT_STRING} ${ISO_TIME_FORMAT_STRING}`;
+
+const STANDARD_DATE_DISPLAY_FORMATS = [
+    "yyyy-MM-dd",
+    "yyyy-MMM-dd",
+    "dd-MMM-yyyy",
+    "dd-MMM-yy",
+    "ddMMMyyyy",
+    "ddMMMyy"];
+
+const STANDARD_TIME_DISPLAY_FORMATS = [
+    "HH:mm:ss",
+    "HH:mm",
+    "HH:mm:ss.SSS",
+    "hh:mm a"];
+
+const MISSING_FORMAT_DISPLAY = '<none>';
+
 
 // Intended to match against ISO_DATE_FORMAT_STRING
 const ISO_DATE_FORMAT_REGEX = /^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/;
@@ -225,27 +243,35 @@ export function getColFormattedTimeFilterValue(column: QueryColumn, value: strin
     return _getColFormattedTimeFilterValue(column, value);
 }
 
-type ContainerFormats = {
+export type ContainerFormats = {
     dateFormat: string;
     dateTimeFormat: string;
     numberFormat: string;
     timeFormat: string;
+    dateFormatInherited?: boolean;
+    dateTimeFormatInherited?: boolean;
+    numberFormatInherited?: boolean;
+    timeFormatInherited?: boolean;
+    parentDateFormat?: string;
+    parentDateTimeFormat?: string;
+    parentNumberFormat?: string;
+    parentTimeFormat?: string;
 };
 
-function getFormats(container?: Partial<Container>): ContainerFormats {
+export function getContainerFormats(container?: Partial<Container>): ContainerFormats {
     return (container ?? getServerContext().container).formats;
 }
 
 export function getDateFormat(container?: Partial<Container>): string {
-    return getFormats(container).dateFormat;
+    return getContainerFormats(container).dateFormat;
 }
 
 export function getDateTimeFormat(container?: Partial<Container>): string {
-    return getFormats(container).dateTimeFormat;
+    return getContainerFormats(container).dateTimeFormat;
 }
 
 export function getTimeFormat(container?: Partial<Container>): string {
-    return getFormats(container).timeFormat;
+    return getContainerFormats(container).timeFormat;
 }
 
 // Tested via formatDate(). Search Date.test.ts for 'toDateFNSFormatString'.
@@ -386,6 +412,73 @@ function safeParse(dateStr: string, formatStr: string, referenceDate: number | D
         // It is possible for date-fns to throw when parsing. Treat this as an invalid date / format.
         return undefined;
     }
+}
+
+export function isStandardDateDisplayFormat(dateFormat: string): boolean {
+    return STANDARD_DATE_DISPLAY_FORMATS.indexOf(dateFormat) > -1;
+}
+
+export function isStandardTimeDisplayFormat(timeFormat: string): boolean {
+    return STANDARD_TIME_DISPLAY_FORMATS.indexOf(timeFormat) > -1;
+}
+
+export function splitDateTimeFormat(dateTimeFormat: string): string[] {
+    return dateTimeFormat.split(/\s+/, 2);
+}
+
+export function isStandardDateTimeDisplayFormat(dateTimeFormat: string): boolean {
+    const parts = splitDateTimeFormat(dateTimeFormat);
+    if (parts.length === 1)
+        return isStandardDateDisplayFormat(parts[0]);
+    else if (parts.length === 2)
+        return isStandardDateDisplayFormat(parts[0]) && isStandardTimeDisplayFormat(parts[1]);
+    return false;
+}
+
+export function isStandardFormat(formatType: DateFormatType, formatPattern: string) : boolean {
+    switch (formatType)
+    {
+        case DateFormatType.Date:
+            return isStandardDateDisplayFormat(formatPattern);
+        case DateFormatType.DateTime:
+            return isStandardDateTimeDisplayFormat(formatPattern);
+        case DateFormatType.Time:
+            return isStandardTimeDisplayFormat(formatPattern);
+    }
+    return false;
+}
+
+export function getDateTimeInputOptions(timezone?: string, date?: Date): { dateOptions: SelectInputOption[], timeOptions: SelectInputOption[] } {
+    const date_ = date ?? new Date();
+
+    const dateOptions = [];
+    STANDARD_DATE_DISPLAY_FORMATS.forEach(format => {
+        const example = _formatDate(date_, format, timezone);
+        dateOptions.push({
+            value: format,
+            label: format + ' (' + example + ')'
+        })
+    })
+
+    const dateFormat = STANDARD_DATE_DISPLAY_FORMATS[0];
+    const timeOptions : SelectInputOption[] = [{
+        value: undefined,
+        label: MISSING_FORMAT_DISPLAY
+    }];
+    STANDARD_TIME_DISPLAY_FORMATS.forEach(timeFormat => {
+        const dateTime = _formatDate(date_, dateFormat + ' ' + timeFormat, timezone);
+        const parts = splitDateTimeFormat(dateTime);
+        const example = parts[1];
+        timeOptions.push({
+            value: timeFormat,
+            label: timeFormat + ' (' + example + ')'
+        })
+    })
+
+    return {
+        dateOptions,
+        timeOptions
+    };
 }
 
 function _formatDate(date: Date | string | number, dateFormat: string, timezone?: string): string {

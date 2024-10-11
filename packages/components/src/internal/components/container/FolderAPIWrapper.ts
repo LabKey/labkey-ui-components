@@ -28,6 +28,9 @@ export interface UpdateContainerSettingsOptions {
     defaultDateFormat?: string;
     defaultDateTimeFormat?: string;
     defaultTimeFormat?: string;
+    defaultDateFormatInherited?: boolean;
+    defaultDateTimeFormatInherited?: boolean;
+    defaultTimeFormatInherited?: boolean;
 }
 
 export interface AuditSettingsResponse {
@@ -140,7 +143,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
     ): Promise<void> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
-                url: ActionURL.buildURL('admin', 'updateProjectSettings.api', containerPath),
+                url: ActionURL.buildURL('admin', 'updateContainerSettings.api', containerPath),
                 method: 'POST',
                 jsonData: options,
                 success: Utils.getCallbackWrapper(() => {

@@ -43,9 +43,7 @@ export interface SamplesTabbedGridPanelComponentProps {
     showLabelOption?: boolean;
     tabRowCounts?: Record<string, number>;
     tabbedGridPanelProps?: Partial<TabbedGridPanelProps>;
-    title?: string;
     user: User;
-    withTitle?: boolean;
 }
 
 export type SamplesTabbedGridPanel = ComponentType<SamplesTabbedGridPanelComponentProps & InjectedQueryModels>;

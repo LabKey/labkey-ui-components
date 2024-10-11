@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: ? October 2024
 - EditableGridPanel: Remove support for tabs
 - SampleTypeAppContext: change parentDataTypes to an array
+- SamplesTabbedGridPanelComponentProps: remove withTitle, title props
 
 ### version 5.15.1
 *Released*: 21 October 2024

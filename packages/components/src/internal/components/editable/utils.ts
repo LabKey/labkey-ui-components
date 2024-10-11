@@ -18,30 +18,8 @@ import { QuerySelectOwnProps } from '../forms/QuerySelect';
 import { isBoolean, isFloat, isInteger } from '../../util/utils';
 import { incrementClientSideMetricCount } from '../../actions';
 
-import { EditorModel, CellMessage } from './models';
+import { CellMessage } from './models';
 import { CellActions, MODIFICATION_TYPES } from './constants';
-
-export function applyEditorModelChanges(
-    models: EditorModel[],
-    changes: Partial<EditorModel>,
-    tabIndex = 0
-): EditorModel[] {
-    const updatedModels = [...models];
-    let editorModel = models[tabIndex].merge(changes) as EditorModel;
-    // NK: The "selectionCells" property is of type string[]. When merge() is used it utilizes
-    // Immutable.fromJS() which turns the Array into a List. We want to maintain the property
-    // as an Array so here we set it explicitly.
-    if (changes?.selectionCells !== undefined) {
-        const selectionCells = sortCellKeys(editorModel.orderedColumns.toArray(), changes.selectionCells);
-        editorModel = editorModel.set('selectionCells', selectionCells) as EditorModel;
-        editorModel = editorModel.set(
-            'isSparseSelection',
-            isSparseSelection(editorModel.orderedColumns.toArray(), selectionCells)
-        ) as EditorModel;
-    }
-    updatedModels[tabIndex] = editorModel;
-    return updatedModels;
-}
 
 interface ValidatedValue {
     message: CellMessage;
@@ -173,7 +151,7 @@ export function decimalDifference(first, second, subtract = true): number {
  * @param orderedColumns the orderedColumns from the EditorModel
  * @param selection An array of cell keys representing the selected cells, ordered left to right, top to bottom.
  */
-function isSparseSelection(orderedColumns: string[], selection: string[]): boolean {
+export function isSparseSelection(orderedColumns: string[], selection: string[]): boolean {
     if (selection.length === 0) return false;
 
     const firstCell = parseCellKey(selection[0]);

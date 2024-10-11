@@ -114,9 +114,16 @@ export class LineageNodeMetadata extends ImmutableRecord({
     }
 }
 
-export class LineageLink extends ImmutableRecord({
-    lsid: undefined,
-}) {
+export interface ILineageLink {
+    lsid: string;
+}
+
+export class LineageLink
+    extends ImmutableRecord({
+        lsid: undefined,
+    })
+    implements ILineageLink
+{
     declare lsid: string;
 
     static createList(values?: any): List<LineageLink> {
@@ -239,13 +246,13 @@ export class LineageIO implements LineageItemWithMetadata {
 interface LineageNodeConfig
     extends Omit<Experiment.LineageNodeBase, 'children' | 'parents' | 'steps'>,
         LineageItemWithIOMetadata {
-    children: List<LineageLink>;
+    children: List<LineageLink> | LineageLink[] | ILineageLink[];
     // computed properties
     distance: number;
     listURL: string;
 
     meta: LineageNodeMetadata;
-    parents: List<LineageLink>;
+    parents: List<LineageLink> | LineageLink[] | ILineageLink[];
     steps: List<LineageRunStep>;
 }
 
@@ -330,14 +337,14 @@ export class LineageNode
     meta: LineageNodeMetadata;
 
     static create(lsid: string, values?: Partial<LineageNodeConfig>): LineageNode {
-        let config: any;
+        let config;
 
         if (values && values instanceof LineageNode) {
             config = values;
         } else {
             config = {
                 ...values,
-                ...LineageIO.applyConfig(values as LineageNodeConfig),
+                ...LineageIO.applyConfig(values),
                 ...{
                     children: LineageLink.createList(values.children),
                     lsid,
@@ -484,7 +491,7 @@ export class LineageResult extends ImmutableRecord({
     ): List<{ lsid: string; role: string }> {
         let newTree = [];
         const edges: List<LineageLink> = node.get(dir);
-        const walked: { [key: string]: string } = {};
+        const walked: Record<string, string> = {};
 
         edges.forEach(edge => {
             newTree = newTree.concat(LineageResult.pruneEdge(edge, nodes, dir, field, value, filterIn, walked));
@@ -500,7 +507,7 @@ export class LineageResult extends ImmutableRecord({
         field: string,
         value: any,
         filterIn: boolean,
-        walked: { [key: string]: string }
+        walked: Record<string, string>
     ): Array<{ lsid: string; role: string }> {
         let heritage = [];
         const lsid = edge.lsid;
@@ -586,7 +593,7 @@ export class Lineage {
      * @remarks
      * First, the LabKey lineage is filtered according to the {@link LineageOptions.filters}
      * then the graph is translated into vis.js nodes and edges.  During translation, nodes
-     * will be combined together according to {@link LineageGroupingOptions.combineSize} and recursion
+     * will be combined according to {@link LineageGroupingOptions.combineSize} and recursion
      * will be stopped when {@link LineageGroupingOptions.generations} condition is met.
      */
     generateGraph(options?: LineageOptions): VisGraphOptions {
@@ -1137,7 +1144,7 @@ function groupingBoundary(
     grouping: LineageGroupingOptions,
     depth: number,
     dir: LINEAGE_DIRECTIONS,
-    depthSets: Array<{ [key: string]: string }>
+    depthSets: Array<Record<string, string>>
 ): boolean {
     if (grouping) {
         // Nearest only examines the first parent and child generations (depth = 1) from seed
@@ -1176,10 +1183,35 @@ function groupingBoundary(
  */
 function level(depth: number, dir: LINEAGE_DIRECTIONS, combined: boolean): number {
     const combinedOffset = combined ? 1 : 0;
+
+    let level_: number;
     if (dir === LINEAGE_DIRECTIONS.Parent) {
-        return (-1 * depth) - combinedOffset;
+        level_ = -1 * depth - combinedOffset;
+    } else {
+        level_ = depth + combinedOffset;
     }
-    return depth + combinedOffset;
+
+    // JavaScript supports -0 which is not want we want to return.
+    // If the value is equivalent to 0 (-0 === 0 is true), then always return 0 instead of -0.
+    return level_ === 0 ? 0 : level_;
+}
+
+/**
+ * Reprocess the "level" of a node that has been previously processed. A node may have been previously seen at a lower
+ * level, however, after further walking the graph it could be that this node needs to be moved to a different level
+ * given a parent/child at a higher/lower depth. See Issue 51425.
+ */
+function reprocessLevel(visNode: VisGraphNode | VisGraphCombinedNode, dir: LINEAGE_DIRECTIONS, depth: number): void {
+    if (!visNode) return;
+
+    const currentLevel = visNode.level;
+    const nextLevel = level(depth, dir, false);
+    const isHigherParent = dir === LINEAGE_DIRECTIONS.Parent && nextLevel < currentLevel;
+    const isLowerChild = dir === LINEAGE_DIRECTIONS.Children && nextLevel > currentLevel;
+
+    if (isHigherParent || isLowerChild) {
+        visNode.level = nextLevel;
+    }
 }
 
 /**
@@ -1203,7 +1235,7 @@ function level(depth: number, dir: LINEAGE_DIRECTIONS, combined: boolean): numbe
  *  - create a VisGraphNode and add it to the graph (if it hasn't already been added within a combined node)
  *  - check for stop conditions in `options.generations`:
  *      - if Immediate and depth exceeds depth 1, stop
- *      - if Specific an depth exceeds the desired depth, stop
+ *      - if Specific and depth exceeds the desired depth, stop
  *      - if 'Multi' and there are >1 edges at the previous depth, stop
  *  - if there are more than {combineSize} edges, create a combined node
  *     - mark all included nodes and edges on the combined node: {containedNodes: [...]}
@@ -1211,9 +1243,9 @@ function level(depth: number, dir: LINEAGE_DIRECTIONS, combined: boolean): numbe
  *     - add any additional edges needed for other combined nodes the edge target might belong to
  *     - create edge from the node to the new combined node
  *   - if there are less than {combineSize} edges, create a basic node
- *     - create edges from the node to all of edge targets
+ *     - create edges from the node to all edge targets
  */
-function processNodes(
+export function processNodes(
     seed: string,
     lsid: string,
     nodes: LineageNodesRecord,
@@ -1223,10 +1255,12 @@ function processNodes(
     visNodes: VisNodesRecord,
     nodesInCombinedNode: NodesInCombinedNode,
     depth = 0,
-    processed: { [key: string]: boolean } = {},
-    depthSets: Array<{ [key: string]: string }> = []
+    processed: Record<string, boolean> = {},
+    depthSets: Array<Record<string, string>> = []
 ): void {
     if (processed[lsid] === true) {
+        // We have already seen this node, however, this now might be at a greater depth so reprocess the level
+        reprocessLevel(visNodes[lsid], dir, depth);
         return;
     }
 
@@ -1315,6 +1349,7 @@ const DEFAULT_EDGE_PROPS = {
     arrows: {
         to: {
             enabled: true,
+            scaleFactor: 0.6,
         },
         from: {
             enabled: false,
@@ -1369,22 +1404,22 @@ const DEFAULT_NODE_PROPS = {
     },
 };
 
-export function generate(result: LineageResult, options?: LineageOptions): VisGraphOptions {
-    if (result === undefined) {
-        throw new Error('raw lineage result needed to create graph');
-    }
+export type NodesAndEdges = {
+    edges: EdgesRecord;
+    nodes: VisNodesRecord;
+};
 
+export function generateNodesAndEdges(result: LineageResult, options?: LineageOptions): NodesAndEdges {
     const _options = applyLineageOptions(options);
-
-    const nodes = result.nodes.toObject();
-
-    // The primary output of this function: the node objects to be consumed by vis.js
-    // lsid -> VisGraphNode or VisGraphCombinedNode
-    const visNodes: VisNodesRecord = {};
+    const lineageNodes = result.nodes.toObject();
 
     // The primary output of this function: the edge objects to be consumed by vis.js
     // fromLsid + '||' + toLsid -> Edge
-    const visEdges: EdgesRecord = {};
+    const edges: EdgesRecord = {};
+
+    // The primary output of this function: the node objects to be consumed by vis.js
+    // lsid -> VisGraphNode or VisGraphCombinedNode
+    const nodes: VisNodesRecord = {};
 
     // Intermediate state used by processNodes
     // lsid -> Array of combined id nodes
@@ -1395,11 +1430,11 @@ export function generate(result: LineageResult, options?: LineageOptions): VisGr
         processNodes(
             result.seed,
             startLsid,
-            nodes,
+            lineageNodes,
             _options,
             LINEAGE_DIRECTIONS.Parent,
-            visEdges,
-            visNodes,
+            edges,
+            nodes,
             nodesInCombinedNode
         );
 
@@ -1407,27 +1442,39 @@ export function generate(result: LineageResult, options?: LineageOptions): VisGr
         processNodes(
             result.seed,
             startLsid,
-            nodes,
+            lineageNodes,
             _options,
             LINEAGE_DIRECTIONS.Children,
-            visEdges,
-            visNodes,
+            edges,
+            nodes,
             nodesInCombinedNode
         );
     });
 
-    return new VisGraphOptions({
-        nodes: new DataSet<VisGraphNode | VisGraphCombinedNode>(Object.values(visNodes)),
-        edges: new DataSet<Edge>(Object.values(visEdges)),
+    return { edges, nodes };
+}
 
-        // visjs options described in detail here: https://visjs.github.io/vis-network/docs/network/
+export function generate(result: LineageResult, options?: LineageOptions): VisGraphOptions {
+    if (result === undefined) {
+        throw new Error('raw lineage result needed to create graph');
+    }
+
+    const { edges, nodes } = generateNodesAndEdges(result, options);
+
+    return new VisGraphOptions({
+        nodes: new DataSet<VisGraphNode | VisGraphCombinedNode>(Object.values(nodes)),
+        edges: new DataSet<Edge>(Object.values(edges)),
+
+        // vis.js options described in detail here: https://visjs.github.io/vis-network/docs/network/
         options: {
             // hierarchical is needed to render linage as consistent straight up and down single branch
             // oriented in the direction implied by the direction of the edges.
             layout: {
                 hierarchical: {
-                    enabled: true,
                     direction: 'UD',
+                    edgeMinimization: false,
+                    enabled: true,
+                    levelSeparation: 125,
                     sortMethod: 'directed',
                 },
             },

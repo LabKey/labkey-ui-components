@@ -13,6 +13,6 @@ export enum LoadingState {
 export const isLoading = (...loadingStates: LoadingState[]): boolean => {
     return (
         !!loadingStates &&
-        loadingStates.find(ls => ls === LoadingState.INITIALIZED || ls === LoadingState.LOADING) !== undefined
+        loadingStates.some(ls => ls === LoadingState.INITIALIZED || ls === LoadingState.LOADING)
     );
 };

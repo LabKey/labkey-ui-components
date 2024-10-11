@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Filter, Query } from '@labkey/api';
+import { Filter, Query, Utils } from '@labkey/api';
 import { fromJS, Iterable, List, Map, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 import { ReactNode } from 'react';
 
@@ -26,7 +26,9 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { getQueryColumnRenderers } from '../../global';
-import { quoteValueWithDelimiters } from '../../util/utils';
+import { caseInsensitive, isQuotedWithDelimiters, quoteValueWithDelimiters } from '../../util/utils';
+
+import { hasProductFolders } from '../../app/utils';
 
 import { CellCoordinates, EditableGridEvent } from './constants';
 import { genCellKey, getValidatedEditableGridValue, parseCellKey } from './utils';
@@ -107,6 +109,10 @@ export enum EditorMode {
     Insert,
     Update,
 }
+
+export const FOLDER_COL = 'Folder';
+export type UpdatedRowValue = string | string[] | number | number[] | boolean | boolean[];
+export type UpdatedRow = Record<string, UpdatedRowValue>;
 
 export class EditorModel
     extends ImmutableRecord({
@@ -696,6 +702,112 @@ export class EditorModel
     lastSelection(fieldKey: string, rowIdx: number): boolean {
         const cellKeys = this.isMultiSelect ? this.selectionCells : [this.selectionKey];
         return genCellKey(fieldKey, rowIdx) === cellKeys[cellKeys.length - 1];
+    }
+
+    /**
+     * Constructs an array of objects (suitable for the rows parameter of updateRows), where each object contains the
+     * values in editorRows that are different from the ones in originalGridData
+     *
+     * bulkEditData: Updated data from a bulk update form, may be undefined
+     */
+    getUpdatedData(bulkEditData?: Map<string, Map<string, any>>): UpdatedRow[] {
+        // If we have data from bulk edit then we need to use that as originalData instead of the data on the EditorModel
+        // otherwise we'll incorrectly diff the changes
+        const originalData = bulkEditData ?? this.originalData;
+        const editorRows = this.getDataForServerUpload().toArray();
+        const pkFieldKey = this.pkFieldKey;
+        const queryInfo = this.queryInfo;
+        const updatedRows: UpdatedRow[] = [];
+        editorRows.forEach(editedRow => {
+            const id = editedRow.get(pkFieldKey);
+            const altIds = {};
+            queryInfo.altUpdateKeys?.forEach(altIdField => {
+                altIds[altIdField] = altIdField ? editedRow.get(altIdField) : undefined;
+            });
+            const originalRow = originalData.get(id.toString());
+            if (originalRow) {
+                const row = editedRow.reduce((row, value, key) => {
+                    // We can skip the idField for the diff check, that will be added to the updated rows later
+                    if (key === pkFieldKey) return row;
+
+                    let originalValue = originalRow.get(key, undefined);
+                    const col = queryInfo.getColumn(key);
+
+                    // Convert empty cell to null
+                    if (value === '') value = null;
+
+                    // Some column types have special handling of raw data, i.e. StoredAmount and Units (issue 49502)
+                    if (col?.columnRenderer) {
+                        const renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
+                        if (renderer?.getOriginalRawValue) {
+                            originalValue = renderer.getOriginalRawValue(originalValue);
+                        }
+                    }
+
+                    // Lookup columns store a list but grid only holds a single value
+                    if (List.isList(originalValue) && !Array.isArray(value)) {
+                        originalValue = Map.isMap(originalValue.get(0))
+                            ? originalValue.get(0).get('value')
+                            : originalValue.get(0).value;
+                    }
+
+                    // EditableGrid passes in strings for single values. Attempt this conversion here to help check for
+                    // updated values. This is not the final type check.
+                    if (typeof originalValue === 'number' || typeof originalValue === 'boolean') {
+                        try {
+                            if (!isQuotedWithDelimiters(value, ',')) value = JSON.parse(value);
+                        } catch (e) {
+                            // Incorrect types are handled by API and user feedback created from that response. Don't need
+                            // to handle that here.
+                        }
+                    } else if (Iterable.isIterable(originalValue) && !List.isList(originalValue)) {
+                        originalValue = originalValue.get('value');
+                    }
+
+                    // If col is a multi-value column, compare all values for changes
+                    if ((List.isList(originalValue) || originalValue === undefined) && Array.isArray(value)) {
+                        if ((originalValue?.size ?? 0) !== value.length) {
+                            row[key] = value;
+                        } else if (originalValue) {
+                            if (Map.isMap(originalValue.get(0))) {
+                                // filter to those values that no longer exist in the new value array
+                                const filtered = originalValue.filter(
+                                    o =>
+                                        value.indexOf(o.get('value')) === -1 &&
+                                        value.indexOf(o.get('displayValue')) === -1
+                                );
+                                if (filtered.size > 0) {
+                                    row[key] = value;
+                                }
+                            } else if (
+                                originalValue?.findIndex(
+                                    o => value.indexOf(o.value) === -1 && value.indexOf(o.displayValue) === -1
+                                ) !== -1
+                            ) {
+                                row[key] = value;
+                            }
+                        }
+                    } else if (!(originalValue == undefined && value == undefined) && originalValue !== value) {
+                        // only update if the value has changed
+
+                        // if the value is 'undefined', it will be removed from the update rows, so in order to
+                        // erase an existing value we set the value to null in our update data
+                        row[key] = value === undefined ? null : value;
+                    }
+                    return row;
+                }, {});
+                if (!Utils.isEmptyObj(row)) {
+                    row[pkFieldKey] = id;
+                    Object.assign(row, altIds);
+                    const folder = caseInsensitive(editedRow.toJS(), FOLDER_COL);
+                    if (hasProductFolders() && folder) row[FOLDER_COL] = folder;
+                    updatedRows.push(row);
+                }
+            } else {
+                console.error('Unable to find original row for id ' + id);
+            }
+        });
+        return updatedRows;
     }
 }
 

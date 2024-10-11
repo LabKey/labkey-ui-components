@@ -1,5 +1,4 @@
-import { Iterable, List, Map } from 'immutable';
-import { Filter, Utils } from '@labkey/api';
+import { Filter } from '@labkey/api';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 
@@ -12,21 +11,15 @@ import {
     parseTime,
 } from '../../util/Date';
 
-import { QueryInfo } from '../../../public/QueryInfo';
-
 import { SelectInputOption, SelectInputProps } from '../forms/input/SelectInput';
-
-import { getQueryColumnRenderers } from '../../global';
 
 import { QuerySelectOwnProps } from '../forms/QuerySelect';
 
-import { caseInsensitive, isBoolean, isFloat, isInteger, isQuotedWithDelimiters } from '../../util/utils';
-import { SchemaQuery } from '../../../public/SchemaQuery';
+import { isBoolean, isFloat, isInteger } from '../../util/utils';
 import { incrementClientSideMetricCount } from '../../actions';
 
 import { EditorModel, CellMessage } from './models';
 import { CellActions, MODIFICATION_TYPES } from './constants';
-import { hasProductFolders } from '../../app/utils';
 
 export function applyEditorModelChanges(
     models: EditorModel[],
@@ -101,148 +94,6 @@ export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn):
     return {
         value,
         message: message ? { message } : undefined,
-    };
-};
-
-export const FOLDER_COL = 'Folder';
-export type UpdatedRowValue = string | string[] | number | number[] | boolean | boolean[];
-export type UpdatedRow = Record<string, UpdatedRowValue>;
-
-/**
- * Constructs an array of objects (suitable for the rows parameter of updateRows), where each object contains the
- * values in editorRows that are different from the ones in originalGridData
- *
- * @param originalGridData a map from an id field to a Map from fieldKeys to values
- * @param editorRows An array of Maps from field keys to values
- * @param idField the fieldKey in the editorRow objects that is the id field that is the key for originalGridData
- * @param queryInfo the query info behind this editable grid
- */
-export function getUpdatedDataFromGrid(
-    originalGridData: Map<string, Map<string, any>>,
-    editorRows: Array<Map<string, any>>,
-    idField: string,
-    queryInfo: QueryInfo
-): UpdatedRow[] {
-    const updatedRows = [];
-    const altIdFields = queryInfo.altUpdateKeys;
-    editorRows.forEach(editedRow => {
-        const id = editedRow.get(idField);
-        const altIds = {};
-        altIdFields?.forEach(altIdField => {
-            altIds[altIdField] = altIdField ? editedRow.get(altIdField) : undefined;
-        });
-        const originalRow = originalGridData.get(id.toString());
-        if (originalRow) {
-            const row = editedRow.reduce((row, value, key) => {
-                // We can skip the idField for the diff check, that will be added to the updated rows later
-                if (key === idField) return row;
-
-                let originalValue = originalRow.get(key, undefined);
-                const col = queryInfo.getColumn(key);
-
-                // Convert empty cell to null
-                if (value === '') value = null;
-
-                // Some column types have special handling of raw data, i.e. StoredAmount and Units (issue 49502)
-                if (col?.columnRenderer) {
-                    const renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
-                    if (renderer?.getOriginalRawValue) {
-                        originalValue = renderer.getOriginalRawValue(originalValue);
-                    }
-                }
-
-                // Lookup columns store a list but grid only holds a single value
-                if (List.isList(originalValue) && !Array.isArray(value)) {
-                    originalValue = Map.isMap(originalValue.get(0))
-                        ? originalValue.get(0).get('value')
-                        : originalValue.get(0).value;
-                }
-
-                // EditableGrid passes in strings for single values. Attempt this conversion here to help check for
-                // updated values. This is not the final type check.
-                if (typeof originalValue === 'number' || typeof originalValue === 'boolean') {
-                    try {
-                        if (!isQuotedWithDelimiters(value, ',')) value = JSON.parse(value);
-                    } catch (e) {
-                        // Incorrect types are handled by API and user feedback created from that response. Don't need
-                        // to handle that here.
-                    }
-                } else if (Iterable.isIterable(originalValue) && !List.isList(originalValue)) {
-                    originalValue = originalValue.get('value');
-                }
-
-                // If col is a multi-value column, compare all values for changes
-                if ((List.isList(originalValue) || originalValue === undefined) && Array.isArray(value)) {
-                    if ((originalValue?.size ?? 0) !== value.length) {
-                        row[key] = value;
-                    } else if (originalValue) {
-                        if (Map.isMap(originalValue.get(0))) {
-                            // filter to those values that no longer exist in the new value array
-                            const filtered = originalValue.filter(
-                                o => value.indexOf(o.get('value')) === -1 && value.indexOf(o.get('displayValue')) === -1
-                            );
-                            if (filtered.size > 0) {
-                                row[key] = value;
-                            }
-                        } else if (
-                            originalValue?.findIndex(
-                                o => value.indexOf(o.value) === -1 && value.indexOf(o.displayValue) === -1
-                            ) !== -1
-                        ) {
-                            row[key] = value;
-                        }
-                    }
-                } else if (!(originalValue == undefined && value == undefined) && originalValue !== value) {
-                    // only update if the value has changed
-
-                    // if the value is 'undefined', it will be removed from the update rows, so in order to
-                    // erase an existing value we set the value to null in our update data
-                    row[key] = value === undefined ? null : value;
-                }
-                return row;
-            }, {});
-            if (!Utils.isEmptyObj(row)) {
-                row[idField] = id;
-                Object.assign(row, altIds);
-                const folder = caseInsensitive(editedRow.toJS(), FOLDER_COL);
-                if (hasProductFolders() && folder) row[FOLDER_COL] = folder;
-                updatedRows.push(row);
-            }
-        } else {
-            console.error('Unable to find original row for id ' + id);
-        }
-    });
-    return updatedRows;
-}
-
-interface EditableGridUpdatedData {
-    originalRows: Record<string, any>;
-    schemaQuery: SchemaQuery;
-    tabIndex: number;
-    updatedRows: any[];
-}
-
-export const getUpdatedDataFromEditableGrid = (
-    editorModels: EditorModel[],
-    bulkEditData?: Map<string, any>,
-    tabIndex = 0
-): EditableGridUpdatedData => {
-    const editorModel = editorModels[tabIndex];
-
-    if (!editorModel) {
-        console.error('Grid does not expose an editor. Ensure the grid is properly initialized for editing.');
-        return null;
-    }
-
-    // If we have data from bulk edit then we need to use that as originalData instead of the data on the EditorModel
-    // otherwise we'll incorrectly diff the changes when we call getUpdatedDataFromGrid below.
-    const originalData = bulkEditData ?? editorModel.originalData;
-    const editorData = editorModel.getDataForServerUpload().toArray();
-    return {
-        originalRows: editorModel.originalData.toJS(),
-        schemaQuery: editorModel.queryInfo.schemaQuery,
-        tabIndex,
-        updatedRows: getUpdatedDataFromGrid(originalData, editorData, editorModel.pkFieldKey, editorModel.queryInfo),
     };
 };
 

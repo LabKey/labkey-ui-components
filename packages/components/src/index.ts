@@ -266,7 +266,6 @@ import { NOT_ANY_FILTER_TYPE } from './internal/url/NotAnyFilterType';
 import {
     applyEditorModelChanges,
     genCellKey,
-    getUpdatedDataFromEditableGrid,
     parseCellKey,
     incrementRowCountMetric,
 } from './internal/components/editable/utils';
@@ -1161,7 +1160,6 @@ export {
     applyEditorModelChanges,
     genCellKey,
     parseCellKey,
-    getUpdatedDataFromEditableGrid,
     initEditorModel,
     initEditorModels,
     MAX_EDITABLE_GRID_ROWS,
@@ -1868,6 +1866,8 @@ export type {
     EditorModelProps,
     GridLoader,
     GridResponse,
+    UpdatedRowValue,
+    UpdatedRow,
 } from './internal/components/editable/models';
 export type { IDataViewInfo } from './internal/DataViewInfo';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';
@@ -1957,7 +1957,6 @@ export type { GetParentTypeDataForLineage } from './internal/components/entities
 export type { URLMapper } from './internal/url/URLResolver';
 export type { PlacementType } from './internal/components/editable/Controls';
 export type { EditableGridChange } from './internal/components/editable/EditableGrid';
-export type { UpdatedRowValue, UpdatedRow } from './internal/components/editable/utils';
 export type { GetAssayDefinitionsOptions, GetProtocolOptions } from './internal/components/assay/actions';
 export type {
     FormsySelectOption,

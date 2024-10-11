@@ -55,6 +55,8 @@ export const getColumnTypeMap = (
 };
 
 export const getPHIColumnNames = (domainFields: List<DomainField>): string[] => {
+    if (!domainFields) return [];
+
     return domainFields
         .filter(df => df.isPHI())
         .map(df => df.name)

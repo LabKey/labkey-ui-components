@@ -33,13 +33,14 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
     mode: EditorMode;
     model: QueryModel;
     omittedColumns: string[];
+    queryModel: QueryModel;
     queryInfo: QueryInfo;
     requiredColumns: string[];
     updateData: any;
 
     constructor(
         id: string,
-        queryInfo: QueryInfo,
+        queryModel: QueryModel,
         // FIXME: the types I'm seeing passed as updateData imply Map<string, any> is the correct type, however assuming
         //  that makes the code fall over
         updateData: any,
@@ -55,7 +56,8 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
         this.extraColumns = extraColumns;
         this.id = id;
         this.mode = EditorMode.Update;
-        this.queryInfo = queryInfo;
+        this.queryModel = queryModel;
+        this.queryInfo = queryModel.queryInfo;
         this.updateData = updateData || {};
         this.requiredColumns = requiredColumns || [];
         this.omittedColumns = omittedColumns || [];
@@ -64,14 +66,14 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
         this.idsNotPermitted = idsNotPermitted || [];
     }
 
-    async fetch(queryModel: QueryModel): Promise<GridResponse> {
-        const { queryName, queryParameters, schemaName, sortString, viewName } = queryModel;
-        const selectedIds = queryModel.getSelectedIds(this.idsNotPermitted);
+    async fetch(): Promise<GridResponse> {
+        const { queryName, queryParameters, schemaName, sortString, viewName } = this.queryModel;
+        const selectedIds = this.queryModel.getSelectedIds(this.idsNotPermitted);
         const { data, dataIds } = await getSelectedData(
             schemaName,
             queryName,
             selectedIds,
-            queryModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns, true),
+            this.queryModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns, true),
             sortString,
             queryParameters,
             viewName

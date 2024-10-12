@@ -83,7 +83,7 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
     useEffect(() => {
         (async (): Promise<void> => {
             try {
-                const model = await initEditorModel(queryModel, loader, columnMetadata);
+                const model = await initEditorModel(loader, columnMetadata);
                 setEditorModel(model);
             } catch (e) {
                 console.error(e);

@@ -11,6 +11,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 - EditorModel:
   - add getUpdatedData
   - add applyChanges
+- Remove initEditorModels
+- Remove queryModel arg from initEditorModel
+- Remove queryModel arg from EditableGridLoader.fetch
 
 ### version 5.15.1
 *Released*: 21 October 2024

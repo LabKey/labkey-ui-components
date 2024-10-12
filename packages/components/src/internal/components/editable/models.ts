@@ -833,10 +833,6 @@ export interface GridResponse {
     dataIds: List<any>;
 }
 
-interface GridSelectionResponse {
-    selectedIds: List<any>;
-}
-
 /**
  * TODO: GridLoader and EditableGridLoader are artifacts of QueryGridModel, this is why they return GridResponse, which
  * uses Immutable, despite the data loaded from EditableGridLoaders going into QueryModels, which end up converting the
@@ -858,8 +854,7 @@ interface GridSelectionResponse {
  * - EditableGridLoaderFromSelection (uses getSelectedData)
  */
 export interface GridLoader {
-    fetch: (model: QueryModel) => Promise<GridResponse>;
-    fetchSelection?: (model: QueryModel) => Promise<GridSelectionResponse>;
+    fetch: () => Promise<GridResponse>;
 }
 
 export interface EditableGridLoader extends GridLoader {

@@ -25,7 +25,7 @@ class AssayWizardModelEditableGridLoader implements EditableGridLoader {
         this.data = data;
     }
 
-    async fetch(model: QueryModel): Promise<GridResponse> {
+    async fetch(): Promise<GridResponse> {
         return {
             data: this.data,
             dataIds: this.data.keySeq().toList(),
@@ -263,7 +263,6 @@ export class AssayWizardModel
         // We only care about passing samples to the data grid if there is a sample column in the results domain.
         const rows = hasSamples ? selectedSamples : Map<string, Map<string, any>>({});
         const loader = new AssayWizardModelEditableGridLoader(this.queryInfo, rows);
-        const dataModel = new QueryModel({ schemaQuery: this.queryInfo.schemaQuery }).mutate({ queryInfo: this.queryInfo });
-        return await initEditorModel(dataModel, loader, columnMetadata);
+        return await initEditorModel(loader, columnMetadata);
     }
 }

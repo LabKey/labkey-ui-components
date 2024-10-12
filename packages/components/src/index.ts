@@ -181,7 +181,6 @@ import {
     addColumns,
     changeColumn,
     initEditorModel,
-    initEditorModels,
     removeColumn,
     updateGridFromBulkForm,
 } from './internal/components/editable/actions';
@@ -1162,7 +1161,6 @@ export {
     genCellKey,
     parseCellKey,
     initEditorModel,
-    initEditorModels,
     MAX_EDITABLE_GRID_ROWS,
     EditableGridLoaderFromSelection,
     EditableGridPanel,

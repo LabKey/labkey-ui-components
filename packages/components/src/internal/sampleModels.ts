@@ -79,7 +79,7 @@ export interface SamplesEditableGridProps {
     invalidateSampleQueries?: (schemaQuery: SchemaQuery) => void;
     onGridEditCancel: () => void;
     onGridEditComplete: () => void;
-    parentDataTypes: List<EntityDataType>;
+    parentDataTypes: EntityDataType[];
     samplesGridRequiredColumns?: string[];
     selectionData: Map<string, any>;
     setIsDirty?: (isDirty: boolean) => void;

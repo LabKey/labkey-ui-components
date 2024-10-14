@@ -143,28 +143,28 @@ const DATETIME_HELP_CONTENT = (
         <p>Examples for August 14, 2024 01:45 PM:</p>
         <table className="table-bordered margin-bottom help-table">
             <thead>
-            <tr>
-                <th>Format String</th>
-                <th>Display Result</th>
-            </tr>
+                <tr>
+                    <th>Format String</th>
+                    <th>Display Result</th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>yyyy-MM-dd HH:mm</td>
-                <td>2024-08-14 13:45</td>
-            </tr>
-            <tr>
-                <td>yyyy-MMM-dd hh:mm a</td>
-                <td>2024-Aug-14 01:45 PM</td>
-            </tr>
-            <tr>
-                <td>dd-MMM-yyyy</td>
-                <td>14-Aug-2024</td>
-            </tr>
-            <tr>
-                <td>dd-MMM-yy</td>
-                <td>14-Aug-24</td>
-            </tr>
+                <tr>
+                    <td>yyyy-MM-dd HH:mm</td>
+                    <td>2024-08-14 13:45</td>
+                </tr>
+                <tr>
+                    <td>yyyy-MMM-dd hh:mm a</td>
+                    <td>2024-Aug-14 01:45 PM</td>
+                </tr>
+                <tr>
+                    <td>dd-MMM-yyyy</td>
+                    <td>14-Aug-2024</td>
+                </tr>
+                <tr>
+                    <td>dd-MMM-yy</td>
+                    <td>14-Aug-24</td>
+                </tr>
             </tbody>
         </table>
     </>
@@ -174,28 +174,28 @@ const DATE_HELP_CONTENT = (
         <p>Examples for August 14, 2024:</p>
         <table className="table-bordered margin-bottom help-table">
             <thead>
-            <tr>
-                <th>Format String</th>
-                <th>Display Result</th>
-            </tr>
+                <tr>
+                    <th>Format String</th>
+                    <th>Display Result</th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>yyyy-MM-dd</td>
-                <td>2024-08-14</td>
-            </tr>
-            <tr>
-                <td>yyyy-MMM-dd</td>
-                <td>2024-Aug-14</td>
-            </tr>
-            <tr>
-                <td>dd-MMM-yyyy</td>
-                <td>14-Aug-2024</td>
-            </tr>
-            <tr>
-                <td>dd-MMM-yy</td>
-                <td>14-Aug-24</td>
-            </tr>
+                <tr>
+                    <td>yyyy-MM-dd</td>
+                    <td>2024-08-14</td>
+                </tr>
+                <tr>
+                    <td>yyyy-MMM-dd</td>
+                    <td>2024-Aug-14</td>
+                </tr>
+                <tr>
+                    <td>dd-MMM-yyyy</td>
+                    <td>14-Aug-2024</td>
+                </tr>
+                <tr>
+                    <td>dd-MMM-yy</td>
+                    <td>14-Aug-24</td>
+                </tr>
             </tbody>
         </table>
     </>
@@ -205,35 +205,35 @@ const TIME_HELP_CONTENT = (
         <p>Examples for 01:45:15 PM:</p>
         <table className="table-bordered margin-bottom help-table">
             <thead>
-            <tr>
-                <th>Format String</th>
-                <th>Display Result</th>
-            </tr>
+                <tr>
+                    <th>Format String</th>
+                    <th>Display Result</th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>HH:mm:ss</td>
-                <td>13:45:15</td>
-            </tr>
-            <tr>
-                <td>HH:mm</td>
-                <td>13:45</td>
-            </tr>
-            <tr>
-                <td>HH:mm:ss.SSS</td>
-                <td>13:45:15.000</td>
-            </tr>
-            <tr>
-                <td>hh:mm a</td>
-                <td>01:45 PM</td>
-            </tr>
+                <tr>
+                    <td>HH:mm:ss</td>
+                    <td>13:45:15</td>
+                </tr>
+                <tr>
+                    <td>HH:mm</td>
+                    <td>13:45</td>
+                </tr>
+                <tr>
+                    <td>HH:mm:ss.SSS</td>
+                    <td>13:45:15.000</td>
+                </tr>
+                <tr>
+                    <td>hh:mm a</td>
+                    <td>01:45 PM</td>
+                </tr>
             </tbody>
         </table>
     </>
 );
 
 export const getFolderDateTimeHelpBody = (isDate: boolean = true, isTime: boolean = true): ReactNode => {
-    const content = isDate && isTime ? DATETIME_HELP_CONTENT : (isDate ? DATE_HELP_CONTENT : TIME_HELP_CONTENT);
+    const content = isDate && isTime ? DATETIME_HELP_CONTENT : isDate ? DATE_HELP_CONTENT : TIME_HELP_CONTENT;
     const contentLabel = isDate && isTime ? 'date or time' : isDate ? 'date' : 'time';
     return (
         <>
@@ -251,9 +251,5 @@ export const getFolderDateTimeHelpBody = (isDate: boolean = true, isTime: boolea
 
 export const getFolderDateTimeHelp = (isDate: boolean = true, isTime: boolean = true): ReactNode => {
     const titleLabel = isDate && isTime ? 'Date-time' : isDate ? 'Date' : 'Time';
-    return (
-        <LabelHelpTip title={titleLabel + ' format'}>
-            {getFolderDateTimeHelpBody(isDate, isTime)}
-        </LabelHelpTip>
-    );
+    return <LabelHelpTip title={titleLabel + ' format'}>{getFolderDateTimeHelpBody(isDate, isTime)}</LabelHelpTip>;
 };

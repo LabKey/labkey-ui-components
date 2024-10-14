@@ -26,10 +26,10 @@ export interface FolderSettingsOptions {
 
 export interface UpdateContainerSettingsOptions {
     defaultDateFormat?: string;
-    defaultDateTimeFormat?: string;
-    defaultTimeFormat?: string;
     defaultDateFormatInherited?: boolean;
+    defaultDateTimeFormat?: string;
     defaultDateTimeFormatInherited?: boolean;
+    defaultTimeFormat?: string;
     defaultTimeFormatInherited?: boolean;
 }
 
@@ -40,8 +40,6 @@ export interface AuditSettingsResponse {
 export interface FolderAPIWrapper {
     createFolder: (options: FolderSettingsOptions, containerPath?: string) => Promise<Container>;
     getAuditSettings: (containerPath?: string) => Promise<AuditSettingsResponse>;
-    getDataTypeExcludedContainers: (dataType: FolderConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
-    getFolderDataTypeExclusions: (excludedContainer?: string) => Promise<{ [key: string]: number[] }>;
     getContainers: (
         container?: Container,
         moduleContext?: ModuleContext,
@@ -49,10 +47,15 @@ export interface FolderAPIWrapper {
         includeEffectivePermissions?: boolean,
         includeTopFolder?: boolean
     ) => Promise<Container[]>;
+    getDataTypeExcludedContainers: (dataType: FolderConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
+    getFolderDataTypeExclusions: (excludedContainer?: string) => Promise<{ [key: string]: number[] }>;
     renameFolder: (options: FolderSettingsOptions, containerPath?: string) => Promise<Container>;
     setAuditCommentsRequired: (isRequired: boolean, containerPath?: string) => Promise<void>;
     updateContainerDataExclusions: (options: FolderSettingsOptions, containerPath?: string) => Promise<void>;
-    updateContainerLookAndFeelSettings: (options: UpdateContainerSettingsOptions, containerPath?: string) => Promise<void>;
+    updateContainerLookAndFeelSettings: (
+        options: UpdateContainerSettingsOptions,
+        containerPath?: string
+    ) => Promise<void>;
 }
 
 export class ServerFolderAPIWrapper implements FolderAPIWrapper {
@@ -154,7 +157,10 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
         });
     };
 
-    getDataTypeExcludedContainers = (dataType: FolderConfigurableDataType, dataTypeRowId: number): Promise<string[]> => {
+    getDataTypeExcludedContainers = (
+        dataType: FolderConfigurableDataType,
+        dataTypeRowId: number
+    ): Promise<string[]> => {
         if (!dataType || !dataTypeRowId) {
             return Promise.resolve(undefined);
         }

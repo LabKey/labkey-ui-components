@@ -1956,7 +1956,11 @@ export type { GetParentTypeDataForLineage } from './internal/components/entities
 export type { URLMapper } from './internal/url/URLResolver';
 export type { PlacementType } from './internal/components/editable/Controls';
 export type { EditableGridChange } from './internal/components/editable/EditableGrid';
-export type { GetAssayDefinitionsOptions, GetProtocolOptions } from './internal/components/assay/actions';
+export type {
+    DuplicateFilesResponse,
+    GetAssayDefinitionsOptions,
+    GetProtocolOptions,
+} from './internal/components/assay/actions';
 export type {
     FormsySelectOption,
     FormsyInputProps,

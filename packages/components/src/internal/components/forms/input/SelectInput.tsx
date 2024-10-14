@@ -126,29 +126,31 @@ function initOptionFromPrimitive(value: string | number, props: SelectInputProps
 // This will accept a primitive value (e.g. 5) and resolve it to an option (e.g. { label: 'Awesome', value: 5 })
 // if the option is available. Supports mapping single or multiple values.
 export function initOptions(props: SelectInputProps): SelectInputOption | SelectInputOption[] {
-    const { value } = props;
-    let options;
+    const { value, options } = props;
+    let selectedOptions;
 
-    if (value !== undefined && value !== null && value !== '') {
+    const allowBlank = options?.find(option => option.value === '');
+
+    if (value !== undefined && value !== null && (value !== '' || !!allowBlank)) {
         if (Array.isArray(value)) {
-            options = [];
+            selectedOptions = [];
             value.forEach(v => {
                 if (v !== undefined && v !== null) {
                     if (typeof v === 'string' || typeof v === 'number') {
-                        options.push(initOptionFromPrimitive(v, props));
+                        selectedOptions.push(initOptionFromPrimitive(v, props));
                     } else {
-                        options.push(v);
+                        selectedOptions.push(v);
                     }
                 }
             });
         } else if (typeof value === 'string' || typeof value === 'number') {
-            options = initOptionFromPrimitive(value, props);
+            selectedOptions = initOptionFromPrimitive(value, props);
         } else {
-            options = value;
+            selectedOptions = value;
         }
     }
 
-    return options;
+    return selectedOptions;
 }
 
 const nullComponent: FC = () => null;

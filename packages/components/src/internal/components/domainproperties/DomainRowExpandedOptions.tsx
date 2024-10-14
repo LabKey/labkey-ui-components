@@ -140,7 +140,6 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                         domainIndex={domainIndex}
                         label="Date and Time Options"
                         format={field.format}
-                        excludeFromShifting={field.excludeFromShifting}
                         onChange={onChange}
                         lockType={field.lockType}
                         type={dataTypeName}

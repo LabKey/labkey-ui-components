@@ -1,86 +1,221 @@
-import React, { ReactNode } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
-import { DATE_FORMATS_TOPIC, HelpLink, JavaDocsLink } from '../../util/helpLinks';
+import {
+    getFolderDateTimeHelpBody,
+} from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from './propertiesUtil';
-import { createFormInputId, createFormInputName, getNameFromId } from './utils';
-import { DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, DOMAIN_FIELD_FORMAT } from './constants';
+import { createFormInputId, createFormInputName } from './utils';
+import { DOMAIN_FIELD_FORMAT } from './constants';
 import { ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
+import {
+    ContainerFormats,
+    DateFormatType,
+    DateTimeSettingProp,
+    getContainerFormats,
+    getDateTimeInputOptions, getDateTimeSettingFormat,
+    isStandardFormat, isValidDateTimeSetting, splitDateTimeFormat
+} from '../../util/Date';
+import { useServerContext } from '../base/ServerContext';
+import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
+import { Tip } from '../base/Tip';
 
 interface DateTimeFieldProps extends ITypeDependentProps {
-    excludeFromShifting: boolean;
     format: string;
     type: 'dateTime' | 'date' | 'time';
 }
 
-export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps> {
-    onFieldChange = (evt): void => {
-        const { onChange } = this.props;
-
-        let value = evt.target.value;
-
-        if (getNameFromId(evt.target.id) === DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING) {
-            value = evt.target.checked;
-        }
-
-        if (onChange) {
-            onChange(evt.target.id, value);
-        }
-    };
-
-    getFormatHelpText = (): ReactNode => {
-        const { type } = this.props;
-        const noun = type === 'dateTime' ? 'date or time' : type;
-        return (
-            <>
-                <p>
-                    To control how a {noun} value is displayed, provide a string format compatible with the Java{' '}
-                    <JavaDocsLink urlSuffix="java/text/SimpleDateFormat.html">SimpleDateFormat</JavaDocsLink> class.
-                </p>
-                <p>
-                    Learn more about using <HelpLink topic={DATE_FORMATS_TOPIC}>Date and Time formats</HelpLink> in
-                    LabKey.
-                </p>
-            </>
-        );
-    };
-
-    render(): ReactNode {
-        const { index, label, format, lockType, domainIndex, type } = this.props;
-
-        const noun = type === 'time' ? 'Times' : 'Dates';
-        return (
-            <div>
-                <div className="row">
-                    <div className="col-xs-12">
-                        <SectionHeading title={label} />
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-xs-3">
-                        <div className="domain-field-label">
-                            <DomainFieldLabel label={'Format for ' + noun} helpTipBody={this.getFormatHelpText()} />
-                        </div>
-                    </div>
-                    <div className="col-xs-9" />
-                </div>
-                <div className="row">
-                    <div className="col-xs-3">
-                        <input
-                            className="form-control"
-                            type="text"
-                            value={format || ''}
-                            onChange={this.onFieldChange}
-                            disabled={isFieldFullyLocked(lockType)}
-                            id={createFormInputId(DOMAIN_FIELD_FORMAT, domainIndex, index)}
-                            name={createFormInputName(DOMAIN_FIELD_FORMAT)}
-                        />
-                    </div>
-                    <div className="col-xs-9" />
-                </div>
-            </div>
-        );
+export const getInitDateTimeSetting = (fieldFormat: string, formats : ContainerFormats, isDate: boolean, isTime: boolean, dateOptions: SelectInputOption[], timeOptions: SelectInputOption[]) : DateTimeSettingProp => {
+    const formatType = isDate && isTime ? DateFormatType.DateTime : (isDate ? DateFormatType.Date : DateFormatType.Time);
+    let currentFormat: string, parentFormat: string, settingName: string, dateFormat: string, timeFormat: string;
+    const inherited = !fieldFormat;
+    switch (formatType)
+    {
+        case DateFormatType.DateTime:
+            settingName = 'Date Times';
+            parentFormat = formats.dateTimeFormat;
+            currentFormat = inherited ? parentFormat : fieldFormat;
+            const parts = splitDateTimeFormat(currentFormat);
+            dateFormat = parts[0];
+            timeFormat = parts[1];
+            break;
+        case DateFormatType.Date:
+            settingName = 'Dates';
+            parentFormat = formats.dateFormat;
+            currentFormat = inherited ? parentFormat : fieldFormat;
+            dateFormat = currentFormat;
+            break;
+        case DateFormatType.Time:
+            settingName = 'Times';
+            parentFormat = formats.timeFormat;
+            currentFormat = inherited ? parentFormat : fieldFormat;
+            timeFormat = currentFormat;
+    }
+    const valid = isStandardFormat(formatType, currentFormat);
+    return {
+        formatType,
+        settingName,
+        dateOptions: isDate ? dateOptions : undefined,
+        timeOptions: isTime ? timeOptions : undefined,
+        isDate,
+        dateFormat,
+        isTime,
+        isTimeRequired: isTime && !isDate,
+        timeFormat,
+        inherited,
+        parentFormat,
+        valid,
     }
 }
+
+export const DateTimeFieldOptions: FC<DateTimeFieldProps> = memo(props => {
+    const { onChange, index, label, format, lockType, domainIndex, type } = props;
+    const [setting, setSetting] = useState<DateTimeSettingProp>();
+    const { timezone, container } = useServerContext();
+    const [domainFieldId, setDomainFieldId] = useState<string>();
+
+    useEffect(() => {
+        const { dateOptions, timeOptions, optionalTimeOptions} = getDateTimeInputOptions(timezone);
+
+        const settings_ = getInitDateTimeSetting(format, getContainerFormats(container), type === 'dateTime' || type === 'date', type === 'dateTime' || type === 'time', dateOptions, type === 'dateTime' ? optionalTimeOptions : timeOptions);
+        setSetting(settings_);
+        setDomainFieldId(createFormInputId(DOMAIN_FIELD_FORMAT, domainIndex, index));
+    }, [type]);
+
+    const onToggleInherited = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
+        const { checked } = event.target;
+        setSetting(prevSetting => {
+            const updates : Partial<DateTimeSettingProp> = {
+                inherited: checked
+            };
+            if (checked) {
+                const parentFormat = prevSetting.parentFormat;
+
+                if (prevSetting.isDate && !prevSetting.isTime)
+                    updates.dateFormat = parentFormat;
+                else if (!prevSetting.isDate && prevSetting.isTime)
+                    updates.timeFormat = parentFormat;
+                else {
+                    const parts = splitDateTimeFormat(parentFormat);
+                    updates.dateFormat = parts[0];
+                    updates.timeFormat = parts[1];
+                }
+            }
+            updates.valid = isValidDateTimeSetting({...prevSetting, ...updates} as DateTimeSettingProp);
+            return {
+                ...prevSetting,
+                ...updates
+            };
+        })
+
+        if (checked)
+            onChange(domainFieldId, null);
+
+    }, [setSetting, domainFieldId, onChange]);
+
+    const onFormatChange = useCallback((newFormat: string, isTime?: boolean): void => {
+        setSetting(prevSetting => {
+            const updates : Partial<DateTimeSettingProp> = {
+                [isTime ? 'timeFormat' : 'dateFormat']: newFormat == null ? '' : newFormat
+            };
+            updates.valid = isValidDateTimeSetting({...prevSetting, ...updates} as DateTimeSettingProp);
+
+            const updatedSetting = {
+                ...prevSetting,
+                ...updates
+            };
+            onChange?.(domainFieldId, getDateTimeSettingFormat(updatedSetting));
+            return updatedSetting;
+        })
+
+    }, [domainFieldId, onChange]);
+
+    const onDateFormatChange = useCallback((name: string, selectedValue: string, selectedOption: SelectInputOption): void => {
+        onFormatChange(selectedOption?.value);
+    }, [domainFieldId, onChange]);
+
+    const onTimeFormatChange = useCallback((name: string, selectedValue: string, selectedOption: SelectInputOption): void => {
+        onFormatChange(selectedOption?.value, true);
+    }, [domainFieldId, onChange]);
+
+    if (!setting)
+        return null;
+
+    return (
+        <div>
+            <div className="row">
+                <div className="col-xs-12">
+                    <SectionHeading title={label} />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-xs-3">
+                    Use Default
+                </div>
+                <div className="col-xs-9">
+                    <input
+                        checked={setting.inherited}
+                        onChange={onToggleInherited}
+                        disabled={isFieldFullyLocked(lockType)}
+                        type="checkbox"
+                        id={createFormInputId(DOMAIN_FIELD_FORMAT + '_inherit' + type, domainIndex, index)}
+                        name={createFormInputName(DOMAIN_FIELD_FORMAT + '_inherit' + type)}
+                    />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-xs-3">
+                    <div className="domain-field-label">
+                        <DomainFieldLabel label={'Format for ' + setting.settingName} helpTipBody={getFolderDateTimeHelpBody(setting.isDate, setting.isTime)} />
+                    </div>
+                </div>
+                <div className="col-xs-9" />
+            </div>
+            <div className="row">
+                {setting.isDate &&
+                    <div className="col-xs-3">
+                        <SelectInput
+                            containerClass=""
+                            inputClass="form-group"
+                            id={createFormInputId(DOMAIN_FIELD_FORMAT + '_date' + type, domainIndex, index)}
+                            name={createFormInputName(DOMAIN_FIELD_FORMAT + '_date' + type)}
+                            onChange={onDateFormatChange}
+                            options={setting.dateOptions}
+                            placeholder={`Select a date format...`}
+                            value={setting.dateFormat}
+                            required={true}
+                            clearable={false}
+                            disabled={isFieldFullyLocked(lockType) || setting.inherited}
+                        />
+                    </div>
+                }
+                {setting.isTime &&
+                    <div className="col-xs-3">
+                        <SelectInput
+                            containerClass=""
+                            inputClass="form-group"
+                            id={createFormInputId(DOMAIN_FIELD_FORMAT + '_time' + type, domainIndex, index)}
+                            name={createFormInputName(DOMAIN_FIELD_FORMAT + '_time' + type)}
+                            onChange={onTimeFormatChange}
+                            options={setting.timeOptions}
+                            placeholder={`Select a time format...`}
+                            value={setting.timeFormat}
+                            required={setting.isTimeRequired}
+                            clearable={false}
+                            disabled={isFieldFullyLocked(lockType) || setting.inherited}
+                        />
+                    </div>
+                }
+                {!setting.valid && <div className="col-xs-1">
+                    <Tip caption={`Non-standard ${setting.settingName} format.`}>
+                        <span className="domain-warning-icon top-spacing fa fa-exclamation-circle"/>
+                    </Tip>
+                </div>}
+            </div>
+        </div>
+    );
+});
+
+DateTimeFieldOptions.displayName = 'DateTimeFieldOptions';

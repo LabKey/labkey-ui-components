@@ -423,12 +423,30 @@ export function isStandardTimeDisplayFormat(timeFormat: string): boolean {
 }
 
 export function splitDateTimeFormat(dateTimeFormat: string): string[] {
-    return dateTimeFormat.split(/\s+/, 2);
+    if (dateTimeFormat.indexOf(" h") > -0 || dateTimeFormat.indexOf(" H") > -0) {
+        const splitInd = dateTimeFormat.indexOf(" h") > -0 ? dateTimeFormat.indexOf(" h") : dateTimeFormat.indexOf(" H");
+        const date = dateTimeFormat.substring(0, splitInd).trim();
+        const time = dateTimeFormat.substring(splitInd + 1).trim();
+        return [date, time];
+    }
+    let [date, ...rest] = dateTimeFormat.split(/\s+/);
+    if (!rest || rest.length === 0)
+        return [date, ''];
+    const time =  rest.join(' ');
+    return [date, time];
+}
+
+export const joinDateTimeFormat = (date: string, time?: string) : string => {
+    if (!time)
+        return date;
+    return date + ' ' + time;
 }
 
 export function isStandardDateTimeDisplayFormat(dateTimeFormat: string): boolean {
-    const parts = splitDateTimeFormat(dateTimeFormat);
-    if (parts.length === 1)
+    if (!dateTimeFormat)
+        return false;
+    const parts = splitDateTimeFormat(dateTimeFormat.trim());
+    if (parts.length === 1 || !parts[1])
         return isStandardDateDisplayFormat(parts[0]);
     else if (parts.length === 2)
         return isStandardDateDisplayFormat(parts[0]) && isStandardTimeDisplayFormat(parts[1]);
@@ -448,7 +466,7 @@ export function isStandardFormat(formatType: DateFormatType, formatPattern: stri
     return false;
 }
 
-export function getDateTimeInputOptions(timezone?: string, date?: Date): { dateOptions: SelectInputOption[], timeOptions: SelectInputOption[] } {
+export function getDateTimeInputOptions(timezone?: string, date?: Date): { dateOptions: SelectInputOption[], timeOptions: SelectInputOption[], optionalTimeOptions: SelectInputOption[] } {
     const date_ = date ?? new Date();
 
     const dateOptions = [];
@@ -461,10 +479,7 @@ export function getDateTimeInputOptions(timezone?: string, date?: Date): { dateO
     })
 
     const dateFormat = STANDARD_DATE_DISPLAY_FORMATS[0];
-    const timeOptions : SelectInputOption[] = [{
-        value: undefined,
-        label: MISSING_FORMAT_DISPLAY
-    }];
+    const timeOptions : SelectInputOption[] = [];
     STANDARD_TIME_DISPLAY_FORMATS.forEach(timeFormat => {
         const dateTime = _formatDate(date_, dateFormat + ' ' + timeFormat, timezone);
         const parts = splitDateTimeFormat(dateTime);
@@ -475,10 +490,44 @@ export function getDateTimeInputOptions(timezone?: string, date?: Date): { dateO
         })
     })
 
+    const optionalTimeOptions = [{
+        value: '',
+        label: MISSING_FORMAT_DISPLAY
+    }, ...timeOptions];
+
     return {
         dateOptions,
-        timeOptions
+        timeOptions,
+        optionalTimeOptions
     };
+}
+
+export interface DateTimeSettingProp {
+    formatType: DateFormatType;
+    settingName: string;
+    placeholder?: string;
+    dateOptions: SelectInputOption[];
+    timeOptions: SelectInputOption[];
+    isDate: boolean;
+    dateFormat: string;
+    isTime: boolean;
+    isTimeRequired: boolean;
+    timeFormat: string;
+    inherited: boolean;
+    parentFormat: string;
+    valid: boolean;
+}
+
+export const getDateTimeSettingFormat = (setting: DateTimeSettingProp, checkInherited?: boolean): string => {
+    const { formatType, dateFormat, timeFormat, inherited } = setting;
+    if (!checkInherited && inherited)
+        return null;
+    return formatType === DateFormatType.DateTime ? joinDateTimeFormat(dateFormat, timeFormat) : (formatType === DateFormatType.Date ? dateFormat : timeFormat)
+}
+
+export const isValidDateTimeSetting = (setting: DateTimeSettingProp): boolean => {
+    const { formatType } = setting;
+    return isStandardFormat(formatType, getDateTimeSettingFormat(setting, true));
 }
 
 function _formatDate(date: Date | string | number, dateFormat: string, timezone?: string): string {

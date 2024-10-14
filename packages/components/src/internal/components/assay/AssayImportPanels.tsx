@@ -79,7 +79,7 @@ import {
     loadSelectedSamples,
     uploadAssayRunFiles,
 } from './actions';
-import { AssayReimportHeader } from './AssayReimportHeader';
+import { AssayReimportHeader, PlateAssayReimportHeader } from './AssayReimportHeader';
 import { AssayWizardModel, AssayUploadOptions } from './AssayWizardModel';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
 import { PLATE_SET_COLUMN, PLATE_TEMPLATE_COLUMN, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
@@ -756,11 +756,12 @@ class AssayImportPanelsBody extends Component<BodyProps, State> {
         } = this.props;
         const { comment, duplicateFileResponse, editorModel, model, showRenameModal, warning } = this.state;
         const runPropsModel = this.getRunPropsQueryModel();
-        const resultsFilesCount = model.getResultsFiles().length;
 
         if (!model.isInit || runPropsModel.isLoading) {
             return <LoadingSpinner />;
-        } else if (runPropsModel.hasLoadErrors) {
+        }
+
+        if (runPropsModel.hasLoadErrors) {
             return (
                 <Alert>
                     <ul>
@@ -773,9 +774,7 @@ class AssayImportPanelsBody extends Component<BodyProps, State> {
         }
 
         const isReimport = this.isReimport();
-        const operation = isReimport ? Operation.update : Operation.insert;
         const runContainerId = runPropsModel.getRowValue('Folder');
-        const plateSupportEnabled = this.plateSupportEnabled;
 
         if (isReimport && !allowReimportAssayRun(user, runContainerId, container.id)) {
             const runName = runPropsModel.getRowValue('Name');
@@ -787,22 +786,27 @@ class AssayImportPanelsBody extends Component<BodyProps, State> {
             );
         }
 
-        const showSaveAgainBtn = !isReimport && onSave !== undefined;
         const disabledSave =
             model.isSubmitting ||
             !model.hasData(currentStep, editorModel) ||
             (model.isGridTab(currentStep) && editorModel?.hasErrors) ||
             (!isReimport && !!getIsDirty && !getIsDirty?.()) ||
             (isReimport && requiresUserComment && !comment?.trim()?.length);
+        const operation = isReimport ? Operation.update : Operation.insert;
+        const plateSupportEnabled = this.plateSupportEnabled;
+        const resultsFilesCount = model.getResultsFiles().length;
         const runProps = runPropsModel.getRow();
+        const showSaveAgainBtn = !isReimport && onSave !== undefined;
 
         return (
             <>
-                {isReimport && (
+                {isReimport && plateSupportEnabled && (
+                    <PlateAssayReimportHeader replacedRunProperties={runProps} />
+                )}
+                {isReimport && !plateSupportEnabled && (
                     <AssayReimportHeader
-                        assay={model.assayDef}
-                        replacedRunProperties={runProps}
                         hasBatchProperties={model.batchColumns.size > 0}
+                        replacedRunProperties={runProps}
                     />
                 )}
                 <Alert bsStyle="warning">{warning}</Alert>

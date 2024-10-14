@@ -7,7 +7,7 @@ import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 
 import { AssayReimportHeader } from './AssayReimportHeader';
 
-describe('<AssayReimportHeader/>', () => {
+describe('AssayReimportHeader', () => {
     const assay = AssayDefinitionModel.create(assayDefJSON);
 
     const runData = {
@@ -17,7 +17,7 @@ describe('<AssayReimportHeader/>', () => {
 
     test('has batch properties', () => {
         const component = (
-            <AssayReimportHeader hasBatchProperties={true} assay={assay} replacedRunProperties={runData} />
+            <AssayReimportHeader hasBatchProperties assay={assay} replacedRunProperties={runData} />
         );
         const { container } = render(component);
         expect(container).toMatchSnapshot();

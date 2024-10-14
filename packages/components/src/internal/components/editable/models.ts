@@ -312,7 +312,9 @@ export class EditorModel
             if (renderer?.getEditableRawValue) {
                 row = row.set(col.name, renderer.getEditableRawValue(values));
             } else if (col.isLookup()) {
-                if (col.isExpInput() || col.isAliquotParent()) {
+                if (col.isAliquotParent()) {
+                    // TODO: We should update the server to accept rowId for aliquot parent, that way we can use the
+                    //  same logic as exp inputs and junction lookups below
                     row = row.set(
                         col.name,
                         values
@@ -320,16 +322,13 @@ export class EditorModel
                             .map(vd => quoteValueWithDelimiters(vd.display, ','))
                             .join(', ')
                     );
-                } else if (col.isJunctionLookup()) {
+                } else if (col.isExpInput() || col.isJunctionLookup()) {
                     row = row.set(
                         col.name,
-                        values.reduce((arr, vd) => {
-                            const val = vd.raw;
-                            if (val !== undefined && val !== null) {
-                                arr.push(val);
-                            }
-                            return arr;
-                        }, [])
+                        values
+                            .filter(vd => vd.raw !== undefined && vd.raw !== null)
+                            .map(vd => vd.raw)
+                            .toArray()
                     );
                 } else if (col.lookup.displayColumn === col.lookup.keyColumn) {
                     row = row.set(

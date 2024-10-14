@@ -340,11 +340,6 @@ export interface EditableGridProps extends SharedEditableGridProps {
     onChange: EditableGridChange;
 }
 
-export interface SharedEditableGridPanelProps extends EditableGridProps {
-    bsStyle?: any;
-    title?: string;
-}
-
 export interface EditableGridState {
     activeEditTab?: EditableGridTabs;
     inDrag: boolean;

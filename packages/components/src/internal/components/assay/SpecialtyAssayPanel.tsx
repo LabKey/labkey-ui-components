@@ -137,3 +137,5 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
         </div>
     );
 });
+
+SpecialtyAssayPanel.displayName = 'SpecialtyAssayPanel';

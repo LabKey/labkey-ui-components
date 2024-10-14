@@ -578,7 +578,7 @@ export function getSnapshotSelections(key: string, containerPath?: string): Prom
     });
 }
 
-interface ISelectionResponse {
+export interface SelectionResponse {
     resolved: boolean;
     schemaQuery?: SchemaQuery;
     selected: any[];
@@ -588,7 +588,7 @@ export async function getSelection(
     searchParams: URLSearchParams,
     schemaName?: string,
     queryName?: string
-): Promise<ISelectionResponse> {
+): Promise<SelectionResponse> {
     const selectionKey = searchParams.get('selectionKey');
     if (selectionKey) {
         let { keys, schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);

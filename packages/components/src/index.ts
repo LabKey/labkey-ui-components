@@ -143,6 +143,7 @@ import {
     formatDateTime,
     fromDate,
     fromNow,
+    generateNameWithTimestamp,
     getDateFormat,
     getDateTimeFormat,
     getParsedRelativeDateStr,
@@ -417,12 +418,7 @@ import {
 } from './internal/components/assay/withAssayModels';
 import { AssayPicker, AssayPickerTabs } from './internal/components/assay/AssayPicker';
 import { AssayStateModel, AssayUploadResultModel } from './internal/components/assay/models';
-import {
-    allowReimportAssayRun,
-    clearAssayDefinitionCache,
-    getAssayDefinitions,
-    getProtocol,
-} from './internal/components/assay/actions';
+import { clearAssayDefinitionCache, getAssayDefinitions, getProtocol } from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
 import {
     createHorizontalBarLegendData,
@@ -612,7 +608,6 @@ import { DomainFieldLabel } from './internal/components/domainproperties/DomainF
 import { RangeValidationOptionsModal } from './internal/components/domainproperties/validation/RangeValidationOptions';
 import { DataTypeFoldersPanel } from './internal/components/domainproperties/DataTypeFoldersPanel';
 
-import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
 import {
     AppContextTestProvider,
@@ -960,6 +955,7 @@ const App = {
     hasPremiumModule,
     hasProductFolders,
     hasModule,
+    generateNameWithTimestamp,
     getDateFormat,
     getDateTimeFormat,
     getTimeFormat,
@@ -1275,6 +1271,7 @@ export {
     SecurityAssignment,
     SecurityRole,
     Principal,
+    useContainerUser,
     useUserProperties,
     isLoginAutoRedirectEnabled,
     GroupDetailsPanel,
@@ -1432,7 +1429,6 @@ export {
     // assay
     AssayUploadResultModel,
     AssayStateModel,
-    AssayImportPanels,
     AssayPicker,
     AssayPickerTabs,
     withAssayModels,
@@ -1444,7 +1440,6 @@ export {
     AssayDomainTypes,
     AssayLink,
     AssayDesignEmptyAlert,
-    allowReimportAssayRun,
     clearAssayDefinitionCache,
     getAssayDefinitions,
     WORKFLOW_TASK_PROPERTIES_REQUIRED_COLUMNS,
@@ -1958,8 +1953,9 @@ export type { FetchedGroup, SecurityAPIWrapper } from './internal/components/sec
 export type { UserLimitSettings } from './internal/components/permissions/actions';
 export type { ModalProps } from './internal/Modal';
 export type { QueryLookupFilterGroup, QueryLookupFilterGroupFilter } from './public/QueryColumn';
-export type { ClearSelectedOptions, ReplaceSelectedOptions } from './internal/actions';
+export type { ClearSelectedOptions, ReplaceSelectedOptions, SelectionResponse } from './internal/actions';
 export type { LabelsAPIWrapper } from './internal/components/labels/APIWrapper';
 export type { InputRendererProps } from './internal/components/forms/input/types';
 export type { InputRendererComponent } from './internal/components/forms/input/InputRenderFactory';
 export type { AppContextTestProviderProps } from './internal/test/testHelpers';
+export type { DisableableInputProps } from './internal/components/forms/input/DisableableInput';

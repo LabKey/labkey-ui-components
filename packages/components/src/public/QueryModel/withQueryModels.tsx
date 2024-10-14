@@ -15,6 +15,8 @@ import { resolveErrorMessage } from '../../internal/util/messaging';
 
 import { selectRows } from '../../internal/query/selectRows';
 
+import { incrementClientSideMetricCount } from '../../internal/actions';
+
 import { filterArraysEqual, getSelectRowCountColumnsStr, sortArraysEqual } from './utils';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
 import {
@@ -647,7 +649,10 @@ export function withQueryModels<Props>(
                 this.setState(
                     produce<State>(draft => {
                         const model = draft.queryModels[id];
-                        const calcFieldNames = model.queryInfo.getAllColumns().filter(c => c.isCalculatedField).map(c => c.name);
+                        const calcFieldNames = model.queryInfo
+                            .getAllColumns()
+                            .filter(c => c.isCalculatedField)
+                            .map(c => c.name);
                         let rowsError = resolveErrorMessage(error, 'data', undefined, 'loading');
 
                         if (rowsError === undefined) {
@@ -665,6 +670,7 @@ export function withQueryModels<Props>(
                             resetTotalCountState(model);
                             resetSelectionState(model);
                             model.viewError = rowsError + ' Returning to the default view.';
+                            incrementClientSideMetricCount('QueryModel', 'ViewDoesNotExist');
                         } else if (!model.viewError && calcFieldNames.length > 0) {
                             // Issue 51204: if we have a calculated field, they are likely causing the problem so retry without them
                             viewDoesNotExist = true;
@@ -672,7 +678,11 @@ export function withQueryModels<Props>(
                             resetRowsState(model);
                             resetTotalCountState(model);
                             resetSelectionState(model);
-                            model.viewError = rowsError + (rowsError.endsWith('.') ? '' : '.') + ' All calculated fields have been omitted from the view.';
+                            model.viewError =
+                                rowsError +
+                                (rowsError.endsWith('.') ? '' : '.') +
+                                ' All calculated fields have been omitted from the view.';
+                            incrementClientSideMetricCount('QueryModel', 'CalculatedFieldError');
                         } else {
                             model.rowsLoadingState = LoadingState.LOADED;
                             model.rowsError = rowsError;
@@ -681,7 +691,7 @@ export function withQueryModels<Props>(
                     }),
                     () => {
                         if (viewDoesNotExist) {
-                            this.maybeLoad(id, false, true, loadSelections);
+                            this.maybeLoad(id, false, true, true, true);
                             saveSettingsToLocalStorage(this.state.queryModels[id]);
                         }
                     }

@@ -1,6 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.X
+*Released*: X October 2024
+- Date/Time formatting simplifications - Settings UI Changes
+  - TODO
+
+### version 5.13.2
+*Released*: 14 October 2024
+- Issue 51056 Samples with single double quotes in the name will not resolve if added as parent samples.
+- Issue 51433 Unhandled client side exception when using a parent field in editable grid after clearing the field.
+
 ### version 5.13.1
 *Released*: 14 October 2024
 - Issue 51425: reprocess lineage node "level" on subsequent traversals

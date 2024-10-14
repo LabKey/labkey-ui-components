@@ -688,12 +688,21 @@ export function parseCsvString(value: string, delimiter: string, removeQuotes?: 
                 end++; // skip double ""
             }
             // if no ending quote, don't remove quotes;
-            if (end === -1) {
-                end = value.indexOf(delimiter, start);
-                if (end === -1) end = value.length;
-                parsedValues.push(value.substring(start, end));
-                start = end + delimiter.length;
-                continue;
+            if (end === -1 || end !== value.length - 1) {
+                let isCurrentDelimiterOrQuote = true;
+                if (end > -1) {
+                    const nextChar = value[end + 1];
+                    // Issue 51056: "a, "b should be parsed to ["a, "b], not [a, ]
+                    isCurrentDelimiterOrQuote = nextChar === '"' || nextChar === delimiter;
+                }
+
+                if (end === -1 || !isCurrentDelimiterOrQuote) {
+                    end = value.indexOf(delimiter, start);
+                    if (end === -1) end = value.length;
+                    parsedValues.push(value.substring(start, end));
+                    start = end + delimiter.length;
+                    continue;
+                }
             }
             let parsedValue = removeQuotes ? value.substring(start + 1, end) : value.substring(start, end + 1); // start is at the quote
             if (removeQuotes && parsedValue.indexOf('""') !== -1) {

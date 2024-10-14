@@ -13,36 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, OrderedMap } from 'immutable';
-import { ActionURL, Ajax, Assay, AssayDOM, Filter, Utils } from '@labkey/api';
+import { List } from 'immutable';
+import { ActionURL, Ajax, Assay, AssayDOM, Utils } from '@labkey/api';
 
-import { User } from '../base/models/User';
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
-import { buildURL } from '../../url/AppURL';
-import { caseInsensitive, handleRequestFailure } from '../../util/utils';
+import { handleRequestFailure } from '../../util/utils';
 
 import { AssayProtocolModel } from '../domainproperties/assay/models';
 
-import { QueryColumn } from '../../../public/QueryColumn';
-
-import { SCHEMAS } from '../../schemas';
-import { getSelection } from '../../actions';
-import { fetchSamples } from '../samples/actions';
-import { getSelectedPicklistSamples } from '../picklist/actions';
-
-import { AssayUploadURLSearchParam, AssayUploadResultModel } from './models';
-import { AssayUploadOptions } from './AssayWizardModel';
-
-/**
- * Only support option to re-import run if user has insert permissions in current container
- * and the current container is where the source run is located. This prevents runs from being
- * re-imported "up" or "down" the folder structure.
- */
-export function allowReimportAssayRun(user: User, runContainerId: string, targetContainerId: string): boolean {
-    return (
-        !!runContainerId && !!targetContainerId && targetContainerId === runContainerId && user.hasInsertPermission()
-    );
-}
+import { AssayUploadResultModel } from './models';
 
 let assayDefinitionCache: { [key: string]: Promise<AssayDefinitionModel[]> } = {};
 let protocolCache: Record<string, Promise<AssayProtocolModel>> = {};
@@ -132,180 +111,6 @@ export function importAssayRun(config: ImportAssayRunOptions): Promise<AssayUplo
     });
 }
 
-/**
- * Loads a collection of RowIds from a selectionKey found on "location". Uses [[fetchSamples]] to query and filter
- * the Sample Set data.
- * @param searchParams The URLSearchParams to search for the selectionKey on
- * @param sampleColumn A QueryColumn used to map data in [[fetchSamples]]
- * @param containerPath Container path where requests are made
- */
-export async function loadSelectedSamples(
-    searchParams: URLSearchParams,
-    sampleColumn: QueryColumn,
-    containerPath?: string
-): Promise<OrderedMap<any, any>> {
-    const workflowJobId = searchParams.get(AssayUploadURLSearchParam.workflowJobId);
-    // If the "workflowJobId" URL parameter is specified, then fetch the samples associated with the workflow job.
-    if (workflowJobId) {
-        return fetchSamples(
-            SCHEMAS.SAMPLE_MANAGEMENT.INPUT_SAMPLES_SQ,
-            sampleColumn,
-            [Filter.create('ApplicationType', 'ExperimentRun'), Filter.create('ApplicationRun', workflowJobId)],
-            'Name',
-            'RowId', // Issue 51123
-            containerPath
-        );
-    }
-
-    // Otherwise, load the samples from the selection.
-    const selection = await getSelection(searchParams);
-
-    if (selection.resolved && selection.schemaQuery && selection.selected.length) {
-        const isPicklist = searchParams.get(AssayUploadURLSearchParam.isPicklist) === 'true';
-        let sampleIdNums = selection.selected;
-        if (isPicklist) {
-            sampleIdNums = await getSelectedPicklistSamples(selection.schemaQuery.queryName, selection.selected, false);
-        }
-
-        const sampleSchemaQuery =
-            isPicklist || selection.schemaQuery.isEqual(SCHEMAS.SAMPLE_MANAGEMENT.INPUT_SAMPLES_SQ)
-                ? SCHEMAS.EXP_TABLES.MATERIALS
-                : selection.schemaQuery;
-        return fetchSamples(
-            sampleSchemaQuery,
-            sampleColumn,
-            [Filter.create('RowId', sampleIdNums, Filter.Types.IN)],
-            sampleColumn.lookup.displayColumn,
-            sampleColumn.lookup.keyColumn,
-            containerPath
-        );
-    }
-
-    return OrderedMap();
-}
-
-export function uploadAssayRunFiles(data: AssayUploadOptions): Promise<AssayUploadOptions> {
-    return new Promise((resolve, reject) => {
-        const batchFiles = collectFiles(data.batchProperties);
-        const runFiles = collectFiles(data.properties);
-
-        // track the largest file size for the results data, used to determine if async mode should be used
-        // note that we don't include the batchFiles or runFiles in this as they are processed / posted separately
-        let maxFileSize = 0;
-
-        const maxRowCount = Array.isArray(data.dataRows) ? data.dataRows.length : undefined;
-        if (data.files) {
-            data.files.forEach(file => {
-                if (file.size > maxFileSize) {
-                    maxFileSize = file.size;
-                }
-            });
-        }
-
-        if (Utils.isEmptyObj(batchFiles) && Utils.isEmptyObj(runFiles)) {
-            // No files in the data, so just go ahead and resolve so we run the import.
-            resolve({ ...data, maxRowCount, maxFileSize });
-            return;
-        }
-
-        // If we're this far along we've got files so let's process them.
-        let fileCounter = 0;
-        const formData = new FormData();
-        const fileNameMap = {}; // Maps the file name "fileN" to the run/batch property it belongs to.
-
-        // TODO factor this out so the code isn't duplicate below for the runFiles case
-        Object.keys(batchFiles).forEach(columnName => {
-            const name = fileCounter === 0 ? 'file' : `file${fileCounter}`;
-            const file = batchFiles[columnName];
-            fileNameMap[name] = {
-                columnName,
-                origin: 'batch',
-            };
-            formData.append(name, file);
-            fileCounter++;
-        });
-
-        Object.keys(runFiles).forEach(columnName => {
-            const name = fileCounter === 0 ? 'file' : `file${fileCounter}`;
-            const file = runFiles[columnName];
-            fileNameMap[name] = {
-                columnName,
-                origin: 'run',
-            };
-            formData.append(name, file);
-            fileCounter++;
-        });
-
-        // N.B. assayFileUpload's success response is not handled well by Utils.getCallbackWrapper.
-        Ajax.request({
-            url: buildURL('assay', 'assayFileUpload.view', data.containerPath),
-            method: 'POST',
-            form: formData,
-            success: result => {
-                let response = JSON.parse(result.responseText);
-                const batchPaths = {};
-                const runPaths = {};
-
-                if (fileCounter === 1) {
-                    // Make the single file response look like the multi-file response.
-                    response = {
-                        file: response,
-                    };
-                }
-
-                // Only process attributes that start with file so we ignore all the other stuff in the response like
-                // the "success" attribute.
-                Object.keys(response)
-                    .filter(key => key.startsWith('file'))
-                    .forEach(key => {
-                        const { columnName, origin } = fileNameMap[key];
-
-                        if (origin === 'batch') {
-                            batchPaths[columnName] = response[key].absolutePath;
-                        } else if (origin === 'run') {
-                            runPaths[columnName] = response[key].absolutePath;
-                        }
-                    });
-
-                resolve({
-                    ...data,
-                    batchProperties: {
-                        ...data.batchProperties,
-                        ...batchPaths,
-                    },
-                    properties: {
-                        ...data.properties,
-                        ...runPaths,
-                    },
-                    maxRowCount,
-                    maxFileSize,
-                });
-            },
-            failure: Utils.getCallbackWrapper(error => {
-                // As far as I can tell errors returned from assay FileUpload are only ever strings.
-                const message = `Error while uploading files: ${error}`;
-                reject({ message });
-            }),
-        });
-    });
-}
-
-interface FileMap {
-    [s: string]: File;
-}
-
-function collectFiles(source: Record<string, any>): FileMap {
-    return Object.keys(source).reduce((files, key) => {
-        const item = source[key];
-
-        if (item instanceof File) {
-            files[key] = item;
-        }
-
-        return files;
-    }, {} as FileMap);
-}
-
 export interface DuplicateFilesResponse {
     duplicate: boolean;
     newFileNames: List<string>;
@@ -329,35 +134,4 @@ export function checkForDuplicateAssayFiles(
             failure: handleRequestFailure(reject, 'Problem checking for duplicate files'),
         });
     });
-}
-
-export function getRunPropertiesFileName(row: Record<string, any>): string {
-    const dataOutputs = caseInsensitive(row, 'DataOutputs');
-    return dataOutputs && dataOutputs.length === 1 ? dataOutputs[0].displayValue : undefined;
-}
-
-export function flattenQueryModelRow(rowData: Record<string, any>): Map<string, any> {
-    if (rowData) {
-        // TODO make the consumers of this row data able to handle the queryData instead of
-        // having to create the key -> value map via reduction.
-        let map = Map<string, any>();
-
-        Object.keys(rowData).forEach(k => {
-            const v = rowData[k];
-            let valueMap = v;
-            if (Utils.isArray(v)) {
-                if (v.length > 1) {
-                    console.warn("Multiple values for field '" + k + "'.  Using the last.");
-                }
-                valueMap = v[v.length - 1];
-            }
-            if (valueMap && valueMap['value'] !== undefined && valueMap['value'] !== null) {
-                map = map.set(k, valueMap['value']);
-            }
-        });
-
-        return map;
-    }
-
-    return Map<string, any>();
 }

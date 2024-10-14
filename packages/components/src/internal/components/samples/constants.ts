@@ -96,8 +96,6 @@ export const permittedOps = {
     [SampleStateType.Locked]: new Set([SampleOperation.AddToPicklist]),
 };
 
-export const STATUS_DATA_RETRIEVAL_ERROR = 'There was a problem retrieving the current sample status data.';
-
 export const operationRestrictionMessage = {
     [SampleOperation.EditMetadata]: {
         all: 'updating of their data without also changing the status',

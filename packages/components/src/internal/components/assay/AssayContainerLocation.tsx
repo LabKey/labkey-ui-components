@@ -1,22 +1,26 @@
 import React, { FC, memo, useMemo, useCallback, ReactNode } from 'react';
 
 interface AssayContainerLocationProps {
-    selected: string;
     locations: { [key: string]: string };
     onChange: (value: string) => void;
+    selected: string;
 }
 
 export const AssayContainerLocation: FC<AssayContainerLocationProps> = memo(props => {
     const { locations, selected, onChange } = props;
 
     const options = useMemo((): ReactNode => {
-        const options = [];
+        const options_ = [];
         if (locations) {
             Object.entries(locations).forEach(([key, value]) => {
-                options.push(<option key={key} value={key}>{value}</option>);
+                options_.push(
+                    <option key={key} value={key}>
+                        {value}
+                    </option>
+                );
             });
         }
-        return options;
+        return options_;
     }, [locations]);
 
     const onSelectChange = useCallback(
@@ -43,3 +47,5 @@ export const AssayContainerLocation: FC<AssayContainerLocationProps> = memo(prop
         </>
     );
 });
+
+AssayContainerLocation.displayName = 'AssayContainerLocation';

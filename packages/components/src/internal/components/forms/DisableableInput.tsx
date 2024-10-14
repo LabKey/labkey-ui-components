@@ -18,24 +18,24 @@ export const DisableableInput: FC<Props> = memo(props => {
     const { disabledMsg, title, ...inputProps } = props;
     const id = useMemo(() => generateId(), []);
 
+    if (!disabledMsg) {
+        return <input {...inputProps} type="text" />;
+    }
+
     return (
-        <>
-            {disabledMsg ? (
-                <OverlayTrigger
-                    style={{ display: 'inline' }}
-                    overlay={
-                        <Popover id={id} title={title} placement="bottom">
-                            {disabledMsg}
-                        </Popover>
-                    }
-                >
-                    <div className="disabled-button-with-tooltip full-width">
-                        <input {...inputProps} type="text" disabled />
-                    </div>
-                </OverlayTrigger>
-            ) : (
-                <input {...inputProps} type="text" />
-            )}
-        </>
+        <OverlayTrigger
+            style={{ display: 'inline' }}
+            overlay={
+                <Popover id={id} title={title} placement="bottom">
+                    {disabledMsg}
+                </Popover>
+            }
+        >
+            <div className="disabled-button-with-tooltip full-width">
+                <input {...inputProps} type="text" disabled />
+            </div>
+        </OverlayTrigger>
     );
 });
+
+DisableableInput.displayName = 'DisableableInput';

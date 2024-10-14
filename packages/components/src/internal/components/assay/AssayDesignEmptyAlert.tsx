@@ -30,3 +30,5 @@ export const AssayDesignEmptyAlert: FC<Props> = memo(props => {
         />
     );
 });
+
+AssayDesignEmptyAlert.displayName = 'AssayDesignEmptyAlert';

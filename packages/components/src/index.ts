@@ -1902,7 +1902,7 @@ export type {
 export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
 export type { AppRouteResolver } from './internal/url/models';
 export type { WithFormStepsProps } from './internal/components/forms/FormStep';
-export type { BulkAddData, SharedEditableGridPanelProps } from './internal/components/editable/EditableGrid';
+export type { BulkAddData } from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
 export type { Row, RowValue, SelectRowsOptions, SelectRowsResponse } from './internal/query/selectRows';
 export type { ServerNotificationState, ProductMenuState, AppReducerState } from './internal/app/reducers';

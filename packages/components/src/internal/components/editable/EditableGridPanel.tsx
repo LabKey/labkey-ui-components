@@ -1,8 +1,10 @@
 import React, { FC, memo, PropsWithChildren } from 'react';
 
-import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
+import { EditableGrid, EditableGridProps } from './EditableGrid';
 
-export type EditableGridPanelProps = SharedEditableGridPanelProps & PropsWithChildren;
+interface EditableGridPanelProps extends EditableGridProps, PropsWithChildren {
+    title?: string;
+}
 
 /**
  * TODO: This docstring really belongs on EditableGrid, but maybe still have a docstring that tells people to look at
@@ -17,7 +19,7 @@ export type EditableGridPanelProps = SharedEditableGridPanelProps & PropsWithChi
 // TODO: Find all usages that do not pass title, bstyle, className, or children to EditableGridPanel and make them use
 //  EditableGrid directly
 export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
-    const { title, bsStyle, children, ...gridProps } = props;
+    const { title, children, ...gridProps } = props;
     const editableGrid = <EditableGrid {...gridProps} />;
 
     if (!title) {
@@ -25,7 +27,7 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
     }
 
     return (
-        <div className={`panel ${bsStyle === 'info' ? 'panel-info' : 'panel-default'}`}>
+        <div className="panel panel-info">
             <div className="panel-heading">{title}</div>
             <div className="panel-body">
                 {children}

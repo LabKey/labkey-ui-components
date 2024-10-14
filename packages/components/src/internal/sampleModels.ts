@@ -70,18 +70,14 @@ export type SampleStorageMenu = ComponentType<SampleStorageMenuComponentProps>;
 
 export type SampleGridButton = ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
 
-// This props interface is here to prevent circular dependencies between the main package and the entities sub package.
-export interface SamplesEditableGridProps {
-    api?: ComponentsAPIWrapper;
+// This interface stores app-wide settings passed to the LineageEditableGrid
+export interface LineageEditableGridProps {
     combineParentTypes?: boolean;
-    editableGridUpdateData?: OrderedMap<string, any>;
-    getIsDirty?: () => boolean;
-    invalidateSampleQueries?: (schemaQuery: SchemaQuery) => void;
-    onGridEditCancel: () => void;
-    onGridEditComplete: () => void;
     parentDataTypes: EntityDataType[];
+}
+
+// This interface stores app-wide settings that get passed to our SamplesEditableGrid. It extends
+// LineageEditableGridProps because the settings are passed to SamplesTabbedGridPanel as one object.
+export interface SamplesEditableGridProps extends LineageEditableGridProps {
     samplesGridRequiredColumns?: string[];
-    selectionData: Map<string, any>;
-    setIsDirty?: (isDirty: boolean) => void;
-    user: User;
 }

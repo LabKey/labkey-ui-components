@@ -1245,7 +1245,7 @@ function reprocessLevel(visNode: VisGraphNode | VisGraphCombinedNode, dir: LINEA
  *   - if there are less than {combineSize} edges, create a basic node
  *     - create edges from the node to all edge targets
  */
-export function processNodes(
+function processNodes(
     seed: string,
     lsid: string,
     nodes: LineageNodesRecord,

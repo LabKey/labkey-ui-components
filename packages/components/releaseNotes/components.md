@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.13.1
+*Released*: 14 October 2024
+- Issue 51425: reprocess lineage node "level" on subsequent traversals
+- Lineage styling:
+    - Set `scaleFactor=0.6` (default is 1) for arrows so they render a bit smaller.
+    - Set `levelSeparation=125` (default is 150) to reduce the space between levels in the graph.
+    - Set `edgeMinimization=false` (default is true) so that all edges are represented in the graph.
+
 ### version 5.13.0
 *Released*: 7 October 2024
 - Issue 47087: Find Derivatives in Sample Finder to include a selection in filters

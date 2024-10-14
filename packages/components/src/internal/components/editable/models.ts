@@ -527,7 +527,7 @@ export class EditorModel
 
     getValueForCellKey(cellKey: string): List<ValueDescriptor> {
         if (this.cellValues.has(cellKey)) {
-            return this.cellValues.get(cellKey);
+            return this.cellValues.get(cellKey) ?? List<ValueDescriptor>();
         }
 
         return List<ValueDescriptor>();

@@ -342,7 +342,6 @@ export interface EditableGridProps extends SharedEditableGridProps {
 
 export interface SharedEditableGridPanelProps extends EditableGridProps {
     bsStyle?: any;
-    className?: string;
     title?: string;
 }
 

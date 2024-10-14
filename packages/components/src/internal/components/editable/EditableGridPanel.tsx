@@ -17,7 +17,7 @@ export type EditableGridPanelProps = SharedEditableGridPanelProps & PropsWithChi
 // TODO: Find all usages that do not pass title, bstyle, className, or children to EditableGridPanel and make them use
 //  EditableGrid directly
 export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
-    const { title, bsStyle, children, className = '', ...gridProps } = props;
+    const { title, bsStyle, children, ...gridProps } = props;
     const editableGrid = <EditableGrid {...gridProps} />;
 
     if (!title) {
@@ -25,7 +25,7 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
     }
 
     return (
-        <div className={`panel ${bsStyle === 'info' ? 'panel-info' : 'panel-default'} ${className}`}>
+        <div className={`panel ${bsStyle === 'info' ? 'panel-info' : 'panel-default'}`}>
             <div className="panel-heading">{title}</div>
             <div className="panel-body">
                 {children}

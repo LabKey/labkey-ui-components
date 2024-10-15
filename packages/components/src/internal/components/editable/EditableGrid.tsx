@@ -356,6 +356,13 @@ export enum EditableGridTabs {
     Grid = 'Grid',
 }
 
+/**
+ * Note that there are some cases which will call the onChange callback prop back to back (i.e. see LookupCell.onInputChange)
+ * and pass through different sets of `editorModelChanges`. In that case, you will want to make sure that your onChange
+ * handler is getting the current state object before merging in the `editorModelChanges`. See example in platform/core
+ * (core/src/client/LabKeyUIComponentsPage/EditableGridPage.tsx) which uses the set state function which takes a function
+ * as the first parameter instead of the new state object.
+ */
 export class EditableGrid extends PureComponent<EditableGridProps, EditableGridState> {
     static defaultProps = {
         allowAdd: true,
@@ -369,7 +376,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         bulkAddText: 'Bulk Add',
         bulkRemoveText: 'Delete Rows',
         bulkUpdateText: 'Bulk Update',
-        columnMetadata: Map<string, EditableColumnMetadata>(),
         fixedHeight: true,
         lockLeftOnScroll: true,
         disabled: false,
@@ -381,10 +387,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         rowNumColumn: COUNT_COL,
     };
 
+    private cellActions: CellActions;
     private dragDelay: number;
     private maskDelay: number;
-
-    cellActions: CellActions;
 
     constructor(props: EditableGridProps) {
         super(props);

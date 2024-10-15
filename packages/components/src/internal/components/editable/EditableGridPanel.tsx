@@ -15,9 +15,6 @@ interface EditableGridPanelProps extends EditableGridProps, PropsWithChildren {
  * (core/src/client/LabKeyUIComponentsPage/EditableGridPage.tsx) which uses the set state function which takes a function
  * as the first parameter instead of the new state object.
  */
-
-// TODO: Find all usages that do not pass title, bstyle, className, or children to EditableGridPanel and make them use
-//  EditableGrid directly
 export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
     const { title, children, ...gridProps } = props;
     const editableGrid = <EditableGrid {...gridProps} />;

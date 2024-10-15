@@ -4,7 +4,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 5.X
 *Released*: X October 2024
 - Date/Time formatting simplifications - Settings UI Changes
-  - TODO
+  - Add utils for handling standard date/time formats
+  - Move getFolderDateTimeHelpBody from ContainerLookAndFeelForm to shared util
+  - Check blank initial value for SelectInput
+  - Modified DateTimeFieldOptions to use standard formats and new UI
 
 ### version 5.13.2
 *Released*: 14 October 2024

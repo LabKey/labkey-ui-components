@@ -35,11 +35,12 @@ interface DateTimeFieldProps extends ITypeDependentProps {
 export const getInitDateTimeSetting = (
     fieldFormat: string,
     formats: ContainerFormats,
-    isDate: boolean,
-    isTime: boolean,
+    type: string,
     dateOptions: SelectInputOption[],
     timeOptions: SelectInputOption[]
 ): DateTimeSettingProp => {
+    const isDate = type === 'dateTime' || type === 'date';
+    const isTime = type === 'dateTime' || type === 'time';
     const formatType = isDate && isTime ? DateFormatType.DateTime : isDate ? DateFormatType.Date : DateFormatType.Time;
     let currentFormat: string, parentFormat: string, settingName: string, dateFormat: string, timeFormat: string;
     const inherited = !fieldFormat;
@@ -93,8 +94,7 @@ export const DateTimeFieldOptions: FC<DateTimeFieldProps> = memo(props => {
         const settings_ = getInitDateTimeSetting(
             format,
             getContainerFormats(container),
-            type === 'dateTime' || type === 'date',
-            type === 'dateTime' || type === 'time',
+            type,
             dateOptions,
             type === 'dateTime' ? optionalTimeOptions : timeOptions
         );
@@ -121,13 +121,15 @@ export const DateTimeFieldOptions: FC<DateTimeFieldProps> = memo(props => {
                     }
                 }
                 updates.valid = isValidDateTimeSetting({ ...prevSetting, ...updates } as DateTimeSettingProp);
-                return {
+                const updatedSetting =  {
                     ...prevSetting,
                     ...updates,
                 };
-            });
 
-            if (checked) onChange(domainFieldId, null);
+                onChange?.(domainFieldId, checked ? null : getDateTimeSettingFormat(updatedSetting));
+
+                return updatedSetting;
+            });
         },
         [setSetting, domainFieldId, onChange]
     );
@@ -155,14 +157,14 @@ export const DateTimeFieldOptions: FC<DateTimeFieldProps> = memo(props => {
         (name: string, selectedValue: string, selectedOption: SelectInputOption): void => {
             onFormatChange(selectedOption?.value);
         },
-        [domainFieldId, onChange]
+        [onFormatChange]
     );
 
     const onTimeFormatChange = useCallback(
         (name: string, selectedValue: string, selectedOption: SelectInputOption): void => {
             onFormatChange(selectedOption?.value, true);
         },
-        [domainFieldId, onChange]
+        [onFormatChange]
     );
 
     if (!setting) return null;

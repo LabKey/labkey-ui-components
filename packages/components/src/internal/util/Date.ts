@@ -411,10 +411,13 @@ export function isStandardTimeDisplayFormat(timeFormat: string): boolean {
     return STANDARD_TIME_DISPLAY_FORMATS.indexOf(timeFormat) > -1;
 }
 
-export function splitDateTimeFormat(dateTimeFormat: string): string[] {
-    if (dateTimeFormat.indexOf(' h') > -0 || dateTimeFormat.indexOf(' H') > -0) {
+export function splitDateTimeFormat(dateTimeFormatStr: string): string[] {
+    const dateTimeFormat = dateTimeFormatStr?.trim();
+    if (!dateTimeFormat)
+        return ['', ''];
+    if (dateTimeFormat.indexOf(' h') > 0 || dateTimeFormat.indexOf(' H') > 0) {
         const splitInd =
-            dateTimeFormat.indexOf(' h') > -0 ? dateTimeFormat.indexOf(' h') : dateTimeFormat.indexOf(' H');
+            dateTimeFormat.indexOf(' h') > 0 ? dateTimeFormat.indexOf(' h') : dateTimeFormat.indexOf(' H');
         const date = dateTimeFormat.substring(0, splitInd).trim();
         const time = dateTimeFormat.substring(splitInd + 1).trim();
         return [date, time];
@@ -432,7 +435,7 @@ export const joinDateTimeFormat = (date: string, time?: string): string => {
 
 export function isStandardDateTimeDisplayFormat(dateTimeFormat: string): boolean {
     if (!dateTimeFormat) return false;
-    const parts = splitDateTimeFormat(dateTimeFormat.trim());
+    const parts = splitDateTimeFormat(dateTimeFormat);
     if (parts.length === 1 || !parts[1]) return isStandardDateDisplayFormat(parts[0]);
     else if (parts.length === 2) return isStandardDateDisplayFormat(parts[0]) && isStandardTimeDisplayFormat(parts[1]);
     return false;

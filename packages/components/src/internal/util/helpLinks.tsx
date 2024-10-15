@@ -238,8 +238,7 @@ export const getFolderDateTimeHelpBody = (isDate: boolean = true, isTime: boolea
     return (
         <>
             <p>
-                To control how a {contentLabel} value is displayed, provide a string format compatible with the Java{' '}
-                <JavaDocsLink urlSuffix="java/text/SimpleDateFormat.html">SimpleDateFormat</JavaDocsLink> class.
+                Select a format to control how a {contentLabel} value is displayed in the application.
             </p>
             {content}
             <p>

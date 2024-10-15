@@ -27,7 +27,7 @@ import {
     getContainerFilterForFolder,
     invalidateQueryDetailsCache,
     selectDistinctRows,
-    selectRowsDeprecated
+    selectRowsDeprecated,
 } from './query/api';
 import {
     BARTENDER_EXPORT_CONTROLLER,
@@ -77,7 +77,7 @@ export function selectAll(
 export function getGridIdsFromTransactionId(
     transactionAuditId: number | string,
     dataType: string,
-    containerPath?: string,
+    containerPath?: string
 ): Promise<string[]> {
     if (!transactionAuditId) {
         return;

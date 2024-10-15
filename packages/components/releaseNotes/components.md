@@ -15,6 +15,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Remove queryModel arg from initEditorModel
 - Remove queryModel arg from EditableGridLoader.fetch
 - Export EditableGrid
+- Remove EditableGridPanel
 - Remove EditableGridPanelForUpdate
 
 ### version 5.15.1

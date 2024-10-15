@@ -264,7 +264,6 @@ import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolv
 import { NOT_ANY_FILTER_TYPE } from './internal/url/NotAnyFilterType';
 import { genCellKey, parseCellKey, incrementRowCountMetric } from './internal/components/editable/utils';
 import { EditableGrid, EditableGridTabs } from './internal/components/editable/EditableGrid';
-import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
@@ -1155,7 +1154,6 @@ export {
     initEditorModel,
     MAX_EDITABLE_GRID_ROWS,
     EditableGridLoaderFromSelection,
-    EditableGridPanel,
     EditableGrid,
     EditableGridTabs,
     EditorModel,

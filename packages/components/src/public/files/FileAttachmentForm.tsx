@@ -31,9 +31,10 @@ import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
 import { FormSection } from '../../internal/components/base/FormSection';
 import { Progress } from '../../internal/components/base/Progress';
 
+import { inferDomainFromFile } from '../InferDomainResponse';
+
 import { TemplateDownloadButton } from './TemplateDownloadButton';
 import { FileSizeLimitProps, FileGridPreviewProps } from './models';
-import { inferDomainFromFile } from '../InferDomainResponse';
 
 export interface FileAttachmentFormProps {
     acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'

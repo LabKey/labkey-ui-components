@@ -32,8 +32,7 @@ import { decodePart, encodePart, getSchemaQuery, resolveKey, SchemaQuery } from 
 import { insertColumnFilter, Operation, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
-import { InferDomainResponse } from './public/InferDomainResponse';
-import { inferDomainFromFile } from './internal/components/assay/utils';
+import { InferDomainResponse, inferDomainFromFile } from './public/InferDomainResponse';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
 import { SchemaDetails } from './internal/SchemaDetails';
@@ -1891,6 +1890,7 @@ export type { ServerNotificationState, ProductMenuState, AppReducerState } from 
 export type { IAttachment } from './internal/renderers/AttachmentCard';
 export type { Field, FormSchema, Option } from './internal/components/AutoForm';
 export type { FileSizeLimitProps } from './public/files/models';
+export type { FileAttachmentFormProps } from './public/files/FileAttachmentForm';
 export type { UsersLoader } from './internal/components/forms/actions';
 export type { LineageGroupingOptions } from './internal/components/lineage/types';
 export type {

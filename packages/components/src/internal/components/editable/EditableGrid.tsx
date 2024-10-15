@@ -699,6 +699,10 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         if (pkValue !== undefined && readonlyRows?.includes(pkValue.toString())) return true;
 
         const queryCol = editorModel.columnMap.get(fieldKey);
+        if (!queryCol) {
+            console.error("No query column for field '", fieldKey + "'", editorModel.columnMap.toJS());
+            return true;
+        }
         if (queryCol.readOnly) return true;
 
         const metadata = editorModel.getColumnMetadata(queryCol.fieldKey);

@@ -10,6 +10,19 @@ Components, models, actions, and utility functions for LabKey applications and p
   - withQueryModel to retry failed query without calculated fields, set viewError on QueryModel for grid display
   - remove experimental feature flag for calculated fields
 
+### version 5.13.2
+*Released*: 14 October 2024
+- Issue 51056 Samples with single double quotes in the name will not resolve if added as parent samples.
+- Issue 51433 Unhandled client side exception when using a parent field in editable grid after clearing the field.
+
+### version 5.13.1
+*Released*: 14 October 2024
+- Issue 51425: reprocess lineage node "level" on subsequent traversals
+- Lineage styling:
+    - Set `scaleFactor=0.6` (default is 1) for arrows so they render a bit smaller.
+    - Set `levelSeparation=125` (default is 150) to reduce the space between levels in the graph.
+    - Set `edgeMinimization=false` (default is true) so that all edges are represented in the graph.
+
 ### version 5.13.0
 *Released*: 7 October 2024
 - Issue 47087: Find Derivatives in Sample Finder to include a selection in filters

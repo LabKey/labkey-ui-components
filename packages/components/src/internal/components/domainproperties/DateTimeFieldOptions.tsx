@@ -121,7 +121,7 @@ export const DateTimeFieldOptions: FC<DateTimeFieldProps> = memo(props => {
                     }
                 }
                 updates.valid = isValidDateTimeSetting({ ...prevSetting, ...updates } as DateTimeSettingProp);
-                const updatedSetting =  {
+                const updatedSetting = {
                     ...prevSetting,
                     ...updates,
                 };

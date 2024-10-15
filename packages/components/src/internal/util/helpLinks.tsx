@@ -237,9 +237,7 @@ export const getFolderDateTimeHelpBody = (isDate: boolean = true, isTime: boolea
     const contentLabel = isDate && isTime ? 'date or time' : isDate ? 'date' : 'time';
     return (
         <>
-            <p>
-                Select a format to control how a {contentLabel} value is displayed in the application.
-            </p>
+            <p>Select a format to control how a {contentLabel} value is displayed in the application.</p>
             {content}
             <p>
                 Learn more about using <HelpLink topic={DATE_FORMATS_TOPIC}>Date and Time formats</HelpLink> in LabKey.

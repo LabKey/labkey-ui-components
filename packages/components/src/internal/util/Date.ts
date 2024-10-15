@@ -413,11 +413,9 @@ export function isStandardTimeDisplayFormat(timeFormat: string): boolean {
 
 export function splitDateTimeFormat(dateTimeFormatStr: string): string[] {
     const dateTimeFormat = dateTimeFormatStr?.trim();
-    if (!dateTimeFormat)
-        return ['', ''];
+    if (!dateTimeFormat) return ['', ''];
     if (dateTimeFormat.indexOf(' h') > 0 || dateTimeFormat.indexOf(' H') > 0) {
-        const splitInd =
-            dateTimeFormat.indexOf(' h') > 0 ? dateTimeFormat.indexOf(' h') : dateTimeFormat.indexOf(' H');
+        const splitInd = dateTimeFormat.indexOf(' h') > 0 ? dateTimeFormat.indexOf(' h') : dateTimeFormat.indexOf(' H');
         const date = dateTimeFormat.substring(0, splitInd).trim();
         const time = dateTimeFormat.substring(splitInd + 1).trim();
         return [date, time];

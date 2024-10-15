@@ -113,8 +113,8 @@ export interface StorageActionStatusCounts {
 // Note: this should stay in sync with the freezermanager/src/components/AddSamplesToStorageModal.tsx props
 interface AddSamplesToStorageModalComponentProps {
     actionStatusCounts?: StorageActionStatusCounts;
-    onCancel: () => any;
-    onSuccess?: () => any;
+    onCancel: () => void;
+    onSuccess?: () => void;
     samplesSelectionKey?: string;
     user: User;
 }

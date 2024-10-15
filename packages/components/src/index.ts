@@ -852,11 +852,7 @@ import {
     TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from './internal/productFixtures';
-import {
-    GENERAL_ASSAY_PROVIDER_NAME,
-    RUN_PROPERTIES_REQUIRED_COLUMNS,
-    WORKFLOW_TASK_PROPERTIES_REQUIRED_COLUMNS,
-} from './internal/components/assay/constants';
+import { GENERAL_ASSAY_PROVIDER_NAME } from './internal/components/assay/constants';
 import { GlobalStateContextProvider } from './internal/GlobalStateContext';
 import {
     areUnitsCompatible,
@@ -1443,8 +1439,6 @@ export {
     AssayDesignEmptyAlert,
     clearAssayDefinitionCache,
     getAssayDefinitions,
-    WORKFLOW_TASK_PROPERTIES_REQUIRED_COLUMNS,
-    RUN_PROPERTIES_REQUIRED_COLUMNS,
     GENERAL_ASSAY_PROVIDER_NAME,
     // report / chart related items
     BaseBarChart,

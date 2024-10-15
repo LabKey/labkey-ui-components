@@ -472,15 +472,14 @@ export async function parseCalculatedColumn(
             includeTotalCount: false,
         });
     } catch (e) {
-        const error = resolveErrorMessage(e, 'data', undefined, undefined, undefined, true);
-        return { error: _sanitizeParseCalculatedColumnError(error), type: undefined };
+        return { error: _sanitizeParseCalculatedColumnError(e), type: undefined };
     }
 
     return _parseCalculatedColumn(expression, columnMap, phiColumns, containerPath);
 }
 
-function _sanitizeParseCalculatedColumnError(originalError: string): string {
-    let error = originalError;
+function _sanitizeParseCalculatedColumnError(e: Record<string, string>): string {
+    let error = resolveErrorMessage(e, 'data', undefined, undefined, undefined, true);
     if (error?.indexOf('ExecutingSelector; ') === 0) {
         error = error.substring(error.indexOf('; ') + 2);
     }

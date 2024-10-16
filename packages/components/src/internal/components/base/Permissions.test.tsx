@@ -2,7 +2,8 @@ import React from 'react';
 import { PermissionTypes } from '@labkey/api';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_ASSAY_DESIGNER, TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
-import { mountWithServerContext } from '../../test/enzymeTestHelpers';
+
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 import { User } from './models/User';
 
@@ -14,94 +15,96 @@ const CONTENT_SELECTOR = 'div.requires-permission-content';
 describe('<RequiresPermission/>', () => {
     test('does not have permission', () => {
         // Act
-        const wrapper = mountWithServerContext(
-            <RequiresPermission perms={PermissionTypes.Admin}>{CONTENT}</RequiresPermission>,
-            { user: TEST_USER_READER }
-        );
+        renderWithAppContext(<RequiresPermission perms={PermissionTypes.Admin}>{CONTENT}</RequiresPermission>, {
+            serverContext: { user: TEST_USER_READER },
+        });
 
         // Assert
-        expect(wrapper.find(CONTENT_SELECTOR).exists()).toBe(false);
+        expect(document.querySelectorAll(CONTENT_SELECTOR)).toHaveLength(0);
     });
     test('has permission', () => {
         // Act
-        const wrapper = mountWithServerContext(
-            <RequiresPermission perms={PermissionTypes.Admin}>{CONTENT}</RequiresPermission>,
-            { user: TEST_USER_APP_ADMIN }
-        );
+        renderWithAppContext(<RequiresPermission perms={PermissionTypes.Admin}>{CONTENT}</RequiresPermission>, {
+            serverContext: { user: TEST_USER_APP_ADMIN },
+        });
 
         // Assert
-        expect(wrapper.find(CONTENT_SELECTOR).exists()).toBe(true);
+        expect(document.querySelectorAll(CONTENT_SELECTOR)).toHaveLength(1);
     });
     test('does not have all permissions', () => {
         // Act
         // TEST_USER_ASSAY_DESIGNER does not have PermissionTypes.Delete
-        const wrapper = mountWithServerContext(
+        renderWithAppContext(
             <RequiresPermission perms={[PermissionTypes.Delete, PermissionTypes.DesignAssay]}>
                 {CONTENT}
             </RequiresPermission>,
-            { user: TEST_USER_ASSAY_DESIGNER }
+            { serverContext: { user: TEST_USER_ASSAY_DESIGNER } }
         );
 
         // Assert
-        expect(wrapper.find(CONTENT_SELECTOR).exists()).toBe(false);
+        expect(document.querySelectorAll(CONTENT_SELECTOR)).toHaveLength(0);
     });
     test('has all permissions', () => {
         // Act
-        const wrapper = mountWithServerContext(
+        renderWithAppContext(
             <RequiresPermission perms={[PermissionTypes.Read, PermissionTypes.Update, PermissionTypes.Delete]}>
                 {CONTENT}
             </RequiresPermission>,
-            { user: TEST_USER_EDITOR }
+            { serverContext: { user: TEST_USER_EDITOR } }
         );
 
         // Assert
-        expect(wrapper.find(CONTENT_SELECTOR).exists()).toBe(true);
+        expect(document.querySelectorAll(CONTENT_SELECTOR)).toHaveLength(1);
     });
     test('does not have any permissions', () => {
         // Act
-        const wrapper = mountWithServerContext(
+        renderWithAppContext(
             <RequiresPermission permissionCheck="any" perms={[PermissionTypes.Update, PermissionTypes.Delete]}>
                 {CONTENT}
             </RequiresPermission>,
-            { user: TEST_USER_READER }
+            { serverContext: { user: TEST_USER_READER } }
         );
 
         // Assert
-        expect(wrapper.find(CONTENT_SELECTOR).exists()).toBe(false);
+        expect(document.querySelectorAll(CONTENT_SELECTOR)).toHaveLength(0);
     });
     test('has any permissions', () => {
         // Act
-        const wrapper = mountWithServerContext(
+        renderWithAppContext(
             <RequiresPermission
                 permissionCheck="any"
                 perms={[PermissionTypes.Admin, PermissionTypes.Read, PermissionTypes.Insert]}
             >
                 {CONTENT}
             </RequiresPermission>,
-            { user: TEST_USER_READER }
+            { serverContext: { user: TEST_USER_READER } }
         );
 
         // Assert
-        expect(wrapper.find(CONTENT_SELECTOR).exists()).toBe(true);
+        expect(document.querySelectorAll(CONTENT_SELECTOR)).toHaveLength(1);
     });
-    test('respects checkIsAdmin', () => {
+    test('respects checkIsAdmin true', () => {
         // Arrange
         const ADMIN_READER = new User({ ...TEST_USER_READER, isAdmin: true });
 
         // Act
         // "checkIsAdmin" defaults to true
-        let wrapper = mountWithServerContext(
+        renderWithAppContext(
             <RequiresPermission permissionCheck="any" perms={[PermissionTypes.Update, PermissionTypes.Delete]}>
                 {CONTENT}
             </RequiresPermission>,
-            { user: ADMIN_READER }
+            { serverContext: { user: ADMIN_READER } }
         );
 
         // Assert
-        expect(wrapper.find(CONTENT_SELECTOR).exists()).toBe(true);
-        wrapper.unmount();
+        expect(document.querySelectorAll(CONTENT_SELECTOR)).toHaveLength(1);
+    });
+    test('respects checkIsAdmin false', () => {
+        // Arrange
+        const ADMIN_READER = new User({ ...TEST_USER_READER, isAdmin: true });
 
-        wrapper = mountWithServerContext(
+        // Act
+        renderWithAppContext(
             <RequiresPermission
                 checkIsAdmin={false}
                 permissionCheck="any"
@@ -109,9 +112,9 @@ describe('<RequiresPermission/>', () => {
             >
                 {CONTENT}
             </RequiresPermission>,
-            { user: ADMIN_READER }
+            { serverContext: { user: ADMIN_READER } }
         );
 
-        expect(wrapper.find(CONTENT_SELECTOR).exists()).toBe(false);
+        expect(document.querySelectorAll(CONTENT_SELECTOR)).toHaveLength(0);
     });
 });

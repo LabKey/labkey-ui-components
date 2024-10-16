@@ -967,27 +967,15 @@ describe('utils', () => {
 
     test('isCalculatedFieldsEnabled', () => {
         expect(isCalculatedFieldsEnabled()).toBeFalsy();
-        expect(isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': false } })).toBeFalsy();
-        expect(isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true } })).toBeFalsy();
-        expect(
-            isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true }, api: { moduleNames: [] } })
-        ).toBeFalsy(); // community
-        expect(
-            isCalculatedFieldsEnabled({
-                core: { 'experimental-calculated-fields': true },
-                api: { moduleNames: ['premium'] },
-            })
-        ).toBeTruthy(); // LKS Prof
+        expect(isCalculatedFieldsEnabled()).toBeFalsy();
+        expect(isCalculatedFieldsEnabled({ api: { moduleNames: [] } })).toBeFalsy(); // community
+        expect(isCalculatedFieldsEnabled({ api: { moduleNames: ['premium'] } })).toBeTruthy(); // LKS Prof
 
         window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()
-        expect(isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true } })).toBeFalsy();
+        expect(isCalculatedFieldsEnabled()).toBeFalsy();
+        expect(isCalculatedFieldsEnabled({ core: { productFeatures: [] } })).toBeFalsy();
         expect(
-            isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true, productFeatures: [] } })
-        ).toBeFalsy();
-        expect(
-            isCalculatedFieldsEnabled({
-                core: { 'experimental-calculated-fields': true, productFeatures: [ProductFeature.CalculatedFields] },
-            })
+            isCalculatedFieldsEnabled({ core: { productFeatures: [ProductFeature.CalculatedFields] } })
         ).toBeTruthy();
     });
 

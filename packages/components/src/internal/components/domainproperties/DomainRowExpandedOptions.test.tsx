@@ -247,7 +247,7 @@ describe('DomainRowExpandedOptions', () => {
             rangeURI: TEXT_TYPE.rangeURI,
         });
 
-        render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
+        renderWithAppContext(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
         await waitFor(() => {
             const headers = document.querySelectorAll('.domain-field-section-heading');
@@ -264,7 +264,7 @@ describe('DomainRowExpandedOptions', () => {
             rangeURI: INTEGER_TYPE.rangeURI,
         });
 
-        render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
+        renderWithAppContext(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
         await waitFor(() => {
             const headers = document.querySelectorAll('.domain-field-section-heading');

@@ -724,12 +724,14 @@ export class EditorModel
      * Constructs an array of objects (suitable for the rows parameter of updateRows), where each object contains the
      * values in editorRows that are different from the ones in originalGridData
      *
-     * bulkEditData: Updated data from a bulk update form, may be undefined
+     * originalData: The original data to compare against. We need this as argument to support bulk edit, as
+     * EditorModels are initialized with data that has bulk changes applied, and we still want to account for the bulk
+     * changes even if a user didn't change anything in an EditableGrid.
      */
-    getUpdatedData(bulkEditData?: Map<string, Map<string, any>>): UpdatedRow[] {
+    getUpdatedData(originalData?: Map<string, Map<string, any>>): UpdatedRow[] {
         // If we have data from bulk edit then we need to use that as originalData instead of the data on the EditorModel
         // otherwise we'll incorrectly diff the changes
-        const originalData = bulkEditData ?? this.originalData;
+        originalData = originalData ?? this.originalData;
         const editorRows = this.getDataForServerUpload().toArray();
         const pkFieldKey = this.pkFieldKey;
         const queryInfo = this.queryInfo;
@@ -815,8 +817,10 @@ export class EditorModel
                 if (!Utils.isEmptyObj(row)) {
                     row[pkFieldKey] = id;
                     Object.assign(row, altIds);
-                    const folder = caseInsensitive(editedRow.toJS(), FOLDER_COL);
-                    if (hasProductFolders() && folder) row[FOLDER_COL] = folder;
+                    // If the original row has a folder column we copy that over, we do not check for hasProductFolders
+                    // because a few areas always send the column
+                    const folder = caseInsensitive(originalRow.toJS(), FOLDER_COL)?.value;
+                    if (folder) row[FOLDER_COL] = folder;
                     updatedRows.push(row);
                 }
             } else {

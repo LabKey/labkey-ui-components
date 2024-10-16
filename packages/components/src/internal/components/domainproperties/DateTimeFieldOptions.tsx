@@ -9,8 +9,8 @@ import {
     getContainerFormats,
     getDateTimeInputOptions,
     getDateTimeSettingFormat,
-    isStandardFormat,
-    isValidDateTimeSetting,
+    getNonStandardFormatWarning,
+    getDateTimeSettingWarning,
     splitDateTimeFormat,
 } from '../../util/Date';
 
@@ -65,7 +65,7 @@ export const getInitDateTimeSetting = (
             currentFormat = inherited ? parentFormat : fieldFormat;
             timeFormat = currentFormat;
     }
-    const valid = isStandardFormat(formatType, currentFormat);
+    const invalidWarning = getNonStandardFormatWarning(formatType, currentFormat);
     return {
         formatType,
         settingName,
@@ -78,7 +78,7 @@ export const getInitDateTimeSetting = (
         timeFormat,
         inherited,
         parentFormat,
-        valid,
+        invalidWarning,
     };
 };
 
@@ -120,7 +120,7 @@ export const DateTimeFieldOptions: FC<DateTimeFieldProps> = memo(props => {
                         updates.timeFormat = parts[1];
                     }
                 }
-                updates.valid = isValidDateTimeSetting({ ...prevSetting, ...updates } as DateTimeSettingProp);
+                updates.invalidWarning = getDateTimeSettingWarning({ ...prevSetting, ...updates } as DateTimeSettingProp);
                 const updatedSetting = {
                     ...prevSetting,
                     ...updates,
@@ -140,7 +140,7 @@ export const DateTimeFieldOptions: FC<DateTimeFieldProps> = memo(props => {
                 const updates: Partial<DateTimeSettingProp> = {
                     [isTime ? 'timeFormat' : 'dateFormat']: newFormat == null ? '' : newFormat,
                 };
-                updates.valid = isValidDateTimeSetting({ ...prevSetting, ...updates } as DateTimeSettingProp);
+                updates.invalidWarning = getDateTimeSettingWarning({ ...prevSetting, ...updates } as DateTimeSettingProp);
 
                 const updatedSetting = {
                     ...prevSetting,
@@ -235,9 +235,9 @@ export const DateTimeFieldOptions: FC<DateTimeFieldProps> = memo(props => {
                         />
                     </div>
                 )}
-                {!setting.valid && (
+                {setting.invalidWarning && (
                     <div className="col-xs-1">
-                        <Tip caption={`Non-standard ${setting.settingName} format.`}>
+                        <Tip caption={setting.invalidWarning}>
                             <span className="domain-warning-icon top-spacing fa fa-exclamation-circle" />
                         </Tip>
                     </div>

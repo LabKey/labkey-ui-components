@@ -14,11 +14,11 @@ import {
     FLAG_TYPE,
     INTEGER_TYPE,
     MULTILINE_TYPE,
-    ONTOLOGY_LOOKUP_TYPE,
     SAMPLE_TYPE,
     TEXT_CHOICE_TYPE,
     TEXT_TYPE,
 } from './PropDescType';
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 jest.mock('./actions', () => ({
     ...jest.requireActual('./actions'),
@@ -88,7 +88,7 @@ describe('DomainRowExpandedOptions', () => {
             rangeURI: DATETIME_TYPE.rangeURI,
         });
 
-        render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
+        renderWithAppContext(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
         await waitFor(() => {
             const headers = document.querySelectorAll('.domain-field-section-heading');

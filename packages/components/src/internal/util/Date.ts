@@ -403,11 +403,11 @@ function safeParse(dateStr: string, formatStr: string, referenceDate: number | D
     }
 }
 
-export function isStandardDateDisplayFormat(dateFormat: string): boolean {
+function isStandardDateDisplayFormat(dateFormat: string): boolean {
     return STANDARD_DATE_DISPLAY_FORMATS.indexOf(dateFormat) > -1;
 }
 
-export function isStandardTimeDisplayFormat(timeFormat: string): boolean {
+function isStandardTimeDisplayFormat(timeFormat: string): boolean {
     return STANDARD_TIME_DISPLAY_FORMATS.indexOf(timeFormat) > -1;
 }
 
@@ -431,24 +431,33 @@ export const joinDateTimeFormat = (date: string, time?: string): string => {
     return date + ' ' + time;
 };
 
-export function isStandardDateTimeDisplayFormat(dateTimeFormat: string): boolean {
-    if (!dateTimeFormat) return false;
+export function getNonStandardDateTimeFormatWarning(dateTimeFormat: string): string {
+    if (!dateTimeFormat) return 'Non-standard date and time format.';
     const parts = splitDateTimeFormat(dateTimeFormat);
-    if (parts.length === 1 || !parts[1]) return isStandardDateDisplayFormat(parts[0]);
-    else if (parts.length === 2) return isStandardDateDisplayFormat(parts[0]) && isStandardTimeDisplayFormat(parts[1]);
-    return false;
+    if (parts.length === 1 || !parts[1]) return isStandardDateDisplayFormat(parts[0]) ? null : 'Non-standard date format.';
+    else if (parts.length === 2) {
+        const invalidParts = [];
+        if (!isStandardDateDisplayFormat(parts[0]))
+            invalidParts.push('date');
+        if (!isStandardTimeDisplayFormat(parts[1]))
+            invalidParts.push('time');
+        if (invalidParts.length === 0)
+            return null;
+        return 'Non-standard ' + invalidParts.join(' and ') + ' format.';
+    }
+    return 'Non-standard date and time format.';
 }
 
-export function isStandardFormat(formatType: DateFormatType, formatPattern: string): boolean {
+export function getNonStandardFormatWarning(formatType: DateFormatType, formatPattern: string): string {
     switch (formatType) {
         case DateFormatType.Date:
-            return isStandardDateDisplayFormat(formatPattern);
+            return isStandardDateDisplayFormat(formatPattern) ? null : 'Non-standard date format.';
         case DateFormatType.DateTime:
-            return isStandardDateTimeDisplayFormat(formatPattern);
+            return getNonStandardDateTimeFormatWarning(formatPattern);
         case DateFormatType.Time:
-            return isStandardTimeDisplayFormat(formatPattern);
+            return isStandardTimeDisplayFormat(formatPattern) ? null : 'Non-standard time format.';
     }
-    return false;
+    return null;
 }
 
 export function getDateTimeInputOptions(
@@ -506,7 +515,7 @@ export interface DateTimeSettingProp {
     settingName: string;
     timeFormat: string;
     timeOptions: SelectInputOption[];
-    valid: boolean;
+    invalidWarning: string;
 }
 
 export const getDateTimeSettingFormat = (setting: DateTimeSettingProp, checkInherited?: boolean): string => {
@@ -519,9 +528,9 @@ export const getDateTimeSettingFormat = (setting: DateTimeSettingProp, checkInhe
           : timeFormat;
 };
 
-export const isValidDateTimeSetting = (setting: DateTimeSettingProp): boolean => {
+export const getDateTimeSettingWarning = (setting: DateTimeSettingProp): string => {
     const { formatType } = setting;
-    return isStandardFormat(formatType, getDateTimeSettingFormat(setting, true));
+    return getNonStandardFormatWarning(formatType, getDateTimeSettingFormat(setting, true));
 };
 
 function _formatDate(date: Date | string | number, dateFormat: string, timezone?: string): string {

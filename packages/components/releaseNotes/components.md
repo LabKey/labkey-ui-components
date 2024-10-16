@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 5.14.0
+*Released*: 16 October 2024
 - Calculated fields error handling
   - calculated field expression input width change, show examples inline next to textarea, add "click to validate"
   - parseCalculatedColumn to first try making an executeSQL call with fake data to catch SQL errors

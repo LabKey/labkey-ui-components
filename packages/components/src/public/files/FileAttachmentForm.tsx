@@ -28,14 +28,15 @@ import { FilePreviewGrid } from '../../internal/components/files/FilePreviewGrid
 import { SimpleResponse } from '../../internal/components/files/models';
 
 import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
-import { inferDomainFromFile } from '../../internal/components/assay/utils';
 import { FormSection } from '../../internal/components/base/FormSection';
 import { Progress } from '../../internal/components/base/Progress';
+
+import { inferDomainFromFile } from '../InferDomainResponse';
 
 import { TemplateDownloadButton } from './TemplateDownloadButton';
 import { FileSizeLimitProps, FileGridPreviewProps } from './models';
 
-interface FileAttachmentFormProps {
+export interface FileAttachmentFormProps {
     acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
     allowDirectories?: boolean;
     allowMultiple?: boolean;

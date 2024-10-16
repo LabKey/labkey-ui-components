@@ -15,33 +15,8 @@
  */
 import { immerable, produce } from 'immer';
 
-import { Operation } from '../../../public/QueryColumn';
-
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import { LoadingState } from '../../../public/LoadingState';
-
-import { SelectInputChange } from '../forms/input/SelectInput';
-
-import { AssayWizardModel } from './AssayWizardModel';
-
-export enum AssayUploadURLSearchParam {
-    assayRequest = 'assayRequest',
-    dataTab = 'dataTab',
-    destinationContainerId = 'destinationContainerId',
-    isPicklist = 'isPicklist',
-    plateSet = 'plateSet',
-    useAsync = 'useAsync',
-    workflowJobId = 'workflowJobId',
-    workflowTaskId = 'workflowTaskId',
-}
-
-export interface AssayPropertiesPanelProps {
-    containerPath?: string;
-    model: AssayWizardModel;
-    onChange: (fieldValues: any, isChanged?: boolean) => void;
-    onWorkflowTaskChange?: SelectInputChange;
-    operation: Operation;
-}
 
 export class AssayUploadResultModel {
     [immerable] = true;

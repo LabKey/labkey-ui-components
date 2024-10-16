@@ -17,6 +17,7 @@ import {
     deleteView,
     getGridViews,
     GetSelectedResponse,
+    getSelection,
     getSnapshotSelections,
     incrementClientSideMetricCount,
     renameGridView,
@@ -25,6 +26,7 @@ import {
     saveGridView,
     saveSessionView,
     SelectResponse,
+    SelectionResponse,
     setSelected,
     setSnapshotSelections,
 } from '../actions';
@@ -34,6 +36,8 @@ import { SchemaQuery } from '../../public/SchemaQuery';
 import { ViewInfo } from '../ViewInfo';
 
 import { QueryColumn } from '../../public/QueryColumn';
+
+import { incrementRowCountMetric } from '../components/editable/utils';
 
 import {
     deleteRows,
@@ -55,7 +59,6 @@ import {
     UpdateRowsOptions,
 } from './api';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
-import { incrementRowCountMetric } from '../components/editable/utils';
 
 export interface QueryAPIWrapper {
     clearSelected: (options: ClearSelectedOptions) => Promise<SelectResponse>;
@@ -72,13 +75,6 @@ export interface QueryAPIWrapper {
         entityDataType: EntityDataType,
         containerPath?: string
     ) => Promise<Map<string, List<IEntityTypeOption>>>;
-    getGridViews: (
-        schemaQuery: SchemaQuery,
-        sort?: boolean,
-        viewName?: string,
-        excludeSessionView?: boolean,
-        includeHidden?: boolean
-    ) => Promise<ViewInfo[]>;
     getFolderConfigurableEntityTypeOptions: (
         entityDataType: EntityDataType,
         containerPath?: string,
@@ -90,7 +86,19 @@ export interface QueryAPIWrapper {
         allDataTypes?: DataTypeEntity[],
         isNewFolder?: boolean
     ) => Promise<Record<string, number>>;
+    getGridViews: (
+        schemaQuery: SchemaQuery,
+        sort?: boolean,
+        viewName?: string,
+        excludeSessionView?: boolean,
+        includeHidden?: boolean
+    ) => Promise<ViewInfo[]>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
+    getSelection: (
+        searchParams: URLSearchParams,
+        schemaName?: string,
+        queryName?: string
+    ) => Promise<SelectionResponse>;
     getServerDate: () => Promise<Date>;
     getSnapshotSelections: (key: string, containerPath?: string) => Promise<GetSelectedResponse>;
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
@@ -158,6 +166,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     getFolderDataTypeDataCount = getFolderDataTypeDataCount;
     getQueryDetails = getQueryDetails;
     getSnapshotSelections = getSnapshotSelections;
+    getSelection = getSelection;
     getServerDate = getServerDate;
     incrementClientSideMetricCount = incrementClientSideMetricCount;
     incrementRowCountMetric = incrementRowCountMetric;
@@ -195,6 +204,7 @@ export function getQueryTestAPIWrapper(
         getFolderDataTypeDataCount: mockFn(),
         getQueryDetails: mockFn(),
         getSnapshotSelections: mockFn(),
+        getSelection: mockFn(),
         getServerDate: () => Promise.resolve(new Date()),
         incrementClientSideMetricCount: mockFn(),
         incrementRowCountMetric: mockFn(),

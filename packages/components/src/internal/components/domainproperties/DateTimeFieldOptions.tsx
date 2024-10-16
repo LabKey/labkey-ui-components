@@ -120,7 +120,10 @@ export const DateTimeFieldOptions: FC<DateTimeFieldProps> = memo(props => {
                         updates.timeFormat = parts[1];
                     }
                 }
-                updates.invalidWarning = getDateTimeSettingWarning({ ...prevSetting, ...updates } as DateTimeSettingProp);
+                updates.invalidWarning = getDateTimeSettingWarning({
+                    ...prevSetting,
+                    ...updates,
+                } as DateTimeSettingProp);
                 const updatedSetting = {
                     ...prevSetting,
                     ...updates,
@@ -140,7 +143,10 @@ export const DateTimeFieldOptions: FC<DateTimeFieldProps> = memo(props => {
                 const updates: Partial<DateTimeSettingProp> = {
                     [isTime ? 'timeFormat' : 'dateFormat']: newFormat == null ? '' : newFormat,
                 };
-                updates.invalidWarning = getDateTimeSettingWarning({ ...prevSetting, ...updates } as DateTimeSettingProp);
+                updates.invalidWarning = getDateTimeSettingWarning({
+                    ...prevSetting,
+                    ...updates,
+                } as DateTimeSettingProp);
 
                 const updatedSetting = {
                     ...prevSetting,

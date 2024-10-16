@@ -1,11 +1,14 @@
 import React from 'react';
 
+import { act } from '@testing-library/react';
+
+import { userEvent } from '@testing-library/user-event';
+
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+
 import { createFormInputId } from './utils';
 import { DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_NOT_LOCKED } from './constants';
 import { DateTimeFieldOptions } from './DateTimeFieldOptions';
-import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
-import { act } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
 
 const DEFAULT_PROP = {
     index: 1,
@@ -14,7 +17,7 @@ const DEFAULT_PROP = {
     onChange: jest.fn(),
     lockType: DOMAIN_FIELD_NOT_LOCKED,
     type: 'dateTime',
-}
+};
 
 const APP_CONTEXT = {
     container: {
@@ -36,9 +39,20 @@ const APP_CONTEXT_INVALID = {
     },
 };
 
-function verifyInputs(type: string, inherit: boolean, date: string = 'yyyy-MM-dd', time: string = 'HH:mm', dateInvalid?: boolean, timeInvalid?: boolean) {
+function verifyInputs(
+    type: string,
+    inherit: boolean,
+    date: string = 'yyyy-MM-dd',
+    time: string = 'HH:mm',
+    dateInvalid?: boolean,
+    timeInvalid?: boolean
+) {
     expect(document.querySelector('.domain-field-section-heading').textContent).toBe(DEFAULT_PROP.label);
-    const inheritCheckboxId = createFormInputId(DOMAIN_FIELD_FORMAT + '_inherit' + type, DEFAULT_PROP.domainIndex, DEFAULT_PROP.index);
+    const inheritCheckboxId = createFormInputId(
+        DOMAIN_FIELD_FORMAT + '_inherit' + type,
+        DEFAULT_PROP.domainIndex,
+        DEFAULT_PROP.index
+    );
     const checkbox = document.getElementById(inheritCheckboxId);
     expect(checkbox.hasAttribute('checked')).toEqual(inherit);
 
@@ -47,24 +61,19 @@ function verifyInputs(type: string, inherit: boolean, date: string = 'yyyy-MM-dd
     expect(selectInputs[0].hasAttribute('aria-disabled')).toEqual(inherit);
     if (type === 'dateTime') {
         expect(selectInputs[1].hasAttribute('aria-disabled')).toEqual(inherit);
-        expect(selectInputs[0].textContent.startsWith(date + (dateInvalid ? '' : " ("))).toBeTruthy();
-        expect(selectInputs[1].textContent.startsWith(time ? (time + (timeInvalid ? '' : " (")) : "<none>")).toBeTruthy()
-    }
-    else if (type === 'date') {
-        expect(selectInputs[0].textContent.startsWith(date + (dateInvalid ? '' : " ("))).toBeTruthy();
-    }
-    else {
-        expect(selectInputs[0].textContent.startsWith(time + (timeInvalid ? '' : " ("))).toBeTruthy();
+        expect(selectInputs[0].textContent.startsWith(date + (dateInvalid ? '' : ' ('))).toBeTruthy();
+        expect(selectInputs[1].textContent.startsWith(time ? time + (timeInvalid ? '' : ' (') : '<none>')).toBeTruthy();
+    } else if (type === 'date') {
+        expect(selectInputs[0].textContent.startsWith(date + (dateInvalid ? '' : ' ('))).toBeTruthy();
+    } else {
+        expect(selectInputs[0].textContent.startsWith(time + (timeInvalid ? '' : ' ('))).toBeTruthy();
     }
 
     expect(document.querySelectorAll('.fa-exclamation-circle')).toHaveLength(dateInvalid || timeInvalid ? 1 : 0);
-
 }
 
 describe('DateTimeFieldOptions', () => {
-
     test('DateTime type, no format', async () => {
-
         const props = {
             ...DEFAULT_PROP,
             type: 'dateTime',
@@ -72,7 +81,7 @@ describe('DateTimeFieldOptions', () => {
 
         await act(async () => {
             renderWithAppContext(<DateTimeFieldOptions {...props} />, {
-                appContext: APP_CONTEXT
+                appContext: APP_CONTEXT,
             });
         });
 
@@ -84,7 +93,6 @@ describe('DateTimeFieldOptions', () => {
     });
 
     test('DateTime type, with valid format', async () => {
-
         const props = {
             ...DEFAULT_PROP,
             format: 'yyyy-MMM-dd hh:mm a',
@@ -93,7 +101,7 @@ describe('DateTimeFieldOptions', () => {
 
         await act(async () => {
             renderWithAppContext(<DateTimeFieldOptions {...props} />, {
-                appContext: APP_CONTEXT
+                appContext: APP_CONTEXT,
             });
         });
 
@@ -101,7 +109,6 @@ describe('DateTimeFieldOptions', () => {
     });
 
     test('DateTime type, with invalid date format', async () => {
-
         const props = {
             ...DEFAULT_PROP,
             format: 'yyyy/MM/dd hh:mm a',
@@ -110,7 +117,7 @@ describe('DateTimeFieldOptions', () => {
 
         await act(async () => {
             renderWithAppContext(<DateTimeFieldOptions {...props} />, {
-                appContext: APP_CONTEXT
+                appContext: APP_CONTEXT,
             });
         });
 
@@ -121,11 +128,9 @@ describe('DateTimeFieldOptions', () => {
         await act(() => userEvent.click(checkbox));
         expect(DEFAULT_PROP.onChange).toHaveBeenCalledTimes(2);
         expect(document.querySelectorAll('.fa-exclamation-circle')).toHaveLength(0);
-
     });
 
     test('DateTime type, with invalid time format', async () => {
-
         const props = {
             ...DEFAULT_PROP,
             format: 'yyyy-MMM-dd hh:mm aa',
@@ -134,7 +139,7 @@ describe('DateTimeFieldOptions', () => {
 
         await act(async () => {
             renderWithAppContext(<DateTimeFieldOptions {...props} />, {
-                appContext: APP_CONTEXT
+                appContext: APP_CONTEXT,
             });
         });
 
@@ -145,11 +150,9 @@ describe('DateTimeFieldOptions', () => {
         await act(() => userEvent.click(checkbox));
         expect(DEFAULT_PROP.onChange).toHaveBeenCalledTimes(3);
         expect(document.querySelectorAll('.fa-exclamation-circle')).toHaveLength(0);
-
     });
 
     test('DateTime type, with valid date and empty time', async () => {
-
         const props = {
             ...DEFAULT_PROP,
             format: 'yyyy-MMM-dd',
@@ -158,7 +161,7 @@ describe('DateTimeFieldOptions', () => {
 
         await act(async () => {
             renderWithAppContext(<DateTimeFieldOptions {...props} />, {
-                appContext: APP_CONTEXT
+                appContext: APP_CONTEXT,
             });
         });
 
@@ -166,7 +169,6 @@ describe('DateTimeFieldOptions', () => {
     });
 
     test('Date type, with override', async () => {
-
         const props = {
             ...DEFAULT_PROP,
             format: 'ddMMMyyyy',
@@ -175,7 +177,7 @@ describe('DateTimeFieldOptions', () => {
 
         await act(async () => {
             renderWithAppContext(<DateTimeFieldOptions {...props} />, {
-                appContext: APP_CONTEXT
+                appContext: APP_CONTEXT,
             });
         });
 
@@ -183,7 +185,6 @@ describe('DateTimeFieldOptions', () => {
     });
 
     test('Date type, with invalid override', async () => {
-
         const props = {
             ...DEFAULT_PROP,
             format: 'ddMMM-yyyy',
@@ -192,7 +193,7 @@ describe('DateTimeFieldOptions', () => {
 
         await act(async () => {
             renderWithAppContext(<DateTimeFieldOptions {...props} />, {
-                appContext: APP_CONTEXT
+                appContext: APP_CONTEXT,
             });
         });
 
@@ -202,11 +203,9 @@ describe('DateTimeFieldOptions', () => {
         await act(() => userEvent.click(checkbox));
         expect(DEFAULT_PROP.onChange).toHaveBeenCalledTimes(4);
         expect(document.querySelectorAll('.fa-exclamation-circle')).toHaveLength(0);
-
     });
 
     test('Time type, with invalid override', async () => {
-
         const props = {
             ...DEFAULT_PROP,
             format: 'kk:mm',
@@ -215,7 +214,7 @@ describe('DateTimeFieldOptions', () => {
 
         await act(async () => {
             renderWithAppContext(<DateTimeFieldOptions {...props} />, {
-                appContext: APP_CONTEXT
+                appContext: APP_CONTEXT,
             });
         });
 
@@ -225,11 +224,9 @@ describe('DateTimeFieldOptions', () => {
         await act(() => userEvent.click(checkbox));
         expect(DEFAULT_PROP.onChange).toHaveBeenCalledTimes(5);
         expect(document.querySelectorAll('.fa-exclamation-circle')).toHaveLength(0);
-
     });
 
     test('Time type, with empty time', async () => {
-
         const props = {
             ...DEFAULT_PROP,
             format: '',
@@ -238,11 +235,10 @@ describe('DateTimeFieldOptions', () => {
 
         await act(async () => {
             renderWithAppContext(<DateTimeFieldOptions {...props} />, {
-                appContext: APP_CONTEXT
+                appContext: APP_CONTEXT,
             });
         });
 
         verifyInputs('time', true, null, 'HH:mm');
     });
-
 });

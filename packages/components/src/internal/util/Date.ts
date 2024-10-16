@@ -434,15 +434,13 @@ export const joinDateTimeFormat = (date: string, time?: string): string => {
 export function getNonStandardDateTimeFormatWarning(dateTimeFormat: string): string {
     if (!dateTimeFormat) return 'Non-standard date and time format.';
     const parts = splitDateTimeFormat(dateTimeFormat);
-    if (parts.length === 1 || !parts[1]) return isStandardDateDisplayFormat(parts[0]) ? null : 'Non-standard date format.';
+    if (parts.length === 1 || !parts[1])
+        return isStandardDateDisplayFormat(parts[0]) ? null : 'Non-standard date format.';
     else if (parts.length === 2) {
         const invalidParts = [];
-        if (!isStandardDateDisplayFormat(parts[0]))
-            invalidParts.push('date');
-        if (!isStandardTimeDisplayFormat(parts[1]))
-            invalidParts.push('time');
-        if (invalidParts.length === 0)
-            return null;
+        if (!isStandardDateDisplayFormat(parts[0])) invalidParts.push('date');
+        if (!isStandardTimeDisplayFormat(parts[1])) invalidParts.push('time');
+        if (invalidParts.length === 0) return null;
         return 'Non-standard ' + invalidParts.join(' and ') + ' format.';
     }
     return 'Non-standard date and time format.';
@@ -507,6 +505,7 @@ export interface DateTimeSettingProp {
     dateOptions: SelectInputOption[];
     formatType: DateFormatType;
     inherited: boolean;
+    invalidWarning: string;
     isDate: boolean;
     isTime: boolean;
     isTimeRequired: boolean;
@@ -515,7 +514,6 @@ export interface DateTimeSettingProp {
     settingName: string;
     timeFormat: string;
     timeOptions: SelectInputOption[];
-    invalidWarning: string;
 }
 
 export const getDateTimeSettingFormat = (setting: DateTimeSettingProp, checkInherited?: boolean): string => {

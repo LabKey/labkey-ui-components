@@ -3,6 +3,8 @@ import { render } from '@testing-library/react';
 
 import { waitFor } from '@testing-library/dom';
 
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { DomainField } from './models';
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DOMAIN_FIELD_FULLY_LOCKED } from './constants';
@@ -18,7 +20,6 @@ import {
     TEXT_CHOICE_TYPE,
     TEXT_TYPE,
 } from './PropDescType';
-import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 jest.mock('./actions', () => ({
     ...jest.requireActual('./actions'),

@@ -71,8 +71,8 @@ describe('Date Utilities', () => {
     });
 
     test('getNonStandardDateTimeFormatWarning', () => {
-        expect(getNonStandardDateTimeFormatWarning(null)).toBe('Non-standard date and time format.')
-        expect(getNonStandardDateTimeFormatWarning('')).toBe('Non-standard date and time format.')
+        expect(getNonStandardDateTimeFormatWarning(null)).toBe('Non-standard date and time format.');
+        expect(getNonStandardDateTimeFormatWarning('')).toBe('Non-standard date and time format.');
         expect(getNonStandardDateTimeFormatWarning('yyyy-MM-dd')).toBeNull();
         expect(getNonStandardDateTimeFormatWarning('yyyy-MM-dd HH:mm')).toBeNull();
         expect(getNonStandardDateTimeFormatWarning('yyyy-MM-dd hh:mm a')).toBeNull();
@@ -84,9 +84,11 @@ describe('Date Utilities', () => {
     });
 
     test('getNonStandardFormatWarning', () => {
-        expect(getNonStandardFormatWarning(DateFormatType.Date, null)).toBe('Non-standard date format.')
-        expect(getNonStandardFormatWarning(DateFormatType.Time, '')).toBe('Non-standard time format.')
-        expect(getNonStandardFormatWarning(DateFormatType.DateTime, undefined)).toBe('Non-standard date and time format.')
+        expect(getNonStandardFormatWarning(DateFormatType.Date, null)).toBe('Non-standard date format.');
+        expect(getNonStandardFormatWarning(DateFormatType.Time, '')).toBe('Non-standard time format.');
+        expect(getNonStandardFormatWarning(DateFormatType.DateTime, undefined)).toBe(
+            'Non-standard date and time format.'
+        );
 
         expect(getNonStandardFormatWarning(DateFormatType.Date, 'yyyy-MM-dd')).toBeNull();
         expect(getNonStandardFormatWarning(DateFormatType.DateTime, 'yyyy-MM-dd')).toBeNull();
@@ -101,7 +103,9 @@ describe('Date Utilities', () => {
         expect(getNonStandardFormatWarning(DateFormatType.Time, 'HH:mm')).toBeNull();
 
         expect(getNonStandardFormatWarning(DateFormatType.Date, 'yyyy/MM/dd')).toBe('Non-standard date format.');
-        expect(getNonStandardFormatWarning(DateFormatType.DateTime, 'yyyy/MM/dd HH-mm')).toBe('Non-standard date and time format.')
+        expect(getNonStandardFormatWarning(DateFormatType.DateTime, 'yyyy/MM/dd HH-mm')).toBe(
+            'Non-standard date and time format.'
+        );
         expect(getNonStandardFormatWarning(DateFormatType.Time, 'hh:mm aa')).toBe('Non-standard time format.');
     });
 
@@ -112,26 +116,28 @@ describe('Date Utilities', () => {
 
         const expectedOptions = {
             dateOptions: [
-                {"label": "yyyy-MM-dd (2020-08-06)", "value": "yyyy-MM-dd"},
-                {"label": "yyyy-MMM-dd (2020-Aug-06)", "value": "yyyy-MMM-dd"},
-                {"label": "dd-MMM-yyyy (06-Aug-2020)", "value": "dd-MMM-yyyy"},
-                {"label": "dd-MMM-yy (06-Aug-20)", "value": "dd-MMM-yy"},
-                {"label": "ddMMMyyyy (06Aug2020)", "value": "ddMMMyyyy"},
-                {"label": "ddMMMyy (06Aug20)", "value": "ddMMMyy"}],
+                { label: 'yyyy-MM-dd (2020-08-06)', value: 'yyyy-MM-dd' },
+                { label: 'yyyy-MMM-dd (2020-Aug-06)', value: 'yyyy-MMM-dd' },
+                { label: 'dd-MMM-yyyy (06-Aug-2020)', value: 'dd-MMM-yyyy' },
+                { label: 'dd-MMM-yy (06-Aug-20)', value: 'dd-MMM-yy' },
+                { label: 'ddMMMyyyy (06Aug2020)', value: 'ddMMMyyyy' },
+                { label: 'ddMMMyy (06Aug20)', value: 'ddMMMyy' },
+            ],
             optionalTimeOptions: [
-                {"label": "<none>", "value": ""},
-                {"label": "HH:mm:ss (17:44:43)", "value": "HH:mm:ss"},
-                {"label": "HH:mm (17:44)", "value": "HH:mm"},
-                {"label": "HH:mm:ss.SSS (17:44:43.812)", "value": "HH:mm:ss.SSS"},
-                {"label": "hh:mm a (05:44 PM)", "value": "hh:mm a"}],
+                { label: '<none>', value: '' },
+                { label: 'HH:mm:ss (17:44:43)', value: 'HH:mm:ss' },
+                { label: 'HH:mm (17:44)', value: 'HH:mm' },
+                { label: 'HH:mm:ss.SSS (17:44:43.812)', value: 'HH:mm:ss.SSS' },
+                { label: 'hh:mm a (05:44 PM)', value: 'hh:mm a' },
+            ],
             timeOptions: [
-                {"label": "HH:mm:ss (17:44:43)", "value": "HH:mm:ss"},
-                {"label": "HH:mm (17:44)", "value": "HH:mm"},
-                {"label": "HH:mm:ss.SSS (17:44:43.812)", "value": "HH:mm:ss.SSS"},
-                {"label": "hh:mm a (05:44 PM)", "value": "hh:mm a"}]
+                { label: 'HH:mm:ss (17:44:43)', value: 'HH:mm:ss' },
+                { label: 'HH:mm (17:44)', value: 'HH:mm' },
+                { label: 'HH:mm:ss.SSS (17:44:43.812)', value: 'HH:mm:ss.SSS' },
+                { label: 'hh:mm a (05:44 PM)', value: 'hh:mm a' },
+            ],
         };
         expect(getDateTimeInputOptions(tz, date)).toEqual(expectedOptions);
-
     });
 
     describe('generateNameWithTimestamp', () => {

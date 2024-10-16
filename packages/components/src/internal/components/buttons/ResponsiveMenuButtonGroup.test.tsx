@@ -7,7 +7,7 @@ import { TEST_USER_FOLDER_ADMIN, TEST_USER_READER } from '../../userFixtures';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { mountWithServerContext } from '../../test/enzymeTestHelpers';
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 import { ResponsiveMenuButtonGroup } from './ResponsiveMenuButtonGroup';
 
@@ -21,20 +21,16 @@ describe('ResponsiveMenuButtonGroup', () => {
     };
 
     test('admin', () => {
-        const wrapper = mountWithServerContext(
-            <ResponsiveMenuButtonGroup {...DEFAULT_PROPS} user={TEST_USER_FOLDER_ADMIN} />,
-            { user: TEST_USER_FOLDER_ADMIN }
-        );
-        expect(wrapper.find('DropdownButton')).toHaveLength(2);
-        wrapper.unmount();
+        renderWithAppContext(<ResponsiveMenuButtonGroup {...DEFAULT_PROPS} user={TEST_USER_FOLDER_ADMIN} />, {
+            serverContext: { user: TEST_USER_FOLDER_ADMIN },
+        });
+        expect(document.querySelectorAll('button')).toHaveLength(2);
     });
 
     test('reader', () => {
-        const wrapper = mountWithServerContext(
-            <ResponsiveMenuButtonGroup {...DEFAULT_PROPS} user={TEST_USER_READER} />,
-            { user: TEST_USER_READER }
-        );
-        expect(wrapper.find('DropdownButton')).toHaveLength(0);
-        wrapper.unmount();
+        renderWithAppContext(<ResponsiveMenuButtonGroup {...DEFAULT_PROPS} user={TEST_USER_READER} />, {
+            serverContext: { user: TEST_USER_READER },
+        });
+        expect(document.querySelectorAll('button')).toHaveLength(0);
     });
 });

@@ -115,7 +115,6 @@ export const EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED = 'queryProductProj
 export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu';
 export const EXPERIMENTAL_IDENTIFYING_FIELDS = 'experimental-identifying-fields';
 export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot-selector';
-export const EXPERIMENTAL_CALCULATED_FIELDS = 'experimental-calculated-fields';
 
 export const FOLDER_DATA_TYPE_EXCLUSIONS = 'dataTypeExclusions';
 

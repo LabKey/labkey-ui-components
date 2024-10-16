@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.14.0
+*Released*: 16 October 2024
+- Calculated fields error handling
+  - calculated field expression input width change, show examples inline next to textarea, add "click to validate"
+  - parseCalculatedColumn to first try making an executeSQL call with fake data to catch SQL errors
+  - parseCalculatedColumn to include PHI check in validation (Issue 51235)
+  - withQueryModel to retry failed query without calculated fields, set viewError on QueryModel for grid display
+  - remove experimental feature flag for calculated fields
+
 ### version 5.13.2
 *Released*: 14 October 2024
 - Issue 51056 Samples with single double quotes in the name will not resolve if added as parent samples.

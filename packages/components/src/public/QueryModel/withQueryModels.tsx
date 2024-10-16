@@ -15,6 +15,8 @@ import { resolveErrorMessage } from '../../internal/util/messaging';
 
 import { selectRows } from '../../internal/query/selectRows';
 
+import { incrementClientSideMetricCount } from '../../internal/actions';
+
 import { filterArraysEqual, getSelectRowCountColumnsStr, sortArraysEqual } from './utils';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
 import {
@@ -136,6 +138,7 @@ const resetRowsState = (model: Draft<QueryModel>): void => {
     model.messages = undefined;
     model.offset = 0;
     model.orderedRows = undefined;
+    model.viewError = undefined;
     model.rowsError = undefined;
     model.rows = undefined;
     model.rowCount = undefined;
@@ -646,6 +649,10 @@ export function withQueryModels<Props>(
                 this.setState(
                     produce<State>(draft => {
                         const model = draft.queryModels[id];
+                        const calcFieldNames = model.queryInfo
+                            .getAllColumns()
+                            .filter(c => c.isCalculatedField)
+                            .map(c => c.name);
                         let rowsError = resolveErrorMessage(error, 'data', undefined, 'loading');
 
                         if (rowsError === undefined) {
@@ -655,13 +662,30 @@ export function withQueryModels<Props>(
                         console.error(`Error loading rows for model ${id}: `, rowsError);
                         removeSettingsFromLocalStorage(this.state.queryModels[id]);
 
-                        if (rowsError?.indexOf('The requested view does not exist for this user') > -1) {
+                        if (
+                            rowsError?.indexOf('The requested view') === 0 &&
+                            rowsError?.indexOf(' does not exist for this user.') > 0
+                        ) {
                             // Issue 49378: if view doesn't exist, use default view
                             viewDoesNotExist = true;
                             model.schemaQuery = new SchemaQuery(model.schemaName, model.queryName);
                             resetRowsState(model);
                             resetTotalCountState(model);
                             resetSelectionState(model);
+                            model.viewError = rowsError + ' Returning to the default view.';
+                            incrementClientSideMetricCount('QueryModel', 'ViewDoesNotExist');
+                        } else if (!model.viewError && calcFieldNames.length > 0) {
+                            // Issue 51204: if we have a calculated field, they are likely causing the problem so retry without them
+                            viewDoesNotExist = true;
+                            model.omittedColumns = model.omittedColumns.concat(calcFieldNames);
+                            resetRowsState(model);
+                            resetTotalCountState(model);
+                            resetSelectionState(model);
+                            model.viewError =
+                                rowsError +
+                                (rowsError.endsWith('.') ? '' : '.') +
+                                ' All calculated fields have been omitted from the view.';
+                            incrementClientSideMetricCount('QueryModel', 'CalculatedFieldError');
                         } else {
                             model.rowsLoadingState = LoadingState.LOADED;
                             model.rowsError = rowsError;
@@ -670,7 +694,7 @@ export function withQueryModels<Props>(
                     }),
                     () => {
                         if (viewDoesNotExist) {
-                            this.maybeLoad(id, false, true, loadSelections);
+                            this.maybeLoad(id, false, true, true, true);
                             saveSettingsToLocalStorage(this.state.queryModels[id]);
                         }
                     }
@@ -773,6 +797,7 @@ export function withQueryModels<Props>(
                         model.queryInfo = queryInfo;
                         model.queryInfoLoadingState = LoadingState.LOADED;
                         model.queryInfoError = undefined;
+                        model.viewError = undefined;
                     }),
                     () => this.maybeLoad(id, false, loadRows, loadSelections, reloadTotalCount)
                 );

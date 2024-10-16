@@ -435,11 +435,9 @@ export function getNonStandardDateTimeFormatWarning(dateTimeFormat: string): str
     const warning = 'Non-standard date-time format.';
     if (!dateTimeFormat) return warning;
     const parts = splitDateTimeFormat(dateTimeFormat);
-    if (parts.length === 1 || !parts[1])
-        return isStandardDateDisplayFormat(parts[0]) ? null : warning;
+    if (parts.length === 1 || !parts[1]) return isStandardDateDisplayFormat(parts[0]) ? null : warning;
     else if (parts.length === 2) {
-        if (!isStandardDateDisplayFormat(parts[0]) || !isStandardTimeDisplayFormat(parts[1]))
-            return warning;
+        if (!isStandardDateDisplayFormat(parts[0]) || !isStandardTimeDisplayFormat(parts[1])) return warning;
         return null;
     }
     return warning;

@@ -3,6 +3,8 @@ import { render } from '@testing-library/react';
 
 import { waitFor } from '@testing-library/dom';
 
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { DomainField } from './models';
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DOMAIN_FIELD_FULLY_LOCKED } from './constants';
@@ -246,7 +248,7 @@ describe('DomainRowExpandedOptions', () => {
             rangeURI: TEXT_TYPE.rangeURI,
         });
 
-        render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
+        renderWithAppContext(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
         await waitFor(() => {
             const headers = document.querySelectorAll('.domain-field-section-heading');
@@ -263,7 +265,7 @@ describe('DomainRowExpandedOptions', () => {
             rangeURI: INTEGER_TYPE.rangeURI,
         });
 
-        render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
+        renderWithAppContext(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
         await waitFor(() => {
             const headers = document.querySelectorAll('.domain-field-section-heading');

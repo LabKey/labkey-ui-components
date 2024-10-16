@@ -75,7 +75,8 @@ export function resolveErrorMessage(
     noun = 'data',
     nounPlural?: string,
     verb?: string,
-    duplicatesMessageResolver?: (errorMsg: string, noun: string, nounPlural?: string, verb?: string) => string
+    duplicatesMessageResolver?: (errorMsg: string, noun: string, nounPlural?: string, verb?: string) => string,
+    returnInitialMsg = false
 ): string {
     let errorMsg;
     if (!error) {
@@ -90,7 +91,9 @@ export function resolveErrorMessage(
     } else if (error.exception) {
         errorMsg = error.exception;
     }
-    if (errorMsg) {
+    if (returnInitialMsg) {
+        return errorMsg;
+    } else if (errorMsg) {
         const lcMessage = errorMsg.toLowerCase();
         const duplicatesResolver = duplicatesMessageResolver ?? resolveDuplicatesAsName;
         if (
@@ -105,10 +108,8 @@ export function resolveErrorMessage(
         ) {
             return `There was a problem ${verb || 'creating'} your ${noun || 'data'}. Check the data fields to make
             sure they contain or reference valid values.`;
-        } else if (lcMessage.indexOf(ClassCastMessage) >= 0) {
+        } else if (lcMessage.indexOf(ClassCastMessage) >= 0 || lcMessage.indexOf('bad sql grammar') >= 0) {
             return `There was a problem ${verb || 'creating'} your ${noun || 'data'}.  Check that the format of the data matches the expected type for each field.`;
-        } else if (lcMessage.indexOf('bad sql grammar') >= 0) {
-            return `There was a problem ${verb || 'creating'} your ${noun || 'data'}.  Check that the format of the data matches the expected type for each field. If you are using calculated fields, you might need to add explicit type casts.`;
         } else if (lcMessage.indexOf('existing row was not found') >= 0) {
             return `We could not find the ${noun || 'data'} ${
                 verb ? 'to ' + verb : ''

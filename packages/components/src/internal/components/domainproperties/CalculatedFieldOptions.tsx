@@ -54,20 +54,22 @@ export const getColumnTypeMap = (
     return colTypeMap;
 };
 
+export const getPHIColumnNames = (domainFields: List<DomainField>): string[] => {
+    if (!domainFields) return [];
+
+    return domainFields
+        .filter(df => df.isPHI())
+        .map(df => df.name)
+        .toArray();
+};
+
 const HELP_TIP_BODY = (
     <div className="domain-field-fixed-tooltip">
         <p>Define the SQL expression to use for this calculated field.</p>
         <p>
             The expression must be valid LabKey SQL and can use the default system fields, custom fields, constants, and
-            operators. Learn more: <HelpLink topic={LABKEY_SQL_TOPIC}>LabKey SQL Reference</HelpLink>
+            operators. Learn more about using <HelpLink topic={LABKEY_SQL_TOPIC}>LabKey SQL</HelpLink>.
         </p>
-        Examples:
-        <pre>
-            <p>numericField1 / numericField2 * 100</p>
-            <p>CURDATE()</p>
-            <p>CASE WHEN FreezeThawCount &lt; 2 THEN 'Viable' ELSE 'Questionable' END</p>
-        </pre>
-        <HelpLink topic={FIELD_EDITOR_CALC_COLS_TOPIC}>Click for more examples</HelpLink>
     </div>
 );
 
@@ -89,6 +91,8 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
     const handleChange = useCallback(
         (evt: any): void => {
             onChange(evt.target.id, evt.target.value);
+            setError(undefined);
+            setParsedType(undefined);
         },
         [onChange]
     );
@@ -100,8 +104,9 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
             setParsedType(undefined);
             const { domainFields, systemFields } = getDomainFields();
             const colTypeMap = getColumnTypeMap(domainFields, systemFields);
+            const phiColumns = getPHIColumnNames(domainFields);
             try {
-                const response = await parseCalculatedColumn(value, colTypeMap);
+                const response = await parseCalculatedColumn(value, colTypeMap, phiColumns);
                 setError(response.error);
                 setParsedType(response.type);
 
@@ -153,21 +158,21 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
             })}
         >
             <div className="row">
-                <div className="col-xs-12">
+                <div className="col-xs-12 col-md-6">
                     <SectionHeading title="Expression" cls="bottom-spacing" helpTipBody={HELP_TIP_BODY} />
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-xs-12">
                     <textarea
                         className="form-control"
-                        rows={4}
+                        rows={6}
                         value={field.valueExpression || ''}
                         id={createFormInputId(DOMAIN_FIELD_VALUE_EXPRESSION, domainIndex, index)}
                         name={createFormInputName(DOMAIN_FIELD_VALUE_EXPRESSION)}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        disabled={isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType)}
+                        disabled={
+                            isFieldPartiallyLocked(field.lockType) ||
+                            isFieldFullyLocked(field.lockType) ||
+                            field.lockExistingField
+                        }
                     />
                     <div className="domain-field-calc-footer">
                         {error && <div className="error">{error}</div>}
@@ -177,7 +182,34 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                             </div>
                         )}
                         {loading && <div>Validating expression...</div>}
+                        {!error && !loading && !parsedType && field.valueExpression?.length > 0 && (
+                            <div className="validate-link">Click to validate</div>
+                        )}
                     </div>
+                </div>
+                <div className="col-xs-12 col-md-6 domain-field-calc-examples">
+                    <b>Examples</b>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Addition:</td>
+                                <td className="code">numericField1 + numericField2</td>
+                            </tr>
+                            <tr>
+                                <td>Subtraction:</td>
+                                <td className="code">numericField1 - numericField2</td>
+                            </tr>
+                            <tr>
+                                <td>Multiplication:</td>
+                                <td className="code">numericField1 * numericField2</td>
+                            </tr>
+                            <tr>
+                                <td>Division:</td>
+                                <td className="code">numericField1 / nonZeroField1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <HelpLink topic={FIELD_EDITOR_CALC_COLS_TOPIC}>Click for more examples</HelpLink>
                 </div>
             </div>
         </div>

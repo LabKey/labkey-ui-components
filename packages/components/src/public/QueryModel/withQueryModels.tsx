@@ -662,7 +662,10 @@ export function withQueryModels<Props>(
                         console.error(`Error loading rows for model ${id}: `, rowsError);
                         removeSettingsFromLocalStorage(this.state.queryModels[id]);
 
-                        if (rowsError?.indexOf('The requested view') === 0 && rowsError?.indexOf(' does not exist for this user.') > 0) {
+                        if (
+                            rowsError?.indexOf('The requested view') === 0 &&
+                            rowsError?.indexOf(' does not exist for this user.') > 0
+                        ) {
                             // Issue 49378: if view doesn't exist, use default view
                             viewDoesNotExist = true;
                             model.schemaQuery = new SchemaQuery(model.schemaName, model.queryName);

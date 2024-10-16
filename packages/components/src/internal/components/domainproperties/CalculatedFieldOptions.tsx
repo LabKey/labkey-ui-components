@@ -168,7 +168,11 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                         name={createFormInputName(DOMAIN_FIELD_VALUE_EXPRESSION)}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        disabled={isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType) || field.lockExistingField}
+                        disabled={
+                            isFieldPartiallyLocked(field.lockType) ||
+                            isFieldFullyLocked(field.lockType) ||
+                            field.lockExistingField
+                        }
                     />
                     <div className="domain-field-calc-footer">
                         {error && <div className="error">{error}</div>}

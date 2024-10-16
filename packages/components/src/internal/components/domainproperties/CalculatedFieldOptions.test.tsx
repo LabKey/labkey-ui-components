@@ -6,14 +6,14 @@ import { act } from '@testing-library/react';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
-import {CalculatedFieldOptions, getColumnTypeMap, getPHIColumnNames, typeToDisplay} from './CalculatedFieldOptions';
+import { CalculatedFieldOptions, getColumnTypeMap, getPHIColumnNames, typeToDisplay } from './CalculatedFieldOptions';
 import { DomainField, SystemField } from './models';
 import {
     DOMAIN_FIELD_PARTIALLY_LOCKED,
     INT_RANGE_URI,
     PHILEVEL_LIMITED_PHI,
     PHILEVEL_NOT_PHI,
-    STRING_RANGE_URI
+    STRING_RANGE_URI,
 } from './constants';
 
 describe('CalculatedFieldOptions', () => {
@@ -96,7 +96,7 @@ describe('CalculatedFieldOptions', () => {
     test('getPHIColumnNames', () => {
         expect(getPHIColumnNames(undefined)).toEqual([]);
         expect(getPHIColumnNames(List.of())).toEqual([]);
-        expect(getPHIColumnNames(List.of(DomainField.create({ name: 'a' } )))).toEqual([]);
+        expect(getPHIColumnNames(List.of(DomainField.create({ name: 'a' })))).toEqual([]);
         expect(getPHIColumnNames(List.of(DomainField.create({ name: 'a', PHI: undefined })))).toEqual([]);
         expect(getPHIColumnNames(List.of(DomainField.create({ name: 'a', PHI: PHILEVEL_NOT_PHI })))).toEqual([]);
         expect(getPHIColumnNames(List.of(DomainField.create({ name: 'a', PHI: PHILEVEL_LIMITED_PHI })))).toEqual(['a']);

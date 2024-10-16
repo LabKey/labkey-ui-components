@@ -69,6 +69,9 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
     async fetch(): Promise<GridResponse> {
         const { queryName, queryParameters, schemaName, sortString, viewName } = this.queryModel;
         const selectedIds = this.queryModel.getSelectedIds(this.idsNotPermitted);
+        // TODO: when going form Bulk Update -> Edit in Grid this getSelectedData call is redundant, as our
+        //  BulkUpdateForm gives us the selected data. In a future PR we'll update this loader to optionally accept the
+        //  already existing selection data. See SamplesEditableGrid for an example that is passed selectionData.
         const { data, dataIds } = await getSelectedData(
             schemaName,
             queryName,

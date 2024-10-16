@@ -11,6 +11,7 @@ import { AppURL, createProductUrlFromParts } from './url/AppURL';
 
 import { SCHEMAS } from './schemas';
 import { WHERE_FILTER_TYPE } from './url/WhereFilterType';
+import { ASSAYS_KEY } from './app/constants';
 
 export enum AssayDomainTypes {
     BATCH = 'Batch',
@@ -66,6 +67,18 @@ export class AssayDefinitionModel extends ImmutableRecord({
     declare reRunSupport: string;
     declare templateLink: string;
     declare type: string;
+
+    get batchesSchemaQuery(): SchemaQuery {
+        return new SchemaQuery(this.protocolSchemaName, 'Batches');
+    }
+
+    get resultsSchemaQuery(): SchemaQuery {
+        return new SchemaQuery(this.protocolSchemaName, 'Data');
+    }
+
+    get runsSchemaQuery(): SchemaQuery {
+        return new SchemaQuery(this.protocolSchemaName, 'Runs');
+    }
 
     static create(rawModel): AssayDefinitionModel {
         let domains = Map<string, List<QueryColumn>>();
@@ -136,7 +149,7 @@ export class AssayDefinitionModel extends ImmutableRecord({
                 targetProductId,
                 currentProductId,
                 params,
-                'assays',
+                ASSAYS_KEY,
                 this.type,
                 this.name,
                 'upload'
@@ -150,8 +163,12 @@ export class AssayDefinitionModel extends ImmutableRecord({
         return url;
     }
 
-    getRunsUrl() {
-        return AppURL.create('assays', this.type, this.name, 'runs');
+    getAppImportUrl(): AppURL {
+        return AppURL.create(ASSAYS_KEY, this.type, this.name, 'upload');
+    }
+
+    getRunsUrl(): AppURL {
+        return AppURL.create(ASSAYS_KEY, this.type, this.name, 'runs');
     }
 
     hasLookup(targetSQ: SchemaQuery, isPicklist?: boolean): boolean {

@@ -66,6 +66,10 @@ export const getInitDateTimeSetting = (
             timeFormat = currentFormat;
     }
     const invalidWarning = getNonStandardFormatWarning(formatType, currentFormat);
+    if (invalidWarning && formatType === DateFormatType.DateTime) {
+        dateFormat = currentFormat;
+        timeFormat = '';
+    }
     return {
         formatType,
         settingName,

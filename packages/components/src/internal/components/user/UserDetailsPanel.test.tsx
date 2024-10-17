@@ -1,5 +1,4 @@
-import React from 'react';
-import { act } from '@testing-library/react';
+import React, { act } from 'react';
 
 import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
 import policyJSON from '../../../test/data/security-getPolicy.json';

@@ -1,8 +1,8 @@
 // This file was originally derived from the "formsy-react" package, specifically, v2.3.2.
 // Credit: Christian Alfoni and the Formsy Authors
 // Repository: https://github.com/formsy/formsy-react/tree/0226fab133a25
-import React, { FC, PropsWithChildren, memo, useCallback, useRef, useState } from 'react';
-import { act, createEvent, fireEvent, render } from '@testing-library/react';
+import React, { act, FC, PropsWithChildren, memo, useCallback, useRef, useState } from 'react';
+import { createEvent, fireEvent, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
 import { FormsyInjectedProps, ValidationError } from './types';

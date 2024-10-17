@@ -1,5 +1,5 @@
-import React from 'react';
-import { screen, act } from '@testing-library/react';
+import React, { act } from 'react';
+import { screen } from '@testing-library/react';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getQueryTestAPIWrapper } from '../../query/APIWrapper';

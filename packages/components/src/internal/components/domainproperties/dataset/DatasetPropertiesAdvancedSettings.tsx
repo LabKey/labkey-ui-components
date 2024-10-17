@@ -147,7 +147,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         fetchCohorts()
             .then(data => {
                 this.setState({
-                    availableCohorts: data.toArray(),
+                    availableCohorts: data,
                 });
             })
             .catch(error => {

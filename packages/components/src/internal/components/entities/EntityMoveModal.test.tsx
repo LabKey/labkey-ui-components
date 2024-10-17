@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { act } from '@testing-library/react';
+import React, { act } from 'react';
 
 import { render } from '@testing-library/react';
 

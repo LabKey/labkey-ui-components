@@ -163,7 +163,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                 })
                 .catch(reason => {
                     setError(
-                        resolveErrorMessage(reason, 'status', 'statuses', 'updating', resolveDuplicateStatusLabel)
+                        resolveErrorMessage(reason, 'status', 'statuses', 'update', resolveDuplicateStatusLabel)
                     );
                     setSaving(false);
                 });
@@ -183,7 +183,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                             response.error,
                             'status',
                             'status',
-                            'inserting',
+                            'insert',
                             resolveDuplicateStatusLabel
                         )
                     );
@@ -205,7 +205,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     onActionComplete(undefined, true);
                 })
                 .catch(reason => {
-                    setError(resolveErrorMessage(reason?.error, 'status', 'statuses', 'deleting'));
+                    setError(resolveErrorMessage(reason?.error, 'status', 'statuses', 'delete'));
                     setShowDeleteConfirm(false);
                 });
         } else {

@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
-import { act } from '@testing-library/react';
+import React, { act } from 'react';
 
 import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
@@ -26,7 +25,12 @@ import { DatasetModel } from './models';
 
 import { DatasetPropertiesPanel } from './DatasetPropertiesPanel';
 import { VISIT_TIMEPOINT_TYPE } from './constants';
-import { sleep } from '../../../test/testHelpers';
+
+jest.mock('./actions', () => ({
+    ...jest.requireActual('./actions'),
+    fetchCohorts: jest.fn().mockResolvedValue([]),
+    fetchCategories: jest.fn().mockResolvedValue([]),
+}));
 
 describe('Dataset Properties Panel', () => {
     const studyProperties = {
@@ -36,50 +40,45 @@ describe('Dataset Properties Panel', () => {
         TimepointType: VISIT_TIMEPOINT_TYPE,
     };
 
-    // FIXME: these test cases are disabled for several reasons. They can be re-enabled when:
-    //  1. DatasetPropertiesAdvancedPanel makes network requests, it needs to be updated so that it uses an APIWrapper
-    //  2. DatasetPropertiesFormElements makes network reqquests, it needs tobe updated so that it uses an APIWrapper
-    //  3. We have specific things that we are going to test for instead of using snapshots. It is not clear what these
-    //  tests are actually testing. Do not enable them with snapshots.
-    test('FIXME', () => {});
+    test('New dataset', async () => {
+        await act(async () => {
+            renderWithAppContext(
+                <DatasetPropertiesPanel
+                    initCollapsed={false}
+                    model={DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE)}
+                    controlledCollapse={true}
+                    panelStatus="COMPLETE"
+                    validate={false}
+                    studyProperties={studyProperties}
+                    onToggle={jest.fn()}
+                    onChange={jest.fn()}
+                />
+            );
+        });
 
-    // test('New dataset', async () => {
-    //     let container;
-    //     await act(async () => {
-    //         container = renderWithAppContext(
-    //             <DatasetPropertiesPanel
-    //                 initCollapsed={false}
-    //                 model={DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE)}
-    //                 controlledCollapse={true}
-    //                 panelStatus="COMPLETE"
-    //                 validate={false}
-    //                 studyProperties={studyProperties}
-    //                 onToggle={jest.fn()}
-    //                 onChange={jest.fn()}
-    //             />
-    //         );
-    //     });
-    //
-    //     expect(container).toMatchSnapshot();
-    // });
-    //
-    // test('Edit existing dataset', async () => {
-    //     let container;
-    //     await act(async () => {
-    //         container = renderWithAppContext(
-    //             <DatasetPropertiesPanel
-    //                 initCollapsed={false}
-    //                 model={DatasetModel.create(null, getDatasetDesign)}
-    //                 controlledCollapse={true}
-    //                 panelStatus="COMPLETE"
-    //                 validate={false}
-    //                 studyProperties={studyProperties}
-    //                 onToggle={jest.fn()}
-    //                 onChange={jest.fn()}
-    //             />
-    //         );
-    //     });
-    //
-    //     expect(container).toMatchSnapshot();
-    // });
+        expect(document.getElementById('name')).toHaveValue('');
+        expect(document.getElementById('label')).toHaveValue('');
+        expect(document.getElementById('description').textContent).toBe('');
+    });
+
+    test('Edit existing dataset', async () => {
+        await act(async () => {
+            renderWithAppContext(
+                <DatasetPropertiesPanel
+                    initCollapsed={false}
+                    model={DatasetModel.create(null, getDatasetDesign)}
+                    controlledCollapse={true}
+                    panelStatus="COMPLETE"
+                    validate={false}
+                    studyProperties={studyProperties}
+                    onToggle={jest.fn()}
+                    onChange={jest.fn()}
+                />
+            );
+        });
+
+        expect(document.getElementById('name')).toHaveValue('Dataset1');
+        expect(document.getElementById('label')).toHaveValue('Dataset One');
+        expect(document.getElementById('description').textContent).toBe('This is the first dataset');
+    });
 });

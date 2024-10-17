@@ -653,7 +653,7 @@ export function withQueryModels<Props>(
                             .getAllColumns()
                             .filter(c => c.isCalculatedField)
                             .map(c => c.name);
-                        let rowsError = resolveErrorMessage(error, 'data', undefined, 'loading');
+                        let rowsError = resolveErrorMessage(error, 'data', undefined, 'load');
 
                         if (rowsError === undefined) {
                             rowsError = `Error while loading rows for SchemaQuery: ${model.schemaQuery.toString()}`;

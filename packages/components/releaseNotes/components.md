@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.X
+*Released*: X October 2024
+- Date/Time formatting simplifications - Settings UI Changes
+  - Add utils for handling standard date/time formats
+  - Move getFolderDateTimeHelpBody from ContainerLookAndFeelForm to shared util
+  - Check blank initial value for SelectInput
+  - Modified DateTimeFieldOptions to use standard formats and new UI
+
 ### version 5.14.1
 *Released*: 17 October 2024
 - Fix verb usage in `resolveErrorMessage`, deriving the present participle of the verb when not provided

@@ -20,12 +20,19 @@ import { Container, getServerContext } from '@labkey/api';
 import { QueryColumn } from '../../public/QueryColumn';
 
 import { TIME_RANGE_URI } from '../components/domainproperties/constants';
+import { SelectInputOption } from '../components/forms/input/SelectInput';
 
 // These constants align with the formats declared in DateUtil.java
 const ISO_DATE_FORMAT_STRING = 'yyyy-MM-dd';
 const ISO_SHORT_TIME_FORMAT_STRING = 'HH:mm';
 const ISO_TIME_FORMAT_STRING = 'HH:mm:ss';
 const ISO_DATE_TIME_FORMAT_STRING = `${ISO_DATE_FORMAT_STRING} ${ISO_TIME_FORMAT_STRING}`;
+
+const STANDARD_DATE_DISPLAY_FORMATS = ['yyyy-MM-dd', 'yyyy-MMM-dd', 'dd-MMM-yyyy', 'dd-MMM-yy', 'ddMMMyyyy', 'ddMMMyy'];
+
+const STANDARD_TIME_DISPLAY_FORMATS = ['HH:mm:ss', 'HH:mm', 'HH:mm:ss.SSS', 'hh:mm a'];
+
+const MISSING_FORMAT_DISPLAY = '<none>';
 
 // Intended to match against ISO_DATE_FORMAT_STRING
 const ISO_DATE_FORMAT_REGEX = /^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/;
@@ -225,27 +232,35 @@ export function getColFormattedTimeFilterValue(column: QueryColumn, value: strin
     return _getColFormattedTimeFilterValue(column, value);
 }
 
-type ContainerFormats = {
+export type ContainerFormats = {
     dateFormat: string;
+    dateFormatInherited?: boolean;
     dateTimeFormat: string;
+    dateTimeFormatInherited?: boolean;
     numberFormat: string;
+    numberFormatInherited?: boolean;
+    parentDateFormat?: string;
+    parentDateTimeFormat?: string;
+    parentNumberFormat?: string;
+    parentTimeFormat?: string;
     timeFormat: string;
+    timeFormatInherited?: boolean;
 };
 
-function getFormats(container?: Partial<Container>): ContainerFormats {
+export function getContainerFormats(container?: Partial<Container>): ContainerFormats {
     return (container ?? getServerContext().container).formats;
 }
 
 export function getDateFormat(container?: Partial<Container>): string {
-    return getFormats(container).dateFormat;
+    return getContainerFormats(container).dateFormat;
 }
 
 export function getDateTimeFormat(container?: Partial<Container>): string {
-    return getFormats(container).dateTimeFormat;
+    return getContainerFormats(container).dateTimeFormat;
 }
 
 export function getTimeFormat(container?: Partial<Container>): string {
-    return getFormats(container).timeFormat;
+    return getContainerFormats(container).timeFormat;
 }
 
 // Tested via formatDate(). Search Date.test.ts for 'toDateFNSFormatString'.
@@ -387,6 +402,131 @@ function safeParse(dateStr: string, formatStr: string, referenceDate: number | D
         return undefined;
     }
 }
+
+function isStandardDateDisplayFormat(dateFormat: string): boolean {
+    return STANDARD_DATE_DISPLAY_FORMATS.indexOf(dateFormat) > -1;
+}
+
+function isStandardTimeDisplayFormat(timeFormat: string): boolean {
+    return STANDARD_TIME_DISPLAY_FORMATS.indexOf(timeFormat) > -1;
+}
+
+export function splitDateTimeFormat(dateTimeFormatStr: string): string[] {
+    const dateTimeFormat = dateTimeFormatStr?.trim();
+    if (!dateTimeFormat) return ['', ''];
+    if (dateTimeFormat.indexOf(' h') > 0 || dateTimeFormat.indexOf(' H') > 0) {
+        const splitInd = dateTimeFormat.indexOf(' h') > 0 ? dateTimeFormat.indexOf(' h') : dateTimeFormat.indexOf(' H');
+        const date = dateTimeFormat.substring(0, splitInd).trim();
+        const time = dateTimeFormat.substring(splitInd + 1).trim();
+        return [date, time];
+    }
+    const [date, ...rest] = dateTimeFormat.split(/\s+/);
+    if (!rest || rest.length === 0) return [date, ''];
+    const time = rest.join(' ');
+    return [date, time];
+}
+
+export const joinDateTimeFormat = (date: string, time?: string): string => {
+    if (!time) return date;
+    return date + ' ' + time;
+};
+
+export function getNonStandardDateTimeFormatWarning(dateTimeFormat: string): string {
+    const warning = 'Non-standard date-time format.';
+    if (!dateTimeFormat) return warning;
+    const parts = splitDateTimeFormat(dateTimeFormat);
+    if (parts.length === 1 || !parts[1]) return isStandardDateDisplayFormat(parts[0]) ? null : warning;
+    else if (parts.length === 2) {
+        if (!isStandardDateDisplayFormat(parts[0]) || !isStandardTimeDisplayFormat(parts[1])) return warning;
+        return null;
+    }
+    return warning;
+}
+
+export function getNonStandardFormatWarning(formatType: DateFormatType, formatPattern: string): string {
+    switch (formatType) {
+        case DateFormatType.Date:
+            return isStandardDateDisplayFormat(formatPattern) ? null : 'Non-standard date format.';
+        case DateFormatType.DateTime:
+            return getNonStandardDateTimeFormatWarning(formatPattern);
+        case DateFormatType.Time:
+            return isStandardTimeDisplayFormat(formatPattern) ? null : 'Non-standard time format.';
+    }
+    return null;
+}
+
+export function getDateTimeInputOptions(
+    timezone?: string,
+    date?: Date
+): { dateOptions: SelectInputOption[]; optionalTimeOptions: SelectInputOption[]; timeOptions: SelectInputOption[] } {
+    const date_ = date ?? new Date();
+
+    const dateOptions = [];
+    STANDARD_DATE_DISPLAY_FORMATS.forEach(format => {
+        const example = _formatDate(date_, format, timezone);
+        dateOptions.push({
+            value: format,
+            label: format + ' (' + example + ')',
+        });
+    });
+
+    const dateFormat = STANDARD_DATE_DISPLAY_FORMATS[0];
+    const timeOptions: SelectInputOption[] = [];
+    STANDARD_TIME_DISPLAY_FORMATS.forEach(timeFormat => {
+        const dateTime = _formatDate(date_, dateFormat + ' ' + timeFormat, timezone);
+        const parts = splitDateTimeFormat(dateTime);
+        const example = parts[1];
+        timeOptions.push({
+            value: timeFormat,
+            label: timeFormat + ' (' + example + ')',
+        });
+    });
+
+    const optionalTimeOptions = [
+        {
+            value: '',
+            label: MISSING_FORMAT_DISPLAY,
+        },
+        ...timeOptions,
+    ];
+
+    return {
+        dateOptions,
+        timeOptions,
+        optionalTimeOptions,
+    };
+}
+
+export interface DateTimeSettingProp {
+    dateFormat: string;
+    dateOptions: SelectInputOption[];
+    formatType: DateFormatType;
+    inherited: boolean;
+    invalidWarning: string;
+    isDate: boolean;
+    isTime: boolean;
+    isTimeRequired: boolean;
+    parentFormat: string;
+    placeholder?: string;
+    settingName: string;
+    timeFormat: string;
+    timeOptions: SelectInputOption[];
+}
+
+export const getDateTimeSettingFormat = (setting: DateTimeSettingProp, checkInherited?: boolean): string => {
+    const { formatType, dateFormat, timeFormat, inherited } = setting;
+    if (!checkInherited && inherited) return null;
+    return formatType === DateFormatType.DateTime
+        ? joinDateTimeFormat(dateFormat, timeFormat)
+        : formatType === DateFormatType.Date
+          ? dateFormat
+          : timeFormat;
+};
+
+export const getDateTimeSettingWarning = (setting: DateTimeSettingProp): string => {
+    const { formatType } = setting;
+    return getNonStandardFormatWarning(formatType, getDateTimeSettingFormat(setting, true));
+};
 
 function _formatDate(date: Date | string | number, dateFormat: string, timezone?: string): string {
     const date_ = parseDate(date);

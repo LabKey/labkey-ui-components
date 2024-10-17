@@ -110,8 +110,8 @@ const basicEditorModel = new EditorModel({
 });
 
 function modifyEm(changes: Partial<EditorModel>, em?: EditorModel): EditorModel {
-    const models = [em ?? basicEditorModel];
-    return applyEditorModelChanges(models, changes)[0];
+    const model = em ?? basicEditorModel;
+    return model.applyChanges(changes);
 }
 
 describe('EditorModel', () => {

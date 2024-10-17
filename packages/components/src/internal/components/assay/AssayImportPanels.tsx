@@ -26,7 +26,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { isPlatesEnabled, isPremiumProductEnabled } from '../../app/utils';
+import { isPlatesEnabled } from '../../app/utils';
 
 import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionModel';
 
@@ -59,7 +59,7 @@ import { getOperationNotAllowedMessage } from '../samples/utils';
 
 import { EditableGridChange } from '../editable/EditableGrid';
 
-import { applyEditorModelChanges, incrementRowCountMetric } from '../editable/utils';
+import { incrementRowCountMetric } from '../editable/utils';
 
 import { CommentTextArea } from '../forms/input/CommentTextArea';
 
@@ -730,9 +730,8 @@ class AssayImportPanelsBody extends Component<BodyProps, State> {
 
     onGridChange: EditableGridChange = (event, editorModelChanges): void => {
         this.setState(state => {
-            const updatedModels = applyEditorModelChanges([state.editorModel], editorModelChanges);
             this.props.setIsDirty?.(true);
-            return { editorModel: updatedModels[0] };
+            return { editorModel: state.editorModel.applyChanges(editorModelChanges) };
         });
     };
 

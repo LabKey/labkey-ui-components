@@ -55,6 +55,7 @@ export interface SampleStorageLocationComponentProps {
     currentProductId?: string;
     onUpdate?: () => void;
     sampleId: string | number;
+    sampleQueryModel: QueryModel;
     updateAllowed: boolean;
     user: User;
 }

@@ -297,7 +297,6 @@ export interface SharedEditableGridProps {
     bulkAddProps?: Partial<QueryInfoFormProps>;
     bulkAddText?: string;
     bulkRemoveText?: string;
-    bulkTabHeaderComponent?: ReactNode; // TODO: Only used by MultiTargetStorageEditableGrid, is there another way?
     bulkUpdateProps?: Partial<BulkUpdateQueryInfoFormProps>;
     bulkUpdateText?: string;
     containerFilter?: Query.ContainerFilter;
@@ -315,11 +314,9 @@ export interface SharedEditableGridProps {
     lockLeftOnScroll?: boolean; // lock the left columns when scrolling horizontally
     maxRows?: number;
     metricFeatureArea?: string;
-    primaryBtnProps?: EditableGridBtnProps; // TODO: Only used by MultiTargetStorageEditableGrid, is there another way?
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
     readonlyRows?: string[]; // list of key values for rows that are readonly.
     rowNumColumn?: GridColumn;
-    saveBtnClickedCount?: number; // TODO: Only used by MultiTargetStorageEditableGrid, is there another way?
     showAsTab?: boolean; // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
     tabContainerCls?: string;
 }
@@ -447,13 +444,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         document.removeEventListener('copy', this.onCopy);
         document.removeEventListener('cut', this.onCut);
         document.removeEventListener('paste', this.onPaste);
-    }
-
-    componentDidUpdate(prevProps: EditableGridProps): void {
-        // use saveBtnClickedCount to notify EditableGrid of buttons defined outside of the component
-        if (prevProps.saveBtnClickedCount !== this.props.saveBtnClickedCount) {
-            this.onSaveClick();
-        }
     }
 
     select = (row: Map<string, any>, event: ChangeEvent<HTMLInputElement>): void => {
@@ -709,6 +699,10 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         if (pkValue !== undefined && readonlyRows?.includes(pkValue.toString())) return true;
 
         const queryCol = editorModel.columnMap.get(fieldKey);
+        if (!queryCol) {
+            console.error("No query column for field '", fieldKey + "'", editorModel.columnMap.toJS());
+            return true;
+        }
         if (queryCol.readOnly) return true;
 
         const metadata = editorModel.getColumnMetadata(queryCol.fieldKey);
@@ -1575,26 +1569,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
     };
 
-    onSaveClick = (): void => {
-        const { primaryBtnProps, editorModel, maxRows } = this.props;
-        const { pendingBulkFormData } = this.state;
-
-        if (editorModel.rowCount > maxRows) {
-            // only bulk edit is supported
-            primaryBtnProps?.onClick?.(pendingBulkFormData);
-            this.setState({ pendingBulkFormData: undefined });
-            return;
-        }
-
-        this.bulkUpdate(pendingBulkFormData).then(updates => {
-            this.setState({ pendingBulkFormData: undefined });
-            primaryBtnProps?.onClick?.(undefined, updates); // send back the updates in case caller uses useState to update EditorModel, which is async without cb
-        });
-    };
-
     renderBulkUpdate = (): ReactNode => {
         const {
-            bulkTabHeaderComponent,
             addControlProps,
             bulkUpdateProps,
             editorModel,
@@ -1616,7 +1592,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         {bulkUpdateProps.applyBulkUpdateBtnText}
                     </button>
                 )}
-                {bulkTabHeaderComponent}
                 <BulkAddUpdateForm
                     asModal={!showAsTab}
                     columnFilter={bulkUpdateProps?.columnFilter}

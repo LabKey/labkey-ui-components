@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 5.15.0
+*Released*: 17 October 2024
 - Remove properties from `EditableGrid` that support bulk updates when adding to storage
 
 ### version 5.14.1

@@ -731,7 +731,7 @@ export class EditorModel
     getUpdatedData(originalData?: Map<string, Map<string, any>>): UpdatedRow[] {
         // If we have data from bulk edit then we need to use that as originalData instead of the data on the EditorModel
         // otherwise we'll incorrectly diff the changes
-        originalData = originalData ?? this.originalData;
+        originalData = originalData ? EditorModel.convertQueryDataToEditorData(originalData) : this.originalData;
         const editorRows = this.getDataForServerUpload().toArray();
         const pkFieldKey = this.pkFieldKey;
         const queryInfo = this.queryInfo;
@@ -819,8 +819,8 @@ export class EditorModel
                     Object.assign(row, altIds);
                     // If the original row has a folder column we copy that over, we do not check for hasProductFolders
                     // because a few areas always send the column
-                    const folder = caseInsensitive(originalRow.toJS(), FOLDER_COL)?.value;
-                    if (folder) row[FOLDER_COL] = folder;
+                    const folder = caseInsensitive(originalRow.toJS(), FOLDER_COL)?.[0];
+                    if (folder) row[FOLDER_COL] = folder.value;
                     updatedRows.push(row);
                 }
             } else {

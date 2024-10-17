@@ -1,4 +1,3 @@
-import { List, Map, OrderedMap } from 'immutable';
 import { ComponentType } from 'react';
 import { Query } from '@labkey/api';
 
@@ -8,7 +7,6 @@ import { SchemaQuery } from '../public/SchemaQuery';
 
 import { TabbedGridPanelProps } from '../public/QueryModel/TabbedGridPanel';
 
-import { ComponentsAPIWrapper } from './APIWrapper';
 import { User } from './components/base/models/User';
 import { EntityDataType } from './components/entities/models';
 import { SampleGridButtonProps } from './components/samples/models';

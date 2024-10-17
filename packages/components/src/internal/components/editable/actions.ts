@@ -109,7 +109,7 @@ export const initEditorModel = async (
     let columns: QueryColumn[];
 
     if (loaderColumns) {
-        columns = loader.columns;
+        columns = loaderColumns;
     } else if (forUpdate) {
         columns = queryInfo.getUpdateColumns();
     } else {

@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Remove properties from `EditableGrid` that support bulk updates when adding to storage
 
+### version 5.14.1
+*Released*: 17 October 2024
+- Fix verb usage in `resolveErrorMessage`, deriving the present participle of the verb when not provided
+
 ### version 5.14.0
 *Released*: 16 October 2024
 - Calculated fields error handling

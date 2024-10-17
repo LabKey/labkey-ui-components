@@ -175,7 +175,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                     onActionCompleted(undefined, true);
                 })
                 .catch(reason => {
-                    setError(resolveErrorMessage(reason.get('error'), 'template', 'templates', 'deleting'));
+                    setError(resolveErrorMessage(reason.get('error'), 'template', 'templates', 'delete'));
                     onToggleDeleteConfirm();
                 });
         } else {

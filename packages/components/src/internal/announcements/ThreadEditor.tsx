@@ -324,7 +324,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
                 setModel({ ...model, attachments: updatedAttachments });
                 setAttachmentToRemove(undefined);
             } catch (err) {
-                const message = resolveErrorMessage(err, 'attachment', 'delete');
+                const message = resolveErrorMessage(err, 'attachment', 'attachments', 'delete');
                 setRemoveAttachmentError(`Error deleting attachment: ${message}`);
             } finally {
                 setIsRemoving(false);
@@ -365,7 +365,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         try {
             createdThread = await api.createThread(modelToCreate, files, parent !== undefined, containerPath);
         } catch (err) {
-            setError(resolveErrorMessage(err, 'thread', 'create'));
+            setError(resolveErrorMessage(err, 'thread', 'threads', 'create'));
         }
 
         setSubmitting(false);
@@ -391,7 +391,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         try {
             updatedThread = await api.updateThread(model, files, containerPath);
         } catch (err) {
-            setError(resolveErrorMessage(err, 'thread', 'update'));
+            setError(resolveErrorMessage(err, 'thread', 'threads', 'update'));
         }
 
         setSubmitting(false);

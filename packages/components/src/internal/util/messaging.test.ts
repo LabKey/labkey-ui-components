@@ -1,4 +1,22 @@
-import { getPermissionRestrictionMessage, resolveErrorMessage } from './messaging';
+import { getPermissionRestrictionMessage, makePresentParticiple, resolveErrorMessage } from './messaging';
+
+describe('makePresentParticiple', () => {
+    test('no verb', () => {
+        expect(makePresentParticiple('')).toBe('');
+        expect(makePresentParticiple(undefined)).toBeUndefined();
+        expect(makePresentParticiple(null)).toBeNull();
+    });
+
+    test('no e', () => {
+        expect(makePresentParticiple('import')).toBe('importing');
+        expect(makePresentParticiple('function')).toBe('functioning');
+    });
+
+    test('with e', () => {
+        expect(makePresentParticiple('delete')).toBe('deleting');
+        expect(makePresentParticiple('implore')).toBe('imploring');
+    });
+});
 
 describe('resolveErrorMessage', () => {
     test('original is string', () => {
@@ -204,7 +222,7 @@ describe('resolveErrorMessage', () => {
         );
     });
 
-    test('Existing row now found', () => {
+    test('Existing row not found', () => {
         const error = {
             exception: 'The existing row was not found.',
             exceptionClass: 'org.labkey.api.view.NotFoundException',
@@ -220,6 +238,9 @@ describe('resolveErrorMessage', () => {
         };
         expect(resolveErrorMessage(error, 'octopus')).toBe(
             'There was a problem retrieving your octopus. Your session may have expired or the octopus may no longer be valid.  Try refreshing your page.'
+        );
+        expect(resolveErrorMessage(error, 'octopus', 'octopuses', 'delete')).toBe(
+            'There was a problem deleting your octopus. Your session may have expired or the octopus may no longer be valid.  Try refreshing your page.'
         );
     });
 
@@ -255,7 +276,7 @@ describe('resolveErrorMessage', () => {
         expect(resolveErrorMessage(error, 'sample')).toBe(
             'There was a problem processing your sample. This may be a problem in the application. Contact your administrator.'
         );
-        expect(resolveErrorMessage(error, 'sample', 'samples', 'importing')).toBe(
+        expect(resolveErrorMessage(error, 'sample', 'samples', 'import')).toBe(
             'There was a problem importing your sample. This may be a problem in the application. Contact your administrator.'
         );
     });

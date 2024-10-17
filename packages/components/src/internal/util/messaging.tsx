@@ -88,10 +88,9 @@ export function resolveErrorMessage(
     nounPlural?: string,
     verbPresent?: string,
     duplicatesMessageResolver?: (errorMsg: string, noun: string, nounPlural?: string, verb?: string) => string,
-    returnInitialMsg = false,
-    verbParticiple?: string
+    returnInitialMsg = false
 ): string {
-    const verbPresParticiple = verbParticiple ?? makePresentParticiple(verbPresent);
+    const verbPresParticiple = makePresentParticiple(verbPresent);
     let errorMsg;
     if (!error) {
         return undefined;

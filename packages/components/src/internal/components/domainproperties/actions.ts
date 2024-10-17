@@ -37,7 +37,7 @@ import { caseInsensitive, handleRequestFailure } from '../../util/utils';
 
 import { getExcludedDataTypeNames } from '../entities/actions';
 
-import { getQueryDetails } from '../../query/api';
+import { getQueryDetails, selectRowsDeprecated } from '../../query/api';
 
 import { selectRows } from '../../query/selectRows';
 
@@ -418,22 +418,100 @@ export function getMaxPhiLevel(containerPath?: string): Promise<string> {
     });
 }
 
-export function parseCalculatedColumn(
+// exported for jest testing
+export function getCastStatement(key: string, type: string): string {
+    switch (type) {
+        case 'INTEGER':
+        case 'SAMPLE':
+        case 'USERS':
+            return `CAST(1 AS INTEGER) AS "${key}"`;
+        case 'DOUBLE':
+        case 'DECIMAL (FLOATING POINT)':
+        case 'VISITID':
+            return `CAST(1.1 AS DOUBLE) AS "${key}"`;
+        case 'BOOLEAN':
+            return `CAST(TRUE AS BOOLEAN) AS "${key}"`;
+        case 'DATETIME':
+        case 'VISITDATE':
+            return `CAST(CURDATE() AS TIMESTAMP) AS "${key}"`;
+        case 'DATE':
+            return `CAST(CURDATE() AS DATE) AS "${key}"`;
+        case 'TIME':
+            return `CAST('13:00' AS TIME) AS "${key}"`;
+        default:
+            return `CAST('Testing' AS VARCHAR) AS "${key}"`;
+    }
+}
+
+export async function parseCalculatedColumn(
     expression: string,
     columnMap: Record<string, string>,
+    phiColumns: string[],
+    containerPath?: string
+): Promise<{ error: string; type: string }> {
+    if (!expression || expression?.trim()?.length === 0) {
+        return { error: 'Error: an expression value is required.', type: undefined };
+    }
+
+    try {
+        const sql =
+            'SELECT\n' +
+            expression +
+            '\nFROM (SELECT ' +
+            Object.keys(columnMap)
+                .map(key => {
+                    return getCastStatement(key, columnMap[key]);
+                })
+                .join(',\n') +
+            ') AS x' +
+            ' WHERE 1=0';
+
+        await selectRowsDeprecated({
+            schemaName: 'core',
+            sql,
+            includeTotalCount: false,
+        });
+    } catch (e) {
+        return { error: _sanitizeParseCalculatedColumnError(e), type: undefined };
+    }
+
+    return _parseCalculatedColumn(expression, columnMap, phiColumns, containerPath);
+}
+
+function _sanitizeParseCalculatedColumnError(e: Record<string, string>): string {
+    let error = resolveErrorMessage(e, 'data', undefined, undefined, undefined, true);
+    if (error?.indexOf('ExecutingSelector; ') === 0) {
+        error = error.substring(error.indexOf('; ') + 2);
+    }
+    if (error?.indexOf('Error on line ') === 0) {
+        error = error.substring(error.indexOf(':') + 1);
+    }
+    if (error?.endsWith(': "Testing"')) {
+        error = error.substring(0, error.lastIndexOf(': "Testing"'));
+    }
+    if (error?.endsWith("Syntax error near 'FROM'")) {
+        error = 'Invalid expression syntax';
+    }
+    if (error === 'bad SQL grammar []') {
+        error =
+            'Invalid expression SQL. No operator matches the given name and argument types. You might need to add explicit type casts.';
+    }
+    return error;
+}
+
+export function _parseCalculatedColumn(
+    expression: string,
+    columnMap: Record<string, string>,
+    phiColumns: string[],
     containerPath?: string
 ): Promise<{ error: string; type: string }> {
     return new Promise((resolve, reject) => {
-        if (!expression || expression?.trim()?.length === 0) {
-            resolve({ error: 'Error: an expression value is required.', type: undefined });
-            return;
-        }
-
         Ajax.request({
             url: buildURL('query', 'parseCalculatedColumn.api', undefined, { container: containerPath }),
             jsonData: {
                 expression,
                 columnMap,
+                phiColumns,
             },
             success: Utils.getCallbackWrapper(response => {
                 const type = response.jdbcType;
@@ -441,7 +519,6 @@ export function parseCalculatedColumn(
                 resolve({ error, type });
             }),
             failure: Utils.getCallbackWrapper(response => {
-                console.error(response);
                 reject(resolveErrorMessage(response));
             }),
         });

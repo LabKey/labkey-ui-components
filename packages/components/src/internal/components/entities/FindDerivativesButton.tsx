@@ -16,10 +16,14 @@ import { FieldFilter } from '../search/models';
 import { useAppContext } from '../../AppContext';
 import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
 
+import { getSelectedData } from '../../actions';
+import { caseInsensitive } from '../../util/utils';
+
 import { EntityDataType, FilterProps } from './models';
 
 export const SAMPLE_FINDER_SESSION_PREFIX = 'Searched ';
 
+const MAX_SELECTION = 200;
 const DISABLED_FIND_DERIVATIVES_MSG =
     'Unable to find derivative samples using search filters or filters on multi-valued lookup fields';
 
@@ -47,19 +51,19 @@ export const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): Field
         fieldKey: colName,
         fieldCaption: column?.caption ?? colName,
         filter,
-        jsonType: column?.isLookup() ? column.displayFieldJsonType : column?.jsonType ?? 'string',
+        jsonType: column?.isLookup() ? column.displayFieldJsonType : (column?.jsonType ?? 'string'),
     } as FieldFilter;
 };
 
 // exported for unit test coverage
-export const getSessionSearchFilterProps = (
+export const getSessionSearchFilterProps = async (
     entityDataType: EntityDataType,
     model: QueryModel,
     filters: Filter.IFilter[],
     baseEntityDataType?: EntityDataType,
     baseModel?: QueryModel,
     baseFilter?: Filter.IFilter[]
-): FilterProps[] => {
+): Promise<FilterProps[]> => {
     let fieldFilters = [];
     // optionally include baseFilter when passed without a baseModel (i.e. apply to the same schemaQuery as the other filters)
     if (baseFilter && !baseModel) {
@@ -67,6 +71,34 @@ export const getSessionSearchFilterProps = (
     }
     // always include viewFilters and user defined filters (filterArray)
     fieldFilters = fieldFilters.concat(filters.map(filter => getFieldFilter(model, filter)));
+
+    // Issue 47087: if model has selections, include those as IN clause
+    if (model.hasSelections && model.queryInfo.pkCols?.length === 1 && model.queryInfo.titleColumn) {
+        const pkCol = model.queryInfo.getPkCols()[0];
+        const titleCol = model.queryInfo.getColumn(model.queryInfo.titleColumn);
+
+        const selectedData = await getSelectedData(
+            model.schemaName,
+            model.queryName,
+            Array.from(model.selections),
+            [pkCol.fieldKey, titleCol.fieldKey],
+            undefined,
+            model.queryParameters,
+            model.viewName,
+            pkCol.fieldKey
+        );
+        const selectedValues = [];
+        selectedData.data.forEach(row => {
+            selectedValues.push(caseInsensitive(row.toJS(), titleCol.fieldKey).value);
+        });
+
+        fieldFilters.push({
+            fieldKey: titleCol.fieldKey,
+            fieldCaption: 'Selection',
+            filter: Filter.create(titleCol.fieldKey, selectedValues, Filter.Types.IN),
+            jsonType: titleCol.jsonType,
+        });
+    }
 
     const filterProps = [];
     if (baseModel && baseFilter) {
@@ -166,10 +198,10 @@ export const FindDerivativesMenuItem: FC<Props> = memo(props => {
         [model, viewAndUserFilters]
     );
 
-    const onClick = useCallback(() => {
+    const onClick = useCallback(async () => {
         const currentTimestamp = new Date();
         const sessionViewName = SAMPLE_FINDER_SESSION_PREFIX + formatDateTime(currentTimestamp);
-        const filterProps = getSessionSearchFilterProps(
+        const filterProps = await getSessionSearchFilterProps(
             entityDataType,
             model,
             viewAndUserFilters,
@@ -188,13 +220,14 @@ export const FindDerivativesMenuItem: FC<Props> = memo(props => {
 
     if (!model.queryInfo) return null;
 
+    const validSelection = !model.selections?.size || model.selections.size <= MAX_SELECTION;
+    const disabled = !validSelection || invalidFilterNames !== '';
+    const disabledMessage = !validSelection
+        ? 'At most ' + MAX_SELECTION + ' can be selected'
+        : DISABLED_FIND_DERIVATIVES_MSG + ' (' + invalidFilterNames + ').';
+
     return (
-        <DisableableMenuItem
-            disabled={invalidFilterNames !== ''}
-            disabledMessage={DISABLED_FIND_DERIVATIVES_MSG + ' (' + invalidFilterNames + ').'}
-            onClick={onClick}
-            placement="right"
-        >
+        <DisableableMenuItem disabled={disabled} disabledMessage={disabledMessage} onClick={onClick} placement="right">
             Find Derivatives in Sample Finder
         </DisableableMenuItem>
     );

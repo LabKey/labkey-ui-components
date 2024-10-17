@@ -912,8 +912,26 @@
 .domain-field-calc-footer span {
     font-size: 12px;
 }
+.domain-field-calc-footer .validate-link {
+    cursor: pointer;
+    color: $brand-primary;
+}
 .domain-field-calc-footer .error {
     color: $brand-danger;
+}
+
+.domain-field-calc-examples table {
+    margin-top: 15px;
+}
+.domain-field-calc-examples td {
+    padding-bottom: 8px;
+}
+.domain-field-calc-examples .code {
+    font-family: monospace;
+    font-size: 13px;
+}
+.domain-field-calc-examples td.code {
+    padding-left: 10px;
 }
 
 .domain-field-alias--row {

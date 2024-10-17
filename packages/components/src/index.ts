@@ -382,7 +382,6 @@ import {
     getSampleTypeDetails,
     getSelectedSampleIdsFromSelectionKey,
     getSelectionLineageData,
-    updateSampleStorageData,
 } from './internal/components/samples/actions';
 import { SampleTypeEmptyAlert } from './internal/components/samples/SampleTypeEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
@@ -1342,7 +1341,6 @@ export {
     getSampleTypeDetails,
     getFieldLookupFromSelection,
     getSelectionLineageData,
-    updateSampleStorageData,
     getGroupedSampleDomainFields,
     getGroupedSampleDisplayColumns,
     getParentTypeDataForLineage,

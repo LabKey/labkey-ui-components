@@ -17,6 +17,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Export EditableGrid
 - Remove EditableGridPanel
 - Remove EditableGridPanelForUpdate
+- Don't export updateSampleStorageData
 
 ### version 5.15.0
 *Released*: 17 October 2024

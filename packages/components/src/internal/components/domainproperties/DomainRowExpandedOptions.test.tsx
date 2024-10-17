@@ -25,6 +25,7 @@ import {
 jest.mock('./actions', () => ({
     ...jest.requireActual('./actions'),
     fetchQueries: jest.fn().mockResolvedValue([]),
+    fetchOntologies: jest.fn().mockResolvedValue([]),
 }));
 
 const DEFAULT_PROPS = {
@@ -190,22 +191,20 @@ describe('DomainRowExpandedOptions', () => {
     });
 
     test('Ontology data type', async () => {
-        // FIXME: This test is disabled because the Ontology lookup components make network requests, which causes
-        //  failures. They'll need to be updated to get their API methods from context.
-        // const field = DomainField.create({
-        //     conceptURI: ONTOLOGY_LOOKUP_TYPE.conceptURI,
-        //     rangeURI: ONTOLOGY_LOOKUP_TYPE.rangeURI,
-        // });
-        //
-        // render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
-        //
-        // await waitFor(() => {
-        //     const headers = document.querySelectorAll('.domain-field-section-heading');
-        //     expect(headers.length).toBe(3);
-        //     expect(headers[0].textContent).toBe('Ontology Lookup Options');
-        //     expect(headers[1].textContent).toBe('Name and Linking Options');
-        //     expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
-        // });
+        const field = DomainField.create({
+            conceptURI: ONTOLOGY_LOOKUP_TYPE.conceptURI,
+            rangeURI: ONTOLOGY_LOOKUP_TYPE.rangeURI,
+        });
+
+        render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
+
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(3);
+            expect(headers[0].textContent).toBe('Ontology Lookup Options');
+            expect(headers[1].textContent).toBe('Name and Linking Options');
+            expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
+        });
     });
 
     test('Sample data type', async () => {

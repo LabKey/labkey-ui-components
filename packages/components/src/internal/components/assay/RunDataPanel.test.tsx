@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { act } from '@testing-library/react';
+import React, { act } from 'react';
 
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 import { AssayUploadTabs } from '../../constants';

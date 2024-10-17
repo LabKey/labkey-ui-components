@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { act } from 'react';
 
 import { Filter } from '@labkey/api';
 
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getQueryTestAPIWrapper } from '../../query/APIWrapper';

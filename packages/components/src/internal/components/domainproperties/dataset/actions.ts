@@ -37,7 +37,7 @@ import {
 import { DatasetModel } from './models';
 import { StudyProperties } from './utils';
 
-export function fetchCategories(): Promise<List<SelectInputOption>> {
+export function fetchCategories(): Promise<SelectInputOption[]> {
     return new Promise((resolve, reject) => {
         selectRowsDeprecated({
             saveInSession: true,
@@ -46,14 +46,14 @@ export function fetchCategories(): Promise<List<SelectInputOption>> {
         })
             .then(data => {
                 const models = fromJS(data.models[data.key]);
-                let categories = List<SelectInputOption>();
+                const categories = [];
 
                 data.orderedModels[data.key].forEach(modelKey => {
                     const row = models.get(modelKey);
                     const value = row.getIn(['Label', 'value']);
                     const label = row.getIn(['Label', 'value']);
 
-                    categories = categories.push({ value, label });
+                    categories.push({ value, label });
                 });
 
                 resolve(categories);
@@ -97,7 +97,7 @@ export function getAdditionalKeyFields(domain: DomainDesign, timepointType: stri
     return additionalKeyFields;
 }
 
-export function fetchCohorts(): Promise<List<SelectInputOption>> {
+export function fetchCohorts(): Promise<SelectInputOption[]> {
     return new Promise((resolve, reject) => {
         selectRowsDeprecated({
             schemaName: 'study',
@@ -105,14 +105,14 @@ export function fetchCohorts(): Promise<List<SelectInputOption>> {
         })
             .then(data => {
                 const models = fromJS(data.models[data.key]);
-                let cohorts = List<SelectInputOption>();
+                const cohorts = [];
 
                 data.orderedModels[data.key].forEach(modelKey => {
                     const row = models.get(modelKey);
                     const value = row.getIn(['rowid', 'value']);
                     const label = row.getIn(['label', 'value']);
 
-                    cohorts = cohorts.push({ value, label });
+                    cohorts.push({ value, label });
                 });
 
                 resolve(cohorts);

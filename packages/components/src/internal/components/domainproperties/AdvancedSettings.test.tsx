@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { act } from 'react';
 import { List } from 'immutable';
-import { act } from '@testing-library/react';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 

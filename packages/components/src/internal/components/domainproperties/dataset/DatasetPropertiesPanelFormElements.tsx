@@ -77,7 +77,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
         fetchCategories()
             .then(data => {
                 this.setState({
-                    availableCategories: data.toArray(),
+                    availableCategories: data,
                 });
             })
             .catch(error => {

@@ -1,8 +1,8 @@
-import { fromJS, List, Map, OrderedMap, Record as ImmutableRecord } from 'immutable';
+import { fromJS, List, Map, Record as ImmutableRecord } from 'immutable';
 import { Filter } from '@labkey/api';
 
+import { ExtendedMap } from '../public/ExtendedMap';
 import { QueryColumn } from '../public/QueryColumn';
-
 import { SchemaQuery } from '../public/SchemaQuery';
 
 import { AssayUploadTabs } from './constants';
@@ -299,25 +299,21 @@ export class AssayDefinitionModel extends ImmutableRecord({
         }
     }
 
-    getDomainColumns(type: AssayDomainTypes): OrderedMap<string, QueryColumn> {
-        const columns = OrderedMap<string, QueryColumn>().asMutable();
+    getDomainColumns(type: AssayDomainTypes): ExtendedMap<string, QueryColumn> {
+        const columns = new ExtendedMap<string, QueryColumn>();
 
         if (this.domains && this.domains.size) {
-            const domainColumns = this.getDomainByType(type);
-
-            if (domainColumns && domainColumns.size) {
-                domainColumns.forEach(dc => {
-                    columns.set(dc.fieldKey.toLowerCase(), dc);
-                });
-            }
+            this.getDomainByType(type)?.forEach(dc => {
+                columns.set(dc.fieldKey.toLowerCase(), dc);
+            });
         }
 
-        return columns.asImmutable();
+        return columns;
     }
 
     getDomainFileColumns(type: AssayDomainTypes): QueryColumn[] {
         return this.getDomainColumns(type)
             .filter(col => col.isFileInput)
-            .toArray();
+            .valueArray;
     }
 }

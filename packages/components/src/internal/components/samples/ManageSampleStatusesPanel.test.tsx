@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { act } from 'react';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 
@@ -9,7 +9,7 @@ import { ManageSampleStatusesPanel, SampleStatusDetail, SampleStatusesList } fro
 
 import { getSamplesTestAPIWrapper } from './APIWrapper';
 import { SampleStateType } from './constants';
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 describe('ManageSampleStatusesPanel', () => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { act } from 'react';
 
 import { PermissionTypes } from '@labkey/api';
 import { TEST_FOLDER_CONTAINER, TEST_FOLDER_OTHER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
@@ -16,7 +16,6 @@ import {
     EntityMoveConfirmationModalProps,
     getContainerOptions,
 } from './EntityMoveConfirmationModal';
-import { act } from '@testing-library/react';
 
 describe('EntityMoveConfirmationModal', () => {
     function getDefaultProps(): EntityMoveConfirmationModalProps {

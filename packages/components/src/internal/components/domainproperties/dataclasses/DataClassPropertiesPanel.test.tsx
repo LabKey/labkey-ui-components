@@ -1,5 +1,4 @@
-import React from 'react';
-import { act } from '@testing-library/react';
+import React, { act } from 'react';
 
 import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 

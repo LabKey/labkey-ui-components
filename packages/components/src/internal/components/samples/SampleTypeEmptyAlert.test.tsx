@@ -1,5 +1,4 @@
-import React from 'react';
-import { act } from '@testing-library/react';
+import React, { act } from 'react';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
 import { NEW_SAMPLE_TYPE_HREF } from '../../app/constants';

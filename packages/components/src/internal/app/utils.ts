@@ -365,10 +365,6 @@ export function isChartBuilderEnabled(moduleContext?: ModuleContext): boolean {
     return isFeatureEnabled(ProductFeature.ChartBuilding, moduleContext);
 }
 
-export function isIdentifyingFieldsEnabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.samplemanagement?.[EXPERIMENTAL_IDENTIFYING_FIELDS] === true;
-}
-
 // Should be enabled for LKS Community & LKS Starter, but in the apps only if the feature is enabled
 export function isTransformScriptsEnabled(moduleContext?: ModuleContext): boolean {
     return isApp() ? isFeatureEnabled(ProductFeature.TransformScripts, moduleContext) : true;

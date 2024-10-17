@@ -4,7 +4,6 @@ import { addDays, subDays } from 'date-fns';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn } from '../../../public/QueryColumn';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { cancelEvent, getPasteValue, setCopyValue } from '../../events';
 import { formatDate, formatDateTime, parseDate } from '../../util/Date';

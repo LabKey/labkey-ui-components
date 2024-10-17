@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { Filter, Query } from '@labkey/api';
-import { List } from 'immutable';
 import React, { createContext, PropsWithChildren, ReactElement, useContext, useMemo } from 'react';
 
 import { QueryConfigMap } from '../public/QueryModel/withQueryModels';

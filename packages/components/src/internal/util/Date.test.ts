@@ -71,23 +71,24 @@ describe('Date Utilities', () => {
     });
 
     test('getNonStandardDateTimeFormatWarning', () => {
-        expect(getNonStandardDateTimeFormatWarning(null)).toBe('Non-standard date and time format.');
-        expect(getNonStandardDateTimeFormatWarning('')).toBe('Non-standard date and time format.');
+        expect(getNonStandardDateTimeFormatWarning(null)).toBe('Non-standard date-time format.');
+        expect(getNonStandardDateTimeFormatWarning('')).toBe('Non-standard date-time format.');
         expect(getNonStandardDateTimeFormatWarning('yyyy-MM-dd')).toBeNull();
         expect(getNonStandardDateTimeFormatWarning('yyyy-MM-dd HH:mm')).toBeNull();
         expect(getNonStandardDateTimeFormatWarning('yyyy-MM-dd hh:mm a')).toBeNull();
         expect(getNonStandardDateTimeFormatWarning('ddMMMyyyy hh:mm a')).toBeNull();
-        expect(getNonStandardDateTimeFormatWarning('yyyy-MM-DD')).toBe('Non-standard date format.');
-        expect(getNonStandardDateTimeFormatWarning('yyyy-MM-ddHH:mm')).toBe('Non-standard date format.');
-        expect(getNonStandardDateTimeFormatWarning('yyyy-MM-dd hh:mm aa')).toBe('Non-standard time format.');
-        expect(getNonStandardDateTimeFormatWarning('yyyy MM dd hh:mm aa')).toBe('Non-standard date and time format.');
+        expect(getNonStandardDateTimeFormatWarning('HH:mm ddMMMyyyy')).toBe('Non-standard date-time format.');
+        expect(getNonStandardDateTimeFormatWarning('yyyy-MM-DD')).toBe('Non-standard date-time format.');
+        expect(getNonStandardDateTimeFormatWarning('yyyy-MM-ddHH:mm')).toBe('Non-standard date-time format.');
+        expect(getNonStandardDateTimeFormatWarning('yyyy-MM-dd hh:mm aa')).toBe('Non-standard date-time format.');
+        expect(getNonStandardDateTimeFormatWarning('yyyy MM dd hh:mm aa')).toBe('Non-standard date-time format.');
     });
 
     test('getNonStandardFormatWarning', () => {
         expect(getNonStandardFormatWarning(DateFormatType.Date, null)).toBe('Non-standard date format.');
         expect(getNonStandardFormatWarning(DateFormatType.Time, '')).toBe('Non-standard time format.');
         expect(getNonStandardFormatWarning(DateFormatType.DateTime, undefined)).toBe(
-            'Non-standard date and time format.'
+            'Non-standard date-time format.'
         );
 
         expect(getNonStandardFormatWarning(DateFormatType.Date, 'yyyy-MM-dd')).toBeNull();
@@ -99,12 +100,12 @@ describe('Date Utilities', () => {
         expect(getNonStandardFormatWarning(DateFormatType.Time, 'yyyy-MM-dd HH:mm')).toBe('Non-standard time format.');
 
         expect(getNonStandardFormatWarning(DateFormatType.Date, 'HH:mm')).toBe('Non-standard date format.');
-        expect(getNonStandardFormatWarning(DateFormatType.DateTime, 'HH:mm')).toBe('Non-standard date format.');
+        expect(getNonStandardFormatWarning(DateFormatType.DateTime, 'HH:mm')).toBe('Non-standard date-time format.');
         expect(getNonStandardFormatWarning(DateFormatType.Time, 'HH:mm')).toBeNull();
 
         expect(getNonStandardFormatWarning(DateFormatType.Date, 'yyyy/MM/dd')).toBe('Non-standard date format.');
         expect(getNonStandardFormatWarning(DateFormatType.DateTime, 'yyyy/MM/dd HH-mm')).toBe(
-            'Non-standard date and time format.'
+            'Non-standard date-time format.'
         );
         expect(getNonStandardFormatWarning(DateFormatType.Time, 'hh:mm aa')).toBe('Non-standard time format.');
     });

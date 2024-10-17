@@ -121,7 +121,7 @@ describe('DateTimeFieldOptions', () => {
             });
         });
 
-        verifyInputs('dateTime', false, 'yyyy/MM/dd', 'hh:mm a', true, false);
+        verifyInputs('dateTime', false, 'yyyy/MM/dd hh:mm a', '', true, false);
 
         // toggle to inherit, should get rid of warning
         const checkbox = document.querySelector('input[type="checkbox"]');
@@ -143,7 +143,7 @@ describe('DateTimeFieldOptions', () => {
             });
         });
 
-        verifyInputs('dateTime', false, 'yyyy-MMM-dd', 'hh:mm aa', false, true);
+        verifyInputs('dateTime', false, 'yyyy-MMM-dd hh:mm aa', '', true, false);
 
         // toggle to inherit, should get rid of warning
         const checkbox = document.querySelector('input[type="checkbox"]');

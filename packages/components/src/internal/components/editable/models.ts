@@ -294,9 +294,9 @@ export class EditorModel
     /**
      * Formats the values for an entire row into a Map<string, any>
      * @param rowIdx
-     * @param displayValues
+     * @param useRawValues If false we format the raw values
      */
-    getRowValue(rowIdx: number, displayValues = true): Map<string, any> {
+    getRowValue(rowIdx: number, useRawValues = true): Map<string, any> {
         let row = Map<string, any>();
 
         this.columnMap.forEach(col => {
@@ -312,9 +312,8 @@ export class EditorModel
             if (renderer?.getEditableRawValue) {
                 row = row.set(col.name, renderer.getEditableRawValue(values));
             } else if (col.isLookup()) {
-                if (col.isAliquotParent()) {
-                    // TODO: We should update the server to accept rowId for aliquot parent, that way we can use the
-                    //  same logic as exp inputs and junction lookups below
+                if (col.isExpInput() || col.isAliquotParent()) {
+                    // We have to use display values for ExpInput and AliquotParent because of name expressions
                     row = row.set(
                         col.name,
                         values
@@ -322,7 +321,7 @@ export class EditorModel
                             .map(vd => quoteValueWithDelimiters(vd.display, ','))
                             .join(', ')
                     );
-                } else if (col.isExpInput() || col.isJunctionLookup()) {
+                } else if (col.isJunctionLookup()) {
                     row = row.set(
                         col.name,
                         values
@@ -346,7 +345,7 @@ export class EditorModel
                 row = row.set(col.name, values.size === 1 ? values.first().raw?.toString().trim() : undefined);
             } else {
                 let val = values.size === 1 ? values.first().raw : undefined;
-                if (!displayValues) val = getValidatedEditableGridValue(val?.toString().trim(), col).value;
+                if (!useRawValues) val = getValidatedEditableGridValue(val?.toString().trim(), col).value;
                 row = row.set(col.name, val);
             }
         });
@@ -356,13 +355,13 @@ export class EditorModel
 
     /**
      * This method formats the EditorModel data, so we can upload the data to LKS via insert/updateRows
-     * @param displayValues
+     * @param useRawValues If false we format the raw values
      */
-    getDataForServerUpload(displayValues = true): List<Map<string, any>> {
+    getDataForServerUpload(useRawValues = true): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
 
         for (let rn = 0; rn < this.rowCount; rn++) {
-            const row = this.getRowValue(rn, displayValues);
+            const row = this.getRowValue(rn, useRawValues);
             rawData = rawData.push(row);
         }
 
@@ -749,7 +748,8 @@ export class EditorModel
                     if (key === pkFieldKey) return row;
 
                     let originalValue = originalRow.get(key, undefined);
-                    const col = queryInfo.getColumn(key);
+                    // For lineage grids the parent columns aren't on the queryInfo
+                    const col = queryInfo.getColumn(key) ?? this.columnMap.get(key.toLowerCase());
 
                     // Convert empty cell to null
                     if (value === '') value = null;
@@ -764,9 +764,13 @@ export class EditorModel
 
                     // Lookup columns store a list but grid only holds a single value
                     if (List.isList(originalValue) && !Array.isArray(value)) {
-                        originalValue = Map.isMap(originalValue.get(0))
-                            ? originalValue.get(0).get('value')
-                            : originalValue.get(0).value;
+                        if (col.isExpInput()) {
+                            // We have to compare displayValues for ExpInput columns for name expressions to work
+                            originalValue = originalValue.map(v => v.displayValue).join(', ');
+                        } else {
+                            const valueObj = originalValue.get(0);
+                            originalValue = Map.isMap(valueObj) ? valueObj.get('value') : valueObj.value;
+                        }
                     }
 
                     // EditableGrid passes in strings for single values. Attempt this conversion here to help check for
@@ -817,10 +821,6 @@ export class EditorModel
                 if (!Utils.isEmptyObj(row)) {
                     row[pkFieldKey] = id;
                     Object.assign(row, altIds);
-                    // If the original row has a folder column we copy that over, we do not check for hasProductFolders
-                    // because a few areas always send the column
-                    const folder = caseInsensitive(originalRow.toJS(), FOLDER_COL)?.[0];
-                    if (folder) row[FOLDER_COL] = folder.value;
                     updatedRows.push(row);
                 }
             } else {

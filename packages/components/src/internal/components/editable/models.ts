@@ -821,7 +821,7 @@ export class EditorModel
                 if (!Utils.isEmptyObj(row)) {
                     row[pkFieldKey] = id;
                     // Always append folder if it's in the original data so cross folder updates work
-                    const folder = originalRow.get(FOLDER_COL).get(0).value;
+                    const folder = originalRow.get(FOLDER_COL)?.get(0)?.value;
                     if (folder !== undefined) row[FOLDER_COL] = folder;
                     Object.assign(row, altIds);
                     updatedRows.push(row);

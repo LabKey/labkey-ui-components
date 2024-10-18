@@ -32,7 +32,7 @@ describe('DiscardConsumedSamplesPanel', () => {
         );
 
         expect(getCommentField().disabled).toBe(false);
-        expect(getTitle()).toEqual('Remove All?');
+        expect(getTitle()).toEqual(' Remove All?');
     });
 
     test('remove disabled', () => {
@@ -50,7 +50,7 @@ describe('DiscardConsumedSamplesPanel', () => {
         );
 
         expect(getCommentField().disabled).toBe(true);
-        expect(getTitle()).toEqual('Remove Sample(s) from Storage?');
+        expect(getTitle()).toEqual(' Remove Sample(s) from Storage?');
     });
 
     const apiRequireComments = getTestAPIWrapper(jest.fn, {

@@ -1,4 +1,3 @@
-import { List, Map, OrderedMap } from 'immutable';
 import { ComponentType } from 'react';
 import { Query } from '@labkey/api';
 
@@ -8,7 +7,6 @@ import { SchemaQuery } from '../public/SchemaQuery';
 
 import { TabbedGridPanelProps } from '../public/QueryModel/TabbedGridPanel';
 
-import { ComponentsAPIWrapper } from './APIWrapper';
 import { User } from './components/base/models/User';
 import { EntityDataType } from './components/entities/models';
 import { SampleGridButtonProps } from './components/samples/models';
@@ -43,9 +41,7 @@ export interface SamplesTabbedGridPanelComponentProps {
     showLabelOption?: boolean;
     tabRowCounts?: Record<string, number>;
     tabbedGridPanelProps?: Partial<TabbedGridPanelProps>;
-    title?: string;
     user: User;
-    withTitle?: boolean;
 }
 
 export type SamplesTabbedGridPanel = ComponentType<SamplesTabbedGridPanelComponentProps & InjectedQueryModels>;
@@ -72,19 +68,14 @@ export type SampleStorageMenu = ComponentType<SampleStorageMenuComponentProps>;
 
 export type SampleGridButton = ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
 
-// This props interface is here to prevent circular dependencies between the main package and the entities sub package.
-export interface SamplesEditableGridProps {
-    api?: ComponentsAPIWrapper;
+// This interface stores app-wide settings passed to the LineageEditableGrid
+export interface LineageEditableGridProps {
     combineParentTypes?: boolean;
-    editableGridUpdateData?: OrderedMap<string, any>;
-    getIsDirty?: () => boolean;
-    invalidateSampleQueries?: (schemaQuery: SchemaQuery) => void;
-    onGridEditCancel: () => void;
-    onGridEditComplete: () => void;
-    parentDataTypes: List<EntityDataType>;
-    samplesGridOmittedColumns?: List<string>;
+    parentDataTypes: EntityDataType[];
+}
+
+// This interface stores app-wide settings that get passed to our SamplesEditableGrid. It extends
+// LineageEditableGridProps because the settings are passed to SamplesTabbedGridPanel as one object.
+export interface SamplesEditableGridProps extends LineageEditableGridProps {
     samplesGridRequiredColumns?: string[];
-    selectionData: Map<string, any>;
-    setIsDirty?: (isDirty: boolean) => void;
-    user: User;
 }

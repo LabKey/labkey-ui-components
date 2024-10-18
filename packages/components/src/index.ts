@@ -181,7 +181,6 @@ import {
     addColumns,
     changeColumn,
     initEditorModel,
-    initEditorModels,
     removeColumn,
     updateGridFromBulkForm,
 } from './internal/components/editable/actions';
@@ -263,16 +262,8 @@ import {
 } from './internal/util/helpLinks';
 import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
 import { NOT_ANY_FILTER_TYPE } from './internal/url/NotAnyFilterType';
-import {
-    applyEditorModelChanges,
-    genCellKey,
-    getUpdatedDataFromEditableGrid,
-    parseCellKey,
-    incrementRowCountMetric,
-} from './internal/components/editable/utils';
-import { EditableGridTabs } from './internal/components/editable/EditableGrid';
-import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
-import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
+import { genCellKey, parseCellKey, incrementRowCountMetric } from './internal/components/editable/utils';
+import { EditableGrid, EditableGridTabs } from './internal/components/editable/EditableGrid';
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
@@ -391,7 +382,6 @@ import {
     getSampleTypeDetails,
     getSelectedSampleIdsFromSelectionKey,
     getSelectionLineageData,
-    updateSampleStorageData,
 } from './internal/components/samples/actions';
 import { SampleTypeEmptyAlert } from './internal/components/samples/SampleTypeEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
@@ -1158,16 +1148,12 @@ export {
     processSchemas,
     invalidateFullQueryDetailsCache,
     // editable grid related items
-    applyEditorModelChanges,
     genCellKey,
     parseCellKey,
-    getUpdatedDataFromEditableGrid,
     initEditorModel,
-    initEditorModels,
     MAX_EDITABLE_GRID_ROWS,
     EditableGridLoaderFromSelection,
-    EditableGridPanel,
-    EditableGridPanelForUpdate,
+    EditableGrid,
     EditableGridTabs,
     EditorModel,
     EditorMode,
@@ -1355,7 +1341,6 @@ export {
     getSampleTypeDetails,
     getFieldLookupFromSelection,
     getSelectionLineageData,
-    updateSampleStorageData,
     getGroupedSampleDomainFields,
     getGroupedSampleDisplayColumns,
     getParentTypeDataForLineage,
@@ -1868,6 +1853,8 @@ export type {
     EditorModelProps,
     GridLoader,
     GridResponse,
+    UpdatedRowValue,
+    UpdatedRow,
 } from './internal/components/editable/models';
 export type { IDataViewInfo } from './internal/DataViewInfo';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';
@@ -1906,7 +1893,7 @@ export type {
 export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
 export type { AppRouteResolver } from './internal/url/models';
 export type { WithFormStepsProps } from './internal/components/forms/FormStep';
-export type { BulkAddData, SharedEditableGridPanelProps } from './internal/components/editable/EditableGrid';
+export type { BulkAddData, EditableGridChange, EditableGridProps } from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
 export type { Row, RowValue, SelectRowsOptions, SelectRowsResponse } from './internal/query/selectRows';
 export type { ServerNotificationState, ProductMenuState, AppReducerState } from './internal/app/reducers';
@@ -1956,7 +1943,6 @@ export type { ComponentsAPIWrapper } from './internal/APIWrapper';
 export type { GetParentTypeDataForLineage } from './internal/components/entities/actions';
 export type { URLMapper } from './internal/url/URLResolver';
 export type { PlacementType } from './internal/components/editable/Controls';
-export type { EditableGridChange } from './internal/components/editable/EditableGrid';
 export type { GetAssayDefinitionsOptions, GetProtocolOptions } from './internal/components/assay/actions';
 export type {
     FormsySelectOption,

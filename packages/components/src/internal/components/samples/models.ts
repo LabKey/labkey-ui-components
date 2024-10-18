@@ -113,8 +113,8 @@ export interface StorageActionStatusCounts {
 // Note: this should stay in sync with the freezermanager/src/components/AddSamplesToStorageModal.tsx props
 interface AddSamplesToStorageModalComponentProps {
     actionStatusCounts?: StorageActionStatusCounts;
-    onCancel: () => any;
-    onSuccess?: () => any;
+    onCancel: () => void;
+    onSuccess?: () => void;
     samplesSelectionKey?: string;
     user: User;
 }
@@ -217,5 +217,6 @@ export interface SampleGridButtonProps {
     onTabbedViewAliquotSelectorUpdate?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
     sampleFinderBaseProps?: Record<string, any>;
     showBulkUpdate?: (statusData?: OperationConfirmationData) => void;
-    toggleEditWithGridUpdate?: (statusData?: OperationConfirmationData) => void;
+    toggleEditLineage?: (statusData?: OperationConfirmationData) => void;
+    toggleEditSamples?: (statusData?: OperationConfirmationData) => void;
 }

@@ -138,14 +138,22 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
     // instead of in withQueryModels, it allows us to easily mock them or provide alternate implementations.
     clearSelections(model) {
         const { containerFilter, selectionKey, schemaQuery, filters, queryParameters, selectionContainerPath } = model;
-        return clearSelected({
-            selectionKey,
-            schemaQuery,
-            filters,
-            containerPath: selectionContainerPath,
-            queryParameters,
-            containerFilter,
-        });
+        if (filters?.length > 0) {
+            return clearSelected({
+                selectionKey,
+                schemaQuery,
+                filters,
+                containerPath: selectionContainerPath,
+                queryParameters,
+                containerFilter,
+            });
+        } else {
+            // Issue 51422: When there are no filters, we can use a more efficient version of clearSelected
+            return clearSelected({
+                selectionKey,
+                containerPath: selectionContainerPath,
+            });
+        }
     },
     async loadSelections(model) {
         const { containerFilter, selectionKey, schemaQuery, filters, queryParameters, selectionContainerPath } = model;

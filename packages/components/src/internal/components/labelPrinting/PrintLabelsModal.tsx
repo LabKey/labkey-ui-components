@@ -245,7 +245,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                                     queryFilters={List(model.filters)}
                                     displayColumn={displayColumn}
                                     valueColumn={valueColumn}
-                                    value={this.props.sampleIds.join(',')}
+                                    value={this.props.sampleIds?.join(',')}
                                 />
                             </div>
                         )}

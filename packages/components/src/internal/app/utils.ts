@@ -23,7 +23,6 @@ import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
     EXPERIMENTAL_APP_PLATE_SUPPORT,
-    EXPERIMENTAL_IDENTIFYING_FIELDS,
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
     EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED,
     EXPERIMENTAL_REQUESTS_MENU,
@@ -363,10 +362,6 @@ export function isPlatesEnabled(moduleContext?: ModuleContext): boolean {
 
 export function isChartBuilderEnabled(moduleContext?: ModuleContext): boolean {
     return isFeatureEnabled(ProductFeature.ChartBuilding, moduleContext);
-}
-
-export function isIdentifyingFieldsEnabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.samplemanagement?.[EXPERIMENTAL_IDENTIFYING_FIELDS] === true;
 }
 
 // Should be enabled for LKS Community & LKS Starter, but in the apps only if the feature is enabled

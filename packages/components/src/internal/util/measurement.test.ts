@@ -127,26 +127,6 @@ describe('MetricUnit utils', () => {
         expect(getAltUnitKeys('bad').length).toBe(0);
     });
 
-    test('getMultiAltUnitKeys', () => {
-        const expectedUlOptions = ['mL', 'uL', 'L'];
-        expect(getMultiAltUnitKeys(['uL'])).toEqual(expectedUlOptions);
-        expect(getMultiAltUnitKeys(['mL', 'mL'])).toEqual(expectedUlOptions);
-        expect(getMultiAltUnitKeys(['uL', 'mL'])).toEqual(expectedUlOptions);
-
-        const expectedGOptions = ['g', 'mg', 'kg'];
-        expect(getMultiAltUnitKeys(['g'])).toEqual(expectedGOptions);
-        expect(getMultiAltUnitKeys(['kg', 'g', 'mg'])).toEqual(expectedGOptions);
-
-        expect(getMultiAltUnitKeys(['cc', 'cc'])).toEqual([]);
-        expect(getMultiAltUnitKeys(['uL', 'mL', null])).toEqual([]);
-        expect(getMultiAltUnitKeys(['uL', 'mL', undefined])).toEqual([]);
-        expect(getMultiAltUnitKeys(['uL', 'mL', 'kg'])).toEqual([]);
-
-        const allOptions = [...expectedGOptions, ...expectedUlOptions, 'unit'];
-        expect(getMultiAltUnitKeys([null, null])).toEqual(allOptions);
-        expect(getMultiAltUnitKeys(['', null])).toEqual(allOptions);
-    });
-
     test('convertUnitsForInput', () => {
         expect(convertUnitsForInput(null, null, null)).toBeNull();
         expect(convertUnitsForInput(1000, null, null)).toBe(1000);

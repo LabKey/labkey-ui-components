@@ -241,32 +241,6 @@ export function getAltUnitKeys(unitTypeStr): string[] {
 
     return options;
 }
-
-export function getMultiAltUnitKeys(unitTypeStrs: string[]): string[] {
-    let compabitable = true;
-    const unitTypeStr = unitTypeStrs[0];
-    for (let i = 1; i < unitTypeStrs.length; i++) {
-        if (!areUnitsCompatible(unitTypeStr, unitTypeStrs[i])) {
-            compabitable = false;
-            break;
-        }
-    }
-
-    if (!compabitable) {
-        return [];
-    }
-
-    if (!unitTypeStr) {
-        // if no unit type, return all unit types
-        const options = [];
-        Object.values(MEASUREMENT_UNITS).forEach(value => {
-            options.push(value.label);
-        });
-        return options;
-    }
-    return getAltUnitKeys(unitTypeStr);
-}
-
 export function convertUnitsForInput(amount: number, unit: string, displayUnit: string): number {
     if (!amount || !displayUnit || !unit) {
         return amount;

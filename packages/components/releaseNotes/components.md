@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.15.1
+*Released*: 21 October 2024
+- Issue 51422: When not using filters, `clearSelections` can be more efficient
+
 ### version 5.15.0
 *Released*: 17 October 2024
 - Remove properties from `EditableGrid` that support bulk updates when adding to storage

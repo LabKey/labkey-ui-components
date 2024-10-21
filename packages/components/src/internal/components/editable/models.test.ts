@@ -24,11 +24,23 @@ import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
 import { EditorModel, ValueDescriptor } from './models';
-import { applyEditorModelChanges, genCellKey } from './utils';
+import { genCellKey } from './utils';
 
+const PK_COL = new QueryColumn({
+    caption: 'RowId',
+    fieldKey: 'rowId',
+    name: 'rowId',
+    fieldKeyArray: ['rowId'],
+    shownInInsertView: false,
+    shownInUpdateView: false,
+    userEditable: false,
+    readOnly: true,
+    required: false,
+});
 const COLUMN_CAN_INSERT_AND_UPDATE = new QueryColumn({
     caption: 'Both',
     fieldKey: 'both',
+    name: 'both',
     fieldKeyArray: ['both'],
     shownInInsertView: true,
     shownInUpdateView: true,
@@ -39,6 +51,7 @@ const COLUMN_CAN_INSERT_AND_UPDATE = new QueryColumn({
 const COLUMN_CAN_INSERT = new QueryColumn({
     caption: 'Insert',
     fieldKey: 'insert',
+    name: 'insert',
     fieldKeyArray: ['insert'],
     shownInInsertView: true,
     shownInUpdateView: false,
@@ -49,6 +62,7 @@ const COLUMN_CAN_INSERT = new QueryColumn({
 const COLUMN_CAN_UPDATE = new QueryColumn({
     caption: 'Update',
     fieldKey: 'update',
+    name: 'update',
     fieldKeyArray: ['update'],
     shownInInsertView: false,
     shownInUpdateView: true,
@@ -58,6 +72,7 @@ const COLUMN_CAN_UPDATE = new QueryColumn({
 const COLUMN_CANNOT_INSERT_AND_UPDATE = new QueryColumn({
     caption: 'Neither',
     fieldKey: 'neither',
+    name: 'neither',
     fieldKeyArray: ['neither'],
     shownInInsertView: false,
     shownInUpdateView: false,
@@ -66,6 +81,7 @@ const COLUMN_CANNOT_INSERT_AND_UPDATE = new QueryColumn({
 });
 const COLUMN_BARCODE = new QueryColumn({
     name: 'Barcode',
+    caption: 'Barcode',
     fieldKey: 'Barcode',
     fieldKeyArray: ['Barcode'],
     shownInInsertView: true,
@@ -75,7 +91,9 @@ const COLUMN_BARCODE = new QueryColumn({
 });
 
 const QUERY_INFO = QueryInfo.fromJsonForTests({
+    pkCols: ['rowId'],
     columns: {
+        rowId: PK_COL,
         both: COLUMN_CAN_INSERT_AND_UPDATE,
         insert: COLUMN_CAN_INSERT,
         update: COLUMN_CAN_UPDATE,
@@ -86,7 +104,7 @@ const QUERY_INFO = QueryInfo.fromJsonForTests({
 const orderedColumns = fromJS(QUERY_INFO.columns.mapValues(col => col.fieldKey.toLowerCase()).sort());
 const columnMap = fromJS(
     QUERY_INFO.columns.reduce((result, col, key) => {
-        result[key] = col;
+        result[key.toLowerCase()] = col;
         return result;
     }, {})
 );
@@ -94,17 +112,34 @@ const colOneFk = orderedColumns.get(0);
 const colOneCaption = columnMap.get(colOneFk).caption;
 const colTwoFk = orderedColumns.get(1);
 const colTwoCaption = columnMap.get(colTwoFk).caption;
+const rowIdFk = 'rowId';
 const basicCellValues = fromJS({
+    [genCellKey(rowIdFk, 0)]: List([{ display: '0', raw: 0 } as ValueDescriptor]),
+    [genCellKey(rowIdFk, 1)]: List([{ display: '1', raw: 1 } as ValueDescriptor]),
     [genCellKey(colOneFk, 0)]: List([{ display: 'A', raw: 'a' } as ValueDescriptor]),
     [genCellKey(colOneFk, 1)]: List([{ display: 'AA', raw: 'aa' } as ValueDescriptor]),
     [genCellKey(colTwoFk, 0)]: List([{ display: 'B', raw: 'b' } as ValueDescriptor]),
     [genCellKey(colTwoFk, 1)]: List([{ display: 'BB', raw: 'bb' } as ValueDescriptor]),
 });
+const originalQueryData = fromJS({
+    '0': {
+        [rowIdFk]: { displayValue: '1', value: 0 },
+        [colOneFk]: { displayValue: 'A ', value: 'a' },
+        [colTwoFk]: { displayValue: 'B ', value: 'b' },
+    },
+    '1': {
+        [rowIdFk]: { displayValue: '2', value: 1 },
+        [colOneFk]: { displayValue: 'AA ', value: 'aa' },
+        [colTwoFk]: { displayValue: 'BB ', value: 'bb' },
+    },
+});
+const originalData = EditorModel.convertQueryDataToEditorData(originalQueryData);
 const basicEditorModel = new EditorModel({
     cellMessages: Map.of(genCellKey(colOneFk, 0), { message: 'a' }, genCellKey(colTwoFk, 1), { message: 'b' }),
     cellValues: basicCellValues,
     columnMap,
     orderedColumns,
+    originalData,
     queryInfo: QUERY_INFO,
     rowCount: 2,
 });
@@ -456,6 +491,265 @@ describe('EditorModel', () => {
             );
 
             expect(gridResponse.dataIds).toStrictEqual(List.of(...orderedRowKeys));
+        });
+    });
+
+    describe('getUpdatedData', () => {
+        test('no changes', () => {
+            const updatedRows = basicEditorModel.getUpdatedData();
+            expect(updatedRows).toHaveLength(0);
+        });
+        test('row value updated', () => {
+            const cellKey = genCellKey(colOneFk, 0);
+            const value = List([{ display: 'Changed', raw: 'changed' } as ValueDescriptor]);
+            const model = basicEditorModel.merge({
+                cellValues: basicEditorModel.cellValues.set(cellKey, value),
+            }) as EditorModel;
+            const updatedRows = model.getUpdatedData();
+            expect(updatedRows).toHaveLength(1);
+            expect(updatedRows[0][colOneFk]).toEqual('changed');
+        });
+        test('row value removed', () => {
+            const cellKey = genCellKey(colOneFk, 0);
+            const value = List([{ display: undefined, raw: undefined } as ValueDescriptor]);
+            const model = basicEditorModel.merge({
+                cellValues: basicEditorModel.cellValues.set(cellKey, value),
+            }) as EditorModel;
+            const updatedRows = model.getUpdatedData();
+            expect(updatedRows).toHaveLength(1);
+            // Undefined values get coerced to null so our server will acknowledge the deletion
+            expect(updatedRows[0][colOneFk]).toEqual(null);
+        });
+        test('external originalData', () => {
+            const altOriginalData = fromJS({
+                '0': {
+                    [rowIdFk]: { displayValue: '1', value: 0 },
+                    [colOneFk]: { displayValue: 'actual original ', value: 'actual original' },
+                    [colTwoFk]: { displayValue: 'B ', value: 'b' },
+                },
+                '1': {
+                    [rowIdFk]: { displayValue: '2', value: 1 },
+                    [colOneFk]: { displayValue: 'AA ', value: 'aa' },
+                    [colTwoFk]: { displayValue: 'BB ', value: 'bb' },
+                },
+            });
+            const updatedRows = basicEditorModel.getUpdatedData(altOriginalData);
+            expect(updatedRows).toHaveLength(1);
+            expect(updatedRows[0][colOneFk]).toEqual('a');
+        });
+        test('all rows updated', () => {
+            const value = List([{ display: 'Changed', raw: 'changed' } as ValueDescriptor]);
+            let cellValues = basicEditorModel.cellValues.set(genCellKey(colOneFk, 0), value);
+            cellValues = cellValues.set(genCellKey(colOneFk, 1), value);
+            const model = basicEditorModel.merge({ cellValues }) as EditorModel;
+            const updatedRows = model.getUpdatedData();
+            expect(updatedRows).toHaveLength(2);
+            expect(updatedRows[0][colOneFk]).toEqual('changed');
+            expect(updatedRows[1][colOneFk]).toEqual('changed');
+        });
+        test('MVFK (array) value updated', () => {
+            const fk = 'mvfk';
+            const mvfkCol = new QueryColumn({
+                name: 'mvfk',
+                caption: 'mvfk',
+                fieldKey: fk,
+                fieldKeyArray: ['mvfk'],
+                shownInInsertView: true,
+                userEditable: true,
+                lookup: { queryName: 'lookupQuery', schemaName: 'lookupSchema', multiValued: 'junction' },
+            });
+            let originalData = basicEditorModel.originalData.setIn(
+                ['0', 'mvfk'],
+                List([{ displayValue: undefined, value: undefined }])
+            );
+            originalData = originalData.setIn(
+                ['1', 'mvfk'],
+                List([
+                    {
+                        displayValue: 'Value 123',
+                        value: 123,
+                    },
+                    {
+                        displayValue: 'Value 321',
+                        value: 321,
+                    },
+                ])
+            );
+            originalData = originalData.setIn(
+                ['2', 'mvfk'],
+                List([
+                    {
+                        displayValue: 'Value 123',
+                        value: 123,
+                    },
+                    {
+                        displayValue: 'Value 321',
+                        value: 321,
+                    },
+                ])
+            );
+            // Values added to cell
+            let cellValues = basicEditorModel.cellValues.set(
+                genCellKey(mvfkCol.fieldKey.toLowerCase(), 0),
+                List([
+                    {
+                        raw: 123,
+                        display: 'Value 123',
+                    },
+                    {
+                        raw: 321,
+                        display: 'Value 321',
+                    },
+                ])
+            );
+            // All values removed from cell
+            cellValues.set(genCellKey(mvfkCol.fieldKey.toLowerCase(), 1), List());
+            // Single value removed from cell
+            cellValues = cellValues.set(
+                genCellKey(mvfkCol.fieldKey.toLowerCase(), 2),
+                List([
+                    {
+                        raw: 123,
+                        display: 'Value 123',
+                    },
+                ])
+            );
+            cellValues = cellValues.set(genCellKey(rowIdFk.toLowerCase(), 2), List([{ raw: 2, display: '2' }]));
+            const em = modifyEm({
+                columnMap: basicEditorModel.columnMap.set(fk, mvfkCol),
+                orderedColumns: basicEditorModel.orderedColumns.push(fk),
+                originalData,
+                cellValues,
+                rowCount: 3,
+            });
+            const updatedRows = em.getUpdatedData();
+            // Added values should be an array
+            expect(updatedRows[0][fk]).toEqual([123, 321]);
+            // Cleared values should result in an empty array
+            expect(updatedRows[1][fk]).toEqual([]);
+            // Removed value should not be present in array
+            expect(updatedRows[2][fk]).toEqual([123]);
+        });
+        test('lookup value updated', () => {
+            const lookupCol = new QueryColumn({
+                name: 'lookup',
+                caption: 'lookup',
+                fieldKey: 'lookup',
+                fieldKeyArray: ['lookup'],
+                shownInInsertView: true,
+                userEditable: true,
+                lookup: { queryName: 'lookupQuery', schemaName: 'lookupSchema' },
+            });
+            const em = modifyEm({
+                columnMap: basicEditorModel.columnMap.set(lookupCol.fieldKey, lookupCol),
+                orderedColumns: basicEditorModel.orderedColumns.push(lookupCol.fieldKey),
+                originalData: basicEditorModel.originalData.setIn(
+                    [0, lookupCol.fieldKey],
+                    List([{ value: 456, displayValue: 'Value 456' }])
+                ),
+                cellValues: basicEditorModel.cellValues.set(
+                    genCellKey('lookup', 0),
+                    List([
+                        {
+                            raw: 123,
+                            display: 'Value 123',
+                        },
+                    ])
+                ),
+            });
+            const updatedRows = em.getUpdatedData();
+            // ExpInput columns should be converted to comma separated string values
+            expect(updatedRows[0][lookupCol.fieldKey]).toEqual('Value 123');
+        });
+        test('expInput value updated', () => {
+            const materialInputs = QueryColumn.MATERIAL_INPUTS.toLowerCase();
+            const expInputCol = new QueryColumn({
+                name: `${materialInputs}/input`,
+                caption: 'input',
+                fieldKey: `${materialInputs}/input`,
+                fieldKeyArray: [materialInputs, 'input'],
+                shownInInsertView: true,
+                userEditable: true,
+                lookup: { queryName: 'lookupQuery', schemaName: 'lookupSchema' },
+            });
+            const em = modifyEm({
+                columnMap: basicEditorModel.columnMap.set(expInputCol.fieldKey.toLowerCase(), expInputCol),
+                orderedColumns: basicEditorModel.orderedColumns.push(expInputCol.fieldKey.toLowerCase()),
+                cellValues: basicEditorModel.cellValues.set(
+                    genCellKey(expInputCol.fieldKey.toLowerCase(), 0),
+                    List([
+                        {
+                            raw: 123,
+                            display: 'Value 123',
+                        },
+                        {
+                            raw: 321,
+                            display: 'Value 321',
+                        },
+                    ])
+                ),
+            });
+            const updatedRows = em.getUpdatedData();
+            // ExpInput columns should be converted to comma separated string values
+            expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toEqual('Value 123, Value 321');
+        });
+        test('altUpdateKeys', () => {
+            const queryInfo = basicEditorModel.queryInfo.mutate({ altUpdateKeys: new Set([colTwoFk]) });
+            const cellKey = genCellKey(colOneFk, 0);
+            const value = List([{ display: 'Changed', raw: 'changed' } as ValueDescriptor]);
+            const model = modifyEm({
+                cellValues: basicEditorModel.cellValues.set(cellKey, value),
+                queryInfo,
+            });
+            const updatedRows = model.getUpdatedData();
+            // altUpdateKeys are always appended to row values even if not changed
+            expect(updatedRows[0]).toHaveProperty(colTwoFk);
+        });
+        test('field added', () => {
+            const addedColumn = new QueryColumn({
+                name: 'added',
+                caption: 'added',
+                fieldKey: 'added',
+                fieldKeyArray: ['added'],
+                shownInInsertView: true,
+                userEditable: true,
+            });
+            const updatedCellValues = basicEditorModel.cellValues.merge({
+                [genCellKey(addedColumn.fieldKey, 0)]: List([
+                    { display: 'Added Value', raw: 'Added Value' } as ValueDescriptor,
+                ]),
+                [genCellKey(addedColumn.fieldKey, 1)]: List([
+                    { display: undefined, raw: undefined } as ValueDescriptor,
+                ]),
+            });
+            const em = modifyEm({
+                columnMap: basicEditorModel.columnMap.set(addedColumn.fieldKey.toLowerCase(), addedColumn),
+                orderedColumns: basicEditorModel.orderedColumns.push(addedColumn.fieldKey.toLowerCase()),
+                cellValues: updatedCellValues,
+            });
+            const updatedRows = em.getUpdatedData();
+            expect(updatedRows).toHaveLength(1);
+            expect(updatedRows[0].added).toEqual('Added Value');
+        });
+        test('folder included', () => {
+            const altOriginalData = fromJS({
+                '0': {
+                    folder: { displayValue: 'fake folder', value: 'fake folder' },
+                    [rowIdFk]: { displayValue: '1', value: 0 },
+                    [colOneFk]: { displayValue: 'actual original ', value: 'actual original' },
+                    [colTwoFk]: { displayValue: 'B ', value: 'b' },
+                },
+                '1': {
+                    folder: { displayValue: 'fake folder', value: 'fake child folder' },
+                    [rowIdFk]: { displayValue: '2', value: 1 },
+                    [colOneFk]: { displayValue: 'actual original', value: 'actual original' },
+                    [colTwoFk]: { displayValue: 'BB ', value: 'bb' },
+                },
+            });
+            const updatedRows = basicEditorModel.getUpdatedData(altOriginalData);
+            expect(updatedRows).toHaveLength(2);
+            expect(updatedRows[0].Folder).toEqual('fake folder');
+            expect(updatedRows[1].Folder).toEqual('fake child folder');
         });
     });
 

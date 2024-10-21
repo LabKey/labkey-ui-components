@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 5.15.1
+*Released*: 21 October 2024
 - Issue 51422: When not using filters, `clearSelections` can be more efficient
 
 ### version 5.15.0

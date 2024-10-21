@@ -23,8 +23,7 @@ import { InferDomainResponse } from '../../../public/InferDomainResponse';
 import { EditorModel } from '../editable/models';
 
 import { DATA_IMPORT_TOPIC, HelpLink } from '../../util/helpLinks';
-import { EditableGridChange } from '../editable/EditableGrid';
-import { EditableGridPanel } from '../editable/EditableGridPanel';
+import { EditableGrid, EditableGridChange } from '../editable/EditableGrid';
 
 import { FileSizeLimitProps } from '../../../public/files/models';
 import { getActionErrorMessage } from '../../util/messaging';
@@ -268,7 +267,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
                             <div className="row">
                                 <div className="col-sm-12">
                                     <FormStep stepIndex={AssayUploadTabs.Grid}>
-                                        <EditableGridPanel
+                                        <EditableGrid
                                             addControlProps={{
                                                 placement: 'top',
                                                 nounPlural: 'rows',
@@ -293,8 +292,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                             maxRows={this.props.maxRows}
                                             metricFeatureArea="assayResultsEditableGrid"
                                             onChange={this.props.onGridChange}
-                                            getIsDirty={getIsDirty}
-                                            setIsDirty={setIsDirty}
                                         />
                                     </FormStep>
                                     <FormStep stepIndex={AssayUploadTabs.Files}>

@@ -23,10 +23,11 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
     } = props;
     const { requiresUserComment } = useDataChangeCommentsRequired();
 
+    // TODO: Make clicking the discardTitle check the checkbox!
     return (
         <>
             <div className="form-group">
-                <div className="form-check">
+                <label className="form-check">
                     <input
                         className="form-check-input"
                         type="checkbox"
@@ -35,8 +36,8 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
                         onChange={toggleShouldDiscard}
                         checked={shouldDiscard}
                     />
-                    <span className="discard-consumed-title left-spacing">{discardTitle}</span>
-                </div>
+                    <span className="discard-consumed-title"> {discardTitle}</span>
+                </label>
             </div>
             {onCommentChange && (
                 <CommentTextArea

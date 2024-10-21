@@ -1,6 +1,24 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.16.0
+*Released*: 21 October 2024
+- EditableGridPanel: Remove support for tabs
+- SampleTypeAppContext: change parentDataTypes to an array
+- SamplesTabbedGridPanelComponentProps: remove withTitle, title props
+- Remove getUpdatedDataFromEditableGrid
+- Remove applyEditorModelChanges
+- EditorModel:
+  - add getUpdatedData
+  - add applyChanges
+- Remove initEditorModels
+- Remove queryModel arg from initEditorModel
+- Remove queryModel arg from EditableGridLoader.fetch
+- Export EditableGrid
+- Remove EditableGridPanel
+- Remove EditableGridPanelForUpdate
+- Don't export updateSampleStorageData
+
 ### version 5.15.1
 *Released*: 21 October 2024
 - Issue 51422: When not using filters, `clearSelections` can be more efficient

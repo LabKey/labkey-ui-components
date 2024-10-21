@@ -4,7 +4,6 @@ import { addDays, subDays } from 'date-fns';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn } from '../../../public/QueryColumn';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { cancelEvent, getPasteValue, setCopyValue } from '../../events';
 import { formatDate, formatDateTime, parseDate } from '../../util/Date';
@@ -98,26 +97,19 @@ const loadEditorModelData = async (
     return cellValues;
 };
 
-// TODO: we should refactor EditableGridLoader to make queryModel irrelevant. Some cases like AssayImportPanels create
-//  what is essentially a fake QueryModel just to satisfy this arg. EditableGridPanelForUpdateWithLineage passes the
-//  same QueryModel to every loader (it uses initEditorModels). I think the solution will be to add it to the
-//  constructor of any loader that needs it, and remove it from the fetch args. Alternatively we get rid of the whole
-//  loader pattern entirely, since most don't even fetch data (they immediately resolve promises), the GridLoader
-//  pattern is an artifact of the long-gone QueryGridModel.
 export const initEditorModel = async (
-    queryModel: QueryModel,
     loader: EditableGridLoader,
     columnMetadata?: Map<string, EditableColumnMetadata>
 ): Promise<EditorModel> => {
     const { columns: loaderColumns, queryInfo } = loader;
-    const { data, dataIds } = await loader.fetch(queryModel);
+    const { data, dataIds } = await loader.fetch();
     const rows = data.toJS();
     const orderedRows = dataIds.toArray();
     const forUpdate = loader.mode === EditorMode.Update;
     let columns: QueryColumn[];
 
     if (loaderColumns) {
-        columns = loader.columns;
+        columns = loaderColumns;
     } else if (forUpdate) {
         columns = queryInfo.getUpdateColumns();
     } else {
@@ -193,16 +185,7 @@ export const initEditorModel = async (
         originalData: data,
         queryInfo,
         rowCount: orderedRows.length,
-        tabTitle: queryModel.title ?? queryModel.queryName,
     } as Partial<EditorModelProps>);
-};
-
-export const initEditorModels = async (
-    queryModels: QueryModel[],
-    loaders: EditableGridLoader[],
-    columnMetadata?: Array<Map<string, EditableColumnMetadata>>
-) => {
-    return await Promise.all(queryModels.map((qm, i) => initEditorModel(qm, loaders[i], columnMetadata?.[i])));
 };
 
 export function parseIntIfNumber(val: any): number | string {

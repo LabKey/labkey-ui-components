@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD October 2024
+- Issue 39332: Make sure export started messages shows before export starts in TabbedGridPanel exportTabs case
+
 ### version 5.17.0
 *Released*: 21 October 2024
 - Migrate out all components related to `AssayImportPanels` (i.e. assay run import page) and corresponding functionality.

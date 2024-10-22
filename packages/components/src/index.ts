@@ -32,8 +32,7 @@ import { decodePart, encodePart, getSchemaQuery, resolveKey, SchemaQuery } from 
 import { insertColumnFilter, Operation, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
-import { InferDomainResponse } from './public/InferDomainResponse';
-import { inferDomainFromFile } from './internal/components/assay/utils';
+import { InferDomainResponse, inferDomainFromFile } from './public/InferDomainResponse';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
 import { SchemaDetails } from './internal/SchemaDetails';
@@ -143,6 +142,7 @@ import {
     formatDateTime,
     fromDate,
     fromNow,
+    generateNameWithTimestamp,
     getDateFormat,
     getDateTimeFormat,
     getParsedRelativeDateStr,
@@ -417,12 +417,7 @@ import {
 } from './internal/components/assay/withAssayModels';
 import { AssayPicker, AssayPickerTabs } from './internal/components/assay/AssayPicker';
 import { AssayStateModel, AssayUploadResultModel } from './internal/components/assay/models';
-import {
-    allowReimportAssayRun,
-    clearAssayDefinitionCache,
-    getAssayDefinitions,
-    getProtocol,
-} from './internal/components/assay/actions';
+import { clearAssayDefinitionCache, getAssayDefinitions, getProtocol } from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
 import {
     createHorizontalBarLegendData,
@@ -612,7 +607,6 @@ import { DomainFieldLabel } from './internal/components/domainproperties/DomainF
 import { RangeValidationOptionsModal } from './internal/components/domainproperties/validation/RangeValidationOptions';
 import { DataTypeFoldersPanel } from './internal/components/domainproperties/DataTypeFoldersPanel';
 
-import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
 import {
     AppContextTestProvider,
@@ -714,6 +708,7 @@ import {
     isAppHomeFolder,
     isAssayDesignExportEnabled,
     isAssayEnabled,
+    isAssayFileUploadEnabled,
     isAssayQCEnabled,
     isAssayRequestsEnabled,
     isBiologicsEnabled,
@@ -856,11 +851,7 @@ import {
     TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from './internal/productFixtures';
-import {
-    GENERAL_ASSAY_PROVIDER_NAME,
-    RUN_PROPERTIES_REQUIRED_COLUMNS,
-    WORKFLOW_TASK_PROPERTIES_REQUIRED_COLUMNS,
-} from './internal/components/assay/constants';
+import { GENERAL_ASSAY_PROVIDER_NAME } from './internal/components/assay/constants';
 import { GlobalStateContextProvider } from './internal/GlobalStateContext';
 import {
     areUnitsCompatible,
@@ -921,6 +912,7 @@ const App = {
     isAppHomeFolder,
     isAssayDesignExportEnabled,
     isAssayEnabled,
+    isAssayFileUploadEnabled,
     isAssayQCEnabled,
     isAssayRequestsEnabled,
     isExperimentAliasEnabled,
@@ -1275,6 +1267,7 @@ export {
     SecurityAssignment,
     SecurityRole,
     Principal,
+    useContainerUser,
     useUserProperties,
     isLoginAutoRedirectEnabled,
     GroupDetailsPanel,
@@ -1432,7 +1425,6 @@ export {
     // assay
     AssayUploadResultModel,
     AssayStateModel,
-    AssayImportPanels,
     AssayPicker,
     AssayPickerTabs,
     withAssayModels,
@@ -1444,11 +1436,8 @@ export {
     AssayDomainTypes,
     AssayLink,
     AssayDesignEmptyAlert,
-    allowReimportAssayRun,
     clearAssayDefinitionCache,
     getAssayDefinitions,
-    WORKFLOW_TASK_PROPERTIES_REQUIRED_COLUMNS,
-    RUN_PROPERTIES_REQUIRED_COLUMNS,
     GENERAL_ASSAY_PROVIDER_NAME,
     // report / chart related items
     BaseBarChart,
@@ -1584,6 +1573,7 @@ export {
     formatDateTime,
     fromDate,
     fromNow,
+    generateNameWithTimestamp,
     parseDate,
     isRelativeDateFilterValue,
     getParsedRelativeDateStr,
@@ -1900,6 +1890,7 @@ export type { ServerNotificationState, ProductMenuState, AppReducerState } from 
 export type { IAttachment } from './internal/renderers/AttachmentCard';
 export type { Field, FormSchema, Option } from './internal/components/AutoForm';
 export type { FileSizeLimitProps } from './public/files/models';
+export type { FileAttachmentFormProps } from './public/files/FileAttachmentForm';
 export type { UsersLoader } from './internal/components/forms/actions';
 export type { LineageGroupingOptions } from './internal/components/lineage/types';
 export type {
@@ -1943,7 +1934,11 @@ export type { ComponentsAPIWrapper } from './internal/APIWrapper';
 export type { GetParentTypeDataForLineage } from './internal/components/entities/actions';
 export type { URLMapper } from './internal/url/URLResolver';
 export type { PlacementType } from './internal/components/editable/Controls';
-export type { GetAssayDefinitionsOptions, GetProtocolOptions } from './internal/components/assay/actions';
+export type {
+    DuplicateFilesResponse,
+    GetAssayDefinitionsOptions,
+    GetProtocolOptions,
+} from './internal/components/assay/actions';
 export type {
     FormsySelectOption,
     FormsyInputProps,
@@ -1958,8 +1953,9 @@ export type { FetchedGroup, SecurityAPIWrapper } from './internal/components/sec
 export type { UserLimitSettings } from './internal/components/permissions/actions';
 export type { ModalProps } from './internal/Modal';
 export type { QueryLookupFilterGroup, QueryLookupFilterGroupFilter } from './public/QueryColumn';
-export type { ClearSelectedOptions, ReplaceSelectedOptions } from './internal/actions';
+export type { ClearSelectedOptions, ReplaceSelectedOptions, SelectionResponse } from './internal/actions';
 export type { LabelsAPIWrapper } from './internal/components/labels/APIWrapper';
 export type { InputRendererProps } from './internal/components/forms/input/types';
 export type { InputRendererComponent } from './internal/components/forms/input/InputRenderFactory';
 export type { AppContextTestProviderProps } from './internal/test/testHelpers';
+export type { DisableableInputProps } from './internal/components/forms/input/DisableableInput';

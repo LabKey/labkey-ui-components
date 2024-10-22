@@ -1,10 +1,11 @@
 import { List, Map } from 'immutable';
 
-import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { QueryColumn, QueryLookup } from '../../../public/QueryColumn';
 
 import { DATE_RANGE_URI } from '../domainproperties/constants';
+
+import sampleSetQueryInfoJSON from '../../../test/data/sampleSetAllFieldTypes-getQueryDetails.json';
 
 import { EditableGridLoader, EditorMode } from './models';
 import { computeRangeChange, genCellKey, getValidatedEditableGridValue, parseCellKey, sortCellKeys } from './utils';
@@ -33,7 +34,7 @@ class MockEditableGridLoader implements EditableGridLoader {
 
 describe('Editable Grids Utils', () => {
     describe('initEditorModel', () => {
-        const { queryInfo } = ASSAY_WIZARD_MODEL;
+        const queryInfo = QueryInfo.fromJsonForTests(sampleSetQueryInfoJSON);
 
         test('defaults to insert columns', async () => {
             const loader = new MockEditableGridLoader(queryInfo);
@@ -45,30 +46,32 @@ describe('Editable Grids Utils', () => {
 
         test('respects loader mode for columns', async () => {
             const loader = new MockEditableGridLoader(queryInfo, { mode: EditorMode.Update });
-            const expectedUpdateColumns = queryInfo.getUpdateColumns().map(col => col.fieldKey.toLowerCase());
+            const expectedUpdateColumns = queryInfo
+                .getUpdateColumns()
+                .filter(col => !col.isFileInput)
+                .map(col => col.fieldKey.toLowerCase());
             const editorModel = await initEditorModel(loader);
             expect(editorModel.orderedColumns.toArray()).toEqual(expectedUpdateColumns);
         });
 
         test('respects loader supplied columns', async () => {
-            const columns = [queryInfo.getColumn('SampleID'), queryInfo.getColumn('Date')];
+            const columns = [queryInfo.getColumn('Name'), queryInfo.getColumn('Date')];
             const loader = new MockEditableGridLoader(queryInfo, { columns });
             const editorModel = await initEditorModel(loader);
             expect(editorModel.orderedColumns.toArray()).toEqual(columns.map(col => col.fieldKey.toLowerCase()));
         });
 
         test('respects loader extra columns', async () => {
-            const columns = [queryInfo.getColumn('SampleID')];
+            const columns = [queryInfo.getColumn('Name')];
             const extraColumns = [queryInfo.getColumn('Date')];
             const loader = new MockEditableGridLoader(queryInfo, { columns, extraColumns });
             const editorModel = await initEditorModel(loader);
+            const { columnMap, orderedColumns } = editorModel;
 
             // Extra columns should not show up in the orderedColumns array
-            expect(editorModel.orderedColumns.find(col => col == extraColumns[0].fieldKey.toLowerCase())).toEqual(
-                undefined
-            );
+            expect(orderedColumns.find(col => col === extraColumns[0].fieldKey.toLowerCase())).toBeUndefined();
             // Extra columns should show up in the columnMap
-            expect(editorModel.columnMap.get('date')).toEqual(extraColumns[0]);
+            expect(columnMap.get('date')).toEqual(extraColumns[0]);
         });
     });
 });

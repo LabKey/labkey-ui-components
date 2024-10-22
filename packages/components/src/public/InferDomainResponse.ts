@@ -1,5 +1,10 @@
 import { fromJS, List, Record } from 'immutable';
 
+import { Ajax, Utils } from '@labkey/api';
+
+import { buildURL } from '../internal/url/AppURL';
+import { processRequest } from '../internal/query/api';
+
 import { QueryColumn } from './QueryColumn';
 
 export class InferDomainResponse extends Record({
@@ -36,4 +41,35 @@ export class InferDomainResponse extends Record({
             reservedFields,
         });
     }
+}
+
+export function inferDomainFromFile(
+    file: File | string, // file or webdav url path
+    numLinesToInclude: number,
+    domainKindName?: string
+): Promise<InferDomainResponse> {
+    return new Promise((resolve, reject) => {
+        const form = new FormData();
+        form.append('file', file);
+        form.append('numLinesToInclude', numLinesToInclude ? (numLinesToInclude + 1).toString() : undefined);
+        if (domainKindName) {
+            form.append('domainKindName', domainKindName);
+        }
+
+        Ajax.request({
+            url: buildURL('property', 'inferDomain'),
+            method: 'POST',
+            form,
+            success: Utils.getCallbackWrapper((response, request) => {
+                if (processRequest(response, request, reject)) return;
+                resolve(InferDomainResponse.create(response));
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                console.error(error);
+                reject(
+                    'There was a problem determining the fields in the uploaded file.  Please check the format of the file.'
+                );
+            }),
+        });
+    });
 }

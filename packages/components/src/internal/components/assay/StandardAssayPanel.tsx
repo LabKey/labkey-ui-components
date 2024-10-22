@@ -35,3 +35,5 @@ export const StandardAssayPanel: FC<StandardAssayPanelProps> = memo(props => {
         </div>
     );
 });
+
+StandardAssayPanel.displayName = 'StandardAssayPanel';

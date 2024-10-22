@@ -27,7 +27,7 @@ import {
     getContainerFilterForFolder,
     invalidateQueryDetailsCache,
     selectDistinctRows,
-    selectRowsDeprecated
+    selectRowsDeprecated,
 } from './query/api';
 import {
     BARTENDER_EXPORT_CONTROLLER,
@@ -77,7 +77,7 @@ export function selectAll(
 export function getGridIdsFromTransactionId(
     transactionAuditId: number | string,
     dataType: string,
-    containerPath?: string,
+    containerPath?: string
 ): Promise<string[]> {
     if (!transactionAuditId) {
         return;
@@ -578,7 +578,7 @@ export function getSnapshotSelections(key: string, containerPath?: string): Prom
     });
 }
 
-interface ISelectionResponse {
+export interface SelectionResponse {
     resolved: boolean;
     schemaQuery?: SchemaQuery;
     selected: any[];
@@ -588,7 +588,7 @@ export async function getSelection(
     searchParams: URLSearchParams,
     schemaName?: string,
     queryName?: string
-): Promise<ISelectionResponse> {
+): Promise<SelectionResponse> {
     const selectionKey = searchParams.get('selectionKey');
     if (selectionKey) {
         let { keys, schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);

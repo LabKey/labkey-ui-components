@@ -91,7 +91,7 @@ describe('DomainRowExpandedOptions', () => {
             rangeURI: DATETIME_TYPE.rangeURI,
         });
 
-        render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
+        renderWithAppContext(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
 
         await waitFor(() => {
             const headers = document.querySelectorAll('.domain-field-section-heading');

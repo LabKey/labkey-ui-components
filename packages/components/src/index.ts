@@ -143,6 +143,7 @@ import {
     fromDate,
     fromNow,
     generateNameWithTimestamp,
+    getContainerFormats,
     getDateFormat,
     getDateTimeFormat,
     getParsedRelativeDateStr,
@@ -151,6 +152,13 @@ import {
     isDateTimeInPast,
     isRelativeDateFilterValue,
     parseDate,
+    getNonStandardFormatWarning,
+    getDateTimeInputOptions,
+    splitDateTimeFormat,
+    DateFormatType,
+    getDateTimeSettingWarning,
+    joinDateTimeFormat,
+    getDateTimeSettingFormat,
 } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
@@ -259,6 +267,7 @@ import {
     HelpLink,
     JavaDocsLink,
     SAMPLE_IMPORT_TOPIC,
+    getFolderDateTimeHelp,
 } from './internal/util/helpLinks';
 import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
 import { NOT_ANY_FILTER_TYPE } from './internal/url/NotAnyFilterType';
@@ -952,6 +961,7 @@ const App = {
     hasPremiumModule,
     hasProductFolders,
     hasModule,
+    getContainerFormats,
     getDateFormat,
     getDateTimeFormat,
     getTimeFormat,
@@ -1575,6 +1585,13 @@ export {
     fromNow,
     generateNameWithTimestamp,
     parseDate,
+    getNonStandardFormatWarning,
+    getDateTimeInputOptions,
+    splitDateTimeFormat,
+    DateFormatType,
+    getDateTimeSettingWarning,
+    joinDateTimeFormat,
+    getDateTimeSettingFormat,
     isRelativeDateFilterValue,
     getParsedRelativeDateStr,
     isDateTimeInPast,
@@ -1606,6 +1623,7 @@ export {
     getConfirmDeleteMessage,
     resolveErrorMessage,
     getHelpLink,
+    getFolderDateTimeHelp,
     HelpLink,
     JavaDocsLink,
     HELP_LINK_REFERRER,
@@ -1959,3 +1977,4 @@ export type { InputRendererProps } from './internal/components/forms/input/types
 export type { InputRendererComponent } from './internal/components/forms/input/InputRenderFactory';
 export type { AppContextTestProviderProps } from './internal/test/testHelpers';
 export type { DisableableInputProps } from './internal/components/forms/input/DisableableInput';
+export type { ContainerFormats, DateTimeSettingProp } from './internal/util/Date';

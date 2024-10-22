@@ -21,6 +21,7 @@ import { QueryColumn } from '../../public/QueryColumn';
 import { DATE_TYPE, DATETIME_TYPE, TIME_TYPE } from '../components/domainproperties/PropDescType';
 
 import {
+    DateFormatType,
     formatDate,
     formatDateTime,
     generateNameWithTimestamp,
@@ -30,10 +31,13 @@ import {
     getDateFNSDateFormat,
     getDateFNSDateTimeFormat,
     getDateFNSTimeFormat,
+    getDateTimeInputOptions,
     getFormattedStringFromDate,
     getJsonDateTimeFormatString,
     getJsonFormatString,
     getNextDateStr,
+    getNonStandardDateTimeFormatWarning,
+    getNonStandardFormatWarning,
     getParsedRelativeDateStr,
     getPickerDateAndTimeFormat,
     isDateBetween,
@@ -43,6 +47,7 @@ import {
     parseDateFNSTimeFormat,
     parseFNSTimeFormat,
     parseTime,
+    splitDateTimeFormat,
 } from './Date';
 
 describe('Date Utilities', () => {
@@ -50,6 +55,90 @@ describe('Date Utilities', () => {
 
     test('it should always be UTC', () => {
         expect(new Date().getTimezoneOffset()).toBe(0);
+    });
+
+    test('splitDateTimeFormat', () => {
+        expect(splitDateTimeFormat(null)).toEqual(['', '']);
+        expect(splitDateTimeFormat('')).toEqual(['', '']);
+        expect(splitDateTimeFormat(' ')).toEqual(['', '']);
+        expect(splitDateTimeFormat('yyyy-MM-dd')).toEqual(['yyyy-MM-dd', '']);
+        expect(splitDateTimeFormat('yyyy-MM-dd HH:mm')).toEqual(['yyyy-MM-dd', 'HH:mm']);
+        expect(splitDateTimeFormat('yyyy-MM-dd hh:mm a')).toEqual(['yyyy-MM-dd', 'hh:mm a']);
+        expect(splitDateTimeFormat('ddMMMyyyy hh:mm a')).toEqual(['ddMMMyyyy', 'hh:mm a']);
+        expect(splitDateTimeFormat('ddMMMyyyy KK:mm a z')).toEqual(['ddMMMyyyy', 'KK:mm a z']);
+        expect(splitDateTimeFormat('yyyy MM dd')).toEqual(['yyyy', 'MM dd']);
+        expect(splitDateTimeFormat('yyyy MM dd HH:mm')).toEqual(['yyyy MM dd', 'HH:mm']);
+    });
+
+    test('getNonStandardDateTimeFormatWarning', () => {
+        expect(getNonStandardDateTimeFormatWarning(null)).toBe('Non-standard date-time format.');
+        expect(getNonStandardDateTimeFormatWarning('')).toBe('Non-standard date-time format.');
+        expect(getNonStandardDateTimeFormatWarning('yyyy-MM-dd')).toBeNull();
+        expect(getNonStandardDateTimeFormatWarning('yyyy-MM-dd HH:mm')).toBeNull();
+        expect(getNonStandardDateTimeFormatWarning('yyyy-MM-dd hh:mm a')).toBeNull();
+        expect(getNonStandardDateTimeFormatWarning('ddMMMyyyy hh:mm a')).toBeNull();
+        expect(getNonStandardDateTimeFormatWarning('HH:mm ddMMMyyyy')).toBe('Non-standard date-time format.');
+        expect(getNonStandardDateTimeFormatWarning('yyyy-MM-DD')).toBe('Non-standard date-time format.');
+        expect(getNonStandardDateTimeFormatWarning('yyyy-MM-ddHH:mm')).toBe('Non-standard date-time format.');
+        expect(getNonStandardDateTimeFormatWarning('yyyy-MM-dd hh:mm aa')).toBe('Non-standard date-time format.');
+        expect(getNonStandardDateTimeFormatWarning('yyyy MM dd hh:mm aa')).toBe('Non-standard date-time format.');
+    });
+
+    test('getNonStandardFormatWarning', () => {
+        expect(getNonStandardFormatWarning(DateFormatType.Date, null)).toBe('Non-standard date format.');
+        expect(getNonStandardFormatWarning(DateFormatType.Time, '')).toBe('Non-standard time format.');
+        expect(getNonStandardFormatWarning(DateFormatType.DateTime, undefined)).toBe(
+            'Non-standard date-time format.'
+        );
+
+        expect(getNonStandardFormatWarning(DateFormatType.Date, 'yyyy-MM-dd')).toBeNull();
+        expect(getNonStandardFormatWarning(DateFormatType.DateTime, 'yyyy-MM-dd')).toBeNull();
+        expect(getNonStandardFormatWarning(DateFormatType.Time, 'yyyy-MM-dd')).toBe('Non-standard time format.');
+
+        expect(getNonStandardFormatWarning(DateFormatType.Date, 'yyyy-MM-dd HH:mm')).toBe('Non-standard date format.');
+        expect(getNonStandardFormatWarning(DateFormatType.DateTime, 'yyyy-MM-dd HH:mm')).toBeNull();
+        expect(getNonStandardFormatWarning(DateFormatType.Time, 'yyyy-MM-dd HH:mm')).toBe('Non-standard time format.');
+
+        expect(getNonStandardFormatWarning(DateFormatType.Date, 'HH:mm')).toBe('Non-standard date format.');
+        expect(getNonStandardFormatWarning(DateFormatType.DateTime, 'HH:mm')).toBe('Non-standard date-time format.');
+        expect(getNonStandardFormatWarning(DateFormatType.Time, 'HH:mm')).toBeNull();
+
+        expect(getNonStandardFormatWarning(DateFormatType.Date, 'yyyy/MM/dd')).toBe('Non-standard date format.');
+        expect(getNonStandardFormatWarning(DateFormatType.DateTime, 'yyyy/MM/dd HH-mm')).toBe(
+            'Non-standard date-time format.'
+        );
+        expect(getNonStandardFormatWarning(DateFormatType.Time, 'hh:mm aa')).toBe('Non-standard time format.');
+    });
+
+    test('getDateTimeInputOptions', () => {
+        const datePOSIX = 1596750283812; // Aug 6, 2020 21:44 UTC
+        const date = new Date(datePOSIX);
+        const tz = 'America/New_York';
+
+        const expectedOptions = {
+            dateOptions: [
+                { label: 'yyyy-MM-dd (2020-08-06)', value: 'yyyy-MM-dd' },
+                { label: 'yyyy-MMM-dd (2020-Aug-06)', value: 'yyyy-MMM-dd' },
+                { label: 'dd-MMM-yyyy (06-Aug-2020)', value: 'dd-MMM-yyyy' },
+                { label: 'dd-MMM-yy (06-Aug-20)', value: 'dd-MMM-yy' },
+                { label: 'ddMMMyyyy (06Aug2020)', value: 'ddMMMyyyy' },
+                { label: 'ddMMMyy (06Aug20)', value: 'ddMMMyy' },
+            ],
+            optionalTimeOptions: [
+                { label: '<none>', value: '' },
+                { label: 'HH:mm:ss (17:44:43)', value: 'HH:mm:ss' },
+                { label: 'HH:mm (17:44)', value: 'HH:mm' },
+                { label: 'HH:mm:ss.SSS (17:44:43.812)', value: 'HH:mm:ss.SSS' },
+                { label: 'hh:mm a (05:44 PM)', value: 'hh:mm a' },
+            ],
+            timeOptions: [
+                { label: 'HH:mm:ss (17:44:43)', value: 'HH:mm:ss' },
+                { label: 'HH:mm (17:44)', value: 'HH:mm' },
+                { label: 'HH:mm:ss.SSS (17:44:43.812)', value: 'HH:mm:ss.SSS' },
+                { label: 'hh:mm a (05:44 PM)', value: 'hh:mm a' },
+            ],
+        };
+        expect(getDateTimeInputOptions(tz, date)).toEqual(expectedOptions);
     });
 
     describe('generateNameWithTimestamp', () => {

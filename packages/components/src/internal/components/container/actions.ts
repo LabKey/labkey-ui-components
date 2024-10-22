@@ -48,7 +48,7 @@ export type UseContainerUserOptions = Omit<FetchContainerOptions, 'containerPath
  * React hook that supplies the container, user, and the container-relative permissions for the user.
  * @param containerIdOrPath The container id or container path to request.
  * @param options Supply different request options for fetch containers endpoint.
- * Requests default to includeSubfolders=false and includeStandardProperties=false.
+ * Requests default to includeSubfolders=false, includeStandardProperties=false and includeInheritableFormats=false.
  * Example:
  * ```tsx
  * const SeeUserPermissions: React.FC = () => {

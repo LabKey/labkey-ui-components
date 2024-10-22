@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.17.0
+*Released*: 21 October 2024
+- Migrate out all components related to `AssayImportPanels` (i.e. assay run import page) and corresponding functionality.
+- Add `checkForDuplicateAssayFiles()` to assay API wrapper.
+- Add `getSelection()` to query API wrapper.
+
 ### version 5.16.0
 *Released*: 21 October 2024
 - EditableGridPanel: Remove support for tabs

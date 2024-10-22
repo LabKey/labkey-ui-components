@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Filter, Query } from '@labkey/api';
+import { Filter, Query, Utils } from '@labkey/api';
 import { fromJS, Iterable, List, Map, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 import { ReactNode } from 'react';
 
@@ -26,10 +26,12 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { getQueryColumnRenderers } from '../../global';
-import { quoteValueWithDelimiters } from '../../util/utils';
+import { caseInsensitive, isQuotedWithDelimiters, quoteValueWithDelimiters } from '../../util/utils';
+
+import { hasProductFolders } from '../../app/utils';
 
 import { CellCoordinates, EditableGridEvent } from './constants';
-import { genCellKey, getValidatedEditableGridValue, parseCellKey } from './utils';
+import { genCellKey, getValidatedEditableGridValue, isSparseSelection, parseCellKey, sortCellKeys } from './utils';
 
 export interface EditableColumnMetadata {
     align?: string;
@@ -107,6 +109,10 @@ export enum EditorMode {
     Insert,
     Update,
 }
+
+export const FOLDER_COL = 'Folder';
+export type UpdatedRowValue = string | string[] | number | number[] | boolean | boolean[];
+export type UpdatedRow = Record<string, UpdatedRowValue>;
 
 export class EditorModel
     extends ImmutableRecord({
@@ -288,9 +294,9 @@ export class EditorModel
     /**
      * Formats the values for an entire row into a Map<string, any>
      * @param rowIdx
-     * @param displayValues
+     * @param useRawValues If false we format the raw values
      */
-    getRowValue(rowIdx: number, displayValues = true): Map<string, any> {
+    getRowValue(rowIdx: number, useRawValues = true): Map<string, any> {
         let row = Map<string, any>();
 
         this.columnMap.forEach(col => {
@@ -307,6 +313,7 @@ export class EditorModel
                 row = row.set(col.name, renderer.getEditableRawValue(values));
             } else if (col.isLookup()) {
                 if (col.isExpInput() || col.isAliquotParent()) {
+                    // We have to use display values for ExpInput and AliquotParent because of name expressions
                     row = row.set(
                         col.name,
                         values
@@ -317,13 +324,10 @@ export class EditorModel
                 } else if (col.isJunctionLookup()) {
                     row = row.set(
                         col.name,
-                        values.reduce((arr, vd) => {
-                            const val = vd.raw;
-                            if (val !== undefined && val !== null) {
-                                arr.push(val);
-                            }
-                            return arr;
-                        }, [])
+                        values
+                            .filter(vd => vd.raw !== undefined && vd.raw !== null)
+                            .map(vd => vd.raw)
+                            .toArray()
                     );
                 } else if (col.lookup.displayColumn === col.lookup.keyColumn) {
                     row = row.set(
@@ -341,7 +345,7 @@ export class EditorModel
                 row = row.set(col.name, values.size === 1 ? values.first().raw?.toString().trim() : undefined);
             } else {
                 let val = values.size === 1 ? values.first().raw : undefined;
-                if (!displayValues) val = getValidatedEditableGridValue(val?.toString().trim(), col).value;
+                if (!useRawValues) val = getValidatedEditableGridValue(val?.toString().trim(), col).value;
                 row = row.set(col.name, val);
             }
         });
@@ -351,13 +355,13 @@ export class EditorModel
 
     /**
      * This method formats the EditorModel data, so we can upload the data to LKS via insert/updateRows
-     * @param displayValues
+     * @param useRawValues If false we format the raw values
      */
-    getDataForServerUpload(displayValues = true): List<Map<string, any>> {
+    getDataForServerUpload(useRawValues = true): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
 
         for (let rn = 0; rn < this.rowCount; rn++) {
-            const row = this.getRowValue(rn, displayValues);
+            const row = this.getRowValue(rn, useRawValues);
             rawData = rawData.push(row);
         }
 
@@ -697,15 +701,142 @@ export class EditorModel
         const cellKeys = this.isMultiSelect ? this.selectionCells : [this.selectionKey];
         return genCellKey(fieldKey, rowIdx) === cellKeys[cellKeys.length - 1];
     }
+
+    applyChanges(changes: Partial<EditorModel>): EditorModel {
+        let editorModel = this.merge(changes) as EditorModel;
+        // NK: The "selectionCells" property is of type string[]. When merge() is used it utilizes
+        // Immutable.fromJS() which turns the Array into a List. We want to maintain the property
+        // as an Array so here we set it explicitly.
+        if (changes?.selectionCells !== undefined) {
+            const selectionCells = sortCellKeys(editorModel.orderedColumns.toArray(), changes.selectionCells);
+            editorModel = editorModel.set('selectionCells', selectionCells) as EditorModel;
+            editorModel = editorModel.set(
+                'isSparseSelection',
+                isSparseSelection(editorModel.orderedColumns.toArray(), selectionCells)
+            ) as EditorModel;
+        }
+
+        return editorModel;
+    }
+
+    /**
+     * Constructs an array of objects (suitable for the rows parameter of updateRows), where each object contains the
+     * values in editorRows that are different from the ones in originalGridData
+     *
+     * originalData: The original data to compare against. We need this as argument to support bulk edit, as
+     * EditorModels are initialized with data that has bulk changes applied, and we still want to account for the bulk
+     * changes even if a user didn't change anything in an EditableGrid.
+     */
+    getUpdatedData(originalData?: Map<string, Map<string, any>>): UpdatedRow[] {
+        // If we have data from bulk edit then we need to use that as originalData instead of the data on the EditorModel
+        // otherwise we'll incorrectly diff the changes
+        originalData = originalData ? EditorModel.convertQueryDataToEditorData(originalData) : this.originalData;
+        const editorRows = this.getDataForServerUpload().toArray();
+        const pkFieldKey = this.pkFieldKey;
+        const queryInfo = this.queryInfo;
+        const updatedRows: UpdatedRow[] = [];
+        editorRows.forEach(editedRow => {
+            const id = editedRow.get(pkFieldKey);
+            const altIds = {};
+            queryInfo.altUpdateKeys?.forEach(altIdField => {
+                altIds[altIdField] = altIdField ? editedRow.get(altIdField) : undefined;
+            });
+            const originalRow = originalData.get(id.toString());
+            if (originalRow) {
+                const row = editedRow.reduce((row, value, key) => {
+                    // We can skip the idField for the diff check, that will be added to the updated rows later
+                    if (key === pkFieldKey) return row;
+
+                    let originalValue = originalRow.get(key, undefined);
+                    // For lineage grids the parent columns aren't on the queryInfo
+                    const col = queryInfo.getColumn(key) ?? this.columnMap.get(key.toLowerCase());
+
+                    // Convert empty cell to null
+                    if (value === '') value = null;
+
+                    // Some column types have special handling of raw data, i.e. StoredAmount and Units (issue 49502)
+                    if (col?.columnRenderer) {
+                        const renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
+                        if (renderer?.getOriginalRawValue) {
+                            originalValue = renderer.getOriginalRawValue(originalValue);
+                        }
+                    }
+
+                    // Lookup columns store a list but grid only holds a single value
+                    if (List.isList(originalValue) && !Array.isArray(value)) {
+                        if (col.isExpInput()) {
+                            // We have to compare displayValues for ExpInput columns for name expressions to work
+                            originalValue = originalValue.map(v => v.displayValue).join(', ');
+                        } else {
+                            const valueObj = originalValue.get(0);
+                            originalValue = Map.isMap(valueObj) ? valueObj.get('value') : valueObj.value;
+                        }
+                    }
+
+                    // EditableGrid passes in strings for single values. Attempt this conversion here to help check for
+                    // updated values. This is not the final type check.
+                    if (typeof originalValue === 'number' || typeof originalValue === 'boolean') {
+                        try {
+                            if (!isQuotedWithDelimiters(value, ',')) value = JSON.parse(value);
+                        } catch (e) {
+                            // Incorrect types are handled by API and user feedback created from that response. Don't need
+                            // to handle that here.
+                        }
+                    } else if (Iterable.isIterable(originalValue) && !List.isList(originalValue)) {
+                        originalValue = originalValue.get('value');
+                    }
+
+                    // If col is a multi-value column, compare all values for changes
+                    if ((List.isList(originalValue) || originalValue === undefined) && Array.isArray(value)) {
+                        if ((originalValue?.size ?? 0) !== value.length) {
+                            row[key] = value;
+                        } else if (originalValue) {
+                            if (Map.isMap(originalValue.get(0))) {
+                                // filter to those values that no longer exist in the new value array
+                                const filtered = originalValue.filter(
+                                    o =>
+                                        value.indexOf(o.get('value')) === -1 &&
+                                        value.indexOf(o.get('displayValue')) === -1
+                                );
+                                if (filtered.size > 0) {
+                                    row[key] = value;
+                                }
+                            } else if (
+                                originalValue?.findIndex(
+                                    o => value.indexOf(o.value) === -1 && value.indexOf(o.displayValue) === -1
+                                ) !== -1
+                            ) {
+                                row[key] = value;
+                            }
+                        }
+                    } else if (!(originalValue == undefined && value == undefined) && originalValue !== value) {
+                        // only update if the value has changed
+
+                        // if the value is 'undefined', it will be removed from the update rows, so in order to
+                        // erase an existing value we set the value to null in our update data
+                        row[key] = value === undefined ? null : value;
+                    }
+                    return row;
+                }, {});
+                if (!Utils.isEmptyObj(row)) {
+                    row[pkFieldKey] = id;
+                    // Always append folder if it's in the original data so cross folder updates work
+                    const folder = caseInsensitive(originalRow?.toJS(), FOLDER_COL)?.[0]?.value;
+                    if (folder !== undefined) row[FOLDER_COL] = folder;
+                    Object.assign(row, altIds);
+                    updatedRows.push(row);
+                }
+            } else {
+                console.error('Unable to find original row for id ' + id);
+            }
+        });
+        return updatedRows;
+    }
 }
 
 export interface GridResponse {
     data: Map<any, any>;
     dataIds: List<any>;
-}
-
-interface GridSelectionResponse {
-    selectedIds: List<any>;
 }
 
 /**
@@ -729,8 +860,7 @@ interface GridSelectionResponse {
  * - EditableGridLoaderFromSelection (uses getSelectedData)
  */
 export interface GridLoader {
-    fetch: (model: QueryModel) => Promise<GridResponse>;
-    fetchSelection?: (model: QueryModel) => Promise<GridSelectionResponse>;
+    fetch: () => Promise<GridResponse>;
 }
 
 export interface EditableGridLoader extends GridLoader {

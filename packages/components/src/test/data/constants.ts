@@ -16,25 +16,10 @@
 import { List } from 'immutable';
 import { Filter, PermissionRoles } from '@labkey/api';
 
-import { AssayWizardModel } from '../../internal/components/assay/AssayWizardModel';
-
-import { AssayDefinitionModel, AssayDomainTypes } from '../../internal/AssayDefinitionModel';
-import { QueryInfo } from '../../public/QueryInfo';
 import { IFile } from '../../internal/components/files/models';
 
 import { SchemaQuery } from '../../public/SchemaQuery';
 import { EntityDataType } from '../../internal/components/entities/models';
-
-import assayWizardJSON from './assayWizardModel.json';
-
-const ASSAY_DEFINITION_MODEL = AssayDefinitionModel.create(assayWizardJSON.assayDef);
-export const ASSAY_WIZARD_MODEL = new AssayWizardModel({
-    isInit: true,
-    assayDef: ASSAY_DEFINITION_MODEL,
-    batchColumns: ASSAY_DEFINITION_MODEL.getDomainColumns(AssayDomainTypes.BATCH),
-    runColumns: ASSAY_DEFINITION_MODEL.getDomainColumns(AssayDomainTypes.RUN),
-    queryInfo: QueryInfo.fromJsonForTests(assayWizardJSON.queryInfo),
-});
 
 export const FILES_DATA = List<IFile>([
     {

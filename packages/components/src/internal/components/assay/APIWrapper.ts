@@ -3,7 +3,9 @@ import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import { AssayProtocolModel } from '../domainproperties/assay/models';
 
 import {
+    checkForDuplicateAssayFiles,
     clearAssayDefinitionCache,
+    DuplicateFilesResponse,
     GetAssayDefinitionsOptions,
     getAssayDefinitions,
     GetProtocolOptions,
@@ -14,6 +16,7 @@ import {
 import { AssayUploadResultModel } from './models';
 
 export interface AssayAPIWrapper {
+    checkForDuplicateAssayFiles: (fileNames: string[], containerPath?: string) => Promise<DuplicateFilesResponse>;
     clearAssayDefinitionCache: () => void;
     getAssayDefinitions: (options: GetAssayDefinitionsOptions) => Promise<AssayDefinitionModel[]>;
     getProtocol: (options: GetProtocolOptions) => Promise<AssayProtocolModel>;
@@ -21,6 +24,7 @@ export interface AssayAPIWrapper {
 }
 
 export class AssayServerAPIWrapper implements AssayAPIWrapper {
+    checkForDuplicateAssayFiles = checkForDuplicateAssayFiles;
     clearAssayDefinitionCache = clearAssayDefinitionCache;
     getAssayDefinitions = getAssayDefinitions;
     getProtocol = getProtocol;
@@ -35,6 +39,7 @@ export function getAssayTestAPIWrapper(
     overrides: Partial<AssayAPIWrapper> = {}
 ): AssayAPIWrapper {
     return {
+        checkForDuplicateAssayFiles: mockFn(),
         clearAssayDefinitionCache: mockFn(),
         getAssayDefinitions: mockFn(),
         getProtocol: mockFn(),

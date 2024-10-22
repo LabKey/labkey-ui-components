@@ -1,13 +1,37 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 5.X
-*Released*: X October 2024
+### version 5.17.1
+*Released*: 22 October 2024
 - Date/Time formatting simplifications - Settings UI Changes
   - Add utils for handling standard date/time formats
   - Move getFolderDateTimeHelpBody from ContainerLookAndFeelForm to shared util
   - Check blank initial value for SelectInput
   - Modified DateTimeFieldOptions to use standard formats and new UI
+
+### version 5.17.0
+*Released*: 21 October 2024
+- Migrate out all components related to `AssayImportPanels` (i.e. assay run import page) and corresponding functionality.
+- Add `checkForDuplicateAssayFiles()` to assay API wrapper.
+- Add `getSelection()` to query API wrapper.
+
+### version 5.16.0
+*Released*: 21 October 2024
+- EditableGridPanel: Remove support for tabs
+- SampleTypeAppContext: change parentDataTypes to an array
+- SamplesTabbedGridPanelComponentProps: remove withTitle, title props
+- Remove getUpdatedDataFromEditableGrid
+- Remove applyEditorModelChanges
+- EditorModel:
+  - add getUpdatedData
+  - add applyChanges
+- Remove initEditorModels
+- Remove queryModel arg from initEditorModel
+- Remove queryModel arg from EditableGridLoader.fetch
+- Export EditableGrid
+- Remove EditableGridPanel
+- Remove EditableGridPanelForUpdate
+- Don't export updateSampleStorageData
 
 ### version 5.15.1
 *Released*: 21 October 2024

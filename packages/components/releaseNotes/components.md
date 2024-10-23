@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD October 2024
 - Issue 39332: Make sure export started messages shows before export starts in TabbedGridPanel exportTabs case
 
+### version 5.17.2
+*Released*: 23 October 2024
+- Fix Issue 51359
+  - Paste starting from first cell in selection
+
 ### version 5.17.1
 *Released*: 22 October 2024
 - Date/Time formatting simplifications - Settings UI Changes

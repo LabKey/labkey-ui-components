@@ -15,6 +15,7 @@ import {
     parsePastedLookup,
     removeColumn,
     splitPrefixedNumber,
+    validateAndInsertPastedData,
 } from './actions';
 import { CellMessage, EditorModel, ValueDescriptor } from './models';
 import { genCellKey } from './utils';
@@ -811,5 +812,139 @@ describe('parsePastedLookup', () => {
                 ]),
             });
         });
+    });
+});
+
+describe('insertPastedData', () => {
+    test('paste starts at first selected cell', async () => {
+        // Issue 51359
+        const pkFk = 'rowId';
+        const fkOne = 'field_one';
+        const fkTwo = 'field_two';
+        const queryInfo = QueryInfo.fromJsonForTests({
+            pkCols: [pkFk],
+            columns: {
+                [pkFk]: new QueryColumn({
+                    caption: 'Row Id',
+                    fieldKey: pkFk,
+                    inputType: 'number',
+                }),
+                [fkOne]: new QueryColumn({
+                    caption: 'Field One',
+                    fieldKey: fkOne,
+                    inputType: 'string',
+                }),
+                [fkTwo]: new QueryColumn({
+                    caption: 'Field Two',
+                    fieldKey: fkTwo,
+                    inputType: 'string',
+                }),
+            },
+        });
+
+        const baseEditorModel = new EditorModel({}).merge({
+            cellMessages: Map<string, CellMessage>({
+                '1-0': 'description 1 message',
+            }),
+            cellValues: Map<string, List<ValueDescriptor>>({
+                [genCellKey(fkOne, 0)]: List<ValueDescriptor>([
+                    {
+                        display: 'qwer',
+                        raw: 'qwer',
+                    },
+                ]),
+                [genCellKey(fkOne, 1)]: List<ValueDescriptor>([
+                    {
+                        display: 'asdf',
+                        raw: 'asdf',
+                    },
+                ]),
+                [genCellKey(fkOne, 2)]: List<ValueDescriptor>([
+                    {
+                        display: 'zxcv',
+                        raw: 'zxcv',
+                    },
+                ]),
+                [genCellKey(fkTwo, 0)]: List<ValueDescriptor>([
+                    {
+                        display: 'yuio',
+                        raw: 'yuio',
+                    },
+                ]),
+                [genCellKey(fkTwo, 1)]: List<ValueDescriptor>([
+                    {
+                        display: 'hjkl',
+                        raw: 'hjkl',
+                    },
+                ]),
+                [genCellKey(fkTwo, 2)]: List<ValueDescriptor>([
+                    {
+                        display: 'nm',
+                        raw: 'nm',
+                    },
+                ]),
+            }),
+            orderedColumns: List([fkOne, fkTwo]),
+            columnMap: [fkOne, fkTwo].reduce((result, key) => {
+                return result.set(key, queryInfo.getColumn(key));
+            }, Map<string, QueryColumn>()),
+            queryInfo,
+            rowCount: 10,
+        }) as EditorModel;
+
+        const emWithColumnSelected = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(fkOne, 0), genCellKey(fkOne, 1), genCellKey(fkOne, 2)],
+            selectedColIdx: 0,
+            selectedRowIdx: 2,
+        });
+
+        let changes = await validateAndInsertPastedData(
+            emWithColumnSelected,
+            'one\ntwo\nthree',
+            undefined,
+            true,
+            true,
+            undefined,
+            true
+        );
+        let cellValues = changes.cellValues;
+        expect(cellValues.get(genCellKey(fkOne, 0))).toEqual(List([{ display: 'one', raw: 'one' }]));
+        expect(cellValues.get(genCellKey(fkOne, 1))).toEqual(List([{ display: 'two', raw: 'two' }]));
+        expect(cellValues.get(genCellKey(fkOne, 2))).toEqual(List([{ display: 'three', raw: 'three' }]));
+        expect(changes.selectionCells).toEqual([genCellKey(fkOne, 0), genCellKey(fkOne, 1), genCellKey(fkOne, 2)]);
+
+        cellValues = (
+            await validateAndInsertPastedData(emWithColumnSelected, 'one', undefined, true, true, undefined, true)
+        ).cellValues;
+        expect(cellValues.get(genCellKey(fkOne, 0))).toEqual(List([{ display: 'one', raw: 'one' }]));
+        expect(cellValues.get(genCellKey(fkOne, 1))).toEqual(List([{ display: 'one', raw: 'one' }]));
+        expect(cellValues.get(genCellKey(fkOne, 2))).toEqual(List([{ display: 'one', raw: 'one' }]));
+
+        const emWithCellSelected = baseEditorModel.applyChanges({
+            selectedColIdx: 0,
+            selectedRowIdx: 1,
+        });
+        cellValues = (
+            await validateAndInsertPastedData(emWithCellSelected, 'one', undefined, true, true, undefined, true)
+        ).cellValues;
+        expect(cellValues.get(genCellKey(fkOne, 0))).toEqual(List([{ display: 'qwer', raw: 'qwer' }]));
+        expect(cellValues.get(genCellKey(fkOne, 1))).toEqual(List([{ display: 'one', raw: 'one' }]));
+        expect(cellValues.get(genCellKey(fkOne, 2))).toEqual(List([{ display: 'zxcv', raw: 'zxcv' }]));
+
+        // Pasting more data than we have cells selected should paste beyond the cells
+        changes = await validateAndInsertPastedData(
+            emWithCellSelected,
+            'one\ntwo',
+            undefined,
+            true,
+            true,
+            undefined,
+            true
+        );
+        cellValues = changes.cellValues;
+        expect(cellValues.get(genCellKey(fkOne, 0))).toEqual(List([{ display: 'qwer', raw: 'qwer' }]));
+        expect(cellValues.get(genCellKey(fkOne, 1))).toEqual(List([{ display: 'one', raw: 'one' }]));
+        expect(cellValues.get(genCellKey(fkOne, 2))).toEqual(List([{ display: 'two', raw: 'two' }]));
+        expect(changes.selectionCells).toEqual([genCellKey(fkOne, 1), genCellKey(fkOne, 2)]);
     });
 });

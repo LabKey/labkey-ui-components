@@ -1378,9 +1378,25 @@ export async function validateAndInsertPastedData(
     targetContainerPath: string,
     selectCells: boolean
 ): Promise<Partial<EditorModel>> {
-    const { selectedColIdx, selectedRowIdx } = editorModel;
+    let selectedColIdx: number;
+    let selectedRowIdx: number;
+
+    if (editorModel.isMultiSelect) {
+        // Issue 51359 - When pasting during multiselect we want to paste from the first cell in the selection,
+        // otherwise we'll paste from the initially selected cell, which will fill the wrong area. This is most obvious
+        // if you select upwards, then paste.
+        const minCellKey = editorModel.selectionCells[0];
+        const { fieldKey, rowIdx } = parseCellKey(minCellKey);
+        selectedRowIdx = rowIdx;
+        selectedColIdx = editorModel.orderedColumns.indexOf(fieldKey);
+    } else {
+        selectedRowIdx = editorModel.selectedRowIdx;
+        selectedColIdx = editorModel.selectedColIdx;
+    }
+
     const readOnlyRowCount =
         readonlyRows && !lockRowCount ? getReadonlyRowCount(editorModel, selectedRowIdx, readonlyRows) : 0;
+
     const paste = validatePaste(editorModel, selectedColIdx, selectedRowIdx, value, readOnlyRowCount);
 
     if (paste.success) {

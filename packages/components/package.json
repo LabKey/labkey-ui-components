@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "5.17.1-fb-coryMisc2411Oct.0",
+  "version": "5.17.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

@@ -145,8 +145,7 @@ export class EditorModel
     declare focusColIdx: number;
     declare focusRowIdx: number;
     declare focusValue: List<ValueDescriptor>;
-    // NK: This is precomputed property that is updated whenever the selection is updated.
-    // See applyEditableGridChangesToModels().
+    // NK: This is precomputed property that is updated whenever the selection is updated. See applyChanges().
     declare isSparseSelection: boolean;
     declare orderedColumns: List<string>;
     declare originalData: Map<string, Map<string, any>>;

@@ -18,7 +18,7 @@ import {
     validateAndInsertPastedData,
 } from './actions';
 import { CellMessage, EditorModel, ValueDescriptor } from './models';
-import { genCellKey, sortCellKeys } from './utils';
+import { genCellKey } from './utils';
 
 describe('column mutation actions', () => {
     const queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);

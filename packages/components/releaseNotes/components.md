@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 5.??.?
-*Released*: ?? October 2024
+### version 5.17.2
+*Released*: 23 October 2024
 - Fix Issue 51359
   - Paste starting from first cell in selection
 

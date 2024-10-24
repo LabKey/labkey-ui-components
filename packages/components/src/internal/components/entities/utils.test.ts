@@ -14,12 +14,16 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 
+import { ViewInfo } from '../../ViewInfo';
+
 import { IEntityTypeOption } from './models';
 import {
     getEntityDescription,
     getEntityNoun,
+    getIdentifyingFieldKeys,
     getInitialParentChoices,
     getJobCreationHref,
+    getSampleIdCellKey,
     sampleDeleteDependencyText,
 } from './utils';
 import { DataClassDataType, SampleTypeDataType } from './constants';
@@ -305,5 +309,69 @@ describe('getJobCreationHref', () => {
         expect(getJobCreationHref(queryModel, undefined, true, undefined, false, null, 'from', 'to')).toBe(
             '/labkey/to/app.view#/workflow/new?selectionKey=id'
         );
+    });
+});
+
+describe('getIdentifyingFieldKeys', () => {
+    const columns = [
+        { fieldKey: 'intCol', jsonType: 'int' },
+        { fieldKey: 'doubleCol', jsonType: 'double' },
+        { fieldKey: 'textCol', jsonType: 'string' },
+    ];
+    const QUERY_INFO_NO_ID_VIEW = QueryInfo.fromJsonForTests(
+        {
+            columns,
+            name: 'query',
+            schemaName: 'schema',
+            views: [
+                { columns, name: ViewInfo.DEFAULT_NAME },
+                { columns, name: 'view' },
+            ],
+        },
+        true
+    );
+    const QUERY_INFO_WITH_ID_VIEW = QueryInfo.fromJsonForTests(
+        {
+            columns,
+            name: 'query',
+            schemaName: 'schema',
+            views: [
+                { columns, name: ViewInfo.DEFAULT_NAME },
+                { columns, name: ViewInfo.IDENTIFYING_FIELDS_VIEW_NAME },
+            ],
+        },
+        true
+    );
+
+    test('no view defined', () => {
+        expect(getIdentifyingFieldKeys(QUERY_INFO_NO_ID_VIEW)).toStrictEqual([]);
+    });
+
+    test('view with default labels', () => {
+        expect(getIdentifyingFieldKeys(QUERY_INFO_WITH_ID_VIEW)).toStrictEqual(['intCol', 'doubleCol', 'textCol']);
+    });
+
+    test('view with custom labels', () => {
+        const newColumn = { fieldKey: 'intCol', jsonType: 'int', title: 'Counter' };
+        const queryInfo = QueryInfo.fromJsonForTests(
+            {
+                columns: [newColumn, columns[1], columns[2]],
+                name: 'query',
+                schemaName: 'schema',
+                views: [
+                    { columns, name: ViewInfo.DEFAULT_NAME },
+                    { columns: [columns[1], newColumn], name: ViewInfo.IDENTIFYING_FIELDS_VIEW_NAME },
+                ],
+            },
+            true
+        );
+        expect(getIdentifyingFieldKeys(queryInfo)).toStrictEqual(['doubleCol', 'intCol']);
+    });
+});
+
+describe('get cell key helpers', () => {
+    test('getSampleIdCellKey', () => {
+        expect(getSampleIdCellKey(0)).toBe('sampleid&&0');
+        expect(getSampleIdCellKey(9)).toBe('sampleid&&9');
     });
 });

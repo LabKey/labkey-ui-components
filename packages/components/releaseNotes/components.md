@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD October 2024
+- Add identifying fields to grids when insert assay data via EditableGrid
+  - migrate some sample identifying fields utils from @labkey/premium
+
 ### version 5.17.3
 *Released*: 23 October 2024
 - Issue 39332: Make sure export started messages shows before export starts in TabbedGridPanel exportTabs case

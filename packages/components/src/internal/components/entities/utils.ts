@@ -12,6 +12,10 @@ import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
 import { WORKFLOW_KEY } from '../../app/constants';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
+import { genCellKey } from '../editable/utils';
+
+import { ViewInfo } from '../../ViewInfo';
+
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 
 import { ParentIdData } from './actions';
@@ -158,4 +162,17 @@ export function getJobCreationHref(
 
     const actionUrl = createProductUrlFromParts(targetProductId, currentProductId, params, WORKFLOW_KEY, 'new');
     return actionUrl instanceof AppURL ? actionUrl.toHref() : actionUrl;
+}
+
+export function getIdentifyingFieldKeys(queryInfo: QueryInfo): string[] {
+    const idView = queryInfo?.getView(ViewInfo.IDENTIFYING_FIELDS_VIEW_NAME);
+    if (!idView) {
+        return [];
+    }
+    return queryInfo.getLookupViewEditableGridColumns(true).map(col => col.fieldKey);
+}
+
+export const SAMPLE_ID_FIELD_KEY = 'sampleid';
+export function getSampleIdCellKey(rowIdx: number): string {
+    return genCellKey(SAMPLE_ID_FIELD_KEY, rowIdx);
 }

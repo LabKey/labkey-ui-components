@@ -511,6 +511,8 @@ import {
     getParentTypeDataForLineage,
     getSampleOperationConfirmationData,
     saveOrderedSnapshotSelection,
+    updateCellValuesForSampleIds,
+    getSampleIdentifyingFieldGridData,
 } from './internal/components/entities/actions';
 import {
     AssayResultDataType,
@@ -535,6 +537,8 @@ import {
     isDataClassEntity,
     isSampleEntity,
     sampleDeleteDependencyText,
+    getSampleIdCellKey,
+    SAMPLE_ID_FIELD_KEY,
 } from './internal/components/entities/utils';
 import {
     ALIQUOT_CREATION,
@@ -1401,6 +1405,10 @@ export {
     getJobCreationHref,
     getPermissionRestrictionMessage,
     DiscardConsumedSamplesPanel,
+    SAMPLE_ID_FIELD_KEY,
+    getSampleIdCellKey,
+    updateCellValuesForSampleIds,
+    getSampleIdentifyingFieldGridData,
     // metric related items
     UnitModel,
     MEASUREMENT_UNITS,

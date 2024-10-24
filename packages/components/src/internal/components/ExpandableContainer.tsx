@@ -9,15 +9,15 @@ import { SVGIcon } from './base/SVGIcon';
 
 interface Props extends PropsWithChildren {
     clause: React.ReactNode;
-    rowCls?: string;
     containerCls?: string;
     iconFaCls?: string;
     iconSrc?: string;
-    noIcon?: boolean;
     initExpanded?: boolean;
     isExpandable: boolean;
     links: React.ReactNode;
+    noIcon?: boolean;
     onClick?: (show: boolean) => void;
+    rowCls?: string;
     useGreyTheme?: boolean;
 }
 
@@ -61,7 +61,18 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { children, rowCls = 'row', noIcon, iconSrc, iconFaCls, isExpandable, clause, links, containerCls, useGreyTheme } = this.props;
+        const {
+            children,
+            rowCls = 'row',
+            noIcon,
+            iconSrc,
+            iconFaCls,
+            isExpandable,
+            clause,
+            links,
+            containerCls,
+            useGreyTheme,
+        } = this.props;
         const { visible, isHover } = this.state;
         const hasOnClick = this.props.onClick !== undefined;
         const containerDivCls = useGreyTheme ? 'container-expandable-grey' : 'container-expandable-blue';
@@ -80,22 +91,22 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
                         { 'container-expandable__inactive': !isHover && !visible }
                     )}
                 >
-                    {!noIcon &&
+                    {!noIcon && (
                         <i className="container-expandable-child__img">
                             {iconFaCls ? (
-                                <i style={{padding: '5px'}} className={'fa fa-' + iconFaCls}/>
+                                <i style={{ padding: '5px' }} className={'fa fa-' + iconFaCls} />
                             ) : (
-                                <SVGIcon iconSrc={iconSrc} isActive={isHover} height="50px" width="50px"/>
+                                <SVGIcon iconSrc={iconSrc} isActive={isHover} height="50px" width="50px" />
                             )}
                         </i>
-                    }
+                    )}
                     <div
                         onClick={hasOnClick || isExpandable ? this.handleClick : undefined}
                         className={classNames('pull-right', 'container-expandable-child__chevron', {
                             'text-muted': !isExpandable,
                         })}
                     >
-                    <i
+                        <i
                             onClick={hasOnClick || isExpandable ? this.handleClick : undefined}
                             className={classNames('fa', {
                                 'fa-chevron-down': visible,

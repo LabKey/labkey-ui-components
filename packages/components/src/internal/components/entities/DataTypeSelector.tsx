@@ -10,8 +10,9 @@ import { ColorIcon } from '../base/ColorIcon';
 
 import { Container } from '../base/models/Container';
 
-import { DataTypeEntity, EntityDataType, FolderConfigurableDataType } from './models';
 import { ExpandableContainer } from '../ExpandableContainer';
+
+import { DataTypeEntity, EntityDataType, FolderConfigurableDataType } from './models';
 
 export const filterDataTypeHiddenEntity = (dataType: DataTypeEntity, hiddenEntities?: any[]): boolean => {
     return !hiddenEntities || hiddenEntities?.indexOf(dataType.rowId ?? dataType.lsid) === -1;
@@ -29,13 +30,13 @@ export interface DataTypeSelectorProps {
     disabled?: boolean;
     entityDataType?: EntityDataType;
     hiddenEntities?: any[]; // number[] | string[]
+    inactiveSectionLabel?: string;
     isNewFolder?: boolean;
     noHeader?: boolean;
     showUncheckedWarning?: boolean;
     toggleSelectAll?: boolean;
     uncheckedEntitiesDB: any[]; // number[] | string[]
     updateUncheckedTypes: (dataType: string, unchecked: any[] /* number[] | string[]*/) => void;
-    inactiveSectionLabel?: string;
 }
 
 export const getUncheckedEntityWarning = (
@@ -67,39 +68,38 @@ export const getUncheckedEntityWarning = (
 };
 
 interface DataTypeSelectorListProps {
-    index?: number;
-    getUncheckedEntityWarning?: (id: number | string) => React.ReactNode;
-    disabled: boolean;
-    uncheckedEntities: any[],
-    onChange: (entityId: number | string, toggle: boolean, check?: boolean) => void;
-    showUncheckedWarning: boolean;
+    columns?: number;
     dataType?: DataTypeEntity;
     dataTypes?: DataTypeEntity[];
-    columns?: number;
+    disabled: boolean;
+    getUncheckedEntityWarning?: (id: number | string) => React.ReactNode;
+    index?: number;
+    onChange: (entityId: number | string, toggle: boolean, check?: boolean) => void;
+    showUncheckedWarning: boolean;
+    uncheckedEntities: any[];
 }
 
 export const DataTypeSelectorItem: FC<DataTypeSelectorListProps> = memo(props => {
-    const {
-        index,
-        disabled,
-        getUncheckedEntityWarning,
-        uncheckedEntities,
-        onChange,
-        showUncheckedWarning,
-        dataType,
-    } = props;
+    const { index, disabled, getUncheckedEntityWarning, uncheckedEntities, onChange, showUncheckedWarning, dataType } =
+        props;
 
     const entityId = useMemo(() => {
         return dataType.rowId ?? dataType.lsid;
     }, [dataType]);
 
-    const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-        onChange(entityId, false, event.target.checked);
-    }, [entityId]);
+    const handleChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange(entityId, false, event.target.checked);
+        },
+        [entityId]
+    );
 
-    const handleClick = useCallback((event: any) => {
-        onChange(entityId, true);
-    }, [entityId]);
+    const handleClick = useCallback(
+        (event: any) => {
+            onChange(entityId, true);
+        },
+        [entityId]
+    );
 
     return (
         <li key={entityId} className="folder-faceted-data-type">
@@ -112,15 +112,9 @@ export const DataTypeSelectorItem: FC<DataTypeSelectorListProps> = memo(props =>
                     checked={uncheckedEntities?.indexOf(entityId) < 0}
                     disabled={disabled}
                 />
-                <div
-                    className="margin-left-more folder-datatype-faceted__value"
-                    onClick={handleClick}
-                >
+                <div className="margin-left-more folder-datatype-faceted__value" onClick={handleClick}>
                     {dataType.labelColor && (
-                        <ColorIcon
-                            cls="label_color color-icon__circle-small"
-                            value={dataType.labelColor}
-                        />
+                        <ColorIcon cls="label_color color-icon__circle-small" value={dataType.labelColor} />
                     )}
                     {dataType.label}
                 </div>
@@ -132,14 +126,20 @@ export const DataTypeSelectorItem: FC<DataTypeSelectorListProps> = memo(props =>
 });
 
 export const DataTypeSelectorList: FC<DataTypeSelectorListProps> = memo(props => {
-    const { columns = 1, dataTypes, disabled, getUncheckedEntityWarning,
-        uncheckedEntities, onChange, showUncheckedWarning, } = props;
+    const {
+        columns = 1,
+        dataTypes,
+        disabled,
+        getUncheckedEntityWarning,
+        uncheckedEntities,
+        onChange,
+        showUncheckedWarning,
+    } = props;
 
     const colWidth = 12 / columns;
     const subSize = Math.ceil(dataTypes.length / columns);
     const columnIndexes = [];
-    for (let i = 0; i < columns; i++)
-        columnIndexes.push(i);
+    for (let i = 0; i < columns; i++) columnIndexes.push(i);
 
     return (
         <>
@@ -164,11 +164,10 @@ export const DataTypeSelectorList: FC<DataTypeSelectorListProps> = memo(props =>
                             })}
                         </ul>
                     </div>
-                )
+                );
             })}
         </>
     );
-
 });
 
 export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
@@ -189,7 +188,7 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
         container,
         showUncheckedWarning = true,
         dataTypePrefix = '',
-        inactiveSectionLabel = 'Inactive'
+        inactiveSectionLabel = 'Inactive',
     } = props;
 
     const [dataTypes, setDataTypes] = useState<DataTypeEntity[]>();
@@ -302,17 +301,15 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
         return null;
     }, [dataTypeLabel, entityDataType]);
 
-    const { activeDataTypes, inactiveDataTypes} = useMemo(() => {
-        const activeDataTypes : DataTypeEntity[] = [], inactiveDataTypes : DataTypeEntity[] = [];
-        if (loading)
-            return {activeDataTypes, inactiveDataTypes};
+    const { activeDataTypes, inactiveDataTypes } = useMemo(() => {
+        const activeDataTypes: DataTypeEntity[] = [],
+            inactiveDataTypes: DataTypeEntity[] = [];
+        if (loading) return { activeDataTypes, inactiveDataTypes };
         dataTypes?.forEach(dataType => {
-            if (dataType.inactive)
-                inactiveDataTypes.push(dataType);
-            else
-                activeDataTypes.push(dataType);
+            if (dataType.inactive) inactiveDataTypes.push(dataType);
+            else activeDataTypes.push(dataType);
         });
-        return {activeDataTypes, inactiveDataTypes};
+        return { activeDataTypes, inactiveDataTypes };
     }, [loading, dataTypes]);
 
     const generateInactiveSectionHeader = useMemo(() => {
@@ -326,7 +323,7 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
     // Note: because we return LoadingSpinner here when loading we can remove all the stuff below that renders based on
     // loading status
     if (!dataTypes || loading) {
-        return <LoadingSpinner/>;
+        return <LoadingSpinner />;
     }
 
     return (
@@ -379,7 +376,6 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
                                 showUncheckedWarning={showUncheckedWarning}
                             />
                         </ExpandableContainer>
-
                     </div>
                 )}
             </div>

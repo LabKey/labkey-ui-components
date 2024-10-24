@@ -38,6 +38,7 @@ export interface AuditSettingsResponse {
 }
 
 export interface FolderAPIWrapper {
+    archiveFolder: (archive: boolean, containerPath?: string) => Promise<Container>;
     createFolder: (options: FolderSettingsOptions, containerPath?: string) => Promise<Container>;
     getAuditSettings: (containerPath?: string) => Promise<AuditSettingsResponse>;
     getContainers: (
@@ -46,12 +47,11 @@ export interface FolderAPIWrapper {
         includeStandardProperties?: boolean,
         includeEffectivePermissions?: boolean,
         includeTopFolder?: boolean,
-        excludeArchived?: boolean,
+        excludeArchived?: boolean
     ) => Promise<Container[]>;
     getDataTypeExcludedContainers: (dataType: FolderConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
     getFolderDataTypeExclusions: (excludedContainer?: string) => Promise<{ [key: string]: number[] }>;
     renameFolder: (options: FolderSettingsOptions, containerPath?: string) => Promise<Container>;
-    archiveFolder: (archive: boolean, containerPath?: string) => Promise<Container>;
     setAuditCommentsRequired: (isRequired: boolean, containerPath?: string) => Promise<void>;
     updateContainerDataExclusions: (options: FolderSettingsOptions, containerPath?: string) => Promise<void>;
     updateContainerLookAndFeelSettings: (
@@ -89,7 +89,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                 ),
                 method: 'POST',
                 jsonData: {
-                    archive
+                    archive,
                 },
                 success: Utils.getCallbackWrapper(({ folder }) => {
                     resolve(new Container(folder));
@@ -225,8 +225,8 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                         // if user doesn't have permissions to the parent/project, the response will come back with an empty Container object
                         .filter(c => c !== undefined && c.id !== '');
 
-                    const childFolders = folders.filter(c =>
-                        c.path !== topFolderPath && (!excludeArchived || !c.isArchived)
+                    const childFolders = folders.filter(
+                        c => c.path !== topFolderPath && (!excludeArchived || !c.isArchived)
                     );
                     // Issue 45805: sort folders by title as server-side sorting is insufficient
                     childFolders.sort(naturalSortByProperty('title'));

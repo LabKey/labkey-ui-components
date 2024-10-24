@@ -225,9 +225,7 @@ export const ProductMenuButtonTitle: FC<ProductMenuButtonTitle> = memo(props => 
         <>
             <div className="title">
                 {title}
-                {container.isArchived && (
-                    <Alert className="product-menu_archived-tag">Archived</Alert>
-                )}
+                {container.isArchived && <Alert className="product-menu_archived-tag">Archived</Alert>}
             </div>
             <div className="subtitle">{subtitle}</div>
         </>

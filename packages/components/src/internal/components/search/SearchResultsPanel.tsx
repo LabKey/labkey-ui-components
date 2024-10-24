@@ -21,11 +21,13 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { Alert } from '../base/Alert';
 
+import { useServerContext } from '../base/ServerContext';
+
+import { getArchivedFolders } from '../../app/utils';
+
 import { SearchResultCard } from './SearchResultCard';
 import { SearchResultsModel } from './models';
 import { decodeErrorMessage } from './utils';
-import { useServerContext } from '../base/ServerContext';
-import { getArchivedFolders } from '../../app/utils';
 
 interface Props {
     emptyResultDisplay?: React.ReactNode;
@@ -46,7 +48,11 @@ export const SearchResultsPanel: FC<Props> = memo(({ emptyResultDisplay, iconUrl
 
     return (
         <div className="search-results-panel">
-            {loading && <div className="top-spacing"><LoadingSpinner /></div>}
+            {loading && (
+                <div className="top-spacing">
+                    <LoadingSpinner />
+                </div>
+            )}
             {!loading && error && (
                 <Alert className="margin-top">
                     There was an error with your search term(s). {decodeErrorMessage(error)}

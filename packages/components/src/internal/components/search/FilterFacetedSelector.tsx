@@ -11,8 +11,9 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { useRequestHandler } from '../../util/RequestHandler';
 
-import { ALL_VALUE_DISPLAY, EMPTY_VALUE_DISPLAY, getCheckedFilterValues, getUpdatedChooseValuesFilter } from './utils';
 import { FolderColumnRenderer } from '../../renderers/FolderColumnRenderer';
+
+import { ALL_VALUE_DISPLAY, EMPTY_VALUE_DISPLAY, getCheckedFilterValues, getUpdatedChooseValuesFilter } from './utils';
 
 const MAX_DISTINCT_FILTER_OPTIONS = 250;
 
@@ -28,9 +29,9 @@ interface Props {
     showSearchLength?: number;
 }
 
-const rendererFolderValue = (value: any) : ReactNode => {
+const rendererFolderValue = (value: any): ReactNode => {
     return <FolderColumnRenderer data={value} />;
-}
+};
 
 export const FilterFacetedSelector: FC<Props> = memo(props => {
     const {
@@ -63,7 +64,12 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     useEffect(() => {
         setDistinctValues(true);
         const fieldKeyLc = fieldKey.toLowerCase();
-        if (fieldKeyLc === 'folder' || fieldKeyLc === 'folder/displayname' || fieldKeyLc === 'container' ||fieldKeyLc === 'container/displayname') {
+        if (
+            fieldKeyLc === 'folder' ||
+            fieldKeyLc === 'folder/displayname' ||
+            fieldKeyLc === 'container' ||
+            fieldKeyLc === 'container/displayname'
+        ) {
             setIsFolderField(true);
         }
     }, [fieldKey]); // on fieldKey change, reload selection values
@@ -199,12 +205,15 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         });
     }, [fieldDistinctValues, searchDistinctValues, searchStr]);
 
-    const renderValue = useCallback((value: any) => {
-        if (isFolderField) {
-            return rendererFolderValue(value);
-        }
-        return value;
-    }, [isFolderField]);
+    const renderValue = useCallback(
+        (value: any) => {
+            if (isFolderField) {
+                return rendererFolderValue(value);
+            }
+            return value;
+        },
+        [isFolderField]
+    );
 
     if (!fieldDistinctValues || allShown === undefined) return <LoadingSpinner />;
 

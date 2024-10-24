@@ -282,6 +282,7 @@ import { StorageStatusRenderer } from './internal/renderers/StorageStatusRendere
 import { StoredAmountRenderer } from './internal/renderers/StoredAmountRenderer';
 import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
 import { ExpirationDateColumnRenderer } from './internal/renderers/ExpirationDateColumnRenderer';
+import { FolderColumnRenderer } from './internal/renderers/FolderColumnRenderer';
 import { AppendUnits } from './internal/renderers/AppendUnits';
 import { AttachmentCard } from './internal/renderers/AttachmentCard';
 import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
@@ -1199,6 +1200,7 @@ export {
     MultiValueRenderer,
     NoLinkRenderer,
     ExpirationDateColumnRenderer,
+    FolderColumnRenderer,
     StorageStatusRenderer,
     StoredAmountRenderer,
     SampleStatusRenderer,

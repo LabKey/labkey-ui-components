@@ -1,4 +1,4 @@
-import React, { FC, Fragment, memo } from 'react';
+import React, { FC, Fragment, memo, useMemo } from 'react';
 import classNames from 'classnames';
 
 import { getPrimaryAppProperties } from '../../app/utils';
@@ -6,6 +6,7 @@ import { useServerContext } from '../base/ServerContext';
 import { AppURL, createProductUrl } from '../../url/AppURL';
 import { getHref } from '../../url/utils';
 import { Tip } from '../base/Tip';
+import { ExpandableContainer } from '../ExpandableContainer';
 
 export interface FolderMenuItem {
     href: string;
@@ -13,6 +14,7 @@ export interface FolderMenuItem {
     isTopLevel: boolean;
     label: string;
     path: string;
+    archived: boolean;
 }
 
 export interface FolderMenuProps {
@@ -22,7 +24,7 @@ export interface FolderMenuProps {
     onClick: (item: FolderMenuItem) => void;
 }
 
-export const FolderMenu: FC<FolderMenuProps> = memo(props => {
+export const FolderMenuItems: FC<FolderMenuProps> = memo(props => {
     const { items, onClick, activeContainerId, currentProductId } = props;
     const { moduleContext, user } = useServerContext();
     const primaryProductId = getPrimaryAppProperties(moduleContext).productId;
@@ -32,8 +34,7 @@ export const FolderMenu: FC<FolderMenuProps> = memo(props => {
     // useContainerUser() hook here (need to consider performance implications)
 
     return (
-        <div className="menu-section col-folders">
-            <ul>
+            <>
                 {items.map(item => {
                     const dashboardURL = createProductUrl(
                         primaryProductId,
@@ -97,6 +98,65 @@ export const FolderMenu: FC<FolderMenuProps> = memo(props => {
                         </Fragment>
                     );
                 })}
+            </>
+    );
+});
+FolderMenuItems.displayName = 'FolderMenuItems';
+
+export const FolderMenu: FC<FolderMenuProps> = memo(props => {
+    const {items, onClick, activeContainerId, currentProductId} = props;
+
+    // TODO: the "user" object here is for the current container, so all of the user.isAdmin checks below are incorrect
+    // TBD if we want to includeEffectivePermissions in the getContainers() call in ProductMenu.tsx or use the
+    // useContainerUser() hook here (need to consider performance implications)
+    const {activeItems, archivedItems} = useMemo(() => {
+        const activeItems_ = [], archivedItems_ = [];
+        items?.forEach(item => {
+            if (item.archived)
+                archivedItems_.push(item);
+            else
+                activeItems_.push(item);
+        })
+        return {activeItems: activeItems_, archivedItems: archivedItems_}
+    }, [items]);
+
+    const archiveSectionHeader = (
+        <>
+            <div>
+                <span>Archived Folders</span>
+            </div>
+        </>
+    );
+
+    return (
+        <div className="menu-section col-folders">
+            <ul>
+                <FolderMenuItems
+                    activeContainerId={activeContainerId}
+                    currentProductId={currentProductId}
+                    items={activeItems}
+                    onClick={onClick}
+                />
+                {(archivedItems?.length > 0) && (
+                    <div className="archived-product-menu">
+                        <ExpandableContainer
+                            isExpandable={true}
+                            clause={archiveSectionHeader}
+                            links={null}
+                            noIcon={true}
+                            useGreyTheme={true}
+                            rowCls={''}
+                        >
+                            <FolderMenuItems
+                                activeContainerId={activeContainerId}
+                                currentProductId={currentProductId}
+                                items={archivedItems}
+                                onClick={onClick}
+                            />
+                        </ExpandableContainer>
+
+                    </div>
+                )}
             </ul>
         </div>
     );

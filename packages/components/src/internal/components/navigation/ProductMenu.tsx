@@ -223,7 +223,12 @@ export const ProductMenuButtonTitle: FC<ProductMenuButtonTitle> = memo(props => 
 
     return (
         <>
-            <div className="title">{title}</div>
+            <div className="title">
+                {title}
+                {container.isArchived && (
+                    <Alert className="product-menu_archived-tag">Archived</Alert>
+                )}
+            </div>
             <div className="subtitle">{subtitle}</div>
         </>
     );
@@ -331,6 +336,7 @@ export function createFolderItem(folder: Container, controllerName: string, isTo
         isTopLevel,
         label: folder.path === HOME_PATH ? HOME_TITLE : folder.title,
         path: folder.path,
+        archived: folder.isArchived,
     };
 }
 

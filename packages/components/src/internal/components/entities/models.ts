@@ -658,6 +658,7 @@ export interface DataTypeEntity {
     rowId?: number;
     sublabel?: string;
     type: FolderConfigurableDataType;
+    inactive?: boolean;
 }
 
 export interface FilterProps {

@@ -24,6 +24,8 @@ import { Alert } from '../base/Alert';
 import { SearchResultCard } from './SearchResultCard';
 import { SearchResultsModel } from './models';
 import { decodeErrorMessage } from './utils';
+import { useServerContext } from '../base/ServerContext';
+import { getArchivedFolders } from '../../app/utils';
 
 interface Props {
     emptyResultDisplay?: React.ReactNode;
@@ -33,6 +35,9 @@ interface Props {
 }
 
 export const SearchResultsPanel: FC<Props> = memo(({ emptyResultDisplay, iconUrl, model, offset = 0 }) => {
+    const { moduleContext } = useServerContext();
+    const archivedFolders = getArchivedFolders(moduleContext);
+
     const error = model?.error;
     const loading = model?.isLoading ?? false;
     const data = model?.getIn(['entities', 'hits']);
@@ -62,6 +67,7 @@ export const SearchResultsPanel: FC<Props> = memo(({ emptyResultDisplay, iconUrl
                                     iconUrl={iconUrl}
                                     cardData={item.get('cardData').toJS()}
                                     isTopResult={offset === 0 && i === 0}
+                                    archived={archivedFolders.indexOf(item.get('container')) > -1}
                                 />
                             </div>
                         ))}

@@ -36,7 +36,7 @@ export async function getContainerOptions(
     dataType: FolderConfigurableDataType,
     dataTypeRowId: number
 ): Promise<SelectInputOption[]> {
-    let folders = await api.folder.getContainers(container, moduleContext, true, true, true);
+    let folders = await api.folder.getContainers(container, moduleContext, true, true, true, true);
 
     const excludedFolders = await api.folder.getDataTypeExcludedContainers(dataType, dataTypeRowId);
 

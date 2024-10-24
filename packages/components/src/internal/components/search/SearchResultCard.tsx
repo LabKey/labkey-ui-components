@@ -21,6 +21,7 @@ import { incrementClientSideMetricCount } from '../../actions';
 import { getCurrentAppProperties } from '../../app/utils';
 
 import { SearchResultCardData } from './models';
+import { Alert } from '../base/Alert';
 
 interface SearchResultProps {
     cardData: SearchResultCardData;
@@ -28,9 +29,10 @@ interface SearchResultProps {
     isTopResult: boolean;
     summary: string;
     url: string;
+    archived?: boolean;
 }
 
-export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl, isTopResult, summary, url }) => {
+export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl, isTopResult, summary, url, archived }) => {
     const { altText, category, iconDir, iconSrc, title, typeName } = cardData;
     const productId = getCurrentAppProperties()?.productId;
     const summaryText = summary?.length ? summary : 'No summary provided';
@@ -63,6 +65,9 @@ export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl
                         {textParts.length > 0 && (
                             <div className="margin-left status-pill muted">{textParts.join(': ')}</div>
                         )}
+                        {archived &&
+                            <Alert className="folder-field_archived-tag">Archived</Alert>
+                        }
                     </div>
                     <div className="search-result__summary">{summaryText}</div>
                 </div>

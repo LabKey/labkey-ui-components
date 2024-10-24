@@ -64,7 +64,19 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
                     const containers = await api.folder.getContainers(container, moduleContext, true, true, true);
 
                     const allContainers_ = containers.map(container_ => {
-                        return { label: container_.title, lsid: container_.id, type: 'Container' } as DataTypeEntity;
+                        return {
+                            label: container_.title,
+                            lsid: container_.id,
+                            type: 'Container',
+                            inactive: container_.isArchived,
+                        } as DataTypeEntity;
+                    });
+
+                    const activeContainers = [];
+                    const archivedContainers = [];
+                    allContainers_.forEach(container => {
+                        if (container.inactive) archivedContainers.push(container);
+                        else activeContainers.push(container);
                     });
 
                     setChildFolders(allContainers_.slice(1));
@@ -173,6 +185,7 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
                                 dataTypeLabel="folders"
                                 noHeader
                                 columns={2}
+                                inactiveSectionLabel="Archived Folders"
                             />
                         </div>
                     )}
@@ -187,6 +200,7 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
                                     updateUncheckedTypes={updateExcludedFolders}
                                     uncheckedEntitiesDB={excludedContainerIdsDB}
                                     dataTypeLabel="Include in Folders"
+                                    inactiveSectionLabel="Archived Folders"
                                 />
                             </div>
                             <div className="col-xs-6 bottom-spacing">
@@ -199,6 +213,7 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
                                     uncheckedEntitiesDB={relatedExcludedContainerIdsDB}
                                     hiddenEntities={excludedContainerIds}
                                     dataTypeLabel={relatedDataTypeLabel}
+                                    inactiveSectionLabel="Archived Folders"
                                 />
                             </div>
                         </>

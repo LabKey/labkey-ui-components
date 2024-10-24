@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.X
+*Released*: X October 2024
+- Folders: Archive V1 (Hide from view/show hidden)
+  - TODO
+
 ### version 5.17.3
 *Released*: 23 October 2024
 - Issue 39332: Make sure export started messages shows before export starts in TabbedGridPanel exportTabs case

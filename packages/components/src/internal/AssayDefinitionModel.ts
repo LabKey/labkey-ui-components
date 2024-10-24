@@ -10,7 +10,6 @@ import { AssayUploadTabs } from './constants';
 import { AppURL, createProductUrlFromParts } from './url/AppURL';
 
 import { SCHEMAS } from './schemas';
-import { WHERE_FILTER_TYPE } from './url/WhereFilterType';
 import { ASSAYS_KEY } from './app/constants';
 
 export enum AssayDomainTypes {
@@ -210,47 +209,27 @@ export class AssayDefinitionModel extends ImmutableRecord({
         return false;
     }
 
-    private getSampleColumnsByDomain(domainType: AssayDomainTypes): ScopedSampleColumn[] {
-        const ret = [];
-        const columns = this.getDomainByType(domainType);
-
-        if (columns) {
-            columns.forEach(column => {
-                if (column.isSampleLookup()) {
-                    ret.push({ column, domain: domainType });
-                }
-            });
-        }
-
-        return ret;
-    }
-
     /**
      * get all sample lookup columns found in the result, run, and batch domains, or from a specific domainType
      */
-    getSampleColumns(domainType?: AssayDomainTypes): List<ScopedSampleColumn> {
-        let ret = [];
+    getSampleColumns(domainType?: AssayDomainTypes): ScopedSampleColumn[] {
+        const columns: ScopedSampleColumn[] = [];
         // The order matters here, we care about result, run, and batch in that order.
         const domainTypes = domainType
             ? [domainType]
             : [AssayDomainTypes.RESULT, AssayDomainTypes.RUN, AssayDomainTypes.BATCH];
         for (const domain of domainTypes) {
-            const columns = this.getSampleColumnsByDomain(domain);
-
-            if (columns && columns.length > 0) {
-                ret = ret.concat(columns);
-            }
+            columns.push(...this.getSampleColumnsByDomain(domain));
         }
 
-        return List(ret);
+        return columns;
     }
 
     /**
      * get the first sample lookup column found in the result, run, or batch domain.
      */
     getSampleColumn(domainType?: AssayDomainTypes): ScopedSampleColumn {
-        const sampleColumns = this.getSampleColumns(domainType);
-        return !sampleColumns.isEmpty() ? sampleColumns.first() : null;
+        return this.getSampleColumns(domainType)[0];
     }
 
     /**
@@ -270,33 +249,8 @@ export class AssayDefinitionModel extends ImmutableRecord({
     /**
      * returns the FieldKey string of the sample columns relative from the assay Results table.
      */
-    getSampleColumnFieldKeys(): List<string> {
-        const sampleCols = this.getSampleColumns();
-        return List(sampleCols.map(this.sampleColumnFieldKey));
-    }
-
-    createSampleFilter(sampleColumns: List<string>, value: Array<string | number>, singleFilter: Filter.IFilterType) {
-        const keyCol = '/RowId';
-        if (sampleColumns.size === 1) {
-            // generate simple equals filter
-            const sampleColumn = sampleColumns.get(0);
-            return Filter.create(sampleColumn + keyCol, value, singleFilter);
-        } else if (sampleColumns.size > 1) {
-            // generate a where clause filter to include all sample columns via a UNION (issue 47346)
-            const whereClause =
-                'RowId IN (' +
-                sampleColumns
-                    .map(sampleCol => {
-                        const fieldKey = (sampleCol + keyCol)
-                            .split('/')
-                            .map(token => '"' + token + '"')
-                            .join('.');
-                        return `SELECT RowId FROM Data WHERE ${fieldKey} IN (${value.join(',')})`;
-                    })
-                    .join(' UNION ') +
-                ')';
-            return Filter.create('*', whereClause, WHERE_FILTER_TYPE);
-        }
+    getSampleColumnFieldKeys(domainType?: AssayDomainTypes): string[] {
+        return this.getSampleColumns(domainType).map(this.sampleColumnFieldKey);
     }
 
     getDomainColumns(type: AssayDomainTypes): ExtendedMap<string, QueryColumn> {
@@ -312,8 +266,18 @@ export class AssayDefinitionModel extends ImmutableRecord({
     }
 
     getDomainFileColumns(type: AssayDomainTypes): QueryColumn[] {
-        return this.getDomainColumns(type)
-            .filter(col => col.isFileInput)
-            .valueArray;
+        return this.getDomainColumns(type).filter(col => col.isFileInput).valueArray;
+    }
+
+    private getSampleColumnsByDomain(domainType: AssayDomainTypes): ScopedSampleColumn[] {
+        const columns: ScopedSampleColumn[] = [];
+
+        this.getDomainByType(domainType)?.forEach(column => {
+            if (column.isSampleLookup()) {
+                columns.push({ column, domain: domainType });
+            }
+        });
+
+        return columns;
     }
 }

@@ -499,7 +499,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, column));
                 } else if (filter.getColumnName().indexOf('/') > -1) {
                     const lookupCol = model.getColumnByFieldKey(filter.getColumnName().split('/')[0]);
-                    if (lookupCol) actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, column));
+                    if (lookupCol) actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, lookupCol));
                 }
             }
         });

@@ -26,10 +26,12 @@ interface Props {
     className?: string;
     column?: QueryColumn;
     emptyText?: string;
+    endDate?: Date;
     label?: string;
     name: string;
     onChange?: (name: string, newValue: any) => void;
     placeholder?: string;
+    startDate?: Date;
     timezone?: string;
     tooltip?: string; // only shown when component has a label and is allowEdit
     type: string;
@@ -42,17 +44,19 @@ export const EditInlineField: FC<Props> = memo(props => {
         allowBlank,
         allowEdit,
         className = 'edit-inline-field',
+        column,
         emptyText,
+        endDate,
         label,
         name,
         onChange,
         placeholder,
-        type,
-        value,
-        column,
-        useJsonDateFormat,
+        startDate,
         timezone,
         tooltip,
+        type,
+        useJsonDateFormat,
+        value,
     } = props;
     const { container } = useServerContext();
     const dateFormat = column?.format ?? getDateFNSDateFormat(container);
@@ -216,6 +220,9 @@ export const EditInlineField: FC<Props> = memo(props => {
                 <DateInput
                     autoFocus
                     container={container}
+                    endDate={endDate}
+                    minDate={startDate}
+                    maxDate={endDate}
                     name={name}
                     onBlur={onBlur}
                     onKeyDown={onKeyDown}
@@ -223,6 +230,9 @@ export const EditInlineField: FC<Props> = memo(props => {
                     onMonthChange={onDateChange}
                     placeholderText={placeholder}
                     selected={dateValue}
+                    selectsEnd={startDate !== undefined}
+                    selectsStart={endDate !== undefined}
+                    startDate={startDate}
                     showTimeSelect={!!column}
                     dateFormat={dateInputDateFormat}
                 />

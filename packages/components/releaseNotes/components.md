@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Ability to Edit Sample IDs in the Grid
   - Add `canEditName` to `OperationConfirmationData`
 
+### version 6.17.1
+*Released*: 26 January 2025
+- Issue 52066: LKSM: Editing aliquots in UI is treated as parent samples if the default grid view as a saved filter on IsAliquot field
+
 ### version 6.17.0
 *Released*: 23 January 2025
 - Add support for conditional formatting in LIMS and SDMS products

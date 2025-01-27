@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.X
-*Released*: X January 2025
+### version 6.17.2
+*Released*: 27 January 2025
 - Ability to Edit Sample IDs in the Grid
   - Add `canEditName` to `OperationConfirmationData`
 

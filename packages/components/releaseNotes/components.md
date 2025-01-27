@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages
 
 ### version 5.20.6
-*Released*: TBD
+*Released*: 27 January 2025
 - Issue 52038: Fix problems fields whose names and fieldKeys are different
  - Editable grid needs to find columns using names not field key
  - detail editing needs to use name instead of fieldKey for changed values

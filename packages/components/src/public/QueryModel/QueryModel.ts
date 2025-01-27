@@ -828,7 +828,17 @@ export class QueryModel {
      */
     getColumnByFieldKey(fieldKey: string): QueryColumn {
         const locFieldKey = fieldKey.toLowerCase();
-        return this.allColumns?.find(c => c.fieldKey?.toLowerCase() === locFieldKey);
+        let col = this.allColumns?.find(c => c.fieldKey?.toLowerCase() === locFieldKey);
+        if (!col) {
+            col = this.allColumns?.filter(queryColumn => {
+                if (queryColumn.isLookup()) {
+                    return (
+                        queryColumn.displayField?.toLowerCase() === locFieldKey
+                    );
+                }
+            })?.[0];
+        }
+        return col;
     }
 
     /**

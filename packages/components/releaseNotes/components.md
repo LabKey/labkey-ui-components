@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 6.??.??
 *Released*: ??
 - Fix Issue 51909: Hit Selection Dialog should show field-modal__field_dot next to fields that have criteria
+- Fix Issue 51421: Inconsistent behavior when hitting `Shift` + `Home/End` in the editable grid
 
 ### version 6.18.2
 *Released*: 29 January 2025

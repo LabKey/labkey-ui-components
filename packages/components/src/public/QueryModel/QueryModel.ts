@@ -830,7 +830,7 @@ export class QueryModel {
         const locFieldKey = fieldKey.toLowerCase();
         let col = this.allColumns?.find(c => c.fieldKey?.toLowerCase() === locFieldKey);
         if (!col) {
-            col = this.allColumns.filter(queryColumn => {
+            col = this.allColumns?.filter(queryColumn => {
                 if (queryColumn.isLookup()) {
                     return (
                         queryColumn.displayField?.toLowerCase() === locFieldKey

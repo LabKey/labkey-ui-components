@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 import { List, Record } from 'immutable';
-import { Ajax, Utils, QueryKey } from '@labkey/api';
+import { ActionURL, QueryKey } from '@labkey/api';
 
-import { buildURL, createProductUrl, AppURL, createProductUrlFromPartsWithContainer } from '../../url/AppURL';
+import { createProductUrl, AppURL, createProductUrlFromPartsWithContainer } from '../../url/AppURL';
+import { request } from '../../request';
 
 export class MenuSectionModel extends Record({
     label: undefined,
@@ -160,34 +161,23 @@ export class ProductMenuModel extends Record({
     /**
      * Retrieve the product menu sections for this productId
      */
-    getMenuSections(): Promise<List<MenuSectionModel>> {
-        return new Promise((resolve, reject) => {
-            return Ajax.request({
-                url: buildURL('product', 'menuSections.api', undefined, {
-                    container: this.containerPath,
-                }),
-                params: Object.assign({
-                    currentProductId: this.currentProductId,
-                    productIds: List.isList(this.productIds) ? this.productIds.toArray().join(',') : this.productIds,
-                }),
-                success: Utils.getCallbackWrapper(response => {
-                    let sections = List<MenuSectionModel>();
-                    if (response) {
-                        response.forEach(sectionData => {
-                            sections = sections.push(
-                                MenuSectionModel.create(sectionData, this.currentProductId, this.containerPath)
-                            );
-                        });
-                    }
-                    resolve(sections);
-                }),
-                failure: Utils.getCallbackWrapper(response => {
-                    console.error(response);
-                    reject(response);
-                }),
-            });
+    async getMenuSections(): Promise<List<MenuSectionModel>> {
+        const response = await request<any>({
+            url: ActionURL.buildURL('product', 'menuSections.api', this.containerPath),
+            params: {
+                currentProductId: this.currentProductId,
+                productIds: List.isList(this.productIds) ? this.productIds.toArray().join(',') : this.productIds,
+            },
+            errorLogMsg: 'Failed to load product menu sections',
         });
-    }
+
+        const sections: MenuSectionModel[] = [];
+        response?.data?.forEach(data => {
+            sections.push(MenuSectionModel.create(data, this.currentProductId, this.containerPath));
+        });
+
+        return List<MenuSectionModel>(sections);
+    };
 
     setLoadedSections(sections: List<MenuSectionModel>): ProductMenuModel {
         return this.merge({

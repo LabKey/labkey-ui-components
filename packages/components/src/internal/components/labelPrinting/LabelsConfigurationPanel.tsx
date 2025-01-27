@@ -32,8 +32,8 @@ const SAVING_LOCKED_TITLE = 'Saving';
 
 interface LabelTemplatesPanelProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
-    defaultLabel?: number;
     container: Container;
+    defaultLabel?: number;
 }
 
 interface LabelTemplatesListProps {
@@ -57,32 +57,25 @@ interface LabelTemplateDetailsProps {
 
 export const LabelTemplatesList: FC<LabelTemplatesListProps> = memo(props => {
     const { onSelect, defaultLabel, selected, templates } = props;
-    const isDefault = useCallback(
-        (rowId: number) => {
-            return rowId === defaultLabel ? <div className="badge">default</div> : undefined;
-        },
-        [defaultLabel]
-    );
 
-    if (!templates || templates.length === 0)
+    if (!templates || templates.length === 0) {
         return <div className="choices-list__empty-message">No label templates registered.</div>;
+    }
 
     return (
-        <>
-            <div className="list-group">
-                {templates.map((template, index) => (
-                    <ChoicesListItem
-                        active={index === selected}
-                        index={index}
-                        subLabel={template.path}
-                        key={template.rowId}
-                        label={template.name}
-                        onSelect={onSelect}
-                        componentRight={isDefault(template.rowId)}
-                    />
-                ))}
-            </div>
-        </>
+        <div className="list-group">
+            {templates.map((template, index) => (
+                <ChoicesListItem
+                    active={index === selected}
+                    index={index}
+                    subLabel={template.path}
+                    key={template.rowId}
+                    label={template.name}
+                    onSelect={onSelect}
+                    componentRight={template.rowId === defaultLabel ? <div className="badge">default</div> : undefined}
+                />
+            ))}
+        </div>
     );
 });
 
@@ -382,7 +375,7 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
                     setError('Error: Unable to load label templates.');
                 });
         },
-        [api, user]
+        [api.labelprinting, container?.path, user]
     );
 
     // Load template list

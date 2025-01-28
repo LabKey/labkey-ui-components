@@ -12,16 +12,19 @@ export interface PaginationInfoProps {
 export const PaginationInfo: FC<PaginationInfoProps> = memo(props => {
     const { offset, pageSize, rowCount, totalCountLoadingState } = props;
     const loading = isLoading(totalCountLoadingState);
+    const outOfBounds = rowCount <= offset;
     const min = offset !== rowCount ? offset + 1 : offset;
     const max = offset + pageSize;
-    const text = `${min.toLocaleString()} - `;
+    const text = outOfBounds ? '' : `${min.toLocaleString()} - `;
+    const showRowCount = !loading && !outOfBounds;
+    const showTotalCount = !loading && rowCount > max;
 
     return (
         <span className="pagination-info" data-min={min} data-max={max} data-total={rowCount}>
             {text}
             {loading && <LoadingSpinner msg="" />}
-            {!loading && <span>{max > rowCount ? rowCount.toLocaleString() : max.toLocaleString()}</span>}
-            {!loading && rowCount > max && <span>{` of ${rowCount.toLocaleString()}`}</span>}
+            {showRowCount && <span>{max > rowCount ? rowCount.toLocaleString() : max.toLocaleString()}</span>}
+            {showTotalCount && <span>{` of ${rowCount.toLocaleString()}`}</span>}
         </span>
     );
 });

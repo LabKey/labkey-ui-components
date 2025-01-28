@@ -5,6 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: ??
 - Fix Issue 51909: Hit Selection Dialog should show field-modal__field_dot next to fields that have criteria
 - Fix Issue 51421: Inconsistent behavior when hitting `Shift` + `Home/End` in the editable grid
+- Fix Issue 51897: Grid loses paging control and shows "No data" when samples in a filtered view are updated
+  - We now render pagination buttons when the user is out of bounds, and the previous button goes to the last page
 - EditInlineField: Add optional validation props for date fields
 
 ### version 6.18.2

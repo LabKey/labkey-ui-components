@@ -1299,7 +1299,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     restoreBulkInsertData = (data: Map<string, any>): Map<string, any> => {
         const insertData = OrderedMap<string, any>().asMutable();
-        this.getBulkToGridColumns().forEach(col => insertData.set(col.name, undefined));
+        this.getBulkToGridColumns().forEach(col => insertData.set(col.fieldKey, undefined));
         return insertData.merge(data).asImmutable();
     };
 

@@ -48,8 +48,14 @@ export class Pagination extends PureComponent<PaginationProps> {
     };
 
     onLoadPreviousPage = () => {
+        const { offset, rowCount } = this.props;
+        const outOfBounds = rowCount <= offset;
         incrementClientSideMetricCount(PAGINATION_METRIC_AREA, 'loadPreviousPage');
-        this.props.loadPreviousPage();
+
+        // If the user accidentally landed out of bounds (can happen via a bug in our UI or a bookmark) then navigate
+        // them to the last page when they hit the previous button.
+        if (outOfBounds) this.props.loadLastPage();
+        else this.props.loadLastPage();
     };
 
     onLoadNextPage = () => {
@@ -75,7 +81,9 @@ export class Pagination extends PureComponent<PaginationProps> {
             rowCount,
             totalCountLoadingState,
         } = this.props;
-        const showPaginationButtons = rowCount > pageSizes[0];
+        const hasPages = rowCount > pageSizes[0];
+        const outOfBounds = rowCount <= offset;
+        const showPaginationButtons = hasPages || outOfBounds;
 
         // Use lk-pagination so we don't conflict with bootstrap pagination class.
         return (
@@ -112,7 +120,7 @@ export class Pagination extends PureComponent<PaginationProps> {
 
                         <PaginationButton
                             className="pagination-button--next"
-                            disabled={disabled || isLastPage}
+                            disabled={disabled || isLastPage || outOfBounds}
                             iconClass="fa-chevron-right"
                             tooltip="Next Page"
                             onClick={this.onLoadNextPage}

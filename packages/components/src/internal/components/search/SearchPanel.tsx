@@ -137,6 +137,7 @@ export const SearchPanelImpl: FC<SearchPanelImplProps> = memo(props => {
         </Section>
     );
 });
+SearchPanelImpl.displayName = 'SearchPanelImpl';
 
 // FIXME: This component should be moved into premium, the props should be refactored:
 //      - search prop should be removed, and it should be handled internally via react router hooks (setting search
@@ -191,6 +192,7 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
                     {
                         category,
                         escapeQuery: true,
+                        escapeQuotes: true,
                         q: searchTerm,
                         limit: pageSize,
                         offset,
@@ -226,3 +228,4 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
 
     return <SearchPanelImpl {...props} search={search} model={model} onPageChange={onPage} offset={offset} />;
 });
+SearchPanel.displayName = 'SearchPanel';

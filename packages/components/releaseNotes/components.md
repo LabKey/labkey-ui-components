@@ -5,6 +5,26 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 39517: Assay importRun to include display value in the row data for sample lookup columns
 
+### version 6.18.0
+*Released*: 29 January 2025
+- QueryModel: rename getSelectedIdsAsInts to intSelections, convert to `get` method
+- Fix types for "sampleIds" variable
+    - Despite being typed as string[] it is actually always number[]
+- Rename getFieldLookupFromSelection to getLookupRowIdsFromSelection
+
+### version 6.17.3
+*Released*: 28 January 2025
+- Issue 52082: default `SearchPanel` to `encodeQuotes: true`
+
+### version 6.17.2
+*Released*: 27 January 2025
+- Ability to Edit Sample IDs in the Grid
+  - Add `canEditName` to `OperationConfirmationData`
+
+### version 6.17.1
+*Released*: 26 January 2025
+- Issue 52066: LKSM: Editing aliquots in UI is treated as parent samples if the default grid view as a saved filter on IsAliquot field
+
 ### version 6.17.0
 *Released*: 23 January 2025
 - Add support for conditional formatting in LIMS and SDMS products

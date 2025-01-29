@@ -131,3 +131,4 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         </div>
     );
 });
+Pagination.displayName = 'Pagination';

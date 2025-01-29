@@ -28,3 +28,4 @@ export const PaginationInfo: FC<PaginationInfoProps> = memo(props => {
         </span>
     );
 });
+PaginationInfo.displayName = 'PaginationInfo';

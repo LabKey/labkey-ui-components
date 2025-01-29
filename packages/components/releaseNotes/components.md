@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.18.1
+*Released*: 29 January 2025
 - Issue 39517: Assay importRun to include display value in the row data for sample lookup columns
 
 ### version 6.18.0

@@ -20,6 +20,7 @@ import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 
 import { ParentIdData } from './actions';
 import { SELECTION_KEY_TYPE } from '../samples/constants';
+import { QueryColumn } from '../../../public/QueryColumn';
 
 export function sampleDeleteDependencyText(): string {
     let deleteMsg = '';
@@ -168,12 +169,12 @@ export function getJobCreationHref(
     return actionUrl instanceof AppURL ? actionUrl.toHref() : actionUrl;
 }
 
-export function getIdentifyingFieldKeys(queryInfo: QueryInfo): string[] {
+export function getIdentifyingColumns(queryInfo: QueryInfo): QueryColumn[] {
     const idView = queryInfo?.getView(ViewInfo.IDENTIFYING_FIELDS_VIEW_NAME);
     if (!idView) {
         return [];
     }
-    return queryInfo.getIdentifyingFieldsEditableGridColumns(true).map(col => col.fieldKey);
+    return queryInfo.getIdentifyingFieldsEditableGridColumns(true)
 }
 
 export const SAMPLE_ID_FIELD_KEY = 'sampleid';

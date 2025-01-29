@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.??.0
-*Released*: ?? January 2025
+### version 6.18.0
+*Released*: 29 January 2025
 - QueryModel: rename getSelectedIdsAsInts to intSelections, convert to `get` method
 - Fix types for "sampleIds" variable
     - Despite being typed as string[] it is actually always number[]

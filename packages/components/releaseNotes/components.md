@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.X
+*Released*: X January 2025
+- Issue 52007: Filtering blank with more than 250 options won't show check mark
+
 ### version 6.17.3
 *Released*: 28 January 2025
 - Issue 52082: default `SearchPanel` to `encodeQuotes: true`

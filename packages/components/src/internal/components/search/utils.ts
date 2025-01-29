@@ -280,19 +280,19 @@ export function getUpdateFilterExpressionFilter(
 export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string[]): string[] {
     if (!filter && !allValues) return [];
 
+    const filterUrlSuffix = filter?.getFilterType()?.getURLSuffix();
     // if allValues is undefined, then we don't know the full set of values so filter must be an Equals/Equals one of
-    if (!allValues) return getFilterValuesAsArray(filter, undefined, true);
+    if (!allValues && filterUrlSuffix !== 'isblank') return getFilterValuesAsArray(filter, undefined, true);
 
     // if no existing filter, check all values by default
     if (!filter) return allValues;
     if (filter.getFilterType().isDataValueRequired() && filter.getValue() == null) return allValues;
 
-    const filterUrlSuffix = filter.getFilterType().getURLSuffix();
     const filterValues = getFilterValuesAsArray(filter);
-    const hasBlank = allValues.findIndex(value => value === EMPTY_VALUE_DISPLAY) !== -1;
+    const hasBlank = allValues?.findIndex(value => value === EMPTY_VALUE_DISPLAY) !== -1;
 
     if (filterUrlSuffix === 'ancestormatchesallof') {
-        if (filterValues?.length === allValues.length - 1 /** except [All] **/) return allValues;
+        if (filterValues?.length === allValues?.length - 1 /** except [All] **/) return allValues;
         return filterValues;
     }
 
@@ -304,7 +304,7 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
             return [EMPTY_VALUE_DISPLAY];
         case 'isnonblank':
             return hasBlank
-                ? allValues.filter(value => value !== EMPTY_VALUE_DISPLAY && value !== ALL_VALUE_DISPLAY)
+                ? allValues?.filter(value => value !== EMPTY_VALUE_DISPLAY && value !== ALL_VALUE_DISPLAY)
                 : allValues;
         case 'neq':
         case 'neqornull':
@@ -313,7 +313,7 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
         case 'in':
             return filterValues;
         case 'notin':
-            return allValues.filter(value => filterValues.indexOf(value) === -1 && value !== ALL_VALUE_DISPLAY);
+            return allValues?.filter(value => filterValues.indexOf(value) === -1 && value !== ALL_VALUE_DISPLAY);
         default:
             return [];
     }

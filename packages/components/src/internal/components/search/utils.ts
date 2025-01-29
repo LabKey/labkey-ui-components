@@ -124,7 +124,7 @@ export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: stri
     } else rawValues = [rawValue];
 
     rawValues.forEach(v => {
-        values.push(v == '' ? blankValue ?? EMPTY_VALUE_DISPLAY : v);
+        values.push(v == '' ? (blankValue ?? EMPTY_VALUE_DISPLAY) : v);
     });
 
     return values;
@@ -600,7 +600,8 @@ export function getSearchResultCardData(
             if (type === 'sampleSet') {
                 return {
                     iconSrc:
-                        queryMetadata?.schema?.[SCHEMAS.SAMPLE_SETS.SCHEMA]?.query?.[data['name'].toLowerCase()]?.iconURL || 'sample_set',
+                        queryMetadata?.schema?.[SCHEMAS.SAMPLE_SETS.SCHEMA]?.query?.[data['name'].toLowerCase()]
+                            ?.iconURL || 'sample_set',
                     altText: 'sample_type-icon',
                     category: 'Sample Type',
                     title: dataName,

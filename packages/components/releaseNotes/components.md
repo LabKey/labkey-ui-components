@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.18.2
+*Released*: 29 January 2025
+- Merge from release25.1-SNAPSHOT to develop
+    - includes changes from 6.10.3 #1700
+
 ### version 6.18.1
 *Released*: 29 January 2025
 - Issue 39517: Assay importRun to include display value in the row data for sample lookup columns
@@ -94,6 +99,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 6.11.0
 *Released*: 3 January 2025
 - Issue 51879: App grid column header click area above column title should open the menu
+
+### version 6.10.3
+*Released*: 28 January 2025
+- Merge from release24.11-SNAPSHOT to release25.1-SNAPSHOT
+  - includes changes from 5.20.6
 
 ### version 6.10.2
 *Released*: 14 January 2025
@@ -334,6 +344,14 @@ Components, models, actions, and utility functions for LabKey applications and p
     - include identifying fields in getSelectionLineageData()
     - EditorModel.getUpdatedData() to skip non-userEditable fields when comparing values
     - getIdentifyingFieldsEditableGridColumns() to take param for hasProductFolders to determine if Folder should be excluded
+
+### version 5.20.6
+*Released*: 27 January 2025
+- Issue 52038: Fix problems fields whose names and fieldKeys are different
+ - Editable grid needs to find columns using names not field key
+ - detail editing needs to use name instead of fieldKey for changed values
+ - Fixes for identifying field retrieval and population in the grid
+ - Update CheckboxInput.tsx and DatePickerInput.tsx to use column.fieldKey for input name prop (to match other input types)
 
 ### version 5.20.5
 *Released*: 13 January 2025

@@ -94,6 +94,7 @@ const FilterCriteriaChoice: FC<FilterCriteriaChoiceProps> = memo(props => {
         />
     );
 });
+FilterCriteriaChoice.displayName = 'FilterCriteriaChoice';
 
 /**
  * openTo: The propertyId of the domain field you want to open the modal to
@@ -228,3 +229,4 @@ export const FilterCriteriaModal: FC<Props> = memo(({ onClose, onSave, openTo, p
         </Modal>
     );
 });
+FilterCriteriaModal.displayName = 'FilterCriteriaModal';

@@ -3,6 +3,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 6.18.1
 *Released*: 29 January 2025
+- Merge from release25.1-SNAPSHOT to develop
+    - includes changes from 6.10.3 #1700
+
+### version 6.18.1
+*Released*: 29 January 2025
 - Issue 39517: Assay importRun to include display value in the row data for sample lookup columns
 
 ### version 6.18.0

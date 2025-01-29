@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.17.3
+*Released*: 28 January 2025
+- Issue 52082: default `SearchPanel` to `encodeQuotes: true`
+
 ### version 6.17.2
 *Released*: 27 January 2025
 - Ability to Edit Sample IDs in the Grid

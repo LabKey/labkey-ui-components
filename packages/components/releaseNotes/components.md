@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.20.X
+*Released*: TBD
+- Issue 52132: EditorModel.getUpdatedData fix to account for lookup columns with column.name key
+  - For editable grid with sample type identifying fields showing as read-only
+
 ### version 5.20.6
 *Released*: 27 January 2025
 - Issue 52038: Fix problems fields whose names and fieldKeys are different

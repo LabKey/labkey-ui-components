@@ -4,6 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 6.X
 *Released*: X January 2025
 - LKSM: Add numbered cells for terminal storage
+  - fix style for Storage properties panel radio button position
+  - add StoragePositionNumber field to SampleFinder filter cards
 
 ### version 6.18.2
 *Released*: 29 January 2025

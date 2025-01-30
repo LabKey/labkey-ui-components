@@ -301,8 +301,13 @@ export class EditorModel
      * Formats the values for an entire row into a Map<string, any>
      * @param rowIdx
      * @param useRawValues If false we format the raw values
+     * @param includeDisplayValForCol Optional callback function to decide if the display value should be included for a lookup column
      */
-    getRowValue(rowIdx: number, useRawValues = true): Map<string, any> {
+    getRowValue(
+        rowIdx: number,
+        useRawValues = true,
+        includeDisplayValForCol?: (col: QueryColumn) => boolean
+    ): Map<string, any> {
         let row = Map<string, any>();
 
         this.columnMap.forEach(col => {
@@ -344,6 +349,12 @@ export class EditorModel
                     let val;
                     if (values.size === 1) val = values.first()?.raw;
                     row = row.set(col.name, val);
+
+                    // Issue 39517: include display value in the row data for lookup columns
+                    const displayVal = values.size === 1 ? values.first()?.display : undefined;
+                    if (val !== displayVal && includeDisplayValForCol?.(col)) {
+                        row = row.set(col.name + '/' + col.lookup.displayColumn, displayVal);
+                    }
                 }
             } else if (col.jsonType === 'time') {
                 row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
@@ -365,12 +376,16 @@ export class EditorModel
     /**
      * This method formats the EditorModel data, so we can upload the data to LKS via insert/updateRows
      * @param useRawValues If false we format the raw values
+     * @param includeDisplayValForCol Optional callback function to decide if the display value should be included for a lookup column
      */
-    getDataForServerUpload(useRawValues = true): List<Map<string, any>> {
+    getDataForServerUpload(
+        useRawValues = true,
+        includeDisplayValForCol?: (col: QueryColumn) => boolean
+    ): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
 
         for (let rn = 0; rn < this.rowCount; rn++) {
-            const row = this.getRowValue(rn, useRawValues);
+            const row = this.getRowValue(rn, useRawValues, includeDisplayValForCol);
             rawData = rawData.push(row);
         }
 
@@ -760,13 +775,19 @@ export class EditorModel
             });
             const originalRow = originalData.get(id.toString());
             if (originalRow) {
+                // Issue 52038: key here is almost always the column name (not the fieldKey) and should remain so since that is
+                // the key we need to send to the server when saving the rows. For lineage columns, key is actually more like
+                // the fieldKey (that is, the parts of that lineage lookup have been encoded for Query names (e.g., / becomes $S)
+                // The Lineage field key parts need to be sent encoded so parsing of the field key parts (that is, splitting on the
+                // '/' character) can be done without a problem on the server side. Ideally, we would be able to send field keys in
+                // all cases, but that is for a later day.
                 const row = editedRow.reduce((row, value, key) => {
                     // We can skip the idField for the diff check, that will be added to the updated rows later
                     if (key === pkFieldKey) return row;
 
-                    let originalValue = originalRow.get(key, undefined);
                     // For lineage grids the parent columns aren't on the queryInfo
-                    const col = queryInfo.getColumn(key) ?? this.columnMap.get(key.toLowerCase());
+                    const col = queryInfo.getColumnFromName(key) ?? this.columnMap.get(key.toLowerCase());
+                    let originalValue = originalRow.get(col.fieldKey, undefined);
 
                     // we can skip any readOnly columns or non-userEditable columns
                     if (col?.readOnly || !col?.userEditable) return row;

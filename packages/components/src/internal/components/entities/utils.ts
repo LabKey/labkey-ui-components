@@ -19,6 +19,8 @@ import { ViewInfo } from '../../ViewInfo';
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 
 import { ParentIdData } from './actions';
+import { SELECTION_KEY_TYPE } from '../samples/constants';
+import { QueryColumn } from '../../../public/QueryColumn';
 
 export function sampleDeleteDependencyText(): string {
     let deleteMsg = '';
@@ -155,21 +157,24 @@ export function getJobCreationHref(
     targetProductId?: string,
     ignoreFilter?: boolean
 ): string {
+    const hasFilters = model.filterArray.length > 0;
     const params = getURLParamsForSampleSelectionKey(model, picklistName, isAssay, sampleFieldKey, ignoreFilter);
 
     if (templateId) params['templateId'] = templateId;
     if (!samplesIncluded) params['sampleTab'] = 'search'; // i.e. JOB_SAMPLE_SEARCH_TAB_ID
+    // If we have filters and are explicitly ignoring filters, then we're using a selection snapshot
+    if (ignoreFilter && hasFilters) params.selectionKeyType = SELECTION_KEY_TYPE.snapshot;
 
     const actionUrl = createProductUrlFromParts(targetProductId, currentProductId, params, WORKFLOW_KEY, 'new');
     return actionUrl instanceof AppURL ? actionUrl.toHref() : actionUrl;
 }
 
-export function getIdentifyingFieldKeys(queryInfo: QueryInfo): string[] {
+export function getIdentifyingColumns(queryInfo: QueryInfo): QueryColumn[] {
     const idView = queryInfo?.getView(ViewInfo.IDENTIFYING_FIELDS_VIEW_NAME);
     if (!idView) {
         return [];
     }
-    return queryInfo.getIdentifyingFieldsEditableGridColumns(true).map(col => col.fieldKey);
+    return queryInfo.getIdentifyingFieldsEditableGridColumns(true)
 }
 
 export const SAMPLE_ID_FIELD_KEY = 'sampleid';

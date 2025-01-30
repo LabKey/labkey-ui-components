@@ -828,7 +828,17 @@ export class QueryModel {
      */
     getColumnByFieldKey(fieldKey: string): QueryColumn {
         const locFieldKey = fieldKey.toLowerCase();
-        return this.allColumns?.find(c => c.fieldKey?.toLowerCase() === locFieldKey);
+        let col = this.allColumns?.find(c => c.fieldKey?.toLowerCase() === locFieldKey);
+        if (!col) {
+            col = this.allColumns?.filter(queryColumn => {
+                if (queryColumn.isLookup()) {
+                    return (
+                        queryColumn.displayField?.toLowerCase() === locFieldKey
+                    );
+                }
+            })?.[0];
+        }
+        return col;
     }
 
     /**
@@ -982,7 +992,7 @@ export class QueryModel {
     /**
      * Return the selection ids as an array of integers.
      */
-    getSelectedIdsAsInts(): number[] {
+    get intSelections(): number[] {
         if (this.selections) {
             return Array.from(this.selections).map(id => parseInt(id));
         }

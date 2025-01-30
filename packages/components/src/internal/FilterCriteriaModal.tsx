@@ -65,6 +65,37 @@ function fieldLoaderFactory(
     };
 }
 
+function getFilterCriteriaForField(filterCriteria: FilterCriteriaMap, field: FilterCriteriaField): FilterCriteria[] {
+    const sourcePropertyId = field.referencePropertyId ?? field.propertyId;
+    return filterCriteria.get(sourcePropertyId).filter(value => value.propertyId === field.propertyId);
+}
+
+interface FilterCriteriaChoiceProps {
+    active: boolean;
+    field: FilterCriteriaField;
+    filterCriteria: FilterCriteriaMap;
+    index: number;
+    onSelect: (idx: number) => void;
+}
+
+const FilterCriteriaChoice: FC<FilterCriteriaChoiceProps> = memo(props => {
+    const { active, field, filterCriteria, index, onSelect } = props;
+    const fieldCriteria = getFilterCriteriaForField(filterCriteria, field);
+    const dot = fieldCriteria.length > 0 ? <span className="pull-right field-modal__field_dot" /> : undefined;
+
+    return (
+        <ChoicesListItem
+            active={active}
+            componentRight={dot}
+            index={index}
+            key={field.name}
+            label={field.name}
+            onSelect={onSelect}
+        />
+    );
+});
+FilterCriteriaChoice.displayName = 'FilterCriteriaChoice';
+
 /**
  * openTo: The propertyId of the domain field you want to open the modal to
  */
@@ -134,11 +165,9 @@ export const FilterCriteriaModal: FC<Props> = memo(({ onClose, onSave, openTo, p
 
         if (!filterCriteriaField) return undefined;
 
-        const sourcePropertyId = filterCriteriaField.referencePropertyId ?? filterCriteriaField.propertyId;
-        return filterCriteria
-            .get(sourcePropertyId)
-            .filter(value => value.propertyId === filterCriteriaField.propertyId)
-            .map(fc => Filter.create(fc.name, fc.value, Filter.Types[fc.op.toUpperCase()]));
+        return getFilterCriteriaForField(filterCriteria, filterCriteriaField).map(fc =>
+            Filter.create(fc.name, fc.value, Filter.Types[fc.op.toUpperCase()])
+        );
     }, [filterCriteriaFields, filterCriteria, selectedFieldId]);
 
     const currentColumn: QueryColumn = useMemo(() => {
@@ -169,11 +198,12 @@ export const FilterCriteriaModal: FC<Props> = memo(({ onClose, onSave, openTo, p
                                     <div className="field-modal__empty-msg padding">No fields defined yet.</div>
                                 )}
                                 {fieldsToRender?.map((field, index) => (
-                                    <ChoicesListItem
-                                        active={fieldsToRender[index].propertyId === selectedFieldId}
+                                    <FilterCriteriaChoice
+                                        active={field.propertyId === selectedFieldId}
+                                        field={field}
+                                        filterCriteria={filterCriteria}
                                         index={index}
-                                        key={field.name}
-                                        label={field.name}
+                                        key={field.propertyId}
                                         onSelect={onSelect}
                                     />
                                 ))}
@@ -199,3 +229,4 @@ export const FilterCriteriaModal: FC<Props> = memo(({ onClose, onSave, openTo, p
         </Modal>
     );
 });
+FilterCriteriaModal.displayName = 'FilterCriteriaModal';

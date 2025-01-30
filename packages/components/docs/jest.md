@@ -110,7 +110,6 @@ has its own jest tests will currently need to mock the `LABKEY` object if that m
 1. Using `async` with `await sleep()`
     1. [QueryModel/withQueryModels.spec.tsx](../src/public/QueryModel/withQueryModels.spec.tsx)
 1. Using `jest.mock`
-    1. [pagination/Pagination.spec.tsx](../src/internal/components/pagination/Pagination.spec.tsx)
     1. [components/QueryGrid.spec.tsx](../src/internal/components/QueryGrid.spec.tsx)
 1. Using `jest.spyOn` for an Ajax request to check param contents:
     1. [query/SelectRows.spec.ts](https://github.com/LabKey/labkey-api-js/blob/main/src/labkey/query/SelectRows.spec.ts)

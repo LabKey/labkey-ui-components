@@ -76,3 +76,4 @@ export const PageMenu: FC<Props> = props => {
         </DropdownButton>
     );
 };
+PageMenu.displayName = 'PageMenu';

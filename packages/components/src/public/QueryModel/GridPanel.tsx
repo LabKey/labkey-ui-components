@@ -174,9 +174,9 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             supportedExportTypes,
         } = this.props;
 
-        const { hasData, hasRows, queryInfo, queryInfoError, rowsError, selectionsError } = model;
+        const { hasData, queryInfo, queryInfoError, rowCount, rowsError, selectionsError } = model;
         const hasError = queryInfoError !== undefined || rowsError !== undefined || selectionsError !== undefined;
-        const paginate = showPagination && hasRows && !hasError;
+        const paginate = showPagination && rowCount && !hasError;
         const canExport = showExport && !hasError;
         // Don't disable view selection when there is an error because it's possible the error may be caused by the view
         const canSelectView = showViewMenu && queryInfo !== undefined;
@@ -247,8 +247,8 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                 </div>
 
                 {/*
-                    This span is to show a 2nd grid button bar row in screen sizes < large which will display the
-                    filter/search and pagination information so that they is room for the buttons in the 1st button bar.
+                    This span shows a 2nd grid button bar row in screen sizes < large which will displays filter,
+                    search, and pagination information, so that there is room for the buttons in the 1st button bar.
                 */}
                 <span
                     className={classNames({

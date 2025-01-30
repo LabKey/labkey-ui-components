@@ -512,6 +512,7 @@ export interface EntityDataType {
     typeNounAsParentSingular: string;
     typeNounSingular: string;
     uniqueFieldKey: string;
+    extraFinderFields?: string[];
 }
 
 interface OperationContainerInfo {

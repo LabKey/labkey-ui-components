@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.20.1
+*Released*: 30 January 2025
+- Issue 52007: Filtering blank with more than 250 options won't show check mark
+
 ### version 6.20.0
 *Released*: 30 January 2025
 - Fix Issue 51909: Hit Selection Dialog should show field-modal__field_dot next to fields that have criteria

@@ -53,3 +53,4 @@ export const PaginationButton: FC<Props> = ({ className, disabled, iconClass, on
         </button>
     );
 };
+PaginationButton.displayName = 'PaginationButton';

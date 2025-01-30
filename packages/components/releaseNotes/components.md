@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.X
+*Released*: X January 2025
+- LKSM: Add numbered cells for terminal storage
+
 ### version 6.18.2
 *Released*: 29 January 2025
 - Merge from release25.1-SNAPSHOT to develop

@@ -288,13 +288,15 @@ export class EditorModel
     }
 
     getColumnFromMap(fieldKeyOrName: string): QueryColumn {
-        // first try to find by fieldKey (lowercase)
-        let col = this.columnMap.get(fieldKeyOrName.toLowerCase());
+        const lowerCaseKey = fieldKeyOrName.toLowerCase();
 
-        // second try to find by fieldKey or name (case-sensitive): Issue 52132
+        // first try to find by fieldKey using the columnMap keys
+        let col = this.columnMap.get(lowerCaseKey);
+
+        // second try to find by fieldKey or name using the values of the map directly (Issue 52132)
         if (!col) {
             const columns = this.columnMap.valueSeq().toArray();
-            col = columns.find(c => c.fieldKey === fieldKeyOrName || c.name === fieldKeyOrName);
+            col = columns.find(c => c.fieldKey.toLowerCase() === lowerCaseKey || c.name.toLowerCase() === lowerCaseKey);
         }
 
         return col;
@@ -781,7 +783,7 @@ export class EditorModel
                     // We can skip the idField for the diff check, that will be added to the updated rows later
                     if (key === pkFieldKey) return row;
 
-                    // For lineage grids the parent columns aren't on the queryInfo to fall back to checking columnMap
+                    // Parent columns in lineage grids and identifying field lookup columns aren't on the queryInfo, so fall back to checking columnMap
                     const col = queryInfo.getColumnFromName(key) ?? this.getColumnFromMap(key);
 
                     // Issue 52038/52132: fail fast if we can't find the column, all columns should be in the columnMap

@@ -1066,6 +1066,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const rowIdx = editorModel.selectedRowIdx;
         let nextCol: number;
         let nextRow: number;
+        let selectionType: SELECTION_TYPES = isShift ? SELECTION_TYPES.AREA_CHANGE : undefined;
 
         switch (event.key) {
             case Key.ARROW_LEFT: {
@@ -1149,11 +1150,15 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             case Key.HOME: {
                 nextCol = 0;
                 nextRow = rowIdx;
+                // Issue 51421
+                if (isShift) selectionType = SELECTION_TYPES.AREA;
                 break;
             }
             case Key.END: {
                 nextCol = editorModel.orderedColumns.size - 1;
                 nextRow = rowIdx;
+                // Issue 51421
+                if (isShift) selectionType = SELECTION_TYPES.AREA;
                 break;
             }
             default:
@@ -1163,7 +1168,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         if (nextCol !== undefined && nextRow !== undefined) {
             cancelEvent(event);
-            this.selectCell(nextCol, nextRow, isShift ? SELECTION_TYPES.AREA_CHANGE : undefined);
+            this.selectCell(nextCol, nextRow, selectionType);
         }
     };
 

@@ -1,4 +1,4 @@
-import React, { PureComponent, ReactNode } from 'react';
+import React, { FC, memo, useCallback } from 'react';
 
 import { LoadingState } from '../../../public/LoadingState';
 
@@ -31,95 +31,104 @@ export interface PaginationProps extends PaginationData {
 }
 
 const PAGINATION_METRIC_AREA = 'pagination';
+const DEFAULT_PAGE_SIZES = [20, 40, 100, 250, 400];
 
-export class Pagination extends PureComponent<PaginationProps> {
-    static defaultProps = {
-        pageSizes: [20, 40, 100, 250, 400],
-    };
+export const Pagination: FC<PaginationProps> = memo(props => {
+    const {
+        currentPage,
+        disabled,
+        isFirstPage,
+        isLastPage,
+        loadFirstPage,
+        loadLastPage,
+        loadNextPage,
+        loadPreviousPage,
+        offset,
+        pageCount,
+        pageSize,
+        pageSizes = DEFAULT_PAGE_SIZES,
+        rowCount,
+        setPageSize,
+        totalCountLoadingState,
+    } = props;
+    const hasPages = rowCount > pageSizes[0];
+    const outOfBounds = rowCount <= offset;
+    const showPaginationButtons = hasPages || outOfBounds;
 
-    onLoadFirstPage = () => {
+    const onLoadFirstPage = useCallback(() => {
         incrementClientSideMetricCount(PAGINATION_METRIC_AREA, 'loadFirstPage');
-        this.props.loadFirstPage();
-    };
+        loadFirstPage();
+    }, [loadFirstPage]);
 
-    onLoadLastPage = () => {
+    const onLoadLastPage = useCallback(() => {
         incrementClientSideMetricCount(PAGINATION_METRIC_AREA, 'loadLastPage');
-        this.props.loadLastPage();
-    };
+        loadLastPage();
+    }, [loadLastPage]);
 
-    onLoadPreviousPage = () => {
+    const onLoadPreviousPage = useCallback(() => {
         incrementClientSideMetricCount(PAGINATION_METRIC_AREA, 'loadPreviousPage');
-        this.props.loadPreviousPage();
-    };
+        // If the user accidentally landed out of bounds (can happen via a bug in our UI or a bookmark) then navigate
+        // them to the last page when they hit the previous button.
+        if (outOfBounds) loadLastPage();
+        else loadPreviousPage();
+    }, [outOfBounds, loadLastPage, loadPreviousPage]);
 
-    onLoadNextPage = () => {
+    const onLoadNextPage = useCallback(() => {
         incrementClientSideMetricCount(PAGINATION_METRIC_AREA, 'loadNextPage');
-        this.props.loadNextPage();
-    };
+        loadNextPage();
+    }, [loadNextPage]);
 
-    onSetPageSize = (pageSize: number) => {
-        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, 'setPageSize' + pageSize);
-        this.props.setPageSize(pageSize);
-    };
+    const onSetPageSize = useCallback(
+        (newPageSize: number) => {
+            incrementClientSideMetricCount(PAGINATION_METRIC_AREA, 'setPageSize' + newPageSize);
+            setPageSize(newPageSize);
+        },
+        [setPageSize]
+    );
 
-    render(): ReactNode {
-        const {
-            currentPage,
-            disabled,
-            isFirstPage,
-            isLastPage,
-            offset,
-            pageSize,
-            pageCount,
-            pageSizes,
-            rowCount,
-            totalCountLoadingState,
-        } = this.props;
-        const showPaginationButtons = rowCount > pageSizes[0];
+    // Use lk-pagination so we don't conflict with bootstrap pagination class.
+    return (
+        <div className="lk-pagination">
+            <PaginationInfo
+                offset={offset}
+                pageSize={pageSize}
+                rowCount={rowCount}
+                totalCountLoadingState={totalCountLoadingState}
+            />
 
-        // Use lk-pagination so we don't conflict with bootstrap pagination class.
-        return (
-            <div className="lk-pagination">
-                <PaginationInfo
-                    offset={offset}
-                    pageSize={pageSize}
-                    rowCount={rowCount}
-                    totalCountLoadingState={totalCountLoadingState}
-                />
+            {showPaginationButtons && (
+                <div className="pagination-button-group btn-group">
+                    <PaginationButton
+                        className="pagination-button--previous"
+                        disabled={disabled || isFirstPage}
+                        iconClass="fa-chevron-left"
+                        tooltip="Previous Page"
+                        onClick={onLoadPreviousPage}
+                    />
 
-                {showPaginationButtons && (
-                    <div className="pagination-button-group btn-group">
-                        <PaginationButton
-                            className="pagination-button--previous"
-                            disabled={disabled || isFirstPage}
-                            iconClass="fa-chevron-left"
-                            tooltip="Previous Page"
-                            onClick={this.onLoadPreviousPage}
-                        />
+                    <PageMenu
+                        currentPage={currentPage}
+                        disabled={disabled}
+                        isFirstPage={isFirstPage}
+                        isLastPage={isLastPage}
+                        pageCount={pageCount}
+                        loadFirstPage={onLoadFirstPage}
+                        loadLastPage={onLoadLastPage}
+                        pageSize={pageSize}
+                        pageSizes={pageSizes}
+                        setPageSize={onSetPageSize}
+                    />
 
-                        <PageMenu
-                            currentPage={currentPage}
-                            disabled={disabled}
-                            isFirstPage={isFirstPage}
-                            isLastPage={isLastPage}
-                            pageCount={pageCount}
-                            loadFirstPage={this.onLoadFirstPage}
-                            loadLastPage={this.onLoadLastPage}
-                            pageSize={pageSize}
-                            pageSizes={pageSizes}
-                            setPageSize={this.onSetPageSize}
-                        />
-
-                        <PaginationButton
-                            className="pagination-button--next"
-                            disabled={disabled || isLastPage}
-                            iconClass="fa-chevron-right"
-                            tooltip="Next Page"
-                            onClick={this.onLoadNextPage}
-                        />
-                    </div>
-                )}
-            </div>
-        );
-    }
-}
+                    <PaginationButton
+                        className="pagination-button--next"
+                        disabled={disabled || isLastPage || outOfBounds}
+                        iconClass="fa-chevron-right"
+                        tooltip="Next Page"
+                        onClick={onLoadNextPage}
+                    />
+                </div>
+            )}
+        </div>
+    );
+});
+Pagination.displayName = 'Pagination';

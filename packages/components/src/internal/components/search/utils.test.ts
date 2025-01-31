@@ -466,6 +466,10 @@ describe('getCheckedFilterValues', () => {
         expect(getCheckedFilterValues(anyFilter, distinctValues)).toEqual(distinctValues);
     });
 
+    test('any filter, no allValues', () => {
+        expect(getCheckedFilterValues(anyFilter, null)).toEqual([]);
+    });
+
     test('with filter but no values', () => {
         expect(getCheckedFilterValues(checkedTwo, undefined)).toEqual(['ed', 'ned']);
     });
@@ -480,6 +484,10 @@ describe('getCheckedFilterValues', () => {
 
     test('isblank', () => {
         expect(getCheckedFilterValues(blankFilter, distinctValues)).toEqual(['[blank]']);
+    });
+
+    test('isblank, no allValues', () => {
+        expect(getCheckedFilterValues(blankFilter, null)).toEqual(['[blank]']);
     });
 
     test('not blank', () => {
@@ -505,6 +513,9 @@ describe('getCheckedFilterValues', () => {
     test('ancestor matches all', () => {
         expect(getCheckedFilterValues(matchAllFilter, [])).toEqual(['ed', 'ned', 'ted']);
         expect(getCheckedFilterValues(matchAllFilter, distinctValues)).toEqual(['ed', 'ned', 'ted']);
+        expect(getCheckedFilterValues(matchAll1Filter, distinctValues)).toEqual(['ed']);
+        expect(getCheckedFilterValues(matchAll0Filter, distinctValues)).toEqual([]);
+        expect(getCheckedFilterValues(matchAllEveryFilter, distinctValues)).toEqual(distinctValues);
     });
 });
 

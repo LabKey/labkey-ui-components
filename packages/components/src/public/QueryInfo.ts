@@ -180,9 +180,11 @@ export class QueryInfo {
             const lcName = name.toLowerCase();
             const matchingCols = this.columns.filter(col => col.name.toLowerCase() === lcName).valueArray;
             if (matchingCols.length > 1)
-                console.warn("Found " + matchingCols.length + " columns with name " + name + ". Returning first.", matchingCols);
-            if (matchingCols.length > 0)
-                return matchingCols[0];
+                console.warn(
+                    'Found ' + matchingCols.length + ' columns with name ' + name + '. Returning first.',
+                    matchingCols
+                );
+            if (matchingCols.length > 0) return matchingCols[0];
         }
         return undefined;
     }

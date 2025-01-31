@@ -16,6 +16,8 @@ import { genCellKey } from '../editable/utils';
 
 import { ViewInfo } from '../../ViewInfo';
 
+import { QueryColumn } from '../../../public/QueryColumn';
+
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 
 import { ParentIdData } from './actions';

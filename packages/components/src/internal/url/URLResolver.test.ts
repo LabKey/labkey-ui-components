@@ -51,7 +51,27 @@ describe('URLResolver', () => {
             expect(resolved).toHaveProperty(['hits', 0, 'data', 'name'], 'Molecule'); // not sure if this is best place to check this...
         });
 
-        test('assay runs', () => {
+        test('assay batch', () => {
+            // Arrange
+            const assayBatchRowId = 3927119;
+            const assayRunSearchHit: SearchHit = {
+                category: SearchCategory.AssayBatch,
+                container: TEST_PROJECT_CONTAINER.id,
+                data: { id: assayBatchRowId },
+                id: [SearchCategory.AssayBatch, assayBatchRowId].join(':'),
+                title: 'Assay Batch - NY_Marathon_2023-06-09_15-03-39',
+                url: `/labkey/testContainer/experiment-details.view?rowId=${assayBatchRowId}&_docid=assayRun%3A${assayBatchRowId}`,
+            };
+
+            // Act
+            const searchResult = resolver.resolveSearchUsingIndex(createSearchResult(assayRunSearchHit));
+
+            // Assert
+            const [searchHit] = searchResult.hits;
+            expect(searchHit.url).toEqual(`#/rd/assaybatch/${assayBatchRowId}`);
+        });
+
+        test('assay run', () => {
             // Arrange
             const assayRunRowId = 711392;
             const assayRunSearchHit: SearchHit = {

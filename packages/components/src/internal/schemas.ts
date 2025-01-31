@@ -40,6 +40,7 @@ export const EXP_TABLES = {
     DATA_CLASS_CATEGORY_TYPE: new SchemaQuery(EXP_SCHEMA, 'DataClassCategoryType'),
     MATERIALS: new SchemaQuery(EXP_SCHEMA, 'Materials'),
     PROTOCOLS: new SchemaQuery(EXP_SCHEMA, 'Protocols'),
+    RUN_GROUPS: new SchemaQuery(EXP_SCHEMA, 'RunGroups'),
     SCHEMA: EXP_SCHEMA,
     SAMPLE_SETS: new SchemaQuery(EXP_SCHEMA, 'SampleSets'),
     SAMPLE_SETS_DETAILS: new SchemaQuery(EXP_SCHEMA, 'SampleSets', ViewInfo.DETAIL_NAME),

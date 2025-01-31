@@ -832,9 +832,7 @@ export class QueryModel {
         if (!col) {
             col = this.allColumns?.filter(queryColumn => {
                 if (queryColumn.isLookup()) {
-                    return (
-                        queryColumn.displayField?.toLowerCase() === locFieldKey
-                    );
+                    return queryColumn.displayField?.toLowerCase() === locFieldKey;
                 }
             })?.[0];
         }

@@ -16,10 +16,11 @@ import { genCellKey } from '../editable/utils';
 
 import { ViewInfo } from '../../ViewInfo';
 
+import { QueryColumn } from '../../../public/QueryColumn';
+
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 
 import { ParentIdData } from './actions';
-import { QueryColumn } from '../../../public/QueryColumn';
 
 export function sampleDeleteDependencyText(): string {
     let deleteMsg = '';
@@ -170,7 +171,7 @@ export function getIdentifyingColumns(queryInfo: QueryInfo): QueryColumn[] {
     if (!idView) {
         return [];
     }
-    return queryInfo.getIdentifyingFieldsEditableGridColumns(true)
+    return queryInfo.getIdentifyingFieldsEditableGridColumns(true);
 }
 
 export const SAMPLE_ID_FIELD_KEY = 'sampleid';

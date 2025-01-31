@@ -1506,7 +1506,8 @@ export function updateCellValuesForSampleIds(
                                 );
                                 identifyingColumns
                                     .filter(
-                                        col => DEFAULT_SAMPLE_EDITABLE_GRID_COLUMNS.indexOf(col.name.toLowerCase()) === -1
+                                        col =>
+                                            DEFAULT_SAMPLE_EDITABLE_GRID_COLUMNS.indexOf(col.name.toLowerCase()) === -1
                                     )
                                     .forEach(col => {
                                         updates = updates.set(

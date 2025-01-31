@@ -831,11 +831,11 @@ describe('EditorModel', () => {
             // Issue 52132: identifying field lookup columns have keys in editedRow like ("SampleId/abc/,." which
             // are the column name and not the encoded fieldKey.
             const identFieldCol = new QueryColumn({
-                caption: "Test\"$/&}~,.'",
-                fieldKey: "SampleID/test\"$D$S$A$B$T$C$P'",
-                fieldKeyArray: ["test\"$/&}~,.'"],
+                caption: 'Test"$/&}~,.\'',
+                fieldKey: 'SampleID/test"$D$S$A$B$T$C$P\'',
+                fieldKeyArray: ['test"$/&}~,.\''],
                 jsonType: 'string',
-                name: "SampleID/test\"$/&}~,.'",
+                name: 'SampleID/test"$/&}~,.\'',
                 shownInInsertView: true,
                 shownInUpdateView: true,
                 required: false,

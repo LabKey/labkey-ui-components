@@ -28,6 +28,8 @@ import { QueryColumn } from '../../public/QueryColumn';
 
 import { SearchResult } from '../components/search/actions';
 
+import { SearchCategory } from '../components/search/constants';
+
 import { AppURL, createProductUrl, createProductUrlFromParts } from './AppURL';
 import { AppRouteResolver } from './models';
 import { encodeListResolverPath } from './utils';
@@ -240,6 +242,21 @@ const ASSAY_MAPPERS = [
 
                 delete params.rowId; // strip the rowId and pass through the remaining params
                 return AppURL.create('assays', rowId, 'data').addParams(params);
+            }
+        }
+    }),
+
+    // Issue 52151: resolve assay runs from search results
+    new ActionMapper('experiment', 'showRunGraph', row => {
+        const url = row.get('url');
+        if (url) {
+            // Note: This intentionally only matches when the "row" supplied is a search result.
+            const category = row.get('category');
+            if (SearchCategory.AssayRun === category) {
+                const runId = parseInt(row.getIn(['data', 'id']), 10);
+                if (!isNaN(runId)) {
+                    return AppURL.create('rd', 'assayrun', runId);
+                }
             }
         }
     }),

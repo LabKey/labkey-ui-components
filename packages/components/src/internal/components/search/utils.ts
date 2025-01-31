@@ -622,12 +622,6 @@ export function getSearchResultCardData(
                         category: 'Source Type',
                     };
                 }
-                return {
-                    altText: 'source_type-icon',
-                    iconSrc: 'source_type',
-                    category: 'Source Type',
-                    title: dataName,
-                };
             }
         } else if (data.sampleSet?.name) {
             const sampleSetName = data.sampleSet.name.toLowerCase();

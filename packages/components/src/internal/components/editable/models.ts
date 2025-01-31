@@ -78,7 +78,7 @@ export interface EditorModelProps {
     cellValues: CellValues;
     // columnMap is a Map of fieldKey to QueryColumn, it includes potentially hidden columns such as RowId or Container,
     // which are necessary when updating data. If you need the visible columns use orderedColumns.
-    columnMap: Map<string, QueryColumn>;
+    columnMap: Map<string, QueryColumn>; // TODO rename this to columnMapByFieldKey
     columnMetadata: Map<string, EditableColumnMetadata>;
     focusColIdx: number;
     focusRowIdx: number;
@@ -285,6 +285,21 @@ export class EditorModel
         }
 
         return values.asImmutable();
+    }
+
+    getColumnFromMap(fieldKeyOrName: string): QueryColumn {
+        const lowerCaseKey = fieldKeyOrName.toLowerCase();
+
+        // first try to find by fieldKey using the columnMap keys
+        let col = this.columnMap.get(lowerCaseKey);
+
+        // second try to find by fieldKey or name using the values of the map directly (Issue 52132)
+        if (!col) {
+            const columns = this.columnMap.valueSeq().toArray();
+            col = columns.find(c => c.fieldKey.toLowerCase() === lowerCaseKey || c.name.toLowerCase() === lowerCaseKey);
+        }
+
+        return col;
     }
 
     getColumnByIndex(colIdx: number): QueryColumn {
@@ -768,18 +783,24 @@ export class EditorModel
                     // We can skip the idField for the diff check, that will be added to the updated rows later
                     if (key === pkFieldKey) return row;
 
-                    // For lineage grids the parent columns aren't on the queryInfo
-                    const col = queryInfo.getColumnFromName(key) ?? this.columnMap.get(key.toLowerCase());
+                    // Parent columns in lineage grids and identifying field lookup columns aren't on the queryInfo, so fall back to checking columnMap
+                    const col = queryInfo.getColumnFromName(key) ?? this.getColumnFromMap(key);
+
+                    // Issue 52038/52132: fail fast if we can't find the column, all columns should be in the columnMap
+                    if (!col) {
+                        throw new Error(`Unable to find column for key ${key}.`);
+                    }
+
                     let originalValue = originalRow.get(col.fieldKey, undefined);
 
                     // we can skip any readOnly columns
-                    if (col?.readOnly) return row;
+                    if (col.readOnly) return row;
 
                     // Convert empty cell to null
                     if (value === '') value = null;
 
                     // Some column types have special handling of raw data, i.e. StoredAmount and Units (issue 49502)
-                    if (col?.columnRenderer) {
+                    if (col.columnRenderer) {
                         const renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
                         if (renderer?.getOriginalRawValue) {
                             originalValue = renderer.getOriginalRawValue(originalValue);
@@ -854,7 +875,7 @@ export class EditorModel
                     updatedRows.push(row);
                 }
             } else {
-                console.error('Unable to find original row for id ' + id);
+                throw new Error(`Unable to find original row for id ${id}.`);
             }
         });
         return updatedRows;

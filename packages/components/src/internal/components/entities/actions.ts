@@ -338,7 +338,13 @@ async function initParents(
 
     if (selectionKey) {
         const { schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);
-        const selectionResponse = await getSelected(selectionKey, isSnapshotSelection, undefined, undefined, selectionContainerId);
+        const selectionResponse = await getSelected(
+            selectionKey,
+            isSnapshotSelection,
+            undefined,
+            undefined,
+            selectionContainerId
+        );
 
         const insertPermissionContainers = await getContainersForPermission(PermissionTypes.Insert);
 
@@ -526,7 +532,7 @@ export async function getChosenParentData(
 export async function getEntityTypeOptionsWithExclusions(
     entityDataType: EntityDataType,
     dataTypeExclusions?: { [key: string]: number[] },
-    containerPath?: string,
+    containerPath?: string
 ): Promise<Map<string, List<IEntityTypeOption>>> {
     return getEntityTypeOptions(entityDataType, containerPath, undefined, undefined, undefined, dataTypeExclusions);
 }
@@ -1509,7 +1515,8 @@ export function updateCellValuesForSampleIds(
                                 );
                                 identifyingColumns
                                     .filter(
-                                        col => DEFAULT_SAMPLE_EDITABLE_GRID_COLUMNS.indexOf(col.name.toLowerCase()) === -1
+                                        col =>
+                                            DEFAULT_SAMPLE_EDITABLE_GRID_COLUMNS.indexOf(col.name.toLowerCase()) === -1
                                     )
                                     .forEach(col => {
                                         updates = updates.set(

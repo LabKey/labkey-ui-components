@@ -529,23 +529,46 @@ describe('QueryInfo', () => {
     describe('getColumnFromName', () => {
         test('no name', () => {
             expect(queryInfo.getColumnFromName(undefined)).toBeUndefined();
-            expect(queryInfo.getColumnFromName("")).toBeUndefined();
+            expect(queryInfo.getColumnFromName('')).toBeUndefined();
             expect(queryInfo.getColumnFromName(null)).toBeUndefined();
         });
 
         test('invalid name', () => {
-            expect(queryInfo.getColumnFromName("nonesuch")).toBeUndefined();
-            expect(queryInfo.getColumnFromName("NAMEe")).toBeUndefined();
+            expect(queryInfo.getColumnFromName('nonesuch')).toBeUndefined();
+            expect(queryInfo.getColumnFromName('NAMEe')).toBeUndefined();
         });
 
         test('valid name', () => {
-            const col = queryInfo.getColumnFromName("Name");
-            expect(col.name).toBe("Name");
+            const col = queryInfo.getColumnFromName('Name');
+            expect(col.name).toBe('Name');
         });
 
         test('case-insensitive', () => {
-            const col = queryInfo.getColumnFromName("NAME");
-            expect(col.name).toBe("Name");
+            const col = queryInfo.getColumnFromName('NAME');
+            expect(col.name).toBe('Name');
+        });
+    });
+
+    describe('getColumnFromName', () => {
+        test('no name', () => {
+            expect(queryInfo.getColumnFromName(undefined)).toBeUndefined();
+            expect(queryInfo.getColumnFromName('')).toBeUndefined();
+            expect(queryInfo.getColumnFromName(null)).toBeUndefined();
+        });
+
+        test('invalid name', () => {
+            expect(queryInfo.getColumnFromName('nonesuch')).toBeUndefined();
+            expect(queryInfo.getColumnFromName('NAMEe')).toBeUndefined();
+        });
+
+        test('valid name', () => {
+            const col = queryInfo.getColumnFromName('Name');
+            expect(col.name).toBe('Name');
+        });
+
+        test('case-insensitive', () => {
+            const col = queryInfo.getColumnFromName('NAME');
+            expect(col.name).toBe('Name');
         });
     });
 });

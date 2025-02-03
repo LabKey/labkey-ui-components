@@ -43,7 +43,7 @@ describe('URLResolver', () => {
             };
         }
 
-        test('resolve Sample Set url', () => {
+        test('resolve sample type url', () => {
             const resolved = resolver.resolveSearchUsingIndex(entitiesJSON);
             expect(resolved).toHaveProperty(['hits']);
             expect(resolved).toHaveProperty(['hits', 0]);

@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   - fix style for Storage properties panel radio button position
   - add StoragePositionNumber field to SampleFinder filter cards
 
+### version 6.20.2
+*Released*: 31 January 2025
+- Merge from release24.11-SNAPSHOT to develop
+    - includes changes from 5.20.7 #1705
+
 ### version 6.20.1
 *Released*: 30 January 2025
 - Issue 52007: Filtering blank with more than 250 options won't show check mark
@@ -364,6 +369,11 @@ Components, models, actions, and utility functions for LabKey applications and p
     - include identifying fields in getSelectionLineageData()
     - EditorModel.getUpdatedData() to skip non-userEditable fields when comparing values
     - getIdentifyingFieldsEditableGridColumns() to take param for hasProductFolders to determine if Folder should be excluded
+
+### version 5.20.7
+*Released*: 31 January 2025
+- Issue 52132: EditorModel.getUpdatedData fix to account for lookup columns with column.name key
+  - For editable grid with sample type identifying fields showing as read-only
 
 ### version 5.20.6
 *Released*: 27 January 2025

@@ -857,7 +857,49 @@ describe('EditorModel', () => {
             // "Wed Jan 01 2025 00:00:00 GMT+0000 (Coordinated Universal Time)"
             expect(updatedRow[dateColumn.fieldKey]).toEqual('2025-01-01 00:00:00');
         });
+        test('identifying field lookup column', () => {
+            // Issue 52132: identifying field lookup columns have keys in editedRow like ("SampleId/abc/,." which
+            // are the column name and not the encoded fieldKey.
+            const identFieldCol = new QueryColumn({
+                caption: 'Test"$/&}~,.\'',
+                fieldKey: 'SampleID/test"$D$S$A$B$T$C$P\'',
+                fieldKeyArray: ['test"$/&}~,.\''],
+                jsonType: 'string',
+                name: 'SampleID/test"$/&}~,.\'',
+                shownInInsertView: true,
+                shownInUpdateView: true,
+                required: false,
+                userEditable: true,
+            });
+            const colFk = identFieldCol.fieldKey.toLowerCase();
+            const colValue = 'testing';
 
+            const cellValues = fromJS({
+                [genCellKey(colFk, 0)]: List<ValueDescriptor>([{ display: undefined, raw: undefined }]),
+                [genCellKey(colFk, 1)]: List<ValueDescriptor>([
+                    {
+                        display: colValue,
+                        raw: colValue,
+                    },
+                ]),
+            });
+
+            const editorModel = modifyEm({
+                cellValues: basicEditorModel.cellValues.merge(cellValues),
+                columnMap: basicEditorModel.columnMap.set(colFk, identFieldCol),
+                orderedColumns: basicEditorModel.orderedColumns.push(colFk),
+                rowCount: 2,
+            });
+
+            const updatedRows = editorModel.getUpdatedData();
+            expect(updatedRows).toHaveLength(1);
+            const [updatedRow] = updatedRows;
+
+            expect(editorModel.getRowValue(1).get(identFieldCol.fieldKey)).toEqual(undefined);
+            expect(editorModel.getRowValue(1).get(identFieldCol.name)).toEqual(colValue);
+            expect(updatedRow[identFieldCol.fieldKey]).toEqual(undefined);
+            expect(updatedRow[identFieldCol.name]).toEqual(colValue);
+        });
         test('include sample lookup display value', () => {
             const sampleColumn = new QueryColumn({
                 caption: 'Sample ID',

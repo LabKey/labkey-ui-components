@@ -41,7 +41,7 @@ export function extractChanges(
                 return false;
             }
             // Issue 52038: store changedValues using column name as key not fieldKey since server won't recognize
-                // the fields if you use fieldKey and thus no changes will be saved.
+            // the fields if you use fieldKey and thus no changes will be saved.
             // If the submitted value is empty and there is an existing value, should update field
             else if (!changedValue && existingValue.size > 0) {
                 // Issue 46102

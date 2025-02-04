@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.21.0
+*Released*: 4 February 2025
+- Issue 52151: resolve assay batches/runs from search results
+- Resolve an icon for assay batch and assay run search results
+
 ### version 6.20.2
 *Released*: 31 January 2025
 - Merge from release24.11-SNAPSHOT to develop

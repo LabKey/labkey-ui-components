@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "6.20.2",
+  "version": "6.20.2-fb-issue51620.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -70,6 +70,7 @@
     "react-router-dom": "~6.27.0",
     "react-select": "~5.8.2",
     "react-treebeard": "~3.2.4",
+    "status": "^0.0.13",
     "vis-data": "~7.1.9",
     "vis-network": "~9.1.9"
   },

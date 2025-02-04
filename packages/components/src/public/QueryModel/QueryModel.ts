@@ -63,8 +63,8 @@ function searchFiltersFromString(searchStr: string): Filter.IFilter[] {
 /**
  * Returns true if a given location has queryParams that would conflict with savedSettings: filters, sorts, view,
  * page offset, pageSize.
- * @param prefix: the QueryModel prefix
- * @param searchParams: The URLSearchParams returned by the react-router useSearchParams hook
+ * @param prefix the QueryModel prefix
+ * @param searchParams The URLSearchParams returned by the react-router useSearchParams hook
  */
 export function locationHasQueryParamSettings(prefix: string, searchParams?: URLSearchParams): boolean {
     if (searchParams === undefined) return false;
@@ -217,8 +217,8 @@ export interface QueryConfig {
     useSavedSettings?: boolean;
 }
 
-const DEFAULT_OFFSET = 0;
-const DEFAULT_MAX_ROWS = 20;
+export const DEFAULT_OFFSET = 0;
+export const DEFAULT_MAX_ROWS = 20;
 
 /**
  * An object that describes the current selection pivot row for shift-select behavior. When a single row is selected
@@ -1162,8 +1162,8 @@ export class QueryModel {
 
     /**
      * Returns the model attributes given a set of queryParams from the URL. Used for URL Binding.
-     * @param searchParams: The URLSearchParams from the react-router useSearchParams hook
-     * @param useExistingValues: Set to true if you want to use the values on the model as the default values.
+     * @param searchParams The URLSearchParams from the react-router useSearchParams hook
+     * @param useExistingValues Set to true if you want to use the values on the model as the default values.
      * Typically, this should be false, because you want to treat the URL as the single source of truth, but when we
      * initialize models we may programmatically want to set an initial value (e.g. a default sort).
      */
@@ -1175,7 +1175,7 @@ export class QueryModel {
         let filterArray = columnFilters.concat(searchFilters);
         let maxRows = parseInt(searchParams.get(`${prefix}.pageSize`), 10);
         if (isNaN(maxRows)) maxRows = DEFAULT_MAX_ROWS;
-        let offset = offsetFromString(this.maxRows, searchParams.get(`${prefix}.p`)) ?? DEFAULT_OFFSET;
+        let offset = offsetFromString(maxRows, searchParams.get(`${prefix}.p`)) ?? DEFAULT_OFFSET;
         let schemaQuery = new SchemaQuery(this.schemaName, this.queryName, viewName);
         let selectedReportId = searchParams.get(`${prefix}.reportId`) ?? undefined;
         let sorts = querySortsFromString(searchParams.get(`${prefix}.sort`)) ?? [];

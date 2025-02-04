@@ -12,8 +12,18 @@ import { GRID_CHECKBOX_OPTIONS } from '../../internal/constants';
 
 import { ViewInfo } from '../../internal/ViewInfo';
 
-import { flattenValuesFromRow, locationHasQueryParamSettings, QueryConfig, QueryModel } from './QueryModel';
+import { getQueryParams } from '../../internal/util/URL';
+
+import {
+    DEFAULT_MAX_ROWS,
+    DEFAULT_OFFSET,
+    flattenValuesFromRow,
+    locationHasQueryParamSettings,
+    QueryConfig,
+    QueryModel,
+} from './QueryModel';
 import { makeTestQueryModel } from './testUtils';
+import exp from 'node:constants';
 
 const SCHEMA_QUERY = new SchemaQuery('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;
@@ -350,5 +360,222 @@ describe('locationHasQueryParamSettings', () => {
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.reportIdd': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.bogus': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.col~eq': '1' }))).toBe(true);
+    });
+});
+
+describe('attributesForURLQueryParams', () => {
+    test('without useExistingValues', () => {
+        const defaultExpected = {
+            filterArray: [],
+            maxRows: DEFAULT_MAX_ROWS,
+            offset: DEFAULT_OFFSET,
+            schemaQuery: SCHEMA_QUERY,
+            selectedReportId: undefined,
+            sorts: [],
+        };
+        const model = new QueryModel({
+            schemaQuery: SCHEMA_QUERY,
+            maxRows: 10,
+            offset: 60, // equivalent to page 6 with 10 max rows
+        });
+        let searchParams = new URLSearchParams({});
+
+        // Empty search params should result in all default values
+        let values = model.attributesForURLQueryParams(searchParams);
+        expect(values).toEqual(defaultExpected);
+
+        // Page without pageSize should set offset correctly
+        searchParams = new URLSearchParams({
+            'query.p': '3',
+        });
+        values = model.attributesForURLQueryParams(searchParams);
+        expect(values).toEqual({
+            ...defaultExpected,
+            offset: 40,
+        });
+
+        // Issue 52143: Grid paging parameter in URL is not always respected
+        // Setting page and pageSize should set offset correctly
+        searchParams = new URLSearchParams({
+            'query.p': '3',
+            'query.pageSize': '100',
+        });
+        values = model.attributesForURLQueryParams(searchParams);
+        expect(values).toEqual({
+            ...defaultExpected,
+            maxRows: 100,
+            offset: 200,
+        });
+
+        // reportId should be honored
+        searchParams = new URLSearchParams({
+            'query.reportId': 'db:99',
+        });
+        values = model.attributesForURLQueryParams(searchParams);
+        expect(values).toEqual({
+            ...defaultExpected,
+            selectedReportId: 'db:99',
+        });
+
+        // custom views should alter schemaQuery
+        searchParams = new URLSearchParams({
+            'query.view': 'custom view',
+        });
+        values = model.attributesForURLQueryParams(searchParams);
+        expect(values).toEqual({
+            ...defaultExpected,
+            schemaQuery: new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'custom view'),
+        });
+
+        // Sorts should be honored
+        searchParams = new URLSearchParams({
+            'query.sort': '-testCol,otherCol',
+        });
+        const expectedSorts = [
+            new QuerySort({ dir: '-', fieldKey: 'testCol' }),
+            new QuerySort({ fieldKey: 'otherCol' }),
+        ];
+        values = model.attributesForURLQueryParams(searchParams);
+        expect(values).toEqual({
+            ...defaultExpected,
+            sorts: expectedSorts,
+        });
+
+        // Filters should be honored
+        searchParams = new URLSearchParams({
+            'query.testCol~eq=': '1',
+            'query.otherCol~neq=': '1',
+        });
+        const expectedFilters = Filter.getFiltersFromParameters(getQueryParams(searchParams), 'query');
+        values = model.attributesForURLQueryParams(searchParams);
+        expect(values).toEqual({
+            ...defaultExpected,
+            filterArray: expectedFilters,
+        });
+
+        // Everything should be honored at the same time
+        searchParams = new URLSearchParams({
+            'query.testCol~eq=': '1',
+            'query.otherCol~neq=': '1',
+            'query.p': '3',
+            'query.pageSize': '100',
+            'query.reportId': 'db:99',
+            'query.sort': '-testCol,otherCol',
+            'query.view': 'custom view',
+        });
+        values = model.attributesForURLQueryParams(searchParams);
+        expect(values).toEqual({
+            filterArray: expectedFilters,
+            maxRows: 100,
+            offset: 200,
+            schemaQuery: new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'custom view'),
+            selectedReportId: 'db:99',
+            sorts: expectedSorts,
+        });
+    });
+
+    test('with useExistingValues', () => {
+        const defaultExpected = {
+            filterArray: [Filter.create('existingCol', 25)],
+            maxRows: 10,
+            offset: 60,
+            schemaQuery: new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'existing custom view'),
+            selectedReportId: 'db:900',
+            sorts: [new QuerySort({ dir: '-', fieldKey: 'existingCol' })],
+        };
+        const model = new QueryModel({ ...defaultExpected }).mutate({ selectedReportId: 'db:900' });
+        let searchParams = new URLSearchParams({});
+
+        let values = model.attributesForURLQueryParams(searchParams, true);
+        expect(values).toEqual(defaultExpected);
+
+        // Page without pageSize should set offset correctly
+        searchParams = new URLSearchParams({
+            'query.p': '3',
+        });
+        values = model.attributesForURLQueryParams(searchParams, true);
+        expect(values).toEqual({
+            ...defaultExpected,
+            offset: 40,
+        });
+
+        // Issue 52143: Grid paging parameter in URL is not always respected
+        // Setting page and pageSize should set offset correctly
+        searchParams = new URLSearchParams({
+            'query.p': '3',
+            'query.pageSize': '100',
+        });
+        values = model.attributesForURLQueryParams(searchParams, true);
+        expect(values).toEqual({
+            ...defaultExpected,
+            maxRows: 100,
+            offset: 200,
+        });
+
+        // reportId should be honored
+        searchParams = new URLSearchParams({
+            'query.reportId': 'db:99',
+        });
+        values = model.attributesForURLQueryParams(searchParams, true);
+        expect(values).toEqual({
+            ...defaultExpected,
+            selectedReportId: 'db:99',
+        });
+
+        // custom views should alter schemaQuery
+        searchParams = new URLSearchParams({
+            'query.view': 'custom view',
+        });
+        values = model.attributesForURLQueryParams(searchParams, true);
+        expect(values).toEqual({
+            ...defaultExpected,
+            schemaQuery: new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'custom view'),
+        });
+
+        // Sorts should be honored
+        searchParams = new URLSearchParams({
+            'query.sort': '-testCol,otherCol',
+        });
+        const expectedSorts = [
+            new QuerySort({ dir: '-', fieldKey: 'testCol' }),
+            new QuerySort({ fieldKey: 'otherCol' }),
+        ];
+        values = model.attributesForURLQueryParams(searchParams, true);
+        expect(values).toEqual({
+            ...defaultExpected,
+            sorts: expectedSorts,
+        });
+
+        // Filters should be honored
+        searchParams = new URLSearchParams({
+            'query.testCol~eq=': '1',
+            'query.otherCol~neq=': '1',
+        });
+        const expectedFilters = Filter.getFiltersFromParameters(getQueryParams(searchParams), 'query');
+        values = model.attributesForURLQueryParams(searchParams, true);
+        expect(values).toEqual({
+            ...defaultExpected,
+            filterArray: expectedFilters,
+        });
+
+        // Everything should be honored at the same time
+        searchParams = new URLSearchParams({
+            'query.testCol~eq=': '1',
+            'query.otherCol~neq=': '1',
+            'query.p': '3',
+            'query.pageSize': '100',
+            'query.reportId': 'db:99',
+            'query.sort': '-testCol,otherCol',
+            'query.view': 'custom view',
+        });
+        values = model.attributesForURLQueryParams(searchParams, true);
+        expect(values).toEqual({
+            filterArray: expectedFilters,
+            maxRows: 100,
+            offset: 200,
+            schemaQuery: new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'custom view'),
+            selectedReportId: 'db:99',
+            sorts: expectedSorts,
+        });
     });
 });

@@ -23,7 +23,6 @@ import {
     QueryModel,
 } from './QueryModel';
 import { makeTestQueryModel } from './testUtils';
-import exp from 'node:constants';
 
 const SCHEMA_QUERY = new SchemaQuery('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;

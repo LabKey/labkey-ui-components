@@ -105,17 +105,6 @@ export interface StorageActionStatusCounts {
     total: number;
 }
 
-// Note: this should stay in sync with the freezermanager/src/components/AddSamplesToStorageModal.tsx props
-interface AddSamplesToStorageModalComponentProps {
-    actionStatusCounts?: StorageActionStatusCounts;
-    onCancel: () => void;
-    onSuccess?: () => void;
-    samplesSelectionKey?: string;
-    user: User;
-}
-
-export type AddSamplesToStorageModal = ComponentType<AddSamplesToStorageModalComponentProps>;
-
 // Note: this should stay in sync with the freezermanager/src/components/StorageButton.tsx props
 interface SampleStorageButtonComponentProps {
     afterStorageUpdate?: () => void;
@@ -127,19 +116,6 @@ interface SampleStorageButtonComponentProps {
 }
 
 export type SampleStorageButton = ComponentType<SampleStorageButtonComponentProps>;
-
-// Note: this should stay in sync with the workflow/src/Components/JobsButton.tsx props
-interface JobsButtonsComponentProps {
-    isAssay?: boolean;
-    metricFeatureArea?: string;
-    model: QueryModel;
-    user: User;
-}
-
-export type JobsButton = ComponentType<JobsButtonsComponentProps>;
-
-// Note: this is meant to correspond to the JobsMenuOptions component in workflow/src/Components/JobsButton.tsx
-export type JobsMenuOptions = ComponentType<JobsButtonsComponentProps>;
 
 // Note: this should stay in sync with the workflow/src/Components/WorkflowGrid.tsx props
 interface WorkflowGridComponentProps {

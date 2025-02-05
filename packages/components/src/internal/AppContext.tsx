@@ -25,7 +25,6 @@ import {
     NotebookContainerSettings,
     FolderStorageSelection,
     WorkflowNotificationSettings,
-    ReferencingNotebooks,
 } from './app/models';
 import { User } from './components/base/models/User';
 import { DomainDetails } from './components/domainproperties/models';
@@ -33,17 +32,12 @@ import { EntityDataType } from './components/entities/models';
 import { DetailRenderer } from './components/forms/detail/DetailDisplay';
 import { ALIQUOT_FILTER_MODE } from './components/samples/constants';
 import {
-    AddSamplesToStorageModal,
-    JobsButton,
-    JobsMenuOptions,
     SampleStorageButton,
     WorkflowGrid,
 } from './components/samples/models';
 import {
     SampleGridButton,
     SamplesEditableGridProps,
-    SampleStorageLocation,
-    SampleStorageMenu,
     SamplesTabbedGridPanel,
 } from './sampleModels';
 
@@ -58,13 +52,8 @@ export interface AdminAppContext {
 }
 
 export interface SampleTypeAppContext {
-    AddSamplesToStorageModalComponent: AddSamplesToStorageModal;
-    JobsButtonComponent: JobsButton;
-    ReferencingNotebooksComponent: ReferencingNotebooks;
     SampleGridButtonComponent: SampleGridButton;
     SampleStorageButtonComponent: SampleStorageButton;
-    SampleStorageLocationComponent: SampleStorageLocation;
-    SampleStorageMenuComponent: SampleStorageMenu;
     SamplesTabbedGridPanelComponent: SamplesTabbedGridPanel;
     WorkflowGridComponent: WorkflowGrid;
     assayProviderType?: string;
@@ -104,8 +93,6 @@ export interface SampleTypeAppContext {
 }
 
 export interface AssayAppContext {
-    JobsMenuOptionsComponent: JobsMenuOptions;
-    ReferencingNotebooksComponent: ReferencingNotebooks;
     assayProviderType?: string;
     assayTypes?: string[];
     detailRenderer?: DetailRenderer;

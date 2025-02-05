@@ -1977,11 +1977,7 @@ export type {
 } from './internal/components/labelPrinting/LabelPrintingContextProvider';
 export type { SamplesEditableGridProps } from './internal/sampleModels';
 export type { MeasurementUnit } from './internal/util/measurement';
-export type {
-    SampleStorageLocationComponentProps,
-    SampleStorageMenuComponentProps,
-    SamplesTabbedGridPanelComponentProps,
-} from './internal/sampleModels';
+export type { SamplesTabbedGridPanelComponentProps } from './internal/sampleModels';
 export type { SearchHit, SearchMetadata, SearchResult, SearchOptions } from './internal/components/search/actions';
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
 export type { GroupedSampleDisplayColumns } from './internal/components/samples/actions';

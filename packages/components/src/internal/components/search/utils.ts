@@ -622,14 +622,6 @@ export function getSearchResultCardData(
                         category: 'Source Type',
                     };
                 }
-                return {
-                    altText: 'source_type-icon',
-                    iconSrc: 'source_type',
-                    category: 'Source Type',
-                    title: dataName,
-                };
-            } else if (type === 'assay') {
-                return { category: 'Assay' };
             }
         } else if (data.sampleSet?.name) {
             const sampleSetName = data.sampleSet.name.toLowerCase();
@@ -651,7 +643,11 @@ export function getSearchResultCardData(
 
     switch (category) {
         case SearchCategory.Assay:
-            return { category: 'Assay' };
+            return { category: 'Assay', iconSrc: 'assay' };
+        case SearchCategory.AssayBatch:
+            return { category: 'Assay Batch', iconSrc: 'assay' };
+        case SearchCategory.AssayRun:
+            return { category: 'Assay Run', iconSrc: 'assay' };
         case SearchCategory.Plate:
             return { iconSrc: 'plates' };
         case SearchCategory.WorkflowJob:

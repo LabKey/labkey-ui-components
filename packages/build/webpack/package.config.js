@@ -41,13 +41,28 @@ const plugins = [
         failOnError: true,
     }),
 ];
+// HACK
+if (constants.lkModule === 'components' || constants.lkModule === 'premium') {
+    let repositoryUrl;
+    if (constants.lkModule === 'components') {
+        repositoryUrl = 'https://github.com/LabKey/labkey-ui-components/tree/develop/packages/components/';
+    } else {
+        repositoryUrl = 'https://github.com/LabKey/labkey-ui-premium/tree/develop/';
+    }
+    plugins.push(
+        new webpack.SourceMapDevToolPlugin({
+            moduleFilenameTemplate: repositoryUrl + '[resource-path]?[loaders]',
+            filename: '[file].map',
+        }),
+    );
+}
 if (process.env.ANALYZE) {
     plugins.push(new BundleAnalyzerPlugin());
 }
 
 module.exports = {
     entry: './src/index.ts',
-    devtool: 'source-map',
+    devtool: false,
     target: 'web',
     mode: 'production',
     module: {

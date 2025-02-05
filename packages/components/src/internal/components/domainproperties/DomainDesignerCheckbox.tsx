@@ -22,3 +22,4 @@ export const DomainDesignerCheckbox: FC<Props> = memo(
         </div>
     )
 );
+DomainDesignerCheckbox.displayName = 'DomainDesignerCheckbox';

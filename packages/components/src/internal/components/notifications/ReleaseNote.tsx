@@ -54,3 +54,4 @@ export const ReleaseNote: FC = props => {
         </div>
     );
 };
+ReleaseNote.displayName = 'ReleaseNote';

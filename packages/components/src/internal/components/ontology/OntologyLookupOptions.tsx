@@ -301,3 +301,4 @@ const OntologyTextDomainFieldSelect: FC<OntologyTextDomainFieldSelectProps> = me
         </select>
     );
 });
+OntologyTextDomainFieldSelect.displayName = 'OntologyTextDomainFieldSelect';

@@ -1,6 +1,5 @@
 import React, { FC, memo } from 'react';
 
-
 import { Member } from '../administration/models';
 import { UserLink } from '../user/UserLink';
 
@@ -8,18 +7,13 @@ interface Props {
     members: Member[];
 }
 
-export const MembersList: FC<Props> = memo(props => {
-    const { members } = props;
-
-    return members.length === 0 ? (
-        <></>
-    ) : (
+export const MembersList: FC<Props> = memo(({ members }) => {
+    if (members.length === 0) return null;
+    return (
         <>
             <hr className="principal-hr" />
             <div className="row">
-                <div className="col-xs-4 principal-detail-label">
-                    Members
-                </div>
+                <div className="col-xs-4 principal-detail-label">Members</div>
                 <div className="col-xs-8 principal-detail-value">
                     <ul className="principal-detail-ul">
                         {members.map(member => (
@@ -37,3 +31,4 @@ export const MembersList: FC<Props> = memo(props => {
         </>
     );
 });
+MembersList.displayName = 'MembersList';

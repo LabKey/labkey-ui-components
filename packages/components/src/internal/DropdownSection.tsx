@@ -86,3 +86,4 @@ export const DropdownSection: FC<MenuSectionProps> = ({ items, showDivider = fal
         </>
     );
 };
+DropdownSection.displayName = 'DropdownSection';

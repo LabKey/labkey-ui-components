@@ -35,3 +35,4 @@ export const ChartBuilderMenuItem: FC<RequiresModelAndActions> = memo(({ actions
         </>
     );
 });
+ChartBuilderMenuItem.displayName = 'ChartBuilderMenuItem';

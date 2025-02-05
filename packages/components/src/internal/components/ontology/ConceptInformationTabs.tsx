@@ -42,3 +42,4 @@ export const ConceptInformationTabs: FC<ConceptInformationTabsProps> = memo(prop
         </Tabs>
     );
 });
+ConceptInformationTabs.displayName = 'ConceptInformationTabs';

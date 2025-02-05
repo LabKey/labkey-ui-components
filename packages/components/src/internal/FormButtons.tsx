@@ -54,3 +54,4 @@ export const FormButtons: FC<Props> = memo(({ children, sticky = true }) => {
         </div>
     );
 });
+FormButtons.displayName = 'FormButtons';

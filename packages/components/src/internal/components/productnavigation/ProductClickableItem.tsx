@@ -25,3 +25,4 @@ export const ProductClickableItem: FC<ProductClickableItemProps> = memo(props =>
         </a>
     );
 });
+ProductClickableItem.displayName = 'ProductClickableItem';

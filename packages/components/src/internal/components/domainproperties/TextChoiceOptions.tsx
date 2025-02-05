@@ -328,6 +328,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
         </div>
     );
 });
+TextChoiceOptionsImpl.displayName = 'TextChoiceOptionsImpl';
 
 export const TextChoiceOptions: FC<Props> = memo(props => {
     const { field, onChange, domainIndex, index, schemaName, queryName, lockedSqlFragment = 'FALSE' } = props;
@@ -403,3 +404,4 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
         />
     );
 });
+TextChoiceOptions.displayName = 'TextChoiceOptions';

@@ -255,6 +255,7 @@ export function withAssayModelsFromLocation<Props>(
         const protocol = useParams().protocol;
         return <WrappedComponent {...props} assayName={protocol} />;
     };
+    AssayFromLocation.displayName = 'AssayFromLocation';
 
     return AssayFromLocation;
 }

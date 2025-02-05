@@ -61,6 +61,7 @@ export const AssayResultsForSamplesMenuItem: FC<Props> = memo(props => {
         />
     );
 });
+AssayResultsForSamplesMenuItem.displayName = 'AssayResultsForSamplesMenuItem';
 
 export const AssayResultsForSamplesButton: FC<Props> = memo(props => {
     const { asSubMenu, user } = props;
@@ -72,3 +73,4 @@ export const AssayResultsForSamplesButton: FC<Props> = memo(props => {
         </ResponsiveMenuButton>
     );
 });
+AssayResultsForSamplesButton.displayName = 'AssayResultsForSamplesButton';

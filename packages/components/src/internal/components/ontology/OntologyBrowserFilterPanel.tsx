@@ -128,3 +128,4 @@ export const OntologyBrowserFilterPanel: FC<OntologyBrowserFilterPanelProps> = m
         </>
     );
 });
+OntologyBrowserFilterPanel.displayName = 'OntologyBrowserFilterPanel';

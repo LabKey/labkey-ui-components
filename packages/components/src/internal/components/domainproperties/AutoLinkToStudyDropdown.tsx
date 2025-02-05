@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 
 import { Container } from '../base/models/Container';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -10,26 +10,17 @@ interface Props {
     value: string;
 }
 
-export const AutoLinkToStudyDropdown: FC<Props> = props => {
+export const AutoLinkToStudyDropdown: FC<Props> = memo(({ autoLinkTarget, containers, onChange, value }) => {
+    if (containers === undefined) return <LoadingSpinner />;
     return (
-        <>
-            {props.containers === undefined ? (
-                <LoadingSpinner />
-            ) : (
-                <select
-                    className="form-control"
-                    id={props.autoLinkTarget}
-                    onChange={props.onChange}
-                    value={props.value || ''}
-                >
-                    <option key="_empty" value={null} />
-                    {props.containers.map(container => (
-                        <option key={container.id} value={container.id}>
-                            {container.path}
-                        </option>
-                    ))}
-                </select>
-            )}
-        </>
+        <select className="form-control" id={autoLinkTarget} onChange={onChange} value={value || ''}>
+            <option value={null} />
+            {containers.map(container => (
+                <option key={container.id} value={container.id}>
+                    {container.path}
+                </option>
+            ))}
+        </select>
     );
-};
+});
+AutoLinkToStudyDropdown.displayName = 'AutoLinkToStudyDropdown';

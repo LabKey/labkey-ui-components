@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- AppContext cleanup of components that can now be directly imported from ui-premium (previously cross subpackage)
+  - includes AddSamplesToStorageModalComponent, JobsButtonComponent, ReferencingNotebooksComponent, SampleStorageLocationComponent, SampleStorageMenuComponent
+
 ### version 6.21.1
 *Released*: 5 February 2025
 - Issue 52143: Grid paging parameter in URL is not always respected

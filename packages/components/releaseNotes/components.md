@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.x.x
-*Released*: ?? February 2025
+### version 6.21.1
+*Released*: 5 February 2025
 - Issue 52143: Grid paging parameter in URL is not always respected
   - Fix how we parse the URL to calculate page offset
 

@@ -482,6 +482,7 @@ export interface EntityDataType {
     descriptionSingular: string;
     editTypeAppUrlPrefix?: string;
     exprColumnsWithSubSelect?: string[];
+    extraFinderFields?: string[];
     filterArray?: Filter.IFilter[];
     filterCardHeaderClass?: string;
     folderConfigurableDataType?: FolderConfigurableDataType;
@@ -491,7 +492,6 @@ export interface EntityDataType {
     importFileController?: string;
     inputColumnName?: string;
     inputTypeValueField?: string;
-    insertColumnNamePrefix?: string;
     instanceKey?: string;
     instanceSchemaName: string;
     isFromSharedContainer?: boolean;
@@ -512,7 +512,7 @@ export interface EntityDataType {
     typeNounAsParentSingular: string;
     typeNounSingular: string;
     uniqueFieldKey: string;
-    extraFinderFields?: string[];
+    insertColumnNamePrefix?: string;
 }
 
 interface OperationContainerInfo {

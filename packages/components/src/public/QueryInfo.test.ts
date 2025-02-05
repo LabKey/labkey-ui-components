@@ -327,7 +327,11 @@ describe('QueryInfo', () => {
             added.add('test1');
             extras = queryInfoWithAddAndDisabledSystemFields.getExtraDisplayColumns(added, ['test2']);
             expect(extras.length).toBe(0);
-            extras = queryInfoWithAddAndDisabledSystemFields.getExtraDisplayColumns(added, ['test2'], ['test4', 'test5']);
+            extras = queryInfoWithAddAndDisabledSystemFields.getExtraDisplayColumns(
+                added,
+                ['test2'],
+                ['test4', 'test5']
+            );
             expect(extras.length).toBe(1);
             expect(extras[0].fieldKey).toBe('test5');
             added.add('test2');

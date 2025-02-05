@@ -354,7 +354,7 @@ export function withQueryModels<Props>(
                             return result;
                         },
                         // QueryModel.urlQueryParams returns Record<string, string> but getQueryParams and setSearchParams
-                        // use Record<string, string | string[]
+                        // use Record<string, string | string[]>
                         urlQueryParams as Record<string, string | string[]>
                     );
                 },

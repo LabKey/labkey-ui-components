@@ -1,11 +1,9 @@
 import React, { ChangeEvent, FC, memo, PropsWithChildren, ReactNode, useCallback, useState } from 'react';
 import classNames from 'classnames';
 
-import { ActionURL } from '@labkey/api';
-
 import { Modal } from '../../../Modal';
 
-import { getSubmitButtonClass } from '../../../app/utils';
+import { getSubmitButtonClass, isObjectLevelDiscussionsEnabled } from '../../../app/utils';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
@@ -16,8 +14,6 @@ import { SelectInput } from '../../forms/input/SelectInput';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 import { DomainDesignerRadio } from '../DomainDesignerRadio';
-
-import { request } from '../../../request';
 
 import { AdvancedSettingsForm, EachItemSettings, EntireListSettings, ListModel } from './models';
 
@@ -411,7 +407,6 @@ interface AdvancedSettingsProps {
 
 interface AdvancedSettingsState extends AdvancedSettingsForm {
     modalOpen?: boolean;
-    objectLevelDiscussionsEnabled?: boolean;
 }
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, Partial<AdvancedSettingsState>> {
@@ -421,21 +416,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         this.state = {
             modalOpen: false,
-            objectLevelDiscussionsEnabled: false,
             ...initialState,
         } as AdvancedSettingsState;
-    }
-
-    componentDidMount() {
-        (async () => {
-            const resp = await request<Record<string, boolean>>({
-                url: ActionURL.buildURL('admin', 'DeprecatedFlag.api'),
-                method: 'POST',
-                jsonData: { featureName: 'deprecatedObjectLevelDiscussions' },
-                errorLogMsg: 'Problem fetching deprecation status',
-            });
-            this.setState({ objectLevelDiscussionsEnabled: resp.response });
-        })();
     }
 
     getInitialState = (): AdvancedSettingsState => {
@@ -523,7 +505,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             titleColumn,
             entireListBodyTemplate,
             eachItemBodyTemplate,
-            objectLevelDiscussionsEnabled,
         } = this.state;
         const { title, model } = this.props;
         const entireListIndexSettings = {
@@ -577,7 +558,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             />
                         </SettingsContainer>
 
-                        {objectLevelDiscussionsEnabled && (
+                        {isObjectLevelDiscussionsEnabled() && (
                             <SettingsContainer title="Discussion Threads" tipBody={DISCUSSION_LINKS_TIP}>
                                 <DiscussionInputs
                                     onRadioChange={this.onRadioChange}

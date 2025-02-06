@@ -31,15 +31,8 @@ import { DomainDetails } from './components/domainproperties/models';
 import { EntityDataType } from './components/entities/models';
 import { DetailRenderer } from './components/forms/detail/DetailDisplay';
 import { ALIQUOT_FILTER_MODE } from './components/samples/constants';
-import {
-    SampleStorageButton,
-    WorkflowGrid,
-} from './components/samples/models';
-import {
-    SampleGridButton,
-    SamplesEditableGridProps,
-    SamplesTabbedGridPanel,
-} from './sampleModels';
+import { SampleStorageButton, WorkflowGrid } from './components/samples/models';
+import { SampleGridButton, SamplesEditableGridProps, SamplesTabbedGridPanel } from './sampleModels';
 
 export interface AdminAppContext {
     FolderStorageSelectionComponent?: FolderStorageSelection;

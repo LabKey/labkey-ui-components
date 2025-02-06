@@ -34,3 +34,4 @@ export const NotificationItem: FC<ItemProps> = ({ item }) => {
         </div>
     );
 };
+NotificationItem.displayName = 'NotificationItem';

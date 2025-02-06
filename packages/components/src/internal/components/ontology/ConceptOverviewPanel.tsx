@@ -43,6 +43,7 @@ export const OntologyConceptOverviewPanel: FC<ConceptOverviewPanelProps> = memo(
         </>
     );
 });
+OntologyConceptOverviewPanel.displayName = 'OntologyConceptOverviewPanel';
 
 interface ConceptOverviewPanelImplProps {
     concept: ConceptModel;
@@ -66,6 +67,7 @@ export const ConceptSynonyms: FC<{ synonyms: string[] }> = memo(props => {
         </>
     );
 });
+ConceptSynonyms.displayName = 'ConceptSynonyms';
 
 /**
  * The ontology concept overview display panel that takes in the concept prop (i.e. ConceptModel) and displays
@@ -115,6 +117,7 @@ export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(
         </>
     );
 });
+ConceptOverviewPanelImpl.displayName = 'ConceptOverviewPanelImpl';
 
 interface ConceptOverviewModalProps {
     concept: ConceptModel;
@@ -151,3 +154,4 @@ export const ConceptOverviewTooltip: FC<ConceptOverviewModalProps> = memo(props 
         </>
     );
 });
+ConceptOverviewTooltip.displayName = 'ConceptOverviewTooltip';

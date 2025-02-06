@@ -19,3 +19,4 @@ export const HelpTipRenderer: FC<Props> = memo(props => {
 
     return null;
 });
+HelpTipRenderer.displayName = 'HelpTipRenderer';

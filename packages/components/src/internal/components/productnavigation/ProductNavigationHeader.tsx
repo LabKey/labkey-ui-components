@@ -31,3 +31,4 @@ export const ProductNavigationHeader: FC<ProductNavigationHeaderProps> = memo(pr
         </h3>
     );
 });
+ProductNavigationHeader.displayName = 'ProductNavigationHeader';

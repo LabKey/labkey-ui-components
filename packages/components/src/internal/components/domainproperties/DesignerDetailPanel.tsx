@@ -52,6 +52,7 @@ export const DesignerDetailPanel: FC<DesignerDetailPanelProps> = memo(props => {
 
     return <DetailPanel fieldHelpTexts={previews} queryColumns={queryColumns} {...detailDisplayProps} />;
 });
+DesignerDetailPanel.displayName = 'DesignerDetailPanel';
 
 export const DesignerDetailTooltip: FC<DesignerDetailPanelProps> = memo(props => {
     const { model } = props;
@@ -75,3 +76,4 @@ export const DesignerDetailTooltip: FC<DesignerDetailPanelProps> = memo(props =>
         </div>
     );
 });
+DesignerDetailTooltip.displayName = 'DesignerDetailTooltip';

@@ -141,3 +141,4 @@ export const OntologyConceptSelectButton: FC<OntologyConceptSelectButtonProps> =
         </>
     );
 });
+OntologyConceptSelectButton.displayName = 'OntologyConceptSelectButton';

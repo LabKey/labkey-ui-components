@@ -77,3 +77,4 @@ export const FileAttachmentOptions: FC<Props> = memo(props => {
         </div>
     );
 });
+FileAttachmentOptions.displayName = 'FileAttachmentOptions';

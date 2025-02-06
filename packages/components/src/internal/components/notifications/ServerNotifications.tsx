@@ -104,3 +104,4 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
         </div>
     );
 };
+ServerNotifications.displayName = 'ServerNotifications';

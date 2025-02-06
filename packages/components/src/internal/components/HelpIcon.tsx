@@ -24,3 +24,4 @@ export const HelpIcon: FC<Props> = memo(({ children, placement = 'bottom' }) => 
         </span>
     );
 });
+HelpIcon.displayName = 'HelpIcon';

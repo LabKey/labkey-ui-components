@@ -52,3 +52,4 @@ export const ProductAppMenuItem: FC<ProductAppMenuItemProps> = memo(props => {
         </li>
     );
 });
+ProductAppMenuItem.displayName = 'ProductAppMenuItem';

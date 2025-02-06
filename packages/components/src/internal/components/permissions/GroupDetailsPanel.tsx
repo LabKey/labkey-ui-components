@@ -88,3 +88,4 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
         </div>
     );
 });
+GroupDetailsPanel.displayName = 'GroupDetailsPanel';

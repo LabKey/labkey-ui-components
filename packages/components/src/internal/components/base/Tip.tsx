@@ -41,3 +41,4 @@ export const Tip: FC<Props> = ({ caption, children, triggerType }) => {
         </OverlayTrigger>
     );
 };
+Tip.displayName = 'Tip';

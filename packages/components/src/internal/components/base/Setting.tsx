@@ -107,3 +107,4 @@ export const Setting: FC<SettingProps> = memo(props => {
         </div>
     );
 });
+Setting.displayName = 'Setting';

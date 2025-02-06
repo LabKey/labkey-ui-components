@@ -55,6 +55,7 @@ export const NavItem: FC<NavItemProps> = memo(({ children, onActive, to, isActiv
         </li>
     );
 });
+NavItem.displayName = 'NavItem';
 
 export const ParentNavItem: FC<NavItemProps> = memo(({ children, to }) => {
     const href = to instanceof AppURL ? to.toString() : to;
@@ -73,3 +74,4 @@ export const ParentNavItem: FC<NavItemProps> = memo(({ children, to }) => {
         </div>
     );
 });
+ParentNavItem.displayName = 'ParentNavItem';

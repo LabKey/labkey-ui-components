@@ -37,6 +37,7 @@ export const OntologySelectionPanel: FC<OntologySelectionPanelProps> = memo(prop
 
     return <OntologySelectionPanelImpl {...props} error={error} ontologies={ontologies} />;
 });
+OntologySelectionPanel.displayName = 'OntologySelectionPanel';
 
 interface OntologySelectionPanelImplProps extends OntologySelectionPanelProps {
     error: string;
@@ -91,3 +92,4 @@ export const OntologySelectionPanelImpl: FC<OntologySelectionPanelImplProps> = m
         </>
     );
 });
+OntologySelectionPanelImpl.displayName = 'OntologySelectionPanelImpl';

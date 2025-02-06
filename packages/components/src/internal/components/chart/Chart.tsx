@@ -38,6 +38,7 @@ const ChartLoadingMask: FC<ChartLoadingMaskProps> = memo(({ msg = 'Loading Chart
         <LoadingSpinner msg={msg} wrapperClassName="loading-spinner" />
     </div>
 ));
+ChartLoadingMask.displayName = 'ChartLoadingMask';
 
 /**
  * Returns a string representation of a given filter array. Needed to properly memoize variables in functional

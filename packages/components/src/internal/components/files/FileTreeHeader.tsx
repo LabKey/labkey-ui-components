@@ -31,6 +31,7 @@ export const FileNodeIcon: FC<FileNodeIconProps> = props => {
         </>
     );
 };
+FileNodeIcon.displayName = 'FileNodeIcon';
 
 export interface TreeNodeProps extends PropsWithChildren {
     NodeIcon?: (props: unknown) => React.ReactElement; // Function Component method to render icon element
@@ -120,4 +121,4 @@ export const Header: FC<TreeNodeProps> = props => {
         </span>
     );
 };
-
+Header.displayName = 'Header';

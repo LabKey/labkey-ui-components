@@ -70,3 +70,4 @@ export const FileAttachmentArea: FC<SimpleFileAttachmentContainerProps> = memo((
         </div>
     );
 });
+FileAttachmentArea.displayName = 'FileAttachmentArea';

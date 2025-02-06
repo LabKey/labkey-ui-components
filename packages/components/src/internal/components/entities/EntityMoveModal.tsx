@@ -261,6 +261,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
         </>
     );
 });
+EntityMoveModal.displayName = 'EntityMoveModal';
 
 // exported for jest testing
 export const getMoveConfirmationProperties = (

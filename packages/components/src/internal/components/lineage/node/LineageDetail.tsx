@@ -40,6 +40,7 @@ const LineageDetailImpl: FC<LineageDetailProps & InjectedQueryModels> = memo(pro
         />
     );
 });
+LineageDetailImpl.displayName = 'LineageDetailImpl';
 
 const LineageDetailWithQueryModels = withQueryModels<LineageDetailProps>(LineageDetailImpl);
 
@@ -61,6 +62,7 @@ export const LineageDetail: FC<LineageDetailProps> = memo(({ item }) => {
     // providing "key" to allow for reload on lsid change
     return <LineageDetailWithQueryModels key={item.lsid} autoLoad queryConfigs={queryConfigs} item={item} />;
 });
+LineageDetail.displayName = 'LineageDetail';
 
 interface RendererProps {
     data: List<Map<string, any>>;
@@ -86,6 +88,7 @@ export const CustomPropertiesRenderer: FC<RendererProps> = memo(({ data }) => {
         </table>
     );
 });
+CustomPropertiesRenderer.displayName = 'CustomPropertiesRenderer';
 
 function _resolveDetailRenderer(column: QueryColumn): Renderer {
     if (column.fieldKey.toLowerCase() === 'properties') {

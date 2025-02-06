@@ -69,3 +69,4 @@ export const LabelPrintingContextProvider: FC<LabelPrintingContextProviderProps>
 
     return <Context.Provider value={labelContext}>{children}</Context.Provider>;
 });
+LabelPrintingContextProvider.displayName = 'LabelPrintingContextProvider';

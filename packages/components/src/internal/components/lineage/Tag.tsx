@@ -14,3 +14,4 @@ export const Tag: FC<TagProps> = props => (
         <span className={'label ' + (props.bsStyle ? `label-${props.bsStyle}` : '')}>{props.children}</span>
     </span>
 );
+Tag.displayName = 'Tag';

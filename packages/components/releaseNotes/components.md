@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.21.2
+*Released*: 6 February 2025
 - AppContext cleanup of components that can now be directly imported from ui-premium (previously cross subpackage)
   - includes AddSamplesToStorageModalComponent, JobsButtonComponent, ReferencingNotebooksComponent, SampleStorageLocationComponent, SampleStorageMenuComponent
 

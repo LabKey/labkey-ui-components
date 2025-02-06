@@ -433,7 +433,6 @@ export class QueryColumn implements IQueryColumn {
         const lcName = importName.toLowerCase().trim();
         return (
             this.caption?.toLowerCase() === lcName ||
-            this.caption?.replace(' ', '').toLowerCase() === lcName ||
             this.name?.toLowerCase() === lcName ||
             this.fieldKey?.toLowerCase() === lcName
         );

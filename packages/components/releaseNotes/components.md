@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Release*: TBD
+- Issue 52193: No need to match on caption without spaces in `QueryColumn.isImportColumn`
+
 ### version 6.21.2
 *Released*: 6 February 2025
 - AppContext cleanup of components that can now be directly imported from ui-premium (previously cross subpackage)

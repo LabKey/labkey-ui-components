@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Release*: TBD
-- Issue 52193: No need to match on caption without spaces in `QueryColumn.isImportColumn`
+- Issue 52193: Update `QueryColumn.isImportColumn` to match on caption fully stripped of spaces
 
 ### version 6.21.2
 *Released*: 6 February 2025

@@ -52,17 +52,6 @@ export interface AppProperties {
     searchPlaceholder?: string;
 }
 
-// Note: this should stay in sync with the eln/src/ReferencingNotebooks.tsx props
-interface ReferencingNotebooksComponentProps {
-    label: string;
-    noun: string;
-    queryName: string;
-    schemaName: string;
-    value: number;
-}
-
-export type ReferencingNotebooks = ComponentType<ReferencingNotebooksComponentProps>;
-
 interface NotebookContainerSettingsProps {
     containerPath?: string;
     labelsAPI: LabelsAPIWrapper;

@@ -34,6 +34,7 @@ import { SCHEMAS } from '../../schemas';
 
 import {
     getContainerFilter,
+    getQueryDetails,
     invalidateFullQueryDetailsCache,
     ISelectRowsResult,
     selectDistinctRows,
@@ -200,15 +201,18 @@ export async function getGroupedSampleDomainFields(sampleType: string): Promise<
     const independentFields = [];
     const aliquotFields = [];
 
+    // use domain fields as we only want to include fields defined by the user, but use queryInfo to map to fieldKey
     const sampleTypeDomain = await getSampleTypeDetails(new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType));
+    const queryInfo = await getQueryDetails(new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType));
 
     sampleTypeDomain.domainDesign.fields.forEach(field => {
+        const col = queryInfo.getColumnFromName(field.name);
         if (field.derivationDataScope === DERIVATION_DATA_SCOPES.CHILD_ONLY) {
-            aliquotFields.push(field.name.toLowerCase());
+            aliquotFields.push(col.fieldKey.toLowerCase());
         } else if (field.derivationDataScope === DERIVATION_DATA_SCOPES.ALL) {
-            independentFields.push(field.name.toLowerCase());
-        } else {
-            metaFields.push(field.name.toLowerCase());
+            independentFields.push(col.fieldKey.toLowerCase());
+        } else if (!field.isCalculatedField()) {
+            metaFields.push(col.fieldKey.toLowerCase());
         }
     });
 
@@ -285,11 +289,11 @@ export function getGroupedSampleDisplayColumns(
     const aliquotHeaderDisplayColumns = [];
 
     allDisplayColumns.forEach(col => {
-        const colName = col.name.toLowerCase();
-        if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(colName) > -1) {
+        const lcFieldKey = col.fieldKey.toLowerCase();
+        if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(lcFieldKey) > -1) {
             return;
         }
-        if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(colName) > -1 && canBeInStorage) {
+        if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(lcFieldKey) > -1 && canBeInStorage) {
             return;
         }
         if (isAliquot) {
@@ -299,38 +303,38 @@ export function getGroupedSampleDisplayColumns(
             }
             // display parent meta for aliquot
             else if (
-                sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1 ||
-                sampleTypeDomainFields.independentFields.indexOf(colName) > -1
+                sampleTypeDomainFields.aliquotFields.indexOf(lcFieldKey) > -1 ||
+                sampleTypeDomainFields.independentFields.indexOf(lcFieldKey) > -1
             ) {
                 aliquotHeaderDisplayColumns.push(col);
             }
         } else {
-            if (sampleTypeDomainFields.aliquotFields.indexOf(colName) === -1) {
+            if (sampleTypeDomainFields.aliquotFields.indexOf(lcFieldKey) === -1) {
                 displayColumns.push(col);
             }
         }
     });
 
     allUpdateColumns.forEach(col => {
-        const colName = col.name.toLowerCase();
-        if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(colName) > -1) {
+        const lcFieldKey = col.fieldKey.toLowerCase();
+        if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(lcFieldKey) > -1) {
             return;
         }
-        if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(colName) > -1 && canBeInStorage) {
+        if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(lcFieldKey) > -1 && canBeInStorage) {
             return;
         }
-        if (sampleTypeDomainFields.independentFields.indexOf(colName) > -1) {
+        if (sampleTypeDomainFields.independentFields.indexOf(lcFieldKey) > -1) {
             editColumns.push(col);
             return;
         }
         if (isAliquot) {
-            if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1) {
+            if (sampleTypeDomainFields.aliquotFields.indexOf(lcFieldKey) > -1) {
                 editColumns.push(col);
-            } else if (isAliquotEditableField(colName)) {
+            } else if (isAliquotEditableField(lcFieldKey)) {
                 editColumns.push(col);
             }
         } else {
-            if (sampleTypeDomainFields.aliquotFields.indexOf(colName) === -1) {
+            if (sampleTypeDomainFields.aliquotFields.indexOf(lcFieldKey) === -1) {
                 editColumns.push(col);
             }
         }

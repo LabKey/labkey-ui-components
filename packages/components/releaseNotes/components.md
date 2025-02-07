@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 52197: use current container when querying for groups with permissions for job and task assignments
+
 ### version 6.20.2
 *Released*: 31 January 2025
 - Merge from release24.11-SNAPSHOT to develop

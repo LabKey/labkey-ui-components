@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.22.0
+*Released*: 7 February 2025
 - Only show 'Discussion Threads' Advanced Setting in Lists if relevant Deprecated Feature is turned on
 
 ### version 6.21.3

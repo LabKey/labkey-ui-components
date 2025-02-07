@@ -14,8 +14,6 @@ import { selectRows } from '../../query/selectRows';
 
 import { getContainerFilterForLookups } from '../../query/api';
 
-import { encodePart } from '../../../public/SchemaQuery';
-
 import {
     CellMessage,
     CellMessages,
@@ -48,9 +46,10 @@ const loadEditorModelData = async (
         orderedRows.forEach((id, rn) => {
             const row = rows[id];
             const cellKey = genCellKey(col.fieldKey, rn);
-            // Our loaders (e.g. EditableGridLoaderFromSelection) use EditorModel.convertQueryDataToEditorData which
-            // uses encodePart, so we check for the encoded fieldKey.
-            const value = row[col.fieldKey] ?? row[encodePart(col.fieldKey)];
+
+            // Our loaders (e.g. EditableGridLoaderFromSelection) use data objects from selectRows which has
+            // rows objects keyed by column name
+            const value = row[col.name];
 
             if (Array.isArray(value)) {
                 // assume to be list of {displayValue, value} objects

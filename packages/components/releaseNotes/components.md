@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD February 2025
+- Remove usages of encodePart when dealing with data rows for update cases
+  - EditableGridLoaderFromSelection not to encodePart() in the data rows, leave keyed by column name as it comes from server
+  -
+
 ### version 6.22.0
 *Released*: 7 February 2025
 - Only show 'Discussion Threads' Advanced Setting in Lists if relevant Deprecated Feature is turned on

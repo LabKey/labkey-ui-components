@@ -17,8 +17,6 @@ import { Filter, Query, Utils } from '@labkey/api';
 import { fromJS, Iterable, List, Map, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 import { ReactNode } from 'react';
 
-import { encodePart } from '../../../public/SchemaQuery';
-
 import { QueryInfo } from '../../../public/QueryInfo';
 
 import { QueryColumn } from '../../../public/QueryColumn';
@@ -690,38 +688,35 @@ export class EditorModel
     }
 
     static convertQueryDataToEditorData(
-        data: Map<string, any>,
-        updates?: Map<any, any>,
+        data: Map<string, any>, // this map is keyed by column name
+        queryInfo?: QueryInfo,
+        updates?: Map<string, any>, // this map is keyed by column fieldKey
         idsNotToUpdate?: number[],
-        fieldsNotToUpdate?: string[],
-        encode = true
-    ): Map<any, Map<string, any>> {
+        fieldsNotToUpdate?: string[] // keys here are column fieldKey
+    ): Map<string, Map<string, any>> {
         return data
             .map((valueMap, id) => {
-                const returnMap = valueMap.reduce((m, valueMap_, key) => {
+                const returnMap = valueMap.reduce((m, valueMap_, colName) => {
                     const editorData = EditorModel.getEditorDataFromQueryValueMap(valueMap_);
                     if (editorData === undefined) {
                         return m;
                     }
 
-                    // data maps have keys that are display names/captions. We need to convert to the
-                    // encoded keys used in our filters to match up with values from the forms.
-                    const key_ = encode ? encodePart(key) : key;
-                    return m.set(key_, editorData);
-                }, Map<any, any>());
+                    return m.set(colName, editorData);
+                }, Map<string, any>());
 
-                if (!updates) {
+                if (!queryInfo || !updates) {
                     return returnMap;
                 }
 
-                if (!idsNotToUpdate || idsNotToUpdate.indexOf(parseInt(id, 10)) < 0 || !fieldsNotToUpdate) {
-                    return returnMap.merge(updates);
-                }
-
-                let trimmedUpdates = Map<any, any>();
+                let trimmedUpdates = Map<string, any>();
+                const isNotUpdateId = idsNotToUpdate && idsNotToUpdate.indexOf(parseInt(id, 10)) > -1;
                 updates.forEach((value, fieldKey) => {
-                    if (fieldsNotToUpdate.indexOf(fieldKey.toLowerCase()) < 0) {
-                        trimmedUpdates = trimmedUpdates.set(fieldKey, value);
+                    const col = queryInfo.getColumn(fieldKey);
+                    const isFieldNotToUpdate =
+                        fieldsNotToUpdate && fieldsNotToUpdate.indexOf(fieldKey.toLowerCase()) > -1;
+                    if (!isFieldNotToUpdate || !isNotUpdateId) {
+                        trimmedUpdates = trimmedUpdates.set(col.name, value);
                     }
                 });
                 return returnMap.merge(trimmedUpdates);
@@ -739,7 +734,7 @@ export class EditorModel
         });
 
         return {
-            data: EditorModel.convertQueryDataToEditorData(fromJS(data), undefined, undefined, undefined, false),
+            data: EditorModel.convertQueryDataToEditorData(fromJS(data)),
             dataIds: fromJS(dataIds),
         };
     }
@@ -808,7 +803,7 @@ export class EditorModel
                         throw new Error(`Unable to find column for key ${key}.`);
                     }
 
-                    let originalValue = originalRow.get(col.fieldKey, undefined);
+                    let originalValue = originalRow.get(col.name, undefined);
 
                     // we can skip any readOnly columns or non-userEditable columns
                     if (col.readOnly || !col.userEditable) return row;

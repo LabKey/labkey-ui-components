@@ -78,6 +78,7 @@ export const LabelTemplatesList: FC<LabelTemplatesListProps> = memo(props => {
         </div>
     );
 });
+LabelTemplatesList.displayName = 'LabelTemplatesList';
 
 const normalizeValues = (template: LabelTemplate): LabelTemplate => {
     if (!template) throw Error('Unable to save, invalid template');
@@ -349,6 +350,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
         </>
     );
 });
+LabelTemplateDetails.displayName = 'LabelTemplateDetails';
 
 export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props => {
     const { api, setIsDirty, defaultLabel, container } = props;
@@ -452,3 +454,4 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
         </div>
     );
 });
+LabelsConfigurationPanel.displayName = 'LabelsConfigurationPanel';

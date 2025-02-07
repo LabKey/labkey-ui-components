@@ -5,6 +5,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Only show 'Discussion Threads' Advanced Setting in Lists if relevant Deprecated Feature is turned on
 
+### version 6.21.3
+*Released*: 6 February 2025
+- Add displayName to various components
+- LockIcon: remove unused prop, add displayName, format code
+- Remove ValueList
+- AutoLinkToStudyDropdown: improve formatting, use memo
+
+### version 6.21.2
+*Released*: 6 February 2025
+- AppContext cleanup of components that can now be directly imported from ui-premium (previously cross subpackage)
+  - includes AddSamplesToStorageModalComponent, JobsButtonComponent, ReferencingNotebooksComponent, SampleStorageLocationComponent, SampleStorageMenuComponent
+
 ### version 6.21.1
 *Released*: 5 February 2025
 - Issue 52143: Grid paging parameter in URL is not always respected

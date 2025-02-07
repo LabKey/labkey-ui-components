@@ -30,3 +30,4 @@ export const BreadcrumbCreate: FC<Props> = memo(props => (
         <CreatedModified row={props.row} useServerDate={props.useServerDate} className="col-xs-4 col-sm-4 col-md-4" />
     </div>
 ));
+BreadcrumbCreate.displayName = 'BreadcrumbCreate';

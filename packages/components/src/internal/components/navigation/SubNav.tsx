@@ -136,6 +136,7 @@ const SubNavImpl: FC<Props> = ({ noun, tabs }) => {
         </nav>
     );
 };
+SubNavImpl.displayName = 'SubNavImpl';
 
 export const SubNav: FC = memo(() => {
     const { noun, tabs } = useSubNavTabsContext();
@@ -146,3 +147,4 @@ export const SubNav: FC = memo(() => {
 
     return <SubNavImpl noun={noun} tabs={tabs} />;
 });
+SubNav.displayName = 'SubNav';

@@ -35,6 +35,7 @@ const DeleteThreadModal: FC<DeleteThreadBSModalProps> = ({ cancel, onDelete }) =
         thread?
     </Modal>
 );
+DeleteThreadModal.displayName = 'DeleteThreadModal';
 
 const DeleteReplyModal: FC<DeleteThreadBSModalProps> = ({ cancel, onDelete }) => (
     <Modal
@@ -47,6 +48,7 @@ const DeleteReplyModal: FC<DeleteThreadBSModalProps> = ({ cancel, onDelete }) =>
         Are you sure you want to delete this reply?
     </Modal>
 );
+DeleteReplyModal.displayName = 'DeleteReplyModal';
 
 interface ThreadBlockHeaderProps {
     author: User;
@@ -112,6 +114,7 @@ const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
         </div>
     );
 };
+ThreadBlockHeader.displayName = 'ThreadBlockHeader';
 
 export interface ThreadBlockProps extends ThreadEditorProps {
     canReply?: boolean;

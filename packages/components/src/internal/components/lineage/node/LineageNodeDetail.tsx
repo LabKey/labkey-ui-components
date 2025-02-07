@@ -200,6 +200,7 @@ const RunStepNodeDetail: FC<RunStepNodeDetailProps> = memo(props => {
         </div>
     );
 });
+RunStepNodeDetail.displayName = 'RunStepNodeDetail';
 
 const provenanceCellRenderer = (data, row) => {
     const name = data?.get('name');
@@ -230,3 +231,4 @@ export interface RunStepProvenanceMapProps {
 const RunStepProvenanceMap: FC<RunStepProvenanceMapProps> = memo(({ item }) => {
     return <Grid columns={PROVENANCE_MAP_COLS} data={item?.provenanceMap ?? []} />;
 });
+RunStepProvenanceMap.displayName = 'RunStepProvenanceMap';

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 
 import { Modal } from '../../Modal';
+
 import { MAX_VALID_TEXT_CHOICES } from './constants';
 import { getValidValuesFromArray } from './models';
 
@@ -35,9 +36,7 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
     const valueNoun = Utils.pluralize(maxValuesToAdd, 'value', 'values');
     return (
         <Modal canConfirm={canConfirm} confirmText="Apply" onCancel={onCancel} onConfirm={onConfirm} title={title}>
-            <p>
-                Enter each value on a new line. {valueNoun} can be added.
-            </p>
+            <p>Enter each value on a new line. {valueNoun} can be added.</p>
             <textarea
                 rows={8}
                 cols={50}
@@ -51,10 +50,9 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
                     'domain-text-choices-error': parsedValues.length > maxValuesToAdd,
                 })}
             >
-                {parsedValues.length === 1
-                    ? '1 new value provided.'
-                    : `${parsedValues.length} new values provided.`}
+                {parsedValues.length === 1 ? '1 new value provided.' : `${parsedValues.length} new values provided.`}
             </div>
         </Modal>
     );
 });
+TextChoiceAddValuesModal.displayName = 'TextChoiceAddValuesModal';

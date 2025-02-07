@@ -127,6 +127,7 @@ export const DataTypeSelectorItem: FC<DataTypeSelectorItemProps> = memo(props =>
         </li>
     );
 });
+DataTypeSelectorItem.displayName = 'DataTypeSelectorItem';
 
 export const DataTypeSelectorList: FC<DataTypeSelectorListProps> = memo(props => {
     const {
@@ -171,6 +172,7 @@ export const DataTypeSelectorList: FC<DataTypeSelectorListProps> = memo(props =>
         </>
     );
 });
+DataTypeSelectorList.displayName = 'DataTypeSelectorList';
 
 export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
     const {

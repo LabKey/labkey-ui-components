@@ -5,7 +5,7 @@ import { ThreadBlock, ThreadBlockProps } from './ThreadBlock';
 export const Thread: FC<ThreadBlockProps> = props => {
     const { thread } = props;
     const { responses } = thread;
-    const [ responseToggle, setResponseToggle ] = useState(false);
+    const [responseToggle, setResponseToggle] = useState(false);
     const showResponses = responseToggle && responses.length > 0;
 
     const toggleResponses = useCallback(() => {
@@ -31,3 +31,4 @@ export const Thread: FC<ThreadBlockProps> = props => {
         </div>
     );
 };
+Thread.displayName = 'Thread';

@@ -173,3 +173,4 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
         </Modal>
     );
 });
+EntityMoveConfirmationModal.displayName = 'EntityMoveConfirmationModal';

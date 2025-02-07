@@ -60,6 +60,7 @@ const MenuSectionLink: FC<MenuSectionLinkProps> = ({ config, item }) => {
 
     return <a href={item.url.toString()}>{body}</a>;
 };
+MenuSectionLink.displayName = 'MenuSectionLink';
 
 interface MenuSectionProps {
     config: MenuSectionConfig;

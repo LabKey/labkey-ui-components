@@ -32,6 +32,7 @@ const RangeValidatorHelpText: FC = () => (
         </p>
     </>
 );
+RangeValidatorHelpText.displayName = 'RangeValidatorHelpText';
 
 const RegexValidatorHelpText: FC = () => (
     <>
@@ -42,6 +43,7 @@ const RegexValidatorHelpText: FC = () => (
         </p>
     </>
 );
+RegexValidatorHelpText.displayName = 'RegexValidatorHelpText';
 
 const ConditionalFormatHelpText: FC = () => (
     <>
@@ -52,6 +54,7 @@ const ConditionalFormatHelpText: FC = () => (
         </p>
     </>
 );
+ConditionalFormatHelpText.displayName = 'ConditionalFormatHelpText';
 
 interface Props {
     domainFormDisplayOptions?: IDomainFormDisplayOptions;

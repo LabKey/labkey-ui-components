@@ -204,6 +204,7 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
         </div>
     );
 });
+ProductMenu.displayName = 'ProductMenu';
 
 interface ProductMenuButtonTitle {
     container: Container;
@@ -231,6 +232,7 @@ export const ProductMenuButtonTitle: FC<ProductMenuButtonTitle> = memo(props => 
         </>
     );
 });
+ProductMenuButtonTitle.displayName = 'ProductMenuButtonTitle';
 
 export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
     const { appProperties = getCurrentAppProperties() } = props;
@@ -322,6 +324,7 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
         </div>
     );
 });
+ProductMenuButton.displayName = 'ProductMenuButton';
 
 // export for jest testing
 export function createFolderItem(folder: Container, controllerName: string, isTopLevel: boolean): FolderMenuItem {

@@ -40,6 +40,7 @@ export const ConceptPathInfo: FC<ConceptPathInfoProps> = memo(props => {
         </>
     );
 });
+ConceptPathInfo.displayName = 'ConceptPathInfo';
 
 interface ConceptPathInfoImplProps extends ConceptPathInfoProps {
     alternatePaths?: PathModel[];
@@ -62,6 +63,7 @@ export const ConceptPathInfoImpl: FC<ConceptPathInfoImplProps> = memo(props => {
         </div>
     );
 });
+ConceptPathInfoImpl.displayName = 'ConceptPathInfoImpl';
 
 // export for jest testing
 export const AlternatePathPanel: FC<ConceptPathInfoImplProps> = memo(props => {
@@ -87,3 +89,4 @@ export const AlternatePathPanel: FC<ConceptPathInfoImplProps> = memo(props => {
         </>
     );
 });
+AlternatePathPanel.displayName = 'AlternatePathPanel';

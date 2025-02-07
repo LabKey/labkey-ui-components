@@ -46,26 +46,6 @@ export interface SamplesTabbedGridPanelComponentProps {
 
 export type SamplesTabbedGridPanel = ComponentType<SamplesTabbedGridPanelComponentProps & InjectedQueryModels>;
 
-export interface SampleStorageLocationComponentProps {
-    actionChangeCount?: number;
-    currentProductId?: string;
-    onUpdate?: () => void;
-    sampleId: string | number;
-    sampleQueryModel: QueryModel;
-    updateAllowed: boolean;
-    user: User;
-}
-
-export type SampleStorageLocation = ComponentType<SampleStorageLocationComponentProps>;
-
-export interface SampleStorageMenuComponentProps {
-    onUpdate?: (skipChangeCount?: boolean) => void;
-    sampleModel: QueryModel;
-    sampleUser: User;
-}
-
-export type SampleStorageMenu = ComponentType<SampleStorageMenuComponentProps>;
-
 export type SampleGridButton = ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
 
 // This interface stores app-wide settings passed to the LineageEditableGrid

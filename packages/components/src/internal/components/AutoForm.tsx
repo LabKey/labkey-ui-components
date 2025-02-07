@@ -103,6 +103,7 @@ const Label: FC<LabelProps> = ({ cls, field, id, wrapperCls }) => {
         </div>
     );
 };
+Label.displayName = 'Label';
 
 const TextInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange, value }) => {
     const { name, placeholder } = field;
@@ -121,6 +122,7 @@ const TextInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange, 
         />
     );
 };
+TextInput.displayName = 'TextInput';
 
 const NumberInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange, value }) => {
     const { name, placeholder } = field;
@@ -141,6 +143,7 @@ const NumberInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange
         />
     );
 };
+NumberInput.displayName = 'NumberInput';
 
 const TextareaInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange, value }) => {
     const _onChange = useCallback(
@@ -151,6 +154,7 @@ const TextareaInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChan
     const _value = value === null || value === undefined ? '' : value;
     return <textarea className={className} id={id} name={field.name} value={_value} onChange={_onChange} />;
 };
+TextareaInput.displayName = 'TextareaInput';
 
 const CheckboxInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange, value }) => {
     const _onChange = useCallback(
@@ -169,6 +173,7 @@ const CheckboxInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChan
         />
     );
 };
+CheckboxInput.displayName = 'CheckboxInput';
 
 const SelectInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange, value }) => {
     const { name, options, placeholder } = field;
@@ -193,6 +198,7 @@ const SelectInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange
         </select>
     );
 };
+SelectInput.displayName = 'SelectInput';
 
 const RadioInput: FC<AutoFormFieldProps> = ({ field, inputClasses, onChange, value }) => {
     const { name, options } = field;
@@ -215,6 +221,7 @@ const RadioInput: FC<AutoFormFieldProps> = ({ field, inputClasses, onChange, val
         </div>
     );
 };
+RadioInput.displayName = 'RadioInput';
 
 const AutoFormField: FC<AutoFormFieldProps> = props => {
     const { field, id, inputWrapperCls, labelCls, labelWrapperCls, fieldWrapperCls } = props;
@@ -233,6 +240,7 @@ const AutoFormField: FC<AutoFormFieldProps> = props => {
         </div>
     );
 };
+AutoFormField.displayName = 'AutoFormField';
 
 export interface Props extends FieldClassProps {
     formSchema: FormSchema;
@@ -283,3 +291,4 @@ export const AutoForm: FC<Props> = props => {
         </div>
     );
 };
+AutoForm.displayName = 'AutoForm';

@@ -232,6 +232,7 @@ export const FindDerivativesMenuItem: FC<Props> = memo(props => {
         </DisableableMenuItem>
     );
 });
+FindDerivativesMenuItem.displayName = 'FindDerivativesMenuItem';
 
 export const FindDerivativesButton: FC<Props> = memo(props => {
     return (
@@ -240,3 +241,4 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
         </ResponsiveMenuButton>
     );
 });
+FindDerivativesButton.displayName = 'FindDerivativesButton';

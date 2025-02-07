@@ -50,6 +50,7 @@ const NotificationList: FC<NotificationListProps> = ({ alertClass, notifications
 
     return <div className={'notification-container alert alert-' + alertClass}>{body}</div>;
 };
+NotificationList.displayName = 'NotificationList';
 
 export const Notifications: FC = () => {
     const { notifications, dismissNotifications, createNotification } = useNotificationsContext();
@@ -115,3 +116,4 @@ export const Notifications: FC = () => {
         </div>
     );
 };
+Notifications.displayName = 'Notifications';

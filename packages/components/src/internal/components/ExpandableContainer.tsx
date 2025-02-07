@@ -118,3 +118,4 @@ export const ExpandableContainer: FC<Props> = memo(props => {
         </div>
     );
 });
+ExpandableContainer.displayName = 'ExpandableContainer';

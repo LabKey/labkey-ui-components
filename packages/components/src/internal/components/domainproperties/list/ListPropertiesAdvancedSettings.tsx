@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { Modal } from '../../../Modal';
 
-import { getSubmitButtonClass } from '../../../app/utils';
+import { getSubmitButtonClass, isObjectLevelDiscussionsEnabled } from '../../../app/utils';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
@@ -568,12 +568,14 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             />
                         </SettingsContainer>
 
-                        <SettingsContainer title="Discussion Threads" tipBody={DISCUSSION_LINKS_TIP}>
-                            <DiscussionInputs
-                                onRadioChange={this.onRadioChange}
-                                discussionSetting={discussionSetting}
-                            />
-                        </SettingsContainer>
+                        {isObjectLevelDiscussionsEnabled() && (
+                            <SettingsContainer title="Discussion Threads" tipBody={DISCUSSION_LINKS_TIP}>
+                                <DiscussionInputs
+                                    onRadioChange={this.onRadioChange}
+                                    discussionSetting={discussionSetting}
+                                />
+                            </SettingsContainer>
+                        )}
 
                         <SettingsContainer title="Search Indexing Options" tipBody={SEARCH_INDEXING_TIP}>
                             <SearchIndexing

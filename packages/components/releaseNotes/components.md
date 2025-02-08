@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - EditableGridLoaderFromSelection not to encodePart() in the data rows, leave keyed by column name as it comes from server
   - BulkUpdateForm not to encodePart() when comparing with original data, use QueryInfo to lookup column instead
   - Fix up sample aliquot-only vs sample-only fields to use fieldKey instead of name
+  - getSampleIdentifyingFieldGridData() to use column.index instead of column.name for the key
 
 ### version 6.22.0
 *Released*: 7 February 2025

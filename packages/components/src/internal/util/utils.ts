@@ -297,11 +297,13 @@ export function getUpdatedData(
 
     const updatedData = originalData.map(originalRowMap => {
         return originalRowMap.reduce((m, fieldValueMap, key) => {
+            const isPKCol = pkColsLc.has(key.toLowerCase());
+
             // Issue 42672: The original data has keys that are column names. Need to get the QueryColumn object from that
             // name so that we can get the fieldKey for the column to get the updated value from the updateValuesMap.
             // (e.g., "U g$Sl" instead of "U g/l")
             const col = queryInfo.getColumnFromName(key);
-            if (!col) {
+            if (!col && !isPKCol) {
                 if (fieldValueMap) {
                     throw new Error(`Unable to find column for key ${key}.`);
                 } else {
@@ -310,7 +312,7 @@ export function getUpdatedData(
             }
 
             if (fieldValueMap?.has('value')) {
-                if (pkColsLc.has(key.toLowerCase())) {
+                if (isPKCol) {
                     return m.set(key, fieldValueMap.get('value'));
                 } else if (
                     updateValuesMap.has(col.fieldKey) &&

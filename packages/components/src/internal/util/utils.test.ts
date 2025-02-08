@@ -15,6 +15,10 @@
  */
 import { fromJS, List, Map } from 'immutable';
 
+import { QueryInfo } from '../../public/QueryInfo';
+import { ExtendedMap } from '../../public/ExtendedMap';
+import { QueryColumn } from '../../public/QueryColumn';
+
 import {
     arrayEquals,
     camelCaseToTitleCase,
@@ -446,8 +450,46 @@ describe('getUpdatedData', () => {
         },
     });
 
+    const queryInfo = new QueryInfo({
+        pkCols: ['RowId'],
+        columns: new ExtendedMap({
+            rowid: new QueryColumn({
+                name: 'RowId',
+                fieldKey: 'RowId',
+            }),
+            name: new QueryColumn({
+                name: 'Name',
+                fieldKey: 'Name',
+            }),
+            alias: new QueryColumn({
+                name: 'Alias',
+                fieldKey: 'Alias',
+            }),
+            data: new QueryColumn({
+                name: 'Data',
+                fieldKey: 'Data',
+            }),
+            and$sagain: new QueryColumn({
+                name: 'And/Again',
+                fieldKey: 'And$SAgain',
+            }),
+            value: new QueryColumn({
+                name: 'Value',
+                fieldKey: 'Value',
+            }),
+            other: new QueryColumn({
+                name: 'Other',
+                fieldKey: 'Other',
+            }),
+            intvalue: new QueryColumn({
+                name: 'IntValue',
+                fieldKey: 'IntValue',
+            }),
+        }),
+    });
+
     test('empty updates', () => {
-        const updatedData = getUpdatedData(originalData, {}, ['RowId']);
+        const updatedData = getUpdatedData(originalData, {}, queryInfo);
         expect(updatedData).toHaveLength(0);
     });
 
@@ -458,7 +500,7 @@ describe('getUpdatedData', () => {
                 Data: 'data1',
                 And$SAgain: 'again',
             },
-            ['RowId']
+            queryInfo
         );
         expect(updatedData).toHaveLength(0);
     });
@@ -472,7 +514,7 @@ describe('getUpdatedData', () => {
                 And$SAgain: 'again',
                 Other: 'other3',
             },
-            ['RowId']
+            queryInfo
         );
         expect(updatedData).toHaveLength(3);
         expect(updatedData[0]).toStrictEqual({
@@ -500,7 +542,7 @@ describe('getUpdatedData', () => {
                 And$SAgain: 'again2',
                 Other: 'not another',
             },
-            ['RowId']
+            queryInfo
         );
         expect(updatedData).toHaveLength(4);
         expect(updatedData[0]).toStrictEqual({
@@ -541,7 +583,7 @@ describe('getUpdatedData', () => {
                 And$SAgain: undefined,
                 Other: 'not another',
             },
-            ['RowId']
+            queryInfo
         );
         expect(updatedData).toHaveLength(4);
         expect(updatedData[0]).toStrictEqual({
@@ -585,7 +627,7 @@ describe('getUpdatedData', () => {
             {
                 IntValue: '123',
             },
-            ['RowId']
+            queryInfo
         );
         expect(updatedData).toHaveLength(0);
     });
@@ -607,7 +649,7 @@ describe('getUpdatedData', () => {
             {
                 IntValue: '234',
             },
-            ['RowId']
+            queryInfo
         );
         expect(updatedData).toHaveLength(1);
         expect(updatedData[0]).toStrictEqual({
@@ -635,7 +677,7 @@ describe('getUpdatedData', () => {
             {
                 Alias: ['alias3'],
             },
-            ['RowId']
+            queryInfo
         );
         expect(updatedData).toHaveLength(1);
         expect(updatedData[0]).toStrictEqual({
@@ -663,7 +705,7 @@ describe('getUpdatedData', () => {
             {
                 Alias: [2],
             },
-            ['RowId']
+            queryInfo
         );
         expect(updatedData).toHaveLength(1);
         expect(updatedData[0]).toStrictEqual({
@@ -691,7 +733,7 @@ describe('getUpdatedData', () => {
             {
                 Alias: [],
             },
-            ['RowId']
+            queryInfo
         );
         expect(updatedData).toHaveLength(1);
         expect(updatedData[0]).toStrictEqual({
@@ -708,7 +750,7 @@ describe('getUpdatedData', () => {
                 And$SAgain: 'again',
                 Other: 'other3',
             },
-            ['RowId'],
+            queryInfo,
             new Set(['Data'])
         );
         expect(updatedData).toHaveLength(3);
@@ -768,7 +810,7 @@ describe('getUpdatedData', () => {
                 And$SAgain: 'again',
                 Other: 'other3',
             },
-            ['RowId']
+            queryInfo
         );
         expect(updatedData[0]).toStrictEqual({
             RowId: 448,
@@ -815,7 +857,7 @@ describe('getUpdatedData', () => {
                 And$SAgain: 'again',
                 Other: 'other3',
             },
-            ['RowId']
+            queryInfo
         );
         expect(updatedData[0]).toStrictEqual({
             RowId: 448,
@@ -1385,7 +1427,7 @@ describe('getDataStylingString', () => {
         expect(
             getDataStyling({
                 value: 1,
-                style: ';font-style: italic;color: #7b64ff;background-color: #fe9200 !important;'
+                style: ';font-style: italic;color: #7b64ff;background-color: #fe9200 !important;',
             })
         ).toStrictEqual({
             fontStyle: 'italic',
@@ -1436,25 +1478,17 @@ describe('styleStringToObj', () => {
             color: '#7b64ff',
             backgroundColor: '#fe9200',
         });
-        expect(
-            styleStringToObj('font-style: italic')
-        ).toStrictEqual({
+        expect(styleStringToObj('font-style: italic')).toStrictEqual({
             fontStyle: 'italic',
         });
-        expect(
-            styleStringToObj('font-style: italic; color: blue')
-        ).toStrictEqual({
+        expect(styleStringToObj('font-style: italic; color: blue')).toStrictEqual({
             fontStyle: 'italic',
             color: 'blue',
         });
-        expect(
-            styleStringToObj('; color: blue')
-        ).toStrictEqual({
+        expect(styleStringToObj('; color: blue')).toStrictEqual({
             color: 'blue',
         });
-        expect(
-            styleStringToObj(' background-color: blue;  ')
-        ).toStrictEqual({
+        expect(styleStringToObj(' background-color: blue;  ')).toStrictEqual({
             backgroundColor: 'blue',
         });
     });

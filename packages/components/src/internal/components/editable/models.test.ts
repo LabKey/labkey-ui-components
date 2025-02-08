@@ -23,6 +23,8 @@ import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
+import { ExtendedMap } from '../../../public/ExtendedMap';
+
 import { EditorModel, ValueDescriptor } from './models';
 import { genCellKey } from './utils';
 
@@ -368,17 +370,64 @@ describe('EditorModel', () => {
                 withValue: 'purple',
                 withDisplay$SValue: 'teal',
             });
-            const result = EditorModel.convertQueryDataToEditorData(queryData, updates);
+            const queryInfo2 = new QueryInfo({
+                columns: new ExtendedMap({
+                    novalue: new QueryColumn({
+                        name: 'noValue',
+                        fieldKey: 'noValue',
+                    }),
+                    withvalue: new QueryColumn({
+                        name: 'withValue',
+                        fieldKey: 'withValue',
+                    }),
+                    withdisplay$svalue: new QueryColumn({
+                        name: 'withDisplay/Value',
+                        fieldKey: 'withDisplay$SValue',
+                    }),
+                    donotchangeme: new QueryColumn({
+                        name: 'doNotChangeMe',
+                        fieldKey: 'doNotChangeMe',
+                    }),
+                }),
+            });
+            const result = EditorModel.convertQueryDataToEditorData(queryData, queryInfo2, updates);
             expect(result).toStrictEqual(
                 Map<string, any>({
                     1: Map<string, any>({
                         withValue: 'purple',
-                        withDisplay$SValue: 'teal',
+                        'withDisplay/Value': 'teal',
                         doNotChangeMe: 'fred',
                     }),
                     2: Map<string, any>({
                         withValue: 'purple',
-                        withDisplay$SValue: 'teal',
+                        'withDisplay/Value': 'teal',
+                        doNotChangeMe: 'maroon',
+                    }),
+                })
+            );
+
+            const result2 = EditorModel.convertQueryDataToEditorData(
+                queryData,
+                queryInfo2,
+                updates,
+                [1],
+                ['withvalue', 'withdisplay$svalue']
+            );
+            expect(result2).toStrictEqual(
+                Map<string, any>({
+                    1: Map<string, any>({
+                        withValue: 'orange',
+                        'withDisplay/Value': List([
+                            {
+                                value: 'b',
+                                displayValue: 'blue',
+                            },
+                        ]),
+                        doNotChangeMe: 'fred',
+                    }),
+                    2: Map<string, any>({
+                        withValue: 'purple',
+                        'withDisplay/Value': 'teal',
                         doNotChangeMe: 'maroon',
                     }),
                 })

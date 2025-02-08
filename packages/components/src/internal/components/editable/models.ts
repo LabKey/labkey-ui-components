@@ -696,13 +696,13 @@ export class EditorModel
     ): Map<string, Map<string, any>> {
         return data
             .map((valueMap, id) => {
-                const returnMap = valueMap.reduce((m, valueMap_, colName) => {
+                const returnMap = valueMap.reduce((m, valueMap_, key) => {
                     const editorData = EditorModel.getEditorDataFromQueryValueMap(valueMap_);
                     if (editorData === undefined) {
                         return m;
                     }
 
-                    return m.set(colName, editorData);
+                    return m.set(key, editorData);
                 }, Map<string, any>());
 
                 if (!queryInfo || !updates) {
@@ -790,7 +790,7 @@ export class EditorModel
                 // the fieldKey (that is, the parts of that lineage lookup have been encoded for Query names (e.g., / becomes $S)
                 // The Lineage field key parts need to be sent encoded so parsing of the field key parts (that is, splitting on the
                 // '/' character) can be done without a problem on the server side. Ideally, we would be able to send field keys in
-                // all cases, but that is for a later day.
+                // all cases, but that is for a later day. See QueryColumn index() comments.
                 const row = editedRow.reduce((row, value, key) => {
                     // We can skip the idField for the diff check, that will be added to the updated rows later
                     if (key === pkFieldKey) return row;
@@ -803,7 +803,7 @@ export class EditorModel
                         throw new Error(`Unable to find column for key ${key}.`);
                     }
 
-                    let originalValue = originalRow.get(col.name, undefined);
+                    let originalValue = originalRow.get(col.index, undefined);
 
                     // we can skip any readOnly columns or non-userEditable columns
                     if (col.readOnly || !col.userEditable) return row;

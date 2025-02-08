@@ -48,8 +48,9 @@ const loadEditorModelData = async (
             const cellKey = genCellKey(col.fieldKey, rn);
 
             // Our loaders (e.g. EditableGridLoaderFromSelection) use data objects from selectRows which has
-            // rows objects keyed by column name
-            const value = row[col.name];
+            // rows objects keyed by column name for base table columns and by fieldKey for lookup columns
+            // (see comments in QueryColumn index()).
+            const value = row[col.index];
 
             if (Array.isArray(value)) {
                 // assume to be list of {displayValue, value} objects

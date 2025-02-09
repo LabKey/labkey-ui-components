@@ -134,7 +134,7 @@ export async function fetchSamples(
 
     orderedModels[key].forEach(id => {
         data.setIn(
-            [id, sampleColumn.fieldKey],
+            [id, sampleColumn.index],
             List([
                 {
                     displayValue: caseInsensitive(rows[id], displayValueKey)?.value,

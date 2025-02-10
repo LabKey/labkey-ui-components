@@ -87,6 +87,7 @@ const AliquotOptionsHelp: FC<{ helpTopic: string }> = memo(({ helpTopic }) => {
         </div>
     );
 });
+AliquotOptionsHelp.displayName = 'AliquotOptionsHelp';
 
 interface Props {
     aliquotNamePatternProps?: AliquotNamePatternProps;

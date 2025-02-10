@@ -250,6 +250,7 @@ const GridMessages: FC<GridMessagesProps> = memo(({ messages }) => (
             .toArray()}
     </div>
 ));
+GridMessages.displayName = 'GridMessages';
 
 interface GridRowProps {
     columns: List<GridColumn>;
@@ -335,6 +336,7 @@ const GridBody: FC<GridBodyProps> = memo(props => {
         </tbody>
     );
 });
+GridBody.displayName = 'GridBody';
 
 export type GridData = Array<Record<string, any>> | List<Map<string, any>>;
 
@@ -433,3 +435,4 @@ export const Grid: FC<GridProps> = memo(props => {
         </div>
     );
 });
+Grid.displayName = 'Grid';

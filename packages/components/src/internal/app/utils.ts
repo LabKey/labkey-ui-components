@@ -49,6 +49,7 @@ import {
     USER_KEY,
     WORKFLOW_KEY,
     ARCHIVED_FOLDERS,
+    DEPRECATED_OBJECT_LEVEL_DISCUSSIONS,
 } from './constants';
 
 declare var LABKEY: LabKey;
@@ -469,6 +470,10 @@ export function isFeatureEnabled(flag: ProductFeature, moduleContext?: ModuleCon
 
 export function isSampleAliquotSelectorEnabled(moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.samplemanagement?.[EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR] === true;
+}
+
+export function isObjectLevelDiscussionsEnabled(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.core?.[DEPRECATED_OBJECT_LEVEL_DISCUSSIONS] === true;
 }
 
 export function hasModule(moduleName: string, moduleContext?: ModuleContext): boolean {

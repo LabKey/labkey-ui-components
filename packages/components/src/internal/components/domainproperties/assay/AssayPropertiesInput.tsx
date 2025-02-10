@@ -85,6 +85,7 @@ export const NameInput: FC<InputProps> = memo(props => (
         />
     </AssayPropertiesInput>
 ));
+NameInput.displayName = 'NameInput';
 
 export const DescriptionInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput
@@ -100,6 +101,7 @@ export const DescriptionInput: FC<InputProps> = memo(props => (
         />
     </AssayPropertiesInput>
 ));
+DescriptionInput.displayName = 'DescriptionInput';
 
 export const QCStatesInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput
@@ -114,6 +116,7 @@ export const QCStatesInput: FC<InputProps> = memo(props => (
         <input type="checkbox" id={FORM_IDS.QC_ENABLED} checked={props.model.qcEnabled} onChange={props.onChange} />
     </AssayPropertiesInput>
 ));
+QCStatesInput.displayName = 'QCStatesInput';
 
 export const PlateTemplatesInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput
@@ -146,6 +149,7 @@ export const PlateTemplatesInput: FC<InputProps> = memo(props => (
         </a>
     </AssayPropertiesInput>
 ));
+PlateTemplatesInput.displayName = 'PlateTemplatesInput';
 
 export const DetectionMethodsInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput
@@ -169,6 +173,7 @@ export const DetectionMethodsInput: FC<InputProps> = memo(props => (
         </select>
     </AssayPropertiesInput>
 ));
+DetectionMethodsInput.displayName = 'DetectionMethodsInput';
 
 export const MetadataInputFormatsInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput
@@ -206,6 +211,7 @@ export const MetadataInputFormatsInput: FC<InputProps> = memo(props => (
         </select>
     </AssayPropertiesInput>
 ));
+MetadataInputFormatsInput.displayName = 'MetadataInputFormatsInput';
 
 export const AssayStatusInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput
@@ -218,6 +224,7 @@ export const AssayStatusInput: FC<InputProps> = memo(props => (
         <input type="checkbox" id={FORM_IDS.STATUS} checked={props.model.isActive()} onChange={props.onChange} />
     </AssayPropertiesInput>
 ));
+AssayStatusInput.displayName = 'AssayStatusInput';
 
 export const EditableRunsInput: FC<InputProps> = memo((props: InputProps) => (
     <AssayPropertiesInput
@@ -238,6 +245,7 @@ export const EditableRunsInput: FC<InputProps> = memo((props: InputProps) => (
         />
     </AssayPropertiesInput>
 ));
+EditableRunsInput.displayName = 'EditableRunsInput';
 
 export const EditableResultsInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput
@@ -262,6 +270,7 @@ export const EditableResultsInput: FC<InputProps> = memo(props => (
         />
     </AssayPropertiesInput>
 ));
+EditableResultsInput.displayName = 'EditableResultsInput';
 
 export const BackgroundUploadInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput
@@ -281,6 +290,7 @@ export const BackgroundUploadInput: FC<InputProps> = memo(props => (
         />
     </AssayPropertiesInput>
 ));
+BackgroundUploadInput.displayName = 'BackgroundUploadInput';
 
 interface AutoLinkDataInputState {
     containers: Container[];
@@ -361,6 +371,7 @@ export const AutoLinkCategoryInput: FC<InputProps> = memo(({ model, onChange }) 
         />
     </AssayPropertiesInput>
 ));
+AutoLinkCategoryInput.displayName = 'AutoLinkCategoryInput';
 
 interface ModuleProvidedScriptsInputProps {
     model: AssayProtocolModel;
@@ -393,6 +404,7 @@ export const ModuleProvidedScriptsInput: FC<ModuleProvidedScriptsInputProps> = p
             .toArray()}
     </AssayPropertiesInput>
 );
+ModuleProvidedScriptsInput.displayName = 'ModuleProvidedScriptsInput';
 
 enum AddingScriptType {
     file,
@@ -747,6 +759,7 @@ export const SaveScriptDataInput: FC<InputProps> = memo(({ model, onChange }) =>
         )}
     </AssayPropertiesInput>
 ));
+SaveScriptDataInput.displayName = 'SaveScriptDataInput';
 
 export const PlateMetadataInput: FC<InputProps> = memo(({ model, onChange }) => (
     <AssayPropertiesInput
@@ -761,6 +774,7 @@ export const PlateMetadataInput: FC<InputProps> = memo(({ model, onChange }) => 
         <input type="checkbox" id={FORM_IDS.PLATE_METADATA} checked={model.plateMetadata} onChange={onChange} />
     </AssayPropertiesInput>
 ));
+PlateMetadataInput.displayName = 'PlateMetadataInput';
 
 export const FilterCriteriaInput: FC<InputProps> = memo(({ model }) => {
     const context = useFilterCriteriaContext();
@@ -789,3 +803,4 @@ export const FilterCriteriaInput: FC<InputProps> = memo(({ model }) => {
         </AssayPropertiesInput>
     );
 });
+FilterCriteriaInput.displayName = 'FilterCriteriaInput';

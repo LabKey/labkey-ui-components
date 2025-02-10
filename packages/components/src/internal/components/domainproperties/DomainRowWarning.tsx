@@ -24,3 +24,4 @@ export const DomainRowWarning: FC<Props> = memo(({ fieldError }) => {
         </span>
     );
 });
+DomainRowWarning.displayName = 'DomainRowWarning';

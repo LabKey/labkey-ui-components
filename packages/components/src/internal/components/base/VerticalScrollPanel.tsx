@@ -32,4 +32,3 @@ export const VerticalScrollPanel: FC<Props> = memo(props => {
 });
 
 VerticalScrollPanel.displayName = 'VerticalScrollPanel';
-

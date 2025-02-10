@@ -48,7 +48,6 @@ import { usePortalRef } from './hooks';
 import { MenuDivider, MenuItem } from './dropdowns';
 import { LabelOverlay } from './components/forms/LabelOverlay';
 import { DOMAIN_FIELD } from './components/forms/DomainFieldHelpTipContents';
-import { cancelEvent } from './events';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
@@ -126,6 +125,7 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
         </>
     );
 });
+EditableColumnTitle.displayName = 'EditableColumnTitle';
 
 interface SharedHeaderCellProps {
     handleAddColumn?: (column: QueryColumn) => void;
@@ -337,6 +337,7 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
         </div>
     );
 });
+HeaderCellDropdownMenu.displayName = 'HeaderCellDropdownMenu';
 
 interface HeaderCellDropdownProps extends SharedHeaderCellProps {
     column: GridColumn;
@@ -453,6 +454,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
         </div>
     );
 });
+HeaderCellDropdown.displayName = 'HeaderCellDropdown';
 
 export function headerCell(
     i: number,

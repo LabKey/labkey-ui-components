@@ -26,3 +26,4 @@ export const ProductNavigation: FC = memo(() => {
         </div>
     );
 });
+ProductNavigation.displayName = 'ProductNavigation';

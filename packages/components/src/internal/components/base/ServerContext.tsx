@@ -49,6 +49,7 @@ export const ServerContextProvider: FC<ServerContextProviderProps> = ({ children
         </Context.Provider>
     );
 };
+ServerContextProvider.displayName = 'ServerContextProvider';
 
 export const hasServerContext = (): boolean => {
     return !!useContext(Context);

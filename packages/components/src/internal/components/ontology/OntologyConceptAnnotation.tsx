@@ -41,6 +41,7 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
         </>
     );
 });
+OntologyConceptAnnotation.displayName = 'OntologyConceptAnnotation';
 
 function getOntologyConceptAnnotationHelpTipBody(): ReactNode {
     return (

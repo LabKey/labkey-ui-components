@@ -32,6 +32,7 @@ export const NameInput: FC<BasicPropertiesInputsProps> = memo(({ model, onInputC
         </div>
     </div>
 ));
+NameInput.displayName = 'NameInput';
 
 export const DescriptionInput: FC<BasicPropertiesInputsProps> = memo(({ model, onInputChange }) => (
     <div className="row margin-top">
@@ -49,6 +50,7 @@ export const DescriptionInput: FC<BasicPropertiesInputsProps> = memo(({ model, o
         </div>
     </div>
 ));
+DescriptionInput.displayName = 'DescriptionInput';
 
 export const BasicPropertiesFields: FC<BasicPropertiesInputsProps> = memo(({ model, onInputChange }) => (
     <div className="col-xs-12 col-md-7">
@@ -59,6 +61,7 @@ export const BasicPropertiesFields: FC<BasicPropertiesInputsProps> = memo(({ mod
         <DescriptionInput model={model} onInputChange={onInputChange} />
     </div>
 ));
+BasicPropertiesFields.displayName = 'BasicPropertiesFields';
 
 interface CheckBoxRowProps {
     checked: boolean;
@@ -98,6 +101,7 @@ const AllowableActionContainer: FC<AllowableActionContainerProps> = memo(({ mode
         <CheckBoxRow text="Export & Print" checked={model.allowExport} onChange={onChange} name="allowExport" />
     </div>
 ));
+AllowableActionContainer.displayName = 'AllowableActionContainer';
 
 interface AllowableActionsProps {
     model: ListModel;

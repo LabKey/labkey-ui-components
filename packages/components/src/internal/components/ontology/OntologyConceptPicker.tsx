@@ -94,3 +94,4 @@ export const OntologyConceptPicker: FC<Props> = memo((props: Props) => {
         </>
     );
 });
+OntologyConceptPicker.displayName = 'OntologyConceptPicker';

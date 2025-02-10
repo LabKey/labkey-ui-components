@@ -5,6 +5,17 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Release*: TBD
 - Issue 52193: Update `QueryColumn.isImportColumn` to match on caption fully stripped of spaces
 
+### version 6.22.0
+*Released*: 7 February 2025
+- Only show 'Discussion Threads' Advanced Setting in Lists if relevant Deprecated Feature is turned on
+
+### version 6.21.3
+*Released*: 6 February 2025
+- Add displayName to various components
+- LockIcon: remove unused prop, add displayName, format code
+- Remove ValueList
+- AutoLinkToStudyDropdown: improve formatting, use memo
+
 ### version 6.21.2
 *Released*: 6 February 2025
 - AppContext cleanup of components that can now be directly imported from ui-premium (previously cross subpackage)

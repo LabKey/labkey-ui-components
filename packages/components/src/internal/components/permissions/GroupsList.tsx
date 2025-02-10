@@ -78,3 +78,4 @@ export const GroupsList: FC<Props> = memo(props => {
         </>
     );
 });
+GroupsList.displayName = 'GroupsList';

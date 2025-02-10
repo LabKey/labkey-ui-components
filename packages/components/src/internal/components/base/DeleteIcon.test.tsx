@@ -7,7 +7,9 @@ import { DeleteIcon } from './DeleteIcon';
 describe('DeleteIcon', () => {
     test('default properties', async () => {
         const onDelete = jest.fn();
-        render(<DeleteIcon onDelete={onDelete} />);
+        render(
+            <DeleteIcon onDelete={onDelete} className="field-icon" iconCls="field-delete" title="Delete this item" />
+        );
         expect(document.querySelectorAll('.field-icon')).toHaveLength(1);
         expect(document.querySelectorAll('.field-delete')).toHaveLength(1);
         expect(onDelete).toHaveBeenCalledTimes(0);

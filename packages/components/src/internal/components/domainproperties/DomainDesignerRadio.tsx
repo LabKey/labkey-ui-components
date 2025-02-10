@@ -18,3 +18,4 @@ export const DomainDesignerRadio: FC<Props> = memo(({ checked, children, disable
         </label>
     </div>
 ));
+DomainDesignerRadio.displayName = 'DomainDesignerRadio';

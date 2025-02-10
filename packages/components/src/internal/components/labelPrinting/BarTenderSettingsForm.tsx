@@ -79,6 +79,7 @@ const SettingsInput: FC<SettingsInputProps> = memo(({ children, description, lab
         </div>
     );
 });
+SettingsInput.displayName = 'SettingsInput';
 
 const btTestConnectionTemplate = (): string => {
     // This will fail script validation, but will have status "RanToCompletion" which means that the server was successfully

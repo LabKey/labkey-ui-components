@@ -125,6 +125,7 @@ const ToolBarButton: FC<ToolbarButtonProps> = memo(({ disabled, iconName, onClic
         </button>
     );
 });
+ToolBarButton.displayName = 'ToolBarButton';
 
 const extractTemplateParts = (element: HTMLTextAreaElement): [string, string, string] => {
     const { selectionStart, selectionEnd, value } = element;
@@ -204,6 +205,7 @@ const ThreadEditorToolbar: FC<ThreadEditorToolbarProps> = memo(({ inputRef, setB
         </div>
     );
 });
+ThreadEditorToolbar.displayName = 'ThreadEditorToolbar';
 
 interface PreviewProps {
     containerPath?: string;
@@ -241,6 +243,7 @@ const Preview: FC<PreviewProps> = memo(({ containerPath, content, renderContent 
         </div>
     );
 });
+Preview.displayName = 'Preview';
 
 export interface ThreadEditorProps {
     api: AnnouncementsAPIWrapper;
@@ -532,3 +535,4 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         </div>
     );
 };
+ThreadEditor.displayName = 'ThreadEditor';

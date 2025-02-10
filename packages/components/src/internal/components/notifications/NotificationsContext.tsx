@@ -118,6 +118,7 @@ export const NotificationsContextProvider: FC<NotificationsContextProviderProps>
         return <NotificationsContext.Provider value={notificationsContext}>{children}</NotificationsContext.Provider>;
     }
 );
+NotificationsContextProvider.displayName = 'NotificationsContext';
 
 /**
  * @deprecated use the useNotificationsContext hook instead

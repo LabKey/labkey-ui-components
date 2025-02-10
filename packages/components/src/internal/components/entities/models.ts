@@ -492,6 +492,7 @@ export interface EntityDataType {
     importFileController?: string;
     inputColumnName?: string;
     inputTypeValueField?: string;
+    insertColumnNamePrefix?: string;
     instanceKey?: string;
     instanceSchemaName: string;
     isFromSharedContainer?: boolean;
@@ -501,7 +502,6 @@ export interface EntityDataType {
     nounAsParentPlural: string;
     nounAsParentSingular: string;
     nounPlural: string;
-    nounSingular: string;
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
     sampleFinderCardType?: SampleFinderCardType;
@@ -512,7 +512,7 @@ export interface EntityDataType {
     typeNounAsParentSingular: string;
     typeNounSingular: string;
     uniqueFieldKey: string;
-    insertColumnNamePrefix?: string;
+    nounSingular: string;
 }
 
 interface OperationContainerInfo {

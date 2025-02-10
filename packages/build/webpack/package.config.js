@@ -41,29 +41,17 @@ const plugins = [
         include: /src/,
         failOnError: true,
     }),
+    new webpack.SourceMapDevToolPlugin({
+        filename: '[file].map'
+    }),
 ];
-// HACK
-if (constants.lkModule === 'components' || constants.lkModule === 'premium') {
-    let repositoryUrl;
-    if (constants.lkModule === 'components') {
-        repositoryUrl = 'https://github.com/LabKey/labkey-ui-components/tree/develop/packages/components/';
-    } else {
-        repositoryUrl = 'https://github.com/LabKey/labkey-ui-premium/tree/develop/';
-    }
-    plugins.push(
-        new webpack.SourceMapDevToolPlugin({
-            moduleFilenameTemplate: repositoryUrl + '[resource-path]?[loaders]',
-            filename: '[file].map',
-        }),
-    );
-}
 if (process.env.ANALYZE) {
     plugins.push(new BundleAnalyzerPlugin());
 }
 
 module.exports = {
     entry: './src/index.ts',
-    devtool: false,
+    devtool: 'source-map',
     target: 'web',
     mode: 'production',
     module: {

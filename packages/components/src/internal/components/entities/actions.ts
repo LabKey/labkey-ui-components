@@ -1482,7 +1482,7 @@ export function updateCellValuesForSampleIds(
                 let updates = Map<string, List<any>>();
                 dataRemovedIndexes.forEach(rowInd => {
                     identifyingColumns
-                        .filter(col => DEFAULT_SAMPLE_EDITABLE_GRID_COLUMNS.indexOf(col.fieldKey.toLowerCase()) === -1)
+                        .filter(col => DEFAULT_SAMPLE_EDITABLE_GRID_COLUMNS.indexOf(col.index.toLowerCase()) === -1)
                         .forEach(col => {
                             updates = updates.set(
                                 // Issue 52038: cell keys are based on fieldKey currently
@@ -1516,10 +1516,11 @@ export function updateCellValuesForSampleIds(
                                 identifyingColumns
                                     .filter(
                                         col =>
-                                            DEFAULT_SAMPLE_EDITABLE_GRID_COLUMNS.indexOf(col.fieldKey.toLowerCase()) === -1
+                                            DEFAULT_SAMPLE_EDITABLE_GRID_COLUMNS.indexOf(col.index.toLowerCase()) === -1
                                     )
                                     .forEach(col => {
                                         updates = updates.set(
+                                            // this one does need to use col.fieldKey since this is a multi part key (we want the encoded fieldKey)
                                             sampleGenCellKey(sampleFieldKeyPrefix_, col.fieldKey, rowInd),
                                             // Issue 52038: getSampleIdentifyingFieldGridData returns data keyed by QueryColumn index
                                             List<any>([

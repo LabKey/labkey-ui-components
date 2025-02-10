@@ -445,7 +445,7 @@ describe('EditorModel', () => {
                         value: 'orange',
                         ignoreMe: 'nothing to see',
                     },
-                    withDisplayValue: {
+                    'with,.$Display/Value': {
                         value: 'b',
                         displayValue: 'blue',
                         otherField: 'irrelevant',
@@ -463,7 +463,7 @@ describe('EditorModel', () => {
                         value: 'orangish',
                         ignoreMe: 'nothing to see',
                     },
-                    withDisplayValue: {
+                    'with,.$Display/Value': {
                         value: 'b',
                         displayValue: 'black',
                         otherField: 'irrelevant',
@@ -477,7 +477,7 @@ describe('EditorModel', () => {
                 Map<string, any>({
                     1: Map<string, any>({
                         withValue: 'orange',
-                        withDisplayValue: List.of({
+                        'with,.$Display/Value': List.of({
                             value: 'b',
                             displayValue: 'blue',
                         }),
@@ -485,7 +485,7 @@ describe('EditorModel', () => {
                     }),
                     2: Map<string, any>({
                         withValue: 'orangish',
-                        withDisplayValue: List.of({
+                        'with,.$Display/Value': List.of({
                             displayValue: 'black',
                             value: 'b',
                         }),
@@ -948,6 +948,49 @@ describe('EditorModel', () => {
             expect(editorModel.getRowValue(1).get(identFieldCol.name)).toEqual(colValue);
             expect(updatedRow[identFieldCol.fieldKey]).toEqual(undefined);
             expect(updatedRow[identFieldCol.name]).toEqual(colValue);
+        });
+        test('column with special chars in name', () => {
+            const specCharCol = new QueryColumn({
+                caption: 'Test"$/&}~,.\'',
+                fieldKey: 'test"$D$S$A$B$T$C$P\'',
+                fieldKeyArray: ['test"$/&}~,.\''],
+                jsonType: 'string',
+                name: 'test"$/&}~,.\'',
+                shownInInsertView: true,
+                shownInUpdateView: true,
+                required: false,
+                userEditable: true,
+            });
+            const colFk = specCharCol.fieldKey.toLowerCase();
+            const colValue = 'testing';
+
+            const cellValues = fromJS({
+                [genCellKey(colFk, 0)]: List<ValueDescriptor>([{ display: undefined, raw: undefined }]),
+                [genCellKey(colFk, 1)]: List<ValueDescriptor>([
+                    {
+                        display: colValue,
+                        raw: colValue,
+                    },
+                ]),
+            });
+
+            const editorModel = modifyEm({
+                cellValues: basicEditorModel.cellValues.merge(cellValues),
+                columnMap: basicEditorModel.columnMap.set(colFk, specCharCol),
+                orderedColumns: basicEditorModel.orderedColumns.push(colFk),
+                rowCount: 2,
+            });
+
+            const updatedRows = editorModel.getUpdatedData();
+            expect(updatedRows).toHaveLength(1);
+            const [updatedRow] = updatedRows;
+
+            expect(editorModel.getRowValue(1).get(specCharCol.fieldKey)).toEqual(undefined);
+            expect(editorModel.getRowValue(1).get(specCharCol.name)).toEqual(colValue);
+            expect(editorModel.getRowValue(1).get(specCharCol.index)).toEqual(colValue);
+            expect(updatedRow[specCharCol.fieldKey]).toEqual(undefined);
+            expect(updatedRow[specCharCol.name]).toEqual(colValue);
+            expect(updatedRow[specCharCol.index]).toEqual(colValue);
         });
         test('include sample lookup display value', () => {
             const sampleColumn = new QueryColumn({

@@ -51,6 +51,8 @@ import { buildURL } from '../../url/AppURL';
 
 import { selectRows } from '../../query/selectRows';
 
+import { QueryInfo } from '../../../public/QueryInfo';
+
 import {
     AMOUNT_AND_UNITS_COLUMNS_LC,
     SAMPLE_STORAGE_COLUMNS_LC,
@@ -197,13 +199,21 @@ export async function getSelectedSampleIdsFromSelectionKey(searchParams: URLSear
 }
 
 export async function getGroupedSampleDomainFields(sampleType: string): Promise<GroupedSampleFields> {
-    const metaFields = [];
-    const independentFields = [];
-    const aliquotFields = [];
-
     // use domain fields as we only want to include fields defined by the user, but use queryInfo to map to fieldKey
     const sampleTypeDomain = await getSampleTypeDetails(new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType));
     const queryInfo = await getQueryDetails(new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType));
+
+    return _getGroupedSampleDomainFields(sampleTypeDomain, queryInfo);
+}
+
+// exported for jest testing
+export function _getGroupedSampleDomainFields(
+    sampleTypeDomain: DomainDetails,
+    queryInfo: QueryInfo
+): GroupedSampleFields {
+    const metaFields = [];
+    const independentFields = [];
+    const aliquotFields = [];
 
     sampleTypeDomain.domainDesign.fields.forEach(field => {
         const col = queryInfo.getColumnFromName(field.name);
@@ -537,7 +547,12 @@ export async function getLookupRowIdsFromSelection(
 
     if (fieldKey) {
         const rowIdFieldKey = `${fieldKey}/RowId`; // Pull the rowId of the lookup
-        const { data, dataIds } = await getSelectedDataDeprecated(schemaName, queryName, selected, 'RowId,' + rowIdFieldKey); // Include the RowId column to prevent warnings
+        const { data, dataIds } = await getSelectedDataDeprecated(
+            schemaName,
+            queryName,
+            selected,
+            'RowId,' + rowIdFieldKey
+        ); // Include the RowId column to prevent warnings
         if (data) {
             const rows = data.toJS();
             dataIds.forEach(rowId => {

@@ -30,9 +30,10 @@ import {
 import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGridValue, parseCellKey } from './utils';
 
 /**
- * Do not use this method directly, use initEditorModel instead
+ * Do not use this method directly, use initEditorModel instead.
+ * Exported for jest testing.
  */
-const loadEditorModelData = async (
+export const loadEditorModelData = async (
     orderedRows: string[],
     rows: Record<string, any>,
     columns: QueryColumn[],

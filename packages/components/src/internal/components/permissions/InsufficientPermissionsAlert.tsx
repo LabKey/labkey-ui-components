@@ -20,3 +20,4 @@ import { Alert } from '../base/Alert';
 export const InsufficientPermissionsAlert: FC<{ message?: string }> = ({message = 'You do not have permissions for this action.' }) => {
     return <Alert>{message}</Alert>;
 };
+InsufficientPermissionsAlert.displayName = 'InsufficientPermissionsAlert';

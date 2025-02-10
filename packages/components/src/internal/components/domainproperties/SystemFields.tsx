@@ -120,3 +120,4 @@ export const SystemFields: FC<Props> = memo(({ fields, disabledSystemFields, onS
         </>
     );
 });
+SystemFields.displayName = 'SystemFields';

@@ -75,6 +75,7 @@ export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props 
         />
     );
 });
+ProductNavigationMenu.displayName = 'ProductNavigationMenu';
 
 interface ProductNavigationMenuImplProps extends ProductNavigationMenuProps {
     disableLKSContainerLink: boolean;
@@ -150,6 +151,7 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
         </div>
     );
 });
+ProductNavigationMenuImpl.displayName = 'ProductNavigationMenuImpl';
 
 // exported for jest testing
 export function getSelectedProduct(products: ProductModel[], productId: string): ProductModel {

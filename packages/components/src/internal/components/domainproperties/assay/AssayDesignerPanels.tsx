@@ -149,6 +149,7 @@ const AssayDomainForm: FC<AssayDomainFormProps> = memo(props => {
         </DomainForm>
     );
 });
+AssayDomainForm.displayName = 'AssayDomainForm';
 
 export interface AssayDesignerPanelsProps {
     allowFolderExclusion?: boolean;

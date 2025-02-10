@@ -55,3 +55,4 @@ export const ScannableOption: FC<ScannableProps> = memo(props => {
         </>
     );
 });
+ScannableOption.displayName = 'ScannableOption';

@@ -24,3 +24,4 @@ export const ResponsiveMenuButton: FC<Props> = memo(({ asSubMenu, className, tex
         </DropdownButton>
     );
 });
+ResponsiveMenuButton.displayName = 'ResponsiveMenuButton';

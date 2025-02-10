@@ -65,6 +65,7 @@ export const OntologyBrowserPage: FC<OntologyBrowserProps> = memo(props => {
         </>
     );
 });
+OntologyBrowserPage.displayName = 'OntologyBrowserPage';
 
 export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     const {

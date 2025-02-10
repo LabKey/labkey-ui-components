@@ -10,6 +10,7 @@ export const ContentGroupLabel: FC<ContentGroupLabelProps> = ({ withoutBottomMar
         <div className={classNames('content-group-label', { 'content-group': !withoutBottomMargin })}>{children}</div>
     );
 };
+ContentGroupLabel.displayName = 'ContentGroupLabel';
 
 interface ContentGroupProps extends PropsWithChildren {
     label?: ReactNode;
@@ -23,3 +24,4 @@ export const ContentGroup: FC<ContentGroupProps> = ({ children, label }) => {
         </div>
     );
 };
+ContentGroup.displayName = 'ContentGroup';

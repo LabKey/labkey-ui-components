@@ -39,3 +39,4 @@ export const DragDropHandle: FC<Props> = memo(({ highlighted, tooltip }) => {
         </OverlayTrigger>
     );
 });
+DragDropHandle.displayName = 'DragDropHandle';

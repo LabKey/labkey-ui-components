@@ -56,6 +56,7 @@ export const Tab: FC<TabProps> = ({ children, className, eventKey }) => {
         </div>
     );
 };
+Tab.displayName = 'Tab';
 
 interface TabsProps {
     activeKey?: string;
@@ -131,3 +132,4 @@ export const Tabs: FC<TabsProps> = props => {
         </div>
     );
 };
+Tabs.displayName = 'Tabs';

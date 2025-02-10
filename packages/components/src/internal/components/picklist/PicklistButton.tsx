@@ -50,3 +50,4 @@ export const PicklistButton: FC<Props> = memo(props => {
         </RequiresPermission>
     );
 });
+PicklistButton.displayName = 'PicklistButton';

@@ -196,3 +196,4 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
         </div>
     );
 });
+TrendlineOption.displayName = 'TrendlineOption';

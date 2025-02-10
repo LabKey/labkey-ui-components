@@ -44,6 +44,7 @@ export const ConceptPathDisplay: FC<ConceptPathDisplayProps> = memo(props => {
         </>
     );
 });
+ConceptPathDisplay.displayName = 'ConceptPathDisplay';
 
 interface ConceptPathDisplayImplProps extends ConceptPathDisplayProps {
     parentPaths: PathModel[];
@@ -81,3 +82,4 @@ export const ConceptPathDisplayImpl: FC<ConceptPathDisplayImplProps> = memo(prop
         </div>
     );
 });
+ConceptPathDisplayImpl.displayName = 'ConceptPathDisplay';

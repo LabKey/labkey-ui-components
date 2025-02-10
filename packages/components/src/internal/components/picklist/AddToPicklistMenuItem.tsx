@@ -114,3 +114,4 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
         </>
     );
 });
+AddToPicklistMenuItem.displayName = 'AddToPicklistMenuItem';

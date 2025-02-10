@@ -58,3 +58,4 @@ export const UniqueIdBanner: FC<Props> = memo(({ model, isFieldsPanel, onAddFiel
         }
     }
 });
+UniqueIdBanner.displayName = 'UniqueIdBanner';

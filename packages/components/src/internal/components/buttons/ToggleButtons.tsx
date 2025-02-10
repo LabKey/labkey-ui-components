@@ -71,6 +71,7 @@ export const ToggleButtons: FC<Props> = memo(props => {
         </>
     );
 });
+ToggleButtons.displayName = 'ToggleButtons';
 
 export const ToggleIcon: FC<Props> = memo(props => {
     const {
@@ -122,3 +123,4 @@ export const ToggleIcon: FC<Props> = memo(props => {
         </>
     );
 });
+ToggleIcon.displayName = 'ToggleIcon';

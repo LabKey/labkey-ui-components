@@ -60,6 +60,7 @@ export const PicklistList: FC<PicklistListProps> = memo(props => {
         </div>
     );
 });
+PicklistList.displayName = 'PicklistList';
 
 interface PicklistItemsSummaryProps {
     picklist: Picklist;
@@ -122,6 +123,7 @@ export const PicklistItemsSummary: FC<PicklistItemsSummaryProps> = memo(({ pickl
         </div>
     );
 });
+PicklistItemsSummary.displayName = 'PicklistItemsSummary';
 
 interface PicklistDetailsProps {
     picklist: Picklist;
@@ -157,6 +159,7 @@ export const PicklistDetails: FC<PicklistDetailsProps> = memo(props => {
         </div>
     );
 });
+PicklistDetails.displayName = 'PicklistDetails';
 
 interface AddedToPicklistNotificationProps {
     currentProductId?: string;
@@ -191,6 +194,7 @@ export const AddedToPicklistNotification: FC<AddedToPicklistNotificationProps> =
         </>
     );
 };
+AddedToPicklistNotification.displayName = 'AddedToPicklistNotification';
 
 interface ChoosePicklistModalDisplayProps {
     loading: boolean;
@@ -408,6 +412,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         );
     }
 );
+ChoosePicklistModalDisplay.displayName = 'ChoosePicklistModalDisplay';
 
 interface ChoosePicklistModalProps {
     afterAddToPicklist: () => void;

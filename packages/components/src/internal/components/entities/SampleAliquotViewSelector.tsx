@@ -18,6 +18,7 @@ const ViewMenuItem: FC<ViewMenuItemProps> = ({ currentFilterMode, filterMode, la
         </MenuItem>
     );
 };
+ViewMenuItem.displayName = 'ViewMenuItem';
 
 interface Props {
     aliquotFilterMode: ALIQUOT_FILTER_MODE;

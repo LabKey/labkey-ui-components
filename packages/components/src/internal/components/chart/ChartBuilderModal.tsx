@@ -272,6 +272,7 @@ const ChartTypeSideBar: FC<ChartTypeSideBarProps> = memo(props => {
         </>
     );
 });
+ChartTypeSideBar.displayName = 'ChartTypeSideBar';
 
 interface ChartTypeQueryFormProps {
     allowInherit: boolean;
@@ -435,6 +436,7 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
         </div>
     );
 });
+ChartTypeQueryForm.displayName = 'ChartTypeQueryForm';
 
 interface ChartPreviewProps {
     fieldValues: Record<string, SelectInputOption>;
@@ -557,6 +559,7 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
         </>
     );
 });
+ChartPreview.displayName = 'ChartPreview';
 
 interface ChartBuilderFooterProps {
     afterDelete: () => void;
@@ -638,6 +641,7 @@ const ChartBuilderFooter: FC<ChartBuilderFooterProps> = memo(props => {
         </FormButtons>
     );
 });
+ChartBuilderFooter.displayName = 'ChartBuilderFooter';
 
 interface ChartBuilderModalProps extends RequiresModelAndActions {
     onHide: (successMsg?: string) => void;
@@ -858,3 +862,4 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
         </Modal>
     );
 });
+ChartBuilderModal.displayName = 'ChartBuilderModal';

@@ -55,3 +55,4 @@ export const DomainFieldHelpTipContents: FC<Props> = props => {
         </>
     );
 };
+DomainFieldHelpTipContents.displayName = 'DomainFieldHelpTipContents';

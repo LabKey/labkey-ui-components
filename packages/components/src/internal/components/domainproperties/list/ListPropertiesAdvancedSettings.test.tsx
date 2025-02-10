@@ -20,6 +20,14 @@ const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
 
 describe('AdvancedSettings', () => {
+    beforeEach(() => {
+        LABKEY.moduleContext = {
+            core: {
+                deprecatedObjectLevelDiscussions: false,
+            },
+        };
+    });
+
     test('default properties', () => {
         const advancedSettings = (
             <AdvancedSettings title="Advanced Settings" model={emptyNewModel} applyAdvancedProperties={jest.fn()} />

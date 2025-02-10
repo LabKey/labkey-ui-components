@@ -12,3 +12,4 @@ export const RemoveColumnMenuItem: FC<Props> = memo(({ column, onClick }) => {
     const onClick_ = useCallback(() => onClick(column), [column, onClick]);
     return <MenuItem onClick={onClick_}>Remove Column</MenuItem>;
 });
+RemoveColumnMenuItem.displayName = 'RemoveColumnMenuItem';

@@ -50,3 +50,4 @@ export const OntologyBrowserModal: FC<OntologyBrowserModalProps> = memo(props =>
         </Modal>
     );
 });
+OntologyBrowserModal.displayName = 'OntologyBrowserModal';

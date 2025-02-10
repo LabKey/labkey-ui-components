@@ -26,7 +26,9 @@ import { QueryInfo } from '../../public/QueryInfo';
 
 import { QueryColumn } from '../../public/QueryColumn';
 
-import { SearchResult } from '../components/search/actions';
+import { SearchHit, SearchResult } from '../components/search/actions';
+
+import { SearchCategory } from '../components/search/constants';
 
 import { AppURL, createProductUrl, createProductUrlFromParts } from './AppURL';
 import { AppRouteResolver } from './models';
@@ -240,6 +242,34 @@ const ASSAY_MAPPERS = [
 
                 delete params.rowId; // strip the rowId and pass through the remaining params
                 return AppURL.create('assays', rowId, 'data').addParams(params);
+            }
+        }
+    }),
+
+    // Issue 52151: resolve assay runs from search results
+    new ActionMapper('experiment', 'showRunGraph', row => {
+        const url = row.get('url');
+        if (url) {
+            const hit: SearchHit = row.toJS();
+            if (hit.category === SearchCategory.AssayRun) {
+                const runId = parseInt(hit.data?.id, 10);
+                if (!isNaN(runId)) {
+                    return AppURL.create('rd', 'assayrun', runId);
+                }
+            }
+        }
+    }),
+
+    // Issue 52151: resolve assay batches from search results
+    new ActionMapper('experiment', 'details', row => {
+        const url = row.get('url');
+        if (url) {
+            const hit: SearchHit = row.toJS();
+            if (hit.category === SearchCategory.AssayBatch) {
+                const batchRowId = parseInt(hit.data?.id, 10);
+                if (!isNaN(batchRowId)) {
+                    return AppURL.create('rd', 'assaybatch', batchRowId);
+                }
             }
         }
     }),
@@ -714,7 +744,6 @@ export class URLResolver {
         return resolved.toJS();
     }
 
-    // ToDo: this is rather fragile and data specific. this should be reworked with the mappers and rest of the resolvers to provide for more thorough coverage of our incoming URLs
     resolveSearchUsingIndex(result: SearchResult): SearchResult {
         let resolved = fromJS(JSON.parse(JSON.stringify(result)));
 
@@ -725,7 +754,7 @@ export class URLResolver {
                     let url = row.get('url');
                     let query;
 
-                    // TODO: add reroute for assays/runs when pages and URLs are decided
+                    // TODO: This should be refactored to be based off hit.category (SearchCategory) matching
                     if (row.has('data') && row.hasIn(['data', 'dataClass'])) {
                         query = row.getIn(['data', 'dataClass', 'name']);
                         url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID

@@ -65,3 +65,4 @@ export const FormSection: FC<Props> = ({
         </div>
     </>
 );
+FormSection.displayName = 'FormSection';

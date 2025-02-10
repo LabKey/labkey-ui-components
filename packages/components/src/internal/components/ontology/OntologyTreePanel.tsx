@@ -128,6 +128,7 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
         />
     );
 };
+OntologyTreePanel.displayName = 'OntologyBrowserPanel';
 
 const getTreeNodeForPath = function (fileTree, path: string): any {
     return fileTree?.getDataNode(path, fileTree.state.data);

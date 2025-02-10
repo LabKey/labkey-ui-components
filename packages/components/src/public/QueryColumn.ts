@@ -427,7 +427,7 @@ export class QueryColumn implements IQueryColumn {
         return !!this.description || !!this.format || !!this.phiProtected;
     }
 
-    isImportColumn(importName: string): boolean {
+    isIdentifiedByImportName(importName: string): boolean {
         if (!importName) return false;
 
         const lcName = importName.toLowerCase().trim();

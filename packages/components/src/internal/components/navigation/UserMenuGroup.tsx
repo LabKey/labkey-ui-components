@@ -196,6 +196,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
         </>
     );
 };
+UserMenuGroupImpl.displayName = 'UserMenuGroupImpl';
 
 export const UserMenuGroup: FC<UserMenuProps> = props => {
     const { api } = useAppContext<AppContext>();
@@ -215,3 +216,4 @@ export const UserMenuGroup: FC<UserMenuProps> = props => {
 
     return <UserMenuGroupImpl {...props} model={model} />;
 };
+UserMenuGroup.displayName = 'UserMenuGroup';

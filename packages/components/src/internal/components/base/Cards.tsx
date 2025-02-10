@@ -42,6 +42,7 @@ const Card: FC<CardProps> = props => {
         </a>
     );
 };
+Card.displayName = 'Card';
 
 interface Props {
     cards: ICardProps[];
@@ -58,3 +59,4 @@ export const Cards: FC<Props> = props => (
         </div>
     </div>
 );
+Cards.displayName = 'Cards';

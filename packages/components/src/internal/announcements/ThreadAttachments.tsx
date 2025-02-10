@@ -37,6 +37,7 @@ const ThreadAttachment: FC<ThreadAttachmentProps> = memo(({ attachment, containe
         </div>
     );
 });
+ThreadAttachment.displayName = 'ThreadAttachment';
 
 interface ThreadAttachmentsProps {
     attachments: Attachment[];
@@ -63,6 +64,7 @@ export const ThreadAttachments: FC<ThreadAttachmentsProps> = memo(({ attachments
         </div>
     </div>
 ));
+ThreadAttachments.displayName = 'ThreadAttachments';
 
 interface RemoveAttachmentModalProps {
     cancel: () => void;
@@ -85,3 +87,4 @@ export const RemoveAttachmentModal: FC<RemoveAttachmentModalProps> = memo(props 
         Are you sure you want to delete the attachment "{props.name}"?
     </Modal>
 ));
+RemoveAttachmentModal.displayName = 'RemoveAttachmentModal';

@@ -10,3 +10,4 @@ export const ArchivedFolderTag: FC<Props> = memo(({archived}) => {
     if (!archived) return null;
     return <Alert className="folder-field_archived-tag">Archived</Alert>;
 });
+ArchivedFolderTag.displayName = 'ArchivedFolderTag';

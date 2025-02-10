@@ -93,3 +93,4 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
         </Modal>
     );
 });
+ExportModal.displayName = 'ExportModal';

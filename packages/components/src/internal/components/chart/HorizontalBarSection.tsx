@@ -87,3 +87,4 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
         </div>
     );
 });
+HorizontalBarSection.displayName = 'HorizontalBarSection';

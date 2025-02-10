@@ -11,24 +11,20 @@ interface Props {
     id: string;
     placement?: Placement;
     title: string;
-    unlocked?: boolean;
 }
 
-export const LockIcon: FC<Props> = memo(
-    ({ id, title, iconCls, body, className, unlocked = false, placement = 'bottom' }) => {
-        return (
-            <OverlayTrigger
-                className={className}
-                overlay={
-                    <Popover id={id} title={title} placement={placement}>
-                        {body}
-                    </Popover>
-                }
-            >
-                <span className={'domain-field-lock-icon' + (iconCls ? ' ' + iconCls : '')}>
-                    <span className={`fa fa-${unlocked ? 'unlock' : 'lock'}`} />
-                </span>
-            </OverlayTrigger>
-        );
-    }
-);
+export const LockIcon: FC<Props> = memo(({ id, title, iconCls, body, className, placement = 'bottom' }) => (
+    <OverlayTrigger
+        className={className}
+        overlay={
+            <Popover id={id} title={title} placement={placement}>
+                {body}
+            </Popover>
+        }
+    >
+        <span className={'domain-field-lock-icon' + (iconCls ? ' ' + iconCls : '')}>
+            <span className="fa fa-lock" />
+        </span>
+    </OverlayTrigger>
+));
+LockIcon.displayName = 'LockIcon';

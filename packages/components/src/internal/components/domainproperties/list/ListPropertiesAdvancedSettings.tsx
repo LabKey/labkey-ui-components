@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { Modal } from '../../../Modal';
 
-import { getSubmitButtonClass } from '../../../app/utils';
+import { getSubmitButtonClass, isObjectLevelDiscussionsEnabled } from '../../../app/utils';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
@@ -64,6 +64,7 @@ export const DisplayTitle: FC<DisplayTitleProps> = memo(({ model, onSelectChange
         </div>
     );
 });
+DisplayTitle.displayName = 'DisplayTitle';
 
 interface DiscussionLinksProps {
     discussionSetting: number;
@@ -102,6 +103,7 @@ const DiscussionInputs: FC<DiscussionLinksProps> = memo(({ onRadioChange, discus
         </DomainDesignerRadio>
     </div>
 ));
+DiscussionInputs.displayName = 'DiscussionInputs';
 
 interface TitleIndexFieldProps {
     name: string;
@@ -124,6 +126,7 @@ const TitleIndexField: FC<TitleIndexFieldProps> = memo(({ name, titleTemplate, o
         </span>
     </div>
 ));
+TitleIndexField.displayName = 'TitleIndexField';
 
 interface MetadataIndexFieldProps {
     indexSetting: number;
@@ -150,6 +153,7 @@ const MetadataIndexField: FC<MetadataIndexFieldProps> = memo(({ indexSetting, na
         </DomainDesignerRadio>
     </div>
 ));
+MetadataIndexField.displayName = 'MetadataIndexField';
 
 interface IndexFieldProps {
     bodySetting: number;
@@ -191,6 +195,7 @@ export const IndexField: FC<IndexFieldProps> = memo(props => {
         </div>
     );
 });
+IndexField.displayName = 'IndexField';
 
 interface SingleDocumentIndexFieldsProps extends EntireListSettings {
     onInputChange: (evt: any) => void;
@@ -231,6 +236,7 @@ export const SingleDocumentIndexFields: FC<SingleDocumentIndexFieldsProps> = mem
         </div>
     );
 });
+SingleDocumentIndexFields.displayName = 'SingleDocumentIndexField';
 
 interface SeparateDocumentIndexFieldsProps extends EachItemSettings {
     onInputChange: (evt: any) => void;
@@ -258,6 +264,7 @@ export const SeparateDocumentIndexFields: FC<SeparateDocumentIndexFieldsProps> =
         </div>
     );
 });
+SeparateDocumentIndexFields.displayName = 'SeparateDocumentIndexFields';
 
 interface CollapsibleFieldsProps extends PropsWithChildren {
     checked: boolean;
@@ -306,6 +313,7 @@ const CollapsibleFields: FC<CollapsibleFieldsProps> = memo(props => {
         </div>
     );
 });
+CollapsibleFields.displayName = 'CollapsibleFields';
 
 interface SearchIndexingProps {
     eachItemIndex: boolean;
@@ -381,6 +389,7 @@ export const SearchIndexing: FC<SearchIndexingProps> = memo(props => {
         </div>
     );
 });
+SearchIndexing.displayName = 'SearchIndexing';
 
 interface SettingsContainerProps extends PropsWithChildren {
     tipBody: string | JSX.Element;
@@ -398,6 +407,7 @@ const SettingsContainer: FC<SettingsContainerProps> = memo(({ children, title, t
         {children}
     </div>
 ));
+SettingsContainer.displayName = 'SettingsContainer';
 
 interface AdvancedSettingsProps {
     applyAdvancedProperties: (advancedSettingsForm: AdvancedSettingsForm) => void;
@@ -558,12 +568,14 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             />
                         </SettingsContainer>
 
-                        <SettingsContainer title="Discussion Threads" tipBody={DISCUSSION_LINKS_TIP}>
-                            <DiscussionInputs
-                                onRadioChange={this.onRadioChange}
-                                discussionSetting={discussionSetting}
-                            />
-                        </SettingsContainer>
+                        {isObjectLevelDiscussionsEnabled() && (
+                            <SettingsContainer title="Discussion Threads" tipBody={DISCUSSION_LINKS_TIP}>
+                                <DiscussionInputs
+                                    onRadioChange={this.onRadioChange}
+                                    discussionSetting={discussionSetting}
+                                />
+                            </SettingsContainer>
+                        )}
 
                         <SettingsContainer title="Search Indexing Options" tipBody={SEARCH_INDEXING_TIP}>
                             <SearchIndexing

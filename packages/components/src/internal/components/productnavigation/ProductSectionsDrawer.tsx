@@ -17,7 +17,6 @@ import { AppURL, createProductUrl } from '../../url/AppURL';
 import { ProductModel, ProductSectionModel } from './models';
 import { APPLICATION_NAVIGATION_METRIC, SECTION_KEYS_TO_SKIP } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
-import { ProductLKSDrawer } from './ProductLKSDrawer';
 
 interface ProductAppsDrawerProps {
     api?: ComponentsAPIWrapper;
@@ -96,6 +95,7 @@ export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = mem
         </div>
     );
 });
+ProductSectionsDrawerImpl.displayName = 'ProductSectionsDrawerImpl';
 
 // function below are exported for jest testing
 

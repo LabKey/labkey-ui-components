@@ -116,3 +116,4 @@ export const CreatedModified: FC<CreatedModifiedProps> = memo(props => {
         </span>
     );
 });
+CreatedModified.displayName = 'CreatedModified';

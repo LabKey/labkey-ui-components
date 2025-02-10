@@ -67,6 +67,7 @@ const AddEntityHelpTip: FC<{ parentageLabel?: string }> = memo(({ parentageLabel
         </>
     );
 });
+AddEntityHelpTip.displayName = 'AddEntityHelpTip';
 
 const AutoLinkDataToStudyHelpTip: FC = () => (
     <>
@@ -80,6 +81,7 @@ const AutoLinkDataToStudyHelpTip: FC = () => (
         </p>
     </>
 );
+AutoLinkDataToStudyHelpTip.displayName = 'AutoLinkDataToStudyHelpTip';
 
 const LinkedDatasetCategoryHelpTip: FC = () => (
     <>
@@ -93,6 +95,7 @@ const LinkedDatasetCategoryHelpTip: FC = () => (
         </p>
     </>
 );
+LinkedDatasetCategoryHelpTip.displayName = 'LinkedDatasetCategoryHelpTip';
 
 const UniqueIdHelpTip: FC = () => (
     <>
@@ -103,6 +106,7 @@ const UniqueIdHelpTip: FC = () => (
         </p>
     </>
 );
+UniqueIdHelpTip.displayName = 'UniqueIdHelpTip';
 
 // Splitting these out to clarify where they end-up
 interface OwnProps {

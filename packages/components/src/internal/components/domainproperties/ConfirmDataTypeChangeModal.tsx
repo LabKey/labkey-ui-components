@@ -64,6 +64,7 @@ export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
         </Modal>
     );
 });
+ConfirmDataTypeChangeModal.displayName = 'ConfirmDataTypeChangeModal';
 
 // exported for jest testing
 export const getDataTypeConfirmDisplayText = (rangeURI: string): string => {

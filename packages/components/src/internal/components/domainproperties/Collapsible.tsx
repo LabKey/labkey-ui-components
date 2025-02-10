@@ -9,3 +9,4 @@ interface Props extends PropsWithChildren {
 export const Collapsible: FC<Props> = memo(({ children, className, expanded }) => (
     <div className={classNames('collapse', className, { in: expanded })}>{children}</div>
 ));
+Collapsible.displayName = 'Collapsible';

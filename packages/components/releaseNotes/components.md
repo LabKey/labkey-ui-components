@@ -5,6 +5,32 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X February 2025
 - Issue 51973: LIMS: Only one person's updates to templates are saved if two admins are working concurrently
 
+### version 6.22.0
+*Released*: 7 February 2025
+- Only show 'Discussion Threads' Advanced Setting in Lists if relevant Deprecated Feature is turned on
+
+### version 6.21.3
+*Released*: 6 February 2025
+- Add displayName to various components
+- LockIcon: remove unused prop, add displayName, format code
+- Remove ValueList
+- AutoLinkToStudyDropdown: improve formatting, use memo
+
+### version 6.21.2
+*Released*: 6 February 2025
+- AppContext cleanup of components that can now be directly imported from ui-premium (previously cross subpackage)
+  - includes AddSamplesToStorageModalComponent, JobsButtonComponent, ReferencingNotebooksComponent, SampleStorageLocationComponent, SampleStorageMenuComponent
+
+### version 6.21.1
+*Released*: 5 February 2025
+- Issue 52143: Grid paging parameter in URL is not always respected
+  - Fix how we parse the URL to calculate page offset
+
+### version 6.21.0
+*Released*: 4 February 2025
+- Issue 52151: resolve assay batches/runs from search results
+- Resolve an icon for assay batch and assay run search results
+
 ### version 6.20.2
 *Released*: 31 January 2025
 - Merge from release24.11-SNAPSHOT to develop

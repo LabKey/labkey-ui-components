@@ -179,7 +179,6 @@ import { ResponsiveMenuButton } from './internal/components/buttons/ResponsiveMe
 import { ResponsiveMenuButtonGroup } from './internal/components/buttons/ResponsiveMenuButtonGroup';
 import { Cards } from './internal/components/base/Cards';
 import { Setting } from './internal/components/base/Setting';
-import { ValueList } from './internal/components/base/ValueList';
 import { ChoicesListItem } from './internal/components/base/ChoicesListItem';
 
 import { DataTypeSelector } from './internal/components/entities/DataTypeSelector';
@@ -1712,7 +1711,6 @@ export {
     LockIcon,
     ExpandableFilterToggle,
     Setting,
-    ValueList,
     DataTypeSelector,
     ChoicesListItem,
     VerticalScrollPanel,
@@ -1977,11 +1975,7 @@ export type {
 } from './internal/components/labelPrinting/LabelPrintingContextProvider';
 export type { SamplesEditableGridProps } from './internal/sampleModels';
 export type { MeasurementUnit } from './internal/util/measurement';
-export type {
-    SampleStorageLocationComponentProps,
-    SampleStorageMenuComponentProps,
-    SamplesTabbedGridPanelComponentProps,
-} from './internal/sampleModels';
+export type { SamplesTabbedGridPanelComponentProps } from './internal/sampleModels';
 export type { SearchHit, SearchMetadata, SearchResult, SearchOptions } from './internal/components/search/actions';
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
 export type { GroupedSampleDisplayColumns } from './internal/components/samples/actions';

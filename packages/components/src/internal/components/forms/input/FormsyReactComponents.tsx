@@ -86,6 +86,7 @@ const ErrorMessages: FC<ErrorMessageProps> = memo(props => {
         </div>
     );
 });
+ErrorMessages.displayName = 'ErrorMessages';
 
 interface RequiredSymbolProps {
     required: boolean;
@@ -96,6 +97,7 @@ const RequiredSymbol: FC<RequiredSymbolProps> = memo(({ required, symbol = ' *' 
     if (required === false) return null;
     return <span className="required-symbol">{symbol}</span>;
 });
+RequiredSymbol.displayName = 'RequiredSymbol';
 
 interface LabelProps extends PropsWithChildren {
     fakeLabel?: boolean;
@@ -210,6 +212,7 @@ const InputGroup: FC<InputGroupProps> = props => {
         </div>
     );
 };
+InputGroup.displayName = 'InputGroup';
 
 interface BaseControlProps extends BaseComponentProps {
     markAsInvalid?: boolean;
@@ -352,6 +355,7 @@ const CheckboxImpl: FC<FormsyCheckboxProps & FormsyInjectedProps<boolean>> = pro
         </Control>
     );
 };
+CheckboxImpl.displayName = 'CheckboxImpl';
 
 export const FormsyCheckbox = withFormsy<FormsyCheckboxProps, boolean>(CheckboxImpl);
 
@@ -434,6 +438,7 @@ const InputImpl: FC<FormsyInputProps & FormsyInjectedProps<string>> = props => {
         </Control>
     );
 };
+InputImpl.displayName = 'InputImpl';
 
 export const FormsyInput = withFormsy<FormsyInputProps, string>(InputImpl);
 
@@ -497,6 +502,7 @@ const SelectImpl: FC<FormsySelectProps & FormsyInjectedProps<any>> = props => {
         </Control>
     );
 };
+SelectImpl.displayName = 'SelectImpl';
 
 export const FormsySelect = withFormsy<FormsySelectProps, any>(SelectImpl);
 
@@ -545,6 +551,7 @@ const TextAreaImpl: FC<FormsyTextAreaProps & FormsyInjectedProps<string>> = prop
         </Control>
     );
 };
+TextAreaImpl.displayName = 'TextArea';
 
 export const FormsyTextArea = withFormsy<FormsyTextAreaProps, string>(TextAreaImpl);
 

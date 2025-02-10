@@ -70,3 +70,4 @@ export const ModalButtons: FC<ModalButtonsProps> = memo(props => {
         </div>
     );
 });
+ModalButtons.displayName = 'ModalButtons';

@@ -30,3 +30,7 @@ export const useSearchParams = () => {
 let params = {};
 export const __setParams = (mockParams: Record<string, string>) => params = mockParams;
 export const useParams = () => params;
+
+let pathMatch = {};
+export const __setMatch = (mockPathMatch: Record<string, string>) => pathMatch = mockPathMatch;
+export const useMatch = () => pathMatch;

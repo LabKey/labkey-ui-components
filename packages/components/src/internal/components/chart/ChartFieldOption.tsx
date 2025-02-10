@@ -236,3 +236,4 @@ export const ChartFieldOption: FC<ChartFieldOptionProps> = memo(props => {
         </div>
     );
 });
+ChartFieldOption.displayName = 'ChartFieldOption';

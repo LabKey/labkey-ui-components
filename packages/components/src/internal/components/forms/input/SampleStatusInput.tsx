@@ -170,3 +170,4 @@ export const SampleStatusInputRenderer: FC<InputRendererProps> = memo(props => {
         />
     );
 });
+SampleStatusInputRenderer.displayName = 'SampleStatusInputRenderer';

@@ -143,6 +143,7 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
         </div>
     );
 });
+OntologyTreeSearchContainer.displayName = 'OntologyTreeSearchContainer';
 
 interface OntologySearchResultsMenuProps {
     error: string;
@@ -205,6 +206,7 @@ export const OntologySearchResultsMenu: FC<OntologySearchResultsMenuProps> = mem
         </div>
     );
 });
+OntologySearchResultsMenu.displayName = 'OntologySearchResultsMenu';
 
 interface OntologySearchInputProps
     extends Omit<OntologyTreeSearchContainerProps, 'ontology' | 'searchPathClickHandler' | 'onChangeListener'> {
@@ -257,6 +259,7 @@ export const OntologySearchInput: FC<OntologySearchInputProps> = memo(props => {
         </>
     );
 });
+OntologySearchInput.displayName = 'OntologySearchInput';
 
 // exported for jest testing
 export function getOntologySearchTerm(ontology: OntologyModel, searchTerm: string): string {

@@ -1237,16 +1237,13 @@ describe('getSearchResultCardData', () => {
 
     test('data.dataClass', () => {
         expect(
-            getSearchResultCardData(
-                {
-                    name: 'Test',
-                    dataClass: {
-                        name: 'Test Class',
-                        category: 'sources',
-                    },
+            getSearchResultCardData({
+                name: 'Test',
+                dataClass: {
+                    name: 'Test Class',
+                    category: 'sources',
                 },
-                undefined
-            )
+            })
         ).toStrictEqual({
             iconSrc: 'sources',
             category: 'Sources',
@@ -1256,13 +1253,10 @@ describe('getSearchResultCardData', () => {
 
     test('data.type is sampleSet, no metadata', () => {
         expect(
-            getSearchResultCardData(
-                {
-                    name: 'Test',
-                    type: 'sampleSet',
-                },
-                undefined
-            )
+            getSearchResultCardData({
+                name: 'Test',
+                type: 'sampleSet',
+            })
         ).toStrictEqual({
             iconSrc: 'sample_set',
             category: 'Sample Type',
@@ -1349,13 +1343,10 @@ describe('getSearchResultCardData', () => {
 
     test('data.type is generic dataClass', () => {
         expect(
-            getSearchResultCardData(
-                {
-                    name: 'Test Source',
-                    type: 'dataClass',
-                },
-                undefined
-            )
+            getSearchResultCardData({
+                name: 'Test Source',
+                type: 'dataClass',
+            })
         ).toStrictEqual({
             iconSrc: 'source_type',
             category: 'Source Type',
@@ -1366,13 +1357,10 @@ describe('getSearchResultCardData', () => {
 
     test('data.type is source dataClass', () => {
         expect(
-            getSearchResultCardData(
-                {
-                    name: 'Test Source',
-                    type: 'dataClass:sources',
-                },
-                undefined
-            )
+            getSearchResultCardData({
+                name: 'Test Source',
+                type: 'dataClass:sources',
+            })
         ).toStrictEqual({
             iconSrc: 'source_type',
             category: 'Source Type',
@@ -1383,13 +1371,10 @@ describe('getSearchResultCardData', () => {
 
     test('data.type is registry dataClass', () => {
         expect(
-            getSearchResultCardData(
-                {
-                    name: 'TestRegistrySource',
-                    type: 'dataClass:registry',
-                },
-                undefined
-            )
+            getSearchResultCardData({
+                name: 'TestRegistrySource',
+                type: 'dataClass:registry',
+            })
         ).toStrictEqual({
             iconSrc: 'testregistrysource',
             category: 'Source Type',
@@ -1397,17 +1382,18 @@ describe('getSearchResultCardData', () => {
         });
     });
 
-    test('data.type is assay', () => {
-        expect(
-            getSearchResultCardData(
-                {
-                    name: 'Test Assay',
-                    type: 'assay',
-                },
-                undefined
-            )
-        ).toStrictEqual({
+    test('data.name with assay categories', () => {
+        expect(getSearchResultCardData({ name: 'Test Assay' }, SearchCategory.Assay)).toStrictEqual({
             category: 'Assay',
+            iconSrc: 'assay',
+        });
+        expect(getSearchResultCardData({ name: 'Test Assay Run' }, SearchCategory.AssayRun)).toStrictEqual({
+            category: 'Assay Run',
+            iconSrc: 'assay',
+        });
+        expect(getSearchResultCardData({ name: 'Test Assay Batch' }, SearchCategory.AssayBatch)).toStrictEqual({
+            category: 'Assay Batch',
+            iconSrc: 'assay',
         });
     });
 

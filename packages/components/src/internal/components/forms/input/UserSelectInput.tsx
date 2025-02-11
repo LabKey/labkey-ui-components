@@ -118,7 +118,7 @@ export const UserSelectInput: FC<UserSelectInputProps> = memo(props => {
                 const users = await api.security.getUsersWithPermissions(permissions, containerPath, includeInactive);
                 let groups: FetchedGroup[];
                 if (includeGroups)
-                    groups = await api.security.fetchGroups(getProjectPath(containerPath), permissions, true);
+                    groups = await api.security.fetchGroups(containerPath, permissions, true);
 
                 return getUserGroupOptions(users, groups, input, notifyList, useEmail);
             } catch (e) {

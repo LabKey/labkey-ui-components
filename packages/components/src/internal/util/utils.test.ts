@@ -371,7 +371,7 @@ describe('getUpdatedData', () => {
             Data: {
                 value: 'data1',
             },
-            'And/Again': {
+            'And,./Again': {
                 value: 'again',
             },
             Name: {
@@ -393,7 +393,7 @@ describe('getUpdatedData', () => {
             Data: {
                 value: 'data1',
             },
-            'And/Again': {
+            'And,./Again': {
                 value: 'again',
             },
             Name: {
@@ -415,7 +415,7 @@ describe('getUpdatedData', () => {
             Data: {
                 value: 'data1',
             },
-            'And/Again': {
+            'And,./Again': {
                 value: 'again',
             },
             Name: {
@@ -437,7 +437,7 @@ describe('getUpdatedData', () => {
             Data: {
                 value: 'data1',
             },
-            'And/Again': {
+            'And,./Again': {
                 value: 'again',
             },
             Name: {
@@ -469,9 +469,9 @@ describe('getUpdatedData', () => {
                 name: 'Data',
                 fieldKey: 'Data',
             }),
-            and$sagain: new QueryColumn({
-                name: 'And/Again',
-                fieldKey: 'And$SAgain',
+            and$c$d$sagain: new QueryColumn({
+                name: 'And,./Again',
+                fieldKey: 'And$C$D$SAgain',
             }),
             value: new QueryColumn({
                 name: 'Value',
@@ -498,7 +498,7 @@ describe('getUpdatedData', () => {
             originalData,
             {
                 Data: 'data1',
-                And$SAgain: 'again',
+                And$C$D$SAgain: 'again',
             },
             queryInfo
         );
@@ -511,7 +511,7 @@ describe('getUpdatedData', () => {
             {
                 Value: 'val',
                 Data: 'data1',
-                And$SAgain: 'again',
+                And$C$D$SAgain: 'again',
                 Other: 'other3',
             },
             queryInfo
@@ -539,7 +539,7 @@ describe('getUpdatedData', () => {
             {
                 Value: 'val2',
                 Data: 'data2',
-                And$SAgain: 'again2',
+                And$C$D$SAgain: 'again2',
                 Other: 'not another',
             },
             queryInfo
@@ -549,28 +549,28 @@ describe('getUpdatedData', () => {
             RowId: 445,
             Value: 'val2',
             Data: 'data2',
-            'And/Again': 'again2',
+            'And,./Again': 'again2',
             Other: 'not another',
         });
         expect(updatedData[1]).toStrictEqual({
             RowId: 446,
             Value: 'val2',
             Data: 'data2',
-            'And/Again': 'again2',
+            'And,./Again': 'again2',
             Other: 'not another',
         });
         expect(updatedData[2]).toStrictEqual({
             RowId: 447,
             Value: 'val2',
             Data: 'data2',
-            'And/Again': 'again2',
+            'And,./Again': 'again2',
             Other: 'not another',
         });
         expect(updatedData[3]).toStrictEqual({
             RowId: 448,
             Value: 'val2',
             Data: 'data2',
-            'And/Again': 'again2',
+            'And,./Again': 'again2',
             Other: 'not another',
         });
     });
@@ -580,7 +580,7 @@ describe('getUpdatedData', () => {
             originalData,
             {
                 Value: null,
-                And$SAgain: undefined,
+                And$C$D$SAgain: undefined,
                 Other: 'not another',
             },
             queryInfo
@@ -589,23 +589,23 @@ describe('getUpdatedData', () => {
         expect(updatedData[0]).toStrictEqual({
             RowId: 445,
             Value: null,
-            'And/Again': null,
+            'And,./Again': null,
             Other: 'not another',
         });
         expect(updatedData[1]).toStrictEqual({
             RowId: 446,
             Value: null,
-            'And/Again': null,
+            'And,./Again': null,
             Other: 'not another',
         });
         expect(updatedData[2]).toStrictEqual({
             RowId: 447,
-            'And/Again': null,
+            'And,./Again': null,
             Other: 'not another',
         });
         expect(updatedData[3]).toStrictEqual({
             RowId: 448,
-            'And/Again': null,
+            'And,./Again': null,
             Other: 'not another',
         });
     });
@@ -747,7 +747,7 @@ describe('getUpdatedData', () => {
             originalData,
             {
                 Value: 'val',
-                And$SAgain: 'again',
+                And$C$D$SAgain: 'again',
                 Other: 'other3',
             },
             queryInfo,
@@ -786,7 +786,7 @@ describe('getUpdatedData', () => {
                 Data: {
                     value: 'data1',
                 },
-                'And/Again': {
+                'And,./Again': {
                     value: 'again',
                 },
                 Name: {
@@ -807,7 +807,7 @@ describe('getUpdatedData', () => {
             originalData_,
             {
                 Value: 'val',
-                And$SAgain: 'again',
+                And$C$D$SAgain: 'again',
                 Other: 'other3',
             },
             queryInfo
@@ -833,7 +833,7 @@ describe('getUpdatedData', () => {
                 Data: {
                     value: 'data1',
                 },
-                'And/Again': {
+                'And,./Again': {
                     value: 'again',
                 },
                 Name: {
@@ -854,7 +854,7 @@ describe('getUpdatedData', () => {
             originalData_,
             {
                 Value: 'val',
-                And$SAgain: 'again',
+                And$C$D$SAgain: 'again changed',
                 Other: 'other3',
             },
             queryInfo
@@ -862,6 +862,7 @@ describe('getUpdatedData', () => {
         expect(updatedData[0]).toStrictEqual({
             RowId: 448,
             Value: 'val',
+            'And,./Again': 'again changed',
             Other: 'other3',
             Container: 'ENTITYID-A',
         });

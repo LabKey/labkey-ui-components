@@ -946,8 +946,10 @@ describe('EditorModel', () => {
 
             expect(editorModel.getRowValue(1).get(identFieldCol.fieldKey)).toEqual(undefined);
             expect(editorModel.getRowValue(1).get(identFieldCol.name)).toEqual(colValue);
+            expect(editorModel.getRowValue(1).get(identFieldCol.index)).toEqual(undefined);
             expect(updatedRow[identFieldCol.fieldKey]).toEqual(undefined);
             expect(updatedRow[identFieldCol.name]).toEqual(colValue);
+            expect(updatedRow[identFieldCol.index]).toEqual(undefined);
         });
         test('column with special chars in name', () => {
             const specCharCol = new QueryColumn({

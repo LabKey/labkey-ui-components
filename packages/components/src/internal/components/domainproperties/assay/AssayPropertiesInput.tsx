@@ -31,6 +31,7 @@ import { AssayProtocolModel, ProtocolTransformScript } from './models';
 import { FORM_IDS, SCRIPTS_DIR } from './constants';
 import { getScriptEngineForExtension, getValidPublishTargets } from './actions';
 import { useFilterCriteriaContext } from './FilterCriteriaContext';
+import { InternalSpacesWarning } from '../../forms/InternalSpacesWarning';
 
 interface AssayPropertiesInputProps extends DomainFieldLabelProps, PropsWithChildren {
     colSize?: number;
@@ -83,6 +84,7 @@ export const NameInput: FC<InputProps> = memo(props => (
             onChange={props.onChange}
             disabled={!props.model.isNew() && !props.canRename}
         />
+        <InternalSpacesWarning value={props.model.name || ''} fieldName="name" />
     </AssayPropertiesInput>
 ));
 NameInput.displayName = 'NameInput';

@@ -13,6 +13,8 @@ import { IEntityDetails } from './models';
 import { getEntityDescriptionValue, getEntityNameExpressionValue, getEntityNameValue, } from './actions';
 import { ENTITY_FORM_IDS } from './constants';
 
+import { InternalSpacesWarning } from '../../forms/InternalSpacesWarning';
+
 export interface EntityDetailsProps {
     data?: Map<string, any>;
     formValues?: IEntityDetails;
@@ -29,7 +31,7 @@ export interface EntityDetailsProps {
     warning?: string;
 }
 
-export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, any> {
+export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps> {
     render() {
         const {
             nameExpressionInfoUrl,
@@ -72,6 +74,12 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                             value={getEntityNameValue(formValues, data)}
                             disabled={nameReadOnly}
                         />
+                    </div>
+                    <div>
+                        <div className="col-xs-2"></div>
+                        <div className="col-xs-10">
+                            <InternalSpacesWarning value={getEntityNameValue(formValues, data)} />
+                        </div>
                     </div>
                 </div>
                 <div className="row margin-bottom">

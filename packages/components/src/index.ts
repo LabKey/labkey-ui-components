@@ -94,6 +94,7 @@ import {
     resolveErrorMessage,
 } from './internal/util/messaging';
 import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
+import { InternalSpacesWarning } from './internal/components/forms/InternalSpacesWarning';
 import { AddEntityButton, AddEntityElement } from './internal/components/buttons/AddEntityButton';
 import { RemoveEntityButton } from './internal/components/buttons/RemoveEntityButton';
 import { Alert } from './internal/components/base/Alert';
@@ -1246,6 +1247,7 @@ export {
     formsyRules,
     withFormsy,
     // form related items
+    InternalSpacesWarning,
     BulkUpdateForm,
     QueryFormInputs,
     LookupSelectInput,

@@ -279,7 +279,7 @@ function isSameWithStringCompare(value1: any, value2: any): boolean {
  */
 export function getUpdatedData(
     originalData: Map<string, any>, // the rows in the original data have column names as keys
-    updatedValues: any, // the keys here are column fieldKeys
+    updatedValues: Record<string, any>, // the keys here are column fieldKeys
     queryInfo: QueryInfo,
     additionalCols?: Set<string>
 ): any[] {

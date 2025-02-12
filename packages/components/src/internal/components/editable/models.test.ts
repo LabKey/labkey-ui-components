@@ -411,7 +411,7 @@ describe('EditorModel', () => {
                 queryInfo2,
                 updates,
                 [1],
-                ['withvalue', 'withdisplay$svalue']
+                ['WithValue', 'WithDisplay$SValue']
             );
             expect(result2).toStrictEqual(
                 Map<string, any>({

@@ -694,6 +694,8 @@ export class EditorModel
         idsNotToUpdate?: number[],
         fieldsNotToUpdate?: string[] // keys here are column fieldKey
     ): Map<string, Map<string, any>> {
+        const fieldsNotToUpdateLower = fieldsNotToUpdate?.map(f => f.toLowerCase()) ?? [];
+
         return data
             .map((valueMap, id) => {
                 const returnMap = valueMap.reduce((m, valueMap_, key) => {
@@ -713,8 +715,7 @@ export class EditorModel
                 const isNotUpdateId = idsNotToUpdate && idsNotToUpdate.indexOf(parseInt(id, 10)) > -1;
                 updates.forEach((value, fieldKey) => {
                     const col = queryInfo.getColumn(fieldKey);
-                    const isFieldNotToUpdate =
-                        fieldsNotToUpdate && fieldsNotToUpdate.indexOf(fieldKey.toLowerCase()) > -1;
+                    const isFieldNotToUpdate = fieldsNotToUpdateLower.indexOf(fieldKey.toLowerCase()) > -1;
                     if (!isFieldNotToUpdate || !isNotUpdateId) {
                         trimmedUpdates = trimmedUpdates.set(col.name, value);
                     }

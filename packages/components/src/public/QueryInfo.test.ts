@@ -296,6 +296,7 @@ describe('QueryInfo', () => {
                     { fieldKey: 'test2', addToSystemView: true },
                     { fieldKey: 'test3', addToSystemView: true },
                     { fieldKey: 'test4', addToSystemView: false },
+                    { fieldKey: 'test5', addToSystemView: false },
                 ],
                 disabledSystemFields: ['test3', 'test4'],
                 views: [{ name: '', default: true }],
@@ -312,14 +313,27 @@ describe('QueryInfo', () => {
             extras = queryInfoWithAddAndDisabledSystemFields.getExtraDisplayColumns(added, []);
             expect(extras.length).toBe(1);
             expect(extras[0].fieldKey).toBe('test2');
+            extras = queryInfoWithAddAndDisabledSystemFields.getExtraDisplayColumns(added, [], ['test4', 'test5']);
+            expect(extras.length).toBe(2);
+            expect(extras[0].fieldKey).toBe('test2');
+            expect(extras[1].fieldKey).toBe('test5');
             added.add('test2');
             extras = queryInfoWithAddAndDisabledSystemFields.getExtraDisplayColumns(added, []);
             expect(extras.length).toBe(0);
+            extras = queryInfoWithAddAndDisabledSystemFields.getExtraDisplayColumns(added, [], ['test4', 'test5']);
+            expect(extras.length).toBe(1);
+            expect(extras[0].fieldKey).toBe('test5');
             added = new Set();
             added.add('test1');
-            extras = queryInfoWithAddAndDisabledSystemFields.getExtraDisplayColumns(added, []);
+            extras = queryInfoWithAddAndDisabledSystemFields.getExtraDisplayColumns(added, ['test2']);
+            expect(extras.length).toBe(0);
+            extras = queryInfoWithAddAndDisabledSystemFields.getExtraDisplayColumns(
+                added,
+                ['test2'],
+                ['test4', 'test5']
+            );
             expect(extras.length).toBe(1);
-            expect(extras[0].fieldKey).toBe('test2');
+            expect(extras[0].fieldKey).toBe('test5');
             added.add('test2');
             extras = queryInfoWithAddAndDisabledSystemFields.getExtraDisplayColumns(added, ['test2']);
             expect(extras.length).toBe(0);

@@ -1,9 +1,24 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.X
-*Released*: X February 2025
+### version 6.22.4
+*Released*: 12 February 2025
 - Issue 51973: LIMS: Only one person's updates to templates are saved if two admins are working concurrently
+
+### version 6.22.3
+*Released*: 12 February 2025
+- Merge from release25.2-SNAPSHOT to develop
+    - includes changes from 6.20.3 #1714
+
+### version 6.22.2
+*Released*: 11 February 2025
+- LKSM: Add numbered cells for terminal storage
+  - fix style for Storage properties panel radio button position
+  - add StoragePositionNumber field to SampleFinder filter cards
+
+### version 6.22.1
+*Release*: 11 February 2025
+- Issue 52193: Update `QueryColumn.isImportColumn` to match on caption fully stripped of spaces
 
 ### version 6.22.0
 *Released*: 7 February 2025
@@ -30,6 +45,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 4 February 2025
 - Issue 52151: resolve assay batches/runs from search results
 - Resolve an icon for assay batch and assay run search results
+
+### version 6.20.3
+*Released*: 11 February 2025
+- Issue 52197: use current container when querying for groups with permissions for job and task assignments
 
 ### version 6.20.2
 *Released*: 31 January 2025

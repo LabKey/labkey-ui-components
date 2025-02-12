@@ -1,11 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.X
-*Released*: X January 2025
+### version 6.22.2
+*Released*: 11 February 2025
 - LKSM: Add numbered cells for terminal storage
   - fix style for Storage properties panel radio button position
   - add StoragePositionNumber field to SampleFinder filter cards
+
+### version 6.22.1
+*Release*: 11 February 2025
+- Issue 52193: Update `QueryColumn.isImportColumn` to match on caption fully stripped of spaces
 
 ### version 6.22.0
 *Released*: 7 February 2025

@@ -224,12 +224,12 @@ describe('QueryColumn', () => {
         expect(samplesDataTypeColumnLookup.isSampleLookup()).toBe(true);
     });
 
-    test('isImportColumn', () => {
-        expect(validColumn.isImportColumn(undefined)).toBeFalsy();
-        expect(validColumn.isImportColumn('not a name')).toBeFalsy();
-        expect(validColumn.isImportColumn('Special Column')).toBeTruthy();
-        expect(validColumn.isImportColumn('special_column')).toBeTruthy();
-        expect(validColumn.isImportColumn('Special_column')).toBeTruthy();
+    test('isIdentifiedByImportName', () => {
+        expect(validColumn.isIdentifiedByImportName(undefined)).toBeFalsy();
+        expect(validColumn.isIdentifiedByImportName('not a name')).toBeFalsy();
+        expect(validColumn.isIdentifiedByImportName('Special Column')).toBeTruthy();
+        expect(validColumn.isIdentifiedByImportName('special_column')).toBeTruthy();
+        expect(validColumn.isIdentifiedByImportName('Special_column')).toBeTruthy();
     });
 
     test('isDataInput', () => {

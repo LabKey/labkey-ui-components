@@ -1,5 +1,7 @@
 import { List } from 'immutable';
 
+import { Query, QueryKey } from '@labkey/api';
+
 import { SCHEMAS } from '../../schemas';
 
 import { DELETE_ASSAY_RUNS_TOPIC, DELETE_SAMPLES_TOPIC } from '../../util/helpLinks';
@@ -14,7 +16,6 @@ import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE } from '../search/constants';
 
 import { EntityDataType } from './models';
 import { sampleDeleteDependencyText } from './utils';
-import { Query, QueryKey } from '@labkey/api';
 
 const DATA_OPERATION_CONFIRMATION_ACTION = 'getDataOperationConfirmationData.api';
 const SAMPLE_OPERATION_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
@@ -140,6 +141,7 @@ export const SampleTypeDataType: EntityDataType = {
     supportsCrossTypeImport: true,
     folderConfigurableDataType: 'SampleType',
     labelColorCol: 'labelcolor',
+    extraFinderFields: ['storagepositionnumber'],
 };
 
 export const SampleParentDataType = {

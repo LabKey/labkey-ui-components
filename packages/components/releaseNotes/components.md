@@ -9,6 +9,21 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Fix up sample aliquot-only vs sample-only fields to use fieldKey instead of name
   - getSampleIdentifyingFieldGridData() to use column.index instead of column.name for the key
 
+### version 6.22.3
+*Released*: 12 February 2025
+- Merge from release25.2-SNAPSHOT to develop
+    - includes changes from 6.20.3 #1714
+
+### version 6.22.2
+*Released*: 11 February 2025
+- LKSM: Add numbered cells for terminal storage
+  - fix style for Storage properties panel radio button position
+  - add StoragePositionNumber field to SampleFinder filter cards
+
+### version 6.22.1
+*Release*: 11 February 2025
+- Issue 52193: Update `QueryColumn.isImportColumn` to match on caption fully stripped of spaces
+
 ### version 6.22.0
 *Released*: 7 February 2025
 - Only show 'Discussion Threads' Advanced Setting in Lists if relevant Deprecated Feature is turned on
@@ -34,6 +49,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 4 February 2025
 - Issue 52151: resolve assay batches/runs from search results
 - Resolve an icon for assay batch and assay run search results
+
+### version 6.20.3
+*Released*: 11 February 2025
+- Issue 52197: use current container when querying for groups with permissions for job and task assignments
 
 ### version 6.20.2
 *Released*: 31 January 2025

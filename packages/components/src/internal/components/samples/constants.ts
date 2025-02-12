@@ -196,6 +196,7 @@ export const SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR = [
     'SampleTypeUnits',
     'FreezeThawCount',
     'CheckedOutBy',
+    'StoragePositionNumber',
     'StorageRow',
     'StorageCol',
     'CheckedOut',

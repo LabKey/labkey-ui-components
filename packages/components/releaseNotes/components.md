@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.22.4
+*Released*: 12 February 2025
+- Issue 51973: LIMS: Only one person's updates to templates are saved if two admins are working concurrently
+
 ### version 6.22.3
 *Released*: 12 February 2025
 - Merge from release25.2-SNAPSHOT to develop

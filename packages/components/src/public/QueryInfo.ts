@@ -257,23 +257,25 @@ export class QueryInfo {
         return [];
     }
 
-    getExtraDisplayColumns(columnFieldKeysLc: Set<string>, lowerOmit?: string[]): QueryColumn[] {
+    getExtraDisplayColumns(
+        alreadyIncludedFieldKeysLc: Set<string>,
+        lowerOmit?: string[],
+        extraFieldsLc?: string[]
+    ): QueryColumn[] {
         const extraDisplayColumn = [];
-        const disabledSysFields = [];
+        const disabledSysFieldsLc = [];
         this.disabledSystemFields?.forEach(field => {
-            disabledSysFields.push(field.toLowerCase());
+            disabledSysFieldsLc.push(field.toLowerCase());
         });
 
         this.columns.forEach(col => {
-            const fieldKey = col.fieldKey.toLowerCase();
-            if (
-                fieldKey &&
-                col.addToSystemView &&
-                !columnFieldKeysLc.has(fieldKey) &&
-                disabledSysFields.indexOf(fieldKey) === -1
-            ) {
-                if (!lowerOmit || !lowerOmit.includes(col.fieldKey.toLowerCase())) extraDisplayColumn.push(col);
-            }
+            const fieldKeyLc = col.fieldKey.toLowerCase();
+            const isNotIncludedOrDisabled =
+                !alreadyIncludedFieldKeysLc.has(fieldKeyLc) &&
+                !disabledSysFieldsLc.includes(fieldKeyLc) &&
+                !lowerOmit?.includes(fieldKeyLc);
+            if (fieldKeyLc && isNotIncludedOrDisabled && (col.addToSystemView || extraFieldsLc?.includes(fieldKeyLc)))
+                extraDisplayColumn.push(col);
         });
 
         return extraDisplayColumn;

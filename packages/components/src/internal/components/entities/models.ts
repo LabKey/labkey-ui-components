@@ -482,6 +482,7 @@ export interface EntityDataType {
     descriptionSingular: string;
     editTypeAppUrlPrefix?: string;
     exprColumnsWithSubSelect?: string[];
+    extraFinderFields?: string[];
     filterArray?: Filter.IFilter[];
     filterCardHeaderClass?: string;
     folderConfigurableDataType?: FolderConfigurableDataType;
@@ -501,7 +502,6 @@ export interface EntityDataType {
     nounAsParentPlural: string;
     nounAsParentSingular: string;
     nounPlural: string;
-    nounSingular: string;
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
     sampleFinderCardType?: SampleFinderCardType;
@@ -512,6 +512,7 @@ export interface EntityDataType {
     typeNounAsParentSingular: string;
     typeNounSingular: string;
     uniqueFieldKey: string;
+    nounSingular: string;
 }
 
 interface OperationContainerInfo {

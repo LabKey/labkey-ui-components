@@ -191,6 +191,7 @@ export class QueryInfo {
         return undefined;
     }
 
+    // TODO rename to getColumnFromFieldKey
     getColumn(fieldKey: string): QueryColumn {
         if (fieldKey) {
             return this.columns.get(fieldKey.toLowerCase());

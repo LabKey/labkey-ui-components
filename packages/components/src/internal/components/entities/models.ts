@@ -284,7 +284,7 @@ export class EntityIdCreationModel extends Record({
     getIdentifyingFields(): ExtendedMap<string, QueryColumn> {
         let columns = new ExtendedMap<string, QueryColumn>();
         this.identifyingFields.forEach(col => {
-            columns = columns.set(col.name.toLowerCase(), col);
+            columns = columns.set(col.fieldKey.toLowerCase(), col);
         });
         return columns;
     }
@@ -502,6 +502,7 @@ export interface EntityDataType {
     nounAsParentPlural: string;
     nounAsParentSingular: string;
     nounPlural: string;
+    nounSingular: string;
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
     sampleFinderCardType?: SampleFinderCardType;
@@ -512,7 +513,6 @@ export interface EntityDataType {
     typeNounAsParentSingular: string;
     typeNounSingular: string;
     uniqueFieldKey: string;
-    nounSingular: string;
 }
 
 interface OperationContainerInfo {

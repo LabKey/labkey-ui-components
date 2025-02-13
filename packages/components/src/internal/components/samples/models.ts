@@ -67,12 +67,9 @@ export const ALIQUOT_CREATION: EntityCreationTypeModel = {
 };
 
 export interface GroupedSampleFields {
-    // aliquot-specific
-    aliquotFields: string[];
-    // aliquot & parent rename to sharedFields
-    independentFields: string[];
-    // parent only
-    metaFields: string[];
+    aliquotFields: string[]; // aliquot-specific (lowercase column fieldKey)
+    independentFields: string[]; // aliquot & parent rename to sharedFields (lowercase column fieldKey)
+    metaFields: string[]; // parent only (lowercase column fieldKey)
     metricUnit: string;
 }
 

@@ -63,6 +63,7 @@ const QUERY_INFO_DEFAULTS = {
     showInsertNewButton: true, // opt out
     singular: undefined, // defaults to value of queryLabel
     plural: undefined, // defaults to value of queryLabel
+    modified: undefined,
 };
 
 export interface ImportTemplate {
@@ -112,6 +113,7 @@ export class QueryInfo {
     declare importUrl: string;
     declare insertUrlDisabled: boolean;
     declare insertUrl: string;
+    declare modified: number; // query definition last modified timestamp
 
     /**
      * This constructor merges a Partial<QueryInfo> with QUERY_INFO_DEFAULTS to create a QueryInfo object. You should

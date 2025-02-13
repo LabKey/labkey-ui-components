@@ -502,6 +502,7 @@ export interface EntityDataType {
     nounAsParentPlural: string;
     nounAsParentSingular: string;
     nounPlural: string;
+    nounSingular: string;
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
     sampleFinderCardType?: SampleFinderCardType;
@@ -512,7 +513,6 @@ export interface EntityDataType {
     typeNounAsParentSingular: string;
     typeNounSingular: string;
     uniqueFieldKey: string;
-    nounSingular: string;
 }
 
 interface OperationContainerInfo {

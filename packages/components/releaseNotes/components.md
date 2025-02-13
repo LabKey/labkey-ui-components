@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD February 2025
+- Misc 25.3 fixes
+  - Issue 52228: App using an Identifying field that's required errors during sample import
+  - Issue 52230: App broken link under Calculated Columns data field hover tooltip
+
 ### version 6.22.4
 *Released*: 12 February 2025
 - Issue 51973: LIMS: Only one person's updates to templates are saved if two admins are working concurrently

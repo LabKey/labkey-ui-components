@@ -34,6 +34,7 @@ import { SCHEMAS } from '../../schemas';
 
 import {
     getContainerFilter,
+    getQueryDetails,
     invalidateFullQueryDetailsCache,
     ISelectRowsResult,
     selectDistinctRows,
@@ -49,6 +50,8 @@ import { TimelineEventModel } from '../auditlog/models';
 import { buildURL } from '../../url/AppURL';
 
 import { selectRows } from '../../query/selectRows';
+
+import { QueryInfo } from '../../../public/QueryInfo';
 
 import {
     AMOUNT_AND_UNITS_COLUMNS_LC,
@@ -133,7 +136,7 @@ export async function fetchSamples(
 
     orderedModels[key].forEach(id => {
         data.setIn(
-            [id, sampleColumn.fieldKey],
+            [id, sampleColumn.index],
             List([
                 {
                     displayValue: caseInsensitive(rows[id], displayValueKey)?.value,
@@ -196,19 +199,30 @@ export async function getSelectedSampleIdsFromSelectionKey(searchParams: URLSear
 }
 
 export async function getGroupedSampleDomainFields(sampleType: string): Promise<GroupedSampleFields> {
+    // use domain fields as we only want to include fields defined by the user, but use queryInfo to map to fieldKey
+    const sampleTypeDomain = await getSampleTypeDetails(new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType));
+    const queryInfo = await getQueryDetails(new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType));
+
+    return _getGroupedSampleDomainFields(sampleTypeDomain, queryInfo);
+}
+
+// exported for jest testing
+export function _getGroupedSampleDomainFields(
+    sampleTypeDomain: DomainDetails,
+    queryInfo: QueryInfo
+): GroupedSampleFields {
     const metaFields = [];
     const independentFields = [];
     const aliquotFields = [];
 
-    const sampleTypeDomain = await getSampleTypeDetails(new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType));
-
     sampleTypeDomain.domainDesign.fields.forEach(field => {
+        const col = queryInfo.getColumnFromName(field.name);
         if (field.derivationDataScope === DERIVATION_DATA_SCOPES.CHILD_ONLY) {
-            aliquotFields.push(field.name.toLowerCase());
+            aliquotFields.push(col.fieldKey.toLowerCase());
         } else if (field.derivationDataScope === DERIVATION_DATA_SCOPES.ALL) {
-            independentFields.push(field.name.toLowerCase());
-        } else {
-            metaFields.push(field.name.toLowerCase());
+            independentFields.push(col.fieldKey.toLowerCase());
+        } else if (!field.isCalculatedField()) {
+            metaFields.push(col.fieldKey.toLowerCase());
         }
     });
 
@@ -285,11 +299,11 @@ export function getGroupedSampleDisplayColumns(
     const aliquotHeaderDisplayColumns = [];
 
     allDisplayColumns.forEach(col => {
-        const colName = col.name.toLowerCase();
-        if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(colName) > -1) {
+        const lcFieldKey = col.fieldKey.toLowerCase();
+        if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(lcFieldKey) > -1) {
             return;
         }
-        if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(colName) > -1 && canBeInStorage) {
+        if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(lcFieldKey) > -1 && canBeInStorage) {
             return;
         }
         if (isAliquot) {
@@ -299,38 +313,38 @@ export function getGroupedSampleDisplayColumns(
             }
             // display parent meta for aliquot
             else if (
-                sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1 ||
-                sampleTypeDomainFields.independentFields.indexOf(colName) > -1
+                sampleTypeDomainFields.aliquotFields.indexOf(lcFieldKey) > -1 ||
+                sampleTypeDomainFields.independentFields.indexOf(lcFieldKey) > -1
             ) {
                 aliquotHeaderDisplayColumns.push(col);
             }
         } else {
-            if (sampleTypeDomainFields.aliquotFields.indexOf(colName) === -1) {
+            if (sampleTypeDomainFields.aliquotFields.indexOf(lcFieldKey) === -1) {
                 displayColumns.push(col);
             }
         }
     });
 
     allUpdateColumns.forEach(col => {
-        const colName = col.name.toLowerCase();
-        if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(colName) > -1) {
+        const lcFieldKey = col.fieldKey.toLowerCase();
+        if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(lcFieldKey) > -1) {
             return;
         }
-        if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(colName) > -1 && canBeInStorage) {
+        if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(lcFieldKey) > -1 && canBeInStorage) {
             return;
         }
-        if (sampleTypeDomainFields.independentFields.indexOf(colName) > -1) {
+        if (sampleTypeDomainFields.independentFields.indexOf(lcFieldKey) > -1) {
             editColumns.push(col);
             return;
         }
         if (isAliquot) {
-            if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1) {
+            if (sampleTypeDomainFields.aliquotFields.indexOf(lcFieldKey) > -1) {
                 editColumns.push(col);
-            } else if (isAliquotEditableField(colName)) {
+            } else if (isAliquotEditableField(lcFieldKey)) {
                 editColumns.push(col);
             }
         } else {
-            if (sampleTypeDomainFields.aliquotFields.indexOf(colName) === -1) {
+            if (sampleTypeDomainFields.aliquotFields.indexOf(lcFieldKey) === -1) {
                 editColumns.push(col);
             }
         }
@@ -533,7 +547,12 @@ export async function getLookupRowIdsFromSelection(
 
     if (fieldKey) {
         const rowIdFieldKey = `${fieldKey}/RowId`; // Pull the rowId of the lookup
-        const { data, dataIds } = await getSelectedDataDeprecated(schemaName, queryName, selected, 'RowId,' + rowIdFieldKey); // Include the RowId column to prevent warnings
+        const { data, dataIds } = await getSelectedDataDeprecated(
+            schemaName,
+            queryName,
+            selected,
+            'RowId,' + rowIdFieldKey
+        ); // Include the RowId column to prevent warnings
         if (data) {
             const rows = data.toJS();
             dataIds.forEach(rowId => {

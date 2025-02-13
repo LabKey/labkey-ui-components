@@ -1412,10 +1412,10 @@ export function getSampleIdentifyingFieldGridData(
                       }
                     : {};
                 sampleIdentifyingColumns.forEach(c => {
-                    // Issue 52038: the Row has data keyed by name, but we want editable grid data to be keyed by fieldKey
+                    // Issue 52038: the Row has data keyed by name so make sure we do the same here (see QueryColumn index() comments)
                     const colData = caseInsensitive(row, c.name);
                     if (colData?.value) {
-                        d[c.fieldKey] = colData?.formattedValue ?? colData?.displayValue ?? colData?.value;
+                        d[c.index] = colData?.formattedValue ?? colData?.displayValue ?? colData?.value;
                     }
                 });
                 samplesData[rowId] = d;
@@ -1482,7 +1482,7 @@ export function updateCellValuesForSampleIds(
                 let updates = Map<string, List<any>>();
                 dataRemovedIndexes.forEach(rowInd => {
                     identifyingColumns
-                        .filter(col => DEFAULT_SAMPLE_EDITABLE_GRID_COLUMNS.indexOf(col.name.toLowerCase()) === -1)
+                        .filter(col => DEFAULT_SAMPLE_EDITABLE_GRID_COLUMNS.indexOf(col.index.toLowerCase()) === -1)
                         .forEach(col => {
                             updates = updates.set(
                                 // Issue 52038: cell keys are based on fieldKey currently
@@ -1516,16 +1516,17 @@ export function updateCellValuesForSampleIds(
                                 identifyingColumns
                                     .filter(
                                         col =>
-                                            DEFAULT_SAMPLE_EDITABLE_GRID_COLUMNS.indexOf(col.name.toLowerCase()) === -1
+                                            DEFAULT_SAMPLE_EDITABLE_GRID_COLUMNS.indexOf(col.index.toLowerCase()) === -1
                                     )
                                     .forEach(col => {
                                         updates = updates.set(
+                                            // this one does need to use col.fieldKey since this is a multi part key (we want the encoded fieldKey)
                                             sampleGenCellKey(sampleFieldKeyPrefix_, col.fieldKey, rowInd),
-                                            // Issue 52038: getSampleIdentifyingFieldGridData returns data keyed by fieldKey
+                                            // Issue 52038: getSampleIdentifyingFieldGridData returns data keyed by QueryColumn index
                                             List<any>([
                                                 {
-                                                    display: data[col.fieldKey],
-                                                    raw: data[col.fieldKey],
+                                                    display: data[col.index],
+                                                    raw: data[col.index],
                                                 },
                                             ])
                                         );

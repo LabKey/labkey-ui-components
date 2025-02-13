@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD February 2025
+### version 6.23.0
+*Released*: 13 February 2025
 - Remove usages of encodePart when dealing with data rows for update cases
   - EditableGridLoaderFromSelection not to encodePart() in the data rows, leave keyed by column name as it comes from server
   - BulkUpdateForm not to encodePart() when comparing with original data, use QueryInfo to lookup column instead

@@ -403,7 +403,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                                 />
                                             </div>
                                         </div>
-
                                     )}
                                 </>
                             );

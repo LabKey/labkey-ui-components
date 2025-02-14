@@ -312,6 +312,7 @@ export class QueryInfo {
                 if (ancestorOnly && !col.name.startsWith('Ancestors/')) return;
                 const qCol = new QueryColumn(col);
                 qCol.readOnly = true;
+                qCol.required = false; // Issue 52228
                 if (prefixFieldKey) {
                     qCol.name = prefixFieldKey + '/' + qCol.name;
                     qCol.fieldKey = prefixFieldKey + '/' + qCol.fieldKey;

@@ -33,6 +33,7 @@ export interface EditableDetailPanelProps {
     detailRenderer?: DetailRenderer;
     disabled?: boolean;
     editColumns?: QueryColumn[];
+    internalSpacesWarningFieldKeys?: string[];
     model: QueryModel;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
     onBeforeUpdate?: (row: Record<string, any>) => void;
@@ -58,6 +59,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
         detailEditRenderer,
         detailHeader,
         detailRenderer,
+        internalSpacesWarningFieldKeys,
         asSubPanel,
         canUpdate,
         editColumns,
@@ -194,6 +196,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
                             editColumns={editColumns}
                             editingMode
                             fileInputRenderer={fileInputRenderer}
+                            internalSpacesWarningFieldKeys={internalSpacesWarningFieldKeys}
                             onAdditionalFormDataChange={onAdditionalFormDataChange}
                             queryConfig={{
                                 ...model.queryConfig,

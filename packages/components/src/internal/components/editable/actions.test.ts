@@ -11,6 +11,7 @@ import {
     addColumns,
     changeColumn,
     fillColumnCells,
+    loadEditorModelData,
     parseIntIfNumber,
     parsePastedLookup,
     removeColumn,
@@ -789,7 +790,10 @@ describe('parsePastedLookup', () => {
             valueDescriptors: List([{ display: 'abc', raw: 'abc' }]),
         });
         expect(parsePastedLookup(stringLookupCol, stringLookupValues, 'abc, valueD')).toStrictEqual({
-            message: { message: 'Could not find "abc", "valueD". Please make sure values that contain commas are properly quoted.' },
+            message: {
+                message:
+                    'Could not find "abc", "valueD". Please make sure values that contain commas are properly quoted.',
+            },
             valueDescriptors: List([
                 { display: 'abc', raw: 'abc' },
                 { display: 'valueD', raw: 'valueD' },
@@ -820,7 +824,10 @@ describe('parsePastedLookup', () => {
             valueDescriptors: List([{ display: 'abc', raw: 'abc' }]),
         });
         expect(parsePastedLookup(intLookupCol, intLookupValues, 'abc, valueD')).toStrictEqual({
-            message: { message: 'Could not find "abc", "valueD". Please make sure values that contain commas are properly quoted.' },
+            message: {
+                message:
+                    'Could not find "abc", "valueD". Please make sure values that contain commas are properly quoted.',
+            },
             valueDescriptors: List([
                 { display: 'abc', raw: 'abc' },
                 { display: 'valueD', raw: 'valueD' },
@@ -980,5 +987,164 @@ describe('insertPastedData', () => {
         expect(cellValues.get(genCellKey(fkOne, 1))).toEqual(List([{ display: 'one', raw: 'one' }]));
         expect(cellValues.get(genCellKey(fkOne, 2))).toEqual(List([{ display: 'two', raw: 'two' }]));
         expect(changes.selectionCells).toEqual([genCellKey(fkOne, 1), genCellKey(fkOne, 2)]);
+    });
+});
+
+describe('loadEditorModelData', () => {
+    const orderedRows = ['2811466', '2805931'];
+    const rows = {
+        '2805931': {
+            'TimeField./,$&': '16:10',
+            'IntField./,$&': 333,
+            LSID: 'urn:lsid:labkey.com:Sample.Folder-519.24:26',
+            'tcField./,$&': '2',
+            'DtField./,$&': [{ displayValue: '07Feb2025', value: '2025-02-07 00:00:00.000' }],
+            'txtField./,$&': '777',
+            MaterialExpDate: [{ displayValue: '07Feb25 00:00:00.000', value: '2025-02-07 00:00:00.000' }],
+            SampleState: [{ displayValue: 'Available', value: 70 }],
+            'ontField./,$&': '666',
+            Name: 'S-26',
+            'MultiField./,$&': '444',
+            Folder: [{ displayValue: 'Biologics Example', value: '01b94403-4179-1039-a799-ea54f212702c' }],
+            'idField./,$&': '000631254',
+            Units: 'mL',
+            Alias: [],
+            'DtTimeField./,$&': [{ displayValue: '2025-02-07 16:30', value: '2025-02-07 16:30:00.000' }],
+            'lkField./,$&': [{ displayValue: 'Assay Required File', value: 37721 }],
+            RowId: 2805931,
+            'DecField./,$&': 222,
+            'aliqAndParent$,./': '888',
+            StoredAmount: 99,
+            Description: '111',
+            'sampleField./,$&': [{ displayValue: '10-1-1', value: 117334 }],
+            'BoolField./,$&': false,
+            'userField./,$&': [{ displayValue: 'assaytypedesigner', value: 14688 }],
+            'flagField./,$&': '555',
+        },
+        '2811466': {
+            'TimeField./,$&': '16:20',
+            'IntField./,$&': 3,
+            LSID: 'urn:lsid:labkey.com:Sample.Folder-519.24:27',
+            'tcField./,$&': '3',
+            'DtField./,$&': [{ displayValue: '04Feb2025', value: '2025-02-04 00:00:00.000' }],
+            'txtField./,$&': '7',
+            MaterialExpDate: [{ displayValue: '10Feb25 00:00:00.000', value: '2025-02-10 00:00:00.000' }],
+            SampleState: [{ displayValue: 'Available', value: 70 }],
+            'ontField./,$&': '666',
+            Name: 'S-20-3',
+            'MultiField./,$&': '444',
+            Folder: [{ displayValue: 'Biologics Example', value: '01b94403-4179-1039-a799-ea54f212702c' }],
+            'idField./,$&': '000631255',
+            'fileField./,$&': [
+                {
+                    displayValue: 'sampletype/before.png',
+                    value: '/Users/corynathe/LabKey/trunk/build/deploy/files/Biologics Example/@files/sampletype/before.png',
+                },
+            ],
+            Units: 'mL',
+            Alias: [],
+            'aliqField$,./': '123',
+            'DtTimeField./,$&': [{ displayValue: '2025-01-29 24:00', value: '2025-01-29 00:00:00.000' }],
+            'lkField./,$&': [{ displayValue: 'DAS Testing', value: 42876 }],
+            RowId: 2811466,
+            'DecField./,$&': 22,
+            'aliqAndParent$,./': '456',
+            StoredAmount: 3,
+            Description: 'desc',
+            'sampleField./,$&': [{ displayValue: '00401', value: 2675720 }],
+            'BoolField./,$&': true,
+            'userField./,$&': [{ displayValue: 'editorwithoutdelete', value: 5027 }],
+            'flagField./,$&': '555',
+        },
+    };
+
+    test('get column by index', async () => {
+        const columns = [
+            new QueryColumn({
+                fieldKey: 'Name',
+                fieldKeyArray: ['Name'],
+                fieldKeyPath: 'Name',
+                derivationDataScope: null,
+                name: 'Name',
+            }),
+            new QueryColumn({
+                fieldKey: 'DtField$P$S$C$D$A',
+                fieldKeyArray: ['DtField./,$&'],
+                fieldKeyPath: 'DtField$P$S$C$D$A',
+                derivationDataScope: 'ParentOnly',
+                name: 'DtField./,$&',
+            }),
+            new QueryColumn({
+                fieldKey: 'IntField$P$S$C$D$A',
+                fieldKeyArray: ['IntField./,$&'],
+                fieldKeyPath: 'IntField$P$S$C$D$A',
+                derivationDataScope: 'ParentOnly',
+                name: 'IntField./,$&',
+            }),
+            new QueryColumn({
+                fieldKey: 'lkField$P$S$C$D$A',
+                fieldKeyArray: ['lkField./,$&'],
+                fieldKeyPath: 'lkField$P$S$C$D$A',
+                name: 'lkField./,$&',
+                derivationDataScope: 'ParentOnly',
+                lookup: {
+                    displayColumn: 'Name',
+                    isPublic: true,
+                    keyColumn: 'RowId',
+                    public: true,
+                    queryName: 'AssayList',
+                    schema: 'assay',
+                    schemaName: 'assay',
+                },
+            }),
+            new QueryColumn({
+                fieldKey: 'sampleField$P$S$C$D$A',
+                fieldKeyArray: ['sampleField./,$&'],
+                fieldKeyPath: 'sampleField$P$S$C$D$A',
+                name: 'sampleField./,$&',
+                derivationDataScope: 'ParentOnly',
+                lookup: {
+                    displayColumn: 'Name',
+                    isPublic: true,
+                    keyColumn: 'RowId',
+                    public: true,
+                    queryName: 'Materials',
+                    schema: 'exp',
+                    schemaName: 'exp',
+                },
+            }),
+            new QueryColumn({
+                fieldKey: 'aliqField$D$C$P$S',
+                fieldKeyArray: ['aliqField$,./'],
+                fieldKeyPath: 'aliqField$D$C$P$S',
+                name: 'aliqField$,./',
+                derivationDataScope: 'ChildOnly',
+            }),
+            new QueryColumn({
+                fieldKey: 'aliqAndParent$D$C$P$S',
+                fieldKeyArray: ['aliqAndParent$,./'],
+                fieldKeyPath: 'aliqAndParent$D$C$P$S',
+                name: 'aliqAndParent$,./',
+                derivationDataScope: 'All',
+            }),
+        ];
+
+        const result = await loadEditorModelData(orderedRows, rows, columns, false);
+        expect(result.toJS()).toStrictEqual({
+            'name&&0': [{ display: 'S-20-3', raw: 'S-20-3' }],
+            'name&&1': [{ display: 'S-26', raw: 'S-26' }],
+            'aliqandparent$d$c$p$s&&0': [{ display: '456', raw: '456' }],
+            'samplefield$p$s$c$d$a&&0': [{ display: '00401', raw: 2675720 }],
+            'aliqandparent$d$c$p$s&&1': [{ display: '888', raw: '888' }],
+            'samplefield$p$s$c$d$a&&1': [{ display: '10-1-1', raw: 117334 }],
+            'intfield$p$s$c$d$a&&0': [{ display: 3, raw: 3 }],
+            'dtfield$p$s$c$d$a&&0': [{ display: '04Feb2025', raw: '2025-02-04 00:00:00.000' }],
+            'intfield$p$s$c$d$a&&1': [{ display: 333, raw: 333 }],
+            'aliqfield$d$c$p$s&&0': [{ display: '123', raw: '123' }],
+            'dtfield$p$s$c$d$a&&1': [{ display: '07Feb2025', raw: '2025-02-07 00:00:00.000' }],
+            'aliqfield$d$c$p$s&&1': [{ display: undefined, raw: undefined }],
+            'lkfield$p$s$c$d$a&&0': [{ display: 'DAS Testing', raw: 42876 }],
+            'lkfield$p$s$c$d$a&&1': [{ display: 'Assay Required File', raw: 37721 }],
+        });
     });
 });

@@ -18,8 +18,7 @@ import { getServerContext, Utils } from '@labkey/api';
 import { ChangeEvent, CSSProperties } from 'react';
 
 import { hasParameter, toggleParameter } from '../url/ActionURL';
-import { encodePart } from '../../public/SchemaQuery';
-import { GridColumn } from '../components/base/models/GridColumn';
+import { QueryInfo } from '../../public/QueryInfo';
 
 // Case-insensitive Object reference. Returns undefined if either object or prop does not resolve.
 // If both casings exist (e.g. 'x' and 'X' are props) then either value may be returned.
@@ -275,18 +274,18 @@ function isSameWithStringCompare(value1: any, value2: any): boolean {
  *
  * @param originalData a map from an id field to a Map from fieldKeys to an object with a 'value' field
  * @param updatedValues an object mapping fieldKeys to values that are being updated
- * @param primaryKeys the list of primary fieldKey names
+ * @param queryInfo the queryInfo to get column information from
  * @param additionalCols additional array of fieldKeys to include
  */
 export function getUpdatedData(
-    originalData: Map<string, any>,
-    updatedValues: any,
-    primaryKeys: string[],
+    originalData: Map<string, any>, // the rows in the original data have column names as keys
+    updatedValues: Record<string, any>, // the keys here are column fieldKeys
+    queryInfo: QueryInfo,
     additionalCols?: Set<string>
 ): any[] {
     const updateValuesMap = Map<any, any>(updatedValues);
     const pkColsLc = new Set<string>();
-    primaryKeys.forEach(key => pkColsLc.add(key.toLowerCase()));
+    queryInfo.pkCols.forEach(key => pkColsLc.add(key.toLowerCase()));
     additionalCols?.forEach(col => pkColsLc.add(col.toLowerCase()));
 
     // if the originalData has the container/folder values, keep those as well (i.e. treat it as a primary key)
@@ -298,19 +297,30 @@ export function getUpdatedData(
 
     const updatedData = originalData.map(originalRowMap => {
         return originalRowMap.reduce((m, fieldValueMap, key) => {
-            // Issue 42672: The original data has keys that are names or captions for the columns.  We need to use
-            // the encoded key that will match what's expected for filtering on the server side (e.g., "U g$Sl" instead of "U g/l")
-            const encodedKey = encodePart(key);
+            const isPKCol = pkColsLc.has(key.toLowerCase());
+
+            // Issue 42672: The original data has keys that are column names. Need to get the QueryColumn object from that
+            // name so that we can get the fieldKey for the column to get the updated value from the updateValuesMap.
+            // (e.g., "U g$Sl" instead of "U g/l")
+            const col = queryInfo.getColumnFromName(key);
+            if (!col && !isPKCol) {
+                if (fieldValueMap) {
+                    throw new Error(`Unable to find column for key ${key}.`);
+                } else {
+                    return m;
+                }
+            }
+
             if (fieldValueMap?.has('value')) {
-                if (pkColsLc.has(key.toLowerCase())) {
+                if (isPKCol) {
                     return m.set(key, fieldValueMap.get('value'));
                 } else if (
-                    updateValuesMap.has(encodedKey) &&
-                    !isSameWithStringCompare(updateValuesMap.get(encodedKey), fieldValueMap.get('value'))
+                    updateValuesMap.has(col.fieldKey) &&
+                    !isSameWithStringCompare(updateValuesMap.get(col.fieldKey), fieldValueMap.get('value'))
                 ) {
                     return m.set(
                         key,
-                        updateValuesMap.get(encodedKey) == undefined ? null : updateValuesMap.get(encodedKey)
+                        updateValuesMap.get(col.fieldKey) == undefined ? null : updateValuesMap.get(col.fieldKey)
                     );
                 } else {
                     return m;
@@ -318,7 +328,7 @@ export function getUpdatedData(
             }
             // Handle multi-value select
             else if (List.isList(fieldValueMap)) {
-                let updatedVal = updateValuesMap.get(encodedKey);
+                let updatedVal = updateValuesMap.get(col.fieldKey);
                 if (Array.isArray(updatedVal)) {
                     updatedVal = updatedVal.map(val => {
                         const match = fieldValueMap.find(original => original.get('value') === val);
@@ -329,11 +339,11 @@ export function getUpdatedData(
                     });
 
                     return m.set(key, updatedVal);
-                } else if (updateValuesMap.has(encodedKey) && updatedVal === undefined) {
+                } else if (updateValuesMap.has(col.fieldKey) && updatedVal === undefined) {
                     return m.set(key, []);
                 } else return m;
             } else return m;
-        }, Map<any, any>());
+        }, Map<string, any>());
     });
     // we want the rows that contain more than just the primaryKeys
     return updatedData

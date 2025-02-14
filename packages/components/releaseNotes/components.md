@@ -7,6 +7,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Use component in `EntityDetailsForm`, `QueryFormInputs`, `AssayPropertiesInput`, and `TextInput`
 - Do some more error message resolution
 
+### version 6.23.0
+*Released*: 13 February 2025
+- Remove usages of encodePart when dealing with data rows for update cases
+  - EditableGridLoaderFromSelection not to encodePart() in the data rows, leave keyed by column name as it comes from server
+  - BulkUpdateForm not to encodePart() when comparing with original data, use QueryInfo to lookup column instead
+  - Fix up sample aliquot-only vs sample-only fields to use fieldKey instead of name
+  - getSampleIdentifyingFieldGridData() to use column.index instead of column.name for the key
+
 ### version 6.22.4
 *Released*: 12 February 2025
 - Issue 51973: LIMS: Only one person's updates to templates are saved if two admins are working concurrently

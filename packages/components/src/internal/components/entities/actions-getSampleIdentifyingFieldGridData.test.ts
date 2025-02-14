@@ -35,9 +35,9 @@ jest.mock('../../query/selectRows', () => ({
 }));
 
 const columns = [
-    { fieldKey: 'intCol', jsonType: 'int', name: 'intCol' },
-    { fieldKey: 'doubleCol$S', jsonType: 'double', name: 'doubleCol/' },
-    { fieldKey: 'textCol', jsonType: 'string', name: 'textCol' },
+    { fieldKey: 'intCol', jsonType: 'int', name: 'intCol', fieldKeyArray: ['intCol'] },
+    { fieldKey: 'doubleCol$S', jsonType: 'double', name: 'doubleCol/', fieldKeyArray: ['doubleCol/'] },
+    { fieldKey: 'textCol', jsonType: 'string', name: 'textCol', fieldKeyArray: ['textCol'] },
 ];
 const QUERY_INFO_NO_ID_VIEW = QueryInfo.fromJsonForTests(
     {
@@ -77,14 +77,14 @@ describe('getSampleIdentifyingFieldGridData', () => {
     test('with identifying fields, with rows in response', async () => {
         expect(await getSampleIdentifyingFieldGridData([1, 2], QUERY_INFO_WITH_ID_VIEW)).toStrictEqual({
             '1': {
-                doubleCol$S: 1.1,
+                'doubleCol/': 1.1,
                 intCol: 1,
                 rowId: 1,
                 sampleId: 'S1',
                 textCol: 'TEST 1',
             },
             '2': {
-                doubleCol$S: '2.200',
+                'doubleCol/': '2.200',
                 intCol: 2,
                 rowId: 2,
                 sampleId: 'S2',
@@ -96,12 +96,12 @@ describe('getSampleIdentifyingFieldGridData', () => {
     test('includeDefaultColumns false', async () => {
         expect(await getSampleIdentifyingFieldGridData([1, 2], QUERY_INFO_WITH_ID_VIEW, false)).toStrictEqual({
             '1': {
-                doubleCol$S: 1.1,
+                'doubleCol/': 1.1,
                 intCol: 1,
                 textCol: 'TEST 1',
             },
             '2': {
-                doubleCol$S: '2.200',
+                'doubleCol/': '2.200',
                 intCol: 2,
                 textCol: 'test2',
             },

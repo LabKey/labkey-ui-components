@@ -17,8 +17,6 @@ import { Filter, Query, Utils } from '@labkey/api';
 import { fromJS, Iterable, List, Map, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 import { ReactNode } from 'react';
 
-import { encodePart } from '../../../public/SchemaQuery';
-
 import { QueryInfo } from '../../../public/QueryInfo';
 
 import { QueryColumn } from '../../../public/QueryColumn';
@@ -690,12 +688,14 @@ export class EditorModel
     }
 
     static convertQueryDataToEditorData(
-        data: Map<string, any>,
-        updates?: Map<any, any>,
+        data: Map<string, any>, // this map is keyed by column name
+        queryInfo?: QueryInfo,
+        updates?: Map<string, any>, // this map is keyed by column fieldKey
         idsNotToUpdate?: number[],
-        fieldsNotToUpdate?: string[],
-        encode = true
-    ): Map<any, Map<string, any>> {
+        fieldsNotToUpdate?: string[] // keys here are column fieldKey
+    ): Map<string, Map<string, any>> {
+        const fieldsNotToUpdateLower = fieldsNotToUpdate?.map(f => f.toLowerCase()) ?? [];
+
         return data
             .map((valueMap, id) => {
                 const returnMap = valueMap.reduce((m, valueMap_, key) => {
@@ -704,24 +704,20 @@ export class EditorModel
                         return m;
                     }
 
-                    // data maps have keys that are display names/captions. We need to convert to the
-                    // encoded keys used in our filters to match up with values from the forms.
-                    const key_ = encode ? encodePart(key) : key;
-                    return m.set(key_, editorData);
-                }, Map<any, any>());
+                    return m.set(key, editorData);
+                }, Map<string, any>());
 
-                if (!updates) {
+                if (!queryInfo || !updates) {
                     return returnMap;
                 }
 
-                if (!idsNotToUpdate || idsNotToUpdate.indexOf(parseInt(id, 10)) < 0 || !fieldsNotToUpdate) {
-                    return returnMap.merge(updates);
-                }
-
-                let trimmedUpdates = Map<any, any>();
+                let trimmedUpdates = Map<string, any>();
+                const isNotUpdateId = idsNotToUpdate && idsNotToUpdate.indexOf(parseInt(id, 10)) > -1;
                 updates.forEach((value, fieldKey) => {
-                    if (fieldsNotToUpdate.indexOf(fieldKey.toLowerCase()) < 0) {
-                        trimmedUpdates = trimmedUpdates.set(fieldKey, value);
+                    const col = queryInfo.getColumn(fieldKey);
+                    const isFieldNotToUpdate = fieldsNotToUpdateLower.indexOf(fieldKey.toLowerCase()) > -1;
+                    if (!isFieldNotToUpdate || !isNotUpdateId) {
+                        trimmedUpdates = trimmedUpdates.set(col.name, value);
                     }
                 });
                 return returnMap.merge(trimmedUpdates);
@@ -739,7 +735,7 @@ export class EditorModel
         });
 
         return {
-            data: EditorModel.convertQueryDataToEditorData(fromJS(data), undefined, undefined, undefined, false),
+            data: EditorModel.convertQueryDataToEditorData(fromJS(data)),
             dataIds: fromJS(dataIds),
         };
     }
@@ -795,7 +791,7 @@ export class EditorModel
                 // the fieldKey (that is, the parts of that lineage lookup have been encoded for Query names (e.g., / becomes $S)
                 // The Lineage field key parts need to be sent encoded so parsing of the field key parts (that is, splitting on the
                 // '/' character) can be done without a problem on the server side. Ideally, we would be able to send field keys in
-                // all cases, but that is for a later day.
+                // all cases, but that is for a later day. See QueryColumn index() comments.
                 const row = editedRow.reduce((row, value, key) => {
                     // We can skip the idField for the diff check, that will be added to the updated rows later
                     if (key === pkFieldKey) return row;
@@ -808,7 +804,7 @@ export class EditorModel
                         throw new Error(`Unable to find column for key ${key}.`);
                     }
 
-                    let originalValue = originalRow.get(col.fieldKey, undefined);
+                    let originalValue = originalRow.get(col.index, undefined);
 
                     // we can skip any readOnly columns or non-userEditable columns
                     if (col.readOnly || !col.userEditable) return row;

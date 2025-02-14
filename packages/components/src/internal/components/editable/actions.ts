@@ -14,8 +14,6 @@ import { selectRows } from '../../query/selectRows';
 
 import { getContainerFilterForLookups } from '../../query/api';
 
-import { encodePart } from '../../../public/SchemaQuery';
-
 import {
     CellMessage,
     CellMessages,
@@ -32,9 +30,10 @@ import {
 import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGridValue, parseCellKey } from './utils';
 
 /**
- * Do not use this method directly, use initEditorModel instead
+ * Do not use this method directly, use initEditorModel instead.
+ * Exported for jest testing.
  */
-const loadEditorModelData = async (
+export const loadEditorModelData = async (
     orderedRows: string[],
     rows: Record<string, any>,
     columns: QueryColumn[],
@@ -48,9 +47,11 @@ const loadEditorModelData = async (
         orderedRows.forEach((id, rn) => {
             const row = rows[id];
             const cellKey = genCellKey(col.fieldKey, rn);
-            // Our loaders (e.g. EditableGridLoaderFromSelection) use EditorModel.convertQueryDataToEditorData which
-            // uses encodePart, so we check for the encoded fieldKey.
-            const value = row[col.fieldKey] ?? row[encodePart(col.fieldKey)];
+
+            // Our loaders (e.g. EditableGridLoaderFromSelection) use data objects from selectRows which has
+            // rows objects keyed by column name for base table columns and by fieldKey for lookup columns
+            // (see comments in QueryColumn index()).
+            const value = row[col.index];
 
             if (Array.isArray(value)) {
                 // assume to be list of {displayValue, value} objects

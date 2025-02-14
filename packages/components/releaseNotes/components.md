@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD February 2025
+### version 6.23.1
+*Released*: 14 February 2025
 - Misc 25.3 fixes
   - Issue 52228: App using an Identifying field that's required errors during sample import
   - Issue 52230: App broken link under Calculated Columns data field hover tooltip

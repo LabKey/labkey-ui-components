@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { PermissionTypes } from '@labkey/api';
+import { useCallback, useEffect, useState } from 'react';
+import { Filter, PermissionTypes, Query } from '@labkey/api';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { useAppContext } from '../../AppContext';
@@ -8,6 +8,8 @@ import { Container } from '../base/models/Container';
 import { User } from '../base/models/User';
 import { resolveErrorMessage } from '../../util/messaging';
 import { FetchContainerOptions } from '../security/APIWrapper';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { caseInsensitive } from '../../util/utils';
 
 /**
  * Applies the permissions on the container to the user. Only permission related User fields are mutated.
@@ -29,6 +31,70 @@ function applyPermissions(container: Container, user: User): User {
         canUpdate: contextUser.hasUpdatePermission(),
         canUpdateOwn: contextUser.hasUpdatePermission(),
     });
+}
+
+export type UseContainerPath = {
+    containerPath: string;
+    error: string;
+    isLoaded: boolean;
+};
+
+export interface UseContainerPathOptions {
+    dataIdColumn?: string;
+    pathColumn?: string;
+}
+
+export function useContainerPath(
+    schemaQuery: SchemaQuery,
+    dataId: string | number,
+    options: UseContainerPathOptions = {}
+): UseContainerPath {
+    const { dataIdColumn = 'RowId', pathColumn = 'Folder/Path' } = options;
+    const [containerPath, setContainerPath] = useState<string>(undefined);
+    const [error, setError] = useState<string>(undefined);
+    const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
+    const { api } = useAppContext();
+
+    const load = useCallback(async () => {
+        if (dataId === undefined || dataId === null) return;
+
+        setLoadingState(LoadingState.LOADING);
+
+        try {
+            const result = await api.query.selectRows({
+                columns: [pathColumn],
+                containerFilter: Query.ContainerFilter.allInProjectPlusShared,
+                filterArray: [Filter.create(dataIdColumn, dataId)],
+                schemaQuery,
+            });
+
+            const [row] = result.rows;
+            if (row) {
+                const _containerId = caseInsensitive(row, pathColumn).value;
+                if (_containerId) {
+                    setContainerPath(_containerId);
+                } else {
+                    setError('Container path not resolved from row.');
+                }
+            } else {
+                setError('Container path not found.');
+            }
+        } catch (e) {
+            setError(resolveErrorMessage(e) ?? 'Failed to resolve container path.');
+        }
+
+        setLoadingState(LoadingState.LOADED);
+    }, [api.query, dataId, dataIdColumn, pathColumn, schemaQuery]);
+
+    useEffect(() => {
+        load();
+    }, [load]);
+
+    return {
+        containerPath,
+        error,
+        isLoaded: !isLoading(loadingState),
+    };
 }
 
 export interface ContainerUser {

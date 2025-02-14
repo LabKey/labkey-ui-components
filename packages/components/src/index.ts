@@ -40,7 +40,7 @@ import { SchemaDetails } from './internal/SchemaDetails';
 import { SCHEMAS } from './internal/schemas';
 import { isLoading, LoadingState } from './public/LoadingState';
 import { ExtendedMap } from './public/ExtendedMap';
-import { useContainerUser } from './internal/components/container/actions';
+import { useContainerPath, useContainerUser } from './internal/components/container/actions';
 import { request } from './internal/request';
 
 import {
@@ -1101,6 +1101,7 @@ const App = {
 
 const Hooks = {
     useAppContext,
+    useContainerPath,
     useContainerUser,
     useEnterEscape,
     useLabelPrintingContext,
@@ -1306,6 +1307,7 @@ export {
     SecurityAssignment,
     SecurityRole,
     Principal,
+    useContainerPath,
     useContainerUser,
     useUserProperties,
     isLoginAutoRedirectEnabled,
@@ -1960,7 +1962,7 @@ export type { WithAdminAppContext } from './internal/components/administration/u
 export type { Groups, Member, GroupMembership } from './internal/components/administration/models';
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
-export type { ContainerUser, UseContainerUser } from './internal/components/container/actions';
+export type { ContainerUser, UseContainerPath, UseContainerUser } from './internal/components/container/actions';
 export type {
     FolderAPIWrapper,
     FolderSettingsOptions,

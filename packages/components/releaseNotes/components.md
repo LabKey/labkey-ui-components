@@ -4,6 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Add new `InternalSpacesWarning` component to warn when values contain multiple spaces between words
+- Use component in `EntityDetailsForm`, `QueryFormInputs`, `AssayPropertiesInput`, and `TextInput`
+- Do some more error message resolution
 
 ### version 6.22.4
 *Released*: 12 February 2025

@@ -264,7 +264,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
             });
 
             setSubmitting(false, () => {
-                this.saveModel({ domain: savedDomain, exception: undefined }, () => {
+                this.saveModel({ name: savedDomain.name, domain: savedDomain, exception: undefined }, () => {
                     onComplete(this.state.model);
                 });
             });

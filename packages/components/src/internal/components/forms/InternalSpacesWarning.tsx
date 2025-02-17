@@ -18,3 +18,5 @@ export const InternalSpacesWarning: FC<Props> = ({ value, fieldName = 'name' }) 
     }
     return null;
 };
+
+InternalSpacesWarning.displayName = 'InternalSpacesWarning';

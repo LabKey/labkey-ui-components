@@ -84,7 +84,7 @@ export const NameInput: FC<InputProps> = memo(props => (
             onChange={props.onChange}
             disabled={!props.model.isNew() && !props.canRename}
         />
-        <InternalSpacesWarning value={props.model.name || ''} fieldName="name" />
+        <InternalSpacesWarning value={props.model.name} fieldName="name" />
     </AssayPropertiesInput>
 ));
 NameInput.displayName = 'NameInput';

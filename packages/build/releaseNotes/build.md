@@ -1,5 +1,10 @@
 # @labkey/build
 
+### version 8.4.0
+*Released*: 17 February 2025
+- Add `source-map-loader` as a dependency
+- Add webpack rule for processing source maps using `source-map-loader`. This is set up to specifically target `@labkey` packages.
+
 ### version 8.3.0
 *Released*: 5 November 2024
 - Package updates

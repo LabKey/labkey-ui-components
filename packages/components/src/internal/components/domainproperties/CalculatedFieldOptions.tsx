@@ -68,7 +68,11 @@ const HELP_TIP_BODY = (
         <p>Define the SQL expression to use for this calculated field.</p>
         <p>
             The expression must be valid LabKey SQL and can use the default system fields, custom fields, constants, and
-            operators. Learn more about using <HelpLink topic={LABKEY_SQL_TOPIC}>LabKey SQL</HelpLink>.
+            operators. Learn more about using{' '}
+            <HelpLink topic={LABKEY_SQL_TOPIC} useDefaultUrl>
+                LabKey SQL
+            </HelpLink>
+            .
         </p>
     </div>
 );

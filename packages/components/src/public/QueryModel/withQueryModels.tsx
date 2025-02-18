@@ -69,6 +69,7 @@ export interface Actions {
     loadPreviousPage: (id: string) => void;
     loadRows: (id: string) => void;
     replaceSelections: (id: string, selections: string[]) => void;
+    resetModel: (id: string, loadSelections?: boolean) => void;
     resetTotalCountState: () => void;
     selectAllRows: (id: string) => void;
     selectPage: (id: string, checked: boolean) => void;
@@ -245,6 +246,7 @@ export function withQueryModels<Props>(
                 loadLastPage: this.loadLastPage,
                 loadCharts: this.loadCharts,
                 replaceSelections: this.replaceSelections,
+                resetModel: this.resetModel,
                 resetTotalCountState: this.resetTotalCountState,
                 selectAllRows: this.selectAllRows,
                 selectRow: this.selectRow,
@@ -1035,6 +1037,24 @@ export function withQueryModels<Props>(
                     this.maybeLoad(id, false, shouldLoad, shouldLoad && loadSelections);
                     saveSettingsToLocalStorage(this.state.queryModels[id]);
                 }
+            );
+        };
+
+        /**
+         * Resets and reloads the model's rows, pagination, and optionally selections. Use this method after a user
+         * modifies rows in a model. See Issue 51897.
+         * @param id
+         * @param loadSelections
+         */
+        resetModel = (id: string, loadSelections: boolean): void => {
+            this.setState(
+                produce<State>(draft => {
+                    const model = draft.queryModels[id];
+                    resetRowsState(model);
+                    resetSelectionState(model);
+                    resetTotalCountState(model);
+                }),
+                () => this.maybeLoad(id, true, true, loadSelections, true)
             );
         };
 

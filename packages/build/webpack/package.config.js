@@ -47,6 +47,7 @@ if (process.env.ANALYZE) {
 
 module.exports = {
     entry: './src/index.ts',
+    devtool: 'source-map',
     target: 'web',
     mode: 'production',
     module: {

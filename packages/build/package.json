@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "8.3.0",
+  "version": "8.4.0",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"
@@ -34,6 +34,7 @@
     "rimraf": "~6.0.1",
     "sass": "~1.77.8",
     "sass-loader": "~14.2.1",
+    "source-map-loader": "~5.0.0",
     "style-loader": "~4.0.0",
     "typescript": "~5.6.3",
     "webpack": "~5.96.1",

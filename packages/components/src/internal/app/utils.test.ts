@@ -830,48 +830,70 @@ describe('utils', () => {
     test('isCommunityDistribution', () => {
         expect(isCommunityDistribution({ api: { moduleNames: ['api'] } })).toBeTruthy(); // LKS Community
         expect(isCommunityDistribution({ api: { moduleNames: ['samplemanagement'] } })).toBeFalsy(); // LKSM-only
-        expect(isCommunityDistribution({ api: { moduleNames: ['premium'] } })).toBeFalsy(); // LKS Starter
-        expect(isCommunityDistribution({ api: { moduleNames: ['premium', 'professional'] } })).toBeFalsy(); // LKS Professional
+        expect(isCommunityDistribution({ api: { moduleNames: ['premium', 'samplemanagement'] } })).toBeFalsy(); // LKS Starter
         expect(
-            isCommunityDistribution({ api: { moduleNames: ['premium', 'professional', 'compliance'] } })
+            isCommunityDistribution({ api: { moduleNames: ['premium', 'professional', 'samplemanagement'] } })
+        ).toBeFalsy(); // LKS Professional
+        expect(
+            isCommunityDistribution({
+                api: { moduleNames: ['premium', 'professional', 'compliance', 'samplemanagement'] },
+            })
         ).toBeFalsy(); // LKS Enterprise
     });
 
     test('isSampleManagerDistribution', () => {
         expect(isSampleManagerDistribution({ api: { moduleNames: ['api'] } })).toBeFalsy(); // LKS Community
         expect(isSampleManagerDistribution({ api: { moduleNames: ['samplemanagement'] } })).toBeTruthy(); // LKSM-only
-        expect(isSampleManagerDistribution({ api: { moduleNames: ['premium'] } })).toBeFalsy(); // LKS Starter
-        expect(isSampleManagerDistribution({ api: { moduleNames: ['premium', 'professional'] } })).toBeFalsy(); // LKS Professional
+        expect(isSampleManagerDistribution({ api: { moduleNames: ['premium', 'samplemanagement'] } })).toBeFalsy(); // LKS Starter
         expect(
-            isSampleManagerDistribution({ api: { moduleNames: ['premium', 'professional', 'compliance'] } })
+            isSampleManagerDistribution({ api: { moduleNames: ['premium', 'professional', 'samplemanagement'] } })
+        ).toBeFalsy(); // LKS Professional
+        expect(
+            isSampleManagerDistribution({
+                api: { moduleNames: ['premium', 'professional', 'compliance', 'samplemanagement'] },
+            })
         ).toBeFalsy(); // LKS Enterprise
     });
 
     test('isStarterDistribution', () => {
         expect(isStarterDistribution({ api: { moduleNames: ['api'] } })).toBeFalsy(); // LKS Community
         expect(isStarterDistribution({ api: { moduleNames: ['samplemanagement'] } })).toBeFalsy(); // LKSM-only
-        expect(isStarterDistribution({ api: { moduleNames: ['premium'] } })).toBeTruthy(); // LKS Starter
-        expect(isStarterDistribution({ api: { moduleNames: ['premium', 'professional'] } })).toBeFalsy(); // LKS Professional
-        expect(isStarterDistribution({ api: { moduleNames: ['premium', 'professional', 'compliance'] } })).toBeFalsy(); // LKS Enterprise
+        expect(isStarterDistribution({ api: { moduleNames: ['premium', 'samplemanagement'] } })).toBeTruthy(); // LKS Starter
+        expect(
+            isStarterDistribution({ api: { moduleNames: ['premium', 'professional', 'samplemanagement'] } })
+        ).toBeFalsy(); // LKS Professional
+        expect(
+            isStarterDistribution({
+                api: { moduleNames: ['premium', 'professional', 'compliance', 'samplemanagement'] },
+            })
+        ).toBeFalsy(); // LKS Enterprise
     });
 
     test('isProfessionalDistribution', () => {
         expect(isProfessionalDistribution({ api: { moduleNames: ['api'] } })).toBeFalsy(); // LKS Community
         expect(isProfessionalDistribution({ api: { moduleNames: ['samplemanagement'] } })).toBeFalsy(); // LKSM-only
-        expect(isProfessionalDistribution({ api: { moduleNames: ['premium'] } })).toBeFalsy(); // LKS Starter
-        expect(isProfessionalDistribution({ api: { moduleNames: ['premium', 'professional'] } })).toBeTruthy(); // LKS Professional
+        expect(isProfessionalDistribution({ api: { moduleNames: ['premium', 'samplemanagement'] } })).toBeFalsy(); // LKS Starter
         expect(
-            isProfessionalDistribution({ api: { moduleNames: ['premium', 'professional', 'compliance'] } })
+            isProfessionalDistribution({ api: { moduleNames: ['premium', 'professional', 'samplemanagement'] } })
+        ).toBeTruthy(); // LKS Professional
+        expect(
+            isProfessionalDistribution({
+                api: { moduleNames: ['premium', 'professional', 'compliance', 'samplemanagement'] },
+            })
         ).toBeFalsy(); // LKS Enterprise
     });
 
     test('isEnterpriseDistribution', () => {
         expect(isEnterpriseDistribution({ api: { moduleNames: ['api'] } })).toBeFalsy(); // LKS Community
         expect(isEnterpriseDistribution({ api: { moduleNames: ['samplemanagement'] } })).toBeFalsy(); // LKSM-only
-        expect(isEnterpriseDistribution({ api: { moduleNames: ['premium'] } })).toBeFalsy(); // LKS Starter
-        expect(isEnterpriseDistribution({ api: { moduleNames: ['premium', 'professional'] } })).toBeFalsy(); // LKS Professional
+        expect(isEnterpriseDistribution({ api: { moduleNames: ['premium', 'samplemanagement'] } })).toBeFalsy(); // LKS Starter
         expect(
-            isEnterpriseDistribution({ api: { moduleNames: ['premium', 'professional', 'compliance'] } })
+            isEnterpriseDistribution({ api: { moduleNames: ['premium', 'professional', 'samplemanagement'] } })
+        ).toBeFalsy(); // LKS Professional
+        expect(
+            isEnterpriseDistribution({
+                api: { moduleNames: ['premium', 'professional', 'compliance', 'samplemanagement'] },
+            })
         ).toBeTruthy(); // LKS Enterprise
     });
 
@@ -1014,11 +1036,15 @@ describe('utils', () => {
     test('isCalculatedFieldsEnabled', () => {
         expect(isCalculatedFieldsEnabled()).toBeFalsy();
         expect(isCalculatedFieldsEnabled()).toBeFalsy();
-        expect(isCalculatedFieldsEnabled({ api: { moduleNames: [] } })).toBeFalsy(); // LKS Community
-        expect(isCalculatedFieldsEnabled({ api: { moduleNames: ['premium'] } })).toBeFalsy(); // LKS Starter
-        expect(isCalculatedFieldsEnabled({ api: { moduleNames: ['premium', 'professional'] } })).toBeTruthy(); // LKS Professional
+        expect(isCalculatedFieldsEnabled({ api: { moduleNames: ['api'] } })).toBeFalsy(); // LKS Community
+        expect(isCalculatedFieldsEnabled({ api: { moduleNames: ['premium', 'samplemanagement'] } })).toBeFalsy(); // LKS Starter
         expect(
-            isCalculatedFieldsEnabled({ api: { moduleNames: ['premium', 'professional', 'compliance'] } })
+            isCalculatedFieldsEnabled({ api: { moduleNames: ['premium', 'professional', 'samplemanagement'] } })
+        ).toBeTruthy(); // LKS Professional
+        expect(
+            isCalculatedFieldsEnabled({
+                api: { moduleNames: ['premium', 'professional', 'compliance', 'samplemanagement'] },
+            })
         ).toBeTruthy(); // LKS Enterprise
 
         window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()
@@ -1030,12 +1056,16 @@ describe('utils', () => {
     });
 
     test('isConditionalFormattingEnabled', () => {
-        expect(isConditionalFormattingEnabled({ api: { moduleNames: [] } })).toBeTruthy(); // LKS Community
+        expect(isConditionalFormattingEnabled({ api: { moduleNames: ['api'] } })).toBeTruthy(); // LKS Community
         expect(isConditionalFormattingEnabled({ api: { moduleNames: ['samplemanagement'] } })).toBeFalsy(); // LKSM-only
-        expect(isConditionalFormattingEnabled({ api: { moduleNames: ['premium'] } })).toBeTruthy(); // LKS Starter
-        expect(isConditionalFormattingEnabled({ api: { moduleNames: ['premium', 'professional'] } })).toBeTruthy(); // LKS Professional
+        expect(isConditionalFormattingEnabled({ api: { moduleNames: ['premium', 'samplemanagement'] } })).toBeTruthy(); // LKS Starter
         expect(
-            isConditionalFormattingEnabled({ api: { moduleNames: ['premium', 'professional', 'compliance'] } })
+            isConditionalFormattingEnabled({ api: { moduleNames: ['premium', 'professional', 'samplemanagement'] } })
+        ).toBeTruthy(); // LKS Professional
+        expect(
+            isConditionalFormattingEnabled({
+                api: { moduleNames: ['premium', 'professional', 'compliance', 'samplemanagement'] },
+            })
         ).toBeTruthy(); // LKS Enterprise
 
         window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()

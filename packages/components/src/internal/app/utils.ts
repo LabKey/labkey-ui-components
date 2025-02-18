@@ -448,7 +448,7 @@ export function isDataChangeCommentRequirementFeatureEnabled(moduleContext?: Mod
     return isFeatureEnabled(ProductFeature.DataChangeCommentRequirement, moduleContext);
 }
 
-// should be enabled for LKSM Professional, LIMS, LKB (via ProductFeature) AND for LKS Professional, LKS Enterprise
+// should be enabled via ProductFeature for LKSM Professional, LIMS, LKB AND via distribution for LKS Professional, LKS Enterprise
 export function isCalculatedFieldsEnabled(moduleContext?: ModuleContext): boolean {
     return isApp()
         ? isFeatureEnabled(ProductFeature.CalculatedFields, moduleContext)

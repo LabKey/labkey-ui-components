@@ -67,9 +67,7 @@ export function useContainerPath(
 
         const containerPath = caseInsensitive(result.rows[0], pathColumn)?.value;
         if (!containerPath) {
-            throw new Error(
-                `Failed to resolve folder path from column "${pathColumn}" on ${schemaQuery.schemaName}.${schemaQuery.queryName}.`
-            );
+            throw new Error(`Failed to resolve folder path from column "${pathColumn}" on ${schemaQuery.toString()}.`);
         }
 
         return containerPath;

@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { PermissionTypes } from '@labkey/api';
+import { useCallback, useEffect, useState } from 'react';
+import { Filter, PermissionTypes, Query } from '@labkey/api';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { useAppContext } from '../../AppContext';
@@ -8,6 +8,9 @@ import { Container } from '../base/models/Container';
 import { User } from '../base/models/User';
 import { resolveErrorMessage } from '../../util/messaging';
 import { FetchContainerOptions } from '../security/APIWrapper';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { caseInsensitive } from '../../util/utils';
+import { useLoadableState } from '../../useLoadableState';
 
 /**
  * Applies the permissions on the container to the user. Only permission related User fields are mutated.
@@ -29,6 +32,54 @@ function applyPermissions(container: Container, user: User): User {
         canUpdate: contextUser.hasUpdatePermission(),
         canUpdateOwn: contextUser.hasUpdatePermission(),
     });
+}
+
+export type UseContainerPath = {
+    containerPath: string;
+    error: string;
+    isLoaded: boolean;
+};
+
+export interface UseContainerPathOptions {
+    dataIdColumn?: string;
+    pathColumn?: string;
+}
+
+export function useContainerPath(
+    schemaQuery: SchemaQuery,
+    dataId: string | number,
+    options: UseContainerPathOptions = {}
+): UseContainerPath {
+    const { dataIdColumn = 'RowId', pathColumn = 'Folder/Path' } = options;
+    const { api } = useAppContext();
+
+    const loadContainerPath = useCallback(async () => {
+        const result = await api.query.selectRows({
+            columns: [pathColumn],
+            containerFilter: Query.ContainerFilter.allInProjectPlusShared,
+            filterArray: [Filter.create(dataIdColumn, dataId)],
+            schemaQuery,
+        });
+
+        if (result.rows.length !== 1) {
+            throw new Error(`Failed to resolve folder path. ${result.rowCount} matching results.`);
+        }
+
+        const containerPath = caseInsensitive(result.rows[0], pathColumn)?.value;
+        if (!containerPath) {
+            throw new Error(`Failed to resolve folder path from column "${pathColumn}" on ${schemaQuery.toString()}.`);
+        }
+
+        return containerPath;
+    }, [api.query, dataId, dataIdColumn, pathColumn, schemaQuery]);
+
+    const { error, loadingState, value } = useLoadableState<string>(loadContainerPath);
+
+    return {
+        containerPath: value,
+        error,
+        isLoaded: !isLoading(loadingState),
+    };
 }
 
 export interface ContainerUser {

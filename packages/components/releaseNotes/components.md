@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.??.??
+*Released*: ?? February 2025
+- withQueryModels: add resetModel to Actions
+
 ### version 6.27.0
 *Released*: 4 March 2025
 - Issue 52072: Text choice field values to handle | character within values

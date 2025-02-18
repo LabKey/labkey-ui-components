@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 52167: Update isCalculatedFieldsEnabled() check for LKS distributions
+
 ### version 6.24.0
 *Released*: 17 February 2025
 - Bump `@labkey/api` and `@labkey/build`.

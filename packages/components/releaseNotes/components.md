@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.24.2
+*Released*: 18 February 2025
+- Issue 52167: Update isCalculatedFieldsEnabled() check for LKS distributions
+
 ### version 6.24.1
 *Released*: 18 February 2025
 - Issue 52092: Introduce useContainerPath

@@ -234,7 +234,7 @@ export function freezerManagerIsCurrentApp(): boolean {
 }
 
 export function isSampleStatusEnabled(moduleContext?: ModuleContext): boolean {
-    return hasModule('SampleManagement', moduleContext);
+    return hasSampleManagementModule(moduleContext);
 }
 
 export function isQueryMetadataEditor(): boolean {
@@ -410,7 +410,7 @@ export function isELNEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isProtectedDataEnabled(moduleContext?: ModuleContext): boolean {
-    return hasModule('compliance', moduleContext) && hasModule('complianceActivities', moduleContext);
+    return hasComplianceModule(moduleContext) && hasModule('complianceActivities', moduleContext);
 }
 
 export function isNamingPrefixEnabled(moduleContext?: ModuleContext): boolean {
@@ -448,10 +448,11 @@ export function isDataChangeCommentRequirementFeatureEnabled(moduleContext?: Mod
     return isFeatureEnabled(ProductFeature.DataChangeCommentRequirement, moduleContext);
 }
 
+// should be enabled via ProductFeature for LKSM Professional, LIMS, LKB AND via distribution for LKS Professional, LKS Enterprise
 export function isCalculatedFieldsEnabled(moduleContext?: ModuleContext): boolean {
     return isApp()
         ? isFeatureEnabled(ProductFeature.CalculatedFields, moduleContext)
-        : !isCommunityDistribution(moduleContext);
+        : isProfessionalDistribution(moduleContext) || isEnterpriseDistribution(moduleContext);
 }
 
 export function isCustomImportTemplatesEnabled(moduleContext?: ModuleContext): boolean {
@@ -461,7 +462,10 @@ export function isCustomImportTemplatesEnabled(moduleContext?: ModuleContext): b
 // This is enabled for all distributions except sample manager-only distributions. LKS distributions don't
 // currently supply feature flags, so a pure flag check is not sufficient.
 export function isConditionalFormattingEnabled(moduleContext?: ModuleContext): boolean {
-    return isFeatureEnabled(ProductFeature.ConditionalFormatting) || !isSampleManagerDistribution(moduleContext);
+    return (
+        isFeatureEnabled(ProductFeature.ConditionalFormatting, moduleContext) ||
+        !isSampleManagerDistribution(moduleContext)
+    );
 }
 
 export function isFeatureEnabled(flag: ProductFeature, moduleContext?: ModuleContext): boolean {
@@ -484,12 +488,42 @@ export function hasPremiumModule(moduleContext?: ModuleContext): boolean {
     return hasModule('Premium', moduleContext);
 }
 
-export function isCommunityDistribution(moduleContext?: ModuleContext): boolean {
-    return !hasModule('SampleManagement', moduleContext) && !hasPremiumModule(moduleContext);
+export function hasProfessionalModule(moduleContext?: ModuleContext): boolean {
+    return hasModule('Professional', moduleContext);
+}
+
+export function hasComplianceModule(moduleContext?: ModuleContext): boolean {
+    return hasModule('Compliance', moduleContext);
+}
+
+export function hasSampleManagementModule(moduleContext?: ModuleContext): boolean {
+    return hasModule('SampleManagement', moduleContext);
+}
+
+export function isEnterpriseDistribution(moduleContext?: ModuleContext): boolean {
+    return (
+        hasPremiumModule(moduleContext) && hasProfessionalModule(moduleContext) && hasComplianceModule(moduleContext)
+    );
+}
+
+export function isProfessionalDistribution(moduleContext?: ModuleContext): boolean {
+    return (
+        hasPremiumModule(moduleContext) && hasProfessionalModule(moduleContext) && !hasComplianceModule(moduleContext)
+    );
+}
+
+export function isStarterDistribution(moduleContext?: ModuleContext): boolean {
+    return (
+        hasPremiumModule(moduleContext) && !hasProfessionalModule(moduleContext) && !hasComplianceModule(moduleContext)
+    );
 }
 
 export function isSampleManagerDistribution(moduleContext?: ModuleContext): boolean {
-    return hasModule('SampleManagement', moduleContext) && !hasPremiumModule(moduleContext);
+    return hasSampleManagementModule(moduleContext) && !hasPremiumModule(moduleContext);
+}
+
+export function isCommunityDistribution(moduleContext?: ModuleContext): boolean {
+    return !hasSampleManagementModule(moduleContext) && !hasPremiumModule(moduleContext);
 }
 
 export function isRestrictedIssueListSupported(moduleContext?: ModuleContext): boolean {

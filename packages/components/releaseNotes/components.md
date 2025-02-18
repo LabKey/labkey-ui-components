@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.24.0
+*Released*: 17 February 2025
+- Bump `@labkey/api` and `@labkey/build`.
+- Distribution now includes source maps.
+
 ### version 6.23.1
 *Released*: 14 February 2025
 - Misc 25.3 fixes

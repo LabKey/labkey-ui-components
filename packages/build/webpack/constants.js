@@ -241,6 +241,20 @@ module.exports = {
                 type: 'asset',
             }
         ],
+        SOURCE_MAP: [
+            {
+                // Matches against package source files (e.g. premium.js, components.js, etc.)
+                test: /\.js$/,
+                enforce: 'pre',
+                use: [{
+                    loader: 'source-map-loader',
+                    options: {
+                        // Match only against source maps provided by @labkey packages
+                        filterSourceMappingUrl: (url, resourcePath) => /\/@labkey\//.test(resourcePath),
+                    }
+                }],
+            }
+        ],
         STYLE: [
             {
                 test: /\.css$/,

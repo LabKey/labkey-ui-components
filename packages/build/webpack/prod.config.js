@@ -18,7 +18,11 @@ module.exports = {
         filename: '[name].[contenthash].cache.js'
     },
     module: {
-        rules: constants.loaders.TYPESCRIPT.concat(constants.loaders.STYLE).concat(constants.loaders.FILES),
+        rules: constants.loaders.TYPESCRIPT.concat(
+            constants.loaders.STYLE,
+            constants.loaders.FILES,
+            constants.loaders.SOURCE_MAP
+        ),
     },
     resolve: {
         alias: constants.aliases.LABKEY_PACKAGES,

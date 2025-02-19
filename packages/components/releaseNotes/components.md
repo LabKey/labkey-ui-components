@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.25.0
+*Released*: 19 February 2025
 - Add new `InternalSpacesWarning` component to warn when values contain multiple spaces between words
 - Use component in `EntityDetailsForm`, `QueryFormInputs`, `AssayPropertiesInput`, and `TextInput`
 - Do some more error message resolution

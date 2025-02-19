@@ -372,7 +372,7 @@ describe('domain properties actions', () => {
         expect(available.contains(TEXT_CHOICE_TYPE)).toBeTruthy();
         expect(available.contains(SAMPLE_TYPE)).toBeTruthy();
         expect(available.contains(PARTICIPANT_TYPE)).toBeTruthy();
-        expect(available.contains(CALCULATED_TYPE)).toBeTruthy();
+        expect(available.contains(CALCULATED_TYPE)).toBeFalsy();
     });
 
     test('getAvailableTypes, no optional allowed', () => {
@@ -462,6 +462,17 @@ describe('domain properties actions', () => {
 
     test('getAvailableTypes, sampleType Premium', () => {
         LABKEY.moduleContext.api = { moduleNames: ['premium'] };
+        const domain = DomainDesign.create({
+            domainKindName: Domain.KINDS.SAMPLE_TYPE,
+            allowCalculatedFields: true,
+        });
+        const available = getAvailableTypes(domain);
+        expect(available.contains(UNIQUE_ID_TYPE)).toBeTruthy();
+        expect(available.contains(CALCULATED_TYPE)).toBeFalsy();
+    });
+
+    test('getAvailableTypes, sampleType Professional', () => {
+        LABKEY.moduleContext.api = { moduleNames: ['premium', 'professional'] };
         const domain = DomainDesign.create({
             domainKindName: Domain.KINDS.SAMPLE_TYPE,
             allowCalculatedFields: true,

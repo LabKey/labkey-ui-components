@@ -23,6 +23,7 @@ import { INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME } from '../constants';
 
 import { FormsyInput, FormsyInputProps } from './FormsyReactComponents';
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import { InternalSpacesWarning } from '../InternalSpacesWarning';
 
 export interface TextInputProps extends DisableableInputProps, Omit<FormsyInputProps, 'onChange'> {
     addLabelAsterisk?: boolean;
@@ -31,6 +32,7 @@ export interface TextInputProps extends DisableableInputProps, Omit<FormsyInputP
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     showLabel?: boolean;
     startFocused?: boolean;
+    includeSpacesWarning?: boolean;
 }
 
 interface TextInputState extends DisableableInputState {
@@ -58,6 +60,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         this.state = {
             didFocus: false,
             isDisabled: props.initiallyDisabled,
+            inputValue: props.value,
         };
 
         this.textInput = React.createRef();
@@ -101,10 +104,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
     }
 
     onChange = (name: string, value: any): void => {
-        if (this.props.allowDisable) {
-            this.setState({ inputValue: value });
-        }
-
+        this.setState({ inputValue: value });
         this.props.onChange?.(value);
     };
 
@@ -120,6 +120,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
             queryColumn,
             showLabel,
             startFocused,
+            includeSpacesWarning,
             ...inputProps
         } = rest;
         let { validations } = inputProps;
@@ -145,23 +146,26 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         }
 
         return (
-            <FormsyInput
-                id={queryColumn.fieldKey}
-                name={queryColumn.fieldKey}
-                placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
-                required={queryColumn.required}
-                {...inputProps}
-                componentRef={this.textInput}
-                disabled={this.state.isDisabled}
-                help={help}
-                label={this.renderLabel()}
-                labelClassName={showLabel ? labelClassName : 'hide-label'}
-                onChange={this.onChange}
-                step={step}
-                type={type}
-                validations={validations}
-                value={this.getInputValue()}
-            />
+            <>
+                <FormsyInput
+                    id={queryColumn.fieldKey}
+                    name={queryColumn.fieldKey}
+                    placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
+                    required={queryColumn.required}
+                    {...inputProps}
+                    componentRef={this.textInput}
+                    disabled={this.state.isDisabled}
+                    help={help}
+                    label={this.renderLabel()}
+                    labelClassName={showLabel ? labelClassName : 'hide-label'}
+                    onChange={this.onChange}
+                    step={step}
+                    type={type}
+                    validations={validations}
+                    value={this.getInputValue()}
+                />
+                {includeSpacesWarning && <InternalSpacesWarning value={this.state.inputValue} />}
+            </>
         );
     }
 }

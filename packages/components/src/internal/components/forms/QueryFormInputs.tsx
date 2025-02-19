@@ -41,6 +41,7 @@ import { DatePickerInput } from './input/DatePickerInput';
 import { TextChoiceInput } from './input/TextChoiceInput';
 
 import { getQueryFormLabelFieldName, isQueryFormLabelField } from './utils';
+import { InternalSpacesWarning } from './InternalSpacesWarning';
 
 export interface QueryFormInputsProps {
     allowFieldDisable?: boolean;
@@ -56,6 +57,7 @@ export interface QueryFormInputsProps {
     fireQSChangeOnInit?: boolean;
     includeLabelField?: boolean;
     initiallyDisableFields?: boolean;
+    internalSpacesWarningFieldKeys?: string[];
     // isIncludedColumn can be used when you want to keep certain columns always filtered out (e.g., aliquot- or
     // sample-only columns). Note: This props is never used by QueryFormInputs, but is needed because this interface is
     // shared with other components. We should probably move this particular prop to a more appropriate place.
@@ -164,6 +166,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             columnFilter,
             containerFilter,
             containerPath,
+            internalSpacesWarningFieldKeys,
             preventCrossFolderEnable,
             pluralNoun = 'rows',
             fieldValues,
@@ -379,16 +382,29 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             );
                         default:
                             return (
-                                <TextInput
-                                    key={i}
-                                    queryColumn={col}
-                                    value={value ? String(value) : value}
-                                    allowDisable={allowFieldDisable}
-                                    initiallyDisabled={shouldDisableField}
-                                    onToggleDisable={this.onToggleDisable}
-                                    addLabelAsterisk={showAsteriskSymbol}
-                                    renderFieldLabel={renderFieldLabel}
-                                />
+                                <>
+                                    <TextInput
+                                        key={i}
+                                        queryColumn={col}
+                                        value={value ? String(value) : value}
+                                        allowDisable={allowFieldDisable}
+                                        initiallyDisabled={shouldDisableField}
+                                        onToggleDisable={this.onToggleDisable}
+                                        addLabelAsterisk={showAsteriskSymbol}
+                                        renderFieldLabel={renderFieldLabel}
+                                    />
+                                    {internalSpacesWarningFieldKeys?.indexOf(col.fieldKey.toLowerCase()) > -1 && (
+                                        <div className="row shift-margin-to-bottom">
+                                            <div className="col-sm-3 col-xs-12" />
+                                            <div className="col-sm-9 col-xs-12 text-danger">
+                                                <InternalSpacesWarning
+                                                    value={value}
+                                                    fieldName={col.caption?.toLowerCase() ?? col.name.toLowerCase()}
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
                             );
                     }
                 });

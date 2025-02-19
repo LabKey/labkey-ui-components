@@ -412,7 +412,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             if (!hasConfirmedNameExpression && this.props.validateProperties) {
                 const response = await this.props.validateProperties(details);
                 if (response.error) {
-                    const updatedModel = model.set('exception', response.error) as SampleTypeModel;
+                    const updatedModel = model.set('exception', resolveErrorMessage(response.error)) as SampleTypeModel;
                     setSubmitting(false, () => {
                         this.setState(
                             () => ({ model: updatedModel, showUniqueIdConfirmation: false }),

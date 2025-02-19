@@ -50,6 +50,7 @@ export interface RenderOptions {
     /** A container path that will be applied to all query-based inputs on this form */
     containerPath?: string;
     hideLabel?: boolean;
+    includeSpacesWarning?: boolean;
 }
 
 export interface EditRendererOptions extends RenderOptions {
@@ -94,11 +95,14 @@ function processFields(
     titleRenderer?: TitleRenderer,
     options?: RenderOptions,
     fileInputRenderer?: (col: QueryColumn, data: any) => ReactNode,
-    onAdditionalFormDataChange?: (name: string, value: any) => any
+    onAdditionalFormDataChange?: (name: string, value: any) => any,
+    internalSpacesWarningFieldKeys?: string[]
 ): OrderedMap<string, DetailField> {
     return queryColumns.reduce((fields, c) => {
         const fieldKey = c.fieldKey.toLowerCase();
-
+        if (internalSpacesWarningFieldKeys?.indexOf(fieldKey) > -1) {
+            options.includeSpacesWarning = true;
+        }
         return fields.set(
             fieldKey,
             new DetailField({
@@ -144,6 +148,7 @@ export interface DetailDisplaySharedProps extends RenderOptions {
     editingMode?: boolean;
     fieldHelpTexts?: Record<string, string>;
     fileInputRenderer?: (col: QueryColumn, data: any) => ReactNode;
+    internalSpacesWarningFieldKeys?: string[];
     onAdditionalFormDataChange?: (name: string, value: any) => any;
     tableCls?: string;
     titleRenderer?: TitleRenderer;
@@ -166,6 +171,7 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
         fieldHelpTexts,
         onAdditionalFormDataChange,
         tableCls,
+        internalSpacesWarningFieldKeys,
     } = props;
 
     const detailRenderer = useMemo(() => {
@@ -193,7 +199,8 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
             titleRenderer,
             options,
             fileInputRenderer,
-            onAdditionalFormDataChange
+            onAdditionalFormDataChange,
+            internalSpacesWarningFieldKeys
         );
 
         body = (
@@ -427,6 +434,7 @@ export function resolveDetailEditRenderer(
                         // required if the nameExpression is not defined to force the form to require a value.
                         required={col.required || col.nameExpression !== undefined}
                         showLabel={showLabel}
+                        includeSpacesWarning={options.includeSpacesWarning}
                         validatePristine
                         validationError={validationError}
                         value={value}

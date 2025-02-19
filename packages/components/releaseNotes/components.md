@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.25.0
+*Released*: 19 February 2025
+- Add new `InternalSpacesWarning` component to warn when values contain multiple spaces between words
+- Use component in `EntityDetailsForm`, `QueryFormInputs`, `AssayPropertiesInput`, and `TextInput`
+- Do some more error message resolution
+
 ### version 6.24.2
 *Released*: 18 February 2025
 - Issue 52167: Update isCalculatedFieldsEnabled() check for LKS distributions
@@ -44,7 +50,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - add StoragePositionNumber field to SampleFinder filter cards
 
 ### version 6.22.1
-*Release*: 11 February 2025
+*Released*: 11 February 2025
 - Issue 52193: Update `QueryColumn.isImportColumn` to match on caption fully stripped of spaces
 
 ### version 6.22.0

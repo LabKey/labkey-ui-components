@@ -27,6 +27,14 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
           value=""
         />
       </div>
+      <div>
+        <div
+          class="col-xs-2"
+        />
+        <div
+          class="col-xs-10"
+        />
+      </div>
     </div>
     <div
       class="row margin-bottom"
@@ -128,6 +136,14 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
           placeholder="Enter a name for this entity"
           type="text"
           value="Test Entity Name"
+        />
+      </div>
+      <div>
+        <div
+          class="col-xs-2"
+        />
+        <div
+          class="col-xs-10"
         />
       </div>
     </div>
@@ -235,6 +251,14 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
           value=""
         />
       </div>
+      <div>
+        <div
+          class="col-xs-2"
+        />
+        <div
+          class="col-xs-10"
+        />
+      </div>
     </div>
     <div
       class="row margin-bottom"
@@ -337,6 +361,14 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
           placeholder="Enter a name for this entity"
           type="text"
           value="Test Entity Name"
+        />
+      </div>
+      <div>
+        <div
+          class="col-xs-2"
+        />
+        <div
+          class="col-xs-10"
         />
       </div>
     </div>
@@ -442,6 +474,14 @@ exports[`<EntityDetailsForm/> with previewName 1`] = `
           placeholder="Enter a name for this entity"
           type="text"
           value="Test Entity Name"
+        />
+      </div>
+      <div>
+        <div
+          class="col-xs-2"
+        />
+        <div
+          class="col-xs-10"
         />
       </div>
     </div>

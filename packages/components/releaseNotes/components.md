@@ -3,7 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 6.??.??
 *Released*: ?? February 2025
-- withQueryModels: add resetModel to Actions
+- withQueryModels: add onModelChange to Actions
+  - onModelChange is an action to call after a user has done something to alter the underlying data for a QueryModel
+    e.g. delete or update rows
 
 ### version 6.26.3
 *Released*: 25 February 2025

@@ -633,7 +633,7 @@ import {
 import { renderWithAppContext } from './internal/test/reactTestLibraryHelpers';
 import { flattenValuesFromRow, QueryModel } from './public/QueryModel/QueryModel';
 import { getExpandQueryInfo, includedColumnsForCustomizationFilter } from './public/QueryModel/CustomizeGridViewModal';
-import { withQueryModels } from './public/QueryModel/withQueryModels';
+import { ChangeType, withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
 import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
 import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
@@ -1754,6 +1754,7 @@ export {
     // QueryModel
     GRID_CHECKBOX_OPTIONS,
     QueryModel,
+    ChangeType,
     withQueryModels,
     GridPanel,
     GridPanelWithModel,

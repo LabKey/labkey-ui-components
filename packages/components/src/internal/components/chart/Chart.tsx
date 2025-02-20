@@ -24,6 +24,8 @@ import { getContainerFilterForFolder } from '../../query/api';
 import { generateId } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
 import { ChartAPIWrapper, DEFAULT_API_WRAPPER } from './api';
 import { ChartConfig, ChartQueryConfig } from './models';
 import { getChartRenderMsg } from './ChartBuilderModal';
@@ -82,9 +84,10 @@ interface Props {
     chart: DataViewInfo;
     container?: string;
     filters?: Filter.IFilter[];
+    model?: QueryModel;
 }
 
-export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => {
+export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, model }) => {
     const { error, reportId } = chart;
     const divId = useMemo(() => generateId('chart-'), []);
     const containerFilter = useMemo(() => getContainerFilterForFolder(container), [container]);
@@ -115,6 +118,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
             if (filters) {
                 queryConfig_.filterArray = [...queryConfig_.filterArray, ...filters];
             }
+            queryConfig_.parameters = model?.queryParameters;
             setQueryConfig(queryConfig_);
         } catch (e) {
             setLoadError(e.exception);
@@ -318,11 +322,11 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
 });
 RReport.displayName = 'RReport';
 
-export const Chart: FC<Props> = memo(({ api = DEFAULT_API_WRAPPER, chart, container, filters }) => {
+export const Chart: FC<Props> = memo(({ api = DEFAULT_API_WRAPPER, chart, container, filters, model }) => {
     if (chart.type === DataViewInfoTypes.RReport) {
         return <RReport api={api} chart={chart} container={container} filters={filters} />;
     } else if (GENERIC_CHART_REPORTS.indexOf(chart.type) > -1) {
-        return <SVGChart api={api} chart={chart} container={container} filters={filters} />;
+        return <SVGChart api={api} chart={chart} container={container} filters={filters} model={model} />;
     }
     return null;
 });

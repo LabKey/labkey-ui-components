@@ -19,10 +19,13 @@ export const includedColumnsForCustomizationFilter = (column: QueryColumn, showA
     // don't allow multiple levels of ancestors since the ancestor value may not be a valid rowId to join through
     const isNestedAncestor =
         column.fieldKeyPath?.indexOf('Ancestors/') !== column.fieldKeyPath?.lastIndexOf('/Ancestors') + 1;
+    // Issue 52337: queryMetadata can mark certain fields as removed that might also happen to be ancestor types. We need to include
+    // the ancestorTypes, but apply the "removeFromViewCustomization" to fields.
+    const isField = !isAncestorChild || column.fieldKeyPath?.split('/').length === 4;
     return (
         (showAllColumns || !column.hidden) &&
         !column.removeFromViews &&
-        (showPremiumFeatures() || !column.removeFromViewCustomization) &&
+        (showPremiumFeatures() || !isField || !column.removeFromViewCustomization) &&
         !isRunSampleAncestor &&
         // Issue 46870: Don't allow selection/inclusion of multi-valued lookup fields from Ancestors
         (!isAncestorChild || (!isNestedAncestor && !column.isJunctionLookup()))

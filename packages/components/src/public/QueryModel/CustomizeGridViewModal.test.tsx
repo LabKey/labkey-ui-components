@@ -258,5 +258,20 @@ describe('includedColumnsForCustomizationFilter', () => {
 
         col = new QueryColumn({ name: 'testColumn', fieldKeyPath: 'Ancestors' });
         expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
+
+        // Issue 52337. removeFromViewCustomization is set via queryMetadata, but is meant to apply to fields only, not types
+        col = new QueryColumn({
+            name: 'Protocol',
+            fieldKeyPath: 'Ancestors/RegistryAndSources/Protocol',
+            removeFromViewCustomization: true,
+        });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
+
+        col = new QueryColumn({
+            name: 'Protocol',
+            fieldKeyPath: 'Ancestors/Samples/SampleType/Protocol',
+            removeFromViewCustomization: true,
+        });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
     });
 });

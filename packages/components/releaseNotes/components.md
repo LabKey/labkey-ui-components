@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 51877: Allow calculated fields for list title column
+
 ### version 6.25.0
 *Released*: 19 February 2025
 - Add new `InternalSpacesWarning` component to warn when values contain multiple spaces between words

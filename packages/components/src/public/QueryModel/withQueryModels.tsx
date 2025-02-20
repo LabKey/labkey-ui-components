@@ -56,6 +56,55 @@ export function withSearchParams<T>(Component: WithSearchParamsComponent<T>): Co
     return Wrapped;
 }
 
+function columnHasFilter(fieldKey, filters: Filter.IFilter[]): boolean {
+    return filters.some(filter => filter.getColumnName() === fieldKey);
+}
+
+function columnsHaveFilter(columns: string[], filters: Filter.IFilter[]): boolean {
+    return columns.some(fieldKey => columnHasFilter(fieldKey, filters));
+}
+
+export enum ChangeType {
+    add = 'add',
+    delete = 'delete',
+    update = 'update',
+}
+
+interface BaseModelChange {
+    changeType: ChangeType;
+}
+
+export interface AddChange extends BaseModelChange {
+    changeType: ChangeType.add;
+}
+
+/**
+ * selectionsForReplace: an optional set of row keys to select after the model is reset.
+ */
+export interface DeleteOptions {
+    selectionsForReplace?: string[];
+}
+
+export interface DeleteChange extends BaseModelChange {
+    changeType: ChangeType.delete;
+    options: DeleteOptions;
+}
+
+/**
+ * columnsChanged: an optional list of fieldKeys used to check against the filters. If any of the columns have filters
+ * on the QueryModel we will reset the model, if not we will only reload the model.
+ */
+export interface UpdateOptions {
+    columnsChanged?: string[];
+}
+
+export interface UpdateChange extends BaseModelChange {
+    changeType: ChangeType.update;
+    options: UpdateOptions;
+}
+
+export type ModelChange = AddChange | DeleteChange | UpdateChange;
+
 export interface Actions {
     addMessage: (id: string, message: GridMessage, duration?: number) => void;
     addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
@@ -68,8 +117,8 @@ export interface Actions {
     loadNextPage: (id: string) => void;
     loadPreviousPage: (id: string) => void;
     loadRows: (id: string) => void;
+    onModelChange: (id: string, modelChange: ModelChange) => void;
     replaceSelections: (id: string, selections: string[]) => void;
-    resetModel: (id: string, loadSelections?: boolean) => void;
     resetTotalCountState: () => void;
     selectAllRows: (id: string) => void;
     selectPage: (id: string, checked: boolean) => void;
@@ -155,6 +204,17 @@ const resetSelectionState = (model: Draft<QueryModel>): void => {
     model.selections = undefined;
     model.selectionsError = undefined;
     model.selectionsLoadingState = LoadingState.INITIALIZED;
+    model.selectionPivot = undefined;
+};
+
+/**
+ * Resets the model to the first page, resets the selection state, and resets the total count state.
+ * @param model The model to reset
+ */
+const resetModelState = (model: Draft<QueryModel>): void => {
+    resetRowsState(model);
+    resetSelectionState(model);
+    resetTotalCountState(model);
 };
 
 /**
@@ -245,8 +305,8 @@ export function withQueryModels<Props>(
                 loadFirstPage: this.loadFirstPage,
                 loadLastPage: this.loadLastPage,
                 loadCharts: this.loadCharts,
+                onModelChange: this.onModelChange,
                 replaceSelections: this.replaceSelections,
-                resetModel: this.resetModel,
                 resetTotalCountState: this.resetTotalCountState,
                 selectAllRows: this.selectAllRows,
                 selectRow: this.selectRow,
@@ -616,7 +676,7 @@ export function withQueryModels<Props>(
             );
         };
 
-        loadRows = async (id: string, loadSelections = false): Promise<void> => {
+        loadRows = async (id: string, loadSelections = false, selectionsForReplace?: string[]): Promise<void> => {
             const { loadRows } = this.props.modelLoader;
 
             if (isLoading(this.state.queryModels[id].queryInfoLoadingState)) {
@@ -644,7 +704,7 @@ export function withQueryModels<Props>(
                         model.rowsError = undefined;
                         model.selectionPivot = undefined;
                     }),
-                    () => this.maybeLoad(id, false, false, loadSelections)
+                    () => this.maybeLoad(id, false, false, loadSelections, false, selectionsForReplace)
                 );
             } catch (error) {
                 let viewDoesNotExist = false;
@@ -829,23 +889,27 @@ export function withQueryModels<Props>(
          * @param loadRows boolean, if true will load the model's rows.
          * @param loadSelections boolean, if true will load selections after loading QueryInfo.
          * @param reloadTotalCount boolean, if true will reload totalCount after loading QueryInfo.
+         * @param selectionsForReplace string[], if defined it will replace the existing selections via replaceSelections
          */
         maybeLoad = (
             id: string,
             loadQueryInfo = false,
             loadRows = false,
             loadSelections = false,
-            reloadTotalCount = false
+            reloadTotalCount = false,
+            selectionsForReplace?: string[]
         ): void => {
             if (loadQueryInfo) {
                 // Postpone loading any rows or selections if we're loading the QueryInfo.
                 this.loadQueryInfo(id, loadRows, loadSelections);
             } else {
                 if (loadRows) {
-                    this.loadRows(id, loadSelections);
+                    this.loadRows(id, loadSelections, selectionsForReplace);
                     this.loadTotalCount(id, reloadTotalCount);
                 } else if (loadSelections) {
                     this.loadSelections(id);
+                } else if (selectionsForReplace !== undefined) {
+                    this.replaceSelections(id, selectionsForReplace);
                 }
             }
 
@@ -1041,24 +1105,6 @@ export function withQueryModels<Props>(
         };
 
         /**
-         * Resets and reloads the model's rows, pagination, and optionally selections. Use this method after a user
-         * modifies rows in a model. See Issue 51897.
-         * @param id
-         * @param loadSelections
-         */
-        resetModel = (id: string, loadSelections: boolean): void => {
-            this.setState(
-                produce<State>(draft => {
-                    const model = draft.queryModels[id];
-                    resetRowsState(model);
-                    resetSelectionState(model);
-                    resetTotalCountState(model);
-                }),
-                () => this.maybeLoad(id, true, true, loadSelections, true)
-            );
-        };
-
-        /**
          * Reset the totalCount state for all models so that the next time loadModel or loadAllModels() is called,
          * it will also call the loadTotalCount().
          */
@@ -1162,6 +1208,48 @@ export function withQueryModels<Props>(
                         model.messages = model.messages.filter(m => m.content !== message.content);
                     }
                 })
+            );
+        };
+
+        /**
+         * A method used to indicate that a user has made a change to the underlying data of a QueryModel, e.g. added,
+         * updated, or deleted rows. This method will at a minimum reload the model, but may also reset the pagination
+         * if the change could result in a bad state. See Issue 51987.
+         * @param id the id of the model
+         * @param modelChange a ModelChange object describing the change
+         */
+        onModelChange = (id: string, modelChange: ModelChange): void => {
+            let shouldLoadTotalCount = false;
+            let selectionsForReplace: string[];
+
+            this.setState(
+                produce<State>(draft => {
+                    const model = draft.queryModels[id];
+
+                    if (modelChange.changeType === ChangeType.add) {
+                        shouldLoadTotalCount = true;
+                    } else if (modelChange.changeType === ChangeType.delete) {
+                        selectionsForReplace = modelChange.options.selectionsForReplace;
+                        shouldLoadTotalCount = true;
+                        resetModelState(model);
+                    } else if (modelChange.changeType === ChangeType.update) {
+                        const { columnsChanged } = modelChange.options;
+                        const hasChangeOnFilteredColumn =
+                            columnsChanged !== undefined && columnsHaveFilter(columnsChanged, model.filters);
+                        const unknownChangeWithFilters = columnsChanged === undefined && model.filters.length > 0;
+
+                        // If we don't know what columns were changed, and we have filters, or there is a change on a
+                        // column with filters, then we need to reset the model, otherwise the grid could be put in a
+                        // bad state. See Issue 51897.
+                        if (hasChangeOnFilteredColumn || unknownChangeWithFilters) {
+                            shouldLoadTotalCount = true;
+                            resetModelState(model);
+                        }
+                    }
+                }),
+                () => {
+                    this.maybeLoad(id, false, true, true, shouldLoadTotalCount, selectionsForReplace);
+                }
             );
         };
 

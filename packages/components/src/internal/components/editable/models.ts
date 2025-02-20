@@ -824,7 +824,8 @@ export class EditorModel
                     if (List.isList(originalValue) && !Array.isArray(value)) {
                         if (col.isExpInput()) {
                             // We have to compare displayValues for ExpInput columns for name expressions to work
-                            originalValue = originalValue.map(v => v.displayValue).join(', ');
+                            // row values were processed with quoteValueWithDelimiters, originalValue should be compared using the same process
+                            originalValue = originalValue.map(v => isQuotedWithDelimiters(v.displayValue, ',') ? v.displayValue : quoteValueWithDelimiters(v.displayValue, ',')).join(', ');
                         } else {
                             const valueObj = originalValue.get(0);
                             originalValue = Map.isMap(valueObj) ? valueObj.get('value') : valueObj.value;

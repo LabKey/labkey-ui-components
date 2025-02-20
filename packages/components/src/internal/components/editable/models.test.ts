@@ -771,7 +771,7 @@ describe('EditorModel', () => {
             const updatedRows = em.getUpdatedData();
             expect(updatedRows).toHaveLength(0);
         });
-        test('expInput value updated', () => {
+        describe('expInput value updated', () => {
             const materialInputs = QueryColumn.MATERIAL_INPUTS.toLowerCase();
             const expInputCol = new QueryColumn({
                 name: `${materialInputs}/input`,
@@ -782,9 +782,12 @@ describe('EditorModel', () => {
                 userEditable: true,
                 lookup: { queryName: 'lookupQuery', schemaName: 'lookupSchema' },
             });
-            const em = modifyEm({
+            const editorModel = modifyEm({
                 columnMap: basicEditorModel.columnMap.set(expInputCol.fieldKey.toLowerCase(), expInputCol),
-                orderedColumns: basicEditorModel.orderedColumns.push(expInputCol.fieldKey.toLowerCase()),
+                orderedColumns: basicEditorModel.orderedColumns.push(expInputCol.fieldKey.toLowerCase())
+            });
+
+            const emMultipleInputs = modifyEm({
                 cellValues: basicEditorModel.cellValues.set(
                     genCellKey(expInputCol.fieldKey.toLowerCase(), 0),
                     List([
@@ -798,10 +801,128 @@ describe('EditorModel', () => {
                         },
                     ])
                 ),
+            }, editorModel);
+
+            const emSingleInputs = modifyEm({
+                cellValues: basicEditorModel.cellValues.set(
+                    genCellKey(expInputCol.fieldKey.toLowerCase(), 0),
+                    List([
+                        {
+                            raw: 155,
+                            display: 'Value 123, Value 321',
+                        }
+                    ])
+                ),
+            }, editorModel);
+
+            const originalSingleValueWithComma = fromJS({
+                0: {
+                    [expInputCol.fieldKey]: {
+                        value: 155,
+                        displayValue: 'Value 123, Value 321'
+                    }
+                },
+                1: {
+                    [expInputCol.fieldKey]: null
+                }
             });
-            const updatedRows = em.getUpdatedData();
-            // ExpInput columns should be converted to comma separated string values
-            expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toEqual('Value 123, Value 321');
+
+            const originalMultiValues = fromJS({
+                0: {
+                    [expInputCol.fieldKey]: [{
+                        value: 123,
+                        displayValue: 'Value 123'
+                    }, {
+                        value: 321,
+                        displayValue: 'Value 321'
+                    }]
+                },
+                1: {
+                    [expInputCol.fieldKey]: null
+                }
+            });
+            test('no original value', () => {
+                let updatedRows = emSingleInputs.getUpdatedData();
+                expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toEqual('"Value 123, Value 321"');
+
+                updatedRows = emMultipleInputs.getUpdatedData();
+                expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toEqual('Value 123, Value 321');
+
+            });
+
+            test("with original single value, new single value", () => {
+                let updatedRows = emSingleInputs.getUpdatedData(originalSingleValueWithComma);
+                expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toBeUndefined();
+
+                const edWithOriginal = modifyEm({
+                    originalData: EditorModel.convertQueryDataToEditorData(originalSingleValueWithComma)
+                }, emSingleInputs);
+                updatedRows = edWithOriginal.getUpdatedData();
+                expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toBeUndefined();
+
+                updatedRows = emSingleInputs.getUpdatedData(fromJS({
+                    0: {
+                        [expInputCol.fieldKey]: {
+                            value: 155,
+                            displayValue: 'Not Comma'
+                        }
+                    },
+                    1: {
+                        [expInputCol.fieldKey]: null
+                    }
+                }));
+                expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toEqual('"Value 123, Value 321"');
+            });
+
+            test("with original single value, multiple new values", () => {
+                let updatedRows = emMultipleInputs.getUpdatedData(originalSingleValueWithComma);
+                expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toEqual('Value 123, Value 321');
+
+                const edWithOriginal = modifyEm({
+                    originalData: EditorModel.convertQueryDataToEditorData(originalSingleValueWithComma)
+                }, emMultipleInputs);
+                updatedRows = edWithOriginal.getUpdatedData();
+                expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toEqual('Value 123, Value 321');
+            });
+
+            test("with original multi values, single new value", () => {
+                let updatedRows = emSingleInputs.getUpdatedData(originalMultiValues);
+                expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toEqual('"Value 123, Value 321"');
+
+                const edWithOriginal = modifyEm({
+                    originalData: EditorModel.convertQueryDataToEditorData(originalMultiValues)
+                }, emSingleInputs);
+                updatedRows = edWithOriginal.getUpdatedData();
+                expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toEqual('"Value 123, Value 321"');
+            });
+
+            test("with original multi values, multiple new value", () => {
+                let updatedRows = emMultipleInputs.getUpdatedData(originalMultiValues);
+                expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toBeUndefined();
+
+                const edWithOriginal = modifyEm({
+                    originalData: EditorModel.convertQueryDataToEditorData(originalMultiValues)
+                }, emMultipleInputs);
+                updatedRows = edWithOriginal.getUpdatedData();
+                expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toBeUndefined();
+
+                updatedRows = emMultipleInputs.getUpdatedData(fromJS({
+                    0: {
+                        [expInputCol.fieldKey]: [{
+                            value: 345,
+                            displayValue: 'Value 345'
+                        }, {
+                            value: 678,
+                            displayValue: 'Value 678'
+                        }]
+                    },
+                    1: {
+                        [expInputCol.fieldKey]: null
+                    }
+                }));
+                expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toEqual('Value 123, Value 321');
+            });
+
         });
         test('altUpdateKeys', () => {
             const queryInfo = basicEditorModel.queryInfo.mutate({ altUpdateKeys: new Set([colTwoFk]) });

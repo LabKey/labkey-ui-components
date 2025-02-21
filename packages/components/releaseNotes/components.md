@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.26.0
+*Released*: 21 February 2025
 - Issue 51877: Allow calculated fields for list title column
 
 ### version 6.25.0

@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X February 2025
 - Issue 52304: Sample Manager: Edit Lineage in grid not saving updates if names contains comma
 
+### version 6.26.0
+*Released*: 21 February 2025
+- Issue 51877: Allow calculated fields for list title column
+
 ### version 6.25.0
 *Released*: 19 February 2025
 - Add new `InternalSpacesWarning` component to warn when values contain multiple spaces between words

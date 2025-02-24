@@ -87,7 +87,7 @@ export interface DeleteOptions {
 
 export interface DeleteChange extends BaseModelChange {
     changeType: ChangeType.delete;
-    options: DeleteOptions;
+    options?: DeleteOptions;
 }
 
 /**
@@ -100,7 +100,7 @@ export interface UpdateOptions {
 
 export interface UpdateChange extends BaseModelChange {
     changeType: ChangeType.update;
-    options: UpdateOptions;
+    options?: UpdateOptions;
 }
 
 export type ModelChange = AddChange | DeleteChange | UpdateChange;
@@ -1229,11 +1229,11 @@ export function withQueryModels<Props>(
                     if (modelChange.changeType === ChangeType.add) {
                         shouldLoadTotalCount = true;
                     } else if (modelChange.changeType === ChangeType.delete) {
-                        selectionsForReplace = modelChange.options.selectionsForReplace;
+                        selectionsForReplace = modelChange.options?.selectionsForReplace ?? [];
                         shouldLoadTotalCount = true;
                         resetModelState(model);
                     } else if (modelChange.changeType === ChangeType.update) {
-                        const { columnsChanged } = modelChange.options;
+                        const columnsChanged = modelChange.options?.columnsChanged;
                         const hasChangeOnFilteredColumn =
                             columnsChanged !== undefined && columnsHaveFilter(columnsChanged, model.filters);
                         const unknownChangeWithFilters = columnsChanged === undefined && model.filters.length > 0;

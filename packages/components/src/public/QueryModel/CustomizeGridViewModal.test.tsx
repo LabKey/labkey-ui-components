@@ -232,12 +232,18 @@ describe('includedColumnsForCustomizationFilter', () => {
         expect(includedColumnsForCustomizationFilter(col, false)).toBeFalsy();
         expect(includedColumnsForCustomizationFilter(col, true)).toBeFalsy();
 
+        const defaultModuleContext = { ...LABKEY.moduleContext };
         LABKEY.moduleContext = { api: { moduleNames: ['api', 'core', 'premium'] } };
         expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
         expect(includedColumnsForCustomizationFilter(col, true)).toBeTruthy();
+        LABKEY.moduleContext = defaultModuleContext;
     });
 
     test('ancestor nodes', () => {
+        // test this case without premium module in context
+        const defaultModuleContext = { ...LABKEY.moduleContext };
+        LABKEY.moduleContext = { api: { moduleNames: ['api', 'core'] } };
+
         let col = new QueryColumn({ name: 'testColumn', fieldKeyPath: 'Run/SampleID/Ancestors' });
         expect(includedColumnsForCustomizationFilter(col, false)).toBeFalsy();
 
@@ -266,12 +272,40 @@ describe('includedColumnsForCustomizationFilter', () => {
             removeFromViewCustomization: true,
         });
         expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
+        col = new QueryColumn({
+            name: 'Protocol',
+            fieldKeyPath: 'Ancestors/Samples/SampleType/Protocol',
+            removeFromViewCustomization: true,
+        });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeFalsy();
+        col = new QueryColumn({
+            name: 'Protocol',
+            fieldKeyPath: 'Protocol',
+            removeFromViewCustomization: true,
+        });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeFalsy();
 
+        // enable premium module to check again for removeFromViewCustomization case
+        LABKEY.moduleContext = { api: { moduleNames: ['api', 'core', 'premium'] } };
+        col = new QueryColumn({
+            name: 'Protocol',
+            fieldKeyPath: 'Ancestors/RegistryAndSources/Protocol',
+            removeFromViewCustomization: true,
+        });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
         col = new QueryColumn({
             name: 'Protocol',
             fieldKeyPath: 'Ancestors/Samples/SampleType/Protocol',
             removeFromViewCustomization: true,
         });
         expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
+        col = new QueryColumn({
+            name: 'Protocol',
+            fieldKeyPath: 'Protocol',
+            removeFromViewCustomization: true,
+        });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
+
+        LABKEY.moduleContext = defaultModuleContext;
     });
 });

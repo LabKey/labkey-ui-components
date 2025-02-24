@@ -89,7 +89,8 @@ export function getGridIdsFromTransactionId(
             params: { transactionAuditId, dataType, containerFilter: getContainerFilterForFolder(containerPath) },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
-                    resolve(response.rowIds);
+                    // The server returns numbers, so we coerce to string; If we don't it can lead to bugs (and has).
+                    resolve(response.rowIds.map((rowId: number) => rowId.toString()));
                 } else {
                     console.error(failureMsg + ' (transactionAuditId = ' + transactionAuditId + ')', response);
                     reject(failureMsg);
@@ -114,8 +115,7 @@ export async function selectGridIdsFromTransactionId(
 
     const modelId = createGridModelId(gridIdPrefix, schemaQuery);
     const selected = await getGridIdsFromTransactionId(transactionAuditId, dataType);
-    await actions.replaceSelections(modelId, selected);
-    actions.loadModel(modelId, true);
+    actions.replaceSelections(modelId, selected);
     return selected;
 }
 

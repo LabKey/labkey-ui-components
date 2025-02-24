@@ -44,7 +44,7 @@ interface DisplayTitleProps {
 }
 
 export const DisplayTitle: FC<DisplayTitleProps> = memo(({ model, onSelectChange, titleColumn }) => {
-    const fields = model.domain.fields.filter(field => !field.isCalculatedField());
+    const fields = model.domain.fields; // Issue 51877: include all fields, including calculated fields for titleColumn options
     const disabled = fields.size === 0;
     const placeholder = disabled ? 'No fields have been defined yet' : 'Auto';
 

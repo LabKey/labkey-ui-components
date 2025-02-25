@@ -10,7 +10,7 @@
     "build": "npm run clean && node src/buildThemes.js",
     "clean": "rimraf dist",
     "cleanAll": "rimraf dist && rimraf node_modules",
-    "postinstall": "patch-package",
+    "postinstall": "npx patch-package",
     "prepublishOnly": "npm run build"
   },
   "repository": {

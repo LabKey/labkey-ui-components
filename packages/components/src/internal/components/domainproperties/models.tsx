@@ -698,7 +698,7 @@ export class PropertyValidatorProperties
         }
         // see DomainUtil.getPropertyDescriptor() for where this property is added to the JSON field validator extChoice validator info
         if (typeof values?.validValues === 'string') {
-            values.validValues = values.validValues.split('|');
+            values.validValues = PropertyValidator.splitValidValues(values.validValues);
         }
         super(values);
     }
@@ -745,6 +745,14 @@ export class PropertyValidator
     declare rowId?: number;
     declare expression?: string;
 
+    static joinValidValues(values: string[]): string {
+        return values?.map(val => val.replace(/\|/g, '\\|')).join('|');
+    }
+
+    static splitValidValues(value: string): string[] {
+        return value?.split(/(?<!\\)\|/).map(v => v.replaceAll('\\|', '|')) ?? [];
+    }
+
     static fromJS(rawPropertyValidator: any[], type: string, isNewField = false): List<PropertyValidator> {
         let propValidators = List<PropertyValidator>();
 
@@ -756,7 +764,8 @@ export class PropertyValidator
 
                     // if we are loading a textChoiceValidator from JSON, we need to set the properties.validValues
                     if (type === 'TextChoice' && !rawPropertyValidator[i]?.properties?.validValues) {
-                        rawPropertyValidator[i].properties.validValues = expressionStr?.split('|') ?? [];
+                        rawPropertyValidator[i].properties.validValues =
+                            PropertyValidator.splitValidValues(expressionStr);
                     }
 
                     rawPropertyValidator[i]['properties'] = new PropertyValidatorProperties(

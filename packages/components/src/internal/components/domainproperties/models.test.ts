@@ -1251,19 +1251,6 @@ describe('PropertyValidator', () => {
         expect(pvs.get(0).shouldShowWarning).toBeTruthy();
     });
 
-    test('TextChoice validValues', () => {
-        let pvs = PropertyValidator.fromJS(validators, 'TextChoice');
-        expect(pvs.size).toBe(1);
-        expect(pvs.get(0).properties.validValues).toStrictEqual([]);
-
-        pvs = PropertyValidator.fromJS(
-            [{ type: 'TextChoice', name: 'Text Choice Validator', expression: 'a|b', properties: {} }],
-            'TextChoice'
-        );
-        expect(pvs.size).toBe(1);
-        expect(pvs.get(0).properties.validValues).toStrictEqual(['a', 'b']);
-    });
-
     test('isNewField', () => {
         let pvs = PropertyValidator.fromJS(validators, 'TextChoice');
         expect(pvs.size).toBe(1);
@@ -1280,6 +1267,45 @@ describe('PropertyValidator', () => {
         expect(pvs[0].properties.failOnMatch).toBeDefined();
         expect(pvs[0].properties.validValues).toBeUndefined();
         expect(pvs[0].shouldShowWarning).toBeUndefined();
+    });
+
+    test('TextChoice validValues', () => {
+        let pvs = PropertyValidator.fromJS(validators, 'TextChoice');
+        expect(pvs.size).toBe(1);
+        expect(pvs.get(0).properties.validValues).toStrictEqual([]);
+
+        pvs = PropertyValidator.fromJS(
+            [{ type: 'TextChoice', name: 'Text Choice Validator', expression: 'a|b', properties: {} }],
+            'TextChoice'
+        );
+        expect(pvs.size).toBe(1);
+        expect(pvs.get(0).properties.validValues).toStrictEqual(['a', 'b']);
+    });
+
+    test('TextChoice joinValidValues', () => {
+        expect(PropertyValidator.joinValidValues(undefined)).toBeUndefined();
+        expect(PropertyValidator.joinValidValues([])).toBe('');
+        expect(PropertyValidator.joinValidValues(['a'])).toBe('a');
+        expect(PropertyValidator.joinValidValues(['a/a'])).toBe('a/a');
+        expect(PropertyValidator.joinValidValues(['a\\a'])).toBe('a\\a');
+        expect(PropertyValidator.joinValidValues(['a', 'b'])).toBe('a|b');
+        expect(PropertyValidator.joinValidValues(['a ', ' b'])).toBe('a | b');
+        expect(PropertyValidator.joinValidValues(['a ', ' b | b ', '||c|c||'])).toBe('a | b \\| b |\\|\\|c\\|c\\|\\|');
+    });
+
+    test('TextChoice splitValidValues', () => {
+        expect(PropertyValidator.splitValidValues(undefined)).toStrictEqual([]);
+        expect(PropertyValidator.splitValidValues('')).toStrictEqual(['']);
+        expect(PropertyValidator.splitValidValues('a')).toStrictEqual(['a']);
+        expect(PropertyValidator.splitValidValues('a/a')).toStrictEqual(['a/a']);
+        expect(PropertyValidator.splitValidValues('a\\a')).toStrictEqual(['a\\a']);
+        expect(PropertyValidator.splitValidValues('a|b')).toStrictEqual(['a', 'b']);
+        expect(PropertyValidator.splitValidValues('a | b')).toStrictEqual(['a ', ' b']);
+        expect(PropertyValidator.splitValidValues('a | b \\| b |\\|\\|c\\|c\\|\\|')).toStrictEqual([
+            'a ',
+            ' b | b ',
+            '||c|c||',
+        ]);
     });
 });
 

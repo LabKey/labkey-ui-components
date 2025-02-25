@@ -1034,6 +1034,29 @@ describe('EditorModel', () => {
                 );
                 expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toEqual('Value 123, "Value 123, Value 321"');
             });
+
+            test('with original multi values, multiple same values, but ordering is changed', () => {
+                let updatedRows = emMultipleComplexInputs.getUpdatedData(
+                    fromJS({
+                        0: {
+                            [expInputCol.fieldKey]: [
+                                {
+                                    value: 155,
+                                    displayValue: 'Value 123, Value 321',
+                                },
+                                {
+                                    value: 123,
+                                    displayValue: 'Value 123',
+                                }
+                            ],
+                        },
+                        1: {
+                            [expInputCol.fieldKey]: null,
+                        },
+                    })
+                );
+                expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toBeUndefined();
+            });
         });
         test('altUpdateKeys', () => {
             const queryInfo = basicEditorModel.queryInfo.mutate({ altUpdateKeys: new Set([colTwoFk]) });

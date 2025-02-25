@@ -1,9 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.24.X
+### version 6.26.X
 *Released*: X February 2025
 - Issue 52304: Sample Manager: Edit Lineage in grid not saving updates if names contains comma
+
+### version 6.26.1
+*Released*: 24 February 2025
+- Issue 52337: ensure that items being excluded from view customization are fields, not ancestor nodes
 
 ### version 6.26.0
 *Released*: 21 February 2025

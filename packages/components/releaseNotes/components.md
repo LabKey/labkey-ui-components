@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Issue 52072: Text choice field values to handle | character within values
+  - PropertyValidator.joinValidValues() and PropertyValidator.splitValidValues()
 
 ### version 6.26.1
 *Released*: 24 February 2025

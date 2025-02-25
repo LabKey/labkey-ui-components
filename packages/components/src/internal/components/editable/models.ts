@@ -826,6 +826,7 @@ export class EditorModel
                             // We have to compare displayValues for ExpInput columns for name expressions to work
                             // row values were processed with quoteValueWithDelimiters, originalValue should be compared using the same process
                             originalValue = originalValue
+                                .sortBy((v) => v.displayValue)
                                 .map(v =>
                                     isQuotedWithDelimiters(v.displayValue, ',')
                                         ? v.displayValue

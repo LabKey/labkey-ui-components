@@ -5,6 +5,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 52341: App chart render queryConfig to support parameterized queries
 
+### version 6.26.2
+*Released*: 25 February 2025
+- Issue 52304: Sample Manager: Edit Lineage in grid not saving updates if names contains comma
+
+### version 6.26.1
+*Released*: 24 February 2025
+- Issue 52337: ensure that items being excluded from view customization are fields, not ancestor nodes
+
 ### version 6.26.0
 *Released*: 21 February 2025
 - Issue 51877: Allow calculated fields for list title column

@@ -84,10 +84,10 @@ interface Props {
     chart: DataViewInfo;
     container?: string;
     filters?: Filter.IFilter[];
-    model?: QueryModel;
+    queryParameters?: { [key: string]: any };
 }
 
-export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, model }) => {
+export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, queryParameters }) => {
     const { error, reportId } = chart;
     const divId = useMemo(() => generateId('chart-'), []);
     const containerFilter = useMemo(() => getContainerFilterForFolder(container), [container]);
@@ -118,7 +118,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, model
             if (filters) {
                 queryConfig_.filterArray = [...queryConfig_.filterArray, ...filters];
             }
-            queryConfig_.parameters = model?.queryParameters;
+            queryConfig_.parameters = queryParameters;
             setQueryConfig(queryConfig_);
         } catch (e) {
             setLoadError(e.exception);
@@ -322,11 +322,11 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
 });
 RReport.displayName = 'RReport';
 
-export const Chart: FC<Props> = memo(({ api = DEFAULT_API_WRAPPER, chart, container, filters, model }) => {
+export const Chart: FC<Props> = memo(({ api = DEFAULT_API_WRAPPER, chart, container, filters, queryParameters }) => {
     if (chart.type === DataViewInfoTypes.RReport) {
         return <RReport api={api} chart={chart} container={container} filters={filters} />;
     } else if (GENERIC_CHART_REPORTS.indexOf(chart.type) > -1) {
-        return <SVGChart api={api} chart={chart} container={container} filters={filters} model={model} />;
+        return <SVGChart api={api} chart={chart} container={container} filters={filters} queryParameters={queryParameters} />;
     }
     return null;
 });

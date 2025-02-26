@@ -56,7 +56,7 @@ export function withSearchParams<T>(Component: WithSearchParamsComponent<T>): Co
     return Wrapped;
 }
 
-function columnHasFilter(fieldKey, filters: Filter.IFilter[]): boolean {
+function columnHasFilter(fieldKey: string, filters: Filter.IFilter[]): boolean {
     return filters.some(filter => filter.getColumnName().toLowerCase() === fieldKey);
 }
 

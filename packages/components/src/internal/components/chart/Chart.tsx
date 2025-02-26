@@ -324,7 +324,15 @@ export const Chart: FC<Props> = memo(({ api = DEFAULT_API_WRAPPER, chart, contai
     if (chart.type === DataViewInfoTypes.RReport) {
         return <RReport api={api} chart={chart} container={container} filters={filters} />;
     } else if (GENERIC_CHART_REPORTS.indexOf(chart.type) > -1) {
-        return <SVGChart api={api} chart={chart} container={container} filters={filters} queryParameters={queryParameters} />;
+        return (
+            <SVGChart
+                api={api}
+                chart={chart}
+                container={container}
+                filters={filters}
+                queryParameters={queryParameters}
+            />
+        );
     }
     return null;
 });

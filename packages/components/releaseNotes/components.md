@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.26.3
+*Released*: 25 February 2025
 - Issue 52341: App chart render queryConfig to support parameterized queries
 
 ### version 6.26.2

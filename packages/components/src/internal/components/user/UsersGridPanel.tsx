@@ -182,7 +182,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
 
     onUsersStateChangeComplete = (response: any, isDelete: boolean = false): void => {
         this.closeDialog();
-        this.updateSelectedUserId(undefined); // clear selected user details
+        if (isDelete) this.updateSelectedUserId(undefined); // clear selected user details
         this.props.onUsersStateChangeComplete(response);
         this.props.actions.onModelChange(this.getUsersModelId(), {
             changeType: isDelete ? ChangeType.delete : ChangeType.update,

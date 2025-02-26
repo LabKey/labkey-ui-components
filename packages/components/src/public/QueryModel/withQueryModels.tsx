@@ -1249,14 +1249,9 @@ export function withQueryModels<Props>(
                     }
                 }),
                 () => {
-                    this.maybeLoad(
-                        id,
-                        false,
-                        true,
-                        selectionsForReplace === undefined,
-                        shouldLoadTotalCount,
-                        selectionsForReplace
-                    );
+                    // Loading & replacing selections are mutually exclusive, if we aren't replacing anything then load
+                    const loadSelections = selectionsForReplace === undefined;
+                    this.maybeLoad(id, false, true, loadSelections, shouldLoadTotalCount, selectionsForReplace);
                 }
             );
         };

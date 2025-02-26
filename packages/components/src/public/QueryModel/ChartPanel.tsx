@@ -136,7 +136,13 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
                 </div>
             </div>
 
-            <Chart api={api} chart={selectedChart} container={containerPath} filters={model.filters} />
+            <Chart
+                api={api}
+                chart={selectedChart}
+                container={containerPath}
+                filters={model.filters}
+                queryParameters={model.queryParameters}
+            />
 
             {showEditModal && (
                 <ChartBuilderModal

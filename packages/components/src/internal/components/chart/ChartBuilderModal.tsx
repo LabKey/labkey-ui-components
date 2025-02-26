@@ -117,7 +117,7 @@ export const getChartBuilderQueryConfig = (
         queryName: savedConfig?.queryName || queryName,
         viewName: savedConfig?.viewName || viewName,
         columns: Object.values(fieldValues)
-            .filter(field => field?.value)
+            .filter(field => field?.value && typeof field.value === 'string') // just those fields with values
             .map(field => field.value),
         sort: LABKEY_VIS.GenericChartHelper.getQueryConfigSortKey(chartConfig.measures),
         filterArray: savedConfig?.filterArray ?? [],

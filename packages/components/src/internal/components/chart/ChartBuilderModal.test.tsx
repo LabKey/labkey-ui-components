@@ -569,6 +569,7 @@ describe('getChartBuilderQueryConfig', () => {
     const fieldValues = {
         x: { value: 'field1', label: 'Field 1', data: { fieldKey: 'field1' } },
         y: { value: undefined },
+        scales: { value: { x: { type: 'automatic', trans: 'linear' }, y: { type: 'automatic', trans: 'linear' } } },
     };
 
     test('based on model', () => {

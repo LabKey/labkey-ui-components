@@ -1249,7 +1249,14 @@ export function withQueryModels<Props>(
                     }
                 }),
                 () => {
-                    this.maybeLoad(id, false, true, true, shouldLoadTotalCount, selectionsForReplace);
+                    this.maybeLoad(
+                        id,
+                        false,
+                        true,
+                        selectionsForReplace === undefined,
+                        shouldLoadTotalCount,
+                        selectionsForReplace
+                    );
                 }
             );
         };

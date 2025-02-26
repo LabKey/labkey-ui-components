@@ -24,8 +24,6 @@ import { getContainerFilterForFolder } from '../../query/api';
 import { generateId } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-
 import { ChartAPIWrapper, DEFAULT_API_WRAPPER } from './api';
 import { ChartConfig, ChartQueryConfig } from './models';
 import { getChartRenderMsg } from './ChartBuilderModal';

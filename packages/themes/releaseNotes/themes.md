@@ -1,7 +1,7 @@
 # @labkey/themes
 UI themes for LabKey Server.
 
-### version 1.3.3
+### version 1.3.4
 *Released*: 26 February 2025
 * Issue 52402: Encode bootstrap button state attributes
 

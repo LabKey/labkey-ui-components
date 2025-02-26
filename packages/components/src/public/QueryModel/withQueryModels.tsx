@@ -57,11 +57,12 @@ export function withSearchParams<T>(Component: WithSearchParamsComponent<T>): Co
 }
 
 function columnHasFilter(fieldKey: string, filters: Filter.IFilter[]): boolean {
+    fieldKey = fieldKey.toLowerCase();
     return filters.some(filter => filter.getColumnName().toLowerCase() === fieldKey);
 }
 
 function columnsHaveFilter(columnFieldKeys: string[], filters: Filter.IFilter[]): boolean {
-    return columnFieldKeys.some(fieldKey => columnHasFilter(fieldKey.toLowerCase(), filters));
+    return columnFieldKeys.some(fieldKey => columnHasFilter(fieldKey, filters));
 }
 
 export enum ChangeType {

@@ -19,6 +19,7 @@ import { ChangeEvent, CSSProperties } from 'react';
 
 import { hasParameter, toggleParameter } from '../url/ActionURL';
 import { QueryInfo } from '../../public/QueryInfo';
+import { request } from '../request';
 
 // Case-insensitive Object reference. Returns undefined if either object or prop does not resolve.
 // If both casings exist (e.g. 'x' and 'X' are props) then either value may be returned.
@@ -421,15 +422,17 @@ export function isImage(value): boolean {
     return validImageExtensions.indexOf(extensionType) > -1;
 }
 
-export function downloadAttachment(href: string, openInTab?: boolean, fileName?: string): void {
+export function downloadAttachment(href: string, openInTab?: boolean, fileName?: string): Promise<void> {
     if (openInTab) {
         window.open(href, '_blank', 'noopener,noreferrer');
-    } else {
-        const link = document.createElement('a');
-        link.href = href;
-        link.download = fileName;
-        link.click();
+        return undefined;
     }
+
+    return request({
+        url: href,
+        downloadFile: fileName ?? true,
+        errorLogMsg: 'Failed to download attachment',
+    });
 }
 
 // copied from platform/api/src/org/labkey/api/attachments/Attachment.java

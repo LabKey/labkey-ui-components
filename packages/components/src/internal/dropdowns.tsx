@@ -126,6 +126,7 @@ interface DropdownButtonProps {
     className?: string;
     disabled?: boolean;
     dropup?: boolean;
+    menuOpen?: boolean;
     noCaret?: boolean;
     onClick?: () => void;
     onMouseEnter?: () => void;
@@ -143,6 +144,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
         children,
         disabled = false,
         dropup = false,
+        menuOpen,
         noCaret = false,
         onClick,
         onMouseEnter,
@@ -151,7 +153,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
         title,
     } = props;
     const id = useMemo(() => generateId('dropdown-button-'), []);
-    const { onClick: onToggleClick, open, toggleRef } = useToggleState<HTMLButtonElement>();
+    const { onClick: onToggleClick, open, setOpen, toggleRef } = useToggleState<HTMLButtonElement>();
     const className = classNames('lk-dropdown', 'btn-group', props.className, { open, dropdown: !dropup, dropup });
     const buttonClassName = classNames('btn', 'btn-' + bsStyle, 'dropdown-toggle', props.buttonClassName);
     const menuClassName = classNames(DROPDOWN_MENU_CLASS, { 'dropdown-menu-right': pullRight });
@@ -163,6 +165,11 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
         },
         [onToggleClick, onClick]
     );
+
+    useEffect(() => {
+        if (menuOpen === undefined) return;
+        setOpen(menuOpen);
+    }, [menuOpen, setOpen]);
 
     return (
         <div className={className} ref={ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>

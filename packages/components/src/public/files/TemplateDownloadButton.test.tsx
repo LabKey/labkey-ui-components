@@ -1,4 +1,5 @@
-import React, { act } from 'react';
+import React from 'react';
+import { waitFor } from '@testing-library/dom';
 
 import { userEvent } from '@testing-library/user-event';
 
@@ -37,19 +38,19 @@ const APP_CONTEXT = {
 describe('TemplateDownloadButton', () => {
     test('no onDownloadDefault or defaultTemplateUrl', () => {
         const { container } = renderWithAppContext(<TemplateDownloadButton />);
-        expect(container.textContent).toBe('');
+        expect(container).toHaveTextContent('');
     });
 
     test('no onDownloadDefault, empty defaultTemplateUrl', () => {
         const { container } = renderWithAppContext(<TemplateDownloadButton defaultTemplateUrl="" />);
-        expect(container.textContent).toBe('');
+        expect(container).toHaveTextContent('');
     });
 
     test('reader', () => {
         const { container } = renderWithAppContext(
             <TemplateDownloadButton defaultTemplateUrl="" user={TEST_USER_READER} />
         );
-        expect(container.textContent).toBe('');
+        expect(container).toHaveTextContent('');
     });
 
     test('editor', () => {
@@ -57,114 +58,78 @@ describe('TemplateDownloadButton', () => {
             <TemplateDownloadButton defaultTemplateUrl="testUrl" user={TEST_USER_EDITOR} />,
             {}
         );
-        expect(container.textContent).toBe(' Template');
+        expect(container).toHaveTextContent('Template');
         expect(document.querySelectorAll('span.fa-download')).toHaveLength(1);
     });
 
     test('with custom templates, with defaultTemplateUrl', async () => {
-        await act(async () => {
-            renderWithAppContext(
-                <TemplateDownloadButton
-                    defaultTemplateUrl="testUrl"
-                    schemaQuery={new SchemaQuery('a', 'b')}
-                    user={TEST_USER_EDITOR}
-                />,
-                { appContext: APP_CONTEXT }
-            );
+        renderWithAppContext(
+            <TemplateDownloadButton
+                defaultTemplateUrl="testUrl"
+                schemaQuery={new SchemaQuery('a', 'b')}
+                user={TEST_USER_EDITOR}
+            />,
+            { appContext: APP_CONTEXT }
+        );
+
+        await waitFor(() => {
+            expect(document.querySelectorAll('span.fa-download')).toHaveLength(1);
         });
-        expect(document.querySelectorAll('span.fa-download')).toHaveLength(1);
-        expect(document.querySelector('button').textContent).toEqual(' Template');
+
+        const link = document.querySelector('a.btn-info');
+        expect(link).toHaveTextContent('Template');
+        await userEvent.click(link);
+
         expect(document.querySelectorAll('.dropdown')).toHaveLength(1);
         const dropdown = document.querySelector('.dropdown');
-        expect(document.querySelectorAll('.caret')).toHaveLength(1);
         const menuItems = dropdown.querySelectorAll('li');
         expect(menuItems).toHaveLength(3);
         const downloadLinks = dropdown.querySelectorAll('a');
         expect(downloadLinks).toHaveLength(3);
-        expect(downloadLinks[0].getAttribute('href')).toEqual('testUrl');
-        expect(downloadLinks[0].textContent).toEqual('Default Template');
-        expect(downloadLinks[1].getAttribute('href')).toEqual(TEMPLATES[1].url);
-        expect(downloadLinks[1].textContent).toEqual(TEMPLATES[1].label);
-        expect(downloadLinks[2].getAttribute('href')).toEqual(TEMPLATES[2].url);
-        expect(downloadLinks[2].textContent).toEqual(TEMPLATES[2].label);
+        expect(downloadLinks[0]).toHaveTextContent('Default Template');
+        expect(downloadLinks[1]).toHaveTextContent(TEMPLATES[1].label);
+        expect(downloadLinks[2]).toHaveTextContent(TEMPLATES[2].label);
     });
 
     test('with custom templates, with onDownloadDefault', async () => {
-        let container;
-        const downloadFn = jest.fn();
-        await act(async () => {
-            renderWithAppContext(
-                <TemplateDownloadButton
-                    onDownloadDefault={jest.fn()}
-                    schemaQuery={new SchemaQuery('a', 'b')}
-                    user={TEST_USER_EDITOR}
-                />,
-                { appContext: APP_CONTEXT }
-            );
+        renderWithAppContext(
+            <TemplateDownloadButton
+                onDownloadDefault={jest.fn()}
+                schemaQuery={new SchemaQuery('a', 'b')}
+                user={TEST_USER_EDITOR}
+            />,
+            { appContext: APP_CONTEXT }
+        );
+
+        await waitFor(() => {
+            expect(document.querySelectorAll('span.fa-download')).toHaveLength(1);
         });
-        expect(document.querySelectorAll('span.fa-download')).toHaveLength(1);
-        expect(document.querySelector('button').textContent).toEqual(' Template');
+
+        const link = document.querySelector('a.btn-info');
+        expect(link).toHaveTextContent('Template');
+        await userEvent.click(link);
+
         expect(document.querySelectorAll('.dropdown')).toHaveLength(1);
         const dropdown = document.querySelector('.dropdown');
-        expect(document.querySelectorAll('.caret')).toHaveLength(1);
         const menuItems = dropdown.querySelectorAll('li');
         expect(menuItems).toHaveLength(3);
         const downloadLinks = dropdown.querySelectorAll('a');
         expect(downloadLinks).toHaveLength(3);
-        expect(downloadLinks[0].getAttribute('href')).toEqual('#');
-        expect(downloadLinks[0].textContent).toEqual('Default Template');
-        expect(downloadLinks[1].getAttribute('href')).toEqual(TEMPLATES[1].url);
-        expect(downloadLinks[1].textContent).toEqual(TEMPLATES[1].label);
-        expect(downloadLinks[2].getAttribute('href')).toEqual(TEMPLATES[2].url);
-        expect(downloadLinks[2].textContent).toEqual(TEMPLATES[2].label);
-    });
-
-    test('isGridRenderer, with defaultTemplateUrl', async () => {
-        let container;
-        await act(async () => {
-            renderWithAppContext(
-                <TemplateDownloadButton
-                    isGridRenderer
-                    defaultTemplateUrl="testUrl"
-                    schemaQuery={new SchemaQuery('a', 'b')}
-                    user={TEST_USER_EDITOR}
-                />,
-                { appContext: APP_CONTEXT }
-            );
-        });
-        expect(document.querySelectorAll('span.fa-download')).toHaveLength(1);
-        expect(document.querySelector('button').textContent).toEqual(' Template');
-        expect(document.querySelectorAll('.dropdown')).toHaveLength(1);
-        expect(document.querySelectorAll('.caret')).toHaveLength(0);
-        const dropdown = document.querySelector('.dropdown');
-        const menuItems = dropdown.querySelectorAll('li');
-        expect(menuItems).toHaveLength(0);
-        let downloadLinks = dropdown.querySelectorAll('a');
-        expect(downloadLinks).toHaveLength(0);
-
-        await userEvent.click(document.querySelector('button'));
-
-        expect(document.querySelectorAll('.dropdown')).toHaveLength(1);
-        expect(document.querySelectorAll('.caret')).toHaveLength(1);
-        downloadLinks = dropdown.querySelectorAll('a');
-        expect(downloadLinks[0].getAttribute('href')).toEqual('testUrl');
-        expect(downloadLinks[0].textContent).toEqual('Default Template');
-        expect(downloadLinks[1].getAttribute('href')).toEqual(TEMPLATES[1].url);
-        expect(downloadLinks[1].textContent).toEqual(TEMPLATES[1].label);
-        expect(downloadLinks[2].getAttribute('href')).toEqual(TEMPLATES[2].url);
-        expect(downloadLinks[2].textContent).toEqual(TEMPLATES[2].label);
+        expect(downloadLinks[0]).toHaveTextContent('Default Template');
+        expect(downloadLinks[1]).toHaveTextContent(TEMPLATES[1].label);
+        expect(downloadLinks[2]).toHaveTextContent(TEMPLATES[2].label);
     });
 
     test('editor, with custom properties', () => {
         const { container } = renderWithAppContext(
             <TemplateDownloadButton
-                onDownloadDefault={jest.fn}
+                onDownloadDefault={jest.fn()}
                 text="Test Text"
                 className="custom-styling"
                 user={TEST_USER_EDITOR}
             />
         );
-        expect(container.textContent).toBe(' Test Text');
+        expect(container).toHaveTextContent('Test Text');
         expect(document.querySelectorAll('span.fa-download')).toHaveLength(1);
         expect(document.querySelectorAll('.custom-styling')).toHaveLength(1);
     });

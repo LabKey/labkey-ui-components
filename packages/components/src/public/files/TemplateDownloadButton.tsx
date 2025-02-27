@@ -1,4 +1,5 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
+import classNames from 'classnames';
 
 import { PermissionTypes } from '@labkey/api';
 
@@ -6,104 +7,124 @@ import { User } from '../../internal/components/base/models/User';
 import { RequiresPermission } from '../../internal/components/base/Permissions';
 import { DropdownButton, MenuItem } from '../../internal/dropdowns';
 import { ImportTemplate } from '../QueryInfo';
-import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
 import { SchemaQuery } from '../SchemaQuery';
 import { useAppContext } from '../../internal/AppContext';
 import { downloadAttachment } from '../../internal/util/utils';
 import { DisableableMenuItem } from '../../internal/components/samples/DisableableMenuItem';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 import { getAppHomeFolderPath } from '../../internal/app/utils';
+import { LoadingState } from '../LoadingState';
+
+const TITLE = 'Download Template';
 
 interface Props {
     className?: string;
     defaultTemplateUrl?: string;
     dropDownClassName?: string;
     isGridRenderer?: boolean;
-    onDownloadDefault?: () => void;
+    onDownloadDefault?: () => Promise<void>;
     schemaQuery?: SchemaQuery;
     text?: string;
     user?: User;
 }
 
-export const TemplateDownloadButton: FC<Props> = memo(props => {
+const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
     const {
-        schemaQuery,
-        isGridRenderer,
         className,
-        onDownloadDefault,
         defaultTemplateUrl,
-        text = 'Template',
-        user,
         dropDownClassName,
+        isGridRenderer,
+        onDownloadDefault,
+        schemaQuery,
+        text = 'Template',
     } = props;
-    const [customTemplates, setCustomTemplates] = useState<ImportTemplate[]>();
-    const [loadingTemplates, setLoadingTemplates] = useState<boolean>(false);
+    const [customTemplates, setCustomTemplates] = useState<ImportTemplate[]>([]);
+    const [downloading, setDownloading] = useState<boolean>(false);
+    const [loadingTemplates, setLoadingTemplates] = useState<LoadingState>(LoadingState.INITIALIZED);
     const { container, moduleContext } = useServerContext();
-    const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
-
     const { api } = useAppContext();
+    const isLoading = loadingTemplates === LoadingState.LOADING;
+    const schemaName = schemaQuery?.schemaName;
+    const queryName = schemaQuery?.queryName;
+    const showDropdown = customTemplates.length > 0;
+    const isDownloadingOrLoading = downloading || isLoading;
 
-    useEffect(() => {
-        if (!schemaQuery || isGridRenderer || customTemplates) return;
+    const loadCustomTemplates = useCallback(async (): Promise<boolean> => {
+        let hasTemplates = false;
 
-        (async () => {
-            await loadTemplates();
-        })();
-    }, [schemaQuery, isGridRenderer, customTemplates]);
-
-    const loadTemplates = useCallback(async (): Promise<boolean> => {
         try {
-            setLoadingTemplates(true);
+            setLoadingTemplates(LoadingState.LOADING);
             const queryInfo = await api.query.getQueryDetails({
-                schemaName: schemaQuery.schemaName,
-                queryName: schemaQuery.queryName,
-                containerPath: homeFolderPath
+                containerPath: getAppHomeFolderPath(container, moduleContext),
+                schemaName,
+                queryName,
             });
-            const customTemplates_ = queryInfo.getCustomTemplates();
-            setCustomTemplates(customTemplates_);
-            return customTemplates_?.length > 0;
-        } catch (reason) {
-            console.error(reason);
-        } finally {
-            setLoadingTemplates(false);
-        }
-    }, [schemaQuery, setLoadingTemplates, setCustomTemplates, homeFolderPath]);
 
-    const showDropdown = useMemo(() => {
-        return customTemplates?.length > 0 || (isGridRenderer && !customTemplates);
-    }, [customTemplates, isGridRenderer]);
+            const templates = queryInfo.getCustomTemplates() ?? [];
+            hasTemplates = templates.length > 0;
+
+            setCustomTemplates(templates);
+        } catch (error) {
+            console.error('Failed to load custom templates', error);
+        } finally {
+            setLoadingTemplates(LoadingState.LOADED);
+        }
+
+        return hasTemplates;
+    }, [api.query, container, moduleContext, schemaName, queryName]);
+
+    const downloadCustomTemplate = useCallback(
+        (customTemplateUrl: string) => {
+            return async () => {
+                if (downloading) return;
+                setDownloading(true);
+                await downloadAttachment(customTemplateUrl);
+                setDownloading(false);
+            };
+        },
+        [downloading]
+    );
+
+    const downloadDefaultTemplate = useCallback(async () => {
+        if (downloading) return;
+        setDownloading(true);
+        if (onDownloadDefault) {
+            await onDownloadDefault();
+        } else {
+            await downloadAttachment(defaultTemplateUrl);
+        }
+        setDownloading(false);
+    }, [defaultTemplateUrl, downloading, onDownloadDefault]);
 
     const fetchTemplates = useCallback(async () => {
-        if (customTemplates || !isGridRenderer) return;
-        const hasCustomTemplates = await loadTemplates();
+        if (isDownloadingOrLoading || !schemaQuery) return;
+        const hasCustomTemplates = await loadCustomTemplates();
+
+        // There are no custom templates so download the default template
         if (!hasCustomTemplates) {
-            if (onDownloadDefault) onDownloadDefault();
-            else downloadAttachment(defaultTemplateUrl, true);
+            downloadDefaultTemplate();
         }
-    }, [isGridRenderer, onDownloadDefault, customTemplates, loadTemplates, defaultTemplateUrl]);
+    }, [downloadDefaultTemplate, isDownloadingOrLoading, loadCustomTemplates, schemaQuery]);
+
+    const iconClassName = classNames('fa', {
+        'fa-download': !isDownloadingOrLoading,
+        'fa-spinner': isDownloadingOrLoading,
+        'fa-pulse': isDownloadingOrLoading,
+    });
 
     const dropdownTitle = useMemo(() => {
         return (
-            <span title="Download Template">
-                <span className="fa fa-download" /> {text}
+            <span title={TITLE}>
+                <span className={iconClassName} /> {text}
             </span>
         );
-    }, [text]);
-
-    if (!onDownloadDefault && !defaultTemplateUrl?.length && !showDropdown) return null;
+    }, [iconClassName, text]);
 
     return (
-        <RequiresPermission perms={[PermissionTypes.Insert, PermissionTypes.Update]} permissionCheck="any" user={user}>
+        <>
             {!showDropdown && (
-                <a
-                    className={'btn btn-info ' + (className ?? '')}
-                    title="Download Template"
-                    onClick={onDownloadDefault}
-                    href={defaultTemplateUrl}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                >
-                    <span className="fa fa-download" /> {text}
+                <a className={'btn btn-info ' + (className ?? '')} title={TITLE} onClick={fetchTemplates}>
+                    <span className={iconClassName} /> {text}
                 </a>
             )}
             {showDropdown && (
@@ -111,45 +132,47 @@ export const TemplateDownloadButton: FC<Props> = memo(props => {
                     onClick={fetchTemplates}
                     title={dropdownTitle}
                     bsStyle="info"
-                    noCaret={!customTemplates || customTemplates.length === 0}
+                    menuOpen
+                    noCaret
                     className="small-right-spacing"
                     buttonClassName={dropDownClassName ?? (isGridRenderer ? 'button-small-padding' : '')}
                 >
-                    {customTemplates?.length > 0 && (
-                        <MenuItem
-                            key={0}
-                            href={defaultTemplateUrl}
-                            onClick={onDownloadDefault}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                        >
+                    {customTemplates.length > 0 && (
+                        <MenuItem key={0} onClick={downloadDefaultTemplate}>
                             Default Template
                         </MenuItem>
                     )}
-                    {loadingTemplates && <LoadingSpinner />}
-                    {customTemplates?.map(template => {
-                        if (template.url.endsWith('(unavailable)'))
+                    {customTemplates.map(template => {
+                        if (template.url.endsWith('(unavailable)')) {
                             return (
                                 <DisableableMenuItem key={template.label} disabled disabledMessage="File not found">
                                     {template.label}
                                 </DisableableMenuItem>
                             );
+                        }
 
                         return (
-                            <MenuItem
-                                key={template.label}
-                                href={template.url}
-                                rel="noopener noreferrer"
-                                target="_blank"
-                            >
+                            <MenuItem key={template.label} onClick={downloadCustomTemplate(template.url)}>
                                 {template.label}
                             </MenuItem>
                         );
                     })}
                 </DropdownButton>
             )}
+        </>
+    );
+});
+TemplateDownloadButtonImpl.displayName = 'TemplateDownloadButtonImpl';
+
+export const TemplateDownloadButton: FC<Props> = memo(props => {
+    const { defaultTemplateUrl, onDownloadDefault, user } = props;
+
+    if (!onDownloadDefault && !defaultTemplateUrl?.length) return null;
+
+    return (
+        <RequiresPermission perms={[PermissionTypes.Insert, PermissionTypes.Update]} permissionCheck="any" user={user}>
+            <TemplateDownloadButtonImpl {...props} />
         </RequiresPermission>
     );
 });
-
 TemplateDownloadButton.displayName = 'TemplateDownloadButton';

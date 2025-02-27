@@ -1,6 +1,10 @@
 # @labkey/test
 Utilities and configurations for running JavaScript tests with LabKey Server.
 
+### version 1.X
+*Released* * 2025
+* Add helper util for generating random names
+
 ### version 1.7.1
 *Released*: 13 November 2024
 - Merge from release24.11-SNAPSHOT to develop

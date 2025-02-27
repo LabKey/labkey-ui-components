@@ -24,6 +24,10 @@ import {
     sleep,
     shuffleArray,
     selectRandomN,
+    generateDomainName,
+    generateFieldName,
+    generateRandomStr,
+    getEscapedNameExpression,
 } from './utils';
 import {
     insertRows,
@@ -44,6 +48,7 @@ import {
     sourceExists,
     createSample,
     getAliquotsByRootId,
+    importCrossTypeData,
     getAllRows,
     importData
 } from './ExperimentCrudUtils';
@@ -67,6 +72,7 @@ const ExperimentCRUDUtils = {
     sourceExists,
     createSample,
     getAliquotsByRootId,
+    importCrossTypeData,
     getAllRows,
     importData,
 }
@@ -81,4 +87,8 @@ export {
     ExperimentCRUDUtils,
     shuffleArray,
     selectRandomN,
+    generateDomainName,
+    generateRandomStr,
+    generateFieldName,
+    getEscapedNameExpression,
 };

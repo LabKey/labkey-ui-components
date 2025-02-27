@@ -5,6 +5,10 @@ UI themes for LabKey Server.
 *Released*: 5 November 2024
 - Package updates
 
+### version 1.3.4
+*Released*: 26 February 2025
+* Issue 52402: Encode bootstrap button state attributes
+
 ### version 1.3.2
 *Released*: 22 September 2023
 * Migrate build from yarn to npm

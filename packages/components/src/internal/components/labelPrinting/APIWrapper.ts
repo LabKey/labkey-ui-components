@@ -11,7 +11,7 @@ import { selectRows } from '../../query/selectRows';
 
 import { User } from '../base/models/User';
 
-import { handleRequestFailure } from '../../util/utils';
+import { handleRequestFailure } from '../../request';
 
 import { LABEL_TEMPLATE_SQ } from './constants';
 import { BarTenderConfiguration, BarTenderResponse, LabelTemplate } from './models';

@@ -1,6 +1,6 @@
 import { ActionURL, Ajax, Utils } from '@labkey/api';
 
-import { handleRequestFailure } from '../../util/utils';
+import { handleRequestFailure } from '../../request';
 
 export const updateCustomLabels = (
     labelProvider: string,

@@ -526,38 +526,6 @@ export function formatBytes(bytes: number, decimals = 2): string {
 }
 
 /**
- * Handles Ajax.request() failures. Calls the passed in "reject" handler with the error
- * from the request as determined by Utils.getCallbackWrapper(). The "reject" parameter can be a normal function
- * or a rejection handler for a Promise. If a response status code is available, then it will append that value
- * to the error object as "status".
- * Example:
- * ```
- * import { Ajax } from '@labkey/api';
- *
- * new Promise((resolve, reject) => {
- *     return Ajax.request({
- *         // ... url, success handler, etc
- *         failure: handleRequestFailure(reject, 'This optional message is logged to console.error'),
- *     });
- * });
- * ```
- */
-export function handleRequestFailure(reject: (error: any) => void, logMsg?: string) {
-    return Utils.getCallbackWrapper(
-        (error, response) => {
-            // Appends the response's status code to the error object
-            const errorWithStatus = { ...error, status: response?.status };
-            if (logMsg) {
-                console.error(logMsg, errorWithStatus);
-            }
-            reject(errorWithStatus);
-        },
-        undefined,
-        true
-    );
-}
-
-/**
  * Given an array of 1-based ordinals, which may have gaps in them (e.g., [1, 3, 4, 6]) and an
  * array of ordered values, extract the ordered values that correspond to the gaps in
  * the ordinals (e.g., values[1], values[4]).

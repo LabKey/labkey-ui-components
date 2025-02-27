@@ -6,7 +6,7 @@ import { getPrimaryAppProperties, getProjectPath, isAllProductFoldersFilteringEn
 
 import { incrementClientSideMetricCount } from '../../actions';
 import { URLResolver } from '../../url/URLResolver';
-import { handleRequestFailure } from '../../util/utils';
+import { handleRequestFailure } from '../../request';
 
 import { getContainerFilter } from '../../query/api';
 

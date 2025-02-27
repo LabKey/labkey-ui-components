@@ -41,7 +41,7 @@ import { SCHEMAS } from './internal/schemas';
 import { isLoading, LoadingState } from './public/LoadingState';
 import { ExtendedMap } from './public/ExtendedMap';
 import { useContainerPath, useContainerUser } from './internal/components/container/actions';
-import { request } from './internal/request';
+import { handleRequestFailure, request } from './internal/request';
 
 import {
     ServerContextConsumer,
@@ -67,7 +67,6 @@ import {
     getValueFromRow,
     getValuesSummary,
     handleFileInputChange,
-    handleRequestFailure,
     isImage,
     isInteger,
     isIntegerInRange,

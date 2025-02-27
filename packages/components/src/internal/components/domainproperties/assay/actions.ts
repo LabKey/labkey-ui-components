@@ -23,7 +23,7 @@ import { setDomainException } from '../actions';
 import { Container } from '../../base/models/Container';
 import { isAssayEnabled } from '../../../app/utils';
 
-import { handleRequestFailure } from '../../../util/utils';
+import { handleRequestFailure } from '../../../request';
 
 import { AssayProtocolModel } from './models';
 

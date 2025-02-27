@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 52072: Text choice field values to handle | character within values
   - PropertyValidator.joinValidValues() and PropertyValidator.splitValidValues()
 
+### version 6.26.3
+*Released*: 25 February 2025
+- Issue 52341: App chart render queryConfig to support parameterized queries
+
 ### version 6.26.2
 *Released*: 25 February 2025
 - Issue 52304: Sample Manager: Edit Lineage in grid not saving updates if names contains comma

@@ -746,11 +746,34 @@ export class PropertyValidator
     declare expression?: string;
 
     static joinValidValues(values: string[]): string {
-        return values?.map(val => val.trim().replace(/([\\|])/g, '\\$1')).join(' | ') || '';
+        // See PageFlowUtil.joinValuesToString()
+        return values?.map(val => val.trim().replace(/([\\|])/g, '\\$1')).join('|') || '';
     }
 
     static splitValidValues(value: string): string[] {
-        return value?.split(/(?<!\\)\|/).map(v => v.trim().replaceAll(/\\([\\|])/g, '$1')) ?? [];
+        // See PageFlowUtil.splitStringToValues()
+        const delimiter = '|';
+        const escape = '\\';
+        const result = [];
+
+        let currentToken = '';
+        let escaped = false;
+        for (let i = 0; i < value.length; i++) {
+            const c = value[i];
+            if (escaped) {
+                currentToken += c;
+                escaped = false;
+            } else if (c === escape) {
+                escaped = true;
+            } else if (c === delimiter) {
+                result.push(currentToken);
+                currentToken = '';
+            } else {
+                currentToken += c;
+            }
+        }
+        result.push(currentToken);
+        return result;
     }
 
     static fromJS(rawPropertyValidator: any[], type: string, isNewField = false): List<PropertyValidator> {

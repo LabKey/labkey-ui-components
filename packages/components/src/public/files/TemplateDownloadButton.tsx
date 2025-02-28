@@ -41,7 +41,7 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
     const [loadingTemplates, setLoadingTemplates] = useState<LoadingState>(LoadingState.INITIALIZED);
     const { container, moduleContext } = useServerContext();
     const { api } = useAppContext();
-    const isLoaded = loadingTemplates === LoadingState.LOADED;
+    const isLoaded = loadingTemplates === LoadingState.LOADED || !schemaQuery;
     const isLoading = loadingTemplates === LoadingState.LOADING;
     const schemaName = schemaQuery?.schemaName;
     const queryName = schemaQuery?.queryName;
@@ -49,7 +49,7 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
     const isDownloadingOrLoading = downloading || isLoading;
 
     const loadCustomTemplates = useCallback(async (): Promise<boolean> => {
-        let hasTemplates = false;
+        let hasTemplates_ = false;
 
         try {
             setLoadingTemplates(LoadingState.LOADING);
@@ -60,7 +60,7 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
             });
 
             const templates = queryInfo.getCustomTemplates() ?? [];
-            hasTemplates = templates.length > 0;
+            hasTemplates_ = templates.length > 0;
 
             setCustomTemplates(templates);
         } catch (error) {
@@ -69,7 +69,7 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
             setLoadingTemplates(LoadingState.LOADED);
         }
 
-        return hasTemplates;
+        return hasTemplates_;
     }, [api.query, container, moduleContext, schemaName, queryName]);
 
     const downloadCustomTemplate = useCallback(
@@ -119,27 +119,26 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
         'is-loaded': isLoaded,
     });
 
-    const iconClassName = classNames('fa', {
-        'fa-download': !isDownloadingOrLoading,
-        'fa-spinner': isDownloadingOrLoading,
-        'fa-pulse': isDownloadingOrLoading,
-    });
+    const dropdownTitle = useMemo(() => {
+        const iconClassName = classNames('fa', {
+            'fa-download': !isDownloadingOrLoading,
+            'fa-spinner': isDownloadingOrLoading,
+            'fa-pulse': isDownloadingOrLoading,
+        });
 
-    const dropdownTitle = useMemo(
-        () => (
+        return (
             <span title={TITLE}>
                 <span className={iconClassName} /> {text}
             </span>
-        ),
-        [iconClassName, text]
-    );
+        );
+    }, [isDownloadingOrLoading, text]);
 
     return (
         <DropdownButton
             bsStyle="info"
             buttonClassName={buttonClassName}
             buttonTitle={TITLE}
-            className={className}
+            className={classNames('template-download-button', className)}
             noCaret
             onClick={fetchTemplates}
             pullRight

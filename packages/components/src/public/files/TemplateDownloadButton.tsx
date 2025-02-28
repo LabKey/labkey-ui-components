@@ -41,9 +41,11 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
     const [loadingTemplates, setLoadingTemplates] = useState<LoadingState>(LoadingState.INITIALIZED);
     const { container, moduleContext } = useServerContext();
     const { api } = useAppContext();
+    const isLoaded = loadingTemplates === LoadingState.LOADED;
     const isLoading = loadingTemplates === LoadingState.LOADING;
     const schemaName = schemaQuery?.schemaName;
     const queryName = schemaQuery?.queryName;
+    const hasTemplates = customTemplates.length > 0;
     const isDownloadingOrLoading = downloading || isLoading;
 
     const loadCustomTemplates = useCallback(async (): Promise<boolean> => {
@@ -95,13 +97,27 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
 
     const fetchTemplates = useCallback(async () => {
         if (isDownloadingOrLoading || !schemaQuery) return;
-        const hasCustomTemplates = await loadCustomTemplates();
+        let hasCustomTemplates: boolean;
+
+        if (isLoaded) {
+            hasCustomTemplates = hasTemplates;
+        } else {
+            hasCustomTemplates = await loadCustomTemplates();
+        }
 
         // There are no custom templates so download the default template
         if (!hasCustomTemplates) {
             downloadDefaultTemplate();
         }
-    }, [downloadDefaultTemplate, isDownloadingOrLoading, loadCustomTemplates, schemaQuery]);
+    }, [downloadDefaultTemplate, hasTemplates, isDownloadingOrLoading, isLoaded, loadCustomTemplates, schemaQuery]);
+
+    const buttonClassName = classNames({
+        'button-small-padding': isGridRenderer,
+
+        // marker classes to assist automated testing
+        'has-templates': hasTemplates,
+        'is-loaded': isLoaded,
+    });
 
     const iconClassName = classNames('fa', {
         'fa-download': !isDownloadingOrLoading,
@@ -121,16 +137,16 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
     return (
         <DropdownButton
             bsStyle="info"
-            buttonClassName={classNames({ 'button-small-padding': isGridRenderer })}
+            buttonClassName={buttonClassName}
             buttonTitle={TITLE}
             className={className}
             noCaret
             onClick={fetchTemplates}
             pullRight
-            showMenu={customTemplates.length > 0}
+            showMenu={hasTemplates}
             title={dropdownTitle}
         >
-            {customTemplates.length > 0 && (
+            {hasTemplates && (
                 <MenuItem key={0} onClick={downloadDefaultTemplate}>
                     Default Template
                 </MenuItem>

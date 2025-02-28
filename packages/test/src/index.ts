@@ -27,6 +27,7 @@ import {
     generateDomainName,
     generateFieldName,
     generateRandomStr,
+    generateNamingExpressionConstant,
     getEscapedNameExpression,
 } from './utils';
 import {
@@ -89,6 +90,7 @@ export {
     selectRandomN,
     generateDomainName,
     generateRandomStr,
+    generateNamingExpressionConstant,
     generateFieldName,
     getEscapedNameExpression,
 };

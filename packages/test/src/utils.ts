@@ -51,16 +51,22 @@ export function selectRandomN<T>(choices: T[], selectCount = 1) : T[] {
     return shuffled.slice(0, selectCount);
 }
 
-export function generateRandomStr(length: number = 8, charset: string = STRING_CHARSET) {
+export function generateRandomStr(length: number = 8, charset: string = STRING_CHARSET, excluded: string = '\r') {
     let result = '';
     const charsetLength = charset.length;
 
-    for (let i = 0; i < length; i++) {
+    while (result.length < length) {
         const randomIndex = Math.floor(Math.random() * charsetLength);
-        result += charset[randomIndex];
+        const select = charset[randomIndex];
+        if (!excluded || excluded.indexOf(select) === -1)
+            result += charset[randomIndex];
     }
 
     return result.trim();
+}
+
+export function generateNamingExpressionConstant(length: number = 8, charset: string = STRING_CHARSET) {
+    return generateRandomStr(length, charset, '{}\r\n');
 }
 
 export function generateFieldName(length: number = 5, charset: string = FIELD_NAME_CHARSET) {

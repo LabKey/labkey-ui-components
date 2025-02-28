@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.X
+*Released*: X 2025
+- Issue 52430: Sample Manager: sample names with newline characters
+
 ### version 6.26.3
 *Released*: 25 February 2025
 - Issue 52341: App chart render queryConfig to support parameterized queries

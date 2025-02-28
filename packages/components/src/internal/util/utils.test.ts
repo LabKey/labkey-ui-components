@@ -1277,17 +1277,33 @@ describe('quoteValueWithDelimiters', () => {
         expect(quoteValueWithDelimiters('abc,d', ',')).toBe('"abc,d"');
         expect(quoteValueWithDelimiters('ab "cd,e"', ',')).toBe('"ab ""cd,e"""');
         expect(quoteValueWithDelimiters('ab, "cd,e"', ',')).toBe('"ab, ""cd,e"""');
+        expect(quoteValueWithDelimiters('a\nb', ',')).toBe('"a\nb"');
+        expect(quoteValueWithDelimiters('a\nb,c', ',')).toBe('"a\nb,c"');
+        expect(quoteValueWithDelimiters('a\nb,c"d', ',')).toBe('"a\nb,c""d"');
+
 
         expect(isQuotedWithDelimiters('"abc,d"', ',')).toBeTruthy();
         expect(isQuotedWithDelimiters('"ab ""cd,e"""', ',')).toBeTruthy();
         expect(isQuotedWithDelimiters('"ab, ""cd,e"""', ',')).toBeTruthy();
+        expect(isQuotedWithDelimiters('"a\nb"', ',')).toBeTruthy();
+        expect(isQuotedWithDelimiters('"a\nb,c"', ',')).toBeTruthy();
+        expect(isQuotedWithDelimiters('"a\nb,c""d"', ',')).toBeTruthy();
     });
 
     test('round trip', () => {
         const initialString = 'ab "cd,e"';
         expect(parseCsvString(quoteValueWithDelimiters(initialString, ','), ',', true)).toStrictEqual([initialString]);
-
         expect(isQuotedWithDelimiters(quoteValueWithDelimiters(initialString, ','), ',')).toBeTruthy();
+
+        const initialStringWithNewLine = 'ab\nc';
+        expect(parseCsvString(quoteValueWithDelimiters(initialStringWithNewLine, ','), ',', true)).toStrictEqual([initialStringWithNewLine]);
+        expect(isQuotedWithDelimiters(quoteValueWithDelimiters(initialStringWithNewLine, ','), ',')).toBeTruthy();
+
+        const initialStringWithNewLineAndComma = 'acb\nc';
+        expect(parseCsvString(quoteValueWithDelimiters(initialStringWithNewLineAndComma, ','), ',', true)).toStrictEqual([initialStringWithNewLineAndComma]);
+        expect(isQuotedWithDelimiters(quoteValueWithDelimiters(initialStringWithNewLineAndComma, ','), ',')).toBeTruthy();
+
+
     });
 });
 

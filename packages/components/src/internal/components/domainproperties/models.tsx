@@ -754,7 +754,9 @@ export class PropertyValidator
         // See PageFlowUtil.splitStringToValues()
         const delimiter = '|';
         const escape = '\\';
+
         const result = [];
+        if (!value) return result;
 
         let currentToken = '';
         let escaped = false;
@@ -766,13 +768,13 @@ export class PropertyValidator
             } else if (c === escape) {
                 escaped = true;
             } else if (c === delimiter) {
-                result.push(currentToken);
+                result.push(currentToken.trim());
                 currentToken = '';
             } else {
                 currentToken += c;
             }
         }
-        result.push(currentToken);
+        result.push(currentToken.trim());
         return result;
     }
 

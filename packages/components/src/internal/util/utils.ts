@@ -428,9 +428,17 @@ export function downloadAttachment(href: string, openInTab?: boolean, fileName?:
         return undefined;
     }
 
+    let params: any;
+    if (href.indexOf('/_webdav/') > -1) {
+        // WebDav supports a URL parameter for specifying the content disposition.
+        // When supplied, the server will supply the filename via the "Content-Disposition" response header.
+        // This file name is overridden by an explicitly provided "fileName".
+        params = { contentDisposition: 'attachment' };
+    }
+
     return request({
-        headers: { 'Content-Disposition': 'attachment' },
         url: href,
+        params,
         downloadFile: fileName ?? true,
         errorLogMsg: 'Failed to download attachment',
     });

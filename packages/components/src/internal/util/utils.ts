@@ -429,6 +429,7 @@ export function downloadAttachment(href: string, openInTab?: boolean, fileName?:
     }
 
     return request({
+        headers: { 'Content-Disposition': 'attachment' },
         url: href,
         downloadFile: fileName ?? true,
         errorLogMsg: 'Failed to download attachment',

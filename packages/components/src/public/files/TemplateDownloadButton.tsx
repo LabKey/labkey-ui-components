@@ -111,7 +111,7 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
         }
     }, [downloadDefaultTemplate, hasTemplates, isDownloadingOrLoading, isLoaded, loadCustomTemplates, schemaQuery]);
 
-    const buttonClassName = classNames({
+    const buttonClassName = classNames('template-download-button', {
         'button-small-padding': isGridRenderer,
 
         // marker classes to assist automated testing
@@ -138,7 +138,7 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
             bsStyle="info"
             buttonClassName={buttonClassName}
             buttonTitle={TITLE}
-            className={classNames('template-download-button', className)}
+            className={className}
             noCaret
             onClick={fetchTemplates}
             pullRight

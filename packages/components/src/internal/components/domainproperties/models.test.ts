@@ -1283,14 +1283,20 @@ describe('PropertyValidator', () => {
     });
 
     test('TextChoice joinValidValues', () => {
-        expect(PropertyValidator.joinValidValues(undefined)).toBeUndefined();
+        expect(PropertyValidator.joinValidValues(undefined)).toBe('');
         expect(PropertyValidator.joinValidValues([])).toBe('');
         expect(PropertyValidator.joinValidValues(['a'])).toBe('a');
         expect(PropertyValidator.joinValidValues(['a/a'])).toBe('a/a');
-        expect(PropertyValidator.joinValidValues(['a\\a'])).toBe('a\\a');
-        expect(PropertyValidator.joinValidValues(['a', 'b'])).toBe('a|b');
+        expect(PropertyValidator.joinValidValues(['a\\a'])).toBe('a\\\\a');
+        expect(PropertyValidator.joinValidValues(['a\\\\a'])).toBe('a\\\\\\\\a');
+        expect(PropertyValidator.joinValidValues(['a', 'b'])).toBe('a | b');
+        expect(PropertyValidator.joinValidValues(['a\\', 'b'])).toBe('a\\\\ | b');
         expect(PropertyValidator.joinValidValues(['a ', ' b'])).toBe('a | b');
-        expect(PropertyValidator.joinValidValues(['a ', ' b | b ', '||c|c||'])).toBe('a | b \\| b |\\|\\|c\\|c\\|\\|');
+
+        const joinedResult = PropertyValidator.joinValidValues(['a ', ' b | b ', '||c|c||']);
+        expect(joinedResult).toBe('a | b \\| b | \\|\\|c\\|c\\|\\|');
+        const splitResult = PropertyValidator.splitValidValues(joinedResult);
+        expect(splitResult).toStrictEqual(['a', 'b | b', '||c|c||']);
     });
 
     test('TextChoice splitValidValues', () => {
@@ -1298,14 +1304,15 @@ describe('PropertyValidator', () => {
         expect(PropertyValidator.splitValidValues('')).toStrictEqual(['']);
         expect(PropertyValidator.splitValidValues('a')).toStrictEqual(['a']);
         expect(PropertyValidator.splitValidValues('a/a')).toStrictEqual(['a/a']);
-        expect(PropertyValidator.splitValidValues('a\\a')).toStrictEqual(['a\\a']);
-        expect(PropertyValidator.splitValidValues('a|b')).toStrictEqual(['a', 'b']);
-        expect(PropertyValidator.splitValidValues('a | b')).toStrictEqual(['a ', ' b']);
-        expect(PropertyValidator.splitValidValues('a | b \\| b |\\|\\|c\\|c\\|\\|')).toStrictEqual([
-            'a ',
-            ' b | b ',
-            '||c|c||',
-        ]);
+        expect(PropertyValidator.splitValidValues('a\\\\a')).toStrictEqual(['a\\a']);
+        expect(PropertyValidator.splitValidValues('a\\\\\\\\a')).toStrictEqual(['a\\\\a']);
+        expect(PropertyValidator.splitValidValues('a | b')).toStrictEqual(['a', 'b']);
+        expect(PropertyValidator.splitValidValues('a\\\\ | b')).toStrictEqual(['a\\', 'b']);
+
+        const splitResult = PropertyValidator.splitValidValues('a | b \\| b |\\|\\|c\\|c\\|\\|');
+        expect(splitResult).toStrictEqual(['a', 'b | b', '||c|c||']);
+        const joinResult = PropertyValidator.joinValidValues(splitResult);
+        expect(joinResult).toBe('a | b \\| b | \\|\\|c\\|c\\|\\|');
     });
 });
 

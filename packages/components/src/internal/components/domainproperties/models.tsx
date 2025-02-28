@@ -746,11 +746,11 @@ export class PropertyValidator
     declare expression?: string;
 
     static joinValidValues(values: string[]): string {
-        return values?.map(val => val.replace(/\|/g, '\\|')).join('|');
+        return values?.map(val => val.trim().replace(/([\\|])/g, '\\$1')).join(' | ') || '';
     }
 
     static splitValidValues(value: string): string[] {
-        return value?.split(/(?<!\\)\|/).map(v => v.replaceAll('\\|', '|')) ?? [];
+        return value?.split(/(?<!\\)\|/).map(v => v.trim().replaceAll(/\\([\\|])/g, '$1')) ?? [];
     }
 
     static fromJS(rawPropertyValidator: any[], type: string, isNewField = false): List<PropertyValidator> {

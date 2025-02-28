@@ -20,7 +20,6 @@ const TITLE = 'Download Template';
 interface Props {
     className?: string;
     defaultTemplateUrl?: string;
-    dropDownClassName?: string;
     isGridRenderer?: boolean;
     onDownloadDefault?: () => Promise<void>;
     schemaQuery?: SchemaQuery;
@@ -30,14 +29,13 @@ interface Props {
 
 const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
     const {
-        className,
+        className = 'small-right-spacing',
         defaultTemplateUrl,
-        dropDownClassName,
         isGridRenderer,
         onDownloadDefault,
         schemaQuery,
-        text = 'Template',
     } = props;
+    const text = props.text ?? (isGridRenderer ? 'Download' : 'Template');
     const [customTemplates, setCustomTemplates] = useState<ImportTemplate[]>([]);
     const [downloading, setDownloading] = useState<boolean>(false);
     const [loadingTemplates, setLoadingTemplates] = useState<LoadingState>(LoadingState.INITIALIZED);
@@ -46,7 +44,6 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
     const isLoading = loadingTemplates === LoadingState.LOADING;
     const schemaName = schemaQuery?.schemaName;
     const queryName = schemaQuery?.queryName;
-    const showDropdown = customTemplates.length > 0;
     const isDownloadingOrLoading = downloading || isLoading;
 
     const loadCustomTemplates = useCallback(async (): Promise<boolean> => {
@@ -112,54 +109,48 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
         'fa-pulse': isDownloadingOrLoading,
     });
 
-    const dropdownTitle = useMemo(() => {
-        return (
+    const dropdownTitle = useMemo(
+        () => (
             <span title={TITLE}>
                 <span className={iconClassName} /> {text}
             </span>
-        );
-    }, [iconClassName, text]);
+        ),
+        [iconClassName, text]
+    );
 
     return (
-        <>
-            {!showDropdown && (
-                <a className={'btn btn-info ' + (className ?? '')} title={TITLE} onClick={fetchTemplates}>
-                    <span className={iconClassName} /> {text}
-                </a>
+        <DropdownButton
+            bsStyle="info"
+            buttonClassName={classNames({ 'button-small-padding': isGridRenderer })}
+            buttonTitle={TITLE}
+            className={className}
+            noCaret
+            onClick={fetchTemplates}
+            pullRight
+            showMenu={customTemplates.length > 0}
+            title={dropdownTitle}
+        >
+            {customTemplates.length > 0 && (
+                <MenuItem key={0} onClick={downloadDefaultTemplate}>
+                    Default Template
+                </MenuItem>
             )}
-            {showDropdown && (
-                <DropdownButton
-                    onClick={fetchTemplates}
-                    title={dropdownTitle}
-                    bsStyle="info"
-                    menuOpen
-                    noCaret
-                    className="small-right-spacing"
-                    buttonClassName={dropDownClassName ?? (isGridRenderer ? 'button-small-padding' : '')}
-                >
-                    {customTemplates.length > 0 && (
-                        <MenuItem key={0} onClick={downloadDefaultTemplate}>
-                            Default Template
-                        </MenuItem>
-                    )}
-                    {customTemplates.map(template => {
-                        if (template.url.endsWith('(unavailable)')) {
-                            return (
-                                <DisableableMenuItem key={template.label} disabled disabledMessage="File not found">
-                                    {template.label}
-                                </DisableableMenuItem>
-                            );
-                        }
+            {customTemplates.map(template => {
+                if (template.url.endsWith('(unavailable)')) {
+                    return (
+                        <DisableableMenuItem key={template.label} disabled disabledMessage="File not found">
+                            {template.label}
+                        </DisableableMenuItem>
+                    );
+                }
 
-                        return (
-                            <MenuItem key={template.label} onClick={downloadCustomTemplate(template.url)}>
-                                {template.label}
-                            </MenuItem>
-                        );
-                    })}
-                </DropdownButton>
-            )}
-        </>
+                return (
+                    <MenuItem key={template.label} onClick={downloadCustomTemplate(template.url)}>
+                        {template.label}
+                    </MenuItem>
+                );
+            })}
+        </DropdownButton>
     );
 });
 TemplateDownloadButtonImpl.displayName = 'TemplateDownloadButtonImpl';

@@ -76,9 +76,9 @@ describe('TemplateDownloadButton', () => {
             expect(document.querySelectorAll('span.fa-download')).toHaveLength(1);
         });
 
-        const link = document.querySelector('a.btn-info');
-        expect(link).toHaveTextContent('Template');
-        await userEvent.click(link);
+        const button = document.querySelector('button.btn-info');
+        expect(button).toHaveTextContent('Template');
+        await userEvent.click(button);
 
         expect(document.querySelectorAll('.dropdown')).toHaveLength(1);
         const dropdown = document.querySelector('.dropdown');
@@ -105,9 +105,9 @@ describe('TemplateDownloadButton', () => {
             expect(document.querySelectorAll('span.fa-download')).toHaveLength(1);
         });
 
-        const link = document.querySelector('a.btn-info');
-        expect(link).toHaveTextContent('Template');
-        await userEvent.click(link);
+        const button = document.querySelector('button.btn-info');
+        expect(button).toHaveTextContent('Template');
+        await userEvent.click(button);
 
         expect(document.querySelectorAll('.dropdown')).toHaveLength(1);
         const dropdown = document.querySelector('.dropdown');

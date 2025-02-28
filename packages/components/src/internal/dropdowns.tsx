@@ -3,6 +3,7 @@ import React, {
     forwardRef,
     memo,
     MouseEvent,
+    MouseEventHandler,
     MutableRefObject,
     PropsWithChildren,
     ReactElement,
@@ -119,19 +120,19 @@ export const DropdownMenu: FC<DropdownMenuProps> = props => {
 };
 DropdownMenu.displayName = 'DropdownMenu';
 
-interface DropdownButtonProps {
+interface DropdownButtonProps extends PropsWithChildren {
     bsStyle?: BSStyle;
     buttonClassName?: string;
-    children: ReactNode;
+    buttonTitle?: string;
     className?: string;
     disabled?: boolean;
     dropup?: boolean;
-    menuOpen?: boolean;
     noCaret?: boolean;
     onClick?: () => void;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
     pullRight?: boolean;
+    showMenu?: boolean;
     title: ReactNode;
 }
 
@@ -141,35 +142,31 @@ interface DropdownButtonProps {
 export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((props, ref) => {
     const {
         bsStyle = 'default',
+        buttonTitle,
         children,
         disabled = false,
         dropup = false,
-        menuOpen,
         noCaret = false,
         onClick,
         onMouseEnter,
         onMouseLeave,
         pullRight = false,
+        showMenu = true,
         title,
     } = props;
     const id = useMemo(() => generateId('dropdown-button-'), []);
-    const { onClick: onToggleClick, open, setOpen, toggleRef } = useToggleState<HTMLButtonElement>();
+    const { onClick: onToggleClick, open, toggleRef } = useToggleState<HTMLButtonElement>();
     const className = classNames('lk-dropdown', 'btn-group', props.className, { open, dropdown: !dropup, dropup });
     const buttonClassName = classNames('btn', 'btn-' + bsStyle, 'dropdown-toggle', props.buttonClassName);
     const menuClassName = classNames(DROPDOWN_MENU_CLASS, { 'dropdown-menu-right': pullRight });
     const caretClassName = classNames('caret', { 'no-margin': !title });
-    const onClick_ = useCallback(
+    const onClick_ = useCallback<MouseEventHandler<HTMLButtonElement>>(
         event => {
             onToggleClick(event);
             onClick?.();
         },
         [onToggleClick, onClick]
     );
-
-    useEffect(() => {
-        if (menuOpen === undefined) return;
-        setOpen(menuOpen);
-    }, [menuOpen, setOpen]);
 
     return (
         <div className={className} ref={ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
@@ -182,14 +179,17 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
                 onClick={onClick_}
                 ref={toggleRef}
                 role="button"
+                title={buttonTitle}
                 type="button"
             >
                 {title}
                 {!noCaret && <span className={caretClassName} />}
             </button>
-            <ul className={menuClassName} aria-labelledby={id} onClick={handleMenuClick} role="menu">
-                {children}
-            </ul>
+            {showMenu && (
+                <ul className={menuClassName} aria-labelledby={id} onClick={handleMenuClick} role="menu">
+                    {children}
+                </ul>
+            )}
         </div>
     );
 });

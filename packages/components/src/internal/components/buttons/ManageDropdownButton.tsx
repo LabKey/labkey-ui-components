@@ -27,7 +27,7 @@ export const ManageDropdownButton: FC<Props> = ({ children, disabled, showIcon =
     const buttonLabel: ReactNode = useMemo(
         () => (
             <span>
-                {showIcon && <i className="fa fa-bars margin-right" />}
+                {showIcon && <i className="fa fa-bars margin-right manage-dropdown" />}
                 Manage
             </span>
         ),

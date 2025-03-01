@@ -19,7 +19,6 @@ import { ChangeEvent, CSSProperties } from 'react';
 
 import { hasParameter, toggleParameter } from '../url/ActionURL';
 import { QueryInfo } from '../../public/QueryInfo';
-import { request } from '../request';
 
 // Case-insensitive Object reference. Returns undefined if either object or prop does not resolve.
 // If both casings exist (e.g. 'x' and 'X' are props) then either value may be returned.
@@ -425,23 +424,14 @@ export function isImage(value): boolean {
 export function downloadAttachment(href: string, openInTab?: boolean, fileName?: string): Promise<void> {
     if (openInTab) {
         window.open(href, '_blank', 'noopener,noreferrer');
-        return undefined;
+    } else {
+        const link = document.createElement('a');
+        link.href = href;
+        link.download = fileName;
+        link.click();
     }
 
-    let params: any;
-    if (href.indexOf('/_webdav/') > -1) {
-        // WebDav supports a URL parameter for specifying the content disposition.
-        // When supplied, the server will supply the filename via the "Content-Disposition" response header.
-        // This file name is overridden by an explicitly provided "fileName".
-        params = { contentDisposition: 'attachment' };
-    }
-
-    return request({
-        url: href,
-        params,
-        downloadFile: fileName ?? true,
-        errorLogMsg: 'Failed to download attachment',
-    });
+    return undefined;
 }
 
 // copied from platform/api/src/org/labkey/api/attachments/Attachment.java

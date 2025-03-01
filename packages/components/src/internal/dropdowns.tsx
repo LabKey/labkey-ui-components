@@ -120,10 +120,11 @@ export const DropdownMenu: FC<DropdownMenuProps> = props => {
 };
 DropdownMenu.displayName = 'DropdownMenu';
 
-interface DropdownButtonProps extends PropsWithChildren {
+interface DropdownButtonProps {
     bsStyle?: BSStyle;
     buttonClassName?: string;
     buttonTitle?: string;
+    children: ReactNode;
     className?: string;
     disabled?: boolean;
     dropup?: boolean;

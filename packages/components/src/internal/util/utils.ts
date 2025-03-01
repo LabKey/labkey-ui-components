@@ -427,7 +427,9 @@ export function downloadAttachment(href: string, openInTab?: boolean, fileName?:
     } else {
         const link = document.createElement('a');
         link.href = href;
-        link.download = fileName;
+        if (fileName) {
+            link.download = fileName;
+        }
         link.click();
     }
 

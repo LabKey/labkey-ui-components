@@ -49,7 +49,7 @@
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {
     "@hello-pangea/dnd": "17.0.0",
-    "@labkey/api": "1.38.0",
+    "@labkey/api": "1.38.0-fb-issue-52237.0",
     "@testing-library/dom": "~10.4.0",
     "@testing-library/jest-dom": "~6.6.3",
     "@testing-library/react": "~16.0.1",

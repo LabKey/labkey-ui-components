@@ -23,7 +23,7 @@ const ALPHA = 'ABCDabcvxyz';
 const NUMERIC = '0123456789';
 const SPECIAL = '~!@#$%^&*()-+=_{}[]|:;\"\',.<>';
 const DOMAIN_SPECIAL_STRING =  "+- _.:&()/";
-const WHITE_SPACE = ' \t\n\r\u00A0';
+const WHITE_SPACE = ' \t\n\u00A0';
 const FIELD_NAME_CHARSET = ALPHA + NUMERIC + QUERY_KEY_CHARSET + SPECIAL + ' '/*only space is allowed, no other whitespace chars*/;
 const STRING_CHARSET = ALPHA + NUMERIC + QUERY_KEY_CHARSET + SPECIAL + WHITE_SPACE;
 

@@ -1,9 +1,18 @@
 # @labkey/themes
 UI themes for LabKey Server.
 
+### version 1.4.1
+*Released*: 27 February 2025
+- Merge release24.11-SNAPSHOT to develop:
+    - includes changes from 1.3.4
+
 ### version 1.4.0
 *Released*: 5 November 2024
 - Package updates
+
+### version 1.3.4
+*Released*: 26 February 2025
+* Issue 52402: Encode bootstrap button state attributes
 
 ### version 1.3.2
 *Released*: 22 September 2023

@@ -1,12 +1,12 @@
-/components/packages/build @labkey-alan @labkey-nicka @cnathe
+/packages/build @labkey-alan @labkey-nicka @cnathe
 
 # components
-/components/packages/components/src/public/ExtendedMap.ts @labkey-alan
-/components/packages/components/src/public/QueryModel/withQueryModels.tsx @labkey-alan
-/components/packages/components/src/public/QueryModel/QueryModel.ts @labkey-alan
-/components/packages/components/src/internal/useLoadableState.ts @labkey-alan
-/components/packages/components/src/internal/dropdowns.tsx @labkey-alan
-/components/packages/components/src/internal/components/AutoForm.tsx @labkey-alan
+/packages/components/src/public/ExtendedMap.ts @labkey-alan
+/packages/components/src/public/QueryModel/withQueryModels.tsx @labkey-alan
+/packages/components/src/public/QueryModel/QueryModel.ts @labkey-alan
+/packages/components/src/internal/useLoadableState.ts @labkey-alan
+/packages/components/src/internal/dropdowns.tsx @labkey-alan
+/packages/components/src/internal/components/AutoForm.tsx @labkey-alan
 /packages/components/src/internal/components/domainproperties @cnathe
 /packages/components/src/internal/components/chart @cnathe
 /packages/components/src/internal/components/ontology @cnathe

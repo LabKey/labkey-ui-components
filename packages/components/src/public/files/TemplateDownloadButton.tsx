@@ -72,20 +72,8 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
         return hasTemplates_;
     }, [api.query, container, moduleContext, schemaName, queryName]);
 
-    const downloadCustomTemplate = useCallback(
-        (customTemplateUrl: string) => {
-            return async () => {
-                if (downloading) return;
-                setDownloading(true);
-                await downloadAttachment(customTemplateUrl);
-                setDownloading(false);
-            };
-        },
-        [downloading]
-    );
-
     const downloadDefaultTemplate = useCallback(async () => {
-        if (downloading) return;
+        if (isDownloadingOrLoading) return;
         setDownloading(true);
         if (onDownloadDefault) {
             await onDownloadDefault();
@@ -93,7 +81,7 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
             await downloadAttachment(defaultTemplateUrl);
         }
         setDownloading(false);
-    }, [defaultTemplateUrl, downloading, onDownloadDefault]);
+    }, [defaultTemplateUrl, isDownloadingOrLoading, onDownloadDefault]);
 
     const fetchTemplates = useCallback(async () => {
         if (isDownloadingOrLoading || !schemaQuery) return;
@@ -105,7 +93,7 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
             hasCustomTemplates = await loadCustomTemplates();
         }
 
-        // There are no custom templates so download the default template
+        // There are no custom templates, so download the default template
         if (!hasCustomTemplates) {
             downloadDefaultTemplate();
         }
@@ -141,13 +129,13 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
             className={className}
             // Intentionally do not display a caret for this button as it may or may not be a menu
             noCaret
-            onClick={fetchTemplates}
+            onClick={isDownloadingOrLoading ? undefined : fetchTemplates}
             pullRight
             showMenu={hasTemplates}
             title={dropdownTitle}
         >
             {hasTemplates && (
-                <MenuItem key={0} onClick={downloadDefaultTemplate}>
+                <MenuItem key={0} onClick={downloading ? undefined : downloadDefaultTemplate}>
                     Default Template
                 </MenuItem>
             )}

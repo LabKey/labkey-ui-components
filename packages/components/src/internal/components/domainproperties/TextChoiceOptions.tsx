@@ -355,7 +355,7 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
                     ...field.textChoiceValidator,
                     ...DEFAULT_TEXT_CHOICE_VALIDATOR.toJS(),
                     shouldShowWarning: true,
-                    expression: newValues.join('|'),
+                    expression: PropertyValidator.joinValidValues(newValues),
                     properties: { validValues: newValues },
                     extraProperties: { valueUpdates },
                 })

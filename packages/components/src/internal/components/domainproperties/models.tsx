@@ -698,7 +698,7 @@ export class PropertyValidatorProperties
         }
         // see DomainUtil.getPropertyDescriptor() for where this property is added to the JSON field validator extChoice validator info
         if (typeof values?.validValues === 'string') {
-            values.validValues = values.validValues.split('|');
+            values.validValues = PropertyValidator.splitValidValues(values.validValues);
         }
         super(values);
     }
@@ -745,6 +745,39 @@ export class PropertyValidator
     declare rowId?: number;
     declare expression?: string;
 
+    static joinValidValues(values: string[]): string {
+        // See PageFlowUtil.joinValuesToString()
+        return values?.map(val => val.trim().replace(/([\\|])/g, '\\$1')).join('|') || '';
+    }
+
+    static splitValidValues(value: string): string[] {
+        // See PageFlowUtil.splitStringToValues()
+        const delimiter = '|';
+        const escape = '\\';
+
+        const result = [];
+        if (!value) return result;
+
+        let currentToken = '';
+        let escaped = false;
+        for (let i = 0; i < value.length; i++) {
+            const c = value[i];
+            if (escaped) {
+                currentToken += c;
+                escaped = false;
+            } else if (c === escape) {
+                escaped = true;
+            } else if (c === delimiter) {
+                result.push(currentToken.trim());
+                currentToken = '';
+            } else {
+                currentToken += c;
+            }
+        }
+        result.push(currentToken.trim());
+        return result;
+    }
+
     static fromJS(rawPropertyValidator: any[], type: string, isNewField = false): List<PropertyValidator> {
         let propValidators = List<PropertyValidator>();
 
@@ -756,7 +789,8 @@ export class PropertyValidator
 
                     // if we are loading a textChoiceValidator from JSON, we need to set the properties.validValues
                     if (type === 'TextChoice' && !rawPropertyValidator[i]?.properties?.validValues) {
-                        rawPropertyValidator[i].properties.validValues = expressionStr?.split('|') ?? [];
+                        rawPropertyValidator[i].properties.validValues =
+                            PropertyValidator.splitValidValues(expressionStr);
                     }
 
                     rawPropertyValidator[i]['properties'] = new PropertyValidatorProperties(

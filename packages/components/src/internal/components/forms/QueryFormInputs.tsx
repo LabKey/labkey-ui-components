@@ -343,11 +343,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 onToggleDisable={this.onToggleDisable}
                                 addLabelAsterisk={showAsteriskSymbol}
                                 renderFieldLabel={renderFieldLabel}
-                                toggleDisabledTooltip={
-                                    preventCrossFolderEnable
-                                        ? `File fields for the selected ${pluralNoun.toLowerCase()} can't be updated because the ${pluralNoun.toLowerCase()} belong to multiple folders.`
-                                        : undefined
-                                }
                                 showLabel
                             />
                         );

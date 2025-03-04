@@ -26,7 +26,7 @@ import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { capitalizeFirstChar } from '../../util/utils';
 
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { ChangeType, InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 import { MenuItem } from '../../dropdowns';
 
@@ -173,20 +173,24 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
         this.closeDialog();
         this.onRowSelectionChange(this.getUsersModel(), undefined, false); // clear selected user details
         this.props.onCreateComplete(response, roles);
-        this.reloadUsersModel();
+        this.props.actions.onModelChange(this.getUsersModelId(), { changeType: ChangeType.add });
     };
 
     reloadUsersModel(): void {
         this.props.actions.loadModel(this.getUsersModelId(), true, true);
     }
 
-    onUsersStateChangeComplete = (response: any, resetSelection = true): void => {
+    onUsersStateChangeComplete = (response: any, isDelete: boolean = false): void => {
         this.closeDialog();
-        if (resetSelection) {
-            this.onRowSelectionChange(this.getUsersModel(), undefined, false); // clear selected user details
-        }
+        if (isDelete) this.updateSelectedUserId(undefined); // clear selected user details
         this.props.onUsersStateChangeComplete(response);
-        this.reloadUsersModel();
+        this.props.actions.onModelChange(this.getUsersModelId(), {
+            changeType: isDelete ? ChangeType.delete : ChangeType.update,
+        });
+    };
+
+    onUserDelete = (response: any): void => {
+        this.onUsersStateChangeComplete(response, true);
     };
 
     onRowSelectionChange = (model: QueryModel, row: any, checked: boolean): void => {
@@ -367,7 +371,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                 {user.hasManageUsersPermission() && showDialog === 'delete' && (
                     <UserDeleteConfirmModal
                         userIds={model.intSelections}
-                        onComplete={this.onUsersStateChangeComplete}
+                        onComplete={this.onUserDelete}
                         onCancel={this.closeDialog}
                     />
                 )}

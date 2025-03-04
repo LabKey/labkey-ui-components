@@ -2,7 +2,7 @@ import React, { ComponentType, FC, PureComponent, ReactNode } from 'react';
 import { Filter } from '@labkey/api';
 // eslint cannot find Draft for some reason, but Intellij can.
 // eslint-disable-next-line import/named
-import { Draft, produce } from 'immer';
+import { Draft, produce, WritableDraft } from 'immer';
 import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
 
 import { getQueryParams } from '../../internal/util/URL';
@@ -56,6 +56,56 @@ export function withSearchParams<T>(Component: WithSearchParamsComponent<T>): Co
     return Wrapped;
 }
 
+function columnHasFilter(fieldKey: string, filters: Filter.IFilter[]): boolean {
+    fieldKey = fieldKey.toLowerCase();
+    return filters.some(filter => filter.getColumnName().toLowerCase() === fieldKey);
+}
+
+function columnsHaveFilter(columnFieldKeys: string[], filters: Filter.IFilter[]): boolean {
+    return columnFieldKeys.some(fieldKey => columnHasFilter(fieldKey, filters));
+}
+
+export enum ChangeType {
+    add = 'add',
+    delete = 'delete',
+    update = 'update',
+}
+
+interface BaseModelChange {
+    changeType: ChangeType;
+}
+
+export interface AddChange extends BaseModelChange {
+    changeType: ChangeType.add;
+}
+
+/**
+ * selectionsForReplace: an optional set of row keys to select after the model is reset.
+ */
+export interface DeleteOptions {
+    selectionsForReplace?: string[];
+}
+
+export interface DeleteChange extends BaseModelChange {
+    changeType: ChangeType.delete;
+    options?: DeleteOptions;
+}
+
+/**
+ * columnsChanged: an optional list of fieldKeys used to check against the filters. If any of the columns have filters
+ * on the QueryModel we will reset the model, if not we will only reload the model.
+ */
+export interface UpdateOptions {
+    columnsChanged?: string[];
+}
+
+export interface UpdateChange extends BaseModelChange {
+    changeType: ChangeType.update;
+    options?: UpdateOptions;
+}
+
+export type ModelChange = AddChange | DeleteChange | UpdateChange;
+
 export interface Actions {
     addMessage: (id: string, message: GridMessage, duration?: number) => void;
     addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
@@ -68,6 +118,7 @@ export interface Actions {
     loadNextPage: (id: string) => void;
     loadPreviousPage: (id: string) => void;
     loadRows: (id: string) => void;
+    onModelChange: (id: string, modelChange: ModelChange) => void;
     replaceSelections: (id: string, selections: string[]) => void;
     resetTotalCountState: () => void;
     selectAllRows: (id: string) => void;
@@ -154,6 +205,17 @@ const resetSelectionState = (model: Draft<QueryModel>): void => {
     model.selections = undefined;
     model.selectionsError = undefined;
     model.selectionsLoadingState = LoadingState.INITIALIZED;
+    model.selectionPivot = undefined;
+};
+
+/**
+ * Resets the model to the first page, resets the selection state, and resets the total count state.
+ * @param model The model to reset
+ */
+const resetModelState = (model: Draft<QueryModel>): void => {
+    resetRowsState(model);
+    resetSelectionState(model);
+    resetTotalCountState(model);
 };
 
 /**
@@ -244,6 +306,7 @@ export function withQueryModels<Props>(
                 loadFirstPage: this.loadFirstPage,
                 loadLastPage: this.loadLastPage,
                 loadCharts: this.loadCharts,
+                onModelChange: this.onModelChange,
                 replaceSelections: this.replaceSelections,
                 resetTotalCountState: this.resetTotalCountState,
                 selectAllRows: this.selectAllRows,
@@ -367,7 +430,7 @@ export function withQueryModels<Props>(
             let loadSelections = false;
 
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
                     Object.assign(model, model.attributesForURLQueryParams(searchParams));
                     // If we have selections or previously attempted to load them we'll want to reload them when the
@@ -387,7 +450,7 @@ export function withQueryModels<Props>(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         setSelectionsError = (id: string, error: any, action: string): void => {
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
                     let selectionsError = resolveErrorMessage(error);
 
@@ -407,7 +470,7 @@ export function withQueryModels<Props>(
             const { loadSelections } = this.props.modelLoader;
 
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
                 })
             );
@@ -416,7 +479,7 @@ export function withQueryModels<Props>(
                 const selections = await loadSelections(this.state.queryModels[id]);
 
                 this.setState(
-                    produce<State>(draft => {
+                    produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
                         model.selections = selections;
                         model.selectionsLoadingState = LoadingState.LOADED;
@@ -434,7 +497,7 @@ export function withQueryModels<Props>(
 
             if (!isLoading) {
                 this.setState(
-                    produce<State>(draft => {
+                    produce<State>((draft: WritableDraft<State>) => {
                         draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
                     })
                 );
@@ -443,7 +506,7 @@ export function withQueryModels<Props>(
             try {
                 await modelLoader.clearSelections(this.state.queryModels[id]);
                 this.setState(
-                    produce<State>(draft => {
+                    produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
                         model.selections = new Set();
                         if (!isLoading) {
@@ -464,7 +527,7 @@ export function withQueryModels<Props>(
 
             if (!isLoading) {
                 this.setState(
-                    produce<State>(draft => {
+                    produce<State>((draft: WritableDraft<State>) => {
                         draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
                     })
                 );
@@ -473,7 +536,7 @@ export function withQueryModels<Props>(
             try {
                 await modelLoader.setSelections(this.state.queryModels[id], checked, selections);
                 this.setState(
-                    produce<State>(draft => {
+                    produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
 
                         // If there are selections made, then ensure the model.selections is initialized
@@ -509,7 +572,7 @@ export function withQueryModels<Props>(
             const { modelLoader } = this.props;
 
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
                 })
             );
@@ -517,7 +580,7 @@ export function withQueryModels<Props>(
             try {
                 await modelLoader.replaceSelections(this.state.queryModels[id], selections);
                 this.setState(
-                    produce<State>(draft => {
+                    produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
                         model.selections = new Set(selections);
                         model.selectionsError = undefined;
@@ -534,7 +597,7 @@ export function withQueryModels<Props>(
             const { modelLoader } = this.props;
 
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
                 })
             );
@@ -542,7 +605,7 @@ export function withQueryModels<Props>(
             try {
                 const selections = await modelLoader.selectAllRows(this.state.queryModels[id]);
                 this.setState(
-                    produce<State>(draft => {
+                    produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
                         model.selections = selections;
                         model.selectionsError = undefined;
@@ -602,7 +665,7 @@ export function withQueryModels<Props>(
 
         selectReport = (id: string, reportId: string): void => {
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
                     model.selectedReportId = reportId;
                 }),
@@ -614,7 +677,7 @@ export function withQueryModels<Props>(
             );
         };
 
-        loadRows = async (id: string, loadSelections = false): Promise<void> => {
+        loadRows = async (id: string, loadSelections = false, selectionsForReplace?: string[]): Promise<void> => {
             const { loadRows } = this.props.modelLoader;
 
             if (isLoading(this.state.queryModels[id].queryInfoLoadingState)) {
@@ -622,7 +685,7 @@ export function withQueryModels<Props>(
             }
 
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     draft.queryModels[id].rowsLoadingState = LoadingState.LOADING;
                 })
             );
@@ -632,7 +695,7 @@ export function withQueryModels<Props>(
                 const { messages, rows, orderedRows, rowCount } = result;
 
                 this.setState(
-                    produce<State>(draft => {
+                    produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
                         model.messages = messages;
                         model.rows = rows;
@@ -642,12 +705,12 @@ export function withQueryModels<Props>(
                         model.rowsError = undefined;
                         model.selectionPivot = undefined;
                     }),
-                    () => this.maybeLoad(id, false, false, loadSelections)
+                    () => this.maybeLoad(id, false, false, loadSelections, false, selectionsForReplace)
                 );
             } catch (error) {
                 let viewDoesNotExist = false;
                 this.setState(
-                    produce<State>(draft => {
+                    produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
                         const calcFieldNames = model.queryInfo
                             .getAllColumns()
@@ -715,7 +778,7 @@ export function withQueryModels<Props>(
             // if usage didn't request loading the totalCount, skip it
             if (!this.state.queryModels[id].includeTotalCount) {
                 this.setState(
-                    produce<State>(draft => {
+                    produce<State>((draft: WritableDraft<State>) => {
                         draft.queryModels[id].totalCountLoadingState = LoadingState.LOADED;
                     })
                 );
@@ -723,7 +786,7 @@ export function withQueryModels<Props>(
             }
 
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     draft.queryModels[id].totalCountLoadingState = LoadingState.LOADING;
                 })
             );
@@ -749,7 +812,7 @@ export function withQueryModels<Props>(
                 });
 
                 this.setState(
-                    produce<State>(draft => {
+                    produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
                         model.rowCount = rowCount;
                         model.totalCountLoadingState = LoadingState.LOADED;
@@ -758,7 +821,7 @@ export function withQueryModels<Props>(
                 );
             } catch (error) {
                 this.setState(
-                    produce<State>(draft => {
+                    produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
                         let rowsError = resolveErrorMessage(error);
 
@@ -784,7 +847,7 @@ export function withQueryModels<Props>(
             const { loadQueryInfo } = this.props.modelLoader;
 
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     draft.queryModels[id].queryInfoLoadingState = LoadingState.LOADING;
                 })
             );
@@ -792,7 +855,7 @@ export function withQueryModels<Props>(
             try {
                 const queryInfo = await loadQueryInfo(this.state.queryModels[id]);
                 this.setState(
-                    produce<State>(draft => {
+                    produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
                         model.queryInfo = queryInfo;
                         model.queryInfoLoadingState = LoadingState.LOADED;
@@ -803,7 +866,7 @@ export function withQueryModels<Props>(
                 );
             } catch (error) {
                 this.setState(
-                    produce<State>(draft => {
+                    produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
                         let queryInfoError = resolveErrorMessage(error);
 
@@ -827,23 +890,27 @@ export function withQueryModels<Props>(
          * @param loadRows boolean, if true will load the model's rows.
          * @param loadSelections boolean, if true will load selections after loading QueryInfo.
          * @param reloadTotalCount boolean, if true will reload totalCount after loading QueryInfo.
+         * @param selectionsForReplace string[], if defined it will replace the existing selections via replaceSelections
          */
         maybeLoad = (
             id: string,
             loadQueryInfo = false,
             loadRows = false,
             loadSelections = false,
-            reloadTotalCount = false
+            reloadTotalCount = false,
+            selectionsForReplace?: string[]
         ): void => {
             if (loadQueryInfo) {
                 // Postpone loading any rows or selections if we're loading the QueryInfo.
                 this.loadQueryInfo(id, loadRows, loadSelections);
             } else {
                 if (loadRows) {
-                    this.loadRows(id, loadSelections);
+                    this.loadRows(id, loadSelections, selectionsForReplace);
                     this.loadTotalCount(id, reloadTotalCount);
                 } else if (loadSelections) {
                     this.loadSelections(id);
+                } else if (selectionsForReplace !== undefined) {
+                    this.replaceSelections(id, selectionsForReplace);
                 }
             }
 
@@ -867,7 +934,7 @@ export function withQueryModels<Props>(
         loadNextPage = (id: string): void => {
             let shouldLoad = false;
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
 
                     if (!model.isLastPage) {
@@ -882,7 +949,7 @@ export function withQueryModels<Props>(
         loadPreviousPage = (id: string): void => {
             let shouldLoad = false;
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
 
                     if (!model.isFirstPage) {
@@ -897,7 +964,7 @@ export function withQueryModels<Props>(
         loadFirstPage = (id: string): void => {
             let shouldLoad = false;
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
 
                     if (!model.isFirstPage) {
@@ -912,7 +979,7 @@ export function withQueryModels<Props>(
         loadLastPage = (id: string): void => {
             let shouldLoad = false;
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
 
                     if (!model.isLastPage) {
@@ -928,7 +995,7 @@ export function withQueryModels<Props>(
             const { modelLoader } = this.props;
 
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     draft.queryModels[id].chartsLoadingState = LoadingState.LOADING;
                 })
             );
@@ -936,7 +1003,7 @@ export function withQueryModels<Props>(
             try {
                 const charts = await modelLoader.loadCharts(this.state.queryModels[id]);
                 this.setState(
-                    produce<State>(draft => {
+                    produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
                         model.charts = charts;
                         model.chartsLoadingState = LoadingState.LOADED;
@@ -945,7 +1012,7 @@ export function withQueryModels<Props>(
                 );
             } catch (error) {
                 this.setState(
-                    produce<State>(draft => {
+                    produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
                         let chartsError = resolveErrorMessage(error);
 
@@ -967,7 +1034,7 @@ export function withQueryModels<Props>(
             const { searchParams } = this.props;
             let id;
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     // Instantiate the model first because queryConfig.id is optional and is auto-generated in the
                     // QueryModel constructor if not set.
                     let queryModel = new QueryModel(queryConfig);
@@ -984,7 +1051,7 @@ export function withQueryModels<Props>(
         setOffset = (id: string, offset: number, reloadModel = true): void => {
             let shouldLoad = false;
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
 
                     if (model.offset !== offset) {
@@ -999,7 +1066,7 @@ export function withQueryModels<Props>(
         setMaxRows = (id: string, maxRows: number): void => {
             let shouldLoad = false;
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
 
                     if (model.maxRows !== maxRows) {
@@ -1018,7 +1085,7 @@ export function withQueryModels<Props>(
         setView = (id: string, viewName: string, loadSelections = false): void => {
             let shouldLoad = false;
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
 
                     if (model.viewName !== viewName) {
@@ -1044,7 +1111,7 @@ export function withQueryModels<Props>(
          */
         resetTotalCountState = (): void => {
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     Object.keys(this.state.queryModels).forEach(id => {
                         const model = draft.queryModels[id];
                         resetTotalCountState(model);
@@ -1056,7 +1123,7 @@ export function withQueryModels<Props>(
         setSchemaQuery = (id: string, schemaQuery: SchemaQuery, loadSelections = false): void => {
             let shouldLoad = false;
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
 
                     if (!model.schemaQuery.isEqual(schemaQuery)) {
@@ -1077,7 +1144,7 @@ export function withQueryModels<Props>(
         setFilters = (id: string, filters: Filter.IFilter[], loadSelections = false): void => {
             let shouldLoad = false;
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
                     if (!filterArraysEqual(model.filterArray, filters)) {
                         shouldLoad = true;
@@ -1102,7 +1169,7 @@ export function withQueryModels<Props>(
         setSorts = (id: string, sorts: QuerySort[]): void => {
             let shouldLoad = false;
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
                     if (!sortArraysEqual(model.sorts, sorts)) {
                         shouldLoad = true;
@@ -1118,7 +1185,7 @@ export function withQueryModels<Props>(
 
         addMessage = (id: string, message: GridMessage, duration?: number): void => {
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
                     if (model.messages === undefined) {
                         model.messages = [];
@@ -1136,12 +1203,56 @@ export function withQueryModels<Props>(
 
         removeMessage = (id: string, message: GridMessage): void => {
             this.setState(
-                produce<State>(draft => {
+                produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
                     if (model.messages !== undefined) {
                         model.messages = model.messages.filter(m => m.content !== message.content);
                     }
                 })
+            );
+        };
+
+        /**
+         * A method used to indicate that a user has made a change to the underlying data of a QueryModel, e.g. added,
+         * updated, or deleted rows. This method will at a minimum reload the model, but may also reset the pagination
+         * if the change could result in a bad state. See Issue 51987.
+         * @param id the id of the model
+         * @param modelChange a ModelChange object describing the change
+         */
+        onModelChange = (id: string, modelChange: ModelChange): void => {
+            let shouldLoadTotalCount = false;
+            let selectionsForReplace: string[];
+
+            this.setState(
+                produce<State>((draft: WritableDraft<State>) => {
+                    const model = draft.queryModels[id];
+
+                    if (modelChange.changeType === ChangeType.add) {
+                        shouldLoadTotalCount = true;
+                    } else if (modelChange.changeType === ChangeType.delete) {
+                        selectionsForReplace = modelChange.options?.selectionsForReplace ?? [];
+                        shouldLoadTotalCount = true;
+                        resetModelState(model);
+                    } else if (modelChange.changeType === ChangeType.update) {
+                        const columnsChanged = modelChange.options?.columnsChanged;
+                        const hasChangeOnFilteredColumn =
+                            columnsChanged !== undefined && columnsHaveFilter(columnsChanged, model.filters);
+                        const unknownChangeWithFilters = columnsChanged === undefined && model.filters.length > 0;
+
+                        // If we don't know what columns were changed, and we have filters, or there is a change on a
+                        // column with filters, then we need to reset the model, otherwise the grid could be put in a
+                        // bad state. See Issue 51897.
+                        if (hasChangeOnFilteredColumn || unknownChangeWithFilters) {
+                            shouldLoadTotalCount = true;
+                            resetModelState(model);
+                        }
+                    }
+                }),
+                () => {
+                    // Loading & replacing selections are mutually exclusive, if we aren't replacing anything then load
+                    const loadSelections = selectionsForReplace === undefined;
+                    this.maybeLoad(id, false, true, loadSelections, shouldLoadTotalCount, selectionsForReplace);
+                }
             );
         };
 

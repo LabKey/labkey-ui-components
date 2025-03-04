@@ -20,6 +20,7 @@ import { setCopyValue } from '../../events';
 import { biologicsIsPrimaryApp, getCurrentAppProperties, isApp, isFeatureEnabled } from '../../app/utils';
 import { ProductFeature } from '../../app/constants';
 import {
+    ChangeType,
     InjectedQueryModels,
     QueryConfigMap,
     RequiresModelAndActions,
@@ -44,9 +45,7 @@ const APIKeysButtonsComponent: FC<ButtonsComponentProps> = props => {
     const onConfirmDelete = useCallback(async () => {
         try {
             await api.security.deleteApiKeys(model.selections);
-            actions.clearSelections(model.id);
-            actions.loadModel(model.id, true, true);
-            actions.loadFirstPage(model.id);
+            actions.onModelChange(model.id, { changeType: ChangeType.delete });
             closeDeleteModal();
             onDelete();
         } catch (e) {
@@ -94,7 +93,7 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
     const [description, setDescription] = useState<string>();
     const { api } = useAppContext<AppContext>();
     const [error, setError] = useState<boolean>(false);
-    const [keyValue, setKeyValue ] = useState<string>(undefined);
+    const [keyValue, setKeyValue] = useState<string>(undefined);
 
     const onGenerateKey = useCallback(async () => {
         try {
@@ -189,7 +188,7 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
 
 // exported for jest testing
 export const KeyGenerator: FC<KeyGeneratorProps> = props => {
-    const { afterCreate, type, noun} = props;
+    const { afterCreate, type, noun } = props;
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const openModal = useCallback(() => {
@@ -234,12 +233,9 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
         }
     }, []);
 
-    const onApiKeyCreate = useCallback(
-        () => {
-            actions?.loadModel(model?.id, true, true);
-        },
-        [actions, model?.id]
-    );
+    const onApiKeyCreate = useCallback(() => {
+        actions.onModelChange(model?.id, { changeType: ChangeType.add });
+    }, [actions, model?.id]);
 
     const adminMsg = useMemo(
         () =>
@@ -365,10 +361,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
                                     out your session. Since they expire quickly, session keys are most appropriate for
                                     deployments with regulatory compliance requirements.
                                 </p>
-                                <KeyGenerator
-                                    type="session"
-                                    noun="Session Key"
-                                />
+                                <KeyGenerator type="session" noun="Session Key" />
                             </>
                         )}
                     </>

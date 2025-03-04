@@ -10,7 +10,7 @@ import { Actions } from './withQueryModels';
  * @ignore
  * Helper to instantiate a QueryModel for use with tests.
  * @param schemaQuery
- * @param queryInfo: The queryInfo you want to apply to a model. See makeQueryInfo above.
+ * @param queryInfo The queryInfo you want to apply to a model. See makeQueryInfo above.
  * @param rows
  * @param orderedRows
  * @param rowCount
@@ -70,6 +70,7 @@ export const makeTestActions = (mockFn = (): any => () => {}, overrides: Partial
         loadFirstPage: mockFn(),
         loadLastPage: mockFn(),
         loadCharts: mockFn(),
+        onModelChange: mockFn(),
         selectAllRows: mockFn(),
         selectRow: mockFn(),
         selectPage: mockFn(),

@@ -1,11 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.??.??
-*Released*: ?? February 2025
+### version 6.28.0
+*Released*: 4 March 2025
 - withQueryModels: add onModelChange to Actions
   - onModelChange is an action to call after a user has done something to alter the underlying data for a QueryModel
     e.g. delete or update rows
+- `getGridIdsFromTransactionId`: actually return strings
 
 ### version 6.27.0
 *Released*: 4 March 2025

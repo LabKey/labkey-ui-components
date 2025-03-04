@@ -139,6 +139,7 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
             buttonClassName={buttonClassName}
             buttonTitle={TITLE}
             className={className}
+            // Intentionally do not display a caret for this button as it may or may not be a menu
             noCaret
             onClick={fetchTemplates}
             pullRight
@@ -160,7 +161,7 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
                 }
 
                 return (
-                    <MenuItem key={template.label} onClick={downloadCustomTemplate(template.url)}>
+                    <MenuItem href={template.url} key={template.label} rel="noopener noreferrer" target="_blank">
                         {template.label}
                     </MenuItem>
                 );

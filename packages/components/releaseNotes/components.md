@@ -5,6 +5,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X 2025
 - Issue 52430: Sample Manager: sample names with newline characters
 
+### version 6.28.0
+*Released*: 4 March 2025
+- withQueryModels: add onModelChange to Actions
+  - onModelChange is an action to call after a user has done something to alter the underlying data for a QueryModel
+    e.g. delete or update rows
+- `getGridIdsFromTransactionId`: actually return strings
+
+### version 6.27.0
+*Released*: 4 March 2025
+- Issue 52072: Text choice field values to handle | character within values
+  - PropertyValidator.joinValidValues() and PropertyValidator.splitValidValues()
+
 ### version 6.26.3
 *Released*: 25 February 2025
 - Issue 52341: App chart render queryConfig to support parameterized queries

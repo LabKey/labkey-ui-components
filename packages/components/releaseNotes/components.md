@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.??.??
-*Released*: ? March 2025
+### version 6.29.0
+*Released*: 5 March 2025
 - APIKeysPanel: refactor component
   - Underlying grid can always expect a grid model
 

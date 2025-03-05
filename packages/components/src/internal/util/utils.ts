@@ -650,6 +650,14 @@ export function parseCsvString(value: string, delimiter: string, removeQuotes?: 
     return parsedValues;
 }
 
+const TSV_ESCAPE_CHARS = ['\r', '\n', '\\', '"'];
+function hasTsvEscapeChar(value: any, delimiter: string) : boolean {
+    const allEscapedChars = [...TSV_ESCAPE_CHARS, delimiter];
+    return !!allEscapedChars.find(char => value.indexOf(char)> -1);
+}
+
+// see TSVWriter.quoteValue
+// Issue 52430: Sample Manager: sample names with newline characters
 export function quoteValueWithDelimiters(value: any, delimiter: string): string {
     if (!value || !Utils.isString(value)) {
         return value;
@@ -657,7 +665,9 @@ export function quoteValueWithDelimiters(value: any, delimiter: string): string 
     if (!delimiter) {
         throw new Error('Delimiter is required.');
     }
-    if (value.indexOf(delimiter) === -1 && value.indexOf('\r') === -1 && value.indexOf('\n') === -1) return value; // nothing to do for a string that doesn't contain the delimiter
+    if (!hasTsvEscapeChar(value, delimiter))
+        return value; // nothing to do for a string that doesn't contain any character that needs to be escaped
+
     if (value.indexOf('"') !== -1) {
         value = value.replace(/"/g, '""');
     }
@@ -673,7 +683,7 @@ export function isQuotedWithDelimiters(value: any, delimiter: string): boolean {
     }
 
     const strVal = value + '';
-    if (strVal.indexOf(delimiter) === -1 && value.indexOf('\r') === -1 && value.indexOf('\n') === -1) return false;
+    if (!hasTsvEscapeChar(strVal, delimiter)) return false;
 
     return strVal.startsWith('"') && strVal.endsWith('"');
 }

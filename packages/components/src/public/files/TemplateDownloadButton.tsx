@@ -159,6 +159,8 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
 });
 TemplateDownloadButtonImpl.displayName = 'TemplateDownloadButtonImpl';
 
+// This wrapper component is utilized to avoid any render processing in TemplateDownloadButtonImpl
+// when the user does not have permissions.
 export const TemplateDownloadButton: FC<Props> = memo(props => {
     const { defaultTemplateUrl, onDownloadDefault, user } = props;
 

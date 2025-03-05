@@ -27,7 +27,7 @@ export const ManageDropdownButton: FC<Props> = ({ children, disabled, showIcon =
     const buttonLabel: ReactNode = useMemo(
         () => (
             <span>
-                {showIcon && <i className="fa fa-bars margin-right manage-dropdown" />}
+                {showIcon && <i className="fa fa-bars margin-right" />}
                 Manage
             </span>
         ),
@@ -35,7 +35,7 @@ export const ManageDropdownButton: FC<Props> = ({ children, disabled, showIcon =
     );
 
     return (
-        <DropdownButton title={buttonLabel} noCaret pullRight disabled={disabled}>
+        <DropdownButton buttonClassName="manage-dropdown" title={buttonLabel} noCaret pullRight disabled={disabled}>
             {children}
         </DropdownButton>
     );

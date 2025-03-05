@@ -651,9 +651,9 @@ export function parseCsvString(value: string, delimiter: string, removeQuotes?: 
 }
 
 const TSV_ESCAPE_CHARS = ['\r', '\n', '\\', '"'];
-function hasTsvEscapeChar(value: any, delimiter: string) : boolean {
+function hasTsvEscapeChar(value: any, delimiter: string): boolean {
     const allEscapedChars = [...TSV_ESCAPE_CHARS, delimiter];
-    return !!allEscapedChars.find(char => value.indexOf(char)> -1);
+    return !!allEscapedChars.find(char => value.indexOf(char) > -1);
 }
 
 // see TSVWriter.quoteValue
@@ -665,8 +665,7 @@ export function quoteValueWithDelimiters(value: any, delimiter: string): string 
     if (!delimiter) {
         throw new Error('Delimiter is required.');
     }
-    if (!hasTsvEscapeChar(value, delimiter))
-        return value; // nothing to do for a string that doesn't contain any character that needs to be escaped
+    if (!hasTsvEscapeChar(value, delimiter)) return value; // nothing to do for a string that doesn't contain any character that needs to be escaped
 
     if (value.indexOf('"') !== -1) {
         value = value.replace(/"/g, '""');

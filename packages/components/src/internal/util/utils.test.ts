@@ -1281,7 +1281,6 @@ describe('quoteValueWithDelimiters', () => {
         expect(quoteValueWithDelimiters('a\nb,c', ',')).toBe('"a\nb,c"');
         expect(quoteValueWithDelimiters('a\nb,c"d', ',')).toBe('"a\nb,c""d"');
 
-
         expect(isQuotedWithDelimiters('"abc,d"', ',')).toBeTruthy();
         expect(isQuotedWithDelimiters('"ab ""cd,e"""', ',')).toBeTruthy();
         expect(isQuotedWithDelimiters('"ab, ""cd,e"""', ',')).toBeTruthy();
@@ -1296,14 +1295,18 @@ describe('quoteValueWithDelimiters', () => {
         expect(isQuotedWithDelimiters(quoteValueWithDelimiters(initialString, ','), ',')).toBeTruthy();
 
         const initialStringWithNewLine = 'ab\nc';
-        expect(parseCsvString(quoteValueWithDelimiters(initialStringWithNewLine, ','), ',', true)).toStrictEqual([initialStringWithNewLine]);
+        expect(parseCsvString(quoteValueWithDelimiters(initialStringWithNewLine, ','), ',', true)).toStrictEqual([
+            initialStringWithNewLine,
+        ]);
         expect(isQuotedWithDelimiters(quoteValueWithDelimiters(initialStringWithNewLine, ','), ',')).toBeTruthy();
 
         const initialStringWithNewLineAndComma = 'acb\nc';
-        expect(parseCsvString(quoteValueWithDelimiters(initialStringWithNewLineAndComma, ','), ',', true)).toStrictEqual([initialStringWithNewLineAndComma]);
-        expect(isQuotedWithDelimiters(quoteValueWithDelimiters(initialStringWithNewLineAndComma, ','), ',')).toBeTruthy();
-
-
+        expect(
+            parseCsvString(quoteValueWithDelimiters(initialStringWithNewLineAndComma, ','), ',', true)
+        ).toStrictEqual([initialStringWithNewLineAndComma]);
+        expect(
+            isQuotedWithDelimiters(quoteValueWithDelimiters(initialStringWithNewLineAndComma, ','), ',')
+        ).toBeTruthy();
     });
 });
 

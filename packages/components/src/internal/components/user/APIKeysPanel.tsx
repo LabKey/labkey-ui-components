@@ -228,29 +228,19 @@ export const KeyGenerator: FC<KeyGeneratorProps> = props => {
 };
 KeyGenerator.displayName = 'KeyGenerator';
 
-const SessionKeysSection: FC = memo(() => {
-    const { impersonatingUser } = useServerContext();
-    return (
-        <div className="session-keys-section">
-            <div className="user-section-header top-padding bottom-padding">Session Keys</div>
-            {impersonatingUser !== undefined && (
-                <Alert bsStyle="warning" id="session-impersonating-msg">
-                    Session key generation is not available while impersonating.
-                </Alert>
-            )}
-            {!impersonatingUser && (
-                <p>
-                    A session key is tied to your current browser session, which means all API calls execute in your
-                    current context (e.g., your user, your authorizations, etc.). It also means the key will no longer
-                    represent a logged in user when the session expires, e.g., when you sign out via the browser or the
-                    server automatically times out your session. Since they expire quickly, session keys are most
-                    appropriate for deployments with regulatory compliance requirements.
-                </p>
-            )}
-            {!impersonatingUser && <KeyGenerator type="session" noun="Session Key" />}
-        </div>
-    );
-});
+const SessionKeysSection: FC = memo(() => (
+    <div className="session-keys-section">
+        <div className="user-section-header top-padding bottom-padding">Session Keys</div>
+        <p>
+            A session key is tied to your current browser session, which means all API calls execute in your current
+            context (e.g., your user, your authorizations, etc.). It also means the key will no longer represent a
+            logged in user when the session expires, e.g., when you sign out via the browser or the server automatically
+            times out your session. Since they expire quickly, session keys are most appropriate for deployments with
+            regulatory compliance requirements.
+        </p>
+        <KeyGenerator type="session" noun="Session Key" />
+    </div>
+));
 SessionKeysSection.displayName = 'SessionKeysSection';
 
 interface APIKeysGridProps {
@@ -260,7 +250,7 @@ interface APIKeysGridProps {
 const APIKeysPanelGrid: FC<APIKeysGridProps & InjectedQueryModels> = props => {
     const { actions, includeSessionKeys, queryModels } = props;
     const { model } = queryModels;
-    const { moduleContext, impersonatingUser } = useServerContext();
+    const { moduleContext } = useServerContext();
     const [error, setError] = useState<string>();
     const apiEnabled = isApiKeyGenerationEnabled(moduleContext);
     const sessionEnabled = isSessionKeyGenerationEnabled(moduleContext);
@@ -297,21 +287,8 @@ const APIKeysPanelGrid: FC<APIKeysGridProps & InjectedQueryModels> = props => {
             />
             <Alert>{error}</Alert>
 
-            {apiEnabled && (
-                <>
-                    {impersonatingUser !== undefined && (
-                        <Alert bsStyle="warning" id="impersonating-msg">
-                            API key generation is not available while impersonating.
-                        </Alert>
-                    )}
-                    {!impersonatingUser && <KeyGenerator type="apikey" afterCreate={onApiKeyCreate} noun="API Key" />}
-                </>
-            )}
-            {!apiEnabled && (
-                <Alert bsStyle="warning" id="config-msg">
-                    API key generation is currently not enabled on this server.
-                </Alert>
-            )}
+            {apiEnabled && <KeyGenerator type="apikey" afterCreate={onApiKeyCreate} noun="API Key" />}
+
             {sessionEnabled && includeSessionKeys && <SessionKeysSection />}
         </div>
     );
@@ -321,8 +298,11 @@ APIKeysPanelGrid.displayName = 'APIKeysPanelGrid';
 const APIKeysPanelWithQueryModels = withQueryModels(APIKeysPanelGrid);
 
 export const APIKeysPanel: FC<APIKeysGridProps> = props => {
+    const { includeSessionKeys } = props;
     const { homeContainer, impersonatingUser, moduleContext, user } = useServerContext();
+    const isImpersonating = !!impersonatingUser;
     const apiEnabled = isApiKeyGenerationEnabled(moduleContext);
+    const sessionEnabled = isSessionKeyGenerationEnabled(moduleContext);
     const configs: QueryConfigMap = useMemo(
         () => ({
             model: {
@@ -338,6 +318,20 @@ export const APIKeysPanel: FC<APIKeysGridProps> = props => {
 
     // We are meant to not show this panel for LKSM Starter, but show it in LKS and LKSM Prof+
     if (isApp() && !isFeatureEnabled(ProductFeature.ApiKeys, moduleContext)) return null;
+
+    const disabledMessage = !apiEnabled ? 'API key generation is currently not enabled on this server.' : undefined;
+    let impersonatingMessage: string;
+
+    if ((apiEnabled || sessionEnabled) && isImpersonating) {
+        let noun;
+
+        if (apiEnabled && sessionEnabled && includeSessionKeys) noun = 'API and session key';
+        else if (apiEnabled) noun = 'API key';
+        else if (sessionEnabled && includeSessionKeys) noun = 'Session key';
+
+        // Noun will be undefined if we are in an app, and only session keys are enabled
+        if (noun) impersonatingMessage = `${noun} generation is not available while impersonating.`;
+    }
 
     const renderHelpLink = isApp();
 
@@ -374,11 +368,13 @@ export const APIKeysPanel: FC<APIKeysGridProps> = props => {
                     </Alert>
                 )}
 
-                {impersonatingUser !== undefined && (
-                    <Alert bsStyle="warning" id="impersonating-msg">
-                        API key generation is not available while impersonating.
-                    </Alert>
-                )}
+                <Alert bsStyle="warning" id="impersonating-msg">
+                    {impersonatingMessage}
+                </Alert>
+
+                <Alert bsStyle="warning" id="config-msg">
+                    {disabledMessage}
+                </Alert>
 
                 {!impersonatingUser && <APIKeysPanelWithQueryModels autoLoad queryConfigs={configs} {...props} />}
             </div>

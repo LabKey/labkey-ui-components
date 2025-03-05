@@ -17,7 +17,7 @@ import { useServerContext } from '../base/ServerContext';
 import { Alert } from '../base/Alert';
 import { AppContext, useAppContext } from '../../AppContext';
 import { setCopyValue } from '../../events';
-import { biologicsIsPrimaryApp, getCurrentAppProperties, isApp, isFeatureEnabled } from '../../app/utils';
+import { biologicsIsPrimaryApp, isApp, isFeatureEnabled } from '../../app/utils';
 import { ProductFeature } from '../../app/constants';
 import {
     ChangeType,
@@ -29,15 +29,15 @@ import {
 import { SCHEMAS } from '../../schemas';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { Modal } from '../../Modal';
-import { HelpLink } from '../../util/helpLinks';
+import { getHelpLink, HelpLink } from '../../util/helpLinks';
 
 const API_KEYS_QUERY_HREF = ActionURL.buildURL('query', 'executeQuery.view', '/', {
     schemaName: 'core',
     queryName: 'APIKeys',
 });
 const CUSTOMIZE_SITE_HREF = ActionURL.buildURL('admin', 'customizeSite.view', '/');
-const API_KEYS_DOCS_HREF = 'https://www.labkey.org/Documentation/wiki-page.view?name=apiKey#usage';
-const CLIENT_APIS_HREF = 'https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=viewApis';
+const API_KEYS_DOCS_HREF = getHelpLink('apiKey#usage', undefined, true);
+const CLIENT_APIS_HREF = getHelpLink('viewApis', undefined, true);
 
 interface ButtonsComponentProps extends RequiresModelAndActions {
     onDelete: (error?: string) => void;
@@ -279,9 +279,6 @@ const APIKeysPanelGrid: FC<APIKeysGridProps & InjectedQueryModels> = props => {
 
     const buttonsProps = useMemo(() => ({ onDelete }), [onDelete]);
 
-    // We are meant to not show this panel for LKSM Starter, but show it in LKS and LKSM Prof+
-    if (isApp() && !isFeatureEnabled(ProductFeature.ApiKeys, moduleContext)) return null;
-
     return (
         <div className="api-keys-panel__grid">
             <GridPanel
@@ -342,7 +339,7 @@ export const APIKeysPanel: FC<APIKeysGridProps> = props => {
     // We are meant to not show this panel for LKSM Starter, but show it in LKS and LKSM Prof+
     if (isApp() && !isFeatureEnabled(ProductFeature.ApiKeys, moduleContext)) return null;
 
-    const renderHelpLink = !!getCurrentAppProperties();
+    const renderHelpLink = isApp();
 
     return (
         <div className="api-keys-panel panel panel-content panel-default">

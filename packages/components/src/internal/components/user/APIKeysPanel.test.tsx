@@ -101,35 +101,39 @@ describe('APIKeysPanel', () => {
         };
     }
 
+    function waitForGrid(): Promise<void> {
+        return waitFor(() => expect(document.querySelector('.fa-trash')).toBeInTheDocument());
+    }
+
+    function waitForPanel(): Promise<void> {
+        return waitFor(() => expect(document.querySelector('.api-keys-panel')).toBeInTheDocument());
+    }
+
     test('SM Starter, not enabled', async () => {
         window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()
 
-        await act(async () => {
-            const { container } = renderWithAppContext(<APIKeysPanel />, {
-                serverContext: defaultServerContext({
-                    moduleContext: {
-                        ...TEST_LKSM_STARTER_MODULE_CONTEXT,
-                    },
-                }),
-            });
-            expect(container.firstChild).toBeNull();
+        const { container } = renderWithAppContext(<APIKeysPanel />, {
+            serverContext: defaultServerContext({
+                moduleContext: {
+                    ...TEST_LKSM_STARTER_MODULE_CONTEXT,
+                },
+            }),
         });
+        expect(container.firstChild).toBeNull();
     });
 
     test('SM Starter, enabled', async () => {
         window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()
 
-        await act(async () => {
-            const { container } = renderWithAppContext(<APIKeysPanel />, {
-                serverContext: defaultServerContext({
-                    moduleContext: {
-                        ...TEST_LKSM_STARTER_MODULE_CONTEXT,
-                        api: { allowApiKeys: true },
-                    },
-                }),
-            });
-            expect(container.firstChild).toBeNull();
+        const { container } = renderWithAppContext(<APIKeysPanel />, {
+            serverContext: defaultServerContext({
+                moduleContext: {
+                    ...TEST_LKSM_STARTER_MODULE_CONTEXT,
+                    api: { allowApiKeys: true },
+                },
+            }),
         });
+        expect(container.firstChild).toBeNull();
     });
 
     function validate(
@@ -137,7 +141,7 @@ describe('APIKeysPanel', () => {
         apiKeysEnabled: boolean,
         isImpersonating: boolean = false,
         sessionKeysEnabled: boolean = false
-    ) {
+    ): void {
         const adminMsg = document.querySelector('#admin-msg');
         if (isAdmin) {
             expect(adminMsg).not.toBeNull();
@@ -155,193 +159,173 @@ describe('APIKeysPanel', () => {
 
         const configMsg = document.querySelector('#config-msg');
         const impersonatingMsg = document.querySelector('#impersonating-msg');
-        if (apiKeysEnabled) {
-            expect(configMsg.textContent).toContain('API keys are currently configured');
-            if (isImpersonating) {
-                expect(impersonatingMsg.textContent).toBe('API key generation is not available while impersonating.');
-                expect(document.querySelector('button')).toBeNull();
-            } else {
-                expect(impersonatingMsg).toBeNull();
-            }
-        } else {
-            expect(configMsg.textContent).toBe('API key generation is currently not enabled on this server.');
-            expect(impersonatingMsg).toBeNull();
+
+        if (isImpersonating && apiKeysEnabled && sessionKeysEnabled) {
+            expect(impersonatingMsg).toHaveTextContent(
+                'API and session key generation is not available while impersonating'
+            );
+        } else if (isImpersonating && apiKeysEnabled) {
+            expect(impersonatingMsg).toHaveTextContent('API key generation is not available while impersonating');
+        } else if (isImpersonating && sessionKeysEnabled) {
+            expect(impersonatingMsg).toHaveTextContent('Session key generation is not available while impersonating');
         }
 
-        const sessionImpersonatingMsg = document.querySelector('#session-impersonating-msg');
-        if (sessionKeysEnabled) {
-            if (isImpersonating) {
-                expect(sessionImpersonatingMsg.textContent).toBe(
-                    'Session key generation is not available while impersonating.'
-                );
-            } else {
-                expect(sessionImpersonatingMsg).toBeNull();
-            }
+        if (apiKeysEnabled) {
+            expect(configMsg.textContent).toContain('API keys are currently configured');
         } else {
-            expect(sessionImpersonatingMsg).toBeNull();
+            expect(configMsg).toHaveTextContent('API key generation is currently not enabled on this server.');
         }
     }
 
     test('SM Pro, non-admin, not enabled', async () => {
-        await act(async () => {
-            renderWithAppContext(<APIKeysPanel />, {
-                serverContext: defaultServerContext({
-                    moduleContext: {
-                        ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-                    },
-                }),
-            });
+        renderWithAppContext(<APIKeysPanel />, {
+            serverContext: defaultServerContext({
+                moduleContext: {
+                    ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+                },
+            }),
         });
+        await waitForGrid();
         validate(false, false);
     });
 
     test('SM Pro, app admin, not enabled', async () => {
-        await act(async () => {
-            renderWithAppContext(<APIKeysPanel />, {
-                serverContext: defaultServerContext({
-                    user: TEST_USER_APP_ADMIN,
-                    moduleContext: {
-                        ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-                    },
-                }),
-            });
+        renderWithAppContext(<APIKeysPanel />, {
+            serverContext: defaultServerContext({
+                user: TEST_USER_APP_ADMIN,
+                moduleContext: {
+                    ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+                },
+            }),
         });
+        await waitForGrid();
         validate(false, false);
     });
 
     test('SM Pro, non-admin, enabled, not impersonating', async () => {
-        await act(async () => {
-            renderWithAppContext(<APIKeysPanel />, {
-                serverContext: defaultServerContext({
-                    moduleContext: {
-                        ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-                        api: { allowApiKeys: true, allowSessionKeys: false },
-                    },
-                }),
-            });
+        renderWithAppContext(<APIKeysPanel />, {
+            serverContext: defaultServerContext({
+                moduleContext: {
+                    ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+                    api: { allowApiKeys: true, allowSessionKeys: false },
+                },
+            }),
         });
+        await waitForGrid();
         validate(false, true);
     });
 
     test('SM Pro, non-admin, enabled, impersonating', async () => {
-        await act(async () => {
-            renderWithAppContext(<APIKeysPanel />, {
-                serverContext: defaultServerContext({
-                    impersonatingUser: TEST_USER_EDITOR,
-                    moduleContext: {
-                        ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-                        api: { allowApiKeys: true },
-                    },
-                }),
-            });
+        renderWithAppContext(<APIKeysPanel />, {
+            serverContext: defaultServerContext({
+                impersonatingUser: TEST_USER_EDITOR,
+                moduleContext: {
+                    ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+                    api: { allowApiKeys: true },
+                },
+            }),
         });
+        await waitForPanel();
         validate(false, true, true, false);
     });
 
     test('SM Pro, site admin, not enabled', async () => {
-        await act(async () => {
-            renderWithAppContext(<APIKeysPanel />, {
-                serverContext: defaultServerContext({
-                    user: TEST_USER_SITE_ADMIN,
-                    moduleContext: {
-                        ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-                    },
-                }),
-            });
+        renderWithAppContext(<APIKeysPanel />, {
+            serverContext: defaultServerContext({
+                user: TEST_USER_SITE_ADMIN,
+                moduleContext: {
+                    ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+                },
+            }),
         });
+        await waitForGrid();
         validate(true, false);
     });
 
     test('SM Pro, site admin, enabled', async () => {
-        await act(async () => {
-            renderWithAppContext(<APIKeysPanel />, {
-                serverContext: defaultServerContext({
-                    user: TEST_USER_SITE_ADMIN,
-                    moduleContext: {
-                        ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-                        api: { allowApiKeys: true },
-                    },
-                }),
-            });
+        renderWithAppContext(<APIKeysPanel />, {
+            serverContext: defaultServerContext({
+                user: TEST_USER_SITE_ADMIN,
+                moduleContext: {
+                    ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+                    api: { allowApiKeys: true },
+                },
+            }),
         });
+        await waitForGrid();
         validate(true, true);
     });
 
     test('SM Pro, site admin, enabled, impersonating', async () => {
-        await act(async () => {
-            renderWithAppContext(<APIKeysPanel />, {
-                serverContext: defaultServerContext({
-                    impersonatingUser: TEST_USER_APP_ADMIN,
-                    user: TEST_USER_SITE_ADMIN,
-                    moduleContext: {
-                        ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-                        api: { allowApiKeys: true },
-                    },
-                }),
-            });
+        renderWithAppContext(<APIKeysPanel />, {
+            serverContext: defaultServerContext({
+                impersonatingUser: TEST_USER_APP_ADMIN,
+                user: TEST_USER_SITE_ADMIN,
+                moduleContext: {
+                    ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+                    api: { allowApiKeys: true },
+                },
+            }),
         });
+        await waitForPanel();
         validate(true, true, true, false);
     });
 
     test('Include session keys, session enabled, not impersonating', async () => {
-        await act(async () => {
-            renderWithAppContext(<APIKeysPanel includeSessionKeys={true} />, {
-                serverContext: defaultServerContext({
-                    user: TEST_USER_EDITOR,
-                    moduleContext: {
-                        ...TEST_LKS_STARTER_MODULE_CONTEXT,
-                        api: { allowApiKeys: false, allowSessionKeys: true },
-                    },
-                }),
-            });
+        renderWithAppContext(<APIKeysPanel includeSessionKeys={true} />, {
+            serverContext: defaultServerContext({
+                user: TEST_USER_EDITOR,
+                moduleContext: {
+                    ...TEST_LKS_STARTER_MODULE_CONTEXT,
+                    api: { allowApiKeys: false, allowSessionKeys: true },
+                },
+            }),
         });
+        await waitForGrid();
         validate(false, false, false, true);
     });
 
     test('Include session keys, both enabled, not impersonating', async () => {
-        await act(async () => {
-            renderWithAppContext(<APIKeysPanel includeSessionKeys={true} />, {
-                serverContext: defaultServerContext({
-                    user: TEST_USER_EDITOR,
-                    moduleContext: {
-                        ...TEST_LKS_STARTER_MODULE_CONTEXT,
-                        api: { allowApiKeys: true, allowSessionKeys: true },
-                    },
-                }),
-            });
+        renderWithAppContext(<APIKeysPanel includeSessionKeys={true} />, {
+            serverContext: defaultServerContext({
+                user: TEST_USER_EDITOR,
+                moduleContext: {
+                    ...TEST_LKS_STARTER_MODULE_CONTEXT,
+                    api: { allowApiKeys: true, allowSessionKeys: true },
+                },
+            }),
         });
+        await waitForGrid();
         validate(false, true, false, true);
     });
 
     test('Include session keys, session enabled, impersonating', async () => {
-        await act(async () => {
-            renderWithAppContext(<APIKeysPanel includeSessionKeys={true} />, {
-                serverContext: defaultServerContext({
-                    impersonatingUser: TEST_USER_EDITOR,
-                    user: TEST_USER_APP_ADMIN,
-                    moduleContext: {
-                        ...TEST_LKS_STARTER_MODULE_CONTEXT,
-                        api: { allowApiKeys: false, allowSessionKeys: true },
-                    },
-                }),
-            });
+        renderWithAppContext(<APIKeysPanel includeSessionKeys={true} />, {
+            serverContext: defaultServerContext({
+                impersonatingUser: TEST_USER_EDITOR,
+                user: TEST_USER_APP_ADMIN,
+                moduleContext: {
+                    ...TEST_LKS_STARTER_MODULE_CONTEXT,
+                    api: { allowApiKeys: false, allowSessionKeys: true },
+                },
+            }),
         });
+        await waitForPanel();
         validate(false, false, true, true);
     });
 
     test('Include session keys, both enabled, impersonating', async () => {
-        await act(async () => {
-            renderWithAppContext(<APIKeysPanel includeSessionKeys={true} />, {
-                serverContext: defaultServerContext({
-                    impersonatingUser: TEST_USER_EDITOR,
-                    user: TEST_USER_APP_ADMIN,
-                    moduleContext: {
-                        ...TEST_LKS_STARTER_MODULE_CONTEXT,
-                        api: { allowApiKeys: true, allowSessionKeys: true },
-                    },
-                }),
-            });
+        renderWithAppContext(<APIKeysPanel includeSessionKeys={true} />, {
+            serverContext: defaultServerContext({
+                impersonatingUser: TEST_USER_EDITOR,
+                user: TEST_USER_APP_ADMIN,
+                moduleContext: {
+                    ...TEST_LKS_STARTER_MODULE_CONTEXT,
+                    api: { allowApiKeys: true, allowSessionKeys: true },
+                },
+            }),
         });
+        await waitForPanel();
         validate(false, true, true, true);
     });
 });

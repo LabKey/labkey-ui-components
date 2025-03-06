@@ -2,7 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { ChangeEvent, FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ActionURL } from '@labkey/api';
 
@@ -17,7 +17,7 @@ import { useServerContext } from '../base/ServerContext';
 import { Alert } from '../base/Alert';
 import { AppContext, useAppContext } from '../../AppContext';
 import { setCopyValue } from '../../events';
-import { biologicsIsPrimaryApp, getCurrentAppProperties, isApp, isFeatureEnabled } from '../../app/utils';
+import { biologicsIsPrimaryApp, isApp, isFeatureEnabled } from '../../app/utils';
 import { ProductFeature } from '../../app/constants';
 import {
     ChangeType,
@@ -29,7 +29,15 @@ import {
 import { SCHEMAS } from '../../schemas';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { Modal } from '../../Modal';
-import { HelpLink } from '../../util/helpLinks';
+import { getHelpLink, HelpLink } from '../../util/helpLinks';
+
+const API_KEYS_QUERY_HREF = ActionURL.buildURL('query', 'executeQuery.view', '/', {
+    schemaName: 'core',
+    queryName: 'APIKeys',
+});
+const CUSTOMIZE_SITE_HREF = ActionURL.buildURL('admin', 'customizeSite.view', '/');
+const API_KEYS_DOCS_HREF = getHelpLink('apiKey#usage', undefined, true);
+const CLIENT_APIS_HREF = getHelpLink('viewApis', undefined, true);
 
 interface ButtonsComponentProps extends RequiresModelAndActions {
     onDelete: (error?: string) => void;
@@ -56,7 +64,7 @@ const APIKeysButtonsComponent: FC<ButtonsComponentProps> = props => {
         }
     }, [api.security, model.selections, model.id, actions, closeDeleteModal, onDelete]);
 
-    const noun = model?.selections?.size > 1 ? 'Keys' : 'Key';
+    const noun = model.selections?.size > 1 ? 'Keys' : 'Key';
     return (
         <div className="btn-group">
             <button type="button" className="btn btn-default" disabled={!model.hasSelections} onClick={onDeleteClicked}>
@@ -68,7 +76,7 @@ const APIKeysButtonsComponent: FC<ButtonsComponentProps> = props => {
                     onCancel={closeDeleteModal}
                     onConfirm={onConfirmDelete}
                     confirmText="Yes, Delete"
-                    title={`Delete ${model?.selections?.size} API ${noun}`}
+                    title={`Delete ${model.selections?.size} API ${noun}`}
                 >
                     <strong>Deletion cannot be undone.</strong> Do you want to proceed?
                 </Modal>
@@ -76,6 +84,7 @@ const APIKeysButtonsComponent: FC<ButtonsComponentProps> = props => {
         </div>
     );
 };
+APIKeysButtonsComponent.displayName = 'APIKeysButtonsComponent';
 
 interface KeyGeneratorProps {
     afterCreate?: () => void;
@@ -166,6 +175,7 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
                             name={'copy_' + type + '_token'}
                             onClick={onCopyKey}
                             disabled={!keyValue}
+                            type="button"
                         >
                             <i className="fa fa-clipboard"></i>
                         </button>
@@ -185,6 +195,7 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
         </Modal>
     );
 };
+KeyGeneratorModal.displayName = 'KeyGeneratorModal';
 
 // exported for jest testing
 export const KeyGenerator: FC<KeyGeneratorProps> = props => {
@@ -200,27 +211,46 @@ export const KeyGenerator: FC<KeyGeneratorProps> = props => {
     }, []);
 
     return (
-        <>
-            <div className="top-padding">
-                <div className="top-padding form-group">
-                    <button className="btn btn-success api-key__button" onClick={openModal} disabled={showModal}>
-                        Generate {noun}
-                    </button>
-                </div>
+        <div className="top-padding">
+            <div className="top-padding form-group">
+                <button
+                    className="btn btn-success api-key__button"
+                    onClick={openModal}
+                    disabled={showModal}
+                    type="button"
+                >
+                    Generate {noun}
+                </button>
             </div>
             {showModal && <KeyGeneratorModal afterCreate={afterCreate} noun={noun} type={type} onClose={closeModal} />}
-        </>
+        </div>
     );
 };
+KeyGenerator.displayName = 'KeyGenerator';
 
-interface APIKeysPanelBodyProps {
+const SessionKeysSection: FC = memo(() => (
+    <div className="session-keys-section">
+        <div className="user-section-header top-padding bottom-padding">Session Keys</div>
+        <p>
+            A session key is tied to your current browser session, which means all API calls execute in your current
+            context (e.g., your user, your authorizations, etc.). It also means the key will no longer represent a
+            logged in user when the session expires, e.g., when you sign out via the browser or the server automatically
+            times out your session. Since they expire quickly, session keys are most appropriate for deployments with
+            regulatory compliance requirements.
+        </p>
+        <KeyGenerator type="session" noun="Session Key" />
+    </div>
+));
+SessionKeysSection.displayName = 'SessionKeysSection';
+
+interface APIKeysGridProps {
     includeSessionKeys?: boolean;
 }
 
-const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props => {
-    const { includeSessionKeys, actions, queryModels } = props;
+const APIKeysPanelGrid: FC<APIKeysGridProps & InjectedQueryModels> = props => {
+    const { actions, includeSessionKeys, queryModels } = props;
     const { model } = queryModels;
-    const { user, moduleContext, impersonatingUser } = useServerContext();
+    const { moduleContext } = useServerContext();
     const [error, setError] = useState<string>();
     const apiEnabled = isApiKeyGenerationEnabled(moduleContext);
     const sessionEnabled = isSessionKeyGenerationEnabled(moduleContext);
@@ -234,157 +264,121 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
     }, []);
 
     const onApiKeyCreate = useCallback(() => {
-        actions.onModelChange(model?.id, { changeType: ChangeType.add });
-    }, [actions, model?.id]);
+        actions.onModelChange(model.id, { changeType: ChangeType.add });
+    }, [actions, model.id]);
 
-    const adminMsg = useMemo(
-        () =>
-            user.isSystemAdmin ? (
-                <Alert bsStyle="info" id="admin-msg">
-                    As a site administrator, you can configure API keys on the{' '}
-                    <a href={ActionURL.buildURL('admin', 'customizeSite.view', '/')}>Site Settings page</a>. You can
-                    manage API keys generated on the server via{' '}
-                    <a
-                        href={ActionURL.buildURL('query', 'executeQuery.view', '/', {
-                            schemaName: 'core',
-                            queryName: 'APIKeys',
-                        })}
-                    >
-                        this query
-                    </a>
-                    .
-                </Alert>
-            ) : null,
-        [user]
+    const buttonsProps = useMemo(() => ({ onDelete }), [onDelete]);
+
+    return (
+        <div className="api-keys-panel__grid">
+            <GridPanel
+                actions={actions}
+                model={model}
+                asPanel={false}
+                showSearchInput={false}
+                showFiltersButton={false}
+                showExport={false}
+                showChartMenu={false}
+                showViewMenu={false}
+                allowViewCustomization={false}
+                buttonsComponentProps={buttonsProps}
+                ButtonsComponent={APIKeysButtonsComponent}
+                emptyText="You currently do not have any API keys."
+            />
+            <Alert>{error}</Alert>
+
+            {apiEnabled && <KeyGenerator type="apikey" afterCreate={onApiKeyCreate} noun="API Key" />}
+
+            {sessionEnabled && includeSessionKeys && <SessionKeysSection />}
+        </div>
     );
+};
+APIKeysPanelGrid.displayName = 'APIKeysPanelGrid';
 
-    const configMsg = useMemo(
-        () =>
-            apiEnabled ? (
-                <p id="config-msg">
-                    API keys are currently configured to{' '}
-                    <span className="api-key__expiration-config">{getApiExpirationMessage(moduleContext)}</span>.{' '}
-                    <span>
-                        {getCurrentAppProperties() ? (
-                            <HelpLink topic="myAccount#apikey" useDefaultUrl={biologicsIsPrimaryApp(moduleContext)}>
-                                More info
-                            </HelpLink>
-                        ) : (
-                            <a href="https://www.labkey.org/Documentation/wiki-page.view?name=apiKey#usage">
-                                More info
-                            </a>
-                        )}
-                    </span>
-                </p>
-            ) : null,
-        [moduleContext, apiEnabled]
+const APIKeysPanelWithQueryModels = withQueryModels(APIKeysPanelGrid);
+
+export const APIKeysPanel: FC<APIKeysGridProps> = props => {
+    const { includeSessionKeys } = props;
+    const { homeContainer, impersonatingUser, moduleContext, user } = useServerContext();
+    const isImpersonating = !!impersonatingUser;
+    const apiEnabled = isApiKeyGenerationEnabled(moduleContext);
+    const sessionEnabled = isSessionKeyGenerationEnabled(moduleContext);
+    const configs: QueryConfigMap = useMemo(
+        () => ({
+            model: {
+                id: 'model',
+                title: 'Current API Keys',
+                schemaQuery: SCHEMAS.CORE_TABLES.USER_API_KEYS,
+                includeTotalCount: true,
+                containerPath: homeContainer,
+            },
+        }),
+        [homeContainer]
     );
 
     // We are meant to not show this panel for LKSM Starter, but show it in LKS and LKSM Prof+
     if (isApp() && !isFeatureEnabled(ProductFeature.ApiKeys, moduleContext)) return null;
 
+    const disabledMessage = !apiEnabled ? 'API key generation is currently not enabled on this server.' : undefined;
+    let impersonatingMessage: string;
+
+    if ((apiEnabled || sessionEnabled) && isImpersonating) {
+        let noun;
+
+        if (apiEnabled && sessionEnabled && includeSessionKeys) noun = 'API and session key';
+        else if (apiEnabled) noun = 'API key';
+        else if (sessionEnabled && includeSessionKeys) noun = 'Session key';
+
+        // Noun will be undefined if we are in an app, and only session keys are enabled
+        if (noun) impersonatingMessage = `${noun} generation is not available while impersonating.`;
+    }
+
+    const renderHelpLink = isApp();
+
     return (
-        <div className="panel panel-content panel-default">
+        <div className="api-keys-panel panel panel-content panel-default">
             <div className="panel-heading">API Keys</div>
             <div className="panel-body">
                 <p>
                     API keys are used to authorize client code using one of the{' '}
-                    <a href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=viewApis">
-                        LabKey Client APIs
-                    </a>
-                    . API keys are appropriate for authenticating ad hoc interactions within statistical tools (e.g., R,
-                    RStudio, SAS) or programming languages (e.g., Java, Python), as well as authenticating API use from
-                    automated scripts. A valid API key provides complete access to your data and actions, so it should
-                    be kept secret.
+                    <a href={CLIENT_APIS_HREF}>LabKey Client APIs</a>. API keys are appropriate for authenticating ad
+                    hoc interactions within statistical tools (e.g., R, RStudio, SAS) or programming languages (e.g.,
+                    Java, Python), as well as authenticating API use from automated scripts. A valid API key provides
+                    complete access to your data and actions, so it should be kept secret.
                 </p>
 
-                {configMsg}
-                {adminMsg}
-
-                {!impersonatingUser && (
-                    <>
-                        <GridPanel
-                            actions={actions}
-                            model={model}
-                            asPanel={false}
-                            showSearchInput={false}
-                            showFiltersButton={false}
-                            showPagination={true}
-                            showExport={false}
-                            showChartMenu={false}
-                            showViewMenu={false}
-                            allowViewCustomization={false}
-                            buttonsComponentProps={{
-                                model,
-                                actions,
-                                onDelete,
-                            }}
-                            ButtonsComponent={APIKeysButtonsComponent}
-                            emptyText="You currently do not have any API keys."
-                        />
-                        <Alert>{error}</Alert>
-                    </>
-                )}
-
                 {apiEnabled && (
-                    <>
-                        {impersonatingUser !== undefined && (
-                            <Alert bsStyle="warning" id="impersonating-msg">
-                                API key generation is not available while impersonating.
-                            </Alert>
+                    <p id="config-msg">
+                        API keys are currently configured to{' '}
+                        <span className="api-key__expiration-config">{getApiExpirationMessage(moduleContext)}</span>.{' '}
+                        {renderHelpLink && (
+                            <HelpLink topic="myAccount#apikey" useDefaultUrl={biologicsIsPrimaryApp(moduleContext)}>
+                                More info
+                            </HelpLink>
                         )}
-                        {!impersonatingUser && (
-                            <KeyGenerator type="apikey" afterCreate={onApiKeyCreate} noun="API Key" />
-                        )}
-                    </>
+                        {!renderHelpLink && <a href={API_KEYS_DOCS_HREF}>More info</a>}
+                    </p>
                 )}
-                {!apiEnabled && (
-                    <Alert bsStyle="warning" id="config-msg">
-                        API key generation is currently not enabled on this server.
+
+                {user.isSystemAdmin && (
+                    <Alert bsStyle="info" id="admin-msg">
+                        As a site administrator, you can configure API keys on the{' '}
+                        <a href={CUSTOMIZE_SITE_HREF}>Site Settings page</a>. You can manage API keys generated on the
+                        server via <a href={API_KEYS_QUERY_HREF}>this query</a>.
                     </Alert>
                 )}
-                {sessionEnabled && includeSessionKeys && (
-                    <>
-                        <div className="user-section-header top-padding bottom-padding">Session Keys</div>
-                        {impersonatingUser !== undefined && (
-                            <Alert bsStyle="warning" id="session-impersonating-msg">
-                                Session key generation is not available while impersonating.
-                            </Alert>
-                        )}
-                        {!impersonatingUser && (
-                            <>
-                                <p>
-                                    A session key is tied to your current browser session, which means all API calls
-                                    execute in your current context (e.g., your user, your authorizations, etc.). It
-                                    also means the key will no longer represent a logged in user when the session
-                                    expires, e.g., when you sign out via the browser or the server automatically times
-                                    out your session. Since they expire quickly, session keys are most appropriate for
-                                    deployments with regulatory compliance requirements.
-                                </p>
-                                <KeyGenerator type="session" noun="Session Key" />
-                            </>
-                        )}
-                    </>
-                )}
+
+                <Alert bsStyle="warning" id="impersonating-msg">
+                    {impersonatingMessage}
+                </Alert>
+
+                <Alert bsStyle="warning" id="config-msg">
+                    {disabledMessage}
+                </Alert>
+
+                {!impersonatingUser && <APIKeysPanelWithQueryModels autoLoad queryConfigs={configs} {...props} />}
             </div>
         </div>
     );
 };
-
-const APIKeysPanelWithQueryModels = withQueryModels(APIKeysPanelBody);
-
-export const APIKeysPanel: FC<APIKeysPanelBodyProps> = props => {
-    const { homeContainer, impersonatingUser } = useServerContext();
-    const configs: QueryConfigMap = {};
-    if (!impersonatingUser) {
-        configs.model = {
-            id: 'model',
-            title: 'Current API Keys',
-            schemaQuery: SCHEMAS.CORE_TABLES.USER_API_KEYS,
-            includeTotalCount: true,
-            containerPath: homeContainer,
-        };
-    }
-
-    return <APIKeysPanelWithQueryModels autoLoad queryConfigs={configs} {...props} />;
-};
+APIKeysPanel.displayName = 'APIKeysPanel';

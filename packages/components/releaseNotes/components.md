@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.29.0
+*Released*: 6 March 2025
+- APIKeysPanel: refactor component
+  - Underlying grid can always expect a grid model
+
 ### version 6.28.0
 *Released*: 4 March 2025
 - withQueryModels: add onModelChange to Actions

@@ -340,7 +340,7 @@ export function resolveDetailEditRenderer(
                         label={col.caption}
                         maxRows={10}
                         multiple={multiple}
-                        name={col.name}
+                        name={col.fieldKey}
                         onBlur={options?.onBlur}
                         onQSChange={options?.onSelectChange}
                         placeholder={options?.placeholder ?? 'Select or type to search...'}

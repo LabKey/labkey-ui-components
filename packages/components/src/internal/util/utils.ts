@@ -743,3 +743,12 @@ export function styleStringToObj(styleString: string): CSSProperties {
         return prev;
     }, {});
 }
+
+const IS_NODE_TEST_ENV = process.env.NODE_ENV === 'test';
+let IS_TEST_ENV = false;
+
+export const setIsTestEnv = (isTestEnv: boolean): void => {
+    IS_TEST_ENV = !!isTestEnv;
+};
+
+export const isTestEnv = (): boolean => IS_NODE_TEST_ENV || IS_TEST_ENV;

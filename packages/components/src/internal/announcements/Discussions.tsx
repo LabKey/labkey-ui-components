@@ -3,13 +3,15 @@ import { UserWithPermissions } from '@labkey/api';
 
 import { resolveErrorMessage } from '../util/messaging';
 
+import { isTestEnv } from '../util/utils';
+
 import { AnnouncementsAPIWrapper, getDefaultAnnouncementsAPIWrapper } from './APIWrapper';
 import { AnnouncementModel } from './model';
 import { Thread } from './Thread';
 import { ThreadEditor } from './ThreadEditor';
 
 // Prevent auto-load in test environments in lieu of mocking APIWrapper in all test locations
-const DEFAULT_AUTO_LOAD = process.env.NODE_ENV !== 'test';
+const DEFAULT_AUTO_LOAD = isTestEnv();
 
 interface Props {
     api?: AnnouncementsAPIWrapper;

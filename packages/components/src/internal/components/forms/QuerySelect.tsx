@@ -25,6 +25,8 @@ import { Row } from '../../query/selectRows';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
+import { isTestEnv } from '../../util/utils';
+
 import { SelectInputOption, SelectInput, SelectInputProps, SelectInputChange } from './input/SelectInput';
 import { resolveDetailFieldLabel } from './utils';
 import {
@@ -38,7 +40,7 @@ import {
 import { DELIMITER } from './constants';
 
 // Prevent initialization in test environments in lieu of mocking APIWrapper in all test locations
-const DEFAULT_AUTO_LOAD = process.env.NODE_ENV !== 'test';
+const DEFAULT_AUTO_LOAD = isTestEnv();
 
 function getValue(model: QuerySelectModel, multiple: boolean): any {
     const { rawSelectedValue } = model;

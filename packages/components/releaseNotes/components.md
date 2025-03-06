@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD March 2025
+- Fix breadcrumb separator scss to apply to .app-body and .li-modal
+
 ### version 6.28.0
 *Released*: 4 March 2025
 - withQueryModels: add onModelChange to Actions

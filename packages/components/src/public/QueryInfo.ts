@@ -1,6 +1,6 @@
 import { Filter } from '@labkey/api';
 
-import { toLowerSafe } from '../internal/util/utils';
+import { isTestEnv, toLowerSafe } from '../internal/util/utils';
 
 import { ViewInfo } from '../internal/ViewInfo';
 import { LastActionStatus } from '../internal/LastActionStatus';
@@ -10,6 +10,8 @@ import { insertColumnFilter, QueryColumn } from './QueryColumn';
 import { SchemaQuery } from './SchemaQuery';
 import { QuerySort } from './QuerySort';
 import { naturalSortByProperty } from './sort';
+
+const IS_TEST_ENV = isTestEnv();
 
 export enum QueryInfoStatus {
     ok,
@@ -416,7 +418,7 @@ export class QueryInfo {
             return viewInfo.filters;
         }
 
-        if (process.env.NODE_ENV !== 'test') {
+        if (!IS_TEST_ENV) {
             console.warn('Unable to find view:', view, '(' + this.schemaName + '.' + this.name + ')');
         }
 

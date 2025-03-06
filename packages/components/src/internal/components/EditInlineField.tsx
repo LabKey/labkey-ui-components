@@ -156,7 +156,7 @@ export const EditInlineField: FC<Props> = memo(props => {
 
     const onFormsyColumnChange = useCallback(
         (data: Record<string, any>) => {
-            setColumnBasedValue(data[column.fieldKey]);
+            setColumnBasedValue(data[column.fieldKey] ?? data[column.name]);
         },
         [column]
     );

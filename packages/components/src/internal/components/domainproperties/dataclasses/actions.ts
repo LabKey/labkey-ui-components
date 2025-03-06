@@ -22,7 +22,7 @@ import { deleteEntityType } from '../../entities/actions';
 import { SchemaQuery } from '../../../../public/SchemaQuery';
 import { DomainDetails } from '../models';
 
-import { handleRequestFailure } from '../../../util/utils';
+import { handleRequestFailure } from '../../../request';
 
 import { DataClassModel } from './models';
 

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.30.0
+*Released*: 6 March 2025
+- Template download button updates
+
 ### version 6.29.0
 *Released*: 6 March 2025
 - APIKeysPanel: refactor component

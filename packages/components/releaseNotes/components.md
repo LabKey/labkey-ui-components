@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.X
+*Released*: X March 2025
+- Clean up smart quotes usages
+
 ### version 6.30.0
 *Released*: 6 March 2025
 - Template download button updates

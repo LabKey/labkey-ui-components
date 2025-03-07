@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.31.0
+*Released*: 7 March 2025
+- Bump api-js
+- QueryFormInputs
+    - Fix React Keys error
+    - Allow file changes for cross-folder selections
+
 ### version 6.30.0
 *Released*: 6 March 2025
 - Template download button updates

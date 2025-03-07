@@ -29,13 +29,13 @@ import {
     isProjectContainer,
 } from '../app/utils';
 
-import { caseInsensitive, handleRequestFailure, quoteValueWithDelimiters } from '../util/utils';
+import { caseInsensitive, quoteValueWithDelimiters } from '../util/utils';
 import { QueryInfo, QueryInfoStatus } from '../../public/QueryInfo';
 import { QueryColumn, QueryLookup } from '../../public/QueryColumn';
 import { ViewInfo, ViewInfoJson } from '../ViewInfo';
 import { URLResolver } from '../url/URLResolver';
 import { ModuleContext } from '../components/base/ServerContext';
-import { RequestHandler } from '../request';
+import { handleRequestFailure, RequestHandler } from '../request';
 
 let queryDetailsCache: Record<string, Promise<QueryInfo>> = {};
 

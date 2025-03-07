@@ -7,7 +7,7 @@ import { DuplicateFilesResponse } from '../../assay/actions';
 import { Principal } from '../../permissions/models';
 import { buildURL } from '../../../url/AppURL';
 
-import { handleRequestFailure } from '../../../util/utils';
+import { handleRequestFailure } from '../../../request';
 
 import { IssuesListDefModel, IssuesListDefOptionsConfig, IssuesRelatedFolder } from './models';
 

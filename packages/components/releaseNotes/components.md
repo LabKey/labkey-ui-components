@@ -5,6 +5,22 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X 2025
 - Issue 52430: Sample Manager: sample names with newline characters
 
+### version 6.31.0
+*Released*: 7 March 2025
+- Bump api-js
+- QueryFormInputs
+    - Fix React Keys error
+    - Allow file changes for cross-folder selections
+
+### version 6.30.0
+*Released*: 6 March 2025
+- Template download button updates
+
+### version 6.29.0
+*Released*: 6 March 2025
+- APIKeysPanel: refactor component
+  - Underlying grid can always expect a grid model
+
 ### version 6.28.0
 *Released*: 4 March 2025
 - withQueryModels: add onModelChange to Actions

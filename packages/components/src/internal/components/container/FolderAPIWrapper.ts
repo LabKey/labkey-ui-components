@@ -1,7 +1,7 @@
 import { ActionURL, Ajax, Utils } from '@labkey/api';
 
 import { Container } from '../base/models/Container';
-import { handleRequestFailure } from '../../util/utils';
+import { handleRequestFailure } from '../../request';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { FolderConfigurableDataType } from '../entities/models';
 import { getFolderDataTypeExclusions } from '../entities/actions';

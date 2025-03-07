@@ -421,15 +421,19 @@ export function isImage(value): boolean {
     return validImageExtensions.indexOf(extensionType) > -1;
 }
 
-export function downloadAttachment(href: string, openInTab?: boolean, fileName?: string): void {
+export function downloadAttachment(href: string, openInTab?: boolean, fileName?: string): Promise<void> {
     if (openInTab) {
         window.open(href, '_blank', 'noopener,noreferrer');
     } else {
         const link = document.createElement('a');
         link.href = href;
-        link.download = fileName;
+        if (fileName) {
+            link.download = fileName;
+        }
         link.click();
     }
+
+    return undefined;
 }
 
 // copied from platform/api/src/org/labkey/api/attachments/Attachment.java
@@ -520,38 +524,6 @@ export function formatBytes(bytes: number, decimals = 2): string {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
 
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-}
-
-/**
- * Handles Ajax.request() failures. Calls the passed in "reject" handler with the error
- * from the request as determined by Utils.getCallbackWrapper(). The "reject" parameter can be a normal function
- * or a rejection handler for a Promise. If a response status code is available, then it will append that value
- * to the error object as "status".
- * Example:
- * ```
- * import { Ajax } from '@labkey/api';
- *
- * new Promise((resolve, reject) => {
- *     return Ajax.request({
- *         // ... url, success handler, etc
- *         failure: handleRequestFailure(reject, 'This optional message is logged to console.error'),
- *     });
- * });
- * ```
- */
-export function handleRequestFailure(reject: (error: any) => void, logMsg?: string) {
-    return Utils.getCallbackWrapper(
-        (error, response) => {
-            // Appends the response's status code to the error object
-            const errorWithStatus = { ...error, status: response?.status };
-            if (logMsg) {
-                console.error(logMsg, errorWithStatus);
-            }
-            reject(errorWithStatus);
-        },
-        undefined,
-        true
-    );
 }
 
 /**

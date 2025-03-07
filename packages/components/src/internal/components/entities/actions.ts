@@ -8,7 +8,8 @@ import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
 import { importData, InsertOptions } from '../../query/api';
-import { caseInsensitive, generateId, handleRequestFailure } from '../../util/utils';
+import { caseInsensitive, generateId } from '../../util/utils';
+import { handleRequestFailure } from '../../request';
 import { EntityCreationType } from '../samples/models';
 
 import { SHARED_CONTAINER_PATH } from '../../constants';

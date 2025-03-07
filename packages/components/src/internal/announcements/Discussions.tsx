@@ -27,7 +27,7 @@ export const Discussions: FC<Props> = memo(props => {
     const {
         api = getDefaultAnnouncementsAPIWrapper(),
         // Prevent autoLoad in test environments in lieu of mocking APIWrapper in all test locations
-        autoLoad = isTestEnv(),
+        autoLoad = !isTestEnv(),
         containerPath,
         discussionSrcIdentifier,
         discussionSrcEntityType,

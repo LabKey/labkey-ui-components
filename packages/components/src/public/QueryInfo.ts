@@ -253,7 +253,7 @@ export class QueryInfo {
             return displayColumns;
         }
 
-        if (process.env.NODE_ENV !== 'test') {
+        if (!isTestEnv()) {
             console.warn('Unable to find columns on view:', view, '(' + this.schemaName + '.' + this.name + ')');
         }
 

@@ -191,7 +191,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     const {
         OptionComponent,
         // Prevent initialization in test environments in lieu of mocking APIWrapper in all test locations
-        autoInit = isTestEnv(),
+        autoInit = !isTestEnv(),
         containerFilter,
         containerPath,
         delimiter = DELIMITER,

@@ -1,7 +1,7 @@
 import { Ajax, Utils } from '@labkey/api';
 
 import { buildURL } from '../../url/AppURL';
-import { handleRequestFailure } from '../../util/utils';
+import { handleRequestFailure } from '../../request';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 export const saveNameExpressionOptions = (

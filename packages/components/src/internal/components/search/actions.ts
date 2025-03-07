@@ -6,13 +6,11 @@ import { getPrimaryAppProperties, getProjectPath, isAllProductFoldersFilteringEn
 
 import { incrementClientSideMetricCount } from '../../actions';
 import { URLResolver } from '../../url/URLResolver';
-import { handleRequestFailure } from '../../util/utils';
+import { handleRequestFailure, RequestHandler } from '../../request';
 
 import { getContainerFilter } from '../../query/api';
 
 import { ModuleContext } from '../base/ServerContext';
-
-import { RequestHandler } from '../../request';
 
 import { getSearchScopeFromContainerFilter, escapeSearchQuery } from './utils';
 import { GetCardDataFn, SearchIdData, SearchResultCardData } from './models';

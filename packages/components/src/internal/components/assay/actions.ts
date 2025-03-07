@@ -17,7 +17,7 @@ import { List } from 'immutable';
 import { ActionURL, Ajax, Assay, AssayDOM, Utils } from '@labkey/api';
 
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
-import { handleRequestFailure } from '../../util/utils';
+import { handleRequestFailure } from '../../request';
 
 import { AssayProtocolModel } from '../domainproperties/assay/models';
 

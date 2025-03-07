@@ -21,7 +21,8 @@ import { deleteEntityType, getSelectedItemSamples } from '../entities/actions';
 
 import { getSelectedDataDeprecated, getSelection, getSnapshotSelections } from '../../actions';
 
-import { caseInsensitive, handleRequestFailure } from '../../util/utils';
+import { caseInsensitive } from '../../util/utils';
+import { handleRequestFailure } from '../../request';
 
 import { ParentEntityLineageColumns } from '../entities/constants';
 

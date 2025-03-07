@@ -3,6 +3,7 @@ import React, {
     forwardRef,
     memo,
     MouseEvent,
+    MouseEventHandler,
     MutableRefObject,
     PropsWithChildren,
     ReactElement,
@@ -122,6 +123,7 @@ DropdownMenu.displayName = 'DropdownMenu';
 interface DropdownButtonProps {
     bsStyle?: BSStyle;
     buttonClassName?: string;
+    buttonTitle?: string;
     children: ReactNode;
     className?: string;
     disabled?: boolean;
@@ -131,6 +133,7 @@ interface DropdownButtonProps {
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
     pullRight?: boolean;
+    showMenu?: boolean;
     title: ReactNode;
 }
 
@@ -140,6 +143,7 @@ interface DropdownButtonProps {
 export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((props, ref) => {
     const {
         bsStyle = 'default',
+        buttonTitle,
         children,
         disabled = false,
         dropup = false,
@@ -148,6 +152,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
         onMouseEnter,
         onMouseLeave,
         pullRight = false,
+        showMenu = true,
         title,
     } = props;
     const id = useMemo(() => generateId('dropdown-button-'), []);
@@ -156,7 +161,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
     const buttonClassName = classNames('btn', 'btn-' + bsStyle, 'dropdown-toggle', props.buttonClassName);
     const menuClassName = classNames(DROPDOWN_MENU_CLASS, { 'dropdown-menu-right': pullRight });
     const caretClassName = classNames('caret', { 'no-margin': !title });
-    const onClick_ = useCallback(
+    const onClick_ = useCallback<MouseEventHandler<HTMLButtonElement>>(
         event => {
             onToggleClick(event);
             onClick?.();
@@ -175,14 +180,17 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
                 onClick={onClick_}
                 ref={toggleRef}
                 role="button"
+                title={buttonTitle}
                 type="button"
             >
                 {title}
                 {!noCaret && <span className={caretClassName} />}
             </button>
-            <ul className={menuClassName} aria-labelledby={id} onClick={handleMenuClick} role="menu">
-                {children}
-            </ul>
+            {showMenu && (
+                <ul className={menuClassName} aria-labelledby={id} onClick={handleMenuClick} role="menu">
+                    {children}
+                </ul>
+            )}
         </div>
     );
 });

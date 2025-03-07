@@ -6,7 +6,7 @@ import { Map } from 'immutable';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
-import { handleRequestFailure } from '../../util/utils';
+import { handleRequestFailure } from '../../request';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 

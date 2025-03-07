@@ -41,7 +41,7 @@ import { SCHEMAS } from './internal/schemas';
 import { isLoading, LoadingState } from './public/LoadingState';
 import { ExtendedMap } from './public/ExtendedMap';
 import { useContainerPath, useContainerUser } from './internal/components/container/actions';
-import { request } from './internal/request';
+import { handleRequestFailure, request } from './internal/request';
 
 import {
     ServerContextConsumer,
@@ -67,7 +67,6 @@ import {
     getValueFromRow,
     getValuesSummary,
     handleFileInputChange,
-    handleRequestFailure,
     isImage,
     isInteger,
     isIntegerInRange,
@@ -302,7 +301,6 @@ import {
     SourceTypeImportAliasRenderer,
 } from './internal/renderers/ImportAliasRenderer';
 import { addFormsyRule, Formsy, formsyRules, withFormsy } from './internal/components/forms/formsy';
-import { DataClassTemplateDownloadRenderer } from './internal/renderers/DataClassTemplateDownloadRenderer';
 import { BulkUpdateForm } from './internal/components/forms/BulkUpdateForm';
 import { LabelOverlay } from './internal/components/forms/LabelOverlay';
 import {
@@ -1222,7 +1220,6 @@ export {
     ANCESTOR_LOOKUP_CONCEPT_URI,
     AncestorRenderer,
     AppendUnits,
-    DataClassTemplateDownloadRenderer,
     DefaultRenderer,
     FileColumnRenderer,
     LabelColorRenderer,

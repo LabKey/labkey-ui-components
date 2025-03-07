@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.26.5
+*Released*: 7 March 2025
+- Issue 52477: Sample workflow custom fields: edit field inline from Job Overview page doesn't save lookup fields with special characters
+
 ### version 6.26.4
 *Released*: 5 March 2025
 - Issue 51091: Product menu endpoints return objects

@@ -11,8 +11,6 @@ import { SchemaQuery } from './SchemaQuery';
 import { QuerySort } from './QuerySort';
 import { naturalSortByProperty } from './sort';
 
-const IS_TEST_ENV = isTestEnv();
-
 export enum QueryInfoStatus {
     ok,
     notFound,
@@ -418,7 +416,7 @@ export class QueryInfo {
             return viewInfo.filters;
         }
 
-        if (!IS_TEST_ENV) {
+        if (!isTestEnv()) {
             console.warn('Unable to find view:', view, '(' + this.schemaName + '.' + this.name + ')');
         }
 

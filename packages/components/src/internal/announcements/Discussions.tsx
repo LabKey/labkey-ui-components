@@ -10,9 +10,6 @@ import { AnnouncementModel } from './model';
 import { Thread } from './Thread';
 import { ThreadEditor } from './ThreadEditor';
 
-// Prevent auto-load in test environments in lieu of mocking APIWrapper in all test locations
-const DEFAULT_AUTO_LOAD = isTestEnv();
-
 interface Props {
     api?: AnnouncementsAPIWrapper;
     autoLoad?: boolean;
@@ -29,7 +26,8 @@ interface Props {
 export const Discussions: FC<Props> = memo(props => {
     const {
         api = getDefaultAnnouncementsAPIWrapper(),
-        autoLoad = DEFAULT_AUTO_LOAD,
+        // Prevent autoLoad in test environments in lieu of mocking APIWrapper in all test locations
+        autoLoad = isTestEnv(),
         containerPath,
         discussionSrcIdentifier,
         discussionSrcEntityType,

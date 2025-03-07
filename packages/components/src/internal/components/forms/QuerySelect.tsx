@@ -39,9 +39,6 @@ import {
 } from './model';
 import { DELIMITER } from './constants';
 
-// Prevent initialization in test environments in lieu of mocking APIWrapper in all test locations
-const DEFAULT_AUTO_LOAD = isTestEnv();
-
 function getValue(model: QuerySelectModel, multiple: boolean): any {
     const { rawSelectedValue } = model;
 
@@ -193,7 +190,8 @@ type DefaultOptions = boolean | SelectInputOption[];
 export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     const {
         OptionComponent,
-        autoInit = DEFAULT_AUTO_LOAD,
+        // Prevent initialization in test environments in lieu of mocking APIWrapper in all test locations
+        autoInit = isTestEnv(),
         containerFilter,
         containerPath,
         delimiter = DELIMITER,

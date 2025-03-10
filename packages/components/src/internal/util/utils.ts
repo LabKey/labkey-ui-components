@@ -752,3 +752,21 @@ export function styleStringToObj(styleString: string): CSSProperties {
         return prev;
     }, {});
 }
+
+/**
+ * When this package is exported this environment variable reference is inline rewritten as
+ * `const IS_NODE_TEST_ENV = "production" === 'test';`
+ * so this will always be false in the exported package.
+ */
+const IS_NODE_TEST_ENV = process.env.NODE_ENV === 'test';
+
+let IS_TEST_ENV = false;
+
+/**
+ * Support external packages being able to configure @labkey/components to recognize test environments.
+ */
+export const setIsTestEnv = (isTestEnv: boolean): void => {
+    IS_TEST_ENV = !!isTestEnv;
+};
+
+export const isTestEnv = (): boolean => IS_NODE_TEST_ENV || IS_TEST_ENV;

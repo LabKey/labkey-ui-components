@@ -2,8 +2,13 @@
 Components, models, actions, and utility functions for LabKey applications and pages
 
 ### version 6.X
-*Released*: X 2025
+*Released*: X March 2025
 - Issue 52430: Sample Manager: sample names with newline characters
+
+### version 6.31.3
+*Released*: 10 March 2025
+- Add `isTestEnv()` and `setIsTestEnv()` methods which allow for external packages to configure `@labkey/components`
+  as running in a test environment.
 
 ### version 6.31.2
 *Released*: 10 March 2025

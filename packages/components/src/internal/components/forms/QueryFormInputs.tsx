@@ -194,14 +194,14 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         if (columns) {
             return columns.valueArray
                 .filter(col => filter(col))
-                .map((col, i) => {
-                    const shouldDisableField =
-                        initiallyDisableFields || disabledFields.contains(col.name.toLowerCase());
+                .map(col => {
+                    const { fieldKey, name, required } = col;
+                    const shouldDisableField = initiallyDisableFields || disabledFields.contains(name.toLowerCase());
                     if (!shouldDisableField) {
                         this._fieldEnabledCount++;
                     }
                     let showAsteriskSymbol = false;
-                    if (!checkRequiredFields && col.required) {
+                    if (!checkRequiredFields && required) {
                         col = col.mutate({ required: false });
                         showAsteriskSymbol = showLabelAsterisk;
                     }
@@ -227,7 +227,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 data={fieldValues}
                                 formsy
                                 initiallyDisabled={shouldDisableField}
-                                key={i}
+                                key={fieldKey}
                                 onAdditionalFormDataChange={onAdditionalFormDataChange}
                                 onSelectChange={this.onSelectChange}
                                 onToggleDisable={this.onToggleDisable}
@@ -247,7 +247,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             const joinValues = multiple;
                             const queryFilter = col.lookup.hasQueryFilters(operation)
                                 ? List(col.lookup.getQueryFilters(operation))
-                                : queryFilters?.[col.fieldKey];
+                                : queryFilters?.[fieldKey];
 
                             // preventCrossFolderEnable will be true for bulk update of a selection from multiple containers,
                             // however, lookup can be used if there is a defined col.lookup.containerPath or if isAllProductFoldersFilteringEnabled()
@@ -259,7 +259,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     : undefined;
 
                             return (
-                                <React.Fragment key={i}>
+                                <React.Fragment key={fieldKey}>
                                     {this.renderLabelField(col)}
                                     <QuerySelect
                                         addLabelAsterisk={showAsteriskSymbol}
@@ -281,7 +281,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         loadOnFocus
                                         maxRows={10}
                                         multiple={multiple}
-                                        name={col.fieldKey}
+                                        name={fieldKey}
                                         onQSChange={this.onSelectChange}
                                         onToggleDisable={this.onToggleDisable}
                                         placeholder="Select or type to search..."
@@ -305,7 +305,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 allowDisable={allowFieldDisable}
                                 formsy
                                 initiallyDisabled={shouldDisableField}
-                                key={i}
+                                key={fieldKey}
                                 onChange={this.onSelectChange}
                                 onToggleDisable={this.onToggleDisable}
                                 placeholder="Select or type to search..."
@@ -320,7 +320,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (col.inputType === 'textarea') {
                         return (
                             <TextAreaInput
-                                key={i}
+                                key={fieldKey}
                                 queryColumn={col}
                                 value={value}
                                 allowDisable={allowFieldDisable}
@@ -334,20 +334,15 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         return (
                             <FileInput
                                 formsy
-                                key={i}
+                                key={fieldKey}
                                 queryColumn={col}
                                 initialValue={value}
-                                name={col.fieldKey}
+                                name={fieldKey}
                                 allowDisable={allowFieldDisable}
                                 initiallyDisabled={shouldDisableField}
                                 onToggleDisable={this.onToggleDisable}
                                 addLabelAsterisk={showAsteriskSymbol}
                                 renderFieldLabel={renderFieldLabel}
-                                toggleDisabledTooltip={
-                                    preventCrossFolderEnable
-                                        ? `File fields for the selected ${pluralNoun.toLowerCase()} can't be updated because the ${pluralNoun.toLowerCase()} belong to multiple folders.`
-                                        : undefined
-                                }
                                 showLabel
                             />
                         );
@@ -357,7 +352,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         case 'time':
                             return (
                                 <DatePickerInput
-                                    key={i}
+                                    key={fieldKey}
                                     queryColumn={col}
                                     value={value}
                                     allowDisable={allowFieldDisable}
@@ -370,7 +365,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         case 'boolean':
                             return (
                                 <CheckboxInput
-                                    key={i}
+                                    key={fieldKey}
                                     queryColumn={col}
                                     value={value}
                                     allowDisable={allowFieldDisable}
@@ -382,9 +377,8 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             );
                         default:
                             return (
-                                <>
+                                <React.Fragment key={fieldKey}>
                                     <TextInput
-                                        key={i}
                                         queryColumn={col}
                                         value={value ? String(value) : value}
                                         allowDisable={allowFieldDisable}
@@ -393,7 +387,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         addLabelAsterisk={showAsteriskSymbol}
                                         renderFieldLabel={renderFieldLabel}
                                     />
-                                    {internalSpacesWarningFieldKeys?.indexOf(col.fieldKey.toLowerCase()) > -1 && (
+                                    {internalSpacesWarningFieldKeys?.indexOf(fieldKey.toLowerCase()) > -1 && (
                                         <div className="row shift-margin-to-bottom">
                                             <div className="col-sm-3 col-xs-12" />
                                             <div className="col-sm-9 col-xs-12 text-danger">
@@ -404,7 +398,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                             </div>
                                         </div>
                                     )}
-                                </>
+                                </React.Fragment>
                             );
                     }
                 });

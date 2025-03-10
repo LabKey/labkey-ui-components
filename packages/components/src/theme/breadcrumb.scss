@@ -12,7 +12,8 @@
 }
 
 // Issue 49352: Breadcrumb separator should be selectable / copyable
-.app-body .breadcrumb > li + li:before {
+.app-body .breadcrumb > li + li:before,
+.lk-modal .breadcrumb > li + li:before {
     padding: 0 2px;
     content: '';
 }

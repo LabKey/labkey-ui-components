@@ -5,6 +5,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X 2025
 - Issue 52430: Sample Manager: sample names with newline characters
 
+### version 6.31.2
+*Released*: 10 March 2025
+- Fix breadcrumb separator scss to apply to .app-body and .li-modal
+
+### version 6.31.1
+*Released*: 9 March 2025
+- Clean up smart quotes usages
+
 ### version 6.31.0
 *Released*: 7 March 2025
 - Bump api-js

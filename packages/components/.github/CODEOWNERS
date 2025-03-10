@@ -1,0 +1,25 @@
+# build
+/packages/build @labkey-alan @labkey-nicka @cnathe
+
+# components
+/packages/components/src/internal/dropdowns.tsx @labkey-alan
+/packages/components/src/internal/components/AutoForm.tsx @labkey-alan
+/packages/components/src/internal/components/chart @cnathe
+/packages/components/src/internal/components/domainproperties @cnathe
+/packages/components/src/internal/components/editable @labkey-alan @labkey-nicka
+/packages/components/src/internal/components/ontology @cnathe
+/packages/components/src/internal/components/productnavigation @cnathe
+/packages/components/src/internal/query @labkey-nicka
+/packages/components/src/internal/useLoadableState.ts @labkey-alan
+/packages/components/src/public @labkey-nicka
+/packages/components/src/public/ExtendedMap.ts @labkey-alan
+/packages/components/src/public/QueryInfo.ts @labkey-nicka
+/packages/components/src/public/QueryModel/ChartPanel.tsx @cnathe
+/packages/components/src/public/QueryModel/QueryModel.ts @labkey-alan
+/packages/components/src/public/QueryModel/withQueryModels.tsx @labkey-alan
+
+# test
+/packages/test @labkey-nicka
+
+# themes
+/packages/themes @labkey-nicka

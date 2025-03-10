@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD March 2025
+### version 6.31.2
+*Released*: 10 March 2025
 - Fix breadcrumb separator scss to apply to .app-body and .li-modal
 
 ### version 6.31.1

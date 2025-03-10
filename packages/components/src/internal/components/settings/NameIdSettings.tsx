@@ -401,7 +401,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                         <div>
                             The following tokens/counters are utilized in naming patterns for the application and all
                             folders. To modify a counter, simply enter a number greater than the current value and
-                            click “Apply”. Please be aware that once a counter is changed, the action cannot be
+                            click "Apply". Please be aware that once a counter is changed, the action cannot be
                             reversed. For additional information regarding these tokens, you can refer to this{' '}
                             <HelpLink topic={SAMPLE_TYPE_NAME_EXPRESSION_TOPIC}>link</HelpLink>.
                         </div>

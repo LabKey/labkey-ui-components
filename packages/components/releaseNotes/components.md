@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.31.3
+*Released*: 10 March 2025
+- Add `isTestEnv()` and `setIsTestEnv()` methods which allow for external packages to configure `@labkey/components`
+  as running in a test environment.
+
 ### version 6.31.2
 *Released*: 10 March 2025
 - Fix breadcrumb separator scss to apply to .app-body and .li-modal

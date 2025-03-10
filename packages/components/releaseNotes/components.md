@@ -5,6 +5,26 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X March 2025
 - Issue 52477: Sample workflow custom fields: edit field inline with special characters
 
+### version 6.31.3
+*Released*: 10 March 2025
+- Add `isTestEnv()` and `setIsTestEnv()` methods which allow for external packages to configure `@labkey/components`
+  as running in a test environment.
+
+### version 6.31.2
+*Released*: 10 March 2025
+- Fix breadcrumb separator scss to apply to .app-body and .li-modal
+
+### version 6.31.1
+*Released*: 9 March 2025
+- Clean up smart quotes usages
+
+### version 6.31.0
+*Released*: 7 March 2025
+- Bump api-js
+- QueryFormInputs
+    - Fix React Keys error
+    - Allow file changes for cross-folder selections
+
 ### version 6.30.0
 *Released*: 6 March 2025
 - Template download button updates

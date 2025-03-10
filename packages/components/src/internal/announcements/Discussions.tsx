@@ -3,13 +3,12 @@ import { UserWithPermissions } from '@labkey/api';
 
 import { resolveErrorMessage } from '../util/messaging';
 
+import { isTestEnv } from '../util/utils';
+
 import { AnnouncementsAPIWrapper, getDefaultAnnouncementsAPIWrapper } from './APIWrapper';
 import { AnnouncementModel } from './model';
 import { Thread } from './Thread';
 import { ThreadEditor } from './ThreadEditor';
-
-// Prevent auto-load in test environments in lieu of mocking APIWrapper in all test locations
-const DEFAULT_AUTO_LOAD = process.env.NODE_ENV !== 'test';
 
 interface Props {
     api?: AnnouncementsAPIWrapper;
@@ -27,7 +26,8 @@ interface Props {
 export const Discussions: FC<Props> = memo(props => {
     const {
         api = getDefaultAnnouncementsAPIWrapper(),
-        autoLoad = DEFAULT_AUTO_LOAD,
+        // Prevent autoLoad in test environments in lieu of mocking APIWrapper in all test locations
+        autoLoad = !isTestEnv(),
         containerPath,
         discussionSrcIdentifier,
         discussionSrcEntityType,

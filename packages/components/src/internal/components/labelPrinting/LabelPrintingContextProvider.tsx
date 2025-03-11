@@ -17,7 +17,7 @@ export interface LabelPrintingContext {
     printServiceUrl: string;
 }
 
-export type LabelPrintingContextProps = Omit<LabelPrintingContext, 'canPrintLabels' | 'error'>;
+export type LabelPrintingContextProps = Omit<LabelPrintingContext, 'error'>;
 
 interface LabelPrintingContextProviderProps extends PropsWithChildren {
     initialContext?: LabelPrintingContextProps;
@@ -34,13 +34,13 @@ export const LabelPrintingContextProvider: FC<LabelPrintingContextProviderProps>
     const { moduleContext, user } = useServerContext();
     const { api } = useAppContext();
     const [labelContext, setLabelContext] = useState<LabelPrintingContext>(() => ({
-        canPrintLabels: userCanPrintLabels(user),
+        canPrintLabels: initialContext?.canPrintLabels ?? userCanPrintLabels(user),
         defaultLabel: initialContext?.defaultLabel,
         printServiceUrl: initialContext?.printServiceUrl,
     }));
 
     useEffect(() => {
-        if (!userCanPrintLabels(user) || !isSampleManagerEnabled(moduleContext)) return;
+        if (!labelContext.canPrintLabels || !userCanPrintLabels(user) || !isSampleManagerEnabled(moduleContext)) return;
 
         (async () => {
             try {
@@ -65,6 +65,7 @@ export const LabelPrintingContextProvider: FC<LabelPrintingContextProviderProps>
                 });
             }
         })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- do not add labelContext or any of its properties
     }, [api, moduleContext, user]);
 
     return <Context.Provider value={labelContext}>{children}</Context.Provider>;

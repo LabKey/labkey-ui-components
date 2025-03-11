@@ -31,13 +31,19 @@ export interface AppContextTestProviderProps<A = AppContext> extends PropsWithCh
 export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => {
     const { appContext, children, serverContext = {}, notificationContext, printLabelsContext } = props;
     const initialAppContext = useMemo(() => ({ api: getTestAPIWrapper(), ...appContext }), [appContext]);
+    const initialPrintLabelsContext = useMemo(
+        () => ({ canPrintLabels: false, ...printLabelsContext }),
+        [printLabelsContext]
+    );
 
     return (
         <ServerContextProvider initialContext={serverContext as ServerContext}>
             <AppContextProvider initialContext={initialAppContext}>
                 <GlobalStateContextProvider>
                     <NotificationsContextProvider initialContext={notificationContext as NotificationsContextState}>
-                        <LabelPrintingContextProvider initialContext={printLabelsContext as LabelPrintingContextProps}>
+                        <LabelPrintingContextProvider
+                            initialContext={initialPrintLabelsContext as LabelPrintingContextProps}
+                        >
                             {children}
                         </LabelPrintingContextProvider>
                     </NotificationsContextProvider>

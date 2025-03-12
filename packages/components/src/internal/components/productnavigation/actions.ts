@@ -1,37 +1,35 @@
-import { Ajax, Utils, ActionURL } from '@labkey/api';
+import { ActionURL } from '@labkey/api';
 
-import { resolveErrorMessage } from '../../util/messaging';
+import { request, SuccessDataResponse } from '../../request';
 
 import { ContainerTabModel, ProductModel } from './models';
 
-export function getRegisteredProducts(): Promise<ProductModel[]> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: ActionURL.buildURL('product', 'getRegisteredProducts.api'),
-            method: 'POST',
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response.map(data => new ProductModel(data)));
-            }),
-            failure: Utils.getCallbackWrapper(response => {
-                console.error(response);
-                reject(resolveErrorMessage(response));
-            }),
-        });
+export async function getRegisteredProducts(): Promise<ProductModel[]> {
+    const response = await request<SuccessDataResponse<Array<Partial<ProductModel>>>>({
+        url: ActionURL.buildURL('product', 'getRegisteredProducts.api'),
+        method: 'POST',
+        errorLogMsg: 'Failed to load registered products',
     });
+
+    const models: ProductModel[] = [];
+    response.data?.forEach(data => {
+        models.push(new ProductModel(data));
+    });
+
+    return models;
 }
 
-export function getContainerTabs(): Promise<ContainerTabModel[]> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: ActionURL.buildURL('admin', 'getFolderTabs.api'),
-            method: 'POST',
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response.map(data => new ContainerTabModel(data)));
-            }),
-            failure: Utils.getCallbackWrapper(response => {
-                console.error(response);
-                reject(resolveErrorMessage(response));
-            }),
-        });
+export async function getContainerTabs(): Promise<ContainerTabModel[]> {
+    const response = await request<SuccessDataResponse<Array<Partial<ContainerTabModel>>>>({
+        url: ActionURL.buildURL('admin', 'getFolderTabs.api'),
+        method: 'POST',
+        errorLogMsg: 'Failed to load container tabs',
     });
+
+    const models: ContainerTabModel[] = [];
+    response.data?.forEach(data => {
+        models.push(new ContainerTabModel(data));
+    });
+
+    return models;
 }

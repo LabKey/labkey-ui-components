@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.31.4
+*Released*: 12 March 2025
+- Merge from release25.3-SNAPSHOT to develop
+    - includes changes from 6.26.4 #1735
+    - includes changes from 6.26.5 #1741
+
 ### version 6.31.3
 *Released*: 10 March 2025
 - Add `isTestEnv()` and `setIsTestEnv()` methods which allow for external packages to configure `@labkey/components`

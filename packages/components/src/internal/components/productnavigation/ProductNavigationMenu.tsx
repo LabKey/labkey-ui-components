@@ -1,5 +1,5 @@
 import React, { FC, memo, MutableRefObject, useCallback, useEffect, useMemo, useState } from 'react';
-import { getServerContext, PermissionTypes, Security } from '@labkey/api';
+import { getServerContext, PermissionTypes } from '@labkey/api';
 
 import classNames from 'classnames';
 
@@ -12,6 +12,10 @@ import { Alert } from '../base/Alert';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
+import { resolveErrorMessage } from '../../util/messaging';
+
+import { fetchContainers } from '../permissions/actions';
+
 import { getContainerTabs, getRegisteredProducts } from './actions';
 import { ADMIN_LOOK_AND_FEEL_URL, PRODUCT_SERVICES_URL } from './constants';
 import { ContainerTabModel, ProductModel } from './models';
@@ -22,8 +26,8 @@ import { ProductNavigationHeader } from './ProductNavigationHeader';
 
 interface ProductNavigationMenuProps {
     disableLKSContainerLink?: boolean;
-    onCloseMenu?: () => void;
     menuRef: MutableRefObject<HTMLDivElement>;
+    onCloseMenu?: () => void;
 }
 
 export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props => {
@@ -35,30 +39,34 @@ export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props 
     const [selectedProductId, setSelectedProductId] = useState<string>();
     const [homeVisible, setHomeVisible] = useState<boolean>(false); // is home project visible to this user.
 
-    const onSelection = useCallback(
-        (productId: string) => {
-            setSelectedProductId(productId);
-        },
-        [setSelectedProductId]
-    );
+    const onSelection = useCallback((productId: string) => {
+        setSelectedProductId(productId);
+    }, []);
 
     useEffect(() => {
-        getRegisteredProducts().then(setProducts).catch(setError);
+        getRegisteredProducts()
+            .then(setProducts)
+            .catch(e => {
+                setError(resolveErrorMessage(e));
+            });
 
-        Security.getContainers({
+        fetchContainers({
             container: homeContainer,
-            includeSubfolders: false,
             includeEffectivePermissions: true,
-            success: data => {
-                setHomeVisible(data.effectivePermissions?.indexOf(PermissionTypes.Read) > -1);
-            },
-            failure: errorInfo => {
-                console.error(errorInfo);
+            includeSubfolders: false,
+        })
+            .then(containers => {
+                setHomeVisible(containers[0]?.effectivePermissions?.indexOf(PermissionTypes.Read) > -1);
+            })
+            .catch(() => {
                 setError('Error: unable to get LabKey folder information.');
-            },
-        });
+            });
 
-        getContainerTabs().then(setTabs).catch(setError);
+        getContainerTabs()
+            .then(setTabs)
+            .catch(e => {
+                setError(resolveErrorMessage(e));
+            });
     }, []);
 
     return (

@@ -6,6 +6,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 52477: Sample workflow custom fields: edit field inline with special characters
 - Issue 52511: Sample Manager: Workflow custom time only field fails to clear value
 
+### version 6.31.4
+*Released*: 12 March 2025
+- Merge from release25.3-SNAPSHOT to develop
+    - includes changes from 6.26.4 #1735
+    - includes changes from 6.26.5 #1741
+
 ### version 6.31.3
 *Released*: 10 March 2025
 - Add `isTestEnv()` and `setIsTestEnv()` methods which allow for external packages to configure `@labkey/components`
@@ -46,6 +52,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 4 March 2025
 - Issue 52072: Text choice field values to handle | character within values
   - PropertyValidator.joinValidValues() and PropertyValidator.splitValidValues()
+
+### version 6.26.5
+*Released*: 7 March 2025
+- Issue 52477: Sample workflow custom fields: edit field inline from Job Overview page doesn't save lookup fields with special characters
+
+### version 6.26.4
+*Released*: 5 March 2025
+- Issue 51091: Product menu endpoints return objects
+- define `SuccessDataResponse<T>` to ease adding typing for endpoint response payloads
 
 ### version 6.26.3
 *Released*: 25 February 2025

@@ -150,9 +150,17 @@ export const EditInlineField: FC<Props> = memo(props => {
 
     const onDateChange = useCallback((date: Date | string) => {
         if (date instanceof Array) throw new Error('Unsupported date/time type');
+
+        if (!date) {
+            if (isDate)
+                setDateValue(undefined);
+            else
+                setTimeJsonValue(undefined);
+        }
+
         if (typeof date === 'string') setTimeJsonValue(date);
         else setDateValue(date);
-    }, []);
+    }, [isDate]);
 
     const onFormsyColumnChange = useCallback(
         (data: Record<string, any>) => {

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Release*: TBD
+- Issue 52264: Include `viewName` when building query parameters for QueryController selectX actions
+
 ### version 6.31.6
 *Released*: 13 March 2025
 - Issue 52430: Sample Manager: sample names with newline characters

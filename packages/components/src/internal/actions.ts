@@ -348,6 +348,7 @@ function buildQueryParams(
     const params = {
         schemaName: schemaQuery.schemaName,
         queryName: schemaQuery.queryName,
+        viewName: schemaQuery.viewName,
         'query.selectionKey': key,
     };
 

@@ -34,13 +34,13 @@ export const LabelPrintingContextProvider: FC<LabelPrintingContextProviderProps>
     const { moduleContext, user } = useServerContext();
     const { api } = useAppContext();
     const [labelContext, setLabelContext] = useState<LabelPrintingContext>(() => ({
-        canPrintLabels: initialContext?.canPrintLabels ?? userCanPrintLabels(user),
+        canPrintLabels: initialContext?.canPrintLabels ?? false,
         defaultLabel: initialContext?.defaultLabel,
         printServiceUrl: initialContext?.printServiceUrl,
     }));
 
     useEffect(() => {
-        if (!labelContext.canPrintLabels || !userCanPrintLabels(user) || !isSampleManagerEnabled(moduleContext)) return;
+        if (!userCanPrintLabels(user) || !isSampleManagerEnabled(moduleContext)) return;
 
         (async () => {
             try {

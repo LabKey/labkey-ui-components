@@ -1,8 +1,8 @@
 # @labkey/test
 Utilities and configurations for running JavaScript tests with LabKey Server.
 
-### version 1.X
-*Released* * 2025
+### version 1.7.2
+*Released*: 13 March
 * Add helper util for generating random names
 * Add ExperimentCrudUtils.importCrossTypeData
 

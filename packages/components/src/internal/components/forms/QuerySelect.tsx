@@ -25,6 +25,8 @@ import { Row } from '../../query/selectRows';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
+import { isTestEnv } from '../../util/utils';
+
 import { SelectInputOption, SelectInput, SelectInputProps, SelectInputChange } from './input/SelectInput';
 import { resolveDetailFieldLabel } from './utils';
 import {
@@ -36,9 +38,6 @@ import {
     setSelection,
 } from './model';
 import { DELIMITER } from './constants';
-
-// Prevent initialization in test environments in lieu of mocking APIWrapper in all test locations
-const DEFAULT_AUTO_LOAD = process.env.NODE_ENV !== 'test';
 
 function getValue(model: QuerySelectModel, multiple: boolean): any {
     const { rawSelectedValue } = model;
@@ -191,7 +190,8 @@ type DefaultOptions = boolean | SelectInputOption[];
 export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     const {
         OptionComponent,
-        autoInit = DEFAULT_AUTO_LOAD,
+        // Prevent initialization in test environments in lieu of mocking APIWrapper in all test locations
+        autoInit = !isTestEnv(),
         containerFilter,
         containerPath,
         delimiter = DELIMITER,

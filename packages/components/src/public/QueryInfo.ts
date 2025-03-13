@@ -1,6 +1,6 @@
 import { Filter } from '@labkey/api';
 
-import { toLowerSafe } from '../internal/util/utils';
+import { isTestEnv, toLowerSafe } from '../internal/util/utils';
 
 import { ViewInfo } from '../internal/ViewInfo';
 import { LastActionStatus } from '../internal/LastActionStatus';
@@ -253,7 +253,7 @@ export class QueryInfo {
             return displayColumns;
         }
 
-        if (process.env.NODE_ENV !== 'test') {
+        if (!isTestEnv()) {
             console.warn('Unable to find columns on view:', view, '(' + this.schemaName + '.' + this.name + ')');
         }
 
@@ -416,7 +416,7 @@ export class QueryInfo {
             return viewInfo.filters;
         }
 
-        if (process.env.NODE_ENV !== 'test') {
+        if (!isTestEnv()) {
             console.warn('Unable to find view:', view, '(' + this.schemaName + '.' + this.name + ')');
         }
 

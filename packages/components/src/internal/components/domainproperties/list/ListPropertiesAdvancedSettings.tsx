@@ -25,7 +25,7 @@ export const CUSTOM_TEMPLATE_TIP = 'Example: ${Key} ${value}';
 
 export const DISPLAY_TITLE_TIP = (
     <>
-        Choose a field to identify this list when other lists or datasets have lookups into this list. When “Auto” is
+        Choose a field to identify this list when other lists or datasets have lookups into this list. When "Auto" is
         enabled, LabKey will select the title field for you by using:
         <ul>
             <li>The first non-lookup string column</li>

@@ -143,6 +143,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         }
 
         let help: string;
+        // Issue 52367: Don't show the message if we have a name that can be edited
         if (queryColumn.nameExpression && !isUpdate) {
             help = `A ${queryColumn.caption} will be generated if one is not given.`;
         }

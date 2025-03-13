@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.31.5
+*Released*: 13 March 2025
+- Issue 52367: Don't show name generation message when editing a name
+
 ### version 6.31.4
 *Released*: 12 March 2025
 - Merge from release25.3-SNAPSHOT to develop

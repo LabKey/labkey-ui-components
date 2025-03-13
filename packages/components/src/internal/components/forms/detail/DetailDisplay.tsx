@@ -426,6 +426,7 @@ export function resolveDetailEditRenderer(
                 return (
                     <TextInput
                         elementWrapperClassName={DETAIL_INPUT_WRAPPER_CLASS_NAME}
+                        isUpdate={true}
                         queryColumn={col}
                         // Issue 43561: Support name expression fields
                         // NK: If a name expression is applied, then the server does not mark the field as required as

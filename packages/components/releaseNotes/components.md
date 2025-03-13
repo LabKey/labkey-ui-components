@@ -6,6 +6,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 52477: Sample workflow custom fields: edit field inline with special characters
 - Issue 52511: Sample Manager: Workflow custom time only field fails to clear value
 
+### version 6.31.6
+*Released*: 13 March 2025
+- Issue 52430: Sample Manager: sample names with newline characters
+
+### version 6.31.5
+*Released*: 13 March 2025
+- Issue 52367: Don't show name generation message when editing a name
+
 ### version 6.31.4
 *Released*: 12 March 2025
 - Merge from release25.3-SNAPSHOT to develop

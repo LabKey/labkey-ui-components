@@ -27,12 +27,13 @@ import { InternalSpacesWarning } from '../InternalSpacesWarning';
 
 export interface TextInputProps extends DisableableInputProps, Omit<FormsyInputProps, 'onChange'> {
     addLabelAsterisk?: boolean;
+    includeSpacesWarning?: boolean;
+    isUpdate?: boolean;
     onChange?: (value: any) => void;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     showLabel?: boolean;
     startFocused?: boolean;
-    includeSpacesWarning?: boolean;
 }
 
 interface TextInputState extends DisableableInputState {
@@ -121,6 +122,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
             showLabel,
             startFocused,
             includeSpacesWarning,
+            isUpdate,
             ...inputProps
         } = rest;
         let { validations } = inputProps;
@@ -141,7 +143,8 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         }
 
         let help: string;
-        if (queryColumn.nameExpression) {
+        // Issue 52367: Don't show the message if we have a name that can be edited
+        if (queryColumn.nameExpression && !isUpdate) {
             help = `A ${queryColumn.caption} will be generated if one is not given.`;
         }
 

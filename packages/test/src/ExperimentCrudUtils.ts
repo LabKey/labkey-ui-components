@@ -193,4 +193,47 @@ export async function getAliquotsByRootId(server: IntegrationTestServer, rootId:
     return response.body.rows;
 }
 
+export async function importCrossTypeData(
+    server,
+    importText: string,
+    insertOption = 'IMPORT',
+    folderOptions: RequestOptions,
+    userOptions: RequestOptions,
+    isSamples?: boolean,
+    debug?: boolean,
+    isFailure?: boolean
+): Promise<any> {
+    let errorResp = null;
+    const response = await server
+        .request(
+            'experiment',
+            isSamples ? 'importSamples' : 'importData',
+            (agent, url) => {
+                return agent
+                    .post(url + '?auditBehavior=DETAILED&crossFolderImport=true&crossTypeImport=true')
+                    .type('form')
+                    .send({
+                        schemaName: undefined,
+                        queryName: undefined,
+                        insertOption,
+                        text: importText,
+                        importLookupByAlternateKey: true,
+                    });
+            },
+            { ...folderOptions, ...userOptions }
+        )
+        .expect(
+            isFailure
+                ? error => {
+                    errorResp = error;
+                }
+                : successfulResponse
+        );
+
+    if (isFailure) return errorResp;
+
+    if (debug) console.log(response);
+
+    return response;
+}
 

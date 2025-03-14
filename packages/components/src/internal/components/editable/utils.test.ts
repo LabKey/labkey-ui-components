@@ -151,19 +151,19 @@ describe('getValidatedEditableGridValue', () => {
     test('valid dateTimeCol value', () => {
         expect(getValidatedEditableGridValue('2020-12-23', dateTimeCol)).toStrictEqual({
             message: undefined,
-            value: '2020-12-23 00:00:00',
+            value: '2020-12-23 00:00:00.000',
         });
         expect(getValidatedEditableGridValue('2020-12-23 00:00:00', dateTimeCol)).toStrictEqual({
             message: undefined,
-            value: '2020-12-23 00:00:00',
+            value: '2020-12-23 00:00:00.000',
         });
         expect(getValidatedEditableGridValue('2020-12-23 14:34', dateTimeCol)).toStrictEqual({
             message: undefined,
-            value: '2020-12-23 14:34:00',
+            value: '2020-12-23 14:34:00.000',
         });
         expect(getValidatedEditableGridValue(new Date('2020-12-23 14:34'), dateTimeCol)).toStrictEqual({
             message: undefined,
-            value: '2020-12-23 14:34:00',
+            value: '2020-12-23 14:34:00.000',
         });
     });
 

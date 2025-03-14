@@ -724,6 +724,20 @@ function everyValueHasSamePrefix(values: PrefixAndNumber[]): boolean {
     return values.every(value => value[0] === prefix);
 }
 
+/**
+ * Given a string that represents a number it returns the number needed when using String.padStart. It returns undefined
+ * in the following scenarios:
+ *  - If the value is undefined
+ *  - If the value is a decimal (e.g. 001.100)
+ *  - If the value is not a padded integer (e.g. 5, 10, 34)
+ * @param value a string representing a number
+ */
+export function detectPadLength(value: string): number {
+    // We don't support padded numbers with decimals
+    if (value === undefined || value.includes('.') || value[0] !== '0') return undefined;
+    return value.length;
+}
+
 enum IncrementDirection {
     FORWARD,
     BACKWARD,
@@ -741,6 +755,7 @@ interface SelectionIncrement {
     increment?: number;
     incrementType: IncrementType;
     initialSelectionValues: Array<List<ValueDescriptor>>; // yes this is a very odd type, but we can clean it up when we rip out Immutable
+    padLength?: number;
     prefix?: string;
     startingValue: number | string;
 }
@@ -785,6 +800,7 @@ function inferSelectionIncrement(
     let prefix;
     let incrementType = IncrementType.NONE;
     let increment;
+    let padLength;
     const splitValues = displayValues.map(splitPrefixedNumber);
     const allPrefixed = everyValueHasSamePrefix(splitValues);
 
@@ -798,16 +814,27 @@ function inferSelectionIncrement(
     const isFloatSeq = values.length > 1 && displayValues.every(isFloat);
     const isIntSeq = values.length > 1 && displayValues.every(isInteger);
 
-    if (isFloatSeq) {
-        firstValue = parseFloat(firstValue);
-        lastValue = parseFloat(lastValue);
-    } else if (isIntSeq) {
+    if (isIntSeq) {
         firstValue = parseScientificInt(firstValue);
         lastValue = parseScientificInt(lastValue);
+        // Note: We only support padLength for integer sequences. This is roughly analogous to how Excel/Sheets works.
+        // It's different because what Sheets does is so wrong it's useless, so we're not even going to bother. To see
+        // what Sheets does drag fill a sequence that looks like: SP1.5000, SP1.6000, SP1.7000.
+        // Note: We determine pad length from the first value in a sequence because that is what Excel and Sheets do
+        padLength = detectPadLength(splitValues[0][1]);
+    } else if (isFloatSeq) {
+        firstValue = parseFloat(firstValue);
+        lastValue = parseFloat(lastValue);
     }
 
     if (isFloatSeq || isIntSeq) {
-        // increment -> last value minus first value divide by the number of steps in the initial selection
+        // increment = last value minus first value divide by the number of steps in the initial selection
+        // Note: our increment calculation is different from Excel/Sheets, but that's because their behavior doesn't
+        // make any sense for certain sequences, e.g.:
+        //  - 1, 3, 3, 7 increments by 1 once, then 1.8 the rest of the time
+        //  - 5, 9, 9, 11 increments by 2 once, then 1.8 the rest of the time
+        //  - 1, 1, 1, 2, 2, 2, 3, 3, 3 increments by 0.5 once, then 0.3 the rest of the time
+        // Our behavior results in a consistent increment and can be easily explained
         increment = decimalDifference(lastValue, firstValue);
         increment = increment / (displayValues.length - 1);
         incrementType = IncrementType.NUMBER;
@@ -818,6 +845,7 @@ function inferSelectionIncrement(
         increment,
         incrementType,
         initialSelectionValues: values,
+        padLength,
         prefix,
         startingValue: direction === IncrementDirection.FORWARD ? lastValue : firstValue,
     };
@@ -1018,7 +1046,7 @@ export async function fillColumnCells(
     forUpdate: boolean,
     targetContainerPath: string
 ): Promise<CellMessagesAndValues> {
-    const { direction, increment, incrementType, prefix, startingValue, initialSelectionValues } =
+    const { direction, increment, incrementType, padLength, prefix, startingValue, initialSelectionValues } =
         inferSelectionIncrement(editorModel, initialSelection, selectionToFill);
 
     if (direction === IncrementDirection.BACKWARD) {
@@ -1036,6 +1064,10 @@ export async function fillColumnCells(
                 raw = decimalDifference(amount, startingValue as number, false);
             } else {
                 raw = decimalDifference(startingValue as number, amount, true);
+            }
+
+            if (padLength !== undefined) {
+                raw = raw.toString(10).padStart(padLength, '0');
             }
 
             if (prefix !== undefined) raw = prefix + raw;

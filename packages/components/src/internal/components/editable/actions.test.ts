@@ -9,7 +9,7 @@ import sampleSet2QueryInfo from '../../../test/data/sampleSet2-getQueryDetails.j
 
 import {
     addColumns,
-    changeColumn,
+    changeColumn, detectPadLength, detectPaddingInPrefixedNumbers,
     fillColumnCells,
     loadEditorModelData,
     parseIntIfNumber,
@@ -697,7 +697,10 @@ describe('splitPrefixedNumber', () => {
         expect(splitPrefixedNumber('ABC')).toEqual(['ABC', undefined]);
         expect(splitPrefixedNumber('ABC-')).toEqual(['ABC-', undefined]);
         expect(splitPrefixedNumber('123')).toEqual([undefined, '123']);
-        expect(splitPrefixedNumber('123.45')).toEqual([undefined, '123.45']);
+        expect(splitPrefixedNumber('00.45')).toEqual([undefined, '00.45']);
+        expect(splitPrefixedNumber('001')).toEqual([undefined, '001']);
+        expect(splitPrefixedNumber('ABC001')).toEqual(['ABC', '001']);
+        expect(splitPrefixedNumber('ABC00.45')).toEqual(['ABC', '00.45']);
     });
 
     test('param as number', () => {
@@ -708,6 +711,17 @@ describe('splitPrefixedNumber', () => {
         expect(splitPrefixedNumber(undefined)).toEqual([undefined, undefined]);
         expect(splitPrefixedNumber(null)).toEqual([undefined, undefined]);
         expect(splitPrefixedNumber('')).toEqual([undefined, undefined]);
+    });
+});
+
+describe('detectPadSize', () => {
+    test('detects padding correctly', () => {
+        expect(detectPadLength(undefined)).toEqual(undefined);
+        expect(detectPadLength('')).toEqual(undefined);
+        expect(detectPadLength('123')).toEqual(undefined);
+        expect(detectPadLength('000.123')).toEqual(undefined);
+        expect(detectPadLength('0000123')).toEqual(7);
+        expect(detectPadLength('0001234')).toEqual(7);
     });
 });
 

@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 51982: QueryModel useSavedSettings requires containerPath to be set
+  - to prevent inadvertent cross-folder saved settings from being applied
+  - applySavedSettings in withQueryModels for both the initModels case and the addModel case
+
 ### version 6.31.6
 *Released*: 13 March 2025
 - Issue 52430: Sample Manager: sample names with newline characters

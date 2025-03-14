@@ -23,7 +23,8 @@ import { DATE_TYPE, DATETIME_TYPE, TIME_TYPE } from '../components/domainpropert
 import {
     DateFormatType,
     formatDate,
-    formatDateTime, fromISODateStr,
+    formatDateTime,
+    fromISODateStr,
     generateNameWithTimestamp,
     getColDateFormat,
     getColFormattedDateFilterValue,
@@ -869,7 +870,5 @@ describe('Date Utilities', () => {
             expect(fromISODateStr('2022-04-19').toString()).toContain('Apr 19 2022');
             expect(fromISODateStr('2022-04-19 01:02:30 AM').toString()).toContain('Apr 19 2022');
         });
-
     });
-
 });

@@ -682,17 +682,15 @@ export function isDateTimeInPast(date: Date | string | number): boolean {
 }
 
 export function fromISODateStr(isoDateStr: string): Date {
-    if (!isoDateStr)
-        return null;
+    if (!isoDateStr) return null;
 
-    const dateTimeParts = isoDateStr.split(" ");
+    const dateTimeParts = isoDateStr.split(' ');
     const datePart = dateTimeParts[0];
-    const parts = datePart.split("-");
-    if (parts.length < 3)
-        return null;
+    const parts = datePart.split('-');
+    if (parts.length < 3) return null;
 
-    let date = new Date();
-    date.setFullYear(parseInt(parts[0]), parseInt(parts[1]) -1, parseInt(parts[2]));
+    const date = new Date();
+    date.setFullYear(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
     date.setHours(0, 0, 0, 0);
     return date;
 }

@@ -23,7 +23,7 @@ import { TIME_RANGE_URI } from '../components/domainproperties/constants';
 import { SelectInputOption } from '../components/forms/input/SelectInput';
 
 // These constants align with the formats declared in DateUtil.java
-const ISO_DATE_FORMAT_STRING = 'yyyy-MM-dd';
+export const ISO_DATE_FORMAT_STRING = 'yyyy-MM-dd';
 const ISO_SHORT_TIME_FORMAT_STRING = 'HH:mm';
 const ISO_TIME_FORMAT_STRING = 'HH:mm:ss';
 const ISO_DATE_TIME_FORMAT_STRING = `${ISO_DATE_FORMAT_STRING} ${ISO_TIME_FORMAT_STRING}`;
@@ -679,4 +679,20 @@ export function getParsedRelativeDateStr(dateVal: string): { days: number; posit
 export function isDateTimeInPast(date: Date | string | number): boolean {
     const date_ = parseDate(date);
     return isValid(date_) && date_.getTime() <= new Date().getTime();
+}
+
+export function fromISODateStr(isoDateStr: string): Date {
+    if (!isoDateStr)
+        return null;
+
+    const dateTimeParts = isoDateStr.split(" ");
+    const datePart = dateTimeParts[0];
+    const parts = datePart.split("-");
+    if (parts.length < 3)
+        return null;
+
+    let date = new Date();
+    date.setFullYear(parseInt(parts[0]), parseInt(parts[1]) -1, parseInt(parts[2]));
+    date.setHours(0, 0, 0, 0);
+    return date;
 }

@@ -23,7 +23,7 @@ import { DATE_TYPE, DATETIME_TYPE, TIME_TYPE } from '../components/domainpropert
 import {
     DateFormatType,
     formatDate,
-    formatDateTime,
+    formatDateTime, fromISODateStr,
     generateNameWithTimestamp,
     getColDateFormat,
     getColFormattedDateFilterValue,
@@ -850,4 +850,26 @@ describe('Date Utilities', () => {
             expect(checkFormat('XXX', tz)).toBe('-05:00');
         });
     });
+
+    describe('fromISODateStr', () => {
+        test('no dateStr', () => {
+            expect(fromISODateStr(undefined)).toBeNull();
+            expect(fromISODateStr(null)).toBeNull();
+            expect(fromISODateStr('')).toBeNull();
+        });
+
+        test('invalid date', () => {
+            expect(fromISODateStr('10')).toBeNull();
+            expect(fromISODateStr('10-12')).toBeNull();
+            expect(fromISODateStr('10:12 2024-02-03')).toBeNull();
+        });
+
+        test('valid date', () => {
+            expect(fromISODateStr('2022-04-19 01:02').toString()).toContain('Apr 19 2022');
+            expect(fromISODateStr('2022-04-19').toString()).toContain('Apr 19 2022');
+            expect(fromISODateStr('2022-04-19 01:02:30 AM').toString()).toContain('Apr 19 2022');
+        });
+
+    });
+
 });

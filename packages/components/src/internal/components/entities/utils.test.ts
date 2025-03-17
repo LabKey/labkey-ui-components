@@ -29,7 +29,7 @@ import {
     getIdentifyingColumns,
     getInitialParentChoices,
     getJobCreationHref,
-    getSampleIdCellKey,
+    getSampleIdCellKey, parseEntityParentKey,
     sampleDeleteDependencyText,
     updateCellKeySampleIdMap,
 } from './utils';
@@ -464,12 +464,14 @@ describe('get cell key helpers', () => {
     });
 });
 
-describe('createEntityParentKey', () => {
+describe('createEntityParentKey & parseEntityParentKey', () => {
     test('without id', () => {
-        expect(createEntityParentKey(new SchemaQuery('schema', 'query'))).toBe('schema:query');
+        expect(createEntityParentKey(new SchemaQuery('schema', 'query'))).toBe('schema|query');
+        expect(parseEntityParentKey('schema|query')).toEqual(['schema', 'query']);
     });
     test('with id', () => {
-        expect(createEntityParentKey(new SchemaQuery('schema', 'query'), 'id')).toBe('schema:query:id');
+        expect(createEntityParentKey(new SchemaQuery('schema', 'query'), 'id')).toBe('schema|query|id');
+        expect(parseEntityParentKey('schema|query|id')).toEqual(['schema', 'query', 'id']);
     });
 });
 

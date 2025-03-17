@@ -223,6 +223,7 @@ export function parseEntityParentKey(parentKey: string): string[] {
 
     const allParts = parentKey.split(PARENT_KEY_DIVIDER);
     const result = allParts.splice(0, 3);
-    result.push(allParts.join(' '));
+    if (allParts?.length > 0)
+        result.push(allParts.join(' '));
     return result;
 }

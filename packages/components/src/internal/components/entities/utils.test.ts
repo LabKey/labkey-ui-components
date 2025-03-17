@@ -472,6 +472,8 @@ describe('createEntityParentKey & parseEntityParentKey', () => {
     test('with id', () => {
         expect(createEntityParentKey(new SchemaQuery('schema', 'query'), 'id')).toBe('schema|query|id');
         expect(parseEntityParentKey('schema|query|id')).toEqual(['schema', 'query', 'id']);
+        expect(createEntityParentKey(new SchemaQuery('schema', 'query'), 'i|d')).toBe('schema|query|i|d');
+        expect(parseEntityParentKey('schema|query|i|d')).toEqual(['schema', 'query', 'i|d']);
     });
 });
 

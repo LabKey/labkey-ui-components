@@ -222,8 +222,10 @@ export function parseEntityParentKey(parentKey: string): string[] {
         return [];
 
     const allParts = parentKey.split(PARENT_KEY_DIVIDER);
-    const result = allParts.splice(0, 3);
+    // schema: allParts[0]; query: allParts[1];
+    const result = allParts.splice(0, 2);
+    // all rest is the key value (optional)
     if (allParts?.length > 0)
-        result.push(allParts.join(' '));
+        result.push(allParts.join(PARENT_KEY_DIVIDER));
     return result;
 }

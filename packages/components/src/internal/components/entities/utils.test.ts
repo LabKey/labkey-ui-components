@@ -22,6 +22,7 @@ import { genCellKey } from '../editable/utils';
 
 import { IEntityTypeOption } from './models';
 import {
+    createEntityParentKey,
     getCellKeyColumnMap,
     getEntityDescription,
     getEntityNoun,
@@ -462,3 +463,13 @@ describe('get cell key helpers', () => {
         });
     });
 });
+
+describe('createEntityParentKey', () => {
+    test('without id', () => {
+        expect(createEntityParentKey(new SchemaQuery('schema', 'query'))).toBe('schema:query');
+    });
+    test('with id', () => {
+        expect(createEntityParentKey(new SchemaQuery('schema', 'query'), 'id')).toBe('schema:query:id');
+    });
+});
+

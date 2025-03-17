@@ -23,6 +23,7 @@ import { SELECTION_KEY_TYPE } from '../samples/constants';
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 
 import { ParentIdData } from './actions';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 export function sampleDeleteDependencyText(): string {
     let deleteMsg = '';
@@ -204,4 +205,24 @@ export function updateCellKeySampleIdMap(
     });
     Object.assign(updatedCellKeyMap, cellKeyChanges.toAddOrUpdate);
     return updatedCellKeyMap;
+}
+
+const PARENT_KEY_DIVIDER = '|';
+
+export function createEntityParentKey(schemaQuery: SchemaQuery, id?: string): string {
+    const keys = [schemaQuery.schemaName, schemaQuery.queryName];
+    if (id) {
+        keys.push(id);
+    }
+    return keys.join(PARENT_KEY_DIVIDER).toLowerCase();
+}
+
+export function parseEntityParentKey(parentKey: string): string[] {
+    if (!parentKey)
+        return [];
+
+    const allParts = parentKey.split(PARENT_KEY_DIVIDER);
+    const result = allParts.splice(0, 3);
+    result.push(allParts.join(' '));
+    return result;
 }

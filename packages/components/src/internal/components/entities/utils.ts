@@ -20,10 +20,11 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { SELECTION_KEY_TYPE } from '../samples/constants';
 
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 
 import { ParentIdData } from './actions';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 
 export function sampleDeleteDependencyText(): string {
     let deleteMsg = '';
@@ -218,14 +219,12 @@ export function createEntityParentKey(schemaQuery: SchemaQuery, id?: string): st
 }
 
 export function parseEntityParentKey(parentKey: string): string[] {
-    if (!parentKey)
-        return [];
+    if (!parentKey) return [];
 
     const allParts = parentKey.split(PARENT_KEY_DIVIDER);
     // schema: allParts[0]; query: allParts[1];
     const result = allParts.splice(0, 2);
     // all rest is the key value (optional)
-    if (allParts?.length > 0)
-        result.push(allParts.join(PARENT_KEY_DIVIDER));
+    if (allParts?.length > 0) result.push(allParts.join(PARENT_KEY_DIVIDER));
     return result;
 }

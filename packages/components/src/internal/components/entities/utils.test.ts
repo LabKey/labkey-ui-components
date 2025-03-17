@@ -29,7 +29,8 @@ import {
     getIdentifyingColumns,
     getInitialParentChoices,
     getJobCreationHref,
-    getSampleIdCellKey, parseEntityParentKey,
+    getSampleIdCellKey,
+    parseEntityParentKey,
     sampleDeleteDependencyText,
     updateCellKeySampleIdMap,
 } from './utils';
@@ -476,4 +477,3 @@ describe('createEntityParentKey & parseEntityParentKey', () => {
         expect(parseEntityParentKey('schema|query|i|d')).toEqual(['schema', 'query', 'i|d']);
     });
 });
-

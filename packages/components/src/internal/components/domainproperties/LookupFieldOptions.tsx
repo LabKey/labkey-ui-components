@@ -80,6 +80,10 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
         const disabled = lockType === DOMAIN_FIELD_PARTIALLY_LOCKED || lockType === DOMAIN_FIELD_FULLY_LOCKED;
         const isUserLookup = dataType.isUser();
 
+        if (isUserLookup) {
+            return null;
+        }
+
         return (
             <div>
                 <div className="row">
@@ -88,46 +92,42 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                     </div>
                 </div>
                 <div className="row">
-                    {!isUserLookup && (
-                        <>
-                            <div className="col-xs-2">
-                                <div className="domain-field-label">Target Folder</div>
-                                <FolderSelect
-                                    id={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, domainIndex, index)}
-                                    key={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, domainIndex, index)}
-                                    disabled={disabled}
-                                    onChange={this.onFieldChange}
-                                    value={lookupContainer}
-                                />
-                            </div>
-                            <div className="col-xs-2">
-                                <div className="domain-field-label">Target Schema</div>
-                                <SchemaSelect
-                                    containerPath={lookupContainer}
-                                    id={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, domainIndex, index)}
-                                    key={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, domainIndex, index)}
-                                    disabled={disabled}
-                                    onChange={this.onFieldChange}
-                                    value={lookupSchema}
-                                />
-                            </div>
-                            <div className="col-xs-2">
-                                <div className="domain-field-label">Target Table</div>
-                                <TargetTableSelect
-                                    containerPath={lookupContainer}
-                                    id={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index)}
-                                    key={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index)}
-                                    disabled={disabled}
-                                    lookupURI={original.rangeURI}
-                                    onChange={this.onFieldChange}
-                                    schemaName={lookupSchema}
-                                    value={lookupQueryValue}
-                                    lookupIsValid={lookupIsValid}
-                                    shouldDisableNonExists={!wrappedColumnName && lookupIsValid} // Only disable non-wrapped fields with valid lookup value if the value is not in the query list
-                                />
-                            </div>
-                        </>
-                    )}
+                    <div className="col-xs-2">
+                        <div className="domain-field-label">Target Folder</div>
+                        <FolderSelect
+                            id={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, domainIndex, index)}
+                            key={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, domainIndex, index)}
+                            disabled={disabled}
+                            onChange={this.onFieldChange}
+                            value={lookupContainer}
+                        />
+                    </div>
+                    <div className="col-xs-2">
+                        <div className="domain-field-label">Target Schema</div>
+                        <SchemaSelect
+                            containerPath={lookupContainer}
+                            id={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, domainIndex, index)}
+                            key={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, domainIndex, index)}
+                            disabled={disabled}
+                            onChange={this.onFieldChange}
+                            value={lookupSchema}
+                        />
+                    </div>
+                    <div className="col-xs-2">
+                        <div className="domain-field-label">Target Table</div>
+                        <TargetTableSelect
+                            containerPath={lookupContainer}
+                            id={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index)}
+                            key={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index)}
+                            disabled={disabled}
+                            lookupURI={original.rangeURI}
+                            onChange={this.onFieldChange}
+                            schemaName={lookupSchema}
+                            value={lookupQueryValue}
+                            lookupIsValid={lookupIsValid}
+                            shouldDisableNonExists={!wrappedColumnName && lookupIsValid} // Only disable non-wrapped fields with valid lookup value if the value is not in the query list
+                        />
+                    </div>
                     <div className="col-xs-6">
                         <div className="domain-field-label">Lookup Validator</div>
                         <DomainDesignerCheckbox
@@ -141,7 +141,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                             <LabelHelpTip title="Lookup Validator">
                                 <div>
                                     Lookup validators allow you to require that any value is present in the lookup's
-                                    target table or query
+                                    target table or query.
                                 </div>
                             </LabelHelpTip>
                         </DomainDesignerCheckbox>

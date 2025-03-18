@@ -3,10 +3,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 6.??.?
 *Released*: ?? March 2025
-- Issue 52253: Editable grid drag and fill removes internal zeros
-- Issue 51584: Editable grid does not delete values in fields if drag-select started in a read-only field
-- Issue 52347: EditableGrid: Drag filling Sample IDs doesn't resolve samples
-- Issue 52412: EditableGrid: Drag Filling Lookups with special characters doesn't work
+- Add `test-to-file` script
+- `Cell`: ignore readOnly state when handling certain events
+- Update `dragFillEvent` to detect and apply padding during drag fill
+  - Issue 52253: Editable grid drag and fill removes internal zeros
+  - Issue 51584: Editable grid does not delete values in fields if drag-select started in a read-only field
+- Update `dragFillEvent` to generate a TSV then use our underlying paste handling code to insert the drag filled data
+  - Issue 52347: EditableGrid: Drag filling Sample IDs doesn't resolve samples
+  - Issue 52412: EditableGrid: Drag Filling Lookups with special characters doesn't work
+- `EditableGrid`: pass queryFilters when rendering bulk add
+  - Issue 52371: Bulk Add Units list isn't filtered to match Sample Type when inserting samples
 
 ### version 6.31.12
 *Released*: 21 March 2025

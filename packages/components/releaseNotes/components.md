@@ -5,6 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: ?? March 2025
 - Issue 52253: Editable grid drag and fill removes internal zeros
 - Issue 51584: Editable grid does not delete values in fields if drag-select started in a read-only field
+- Issue 52347: EditableGrid: Drag filling Sample IDs doesn't resolve samples
+- Issue 52412: EditableGrid: Drag Filling Lookups with special characters doesn't work
 
 ### version 6.31.12
 *Released*: 21 March 2025

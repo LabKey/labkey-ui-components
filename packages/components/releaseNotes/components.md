@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.X
-*Released*: X March 2025
+### version 6.31.7
+*Released*: 17 March 2025
 - Issue 52533: LKSM: Error creating samples from details pages with Sources with a colon in the name
   - Move createEntityParentKey from premium and switch to use '|' for schema|query|keyValue delimiter
   - Add parseEntityParentKey util

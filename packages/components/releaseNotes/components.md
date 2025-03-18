@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.31.9
+*Release*: 18 March 2025
+- Expose `enabled` as a public property on `LabelPrintingContextProps`. Default test environment context to `false`.
+- Support initialization of `enabled` in `LabelPrintingContextProvider`.
+- Default `canPrintLabels` to `false`
+
 ### version 6.31.8
 *Release*: 18 March 2025
 - Issue 52264: Include `viewName` when building query parameters for QueryController selectX actions

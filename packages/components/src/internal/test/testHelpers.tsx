@@ -31,13 +31,17 @@ export interface AppContextTestProviderProps<A = AppContext> extends PropsWithCh
 export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => {
     const { appContext, children, serverContext = {}, notificationContext, printLabelsContext } = props;
     const initialAppContext = useMemo(() => ({ api: getTestAPIWrapper(), ...appContext }), [appContext]);
+    const initialPrintLabelsContext = useMemo(
+        () => ({ enabled: false, ...printLabelsContext }) as LabelPrintingContextProps,
+        [printLabelsContext]
+    );
 
     return (
         <ServerContextProvider initialContext={serverContext as ServerContext}>
             <AppContextProvider initialContext={initialAppContext}>
                 <GlobalStateContextProvider>
                     <NotificationsContextProvider initialContext={notificationContext as NotificationsContextState}>
-                        <LabelPrintingContextProvider initialContext={printLabelsContext as LabelPrintingContextProps}>
+                        <LabelPrintingContextProvider initialContext={initialPrintLabelsContext}>
                             {children}
                         </LabelPrintingContextProvider>
                     </NotificationsContextProvider>
@@ -46,6 +50,7 @@ export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => 
         </ServerContextProvider>
     );
 };
+AppContextTestProvider.displayName = 'AppContextTestProvider';
 
 /**
  * Instantiates a QueryInfo from a captured query details response payload. Cannot be used until you've called

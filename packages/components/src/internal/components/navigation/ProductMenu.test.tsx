@@ -1,9 +1,8 @@
-import React, { act, createRef } from 'react';
+import React, { createRef } from 'react';
+import { waitFor } from '@testing-library/react';
 import { List, Map } from 'immutable';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
-
-import { AppContext } from '../../AppContext';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { TEST_ARCHIVED_FOLDER_CONTAINER, TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
@@ -16,7 +15,9 @@ import { TEST_LKS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
 
 import { Container } from '../base/models/Container';
 
-import { getNavigationTestAPIWrapper, NavigationAPIWrapper } from './NavigationAPIWrapper';
+import { AppContextTestProviderProps } from '../../test/testHelpers';
+
+import { getNavigationTestAPIWrapper } from './NavigationAPIWrapper';
 
 import { FolderMenuItem } from './FolderMenu';
 
@@ -35,7 +36,7 @@ import { HOME_PATH, HOME_TITLE } from './constants';
 function getDefaultServerContext(): Partial<ServerContext> {
     return {
         container: TEST_PROJECT_CONTAINER,
-        moduleContext: { ...TEST_LKS_STARTER_MODULE_CONTEXT },
+        moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT,
     };
 }
 
@@ -145,18 +146,7 @@ sectionConfigs = sectionConfigs.push(twoSectionConfig);
 const HOME_PROJECT = new Container({ id: '12345', path: HOME_PATH, title: 'home' });
 
 describe('ProductMenuButton', () => {
-    function getDefaultAppContext(overrides?: Partial<SecurityAPIWrapper>): Partial<AppContext> {
-        return {
-            api: getTestAPIWrapper(jest.fn, {
-                security: getSecurityTestAPIWrapper(jest.fn, {
-                    fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER]),
-                    ...overrides,
-                }),
-            }),
-        };
-    }
-
-    function getDefaultProps(): ProductMenuButtonProps {
+    function defaultProps(): ProductMenuButtonProps {
         return {
             appProperties: SAMPLE_MANAGER_APP_PROPERTIES,
             sectionConfigs,
@@ -164,132 +154,122 @@ describe('ProductMenuButton', () => {
         };
     }
 
-    test('default props', async () => {
-        await act(async () => {
-            renderWithAppContext(
-                <ProductMenuButton {...getDefaultProps()} />,
-                {
-                    appContext: getDefaultAppContext(),
-                    serverContext: getDefaultServerContext()
-                }
-            );
-        });
-        expect(document.querySelectorAll('.product-menu-button')).toHaveLength(1);
-        expect(document.querySelector('.product-menu-button').getAttribute('aria-expanded')).toBe("false");
-        expect(document.querySelectorAll('div.title')).toHaveLength(1);
-        expect(document.querySelectorAll('.product-menu-content')).toHaveLength(0);
-        expect(document.querySelectorAll('.with-col-folders')).toHaveLength(0);
-
-    });
-
-    test('ProductMenuButtonTitle without items', async () => {
-        const location = { pathname: '/admin' };
-        await act(async () => {
-            renderWithAppContext(
-                <ProductMenuButtonTitle container={TEST_FOLDER_CONTAINER} folderItems={[]} location={location as any} />,
-                {
-                    appContext: getDefaultAppContext(),
-                    serverContext: getDefaultServerContext()
-                }
-            );
-        });
-        expect(document.querySelector('div.title').textContent).toBe('Menu');
-        expect(document.querySelector('.subtitle').textContent).toBe('Administration');
-    });
-
-    test('ProductMenuButtonTitle with items', async () => {
-        const location = { pathname: '/items' };
-        await act(async () => {
-            renderWithAppContext(
-                <ProductMenuButtonTitle
-                    container={TEST_FOLDER_CONTAINER}
-                    folderItems={[{} as FolderMenuItem, {} as FolderMenuItem]}
-                    location={location as any}
-                />,
-                {
-                    appContext: getDefaultAppContext(),
-                    serverContext: getDefaultServerContext()
-                }
-            );
-        });
-        expect(document.querySelector('div.title').textContent).toBe(TEST_FOLDER_CONTAINER.title);
-        expect(document.querySelector('.subtitle').textContent).toBe('Storage');
-    });
-
-    test('ProductMenuButtonTitle without routes', async () => {
-        const location = { pathname: '/' };
-        await act(async () => {
-            renderWithAppContext(
-                <ProductMenuButtonTitle
-                    container={TEST_FOLDER_CONTAINER}
-                    folderItems={[{} as FolderMenuItem, {} as FolderMenuItem]}
-                    location={location as any}
-                />,
-                {
-                    appContext: getDefaultAppContext(),
-                    serverContext: getDefaultServerContext()
-                }
-            );
-        });
-        expect(document.querySelector('div.title').textContent).toBe(TEST_FOLDER_CONTAINER.title);
-        expect(document.querySelector('.subtitle').textContent).toBe('Dashboard');
-
-    });
-
-    test('ProductMenuButtonTitle home', async () => {
-        const location = { pathname: '/' };
-        await act(async () => {
-            renderWithAppContext(
-                <ProductMenuButtonTitle
-                    container={HOME_PROJECT}
-                    folderItems={[{} as FolderMenuItem, {} as FolderMenuItem]}
-                    location={location as any}
-                />,
-                {
-                    appContext: getDefaultAppContext(),
-                    serverContext: getDefaultServerContext()
-                }
-            );
-        });
-        expect(document.querySelector('div.title').textContent).toBe(HOME_TITLE);
-        expect(document.querySelector('.subtitle').textContent).toBe('Dashboard');
-    });
-
-    test('ProductMenuButtonTitle archived', async () => {
-        const location = { pathname: '/' };
-        await act(async () => {
-            renderWithAppContext(
-                <ProductMenuButtonTitle
-                    container={TEST_ARCHIVED_FOLDER_CONTAINER}
-                    folderItems={[{} as FolderMenuItem, {} as FolderMenuItem]}
-                    location={location as any}
-                />,
-                {
-                    appContext: getDefaultAppContext(),
-                    serverContext: getDefaultServerContext()
-                }
-            );
-        });
-        expect(document.querySelector('div.title').textContent).toBe(TEST_ARCHIVED_FOLDER_CONTAINER.title + "Archived");
-        expect(document.querySelector('.subtitle').textContent).toBe('Dashboard');
-        expect(document.querySelectorAll('.product-menu_archived-tag')).toHaveLength(1);
-    });
-
-});
-
-describe('ProductMenu', () => {
-    function getDefaultAppContext(overrides?: Partial<NavigationAPIWrapper>): Partial<AppContext> {
+    function defaultContext(overrides?: Partial<SecurityAPIWrapper>): AppContextTestProviderProps {
         return {
-            api: getTestAPIWrapper(jest.fn, {
-                navigation: getNavigationTestAPIWrapper(jest.fn, {
-                    initMenuModel: jest.fn().mockResolvedValue(model),
-                    ...overrides,
+            appContext: {
+                api: getTestAPIWrapper(jest.fn, {
+                    security: getSecurityTestAPIWrapper(jest.fn, {
+                        fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER]),
+                        ...overrides,
+                    }),
                 }),
-            }),
+            },
+            serverContext: getDefaultServerContext(),
         };
     }
 
-    function getDefaultProps(): ProductMenuProps {
+    test('default props', async () => {
+        renderWithAppContext(<ProductMenuButton {...defaultProps()} />, defaultContext());
+
+        await waitFor(() => {
+            expect(document.querySelectorAll('.product-menu-button')).toHaveLength(1);
+        });
+        expect(document.querySelector('.product-menu-button').getAttribute('aria-expanded')).toBe('false');
+        expect(document.querySelectorAll('div.title')).toHaveLength(1);
+        expect(document.querySelectorAll('.product-menu-content')).toHaveLength(0);
+        expect(document.querySelectorAll('.with-col-folders')).toHaveLength(0);
+    });
+
+    test('ProductMenuButtonTitle without items', () => {
+        const location = { pathname: '/admin' };
+        renderWithAppContext(
+            <ProductMenuButtonTitle container={TEST_FOLDER_CONTAINER} folderItems={[]} location={location as any} />,
+            defaultContext()
+        );
+
+        expect(document.querySelector('div.title')).toHaveTextContent('Menu');
+        expect(document.querySelector('.subtitle')).toHaveTextContent('Administration');
+    });
+
+    test('ProductMenuButtonTitle with items', () => {
+        const location = { pathname: '/items' };
+        renderWithAppContext(
+            <ProductMenuButtonTitle
+                container={TEST_FOLDER_CONTAINER}
+                folderItems={[{} as FolderMenuItem, {} as FolderMenuItem]}
+                location={location as any}
+            />,
+            defaultContext()
+        );
+
+        expect(document.querySelector('div.title')).toHaveTextContent(TEST_FOLDER_CONTAINER.title);
+        expect(document.querySelector('.subtitle')).toHaveTextContent('Storage');
+    });
+
+    test('ProductMenuButtonTitle without routes', () => {
+        const location = { pathname: '/' };
+        renderWithAppContext(
+            <ProductMenuButtonTitle
+                container={TEST_FOLDER_CONTAINER}
+                folderItems={[{} as FolderMenuItem, {} as FolderMenuItem]}
+                location={location as any}
+            />,
+            defaultContext()
+        );
+
+        expect(document.querySelector('div.title')).toHaveTextContent(TEST_FOLDER_CONTAINER.title);
+        expect(document.querySelector('.subtitle')).toHaveTextContent('Dashboard');
+    });
+
+    test('ProductMenuButtonTitle home', () => {
+        const location = { pathname: '/' };
+        renderWithAppContext(
+            <ProductMenuButtonTitle
+                container={HOME_PROJECT}
+                folderItems={[{} as FolderMenuItem, {} as FolderMenuItem]}
+                location={location as any}
+            />,
+            defaultContext()
+        );
+
+        expect(document.querySelector('div.title')).toHaveTextContent(HOME_TITLE);
+        expect(document.querySelector('.subtitle')).toHaveTextContent('Dashboard');
+    });
+
+    test('ProductMenuButtonTitle archived', () => {
+        const location = { pathname: '/' };
+        renderWithAppContext(
+            <ProductMenuButtonTitle
+                container={TEST_ARCHIVED_FOLDER_CONTAINER}
+                folderItems={[{} as FolderMenuItem, {} as FolderMenuItem]}
+                location={location as any}
+            />,
+            defaultContext()
+        );
+
+        expect(document.querySelector('div.title')).toHaveTextContent(
+            TEST_ARCHIVED_FOLDER_CONTAINER.title + 'Archived'
+        );
+        expect(document.querySelector('.subtitle')).toHaveTextContent('Dashboard');
+        expect(document.querySelectorAll('.product-menu_archived-tag')).toHaveLength(1);
+    });
+});
+
+describe('ProductMenu', () => {
+    function defaultContext(): AppContextTestProviderProps {
+        return {
+            appContext: {
+                api: getTestAPIWrapper(jest.fn, {
+                    navigation: getNavigationTestAPIWrapper(jest.fn, {
+                        initMenuModel: jest.fn().mockResolvedValue(model),
+                    }),
+                }),
+            },
+            serverContext: getDefaultServerContext(),
+        };
+    }
+
+    function defaultProps(): ProductMenuProps {
         return {
             appProperties: SAMPLE_MANAGER_APP_PROPERTIES,
             error: undefined,
@@ -301,8 +281,10 @@ describe('ProductMenu', () => {
         };
     }
 
-    function validate(hasError = false, showFolderMenu = true, contentSections = 2): void {
-        expect(document.querySelectorAll('.product-menu-content')).toHaveLength(1);
+    async function validate(hasError = false, showFolderMenu = true, contentSections = 2): Promise<void> {
+        await waitFor(() => {
+            expect(document.querySelectorAll('.product-menu-content')).toHaveLength(1);
+        });
         expect(document.querySelectorAll('.navbar-connector')).toHaveLength(1);
         expect(document.querySelectorAll('.alert')).toHaveLength(hasError ? 1 : 0);
         expect(document.querySelectorAll('.menu-section.col-folders')).toHaveLength(showFolderMenu ? 1 : 0);
@@ -313,44 +295,19 @@ describe('ProductMenu', () => {
     }
 
     test('default props', async () => {
-        await act(async () => {
-            renderWithAppContext(
-                <ProductMenu {...getDefaultProps()} />,
-                {
-                    appContext: getDefaultAppContext(),
-                    serverContext: getDefaultServerContext()
-                }
-            );
-        });
-        validate();
+        renderWithAppContext(<ProductMenu {...defaultProps()} />, defaultContext());
+        await validate();
     });
 
     test('error', async () => {
-        await act(async () => {
-            renderWithAppContext(
-                <ProductMenu {...getDefaultProps()} error="Test Error" />,
-                {
-                    appContext: getDefaultAppContext(),
-                    serverContext: getDefaultServerContext()
-                }
-            );
-        });
-        validate(true);
+        renderWithAppContext(<ProductMenu {...defaultProps()} error="Test Error" />, defaultContext());
+        await validate(true);
     });
 
     test('showFolderMenu false', async () => {
-        await act(async () => {
-            renderWithAppContext(
-                <ProductMenu {...getDefaultProps()} showFolderMenu={false} />,
-                {
-                    appContext: getDefaultAppContext(),
-                    serverContext: getDefaultServerContext()
-                }
-            );
-        });
-        validate(false, false);
+        renderWithAppContext(<ProductMenu {...defaultProps()} showFolderMenu={false} />, defaultContext());
+        await validate(false, false);
     });
-
 });
 
 describe('createFolderItem', () => {

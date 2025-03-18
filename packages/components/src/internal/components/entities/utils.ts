@@ -20,6 +20,8 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { SELECTION_KEY_TYPE } from '../samples/constants';
 
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 
 import { ParentIdData } from './actions';
@@ -204,4 +206,25 @@ export function updateCellKeySampleIdMap(
     });
     Object.assign(updatedCellKeyMap, cellKeyChanges.toAddOrUpdate);
     return updatedCellKeyMap;
+}
+
+const PARENT_KEY_DIVIDER = '|';
+
+export function createEntityParentKey(schemaQuery: SchemaQuery, id?: string): string {
+    const keys = [schemaQuery.schemaName, schemaQuery.queryName];
+    if (id) {
+        keys.push(id);
+    }
+    return keys.join(PARENT_KEY_DIVIDER).toLowerCase();
+}
+
+export function parseEntityParentKey(parentKey: string): string[] {
+    if (!parentKey) return [];
+
+    const allParts = parentKey.split(PARENT_KEY_DIVIDER);
+    // schema: allParts[0]; query: allParts[1];
+    const result = allParts.splice(0, 2);
+    // all rest is the key value (optional)
+    if (allParts?.length > 0) result.push(allParts.join(PARENT_KEY_DIVIDER));
+    return result;
 }

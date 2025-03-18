@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.31.8
+*Release*: 18 March 2025
+- Issue 52264: Include `viewName` when building query parameters for QueryController selectX actions
+- Issue 52189: don't show option to validate user lookups
+
 ### version 6.31.7
 *Released*: 17 March 2025
 - Issue 52533: LKSM: Error creating samples from details pages with Sources with a colon in the name

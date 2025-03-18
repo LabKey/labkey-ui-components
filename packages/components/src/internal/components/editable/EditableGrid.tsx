@@ -1469,6 +1469,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 operation={forUpdate ? Operation.update : Operation.insert}
                 onSuccess={this.toggleBulkAdd}
                 queryInfo={queryInfo.getInsertQueryInfo()}
+                queryFilters={bulkAddProps?.queryFilters}
                 header={
                     !!bulkAddProps?.header && <div className="editable-grid__bulk-header">{bulkAddProps.header}</div>
                 }

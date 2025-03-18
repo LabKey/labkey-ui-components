@@ -179,7 +179,6 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                     />
                 );
             case 'lookup':
-            case 'users':
                 return (
                     <LookupFieldOptions
                         index={index}

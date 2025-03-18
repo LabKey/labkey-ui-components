@@ -22,6 +22,7 @@ import { genCellKey } from '../editable/utils';
 
 import { IEntityTypeOption } from './models';
 import {
+    createEntityParentKey,
     getCellKeyColumnMap,
     getEntityDescription,
     getEntityNoun,
@@ -29,6 +30,7 @@ import {
     getInitialParentChoices,
     getJobCreationHref,
     getSampleIdCellKey,
+    parseEntityParentKey,
     sampleDeleteDependencyText,
     updateCellKeySampleIdMap,
 } from './utils';
@@ -460,5 +462,18 @@ describe('get cell key helpers', () => {
             'samplefieldkey&&2': 4,
             'samplefieldkey&&3': 3,
         });
+    });
+});
+
+describe('createEntityParentKey & parseEntityParentKey', () => {
+    test('without id', () => {
+        expect(createEntityParentKey(new SchemaQuery('schema', 'query'))).toBe('schema|query');
+        expect(parseEntityParentKey('schema|query')).toEqual(['schema', 'query']);
+    });
+    test('with id', () => {
+        expect(createEntityParentKey(new SchemaQuery('schema', 'query'), 'id')).toBe('schema|query|id');
+        expect(parseEntityParentKey('schema|query|id')).toEqual(['schema', 'query', 'id']);
+        expect(createEntityParentKey(new SchemaQuery('schema', 'query'), 'i|d')).toBe('schema|query|i|d');
+        expect(parseEntityParentKey('schema|query|i|d')).toEqual(['schema', 'query', 'i|d']);
     });
 });

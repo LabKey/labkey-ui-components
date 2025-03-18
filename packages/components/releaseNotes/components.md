@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.26.X
-*Released*: TBD
+### version 6.26.6
+*Released*: 18 March 2025
 - Issue 52535: Don't match lineage columns to raw column captions
 
 ### version 6.26.5

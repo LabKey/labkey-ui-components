@@ -13,6 +13,7 @@ import { userCanPrintLabels } from './utils';
 export interface LabelPrintingContext {
     canPrintLabels: boolean;
     defaultLabel: number;
+    enabled: boolean;
     error?: string;
     printServiceUrl: string;
 }
@@ -36,11 +37,13 @@ export const LabelPrintingContextProvider: FC<LabelPrintingContextProviderProps>
     const [labelContext, setLabelContext] = useState<LabelPrintingContext>(() => ({
         canPrintLabels: initialContext?.canPrintLabels ?? false,
         defaultLabel: initialContext?.defaultLabel,
+        enabled: initialContext?.enabled ?? true,
         printServiceUrl: initialContext?.printServiceUrl,
     }));
+    const { enabled } = labelContext;
 
     useEffect(() => {
-        if (!userCanPrintLabels(user) || !isSampleManagerEnabled(moduleContext)) return;
+        if (!enabled || !userCanPrintLabels(user) || !isSampleManagerEnabled(moduleContext)) return;
 
         (async () => {
             try {
@@ -49,24 +52,26 @@ export const LabelPrintingContextProvider: FC<LabelPrintingContextProviderProps>
                     api.labelprinting.ensureLabelTemplatesList(user),
                 ]);
 
-                setLabelContext({
+                setLabelContext(context => ({
+                    ...context,
                     canPrintLabels: !!btConfiguration.serviceURL && templates?.length > 0,
                     defaultLabel: btConfiguration.defaultLabel,
                     printServiceUrl: btConfiguration.serviceURL,
-                });
+                }));
             } catch (e) {
-                setLabelContext({
+                setLabelContext(context => ({
+                    ...context,
                     canPrintLabels: false,
                     defaultLabel: undefined,
                     error: `Failed to initialize label printing context: "${
                         resolveErrorMessage(e) ?? 'Unknown error'
                     }"`,
                     printServiceUrl: undefined,
-                });
+                }));
             }
         })();
-        // eslint-disable-next-line react-hooks/exhaustive-deps -- do not add labelContext or any of its properties
-    }, [api, moduleContext, user]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- do not add labelContext
+    }, [api, enabled, moduleContext, user]);
 
     return <Context.Provider value={labelContext}>{children}</Context.Provider>;
 });

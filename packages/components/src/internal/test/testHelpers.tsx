@@ -32,7 +32,7 @@ export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => 
     const { appContext, children, serverContext = {}, notificationContext, printLabelsContext } = props;
     const initialAppContext = useMemo(() => ({ api: getTestAPIWrapper(), ...appContext }), [appContext]);
     const initialPrintLabelsContext = useMemo(
-        () => ({ canPrintLabels: false, ...printLabelsContext }) as LabelPrintingContextProps,
+        () => ({ enabled: false, ...printLabelsContext }) as LabelPrintingContextProps,
         [printLabelsContext]
     );
 

@@ -38,10 +38,15 @@ import { resolveDetailFieldLabel, resolveDetailFieldValue } from './utils';
 function formatOption(model: QuerySelectModel, result: any): SelectInputOption {
     const { displayColumn, valueColumn } = model;
 
+    const valueCol = model.queryInfo.getColumn(valueColumn) ?? model.queryInfo.getColumnFromName(valueColumn);
+    const valueField = result.get(valueCol.name) ?? result.get(valueCol.fieldKey);
+
+    const labelCol = model.queryInfo.getColumn(displayColumn) ?? model.queryInfo.getColumnFromName(displayColumn);
+    const labelField = result.get(labelCol.name) ?? result.get(labelCol.fieldKey) ?? valueField;
+
     return {
-        label: (resolveDetailFieldLabel(result.get(displayColumn)) ??
-            resolveDetailFieldLabel(result.get(valueColumn))) as string,
-        value: resolveDetailFieldValue(result.get(valueColumn)),
+        label: resolveDetailFieldLabel(labelField) as string,
+        value: resolveDetailFieldValue(valueField),
     };
 }
 
@@ -220,12 +225,14 @@ function initValueColumn(queryInfo: QueryInfo, column?: string): string {
     let valueColumn: string;
     if (column) {
         valueColumn = column;
+        const valueCol = queryInfo.getColumn(valueColumn) ?? queryInfo.getColumnFromName(valueColumn);
 
-        if (!queryInfo.getColumn(valueColumn)) {
+        if (!valueCol) {
             throw new Error(
                 `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). The "valueColumn" "${valueColumn}" does not exist.`
             );
         }
+        valueColumn = valueCol.fieldKey;
     } else {
         const pkCols = queryInfo.getPkCols();
 
@@ -250,12 +257,13 @@ function initDisplayColumn(queryInfo: QueryInfo, valueColumn: string, column?: s
     let displayColumn: string;
 
     if (column) {
-        if (!queryInfo.getColumn(column)) {
+        const col = queryInfo.getColumn(column) ?? queryInfo.getColumnFromName(column);
+        if (!col) {
             console.warn(
                 `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). The display column "${column}" does not exist.`
             );
         } else {
-            displayColumn = column;
+            displayColumn = col.fieldKey;
         }
     }
 
@@ -269,7 +277,8 @@ function initDisplayColumn(queryInfo: QueryInfo, valueColumn: string, column?: s
 
     // fallback to valueColumn
     if (!displayColumn) {
-        displayColumn = valueColumn;
+        const valueCol = queryInfo.getColumn(valueColumn) ?? queryInfo.getColumnFromName(valueColumn);
+        displayColumn = valueCol.fieldKey;
     }
 
     return displayColumn;

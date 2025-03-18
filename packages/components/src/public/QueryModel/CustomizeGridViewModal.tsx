@@ -39,7 +39,7 @@ export const getExpandQueryInfo = async (queryInfo: QueryInfo, column: QueryColu
         schemaQuery: queryInfo.schemaQuery,
     });
     // For data classes, we want to limit the Ancestor filters to exclude 'Samples'
-    if (column.index === 'Ancestors' && queryInfo.schemaQuery.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA) {
+    if (column.index === QueryColumn.ANCESTORS_PREFIX && queryInfo.schemaQuery.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA) {
         fkQueryInfo.columns = fkQueryInfo.columns.filter(
             col => col.fieldKey !== 'Samples' && col.fieldKey !== 'MediaSamples'
         );

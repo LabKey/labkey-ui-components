@@ -8,6 +8,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 52282: Job/Task dates get shifted when client is in a different time zone
 - Issue 52543: Sample Manager: lookup field that looks up to a list with auto key and field containing special character fails to resolve lookup values
 
+### version 6.31.7
+*Released*: 17 March 2025
+- Issue 52533: LKSM: Error creating samples from details pages with Sources with a colon in the name
+  - Move createEntityParentKey from premium and switch to use '|' for schema|query|keyValue delimiter
+  - Add parseEntityParentKey util
+
 ### version 6.31.6
 *Released*: 13 March 2025
 - Issue 52430: Sample Manager: sample names with newline characters

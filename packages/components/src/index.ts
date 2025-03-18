@@ -544,6 +544,8 @@ import {
     SAMPLE_ID_FIELD_KEY,
     sampleDeleteDependencyText,
     updateCellKeySampleIdMap,
+    createEntityParentKey,
+    parseEntityParentKey,
 } from './internal/components/entities/utils';
 import {
     ALIQUOT_CREATION,
@@ -1441,6 +1443,8 @@ export {
     getSampleIdentifyingFieldGridData,
     getCellKeyColumnMap,
     updateCellKeySampleIdMap,
+    createEntityParentKey,
+    parseEntityParentKey,
     // metric related items
     UnitModel,
     MEASUREMENT_UNITS,

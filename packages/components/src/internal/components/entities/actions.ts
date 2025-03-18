@@ -41,6 +41,7 @@ import {
     isAssayResultEntity,
     isDataClassEntity,
     isSampleEntity,
+    parseEntityParentKey,
     SAMPLE_ID_FIELD_KEY,
 } from './utils';
 import {
@@ -366,7 +367,7 @@ async function initParents(
         );
     } else if (initialParents?.length > 0) {
         const [parent] = initialParents;
-        const [schema, query, value] = parent.toLowerCase().split(':');
+        const [schema, query, value] = parseEntityParentKey(parent.toLowerCase());
 
         // if the parent key doesn't have a value, we don't need to make the request to getSelectedParents
         if (value === undefined) {

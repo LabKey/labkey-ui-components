@@ -40,7 +40,7 @@ describe('getChosenParentData', () => {
     test('allowParents, initialParents without value', async () => {
         const result = await getChosenParentData(
             new EntityIdCreationModel({
-                originalParents: ['samples:TEST'],
+                originalParents: ['samples|TEST'],
                 selectionKey: undefined,
             }),
             PARENT_ENTITY_DATA_TYPES,

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "6.31.7-fb-workflowDomainFieldsTest.4",
+  "version": "6.31.8-fb-workflowDomainFieldsTest.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

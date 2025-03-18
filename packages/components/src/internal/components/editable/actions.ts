@@ -1,4 +1,4 @@
-import { Filter, Utils } from '@labkey/api';
+import { Filter, QueryKey, Utils } from '@labkey/api';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { addDays, subDays } from 'date-fns';
 
@@ -216,10 +216,10 @@ const findLookupValues = async (
 ): ColumnLoaderPromise => {
     const { lookup } = column;
     const { keyColumn } = lookup;
-    const displayColumn = resolveDisplayColumn(column);
+    const displayColumnName = resolveDisplayColumn(column);
 
     const results = await selectRows({
-        columns: [displayColumn, keyColumn],
+        columns: [QueryKey.encodePart(displayColumnName), keyColumn],
         containerPath: lookup.containerPath ?? containerPath,
         containerFilter: lookup.containerFilter ?? getContainerFilterForLookups(),
         filterArray: getLookupFilters(
@@ -228,7 +228,7 @@ const findLookupValues = async (
             lookupValues,
             lookupValueFilters,
             forUpdate,
-            displayColumn
+            displayColumnName
         ),
         includeTotalCount: false,
         maxRows: -1,
@@ -239,7 +239,7 @@ const findLookupValues = async (
     const descriptors = results.rows.reduce<ValueDescriptor[]>((desc, row) => {
         const key = caseInsensitive(row, keyColumn)?.value;
         if (key !== undefined && key !== null) {
-            const displayRow = caseInsensitive(row, displayColumn);
+            const displayRow = caseInsensitive(row, displayColumnName);
             desc.push({ display: displayRow?.displayValue || displayRow?.value, raw: key });
         }
         return desc;
@@ -263,7 +263,7 @@ async function getLookupValueDescriptors(
         if (col.isPublicLookup()) {
             ids.forEach(id => {
                 const row = rows[id];
-                const value = row?.[col.fieldKey];
+                const value = row?.[col.fieldKey] ?? row?.[col.name];
                 if (Utils.isNumber(value)) {
                     values = values.add(value);
                 } else if (List.isList(value)) {

@@ -36,7 +36,7 @@ export interface QueryLookupFilterGroup {
 export class QueryLookup {
     declare containerFilter: Query.ContainerFilter;
     declare containerPath: string;
-    declare displayColumn: string;
+    declare displayColumn: string; // name of the display column, not fieldKey
     declare filterGroups: QueryLookupFilterGroup[];
     declare isPublic: boolean;
     declare junctionLookup: string; // name of the column on the junction table that is also a lookup

@@ -4,13 +4,13 @@ import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-
 import { ColorIcon } from '../base/ColorIcon';
 
 import { Container } from '../base/models/Container';
 
 import { ExpandableContainer } from '../ExpandableContainer';
+
+import { useAppContext } from '../../AppContext';
 
 import { DataTypeEntity, EntityDataType, FolderConfigurableDataType } from './models';
 
@@ -21,7 +21,6 @@ export const filterDataTypeHiddenEntity = (dataType: DataTypeEntity, hiddenEntit
 export interface DataTypeSelectorProps {
     allDataCounts?: Record<string, number>;
     allDataTypes?: DataTypeEntity[]; // either use allDataTypes to pass in dataTypes, or specify entityDataType to query dataTypes
-    api?: ComponentsAPIWrapper;
     columns?: number; // partition list to N columns
     container?: Container;
     dataTypeKey?: string;
@@ -176,7 +175,6 @@ DataTypeSelectorList.displayName = 'DataTypeSelectorList';
 
 export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
     const {
-        api = getDefaultAPIWrapper(),
         toggleSelectAll = true,
         disabled,
         entityDataType,
@@ -198,12 +196,12 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
     const [dataTypes, setDataTypes] = useState<DataTypeEntity[]>();
     const [activeDataTypes, setActiveDataTypes] = useState<DataTypeEntity[]>([]);
     const [inactiveDataTypes, setInactiveDataTypes] = useState<DataTypeEntity[]>([]);
-
     const [dataType, setDataType] = useState<FolderConfigurableDataType>();
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<boolean>(false);
     const [dataCounts, setDataCounts] = useState<Record<string, number>>();
     const [uncheckedEntities, setUncheckedEntities] = useState<any[] /* number[] | string[]*/>();
+    const { api } = useAppContext();
 
     const loadDataTypes = useCallback(async () => {
         try {

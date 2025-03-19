@@ -73,6 +73,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 52072: Text choice field values to handle | character within values
   - PropertyValidator.joinValidValues() and PropertyValidator.splitValidValues()
 
+### version 6.26.6
+*Released*: 18 March 2025
+- Issue 52535: Don't match lineage columns to raw column captions
+
 ### version 6.26.5
 *Released*: 7 March 2025
 - Issue 52477: Sample workflow custom fields: edit field inline from Job Overview page doesn't save lookup fields with special characters

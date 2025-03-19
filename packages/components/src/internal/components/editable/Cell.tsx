@@ -35,7 +35,13 @@ import { Popover } from '../../Popover';
 import { CellMessage, EditableColumnMetadata, ValueDescriptor } from './models';
 
 import { CellActions, MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
-import { EDIT_GRID_INPUT_CELL_CLASS, gridCellSelectInputProps, onCellSelectChange } from './utils';
+import {
+    EDIT_GRID_INPUT_CELL_CLASS,
+    gridCellSelectInputProps,
+    isCellError,
+    isCellWarning,
+    onCellSelectChange,
+} from './utils';
 import { LookupCell } from './LookupCell';
 import { DateInputCell } from './DateInputCell';
 
@@ -106,12 +112,13 @@ const DisplayCell: FC<DisplayCellProps> = memo(props => {
         'cell-border-right': borderMaskRight,
         'cell-border-bottom': borderMaskBottom,
         'cell-border-left': borderMaskLeft,
+        'cell-error': isCellError(message),
         'cell-menu': showMenu,
         'cell-placeholder': displayValue.length === 0 && placeholder !== undefined,
         'cell-read-only': isReadOnly,
         'cell-selected': selected,
         'cell-selection': selection,
-        'cell-warning': message !== undefined,
+        'cell-warning': isCellWarning(message),
     });
     const value = displayValue.length === 0 && placeholder ? placeholder : displayValue;
     let body;

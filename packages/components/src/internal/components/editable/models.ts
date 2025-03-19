@@ -31,6 +31,7 @@ import {
     genCellKey,
     genCellKeyPrefix,
     getValidatedEditableGridValue,
+    isCellError,
     isSparseSelection,
     parseCellKey,
     sortCellKeys,
@@ -61,6 +62,7 @@ export interface ValueDescriptor {
 }
 
 export interface CellMessage {
+    isWarning?: boolean;
     message: string;
 }
 
@@ -264,7 +266,7 @@ export class EditorModel
     }
 
     get hasErrors(): boolean {
-        return this.cellMessages?.some(cm => cm?.message !== undefined);
+        return this.cellMessages?.some(isCellError);
     }
 
     getMessage(fieldKey: string, rowIdx: number): CellMessage {

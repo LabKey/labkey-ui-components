@@ -44,9 +44,10 @@ export const loadEditorModelData = async (
     rows: Record<string, any>,
     columns: QueryColumn[],
     forUpdate: boolean
-): Promise<CellValues> => {
-    const lookupValueDescriptors = await getLookupValueDescriptors(columns, rows, orderedRows, forUpdate);
-    let cellValues = Map<string, List<ValueDescriptor>>();
+): Promise<{ cellMessages: CellMessages; cellValues: CellValues }> => {
+    const lookupValues = await getLookupValueDescriptors(columns, rows, orderedRows, forUpdate);
+    const cellMessages = Map<string, CellMessage>().asMutable();
+    const cellValues = Map<string, List<ValueDescriptor>>().asMutable();
 
     // data is initialized in column order
     columns.forEach(col => {
@@ -61,15 +62,23 @@ export const loadEditorModelData = async (
 
             if (Array.isArray(value)) {
                 // assume to be list of {displayValue, value} objects
-                cellValues = cellValues.set(
+                cellValues.set(
                     cellKey,
                     value.reduce((list, v) => {
                         if (col.isLookup() && Utils.isNumber(v)) {
-                            const descriptors = lookupValueDescriptors[col.lookupKey];
-                            if (descriptors) {
-                                const desc = descriptors.filter(descriptor => descriptor.raw === v);
-                                if (desc) {
-                                    return list.push(...desc);
+                            const lookupValue = lookupValues[col.lookupKey];
+                            if (lookupValue) {
+                                const messageAndValues = lookupValue.filter(lv => lv.valueDescriptor.raw === v);
+                                if (messageAndValues) {
+                                    const descriptors: ValueDescriptor[] = [];
+                                    for (let i = 0; i < messageAndValues.length; i++) {
+                                        if (messageAndValues[i].message) {
+                                            cellMessages.set(cellKey, messageAndValues[i].message);
+                                        }
+                                        descriptors.push(messageAndValues[i].valueDescriptor);
+                                    }
+
+                                    return list.push(...descriptors);
                                 }
                             }
                         }
@@ -90,18 +99,29 @@ export const loadEditorModelData = async (
 
                 // Issue 37833: try resolving the value for the lookup to get the displayValue to show in the grid cell
                 if (col.isLookup() && Utils.isNumber(raw)) {
-                    const descriptors = lookupValueDescriptors[col.lookupKey];
-                    if (descriptors) {
-                        cellValue = List(descriptors.filter(descriptor => descriptor.raw === raw));
+                    const lookupValue = lookupValues[col.lookupKey];
+                    if (lookupValue) {
+                        const messageAndValues = lookupValue.filter(lv => lv.valueDescriptor.raw === raw);
+                        if (messageAndValues) {
+                            const descriptors: ValueDescriptor[] = [];
+                            for (let i = 0; i < messageAndValues.length; i++) {
+                                if (messageAndValues[i].message) {
+                                    cellMessages.set(cellKey, messageAndValues[i].message);
+                                }
+                                descriptors.push(messageAndValues[i].valueDescriptor);
+                            }
+
+                            cellValue = List(descriptors);
+                        }
                     }
                 }
 
-                cellValues = cellValues.set(cellKey, cellValue);
+                cellValues.set(cellKey, cellValue);
             }
         });
     });
 
-    return cellValues;
+    return { cellMessages: cellMessages.asImmutable(), cellValues: cellValues.asImmutable() };
 };
 
 export const initEditorModel = async (
@@ -175,7 +195,7 @@ export const initEditorModel = async (
     }
 
     // TODO: Move initEditorModel, loadEditorModelData, and getLookupValueDescriptors to EditorModel as static methods
-    const cellValues = await loadEditorModelData(orderedRows, rows, columns, forUpdate);
+    const { cellMessages, cellValues } = await loadEditorModelData(orderedRows, rows, columns, forUpdate);
 
     if (columnMetadata) {
         // If columnMetadata is present force it to use lowercase keys
@@ -185,6 +205,7 @@ export const initEditorModel = async (
     }
 
     return new EditorModel({
+        cellMessages,
         cellValues,
         columnMetadata,
         columnMap: fromJS(columnMap),
@@ -210,8 +231,6 @@ const resolveDisplayField = (column: QueryColumn): string => {
     return column.lookup.displayColumnFieldKey;
 };
 
-type ColumnLoaderPromise = Promise<{ column: QueryColumn; descriptors: ValueDescriptor[] }>;
-
 const findLookupValues = async (
     column: QueryColumn,
     lookupKeyValues?: any[],
@@ -219,7 +238,7 @@ const findLookupValues = async (
     lookupValueFilters?: Filter.IFilter[],
     forUpdate?: boolean,
     containerPath?: string
-): ColumnLoaderPromise => {
+): Promise<ValueDescriptor[]> => {
     const { lookup } = column;
     const { keyColumn } = lookup;
     const displayColumnFieldKey = resolveDisplayField(column);
@@ -242,7 +261,7 @@ const findLookupValues = async (
         viewName: ViewInfo.DETAIL_NAME, // Use the detail view so values that may be filtered out of the default view show up.
     });
 
-    const descriptors = results.rows.reduce<ValueDescriptor[]>((desc, row) => {
+    return results.rows.reduce<ValueDescriptor[]>((desc, row) => {
         const key = caseInsensitive(row, keyColumn)?.value;
         if (key !== undefined && key !== null) {
             const displayRow = caseInsensitive(row, displayColumnFieldKey) ?? caseInsensitive(row, QueryKey.decodePart(displayColumnFieldKey));
@@ -250,8 +269,6 @@ const findLookupValues = async (
         }
         return desc;
     }, []);
-
-    return { column, descriptors };
 };
 
 async function getLookupValueDescriptors(
@@ -259,38 +276,47 @@ async function getLookupValueDescriptors(
     rows: Record<string, Record<string, any>>,
     ids: string[],
     forUpdate?: boolean
-): Promise<{ [colKey: string]: ValueDescriptor[] }> {
+): Promise<{ [colKey: string]: MessageAndValue[] }> {
     const descriptorMap = {};
     // for each lookup column, find the unique values in the rows and query for those values when they look like ids
     for (let cn = 0; cn < columns.length; cn++) {
         const col = columns[cn];
-        let values = new Set<number>();
+        const values = new Set<number>();
 
         if (col.isPublicLookup()) {
             ids.forEach(id => {
                 const row = rows[id];
                 const value = row?.[col.fieldKey] ?? row?.[col.name];
                 if (Utils.isNumber(value)) {
-                    values = values.add(value);
+                    values.add(value);
                 } else if (List.isList(value)) {
                     value.forEach(val => {
                         if (Map.isMap(val)) {
-                            values = values.add(val.get('value'));
+                            values.add(val.get('value'));
                         } else {
-                            values = values.add(val);
+                            values.add(val);
                         }
                     });
                 }
             });
             if (values.size > 0) {
-                const { descriptors } = await findLookupValues(
-                    col,
-                    Array.from(values),
-                    undefined,
-                    undefined,
-                    forUpdate
-                );
-                descriptorMap[col.lookupKey] = descriptors;
+                const descriptors = await findLookupValues(col, Array.from(values), undefined, undefined, forUpdate);
+                const messageAndValues: MessageAndValue[] = [];
+
+                descriptors.forEach(desc => {
+                    values.delete(desc.raw);
+                    messageAndValues.push({ valueDescriptor: desc });
+                });
+
+                // Issue 52311: Mark unresolved lookup values with a warning.
+                for (const value of values.values()) {
+                    messageAndValues.push({
+                        message: { ...lookupValidationError(value), isWarning: true },
+                        valueDescriptor: { display: `<${value}>`, raw: value },
+                    });
+                }
+
+                descriptorMap[col.lookupKey] = messageAndValues;
             }
         }
     }
@@ -318,7 +344,7 @@ async function getLookupDisplayValue(column: QueryColumn, value: any, containerP
 
     let message: CellMessage;
 
-    const { descriptors } = await findLookupValues(column, [value], undefined, undefined, false, containerPath);
+    const descriptors = await findLookupValues(column, [value], undefined, undefined, false, containerPath);
     if (!descriptors.length) {
         message = lookupValidationError(value);
     }
@@ -1012,7 +1038,7 @@ async function getParsedLookup(
             columnMetadata?.lookupValueFilters,
             forUpdate,
             containerPath
-        ).then(response => response.descriptors);
+        );
     }
 
     const descriptors = await lookupValueCache[cacheKey];

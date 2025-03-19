@@ -150,6 +150,14 @@ export function decimalDifference(first, second, subtract = true): number {
     return (first * multiplier + (subtract ? -1 : 1) * second * multiplier) / multiplier;
 }
 
+export function isCellError(cm: CellMessage): boolean {
+    return cm && cm.message !== undefined && !cm.isWarning;
+}
+
+export function isCellWarning(cm: CellMessage): boolean {
+    return cm && cm.message !== undefined && cm.isWarning;
+}
+
 /**
  * Returns true if the selection is sparse. A sparse selection is one where a continuous set of cells in a rectangle are
  * not selected. It may look something like this:

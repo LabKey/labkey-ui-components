@@ -421,10 +421,6 @@ describe('generateColumnFillValues', () => {
         rowCount: 10,
     }) as EditorModel;
 
-    beforeAll(() => {
-        global.console.warn = jest.fn();
-    });
-
     test('single initialSelection', () => {
         const cellValues = generateColumnFillValues(editorModel, [genCellKey(lookupFk, 0)], undefined, [
             genCellKey(lookupFk, 1),
@@ -1072,7 +1068,7 @@ describe('loadEditorModelData', () => {
         ];
 
         const result = await loadEditorModelData(orderedRows, rows, columns, false);
-        expect(result.toJS()).toStrictEqual({
+        expect(result.cellValues.toJS()).toStrictEqual({
             'name&&0': [{ display: 'S-20-3', raw: 'S-20-3' }],
             'name&&1': [{ display: 'S-26', raw: 'S-26' }],
             'aliqandparent$d$c$p$s&&0': [{ display: '456', raw: '456' }],

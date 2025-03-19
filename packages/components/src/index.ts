@@ -141,7 +141,7 @@ import { DisableableAnchor } from './internal/components/base/DisableableAnchor'
 import {
     DateFormatType,
     ISO_DATE_FORMAT_STRING,
-    fromISODateStr,
+    ISO_DATE_TIME_FORMAT_STRING,
     formatDate,
     formatDateTime,
     fromDate,
@@ -1627,7 +1627,7 @@ export {
     splitDateTimeFormat,
     DateFormatType,
     ISO_DATE_FORMAT_STRING,
-    fromISODateStr,
+    ISO_DATE_TIME_FORMAT_STRING,
     getDateTimeSettingWarning,
     joinDateTimeFormat,
     getDateTimeSettingFormat,

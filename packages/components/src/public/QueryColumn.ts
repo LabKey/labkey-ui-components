@@ -271,6 +271,7 @@ export class QueryColumn implements IQueryColumn {
         }
     }
 
+    static ANCESTORS_PREFIX = 'Ancestors';
     static DATA_INPUTS = 'DataInputs';
     static MATERIAL_INPUTS = 'MaterialInputs';
     static ALIQUOTED_FROM = 'AliquotedFrom';
@@ -323,6 +324,14 @@ export class QueryColumn implements IQueryColumn {
 
     isExpInput(checkLookup = true): boolean {
         return this.isDataInput(checkLookup) || this.isMaterialInput(checkLookup);
+    }
+
+    isAncestorInput(checkLookup = true): boolean {
+        return (
+            this.name &&
+            this.name.toLowerCase().indexOf(QueryColumn.ANCESTORS_PREFIX.toLowerCase() + '/') === 0 &&
+            (!checkLookup || this.isLookup())
+        );
     }
 
     isDataInput(checkLookup = true): boolean {
@@ -431,9 +440,10 @@ export class QueryColumn implements IQueryColumn {
         if (!importName) return false;
 
         const lcName = importName.toLowerCase().trim();
+        const isLineageLookup = this.isAncestorInput() || this.isExpInput();
         return (
-            this.caption?.toLowerCase() === lcName ||
-            this.caption?.replaceAll(' ', '').toLowerCase() === lcName || // Issue 52193: allow for "SampleID" when caption is "Sample ID", but don't match for simply fewer spaces
+            (!isLineageLookup && this.caption?.toLowerCase() === lcName) ||
+            (!isLineageLookup && this.caption?.replaceAll(' ', '').toLowerCase() === lcName) || // Issue 52193: allow for "SampleID" when caption is "Sample ID", but don't match for simply fewer spaces
             this.name?.toLowerCase() === lcName ||
             this.fieldKey?.toLowerCase() === lcName
         );

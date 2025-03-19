@@ -169,7 +169,6 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
                     {!relatedFolderConfigurableDataType && (
                         <div className="col-xs-12 bottom-padding">
                             <DataTypeSelector
-                                api={api}
                                 entityDataType={entityDataType}
                                 allDataCounts={allDataCounts}
                                 allDataTypes={childFolders}
@@ -188,7 +187,6 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
                         <>
                             <div className="col-xs-6 bottom-padding">
                                 <DataTypeSelector
-                                    api={api}
                                     entityDataType={entityDataType}
                                     allDataCounts={allDataCounts}
                                     allDataTypes={childFolders}
@@ -202,7 +200,6 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
                             </div>
                             <div className="col-xs-6 bottom-padding">
                                 <DataTypeSelector
-                                    api={api}
                                     dataTypePrefix="Dashboard"
                                     entityDataType={entityDataType}
                                     allDataTypes={allContainers}

@@ -78,7 +78,7 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
         if (onDownloadDefault) {
             await onDownloadDefault();
         } else {
-            await downloadAttachment(defaultTemplateUrl);
+            await downloadAttachment(defaultTemplateUrl, true);
         }
         setDownloading(false);
     }, [defaultTemplateUrl, isDownloadingOrLoading, onDownloadDefault]);

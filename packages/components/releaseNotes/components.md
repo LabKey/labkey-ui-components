@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.31.11
+*Release*: 19 March 2025
+- Issue 51982: QueryModel useSavedSettings requires containerPath to be set
+  - to prevent inadvertent cross-folder saved settings from being applied
+  - applySavedSettings in withQueryModels for both the initModels case and the addModel case
+- Issue 52509: TemplateDownloadButton fix to pass openInTab = true
+- Issue 52147: Customize View modal fix to get out of column title edit mode to allow for column reorder
+
 ### version 6.31.10
 *Release*: 19 March 2025
 - Merge from release25.3-SNAPSHOT to develop

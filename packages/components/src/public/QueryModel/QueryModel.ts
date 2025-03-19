@@ -1267,6 +1267,14 @@ export function saveSettingsToLocalStorage(model: QueryModel): void {
         console.error(UNIQUE_ERROR);
         return;
     }
+
+    // Issue 51982: if we don't have a containerPath on the model, we won't save settings because it can lead to
+    // settings being "applied" inadvertently cross-containers.
+    if (!model.containerPath) {
+        console.error('A model.containerPath is required to save settings to local storage: ' + model.id);
+        return;
+    }
+
     const settings = {
         filterArray: model.filterArray.map(f => ({
             columnName: f.getColumnName(),

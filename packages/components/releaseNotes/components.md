@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.31.10
+*Release*: 19 March 2025
+- Merge from release25.3-SNAPSHOT to develop
+    - includes changes from 6.26.6 #1750
+
 ### version 6.31.9
 *Release*: 18 March 2025
 - Expose `enabled` as a public property on `LabelPrintingContextProps`. Default test environment context to `false`.

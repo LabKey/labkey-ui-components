@@ -197,13 +197,15 @@ export function getLookupFilters(
     lookupValues?: any[],
     lookupValueFilters?: Filter.IFilter[],
     forUpdate?: boolean,
-    displayColumnName?: string
+    displayColumnFieldKey?: string
 ): Filter.IFilter[] {
     const { lookup } = column;
     const filters = Array.from(lookupValueFilters ?? []);
 
     if (lookupValues) {
-        filters.push(Filter.create(QueryKey.encodePart(displayColumnName ?? lookup.displayColumn), lookupValues, Filter.Types.IN));
+        filters.push(
+            Filter.create(displayColumnFieldKey ?? QueryKey.encodePart(lookup.displayColumn), lookupValues, Filter.Types.IN)
+        );
     }
 
     if (lookupKeyValues) {

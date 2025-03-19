@@ -850,5 +850,4 @@ describe('Date Utilities', () => {
             expect(checkFormat('XXX', tz)).toBe('-05:00');
         });
     });
-
 });

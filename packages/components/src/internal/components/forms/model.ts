@@ -269,10 +269,10 @@ function initDisplayColumn(queryInfo: QueryInfo, valueColumn: string, column?: s
 
     // fallback to titleColumn
     if (!displayColumn && queryInfo.titleColumn) {
-        const titleColumn = queryInfo.getColumn(queryInfo.titleColumn) ?? queryInfo.getColumnFromName(queryInfo.titleColumn);
+        const titleColumn =
+            queryInfo.getColumn(queryInfo.titleColumn) ?? queryInfo.getColumnFromName(queryInfo.titleColumn);
         // Issue 52543: Sample Manager: lookup field that looks up to a list with auto key and field containing special character fails to resolve lookup values
-        if (titleColumn)
-            displayColumn = titleColumn.fieldKey;
+        if (titleColumn) displayColumn = titleColumn.fieldKey;
     }
 
     // fallback to valueColumn

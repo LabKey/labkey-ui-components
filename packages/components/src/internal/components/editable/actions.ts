@@ -194,14 +194,15 @@ export function parseIntIfNumber(val: any): number | string {
     return intVal === undefined || isNaN(intVal) ? val : intVal;
 }
 
-const resolveDisplayColumn = (column: QueryColumn): string => {
+const resolveDisplayField = (column: QueryColumn): string => {
     // Handle MVFK
     if (column.multiValue && column.isJunctionLookup()) {
         const parts = column.displayField.split('$S');
         if (parts.length > 1) return parts[1];
     }
 
-    return column.lookup.displayColumn;
+    // column.lookup.displayColumn is the name of the display column, not the field key
+    return QueryKey.encodePart(column.lookup.displayColumn);
 };
 
 type ColumnLoaderPromise = Promise<{ column: QueryColumn; descriptors: ValueDescriptor[] }>;
@@ -216,10 +217,10 @@ const findLookupValues = async (
 ): ColumnLoaderPromise => {
     const { lookup } = column;
     const { keyColumn } = lookup;
-    const displayColumnName = resolveDisplayColumn(column);
+    const displayColumnFieldKey = resolveDisplayField(column);
 
     const results = await selectRows({
-        columns: [QueryKey.encodePart(displayColumnName), keyColumn],
+        columns: [displayColumnFieldKey, keyColumn],
         containerPath: lookup.containerPath ?? containerPath,
         containerFilter: lookup.containerFilter ?? getContainerFilterForLookups(),
         filterArray: getLookupFilters(
@@ -228,7 +229,7 @@ const findLookupValues = async (
             lookupValues,
             lookupValueFilters,
             forUpdate,
-            displayColumnName
+            displayColumnFieldKey
         ),
         includeTotalCount: false,
         maxRows: -1,
@@ -239,7 +240,7 @@ const findLookupValues = async (
     const descriptors = results.rows.reduce<ValueDescriptor[]>((desc, row) => {
         const key = caseInsensitive(row, keyColumn)?.value;
         if (key !== undefined && key !== null) {
-            const displayRow = caseInsensitive(row, displayColumnName);
+            const displayRow = caseInsensitive(row, displayColumnFieldKey) ?? caseInsensitive(row, QueryKey.decodePart(displayColumnFieldKey));
             desc.push({ display: displayRow?.displayValue || displayRow?.value, raw: key });
         }
         return desc;

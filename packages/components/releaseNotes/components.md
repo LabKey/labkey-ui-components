@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.31.10
+*Release*: 19 March 2025
+- Merge from release25.3-SNAPSHOT to develop
+    - includes changes from 6.26.6 #1750
+
 ### version 6.31.9
 *Release*: 18 March 2025
 - Expose `enabled` as a public property on `LabelPrintingContextProps`. Default test environment context to `false`.
@@ -72,6 +77,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 4 March 2025
 - Issue 52072: Text choice field values to handle | character within values
   - PropertyValidator.joinValidValues() and PropertyValidator.splitValidValues()
+
+### version 6.26.6
+*Released*: 18 March 2025
+- Issue 52535: Don't match lineage columns to raw column captions
 
 ### version 6.26.5
 *Released*: 7 March 2025

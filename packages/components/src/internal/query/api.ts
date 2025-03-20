@@ -631,8 +631,10 @@ export function handleSelectRowsResponse(response: Query.Response, queryInfo: Qu
         // Match ApiQueryResponse logic for determining "metaData.id"
         if (queryInfo.pkCols.length === 1) {
             const pkCol = queryInfo.getColumn(queryInfo.pkCols[0]);
-            metadataKey = pkCol.name;
-            metadataAltKey = pkCol.fieldKey;
+            if (pkCol) {
+                metadataKey = pkCol.name;
+                metadataAltKey = pkCol.fieldKey;
+            }
         }
     }
     const modelKey = resolveKeyFromJson(resolved);

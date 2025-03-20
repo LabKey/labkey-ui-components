@@ -201,8 +201,7 @@ const resolveDisplayField = (column: QueryColumn): string => {
         if (parts.length > 1) return parts[1];
     }
 
-    // column.lookup.displayColumn is the name of the display column, not the field key
-    return QueryKey.encodePart(column.lookup.displayColumn);
+    return column.lookup.displayColumnFieldKey;
 };
 
 type ColumnLoaderPromise = Promise<{ column: QueryColumn; descriptors: ValueDescriptor[] }>;

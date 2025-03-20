@@ -204,7 +204,7 @@ export function getLookupFilters(
 
     if (lookupValues) {
         filters.push(
-            Filter.create(displayColumnFieldKey ?? QueryKey.encodePart(lookup.displayColumn), lookupValues, Filter.Types.IN)
+            Filter.create(displayColumnFieldKey ?? lookup.displayColumnFieldKey, lookupValues, Filter.Types.IN)
         );
     }
 

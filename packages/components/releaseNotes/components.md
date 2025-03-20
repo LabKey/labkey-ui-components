@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.26.7
+*Released*: 20 March 2025
+- Update `ISO_DATE_TIME_FORMAT_STRING` constant to match server.
+- Export JSON date format utility functions from the package.
+
 ### version 6.26.6
 *Released*: 18 March 2025
 - Issue 52535: Don't match lineage columns to raw column captions

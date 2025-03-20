@@ -26,7 +26,8 @@ import { SelectInputOption } from '../components/forms/input/SelectInput';
 const ISO_DATE_FORMAT_STRING = 'yyyy-MM-dd';
 const ISO_SHORT_TIME_FORMAT_STRING = 'HH:mm';
 const ISO_TIME_FORMAT_STRING = 'HH:mm:ss';
-const ISO_DATE_TIME_FORMAT_STRING = `${ISO_DATE_FORMAT_STRING} ${ISO_TIME_FORMAT_STRING}`;
+const ISO_LONG_TIME_FORMAT_STRING = 'HH:mm:ss.SSS';
+const ISO_DATE_TIME_FORMAT_STRING = `${ISO_DATE_FORMAT_STRING} ${ISO_LONG_TIME_FORMAT_STRING}`;
 
 const STANDARD_DATE_DISPLAY_FORMATS = [
     'yyyy-MM-dd',

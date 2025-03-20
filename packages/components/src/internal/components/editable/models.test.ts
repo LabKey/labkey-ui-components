@@ -1155,11 +1155,11 @@ describe('EditorModel', () => {
             const [updatedRow] = updatedRows;
 
             expect(editorModel.getRowValue(1, true).get(dateColumn.fieldKey)).toEqual(date);
-            expect(editorModel.getRowValue(1, false).get(dateColumn.fieldKey)).toEqual('2025-01-01 00:00:00');
+            expect(editorModel.getRowValue(1, false).get(dateColumn.fieldKey)).toEqual('2025-01-01 00:00:00.000');
 
             // Formerly, this would have .toString() the date which would end up with:
             // "Wed Jan 01 2025 00:00:00 GMT+0000 (Coordinated Universal Time)"
-            expect(updatedRow[dateColumn.fieldKey]).toEqual('2025-01-01 00:00:00');
+            expect(updatedRow[dateColumn.fieldKey]).toEqual('2025-01-01 00:00:00.000');
         });
         test('identifying field lookup column', () => {
             // Issue 52132: identifying field lookup columns have keys in editedRow like ("SampleId/abc/,." which

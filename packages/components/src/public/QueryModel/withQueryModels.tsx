@@ -243,6 +243,24 @@ const paramsEqual = (oldParams, newParams): boolean => {
     return false;
 };
 
+function applySavedSettings(id: string, model: QueryModel): QueryModel {
+    const settings = getSettingsFromLocalStorage(id, model.containerPath);
+    if (settings !== undefined) {
+        const { filterArray, maxRows, sorts, viewName } = settings;
+        let schemaQuery = model.schemaQuery;
+        if (viewName !== undefined) {
+            schemaQuery = new SchemaQuery(model.schemaName, model.queryName, viewName);
+        }
+        return model.mutate({
+            filterArray,
+            maxRows,
+            schemaQuery,
+            sorts,
+        });
+    }
+    return model;
+}
+
 /**
  * A wrapper for LabKey selectRows API. For in-depth documentation and examples see components/docs/QueryModel.md.
  * @param ComponentToWrap A component that implements generic Props and InjectedQueryModels.
@@ -265,19 +283,10 @@ export function withQueryModels<Props>(
             if (model.bindURL && hasQueryParamSettings) {
                 model = model.mutate(model.attributesForURLQueryParams(searchParams, true));
             } else if (model.useSavedSettings) {
-                const settings = getSettingsFromLocalStorage(id, model.containerPath);
-                if (settings !== undefined) {
-                    const { filterArray, maxRows, sorts, viewName } = settings;
-                    let schemaQuery = model.schemaQuery;
-                    if (viewName !== undefined) {
-                        schemaQuery = new SchemaQuery(model.schemaName, model.queryName, viewName);
-                    }
-                    model = model.mutate({
-                        filterArray,
-                        maxRows,
-                        schemaQuery,
-                        sorts,
-                    });
+                if (!model.containerPath) {
+                    console.error('A model.containerPath is required when useSavedSettings is true: ' + model.id);
+                } else {
+                    model = applySavedSettings(model.id, model);
                 }
             }
 
@@ -1039,9 +1048,14 @@ export function withQueryModels<Props>(
                     // QueryModel constructor if not set.
                     let queryModel = new QueryModel(queryConfig);
                     id = queryModel.id;
-                    if (queryModel.bindURL && searchParams) {
+
+                    const hasQueryParamSettings = locationHasQueryParamSettings(queryModel.urlPrefix, searchParams);
+                    if (queryModel.bindURL && hasQueryParamSettings) {
                         queryModel = queryModel.mutate(queryModel.attributesForURLQueryParams(searchParams));
+                    } else if (queryModel.useSavedSettings && queryModel.containerPath) {
+                        queryModel = applySavedSettings(id, queryModel);
                     }
+
                     draft.queryModels[queryModel.id] = queryModel;
                 }),
                 () => this.maybeLoad(id, load, load, loadSelections)

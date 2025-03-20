@@ -279,9 +279,7 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
     const _onUpdateTitle = useCallback(
         (col: QueryColumn, title: string) => {
             setEditing(false);
-            if (col && title) {
-                onUpdateTitle(col, title);
-            }
+            onUpdateTitle(col, title);
         },
         [onUpdateTitle]
     );
@@ -482,14 +480,16 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
 
     const onUpdateTitle = useCallback(
         (updatedColumn: QueryColumn, caption: string) => {
-            const relabeledColumn = updatedColumn.mutate({ caption });
-            const index = selectedColumns.findIndex(column => column.index === updatedColumn.index);
-            setSelectedColumns([
-                ...selectedColumns.slice(0, index),
-                relabeledColumn,
-                ...selectedColumns.slice(index + 1),
-            ]);
-            setIsDirty(true);
+            if (updatedColumn && caption) {
+                const relabeledColumn = updatedColumn.mutate({ caption });
+                const index = selectedColumns.findIndex(column => column.index === updatedColumn.index);
+                setSelectedColumns([
+                    ...selectedColumns.slice(0, index),
+                    relabeledColumn,
+                    ...selectedColumns.slice(index + 1),
+                ]);
+                setIsDirty(true);
+            }
             setEditingColumnTitle(false);
         },
         [selectedColumns]

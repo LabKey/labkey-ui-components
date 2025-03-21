@@ -148,11 +148,25 @@ export const EditInlineField: FC<Props> = memo(props => {
         setState({ ignoreBlur: false });
     }, [allowBlank, getInputValue, isDate, onCancel, saveEdit, state.ignoreBlur]);
 
-    const onDateChange = useCallback((date: Date | string) => {
-        if (date instanceof Array) throw new Error('Unsupported date/time type');
-        if (typeof date === 'string') setTimeJsonValue(date);
-        else setDateValue(date);
-    }, []);
+    const onDateChange = useCallback(
+        (date: Date | string) => {
+            if (date instanceof Array) throw new Error('Unsupported date/time type');
+
+            if (!date) {
+                if (isDate) setDateValue(undefined);
+                else setTimeJsonValue(undefined);
+            }
+
+            if (typeof date === 'string') {
+                if (!isDate) setTimeJsonValue(date);
+            }
+            else {
+                if (isDate)
+                    setDateValue(date);
+            }
+        },
+        [isDate]
+    );
 
     const onFormsyColumnChange = useCallback(
         (data: Record<string, any>) => {

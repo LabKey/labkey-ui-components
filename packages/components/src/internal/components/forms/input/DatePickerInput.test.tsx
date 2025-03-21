@@ -90,7 +90,7 @@ describe('DatePickerInput', () => {
             />
         );
 
-        expect(setValue).toHaveBeenCalledWith('2024-12-16 11:20:00');
+        expect(setValue).toHaveBeenCalledWith('2024-12-16 11:20:00.000');
         setValue.mockReset();
 
         render(

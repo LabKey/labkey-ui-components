@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.31.12
+*Released*: 21 March 2025
+- Issue 52477: Sample workflow custom fields: edit field inline with special characters
+- Issue 52511: Sample Manager: Workflow custom time only field fails to clear value
+- Issue 52282: Job/Task dates get shifted when client is in a different time zone
+- Issue 52543: Sample Manager: lookup field that looks up to a list with auto key and field containing special character fails to resolve lookup values
+
 ### version 6.31.11
 *Release*: 19 March 2025
 - Issue 51982: QueryModel useSavedSettings requires containerPath to be set

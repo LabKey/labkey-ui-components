@@ -1,4 +1,4 @@
-import { Filter, Utils } from '@labkey/api';
+import { Filter, QueryKey, Utils } from '@labkey/api';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 
@@ -197,13 +197,15 @@ export function getLookupFilters(
     lookupValues?: any[],
     lookupValueFilters?: Filter.IFilter[],
     forUpdate?: boolean,
-    displayColumn?: string
+    displayColumnFieldKey?: string
 ): Filter.IFilter[] {
     const { lookup } = column;
     const filters = Array.from(lookupValueFilters ?? []);
 
     if (lookupValues) {
-        filters.push(Filter.create(displayColumn ?? lookup.displayColumn, lookupValues, Filter.Types.IN));
+        filters.push(
+            Filter.create(displayColumnFieldKey ?? lookup.displayColumnFieldKey, lookupValues, Filter.Types.IN)
+        );
     }
 
     if (lookupKeyValues) {

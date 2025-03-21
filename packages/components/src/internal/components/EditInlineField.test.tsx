@@ -207,7 +207,8 @@ describe('EditInlineField', () => {
                 {...DEFAULT_PROPS}
                 column={
                     new QueryColumn({
-                        fieldKey: 'test',
+                        name: 't.e/st',
+                        fieldKey: 't$De$Sst',
                         caption: 'Test',
                         readOnly: false,
                         userEditable: true,
@@ -225,5 +226,7 @@ describe('EditInlineField', () => {
         validate(false, true, { user: 1 });
         await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
         validate(true, true, { text: 1 });
+        expect(document.querySelectorAll('input[name="t$De$Sst"]')).toHaveLength(1);
+        expect(document.querySelectorAll('input[name="t.e/st"]')).toHaveLength(0);
     });
 });

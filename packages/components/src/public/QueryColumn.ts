@@ -1,6 +1,6 @@
 // Consider having this implement Query.QueryColumn from @labkey/api
 // commented out attributes are not used in app
-import { Filter, Query } from '@labkey/api';
+import { Filter, Query, QueryKey } from '@labkey/api';
 
 import {
     CALCULATED_CONCEPT_URI,
@@ -36,7 +36,8 @@ export interface QueryLookupFilterGroup {
 export class QueryLookup {
     declare containerFilter: Query.ContainerFilter;
     declare containerPath: string;
-    declare displayColumn: string;
+    declare displayColumn: string; // name of the display column, not fieldKey
+    declare displayColumnFieldKey: string;
     declare filterGroups: QueryLookupFilterGroup[];
     declare isPublic: boolean;
     declare junctionLookup: string; // name of the column on the junction table that is also a lookup
@@ -52,6 +53,7 @@ export class QueryLookup {
 
     constructor(rawLookup: Partial<QueryLookup>) {
         Object.assign(this, rawLookup, {
+            displayColumnFieldKey: rawLookup.displayColumn && !rawLookup.displayColumnFieldKey ? QueryKey.encodePart(rawLookup.displayColumn) : rawLookup.displayColumnFieldKey,
             schemaQuery: new SchemaQuery(rawLookup.schemaName, rawLookup.queryName, rawLookup.viewName),
         });
     }

@@ -623,14 +623,18 @@ export function handleSelectRowsResponse(response: Query.Response, queryInfo: Qu
         qsKey = 'queries',
         rowCount = response.rowCount || 0;
 
-    let metadataKey: string;
+    let metadataKey: string, metadataAltKey: string;
     if (resolved.metaData) {
         // If metaData is present, then use its "id" value regardless of presence of a queryInfo
         metadataKey = resolved.metaData.id;
     } else if (queryInfo) {
         // Match ApiQueryResponse logic for determining "metaData.id"
         if (queryInfo.pkCols.length === 1) {
-            metadataKey = queryInfo.pkCols[0];
+            const pkCol = queryInfo.getColumn(queryInfo.pkCols[0]);
+            if (pkCol) {
+                metadataKey = pkCol.name;
+                metadataAltKey = pkCol.fieldKey;
+            }
         }
     }
     const modelKey = resolveKeyFromJson(resolved);
@@ -638,9 +642,10 @@ export function handleSelectRowsResponse(response: Query.Response, queryInfo: Qu
     // ensure id -- unfortunately, with normalizr 3.x there doesn't seem to be a way to generate the id
     // without attaching directly to the object
     resolved.rows.forEach((row: any) => {
-        if (metadataKey) {
-            if (row[metadataKey] !== undefined) {
-                row._id_ = row[metadataKey].value;
+        if (metadataKey || metadataAltKey) {
+            const val = row[metadataKey] ?? row[metadataAltKey];
+            if (val !== undefined) {
+                row._id_ = val.value;
                 return;
             } else {
                 console.error('Missing entry', metadataKey, row, resolved.schemaKey, resolved.queryName);

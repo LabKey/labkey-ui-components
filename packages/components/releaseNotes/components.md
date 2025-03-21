@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.X
-*Released*: X March 2025
+### version 6.31.12
+*Released*: 21 March 2025
 - Issue 52477: Sample workflow custom fields: edit field inline with special characters
 - Issue 52511: Sample Manager: Workflow custom time only field fails to clear value
 - Issue 52282: Job/Task dates get shifted when client is in a different time zone

@@ -295,11 +295,11 @@ async function getLookupValueDescriptors(
     api?: ComponentsAPIWrapper
 ): Promise<{ [colKey: string]: MessageAndValue[] }> {
     const descriptorMap = {};
-    // for each lookup column, find the unique values in the rows and query for those values when they look like ids
-    for (let cn = 0; cn < columns.length; cn++) {
-        const col = columns[cn];
 
-        if (col.isPublicLookup()) {
+    // for each lookup column, find the unique values in the rows and query for those values when they look like ids
+    const lookupPromises = columns
+        .filter(col => col.isPublicLookup())
+        .map(async col => {
             const values = new Set<number>();
 
             ids.forEach(id => {
@@ -333,7 +333,7 @@ async function getLookupValueDescriptors(
                 });
 
                 // Issue 52311: Mark unresolved lookup values with a warning.
-                for (const value of values.values()) {
+                for (const value of values) {
                     messageAndValues.push({
                         message: { ...lookupValidationError(value), isWarning: true },
                         valueDescriptor: { display: `<${value}>`, raw: value },
@@ -342,8 +342,9 @@ async function getLookupValueDescriptors(
 
                 descriptorMap[col.lookupKey] = messageAndValues;
             }
-        }
-    }
+        });
+
+    await Promise.all(lookupPromises);
 
     return descriptorMap;
 }

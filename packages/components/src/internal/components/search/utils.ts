@@ -270,7 +270,7 @@ export function getUpdateFilterExpressionFilter(
         } else if (!value && field.getDisplayFieldJsonType() === 'boolean') {
             value = 'false';
         } else if (value && filterType.isMultiValued()) {
-            // Issue 52068
+            // Issue 52068: for multivalued filter types, split on new line to get an array of values
             value = value.split('\n');
         }
 

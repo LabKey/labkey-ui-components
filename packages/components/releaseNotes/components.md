@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.??.?
-*Released*: ?? March 2025
+### version 6.32.0
+*Released*: 24 March 2025
 - Add `test-to-file` script
 - `Cell`: ignore readOnly state when handling certain events
 - Update `dragFillEvent` to detect and apply padding during drag fill

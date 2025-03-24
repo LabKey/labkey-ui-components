@@ -17,9 +17,9 @@ import {
 } from '../../util/utils';
 import { ViewInfo } from '../../ViewInfo';
 
-import { selectRows } from '../../query/selectRows';
-
 import { getContainerFilterForLookups } from '../../query/api';
+
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import {
     CellMessage,
@@ -43,9 +43,10 @@ export const loadEditorModelData = async (
     orderedRows: string[],
     rows: Record<string, any>,
     columns: QueryColumn[],
-    forUpdate: boolean
+    forUpdate: boolean,
+    api?: ComponentsAPIWrapper
 ): Promise<{ cellMessages: CellMessages; cellValues: CellValues }> => {
-    const lookupValues = await getLookupValueDescriptors(columns, rows, orderedRows, forUpdate);
+    const lookupValues = await getLookupValueDescriptors(columns, rows, orderedRows, forUpdate, api);
     const cellMessages = Map<string, CellMessage>().asMutable();
     const cellValues = Map<string, List<ValueDescriptor>>().asMutable();
 
@@ -65,10 +66,11 @@ export const loadEditorModelData = async (
                 cellValues.set(
                     cellKey,
                     value.reduce((list, v) => {
-                        if (col.isLookup() && Utils.isNumber(v)) {
+                        const raw = v.value ?? v;
+                        if (col.isLookup() && Utils.isNumber(raw)) {
                             const lookupValue = lookupValues[col.lookupKey];
                             if (lookupValue) {
-                                const messageAndValues = lookupValue.filter(lv => lv.valueDescriptor.raw === v);
+                                const messageAndValues = lookupValue.filter(lv => lv.valueDescriptor.raw === raw);
                                 if (messageAndValues) {
                                     const descriptors: ValueDescriptor[] = [];
                                     for (let i = 0; i < messageAndValues.length; i++) {
@@ -83,7 +85,7 @@ export const loadEditorModelData = async (
                             }
                         }
 
-                        return list.push({ display: v.displayValue ?? v, raw: v.value ?? v });
+                        return list.push({ display: v.displayValue ?? v, raw });
                     }, List<ValueDescriptor>())
                 );
             } else {
@@ -231,19 +233,31 @@ const resolveDisplayField = (column: QueryColumn): string => {
     return column.lookup.displayColumnFieldKey;
 };
 
-const findLookupValues = async (
-    column: QueryColumn,
-    lookupKeyValues?: any[],
-    lookupValues?: any[],
-    lookupValueFilters?: Filter.IFilter[],
-    forUpdate?: boolean,
-    containerPath?: string
-): Promise<ValueDescriptor[]> => {
+type FindLookupValuesOptions = {
+    api?: ComponentsAPIWrapper;
+    column: QueryColumn;
+    containerPath?: string;
+    forUpdate?: boolean;
+    lookupKeyValues?: any[];
+    lookupValueFilters?: Filter.IFilter[];
+    lookupValues?: any[];
+};
+
+const findLookupValues = async (options: FindLookupValuesOptions): Promise<ValueDescriptor[]> => {
+    const {
+        api = getDefaultAPIWrapper(),
+        column,
+        containerPath,
+        forUpdate,
+        lookupKeyValues,
+        lookupValueFilters,
+        lookupValues,
+    } = options;
     const { lookup } = column;
     const { keyColumn } = lookup;
     const displayColumnFieldKey = resolveDisplayField(column);
 
-    const results = await selectRows({
+    const results = await api.query.selectRows({
         columns: [displayColumnFieldKey, keyColumn],
         containerPath: lookup.containerPath ?? containerPath,
         containerFilter: lookup.containerFilter ?? getContainerFilterForLookups(),
@@ -264,7 +278,9 @@ const findLookupValues = async (
     return results.rows.reduce<ValueDescriptor[]>((desc, row) => {
         const key = caseInsensitive(row, keyColumn)?.value;
         if (key !== undefined && key !== null) {
-            const displayRow = caseInsensitive(row, displayColumnFieldKey) ?? caseInsensitive(row, QueryKey.decodePart(displayColumnFieldKey));
+            const displayRow =
+                caseInsensitive(row, displayColumnFieldKey) ??
+                caseInsensitive(row, QueryKey.decodePart(displayColumnFieldKey));
             desc.push({ display: displayRow?.displayValue || displayRow?.value, raw: key });
         }
         return desc;
@@ -275,32 +291,40 @@ async function getLookupValueDescriptors(
     columns: QueryColumn[],
     rows: Record<string, Record<string, any>>,
     ids: string[],
-    forUpdate?: boolean
+    forUpdate: boolean,
+    api?: ComponentsAPIWrapper
 ): Promise<{ [colKey: string]: MessageAndValue[] }> {
     const descriptorMap = {};
     // for each lookup column, find the unique values in the rows and query for those values when they look like ids
     for (let cn = 0; cn < columns.length; cn++) {
         const col = columns[cn];
-        const values = new Set<number>();
 
         if (col.isPublicLookup()) {
+            const values = new Set<number>();
+
             ids.forEach(id => {
                 const row = rows[id];
                 const value = row?.[col.fieldKey] ?? row?.[col.name];
                 if (Utils.isNumber(value)) {
                     values.add(value);
-                } else if (List.isList(value)) {
+                } else if (Array.isArray(value)) {
                     value.forEach(val => {
-                        if (Map.isMap(val)) {
-                            values.add(val.get('value'));
-                        } else {
+                        if (Utils.isNumber(val?.value)) {
+                            values.add(val.value);
+                        } else if (Utils.isNumber(val)) {
                             values.add(val);
                         }
                     });
                 }
             });
+
             if (values.size > 0) {
-                const descriptors = await findLookupValues(col, Array.from(values), undefined, undefined, forUpdate);
+                const descriptors = await findLookupValues({
+                    api,
+                    column: col,
+                    forUpdate,
+                    lookupKeyValues: Array.from(values),
+                });
                 const messageAndValues: MessageAndValue[] = [];
 
                 descriptors.forEach(desc => {
@@ -344,7 +368,7 @@ async function getLookupDisplayValue(column: QueryColumn, value: any, containerP
 
     let message: CellMessage;
 
-    const descriptors = await findLookupValues(column, [value], undefined, undefined, false, containerPath);
+    const descriptors = await findLookupValues({ column, containerPath, forUpdate: false, lookupKeyValues: [value] });
     if (!descriptors.length) {
         message = lookupValidationError(value);
     }
@@ -1031,14 +1055,13 @@ async function getParsedLookup(
     if (!lookupValueCache.hasOwnProperty(cacheKey)) {
         const columnMetadata = editorModel.getColumnMetadata(column.fieldKey);
 
-        lookupValueCache[cacheKey] = findLookupValues(
+        lookupValueCache[cacheKey] = findLookupValues({
             column,
-            undefined,
-            display,
-            columnMetadata?.lookupValueFilters,
+            containerPath,
             forUpdate,
-            containerPath
-        );
+            lookupValueFilters: columnMetadata?.lookupValueFilters,
+            lookupValues: display,
+        });
     }
 
     const descriptors = await lookupValueCache[cacheKey];

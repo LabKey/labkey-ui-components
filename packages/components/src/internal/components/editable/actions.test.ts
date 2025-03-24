@@ -7,6 +7,10 @@ import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import sampleSet2QueryInfo from '../../../test/data/sampleSet2-getQueryDetails.json';
 
+import { ComponentsAPIWrapper, getTestAPIWrapper } from '../../APIWrapper';
+
+import { Row } from '../../query/selectRows';
+
 import {
     addColumns,
     changeColumn,
@@ -929,7 +933,78 @@ describe('insertPastedData', () => {
 });
 
 describe('loadEditorModelData', () => {
+    const columns = [
+        new QueryColumn({
+            fieldKey: 'Name',
+            fieldKeyArray: ['Name'],
+            fieldKeyPath: 'Name',
+            derivationDataScope: null,
+            name: 'Name',
+        }),
+        new QueryColumn({
+            fieldKey: 'DtField$P$S$C$D$A',
+            fieldKeyArray: ['DtField./,$&'],
+            fieldKeyPath: 'DtField$P$S$C$D$A',
+            derivationDataScope: 'ParentOnly',
+            name: 'DtField./,$&',
+        }),
+        new QueryColumn({
+            fieldKey: 'IntField$P$S$C$D$A',
+            fieldKeyArray: ['IntField./,$&'],
+            fieldKeyPath: 'IntField$P$S$C$D$A',
+            derivationDataScope: 'ParentOnly',
+            name: 'IntField./,$&',
+        }),
+        new QueryColumn({
+            fieldKey: 'lkField$P$S$C$D$A',
+            fieldKeyArray: ['lkField./,$&'],
+            fieldKeyPath: 'lkField$P$S$C$D$A',
+            name: 'lkField./,$&',
+            derivationDataScope: 'ParentOnly',
+            lookup: {
+                displayColumn: 'Name',
+                isPublic: true,
+                keyColumn: 'RowId',
+                public: true,
+                queryName: 'AssayList',
+                schema: 'assay',
+                schemaName: 'assay',
+            },
+        }),
+        new QueryColumn({
+            fieldKey: 'sampleField$P$S$C$D$A',
+            fieldKeyArray: ['sampleField./,$&'],
+            fieldKeyPath: 'sampleField$P$S$C$D$A',
+            name: 'sampleField./,$&',
+            derivationDataScope: 'ParentOnly',
+            lookup: {
+                displayColumn: 'Name',
+                isPublic: true,
+                keyColumn: 'RowId',
+                public: true,
+                queryName: 'Materials',
+                schema: 'exp',
+                schemaName: 'exp',
+            },
+        }),
+        new QueryColumn({
+            fieldKey: 'aliqField$D$C$P$S',
+            fieldKeyArray: ['aliqField$,./'],
+            fieldKeyPath: 'aliqField$D$C$P$S',
+            name: 'aliqField$,./',
+            derivationDataScope: 'ChildOnly',
+        }),
+        new QueryColumn({
+            fieldKey: 'aliqAndParent$D$C$P$S',
+            fieldKeyArray: ['aliqAndParent$,./'],
+            fieldKeyPath: 'aliqAndParent$D$C$P$S',
+            name: 'aliqAndParent$,./',
+            derivationDataScope: 'All',
+        }),
+    ];
+
     const orderedRows = ['2811466', '2805931'];
+
     const rows = {
         '2805931': {
             'TimeField./,$&': '16:10',
@@ -954,7 +1029,7 @@ describe('loadEditorModelData', () => {
             'aliqAndParent$,./': '888',
             StoredAmount: 99,
             Description: '111',
-            'sampleField./,$&': [{ displayValue: '10-1-1', value: 117334 }],
+            'sampleField./,$&': [{ value: 117334 }], // displayValue: '10-1-1'
             'BoolField./,$&': false,
             'userField./,$&': [{ displayValue: 'assaytypedesigner', value: 14688 }],
             'flagField./,$&': '555',
@@ -983,7 +1058,7 @@ describe('loadEditorModelData', () => {
             Alias: [],
             'aliqField$,./': '123',
             'DtTimeField./,$&': [{ displayValue: '2025-01-29 24:00', value: '2025-01-29 00:00:00.000' }],
-            'lkField./,$&': [{ displayValue: 'DAS Testing', value: 42876 }],
+            'lkField./,$&': [{ value: 42876 }], // displayValue: 'DAS Testing'
             RowId: 2811466,
             'DecField./,$&': 22,
             'aliqAndParent$,./': '456',
@@ -996,83 +1071,38 @@ describe('loadEditorModelData', () => {
         },
     };
 
-    test('get column by index', async () => {
-        const columns = [
-            new QueryColumn({
-                fieldKey: 'Name',
-                fieldKeyArray: ['Name'],
-                fieldKeyPath: 'Name',
-                derivationDataScope: null,
-                name: 'Name',
-            }),
-            new QueryColumn({
-                fieldKey: 'DtField$P$S$C$D$A',
-                fieldKeyArray: ['DtField./,$&'],
-                fieldKeyPath: 'DtField$P$S$C$D$A',
-                derivationDataScope: 'ParentOnly',
-                name: 'DtField./,$&',
-            }),
-            new QueryColumn({
-                fieldKey: 'IntField$P$S$C$D$A',
-                fieldKeyArray: ['IntField./,$&'],
-                fieldKeyPath: 'IntField$P$S$C$D$A',
-                derivationDataScope: 'ParentOnly',
-                name: 'IntField./,$&',
-            }),
-            new QueryColumn({
-                fieldKey: 'lkField$P$S$C$D$A',
-                fieldKeyArray: ['lkField./,$&'],
-                fieldKeyPath: 'lkField$P$S$C$D$A',
-                name: 'lkField./,$&',
-                derivationDataScope: 'ParentOnly',
-                lookup: {
-                    displayColumn: 'Name',
-                    isPublic: true,
-                    keyColumn: 'RowId',
-                    public: true,
-                    queryName: 'AssayList',
-                    schema: 'assay',
-                    schemaName: 'assay',
-                },
-            }),
-            new QueryColumn({
-                fieldKey: 'sampleField$P$S$C$D$A',
-                fieldKeyArray: ['sampleField./,$&'],
-                fieldKeyPath: 'sampleField$P$S$C$D$A',
-                name: 'sampleField./,$&',
-                derivationDataScope: 'ParentOnly',
-                lookup: {
-                    displayColumn: 'Name',
-                    isPublic: true,
-                    keyColumn: 'RowId',
-                    public: true,
-                    queryName: 'Materials',
-                    schema: 'exp',
-                    schemaName: 'exp',
-                },
-            }),
-            new QueryColumn({
-                fieldKey: 'aliqField$D$C$P$S',
-                fieldKeyArray: ['aliqField$,./'],
-                fieldKeyPath: 'aliqField$D$C$P$S',
-                name: 'aliqField$,./',
-                derivationDataScope: 'ChildOnly',
-            }),
-            new QueryColumn({
-                fieldKey: 'aliqAndParent$D$C$P$S',
-                fieldKeyArray: ['aliqAndParent$,./'],
-                fieldKeyPath: 'aliqAndParent$D$C$P$S',
-                name: 'aliqAndParent$,./',
-                derivationDataScope: 'All',
-            }),
-        ];
+    function getTestApi(): ComponentsAPIWrapper {
+        const testApi = getTestAPIWrapper(jest.fn);
 
-        const result = await loadEditorModelData(orderedRows, rows, columns, false);
+        return {
+            ...testApi,
+            query: {
+                ...testApi.query,
+                selectRows: jest.fn().mockImplementation(({ schemaQuery }) => {
+                    const rows_: Row[] = [];
+
+                    if (schemaQuery.queryName === 'AssayList') {
+                        // Resolve lookup value for lkField./,$&
+                        rows_.push({ Name: { value: 'DAS Testing' }, RowId: { value: 42876 } });
+                    } else if (schemaQuery.queryName === 'Materials') {
+                        // Resolve lookup value for sampleField./,$&
+                        rows_.push({ Name: { value: '10-1-1' }, RowId: { value: 117334 } });
+                    }
+
+                    return { rows: rows_ };
+                }),
+            },
+        };
+    }
+
+    test('get column by index', async () => {
+        const api = getTestApi();
+        const result = await loadEditorModelData(orderedRows, rows, columns, false, api);
         expect(result.cellValues.toJS()).toStrictEqual({
             'name&&0': [{ display: 'S-20-3', raw: 'S-20-3' }],
             'name&&1': [{ display: 'S-26', raw: 'S-26' }],
             'aliqandparent$d$c$p$s&&0': [{ display: '456', raw: '456' }],
-            'samplefield$p$s$c$d$a&&0': [{ display: '00401', raw: 2675720 }],
+            'samplefield$p$s$c$d$a&&0': [{ display: '<2675720>', raw: 2675720 }],
             'aliqandparent$d$c$p$s&&1': [{ display: '888', raw: '888' }],
             'samplefield$p$s$c$d$a&&1': [{ display: '10-1-1', raw: 117334 }],
             'intfield$p$s$c$d$a&&0': [{ display: 3, raw: 3 }],
@@ -1082,7 +1112,16 @@ describe('loadEditorModelData', () => {
             'dtfield$p$s$c$d$a&&1': [{ display: '07Feb2025', raw: '2025-02-07 00:00:00.000' }],
             'aliqfield$d$c$p$s&&1': [{ display: undefined, raw: undefined }],
             'lkfield$p$s$c$d$a&&0': [{ display: 'DAS Testing', raw: 42876 }],
-            'lkfield$p$s$c$d$a&&1': [{ display: 'Assay Required File', raw: 37721 }],
+            'lkfield$p$s$c$d$a&&1': [{ display: '<37721>', raw: 37721 }],
         });
+
+        // Issue 52311: Expect lookup validation warnings
+        expect(result.cellMessages.toJS()).toStrictEqual({
+            'lkfield$p$s$c$d$a&&1': { message: 'Could not find 37721', isWarning: true },
+            'samplefield$p$s$c$d$a&&0': { message: 'Could not find 2675720', isWarning: true },
+        });
+
+        // Expect both lookup columns to have been validated
+        expect(api.query.selectRows).toHaveBeenCalledTimes(2);
     });
 });

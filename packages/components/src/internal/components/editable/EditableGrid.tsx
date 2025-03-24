@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Query, Utils } from '@labkey/api';
+import { Query } from '@labkey/api';
 import classNames from 'classnames';
 import { List, Map, OrderedMap, Set } from 'immutable';
 import React, { ChangeEvent, PureComponent, ReactNode } from 'react';
@@ -1536,7 +1536,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     renderBulkUpdate = (): ReactNode => {
         const { addControlProps, bulkUpdateProps, editorModel, forUpdate, showAsTab, containerPath } = this.props;
-        editorModel.columnMetadata.values()[0]
 
         return (
             <BulkAddUpdateForm

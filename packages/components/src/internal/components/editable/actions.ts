@@ -23,6 +23,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import {
     CellMessage,
+    CellMessages,
     CellValues,
     EditableColumnMetadata,
     EditableGridLoader,

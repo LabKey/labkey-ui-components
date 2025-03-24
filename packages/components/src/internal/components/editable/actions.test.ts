@@ -10,7 +10,7 @@ import sampleSet2QueryInfo from '../../../test/data/sampleSet2-getQueryDetails.j
 import {
     addColumns,
     changeColumn,
-    fillColumnCells,
+    detectPadLength,
     loadEditorModelData,
     parseIntIfNumber,
     parsePastedLookup,
@@ -18,6 +18,7 @@ import {
     removeColumns,
     splitPrefixedNumber,
     validateAndInsertPastedData,
+    generateColumnFillValues,
 } from './actions';
 import { CellMessage, EditorModel, ValueDescriptor } from './models';
 import { genCellKey } from './utils';
@@ -327,18 +328,35 @@ describe('column mutation actions', () => {
     });
 });
 
-describe('fillColumnCells', () => {
+describe('generateColumnFillValues', () => {
+    // Makes cellValues where the values have the same display and raw value
+    function makeCellValues(fk: string, rows: string[][]): Record<string, List<ValueDescriptor>> {
+        return rows.reduce((result, values, rowIdx) => {
+            result[genCellKey(fk, rowIdx)] = List<ValueDescriptor>(
+                values.map(value => ({
+                    raw: value,
+                    display: value,
+                }))
+            );
+            return result;
+        }, {});
+    }
+    const queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);
     const lookupFk = 'lookup';
     const intFk = 'int';
     const floatFk = 'float';
     const dateFk = 'date';
     const datetimeFk = 'datetime';
     const strFk = 'str';
+    const quoteFk = 'quote';
+    const mvFk = 'mv';
     const editorModel = new EditorModel({}).merge({
+        queryInfo,
         cellMessages: Map<string, CellMessage>({
             '1-0': 'description 1 message',
         }),
         cellValues: Map<string, List<ValueDescriptor>>({
+            // Can't use makeCellValues for the number or lookup values because raw != display
             [genCellKey(lookupFk, 0)]: List<ValueDescriptor>([
                 {
                     display: 'S-1',
@@ -393,273 +411,183 @@ describe('fillColumnCells', () => {
                     raw: 0,
                 },
             ]),
-            [genCellKey(strFk, 0)]: List<ValueDescriptor>([
-                {
-                    display: 'qwer',
-                    raw: 'qwer',
-                },
-            ]),
-            [genCellKey(strFk, 1)]: List<ValueDescriptor>([
-                {
-                    display: 'asdf',
-                    raw: 'asdf',
-                },
-            ]),
-            [genCellKey(strFk, 2)]: List<ValueDescriptor>([
-                {
-                    display: 'zxcv',
-                    raw: 'zxcv',
-                },
-            ]),
-            [genCellKey(dateFk, 0)]: List<ValueDescriptor>([
-                {
-                    display: '2023-06-01',
-                    raw: '2023-06-01',
-                },
-            ]),
-            [genCellKey(dateFk, 1)]: List<ValueDescriptor>([
-                {
-                    display: '',
-                    raw: '',
-                },
-            ]),
-            [genCellKey(dateFk, 2)]: List<ValueDescriptor>([
-                {
-                    display: '2023-04-16',
-                    raw: '2023-04-16',
-                },
-            ]),
-            [genCellKey(datetimeFk, 0)]: List<ValueDescriptor>([
-                {
-                    display: '2023-06-01 10:42',
-                    raw: '2023-06-01 10:42',
-                },
-            ]),
-            [genCellKey(datetimeFk, 1)]: List<ValueDescriptor>([
-                {
-                    display: '',
-                    raw: '',
-                },
-            ]),
-            [genCellKey(datetimeFk, 2)]: List<ValueDescriptor>([
-                {
-                    display: '2023-04-16 11:11',
-                    raw: '2023-04-16 11:11',
-                },
-            ]),
+            ...makeCellValues(strFk, [['qwer'], ['asdf'], ['zxcv']]),
+            ...makeCellValues(dateFk, [['2023-06-01'], [''], ['2023-04-16']]),
+            ...makeCellValues(datetimeFk, [['2023-06-01 10:42'], [''], ['2023-04-16 11:11']]),
+            ...makeCellValues(quoteFk, [['S,1'], ['S,2'], ['']]),
+            ...makeCellValues(mvFk, [['S,1', 'S,2'], ['S2', 'S3'], [''], ['']]),
         }),
         orderedColumns: List([lookupFk, intFk, floatFk, strFk, dateFk, datetimeFk]),
         rowCount: 10,
     }) as EditorModel;
 
-    const textCol = new QueryColumn({
-        fieldKey: 'textCol',
-        lookup: undefined,
-    });
-
     beforeAll(() => {
         global.console.warn = jest.fn();
     });
 
-    test('single initialSelection', async () => {
-        const { cellValues } = await fillColumnCells(
-            editorModel,
-            textCol,
-            undefined,
-            editorModel.cellMessages,
-            editorModel.cellValues,
-            [genCellKey(lookupFk, 0)],
-            [genCellKey(lookupFk, 1), genCellKey(lookupFk, 2), genCellKey(lookupFk, 3)],
-            true,
-            undefined
-        );
-        // Filled values should be copies of the initial selection
-        for (let i = 1; i <= 3; i++) {
-            expect(cellValues.get(genCellKey(lookupFk, i)).get(0).display).toEqual('S-1');
-            expect(cellValues.get(genCellKey(lookupFk, i)).get(0).raw).toEqual(1);
-        }
+    test('single initialSelection', () => {
+        const cellValues = generateColumnFillValues(editorModel, [genCellKey(lookupFk, 0)], undefined, [
+            genCellKey(lookupFk, 1),
+            genCellKey(lookupFk, 2),
+            genCellKey(lookupFk, 3),
+        ]);
+        expect(cellValues).toEqual(['S-1', 'S-1', 'S-1']);
     });
 
-    test('prefixed number, multi initialSelection', async () => {
-        const { cellValues } = await fillColumnCells(
+    test('prefixed number, multi initialSelection', () => {
+        const cellValues = generateColumnFillValues(
             editorModel,
-            textCol,
-            undefined,
-            editorModel.cellMessages,
-            editorModel.cellValues,
             [genCellKey(lookupFk, 0), genCellKey(lookupFk, 1), genCellKey(lookupFk, 2)],
-            [genCellKey(lookupFk, 3), genCellKey(lookupFk, 4)],
-            true,
-            undefined
+            undefined,
+            [genCellKey(lookupFk, 3), genCellKey(lookupFk, 4)]
         );
-        expect(cellValues.get(genCellKey(lookupFk, 3)).get(0).display).toEqual('S-4');
-        expect(cellValues.get(genCellKey(lookupFk, 3)).get(0).raw).toEqual('S-4');
-        expect(cellValues.get(genCellKey(lookupFk, 4)).get(0).display).toEqual('S-5');
-        expect(cellValues.get(genCellKey(lookupFk, 4)).get(0).raw).toEqual('S-5');
+        expect(cellValues).toEqual(['S-4', 'S-5']);
     });
 
-    test('integer, multi initialSelection, forward', async () => {
-        const { cellValues } = await fillColumnCells(
+    test('integer, multi initialSelection, forward', () => {
+        const cellValues = generateColumnFillValues(
             editorModel,
-            textCol,
-            undefined,
-            editorModel.cellMessages,
-            editorModel.cellValues,
             [genCellKey(intFk, 0), genCellKey(intFk, 1), genCellKey(intFk, 2)],
-            [genCellKey(intFk, 3), genCellKey(intFk, 4)],
-            true,
-            undefined
+            undefined,
+            [genCellKey(intFk, 3), genCellKey(intFk, 4)]
         );
-        expect(cellValues.get(genCellKey(intFk, 3)).get(0).display).toEqual('7');
-        expect(cellValues.get(genCellKey(intFk, 3)).get(0).raw).toEqual(7);
-        expect(cellValues.get(genCellKey(intFk, 4)).get(0).display).toEqual('9');
-        expect(cellValues.get(genCellKey(intFk, 4)).get(0).raw).toEqual(9);
+        expect(cellValues).toEqual(['7', '9']);
     });
 
-    test('integer, multi initialSelection, backward', async () => {
-        const { cellValues } = await fillColumnCells(
+    test('integer, multi initialSelection, backward', () => {
+        const cellValues = generateColumnFillValues(
             editorModel,
-            textCol,
-            undefined,
-            editorModel.cellMessages,
-            editorModel.cellValues,
             [genCellKey(intFk, 1), genCellKey(intFk, 2)],
-            [genCellKey(intFk, 0)],
-            true,
-            undefined
+            undefined,
+            [genCellKey(intFk, 0)]
         );
-        expect(cellValues.get(genCellKey(intFk, 0)).get(0).display).toEqual('1');
-        expect(cellValues.get(genCellKey(intFk, 0)).get(0).raw).toEqual(1);
+        expect(cellValues).toEqual(['1']);
     });
 
-    test('float, multi initialSelection, forward', async () => {
-        const { cellValues } = await fillColumnCells(
+    test('float, multi initialSelection, forward', () => {
+        const cellValues = generateColumnFillValues(
             editorModel,
-            textCol,
-            undefined,
-            editorModel.cellMessages,
-            editorModel.cellValues,
             [genCellKey(floatFk, 0), genCellKey(floatFk, 1), genCellKey(floatFk, 2)],
-            [genCellKey(floatFk, 3), genCellKey(floatFk, 4)],
-            true,
-            undefined
+            undefined,
+            [genCellKey(floatFk, 3), genCellKey(floatFk, 4)]
         );
-        expect(cellValues.get(genCellKey(floatFk, 3)).get(0).display).toEqual('-1.5');
-        expect(cellValues.get(genCellKey(floatFk, 3)).get(0).raw).toEqual(-1.5);
-        expect(cellValues.get(genCellKey(floatFk, 4)).get(0).display).toEqual('-3');
-        expect(cellValues.get(genCellKey(floatFk, 4)).get(0).raw).toEqual(-3);
+        expect(cellValues).toEqual(['-1.5', '-3']);
     });
 
-    test('float, multi initialSelection, backward', async () => {
-        const { cellValues } = await fillColumnCells(
+    test('float, multi initialSelection, backward', () => {
+        const cellValues = generateColumnFillValues(
             editorModel,
-            textCol,
-            undefined,
-            editorModel.cellMessages,
-            editorModel.cellValues,
             [genCellKey(floatFk, 1), genCellKey(floatFk, 2)],
-            [genCellKey(floatFk, 0)],
-            true,
-            undefined
+            undefined,
+            [genCellKey(floatFk, 0)]
         );
-        expect(cellValues.get(genCellKey(floatFk, 0)).get(0).display).toEqual('3');
-        expect(cellValues.get(genCellKey(floatFk, 0)).get(0).raw).toEqual(3);
+        expect(cellValues).toEqual(['3']);
     });
 
-    test('date, single row initialSelection, forward', async () => {
-        const { cellValues } = await fillColumnCells(
-            editorModel,
-            textCol,
-            undefined,
-            editorModel.cellMessages,
-            editorModel.cellValues,
-            [genCellKey(dateFk, 0)],
-            [genCellKey(dateFk, 1), genCellKey(dateFk, 2), genCellKey(dateFk, 3)],
-            true,
-            undefined
-        );
+    test('date, single row initialSelection, forward', () => {
+        const cellValues = generateColumnFillValues(editorModel, [genCellKey(dateFk, 0)], undefined, [
+            genCellKey(dateFk, 1),
+            genCellKey(dateFk, 2),
+            genCellKey(dateFk, 3),
+        ]);
         // Filled values should be copies of the initial selection
+        const expected = [];
         for (let i = 1; i <= 3; i++) {
-            expect(cellValues.get(genCellKey(dateFk, i)).get(0).display).toEqual(`2023-06-0${i + 1}`);
-            expect(cellValues.get(genCellKey(dateFk, i)).get(0).raw).toEqual(`2023-06-0${i + 1}`);
+            expected.push(`2023-06-0${i + 1}`);
         }
+        expect(cellValues).toEqual(expected);
     });
 
-    test('date, single row initialSelection, backward', async () => {
-        const { cellValues } = await fillColumnCells(
-            editorModel,
-            textCol,
-            undefined,
-            editorModel.cellMessages,
-            editorModel.cellValues,
-            [genCellKey(dateFk, 2)],
-            [genCellKey(dateFk, 0), genCellKey(dateFk, 1)],
-            true,
-            undefined
-        );
-        // Filled values should be copies of the initial selection
-        for (let i = 0; i <= 2; i++) {
-            expect(cellValues.get(genCellKey(dateFk, i)).get(0).display).toEqual(`2023-04-${14 + i}`);
-            expect(cellValues.get(genCellKey(dateFk, i)).get(0).raw).toEqual(`2023-04-${14 + i}`);
+    test('date, single row initialSelection, backward', () => {
+        const cellValues = generateColumnFillValues(editorModel, [genCellKey(dateFk, 2)], undefined, [
+            genCellKey(dateFk, 0),
+            genCellKey(dateFk, 1),
+        ]);
+        // Filled values decrement by one day
+        const expected = [];
+        for (let i = 0; i < 2; i++) {
+            expected.push(`2023-04-${15 - i}`);
         }
+        expect(cellValues).toEqual(expected);
     });
 
-    test('datetime, single row initialSelection, forward', async () => {
-        const { cellValues } = await fillColumnCells(
-            editorModel,
-            textCol,
-            undefined,
-            editorModel.cellMessages,
-            editorModel.cellValues,
-            [genCellKey(datetimeFk, 0)],
-            [genCellKey(datetimeFk, 1), genCellKey(datetimeFk, 2), genCellKey(datetimeFk, 3)],
-            true,
-            undefined
-        );
-        // Filled values should be copies of the initial selection
+    test('datetime, single row initialSelection, forward', () => {
+        const cellValues = generateColumnFillValues(editorModel, [genCellKey(datetimeFk, 0)], undefined, [
+            genCellKey(datetimeFk, 1),
+            genCellKey(datetimeFk, 2),
+            genCellKey(datetimeFk, 3),
+        ]);
+        // Filled values should increment by one day
+        const expected = [];
         for (let i = 1; i <= 3; i++) {
-            expect(cellValues.get(genCellKey(datetimeFk, i)).get(0).display).toEqual(`2023-06-0${i + 1} 10:42`);
-            expect(cellValues.get(genCellKey(datetimeFk, i)).get(0).raw).toEqual(`2023-06-0${i + 1} 10:42`);
+            expected.push(`2023-06-0${i + 1} 10:42`);
         }
+
+        expect(cellValues).toEqual(expected);
     });
 
-    test('datetime, single row initialSelection, backward', async () => {
-        const { cellValues } = await fillColumnCells(
-            editorModel,
-            textCol,
-            undefined,
-            editorModel.cellMessages,
-            editorModel.cellValues,
-            [genCellKey(datetimeFk, 2)],
-            [genCellKey(datetimeFk, 0), genCellKey(datetimeFk, 1)],
-            true,
-            undefined
-        );
-        // Filled values should be copies of the initial selection
-        for (let i = 0; i <= 2; i++) {
-            expect(cellValues.get(genCellKey(datetimeFk, i)).get(0).display).toEqual(`2023-04-${14 + i} 11:11`);
-            expect(cellValues.get(genCellKey(datetimeFk, i)).get(0).raw).toEqual(`2023-04-${14 + i} 11:11`);
+    test('datetime, single row initialSelection, backward', () => {
+        const cellValues = generateColumnFillValues(editorModel, [genCellKey(datetimeFk, 2)], undefined, [
+            genCellKey(datetimeFk, 0),
+            genCellKey(datetimeFk, 1),
+        ]);
+        // Filled values decrement by one day
+        const expected = [];
+        for (let i = 0; i < 2; i++) {
+            expected.push(`2023-04-${15 - i} 11:11`);
         }
+        expect(cellValues).toEqual(expected);
     });
 
-    test('text, multi initialSelection, forward', async () => {
-        const { cellValues } = await fillColumnCells(
+    test('text, multi initialSelection, forward', () => {
+        const cellValues = generateColumnFillValues(
             editorModel,
-            textCol,
-            undefined,
-            editorModel.cellMessages,
-            editorModel.cellValues,
             [genCellKey(strFk, 0), genCellKey(strFk, 1), genCellKey(strFk, 2)],
-            [genCellKey(strFk, 3), genCellKey(strFk, 4), genCellKey(strFk, 5)],
-            true,
-            undefined
+            undefined,
+            [genCellKey(strFk, 3), genCellKey(strFk, 4), genCellKey(strFk, 5)]
         );
-        expect(cellValues.get(genCellKey(strFk, 3)).get(0).display).toEqual('qwer');
-        expect(cellValues.get(genCellKey(strFk, 3)).get(0).raw).toEqual('qwer');
-        expect(cellValues.get(genCellKey(strFk, 4)).get(0).display).toEqual('asdf');
-        expect(cellValues.get(genCellKey(strFk, 4)).get(0).raw).toEqual('asdf');
-        expect(cellValues.get(genCellKey(strFk, 5)).get(0).display).toEqual('zxcv');
-        expect(cellValues.get(genCellKey(strFk, 5)).get(0).raw).toEqual('zxcv');
+        expect(cellValues).toEqual(['qwer', 'asdf', 'zxcv']);
+    });
+
+    // Issue 52412
+    test('values with commas are quoted', () => {
+        let cellValues = generateColumnFillValues(
+            editorModel,
+            [genCellKey(quoteFk, 0), genCellKey(quoteFk, 1)],
+            undefined,
+            [genCellKey(strFk, 2), genCellKey(strFk, 3), genCellKey(strFk, 4)]
+        );
+        // Incremented values with commas should be quoted
+        expect(cellValues).toEqual(['"S,3"', '"S,4"', '"S,5"']);
+
+        cellValues = generateColumnFillValues(editorModel, [genCellKey(quoteFk, 0)], undefined, [
+            genCellKey(strFk, 1),
+            genCellKey(strFk, 2),
+            genCellKey(strFk, 3),
+        ]);
+        // Copied values with commas should be quoted
+        expect(cellValues).toEqual(['"S,1"', '"S,1"', '"S,1"']);
+    });
+
+    // Issue 52412
+    test('cells with multiple values are quoted', () => {
+        let cellValues = generateColumnFillValues(editorModel, [genCellKey(mvFk, 0), genCellKey(mvFk, 1)], undefined, [
+            genCellKey(mvFk, 2),
+            genCellKey(mvFk, 3),
+            genCellKey(mvFk, 4),
+            genCellKey(mvFk, 5),
+        ]);
+        // When we copy multiple values only the ones needing quotes should be quoted
+        expect(cellValues).toEqual(['"S,1","S,2"', 'S2,S3', '"S,1","S,2"', 'S2,S3']);
+
+        cellValues = generateColumnFillValues(editorModel, [genCellKey(mvFk, 0)], undefined, [
+            genCellKey(mvFk, 1),
+            genCellKey(mvFk, 2),
+            genCellKey(mvFk, 3),
+            genCellKey(mvFk, 5),
+        ]);
+        // Copying single values should quote them as appropriate
+        expect(cellValues).toEqual(['"S,1","S,2"', '"S,1","S,2"', '"S,1","S,2"', '"S,1","S,2"']);
     });
 });
 
@@ -697,7 +625,10 @@ describe('splitPrefixedNumber', () => {
         expect(splitPrefixedNumber('ABC')).toEqual(['ABC', undefined]);
         expect(splitPrefixedNumber('ABC-')).toEqual(['ABC-', undefined]);
         expect(splitPrefixedNumber('123')).toEqual([undefined, '123']);
-        expect(splitPrefixedNumber('123.45')).toEqual([undefined, '123.45']);
+        expect(splitPrefixedNumber('00.45')).toEqual([undefined, '00.45']);
+        expect(splitPrefixedNumber('001')).toEqual([undefined, '001']);
+        expect(splitPrefixedNumber('ABC001')).toEqual(['ABC', '001']);
+        expect(splitPrefixedNumber('ABC00.45')).toEqual(['ABC', '00.45']);
     });
 
     test('param as number', () => {
@@ -708,6 +639,17 @@ describe('splitPrefixedNumber', () => {
         expect(splitPrefixedNumber(undefined)).toEqual([undefined, undefined]);
         expect(splitPrefixedNumber(null)).toEqual([undefined, undefined]);
         expect(splitPrefixedNumber('')).toEqual([undefined, undefined]);
+    });
+});
+
+describe('detectPadSize', () => {
+    test('detects padding correctly', () => {
+        expect(detectPadLength(undefined)).toEqual(undefined);
+        expect(detectPadLength('')).toEqual(undefined);
+        expect(detectPadLength('123')).toEqual(undefined);
+        expect(detectPadLength('000.123')).toEqual(undefined);
+        expect(detectPadLength('0000123')).toEqual(7);
+        expect(detectPadLength('0001234')).toEqual(7);
     });
 });
 

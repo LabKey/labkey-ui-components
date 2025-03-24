@@ -269,6 +269,9 @@ export function getUpdateFilterExpressionFilter(
             }
         } else if (!value && field.getDisplayFieldJsonType() === 'boolean') {
             value = 'false';
+        } else if (value && filterType.isMultiValued()) {
+            // Issue 52068
+            value = value.split('\n');
         }
 
         filter = Filter.create(fieldKey, value, filterType);
@@ -466,7 +469,7 @@ export function getFilterSelections(
                 filter.firstFilterValue = values[0];
                 filter.secondFilterValue = values[1];
             } else if (values.length > 1) {
-                filter.firstFilterValue = values.join(';');
+                filter.firstFilterValue = values;
             } else {
                 filter.firstFilterValue = values[0];
             }

@@ -958,7 +958,7 @@ describe('getFilterSelections', () => {
         expect(filterSelections).toStrictEqual([
             {
                 filterType: oneOfOption,
-                firstFilterValue: 'test;zebra',
+                firstFilterValue: ['test', 'zebra'],
             },
         ]);
     });
@@ -993,7 +993,7 @@ describe('getFilterSelections', () => {
             },
             {
                 filterType: oneOfOption,
-                firstFilterValue: 'unicorn;walrus',
+                firstFilterValue: ['unicorn', 'walrus'],
             },
         ]);
     });

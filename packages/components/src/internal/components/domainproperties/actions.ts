@@ -469,7 +469,6 @@ export async function parseCalculatedColumn(
             ') AS x' +
             ' WHERE 1=0';
 
-        console.log(sql);
         await selectRowsDeprecated({
             schemaName: 'core',
             sql,

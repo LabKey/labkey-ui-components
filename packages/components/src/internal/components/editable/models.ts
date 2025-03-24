@@ -943,8 +943,3 @@ export interface EditableGridLoader extends GridLoader {
     queryInfo: QueryInfo;
     requiredColumns?: string[];
 }
-
-export interface MessageAndValue {
-    message?: CellMessage;
-    valueDescriptor: ValueDescriptor;
-}

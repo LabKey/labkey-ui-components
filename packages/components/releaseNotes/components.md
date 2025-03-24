@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 52068: getFilterValuesAsArray to account for multivalued filter types before splitting string value
+
 ### version 6.31.12
 *Released*: 21 March 2025
 - Issue 52477: Sample workflow custom fields: edit field inline with special characters

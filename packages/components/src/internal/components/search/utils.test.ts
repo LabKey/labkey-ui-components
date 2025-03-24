@@ -216,6 +216,31 @@ describe('getFilterValuesAsArray', () => {
             getFilterValuesAsArray(Filter.create('textField', null, Filter.Types.IN), '[empty]', true)
         ).toStrictEqual([]);
     });
+
+    test('value with semicolon', () => {
+        // Issue 52068
+        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;c;d;e', Filter.Types.IN))).toStrictEqual([
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+        ]);
+        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;c;d;e', Filter.Types.NOT_IN))).toStrictEqual([
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+        ]);
+        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;c;d;e', Filter.Types.EQAUL))).toStrictEqual([
+            'a;b;c;d;e',
+        ]);
+        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;c;d;e', Filter.Types.NOT_EQUAL))).toStrictEqual([
+            'a;b;c;d;e',
+        ]);
+        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;c;d;e'))).toStrictEqual(['a;b;c;d;e']);
+    });
 });
 
 describe('getFieldFiltersValidationResult', () => {

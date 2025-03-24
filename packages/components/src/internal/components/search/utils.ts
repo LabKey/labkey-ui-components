@@ -113,13 +113,14 @@ export const EMPTY_VALUE_DISPLAY = '[blank]';
 export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: string, checkNull = false): any[] {
     let values = [],
         rawValues;
+    const isMultiValuedType = filter.getFilterType().isMultiValued(); // Issue 52068
     const rawValue = filter.getValue();
 
     if (checkNull && rawValue === null) return [];
 
     if (Array.isArray(rawValue)) {
         rawValues = [...rawValue];
-    } else if (typeof rawValue === 'string') {
+    } else if (isMultiValuedType && typeof rawValue === 'string') {
         rawValues = rawValue.split(';');
     } else rawValues = [rawValue];
 

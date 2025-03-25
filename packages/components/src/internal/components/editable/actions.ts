@@ -299,18 +299,27 @@ async function getLookupValueDescriptors(
                 const value = row?.[col.fieldKey] ?? row?.[col.name];
                 if (Utils.isNumber(value)) {
                     values.add(value);
-                } else if (Array.isArray(value)) {
-                    value.forEach(val => {
-                        if (Utils.isNumber(val?.value)) {
-                            values.add(val.value);
-                        } else if (Utils.isNumber(val)) {
-                            values.add(val);
-                        }
-                    });
                 }
+
+                // eslint-disable-next-line no-warning-comments
+                // FIXME: Issue 52634: Resolve lookup values against array-based results.
+                // Previously, this had been looking for List.isList(value) which is no longer viable as Lists are no
+                // longer passed into this function. When re-enabling this behavior I encountered multiple issues.
+                //
+                // } else if (Array.isArray(value)) {
+                //     value.forEach(val => {
+                //         if (Utils.isNumber(val?.value)) {
+                //             values.add(val.value);
+                //         }
+                //     });
+                // }
             });
 
             if (values.size > 0) {
+                // eslint-disable-next-line no-warning-comments
+                // FIXME: Issue 52634: Respect folder of the row. Aggregate lookup value requests by folder.
+                // This does not respect the folder/container of the row which results in unresolved lookups because
+                // the request container is incorrect.
                 const descriptors = await findLookupValues({
                     api,
                     column: col,

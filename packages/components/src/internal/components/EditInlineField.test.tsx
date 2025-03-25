@@ -10,10 +10,6 @@ import { TEST_USER_EDITOR } from '../userFixtures';
 
 import { EditInlineField } from './EditInlineField';
 
-beforeAll(() => {
-    global.console.warn = jest.fn();
-});
-
 describe('EditInlineField', () => {
     const DEFAULT_PROPS = {
         name: 'name',
@@ -42,7 +38,7 @@ describe('EditInlineField', () => {
         expect(document.querySelectorAll('.edit-inline-field__toggle')).toHaveLength(!editing && allowEdit ? 1 : 0);
         expect(document.querySelectorAll('.fa-pencil')).toHaveLength(!editing && allowEdit ? 1 : 0);
         if (!editing) {
-            expect(document.querySelector('.edit-inline-field__label').innerHTML).toBe('Test Label');
+            expect(document.querySelector('.edit-inline-field__label')).toHaveTextContent('Test Label');
         }
 
         expect(document.querySelectorAll('.date-input')).toHaveLength(type?.date ?? 0);
@@ -58,7 +54,7 @@ describe('EditInlineField', () => {
             appContext: APP_CONTEXT,
         });
         validate();
-        expect(document.querySelector('.edit-inline-field__placeholder').innerHTML).toBe('');
+        expect(document.querySelector('.edit-inline-field__placeholder')).toHaveTextContent('');
         expect(document.querySelectorAll('.fa-pencil')).toHaveLength(1);
         await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
         validate(true, true, { text: 1 });
@@ -78,7 +74,7 @@ describe('EditInlineField', () => {
             appContext: APP_CONTEXT,
         });
         validate();
-        expect(document.querySelector('.edit-inline-field__placeholder').innerHTML).toBe('Test Empty Text');
+        expect(document.querySelector('.edit-inline-field__placeholder')).toHaveTextContent('Test Empty Text');
     });
 
     test('with value', () => {
@@ -147,7 +143,7 @@ describe('EditInlineField', () => {
         await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
         validate(true, true, { date: 1 });
         expect(document.querySelectorAll('.react-datepicker')).toHaveLength(1);
-        expect(document.querySelector('.react-datepicker__input-container input').value).toBe('');
+        expect(document.querySelector('.react-datepicker__input-container input')).toHaveValue('');
     });
 
     test('isDate, with initial value', async () => {
@@ -159,7 +155,7 @@ describe('EditInlineField', () => {
         await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
         validate(true, true, { date: 1 });
         expect(document.querySelectorAll('.react-datepicker')).toHaveLength(1);
-        expect(document.querySelector('.react-datepicker__input-container input').value).toBe('2022-08-11');
+        expect(document.querySelector('.react-datepicker__input-container input')).toHaveValue('2022-08-11');
     });
 
     test('isDate, with initial value and QueryColumn format', async () => {
@@ -176,7 +172,7 @@ describe('EditInlineField', () => {
         await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
         validate(true, true, { date: 1 });
         expect(document.querySelectorAll('.react-datepicker')).toHaveLength(1);
-        expect(document.querySelector('.react-datepicker__input-container input').value).toBe('08/11/2022 18:00:00');
+        expect(document.querySelector('.react-datepicker__input-container input')).toHaveValue('08/11/2022 18:00:00');
     });
 
     test('resolveDetailEditRenderer', async () => {

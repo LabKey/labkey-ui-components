@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.32.1
+*Released*: 25 March 2025
+- Merge from release25.3-SNAPSHOT to develop
+    - includes changes from 6.26.7 #1749
+
 ### version 6.32.0
 *Released*: 24 March 2025
 - Add `test-to-file` script
@@ -105,6 +110,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 4 March 2025
 - Issue 52072: Text choice field values to handle | character within values
   - PropertyValidator.joinValidValues() and PropertyValidator.splitValidValues()
+
+### version 6.26.7
+*Released*: 20 March 2025
+- Update `ISO_DATE_TIME_FORMAT_STRING` constant to match server.
+- Export JSON date format utility functions from the package.
 
 ### version 6.26.6
 *Released*: 18 March 2025

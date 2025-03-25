@@ -422,26 +422,27 @@ export function getMaxPhiLevel(containerPath?: string): Promise<string> {
 
 // exported for jest testing
 export function getCastStatement(key: string, type: string): string {
+    const quotedKey = key.replace(/"/g, '""'); // Issue 52608: escape double quotes in key
     switch (type) {
         case 'INTEGER':
         case 'SAMPLE':
         case 'USERS':
-            return `CAST(1 AS INTEGER) AS "${key}"`;
+            return `CAST(1 AS INTEGER) AS "${quotedKey}"`;
         case 'DOUBLE':
         case 'DECIMAL (FLOATING POINT)':
         case 'VISITID':
-            return `CAST(1.1 AS DOUBLE) AS "${key}"`;
+            return `CAST(1.1 AS DOUBLE) AS "${quotedKey}"`;
         case 'BOOLEAN':
-            return `CAST(TRUE AS BOOLEAN) AS "${key}"`;
+            return `CAST(TRUE AS BOOLEAN) AS "${quotedKey}"`;
         case 'DATETIME':
         case 'VISITDATE':
-            return `CAST(CURDATE() AS TIMESTAMP) AS "${key}"`;
+            return `CAST(CURDATE() AS TIMESTAMP) AS "${quotedKey}"`;
         case 'DATE':
-            return `CAST(CURDATE() AS DATE) AS "${key}"`;
+            return `CAST(CURDATE() AS DATE) AS "${quotedKey}"`;
         case 'TIME':
-            return `CAST('13:00' AS TIME) AS "${key}"`;
+            return `CAST('13:00' AS TIME) AS "${quotedKey}"`;
         default:
-            return `CAST('Testing' AS VARCHAR) AS "${key}"`;
+            return `CAST('Testing' AS VARCHAR) AS "${quotedKey}"`;
     }
 }
 

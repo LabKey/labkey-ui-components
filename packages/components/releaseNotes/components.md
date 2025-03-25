@@ -7,6 +7,28 @@ Components, models, actions, and utility functions for LabKey applications and p
   - getFilterValuesAsArray to account for multivalued filter types before splitting string value
   - FilterExpressionView to handle value array for showing multivalued filter type textarea
 
+### version 6.32.2
+*Released*: 25 March 2025
+- Issue 52608: Field names for calculated column validation need to escape quotes in executeSql query
+
+### version 6.32.1
+*Released*: 25 March 2025
+- Merge from release25.3-SNAPSHOT to develop
+    - includes changes from 6.26.7 #1749
+
+### version 6.32.0
+*Released*: 24 March 2025
+- Add `test-to-file` script
+- `Cell`: ignore readOnly state when handling certain events
+- Update `dragFillEvent` to detect and apply padding during drag fill
+  - Issue 52253: Editable grid drag and fill removes internal zeros
+  - Issue 51584: Editable grid does not delete values in fields if drag-select started in a read-only field
+- Update `dragFillEvent` to generate a TSV then use our underlying paste handling code to insert the drag filled data
+  - Issue 52347: EditableGrid: Drag filling Sample IDs doesn't resolve samples
+  - Issue 52412: EditableGrid: Drag Filling Lookups with special characters doesn't work
+- `EditableGrid`: pass queryFilters when rendering bulk add
+  - Issue 52371: Bulk Add Units list isn't filtered to match Sample Type when inserting samples
+
 ### version 6.31.12
 *Released*: 21 March 2025
 - Issue 52477: Sample workflow custom fields: edit field inline with special characters
@@ -98,6 +120,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 4 March 2025
 - Issue 52072: Text choice field values to handle | character within values
   - PropertyValidator.joinValidValues() and PropertyValidator.splitValidValues()
+
+### version 6.26.7
+*Released*: 20 March 2025
+- Update `ISO_DATE_TIME_FORMAT_STRING` constant to match server.
+- Export JSON date format utility functions from the package.
 
 ### version 6.26.6
 *Released*: 18 March 2025

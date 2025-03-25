@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "6.31.12-filterSemicolonValue52068.1",
+  "version": "6.32.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -27,6 +27,7 @@
     "prepublishOnly": "npm install --legacy-peer-deps && cross-env WEBPACK_STATS=errors-only npm run build",
     "test": "cross-env NODE_ENV=test jest --maxWorkers=6",
     "test-ci": "cross-env NODE_ENV=test jest --ci",
+    "test-to-file": "cross-env NODE_ENV=test jest -i --no-color 2>jest-log.txt",
     "lint": "eslint",
     "lint-fix": "eslint --fix",
     "lint-precommit": "node lint.diff.mjs",

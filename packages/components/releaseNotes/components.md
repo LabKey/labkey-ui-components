@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.??.??
+*Released*: ??
+- Issue 52332: Editing a Parent field that contains a mix of resolved and unresolved parents deletes all references
+
 ### version 6.33.0
 *Released*: 28 March 2025
 - Issue 52068: Filtering on a value with a semicolon is incorrectly displayed in the filter modal facet filter listing

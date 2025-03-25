@@ -32,7 +32,6 @@ interface Props {
     onChange?: (name: string, newValue: any) => void;
     placeholder?: string;
     startDate?: Date;
-    timezone?: string;
     tooltip?: string; // only shown when component has a label and is allowEdit
     type: string;
     useJsonDateFormat?: boolean;
@@ -52,7 +51,6 @@ export const EditInlineField: FC<Props> = memo(props => {
         onChange,
         placeholder,
         startDate,
-        timezone,
         tooltip,
         type,
         useJsonDateFormat,
@@ -89,7 +87,7 @@ export const EditInlineField: FC<Props> = memo(props => {
         } else if (_value !== undefined && _value !== null && _value !== '') {
             // value is of type "any" so it could be a number, boolean, etc. Use explicit value checks.
             if (isDate) {
-                value_ = formatDate(_value, timezone, dateFormat);
+                value_ = formatDate(_value, undefined, dateFormat);
             } else {
                 value_ = _value?.toString();
             }
@@ -106,7 +104,7 @@ export const EditInlineField: FC<Props> = memo(props => {
 
         if (value_) return value_;
         return <span className="edit-inline-field__placeholder">{emptyText}</span>;
-    }, [dateFormat, emptyText, isDate, timezone, value, _value]);
+    }, [dateFormat, emptyText, isDate, value, _value]);
 
     const getInputValue = useCallback((): any => {
         if (isTime) return timeJsonValue;

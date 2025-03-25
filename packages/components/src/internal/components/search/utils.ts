@@ -111,23 +111,18 @@ export function isChooseValuesFilter(filter: Filter.IFilter): boolean {
 export const ALL_VALUE_DISPLAY = '[All]';
 export const EMPTY_VALUE_DISPLAY = '[blank]';
 export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: string, checkNull = false): any[] {
-    let values = [],
-        rawValues;
-    const isMultiValuedType = filter.getFilterType().isMultiValued(); // Issue 52068
-    const rawValue = filter.getValue();
-
+    let rawValue = filter.getValue();
     if (checkNull && rawValue === null) return [];
 
-    if (Array.isArray(rawValue)) {
-        rawValues = [...rawValue];
-    } else if (isMultiValuedType && typeof rawValue === 'string') {
-        rawValues = rawValue.split(';');
-    } else rawValues = [rawValue];
+    if (typeof rawValue === 'string') {
+        rawValue = filter.getFilterType().parseValue(rawValue);
+    }
+    const rawValues = Array.isArray(rawValue) ? [...rawValue] : [rawValue];
 
+    const values = [];
     rawValues.forEach(v => {
         values.push(v == '' ? (blankValue ?? EMPTY_VALUE_DISPLAY) : v);
     });
-
     return values;
 }
 

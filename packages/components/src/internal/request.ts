@@ -37,11 +37,6 @@ export type SuccessDataResponse<T> = {
     success: boolean;
 };
 
-export type SuccessDataResponse<T> = {
-    data: T;
-    success: boolean;
-};
-
 export type RequestHandler = (request: XMLHttpRequest) => void;
 
 export interface RequestOptions extends Omit<Ajax.RequestOptions, 'failure' | 'scope' | 'success'> {

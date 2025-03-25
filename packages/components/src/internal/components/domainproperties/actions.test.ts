@@ -856,6 +856,16 @@ describe('domain properties actions', () => {
         expect(getCastStatement('key', 'OTHER')).toBe('CAST(\'Testing\' AS VARCHAR) AS "key"');
     });
 
+    // Issue 52608
+    test('getCastStatement for special char field', () => {
+        expect(getCastStatement('a"key" with quotes', 'TEXT')).toBe(
+            'CAST(\'Testing\' AS VARCHAR) AS "a""key"" with quotes"'
+        );
+        expect(getCastStatement('a,./key with!@#$specCHARS', 'TEXT')).toBe(
+            'CAST(\'Testing\' AS VARCHAR) AS "a,./key with!@#$specCHARS"'
+        );
+    });
+
     test('parseCalculatedColumn', async () => {
         let response = await parseCalculatedColumn(undefined, {}, []);
         expect(response.error).toBe('Error: an expression value is required.');

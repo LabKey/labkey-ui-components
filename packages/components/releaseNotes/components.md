@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.32.2
+*Released*: 25 March 2025
+- Issue 52608: Field names for calculated column validation need to escape quotes in executeSql query
+
 ### version 6.32.1
 *Released*: 25 March 2025
 - Merge from release25.3-SNAPSHOT to develop

@@ -541,6 +541,7 @@ export function replaceSelected(options: ReplaceSelectedOptions): Promise<Select
 }
 
 /**
+ * @deprecated use QueryModel/utils.ts createSnapshotSelectionKey instead
  * Set the snapshot selections for a grid
  * @param key the selection key for the grid
  * @param ids ids to change selection for

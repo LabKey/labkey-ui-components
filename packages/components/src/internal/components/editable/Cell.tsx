@@ -330,7 +330,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
             case KEYS.Backspace:
             case KEYS.Delete:
                 // "Backspace" and "Delete" are ignored on recorded input
-                if (!focused && selected && !isRecording && !this.isReadOnly) {
+                if (!focused && selected && !isRecording) {
                     cancelEvent(event);
                     modifyCell(colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
                 }
@@ -368,14 +368,14 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 }
                 break;
             case KEYS.D:
-                if (!focused && isFillDown(event) && !this.isReadOnly) {
+                if (!focused && isFillDown(event)) {
                     cancelEvent(event);
                     fillDown();
                     break;
                 }
             // eslint-disable-next-line no-fallthrough
             case KEYS.A:
-                if (!focused && isSelectAll(event) && !this.isReadOnly) {
+                if (!focused && isSelectAll(event)) {
                     cancelEvent(event);
                     selectCell(colIdx, rowIdx, SELECTION_TYPES.ALL);
                     break;

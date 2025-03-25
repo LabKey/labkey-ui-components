@@ -7,7 +7,14 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { cancelEvent, getPasteValue, setCopyValue } from '../../events';
 import { formatDate, formatDateTime, parseDate } from '../../util/Date';
-import { caseInsensitive, isFloat, isInteger, parseCsvString, parseScientificInt } from '../../util/utils';
+import {
+    caseInsensitive,
+    isFloat,
+    isInteger,
+    parseCsvString,
+    parseScientificInt,
+    quoteValueWithDelimiters,
+} from '../../util/utils';
 import { ViewInfo } from '../../ViewInfo';
 
 import { selectRows } from '../../query/selectRows';
@@ -16,7 +23,6 @@ import { getContainerFilterForLookups } from '../../query/api';
 
 import {
     CellMessage,
-    CellMessages,
     CellValues,
     EditableColumnMetadata,
     EditableGridLoader,
@@ -724,6 +730,20 @@ function everyValueHasSamePrefix(values: PrefixAndNumber[]): boolean {
     return values.every(value => value[0] === prefix);
 }
 
+/**
+ * Given a string that represents a number it returns the number needed when using String.padStart. It returns undefined
+ * in the following scenarios:
+ *  - If the value is undefined
+ *  - If the value is a decimal (e.g. 001.100)
+ *  - If the value is not a padded integer (e.g. 5, 10, 34)
+ * @param value a string representing a number
+ */
+export function detectPadLength(value: string): number {
+    // We don't support padded numbers with decimals
+    if (value === undefined || value.includes('.') || value[0] !== '0') return undefined;
+    return value.length;
+}
+
 enum IncrementDirection {
     FORWARD,
     BACKWARD,
@@ -741,6 +761,7 @@ interface SelectionIncrement {
     increment?: number;
     incrementType: IncrementType;
     initialSelectionValues: Array<List<ValueDescriptor>>; // yes this is a very odd type, but we can clean it up when we rip out Immutable
+    padLength?: number;
     prefix?: string;
     startingValue: number | string;
 }
@@ -785,6 +806,7 @@ function inferSelectionIncrement(
     let prefix;
     let incrementType = IncrementType.NONE;
     let increment;
+    let padLength;
     const splitValues = displayValues.map(splitPrefixedNumber);
     const allPrefixed = everyValueHasSamePrefix(splitValues);
 
@@ -798,16 +820,27 @@ function inferSelectionIncrement(
     const isFloatSeq = values.length > 1 && displayValues.every(isFloat);
     const isIntSeq = values.length > 1 && displayValues.every(isInteger);
 
-    if (isFloatSeq) {
-        firstValue = parseFloat(firstValue);
-        lastValue = parseFloat(lastValue);
-    } else if (isIntSeq) {
+    if (isIntSeq) {
         firstValue = parseScientificInt(firstValue);
         lastValue = parseScientificInt(lastValue);
+        // Note: We only support padLength for integer sequences. This is roughly analogous to how Excel/Sheets works.
+        // It's different because what Sheets does is so wrong it's useless, so we're not even going to bother. To see
+        // what Sheets does drag fill a sequence that looks like: SP1.5000, SP1.6000, SP1.7000.
+        // Note: We determine pad length from the first value in a sequence because that is what Excel and Sheets do
+        padLength = detectPadLength(splitValues[0][1]);
+    } else if (isFloatSeq) {
+        firstValue = parseFloat(firstValue);
+        lastValue = parseFloat(lastValue);
     }
 
     if (isFloatSeq || isIntSeq) {
-        // increment -> last value minus first value divide by the number of steps in the initial selection
+        // increment = last value minus first value divide by the number of steps in the initial selection
+        // Note: our increment calculation is different from Excel/Sheets, but that's because their behavior doesn't
+        // make any sense for certain sequences, e.g.:
+        //  - 1, 3, 3, 7 increments by 1 once, then 1.8 the rest of the time
+        //  - 5, 9, 9, 11 increments by 2 once, then 1.8 the rest of the time
+        //  - 1, 1, 1, 2, 2, 2, 3, 3, 3 increments by 0.5 once, then 0.3 the rest of the time
+        // Our behavior results in a consistent increment and can be easily explained
         increment = decimalDifference(lastValue, firstValue);
         increment = increment / (displayValues.length - 1);
         incrementType = IncrementType.NUMBER;
@@ -818,6 +851,7 @@ function inferSelectionIncrement(
         increment,
         incrementType,
         initialSelectionValues: values,
+        padLength,
         prefix,
         startingValue: direction === IncrementDirection.FORWARD ? lastValue : firstValue,
     };
@@ -986,48 +1020,42 @@ async function getParsedLookup(
 }
 
 /**
- * Fills a column of cells based on the initially selected values.
+ * Generates an array of string values to paste into a selection of cells based on the values of an initial selection.
+ *
  * If the initialSelection is for a single cell, the fill operation will always be a copy of that value.
  * If the initialSelection includes a range of cells and all values are numeric (or numbers prefixed with the same
  * string), fill via a generated sequence where the step/diff is based on the first and last value in the initSelection.
  * if the initialSelection is a single row, and the value is a date (as determined by the date format set by the server)
  * then we will fill via a generated sequence that increments the date by one day each row.
- * If the initialSelection includes a range of cells and not all values are numeric, fill via a copy of all of the values
+ * If the initialSelection includes a range of cells and not all values are numeric, fill via a copy of all the values
  * in initSelection.
  * @param editorModel An EditorModel object
- * @param column
- * @param columnMetadata
- * @param cellMessages The CellMessages object to mutate, we cannot use the one from EditorModel because we may need to
- * modify multiple columns of data in one event (see dragFillEvent).
- * @param cellValues The CellValues object to mutate, we cannot use the one from EditorModel because we may need to
- * modify multiple columns of data in one event (see dragFillEvent).
  * @param initialSelection An array of sorted cell keys, all from the same column that were initially selected
+ * @param readonlyRows An array of readonly rows
  * @param selectionToFill An array of sorted cell keys, all from the same column, to be filled with values based on the
  * content of initialSelection
- * @param forUpdate True if this is operating on update query filters.
- * @param targetContainerPath
  */
-export async function fillColumnCells(
+export function generateColumnFillValues(
     editorModel: EditorModel,
-    column: QueryColumn,
-    columnMetadata: EditableColumnMetadata,
-    cellMessages: CellMessages,
-    cellValues: CellValues,
     initialSelection: string[],
-    selectionToFill: string[],
-    forUpdate: boolean,
-    targetContainerPath: string
-): Promise<CellMessagesAndValues> {
-    const { direction, increment, incrementType, prefix, startingValue, initialSelectionValues } =
+    readonlyRows: string[],
+    selectionToFill: string[]
+): string[] {
+    const { direction, increment, incrementType, padLength, prefix, startingValue, initialSelectionValues } =
         inferSelectionIncrement(editorModel, initialSelection, selectionToFill);
 
     if (direction === IncrementDirection.BACKWARD) {
         selectionToFill.reverse();
     }
 
-    selectionToFill.forEach((cellKey, i) => {
-        let fillValue = initialSelectionValues[i % initialSelectionValues.length];
+    return selectionToFill.map((cellKey, i) => {
+        const { fieldKey, rowIdx } = parseCellKey(cellKey);
+        const { isReadonlyCell, isReadonlyRow } = editorModel.getCellReadStatus(fieldKey, rowIdx, readonlyRows);
+        // Only need to generate blank values for read only cells, paste will ignore them
+        if (isReadonlyCell || isReadonlyRow) return '';
 
+        const initialValue = initialSelectionValues[i % initialSelectionValues.length];
+        let value = initialValue.map(v => quoteValueWithDelimiters(v.display, ',')).join(',');
         if (incrementType === IncrementType.NUMBER) {
             const amount = increment * (i + 1);
             let raw: number | string;
@@ -1038,9 +1066,13 @@ export async function fillColumnCells(
                 raw = decimalDifference(startingValue as number, amount, true);
             }
 
+            if (padLength !== undefined) {
+                raw = raw.toString(10).padStart(padLength, '0');
+            }
+
             if (prefix !== undefined) raw = prefix + raw;
-            const display = raw.toString();
-            fillValue = List([{ raw, display }]);
+            // Issue 52412
+            value = quoteValueWithDelimiters(raw.toString(), ',');
         } else if (incrementType === IncrementType.DATE || incrementType === IncrementType.DATETIME) {
             let date = parseDate(startingValue);
 
@@ -1050,107 +1082,68 @@ export async function fillColumnCells(
                 date = subDays(date, i + 1);
             }
 
-            const raw = incrementType === IncrementType.DATE ? formatDate(date) : formatDateTime(date);
-            fillValue = List([{ raw, display: raw }]);
+            value = incrementType === IncrementType.DATE ? formatDate(date) : formatDateTime(date);
         }
 
-        cellValues = cellValues.set(cellKey, fillValue);
+        return value;
     });
-
-    const filteredLookupValues = columnMetadata?.filteredLookupValues?.toArray();
-    const lookupValueCache: LookupValueCache = {};
-    for (const cellKey of selectionToFill) {
-        // If the column is a lookup, then we need to query for the rowIds so we can set the correct raw values,
-        // otherwise insert will fail. This is most common for cross-folder sample selection (Issue 50363)
-        if (column.isPublicLookup()) {
-            const display = cellValues
-                .get(cellKey)
-                .map(v => v.display)
-                .toArray();
-
-            const { message, valueDescriptors } = await getParsedLookup(
-                column,
-                lookupValueCache,
-                display,
-                filteredLookupValues ?? display.join(','),
-                cellKey,
-                forUpdate,
-                targetContainerPath,
-                editorModel
-            );
-            cellValues = cellValues.set(cellKey, valueDescriptors);
-            cellMessages = cellMessages.set(cellKey, message);
-        } else {
-            const { message } = getValidatedEditableGridValue(cellValues.get(cellKey)?.get(0)?.display, column);
-            cellMessages = cellMessages.set(cellKey, message);
-        }
-    }
-
-    return { cellValues, cellMessages };
 }
 
-type CellMessagesAndValues = Pick<EditorModel, 'cellMessages' | 'cellValues'>;
-
 /**
- * @param editorModel
+ * @param editorModel An EditorModel object
  * @param initialSelection The initial selection before the selection was expanded
- * @param readonlyRows A list of readonly rows
+ * @param readonlyRows An array of readonly rows
  * @param forUpdate True if this is operating on update query filters.
  * @param targetContainerPath The container path to use when looking up lookup values in the forUpdate false case
  */
-export async function dragFillEvent(
+export function dragFillEvent(
     editorModel: EditorModel,
     initialSelection: string[],
     readonlyRows: string[],
     forUpdate: boolean,
     targetContainerPath: string
-): Promise<CellMessagesAndValues> {
+): Promise<Partial<EditorModel>> {
+    // Note: this method works by generating a TSV of new values and treating it as if the user pasted the TSV. This
+    // lets us reuse our paste code which is reasonably complex.
     const { columnMap, selectionCells } = editorModel;
-    let { cellMessages, cellValues } = editorModel;
+    const { cellMessages, cellValues } = editorModel;
 
     // If the selection size hasn't changed, then the selection hasn't changed, so return the existing cellValues
-    if (selectionCells.length === initialSelection.length) return { cellMessages, cellValues };
+    if (selectionCells.length === initialSelection.length) return Promise.resolve({ cellMessages, cellValues });
 
     const selectionToFill = generateFillCellKeys(editorModel, initialSelection, selectionCells);
+    const filledColumns = [];
     for (const columnCells of selectionToFill) {
         const { fieldKey } = parseCellKey(columnCells[0]);
         const initialSelectionByCol = initialSelection.filter(cellKey => parseCellKey(cellKey).fieldKey === fieldKey);
         const column = columnMap.get(fieldKey);
-        const metadata = editorModel.getColumnMetadata(fieldKey);
 
-        // Don't manipulate any values in read only columns
         if (column.readOnly) {
+            // Generate blank values for readOnly columns, they'll be ignored during paste
+            filledColumns.push(columnCells.map(() => ''));
             continue;
         }
 
-        const selectionToFillByCol = columnCells.filter(cellKey => {
-            const { fieldKey, rowIdx } = parseCellKey(cellKey);
-            const { isReadonlyCell, isReadonlyRow } = editorModel.getCellReadStatus(fieldKey, rowIdx, readonlyRows);
-            return !isReadonlyCell && !isReadonlyRow;
-        });
-
-        // if nothing to fill, i.e. read only cells, skip
-        if (selectionToFillByCol.length === 0) {
-            continue;
-        }
-
-        // eslint-disable-next-line no-await-in-loop
-        const messagesAndValues = await fillColumnCells(
-            editorModel,
-            column,
-            metadata,
-            cellMessages,
-            cellValues,
-            initialSelectionByCol,
-            selectionToFillByCol,
-            forUpdate,
-            targetContainerPath
-        );
-        cellValues = messagesAndValues.cellValues;
-        cellMessages = messagesAndValues.cellMessages;
+        filledColumns.push(generateColumnFillValues(editorModel, initialSelectionByCol, readonlyRows, columnCells));
     }
 
-    return { cellMessages, cellValues };
+    const rowStrings = [];
+    for (let rowIdx = 0; rowIdx < filledColumns[0].length; rowIdx++) {
+        rowStrings.push(filledColumns.map(column => column[rowIdx]).join('\t'));
+    }
+
+    const tsv = rowStrings.join('\n');
+
+    return validateAndInsertPastedData(
+        editorModel,
+        tsv,
+        readonlyRows,
+        true,
+        forUpdate,
+        targetContainerPath,
+        false,
+        selectionToFill
+    );
 }
 
 /**
@@ -1430,14 +1423,15 @@ function getPasteValuesByColumn(paste: PasteModel): List<List<string>> {
     return valuesByColumn.asImmutable();
 }
 
-export async function validateAndInsertPastedData(
+export function validateAndInsertPastedData(
     editorModel: EditorModel,
     value: string,
     readonlyRows: string[],
     lockRowCount: boolean,
     forUpdate: boolean,
     targetContainerPath: string,
-    selectCells: boolean
+    selectCells: boolean,
+    selectionToFill?: string[][]
 ): Promise<Partial<EditorModel>> {
     let selectedColIdx: number;
     let selectedRowIdx: number;
@@ -1446,7 +1440,7 @@ export async function validateAndInsertPastedData(
         // Issue 51359 - When pasting during multiselect we want to paste from the first cell in the selection,
         // otherwise we'll paste from the initially selected cell, which will fill the wrong area. This is most obvious
         // if you select upwards, then paste.
-        const minCellKey = editorModel.selectionCells[0];
+        const minCellKey = selectionToFill !== undefined ? selectionToFill[0][0] : editorModel.selectionCells[0];
         const { fieldKey, rowIdx } = parseCellKey(minCellKey);
         selectedRowIdx = rowIdx;
         selectedColIdx = editorModel.orderedColumns.indexOf(fieldKey);
@@ -1473,11 +1467,12 @@ export async function validateAndInsertPastedData(
     } else {
         const fieldKey = editorModel.getFieldKeyByIndex(selectedColIdx);
         const cellKey = genCellKey(fieldKey, selectedRowIdx);
-        return { cellMessages: editorModel.cellMessages.set(cellKey, { message: paste.message }) };
+        // We have to coerce this to a promise because insertPastedData returns a promise.
+        return Promise.resolve({ cellMessages: editorModel.cellMessages.set(cellKey, { message: paste.message }) });
     }
 }
 
-export async function pasteEvent(
+export function pasteEvent(
     editorModel: EditorModel,
     event: any,
     readonlyRows: string[],
@@ -1489,7 +1484,7 @@ export async function pasteEvent(
     if (editorModel && editorModel.hasSelection && !editorModel.hasFocus) {
         cancelEvent(event);
         const value = getPasteValue(event);
-        return await validateAndInsertPastedData(
+        return validateAndInsertPastedData(
             editorModel,
             value,
             readonlyRows,

@@ -2222,6 +2222,7 @@ export interface SystemField {
     DataType: string;
     Description: string;
     Disableble: boolean;
+    Editable?: boolean;
     Enabled?: boolean;
     Label: string;
     Name: string;

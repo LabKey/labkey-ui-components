@@ -277,6 +277,7 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         Required: false,
         Description: '',
         Disableble: true,
+        Editable: false,
     },
 ];
 

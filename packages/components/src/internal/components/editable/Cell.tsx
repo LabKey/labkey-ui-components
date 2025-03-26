@@ -235,7 +235,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
     }
 
     get isReadOnly(): boolean {
-        return this.props.readOnly || this.props.col.readOnly
+        return this.props.readOnly || this.props.col.readOnly;
     }
 
     componentDidUpdate(prevProps: Readonly<CellProps>): void {

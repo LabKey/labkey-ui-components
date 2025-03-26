@@ -1,4 +1,4 @@
-import { Filter, QueryKey, Utils } from '@labkey/api';
+import { Filter, getServerContext, QueryKey, Utils } from '@labkey/api';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { addDays, subDays } from 'date-fns';
 
@@ -279,6 +279,25 @@ const findLookupValues = async (options: FindLookupValuesOptions): Promise<Value
     }, []);
 };
 
+function getRowFolderPath(row: Record<string, any>): string {
+    const rowValue = caseInsensitive(row, 'Folder') ?? caseInsensitive(row, 'Container');
+    const currentFolder = getServerContext().container;
+    let folderPath: string;
+
+    if (Array.isArray(rowValue)) {
+        folderPath = rowValue[0]?.value;
+    } else {
+        folderPath = rowValue?.value;
+    }
+
+    // If the value is the current folder's entityId, then return the current folder's path
+    if (folderPath !== undefined && folderPath !== currentFolder.id) {
+        return folderPath;
+    }
+
+    return currentFolder.path;
+}
+
 async function getLookupValueDescriptors(
     columns: QueryColumn[],
     rows: Record<string, Record<string, any>>,
@@ -292,52 +311,72 @@ async function getLookupValueDescriptors(
     const lookupPromises = columns
         .filter(col => col.isPublicLookup())
         .map(async col => {
-            const values = new Set<number>();
+            const allValues = new Set<number>();
+            const valueFolderMap: Record<string, Set<number>> = {};
+            const valueDisplayValueMap: Record<number, any> = {};
 
-            ids.forEach(id => {
+            const processValue = (val: number, row: Record<string, any>): void => {
+                const folderPath = getRowFolderPath(row);
+                if (!valueFolderMap[folderPath]) valueFolderMap[folderPath] = new Set<number>();
+                valueFolderMap[folderPath].add(val);
+                allValues.add(val);
+            };
+
+            for (const id of ids) {
                 const row = rows[id];
                 const value = row?.[col.fieldKey] ?? row?.[col.name];
-                if (Utils.isNumber(value)) {
-                    values.add(value);
+
+                if (Array.isArray(value)) {
+                    value.forEach(val => {
+                        if (Utils.isNumber(val?.value)) {
+                            processValue(val?.value, row);
+                            if (val?.displayValue) {
+                                valueDisplayValueMap[val.value] = val.displayValue;
+                            }
+                        }
+                    });
+                } else if (Utils.isNumber(value)) {
+                    processValue(value, row);
                 }
+            }
 
-                // eslint-disable-next-line no-warning-comments
-                // FIXME: Issue 52634: Resolve lookup values against array-based results.
-                // Previously, this had been looking for List.isList(value) which is no longer viable as Lists are no
-                // longer passed into this function. When re-enabling this behavior I encountered multiple issues.
-                //
-                // } else if (Array.isArray(value)) {
-                //     value.forEach(val => {
-                //         if (Utils.isNumber(val?.value)) {
-                //             values.add(val.value);
-                //         }
-                //     });
-                // }
-            });
+            if (allValues.size > 0) {
+                const results = await Promise.all(
+                    Object.entries(valueFolderMap).map(([containerPath, values]) =>
+                        findLookupValues({
+                            api,
+                            column: col,
+                            containerPath,
+                            forUpdate,
+                            lookupKeyValues: Array.from(values),
+                        })
+                    )
+                );
 
-            if (values.size > 0) {
-                // eslint-disable-next-line no-warning-comments
-                // FIXME: Issue 52634: Respect folder of the row. Aggregate lookup value requests by folder.
-                // This does not respect the folder/container of the row which results in unresolved lookups because
-                // the request container is incorrect.
-                const descriptors = await findLookupValues({
-                    api,
-                    column: col,
-                    forUpdate,
-                    lookupKeyValues: Array.from(values),
-                });
                 const messageAndValues: MessageAndValue[] = [];
-
-                descriptors.forEach(desc => {
-                    values.delete(desc.raw);
-                    messageAndValues.push({ valueDescriptor: desc });
+                results.forEach(descriptors => {
+                    descriptors.forEach(valueDescriptor => {
+                        if (allValues.has(valueDescriptor.raw)) {
+                            allValues.delete(valueDescriptor.raw);
+                            messageAndValues.push({ valueDescriptor });
+                        }
+                    });
                 });
 
                 // Issue 52311: Mark unresolved lookup values with a warning.
-                for (const value of values) {
+                for (const value of allValues) {
+                    let message: string;
+                    const display = valueDisplayValueMap[value];
+
+                    if (display !== undefined) {
+                        message = `${display} is no longer a valid value. Data may have moved.`;
+                    } else {
+                        message = lookupValidationError(value).message;
+                    }
+
                     messageAndValues.push({
-                        message: { ...lookupValidationError(value), isWarning: true },
-                        valueDescriptor: { display: `<${value}>`, raw: value },
+                        message: { message, isWarning: true },
+                        valueDescriptor: { display: valueDisplayValueMap[value] ?? `<${value}>`, raw: value },
                     });
                 }
 

@@ -21,6 +21,8 @@ import { getContainerFilterForLookups } from '../../query/api';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { resolveErrorMessage } from '../../util/messaging';
+
 import {
     CellMessage,
     EditableColumnMetadata,
@@ -279,6 +281,8 @@ const findLookupValues = async (options: FindLookupValuesOptions): Promise<Value
     }, []);
 };
 
+// Resolves the folder path for a row during initialization.
+// If a folder path is not explicitly resolved, then it defaults to the current folder.
 function getRowFolderPath(row: Record<string, any>): string {
     const rowValue = caseInsensitive(row, 'Folder') ?? caseInsensitive(row, 'Container');
     const currentFolder = getServerContext().container;
@@ -313,8 +317,10 @@ async function getLookupValueDescriptors(
         .map(async col => {
             const allValues = new Set<number>();
             const valueFolderMap: Record<string, Set<number>> = {};
-            const valueDisplayValueMap: Record<number, any> = {};
+            const displayValueMap: Record<number, any> = {};
 
+            // The same value for a column may be set in rows from different folders. We need to validate each value
+            // for each folder where that value is utilized. Due to this we end up making a request per folder/column/value.
             const processValue = (val: number, row: Record<string, any>): void => {
                 const folderPath = getRowFolderPath(row);
                 if (!valueFolderMap[folderPath]) valueFolderMap[folderPath] = new Set<number>();
@@ -326,31 +332,51 @@ async function getLookupValueDescriptors(
                 const row = rows[id];
                 const value = row?.[col.fieldKey] ?? row?.[col.name];
 
-                if (Array.isArray(value)) {
+                if (Utils.isNumber(value)) {
+                    processValue(value, row);
+                } else if (Array.isArray(value)) {
                     value.forEach(val => {
                         if (Utils.isNumber(val?.value)) {
                             processValue(val?.value, row);
                             if (val?.displayValue) {
-                                valueDisplayValueMap[val.value] = val.displayValue;
+                                displayValueMap[val.value] = val.displayValue;
                             }
                         }
                     });
-                } else if (Utils.isNumber(value)) {
-                    processValue(value, row);
                 }
             }
 
             if (allValues.size > 0) {
+                // Collect errors made when attempting to resolve lookup values so we can at least tell the user
+                // something went awry when trying to validate the values. This is expected to be an uncommon scenario.
+                const errorMap: Record<number, string> = {};
+
                 const results = await Promise.all(
-                    Object.entries(valueFolderMap).map(([containerPath, values]) =>
-                        findLookupValues({
-                            api,
-                            column: col,
-                            containerPath,
-                            forUpdate,
-                            lookupKeyValues: Array.from(values),
-                        })
-                    )
+                    // This must be async as returning the result directly avoids the try/catch handling
+                    Object.entries(valueFolderMap).map(async ([containerPath, values]) => {
+                        let descriptors_: ValueDescriptor[];
+                        try {
+                            descriptors_ = await findLookupValues({
+                                api,
+                                column: col,
+                                containerPath,
+                                forUpdate,
+                                lookupKeyValues: Array.from(values),
+                            });
+                        } catch (e) {
+                            let errorMsg = `Failed to resolves values for column ${col.caption ?? col.name}.`;
+                            const resolved = resolveErrorMessage(e);
+                            if (resolved) {
+                                errorMsg += ' ' + resolved;
+                            }
+                            values.forEach(value => {
+                                errorMap[value] = errorMsg;
+                            });
+                            descriptors_ = [];
+                        }
+
+                        return descriptors_;
+                    })
                 );
 
                 const messageAndValues: MessageAndValue[] = [];
@@ -365,18 +391,14 @@ async function getLookupValueDescriptors(
 
                 // Issue 52311: Mark unresolved lookup values with a warning.
                 for (const value of allValues) {
-                    let message: string;
-                    const display = valueDisplayValueMap[value];
-
-                    if (display !== undefined) {
-                        message = `${display} is no longer a valid value. Data may have moved.`;
-                    } else {
-                        message = lookupValidationError(value).message;
-                    }
+                    const displayValue = displayValueMap[value];
 
                     messageAndValues.push({
-                        message: { message, isWarning: true },
-                        valueDescriptor: { display: valueDisplayValueMap[value] ?? `<${value}>`, raw: value },
+                        message: {
+                            isWarning: true,
+                            message: errorMap[value] ?? lookupValidationError(value, false, displayValue).message,
+                        },
+                        valueDescriptor: { display: displayValue ?? `<${value}>`, raw: value },
                     });
                 }
 
@@ -388,12 +410,22 @@ async function getLookupValueDescriptors(
     return lookupValues;
 }
 
-function lookupValidationError(value: string | number | boolean, fromPaste?: boolean): CellMessage {
-    let suffix = '';
-    if (fromPaste && typeof value === 'string' && value.toString().indexOf(',') > -1) {
-        suffix = '. Please make sure values that contain commas are properly quoted.';
+export function lookupValidationError(
+    value: string | number | boolean,
+    fromPaste?: boolean,
+    displayValue?: any
+): CellMessage {
+    let message = displayValue !== undefined ? `${displayValue} is no longer a valid value` : `Could not find ${value}`;
+
+    if (fromPaste) {
+        if (typeof value === 'string' && value.toString().indexOf(',') > -1) {
+            message += '. Please make sure values that contain commas are properly quoted.';
+        }
+    } else {
+        message += '. Data may have been moved or deleted.';
     }
-    return { message: `Could not find ${value}${suffix}` };
+
+    return { message };
 }
 
 async function getLookupDisplayValue(column: QueryColumn, value: any, containerPath: string): Promise<MessageAndValue> {

@@ -16,6 +16,7 @@ import {
     changeColumn,
     detectPadLength,
     loadEditorModelData,
+    lookupValidationError,
     parseIntIfNumber,
     parsePastedLookup,
     removeColumn,
@@ -1071,32 +1072,27 @@ describe('loadEditorModelData', () => {
         },
     };
 
-    function getTestApi(): ComponentsAPIWrapper {
+    function getTestApi(selectRows = jest.fn()): ComponentsAPIWrapper {
         const testApi = getTestAPIWrapper(jest.fn);
-
-        return {
-            ...testApi,
-            query: {
-                ...testApi.query,
-                selectRows: jest.fn().mockImplementation(({ schemaQuery }) => {
-                    const rows_: Row[] = [];
-
-                    if (schemaQuery.queryName === 'AssayList') {
-                        // Resolve lookup value for lkField./,$&
-                        rows_.push({ Name: { value: 'DAS Testing' }, RowId: { value: 42876 } });
-                    } else if (schemaQuery.queryName === 'Materials') {
-                        // Resolve lookup value for sampleField./,$&
-                        rows_.push({ Name: { value: '10-1-1' }, RowId: { value: 117334 } });
-                    }
-
-                    return { rows: rows_ };
-                }),
-            },
-        };
+        return { ...testApi, query: { ...testApi.query, selectRows } };
     }
 
-    test('get column by index', async () => {
-        const api = getTestApi();
+    test('getLookupValueDescriptors', async () => {
+        const selectRows = jest.fn().mockImplementation(({ schemaQuery }) => {
+            const rows_: Row[] = [];
+
+            if (schemaQuery.queryName === 'AssayList') {
+                // Resolve lookup value for lkField./,$&
+                rows_.push({ Name: { value: 'DAS Testing' }, RowId: { value: 42876 } });
+            } else if (schemaQuery.queryName === 'Materials') {
+                // Resolve lookup value for sampleField./,$&
+                rows_.push({ Name: { value: '10-1-1' }, RowId: { value: 117334 } });
+            }
+
+            return { rows: rows_ };
+        });
+
+        const api = getTestApi(selectRows);
         const result = await loadEditorModelData(orderedRows, rows, columns, false, api);
 
         expect(result.cellValues.toJS()).toStrictEqual({
@@ -1119,13 +1115,70 @@ describe('loadEditorModelData', () => {
         // Issue 52311: Expect lookup validation warnings
         expect(result.cellMessages.toJS()).toStrictEqual({
             'lkfield$p$s$c$d$a&&1': {
-                message: 'Assay Required File is no longer a valid value. Data may have moved.',
                 isWarning: true,
+                message: 'Assay Required File is no longer a valid value. Data may have been moved or deleted.',
             },
-            'samplefield$p$s$c$d$a&&0': { message: 'Could not find 2675720', isWarning: true },
+            'samplefield$p$s$c$d$a&&0': {
+                isWarning: true,
+                message: 'Could not find 2675720. Data may have been moved or deleted.',
+            },
         });
 
         // Expect both lookup columns to have been validated
         expect(api.query.selectRows).toHaveBeenCalledTimes(2);
+    });
+
+    test('getLookupValueDescriptors failed lookup request', async () => {
+        const selectRows = jest.fn().mockRejectedValue('Who goes there?!');
+
+        const api = getTestApi(selectRows);
+        const result = await loadEditorModelData(orderedRows, rows, columns, false, api);
+
+        // Issue 52311: Expect lookup validation warnings
+        expect(result.cellMessages.toJS()).toStrictEqual({
+            'lkfield$p$s$c$d$a&&0': {
+                isWarning: true,
+                message: 'Failed to resolves values for column lkField./,$&. Who goes there?!',
+            },
+            'lkfield$p$s$c$d$a&&1': {
+                isWarning: true,
+                message: 'Failed to resolves values for column lkField./,$&. Who goes there?!',
+            },
+            'samplefield$p$s$c$d$a&&0': {
+                isWarning: true,
+                message: 'Failed to resolves values for column sampleField./,$&. Who goes there?!',
+            },
+            'samplefield$p$s$c$d$a&&1': {
+                isWarning: true,
+                message: 'Failed to resolves values for column sampleField./,$&. Who goes there?!',
+            },
+        });
+
+        // Expect both lookup columns to have been validated
+        expect(api.query.selectRows).toHaveBeenCalledTimes(2);
+    });
+});
+
+describe('lookupValidationError', () => {
+    test('value only', () => {
+        expect(lookupValidationError('s').message).toEqual('Could not find s. Data may have been moved or deleted.');
+        expect(lookupValidationError(1.4).message).toEqual('Could not find 1.4. Data may have been moved or deleted.');
+        expect(lookupValidationError(false).message).toEqual(
+            'Could not find false. Data may have been moved or deleted.'
+        );
+    });
+
+    test('fromPaste', () => {
+        expect(lookupValidationError(false, true).message).toEqual('Could not find false');
+        expect(lookupValidationError('beep', true).message).toEqual('Could not find beep');
+        expect(lookupValidationError('"sara", "pete"', true).message).toEqual(
+            'Could not find "sara", "pete". Please make sure values that contain commas are properly quoted.'
+        );
+    });
+
+    test('with displayValue', () => {
+        expect(lookupValidationError('beep,', false, 'vw').message).toEqual(
+            'vw is no longer a valid value. Data may have been moved or deleted.'
+        );
     });
 });

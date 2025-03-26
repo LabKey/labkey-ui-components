@@ -266,7 +266,7 @@ export function getUpdateFilterExpressionFilter(
             value = 'false';
         } else if (value && filterType.isMultiValued()) {
             // Issue 52068: for multivalued filter types, split on new line to get an array of values
-            value = value.split('\n');
+            value = value.indexOf('\n') > -1 ? value.split('\n') : filterType.parseValue(value);
         }
 
         filter = Filter.create(fieldKey, value, filterType);

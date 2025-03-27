@@ -13,8 +13,8 @@ export interface PreviewData {
 
 type Props = FileGridPreviewProps & {
     columns?: List<GridColumn>;
-    previewData: PreviewData;
     errorMsg?: string;
+    previewData: PreviewData;
 };
 
 export class FilePreviewGrid extends React.Component<Props, any> {

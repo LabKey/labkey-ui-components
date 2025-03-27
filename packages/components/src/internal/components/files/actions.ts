@@ -23,7 +23,7 @@ export function convertRowDataIntoPreviewData(
     const headerRow = data.size > 0 ? data.get(0) : undefined;
     if (!headerRow) {
         return {
-            data: rows
+            data: rows,
         };
     }
 
@@ -79,7 +79,10 @@ export function convertRowDataIntoPreviewData(
 
     return {
         data: rows,
-        warningMsg: duplicateColumns.size > 0 ? 'Duplicate column(s) provided: ' + [...duplicateColumns].join(', ') + '.' : undefined,
+        warningMsg:
+            duplicateColumns.size > 0
+                ? 'Duplicate column(s) provided: ' + [...duplicateColumns].join(', ') + '.'
+                : undefined,
     };
 }
 

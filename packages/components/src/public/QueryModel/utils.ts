@@ -163,7 +163,7 @@ export async function createSnapshotSelectionKey(model: QueryModel): Promise<str
         key,
         true,
         Array.from(model.selections),
-        model.containerPath,
+        model.selectionContainerPath,
         false,
         model.schemaName,
         model.queryName

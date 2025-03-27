@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.26.TBD
+*Released*: TBD
+- Issue 52658: Use raw values for units and stored amounts in `BulkUpdateForm`
+
 ### version 6.26.7
 *Released*: 20 March 2025
 - Update `ISO_DATE_TIME_FORMAT_STRING` constant to match server.

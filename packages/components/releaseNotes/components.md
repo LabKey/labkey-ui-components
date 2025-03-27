@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.26.X
+*Released*: X 2025
+- Issue 52616: LKSM: When two lineage alias columns are in a file we silently ignore one
+  - Add warning about duplicate columns in file preview panel
+  - Show duplicate columns in preview grid
+
 ### version 6.26.7
 *Released*: 20 March 2025
 - Update `ISO_DATE_TIME_FORMAT_STRING` constant to match server.

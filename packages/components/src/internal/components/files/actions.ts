@@ -10,18 +10,21 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { FileSizeLimitProps } from '../../../public/files/models';
 
 import { ALL_FILES_LIMIT_KEY } from './models';
+import { PreviewData } from './FilePreviewGrid';
 
 // Converts the 2D array returned by inferDomain action into a list of row maps that the grid understands
 export function convertRowDataIntoPreviewData(
     data: List<any>,
     previewRowCount: number,
     fields?: List<QueryColumn>
-): List<Map<string, any>> {
+): PreviewData {
     let rows = List<Map<string, any>>();
 
     const headerRow = data.size > 0 ? data.get(0) : undefined;
     if (!headerRow) {
-        return rows;
+        return {
+            data: rows
+        };
     }
 
     // numeric data is imported as Doubles for excel (see org.labkey.api.exp.PropertyType#getFromExcelCell)
@@ -39,11 +42,13 @@ export function convertRowDataIntoPreviewData(
         });
     }
 
+    const duplicateColumns = new Set<string>();
     for (let i = 1; i < Math.min(previewRowCount + 1, data.size); i++) {
         const row = data.get(i);
 
         let m = OrderedMap<string, any>();
         headerRow.forEach((column, j) => {
+            let columnName = column;
             let value = row.get(j);
             // Issue 43531: We only want to do the integer conversion if the value is an integer.  If the value is a string that
             // looks like an integer (e.g., 000304), we want to retain the leading 0s at least in the preview.  The 0's will get
@@ -55,13 +60,27 @@ export function convertRowDataIntoPreviewData(
                 value.toString().endsWith('.0')
             )
                 value = parseScientificInt(value);
-            m = m.set(column, value);
+
+            // don't show blank columns
+            if (columnName) {
+                // Issue 52616: LKSM: When two lineage alias columns are in a file we silently ignore one
+                // preview grid should show all duplicate columns. Append ' ' to duplicate columns to de-duplicate them.
+                while (m.has(columnName)) {
+                    duplicateColumns.add(columnName);
+                    columnName = columnName + ' ';
+                }
+
+                m = m.set(columnName, value);
+            }
         });
 
         rows = rows.push(m);
     }
 
-    return rows;
+    return {
+        data: rows,
+        warningMsg: duplicateColumns.size > 0 ? 'Duplicate column(s) provided: ' + [...duplicateColumns].join(', ') + '.' : undefined,
+    };
 }
 
 // Finds the extension on the given file name, including the '.'. Optionally, returning the type based on the first or

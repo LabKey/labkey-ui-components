@@ -3,7 +3,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 6.??.??
 *Released*: ??
-- Issue 52332: Editing a Parent field that contains a mix of resolved and unresolved parents deletes all references
 - Add `createSnapshotSelectionKey`
   - Used to snapshot selections for a given QueryModel without needing to use the server side snapshot API or
   useSnapshotSelections flag

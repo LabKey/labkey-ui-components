@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { FC, memo, useCallback, useMemo, KeyboardEvent } from 'react';
-import { Filter, Query, Utils } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 import { List } from 'immutable';
 
 import { QueryColumn } from '../../../public/QueryColumn';
@@ -97,16 +97,6 @@ const QueryLookupCell: FC<QueryLookupCellProps> = memo(props => {
     );
 
     let selectValue = isMultiple ? rawValues : rawValues[0];
-
-    if (isMultiple) {
-        // Issue 52332
-        // If the cell supports multiple values, then all the values should be numbers. Any non-numeric value means we
-        // were not able to resolve the rowId. If we pass string values and numeric values in an IN filter LKS will
-        // return 0 rows, even if some of the values are valid. e.g. an IN filter for [123, 'S-124'] will return 0 rows,
-        // even if 123 is a valid rowId. This results in the dropdown having no value when the user tries to edit the
-        // cell.
-        selectValue = selectValue.filter(value => Utils.isNumber(value));
-    }
 
     // Issue 49502: Some column types have special handling of raw data, i.e. StoredAmount and Units
     if (columnRenderer) {

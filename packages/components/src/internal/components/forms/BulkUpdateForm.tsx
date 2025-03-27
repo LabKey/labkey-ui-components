@@ -172,7 +172,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     };
 
     renderBulkUpdateHeader() {
-        const { header } = this.props;
+        const { header, onSubmitForEdit } = this.props;
         if (!header) return null;
 
         const noun = this.getSelectionNoun();
@@ -184,7 +184,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                         Make changes to the selected {noun}. Enable a field to update or remove the value for the
                         selected {noun}.
                     </p>
-                    {this.getSelectionCount() > 1 && (
+                    {this.getSelectionCount() > 1 && onSubmitForEdit && (
                         <p>To update individual {noun} in this selection group, select "Edit with Grid".</p>
                     )}
                 </div>

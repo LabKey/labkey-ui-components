@@ -3,7 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 6.26.TBD
 *Released*: TBD
-- Issue 52658: Use raw values for units and stored amounts in `BulkUpdateForm`
+- Issue 52658:
+  - Use raw values for units and stored amounts in `BulkUpdateForm`
+  - Don't show text about "Edit with Grid" if that button won't be shown
 
 ### version 6.26.7
 *Released*: 20 March 2025

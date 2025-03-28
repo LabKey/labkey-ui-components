@@ -285,12 +285,15 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             }
 
             if (filterType.multiValue && !filterType.betweenOperator) {
+                // Issue 52068: if the valueRaw is an array, just join it by new lines (not replacing semicolons)
+                const value = Array.isArray(valueRaw) ? valueRaw.join('\n') : (valueRaw?.replaceAll(';', '\n') ?? '');
+
                 return (
                     <textarea
                         className="form-control filter-expression__textarea"
                         name={'field-value-text' + suffix}
                         onChange={event => updateTextFilterFieldValue(filterIndex, event)}
-                        defaultValue={(valueRaw && valueRaw.replaceAll(';', '\n')) ?? ''}
+                        defaultValue={value}
                         rows={3}
                         required
                         placeholder={placeholder}

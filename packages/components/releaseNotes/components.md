@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.33.0
+*Released*: 28 March 2025
+- Issue 52068: Filtering on a value with a semicolon is incorrectly displayed in the filter modal facet filter listing
+  - getFilterValuesAsArray to account for multivalued filter types before splitting string value
+  - FilterExpressionView to handle value array for showing multivalued filter type textarea
+
 ### version 6.32.2
 *Released*: 25 March 2025
 - Issue 52608: Field names for calculated column validation need to escape quotes in executeSql query

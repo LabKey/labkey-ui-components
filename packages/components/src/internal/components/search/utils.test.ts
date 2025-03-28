@@ -216,6 +216,31 @@ describe('getFilterValuesAsArray', () => {
             getFilterValuesAsArray(Filter.create('textField', null, Filter.Types.IN), '[empty]', true)
         ).toStrictEqual([]);
     });
+
+    test('value with semicolon', () => {
+        // Issue 52068
+        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;c;d;e', Filter.Types.IN))).toStrictEqual([
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+        ]);
+        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;c;d;e', Filter.Types.NOT_IN))).toStrictEqual([
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+        ]);
+        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;c;d;e', Filter.Types.EQAUL))).toStrictEqual([
+            'a;b;c;d;e',
+        ]);
+        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;c;d;e', Filter.Types.NOT_EQUAL))).toStrictEqual([
+            'a;b;c;d;e',
+        ]);
+        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;c;d;e'))).toStrictEqual(['a;b;c;d;e']);
+    });
 });
 
 describe('getFieldFiltersValidationResult', () => {
@@ -373,6 +398,15 @@ describe('getUpdateFilterExpressionFilter', () => {
         isSoleFilter: false,
     };
 
+    const oneOfOption = {
+        betweenOperator: false,
+        label: 'Equals One Of',
+        multiValue: true,
+        value: 'in',
+        valueRequired: true,
+        isSoleFilter: false,
+    };
+
     const badOp = {
         betweenOperator: true,
         label: 'NotSupported',
@@ -429,6 +463,29 @@ describe('getUpdateFilterExpressionFilter', () => {
     test('clear between filter values', () => {
         expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', null, null, true)).toStrictEqual(
             Filter.create(fieldKey, null, Filter.Types.BETWEEN)
+        );
+    });
+
+    test('in filter type with value string', () => {
+        expect(getUpdateFilterExpressionFilter(oneOfOption, stringField, null, null, 'a;b;c')).toStrictEqual(
+            Filter.create(fieldKey, ['a', 'b', 'c'], Filter.Types.IN)
+        );
+        expect(getUpdateFilterExpressionFilter(oneOfOption, stringField, null, null, 'a\nb\nc')).toStrictEqual(
+            Filter.create(fieldKey, ['a', 'b', 'c'], Filter.Types.IN)
+        );
+        expect(getUpdateFilterExpressionFilter(oneOfOption, stringField, null, null, 'a;b;c\nd;e;f')).toStrictEqual(
+            Filter.create(fieldKey, ['a;b;c', 'd;e;f'], Filter.Types.IN)
+        );
+        expect(getUpdateFilterExpressionFilter(oneOfOption, stringField, null, null, 'a;b\nc\nd\ne;f')).toStrictEqual(
+            Filter.create(fieldKey, ['a;b', 'c', 'd', 'e;f'], Filter.Types.IN)
+        );
+
+        // non-multivalued type shouldn't split to array
+        expect(getUpdateFilterExpressionFilter(equalOp, stringField, null, null, 'a;b;c')).toStrictEqual(
+            Filter.create(fieldKey, 'a;b;c', Filter.Types.EQAUL)
+        );
+        expect(getUpdateFilterExpressionFilter(equalOp, stringField, null, null, 'a\nb\nc')).toStrictEqual(
+            Filter.create(fieldKey, 'a\nb\nc', Filter.Types.EQAUL)
         );
     });
 });
@@ -933,7 +990,7 @@ describe('getFilterSelections', () => {
         expect(filterSelections).toStrictEqual([
             {
                 filterType: oneOfOption,
-                firstFilterValue: 'test;zebra',
+                firstFilterValue: ['test', 'zebra'],
             },
         ]);
     });
@@ -968,7 +1025,7 @@ describe('getFilterSelections', () => {
             },
             {
                 filterType: oneOfOption,
-                firstFilterValue: 'unicorn;walrus',
+                firstFilterValue: ['unicorn', 'walrus'],
             },
         ]);
     });

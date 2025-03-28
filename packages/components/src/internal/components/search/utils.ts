@@ -111,22 +111,18 @@ export function isChooseValuesFilter(filter: Filter.IFilter): boolean {
 export const ALL_VALUE_DISPLAY = '[All]';
 export const EMPTY_VALUE_DISPLAY = '[blank]';
 export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: string, checkNull = false): any[] {
-    let values = [],
-        rawValues;
-    const rawValue = filter.getValue();
-
+    let rawValue = filter.getValue();
     if (checkNull && rawValue === null) return [];
 
-    if (Array.isArray(rawValue)) {
-        rawValues = [...rawValue];
-    } else if (typeof rawValue === 'string') {
-        rawValues = rawValue.split(';');
-    } else rawValues = [rawValue];
+    if (typeof rawValue === 'string') {
+        rawValue = filter.getFilterType().parseValue(rawValue);
+    }
+    const rawValues = Array.isArray(rawValue) ? [...rawValue] : [rawValue];
 
+    const values = [];
     rawValues.forEach(v => {
         values.push(v == '' ? (blankValue ?? EMPTY_VALUE_DISPLAY) : v);
     });
-
     return values;
 }
 
@@ -268,6 +264,9 @@ export function getUpdateFilterExpressionFilter(
             }
         } else if (!value && field.getDisplayFieldJsonType() === 'boolean') {
             value = 'false';
+        } else if (value && filterType.isMultiValued()) {
+            // Issue 52068: for multivalued filter types, split on new line to get an array of values
+            value = value.indexOf('\n') > -1 ? value.split('\n') : filterType.parseValue(value);
         }
 
         filter = Filter.create(fieldKey, value, filterType);
@@ -465,7 +464,7 @@ export function getFilterSelections(
                 filter.firstFilterValue = values[0];
                 filter.secondFilterValue = values[1];
             } else if (values.length > 1) {
-                filter.firstFilterValue = values.join(';');
+                filter.firstFilterValue = values;
             } else {
                 filter.firstFilterValue = values[0];
             }

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.33.0
+*Released*: 28 March 2025
 - Issue 52068: Filtering on a value with a semicolon is incorrectly displayed in the filter modal facet filter listing
   - getFilterValuesAsArray to account for multivalued filter types before splitting string value
   - FilterExpressionView to handle value array for showing multivalued filter type textarea

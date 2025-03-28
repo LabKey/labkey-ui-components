@@ -34,38 +34,38 @@ const COLUMNS = List<GridColumn>([
 
 describe('<FilePreviewGrid/>', () => {
     test('no data', () => {
-        const component = <FilePreviewGrid data={fromJS([])} previewCount={null} />;
+        const component = <FilePreviewGrid previewData={{data: fromJS([]), warningMsg: undefined}} previewCount={null} />;
         const { container } = render(component);
         expect(container).toMatchSnapshot();
     });
 
     test('one row of data', () => {
-        const component = <FilePreviewGrid data={fromJS([{ test: 123 }])} previewCount={null} />;
+        const component = <FilePreviewGrid previewData={{data: fromJS([{ test: 123 }]), warningMsg: undefined}} previewCount={null} />;
         const { container } = render(component);
         expect(container).toMatchSnapshot();
     });
 
     test('three rows of data', () => {
-        const component = <FilePreviewGrid data={DATA} previewCount={null} />;
+        const component = <FilePreviewGrid previewData={{data: DATA, warningMsg: undefined}} previewCount={null} />;
         const { container } = render(component);
         expect(container).toMatchSnapshot();
     });
 
     test('custom column headers', () => {
-        const component = <FilePreviewGrid data={DATA} previewCount={null} columns={COLUMNS} />;
+        const component = <FilePreviewGrid previewData={{data: DATA, warningMsg: undefined}} previewCount={null} columns={COLUMNS} />;
         const { container } = render(component);
         expect(container).toMatchSnapshot();
     });
 
     test('error message', () => {
-        const component = <FilePreviewGrid data={DATA} previewCount={null} errorMsg="Testing error message" />;
+        const component = <FilePreviewGrid previewData={{data: DATA, warningMsg: undefined}} previewCount={null} errorMsg="Testing error message" />;
         const { container } = render(component);
         expect(container).toMatchSnapshot();
     });
 
     test('error message with custom style', () => {
         const component = (
-            <FilePreviewGrid data={DATA} previewCount={null} errorMsg="Testing error message" errorStyle="danger" />
+            <FilePreviewGrid previewData={{data: DATA, warningMsg: undefined}} previewCount={null} errorMsg="Testing error message" errorStyle="danger" />
         );
         const { container } = render(component);
         expect(container).toMatchSnapshot();
@@ -73,14 +73,26 @@ describe('<FilePreviewGrid/>', () => {
 
     test('custom header and info message', () => {
         const component = (
-            <FilePreviewGrid data={DATA} previewCount={null} header="Custom Header" infoMsg="Custom info message." />
+            <FilePreviewGrid previewData={{data: DATA, warningMsg: undefined}} previewCount={null} header="Custom Header" infoMsg="Custom info message." />
         );
         const { container } = render(component);
         expect(container).toMatchSnapshot();
     });
 
     test('warning message', () => {
-        const component = <FilePreviewGrid data={DATA} previewCount={null} warningMsg="Testing warning message" />;
+        const component = <FilePreviewGrid previewData={{data: DATA, warningMsg: undefined}} previewCount={null} warningMsg="Testing warning message" />;
+        const { container } = render(component);
+        expect(container).toMatchSnapshot();
+    });
+
+    test('previewData.warningMsg', () => {
+        const component = <FilePreviewGrid previewData={{data: DATA, warningMsg: 'Duplicate fields'}} previewCount={null} />;
+        const { container } = render(component);
+        expect(container).toMatchSnapshot();
+    });
+
+    test('warning message and previewData.warningMsg', () => {
+        const component = <FilePreviewGrid previewData={{data: DATA, warningMsg: 'Duplicate fields'}} previewCount={null} warningMsg="Testing warning message" />;
         const { container } = render(component);
         expect(container).toMatchSnapshot();
     });

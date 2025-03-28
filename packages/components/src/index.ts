@@ -562,7 +562,11 @@ import { DEFAULT_ALIQUOT_NAMING_PATTERN, SampleTypeModel } from './internal/comp
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
 import { Pagination } from './internal/components/pagination/Pagination';
-import { getQueryModelExportParams, runDetailsColumnsForQueryModel } from './public/QueryModel/utils';
+import {
+    createSnapshotSelectionKey,
+    getQueryModelExportParams,
+    runDetailsColumnsForQueryModel,
+} from './public/QueryModel/utils';
 import { CONFIRM_MESSAGE, useRouteLeave } from './internal/util/RouteLeave';
 import { useRequestHandler } from './internal/util/RequestHandler';
 import { HorizontalBarSection } from './internal/components/chart/HorizontalBarSection';
@@ -1778,6 +1782,7 @@ export {
     EditableDetailPanel,
     TabbedGridPanel,
     runDetailsColumnsForQueryModel,
+    createSnapshotSelectionKey,
     flattenValuesFromRow,
     Pagination,
     makeTestActions,

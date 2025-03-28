@@ -9,9 +9,8 @@ import { QueryColumn } from '../QueryColumn';
 
 import { SCHEMAS } from '../../internal/schemas';
 
-import { QueryInfo } from '../QueryInfo';
-
 import { QueryModel } from './QueryModel';
+import { QueryInfo } from '../QueryInfo';
 
 export const includedColumnsForCustomizationFilter = (column: QueryColumn, showAllColumns: boolean): boolean => {
     const isAncestor = column.fieldKeyPath?.indexOf('/Ancestors') >= 0;
@@ -40,10 +39,7 @@ export const getExpandQueryInfo = async (queryInfo: QueryInfo, column: QueryColu
         schemaQuery: queryInfo.schemaQuery,
     });
     // For data classes, we want to limit the Ancestor filters to exclude 'Samples'
-    if (
-        column.index === QueryColumn.ANCESTORS_PREFIX &&
-        queryInfo.schemaQuery.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA
-    ) {
+    if (column.index === QueryColumn.ANCESTORS_PREFIX && queryInfo.schemaQuery.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA) {
         fkQueryInfo.columns = fkQueryInfo.columns.filter(
             col => col.fieldKey !== 'Samples' && col.fieldKey !== 'MediaSamples'
         );

@@ -1036,7 +1036,7 @@ describe('EditorModel', () => {
             });
 
             test('with original multi values, multiple same values, but ordering is changed', () => {
-                const updatedRows = emMultipleComplexInputs.getUpdatedData(
+                let updatedRows = emMultipleComplexInputs.getUpdatedData(
                     fromJS({
                         0: {
                             [expInputCol.fieldKey]: [
@@ -1047,7 +1047,7 @@ describe('EditorModel', () => {
                                 {
                                     value: 123,
                                     displayValue: 'Value 123',
-                                },
+                                }
                             ],
                         },
                         1: {

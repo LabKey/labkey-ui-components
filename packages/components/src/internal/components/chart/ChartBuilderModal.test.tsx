@@ -606,8 +606,8 @@ describe('getChartBuilderQueryConfig', () => {
 
 describe('getChartBuilderChartConfig', () => {
     const fieldValues = {
-        x: { value: 'field1', label: 'Field 1', data: { fieldKey: 'field1' } },
-        y: { value: 'field2', label: 'Field 2', data: { fieldKey: 'field2' } },
+        x: { value: 'field/1', label: 'Field 1', data: { fieldKey: 'field$S1', name: 'field/1' } },
+        y: { value: 'field2', label: 'Field 2', data: { fieldKey: 'field2', name: 'field2' } },
     };
 
     test('based on fieldValues', () => {
@@ -617,8 +617,10 @@ describe('getChartBuilderChartConfig', () => {
         expect(config.labels.main).toBe('');
         expect(config.labels.subtitle).toBe('');
         expect(config.pointType).toBe('all');
-        expect(config.measures.x.name).toBe('field1');
+        expect(config.measures.x.name).toBe('field/1');
+        expect(config.measures.x.fieldKey).toBe('field$S1');
         expect(config.measures.y.name).toBe('field2');
+        expect(config.measures.y.fieldKey).toBe('field2');
         expect(config.labels.x).toBe('Field 1');
         expect(config.labels.y).toBe('Sum of Field 2');
     });
@@ -639,7 +641,7 @@ describe('getChartBuilderChartConfig', () => {
         expect(config.labels.main).toBe('Main');
         expect(config.labels.subtitle).toBe('Subtitle');
         expect(config.pointType).toBe('outliers');
-        expect(config.measures.x.name).toBe('field1');
+        expect(config.measures.x.name).toBe('field/1');
         expect(config.measures.y.name).toBe('field2');
         expect(config.labels.x).toBe('X Label');
         expect(config.labels.y).toBe('Sum of Field 2');
@@ -664,7 +666,7 @@ describe('getChartBuilderChartConfig', () => {
         expect(config.labels.main).toBe('Main');
         expect(config.labels.subtitle).toBe('Subtitle');
         expect(config.pointType).toBe('outliers');
-        expect(config.measures.x.name).toBe('field1');
+        expect(config.measures.x.name).toBe('field/1');
         expect(config.measures.y.name).toBe('field2');
         expect(config.labels.x).toBe('X Label');
         expect(config.labels.y).toBe('Y Label');

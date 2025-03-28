@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 52050: App chart builder modal to handle field names with special characters in input selection
+
 ### version 6.34.0
 *Released*: 28 March 2025
 - Add `createSnapshotSelectionKey`

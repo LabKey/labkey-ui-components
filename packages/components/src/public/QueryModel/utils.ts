@@ -3,11 +3,11 @@
  * @param value
  * @param defaultValue
  */
-import { Filter } from '@labkey/api';
+import { Filter, Utils } from '@labkey/api';
 
 import { List } from 'immutable';
 
-import { ExportOptions, getExportParams } from '../../internal/actions';
+import { ExportOptions, getExportParams, setSelected } from '../../internal/actions';
 
 import { QuerySort } from '../QuerySort';
 
@@ -148,4 +148,25 @@ export function getSelectRowCountColumnsStr(
         typeof rawColumns === 'string' ? rawColumns.split(',').map(col => col.trim()) : rawColumns;
 
     return columns[0];
+}
+
+/**
+ * Creates a new selection key with the current selections for a given model. Use this when calling an API that takes
+ * a selectionKey in order to prevent taking action on values that have been filtered out of the view (See Issue 52393
+ * as an example) . Using this method is not compatible with the useSnapshotSelections param supported by some of our
+ * APIs. If you use this do not set the useSnapshotSelections flag in your API call.
+ * @param model the QueryModel used to create a snapshot selection key
+ */
+export async function createSnapshotSelectionKey(model: QueryModel): Promise<string> {
+    const key = model.selectionKey + Utils.generateUUID();
+    await setSelected(
+        key,
+        true,
+        Array.from(model.selections),
+        model.selectionContainerPath,
+        false,
+        model.schemaName,
+        model.queryName
+    );
+    return key;
 }

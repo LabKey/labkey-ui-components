@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "6.32.2-filterSemicolonValue52068.2",
+  "version": "6.33.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.26.TBD
-*Released*: TBD
+### version 6.26.8
+*Released*: 28 March 2025
 - Issue 52658:
   - Use raw values for units and stored amounts in `BulkUpdateForm`
   - Don't show text about "Edit with Grid" if that button won't be shown

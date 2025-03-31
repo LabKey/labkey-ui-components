@@ -26,6 +26,7 @@ if (process.env.LABKEY_UI_PREMIUM_HOME === undefined) {
 
 const components = `${process.env.LABKEY_UI_COMPONENTS_HOME}packages/components/src`;
 const premium = `${process.env.LABKEY_UI_PREMIUM_HOME}src`;
+let ehrComponents;
 const modules = `${process.env.LABKEY_HOME}server/modules`
 const limsModules = `${modules}/limsModules`;
 const biologics = `${limsModules}/biologics`;
@@ -33,6 +34,9 @@ const sampleManagement = `${limsModules}/sampleManagement`;
 const inventory = `${limsModules}/inventory`;
 const puppeteer = `${limsModules}/puppeteer`;
 const labbook = `${limsModules}/labbook`;
+const premiumModules = `${modules}/premiumModules`;
+const ontology = `${premiumModules}/ontology`;
+// Note: explicitly ignoring premiumModules/provenance
 const platform = `${modules}/platform`;
 const core = `${platform}/core`;
 const assay = `${platform}/assay`;
@@ -40,21 +44,38 @@ const experiment = `${platform}/experiment`;
 const pipeline = `${platform}/pipeline`;
 const moduleEditor = `${modules}/premiumModules/moduleEditor`;
 const reactExamples = `${modules}/tutorialModules/reactExamples`;
-// TODO: there are probably more modules using ui-components that I am missing
+const elisa = `${modules}/commonAssays/elisa`;
 
-const modulePaths = [
+let modulePaths = [
     biologics,
     sampleManagement,
     inventory,
     puppeteer,
     labbook,
+    ontology,
     core,
     assay,
     experiment,
     pipeline,
     moduleEditor,
     reactExamples,
-].map(path => `${path}/src/client`);
+    elisa,
+]
+
+// This allows you to pull down various EHR Modules without having to keep them in your enlistment and build them. If
+// they are in your enlistment set this path to $LABKEY_HOME/server/modules
+if (process.env.EHR_MODULE_DIRS !== undefined) {
+    const baseEHRPath = process.env.EHR_MODULE_DIRS;
+    console.log(`EHR modules configured, searching in ${baseEHRPath}`);
+    const ehrModules = `${baseEHRPath}/ehrModules`;
+    ehrComponents = `${ehrModules}/labkey-ui-ehr/src`;
+    modulePaths.push(`${ehrModules}/ehr`);
+    modulePaths.push(`${ehrModules}/EHR_App`);
+    modulePaths.push(`${baseEHRPath}/snprcEHRModules/snprc_ehr`);
+    modulePaths.push(`${baseEHRPath}/wnprc-modules/WNPRC_Purchasing`);
+}
+
+modulePaths = modulePaths.map(path => `${path}/src/client`);
 
 function findExports(packagePath) {
     const project = new Project();
@@ -113,6 +134,10 @@ function findUnusedExports(packageName, packagePath, pathsToSearch) {
     writeFile(`${packageName}-unused.txt`, unusedExports);
 }
 
-findUnusedExports('components', components, [...modulePaths, premium]);
+const componentsImportPaths = [...modulePaths, premium];
+
+if (ehrComponents) componentsImportPaths.push(ehrComponents);
+
+findUnusedExports('components', components, componentsImportPaths);
 // TODO: imports for premium is empty, which is for sure wrong.
 findUnusedExports('premium', premium, modulePaths);

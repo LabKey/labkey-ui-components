@@ -1,4 +1,4 @@
-import { Filter, QueryKey, Utils } from '@labkey/api';
+import { Filter, getServerContext, QueryKey, Utils } from '@labkey/api';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { addDays, subDays } from 'date-fns';
 
@@ -17,19 +17,19 @@ import {
 } from '../../util/utils';
 import { ViewInfo } from '../../ViewInfo';
 
-import { selectRows } from '../../query/selectRows';
-
 import { getContainerFilterForLookups } from '../../query/api';
+
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { resolveErrorMessage } from '../../util/messaging';
 
 import {
     CellMessage,
-    CellValues,
     EditableColumnMetadata,
     EditableGridLoader,
     EditorMode,
     EditorModel,
     EditorModelProps,
-    MessageAndValue,
     ValueDescriptor,
 } from './models';
 
@@ -43,10 +43,12 @@ export const loadEditorModelData = async (
     orderedRows: string[],
     rows: Record<string, any>,
     columns: QueryColumn[],
-    forUpdate: boolean
-): Promise<CellValues> => {
-    const lookupValueDescriptors = await getLookupValueDescriptors(columns, rows, orderedRows, forUpdate);
-    let cellValues = Map<string, List<ValueDescriptor>>();
+    forUpdate: boolean,
+    api?: ComponentsAPIWrapper
+): Promise<Partial<EditorModel>> => {
+    const lookupValues = await getLookupValueDescriptors(columns, rows, orderedRows, forUpdate, api);
+    const cellMessages: Record<string, CellMessage> = {};
+    const cellValues: Record<string, List<ValueDescriptor>> = {};
 
     // data is initialized in column order
     columns.forEach(col => {
@@ -58,50 +60,23 @@ export const loadEditorModelData = async (
             // rows objects keyed by column name for base table columns and by fieldKey for lookup columns
             // (see comments in QueryColumn index()).
             const value = row[col.index];
+            let descriptors: ValueDescriptor[];
 
             if (Array.isArray(value)) {
-                // assume to be list of {displayValue, value} objects
-                cellValues = cellValues.set(
-                    cellKey,
-                    value.reduce((list, v) => {
-                        if (col.isLookup() && Utils.isNumber(v)) {
-                            const descriptors = lookupValueDescriptors[col.lookupKey];
-                            if (descriptors) {
-                                const desc = descriptors.filter(descriptor => descriptor.raw === v);
-                                if (desc) {
-                                    return list.push(...desc);
-                                }
-                            }
-                        }
-
-                        return list.push({ display: v.displayValue ?? v, raw: v.value ?? v });
-                    }, List<ValueDescriptor>())
-                );
+                descriptors = value.reduce<ValueDescriptor[]>((list, v) => {
+                    list.push(...resolveValueDescriptors(col, lookupValues, cellMessages, cellKey, v));
+                    return list;
+                }, []);
             } else {
-                // assume to be a {displayValue, value} object but fall back on value not being an object
-                const raw = value?.value ?? value;
-                const display = value?.displayValue ?? raw;
-                let cellValue = List([
-                    {
-                        display: display !== null ? display : undefined,
-                        raw: raw !== null ? raw : undefined,
-                    },
-                ]);
-
                 // Issue 37833: try resolving the value for the lookup to get the displayValue to show in the grid cell
-                if (col.isLookup() && Utils.isNumber(raw)) {
-                    const descriptors = lookupValueDescriptors[col.lookupKey];
-                    if (descriptors) {
-                        cellValue = List(descriptors.filter(descriptor => descriptor.raw === raw));
-                    }
-                }
-
-                cellValues = cellValues.set(cellKey, cellValue);
+                descriptors = resolveValueDescriptors(col, lookupValues, cellMessages, cellKey, value);
             }
+
+            cellValues[cellKey] = List(descriptors);
         });
     });
 
-    return cellValues;
+    return { cellMessages: Map(cellMessages), cellValues: Map(cellValues) };
 };
 
 export const initEditorModel = async (
@@ -175,7 +150,7 @@ export const initEditorModel = async (
     }
 
     // TODO: Move initEditorModel, loadEditorModelData, and getLookupValueDescriptors to EditorModel as static methods
-    const cellValues = await loadEditorModelData(orderedRows, rows, columns, forUpdate);
+    const { cellMessages, cellValues } = await loadEditorModelData(orderedRows, rows, columns, forUpdate);
 
     if (columnMetadata) {
         // If columnMetadata is present force it to use lowercase keys
@@ -185,6 +160,7 @@ export const initEditorModel = async (
     }
 
     return new EditorModel({
+        cellMessages,
         cellValues,
         columnMetadata,
         columnMap: fromJS(columnMap),
@@ -210,21 +186,72 @@ const resolveDisplayField = (column: QueryColumn): string => {
     return column.lookup.displayColumnFieldKey;
 };
 
-type ColumnLoaderPromise = Promise<{ column: QueryColumn; descriptors: ValueDescriptor[] }>;
+interface MessageAndValue {
+    message?: CellMessage;
+    valueDescriptor: ValueDescriptor;
+}
 
-const findLookupValues = async (
-    column: QueryColumn,
-    lookupKeyValues?: any[],
-    lookupValues?: any[],
-    lookupValueFilters?: Filter.IFilter[],
-    forUpdate?: boolean,
-    containerPath?: string
-): ColumnLoaderPromise => {
+type MessageAndValueMap = { [colKey: string]: MessageAndValue[] };
+
+function resolveValueDescriptors(
+    col: QueryColumn,
+    lookupValues: MessageAndValueMap,
+    cellMessages: Record<string, CellMessage>,
+    cellKey: string,
+    value: any
+): ValueDescriptor[] {
+    const raw = value?.value ?? value;
+
+    if (col.isLookup() && Utils.isNumber(raw)) {
+        const messageAndValues = lookupValues[col.lookupKey]?.filter(lv => lv.valueDescriptor.raw === raw);
+        if (messageAndValues) {
+            const descriptors: ValueDescriptor[] = [];
+            for (let i = 0; i < messageAndValues.length; i++) {
+                if (messageAndValues[i].message) {
+                    cellMessages[cellKey] = messageAndValues[i].message;
+                }
+                descriptors.push(messageAndValues[i].valueDescriptor);
+            }
+
+            return descriptors;
+        }
+    }
+
+    const display = value?.displayValue ?? raw;
+
+    return [
+        {
+            display: display !== null ? display : undefined,
+            raw: raw !== null ? raw : undefined,
+        },
+    ];
+}
+
+type FindLookupValuesOptions = {
+    api?: ComponentsAPIWrapper;
+    column: QueryColumn;
+    containerPath?: string;
+    forUpdate?: boolean;
+    lookupKeyValues?: any[];
+    lookupValueFilters?: Filter.IFilter[];
+    lookupValues?: any[];
+};
+
+const findLookupValues = async (options: FindLookupValuesOptions): Promise<ValueDescriptor[]> => {
+    const {
+        api = getDefaultAPIWrapper(),
+        column,
+        containerPath,
+        forUpdate,
+        lookupKeyValues,
+        lookupValueFilters,
+        lookupValues,
+    } = options;
     const { lookup } = column;
     const { keyColumn } = lookup;
     const displayColumnFieldKey = resolveDisplayField(column);
 
-    const results = await selectRows({
+    const results = await api.query.selectRows({
         columns: [displayColumnFieldKey, keyColumn],
         containerPath: lookup.containerPath ?? containerPath,
         containerFilter: lookup.containerFilter ?? getContainerFilterForLookups(),
@@ -242,68 +269,163 @@ const findLookupValues = async (
         viewName: ViewInfo.DETAIL_NAME, // Use the detail view so values that may be filtered out of the default view show up.
     });
 
-    const descriptors = results.rows.reduce<ValueDescriptor[]>((desc, row) => {
+    return results.rows.reduce<ValueDescriptor[]>((desc, row) => {
         const key = caseInsensitive(row, keyColumn)?.value;
         if (key !== undefined && key !== null) {
-            const displayRow = caseInsensitive(row, displayColumnFieldKey) ?? caseInsensitive(row, QueryKey.decodePart(displayColumnFieldKey));
+            const displayRow =
+                caseInsensitive(row, displayColumnFieldKey) ??
+                caseInsensitive(row, QueryKey.decodePart(displayColumnFieldKey));
             desc.push({ display: displayRow?.displayValue || displayRow?.value, raw: key });
         }
         return desc;
     }, []);
-
-    return { column, descriptors };
 };
+
+// Resolves the folder path for a row during initialization.
+// If a folder path is not explicitly resolved, then it defaults to the current folder.
+function getRowFolderPath(row: Record<string, any>): string {
+    const rowValue = caseInsensitive(row, 'Folder') ?? caseInsensitive(row, 'Container');
+    const currentFolder = getServerContext().container;
+    let folderPath: string;
+
+    if (Array.isArray(rowValue)) {
+        folderPath = rowValue[0]?.value;
+    } else {
+        folderPath = rowValue?.value;
+    }
+
+    // If the value is the current folder's entityId, then return the current folder's path
+    if (folderPath !== undefined && folderPath !== currentFolder.id) {
+        return folderPath;
+    }
+
+    return currentFolder.path;
+}
 
 async function getLookupValueDescriptors(
     columns: QueryColumn[],
     rows: Record<string, Record<string, any>>,
     ids: string[],
-    forUpdate?: boolean
-): Promise<{ [colKey: string]: ValueDescriptor[] }> {
-    const descriptorMap = {};
-    // for each lookup column, find the unique values in the rows and query for those values when they look like ids
-    for (let cn = 0; cn < columns.length; cn++) {
-        const col = columns[cn];
-        let values = new Set<number>();
+    forUpdate: boolean,
+    api?: ComponentsAPIWrapper
+): Promise<MessageAndValueMap> {
+    const lookupValues: MessageAndValueMap = {};
 
-        if (col.isPublicLookup()) {
-            ids.forEach(id => {
+    // for each lookup column, find the unique values in the rows and query for those values when they look like ids
+    const lookupPromises = columns
+        .filter(col => col.isPublicLookup())
+        .map(async col => {
+            const allValues = new Set<number>();
+            const valueFolderMap: Record<string, Set<number>> = {};
+            const displayValueMap: Record<number, any> = {};
+
+            // The same value for a column may be set in rows from different folders. We need to validate each value
+            // for each folder where that value is utilized. Due to this we end up making a request per folder/column/value.
+            const processValue = (val: number, row: Record<string, any>): void => {
+                const folderPath = getRowFolderPath(row);
+                if (!valueFolderMap[folderPath]) valueFolderMap[folderPath] = new Set<number>();
+                valueFolderMap[folderPath].add(val);
+                allValues.add(val);
+            };
+
+            for (const id of ids) {
                 const row = rows[id];
                 const value = row?.[col.fieldKey] ?? row?.[col.name];
+
                 if (Utils.isNumber(value)) {
-                    values = values.add(value);
-                } else if (List.isList(value)) {
+                    processValue(value, row);
+                } else if (Array.isArray(value)) {
                     value.forEach(val => {
-                        if (Map.isMap(val)) {
-                            values = values.add(val.get('value'));
-                        } else {
-                            values = values.add(val);
+                        if (Utils.isNumber(val?.value)) {
+                            processValue(val?.value, row);
+                            if (val?.displayValue) {
+                                displayValueMap[val.value] = val.displayValue;
+                            }
                         }
                     });
                 }
-            });
-            if (values.size > 0) {
-                const { descriptors } = await findLookupValues(
-                    col,
-                    Array.from(values),
-                    undefined,
-                    undefined,
-                    forUpdate
-                );
-                descriptorMap[col.lookupKey] = descriptors;
             }
-        }
-    }
 
-    return descriptorMap;
+            if (allValues.size > 0) {
+                // Collect errors made when attempting to resolve lookup values so we can at least tell the user
+                // something went awry when trying to validate the values. This is expected to be an uncommon scenario.
+                const errorMap: Record<number, string> = {};
+
+                const results = await Promise.all(
+                    // This must be async as returning the result directly avoids the try/catch handling
+                    Object.entries(valueFolderMap).map(async ([containerPath, values]) => {
+                        let descriptors_: ValueDescriptor[];
+                        try {
+                            descriptors_ = await findLookupValues({
+                                api,
+                                column: col,
+                                containerPath,
+                                forUpdate,
+                                lookupKeyValues: Array.from(values),
+                            });
+                        } catch (e) {
+                            let errorMsg = `Failed to resolves values for column ${col.caption ?? col.name}.`;
+                            const resolved = resolveErrorMessage(e);
+                            if (resolved) {
+                                errorMsg += ' ' + resolved;
+                            }
+                            values.forEach(value => {
+                                errorMap[value] = errorMsg;
+                            });
+                            descriptors_ = [];
+                        }
+
+                        return descriptors_;
+                    })
+                );
+
+                const messageAndValues: MessageAndValue[] = [];
+                results.forEach(descriptors => {
+                    descriptors.forEach(valueDescriptor => {
+                        if (allValues.has(valueDescriptor.raw)) {
+                            allValues.delete(valueDescriptor.raw);
+                            messageAndValues.push({ valueDescriptor });
+                        }
+                    });
+                });
+
+                // Issue 52311: Mark unresolved lookup values with a warning.
+                for (const value of allValues) {
+                    const displayValue = displayValueMap[value];
+
+                    messageAndValues.push({
+                        message: {
+                            isWarning: true,
+                            message: errorMap[value] ?? lookupValidationError(value, false, displayValue).message,
+                        },
+                        valueDescriptor: { display: displayValue ?? `<${value}>`, raw: value },
+                    });
+                }
+
+                lookupValues[col.lookupKey] = messageAndValues;
+            }
+        });
+
+    await Promise.all(lookupPromises);
+    return lookupValues;
 }
 
-function lookupValidationError(value: string | number | boolean, fromPaste?: boolean): CellMessage {
-    let suffix = '';
-    if (fromPaste && typeof value === 'string' && value.toString().indexOf(',') > -1) {
-        suffix = '. Please make sure values that contain commas are properly quoted.';
+export function lookupValidationError(
+    value: string | number | boolean,
+    fromPaste?: boolean,
+    displayValue?: any
+): CellMessage {
+    let message = displayValue !== undefined ? `${displayValue} is no longer a valid value` : `Could not find ${value}`;
+
+    if (fromPaste) {
+        if (typeof value === 'string' && value.toString().indexOf(',') > -1) {
+            message += '. Please make sure values that contain commas are properly quoted.';
+        }
+    } else {
+        message += '. Data may have been moved or deleted.';
     }
-    return { message: `Could not find ${value}${suffix}` };
+
+    return { message };
 }
 
 async function getLookupDisplayValue(column: QueryColumn, value: any, containerPath: string): Promise<MessageAndValue> {
@@ -318,7 +440,7 @@ async function getLookupDisplayValue(column: QueryColumn, value: any, containerP
 
     let message: CellMessage;
 
-    const { descriptors } = await findLookupValues(column, [value], undefined, undefined, false, containerPath);
+    const descriptors = await findLookupValues({ column, containerPath, forUpdate: false, lookupKeyValues: [value] });
     if (!descriptors.length) {
         message = lookupValidationError(value);
     }
@@ -1005,14 +1127,13 @@ async function getParsedLookup(
     if (!lookupValueCache.hasOwnProperty(cacheKey)) {
         const columnMetadata = editorModel.getColumnMetadata(column.fieldKey);
 
-        lookupValueCache[cacheKey] = findLookupValues(
+        lookupValueCache[cacheKey] = findLookupValues({
             column,
-            undefined,
-            display,
-            columnMetadata?.lookupValueFilters,
+            containerPath,
             forUpdate,
-            containerPath
-        ).then(response => response.descriptors);
+            lookupValueFilters: columnMetadata?.lookupValueFilters,
+            lookupValues: display,
+        });
     }
 
     const descriptors = await lookupValueCache[cacheKey];

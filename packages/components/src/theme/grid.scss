@@ -337,21 +337,37 @@ $table-cell-padding: 4px 2px;
       justify-content: flex-end;
     }
 
-    .cell-warning {
+    .cell-error, .cell-warning {
       position: relative;
-      background-color: $panel-danger-heading-bg;
 
       &:after {
         content: '';
         display: block;
         height: 8px;
         width: 8px;
-        background-image: linear-gradient(225deg, $brand-danger, $brand-danger 6px, transparent 6px, transparent);
         position: absolute;
         top: 1px;
         right: -1px;
       }
+    }
 
+    .cell-error {
+      background-color: $panel-danger-heading-bg;
+
+      &:after {
+        background-image: linear-gradient(225deg, $brand-danger, $brand-danger 6px, transparent 6px, transparent);
+      }
+      &.cell-selected {
+        background-color: $state-danger-bg;
+      }
+    }
+
+    .cell-warning {
+      background-color: $panel-warning-heading-bg;
+
+      &:after {
+        background-image: linear-gradient(225deg, $brand-warning, $brand-warning 6px, transparent 6px, transparent);
+      }
       &.cell-selected {
         background-color: $state-warning-bg;
       }

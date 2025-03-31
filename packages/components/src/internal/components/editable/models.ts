@@ -31,6 +31,7 @@ import {
     genCellKey,
     genCellKeyPrefix,
     getValidatedEditableGridValue,
+    isCellError,
     isSparseSelection,
     parseCellKey,
     sortCellKeys,
@@ -61,6 +62,7 @@ export interface ValueDescriptor {
 }
 
 export interface CellMessage {
+    isWarning?: boolean;
     message: string;
 }
 
@@ -264,7 +266,7 @@ export class EditorModel
     }
 
     get hasErrors(): boolean {
-        return this.cellMessages?.some(cm => cm?.message !== undefined);
+        return this.cellMessages?.some(isCellError);
     }
 
     getMessage(fieldKey: string, rowIdx: number): CellMessage {
@@ -826,7 +828,7 @@ export class EditorModel
                             // We have to compare displayValues for ExpInput columns for name expressions to work
                             // row values were processed with quoteValueWithDelimiters, originalValue should be compared using the same process
                             originalValue = originalValue
-                                .sortBy((v) => v.displayValue)
+                                .sortBy(v => v.displayValue)
                                 .map(v =>
                                     isQuotedWithDelimiters(v.displayValue, ',')
                                         ? v.displayValue
@@ -940,9 +942,4 @@ export interface EditableGridLoader extends GridLoader {
     omittedColumns?: string[];
     queryInfo: QueryInfo;
     requiredColumns?: string[];
-}
-
-export interface MessageAndValue {
-    message?: CellMessage;
-    valueDescriptor: ValueDescriptor;
 }

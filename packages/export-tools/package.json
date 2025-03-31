@@ -1,0 +1,19 @@
+{
+  "name": "export-tools",
+  "version": "1.0.0",
+  "description": "Package to assist with logging imports and exports of our @labkey packages",
+  "main": "index.js",
+  "bin": {
+    "findExports": "src/find-exports.mjs",
+    "findImports": "src/find-imports.mjs",
+    "findUnusedExports": "src/find-unused-exports.mjs"
+  },
+  "scripts": {
+    "findUnused": "node src/find-unused-exports.mjs"
+  },
+  "author": "LabKey",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "dependencies": {
+    "ts-morph": "^25.0.1"
+  }
+}

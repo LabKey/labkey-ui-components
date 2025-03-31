@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "6.34.1",
+  "version": "6.34.1-chartModal52050.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

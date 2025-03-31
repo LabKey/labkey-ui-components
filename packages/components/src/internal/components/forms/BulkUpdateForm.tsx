@@ -158,7 +158,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         }
 
         const rows = !Utils.isEmptyObj(data)
-            ? getUpdatedData(this.state.originalDataForSelection, data, queryInfo, queryInfo.altUpdateKeys)
+            ? getUpdatedData(this.state.originalDataForSelection, data, queryInfo.pkCols, queryInfo.altUpdateKeys)
             : [];
 
         return updateRows(queryInfo.schemaQuery, rows, comment);

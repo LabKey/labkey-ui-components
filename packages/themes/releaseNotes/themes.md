@@ -1,6 +1,10 @@
 # @labkey/themes
 UI themes for LabKey Server.
 
+### version 1.4.2
+*Released*: TBD
+- Remove dead code for mobile navigation
+
 ### version 1.4.1
 *Released*: 27 February 2025
 - Merge release24.11-SNAPSHOT to develop:

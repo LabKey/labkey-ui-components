@@ -23,7 +23,6 @@ function isUpdateModel(fn: UpdateRows | UpdateModel): fn is UpdateModel {
 interface Props {
     containerFilter?: Query.ContainerFilter;
     disabled?: boolean;
-    displayValueFields?: string[];
     header?: ReactNode;
     includeCommentField?: boolean;
     itemLabel?: string;
@@ -55,7 +54,6 @@ interface State {
     containerPaths: string[];
     dataForSelection: Map<string, any>;
     dataIdsForSelection: List<any>;
-    displayFieldUpdates: any;
     formData: Map<string, any>;
     isLoadingDataForSelection: boolean;
     originalDataForSelection: Map<string, any>;
@@ -75,7 +73,6 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
             containerPaths: undefined,
             dataForSelection: undefined,
             dataIdsForSelection: undefined,
-            displayFieldUpdates: {},
             formData: undefined,
             isLoadingDataForSelection: true,
             originalDataForSelection: undefined,
@@ -102,12 +99,10 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 undefined,
                 viewName
             );
-            const mappedData = this.mapDataForDisplayFields(data);
             this.setState({
-                containerPaths: mappedData.containerPaths,
+                containerPaths: this.getContainerPaths(data),
                 originalDataForSelection: data,
-                dataForSelection: mappedData.data,
-                displayFieldUpdates: mappedData.bulkUpdates,
+                dataForSelection: data,
                 dataIdsForSelection: dataIds,
                 isLoadingDataForSelection: false,
             });
@@ -118,55 +113,17 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         }
     };
 
-    mapDataForDisplayFields(data: Map<string, any>): {
-        bulkUpdates: OrderedMap<string, any>;
-        containerPaths?: string[];
-        data: Map<string, any>;
-    } {
-        const { displayValueFields } = this.props;
-        let updates = Map<string, any>();
-        let bulkUpdates = OrderedMap<string, any>();
+    getContainerPaths(data: Map<string, any>): string[] {
         const containerPaths = new Set<string>();
 
-        let conflictKeys = new Set<string>();
         data.forEach((rowData, id) => {
             if (rowData) {
                 const containerPath =
                     caseInsensitive(rowData.toJS(), 'Folder') ?? caseInsensitive(rowData.toJS(), 'Container');
                 if (containerPath?.value) containerPaths.add(containerPath.value);
-
-                if (displayValueFields) {
-                    let updatedRow = Map<string, any>();
-                    rowData.forEach((field, key) => {
-                        if (displayValueFields.includes(key)) {
-                            const valuesDiffer =
-                                field.has('displayValue') && field.get('value') !== field.get('displayValue');
-                            let comparisonValue = field.get('displayValue') ?? field.get('value');
-                            if (comparisonValue) comparisonValue += ''; // force to string
-                            if (!conflictKeys.has(key)) {
-                                if (!bulkUpdates.has(key)) {
-                                    bulkUpdates = bulkUpdates.set(key, comparisonValue);
-                                } else if (bulkUpdates.get(key) !== comparisonValue) {
-                                    bulkUpdates = bulkUpdates.remove(key);
-                                    conflictKeys = conflictKeys.add(key);
-                                }
-                            }
-                            if (valuesDiffer) {
-                                field = field.set('value', comparisonValue);
-                            }
-                        }
-                        updatedRow = updatedRow.set(key, field);
-                    });
-                    if (!updatedRow.isEmpty()) {
-                        updates = updates.set(id, updatedRow);
-                    }
-                }
             }
         });
-        if (!updates.isEmpty()) {
-            return { data: data.merge(updates), bulkUpdates, containerPaths: Array.from(containerPaths) };
-        }
-        return { data, bulkUpdates, containerPaths: Array.from(containerPaths) };
+        return Array.from(containerPaths);
     }
 
     getSelectionCount(): number {
@@ -195,15 +152,13 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
 
     onSubmit = (data: any, comment?: string): Promise<any> => {
         const { queryInfo, updateRows } = this.props;
-        const { displayFieldUpdates } = this.state;
-        const updateData = displayFieldUpdates.merge(data);
 
         if (isUpdateModel(updateRows)) {
-            return updateRows(updateData);
+            return updateRows(data);
         }
 
         const rows = !Utils.isEmptyObj(data)
-            ? getUpdatedData(this.state.originalDataForSelection, updateData, queryInfo.pkCols, queryInfo.altUpdateKeys)
+            ? getUpdatedData(this.state.originalDataForSelection, data, queryInfo, queryInfo.altUpdateKeys)
             : [];
 
         return updateRows(queryInfo.schemaQuery, rows, comment);
@@ -217,7 +172,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     };
 
     renderBulkUpdateHeader() {
-        const { header } = this.props;
+        const { header, onSubmitForEdit } = this.props;
         if (!header) return null;
 
         const noun = this.getSelectionNoun();
@@ -229,7 +184,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                         Make changes to the selected {noun}. Enable a field to update or remove the value for the
                         selected {noun}.
                     </p>
-                    {this.getSelectionCount() > 1 && (
+                    {this.getSelectionCount() > 1 && onSubmitForEdit && (
                         <p>To update individual {noun} in this selection group, select "Edit with Grid".</p>
                     )}
                 </div>

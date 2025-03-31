@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 52532: better messaging for ignored fields from files
 
+### version 6.34.1
+*Released*: 28 March 2025
+- Issue 52311: Mark unresolved lookup values in editable grid with a warning
+
 ### version 6.34.0
 *Released*: 28 March 2025
 - Add `createSnapshotSelectionKey`

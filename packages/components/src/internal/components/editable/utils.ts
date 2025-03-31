@@ -1,4 +1,4 @@
-import { Filter, QueryKey, Utils } from '@labkey/api';
+import { Filter, Utils } from '@labkey/api';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 
@@ -148,6 +148,14 @@ export function sortCellKeys(orderedColumns: string[], cellKeys: string[]): stri
 export function decimalDifference(first, second, subtract = true): number {
     const multiplier = 10000; // this will only help/work to 4 decimal places
     return (first * multiplier + (subtract ? -1 : 1) * second * multiplier) / multiplier;
+}
+
+export function isCellError(cm: CellMessage): boolean {
+    return cm && cm.message !== undefined && !cm.isWarning;
+}
+
+export function isCellWarning(cm: CellMessage): boolean {
+    return cm && cm.message !== undefined && cm.isWarning;
 }
 
 /**

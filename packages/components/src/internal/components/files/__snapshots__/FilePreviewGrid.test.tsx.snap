@@ -355,6 +355,128 @@ exports[`<FilePreviewGrid/> one row of data 1`] = `
 </div>
 `;
 
+exports[`<FilePreviewGrid/> previewData.warningMsg 1`] = `
+<div>
+  <strong>
+    File preview:
+  </strong>
+  <div
+    class="margin-top alert alert-warning"
+    role="alert"
+  >
+    Duplicate fields
+  </div>
+  <p
+    class="margin-top"
+  >
+    <span>
+      The 
+      first 3 rows 
+       of your data file
+       
+      are
+       shown below.
+    </span>
+     
+  </p>
+  <div
+    class="table-responsive"
+  >
+    <div
+      class="grid-messages"
+    />
+    <table
+      class="table table-striped table-bordered"
+    >
+      <thead>
+        <tr>
+          <th
+            class="grid-header-cell"
+            draggable="false"
+            id="col1"
+          >
+            col1
+          </th>
+          <th
+            class="grid-header-cell"
+            draggable="false"
+            id="col2"
+          >
+            col2
+          </th>
+          <th
+            class="grid-header-cell"
+            draggable="false"
+            id="col3"
+          >
+            col3
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="grid-row-alternate"
+        >
+          <td
+            style="text-align: left;"
+          >
+            abc
+          </td>
+          <td
+            style="text-align: left;"
+          >
+            123
+          </td>
+          <td
+            style="text-align: left;"
+          >
+            2019-01-01
+          </td>
+        </tr>
+        <tr
+          class="grid-row"
+        >
+          <td
+            style="text-align: left;"
+          >
+            def
+          </td>
+          <td
+            style="text-align: left;"
+          >
+            456
+          </td>
+          <td
+            style="text-align: left;"
+          >
+            2019-01-02
+          </td>
+        </tr>
+        <tr
+          class="grid-row-alternate"
+        >
+          <td
+            style="text-align: left;"
+          >
+            ghi
+          </td>
+          <td
+            style="text-align: left;"
+          >
+            789
+          </td>
+          <td
+            style="text-align: left;"
+          >
+            2019-01-03
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
 exports[`<FilePreviewGrid/> three rows of data 1`] = `
 <div>
   <strong>
@@ -481,6 +603,134 @@ exports[`<FilePreviewGrid/> warning message 1`] = `
     role="alert"
   >
     Testing warning message
+  </div>
+  <p
+    class="margin-top"
+  >
+    <span>
+      The 
+      first 3 rows 
+       of your data file
+       
+      are
+       shown below.
+    </span>
+     
+  </p>
+  <div
+    class="table-responsive"
+  >
+    <div
+      class="grid-messages"
+    />
+    <table
+      class="table table-striped table-bordered"
+    >
+      <thead>
+        <tr>
+          <th
+            class="grid-header-cell"
+            draggable="false"
+            id="col1"
+          >
+            col1
+          </th>
+          <th
+            class="grid-header-cell"
+            draggable="false"
+            id="col2"
+          >
+            col2
+          </th>
+          <th
+            class="grid-header-cell"
+            draggable="false"
+            id="col3"
+          >
+            col3
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="grid-row-alternate"
+        >
+          <td
+            style="text-align: left;"
+          >
+            abc
+          </td>
+          <td
+            style="text-align: left;"
+          >
+            123
+          </td>
+          <td
+            style="text-align: left;"
+          >
+            2019-01-01
+          </td>
+        </tr>
+        <tr
+          class="grid-row"
+        >
+          <td
+            style="text-align: left;"
+          >
+            def
+          </td>
+          <td
+            style="text-align: left;"
+          >
+            456
+          </td>
+          <td
+            style="text-align: left;"
+          >
+            2019-01-02
+          </td>
+        </tr>
+        <tr
+          class="grid-row-alternate"
+        >
+          <td
+            style="text-align: left;"
+          >
+            ghi
+          </td>
+          <td
+            style="text-align: left;"
+          >
+            789
+          </td>
+          <td
+            style="text-align: left;"
+          >
+            2019-01-03
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`<FilePreviewGrid/> warning message and previewData.warningMsg 1`] = `
+<div>
+  <strong>
+    File preview:
+  </strong>
+  <div
+    class="margin-top alert alert-warning"
+    role="alert"
+  >
+    Testing warning message
+  </div>
+  <div
+    class="margin-top alert alert-warning"
+    role="alert"
+  >
+    Duplicate fields
   </div>
   <p
     class="margin-top"

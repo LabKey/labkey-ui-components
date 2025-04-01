@@ -6,10 +6,15 @@ import { GridColumn } from '../base/models/GridColumn';
 import { Alert } from '../base/Alert';
 import { Grid } from '../base/Grid';
 
+export interface PreviewData {
+    data: List<Map<string, any>>;
+    warningMsg?: string;
+}
+
 type Props = FileGridPreviewProps & {
     columns?: List<GridColumn>;
-    data: List<Map<string, any>>;
     errorMsg?: string;
+    previewData: PreviewData;
 };
 
 export class FilePreviewGrid extends React.Component<Props, any> {
@@ -20,8 +25,8 @@ export class FilePreviewGrid extends React.Component<Props, any> {
     };
 
     render() {
-        const { data, columns, header, infoMsg, errorMsg, errorStyle, warningMsg } = this.props;
-        const numRows = data ? data.size : 0;
+        const { previewData, columns, header, infoMsg, errorMsg, errorStyle, warningMsg } = this.props;
+        const numRows = previewData?.data ? previewData?.data.size : 0;
 
         return (
             <>
@@ -33,6 +38,9 @@ export class FilePreviewGrid extends React.Component<Props, any> {
                         <Alert className="margin-top" bsStyle="warning">
                             {warningMsg}
                         </Alert>
+                        <Alert className="margin-top" bsStyle="warning">
+                            {previewData?.warningMsg}
+                        </Alert>
                         <p className="margin-top">
                             <span>
                                 The {numRows === 1 ? 'one row ' : 'first ' + numRows + ' rows '} of your data file{' '}
@@ -41,7 +49,7 @@ export class FilePreviewGrid extends React.Component<Props, any> {
                             &nbsp;
                             {infoMsg}
                         </p>
-                        <Grid columns={columns} data={data} />
+                        <Grid columns={columns} data={previewData?.data} />
                     </>
                 )}
             </>

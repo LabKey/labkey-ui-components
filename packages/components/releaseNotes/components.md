@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.34.2
+*Released*: 1 April 2025
+- Merge from release25.3-SNAPSHOT to develop
+    - includes changes from 6.26.8 #1761
+    - includes changes from 6.26.9 #1760
+
 ### version 6.34.1
 *Released*: 28 March 2025
 - Issue 52311: Mark unresolved lookup values in editable grid with a warning

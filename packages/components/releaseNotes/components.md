@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.34.3
+*Released*: 1 April 2025
+- Issue 52532: better messaging for ignored fields from files
+
 ### version 6.34.2
 *Released*: 1 April 2025
 - Merge from release25.3-SNAPSHOT to develop

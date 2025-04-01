@@ -1,9 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.34.3
+*Released*: 1 April 2025
 - Issue 52532: better messaging for ignored fields from files
+
+### version 6.34.2
+*Released*: 1 April 2025
+- Merge from release25.3-SNAPSHOT to develop
+    - includes changes from 6.26.8 #1761
+    - includes changes from 6.26.9 #1760
 
 ### version 6.34.1
 *Released*: 28 March 2025
@@ -134,6 +140,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 4 March 2025
 - Issue 52072: Text choice field values to handle | character within values
   - PropertyValidator.joinValidValues() and PropertyValidator.splitValidValues()
+
+### version 6.26.9
+*Released*: 31 March 2025
+- Issue 52616: LKSM: When two lineage alias columns are in a file we silently ignore one
+  - Add warning about duplicate columns in file preview panel
+  - Show duplicate columns in preview grid
+
+### version 6.26.8
+*Released*: 28 March 2025
+- Issue 52658:
+  - Use raw values for units and stored amounts in `BulkUpdateForm`
+  - Don't show text about "Edit with Grid" if that button won't be shown
 
 ### version 6.26.7
 *Released*: 20 March 2025

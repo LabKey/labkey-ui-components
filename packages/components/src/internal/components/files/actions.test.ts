@@ -16,6 +16,13 @@ const DATA = fromJS([
     ['ghi', 3, 789.0, 7.89, '2019-01-03'],
 ]);
 
+const DUP_DATA = fromJS([
+    ['str', 'int', 'int-excelupload', 'double', 'str', 'date'],
+    ['abc', 1, 123.0, 1.23, 'efg', '2019-01-01'],
+    ['def', 2, 456.0, 4.56, 'def', '2019-01-02'],
+    ['ghi', 3, 789.0, 7.89, 'abc', '2019-01-03'],
+]);
+
 const FIELDS = fromJS([
     {
         conceptURI: null,
@@ -101,12 +108,12 @@ const FIELDS = fromJS([
 
 describe('convertRowDataIntoPreviewData', () => {
     test('empty data object', () => {
-        const rows = convertRowDataIntoPreviewData(fromJS([]), 1);
+        const rows = convertRowDataIntoPreviewData(fromJS([]), 1).data;
         expect(rows.size).toBe(0);
     });
 
     test('requesting less rows then data', () => {
-        const rows = convertRowDataIntoPreviewData(DATA, 1);
+        const rows = convertRowDataIntoPreviewData(DATA, 1).data;
         expect(rows.size).toBe(1);
         expect(rows.get(0).get('str')).toBe('abc');
         expect(rows.get(0).get('int')).toBe(1);
@@ -116,7 +123,7 @@ describe('convertRowDataIntoPreviewData', () => {
     });
 
     test('requesting more rows then data', () => {
-        const rows = convertRowDataIntoPreviewData(DATA, 4);
+        const rows = convertRowDataIntoPreviewData(DATA, 4).data;
         expect(rows.size).toBe(3);
         expect(rows.get(0).get('str')).toBe('abc');
         expect(rows.get(1).get('int')).toBe(2);
@@ -124,12 +131,20 @@ describe('convertRowDataIntoPreviewData', () => {
     });
 
     test('with fields passed in to format int column', () => {
-        const rows = convertRowDataIntoPreviewData(DATA, 1, FIELDS);
+        const rows = convertRowDataIntoPreviewData(DATA, 1, FIELDS).data;
         expect(rows.get(0).get('str')).toBe('abc');
         expect(rows.get(0).get('int')).toBe(1);
         expect(rows.get(0).get('int-excelupload')).toBe(123);
         expect(rows.get(0).get('double')).toBe(1.23);
         expect(rows.get(0).get('date')).toBe('2019-01-01');
+    });
+
+    test('requesting more rows then data', () => {
+        const results = convertRowDataIntoPreviewData(DUP_DATA, 4);
+        const rows = results.data;
+        expect(rows.size).toBe(3);
+        expect(rows.get(0).get('str')).toBe('abc');
+        expect(rows.get(0).get('str ')).toBe('efg');
     });
 });
 

@@ -27,7 +27,7 @@ export default class ConfirmImportTypes extends PureComponent<Props> {
                         There was an error importing this file. To import this data now, check your file for issues or
                         resolve the error below:
                     </p>
-                    <ul>{error && error.errors.map((error, index) => <li key={index}>{error.exception}</li>)}</ul>
+                    <ul>{error && error.errors?.map((error, index) => <li key={index}>{error.exception}</li>)}</ul>
                     <p>
                         If you create this {designerType} without resolving the error, no file data will be imported at
                         this time.{' '}

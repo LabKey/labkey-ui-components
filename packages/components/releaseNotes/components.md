@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.26.X
+*Released*: X 2025
+- Fix ConfirmImportTypes null error
+
 ### version 6.26.9
 *Released*: 31 March 2025
 - Issue 52616: LKSM: When two lineage alias columns are in a file we silently ignore one

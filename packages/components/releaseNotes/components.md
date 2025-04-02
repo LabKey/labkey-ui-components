@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages
 
 ### version 5.20.8
-*Released*: 31 March 2025
+*Released*: 2 April 2025
 - Issue 52658: Use raw values for units and stored amounts in `BulkUpdateForm`
 
 ### version 5.20.7

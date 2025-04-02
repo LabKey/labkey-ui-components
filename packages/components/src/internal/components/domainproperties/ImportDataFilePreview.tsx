@@ -43,7 +43,7 @@ export class ImportDataFilePreview extends PureComponent<Props, State> {
             return;
         }
 
-        const data = convertRowDataIntoPreviewData(filePreviewData.get('data'), 4);
+        const previewData = convertRowDataIntoPreviewData(filePreviewData.get('data'), 4);
 
         return (
             <div className="domain-form__file-preview">
@@ -60,7 +60,7 @@ export class ImportDataFilePreview extends PureComponent<Props, State> {
 
                 {shouldImportData && this.props.children}
 
-                {shouldImportData && <FilePreviewGrid previewCount={4} data={data} header={null} />}
+                {shouldImportData && <FilePreviewGrid previewCount={4} previewData={previewData} header={null} />}
             </div>
         );
     }

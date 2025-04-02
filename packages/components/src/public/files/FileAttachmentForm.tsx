@@ -24,7 +24,7 @@ import {
     fileSizeLimitCompare,
     getFileExtension,
 } from '../../internal/components/files/actions';
-import { FilePreviewGrid } from '../../internal/components/files/FilePreviewGrid';
+import { FilePreviewGrid, PreviewData } from '../../internal/components/files/FilePreviewGrid';
 import { SimpleResponse } from '../../internal/components/files/models';
 
 import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
@@ -77,7 +77,7 @@ export interface FileAttachmentFormProps {
 interface State {
     attachedFiles: Map<string, File>;
     errorMessage?: string;
-    previewData?: List<Map<string, any>>;
+    previewData?: PreviewData;
     previewStatus?: string;
 }
 
@@ -266,7 +266,7 @@ export class FileAttachmentForm extends PureComponent<FileAttachmentFormProps, S
 
         if (this.shouldShowPreviewGrid()) {
             if (previewData || errorMessage) {
-                return <FilePreviewGrid {...previewGridProps} data={previewData} errorMsg={errorMessage} />;
+                return <FilePreviewGrid {...previewGridProps} previewData={previewData} errorMsg={errorMessage} />;
             } else if (previewStatus) {
                 return (
                     <div className="margin-top">

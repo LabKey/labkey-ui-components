@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.34.4
+*Released*: 2 April 2025
 - Issue 52050: App chart builder modal to handle field names with special characters in input selection
 
 ### version 6.34.3

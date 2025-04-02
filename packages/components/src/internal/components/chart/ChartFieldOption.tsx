@@ -86,6 +86,8 @@ export const ChartFieldOption: FC<ChartFieldOptionProps> = memo(props => {
             parseFloat(scale.max.toString()) <= parseFloat(scale.min.toString()),
         [scale]
     );
+    // Issue 52050: use fieldKey for special characters
+    const selectInputValue = useMemo(() => fieldValue?.data.fieldKey ?? fieldValue?.value, [fieldValue]);
 
     useEffect(() => {
         if (showFieldOptions && !scale.type) {
@@ -173,7 +175,7 @@ export const ChartFieldOption: FC<ChartFieldOptionProps> = memo(props => {
                     name={field.name}
                     options={options}
                     onChange={onSelectFieldChange_}
-                    value={fieldValue?.value}
+                    value={selectInputValue}
                 />
                 {showFieldOptions && (
                     <div className="field-option-icon">

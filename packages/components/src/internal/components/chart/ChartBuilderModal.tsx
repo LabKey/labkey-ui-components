@@ -84,8 +84,6 @@ const ICONS = {
     line_plot: 'xy_line',
 };
 
-const toggleScaleValue = (value: string): string => (value === 'linear' ? 'log' : 'linear');
-
 export const getChartRenderMsg = (chartConfig: ChartConfig, rowCount: number, isPreview: boolean): string => {
     const msg = [];
     if (isPreview && rowCount === MAX_ROWS_PREVIEW) {
@@ -118,7 +116,7 @@ export const getChartBuilderQueryConfig = (
         viewName: savedConfig?.viewName || viewName,
         columns: Object.values(fieldValues)
             .filter(field => field?.value && typeof field.value === 'string') // just those fields with values
-            .map(field => field.value),
+            .map(field => field.data?.fieldKey ?? field.value), // Issue 52050: use fieldKey for special characters
         sort: LABKEY_VIS.GenericChartHelper.getQueryConfigSortKey(chartConfig.measures),
         filterArray: savedConfig?.filterArray ?? [],
         containerPath: savedConfig?.containerPath || containerPath,
@@ -193,7 +191,7 @@ export const getChartBuilderChartConfig = (
         if (fieldConfig?.value) {
             config.measures[field.name] = {
                 fieldKey: fieldConfig.data.fieldKey,
-                name: fieldConfig.value,
+                name: fieldConfig.data.name,
                 label: fieldConfig.label,
                 queryName: fieldConfig.data.queryName,
                 schemaName: fieldConfig.data.schemaName,

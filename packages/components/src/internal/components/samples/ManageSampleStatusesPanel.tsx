@@ -404,12 +404,12 @@ SampleStatusesList.displayName = 'SampleStatusesList';
 
 interface ManageSampleStatusesPanelProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
-    projectContainer?: Container;
+    homeContainer?: Container;
     addFromHomeOnly?: boolean;
 }
 
 export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = memo(props => {
-    const { api = getDefaultAPIWrapper(), setIsDirty, projectContainer, addFromHomeOnly} = props;
+    const { api = getDefaultAPIWrapper(), setIsDirty, homeContainer, addFromHomeOnly} = props;
     const [states, setStates] = useState<Record<string, SampleState[]>>();
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
@@ -423,7 +423,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
             setError(undefined);
 
             api.samples
-                .getSampleStatuses(true, projectContainer?.path)
+                .getSampleStatuses(true, homeContainer?.path)
                 .then(statuses => {
                     const statesByType: Record<string, SampleState[]> = {};
                     statuses
@@ -447,7 +447,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
                     setError('Error: Unable to load sample statuses.');
                 });
         },
-        [api, projectContainer]
+        [api, homeContainer]
     );
 
     useEffect(() => {
@@ -500,7 +500,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
                                 addNew={addNew}
                                 onActionComplete={onActionComplete}
                                 onChange={onChange}
-                                container={projectContainer}
+                                container={homeContainer}
                             />
                         </div>
                     </div>

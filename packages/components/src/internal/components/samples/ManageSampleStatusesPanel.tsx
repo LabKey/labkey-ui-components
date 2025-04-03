@@ -33,6 +33,8 @@ import { SampleState } from './models';
 import { getSampleStatusColor, getSampleStatusLockedMessage } from './utils';
 import { SampleStatusTag } from './SampleStatusTag';
 import { SAMPLE_STATUS_COLORS, SampleStateType } from './constants';
+import { isAppHomeFolder } from '../../app/utils';
+import { useServerContext } from '../base/ServerContext';
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = new SchemaQuery('exp', 'SampleStateType');
@@ -402,15 +404,18 @@ SampleStatusesList.displayName = 'SampleStatusesList';
 
 interface ManageSampleStatusesPanelProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
-    container?: Container;
+    projectContainer?: Container;
+    addFromHomeOnly?: boolean;
 }
 
 export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = memo(props => {
-    const { api = getDefaultAPIWrapper(), setIsDirty, container } = props;
+    const { api = getDefaultAPIWrapper(), setIsDirty, projectContainer, addFromHomeOnly} = props;
     const [states, setStates] = useState<Record<string, SampleState[]>>();
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
     const [selectedGroup, setSelectedGroup] = useState<string>();
+    const { container, moduleContext } = useServerContext();
+    const showAdd = !addFromHomeOnly || isAppHomeFolder(container, moduleContext);
     const addNew = useMemo(() => selected === NEW_STATUS_INDEX, [selected]);
 
     const querySampleStatuses = useCallback(
@@ -418,7 +423,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
             setError(undefined);
 
             api.samples
-                .getSampleStatuses(true, container?.path)
+                .getSampleStatuses(true, projectContainer?.path)
                 .then(statuses => {
                     const statesByType: Record<string, SampleState[]> = {};
                     statuses
@@ -442,7 +447,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
                     setError('Error: Unable to load sample statuses.');
                 });
         },
-        [api, container]
+        [api, projectContainer]
     );
 
     useEffect(() => {
@@ -486,7 +491,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
                                 selectedGroup={selectedGroup}
                                 onSelect={onSetSelected}
                             />
-                            <AddEntityButton onClick={onAddState} entity="New Status" disabled={addNew} />
+                            {showAdd && <AddEntityButton onClick={onAddState} entity="New Status" disabled={addNew} />}
                         </div>
                         <div className="col-lg-8 col-md-6">
                             <SampleStatusDetail
@@ -495,7 +500,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
                                 addNew={addNew}
                                 onActionComplete={onActionComplete}
                                 onChange={onChange}
-                                container={container}
+                                container={projectContainer}
                             />
                         </div>
                     </div>

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.X
+*Released*: X April 2025
+- Issue 47595: Manage Sample Statuses page in LKS should not allow adding new status in child folder
+- Add null check for ConfirmImportTypes
+
 ### version 6.34.4
 *Released*: 2 April 2025
 - Issue 52050: App chart builder modal to handle field names with special characters in input selection

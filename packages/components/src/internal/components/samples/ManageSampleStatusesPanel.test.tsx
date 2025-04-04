@@ -36,7 +36,7 @@ describe('ManageSampleStatusesPanel', () => {
 
     test('initial state', async () => {
         await act(async () => {
-            renderWithAppContext(<ManageSampleStatusesPanel {...DEFAULT_PROPS} container={TEST_PROJECT_CONTAINER} />);
+            renderWithAppContext(<ManageSampleStatusesPanel {...DEFAULT_PROPS} homeContainer={TEST_PROJECT_CONTAINER} />);
         });
         validate();
     });
@@ -46,7 +46,7 @@ describe('ManageSampleStatusesPanel', () => {
             renderWithAppContext(
                 <ManageSampleStatusesPanel
                     {...DEFAULT_PROPS}
-                    container={TEST_PROJECT_CONTAINER}
+                    homeContainer={TEST_PROJECT_CONTAINER}
                     api={getTestAPIWrapper(jest.fn, {
                         samples: getSamplesTestAPIWrapper(jest.fn, {
                             getSampleStatuses: jest.fn().mockResolvedValue([]),
@@ -64,7 +64,7 @@ describe('ManageSampleStatusesPanel', () => {
             renderWithAppContext(
                 <ManageSampleStatusesPanel
                     {...DEFAULT_PROPS}
-                    container={TEST_PROJECT_CONTAINER}
+                    homeContainer={TEST_PROJECT_CONTAINER}
                     api={getTestAPIWrapper(jest.fn, {
                         samples: getSamplesTestAPIWrapper(jest.fn, {
                             getSampleStatuses: () => Promise.reject({ exception: 'Failure' }),

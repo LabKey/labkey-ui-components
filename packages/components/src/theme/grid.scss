@@ -555,6 +555,10 @@ $table-cell-padding: 4px 2px;
   margin-left: 10px;
 }
 
+.view-header {
+    overflow-wrap: break-word;
+}
+
 .view-menu .dropdown-menu {
     max-width: 600px;
     width: max-content;

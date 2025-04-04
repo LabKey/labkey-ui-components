@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 52667: null value for amount should remain undefined
 - Add spacing between file icon and name in `FileAttachmentEntry` and `FileInput` components
+- Issue 52275: Limit length of custom label on fields to 200
 
 ### version 6.34.4
 *Released*: 2 April 2025

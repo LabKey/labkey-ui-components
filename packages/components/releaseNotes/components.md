@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add spacing between file icon and name in `FileAttachmentEntry` and `FileInput` components
 - Issue 52275: Limit length of custom label on fields to 200
 
+### version 6.35.0
+*Released*: 4 April 2025
+- Issue 47595: Manage Sample Statuses page in LKS should not allow adding new status in child folder
+- Add null check for ConfirmImportTypes
+
 ### version 6.34.4
 *Released*: 2 April 2025
 - Issue 52050: App chart builder modal to handle field names with special characters in input selection

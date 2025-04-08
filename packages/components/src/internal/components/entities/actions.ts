@@ -1258,42 +1258,6 @@ export function getOrderedSelectedMappedKeys(
     });
 }
 
-export function saveOrderedSnapshotSelection(
-    queryModel: QueryModel,
-    fromColumn: string,
-    toColumn?: string
-): Promise<number[]> {
-    return new Promise((resolve, reject) => {
-        const { queryName, queryParameters, selections, sortString, viewName, selectionKey, schemaName } = queryModel;
-        getOrderedSelectedMappedKeys(
-            fromColumn,
-            toColumn ?? fromColumn,
-            schemaName,
-            queryName,
-            Array.from(selections),
-            sortString,
-            queryParameters,
-            viewName
-        )
-            .then(result => {
-                const fromIds = result.mapFromValues;
-                const toIds = result.mapToValues;
-                setSnapshotSelections(selectionKey, fromIds)
-                    .then(result => {
-                        resolve(toIds);
-                    })
-                    .catch(reason => {
-                        console.error(reason);
-                        reject(reason);
-                    });
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(reason);
-            });
-    });
-}
-
 /**
  * Get the ordered remapped key values from a QueryModel based on grid's current selection.
  * For example, picklist grid has a "ID" PK column and a "SampleId" FK column.

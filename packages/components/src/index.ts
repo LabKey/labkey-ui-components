@@ -517,7 +517,6 @@ import {
     getParentTypeDataForLineage,
     getSampleIdentifyingFieldGridData,
     getSampleOperationConfirmationData,
-    saveOrderedSnapshotSelection,
     updateCellValuesForSampleIds,
 } from './internal/components/entities/actions';
 import {
@@ -1140,7 +1139,6 @@ export {
     clearSelected,
     // grid functions
     getOrderedSelectedMappedKeysFromQueryModel,
-    saveOrderedSnapshotSelection,
     getSelected,
     getSelectedDataDeprecated,
     getQueryModelExportParams,

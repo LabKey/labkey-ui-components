@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - FolderAPIWrapper.getMultipleDataTypeExcludedContainers: return cache friendly result
 - createSnapshotSelectionKey: use a separator between the original key and the uuid
 - SchemaQuery.parseSelectionKey: Support snapshot selections
+- Remove saveOrderedSnapshotSelection
 
 ### version 6.35.2
 *Released*: 10 April 2025

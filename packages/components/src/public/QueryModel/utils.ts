@@ -16,6 +16,7 @@ import { EXPORT_TYPES } from '../../internal/constants';
 
 import { QueryModel } from './QueryModel';
 import { ActionValue } from './grid/actions/Action';
+import { SELECTION_SNAPSHOT_SEP } from '../SchemaQuery';
 
 export function filterToString(filter: Filter.IFilter): string {
     return `${filter.getColumnName()}-${filter.getFilterType().getURLSuffix()}-${filter.getValue()}`;
@@ -158,7 +159,7 @@ export function getSelectRowCountColumnsStr(
  * @param model the QueryModel used to create a snapshot selection key
  */
 export async function createSnapshotSelectionKey(model: QueryModel): Promise<string> {
-    const key = model.selectionKey + Utils.generateUUID();
+    const key = model.selectionKey + SELECTION_SNAPSHOT_SEP + Utils.generateUUID();
     await setSelected(
         key,
         true,

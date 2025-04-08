@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 52780: URLResolver assay fix for handling splitting of assay URL to account for protocol name with consecutive periods or ending in period
+
 ### version 6.35.0
 *Released*: 4 April 2025
 - Issue 47595: Manage Sample Statuses page in LKS should not allow adding new status in child folder

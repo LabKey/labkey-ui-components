@@ -19,6 +19,8 @@ import { LoadingSpinner } from './base/LoadingSpinner';
 type ExpandedColumnFilter = (column: QueryColumn, showAllColumns: boolean) => boolean;
 type QueryColumnHandler = (column: QueryColumn) => void;
 
+const MAX_LABEL_LENGTH = 200;
+
 interface FieldLabelDisplayProps {
     column: QueryColumn;
     editing?: boolean;
@@ -66,6 +68,7 @@ export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
                 onBlur={onBlur}
                 onChange={onChange}
                 type="text"
+                maxLength={MAX_LABEL_LENGTH}
             />
         );
     }

@@ -5,6 +5,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 52780: URLResolver assay fix for handling splitting of assay URL to account for protocol name with consecutive periods or ending in period
 
+### version 6.35.1
+*Released*: 9 April 2025
+- Issue 52667: null value for amount should remain undefined
+- Add spacing between file icon and name in `FileAttachmentEntry` and `FileInput` components
+- Issue 52275: Limit length of custom label on fields to 200
+
 ### version 6.35.0
 *Released*: 4 April 2025
 - Issue 47595: Manage Sample Statuses page in LKS should not allow adding new status in child folder

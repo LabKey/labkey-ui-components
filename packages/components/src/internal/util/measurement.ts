@@ -42,7 +42,7 @@ export class UnitModel {
         }
 
         if (this.value == null) {
-            return new UnitModel(0, newUnit.label.toLowerCase());
+            return new UnitModel(undefined, newUnit.label.toLowerCase());
         }
 
         const newValue = this.value * (this.unit.ratio / newUnit.ratio);

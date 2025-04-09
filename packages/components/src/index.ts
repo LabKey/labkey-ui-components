@@ -563,6 +563,7 @@ import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
 import { Pagination } from './internal/components/pagination/Pagination';
 import {
     createSnapshotSelectionKey,
+    createOrderedSnapshotSelectionKey,
     getQueryModelExportParams,
     runDetailsColumnsForQueryModel,
 } from './public/QueryModel/utils';
@@ -1781,6 +1782,7 @@ export {
     TabbedGridPanel,
     runDetailsColumnsForQueryModel,
     createSnapshotSelectionKey,
+    createOrderedSnapshotSelectionKey,
     flattenValuesFromRow,
     Pagination,
     makeTestActions,

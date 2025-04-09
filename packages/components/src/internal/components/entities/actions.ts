@@ -359,12 +359,9 @@ async function initParents(
             filterArray.push(opFilter);
         }
 
-        return getSelectedParents(
-            schemaQuery,
-            filterArray,
-            isAliquotParent,
-            isSnapshotSelection ? selectionResponse.selected : undefined
-        );
+        // Issue 48751 -- Always pass the selectionResponse.selected as the orderedRowIds because we use
+        // createOrderedSnapshotSelectionKey when generating selectionKeys that get passed to this method
+        return getSelectedParents(schemaQuery, filterArray, isAliquotParent, selectionResponse.selected);
     } else if (initialParents?.length > 0) {
         const [parent] = initialParents;
         const [schema, query, value] = parseEntityParentKey(parent.toLowerCase());

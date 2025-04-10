@@ -184,6 +184,8 @@ export async function createOrderedSnapshotSelectionKey(model: QueryModel): Prom
         // We only need the key column for this request
         columns: pkFieldKey,
         includeTotalCount: false,
+        offset: 0,
+        maxRows: -1,
         selections: model.selections,
     });
     const orderedRows = rows.map(row => caseInsensitive(row, pkFieldKey).value.toString());

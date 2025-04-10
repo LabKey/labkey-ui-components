@@ -517,7 +517,6 @@ import {
     getParentTypeDataForLineage,
     getSampleIdentifyingFieldGridData,
     getSampleOperationConfirmationData,
-    saveOrderedSnapshotSelection,
     updateCellValuesForSampleIds,
 } from './internal/components/entities/actions';
 import {
@@ -564,6 +563,7 @@ import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
 import { Pagination } from './internal/components/pagination/Pagination';
 import {
     createSnapshotSelectionKey,
+    createOrderedSnapshotSelectionKey,
     getQueryModelExportParams,
     runDetailsColumnsForQueryModel,
 } from './public/QueryModel/utils';
@@ -1140,7 +1140,6 @@ export {
     clearSelected,
     // grid functions
     getOrderedSelectedMappedKeysFromQueryModel,
-    saveOrderedSnapshotSelection,
     getSelected,
     getSelectedDataDeprecated,
     getQueryModelExportParams,
@@ -1783,6 +1782,7 @@ export {
     TabbedGridPanel,
     runDetailsColumnsForQueryModel,
     createSnapshotSelectionKey,
+    createOrderedSnapshotSelectionKey,
     flattenValuesFromRow,
     Pagination,
     makeTestActions,

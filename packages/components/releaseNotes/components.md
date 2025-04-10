@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.36.0
+*Released*: 10 April 2025
+- FolderAPIWrapper.getMultipleDataTypeExcludedContainers: return cache friendly result
+- createSnapshotSelectionKey: use a separator between the original key and the uuid
+- Add createOrderedSnapshotSelectionKey
+- SchemaQuery.parseSelectionKey: Support snapshot selections
+- Remove saveOrderedSnapshotSelection
+
 ### version 6.35.2
 *Released*: 10 April 2025
 - Merge from release25.4-SNAPSHOT to develop

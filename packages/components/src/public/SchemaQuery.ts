@@ -1,4 +1,16 @@
 const APP_SELECTION_PREFIX = 'appkey';
+export const SELECTION_SNAPSHOT_SEP = '__snapshot__'; // Defined in this module to prevent circular imports
+
+/**
+ * selectionKeys for snapshot selections (created via createSnapshotSelectionKey) are postfixed with __snapshot__<uuid>,
+ * this method strips the selection snapshot separator and uuid from the selectionKey.
+ * @param value
+ */
+function stripSelectionSnapshotId(value: string): string {
+    const snapshotIndex = value.indexOf(SELECTION_SNAPSHOT_SEP);
+    if (snapshotIndex > -1) return value.slice(0, snapshotIndex);
+    return value;
+}
 
 // 36009: Case-insensitive variant of QueryKey.decodePart
 export function decodePart(s: string): string {
@@ -95,6 +107,7 @@ export class SchemaQuery {
     }
 
     static parseSelectionKey(selectionKey: string): IParsedSelectionKey {
+        selectionKey = stripSelectionSnapshotId(selectionKey);
         const [appkey /* not used */, schemaQueryKey, keys] = selectionKey.split('|');
 
         return {

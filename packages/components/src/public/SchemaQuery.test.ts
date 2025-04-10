@@ -48,3 +48,38 @@ describe('resolveKeyFromJson', () => {
         );
     });
 });
+
+describe('parseSelectionKey', () => {
+    test('selectionKey with Schema, Query, and View', () => {
+        expect(SchemaQuery.parseSelectionKey('some-app-key|MySchema/MyQuery/MyView')).toEqual({
+            keys: undefined,
+            schemaQuery: new SchemaQuery('MySchema', 'MyQuery', 'MyView'),
+        });
+    });
+    test('selectionKey with only Schema and Query', () => {
+        expect(SchemaQuery.parseSelectionKey('some-app-key|MySchema/MyQuery')).toEqual({
+            keys: undefined,
+            schemaQuery: new SchemaQuery('MySchema', 'MyQuery'),
+        });
+    });
+    test('selectionKey with keys', () => {
+        expect(SchemaQuery.parseSelectionKey('some-app-key|MySchema/MyQuery/MyView|one;two;three')).toEqual({
+            keys: 'one;two;three',
+            schemaQuery: new SchemaQuery('MySchema', 'MyQuery', 'MyView'),
+        });
+    });
+    test('selectionKey with encoded params', () => {
+        expect(SchemaQuery.parseSelectionKey('some-app-key|My$PSchema/My$SQuery/My$BView|one;two;three')).toEqual({
+            keys: 'one;two;three',
+            schemaQuery: new SchemaQuery('My.Schema', 'My/Query', 'My}View'),
+        });
+    });
+    test('selectionKey with snapshot ID', () => {
+        const sk =
+            'some-app-key|My$PSchema/My$SQuery/My$BView|one;two;three__snapshot__e4bdc808-f624-103d-8ba4-b314ec40030b';
+        expect(SchemaQuery.parseSelectionKey(sk)).toEqual({
+            keys: 'one;two;three',
+            schemaQuery: new SchemaQuery('My.Schema', 'My/Query', 'My}View'),
+        });
+    });
+});

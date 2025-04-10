@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X April 2025
 - Issue 52321: LKSM/LKB: Edit Lineage grid should show Parent or Source columns with aliases by default
   - add `additionalParentTypes` param to `getOriginalParentsFromLineage`
+  - add `omitParentAliases` to `LineageEditableGridProps`
 
 ### version 6.36.0
 *Released*: 10 April 2025

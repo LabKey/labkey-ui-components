@@ -1314,6 +1314,7 @@ function validatePaste(
     colMin: number,
     rowMin: number,
     value: string,
+    allowExpand: boolean,
     readOnlyRowCount?: number
 ): PasteModel {
     const maxRowPaste = 1000;
@@ -1321,7 +1322,7 @@ function validatePaste(
     let message;
     let payload = parsePaste(value);
 
-    if (model.isMultiSelect) {
+    if (model.isMultiSelect && allowExpand) {
         payload = expandPaste(model, payload);
     }
 
@@ -1573,7 +1574,14 @@ export function validateAndInsertPastedData(
     const readOnlyRowCount =
         readonlyRows && !lockRowCount ? getReadonlyRowCount(editorModel, selectedRowIdx, readonlyRows) : 0;
 
-    const paste = validatePaste(editorModel, selectedColIdx, selectedRowIdx, value, readOnlyRowCount);
+    const paste = validatePaste(
+        editorModel,
+        selectedColIdx,
+        selectedRowIdx,
+        value,
+        selectionToFill === undefined, // Issue 52737 -- we do not want to expand paste during drag fill
+        readOnlyRowCount
+    );
 
     if (paste.success) {
         return insertPastedData(

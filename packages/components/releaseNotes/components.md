@@ -12,6 +12,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 47595: Manage Sample Statuses page in LKS should not allow adding new status in child folder
 - Add null check for ConfirmImportTypes
 
+### version 6.34.5
+*Released*: 7 April 2025
+-  Issue 52737: Drag/Fill modifying cells outside of the drag/fill range of cells
+
 ### version 6.34.4
 *Released*: 2 April 2025
 - Issue 52050: App chart builder modal to handle field names with special characters in input selection

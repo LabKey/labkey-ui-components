@@ -948,12 +948,12 @@ export const getOriginalParentsFromLineage = async (
         // filter out additional parent alias columns that's already added
         const additionalParentTypeSchemaQueryKeys = [];
         additionalParentTypes?.forEach(parentType => {
-            additionalParentTypeSchemaQueryKeys.push(parentType.schemaName.toLowerCase() + '-' + parentType.queryName.toLowerCase())
+            additionalParentTypeSchemaQueryKeys.push(parentType.schemaName.toLowerCase() + '|' + parentType.queryName.toLowerCase())
         });
         parentTypeOptions = parentTypeOptions.set(
             dataType.typeListingSchemaQuery.queryName,
             validParentTypeOptions.filter(option => {
-                const schemaQueryKey = option.entityDataType.instanceSchemaName.toLowerCase() + "-" + option.query.toLowerCase();
+                const schemaQueryKey = option.entityDataType.instanceSchemaName.toLowerCase() + '|' + option.query.toLowerCase();
                 return originalParentTypeLsids.indexOf(option.lsid) === -1 && additionalParentTypeSchemaQueryKeys.indexOf(schemaQueryKey) === -1;
             }).toList()
         );

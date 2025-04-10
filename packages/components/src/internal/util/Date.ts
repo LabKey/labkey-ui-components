@@ -228,6 +228,16 @@ function includesSeconds(rawValue: string): boolean {
     return rawValue.split(':').length > 2;
 }
 
+function includesMilliSeconds(rawValue: string): boolean {
+    if (!rawValue || typeof rawValue !== 'string') return false;
+    const parts = rawValue.split(':');
+    if (parts.length <= 2)
+        return false;
+
+    const msParts = parts[2].split('.');
+    return msParts.length > 1;
+}
+
 function _getColFormattedTimeFilterValue(column: QueryColumn, value: string): string {
     if (!value) return value;
 
@@ -398,7 +408,7 @@ export function parseDate(
  */
 export function parseTime(time: string): Date {
     if (!time) return null;
-    let valueFormat = includesSeconds(time) ? ISO_TIME_FORMAT_STRING : ISO_SHORT_TIME_FORMAT_STRING;
+    let valueFormat = includesMilliSeconds(time) ? ISO_LONG_TIME_FORMAT_STRING : (includesSeconds(time) ? ISO_TIME_FORMAT_STRING : ISO_SHORT_TIME_FORMAT_STRING);
     if (includesAMPM(time)) {
         valueFormat = valueFormat.replace('HH', 'hh');
         valueFormat += ' a';
@@ -596,7 +606,7 @@ export function getJsonDateTimeFormatString(date: Date | string | number): strin
 }
 
 export function getJsonTimeFormatString(date: Date | string | number): string {
-    return _formatDate(date, ISO_TIME_FORMAT_STRING);
+    return _formatDate(date, ISO_LONG_TIME_FORMAT_STRING);
 }
 
 export function getJsonDateFormatString(date: Date | string | number): string {

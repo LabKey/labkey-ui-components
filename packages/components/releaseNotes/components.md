@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.X
+*Released*: X April 2025
+- Issue 52536: Sample Manager: time format HH:mm:ss.SSS issues
+
 ### version 6.36.0
 *Released*: 10 April 2025
 - FolderAPIWrapper.getMultipleDataTypeExcludedContainers: return cache friendly result

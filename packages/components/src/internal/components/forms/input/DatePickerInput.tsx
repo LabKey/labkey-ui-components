@@ -170,9 +170,13 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         return parseDate(value, dateFormat, minDate, false, queryColumn.isDateOnlyColumn);
     }
 
-    onChange = (date: Date, event?: any): void => {
+    onChange = (date: Date, event?: any, raw?: boolean): void => {
         const { formsy, hideTime, inlineEdit, queryColumn } = this.props;
         this.setState({ selectedDate: date, invalid: false, invalidStart: false });
+
+        if (queryColumn.isTimeColumn && !event && !raw && date?.getMilliseconds() > 0) {
+            date.setMilliseconds(0); // react-datepicker milliseconds are not 0 when selecting time
+        }
 
         if (this.state.relativeInputValue) {
             this.props.onChange?.(this.state.relativeInputValue, this.state.relativeInputValue);
@@ -195,8 +199,9 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         const value = event?.target?.value;
 
         if (queryColumn.isTimeColumn) {
+            console.log(value);
             // Issue 50010: Time picker enters the wrong time if a time field has a format set
-            this.onChange(parseTime(value));
+            this.onChange(parseTime(value), undefined, true);
         } else if (isRelativeDateFilterValue(value)) {
             this.setState({ relativeInputValue: value });
             this.props.onChange?.(value);

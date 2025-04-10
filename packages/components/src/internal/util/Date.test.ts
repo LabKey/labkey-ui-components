@@ -363,8 +363,8 @@ describe('Date Utilities', () => {
             expect(getJsonFormatString(new Date('2021-12-03 23:59'), 'Date')).toBe('2021-12-03');
             expect(getJsonFormatString(new Date('2021-12-03 00:00'), 'DateTime')).toBe('2021-12-03 00:00:00.000');
             expect(getJsonFormatString(new Date('2021-12-03 23:59'), 'DateTime')).toBe('2021-12-03 23:59:00.000');
-            expect(getJsonFormatString(new Date('2021-12-03 00:00'), 'Time')).toBe('00:00:00');
-            expect(getJsonFormatString(new Date('2021-12-03 23:59'), 'Time')).toBe('23:59:00');
+            expect(getJsonFormatString(new Date('2021-12-03 00:00'), 'Time')).toBe('00:00:00.000');
+            expect(getJsonFormatString(new Date('2021-12-03 23:59'), 'Time')).toBe('23:59:00.000');
         });
     });
 
@@ -664,6 +664,10 @@ describe('Date Utilities', () => {
             expect(parseTime('13:02').toString()).toContain('13:02');
             expect(parseTime('11:02:59 AM').toString()).toContain('11:02:59');
             expect(parseTime('21:02:30').toString()).toContain('21:02:30');
+            expect(parseTime('21:02:30.001').toString()).toContain('21:02:30');
+            expect(parseTime('21:02:30.123').toString()).toContain('21:02:30');
+            expect(parseTime('21:02:30.123').getTime() - parseTime('21:02:30.001').getTime()).toBe(122);
+            expect(parseTime('01:02:30.123 PM').getTime() - parseTime('11:02:30.001 AM').getTime()).toBe(7200122);
         });
     });
 

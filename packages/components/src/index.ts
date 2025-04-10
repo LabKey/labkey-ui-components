@@ -626,7 +626,7 @@ import { SampleTypeDesigner } from './internal/components/domainproperties/sampl
 import { ListDesignerPanels } from './internal/components/domainproperties/list/ListDesignerPanels';
 import { DataClassDesigner } from './internal/components/domainproperties/dataclasses/DataClassDesigner';
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
-import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
+import { deleteDataClass, fetchDataClass, getDataClassDetails } from './internal/components/domainproperties/dataclasses/actions';
 import { DesignerDetailTooltip } from './internal/components/domainproperties/DesignerDetailPanel';
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
 import { RangeValidationOptionsModal } from './internal/components/domainproperties/validation/RangeValidationOptions';
@@ -1349,6 +1349,7 @@ export {
     DataClassModel,
     deleteDataClass,
     fetchDataClass,
+    getDataClassDetails,
     isSampleOperationPermitted,
     isSamplesSchema,
     isAllSamplesSchema,

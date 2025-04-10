@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.X
+*Released*: X April 2025
+- Issue 52321: LKSM/LKB: Edit Lineage grid should show Parent or Source columns with aliases by default
+  - add `additionalParentTypes` param to `getOriginalParentsFromLineage`
+
 ### version 6.35.1
 *Released*: 9 April 2025
 - Issue 52667: null value for amount should remain undefined

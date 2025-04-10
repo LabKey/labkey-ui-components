@@ -41,6 +41,7 @@ import {
     OperationConfirmationData,
     FolderConfigurableDataType,
 } from './models';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 export interface EntityAPIWrapper {
     getCrossFolderSelectionResult: (
@@ -92,6 +93,7 @@ export interface EntityAPIWrapper {
     getOriginalParentsFromLineage: (
         lineage: Record<string, any>,
         parentDataTypes: EntityDataType[],
+        additionalParentTypes?: SchemaQuery[],
         containerPath?: string
     ) => Promise<{
         originalParents: Record<string, List<EntityChoice>>;

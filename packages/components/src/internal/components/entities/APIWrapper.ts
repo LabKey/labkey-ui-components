@@ -9,6 +9,8 @@ import { InsertOptions } from '../../query/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
 import {
     getDataOperationConfirmationData,
     GetDeleteConfirmationDataOptions,
@@ -41,7 +43,6 @@ import {
     OperationConfirmationData,
     FolderConfigurableDataType,
 } from './models';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 
 export interface EntityAPIWrapper {
     getCrossFolderSelectionResult: (

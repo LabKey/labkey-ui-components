@@ -946,7 +946,7 @@ export const getOriginalParentsFromLineage = async (
         const additionalParentTypeSchemaQueryKeys = [];
         additionalParentTypes?.forEach(parentType => {
             additionalParentTypeSchemaQueryKeys.push(
-                parentType.schemaName.toLowerCase() + '|' + parentType.queryName.toLowerCase()
+                parentType.toString().toLowerCase()
             );
         });
         parentTypeOptions = parentTypeOptions.set(
@@ -954,7 +954,7 @@ export const getOriginalParentsFromLineage = async (
             validParentTypeOptions
                 .filter(option => {
                     const schemaQueryKey =
-                        option.entityDataType.instanceSchemaName.toLowerCase() + '|' + option.query.toLowerCase();
+                        new SchemaQuery(option.entityDataType.instanceSchemaName, option.query).toString().toLowerCase();
                     return (
                         originalParentTypeLsids.indexOf(option.lsid) === -1 &&
                         additionalParentTypeSchemaQueryKeys.indexOf(schemaQueryKey) === -1

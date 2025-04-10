@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.35.2
+*Released*: 10 April 2025
+- Merge from release25.4-SNAPSHOT to develop
+  - includes changes from 6.34.5 #1770
+
 ### version 6.35.1
 *Released*: 9 April 2025
 - Issue 52667: null value for amount should remain undefined

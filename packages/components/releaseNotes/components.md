@@ -6,6 +6,19 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 52321: LKSM/LKB: Edit Lineage grid should show Parent or Source columns with aliases by default
   - add `additionalParentTypes` param to `getOriginalParentsFromLineage`
 
+### version 6.36.0
+*Released*: 10 April 2025
+- FolderAPIWrapper.getMultipleDataTypeExcludedContainers: return cache friendly result
+- createSnapshotSelectionKey: use a separator between the original key and the uuid
+- Add createOrderedSnapshotSelectionKey
+- SchemaQuery.parseSelectionKey: Support snapshot selections
+- Remove saveOrderedSnapshotSelection
+
+### version 6.35.2
+*Released*: 10 April 2025
+- Merge from release25.4-SNAPSHOT to develop
+  - includes changes from 6.34.5 #1770
+
 ### version 6.35.1
 *Released*: 9 April 2025
 - Issue 52667: null value for amount should remain undefined
@@ -16,6 +29,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 4 April 2025
 - Issue 47595: Manage Sample Statuses page in LKS should not allow adding new status in child folder
 - Add null check for ConfirmImportTypes
+
+### version 6.34.5
+*Released*: 7 April 2025
+-  Issue 52737: Drag/Fill modifying cells outside of the drag/fill range of cells
 
 ### version 6.34.4
 *Released*: 2 April 2025

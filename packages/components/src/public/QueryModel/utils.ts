@@ -14,8 +14,12 @@ import { QuerySort } from '../QuerySort';
 import { QueryColumn } from '../QueryColumn';
 import { EXPORT_TYPES } from '../../internal/constants';
 
-import { QueryModel } from './QueryModel';
+import { SELECTION_SNAPSHOT_SEP } from '../SchemaQuery';
+import { getSelectedRows } from '../../internal/query/selectRows';
+import { caseInsensitive } from '../../internal/util/utils';
+
 import { ActionValue } from './grid/actions/Action';
+import { QueryModel } from './QueryModel';
 
 export function filterToString(filter: Filter.IFilter): string {
     return `${filter.getColumnName()}-${filter.getFilterType().getURLSuffix()}-${filter.getValue()}`;
@@ -150,6 +154,13 @@ export function getSelectRowCountColumnsStr(
     return columns[0];
 }
 
+// Do not use this directly, use createSnapshotSelectionKey or createOrderedSnapshotSelectionKey below
+async function _createSnapshotSelectionKey(model: QueryModel, selections: string[]): Promise<string> {
+    const key = model.selectionKey + SELECTION_SNAPSHOT_SEP + Utils.generateUUID();
+    await setSelected(key, true, selections, model.selectionContainerPath, false, model.schemaName, model.queryName);
+    return key;
+}
+
 /**
  * Creates a new selection key with the current selections for a given model. Use this when calling an API that takes
  * a selectionKey in order to prevent taking action on values that have been filtered out of the view (See Issue 52393
@@ -157,16 +168,26 @@ export function getSelectRowCountColumnsStr(
  * APIs. If you use this do not set the useSnapshotSelections flag in your API call.
  * @param model the QueryModel used to create a snapshot selection key
  */
-export async function createSnapshotSelectionKey(model: QueryModel): Promise<string> {
-    const key = model.selectionKey + Utils.generateUUID();
-    await setSelected(
-        key,
-        true,
-        Array.from(model.selections),
-        model.selectionContainerPath,
-        false,
-        model.schemaName,
-        model.queryName
-    );
-    return key;
+export function createSnapshotSelectionKey(model: QueryModel): Promise<string> {
+    return _createSnapshotSelectionKey(model, Array.from(model.selections));
+}
+
+/**
+ * Creates a new selection key via the same mechanism as createSnapshotSelectionKey, but sorts the rows via the sorts
+ * from the underlying QueryModel.
+ * @param model
+ */
+export async function createOrderedSnapshotSelectionKey(model: QueryModel): Promise<string> {
+    const pkFieldKey = model.keyColumns[0].fieldKey;
+    const { rows } = await getSelectedRows({
+        ...model.loadRowsConfig,
+        // We only need the key column for this request
+        columns: pkFieldKey,
+        includeTotalCount: false,
+        offset: 0,
+        maxRows: -1,
+        selections: model.selections,
+    });
+    const orderedRows = rows.map(row => caseInsensitive(row, pkFieldKey).value.toString());
+    return _createSnapshotSelectionKey(model, orderedRows);
 }

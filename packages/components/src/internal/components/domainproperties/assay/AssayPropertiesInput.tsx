@@ -27,11 +27,12 @@ import { resolveErrorMessage } from '../../../util/messaging';
 import { FilterCriteriaRenderer } from '../../../FilterCriteriaRenderer';
 import { DisableableButton } from '../../buttons/DisableableButton';
 
+import { InternalSpacesWarning } from '../../forms/InternalSpacesWarning';
+
 import { AssayProtocolModel, ProtocolTransformScript } from './models';
 import { FORM_IDS, SCRIPTS_DIR } from './constants';
 import { getScriptEngineForExtension, getValidPublishTargets } from './actions';
 import { useFilterCriteriaContext } from './FilterCriteriaContext';
-import { InternalSpacesWarning } from '../../forms/InternalSpacesWarning';
 
 interface AssayPropertiesInputProps extends DomainFieldLabelProps, PropsWithChildren {
     colSize?: number;
@@ -567,14 +568,14 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
         const { model } = this.props;
         const { error, addingScript, addingScriptPath } = this.state;
         const protocolTransformScripts = model.protocolTransformScripts || List<ProtocolTransformScript>();
-        const protocolTransformAttachments = protocolTransformScripts.map(config => {
-            return {
+        const protocolTransformAttachments = protocolTransformScripts
+            .map(config => ({
                 name: getAttachmentTitleFromName(config.scriptPath),
                 description: config.scriptPath,
                 runOnImport: config.runOnImport,
                 runOnEdit: config.runOnEdit,
-            };
-        });
+            }))
+            .toArray();
 
         return (
             <>

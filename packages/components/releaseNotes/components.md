@@ -1,11 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.X
-*Released*: X April 2025
+### version 6.36.1
+*Released*: 11 April 2025
 - Issue 52321: LKSM/LKB: Edit Lineage grid should show Parent or Source columns with aliases by default
   - add `additionalParentTypes` param to `getOriginalParentsFromLineage`
   - add `omitParentAliases` to `LineageEditableGridProps`
+
+### version 6.36.1
+*Released*: 11 April 2025
+- Issue 52780: URLResolver assay fix for handling splitting of assay URL to account for protocol name with consecutive periods or ending in period
 
 ### version 6.36.0
 *Released*: 10 April 2025

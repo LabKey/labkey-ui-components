@@ -778,6 +778,25 @@ describe('Date Utilities', () => {
             expect(isDateTimeInPast('3000-01-01 00:01')).toBeFalsy();
             expect(isDateTimeInPast('3000-01-01 00:00:00.001')).toBeFalsy();
         });
+
+        function datePlusHours(date: Date, hours: number): string {
+            return getJsonDateTimeFormatString(new Date(date.getTime() + hours * 60 * 60 * 1000));
+        }
+
+        test('timezone', () => {
+            const utcNow = new Date();
+            const TZ = 'Europe/Moscow';
+            expect(isDateTimeInPast(datePlusHours(utcNow, -4), TZ)).toBeTruthy();
+            expect(isDateTimeInPast(datePlusHours(utcNow, -3), TZ)).toBeTruthy();
+            expect(isDateTimeInPast(datePlusHours(utcNow, -2), TZ)).toBeTruthy();
+            expect(isDateTimeInPast(datePlusHours(utcNow, -1), TZ)).toBeTruthy();
+            expect(isDateTimeInPast(datePlusHours(utcNow, 1), TZ)).toBeTruthy();
+            expect(isDateTimeInPast(datePlusHours(utcNow, 2), TZ)).toBeTruthy();
+            expect(isDateTimeInPast(datePlusHours(utcNow, 3), TZ)).toBeTruthy();
+            expect(isDateTimeInPast(datePlusHours(utcNow, 4), TZ)).toBeFalsy();
+            expect(isDateTimeInPast(datePlusHours(utcNow, 5), TZ)).toBeFalsy();
+            expect(isDateTimeInPast(datePlusHours(utcNow, 6), TZ)).toBeFalsy();
+        });
     });
 
     describe('toDateFNSFormatString', () => {

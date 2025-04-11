@@ -54,7 +54,7 @@ export interface FolderAPIWrapper {
     getMultipleDataTypeExcludedContainers: (
         dataType: FolderConfigurableDataType,
         dataTypeRowIds: number[]
-    ) => Promise<string[]>;
+    ) => Promise<Record<string, string[]>>;
     renameFolder: (options: FolderSettingsOptions, containerPath?: string) => Promise<Container>;
     setAuditCommentsRequired: (isRequired: boolean, containerPath?: string) => Promise<void>;
     updateContainerDataExclusions: (options: FolderSettingsOptions, containerPath?: string) => Promise<void>;
@@ -206,29 +206,38 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
         });
     };
 
+    /**
+     * This is a light wrapper around getDataTypeExcludedContainers that makes it easier for us to cache results
+     */
+    getDataTypeExcludedContainersAsRecord = async (
+        dataType: FolderConfigurableDataType,
+        dataTypeRowId: number
+    ): Promise<Record<string, string[]>> => {
+        const containers = await this.getDataTypeExcludedContainers(dataType, dataTypeRowId);
+        return { [dataTypeRowId]: containers };
+    };
+
     getMultipleDataTypeExcludedContainers = (
         dataType: FolderConfigurableDataType,
         dataTypeRowIds: number[]
-    ): Promise<string[]> => {
+    ): Promise<Record<string, string[]>> => {
         if (!dataType || !dataTypeRowIds || !dataTypeRowIds.length) {
             return Promise.resolve(undefined);
         }
 
         return new Promise((resolve, reject) => {
-            const promises = [];
+            const promises: Array<Promise<Record<string, string[]>>> = [];
 
             dataTypeRowIds.forEach(id => {
-                promises.push(this.getDataTypeExcludedContainers(dataType, id));
+                promises.push(this.getDataTypeExcludedContainersAsRecord(dataType, id));
             });
-            const excludedFolderSet = new Set();
             Promise.all(promises)
                 .then(results => {
-                    results.forEach(exclusions => exclusions.forEach(e => excludedFolderSet.add(e)));
-                    const folderList = [];
-                    excludedFolderSet.forEach(f => {
-                        folderList.push(f);
-                    });
-                    resolve(folderList);
+                    resolve(
+                        results.reduce((reduction, exclusions) => {
+                            return { ...reduction, ...exclusions };
+                        }, {})
+                    );
                 })
                 .catch(reason => {
                     console.error('Unable to retrieve data type exclusions', reason);

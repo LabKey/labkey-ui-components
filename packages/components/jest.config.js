@@ -49,8 +49,7 @@ module.exports = {
         '^.+\\.tsx?$': [
             'ts-jest',
             {
-                // This increases test perf by a considerable margin
-                isolatedModules: true,
+                tsconfig: 'tsconfig.test.json',
             }
         ],
     },

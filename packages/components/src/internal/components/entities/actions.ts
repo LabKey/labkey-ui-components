@@ -890,6 +890,7 @@ export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
 export const getOriginalParentsFromLineage = async (
     lineage: Record<string, any>,
     parentDataTypes: EntityDataType[],
+    additionalParentTypes?: SchemaQuery[],
     containerPath?: string
 ): Promise<{
     originalParents: Record<string, List<EntityChoice>>;
@@ -940,9 +941,26 @@ export const getOriginalParentsFromLineage = async (
         Object.values(originalParents).forEach((parentTypes: List<EntityChoice>) => {
             originalParentTypeLsids.push(...parentTypes.map(parentType => parentType.type.lsid).toArray());
         });
+
+        // filter out additional parent alias columns that's already added
+        const additionalParentTypeSchemaQueryKeys = [];
+        additionalParentTypes?.forEach(parentType => {
+            additionalParentTypeSchemaQueryKeys.push(
+                parentType.toString().toLowerCase()
+            );
+        });
         parentTypeOptions = parentTypeOptions.set(
             dataType.typeListingSchemaQuery.queryName,
-            validParentTypeOptions.filter(option => originalParentTypeLsids.indexOf(option.lsid) === -1).toList()
+            validParentTypeOptions
+                .filter(option => {
+                    const schemaQueryKey =
+                        new SchemaQuery(option.entityDataType.instanceSchemaName, option.query).toString().toLowerCase();
+                    return (
+                        originalParentTypeLsids.indexOf(option.lsid) === -1 &&
+                        additionalParentTypeSchemaQueryKeys.indexOf(schemaQueryKey) === -1
+                    );
+                })
+                .toList()
         );
     });
 

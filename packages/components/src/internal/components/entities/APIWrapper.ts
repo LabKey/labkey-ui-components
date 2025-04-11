@@ -9,6 +9,8 @@ import { InsertOptions } from '../../query/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
 import {
     getDataOperationConfirmationData,
     GetDeleteConfirmationDataOptions,
@@ -92,6 +94,7 @@ export interface EntityAPIWrapper {
     getOriginalParentsFromLineage: (
         lineage: Record<string, any>,
         parentDataTypes: EntityDataType[],
+        additionalParentTypes?: SchemaQuery[],
         containerPath?: string
     ) => Promise<{
         originalParents: Record<string, List<EntityChoice>>;

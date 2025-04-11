@@ -1,13 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.X
-*Released*: X April 2025
+### version 6.36.3
+*Released*: 11 April 2025
 - Issue 52536: Sample Manager: time format HH:mm:ss.SSS issues
   - update `getJsonTimeFormatString` to use `ISO_LONG_TIME_FORMAT_STRING`
   - initializing datepicker selection of time to have 0 millisecond
+  - fix detail editing ignoring seconds and milliseconds
 
-### version 6.36.1
+### version 6.36.2
 *Released*: 11 April 2025
 - Issue 52321: LKSM/LKB: Edit Lineage grid should show Parent or Source columns with aliases by default
   - add `additionalParentTypes` param to `getOriginalParentsFromLineage`

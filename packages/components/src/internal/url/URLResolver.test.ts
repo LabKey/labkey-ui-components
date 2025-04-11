@@ -13,7 +13,7 @@ import { SearchHit, SearchResult } from '../components/search/actions';
 import { TEST_PROJECT_CONTAINER } from '../containerFixtures';
 
 import { AppURL } from './AppURL';
-import { LookupMapper, URLResolver } from './URLResolver';
+import { LookupMapper, URLResolver, URLService } from './URLResolver';
 
 beforeAll(() => {
     LABKEY.container = {
@@ -26,6 +26,34 @@ beforeAll(() => {
 });
 
 describe('URLResolver', () => {
+    function resolveUrl(url: string, schemaName: string): AppURL | string | boolean {
+        return URLService.getUrlMappers()
+            .toSeq()
+            .map(m => m.resolve(url, fromJS({ url }), undefined, schemaName, undefined))
+            .filter(v => v !== undefined)
+            .first();
+    }
+
+    describe('ActionMapper', () => {
+        test('assayRuns', () => {
+            let url = '/Biologics%20Example/assay-assayOther.view?rowId=636&Runs.Batch%2FRowId~eq=6169';
+            let result = resolveUrl(url, 'assay.General.testProtocol');
+            expect(result).toBe(undefined);
+
+            url = '/Biologics%20Example/assay-assayRuns.view?rowId=636&Runs.Run%2FRowId~eq=6169';
+            result = resolveUrl(url, 'assay.General.testProtocol');
+            expect(result).toBe(undefined);
+
+            url = '/Biologics%20Example/assay-assayRuns.view?rowId=636&Runs.Batch%2FRowId~eq=6169';
+            result = resolveUrl(url, 'assay.General.testProtocol');
+            expect(result.toString()).toBe('/assays/General/testProtocol/batches/6169');
+
+            url = '/Biologics%20Example/assay-assayRuns.view?rowId=636&Runs.Batch%2FRowId~eq=6169';
+            result = resolveUrl(url, 'assay.General.test,./Protocol..');
+            expect(result.toString()).toBe('/assays/General/test%2C.%2FProtocol../batches/6169');
+        });
+    });
+
     describe('resolveSearchUsingIndex', () => {
         const resolver = new URLResolver();
 

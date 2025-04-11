@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.36.1
+*Released*: 11 April 2025
+- Issue 52780: URLResolver assay fix for handling splitting of assay URL to account for protocol name with consecutive periods or ending in period
+
 ### version 6.36.0
 *Released*: 10 April 2025
 - FolderAPIWrapper.getMultipleDataTypeExcludedContainers: return cache friendly result

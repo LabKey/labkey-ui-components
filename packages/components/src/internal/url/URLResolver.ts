@@ -198,9 +198,13 @@ const ASSAY_MAPPERS = [
 
                         // expecting a schema of assay.<provider>.<protocol>
                         if (schema.indexOf('assay.') === 0) {
-                            const url = ['assays'].concat(schema.replace('assay.', '').split('.'));
-                            url.push('batches', rowId);
+                            const parts = schema.split('.');
+                            const provider = parts[1];
+                            // Issue 52780: the rest of the parts make up the protocol name, which may contain . chars
+                            const protocol = parts.slice(2).join('.');
 
+                            const url = ['assays', provider, protocol];
+                            url.push('batches', rowId);
                             return AppURL.create(...url);
                         }
                     }

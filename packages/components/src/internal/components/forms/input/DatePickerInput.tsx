@@ -199,7 +199,6 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         const value = event?.target?.value;
 
         if (queryColumn.isTimeColumn) {
-            console.log(value);
             // Issue 50010: Time picker enters the wrong time if a time field has a format set
             this.onChange(parseTime(value), undefined, true);
         } else if (isRelativeDateFilterValue(value)) {

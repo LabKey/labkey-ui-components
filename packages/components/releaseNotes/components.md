@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.36.1
+*Released*: 11 April 2025
 - Issue 52780: URLResolver assay fix for handling splitting of assay URL to account for protocol name with consecutive periods or ending in period
 
 ### version 6.36.0

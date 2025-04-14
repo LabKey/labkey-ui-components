@@ -20,7 +20,6 @@ import React, {
     Dispatch,
     FC,
     memo,
-    ReactNode,
     SetStateAction,
     useCallback,
     useEffect,
@@ -455,36 +454,6 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     );
 });
 HeaderCellDropdown.displayName = 'HeaderCellDropdown';
-
-export function headerCell(
-    i: number,
-    column: GridColumn,
-    selectable?: boolean,
-    columnCount?: number,
-    handleSort?: (column: QueryColumn, dir?: string) => void,
-    handleFilter?: (column: QueryColumn, remove?: boolean) => void,
-    handleAddColumn?: (column: QueryColumn) => void,
-    handleHideColumn?: (column: QueryColumn) => void,
-    onColumnTitleEdit?: (column: QueryColumn) => void,
-    onColumnTitleChange?: (column: QueryColumn) => void,
-    model?: QueryModel
-): ReactNode {
-    return (
-        <HeaderCellDropdown
-            i={i}
-            column={column}
-            selectable={selectable}
-            columnCount={columnCount}
-            handleSort={handleSort}
-            handleFilter={handleFilter}
-            handleAddColumn={handleAddColumn}
-            handleHideColumn={handleHideColumn}
-            model={model}
-            onColumnTitleChange={onColumnTitleChange}
-            onColumnTitleEdit={onColumnTitleEdit}
-        />
-    );
-}
 
 interface HeaderSelectionCellProps {
     className?: string;

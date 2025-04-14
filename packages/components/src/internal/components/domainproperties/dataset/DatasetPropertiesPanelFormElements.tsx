@@ -212,7 +212,7 @@ interface DataRowUniquenessContainerProps {
 }
 
 export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniquenessContainerProps> {
-    getHelpTipForAdditionalField(): JSX.Element {
+    getHelpTipForAdditionalField(): ReactNode {
         const { studyProperties } = this.props;
         const ptidSingularTxt = studyProperties.SubjectNounPlural;
         const timepointTxt = getStudyTimepointLabel(studyProperties.TimepointType);
@@ -237,11 +237,11 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
                     </li>
                 </ul>
             </>
-        ) as JSX.Element;
+        );
     }
 
-    getHelpTipElement(field: string): JSX.Element {
-        return (<> {getHelpTip(field, this.props.studyProperties)} </>) as JSX.Element;
+    getHelpTipElement(field: string): ReactNode {
+        return <> {getHelpTip(field, this.props.studyProperties)} </>;
     }
 
     render() {

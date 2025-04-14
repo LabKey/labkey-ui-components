@@ -31,7 +31,7 @@ export const CommentTextArea: FC<Props> = props => {
     const label = `Reason for ${actionName}${requiresUserComment ? ' *' : ''}`;
 
     const [showError, setShowError] = useState<boolean>(false);
-    const inputRef = useRef<HTMLTextAreaElement>();
+    const inputRef = useRef<HTMLTextAreaElement>(undefined);
 
     // borrowed from https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/
     const onTextAreaInput = useCallback(() => {

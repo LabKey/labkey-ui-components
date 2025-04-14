@@ -416,7 +416,7 @@ const InputImpl: FC<FormsyInputProps & FormsyInjectedProps<string>> = props => {
         return input;
     }
 
-    let control: React.JSX.Element;
+    let control: React.ReactNode;
     if (addonAfter || addonBefore || buttonAfter || buttonBefore) {
         control = (
             <InputGroup

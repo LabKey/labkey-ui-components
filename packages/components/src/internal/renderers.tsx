@@ -165,8 +165,8 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
         setOpen,
     } = props;
     const showGridCustomization = handleHideColumn || handleAddColumn;
-    const toggleEl = useRef<HTMLSpanElement>();
-    const menuEl = useRef<HTMLUListElement>();
+    const toggleEl = useRef<HTMLSpanElement>(undefined);
+    const menuEl = useRef<HTMLUListElement>(undefined);
     const portalRef = usePortalRef('header-cell-dropdown-menu-portal');
     // Note: We need to make sure we cancel all events in our menu handlers or we also trigger the click handler in
     // HeaderCellDropdown, which will reset the open value to true, which will keep the menu open.
@@ -486,25 +486,33 @@ export function headerCell(
     );
 }
 
-export function headerSelectionCell(
-    handleSelection: (event: ChangeEvent<HTMLInputElement>) => void,
-    selectedState: GRID_CHECKBOX_OPTIONS,
-    disabled: boolean,
-    className?: string
-): ReactNode {
-    const isChecked = selectedState === GRID_CHECKBOX_OPTIONS.ALL;
-    const isIndeterminate = selectedState === GRID_CHECKBOX_OPTIONS.SOME;
+interface HeaderSelectionCellProps {
+    className?: string;
+    disabled: boolean;
+    handleSelection: React.ChangeEventHandler<HTMLInputElement>;
+    selectedState: GRID_CHECKBOX_OPTIONS;
+}
 
-    // Ref below is required as indeterminate is not an actual HTML attribute
-    // See: https://github.com/facebook/react/issues/1798
+export const HeaderSelectionCell: FC<HeaderSelectionCellProps> = memo(props => {
+    const { className, disabled, handleSelection, selectedState } = props;
+    const isIndeterminate = selectedState === GRID_CHECKBOX_OPTIONS.SOME;
+    const checkboxRef = useRef<HTMLInputElement>(undefined);
+
+    useEffect(() => {
+        if (checkboxRef.current) {
+            checkboxRef.current.indeterminate = isIndeterminate;
+        }
+    }, [isIndeterminate]);
+
     return (
         <input
             className={className}
-            checked={isChecked}
+            checked={selectedState === GRID_CHECKBOX_OPTIONS.ALL}
             disabled={disabled}
             onChange={handleSelection}
-            ref={elem => elem && (elem.indeterminate = isIndeterminate)}
+            ref={checkboxRef}
             type="checkbox"
         />
     );
-}
+});
+HeaderSelectionCell.displayName = 'HeaderSelectionCell';

@@ -1,5 +1,4 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
 
 import classNames from 'classnames';
 
@@ -42,10 +41,7 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
     }
 
     focusNameInput = () => {
-        if (this.nameInput && this.nameInput.current) {
-            const domEl = findDOMNode(this.nameInput.current) as HTMLInputElement;
-            domEl.focus();
-        }
+        this.nameInput.current?.focus();
     };
 
     onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {

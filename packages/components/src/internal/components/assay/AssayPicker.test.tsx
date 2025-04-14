@@ -21,12 +21,12 @@ describe('AssayPicker', () => {
         );
 
         await waitFor(() => {
-            expect(document.querySelectorAll('.nav-tabs li')).toHaveLength(3);
+            expect(document.querySelectorAll('#assay-type-select-container')).toHaveLength(3);
         });
 
         // Verify all three tabs shown and standard assay selected
+        expect(document.querySelectorAll('.nav-tabs li')).toHaveLength(3);
         expect(document.querySelectorAll('.nav-tabs li')[0].getAttribute('class')).toEqual('active');
-        expect(document.querySelectorAll('#assay-type-select-container')).toHaveLength(3);
 
         // Click import tab and verify it's shown
         expect(document.querySelectorAll('.nav-tabs li.active a#assay-picker-tabs-tab-import')).toHaveLength(0);

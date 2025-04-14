@@ -76,7 +76,7 @@ const EMPTY_MODEL = AssayProtocolModel.create({
     ]),
 });
 
-async function setAssayName(value: string) {
+async function setAssayName(value: string): Promise<void> {
     const nameInput = document.querySelector('input#assay-design-name');
     await userEvent.type(nameInput, value);
 }
@@ -113,10 +113,10 @@ describe('AssayDesignerPanels', () => {
         );
 
         await waitFor(() => {
-            expect(document.querySelectorAll('.domain-form-panel').length).toBe(4);
+            expect(document.querySelectorAll('.domain-form-panel')).toHaveLength(4);
+            expect(document.querySelectorAll('.domain-form-manual-section')).toHaveLength(3);
+            expect(document.querySelectorAll('.domain-field-row')).toHaveLength(0);
         });
-        expect(document.querySelectorAll('.domain-form-manual-section').length).toBe(3);
-        expect(document.querySelectorAll('.domain-field-row').length).toBe(0);
     });
 
     test('initModel', async () => {
@@ -139,10 +139,10 @@ describe('AssayDesignerPanels', () => {
         );
 
         await waitFor(() => {
-            expect(document.querySelectorAll('.domain-form-panel').length).toBe(4);
+            expect(document.querySelectorAll('.domain-form-panel')).toHaveLength(4);
+            expect(document.querySelectorAll('.domain-form-manual-section')).toHaveLength(1);
+            expect(document.querySelectorAll('.domain-field-row')).toHaveLength(6);
         });
-        expect(document.querySelectorAll('.domain-form-manual-section').length).toBe(1);
-        expect(document.querySelectorAll('.domain-field-row').length).toBe(6);
     });
 
     test('hideEmptyBatchDomain for new assay', async () => {
@@ -165,10 +165,10 @@ describe('AssayDesignerPanels', () => {
         );
 
         await waitFor(() => {
-            expect(document.querySelectorAll('.domain-form-panel').length).toBe(3);
+            expect(document.querySelectorAll('.domain-form-panel')).toHaveLength(3);
+            expect(document.querySelectorAll('.domain-form-manual-section')).toHaveLength(2);
+            expect(document.querySelectorAll('.domain-field-row')).toHaveLength(0);
         });
-        expect(document.querySelectorAll('.domain-form-manual-section').length).toBe(2);
-        expect(document.querySelectorAll('.domain-field-row').length).toBe(0);
     });
 
     test('hideEmptyBatchDomain with initModel', async () => {
@@ -192,10 +192,10 @@ describe('AssayDesignerPanels', () => {
         );
 
         await waitFor(() => {
-            expect(document.querySelectorAll('.domain-form-panel').length).toBe(3);
+            expect(document.querySelectorAll('.domain-form-panel')).toHaveLength(3);
+            expect(document.querySelectorAll('.domain-form-manual-section')).toHaveLength(0);
+            expect(document.querySelectorAll('.domain-field-row')).toHaveLength(6);
         });
-        expect(document.querySelectorAll('.domain-form-manual-section').length).toBe(0);
-        expect(document.querySelectorAll('.domain-field-row').length).toBe(6);
     });
 
     test('appPropertiesOnly for new assay', async () => {
@@ -219,10 +219,10 @@ describe('AssayDesignerPanels', () => {
         );
 
         await waitFor(() => {
-            expect(document.querySelectorAll('.domain-form-panel').length).toBe(5);
+            expect(document.querySelectorAll('.domain-form-panel')).toHaveLength(5);
+            expect(document.querySelectorAll('.domain-form-manual-section')).toHaveLength(3);
         });
-        expect(document.querySelectorAll('.domain-form-manual-section').length).toBe(3);
-        expect(document.querySelectorAll('.domain-field-row').length).toBe(0);
+        expect(document.querySelectorAll('.domain-field-row')).toHaveLength(0);
     });
 
     test('appPropertiesOnly, allowFolderExclusion false', async () => {
@@ -246,10 +246,10 @@ describe('AssayDesignerPanels', () => {
         );
 
         await waitFor(() => {
-            expect(document.querySelectorAll('.domain-form-panel').length).toBe(4);
+            expect(document.querySelectorAll('.domain-form-panel')).toHaveLength(4);
         });
-        expect(document.querySelectorAll('.domain-form-manual-section').length).toBe(3);
-        expect(document.querySelectorAll('.domain-field-row').length).toBe(0);
+        expect(document.querySelectorAll('.domain-form-manual-section')).toHaveLength(3);
+        expect(document.querySelectorAll('.domain-field-row')).toHaveLength(0);
     });
 
     test('appPropertiesOnly with initModel', async () => {
@@ -274,10 +274,10 @@ describe('AssayDesignerPanels', () => {
         );
 
         await waitFor(() => {
-            expect(document.querySelectorAll('.domain-form-panel').length).toBe(5);
+            expect(document.querySelectorAll('.domain-form-panel')).toHaveLength(5);
         });
-        expect(document.querySelectorAll('.domain-form-manual-section').length).toBe(1);
-        expect(document.querySelectorAll('.domain-field-row').length).toBe(6);
+        expect(document.querySelectorAll('.domain-form-manual-section')).toHaveLength(1);
+        expect(document.querySelectorAll('.domain-field-row')).toHaveLength(6);
     });
 
     test('new assay wizard', async () => {

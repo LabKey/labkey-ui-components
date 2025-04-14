@@ -173,15 +173,15 @@ export interface IQueryColumn {
     shownInUpdateView: boolean;
     sortable: boolean;
     // versionField: boolean;
-
     sorts: '+' | '-';
     sourceOntology: string;
     // sqlType: string;
+    tableCell: boolean;
     type: string;
     units: string;
-
     userEditable: boolean;
     validValues: string[];
+    width: number;
 }
 
 export class QueryColumn implements IQueryColumn {
@@ -264,6 +264,8 @@ export class QueryColumn implements IQueryColumn {
 
     declare sourceOntology: string;
     declare conceptSubtree: string;
+    declare tableCell: boolean;
+    declare width: number;
 
     constructor(rawColumn: Partial<QueryColumn | IQueryColumn>) {
         Object.assign(this, defaultQueryColumn, rawColumn);

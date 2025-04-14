@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import supertest, { Response, SuperTest, Test } from 'supertest';
+import supertest, { Agent, Response, Test } from 'supertest';
 import { ActionURL, Container, PermissionRoles, Utils } from '@labkey/api';
 
 import { sleep } from './utils';
 
 declare var LABKEY;
 
-type AgentProvider = (agent: SuperTest<Test>, url: string) => Test;
+type AgentProvider = (agent: Agent, url: string) => Test;
 
 interface CreateNewUser {
     email: string;
@@ -54,7 +54,7 @@ class RequestContext implements UserCredentials {
 }
 
 interface ServerContext {
-    agent: SuperTest<Test>;
+    agent: Agent;
     containerPath?: string;
     createdUsers: string[];
     defaultContext: RequestContext;

@@ -281,9 +281,8 @@ describe('Date Utilities', () => {
     });
 
     describe('formatTime', () => {
-
         test('invalid time', () => {
-            expect(formatTime(undefined)).toBeUndefined()
+            expect(formatTime(undefined)).toBeUndefined();
             expect(formatTime(null)).toBeNull();
             expect(formatTime('')).toBe('');
             expect(formatTime('13:02 AM')).toBe('13:02 AM');
@@ -335,9 +334,7 @@ describe('Date Utilities', () => {
             expect(formatTime('23:13:14.001', 'hh:mm:ss.SSS a')).toBe('11:13:14.001 PM');
             expect(formatTime('11:13:14.001', 'hh:mm:ss.SSS a')).toBe('11:13:14.001 AM');
         });
-
     });
-
 
     describe('get date-fns formats', () => {
         const testFormats = {

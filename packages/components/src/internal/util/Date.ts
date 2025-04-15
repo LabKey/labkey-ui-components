@@ -231,8 +231,7 @@ function includesSeconds(rawValue: string): boolean {
 function includesMilliSeconds(rawValue: string): boolean {
     if (!rawValue || typeof rawValue !== 'string') return false;
     const parts = rawValue.split(':');
-    if (parts.length <= 2)
-        return false;
+    if (parts.length <= 2) return false;
 
     const msParts = parts[2].split('.');
     return msParts.length > 1;
@@ -408,7 +407,11 @@ export function parseDate(
  */
 export function parseTime(time: string): Date {
     if (!time) return null;
-    let valueFormat = includesMilliSeconds(time) ? ISO_LONG_TIME_FORMAT_STRING : (includesSeconds(time) ? ISO_TIME_FORMAT_STRING : ISO_SHORT_TIME_FORMAT_STRING);
+    let valueFormat = includesMilliSeconds(time)
+        ? ISO_LONG_TIME_FORMAT_STRING
+        : includesSeconds(time)
+          ? ISO_TIME_FORMAT_STRING
+          : ISO_SHORT_TIME_FORMAT_STRING;
     if (includesAMPM(time)) {
         valueFormat = valueFormat.replace('HH', 'hh');
         valueFormat += ' a';
@@ -600,8 +603,7 @@ export function formatDateTime(date: Date | string | number, timezone?: string, 
 }
 
 export function formatTime(timeStr: string, timeFormat?: string): string {
-    if (!timeStr)
-        return timeStr;
+    if (!timeStr) return timeStr;
     const timeObj = parseTime(timeStr);
     return timeObj ? format(timeObj, timeFormat ?? getDateFNSTimeFormat()) : timeStr;
 }

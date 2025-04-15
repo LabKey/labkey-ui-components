@@ -67,7 +67,9 @@ describe('extractChanges', () => {
         expect(extractChanges(QUERY_INFO, currentData, { dtInput: undefined }).dtInput).toBe(null);
         expect(extractChanges(QUERY_INFO, currentData, { dtInput: null }).dtInput).toBe(null);
         expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-30 01:02:03' }).dtInput).toBe(undefined);
-        expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-30 01:02:04' }).dtInput).toBe('2022-08-30 01:02:04'); // Issue 40139, 52536: date comparison only down to minute precision
+        expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-30 01:02:04' }).dtInput).toBe(
+            '2022-08-30 01:02:04'
+        ); // Issue 40139, 52536: date comparison only down to minute precision
         expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-30 01:02:03.001' }).dtInput).toBe(
             '2022-08-30 01:02:03.001'
         );

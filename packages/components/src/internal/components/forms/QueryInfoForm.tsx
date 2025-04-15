@@ -27,7 +27,7 @@ import { FormButtons } from '../../FormButtons';
 
 import { EntityCreationTypeModel } from '../samples/models';
 import { QueryInfo } from '../../../public/QueryInfo';
-import { formatDate, formatDateTime } from '../../util/Date';
+import { formatDate, formatDateTime, formatTime } from '../../util/Date';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -202,6 +202,8 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                         if (col.isDateOnlyColumn)
                             filteredData = filteredData.set(key, formatDate(data[key], null, col.format));
                         else filteredData = filteredData.set(key, formatDateTime(data[key], null, col.format));
+                    } else if (submitForEdit && col?.jsonType === 'time') {
+                        filteredData = filteredData.set(key, formatTime(data[key], col.format));
                     } else if (col?.jsonType === 'string' && typeof data[key] === 'string') {
                         filteredData = filteredData.set(key, data[key]?.trim());
                     } else {

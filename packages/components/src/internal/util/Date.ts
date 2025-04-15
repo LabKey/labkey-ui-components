@@ -599,6 +599,13 @@ export function formatDateTime(date: Date | string | number, timezone?: string, 
     return _formatDate(date, dateFormat ?? getDateFNSDateTimeFormat(), timezone);
 }
 
+export function formatTime(timeStr: string, timeFormat?: string): string {
+    if (!timeStr)
+        return timeStr;
+    const timeObj = parseTime(timeStr);
+    return timeObj ? format(timeObj, timeFormat ?? getDateFNSTimeFormat()) : timeStr;
+}
+
 // Issue 44398: see DateUtil.java getJsonDateTimeFormatString(), this function is to match the format, which is
 // provided by the LabKey server for the API response, from a JS Date object
 export function getJsonDateTimeFormatString(date: Date | string | number): string {

@@ -24,6 +24,7 @@ import {
     DateFormatType,
     formatDate,
     formatDateTime,
+    formatTime,
     generateNameWithTimestamp,
     getColDateFormat,
     getColFormattedDateFilterValue,
@@ -278,6 +279,65 @@ describe('Date Utilities', () => {
             expect(formatDateTime(testDate, 'America/New_York', 'DDYYYYMM')).toBe('06202008');
         });
     });
+
+    describe('formatTime', () => {
+
+        test('invalid time', () => {
+            expect(formatTime(undefined)).toBeUndefined()
+            expect(formatTime(null)).toBeNull();
+            expect(formatTime('')).toBe('');
+            expect(formatTime('13:02 AM')).toBe('13:02 AM');
+            expect(formatTime('13:02 PM')).toBe('13:02 PM');
+            expect(formatTime('09/11/1985')).toBe('09/11/1985');
+            expect(formatTime('1985-09-11 12:50:22')).toBe('1985-09-11 12:50:22');
+        });
+
+        test('valid time', () => {
+            expect(formatTime('11:13', undefined)).toBe('11:13');
+            expect(formatTime('11:13:14')).toBe('11:13');
+            expect(formatTime('11:13:14.001', null)).toBe('11:13');
+            expect(formatTime('11:13:14.001 PM', undefined)).toBe('23:13');
+            expect(formatTime('11:13:14.001 AM', null)).toBe('11:13');
+
+            expect(formatTime('11:13', 'HH:mm')).toBe('11:13');
+            expect(formatTime('11:13:14', 'HH:mm')).toBe('11:13');
+            expect(formatTime('11:13:14.001', 'HH:mm')).toBe('11:13');
+            expect(formatTime('11:13:14.001 PM', 'HH:mm')).toBe('23:13');
+            expect(formatTime('11:13:14.001 AM', 'HH:mm')).toBe('11:13');
+
+            expect(formatTime('11:13', 'HH:mm:ss')).toBe('11:13:00');
+            expect(formatTime('11:13:14', 'HH:mm:ss')).toBe('11:13:14');
+            expect(formatTime('11:13:14.001', 'HH:mm:ss')).toBe('11:13:14');
+            expect(formatTime('11:13:14.001 PM', 'HH:mm:ss')).toBe('23:13:14');
+            expect(formatTime('11:13:14.001 AM', 'HH:mm:ss')).toBe('11:13:14');
+
+            expect(formatTime('11:13', 'HH:mm:ss.SSS')).toBe('11:13:00.000');
+            expect(formatTime('11:13:14', 'HH:mm:ss.SSS')).toBe('11:13:14.000');
+            expect(formatTime('11:13:14.001', 'HH:mm:ss.SSS')).toBe('11:13:14.001');
+            expect(formatTime('11:13:14.001 PM', 'HH:mm:ss.SSS')).toBe('23:13:14.001');
+            expect(formatTime('11:13:14.001 AM', 'HH:mm:ss.SSS')).toBe('11:13:14.001');
+
+            expect(formatTime('11:13', 'hh:mm a')).toBe('11:13 AM');
+            expect(formatTime('11:13:14', 'hh:mm a')).toBe('11:13 AM');
+            expect(formatTime('11:13:14.001', 'hh:mm a')).toBe('11:13 AM');
+            expect(formatTime('23:13:14.001', 'hh:mm a')).toBe('11:13 PM');
+            expect(formatTime('11:13:14.001', 'hh:mm a')).toBe('11:13 AM');
+
+            expect(formatTime('11:13', 'hh:mm:ss a')).toBe('11:13:00 AM');
+            expect(formatTime('11:13:14', 'hh:mm:ss a')).toBe('11:13:14 AM');
+            expect(formatTime('11:13:14.001', 'hh:mm:ss a')).toBe('11:13:14 AM');
+            expect(formatTime('23:13:14.001', 'hh:mm:ss a')).toBe('11:13:14 PM');
+            expect(formatTime('11:13:14.001', 'hh:mm:ss a')).toBe('11:13:14 AM');
+
+            expect(formatTime('11:13', 'hh:mm:ss.SSS a')).toBe('11:13:00.000 AM');
+            expect(formatTime('11:13:14', 'hh:mm:ss.SSS a')).toBe('11:13:14.000 AM');
+            expect(formatTime('11:13:14.001', 'hh:mm:ss.SSS a')).toBe('11:13:14.001 AM');
+            expect(formatTime('23:13:14.001', 'hh:mm:ss.SSS a')).toBe('11:13:14.001 PM');
+            expect(formatTime('11:13:14.001', 'hh:mm:ss.SSS a')).toBe('11:13:14.001 AM');
+        });
+
+    });
+
 
     describe('get date-fns formats', () => {
         const testFormats = {

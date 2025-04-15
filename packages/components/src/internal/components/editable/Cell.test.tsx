@@ -37,6 +37,7 @@ describe('Cell', () => {
             },
             col: queryColumn,
             colIdx: 1,
+            columnMetadata: undefined,
             forUpdate: false,
             rowIdx: 2,
         };

@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - update `getJsonTimeFormatString` to use `ISO_LONG_TIME_FORMAT_STRING`
   - initializing datepicker selection of time to have 0 millisecond
   - fix detail editing ignoring seconds and milliseconds
+  - fix bulk add to editable grid with wrong time format
 
 ### version 6.36.2
 *Released*: 11 April 2025

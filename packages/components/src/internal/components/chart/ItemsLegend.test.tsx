@@ -4,7 +4,7 @@ import { Map } from 'immutable';
 
 import { ItemsLegend } from './ItemsLegend';
 
-describe('<ItemsLegend/>', () => {
+describe('ItemsLegend', () => {
     test('empty box', () => {
         render(
             <ItemsLegend
@@ -20,12 +20,12 @@ describe('<ItemsLegend/>', () => {
         );
 
         expect(document.querySelector('.box-viewer-legend')).toBeInTheDocument();
-        expect(document.getElementsByClassName('cell-legend-row').length).toBe(1);
-        expect(document.getElementsByClassName('cell-legend-icon').length).toBe(1);
-        expect(document.getElementsByClassName('cell-legend-icon-border').length).toBe(1);
-        expect(document.getElementsByClassName('cell-legend-circle').length).toBe(0);
-        expect(document.getElementsByClassName('cell-legend-label').length).toBe(1);
-        expect(document.getElementsByClassName('cell-legend-label')[0].innerHTML).toBe('Empty location');
+        expect(document.getElementsByClassName('cell-legend-row')).toHaveLength(1);
+        expect(document.getElementsByClassName('cell-legend-icon')).toHaveLength(1);
+        expect(document.getElementsByClassName('cell-legend-icon-border')).toHaveLength(1);
+        expect(document.getElementsByClassName('cell-legend-circle')).toHaveLength(0);
+        expect(document.getElementsByClassName('cell-legend-label')).toHaveLength(1);
+        expect(document.getElementsByClassName('cell-legend-label')[0]).toHaveTextContent('Empty location');
     });
 
     test('multiple sample types and checked out status, no selection', () => {
@@ -48,16 +48,16 @@ describe('<ItemsLegend/>', () => {
         render(<ItemsLegend legendData={MULTIPLE_SAMPLE_TYPES} />);
 
         expect(document.querySelector('.box-viewer-legend')).toBeInTheDocument();
-        expect(document.getElementsByClassName('cell-legend-row').length).toBe(5);
-        expect(document.getElementsByClassName('cell-legend-icon').length).toBe(5);
-        expect(document.getElementsByClassName('cell-legend-icon-border').length).toBe(2);
-        expect(document.getElementsByClassName('cell-legend-circle').length).toBe(3);
-        expect(document.getElementsByClassName('cell-legend-label').length).toBe(5);
-        expect(document.getElementsByClassName('cell-legend-label')[0].innerHTML).toBe('blood');
-        expect(document.getElementsByClassName('cell-legend-label')[1].innerHTML).toBe('samp18');
-        expect(document.getElementsByClassName('cell-legend-label')[2].innerHTML).toBe('sampleB');
-        expect(document.getElementsByClassName('cell-legend-label')[3].innerHTML).toBe('Checked out/Reserved');
-        expect(document.getElementsByClassName('cell-legend-label')[4].innerHTML).toBe('Empty location');
+        expect(document.getElementsByClassName('cell-legend-row')).toHaveLength(5);
+        expect(document.getElementsByClassName('cell-legend-icon')).toHaveLength(5);
+        expect(document.getElementsByClassName('cell-legend-icon-border')).toHaveLength(2);
+        expect(document.getElementsByClassName('cell-legend-circle')).toHaveLength(3);
+        expect(document.getElementsByClassName('cell-legend-label')).toHaveLength(5);
+        expect(document.getElementsByClassName('cell-legend-label')[0]).toHaveTextContent('blood');
+        expect(document.getElementsByClassName('cell-legend-label')[1]).toHaveTextContent('samp18');
+        expect(document.getElementsByClassName('cell-legend-label')[2]).toHaveTextContent('sampleB');
+        expect(document.getElementsByClassName('cell-legend-label')[3]).toHaveTextContent('Checked out/Reserved');
+        expect(document.getElementsByClassName('cell-legend-label')[4]).toHaveTextContent('Empty location');
     });
 
     test('multiple sample types with same color label', () => {
@@ -80,12 +80,12 @@ describe('<ItemsLegend/>', () => {
         render(<ItemsLegend legendData={WITH_SAME_COLOR_LABELS} />);
 
         expect(document.querySelector('.box-viewer-legend')).toBeInTheDocument();
-        expect(document.getElementsByClassName('cell-legend-row').length).toBe(5);
-        expect(document.getElementsByClassName('cell-legend-icon').length).toBe(5);
-        expect(document.getElementsByClassName('cell-legend-icon-border').length).toBe(2);
-        expect(document.getElementsByClassName('cell-legend-circle').length).toBe(3);
-        expect(document.getElementsByClassName('cell-legend-label').length).toBe(5);
-        expect(document.getElementsByClassName('cell-legend-label')[2].innerHTML).toBe('sampleB, sampleC');
+        expect(document.getElementsByClassName('cell-legend-row')).toHaveLength(5);
+        expect(document.getElementsByClassName('cell-legend-icon')).toHaveLength(5);
+        expect(document.getElementsByClassName('cell-legend-icon-border')).toHaveLength(2);
+        expect(document.getElementsByClassName('cell-legend-circle')).toHaveLength(3);
+        expect(document.getElementsByClassName('cell-legend-label')).toHaveLength(5);
+        expect(document.getElementsByClassName('cell-legend-label')[2]).toHaveTextContent('sampleB, sampleC');
     });
 
     test('with selection, locked and expired', () => {
@@ -135,16 +135,16 @@ describe('<ItemsLegend/>', () => {
         render(<ItemsLegend legendData={WITH_MIXED} />);
 
         expect(document.querySelector('.box-viewer-legend')).toBeInTheDocument();
-        expect(document.getElementsByClassName('cell-legend-row').length).toBe(10);
-        expect(document.getElementsByClassName('cell-legend-icon').length).toBe(10);
-        expect(document.getElementsByClassName('cell-legend-icon-border').length).toBe(6);
-        expect(document.getElementsByClassName('cell-legend-circle').length).toBe(6);
-        expect(document.getElementsByClassName('cell-legend-label').length).toBe(10);
-        expect(document.getElementsByClassName('cell-legend-label')[7].innerHTML).toBe('Restricted');
-        expect(document.getElementsByClassName('cell-legend-icon-margin').length).toBe(1);
-        expect(document.getElementsByClassName('cell-lock').length).toBe(1);
-        expect(document.getElementsByClassName('cell-legend-label')[8].innerHTML).toBe('Sample expired');
-        expect(document.getElementsByClassName('expired-form-field').length).toBe(1);
+        expect(document.getElementsByClassName('cell-legend-row')).toHaveLength(10);
+        expect(document.getElementsByClassName('cell-legend-icon')).toHaveLength(10);
+        expect(document.getElementsByClassName('cell-legend-icon-border')).toHaveLength(6);
+        expect(document.getElementsByClassName('cell-legend-circle')).toHaveLength(6);
+        expect(document.getElementsByClassName('cell-legend-label')).toHaveLength(10);
+        expect(document.getElementsByClassName('cell-legend-label')[7]).toHaveTextContent('Restricted');
+        expect(document.getElementsByClassName('cell-legend-icon-margin')).toHaveLength(1);
+        expect(document.getElementsByClassName('cell-lock')).toHaveLength(1);
+        expect(document.getElementsByClassName('cell-legend-label')[8]).toHaveTextContent('Sample expired');
+        expect(document.getElementsByClassName('expired-form-field')).toHaveLength(1);
     });
 
     test('with link and activeIndex', () => {
@@ -180,7 +180,7 @@ describe('<ItemsLegend/>', () => {
         ];
         render(<ItemsLegend legendData={sampleAllocationLegends} activeIndex={1} />);
         const legends = document.querySelectorAll('tr');
-        expect(legends.length).toBe(3);
+        expect(legends).toHaveLength(3);
         expect(document.querySelectorAll('a')).toHaveLength(2);
         expect(legends[0].querySelectorAll('a')).toHaveLength(1);
         expect(legends[0].querySelectorAll('.bold-text')).toHaveLength(0);

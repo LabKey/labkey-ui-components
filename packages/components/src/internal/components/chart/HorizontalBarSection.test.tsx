@@ -1,19 +1,49 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 
 import { HorizontalBarSection } from './HorizontalBarSection';
+import { HorizontalBarData } from './utils';
 
 describe('HorizontalBarSection', () => {
     test('no data', () => {
         render(<HorizontalBarSection title="Test Allocation" subtitle="A description" data={[]} />);
 
-        expect(document.querySelector('.horizontal-bar--title').textContent).toBe('Test Allocation');
-        expect(document.querySelector('.horizontal-bar--subtitle').textContent).toBe('A description');
+        expect(document.querySelector('.horizontal-bar--title')).toHaveTextContent('Test Allocation');
+        expect(document.querySelector('.horizontal-bar--subtitle')).toHaveTextContent('A description');
         expect(document.querySelectorAll('.horizontal-bar-part')).toHaveLength(0);
     });
 
+    // Issue 52587: Empty tooltip content when data has a count of zero
+    test('with data no count', async () => {
+        const expectedTitle = "2 'Sample Type 1' samples";
+        const noCountData: HorizontalBarData[] = [
+            {
+                title: expectedTitle,
+                count: 0,
+                totalCount: 10,
+                percent: 20,
+                backgroundColor: 'blue',
+                href: '#/freezers/test/storageView?query.SampleType~eq=Sample Type 1&query.StorageStatus~eq=Checked out',
+                filled: true,
+            },
+        ];
+        render(<HorizontalBarSection title="Test Allocation" subtitle="A description" data={noCountData} />);
+
+        expect(document.querySelector('.horizontal-bar--title')).toHaveTextContent('Test Allocation');
+        expect(document.querySelector('.horizontal-bar--subtitle')).toHaveTextContent('A description');
+        expect(document.querySelectorAll('.horizontal-bar-part')).toHaveLength(1);
+
+        await userEvent.hover(document.querySelector('.horizontal-bar-part'));
+
+        await waitFor(() => {
+            expect(document.querySelector('.popover-content')).toBeInTheDocument();
+        });
+        expect(document.querySelector('.popover-content')).toHaveTextContent(expectedTitle);
+    });
+
     test('with data', () => {
-        const allocationData = [
+        const allocationData: HorizontalBarData[] = [
             {
                 title: "2 'Sample Type 1' samples",
                 count: 2,
@@ -42,8 +72,8 @@ describe('HorizontalBarSection', () => {
         ];
         render(<HorizontalBarSection title="Test Allocation" subtitle="A description" data={allocationData} />);
 
-        expect(document.querySelector('.horizontal-bar--title').textContent).toBe('Test Allocation');
-        expect(document.querySelector('.horizontal-bar--subtitle').textContent).toBe('A description');
+        expect(document.querySelector('.horizontal-bar--title')).toHaveTextContent('Test Allocation');
+        expect(document.querySelector('.horizontal-bar--subtitle')).toHaveTextContent('A description');
         expect(document.querySelectorAll('.horizontal-bar-part')).toHaveLength(3);
         expect(document.querySelectorAll('.horizontal-bar--linked')).toHaveLength(2);
         expect(document.querySelectorAll('.horizontal-bar--open')).toHaveLength(1);

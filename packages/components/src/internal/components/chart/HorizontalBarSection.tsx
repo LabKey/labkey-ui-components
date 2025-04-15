@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Popover } from '../../Popover';
 import { OverlayTrigger } from '../../OverlayTrigger';
 
-import { createHorizontalBarCountLegendData, HorizontalBarData } from './utils';
+import { createHorizontalBarCountLegendData, HorizontalBarData, HorizontalBarLegendData } from './utils';
 import { ItemsLegend } from './ItemsLegend';
 
 const DEFAULT_EMPTY_TEXT = 'No data available.';
@@ -32,7 +32,7 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
     let horizontalBars: ReactNode = <div className="horizontal-bar--empty-text">{emptyText ?? DEFAULT_EMPTY_TEXT}</div>;
 
     if (data?.length) {
-        let summaryLegendData = null;
+        let summaryLegendData: HorizontalBarLegendData[];
         if (showSummaryTooltip) {
             summaryLegendData = createHorizontalBarCountLegendData(
                 data,
@@ -63,7 +63,7 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
 
                 const overlay = (
                     <Popover id="grid-cell-popover" placement="top" isFlexPlacement>
-                        {showSummaryTooltip ? (
+                        {showSummaryTooltip && summaryLegendData?.length > 0 ? (
                             <ItemsLegend legendData={summaryLegendData} activeIndex={index} />
                         ) : (
                             row.title

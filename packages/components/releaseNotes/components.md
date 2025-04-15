@@ -1,7 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.36.1
+### version 6.36.3
+*Released*: 15 April 2025
+- Use `fromZonedTime` from `date-fns` package to compare dates against server dates in `isDateTimeInPast` utility function.
+- Check legend data exists in `HorizontalBarSection`
+- Convert `ItemsLegend` to a functional component
+
+### version 6.36.2
 *Released*: 11 April 2025
 - Issue 52321: LKSM/LKB: Edit Lineage grid should show Parent or Source columns with aliases by default
   - add `additionalParentTypes` param to `getOriginalParentsFromLineage`

@@ -50,24 +50,24 @@ export function createHorizontalBarCountLegendData(
     emptyTextSingular: string,
     emptyTextPlural: string
 ): HorizontalBarLegendData[] {
-    const legendData = [];
-    data.forEach(row => {
-        if (row.count > 0) {
+    return data
+        .filter(row => row.count > 0)
+        .reduce<HorizontalBarLegendData[]>((legendData, row) => {
             const countDisplay = row.count.toLocaleString();
-            const data = row.href ? Map.of('value', countDisplay, 'url', row.href) : Map.of('value', countDisplay);
             let legendLabel = row.name;
             if (!row.filled) {
                 legendLabel = row.count > 1 ? emptyTextPlural : emptyTextSingular;
             }
+
             legendData.push({
                 circleColor: row.backgroundColor ?? 'fff',
                 backgroundColor: 'none',
                 legendLabel,
-                data,
+                data: row.href ? Map.of('value', countDisplay, 'url', row.href) : Map.of('value', countDisplay),
             });
-        }
-    });
-    return legendData;
+
+            return legendData;
+        }, []);
 }
 
 export const getFieldDataType = (fieldData: Record<string, any>): string => {

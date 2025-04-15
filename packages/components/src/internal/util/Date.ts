@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { addDays, format, formatDistance, isBefore, isValid, parse } from 'date-fns';
-import { format as formatTz, toZonedTime } from 'date-fns-tz';
+import { format as formatTz, fromZonedTime, toZonedTime } from 'date-fns-tz';
 import { Container, getServerContext } from '@labkey/api';
 
 import { QueryColumn } from '../../public/QueryColumn';
@@ -676,8 +676,16 @@ export function getParsedRelativeDateStr(dateVal: string): { days: number; posit
     return { days, positive };
 }
 
-/** Returns true if the date has a timestamp that is before now */
-export function isDateTimeInPast(date: Date | string | number): boolean {
+/**
+ * Returns true if the date has a timestamp that is before now.
+ * If a timezone is not provided, then it will assume the provided date is in the server's timezone
+ */
+export function isDateTimeInPast(date: Date | string | number, timezone?: string): boolean {
     const date_ = parseDate(date);
-    return isValid(date_) && date_.getTime() <= new Date().getTime();
+    if (!isValid(date_)) return false;
+
+    // Issue 52637: Convert dates from server timezone to local timezone for comparison
+    const timezone_ = timezone ?? getServerContext().timezone;
+    const zonedTime = fromZonedTime(date_, timezone_);
+    return zonedTime.getTime() <= new Date().getTime();
 }

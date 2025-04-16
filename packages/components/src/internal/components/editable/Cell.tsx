@@ -570,7 +570,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                         placeholder={placeholder}
                         selected={selected}
                         selection={selection}
-                        showMenu={showLookup}
+                        showMenu={showLookup || !!col.inputRenderer}
                         targetRef={this.displayEl}
                     />
                     {renderDragHandle && !this.isReadOnly && (

@@ -2,10 +2,6 @@ import { Map } from 'immutable';
 
 import { createHorizontalBarLegendData, createHorizontalBarCountLegendData, getFieldDataType } from './utils';
 
-beforeEach(() => {
-    LABKEY.vis = {};
-});
-
 describe('createHorizontalBarLegendData', () => {
     test('all different', () => {
         expect(

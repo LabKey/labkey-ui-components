@@ -1,13 +1,19 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.36.3
+### version 6.36.X
 *Released*: 11 April 2025
 - Issue 52536: Sample Manager: time format HH:mm:ss.SSS issues
   - update `getJsonTimeFormatString` to use `ISO_LONG_TIME_FORMAT_STRING`
   - initializing datepicker selection of time to have 0 millisecond
   - fix detail editing ignoring seconds and milliseconds
   - fix bulk add to editable grid with wrong time format
+
+### version 6.36.3
+*Released*: 15 April 2025
+- Use `fromZonedTime` from `date-fns` package to compare dates against server dates in `isDateTimeInPast` utility function.
+- Check legend data exists in `HorizontalBarSection`
+- Convert `ItemsLegend` to a functional component
 
 ### version 6.36.2
 *Released*: 11 April 2025

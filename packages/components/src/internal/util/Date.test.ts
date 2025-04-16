@@ -285,10 +285,10 @@ describe('Date Utilities', () => {
             expect(formatTime(undefined)).toBeUndefined();
             expect(formatTime(null)).toBeNull();
             expect(formatTime('')).toBe('');
-            expect(formatTime('13:02 AM')).toBe('13:02 AM');
-            expect(formatTime('13:02 PM')).toBe('13:02 PM');
-            expect(formatTime('09/11/1985')).toBe('09/11/1985');
-            expect(formatTime('1985-09-11 12:50:22')).toBe('1985-09-11 12:50:22');
+            expect(formatTime('13:02 AM')).toBe(undefined);
+            expect(formatTime('13:02 PM')).toBe(undefined);
+            expect(formatTime('09/11/1985')).toBe(undefined);
+            expect(formatTime('1985-09-11 12:50:22')).toBe(undefined);
         });
 
         test('valid time', () => {

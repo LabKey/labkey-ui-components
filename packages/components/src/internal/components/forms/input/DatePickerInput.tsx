@@ -172,11 +172,12 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
 
     onChange = (date: Date, event?: any, raw?: boolean): void => {
         const { formsy, hideTime, inlineEdit, queryColumn } = this.props;
-        this.setState({ selectedDate: date, invalid: false, invalidStart: false });
 
-        if (queryColumn.isTimeColumn && !event && !raw && date?.getMilliseconds() > 0) {
+        if (!event && !raw && date?.getMilliseconds() > 0) {
             date.setMilliseconds(0); // react-datepicker milliseconds are not 0 when selecting time
         }
+
+        this.setState({ selectedDate: date, invalid: false, invalidStart: false });
 
         if (this.state.relativeInputValue) {
             this.props.onChange?.(this.state.relativeInputValue, this.state.relativeInputValue);

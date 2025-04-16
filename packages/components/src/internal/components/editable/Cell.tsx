@@ -570,8 +570,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                         placeholder={placeholder}
                         selected={selected}
                         selection={selection}
-                        // FIXME: We should not be referring to specific implementations of inputRenderer
-                        showMenu={showLookup || (col.inputRenderer && col.inputRenderer !== 'AppendUnitsInput')}
+                        showMenu={showLookup}
                         targetRef={this.displayEl}
                     />
                     {renderDragHandle && !this.isReadOnly && (
@@ -591,6 +590,8 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     onSelectChange={this.onSelectChange}
                     selectInputProps={{
                         ...gridCellSelectInputProps,
+                        defaultInputValue: this.recordedKeys,
+                        disabled: this.isReadOnly,
                         onBlur: this.handleSelectionBlur,
                         onKeyDown: this.handleFocusedDropdownKeys,
                     }}

@@ -32,7 +32,7 @@
     "react-refresh": "~0.17.0",
     "resolve-url-loader": "~5.0.0",
     "rimraf": "~6.0.1",
-    "sass": "~1.86.3",
+    "sass": "~1.79.6",
     "sass-loader": "~16.0.5",
     "source-map-loader": "~5.0.0",
     "style-loader": "~4.0.0",

@@ -283,8 +283,8 @@ describe('Date Utilities', () => {
     describe('formatTime', () => {
         test('invalid time', () => {
             expect(formatTime(undefined)).toBeUndefined();
-            expect(formatTime(null)).toBeNull();
-            expect(formatTime('')).toBe('');
+            expect(formatTime(null)).toBeUndefined();
+            expect(formatTime('')).toBeUndefined();
             expect(formatTime('13:02 AM')).toBe(undefined);
             expect(formatTime('13:02 PM')).toBe(undefined);
             expect(formatTime('09/11/1985')).toBe(undefined);

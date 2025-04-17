@@ -608,7 +608,6 @@ export function formatDateTime(date: Date | string | number, timezone?: string, 
 }
 
 export function formatTime(timeStr: string, timeFormat?: string): string {
-    if (!timeStr) return timeStr;
     const timeObj = parseTime(timeStr);
     if (!timeObj)
         return undefined;

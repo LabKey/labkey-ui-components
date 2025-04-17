@@ -18,16 +18,18 @@ import { render } from '@testing-library/react';
 
 import { makeQueryInfo } from '../../test/testHelpers';
 import mixturesQueryInfo from '../../../test/data/mixtures-getQueryDetails.json';
+import samplesQueryInfo from '../../../test/data/sampleDateTimeProps-getQueryDetails.json';
 
-import { QueryInfoForm } from './QueryInfoForm';
+import { getUpdatedFields, QueryInfoForm } from './QueryInfoForm';
 
-const QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
+const MIXTURE_QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
+const SAMPLE_QUERY_INFO = makeQueryInfo(samplesQueryInfo);
 
 describe('QueryInfoForm', () => {
     test('default props', () => {
         let container;
         act(() => {
-            container = render(<QueryInfoForm queryInfo={QUERY_INFO} onHide={jest.fn()} onSubmit={jest.fn()} />);
+            container = render(<QueryInfoForm queryInfo={MIXTURE_QUERY_INFO} onHide={jest.fn()} onSubmit={jest.fn()} />);
         });
         expect(document.querySelectorAll('.form-group.row')).toHaveLength(8);
         expect(document.querySelectorAll('button')).toHaveLength(2);
@@ -36,21 +38,21 @@ describe('QueryInfoForm', () => {
     test('with header', () => {
         const header = <span className="header-info">Header info here</span>;
         act(() => {
-            render(<QueryInfoForm header={header} queryInfo={QUERY_INFO} onSubmit={jest.fn()} />);
+            render(<QueryInfoForm header={header} queryInfo={MIXTURE_QUERY_INFO} onSubmit={jest.fn()} />);
         });
         expect(document.querySelectorAll('.header-info')).toHaveLength(1);
     });
 
     test('as modal', () => {
         act(() => {
-            render(<QueryInfoForm asModal={true} queryInfo={QUERY_INFO} onSubmit={jest.fn()} />);
+            render(<QueryInfoForm asModal={true} queryInfo={MIXTURE_QUERY_INFO} onSubmit={jest.fn()} />);
         });
         expect(document.querySelectorAll('.form-modal')).toHaveLength(1);
     });
 
     test('as modal with title', () => {
         act(() => {
-            render(<QueryInfoForm asModal={true} title="Test modal title" queryInfo={QUERY_INFO} onSubmit={jest.fn()} />);
+            render(<QueryInfoForm asModal={true} title="Test modal title" queryInfo={MIXTURE_QUERY_INFO} onSubmit={jest.fn()} />);
         });
         expect(document.querySelectorAll('.form-modal')).toHaveLength(1);
         const modal = document.querySelector('.form-modal');
@@ -59,7 +61,7 @@ describe('QueryInfoForm', () => {
 
     test("don't include count field", () => {
         act(() => {
-            render(<QueryInfoForm includeCountField={false} queryInfo={QUERY_INFO} onSubmit={jest.fn()} />);
+            render(<QueryInfoForm includeCountField={false} queryInfo={MIXTURE_QUERY_INFO} onSubmit={jest.fn()} />);
         });
         expect(document.querySelectorAll('input#numItems')).toHaveLength(0);
     });
@@ -75,7 +77,7 @@ describe('QueryInfoForm', () => {
                     cancelText={cancelText}
                     countText={countText}
                     submitText={submitText}
-                    queryInfo={QUERY_INFO}
+                    queryInfo={MIXTURE_QUERY_INFO}
                     onHide={jest.fn()}
                     onSubmit={jest.fn()}
                 />
@@ -94,7 +96,7 @@ describe('QueryInfoForm', () => {
     test('with footer', () => {
         const footer = <span className="footer-info">Footer info here</span>;
         act(() => {
-            render(<QueryInfoForm footer={footer} queryInfo={QUERY_INFO} onSubmit={jest.fn()} />);
+            render(<QueryInfoForm footer={footer} queryInfo={MIXTURE_QUERY_INFO} onSubmit={jest.fn()} />);
         });
         expect(document.querySelectorAll('.footer-info')).toHaveLength(1);
     });
@@ -106,7 +108,7 @@ describe('QueryInfoForm', () => {
                 <QueryInfoForm
                     includeCountField={false}
                     checkRequiredFields={false}
-                    queryInfo={QUERY_INFO}
+                    queryInfo={MIXTURE_QUERY_INFO}
                     submitForEditText={submitForEditText}
                     onSubmitForEdit={jest.fn()}
                 />
@@ -124,7 +126,7 @@ describe('QueryInfoForm', () => {
                 <QueryInfoForm
                     includeCountField={false}
                     checkRequiredFields={false}
-                    queryInfo={QUERY_INFO}
+                    queryInfo={MIXTURE_QUERY_INFO}
                     onSubmitForEdit={jest.fn()}
                     onSubmit={jest.fn()}
                 />
@@ -142,7 +144,7 @@ describe('QueryInfoForm', () => {
             render(
                 <QueryInfoForm
                     includeCountField={true}
-                    queryInfo={QUERY_INFO}
+                    queryInfo={MIXTURE_QUERY_INFO}
                     onSubmitForEdit={jest.fn()}
                     onSubmit={jest.fn()}
                 />
@@ -161,7 +163,7 @@ describe('QueryInfoForm', () => {
                 <QueryInfoForm
                     includeCountField={false}
                     checkRequiredFields={false}
-                    queryInfo={QUERY_INFO}
+                    queryInfo={MIXTURE_QUERY_INFO}
                     onSubmit={jest.fn()}
                     canSubmitNotDirty={false}
                 />
@@ -179,7 +181,7 @@ describe('QueryInfoForm', () => {
 
         act(() => {
             render(
-                <QueryInfoForm queryInfo={QUERY_INFO} columnFilter={filter} onSubmit={jest.fn()} />
+                <QueryInfoForm queryInfo={MIXTURE_QUERY_INFO} columnFilter={filter} onSubmit={jest.fn()} />
             );
         });
 
@@ -189,7 +191,7 @@ describe('QueryInfoForm', () => {
     test('skip required check', () => {
         act(() => {
             render(
-                <QueryInfoForm queryInfo={QUERY_INFO} checkRequiredFields={false} onHide={jest.fn()} onSubmit={jest.fn()} />
+                <QueryInfoForm queryInfo={MIXTURE_QUERY_INFO} checkRequiredFields={false} onHide={jest.fn()} onSubmit={jest.fn()} />
             );
         });
 
@@ -200,7 +202,7 @@ describe('QueryInfoForm', () => {
         act(() => {
             render(
                 <QueryInfoForm
-                    queryInfo={QUERY_INFO}
+                    queryInfo={MIXTURE_QUERY_INFO}
                     checkRequiredFields={false}
                     showLabelAsterisk={true}
                     onSubmit={jest.fn()}
@@ -214,9 +216,48 @@ describe('QueryInfoForm', () => {
     test('all fields disabled', () => {
         act(() => {
             render(
-                <QueryInfoForm queryInfo={QUERY_INFO} initiallyDisableFields={true} onSubmit={jest.fn()} />
+                <QueryInfoForm queryInfo={MIXTURE_QUERY_INFO} initiallyDisableFields={true} onSubmit={jest.fn()} />
             );
         });
         expect(document.querySelector('button[type="submit"]').hasAttribute('disabled')).toBeTruthy();
     });
 });
+
+
+describe('getUpdatedFields', () => {
+    const formData = {
+        "date": "2025-04-17",
+        "dateTime": "2025-04-16 22:30:00.000",
+        "time": "22:20:00.000",
+    }
+
+    const formDataWithExtraPrecision = {
+        "date": "2025-04-17",
+        "dateTime": "2025-04-16 22:30:01.123",
+        "time": "22:20:01.123",
+    }
+
+    const formDataWithDiffFormat = {
+        "date": "2025/04/17",
+        "dateTime": "2025/04/16 22:30:01.123",
+        "time": "10:20:01.123 PM",
+    }
+
+    const formatted = {
+        "date": "2025-04-17",
+        "dateTime": "2025-04-16 22:30",
+        "time": "22:20",
+    }
+
+    test('submitForEdit = true', () => {
+        expect(getUpdatedFields(SAMPLE_QUERY_INFO, formData, true).toJS()).toEqual(formatted);
+        expect(getUpdatedFields(SAMPLE_QUERY_INFO, formDataWithExtraPrecision, true).toJS()).toEqual(formatted);
+        expect(getUpdatedFields(SAMPLE_QUERY_INFO, formDataWithDiffFormat, true).toJS()).toEqual(formatted);
+    });
+
+    test('submitForEdit = false', () => {
+        expect(getUpdatedFields(SAMPLE_QUERY_INFO, formData, false).toJS()).toEqual(formData);
+        expect(getUpdatedFields(SAMPLE_QUERY_INFO, formDataWithExtraPrecision, false).toJS()).toEqual(formDataWithExtraPrecision);
+        expect(getUpdatedFields(SAMPLE_QUERY_INFO, formDataWithDiffFormat, false).toJS()).toEqual(formDataWithDiffFormat);
+    });
+})

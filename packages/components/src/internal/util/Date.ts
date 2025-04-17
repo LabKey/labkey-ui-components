@@ -228,6 +228,15 @@ function includesSeconds(rawValue: string): boolean {
     return rawValue.split(':').length > 2;
 }
 
+function includesMilliSeconds(rawValue: string): boolean {
+    if (!rawValue || typeof rawValue !== 'string') return false;
+    const parts = rawValue.split(':');
+    if (parts.length <= 2) return false;
+
+    const msParts = parts[2].split('.');
+    return msParts.length > 1;
+}
+
 function _getColFormattedTimeFilterValue(column: QueryColumn, value: string): string {
     if (!value) return value;
 
@@ -397,15 +406,24 @@ export function parseDate(
  * with a time pre- or post-fixed to a date. You're better off using parseDate() in that case.
  */
 export function parseTime(time: string): Date {
-    if (!time) return null;
-    let valueFormat = includesSeconds(time) ? ISO_TIME_FORMAT_STRING : ISO_SHORT_TIME_FORMAT_STRING;
+    if (!time || typeof time !== 'string') return null;
+    let timeFormat: string;
+
+    if (includesMilliSeconds(time)) {
+        timeFormat = ISO_LONG_TIME_FORMAT_STRING;
+    } else if (includesSeconds(time)) {
+        timeFormat = ISO_TIME_FORMAT_STRING;
+    } else {
+        timeFormat = ISO_SHORT_TIME_FORMAT_STRING;
+    }
+
     if (includesAMPM(time)) {
-        valueFormat = valueFormat.replace('HH', 'hh');
-        valueFormat += ' a';
+        timeFormat = timeFormat.replace('HH', 'hh');
+        timeFormat += ' a';
     }
 
     // https://stackoverflow.com/a/68727535
-    const date = safeParse(time, valueFormat, new Date());
+    const date = safeParse(time, timeFormat, new Date());
     return isValid(date) ? date : null;
 }
 
@@ -589,6 +607,13 @@ export function formatDateTime(date: Date | string | number, timezone?: string, 
     return _formatDate(date, dateFormat ?? getDateFNSDateTimeFormat(), timezone);
 }
 
+export function formatTime(timeStr: string, timeFormat?: string): string {
+    const timeObj = parseTime(timeStr);
+    if (!timeObj)
+        return undefined;
+    return format(timeObj, timeFormat ?? getDateFNSTimeFormat());
+}
+
 // Issue 44398: see DateUtil.java getJsonDateTimeFormatString(), this function is to match the format, which is
 // provided by the LabKey server for the API response, from a JS Date object
 export function getJsonDateTimeFormatString(date: Date | string | number): string {
@@ -596,7 +621,7 @@ export function getJsonDateTimeFormatString(date: Date | string | number): strin
 }
 
 export function getJsonTimeFormatString(date: Date | string | number): string {
-    return _formatDate(date, ISO_TIME_FORMAT_STRING);
+    return _formatDate(date, ISO_LONG_TIME_FORMAT_STRING);
 }
 
 export function getJsonDateFormatString(date: Date | string | number): string {

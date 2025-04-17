@@ -24,6 +24,7 @@ import {
     DateFormatType,
     formatDate,
     formatDateTime,
+    formatTime,
     generateNameWithTimestamp,
     getColDateFormat,
     getColFormattedDateFilterValue,
@@ -279,6 +280,62 @@ describe('Date Utilities', () => {
         });
     });
 
+    describe('formatTime', () => {
+        test('invalid time', () => {
+            expect(formatTime(undefined)).toBeUndefined();
+            expect(formatTime(null)).toBeUndefined();
+            expect(formatTime('')).toBeUndefined();
+            expect(formatTime('13:02 AM')).toBe(undefined);
+            expect(formatTime('13:02 PM')).toBe(undefined);
+            expect(formatTime('09/11/1985')).toBe(undefined);
+            expect(formatTime('1985-09-11 12:50:22')).toBe(undefined);
+        });
+
+        test('valid time', () => {
+            expect(formatTime('11:13', undefined)).toBe('11:13');
+            expect(formatTime('11:13:14')).toBe('11:13');
+            expect(formatTime('11:13:14.001', null)).toBe('11:13');
+            expect(formatTime('11:13:14.001 PM', undefined)).toBe('23:13');
+            expect(formatTime('11:13:14.001 AM', null)).toBe('11:13');
+
+            expect(formatTime('11:13', 'HH:mm')).toBe('11:13');
+            expect(formatTime('11:13:14', 'HH:mm')).toBe('11:13');
+            expect(formatTime('11:13:14.001', 'HH:mm')).toBe('11:13');
+            expect(formatTime('11:13:14.001 PM', 'HH:mm')).toBe('23:13');
+            expect(formatTime('11:13:14.001 AM', 'HH:mm')).toBe('11:13');
+
+            expect(formatTime('11:13', 'HH:mm:ss')).toBe('11:13:00');
+            expect(formatTime('11:13:14', 'HH:mm:ss')).toBe('11:13:14');
+            expect(formatTime('11:13:14.001', 'HH:mm:ss')).toBe('11:13:14');
+            expect(formatTime('11:13:14.001 PM', 'HH:mm:ss')).toBe('23:13:14');
+            expect(formatTime('11:13:14.001 AM', 'HH:mm:ss')).toBe('11:13:14');
+
+            expect(formatTime('11:13', 'HH:mm:ss.SSS')).toBe('11:13:00.000');
+            expect(formatTime('11:13:14', 'HH:mm:ss.SSS')).toBe('11:13:14.000');
+            expect(formatTime('11:13:14.001', 'HH:mm:ss.SSS')).toBe('11:13:14.001');
+            expect(formatTime('11:13:14.001 PM', 'HH:mm:ss.SSS')).toBe('23:13:14.001');
+            expect(formatTime('11:13:14.001 AM', 'HH:mm:ss.SSS')).toBe('11:13:14.001');
+
+            expect(formatTime('11:13', 'hh:mm a')).toBe('11:13 AM');
+            expect(formatTime('11:13:14', 'hh:mm a')).toBe('11:13 AM');
+            expect(formatTime('11:13:14.001', 'hh:mm a')).toBe('11:13 AM');
+            expect(formatTime('23:13:14.001', 'hh:mm a')).toBe('11:13 PM');
+            expect(formatTime('11:13:14.001', 'hh:mm a')).toBe('11:13 AM');
+
+            expect(formatTime('11:13', 'hh:mm:ss a')).toBe('11:13:00 AM');
+            expect(formatTime('11:13:14', 'hh:mm:ss a')).toBe('11:13:14 AM');
+            expect(formatTime('11:13:14.001', 'hh:mm:ss a')).toBe('11:13:14 AM');
+            expect(formatTime('23:13:14.001', 'hh:mm:ss a')).toBe('11:13:14 PM');
+            expect(formatTime('11:13:14.001', 'hh:mm:ss a')).toBe('11:13:14 AM');
+
+            expect(formatTime('11:13', 'hh:mm:ss.SSS a')).toBe('11:13:00.000 AM');
+            expect(formatTime('11:13:14', 'hh:mm:ss.SSS a')).toBe('11:13:14.000 AM');
+            expect(formatTime('11:13:14.001', 'hh:mm:ss.SSS a')).toBe('11:13:14.001 AM');
+            expect(formatTime('23:13:14.001', 'hh:mm:ss.SSS a')).toBe('11:13:14.001 PM');
+            expect(formatTime('11:13:14.001', 'hh:mm:ss.SSS a')).toBe('11:13:14.001 AM');
+        });
+    });
+
     describe('get date-fns formats', () => {
         const testFormats = {
             dateFormat: 'BEEP-123',
@@ -363,8 +420,8 @@ describe('Date Utilities', () => {
             expect(getJsonFormatString(new Date('2021-12-03 23:59'), 'Date')).toBe('2021-12-03');
             expect(getJsonFormatString(new Date('2021-12-03 00:00'), 'DateTime')).toBe('2021-12-03 00:00:00.000');
             expect(getJsonFormatString(new Date('2021-12-03 23:59'), 'DateTime')).toBe('2021-12-03 23:59:00.000');
-            expect(getJsonFormatString(new Date('2021-12-03 00:00'), 'Time')).toBe('00:00:00');
-            expect(getJsonFormatString(new Date('2021-12-03 23:59'), 'Time')).toBe('23:59:00');
+            expect(getJsonFormatString(new Date('2021-12-03 00:00'), 'Time')).toBe('00:00:00.000');
+            expect(getJsonFormatString(new Date('2021-12-03 23:59'), 'Time')).toBe('23:59:00.000');
         });
     });
 
@@ -664,6 +721,10 @@ describe('Date Utilities', () => {
             expect(parseTime('13:02').toString()).toContain('13:02');
             expect(parseTime('11:02:59 AM').toString()).toContain('11:02:59');
             expect(parseTime('21:02:30').toString()).toContain('21:02:30');
+            expect(parseTime('21:02:30.001').toString()).toContain('21:02:30');
+            expect(parseTime('21:02:30.123').toString()).toContain('21:02:30');
+            expect(parseTime('21:02:30.123').getTime() - parseTime('21:02:30.001').getTime()).toBe(122);
+            expect(parseTime('01:02:30.123 PM').getTime() - parseTime('11:02:30.001 AM').getTime()).toBe(7200122);
         });
     });
 

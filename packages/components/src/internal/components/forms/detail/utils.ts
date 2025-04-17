@@ -69,11 +69,10 @@ export function extractChanges(
                 // Ensure dates have same formatting
                 const newDate = new Date(newValue);
                 const origDate = new Date(existingValue);
-                // If submitted value is same as existing date down to the minute (issue 40139), do not update
-                let newDateValue = newDate.setUTCSeconds(0, 0);
-                let origDateValue = origDate.setUTCSeconds(0, 0);
-                // If original date doesn't have timestamp, then only check date to hour
+                let newDateValue = newDate.getTime();
+                let origDateValue = origDate.getTime();
                 if (Utils.isString(newValue) && newValue.indexOf(':') === -1) {
+                    // If new date doesn't have timestamp, then only check date but ignore hour
                     newDateValue = newDate.setUTCHours(0, 0, 0, 0);
                     origDateValue = origDate.setUTCHours(0, 0, 0, 0);
                 }

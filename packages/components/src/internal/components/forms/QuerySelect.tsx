@@ -249,7 +249,13 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     const [loadOnFocusLock, setLoadOnFocusLock] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(undefined);
     const [model, setModel] = useState<QuerySelectModel>(
-        () => new QuerySelectModel({ ...props, delimiter, isInit: false })
+        () =>
+            new QuerySelectModel({
+                ...props,
+                delimiter,
+                isInit: false,
+                rawSelectedValue: value !== null ? value : undefined,
+            })
     );
     // This persists all searches done prior to the select being fully initialized. Once initialized,
     // these searches are cleared out and resolved. The reason we need to retain these is the underlying

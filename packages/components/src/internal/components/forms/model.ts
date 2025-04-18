@@ -329,7 +329,6 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
     const valueColumn = initValueColumn(queryInfo, props.valueColumn);
     const displayColumn = initDisplayColumn(queryInfo, valueColumn, props.displayColumn);
     const groupByColumn = initGroupByColumn(queryInfo, props.groupByColumn);
-    let rawSelectedValue: string;
     let selectedItems = Map<string, any>();
 
     if (props.value !== undefined && props.value !== null) {
@@ -368,7 +367,6 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
             viewName,
         });
 
-        rawSelectedValue = props.value;
         selectedItems = fromJS(
             quoteValueColumnWithDelimiters(data, props.valueColumn, props.delimiter).models[data.key]
         );
@@ -379,7 +377,6 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
         groupByColumn,
         isInit: true,
         queryInfo,
-        rawSelectedValue,
         selectedItems,
         valueColumn,
     };

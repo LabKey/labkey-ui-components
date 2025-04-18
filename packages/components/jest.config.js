@@ -49,7 +49,7 @@ module.exports = {
         '^.+\\.tsx?$': [
             'ts-jest',
             {
-                tsconfig: 'tsconfig.test.json',
+                tsconfig: 'node_modules/@labkey/build/webpack/tsconfig.test.json',
             }
         ],
     },

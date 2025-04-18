@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.36.5
+*Released*: 18 April 2025
+- Issue 52156: Editable grid cell with dropdown loses first input character
+  - SelectInput: load async `defaultInputValue` when provided.
+  - QuerySelect: start with model, support deferred searches. No more `null` render cycles.
+  - Defer clearing cell `recordedKeys` so that they are utilized for the `defaultInputValue` of select input cells.
+
 ### version 6.36.4
 *Released*: 17 April 2025
 - Issue 52536: Sample Manager: time format HH:mm:ss.SSS issues

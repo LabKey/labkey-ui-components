@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ComponentType, FC, memo, useCallback, useEffect, useRef, useState } from 'react';
+import React, { ComponentType, FC, memo, useCallback, useEffect, useState } from 'react';
 import { List, Map } from 'immutable';
 import { Filter, Query, Utils } from '@labkey/api';
 
@@ -27,12 +27,16 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { isTestEnv } from '../../util/utils';
 
+import { useTimeout } from '../../hooks';
+
 import { SelectInputOption, SelectInput, SelectInputProps, SelectInputChange } from './input/SelectInput';
 import { resolveDetailFieldLabel } from './utils';
 import {
     fetchSearchResults,
+    formatResults,
     formatSavedResults,
     initSelect,
+    parseSelectedQuery,
     QuerySelectModel,
     saveSearchResults,
     setSelection,
@@ -187,6 +191,12 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
 
 type DefaultOptions = boolean | SelectInputOption[];
 
+type Search = {
+    input: string;
+    reject: (reason?: any) => any;
+    resolve: (value: SelectInputOption[] | PromiseLike<SelectInputOption[]>) => void;
+};
+
 export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     const {
         OptionComponent,
@@ -216,7 +226,6 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         containerClass,
         customTheme,
         customStyles,
-        defaultInputValue,
         description,
         formsy,
         helpTipRenderer,
@@ -230,6 +239,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         onToggleDisable,
         openMenuOnFocus,
         required,
+        value,
     } = selectInputProps;
     const [defaultOptions, setDefaultOptions] = useState<DefaultOptions>(() =>
         // See note in onFocus() regarding support for "loadOnFocus"
@@ -237,85 +247,112 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     );
     const [error, setError] = useState<string>();
     const [loadOnFocusLock, setLoadOnFocusLock] = useState<boolean>(false);
-    const [initialLoad, setInitialLoad] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(undefined);
-    const [model, setModel] = useState<QuerySelectModel>();
-    const lastRequest = useRef<Record<string, string>>(undefined);
-    const querySelectTimer = useRef(undefined);
+    const [model, setModel] = useState<QuerySelectModel>(
+        () => new QuerySelectModel({ ...props, delimiter, isInit: false })
+    );
+    // This persists all searches done prior to the select being fully initialized. Once initialized,
+    // these searches are cleared out and resolved. The reason we need to retain these is the underlying
+    // SelectInput retains these search results, however, we need be fully initialized to complete a search.
+    const [searches, setSearches] = useState<Search[]>([]);
+    const debounceTO = useTimeout();
     const shouldLoadOnFocus = loadOnFocus && !loadOnFocusLock;
 
-    const clear = useCallback(() => {
-        clearTimeout(querySelectTimer.current);
-        querySelectTimer.current = undefined;
-    }, []);
-
     useEffect(() => {
-        if (!autoInit) return clear;
-
+        if (!autoInit) return;
         (async () => {
             try {
-                const model_ = await initSelect({
-                    ...props,
-                    delimiter,
-                    fireQSChangeOnInit,
-                    loadOnFocus,
-                    preLoad,
-                    showLoading,
+                const modelProps = await initSelect({ ...props, delimiter });
+
+                setModel(model_ => {
+                    const { selectedItems } = modelProps;
+
+                    if (selectedItems.size) {
+                        model_ = model_.merge({
+                            allResults: model_.allResults.merge(selectedItems),
+                            selectedQuery: parseSelectedQuery(model_, selectedItems),
+                        }) as QuerySelectModel;
+                    }
+
+                    return model_.merge(modelProps) as QuerySelectModel;
                 });
-                setModel(model_);
             } catch (e) {
                 setError(resolveErrorMessage(e) ?? 'Failed to initialize.');
             }
         })();
-
-        return clear;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [autoInit]);
 
-    const loadOptions = useCallback(
-        (input: string): Promise<SelectInputOption[]> => {
-            let input_: string;
+    useEffect(() => {
+        if (!model.isInit || value === undefined || value === null) return;
 
-            if (initialLoad) {
-                // If a "defaultInputValue" is supplied and the initial load is an empty search,
-                // then search with the "defaultInputValue"
-                input_ = input ? input : (defaultInputValue ?? '');
-                setInitialLoad(false);
-            } else {
-                input_ = input;
+        // The following logic is only reached once after the model has been initialized.
+        const { rawSelectedValue, selectedItems } = model;
+
+        if (fireQSChangeOnInit && Utils.isFunction(onQSChange)) {
+            let selectOptions: SelectInputOption | SelectInputOption[] = formatResults(model, selectedItems);
+
+            // mimic ReactSelect in that it will return a single option if multiple is not true
+            if (multiple === false) {
+                selectOptions = selectOptions[0];
             }
 
-            const request = (lastRequest.current = {});
-            clear();
+            onQSChange(name, rawSelectedValue, selectOptions, props, selectedItems);
+        }
 
+        // fire listener if given an initial value and a listener function
+        if (rawSelectedValue) {
+            onInitValue?.(rawSelectedValue, selectedItems.toList());
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- should only ever depend on model.isInit
+    }, [model.isInit]);
+
+    const fetchResults = useCallback((model_: QuerySelectModel, search: Search): void => {
+        const { input, reject, resolve } = search;
+        fetchSearchResults(model_, input)
+            .then(data => {
+                resolve(formatSavedResults(model_, data, input));
+                setModel(m => saveSearchResults(m, data));
+            })
+            .catch(e => {
+                const errorMsg = resolveErrorMessage(e) ?? 'Failed to retrieve search results.';
+                console.error(errorMsg, e);
+                reject(errorMsg);
+                setError(errorMsg);
+            });
+    }, []);
+
+    // Any searches (i.e. calls to loadOptions()) made prior to the select being fully
+    // initialized are resolved here after the model has been initialized.
+    useEffect(() => {
+        if (model.isInit && searches.length > 0) {
+            setSearches([]);
+            searches.forEach(s => fetchResults(model, s));
+        }
+    }, [fetchResults, model, searches]);
+
+    const loadOptions = useCallback(
+        (input: string): Promise<SelectInputOption[]> => {
             // If loadOptions occurs prior to call to "onFocus" then there is no need to "loadOnFocus".
             if (shouldLoadOnFocus) {
                 setLoadOnFocusLock(true);
             }
 
+            debounceTO.clear();
+
             return new Promise((resolve, reject): void => {
-                querySelectTimer.current = setTimeout(async () => {
-                    clear();
+                const search: Search = { input, reject, resolve };
 
-                    try {
-                        const data = await fetchSearchResults(model, input_);
-
-                        // Issue 46816: Skip processing stale requests
-                        if (request !== lastRequest.current) return;
-                        lastRequest.current = undefined;
-
-                        resolve(formatSavedResults(model, data, input_));
-                        setModel(saveSearchResults(model, data));
-                    } catch (e) {
-                        const errorMsg = resolveErrorMessage(e) ?? 'Failed to retrieve search results.';
-                        console.error(errorMsg, e);
-                        reject(errorMsg);
-                        setError(errorMsg);
-                    }
-                }, 250);
+                // If the model is already initialized, then debounce the searches
+                if (model.isInit) {
+                    debounceTO.set(() => fetchResults(model, search), 250);
+                } else {
+                    // Otherwise, persist the search to be resolved after the model is initialized
+                    setSearches(s => [...s, search]);
+                }
             });
         },
-        [clear, defaultInputValue, initialLoad, model, shouldLoadOnFocus]
+        [debounceTO, fetchResults, model, shouldLoadOnFocus]
     );
 
     const onChange = useCallback<SelectInputChange>(
@@ -383,55 +420,26 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         );
     }
 
-    if (model?.isInit) {
-        return (
-            <SelectInput
-                filterOption={noopFilterOptions}
-                label={label !== undefined ? label : model.queryInfo.title}
-                {...selectInputProps}
-                allowCreate={false}
-                autoValue={false} // QuerySelect directly controls value of SelectInput via "selectedOptions"
-                cacheOptions
-                defaultOptions={defaultOptions}
-                delimiter={delimiter}
-                isLoading={isLoading}
-                loadOptions={loadOptions}
-                onChange={onChange}
-                onFocus={onFocus}
-                optionRenderer={optionRenderer}
-                options={undefined} // prevent override
-                selectedOptions={model.selectedOptions}
-                value={getValue(model, multiple)} // needed to initialize the Formsy "value" properly
-            />
-        );
-    }
-
-    if (showLoading) {
-        return (
-            <SelectInput
-                allowDisable={allowDisable}
-                containerClass={containerClass}
-                customStyles={customStyles}
-                customTheme={customTheme}
-                description={description}
-                disabled
-                formsy={formsy}
-                helpTipRenderer={helpTipRenderer}
-                initiallyDisabled={initiallyDisabled}
-                label={label}
-                labelClass={labelClass}
-                menuPosition={menuPosition}
-                multiple={multiple}
-                name={name}
-                onToggleDisable={onToggleDisable}
-                openMenuOnFocus={openMenuOnFocus}
-                placeholder="Loading..."
-                required={required}
-                value={undefined}
-            />
-        );
-    }
-
-    return null;
+    return (
+        <SelectInput
+            disabled={showLoading && !model.isInit}
+            filterOption={noopFilterOptions}
+            label={label !== undefined ? label : model.queryInfo?.title}
+            {...selectInputProps}
+            allowCreate={false}
+            autoValue={false} // QuerySelect directly controls value of SelectInput via "selectedOptions"
+            cacheOptions
+            defaultOptions={defaultOptions}
+            delimiter={delimiter}
+            isLoading={isLoading}
+            loadOptions={loadOptions}
+            onChange={onChange}
+            onFocus={onFocus}
+            optionRenderer={optionRenderer}
+            options={undefined} // prevent override
+            selectedOptions={model.isInit ? model.selectedOptions : undefined}
+            value={getValue(model, multiple)} // needed to initialize the Formsy "value" properly
+        />
+    );
 });
 QuerySelect.displayName = 'QuerySelect';

@@ -66,7 +66,7 @@ describe('Cell', () => {
         expect(document.querySelectorAll('div.cellular-display')).toHaveLength(1);
         expect(document.querySelectorAll('div.cell-content')).toHaveLength(1);
         expect(document.querySelectorAll('span.cell-content-value')).toHaveLength(1);
-        expect(document.querySelectorAll('span.cell-content-value')[0].textContent).toBe('placeholder text');
+        expect(document.querySelectorAll('span.cell-content-value')[0]).toHaveTextContent('placeholder text');
         expect(document.querySelectorAll('textarea')).toHaveLength(0);
         expect(document.querySelectorAll('.select-input')).toHaveLength(0);
     });
@@ -113,7 +113,7 @@ describe('Cell', () => {
         render(<Cell {...defaultProps()} colIdx={3} placeholder="readOnly placeholder" readOnly rowIdx={3} />);
         expect(document.querySelectorAll('div.cellular-display')).toHaveLength(1);
         expect(document.querySelectorAll('div.cell-read-only')).toHaveLength(1);
-        expect(document.querySelectorAll('div.cell-read-only')[0].textContent).toBe('readOnly placeholder');
+        expect(document.querySelectorAll('div.cell-read-only')[0]).toHaveTextContent('readOnly placeholder');
         expect(document.querySelectorAll('textarea')).toHaveLength(0);
         expect(document.querySelectorAll('.select-input')).toHaveLength(0);
     });
@@ -130,7 +130,7 @@ describe('Cell', () => {
         expect(document.querySelectorAll('.cell-menu')).toHaveLength(focused ? 0 : 1);
         expect(document.querySelectorAll('.cell-menu-selector')).toHaveLength(focused || readOnly ? 0 : 1);
         expect(document.querySelectorAll('.' + CELL_SELECTION_HANDLE_CLASSNAME)).toHaveLength(0);
-        expect(document.querySelectorAll('.select-input')).toHaveLength(0);
+        expect(document.querySelectorAll('.select-input')).toHaveLength(focused ? 1 : 0);
     };
 
     test('col is lookup, public', () => {
@@ -138,7 +138,7 @@ describe('Cell', () => {
         expectLookup();
     });
 
-    test('col is lookup, public and focused', async () => {
+    test('col is lookup, public and focused', () => {
         render(<Cell {...defaultProps()} col={publicLookupCol} focused selected />);
         expectLookup(true);
     });
@@ -187,7 +187,7 @@ describe('Cell', () => {
             if (focused) {
                 expect(document.querySelectorAll('input.date-input-cell')[0].getAttribute('value')).toEqual(value);
             } else {
-                expect(document.querySelectorAll('.cellular-display')[0].textContent).toEqual(value);
+                expect(document.querySelectorAll('.cellular-display')[0]).toHaveTextContent(value);
             }
         }
     };

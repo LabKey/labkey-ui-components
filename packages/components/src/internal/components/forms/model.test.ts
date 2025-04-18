@@ -1,5 +1,10 @@
 import { fromJS } from 'immutable';
-import { parseSelectedQuery, QuerySelectModel } from './model';
+
+import { QueryInfo } from '../../../public/QueryInfo';
+import { ExtendedMap } from '../../../public/ExtendedMap';
+import { QueryColumn } from '../../../public/QueryColumn';
+
+import { parseSelectedQuery, QuerySelectModel, queryColumnNames } from './model';
 
 describe('form actions', () => {
     const setSelectionModel = new QuerySelectModel({
@@ -48,5 +53,43 @@ describe('form actions', () => {
 
         expect(parsed).toBe('C-1');
         expect(parsed2).toBe('Ron Swanson;Swan Ronson');
+    });
+
+    test('queryColumnNames', () => {
+        const displayColumn = 'display';
+        const valueColumn = 'value';
+        let queryInfo = new QueryInfo({ pkCols: ['pkCol1', 'pkCol2'] });
+        expect(queryColumnNames(queryInfo, displayColumn, valueColumn, [], undefined).sort()).toEqual([
+            displayColumn,
+            'pkCol1',
+            'pkCol2',
+            valueColumn,
+        ]);
+
+        const lookupColumn = 'colA';
+        queryInfo = queryInfo.mutate({
+            columns: new ExtendedMap({
+                [lookupColumn]: new QueryColumn({ fieldKey: lookupColumn, shownInLookupView: true }),
+            }),
+        });
+        expect(queryColumnNames(queryInfo, displayColumn, valueColumn, [], undefined).sort()).toEqual([
+            'colA',
+            displayColumn,
+            'pkCol1',
+            'pkCol2',
+            valueColumn,
+        ]);
+
+        const groupByColumn = 'grouper';
+        const someRequiredColumn = `${valueColumn}/${displayColumn}`;
+        expect(
+            queryColumnNames(
+                queryInfo,
+                displayColumn,
+                valueColumn,
+                [displayColumn, someRequiredColumn, valueColumn],
+                groupByColumn
+            ).sort()
+        ).toEqual(['colA', displayColumn, groupByColumn, 'pkCol1', 'pkCol2', valueColumn, someRequiredColumn]);
     });
 });

@@ -300,14 +300,14 @@ function initGroupByColumn(queryInfo: QueryInfo, column?: string): string {
     return groupByColumn;
 }
 
-function queryColumnNames(
+export function queryColumnNames(
     queryInfo: QueryInfo,
     displayColumn: string,
     valueColumn: string,
     requiredColumns: string[],
     groupByColumn: string
 ): string[] {
-    const queryColumns = queryInfo.pkCols.concat([displayColumn, valueColumn].concat(requiredColumns));
+    let queryColumns = queryInfo.pkCols.concat([displayColumn, valueColumn].concat(requiredColumns));
     const lookupViewColumns = queryInfo.getLookupViewColumns();
 
     if (groupByColumn) {
@@ -315,7 +315,7 @@ function queryColumnNames(
     }
 
     if (lookupViewColumns.length > 0) {
-        return lookupViewColumns.map(c => c.fieldKey).concat(queryColumns);
+        queryColumns = lookupViewColumns.map(c => c.fieldKey).concat(queryColumns);
     }
 
     // Remove duplicates

@@ -199,6 +199,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
     private preFocusDOMRect: React.MutableRefObject<DOMRect>;
     private recordedKeys: string;
     private recordingTO: number;
+    private recordingClearTO: number;
 
     static defaultProps = {
         borderMaskBottom: false,
@@ -402,6 +403,20 @@ export class Cell extends React.PureComponent<CellProps, State> {
         }
     };
 
+    clearRecordedKeys = (immediate: boolean): void => {
+        clearTimeout(this.recordingClearTO);
+
+        if (immediate) {
+            this.recordedKeys = undefined;
+            return;
+        }
+
+        this.recordingClearTO = window.setTimeout(() => {
+            this.recordingClearTO = undefined;
+            this.recordedKeys = undefined;
+        }, 100);
+    };
+
     // Issue 49779: Support barcode scanners "streaming" input keys
     recordKeys = (event: React.KeyboardEvent<HTMLElement>): void => {
         clearTimeout(this.recordingTO);
@@ -427,11 +442,16 @@ export class Cell extends React.PureComponent<CellProps, State> {
             if (this.recordedKeys.indexOf('\n') > -1) {
                 fillText(colIdx, rowIdx, this.recordedKeys);
                 selectCell(colIdx, rowIdx + 1);
+                this.clearRecordedKeys(true);
             } else {
                 this.focusCell(colIdx, rowIdx, !this.isReadOnly);
+
+                // Issue 52156: Do not clear the recordedKeys immediately to allow the next render cycle to
+                // resolve the value when rendering the focused cell. The focused cell is then able to utilize the
+                // recordedKeys for the initial input value.
+                this.clearRecordedKeys(false);
             }
 
-            this.recordedKeys = undefined;
             // Wait for a very brief amount of time as automated input is
             // expected to quickly input subsequent characters
         }, 25);
@@ -523,11 +543,8 @@ export class Cell extends React.PureComponent<CellProps, State> {
             containerPath,
         } = this.props;
 
-        const { filteredLookupKeys } = this.state;
         const alignRight = col.align === 'right';
-        const isDateTimeField = this.isDateTimeField;
         const showLookup = this.isLookup;
-        const showMenu = showLookup || (col.inputRenderer && col.inputRenderer !== 'AppendUnitsInput');
 
         if (!focused) {
             const displayValue = values
@@ -553,7 +570,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                         placeholder={placeholder}
                         selected={selected}
                         selection={selection}
-                        showMenu={showMenu}
+                        showMenu={showLookup || !!col.inputRenderer}
                         targetRef={this.displayEl}
                     />
                     {renderDragHandle && !this.isReadOnly && (
@@ -573,6 +590,8 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     onSelectChange={this.onSelectChange}
                     selectInputProps={{
                         ...gridCellSelectInputProps,
+                        defaultInputValue: this.recordedKeys,
+                        disabled: this.isReadOnly,
                         onBlur: this.handleSelectionBlur,
                         onKeyDown: this.handleFocusedDropdownKeys,
                     }}
@@ -583,6 +602,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
             );
         }
 
+        const isDateTimeField = this.isDateTimeField;
         if (showLookup && !isDateTimeField) {
             return (
                 <LookupCell
@@ -593,7 +613,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     defaultInputValue={this.recordedKeys}
                     disabled={this.isReadOnly}
                     lookupValueFilters={columnMetadata?.lookupValueFilters}
-                    filteredLookupKeys={filteredLookupKeys}
+                    filteredLookupKeys={this.state.filteredLookupKeys}
                     filteredLookupValues={columnMetadata?.filteredLookupValues}
                     forUpdate={forUpdate}
                     modifyCell={cellActions.modifyCell}

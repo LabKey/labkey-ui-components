@@ -82,4 +82,11 @@ describe('parseSelectionKey', () => {
             schemaQuery: new SchemaQuery('My.Schema', 'My/Query', 'My}View'),
         });
     });
+    test('selectionKey with view name', () => {
+        const sk = 'sample-detail|samples/biotest/$t$tdetails$t$t|~~details~~|3933964';
+        expect(SchemaQuery.parseSelectionKey(sk)).toEqual({
+            keys: '3933964',
+            schemaQuery: new SchemaQuery('samples', 'biotest', '~~details~~'),
+        });
+    });
 });

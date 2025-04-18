@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Fix `SchemaQuery.parseSelectionKey` to account for view name in selection key
+
 ### version 6.36.4
 *Released*: 17 April 2025
 - Issue 52536: Sample Manager: time format HH:mm:ss.SSS issues

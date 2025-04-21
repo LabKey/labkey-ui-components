@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.36.6
+*Released*: 21 April 2025
 - Fix `SchemaQuery.parseSelectionKey` to account for view name in selection key
 
 ### version 6.36.5

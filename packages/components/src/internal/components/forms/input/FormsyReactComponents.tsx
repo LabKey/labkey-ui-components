@@ -20,6 +20,7 @@ import classNames from 'classnames';
 
 import { FormsyInjectedProps, withFormsy } from '../formsy';
 import { INPUT_WRAPPER_CLASS_NAME } from '../constants';
+
 import { Help } from './Help';
 
 type LayoutType = 'elementOnly' | 'horizontal' | 'vertical';

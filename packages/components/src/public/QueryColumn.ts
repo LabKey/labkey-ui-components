@@ -53,7 +53,10 @@ export class QueryLookup {
 
     constructor(rawLookup: Partial<QueryLookup>) {
         Object.assign(this, rawLookup, {
-            displayColumnFieldKey: rawLookup.displayColumn && !rawLookup.displayColumnFieldKey ? QueryKey.encodePart(rawLookup.displayColumn) : rawLookup.displayColumnFieldKey,
+            displayColumnFieldKey:
+                rawLookup.displayColumn && !rawLookup.displayColumnFieldKey
+                    ? QueryKey.encodePart(rawLookup.displayColumn)
+                    : rawLookup.displayColumnFieldKey,
             schemaQuery: new SchemaQuery(rawLookup.schemaName, rawLookup.queryName, rawLookup.viewName),
         });
     }

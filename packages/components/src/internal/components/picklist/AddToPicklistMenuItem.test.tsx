@@ -81,9 +81,7 @@ describe('AddToPicklistMenuItem', () => {
     });
 
     test('modal open on click, queryModel with selections', async () => {
-        renderWithAppContext(
-            <AddToPicklistMenuItem queryModel={queryModelWithSelections} user={TEST_USER_EDITOR} />
-        );
+        renderWithAppContext(<AddToPicklistMenuItem queryModel={queryModelWithSelections} user={TEST_USER_EDITOR} />);
         await validateMenuItemClick(true);
     });
 

@@ -23,7 +23,7 @@ describe('LookupCell', () => {
             colIdx: 0,
             forUpdate: false,
             modifyCell: jest.fn(),
-            row: undefined,
+            onBlur: jest.fn(),
             rowIdx: 0,
             select: jest.fn(),
             values: List.of({ raw: 'a' } as ValueDescriptor, { raw: 'b' } as ValueDescriptor, {} as ValueDescriptor),
@@ -31,20 +31,33 @@ describe('LookupCell', () => {
     }
 
     test('col with validValues', () => {
+        render(<LookupCell {...defaultProps()} col={new QueryColumn({ validValues: ['a', 'b'] })} />);
+
+        expect(document.querySelectorAll('.select-input-cell')).toHaveLength(1);
+        expect(document.querySelector('.select-input__single-value')).toHaveTextContent('a');
+
+        const options = document.querySelectorAll('.select-input__option');
+        expect(options).toHaveLength(2);
+        expect(options[0]).toHaveTextContent('a');
+        expect(options[1]).toHaveTextContent('b');
+    });
+
+    test('col with defaultInputValue', () => {
         render(
             <LookupCell
                 {...defaultProps()}
-                col={
-                    new QueryColumn({
-                        validValues: ['a', 'b'],
-                    })
-                }
+                col={new QueryColumn({ validValues: ['aa', 'ab', 'bb', 'ca'] })}
+                defaultInputValue="a"
             />
         );
+
         expect(document.querySelectorAll('.select-input-cell')).toHaveLength(1);
-        expect(document.querySelector('.select-input__single-value').textContent).toBe('a');
-        expect(document.querySelectorAll('.select-input__option')).toHaveLength(2);
-        expect(document.querySelectorAll('.select-input__option')[0].textContent).toBe('a');
-        expect(document.querySelectorAll('.select-input__option')[1].textContent).toBe('b');
+        expect(document.querySelector('.select-input__input')).toHaveValue('a');
+
+        const options = document.querySelectorAll('.select-input__option');
+        expect(options).toHaveLength(3);
+        expect(options[0]).toHaveTextContent('aa');
+        expect(options[1]).toHaveTextContent('ab');
+        expect(options[2]).toHaveTextContent('ca');
     });
 });

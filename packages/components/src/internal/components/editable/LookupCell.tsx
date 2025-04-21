@@ -129,7 +129,19 @@ const QueryLookupCell: FC<QueryLookupCellProps> = memo(props => {
 QueryLookupCell.displayName = 'QueryLookupCell';
 
 export const LookupCell: FC<LookupCellProps> = memo(props => {
-    const { col, colIdx, disabled, modifyCell, onBlur, onKeyDown, rowIdx, select, values, containerPath } = props;
+    const {
+        col,
+        colIdx,
+        defaultInputValue,
+        disabled,
+        modifyCell,
+        onBlur,
+        onKeyDown,
+        rowIdx,
+        select,
+        values,
+        containerPath,
+    } = props;
 
     const onSelectChange = useCallback<SelectInputChange>(
         (fieldName, formValue, options, props_) => {
@@ -152,6 +164,7 @@ export const LookupCell: FC<LookupCellProps> = memo(props => {
             <TextChoiceInput
                 {...gridCellSelectInputProps}
                 autoFocus
+                defaultInputValue={defaultInputValue}
                 disabled={disabled}
                 onBlur={onBlur}
                 onChange={onSelectChange}

@@ -130,8 +130,7 @@ function initOptionFromPrimitive(value: string | number, props: SelectInputProps
             subResult = optionGroup?.options?.find(o => o[valueKey] === value);
         });
 
-        if (!!subResult)
-            return subResult;
+        if (subResult) return subResult;
     }
 
     return { [labelKey]: value, [valueKey]: value };
@@ -284,6 +283,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
 
     private readonly _id: string;
     private _isMounted: boolean;
+    private _defaultValueLoaded = false;
     private CHANGE_LOCK = false;
     private reactSelect: React.RefObject<any>;
 
@@ -539,12 +539,35 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
 
     getOptionValue = (option: SelectInputOption): any => option[this.props.valueKey];
 
-    Input = inputProps => (
+    Input = inputProps => {
+        // React-select in an async configuration has a bug where when a defaultInputValue prop is supplied it
+        // does not fire an onChange event on the underlying input which results in loadOptions() never being called
+        // with the supplied value. Here we simulate an onChange() event ourselves to induce the expected loading logic.
+        // See https://github.com/JedWatson/react-select/issues/3047
+        if (!this._defaultValueLoaded) {
+            this._defaultValueLoaded = true;
+            if (this.props.defaultInputValue && this.isAsync()) {
+                // To avoid performing updates during the render cycle utilize a setTimeout() to defer execution.
+                // Normally, this could be done in componentDidMount(), however, we need access to the inputProps.
+                setTimeout(() => {
+                    const inputEl = document.getElementById(inputProps.id);
+                    if (inputEl) {
+                        // If the input element has a different value than the defaultInputValue, then skip simulating
+                        // the event as the react-select will induce loadOption() appropriately. This only really occurs
+                        // when someone types exceedingly fast into the input.
+                        if ((inputEl as HTMLInputElement).value === this.props.defaultInputValue) {
+                            inputProps.onChange?.({ currentTarget: { value: this.props.defaultInputValue } });
+                        }
+                    }
+                }, 0);
+            }
+        }
+
         // Marking input as "required" is not natively supported by react-select post-v1. Here we can mark
         // the underlying input as required, however, this is not the value input but rather the user visible
         // input so we manually check if a value is set.
-        <components.Input {...inputProps} required={!!this.props.required && !inputProps.selectProps?.value} />
-    );
+        return <components.Input {...inputProps} required={!!this.props.required && !inputProps.selectProps?.value} />;
+    };
 
     Option = optionProps => <CustomOption {...optionProps}>{this.props.optionRenderer(optionProps)}</CustomOption>;
 

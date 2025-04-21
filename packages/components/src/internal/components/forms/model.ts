@@ -50,7 +50,7 @@ function formatOption(model: QuerySelectModel, result: any): SelectInputOption {
     };
 }
 
-function formatResults(model: QuerySelectModel, results: Map<string, any>, token?: string): SelectInputOption[] {
+export function formatResults(model: QuerySelectModel, results: Map<string, any>, token?: string): SelectInputOption[] {
     const { displayColumn, groupByColumn, queryInfo } = model;
 
     if (!queryInfo || !results) {
@@ -198,7 +198,7 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
         allFilters = allFilters.concat(queryFilters.toArray());
     }
 
-    // 35112: Explicitly request exact matches -- can be disabled via QuerySelectModel.addExactFilter = false
+    // Issue 35112: Explicitly request exact matches -- can be disabled via QuerySelectModel.addExactFilter = false
     return searchRows(
         {
             containerFilter: model.containerFilter,
@@ -300,24 +300,36 @@ function initGroupByColumn(queryInfo: QueryInfo, column?: string): string {
     return groupByColumn;
 }
 
-export async function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel> {
+export function queryColumnNames(
+    queryInfo: QueryInfo,
+    displayColumn: string,
+    valueColumn: string,
+    requiredColumns: string[],
+    groupByColumn: string
+): string[] {
+    let queryColumns = queryInfo.pkCols.concat([displayColumn, valueColumn].concat(requiredColumns));
+    const lookupViewColumns = queryInfo.getLookupViewColumns();
+
+    if (groupByColumn) {
+        queryColumns.push(groupByColumn);
+    }
+
+    if (lookupViewColumns.length > 0) {
+        queryColumns = lookupViewColumns.map(c => c.fieldKey).concat(queryColumns);
+    }
+
+    // Remove duplicates
+    return Array.from(new Set(queryColumns));
+}
+
+export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<QuerySelectModelProps>> {
     const { containerFilter, containerPath, schemaQuery, queryFilters } = props;
-    const { queryName, schemaName, viewName } = schemaQuery;
-    const filters = queryFilters ? queryFilters.toArray() : [];
 
     const queryInfo = await getQueryDetails({ containerPath, schemaQuery });
     const valueColumn = initValueColumn(queryInfo, props.valueColumn);
     const displayColumn = initDisplayColumn(queryInfo, valueColumn, props.displayColumn);
     const groupByColumn = initGroupByColumn(queryInfo, props.groupByColumn);
-
-    let model = new QuerySelectModel({
-        ...props,
-        displayColumn,
-        groupByColumn,
-        isInit: true,
-        queryInfo,
-        valueColumn,
-    });
+    let selectedItems = Map<string, any>();
 
     if (props.value !== undefined && props.value !== null) {
         let filter: Filter.IFilter;
@@ -339,50 +351,35 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<QuerySelec
         if (!filter) {
             filter = Filter.create(valueColumn, props.value);
         }
+
+        const filters = queryFilters ? queryFilters.toArray() : [];
         filters.push(filter);
 
+        const { queryName, schemaName, viewName } = schemaQuery;
         const data = await selectRowsDeprecated({
-            columns: model.queryColumnNames,
+            columns: queryColumnNames(queryInfo, displayColumn, valueColumn, props.requiredColumns, groupByColumn),
             containerFilter,
             containerPath,
             filterArray: filters,
-            parameters: model.queryParams,
+            parameters: props.queryParams,
             queryName,
             schemaName,
             viewName,
         });
 
-        const selectedItems = fromJS(
+        selectedItems = fromJS(
             quoteValueColumnWithDelimiters(data, props.valueColumn, props.delimiter).models[data.key]
         );
-
-        model = model.merge({ rawSelectedValue: props.value, selectedItems }) as QuerySelectModel;
-
-        if (selectedItems.size) {
-            model = model.merge({
-                allResults: model.allResults.merge(selectedItems),
-                selectedQuery: parseSelectedQuery(model, selectedItems),
-            }) as QuerySelectModel;
-        }
-
-        if (props.fireQSChangeOnInit && Utils.isFunction(props.onQSChange)) {
-            let selectOptions: SelectInputOption | SelectInputOption[] = formatResults(model, model.selectedItems);
-
-            // mimic ReactSelect in that it will return a single option if multiple is not true
-            if (props.multiple === false) {
-                selectOptions = selectOptions[0];
-            }
-
-            props.onQSChange(props.name, model.rawSelectedValue, selectOptions, props, model.selectedItems);
-        }
-
-        // fire listener if given an initial value and a listener function
-        if (model.rawSelectedValue) {
-            props.onInitValue?.(model.rawSelectedValue, model.selectedItems.toList());
-        }
     }
 
-    return model;
+    return {
+        displayColumn,
+        groupByColumn,
+        isInit: true,
+        queryInfo,
+        selectedItems,
+        valueColumn,
+    };
 }
 
 export interface QuerySelectModelProps {
@@ -474,19 +471,13 @@ export class QuerySelectModel
     }
 
     get queryColumnNames(): string[] {
-        const { displayColumn, groupByColumn, queryInfo, requiredColumns, valueColumn } = this;
-        const queryColumns = queryInfo.pkCols.concat([displayColumn, valueColumn].concat(requiredColumns));
-        const lookupViewColumns = queryInfo.getLookupViewColumns();
-
-        if (groupByColumn) {
-            queryColumns.push(groupByColumn);
-        }
-
-        if (lookupViewColumns.length > 0) {
-            return lookupViewColumns.map(c => c.fieldKey).concat(queryColumns);
-        }
-
-        return queryColumns;
+        return queryColumnNames(
+            this.queryInfo,
+            this.displayColumn,
+            this.valueColumn,
+            this.requiredColumns,
+            this.groupByColumn
+        );
     }
 }
 

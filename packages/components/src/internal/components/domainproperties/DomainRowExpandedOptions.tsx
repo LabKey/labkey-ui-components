@@ -195,12 +195,14 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                 return (
                     <SampleFieldOptions
                         index={index}
+                        field={field}
                         domainIndex={domainIndex}
                         label="Sample Options"
                         value={field.lookupQueryValue}
                         original={field.original}
                         container={field.lookupContainer}
                         onChange={onChange}
+                        onMultiChange={onMultiChange}
                         lockType={field.lockType}
                     />
                 );

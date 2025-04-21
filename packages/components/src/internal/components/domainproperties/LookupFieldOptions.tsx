@@ -52,16 +52,14 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
     addLookupValidator = evt => {
         const { onMultiChange } = this.props;
 
-        let newLookupValidator;
-
-        if (evt.target.checked) {
-            newLookupValidator = new PropertyValidator(LOOKUP_VALIDATOR_VALUES);
-        }
-
-        let changes = List<IFieldChange>();
-        changes = changes.push({ id: evt.target.id, value: newLookupValidator } as IFieldChange);
-
         if (onMultiChange) {
+            let newLookupValidator;
+            if (evt.target.checked) {
+                newLookupValidator = new PropertyValidator(LOOKUP_VALIDATOR_VALUES);
+            }
+
+            let changes = List<IFieldChange>();
+            changes = changes.push({ id: evt.target.id, value: newLookupValidator } as IFieldChange);
             onMultiChange(changes);
         }
     };

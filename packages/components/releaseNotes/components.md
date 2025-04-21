@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 52504: Expose validate lookup setting for sample lookup and turn on by default
+
 ### version 6.36.5
 *Released*: 18 April 2025
 - Issue 52156: Editable grid cell with dropdown loses first input character

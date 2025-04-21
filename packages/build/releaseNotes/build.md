@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 8.5.0
+*Released*: 21 April 2025
+- Package updates
+
 ### version 8.4.0
 *Released*: 17 February 2025
 - Add `source-map-loader` as a dependency

@@ -42,7 +42,7 @@ interface ToggleState<T> {
 }
 
 function useToggleState<T extends HTMLElement>(): ToggleState<T> {
-    const toggleRef = useRef<T>();
+    const toggleRef = useRef<T>(undefined);
     const [open, setOpen] = useState<boolean>(false);
     const onClick = useCallback(event => {
         event.preventDefault(); // Needed so DropdownMenu doesn't navigate to home page on click

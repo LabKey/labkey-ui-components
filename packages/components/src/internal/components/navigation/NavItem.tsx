@@ -27,7 +27,7 @@ interface NavItemProps extends PropsWithChildren {
 export const NavItem: FC<NavItemProps> = memo(({ children, onActive, to, isActive }) => {
     const location = useLocation();
     const href = to instanceof AppURL ? to.toString() : to;
-    const itemRef = useRef<HTMLLIElement>();
+    const itemRef = useRef<HTMLLIElement>(undefined);
     const [active, setActive] = useState<boolean>(false);
 
     useEffect(() => {

@@ -177,16 +177,12 @@ describe('DataTypeSelector', () => {
         };
     }
 
-    function waitForLoaded(): Promise<void> {
-        return waitFor(() => {
-            expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
-        });
-    }
-
     test('data types blank', async () => {
         renderWithAppContext(<DataTypeSelector {...defaultProps()} />, defaultContext());
 
-        await waitForLoaded();
+        await waitFor(() => {
+            expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+        });
         expect(document.querySelector('.content-group-label')).toHaveTextContent('Sample Types');
         expect(document.querySelector('.help-block')).toHaveTextContent('No sample types');
         expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(0);
@@ -195,8 +191,9 @@ describe('DataTypeSelector', () => {
     test('with data types', async () => {
         renderWithAppContext(<DataTypeSelector {...defaultProps()} />, defaultContext(apiWithResults));
 
-        await waitForLoaded();
-        expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        await waitFor(() => {
+            expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        });
         expect(document.querySelectorAll('.folder-faceted-data-type')[0]).toHaveTextContent('Blood');
         expect(document.querySelectorAll('.filter-faceted__checkbox')[0]).toBeChecked();
         expect(document.querySelectorAll('.folder-faceted-data-type')[1]).toHaveTextContent('DNA');
@@ -209,8 +206,9 @@ describe('DataTypeSelector', () => {
     test('with inactive data types', async () => {
         renderWithAppContext(<DataTypeSelector {...defaultProps()} />, defaultContext(apiWithInactiveResults));
 
-        await waitForLoaded();
-        expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        await waitFor(() => {
+            expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        });
         expect(document.querySelectorAll('.folder-faceted-data-type')[0]).toHaveTextContent('Blood');
         expect(document.querySelectorAll('.filter-faceted__checkbox')[0]).toBeChecked();
         expect(document.querySelectorAll('.folder-faceted-data-type')[1]).toHaveTextContent('DNA');
@@ -230,8 +228,12 @@ describe('DataTypeSelector', () => {
     test('with only inactive data types', async () => {
         renderWithAppContext(<DataTypeSelector {...defaultProps()} />, defaultContext(apiWithOnlyInactiveResults));
 
-        await waitForLoaded();
-        expect(document.querySelector('.content-group-label')).toHaveTextContent('Sample Types');
+        await waitFor(() => {
+            expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+        });
+        await waitFor(() => {
+            expect(document.querySelector('.content-group-label')).toHaveTextContent('Sample Types');
+        });
         expect(document.querySelector('.help-block')).toHaveTextContent('No sample types');
         expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(0);
 
@@ -245,8 +247,9 @@ describe('DataTypeSelector', () => {
     test('with 2 columns', async () => {
         renderWithAppContext(<DataTypeSelector {...defaultProps()} columns={2} />, defaultContext(apiWithResults));
 
-        await waitForLoaded();
-        expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        await waitFor(() => {
+            expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        });
         expect(document.querySelectorAll('.folder-faceted-data-type')[0]).toHaveTextContent('Blood');
         expect(document.querySelectorAll('.filter-faceted__checkbox')[0]).toBeChecked();
         expect(document.querySelectorAll('.folder-faceted-data-type')[1]).toHaveTextContent('DNA');
@@ -261,8 +264,9 @@ describe('DataTypeSelector', () => {
             defaultContext(apiWithInactiveResults)
         );
 
-        await waitForLoaded();
-        expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        await waitFor(() => {
+            expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        });
         expect(document.querySelectorAll('.col-xs-12')).toHaveLength(3); // outer col + 2 inner col
         expect(document.querySelectorAll('.col-md-6')).toHaveLength(2);
 
@@ -279,8 +283,9 @@ describe('DataTypeSelector', () => {
             defaultContext(apiWithResults)
         );
 
-        await waitForLoaded();
-        expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        await waitFor(() => {
+            expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        });
         expect(document.querySelectorAll('.folder-faceted-data-type')[0]).toHaveTextContent('Blood');
         expect(document.querySelectorAll('.filter-faceted__checkbox')[0]).toBeChecked();
         expect(document.querySelectorAll('.folder-faceted-data-type')[1]).toHaveTextContent('DNA');
@@ -295,8 +300,9 @@ describe('DataTypeSelector', () => {
             defaultContext(apiWithResults)
         );
 
-        await waitForLoaded();
-        expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        await waitFor(() => {
+            expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        });
         expect(document.querySelectorAll('.folder-faceted-data-type')[0]).toHaveTextContent('Blood');
         expect(document.querySelectorAll('.filter-faceted__checkbox')[0]).not.toBeChecked();
         expect(document.querySelectorAll('.folder-faceted-data-type')[1]).toHaveTextContent('DNA');
@@ -337,8 +343,9 @@ describe('DataTypeSelector', () => {
             defaultContext()
         );
 
-        await waitForLoaded();
-        expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        await waitFor(() => {
+            expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        });
         expect(document.querySelectorAll('.folder-faceted-data-type')[0]).toHaveTextContent('freezer1Floor1/Room2');
         expect(document.querySelectorAll('.filter-faceted__checkbox')[0]).toBeChecked();
         expect(document.querySelectorAll('.folder-faceted-data-type')[1]).toHaveTextContent('freezer2');

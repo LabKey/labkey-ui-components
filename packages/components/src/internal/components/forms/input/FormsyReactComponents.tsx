@@ -20,6 +20,7 @@ import classNames from 'classnames';
 
 import { FormsyInjectedProps, withFormsy } from '../formsy';
 import { INPUT_WRAPPER_CLASS_NAME } from '../constants';
+
 import { Help } from './Help';
 
 type LayoutType = 'elementOnly' | 'horizontal' | 'vertical';
@@ -416,7 +417,7 @@ const InputImpl: FC<FormsyInputProps & FormsyInjectedProps<string>> = props => {
         return input;
     }
 
-    let control: React.JSX.Element;
+    let control: React.ReactNode;
     if (addonAfter || addonBefore || buttonAfter || buttonBefore) {
         control = (
             <InputGroup

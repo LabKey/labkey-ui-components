@@ -14,7 +14,7 @@ import { fromJS, List, Map, Set } from 'immutable';
 import { Filter, getServerContext, Query } from '@labkey/api';
 
 import { EXPORT_TYPES, GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
-import { headerCell, headerSelectionCell, isFilterColumnNameMatch } from '../../internal/renderers';
+import { HeaderCellDropdown, HeaderSelectionCell, isFilterColumnNameMatch } from '../../internal/renderers';
 
 import {
     getGridView,
@@ -1017,25 +1017,33 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     headerCell = (column: GridColumn, index: number, columnCount?: number): ReactNode => {
         const { allowSelections, allowSorting, allowFiltering, allowViewCustomization, model } = this.props;
         const { isLoading, isLoadingSelections, hasRows, rowCount } = model;
-        const disabled = isLoadingSelections || isLoading || (hasRows && rowCount === 0);
         const nonSelectableColumnCount = allowSelections ? columnCount - 1 : columnCount;
 
         if (column.index === GRID_SELECTION_INDEX) {
-            return headerSelectionCell(this.selectPage, model.selectedState, disabled, 'grid-panel__page-checkbox');
+            return (
+                <HeaderSelectionCell
+                    className="grid-panel__page-checkbox"
+                    disabled={isLoadingSelections || isLoading || (hasRows && rowCount === 0)}
+                    handleSelection={this.selectPage}
+                    selectedState={model.selectedState}
+                />
+            );
         }
 
-        return headerCell(
-            index,
-            column,
-            allowSelections,
-            columnCount,
-            allowSorting ? this.sortColumn : undefined,
-            allowFiltering ? this.filterColumn : undefined,
-            allowViewCustomization ? this.addColumn : undefined,
-            allowViewCustomization && nonSelectableColumnCount > 1 ? this.hideColumn : undefined,
-            allowViewCustomization ? this.onColumnTitleEdit : undefined,
-            allowViewCustomization ? this.updateColumnTitle : undefined,
-            model
+        return (
+            <HeaderCellDropdown
+                column={column}
+                columnCount={columnCount}
+                handleAddColumn={allowViewCustomization ? this.addColumn : undefined}
+                handleFilter={allowFiltering ? this.filterColumn : undefined}
+                handleHideColumn={allowViewCustomization && nonSelectableColumnCount > 1 ? this.hideColumn : undefined}
+                handleSort={allowSorting ? this.sortColumn : undefined}
+                i={index}
+                model={model}
+                onColumnTitleChange={allowViewCustomization ? this.updateColumnTitle : undefined}
+                onColumnTitleEdit={allowViewCustomization ? this.onColumnTitleEdit : undefined}
+                selectable={allowSelections}
+            />
         );
     };
 

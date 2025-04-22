@@ -35,7 +35,7 @@ interface Props {
 const SubNavImpl: FC<Props> = ({ noun, tabs }) => {
     const location = useLocation();
     const isAdminPage = useMemo(() => isAdminRoute(location.pathname), [location.pathname]);
-    const scrollable = useRef<HTMLDivElement>();
+    const scrollable = useRef<HTMLDivElement>(undefined);
     const { container, moduleContext } = useServerContext();
     const { versionString } = getServerContext();
     const showCurrentContainer = hasPremiumModule(moduleContext) && !hasProductFolders(moduleContext);

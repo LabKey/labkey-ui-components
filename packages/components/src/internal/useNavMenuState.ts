@@ -13,8 +13,8 @@ interface ProductMenuState {
  */
 export function useNavMenuState(): ProductMenuState {
     const [show, setShow] = useState<boolean>(false);
-    const toggleRef = useRef<HTMLButtonElement>();
-    const menuRef = useRef<HTMLDivElement>();
+    const toggleRef = useRef<HTMLButtonElement>(undefined);
+    const menuRef = useRef<HTMLDivElement>(undefined);
     const onDocumentClick = useCallback(event => {
         const target = event.target;
         const menuEl = menuRef.current;

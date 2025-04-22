@@ -108,7 +108,11 @@ export class SchemaQuery {
 
     static parseSelectionKey(selectionKey: string): IParsedSelectionKey {
         selectionKey = stripSelectionSnapshotId(selectionKey);
-        const [appkey /* not used */, schemaQueryKey, keys] = selectionKey.split('|');
+        const parts = selectionKey.split('|');
+        // first part will be app page model key, which we skip
+        const schemaQueryKey = parts[1];
+        // there may be a view name between the schemaQueryKey and the provided entity keys
+        const keys = parts.length > 2 ? parts[parts.length - 1] : undefined;
 
         return {
             keys,

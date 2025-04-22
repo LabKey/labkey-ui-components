@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { List } from 'immutable';
 
-import { headerCell } from '../../renderers';
+import { HeaderCellDropdown } from '../../renderers';
 
 import { GRID_SELECTION_INDEX } from '../../constants';
 
@@ -30,9 +30,8 @@ interface DomainPropertiesGridProps {
 }
 
 interface DomainPropertiesGridState {
-    gridColumns?: List<GridColumn | DomainPropertiesGridColumn>;
+    gridColumns: List<GridColumn | DomainPropertiesGridColumn>;
     gridData: List<any>;
-    search: string;
     visibleGridData: List<any>;
 }
 
@@ -56,34 +55,31 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
                 showFilterCriteria
             ),
             visibleGridData: this.getVisibleGridData(gridData),
-            search: this.props.search,
         };
     }
 
     componentDidUpdate(prevProps: Readonly<DomainPropertiesGridProps>): void {
-        const { appPropertiesOnly, domain, hasOntologyModule, showFilterCriteria } = this.props;
-        const prevSearch = prevProps.search;
-        const newSearch = this.props.search;
+        const { appPropertiesOnly, domain, hasOntologyModule, search, showFilterCriteria } = this.props;
         const prevGridData = prevProps.domain.getGridData(appPropertiesOnly, hasOntologyModule, showFilterCriteria);
         const newGridData = domain.getGridData(appPropertiesOnly, hasOntologyModule, showFilterCriteria);
 
-        // When new field added
         if (prevGridData.size < newGridData.size) {
+            // When new field added
             this.uponRowAdd(newGridData);
-            // When fields are deleted
         } else if (prevGridData.size > newGridData.size) {
+            // When fields are deleted
             this.uponRowDelete();
+        } else if (prevProps.search !== search) {
             // When search is updated
-        } else if (prevSearch !== newSearch) {
             this.uponFilter();
-            // If selection updated
         } else {
+            // If selection updated
             this.uponRowSelection();
         }
     }
 
     getVisibleGridData = (gridData: List<any>): List<any> => {
-        return gridData.filter(row => row.get('visible')) as List<any>;
+        return gridData.filter(row => row.get('visible')).toList();
     };
 
     uponRowAdd = (newGridData: List<any>): void => {
@@ -120,16 +116,21 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
 
     uponFilter = (): void => {
         const { appPropertiesOnly, domain, hasOntologyModule, showFilterCriteria } = this.props;
-        const { gridData } = this.state;
-        const initGridData = domain.getGridData(appPropertiesOnly, hasOntologyModule, showFilterCriteria);
 
-        const updatedGridData = gridData.map(row => {
-            const nextRowIndex = initGridData.findIndex(nextRow => nextRow.get('fieldIndex') === row.get('fieldIndex'));
-            return row.set('visible', initGridData.get(nextRowIndex).get('visible'));
-        }) as List<any>;
-        const visibleGridData = this.getVisibleGridData(updatedGridData);
+        this.setState(state => {
+            const initGridData = domain.getGridData(appPropertiesOnly, hasOntologyModule, showFilterCriteria);
 
-        this.setState({ gridData: updatedGridData, visibleGridData });
+            const gridData = state.gridData
+                .map(row => {
+                    const nextRowIndex = initGridData.findIndex(
+                        nextRow => nextRow.get('fieldIndex') === row.get('fieldIndex')
+                    );
+                    return row.set('visible', initGridData.get(nextRowIndex).get('visible'));
+                })
+                .toList();
+
+            return { gridData, visibleGridData: this.getVisibleGridData(gridData) };
+        });
     };
 
     uponRowSelection = (): void => {
@@ -156,40 +157,43 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
     };
 
     sortColumn = (column, direction): void => {
-        const { gridData } = this.state;
+        const { index } = column;
 
-        const sortedFields = gridData.sort((field1, field2) => {
-            const col = column.index;
+        this.setState(state => {
+            const gridData = state.gridData
+                .sort((field1, field2) => compareStringsAlphabetically(field1.get(index), field2.get(index), direction))
+                .toList();
 
-            return compareStringsAlphabetically(field1.get(col), field2.get(col), direction);
-        }) as List<any>;
-        const updatedVisibleGridData = this.getVisibleGridData(sortedFields);
-
-        this.setState({ gridData: sortedFields, visibleGridData: updatedVisibleGridData });
+            return { gridData, visibleGridData: this.getVisibleGridData(gridData) };
+        });
     };
 
     headerCell = (column: GridColumn, index: number, columnCount?: number): ReactNode => {
         const { selectAll, actions } = this.props;
         if (column.index === GRID_SELECTION_INDEX) {
             return (
-                <DomainDesignerCheckbox className="domain-summary-selectAll" checked={selectAll} onChange={actions.toggleSelectAll} />
+                <DomainDesignerCheckbox
+                    className="domain-summary-selectAll"
+                    checked={selectAll}
+                    onChange={actions.toggleSelectAll}
+                />
             );
         }
 
-        return headerCell(index, column, false, columnCount, this.sortColumn);
+        return (
+            <HeaderCellDropdown
+                column={column}
+                columnCount={columnCount}
+                handleSort={this.sortColumn}
+                i={index}
+                selectable={false}
+            />
+        );
     };
 
     render() {
         const { visibleGridData, gridColumns } = this.state;
 
-        return (
-            <Grid
-                data={visibleGridData}
-                columns={gridColumns}
-                headerCell={this.headerCell}
-                condensed={true}
-                calcWidths={true}
-            />
-        );
+        return <Grid data={visibleGridData} columns={gridColumns} headerCell={this.headerCell} condensed calcWidths />;
     }
 }

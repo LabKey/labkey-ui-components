@@ -392,7 +392,7 @@ export const SearchIndexing: FC<SearchIndexingProps> = memo(props => {
 SearchIndexing.displayName = 'SearchIndexing';
 
 interface SettingsContainerProps extends PropsWithChildren {
-    tipBody: string | JSX.Element;
+    tipBody: string | ReactNode;
     tipTitle?: string;
     title: string;
 }

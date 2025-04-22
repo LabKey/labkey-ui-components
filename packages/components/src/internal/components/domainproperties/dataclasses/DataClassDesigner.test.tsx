@@ -10,7 +10,7 @@ import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 import getDomainDetailsJSON from '../../../../test/data/dataclass-getDomainDetails.json';
 
 import { DataClassModel } from './models';
-import { DataClassDesigner, DataClassDesignerImpl, DataClassDesignerProps } from './DataClassDesigner';
+import { DataClassDesignerImpl, DataClassDesignerProps } from './DataClassDesigner';
 
 describe('DataClassDesigner', () => {
     const BASE_PROPS: DataClassDesignerProps = {
@@ -41,9 +41,9 @@ describe('DataClassDesigner', () => {
         });
 
         await waitFor(() => {
-            expect(document.querySelectorAll('#dataclass-properties-hdr').length).toBe(1);
+            expect(document.querySelectorAll('#dataclass-properties-hdr')).toHaveLength(1);
         });
-        expect(document.querySelectorAll('.domain-form-panel').length).toBe(2);
+        expect(document.querySelectorAll('.domain-form-panel')).toHaveLength(2);
         expect(screen.getByText('Import or infer fields from file')).toBeInTheDocument();
     });
 
@@ -65,11 +65,11 @@ describe('DataClassDesigner', () => {
         });
 
         await waitFor(() => {
-            expect(document.querySelectorAll('#dataclass-properties-hdr').length).toBe(1);
+            expect(document.querySelectorAll('#dataclass-properties-hdr')).toHaveLength(1);
         });
-        expect(document.querySelectorAll('.domain-form-panel').length).toBe(2);
+        expect(document.querySelectorAll('.domain-form-panel')).toHaveLength(2);
         expect(screen.getByText('Import or infer fields from file')).toBeInTheDocument();
-        expect(document.querySelectorAll('#domain-folders-hdr').length).toBe(0);
+        expect(document.querySelectorAll('#domain-folders-hdr')).toHaveLength(0);
     });
 
     test('initModel', async () => {
@@ -81,9 +81,9 @@ describe('DataClassDesigner', () => {
         });
 
         await waitFor(() => {
-            expect(document.querySelectorAll('#dataclass-properties-hdr').length).toBe(1);
+            expect(document.querySelectorAll('#dataclass-properties-hdr')).toHaveLength(1);
         });
-        expect(document.querySelectorAll('.domain-form-panel').length).toBe(2);
+        expect(document.querySelectorAll('.domain-form-panel')).toHaveLength(2);
         expect(screen.queryByText('Import or infer fields from file')).not.toBeInTheDocument();
     });
 
@@ -99,10 +99,10 @@ describe('DataClassDesigner', () => {
         renderWithAppContext(component, { serverContext: SERVER_CONTEXT });
 
         await waitFor(() => {
-            expect(document.querySelectorAll('#dataclass-properties-hdr').length).toBe(1);
+            expect(document.querySelectorAll('#dataclass-properties-hdr')).toHaveLength(1);
         });
-        expect(document.querySelectorAll('.domain-form-panel').length).toBe(3);
+        expect(document.querySelectorAll('.domain-form-panel')).toHaveLength(3);
         expect(screen.queryByText('Import or infer fields from file')).not.toBeInTheDocument();
-        expect(document.querySelectorAll('#domain-folders-hdr').length).toBe(1);
+        expect(document.querySelectorAll('#domain-folders-hdr')).toHaveLength(1);
     });
 });

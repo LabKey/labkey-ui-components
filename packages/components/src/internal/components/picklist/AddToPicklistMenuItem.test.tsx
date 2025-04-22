@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { userEvent } from '@testing-library/user-event';
+import { waitFor } from '@testing-library/react';
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 
@@ -14,10 +15,6 @@ import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 import { createMockGetQueryDetails, createMockSelectRowsDeprecatedResponse } from '../../../test/MockUtils';
 
 import { AddToPicklistMenuItem } from './AddToPicklistMenuItem';
-
-beforeAll(() => {
-    LABKEY.moduleContext.inventory = { productId: ['FreezerManager'] };
-});
 
 jest.mock('../../query/api', () => ({
     ...jest.requireActual('../../query/api'),
@@ -38,30 +35,30 @@ describe('AddToPicklistMenuItem', () => {
         renderWithAppContext(<AddToPicklistMenuItem queryModel={queryModelWithSelections} user={TEST_USER_EDITOR} />);
         const menuItem = document.querySelectorAll('.lk-menu-item');
         expect(menuItem).toHaveLength(1);
-        expect(menuItem[0].textContent).toBe(expectedText);
+        expect(menuItem[0]).toHaveTextContent(expectedText);
 
         await validateMenuItemClick(true);
         const picklistModal = document.querySelectorAll('.modal');
         expect(picklistModal).toHaveLength(1);
-        expect(document.querySelector('.alert-info').textContent).toBe('Adding 2 samples to selected picklist. ');
+        expect(document.querySelector('.alert-info')).toHaveTextContent('Adding 2 samples to selected picklist.');
     });
 
     test('with selectedIds', async () => {
         renderWithAppContext(
-            <AddToPicklistMenuItem queryModel={queryModelWithoutSelections} sampleIds={['1']} user={TEST_USER_EDITOR} />
+            <AddToPicklistMenuItem queryModel={queryModelWithoutSelections} sampleIds={[1]} user={TEST_USER_EDITOR} />
         );
         const menuItem = document.querySelectorAll('.lk-menu-item');
         expect(menuItem).toHaveLength(1);
-        expect(menuItem[0].textContent).toBe(expectedText);
+        expect(menuItem[0]).toHaveTextContent(expectedText);
 
         await validateMenuItemClick(true);
         const picklistModal = document.querySelectorAll('.modal');
         expect(picklistModal).toHaveLength(1);
-        expect(document.querySelector('.alert-info').textContent).toBe('Adding 1 sample to selected picklist. ');
+        expect(document.querySelector('.alert-info')).toHaveTextContent('Adding 1 sample to selected picklist.');
     });
 
     test('not Editor', () => {
-        renderWithAppContext(<AddToPicklistMenuItem sampleIds={['1']} user={TEST_USER_READER} />);
+        renderWithAppContext(<AddToPicklistMenuItem sampleIds={[1]} user={TEST_USER_READER} />);
         expect(document.querySelectorAll('.lk-menu-item')).toHaveLength(0);
     });
 
@@ -71,7 +68,9 @@ describe('AddToPicklistMenuItem', () => {
 
         expect(document.querySelectorAll('.modal')).toHaveLength(0);
         await userEvent.click(menuItem[0]);
-        expect(document.querySelectorAll('.modal')).toHaveLength(shouldOpen ? 1 : 0);
+        await waitFor(() => {
+            expect(document.querySelectorAll('.modal')).toHaveLength(shouldOpen ? 1 : 0);
+        });
     }
 
     test('modal open on click, queryModel without selections', async () => {
@@ -82,15 +81,13 @@ describe('AddToPicklistMenuItem', () => {
     });
 
     test('modal open on click, queryModel with selections', async () => {
-        renderWithAppContext(
-            <AddToPicklistMenuItem queryModel={queryModelWithSelections} user={TEST_USER_EDITOR} />
-        );
+        renderWithAppContext(<AddToPicklistMenuItem queryModel={queryModelWithSelections} user={TEST_USER_EDITOR} />);
         await validateMenuItemClick(true);
     });
 
     test('modal open on click, sampleIds', async () => {
         renderWithAppContext(
-            <AddToPicklistMenuItem queryModel={queryModelWithoutSelections} sampleIds={['1']} user={TEST_USER_EDITOR} />
+            <AddToPicklistMenuItem queryModel={queryModelWithoutSelections} sampleIds={[1]} user={TEST_USER_EDITOR} />
         );
         await validateMenuItemClick(true);
     });
@@ -106,7 +103,7 @@ describe('AddToPicklistMenuItem', () => {
             },
             orderedRows: ['1'],
         });
-        renderWithAppContext(<AddToPicklistMenuItem queryModel={model} sampleIds={['1']} user={TEST_USER_EDITOR} />);
+        renderWithAppContext(<AddToPicklistMenuItem queryModel={model} sampleIds={[1]} user={TEST_USER_EDITOR} />);
         await validateMenuItemClick(true);
     });
 });

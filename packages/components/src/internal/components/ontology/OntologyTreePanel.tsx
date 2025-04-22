@@ -1,4 +1,4 @@
-import React, { FC, useCallback, RefObject, useRef, useEffect, useState } from 'react';
+import React, { FC, useCallback, useRef, useEffect, useState } from 'react';
 import { TreeNode } from 'react-treebeard';
 
 import classNames from 'classnames';
@@ -56,7 +56,7 @@ interface OntologyTreeProps {
 export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
     const { root, onNodeSelection, alternatePath, showFilterIcon = false, filters = new Map(), onFilterChange } = props;
     const [showLoading, setShowLoading] = useState<boolean>(false);
-    const fileTreeRef: RefObject<FileTree> = useRef();
+    const fileTreeRef = useRef<FileTree>(undefined);
 
     // watch for changes to alternatePath so that we can make sure the tree data down to that node is loaded
     useEffect(() => {

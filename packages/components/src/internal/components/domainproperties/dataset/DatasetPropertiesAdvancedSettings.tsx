@@ -203,8 +203,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         this.setState({ [id]: value });
     };
 
-    getHelpTipElement(field: string): JSX.Element {
-        return (<> {getHelpTip(field, this.props.studyProperties)} </>) as JSX.Element;
+    getHelpTipElement(field: string): ReactNode {
+        return <> {getHelpTip(field, this.props.studyProperties)} </>;
     }
 
     applyChanges = (): void => {

@@ -70,8 +70,8 @@ describe('useAdministrationSubNav', () => {
 
         await waitFor(() => {
             expect(tabsContext.noun).toEqual({ text: 'Dashboard', url: AppURL.create('home') });
+            expect(tabsContext.tabs.length).toEqual(5);
         });
-        expect(tabsContext.tabs.length).toEqual(5);
         expect(tabsContext.tabs[0].text).toEqual('Application Settings');
         expect(tabsContext.tabs[1].text).toEqual('Audit Logs');
         expect(tabsContext.tabs[2].text).toEqual('Users');
@@ -96,8 +96,8 @@ describe('useAdministrationSubNav', () => {
 
         await waitFor(() => {
             expect(tabsContext.noun).toEqual({ text: 'Dashboard', url: AppURL.create('home') });
+            expect(tabsContext.tabs.length).toEqual(2);
         });
-        expect(tabsContext.tabs.length).toEqual(2);
         // Applications settings should not be visible
         expect(tabsContext.tabs[0].text).toEqual('Audit Logs');
         expect(tabsContext.tabs[1].text).toEqual('Permissions');
@@ -115,8 +115,8 @@ describe('useAdministrationSubNav', () => {
 
         await waitFor(() => {
             expect(tabsContext.noun).toEqual({ text: 'Dashboard', url: AppURL.create('home') });
+            expect(tabsContext.tabs.length).toEqual(6);
         });
-        expect(tabsContext.tabs.length).toEqual(6);
         expect(tabsContext.tabs[0].text).toEqual('Application Settings');
         expect(tabsContext.tabs[1].text).toEqual('Folders');
         expect(tabsContext.tabs[2].text).toEqual('Audit Logs');
@@ -137,8 +137,8 @@ describe('useAdministrationSubNav', () => {
 
         await waitFor(() => {
             expect(tabsContext.noun).toEqual({ text: 'Dashboard', url: AppURL.create('home') });
+            expect(tabsContext.tabs.length).toEqual(6);
         });
-        expect(tabsContext.tabs.length).toEqual(6);
         expect(tabsContext.tabs[0].text).toEqual('Application Settings');
         expect(tabsContext.tabs[1].text).toEqual('Folders');
         expect(tabsContext.tabs[2].text).toEqual('Audit Logs');

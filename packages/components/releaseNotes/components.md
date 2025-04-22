@@ -5,6 +5,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 52504: Expose validate lookup setting for sample lookup and turn on by default
 
+### version 6.37.0
+*Released*: 21 April 2025
+- Package Updates
+
+### version 6.36.6
+*Released*: 21 April 2025
+- Fix `SchemaQuery.parseSelectionKey` to account for view name in selection key
+
 ### version 6.36.5
 *Released*: 18 April 2025
 - Issue 52156: Editable grid cell with dropdown loses first input character

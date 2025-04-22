@@ -27,11 +27,12 @@ import { resolveErrorMessage } from '../../../util/messaging';
 import { FilterCriteriaRenderer } from '../../../FilterCriteriaRenderer';
 import { DisableableButton } from '../../buttons/DisableableButton';
 
+import { InternalSpacesWarning } from '../../forms/InternalSpacesWarning';
+
 import { AssayProtocolModel, ProtocolTransformScript } from './models';
 import { FORM_IDS, SCRIPTS_DIR } from './constants';
 import { getScriptEngineForExtension, getValidPublishTargets } from './actions';
 import { useFilterCriteriaContext } from './FilterCriteriaContext';
-import { InternalSpacesWarning } from '../../forms/InternalSpacesWarning';
 
 interface AssayPropertiesInputProps extends DomainFieldLabelProps, PropsWithChildren {
     colSize?: number;
@@ -260,7 +261,11 @@ export const EditableResultsInput: FC<InputProps> = memo(props => (
                     level after the initial import is complete. New result rows cannot be added to existing runs. These
                     changes will be audited.
                 </p>
-                <p> Disabling this option will set the Transform Script 'Run on Edit' values to be unchecked and disabled. </p>
+                <p>
+                    {' '}
+                    Disabling this option will set the Transform Script 'Run on Edit' values to be unchecked and
+                    disabled.{' '}
+                </p>
             </>
         }
     >
@@ -567,14 +572,14 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
         const { model } = this.props;
         const { error, addingScript, addingScriptPath } = this.state;
         const protocolTransformScripts = model.protocolTransformScripts || List<ProtocolTransformScript>();
-        const protocolTransformAttachments = protocolTransformScripts.map(config => {
-            return {
+        const protocolTransformAttachments = protocolTransformScripts
+            .map(config => ({
                 name: getAttachmentTitleFromName(config.scriptPath),
                 description: config.scriptPath,
                 runOnImport: config.runOnImport,
                 runOnEdit: config.runOnEdit,
-            };
-        });
+            }))
+            .toArray();
 
         return (
             <>

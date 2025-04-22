@@ -32,7 +32,7 @@ import {
 } from '../../constants';
 import { cancelEvent, isCtrlOrMetaKey } from '../../events';
 
-import { headerSelectionCell } from '../../renderers';
+import { HeaderSelectionCell } from '../../renderers';
 import { blurActiveElement, capitalizeFirstChar, not } from '../../util/utils';
 import { Grid } from '../base/Grid';
 
@@ -945,7 +945,14 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const { editorModel } = this.props;
 
         if (col.index.toLowerCase() === GRID_SELECTION_INDEX && this.showSelectionCheckboxes()) {
-            return headerSelectionCell(this.selectAll, this.state.selectedState, false, 'grid-panel__checkbox');
+            return (
+                <HeaderSelectionCell
+                    className="grid-panel__checkbox"
+                    disabled={false}
+                    handleSelection={this.selectAll}
+                    selectedState={this.state.selectedState}
+                />
+            );
         }
 
         const qColumn = editorModel.queryInfo.getColumn(col.index);

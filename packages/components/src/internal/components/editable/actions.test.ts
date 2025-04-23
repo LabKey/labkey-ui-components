@@ -803,6 +803,7 @@ describe('insertPastedData', () => {
     const pkFk = 'rowId';
     const fkOne = 'field_one';
     const fkTwo = 'field_two';
+    const dateFk = 'date';
     const queryInfo = QueryInfo.fromJsonForTests({
         pkCols: [pkFk],
         columns: {
@@ -820,6 +821,12 @@ describe('insertPastedData', () => {
                 caption: 'Field Two',
                 fieldKey: fkTwo,
                 inputType: 'string',
+            }),
+            [dateFk]: new QueryColumn({
+                caption: 'Date Field',
+                fieldKey: dateFk,
+                inputType: 'string',
+                jsonType: 'date',
             }),
         },
     });
@@ -883,9 +890,27 @@ describe('insertPastedData', () => {
                     raw: 'nm',
                 },
             ]),
+            [genCellKey(dateFk, 0)]: List<ValueDescriptor>([
+                {
+                    display: '2025-04-23',
+                    raw: '2025-04-23',
+                },
+            ]),
+            [genCellKey(dateFk, 1)]: List<ValueDescriptor>([
+                {
+                    display: '2025-04-23',
+                    raw: '2025-04-23',
+                },
+            ]),
+            [genCellKey(dateFk, 2)]: List<ValueDescriptor>([
+                {
+                    display: '2025-04-23',
+                    raw: '2025-04-23',
+                },
+            ]),
         }),
-        orderedColumns: List([fkOne, fkTwo]),
-        columnMap: [fkOne, fkTwo].reduce((result, key) => {
+        orderedColumns: List([fkOne, fkTwo, dateFk]),
+        columnMap: [fkOne, fkTwo, dateFk].reduce((result, key) => {
             return result.set(key, queryInfo.getColumn(key));
         }, Map<string, QueryColumn>()),
         queryInfo,
@@ -916,7 +941,15 @@ describe('insertPastedData', () => {
         expect(changes.selectionCells).toEqual([genCellKey(fkOne, 0), genCellKey(fkOne, 1), genCellKey(fkOne, 2)]);
 
         cellValues = (
-            await validateAndInsertPastedData(emWithPartialColumnSelected, 'one', undefined, true, true, undefined, true)
+            await validateAndInsertPastedData(
+                emWithPartialColumnSelected,
+                'one',
+                undefined,
+                true,
+                true,
+                undefined,
+                true
+            )
         ).cellValues;
         expect(cellValues.get(genCellKey(fkOne, 0))).toEqual(List([{ display: 'one', raw: 'one' }]));
         expect(cellValues.get(genCellKey(fkOne, 1))).toEqual(List([{ display: 'one', raw: 'one' }]));
@@ -1028,6 +1061,36 @@ describe('insertPastedData', () => {
         expect(cellValues.get(genCellKey(fkTwo, 2))).toEqual(List([{ display: 'nm', raw: 'nm' }]));
         // passing selectCells as false returns an emtpy array
         expect(changes.selectionCells).toEqual([]);
+    });
+
+    test('pasting dates does not change the display value', async () => {
+        // Issue 52326
+        const emWithDateColSelected = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(dateFk, 0), genCellKey(dateFk, 1), genCellKey(dateFk, 2)],
+            selectedColIdx: 2,
+            selectedRowIdx: 0,
+        });
+        const changes = await validateAndInsertPastedData(
+            emWithDateColSelected,
+            '2025-04-24\n2025-04-24\n2025-04-24',
+            undefined,
+            true,
+            true,
+            undefined,
+            true
+        );
+        // Display values should be what was pasted, raw values should be parsed and converted to JSON format expected
+        // by LKS, which includes microseconds.
+        const cellValues = changes.cellValues;
+        expect(cellValues.get(genCellKey(dateFk, 0))).toEqual(
+            List([{ display: '2025-04-24', raw: '2025-04-24 00:00:00.000' }])
+        );
+        expect(cellValues.get(genCellKey(dateFk, 1))).toEqual(
+            List([{ display: '2025-04-24', raw: '2025-04-24 00:00:00.000' }])
+        );
+        expect(cellValues.get(genCellKey(dateFk, 2))).toEqual(
+            List([{ display: '2025-04-24', raw: '2025-04-24 00:00:00.000' }])
+        );
     });
 });
 

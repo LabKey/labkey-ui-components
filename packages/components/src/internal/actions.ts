@@ -571,6 +571,7 @@ export function setSnapshotSelections(
 }
 
 /**
+ * @deprecated use createSnapshotSelectionKey to create a selectionKey and getSelected to retrieve selections
  * Get the snapshot selections for a grid
  * @param key the selection key for the grid
  * @param containerPath optional path to the container for this grid.  Default is the current container path

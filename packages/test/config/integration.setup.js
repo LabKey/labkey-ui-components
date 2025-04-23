@@ -6,6 +6,13 @@
 var fs = require('fs');
 var propertiesReader = require('properties-reader');
 const netrc = require('./netrc');
+const util = require('util');
+
+// ReferenceError: TextEncoder is not defined
+// Define text encoder and decoder supplied by node in Jest/JSDOM environments
+// https://stackoverflow.com/a/68468204
+const { TextEncoder, TextDecoder } = util;
+Object.assign(global, { TextDecoder, TextEncoder });
 
 // Defaults are configured for a local development environment
 const DEFAULT_CONTEXT_PATH = '/';

@@ -42,6 +42,10 @@ import { QueryColumn } from '../../public/QueryColumn';
 
 import { incrementRowCountMetric } from '../components/editable/utils';
 
+import { QueryModel } from '../../public/QueryModel/QueryModel';
+
+import { createOrderedSnapshotSelectionKey, createSnapshotSelectionKey } from '../../public/QueryModel/utils';
+
 import {
     deleteRows,
     deleteRowsByContainer,
@@ -65,6 +69,8 @@ import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows'
 
 export interface QueryAPIWrapper {
     clearSelected: (options: ClearSelectedOptions) => Promise<SelectResponse>;
+    createOrderedSnapshotSelectionKey: (model: QueryModel) => Promise<string>;
+    createSnapshotSelectionKey: (model: QueryModel) => Promise<string>;
     deleteRows: (options: DeleteRowsOptions) => Promise<QueryCommandResponse>;
     deleteRowsByContainer: (options: DeleteRowsOptions, containerField: string) => Promise<QueryCommandResponse>;
     deleteView: (schemaQuery: SchemaQuery, containerPath: string, viewName?: string, revert?: boolean) => Promise<void>;
@@ -104,7 +110,7 @@ export interface QueryAPIWrapper {
         queryName?: string
     ) => Promise<SelectionResponse>;
     getServerDate: () => Promise<Date>;
-    getSnapshotSelections: (key: string, containerPath?: string) => Promise<GetSelectedResponse>;
+    getSnapshotSelections: (key: string, containerPath?: string) => Promise<GetSelectedResponse>; // deprecated
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
     incrementRowCountMetric: (featureArea: string, rowCount: number, isUpdate: boolean) => void;
     insertRows: (options: InsertRowsOptions) => Promise<QueryCommandResponse>;
@@ -147,7 +153,11 @@ export interface QueryAPIWrapper {
         filters?: Filter.IFilter[],
         queryParameters?: Record<string, any>
     ) => Promise<SelectResponse>;
-    setSnapshotSelections: (key: string, ids: string[] | string | number[], containerPath?: string) => Promise<SelectResponse>;
+    setSnapshotSelections: (
+        key: string,
+        ids: string[] | string | number[],
+        containerPath?: string
+    ) => Promise<SelectResponse>; // deprecated
     updateRows: (options: UpdateRowsOptions) => Promise<QueryCommandResponse>;
     updateRowsByContainer: (
         schemaQuery: SchemaQuery,
@@ -160,6 +170,8 @@ export interface QueryAPIWrapper {
 
 export class QueryServerAPIWrapper implements QueryAPIWrapper {
     clearSelected = clearSelected;
+    createOrderedSnapshotSelectionKey = createOrderedSnapshotSelectionKey;
+    createSnapshotSelectionKey = createSnapshotSelectionKey;
     deleteRows = deleteRows;
     deleteRowsByContainer = deleteRowsByContainer;
     deleteView = deleteView;
@@ -169,7 +181,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     getFolderConfigurableEntityTypeOptions = getFolderConfigurableEntityTypeOptions;
     getFolderDataTypeDataCount = getFolderDataTypeDataCount;
     getQueryDetails = getQueryDetails;
-    getSnapshotSelections = getSnapshotSelections;
+    getSnapshotSelections = getSnapshotSelections; // deprecated
     getSelection = getSelection;
     getServerDate = getServerDate;
     incrementClientSideMetricCount = incrementClientSideMetricCount;
@@ -183,7 +195,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     selectRows = selectRows;
     selectDistinctRows = selectDistinctRows;
     setSelected = setSelected;
-    setSnapshotSelections = setSnapshotSelections;
+    setSnapshotSelections = setSnapshotSelections; // deprecated
     updateRows = updateRows;
     updateRowsByContainer = updateRowsByContainer;
     getDefaultVisibleColumns = getDefaultVisibleColumns;
@@ -198,6 +210,8 @@ export function getQueryTestAPIWrapper(
 ): QueryAPIWrapper {
     return {
         clearSelected: mockFn(),
+        createOrderedSnapshotSelectionKey: mockFn(),
+        createSnapshotSelectionKey: mockFn(),
         deleteRows: mockFn(),
         deleteRowsByContainer: mockFn(),
         deleteView: mockFn(),

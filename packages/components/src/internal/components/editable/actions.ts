@@ -1487,7 +1487,14 @@ async function insertPastedData(
                     msg = message;
                 } else {
                     const { message, value } = getValidatedEditableGridValue(val, col);
-                    cv = List([{ display: value, raw: value }]);
+                    let display = value;
+
+                    // Issue 52326: Copy/paste of date values across cells changes date formats
+                    // Set display value to the pasted value, not the validated value, because for dates we use the JSON
+                    // format provided by LKS, which can include microseconds, and users probably didn't paste those.
+                    if (col?.jsonType === 'date') display = val;
+
+                    cv = List([{ display, raw: value }]);
                     msg = message;
                 }
 

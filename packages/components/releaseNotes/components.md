@@ -1,9 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version ??.??.??
-*Released*: ?? April 2025
--  Issue 52326: Copy/paste of date values across cells changes date formats
+### version 6.38.0
+*Released*: 23 April 2025
+- Issue 52326: Copy/paste of date values across cells changes date formats
+- Add deprecation comment to getSnapshotSelections
+- Add createSnapshotSelectionKey and createOrderedSnapshotSelectionKey to Query APIWrapper
 
 ### version 6.37.0
 *Released*: 21 April 2025

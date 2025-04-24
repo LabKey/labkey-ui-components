@@ -321,7 +321,8 @@ function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any): QueryCol
         }
 
         if (lcFieldKey.indexOf('::') > -1) {
-            const lcPivotFieldKey = lcFieldKey.split('::')[1];
+            // Issue 52929: account for a fieldKey ending with a colon char
+            const lcPivotFieldKey = lcFieldKey.substring(lcFieldKey.lastIndexOf('::') + 2);
             const pivotColumnMeta = metadata.getIn([
                 'schema',
                 schemaQuery.schemaName.toLowerCase(),

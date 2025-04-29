@@ -169,6 +169,8 @@ export function setSelection(model: QuerySelectModel, rawSelectedValue: any): Qu
     const selectedItems = getSelectedOptions(model, rawSelectedValue);
 
     return model.merge({
+        // Issue 52773: Unset initialValueNotFound once a value has been selected
+        initialValueNotFound: false,
         rawSelectedValue,
         selectedItems,
         selectedQuery: parseSelectedQuery(model, selectedItems),
@@ -330,6 +332,7 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
     const displayColumn = initDisplayColumn(queryInfo, valueColumn, props.displayColumn);
     const groupByColumn = initGroupByColumn(queryInfo, props.groupByColumn);
     let selectedItems = Map<string, any>();
+    let initialValueNotFound: boolean = false;
 
     if (props.value !== undefined && props.value !== null) {
         let filter: Filter.IFilter;
@@ -370,11 +373,16 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
         selectedItems = fromJS(
             quoteValueColumnWithDelimiters(data, props.valueColumn, props.delimiter).models[data.key]
         );
+
+        // Issue 52773: If a value is specified, but we are unable to resolve the value then display
+        // a warning to the user.
+        initialValueNotFound = selectedItems.size === 0;
     }
 
     return {
         displayColumn,
         groupByColumn,
+        initialValueNotFound,
         isInit: true,
         queryInfo,
         selectedItems,
@@ -390,6 +398,7 @@ export interface QuerySelectModelProps {
     delimiter: string;
     displayColumn: string;
     groupByColumn: string;
+    initialValueNotFound: boolean;
     isInit: boolean;
     maxRows: number;
     multiple: boolean;
@@ -414,6 +423,7 @@ export class QuerySelectModel
         displayColumn: undefined,
         delimiter: DELIMITER,
         groupByColumn: undefined,
+        initialValueNotFound: false,
         isInit: false,
         maxRows: 20,
         multiple: false,
@@ -437,6 +447,7 @@ export class QuerySelectModel
     declare displayColumn: string;
     declare delimiter: string;
     declare groupByColumn: string;
+    declare initialValueNotFound: boolean;
     declare isInit: boolean;
     declare maxRows: number;
     declare multiple: boolean;

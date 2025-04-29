@@ -443,8 +443,13 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
             onFocus={onFocus}
             optionRenderer={optionRenderer}
             options={undefined} // prevent override
+            // Issue 52773: Allow for submission of required fields whose value is not found
+            required={model.initialValueNotFound ? false : required}
             selectedOptions={model.isInit ? model.selectedOptions : undefined}
             value={getValue(model, multiple)} // needed to initialize the Formsy "value" properly
+            warning={
+                model.initialValueNotFound ? `Could not find ${value}. Data may have been moved or deleted.` : undefined
+            }
         />
     );
 });

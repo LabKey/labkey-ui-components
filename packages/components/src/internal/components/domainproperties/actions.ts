@@ -905,7 +905,7 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             field = field.merge({
                 lookupValidator: PropDescType.isUser(value)
                     ? new PropertyValidator(LOOKUP_VALIDATOR_VALUES)
-                    : undefined,
+                    : field.lookupValidator,
             }) as DomainField;
         }
     }

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.38.2
+*Released*: 30 April 2025
+- Remove remnants of Edit with Grid from Bulk Edit modal
+  - Remove unneeded parameters for `EditableGridLoaderFromSelection` and `convertQueryDataToEditorData`
+
 ### version 6.38.1
 *Released*: 24 April 2025
 - Issue 52929: App hit selection summary grid doesn't render hit selection check icon if assay name ends with colon

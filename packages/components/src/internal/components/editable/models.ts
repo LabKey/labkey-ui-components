@@ -691,16 +691,10 @@ export class EditorModel
 
     static convertQueryDataToEditorData(
         data: Map<string, any>, // this map is keyed by column name
-        queryInfo?: QueryInfo,
-        updates?: Map<string, any>, // this map is keyed by column fieldKey
-        idsNotToUpdate?: number[],
-        fieldsNotToUpdate?: string[] // keys here are column fieldKey
     ): Map<string, Map<string, any>> {
-        const fieldsNotToUpdateLower = fieldsNotToUpdate?.map(f => f.toLowerCase()) ?? [];
-
         return data
             .map((valueMap, id) => {
-                const returnMap = valueMap.reduce((m, valueMap_, key) => {
+                return valueMap.reduce((m, valueMap_, key) => {
                     const editorData = EditorModel.getEditorDataFromQueryValueMap(valueMap_);
                     if (editorData === undefined) {
                         return m;
@@ -708,21 +702,6 @@ export class EditorModel
 
                     return m.set(key, editorData);
                 }, Map<string, any>());
-
-                if (!queryInfo || !updates) {
-                    return returnMap;
-                }
-
-                let trimmedUpdates = Map<string, any>();
-                const isNotUpdateId = idsNotToUpdate && idsNotToUpdate.indexOf(parseInt(id, 10)) > -1;
-                updates.forEach((value, fieldKey) => {
-                    const col = queryInfo.getColumn(fieldKey);
-                    const isFieldNotToUpdate = fieldsNotToUpdateLower.indexOf(fieldKey.toLowerCase()) > -1;
-                    if (!isFieldNotToUpdate || !isNotUpdateId) {
-                        trimmedUpdates = trimmedUpdates.set(col.name, value);
-                    }
-                });
-                return returnMap.merge(trimmedUpdates);
             })
             .toMap();
     }

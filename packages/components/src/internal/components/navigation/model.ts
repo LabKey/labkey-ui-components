@@ -219,6 +219,7 @@ export class MenuSectionConfig extends Record({
     filteredEmptyText: undefined,
     emptyAppURL: undefined,
     emptyURLText: 'Get started...',
+    headerURLParams: undefined,
     headerURLPart: undefined,
     headerText: undefined,
     iconCls: undefined,
@@ -232,6 +233,7 @@ export class MenuSectionConfig extends Record({
     declare filteredEmptyText?: string;
     declare emptyAppURL?: AppURL;
     declare emptyURLText: string;
+    declare headerURLParams: Record<string, any>;
     declare headerURLPart: string;
     declare headerText?: string;
     declare iconCls?: string;

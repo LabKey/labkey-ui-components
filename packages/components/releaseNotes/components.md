@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Issue 52979: App grid customize view doesn't expand lookup field with special char
+- Issue 52472: Re-clicking the Source Types, Sample Types or Assay links in the mega menu removes the sort=Name parameter from the url
 
 ### version 6.38.2
 *Released*: 30 April 2025

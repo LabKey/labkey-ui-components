@@ -36,12 +36,10 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
     queryModel: QueryModel;
     queryInfo: QueryInfo;
     requiredColumns: string[];
-    updateData: Map<string, any>; // keys here are column fieldKey
 
     constructor(
         id: string,
         queryModel: QueryModel,
-        updateData: Map<string, any>,
         requiredColumns?: string[],
         omittedColumns?: string[],
         columns?: QueryColumn[],
@@ -56,7 +54,6 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
         this.mode = EditorMode.Update;
         this.queryModel = queryModel;
         this.queryInfo = queryModel.queryInfo;
-        this.updateData = updateData || Map<string, any>();
         this.requiredColumns = requiredColumns || [];
         this.omittedColumns = omittedColumns || [];
         this.idsNotToUpdate = idsNotToUpdate || [];
@@ -81,13 +78,7 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
         );
 
         return {
-            data: EditorModel.convertQueryDataToEditorData(
-                data,
-                this.queryInfo,
-                this.updateData,
-                this.idsNotToUpdate,
-                this.fieldsNotToUpdate
-            ),
+            data: EditorModel.convertQueryDataToEditorData(data),
             dataIds,
         };
     }

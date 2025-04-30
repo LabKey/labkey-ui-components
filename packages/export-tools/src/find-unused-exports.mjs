@@ -1,22 +1,22 @@
 import { Project } from 'ts-morph';
 import { writeFile } from './utils.mjs';
 
-if (process.env.LABKEY_HOME === undefined) {
-    throw new Error('Missing env var LABKEY_HOME');
+function getEnvVar(name) {
+    let envVar = process.env[name];
+
+    if (envVar === undefined) throw new Error(`Missing env var ${name}`);
+    if (!envVar.endsWith('/')) envVar += '/';
+    return envVar;
 }
 
-if (process.env.LABKEY_UI_COMPONENTS_HOME === undefined) {
-    throw new Error('Missing env var LABKEY_UI_COMPONENTS_HOME');
-}
+const labkeyHome = getEnvVar('LABKEY_HOME');
+const componentsHome =  getEnvVar('LABKEY_UI_COMPONENTS_HOME');
+const premiumHome = getEnvVar('LABKEY_UI_PREMIUM_HOME');
 
-if (process.env.LABKEY_UI_PREMIUM_HOME === undefined) {
-    throw new Error('Missing env var LABKEY_UI_PREMIUM_HOME');
-}
-
-const components = `${process.env.LABKEY_UI_COMPONENTS_HOME}packages/components/src`;
-const premium = `${process.env.LABKEY_UI_PREMIUM_HOME}src`;
+const components = `${componentsHome}packages/components/src`;
+const premium = `${premiumHome}src`;
 let ehrComponents;
-const modules = `${process.env.LABKEY_HOME}server/modules`
+const modules = `${labkeyHome}server/modules`
 const limsModules = `${modules}/limsModules`;
 const biologics = `${limsModules}/biologics`;
 const sampleManagement = `${limsModules}/sampleManagement`;

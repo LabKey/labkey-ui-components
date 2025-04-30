@@ -1,17 +1,6 @@
 import { Project } from 'ts-morph';
 import { writeFile } from './utils.mjs';
 
-// 1. Locate ui-components, ui-premium, and labkey home via env-vars (consult labkey build code)
-// 2. Find all exports from ui-components, ui-premium (use ts-morph)
-// 3. Find all imports of ui-components and ui-premium in known locations based on env-vars (use ts-morph)
-// 4. Diff the exports and imports, output the diffs (one file per package)
-// 5. Consider using ts-morph to modify the AST and remove the unused exports (consult ts-morph docs)
-//     - Only do this when --write flag is present, don't output diff files when write is true
-//     - Bonus points: consider using ts-morph to export everything in sorted order.
-
-// S-1, S-999
-// S-1, S-2
-
 if (process.env.LABKEY_HOME === undefined) {
     throw new Error('Missing env var LABKEY_HOME');
 }
@@ -106,7 +95,6 @@ function findImports(packageName, paths) {
     const imports = new Set();
 
     project.getSourceFiles().forEach((sourceFile) => {
-        // console.log(`Searching ${sourceFile.getFilePath()}`);
         sourceFile.getImportDeclarations().forEach((importDeclaration) => {
             if (importDeclaration.getModuleSpecifierValue() === fullPackageName) {
                 importDeclaration.getNamedImports().forEach((namedImport) => {
@@ -139,5 +127,4 @@ const componentsImportPaths = [...modulePaths, premium];
 if (ehrComponents) componentsImportPaths.push(ehrComponents);
 
 findUnusedExports('components', components, componentsImportPaths);
-// TODO: imports for premium is empty, which is for sure wrong.
 findUnusedExports('premium', premium, modulePaths);

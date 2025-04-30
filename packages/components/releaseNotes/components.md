@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.38.2
+*Released*: 30 April 2025
 - Remove remnants of Edit with Grid from Bulk Edit modal
   - Remove unneeded parameters for `EditableGridLoaderFromSelection` and `convertQueryDataToEditorData`
 

@@ -34,12 +34,12 @@ export const includedColumnsForCustomizationFilter = (column: QueryColumn, showA
 
 export const getExpandQueryInfo = async (queryInfo: QueryInfo, column: QueryColumn): Promise<QueryInfo> => {
     const fkQueryInfo = await getQueryDetails({
-        fk: column.index,
+        fk: column.fieldKeyPath, // Issue 52979: use encoded fieldKeyPath
         lookup: column.lookup,
         schemaQuery: queryInfo.schemaQuery,
     });
     // For data classes, we want to limit the Ancestor filters to exclude 'Samples'
-    if (column.index === QueryColumn.ANCESTORS_PREFIX && queryInfo.schemaQuery.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA) {
+    if (column.fieldKey === QueryColumn.ANCESTORS_PREFIX && queryInfo.schemaQuery.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA) {
         fkQueryInfo.columns = fkQueryInfo.columns.filter(
             col => col.fieldKey !== 'Samples' && col.fieldKey !== 'MediaSamples'
         );

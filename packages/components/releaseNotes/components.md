@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 52979: App grid customize view doesn't expand lookup field with special char
+
 ### version 6.38.2
 *Released*: 30 April 2025
 - Remove remnants of Edit with Grid from Bulk Edit modal

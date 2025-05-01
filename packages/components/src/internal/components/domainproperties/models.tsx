@@ -849,6 +849,8 @@ export const DEFAULT_TEXT_CHOICE_VALIDATOR = new PropertyValidator({
     properties: { validValues: [] },
 });
 
+export const LOOKUP_VALIDATOR = new PropertyValidator(LOOKUP_VALIDATOR_VALUES);
+
 interface ILookupConfig {
     lookupContainer?: string;
     lookupQuery?: string;
@@ -1374,9 +1376,8 @@ export class DomainField
         const config = {
             measure: DomainField.defaultValues(DOMAIN_FIELD_MEASURE, dataType),
             dimension: DomainField.defaultValues(DOMAIN_FIELD_DIMENSION, dataType),
-            lookupValidator: dataType === SAMPLE_TYPE ? new PropertyValidator(LOOKUP_VALIDATOR_VALUES) : undefined,
-            propertyValidators:
-                dataType === SAMPLE_TYPE ? List([new PropertyValidator(LOOKUP_VALIDATOR_VALUES)]) : undefined,
+            lookupValidator: dataType === SAMPLE_TYPE ? LOOKUP_VALIDATOR : undefined,
+            propertyValidators: dataType === SAMPLE_TYPE ? List([LOOKUP_VALIDATOR]) : undefined,
         };
 
         const lookupConfig = dataType === SAMPLE_TYPE ? DomainField.resolveLookupConfig(field, dataType) : {};
@@ -1552,8 +1553,8 @@ export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?
                   lookupQuery: SCHEMAS.EXP_TABLES.MATERIALS.queryName,
                   lookupQueryValue: sampleQueryValue,
                   lookupType: field.lookupType.set('rangeURI', rangeURI),
-                  lookupValidator: new PropertyValidator(LOOKUP_VALIDATOR_VALUES),
-                  propertyValidators: List([new PropertyValidator(LOOKUP_VALIDATOR_VALUES)]),
+                  lookupValidator: LOOKUP_VALIDATOR,
+                  propertyValidators: List([LOOKUP_VALIDATOR]),
                   rangeURI,
               }
             : {
@@ -1562,8 +1563,8 @@ export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?
                   lookupQuery: queryName,
                   lookupQueryValue: sampleQueryValue || SAMPLE_TYPE_OPTION_VALUE,
                   lookupType: lookupType.set('rangeURI', rangeURI),
-                  lookupValidator: new PropertyValidator(LOOKUP_VALIDATOR_VALUES),
-                  propertyValidators: List([new PropertyValidator(LOOKUP_VALIDATOR_VALUES)]),
+                  lookupValidator: LOOKUP_VALIDATOR,
+                  propertyValidators: List([LOOKUP_VALIDATOR]),
                   rangeURI,
               };
 

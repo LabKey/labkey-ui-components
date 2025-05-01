@@ -1,11 +1,10 @@
 import { Filter } from '@labkey/api';
 
-import { IDomainField, PropertyValidator } from '../domainproperties/models';
+import { IDomainField, LOOKUP_VALIDATOR } from '../domainproperties/models';
 
 import { SAMPLE_TYPE } from '../domainproperties/PropDescType';
 
 import { FindField } from './models';
-import { LOOKUP_VALIDATOR_VALUES } from '../domainproperties/constants';
 import { List } from 'immutable';
 
 export enum ALIQUOT_FILTER_MODE {
@@ -164,8 +163,8 @@ export const DEFAULT_SAMPLE_FIELD_CONFIG = {
     lookupSchema: 'exp',
     lookupQuery: 'Materials',
     lookupType: { ...SAMPLE_TYPE },
-    lookupValidator: new PropertyValidator(LOOKUP_VALIDATOR_VALUES),
-    propertyValidators: List([new PropertyValidator(LOOKUP_VALIDATOR_VALUES)]),
+    lookupValidator: LOOKUP_VALIDATOR,
+    propertyValidators: List([LOOKUP_VALIDATOR]),
     name: 'SampleID',
     label: 'Sample ID',
 } as Partial<IDomainField>;

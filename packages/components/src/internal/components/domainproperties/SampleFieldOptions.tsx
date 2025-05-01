@@ -11,21 +11,16 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { fetchQueries } from './actions';
 import { createFormInputId, createFormInputName } from './utils';
-import {
-    ALL_SAMPLES_DISPLAY_TEXT,
-    DOMAIN_FIELD_SAMPLE_TYPE,
-    DOMAIN_VALIDATOR_LOOKUP,
-    LOOKUP_VALIDATOR_VALUES
-} from './constants';
+import { ALL_SAMPLES_DISPLAY_TEXT, DOMAIN_FIELD_SAMPLE_TYPE, DOMAIN_VALIDATOR_LOOKUP } from './constants';
 import {
     DomainField,
     encodeLookup,
     IDomainField,
     IFieldChange,
     ITypeDependentProps,
+    LOOKUP_VALIDATOR,
     LookupInfo,
-    PropertyValidator,
-    SAMPLE_TYPE_OPTION_VALUE
+    SAMPLE_TYPE_OPTION_VALUE,
 } from './models';
 
 import { SectionHeading } from './SectionHeading';
@@ -76,26 +71,20 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
         }
     };
 
-    onFieldChange = (evt: any): void => {
-        this.props.onChange?.(evt.target.id, evt.target.value);
+    onFieldChange = (evt): void => {
+        this.props.onChange(evt.target.id, evt.target.value);
     };
 
-    addLookupValidator = (evt: any): void => {
-        const { onMultiChange } = this.props;
-
-        if (onMultiChange) {
-            let newLookupValidator;
-            if (evt.target.checked) {
-                newLookupValidator = new PropertyValidator(LOOKUP_VALIDATOR_VALUES);
-                this.setState({ validateLookup: true });
-            } else {
-                this.setState({ validateLookup: false });
-            }
-
-            let changes = List<IFieldChange>();
-            changes = changes.push({ id: evt.target.id, value: newLookupValidator } as IFieldChange);
-            onMultiChange(changes);
+    addLookupValidator = (evt): void => {
+        let newLookupValidator;
+        if (evt.target.checked) {
+            newLookupValidator = LOOKUP_VALIDATOR;
+            this.setState({ validateLookup: true });
+        } else {
+            this.setState({ validateLookup: false });
         }
+
+        this.props.onMultiChange(List<IFieldChange>([{ id: evt.target.id, value: newLookupValidator }]));
     };
 
     render() {

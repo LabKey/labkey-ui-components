@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 6.39.X
 *Released*: TBD
-- Export `SOURCE_DOMAIN_SYSTEM_FIELDS`
+- Export `getSourceDomainDefaultSystemFields`
 
 ### version 6.38.2
 *Released*: 30 April 2025

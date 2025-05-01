@@ -4,7 +4,7 @@ const DESCRIPTION_FIELD = {
     DataType: 'Text',
     Required: false,
     Description: 'Contains a description for this data object',
-    Disableble: true,
+    Disableable: true,
 };
 
 export const DATACLASS_DOMAIN_SYSTEM_FIELDS = [
@@ -14,7 +14,7 @@ export const DATACLASS_DOMAIN_SYSTEM_FIELDS = [
         DataType: 'Text',
         Required: true,
         Description: 'Contains a short name for this data object',
-        Disableble: false,
+        Disableable: false,
     },
     DESCRIPTION_FIELD,
 ];
@@ -26,7 +26,7 @@ export const SOURCE_DOMAIN_SYSTEM_FIELDS = [
         DataType: 'Text',
         Required: true,
         Description: 'Contains a short name for this data object',
-        Disableble: false,
+        Disableable: false,
     },
     DESCRIPTION_FIELD,
 ];

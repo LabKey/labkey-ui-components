@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.39.X
+*Released*: TBD
+- Export `SOURCE_DOMAIN_SYSTEM_FIELDS`
+
 ### version 6.38.2
 *Released*: 30 April 2025
 - Remove remnants of Edit with Grid from Bulk Edit modal

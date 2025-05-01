@@ -927,6 +927,7 @@ import { ArchivedFolderTag } from './internal/components/folder/ArchivedFolderTa
 import { FilterCriteriaRenderer } from './internal/FilterCriteriaRenderer';
 import { getQueryTestAPIWrapper } from './internal/query/APIWrapper';
 import { useLoadableState } from './internal/useLoadableState';
+import { SOURCE_DOMAIN_SYSTEM_FIELDS } from './internal/components/domainproperties/dataclasses/constants';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1457,6 +1458,7 @@ export {
     updateCellKeySampleIdMap,
     createEntityParentKey,
     parseEntityParentKey,
+    SOURCE_DOMAIN_SYSTEM_FIELDS,
     // metric related items
     UnitModel,
     MEASUREMENT_UNITS,

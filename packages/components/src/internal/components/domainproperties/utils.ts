@@ -3,6 +3,8 @@ import { OrderedMap, Set } from 'immutable';
 import { IParentAlias } from '../entities/models';
 
 import { DOMAIN_FIELD_PREFIX } from './constants';
+import { SystemField } from './models';
+import { SOURCE_DOMAIN_SYSTEM_FIELDS } from './dataclasses/constants';
 
 export function createFormInputName(name: string): string {
     return [DOMAIN_FIELD_PREFIX, name].join('-');
@@ -114,4 +116,8 @@ export function parentAliasInvalid(alias: Partial<IParentAlias>): boolean {
     const parentValueInvalid = !alias.parentValue || !alias.parentValue.value;
 
     return !!(aliasValueInvalid || parentValueInvalid || alias.isDupe);
+}
+
+export function getSourceDomainDefaultSystemFields(): SystemField[] {
+    return SOURCE_DOMAIN_SYSTEM_FIELDS;
 }

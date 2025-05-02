@@ -57,7 +57,7 @@ export const getDatasetSystemFields = (studyProperties: StudyProperties): System
             DataType: 'Text',
             Required: true,
             Description: 'Subject identifier',
-            Disableble: false,
+            Disableable: false,
         },
         {
             Name: 'SequenceNum',
@@ -65,7 +65,7 @@ export const getDatasetSystemFields = (studyProperties: StudyProperties): System
             DataType: 'Decimal (floating point)',
             Required: isVisitBased,
             Description: '',
-            Disableble: false,
+            Disableable: false,
         },
     ];
 
@@ -76,7 +76,7 @@ export const getDatasetSystemFields = (studyProperties: StudyProperties): System
             DataType: 'DateTime',
             Required: true,
             Description: 'The day of the visit. Primarily used in date-based studies.',
-            Disableble: false,
+            Disableable: false,
         });
         systemFields.push({
             Name: 'Day',
@@ -84,7 +84,7 @@ export const getDatasetSystemFields = (studyProperties: StudyProperties): System
             DataType: 'Integer',
             Required: false,
             Description: 'The day of the visit. Primarily used in date-based studies.',
-            Disableble: false,
+            Disableable: false,
         });
     }
 
@@ -94,7 +94,7 @@ export const getDatasetSystemFields = (studyProperties: StudyProperties): System
         DataType: 'Integer',
         Required: true,
         Description: '',
-        Disableble: false,
+        Disableable: false,
     });
 
     return systemFields;

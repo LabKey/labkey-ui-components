@@ -2230,9 +2230,9 @@ export interface NameExpressionsValidationResults {
 export interface SystemField {
     DataType: string;
     Description: string;
-    Disableble: boolean;
-    Editable?: boolean;
+    Disableable: boolean;
     Enabled?: boolean;
+    IsCalculated?: boolean;
     Label: string;
     Name: string;
     Required: boolean;

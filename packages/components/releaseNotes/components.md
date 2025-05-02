@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 52504: Expose validate lookup setting for sample lookup and turn on by default
 
+### version 6.39.0
+*Released*: 2 May 2025
+- Export `getSourceDomainDefaultSystemFields`
+
 ### version 6.38.2
 *Released*: 30 April 2025
 - Remove remnants of Edit with Grid from Bulk Edit modal

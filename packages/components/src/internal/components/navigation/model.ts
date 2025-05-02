@@ -177,7 +177,7 @@ export class ProductMenuModel extends Record({
         });
 
         return List<MenuSectionModel>(sections);
-    };
+    }
 
     setLoadedSections(sections: List<MenuSectionModel>): ProductMenuModel {
         return this.merge({

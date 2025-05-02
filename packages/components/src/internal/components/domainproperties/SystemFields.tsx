@@ -87,7 +87,7 @@ export const SystemFields: FC<Props> = memo(({ fields, disabledSystemFields, onS
                     <input
                         className="grid-panel__row-checkbox"
                         type="checkbox"
-                        disabled={!row.get('Disableble')}
+                        disabled={!row.get('Disableable')}
                         checked={selected === true}
                         onChange={onChange} // eslint-disable-line
                     />

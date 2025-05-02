@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 52472: Re-clicking the Source Types, Sample Types or Assay links in the mega menu removes the sort=Name parameter from the url
 - Customize view available field data-fieldkey attribute to use encoded fieldKey values
 
+### version 6.39.0
+*Released*: 2 May 2025
+- Export `getSourceDomainDefaultSystemFields`
+
 ### version 6.38.2
 *Released*: 30 April 2025
 - Remove remnants of Edit with Grid from Bulk Edit modal

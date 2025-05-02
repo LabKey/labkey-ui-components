@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 52556: Add data-fieldkey attribuet to grid header elements and input elements
+
 ### version 6.39.1
 *Released*: 2 May 2025
 - Issue 52979: App grid customize view doesn't expand lookup field with special char

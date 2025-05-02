@@ -497,7 +497,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
 
                 if (renderFieldLabel) {
                     return (
-                        <label className={labelClass}>
+                        <label className={labelClass} htmlFor={name}>
                             {renderFieldLabel(undefined, label, description_)}
                             {required && <span className="required-symbol"> *</span>}
                         </label>

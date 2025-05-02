@@ -300,7 +300,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         return (
             <div className={containerClassName}>
                 {renderFieldLabel ? (
-                    <label className={labelClassName}>
+                    <label className={labelClassName} htmlFor={queryColumn.fieldKey}>
                         {renderFieldLabel(queryColumn)}
                         {queryColumn?.required && <span className="required-symbol"> *</span>}
                     </label>
@@ -309,7 +309,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                         label={label}
                         labelOverlayProps={{
                             isFormsy: false,
-                            inputId: queryColumn.name,
+                            inputId: queryColumn.fieldKey,
                             required: queryColumn.required,
                             addLabelAsterisk,
                             labelClass: allowDisable ? undefined : labelClassName,

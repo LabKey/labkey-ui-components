@@ -105,7 +105,6 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
         false
     );
     const supportsExpand = !!onExpandColumn;
-    const colFieldKey = column.index;
     const disabled = disabledMsg !== undefined;
 
     // 46256: use encoded fieldKeyPath
@@ -136,12 +135,12 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
     );
 
     return (
-        <div className="list-group-item flex" key={colFieldKey} data-fieldkey={colFieldKey}>
+        <div className="list-group-item flex" key={column.index} data-fieldkey={column.fieldKeyPath}>
             {supportsExpand && (
                 <>
                     {parentFieldKeys.map((parent, index) => (
                         // eslint-disable-next-line react/no-array-index-key
-                        <div className="field-expand-icon" key={`${colFieldKey}|${index}`} />
+                        <div className="field-expand-icon" key={`${column.index}|${index}`} />
                     ))}
                     <div className="field-expand-icon">
                         {column.isLookup() && !isExpanded && (

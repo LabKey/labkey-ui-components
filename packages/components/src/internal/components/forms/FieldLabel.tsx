@@ -90,7 +90,7 @@ export class FieldLabel extends Component<FieldLabelProps> {
                     <span className={classNames(toggleContainerClassName)}>
                         <div className={classNames(toggleClassName, toggleWrapperClassName)}>
                             <ToggleIcon
-                                id={id ?? column?.fieldKey}
+                                id={(id ?? column?.fieldKey) + '::toggle'}
                                 inputFieldName={getFieldEnabledFieldName(column, fieldName)}
                                 active={!isDisabled ? 'on' : 'off'}
                                 onClick={toggleProps?.onClick}

@@ -228,7 +228,7 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         Required: true,
         // For user clarity, below text differs intentionally from schema browser
         Description: 'Unique ID generated from the Naming Pattern or Aliquot Naming Pattern',
-        Disableble: false,
+        Disableable: false,
     },
     {
         Name: 'SampleState',
@@ -236,7 +236,7 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         DataType: 'Integer',
         Required: false,
         Description: 'Represents the status of the sample',
-        Disableble: false,
+        Disableable: false,
     },
     {
         Name: 'Description',
@@ -244,7 +244,7 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         DataType: 'Text',
         Required: false,
         Description: 'Contains a Description for this sample',
-        Disableble: true,
+        Disableable: true,
     },
     {
         Name: 'MaterialExpDate',
@@ -252,7 +252,7 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         DataType: 'DateTime',
         Required: false,
         Description: 'The date that this sample expires on',
-        Disableble: true,
+        Disableable: true,
     },
     {
         Name: 'StoredAmount',
@@ -260,7 +260,7 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         DataType: 'Decimal (floating point)',
         Required: false,
         Description: 'The amount of this sample',
-        Disableble: true,
+        Disableable: true,
     },
     {
         Name: 'Units',
@@ -268,7 +268,7 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         DataType: 'Text',
         Required: false,
         Description: 'The units associated with the Amount value for this sample',
-        Disableble: true,
+        Disableable: true,
     },
     {
         Name: 'AliquotCount',
@@ -276,8 +276,8 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         DataType: 'Integer',
         Required: false,
         Description: '',
-        Disableble: true,
-        Editable: false,
+        Disableable: true,
+        IsCalculated: true,
     },
 ];
 
@@ -288,7 +288,7 @@ export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
         DataType: 'Integer',
         Required: false,
         Description: '',
-        Disableble: true,
+        Disableable: true,
     },
     {
         Name: 'StorageLocation',
@@ -296,10 +296,10 @@ export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
         DataType: 'Text',
         Required: false,
         Description: '',
-        Disableble: true,
+        Disableable: true,
     },
-    { Name: 'StorageRow', Label: 'Storage Row', DataType: 'Text', Required: false, Description: '', Disableble: true },
-    { Name: 'StorageCol', Label: 'Storage Col', DataType: 'Text', Required: false, Description: '', Disableble: true },
+    { Name: 'StorageRow', Label: 'Storage Row', DataType: 'Text', Required: false, Description: '', Disableable: true },
+    { Name: 'StorageCol', Label: 'Storage Col', DataType: 'Text', Required: false, Description: '', Disableable: true },
 ];
 
 export const AMOUNT_PRECISION_ERROR_TEXT = 'Amount used is too precise for selected units.';

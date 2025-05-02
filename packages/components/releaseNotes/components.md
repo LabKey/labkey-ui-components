@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.39.1
+*Released*: 2 May 2025
 - Issue 52979: App grid customize view doesn't expand lookup field with special char
 - Issue 52472: Re-clicking the Source Types, Sample Types or Assay links in the mega menu removes the sort=Name parameter from the url
 - Customize view available field data-fieldkey attribute to use encoded fieldKey values

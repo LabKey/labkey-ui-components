@@ -1,4 +1,9 @@
-import { getPermissionRestrictionMessage, makePresentParticiple, resolveErrorMessage } from './messaging';
+import {
+    getPermissionRestrictionMessage,
+    lookupValidationErrorMessage,
+    makePresentParticiple,
+    resolveErrorMessage,
+} from './messaging';
 
 describe('makePresentParticiple', () => {
     test('no verb', () => {
@@ -367,6 +372,30 @@ describe('getPermissionRestrictionMessage', () => {
         );
         expect(getPermissionRestrictionMessage(2, 1, 'dog', 'dogs', 'walk', ' around the block')).toBe(
             'Selection includes 1 dog that you do not have permission to walk around the block. Only the dogs that you have permission for will be updated.'
+        );
+    });
+});
+
+describe('lookupValidationErrorMessage', () => {
+    test('value only', () => {
+        expect(lookupValidationErrorMessage('s')).toEqual('Could not find s. Data may have been moved or deleted.');
+        expect(lookupValidationErrorMessage(1.4)).toEqual('Could not find 1.4. Data may have been moved or deleted.');
+        expect(lookupValidationErrorMessage(false)).toEqual(
+            'Could not find false. Data may have been moved or deleted.'
+        );
+    });
+
+    test('fromPaste', () => {
+        expect(lookupValidationErrorMessage(false, true)).toEqual('Could not find false');
+        expect(lookupValidationErrorMessage('beep', true)).toEqual('Could not find beep');
+        expect(lookupValidationErrorMessage('"sara", "pete"', true)).toEqual(
+            'Could not find "sara", "pete". Please make sure values that contain commas are properly quoted.'
+        );
+    });
+
+    test('with displayValue', () => {
+        expect(lookupValidationErrorMessage('beep,', false, 'vw')).toEqual(
+            'vw is no longer a valid value. Data may have been moved or deleted.'
         );
     });
 });

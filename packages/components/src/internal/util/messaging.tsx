@@ -232,3 +232,21 @@ export function getPermissionRestrictionMessage(
     const notPermittedNoun = Utils.pluralize(noPermissionCount, nounSingular, nounPlural);
     return `Selection includes ${notPermittedNoun} that you do not have permission to ${verb}${verbSuffix ?? ''}. Only the ${nounPlural} that you have permission for will be updated.`;
 }
+
+export function lookupValidationErrorMessage(
+    value: string | number | boolean,
+    fromPaste?: boolean,
+    displayValue?: any
+): string {
+    let message = displayValue !== undefined ? `${displayValue} is no longer a valid value` : `Could not find ${value}`;
+
+    if (fromPaste) {
+        if (typeof value === 'string' && value.toString().indexOf(',') > -1) {
+            message += '. Please make sure values that contain commas are properly quoted.';
+        }
+    } else {
+        message += '. Data may have been moved or deleted.';
+    }
+
+    return message;
+}

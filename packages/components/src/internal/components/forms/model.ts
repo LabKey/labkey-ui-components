@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, OrderedMap, Record as ImmutableRecord } from 'immutable';
-import { Filter, Query, Utils } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
@@ -29,6 +29,8 @@ import {
 } from '../../query/api';
 import { similaritySortFactory } from '../../util/similaritySortFactory';
 import { parseCsvString } from '../../util/utils';
+
+import { naturalSort } from '../../../public/sort';
 
 import { SelectInputOption } from './input/SelectInput';
 import { DELIMITER } from './constants';
@@ -169,8 +171,8 @@ export function setSelection(model: QuerySelectModel, rawSelectedValue: any): Qu
     const selectedItems = getSelectedOptions(model, rawSelectedValue);
 
     return model.merge({
-        // Issue 52773: Unset initialValueNotFound once a value has been selected
-        initialValueNotFound: false,
+        // Issue 52773: Unset notFoundValues once a value has been selected
+        notFoundValues: undefined,
         rawSelectedValue,
         selectedItems,
         selectedQuery: parseSelectedQuery(model, selectedItems),
@@ -324,66 +326,113 @@ export function queryColumnNames(
     return Array.from(new Set(queryColumns));
 }
 
-export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<QuerySelectModelProps>> {
-    const { containerFilter, containerPath, schemaQuery, queryFilters } = props;
-
+async function initQueryInfoWithColumns(props: QuerySelectOwnProps): Promise<Partial<QuerySelectModelProps>> {
+    const { containerPath, schemaQuery } = props;
     const queryInfo = await getQueryDetails({ containerPath, schemaQuery });
+
     const valueColumn = initValueColumn(queryInfo, props.valueColumn);
     const displayColumn = initDisplayColumn(queryInfo, valueColumn, props.displayColumn);
     const groupByColumn = initGroupByColumn(queryInfo, props.groupByColumn);
+
+    return { queryInfo, valueColumn, displayColumn, groupByColumn };
+}
+
+export function buildValueFilter(
+    value: any,
+    valueColumn: string,
+    multiple: boolean,
+    delimiter: string
+): { expectedValueCount: number; filter: Filter.IFilter } {
+    let filter: Filter.IFilter;
+    let expectedValueCount = 1;
+
+    if (multiple) {
+        if (Array.isArray(value)) {
+            filter = Filter.create(valueColumn, value, Filter.Types.IN);
+            expectedValueCount = new Set(value).size;
+        } else if (typeof value === 'string') {
+            const parsed = parseCsvString(value, delimiter, true);
+            filter = Filter.create(valueColumn, parsed, Filter.Types.IN);
+            expectedValueCount = new Set(parsed).size;
+        }
+    }
+
+    if (!filter) {
+        filter = Filter.create(valueColumn, value);
+    }
+
+    return { expectedValueCount, filter };
+}
+
+export function findNotFoundValues(
+    selectedItems: Map<string, any>,
+    filter: Filter.IFilter,
+    valueColumn: string
+): string[] {
+    const filterValue = filter.getValue();
+    if (filterValue === undefined || filterValue === null) return [];
+
+    const rawValues = Array.isArray(filterValue) ? filterValue : [filterValue];
+    const uniqueValues = new Set(rawValues.filter(v => v !== undefined && v !== null).map(v => v.toString()));
+
+    selectedItems
+        .map(item => item.getIn([valueColumn, 'value']))
+        .filter(v => v !== undefined && v !== null)
+        .forEach(itemValue => uniqueValues.delete(itemValue.toString()));
+
+    return Array.from(uniqueValues).sort(naturalSort);
+}
+
+async function initSelectedItems(
+    props: QuerySelectOwnProps,
+    queryInfo: QueryInfo,
+    valueColumn: string,
+    displayColumn: string,
+    groupByColumn: string,
+    filter: Filter.IFilter
+): Promise<Map<string, any>> {
+    const filters = props.queryFilters ? props.queryFilters.toArray() : [];
+    filters.push(filter);
+
+    const { queryName, schemaName, viewName } = props.schemaQuery;
+    const data = await selectRowsDeprecated({
+        columns: queryColumnNames(queryInfo, displayColumn, valueColumn, props.requiredColumns, groupByColumn),
+        containerFilter: props.containerFilter,
+        containerPath: props.containerPath,
+        filterArray: filters,
+        parameters: props.queryParams,
+        queryName,
+        schemaName,
+        viewName,
+    });
+
+    return fromJS(quoteValueColumnWithDelimiters(data, props.valueColumn, props.delimiter).models[data.key]);
+}
+
+export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<QuerySelectModelProps>> {
+    const { delimiter, multiple, value } = props;
+    const { queryInfo, valueColumn, displayColumn, groupByColumn } = await initQueryInfoWithColumns(props);
+
     let selectedItems = Map<string, any>();
-    let initialValueNotFound: boolean = false;
+    let notFoundValues: List<any>;
 
-    if (props.value !== undefined && props.value !== null) {
-        let filter: Filter.IFilter;
+    if (value !== undefined && value !== null) {
+        const { expectedValueCount, filter } = buildValueFilter(value, valueColumn, multiple, delimiter);
+        selectedItems = await initSelectedItems(props, queryInfo, valueColumn, displayColumn, groupByColumn, filter);
 
-        if (props.multiple) {
-            if (Array.isArray(props.value)) {
-                filter = Filter.create(valueColumn, props.value, Filter.Types.IN);
-            } else if (typeof props.value === 'string') {
-                // Allow for setting multiValue value.
-                // This requires updating the filter and the string
-                filter = Filter.create(
-                    valueColumn,
-                    parseCsvString(props.value, props.delimiter, true),
-                    Filter.Types.IN
-                );
+        if (selectedItems.size !== expectedValueCount) {
+            const notFoundValuesArray = findNotFoundValues(selectedItems, filter, valueColumn);
+            if (notFoundValuesArray) {
+                notFoundValues = List(notFoundValuesArray);
             }
         }
-
-        if (!filter) {
-            filter = Filter.create(valueColumn, props.value);
-        }
-
-        const filters = queryFilters ? queryFilters.toArray() : [];
-        filters.push(filter);
-
-        const { queryName, schemaName, viewName } = schemaQuery;
-        const data = await selectRowsDeprecated({
-            columns: queryColumnNames(queryInfo, displayColumn, valueColumn, props.requiredColumns, groupByColumn),
-            containerFilter,
-            containerPath,
-            filterArray: filters,
-            parameters: props.queryParams,
-            queryName,
-            schemaName,
-            viewName,
-        });
-
-        selectedItems = fromJS(
-            quoteValueColumnWithDelimiters(data, props.valueColumn, props.delimiter).models[data.key]
-        );
-
-        // Issue 52773: If a value is specified, but we are unable to resolve the value then display
-        // a warning to the user.
-        initialValueNotFound = selectedItems.size === 0;
     }
 
     return {
         displayColumn,
         groupByColumn,
-        initialValueNotFound,
         isInit: true,
+        notFoundValues,
         queryInfo,
         selectedItems,
         valueColumn,
@@ -398,10 +447,10 @@ export interface QuerySelectModelProps {
     delimiter: string;
     displayColumn: string;
     groupByColumn: string;
-    initialValueNotFound: boolean;
     isInit: boolean;
     maxRows: number;
     multiple: boolean;
+    notFoundValues: List<any>;
     queryFilters: List<Filter.IFilter>;
     queryInfo: QueryInfo;
     queryParams: Record<string, any>;
@@ -423,10 +472,10 @@ export class QuerySelectModel
         displayColumn: undefined,
         delimiter: DELIMITER,
         groupByColumn: undefined,
-        initialValueNotFound: false,
         isInit: false,
         maxRows: 20,
         multiple: false,
+        notFoundValues: undefined,
         queryFilters: undefined,
         queryInfo: undefined,
         queryParams: undefined,
@@ -447,10 +496,10 @@ export class QuerySelectModel
     declare displayColumn: string;
     declare delimiter: string;
     declare groupByColumn: string;
-    declare initialValueNotFound: boolean;
     declare isInit: boolean;
     declare maxRows: number;
     declare multiple: boolean;
+    declare notFoundValues: List<any>;
     declare queryFilters: List<Filter.IFilter>;
     declare queryInfo: QueryInfo;
     declare queryParams: Record<string, any>;

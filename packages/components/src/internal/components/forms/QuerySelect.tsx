@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ComponentType, FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { List, Map } from 'immutable';
 import { Filter, Query, Utils } from '@labkey/api';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { resolveErrorMessage } from '../../util/messaging';
+import { lookupValidationErrorMessage, resolveErrorMessage } from '../../util/messaging';
 
 import { Row } from '../../query/selectRows';
 
@@ -263,6 +263,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     const [searches, setSearches] = useState<Search[]>([]);
     const debounceTO = useTimeout();
     const shouldLoadOnFocus = loadOnFocus && !loadOnFocusLock;
+    const hasNotFoundValues = model.notFoundValues?.size > 0;
 
     useEffect(() => {
         if (!autoInit) return;
@@ -399,6 +400,20 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         [OptionComponent, model]
     );
 
+    // Issue 52773: If a value is specified, but we are unable to resolve the value then display a warning to the user.
+    const warning = useMemo(() => {
+        if (!hasNotFoundValues) return undefined;
+
+        let warningValue: string;
+        if (model.notFoundValues.size < 5) {
+            warningValue = model.notFoundValues.join(', ');
+        } else {
+            warningValue = `${model.notFoundValues.size} values`;
+        }
+
+        return lookupValidationErrorMessage(warningValue);
+    }, [hasNotFoundValues, model.notFoundValues]);
+
     if (error) {
         return (
             <SelectInput
@@ -444,12 +459,10 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
             optionRenderer={optionRenderer}
             options={undefined} // prevent override
             // Issue 52773: Allow for submission of required fields whose value is not found
-            required={model.initialValueNotFound ? false : required}
+            required={hasNotFoundValues ? false : required}
             selectedOptions={model.isInit ? model.selectedOptions : undefined}
             value={getValue(model, multiple)} // needed to initialize the Formsy "value" properly
-            warning={
-                model.initialValueNotFound ? `Could not find ${value}. Data may have been moved or deleted.` : undefined
-            }
+            warning={warning}
         />
     );
 });

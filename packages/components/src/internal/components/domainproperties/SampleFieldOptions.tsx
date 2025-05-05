@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 import { List } from 'immutable';
 
-import { FIELD_EDITOR_SAMPLE_TYPES_TOPIC, helpLinkNode } from '../../util/helpLinks';
+import { FIELD_EDITOR_SAMPLE_TYPES_TOPIC, HelpLink } from '../../util/helpLinks';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 
@@ -11,13 +11,25 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { fetchQueries } from './actions';
 import { createFormInputId, createFormInputName } from './utils';
-import { ALL_SAMPLES_DISPLAY_TEXT, DOMAIN_FIELD_SAMPLE_TYPE } from './constants';
-import { encodeLookup, IDomainField, ITypeDependentProps, LookupInfo, SAMPLE_TYPE_OPTION_VALUE } from './models';
+import { ALL_SAMPLES_DISPLAY_TEXT, DOMAIN_FIELD_SAMPLE_TYPE, DOMAIN_VALIDATOR_LOOKUP } from './constants';
+import {
+    DomainField,
+    encodeLookup,
+    IDomainField,
+    IFieldChange,
+    ITypeDependentProps,
+    LOOKUP_VALIDATOR,
+    LookupInfo,
+    SAMPLE_TYPE_OPTION_VALUE,
+} from './models';
 
 import { SectionHeading } from './SectionHeading';
+import { DomainDesignerCheckbox } from './DomainDesignerCheckbox';
 
 interface SampleFieldProps extends ITypeDependentProps {
     container: string;
+    field: DomainField;
+    onMultiChange: (changes: List<IFieldChange>) => void;
     original: Partial<IDomainField>;
     value?: string;
 }
@@ -25,20 +37,18 @@ interface SampleFieldProps extends ITypeDependentProps {
 interface State {
     loadingState: LoadingState;
     sampleTypes: List<LookupInfo>;
+    validateLookup: boolean;
 }
 
 export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
     state: Readonly<State> = {
         loadingState: LoadingState.INITIALIZED,
         sampleTypes: List(),
-    };
-
-    onFieldChange = (evt: any): void => {
-        this.props.onChange?.(evt.target.id, evt.target.value);
+        validateLookup: false,
     };
 
     componentDidMount = async (): Promise<void> => {
-        const { original } = this.props;
+        const { original, field } = this.props;
 
         this.setState({ loadingState: LoadingState.LOADING });
 
@@ -50,16 +60,37 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                 .filter(st => st.type.isInteger()) // Remove rowId duplicates
                 .toList();
 
-            this.setState({ loadingState: LoadingState.LOADED, sampleTypes });
+            this.setState({
+                loadingState: LoadingState.LOADED,
+                sampleTypes,
+                validateLookup: field.isNew() || !!field.lookupValidator,
+            });
         } catch (e) {
             console.error('Failed to load sample field information', e);
             this.setState({ loadingState: LoadingState.LOADED });
         }
     };
 
+    onFieldChange = (evt): void => {
+        this.props.onChange(evt.target.id, evt.target.value);
+    };
+
+    addLookupValidator = (evt): void => {
+        let newLookupValidator;
+        if (evt.target.checked) {
+            newLookupValidator = LOOKUP_VALIDATOR;
+            this.setState({ validateLookup: true });
+        } else {
+            this.setState({ validateLookup: false });
+        }
+
+        this.props.onMultiChange(List<IFieldChange>([{ id: evt.target.id, value: newLookupValidator }]));
+    };
+
     render() {
         const { index, label, lockType, value, domainIndex } = this.props;
-        const { loadingState, sampleTypes } = this.state;
+
+        const { loadingState, sampleTypes, validateLookup } = this.state;
         const isLoaded = !isLoading(loadingState);
 
         const id = createFormInputId(DOMAIN_FIELD_SAMPLE_TYPE, domainIndex, index);
@@ -86,15 +117,11 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                                 </p>
                                 <p>
                                     Learn more about using{' '}
-                                    {helpLinkNode(FIELD_EDITOR_SAMPLE_TYPES_TOPIC, 'sample fields')} in LabKey.
+                                    <HelpLink topic={FIELD_EDITOR_SAMPLE_TYPES_TOPIC}>sample fields</HelpLink>
+                                    in LabKey.
                                 </p>{' '}
-                                {/* TODO: contextualize help link based on app (SM, LKS, etc.)*/}
                             </LabelHelpTip>
                         </div>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-xs-5">
                         <select
                             className="form-control"
                             id={id}
@@ -133,6 +160,24 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                                     })
                                     .toArray()}
                         </select>
+                    </div>
+                    <div className="col-xs-6">
+                        <div className="domain-field-label">Lookup Validator</div>
+                        <DomainDesignerCheckbox
+                            className="domain-field-checkbox-margin"
+                            id={createFormInputId(DOMAIN_VALIDATOR_LOOKUP, domainIndex, index)}
+                            name={createFormInputName(DOMAIN_VALIDATOR_LOOKUP)}
+                            checked={validateLookup}
+                            onChange={this.addLookupValidator}
+                        >
+                            <span className="domain-lookup-validator-text">Ensure Value Exists in Lookup Target</span>
+                            <LabelHelpTip title="Lookup Validator">
+                                <div>
+                                    Lookup validators allow you to require that any value is present in the lookup's
+                                    target table or query.
+                                </div>
+                            </LabelHelpTip>
+                        </DomainDesignerCheckbox>
                     </div>
                 </div>
             </div>

@@ -11,10 +11,9 @@ import {
     DOMAIN_FIELD_LOOKUP_SCHEMA,
     DOMAIN_FIELD_PARTIALLY_LOCKED,
     DOMAIN_VALIDATOR_LOOKUP,
-    LOOKUP_VALIDATOR_VALUES,
 } from './constants';
 import { DomainDesignerCheckbox } from './DomainDesignerCheckbox';
-import { DomainField, IFieldChange, ITypeDependentProps, PropertyValidator } from './models';
+import { DomainField, IFieldChange, ITypeDependentProps, LOOKUP_VALIDATOR } from './models';
 import { FolderSelect, SchemaSelect, TargetTableSelect } from './Lookup/Fields';
 
 interface LookupFieldProps extends ITypeDependentProps {
@@ -52,16 +51,14 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
     addLookupValidator = evt => {
         const { onMultiChange } = this.props;
 
-        let newLookupValidator;
-
-        if (evt.target.checked) {
-            newLookupValidator = new PropertyValidator(LOOKUP_VALIDATOR_VALUES);
-        }
-
-        let changes = List<IFieldChange>();
-        changes = changes.push({ id: evt.target.id, value: newLookupValidator } as IFieldChange);
-
         if (onMultiChange) {
+            let newLookupValidator;
+            if (evt.target.checked) {
+                newLookupValidator = LOOKUP_VALIDATOR;
+            }
+
+            let changes = List<IFieldChange>();
+            changes = changes.push({ id: evt.target.id, value: newLookupValidator } as IFieldChange);
             onMultiChange(changes);
         }
     };

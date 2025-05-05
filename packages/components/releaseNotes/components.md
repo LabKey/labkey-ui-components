@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.40.0
+*Released*: 5 May 2025
 - Issue 52504: Expose validate lookup setting for sample lookup and turn on by default
 
 ### version 6.39.1

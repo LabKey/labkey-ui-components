@@ -138,7 +138,7 @@ describe('form actions', () => {
     });
 
     describe('findNotFoundValues', () => {
-        const EMPTY_ITEMS = fromJS({});
+        const EMPTY_ITEMS = {};
 
         function filter(value: any): Filter.IFilter {
             return Filter.create('col', value, Filter.Types.IN);
@@ -161,38 +161,38 @@ describe('form actions', () => {
         });
 
         test('returns missing values when some items are matched', () => {
-            const selectedItems = fromJS({ one: { id: { value: 'x' } }, two: { id: { value: 'z' } } });
+            const selectedItems = { one: { id: { value: 'x' } }, two: { id: { value: 'z' } } };
             expect(findNotFoundValues(selectedItems, filter(['x', 'y', 'z']), 'id')).toEqual(['y']);
         });
 
         test('returns empty array when all values are found in selected items', () => {
-            const selectedAll = fromJS({
+            const selectedAll = {
                 one: { id: { value: 'x' } },
                 two: { id: { value: 'y' } },
                 three: { id: { value: 'z' } },
-            });
+            };
             expect(findNotFoundValues(selectedAll, filter(['x', 'y', 'z']), 'id')).toEqual([]);
         });
 
         test('handles mixed types and converts to string for comparison', () => {
-            const mixedItems = fromJS({ one: { id: { value: 1 } }, two: { id: { value: 3 } } });
+            const mixedItems = { one: { id: { value: 1 } }, two: { id: { value: 3 } } };
             expect(findNotFoundValues(mixedItems, filter([1, 2, 3]), 'id')).toEqual(['2']);
         });
 
         test('ignores items missing the valueColumn', () => {
-            const incompleteItems = fromJS({
+            const incompleteItems = {
                 one: { id: { value: 'x' } },
                 two: { other: { value: 'y' } }, // missing 'id'
-            });
+            };
             expect(findNotFoundValues(incompleteItems, filter(['x', 'y']), 'id')).toEqual(['y']);
         });
 
         test('ignores null or undefined item values', () => {
-            const nullItemValues = fromJS({
+            const nullItemValues = {
                 one: { id: { value: 'x' } },
                 two: { id: { value: null } },
                 three: { id: { value: undefined } },
-            });
+            };
             expect(findNotFoundValues(nullItemValues, filter(['x', 'y']), 'id')).toEqual(['y']);
         });
 
@@ -201,7 +201,7 @@ describe('form actions', () => {
         });
 
         test('handles mixed string/number types across filters and item values', () => {
-            const mixedTypes = fromJS({ one: { id: { value: '1' } }, two: { id: { value: 2 } } });
+            const mixedTypes = { one: { id: { value: '1' } }, two: { id: { value: 2 } } };
             expect(findNotFoundValues(mixedTypes, filter([1, 2, 3]), 'id')).toEqual(['3']);
         });
     });

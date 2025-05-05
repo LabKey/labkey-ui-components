@@ -28,9 +28,11 @@ import {
     selectRowsDeprecated,
 } from '../../query/api';
 import { similaritySortFactory } from '../../util/similaritySortFactory';
-import { parseCsvString } from '../../util/utils';
+import { caseInsensitive, parseCsvString } from '../../util/utils';
 
 import { naturalSort } from '../../../public/sort';
+
+import { Row } from '../../query/selectRows';
 
 import { SelectInputOption } from './input/SelectInput';
 import { DELIMITER } from './constants';
@@ -363,7 +365,7 @@ export function buildValueFilter(
 }
 
 export function findNotFoundValues(
-    selectedItems: Map<string, any>,
+    selectedRows: Record<string, Row>,
     filter: Filter.IFilter,
     valueColumn: string
 ): string[] {
@@ -373,27 +375,28 @@ export function findNotFoundValues(
     const rawValues = Array.isArray(filterValue) ? filterValue : [filterValue];
     const expectedValues = new Set(rawValues.filter(v => v !== undefined && v !== null).map(v => v.toString()));
 
-    selectedItems
-        .map(item => item.getIn([valueColumn, 'value']))
+    Object.values(selectedRows)
+        .map(item => caseInsensitive(item, valueColumn)?.value)
         .filter(value => value !== undefined && value !== null)
         .forEach(value => expectedValues.delete(value.toString()));
 
     return Array.from(expectedValues).sort(naturalSort);
 }
 
-async function initSelectedItems(
+function initSelectedItems(
     props: QuerySelectOwnProps,
     queryInfo: QueryInfo,
     valueColumn: string,
     displayColumn: string,
     groupByColumn: string,
     filter: Filter.IFilter
-): Promise<Map<string, any>> {
+): Promise<ISelectRowsResult> {
     const filters = props.queryFilters ? props.queryFilters.toArray() : [];
     filters.push(filter);
 
     const { queryName, schemaName, viewName } = props.schemaQuery;
-    const data = await selectRowsDeprecated({
+
+    return selectRowsDeprecated({
         columns: queryColumnNames(queryInfo, displayColumn, valueColumn, props.requiredColumns, groupByColumn),
         containerFilter: props.containerFilter,
         containerPath: props.containerPath,
@@ -403,23 +406,22 @@ async function initSelectedItems(
         schemaName,
         viewName,
     });
-
-    return fromJS(quoteValueColumnWithDelimiters(data, props.valueColumn, props.delimiter).models[data.key]);
 }
 
 export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<QuerySelectModelProps>> {
     const { delimiter, multiple, value } = props;
     const { queryInfo, valueColumn, displayColumn, groupByColumn } = await initQueryInfoWithColumns(props);
 
-    let selectedItems = Map<string, any>();
+    let selectedItems: ISelectRowsResult;
     let notFoundValues: List<any>;
 
     if (value !== undefined && value !== null) {
         const { expectedValueCount, filter } = buildValueFilter(value, valueColumn, multiple, delimiter);
         selectedItems = await initSelectedItems(props, queryInfo, valueColumn, displayColumn, groupByColumn, filter);
+        const selectedRows = selectedItems.models[selectedItems.key];
 
-        if (selectedItems.size !== expectedValueCount) {
-            const notFoundValuesArray = findNotFoundValues(selectedItems, filter, valueColumn);
+        if (Object.keys(selectedRows).length !== expectedValueCount) {
+            const notFoundValuesArray = findNotFoundValues(selectedRows, filter, valueColumn);
             if (notFoundValuesArray) {
                 notFoundValues = List(notFoundValuesArray);
             }
@@ -432,7 +434,9 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
         isInit: true,
         notFoundValues,
         queryInfo,
-        selectedItems,
+        selectedItems: selectedItems
+            ? fromJS(quoteValueColumnWithDelimiters(selectedItems, valueColumn, delimiter).models[selectedItems.key])
+            : Map<string, any>(),
         valueColumn,
     };
 }

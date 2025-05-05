@@ -267,7 +267,7 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
         selected,
         index,
     } = props;
-    const key = column.fieldKeyPath;
+    const key = column.index;
     const [editing, setEditing] = useState<boolean>(false);
 
     const _onRemoveColumn = useCallback(() => {
@@ -296,7 +296,7 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
             {(dragProvided, snapshot) => (
                 <div
                     className={classNames('list-group-item flex draggable', { active: selected && !editing })}
-                    data-fieldkey={key}
+                    data-fieldkey={column.fieldKeyPath}
                     onClick={_onClick}
                     ref={dragProvided.innerRef}
                     {...dragProvided.draggableProps}

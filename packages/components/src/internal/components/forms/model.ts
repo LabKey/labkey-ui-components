@@ -182,7 +182,7 @@ export function setSelection(model: QuerySelectModel, rawSelectedValue: any): Qu
 export function fetchSearchResults(model: QuerySelectModel, input: any): Promise<ISelectRowsResult> {
     const { addExactFilter, displayColumn, maxRows, queryFilters, schemaQuery, selectedItems, valueColumn } = model;
 
-    let allFilters = [];
+    let allFilters: Filter.IFilter[] = [];
     const filterVal = input.trim();
 
     // fetch additional options and exclude previously selected so user can see more
@@ -224,37 +224,39 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
     );
 }
 
+function initErrorMsg(queryInfo: QueryInfo, suffix?: string): string {
+    const msg = `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}).`;
+    if (suffix) return msg + ' ' + suffix;
+    return msg;
+}
+
 function initValueColumn(queryInfo: QueryInfo, column?: string): string {
-    // determine 'valueColumn'
-    let valueColumn: string;
     if (column) {
-        valueColumn = column;
-        const valueCol = queryInfo.getColumn(valueColumn) ?? queryInfo.getColumnFromName(valueColumn);
+        const valueCol = queryInfo.getColumn(column) ?? queryInfo.getColumnFromName(column);
 
         if (!valueCol) {
-            throw new Error(
-                `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). The "valueColumn" "${valueColumn}" does not exist.`
-            );
+            throw new Error(initErrorMsg(queryInfo, `The specified "valueColumn" "${column}" does not exist.`));
         }
-        valueColumn = valueCol.fieldKey;
-    } else {
-        const pkCols = queryInfo.getPkCols();
 
-        if (pkCols.length === 1) {
-            valueColumn = pkCols[0].fieldKey;
-        } else if (pkCols.length > 0) {
-            throw new Error(
-                `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). Set "valueColumn" explicitly to any of ` +
-                    pkCols.map(col => col.fieldKey).join(', ')
-            );
-        } else {
-            throw new Error(
-                `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). Set "valueColumn" explicitly as this query does not have any primary keys.`
-            );
-        }
+        return valueCol.fieldKey;
     }
 
-    return valueColumn;
+    const pkCols = queryInfo.getPkCols();
+
+    if (pkCols.length === 0) {
+        throw new Error(
+            initErrorMsg(queryInfo, 'Set "valueColumn" explicitly as this query does not have any primary keys.')
+        );
+    }
+
+    if (pkCols.length > 1) {
+        const availablePkKeys = pkCols.map(col => `"${col.fieldKey}"`).join(', ');
+        throw new Error(
+            initErrorMsg(queryInfo, `Set "valueColumn" explicitly to any of the primary keys: ${availablePkKeys}`)
+        );
+    }
+
+    return pkCols[0].fieldKey;
 }
 
 function initDisplayColumn(queryInfo: QueryInfo, valueColumn: string, column?: string): string {
@@ -263,9 +265,7 @@ function initDisplayColumn(queryInfo: QueryInfo, valueColumn: string, column?: s
     if (column) {
         const col = queryInfo.getColumn(column) ?? queryInfo.getColumnFromName(column);
         if (!col) {
-            console.warn(
-                `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). The display column "${column}" does not exist.`
-            );
+            console.warn(initErrorMsg(queryInfo, `The display column "${column}" does not exist.`));
         } else {
             displayColumn = col.fieldKey;
         }
@@ -293,9 +293,7 @@ function initGroupByColumn(queryInfo: QueryInfo, column?: string): string {
 
     if (column) {
         if (!queryInfo.getColumn(column)) {
-            console.warn(
-                `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). The group by column "${column}" does not exist.`
-            );
+            console.warn(initErrorMsg(queryInfo, `The group by column "${column}" does not exist.`));
         } else {
             groupByColumn = column;
         }
@@ -373,14 +371,14 @@ export function findNotFoundValues(
     if (filterValue === undefined || filterValue === null) return [];
 
     const rawValues = Array.isArray(filterValue) ? filterValue : [filterValue];
-    const uniqueValues = new Set(rawValues.filter(v => v !== undefined && v !== null).map(v => v.toString()));
+    const expectedValues = new Set(rawValues.filter(v => v !== undefined && v !== null).map(v => v.toString()));
 
     selectedItems
         .map(item => item.getIn([valueColumn, 'value']))
-        .filter(v => v !== undefined && v !== null)
-        .forEach(itemValue => uniqueValues.delete(itemValue.toString()));
+        .filter(value => value !== undefined && value !== null)
+        .forEach(value => expectedValues.delete(value.toString()));
 
-    return Array.from(uniqueValues).sort(naturalSort);
+    return Array.from(expectedValues).sort(naturalSort);
 }
 
 async function initSelectedItems(

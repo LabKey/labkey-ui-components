@@ -106,12 +106,16 @@ export const ProductMenuSection: FC<MenuSectionProps> = memo(props => {
                   section.productId,
                   currentProductId,
                   containerPath,
-                  undefined,
+                  config.headerURLParams,
                   config.headerURLPart ?? section.key
               );
 
         if (headerURL instanceof AppURL) {
-            headerEl = <Link to={headerURL.toString()} className="menu-section-link">{label}</Link>;
+            headerEl = (
+                <Link to={headerURL.toString()} className="menu-section-link">
+                    {label}
+                </Link>
+            );
         } else {
             headerEl = <a href={getHref(headerURL)}>{label}</a>;
         }

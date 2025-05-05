@@ -580,6 +580,7 @@ export function addSourcesSectionConfig(
         emptyText: 'No source types have been defined',
         filteredEmptyText: 'No source types available',
         iconURL: imageURL('_images', 'source_type.svg'),
+        headerURLParams: { 'sourcetypegrid.sort': 'Name' }, // Issue 52472
     });
     if (user && userCanDesignSourceTypes(user)) {
         sourcesMenuConfig = sourcesMenuConfig.merge({
@@ -596,6 +597,7 @@ export function getSamplesSectionConfig(user: User): MenuSectionConfig {
         emptyText: 'No sample types have been defined',
         filteredEmptyText: 'No sample types available',
         iconURL: imageURL('_images', 'samples.svg'),
+        headerURLParams: { 'samplesetgrid.sort': 'Name' }, // Issue 52472
     });
     if (user && user.hasDesignSampleTypesPermission()) {
         samplesMenuConfig = samplesMenuConfig.merge({
@@ -616,6 +618,7 @@ export function addAssaysSectionConfig(
         emptyText: 'No assays have been defined',
         filteredEmptyText: 'No assays available',
         iconURL: imageURL('_images', 'assay.svg'),
+        headerURLParams: { 'allassaysgrid.sort': 'Name', 'activeassaysgrid.sort': 'Name' }, // Issue 52472
     });
     if (user && user.hasDesignAssaysPermission()) {
         assaysMenuConfig = assaysMenuConfig.merge({
@@ -660,6 +663,7 @@ function getMediaSectionConfig(): MenuSectionConfig {
 function getRegistrySectionConfig(): MenuSectionConfig {
     return new MenuSectionConfig({
         iconURL: imageURL('_images', 'molecule.svg'),
+        headerURLParams: { 'query.sort': 'Name' }, // Issue 52472
     });
 }
 

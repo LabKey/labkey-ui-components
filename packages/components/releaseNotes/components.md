@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.40.2
+*Released*: 6 May 2025
+- Issue 52773: display warning for unresolved form lookup values
+
 ### version 6.40.1
 *Released*: 6 May 2025
 - Issue 52556: Add data-fieldkey attribute to grid header elements and input elements

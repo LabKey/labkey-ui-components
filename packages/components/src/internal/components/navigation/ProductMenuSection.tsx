@@ -21,6 +21,8 @@ import { AppURL, createProductUrl, createProductUrlFromPartsWithContainer } from
 import { naturalSort } from '../../../public/sort';
 import { getHref } from '../../url/utils';
 
+import { AppLink } from '../../url/AppLink';
+
 import { MenuSectionModel, MenuSectionConfig, MenuItemModel } from './model';
 
 interface MenuSectionLinkProps {
@@ -44,21 +46,14 @@ const MenuSectionItemLabel: FC<MenuSectionLinkProps> = memo(({ config, item }) =
 MenuSectionItemLabel.displayName = 'MenuSectionItemLabel';
 
 const MenuSectionLink: FC<MenuSectionLinkProps> = ({ config, item }) => {
-    const isAppUrl = (item.url instanceof AppURL || item.url.indexOf('#') === 0) && !config.useOriginalURL;
-    const body = <MenuSectionItemLabel config={config} item={item} />;
-
-    if (isAppUrl) {
-        // Hack: sometimes our server returns strings that are actually proper AppURLs (workflow, eln, and more). We can
-        // detect this by checking if the URL is prefixed with "#".
-        const url = item.url instanceof AppURL ? item.url.toString() : item.url.replace('#', '');
-        return (
-            <Link to={url} className="menu-section-link">
-                {body}
-            </Link>
-        );
-    }
-
-    return <a href={item.url.toString()}>{body}</a>;
+    // const isAppUrl = (item.url instanceof AppURL || item.url.indexOf('#') === 0) && !config.useOriginalURL;
+    const href = item.url instanceof AppURL ? undefined : item.url;
+    const appUrl = item.url instanceof AppURL ? item.url : undefined;
+    return (
+        <AppLink appUrl={appUrl} href={href} className="menu-section-link">
+            <MenuSectionItemLabel config={config} item={item} />
+        </AppLink>
+    );
 };
 MenuSectionLink.displayName = 'MenuSectionLink';
 

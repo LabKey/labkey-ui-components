@@ -191,13 +191,13 @@ describe('CustomizeGridViewModal', () => {
         expect(colsInView[1].getAttribute('class')).toContain('active');
 
         // clicking a new column should change the selected index
-        await userEvent.click(colsInView[0].querySelector('.field-name span'));
+        await userEvent.click(colsInView[0].querySelector('.field-caption span'));
         colsInView = document.querySelectorAll('.list-group')[1].querySelectorAll('.list-group-item');
         expect(colsInView[0].getAttribute('class')).toContain('active');
         expect(colsInView[1].getAttribute('class')).not.toContain('active');
 
         // clicking on the same column should unselect
-        await userEvent.click(colsInView[0].querySelector('.field-name span'));
+        await userEvent.click(colsInView[0].querySelector('.field-caption span'));
         colsInView = document.querySelectorAll('.list-group')[1].querySelectorAll('.list-group-item');
         expect(colsInView[0].getAttribute('class')).not.toContain('active');
         expect(colsInView[1].getAttribute('class')).not.toContain('active');

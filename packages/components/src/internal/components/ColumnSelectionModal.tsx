@@ -74,11 +74,11 @@ export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
     }
     // Issue 46256: use encoded fieldKeyPath, Issue 49795: show tooltip more often to account for renamed fields, etc.
     if (!includeFieldKey) {
-        return <div className="field-name">{initialTitle}</div>;
+        return <div className="field-caption">{initialTitle}</div>;
     }
 
     return (
-        <OverlayTrigger className="field-name" overlay={popover}>
+        <OverlayTrigger className="field-caption" overlay={popover}>
             <span>{initialTitle}</span>
         </OverlayTrigger>
     );
@@ -296,6 +296,7 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
             {(dragProvided, snapshot) => (
                 <div
                     className={classNames('list-group-item flex draggable', { active: selected && !editing })}
+                    data-fieldkey={column.fieldKeyPath}
                     onClick={_onClick}
                     ref={dragProvided.innerRef}
                     {...dragProvided.draggableProps}

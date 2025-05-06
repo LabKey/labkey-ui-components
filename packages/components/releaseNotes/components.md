@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.40.1
+*Released*: 6 May 2025
+- Issue 52556: Add data-fieldkey attribute to grid header elements and input elements
+
 ### version 6.40.0
 *Released*: 5 May 2025
 - Issue 52504: Expose validate lookup setting for sample lookup and turn on by default

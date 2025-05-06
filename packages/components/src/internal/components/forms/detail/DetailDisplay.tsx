@@ -106,7 +106,7 @@ function processFields(
         return fields.set(
             fieldKey,
             new DetailField({
-                fieldKey,
+                fieldKey: c.fieldKey,
                 title: c.caption,
                 renderer:
                     detailRenderer?.(c, options, fileInputRenderer, onAdditionalFormDataChange) ?? _defaultRenderer(c),

@@ -212,6 +212,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                         onDragEnter={this.handleDragEnter}
                                         onDragEnd={this.handleDragEnd}
                                         onClick={this.handleHeaderClick}
+                                        data-fieldkey={column.raw?.fieldKeyPath}
                                     >
                                         {headerCell ? headerCell(column, i, columns.size) : title}
                                         {/* headerCell will render the helpTip, so only render here if not using headerCell() */}

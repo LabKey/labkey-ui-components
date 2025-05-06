@@ -109,7 +109,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputImplProps, Checkbo
         return (
             <div className={`${containerClassName} checkbox-input-form-row`}>
                 {renderFieldLabel ? (
-                    <label className={labelClassName}>
+                    <label className={labelClassName} htmlFor={queryColumn.fieldKey}>
                         {renderFieldLabel(queryColumn)}
                         {queryColumn?.required && <span className="required-symbol"> *</span>}
                     </label>
@@ -133,6 +133,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputImplProps, Checkbo
                 <div className={wrapperClassName}>
                     <input
                         disabled={isDisabled}
+                        id={queryColumn.fieldKey}
                         name={queryColumn.fieldKey}
                         // Issue 43299: Ignore "required" property for boolean columns as this will
                         // cause any false value (i.e. unchecked) to prevent submission.

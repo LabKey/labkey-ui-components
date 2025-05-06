@@ -52,7 +52,7 @@ describe('ColumnSelectionModal', () => {
 
         test('isInView', () => {
             render(<ColumnChoice {...defaultProps()} isInView />);
-            expect(document.querySelector('.field-name').textContent).toBe('Test Column');
+            expect(document.querySelector('.field-caption').textContent).toBe('Test Column');
             expect(document.querySelectorAll('.fa-check')).toHaveLength(1);
             expect(document.querySelectorAll('.fa-plus')).toHaveLength(0);
             expect(document.querySelectorAll('.field-expand-icon')).toHaveLength(1);
@@ -62,7 +62,7 @@ describe('ColumnSelectionModal', () => {
 
         test('not isInView', () => {
             render(<ColumnChoice {...defaultProps()} isInView={false} />);
-            expect(document.querySelector('.field-name').textContent).toBe('Test Column');
+            expect(document.querySelector('.field-caption').textContent).toBe('Test Column');
             expect(document.querySelectorAll('.fa-check')).toHaveLength(0);
             expect(document.querySelectorAll('.fa-plus')).toHaveLength(1);
             expect(document.querySelectorAll('.field-expand-icon')).toHaveLength(1);
@@ -72,7 +72,7 @@ describe('ColumnSelectionModal', () => {
 
         test('lookup, collapsed', () => {
             render(<ColumnChoice {...defaultProps()} column={QUERY_COL_LOOKUP} isInView={false} />);
-            expect(document.querySelector('.field-name').textContent).toBe('Test Column');
+            expect(document.querySelector('.field-caption').textContent).toBe('Test Column');
             expect(document.querySelectorAll('.fa-check')).toHaveLength(0);
             expect(document.querySelectorAll('.fa-plus')).toHaveLength(1);
             expect(document.querySelectorAll('.field-expand-icon')).toHaveLength(3);
@@ -82,7 +82,7 @@ describe('ColumnSelectionModal', () => {
 
         test('lookup, expanded', () => {
             render(<ColumnChoice {...defaultProps()} column={QUERY_COL_LOOKUP} isExpanded isInView={false} />);
-            expect(document.querySelector('.field-name').textContent).toBe('Test Column');
+            expect(document.querySelector('.field-caption').textContent).toBe('Test Column');
             expect(document.querySelectorAll('.fa-check')).toHaveLength(0);
             expect(document.querySelectorAll('.fa-plus')).toHaveLength(1);
             expect(document.querySelectorAll('.field-expand-icon')).toHaveLength(3);
@@ -116,7 +116,7 @@ describe('ColumnSelectionModal', () => {
         }
 
         function validate(column: QueryColumn, deleteDisabled: boolean): void {
-            expect(document.querySelector('.field-name span').textContent).toBe(column.caption);
+            expect(document.querySelector('.field-caption span').textContent).toBe(column.caption);
             const removeIcon = document.querySelector('.fa-times');
             if (deleteDisabled) {
                 expect(removeIcon).toBeFalsy();
@@ -184,21 +184,21 @@ describe('ColumnSelectionModal', () => {
     describe('FieldLabelDisplay', () => {
         test('not lookup', () => {
             render(<FieldLabelDisplay column={QUERY_COL} includeFieldKey />);
-            expect(document.querySelector('.field-name span').textContent).toBe(QUERY_COL.caption);
+            expect(document.querySelector('.field-caption span').textContent).toBe(QUERY_COL.caption);
             expect(document.querySelectorAll('.overlay-trigger')).toHaveLength(1);
             expect(document.querySelectorAll('input')).toHaveLength(0);
         });
 
         test('is lookup', () => {
             render(<FieldLabelDisplay column={QUERY_COL_LOOKUP} includeFieldKey />);
-            expect(document.querySelectorAll('.field-name span')).toHaveLength(1);
+            expect(document.querySelectorAll('.field-caption span')).toHaveLength(1);
             expect(document.querySelectorAll('.overlay-trigger')).toHaveLength(1);
             expect(document.querySelectorAll('input')).toHaveLength(0);
         });
 
         test('is lookup, do not include fieldKey', () => {
             render(<FieldLabelDisplay column={QUERY_COL_LOOKUP} />);
-            expect(document.querySelectorAll('.field-name')).toHaveLength(1);
+            expect(document.querySelectorAll('.field-caption')).toHaveLength(1);
             expect(document.querySelectorAll('.overlay-trigger')).toHaveLength(0);
             expect(document.querySelectorAll('input')).toHaveLength(0);
         });

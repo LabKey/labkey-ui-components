@@ -17,6 +17,7 @@ import React, { FC, memo, PropsWithChildren, useEffect, useRef, useState } from 
 import { Link, useLocation } from 'react-router-dom';
 
 import { AppURL } from '../../url/AppURL';
+import { AppLink } from '../../url/AppLink';
 
 interface NavItemProps extends PropsWithChildren {
     isActive?: boolean;
@@ -47,7 +48,7 @@ export const NavItem: FC<NavItemProps> = memo(({ children, onActive, to, isActiv
         } else {
             setActive(false);
         }
-    }, [isActive, location, to]);
+    }, [isActive, location, onActive, to]);
 
     return (
         <li className={active ? 'active' : null} ref={itemRef}>
@@ -58,17 +59,19 @@ export const NavItem: FC<NavItemProps> = memo(({ children, onActive, to, isActiv
 NavItem.displayName = 'NavItem';
 
 export const ParentNavItem: FC<NavItemProps> = memo(({ children, to }) => {
-    const href = to instanceof AppURL ? to.toString() : to;
+    // AppLink is explicit about AppURL vs href
+    const href = to instanceof AppURL ? undefined : to;
+    const appUrl = to instanceof AppURL ? to : undefined;
 
     return (
         <div className="parent-nav">
             <ul className="nav navbar-nav">
                 <li>
-                    <Link to={href}>
+                    <AppLink href={href} appUrl={appUrl}>
                         <i className="fa fa-chevron-left" />
                         &nbsp;
                         {children}
-                    </Link>
+                    </AppLink>
                 </li>
             </ul>
         </div>

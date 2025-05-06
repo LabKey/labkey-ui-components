@@ -35,9 +35,9 @@ export function parseAppPath(href: string): string | undefined {
 
 interface Props extends PropsWithChildren {
     appUrl?: AppURL;
-    className: string;
+    className?: string;
     href?: string;
-    style: StyleHTMLAttributes<HTMLAnchorElement>;
+    style?: StyleHTMLAttributes<HTMLAnchorElement>;
     targetBlank?: boolean;
 }
 

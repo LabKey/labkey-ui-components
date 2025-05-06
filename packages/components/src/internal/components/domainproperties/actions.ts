@@ -61,7 +61,6 @@ import {
     DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
     DOMAIN_FIELD_SAMPLE_TYPE,
     DOMAIN_FIELD_TYPE,
-    LOOKUP_VALIDATOR_VALUES,
     MAX_TEXT_LENGTH,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
@@ -98,8 +97,8 @@ import {
     IDomainField,
     IFieldChange,
     isValidTextChoiceValue,
+    LOOKUP_VALIDATOR,
     NameExpressionsValidationResults,
-    PropertyValidator,
     QueryInfoLite,
     updateSampleField,
 } from './models';
@@ -902,11 +901,9 @@ export function updateDataType(field: DomainField, value: any): DomainField {
                 PHI: undefined,
             }) as DomainField;
         } else {
-            field = field.merge({
-                lookupValidator: PropDescType.isUser(value)
-                    ? new PropertyValidator(LOOKUP_VALIDATOR_VALUES)
-                    : undefined,
-            }) as DomainField;
+            if (PropDescType.isUser(value)) {
+                field = field.merge({lookupValidator: LOOKUP_VALIDATOR}) as DomainField;
+            }
         }
     }
 

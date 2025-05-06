@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.??.??
+*Released*: ? May 2025
+- Add AppLink
+  - Use AppLink any time you need
+- DefaultRenderer: Use AppLink
+  - Issue 53021: Grid Column Renderers can break the back button on pages using useRouteLeave
+
 ### version 6.42.0
 *Released*: 14 May 2025
 - Issue 52934: Filter unit options when updating a type that has samples with units

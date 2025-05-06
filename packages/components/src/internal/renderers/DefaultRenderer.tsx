@@ -16,11 +16,16 @@
 import React, { FC, memo } from 'react';
 import { List } from 'immutable';
 
+import { Link } from 'react-router-dom';
+
 import { QueryColumn } from '../../public/QueryColumn';
 
-import { MultiValueRenderer } from './MultiValueRenderer';
 import { getDataStyling } from '../util/utils';
 import { isConditionalFormattingEnabled } from '../app/utils';
+
+import { AppLink } from '../url/AppLink';
+
+import { MultiValueRenderer } from './MultiValueRenderer';
 
 interface Props {
     col?: QueryColumn;
@@ -66,18 +71,14 @@ export const DefaultRenderer: FC<Props> = memo(({ col, data, noLink }) => {
                 display = o !== null && o !== undefined ? o.toString() : null;
             }
 
-            if (data.get('url') && !noLink) {
+            const url = data.get('url');
+
+            if (url && !noLink) {
                 const targetBlank = data.get('urlTarget') === TARGET_BLANK;
                 return (
-                    <a
-                        className={className}
-                        href={data.get('url')}
-                        target={targetBlank ? TARGET_BLANK : undefined}
-                        rel={targetBlank ? URL_REL : undefined}
-                        style={style}
-                    >
+                    <AppLink className={className} href={url} targetBlank={targetBlank} style={style}>
                         {display}
-                    </a>
+                    </AppLink>
                 );
             }
         }

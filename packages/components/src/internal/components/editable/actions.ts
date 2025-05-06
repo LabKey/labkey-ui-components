@@ -21,7 +21,7 @@ import { getContainerFilterForLookups } from '../../query/api';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-import { resolveErrorMessage } from '../../util/messaging';
+import { lookupValidationErrorMessage, resolveErrorMessage } from '../../util/messaging';
 
 import {
     CellMessage,
@@ -396,7 +396,7 @@ async function getLookupValueDescriptors(
                     messageAndValues.push({
                         message: {
                             isWarning: true,
-                            message: errorMap[value] ?? lookupValidationError(value, false, displayValue).message,
+                            message: errorMap[value] ?? lookupValidationErrorMessage(value, false, displayValue),
                         },
                         valueDescriptor: { display: displayValue ?? `<${value}>`, raw: value },
                     });
@@ -408,24 +408,6 @@ async function getLookupValueDescriptors(
 
     await Promise.all(lookupPromises);
     return lookupValues;
-}
-
-export function lookupValidationError(
-    value: string | number | boolean,
-    fromPaste?: boolean,
-    displayValue?: any
-): CellMessage {
-    let message = displayValue !== undefined ? `${displayValue} is no longer a valid value` : `Could not find ${value}`;
-
-    if (fromPaste) {
-        if (typeof value === 'string' && value.toString().indexOf(',') > -1) {
-            message += '. Please make sure values that contain commas are properly quoted.';
-        }
-    } else {
-        message += '. Data may have been moved or deleted.';
-    }
-
-    return { message };
 }
 
 async function getLookupDisplayValue(column: QueryColumn, value: any, containerPath: string): Promise<MessageAndValue> {
@@ -442,7 +424,7 @@ async function getLookupDisplayValue(column: QueryColumn, value: any, containerP
 
     const descriptors = await findLookupValues({ column, containerPath, forUpdate: false, lookupKeyValues: [value] });
     if (!descriptors.length) {
-        message = lookupValidationError(value);
+        message = { message: lookupValidationErrorMessage(value) };
     }
 
     return {
@@ -1100,7 +1082,7 @@ export function parsePastedLookup(
             .slice(0, 4)
             .map(u => '"' + u + '"')
             .join(', ');
-        message = lookupValidationError(valueStr, true);
+        message = { message: lookupValidationErrorMessage(valueStr, true) };
     }
 
     return {

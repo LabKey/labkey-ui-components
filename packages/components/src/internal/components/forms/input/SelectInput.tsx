@@ -18,6 +18,7 @@ import ReactSelect, { components } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import AsyncCreatableSelect from 'react-select/async-creatable';
 import CreatableSelect from 'react-select/creatable';
+import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
@@ -237,6 +238,7 @@ export interface SelectInputProps {
     value?: any;
     valueKey?: string;
     valueRenderer?: any;
+    warning?: ReactNode;
 }
 
 type SelectInputImplProps = SelectInputProps & FormsyInjectedProps<any>;
@@ -713,20 +715,22 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
     };
 
     render() {
-        const { containerClass, errorMessage, formsy, help, inputClass } = this.props;
+        const { containerClass, errorMessage, formsy, help, inputClass, warning } = this.props;
         const hasError = formsy && !!errorMessage;
+        const hasWarning = !hasError && !!warning;
+
+        const className = classNames('select-input-container', containerClass, {
+            'has-error': hasError,
+            'has-warning': hasWarning,
+        });
 
         return (
-            <div className={`select-input-container ${containerClass}`}>
+            <div className={className}>
                 {this.renderLabel()}
                 <div className={inputClass}>
                     {this.renderSelect()}
-                    {hasError && (
-                        <div className="has-error">
-                            <span className="error-message help-block">{errorMessage}</span>
-                        </div>
-                    )}
-                    {!hasError && !!help && <span className="help-block">{help}</span>}
+                    {hasError && <span className="help-block">{errorMessage}</span>}
+                    {!hasError && (hasWarning || !!help) && <span className="help-block">{warning ?? help}</span>}
                 </div>
             </div>
         );

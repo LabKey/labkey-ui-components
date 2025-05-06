@@ -16,7 +16,6 @@ import {
     changeColumn,
     detectPadLength,
     loadEditorModelData,
-    lookupValidationError,
     parseIntIfNumber,
     parsePastedLookup,
     removeColumn,
@@ -1317,29 +1316,5 @@ describe('loadEditorModelData', () => {
 
         // Expect both lookup columns to have been validated
         expect(api.query.selectRows).toHaveBeenCalledTimes(2);
-    });
-});
-
-describe('lookupValidationError', () => {
-    test('value only', () => {
-        expect(lookupValidationError('s').message).toEqual('Could not find s. Data may have been moved or deleted.');
-        expect(lookupValidationError(1.4).message).toEqual('Could not find 1.4. Data may have been moved or deleted.');
-        expect(lookupValidationError(false).message).toEqual(
-            'Could not find false. Data may have been moved or deleted.'
-        );
-    });
-
-    test('fromPaste', () => {
-        expect(lookupValidationError(false, true).message).toEqual('Could not find false');
-        expect(lookupValidationError('beep', true).message).toEqual('Could not find beep');
-        expect(lookupValidationError('"sara", "pete"', true).message).toEqual(
-            'Could not find "sara", "pete". Please make sure values that contain commas are properly quoted.'
-        );
-    });
-
-    test('with displayValue', () => {
-        expect(lookupValidationError('beep,', false, 'vw').message).toEqual(
-            'vw is no longer a valid value. Data may have been moved or deleted.'
-        );
     });
 });

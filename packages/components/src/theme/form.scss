@@ -432,3 +432,15 @@ textarea.form-control {
 .modal-footer .inline-comment .inline-comment-label {
     margin-bottom: 0;
 }
+
+.has-error .select-input__control,
+.has-error .form-control,
+.has-error .form-control:focus {
+    border-color: $red-border;
+    box-shadow: inset 0 0 3px 0 $red-shadow, 0 0 3px 0 $red-shadow;
+}
+
+.has-warning .select-input__control,
+.has-warning .select-input__control:hover {
+    border-color: $brand-warning;
+}

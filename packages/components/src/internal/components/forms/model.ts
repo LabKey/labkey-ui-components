@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, OrderedMap, Record as ImmutableRecord } from 'immutable';
-import { Filter, Query, Utils } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
@@ -28,7 +28,11 @@ import {
     selectRowsDeprecated,
 } from '../../query/api';
 import { similaritySortFactory } from '../../util/similaritySortFactory';
-import { parseCsvString } from '../../util/utils';
+import { caseInsensitive, parseCsvString } from '../../util/utils';
+
+import { naturalSort } from '../../../public/sort';
+
+import { Row } from '../../query/selectRows';
 
 import { SelectInputOption } from './input/SelectInput';
 import { DELIMITER } from './constants';
@@ -169,6 +173,8 @@ export function setSelection(model: QuerySelectModel, rawSelectedValue: any): Qu
     const selectedItems = getSelectedOptions(model, rawSelectedValue);
 
     return model.merge({
+        // Issue 52773: Unset notFoundValues once a value has been selected
+        notFoundValues: undefined,
         rawSelectedValue,
         selectedItems,
         selectedQuery: parseSelectedQuery(model, selectedItems),
@@ -178,7 +184,7 @@ export function setSelection(model: QuerySelectModel, rawSelectedValue: any): Qu
 export function fetchSearchResults(model: QuerySelectModel, input: any): Promise<ISelectRowsResult> {
     const { addExactFilter, displayColumn, maxRows, queryFilters, schemaQuery, selectedItems, valueColumn } = model;
 
-    let allFilters = [];
+    let allFilters: Filter.IFilter[] = [];
     const filterVal = input.trim();
 
     // fetch additional options and exclude previously selected so user can see more
@@ -220,37 +226,39 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
     );
 }
 
+function initErrorMsg(queryInfo: QueryInfo, suffix?: string): string {
+    const msg = `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}).`;
+    if (suffix) return msg + ' ' + suffix;
+    return msg;
+}
+
 function initValueColumn(queryInfo: QueryInfo, column?: string): string {
-    // determine 'valueColumn'
-    let valueColumn: string;
     if (column) {
-        valueColumn = column;
-        const valueCol = queryInfo.getColumn(valueColumn) ?? queryInfo.getColumnFromName(valueColumn);
+        const valueCol = queryInfo.getColumn(column) ?? queryInfo.getColumnFromName(column);
 
         if (!valueCol) {
-            throw new Error(
-                `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). The "valueColumn" "${valueColumn}" does not exist.`
-            );
+            throw new Error(initErrorMsg(queryInfo, `The specified "valueColumn" "${column}" does not exist.`));
         }
-        valueColumn = valueCol.fieldKey;
-    } else {
-        const pkCols = queryInfo.getPkCols();
 
-        if (pkCols.length === 1) {
-            valueColumn = pkCols[0].fieldKey;
-        } else if (pkCols.length > 0) {
-            throw new Error(
-                `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). Set "valueColumn" explicitly to any of ` +
-                    pkCols.map(col => col.fieldKey).join(', ')
-            );
-        } else {
-            throw new Error(
-                `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). Set "valueColumn" explicitly as this query does not have any primary keys.`
-            );
-        }
+        return valueCol.fieldKey;
     }
 
-    return valueColumn;
+    const pkCols = queryInfo.getPkCols();
+
+    if (pkCols.length === 0) {
+        throw new Error(
+            initErrorMsg(queryInfo, 'Set "valueColumn" explicitly as this query does not have any primary keys.')
+        );
+    }
+
+    if (pkCols.length > 1) {
+        const availablePkKeys = pkCols.map(col => `"${col.fieldKey}"`).join(', ');
+        throw new Error(
+            initErrorMsg(queryInfo, `Set "valueColumn" explicitly to any of the primary keys: ${availablePkKeys}`)
+        );
+    }
+
+    return pkCols[0].fieldKey;
 }
 
 function initDisplayColumn(queryInfo: QueryInfo, valueColumn: string, column?: string): string {
@@ -259,9 +267,7 @@ function initDisplayColumn(queryInfo: QueryInfo, valueColumn: string, column?: s
     if (column) {
         const col = queryInfo.getColumn(column) ?? queryInfo.getColumnFromName(column);
         if (!col) {
-            console.warn(
-                `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). The display column "${column}" does not exist.`
-            );
+            console.warn(initErrorMsg(queryInfo, `The display column "${column}" does not exist.`));
         } else {
             displayColumn = col.fieldKey;
         }
@@ -289,9 +295,7 @@ function initGroupByColumn(queryInfo: QueryInfo, column?: string): string {
 
     if (column) {
         if (!queryInfo.getColumn(column)) {
-            console.warn(
-                `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). The group by column "${column}" does not exist.`
-            );
+            console.warn(initErrorMsg(queryInfo, `The group by column "${column}" does not exist.`));
         } else {
             groupByColumn = column;
         }
@@ -322,62 +326,117 @@ export function queryColumnNames(
     return Array.from(new Set(queryColumns));
 }
 
-export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<QuerySelectModelProps>> {
-    const { containerFilter, containerPath, schemaQuery, queryFilters } = props;
-
+async function initQueryInfoWithColumns(props: QuerySelectOwnProps): Promise<Partial<QuerySelectModelProps>> {
+    const { containerPath, schemaQuery } = props;
     const queryInfo = await getQueryDetails({ containerPath, schemaQuery });
+
     const valueColumn = initValueColumn(queryInfo, props.valueColumn);
     const displayColumn = initDisplayColumn(queryInfo, valueColumn, props.displayColumn);
     const groupByColumn = initGroupByColumn(queryInfo, props.groupByColumn);
-    let selectedItems = Map<string, any>();
 
-    if (props.value !== undefined && props.value !== null) {
-        let filter: Filter.IFilter;
+    return { queryInfo, valueColumn, displayColumn, groupByColumn };
+}
 
-        if (props.multiple) {
-            if (Array.isArray(props.value)) {
-                filter = Filter.create(valueColumn, props.value, Filter.Types.IN);
-            } else if (typeof props.value === 'string') {
-                // Allow for setting multiValue value.
-                // This requires updating the filter and the string
-                filter = Filter.create(
-                    valueColumn,
-                    parseCsvString(props.value, props.delimiter, true),
-                    Filter.Types.IN
-                );
+export function buildValueFilter(
+    value: any,
+    valueColumn: string,
+    multiple: boolean,
+    delimiter: string
+): { expectedValueCount: number; filter: Filter.IFilter } {
+    let filter: Filter.IFilter;
+    let expectedValueCount = 1;
+
+    if (multiple) {
+        if (Array.isArray(value)) {
+            filter = Filter.create(valueColumn, value, Filter.Types.IN);
+            expectedValueCount = new Set(value).size;
+        } else if (typeof value === 'string') {
+            const parsed = parseCsvString(value, delimiter, true);
+            filter = Filter.create(valueColumn, parsed, Filter.Types.IN);
+            expectedValueCount = new Set(parsed).size;
+        }
+    }
+
+    if (!filter) {
+        filter = Filter.create(valueColumn, value);
+    }
+
+    return { expectedValueCount, filter };
+}
+
+export function findNotFoundValues(
+    selectedRows: Record<string, Row>,
+    filter: Filter.IFilter,
+    valueColumn: string
+): string[] {
+    const filterValue = filter.getValue();
+    if (filterValue === undefined || filterValue === null) return [];
+
+    const rawValues = Array.isArray(filterValue) ? filterValue : [filterValue];
+    const expectedValues = new Set(rawValues.filter(v => v !== undefined && v !== null).map(v => v.toString()));
+
+    Object.values(selectedRows)
+        .map(item => caseInsensitive(item, valueColumn)?.value)
+        .filter(value => value !== undefined && value !== null)
+        .forEach(value => expectedValues.delete(value.toString()));
+
+    return Array.from(expectedValues).sort(naturalSort);
+}
+
+function initSelectedItems(
+    props: QuerySelectOwnProps,
+    queryInfo: QueryInfo,
+    valueColumn: string,
+    displayColumn: string,
+    groupByColumn: string,
+    filter: Filter.IFilter
+): Promise<ISelectRowsResult> {
+    const filters = props.queryFilters ? props.queryFilters.toArray() : [];
+    filters.push(filter);
+
+    const { queryName, schemaName, viewName } = props.schemaQuery;
+
+    return selectRowsDeprecated({
+        columns: queryColumnNames(queryInfo, displayColumn, valueColumn, props.requiredColumns, groupByColumn),
+        containerFilter: props.containerFilter,
+        containerPath: props.containerPath,
+        filterArray: filters,
+        parameters: props.queryParams,
+        queryName,
+        schemaName,
+        viewName,
+    });
+}
+
+export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<QuerySelectModelProps>> {
+    const { delimiter, multiple, value } = props;
+    const { queryInfo, valueColumn, displayColumn, groupByColumn } = await initQueryInfoWithColumns(props);
+
+    let selectedItems: ISelectRowsResult;
+    let notFoundValues: List<any>;
+
+    if (value !== undefined && value !== null) {
+        const { expectedValueCount, filter } = buildValueFilter(value, valueColumn, multiple, delimiter);
+        selectedItems = await initSelectedItems(props, queryInfo, valueColumn, displayColumn, groupByColumn, filter);
+        const selectedRows = selectedItems.models[selectedItems.key];
+
+        if (Object.keys(selectedRows).length !== expectedValueCount) {
+            const notFoundValuesArray = findNotFoundValues(selectedRows, filter, valueColumn);
+            if (notFoundValuesArray) {
+                notFoundValues = List(notFoundValuesArray);
             }
         }
-
-        if (!filter) {
-            filter = Filter.create(valueColumn, props.value);
-        }
-
-        const filters = queryFilters ? queryFilters.toArray() : [];
-        filters.push(filter);
-
-        const { queryName, schemaName, viewName } = schemaQuery;
-        const data = await selectRowsDeprecated({
-            columns: queryColumnNames(queryInfo, displayColumn, valueColumn, props.requiredColumns, groupByColumn),
-            containerFilter,
-            containerPath,
-            filterArray: filters,
-            parameters: props.queryParams,
-            queryName,
-            schemaName,
-            viewName,
-        });
-
-        selectedItems = fromJS(
-            quoteValueColumnWithDelimiters(data, props.valueColumn, props.delimiter).models[data.key]
-        );
     }
 
     return {
         displayColumn,
         groupByColumn,
         isInit: true,
+        notFoundValues,
         queryInfo,
-        selectedItems,
+        selectedItems: selectedItems
+            ? fromJS(quoteValueColumnWithDelimiters(selectedItems, valueColumn, delimiter).models[selectedItems.key])
+            : Map<string, any>(),
         valueColumn,
     };
 }
@@ -393,6 +452,7 @@ export interface QuerySelectModelProps {
     isInit: boolean;
     maxRows: number;
     multiple: boolean;
+    notFoundValues: List<any>;
     queryFilters: List<Filter.IFilter>;
     queryInfo: QueryInfo;
     queryParams: Record<string, any>;
@@ -417,6 +477,7 @@ export class QuerySelectModel
         isInit: false,
         maxRows: 20,
         multiple: false,
+        notFoundValues: undefined,
         queryFilters: undefined,
         queryInfo: undefined,
         queryParams: undefined,
@@ -440,6 +501,7 @@ export class QuerySelectModel
     declare isInit: boolean;
     declare maxRows: number;
     declare multiple: boolean;
+    declare notFoundValues: List<any>;
     declare queryFilters: List<Filter.IFilter>;
     declare queryInfo: QueryInfo;
     declare queryParams: Record<string, any>;

@@ -1,9 +1,9 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
-- Issue 52556: Add data-fieldkey attribuet to grid header elements and input elements
+### version 6.40.1
+*Released*: 6 May 2025
+- Issue 52556: Add data-fieldkey attribute to grid header elements and input elements
 
 ### version 6.40.0
 *Released*: 5 May 2025

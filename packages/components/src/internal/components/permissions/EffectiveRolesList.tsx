@@ -5,7 +5,6 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 
-
 import { User } from '../base/models/User';
 import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
 
@@ -47,32 +46,32 @@ export class EffectiveRolesList extends React.PureComponent<Props> {
             <>
                 <hr className="principal-hr" />
                 <div className="row">
-                    <div className="col-xs-4 principal-detail-label">
-                        Effective Roles
-                    </div>
+                    <div className="col-xs-4 principal-detail-label">Effective Roles</div>
                     <div className="col-xs-8 principal-detail-value">
                         <ul className="principal-detail-ul">
-                            {assignments.map(assignment => {
-                                const role = rolesByUniqueName.get(assignment.role);
-                                const roleDisplay = role ? role.displayName : assignment.role;
-                                const url = createProductUrlFromParts(
-                                    targetProductId,
-                                    currentProductId,
-                                    { expand: roleDisplay },
-                                    'admin',
-                                    'permissions'
-                                );
+                            {assignments
+                                .map(assignment => {
+                                    const role = rolesByUniqueName.get(assignment.role);
+                                    const roleDisplay = role ? role.displayName : assignment.role;
+                                    const url = createProductUrlFromParts(
+                                        targetProductId,
+                                        currentProductId,
+                                        { expand: roleDisplay },
+                                        'admin',
+                                        'permissions'
+                                    );
 
-                                return (
-                                    <li key={assignment.role} className="principal-detail-li">
-                                        {currentUser.isAdmin && showLinks ? (
-                                            <a href={url instanceof AppURL ? url.toHref() : url}>{roleDisplay}</a>
-                                        ) : (
-                                            roleDisplay
-                                        )}
-                                    </li>
-                                );
-                            }).toArray()}
+                                    return (
+                                        <li key={assignment.role} className="principal-detail-li">
+                                            {currentUser.isAdmin && showLinks ? (
+                                                <a href={url instanceof AppURL ? url.toHref() : url}>{roleDisplay}</a>
+                                            ) : (
+                                                roleDisplay
+                                            )}
+                                        </li>
+                                    );
+                                })
+                                .toArray()}
                         </ul>
                     </div>
                 </div>

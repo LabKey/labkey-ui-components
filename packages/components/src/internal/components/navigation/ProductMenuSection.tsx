@@ -47,10 +47,8 @@ MenuSectionItemLabel.displayName = 'MenuSectionItemLabel';
 
 const MenuSectionLink: FC<MenuSectionLinkProps> = ({ config, item }) => {
     // const isAppUrl = (item.url instanceof AppURL || item.url.indexOf('#') === 0) && !config.useOriginalURL;
-    const href = item.url instanceof AppURL ? undefined : item.url;
-    const appUrl = item.url instanceof AppURL ? item.url : undefined;
     return (
-        <AppLink appUrl={appUrl} href={href} className="menu-section-link">
+        <AppLink to={item.url} className="menu-section-link">
             <MenuSectionItemLabel config={config} item={item} />
         </AppLink>
     );
@@ -92,9 +90,8 @@ export const ProductMenuSection: FC<MenuSectionProps> = memo(props => {
         headerText
     );
 
-    // In order to make sure we don't break useRouteLeave we need to use <Link> for AppURLs and <a> for non-app URLs
-    let headerEl = label;
-    if (headerEl) {
+    let headerEl: ReactNode;
+    if (label) {
         const headerURL = config.useOriginalURL
             ? section.url
             : createProductUrlFromPartsWithContainer(
@@ -105,33 +102,22 @@ export const ProductMenuSection: FC<MenuSectionProps> = memo(props => {
                   config.headerURLPart ?? section.key
               );
 
-        if (headerURL instanceof AppURL) {
-            headerEl = (
-                <Link to={headerURL.toString()} className="menu-section-link">
-                    {label}
-                </Link>
-            );
-        } else {
-            headerEl = <a href={getHref(headerURL)}>{label}</a>;
-        }
+        const className = headerURL instanceof AppURL ? 'menu-section-link' : undefined;
+        headerEl = (
+            <AppLink to={headerURL} className={className}>
+                {label}
+            </AppLink>
+        );
     }
 
     let emptyLink: ReactNode;
     if (config.emptyAppURL) {
         const emptyURL = createProductUrl(section.productId, currentProductId, config.emptyAppURL, containerPath);
-        if (emptyURL instanceof AppURL) {
-            emptyLink = (
-                <Link className="menu-section-link" to={emptyURL.toString()}>
-                    {config.emptyURLText}
-                </Link>
-            );
-        } else {
-            emptyLink = (
-                <a className="menu-section-link" href={emptyURL}>
-                    {config.emptyURLText}
-                </a>
-            );
-        }
+        emptyLink = (
+            <AppLink to={emptyURL} className="menu-section-link">
+                {config.emptyURLText}
+            </AppLink>
+        );
     }
 
     const visibleItems = section.items.filter(item => !item.hidden).sortBy(item => item.label, naturalSort);

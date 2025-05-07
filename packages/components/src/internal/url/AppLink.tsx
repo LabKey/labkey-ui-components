@@ -2,8 +2,9 @@ import React, { FC, memo, PropsWithChildren, StyleHTMLAttributes } from 'react';
 
 import { Link } from 'react-router-dom';
 
-import { AppURL } from './AppURL';
 import { ActionURL } from '@labkey/api';
+
+import { AppURL } from './AppURL';
 
 const TARGET_BLANK = '_blank';
 const URL_REL = 'noopener noreferrer';
@@ -34,11 +35,10 @@ export function parseAppPath(href: string): string | undefined {
 }
 
 interface Props extends PropsWithChildren {
-    appUrl?: AppURL;
     className?: string;
-    href?: string;
     style?: StyleHTMLAttributes<HTMLAnchorElement>;
     targetBlank?: boolean;
+    to: string | AppURL;
 }
 
 /**
@@ -46,15 +46,13 @@ interface Props extends PropsWithChildren {
  * handles all the corner cases around moving within our apps, between our apps, to other parts of LKS, and externally.
  */
 export const AppLink: FC<Props> = memo(props => {
-    const { appUrl, children, className, href, style, targetBlank } = props;
+    const { children, className, style, targetBlank, to } = props;
 
-    if (!appUrl && !href) throw new Error('AppLink: incorrect usage. Must pass "href" or "appUrl".');
+    const appPath = to instanceof AppURL ? to.toString() : parseAppPath(to);
 
-    const to = appUrl ? appUrl.toString() : parseAppPath(href);
-
-    if (to) {
+    if (appPath) {
         return (
-            <Link className={className} style={style} to={to}>
+            <Link className={className} style={style} to={appPath}>
                 {children}
             </Link>
         );
@@ -63,7 +61,7 @@ export const AppLink: FC<Props> = memo(props => {
     return (
         <a
             className={className}
-            href={href}
+            href={to as string}
             rel={targetBlank ? URL_REL : undefined}
             style={style}
             target={targetBlank ? TARGET_BLANK : undefined}

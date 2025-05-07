@@ -37,7 +37,7 @@ interface Props {
 }
 
 const TARGET_BLANK = '_blank';
-const URL_REL = 'noopener noreferrer';
+
 /**
  * This is the default cell renderer for Details/Grids using a QueryGridModel.
  */
@@ -76,7 +76,7 @@ export const DefaultRenderer: FC<Props> = memo(({ col, data, noLink }) => {
             if (url && !noLink) {
                 const targetBlank = data.get('urlTarget') === TARGET_BLANK;
                 return (
-                    <AppLink className={className} href={url} targetBlank={targetBlank} style={style}>
+                    <AppLink className={className} to={url} targetBlank={targetBlank} style={style}>
                         {display}
                     </AppLink>
                 );

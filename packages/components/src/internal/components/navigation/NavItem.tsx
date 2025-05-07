@@ -27,9 +27,6 @@ interface NavItemProps extends PropsWithChildren {
 
 export const NavItem: FC<NavItemProps> = memo(({ children, onActive, to, isActive }) => {
     const location = useLocation();
-    // AppLink is explicit about AppURL vs href
-    const href = to instanceof AppURL ? undefined : to;
-    const appUrl = to instanceof AppURL ? to : undefined;
     const itemRef = useRef<HTMLLIElement>(undefined);
     const [active, setActive] = useState<boolean>(false);
 
@@ -54,31 +51,23 @@ export const NavItem: FC<NavItemProps> = memo(({ children, onActive, to, isActiv
 
     return (
         <li className={active ? 'active' : null} ref={itemRef}>
-            <AppLink href={href} appUrl={appUrl}>
-                {children}
-            </AppLink>
+            <AppLink to={to}>{children}</AppLink>
         </li>
     );
 });
 NavItem.displayName = 'NavItem';
 
-export const ParentNavItem: FC<NavItemProps> = memo(({ children, to }) => {
-    // AppLink is explicit about AppURL vs href
-    const href = to instanceof AppURL ? undefined : to;
-    const appUrl = to instanceof AppURL ? to : undefined;
-
-    return (
-        <div className="parent-nav">
-            <ul className="nav navbar-nav">
-                <li>
-                    <AppLink href={href} appUrl={appUrl}>
-                        <i className="fa fa-chevron-left" />
-                        &nbsp;
-                        {children}
-                    </AppLink>
-                </li>
-            </ul>
-        </div>
-    );
-});
+export const ParentNavItem: FC<NavItemProps> = memo(({ children, to }) => (
+    <div className="parent-nav">
+        <ul className="nav navbar-nav">
+            <li>
+                <AppLink to={to}>
+                    <i className="fa fa-chevron-left" />
+                    &nbsp;
+                    {children}
+                </AppLink>
+            </li>
+        </ul>
+    </div>
+));
 ParentNavItem.displayName = 'ParentNavItem';

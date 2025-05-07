@@ -3,7 +3,7 @@ import { getServerContext, PermissionTypes } from '@labkey/api';
 
 import classNames from 'classnames';
 
-import { LKS_PRODUCT_ID } from '../../app/constants';
+import { LKS_PRODUCT_ID } from '../../app/products';
 import { hasPremiumModule } from '../../app/utils';
 
 import { naturalSortByProperty } from '../../../public/sort';

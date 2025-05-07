@@ -24,6 +24,7 @@ import {
     createProductUrlFromPartsWithContainer,
     spliceURL,
 } from './internal/url/AppURL';
+import { AppLink } from './internal/url/AppLink';
 import { getHref } from './internal/url/utils';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
@@ -711,7 +712,13 @@ import { BarTenderSettingsForm } from './internal/components/labelPrinting/BarTe
 import { ColumnSelectionModal } from './internal/components/ColumnSelectionModal';
 
 import { AppReducers, ProductMenuReducers, ServerNotificationReducers } from './internal/app/reducers';
-
+import {
+    isBiologicsEnabled,
+    isFreezerManagementEnabled,
+    isLIMSEnabled,
+    isPremiumProductEnabled,
+    isSampleManagerEnabled,
+} from './internal/app/products';
 import {
     biologicsIsPrimaryApp,
     CloseEventCode,
@@ -739,25 +746,21 @@ import {
     isAssayFileUploadEnabled,
     isAssayQCEnabled,
     isAssayRequestsEnabled,
-    isBiologicsEnabled,
     isConditionalFormattingEnabled,
     isCustomImportTemplatesEnabled,
     isDataChangeCommentRequirementFeatureEnabled,
     isELNEnabled,
     isExperimentAliasEnabled,
-    isFreezerManagementEnabled,
     isLKSSupportEnabled,
     isMediaEnabled,
     isNonstandardAssayEnabled,
     isNotebookTagsEnabled,
     isPlatesEnabled,
-    isPremiumProductEnabled,
     isProductFoldersEnabled,
     isProjectContainer,
     isProtectedDataEnabled,
     isRegistryEnabled,
     isSampleAliquotSelectorEnabled,
-    isSampleManagerEnabled,
     isSampleStatusEnabled,
     isSharedContainer,
     isSourceTypeEnabled,
@@ -967,6 +970,7 @@ const App = {
     isPlatesEnabled,
     isSampleManagerEnabled,
     isBiologicsEnabled,
+    isLIMSEnabled,
     isPremiumProductEnabled,
     isSampleAliquotSelectorEnabled,
     isProjectContainer,
@@ -1224,6 +1228,7 @@ export {
     buildURL,
     imageURL,
     spliceURL,
+    AppLink,
     WHERE_FILTER_TYPE,
     NOT_ANY_FILTER_TYPE,
     createProductUrl,

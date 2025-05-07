@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render } from '@testing-library/react';
 
-import { LKS_PRODUCT_ID } from '../../app/constants';
+import { LKS_PRODUCT_ID } from '../../app/products';
 
 import { getSelectedProduct, ProductNavigationMenuImpl } from './ProductNavigationMenu';
 import { ProductModel } from './models';

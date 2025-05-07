@@ -1,7 +1,7 @@
 import React, { FC, memo } from 'react';
 import { getServerContext } from '@labkey/api';
 
-import { LKS_PRODUCT_ID } from '../../app/constants';
+import { LKS_PRODUCT_ID } from '../../app/products';
 
 import { imageURL } from '../../url/ActionURL';
 

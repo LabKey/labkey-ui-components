@@ -21,7 +21,13 @@ import {
 import { Container } from '../components/base/models/Container';
 
 import { MenuSectionConfig } from '../components/navigation/model';
-
+import {
+    isBiologicsEnabled,
+    isFreezerManagementEnabled,
+    isLIMSEnabled,
+    isPremiumProductEnabled,
+    isSampleManagerEnabled,
+} from './products';
 import {
     addAssaysSectionConfig,
     addSourcesSectionConfig,
@@ -38,19 +44,14 @@ import {
     isAssayEnabled,
     isAssayQCEnabled,
     isAssayRequestsEnabled,
-    isBiologicsEnabled,
     isCalculatedFieldsEnabled,
     isCommunityDistribution,
     isELNEnabled,
-    isFreezerManagementEnabled,
-    isLIMSEnabled,
     isLKSSupportEnabled,
     isMediaEnabled,
-    isPremiumProductEnabled,
     isProductNavigationEnabled,
     isProjectContainer,
     isProtectedDataEnabled,
-    isSampleManagerEnabled,
     isSampleStatusEnabled,
     isSharedContainer,
     isTransformScriptsEnabled,

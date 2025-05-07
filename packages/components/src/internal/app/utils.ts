@@ -12,7 +12,7 @@ import { hasAllPermissions, hasPermissions, User } from '../components/base/mode
 import { MenuSectionConfig } from '../components/navigation/model';
 import { imageURL } from '../url/ActionURL';
 import { AppURL } from '../url/AppURL';
-import { ModuleContext } from '../components/base/ServerContext';
+import { ModuleContext, resolveModuleContext } from '../components/base/ServerContext';
 
 import { Container } from '../components/base/models/Container';
 
@@ -51,6 +51,13 @@ import {
     ARCHIVED_FOLDERS,
     DEPRECATED_OBJECT_LEVEL_DISCUSSIONS,
 } from './constants';
+import {
+    isBiologicsEnabled,
+    isFreezerManagementEnabled,
+    isLIMSEnabled,
+    isPremiumProductEnabled,
+    isSampleManagerEnabled,
+} from './products';
 
 declare var LABKEY: LabKey;
 
@@ -73,10 +80,6 @@ export enum CloseEventCode {
     TRY_AGAIN_LATER = 1013,
     BAD_GATEWAY = 1014,
     TLS_HANDSHAKE = 1015,
-}
-
-export function resolveModuleContext(moduleContext?: ModuleContext): ModuleContext {
-    return moduleContext ?? getServerContext().moduleContext;
 }
 
 export function userCanReadAssays(user: User): boolean {
@@ -139,10 +142,6 @@ export function userCanEditSharedViews(user: User): boolean {
     return hasPermissions(user, [PermissionTypes.EditSharedView]);
 }
 
-export function isFreezerManagementEnabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.inventory !== undefined;
-}
-
 export function isOntologyEnabled(moduleContext?: ModuleContext): boolean {
     return hasModule('Ontology', moduleContext);
 }
@@ -181,18 +180,6 @@ export function setProductFolders(moduleContext: ModuleContext, hasProductFolder
     return Object.assign(moduleContext ?? {}, {
         query: Object.assign(moduleContext?.query ?? {}, { hasProductFolders }),
     });
-}
-
-export function isSampleManagerEnabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.samplemanagement !== undefined;
-}
-
-export function isBiologicsEnabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.biologics !== undefined;
-}
-
-export function isPremiumProductEnabled(moduleContext?: ModuleContext): boolean {
-    return isSampleManagerEnabled(moduleContext) || isBiologicsEnabled(moduleContext);
 }
 
 export function isAppHomeFolder(container?: Partial<Container>, moduleContext?: ModuleContext): boolean {
@@ -392,13 +379,6 @@ export function isRReportsEnabled(moduleContext?: ModuleContext): boolean {
 
 export function isLKSSupportEnabled(moduleContext?: ModuleContext): boolean {
     return isBiologicsEnabled(moduleContext) || hasPremiumModule(moduleContext);
-}
-
-export function isLIMSEnabled(moduleContext?: ModuleContext, container?: Container): boolean {
-    // The check for folder type is not ideal here, but since the product is provided through the sampleManagement module
-    // a simple module check isn't sufficient. Since the product configuration is global to the server, we have no good
-    // way to know which URLs to construct in a particular container except by inspecting the folder type (at the moment).
-    return isSampleManagerEnabled(moduleContext) && (container ?? getServerContext().container)?.folderType === 'LIMS';
 }
 
 export function isAssayFileUploadEnabled(moduleContext?: ModuleContext): boolean {

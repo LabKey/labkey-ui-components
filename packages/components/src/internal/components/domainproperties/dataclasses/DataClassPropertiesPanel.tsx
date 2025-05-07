@@ -23,7 +23,7 @@ import { loadNameExpressionOptions } from '../../settings/actions';
 
 import { PREFIX_SUBSTITUTION_EXPRESSION, PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
 
-import { isSampleManagerEnabled } from '../../../app/utils';
+import { isSampleManagerEnabled } from '../../../app/products';
 
 import { NameExpressionGenIdProps } from '../NameExpressionGenIdBanner';
 

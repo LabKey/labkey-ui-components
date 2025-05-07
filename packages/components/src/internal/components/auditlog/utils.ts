@@ -5,13 +5,13 @@
 import React, { ReactNode } from 'react';
 import { Map } from 'immutable';
 
+import { isSampleManagerEnabled } from '../../app/products';
 import {
     isAssayEnabled,
     isChartBuilderEnabled,
     isELNEnabled,
     isProductFoldersEnabled,
     isRegistryEnabled,
-    isSampleManagerEnabled,
     isWorkflowEnabled,
 } from '../../app/utils';
 import { ASSAYS_KEY, BOXES_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { ActionURL, Filter, getServerContext } from '@labkey/api';
+import { getPrimaryAppProductId } from '../app/products';
 
 export function createProductUrlFromParts(
     urlProductId: string,
@@ -122,16 +123,18 @@ export function buildURL(controller: string, action: string, params?: any, optio
 type URLParam = boolean | number | string;
 
 export class AppURL {
-    declare _baseUrl: string;
+    declare _basePath: string;
     declare _filters: Filter.IFilter[];
     declare _params: Record<string, string>;
+    declare _containerPath: string;
+    declare _productId: string;
 
     constructor(partial: Partial<AppURL>) {
         Object.assign(this, partial);
     }
 
     static create(...parts): AppURL {
-        let baseUrl = '';
+        let basePath = '';
         for (let i = 0; i < parts.length; i++) {
             if (parts[i] === undefined || parts[i] === null || parts[i] === '') {
                 if (getServerContext().devMode) {
@@ -152,16 +155,16 @@ export class AppURL {
 
             if (i === 0) {
                 if (stringPart.indexOf('/') === 0) {
-                    baseUrl += newPart;
+                    basePath += newPart;
                 } else {
-                    baseUrl += '/' + newPart;
+                    basePath += '/' + newPart;
                 }
             } else {
-                baseUrl += '/' + newPart;
+                basePath += '/' + newPart;
             }
         }
 
-        return new AppURL({ _baseUrl: baseUrl });
+        return new AppURL({ _basePath: basePath });
     }
 
     addFilters(...filters: Filter.IFilter[]): AppURL {
@@ -193,24 +196,69 @@ export class AppURL {
         return this;
     }
 
-    toHref(urlPrefix?: string): string {
-        return '#' + this.toString(urlPrefix);
+    setContainerPath(containerPath: string): AppURL {
+        return new AppURL({ ...this, _containerPath: containerPath });
     }
 
-    toQuery(urlPrefix?: string): Record<string, string> {
-        const query = { ...this._params };
+    getContainerPath(): string {
+        if (this._containerPath === undefined) return ActionURL.getContainer();
+        return this._containerPath;
+    }
 
-        if (this._filters) {
-            this._filters.forEach(f => {
-                query[f.getURLParameterName(urlPrefix)] = f.getURLParameterValue();
-            });
+    setProductId(productId: string): AppURL {
+        return new AppURL({ ...this, _productId: productId });
+    }
+
+    getProductId(): string {
+        if (this._productId === undefined) return getPrimaryAppProductId() ?? '';
+        return this._productId;
+    }
+
+    /**
+     * Returns true if the AppURL points to a path for the current app in the current container
+     */
+    isAppPath(): boolean {
+        const currentContainerPath = ActionURL.getContainer();
+        const targetContainerPath = this.getContainerPath();
+        const currentProductId = ActionURL.getController().toLowerCase();
+        const targetProductId = this.getProductId()?.toLowerCase() ?? '';
+        return currentContainerPath === targetContainerPath && currentProductId === targetProductId;
+    }
+
+    /**
+     * @deprecated You should only need this if you're rendering an anchor tag, and you should not do that.
+     * @param urlPrefix
+     */
+    toHref(urlPrefix?: string): string {
+        const href = this.toString(urlPrefix);
+        if (this.isAppPath()) return '#' + href;
+        return href;
+    }
+
+    /**
+     * Returns the base URL needed to generate a full LKS URL to one of our apps. If you did not set productId it will
+     * assume the primary product id (e.g. SM, Bio).
+     * e.g. for SM it returns: /MyContainer/samplemanagement-app.view#
+     */
+    baseUrl() {
+        const controller = this.getProductId().toLowerCase();
+        const currentController = ActionURL.getController().toLowerCase();
+        const currentAction = ActionURL.getAction().toLowerCase();
+        let action = 'app';
+
+        if (controller === currentController && currentAction === 'appdev') {
+            action = 'appDev';
         }
 
-        return query;
+        return ActionURL.buildURL(controller, action, this._containerPath);
     }
 
+    /**
+     * Returns the string of the app path needed to navigate within one of our apps. If this AppURL points to a
+     * different app
+     * @param urlPrefix
+     */
     toString(urlPrefix?: string): string {
-        const url = this._baseUrl;
         const parts = [];
 
         if (this._params) {
@@ -225,7 +273,17 @@ export class AppURL {
             });
         }
 
-        return url + (parts.length > 0 ? '?' + parts.join('&') : '');
+        const appPath = this._basePath + (parts.length > 0 ? '?' + parts.join('&') : '');
+
+        // TODO: do not merge this FM code, it's only useful while cleaning up FM usages
+        const isFMPath = appPath.startsWith('/boxes') || appPath.startsWith('/freezers');
+        const isFMApp = this._productId === 'freezermanager';
+        if (isFMPath && !isFMApp) {
+            console.error('FM URL incorrect product id:', appPath, this._productId);
+        }
+
+        if (!this.isAppPath()) return `${this.baseUrl()}#${appPath}`;
+        return appPath;
     }
 }
 

@@ -1,18 +1,35 @@
-/*
- * Copyright (c) 2019 LabKey Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Note: YES, this code does need to be above imports. Jest hoists mock code above imports, if we don't do this when
+// jest hoists the mock code above imports we'll get an error  that CONTEXT_PATH et al are being used before they're
+// defined.
+const CONTEXT_PATH = '';
+let CONTROLLER = 'samplemanager';
+let ACTION = 'app.view';
+let CONTAINER = '/MyTestContainer';
+jest.mock('@labkey/api', () => {
+    const api = jest.requireActual('@labkey/api');
+
+    return {
+        ...api,
+        // getServerContext: () => ({
+        //     experimental: {
+        //         containerRelativeURL: true,
+        //     },
+        //     devMode: true,
+        //     moduleContext: {
+        //         // Force isSampleManagerEnabled to be true
+        //         samplemanagement: {},
+        //     },
+        // }),
+        ActionURL: {
+            ...api.ActionURL,
+            getContextPath: () => CONTEXT_PATH,
+            getAction: () => ACTION,
+            getController: () => CONTROLLER,
+            getContainer: () => CONTAINER,
+        },
+    };
+});
+
 import { Filter } from '@labkey/api';
 
 import {
@@ -24,8 +41,29 @@ import {
 } from './AppURL';
 
 describe('AppURL', () => {
-    beforeAll(() => {
-        LABKEY.devMode = true;
+    let lk;
+    beforeEach(() => {
+        lk = LABKEY;
+        LABKEY = {
+            ...LABKEY,
+            devMode: true,
+            experimental: {
+                ...LABKEY.experimental,
+                containerRelativeURL: true,
+            },
+            moduleContext: {
+                ...LABKEY.moduleContext,
+                // Force isSampleManagerEnabled to be true
+                samplemanagement: {},
+            },
+        };
+        CONTROLLER = 'samplemanager';
+        ACTION = 'app.view';
+        CONTAINER = '/MyTestContainer';
+    });
+
+    afterEach(() => {
+        LABKEY = lk;
     });
 
     test('Empty values dev mode', () => {
@@ -108,14 +146,64 @@ describe('AppURL', () => {
         expect(actual).toContain('mix=tonic');
     });
 
-    test('buildURL', () => {
-        let expected = '/labkey/controller/action.view?returnUrl=%2F';
+    test('productId', () => {
+        let url = AppURL.create('some', 'fun', 'path');
+
+        // without product id set, it should default to the primary app
+
+        // We are currently configured to be in the primary app, so it should give us an app path
+        expect(url.toString()).toEqual('/some/fun/path');
+        expect(url.isAppPath()).toBeTruthy();
+
+        // If we change to be in a different app, it should give us a URL for the primary app
+        CONTROLLER = 'freezermanager';
+        expect(url.toString()).toEqual('/labkey/DefaultTestContainer/samplemanager-app.view#/some/fun/path');
+        expect(url.isAppPath()).not.toBeTruthy();
+
+        CONTROLLER = 'samplemanager';
+
+        url = url.setProductId('samplemanager');
+
+        // If the product id matches the current product id, then we should only get a app path
+        expect(url.toString()).toEqual('/some/fun/path');
+        expect(url.isAppPath()).toBeTruthy();
+
+        url = url.setProductId('alternate');
+
+        // Setting the product ID to something other than the primary should give us a full URL
+        expect(url.toString()).toEqual('/labkey/DefaultTestContainer/alternate-app.view#/some/fun/path');
+        expect(url.isAppPath()).not.toBeTruthy();
+    });
+
+    test('containerPath', () => {
+        let url = AppURL.create('some', 'fun', 'path');
+
+        // without containerPath set, it should give us an app path
+        expect(url.toString()).toEqual('/some/fun/path');
+        expect(url.isAppPath()).toBeTruthy();
+
+        // with containerPath set to the current container, it should give us an app path
+        url = url.setContainerPath('/MyTestContainer');
+        expect(url.toString()).toEqual('/some/fun/path');
+        expect(url.isAppPath()).toBeTruthy();
+
+        url = url.setContainerPath('/MyTestContainer/ChildFolder');
+        expect(url.toString()).toEqual('/labkey/MyTestContainer/ChildFolder/samplemanager-app.view#/some/fun/path');
+        expect(url.isAppPath()).not.toBeTruthy();
+    });
+});
+
+describe('buildURL', () => {
+    test('controller and action', () => {
+        const expected = '/labkey/controller/DefaultTestContainer/action.view?returnUrl=%2F';
         expect(buildURL('controller', 'action')).toBe(expected);
-
-        expected = '/labkey/controller/action.view?p1=test1&returnUrl=%2F';
+    });
+    test('params', () => {
+        const expected = '/labkey/controller/DefaultTestContainer/action.view?p1=test1&returnUrl=%2F';
         expect(buildURL('controller', 'action', { p1: 'test1' })).toBe(expected);
-
-        expected = '/labkey/controller/action.view?returnUrl=somewhere';
+    });
+    test('returnUrl', () => {
+        const expected = '/labkey/controller/DefaultTestContainer/action.view?returnUrl=somewhere';
         expect(buildURL('controller', 'action', {}, { returnUrl: 'somewhere' })).toBe(expected);
     });
 });
@@ -128,12 +216,12 @@ describe('createProductUrlFromParts', () => {
 
     test('no currentProductId', () => {
         const url = createProductUrlFromParts('urlProduct', undefined, { rowId: 123 }, 'destination');
-        expect(url).toEqual('/labkey/urlproduct/app.view#/destination?rowId=123');
+        expect(url).toEqual('/labkey/urlproduct/DefaultTestContainer/app.view#/destination?rowId=123');
     });
 
     test('not currentProductId', () => {
         const url = createProductUrlFromParts('urlProduct', 'currentProduct', { rowId: 123 }, 'destination');
-        expect(url).toEqual('/labkey/urlproduct/app.view#/destination?rowId=123');
+        expect(url).toEqual('/labkey/urlproduct/DefaultTestContainer/app.view#/destination?rowId=123');
     });
 
     test('is current product', () => {
@@ -160,7 +248,7 @@ describe('createProductUrl', () => {
 
     test('no currentProductId', () => {
         const url = createProductUrl('urlProduct', undefined, AppURL.create('destination').addParam('rowId', 123));
-        expect(url).toEqual('/labkey/urlproduct/app.view#/destination?rowId=123');
+        expect(url).toEqual('/labkey/urlproduct/DefaultTestContainer/app.view#/destination?rowId=123');
     });
 
     test('not currentProductId', () => {
@@ -169,7 +257,7 @@ describe('createProductUrl', () => {
             'currentProduct',
             AppURL.create('destination').addParam('rowId', 123)
         );
-        expect(url).toEqual('/labkey/urlproduct/app.view#/destination?rowId=123');
+        expect(url).toEqual('/labkey/urlproduct/DefaultTestContainer/app.view#/destination?rowId=123');
     });
 
     test('is current product', () => {
@@ -204,7 +292,7 @@ describe('createProductUrl', () => {
         expect(url.toString()).toEqual('#/destination?rowId=123');
 
         url = createProductUrl('urlProduct', 'currentProduct', '#/destination?rowId=123');
-        expect(url.toString()).toEqual('/labkey/urlproduct/app.view#/destination?rowId=123');
+        expect(url.toString()).toEqual('/labkey/urlproduct/DefaultTestContainer/app.view#/destination?rowId=123');
     });
 
     test('containerPath', () => {
@@ -221,7 +309,7 @@ describe('createProductUrlFromPartsWithContainer', () => {
 
     test('no containerPath, productId mismatch', () => {
         expect(createProductUrlFromPartsWithContainer('a', 'b', undefined, undefined) as AppURL).toBe(
-            '/labkey/a/app.view#'
+            '/labkey/a/DefaultTestContainer/app.view#'
         );
     });
 

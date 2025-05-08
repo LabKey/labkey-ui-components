@@ -1,10 +1,10 @@
-import { parseAppPath } from './AppLink';
-
+// Note: YES, this code does need to be above imports. Jest hoists mock code above imports, if we don't do this when
+// jest hoists the mock code above imports we'll get an error  that CONTEXT_PATH et al are being used before they're
+// defined.
 const CONTEXT_PATH = '';
 let CONTROLLER = '';
 let ACTION = '';
 let CONTAINER = '';
-
 jest.mock('@labkey/api', () => ({
     ActionURL: {
         getContextPath: () => CONTEXT_PATH,
@@ -14,7 +14,7 @@ jest.mock('@labkey/api', () => ({
     },
 }));
 
-// http://localhost:8080/SampleManager/Subfolder%20Two/samplemanager-appDev.view#/assays/General/Basic%20Assay%20Two/results
+import { parseAppPath } from './AppLink';
 
 const TEST_PROJECT = '/My%20Project';
 const TEST_CHILD = '/My%20Child';

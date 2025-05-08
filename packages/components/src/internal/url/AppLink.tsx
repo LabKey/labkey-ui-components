@@ -1,4 +1,4 @@
-import React, { FC, memo, PropsWithChildren, StyleHTMLAttributes } from 'react';
+import React, { FC, memo, PropsWithChildren, StyleHTMLAttributes, MouseEvent } from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -21,9 +21,9 @@ export function parseAppPath(href: string): string | undefined {
     }
 
     const contextPath = ActionURL.getContextPath();
-    const action = ActionURL.getAction();
-    const controller = ActionURL.getController();
     const container = ActionURL.getContainer();
+    const controller = ActionURL.getController();
+    const action = ActionURL.getAction();
     const baseAppUrl = `${contextPath}${container}/${controller}-${action}.view#`;
 
     if (href.startsWith(baseAppUrl)) {
@@ -36,6 +36,7 @@ export function parseAppPath(href: string): string | undefined {
 
 interface Props extends PropsWithChildren {
     className?: string;
+    onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
     style?: StyleHTMLAttributes<HTMLAnchorElement>;
     targetBlank?: boolean;
     to: string | AppURL;
@@ -46,13 +47,18 @@ interface Props extends PropsWithChildren {
  * handles all the corner cases around moving within our apps, between our apps, to other parts of LKS, and externally.
  */
 export const AppLink: FC<Props> = memo(props => {
-    const { children, className, style, targetBlank, to } = props;
+    const { children, className, onClick, style, targetBlank, to } = props;
+    let appPath;
 
-    const appPath = to instanceof AppURL ? to.toString() : parseAppPath(to);
+    if (to instanceof AppURL && to.isAppPath()) {
+        appPath = to.toString();
+    } else if (typeof to === 'string') {
+        appPath = parseAppPath(to);
+    }
 
     if (appPath) {
         return (
-            <Link className={className} style={style} to={appPath}>
+            <Link className={className} onClick={onClick} style={style} to={appPath}>
                 {children}
             </Link>
         );
@@ -61,7 +67,8 @@ export const AppLink: FC<Props> = memo(props => {
     return (
         <a
             className={className}
-            href={to as string}
+            href={to.toString()}
+            onClick={onClick}
             rel={targetBlank ? URL_REL : undefined}
             style={style}
             target={targetBlank ? TARGET_BLANK : undefined}

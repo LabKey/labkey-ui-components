@@ -103,7 +103,7 @@ describe('AssayPropertiesInput', () => {
         expect(document.querySelectorAll('.col-xs-6').length).toBe(1);
         expect(document.querySelectorAll('select').length).toBe(1);
         expect(document.querySelector('.labkey-text-link').getAttribute('href')).toContain(
-            'plate/plateTemplateList.view'
+            'plate/DefaultTestContainer/plateTemplateList.view'
         );
     });
 
@@ -196,7 +196,7 @@ describe('AssayPropertiesInput', () => {
         expect(document.querySelector('input').getAttribute('checked')).toBe('');
         expect(document.querySelectorAll('.transform-script--download-link').length).toBe(1);
         expect(document.querySelector('a').getAttribute('href')).toContain(
-            '/labkey/assay/downloadSampleQCData.view?rowId=1'
+            '/labkey/assay/DefaultTestContainer/downloadSampleQCData.view?rowId=1'
         );
     });
 

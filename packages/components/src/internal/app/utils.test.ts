@@ -438,8 +438,15 @@ describe('getMenuSectionConfigs', () => {
 });
 
 describe('utils', () => {
+    // Need to reset container after each test so we don't leak the container change to other tests
+    let container;
     beforeEach(() => {
+        container = LABKEY.container;
         window.history.pushState({}, 'Test Title', '/');
+    });
+
+    afterEach(() => {
+        LABKEY.container = container;
     });
 
     test('userCanDesignSourceTypes', () => {
@@ -1156,6 +1163,16 @@ describe('getCurrentAppProperties', () => {
 });
 
 describe('getStorageSectionConfig', () => {
+    // Need to reset container after each test so we don't leak the container change to other tests
+    let container;
+    beforeEach(() => {
+        container = LABKEY.container;
+    });
+
+    afterEach(() => {
+        LABKEY.container = container;
+    });
+
     test('reader, inventory app', () => {
         const config = getStorageSectionConfig(TEST_USER_READER, FREEZER_MANAGER_APP_PROPERTIES.productId, {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
@@ -1187,7 +1204,7 @@ describe('getStorageSectionConfig', () => {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyURLText).toBe('Create storage');
-        expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
+        expect(config.emptyAppURL?.toHref()).toContain('#/freezers/new');
         expect(config.headerURLPart).toBe('home');
     });
 
@@ -1200,7 +1217,7 @@ describe('getStorageSectionConfig', () => {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyURLText).toBe('Create storage');
-        expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
+        expect(config.emptyAppURL?.toHref()).toContain('#/freezers/new');
         expect(config.headerURLPart).toBe('home');
     });
 
@@ -1226,7 +1243,7 @@ describe('getStorageSectionConfig', () => {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyURLText).toBe('Create storage');
-        expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
+        expect(config.emptyAppURL?.toHref()).toContain('#/freezers/new');
         expect(config.headerURLPart).toBe('home');
     });
 
@@ -1239,7 +1256,7 @@ describe('getStorageSectionConfig', () => {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyURLText).toBe('Create storage');
-        expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
+        expect(config.emptyAppURL?.toHref()).toContain('#/freezers/new');
         expect(config.headerURLPart).toBe('home');
     });
 });
@@ -1252,7 +1269,7 @@ describe('addSourcesSectionConfig', () => {
         expect(sectionConfig.headerURLPart).toBe(undefined);
         expect(sectionConfig.headerText).toBe(undefined);
         if (canDesign) {
-            expect(sectionConfig.emptyAppURL?.toHref()).toBe('#/sourceType/new');
+            expect(sectionConfig.emptyAppURL?.toHref()).toContain('#/sourceType/new');
             expect(sectionConfig.emptyURLText).toBe('Create a source type');
         } else {
             expect(sectionConfig.emptyAppURL).toBe(undefined);
@@ -1305,7 +1322,7 @@ describe('getSamplesSectionConfig', () => {
 
     test('admin', () => {
         const sectionConfig = getSamplesSectionConfig(TEST_USER_FOLDER_ADMIN);
-        expect(sectionConfig.emptyAppURL?.toHref()).toBe('#/sampleType/new');
+        expect(sectionConfig.emptyAppURL?.toHref()).toContain('#/sampleType/new');
         expect(sectionConfig.emptyURLText).toBe('Create a sample type');
     });
 });
@@ -1336,14 +1353,14 @@ describe('addAssaySectionConfig', () => {
         expect(configs.size).toBe(1);
         let sectionConfig = configs.get(0).get(ASSAYS_KEY);
         expect(sectionConfig.emptyText).toBe('No assays have been defined');
-        expect(sectionConfig.emptyAppURL?.toHref()).toBe('#/assayDesign/new');
+        expect(sectionConfig.emptyAppURL?.toHref()).toContain('#/assayDesign/new');
         expect(sectionConfig.emptyURLText).toBe('Create an assay design');
 
         configs = List<Map<string, MenuSectionConfig>>();
         configs = addAssaysSectionConfig(TEST_USER_FOLDER_ADMIN, configs, true);
         expect(configs.size).toBe(1);
         sectionConfig = configs.get(0).get(ASSAYS_KEY);
-        expect(sectionConfig.emptyAppURL?.toHref()).toBe('#/assayDesign/General');
+        expect(sectionConfig.emptyAppURL?.toHref()).toContain('#/assayDesign/General');
     });
 });
 

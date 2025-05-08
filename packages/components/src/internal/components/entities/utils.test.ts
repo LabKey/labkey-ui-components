@@ -236,6 +236,18 @@ describe('getEntityNoun', () => {
 });
 
 describe('sampleDeleteDependencyText', () => {
+    let moduleContext;
+
+    // We need to store and reset the module context before and after these tests so we don't impact other tests in this
+    // file.
+    beforeEach(() => {
+        moduleContext = LABKEY.moduleContext;
+    });
+
+    afterEach(() => {
+        LABKEY.moduleContext = moduleContext;
+    });
+
     test('cannot delete, professional', () => {
         LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
         expect(sampleDeleteDependencyText()).toBe(
@@ -314,8 +326,11 @@ describe('getJobCreationHref', () => {
         );
     });
     test('with product id', () => {
+        // TODO: investigate why this test was generating a wildly incorrect URL when we weren't resetting the
+        //  moduleContext in the sampleDeleteDependencyText tests above. It was possibly just a test issue, but maybe
+        //  there is an underlying bug
         expect(getJobCreationHref(queryModel, undefined, true, undefined, false, null, 'from', 'to')).toBe(
-            '/labkey/to/app.view#/workflow/new?selectionKey=id'
+            '/labkey/to/DefaultTestContainer/app.view#/workflow/new?selectionKey=id'
         );
     });
 });

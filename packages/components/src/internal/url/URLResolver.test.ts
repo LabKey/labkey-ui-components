@@ -46,11 +46,11 @@ describe('URLResolver', () => {
 
             url = '/Biologics%20Example/assay-assayRuns.view?rowId=636&Runs.Batch%2FRowId~eq=6169';
             result = resolveUrl(url, 'assay.General.testProtocol');
-            expect(result.toString()).toBe('/assays/General/testProtocol/batches/6169');
+            expect(result.toString()).toBe('#/assays/General/testProtocol/batches/6169');
 
             url = '/Biologics%20Example/assay-assayRuns.view?rowId=636&Runs.Batch%2FRowId~eq=6169';
             result = resolveUrl(url, 'assay.General.test,./Protocol..');
-            expect(result.toString()).toBe('/assays/General/test%2C.%2FProtocol../batches/6169');
+            expect(result.toString()).toBe('#/assays/General/test%2C.%2FProtocol../batches/6169');
         });
     });
 

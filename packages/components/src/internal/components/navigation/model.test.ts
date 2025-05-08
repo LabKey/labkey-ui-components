@@ -123,7 +123,7 @@ describe('MenuItemModel', () => {
             'product1'
         );
 
-        expect(model.url).toBe('/labkey/product2/app.view#/menuItem');
+        expect(model.url).toBe('/labkey/product2/DefaultTestContainer/app.view#/menuItem');
     });
 
     test('originalUrl', () => {
@@ -136,8 +136,8 @@ describe('MenuItemModel', () => {
             'product1'
         );
 
-        expect(model.getUrlString()).toBe('/labkey/product2/app.view#/menuItem');
-        expect(model.getUrlString(false)).toBe('/labkey/product2/app.view#/menuItem');
+        expect(model.getUrlString()).toBe('/labkey/product2/DefaultTestContainer/app.view#/menuItem');
+        expect(model.getUrlString(false)).toBe('/labkey/product2/DefaultTestContainer/app.view#/menuItem');
         expect(model.getUrlString(true)).toBe('#/menuItem');
     });
 

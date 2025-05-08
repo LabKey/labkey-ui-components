@@ -7,7 +7,7 @@ module.exports = {
         LABKEY: {
             contextPath: '/labkey',
             container: {
-                path: '',
+                path: '/DefaultTestContainer',
                 formats: {
                     dateFormat: "yyyy-MM-dd",
                     dateTimeFormat: "yyyy-MM-dd HH:mm",

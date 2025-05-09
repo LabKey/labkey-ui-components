@@ -716,17 +716,14 @@ export function quoteValueColumnWithDelimiters(
     delimiter: string
 ): ISelectRowsResult {
     const rowMap = selectRowsResult.models[selectRowsResult.key];
-    Object.keys(rowMap).forEach(key => {
-        if (rowMap[key][valueColumn]) {
-            Object.assign(rowMap[key], {
-                [valueColumn]: {
-                    value: quoteValueWithDelimiters(rowMap[key][valueColumn].value, delimiter),
-                    displayValue: rowMap[key][valueColumn].displayValue ?? rowMap[key][valueColumn].value,
-                    url: rowMap[key][valueColumn].url,
-                },
-            });
+
+    Object.values(rowMap).forEach(row => {
+        const cell = row[valueColumn];
+        if (Utils.isString(cell?.value)) {
+            cell.value = quoteValueWithDelimiters(cell.value, delimiter);
         }
     });
+
     return selectRowsResult;
 }
 

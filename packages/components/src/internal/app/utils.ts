@@ -52,6 +52,7 @@ import {
     DEPRECATED_OBJECT_LEVEL_DISCUSSIONS,
 } from './constants';
 import {
+    FREEZER_MANAGER_PRODUCT_ID,
     isBiologicsEnabled,
     isFreezerManagementEnabled,
     isLIMSEnabled,
@@ -542,7 +543,7 @@ export function getStorageSectionConfig(user: User, currentProductId: string, mo
         });
         if (user && userCanDesignLocations(user)) {
             locationsMenuConfig = locationsMenuConfig.merge({
-                emptyAppURL: AppURL.create(FREEZERS_KEY, 'new'),
+                emptyAppURL: AppURL.create(FREEZERS_KEY, 'new').setProductId(FREEZER_MANAGER_PRODUCT_ID),
                 emptyURLText: 'Create storage',
             }) as MenuSectionConfig;
         }

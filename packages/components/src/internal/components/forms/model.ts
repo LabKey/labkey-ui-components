@@ -48,10 +48,16 @@ function formatOption(model: QuerySelectModel, result: any): SelectInputOption {
     const labelCol = model.queryInfo.getColumn(displayColumn) ?? model.queryInfo.getColumnFromName(displayColumn);
     const labelField = result.get(labelCol.name) ?? result.get(labelCol.fieldKey) ?? valueField;
 
-    return {
+    const option: SelectInputOption = {
         label: resolveDetailFieldLabel(labelField) as string,
         value: resolveDetailFieldValue(valueField),
     };
+
+    if (valueField?.has('notFound')) {
+        option.notFound = valueField.get('notFound');
+    }
+
+    return option;
 }
 
 export function formatResults(model: QuerySelectModel, results: Map<string, any>, token?: string): SelectInputOption[] {
@@ -424,6 +430,12 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
             const notFoundValuesArray = findNotFoundValues(selectedRows, filter, valueColumn);
             if (notFoundValuesArray) {
                 notFoundValues = List(notFoundValuesArray);
+
+                notFoundValuesArray.forEach(v => {
+                    if (!selectedRows.hasOwnProperty(v)) {
+                        selectedRows[v] = { [valueColumn]: { displayValue: `<${v}>`, notFound: true, value: v } };
+                    }
+                });
             }
         }
     }

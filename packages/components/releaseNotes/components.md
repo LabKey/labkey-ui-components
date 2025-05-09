@@ -3,10 +3,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 6.??.??
 *Released*: ? May 2025
+- AppURL
+  - make container and product aware
+  - add fromMenuUrl static method
 - Add AppLink
   - Use AppLink any time you need
 - DefaultRenderer: Use AppLink
   - Issue 53021: Grid Column Renderers can break the back button on pages using useRouteLeave
+- NavItem: Use AppLink
+- Remove createProductUrlFromParts
 
 ### version 6.42.0
 *Released*: 14 May 2025

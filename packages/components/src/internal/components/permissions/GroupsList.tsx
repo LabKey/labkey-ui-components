@@ -1,13 +1,13 @@
 import React, { FC, memo, useEffect, useState } from 'react';
 
-
-import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 import { fetchGroupMembership } from '../administration/actions';
 import { useAppContext } from '../../AppContext';
 import { useServerContext } from '../base/ServerContext';
 import { Groups, MemberType } from '../administration/models';
-import { getAppHomeFolderPath, getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
+import { getAppHomeFolderPath } from '../../app/utils';
 import { useContainerUser } from '../container/actions';
+import { AppLink } from '../../url/AppLink';
 
 interface Props {
     asRow?: boolean;
@@ -22,8 +22,6 @@ export const GroupsList: FC<Props> = memo(props => {
     const { container, moduleContext } = useServerContext();
     const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
     const homeContainer = useContainerUser(homeFolderPath);
-    const currentProductId = getCurrentAppProperties()?.productId;
-    const targetProductId = getPrimaryAppProperties()?.productId;
 
     useEffect(() => {
         (async () => {
@@ -40,23 +38,16 @@ export const GroupsList: FC<Props> = memo(props => {
         <ul className="principal-detail-ul">
             {groups.length > 0 ? (
                 groups.map(group => {
-                    const url = createProductUrlFromParts(
-                        targetProductId,
-                        currentProductId,
-                        { expand: group.value },
-                        'admin',
-                        'groups'
-                    );
+                    const url = AppURL.create('admin', 'groups').addParams({ expand: group.value });
+                    const showLink =
+                        homeContainer.user?.isAdmin &&
+                        showLinks &&
+                        groupMembership?.[group.value].type !== MemberType.siteGroup;
 
                     return (
                         <li key={group.value} className="principal-detail-li">
-                            {homeContainer.user?.isAdmin &&
-                            showLinks &&
-                            groupMembership?.[group.value].type !== MemberType.siteGroup ? (
-                                <a href={url instanceof AppURL ? url.toHref() : url}>{group.displayValue}</a>
-                            ) : (
-                                group.displayValue
-                            )}
+                            {showLink && <AppLink to={url}>{group.displayValue}</AppLink>}
+                            {!showLink && group.displayValue}
                         </li>
                     );
                 })

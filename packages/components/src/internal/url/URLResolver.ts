@@ -30,7 +30,7 @@ import { SearchHit, SearchResult } from '../components/search/actions';
 
 import { SearchCategory } from '../components/search/constants';
 
-import { AppURL, createProductUrl, createProductUrlFromParts } from './AppURL';
+import { AppURL } from './AppURL';
 import { AppRouteResolver } from './models';
 import { encodeListResolverPath } from './utils';
 
@@ -515,13 +515,8 @@ export const STORAGE_LOCATION_MAPPER = new ActionMapper('query', 'detailsQueryRo
         ) {
             const rowId = params.RowId;
             if (rowId && rowId.length) {
-                return createProductUrlFromParts(
-                    FREEZER_MANAGER_APP_PROPERTIES.productId,
-                    ActionURL.getController(),
-                    {},
-                    'rd',
-                    'freezerLocation',
-                    rowId
+                return AppURL.create('rd', 'freezerLocation', rowId).setProductId(
+                    FREEZER_MANAGER_APP_PROPERTIES.productId
                 );
             }
             return false;
@@ -541,13 +536,9 @@ export const STORAGE_BOX_MAPPER = new ActionMapper('query', 'detailsQueryRow', r
         if (schemaName && schemaName.toLowerCase() === 'inventory' && queryName && queryName.toLowerCase() === 'box') {
             const rowId = params.RowId;
             if (rowId && rowId.length) {
-                return createProductUrlFromParts(
-                    FREEZER_MANAGER_APP_PROPERTIES.productId,
-                    ActionURL.getController(),
-                    { 'query.sort': 'WellPosition' },
-                    'boxes',
-                    rowId
-                );
+                return AppURL.create('boxes', rowId)
+                    .addParams({ 'query.sort': 'WellPosition' })
+                    .setProductId(FREEZER_MANAGER_APP_PROPERTIES.productId);
             }
             return false;
         }

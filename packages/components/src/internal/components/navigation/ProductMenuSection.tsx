@@ -15,11 +15,9 @@
  */
 import React, { FC, memo, ReactNode } from 'react';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
 
-import { AppURL, createProductUrl, createProductUrlFromPartsWithContainer } from '../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 import { naturalSort } from '../../../public/sort';
-import { getHref } from '../../url/utils';
 
 import { AppLink } from '../../url/AppLink';
 

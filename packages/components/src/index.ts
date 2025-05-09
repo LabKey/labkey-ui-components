@@ -20,7 +20,6 @@ import {
     AppURL,
     buildURL,
     createProductUrl,
-    createProductUrlFromParts,
     createProductUrlFromPartsWithContainer,
     spliceURL,
 } from './internal/url/AppURL';
@@ -1232,7 +1231,6 @@ export {
     WHERE_FILTER_TYPE,
     NOT_ANY_FILTER_TYPE,
     createProductUrl,
-    createProductUrlFromParts,
     createProductUrlFromPartsWithContainer,
     // renderers
     ArchivedFolderTag,

@@ -9,10 +9,8 @@ import { PICKLIST } from '../domainproperties/list/constants';
 import { saveDomain } from '../domainproperties/actions';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { User } from '../base/models/User';
-import { AppURL, buildURL, createProductUrlFromParts } from '../../url/AppURL';
+import { buildURL } from '../../url/AppURL';
 import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list/actions';
-
-import { PICKLIST_KEY } from '../../app/constants';
 
 import { isProductFoldersEnabled } from '../../app/utils';
 

@@ -8,7 +8,7 @@ import { EditableColumnMetadata, EditorModel } from '../editable/models';
 import { SCHEMAS } from '../../schemas';
 
 import { getURLParamsForSampleSelectionKey } from '../samples/utils';
-import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 import { WORKFLOW_KEY } from '../../app/constants';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
@@ -169,8 +169,7 @@ export function getJobCreationHref(
     // If we have filters and are explicitly ignoring filters, then we're using a selection snapshot
     if (ignoreFilter && hasFilters) params.selectionKeyType = SELECTION_KEY_TYPE.snapshot;
 
-    const actionUrl = createProductUrlFromParts(targetProductId, currentProductId, params, WORKFLOW_KEY, 'new');
-    return actionUrl instanceof AppURL ? actionUrl.toHref() : actionUrl;
+    return AppURL.create(WORKFLOW_KEY, 'new').addParams(params).toHref();
 }
 
 export function getIdentifyingColumns(queryInfo: QueryInfo): QueryColumn[] {

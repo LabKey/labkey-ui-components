@@ -21,7 +21,10 @@ import { useAppContext } from '../../AppContext';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { Picklist } from './models';
-import { addSamplesToPicklist, getPicklistsForInsert, getPicklistUrl, SampleTypeCount } from './actions';
+import { addSamplesToPicklist, getPicklistsForInsert, SampleTypeCount } from './actions';
+import { AppLink } from '../../url/AppLink';
+import { AppURL } from '../../url/AppURL';
+import { PICKLIST_KEY } from '../../app/constants';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -189,7 +192,7 @@ export const AddedToPicklistNotification: FC<AddedToPicklistNotificationProps> =
     return (
         <>
             {numAddedNotification} to picklist "
-            <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>{picklist.name}</a>".
+            <AppLink to={AppURL.create(PICKLIST_KEY, picklist.listId)}>{picklist.name}</AppLink>".
             {numNotAddedNotification}
         </>
     );

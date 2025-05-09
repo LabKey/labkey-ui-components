@@ -14,8 +14,14 @@ import { CheckboxLK } from '../../Checkbox';
 
 import { useAppContext } from '../../AppContext';
 
+import { AppURL } from '../../url/AppURL';
+
+import { PICKLIST_KEY } from '../../app/constants';
+
+import { AppLink } from '../../url/AppLink';
+
 import { Picklist } from './models';
-import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
+import { createPicklist, updatePicklist } from './actions';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 
 export interface PicklistEditModalProps {
@@ -129,12 +135,13 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
             reset();
 
             if (showNotification) {
-                const href = getPicklistUrl(updatedList.listId, picklistProductId, currentProductId);
+                const url = AppURL.create(PICKLIST_KEY, updatedList.listId);
                 const noun = validCount ? Utils.pluralize(validCount, 'sample', 'samples') : ' no samples';
                 createNotification({
                     message: (
                         <>
-                            Successfully created "{updatedList.name}" with {noun}. <a href={href}>View picklist</a>.
+                            Successfully created "{updatedList.name}" with {noun}.{' '}
+                            <AppLink to={url}>View picklist</AppLink>.
                         </>
                     ),
                     alertClass: 'success',

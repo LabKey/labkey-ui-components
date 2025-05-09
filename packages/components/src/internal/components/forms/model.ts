@@ -179,8 +179,6 @@ export function setSelection(model: QuerySelectModel, rawSelectedValue: any): Qu
     const selectedItems = getSelectedOptions(model, rawSelectedValue);
 
     return model.merge({
-        // Issue 52773: Unset notFoundValues once a value has been selected
-        notFoundValues: undefined,
         rawSelectedValue,
         selectedItems,
         selectedQuery: parseSelectedQuery(model, selectedItems),
@@ -423,7 +421,6 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
     const { queryInfo, valueColumn, displayColumn, groupByColumn } = await initQueryInfoWithColumns(props);
 
     let selectedItems: ISelectRowsResult;
-    let notFoundValues: List<any>;
 
     if (validValue(value)) {
         const { expectedValueCount, filter } = buildValueFilter(value, valueColumn, multiple, delimiter);
@@ -431,16 +428,12 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
         const selectedRows = selectedItems.models[selectedItems.key];
 
         if (Object.keys(selectedRows).length !== expectedValueCount) {
-            const notFoundValuesArray = findNotFoundValues(selectedRows, filter, valueColumn);
-            if (notFoundValuesArray) {
-                notFoundValues = List(notFoundValuesArray);
-
-                notFoundValuesArray.forEach(v => {
-                    if (!selectedRows.hasOwnProperty(v)) {
-                        selectedRows[v] = { [valueColumn]: { displayValue: `<${v}>`, notFound: true, value: v } };
-                    }
-                });
-            }
+            const notFoundValues = findNotFoundValues(selectedRows, filter, valueColumn);
+            notFoundValues.forEach(v => {
+                if (!selectedRows.hasOwnProperty(v)) {
+                    selectedRows[v] = { [valueColumn]: { displayValue: `<${v}>`, notFound: true, value: v } };
+                }
+            });
         }
     }
 
@@ -448,7 +441,6 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
         displayColumn,
         groupByColumn,
         isInit: true,
-        notFoundValues,
         queryInfo,
         selectedItems: selectedItems
             ? fromJS(quoteValueColumnWithDelimiters(selectedItems, valueColumn, delimiter).models[selectedItems.key])
@@ -468,7 +460,6 @@ export interface QuerySelectModelProps {
     isInit: boolean;
     maxRows: number;
     multiple: boolean;
-    notFoundValues: List<any>;
     queryFilters: List<Filter.IFilter>;
     queryInfo: QueryInfo;
     queryParams: Record<string, any>;
@@ -517,7 +508,6 @@ export class QuerySelectModel
     declare isInit: boolean;
     declare maxRows: number;
     declare multiple: boolean;
-    declare notFoundValues: List<any>;
     declare queryFilters: List<Filter.IFilter>;
     declare queryInfo: QueryInfo;
     declare queryParams: Record<string, any>;

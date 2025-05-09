@@ -403,14 +403,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     // Issue 52773: If a value is specified, but we are unable to resolve the value then display a warning to the user.
     const warning = useMemo(() => {
         if (!hasNotFoundValues) return undefined;
-
-        let warningValue: string;
-        if (model.notFoundValues.size < 5) {
-            warningValue = model.notFoundValues.join(', ');
-        } else {
-            warningValue = `${model.notFoundValues.size} values`;
-        }
-
+        const warningValue = model.notFoundValues.size === 1 ? model.notFoundValues.first() : 'multiple values';
         return lookupValidationErrorMessage(warningValue);
     }, [hasNotFoundValues, model.notFoundValues]);
 

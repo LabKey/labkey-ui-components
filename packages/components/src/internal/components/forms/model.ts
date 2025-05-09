@@ -376,17 +376,21 @@ export function findNotFoundValues(
     valueColumn: string
 ): string[] {
     const filterValue = filter.getValue();
-    if (filterValue === undefined || filterValue === null) return [];
+    if (!validValue(filterValue)) return [];
 
     const rawValues = Array.isArray(filterValue) ? filterValue : [filterValue];
-    const expectedValues = new Set(rawValues.filter(v => v !== undefined && v !== null).map(v => v.toString()));
+    const expectedValues = new Set(rawValues.filter(validValue).map(v => v.toString()));
 
     Object.values(selectedRows)
         .map(item => caseInsensitive(item, valueColumn)?.value)
-        .filter(value => value !== undefined && value !== null)
+        .filter(validValue)
         .forEach(value => expectedValues.delete(value.toString()));
 
     return Array.from(expectedValues).sort(naturalSort);
+}
+
+function validValue(value: any): boolean {
+    return value !== undefined && value !== null && value !== '';
 }
 
 function initSelectedItems(
@@ -421,7 +425,7 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
     let selectedItems: ISelectRowsResult;
     let notFoundValues: List<any>;
 
-    if (value !== undefined && value !== null) {
+    if (validValue(value)) {
         const { expectedValueCount, filter } = buildValueFilter(value, valueColumn, multiple, delimiter);
         selectedItems = await initSelectedItems(props, queryInfo, valueColumn, displayColumn, groupByColumn, filter);
         const selectedRows = selectedItems.models[selectedItems.key];

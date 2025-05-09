@@ -94,13 +94,10 @@ export const ProductMenuSection: FC<MenuSectionProps> = memo(props => {
     if (label) {
         const headerURL = config.useOriginalURL
             ? section.url
-            : createProductUrlFromPartsWithContainer(
-                  section.productId,
-                  currentProductId,
-                  containerPath,
-                  config.headerURLParams,
-                  config.headerURLPart ?? section.key
-              );
+            : AppURL.create(config.headerURLPart ?? section.key)
+                  .addParams(config.headerURLParams)
+                  .setContainerPath(containerPath)
+                  .setProductId(section.productId);
 
         const className = headerURL instanceof AppURL ? 'menu-section-link' : undefined;
         headerEl = (
@@ -112,9 +109,8 @@ export const ProductMenuSection: FC<MenuSectionProps> = memo(props => {
 
     let emptyLink: ReactNode;
     if (config.emptyAppURL) {
-        const emptyURL = createProductUrl(section.productId, currentProductId, config.emptyAppURL, containerPath);
         emptyLink = (
-            <AppLink to={emptyURL} className="menu-section-link">
+            <AppLink to={config.emptyAppURL} className="menu-section-link">
                 {config.emptyURLText}
             </AppLink>
         );

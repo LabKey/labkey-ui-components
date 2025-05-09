@@ -16,7 +16,7 @@
 import { List, Record } from 'immutable';
 import { ActionURL, QueryKey } from '@labkey/api';
 
-import { createProductUrl, AppURL, createProductUrlFromPartsWithContainer } from '../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 import { request } from '../../request';
 
 export class MenuSectionModel extends Record({
@@ -103,17 +103,13 @@ export class MenuItemModel extends Record({
                 const decoded = subParts.join('/');
                 const decodedKey = rawData.key.replace(rawData.key, () => decoded); // use the functional version to skip any additional pattern substitutions https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_the_replacement
 
+                const url = AppURL.create(sectionKey, ...subParts)
+                    .setContainerPath(containerPath)
+                    .setProductId(dataProductId);
                 return new MenuItemModel(
                     Object.assign({}, rawData, {
                         originalUrl: rawData.url,
-                        url: createProductUrlFromPartsWithContainer(
-                            dataProductId,
-                            currentProductId,
-                            containerPath,
-                            undefined,
-                            sectionKey,
-                            ...subParts
-                        ),
+                        url,
                         key: decodedKey,
                     })
                 );
@@ -121,7 +117,7 @@ export class MenuItemModel extends Record({
                 return new MenuItemModel(
                     Object.assign({}, rawData, {
                         originalUrl: rawData.url,
-                        url: createProductUrl(dataProductId, currentProductId, rawData.url, containerPath),
+                        url: AppURL.fromMenuUrl(rawData.url, dataProductId, containerPath),
                     })
                 );
             }

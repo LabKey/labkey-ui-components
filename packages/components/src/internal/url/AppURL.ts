@@ -167,6 +167,17 @@ export class AppURL {
         return new AppURL({ _basePath: basePath });
     }
 
+    /**
+     * Creates an AppURL from a URL returned by our MenuSections API
+     */
+    static fromMenuUrl(url: string, productId: string, containerPath: string): AppURL {
+        let params;
+        let path = url.replace('#', '');
+        if (path.indexOf('?')) path = path.substring(0, path.indexOf('?'));
+
+        return new AppURL({ _basePath: path, _containerPath: containerPath, _params: params, _productId: productId });
+    }
+
     addFilters(...filters: Filter.IFilter[]): AppURL {
         return new AppURL({
             ...this,

@@ -720,6 +720,7 @@ export function quoteValueColumnWithDelimiters(
     Object.values(rowMap).forEach(row => {
         const cell = row[valueColumn];
         if (Utils.isString(cell?.value)) {
+            cell.displayValue = cell.displayValue ?? cell.value;
             cell.value = quoteValueWithDelimiters(cell.value, delimiter);
         }
     });

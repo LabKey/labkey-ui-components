@@ -158,7 +158,7 @@ describe('api', () => {
                 key: 'test',
                 models: {
                     test: {
-                        1: { Name: { value: 'one', url: 'http://one/test', randomProperty: 123 } },
+                        1: { Name: { value: 'one', url: 'http://one/test', displayValue: 'one', randomProperty: 123 } },
                         2: {
                             Name: {
                                 value: '"with, comma"',
@@ -169,6 +169,7 @@ describe('api', () => {
                         4: {
                             Name: {
                                 value: '"with ""quotes"", and comma"',
+                                displayValue: 'with "quotes", and comma',
                             },
                         },
                         3: { NoName: { value: 'nonesuch', url: 'http://with, comma/test' } },

@@ -173,11 +173,13 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     containerFilter?: Query.ContainerFilter;
     /** The path to the LK container that the queries should be scoped to. */
     containerPath?: string;
+    delimiter?: string;
     displayColumn?: string;
     fireQSChangeOnInit?: boolean;
     groupByColumn?: string;
     loadOnFocus?: boolean;
     maxRows?: number;
+    notFoundValuesEnabled?: boolean;
     onInitValue?: (value: any, selectedValues: List<any>) => void;
     onQSChange?: QuerySelectChange;
     preLoad?: boolean;
@@ -210,6 +212,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         groupByColumn,
         loadOnFocus = false,
         maxRows,
+        notFoundValuesEnabled = true,
         onInitValue,
         onQSChange,
         preLoad = true,

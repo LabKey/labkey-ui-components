@@ -417,7 +417,7 @@ function initSelectedItems(
 }
 
 export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<QuerySelectModelProps>> {
-    const { delimiter, multiple, value } = props;
+    const { delimiter, multiple, notFoundValuesEnabled, value } = props;
     const { queryInfo, valueColumn, displayColumn, groupByColumn } = await initQueryInfoWithColumns(props);
 
     let selectedItems: ISelectRowsResult;
@@ -427,7 +427,7 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
         selectedItems = await initSelectedItems(props, queryInfo, valueColumn, displayColumn, groupByColumn, filter);
         const selectedRows = selectedItems.models[selectedItems.key];
 
-        if (Object.keys(selectedRows).length !== expectedValueCount) {
+        if (notFoundValuesEnabled && Object.keys(selectedRows).length !== expectedValueCount) {
             const notFoundValues = findNotFoundValues(selectedRows, filter, valueColumn);
             notFoundValues.forEach(v => {
                 if (!selectedRows.hasOwnProperty(v)) {

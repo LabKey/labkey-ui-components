@@ -179,6 +179,7 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     groupByColumn?: string;
     loadOnFocus?: boolean;
     maxRows?: number;
+    /** When enabled "not found" (i.e. unresolved) values will be processed as selectable items. */
     notFoundValuesEnabled?: boolean;
     onInitValue?: (value: any, selectedValues: List<any>) => void;
     onQSChange?: QuerySelectChange;
@@ -289,7 +290,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         if (!autoInit) return;
         (async () => {
             try {
-                const modelProps = await initSelect({ ...props, delimiter });
+                const modelProps = await initSelect({ ...props, delimiter, notFoundValuesEnabled });
 
                 setModel(model_ => {
                     const { selectedItems } = modelProps;

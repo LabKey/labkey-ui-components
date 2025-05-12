@@ -195,13 +195,16 @@ export function areUnitsCompatible(unitAStr: string, unitBStr: string) {
     return unitA.baseUnit == unitB.baseUnit;
 }
 
-export function getMetricUnitOptions(): any[] {
+export function getMetricUnitOptions(metricUnit?: string): any[] {
+    if (metricUnit) {
+        return getAltMetricUnitOptions(metricUnit, true);
+    }
     const options = [];
     for (const [key, value] of Object.entries(MEASUREMENT_UNITS)) {
         if (value.label === 'unit') {
-            options.push({value: value.label, label: value.label});
+            options.push({ value: value.label, label: value.label });
         } else {
-            options.push({value: value.label, label: value.label + ' (' + value.longLabelPlural + ')'});
+            options.push({ value: value.label, label: value.label + ' (' + value.longLabelPlural + ')' });
         }
     }
     return options;
@@ -217,9 +220,9 @@ export function getAltMetricUnitOptions(unitTypeStr: string, showLongLabel?: boo
     for (const [key, value] of Object.entries(MEASUREMENT_UNITS)) {
         if (value.baseUnit === unit.baseUnit) {
             if (!showLongLabel) {
-                options.push({value: value.label, label: value.label});
+                options.push({ value: value.label, label: value.label });
             } else {
-                options.push({value: value.label, label: value.label + ' (' + value.longLabelPlural + ')'});
+                options.push({ value: value.label, label: value.label + ' (' + value.longLabelPlural + ')' });
             }
         }
     }

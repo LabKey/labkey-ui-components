@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.41.0
+*Released*: 12 May 2025
+- Issue 52773: Update `QuerySelect` to manufacture selectable items for not found results.
+- Dynamically recompute warning and continue to display until unresolved values are no longer "selected".
+- Revise`quoteValueColumnWithDelimiters` to only modify `value` and `displayValue` when necessary. Stop mutating/removing other properties.
+- `SelectInput`: Support "notFound" styling for multi-value selected options
+
 ### version 6.40.2
 *Released*: 6 May 2025
 - Issue 52773: display warning for unresolved form lookup values

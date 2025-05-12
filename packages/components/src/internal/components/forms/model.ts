@@ -48,10 +48,16 @@ function formatOption(model: QuerySelectModel, result: any): SelectInputOption {
     const labelCol = model.queryInfo.getColumn(displayColumn) ?? model.queryInfo.getColumnFromName(displayColumn);
     const labelField = result.get(labelCol.name) ?? result.get(labelCol.fieldKey) ?? valueField;
 
-    return {
+    const option: SelectInputOption = {
         label: resolveDetailFieldLabel(labelField) as string,
         value: resolveDetailFieldValue(valueField),
     };
+
+    if (valueField?.has('notFound')) {
+        option.notFound = valueField.get('notFound');
+    }
+
+    return option;
 }
 
 export function formatResults(model: QuerySelectModel, results: Map<string, any>, token?: string): SelectInputOption[] {
@@ -173,8 +179,6 @@ export function setSelection(model: QuerySelectModel, rawSelectedValue: any): Qu
     const selectedItems = getSelectedOptions(model, rawSelectedValue);
 
     return model.merge({
-        // Issue 52773: Unset notFoundValues once a value has been selected
-        notFoundValues: undefined,
         rawSelectedValue,
         selectedItems,
         selectedQuery: parseSelectedQuery(model, selectedItems),
@@ -370,17 +374,21 @@ export function findNotFoundValues(
     valueColumn: string
 ): string[] {
     const filterValue = filter.getValue();
-    if (filterValue === undefined || filterValue === null) return [];
+    if (!validValue(filterValue)) return [];
 
     const rawValues = Array.isArray(filterValue) ? filterValue : [filterValue];
-    const expectedValues = new Set(rawValues.filter(v => v !== undefined && v !== null).map(v => v.toString()));
+    const expectedValues = new Set(rawValues.filter(validValue).map(v => v.toString()));
 
     Object.values(selectedRows)
         .map(item => caseInsensitive(item, valueColumn)?.value)
-        .filter(value => value !== undefined && value !== null)
+        .filter(validValue)
         .forEach(value => expectedValues.delete(value.toString()));
 
     return Array.from(expectedValues).sort(naturalSort);
+}
+
+function validValue(value: any): boolean {
+    return value !== undefined && value !== null && value !== '';
 }
 
 function initSelectedItems(
@@ -409,22 +417,23 @@ function initSelectedItems(
 }
 
 export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<QuerySelectModelProps>> {
-    const { delimiter, multiple, value } = props;
+    const { delimiter, multiple, notFoundValuesEnabled, value } = props;
     const { queryInfo, valueColumn, displayColumn, groupByColumn } = await initQueryInfoWithColumns(props);
 
     let selectedItems: ISelectRowsResult;
-    let notFoundValues: List<any>;
 
-    if (value !== undefined && value !== null) {
+    if (validValue(value)) {
         const { expectedValueCount, filter } = buildValueFilter(value, valueColumn, multiple, delimiter);
         selectedItems = await initSelectedItems(props, queryInfo, valueColumn, displayColumn, groupByColumn, filter);
         const selectedRows = selectedItems.models[selectedItems.key];
 
-        if (Object.keys(selectedRows).length !== expectedValueCount) {
-            const notFoundValuesArray = findNotFoundValues(selectedRows, filter, valueColumn);
-            if (notFoundValuesArray) {
-                notFoundValues = List(notFoundValuesArray);
-            }
+        if (notFoundValuesEnabled && selectedRows && Object.keys(selectedRows).length !== expectedValueCount) {
+            const notFoundValues = findNotFoundValues(selectedRows, filter, valueColumn);
+            notFoundValues.forEach(v => {
+                if (!selectedRows.hasOwnProperty(v)) {
+                    selectedRows[v] = { [valueColumn]: { displayValue: `<${v}>`, notFound: true, value: v } };
+                }
+            });
         }
     }
 
@@ -432,7 +441,6 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
         displayColumn,
         groupByColumn,
         isInit: true,
-        notFoundValues,
         queryInfo,
         selectedItems: selectedItems
             ? fromJS(quoteValueColumnWithDelimiters(selectedItems, valueColumn, delimiter).models[selectedItems.key])
@@ -452,7 +460,6 @@ export interface QuerySelectModelProps {
     isInit: boolean;
     maxRows: number;
     multiple: boolean;
-    notFoundValues: List<any>;
     queryFilters: List<Filter.IFilter>;
     queryInfo: QueryInfo;
     queryParams: Record<string, any>;
@@ -501,7 +508,6 @@ export class QuerySelectModel
     declare isInit: boolean;
     declare maxRows: number;
     declare multiple: boolean;
-    declare notFoundValues: List<any>;
     declare queryFilters: List<Filter.IFilter>;
     declare queryInfo: QueryInfo;
     declare queryParams: Record<string, any>;

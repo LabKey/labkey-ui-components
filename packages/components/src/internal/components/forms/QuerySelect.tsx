@@ -173,11 +173,14 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     containerFilter?: Query.ContainerFilter;
     /** The path to the LK container that the queries should be scoped to. */
     containerPath?: string;
+    delimiter?: string;
     displayColumn?: string;
     fireQSChangeOnInit?: boolean;
     groupByColumn?: string;
     loadOnFocus?: boolean;
     maxRows?: number;
+    /** When enabled "not found" (i.e. unresolved) values will be processed as selectable items. */
+    notFoundValuesEnabled?: boolean;
     onInitValue?: (value: any, selectedValues: List<any>) => void;
     onQSChange?: QuerySelectChange;
     preLoad?: boolean;
@@ -210,6 +213,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         groupByColumn,
         loadOnFocus = false,
         maxRows,
+        notFoundValuesEnabled = true,
         onInitValue,
         onQSChange,
         preLoad = true,
@@ -263,13 +267,30 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     const [searches, setSearches] = useState<Search[]>([]);
     const debounceTO = useTimeout();
     const shouldLoadOnFocus = loadOnFocus && !loadOnFocusLock;
-    const hasNotFoundValues = model.notFoundValues?.size > 0;
+    const { notFoundValues, selectedOptions } = useMemo(() => {
+        const notFoundValues_ = new Set<string | number | boolean>();
+        const options = model.isInit ? model.selectedOptions : undefined;
+
+        if (options) {
+            if (Array.isArray(options)) {
+                options.forEach(option => {
+                    if (option.notFound) {
+                        notFoundValues_.add(option.displayValue ?? option.value);
+                    }
+                });
+            } else if (options.notFound) {
+                notFoundValues_.add(options.displayValue ?? options.value);
+            }
+        }
+
+        return { notFoundValues: notFoundValues_, selectedOptions: options };
+    }, [model]);
 
     useEffect(() => {
         if (!autoInit) return;
         (async () => {
             try {
-                const modelProps = await initSelect({ ...props, delimiter });
+                const modelProps = await initSelect({ ...props, delimiter, notFoundValuesEnabled });
 
                 setModel(model_ => {
                     const { selectedItems } = modelProps;
@@ -402,17 +423,10 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
 
     // Issue 52773: If a value is specified, but we are unable to resolve the value then display a warning to the user.
     const warning = useMemo(() => {
-        if (!hasNotFoundValues) return undefined;
-
-        let warningValue: string;
-        if (model.notFoundValues.size < 5) {
-            warningValue = model.notFoundValues.join(', ');
-        } else {
-            warningValue = `${model.notFoundValues.size} values`;
-        }
-
+        if (notFoundValues.size === 0) return undefined;
+        const warningValue = notFoundValues.size === 1 ? Array.from(notFoundValues)[0] : 'multiple values';
         return lookupValidationErrorMessage(warningValue);
-    }, [hasNotFoundValues, model.notFoundValues]);
+    }, [notFoundValues]);
 
     if (error) {
         return (
@@ -459,8 +473,8 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
             optionRenderer={optionRenderer}
             options={undefined} // prevent override
             // Issue 52773: Allow for submission of required fields whose value is not found
-            required={hasNotFoundValues ? false : required}
-            selectedOptions={model.isInit ? model.selectedOptions : undefined}
+            required={notFoundValues.size > 0 ? false : required}
+            selectedOptions={selectedOptions}
             value={getValue(model, multiple)} // needed to initialize the Formsy "value" properly
             warning={warning}
         />

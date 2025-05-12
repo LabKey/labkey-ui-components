@@ -544,6 +544,7 @@ export interface SaveDomainOptions {
     options?: any;
     /** Original DomainDesign (before filtering out of locked/mapped fields), to be used for addRowIndexes = true */
     originalDomain?: DomainDesign;
+    auditUserComment?: string;
 }
 
 export function saveDomain(options: SaveDomainOptions): Promise<DomainDesign> {
@@ -576,6 +577,7 @@ export function saveDomain(options: SaveDomainOptions): Promise<DomainDesign> {
                 domainDesign: DomainDesign.serialize(domain),
                 includeWarnings,
                 options: options.options,
+                auditUserComment: options.auditUserComment,
                 success: successHandler,
                 failure: failureHandler,
             });

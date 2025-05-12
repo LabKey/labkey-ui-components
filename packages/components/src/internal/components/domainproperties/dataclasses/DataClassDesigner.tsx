@@ -60,7 +60,7 @@ interface Props {
     onChange?: (model: DataClassModel) => void;
     onComplete: (model: DataClassModel) => void;
     saveBtnText?: string;
-    showGenIdBanner?: boolean;
+    isUpdate?: boolean;
     validateNameExpressions?: boolean;
 }
 
@@ -70,6 +70,7 @@ interface State {
     namePreviews: string[];
     namePreviewsLoading: boolean;
     parentOptions: IParentOption[];
+    auditUserComment?: string;
 }
 
 const NEW_DATA_CLASS_OPTION: IParentOption = {
@@ -155,12 +156,12 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
         return name;
     };
 
-    onFinish = (): void => {
+    onFinish = (auditUserComment?: string): void => {
         const { defaultNameFieldConfig, setSubmitting, nounSingular } = this.props;
         const { model } = this.state;
         const isValid = model.isValid(defaultNameFieldConfig);
 
-        this.props.onFinish(isValid, this.saveDomain);
+        this.props.onFinish(isValid, () => this.saveDomain(false, auditUserComment));
 
         if (!isValid) {
             let exception: string;
@@ -206,7 +207,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
         return aliases;
     }
 
-    saveDomain = async (hasConfirmedNameExpression?: boolean): Promise<void> => {
+    saveDomain = async (hasConfirmedNameExpression?: boolean, auditUserComment?: string): Promise<void> => {
         const { api, beforeFinish, onComplete, setSubmitting, validateNameExpressions } = this.props;
         const { model } = this.state;
         const { name, domain } = model;
@@ -238,6 +239,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
                         this.setState({
                             nameExpressionWarnings: response.warnings,
                             namePreviews: response.previews,
+                            auditUserComment: auditUserComment,
                         });
                     });
                     return;
@@ -260,6 +262,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
                 domain: domainDesign,
                 kind: Domain.KINDS.DATA_CLASS,
                 name: model.name,
+                auditUserComment: auditUserComment,
                 options,
             });
 
@@ -339,6 +342,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
         setSubmitting(false, () => {
             this.setState({
                 nameExpressionWarnings: undefined,
+                auditUserComment: undefined,
             });
         });
     };
@@ -348,7 +352,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
             () => ({
                 nameExpressionWarnings: undefined,
             }),
-            () => this.saveDomain(true)
+            () => this.saveDomain(true, this.state.auditUserComment)
         );
     };
 
@@ -460,7 +464,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
             firstState,
             helpTopic,
             domainFormDisplayOptions,
-            showGenIdBanner,
+            isUpdate,
             allowParentAlias,
             allowFolderExclusion,
         } = this.props;
@@ -479,6 +483,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
                 onCancel={onCancel}
                 onFinish={this.onFinish}
                 saveBtnText={saveBtnText}
+                showUserComment={isUpdate && appPropertiesOnly}
             >
                 <DataClassPropertiesPanel
                     nounSingular={nounSingular}
@@ -503,7 +508,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
                     previewName={namePreviews?.[0]}
                     onNameFieldHover={this.onNameFieldHover}
                     nameExpressionGenIdProps={
-                        showGenIdBanner && hasGenIdInExpression
+                        isUpdate && hasGenIdInExpression
                             ? {
                                   containerPath: model.containerPath,
                                   dataTypeName: model.name,

@@ -135,13 +135,16 @@ export class AssayProtocolModel extends ImmutableRecord({
         return new AssayProtocolModel({ ...raw, name, domains });
     }
 
-    static serialize(model: AssayProtocolModel): any {
+    static serialize(model: AssayProtocolModel, auditUserComment?: string): any {
         // need to serialize the DomainDesign objects to remove the unrecognized fields
         const domains = model.domains.map(domain => {
             return DomainDesign.serialize(domain);
         });
 
         const json = model.merge({ domains }).toJS();
+
+        if (auditUserComment)
+            json.auditUserComment = auditUserComment;
 
         // only need to serialize the id and not the autoCopyTargetContainer object
         delete json.autoCopyTargetContainer;

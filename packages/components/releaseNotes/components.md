@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.X
+*Released*: X May 2025
+- Add detailed auditing of domain changes & comment ability
+  - TODO
+
 ### version 6.40.2
 *Released*: 6 May 2025
 - Issue 52773: display warning for unresolved form lookup values

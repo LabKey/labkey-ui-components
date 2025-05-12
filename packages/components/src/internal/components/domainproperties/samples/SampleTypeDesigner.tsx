@@ -117,7 +117,7 @@ interface Props {
     sampleTypeCaption?: string;
     saveBtnText?: string;
     showAliquotOptions?: boolean;
-    showGenIdBanner?: boolean;
+    isUpdate?: boolean;
     showLinkToStudy?: boolean;
     showParentLabelPrefix?: boolean;
     useSeparateDataClassesAliasMenu?: boolean;
@@ -134,6 +134,7 @@ interface State {
     parentOptions: IParentOption[];
     showUniqueIdConfirmation: boolean;
     uniqueIdsConfirmed: boolean;
+    auditUserComment?: string;
 }
 // Exported for testing
 export class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
@@ -338,7 +339,10 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         const { setSubmitting } = this.props;
 
         setSubmitting(false, () => {
-            this.setState({ nameExpressionWarnings: undefined });
+            this.setState({
+                nameExpressionWarnings: undefined,
+                auditUserComment: undefined
+            });
         });
     };
 
@@ -348,7 +352,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         });
     };
 
-    onFinish = (): void => {
+    onFinish = (auditUserComment?: string): void => {
         const { defaultSampleFieldConfig, setSubmitting, metricUnitProps } = this.props;
         const { model, uniqueIdsConfirmed } = this.state;
 
@@ -360,7 +364,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         const metricUnitRequired = metricUnitProps?.metricUnitRequired;
         const isValid = model.isValid(defaultSampleFieldConfig, metricUnitRequired);
 
-        this.props.onFinish(isValid, this.saveDomain);
+        this.props.onFinish(isValid, () => this.saveDomain(false, auditUserComment));
 
         if (isValid) return;
 
@@ -382,15 +386,18 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
 
         const updatedModel = model.set('exception', exception) as SampleTypeModel;
         setSubmitting(false, () => {
-            this.setState({ model: updatedModel }, () => {
+            this.setState({
+                model: updatedModel,
+                auditUserComment: auditUserComment,
+            }, () => {
                 scrollDomainErrorIntoView();
             });
         });
     };
 
-    saveDomain = async (hasConfirmedNameExpression?: boolean): Promise<void> => {
+    saveDomain = async (hasConfirmedNameExpression?: boolean, comment?: string): Promise<void> => {
         const { api, beforeFinish, setSubmitting } = this.props;
-        const { model } = this.state;
+        const { model, auditUserComment } = this.state;
         const { name, domain, description } = model;
         if (!hasConfirmedNameExpression) {
             beforeFinish?.(model);
@@ -492,6 +499,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                 kind: Domain.KINDS.SAMPLE_TYPE,
                 name,
                 options: details,
+                auditUserComment: auditUserComment ?? comment
             });
             setSubmitting(false, () => {
                 this.props.onComplete(response);
@@ -621,7 +629,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             aliquotNamePatternProps,
             initModel,
             showAliquotOptions,
-            showGenIdBanner,
+            isUpdate,
         } = this.props;
         const {
             error,
@@ -667,6 +675,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                 onCancel={onCancel}
                 onFinish={this.onFinish}
                 saveBtnText={saveBtnText}
+                showUserComment={isUpdate && appPropertiesOnly}
             >
                 <SampleTypePropertiesPanel
                     api={api}
@@ -708,7 +717,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                     namePreviews={namePreviews}
                     onNameFieldHover={this.onNameFieldHover}
                     nameExpressionGenIdProps={
-                        showGenIdBanner && options && hasGenIdInExpression
+                        isUpdate && options && hasGenIdInExpression
                             ? {
                                   containerPath: model.containerPath,
                                   dataTypeName: options.get('name'),

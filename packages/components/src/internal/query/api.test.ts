@@ -70,8 +70,8 @@ describe('api', () => {
 
         interface ModuleContextOptions {
             allFolderLookups?: boolean;
-            isProductFoldersEnabled?: boolean;
             folderDataScoped?: boolean;
+            isProductFoldersEnabled?: boolean;
         }
 
         function moduleContext(options?: ModuleContextOptions): ModuleContext {

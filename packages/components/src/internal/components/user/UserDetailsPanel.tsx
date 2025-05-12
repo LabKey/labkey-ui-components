@@ -16,14 +16,14 @@ import { SecurityPolicy, SecurityRole } from '../permissions/models';
 import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
 
 import { GroupsList } from '../permissions/GroupsList';
-import { AppURL, createProductUrlFromPartsWithContainer } from '../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 import { User } from '../base/models/User';
 import { getDefaultAPIWrapper } from '../../APIWrapper';
 import { SecurityAPIWrapper } from '../security/APIWrapper';
 import { Container } from '../base/models/Container';
 import { getRolesByUniqueName } from '../permissions/actions';
 
-import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
+import { AppLink } from '../../url/AppLink';
 
 import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
@@ -34,14 +34,35 @@ interface UserDetailRowProps {
     value: React.ReactNode;
 }
 
-const UserDetailRow: FC<UserDetailRowProps> = ({ label, value }) => {
-    return (
-        <div className="row">
-            <div className="col-xs-4 principal-detail-label">{label}</div>
-            <div className="col-xs-8 principal-detail-value">{value}</div>
-        </div>
-    );
+const UserDetailRow: FC<UserDetailRowProps> = ({ label, value }) => (
+    <div className="row">
+        <div className="col-xs-4 principal-detail-label">{label}</div>
+        <div className="col-xs-8 principal-detail-value">{value}</div>
+    </div>
+);
+UserDetailRow.displayName = 'UserDetailRow';
+
+interface UserPropProps {
+    isDate?: boolean;
+    label: string;
+    prop: string;
+    userProperties: Record<string, any>;
+}
+
+const UserProp: FC<UserPropProps> = ({ isDate, label, prop, userProperties }) => {
+    let value = caseInsensitive(userProperties, prop);
+    if (isDate && value) {
+        const date = parseDate(value);
+        if (date) {
+            value = formatDate(date, undefined, getDateFNSDateTimeFormat());
+        }
+    } else if (value === undefined) {
+        value = 'unknown';
+    }
+
+    return <UserDetailRow label={label} value={value} />;
 };
+UserProp.displayName = 'UserProp';
 
 interface Props {
     allowDelete?: boolean;
@@ -148,7 +169,27 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         this.setState({ showDialog: name });
     };
 
-    onUsersStateChangeComplete = (response: any, isDelete: boolean): void => {
+    closeDialog = (): void => {
+        this.toggleDialog(undefined);
+    };
+
+    toggleResetDialog = (): void => {
+        this.toggleDialog('reset');
+    };
+
+    toggleDeleteDialog = (): void => {
+        this.toggleDialog('delete');
+    };
+
+    toggleActivateDialog = (): void => {
+        this.toggleDialog('activate');
+    };
+
+    toggleDeactivateDialog = (): void => {
+        this.toggleDialog('deactivate');
+    };
+
+    onUsersStateChangeComplete = (response: any, isDelete: boolean = false): void => {
         this.toggleDialog(undefined); // close dialog
         if (!isDelete) {
             this.loadUserDetails(); // reload to pickup new user state
@@ -157,19 +198,9 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         this.props.onUsersStateChangeComplete?.(response, isDelete);
     };
 
-    renderUserProp(label: string, prop: string, formatDate_ = false) {
-        let value = caseInsensitive(this.state.userProperties, prop);
-        if (formatDate_ && value) {
-            const date = parseDate(value);
-            if (date) {
-                value = formatDate(date, undefined, getDateFNSDateTimeFormat());
-            }
-        } else if (value === undefined) {
-            value = 'unknown';
-        }
-
-        return <UserDetailRow label={label} value={value} />;
-    }
+    onUserDeleteComplete = (response: any) => {
+        this.onUsersStateChangeComplete(response, true);
+    };
 
     renderButtons() {
         const { allowDelete, allowResetPassword } = this.props;
@@ -183,7 +214,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
             <>
                 <hr className="principal-hr" />
                 {allowResetPassword && isActive && (
-                    <button className="btn btn-default" onClick={() => this.toggleDialog('reset')} type="button">
+                    <button className="btn btn-default" onClick={this.toggleResetDialog} type="button">
                         Reset Password
                     </button>
                 )}
@@ -191,7 +222,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     <button
                         className="pull-right btn btn-default"
                         style={{ marginLeft: '10px' }}
-                        onClick={() => this.toggleDialog('delete')}
+                        onClick={this.toggleDeleteDialog}
                         type="button"
                     >
                         Delete
@@ -200,7 +231,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                 <button
                     className="pull-right btn btn-default"
                     style={{ marginLeft: '10px' }}
-                    onClick={() => this.toggleDialog(isActive ? 'deactivate' : 'reactivate')}
+                    onClick={isActive ? this.toggleDeactivateDialog : this.toggleActivateDialog}
                     type="button"
                 >
                     {isActive ? 'Deactivate' : 'Reactivate'}
@@ -237,16 +268,15 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
             return (
                 <>
                     {!!name && <UserDetailRow label="Name" value={name} />}
-                    {this.renderUserProp('Email', 'email')}
-
-                    {description && <>{this.renderUserProp('Description', 'description')}</>}
-
-                    <hr className="principal-hr" />
-                    {this.renderUserProp('Last Login', 'lastLogin', true)}
-                    {this.renderUserProp('Created', 'created', true)}
+                    <UserProp label="Email" prop="email" userProperties={userProperties} />
+                    {description && <UserProp label="Description" prop="description" userProperties={userProperties} />}
 
                     <hr className="principal-hr" />
-                    {this.renderUserProp('User ID', 'userId')}
+                    <UserProp isDate label="Last Login" prop="lastLogin" userProperties={userProperties} />
+                    <UserProp isDate label="Created" prop="created" userProperties={userProperties} />
+
+                    <hr className="principal-hr" />
+                    <UserProp label="User ID" prop="userId" userProperties={userProperties} />
                     {!!hasPassword && <UserDetailRow label="Has Password" value={hasPassword.toString()} />}
 
                     <EffectiveRolesList
@@ -294,27 +324,17 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         const { showDialog, userProperties } = this.state;
         const { user, project } = getServerContext();
         const isSelf = userId === user.id;
-        const currentProductId = getCurrentAppProperties()?.productId;
-        const targetProductId = getPrimaryAppProperties()?.productId;
         // We do not currently support user management in sub folders, so we create the management URL for the project
         // container.
-        const manageUrl = createProductUrlFromPartsWithContainer(
-            targetProductId,
-            currentProductId,
-            project.path,
-            { usersView: 'all', 'all.UserId~eq': userId },
-            'admin',
-            'users'
-        );
+        const manageUrl = AppURL.create('admin', 'users')
+            .addParams({ usersView: 'all', 'all.UserId~eq': userId })
+            .setContainerPath(project.path);
 
         if (toggleDetailsModal) {
             const footer = (
-                <a
-                    className="pull-right btn btn-default"
-                    href={manageUrl instanceof AppURL ? manageUrl.toHref() : manageUrl}
-                >
+                <AppLink className="pull-right btn btn-default" to={manageUrl}>
                     Manage
-                </a>
+                </AppLink>
             );
             return (
                 <Modal
@@ -339,23 +359,23 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                             email={caseInsensitive(userProperties, 'email')}
                             userId={caseInsensitive(userProperties, 'userId')}
                             hasLogin={Utils.isString(caseInsensitive(userProperties, 'lastLogin'))}
-                            onComplete={response => this.onUsersStateChangeComplete(response, false)}
-                            onCancel={() => this.toggleDialog(undefined)}
+                            onComplete={this.onUsersStateChangeComplete}
+                            onCancel={this.closeDialog}
                         />
                     )}
                     {(showDialog === 'reactivate' || showDialog === 'deactivate') && (
                         <UserActivateChangeConfirmModal
                             userIds={[userId]}
                             reactivate={showDialog === 'reactivate'}
-                            onComplete={response => this.onUsersStateChangeComplete(response, false)}
-                            onCancel={() => this.toggleDialog(undefined)}
+                            onComplete={this.onUsersStateChangeComplete}
+                            onCancel={this.closeDialog}
                         />
                     )}
                     {allowDelete && showDialog === 'delete' && (
                         <UserDeleteConfirmModal
                             userIds={[userId]}
-                            onComplete={response => this.onUsersStateChangeComplete(response, true)}
-                            onCancel={() => this.toggleDialog(undefined)}
+                            onComplete={this.onUserDeleteComplete}
+                            onCancel={this.closeDialog}
                         />
                     )}
                 </div>

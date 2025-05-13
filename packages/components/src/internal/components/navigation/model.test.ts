@@ -94,7 +94,7 @@ describe('ProductMenuModel', () => {
         expect(model.hasSectionItems(testContainerSectionKey)).toBeTruthy();
 
         const item = model.sections.get(0).items.get(0);
-        expect(item.getUrlString()).toBe('/labkey/samplemanager/test/path/app.view#/testContainer/a');
+        expect(item.getUrlString()).toBe('/labkey/test/path/samplemanager-app.view#/testContainer/a');
     });
 });
 
@@ -120,7 +120,7 @@ describe('MenuItemModel', () => {
             'sectionKey'
         );
 
-        expect(model.url.toString()).toBe('/labkey/product2/DefaultTestContainer/app.view#/menuItem');
+        expect(model.url.toString()).toBe('/labkey/DefaultTestContainer/product2-app.view#/menuItem');
     });
 
     // Check that $ in item keys are correctly escaped. see Issue #45944

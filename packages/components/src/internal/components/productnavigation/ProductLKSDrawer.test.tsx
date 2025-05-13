@@ -16,14 +16,26 @@ const VISIBLE_TAB_1 = new ContainerTabModel({ id: 'tab1', text: 'Tab 1', disable
 const VISIBLE_TAB_2 = new ContainerTabModel({ id: 'tab2', text: 'Tab 2', disabled: false });
 const DISABLED_TAB = new ContainerTabModel({ id: 'tab3', text: 'Tab 3', disabled: true });
 
+let lk = LABKEY;
 beforeEach(() => {
-    LABKEY.homeContainer = 'home';
-    LABKEY.project.id = 'test';
-    LABKEY.project.name = 'test';
-    LABKEY.project.title = 'Test project';
-    LABKEY.container.id = 'test';
-    LABKEY.container.path = '/test';
-    LABKEY.container.title = 'Test project';
+    LABKEY = {
+        ...LABKEY,
+        container: {
+            id: 'test',
+            path: '/test',
+            title: 'Test project',
+        },
+        homeContainer: 'home',
+        project: {
+            id: 'test',
+            name: 'test',
+            title: 'Test project',
+        },
+    };
+});
+
+afterEach(() => {
+    LABKEY = lk;
 });
 
 describe('ProductLKSDrawer', () => {
@@ -117,7 +129,7 @@ describe('ProductLKSDrawer', () => {
 
     test('getProjectBeginUrl', () => {
         LABKEY.container = {};
-        expect(getProjectBeginUrl(undefined)).toBe('/labkey/project/begin.view');
-        expect(getProjectBeginUrl('test')).toBe('/labkey/project/test/begin.view');
+        expect(getProjectBeginUrl(undefined)).toBe('/labkey/project-begin.view');
+        expect(getProjectBeginUrl('test')).toBe('/labkey/test/project-begin.view');
     });
 });

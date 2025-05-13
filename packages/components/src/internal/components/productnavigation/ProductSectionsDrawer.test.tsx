@@ -28,7 +28,7 @@ const DEFAULT_PROPS = {
 };
 
 describe('ProductSectionsDrawer', () => {
-    function validate(count: number, hasError = false) {
+    function validate(count: number, hasError = false): void {
         expect(document.querySelectorAll('.menu-transition-left')).toHaveLength(!hasError ? 1 : 0);
         expect(document.querySelectorAll('.clickable-item')).toHaveLength(count);
         expect(document.querySelectorAll('.alert')).toHaveLength(hasError ? 1 : 0);
@@ -54,7 +54,7 @@ describe('ProductSectionsDrawer', () => {
         expect(sections).toHaveLength(1);
         expect(sections[0].key).toBe('home');
         expect(sections[0].label).toBe('Dashboard');
-        expect(sections[0].url.toString()).toBe('/labkey/samplemanager/test/app.view#/home');
+        expect(sections[0].url.toString()).toBe('/labkey/test/samplemanager-app.view#/home');
     });
 
     test('parseProductMenuSectionResponse, with modelSections to skip', () => {
@@ -71,13 +71,13 @@ describe('ProductSectionsDrawer', () => {
         expect(sections[0].key).toBe('home');
         expect(sections[1].key).toBe('s1');
         expect(sections[1].label).toBe('S1');
-        expect(sections[1].url.toString()).toBe('/labkey/samplemanager/test/app.view#/s1');
+        expect(sections[1].url.toString()).toBe('/labkey/test/samplemanager-app.view#/s1');
         expect(sections[2].key).toBe('s2');
         expect(sections[2].label).toBe('S2');
-        expect(sections[2].url.toString()).toBe('/labkey/samplemanager/test/app.view#/s2');
+        expect(sections[2].url.toString()).toBe('/labkey/test/samplemanager-app.view#/s2');
         expect(sections[3].key).toBe('s3');
         expect(sections[3].label).toBe('S3');
-        expect(sections[3].url.toString()).toBe('/labkey/samplemanager/test/app.view#/s3');
+        expect(sections[3].url.toString()).toBe('/labkey/test/samplemanager-app.view#/s3');
     });
 
     test('parseProductMenuSectionResponse, LKSM sorting', () => {

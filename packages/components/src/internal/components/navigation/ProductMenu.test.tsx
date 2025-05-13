@@ -317,7 +317,7 @@ describe('createFolderItem', () => {
         expect(item.label).toBe(TEST_FOLDER_CONTAINER.title);
         expect(item.path).toBe(TEST_FOLDER_CONTAINER.path);
         expect(item.isTopLevel).toBe(true);
-        expect(item.href).toBe('/labkey/controller/TestProjectContainer/TestFolderContainer/app.view');
+        expect(item.href).toBe('/labkey/TestProjectContainer/TestFolderContainer/controller-app.view');
         expect(item.archived).toBeFalsy();
     });
 
@@ -327,7 +327,7 @@ describe('createFolderItem', () => {
         expect(item.label).toBe(TEST_ARCHIVED_FOLDER_CONTAINER.title);
         expect(item.path).toBe(TEST_ARCHIVED_FOLDER_CONTAINER.path);
         expect(item.isTopLevel).toBe(true);
-        expect(item.href).toBe('/labkey/controller/TestProjectContainer/ArchiveFolderContainer/app.view');
+        expect(item.href).toBe('/labkey/TestProjectContainer/ArchiveFolderContainer/controller-app.view');
         expect(item.archived).toBeTruthy();
     });
 
@@ -337,7 +337,7 @@ describe('createFolderItem', () => {
         expect(item.label).toBe(HOME_TITLE);
         expect(item.path).toBe(HOME_PROJECT.path);
         expect(item.isTopLevel).toBe(true);
-        expect(item.href).toBe('/labkey/controller/home/app.view');
+        expect(item.href).toBe('/labkey/home/controller-app.view');
         expect(item.archived).toBeFalsy();
     });
 });

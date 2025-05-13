@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { ActionURL } from '@labkey/api';
 
 import { AppURL } from './AppURL';
+import { isTestEnv } from '../util/utils';
 
 const TARGET_BLANK = '_blank';
 const URL_REL = 'noopener noreferrer';
@@ -56,7 +57,9 @@ export const AppLink: FC<Props> = memo(props => {
         appPath = parseAppPath(to);
     }
 
-    if (appPath) {
+    // React Router <Link> components render as empty strings in the test environment, so we force them to render as
+    // anchor tags in our tests.
+    if (appPath && !isTestEnv()) {
         return (
             <Link className={className} onClick={onClick} style={style} to={appPath}>
                 {children}

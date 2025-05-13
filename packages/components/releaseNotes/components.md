@@ -11,6 +11,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - DefaultRenderer: Use AppLink
   - Issue 53021: Grid Column Renderers can break the back button on pages using useRouteLeave
 - NavItem: Use AppLink
+- Remove createProductUrl
 - Remove createProductUrlFromParts
 - Remove createProductUrlFromPartsWithContainer
 

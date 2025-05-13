@@ -134,15 +134,15 @@ describe('AppURL', () => {
 
 describe('buildURL', () => {
     test('controller and action', () => {
-        const expected = '/labkey/controller/DefaultTestContainer/action.view?returnUrl=%2F';
+        const expected = '/labkey/DefaultTestContainer/controller-action.view?returnUrl=%2F';
         expect(buildURL('controller', 'action')).toBe(expected);
     });
     test('params', () => {
-        const expected = '/labkey/controller/DefaultTestContainer/action.view?p1=test1&returnUrl=%2F';
+        const expected = '/labkey/DefaultTestContainer/controller-action.view?p1=test1&returnUrl=%2F';
         expect(buildURL('controller', 'action', { p1: 'test1' })).toBe(expected);
     });
     test('returnUrl', () => {
-        const expected = '/labkey/controller/DefaultTestContainer/action.view?returnUrl=somewhere';
+        const expected = '/labkey/DefaultTestContainer/controller-action.view?returnUrl=somewhere';
         expect(buildURL('controller', 'action', {}, { returnUrl: 'somewhere' })).toBe(expected);
     });
 });

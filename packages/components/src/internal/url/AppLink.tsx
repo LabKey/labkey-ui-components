@@ -21,11 +21,8 @@ export function parseAppPath(href: string): string | undefined {
         return href.replace('#', '');
     }
 
-    const contextPath = ActionURL.getContextPath();
-    const container = ActionURL.getContainer();
-    const controller = ActionURL.getController();
-    const action = ActionURL.getAction();
-    const baseAppUrl = `${contextPath}${container}/${controller}-${action}.view#`;
+    const { action, containerPath, controller } = ActionURL.getPathFromLocation();
+    const baseAppUrl = ActionURL.buildURL(controller, action, containerPath) + '#';
 
     if (href.startsWith(baseAppUrl)) {
         // This typically happens when a URL Mapper uses toHref() or something similar

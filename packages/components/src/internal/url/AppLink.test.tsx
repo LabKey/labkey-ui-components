@@ -1,46 +1,32 @@
-// Note: YES, this code does need to be above imports. Jest hoists mock code above imports, if we don't do this when
-// jest hoists the mock code above imports we'll get an error  that CONTEXT_PATH et al are being used before they're
-// defined.
-const CONTEXT_PATH = '';
-let CONTROLLER = '';
-let ACTION = '';
-let CONTAINER = '';
-jest.mock('@labkey/api', () => ({
-    ActionURL: {
-        getContextPath: () => CONTEXT_PATH,
-        getAction: () => ACTION,
-        getController: () => CONTROLLER,
-        getContainer: () => CONTAINER,
-    },
-}));
+import { __setAction, __setContainerPath, __setController } from '@labkey/api';
 
 import { parseAppPath } from './AppLink';
 
-const TEST_PROJECT = '/My%20Project';
-const TEST_CHILD = '/My%20Child';
+const TEST_PROJECT = '/My Project';
+const TEST_CHILD = '/My Child';
 const TEST_SIBLING = '/SiblingFolder';
 
 /**
  * Initializes the mocked ActionURL to point to a project folder
  */
 function initProject(controller = 'samplemanager'): void {
-    CONTROLLER = controller;
-    ACTION = 'app';
-    CONTAINER = `${TEST_PROJECT}`;
+    __setController(controller);
+    __setAction('app');
+    __setContainerPath(`${TEST_PROJECT}`);
 }
 
 /**
  * Initializes the mock ActionURL to point to a child folder
  */
 function initChild(controller = 'samplemanager'): void {
-    CONTROLLER = controller;
-    ACTION = 'app';
-    CONTAINER = `${TEST_PROJECT}${TEST_CHILD}`;
+    __setController(controller);
+    __setAction('app');
+    __setContainerPath(`${TEST_PROJECT}${TEST_CHILD}`);
 }
 
-const projectUrl = (appPath: string): string => `${CONTEXT_PATH}${TEST_PROJECT}/samplemanager-app.view#${appPath}`;
+const projectUrl = (appPath: string): string => encodeURI(`/labkey${TEST_PROJECT}/samplemanager-app.view#${appPath}`);
 const childUrl = (appPath: string, child = TEST_CHILD): string =>
-    `${CONTEXT_PATH}${TEST_PROJECT}${child}/samplemanager-app.view#${appPath}`;
+    encodeURI(`/labkey${TEST_PROJECT}${child}/samplemanager-app.view#${appPath}`);
 
 describe('parseAppPath', () => {
     test('in project, app href in child folder', () => {
@@ -54,11 +40,11 @@ describe('parseAppPath', () => {
 
     test('in project, app href in project', () => {
         initProject();
-        const appPath = '/assays/General/Basic%20Assay%20Two/results';
+        const appPath = '/assays/General/Basic Assay Two/results';
         const to = parseAppPath(projectUrl(appPath));
 
         // An URL in the current folder should return the React Router Path
-        expect(to).toEqual(appPath);
+        expect(to).toEqual(encodeURI(appPath));
     });
 
     test('in project, app href in project, but different app', () => {
@@ -72,7 +58,7 @@ describe('parseAppPath', () => {
 
     test('in project, non-app href in LKS', () => {
         initProject();
-        const to = parseAppPath(`${CONTEXT_PATH}${TEST_PROJECT}/project-begin.view`);
+        const to = parseAppPath(`/labkey${TEST_PROJECT}/project-begin.view`);
 
         // A URL pointing to LKS should return undefined
         expect(to).toEqual(undefined);
@@ -124,7 +110,7 @@ describe('parseAppPath', () => {
 
     test('in child folder, href in LKS', () => {
         initChild();
-        const to = parseAppPath(`${CONTEXT_PATH}/admin-showAdmin.view`);
+        const to = parseAppPath('/labkey/admin-showAdmin.view');
 
         // A URL pointing to LKS should return undefined
         expect(to).toEqual(undefined);

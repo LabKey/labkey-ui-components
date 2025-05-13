@@ -56,12 +56,11 @@ MenuSectionLink.displayName = 'MenuSectionLink';
 interface MenuSectionProps {
     config: MenuSectionConfig;
     containerPath: string;
-    currentProductId: string;
     section: MenuSectionModel;
 }
 
 export const ProductMenuSection: FC<MenuSectionProps> = memo(props => {
-    const { config, section, currentProductId, containerPath } = props;
+    const { config, section, containerPath } = props;
 
     if (!section) return null;
 

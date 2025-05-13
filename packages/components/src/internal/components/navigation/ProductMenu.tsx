@@ -188,7 +188,6 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                                                         key={key}
                                                         config={menuConfig}
                                                         containerPath={menuModel.containerPath}
-                                                        currentProductId={menuModel.currentProductId}
                                                         section={getSectionModel(key)}
                                                     />
                                                 );

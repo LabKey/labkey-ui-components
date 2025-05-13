@@ -1,26 +1,4 @@
-// Note: YES, this code does need to be above imports. Jest hoists mock code above imports, if we don't do this when
-// jest hoists the mock code above imports we'll get an error  that CONTEXT_PATH et al are being used before they're
-// defined.
-const CONTEXT_PATH = '';
-let CONTROLLER = 'samplemanager';
-let ACTION = 'app.view';
-let CONTAINER = '/MyTestContainer';
-jest.mock('@labkey/api', () => {
-    const api = jest.requireActual('@labkey/api');
-
-    return {
-        ...api,
-        ActionURL: {
-            ...api.ActionURL,
-            getContextPath: () => CONTEXT_PATH,
-            getAction: () => ACTION,
-            getController: () => CONTROLLER,
-            getContainer: () => CONTAINER,
-        },
-    };
-});
-
-import { Filter } from '@labkey/api';
+import { Filter, __setController } from '@labkey/api';
 
 import { buildURL, createProductUrl, AppURL, createProductUrlFromPartsWithContainer } from './AppURL';
 
@@ -41,9 +19,7 @@ describe('AppURL', () => {
                 samplemanagement: {},
             },
         };
-        CONTROLLER = 'samplemanager';
-        ACTION = 'app.view';
-        CONTAINER = '/MyTestContainer';
+        __setController('samplemanager');
     });
 
     afterEach(() => {
@@ -78,7 +54,7 @@ describe('AppURL', () => {
                     Filter.create('Bob', ['a', 20, 30], Filter.Types.IN)
                 )
                 .toHref()
-        ).toBe(url + '?query.Status~neq=open&query.RowId~in=10;11;12&query.Bob~in=a;20;30');
+        ).toBe(url + '?query.Status~neq=open&query.RowId~in=10%3B11%3B12&query.Bob~in=a%3B20%3B30');
     });
 
     test('addParam', () => {
@@ -90,37 +66,14 @@ describe('AppURL', () => {
         expect(AppURL.create('somePath').addParam(undefined, 'undef').toHref()).toBe('#/somePath?undefined=undef');
     });
 
-    test('addParams with includeEmptyParams', () => {
+    test('addParams', () => {
         const actual = AppURL.create('somePath')
-            .addParams(
-                {
-                    undef: undefined,
-                    val: 23,
-                    booze: 'gin',
-                    mix: 'tonic',
-                },
-                true
-            )
-            .toHref();
-
-        // Check each parameter as order of params is non-deterministic
-        expect(actual).toContain('undef=undefined');
-        expect(actual).toContain('val=23');
-        expect(actual).toContain('booze=gin');
-        expect(actual).toContain('mix=tonic');
-    });
-
-    test('addParams without includeEmptyParams', () => {
-        const actual = AppURL.create('somePath')
-            .addParams(
-                {
-                    undef: undefined,
-                    val: 23,
-                    booze: 'gin',
-                    mix: 'tonic',
-                },
-                false
-            )
+            .addParams({
+                undef: undefined,
+                val: 23,
+                booze: 'gin',
+                mix: 'tonic',
+            })
             .toHref();
 
         // Check each parameter as order of params is non-deterministic
@@ -140,12 +93,11 @@ describe('AppURL', () => {
         expect(url.isAppPath()).toBeTruthy();
 
         // If we change to be in a different app, it should give us a URL for the primary app
-        CONTROLLER = 'freezermanager';
+        __setController('freezermanager');
         expect(url.toString()).toEqual('/labkey/DefaultTestContainer/samplemanager-app.view#/some/fun/path');
         expect(url.isAppPath()).not.toBeTruthy();
 
-        CONTROLLER = 'samplemanager';
-
+        __setController('samplemanager');
         url = url.setProductId('samplemanager');
 
         // If the product id matches the current product id, then we should only get a app path
@@ -162,17 +114,20 @@ describe('AppURL', () => {
     test('containerPath', () => {
         let url = AppURL.create('some', 'fun', 'path');
 
-        // without containerPath set, it should give us an app path
+        // without containerPath set it should give us an app path
         expect(url.toString()).toEqual('/some/fun/path');
         expect(url.isAppPath()).toBeTruthy();
 
-        // with containerPath set to the current container, it should give us an app path
-        url = url.setContainerPath('/MyTestContainer');
+        // with containerPath set to the current container it should give us an app path
+        url = url.setContainerPath('/DefaultTestContainer');
         expect(url.toString()).toEqual('/some/fun/path');
         expect(url.isAppPath()).toBeTruthy();
 
-        url = url.setContainerPath('/MyTestContainer/ChildFolder');
-        expect(url.toString()).toEqual('/labkey/MyTestContainer/ChildFolder/samplemanager-app.view#/some/fun/path');
+        // with containerPath set to a different path it should give us a full URL
+        url = url.setContainerPath('/DefaultTestContainer/ChildFolder');
+        expect(url.toString()).toEqual(
+            '/labkey/DefaultTestContainer/ChildFolder/samplemanager-app.view#/some/fun/path'
+        );
         expect(url.isAppPath()).not.toBeTruthy();
     });
 });

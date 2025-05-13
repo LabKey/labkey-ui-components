@@ -111,12 +111,13 @@ export function buildURL(controller: string, action: string, params?: any, optio
     return ActionURL.buildURL(controller, action, options?.container, parameters);
 }
 
-type URLParam = boolean | number | string;
+type BaseQueryParamValue = string | number | boolean | null | undefined;
+export type QueryParamValue = BaseQueryParamValue | BaseQueryParamValue[];
 
 export class AppURL {
     declare _basePath: string;
     declare _filters: Filter.IFilter[];
-    declare _params: Record<string, string>;
+    declare _params: Record<string, QueryParamValue>;
     declare _containerPath: string;
     declare _productId: string;
 
@@ -176,23 +177,21 @@ export class AppURL {
         });
     }
 
-    addParam(key: string, value: URLParam, includeEmptyParams?: boolean): AppURL {
-        return this.addParams({ [key]: value }, includeEmptyParams);
+    addParam(key: string, value: QueryParamValue): AppURL {
+        return this.addParams({ [key]: value });
     }
 
-    addParams(params: Record<string, URLParam>, includeEmptyParams = false): AppURL {
+    addParams(params: Record<string, QueryParamValue>): AppURL {
         if (params) {
-            const encodedParams: Record<string, string> = {};
-            Object.keys(params).forEach(key => {
-                const value = params[key];
-                if (includeEmptyParams || (value !== undefined && value !== null)) {
-                    encodedParams[encodeURIComponent(key)] = encodeURIComponent(value);
-                }
-            });
-            return new AppURL({
-                ...this,
-                _params: this._params ? { ...this._params, ...encodedParams } : encodedParams,
-            });
+            const nonEmptyParams = Object.keys(params).reduce(
+                (result, key) => {
+                    const value = params[key];
+                    if (value !== null && value !== undefined) result[key] = value;
+                    return result;
+                },
+                { ...this._params } as Record<string, QueryParamValue>
+            );
+            return new AppURL({ ...this, _params: nonEmptyParams });
         }
 
         return this;
@@ -228,7 +227,9 @@ export class AppURL {
     }
 
     /**
-     * @deprecated You should only need this if you're rendering an anchor tag, and you should not do that.
+     * @deprecated You should only need this if you're rendering an anchor tag, and you should not do that. If you are
+     * trying to use this for something other than rendering an anchor tag update your code to use AppURL objects and
+     * render AppLink.
      * @param urlPrefix
      */
     toHref(urlPrefix?: string): string {
@@ -242,7 +243,7 @@ export class AppURL {
      * assume the primary product id (e.g. SM, Bio).
      * e.g. for SM it returns: /MyContainer/samplemanagement-app.view#
      */
-    baseUrl() {
+    baseUrl(): string {
         const controller = this.getProductId().toLowerCase();
         const currentController = ActionURL.getController().toLowerCase();
         const currentAction = ActionURL.getAction().toLowerCase();
@@ -261,21 +262,17 @@ export class AppURL {
      * @param urlPrefix
      */
     toString(urlPrefix?: string): string {
-        const parts = [];
-
-        if (this._params) {
-            Object.keys(this._params).forEach(key => {
-                parts.push(key + '=' + this._params[key]);
-            });
-        }
+        let appPath = this._basePath;
+        const allParams = { ...this._params };
 
         if (this._filters) {
             this._filters.forEach(f => {
-                parts.push(f.getURLParameterName(urlPrefix) + '=' + f.getURLParameterValue());
+                allParams[f.getURLParameterName(urlPrefix)] = f.getURLParameterValue();
             });
         }
 
-        const appPath = this._basePath + (parts.length > 0 ? '?' + parts.join('&') : '');
+        const queryString = ActionURL.queryString(allParams);
+        if (queryString) appPath += `?${queryString}`;
 
         // TODO: do not merge this FM code, it's only useful while cleaning up FM usages
         const isFMPath = appPath.startsWith('/boxes') || appPath.startsWith('/freezers');

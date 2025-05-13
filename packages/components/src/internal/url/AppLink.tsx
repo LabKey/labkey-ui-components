@@ -28,7 +28,7 @@ export function parseAppPath(href: string): string | undefined {
     const baseAppUrl = `${contextPath}${container}/${controller}-${action}.view#`;
 
     if (href.startsWith(baseAppUrl)) {
-        // This typically happens when a URL Mapper uses createProductUrl() or a derivative
+        // This typically happens when a URL Mapper uses toHref() or something similar
         return href.replace(baseAppUrl, '');
     }
 

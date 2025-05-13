@@ -1,6 +1,6 @@
 import { Filter, __setController } from '@labkey/api';
 
-import { buildURL, createProductUrl, AppURL } from './AppURL';
+import { buildURL, AppURL } from './AppURL';
 
 describe('AppURL', () => {
     let lk;
@@ -144,67 +144,5 @@ describe('buildURL', () => {
     test('returnUrl', () => {
         const expected = '/labkey/controller/DefaultTestContainer/action.view?returnUrl=somewhere';
         expect(buildURL('controller', 'action', {}, { returnUrl: 'somewhere' })).toBe(expected);
-    });
-});
-
-describe('createProductUrl', () => {
-    test('no productId', () => {
-        const url = createProductUrl(undefined, 'currentProduct', AppURL.create('destination'));
-        expect(url.toString()).toEqual('/destination');
-    });
-
-    test('no currentProductId', () => {
-        const url = createProductUrl('urlProduct', undefined, AppURL.create('destination').addParam('rowId', 123));
-        expect(url).toEqual('/labkey/urlproduct/DefaultTestContainer/app.view#/destination?rowId=123');
-    });
-
-    test('not currentProductId', () => {
-        const url = createProductUrl(
-            'urlProduct',
-            'currentProduct',
-            AppURL.create('destination').addParam('rowId', 123)
-        );
-        expect(url).toEqual('/labkey/urlproduct/DefaultTestContainer/app.view#/destination?rowId=123');
-    });
-
-    test('is current product', () => {
-        const url = createProductUrl(
-            'currentProduct',
-            'currentProduct',
-            AppURL.create('destination').addParam('rowId', 123)
-        );
-        expect(url.toString()).toEqual('/destination?rowId=123');
-    });
-
-    test('with multiple params', () => {
-        const url = createProductUrl(
-            undefined,
-            'currentProduct',
-            AppURL.create('destination').addParam('rowId', 123).addParam('view', 'grid')
-        );
-        expect(url.toString()).toEqual('/destination?rowId=123&view=grid');
-    });
-
-    test('with multiple parts', () => {
-        const url = createProductUrl(
-            undefined,
-            'currentProduct',
-            AppURL.create('destination', 'mars').addParam('rowId', 42)
-        );
-        expect(url.toString()).toEqual('/destination/mars?rowId=42');
-    });
-
-    test('as url string', () => {
-        let url = createProductUrl(undefined, 'currentProduct', '#/destination?rowId=123');
-        expect(url.toString()).toEqual('#/destination?rowId=123');
-
-        url = createProductUrl('urlProduct', 'currentProduct', '#/destination?rowId=123');
-        expect(url.toString()).toEqual('/labkey/urlproduct/DefaultTestContainer/app.view#/destination?rowId=123');
-    });
-
-    test('containerPath', () => {
-        expect(createProductUrl('urlProduct', undefined, '#/destination?rowId=123', '/test/container/path')).toBe(
-            '/labkey/urlproduct/test/container/path/app.view#/destination?rowId=123'
-        );
     });
 });

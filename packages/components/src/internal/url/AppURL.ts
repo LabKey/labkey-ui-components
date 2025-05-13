@@ -17,38 +17,6 @@ import { ActionURL, Filter, getServerContext } from '@labkey/api';
 
 import { getPrimaryAppProductId } from '../app/products';
 
-export function createProductUrl(
-    urlProductId: string,
-    currentProductId: string,
-    appUrl: string | AppURL,
-    containerPath?: string
-): string | AppURL {
-    // if caller provided a containerPath, then buildURL
-    // else if target productId of the URL is different then the current productId, then buildURL
-    if (
-        (containerPath && urlProductId) ||
-        (urlProductId && (!currentProductId || urlProductId.toLowerCase() !== currentProductId.toLowerCase()))
-    ) {
-        const href = appUrl instanceof AppURL ? appUrl.toHref() : appUrl;
-
-        // Stay in dev mode if we are staying in the same controller and using action appDev
-        const useDevMode =
-            ActionURL.getController().toLowerCase() === urlProductId.toLowerCase() &&
-            ActionURL.getAction().toLowerCase() === 'appdev';
-
-        return (
-            buildURL(
-                urlProductId.toLowerCase(),
-                useDevMode ? 'appDev.view' : 'app.view',
-                undefined,
-                { returnUrl: false, container: containerPath } // if undefined, buildURL will use current container from server context
-            ) + href
-        );
-    } else {
-        return appUrl;
-    }
-}
-
 export function applyURL(prop: string, options?: BuildURLOptions): string {
     if (options) {
         if (typeof options[prop] === 'string') {

@@ -9,11 +9,7 @@ import { Container } from '../base/models/Container';
 
 import { MenuSectionModel } from '../navigation/model';
 
-import {
-    getProductSectionUrl,
-    parseProductMenuSectionResponse,
-    ProductSectionsDrawerImpl,
-} from './ProductSectionsDrawer';
+import { parseProductMenuSectionResponse, ProductSectionsDrawerImpl } from './ProductSectionsDrawer';
 import { ProductModel, ProductSectionModel } from './models';
 
 const TEST_SECTIONS = [
@@ -51,13 +47,6 @@ describe('ProductSectionsDrawer', () => {
             const item = document.querySelectorAll('.clickable-item')[index];
             expect(item.textContent).toBe(section.label);
         });
-    });
-
-    test('getProductSectionUrl', () => {
-        expect(getProductSectionUrl('id', 'key', '/test')).toBe('/labkey/id/test/app.view#/key');
-
-        // note ActionURL.getController() is '' for this jest test
-        expect(getProductSectionUrl('', 'key', '/test')).toBe('#/key');
     });
 
     test('parseProductMenuSectionResponse, no modelSections', () => {

@@ -1,8 +1,8 @@
 import React, { FC, memo, PropsWithChildren, useCallback, useState } from 'react';
 
 interface ProductClickableItemProps extends PropsWithChildren {
-    id: string;
     href: string;
+    id: string;
     onClick: () => void;
 }
 
@@ -12,6 +12,7 @@ export const ProductClickableItem: FC<ProductClickableItemProps> = memo(props =>
     const onEnter = useCallback(() => setHovered(true), [setHovered]);
     const onLeave = useCallback(() => setHovered(false), [setHovered]);
 
+    // TODO: Need to use AppLinkHere, however we'd need to add several props
     return (
         <a
             href={href}

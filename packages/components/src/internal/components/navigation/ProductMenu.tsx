@@ -107,7 +107,7 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                 menuRef.current.getElementsByClassName('active')?.[0].scrollIntoView({ behavior: 'smooth' });
             }
         }
-    }, [menuModel.isLoaded]);
+    }, [menuModel.isLoaded]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         (async () => {
@@ -156,7 +156,6 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                 {showFolderMenu && (
                     <FolderMenu
                         activeContainerId={menuModel.containerId}
-                        currentProductId={menuModel.currentProductId}
                         items={folderItems}
                         onClick={onFolderItemClick}
                     />

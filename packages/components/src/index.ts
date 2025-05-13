@@ -15,7 +15,7 @@
  */
 import { enableMapSet, enablePatches } from 'immer';
 
-import { applyURL, AppURL, buildURL, createProductUrl, spliceURL } from './internal/url/AppURL';
+import { applyURL, AppURL, buildURL, spliceURL } from './internal/url/AppURL';
 import { AppLink } from './internal/url/AppLink';
 import { getHref } from './internal/url/utils';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
@@ -1223,7 +1223,6 @@ export {
     AppLink,
     WHERE_FILTER_TYPE,
     NOT_ANY_FILTER_TYPE,
-    createProductUrl,
     // renderers
     ArchivedFolderTag,
     AttachmentCard,

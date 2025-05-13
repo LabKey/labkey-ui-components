@@ -30,7 +30,9 @@ module.exports = {
                         columnName: 'ParticipantId'
                     },
                     timepointType: 'VISIT'
-                }
+                },
+                // Makes tests appear to be running within an SM app
+                samplemanagement: {}
             }
         },
     },

@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { List } from 'immutable';
-import { ActionURL, getServerContext } from '@labkey/api';
+import { getServerContext } from '@labkey/api';
 
 import { FREEZERS_KEY, MEDIA_KEY, NOTEBOOKS_KEY, WORKFLOW_KEY } from '../../app/constants';
 
@@ -12,7 +12,7 @@ import { Alert } from '../base/Alert';
 
 import { MenuSectionModel, ProductMenuModel } from '../navigation/model';
 
-import { AppURL, createProductUrl } from '../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 
 import { ProductModel, ProductSectionModel } from './models';
 import { APPLICATION_NAVIGATION_METRIC, SECTION_KEYS_TO_SKIP } from './constants';
@@ -99,15 +99,6 @@ ProductSectionsDrawerImpl.displayName = 'ProductSectionsDrawerImpl';
 
 // function below are exported for jest testing
 
-export function getProductSectionUrl(productId: string, key: string, containerPath: string): string {
-    // if the section is for the same product we are already in, then keep the urls as route changes
-    if (productId.toLowerCase() === ActionURL.getController().toLowerCase()) {
-        return AppURL.create(key).toHref();
-    }
-
-    return createProductUrl(productId, undefined, AppURL.create(key), containerPath).toString();
-}
-
 export function parseProductMenuSectionResponse(
     modelSections: List<MenuSectionModel>,
     product: ProductModel,
@@ -117,7 +108,7 @@ export function parseProductMenuSectionResponse(
         new ProductSectionModel({
             key: 'home',
             label: 'Dashboard',
-            url: getProductSectionUrl(product.productId, 'home', projectPath),
+            url: AppURL.create('home').setContainerPath(projectPath),
         }),
     ];
 
@@ -128,7 +119,7 @@ export function parseProductMenuSectionResponse(
                 new ProductSectionModel({
                     key: modelSection.key,
                     label: modelSection.label,
-                    url: getProductSectionUrl(modelSection.productId, modelSection.key, projectPath),
+                    url: AppURL.create(modelSection.key).setContainerPath(projectPath),
                 })
             );
         });

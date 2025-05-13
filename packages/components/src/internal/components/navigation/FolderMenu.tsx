@@ -1,9 +1,8 @@
 import React, { FC, Fragment, memo, useMemo } from 'react';
 import classNames from 'classnames';
 
-import { getPrimaryAppProperties } from '../../app/utils';
 import { useServerContext } from '../base/ServerContext';
-import { AppURL, createProductUrl } from '../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 import { getHref } from '../../url/utils';
 import { Tip } from '../base/Tip';
 import { ExpandableContainer } from '../ExpandableContainer';
@@ -19,15 +18,13 @@ export interface FolderMenuItem {
 
 export interface FolderMenuProps {
     activeContainerId: string;
-    currentProductId: string;
     items: FolderMenuItem[];
     onClick: (item: FolderMenuItem) => void;
 }
 
 export const FolderMenuItems: FC<FolderMenuProps> = memo(props => {
-    const { items, onClick, activeContainerId, currentProductId } = props;
-    const { moduleContext, user } = useServerContext();
-    const primaryProductId = getPrimaryAppProperties(moduleContext).productId;
+    const { items, onClick, activeContainerId } = props;
+    const { user } = useServerContext();
 
     // TODO: the "user" object here is for the current container, so all of the user.isAdmin checks below are incorrect
     // TBD if we want to includeEffectivePermissions in the getContainers() call in ProductMenu.tsx or use the
@@ -36,18 +33,8 @@ export const FolderMenuItems: FC<FolderMenuProps> = memo(props => {
     return (
         <>
             {items.map(item => {
-                const dashboardURL = createProductUrl(
-                    primaryProductId,
-                    currentProductId,
-                    AppURL.create('home'),
-                    item.path
-                );
-                const adminURL = createProductUrl(
-                    primaryProductId,
-                    currentProductId,
-                    AppURL.create('admin', 'folders'),
-                    item.path
-                );
+                const dashboardURL = AppURL.create('home').setContainerPath(item.path);
+                const adminURL = AppURL.create('admin', 'folders').setContainerPath(item.path);
 
                 return (
                     <Fragment key={item.id}>
@@ -104,14 +91,14 @@ export const FolderMenuItems: FC<FolderMenuProps> = memo(props => {
 FolderMenuItems.displayName = 'FolderMenuItems';
 
 export const FolderMenu: FC<FolderMenuProps> = memo(props => {
-    const { items, onClick, activeContainerId, currentProductId } = props;
+    const { items, onClick, activeContainerId } = props;
 
     // TODO: the "user" object here is for the current container, so all of the user.isAdmin checks below are incorrect
     // TBD if we want to includeEffectivePermissions in the getContainers() call in ProductMenu.tsx or use the
     // useContainerUser() hook here (need to consider performance implications)
     const { activeItems, archivedItems } = useMemo(() => {
-        const activeItems_ = [],
-            archivedItems_ = [];
+        const activeItems_ = [];
+        const archivedItems_ = [];
         items?.forEach(item => {
             if (item.archived) archivedItems_.push(item);
             else activeItems_.push(item);
@@ -120,35 +107,27 @@ export const FolderMenu: FC<FolderMenuProps> = memo(props => {
     }, [items]);
 
     const archiveSectionHeader = (
-        <>
-            <div>
-                <span>Archived Folders</span>
-            </div>
-        </>
+        <div>
+            <span>Archived Folders</span>
+        </div>
     );
 
     return (
         <div className="menu-section col-folders">
             <ul>
-                <FolderMenuItems
-                    activeContainerId={activeContainerId}
-                    currentProductId={currentProductId}
-                    items={activeItems}
-                    onClick={onClick}
-                />
+                <FolderMenuItems activeContainerId={activeContainerId} items={activeItems} onClick={onClick} />
                 {archivedItems?.length > 0 && (
                     <div className="archived-product-menu">
                         <ExpandableContainer
-                            isExpandable={true}
+                            isExpandable
                             clause={archiveSectionHeader}
                             links={null}
-                            noIcon={true}
-                            useGreyTheme={true}
+                            noIcon
+                            useGreyTheme
                             rowCls=""
                         >
                             <FolderMenuItems
                                 activeContainerId={activeContainerId}
-                                currentProductId={currentProductId}
                                 items={archivedItems}
                                 onClick={onClick}
                             />

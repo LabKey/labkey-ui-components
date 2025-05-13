@@ -1,6 +1,6 @@
 const CONTEXT_PATH = '/labkey';
 let CONTROLLER = 'samplemanager';
-let ACTION = 'app.view';
+let ACTION = 'app';
 let CONTAINER = '/DefaultTestContainer';
 
 const actual = jest.requireActual('@labkey/api');
@@ -8,14 +8,8 @@ const actual = jest.requireActual('@labkey/api');
 export const ActionURL = {
     ...actual.ActionURL,
     getContextPath: () => CONTEXT_PATH,
-    getAction: () => {
-        console.log('Returning action:', ACTION);
-        return ACTION;
-    },
-    getController: () => {
-        console.log('Returning controller:', CONTROLLER);
-        return CONTROLLER;
-    },
+    getAction: () => ACTION,
+    getController: () => CONTROLLER,
     getContainer: () => CONTAINER,
 };
 

@@ -120,12 +120,12 @@ export class AppURL {
      * Creates an AppURL from a URL returned by our MenuSections API
      */
     static fromMenuUrl(url: string, productId: string, containerPath: string): AppURL {
+        if (url === undefined) return undefined;
         if (!url.startsWith('#')) return undefined;
-        let params;
         let path = url.replace('#', '');
-        if (path.indexOf('?')) path = path.substring(0, path.indexOf('?'));
+        if (path.indexOf('?') > -1) path = path.substring(0, path.indexOf('?'));
 
-        return new AppURL({ _basePath: path, _containerPath: containerPath, _params: params, _productId: productId });
+        return new AppURL({ _basePath: path, _containerPath: containerPath, _productId: productId });
     }
 
     addFilters(...filters: Filter.IFilter[]): AppURL {
@@ -234,7 +234,7 @@ export class AppURL {
 
         // TODO: do not merge this FM code, it's only useful while cleaning up FM usages
         const isFMPath = appPath.startsWith('/boxes') || appPath.startsWith('/freezers');
-        const isFMApp = this._productId === 'freezermanager';
+        const isFMApp = this._productId?.toLowerCase() === 'freezermanager';
         if (isFMPath && !isFMApp) {
             console.error('FM URL incorrect product id:', appPath, this._productId);
         }

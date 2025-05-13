@@ -36,14 +36,12 @@ export class MenuSectionModel extends Record({
     declare productId: string;
     declare sectionKey: string;
 
-    static create(rawData: any, currentProductId?: string, containerPath?: string): MenuSectionModel {
+    static create(rawData: any, containerPath?: string): MenuSectionModel {
         if (rawData) {
             let items;
 
             if (rawData.items) {
-                items = rawData.items.map(i =>
-                    MenuItemModel.create(i, rawData.sectionKey, currentProductId, containerPath)
-                );
+                items = rawData.items.map(i => MenuItemModel.create(i, rawData.sectionKey, containerPath));
             }
 
             return new MenuSectionModel(
@@ -88,7 +86,7 @@ export class MenuItemModel extends Record({
     declare hasActiveJob: boolean;
     declare fromSharedContainer: boolean;
 
-    static create(rawData, sectionKey: string, currentProductId?: string, containerPath?: string): MenuItemModel {
+    static create(rawData, sectionKey: string, containerPath?: string): MenuItemModel {
         if (rawData) {
             const dataProductId = rawData.productId ? rawData.productId.toLowerCase() : undefined;
 
@@ -168,7 +166,7 @@ export class ProductMenuModel extends Record({
 
         const sections: MenuSectionModel[] = [];
         response?.data?.forEach(data => {
-            sections.push(MenuSectionModel.create(data, this.currentProductId, this.containerPath));
+            sections.push(MenuSectionModel.create(data, this.containerPath));
         });
 
         return List<MenuSectionModel>(sections);

@@ -36,16 +36,8 @@ export interface PicklistEditModalProps {
 }
 
 const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
-    const {
-        onCancel,
-        onFinish,
-        sampleFieldKey,
-        sampleIds,
-        picklist,
-        showNotification,
-        metricFeatureArea,
-        queryModel,
-    } = props;
+    const { onCancel, onFinish, sampleFieldKey, sampleIds, picklist, showNotification, metricFeatureArea, queryModel } =
+        props;
     const useSnapshotSelection = queryModel?.filterArray.length > 0;
     const [name, setName] = useState<string>(picklist?.name ?? '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
@@ -157,8 +149,8 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         metricFeatureArea,
         name,
         onFinish,
-        picklist.Container,
-        picklist.listId,
+        picklist?.Container,
+        picklist?.listId,
         reset,
         sampleIds,
         selectionKey,

@@ -54,7 +54,6 @@ describe('ProductMenuModel', () => {
             ],
             sectionKey: testContainerSectionKey,
         },
-        'current',
         '/test/path'
     );
 
@@ -95,7 +94,7 @@ describe('ProductMenuModel', () => {
         expect(model.hasSectionItems(testContainerSectionKey)).toBeTruthy();
 
         const item = model.sections.get(0).items.get(0);
-        expect(item.getUrlString()).toBe('#/testContainer/a');
+        expect(item.getUrlString()).toBe('/labkey/samplemanager/test/path/app.view#/testContainer/a');
     });
 });
 
@@ -103,14 +102,13 @@ describe('MenuItemModel', () => {
     test('currentProductId param match', () => {
         const model = MenuItemModel.create(
             {
-                productId: 'product1',
+                productId: 'samplemanager',
                 url: '#/menuItem',
             },
-            'sectionKey',
-            'product1'
+            'sectionKey'
         );
 
-        expect(model.url).toBe('#/menuItem');
+        expect(model.url.toString()).toBe('/menuItem');
     });
 
     test('currentProductId param mismatch', () => {
@@ -119,26 +117,10 @@ describe('MenuItemModel', () => {
                 productId: 'product2',
                 url: '#/menuItem',
             },
-            'sectionKey',
-            'product1'
+            'sectionKey'
         );
 
-        expect(model.url).toBe('/labkey/product2/DefaultTestContainer/app.view#/menuItem');
-    });
-
-    test('originalUrl', () => {
-        const model = MenuItemModel.create(
-            {
-                productId: 'product2',
-                url: '#/menuItem',
-            },
-            'sectionKey',
-            'product1'
-        );
-
-        expect(model.getUrlString()).toBe('/labkey/product2/DefaultTestContainer/app.view#/menuItem');
-        expect(model.getUrlString(false)).toBe('/labkey/product2/DefaultTestContainer/app.view#/menuItem');
-        expect(model.getUrlString(true)).toBe('#/menuItem');
+        expect(model.url.toString()).toBe('/labkey/product2/DefaultTestContainer/app.view#/menuItem');
     });
 
     // Check that $ in item keys are correctly escaped. see Issue #45944
@@ -149,8 +131,7 @@ describe('MenuItemModel', () => {
                 key: rawKey,
                 url: '#/menuItem',
             },
-            'sectionKey',
-            'product1'
+            'sectionKey'
         );
         expect(model.key).toBe(expectedKey);
     }

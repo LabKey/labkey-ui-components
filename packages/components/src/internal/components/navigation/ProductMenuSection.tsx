@@ -43,14 +43,11 @@ const MenuSectionItemLabel: FC<MenuSectionLinkProps> = memo(({ config, item }) =
 
 MenuSectionItemLabel.displayName = 'MenuSectionItemLabel';
 
-const MenuSectionLink: FC<MenuSectionLinkProps> = ({ config, item }) => {
-    // const isAppUrl = (item.url instanceof AppURL || item.url.indexOf('#') === 0) && !config.useOriginalURL;
-    return (
-        <AppLink to={item.url} className="menu-section-link">
-            <MenuSectionItemLabel config={config} item={item} />
-        </AppLink>
-    );
-};
+const MenuSectionLink: FC<MenuSectionLinkProps> = ({ config, item }) => (
+    <AppLink to={item.url ?? item.originalUrl} className="menu-section-link">
+        <MenuSectionItemLabel config={config} item={item} />
+    </AppLink>
+);
 MenuSectionLink.displayName = 'MenuSectionLink';
 
 interface MenuSectionProps {
@@ -141,7 +138,7 @@ export const ProductMenuSection: FC<MenuSectionProps> = memo(props => {
                     {!isEmpty &&
                         visibleItems
                             .map(item => {
-                                if (item.url) {
+                                if (item.url || item.originalUrl) {
                                     return (
                                         <li key={item.label} className="clickable-item">
                                             <MenuSectionLink config={config} item={item} />

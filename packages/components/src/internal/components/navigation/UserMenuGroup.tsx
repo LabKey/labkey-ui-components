@@ -72,14 +72,14 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
         : undefined;
 
     const { helpHref, userMenuItems, adminMenuItems } = useMemo(() => {
-        let helpHref;
-        const userMenuItems = [];
-        const adminMenuItems = [];
+        let helpHref_: string;
+        const userMenuItems_ = [];
+        const adminMenuItems_ = [];
         model?.items
             .filter(item => !item.requiresLogin || (item.requiresLogin && user?.isSignedIn))
             .forEach(item => {
                 if (item.key === 'docs') {
-                    helpHref = item.getUrlString();
+                    helpHref_ = item.getUrlString();
                 } else {
                     const menuItem = (
                         <MenuItem key={item.key} href={item.getUrlString()} target="_self">
@@ -87,16 +87,16 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                         </MenuItem>
                     );
                     if (item.key.indexOf('admin') === 0) {
-                        adminMenuItems.push(menuItem);
+                        adminMenuItems_.push(menuItem);
                     } else {
-                        userMenuItems.push(menuItem);
+                        userMenuItems_.push(menuItem);
                     }
                 }
             });
         return {
-            helpHref,
-            userMenuItems,
-            adminMenuItems,
+            helpHref: helpHref_,
+            userMenuItems: userMenuItems_,
+            adminMenuItems: adminMenuItems_,
         };
     }, [model?.items, user?.isSignedIn]);
 

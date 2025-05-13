@@ -120,6 +120,7 @@ export class AppURL {
      * Creates an AppURL from a URL returned by our MenuSections API
      */
     static fromMenuUrl(url: string, productId: string, containerPath: string): AppURL {
+        if (!url.startsWith('#')) return undefined;
         let params;
         let path = url.replace('#', '');
         if (path.indexOf('?')) path = path.substring(0, path.indexOf('?'));

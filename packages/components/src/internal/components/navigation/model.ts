@@ -80,7 +80,7 @@ export class MenuItemModel extends Record({
     declare id: number;
     declare key: string;
     declare label: string;
-    declare url: string | AppURL;
+    declare url: AppURL;
     declare hidden: boolean;
     declare orderNum: number;
     declare originalUrl: string;
@@ -125,9 +125,8 @@ export class MenuItemModel extends Record({
         return new MenuItemModel();
     }
 
-    getUrlString(useOriginalUrl?: boolean): string {
-        if (useOriginalUrl && this.originalUrl) return this.originalUrl;
-        return typeof this.url === 'string' ? this.url : this.url?.toHref();
+    getUrlString(): string {
+        return this.url?.toHref();
     }
 }
 

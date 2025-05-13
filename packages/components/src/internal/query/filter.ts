@@ -24,8 +24,9 @@ import {
     isRelativeDateFilterValue,
 } from '../util/Date';
 
-const QUERY_KEY_CHAR_DECODED = ['$', '/', '&', '}', '~', ',', '.'];
-const QUERY_KEY_CHAR_ENCODED = ['$D', '$S', '$A', '$B', '$T', '$C', '$P'];
+// N.B. the dollar sign should always be last here to avoid double-decoding (see getLegalIdentifier)
+const QUERY_KEY_CHAR_DECODED = ['/', '&', '}', '~', ',', '.', '$'];
+const QUERY_KEY_CHAR_ENCODED = ['$S', '$A', '$B', '$T', '$C', '$P', '$D'];
 
 export const CONCEPT_COLUMN_FILTER_TYPES = [
     Filter.Types.HAS_ANY_VALUE,

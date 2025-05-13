@@ -1,6 +1,6 @@
 import { Filter, __setController } from '@labkey/api';
 
-import { buildURL, createProductUrl, AppURL, createProductUrlFromPartsWithContainer } from './AppURL';
+import { buildURL, createProductUrl, AppURL } from './AppURL';
 
 describe('AppURL', () => {
     let lk;
@@ -205,30 +205,6 @@ describe('createProductUrl', () => {
     test('containerPath', () => {
         expect(createProductUrl('urlProduct', undefined, '#/destination?rowId=123', '/test/container/path')).toBe(
             '/labkey/urlproduct/test/container/path/app.view#/destination?rowId=123'
-        );
-    });
-});
-
-describe('createProductUrlFromPartsWithContainer', () => {
-    test('no containerPath, productId match', () => {
-        expect((createProductUrlFromPartsWithContainer('a', 'a', undefined, undefined) as AppURL).toHref()).toBe('#');
-    });
-
-    test('no containerPath, productId mismatch', () => {
-        expect(createProductUrlFromPartsWithContainer('a', 'b', undefined, undefined) as AppURL).toBe(
-            '/labkey/a/DefaultTestContainer/app.view#'
-        );
-    });
-
-    test('containerPath, productId match', () => {
-        expect(createProductUrlFromPartsWithContainer('a', 'a', '/test/path', undefined)).toBe(
-            '/labkey/a/test/path/app.view#'
-        );
-    });
-
-    test('containerPath, productId mismatch', () => {
-        expect(createProductUrlFromPartsWithContainer('a', 'b', '/test/path', undefined)).toBe(
-            '/labkey/a/test/path/app.view#'
         );
     });
 });

@@ -9,7 +9,7 @@ import { QueryInfo } from '../public/QueryInfo';
 
 import { AssayUploadTabs } from './constants';
 
-import { AppURL, createProductUrlFromPartsWithContainer } from './url/AppURL';
+import { AppURL } from './url/AppURL';
 
 import { SCHEMAS } from './schemas';
 import { ASSAYS_KEY } from './app/constants';

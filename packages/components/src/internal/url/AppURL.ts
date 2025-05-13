@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 import { ActionURL, Filter, getServerContext } from '@labkey/api';
-import { getPrimaryAppProductId } from '../app/products';
 
-// TODO: eliminate all usages of this
-export function createProductUrlFromPartsWithContainer(
-    urlProductId: string,
-    currentProductId: string,
-    containerPath: string,
-    params: { [key: string]: any },
-    ...parts
-): string | AppURL {
-    const appUrl = AppURL.create(...parts).addParams(params);
-    return createProductUrl(urlProductId, currentProductId, appUrl, containerPath);
-}
+import { getPrimaryAppProductId } from '../app/products';
 
 export function createProductUrl(
     urlProductId: string,

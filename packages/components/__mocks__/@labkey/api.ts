@@ -11,6 +11,12 @@ export const ActionURL = {
     getAction: () => ACTION,
     getController: () => CONTROLLER,
     getContainer: () => CONTAINER,
+    getPathFromLocation: () => ({
+        action: ACTION,
+        containerPath: CONTAINER,
+        contextPath: CONTROLLER,
+        controller: CONTROLLER,
+    }),
 };
 
 export const __setAction = (action: string) => (ACTION = action);

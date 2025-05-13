@@ -157,10 +157,8 @@ export function getJobCreationHref(
     picklistName?: string,
     isAssay?: boolean,
     sampleFieldKey?: string,
-    currentProductId?: string,
-    targetProductId?: string,
     ignoreFilter?: boolean
-): string {
+): AppURL {
     const hasFilters = model.filterArray.length > 0;
     const params = getURLParamsForSampleSelectionKey(model, picklistName, isAssay, sampleFieldKey, ignoreFilter);
 
@@ -169,7 +167,7 @@ export function getJobCreationHref(
     // If we have filters and are explicitly ignoring filters, then we're using a selection snapshot
     if (ignoreFilter && hasFilters) params.selectionKeyType = SELECTION_KEY_TYPE.snapshot;
 
-    return AppURL.create(WORKFLOW_KEY, 'new').addParams(params).toHref();
+    return AppURL.create(WORKFLOW_KEY, 'new').addParams(params);
 }
 
 export function getIdentifyingColumns(queryInfo: QueryInfo): QueryColumn[] {

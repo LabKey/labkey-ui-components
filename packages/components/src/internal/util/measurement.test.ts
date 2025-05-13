@@ -1,7 +1,6 @@
 import {
     convertUnitDisplay,
     convertUnitsForInput,
-    getAltMetricUnitOptions,
     getAltUnitKeys,
     getMetricUnitOptions,
     getStoredAmountDisplay,
@@ -58,13 +57,13 @@ describe('MetricUnit utils', () => {
         );
     });
 
-    test('getAltMetricUnitOptions', () => {
+    test('getMetricUnitOptions with unit', () => {
         const expectedUlOptions = [
             { label: 'L', value: 'L' },
             { label: 'mL', value: 'mL' },
             { label: 'uL', value: 'uL' },
         ];
-        const ulOptions = getAltMetricUnitOptions('uL').sort((a, b) => {
+        const ulOptions = getMetricUnitOptions('uL').sort((a, b) => {
             return a.label.localeCompare(b.label);
         });
         expect(ulOptions).toEqual(
@@ -80,7 +79,7 @@ describe('MetricUnit utils', () => {
             { label: 'mL (milliliters)', value: 'mL' },
             { label: 'uL (microliters)', value: 'uL' },
         ];
-        const ulLongLabelOptions = getAltMetricUnitOptions('uL', true).sort((a, b) => {
+        const ulLongLabelOptions = getMetricUnitOptions('uL', true).sort((a, b) => {
             return a.label.localeCompare(b.label);
         });
         expect(ulLongLabelOptions).toEqual(
@@ -96,7 +95,7 @@ describe('MetricUnit utils', () => {
             { label: 'kg', value: 'kg' },
             { label: 'mg', value: 'mg' },
         ];
-        const kgOptions = getAltMetricUnitOptions('kg').sort((a, b) => {
+        const kgOptions = getMetricUnitOptions('kg').sort((a, b) => {
             return a.label.localeCompare(b.label);
         });
         expect(kgOptions).toEqual(
@@ -107,9 +106,9 @@ describe('MetricUnit utils', () => {
             ])
         );
 
-        expect(getAltMetricUnitOptions(null).length).toBe(0);
-        expect(getAltMetricUnitOptions('').length).toBe(0);
-        expect(getAltMetricUnitOptions('bad').length).toBe(0);
+        expect(getMetricUnitOptions(null).length).toBe(7);
+        expect(getMetricUnitOptions('').length).toBe(7);
+        expect(getMetricUnitOptions('bad').length).toBe(7);
     });
 
     test('getAltUnitKeys', () => {

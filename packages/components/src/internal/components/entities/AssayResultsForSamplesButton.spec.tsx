@@ -37,17 +37,6 @@ describe('AssayResultsForSamplesButton', () => {
         wrapper.unmount();
     });
 
-    test('for different product id', () => {
-        const wrapper = mountWithAppServerContext(
-            <AssayResultsForSamplesMenuItem {...DEFAULT_PROPS} asSubMenu currentProductId="A" targetProductId="B" />
-        );
-        expect(wrapper.find(SelectionMenuItem)).toHaveLength(1);
-        expect(wrapper.find(SelectionMenuItem).prop('href')).toBe(
-            '/labkey/b/app.view#/assays/sampleresults?selectionKey=model'
-        );
-        wrapper.unmount();
-    });
-
     test('without read assay perm', () => {
         const wrapper = mountWithAppServerContext(
             <AssayResultsForSamplesMenuItem {...DEFAULT_PROPS} asSubMenu user={TEST_USER_STORAGE_EDITOR} />

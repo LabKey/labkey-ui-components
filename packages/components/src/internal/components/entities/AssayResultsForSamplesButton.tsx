@@ -26,17 +26,15 @@ function getAssayResultsHref(
 
 interface Props {
     asSubMenu?: boolean;
-    currentProductId?: string;
     isAssay?: boolean;
     isPicklist?: boolean;
     metricFeatureArea?: string;
     model: QueryModel;
-    targetProductId?: string;
     user: User;
 }
 
 export const AssayResultsForSamplesMenuItem: FC<Props> = memo(props => {
-    const { model, metricFeatureArea, isAssay, isPicklist, currentProductId, targetProductId, user } = props;
+    const { model, metricFeatureArea, isAssay, isPicklist, user } = props;
     const picklistName = useMemo(() => (isPicklist ? model.queryName : undefined), [model, isPicklist]);
     const sampleFieldKey = useMemo(
         () => (isAssay ? model.displayColumns?.find(c => c.isSampleLookup())?.fieldKey : undefined),

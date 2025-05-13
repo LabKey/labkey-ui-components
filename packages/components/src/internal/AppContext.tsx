@@ -56,7 +56,7 @@ export interface SampleTypeAppContext {
     dataClassTypeCaption?: string;
     detailRenderer?: DetailRenderer;
     downloadTemplateExcludeColumns?: string[];
-    getMetricUnitOptions: (unitTypeStr?: string) => any[];
+    getMetricUnitOptions: (unitTypeStr?: string, includeLongLabel?: boolean) => any[];
     getSamplesEditableGridProps: (user: User) => Partial<SamplesEditableGridProps>;
     getWorkflowGridQueryConfigs?: (
         visibleTabs: string[],

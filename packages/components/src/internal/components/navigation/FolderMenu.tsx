@@ -3,9 +3,9 @@ import classNames from 'classnames';
 
 import { useServerContext } from '../base/ServerContext';
 import { AppURL } from '../../url/AppURL';
-import { getHref } from '../../url/utils';
 import { Tip } from '../base/Tip';
 import { ExpandableContainer } from '../ExpandableContainer';
+import { AppLink } from '../../url/AppLink';
 
 export interface FolderMenuItem {
     archived: boolean;
@@ -62,17 +62,17 @@ export const FolderMenuItems: FC<FolderMenuProps> = memo(props => {
                                         'col-xs-2': !user.isAdmin,
                                     })}
                                 >
-                                    <a href={getHref(dashboardURL)} className="dashboard-link">
+                                    <AppLink to={dashboardURL} className="dashboard-link">
                                         <Tip caption="Dashboard">
                                             <i className="fa fa-home dashboard-icon" />
                                         </Tip>
-                                    </a>
+                                    </AppLink>
                                     {user.isAdmin && (
-                                        <a href={getHref(adminURL)}>
+                                        <AppLink to={adminURL}>
                                             <Tip caption="Administration">
                                                 <i className="fa fa-gear" />
                                             </Tip>
-                                        </a>
+                                        </AppLink>
                                     )}
                                 </div>
                             </div>

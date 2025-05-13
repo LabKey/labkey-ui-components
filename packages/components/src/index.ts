@@ -17,7 +17,6 @@ import { enableMapSet, enablePatches } from 'immer';
 
 import { applyURL, AppURL, buildURL, spliceURL } from './internal/url/AppURL';
 import { AppLink } from './internal/url/AppLink';
-import { getHref } from './internal/url/utils';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
@@ -1213,7 +1212,6 @@ export {
     pushParameters,
     removeParameters,
     replaceParameters,
-    getHref,
     hasParameter,
     toggleParameter,
     applyURL,

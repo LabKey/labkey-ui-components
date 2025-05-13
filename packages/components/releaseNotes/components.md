@@ -14,6 +14,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Remove createProductUrl
 - Remove createProductUrlFromParts
 - Remove createProductUrlFromPartsWithContainer
+- Remove getHref
 
 ### version 6.42.0
 *Released*: 14 May 2025

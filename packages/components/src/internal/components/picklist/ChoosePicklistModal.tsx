@@ -20,11 +20,12 @@ import { useAppContext } from '../../AppContext';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
-import { Picklist } from './models';
-import { addSamplesToPicklist, getPicklistsForInsert, SampleTypeCount } from './actions';
 import { AppLink } from '../../url/AppLink';
 import { AppURL } from '../../url/AppURL';
 import { PICKLIST_KEY } from '../../app/constants';
+
+import { addSamplesToPicklist, getPicklistsForInsert, SampleTypeCount } from './actions';
+import { Picklist } from './models';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -165,16 +166,14 @@ export const PicklistDetails: FC<PicklistDetailsProps> = memo(props => {
 PicklistDetails.displayName = 'PicklistDetails';
 
 interface AddedToPicklistNotificationProps {
-    currentProductId?: string;
     numAdded: number;
     numSelected: number;
     picklist: Picklist;
-    picklistProductId?: string;
 }
 
 // export for jest testing
 export const AddedToPicklistNotification: FC<AddedToPicklistNotificationProps> = props => {
-    const { picklist, numAdded, numSelected, currentProductId, picklistProductId } = props;
+    const { picklist, numAdded, numSelected } = props;
     let numAddedNotification;
     if (numAdded === 0) {
         numAddedNotification = 'No samples added';
@@ -218,8 +217,6 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             user,
             selectionKey,
             sampleIds,
-            currentProductId,
-            picklistProductId,
             metricFeatureArea,
             validCount,
         } = props;
@@ -276,13 +273,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
 
             createNotification({
                 message: (
-                    <AddedToPicklistNotification
-                        picklist={activeItem}
-                        numAdded={numAdded}
-                        numSelected={validCount}
-                        currentProductId={currentProductId}
-                        picklistProductId={picklistProductId}
-                    />
+                    <AddedToPicklistNotification picklist={activeItem} numAdded={numAdded} numSelected={validCount} />
                 ),
                 alertClass: numAdded === 0 ? 'info' : 'success',
             });
@@ -292,8 +283,6 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             createNotification,
             activeItem,
             validCount,
-            currentProductId,
-            picklistProductId,
             afterAddToPicklist,
             selectionKey,
             sampleIds,
@@ -419,11 +408,9 @@ ChoosePicklistModalDisplay.displayName = 'ChoosePicklistModalDisplay';
 
 interface ChoosePicklistModalProps {
     afterAddToPicklist: () => void;
-    currentProductId?: string;
     metricFeatureArea?: string;
     numSelected: number;
     onCancel: (cancelToCreate?: boolean) => void;
-    picklistProductId?: string;
     queryModel?: QueryModel;
     sampleFieldKey?: string;
     sampleIds?: number[];

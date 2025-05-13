@@ -25,12 +25,10 @@ import { createPicklist, updatePicklist } from './actions';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 
 export interface PicklistEditModalProps {
-    currentProductId?: string;
     metricFeatureArea?: string;
     onCancel: () => void;
     onFinish: (picklist: Picklist) => void;
     picklist?: Picklist;
-    picklistProductId?: string;
     queryModel?: QueryModel;
     sampleFieldKey?: string;
     sampleIds?: number[];
@@ -45,8 +43,6 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         sampleIds,
         picklist,
         showNotification,
-        currentProductId,
-        picklistProductId,
         metricFeatureArea,
         queryModel,
     } = props;
@@ -156,15 +152,13 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
     }, [
         api.query,
         createNotification,
-        currentProductId,
         description,
         isUpdate,
         metricFeatureArea,
         name,
         onFinish,
-        picklist?.Container,
-        picklist?.listId,
-        picklistProductId,
+        picklist.Container,
+        picklist.listId,
         reset,
         sampleIds,
         selectionKey,

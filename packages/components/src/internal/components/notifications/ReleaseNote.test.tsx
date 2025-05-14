@@ -7,9 +7,14 @@ import { FREEZER_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 import { DISMISSED_STORAGE_PREFIX, ReleaseNote } from './ReleaseNote';
+import { __setController } from '@labkey/api';
 
 beforeEach(() => {
     LABKEY.versionString = '24.1';
+});
+
+afterEach(() => {
+    __setController('samplemanager');
 });
 
 describe('ReleaseNote', () => {
@@ -49,6 +54,7 @@ describe('ReleaseNote', () => {
     });
 
     test('LKB', async () => {
+        __setController('biologics');
         const version = '24.1-snap';
 
         localStorage.removeItem(DISMISSED_STORAGE_PREFIX + 'Biologics' + version);

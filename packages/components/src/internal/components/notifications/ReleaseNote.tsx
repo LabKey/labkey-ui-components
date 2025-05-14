@@ -31,7 +31,7 @@ export const ReleaseNote: FC = props => {
     }, []);
 
     const onLinkClick = useCallback(() => {
-        api.query.incrementClientSideMetricCount(RELEASE_NOTES_METRIC, "FromBanner");
+        api.query.incrementClientSideMetricCount(RELEASE_NOTES_METRIC, 'FromBanner');
     }, []);
 
     if (releaseNoteDismissed || !releaseNoteLink) return null;
@@ -44,9 +44,9 @@ export const ReleaseNote: FC = props => {
                 <span onClick={onLinkClick}>
                     <HelpLink
                         topic={releaseNoteLink}
-                        useDefaultUrl={biologicsIsPrimaryApp() /* needed for FM in Biologics*/}
+                        useDefaultUrl={biologicsIsPrimaryApp(moduleContext) /* needed for FM in Biologics*/}
                     >
-                    See what's new.
+                        See what's new.
                     </HelpLink>
                 </span>
                 <i style={{ float: 'right' }} className="fa fa-times-circle pointer" onClick={onDismiss} />

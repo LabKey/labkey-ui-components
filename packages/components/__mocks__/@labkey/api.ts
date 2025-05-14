@@ -11,12 +11,15 @@ export const ActionURL = {
     getAction: () => ACTION,
     getController: () => CONTROLLER,
     getContainer: () => CONTAINER,
-    getPathFromLocation: () => ({
-        action: ACTION,
-        containerPath: CONTAINER,
-        contextPath: CONTROLLER,
-        controller: CONTROLLER,
-    }),
+    getPathFromLocation: (url: string) => {
+        if (url) return actual.ActionURL.getPathFromLocation(url, CONTEXT_PATH);
+        return {
+            action: ACTION,
+            containerPath: CONTAINER,
+            contextPath: CONTROLLER,
+            controller: CONTROLLER,
+        };
+    },
 };
 
 export const __setAction = (action: string) => (ACTION = action);

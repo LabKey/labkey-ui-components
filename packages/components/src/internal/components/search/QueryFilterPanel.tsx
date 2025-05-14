@@ -263,7 +263,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                         active={currFieldKey === activeFieldKey}
                                         index={index}
                                         key={field.fieldKeyPath}
-                                        label={<div data-fieldkey={field.fieldKeyPath}>{caption}</div>}
+                                        label={<span data-fieldkey={field.fieldKeyPath}>{caption}</span>}
                                         onSelect={() => onFieldClick(field)}
                                         componentRight={
                                             hasFilters(field) && <span className="pull-right field-modal__field_dot" />

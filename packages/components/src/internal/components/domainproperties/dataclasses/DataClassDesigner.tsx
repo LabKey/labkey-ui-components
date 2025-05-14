@@ -47,6 +47,7 @@ interface Props {
     headerText?: string;
     helpTopic?: string;
     initModel?: DataClassModel;
+    isUpdate?: boolean;
     isValidParentOptionsFn?: (row: any, isDataClass: boolean) => boolean;
     // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
     loadNameExpressionOptions?: (
@@ -60,17 +61,16 @@ interface Props {
     onChange?: (model: DataClassModel) => void;
     onComplete: (model: DataClassModel) => void;
     saveBtnText?: string;
-    isUpdate?: boolean;
     validateNameExpressions?: boolean;
 }
 
 interface State {
+    auditUserComment?: string;
     model: DataClassModel;
     nameExpressionWarnings: string[];
     namePreviews: string[];
     namePreviewsLoading: boolean;
     parentOptions: IParentOption[];
-    auditUserComment?: string;
 }
 
 const NEW_DATA_CLASS_OPTION: IParentOption = {
@@ -239,7 +239,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
                         this.setState({
                             nameExpressionWarnings: response.warnings,
                             namePreviews: response.previews,
-                            auditUserComment: auditUserComment,
+                            auditUserComment,
                         });
                     });
                     return;
@@ -262,7 +262,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
                 domain: domainDesign,
                 kind: Domain.KINDS.DATA_CLASS,
                 name: model.name,
-                auditUserComment: auditUserComment,
+                auditUserComment,
                 options,
             });
 

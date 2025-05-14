@@ -6,7 +6,7 @@ import React, {
     PropsWithChildren,
     useState,
     useCallback,
-    useMemo
+    useMemo,
 } from 'react';
 import { List } from 'immutable';
 
@@ -15,12 +15,14 @@ import { FormButtons } from '../../FormButtons';
 
 import { Alert } from '../base/Alert';
 
+import { CommentTextArea } from '../forms/input/CommentTextArea';
+
+import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
+
 import { getDomainBottomErrorMessage, getDomainHeaderName, getUpdatedVisitedPanelsList } from './actions';
 import { DOMAIN_ERROR_ID, SEVERITY_LEVEL_ERROR } from './constants';
 
 import { DomainDesign } from './models';
-import { CommentTextArea } from '../forms/input/CommentTextArea';
-import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
 export interface InjectedBaseDomainDesignerProps {
     currentPanelIndex: number;
@@ -132,9 +134,9 @@ interface BaseDomainDesignerProps extends PropsWithChildren {
     onCancel: () => void;
     onFinish: (reason?: string) => void;
     saveBtnText?: string;
+    showUserComment?: boolean;
     submitting: boolean;
     visitedPanels: List<number>;
-    showUserComment?: boolean;
 }
 
 export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
@@ -149,7 +151,7 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
         onCancel,
         hasValidProperties,
         saveBtnText = 'Save',
-        showUserComment
+        showUserComment,
     } = props;
     const [userComment, setUserComment] = useState<string>(undefined);
     const requiresUserComment = showUserComment ? useDataChangeCommentsRequired().requiresUserComment : false;
@@ -167,9 +169,8 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
     }, [userComment, onFinish]);
 
     const canSubmit = useMemo(() => {
-        if (submitting)
-            return false;
-        return !requiresUserComment || (userComment?.trim()?.length > 0)
+        if (submitting) return false;
+        return !requiresUserComment || userComment?.trim()?.length > 0;
     }, [requiresUserComment, userComment, submitting]);
 
     return (
@@ -184,7 +185,7 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
                 <button className="cancel-button btn btn-default" onClick={onCancel} type="button">
                     Cancel
                 </button>
-                {showUserComment &&
+                {showUserComment && (
                     <CommentTextArea
                         actionName="Update"
                         containerClassName="inline-comment"
@@ -192,7 +193,7 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
                         requiresUserComment={requiresUserComment}
                         inline
                     />
-                }
+                )}
                 <button className={submitClassname} disabled={!canSubmit} onClick={onSave} type="button">
                     {saveBtnText}
                 </button>

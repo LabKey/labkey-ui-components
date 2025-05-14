@@ -530,6 +530,7 @@ export function _parseCalculatedColumn(
 export interface SaveDomainOptions {
     /** Boolean indicating if rowIndices should be added to the error message objects */
     addRowIndexes?: boolean;
+    auditUserComment?: string;
     /** Container path where requests are made. Defaults to domain.container for updates. */
     containerPath?: string;
     /** DomainDesign to save */
@@ -544,7 +545,6 @@ export interface SaveDomainOptions {
     options?: any;
     /** Original DomainDesign (before filtering out of locked/mapped fields), to be used for addRowIndexes = true */
     originalDomain?: DomainDesign;
-    auditUserComment?: string;
 }
 
 export function saveDomain(options: SaveDomainOptions): Promise<DomainDesign> {
@@ -904,7 +904,7 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             }) as DomainField;
         } else {
             if (PropDescType.isUser(value)) {
-                field = field.merge({lookupValidator: LOOKUP_VALIDATOR}) as DomainField;
+                field = field.merge({ lookupValidator: LOOKUP_VALIDATOR }) as DomainField;
             }
         }
     }

@@ -143,8 +143,7 @@ export class AssayProtocolModel extends ImmutableRecord({
 
         const json = model.merge({ domains }).toJS();
 
-        if (auditUserComment)
-            json.auditUserComment = auditUserComment;
+        if (auditUserComment) json.auditUserComment = auditUserComment;
 
         // only need to serialize the id and not the autoCopyTargetContainer object
         delete json.autoCopyTargetContainer;

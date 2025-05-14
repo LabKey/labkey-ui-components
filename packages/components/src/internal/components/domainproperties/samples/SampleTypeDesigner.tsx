@@ -104,6 +104,7 @@ interface Props {
     helpTopic?: string;
     includeDataClasses?: boolean;
     initModel?: DomainDetails;
+    isUpdate?: boolean;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
     metricUnitProps?: MetricUnitProps;
     nameExpressionInfoUrl?: string;
@@ -113,11 +114,10 @@ interface Props {
     onCancel: () => void;
     onChange?: (model: SampleTypeModel) => void;
     onComplete: (response: DomainDesign) => void;
-    sampleAliasCaption?: string;
     sampleTypeCaption?: string;
     saveBtnText?: string;
     showAliquotOptions?: boolean;
-    isUpdate?: boolean;
+    sampleAliasCaption?: string;
     showLinkToStudy?: boolean;
     showParentLabelPrefix?: boolean;
     useSeparateDataClassesAliasMenu?: boolean;
@@ -126,6 +126,7 @@ interface Props {
 }
 
 interface State {
+    auditUserComment?: string;
     error: React.ReactNode;
     model: SampleTypeModel;
     nameExpressionWarnings: string[];
@@ -134,7 +135,6 @@ interface State {
     parentOptions: IParentOption[];
     showUniqueIdConfirmation: boolean;
     uniqueIdsConfirmed: boolean;
-    auditUserComment?: string;
 }
 // Exported for testing
 export class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
@@ -341,7 +341,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         setSubmitting(false, () => {
             this.setState({
                 nameExpressionWarnings: undefined,
-                auditUserComment: undefined
+                auditUserComment: undefined,
             });
         });
     };
@@ -386,12 +386,15 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
 
         const updatedModel = model.set('exception', exception) as SampleTypeModel;
         setSubmitting(false, () => {
-            this.setState({
-                model: updatedModel,
-                auditUserComment: auditUserComment,
-            }, () => {
-                scrollDomainErrorIntoView();
-            });
+            this.setState(
+                {
+                    model: updatedModel,
+                    auditUserComment,
+                },
+                () => {
+                    scrollDomainErrorIntoView();
+                }
+            );
         });
     };
 
@@ -499,7 +502,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                 kind: Domain.KINDS.SAMPLE_TYPE,
                 name,
                 options: details,
-                auditUserComment: auditUserComment ?? comment
+                auditUserComment: auditUserComment ?? comment,
             });
             setSubmitting(false, () => {
                 this.props.onComplete(response);

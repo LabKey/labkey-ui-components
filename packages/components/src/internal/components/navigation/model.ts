@@ -124,7 +124,7 @@ export class MenuItemModel extends Record({
     }
 
     getUrlString(): string {
-        return this.url?.toHref();
+        return this.url?.toHref() ?? this.originalUrl;
     }
 }
 

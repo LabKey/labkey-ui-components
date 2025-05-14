@@ -89,6 +89,7 @@ import {
     SOURCES_KEY,
     WORKFLOW_KEY,
 } from './constants';
+import { __setAction, __setController } from '@labkey/api';
 
 describe('getMenuSectionConfigs', () => {
     test('LKS starter enabled', () => {
@@ -442,11 +443,11 @@ describe('utils', () => {
     let container;
     beforeEach(() => {
         container = LABKEY.container;
-        window.history.pushState({}, 'Test Title', '/');
     });
 
     afterEach(() => {
         LABKEY.container = container;
+        __setController('samplemanager');
     });
 
     test('userCanDesignSourceTypes', () => {
@@ -697,9 +698,15 @@ describe('utils', () => {
     });
 
     test('isTransformScriptsEnabled', () => {
+        __setController('project'); // isApp() will be false
+        // When not in an app we skip checking module context and default to true
         expect(isTransformScriptsEnabled({})).toBe(true);
         expect(isTransformScriptsEnabled({ api: { moduleNames: ['premium'] } })).toBe(true);
-        expect(isTransformScriptsEnabled({ samplemanagement: {} })).toBe(true);
+
+        __setController('samplemanager'); // isApp() will be true
+        // When in an app we default to checking the module context
+        expect(isTransformScriptsEnabled({})).toBe(false);
+        expect(isTransformScriptsEnabled({ samplemanagement: {} })).toBe(false);
 
         expect(
             isTransformScriptsEnabled({
@@ -708,26 +715,26 @@ describe('utils', () => {
             })
         ).toBe(true);
 
+        __setController('biologics');
         expect(
             isTransformScriptsEnabled({
                 samplemanagement: {},
                 biologics: {},
             })
-        ).toBe(true);
+        ).toBe(false);
 
-        window.history.pushState({}, 'isApp', '/lims-app.view#'); // isApp()
         expect(
             isTransformScriptsEnabled({
                 samplemanagement: {},
+                biologics: {},
                 core: { productFeatures: [ProductFeature.TransformScripts] },
             })
         ).toBe(true);
 
-        window.history.pushState({}, 'isApp', '/samplemanager-app.view#'); // isApp()
+        __setController('lims');
         expect(
             isTransformScriptsEnabled({
                 samplemanagement: {},
-                biologics: {},
                 core: { productFeatures: [ProductFeature.TransformScripts] },
             })
         ).toBe(true);
@@ -1002,6 +1009,7 @@ describe('utils', () => {
     });
 
     test('sampleManagerIsPrimaryApp', () => {
+        __setController('project');
         expect(sampleManagerIsPrimaryApp({})).toBeFalsy();
         expect(sampleManagerIsPrimaryApp({ inventory: {} })).toBeFalsy();
         expect(sampleManagerIsPrimaryApp({ samplemanagement: {}, inventory: {} })).toBeTruthy();
@@ -1010,6 +1018,7 @@ describe('utils', () => {
     });
 
     test('limsIsPrimaryApp', () => {
+        __setController('project');
         LABKEY.container = { folderType: 'LIMS' };
         expect(limsIsPrimaryApp({})).toBe(false);
         expect(limsIsPrimaryApp({ inventory: {} })).toBeFalsy();
@@ -1019,6 +1028,7 @@ describe('utils', () => {
     });
 
     test('biologcisIsPrimaryApp', () => {
+        __setController('project');
         expect(biologicsIsPrimaryApp({})).toBeFalsy();
         expect(biologicsIsPrimaryApp({ samplemanagement: {} })).toBeFalsy();
         expect(biologicsIsPrimaryApp({ inventory: {} })).toBeFalsy();
@@ -1027,6 +1037,7 @@ describe('utils', () => {
     });
 
     test('getPrimaryAppProperties', () => {
+        __setController('project');
         LABKEY.container = {};
         expect(getPrimaryAppProperties({})).toBe(undefined);
         expect(getPrimaryAppProperties({ inventory: {} })).toStrictEqual(FREEZER_MANAGER_APP_PROPERTIES);
@@ -1042,6 +1053,7 @@ describe('utils', () => {
     });
 
     test('isCalculatedFieldsEnabled', () => {
+        __setController('project');
         expect(isCalculatedFieldsEnabled()).toBeFalsy();
         expect(isCalculatedFieldsEnabled()).toBeFalsy();
         expect(isCalculatedFieldsEnabled({ api: { moduleNames: ['api'] } })).toBeFalsy(); // LKS Community
@@ -1055,7 +1067,7 @@ describe('utils', () => {
             })
         ).toBeTruthy(); // LKS Enterprise
 
-        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()
+        __setController('samplemanager');
         expect(isCalculatedFieldsEnabled()).toBeFalsy();
         expect(isCalculatedFieldsEnabled({ core: { productFeatures: [] } })).toBeFalsy();
         expect(
@@ -1093,71 +1105,65 @@ describe('utils', () => {
 
     test('isQueryMetadataEditor', () => {
         expect(isQueryMetadataEditor()).toBe(false);
-        window.history.pushState({}, 'Test Title', '/query-metadataQuery.view#');
+        __setController('query');
+        __setAction('metadataQuery');
         expect(isQueryMetadataEditor()).toBe(true);
-        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#');
+        __setController('samplemanager');
+        __setAction('app.view');
         expect(isQueryMetadataEditor()).toBe(false);
-        window.history.pushState({}, 'Test Title', '/core-queryMetadataEditorDev.view#');
+        __setController('core');
+        __setAction('queryMetadataEditorDev');
         expect(isQueryMetadataEditor()).toBe(true);
     });
 });
 
 describe('freezerManagerIsCurrentApp', () => {
     beforeEach(() => {
-        window.history.pushState({}, 'Test Title', '/');
+        __setController('project');
     });
 
     test('LKFM', () => {
-        window.history.pushState({}, 'Test Title', '/freezermanager-app.view#'); // isApp()
+        __setController('freezermanager');
         expect(freezerManagerIsCurrentApp()).toBe(true);
     });
 
     test('LKSM', () => {
-        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()
+        __setController('samplemanager');
         expect(freezerManagerIsCurrentApp()).toBe(false);
     });
 
     test('LIMS', () => {
-        window.history.pushState({}, 'Test Title', '/lims-app.view#'); // isApp()
+        __setController('lims');
         expect(freezerManagerIsCurrentApp()).toBe(false);
     });
 
     test('LKB', () => {
-        window.history.pushState({}, 'Test Title', '/biologics-app.view#'); // isApp()
+        __setController('biologics');
         expect(freezerManagerIsCurrentApp()).toBe(false);
     });
 });
 
 describe('getCurrentAppProperties', () => {
     beforeEach(() => {
-        window.history.pushState({}, 'Test Title', '/');
+        __setController('project');
     });
 
     test('Sample Manager controller', () => {
-        window.history.pushState({}, 'Test Title', 'labkey/Sam Man/samplemanager-app.view#');
-        expect(getCurrentAppProperties()).toStrictEqual(SAMPLE_MANAGER_APP_PROPERTIES);
-        window.history.pushState({}, 'Test Title', 'labkey/Biologics/samplemanager-app.view#');
+        __setController('samplemanager');
         expect(getCurrentAppProperties()).toStrictEqual(SAMPLE_MANAGER_APP_PROPERTIES);
     });
 
     test('Biologics controller', () => {
-        window.history.pushState({}, 'Test Title', 'labkey/Biologics/biologics-app.view#');
-        expect(getCurrentAppProperties()).toStrictEqual(BIOLOGICS_APP_PROPERTIES);
-        window.history.pushState({}, 'Test Title', 'labkey/samplemanager/biologics-app.view#');
-        expect(getCurrentAppProperties()).toStrictEqual(BIOLOGICS_APP_PROPERTIES);
-        window.history.pushState({}, 'Test Title', 'labkey/Biologics/BiologicS-app.view#');
+        __setController('biologics');
         expect(getCurrentAppProperties()).toStrictEqual(BIOLOGICS_APP_PROPERTIES);
     });
 
     test('Freezer Manager controller', () => {
-        window.history.pushState({}, 'Test Title', 'labkey/Biologics/freezermanager-app.view#');
-        expect(getCurrentAppProperties()).toStrictEqual(FREEZER_MANAGER_APP_PROPERTIES);
-        window.history.pushState({}, 'Test Title', 'labkey/sampleManager/FreezerManager-app.view#');
+        __setController('freezermanager');
         expect(getCurrentAppProperties()).toStrictEqual(FREEZER_MANAGER_APP_PROPERTIES);
     });
 
     test('Non-app controller', () => {
-        window.history.pushState({}, 'Test Title', 'labkey/Biologics/project-begin.view');
         expect(getCurrentAppProperties()).toBe(undefined);
     });
 });

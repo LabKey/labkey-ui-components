@@ -4,7 +4,7 @@ import { Alert } from '../base/Alert';
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import {
-    getAltMetricUnitOptions,
+    getMetricUnitOptions,
     getVolumeMinStep,
     isMeasurementUnitIgnoreCase,
     isValuePrecisionValid,
@@ -68,7 +68,7 @@ export const StorageAmountInput: FC<Props> = memo(props => {
                 containerClass="checkin-unit-select-container"
                 inputClass="checkin-unit-select"
                 name="unitType"
-                options={getAltMetricUnitOptions(preferredUnit)}
+                options={getMetricUnitOptions(preferredUnit)}
                 onChange={(name, formValue, option: SelectInputOption) => {
                     unitsChangedHandler(formValue === undefined && option ? option.id : formValue);
                 }}

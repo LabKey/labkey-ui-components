@@ -471,9 +471,9 @@ export const FREEZER_ITEM_SAMPLE_MAPPER = new ActionMapper('query', 'executeQuer
             params.queryName.toLowerCase() === 'item'
         ) {
             if (params[materialIdKey]) {
-                return AppURL.create('rd', 'sampleItem', params[materialIdKey])
-                    .setProductId(FREEZER_MANAGER_APP_PROPERTIES.productId)
-                    .toHref();
+                return AppURL.create('rd', 'sampleItem', params[materialIdKey]).setProductId(
+                    FREEZER_MANAGER_APP_PROPERTIES.productId
+                );
             } else {
                 return ''; // don't try to show a link if there's no materialId Issue 49679
             }

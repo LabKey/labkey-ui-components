@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.42.0
+*Released*: 14 May 2025
 - Issue 52934: Filter unit options when updating a type that has samples with units
 
 ### version 6.41.0

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { Component, FC, FocusEvent, KeyboardEvent, ReactNode } from 'react';
+import React, { Component, CSSProperties, FC, FocusEvent, KeyboardEvent, ReactNode } from 'react';
 import ReactSelect, { components } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import AsyncCreatableSelect from 'react-select/async-creatable';
@@ -27,6 +27,9 @@ import { DELIMITER, INPUT_CONTAINER_CLASS_NAME, INPUT_LABEL_CLASS_NAME, INPUT_WR
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { generateId } from '../../../util/utils';
 
+const WARN_COLOR = '#8A6D3B';
+const WARN_BG_COLOR = '#FCF8E3';
+
 const _customStyles = {
     control: (styles, props) => {
         if (props.isDisabled) {
@@ -38,22 +41,45 @@ const _customStyles = {
     // which results in layout conflicts in our apps. This reverts to the v1 value.
     menu: provided => ({ ...provided, zIndex: 1000 }),
     menuPortal: provided => ({ ...provided, zIndex: 9999 }), // Issue 45958 Safari scrollbar renders over menu
-    multiValue: (styles, state) => ({ ...styles, backgroundColor: state.isDisabled ? '#E1E1E1' : '#F2F9FC' }),
-    multiValueLabel: (styles, state) => ({ ...styles, color: state.isDisabled ? '#555' : '#08C' }),
-    multiValueRemove: (styles, state) => {
-        // Don't display the remove symbol for each option when the select is disabled.
+    multiValue: (styles, state) => {
+        let backgroundColor: string;
         if (state.isDisabled) {
-            return { ...styles, display: 'none' };
+            backgroundColor = '#E1E1E1';
+        } else if (state.data?.notFound) {
+            backgroundColor = WARN_BG_COLOR;
+        } else {
+            backgroundColor = '#F2F9FC';
         }
 
-        return {
-            ...styles,
-            color: '#08C',
-            ':hover': {
-                backgroundColor: '#2980B9',
-                color: 'white',
-            },
-        };
+        return { ...styles, backgroundColor };
+    },
+    multiValueLabel: (styles, state) => {
+        let color: string;
+        if (state.isDisabled) {
+            color = '#555';
+        } else if (state.data?.notFound) {
+            color = WARN_COLOR;
+        } else {
+            color = '#08C';
+        }
+
+        return { ...styles, color };
+    },
+    multiValueRemove: (styles, state) => {
+        const style: CSSProperties = {};
+
+        if (state.isDisabled) {
+            // Don't display the remove symbol for each option when the select is disabled.
+            style.display = 'none';
+        } else if (state.data?.notFound) {
+            style.color = WARN_COLOR;
+            style[':hover'] = { backgroundColor: WARN_COLOR, color: WARN_BG_COLOR };
+        } else {
+            style.color = '#08C';
+            style[':hover'] = { backgroundColor: '#2980B9', color: '#FFF' };
+        }
+
+        return { ...styles, ...style };
     },
     placeholder: (styles, props) => {
         if (props.isDisabled) {
@@ -104,6 +130,7 @@ const CustomOption = props => {
 export interface SelectInputOption extends Record<string, any> {
     data?: any;
     label?: string;
+    notFound?: boolean;
     options?: SelectInputOption[];
     value?: any;
 }

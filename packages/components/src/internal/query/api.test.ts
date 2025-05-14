@@ -70,8 +70,8 @@ describe('api', () => {
 
         interface ModuleContextOptions {
             allFolderLookups?: boolean;
-            isProductFoldersEnabled?: boolean;
             folderDataScoped?: boolean;
+            isProductFoldersEnabled?: boolean;
         }
 
         function moduleContext(options?: ModuleContextOptions): ModuleContext {
@@ -142,7 +142,7 @@ describe('api', () => {
             key: 'test',
             models: {
                 test: {
-                    1: { Name: { value: 'one', url: 'http://one/test' } },
+                    1: { Name: { value: 'one', url: 'http://one/test', randomProperty: 123 } },
                     2: { Name: { value: 'with, comma', url: 'http://with, comma/test' } },
                     4: { Name: { value: 'with "quotes", and comma' } },
                     3: { NoName: { value: 'nonesuch', url: 'http://with, comma/test' } },
@@ -158,7 +158,7 @@ describe('api', () => {
                 key: 'test',
                 models: {
                     test: {
-                        1: { Name: { value: 'one', url: 'http://one/test', displayValue: 'one' } },
+                        1: { Name: { value: 'one', url: 'http://one/test', displayValue: 'one', randomProperty: 123 } },
                         2: {
                             Name: {
                                 value: '"with, comma"',
@@ -169,7 +169,6 @@ describe('api', () => {
                         4: {
                             Name: {
                                 value: '"with ""quotes"", and comma"',
-                                url: undefined,
                                 displayValue: 'with "quotes", and comma',
                             },
                         },

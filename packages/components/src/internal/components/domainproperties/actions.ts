@@ -332,10 +332,6 @@ export function handleSchemas(payload: any): SchemaDetails[] {
     return processSchemas(payload).valueSeq().sort(naturalSortByProperty('fullyQualifiedName')).toArray();
 }
 
-export function getAvailableTypes(domain: DomainDesign, ontologies = []): List<PropDescType> {
-    return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, ontologies)).toList();
-}
-
 export async function getAvailableTypesForOntology(
     api: DomainPropertiesAPIWrapper,
     domain: DomainDesign
@@ -393,6 +389,10 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
     }
 
     return true;
+}
+
+export function getAvailableTypes(domain: DomainDesign, ontologies = []): List<PropDescType> {
+    return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, ontologies)).toList();
 }
 
 export function fetchOntologies(containerPath?: string): Promise<OntologyModel[]> {

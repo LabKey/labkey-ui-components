@@ -15,7 +15,7 @@
  */
 import { List } from 'immutable';
 
-import { Domain } from '@labkey/api';
+import { __setController, Domain } from '@labkey/api';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
@@ -88,9 +88,21 @@ import {
 import { getDomainPropertiesTestAPIWrapper } from './APIWrapper';
 
 describe('domain properties actions', () => {
-    beforeEach(() => {
-        window.history.pushState({}, 'Test Title', '/');
+    const lk = LABKEY;
+    afterEach(() => {
+        __setController('samplemanager');
+        LABKEY = lk;
     });
+
+    function setModuleContext(moduleContext: any) {
+        LABKEY = {
+            ...LABKEY,
+            moduleContext: {
+                ...LABKEY.moduleContext,
+                ...moduleContext,
+            },
+        };
+    }
 
     test('create id', () => {
         return expect(createFormInputId('marty', 0, 100)).toBe(DOMAIN_FIELD_PREFIX + '-marty-0-100');
@@ -349,7 +361,8 @@ describe('domain properties actions', () => {
     });
 
     test('getAvailableTypes, all optional allowed', () => {
-        LABKEY.moduleContext = { ...TEST_LKS_STARTER_MODULE_CONTEXT };
+        __setController('project');
+        setModuleContext(TEST_LKS_STARTER_MODULE_CONTEXT);
         const domain = DomainDesign.create({
             allowFlagProperties: true,
             allowFileLinkProperties: true,
@@ -376,7 +389,8 @@ describe('domain properties actions', () => {
     });
 
     test('getAvailableTypes, no optional allowed', () => {
-        LABKEY.moduleContext = { ...TEST_LKS_STARTER_MODULE_CONTEXT };
+        __setController('project');
+        setModuleContext(TEST_LKS_STARTER_MODULE_CONTEXT);
         const domain = DomainDesign.create({
             allowFlagProperties: false,
             allowFileLinkProperties: false,
@@ -403,8 +417,7 @@ describe('domain properties actions', () => {
     });
 
     test('getAvailableTypes calculated fields, LKSM Starter', () => {
-        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#');
-        LABKEY.moduleContext = { ...TEST_LKSM_STARTER_MODULE_CONTEXT };
+        setModuleContext(TEST_LKSM_STARTER_MODULE_CONTEXT);
         const domain = DomainDesign.create({
             allowCalculatedFields: true,
         });
@@ -413,8 +426,7 @@ describe('domain properties actions', () => {
     });
 
     test('getAvailableTypes calculated fields, LKSM Professional', () => {
-        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#');
-        LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
+        setModuleContext(TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT);
         const domain = DomainDesign.create({
             allowCalculatedFields: true,
         });
@@ -447,12 +459,12 @@ describe('domain properties actions', () => {
     });
 
     test('getAvailableTypes, sampleType LKSM', () => {
-        LABKEY.moduleContext = {
+        setModuleContext({
             sampleManagement: {},
             api: {
                 moduleNames: ['samplemanagement'],
             },
-        };
+        });
         const domain = DomainDesign.create({
             domainKindName: Domain.KINDS.SAMPLE_TYPE,
         });
@@ -461,7 +473,9 @@ describe('domain properties actions', () => {
     });
 
     test('getAvailableTypes, sampleType Premium', () => {
-        LABKEY.moduleContext.api = { moduleNames: ['premium'] };
+        setModuleContext({
+            api: { moduleNames: ['premium'] },
+        });
         const domain = DomainDesign.create({
             domainKindName: Domain.KINDS.SAMPLE_TYPE,
             allowCalculatedFields: true,
@@ -472,7 +486,8 @@ describe('domain properties actions', () => {
     });
 
     test('getAvailableTypes, sampleType Professional', () => {
-        LABKEY.moduleContext.api = { moduleNames: ['premium', 'professional'] };
+        __setController('project');
+        setModuleContext({ api: { moduleNames: ['premium', 'professional'] } });
         const domain = DomainDesign.create({
             domainKindName: Domain.KINDS.SAMPLE_TYPE,
             allowCalculatedFields: true,
@@ -483,7 +498,7 @@ describe('domain properties actions', () => {
     });
 
     test('getAvailableTypes, sampleType community', () => {
-        LABKEY.moduleContext.api = { moduleNames: ['api', 'core'] };
+        setModuleContext({ api: { moduleNames: ['api', 'core'] } });
         const domain = DomainDesign.create({
             domainKindName: Domain.KINDS.SAMPLE_TYPE,
             allowCalculatedFields: true,

@@ -1,4 +1,13 @@
-import React, { PureComponent, ComponentType, FC, memo, PropsWithChildren, useState, useCallback } from 'react';
+import React, {
+    PureComponent,
+    ComponentType,
+    FC,
+    memo,
+    PropsWithChildren,
+    useState,
+    useCallback,
+    useMemo
+} from 'react';
 import { List } from 'immutable';
 
 import { getSubmitButtonClass, isApp } from '../../app/utils';
@@ -157,6 +166,12 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
         onFinish(userComment);
     }, [userComment, onFinish]);
 
+    const canSubmit = useMemo(() => {
+        if (submitting)
+            return false;
+        return !requiresUserComment || (userComment?.trim()?.length > 0)
+    }, [requiresUserComment, userComment, submitting]);
+
     return (
         <div className="domain-designer">
             {children}
@@ -178,7 +193,7 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
                         inline
                     />
                 }
-                <button className={submitClassname} disabled={submitting} onClick={onSave} type="button">
+                <button className={submitClassname} disabled={!canSubmit} onClick={onSave} type="button">
                     {saveBtnText}
                 </button>
             </FormButtons>

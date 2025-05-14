@@ -41,7 +41,7 @@ describe('MetricUnit utils', () => {
             { label: 'L (liters)', value: 'L' },
         ];
 
-        const options = getMetricUnitOptions().sort((a, b) => {
+        const options = getMetricUnitOptions(undefined, true).sort((a, b) => {
             return a.label.localeCompare(b.label);
         });
         expect(options).toEqual(

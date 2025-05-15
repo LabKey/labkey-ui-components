@@ -18,7 +18,7 @@ import { ActionURL, Experiment, Filter, getServerContext, Query } from '@labkey/
 
 import { LineageLinkMetadata } from '../components/lineage/types';
 
-import { FREEZER_MANAGER_APP_PROPERTIES, SAMPLES_KEY } from '../app/constants';
+import { BOXES_KEY, FREEZER_MANAGER_APP_PROPERTIES, SAMPLES_KEY } from '../app/constants';
 
 import { getCurrentAppProperties, getProjectPath } from '../app/utils';
 
@@ -536,7 +536,7 @@ export const STORAGE_BOX_MAPPER = new ActionMapper('query', 'detailsQueryRow', r
         if (schemaName && schemaName.toLowerCase() === 'inventory' && queryName && queryName.toLowerCase() === 'box') {
             const rowId = params.RowId;
             if (rowId && rowId.length) {
-                return AppURL.create('boxes', rowId)
+                return AppURL.create(BOXES_KEY, rowId)
                     .addParams({ 'query.sort': 'WellPosition' })
                     .setProductId(FREEZER_MANAGER_APP_PROPERTIES.productId);
             }

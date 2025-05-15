@@ -10,6 +10,8 @@ import { AppURL } from '../../url/AppURL';
 
 import { AppLink } from '../../url/AppLink';
 
+import { ADMIN_KEY } from '../../app/constants';
+
 import { SecurityAssignment, SecurityPolicy, SecurityRole } from './models';
 
 interface Props {
@@ -51,7 +53,7 @@ export class EffectiveRolesList extends React.PureComponent<Props> {
                                 .map(assignment => {
                                     const role = rolesByUniqueName.get(assignment.role);
                                     const roleDisplay = role ? role.displayName : assignment.role;
-                                    const url = AppURL.create('admin', 'permissions').addParams({
+                                    const url = AppURL.create(ADMIN_KEY, 'permissions').addParams({
                                         expand: roleDisplay,
                                     });
                                     const showLink = currentUser.isAdmin && showLinks;

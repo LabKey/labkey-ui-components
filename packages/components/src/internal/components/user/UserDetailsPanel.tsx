@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 
@@ -28,6 +28,7 @@ import { AppLink } from '../../url/AppLink';
 import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
+import { ADMIN_KEY } from '../../app/constants';
 
 interface UserDetailRowProps {
     label: string;
@@ -324,23 +325,28 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         const { showDialog, userProperties } = this.state;
         const { user, project } = getServerContext();
         const isSelf = userId === user.id;
-        // We do not currently support user management in sub folders, so we create the management URL for the project
-        // container.
-        const manageUrl = AppURL.create('admin', 'users')
-            .addParams({ usersView: 'all', 'all.UserId~eq': userId })
-            .setContainerPath(project.path);
 
         if (toggleDetailsModal) {
-            const footer = (
-                <AppLink className="pull-right btn btn-default" to={manageUrl}>
-                    Manage
-                </AppLink>
-            );
+            let footer: ReactNode;
+            if (user.isAdmin) {
+                // We do not currently support user management in sub folders, so we create the management URL for the project
+                // container.
+                const manageUrl = AppURL.create(ADMIN_KEY, 'users')
+                    .addParams({ usersView: 'all', 'all.UserId~eq': userId })
+                    .setContainerPath(project.path);
+
+                footer = (
+                    <AppLink className="pull-right btn btn-default" to={manageUrl}>
+                        Manage
+                    </AppLink>
+                );
+            }
+
             return (
                 <Modal
                     onCancel={toggleDetailsModal}
                     className="user-detail-modal"
-                    footer={user.isAdmin ? footer : undefined}
+                    footer={footer}
                     title={this.renderHeader()}
                 >
                     {this.renderBody()}

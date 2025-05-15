@@ -6,6 +6,7 @@ import { AppURL } from '../../url/AppURL';
 import { Tip } from '../base/Tip';
 import { ExpandableContainer } from '../ExpandableContainer';
 import { AppLink } from '../../url/AppLink';
+import { ADMIN_KEY } from '../../app/constants';
 
 export interface FolderMenuItem {
     archived: boolean;
@@ -34,7 +35,7 @@ export const FolderMenuItems: FC<FolderMenuProps> = memo(props => {
         <>
             {items.map(item => {
                 const dashboardURL = AppURL.create('home').setContainerPath(item.path);
-                const adminURL = AppURL.create('admin', 'folders').setContainerPath(item.path);
+                const adminURL = AppURL.create(ADMIN_KEY, 'folders').setContainerPath(item.path);
 
                 return (
                     <Fragment key={item.id}>

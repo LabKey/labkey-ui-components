@@ -18,7 +18,7 @@ import { ActionURL, Experiment, Filter, getServerContext, Query } from '@labkey/
 
 import { LineageLinkMetadata } from '../components/lineage/types';
 
-import { BOXES_KEY, FREEZER_MANAGER_APP_PROPERTIES, SAMPLES_KEY } from '../app/constants';
+import { ADMIN_KEY, BOXES_KEY, FREEZER_MANAGER_APP_PROPERTIES, SAMPLES_KEY } from '../app/constants';
 
 import { getCurrentAppProperties, getProjectPath } from '../app/utils';
 
@@ -492,7 +492,7 @@ export const PROJECT_MGMT_MAPPER = new ActionMapper('project', 'begin', (row, co
         const { containerPath } = ActionURL.getPathFromLocation(url);
         const { controllerName } = getCurrentAppProperties();
         const baseURL = ActionURL.buildURL(controllerName, 'app.view', containerPath);
-        return baseURL + AppURL.create('admin', 'settings').toHref();
+        return baseURL + AppURL.create(ADMIN_KEY, 'settings').toHref();
     }
 
     // Allow resolution of 'project-begin' to fall through to other mappers

@@ -2036,3 +2036,4 @@ export type { ImportTemplate } from './public/QueryInfo';
 export type { RequestHandler, RequestOptions } from './internal/request';
 export type { UseRequestHandler } from './internal/util/RequestHandler';
 export type { UseTimeout } from './internal/hooks';
+export type { QueryParamValue } from './internal/url/AppURL';

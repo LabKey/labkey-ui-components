@@ -533,7 +533,7 @@ export function getProjectPath(containerPath?: string): string {
 }
 
 // exported for testing
-export function getStorageSectionConfig(user: User, currentProductId: string, moduleContext: any): MenuSectionConfig {
+export function getStorageSectionConfig(user: User, moduleContext: any): MenuSectionConfig {
     if (isFreezerManagementEnabled(moduleContext)) {
         let locationsMenuConfig = new MenuSectionConfig({
             emptyText: 'No storage has been defined',
@@ -668,11 +668,7 @@ function getBioWorkflowNotebookMediaConfigs(): Map<string, MenuSectionConfig> {
 }
 
 // exported for testing
-export function getMenuSectionConfigs(
-    user: User,
-    currentProductId: string,
-    moduleContext?: ModuleContext
-): List<Map<string, MenuSectionConfig>> {
+export function getMenuSectionConfigs(user: User, moduleContext?: ModuleContext): List<Map<string, MenuSectionConfig>> {
     let sectionConfigs = List<Map<string, MenuSectionConfig>>();
 
     const isBioEnabled = isBiologicsEnabled(moduleContext);
@@ -694,7 +690,7 @@ export function getMenuSectionConfigs(
         }
     }
 
-    const storageConfig = getStorageSectionConfig(user, currentProductId, moduleContext);
+    const storageConfig = getStorageSectionConfig(user, moduleContext);
 
     if (isBioEnabled) {
         if (isAssayRequestsEnabled(moduleContext)) {
@@ -738,13 +734,9 @@ export function getMenuSectionConfigs(
 
 export const useMenuSectionConfigs = (
     user: User,
-    appProperties: AppProperties,
     moduleContext?: ModuleContext
 ): List<Map<string, MenuSectionConfig>> => {
-    return useMemo(
-        () => getMenuSectionConfigs(user, appProperties.productId, moduleContext),
-        [user, moduleContext, appProperties.productId]
-    );
+    return useMemo(() => getMenuSectionConfigs(user, moduleContext), [user, moduleContext]);
 };
 
 // Returns the friendly name of the product, primarily for use in help text.

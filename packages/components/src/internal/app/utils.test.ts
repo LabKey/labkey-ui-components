@@ -1,4 +1,5 @@
 import { List, Map } from 'immutable';
+import { __setAction, __setController } from '@labkey/api';
 
 import {
     TEST_USER_APP_ADMIN,
@@ -21,6 +22,7 @@ import {
 import { Container } from '../components/base/models/Container';
 
 import { MenuSectionConfig } from '../components/navigation/model';
+
 import {
     isBiologicsEnabled,
     isFreezerManagementEnabled,
@@ -89,11 +91,10 @@ import {
     SOURCES_KEY,
     WORKFLOW_KEY,
 } from './constants';
-import { __setAction, __setController } from '@labkey/api';
 
 describe('getMenuSectionConfigs', () => {
     test('LKS starter enabled', () => {
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, {
             ...TEST_LKS_STARTER_MODULE_CONTEXT,
         });
 
@@ -124,7 +125,7 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('sampleManager starter enabled', () => {
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, {
             ...TEST_LKSM_STARTER_MODULE_CONTEXT,
         });
 
@@ -151,7 +152,7 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('sampleManager professional enabled', () => {
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, 'sampleManager', {
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, {
             ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
         });
 
@@ -188,7 +189,7 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('freezerManager enabled', () => {
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, FREEZER_MANAGER_APP_PROPERTIES.productId, {
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, {
             inventory: {
                 productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
             },
@@ -226,7 +227,7 @@ describe('getMenuSectionConfigs', () => {
             },
         };
 
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, BIOLOGICS_APP_PROPERTIES.productId, moduleContext);
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, moduleContext);
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, REGISTRY_KEY])).toBeTruthy();
         expect(configs.getIn([0, REGISTRY_KEY, 'headerURLPart'])).toEqual(undefined);
@@ -299,7 +300,7 @@ describe('getMenuSectionConfigs', () => {
             },
         };
 
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, BIOLOGICS_APP_PROPERTIES.productId, moduleContext);
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, moduleContext);
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, REGISTRY_KEY])).toBeTruthy();
         expect(configs.getIn([0, REGISTRY_KEY, 'headerURLPart'])).toEqual(undefined);
@@ -340,7 +341,7 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('SM starter enabled, FM current app', () => {
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, FREEZER_MANAGER_APP_PROPERTIES.productId, {
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, {
             ...TEST_LKSM_STARTER_MODULE_CONTEXT,
         });
         expect(configs.size).toBe(4);
@@ -366,7 +367,7 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('SM professional, SM current app, storage editor', () => {
-        const configs = getMenuSectionConfigs(TEST_USER_STORAGE_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
+        const configs = getMenuSectionConfigs(TEST_USER_STORAGE_EDITOR, {
             ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
         });
         expect(configs.size).toBe(5);
@@ -402,7 +403,7 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('SM professional, SM current app, reader', () => {
-        const configs = getMenuSectionConfigs(TEST_USER_READER, 'sampleManager', {
+        const configs = getMenuSectionConfigs(TEST_USER_READER, {
             ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
         });
         expect(configs.size).toBe(5);
@@ -1180,7 +1181,7 @@ describe('getStorageSectionConfig', () => {
     });
 
     test('reader, inventory app', () => {
-        const config = getStorageSectionConfig(TEST_USER_READER, FREEZER_MANAGER_APP_PROPERTIES.productId, {
+        const config = getStorageSectionConfig(TEST_USER_READER, {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyText).toBe('No storage has been defined');
@@ -1193,7 +1194,7 @@ describe('getStorageSectionConfig', () => {
     test('reader, non-inventory app', () => {
         LABKEY.container = {};
 
-        const config = getStorageSectionConfig(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
+        const config = getStorageSectionConfig(TEST_USER_READER, {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyURLText).toBe('Get started...');
@@ -1206,7 +1207,7 @@ describe('getStorageSectionConfig', () => {
             path: 'Project A',
         };
 
-        const config = getStorageSectionConfig(TEST_USER_FOLDER_ADMIN, BIOLOGICS_APP_PROPERTIES.productId, {
+        const config = getStorageSectionConfig(TEST_USER_FOLDER_ADMIN, {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyURLText).toBe('Create storage');
@@ -1219,7 +1220,7 @@ describe('getStorageSectionConfig', () => {
             path: 'Project A/Child Folder 1',
         };
 
-        const config = getStorageSectionConfig(TEST_USER_FOLDER_ADMIN, BIOLOGICS_APP_PROPERTIES.productId, {
+        const config = getStorageSectionConfig(TEST_USER_FOLDER_ADMIN, {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyURLText).toBe('Create storage');
@@ -1232,7 +1233,7 @@ describe('getStorageSectionConfig', () => {
             path: undefined,
         };
 
-        const config = getStorageSectionConfig(TEST_USER_STORAGE_EDITOR, BIOLOGICS_APP_PROPERTIES.productId, {
+        const config = getStorageSectionConfig(TEST_USER_STORAGE_EDITOR, {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyURLText).toBe('Get started...');
@@ -1245,7 +1246,7 @@ describe('getStorageSectionConfig', () => {
             path: 'Project B',
         };
 
-        const config = getStorageSectionConfig(TEST_USER_STORAGE_DESIGNER, BIOLOGICS_APP_PROPERTIES.productId, {
+        const config = getStorageSectionConfig(TEST_USER_STORAGE_DESIGNER, {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyURLText).toBe('Create storage');
@@ -1258,7 +1259,7 @@ describe('getStorageSectionConfig', () => {
             path: 'Project B/Child 1',
         };
 
-        const config = getStorageSectionConfig(TEST_USER_STORAGE_DESIGNER, BIOLOGICS_APP_PROPERTIES.productId, {
+        const config = getStorageSectionConfig(TEST_USER_STORAGE_DESIGNER, {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyURLText).toBe('Create storage');

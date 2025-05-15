@@ -8,6 +8,7 @@ import { Groups, MemberType } from '../administration/models';
 import { getAppHomeFolderPath } from '../../app/utils';
 import { useContainerUser } from '../container/actions';
 import { AppLink } from '../../url/AppLink';
+import { ADMIN_KEY } from '../../app/constants';
 
 interface Props {
     asRow?: boolean;
@@ -38,7 +39,7 @@ export const GroupsList: FC<Props> = memo(props => {
         <ul className="principal-detail-ul">
             {groups.length > 0 ? (
                 groups.map(group => {
-                    const url = AppURL.create('admin', 'groups').addParams({ expand: group.value });
+                    const url = AppURL.create(ADMIN_KEY, 'groups').addParams({ expand: group.value });
                     const showLink =
                         homeContainer.user?.isAdmin &&
                         showLinks &&

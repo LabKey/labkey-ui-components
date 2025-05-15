@@ -160,8 +160,7 @@ export class AppURL {
     }
 
     getContainerPath(): string {
-        if (this._containerPath === undefined) return ActionURL.getContainer();
-        return this._containerPath;
+        return this._containerPath ?? ActionURL.getContainer();
     }
 
     setProductId(productId: string): AppURL {
@@ -169,8 +168,7 @@ export class AppURL {
     }
 
     getProductId(): string {
-        if (this._productId === undefined) return getPrimaryAppProductId() ?? '';
-        return this._productId;
+        return this._productId ?? getPrimaryAppProductId() ?? '';
     }
 
     /**

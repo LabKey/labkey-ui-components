@@ -29,6 +29,7 @@ const LIMS_CONTROLLER_NAME = 'lims';
 const SAMPLE_MANAGER_CONTROLLER_NAME = 'sampleManager';
 const FREEZER_MANAGER_CONTROLLER_NAME = 'freezerManager';
 
+export const ADMIN_KEY = 'admin';
 export const ASSAYS_KEY = 'assays';
 export const ASSAY_DESIGN_KEY = 'assayDesign';
 export const AUDIT_KEY = 'audit';

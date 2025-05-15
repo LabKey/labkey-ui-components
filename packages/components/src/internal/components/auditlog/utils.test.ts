@@ -154,6 +154,6 @@ describe('utils', () => {
         expect(getTimelineEntityUrl({ urlType: 'inventoryLocation', value: ['freezer1', 101] }).toHref()).toEqual(
             '#/rd/freezerLocation/101'
         );
-        expect(getTimelineEntityUrl({ urlType: 'inventoryBox', value: 101 }).toHref()).toEqual('#/boxes/101');
+        expect(getTimelineEntityUrl({ urlType: 'inventoryBox', value: 101 }).toHref()).toEqual('/labkey/DefaultTestContainer/freezermanager-app.view#/boxes/101');
     });
 });

@@ -37,6 +37,7 @@ interface Props extends PropsWithChildren {
     onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
     style?: StyleHTMLAttributes<HTMLAnchorElement>;
     targetBlank?: boolean;
+    title?: string;
     to: string | AppURL;
 }
 
@@ -45,7 +46,7 @@ interface Props extends PropsWithChildren {
  * handles all the corner cases around moving within our apps, between our apps, to other parts of LKS, and externally.
  */
 export const AppLink: FC<Props> = memo(props => {
-    const { children, className, onClick, style, targetBlank, to } = props;
+    const { children, className, onClick, style, targetBlank, title, to } = props;
     let appPath;
 
     if (to instanceof AppURL && to.isAppPath()) {
@@ -72,6 +73,7 @@ export const AppLink: FC<Props> = memo(props => {
             rel={targetBlank ? URL_REL : undefined}
             style={style}
             target={targetBlank ? TARGET_BLANK : undefined}
+            title={title}
         >
             {children}
         </a>

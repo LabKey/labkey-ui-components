@@ -17,7 +17,8 @@ import React, { FC } from 'react';
 
 import { Alert } from '../base/Alert';
 
-export const InsufficientPermissionsAlert: FC<{ message?: string }> = ({message = 'You do not have permissions for this action.' }) => {
-    return <Alert>{message}</Alert>;
-};
+const DEFAULT_MESSAGE = 'You do not have permissions for this action.';
+export const InsufficientPermissionsAlert: FC<{ message?: string }> = ({ message = DEFAULT_MESSAGE }) => (
+    <Alert className="wrong-perms-alert">{message}</Alert>
+);
 InsufficientPermissionsAlert.displayName = 'InsufficientPermissionsAlert';

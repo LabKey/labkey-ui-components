@@ -4,7 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 6.X
 *Released*: X May 2025
 - Add detailed auditing of domain changes & comment ability
-  - TODO
+  - include `CommentTextArea` in `BaseDomainDesigner` for supplying user provided comment for domain updates
+  - wire up `auditUserComment` for `SampleTypeDesigner`, `DataClassDesigner` and `AssayDesignerPanels`
 
 ### version 6.42.0
 *Released*: 14 May 2025

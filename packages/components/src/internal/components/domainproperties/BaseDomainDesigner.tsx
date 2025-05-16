@@ -154,6 +154,7 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
         showUserComment,
     } = props;
     const [userComment, setUserComment] = useState<string>(undefined);
+    // skip useDataChangeCommentsRequired hook for LKS pages with showUserComment=false
     const requiresUserComment = showUserComment ? useDataChangeCommentsRequired().requiresUserComment : false;
 
     // get a list of the domain names that have errors

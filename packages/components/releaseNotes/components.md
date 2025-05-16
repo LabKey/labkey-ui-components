@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add detailed auditing of domain changes & comment ability
   - TODO
 
+### version 6.42.0
+*Released*: 14 May 2025
+- Issue 52934: Filter unit options when updating a type that has samples with units
+
 ### version 6.41.0
 *Released*: 12 May 2025
 - Issue 52773: Update `QuerySelect` to manufacture selectable items for not found results.

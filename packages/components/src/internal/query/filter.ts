@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List } from 'immutable';
-import { Filter } from '@labkey/api';
+import { Filter, QueryKey } from '@labkey/api';
 
 import { JsonType } from '../components/domainproperties/PropDescType';
 import {
@@ -23,9 +23,6 @@ import {
     getParsedRelativeDateStr,
     isRelativeDateFilterValue,
 } from '../util/Date';
-
-const QUERY_KEY_CHAR_DECODED = ['$', '/', '&', '}', '~', ',', '.'];
-const QUERY_KEY_CHAR_ENCODED = ['$D', '$S', '$A', '$B', '$T', '$C', '$P'];
 
 export const CONCEPT_COLUMN_FILTER_TYPES = [
     Filter.Types.HAS_ANY_VALUE,
@@ -77,10 +74,7 @@ export function getLegalIdentifier(columnName: string, tableAlias?: string): str
     columnNameParts.forEach(part => {
         if (part) {
             let decodedPart = part.replace(/"/g, '""');
-            QUERY_KEY_CHAR_ENCODED.forEach((encoded, ind) => {
-                const reg = new RegExp('\\' + encoded, 'g');
-                decodedPart = decodedPart.replace(reg, QUERY_KEY_CHAR_DECODED[ind]);
-            });
+            decodedPart = QueryKey.decodePart(decodedPart);
             formattedParts.push('"' + decodedPart + '"');
         }
     });

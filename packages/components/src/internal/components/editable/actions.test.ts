@@ -670,6 +670,12 @@ describe('parsePastedLookup', () => {
         lookup: new QueryLookup({ isPublic: true }),
         required: true,
     });
+    const multiValueLookup = new QueryColumn({
+        jsonType: 'string',
+        caption: 'MultiValueLookupCol',
+        lookup: new QueryLookup({ isPublic: true, multiValued: 'junction' }),
+        multiValue: true,
+    });
 
     const intLookupValues = [
         { display: 'A', raw: 1 },
@@ -683,24 +689,20 @@ describe('parsePastedLookup', () => {
     ];
 
     test('empty', () => {
-        [undefined, null, '', ' '].forEach(val => {
+        const emptyValues = [undefined, null, '', ' '];
+        emptyValues.forEach(val => {
             expect(parsePastedLookup(intLookupCol, intLookupValues, val)).toStrictEqual({
-                valueDescriptors: List([
-                    {
-                        display: val,
-                        raw: val,
-                    },
-                ]),
+                valueDescriptors: List([{ display: val, raw: val }]),
             });
         });
-        [undefined, null, '', ' '].forEach(val => {
+        emptyValues.forEach(val => {
             expect(parsePastedLookup(stringLookupCol, stringLookupValues, val)).toStrictEqual({
-                valueDescriptors: List([
-                    {
-                        display: val,
-                        raw: val,
-                    },
-                ]),
+                valueDescriptors: List([{ display: val, raw: val }]),
+            });
+        });
+        emptyValues.forEach(val => {
+            expect(parsePastedLookup(multiValueLookup, stringLookupValues, val)).toStrictEqual({
+                valueDescriptors: List([{ display: val, raw: val }]),
             });
         });
     });
@@ -719,12 +721,10 @@ describe('parsePastedLookup', () => {
             valueDescriptors: List([{ display: 'value D', raw: 'd' }]),
         });
         expect(parsePastedLookup(stringLookupCol, stringLookupValues, 'b,C,value D')).toStrictEqual({
-            message: undefined,
-            valueDescriptors: List([
-                { display: 'b', raw: 'B' },
-                { display: 'C', raw: 'C' },
-                { display: 'value D', raw: 'd' },
-            ]),
+            message: {
+                message: 'Could not find "b,C,value D". Please make sure values that contain commas are properly quoted.',
+            },
+            valueDescriptors: List([{ display: 'b,C,value D', raw: 'b,C,value D' }]),
         });
 
         expect(parsePastedLookup(stringLookupCol, stringLookupValues, 'abc')).toStrictEqual({
@@ -733,13 +733,9 @@ describe('parsePastedLookup', () => {
         });
         expect(parsePastedLookup(stringLookupCol, stringLookupValues, 'abc, valueD')).toStrictEqual({
             message: {
-                message:
-                    'Could not find "abc", "valueD". Please make sure values that contain commas are properly quoted.',
+                message: 'Could not find "abc, valueD". Please make sure values that contain commas are properly quoted.',
             },
-            valueDescriptors: List([
-                { display: 'abc', raw: 'abc' },
-                { display: 'valueD', raw: 'valueD' },
-            ]),
+            valueDescriptors: List([{ display: 'abc, valueD', raw: 'abc, valueD' }]),
         });
     });
 
@@ -753,12 +749,10 @@ describe('parsePastedLookup', () => {
             valueDescriptors: List([{ display: 'A', raw: 1 }]),
         });
         expect(parsePastedLookup(intLookupCol, intLookupValues, 'A,B,b')).toStrictEqual({
-            message: undefined,
-            valueDescriptors: List([
-                { display: 'A', raw: 1 },
-                { display: 'b', raw: 2 },
-                { display: 'b', raw: 2 },
-            ]),
+            message: {
+                message: 'Could not find "A,B,b". Please make sure values that contain commas are properly quoted.',
+            },
+            valueDescriptors: List([{ display: 'A,B,b', raw: 'A,B,b' }]),
         });
 
         expect(parsePastedLookup(intLookupCol, intLookupValues, 'abc')).toStrictEqual({
@@ -767,13 +761,9 @@ describe('parsePastedLookup', () => {
         });
         expect(parsePastedLookup(intLookupCol, intLookupValues, 'abc, valueD')).toStrictEqual({
             message: {
-                message:
-                    'Could not find "abc", "valueD". Please make sure values that contain commas are properly quoted.',
+                message: 'Could not find "abc, valueD". Please make sure values that contain commas are properly quoted.',
             },
-            valueDescriptors: List([
-                { display: 'abc', raw: 'abc' },
-                { display: 'valueD', raw: 'valueD' },
-            ]),
+            valueDescriptors: List([{ display: 'abc, valueD', raw: 'abc, valueD' }]),
         });
     });
 
@@ -784,16 +774,41 @@ describe('parsePastedLookup', () => {
         });
         [undefined, null, ''].forEach(val => {
             expect(parsePastedLookup(requiredLookupCol, stringLookupValues, val)).toStrictEqual({
-                message: {
-                    message: 'ReqLookCol is required.',
-                },
-                valueDescriptors: List([
-                    {
-                        display: val,
-                        raw: val,
-                    },
-                ]),
+                message: { message: 'ReqLookCol is required.' },
+                valueDescriptors: List([{ display: val, raw: val }]),
             });
+        });
+    });
+
+    test('multi-value column', () => {
+        expect(parsePastedLookup(multiValueLookup, stringLookupValues, 'A')).toStrictEqual({
+            message: undefined,
+            valueDescriptors: List([{ display: 'A', raw: 'a' }]),
+        });
+        expect(parsePastedLookup(multiValueLookup, stringLookupValues, 'a')).toStrictEqual({
+            message: undefined,
+            valueDescriptors: List([{ display: 'A', raw: 'a' }]),
+        });
+        expect(parsePastedLookup(multiValueLookup, stringLookupValues, 'value D')).toStrictEqual({
+            message: undefined,
+            valueDescriptors: List([{ display: 'value D', raw: 'd' }]),
+        });
+        expect(parsePastedLookup(multiValueLookup, stringLookupValues, 'b,C,value D')).toStrictEqual({
+            message: undefined,
+            valueDescriptors: List([
+                { display: 'b', raw: 'B' },
+                { display: 'C', raw: 'C' },
+                { display: 'value D', raw: 'd' },
+            ]),
+        });
+        expect(parsePastedLookup(multiValueLookup, stringLookupValues, 'b,C,value D,404')).toStrictEqual({
+            message: { message: 'Could not find "404"' },
+            valueDescriptors: List([
+                { display: 'b', raw: 'B' },
+                { display: 'C', raw: 'C' },
+                { display: 'value D', raw: 'd' },
+                { display: '404', raw: '404' },
+            ]),
         });
     });
 });

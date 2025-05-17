@@ -47,6 +47,7 @@ import {
     toLowerSafe,
     uncapitalizeFirstChar,
     unorderedEqual,
+    unquote,
     withTransformedKeys,
 } from './utils';
 
@@ -1154,6 +1155,28 @@ describe('findMissingValues', () => {
     test('gaps everywhere', () => {
         expect(findMissingValues([2, 4, 6], ['a', 'b', 'c', 'd', 'e', 'f'])).toStrictEqual(['a', 'c', 'e']);
         expect(findMissingValues([3], ['a', 'b', 'c', 'd', 'e', 'f'])).toStrictEqual(['a', 'b', 'd', 'e', 'f']);
+    });
+});
+
+describe('unquote', () => {
+    test('quoting', () => {
+        expect(unquote(undefined)).toBe(undefined);
+        expect(unquote(null)).toBe(null);
+        expect(unquote('')).toBe('');
+        expect(unquote(' ')).toBe(' ');
+        expect(unquote('abc')).toBe('abc');
+        expect(unquote('a"bc')).toBe('a"bc');
+        expect(unquote('a"bc"')).toBe('a"bc"');
+        expect(unquote('"a"bc"')).toBe('a"bc');
+        expect(unquote('"abc"')).toBe('abc');
+        expect(unquote('""')).toBe('');
+        expect(unquote('"')).toBe('"');
+        expect(unquote('"\\"quoted\\""')).toBe('\\"quoted\\"');
+        expect(unquote('   "abc"   ')).toBe('   "abc"   ');
+        expect(unquote('"abc" "def"')).toBe('abc" "def');
+        expect(unquote('\'abc\'')).toBe('\'abc\'');
+        expect(unquote('\\"abc\\"')).toBe('\\"abc\\"');
+        expect(unquote('""abc""')).toBe('"abc"');
     });
 });
 

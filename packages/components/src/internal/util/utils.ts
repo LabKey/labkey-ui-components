@@ -560,6 +560,13 @@ export const handleFileInputChange = (
     };
 };
 
+export function unquote(value: string): string {
+    if (value && value.length > 1 && value.startsWith('"') && value.endsWith('"')) {
+        return value.slice(1, -1);
+    }
+    return value;
+}
+
 export function parseCsvString(value: string, delimiter: string, removeQuotes?: boolean): string[] {
     if (delimiter === '"') throw 'Unsupported delimiter: ' + delimiter;
 

@@ -14,6 +14,7 @@ import {
     parseCsvString,
     parseScientificInt,
     quoteValueWithDelimiters,
+    unquote,
 } from '../../util/utils';
 import { ViewInfo } from '../../ViewInfo';
 
@@ -1015,11 +1016,11 @@ export function generateFillCellKeys(
         end = initialMinRow - 1;
     }
 
-    const fillCellKeys = [];
+    const fillCellKeys: string[][] = [];
 
     // Construct arrays of columns, because we're going to generate fill sequences for columns
     for (let colIdx = minCol; colIdx <= maxCol; colIdx++) {
-        const columnKeys = [];
+        const columnKeys: string[] = [];
 
         for (let rowIdx = start; rowIdx <= end; rowIdx++) {
             columnKeys.push(genCellKey(editorModel.orderedColumns.get(colIdx), rowIdx));
@@ -1036,12 +1037,7 @@ export function parsePastedLookup(
     descriptors: ValueDescriptor[],
     value: string[] | string
 ): CellData {
-    const originalValues = List([
-        {
-            display: value,
-            raw: value,
-        },
-    ]);
+    const originalValues = List([{ display: value, raw: value }]);
 
     if (column.required && (value == null || value === '')) {
         return {
@@ -1058,24 +1054,28 @@ export function parsePastedLookup(
 
     let message: CellMessage;
     const unmatched: string[] = [];
+    let parsedValues: string[];
 
-    // parse pasted strings to split properly around quoted values.
-    // Remove the quotes for storing the actual values in the grid.
-    const values = parseCsvString(value, ',', true)
-        .map(v => {
-            const vt = v.trim();
-            if (vt.length > 0) {
-                const vl = vt.toLowerCase();
-                const vd = descriptors.find(d => d.display && d.display.toString().toLowerCase() === vl);
-                if (!vd) {
-                    unmatched.push(vt);
-                    return { display: vt, raw: vt };
-                } else {
-                    return vd;
-                }
-            }
-        })
-        .filter(v => v !== undefined);
+    // Issue 53055: only split raw values for multi-value columns
+    if (column.multiValue && column.isJunctionLookup()) {
+        // parse pasted strings to split properly around quoted values.
+        // Remove the quotes for storing the actual values in the grid.
+        parsedValues = parseCsvString(value, ',', true);
+    } else {
+        parsedValues = [unquote(value.trim())];
+    }
+
+    const values = parsedValues.flatMap(v => {
+        const vt = v.trim();
+        if (!vt) return [];
+
+        const vl = vt.toLowerCase();
+        const vd = descriptors.find(d => d.display && d.display.toString().toLowerCase() === vl);
+        if (vd) return [vd];
+
+        unmatched.push(vt);
+        return [{ display: vt, raw: vt }];
+    });
 
     if (unmatched.length) {
         const valueStr = unmatched
@@ -1085,10 +1085,7 @@ export function parsePastedLookup(
         message = { message: lookupValidationErrorMessage(valueStr, true) };
     }
 
-    return {
-        message,
-        valueDescriptors: List(values),
-    };
+    return { message, valueDescriptors: List(values) };
 }
 
 type LookupValueCache = Record<string, Promise<ValueDescriptor[]>>;

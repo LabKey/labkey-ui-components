@@ -1057,7 +1057,7 @@ export function parsePastedLookup(
     let parsedValues: string[];
 
     // Issue 53055: only split raw values for multi-value columns
-    if (column.multiValue && column.isJunctionLookup()) {
+    if (column.isJunctionLookup()) {
         // parse pasted strings to split properly around quoted values.
         // Remove the quotes for storing the actual values in the grid.
         parsedValues = parseCsvString(value, ',', true);

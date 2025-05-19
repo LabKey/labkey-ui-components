@@ -215,7 +215,6 @@ export class MenuSectionConfig extends Record({
     headerURLParams: undefined,
     headerURLPart: undefined,
     headerText: undefined,
-    iconCls: undefined,
     iconURL: undefined,
     showActiveJobIcon: true,
     staticContent: false,
@@ -229,8 +228,7 @@ export class MenuSectionConfig extends Record({
     declare headerURLParams: Record<string, any>;
     declare headerURLPart: string;
     declare headerText?: string;
-    declare iconCls?: string;
-    declare iconURL?: string;
+    declare iconURL: string;
     declare showActiveJobIcon?: boolean;
     // Inform the display that this section's content is static (unchanging).
     // This helps inform the layout when these sections are laid out alongside sections with dynamic content.

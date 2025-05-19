@@ -297,6 +297,14 @@
   }
 }
 
+.menu-section-header .menu-section-image {
+    margin-right: 4px;
+}
+
+.menu-section-header__text {
+    vertical-align: middle;
+}
+
 @media (min-width: 992px) {
     .product-menu-content {
         width: 925px;

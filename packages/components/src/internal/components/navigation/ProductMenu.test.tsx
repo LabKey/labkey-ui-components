@@ -96,16 +96,19 @@ const sections = List.of(
         label: 'Sample Sets',
         url: undefined,
         items: sampleTypeItems,
+        productId: 'samplemanager',
         key: 'samples',
     }),
     MenuSectionModel.create({
         label: 'Assays',
         items: assayItems,
+        productId: 'samplemanager',
         key: 'assays',
     }),
     MenuSectionModel.create({
         label: 'Your Items',
         items: yourItems,
+        productId: 'samplemanager',
         key: 'user',
     })
 );
@@ -123,24 +126,19 @@ let sectionConfigs = List<Map<string, MenuSectionConfig>>().asImmutable();
 const samplesSectionConfigs = Map<string, MenuSectionConfig>().set(
     'samples',
     new MenuSectionConfig({
-        iconCls: 'test-icon-cls',
         showActiveJobIcon: false,
+        headerURLPart: 'samples',
     })
 );
 sectionConfigs = sectionConfigs.push(samplesSectionConfigs);
 const twoSectionConfig = Map<string, MenuSectionConfig>().set(
     'assays',
     new MenuSectionConfig({
-        iconCls: 'test-icon-cls',
         showActiveJobIcon: true,
+        headerURLPart: 'assays',
     })
 );
-twoSectionConfig.set(
-    'user',
-    new MenuSectionConfig({
-        iconCls: 'test-icon-cls',
-    })
-);
+twoSectionConfig.set('user', new MenuSectionConfig({}));
 sectionConfigs = sectionConfigs.push(twoSectionConfig);
 
 const HOME_PROJECT = new Container({ id: '12345', path: HOME_PATH, title: 'home' });

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo, ReactNode } from 'react';
+import React, { FC, memo } from 'react';
 import classNames from 'classnames';
 
 import { AppURL } from '../../url/AppURL';
@@ -50,6 +50,18 @@ const MenuSectionLink: FC<MenuSectionLinkProps> = ({ config, item }) => (
 );
 MenuSectionLink.displayName = 'MenuSectionLink';
 
+const MenuSectionItem: FC<MenuSectionLinkProps> = ({ item, config }) => {
+    const isUrl = !!(item.url || item.originalUrl);
+    const className = isUrl ? 'clickable-item' : '';
+    return (
+        <li className={className}>
+            {isUrl && <MenuSectionLink config={config} item={item} />}
+            {!isUrl && <MenuSectionItemLabel config={config} item={item} />}
+        </li>
+    );
+};
+MenuSectionItem.displayName = 'MenuSectionItem';
+
 interface MenuSectionProps {
     config: MenuSectionConfig;
     containerPath: string;
@@ -58,66 +70,39 @@ interface MenuSectionProps {
 
 export const ProductMenuSection: FC<MenuSectionProps> = memo(props => {
     const { config, section, containerPath } = props;
-
-    if (!section) return null;
-
-    let icon: ReactNode;
-    if (config.iconURL) {
-        icon = (
-            <img
-                alt={section.label + ' icon'}
-                className={'menu-section-image ' + (config.iconCls || '')}
-                src={config.iconURL}
-                height="24px"
-                width="24px"
-            />
-        );
-    } else if (config.iconCls) {
-        icon = <span className={(config.iconCls || '') + ' menu-section-icon'} />;
-    }
     const headerText = config.headerText ?? section.label;
-    const label = icon ? (
-        <>
-            {icon} {headerText}
-        </>
-    ) : (
-        headerText
-    );
+    const headerURL = config.useOriginalURL
+        ? section.url
+        : AppURL.create(config.headerURLPart ?? section.key)
+              .addParams(config.headerURLParams)
+              .setContainerPath(containerPath)
+              .setProductId(section.productId);
 
-    let headerEl: ReactNode;
-    if (label) {
-        const headerURL = config.useOriginalURL
-            ? section.url
-            : AppURL.create(config.headerURLPart ?? section.key)
-                  .addParams(config.headerURLParams)
-                  .setContainerPath(containerPath)
-                  .setProductId(section.productId);
-
-        const className = headerURL instanceof AppURL ? 'menu-section-link' : undefined;
-        headerEl = (
-            <AppLink to={headerURL} className={className}>
-                {label}
-            </AppLink>
-        );
-    }
-
-    let emptyLink: ReactNode;
-    if (config.emptyAppURL) {
-        emptyLink = (
-            <AppLink to={config.emptyAppURL} className="menu-section-link">
-                {config.emptyURLText}
-            </AppLink>
-        );
-    }
-
-    const visibleItems = section.items.filter(item => !item.hidden).sortBy(item => item.label, naturalSort);
-    const isEmpty = section.items.isEmpty() || visibleItems.isEmpty();
+    const headerLinkClassName = headerURL instanceof AppURL ? 'menu-section-link' : undefined;
+    const visibleItems = section.items
+        .filter(item => !item.hidden)
+        .sortBy(item => item.label, naturalSort)
+        .toArray();
+    const isEmpty = visibleItems.length === 0;
+    const emptyText = section.items.isEmpty() ? config.emptyText : config.filteredEmptyText;
+    const emptyAppUrl = config.emptyAppURL?.setContainerPath(containerPath);
 
     return (
         <>
             <div className="product-menu-section-header">
                 <ul>
-                    <li className="menu-section-header clickable-item">{headerEl}</li>
+                    <li className="menu-section-header clickable-item">
+                        <AppLink to={headerURL} className={headerLinkClassName}>
+                            <img
+                                alt={section.label + ' icon'}
+                                className="menu-section-image"
+                                src={config.iconURL}
+                                height="24px"
+                                width="24px"
+                            />
+                            <span className="menu-section-header__text">{headerText}</span>
+                        </AppLink>
+                    </li>
                     <li>
                         <hr />
                     </li>
@@ -125,34 +110,17 @@ export const ProductMenuSection: FC<MenuSectionProps> = memo(props => {
             </div>
             <div className={classNames('product-menu-section', { 'menu-section-static': config.staticContent })}>
                 <ul>
-                    {isEmpty && (
-                        <>
-                            {(config.emptyText || config.filteredEmptyText) && (
-                                <li className="empty-section">
-                                    {section.items.isEmpty() ? config.emptyText : config.filteredEmptyText}
-                                </li>
-                            )}
-                            {emptyLink && <li className="empty-section-link">{emptyLink}</li>}
-                        </>
+                    {isEmpty && emptyText && <li className="empty-section">{emptyText}</li>}
+                    {isEmpty && emptyAppUrl && (
+                        <li className="empty-section-link">
+                            <AppLink to={emptyAppUrl} className="menu-section-link">
+                                {config.emptyURLText}
+                            </AppLink>
+                        </li>
                     )}
-                    {!isEmpty &&
-                        visibleItems
-                            .map(item => {
-                                if (item.url || item.originalUrl) {
-                                    return (
-                                        <li key={item.label} className="clickable-item">
-                                            <MenuSectionLink config={config} item={item} />
-                                        </li>
-                                    );
-                                }
-
-                                return (
-                                    <li key={item.label}>
-                                        <MenuSectionItemLabel config={config} item={item} />
-                                    </li>
-                                );
-                            })
-                            .toArray()}
+                    {visibleItems.map(item => (
+                        <MenuSectionItem key={item.label} config={config} item={item} />
+                    ))}
                 </ul>
             </div>
         </>

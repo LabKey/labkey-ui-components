@@ -331,12 +331,12 @@ describe('ProductMenuSection', () => {
 
         renderWithAppContext(
             <ProductMenuSection
-                containerPath="/test"
+                containerPath="/DefaultTestContainer"
                 section={section}
                 config={
                     new MenuSectionConfig({
                         emptyText: 'Testing empty',
-                        emptyAppURL: 'home',
+                        emptyAppURL: AppURL.create('home'),
                         emptyURLText: 'Create it',
                     })
                 }
@@ -348,7 +348,7 @@ describe('ProductMenuSection', () => {
         expect(document.querySelectorAll('.empty-section-link').length).toBe(1);
         expect(document.querySelectorAll('.empty-section-link')[0].textContent).toBe('Create it');
         expect(document.querySelectorAll('.empty-section-link')[0].querySelector('a').getAttribute('href')).toBe(
-            'home'
+            '/home'
         );
     });
 

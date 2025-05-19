@@ -15,6 +15,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Remove createProductUrlFromParts
 - Remove createProductUrlFromPartsWithContainer
 - Remove getHref
+- Rename ProductClickableItem to ProductNavigationItem
 
 ### version 6.42.0
 *Released*: 14 May 2025

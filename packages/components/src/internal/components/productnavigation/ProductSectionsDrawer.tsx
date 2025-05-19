@@ -16,92 +16,10 @@ import { AppURL } from '../../url/AppURL';
 
 import { ProductModel, ProductSectionModel } from './models';
 import { APPLICATION_NAVIGATION_METRIC, SECTION_KEYS_TO_SKIP } from './constants';
-import { ProductClickableItem } from './ProductClickableItem';
-
-interface ProductAppsDrawerProps {
-    api?: ComponentsAPIWrapper;
-    onCloseMenu?: () => void;
-    product: ProductModel;
-}
-
-export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
-    const { api = getDefaultAPIWrapper(), product } = props;
-    const currentContainer = getServerContext().container;
-    const [error, setError] = useState<string>();
-    const [sections, setSections] = useState<ProductSectionModel[]>();
-
-    const productIds = useMemo((): List<string> => {
-        return getAppProductIds(product.productId);
-    }, [product.productId]);
-
-    useEffect(() => {
-        const model = new ProductMenuModel({
-            currentProductId: product.productId,
-            productIds,
-        });
-
-        model
-            .getMenuSections()
-            .then(modelSections => {
-                setSections(parseProductMenuSectionResponse(modelSections, product, currentContainer.path));
-            })
-            .catch(error => {
-                setError('Error: unable to load product sections.');
-            });
-    }, [product]);
-
-    return <ProductSectionsDrawerImpl {...props} api={api} error={error} sections={sections} />;
-});
-ProductSectionsDrawer.displayName = 'ProductSectionsDrawer';
-
-interface ProductSectionsDrawerImplProps extends ProductAppsDrawerProps {
-    error: string;
-    sections: ProductSectionModel[];
-}
-
-// exported for jest testing
-export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props => {
-    const { api, sections, error, onCloseMenu, product } = props;
-
-    const [transition, setTransition] = useState<boolean>(true);
-    useEffect(() => {
-        // use setTimeout so that the "left" property will change and trigger the transition
-        setTimeout(() => setTransition(false), 10);
-    }, []);
-
-    const navigate = useCallback((section: ProductSectionModel) => {
-        api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, product.navigationMetric);
-        onCloseMenu?.();
-    }, []);
-
-    if (error) {
-        return <Alert className="error-item">{error}</Alert>;
-    }
-
-    return (
-        <div className={'menu-transition-left' + (transition ? ' transition' : '')}>
-            {sections?.map(section => {
-                return (
-                    <ProductClickableItem
-                        href={section.url.toString()}
-                        key={section.key}
-                        id={section.key}
-                        onClick={() => navigate(section)}
-                    >
-                        {section.label}
-                    </ProductClickableItem>
-                );
-            })}
-        </div>
-    );
-});
-ProductSectionsDrawerImpl.displayName = 'ProductSectionsDrawerImpl';
-
-// function below are exported for jest testing
+import { ProductNavigationItem } from './ProductNavigationItem';
 
 export function parseProductMenuSectionResponse(
     modelSections: List<MenuSectionModel>,
-    product: ProductModel,
     projectPath: string
 ): ProductSectionModel[] {
     const menuSections = [
@@ -119,7 +37,9 @@ export function parseProductMenuSectionResponse(
                 new ProductSectionModel({
                     key: modelSection.key,
                     label: modelSection.label,
-                    url: AppURL.create(modelSection.key).setContainerPath(projectPath),
+                    url: AppURL.create(modelSection.key)
+                        .setContainerPath(projectPath)
+                        .setProductId(modelSection.productId),
                 })
             );
         });
@@ -132,3 +52,83 @@ export function parseProductMenuSectionResponse(
         return 0;
     });
 }
+
+interface ProductAppsDrawerProps {
+    api?: ComponentsAPIWrapper;
+    onCloseMenu?: () => void;
+    product: ProductModel;
+}
+
+interface ProductSectionsDrawerImplProps extends ProductAppsDrawerProps {
+    error: string;
+    sections: ProductSectionModel[];
+}
+
+// exported for jest testing
+export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props => {
+    const { api, sections, error, onCloseMenu, product } = props;
+
+    const onClick = useCallback(() => {
+        api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, product.navigationMetric);
+        onCloseMenu?.();
+    }, [api.query, onCloseMenu, product.navigationMetric]);
+
+    if (error) {
+        return <Alert className="error-item">{error}</Alert>;
+    }
+
+    return (
+        <div className="product-navigation-drawer">
+            {sections?.map(({ key, label, url }) => (
+                <ProductNavigationItem url={url} key={key} id={key} onClick={onClick}>
+                    {label}
+                </ProductNavigationItem>
+            ))}
+        </div>
+    );
+});
+ProductSectionsDrawerImpl.displayName = 'ProductSectionsDrawerImpl';
+
+export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
+    const { api = getDefaultAPIWrapper(), product } = props;
+    const { container } = getServerContext(); // Note:
+    const [error, setError] = useState<string>();
+    const [sections, setSections] = useState<ProductSectionModel[]>();
+    const productIds = useMemo((): List<string> => {
+        return getAppProductIds(product.productId);
+    }, [product.productId]);
+    const load = useCallback(async () => {
+        // TODO: very odd pattern to create a model just so we can use an API method and throw away the model. We should
+        //  move getMenuSections to an APIWrapper.
+        const model = new ProductMenuModel({
+            currentProductId: product.productId,
+            productIds,
+        });
+
+        try {
+            const modelSections = await model.getMenuSections();
+            setSections(parseProductMenuSectionResponse(modelSections, container.path));
+        } catch (e) {
+            setError('Error: unable to load product sections.');
+        }
+    }, [container.path, product, productIds]);
+
+    useEffect(() => {
+        const model = new ProductMenuModel({
+            currentProductId: product.productId,
+            productIds,
+        });
+
+        model
+            .getMenuSections()
+            .then(modelSections => {
+                setSections(parseProductMenuSectionResponse(modelSections, container.path));
+            })
+            .catch(error => {
+                setError('Error: unable to load product sections.');
+            });
+    }, [container.path, product, productIds]);
+
+    return <ProductSectionsDrawerImpl {...props} api={api} error={error} sections={sections} />;
+});
+ProductSectionsDrawer.displayName = 'ProductSectionsDrawer';

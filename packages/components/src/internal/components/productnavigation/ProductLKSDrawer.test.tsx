@@ -12,11 +12,21 @@ const DEFAULT_PROPS = {
     tabs: [],
 };
 
-const VISIBLE_TAB_1 = new ContainerTabModel({ id: 'tab1', text: 'Tab 1', disabled: false });
-const VISIBLE_TAB_2 = new ContainerTabModel({ id: 'tab2', text: 'Tab 2', disabled: false });
-const DISABLED_TAB = new ContainerTabModel({ id: 'tab3', text: 'Tab 3', disabled: true });
+const VISIBLE_TAB_1 = new ContainerTabModel({
+    id: 'tab1',
+    text: 'Tab 1',
+    disabled: false,
+    href: 'https://example.com',
+});
+const VISIBLE_TAB_2 = new ContainerTabModel({
+    id: 'tab2',
+    text: 'Tab 2',
+    disabled: false,
+    href: 'https://example.com',
+});
+const DISABLED_TAB = new ContainerTabModel({ id: 'tab3', text: 'Tab 3', disabled: true, href: 'https://example.com' });
 
-let lk = LABKEY;
+const lk = LABKEY;
 beforeEach(() => {
     LABKEY = {
         ...LABKEY,
@@ -40,7 +50,7 @@ afterEach(() => {
 
 describe('ProductLKSDrawer', () => {
     function validate(containerItemCount: number, tabItemCount = 0) {
-        expect(document.querySelectorAll('.menu-transition-left')).toHaveLength(1);
+        expect(document.querySelectorAll('.product-navigation-drawer')).toHaveLength(1);
         expect(document.querySelectorAll('.container-item')).toHaveLength(containerItemCount);
         expect(document.querySelectorAll('.container-icon')).toHaveLength(containerItemCount);
         expect(document.querySelectorAll('.container-tabs')).toHaveLength(1);

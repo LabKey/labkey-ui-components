@@ -32,9 +32,15 @@ export function parseAppPath(href: string): string | undefined {
     return undefined;
 }
 
+/**
+ * DO NOT USE onMouseEnter or onMouseLeave, they are only needed because  the ProductNavigationItem applies a new CSS
+ * class on hover. This component will be updated in the near future to use a css :hover selector to apply the styling.
+ */
 interface Props extends PropsWithChildren {
     className?: string;
     onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
+    onMouseEnter?: (event: MouseEvent<HTMLAnchorElement>) => void;
+    onMouseLeave?: (event: MouseEvent<HTMLAnchorElement>) => void;
     style?: StyleHTMLAttributes<HTMLAnchorElement>;
     targetBlank?: boolean;
     title?: string;
@@ -46,7 +52,7 @@ interface Props extends PropsWithChildren {
  * handles all the corner cases around moving within our apps, between our apps, to other parts of LKS, and externally.
  */
 export const AppLink: FC<Props> = memo(props => {
-    const { children, className, onClick, style, targetBlank, title, to } = props;
+    const { children, className, onClick, onMouseEnter, onMouseLeave, style, targetBlank, title, to } = props;
     let appPath;
 
     if (to instanceof AppURL && to.isAppPath()) {
@@ -70,6 +76,8 @@ export const AppLink: FC<Props> = memo(props => {
             className={className}
             href={to.toString()}
             onClick={onClick}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
             rel={targetBlank ? URL_REL : undefined}
             style={style}
             target={targetBlank ? TARGET_BLANK : undefined}

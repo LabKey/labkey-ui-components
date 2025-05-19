@@ -11,6 +11,7 @@ import { MenuSectionModel } from '../navigation/model';
 
 import { parseProductMenuSectionResponse, ProductSectionsDrawerImpl } from './ProductSectionsDrawer';
 import { ProductModel, ProductSectionModel } from './models';
+import { getTestAPIWrapper } from '../../APIWrapper';
 
 const TEST_SECTIONS = [
     new ProductSectionModel({ key: 'a', label: 'A', url: 'http://sectionA' }),
@@ -22,6 +23,7 @@ const TEST_PRODUCT = new ProductModel({ productId: 'a', productName: 'A' });
 const TEST_PROJECT = new Container({ id: '1', path: '/test' });
 
 const DEFAULT_PROPS = {
+    api: getTestAPIWrapper(),
     error: undefined,
     sections: [],
     product: TEST_PRODUCT,
@@ -29,7 +31,7 @@ const DEFAULT_PROPS = {
 
 describe('ProductSectionsDrawer', () => {
     function validate(count: number, hasError = false): void {
-        expect(document.querySelectorAll('.menu-transition-left')).toHaveLength(!hasError ? 1 : 0);
+        expect(document.querySelectorAll('.product-navigation-drawer')).toHaveLength(!hasError ? 1 : 0);
         expect(document.querySelectorAll('.clickable-item')).toHaveLength(count);
         expect(document.querySelectorAll('.alert')).toHaveLength(hasError ? 1 : 0);
     }
@@ -50,7 +52,7 @@ describe('ProductSectionsDrawer', () => {
     });
 
     test('parseProductMenuSectionResponse, no modelSections', () => {
-        const sections = parseProductMenuSectionResponse(List<MenuSectionModel>(), TEST_PRODUCT, TEST_PROJECT.path);
+        const sections = parseProductMenuSectionResponse(List<MenuSectionModel>(), TEST_PROJECT.path);
         expect(sections).toHaveLength(1);
         expect(sections[0].key).toBe('home');
         expect(sections[0].label).toBe('Dashboard');
@@ -59,14 +61,14 @@ describe('ProductSectionsDrawer', () => {
 
     test('parseProductMenuSectionResponse, with modelSections to skip', () => {
         const modelSections = List<MenuSectionModel>([
-            new MenuSectionModel({ key: 's1', productId: 'a', label: 'S1' }),
-            new MenuSectionModel({ key: 's2', productId: 'a', label: 'S2' }),
-            new MenuSectionModel({ key: 'user', productId: 'a', label: 'User' }),
+            new MenuSectionModel({ key: 's1', productId: 'samplemanager', label: 'S1' }),
+            new MenuSectionModel({ key: 's2', productId: 'samplemanager', label: 'S2' }),
+            new MenuSectionModel({ key: 'user', productId: 'samplemanager', label: 'User' }),
             new MenuSectionModel({ key: 'biologicsWorkflow', productId: 'a', label: 'Workflow' }),
             new MenuSectionModel({ key: 's3', productId: 'a', label: 'S3' }),
         ]);
 
-        const sections = parseProductMenuSectionResponse(modelSections, TEST_PRODUCT, TEST_PROJECT.path);
+        const sections = parseProductMenuSectionResponse(modelSections, TEST_PROJECT.path);
         expect(sections).toHaveLength(4);
         expect(sections[0].key).toBe('home');
         expect(sections[1].key).toBe('s1');
@@ -77,7 +79,7 @@ describe('ProductSectionsDrawer', () => {
         expect(sections[2].url.toString()).toBe('/labkey/test/samplemanager-app.view#/s2');
         expect(sections[3].key).toBe('s3');
         expect(sections[3].label).toBe('S3');
-        expect(sections[3].url.toString()).toBe('/labkey/test/samplemanager-app.view#/s3');
+        expect(sections[3].url.toString()).toBe('/labkey/test/a-app.view#/s3');
     });
 
     test('parseProductMenuSectionResponse, LKSM sorting', () => {
@@ -87,7 +89,7 @@ describe('ProductSectionsDrawer', () => {
             new MenuSectionModel({ key: FREEZERS_KEY, productId: 'a', label: 'Storage' }),
         ]);
 
-        const sections = parseProductMenuSectionResponse(modelSections, TEST_PRODUCT, TEST_PROJECT.path);
+        const sections = parseProductMenuSectionResponse(modelSections, TEST_PROJECT.path);
         expect(sections).toHaveLength(4);
         expect(sections[0].key).toBe('home');
         expect(sections[1].key).toBe('s1');
@@ -104,7 +106,7 @@ describe('ProductSectionsDrawer', () => {
             new MenuSectionModel({ key: FREEZERS_KEY, productId: 'a', label: 'Storage' }),
         ]);
 
-        const sections = parseProductMenuSectionResponse(modelSections, TEST_PRODUCT, TEST_PROJECT.path);
+        const sections = parseProductMenuSectionResponse(modelSections, TEST_PROJECT.path);
         expect(sections).toHaveLength(6);
         expect(sections[0].key).toBe('home');
         expect(sections[1].key).toBe('s1');

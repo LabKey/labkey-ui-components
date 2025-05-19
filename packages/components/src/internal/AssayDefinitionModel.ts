@@ -123,7 +123,7 @@ export class AssayDefinitionModel extends ImmutableRecord({
 
     getImportUrl(
         selectionKey?: string,
-        filterList?: Filter.IFilter[],
+        filters?: Filter.IFilter[],
         containerPath?: string,
         params?: Record<string, string | number | boolean>
     ): string {
@@ -136,7 +136,7 @@ export class AssayDefinitionModel extends ImmutableRecord({
                 params.dataTab = AssayUploadTabs.Grid;
             }
 
-            filterList?.forEach(filter => {
+            filters?.forEach(filter => {
                 // if the filter has a URL suffix and is not registered as one recognized for URL filters, we ignore it
                 // here
                 // CONSIDER:  Applications might want to be able to register their own filter types

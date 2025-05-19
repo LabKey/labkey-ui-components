@@ -47,7 +47,6 @@ import {
     toLowerSafe,
     uncapitalizeFirstChar,
     unorderedEqual,
-    unquote,
     withTransformedKeys,
 } from './utils';
 
@@ -1158,28 +1157,6 @@ describe('findMissingValues', () => {
     });
 });
 
-describe('unquote', () => {
-    test('quoting', () => {
-        expect(unquote(undefined)).toBe(undefined);
-        expect(unquote(null)).toBe(null);
-        expect(unquote('')).toBe('');
-        expect(unquote(' ')).toBe(' ');
-        expect(unquote('abc')).toBe('abc');
-        expect(unquote('a"bc')).toBe('a"bc');
-        expect(unquote('a"bc"')).toBe('a"bc"');
-        expect(unquote('"a"bc"')).toBe('a"bc');
-        expect(unquote('"abc"')).toBe('abc');
-        expect(unquote('""')).toBe('');
-        expect(unquote('"')).toBe('"');
-        expect(unquote('"\\"quoted\\""')).toBe('\\"quoted\\"');
-        expect(unquote('   "abc"   ')).toBe('   "abc"   ');
-        expect(unquote('"abc" "def"')).toBe('abc" "def');
-        expect(unquote('\'abc\'')).toBe('\'abc\'');
-        expect(unquote('\\"abc\\"')).toBe('\\"abc\\"');
-        expect(unquote('""abc""')).toBe('"abc"');
-    });
-});
-
 describe('parseCsvString', () => {
     test('no value', () => {
         expect(parseCsvString(null, ',')).toBeUndefined();
@@ -1226,6 +1203,9 @@ describe('parseCsvString', () => {
         expect(parseCsvString('"a,"123', ',', true)).toStrictEqual(['"a', '"123']);
         expect(parseCsvString('"a,"123', ', ', true)).toStrictEqual(['"a,"123']);
         expect(parseCsvString('"a, "123', ',', true)).toStrictEqual(['"a', ' "123']);
+        expect(parseCsvString('"sam"', ',', true)).toStrictEqual(['sam']);
+        expect(parseCsvString('"a""b"', ',', true)).toStrictEqual(['a"b']);
+        expect(parseCsvString('"a"b"', ',', true)).toStrictEqual(['"a"b"']);
     });
 });
 

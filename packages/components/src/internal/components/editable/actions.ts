@@ -14,7 +14,6 @@ import {
     parseCsvString,
     parseScientificInt,
     quoteValueWithDelimiters,
-    unquote,
 } from '../../util/utils';
 import { ViewInfo } from '../../ViewInfo';
 
@@ -1053,29 +1052,31 @@ export function parsePastedLookup(
     }
 
     let message: CellMessage;
+    let values: ValueDescriptor[];
     const unmatched: string[] = [];
-    let parsedValues: string[];
 
-    // Issue 53055: only split raw values for multi-value columns
-    if (column.isJunctionLookup()) {
-        // parse pasted strings to split properly around quoted values.
-        // Remove the quotes for storing the actual values in the grid.
-        parsedValues = parseCsvString(value, ',', true);
-    } else {
-        parsedValues = [unquote(value.trim())];
-    }
+    // Parse pasted strings to split properly around quoted values.
+    // Remove the quotes for storing the actual values in the grid.
+    const parsedValues = parseCsvString(value, ',', true);
 
-    const values = parsedValues.flatMap(v => {
-        const vt = v.trim();
-        if (!vt) return [];
-
-        const vl = vt.toLowerCase();
-        const vd = descriptors.find(d => d.display && d.display.toString().toLowerCase() === vl);
-        if (vd) return [vd];
-
+    // Issue 53055: Do not attempt to resolve multiple values for a single-value column
+    if (!column.isJunctionLookup() && parsedValues.length > 1) {
+        const vt = value.trim();
         unmatched.push(vt);
-        return [{ display: vt, raw: vt }];
-    });
+        values = [{ display: vt, raw: vt }];
+    } else {
+        values = parsedValues.flatMap(v => {
+            const vt = v.trim();
+            if (!vt) return [];
+
+            const vl = vt.toLowerCase();
+            const vd = descriptors.find(d => d.display && d.display.toString().toLowerCase() === vl);
+            if (vd) return [vd];
+
+            unmatched.push(vt);
+            return [{ display: vt, raw: vt }];
+        });
+    }
 
     if (unmatched.length) {
         const valueStr = unmatched

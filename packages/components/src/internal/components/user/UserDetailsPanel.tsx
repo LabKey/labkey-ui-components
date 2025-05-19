@@ -183,7 +183,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     };
 
     toggleActivateDialog = (): void => {
-        this.toggleDialog('activate');
+        this.toggleDialog('reactivate');
     };
 
     toggleDeactivateDialog = (): void => {

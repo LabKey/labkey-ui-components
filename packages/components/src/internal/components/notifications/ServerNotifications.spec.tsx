@@ -31,12 +31,7 @@ beforeAll(() => {
 describe('<ServerNotificaitons/>', () => {
     test('loading', () => {
         const wrapper = mount(
-            <ServerNotifications
-                maxRows={8}
-                serverActivity={new ServerNotificationModel({ isLoading: true })}
-                markAllNotificationsRead={markAllNotificationsRead}
-                onViewAll={jest.fn()}
-            />
+            <ServerNotifications onRead={jest.fn()} serverActivity={new ServerNotificationModel({ isLoading: true })} />
         );
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         expect(wrapper.find(ServerActivityList)).toHaveLength(0);
@@ -61,14 +56,7 @@ describe('<ServerNotificaitons/>', () => {
             isError: true,
             errorMessage: errorText,
         });
-        const wrapper = mount(
-            <ServerNotifications
-                maxRows={8}
-                serverActivity={serverActivity}
-                markAllNotificationsRead={markAllNotificationsRead}
-                onViewAll={jest.fn()}
-            />
-        );
+        const wrapper = mount(<ServerNotifications onRead={jest.fn()} serverActivity={serverActivity} />);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         wrapper.find('button').simulate('click');
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
@@ -90,14 +78,7 @@ describe('<ServerNotificaitons/>', () => {
             isError: false,
         });
 
-        const wrapper = mount(
-            <ServerNotifications
-                maxRows={8}
-                serverActivity={serverActivity}
-                markAllNotificationsRead={markAllNotificationsRead}
-                onViewAll={jest.fn()}
-            />
-        );
+        const wrapper = mount(<ServerNotifications onRead={jest.fn()} serverActivity={serverActivity} />);
 
         wrapper.find('button').simulate('click');
         expect(wrapper.find(ServerActivityList)).toHaveLength(1);
@@ -119,14 +100,7 @@ describe('<ServerNotificaitons/>', () => {
             isError: false,
         });
 
-        const wrapper = mount(
-            <ServerNotifications
-                maxRows={8}
-                serverActivity={serverActivity}
-                markAllNotificationsRead={markAllNotificationsRead}
-                onViewAll={jest.fn()}
-            />
-        );
+        const wrapper = mount(<ServerNotifications onRead={jest.fn()} serverActivity={serverActivity} />);
 
         wrapper.find('button').simulate('click');
         expect(wrapper.find(ServerActivityList)).toHaveLength(1);
@@ -148,14 +122,7 @@ describe('<ServerNotificaitons/>', () => {
             isError: false,
         });
 
-        const wrapper = mount(
-            <ServerNotifications
-                maxRows={8}
-                serverActivity={serverActivity}
-                markAllNotificationsRead={markAllNotificationsRead}
-                onViewAll={jest.fn()}
-            />
-        );
+        const wrapper = mount(<ServerNotifications onRead={jest.fn()} serverActivity={serverActivity} />);
 
         wrapper.find('button').simulate('click');
         expect(wrapper.find(ServerActivityList)).toHaveLength(1);
@@ -176,14 +143,7 @@ describe('<ServerNotificaitons/>', () => {
             isError: false,
         });
 
-        const wrapper = mount(
-            <ServerNotifications
-                maxRows={8}
-                serverActivity={serverActivity}
-                markAllNotificationsRead={markAllNotificationsRead}
-                onViewAll={jest.fn()}
-            />
-        );
+        const wrapper = mount(<ServerNotifications onRead={jest.fn()} serverActivity={serverActivity} />);
 
         wrapper.find('button').simulate('click');
         expect(wrapper.find(ServerActivityList)).toHaveLength(1);

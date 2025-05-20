@@ -131,10 +131,7 @@ export interface ServerActivity {
 }
 
 export interface ServerNotificationsConfig {
-    markAllNotificationsRead: () => Promise<boolean>;
-    maxRows: number;
-    onRead?: () => any;
-    onViewAll: () => any;
+    onRead: () => any;
     serverActivity: ServerNotificationModel;
 }
 

@@ -281,11 +281,10 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
     const onClick = useCallback(
         (evt: MouseEvent<HTMLDivElement>) => {
             const classList = (evt.target as HTMLElement).classList;
-            const isPageLink = classList.contains('menu-section-link');
-            const isSectionIcon = classList.contains('menu-section-image');
+            const isMenuSectionEl = Array.from(classList).some(c => c.startsWith('menu-section'));
             const isDashboardLink = classList.contains('dashboard-link') || classList.contains('dashboard-icon');
 
-            if (isPageLink || isSectionIcon || isDashboardLink) {
+            if (isMenuSectionEl || isDashboardLink) {
                 setShow(current => !current);
             }
         },

@@ -328,7 +328,11 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
     };
 
     onUniqueIdCancel = (): void => {
-        this.setState({ showUniqueIdConfirmation: false, uniqueIdsConfirmed: false });
+        this.setState({
+            showUniqueIdConfirmation: false,
+            uniqueIdsConfirmed: false,
+            auditUserComment: undefined,
+        });
     };
 
     onUniqueIdConfirm = (): void => {
@@ -357,7 +361,10 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         const { model, uniqueIdsConfirmed } = this.state;
 
         if (!model.isNew() && this.getNumNewUniqueIdFields() > 0 && !uniqueIdsConfirmed) {
-            this.setState({ showUniqueIdConfirmation: true });
+            this.setState({
+                showUniqueIdConfirmation: true,
+                auditUserComment
+            });
             return;
         }
 

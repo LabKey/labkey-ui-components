@@ -88,7 +88,7 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
                         <div className={'navbar-icon-connector' + (unreadCount > 0 ? ' has-unread' : '')} />
                         Notifications
                         {unreadCount > 0 && (
-                            <div className="pull-right server-notifications-link" onClick={markAllRead}>
+                            <div className="pull-right clickable-text" onClick={markAllRead}>
                                 Mark all as read
                             </div>
                         )}

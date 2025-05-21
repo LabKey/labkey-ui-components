@@ -17,6 +17,7 @@ import { enableMapSet, enablePatches } from 'immer';
 
 import { applyURL, AppURL, buildURL, spliceURL } from './internal/url/AppURL';
 import { AppLink } from './internal/url/AppLink';
+import { useAppNavigate } from './internal/url/useAppNavigate';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
@@ -1221,6 +1222,7 @@ export {
     imageURL,
     spliceURL,
     AppLink,
+    useAppNavigate,
     WHERE_FILTER_TYPE,
     NOT_ANY_FILTER_TYPE,
     // renderers
@@ -2039,3 +2041,4 @@ export type { RequestHandler, RequestOptions } from './internal/request';
 export type { UseRequestHandler } from './internal/util/RequestHandler';
 export type { UseTimeout } from './internal/hooks';
 export type { QueryParamValue } from './internal/url/AppURL';
+export type { NavigateFn } from './internal/url/useAppNavigate';

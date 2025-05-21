@@ -173,29 +173,27 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                     )}
                     {menuModel.isLoaded &&
                         sectionConfigs
-                            .map((sectionConfig, i) => {
-                                // this can happen if a user has different perm in different project folders
-                                if (sectionConfigKeysWithInfo[i].length === 0) return null;
-
-                                return (
-                                    // eslint-disable-next-line react/no-array-index-key
-                                    <div key={i} className="menu-section col-product-section">
-                                        {sectionConfig
-                                            .entrySeq()
-                                            .map(([key, menuConfig]) => {
-                                                return (
-                                                    <ProductMenuSection
-                                                        key={key}
-                                                        config={menuConfig}
-                                                        containerPath={menuModel.containerPath}
-                                                        section={getSectionModel(key)}
-                                                    />
-                                                );
-                                            })
-                                            .toArray()}
-                                    </div>
-                                );
-                            })
+                            // this can happen if a user has different perm in different project folders
+                            .filter((_, i) => sectionConfigKeysWithInfo[i].length > 0)
+                            .map((sectionConfig, i) => (
+                                // eslint-disable-next-line react/no-array-index-key
+                                <div key={i} className="menu-section col-product-section">
+                                    {sectionConfig
+                                        .entrySeq()
+                                        .filter(([key]) => getSectionModel(key) !== undefined)
+                                        .map(([key, menuConfig]) => {
+                                            return (
+                                                <ProductMenuSection
+                                                    key={key}
+                                                    config={menuConfig}
+                                                    containerPath={menuModel.containerPath}
+                                                    section={getSectionModel(key)}
+                                                />
+                                            );
+                                        })
+                                        .toArray()}
+                                </div>
+                            ))
                             .toArray()}
                 </div>
             </div>

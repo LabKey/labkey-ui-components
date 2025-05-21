@@ -19,6 +19,8 @@ import { QueryInfo } from '../../public/QueryInfo';
 import { ExtendedMap } from '../../public/ExtendedMap';
 import { QueryColumn } from '../../public/QueryColumn';
 
+import getDomainDetailsJSON from '../../test/data/dataclass-getDomainDetails.json';
+
 import {
     arrayEquals,
     camelCaseToTitleCase,
@@ -39,6 +41,7 @@ import {
     isNonNegativeFloat,
     isNonNegativeInteger,
     isQuotedWithDelimiters,
+    isSetEqual,
     makeCommaSeparatedString,
     parseCsvString,
     parseScientificInt,
@@ -1488,5 +1491,23 @@ describe('styleStringToObj', () => {
         expect(styleStringToObj(' background-color: blue;  ')).toStrictEqual({
             backgroundColor: 'blue',
         });
+    });
+});
+
+describe('isSetEqual', () => {
+    test('equivalency', () => {
+        expect(isSetEqual([], new Set())).toBe(true);
+        expect(isSetEqual([1], new Set([1, 1]))).toBe(true);
+        expect(isSetEqual([1], [1, 1])).toBe(true);
+        expect(isSetEqual([1, 3, 2], [2, 1, 1, 3, 2])).toBe(true);
+        expect(isSetEqual([{ x: 'a', y: 'b' }], [{ x: 'a', y: 'b' }])).toBe(true);
+        expect(isSetEqual([{ x: 'a', y: 'b' }], [{ y: 'b', x: 'a' }])).toBe(true);
+        expect(isSetEqual([undefined, null], [null, undefined])).toBe(true);
+
+        // Compare more complex objects to check for deep equivalency
+        expect(isSetEqual([{ x: 'a', y: 'b', z: { a: 'x', 1: -1 } }], [{ z: { 1: -1, a: 'x' }, y: 'b', x: 'a' }])).toBe(
+            true
+        );
+        expect(isSetEqual([getDomainDetailsJSON], [getDomainDetailsJSON])).toBe(true);
     });
 });

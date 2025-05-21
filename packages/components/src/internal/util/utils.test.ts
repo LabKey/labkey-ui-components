@@ -1508,6 +1508,7 @@ describe('isSetEqual', () => {
         expect(isSetEqual([{ x: 'a', y: 'b', z: { a: 'x', 1: -1 } }], [{ z: { 1: -1, a: 'x' }, y: 'b', x: 'a' }])).toBe(
             true
         );
-        expect(isSetEqual([getDomainDetailsJSON], [getDomainDetailsJSON])).toBe(true);
+        expect(isSetEqual([getDomainDetailsJSON, 1], [getDomainDetailsJSON, 1, 1])).toBe(true);
+        expect(isSetEqual([getDomainDetailsJSON, 1], [getDomainDetailsJSON, 1, 2])).toBe(false);
     });
 });

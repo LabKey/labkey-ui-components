@@ -29,13 +29,13 @@ import { fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
 import { FileAttachmentEntry } from './FileAttachmentEntry';
 import { ALL_FILES_LIMIT_KEY } from './models';
 
-const isDirectoryEntry = (entry: FileSystemEntry): entry is FileSystemDirectoryEntry => !!entry?.isDirectory;
-const isFileEntry = (entry: FileSystemEntry): entry is FileSystemFileEntry => !!entry?.isFile;
+export const isDirectoryEntry = (entry: FileSystemEntry): entry is FileSystemDirectoryEntry => !!entry?.isDirectory;
+export const isFileEntry = (entry: FileSystemEntry): entry is FileSystemFileEntry => !!entry?.isFile;
 export const getTransferItemDirectoryEntry = (
     transferItems: DataTransferItemList,
     index: number
 ): FileSystemDirectoryEntry | undefined => {
-    const entry = transferItems?.[index]?.webkitGetAsEntry();
+    const entry = transferItems?.[index]?.webkitGetAsEntry?.();
     if (entry && isDirectoryEntry(entry)) return entry;
     return undefined;
 };

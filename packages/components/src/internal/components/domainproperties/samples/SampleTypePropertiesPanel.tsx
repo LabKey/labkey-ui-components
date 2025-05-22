@@ -1,5 +1,4 @@
 import React, { FC, memo, PureComponent } from 'react';
-import { List } from 'immutable';
 import classNames from 'classnames';
 import { Filter, Query } from '@labkey/api';
 
@@ -28,7 +27,8 @@ import { ENTITY_FORM_IDS } from '../entities/constants';
 
 import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
-import { getCurrentProductName, isCommunityDistribution, isSampleManagerEnabled } from '../../../app/utils';
+import { isSampleManagerEnabled } from '../../../app/products';
+import { getCurrentProductName, isCommunityDistribution } from '../../../app/utils';
 
 import { PREFIX_SUBSTITUTION_EXPRESSION, PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
 

@@ -94,3 +94,7 @@ export function withServerContext<T = {}>(Component: ComponentType<T>): FC<T> {
         );
     };
 }
+
+export function resolveModuleContext(moduleContext?: ModuleContext): ModuleContext {
+    return moduleContext ?? getServerContext().moduleContext;
+}

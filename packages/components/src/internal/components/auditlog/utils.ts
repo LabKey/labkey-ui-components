@@ -5,13 +5,13 @@
 import React, { ReactNode } from 'react';
 import { Map } from 'immutable';
 
+import { FREEZER_MANAGER_PRODUCT_ID, isSampleManagerEnabled } from '../../app/products';
 import {
     isAssayEnabled,
     isChartBuilderEnabled,
     isELNEnabled,
     isProductFoldersEnabled,
     isRegistryEnabled,
-    isSampleManagerEnabled,
     isWorkflowEnabled,
 } from '../../app/utils';
 import { ASSAYS_KEY, BOXES_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
@@ -131,7 +131,7 @@ export function getTimelineEntityUrl(d: Record<string, any>): AppURL {
                 }
                 break;
             case 'inventoryBox':
-                url = AppURL.create(BOXES_KEY, value);
+                url = AppURL.create(BOXES_KEY, value).setProductId(FREEZER_MANAGER_PRODUCT_ID);
                 break;
             default:
                 break;

@@ -12,7 +12,7 @@ import { hasAllPermissions, hasPermissions, User } from '../components/base/mode
 import { MenuSectionConfig } from '../components/navigation/model';
 import { imageURL } from '../url/ActionURL';
 import { AppURL } from '../url/AppURL';
-import { ModuleContext } from '../components/base/ServerContext';
+import { ModuleContext, resolveModuleContext } from '../components/base/ServerContext';
 
 import { Container } from '../components/base/models/Container';
 
@@ -51,6 +51,14 @@ import {
     ARCHIVED_FOLDERS,
     DEPRECATED_OBJECT_LEVEL_DISCUSSIONS,
 } from './constants';
+import {
+    FREEZER_MANAGER_PRODUCT_ID,
+    isBiologicsEnabled,
+    isFreezerManagementEnabled,
+    isLIMSEnabled,
+    isPremiumProductEnabled,
+    isSampleManagerEnabled,
+} from './products';
 
 declare var LABKEY: LabKey;
 
@@ -73,10 +81,6 @@ export enum CloseEventCode {
     TRY_AGAIN_LATER = 1013,
     BAD_GATEWAY = 1014,
     TLS_HANDSHAKE = 1015,
-}
-
-export function resolveModuleContext(moduleContext?: ModuleContext): ModuleContext {
-    return moduleContext ?? getServerContext().moduleContext;
 }
 
 export function userCanReadAssays(user: User): boolean {
@@ -139,10 +143,6 @@ export function userCanEditSharedViews(user: User): boolean {
     return hasPermissions(user, [PermissionTypes.EditSharedView]);
 }
 
-export function isFreezerManagementEnabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.inventory !== undefined;
-}
-
 export function isOntologyEnabled(moduleContext?: ModuleContext): boolean {
     return hasModule('Ontology', moduleContext);
 }
@@ -181,18 +181,6 @@ export function setProductFolders(moduleContext: ModuleContext, hasProductFolder
     return Object.assign(moduleContext ?? {}, {
         query: Object.assign(moduleContext?.query ?? {}, { hasProductFolders }),
     });
-}
-
-export function isSampleManagerEnabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.samplemanagement !== undefined;
-}
-
-export function isBiologicsEnabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.biologics !== undefined;
-}
-
-export function isPremiumProductEnabled(moduleContext?: ModuleContext): boolean {
-    return isSampleManagerEnabled(moduleContext) || isBiologicsEnabled(moduleContext);
 }
 
 export function isAppHomeFolder(container?: Partial<Container>, moduleContext?: ModuleContext): boolean {
@@ -394,13 +382,6 @@ export function isLKSSupportEnabled(moduleContext?: ModuleContext): boolean {
     return isBiologicsEnabled(moduleContext) || hasPremiumModule(moduleContext);
 }
 
-export function isLIMSEnabled(moduleContext?: ModuleContext, container?: Container): boolean {
-    // The check for folder type is not ideal here, but since the product is provided through the sampleManagement module
-    // a simple module check isn't sufficient. Since the product configuration is global to the server, we have no good
-    // way to know which URLs to construct in a particular container except by inspecting the folder type (at the moment).
-    return isSampleManagerEnabled(moduleContext) && (container ?? getServerContext().container)?.folderType === 'LIMS';
-}
-
 export function isAssayFileUploadEnabled(moduleContext?: ModuleContext): boolean {
     return isBiologicsEnabled(moduleContext) || isLIMSEnabled(moduleContext);
 }
@@ -552,7 +533,7 @@ export function getProjectPath(containerPath?: string): string {
 }
 
 // exported for testing
-export function getStorageSectionConfig(user: User, currentProductId: string, moduleContext: any): MenuSectionConfig {
+export function getStorageSectionConfig(user: User, moduleContext: any): MenuSectionConfig {
     if (isFreezerManagementEnabled(moduleContext)) {
         let locationsMenuConfig = new MenuSectionConfig({
             emptyText: 'No storage has been defined',
@@ -562,7 +543,7 @@ export function getStorageSectionConfig(user: User, currentProductId: string, mo
         });
         if (user && userCanDesignLocations(user)) {
             locationsMenuConfig = locationsMenuConfig.merge({
-                emptyAppURL: AppURL.create(FREEZERS_KEY, 'new'),
+                emptyAppURL: AppURL.create(FREEZERS_KEY, 'new').setProductId(FREEZER_MANAGER_PRODUCT_ID),
                 emptyURLText: 'Create storage',
             }) as MenuSectionConfig;
         }
@@ -672,9 +653,9 @@ const USER_SECTION_CONFIG = new MenuSectionConfig({
 });
 
 const REQUESTS_SECTION_CONFIG = new MenuSectionConfig({
-    useOriginalURL: true,
     iconURL: imageURL('_images', 'default.svg'),
     staticContent: true,
+    useOriginalURL: true,
 });
 
 function getBioWorkflowNotebookMediaConfigs(): Map<string, MenuSectionConfig> {
@@ -687,11 +668,7 @@ function getBioWorkflowNotebookMediaConfigs(): Map<string, MenuSectionConfig> {
 }
 
 // exported for testing
-export function getMenuSectionConfigs(
-    user: User,
-    currentProductId: string,
-    moduleContext?: ModuleContext
-): List<Map<string, MenuSectionConfig>> {
+export function getMenuSectionConfigs(user: User, moduleContext?: ModuleContext): List<Map<string, MenuSectionConfig>> {
     let sectionConfigs = List<Map<string, MenuSectionConfig>>();
 
     const isBioEnabled = isBiologicsEnabled(moduleContext);
@@ -713,7 +690,7 @@ export function getMenuSectionConfigs(
         }
     }
 
-    const storageConfig = getStorageSectionConfig(user, currentProductId, moduleContext);
+    const storageConfig = getStorageSectionConfig(user, moduleContext);
 
     if (isBioEnabled) {
         if (isAssayRequestsEnabled(moduleContext)) {
@@ -757,13 +734,9 @@ export function getMenuSectionConfigs(
 
 export const useMenuSectionConfigs = (
     user: User,
-    appProperties: AppProperties,
     moduleContext?: ModuleContext
 ): List<Map<string, MenuSectionConfig>> => {
-    return useMemo(
-        () => getMenuSectionConfigs(user, appProperties.productId, moduleContext),
-        [user, moduleContext, appProperties.productId]
-    );
+    return useMemo(() => getMenuSectionConfigs(user, moduleContext), [user, moduleContext]);
 };
 
 // Returns the friendly name of the product, primarily for use in help text.

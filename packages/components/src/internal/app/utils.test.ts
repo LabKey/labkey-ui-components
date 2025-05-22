@@ -1,4 +1,5 @@
 import { List, Map } from 'immutable';
+import { __setAction, __setController } from '@labkey/api';
 
 import {
     TEST_USER_APP_ADMIN,
@@ -23,6 +24,13 @@ import { Container } from '../components/base/models/Container';
 import { MenuSectionConfig } from '../components/navigation/model';
 
 import {
+    isBiologicsEnabled,
+    isFreezerManagementEnabled,
+    isLIMSEnabled,
+    isPremiumProductEnabled,
+    isSampleManagerEnabled,
+} from './products';
+import {
     addAssaysSectionConfig,
     addSourcesSectionConfig,
     biologicsIsPrimaryApp,
@@ -38,19 +46,14 @@ import {
     isAssayEnabled,
     isAssayQCEnabled,
     isAssayRequestsEnabled,
-    isBiologicsEnabled,
     isCalculatedFieldsEnabled,
     isCommunityDistribution,
     isELNEnabled,
-    isFreezerManagementEnabled,
-    isLIMSEnabled,
     isLKSSupportEnabled,
     isMediaEnabled,
-    isPremiumProductEnabled,
     isProductNavigationEnabled,
     isProjectContainer,
     isProtectedDataEnabled,
-    isSampleManagerEnabled,
     isSampleStatusEnabled,
     isSharedContainer,
     isTransformScriptsEnabled,
@@ -91,7 +94,7 @@ import {
 
 describe('getMenuSectionConfigs', () => {
     test('LKS starter enabled', () => {
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, {
             ...TEST_LKS_STARTER_MODULE_CONTEXT,
         });
 
@@ -122,7 +125,7 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('sampleManager starter enabled', () => {
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, {
             ...TEST_LKSM_STARTER_MODULE_CONTEXT,
         });
 
@@ -149,7 +152,7 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('sampleManager professional enabled', () => {
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, 'sampleManager', {
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, {
             ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
         });
 
@@ -186,7 +189,7 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('freezerManager enabled', () => {
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, FREEZER_MANAGER_APP_PROPERTIES.productId, {
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, {
             inventory: {
                 productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
             },
@@ -224,7 +227,7 @@ describe('getMenuSectionConfigs', () => {
             },
         };
 
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, BIOLOGICS_APP_PROPERTIES.productId, moduleContext);
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, moduleContext);
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, REGISTRY_KEY])).toBeTruthy();
         expect(configs.getIn([0, REGISTRY_KEY, 'headerURLPart'])).toEqual(undefined);
@@ -297,7 +300,7 @@ describe('getMenuSectionConfigs', () => {
             },
         };
 
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, BIOLOGICS_APP_PROPERTIES.productId, moduleContext);
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, moduleContext);
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, REGISTRY_KEY])).toBeTruthy();
         expect(configs.getIn([0, REGISTRY_KEY, 'headerURLPart'])).toEqual(undefined);
@@ -338,7 +341,7 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('SM starter enabled, FM current app', () => {
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, FREEZER_MANAGER_APP_PROPERTIES.productId, {
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, {
             ...TEST_LKSM_STARTER_MODULE_CONTEXT,
         });
         expect(configs.size).toBe(4);
@@ -364,7 +367,7 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('SM professional, SM current app, storage editor', () => {
-        const configs = getMenuSectionConfigs(TEST_USER_STORAGE_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
+        const configs = getMenuSectionConfigs(TEST_USER_STORAGE_EDITOR, {
             ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
         });
         expect(configs.size).toBe(5);
@@ -400,7 +403,7 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('SM professional, SM current app, reader', () => {
-        const configs = getMenuSectionConfigs(TEST_USER_READER, 'sampleManager', {
+        const configs = getMenuSectionConfigs(TEST_USER_READER, {
             ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
         });
         expect(configs.size).toBe(5);
@@ -437,8 +440,15 @@ describe('getMenuSectionConfigs', () => {
 });
 
 describe('utils', () => {
+    // Need to reset container after each test so we don't leak the container change to other tests
+    let container;
     beforeEach(() => {
-        window.history.pushState({}, 'Test Title', '/');
+        container = LABKEY.container;
+    });
+
+    afterEach(() => {
+        LABKEY.container = container;
+        __setController('samplemanager');
     });
 
     test('userCanDesignSourceTypes', () => {
@@ -689,9 +699,15 @@ describe('utils', () => {
     });
 
     test('isTransformScriptsEnabled', () => {
+        __setController('project'); // isApp() will be false
+        // When not in an app we skip checking module context and default to true
         expect(isTransformScriptsEnabled({})).toBe(true);
         expect(isTransformScriptsEnabled({ api: { moduleNames: ['premium'] } })).toBe(true);
-        expect(isTransformScriptsEnabled({ samplemanagement: {} })).toBe(true);
+
+        __setController('samplemanager'); // isApp() will be true
+        // When in an app we default to checking the module context
+        expect(isTransformScriptsEnabled({})).toBe(false);
+        expect(isTransformScriptsEnabled({ samplemanagement: {} })).toBe(false);
 
         expect(
             isTransformScriptsEnabled({
@@ -700,26 +716,26 @@ describe('utils', () => {
             })
         ).toBe(true);
 
+        __setController('biologics');
         expect(
             isTransformScriptsEnabled({
                 samplemanagement: {},
                 biologics: {},
             })
-        ).toBe(true);
+        ).toBe(false);
 
-        window.history.pushState({}, 'isApp', '/lims-app.view#'); // isApp()
         expect(
             isTransformScriptsEnabled({
                 samplemanagement: {},
+                biologics: {},
                 core: { productFeatures: [ProductFeature.TransformScripts] },
             })
         ).toBe(true);
 
-        window.history.pushState({}, 'isApp', '/samplemanager-app.view#'); // isApp()
+        __setController('lims');
         expect(
             isTransformScriptsEnabled({
                 samplemanagement: {},
-                biologics: {},
                 core: { productFeatures: [ProductFeature.TransformScripts] },
             })
         ).toBe(true);
@@ -994,6 +1010,7 @@ describe('utils', () => {
     });
 
     test('sampleManagerIsPrimaryApp', () => {
+        __setController('project');
         expect(sampleManagerIsPrimaryApp({})).toBeFalsy();
         expect(sampleManagerIsPrimaryApp({ inventory: {} })).toBeFalsy();
         expect(sampleManagerIsPrimaryApp({ samplemanagement: {}, inventory: {} })).toBeTruthy();
@@ -1002,6 +1019,7 @@ describe('utils', () => {
     });
 
     test('limsIsPrimaryApp', () => {
+        __setController('project');
         LABKEY.container = { folderType: 'LIMS' };
         expect(limsIsPrimaryApp({})).toBe(false);
         expect(limsIsPrimaryApp({ inventory: {} })).toBeFalsy();
@@ -1011,6 +1029,7 @@ describe('utils', () => {
     });
 
     test('biologcisIsPrimaryApp', () => {
+        __setController('project');
         expect(biologicsIsPrimaryApp({})).toBeFalsy();
         expect(biologicsIsPrimaryApp({ samplemanagement: {} })).toBeFalsy();
         expect(biologicsIsPrimaryApp({ inventory: {} })).toBeFalsy();
@@ -1019,6 +1038,7 @@ describe('utils', () => {
     });
 
     test('getPrimaryAppProperties', () => {
+        __setController('project');
         LABKEY.container = {};
         expect(getPrimaryAppProperties({})).toBe(undefined);
         expect(getPrimaryAppProperties({ inventory: {} })).toStrictEqual(FREEZER_MANAGER_APP_PROPERTIES);
@@ -1034,6 +1054,7 @@ describe('utils', () => {
     });
 
     test('isCalculatedFieldsEnabled', () => {
+        __setController('project');
         expect(isCalculatedFieldsEnabled()).toBeFalsy();
         expect(isCalculatedFieldsEnabled()).toBeFalsy();
         expect(isCalculatedFieldsEnabled({ api: { moduleNames: ['api'] } })).toBeFalsy(); // LKS Community
@@ -1047,7 +1068,7 @@ describe('utils', () => {
             })
         ).toBeTruthy(); // LKS Enterprise
 
-        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()
+        __setController('samplemanager');
         expect(isCalculatedFieldsEnabled()).toBeFalsy();
         expect(isCalculatedFieldsEnabled({ core: { productFeatures: [] } })).toBeFalsy();
         expect(
@@ -1085,78 +1106,82 @@ describe('utils', () => {
 
     test('isQueryMetadataEditor', () => {
         expect(isQueryMetadataEditor()).toBe(false);
-        window.history.pushState({}, 'Test Title', '/query-metadataQuery.view#');
+        __setController('query');
+        __setAction('metadataQuery');
         expect(isQueryMetadataEditor()).toBe(true);
-        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#');
+        __setController('samplemanager');
+        __setAction('app.view');
         expect(isQueryMetadataEditor()).toBe(false);
-        window.history.pushState({}, 'Test Title', '/core-queryMetadataEditorDev.view#');
+        __setController('core');
+        __setAction('queryMetadataEditorDev');
         expect(isQueryMetadataEditor()).toBe(true);
     });
 });
 
 describe('freezerManagerIsCurrentApp', () => {
     beforeEach(() => {
-        window.history.pushState({}, 'Test Title', '/');
+        __setController('project');
     });
 
     test('LKFM', () => {
-        window.history.pushState({}, 'Test Title', '/freezermanager-app.view#'); // isApp()
+        __setController('freezermanager');
         expect(freezerManagerIsCurrentApp()).toBe(true);
     });
 
     test('LKSM', () => {
-        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()
+        __setController('samplemanager');
         expect(freezerManagerIsCurrentApp()).toBe(false);
     });
 
     test('LIMS', () => {
-        window.history.pushState({}, 'Test Title', '/lims-app.view#'); // isApp()
+        __setController('lims');
         expect(freezerManagerIsCurrentApp()).toBe(false);
     });
 
     test('LKB', () => {
-        window.history.pushState({}, 'Test Title', '/biologics-app.view#'); // isApp()
+        __setController('biologics');
         expect(freezerManagerIsCurrentApp()).toBe(false);
     });
 });
 
 describe('getCurrentAppProperties', () => {
     beforeEach(() => {
-        window.history.pushState({}, 'Test Title', '/');
+        __setController('project');
     });
 
     test('Sample Manager controller', () => {
-        window.history.pushState({}, 'Test Title', 'labkey/Sam Man/samplemanager-app.view#');
-        expect(getCurrentAppProperties()).toStrictEqual(SAMPLE_MANAGER_APP_PROPERTIES);
-        window.history.pushState({}, 'Test Title', 'labkey/Biologics/samplemanager-app.view#');
+        __setController('samplemanager');
         expect(getCurrentAppProperties()).toStrictEqual(SAMPLE_MANAGER_APP_PROPERTIES);
     });
 
     test('Biologics controller', () => {
-        window.history.pushState({}, 'Test Title', 'labkey/Biologics/biologics-app.view#');
-        expect(getCurrentAppProperties()).toStrictEqual(BIOLOGICS_APP_PROPERTIES);
-        window.history.pushState({}, 'Test Title', 'labkey/samplemanager/biologics-app.view#');
-        expect(getCurrentAppProperties()).toStrictEqual(BIOLOGICS_APP_PROPERTIES);
-        window.history.pushState({}, 'Test Title', 'labkey/Biologics/BiologicS-app.view#');
+        __setController('biologics');
         expect(getCurrentAppProperties()).toStrictEqual(BIOLOGICS_APP_PROPERTIES);
     });
 
     test('Freezer Manager controller', () => {
-        window.history.pushState({}, 'Test Title', 'labkey/Biologics/freezermanager-app.view#');
-        expect(getCurrentAppProperties()).toStrictEqual(FREEZER_MANAGER_APP_PROPERTIES);
-        window.history.pushState({}, 'Test Title', 'labkey/sampleManager/FreezerManager-app.view#');
+        __setController('freezermanager');
         expect(getCurrentAppProperties()).toStrictEqual(FREEZER_MANAGER_APP_PROPERTIES);
     });
 
     test('Non-app controller', () => {
-        window.history.pushState({}, 'Test Title', 'labkey/Biologics/project-begin.view');
         expect(getCurrentAppProperties()).toBe(undefined);
     });
 });
 
 describe('getStorageSectionConfig', () => {
+    // Need to reset container after each test so we don't leak the container change to other tests
+    let container;
+    beforeEach(() => {
+        container = LABKEY.container;
+    });
+
+    afterEach(() => {
+        LABKEY.container = container;
+    });
+
     test('reader, inventory app', () => {
-        const config = getStorageSectionConfig(TEST_USER_READER, FREEZER_MANAGER_APP_PROPERTIES.productId, {
+        const config = getStorageSectionConfig(TEST_USER_READER, {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyText).toBe('No storage has been defined');
@@ -1169,7 +1194,7 @@ describe('getStorageSectionConfig', () => {
     test('reader, non-inventory app', () => {
         LABKEY.container = {};
 
-        const config = getStorageSectionConfig(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
+        const config = getStorageSectionConfig(TEST_USER_READER, {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyURLText).toBe('Get started...');
@@ -1182,11 +1207,11 @@ describe('getStorageSectionConfig', () => {
             path: 'Project A',
         };
 
-        const config = getStorageSectionConfig(TEST_USER_FOLDER_ADMIN, BIOLOGICS_APP_PROPERTIES.productId, {
+        const config = getStorageSectionConfig(TEST_USER_FOLDER_ADMIN, {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyURLText).toBe('Create storage');
-        expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
+        expect(config.emptyAppURL?.toHref()).toContain('#/freezers/new');
         expect(config.headerURLPart).toBe('home');
     });
 
@@ -1195,11 +1220,11 @@ describe('getStorageSectionConfig', () => {
             path: 'Project A/Child Folder 1',
         };
 
-        const config = getStorageSectionConfig(TEST_USER_FOLDER_ADMIN, BIOLOGICS_APP_PROPERTIES.productId, {
+        const config = getStorageSectionConfig(TEST_USER_FOLDER_ADMIN, {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyURLText).toBe('Create storage');
-        expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
+        expect(config.emptyAppURL?.toHref()).toContain('#/freezers/new');
         expect(config.headerURLPart).toBe('home');
     });
 
@@ -1208,7 +1233,7 @@ describe('getStorageSectionConfig', () => {
             path: undefined,
         };
 
-        const config = getStorageSectionConfig(TEST_USER_STORAGE_EDITOR, BIOLOGICS_APP_PROPERTIES.productId, {
+        const config = getStorageSectionConfig(TEST_USER_STORAGE_EDITOR, {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyURLText).toBe('Get started...');
@@ -1221,11 +1246,11 @@ describe('getStorageSectionConfig', () => {
             path: 'Project B',
         };
 
-        const config = getStorageSectionConfig(TEST_USER_STORAGE_DESIGNER, BIOLOGICS_APP_PROPERTIES.productId, {
+        const config = getStorageSectionConfig(TEST_USER_STORAGE_DESIGNER, {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyURLText).toBe('Create storage');
-        expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
+        expect(config.emptyAppURL?.toHref()).toContain('#/freezers/new');
         expect(config.headerURLPart).toBe('home');
     });
 
@@ -1234,11 +1259,11 @@ describe('getStorageSectionConfig', () => {
             path: 'Project B/Child 1',
         };
 
-        const config = getStorageSectionConfig(TEST_USER_STORAGE_DESIGNER, BIOLOGICS_APP_PROPERTIES.productId, {
+        const config = getStorageSectionConfig(TEST_USER_STORAGE_DESIGNER, {
             inventory: { productId: FREEZER_MANAGER_APP_PROPERTIES.productId },
         });
         expect(config.emptyURLText).toBe('Create storage');
-        expect(config.emptyAppURL?.toHref()).toBe('#/freezers/new');
+        expect(config.emptyAppURL?.toHref()).toContain('#/freezers/new');
         expect(config.headerURLPart).toBe('home');
     });
 });
@@ -1251,7 +1276,7 @@ describe('addSourcesSectionConfig', () => {
         expect(sectionConfig.headerURLPart).toBe(undefined);
         expect(sectionConfig.headerText).toBe(undefined);
         if (canDesign) {
-            expect(sectionConfig.emptyAppURL?.toHref()).toBe('#/sourceType/new');
+            expect(sectionConfig.emptyAppURL?.toHref()).toContain('#/sourceType/new');
             expect(sectionConfig.emptyURLText).toBe('Create a source type');
         } else {
             expect(sectionConfig.emptyAppURL).toBe(undefined);
@@ -1304,7 +1329,7 @@ describe('getSamplesSectionConfig', () => {
 
     test('admin', () => {
         const sectionConfig = getSamplesSectionConfig(TEST_USER_FOLDER_ADMIN);
-        expect(sectionConfig.emptyAppURL?.toHref()).toBe('#/sampleType/new');
+        expect(sectionConfig.emptyAppURL?.toHref()).toContain('#/sampleType/new');
         expect(sectionConfig.emptyURLText).toBe('Create a sample type');
     });
 });
@@ -1335,14 +1360,14 @@ describe('addAssaySectionConfig', () => {
         expect(configs.size).toBe(1);
         let sectionConfig = configs.get(0).get(ASSAYS_KEY);
         expect(sectionConfig.emptyText).toBe('No assays have been defined');
-        expect(sectionConfig.emptyAppURL?.toHref()).toBe('#/assayDesign/new');
+        expect(sectionConfig.emptyAppURL?.toHref()).toContain('#/assayDesign/new');
         expect(sectionConfig.emptyURLText).toBe('Create an assay design');
 
         configs = List<Map<string, MenuSectionConfig>>();
         configs = addAssaysSectionConfig(TEST_USER_FOLDER_ADMIN, configs, true);
         expect(configs.size).toBe(1);
         sectionConfig = configs.get(0).get(ASSAYS_KEY);
-        expect(sectionConfig.emptyAppURL?.toHref()).toBe('#/assayDesign/General');
+        expect(sectionConfig.emptyAppURL?.toHref()).toContain('#/assayDesign/General');
     });
 });
 

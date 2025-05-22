@@ -6,10 +6,10 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
   "baseElement": <body>
     <div>
       <div
-        class="panel panel-default domain-form-panel lk-border-theme-light"
+        class="panel panel-default domain-form-panel domain-panel-no-theme"
       >
         <div
-          class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+          class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="issues-properties-hdr"
         >
           <span
@@ -411,10 +411,10 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
   </body>,
   "container": <div>
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light"
+      class="panel panel-default domain-form-panel domain-panel-no-theme"
     >
       <div
-        class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+        class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="issues-properties-hdr"
       >
         <span

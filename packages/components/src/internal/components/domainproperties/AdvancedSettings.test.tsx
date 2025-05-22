@@ -134,9 +134,9 @@ describe('AdvancedSettings', () => {
         // Verify buttons
         const btns = document.getElementsByClassName('btn');
         expect(btns).toHaveLength(2);
-        const primaryBtns = document.getElementsByClassName('btn-primary');
-        expect(primaryBtns).toHaveLength(1);
-        expect(primaryBtns[0].getAttribute('disabled')).toBeNull();
+        const submitBtn = document.getElementsByClassName('domain-adv-apply-btn');
+        expect(submitBtn).toHaveLength(1);
+        expect(submitBtn[0].getAttribute('disabled')).toBeNull();
 
         // PHI
         id = createFormInputId(DOMAIN_FIELD_PHI, _domainIndex, _index);

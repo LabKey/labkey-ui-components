@@ -2,12 +2,8 @@ import { Filter, Query, Utils } from '@labkey/api';
 
 import { User } from '../base/models/User';
 
-import {
-    isFreezerManagementEnabled,
-    isProductFoldersEnabled,
-    isProjectContainer,
-    isSampleStatusEnabled,
-} from '../../app/utils';
+import { isFreezerManagementEnabled } from '../../app/products';
+import { isProductFoldersEnabled, isProjectContainer, isSampleStatusEnabled } from '../../app/utils';
 
 import { OperationConfirmationData } from '../entities/models';
 

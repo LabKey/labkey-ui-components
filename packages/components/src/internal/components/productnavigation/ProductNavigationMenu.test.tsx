@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render } from '@testing-library/react';
 
-import { LKS_PRODUCT_ID } from '../../app/constants';
+import { LKS_PRODUCT_ID } from '../../app/products';
 
 import { getSelectedProduct, ProductNavigationMenuImpl } from './ProductNavigationMenu';
 import { ProductModel } from './models';
@@ -33,7 +33,7 @@ describe('ProductNavigationMenu', () => {
 
         expect(document.querySelectorAll('.product-icon')).toHaveLength(componentCounts?.ProductAppsDrawer ?? 0); // ProductAppsDrawer
         expect(document.querySelectorAll('.container-item')).toHaveLength(componentCounts?.ProductLKSDrawer ?? 0); // ProductLKSDrawer
-        expect(document.querySelectorAll('.menu-transition-left')).toHaveLength(
+        expect(document.querySelectorAll('.product-navigation-drawer')).toHaveLength(
             componentCounts?.ProductSectionsDrawer ?? 0
         ); // ProductSectionsDrawer
     }

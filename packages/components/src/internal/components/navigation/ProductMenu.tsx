@@ -107,7 +107,7 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                 menuRef.current.getElementsByClassName('active')?.[0].scrollIntoView({ behavior: 'smooth' });
             }
         }
-    }, [menuModel.isLoaded]);
+    }, [menuModel.isLoaded]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         (async () => {
@@ -156,7 +156,6 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                 {showFolderMenu && (
                     <FolderMenu
                         activeContainerId={menuModel.containerId}
-                        currentProductId={menuModel.currentProductId}
                         items={folderItems}
                         onClick={onFolderItemClick}
                     />
@@ -174,30 +173,27 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                     )}
                     {menuModel.isLoaded &&
                         sectionConfigs
-                            .map((sectionConfig, i) => {
-                                // this can happen if a user has different perm in different project folders
-                                if (sectionConfigKeysWithInfo[i].length === 0) return null;
-
-                                return (
-                                    // eslint-disable-next-line react/no-array-index-key
-                                    <div key={i} className="menu-section col-product-section">
-                                        {sectionConfig
-                                            .entrySeq()
-                                            .map(([key, menuConfig]) => {
-                                                return (
-                                                    <ProductMenuSection
-                                                        key={key}
-                                                        config={menuConfig}
-                                                        containerPath={menuModel.containerPath}
-                                                        currentProductId={menuModel.currentProductId}
-                                                        section={getSectionModel(key)}
-                                                    />
-                                                );
-                                            })
-                                            .toArray()}
-                                    </div>
-                                );
-                            })
+                            // this can happen if a user has different perm in different project folders
+                            .filter((_, i) => sectionConfigKeysWithInfo[i].length > 0)
+                            .map((sectionConfig, i) => (
+                                // eslint-disable-next-line react/no-array-index-key
+                                <div key={i} className="menu-section col-product-section">
+                                    {sectionConfig
+                                        .entrySeq()
+                                        .filter(([key]) => getSectionModel(key) !== undefined)
+                                        .map(([key, menuConfig]) => {
+                                            return (
+                                                <ProductMenuSection
+                                                    key={key}
+                                                    config={menuConfig}
+                                                    containerPath={menuModel.containerPath}
+                                                    section={getSectionModel(key)}
+                                                />
+                                            );
+                                        })
+                                        .toArray()}
+                                </div>
+                            ))
                             .toArray()}
                 </div>
             </div>
@@ -283,11 +279,10 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
     const onClick = useCallback(
         (evt: MouseEvent<HTMLDivElement>) => {
             const classList = (evt.target as HTMLElement).classList;
-            const isPageLink = classList.contains('menu-section-link');
-            const isSectionIcon = classList.contains('menu-section-image');
+            const isMenuSectionEl = Array.from(classList).some(c => c.startsWith('menu-section'));
             const isDashboardLink = classList.contains('dashboard-link') || classList.contains('dashboard-icon');
 
-            if (isPageLink || isSectionIcon || isDashboardLink) {
+            if (isMenuSectionEl || isDashboardLink) {
                 setShow(current => !current);
             }
         },

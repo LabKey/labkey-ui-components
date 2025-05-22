@@ -96,16 +96,19 @@ const sections = List.of(
         label: 'Sample Sets',
         url: undefined,
         items: sampleTypeItems,
+        productId: 'samplemanager',
         key: 'samples',
     }),
     MenuSectionModel.create({
         label: 'Assays',
         items: assayItems,
+        productId: 'samplemanager',
         key: 'assays',
     }),
     MenuSectionModel.create({
         label: 'Your Items',
         items: yourItems,
+        productId: 'samplemanager',
         key: 'user',
     })
 );
@@ -123,24 +126,19 @@ let sectionConfigs = List<Map<string, MenuSectionConfig>>().asImmutable();
 const samplesSectionConfigs = Map<string, MenuSectionConfig>().set(
     'samples',
     new MenuSectionConfig({
-        iconCls: 'test-icon-cls',
         showActiveJobIcon: false,
+        headerURLPart: 'samples',
     })
 );
 sectionConfigs = sectionConfigs.push(samplesSectionConfigs);
 const twoSectionConfig = Map<string, MenuSectionConfig>().set(
     'assays',
     new MenuSectionConfig({
-        iconCls: 'test-icon-cls',
         showActiveJobIcon: true,
+        headerURLPart: 'assays',
     })
 );
-twoSectionConfig.set(
-    'user',
-    new MenuSectionConfig({
-        iconCls: 'test-icon-cls',
-    })
-);
+twoSectionConfig.set('user', new MenuSectionConfig({}));
 sectionConfigs = sectionConfigs.push(twoSectionConfig);
 
 const HOME_PROJECT = new Container({ id: '12345', path: HOME_PATH, title: 'home' });
@@ -317,7 +315,7 @@ describe('createFolderItem', () => {
         expect(item.label).toBe(TEST_FOLDER_CONTAINER.title);
         expect(item.path).toBe(TEST_FOLDER_CONTAINER.path);
         expect(item.isTopLevel).toBe(true);
-        expect(item.href).toBe('/labkey/controller/TestProjectContainer/TestFolderContainer/app.view');
+        expect(item.href).toBe('/labkey/TestProjectContainer/TestFolderContainer/controller-app.view');
         expect(item.archived).toBeFalsy();
     });
 
@@ -327,7 +325,7 @@ describe('createFolderItem', () => {
         expect(item.label).toBe(TEST_ARCHIVED_FOLDER_CONTAINER.title);
         expect(item.path).toBe(TEST_ARCHIVED_FOLDER_CONTAINER.path);
         expect(item.isTopLevel).toBe(true);
-        expect(item.href).toBe('/labkey/controller/TestProjectContainer/ArchiveFolderContainer/app.view');
+        expect(item.href).toBe('/labkey/TestProjectContainer/ArchiveFolderContainer/controller-app.view');
         expect(item.archived).toBeTruthy();
     });
 
@@ -337,7 +335,7 @@ describe('createFolderItem', () => {
         expect(item.label).toBe(HOME_TITLE);
         expect(item.path).toBe(HOME_PROJECT.path);
         expect(item.isTopLevel).toBe(true);
-        expect(item.href).toBe('/labkey/controller/home/app.view');
+        expect(item.href).toBe('/labkey/home/controller-app.view');
         expect(item.archived).toBeFalsy();
     });
 });

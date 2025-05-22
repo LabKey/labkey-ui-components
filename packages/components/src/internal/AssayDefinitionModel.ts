@@ -9,7 +9,7 @@ import { QueryInfo } from '../public/QueryInfo';
 
 import { AssayUploadTabs } from './constants';
 
-import { AppURL, createProductUrlFromPartsWithContainer } from './url/AppURL';
+import { AppURL } from './url/AppURL';
 
 import { SCHEMAS } from './schemas';
 import { ASSAYS_KEY } from './app/constants';
@@ -122,48 +122,35 @@ export class AssayDefinitionModel extends ImmutableRecord({
     }
 
     getImportUrl(
-        dataTab?: AssayUploadTabs,
         selectionKey?: string,
-        filterList?: List<Filter.IFilter>,
-        isPicklist?: boolean,
-        currentProductId?: string,
-        targetProductId?: string,
-        ignoreFilter?: boolean,
-        containerPath?: string
+        filters?: Filter.IFilter[],
+        containerPath?: string,
+        params?: Record<string, string | number | boolean>
     ): string {
-        let url: AppURL | string;
+        let url: string;
         // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links
         if (this.name !== undefined && this.importAction === 'uploadWizard' && this.importController === 'assay') {
-            const params: Record<string, any> = { rowId: this.id };
-            if (dataTab) params.dataTab = dataTab;
-            if (!ignoreFilter) {
-                filterList?.forEach(filter => {
-                    // if the filter has a URL suffix and is not registered as one recognized for URL filters, we ignore it here
-                    // CONSIDER:  Applications might want to be able to register their own filter types
-                    const urlSuffix = filter.getFilterType().getURLSuffix();
-                    if (!urlSuffix || Filter.getFilterTypeForURLSuffix(urlSuffix)) {
-                        params[filter.getURLParameterName()] = filter.getURLParameterValue();
-                    }
-                });
+            params = { rowId: this.id, ...params };
+            if (selectionKey) {
+                params.selectionKey = selectionKey;
+                params.dataTab = AssayUploadTabs.Grid;
             }
-            if (selectionKey) params.selectionKey = selectionKey;
-            if (isPicklist) params.isPicklist = true;
-            url = createProductUrlFromPartsWithContainer(
-                targetProductId,
-                currentProductId,
-                containerPath,
-                params,
-                ASSAYS_KEY,
-                this.type,
-                this.name,
-                'upload'
-            );
-            if (url instanceof AppURL) {
-                url = url.toHref();
-            }
+
+            filters?.forEach(filter => {
+                // if the filter has a URL suffix and is not registered as one recognized for URL filters, we ignore it
+                // here
+                // CONSIDER:  Applications might want to be able to register their own filter types
+                const urlSuffix = filter.getFilterType().getURLSuffix();
+                if (!urlSuffix || Filter.getFilterTypeForURLSuffix(urlSuffix)) {
+                    params[filter.getURLParameterName()] = filter.getURLParameterValue();
+                }
+            });
+
+            url = this.getAppImportUrl().addParams(params).setContainerPath(containerPath).toHref();
         } else {
             url = this.links.get(AssayLink.IMPORT);
         }
+
         return url;
     }
 

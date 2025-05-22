@@ -6,10 +6,10 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
   "baseElement": <body>
     <div>
       <div
-        class="panel panel-default domain-form-panel lk-border-theme-light"
+        class="panel panel-default domain-form-panel domain-panel-no-theme"
       >
         <div
-          class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+          class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="sample-type-properties-hdr"
         >
           <span
@@ -243,13 +243,13 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
         </div>
       </div>
       <div
-        class="domain-bottom-alert panel-default lk-border-theme-light domain-bottom-alert-top"
+        class="domain-bottom-alert panel-default domain-bottom-alert-expanded domain-bottom-alert-top"
       >
         <div
           class="alert alert-warning"
           role="alert"
         >
-          There was a problem retrieving the Sample Type category.
+          There was a problem retrieving the Naming Pattern prefix.
         </div>
       </div>
     </div>
@@ -271,10 +271,10 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
   </body>,
   "container": <div>
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light"
+      class="panel panel-default domain-form-panel domain-panel-no-theme"
     >
       <div
-        class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+        class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="sample-type-properties-hdr"
       >
         <span
@@ -508,13 +508,13 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
       </div>
     </div>
     <div
-      class="domain-bottom-alert panel-default lk-border-theme-light domain-bottom-alert-top"
+      class="domain-bottom-alert panel-default domain-bottom-alert-expanded domain-bottom-alert-top"
     >
       <div
         class="alert alert-warning"
         role="alert"
       >
-        There was a problem retrieving the Sample Type category.
+        There was a problem retrieving the Naming Pattern prefix.
       </div>
     </div>
   </div>,
@@ -578,10 +578,10 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
   "baseElement": <body>
     <div>
       <div
-        class="panel panel-default domain-form-panel lk-border-theme-light"
+        class="panel panel-default domain-form-panel domain-panel-no-theme"
       >
         <div
-          class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+          class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="sample-type-properties-hdr"
         >
           <span
@@ -760,13 +760,13 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
         </div>
       </div>
       <div
-        class="domain-bottom-alert panel-default lk-border-theme-light domain-bottom-alert-top"
+        class="domain-bottom-alert panel-default domain-bottom-alert-expanded domain-bottom-alert-top"
       >
         <div
           class="alert alert-warning"
           role="alert"
         >
-          There was a problem retrieving the Sample Type category.
+          There was a problem retrieving the Naming Pattern prefix.
         </div>
       </div>
     </div>
@@ -783,10 +783,10 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
   </body>,
   "container": <div>
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light"
+      class="panel panel-default domain-form-panel domain-panel-no-theme"
     >
       <div
-        class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+        class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="sample-type-properties-hdr"
       >
         <span
@@ -965,13 +965,13 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
       </div>
     </div>
     <div
-      class="domain-bottom-alert panel-default lk-border-theme-light domain-bottom-alert-top"
+      class="domain-bottom-alert panel-default domain-bottom-alert-expanded domain-bottom-alert-top"
     >
       <div
         class="alert alert-warning"
         role="alert"
       >
-        There was a problem retrieving the Sample Type category.
+        There was a problem retrieving the Naming Pattern prefix.
       </div>
     </div>
   </div>,
@@ -1035,10 +1035,10 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
   "baseElement": <body>
     <div>
       <div
-        class="panel panel-default domain-form-panel lk-border-theme-light"
+        class="panel panel-default domain-form-panel domain-panel-no-theme"
       >
         <div
-          class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+          class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="sample-type-properties-hdr"
         >
           <span
@@ -1245,13 +1245,13 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
         </div>
       </div>
       <div
-        class="domain-bottom-alert panel-default lk-border-theme-light domain-bottom-alert-top"
+        class="domain-bottom-alert panel-default domain-bottom-alert-expanded domain-bottom-alert-top"
       >
         <div
           class="alert alert-warning"
           role="alert"
         >
-          There was a problem retrieving the Sample Type category.
+          There was a problem retrieving the Naming Pattern prefix.
         </div>
       </div>
     </div>
@@ -1268,10 +1268,10 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
   </body>,
   "container": <div>
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light"
+      class="panel panel-default domain-form-panel domain-panel-no-theme"
     >
       <div
-        class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+        class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="sample-type-properties-hdr"
       >
         <span
@@ -1478,13 +1478,13 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
       </div>
     </div>
     <div
-      class="domain-bottom-alert panel-default lk-border-theme-light domain-bottom-alert-top"
+      class="domain-bottom-alert panel-default domain-bottom-alert-expanded domain-bottom-alert-top"
     >
       <div
         class="alert alert-warning"
         role="alert"
       >
-        There was a problem retrieving the Sample Type category.
+        There was a problem retrieving the Naming Pattern prefix.
       </div>
     </div>
   </div>,

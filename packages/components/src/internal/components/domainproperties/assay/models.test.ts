@@ -274,7 +274,7 @@ describe('AssayProtocolModel', () => {
                 },
             ],
         });
-        expect(newModel.container).toBe('');
+        expect(newModel.container).toBe('/DefaultTestContainer');
 
         const existingModel = AssayProtocolModel.create({
             protocolId: 1,

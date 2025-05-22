@@ -10,13 +10,8 @@ import {
 import { SectionHeading } from '../SectionHeading';
 import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
 
-import {
-    hasModule,
-    isAssayQCEnabled,
-    isPlatesEnabled,
-    isPremiumProductEnabled,
-    isTransformScriptsEnabled,
-} from '../../../app/utils';
+import { isPremiumProductEnabled } from '../../../app/products';
+import { hasModule, isAssayQCEnabled, isPlatesEnabled, isTransformScriptsEnabled } from '../../../app/utils';
 
 import { useServerContext } from '../../base/ServerContext';
 

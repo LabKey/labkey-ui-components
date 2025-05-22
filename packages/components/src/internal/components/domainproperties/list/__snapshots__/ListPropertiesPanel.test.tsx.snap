@@ -6,10 +6,10 @@ exports[`ListPropertiesPanel existing list 1`] = `
   "baseElement": <body>
     <div>
       <div
-        class="panel panel-default domain-form-panel lk-border-theme-light"
+        class="panel panel-default domain-form-panel domain-panel-no-theme"
       >
         <div
-          class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+          class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="list-properties-hdr"
         >
           <span
@@ -195,10 +195,10 @@ exports[`ListPropertiesPanel existing list 1`] = `
   </body>,
   "container": <div>
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light"
+      class="panel panel-default domain-form-panel domain-panel-no-theme"
     >
       <div
-        class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+        class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="list-properties-hdr"
       >
         <span
@@ -436,10 +436,10 @@ exports[`ListPropertiesPanel list with error 1`] = `
   "baseElement": <body>
     <div>
       <div
-        class="panel panel-default domain-form-panel lk-border-theme-light"
+        class="panel panel-default domain-form-panel domain-panel-no-theme"
       >
         <div
-          class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+          class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="list-properties-hdr"
         >
           <div
@@ -638,10 +638,10 @@ exports[`ListPropertiesPanel list with error 1`] = `
   </body>,
   "container": <div>
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light"
+      class="panel panel-default domain-form-panel domain-panel-no-theme"
     >
       <div
-        class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+        class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="list-properties-hdr"
       >
         <div
@@ -887,10 +887,10 @@ exports[`ListPropertiesPanel new list 1`] = `
   "baseElement": <body>
     <div>
       <div
-        class="panel panel-default domain-form-panel lk-border-theme-light"
+        class="panel panel-default domain-form-panel domain-panel-no-theme"
       >
         <div
-          class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+          class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="list-properties-hdr"
         >
           <span
@@ -1069,10 +1069,10 @@ exports[`ListPropertiesPanel new list 1`] = `
   </body>,
   "container": <div>
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light"
+      class="panel panel-default domain-form-panel domain-panel-no-theme"
     >
       <div
-        class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+        class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="list-properties-hdr"
       >
         <span

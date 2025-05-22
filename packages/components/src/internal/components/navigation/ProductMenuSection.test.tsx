@@ -105,7 +105,6 @@ describe('ProductMenuSection', () => {
         renderWithAppContext(
             <ProductMenuSection
                 containerPath="/test/path"
-                currentProductId="testProduct"
                 section={section}
                 config={
                     new MenuSectionConfig({
@@ -133,15 +132,9 @@ describe('ProductMenuSection', () => {
             key: 'samples',
         });
 
-        renderWithAppContext(
-            <ProductMenuSection
-                config={config}
-                containerPath="/test/path"
-                currentProductId="testProduct"
-                section={section}
-            />,
-            { serverContext: getDefaultServerContext() }
-        );
+        renderWithAppContext(<ProductMenuSection config={config} containerPath="/test/path" section={section} />, {
+            serverContext: getDefaultServerContext(),
+        });
 
         expect(document.querySelectorAll('li.empty-section').length).toBe(1);
         expect(document.querySelector('.empty-section').textContent).toBe('Test empty text');
@@ -165,15 +158,9 @@ describe('ProductMenuSection', () => {
             key: 'samples',
         });
 
-        renderWithAppContext(
-            <ProductMenuSection
-                config={config}
-                containerPath="/test/path"
-                currentProductId="testProduct"
-                section={section}
-            />,
-            { serverContext: getDefaultServerContext() }
-        );
+        renderWithAppContext(<ProductMenuSection config={config} containerPath="/test/path" section={section} />, {
+            serverContext: getDefaultServerContext(),
+        });
 
         expect(document.querySelectorAll('.empty-section').length).toBe(1);
         expect(document.querySelector('.empty-section').textContent).not.toContain('Test empty text');
@@ -197,15 +184,9 @@ describe('ProductMenuSection', () => {
             key: 'samples',
         });
 
-        renderWithAppContext(
-            <ProductMenuSection
-                config={config}
-                containerPath="/test/path"
-                currentProductId="testProduct"
-                section={section}
-            />,
-            { serverContext: getDefaultServerContext() }
-        );
+        renderWithAppContext(<ProductMenuSection config={config} containerPath="/test/path" section={section} />, {
+            serverContext: getDefaultServerContext(),
+        });
 
         expect(document.querySelectorAll('.empty-section').length).toBe(0);
         expect(document.querySelectorAll('li').length).toBe(3);
@@ -221,7 +202,6 @@ describe('ProductMenuSection', () => {
         renderWithAppContext(
             <ProductMenuSection
                 containerPath="/test/path"
-                currentProductId="testProductHeaderUrl"
                 section={section}
                 config={
                     new MenuSectionConfig({
@@ -240,8 +220,6 @@ describe('ProductMenuSection', () => {
     });
 
     test('one-column section', () => {
-        const productId = 'testProduct3Columns';
-
         const section = MenuSectionModel.create({
             label: 'Sample Sets',
             url: undefined,
@@ -252,7 +230,6 @@ describe('ProductMenuSection', () => {
         renderWithAppContext(
             <ProductMenuSection
                 containerPath="/test/path"
-                currentProductId={productId}
                 section={section}
                 config={
                     new MenuSectionConfig({
@@ -273,8 +250,6 @@ describe('ProductMenuSection', () => {
     });
 
     test('one column section', () => {
-        const productId = 'testProduct4Columns';
-
         const section = MenuSectionModel.create({
             label: 'Assays',
             items: assayItems,
@@ -286,12 +261,7 @@ describe('ProductMenuSection', () => {
         });
 
         renderWithAppContext(
-            <ProductMenuSection
-                section={section}
-                containerPath="/test/path"
-                currentProductId={productId}
-                config={sectionConfig}
-            />,
+            <ProductMenuSection section={section} containerPath="/test/path" config={sectionConfig} />,
             { serverContext: getDefaultServerContext() }
         );
 
@@ -315,7 +285,6 @@ describe('ProductMenuSection', () => {
         renderWithAppContext(
             <ProductMenuSection
                 containerPath="/test/path"
-                currentProductId="testProductHeaderUrl"
                 section={section}
                 config={
                     new MenuSectionConfig({
@@ -339,7 +308,6 @@ describe('ProductMenuSection', () => {
         renderWithAppContext(
             <ProductMenuSection
                 containerPath="/test/path"
-                currentProductId="testProductHeaderUrl"
                 section={section}
                 config={
                     new MenuSectionConfig({
@@ -363,13 +331,12 @@ describe('ProductMenuSection', () => {
 
         renderWithAppContext(
             <ProductMenuSection
-                containerPath="/test"
-                currentProductId="testProductHeaderUrl"
+                containerPath="/DefaultTestContainer"
                 section={section}
                 config={
                     new MenuSectionConfig({
                         emptyText: 'Testing empty',
-                        emptyAppURL: 'home',
+                        emptyAppURL: AppURL.create('home'),
                         emptyURLText: 'Create it',
                     })
                 }
@@ -381,7 +348,7 @@ describe('ProductMenuSection', () => {
         expect(document.querySelectorAll('.empty-section-link').length).toBe(1);
         expect(document.querySelectorAll('.empty-section-link')[0].textContent).toBe('Create it');
         expect(document.querySelectorAll('.empty-section-link')[0].querySelector('a').getAttribute('href')).toBe(
-            'home'
+            '/home'
         );
     });
 
@@ -396,7 +363,6 @@ describe('ProductMenuSection', () => {
         renderWithAppContext(
             <ProductMenuSection
                 containerPath="/test/sub"
-                currentProductId="testProductHeaderUrl"
                 section={section}
                 config={
                     new MenuSectionConfig({

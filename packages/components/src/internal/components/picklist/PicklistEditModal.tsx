@@ -14,17 +14,21 @@ import { CheckboxLK } from '../../Checkbox';
 
 import { useAppContext } from '../../AppContext';
 
+import { AppURL } from '../../url/AppURL';
+
+import { PICKLIST_KEY } from '../../app/constants';
+
+import { AppLink } from '../../url/AppLink';
+
 import { Picklist } from './models';
-import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
+import { createPicklist, updatePicklist } from './actions';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 
 export interface PicklistEditModalProps {
-    currentProductId?: string;
     metricFeatureArea?: string;
     onCancel: () => void;
     onFinish: (picklist: Picklist) => void;
     picklist?: Picklist;
-    picklistProductId?: string;
     queryModel?: QueryModel;
     sampleFieldKey?: string;
     sampleIds?: number[];
@@ -32,18 +36,8 @@ export interface PicklistEditModalProps {
 }
 
 const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
-    const {
-        onCancel,
-        onFinish,
-        sampleFieldKey,
-        sampleIds,
-        picklist,
-        showNotification,
-        currentProductId,
-        picklistProductId,
-        metricFeatureArea,
-        queryModel,
-    } = props;
+    const { onCancel, onFinish, sampleFieldKey, sampleIds, picklist, showNotification, metricFeatureArea, queryModel } =
+        props;
     const useSnapshotSelection = queryModel?.filterArray.length > 0;
     const [name, setName] = useState<string>(picklist?.name ?? '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
@@ -129,12 +123,13 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
             reset();
 
             if (showNotification) {
-                const href = getPicklistUrl(updatedList.listId, picklistProductId, currentProductId);
+                const url = AppURL.create(PICKLIST_KEY, updatedList.listId);
                 const noun = validCount ? Utils.pluralize(validCount, 'sample', 'samples') : ' no samples';
                 createNotification({
                     message: (
                         <>
-                            Successfully created "{updatedList.name}" with {noun}. <a href={href}>View picklist</a>.
+                            Successfully created "{updatedList.name}" with {noun}.{' '}
+                            <AppLink to={url}>View picklist</AppLink>.
                         </>
                     ),
                     alertClass: 'success',
@@ -149,7 +144,6 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
     }, [
         api.query,
         createNotification,
-        currentProductId,
         description,
         isUpdate,
         metricFeatureArea,
@@ -157,7 +151,6 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         onFinish,
         picklist?.Container,
         picklist?.listId,
-        picklistProductId,
         reset,
         sampleIds,
         selectionKey,

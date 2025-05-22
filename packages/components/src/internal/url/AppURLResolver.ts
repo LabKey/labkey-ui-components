@@ -20,6 +20,7 @@ import { SAMPLE_MANAGEMENT, SCHEMAS } from '../schemas';
 
 import { selectRows } from '../query/selectRows';
 import { caseInsensitive } from '../util/utils';
+import { WORKFLOW_KEY } from '../app/constants';
 
 import { AppRouteResolver } from './models';
 import { decodeListResolverPath } from './utils';
@@ -124,7 +125,7 @@ export class ExperimentRunResolver implements AppRouteResolver {
         }
         if (this.jobs.has(rowId)) {
             // resolve it
-            return AppURL.create('workflow', rowId);
+            return AppURL.create(WORKFLOW_KEY, rowId);
         }
         try {
             const result = await selectRows({
@@ -136,7 +137,7 @@ export class ExperimentRunResolver implements AppRouteResolver {
             if (result.rows.length > 0) {
                 // resolve it
                 this.jobs.add(rowId);
-                return AppURL.create('workflow', rowId);
+                return AppURL.create(WORKFLOW_KEY, rowId);
             } else {
                 return AppURL.create('rd', 'assayrun', rowId);
             }

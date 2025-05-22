@@ -12,10 +12,11 @@ import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 
 import { getSecurityTestAPIWrapper } from '../security/APIWrapper';
 
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+import { TEST_PROJECT_CONTAINER, TEST_PROJECT_CONTAINER_ADMIN } from '../../containerFixtures';
+import { getTestAPIWrapper } from '../../APIWrapper';
+
 import { UserDetailsPanel } from './UserDetailsPanel';
-import {renderWithAppContext} from "../../test/reactTestLibraryHelpers";
-import {TEST_PROJECT_CONTAINER, TEST_PROJECT_CONTAINER_ADMIN} from "../../containerFixtures";
-import {getTestAPIWrapper} from "../../APIWrapper";
 
 const POLICY = SecurityPolicy.create(policyJSON);
 const ROLES = processGetRolesResponse(rolesJSON.roles);
@@ -37,7 +38,13 @@ const API = getSecurityTestAPIWrapper(jest.fn, {
 });
 
 const APP_CONTEXT = { api: getTestAPIWrapper(jest.fn, { security: API }) };
-const SERVER_CONTEXT = {container: TEST_PROJECT_CONTAINER, user: TEST_USER_APP_ADMIN};
+const SERVER_CONTEXT = {
+    container: TEST_PROJECT_CONTAINER,
+    user: TEST_USER_APP_ADMIN,
+    moduleContext: {
+        samplemanagement: {},
+    }
+};
 
 describe('<UserDetailsPanel/>', () => {
     test('no principal', async () => {
@@ -52,7 +59,10 @@ describe('<UserDetailsPanel/>', () => {
         );
         let container;
         await act(async () => {
-            container = renderWithAppContext(component, { appContext: APP_CONTEXT, serverContext: SERVER_CONTEXT }).container;
+            container = renderWithAppContext(component, {
+                appContext: APP_CONTEXT,
+                serverContext: SERVER_CONTEXT,
+            }).container;
         });
         expect(container).toMatchSnapshot();
     });
@@ -71,7 +81,10 @@ describe('<UserDetailsPanel/>', () => {
         );
         let container;
         await act(async () => {
-            container = renderWithAppContext(component, { appContext: APP_CONTEXT, serverContext: SERVER_CONTEXT }).container;
+            container = renderWithAppContext(component, {
+                appContext: APP_CONTEXT,
+                serverContext: SERVER_CONTEXT,
+            }).container;
         });
         expect(container).toMatchSnapshot();
     });
@@ -89,7 +102,10 @@ describe('<UserDetailsPanel/>', () => {
         );
         let container;
         await act(async () => {
-            container = renderWithAppContext(component, { appContext: APP_CONTEXT, serverContext: SERVER_CONTEXT }).container;
+            container = renderWithAppContext(component, {
+                appContext: APP_CONTEXT,
+                serverContext: SERVER_CONTEXT,
+            }).container;
         });
         expect(container).toMatchSnapshot();
     });
@@ -109,7 +125,10 @@ describe('<UserDetailsPanel/>', () => {
         );
         let container;
         await act(async () => {
-            container = renderWithAppContext(component, { appContext: APP_CONTEXT, serverContext: SERVER_CONTEXT }).container;
+            container = renderWithAppContext(component, {
+                appContext: APP_CONTEXT,
+                serverContext: SERVER_CONTEXT,
+            }).container;
         });
         expect(container).toMatchSnapshot();
     });
@@ -131,7 +150,10 @@ describe('<UserDetailsPanel/>', () => {
         );
         let container;
         await act(async () => {
-            container = renderWithAppContext(component, { appContext: APP_CONTEXT, serverContext: SERVER_CONTEXT }).container;
+            container = renderWithAppContext(component, {
+                appContext: APP_CONTEXT,
+                serverContext: SERVER_CONTEXT,
+            }).container;
         });
         expect(container).toMatchSnapshot();
     });

@@ -1,6 +1,27 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.43.0
+*Released*: 22 May 2025
+- AppURL
+  - make container and product aware
+  - add fromMenuUrl static method
+- Add AppLink
+  - Use AppLink any time you need
+- Add useAppNavigate
+  - Use this when you need to navigate, instead of ReactRouter navigate
+  - Can handle navigating to locations outside of our apps
+- DefaultRenderer: Use AppLink
+  - Issue 53021: Grid Column Renderers can break the back button on pages using useRouteLeave
+- NavItem: Use AppLink
+- Remove createProductUrl
+- Remove createProductUrlFromParts
+- Remove createProductUrlFromPartsWithContainer
+- Remove getHref
+- Rename ProductClickableItem to ProductNavigationItem
+- ServerNotificationsConfig: remove unnecessary attributes
+- ServerActivityList: convert to FC, use AppLink
+
 ### version 6.42.0
 *Released*: 14 May 2025
 - Issue 52934: Filter unit options when updating a type that has samples with units

@@ -15,9 +15,7 @@ import { ChoosePicklistModal } from './ChoosePicklistModal';
 import { MAX_SELECTIONS_MESSAGE, MAX_SELECTIONS_PER_ADD } from './constants';
 
 interface Props {
-    currentProductId?: string;
     metricFeatureArea?: string;
-    picklistProductId?: string;
     queryModel?: QueryModel;
     sampleFieldKey?: string;
     sampleIds?: number[];
@@ -25,8 +23,7 @@ interface Props {
 }
 
 export const AddToPicklistMenuItem: FC<Props> = memo(props => {
-    const { sampleIds, user, queryModel, currentProductId, picklistProductId, metricFeatureArea, sampleFieldKey } =
-        props;
+    const { sampleIds, user, queryModel, metricFeatureArea, sampleFieldKey } = props;
     const [showChoosePicklist, setShowChoosePicklist] = useState<boolean>(false);
     const [showCreatePicklist, setShowCreatePicklist] = useState<boolean>(false);
 
@@ -93,8 +90,6 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                     selectionKey={selectionKey}
                     numSelected={numSelected}
                     sampleIds={sampleIds}
-                    currentProductId={currentProductId}
-                    picklistProductId={picklistProductId}
                     metricFeatureArea={metricFeatureArea}
                     queryModel={queryModel}
                     sampleFieldKey={sampleFieldKey}

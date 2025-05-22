@@ -1,6 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { produce } from 'immer';
-import { List, Map } from 'immutable';
+import { List } from 'immutable';
 
 import { Domain, getServerContext } from '@labkey/api';
 
@@ -9,7 +9,8 @@ import DomainForm from '../DomainForm';
 import { getDomainPanelStatus, handleDomainUpdates, saveDomain, scrollDomainErrorIntoView } from '../actions';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
-import { getAppHomeFolderPath, isSampleManagerEnabled } from '../../../app/utils';
+import { isSampleManagerEnabled } from '../../../app/products';
+import { getAppHomeFolderPath } from '../../../app/utils';
 
 import { NameExpressionValidationModal } from '../validation/NameExpressionValidationModal';
 

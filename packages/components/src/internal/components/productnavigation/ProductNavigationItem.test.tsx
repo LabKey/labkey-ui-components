@@ -3,12 +3,12 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
-import { ProductClickableItem } from './ProductClickableItem';
+import { ProductNavigationItem } from './ProductNavigationItem';
 
 const DEFAULT_PROPS = {
     id: 'test-id',
     onClick: jest.fn,
-    href: 'http://go.here',
+    url: 'http://go.here',
 };
 
 describe('ProductClickableItem', () => {
@@ -18,16 +18,16 @@ describe('ProductClickableItem', () => {
 
     test('with child comp', () => {
         render(
-            <ProductClickableItem {...DEFAULT_PROPS}>
+            <ProductNavigationItem {...DEFAULT_PROPS}>
                 <div className="child-comp" />
-            </ProductClickableItem>
+            </ProductNavigationItem>
         );
         validate();
         expect(document.querySelectorAll('.child-comp')).toHaveLength(1);
     });
 
     test('hovered', async () => {
-        render(<ProductClickableItem {...DEFAULT_PROPS} />);
+        render(<ProductNavigationItem {...DEFAULT_PROPS} />);
         validate();
         expect(document.querySelector('a').getAttribute('class')).not.toContain('labkey-page-nav');
 

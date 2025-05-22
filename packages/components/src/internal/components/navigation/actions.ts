@@ -29,11 +29,7 @@ export function signIn(): void {
     window.location.href = buildURL('login', 'login');
 }
 
-export async function getUserMenuSection(
-    currentProductId: string,
-    productId: string,
-    container: string
-): Promise<MenuSectionModel> {
+export async function getUserMenuSection(productId: string, container: string): Promise<MenuSectionModel> {
     const response = await request<any>({
         url: ActionURL.buildURL('product', 'userMenuSection.api', container),
         params: { productId },
@@ -45,5 +41,5 @@ export async function getUserMenuSection(
         return undefined;
     }
 
-    return MenuSectionModel.create(response.data, currentProductId, container);
+    return MenuSectionModel.create(response.data, container);
 }

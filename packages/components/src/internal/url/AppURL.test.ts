@@ -1,31 +1,29 @@
-/*
- * Copyright (c) 2019 LabKey Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-import { Filter } from '@labkey/api';
+import { Filter, __setController } from '@labkey/api';
 
-import {
-    buildURL,
-    createProductUrl,
-    createProductUrlFromParts,
-    AppURL,
-    createProductUrlFromPartsWithContainer,
-} from './AppURL';
+import { buildURL, AppURL } from './AppURL';
 
 describe('AppURL', () => {
-    beforeAll(() => {
-        LABKEY.devMode = true;
+    let lk;
+    beforeEach(() => {
+        lk = LABKEY;
+        LABKEY = {
+            ...LABKEY,
+            devMode: true,
+            experimental: {
+                ...LABKEY.experimental,
+                containerRelativeURL: true,
+            },
+            moduleContext: {
+                ...LABKEY.moduleContext,
+                // Force isSampleManagerEnabled to be true
+                samplemanagement: {},
+            },
+        };
+        __setController('samplemanager');
+    });
+
+    afterEach(() => {
+        LABKEY = lk;
     });
 
     test('Empty values dev mode', () => {
@@ -56,7 +54,7 @@ describe('AppURL', () => {
                     Filter.create('Bob', ['a', 20, 30], Filter.Types.IN)
                 )
                 .toHref()
-        ).toBe(url + '?query.Status~neq=open&query.RowId~in=10;11;12&query.Bob~in=a;20;30');
+        ).toBe(url + '?query.Status~neq=open&query.RowId~in=10%3B11%3B12&query.Bob~in=a%3B20%3B30');
     });
 
     test('addParam', () => {
@@ -68,37 +66,14 @@ describe('AppURL', () => {
         expect(AppURL.create('somePath').addParam(undefined, 'undef').toHref()).toBe('#/somePath?undefined=undef');
     });
 
-    test('addParams with includeEmptyParams', () => {
+    test('addParams', () => {
         const actual = AppURL.create('somePath')
-            .addParams(
-                {
-                    undef: undefined,
-                    val: 23,
-                    booze: 'gin',
-                    mix: 'tonic',
-                },
-                true
-            )
-            .toHref();
-
-        // Check each parameter as order of params is non-deterministic
-        expect(actual).toContain('undef=undefined');
-        expect(actual).toContain('val=23');
-        expect(actual).toContain('booze=gin');
-        expect(actual).toContain('mix=tonic');
-    });
-
-    test('addParams without includeEmptyParams', () => {
-        const actual = AppURL.create('somePath')
-            .addParams(
-                {
-                    undef: undefined,
-                    val: 23,
-                    booze: 'gin',
-                    mix: 'tonic',
-                },
-                false
-            )
+            .addParams({
+                undef: undefined,
+                val: 23,
+                booze: 'gin',
+                mix: 'tonic',
+            })
             .toHref();
 
         // Check each parameter as order of params is non-deterministic
@@ -108,132 +83,66 @@ describe('AppURL', () => {
         expect(actual).toContain('mix=tonic');
     });
 
-    test('buildURL', () => {
-        let expected = '/labkey/controller/action.view?returnUrl=%2F';
-        expect(buildURL('controller', 'action')).toBe(expected);
+    test('productId', () => {
+        let url = AppURL.create('some', 'fun', 'path');
 
-        expected = '/labkey/controller/action.view?p1=test1&returnUrl=%2F';
-        expect(buildURL('controller', 'action', { p1: 'test1' })).toBe(expected);
+        // without product id set, it should default to the primary app
 
-        expected = '/labkey/controller/action.view?returnUrl=somewhere';
-        expect(buildURL('controller', 'action', {}, { returnUrl: 'somewhere' })).toBe(expected);
-    });
-});
+        // We are currently configured to be in the primary app, so it should give us an app path
+        expect(url.toString()).toEqual('/some/fun/path');
+        expect(url.isAppPath()).toBeTruthy();
 
-describe('createProductUrlFromParts', () => {
-    test('no productId', () => {
-        const url = createProductUrlFromParts(undefined, 'currentProduct', undefined, 'destination');
-        expect(url.toString()).toEqual('/destination');
-    });
+        // If we change to be in a different app, it should give us a URL for the primary app
+        __setController('freezermanager');
+        expect(url.toString()).toEqual('/labkey/DefaultTestContainer/samplemanager-app.view#/some/fun/path');
+        expect(url.isAppPath()).not.toBeTruthy();
 
-    test('no currentProductId', () => {
-        const url = createProductUrlFromParts('urlProduct', undefined, { rowId: 123 }, 'destination');
-        expect(url).toEqual('/labkey/urlproduct/app.view#/destination?rowId=123');
-    });
+        __setController('samplemanager');
+        url = url.setProductId('samplemanager');
 
-    test('not currentProductId', () => {
-        const url = createProductUrlFromParts('urlProduct', 'currentProduct', { rowId: 123 }, 'destination');
-        expect(url).toEqual('/labkey/urlproduct/app.view#/destination?rowId=123');
-    });
+        // If the product id matches the current product id, then we should only get a app path
+        expect(url.toString()).toEqual('/some/fun/path');
+        expect(url.isAppPath()).toBeTruthy();
 
-    test('is current product', () => {
-        const url = createProductUrlFromParts('currentProduct', 'currentProduct', { rowId: 123 }, 'destination');
-        expect(url.toString()).toEqual('/destination?rowId=123');
-    });
+        url = url.setProductId('alternate');
 
-    test('with multiple params', () => {
-        const url = createProductUrlFromParts(undefined, 'currentProduct', { rowId: 123, view: 'grid' }, 'destination');
-        expect(url.toString()).toEqual('/destination?rowId=123&view=grid');
-    });
-
-    test('with multiple parts', () => {
-        const url = createProductUrlFromParts(undefined, 'currentProduct', { rowId: 42 }, 'destination', 'mars');
-        expect(url.toString()).toEqual('/destination/mars?rowId=42');
-    });
-});
-
-describe('createProductUrl', () => {
-    test('no productId', () => {
-        const url = createProductUrl(undefined, 'currentProduct', AppURL.create('destination'));
-        expect(url.toString()).toEqual('/destination');
-    });
-
-    test('no currentProductId', () => {
-        const url = createProductUrl('urlProduct', undefined, AppURL.create('destination').addParam('rowId', 123));
-        expect(url).toEqual('/labkey/urlproduct/app.view#/destination?rowId=123');
-    });
-
-    test('not currentProductId', () => {
-        const url = createProductUrl(
-            'urlProduct',
-            'currentProduct',
-            AppURL.create('destination').addParam('rowId', 123)
-        );
-        expect(url).toEqual('/labkey/urlproduct/app.view#/destination?rowId=123');
-    });
-
-    test('is current product', () => {
-        const url = createProductUrl(
-            'currentProduct',
-            'currentProduct',
-            AppURL.create('destination').addParam('rowId', 123)
-        );
-        expect(url.toString()).toEqual('/destination?rowId=123');
-    });
-
-    test('with multiple params', () => {
-        const url = createProductUrl(
-            undefined,
-            'currentProduct',
-            AppURL.create('destination').addParam('rowId', 123).addParam('view', 'grid')
-        );
-        expect(url.toString()).toEqual('/destination?rowId=123&view=grid');
-    });
-
-    test('with multiple parts', () => {
-        const url = createProductUrl(
-            undefined,
-            'currentProduct',
-            AppURL.create('destination', 'mars').addParam('rowId', 42)
-        );
-        expect(url.toString()).toEqual('/destination/mars?rowId=42');
-    });
-
-    test('as url string', () => {
-        let url = createProductUrl(undefined, 'currentProduct', '#/destination?rowId=123');
-        expect(url.toString()).toEqual('#/destination?rowId=123');
-
-        url = createProductUrl('urlProduct', 'currentProduct', '#/destination?rowId=123');
-        expect(url.toString()).toEqual('/labkey/urlproduct/app.view#/destination?rowId=123');
+        // Setting the product ID to something other than the primary should give us a full URL
+        expect(url.toString()).toEqual('/labkey/DefaultTestContainer/alternate-app.view#/some/fun/path');
+        expect(url.isAppPath()).not.toBeTruthy();
     });
 
     test('containerPath', () => {
-        expect(createProductUrl('urlProduct', undefined, '#/destination?rowId=123', '/test/container/path')).toBe(
-            '/labkey/urlproduct/test/container/path/app.view#/destination?rowId=123'
+        let url = AppURL.create('some', 'fun', 'path');
+
+        // without containerPath set it should give us an app path
+        expect(url.toString()).toEqual('/some/fun/path');
+        expect(url.isAppPath()).toBeTruthy();
+
+        // with containerPath set to the current container it should give us an app path
+        url = url.setContainerPath('/DefaultTestContainer');
+        expect(url.toString()).toEqual('/some/fun/path');
+        expect(url.isAppPath()).toBeTruthy();
+
+        // with containerPath set to a different path it should give us a full URL
+        url = url.setContainerPath('/DefaultTestContainer/ChildFolder');
+        expect(url.toString()).toEqual(
+            '/labkey/DefaultTestContainer/ChildFolder/samplemanager-app.view#/some/fun/path'
         );
+        expect(url.isAppPath()).not.toBeTruthy();
     });
 });
 
-describe('createProductUrlFromPartsWithContainer', () => {
-    test('no containerPath, productId match', () => {
-        expect((createProductUrlFromPartsWithContainer('a', 'a', undefined, undefined) as AppURL).toHref()).toBe('#');
+describe('buildURL', () => {
+    test('controller and action', () => {
+        const expected = '/labkey/DefaultTestContainer/controller-action.view?returnUrl=%2F';
+        expect(buildURL('controller', 'action')).toBe(expected);
     });
-
-    test('no containerPath, productId mismatch', () => {
-        expect(createProductUrlFromPartsWithContainer('a', 'b', undefined, undefined) as AppURL).toBe(
-            '/labkey/a/app.view#'
-        );
+    test('params', () => {
+        const expected = '/labkey/DefaultTestContainer/controller-action.view?p1=test1&returnUrl=%2F';
+        expect(buildURL('controller', 'action', { p1: 'test1' })).toBe(expected);
     });
-
-    test('containerPath, productId match', () => {
-        expect(createProductUrlFromPartsWithContainer('a', 'a', '/test/path', undefined)).toBe(
-            '/labkey/a/test/path/app.view#'
-        );
-    });
-
-    test('containerPath, productId mismatch', () => {
-        expect(createProductUrlFromPartsWithContainer('a', 'b', '/test/path', undefined)).toBe(
-            '/labkey/a/test/path/app.view#'
-        );
+    test('returnUrl', () => {
+        const expected = '/labkey/DefaultTestContainer/controller-action.view?returnUrl=somewhere';
+        expect(buildURL('controller', 'action', {}, { returnUrl: 'somewhere' })).toBe(expected);
     });
 });

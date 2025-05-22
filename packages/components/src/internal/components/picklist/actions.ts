@@ -9,10 +9,8 @@ import { PICKLIST } from '../domainproperties/list/constants';
 import { saveDomain } from '../domainproperties/actions';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { User } from '../base/models/User';
-import { AppURL, buildURL, createProductUrlFromParts } from '../../url/AppURL';
+import { buildURL } from '../../url/AppURL';
 import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list/actions';
-
-import { PICKLIST_KEY } from '../../app/constants';
 
 import { isProductFoldersEnabled } from '../../app/utils';
 
@@ -389,16 +387,6 @@ export function deletePicklists(picklists: Picklist[], selectionKey?: string): P
             }),
         });
     });
-}
-
-export function getPicklistUrl(listId: number, picklistProductId?: string, currentProductId?: string): string {
-    let picklistUrl: string = AppURL.create(PICKLIST_KEY, listId).toHref();
-    if (currentProductId && picklistProductId) {
-        const url = createProductUrlFromParts(picklistProductId, currentProductId, {}, PICKLIST_KEY, listId);
-        picklistUrl = url instanceof AppURL ? url.toHref() : url;
-    }
-
-    return picklistUrl;
 }
 
 export const getPicklistFromId = async (listId: number, loadSampleTypes = true): Promise<Picklist> => {

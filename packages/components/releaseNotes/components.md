@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.??.??
-*Released*: ? May 2025
+### version 6.43.0
+*Released*: 22 May 2025
 - AppURL
   - make container and product aware
   - add fromMenuUrl static method

@@ -103,6 +103,12 @@ export interface GridMessage {
     type?: string;
 }
 
+export enum SavedSettings {
+    all = 'all', // Restores filters, maxRows, sorts, and view
+    noFilters = 'noFilters', // Restores maxRows and sorts only
+    none = 'none',
+}
+
 export interface QueryConfig {
     /**
      * An array of base [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/Filter.IFilter.html)
@@ -209,12 +215,17 @@ export interface QueryConfig {
     urlPrefix?: string;
 
     /**
-     * If true we will load filters, sorts, pageSize, and viewName from localStorage when initially loading the model,
-     * but only if there are no settings on the URL. Important: If you are using this flag you must ensure your grid id
-     * is stable and unique. It must be stable between page loads/visits, or we won't be able to fetch the settings. It
-     * must be unique, or we'll override settings for other grid models.
+     * Used to optionally load saved settings from localStorage when initially loading the model, but only if there are
+     * no settings on the URL.
+     *  - 'all' will load filters, sorts, pageSize, and viewName
+     *  - 'noFilters' will load sorts and pageSize
+     *  - 'none' disables this feature
+     *
+     * Important: If you are using this flag you must ensure your grid id is stable and unique. It must be stable
+     * between page loads/visits, or we won't be able to fetch the settings. It must be unique, or we'll override other
+     * grid models.
      */
-    useSavedSettings?: boolean;
+    useSavedSettings?: SavedSettings;
 }
 
 export const DEFAULT_OFFSET = 0;
@@ -345,12 +356,17 @@ export class QueryModel {
      */
     readonly urlPrefix?: string;
     /**
-     * If true we will load filters, sorts, pageSize, and viewName from localStorage when initially loading the model,
-     * but only if there are no settings on the URL. Defaults to false. Important: If you are using this flag you must
-     * ensure your grid id is stable and unique. It must be stable between page loads/visits, or we won't be able to
-     * fetch the settings. It must be unique, or we'll override settings for other grid models.
+     * Used to optionally load saved settings from localStorage when initially loading the model, but only if there are
+     * no settings on the URL.
+     *  - 'all' will load filters, sorts, pageSize, and viewName
+     *  - 'noFilters' will load sorts and pageSize
+     *  - 'none' disables this feature
+     *
+     * Important: If you are using this flag you must ensure your grid id is stable and unique. It must be stable
+     * between page loads/visits, or we won't be able to fetch the settings. It must be unique, or we'll override other
+     * grid models.
      */
-    useSavedSettings?: boolean;
+    readonly useSavedSettings?: SavedSettings;
 
     /**
      * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/Filter.IFilter.html)
@@ -505,7 +521,7 @@ export class QueryModel {
         this.totalCountError = undefined;
         this.totalCountLoadingState = LoadingState.INITIALIZED;
         this.urlPrefix = queryConfig.urlPrefix ?? 'query'; // match Data Region defaults
-        this.useSavedSettings = queryConfig.useSavedSettings ?? false;
+        this.useSavedSettings = queryConfig.useSavedSettings ?? SavedSettings.none;
         this.charts = undefined;
         this.chartsError = undefined;
         this.chartsLoadingState = LoadingState.INITIALIZED;

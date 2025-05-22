@@ -29,8 +29,8 @@ import { fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
 import { FileAttachmentEntry } from './FileAttachmentEntry';
 import { ALL_FILES_LIMIT_KEY } from './models';
 
-const isDirectoryEntry = (entry: FileSystemEntry): entry is FileSystemDirectoryEntry => entry.isDirectory;
-const isFileEntry = (entry: FileSystemEntry): entry is FileSystemFileEntry => entry.isFile;
+const isDirectoryEntry = (entry: FileSystemEntry): entry is FileSystemDirectoryEntry => !!entry?.isDirectory;
+const isFileEntry = (entry: FileSystemEntry): entry is FileSystemFileEntry => !!entry?.isFile;
 export const getTransferItemDirectoryEntry = (
     transferItems: DataTransferItemList,
     index: number

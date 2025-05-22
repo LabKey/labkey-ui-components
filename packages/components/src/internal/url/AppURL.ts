@@ -230,13 +230,6 @@ export class AppURL {
         const queryString = ActionURL.queryString(allParams);
         if (queryString) appPath += `?${queryString}`;
 
-        // TODO: do not merge this FM code, it's only useful while cleaning up FM usages
-        const isFMPath = appPath.startsWith('/boxes') || appPath.startsWith('/freezers');
-        const isFMApp = this._productId?.toLowerCase() === 'freezermanager';
-        if (isFMPath && !isFMApp) {
-            console.error('FM URL incorrect product id:', appPath, this._productId);
-        }
-
         if (!this.isAppPath()) return `${this.baseUrl()}#${appPath}`;
         return appPath;
     }

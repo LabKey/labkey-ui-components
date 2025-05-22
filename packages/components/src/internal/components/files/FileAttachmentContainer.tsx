@@ -31,6 +31,14 @@ import { ALL_FILES_LIMIT_KEY } from './models';
 
 const isDirectoryEntry = (entry: FileSystemEntry): entry is FileSystemDirectoryEntry => entry.isDirectory;
 const isFileEntry = (entry: FileSystemEntry): entry is FileSystemFileEntry => entry.isFile;
+export const getTransferItemDirectoryEntry = (
+    transferItems: DataTransferItemList,
+    index: number
+): FileSystemDirectoryEntry | undefined => {
+    const entry = transferItems?.[index]?.webkitGetAsEntry();
+    if (entry && isDirectoryEntry(entry)) return entry;
+    return undefined;
+};
 
 interface Props {
     acceptedFormats?: string; // comma separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
@@ -173,7 +181,7 @@ export class FileAttachmentContainer extends React.PureComponent<Props, State> {
         const invalidNames = new Set<string>();
 
         Array.from(fileList).forEach((file, index) => {
-            if (transferItems && transferItems[index].webkitGetAsEntry().isDirectory) {
+            if (getTransferItemDirectoryEntry(transferItems, index)) {
                 if (!allowDirectories) {
                     invalidDirectories.push(file.name);
                     invalidNames.add(file.name);
@@ -312,7 +320,7 @@ export class FileAttachmentContainer extends React.PureComponent<Props, State> {
                 newFiles[file.name] = file;
                 haveValidFiles = true;
 
-                if (transferItems && transferItems[index].webkitGetAsEntry().isDirectory) {
+                if (getTransferItemDirectoryEntry(transferItems, index)) {
                     hasDirectory = true;
                 }
             }
@@ -325,8 +333,8 @@ export class FileAttachmentContainer extends React.PureComponent<Props, State> {
                 this.dirCbCount = 0;
                 this.fileCbCount = 0;
                 Array.from(fileList).forEach((file, index) => {
-                    const entry = transferItems[index].webkitGetAsEntry();
-                    if (isDirectoryEntry(entry)) {
+                    const entry = getTransferItemDirectoryEntry(transferItems, index);
+                    if (entry) {
                         delete files[file.name];
                         this.getFilesFromDirectory(files, entry, this, () => {
                             this._handleFiles(files);

@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 52556: Add data-fieldkey attribute to grid header elements and input elements (part 2)
   - FileInput: drop the "-fileUpload" suffix from inputId
+  - EntityParentType model to set fieldKeyPath in generateColumn()
 
 ### version 6.43.0
 *Released*: 22 May 2025

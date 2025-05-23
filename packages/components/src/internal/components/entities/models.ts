@@ -100,7 +100,7 @@ export class EntityParentType extends Record({
 
     generateFieldKey(): string {
         const parentInputType = this.getInputType();
-        const formattedQueryName = capitalizeFirstChar(this.query);
+        const formattedQueryName = this.label ?? capitalizeFirstChar(this.query);
 
         // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
         // capitalized here and we lower it where needed
@@ -109,7 +109,6 @@ export class EntityParentType extends Record({
             : [encodePart(parentInputType), encodePart(formattedQueryName)].join('/');
     }
 
-    // TODO: We should stop generating this on the client and retrieve the actual ColumnInfo from the server
     generateColumn(displayColumn: string, targetSchema: string): QueryColumn {
         const formattedQueryName = this.label ?? capitalizeFirstChar(this.query);
         const parentColName = this.generateFieldKey();
@@ -136,6 +135,7 @@ export class EntityParentType extends Record({
                 : 'Contains ' + formattedQueryName + ' parent entities.',
             fieldKeyArray: [parentColName],
             fieldKey: parentColName,
+            fieldKeyPath: parentColName, // Issue 52556
             lookup: new QueryLookup({
                 displayColumn,
                 isPublic: true,

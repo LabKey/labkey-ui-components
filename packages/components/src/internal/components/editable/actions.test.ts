@@ -722,7 +722,8 @@ describe('parsePastedLookup', () => {
         });
         expect(parsePastedLookup(stringLookupCol, stringLookupValues, 'b,C,value D')).toStrictEqual({
             message: {
-                message: 'Could not find "b,C,value D". Please make sure values that contain commas are properly quoted.',
+                message:
+                    'Could not find "b,C,value D". Please make sure values that contain commas are properly quoted.',
             },
             valueDescriptors: List([{ display: 'b,C,value D', raw: 'b,C,value D' }]),
         });
@@ -733,7 +734,8 @@ describe('parsePastedLookup', () => {
         });
         expect(parsePastedLookup(stringLookupCol, stringLookupValues, 'abc, valueD')).toStrictEqual({
             message: {
-                message: 'Could not find "abc, valueD". Please make sure values that contain commas are properly quoted.',
+                message:
+                    'Could not find "abc, valueD". Please make sure values that contain commas are properly quoted.',
             },
             valueDescriptors: List([{ display: 'abc, valueD', raw: 'abc, valueD' }]),
         });
@@ -761,7 +763,8 @@ describe('parsePastedLookup', () => {
         });
         expect(parsePastedLookup(intLookupCol, intLookupValues, 'abc, valueD')).toStrictEqual({
             message: {
-                message: 'Could not find "abc, valueD". Please make sure values that contain commas are properly quoted.',
+                message:
+                    'Could not find "abc, valueD". Please make sure values that contain commas are properly quoted.',
             },
             valueDescriptors: List([{ display: 'abc, valueD', raw: 'abc, valueD' }]),
         });

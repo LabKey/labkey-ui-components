@@ -1015,11 +1015,11 @@ export function generateFillCellKeys(
         end = initialMinRow - 1;
     }
 
-    const fillCellKeys = [];
+    const fillCellKeys: string[][] = [];
 
     // Construct arrays of columns, because we're going to generate fill sequences for columns
     for (let colIdx = minCol; colIdx <= maxCol; colIdx++) {
-        const columnKeys = [];
+        const columnKeys: string[] = [];
 
         for (let rowIdx = start; rowIdx <= end; rowIdx++) {
             columnKeys.push(genCellKey(editorModel.orderedColumns.get(colIdx), rowIdx));
@@ -1036,12 +1036,7 @@ export function parsePastedLookup(
     descriptors: ValueDescriptor[],
     value: string[] | string
 ): CellData {
-    const originalValues = List([
-        {
-            display: value,
-            raw: value,
-        },
-    ]);
+    const originalValues = List([{ display: value, raw: value }]);
 
     if (column.required && (value == null || value === '')) {
         return {
@@ -1057,25 +1052,31 @@ export function parsePastedLookup(
     }
 
     let message: CellMessage;
+    let values: ValueDescriptor[];
     const unmatched: string[] = [];
 
-    // parse pasted strings to split properly around quoted values.
+    // Parse pasted strings to split properly around quoted values.
     // Remove the quotes for storing the actual values in the grid.
-    const values = parseCsvString(value, ',', true)
-        .map(v => {
+    const parsedValues = parseCsvString(value, ',', true);
+
+    // Issue 53055: Do not attempt to resolve multiple values for a single-value column
+    if (!column.isJunctionLookup() && parsedValues.length > 1) {
+        const vt = value.trim();
+        unmatched.push(vt);
+        values = [{ display: vt, raw: vt }];
+    } else {
+        values = parsedValues.flatMap(v => {
             const vt = v.trim();
-            if (vt.length > 0) {
-                const vl = vt.toLowerCase();
-                const vd = descriptors.find(d => d.display && d.display.toString().toLowerCase() === vl);
-                if (!vd) {
-                    unmatched.push(vt);
-                    return { display: vt, raw: vt };
-                } else {
-                    return vd;
-                }
-            }
-        })
-        .filter(v => v !== undefined);
+            if (!vt) return [];
+
+            const vl = vt.toLowerCase();
+            const vd = descriptors.find(d => d.display && d.display.toString().toLowerCase() === vl);
+            if (vd) return [vd];
+
+            unmatched.push(vt);
+            return [{ display: vt, raw: vt }];
+        });
+    }
 
     if (unmatched.length) {
         const valueStr = unmatched
@@ -1085,10 +1086,7 @@ export function parsePastedLookup(
         message = { message: lookupValidationErrorMessage(valueStr, true) };
     }
 
-    return {
-        message,
-        valueDescriptors: List(values),
-    };
+    return { message, valueDescriptors: List(values) };
 }
 
 type LookupValueCache = Record<string, Promise<ValueDescriptor[]>>;

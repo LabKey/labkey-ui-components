@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - include `CommentTextArea` in `BaseDomainDesigner` for supplying user provided comment for domain updates
     - wire up `auditUserComment` for `SampleTypeDesigner`, `DataClassDesigner` and `AssayDesignerPanels`
 
+### version 6.43.1
+*Released*: 22 May 2025
+- Issue 53055: Check for multiple values in single value column
+
 ### version 6.43.0
 *Released*: 22 May 2025
 - AppURL

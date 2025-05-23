@@ -4,8 +4,29 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 6.X
 *Released*: X May 2025
 - Add detailed auditing of domain changes & comment ability
-  - include `CommentTextArea` in `BaseDomainDesigner` for supplying user provided comment for domain updates
-  - wire up `auditUserComment` for `SampleTypeDesigner`, `DataClassDesigner` and `AssayDesignerPanels`
+    - include `CommentTextArea` in `BaseDomainDesigner` for supplying user provided comment for domain updates
+    - wire up `auditUserComment` for `SampleTypeDesigner`, `DataClassDesigner` and `AssayDesignerPanels`
+
+### version 6.43.0
+*Released*: 22 May 2025
+- AppURL
+  - make container and product aware
+  - add fromMenuUrl static method
+- Add AppLink
+  - Use AppLink any time you need
+- Add useAppNavigate
+  - Use this when you need to navigate, instead of ReactRouter navigate
+  - Can handle navigating to locations outside of our apps
+- DefaultRenderer: Use AppLink
+  - Issue 53021: Grid Column Renderers can break the back button on pages using useRouteLeave
+- NavItem: Use AppLink
+- Remove createProductUrl
+- Remove createProductUrlFromParts
+- Remove createProductUrlFromPartsWithContainer
+- Remove getHref
+- Rename ProductClickableItem to ProductNavigationItem
+- ServerNotificationsConfig: remove unnecessary attributes
+- ServerActivityList: convert to FC, use AppLink
 
 ### version 6.42.0
 *Released*: 14 May 2025

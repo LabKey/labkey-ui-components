@@ -236,6 +236,18 @@ describe('getEntityNoun', () => {
 });
 
 describe('sampleDeleteDependencyText', () => {
+    let moduleContext;
+
+    // We need to store and reset the module context before and after these tests so we don't impact other tests in this
+    // file.
+    beforeEach(() => {
+        moduleContext = LABKEY.moduleContext;
+    });
+
+    afterEach(() => {
+        LABKEY.moduleContext = moduleContext;
+    });
+
     test('cannot delete, professional', () => {
         LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
         expect(sampleDeleteDependencyText()).toBe(
@@ -270,52 +282,49 @@ describe('getJobCreationHref', () => {
     const queryModel = makeTestQueryModel(schemaQuery, queryInfo, undefined, undefined, undefined, modelId);
 
     test('singleSelect', () => {
-        expect(getJobCreationHref(queryModel)).toContain('selectionKey=id');
+        expect(getJobCreationHref(queryModel).toString()).toContain('selectionKey=id');
         const queryModelWithKeyValue = queryModel.mutate({ keyValue: 'key' });
-        expect(getJobCreationHref(queryModelWithKeyValue)).toContain('selectionKey=appkey%7Cs%2Fq%7Ckey');
+        expect(getJobCreationHref(queryModelWithKeyValue).toString()).toContain('selectionKey=appkey%7Cs%2Fq%7Ckey');
     });
     test('filters', () => {
-        expect(getJobCreationHref(queryModel, undefined, true)).toBe('#/workflow/new?selectionKey=id');
+        expect(getJobCreationHref(queryModel, undefined, true).toString()).toBe('/workflow/new?selectionKey=id');
 
         const queryModelWithFilters = queryModel.mutate({ filterArray: [Filter.create('TEST COL', 'TEST VALUE')] });
-        expect(getJobCreationHref(queryModelWithFilters, undefined, true)).toBe(
-            '#/workflow/new?selectionKey=id&query.TEST%20COL~eq=TEST%20VALUE'
+        expect(getJobCreationHref(queryModelWithFilters, undefined, true).toString()).toBe(
+            '/workflow/new?selectionKey=id&query.TEST%20COL~eq=TEST%20VALUE'
         );
     });
     test('with filters but ignoreFilter', () => {
-        expect(getJobCreationHref(queryModel, undefined, true)).toBe('#/workflow/new?selectionKey=id');
+        expect(getJobCreationHref(queryModel, undefined, true).toString()).toBe('/workflow/new?selectionKey=id');
 
         const queryModelWithFilters = queryModel.mutate({ filterArray: [Filter.create('TEST COL', 'TEST VALUE')] });
         expect(
-            getJobCreationHref(queryModelWithFilters, undefined, true, undefined, false, null, null, null, true)
-        ).toBe('#/workflow/new?selectionKey=id&selectionKeyType=snapshot');
+            getJobCreationHref(queryModelWithFilters, undefined, true, undefined, false, null, true).toString()
+        ).toBe('/workflow/new?selectionKey=id&selectionKeyType=snapshot');
     });
     test('templateId', () => {
-        expect(getJobCreationHref(queryModel).indexOf('templateId')).toBe(-1);
-        expect(getJobCreationHref(queryModel, 1)).toContain('templateId=1');
-        expect(getJobCreationHref(queryModel, '1')).toContain('templateId=1');
+        expect(getJobCreationHref(queryModel).toString()).not.toContain('templateId');
+        expect(getJobCreationHref(queryModel, 1).toString()).toContain('templateId=1');
+        expect(getJobCreationHref(queryModel, '1').toString()).toContain('templateId=1');
     });
     test('samplesIncluded', () => {
-        expect(getJobCreationHref(queryModel)).toBe('#/workflow/new?selectionKey=id&sampleTab=search');
-        expect(getJobCreationHref(queryModel, undefined, true)).toBe('#/workflow/new?selectionKey=id');
+        expect(getJobCreationHref(queryModel).toString()).toBe('/workflow/new?selectionKey=id&sampleTab=search');
+        expect(getJobCreationHref(queryModel, undefined, true).toString()).toBe('/workflow/new?selectionKey=id');
     });
     test('picklistName', () => {
-        expect(getJobCreationHref(queryModel).indexOf('picklistName')).toBe(-1);
-        expect(getJobCreationHref(queryModel, undefined, false, 'name')).toContain('picklistName=name');
+        expect(getJobCreationHref(queryModel).toString()).not.toContain('picklistName');
+        expect(getJobCreationHref(queryModel, undefined, false, 'name').toString()).toContain('picklistName=name');
     });
     test('isAssay', () => {
-        expect(getJobCreationHref(queryModel).indexOf('isAssay')).toBe(-1);
-        expect(getJobCreationHref(queryModel, undefined, true, undefined, true)).toBe('#/workflow/new?selectionKey=id');
-        expect(getJobCreationHref(queryModel, undefined, true, undefined, false, 'sampleFieldKey')).toBe(
-            '#/workflow/new?selectionKey=id'
+        expect(getJobCreationHref(queryModel).toString()).not.toContain('isAssay');
+        expect(getJobCreationHref(queryModel, undefined, true, undefined, true).toString()).toBe(
+            '/workflow/new?selectionKey=id'
         );
-        expect(getJobCreationHref(queryModel, undefined, true, undefined, true, 'sampleFieldKey')).toBe(
-            '#/workflow/new?selectionKey=id&assayProtocol=s&isAssay=true&sampleFieldKey=sampleFieldKey'
+        expect(getJobCreationHref(queryModel, undefined, true, undefined, false, 'sampleFieldKey').toString()).toBe(
+            '/workflow/new?selectionKey=id'
         );
-    });
-    test('with product id', () => {
-        expect(getJobCreationHref(queryModel, undefined, true, undefined, false, null, 'from', 'to')).toBe(
-            '/labkey/to/app.view#/workflow/new?selectionKey=id'
+        expect(getJobCreationHref(queryModel, undefined, true, undefined, true, 'sampleFieldKey').toString()).toBe(
+            '/workflow/new?selectionKey=id&assayProtocol=s&isAssay=true&sampleFieldKey=sampleFieldKey'
         );
     });
 });

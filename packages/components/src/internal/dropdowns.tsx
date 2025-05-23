@@ -342,6 +342,7 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
         },
         [disabled, href, onClick]
     );
+    // TODO: Use AppLink (needs support for role and rel), this will be completed in a follow-on PR
     return (
         <li className={className} role="presentation" ref={ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <a onClick={onClick_} href={href} rel={rel} role="menuitem" target={target} title={title}>

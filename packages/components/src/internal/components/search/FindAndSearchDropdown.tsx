@@ -2,10 +2,8 @@ import React, { FC, memo, ReactNode, useCallback, useState } from 'react';
 
 import { capitalizeFirstChar } from '../../util/utils';
 
-import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from '../samples/constants';
 import { FindField } from '../samples/models';
-import { createProductUrl } from '../../url/AppURL';
 import { FIND_SAMPLES_BY_FILTER_HREF } from '../../app/constants';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
@@ -78,16 +76,7 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
                         </MenuItem>
                     </>
                 )}
-                <MenuItem
-                    onClick={onSampleFinder}
-                    href={
-                        createProductUrl(
-                            getPrimaryAppProperties()?.productId,
-                            getCurrentAppProperties()?.productId,
-                            FIND_SAMPLES_BY_FILTER_HREF.toHref()
-                        ) as string
-                    }
-                >
+                <MenuItem onClick={onSampleFinder} href={FIND_SAMPLES_BY_FILTER_HREF.toHref()}>
                     <i className="fa fa-sitemap" /> Sample Finder
                 </MenuItem>
                 {!!onSearch && (

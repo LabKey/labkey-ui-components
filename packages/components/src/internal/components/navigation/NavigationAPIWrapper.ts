@@ -13,12 +13,7 @@ export interface NavigationAPIWrapper {
         containerId: string,
         containerPath?: string
     ) => Promise<ProductMenuModel>;
-    loadUserMenu: (
-        currentProductId: string,
-        appProperties: AppProperties,
-        moduleContext: ModuleContext,
-        containerPath?: string
-    ) => Promise<MenuSectionModel>;
+    loadUserMenu: (currentProductId: string, containerPath?: string) => Promise<MenuSectionModel>;
 }
 
 export class ServerNavigationAPIWrapper implements NavigationAPIWrapper {
@@ -45,19 +40,9 @@ export class ServerNavigationAPIWrapper implements NavigationAPIWrapper {
         }
     };
 
-    loadUserMenu = async (
-        currentProductId: string,
-        appProperties: AppProperties,
-        moduleContext: ModuleContext,
-        containerPath?: string
-    ): Promise<MenuSectionModel> => {
-        const primaryProductId = getPrimaryAppProperties(moduleContext).productId;
+    loadUserMenu = async (currentProductId: string, containerPath?: string): Promise<MenuSectionModel> => {
         try {
-            return await getUserMenuSection(
-                currentProductId,
-                appProperties?.productId ?? primaryProductId,
-                containerPath
-            );
+            return await getUserMenuSection(currentProductId, containerPath);
         } catch (e) {
             return undefined;
         }

@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback } from 'react';
 import classNames from 'classnames';
 
-import { LKS_PRODUCT_ID } from '../../app/constants';
+import { LKS_PRODUCT_ID } from '../../app/products';
 
 interface ProductNavigationHeaderProps {
     title: string;

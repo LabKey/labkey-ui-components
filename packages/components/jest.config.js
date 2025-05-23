@@ -7,12 +7,15 @@ module.exports = {
         LABKEY: {
             contextPath: '/labkey',
             container: {
-                path: '',
+                path: '/DefaultTestContainer',
                 formats: {
                     dateFormat: "yyyy-MM-dd",
                     dateTimeFormat: "yyyy-MM-dd HH:mm",
                     timeFormat: "HH:mm"
                 }
+            },
+            experimental: {
+                containerRelativeURL: true,
             },
             project: {
                 rootId: 'ROOTID'
@@ -30,7 +33,9 @@ module.exports = {
                         columnName: 'ParticipantId'
                     },
                     timepointType: 'VISIT'
-                }
+                },
+                // Makes tests appear to be running within an SM app
+                samplemanagement: {}
             }
         },
     },

@@ -179,7 +179,6 @@ export interface SampleGridButtonProps {
     currentProductId?: string;
     excludeAddButton?: boolean;
     excludedMenuKeys?: SamplesEditButtonSections[];
-    getJobURL?: (jobId: number) => string;
     includesMedia?: boolean;
     initAliquotMode?: ALIQUOT_FILTER_MODE;
     metricFeatureArea?: string;

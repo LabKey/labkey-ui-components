@@ -456,7 +456,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
               class="principal-detail-li"
             >
               <a
-                href="#/admin/permissions?expand=Editor"
+                href="/admin/permissions?expand=Editor"
               >
                 Editor
               </a>
@@ -465,7 +465,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
               class="principal-detail-li"
             >
               <a
-                href="#/admin/permissions?expand=Folder%20Administrator"
+                href="/admin/permissions?expand=Folder%20Administrator"
               >
                 Folder Administrator
               </a>
@@ -474,7 +474,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
               class="principal-detail-li"
             >
               <a
-                href="#/admin/permissions?expand=Project%20Administrator"
+                href="/admin/permissions?expand=Project%20Administrator"
               >
                 Project Administrator
               </a>
@@ -483,7 +483,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
               class="principal-detail-li"
             >
               <a
-                href="#/admin/permissions?expand=Reader"
+                href="/admin/permissions?expand=Reader"
               >
                 Reader
               </a>
@@ -492,7 +492,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
               class="principal-detail-li"
             >
               <a
-                href="#/admin/permissions?expand=Restricted%20Reader"
+                href="/admin/permissions?expand=Restricted%20Reader"
               >
                 Restricted Reader
               </a>
@@ -501,7 +501,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
               class="principal-detail-li"
             >
               <a
-                href="#/admin/permissions?expand=Submitter"
+                href="/admin/permissions?expand=Submitter"
               >
                 Submitter
               </a>

@@ -1,6 +1,7 @@
 import { Filter } from '@labkey/api';
 
-import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
+import { isFreezerManagementEnabled } from '../../app/products';
+import { isSampleStatusEnabled } from '../../app/utils';
 
 import { TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
 

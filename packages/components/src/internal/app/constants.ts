@@ -11,13 +11,12 @@ import { SAMPLE_MANAGER_SEARCH_PLACEHOLDER, SEARCH_PLACEHOLDER } from '../compon
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../components/assay/constants';
 
 import { AppProperties } from './models';
-
-// These ids should match what is used by the MenuProviders in the Java code, so we can avoid toLowerCase comparisons.
-export const LKS_PRODUCT_ID = 'LabKeyServer';
-const BIOLOGICS_PRODUCT_ID = 'Biologics';
-const LIMS_PRODUCT_ID = 'LIMS';
-const SAMPLE_MANAGER_PRODUCT_ID = 'SampleManager';
-const FREEZER_MANAGER_PRODUCT_ID = 'FreezerManager';
+import {
+    BIOLOGICS_PRODUCT_ID,
+    FREEZER_MANAGER_PRODUCT_ID,
+    LIMS_PRODUCT_ID,
+    SAMPLE_MANAGER_PRODUCT_ID,
+} from './products';
 
 const SAMPLE_MANAGER_PRODUCT_NAME = 'Sample Manager';
 const BIOLOGICS_PRODUCT_NAME = 'Biologics';
@@ -30,6 +29,7 @@ const LIMS_CONTROLLER_NAME = 'lims';
 const SAMPLE_MANAGER_CONTROLLER_NAME = 'sampleManager';
 const FREEZER_MANAGER_CONTROLLER_NAME = 'freezerManager';
 
+export const ADMIN_KEY = 'admin';
 export const ASSAYS_KEY = 'assays';
 export const ASSAY_DESIGN_KEY = 'assayDesign';
 export const AUDIT_KEY = 'audit';
@@ -41,6 +41,7 @@ export const DATA_CLASS_KEY = 'dataclass';
 export const SOURCE_TYPE_KEY = 'sourceType';
 export const WORKFLOW_KEY = 'workflow';
 export const FREEZERS_KEY = 'freezers';
+export const ITEMS_KEY = 'items';
 export const BOXES_KEY = 'boxes';
 export const HOME_KEY = 'home';
 export const USER_KEY = 'user';

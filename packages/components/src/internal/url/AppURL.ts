@@ -15,58 +15,7 @@
  */
 import { ActionURL, Filter, getServerContext } from '@labkey/api';
 
-export function createProductUrlFromParts(
-    urlProductId: string,
-    currentProductId: string,
-    params: { [key: string]: any },
-    ...parts
-): string | AppURL {
-    const appUrl = AppURL.create(...parts).addParams(params);
-    return createProductUrl(urlProductId, currentProductId, appUrl);
-}
-
-export function createProductUrlFromPartsWithContainer(
-    urlProductId: string,
-    currentProductId: string,
-    containerPath: string,
-    params: { [key: string]: any },
-    ...parts
-): string | AppURL {
-    const appUrl = AppURL.create(...parts).addParams(params);
-    return createProductUrl(urlProductId, currentProductId, appUrl, containerPath);
-}
-
-export function createProductUrl(
-    urlProductId: string,
-    currentProductId: string,
-    appUrl: string | AppURL,
-    containerPath?: string
-): string | AppURL {
-    // if caller provided a containerPath, then buildURL
-    // else if target productId of the URL is different then the current productId, then buildURL
-    if (
-        (containerPath && urlProductId) ||
-        (urlProductId && (!currentProductId || urlProductId.toLowerCase() !== currentProductId.toLowerCase()))
-    ) {
-        const href = appUrl instanceof AppURL ? appUrl.toHref() : appUrl;
-
-        // Stay in dev mode if we are staying in the same controller and using action appDev
-        const useDevMode =
-            ActionURL.getController().toLowerCase() === urlProductId.toLowerCase() &&
-            ActionURL.getAction().toLowerCase() === 'appdev';
-
-        return (
-            buildURL(
-                urlProductId.toLowerCase(),
-                useDevMode ? 'appDev.view' : 'app.view',
-                undefined,
-                { returnUrl: false, container: containerPath } // if undefined, buildURL will use current container from server context
-            ) + href
-        );
-    } else {
-        return appUrl;
-    }
-}
+import { getPrimaryAppProductId } from '../app/products';
 
 export function applyURL(prop: string, options?: BuildURLOptions): string {
     if (options) {
@@ -119,19 +68,22 @@ export function buildURL(controller: string, action: string, params?: any, optio
     return ActionURL.buildURL(controller, action, options?.container, parameters);
 }
 
-type URLParam = boolean | number | string;
+type BaseQueryParamValue = string | number | boolean | null | undefined;
+export type QueryParamValue = BaseQueryParamValue | BaseQueryParamValue[];
 
 export class AppURL {
-    declare _baseUrl: string;
+    declare _basePath: string;
     declare _filters: Filter.IFilter[];
-    declare _params: Record<string, string>;
+    declare _params: Record<string, QueryParamValue>;
+    declare _containerPath: string;
+    declare _productId: string;
 
     constructor(partial: Partial<AppURL>) {
         Object.assign(this, partial);
     }
 
     static create(...parts): AppURL {
-        let baseUrl = '';
+        let basePath = '';
         for (let i = 0; i < parts.length; i++) {
             if (parts[i] === undefined || parts[i] === null || parts[i] === '') {
                 if (getServerContext().devMode) {
@@ -152,16 +104,28 @@ export class AppURL {
 
             if (i === 0) {
                 if (stringPart.indexOf('/') === 0) {
-                    baseUrl += newPart;
+                    basePath += newPart;
                 } else {
-                    baseUrl += '/' + newPart;
+                    basePath += '/' + newPart;
                 }
             } else {
-                baseUrl += '/' + newPart;
+                basePath += '/' + newPart;
             }
         }
 
-        return new AppURL({ _baseUrl: baseUrl });
+        return new AppURL({ _basePath: basePath });
+    }
+
+    /**
+     * Creates an AppURL from a URL returned by our MenuSections API
+     */
+    static fromMenuUrl(url: string, productId: string, containerPath: string): AppURL {
+        if (url === undefined) return undefined;
+        if (!url.startsWith('#')) return undefined;
+        let path = url.replace('#', '');
+        if (path.indexOf('?') > -1) path = path.substring(0, path.indexOf('?'));
+
+        return new AppURL({ _basePath: path, _containerPath: containerPath, _productId: productId });
     }
 
     addFilters(...filters: Filter.IFilter[]): AppURL {
@@ -171,61 +135,103 @@ export class AppURL {
         });
     }
 
-    addParam(key: string, value: URLParam, includeEmptyParams?: boolean): AppURL {
-        return this.addParams({ [key]: value }, includeEmptyParams);
+    addParam(key: string, value: QueryParamValue): AppURL {
+        return this.addParams({ [key]: value });
     }
 
-    addParams(params: Record<string, URLParam>, includeEmptyParams = false): AppURL {
+    addParams(params: Record<string, QueryParamValue>): AppURL {
         if (params) {
-            const encodedParams: Record<string, string> = {};
-            Object.keys(params).forEach(key => {
-                const value = params[key];
-                if (includeEmptyParams || (value !== undefined && value !== null)) {
-                    encodedParams[encodeURIComponent(key)] = encodeURIComponent(value);
-                }
-            });
-            return new AppURL({
-                ...this,
-                _params: this._params ? { ...this._params, ...encodedParams } : encodedParams,
-            });
+            const nonEmptyParams = Object.keys(params).reduce(
+                (result, key) => {
+                    const value = params[key];
+                    if (value !== null && value !== undefined) result[key] = value;
+                    return result;
+                },
+                { ...this._params } as Record<string, QueryParamValue>
+            );
+            return new AppURL({ ...this, _params: nonEmptyParams });
         }
 
         return this;
     }
 
+    setContainerPath(containerPath: string): AppURL {
+        return new AppURL({ ...this, _containerPath: containerPath });
+    }
+
+    getContainerPath(): string {
+        return this._containerPath ?? ActionURL.getContainer();
+    }
+
+    setProductId(productId: string): AppURL {
+        return new AppURL({ ...this, _productId: productId });
+    }
+
+    getProductId(): string {
+        return this._productId ?? getPrimaryAppProductId() ?? '';
+    }
+
+    /**
+     * Returns true if the AppURL points to a path for the current app in the current container
+     */
+    isAppPath(): boolean {
+        const currentContainerPath = ActionURL.getContainer();
+        const targetContainerPath = this.getContainerPath();
+        const currentProductId = ActionURL.getController().toLowerCase();
+        const targetProductId = this.getProductId()?.toLowerCase() ?? '';
+        return currentContainerPath === targetContainerPath && currentProductId === targetProductId;
+    }
+
+    /**
+     * @deprecated You should only need this if you're rendering an anchor tag, and you should not do that. If you are
+     * trying to use this for something other than rendering an anchor tag update your code to use AppURL objects and
+     * render AppLink.
+     * @param urlPrefix
+     */
     toHref(urlPrefix?: string): string {
-        return '#' + this.toString(urlPrefix);
+        const href = this.toString(urlPrefix);
+        if (this.isAppPath()) return '#' + href;
+        return href;
     }
 
-    toQuery(urlPrefix?: string): Record<string, string> {
-        const query = { ...this._params };
+    /**
+     * Returns the base URL needed to generate a full LKS URL to one of our apps. If you did not set productId it will
+     * assume the primary product id (e.g. SM, Bio).
+     * e.g. for SM it returns: /MyContainer/samplemanagement-app.view#
+     */
+    baseUrl(): string {
+        const controller = this.getProductId().toLowerCase();
+        const currentController = ActionURL.getController().toLowerCase();
+        const currentAction = ActionURL.getAction().toLowerCase();
+        let action = 'app';
 
-        if (this._filters) {
-            this._filters.forEach(f => {
-                query[f.getURLParameterName(urlPrefix)] = f.getURLParameterValue();
-            });
+        if (controller === currentController && currentAction === 'appdev') {
+            action = 'appDev';
         }
 
-        return query;
+        return ActionURL.buildURL(controller, action, this._containerPath);
     }
 
+    /**
+     * Returns the string of the app path needed to navigate within one of our apps. If this AppURL points to a
+     * different app
+     * @param urlPrefix
+     */
     toString(urlPrefix?: string): string {
-        const url = this._baseUrl;
-        const parts = [];
-
-        if (this._params) {
-            Object.keys(this._params).forEach(key => {
-                parts.push(key + '=' + this._params[key]);
-            });
-        }
+        let appPath = this._basePath;
+        const allParams = { ...this._params };
 
         if (this._filters) {
             this._filters.forEach(f => {
-                parts.push(f.getURLParameterName(urlPrefix) + '=' + f.getURLParameterValue());
+                allParams[f.getURLParameterName(urlPrefix)] = f.getURLParameterValue();
             });
         }
 
-        return url + (parts.length > 0 ? '?' + parts.join('&') : '');
+        const queryString = ActionURL.queryString(allParams);
+        if (queryString) appPath += `?${queryString}`;
+
+        if (!this.isAppPath()) return `${this.baseUrl()}#${appPath}`;
+        return appPath;
     }
 }
 

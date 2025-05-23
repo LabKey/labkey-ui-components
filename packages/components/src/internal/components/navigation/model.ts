@@ -16,7 +16,7 @@
 import { List, Record } from 'immutable';
 import { ActionURL, QueryKey } from '@labkey/api';
 
-import { createProductUrl, AppURL, createProductUrlFromPartsWithContainer } from '../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 import { request } from '../../request';
 
 export class MenuSectionModel extends Record({
@@ -36,14 +36,12 @@ export class MenuSectionModel extends Record({
     declare productId: string;
     declare sectionKey: string;
 
-    static create(rawData: any, currentProductId?: string, containerPath?: string): MenuSectionModel {
+    static create(rawData: any, containerPath?: string): MenuSectionModel {
         if (rawData) {
             let items;
 
             if (rawData.items) {
-                items = rawData.items.map(i =>
-                    MenuItemModel.create(i, rawData.sectionKey, currentProductId, containerPath)
-                );
+                items = rawData.items.map(i => MenuItemModel.create(i, rawData.sectionKey, containerPath));
             }
 
             return new MenuSectionModel(
@@ -80,7 +78,7 @@ export class MenuItemModel extends Record({
     declare id: number;
     declare key: string;
     declare label: string;
-    declare url: string | AppURL;
+    declare url: AppURL;
     declare hidden: boolean;
     declare orderNum: number;
     declare originalUrl: string;
@@ -88,7 +86,7 @@ export class MenuItemModel extends Record({
     declare hasActiveJob: boolean;
     declare fromSharedContainer: boolean;
 
-    static create(rawData, sectionKey: string, currentProductId?: string, containerPath?: string): MenuItemModel {
+    static create(rawData, sectionKey: string, containerPath?: string): MenuItemModel {
         if (rawData) {
             const dataProductId = rawData.productId ? rawData.productId.toLowerCase() : undefined;
 
@@ -103,17 +101,13 @@ export class MenuItemModel extends Record({
                 const decoded = subParts.join('/');
                 const decodedKey = rawData.key.replace(rawData.key, () => decoded); // use the functional version to skip any additional pattern substitutions https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_the_replacement
 
+                const url = AppURL.create(sectionKey, ...subParts)
+                    .setContainerPath(containerPath)
+                    .setProductId(dataProductId);
                 return new MenuItemModel(
                     Object.assign({}, rawData, {
                         originalUrl: rawData.url,
-                        url: createProductUrlFromPartsWithContainer(
-                            dataProductId,
-                            currentProductId,
-                            containerPath,
-                            undefined,
-                            sectionKey,
-                            ...subParts
-                        ),
+                        url,
                         key: decodedKey,
                     })
                 );
@@ -121,7 +115,7 @@ export class MenuItemModel extends Record({
                 return new MenuItemModel(
                     Object.assign({}, rawData, {
                         originalUrl: rawData.url,
-                        url: createProductUrl(dataProductId, currentProductId, rawData.url, containerPath),
+                        url: AppURL.fromMenuUrl(rawData.url, dataProductId, containerPath),
                     })
                 );
             }
@@ -129,9 +123,8 @@ export class MenuItemModel extends Record({
         return new MenuItemModel();
     }
 
-    getUrlString(useOriginalUrl?: boolean): string {
-        if (useOriginalUrl && this.originalUrl) return this.originalUrl;
-        return typeof this.url === 'string' ? this.url : this.url?.toHref();
+    getUrlString(): string {
+        return this.url?.toHref() ?? this.originalUrl;
     }
 }
 
@@ -173,7 +166,7 @@ export class ProductMenuModel extends Record({
 
         const sections: MenuSectionModel[] = [];
         response?.data?.forEach(data => {
-            sections.push(MenuSectionModel.create(data, this.currentProductId, this.containerPath));
+            sections.push(MenuSectionModel.create(data, this.containerPath));
         });
 
         return List<MenuSectionModel>(sections);
@@ -222,7 +215,6 @@ export class MenuSectionConfig extends Record({
     headerURLParams: undefined,
     headerURLPart: undefined,
     headerText: undefined,
-    iconCls: undefined,
     iconURL: undefined,
     showActiveJobIcon: true,
     staticContent: false,
@@ -236,8 +228,7 @@ export class MenuSectionConfig extends Record({
     declare headerURLParams: Record<string, any>;
     declare headerURLPart: string;
     declare headerText?: string;
-    declare iconCls?: string;
-    declare iconURL?: string;
+    declare iconURL: string;
     declare showActiveJobIcon?: boolean;
     // Inform the display that this section's content is static (unchanging).
     // This helps inform the layout when these sections are laid out alongside sections with dynamic content.

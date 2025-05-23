@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useMemo } from 'react';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { getURLParamsForSampleSelectionKey } from '../samples/utils';
-import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 import { ASSAYS_KEY } from '../../app/constants';
 import { User } from '../base/models/User';
@@ -17,27 +17,24 @@ function getAssayResultsHref(
     picklistName?: string,
     isAssay?: boolean,
     sampleFieldKey?: string,
-    currentProductId?: string,
-    targetProductId?: string
 ): string {
+    // TODO: update this to return AppURL when MenuItem is updated to render AppLink and take AppURl
     const params = getURLParamsForSampleSelectionKey(model, picklistName, isAssay, sampleFieldKey);
-    const actionUrl = createProductUrlFromParts(targetProductId, currentProductId, params, ASSAYS_KEY, 'sampleresults');
-    return actionUrl instanceof AppURL ? actionUrl.toHref() : actionUrl;
+    const actionUrl = AppURL.create(ASSAYS_KEY, 'sampleresults').addParams(params);
+    return actionUrl.toHref();
 }
 
 interface Props {
     asSubMenu?: boolean;
-    currentProductId?: string;
     isAssay?: boolean;
     isPicklist?: boolean;
     metricFeatureArea?: string;
     model: QueryModel;
-    targetProductId?: string;
     user: User;
 }
 
 export const AssayResultsForSamplesMenuItem: FC<Props> = memo(props => {
-    const { model, metricFeatureArea, isAssay, isPicklist, currentProductId, targetProductId, user } = props;
+    const { model, metricFeatureArea, isAssay, isPicklist, user } = props;
     const picklistName = useMemo(() => (isPicklist ? model.queryName : undefined), [model, isPicklist]);
     const sampleFieldKey = useMemo(
         () => (isAssay ? model.displayColumns?.find(c => c.isSampleLookup())?.fieldKey : undefined),
@@ -53,7 +50,7 @@ export const AssayResultsForSamplesMenuItem: FC<Props> = memo(props => {
     return (
         <SelectionMenuItem
             text="View Assay Results for Selected"
-            href={getAssayResultsHref(model, picklistName, isAssay, sampleFieldKey, currentProductId, targetProductId)}
+            href={getAssayResultsHref(model, picklistName, isAssay, sampleFieldKey)}
             onClick={incrementMetric}
             queryModel={model}
             maxSelection={MAX_SELECTION_ACTION_ROWS}

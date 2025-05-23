@@ -4,7 +4,7 @@ import { useAppContext } from '../../AppContext';
 
 import { useServerContext } from '../base/ServerContext';
 
-import { isSampleManagerEnabled } from '../../app/utils';
+import { isSampleManagerEnabled } from '../../app/products';
 
 import { resolveErrorMessage } from '../../util/messaging';
 

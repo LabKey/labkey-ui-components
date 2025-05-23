@@ -62,9 +62,7 @@
 }
 
 .server-notifications-item {
-    &:hover {
-        cursor: pointer;
-    }
+    cursor: pointer;
 }
 
 .server-notification-data {
@@ -76,21 +74,14 @@
     white-space: nowrap;
 }
 
-.server-notifications-footer {
-    padding: 15px;
-
-    &.server-notifications-error {
-        color: $brand-danger;
-    }
+.server-notifications-footer .server-notifications-error {
+    color: $brand-danger;
 }
 
 .server-notifications-link {
     color: $brand-primary;
-    text-transform: none;
-
-    &:hover {
-        cursor: pointer;
-    }
+    display: block;
+    padding: 15px;
 }
 
 .job-status-log-entry {

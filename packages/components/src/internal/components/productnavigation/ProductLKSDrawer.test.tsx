@@ -12,23 +12,45 @@ const DEFAULT_PROPS = {
     tabs: [],
 };
 
-const VISIBLE_TAB_1 = new ContainerTabModel({ id: 'tab1', text: 'Tab 1', disabled: false });
-const VISIBLE_TAB_2 = new ContainerTabModel({ id: 'tab2', text: 'Tab 2', disabled: false });
-const DISABLED_TAB = new ContainerTabModel({ id: 'tab3', text: 'Tab 3', disabled: true });
+const VISIBLE_TAB_1 = new ContainerTabModel({
+    id: 'tab1',
+    text: 'Tab 1',
+    disabled: false,
+    href: 'https://example.com',
+});
+const VISIBLE_TAB_2 = new ContainerTabModel({
+    id: 'tab2',
+    text: 'Tab 2',
+    disabled: false,
+    href: 'https://example.com',
+});
+const DISABLED_TAB = new ContainerTabModel({ id: 'tab3', text: 'Tab 3', disabled: true, href: 'https://example.com' });
 
+const lk = LABKEY;
 beforeEach(() => {
-    LABKEY.homeContainer = 'home';
-    LABKEY.project.id = 'test';
-    LABKEY.project.name = 'test';
-    LABKEY.project.title = 'Test project';
-    LABKEY.container.id = 'test';
-    LABKEY.container.path = '/test';
-    LABKEY.container.title = 'Test project';
+    LABKEY = {
+        ...LABKEY,
+        container: {
+            id: 'test',
+            path: '/test',
+            title: 'Test project',
+        },
+        homeContainer: 'home',
+        project: {
+            id: 'test',
+            name: 'test',
+            title: 'Test project',
+        },
+    };
+});
+
+afterEach(() => {
+    LABKEY = lk;
 });
 
 describe('ProductLKSDrawer', () => {
     function validate(containerItemCount: number, tabItemCount = 0) {
-        expect(document.querySelectorAll('.menu-transition-left')).toHaveLength(1);
+        expect(document.querySelectorAll('.product-navigation-drawer')).toHaveLength(1);
         expect(document.querySelectorAll('.container-item')).toHaveLength(containerItemCount);
         expect(document.querySelectorAll('.container-icon')).toHaveLength(containerItemCount);
         expect(document.querySelectorAll('.container-tabs')).toHaveLength(1);
@@ -117,7 +139,7 @@ describe('ProductLKSDrawer', () => {
 
     test('getProjectBeginUrl', () => {
         LABKEY.container = {};
-        expect(getProjectBeginUrl(undefined)).toBe('/labkey/project/begin.view');
-        expect(getProjectBeginUrl('test')).toBe('/labkey/project/test/begin.view');
+        expect(getProjectBeginUrl(undefined)).toBe('/labkey/project-begin.view');
+        expect(getProjectBeginUrl('test')).toBe('/labkey/test/project-begin.view');
     });
 });

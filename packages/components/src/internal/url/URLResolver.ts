@@ -18,7 +18,7 @@ import { ActionURL, Experiment, Filter, getServerContext, Query } from '@labkey/
 
 import { LineageLinkMetadata } from '../components/lineage/types';
 
-import { FREEZER_MANAGER_APP_PROPERTIES, SAMPLES_KEY } from '../app/constants';
+import { ADMIN_KEY, BOXES_KEY, FREEZER_MANAGER_APP_PROPERTIES, SAMPLES_KEY } from '../app/constants';
 
 import { getCurrentAppProperties, getProjectPath } from '../app/utils';
 
@@ -30,7 +30,7 @@ import { SearchHit, SearchResult } from '../components/search/actions';
 
 import { SearchCategory } from '../components/search/constants';
 
-import { AppURL, createProductUrl, createProductUrlFromParts } from './AppURL';
+import { AppURL } from './AppURL';
 import { AppRouteResolver } from './models';
 import { encodeListResolverPath } from './utils';
 
@@ -107,7 +107,7 @@ export class ActionMapper implements URLMapper {
     }
 
     getProductUrl = (url: AppURL): AppURL | string => {
-        return createProductUrl(this.productId, undefined, url);
+        return url.toHref();
     };
 
     resolve: URLMapperResolver = (url, row, column, schemaName, queryName) => {
@@ -177,10 +177,7 @@ const ASSAY_MAPPERS = [
 
             // expecting a parameter of runId=<runId>
             if (params.hasOwnProperty('runId')) {
-                const runId = params['runId'];
-
-                const url = ['rd', 'assayrun', runId];
-                return AppURL.create(...url);
+                return AppURL.create('rd', 'assayrun', params['runId']);
             }
         }
     }),
@@ -202,10 +199,7 @@ const ASSAY_MAPPERS = [
                             const provider = parts[1];
                             // Issue 52780: the rest of the parts make up the protocol name, which may contain . chars
                             const protocol = parts.slice(2).join('.');
-
-                            const url = ['assays', provider, protocol];
-                            url.push('batches', rowId);
-                            return AppURL.create(...url);
+                            return AppURL.create('assays', provider, protocol, 'batches', rowId);
                         }
                     }
                 }
@@ -303,8 +297,7 @@ const DATA_CLASS_MAPPERS = [
             const params = ActionURL.getParameters(targetURL);
 
             if (params.rowId) {
-                const url = ['rd', 'expdata', params.rowId];
-                return AppURL.create(...url);
+                return AppURL.create('rd', 'expdata', params.rowId);
             }
         }
     }),
@@ -335,8 +328,7 @@ const SAMPLE_TYPE_MAPPERS = [
             const rowId = params.rowId;
 
             if (rowId !== undefined) {
-                const url = ['rd', 'samples', rowId];
-                return AppURL.create(...url);
+                return AppURL.create('rd', 'samples', rowId);
             } else {
                 return false;
             }
@@ -354,11 +346,9 @@ const RESOLVE_LSID_MAPPERS = [
                 const lsid = params.lsid;
                 if (lsid) {
                     if (type?.toLowerCase() === 'data') {
-                        const url = ['rd', 'expdata', lsid];
-                        return AppURL.create(...url);
+                        return AppURL.create('rd', 'expdata', lsid);
                     } else if (type?.toLowerCase() === 'material') {
-                        const url = ['rd', 'samples', lsid];
-                        return AppURL.create(...url);
+                        return AppURL.create('rd', 'samples', lsid);
                     }
                 }
                 return null; // return null for 'run' so LKS url will be used, don't return undefined
@@ -375,12 +365,10 @@ const LIST_MAPPERS = [
 
             if (params?.pk) {
                 if (params.name) {
-                    const parts = ['q', 'lists', params.name, params.pk];
-                    return AppURL.create(...parts);
+                    return AppURL.create('q', 'lists', params.name, params.pk);
                 } else if (params.listId && urlParts?.containerPath) {
                     const resolverPath = encodeListResolverPath(urlParts.containerPath);
-                    const parts = ['q', 'lists', resolverPath, params.listId, params.pk];
-                    return AppURL.create(...parts);
+                    return AppURL.create('q', 'lists', resolverPath, params.listId, params.pk);
                 }
             }
         }
@@ -393,12 +381,10 @@ const LIST_MAPPERS = [
 
             if (params) {
                 if (params.name) {
-                    const parts = ['q', 'lists', params.name];
-                    return AppURL.create(...parts);
+                    return AppURL.create('q', 'lists', params.name);
                 } else if (params.listId && urlParts?.containerPath) {
                     const resolverPath = encodeListResolverPath(urlParts.containerPath);
-                    const parts = ['q', 'lists', resolverPath, params.listId];
-                    return AppURL.create(...parts);
+                    return AppURL.create('q', 'lists', resolverPath, params.listId);
                 }
             }
         }
@@ -416,9 +402,7 @@ const DETAILS_QUERY_ROW_MAPPER = new ActionMapper('query', 'detailsQueryRow', ro
             const key = params.keyValue ? params.keyValue : params.RowId;
 
             if (key !== undefined) {
-                const parts = ['q', schemaName, queryName, key];
-
-                return AppURL.create(...parts);
+                return AppURL.create('q', schemaName, queryName, key);
             }
         }
     }
@@ -487,10 +471,8 @@ export const FREEZER_ITEM_SAMPLE_MAPPER = new ActionMapper('query', 'executeQuer
             params.queryName.toLowerCase() === 'item'
         ) {
             if (params[materialIdKey]) {
-                return createProductUrl(
-                    FREEZER_MANAGER_APP_PROPERTIES.productId,
-                    undefined,
-                    AppURL.create('rd', 'sampleItem', params[materialIdKey])
+                return AppURL.create('rd', 'sampleItem', params[materialIdKey]).setProductId(
+                    FREEZER_MANAGER_APP_PROPERTIES.productId
                 );
             } else {
                 return ''; // don't try to show a link if there's no materialId Issue 49679
@@ -510,7 +492,7 @@ export const PROJECT_MGMT_MAPPER = new ActionMapper('project', 'begin', (row, co
         const { containerPath } = ActionURL.getPathFromLocation(url);
         const { controllerName } = getCurrentAppProperties();
         const baseURL = ActionURL.buildURL(controllerName, 'app.view', containerPath);
-        return baseURL + AppURL.create('admin', 'settings').toHref();
+        return baseURL + AppURL.create(ADMIN_KEY, 'settings').toHref();
     }
 
     // Allow resolution of 'project-begin' to fall through to other mappers
@@ -533,13 +515,8 @@ export const STORAGE_LOCATION_MAPPER = new ActionMapper('query', 'detailsQueryRo
         ) {
             const rowId = params.RowId;
             if (rowId && rowId.length) {
-                return createProductUrlFromParts(
-                    FREEZER_MANAGER_APP_PROPERTIES.productId,
-                    ActionURL.getController(),
-                    {},
-                    'rd',
-                    'freezerLocation',
-                    rowId
+                return AppURL.create('rd', 'freezerLocation', rowId).setProductId(
+                    FREEZER_MANAGER_APP_PROPERTIES.productId
                 );
             }
             return false;
@@ -559,13 +536,9 @@ export const STORAGE_BOX_MAPPER = new ActionMapper('query', 'detailsQueryRow', r
         if (schemaName && schemaName.toLowerCase() === 'inventory' && queryName && queryName.toLowerCase() === 'box') {
             const rowId = params.RowId;
             if (rowId && rowId.length) {
-                return createProductUrlFromParts(
-                    FREEZER_MANAGER_APP_PROPERTIES.productId,
-                    ActionURL.getController(),
-                    { 'query.sort': 'WellPosition' },
-                    'boxes',
-                    rowId
-                );
+                return AppURL.create(BOXES_KEY, rowId)
+                    .addParams({ 'query.sort': 'WellPosition' })
+                    .setProductId(FREEZER_MANAGER_APP_PROPERTIES.productId);
             }
             return false;
         }

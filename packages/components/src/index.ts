@@ -15,16 +15,9 @@
  */
 import { enableMapSet, enablePatches } from 'immer';
 
-import {
-    applyURL,
-    AppURL,
-    buildURL,
-    createProductUrl,
-    createProductUrlFromParts,
-    createProductUrlFromPartsWithContainer,
-    spliceURL,
-} from './internal/url/AppURL';
-import { getHref } from './internal/url/utils';
+import { applyURL, AppURL, buildURL, spliceURL } from './internal/url/AppURL';
+import { AppLink } from './internal/url/AppLink';
+import { useAppNavigate } from './internal/url/useAppNavigate';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
@@ -711,7 +704,13 @@ import { BarTenderSettingsForm } from './internal/components/labelPrinting/BarTe
 import { ColumnSelectionModal } from './internal/components/ColumnSelectionModal';
 
 import { AppReducers, ProductMenuReducers, ServerNotificationReducers } from './internal/app/reducers';
-
+import {
+    isBiologicsEnabled,
+    isFreezerManagementEnabled,
+    isLIMSEnabled,
+    isPremiumProductEnabled,
+    isSampleManagerEnabled,
+} from './internal/app/products';
 import {
     biologicsIsPrimaryApp,
     CloseEventCode,
@@ -739,25 +738,21 @@ import {
     isAssayFileUploadEnabled,
     isAssayQCEnabled,
     isAssayRequestsEnabled,
-    isBiologicsEnabled,
     isConditionalFormattingEnabled,
     isCustomImportTemplatesEnabled,
     isDataChangeCommentRequirementFeatureEnabled,
     isELNEnabled,
     isExperimentAliasEnabled,
-    isFreezerManagementEnabled,
     isLKSSupportEnabled,
     isMediaEnabled,
     isNonstandardAssayEnabled,
     isNotebookTagsEnabled,
     isPlatesEnabled,
-    isPremiumProductEnabled,
     isProductFoldersEnabled,
     isProjectContainer,
     isProtectedDataEnabled,
     isRegistryEnabled,
     isSampleAliquotSelectorEnabled,
-    isSampleManagerEnabled,
     isSampleStatusEnabled,
     isSharedContainer,
     isSourceTypeEnabled,
@@ -819,11 +814,13 @@ import {
     TEST_PROJECT_CONTAINER_ADMIN,
 } from './internal/containerFixtures';
 import {
+    ADMIN_KEY,
     ASSAY_DESIGN_KEY,
     ASSAYS_KEY,
     AUDIT_KEY,
     BIOLOGICS_APP_PROPERTIES,
     BOXES_KEY,
+    ITEMS_KEY,
     CROSS_TYPE_KEY,
     DATA_CLASS_KEY,
     ELN_KEY,
@@ -967,6 +964,7 @@ const App = {
     isPlatesEnabled,
     isSampleManagerEnabled,
     isBiologicsEnabled,
+    isLIMSEnabled,
     isPremiumProductEnabled,
     isSampleAliquotSelectorEnabled,
     isProjectContainer,
@@ -1032,6 +1030,7 @@ const App = {
     SAMPLE_MANAGER: SAMPLE_MANAGER_APP_PROPERTIES,
     FREEZER_MANAGER: FREEZER_MANAGER_APP_PROPERTIES,
     LIMS: LIMS_APP_PROPERTIES,
+    ADMIN_KEY,
     ASSAYS_KEY,
     ASSAY_DESIGN_KEY,
     AUDIT_KEY,
@@ -1050,6 +1049,7 @@ const App = {
     WORKFLOW_KEY,
     FREEZERS_KEY,
     BOXES_KEY,
+    ITEMS_KEY,
     HOME_KEY,
     USER_KEY,
     GRID_INSERT_SAMPLES_HREF,
@@ -1217,18 +1217,16 @@ export {
     pushParameters,
     removeParameters,
     replaceParameters,
-    getHref,
     hasParameter,
     toggleParameter,
     applyURL,
     buildURL,
     imageURL,
     spliceURL,
+    AppLink,
+    useAppNavigate,
     WHERE_FILTER_TYPE,
     NOT_ANY_FILTER_TYPE,
-    createProductUrl,
-    createProductUrlFromParts,
-    createProductUrlFromPartsWithContainer,
     // renderers
     ArchivedFolderTag,
     AttachmentCard,
@@ -2044,3 +2042,5 @@ export type { ImportTemplate } from './public/QueryInfo';
 export type { RequestHandler, RequestOptions } from './internal/request';
 export type { UseRequestHandler } from './internal/util/RequestHandler';
 export type { UseTimeout } from './internal/hooks';
+export type { QueryParamValue } from './internal/url/AppURL';
+export type { NavigateFn } from './internal/url/useAppNavigate';

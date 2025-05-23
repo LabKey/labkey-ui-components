@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useMemo } from 'react';
 import { getServerContext } from '@labkey/api';
 import classNames from 'classnames';
 
@@ -14,7 +14,7 @@ import {
     TO_LKS_HOME_METRIC,
     TO_LKS_TAB_METRIC,
 } from './constants';
-import { ProductClickableItem } from './ProductClickableItem';
+import { ProductNavigationItem } from './ProductNavigationItem';
 
 interface ProductLKSDrawerProps {
     api?: ComponentsAPIWrapper;
@@ -27,28 +27,22 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
     const { tabs, disableLKSContainerLink, showHome, api = getDefaultAPIWrapper() } = props;
     const { container, homeContainer, user } = getServerContext();
     const isHomeContainer = useMemo(() => container.path === '/home', [container]);
-    const [transition, setTransition] = useState<boolean>(true);
-    useEffect(() => {
-        // use setTimeout so that the "left" property will change and trigger the transition
-        setTimeout(() => setTransition(false), 10);
-    }, []);
-
     const onTabClick = useCallback(() => {
         api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_TAB_METRIC);
-    }, []);
+    }, [api.query]);
 
     const visibleTabs = tabs.filter(tab => !tab.disabled);
 
     const onHomeClick = useCallback(() => {
         api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_HOME_METRIC);
-    }, []);
+    }, [api.query]);
 
     const onContainerClick = useCallback(() => {
         api.query.incrementClientSideMetricCount(APPLICATION_NAVIGATION_METRIC, TO_LKS_CONTAINER_METRIC);
-    }, []);
+    }, [api.query]);
 
     return (
-        <div className={'menu-transition-left' + (transition ? ' transition' : '')}>
+        <div className="product-navigation-drawer">
             {showHome && (
                 <a
                     className={classNames('container-item ', {
@@ -77,13 +71,11 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
             )}
             <div className="container-tabs">
                 {visibleTabs.length > 1 &&
-                    visibleTabs.map(tab => {
-                        return (
-                            <ProductClickableItem href={tab.href} key={tab.id} id={tab.id} onClick={() => onTabClick()}>
-                                {tab.text}
-                            </ProductClickableItem>
-                        );
-                    })}
+                    visibleTabs.map(({ href, id, text }) => (
+                        <ProductNavigationItem key={id} id={id} onClick={onTabClick} url={href}>
+                            {text}
+                        </ProductNavigationItem>
+                    ))}
                 {visibleTabs.length <= 1 && (
                     <div className="empty">
                         No tabs have been added to this folder.

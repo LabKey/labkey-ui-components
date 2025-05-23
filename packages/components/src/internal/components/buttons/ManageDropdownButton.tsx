@@ -35,7 +35,14 @@ export const ManageDropdownButton: FC<Props> = ({ children, disabled, showIcon =
     );
 
     return (
-        <DropdownButton buttonClassName="manage-dropdown" title={buttonLabel} noCaret pullRight disabled={disabled}>
+        <DropdownButton
+            className="manage-dropdown-menu"
+            buttonClassName="manage-dropdown"
+            title={buttonLabel}
+            noCaret
+            pullRight
+            disabled={disabled}
+        >
             {children}
         </DropdownButton>
     );

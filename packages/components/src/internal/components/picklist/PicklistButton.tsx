@@ -14,16 +14,14 @@ import { AddToPicklistMenuItem } from './AddToPicklistMenuItem';
 
 interface Props {
     asSubMenu?: boolean;
-    currentProductId?: string;
     metricFeatureArea?: string;
     model: QueryModel;
-    picklistProductId?: string;
     sampleIds?: number[];
     user: User;
 }
 
 export const PicklistButton: FC<Props> = memo(props => {
-    const { model, user, metricFeatureArea, asSubMenu, currentProductId, picklistProductId, sampleIds } = props;
+    const { model, user, metricFeatureArea, asSubMenu, sampleIds } = props;
 
     return (
         <RequiresPermission permissionCheck="any" perms={PermissionTypes.ManagePicklists}>
@@ -33,8 +31,6 @@ export const PicklistButton: FC<Props> = memo(props => {
                     user={user}
                     sampleIds={sampleIds}
                     metricFeatureArea={metricFeatureArea}
-                    currentProductId={currentProductId}
-                    picklistProductId={picklistProductId}
                 />
                 <PicklistCreationMenuItem
                     queryModel={sampleIds ? undefined : model}
@@ -43,8 +39,6 @@ export const PicklistButton: FC<Props> = memo(props => {
                     user={user}
                     asMenuItem
                     metricFeatureArea={metricFeatureArea}
-                    currentProductId={currentProductId}
-                    picklistProductId={picklistProductId}
                 />
             </ResponsiveMenuButton>
         </RequiresPermission>

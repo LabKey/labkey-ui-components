@@ -1,20 +1,21 @@
 import React, { FC, memo, PropsWithChildren, useCallback, useState } from 'react';
+import { AppLink } from '../../url/AppLink';
+import { AppURL } from '../../url/AppURL';
 
 interface ProductClickableItemProps extends PropsWithChildren {
     id: string;
-    href: string;
     onClick: () => void;
+    url: string | AppURL;
 }
 
-export const ProductClickableItem: FC<ProductClickableItemProps> = memo(props => {
-    const { id, onClick, children, href } = props;
+export const ProductNavigationItem: FC<ProductClickableItemProps> = memo(({ children, id, onClick, url }) => {
     const [hovered, setHovered] = useState<boolean>(false);
     const onEnter = useCallback(() => setHovered(true), [setHovered]);
     const onLeave = useCallback(() => setHovered(false), [setHovered]);
 
     return (
-        <a
-            href={href}
+        <AppLink
+            to={url}
             key={id}
             className={'clickable-item' + (hovered ? ' labkey-page-nav' : '')}
             onClick={onClick}
@@ -22,7 +23,7 @@ export const ProductClickableItem: FC<ProductClickableItemProps> = memo(props =>
             onMouseLeave={onLeave}
         >
             {children}
-        </a>
+        </AppLink>
     );
 });
-ProductClickableItem.displayName = 'ProductClickableItem';
+ProductNavigationItem.displayName = 'ProductClickableItem';

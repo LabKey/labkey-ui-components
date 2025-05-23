@@ -9,9 +9,15 @@ import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 import { UserMenuGroupImpl } from './UserMenuGroup';
 import { MenuSectionModel } from './model';
 
+let lk = LABKEY;
 beforeEach(() => {
-    LABKEY.devMode = false;
-    LABKEY.moduleContext = {};
+    LABKEY = {
+        ...LABKEY,
+        devMode: false,
+    };
+});
+afterEach(() => {
+   LABKEY = lk;
 });
 
 describe('UserMenuGroup', () => {
@@ -29,7 +35,7 @@ describe('UserMenuGroup', () => {
             {
                 key: 'docs',
                 label: 'Documentation',
-                url: 'http://show/me/the/docs',
+                url: 'https://show/me/the/docs',
                 requiresLogin: false,
             },
         ],
@@ -50,7 +56,7 @@ describe('UserMenuGroup', () => {
             {
                 key: 'notdocs',
                 label: 'Documentation',
-                url: 'http://show/me/the/docs',
+                url: 'https://show/me/the/docs',
                 requiresLogin: false,
             },
         ],
@@ -77,7 +83,7 @@ describe('UserMenuGroup', () => {
             {
                 key: 'docs',
                 label: 'Documentation',
-                url: 'http://show/me/the/docs',
+                url: 'https://show/me/the/docs',
                 requiresLogin: false,
             },
         ],
@@ -119,7 +125,7 @@ describe('UserMenuGroup', () => {
     test('not initialized', () => {
         const model = new MenuSectionModel({});
         renderWithAppContext(<UserMenuGroupImpl model={model} user={new User()} />);
-        verify(['Sign In'], null, null);
+        verify(['Sign In'], null, ['Release Notes']);
     });
 
     test('user not logged in', () => {
@@ -128,7 +134,7 @@ describe('UserMenuGroup', () => {
         });
 
         renderWithAppContext(<UserMenuGroupImpl model={section} user={user} />);
-        verify(['Sign In'], null, ['Help']);
+        verify(['Sign In'], null, ['Help', 'Release Notes']);
     });
 
     test('no help icon', () => {
@@ -137,7 +143,7 @@ describe('UserMenuGroup', () => {
         });
 
         renderWithAppContext(<UserMenuGroupImpl model={noHelpSection} user={user} />);
-        verify(['Documentation', 'Sign In'], null, null);
+        verify(['Documentation', 'Sign In'], null, ['Release Notes']);
     });
 
     test('with admin items', () => {
@@ -147,7 +153,7 @@ describe('UserMenuGroup', () => {
 
         renderWithAppContext(<UserMenuGroupImpl model={withAdmins} user={user} />);
 
-        verify(['Profile', 'Sign Out'], ['Application Settings'], ['Help']);
+        verify(['Profile', 'Sign Out'], ['Application Settings'], ['Help', 'Release Notes']);
     });
 
     test('user logged in, but not in dev mode', () => {
@@ -156,7 +162,7 @@ describe('UserMenuGroup', () => {
         });
 
         renderWithAppContext(<UserMenuGroupImpl model={section} user={user} />);
-        verify(['Profile', 'Sign Out'], null, ['Help']);
+        verify(['Profile', 'Sign Out'], null, ['Help', 'Release Notes']);
     });
 
     test('user logged in dev mode', () => {
@@ -166,7 +172,7 @@ describe('UserMenuGroup', () => {
         LABKEY.devMode = true;
 
         renderWithAppContext(<UserMenuGroupImpl model={section} user={user} />);
-        verify(['Profile', 'Sign Out'], ['Enable Redux Tools'], ['Help']);
+        verify(['Profile', 'Sign Out'], ['Enable Redux Tools'], ['Help', 'Release Notes']);
     });
 
     test('user logged in extra items', () => {
@@ -182,7 +188,7 @@ describe('UserMenuGroup', () => {
         );
         renderWithAppContext(<UserMenuGroupImpl model={section} user={user} extraUserItems={extraUserItems} />);
 
-        verify(['Profile', 'Extra One', 'Extra Two', 'Sign Out'], null, ['Help']);
+        verify(['Profile', 'Extra One', 'Extra Two', 'Sign Out'], null, ['Help', 'Release Notes']);
     });
 
     test('user logged in extra dev mode items', () => {
@@ -216,17 +222,11 @@ describe('UserMenuGroup', () => {
         verify(
             ['Profile', 'Extra One', 'Extra Two', 'Sign Out'],
             ['Enable Redux Tools', 'Extra Dev One', 'Extra Dev Two'],
-            ['Help']
+            ['Help', 'Release Notes']
         );
     });
 
     test('with release note, with help', () => {
-        LABKEY.moduleContext = {
-            samplemanagement: {
-                productId: 'SampleManager',
-            },
-        };
-
         const user = new User({
             isSignedIn: true,
         });
@@ -237,12 +237,6 @@ describe('UserMenuGroup', () => {
     });
 
     test('with release note, without help', () => {
-        LABKEY.moduleContext = {
-            samplemanagement: {
-                productId: 'SampleManager',
-            },
-        };
-
         const user = new User({
             isSignedIn: false,
         });

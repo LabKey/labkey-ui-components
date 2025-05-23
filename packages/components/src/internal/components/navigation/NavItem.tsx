@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 import React, { FC, memo, PropsWithChildren, useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { AppURL } from '../../url/AppURL';
+import { AppLink } from '../../url/AppLink';
 
 interface NavItemProps extends PropsWithChildren {
     isActive?: boolean;
@@ -26,7 +27,6 @@ interface NavItemProps extends PropsWithChildren {
 
 export const NavItem: FC<NavItemProps> = memo(({ children, onActive, to, isActive }) => {
     const location = useLocation();
-    const href = to instanceof AppURL ? to.toString() : to;
     const itemRef = useRef<HTMLLIElement>(undefined);
     const [active, setActive] = useState<boolean>(false);
 
@@ -47,31 +47,27 @@ export const NavItem: FC<NavItemProps> = memo(({ children, onActive, to, isActiv
         } else {
             setActive(false);
         }
-    }, [isActive, location, to]);
+    }, [isActive, location, onActive, to]);
 
     return (
         <li className={active ? 'active' : null} ref={itemRef}>
-            <Link to={href}>{children}</Link>
+            <AppLink to={to}>{children}</AppLink>
         </li>
     );
 });
 NavItem.displayName = 'NavItem';
 
-export const ParentNavItem: FC<NavItemProps> = memo(({ children, to }) => {
-    const href = to instanceof AppURL ? to.toString() : to;
-
-    return (
-        <div className="parent-nav">
-            <ul className="nav navbar-nav">
-                <li>
-                    <Link to={href}>
-                        <i className="fa fa-chevron-left" />
-                        &nbsp;
-                        {children}
-                    </Link>
-                </li>
-            </ul>
-        </div>
-    );
-});
+export const ParentNavItem: FC<NavItemProps> = memo(({ children, to }) => (
+    <div className="parent-nav">
+        <ul className="nav navbar-nav">
+            <li>
+                <AppLink to={to}>
+                    <i className="fa fa-chevron-left" />
+                    &nbsp;
+                    {children}
+                </AppLink>
+            </li>
+        </ul>
+    </div>
+));
 ParentNavItem.displayName = 'ParentNavItem';

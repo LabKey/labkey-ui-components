@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.43.1
+*Released*: 22 May 2025
+- Issue 53055: Check for multiple values in single value column
+
 ### version 6.43.0
 *Released*: 22 May 2025
 - AppURL

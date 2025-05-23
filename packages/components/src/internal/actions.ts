@@ -296,7 +296,7 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
         throw new Error('Unknown export type: ' + type);
     }
 
-    form.append("formDataEncoded", "true");
+    form.append('formDataEncoded', 'true');
     Ajax.request({
         url: buildURL(controller, action, undefined, { container: containerPath, returnUrl: false }),
         method: 'POST',

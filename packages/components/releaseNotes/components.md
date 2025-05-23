@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Add `encodeFormDataQuote` util to encode `"` and its encoded form `%22`
   - Encode form params for exportRows actions
 
+### version 6.43.1
+*Released*: 22 May 2025
+- Issue 53055: Check for multiple values in single value column
+
 ### version 6.43.0
 *Released*: 22 May 2025
 - AppURL

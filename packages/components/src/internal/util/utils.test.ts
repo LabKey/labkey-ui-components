@@ -1203,6 +1203,9 @@ describe('parseCsvString', () => {
         expect(parseCsvString('"a,"123', ',', true)).toStrictEqual(['"a', '"123']);
         expect(parseCsvString('"a,"123', ', ', true)).toStrictEqual(['"a,"123']);
         expect(parseCsvString('"a, "123', ',', true)).toStrictEqual(['"a', ' "123']);
+        expect(parseCsvString('"sam"', ',', true)).toStrictEqual(['sam']);
+        expect(parseCsvString('"a""b"', ',', true)).toStrictEqual(['a"b']);
+        expect(parseCsvString('"a"b"', ',', true)).toStrictEqual(['"a"b"']);
     });
 });
 

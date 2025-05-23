@@ -47,6 +47,7 @@ import { ViewInfo } from './ViewInfo';
 import { createGridModelId } from './models';
 import { SAMPLES_KEY } from './app/constants';
 import { SCHEMAS } from './schemas';
+import { encodeFormDataQuote } from './url/utils';
 
 export function selectAll(
     key: string,
@@ -267,9 +268,9 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
         const value = exportParams[key];
 
         if (value instanceof Array) {
-            value.forEach(arrayValue => form.append(key, arrayValue));
+            value.forEach(arrayValue => form.append(encodeFormDataQuote(key), arrayValue));
         } else {
-            form.append(key, value);
+            form.append(encodeFormDataQuote(key), value);
         }
     });
 
@@ -295,6 +296,7 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
         throw new Error('Unknown export type: ' + type);
     }
 
+    form.append("formDataEncoded", "true");
     Ajax.request({
         url: buildURL(controller, action, undefined, { container: containerPath, returnUrl: false }),
         method: 'POST',

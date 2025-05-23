@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.X
+*Released*: X May 2025
+- Issue 52925: App export to csv/tsv ignores filter with column containing double quote
+  - Add `encodeFormDataQuote` util to encode `"` and its encoded form `%22`
+  - Encode form params for exportRows actions
+
 ### version 6.43.0
 *Released*: 22 May 2025
 - AppURL

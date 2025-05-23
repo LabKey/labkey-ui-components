@@ -5,3 +5,7 @@ export function decodeListResolverPath(resolverPath: string): string {
 export function encodeListResolverPath(containerPath: string): string {
     return ['$CPS', containerPath?.toLowerCase(), '$CPE'].join('');
 }
+
+export function encodeFormDataQuote(key: string): string {
+    return key?.replaceAll('%22', '%2522').replaceAll('"', '%22');
+}

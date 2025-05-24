@@ -1,10 +1,23 @@
-import React, { PureComponent, ComponentType, FC, memo, PropsWithChildren } from 'react';
+import React, {
+    PureComponent,
+    ComponentType,
+    FC,
+    memo,
+    PropsWithChildren,
+    useState,
+    useCallback,
+    useMemo,
+} from 'react';
 import { List } from 'immutable';
 
 import { getSubmitButtonClass, isApp } from '../../app/utils';
 import { FormButtons } from '../../FormButtons';
 
 import { Alert } from '../base/Alert';
+
+import { CommentTextArea } from '../forms/input/CommentTextArea';
+
+import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
 import { getDomainBottomErrorMessage, getDomainHeaderName, getUpdatedVisitedPanelsList } from './actions';
 import { DOMAIN_ERROR_ID, SEVERITY_LEVEL_ERROR } from './constants';
@@ -119,8 +132,9 @@ interface BaseDomainDesignerProps extends PropsWithChildren {
     hasValidProperties: boolean;
     name: string;
     onCancel: () => void;
-    onFinish: () => void;
+    onFinish: (reason?: string) => void;
     saveBtnText?: string;
+    showUserComment?: boolean;
     submitting: boolean;
     visitedPanels: List<number>;
 }
@@ -137,7 +151,11 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
         onCancel,
         hasValidProperties,
         saveBtnText = 'Save',
+        showUserComment,
     } = props;
+    const [userComment, setUserComment] = useState<string>(undefined);
+    // skip useDataChangeCommentsRequired hook for LKS pages with showUserComment=false
+    const requiresUserComment = showUserComment ? useDataChangeCommentsRequired().requiresUserComment : false;
 
     // get a list of the domain names that have errors
     const errorDomains = domains
@@ -146,6 +164,15 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
         .toList();
     const bottomErrorMsg = getDomainBottomErrorMessage(exception, errorDomains, hasValidProperties, visitedPanels);
     const submitClassname = `save-button btn btn-${getSubmitButtonClass()}`;
+
+    const onSave = useCallback(() => {
+        onFinish(userComment);
+    }, [userComment, onFinish]);
+
+    const canSubmit = useMemo(() => {
+        if (submitting) return false;
+        return !requiresUserComment || userComment?.trim()?.length > 0;
+    }, [requiresUserComment, userComment, submitting]);
 
     return (
         <div className="domain-designer">
@@ -159,7 +186,16 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
                 <button className="cancel-button btn btn-default" onClick={onCancel} type="button">
                     Cancel
                 </button>
-                <button className={submitClassname} disabled={submitting} onClick={onFinish} type="button">
+                {showUserComment && (
+                    <CommentTextArea
+                        actionName="Update"
+                        containerClassName="inline-comment"
+                        onChange={setUserComment}
+                        requiresUserComment={requiresUserComment}
+                        inline
+                    />
+                )}
+                <button className={submitClassname} disabled={!canSubmit} onClick={onSave} type="button">
                     {saveBtnText}
                 </button>
             </FormButtons>

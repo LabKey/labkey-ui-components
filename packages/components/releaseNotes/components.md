@@ -1,8 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.43.2
+*Released*: 23 May 2025
+- Add detailed auditing of domain changes & comment ability
+    - include `CommentTextArea` in `BaseDomainDesigner` for supplying user provided comment for domain updates
+    - wire up `auditUserComment` for `SampleTypeDesigner`, `DataClassDesigner` and `AssayDesignerPanels`
+
 ### version 6.43.1
-*Released*: 22 May 2025
+*Released*: 23 May 2025
 - Issue 53055: Check for multiple values in single value column
 
 ### version 6.43.0

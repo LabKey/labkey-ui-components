@@ -104,6 +104,7 @@ interface Props {
     helpTopic?: string;
     includeDataClasses?: boolean;
     initModel?: DomainDetails;
+    isUpdate?: boolean;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
     metricUnitProps?: MetricUnitProps;
     nameExpressionInfoUrl?: string;
@@ -113,11 +114,10 @@ interface Props {
     onCancel: () => void;
     onChange?: (model: SampleTypeModel) => void;
     onComplete: (response: DomainDesign) => void;
-    sampleAliasCaption?: string;
     sampleTypeCaption?: string;
     saveBtnText?: string;
     showAliquotOptions?: boolean;
-    showGenIdBanner?: boolean;
+    sampleAliasCaption?: string;
     showLinkToStudy?: boolean;
     showParentLabelPrefix?: boolean;
     useSeparateDataClassesAliasMenu?: boolean;
@@ -126,6 +126,7 @@ interface Props {
 }
 
 interface State {
+    auditUserComment?: string;
     error: React.ReactNode;
     model: SampleTypeModel;
     nameExpressionWarnings: string[];
@@ -327,7 +328,11 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
     };
 
     onUniqueIdCancel = (): void => {
-        this.setState({ showUniqueIdConfirmation: false, uniqueIdsConfirmed: false });
+        this.setState({
+            showUniqueIdConfirmation: false,
+            uniqueIdsConfirmed: false,
+            auditUserComment: undefined,
+        });
     };
 
     onUniqueIdConfirm = (): void => {
@@ -338,7 +343,10 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         const { setSubmitting } = this.props;
 
         setSubmitting(false, () => {
-            this.setState({ nameExpressionWarnings: undefined });
+            this.setState({
+                nameExpressionWarnings: undefined,
+                auditUserComment: undefined,
+            });
         });
     };
 
@@ -348,19 +356,22 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         });
     };
 
-    onFinish = (): void => {
+    onFinish = (auditUserComment?: string): void => {
         const { defaultSampleFieldConfig, setSubmitting, metricUnitProps } = this.props;
         const { model, uniqueIdsConfirmed } = this.state;
 
         if (!model.isNew() && this.getNumNewUniqueIdFields() > 0 && !uniqueIdsConfirmed) {
-            this.setState({ showUniqueIdConfirmation: true });
+            this.setState({
+                showUniqueIdConfirmation: true,
+                auditUserComment
+            });
             return;
         }
 
         const metricUnitRequired = metricUnitProps?.metricUnitRequired;
         const isValid = model.isValid(defaultSampleFieldConfig, metricUnitRequired);
 
-        this.props.onFinish(isValid, this.saveDomain);
+        this.props.onFinish(isValid, () => this.saveDomain(false, auditUserComment));
 
         if (isValid) return;
 
@@ -382,15 +393,21 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
 
         const updatedModel = model.set('exception', exception) as SampleTypeModel;
         setSubmitting(false, () => {
-            this.setState({ model: updatedModel }, () => {
-                scrollDomainErrorIntoView();
-            });
+            this.setState(
+                {
+                    model: updatedModel,
+                    auditUserComment,
+                },
+                () => {
+                    scrollDomainErrorIntoView();
+                }
+            );
         });
     };
 
-    saveDomain = async (hasConfirmedNameExpression?: boolean): Promise<void> => {
+    saveDomain = async (hasConfirmedNameExpression?: boolean, comment?: string): Promise<void> => {
         const { api, beforeFinish, setSubmitting } = this.props;
-        const { model } = this.state;
+        const { model, auditUserComment } = this.state;
         const { name, domain, description } = model;
         if (!hasConfirmedNameExpression) {
             beforeFinish?.(model);
@@ -492,6 +509,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                 kind: Domain.KINDS.SAMPLE_TYPE,
                 name,
                 options: details,
+                auditUserComment: auditUserComment ?? comment,
             });
             setSubmitting(false, () => {
                 this.props.onComplete(response);
@@ -621,7 +639,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             aliquotNamePatternProps,
             initModel,
             showAliquotOptions,
-            showGenIdBanner,
+            isUpdate,
         } = this.props;
         const {
             error,
@@ -667,6 +685,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                 onCancel={onCancel}
                 onFinish={this.onFinish}
                 saveBtnText={saveBtnText}
+                showUserComment={isUpdate && appPropertiesOnly}
             >
                 <SampleTypePropertiesPanel
                     api={api}
@@ -708,7 +727,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                     namePreviews={namePreviews}
                     onNameFieldHover={this.onNameFieldHover}
                     nameExpressionGenIdProps={
-                        showGenIdBanner && options && hasGenIdInExpression
+                        isUpdate && options && hasGenIdInExpression
                             ? {
                                   containerPath: model.containerPath,
                                   dataTypeName: options.get('name'),

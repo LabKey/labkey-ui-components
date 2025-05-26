@@ -47,7 +47,7 @@ import {
     parseDate,
     parseDateFNSTimeFormat,
     parseFNSTimeFormat,
-    parseTime,
+    parseTime, parseTimeParts,
     splitDateTimeFormat,
 } from './Date';
 
@@ -701,13 +701,59 @@ describe('Date Utilities', () => {
         });
     });
 
+    describe('parseTimeParts', () => {
+        test('parseTimeParts', () => {
+            expect(parseTimeParts(undefined)).toBeNull();
+            expect(parseTimeParts(null)).toBeNull();
+            expect(parseTimeParts('')).toBeNull();
+            expect(parseTimeParts('25')).toBeNull();
+            expect(parseTimeParts('-2')).toBeNull();
+            expect(parseTimeParts('A')).toBeNull();
+            expect(parseTimeParts('2', 'A')).toBeNull();
+            expect(parseTimeParts('2', '30', 'A')).toBeNull();
+            expect(parseTimeParts('2', '30', '-30')).toBeNull();
+            expect(parseTimeParts('2', '30', '-30')).toBeNull();
+            expect(parseTimeParts('13', null, null, null, 'PM')).toBeNull();
+            expect(parseTimeParts('2', null, null, null, 'CM')).toBeNull();
+            expect(parseTimeParts('13', null, '02', null, 'AM')).toBeNull();
+            expect(parseTimeParts('3', null, null, 'ABC', 'PM')).toBeNull();
+            expect(parseTimeParts('13', '62')).toBeNull();
+            expect(parseTimeParts('13', '02', null, null, 'PM')).toBeNull();
+            expect(parseTimeParts('13', '15', '62')).toBeNull();
+            expect(parseTimeParts('08', '90', '55')).toBeNull();
+        });
+
+        test('valid', () => {
+            expect(parseTimeParts('01 AM').toISOString()).toContain('01:00:00.000Z');
+            expect(parseTimeParts('01', '02', null, null, 'AM').toISOString()).toContain('01:02:00.000Z');
+            expect(parseTimeParts('01', '02', null, null, 'PM').toISOString()).toContain('13:02:00.000Z');
+            expect(parseTimeParts('11', '02', null, null, 'AM').toISOString()).toContain('11:02:00.000Z');
+            expect(parseTimeParts('13').toISOString()).toContain('13:00:00.000Z');
+            expect(parseTimeParts('13', '02').toISOString()).toContain('13:02:00.000Z');
+            expect(parseTimeParts('11', '02', '59', null, 'AM').toISOString()).toContain('11:02:59.000Z');
+            expect(parseTimeParts('11', '02', '59', '123', 'AM').toISOString()).toContain('11:02:59.123Z');
+            expect(parseTimeParts('11', '02', '59', '12345', 'AM').toISOString()).toContain('11:02:59.123Z');
+            expect(parseTimeParts('21', '02', '30').toISOString()).toContain('21:02:30.000Z');
+            expect(parseTimeParts('21', '02', '30', '001').toISOString()).toContain('21:02:30.001Z');
+            expect(parseTimeParts('21', '02', '30', '123').toISOString()).toContain('21:02:30.123Z');
+            expect(parseTimeParts('21', '02', '30', '999999').toISOString()).toContain('21:02:30.999Z');
+        });
+    });
+
     describe('parseTime', () => {
         test('invalid times', () => {
             expect(parseTime(undefined)).toBeNull();
             expect(parseTime(null)).toBeNull();
             expect(parseTime('')).toBeNull();
+            expect(parseTime('AB')).toBeNull();
+            expect(parseTime('25')).toBeNull();
+            expect(parseTime('13 PM')).toBeNull();
+            expect(parseTime('13 PM')).toBeNull();
             expect(parseTime('13:02 AM')).toBeNull();
+            expect(parseTime('13:62')).toBeNull();
             expect(parseTime('13:02 PM')).toBeNull();
+            expect(parseTime('13:15:62')).toBeNull();
+            expect(parseTime('08:90:55')).toBeNull();
             expect(parseTime('09/11/1985')).toBeNull();
             // The following fails in parseTime() but succeeds in parseDate() since the
             // latter can successfully parse dates with a post-fixed time.
@@ -715,16 +761,21 @@ describe('Date Utilities', () => {
         });
 
         test('valid times', () => {
-            expect(parseTime('01:02 AM').toString()).toContain('01:02');
-            expect(parseTime('01:02 PM').toString()).toContain('13:02');
-            expect(parseTime('11:02 AM').toString()).toContain('11:02');
-            expect(parseTime('13:02').toString()).toContain('13:02');
-            expect(parseTime('11:02:59 AM').toString()).toContain('11:02:59');
-            expect(parseTime('21:02:30').toString()).toContain('21:02:30');
-            expect(parseTime('21:02:30.001').toString()).toContain('21:02:30');
-            expect(parseTime('21:02:30.123').toString()).toContain('21:02:30');
+            expect(parseTime('01 AM').toISOString()).toContain('01:00:00.000Z');
+            expect(parseTime('01:02 AM').toISOString()).toContain('01:02:00.000Z');
+            expect(parseTime('01:02 PM').toISOString()).toContain('13:02:00.000Z');
+            expect(parseTime('11:02 aM').toISOString()).toContain('11:02:00.000Z');
+            expect(parseTime('13').toISOString()).toContain('13:00:00.000Z');
+            expect(parseTime('13:02').toISOString()).toContain('13:02:00.000Z');
+            expect(parseTime('11:02:59 AM').toISOString()).toContain('11:02:59.000Z');
+            expect(parseTime('11:02:59.123 am').toISOString()).toContain('11:02:59.123Z');
+            expect(parseTime('11:02:59.12345 AM').toISOString()).toContain('11:02:59.123Z');
+            expect(parseTime('21:02:30').toISOString()).toContain('21:02:30.000Z');
+            expect(parseTime('21:02:30.001').toISOString()).toContain('21:02:30.001Z');
+            expect(parseTime('21:02:30.123').toISOString()).toContain('21:02:30.123Z');
+            expect(parseTime('21:02:30.999999').toISOString()).toContain('21:02:30.999Z');
             expect(parseTime('21:02:30.123').getTime() - parseTime('21:02:30.001').getTime()).toBe(122);
-            expect(parseTime('01:02:30.123 PM').getTime() - parseTime('11:02:30.001 AM').getTime()).toBe(7200122);
+            expect(parseTime('01:02:30.123 pm').getTime() - parseTime('11:02:30.001 AM').getTime()).toBe(7200122);
         });
     });
 

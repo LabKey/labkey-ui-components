@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.X
+*Released*: X May 2025
+- Issue 53071: Entering more than three digits for milliseconds in a time field causes the value to disappear
+  - Updated `parseTime` util to be more flexible
+
 ### version 6.43.2
 *Released*: 23 May 2025
 - Add detailed auditing of domain changes & comment ability

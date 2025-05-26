@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.43.3
+*Released*: 26 May 2025
+- Migrate `isSetEqual` to `@labkey/components`. Extend with additional support for deep comparison.
+
 ### version 6.43.2
 *Released*: 23 May 2025
 - Add detailed auditing of domain changes & comment ability

@@ -753,6 +753,43 @@ export function styleStringToObj(styleString: string): CSSProperties {
     }, {});
 }
 
+type Collection<C> = C[] | Set<C>;
+
+/**
+ * Replacer function for JSON.stringify() to support having object keys sorted in output. Supports deeply nested objects.
+ *
+ * https://stackoverflow.com/a/43636793
+ */
+const stringifyReplacer = (_, value): any => {
+    if (value instanceof Object && !(value instanceof Array) && Object.keys(value).length > 0) {
+        return Object.keys(value)
+            .sort()
+            .reduce((sorted, key) => {
+                sorted[key] = value[key];
+                return sorted;
+            }, {});
+    }
+
+    return value;
+};
+
+/**
+ * Serializes a Set/Array into a JSON string with sorted unique members.
+ * Useful for determining deep equivalency.
+ *
+ * https://stackoverflow.com/a/43858768
+ */
+const toJsonSet = (s): string => JSON.stringify([...new Set(s)].sort(), stringifyReplacer);
+
+/**
+ * Compare any combination of two Set(s)/Array(s) to determine if they're equivalent.
+ * NOTE: This does not do deeply nested equivalency in all cases. Specifically, when objects are
+ * compared the order of their properties is determined by the symbol/type of the property.
+ */
+export function isSetEqual<T = any>(a: Collection<T>, b: Collection<T>): boolean {
+    return toJsonSet(a) === toJsonSet(b);
+}
+
 /**
  * When this package is exported this environment variable reference is inline rewritten as
  * `const IS_NODE_TEST_ENV = "production" === 'test';`

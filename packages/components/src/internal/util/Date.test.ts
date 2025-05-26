@@ -47,7 +47,8 @@ import {
     parseDate,
     parseDateFNSTimeFormat,
     parseFNSTimeFormat,
-    parseTime, parseTimeParts,
+    parseTime,
+    parseTimeParts,
     splitDateTimeFormat,
 } from './Date';
 

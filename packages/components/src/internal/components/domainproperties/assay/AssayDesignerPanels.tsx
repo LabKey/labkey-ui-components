@@ -232,14 +232,14 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
         );
     }
 
-    onFinish = (): void => {
+    onFinish = (reasonForUpdate?: string): void => {
         const { setSubmitting } = this.props;
         const { protocolModel } = this.state;
         const appIsValidMsg = this.getAppIsValidMsg();
         const textChoiceValidMsg = this.getTextChoiceUpdatesValidMsg();
         const isValid = protocolModel.isValid() && textChoiceValidMsg === undefined && appIsValidMsg === undefined;
 
-        this.props.onFinish(isValid, this.saveDomain);
+        this.props.onFinish(isValid, () => this.saveDomain(reasonForUpdate));
 
         if (!isValid) {
             const exception =
@@ -258,13 +258,13 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
         }
     };
 
-    saveDomain = (): void => {
+    saveDomain = (auditUserComment?: string): void => {
         const { beforeFinish, setSubmitting } = this.props;
         const { protocolModel } = this.state;
 
         beforeFinish?.(protocolModel);
 
-        saveAssayDesign(protocolModel)
+        saveAssayDesign(protocolModel, auditUserComment)
             .then(response => {
                 this.setState(() => ({ protocolModel }));
                 setSubmitting(false, () => {
@@ -418,6 +418,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                 onCancel={onCancel}
                 onFinish={this.onFinish}
                 saveBtnText={saveBtnText}
+                showUserComment={!initModel.isNew() && appPropertiesOnly}
             >
                 <FilterCriteriaContext.Provider value={filterCriteriaState}>
                     <AssayPropertiesPanel

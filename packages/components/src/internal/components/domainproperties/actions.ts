@@ -530,6 +530,7 @@ export function _parseCalculatedColumn(
 export interface SaveDomainOptions {
     /** Boolean indicating if rowIndices should be added to the error message objects */
     addRowIndexes?: boolean;
+    auditUserComment?: string;
     /** Container path where requests are made. Defaults to domain.container for updates. */
     containerPath?: string;
     /** DomainDesign to save */
@@ -576,6 +577,7 @@ export function saveDomain(options: SaveDomainOptions): Promise<DomainDesign> {
                 domainDesign: DomainDesign.serialize(domain),
                 includeWarnings,
                 options: options.options,
+                auditUserComment: options.auditUserComment,
                 success: successHandler,
                 failure: failureHandler,
             });
@@ -902,7 +904,7 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             }) as DomainField;
         } else {
             if (PropDescType.isUser(value)) {
-                field = field.merge({lookupValidator: LOOKUP_VALIDATOR}) as DomainField;
+                field = field.merge({ lookupValidator: LOOKUP_VALIDATOR }) as DomainField;
             }
         }
     }

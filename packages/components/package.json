@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "6.43.3-fb-loc-history-53137.0",
+  "version": "6.43.3",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

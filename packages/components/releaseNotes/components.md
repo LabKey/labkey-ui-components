@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - FileInput: drop the "-fileUpload" suffix from inputId
   - EntityParentType model to set fieldKeyPath in generateColumn()
 
+### version 6.43.3
+*Released*: 26 May 2025
+- Migrate `isSetEqual` to `@labkey/components`. Extend with additional support for deep comparison.
+
 ### version 6.43.2
 *Released*: 23 May 2025
 - Add detailed auditing of domain changes & comment ability

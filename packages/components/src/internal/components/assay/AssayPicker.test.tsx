@@ -14,6 +14,21 @@ const load = (): Promise<any> => {
     return Promise.resolve(getAssayDesignSectionOptions);
 };
 
+const loadGeneralOnly = (): Promise<any> => {
+    return Promise.resolve({
+        "locations" : {
+            "ea7c355b-0b2e-1039-8359-225b19643884" : "Current Folder (BiologicsAssayTest Project)",
+            "ce3fb429-92f9-1038-8523-225b19648208" : "Shared Folder"
+        },
+        "providers" : [ {
+            "name" : "General",
+            "description" : "Imports data from simple Excel or TSV files.",
+            "fileTypes" : [ ".tsv", ".csv", ".xls", ".xlsx", ".txt", ".fna", ".fasta" ]
+        } ],
+        "defaultLocation" : "ea7c355b-0b2e-1039-8359-225b19643884"
+    });
+};
+
 describe('AssayPicker', () => {
     test('AssayPicker', async () => {
         renderWithAppContext(
@@ -42,6 +57,31 @@ describe('AssayPicker', () => {
                 defaultTab={AssayPickerTabs.SPECIALTY_ASSAY_TAB}
                 hasPremium={false}
                 loadOptions={load}
+                onChange={jest.fn()}
+                showContainerSelect={false}
+                showImport={false}
+            />
+        );
+
+        await waitFor(() => {
+            expect(document.querySelectorAll('.nav-tabs li')).toHaveLength(2);
+        });
+
+        // Verify only two tabs and specialty tab selected
+        expect(document.querySelectorAll('.nav-tabs li')).toHaveLength(2);
+        expect(document.querySelectorAll('.nav-tabs li')[0].textContent).toEqual('Standard Assay');
+        expect(document.querySelectorAll('.nav-tabs li')[1].textContent).toEqual('Specialty Assays');
+        expect(document.querySelectorAll('.nav-tabs li')[1].getAttribute('class')).toEqual('active');
+        expect(document.querySelectorAll('#assay-type-select-container')).toHaveLength(0);
+        expect(document.querySelectorAll('.alert-info')).toHaveLength(1);
+    });
+
+    test('AssayPicker General provider only', async () => {
+        renderWithAppContext(
+            <AssayPicker
+                defaultTab={AssayPickerTabs.SPECIALTY_ASSAY_TAB}
+                hasPremium={false}
+                loadOptions={loadGeneralOnly}
                 onChange={jest.fn()}
                 showContainerSelect={false}
                 showImport={false}

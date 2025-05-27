@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.??.?
-*Released*: ?? May 2025
+### version 6.44.0
+*Released*: 27 May 2025
 - QueryModel/QueryConfig change useSavedSettings from boolean to enum SavedSettings
   - Consumers can now opt into 'none', 'all', or 'noFilters'
 

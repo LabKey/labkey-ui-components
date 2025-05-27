@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 53164: AssayPicker.tsx gives JS error if no specialty assay providers available for server
+
 ### version 6.43.3
 *Released*: 26 May 2025
 - Migrate `isSetEqual` to `@labkey/components`. Extend with additional support for deep comparison.

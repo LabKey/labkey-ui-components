@@ -211,7 +211,7 @@ export function getCommonDataValues(data: Map<any, any>, fileFields?: string[]):
                 if (!fieldsInConflict.has(key)) {
                     // skip fields that are already in conflict
                     let value = data;
-                    let rawValue = data;
+                    const rawValue = data;
 
                     // Convert from immutable to regular JS
                     if (Iterable.isIterable(data)) {
@@ -262,8 +262,7 @@ export function getCommonDataValues(data: Map<any, any>, fileFields?: string[]):
 
     // return full file data map (url, displayValue, value) for file fields
     fileFields?.forEach(fileField => {
-        if (valueMap.has(fileField))
-            valueMap = valueMap.set(fileField, fileMap[fileField]);
+        if (valueMap.has(fileField)) valueMap = valueMap.set(fileField, fileMap[fileField]);
     });
 
     return valueMap.toObject();

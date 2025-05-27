@@ -42,11 +42,11 @@ export interface FileInputProps extends DisableableInputProps {
     labelClassName?: string;
     maxFileSize?: number;
     name?: string;
+    onChange?: (fileMap: Record<string, File>) => void;
     queryColumn?: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     showLabel?: boolean;
     toggleDisabledTooltip?: string;
-    onChange?: (fileMap: Record<string, File>) => void;
 }
 
 type FileInputImplProps = FileInputProps & FormsyInjectedProps<any>;
@@ -126,7 +126,9 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
         }
 
         if (maxFileSize && file.size > maxFileSize) {
-            this.setState({ error: `File size must not exceed ${Math.round(maxFileSize / 1024).toLocaleString()} KB.` });
+            this.setState({
+                error: `File size must not exceed ${Math.round(maxFileSize / 1024).toLocaleString()} KB.`,
+            });
             return;
         }
         if (emptyFileNotAllowed && file.size === 0) {

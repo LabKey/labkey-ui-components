@@ -256,8 +256,8 @@ describe('getCommonDataForSelection', () => {
                 Pdf: {
                     value: '/root/lk/Sample%20Management/blood.pdf',
                     displayValue: 'sampletype/blood.pdf',
-                    url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552'
-                }
+                    url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
+                },
             },
             '447': {
                 RowId: {
@@ -283,8 +283,8 @@ describe('getCommonDataForSelection', () => {
                 Pdf: {
                     value: '/root/lk/Sample%20Management/blood.pdf',
                     displayValue: 'sampletype/blood.pdf',
-                    url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552'
-                }
+                    url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
+                },
             },
             '446': {
                 RowId: {
@@ -310,8 +310,8 @@ describe('getCommonDataForSelection', () => {
                 Pdf: {
                     value: '/root/lk/Sample%20Management/blood.pdf',
                     displayValue: 'sampletype/blood.pdf',
-                    url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552'
-                }
+                    url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
+                },
             },
             '445': {
                 RowId: {
@@ -337,8 +337,8 @@ describe('getCommonDataForSelection', () => {
                 Pdf: {
                     value: '/root/lk/Sample%20Management/blood.pdf',
                     displayValue: 'sampletype/blood.pdf',
-                    url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552'
-                }
+                    url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
+                },
             },
             '367': {
                 RowId: {
@@ -364,14 +364,14 @@ describe('getCommonDataForSelection', () => {
                 Pdf: {
                     value: '/root/lk/Sample%20Management/blood.pdf',
                     displayValue: 'sampletype/blood.pdf',
-                    url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552'
-                }
+                    url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
+                },
             },
         });
         expect(getCommonDataValues(data)).toEqual({
             AndAgain: 'again',
             Data: 'data1',
-            Pdf: '/root/lk/Sample%20Management/blood.pdf'
+            Pdf: '/root/lk/Sample%20Management/blood.pdf',
         });
         expect(getCommonDataValues(data, ['Pdf'])).toEqual({
             AndAgain: 'again',
@@ -379,8 +379,8 @@ describe('getCommonDataForSelection', () => {
             Pdf: fromJS({
                 value: '/root/lk/Sample%20Management/blood.pdf',
                 displayValue: 'sampletype/blood.pdf',
-                url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552'
-            })
+                url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
+            }),
         });
     });
 });

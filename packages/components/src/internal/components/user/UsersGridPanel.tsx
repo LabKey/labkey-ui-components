@@ -10,7 +10,7 @@ import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
 
 import { getSelected } from '../../actions';
 
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { QueryModel, SavedSettings } from '../../../public/QueryModel/QueryModel';
 import { removeParameters } from '../../util/URL';
 
 import { UserLimitSettings } from '../permissions/actions';
@@ -134,7 +134,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                 bindURL: true,
                 urlPrefix: usersView, // each model needs to have its own urlPrefix for paging to work across models
                 includeTotalCount: true,
-                useSavedSettings: true,
+                useSavedSettings: SavedSettings.all,
             },
             true,
             true

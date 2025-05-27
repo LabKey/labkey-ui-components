@@ -281,13 +281,10 @@ export function withQueryModels<Props>(
             // e.g. actions.loadNextPage(model.id) would not work.
             let model = new QueryModel({ id, ...queryConfigs[id] });
             const hasQueryParamSettings = locationHasQueryParamSettings(model.urlPrefix, searchParams);
-            console.log('initModels', id, model.bindURL, model.useSavedSettings);
 
             if (model.bindURL && hasQueryParamSettings) {
-                console.log('using query param settings');
                 model = model.mutate(model.attributesForURLQueryParams(searchParams, true));
             } else if (model.useSavedSettings !== SavedSettings.none) {
-                console.log('using saved settings', model.id);
                 if (!model.containerPath) {
                     console.error('A model.containerPath is required when useSavedSettings is true: ' + model.id);
                 } else {

@@ -92,6 +92,10 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
             error: '',
             isDisabled: props.initiallyDisabled,
         };
+
+        if (Map.isMap(props.initialValue)) {
+            props.setValue?.(props.initialValue.get('value'));
+        }
     }
 
     getInputName(): string {

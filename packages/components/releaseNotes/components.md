@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.X
+*Released*: X May 2025
+- Issue 52959: LKSM/LKB: Existing file not shown in Bulk Edit
+  - Update `getCommonDataValues` to retain full data map for file fields
+  - Update `FileInput` to set init value so diff can be generated correctly
+
 ### version 6.43.3
 *Released*: 26 May 2025
 - Migrate `isSetEqual` to `@labkey/components`. Extend with additional support for deep comparison.

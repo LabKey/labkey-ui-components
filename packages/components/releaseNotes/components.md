@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 53164: AssayPicker.tsx gives JS error if no specialty assay providers available for server
 
+### version 6.44.1
+*Released*: 28 May 2025
+- Introduce `getTransferItemDirectoryEntry` to centralize handling/wrapping of calling `webkitGetAsEntry()` on a `DataTransferItemList` item.
+- Address Issue 53149 by updating endpoint wrapper to be tolerant of invalid payload upon success.
+
 ### version 6.44.0
 *Released*: 27 May 2025
 - QueryModel/QueryConfig change useSavedSettings from boolean to enum SavedSettings

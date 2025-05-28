@@ -1,14 +1,15 @@
 import React, { act } from 'react';
 import { render } from '@testing-library/react';
-import { fromJS, } from 'immutable';
+import { fromJS } from 'immutable';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { BulkUpdateForm } from './BulkUpdateForm';
 import { createMockSelectRowsDeprecatedResponse } from '../../../test/MockUtils';
 import { selectRowsDeprecated } from '../../query/api';
+
+import { BulkUpdateForm } from './BulkUpdateForm';
 
 const COLUMN_CAN_UPDATE = new QueryColumn({
     fieldKey: 'update',
@@ -58,28 +59,28 @@ const DEFAULT_PROPS = {
 };
 
 const commonResults = {
-    "samples/testst": {
-        "127796": {
-            "update": {
-                "value": "abc"
+    'samples/testst': {
+        '127796': {
+            update: {
+                value: 'abc',
             },
-            "fileInput": {
-                "value": "/trunk/build/deploy/files/LKSM/@files/sampletype/test.txt",
-                "url": "/LKSM-dan/core-downloadFileLink.view?propertyId=82852",
-                "displayValue": "sampletype/test.txt"
-            }
+            fileInput: {
+                value: '/trunk/build/deploy/files/LKSM/@files/sampletype/test.txt',
+                url: '/LKSM-dan/core-downloadFileLink.view?propertyId=82852',
+                displayValue: 'sampletype/test.txt',
+            },
         },
-        "127797": {
-            "update": {
-                "value": "abc"
+        '127797': {
+            update: {
+                value: 'abc',
             },
-            "fileInput": {
-                "value": "/trunk/build/deploy/files/LKSM/@files/sampletype/test.txt",
-                "url": "/LKSM-dan/core-downloadFileLink.view?propertyId=82852",
-                "displayValue": "sampletype/test.txt"
-            }
-        }
-    }
+            fileInput: {
+                value: '/trunk/build/deploy/files/LKSM/@files/sampletype/test.txt',
+                url: '/LKSM-dan/core-downloadFileLink.view?propertyId=82852',
+                displayValue: 'sampletype/test.txt',
+            },
+        },
+    },
 };
 
 const commonResp = {
@@ -97,11 +98,9 @@ jest.mock('../../query/api', () => ({
     selectRowsDeprecated: () => createMockSelectRowsDeprecatedResponse(commonResp),
 }));
 
-
 describe('BulkUpdateForm', () => {
     // TODO missing test cases for main functionality of component
     describe('columnFilter', () => {
-
         test('filters without uniqueKeyField', async () => {
             let container;
             await act(async () => {
@@ -109,11 +108,11 @@ describe('BulkUpdateForm', () => {
             });
 
             expect(document.querySelectorAll('.query-info-form')).toHaveLength(1);
-            expect(document.querySelectorAll('.toggle-group-icon')).toHaveLength(2)
+            expect(document.querySelectorAll('.toggle-group-icon')).toHaveLength(2);
             expect(document.querySelectorAll('input#update')).toHaveLength(1);
             expect(document.querySelector('input#update').getAttribute('value')).toBe('abc');
             expect(document.querySelectorAll('.attachment-card__name')).toHaveLength(1);
-            expect(document.querySelector('.attachment-card__name').textContent).toBe('test.txt')
+            expect(document.querySelector('.attachment-card__name').textContent).toBe('test.txt');
         });
 
         test('filters with uniqueFieldKey', async () => {
@@ -123,10 +122,9 @@ describe('BulkUpdateForm', () => {
             });
 
             expect(document.querySelectorAll('.query-info-form')).toHaveLength(1);
-            expect(document.querySelectorAll('.toggle-group-icon')).toHaveLength(1)
+            expect(document.querySelectorAll('.toggle-group-icon')).toHaveLength(1);
             expect(document.querySelectorAll('input#update')).toHaveLength(0);
             expect(document.querySelectorAll('.attachment-card__name')).toHaveLength(1);
         });
-
     });
 });

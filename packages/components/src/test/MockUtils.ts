@@ -8,13 +8,15 @@ import { QueryInfo } from '../public/QueryInfo';
  */
 
 export function createMockSelectRowsDeprecatedResponse(result?: Record<string, any>) {
-    return Promise.resolve(result ?? {
-        key: 'test',
-        models: { test: {} },
-        orderedModels: { test: List() },
-        queries: { test: QueryInfo.fromJsonForTests({}) },
-        rowCount: 0,
-    });
+    return Promise.resolve(
+        result ?? {
+            key: 'test',
+            models: { test: {} },
+            orderedModels: { test: List() },
+            queries: { test: QueryInfo.fromJsonForTests({}) },
+            rowCount: 0,
+        }
+    );
 }
 
 export function createMockSelectRowsResponse() {

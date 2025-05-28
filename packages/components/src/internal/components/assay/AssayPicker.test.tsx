@@ -16,16 +16,18 @@ const load = (): Promise<any> => {
 
 const loadGeneralOnly = (): Promise<any> => {
     return Promise.resolve({
-        "locations" : {
-            "ea7c355b-0b2e-1039-8359-225b19643884" : "Current Folder (BiologicsAssayTest Project)",
-            "ce3fb429-92f9-1038-8523-225b19648208" : "Shared Folder"
+        locations: {
+            'ea7c355b-0b2e-1039-8359-225b19643884': 'Current Folder (BiologicsAssayTest Project)',
+            'ce3fb429-92f9-1038-8523-225b19648208': 'Shared Folder',
         },
-        "providers" : [ {
-            "name" : "General",
-            "description" : "Imports data from simple Excel or TSV files.",
-            "fileTypes" : [ ".tsv", ".csv", ".xls", ".xlsx", ".txt", ".fna", ".fasta" ]
-        } ],
-        "defaultLocation" : "ea7c355b-0b2e-1039-8359-225b19643884"
+        providers: [
+            {
+                name: 'General',
+                description: 'Imports data from simple Excel or TSV files.',
+                fileTypes: ['.tsv', '.csv', '.xls', '.xlsx', '.txt', '.fna', '.fasta'],
+            },
+        ],
+        defaultLocation: 'ea7c355b-0b2e-1039-8359-225b19643884',
     });
 };
 

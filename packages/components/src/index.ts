@@ -66,6 +66,7 @@ import {
     isIntegerInRange,
     isNonNegativeFloat,
     isNonNegativeInteger,
+    isSetEqual,
     parseCsvString,
     parseScientificInt,
     quoteValueWithDelimiters,
@@ -640,7 +641,7 @@ import {
     wrapDraggable,
 } from './internal/test/testHelpers';
 import { renderWithAppContext } from './internal/test/reactTestLibraryHelpers';
-import { flattenValuesFromRow, QueryModel } from './public/QueryModel/QueryModel';
+import { flattenValuesFromRow, QueryModel, SavedSettings } from './public/QueryModel/QueryModel';
 import { getExpandQueryInfo, includedColumnsForCustomizationFilter } from './public/QueryModel/CustomizeGridViewModal';
 import { ChangeType, withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
@@ -1668,6 +1669,7 @@ export {
     isNonNegativeFloat,
     isNonNegativeInteger,
     isLoading,
+    isSetEqual,
     naturalSort,
     naturalSortByProperty,
     generateId,
@@ -1776,6 +1778,7 @@ export {
     // QueryModel
     GRID_CHECKBOX_OPTIONS,
     QueryModel,
+    SavedSettings,
     ChangeType,
     withQueryModels,
     GridPanel,

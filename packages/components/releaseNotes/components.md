@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.44.2
+*Released*: 28 May 2025
+- Issue 53164: AssayPicker.tsx gives JS error if no specialty assay providers available for server
+
 ### version 6.44.1
 *Released*: 28 May 2025
 - Introduce `getTransferItemDirectoryEntry` to centralize handling/wrapping of calling `webkitGetAsEntry()` on a `DataTransferItemList` item.

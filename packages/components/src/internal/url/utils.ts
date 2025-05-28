@@ -7,5 +7,7 @@ export function encodeListResolverPath(containerPath: string): string {
 }
 
 export function encodeFormDataQuote(key: string): string {
+    if (!key)
+        return key;
     return key?.replaceAll('%22', '%2522').replaceAll('"', '%22');
 }

@@ -267,6 +267,7 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
     Object.keys(exportParams).forEach(key => {
         const value = exportParams[key];
 
+        // Issue 52925: App export to csv/tsv ignores filter with column containing double quote
         if (value instanceof Array) {
             value.forEach(arrayValue => form.append(encodeFormDataQuote(key), arrayValue));
         } else {

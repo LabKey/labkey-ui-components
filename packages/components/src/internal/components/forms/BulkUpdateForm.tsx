@@ -207,7 +207,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
             includeCommentField,
             onSubmitForEdit,
         } = this.props;
-        const fileFields = queryInfo.columns.valueArray.filter(col => col.inputType === 'file').map(col => col.name);
+        const fileFields = queryInfo.columns.valueArray.filter(col => col.isFileInput).map(col => col.name);
         const fieldValues =
             isLoadingDataForSelection || !dataForSelection
                 ? undefined

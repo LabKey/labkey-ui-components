@@ -29,6 +29,8 @@ import { FILELINK_RANGE_URI } from '../../domainproperties/constants';
 
 import { fileMatchesAcceptedFormat } from '../../files/actions';
 
+import { getTransferItemDirectoryEntry } from '../../files/FileAttachmentContainer';
+
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
 export interface FileInputProps extends DisableableInputProps {
@@ -112,7 +114,7 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
             return;
         }
 
-        if (transferItems && transferItems[0].webkitGetAsEntry().isDirectory) {
+        if (getTransferItemDirectoryEntry(transferItems, 0)) {
             this.setState({ error: 'Folders are not supported, only one file allowed' });
             return;
         }

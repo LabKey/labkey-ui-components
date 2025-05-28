@@ -279,30 +279,32 @@ export class ServerLineageAPIWrapper implements LineageAPIWrapper {
         return new Promise((resolve, reject) => {
             const seed = options.lsid;
 
+            function failure(error?: { exception: string; exceptionClass?: string }): void {
+                let message = `Failed to fetch lineage for seed "${seed}".`;
+
+                if (error?.exception) {
+                    message = error.exception;
+
+                    // When a server exception occurs
+                    if (error.exceptionClass) {
+                        message = `${error.exceptionClass}: ` + error.exception;
+                    }
+                }
+
+                reject({ message, seed });
+            }
+
             Experiment.lineage({
                 ...options,
                 success: lineage => {
-                    resolve(LineageResult.create(lineage));
-                },
-                failure: error => {
-                    let message = `Failed to fetch lineage for seed "${seed}".`;
-
-                    if (error) {
-                        if (error.exception) {
-                            message = error.exception;
-
-                            // When a server exception occurs
-                            if (error.exceptionClass) {
-                                message = `${error.exceptionClass}: ` + error.exception;
-                            }
-                        }
+                    // Issue 53149: Lineage loads undefined object
+                    if (lineage) {
+                        resolve(LineageResult.create(lineage));
+                    } else {
+                        failure();
                     }
-
-                    reject({
-                        seed,
-                        message,
-                    });
                 },
+                failure,
             });
         });
     };

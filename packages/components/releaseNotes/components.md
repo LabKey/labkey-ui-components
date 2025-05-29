@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 52595: Storage editor check in fails if user doesn't have perm to update sample amount/units
+  - export updateSampleStorageData() and SampleStorageData
+
 ### version 6.44.3
 *Released*: 28 May 2025
 - Issue 52925: App export to csv/tsv ignores filter with column containing double quote

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.??.?
+*Released*: ?? June 2025
+- QueryModel: add isQueryInfoLoaded
+- withQueryModels: be more defensive when loading rows and total count
+
 ### version 6.44.3
 *Released*: 28 May 2025
 - Issue 52925: App export to csv/tsv ignores filter with column containing double quote

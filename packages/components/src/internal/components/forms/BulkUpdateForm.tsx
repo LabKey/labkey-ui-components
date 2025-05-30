@@ -11,6 +11,8 @@ import { getSelectedDataDeprecated } from '../../actions';
 
 import { capitalizeFirstChar, caseInsensitive, getCommonDataValues, getUpdatedData } from '../../util/utils';
 
+import { ComponentsAPIWrapper } from '../../APIWrapper';
+
 import { QueryInfoForm } from './QueryInfoForm';
 
 type UpdateRows = (schemaQuery: SchemaQuery, rows: any[], comment?: string) => Promise<any>;
@@ -20,7 +22,8 @@ function isUpdateModel(fn: UpdateRows | UpdateModel): fn is UpdateModel {
     return fn.length === 1; // UpdateModel has only one parameter
 }
 
-interface Props {
+export interface BulkUpdateFormProps {
+    api?: ComponentsAPIWrapper;
     containerFilter?: Query.ContainerFilter;
     disabled?: boolean;
     header?: ReactNode;
@@ -59,7 +62,7 @@ interface State {
     originalDataForSelection: Map<string, any>;
 }
 
-export class BulkUpdateForm extends PureComponent<Props, State> {
+export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
     static defaultProps = {
         pluralNoun: 'rows',
         singularNoun: 'row',
@@ -196,6 +199,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     render() {
         const { formData, isLoadingDataForSelection, dataForSelection, containerPaths } = this.state;
         const {
+            api,
             containerFilter,
             onCancel,
             onComplete,
@@ -224,6 +228,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         return (
             <QueryInfoForm
                 allowFieldDisable
+                api={api}
                 asModal
                 checkRequiredFields={false}
                 columnFilter={this.columnFilter}

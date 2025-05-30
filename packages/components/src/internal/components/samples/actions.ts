@@ -609,7 +609,8 @@ export interface SampleStorageData {
 export function updateSampleStorageData(
     sampleStorageData: SampleStorageData[],
     containerPath?: string,
-    userComment?: string
+    userComment?: string,
+    isDiscard = false
 ): Promise<any> {
     if (sampleStorageData.length === 0) {
         return Promise.resolve();
@@ -621,6 +622,7 @@ export function updateSampleStorageData(
             jsonData: {
                 sampleRows: sampleStorageData,
                 [STORED_AMOUNT_FIELDS.AUDIT_COMMENT]: userComment,
+                isDiscard,
             },
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);

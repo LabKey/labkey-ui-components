@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 52595: Storage editor check in fails if user doesn't have perm to update sample amount/units
   - export updateSampleStorageData() and SampleStorageData
+  - add isDiscard param to updateSampleStorageData()
 
 ### version 6.44.3
 *Released*: 28 May 2025

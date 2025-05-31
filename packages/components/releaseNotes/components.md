@@ -6,6 +6,30 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 53071: Entering more than three digits for milliseconds in a time field causes the value to disappear
   - Updated `parseTime` util to be more flexible
 
+### version 6.44.3
+*Released*: 28 May 2025
+- Issue 52925: App export to csv/tsv ignores filter with column containing double quote
+  - Add `encodeFormDataQuote` util to encode `"` and its encoded form `%22`
+  - Encode form params for exportRows actions
+
+### version 6.44.2
+*Released*: 28 May 2025
+- Issue 53164: AssayPicker.tsx gives JS error if no specialty assay providers available for server
+
+### version 6.44.1
+*Released*: 28 May 2025
+- Introduce `getTransferItemDirectoryEntry` to centralize handling/wrapping of calling `webkitGetAsEntry()` on a `DataTransferItemList` item.
+- Address Issue 53149 by updating endpoint wrapper to be tolerant of invalid payload upon success.
+
+### version 6.44.0
+*Released*: 27 May 2025
+- QueryModel/QueryConfig change useSavedSettings from boolean to enum SavedSettings
+  - Consumers can now opt into 'none', 'all', or 'noFilters'
+
+### version 6.43.3
+*Released*: 26 May 2025
+- Migrate `isSetEqual` to `@labkey/components`. Extend with additional support for deep comparison.
+
 ### version 6.43.2
 *Released*: 23 May 2025
 - Add detailed auditing of domain changes & comment ability

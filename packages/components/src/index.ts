@@ -19,6 +19,7 @@ import { applyURL, AppURL, buildURL, spliceURL } from './internal/url/AppURL';
 import { AppLink } from './internal/url/AppLink';
 import { useAppNavigate } from './internal/url/useAppNavigate';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
+import { encodeFormDataQuote } from './internal/url/utils';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
 import { GridColumn } from './internal/components/base/models/GridColumn';
@@ -65,6 +66,7 @@ import {
     isIntegerInRange,
     isNonNegativeFloat,
     isNonNegativeInteger,
+    isSetEqual,
     parseCsvString,
     parseScientificInt,
     quoteValueWithDelimiters,
@@ -639,7 +641,7 @@ import {
     wrapDraggable,
 } from './internal/test/testHelpers';
 import { renderWithAppContext } from './internal/test/reactTestLibraryHelpers';
-import { flattenValuesFromRow, QueryModel } from './public/QueryModel/QueryModel';
+import { flattenValuesFromRow, QueryModel, SavedSettings } from './public/QueryModel/QueryModel';
 import { getExpandQueryInfo, includedColumnsForCustomizationFilter } from './public/QueryModel/CustomizeGridViewModal';
 import { ChangeType, withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
@@ -1219,6 +1221,7 @@ export {
     replaceParameters,
     hasParameter,
     toggleParameter,
+    encodeFormDataQuote,
     applyURL,
     buildURL,
     imageURL,
@@ -1666,6 +1669,7 @@ export {
     isNonNegativeFloat,
     isNonNegativeInteger,
     isLoading,
+    isSetEqual,
     naturalSort,
     naturalSortByProperty,
     generateId,
@@ -1774,6 +1778,7 @@ export {
     // QueryModel
     GRID_CHECKBOX_OPTIONS,
     QueryModel,
+    SavedSettings,
     ChangeType,
     withQueryModels,
     GridPanel,

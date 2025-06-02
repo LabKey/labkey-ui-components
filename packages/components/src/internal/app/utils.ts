@@ -239,6 +239,15 @@ export function getSubmitButtonClass(): string {
 }
 
 export function getPrimaryAppProperties(moduleContext?: ModuleContext): AppProperties {
+    // TODO Is this if statement necessary?
+    const currentAppProperties = getCurrentAppProperties();
+    if (
+        currentAppProperties?.productId === BIOLOGICS_APP_PROPERTIES.productId ||
+        currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId ||
+        currentAppProperties?.productId === LIMS_APP_PROPERTIES.productId
+    ) {
+        return currentAppProperties;
+    }
     return APPLICATION_PROPERTIES[getPrimaryAppProductId(moduleContext)];
 }
 

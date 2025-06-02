@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.??.??
-*Released*: ?? May 2025
+### version 6.45.0
+*Released*: 2 June 2025
 - Export Loader type
 - DataTypeSelector: Fix react key error
 

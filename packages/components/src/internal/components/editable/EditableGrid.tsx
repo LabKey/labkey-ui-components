@@ -73,6 +73,7 @@ import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { CellMessage, EditableColumnMetadata, EditorModel, EditorModelProps, ValueDescriptor } from './models';
 import { computeRangeChange, genCellKey, getValidatedEditableGridValue, parseCellKey } from './utils';
 import { RemoveColumnMenuItem } from './RemoveColumnMenuItem';
+import { formatDateTimeDisplayValueForUpdate } from '../../util/Date';
 
 function anyCell(values: List<ValueDescriptor>): boolean {
     return true;
@@ -168,7 +169,8 @@ function inputCellFactory(
     containerFilter: Query.ContainerFilter,
     forUpdate: boolean,
     initialSelection: string[],
-    containerPath?: string
+    containerPath?: string,
+    getDisplayValue?: (vd: ValueDescriptor) => string,
 ): GridColumnCellRenderer {
     // Note: We ignore the incoming value (_) and rowNumber (__) because they come from the underlying QueryModel that
     // backs the Grid component, but we need to reference the data that is in the EditorModel.
@@ -258,6 +260,7 @@ function inputCellFactory(
                     values={editorModel.getValue(fieldKey, rowIdx)}
                     linkedValues={linkedValues}
                     containerPath={containerPath}
+                    getDisplayValue={getDisplayValue}
                 />
             </td>
         );
@@ -872,6 +875,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 }
             }
             const hideTooltip = metadata?.hideTitleTooltip ?? qCol.hasHelpTipData;
+            let getDisplayValue = null;
+            if (qCol.isTimeColumn || qCol.jsonType === 'date') {
+                getDisplayValue = (vd) => {
+                    return formatDateTimeDisplayValueForUpdate(vd, qCol);
+                }
+            }
             gridColumns = gridColumns.push(
                 new GridColumn({
                     align: qCol.align,
@@ -885,7 +894,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         metadata?.containerFilter ?? containerFilter,
                         forUpdate,
                         this.state.initialSelection,
-                        containerPath
+                        containerPath,
+                        getDisplayValue
                     ),
                     index: qCol.fieldKey,
                     fixedWidth,

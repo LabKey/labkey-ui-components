@@ -185,6 +185,7 @@ export interface CellProps extends SharedProps {
     row?: any;
     rowIdx: number;
     values?: List<ValueDescriptor>;
+    getDisplayValue?: (vd: ValueDescriptor) => string;
 }
 
 interface State {
@@ -541,6 +542,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
             selection,
             values,
             containerPath,
+            getDisplayValue
         } = this.props;
 
         const alignRight = col.align === 'right';
@@ -549,7 +551,8 @@ export class Cell extends React.PureComponent<CellProps, State> {
         if (!focused) {
             const displayValue = values
                 .filter(vd => vd && vd.display !== undefined)
-                .reduce((v, vd, i) => v + (i > 0 ? ', ' : '') + vd.display, '');
+                .reduce((v, vd, i) =>
+                    v + (i > 0 ? ', ' : '') + (getDisplayValue?.(vd) ?? vd.display), '');
 
             return (
                 <>

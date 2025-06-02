@@ -359,40 +359,6 @@ describe('Date Utilities', () => {
         });
     });
 
-    describe('getFormattedStringFromDate', () => {
-        const datePOSIX = 1596750283812; // Aug 6, 2020 21:44 UTC
-        const testDate = new Date(datePOSIX);
-        const invalidDate = new Date(NaN);
-
-        const dateOnlyColumn = new QueryColumn({ rangeURI: DATE_TYPE.rangeURI });
-        const timeColumn = new QueryColumn({ rangeURI: TIME_TYPE.rangeURI });
-
-        test('preconditions', () => {
-            expect(dateOnlyColumn.isDateOnlyColumn).toBe(true);
-            expect(timeColumn.isTimeColumn).toBe(true);
-        });
-
-        test('invalid date', () => {
-            expect(getFormattedStringFromDate(undefined, timeColumn)).toBeUndefined();
-            expect(getFormattedStringFromDate(null, timeColumn)).toBeUndefined();
-            expect(getFormattedStringFromDate(invalidDate, timeColumn)).toBeUndefined();
-        });
-
-        test('uses column format', () => {
-            const columnFormat = 'yyyy-dd-MM-dd-yyyy';
-            const dateOnlyColumnWithFormat = dateOnlyColumn.mutate({ format: columnFormat });
-            const timeColumnWithFormat = timeColumn.mutate({ format: columnFormat });
-
-            expect(getFormattedStringFromDate(testDate, dateOnlyColumnWithFormat)).toEqual('2020-06-08-06-2020');
-            expect(getFormattedStringFromDate(testDate, timeColumnWithFormat)).toEqual('2020-06-08-06-2020');
-        });
-
-        test('resolved format matches column configuration', () => {
-            expect(getFormattedStringFromDate(testDate, timeColumn)).toEqual('21:44');
-            expect(getFormattedStringFromDate(testDate, dateOnlyColumn)).toEqual('2020-08-06');
-        });
-    });
-
     describe('getJsonDateTimeFormatString', () => {
         test('without date', () => {
             expect(getJsonDateTimeFormatString(undefined)).toBeUndefined();

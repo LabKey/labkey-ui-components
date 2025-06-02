@@ -21,6 +21,7 @@ import { QueryColumn } from '../../public/QueryColumn';
 
 import { TIME_RANGE_URI } from '../components/domainproperties/constants';
 import { SelectInputOption } from '../components/forms/input/SelectInput';
+import { ValueDescriptor } from '../components/editable/models';
 
 // These constants align with the formats declared in DateUtil.java
 export const ISO_DATE_FORMAT_STRING = 'yyyy-MM-dd';
@@ -99,48 +100,95 @@ export function isDateTimeCol(col: QueryColumn): boolean {
     return false;
 }
 
+function _toAmPm(rawTimeFormat: string, toAMPM: boolean) {
+    if (!toAMPM)
+        return rawTimeFormat;
+
+    if (rawTimeFormat.indexOf(' a') > -1)
+        return rawTimeFormat;
+
+    return rawTimeFormat.replace('HH', 'hh') + ' a';
+
+}
+
+export function getPickerTimeFormatWithPrecision(timeFormat: string, showMinute: boolean, showSeconds: boolean, showMilliSeconds: boolean) {
+    const useAmPm = timeFormat.indexOf(' a') > -1;
+    if (timeFormat.indexOf('.SSS') > -1)
+        return timeFormat;
+
+    if (showMilliSeconds)
+        return _toAmPm(ISO_LONG_TIME_FORMAT_STRING, useAmPm);
+
+    if (timeFormat.indexOf(':ss') > -1)
+        return timeFormat;
+
+    if (showSeconds)
+        return _toAmPm(ISO_TIME_FORMAT_STRING, useAmPm);
+
+    if (timeFormat.indexOf(':mm') > -1)
+        return timeFormat;
+
+    if (showMinute)
+        return _toAmPm(ISO_SHORT_TIME_FORMAT_STRING, useAmPm);
+
+    return timeFormat;
+}
+
+// convert rawDateTimeFormat to adjust precision
+// for example:
+// 'yyyy-MM-dd HH:mm' -> 'yyyy-MM-dd HH:mm:ss' if showSeconds is true and showMilliSeconds is false
+// 'yyyy-MM-dd hh:mm a' -> 'yyyy-MM-dd hh:mm:ss.SSS a' if showSeconds is true and showMilliSeconds is true
+export function getPickerFormatWithPrecision(rawDateTimeFormat: string, showMinute: boolean, showSeconds: boolean, showMilliSeconds: boolean) {
+    const parts = splitDateTimeFormat(rawDateTimeFormat);
+    if (parts.length === 1)
+        return parts[0];
+    return (parts[0] + ' ' + getPickerTimeFormatWithPrecision(parts[1], showMinute, showSeconds, showMilliSeconds)).trim();
+}
+
 export function getPickerDateAndTimeFormat(
     column: QueryColumn,
-    hideTime?: boolean
+    hideTime?: boolean,
+    initDate?: Date
 ): { dateFormat: string; timeFormat: string } {
-    const dateFormat = getColDateFormat(column, hideTime ? DateFormatType.Date : undefined, column.isDateOnlyColumn);
+    const hasMsPrecision = initDate?.getMilliseconds() > 0;
+    const hasSecondsPrecision = hasMsPrecision || initDate?.getSeconds() > 0;
+    const hasMinutePrecision =  hasSecondsPrecision || initDate?.getMinutes() > 0 || initDate?.getHours() > 0;
 
+    const dateFormat_ = getColDateFormat(column, hideTime ? DateFormatType.Date : undefined, column.isDateOnlyColumn);
+    let dateFormat = column.isTimeColumn || column.isDateOnlyColumn ? dateFormat_ : getPickerFormatWithPrecision(dateFormat_, hasMinutePrecision, hasSecondsPrecision, hasMsPrecision);
     let timeFormat: string;
     if (!hideTime) {
         if (column.isTimeColumn) {
             timeFormat = parseFNSTimeFormat(getColDateFormat(column, column?.format ?? DateFormatType.Time));
+            timeFormat = getPickerTimeFormatWithPrecision(timeFormat, hasMinutePrecision, hasSecondsPrecision, hasMsPrecision);
+            dateFormat = timeFormat;
         } else {
             timeFormat = parseDateFNSTimeFormat(dateFormat);
         }
     }
 
-    return { dateFormat, timeFormat };
+    return {dateFormat, timeFormat };
 }
 
-export function getFormattedStringFromDate(date: Date, column: QueryColumn, hideTime?: boolean): string {
-    if (!isValid(date)) return undefined;
+export function getDateFromISO(value: string, queryColumn: QueryColumn, allowRelativeInput?: boolean, minDate?: Date): Date {
+    if (!value || (allowRelativeInput && isRelativeDateFilterValue(value))) return undefined;
 
-    let dateFormat = column.format;
-    if (!dateFormat) {
-        if (column.isTimeColumn) {
-            dateFormat = DateFormatType.Time;
-        } else if (column.isDateOnlyColumn || hideTime) {
-            dateFormat = DateFormatType.Date;
-        } else {
-            dateFormat = DateFormatType.DateTime;
-        }
+    if (queryColumn.isTimeColumn) {
+        return parseTime(value);
     }
 
-    const formatStr = getColDateFormat(column, dateFormat);
-    if (!formatStr) {
-        return getJsonFormatString(date, dateFormat);
-    }
+    return parseDate(value, undefined, minDate, false, queryColumn.isDateOnlyColumn);
+}
 
-    try {
-        return format(date, toDateFNSFormatString(formatStr));
-    } catch (e) {
-        return getJsonFormatString(date, dateFormat);
-    }
+export function formatDateTimeDisplayValueForUpdate(vd: ValueDescriptor, queryColumn: QueryColumn): string {
+    const isoValue = vd?.raw;
+    if (!isoValue)
+        return null;
+    const date = getDateFromISO(isoValue, queryColumn);
+    const {dateFormat, timeFormat} = getPickerDateAndTimeFormat(queryColumn, false, date);
+    if (queryColumn.isTimeColumn)
+        return formatTime(isoValue, timeFormat);
+    return formatDate(date, null, dateFormat);
 }
 
 export function getColDateFormat(column: QueryColumn, dateFormat?: string, dateOnly?: boolean): string {
@@ -417,8 +465,17 @@ export function parseTimeParts(h: string, m?: string, s?: string, ms?: string, p
  * NOTE: This is only for time strings. This does not resolve time from date-like strings
  * with a time pre- or post-fixed to a date. You're better off using parseDate() in that case.
  */
-export function parseTime(time: string): Date {
-    if (!time || typeof time !== 'string') return null;
+export function parseTime(time: string | Date): Date {
+    if (!time) return null;
+
+    if (time instanceof Date) {
+        if (isValid(time))
+            return time;
+        return null;
+    }
+    else if (typeof time !== 'string')
+        return null;
+
     // Regular expressions for different time formats
     const timeFormats = [
         {
@@ -662,8 +719,8 @@ export function formatDateTime(date: Date | string | number, timezone?: string, 
     return _formatDate(date, dateFormat ?? getDateFNSDateTimeFormat(), timezone);
 }
 
-export function formatTime(timeStr: string, timeFormat?: string): string {
-    const timeObj = parseTime(timeStr);
+export function formatTime(timeValue: Date | string, timeFormat?: string): string {
+    const timeObj = parseTime(timeValue);
     if (!timeObj) return undefined;
     return format(timeObj, timeFormat ?? getDateFNSTimeFormat());
 }

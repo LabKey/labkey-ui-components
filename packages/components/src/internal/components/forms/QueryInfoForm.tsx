@@ -52,16 +52,8 @@ export const getUpdatedFields = (queryInfo: QueryInfo, data: any, submitForEdit?
     for (const key in data) {
         if (data.hasOwnProperty(key)) {
             if (fieldsToUpdate.has(key.toLowerCase()) || additionalFields.indexOf(key) !== -1) {
-                // Date values are Dates not strings. We convert them to strings in the desired format here.
-                // They are converted back to Dates when saving to the server.
                 const col = queryInfo?.getColumn(key);
-                if (submitForEdit && col?.jsonType === 'date') {
-                    if (col.isDateOnlyColumn)
-                        filteredData = filteredData.set(key, formatDate(data[key], null, col.format));
-                    else filteredData = filteredData.set(key, formatDateTime(data[key], null, col.format));
-                } else if (submitForEdit && col?.jsonType === 'time') {
-                    filteredData = filteredData.set(key, formatTime(data[key], col.format));
-                } else if (col?.jsonType === 'string' && typeof data[key] === 'string') {
+                if (col?.jsonType === 'string' && typeof data[key] === 'string') {
                     filteredData = filteredData.set(key, data[key]?.trim());
                 } else {
                     filteredData = filteredData.set(key, data[key]);

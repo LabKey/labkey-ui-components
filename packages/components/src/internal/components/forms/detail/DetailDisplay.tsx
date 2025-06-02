@@ -408,7 +408,6 @@ export function resolveDetailEditRenderer(
                             showLabel={showLabel}
                             value={value}
                             wrapperClassName={DETAIL_INPUT_WRAPPER_CLASS_NAME}
-                            initValueFormatted
                         />
                     );
                 }

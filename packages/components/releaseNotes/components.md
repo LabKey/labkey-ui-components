@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.??.?
-*Released*: ?? June 2025
+### version 6.44.4
+*Released*: 2 June 2025
 - QueryModel: add isQueryInfoLoaded
 - withQueryModels: be more defensive when loading rows and total count
 

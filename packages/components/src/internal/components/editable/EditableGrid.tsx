@@ -49,7 +49,7 @@ import { LabelOverlay } from '../forms/LabelOverlay';
 
 import { DropdownMenu } from '../../dropdowns';
 
-import { formatDateTimeDisplayValueForUpdate } from '../../util/Date';
+import { getDateTimeDisplayValueFromStr } from '../../util/Date';
 
 import {
     addRows,
@@ -879,7 +879,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             let getDisplayValue = null;
             if (qCol.isTimeColumn || qCol.jsonType === 'date') {
                 getDisplayValue = vd => {
-                    return formatDateTimeDisplayValueForUpdate(vd, qCol);
+                    return getDateTimeDisplayValueFromStr(vd?.raw, qCol);
                 };
             }
             gridColumns = gridColumns.push(

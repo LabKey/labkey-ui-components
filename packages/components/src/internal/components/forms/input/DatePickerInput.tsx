@@ -20,6 +20,7 @@ import { FormsyInjectedProps, withFormsy } from '../formsy';
 import { FieldLabel } from '../FieldLabel';
 import {
     getDateFromISO,
+    getDateTimeDisplayValue,
     getJsonDateFormatString,
     getJsonDateTimeFormatString,
     getJsonTimeFormatString,
@@ -52,7 +53,7 @@ export interface DatePickerInputProps extends DisableableInputProps {
     name?: string;
     onBlur?: () => void;
     onCalendarClose?: () => void;
-    onChange?: (rawDate?: Date | string) => void;
+    onChange?: (rawDate?: Date | string, formatted?: string) => void;
     onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
     placeholderText?: string;
     queryColumn: QueryColumn;
@@ -169,7 +170,8 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         if (this.state.relativeInputValue) {
             onChange?.(this.state.relativeInputValue);
         } else {
-            onChange?.(date);
+            const formatted = getDateTimeDisplayValue(date, queryColumn);
+            onChange?.(queryColumn.isTimeColumn ? formatted : date, formatted);
 
             if (formsy) {
                 this.props.setValue?.(this.getFormsyValue(date));

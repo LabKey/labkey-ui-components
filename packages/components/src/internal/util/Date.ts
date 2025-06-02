@@ -21,7 +21,6 @@ import { QueryColumn } from '../../public/QueryColumn';
 
 import { TIME_RANGE_URI } from '../components/domainproperties/constants';
 import { SelectInputOption } from '../components/forms/input/SelectInput';
-import { ValueDescriptor } from '../components/editable/models';
 
 // These constants align with the formats declared in DateUtil.java
 export const ISO_DATE_FORMAT_STRING = 'yyyy-MM-dd';
@@ -197,18 +196,17 @@ export function getDateFromISO(
     return parseDate(value, undefined, minDate, false, queryColumn.isDateOnlyColumn);
 }
 
-export function formatDateTimeDisplayValueForUpdate(vd: ValueDescriptor, queryColumn: QueryColumn): string {
-    const isoValue = vd?.raw;
-    if (!isoValue || typeof isoValue !== 'string') return null;
-    const date = getDateFromISO(isoValue, queryColumn);
+export function getDateTimeDisplayValue(date: Date, queryColumn: QueryColumn): string {
     const { dateFormat, timeFormat } = getPickerDateAndTimeFormat(queryColumn, false, date);
-    if (queryColumn.isTimeColumn) return formatTime(isoValue, timeFormat);
-    return formatDate(date, null, dateFormat);
+    if (queryColumn.isTimeColumn) return formatTime(date, timeFormat);
+    if (queryColumn.isDateOnlyColumn) formatDate(date, null, dateFormat);
+    return formatDateTime(date, null, dateFormat);
 }
 
-export function getTimeValueFromDatePickerInput(date: Date, queryColumn: QueryColumn): string {
-    const { timeFormat } = getPickerDateAndTimeFormat(queryColumn, false, date);
-    return formatTime(date, timeFormat);
+export function getDateTimeDisplayValueFromStr(isoValue: string, queryColumn: QueryColumn): string {
+    if (!isoValue || typeof isoValue !== 'string') return null;
+    const date = getDateFromISO(isoValue, queryColumn);
+    return getDateTimeDisplayValue(date, queryColumn);
 }
 
 export function getColDateFormat(column: QueryColumn, dateFormat?: string, dateOnly?: boolean): string {
@@ -739,7 +737,8 @@ export function formatDateTime(date: Date | string | number, timezone?: string, 
 export function formatTime(timeValue: Date | string, timeFormat?: string): string {
     const timeObj = parseTime(timeValue);
     if (!timeObj) return undefined;
-    return format(timeObj, timeFormat ?? getDateFNSTimeFormat());
+    const _timeFormat = toDateFNSFormatString(timeFormat ?? getDateFNSTimeFormat());
+    return format(timeObj, _timeFormat);
 }
 
 // Issue 44398: see DateUtil.java getJsonDateTimeFormatString(), this function is to match the format, which is

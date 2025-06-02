@@ -3,13 +3,6 @@ import React, { FC, memo, useCallback } from 'react';
 import { QueryColumn } from '../../../public/QueryColumn';
 
 import { DatePickerInput } from '../forms/input/DatePickerInput';
-import {
-    formatDate,
-    formatDateTime,
-    getJsonTimeFormatString,
-    getTimeValueFromDatePickerInput,
-    isDateTimeCol
-} from '../../util/Date';
 
 import { MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
 import { ValueDescriptor } from './models';
@@ -40,22 +33,11 @@ export const DateInputCell: FC<DateInputCellProps> = memo(props => {
     }, [colIdx, rowIdx, select]);
 
     const onDateInputChange = useCallback(
-        (newDate: Date | string) => {
-            let display, raw = newDate;
-            if (newDate && typeof newDate === 'string') display = newDate;
-            else if (newDate && newDate instanceof Date) {
-                if (col.isTimeColumn) {
-                    raw = getJsonTimeFormatString(newDate);
-                    display = getTimeValueFromDatePickerInput(newDate, col);
-                }
-                else {
-                    display = isDateTimeCol(col)
-                        ? formatDateTime(newDate)
-                        : formatDate(newDate);
-                }
-            }
-
-            modifyCell(colIdx, rowIdx, [{ raw, display }], MODIFICATION_TYPES.REPLACE, col);
+        (newDate: Date | string, formatted?: string) => {
+            modifyCell(colIdx, rowIdx, [{
+                raw: newDate,
+                display: formatted
+            }], MODIFICATION_TYPES.REPLACE, col);
         },
         [col, colIdx, modifyCell, rowIdx]
     );

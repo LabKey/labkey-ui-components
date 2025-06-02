@@ -199,11 +199,16 @@ export function getDateFromISO(
 
 export function formatDateTimeDisplayValueForUpdate(vd: ValueDescriptor, queryColumn: QueryColumn): string {
     const isoValue = vd?.raw;
-    if (!isoValue) return null;
+    if (!isoValue || typeof isoValue !== 'string') return null;
     const date = getDateFromISO(isoValue, queryColumn);
     const { dateFormat, timeFormat } = getPickerDateAndTimeFormat(queryColumn, false, date);
     if (queryColumn.isTimeColumn) return formatTime(isoValue, timeFormat);
     return formatDate(date, null, dateFormat);
+}
+
+export function getTimeValueFromDatePickerInput(date: Date, queryColumn: QueryColumn): string {
+    const { timeFormat } = getPickerDateAndTimeFormat(queryColumn, false, date);
+    return formatTime(date, timeFormat);
 }
 
 export function getColDateFormat(column: QueryColumn, dateFormat?: string, dateOnly?: boolean): string {

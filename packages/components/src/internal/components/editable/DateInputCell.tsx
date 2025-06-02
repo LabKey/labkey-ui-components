@@ -3,7 +3,12 @@ import React, { FC, memo, useCallback } from 'react';
 import { QueryColumn } from '../../../public/QueryColumn';
 
 import { DatePickerInput } from '../forms/input/DatePickerInput';
-import { formatDate, formatDateTime, formatTime, isDateTimeCol } from '../../util/Date';
+import {
+    formatDate,
+    formatDateTime,
+    getTimeValueFromDatePickerInput,
+    isDateTimeCol
+} from '../../util/Date';
 
 import { MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
 import { ValueDescriptor } from './models';
@@ -40,14 +45,14 @@ export const DateInputCell: FC<DateInputCellProps> = memo(props => {
                 if (newDate && typeof newDate === 'string') display = newDate;
                 else if (newDate && newDate instanceof Date) {
                     display = col.isTimeColumn
-                        ? formatTime(newDate)
+                        ? getTimeValueFromDatePickerInput(newDate, col)
                         : isDateTimeCol(col)
                           ? formatDateTime(newDate)
                           : formatDate(newDate);
                 }
             }
 
-            modifyCell(colIdx, rowIdx, [{ raw: newDate, display }], MODIFICATION_TYPES.REPLACE, col);
+            modifyCell(colIdx, rowIdx, [{ raw: col.isTimeColumn ? display : newDate, display }], MODIFICATION_TYPES.REPLACE, col);
         },
         [col, colIdx, modifyCell, rowIdx]
     );

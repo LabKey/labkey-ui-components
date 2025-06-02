@@ -34,10 +34,18 @@ export const DateInputCell: FC<DateInputCellProps> = memo(props => {
 
     const onDateInputChange = useCallback(
         (newDate: Date | string, formatted?: string) => {
-            modifyCell(colIdx, rowIdx, [{
-                raw: newDate,
-                display: formatted
-            }], MODIFICATION_TYPES.REPLACE, col);
+            modifyCell(
+                colIdx,
+                rowIdx,
+                [
+                    {
+                        raw: newDate,
+                        display: formatted,
+                    },
+                ],
+                MODIFICATION_TYPES.REPLACE,
+                col
+            );
         },
         [col, colIdx, modifyCell, rowIdx]
     );

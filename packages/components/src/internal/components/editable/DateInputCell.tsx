@@ -6,6 +6,7 @@ import { DatePickerInput } from '../forms/input/DatePickerInput';
 import {
     formatDate,
     formatDateTime,
+    getJsonTimeFormatString,
     getTimeValueFromDatePickerInput,
     isDateTimeCol
 } from '../../util/Date';
@@ -39,20 +40,22 @@ export const DateInputCell: FC<DateInputCellProps> = memo(props => {
     }, [colIdx, rowIdx, select]);
 
     const onDateInputChange = useCallback(
-        (newDate: Date | string, formatted?: string) => {
-            let display = formatted;
-            if (!display) {
-                if (newDate && typeof newDate === 'string') display = newDate;
-                else if (newDate && newDate instanceof Date) {
-                    display = col.isTimeColumn
-                        ? getTimeValueFromDatePickerInput(newDate, col)
-                        : isDateTimeCol(col)
-                          ? formatDateTime(newDate)
-                          : formatDate(newDate);
+        (newDate: Date | string) => {
+            let display, raw = newDate;
+            if (newDate && typeof newDate === 'string') display = newDate;
+            else if (newDate && newDate instanceof Date) {
+                if (col.isTimeColumn) {
+                    raw = getJsonTimeFormatString(newDate);
+                    display = getTimeValueFromDatePickerInput(newDate, col);
+                }
+                else {
+                    display = isDateTimeCol(col)
+                        ? formatDateTime(newDate)
+                        : formatDate(newDate);
                 }
             }
 
-            modifyCell(colIdx, rowIdx, [{ raw: col.isTimeColumn ? display : newDate, display }], MODIFICATION_TYPES.REPLACE, col);
+            modifyCell(colIdx, rowIdx, [{ raw, display }], MODIFICATION_TYPES.REPLACE, col);
         },
         [col, colIdx, modifyCell, rowIdx]
     );

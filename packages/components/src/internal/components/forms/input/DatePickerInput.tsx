@@ -26,7 +26,6 @@ import {
     getPickerDateAndTimeFormat,
     isDateTimeCol,
     isRelativeDateFilterValue,
-    parseDate,
     parseTime,
 } from '../../../util/Date';
 
@@ -53,7 +52,7 @@ export interface DatePickerInputProps extends DisableableInputProps {
     name?: string;
     onBlur?: () => void;
     onCalendarClose?: () => void;
-    onChange?: (rawDate?: Date | string, dateStr?: string) => void;
+    onChange?: (rawDate?: Date | string) => void;
     onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
     placeholderText?: string;
     queryColumn: QueryColumn;
@@ -168,7 +167,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         this.setState({ selectedDate: date, invalid: false, invalidStart: false });
 
         if (this.state.relativeInputValue) {
-            this.props.onChange?.(this.state.relativeInputValue);
+            onChange?.(this.state.relativeInputValue);
         } else {
             onChange?.(date);
 

@@ -691,7 +691,8 @@ export function withQueryModels<Props>(
         loadRows = async (id: string, loadSelections = false, selectionsForReplace?: string[]): Promise<void> => {
             const { loadRows } = this.props.modelLoader;
 
-            if (isLoading(this.state.queryModels[id].queryInfoLoadingState)) {
+            // Issue 53192
+            if (!this.state.queryModels[id].isQueryInfoLoaded) {
                 return;
             }
 
@@ -777,7 +778,8 @@ export function withQueryModels<Props>(
         };
 
         loadTotalCount = async (id: string, reloadTotalCount = false): Promise<void> => {
-            if (isLoading(this.state.queryModels[id].queryInfoLoadingState)) {
+            // Issue 53192
+            if (!this.state.queryModels[id].isQueryInfoLoaded) {
                 return;
             }
 

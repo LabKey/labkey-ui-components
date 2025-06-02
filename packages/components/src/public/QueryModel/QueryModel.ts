@@ -1045,6 +1045,13 @@ export class QueryModel {
     }
 
     /**
+     * Returns true if the QueryInfo is loaded and there is not an error
+     */
+    get isQueryInfoLoaded(): boolean {
+        return this.queryInfoError === undefined && !isLoading(this.queryInfoLoadingState);
+    }
+
+    /**
      * True if either the query info or rows of the QueryModel are still loading.
      */
     get isLoading(): boolean {

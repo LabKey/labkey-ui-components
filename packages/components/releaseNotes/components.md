@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 53071: Entering more than three digits for milliseconds in a time field causes the value to disappear
   - Updated `parseTime` util to be more flexible
 
+### version 6.44.4
+*Released*: 2 June 2025
+- QueryModel: add isQueryInfoLoaded
+- withQueryModels: be more defensive when loading rows and total count
+
 ### version 6.44.3
 *Released*: 28 May 2025
 - Issue 52925: App export to csv/tsv ignores filter with column containing double quote

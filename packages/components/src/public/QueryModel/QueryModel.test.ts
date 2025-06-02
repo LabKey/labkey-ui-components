@@ -77,6 +77,17 @@ describe('QueryModel', () => {
         expect(model.isLoading).toEqual(false);
     });
 
+    test('isQueryInfoLoaded', () => {
+        let model = new QueryModel({ schemaQuery: SCHEMA_QUERY });
+        expect(model.isQueryInfoLoaded).toEqual(false);
+        model = model.mutate({ queryInfoLoadingState: LoadingState.LOADING });
+        expect(model.isQueryInfoLoaded).toEqual(false);
+        model = model.mutate({ queryInfoLoadingState: LoadingState.LOADED });
+        expect(model.isQueryInfoLoaded).toEqual(true);
+        model = model.mutate({ queryInfoError: 'Oh no!' });
+        expect(model.isQueryInfoLoaded).toEqual(false);
+    });
+
     test('Pagination', () => {
         let model = new QueryModel({ schemaQuery: SCHEMA_QUERY }).mutate({
             maxRows: 20,

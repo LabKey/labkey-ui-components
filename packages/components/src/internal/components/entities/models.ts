@@ -99,18 +99,15 @@ export class EntityParentType extends Record({
     }
 
     generateFieldKey(): string {
-        const parentInputType = this.getInputType();
-        const formattedQueryName = this.label ?? capitalizeFirstChar(this.query);
-
         // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
         // capitalized here and we lower it where needed
         return this.isAliquotParent
             ? QueryColumn.ALIQUOTED_FROM
-            : [encodePart(parentInputType), encodePart(formattedQueryName)].join('/');
+            : [encodePart(this.getInputType()), encodePart(this.query)].join('/');
     }
 
     generateColumn(displayColumn: string, targetSchema: string): QueryColumn {
-        const formattedQueryName = this.label ?? capitalizeFirstChar(this.query);
+        const label_ = this.label ?? capitalizeFirstChar(this.query);
         const parentColName = this.generateFieldKey();
 
         // Issue 40233: SM app allows for two types of parents, sources and samples, and its confusing if both use
@@ -129,10 +126,10 @@ export class EntityParentType extends Record({
         }
 
         return new QueryColumn({
-            caption: this.isAliquotParent ? QueryColumn.ALIQUOTED_FROM_CAPTION : formattedQueryName + captionSuffix,
+            caption: this.isAliquotParent ? QueryColumn.ALIQUOTED_FROM_CAPTION : label_ + captionSuffix,
             description: this.isAliquotParent
                 ? 'The parent sample of the aliquot'
-                : 'Contains ' + formattedQueryName + ' parent entities.',
+                : 'Contains ' + label_ + ' parent entities.',
             fieldKeyArray: [parentColName],
             fieldKey: parentColName,
             fieldKeyPath: parentColName, // Issue 52556

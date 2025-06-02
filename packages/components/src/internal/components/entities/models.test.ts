@@ -70,7 +70,7 @@ describe('EntityParentType', () => {
     });
 
     test('generateColumn parentColName', () => {
-        let col = EntityParentType.create({ query: 'sampletype' }).generateColumn(
+        let col = EntityParentType.create({ query: 'Sampletype' }).generateColumn(
             'Display Column',
             SCHEMAS.SAMPLE_SETS.SCHEMA
         );
@@ -102,17 +102,19 @@ describe('EntityParentType', () => {
     });
 
     test('generateFieldKey', () => {
-        expect(EntityParentType.create({ query: 'test' }).generateFieldKey()).toBe('MaterialInputs/Test');
+        expect(EntityParentType.create({ query: 'test' }).generateFieldKey()).toBe('MaterialInputs/test');
+        expect(EntityParentType.create({ query: 'test,./' }).generateFieldKey()).toBe('MaterialInputs/test$C$P$S');
+        expect(EntityParentType.create({ query: 'Test', label: 'TEST' }).generateFieldKey()).toBe('MaterialInputs/Test');
         expect(EntityParentType.create({ query: 'test', isAliquotParent: true }).generateFieldKey()).toBe(
             'AliquotedFrom'
         );
-        expect(EntityParentType.create({ schema: SCHEMAS.DATA_CLASSES.SCHEMA, query: 'test' }).generateFieldKey()).toBe(
+        expect(EntityParentType.create({ schema: SCHEMAS.DATA_CLASSES.SCHEMA, query: 'Test' }).generateFieldKey()).toBe(
             'DataInputs/Test'
         );
         expect(
             EntityParentType.create({
                 schema: SCHEMAS.DATA_CLASSES.SCHEMA,
-                query: 'test',
+                query: 'Test',
                 isAliquotParent: true,
             }).generateFieldKey()
         ).toBe('AliquotedFrom');

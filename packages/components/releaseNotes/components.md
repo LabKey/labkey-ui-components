@@ -4,7 +4,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 6.X
 *Released*: X May 2025
 - Issue 53071: Entering more than three digits for milliseconds in a time field causes the value to disappear
+- Issue 52820: Sample Manager: editing datetime/time fields in app with display format could result in time precision loss
   - Updated `parseTime` util to be more flexible
+  - TODO
 
 ### version 6.44.4
 *Released*: 2 June 2025

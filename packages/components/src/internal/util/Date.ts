@@ -101,35 +101,31 @@ export function isDateTimeCol(col: QueryColumn): boolean {
 }
 
 function _toAmPm(rawTimeFormat: string, toAMPM: boolean) {
-    if (!toAMPM)
-        return rawTimeFormat;
+    if (!toAMPM) return rawTimeFormat;
 
-    if (rawTimeFormat.indexOf(' a') > -1)
-        return rawTimeFormat;
+    if (rawTimeFormat.indexOf(' a') > -1) return rawTimeFormat;
 
     return rawTimeFormat.replace('HH', 'hh') + ' a';
-
 }
 
-export function getPickerTimeFormatWithPrecision(timeFormat: string, showMinute: boolean, showSeconds: boolean, showMilliSeconds: boolean) {
+export function getPickerTimeFormatWithPrecision(
+    timeFormat: string,
+    showMinute: boolean,
+    showSeconds: boolean,
+    showMilliSeconds: boolean
+) {
     const useAmPm = timeFormat.indexOf(' a') > -1;
-    if (timeFormat.indexOf('.SSS') > -1)
-        return timeFormat;
+    if (timeFormat.indexOf('.SSS') > -1) return timeFormat;
 
-    if (showMilliSeconds)
-        return _toAmPm(ISO_LONG_TIME_FORMAT_STRING, useAmPm);
+    if (showMilliSeconds) return _toAmPm(ISO_LONG_TIME_FORMAT_STRING, useAmPm);
 
-    if (timeFormat.indexOf(':ss') > -1)
-        return timeFormat;
+    if (timeFormat.indexOf(':ss') > -1) return timeFormat;
 
-    if (showSeconds)
-        return _toAmPm(ISO_TIME_FORMAT_STRING, useAmPm);
+    if (showSeconds) return _toAmPm(ISO_TIME_FORMAT_STRING, useAmPm);
 
-    if (timeFormat.indexOf(':mm') > -1)
-        return timeFormat;
+    if (timeFormat.indexOf(':mm') > -1) return timeFormat;
 
-    if (showMinute)
-        return _toAmPm(ISO_SHORT_TIME_FORMAT_STRING, useAmPm);
+    if (showMinute) return _toAmPm(ISO_SHORT_TIME_FORMAT_STRING, useAmPm);
 
     return timeFormat;
 }
@@ -138,11 +134,19 @@ export function getPickerTimeFormatWithPrecision(timeFormat: string, showMinute:
 // for example:
 // 'yyyy-MM-dd HH:mm' -> 'yyyy-MM-dd HH:mm:ss' if showSeconds is true and showMilliSeconds is false
 // 'yyyy-MM-dd hh:mm a' -> 'yyyy-MM-dd hh:mm:ss.SSS a' if showSeconds is true and showMilliSeconds is true
-export function getPickerFormatWithPrecision(rawDateTimeFormat: string, showMinute: boolean, showSeconds: boolean, showMilliSeconds: boolean) {
+export function getPickerFormatWithPrecision(
+    rawDateTimeFormat: string,
+    showMinute: boolean,
+    showSeconds: boolean,
+    showMilliSeconds: boolean
+) {
     const parts = splitDateTimeFormat(rawDateTimeFormat);
-    if (parts.length === 1)
-        return parts[0];
-    return (parts[0] + ' ' + getPickerTimeFormatWithPrecision(parts[1], showMinute, showSeconds, showMilliSeconds)).trim();
+    if (parts.length === 1) return parts[0];
+    return (
+        parts[0] +
+        ' ' +
+        getPickerTimeFormatWithPrecision(parts[1], showMinute, showSeconds, showMilliSeconds)
+    ).trim();
 }
 
 export function getPickerDateAndTimeFormat(
@@ -152,25 +156,38 @@ export function getPickerDateAndTimeFormat(
 ): { dateFormat: string; timeFormat: string } {
     const hasMsPrecision = initDate?.getMilliseconds() > 0;
     const hasSecondsPrecision = hasMsPrecision || initDate?.getSeconds() > 0;
-    const hasMinutePrecision =  hasSecondsPrecision || initDate?.getMinutes() > 0 || initDate?.getHours() > 0;
+    const hasMinutePrecision = hasSecondsPrecision || initDate?.getMinutes() > 0 || initDate?.getHours() > 0;
 
     const dateFormat_ = getColDateFormat(column, hideTime ? DateFormatType.Date : undefined, column.isDateOnlyColumn);
-    let dateFormat = column.isTimeColumn || column.isDateOnlyColumn ? dateFormat_ : getPickerFormatWithPrecision(dateFormat_, hasMinutePrecision, hasSecondsPrecision, hasMsPrecision);
+    let dateFormat =
+        column.isTimeColumn || column.isDateOnlyColumn
+            ? dateFormat_
+            : getPickerFormatWithPrecision(dateFormat_, hasMinutePrecision, hasSecondsPrecision, hasMsPrecision);
     let timeFormat: string;
     if (!hideTime) {
         if (column.isTimeColumn) {
             timeFormat = parseFNSTimeFormat(getColDateFormat(column, column?.format ?? DateFormatType.Time));
-            timeFormat = getPickerTimeFormatWithPrecision(timeFormat, hasMinutePrecision, hasSecondsPrecision, hasMsPrecision);
+            timeFormat = getPickerTimeFormatWithPrecision(
+                timeFormat,
+                hasMinutePrecision,
+                hasSecondsPrecision,
+                hasMsPrecision
+            );
             dateFormat = timeFormat;
         } else {
             timeFormat = parseDateFNSTimeFormat(dateFormat);
         }
     }
 
-    return {dateFormat, timeFormat };
+    return { dateFormat, timeFormat };
 }
 
-export function getDateFromISO(value: string, queryColumn: QueryColumn, allowRelativeInput?: boolean, minDate?: Date): Date {
+export function getDateFromISO(
+    value: string,
+    queryColumn: QueryColumn,
+    allowRelativeInput?: boolean,
+    minDate?: Date
+): Date {
     if (!value || (allowRelativeInput && isRelativeDateFilterValue(value))) return undefined;
 
     if (queryColumn.isTimeColumn) {
@@ -182,12 +199,10 @@ export function getDateFromISO(value: string, queryColumn: QueryColumn, allowRel
 
 export function formatDateTimeDisplayValueForUpdate(vd: ValueDescriptor, queryColumn: QueryColumn): string {
     const isoValue = vd?.raw;
-    if (!isoValue)
-        return null;
+    if (!isoValue) return null;
     const date = getDateFromISO(isoValue, queryColumn);
-    const {dateFormat, timeFormat} = getPickerDateAndTimeFormat(queryColumn, false, date);
-    if (queryColumn.isTimeColumn)
-        return formatTime(isoValue, timeFormat);
+    const { dateFormat, timeFormat } = getPickerDateAndTimeFormat(queryColumn, false, date);
+    if (queryColumn.isTimeColumn) return formatTime(isoValue, timeFormat);
     return formatDate(date, null, dateFormat);
 }
 
@@ -469,12 +484,9 @@ export function parseTime(time: string | Date): Date {
     if (!time) return null;
 
     if (time instanceof Date) {
-        if (isValid(time))
-            return time;
+        if (isValid(time)) return time;
         return null;
-    }
-    else if (typeof time !== 'string')
-        return null;
+    } else if (typeof time !== 'string') return null;
 
     // Regular expressions for different time formats
     const timeFormats = [

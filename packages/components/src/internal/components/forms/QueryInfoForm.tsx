@@ -42,7 +42,12 @@ import { QueryFormInputs, QueryFormInputsProps } from './QueryFormInputs';
 import { getFieldEnabledFieldName } from './utils';
 import { CommentTextArea } from './input/CommentTextArea';
 
-export const getUpdatedFields = (queryInfo: QueryInfo, data: any, submitForEdit?: boolean, additionalFields?: string[]): OrderedMap<string, any> => {
+export const getUpdatedFields = (
+    queryInfo: QueryInfo,
+    data: any,
+    submitForEdit?: boolean,
+    additionalFields?: string[]
+): OrderedMap<string, any> => {
     const fieldsToUpdate = queryInfo.columns.filter(column => {
         const enabledKey = getFieldEnabledFieldName(column);
         return data[enabledKey] === undefined || data[enabledKey] === 'true';
@@ -187,7 +192,10 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         if (onFormChangeWithData) {
             const row = this.formRef?.['current']?.['getModel']?.();
             if (row) {
-                const updatedRow = getUpdatedFields(queryInfo, row, this.state.submitForEdit, ['numItems', 'creationType']);
+                const updatedRow = getUpdatedFields(queryInfo, row, this.state.submitForEdit, [
+                    'numItems',
+                    'creationType',
+                ]);
                 onFormChangeWithData(updatedRow);
             }
         }

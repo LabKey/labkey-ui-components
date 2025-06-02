@@ -49,6 +49,8 @@ import { LabelOverlay } from '../forms/LabelOverlay';
 
 import { DropdownMenu } from '../../dropdowns';
 
+import { formatDateTimeDisplayValueForUpdate } from '../../util/Date';
+
 import {
     addRows,
     addRowsPerPivotValue,
@@ -73,7 +75,6 @@ import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { CellMessage, EditableColumnMetadata, EditorModel, EditorModelProps, ValueDescriptor } from './models';
 import { computeRangeChange, genCellKey, getValidatedEditableGridValue, parseCellKey } from './utils';
 import { RemoveColumnMenuItem } from './RemoveColumnMenuItem';
-import { formatDateTimeDisplayValueForUpdate } from '../../util/Date';
 
 function anyCell(values: List<ValueDescriptor>): boolean {
     return true;
@@ -170,7 +171,7 @@ function inputCellFactory(
     forUpdate: boolean,
     initialSelection: string[],
     containerPath?: string,
-    getDisplayValue?: (vd: ValueDescriptor) => string,
+    getDisplayValue?: (vd: ValueDescriptor) => string
 ): GridColumnCellRenderer {
     // Note: We ignore the incoming value (_) and rowNumber (__) because they come from the underlying QueryModel that
     // backs the Grid component, but we need to reference the data that is in the EditorModel.
@@ -877,9 +878,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             const hideTooltip = metadata?.hideTitleTooltip ?? qCol.hasHelpTipData;
             let getDisplayValue = null;
             if (qCol.isTimeColumn || qCol.jsonType === 'date') {
-                getDisplayValue = (vd) => {
+                getDisplayValue = vd => {
                     return formatDateTimeDisplayValueForUpdate(vd, qCol);
-                }
+                };
             }
             gridColumns = gridColumns.push(
                 new GridColumn({

@@ -6,7 +6,8 @@ import {
     getColDateFormat,
     getDateFNSDateFormat,
     getJsonDateTimeFormatString,
-    getJsonDateFormatString, getJsonTimeFormatString,
+    getJsonDateFormatString,
+    getJsonTimeFormatString,
 } from '../util/Date';
 import { Key, useEnterEscape } from '../../public/useEnterEscape';
 
@@ -145,13 +146,10 @@ export const EditInlineField: FC<Props> = memo(props => {
         setState({ ignoreBlur: false });
     }, [allowBlank, getInputValue, isDate, onCancel, saveEdit, state.ignoreBlur]);
 
-    const onDateChange = useCallback(
-        (date: Date) => {
-            if (date instanceof Array) throw new Error('Unsupported date/time type');
-            setDateValue(date);
-        },
-        []
-    );
+    const onDateChange = useCallback((date: Date) => {
+        if (date instanceof Array) throw new Error('Unsupported date/time type');
+        setDateValue(date);
+    }, []);
 
     const onFormsyColumnChange = useCallback(
         (data: Record<string, any>) => {

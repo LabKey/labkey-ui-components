@@ -155,7 +155,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
 
     getInitDate(props: DatePickerInputProps, minDate?: Date): Date {
         const { allowRelativeInput, queryColumn, value } = props;
-        return getDateFromISO(value, queryColumn, allowRelativeInput, minDate)
+        return getDateFromISO(value, queryColumn, allowRelativeInput, minDate);
     }
 
     onChange = (date: Date, event?: any, raw?: boolean): void => {

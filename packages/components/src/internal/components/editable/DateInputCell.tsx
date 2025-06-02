@@ -39,7 +39,11 @@ export const DateInputCell: FC<DateInputCellProps> = memo(props => {
             if (!display) {
                 if (newDate && typeof newDate === 'string') display = newDate;
                 else if (newDate && newDate instanceof Date) {
-                    display = col.isTimeColumn ? formatTime(newDate): (isDateTimeCol(col) ? formatDateTime(newDate) : formatDate(newDate));
+                    display = col.isTimeColumn
+                        ? formatTime(newDate)
+                        : isDateTimeCol(col)
+                          ? formatDateTime(newDate)
+                          : formatDate(newDate);
                 }
             }
 

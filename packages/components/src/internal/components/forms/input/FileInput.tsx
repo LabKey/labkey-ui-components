@@ -29,6 +29,8 @@ import { FILELINK_RANGE_URI } from '../../domainproperties/constants';
 
 import { fileMatchesAcceptedFormat } from '../../files/actions';
 
+import { getTransferItemDirectoryEntry } from '../../files/FileAttachmentContainer';
+
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
 export interface FileInputProps extends DisableableInputProps {
@@ -42,11 +44,11 @@ export interface FileInputProps extends DisableableInputProps {
     labelClassName?: string;
     maxFileSize?: number;
     name?: string;
+    onChange?: (fileMap: Record<string, File>) => void;
     queryColumn?: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     showLabel?: boolean;
     toggleDisabledTooltip?: string;
-    onChange?: (fileMap: Record<string, File>) => void;
 }
 
 type FileInputImplProps = FileInputProps & FormsyInjectedProps<any>;
@@ -107,7 +109,7 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
             return;
         }
 
-        if (transferItems && transferItems[0].webkitGetAsEntry().isDirectory) {
+        if (getTransferItemDirectoryEntry(transferItems, 0)) {
             this.setState({ error: 'Folders are not supported, only one file allowed' });
             return;
         }
@@ -122,7 +124,9 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
         }
 
         if (maxFileSize && file.size > maxFileSize) {
-            this.setState({ error: `File size must not exceed ${Math.round(maxFileSize / 1024).toLocaleString()} KB.` });
+            this.setState({
+                error: `File size must not exceed ${Math.round(maxFileSize / 1024).toLocaleString()} KB.`,
+            });
             return;
         }
         if (emptyFileNotAllowed && file.size === 0) {

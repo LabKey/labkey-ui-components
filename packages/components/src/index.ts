@@ -19,6 +19,7 @@ import { applyURL, AppURL, buildURL, spliceURL } from './internal/url/AppURL';
 import { AppLink } from './internal/url/AppLink';
 import { useAppNavigate } from './internal/url/useAppNavigate';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
+import { encodeFormDataQuote } from './internal/url/utils';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
 import { GridColumn } from './internal/components/base/models/GridColumn';
@@ -640,7 +641,7 @@ import {
     wrapDraggable,
 } from './internal/test/testHelpers';
 import { renderWithAppContext } from './internal/test/reactTestLibraryHelpers';
-import { flattenValuesFromRow, QueryModel } from './public/QueryModel/QueryModel';
+import { flattenValuesFromRow, QueryModel, SavedSettings } from './public/QueryModel/QueryModel';
 import { getExpandQueryInfo, includedColumnsForCustomizationFilter } from './public/QueryModel/CustomizeGridViewModal';
 import { ChangeType, withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
@@ -1220,6 +1221,7 @@ export {
     replaceParameters,
     hasParameter,
     toggleParameter,
+    encodeFormDataQuote,
     applyURL,
     buildURL,
     imageURL,
@@ -1776,6 +1778,7 @@ export {
     // QueryModel
     GRID_CHECKBOX_OPTIONS,
     QueryModel,
+    SavedSettings,
     ChangeType,
     withQueryModels,
     GridPanel,
@@ -2044,5 +2047,6 @@ export type { ImportTemplate } from './public/QueryInfo';
 export type { RequestHandler, RequestOptions } from './internal/request';
 export type { UseRequestHandler } from './internal/util/RequestHandler';
 export type { UseTimeout } from './internal/hooks';
+export type { Loader } from './internal/useLoadableState';
 export type { QueryParamValue } from './internal/url/AppURL';
 export type { NavigateFn } from './internal/url/useAppNavigate';

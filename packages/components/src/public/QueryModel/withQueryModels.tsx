@@ -26,6 +26,7 @@ import {
     QueryConfig,
     QueryModel,
     removeSettingsFromLocalStorage,
+    SavedSettings,
     saveSettingsToLocalStorage,
 } from './QueryModel';
 
@@ -247,16 +248,17 @@ function applySavedSettings(id: string, model: QueryModel): QueryModel {
     const settings = getSettingsFromLocalStorage(id, model.containerPath);
     if (settings !== undefined) {
         const { filterArray, maxRows, sorts, viewName } = settings;
-        let schemaQuery = model.schemaQuery;
-        if (viewName !== undefined) {
-            schemaQuery = new SchemaQuery(model.schemaName, model.queryName, viewName);
+        const mutations: Partial<Draft<QueryModel>> = { maxRows, sorts };
+
+        if (model.useSavedSettings === SavedSettings.all) {
+            mutations.filterArray = filterArray;
+
+            if (viewName !== undefined) {
+                mutations.schemaQuery = new SchemaQuery(model.schemaName, model.queryName, viewName);
+            }
         }
-        return model.mutate({
-            filterArray,
-            maxRows,
-            schemaQuery,
-            sorts,
-        });
+
+        return model.mutate(mutations as Partial<QueryModel>);
     }
     return model;
 }
@@ -282,7 +284,7 @@ export function withQueryModels<Props>(
 
             if (model.bindURL && hasQueryParamSettings) {
                 model = model.mutate(model.attributesForURLQueryParams(searchParams, true));
-            } else if (model.useSavedSettings) {
+            } else if (model.useSavedSettings !== SavedSettings.none) {
                 if (!model.containerPath) {
                     console.error('A model.containerPath is required when useSavedSettings is true: ' + model.id);
                 } else {
@@ -689,7 +691,8 @@ export function withQueryModels<Props>(
         loadRows = async (id: string, loadSelections = false, selectionsForReplace?: string[]): Promise<void> => {
             const { loadRows } = this.props.modelLoader;
 
-            if (isLoading(this.state.queryModels[id].queryInfoLoadingState)) {
+            // Issue 53192
+            if (!this.state.queryModels[id].isQueryInfoLoaded) {
                 return;
             }
 
@@ -775,7 +778,8 @@ export function withQueryModels<Props>(
         };
 
         loadTotalCount = async (id: string, reloadTotalCount = false): Promise<void> => {
-            if (isLoading(this.state.queryModels[id].queryInfoLoadingState)) {
+            // Issue 53192
+            if (!this.state.queryModels[id].isQueryInfoLoaded) {
                 return;
             }
 
@@ -1288,7 +1292,7 @@ export function withQueryModels<Props>(
         autoLoad: false,
         modelLoader: DefaultQueryModelLoader,
         queryConfigs: {},
-        useSavedSettings: false,
+        useSavedSettings: SavedSettings.none,
     };
 
     return withSearchParams(ComponentWithQueryModels) as ComponentType<Props & MakeQueryModels>;

@@ -14,7 +14,7 @@ interface LoadableState<T> {
     value: T;
 }
 
-type Loader<T> = () => Promise<T>;
+export type Loader<T> = () => Promise<T>;
 
 export function useLoadableState<T>(loader: Loader<T>): LoadableState<T> {
     const [error, setError] = useState<string>(undefined);

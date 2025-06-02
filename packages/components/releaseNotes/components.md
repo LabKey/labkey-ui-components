@@ -7,6 +7,36 @@ Components, models, actions, and utility functions for LabKey applications and p
   - FileInput: drop the "-fileUpload" suffix from inputId
   - EntityParentType model to set fieldKeyPath in generateColumn()
 
+### version 6.45.0
+*Released*: 2 June 2025
+- Export Loader type
+- DataTypeSelector: Fix react key error
+
+### version 6.44.4
+*Released*: 2 June 2025
+- QueryModel: add isQueryInfoLoaded
+- withQueryModels: be more defensive when loading rows and total count
+
+### version 6.44.3
+*Released*: 28 May 2025
+- Issue 52925: App export to csv/tsv ignores filter with column containing double quote
+  - Add `encodeFormDataQuote` util to encode `"` and its encoded form `%22`
+  - Encode form params for exportRows actions
+
+### version 6.44.2
+*Released*: 28 May 2025
+- Issue 53164: AssayPicker.tsx gives JS error if no specialty assay providers available for server
+
+### version 6.44.1
+*Released*: 28 May 2025
+- Introduce `getTransferItemDirectoryEntry` to centralize handling/wrapping of calling `webkitGetAsEntry()` on a `DataTransferItemList` item.
+- Address Issue 53149 by updating endpoint wrapper to be tolerant of invalid payload upon success.
+
+### version 6.44.0
+*Released*: 27 May 2025
+- QueryModel/QueryConfig change useSavedSettings from boolean to enum SavedSettings
+  - Consumers can now opt into 'none', 'all', or 'noFilters'
+
 ### version 6.43.3
 *Released*: 26 May 2025
 - Migrate `isSetEqual` to `@labkey/components`. Extend with additional support for deep comparison.

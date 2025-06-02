@@ -338,8 +338,8 @@ export class EditorModel
             if (renderer?.getEditableRawValue) {
                 row = row.set(col.name, renderer.getEditableRawValue(values));
             } else if (col.isLookup()) {
-                if (col.isExpInput() || col.isAliquotParent()) {
-                    // We have to use display values for ExpInput and AliquotParent because of name expressions
+                if (col.isExpInput()) {
+                    // We have to use display values for ExpInput because of name expressions
                     row = row.set(
                         col.name,
                         values

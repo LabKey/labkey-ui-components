@@ -4,6 +4,14 @@ import {
     ProductFeature,
     SAMPLE_MANAGER_APP_PROPERTIES,
 } from './app/constants';
+import {
+    BIOLOGICS_ENTERPRISE_PRODUCT_KEY,
+    BIOLOGICS_PRODUCT_ID,
+    BIOLOGICS_STARTER_PRODUCT_KEY,
+    SAMPLE_MANAGER_PRODUCT_ID,
+    SAMPLE_MANAGER_PROFESSIONAL_PRODUCT_KEY,
+    SAMPLE_MANAGER_STARTER_PRODUCT_KEY
+} from './app/products';
 
 export const TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT = {
     api: {
@@ -25,7 +33,9 @@ export const TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT = {
             ProductFeature.DataChangeCommentRequirement,
             ProductFeature.CustomImportTemplates,
         ],
-    },
+        primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID,
+        productKey: SAMPLE_MANAGER_PROFESSIONAL_PRODUCT_KEY,
+    }
 };
 
 export const TEST_LKSM_STARTER_MODULE_CONTEXT = {
@@ -40,6 +50,8 @@ export const TEST_LKSM_STARTER_MODULE_CONTEXT = {
     },
     core: {
         productFeatures: [],
+        primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID,
+        productKey: SAMPLE_MANAGER_STARTER_PRODUCT_KEY,
     },
 };
 
@@ -55,6 +67,8 @@ export const TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT = {
     },
     core: {
         productFeatures: [ProductFeature.Workflow],
+        primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID,
+        productKey: SAMPLE_MANAGER_STARTER_PRODUCT_KEY,
     },
 };
 
@@ -91,6 +105,8 @@ export const TEST_BIO_LIMS_STARTER_MODULE_CONTEXT = {
             ProductFeature.CustomImportTemplates,
             ProductFeature.ConditionalFormatting,
         ],
+        primaryApplicationId: BIOLOGICS_PRODUCT_ID,
+        productKey: BIOLOGICS_STARTER_PRODUCT_KEY,
     },
     inventory: {
         productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
@@ -119,6 +135,8 @@ export const TEST_BIO_LIMS_ENTERPRISE_MODULE_CONTEXT = {
             ProductFeature.CustomImportTemplates,
             ProductFeature.ConditionalFormatting,
         ],
+        primaryApplicationId: BIOLOGICS_PRODUCT_ID,
+        productKey: BIOLOGICS_ENTERPRISE_PRODUCT_KEY,
     },
     inventory: {
         productId: FREEZER_MANAGER_APP_PROPERTIES.productId,

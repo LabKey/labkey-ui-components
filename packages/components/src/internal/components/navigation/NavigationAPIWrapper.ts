@@ -1,10 +1,11 @@
 import { AppProperties } from '../../app/models';
 import { ModuleContext } from '../base/ServerContext';
 
-import { getAppProductIds, getPrimaryAppProperties } from '../../app/utils';
+import { getAppProductIds } from '../../app/utils';
 
 import { MenuSectionModel, ProductMenuModel } from './model';
 import { getUserMenuSection } from './actions';
+import { getPrimaryAppProductId } from '../../app/products';
 
 export interface NavigationAPIWrapper {
     initMenuModel: (
@@ -23,7 +24,7 @@ export class ServerNavigationAPIWrapper implements NavigationAPIWrapper {
         containerId: string,
         containerPath?: string
     ): Promise<ProductMenuModel> => {
-        const primaryProductId = getPrimaryAppProperties(moduleContext).productId;
+        const primaryProductId = getPrimaryAppProductId(moduleContext);
         const menuModel = new ProductMenuModel({
             containerId,
             containerPath,

@@ -24,16 +24,18 @@ import { Container } from '../components/base/models/Container';
 import { MenuSectionConfig } from '../components/navigation/model';
 
 import {
+    BIOLOGICS_PRODUCT_ID,
+    FREEZER_MANAGER_PRODUCT_ID,
     isBiologicsEnabled,
     isFreezerManagementEnabled,
-    isLIMSEnabled,
-    isPremiumProductEnabled,
+    isPremiumApplication,
     isSampleManagerEnabled,
+    LIMS_PRODUCT_ID,
+    SAMPLE_MANAGER_PRODUCT_ID,
 } from './products';
 import {
     addAssaysSectionConfig,
     addSourcesSectionConfig,
-    biologicsIsPrimaryApp,
     freezerManagerIsCurrentApp,
     getCurrentAppProperties,
     getMenuSectionConfigs,
@@ -48,30 +50,28 @@ import {
     isAssayRequestsEnabled,
     isCalculatedFieldsEnabled,
     isCommunityDistribution,
+    isConditionalFormattingEnabled,
     isELNEnabled,
+    isEnterpriseDistribution,
     isLKSSupportEnabled,
     isMediaEnabled,
     isProductNavigationEnabled,
+    isProfessionalDistribution,
     isProjectContainer,
     isProtectedDataEnabled,
+    isQueryMetadataEditor,
+    isSampleManagerDistribution,
     isSampleStatusEnabled,
     isSharedContainer,
+    isStarterDistribution,
     isTransformScriptsEnabled,
     isWorkflowEnabled,
-    limsIsPrimaryApp,
-    sampleManagerIsPrimaryApp,
     setProductFolders,
     userCanDesignLocations,
     userCanDesignSourceTypes,
     userCanEditStorageData,
     userCanReadGroupDetails,
     userCanReadUserDetails,
-    isQueryMetadataEditor,
-    isConditionalFormattingEnabled,
-    isSampleManagerDistribution,
-    isStarterDistribution,
-    isProfessionalDistribution,
-    isEnterpriseDistribution,
 } from './utils';
 import {
     ASSAYS_KEY,
@@ -788,41 +788,13 @@ describe('utils', () => {
         expect(isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId, {})).toBeFalsy();
         expect(isProductNavigationEnabled(FREEZER_MANAGER_APP_PROPERTIES.productId, {})).toBeFalsy();
         expect(
-            isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId, { samplemanagement: {} })
+            isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId, { samplemanagement: {}, core: { primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID} })
         ).toBeTruthy();
         expect(
-            isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId, { biologics: {}, samplemanagement: {} })
+            isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId, { biologics: {}, samplemanagement: {}, core: { primaryApplicationId: BIOLOGICS_PRODUCT_ID} })
         ).toBeFalsy();
         expect(
-            isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId, { biologics: {}, samplemanagement: {} })
-        ).toBeTruthy();
-    });
-
-    test('isLIMSEnabled', () => {
-        expect(isLIMSEnabled({})).toBeFalsy();
-        expect(isLIMSEnabled({ inventory: {} })).toBeFalsy();
-        expect(isLIMSEnabled({ inventory: {}, samplemanagement: {} })).toBeFalsy();
-        expect(
-            isLIMSEnabled(
-                {
-                    inventory: {},
-                    samplemanagement: {},
-                    core: { productFeatures: [ProductFeature.ChartBuilding] },
-                },
-                new Container({ folderType: 'LIMS' })
-            )
-        ).toBeTruthy();
-        expect(isLIMSEnabled({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeFalsy();
-        expect(
-            isLIMSEnabled(
-                {
-                    biologics: {},
-                    samplemanagement: {},
-                    inventory: {},
-                    core: { productFeatures: [ProductFeature.ChartBuilding] },
-                },
-                new Container({ folderType: 'LIMS' })
-            )
+            isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId, { biologics: {}, samplemanagement: {}, core: { primaryApplicationId: BIOLOGICS_PRODUCT_ID} })
         ).toBeTruthy();
     });
 
@@ -957,13 +929,13 @@ describe('utils', () => {
         expect(getProjectPath('project')).toBe('project/');
     });
 
-    test('isPremiumProductEnabled', () => {
-        expect(isPremiumProductEnabled({})).toBeFalsy();
-        expect(isPremiumProductEnabled({ inventory: {} })).toBeFalsy();
-        expect(isPremiumProductEnabled({ samplemanagement: {}, inventory: {} })).toBeTruthy();
-        expect(isPremiumProductEnabled({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeTruthy();
-        expect(isPremiumProductEnabled({ inventory: {} })).toBeFalsy();
-        expect(isPremiumProductEnabled({ samplemanagement: {} })).toBeTruthy();
+    test('isPremiumApplication', () => {
+        expect(isPremiumApplication({})).toBeFalsy();
+        expect(isPremiumApplication({ inventory: {} })).toBeFalsy();
+        expect(isPremiumApplication({ samplemanagement: {}, inventory: {}, core: { primaryApplicationId: LIMS_PRODUCT_ID} })).toBeTruthy();
+        expect(isPremiumApplication({ biologics: {}, samplemanagement: {}, inventory: {}, core: { primaryApplicationId: BIOLOGICS_PRODUCT_ID} })).toBeTruthy();
+        expect(isPremiumApplication({ inventory: {}, core: { primaryApplicationId: FREEZER_MANAGER_PRODUCT_ID} })).toBeFalsy();
+        expect(isPremiumApplication({ samplemanagement: {}, core: { primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID} })).toBeTruthy();
     });
 
     test('isAppHomeFolder', () => {
@@ -1009,47 +981,21 @@ describe('utils', () => {
         ).toBeFalsy();
     });
 
-    test('sampleManagerIsPrimaryApp', () => {
-        __setController('project');
-        expect(sampleManagerIsPrimaryApp({})).toBeFalsy();
-        expect(sampleManagerIsPrimaryApp({ inventory: {} })).toBeFalsy();
-        expect(sampleManagerIsPrimaryApp({ samplemanagement: {}, inventory: {} })).toBeTruthy();
-        expect(sampleManagerIsPrimaryApp({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeFalsy();
-        expect(sampleManagerIsPrimaryApp({ samplemanagement: {} })).toBeTruthy();
-    });
-
-    test('limsIsPrimaryApp', () => {
-        __setController('project');
-        LABKEY.container = { folderType: 'LIMS' };
-        expect(limsIsPrimaryApp({})).toBe(false);
-        expect(limsIsPrimaryApp({ inventory: {} })).toBeFalsy();
-        expect(limsIsPrimaryApp({ samplemanagement: {}, inventory: {} })).toBeTruthy();
-        expect(limsIsPrimaryApp({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeFalsy();
-        expect(limsIsPrimaryApp({ samplemanagement: {} })).toBeTruthy();
-    });
-
-    test('biologcisIsPrimaryApp', () => {
-        __setController('project');
-        expect(biologicsIsPrimaryApp({})).toBeFalsy();
-        expect(biologicsIsPrimaryApp({ samplemanagement: {} })).toBeFalsy();
-        expect(biologicsIsPrimaryApp({ inventory: {} })).toBeFalsy();
-        expect(biologicsIsPrimaryApp({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeTruthy();
-        expect(biologicsIsPrimaryApp({ biologics: {}, samplemanagement: {} })).toBeTruthy();
-    });
 
     test('getPrimaryAppProperties', () => {
         __setController('project');
         LABKEY.container = {};
-        expect(getPrimaryAppProperties({})).toBe(undefined);
-        expect(getPrimaryAppProperties({ inventory: {} })).toStrictEqual(FREEZER_MANAGER_APP_PROPERTIES);
-        expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {} })).toStrictEqual(
+        expect(getPrimaryAppProperties({})).toBeUndefined();
+        expect(getPrimaryAppProperties({ inventory: {} })).toBeUndefined();
+        expect(getPrimaryAppProperties({ inventory: {}, core: { primaryApplicationId: FREEZER_MANAGER_PRODUCT_ID} })).toStrictEqual(FREEZER_MANAGER_APP_PROPERTIES);
+        expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {}, core: { primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID}  })).toStrictEqual(
             SAMPLE_MANAGER_APP_PROPERTIES
         );
-        expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {}, biologics: {} })).toStrictEqual(
+        expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {}, biologics: {}, core: { primaryApplicationId: BIOLOGICS_PRODUCT_ID}  })).toStrictEqual(
             BIOLOGICS_APP_PROPERTIES
         );
         LABKEY.container = { folderType: 'LIMS' };
-        expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {} })).toStrictEqual(LIMS_APP_PROPERTIES);
+        expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {}, core: { primaryApplicationId: LIMS_PRODUCT_ID}  })).toStrictEqual(LIMS_APP_PROPERTIES);
         LABKEY.container = {};
     });
 

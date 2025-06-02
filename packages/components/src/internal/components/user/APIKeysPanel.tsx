@@ -17,7 +17,7 @@ import { useServerContext } from '../base/ServerContext';
 import { Alert } from '../base/Alert';
 import { AppContext, useAppContext } from '../../AppContext';
 import { setCopyValue } from '../../events';
-import { biologicsIsPrimaryApp, isApp, isFeatureEnabled } from '../../app/utils';
+import { isApp, isFeatureEnabled } from '../../app/utils';
 import { ProductFeature } from '../../app/constants';
 import {
     ChangeType,
@@ -30,6 +30,7 @@ import { SCHEMAS } from '../../schemas';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { Modal } from '../../Modal';
 import { getHelpLink, HelpLink } from '../../util/helpLinks';
+import { biologicsIsPrimaryApp } from '../../app/products';
 
 const API_KEYS_QUERY_HREF = ActionURL.buildURL('query', 'executeQuery.view', '/', {
     schemaName: 'core',

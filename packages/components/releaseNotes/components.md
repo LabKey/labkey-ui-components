@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 52527: Implement new method for determining primary app id
+
 ### version 6.45.0
 *Released*: 2 June 2025
 - Export Loader type

@@ -2,10 +2,11 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { HelpLink } from '../../util/helpLinks';
-import { biologicsIsPrimaryApp, getPrimaryAppProperties } from '../../app/utils';
+import { getPrimaryAppProperties } from '../../app/utils';
 import { useServerContext } from '../base/ServerContext';
 import { useAppContext } from '../../AppContext';
 import { RELEASE_NOTES_METRIC } from '../productnavigation/constants';
+import { biologicsIsPrimaryApp } from '../../app/products';
 
 export const DISMISSED_STORAGE_PREFIX = '__release_notes_dismissed__';
 

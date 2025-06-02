@@ -8,7 +8,7 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { PaginationButtons } from '../buttons/PaginationButtons';
 
-import { biologicsIsPrimaryApp, isPlatesEnabled } from '../../app/utils';
+import { isPlatesEnabled } from '../../app/utils';
 
 import { useServerContext } from '../base/ServerContext';
 
@@ -18,6 +18,7 @@ import { GetCardDataFn, SearchResultsModel } from './models';
 import { SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE, SearchCategory } from './constants';
 import { searchUsingIndex } from './actions';
 import { getSearchResultCardData } from './utils';
+import { biologicsIsPrimaryApp } from '../../app/products';
 
 interface SearchPanelProps {
     appName: string;

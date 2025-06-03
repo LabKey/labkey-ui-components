@@ -7,14 +7,16 @@ import { QueryInfo } from '../public/QueryInfo';
  * occurring in your tests. See DatasetPropertiesAdvancedSettings.test.tsx for an example.
  */
 
-export function createMockSelectRowsDeprecatedResponse() {
-    return Promise.resolve({
-        key: 'test',
-        models: { test: {} },
-        orderedModels: { test: List() },
-        queries: { test: QueryInfo.fromJsonForTests({}) },
-        rowCount: 0,
-    });
+export function createMockSelectRowsDeprecatedResponse(result?: Record<string, any>) {
+    return Promise.resolve(
+        result ?? {
+            key: 'test',
+            models: { test: {} },
+            orderedModels: { test: List() },
+            queries: { test: QueryInfo.fromJsonForTests({}) },
+            rowCount: 0,
+        }
+    );
 }
 
 export function createMockSelectRowsResponse() {

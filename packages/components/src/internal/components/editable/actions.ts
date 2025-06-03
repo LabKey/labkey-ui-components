@@ -218,7 +218,7 @@ function resolveValueDescriptors(
     }
 
     let display = value?.displayValue ?? raw;
-    if (col.isTimeColumn || (col.jsonType === 'date' && !col.isDateOnlyColumn)) {
+    if (col.isTimeOrDateTimeColumn) {
         display = getDateTimeDisplayValueFromStr(raw, col);
     }
 

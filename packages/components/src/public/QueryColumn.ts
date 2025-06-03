@@ -6,6 +6,7 @@ import {
     CALCULATED_CONCEPT_URI,
     CONCEPT_CODE_CONCEPT_URI,
     DATE_RANGE_URI,
+    DATETIME_RANGE_URI,
     SAMPLE_TYPE_CONCEPT_URI,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
     TIME_RANGE_URI,
@@ -433,6 +434,14 @@ export class QueryColumn implements IQueryColumn {
 
     get isDateOnlyColumn(): boolean {
         return this.rangeURI === DATE_RANGE_URI;
+    }
+
+    get isDateTimeColumn(): boolean {
+        return this.rangeURI === DATETIME_RANGE_URI;
+    }
+
+    get isTimeOrDateTimeColumn(): boolean {
+        return this.isTimeColumn || this.isDateTimeColumn;
     }
 
     get isCalculatedField(): boolean {

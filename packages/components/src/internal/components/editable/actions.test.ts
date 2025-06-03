@@ -26,7 +26,7 @@ import {
 } from './actions';
 import { CellMessage, EditorModel, ValueDescriptor } from './models';
 import { genCellKey } from './utils';
-import { TIME_RANGE_URI } from '../domainproperties/constants';
+import { DATETIME_RANGE_URI, TIME_RANGE_URI } from '../domainproperties/constants';
 
 describe('column mutation actions', () => {
     const queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);
@@ -1136,7 +1136,7 @@ describe('loadEditorModelData', () => {
             fieldKeyPath: 'DtField$P$S$C$D$A',
             derivationDataScope: 'ParentOnly',
             name: 'DtField./,$&',
-            jsonType: 'date',
+            rangeURI: DATETIME_RANGE_URI,
             format: 'yyyy-MMM-dd HH:mm'
         }),
         new QueryColumn({

@@ -7,7 +7,7 @@ import {
     getDateFNSDateFormat,
     getJsonDateTimeFormatString,
     getJsonDateFormatString,
-    getJsonTimeFormatString,
+    getDateTimeDisplayValueFromStr,
 } from '../util/Date';
 import { Key, useEnterEscape } from '../../public/useEnterEscape';
 
@@ -70,6 +70,7 @@ export const EditInlineField: FC<Props> = memo(props => {
     const inputRef = useRef(null);
     const _value = typeof value === 'object' ? value?.value : value;
     const [dateValue, setDateValue] = useState<Date>(() => (isDate && _value ? new Date(_value) : undefined));
+    const [timeJsonValue, setTimeJsonValue] = useState<string>(undefined);
     const [columnBasedValue, setColumnBasedValue] = useState();
 
     // Utilizing useReducer here so multiple state attributes can be updated at once
@@ -80,7 +81,9 @@ export const EditInlineField: FC<Props> = memo(props => {
 
     const displayValue = useMemo<ReactNode>(() => {
         let value_: ReactNode;
-        if (value?.formattedValue) {
+        if (column?.isTimeOrDateTimeColumn && !!_value && typeof _value === 'string') {
+            value_ = getDateTimeDisplayValueFromStr(_value, column);
+        } else if (value?.formattedValue) {
             value_ = value.formattedValue;
         } else if (value?.displayValue) {
             value_ = value.displayValue;
@@ -107,7 +110,7 @@ export const EditInlineField: FC<Props> = memo(props => {
     }, [dateFormat, emptyText, isDate, value, _value]);
 
     const getInputValue = useCallback((): any => {
-        if (isTime) return getJsonTimeFormatString(dateValue);
+        if (isTime) return timeJsonValue;
         if (isDate) {
             if (useJsonDateFormat) {
                 return isDateOnly ? getJsonDateFormatString(dateValue) : getJsonDateTimeFormatString(dateValue);
@@ -116,7 +119,7 @@ export const EditInlineField: FC<Props> = memo(props => {
         }
         if (column) return columnBasedValue;
         return inputRef.current?.value;
-    }, [dateValue, isDate, isTime, columnBasedValue, column, useJsonDateFormat, isDateOnly]);
+    }, [dateValue, timeJsonValue, isDate, isTime, columnBasedValue, column, useJsonDateFormat, isDateOnly]);
 
     const onCancel = useCallback((): void => {
         setState({ editing: false, ignoreBlur: true });
@@ -146,10 +149,25 @@ export const EditInlineField: FC<Props> = memo(props => {
         setState({ ignoreBlur: false });
     }, [allowBlank, getInputValue, isDate, onCancel, saveEdit, state.ignoreBlur]);
 
-    const onDateChange = useCallback((date: Date) => {
-        if (date instanceof Array) throw new Error('Unsupported date/time type');
-        setDateValue(date);
-    }, []);
+    const onDateChange = useCallback(
+        (date: Date | string) => {
+            if (date instanceof Array) throw new Error('Unsupported date/time type');
+
+            if (!date) {
+                if (isDate) setDateValue(undefined);
+                else setTimeJsonValue(undefined);
+            }
+
+            if (typeof date === 'string') {
+                if (!isDate) setTimeJsonValue(date);
+            }
+            else {
+                if (isDate)
+                    setDateValue(date);
+            }
+        },
+        [isDate]
+    );
 
     const onFormsyColumnChange = useCallback(
         (data: Record<string, any>) => {

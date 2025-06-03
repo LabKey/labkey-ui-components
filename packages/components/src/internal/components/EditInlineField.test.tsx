@@ -166,7 +166,13 @@ describe('EditInlineField', () => {
                 {...DEFAULT_PROPS}
                 type="date"
                 value="2022-08-11 18:00:00"
-                column={new QueryColumn({ format: 'MM/dd/YYYY HH:mm:ss', caption: 'DateField', rangeURI: DATETIME_RANGE_URI })}
+                column={
+                    new QueryColumn({
+                        format: 'MM/dd/YYYY HH:mm:ss',
+                        caption: 'DateField',
+                        rangeURI: DATETIME_RANGE_URI,
+                    })
+                }
             />,
             { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
         );
@@ -183,7 +189,13 @@ describe('EditInlineField', () => {
                 {...DEFAULT_PROPS}
                 type="date"
                 value="2022-08-11 18:00:00.123"
-                column={new QueryColumn({ format: 'MM/dd/YYYY HH:mm:ss', caption: 'DateField', rangeURI: DATETIME_RANGE_URI })}
+                column={
+                    new QueryColumn({
+                        format: 'MM/dd/YYYY HH:mm:ss',
+                        caption: 'DateField',
+                        rangeURI: DATETIME_RANGE_URI,
+                    })
+                }
             />,
             { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
         );
@@ -191,7 +203,9 @@ describe('EditInlineField', () => {
         await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
         validate(true, true, { date: 1 });
         expect(document.querySelectorAll('.react-datepicker')).toHaveLength(1);
-        expect(document.querySelector('.react-datepicker__input-container input')).toHaveValue('08/11/2022 18:00:00.123');
+        expect(document.querySelector('.react-datepicker__input-container input')).toHaveValue(
+            '08/11/2022 18:00:00.123'
+        );
     });
 
     test('isTime, with initial value with extra precision and QueryColumn format', async () => {
@@ -199,7 +213,14 @@ describe('EditInlineField', () => {
             <EditInlineField
                 {...DEFAULT_PROPS}
                 value="18:00:00.123"
-                column={new QueryColumn({ format: 'hh:mm a', caption: 'TimeField', jsonType: 'time', rangeURI: TIME_RANGE_URI })}
+                column={
+                    new QueryColumn({
+                        format: 'hh:mm a',
+                        caption: 'TimeField',
+                        jsonType: 'time',
+                        rangeURI: TIME_RANGE_URI,
+                    })
+                }
             />,
             { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
         );

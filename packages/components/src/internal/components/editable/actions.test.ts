@@ -11,6 +11,8 @@ import { ComponentsAPIWrapper, getTestAPIWrapper } from '../../APIWrapper';
 
 import { Row } from '../../query/selectRows';
 
+import { DATETIME_RANGE_URI, TIME_RANGE_URI } from '../domainproperties/constants';
+
 import {
     addColumns,
     changeColumn,
@@ -26,7 +28,6 @@ import {
 } from './actions';
 import { CellMessage, EditorModel, ValueDescriptor } from './models';
 import { genCellKey } from './utils';
-import { DATETIME_RANGE_URI, TIME_RANGE_URI } from '../domainproperties/constants';
 
 describe('column mutation actions', () => {
     const queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);
@@ -1128,7 +1129,7 @@ describe('loadEditorModelData', () => {
             derivationDataScope: 'ParentOnly',
             name: 'TimeField./,$&',
             rangeURI: TIME_RANGE_URI,
-            format: 'hh:mm a'
+            format: 'hh:mm a',
         }),
         new QueryColumn({
             fieldKey: 'DtField$P$S$C$D$A',
@@ -1137,7 +1138,7 @@ describe('loadEditorModelData', () => {
             derivationDataScope: 'ParentOnly',
             name: 'DtField./,$&',
             rangeURI: DATETIME_RANGE_URI,
-            format: 'yyyy-MMM-dd HH:mm'
+            format: 'yyyy-MMM-dd HH:mm',
         }),
         new QueryColumn({
             fieldKey: 'IntField$P$S$C$D$A',

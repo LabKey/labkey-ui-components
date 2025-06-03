@@ -158,7 +158,7 @@ export const DataTypeSelectorList: FC<DataTypeSelectorListProps> = memo(props =>
                                     dataType={type}
                                     disabled={disabled}
                                     getUncheckedEntityWarning={getUncheckedEntityWarning}
-                                    key={type.rowId}
+                                    key={type.rowId ?? type.lsid}
                                     uncheckedEntities={uncheckedEntities}
                                     onChange={onChange}
                                     showUncheckedWarning={showUncheckedWarning}

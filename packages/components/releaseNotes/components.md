@@ -8,6 +8,12 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Updated `parseTime` util to be more flexible
   - TODO
 
+### version 6.45.1
+*Released*: 3 June 2025
+- Issue 52959: LKSM/LKB: Existing file not shown in Bulk Edit
+  - Update `getCommonDataValues` to retain full data map for file fields
+  - Update `FileInput` to set init value so diff can be generated correctly
+
 ### version 6.45.0
 *Released*: 2 June 2025
 - Export Loader type

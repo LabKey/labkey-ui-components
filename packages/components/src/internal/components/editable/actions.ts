@@ -6,7 +6,7 @@ import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { cancelEvent, getPasteValue, setCopyValue } from '../../events';
-import { formatDate, formatDateTime, parseDate } from '../../util/Date';
+import { formatDate, formatDateTime, getDateTimeDisplayValueFromStr, parseDate } from '../../util/Date';
 import {
     caseInsensitive,
     isFloat,
@@ -217,7 +217,10 @@ function resolveValueDescriptors(
         }
     }
 
-    const display = value?.displayValue ?? raw;
+    let display = value?.displayValue ?? raw;
+    if (col.isTimeColumn || (col.jsonType === 'date' && !col.isDateOnlyColumn)) {
+        display = getDateTimeDisplayValueFromStr(raw, col);
+    }
 
     return [
         {

@@ -178,7 +178,6 @@ export interface CellProps extends SharedProps {
     containerPath?: string;
     focused?: boolean;
     forUpdate: boolean;
-    getDisplayValue?: (vd: ValueDescriptor) => string;
     linkedValues?: any[];
     name?: string;
     readOnly?: boolean;
@@ -542,7 +541,6 @@ export class Cell extends React.PureComponent<CellProps, State> {
             selection,
             values,
             containerPath,
-            getDisplayValue,
         } = this.props;
 
         const alignRight = col.align === 'right';
@@ -551,7 +549,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
         if (!focused) {
             const displayValue = values
                 .filter(vd => vd && vd.display !== undefined)
-                .reduce((v, vd, i) => v + (i > 0 ? ', ' : '') + (getDisplayValue?.(vd) ?? vd.display), '');
+                .reduce((v, vd, i) => v + (i > 0 ? ', ' : '') + vd.display, '');
 
             return (
                 <>

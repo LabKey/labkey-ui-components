@@ -239,15 +239,6 @@ export function getSubmitButtonClass(): string {
 }
 
 export function getPrimaryAppProperties(moduleContext?: ModuleContext): AppProperties {
-    // TODO Is this if statement necessary?
-    const currentAppProperties = getCurrentAppProperties();
-    if (
-        currentAppProperties?.productId === BIOLOGICS_APP_PROPERTIES.productId ||
-        currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId ||
-        currentAppProperties?.productId === LIMS_APP_PROPERTIES.productId
-    ) {
-        return currentAppProperties;
-    }
     return APPLICATION_PROPERTIES[getPrimaryAppProductId(moduleContext)];
 }
 
@@ -710,11 +701,7 @@ export const useMenuSectionConfigs = (
 
 // Returns the friendly name of the product, primarily for use in help text.
 export function getCurrentProductName(moduleContext?: ModuleContext): string {
-    const lcController = ActionURL.getController().toLowerCase();
-    if (!lcController) return LABKEY_SERVER_PRODUCT_NAME;
-
-    const properties = getPrimaryAppProperties(moduleContext);
-    return properties?.name || LABKEY_SERVER_PRODUCT_NAME;
+    return getPrimaryAppProperties(moduleContext)?.name || LABKEY_SERVER_PRODUCT_NAME;
 }
 
 export function getAppProductIds(appProductId: string): List<string> {

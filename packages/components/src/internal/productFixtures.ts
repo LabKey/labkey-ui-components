@@ -34,7 +34,6 @@ export const TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT = {
             ProductFeature.CustomImportTemplates,
         ],
         primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID,
-        productKey: SAMPLE_MANAGER_PROFESSIONAL_PRODUCT_KEY,
     }
 };
 
@@ -51,7 +50,6 @@ export const TEST_LKSM_STARTER_MODULE_CONTEXT = {
     core: {
         productFeatures: [],
         primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID,
-        productKey: SAMPLE_MANAGER_STARTER_PRODUCT_KEY,
     },
 };
 
@@ -68,7 +66,6 @@ export const TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT = {
     core: {
         productFeatures: [ProductFeature.Workflow],
         primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID,
-        productKey: SAMPLE_MANAGER_STARTER_PRODUCT_KEY,
     },
 };
 
@@ -106,7 +103,6 @@ export const TEST_BIO_LIMS_STARTER_MODULE_CONTEXT = {
             ProductFeature.ConditionalFormatting,
         ],
         primaryApplicationId: BIOLOGICS_PRODUCT_ID,
-        productKey: BIOLOGICS_STARTER_PRODUCT_KEY,
     },
     inventory: {
         productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
@@ -136,7 +132,6 @@ export const TEST_BIO_LIMS_ENTERPRISE_MODULE_CONTEXT = {
             ProductFeature.ConditionalFormatting,
         ],
         primaryApplicationId: BIOLOGICS_PRODUCT_ID,
-        productKey: BIOLOGICS_ENTERPRISE_PRODUCT_KEY,
     },
     inventory: {
         productId: FREEZER_MANAGER_APP_PROPERTIES.productId,

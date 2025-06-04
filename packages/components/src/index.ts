@@ -707,14 +707,13 @@ import { ColumnSelectionModal } from './internal/components/ColumnSelectionModal
 
 import { AppReducers, ProductMenuReducers, ServerNotificationReducers } from './internal/app/reducers';
 import {
+    biologicsIsPrimaryApp,
     isBiologicsEnabled,
     isFreezerManagementEnabled,
-    isLIMSEnabled,
-    isPremiumProductEnabled,
-    isSampleManagerEnabled,
+    isPremiumApplication,
+    limsIsPrimaryApp,
 } from './internal/app/products';
 import {
-    biologicsIsPrimaryApp,
     CloseEventCode,
     freezerManagerIsCurrentApp,
     getAppHomeFolderId,
@@ -759,7 +758,6 @@ import {
     isSharedContainer,
     isSourceTypeEnabled,
     isWorkflowEnabled,
-    limsIsPrimaryApp,
     setFolderDataExclusion,
     setProductFolders,
     useMenuSectionConfigs,
@@ -822,7 +820,6 @@ import {
     AUDIT_KEY,
     BIOLOGICS_APP_PROPERTIES,
     BOXES_KEY,
-    ITEMS_KEY,
     CROSS_TYPE_KEY,
     DATA_CLASS_KEY,
     ELN_KEY,
@@ -838,6 +835,7 @@ import {
     FREEZERS_KEY,
     GRID_INSERT_SAMPLES_HREF,
     HOME_KEY,
+    ITEMS_KEY,
     LIMS_APP_PROPERTIES,
     MEDIA_KEY,
     MINE_KEY,
@@ -964,10 +962,8 @@ const App = {
     isELNEnabled,
     isFreezerManagementEnabled,
     isPlatesEnabled,
-    isSampleManagerEnabled,
     isBiologicsEnabled,
-    isLIMSEnabled,
-    isPremiumProductEnabled,
+    isPremiumApplication,
     isSampleAliquotSelectorEnabled,
     isProjectContainer,
     isProtectedDataEnabled,

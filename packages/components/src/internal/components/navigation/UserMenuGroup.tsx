@@ -22,7 +22,7 @@ import { User } from '../base/models/User';
 import { devToolsActive, toggleDevTools } from '../../util/utils';
 
 import { useServerContext } from '../base/ServerContext';
-import { biologicsIsPrimaryApp, getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
+import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 import { AppProperties } from '../../app/models';
 
 import { AppContext, useAppContext } from '../../AppContext';
@@ -35,6 +35,7 @@ import { DropdownMenu, DropdownButton, MenuDivider, MenuHeader, MenuItem } from 
 
 import { signIn as defaultSignIn, signOut as defaultSignOut } from './actions';
 import { MenuSectionModel } from './model';
+import { biologicsIsPrimaryApp } from '../../app/products';
 
 export interface UserMenuProps {
     appProperties?: AppProperties;

@@ -8,6 +8,7 @@ import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 import { DISMISSED_STORAGE_PREFIX, ReleaseNote } from './ReleaseNote';
 import { __setController } from '@labkey/api';
+import { FREEZER_MANAGER_PRODUCT_ID } from '../../app/products';
 
 beforeEach(() => {
     LABKEY.versionString = '24.1';
@@ -89,6 +90,9 @@ describe('ReleaseNote', () => {
                     inventory: {
                         productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
                     },
+                    core: {
+                        primaryApplicationId: FREEZER_MANAGER_PRODUCT_ID
+                    }
                 },
             },
             appContext: {},

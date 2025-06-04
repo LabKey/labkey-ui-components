@@ -18,8 +18,6 @@ import { SectionHeading } from '../domainproperties/SectionHeading';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
-import { sampleManagerIsPrimaryApp } from '../../app/utils';
-
 import { DomainPropertiesAPIWrapper } from '../domainproperties/APIWrapper';
 
 import { getDefaultAPIWrapper } from '../../APIWrapper';
@@ -27,6 +25,7 @@ import { getDefaultAPIWrapper } from '../../APIWrapper';
 import { OntologyModel, PathModel } from './models';
 import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
 import { fetchParentPaths, getParentsConceptCodePath } from './actions';
+import { sampleManagerIsPrimaryApp } from '../../app/products';
 
 const LEARN_MORE = (
     <p>

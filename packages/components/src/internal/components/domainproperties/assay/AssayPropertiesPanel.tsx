@@ -10,7 +10,7 @@ import {
 import { SectionHeading } from '../SectionHeading';
 import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
 
-import { isPremiumProductEnabled } from '../../../app/products';
+import { isPremiumApplication } from '../../../app/products';
 import { hasModule, isAssayQCEnabled, isPlatesEnabled, isTransformScriptsEnabled } from '../../../app/utils';
 
 import { useServerContext } from '../../base/ServerContext';
@@ -147,7 +147,7 @@ const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
                     {!hideAdvancedProperties && model.allowQCStates && isAssayQCEnabled(moduleContext) && (
                         <QCStatesInput model={model} onChange={onInputChange} />
                     )}
-                    {isPremiumProductEnabled(moduleContext) && (
+                    {isPremiumApplication(moduleContext) && (
                         <AssayStatusInput
                             model={model}
                             onChange={onStatusChange}

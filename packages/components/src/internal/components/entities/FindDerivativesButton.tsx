@@ -6,7 +6,6 @@ import { AppURL } from '../../url/AppURL';
 import { FIND_SAMPLES_BY_FILTER_KEY } from '../../app/constants';
 import { DisableableMenuItem } from '../samples/DisableableMenuItem';
 import { formatDateTime } from '../../util/Date';
-import { getPrimaryAppProperties } from '../../app/utils';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { isValidFilterField } from '../search/utils';
@@ -20,6 +19,7 @@ import { getSelectedDataDeprecated } from '../../actions';
 import { caseInsensitive } from '../../util/utils';
 
 import { EntityDataType, FilterProps } from './models';
+import { getPrimaryAppProductId } from '../../app/products';
 
 export const SAMPLE_FINDER_SESSION_PREFIX = 'Searched ';
 
@@ -28,7 +28,7 @@ const DISABLED_FIND_DERIVATIVES_MSG =
     'Unable to find derivative samples using search filters or filters on multi-valued lookup fields';
 
 export function getSampleFinderLocalStorageKey(): string {
-    return getPrimaryAppProperties().productId + ActionURL.getContainer() + '-SampleFinder';
+    return getPrimaryAppProductId() + ActionURL.getContainer() + '-SampleFinder';
 }
 
 export function isValidFilterFieldSampleFinder(

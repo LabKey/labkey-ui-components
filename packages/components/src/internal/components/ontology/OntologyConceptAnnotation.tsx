@@ -8,7 +8,8 @@ import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 
 import { ConceptModel, PathModel } from './models';
 import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
-import { sampleManagerIsPrimaryApp } from '../../app/utils';
+
+import { sampleManagerIsPrimaryApp } from '../../app/products';
 
 interface OntologyConceptAnnotationProps {
     field: DomainField;

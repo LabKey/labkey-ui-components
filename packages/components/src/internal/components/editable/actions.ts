@@ -442,7 +442,7 @@ interface CellData {
 }
 
 async function convertRowToEditorModelData(
-    data: Map<string, string | number | boolean>,
+    data: string | number | boolean,
     col: QueryColumn,
     containerPath: string
 ): Promise<CellData> {
@@ -460,7 +460,11 @@ async function convertRowToEditorModelData(
             message = messageAndValue.message;
         }
     } else {
-        valueDescriptors = valueDescriptors.push({ display: data, raw: data });
+        let display = data;
+        if (col.isTimeOrDateTimeColumn && typeof data === 'string') {
+            display = getDateTimeDisplayValueFromStr(data, col);
+        }
+        valueDescriptors = valueDescriptors.push({ display, raw: data });
     }
 
     return { message, valueDescriptors };
@@ -479,6 +483,7 @@ async function prepareInsertRowDataFromBulkForm(
         const data = rowData.get(cn);
         const colIdx = colMin + cn;
         const col = insertColumns[colIdx];
+        // convert date/time fields
         const { message, valueDescriptors } = await convertRowToEditorModelData(data, col, containerPath);
         values = values.push(valueDescriptors);
 

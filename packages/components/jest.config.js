@@ -35,7 +35,8 @@ module.exports = {
                     timepointType: 'VISIT'
                 },
                 // Makes tests appear to be running within an SM app
-                samplemanagement: {}
+                samplemanagement: {},
+                core : { primaryApplicationId: "SampleManager", productKey: "sampleManagerStarter" }
             }
         },
     },

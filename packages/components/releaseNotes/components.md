@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.46.0
+*Released*: 4 June 2025
+- Issue 52527: Implement new method for determining primary app id
+
 ### version 6.45.1
 *Released*: 3 June 2025
 - Issue 52959: LKSM/LKB: Existing file not shown in Bulk Edit

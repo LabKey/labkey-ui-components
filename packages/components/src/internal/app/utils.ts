@@ -20,12 +20,16 @@ import { SHARED_CONTAINER_PATH } from '../constants';
 
 import { AppProperties } from './models';
 import {
+    APPLICATION_PROPERTIES,
+    ARCHIVED_FOLDERS,
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
+    DEPRECATED_OBJECT_LEVEL_DISCUSSIONS,
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
     EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
+    FOLDER_DATA_TYPE_EXCLUSIONS,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     HOME_KEY,
@@ -40,7 +44,6 @@ import {
     PICKLIST_KEY,
     PLATES_KEY,
     ProductFeature,
-    FOLDER_DATA_TYPE_EXCLUSIONS,
     REGISTRY_KEY,
     REQUESTS_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
@@ -48,16 +51,16 @@ import {
     SOURCES_KEY,
     USER_KEY,
     WORKFLOW_KEY,
-    ARCHIVED_FOLDERS,
-    DEPRECATED_OBJECT_LEVEL_DISCUSSIONS,
 } from './constants';
 import {
+    biologicsIsPrimaryApp,
     FREEZER_MANAGER_PRODUCT_ID,
+    getPrimaryAppProductId,
     isBiologicsEnabled,
     isFreezerManagementEnabled,
-    isLIMSEnabled,
-    isPremiumProductEnabled,
+    isLIMSProduct,
     isSampleManagerEnabled,
+    sampleManagerIsPrimaryApp,
 } from './products';
 
 declare var LABKEY: LabKey;
@@ -148,17 +151,7 @@ export function isOntologyEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isProductNavigationEnabled(productId: string, moduleContext?: ModuleContext): boolean {
-    if (productId === LIMS_APP_PROPERTIES.productId) {
-        return isLIMSEnabled(moduleContext);
-    } else if (productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
-        return (
-            isSampleManagerEnabled(moduleContext) && !isLIMSEnabled(moduleContext) && !isBiologicsEnabled(moduleContext)
-        );
-    } else if (productId === BIOLOGICS_APP_PROPERTIES.productId) {
-        return isBiologicsEnabled(moduleContext);
-    }
-
-    return false;
+    return getPrimaryAppProductId(moduleContext) === productId;
 }
 
 export function isExperimentAliasEnabled(moduleContext?: ModuleContext): boolean {
@@ -205,18 +198,6 @@ export function isSharedContainer(containerPath: string): boolean {
     return containerPath === SHARED_CONTAINER_PATH;
 }
 
-export function sampleManagerIsPrimaryApp(moduleContext?: ModuleContext): boolean {
-    return getPrimaryAppProperties(moduleContext)?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId;
-}
-
-export function biologicsIsPrimaryApp(moduleContext?: ModuleContext): boolean {
-    return getPrimaryAppProperties(moduleContext)?.productId === BIOLOGICS_APP_PROPERTIES.productId;
-}
-
-export function limsIsPrimaryApp(moduleContext?: ModuleContext): boolean {
-    return getPrimaryAppProperties(moduleContext)?.productId === LIMS_APP_PROPERTIES.productId;
-}
-
 export function freezerManagerIsCurrentApp(): boolean {
     return getCurrentAppProperties()?.productId === FREEZER_MANAGER_APP_PROPERTIES.productId;
 }
@@ -258,28 +239,7 @@ export function getSubmitButtonClass(): string {
 }
 
 export function getPrimaryAppProperties(moduleContext?: ModuleContext): AppProperties {
-    // Issue 47390: when URL is in the LKB or LKSM controller, then that should be considered the primary app
-    //              it is the LKFM app case when we want to determine the primary app based on enabled modules
-    const currentAppProperties = getCurrentAppProperties();
-    if (
-        currentAppProperties?.productId === BIOLOGICS_APP_PROPERTIES.productId ||
-        currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId ||
-        currentAppProperties?.productId === LIMS_APP_PROPERTIES.productId
-    ) {
-        return currentAppProperties;
-    }
-
-    if (isBiologicsEnabled(moduleContext)) {
-        return BIOLOGICS_APP_PROPERTIES;
-    } else if (isLIMSEnabled(moduleContext)) {
-        return LIMS_APP_PROPERTIES;
-    } else if (isSampleManagerEnabled(moduleContext)) {
-        return SAMPLE_MANAGER_APP_PROPERTIES;
-    } else if (isFreezerManagementEnabled(moduleContext)) {
-        return FREEZER_MANAGER_APP_PROPERTIES;
-    } else {
-        return undefined;
-    }
+    return APPLICATION_PROPERTIES[getPrimaryAppProductId(moduleContext)];
 }
 
 export function isAllProductFoldersFilteringEnabled(moduleContext?: ModuleContext): boolean {
@@ -383,7 +343,7 @@ export function isLKSSupportEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isAssayFileUploadEnabled(moduleContext?: ModuleContext): boolean {
-    return isBiologicsEnabled(moduleContext) || isLIMSEnabled(moduleContext);
+    return isLIMSProduct(moduleContext);
 }
 
 export function isELNEnabled(moduleContext?: ModuleContext): boolean {
@@ -741,13 +701,7 @@ export const useMenuSectionConfigs = (
 
 // Returns the friendly name of the product, primarily for use in help text.
 export function getCurrentProductName(moduleContext?: ModuleContext): string {
-    const lcController = ActionURL.getController().toLowerCase();
-    if (!lcController) return LABKEY_SERVER_PRODUCT_NAME;
-
-    if (isPremiumProductEnabled(moduleContext)) {
-        return getPrimaryAppProperties(moduleContext).name;
-    }
-    return LABKEY_SERVER_PRODUCT_NAME;
+    return getPrimaryAppProperties(moduleContext)?.name || LABKEY_SERVER_PRODUCT_NAME;
 }
 
 export function getAppProductIds(appProductId: string): List<string> {

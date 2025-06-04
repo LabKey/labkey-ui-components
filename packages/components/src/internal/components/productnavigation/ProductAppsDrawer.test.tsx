@@ -12,6 +12,7 @@ import {
     SAMPLE_MANAGER_ALT_PRODUCT_ICON,
     SAMPLE_MANAGER_PRODUCT_ICON,
 } from './constants';
+import { BIOLOGICS_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from '../../app/products';
 
 const DEFAULT_PROPS = {
     products: [],
@@ -45,6 +46,7 @@ describe('ProductAppsDrawer', () => {
         LABKEY.moduleContext = {
             samplemanagement: {},
             biologics: {},
+            core: { primaryApplicationId: BIOLOGICS_PRODUCT_ID }
         };
         // create them after setting the module context to properly set the disabled flags
         const products = [
@@ -69,6 +71,7 @@ describe('ProductAppsDrawer', () => {
     test('iconUrl, only sample manager', () => {
         LABKEY.moduleContext = {
             samplemanagement: {},
+            core: { primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID }
         };
         // create them after setting the module context to properly set the disabled flags
         const products = [

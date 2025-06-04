@@ -38,7 +38,6 @@ export const SAMPLE_TYPE_KEY = 'sampleType';
 export const SEARCH_KEY = 'search';
 export const SOURCES_KEY = 'sources';
 export const DATA_CLASS_KEY = 'dataclass';
-export const SOURCE_TYPE_KEY = 'sourceType';
 export const WORKFLOW_KEY = 'workflow';
 export const FREEZERS_KEY = 'freezers';
 export const ITEMS_KEY = 'items';
@@ -79,7 +78,7 @@ export const FILE_UPDATE_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new').addPar
     'mode',
     EntityCreationMode.FILE_UPDATE
 );
-export const NEW_SOURCE_TYPE_HREF = AppURL.create(SOURCE_TYPE_KEY, 'new');
+export const NEW_SOURCE_TYPE_HREF = AppURL.create(SOURCES_KEY, 'new');
 export const NEW_SAMPLE_TYPE_HREF = AppURL.create(SAMPLE_TYPE_KEY, 'new');
 export const NEW_STANDARD_ASSAY_DESIGN_HREF = AppURL.create(ASSAY_DESIGN_KEY, GENERAL_ASSAY_PROVIDER_NAME);
 export const NEW_ASSAY_DESIGN_HREF = AppURL.create(ASSAY_DESIGN_KEY, 'new');

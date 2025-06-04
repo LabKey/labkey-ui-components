@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.??.?
+*Released*: ? June 2025
+- Remove SOURCE_TYPE_KEY constant
+
+
 ### version 6.48.1
 *Released*: 10 June 2025
 - Update `AppLink` to extend all props of `AnchorHTMLAttributes`

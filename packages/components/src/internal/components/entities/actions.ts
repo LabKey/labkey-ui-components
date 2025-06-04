@@ -300,7 +300,7 @@ function resolveSampleParentTypes(
             EntityParentType.create({
                 index,
                 schema: 'samples',
-                query: sampleType?.toLowerCase(),
+                query: sampleType,
                 label: sampleType,
                 value: orderedRowIds
                     ? List<DisplayObject>(data.sort(_getEntitySort(orderedRowIds)))
@@ -364,7 +364,7 @@ async function initParents(
         return getSelectedParents(schemaQuery, filterArray, isAliquotParent, selectionResponse.selected);
     } else if (initialParents?.length > 0) {
         const [parent] = initialParents;
-        const [schema, query, value] = parseEntityParentKey(parent.toLowerCase());
+        const [schema, query, value] = parseEntityParentKey(parent);
 
         // if the parent key doesn't have a value, we don't need to make the request to getSelectedParents
         if (value === undefined) {
@@ -431,7 +431,7 @@ function resolveEntityParentTypeFromIds(
         EntityParentType.create({
             index: 1,
             schema: schemaQuery.schemaName,
-            query: schemaQuery.queryName,
+            query: dataClass ?? schemaQuery.queryName,
             label: dataClass,
             value: List(data),
             isAliquotParent,

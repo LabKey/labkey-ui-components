@@ -227,12 +227,12 @@ export class EntityIdCreationModel extends Record({
 
     static revertParentInputSchema(inputColumn: QueryColumn): SchemaQuery {
         if (inputColumn.isExpInput()) {
-            const fieldKey = inputColumn.fieldKey.toLowerCase().split('/');
+            const fieldKey = inputColumn.fieldKey.split('/');
             if (fieldKey.length === 2) {
                 let schemaName: string;
-                if (fieldKey[0] === QueryColumn.DATA_INPUTS.toLowerCase()) {
+                if (fieldKey[0] === QueryColumn.DATA_INPUTS) {
                     schemaName = SCHEMAS.DATA_CLASSES.SCHEMA;
-                } else if (fieldKey[0] === QueryColumn.MATERIAL_INPUTS.toLowerCase()) {
+                } else if (fieldKey[0] === QueryColumn.MATERIAL_INPUTS) {
                     schemaName = SCHEMAS.SAMPLE_SETS.SCHEMA;
                 } else {
                     throw new Error('Invalid inputColumn fieldKey. "' + fieldKey[0] + '"');
@@ -382,7 +382,11 @@ export class EntityIdCreationModel extends Record({
                     selected = this.entityParents.reduce((found, parentList) => {
                         return (
                             found ||
-                            parentList.find(parent => parent.schema === sq.schemaName && parent.query === sq.queryName)
+                            parentList.find(
+                                parent =>
+                                    parent.schema === sq.schemaName &&
+                                    parent.query.toLowerCase() === sq.queryName.toLowerCase()
+                            )
                         );
                     }, undefined);
                 } else if (col.isAliquotParent() && this.creationType === EntityCreationType.Aliquots) {

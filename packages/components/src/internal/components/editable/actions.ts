@@ -483,7 +483,6 @@ async function prepareInsertRowDataFromBulkForm(
         const data = rowData.get(cn);
         const colIdx = colMin + cn;
         const col = insertColumns[colIdx];
-        // convert date/time fields
         const { message, valueDescriptors } = await convertRowToEditorModelData(data, col, containerPath);
         values = values.push(valueDescriptors);
 

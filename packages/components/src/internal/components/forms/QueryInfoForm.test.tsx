@@ -18,12 +18,10 @@ import { render } from '@testing-library/react';
 
 import { makeQueryInfo } from '../../test/testHelpers';
 import mixturesQueryInfo from '../../../test/data/mixtures-getQueryDetails.json';
-import samplesQueryInfo from '../../../test/data/sampleDateTimeProps-getQueryDetails.json';
 
 import { getUpdatedFields, QueryInfoForm } from './QueryInfoForm';
 
 const MIXTURE_QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
-const SAMPLE_QUERY_INFO = makeQueryInfo(samplesQueryInfo);
 
 describe('QueryInfoForm', () => {
     test('default props', () => {
@@ -199,42 +197,43 @@ describe('QueryInfoForm', () => {
 
 describe('getUpdatedFields', () => {
     const formData = {
-        date: '2025-04-17',
-        dateTime: '2025-04-16 22:30:00.000',
-        time: '22:20:00.000',
+        expirationTime: '22:20:00.000',
+        extraTestColumn: 'abc ',
+        numItems: 10,
     };
 
-    const formDataWithExtraPrecision = {
-        date: '2025-04-17',
-        dateTime: '2025-04-16 22:30:01.123',
-        time: '22:20:01.123',
-    };
-
-    const formDataWithDiffFormat = {
-        date: '2025/04/17',
-        dateTime: '2025/04/16 22:30:01.123',
-        time: '10:20:01.123 PM',
-    };
-
-    const formatted = {
-        date: '2025-04-17',
-        dateTime: '2025-04-16 22:30',
-        time: '22:20',
-    };
-
-    test('submitForEdit = true', () => {
-        expect(getUpdatedFields(SAMPLE_QUERY_INFO, formData, true).toJS()).toEqual(formatted);
-        expect(getUpdatedFields(SAMPLE_QUERY_INFO, formDataWithExtraPrecision, true).toJS()).toEqual(formatted);
-        expect(getUpdatedFields(SAMPLE_QUERY_INFO, formDataWithDiffFormat, true).toJS()).toEqual(formatted);
+    test('without ::enabled', () => {
+        expect(getUpdatedFields(MIXTURE_QUERY_INFO, formData).toJS()).toEqual({
+            expirationTime: '22:20:00.000',
+            extraTestColumn: 'abc'
+        });
     });
 
-    test('submitForEdit = false', () => {
-        expect(getUpdatedFields(SAMPLE_QUERY_INFO, formData, false).toJS()).toEqual(formData);
-        expect(getUpdatedFields(SAMPLE_QUERY_INFO, formDataWithExtraPrecision, false).toJS()).toEqual(
-            formDataWithExtraPrecision
-        );
-        expect(getUpdatedFields(SAMPLE_QUERY_INFO, formDataWithDiffFormat, false).toJS()).toEqual(
-            formDataWithDiffFormat
-        );
+    test('without ::enabled, with additionalFields', () => {
+        expect(getUpdatedFields(MIXTURE_QUERY_INFO, formData, ['numItems']).toJS()).toEqual({
+            expirationTime: '22:20:00.000',
+            extraTestColumn: 'abc',
+            numItems: 10
+        });
+    });
+
+    test('with ::enabled=false', () => {
+        expect(getUpdatedFields(MIXTURE_QUERY_INFO, {
+            ...formData,
+            'extraTestColumn::enabled': false
+        }).toJS()).toEqual({
+            expirationTime: '22:20:00.000',
+        });
+    });
+
+    test('with ::enabled=false, with additionalFields', () => {
+        expect(getUpdatedFields(MIXTURE_QUERY_INFO, {
+            ...formData,
+            'extraTestColumn::enabled': false
+        }, ['numItems', 'extraTestColumn']).toJS()).toEqual({
+            expirationTime: '22:20:00.000',
+            extraTestColumn: 'abc',
+            numItems: 10
+        });
     });
 });

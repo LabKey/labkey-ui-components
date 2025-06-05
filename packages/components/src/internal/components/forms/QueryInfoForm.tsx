@@ -45,7 +45,6 @@ import { CommentTextArea } from './input/CommentTextArea';
 export const getUpdatedFields = (
     queryInfo: QueryInfo,
     data: any,
-    submitForEdit?: boolean,
     additionalFields?: string[]
 ): OrderedMap<string, any> => {
     const fieldsToUpdate = queryInfo.columns.filter(column => {
@@ -56,7 +55,7 @@ export const getUpdatedFields = (
     let filteredData = OrderedMap<string, any>();
     for (const key in data) {
         if (data.hasOwnProperty(key)) {
-            if (fieldsToUpdate.has(key.toLowerCase()) || additionalFields.indexOf(key) !== -1) {
+            if (fieldsToUpdate.has(key.toLowerCase()) || (additionalFields && additionalFields?.indexOf(key) !== -1)) {
                 const col = queryInfo?.getColumn(key);
                 if (col?.jsonType === 'string' && typeof data[key] === 'string') {
                     filteredData = filteredData.set(key, data[key]?.trim());
@@ -192,7 +191,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         if (onFormChangeWithData) {
             const row = this.formRef?.['current']?.['getModel']?.();
             if (row) {
-                const updatedRow = getUpdatedFields(queryInfo, row, this.state.submitForEdit, [
+                const updatedRow = getUpdatedFields(queryInfo, row, [
                     'numItems',
                     'creationType',
                 ]);
@@ -222,7 +221,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
             errorMsg: undefined,
             isSubmitting: true,
         });
-        const updatedRow = getUpdatedFields(this.props.queryInfo, row, submitForEdit, ['numItems', 'creationType']);
+        const updatedRow = getUpdatedFields(this.props.queryInfo, row, ['numItems', 'creationType']);
         const submitFn = submitForEdit ? onSubmitForEdit : onSubmit;
 
         submitFn(updatedRow, comment).then(

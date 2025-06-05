@@ -99,7 +99,7 @@ export function isDateTimeCol(col: QueryColumn): boolean {
     return false;
 }
 
-function _toAmPm(rawTimeFormat: string, toAMPM: boolean) {
+function _toAmPm(rawTimeFormat: string, toAMPM: boolean) : string {
     if (!toAMPM) return rawTimeFormat;
 
     if (rawTimeFormat.indexOf(' a') > -1) return rawTimeFormat;
@@ -109,10 +109,13 @@ function _toAmPm(rawTimeFormat: string, toAMPM: boolean) {
 
 export function getPickerTimeFormatWithPrecision(
     timeFormat: string,
-    showMinute: boolean,
-    showSeconds: boolean,
-    showMilliSeconds: boolean
-) {
+    showMinute?: boolean,
+    showSeconds?: boolean,
+    showMilliSeconds?: boolean
+) : string {
+    if (!timeFormat)
+        return '';
+
     const useAmPm = timeFormat.indexOf(' a') > -1;
     if (timeFormat.indexOf('.SSS') > -1) return timeFormat;
 
@@ -135,12 +138,13 @@ export function getPickerTimeFormatWithPrecision(
 // 'yyyy-MM-dd hh:mm a' -> 'yyyy-MM-dd hh:mm:ss.SSS a' if showSeconds is true and showMilliSeconds is true
 export function getPickerFormatWithPrecision(
     rawDateTimeFormat: string,
-    showMinute: boolean,
-    showSeconds: boolean,
-    showMilliSeconds: boolean
-) {
+    showMinute?: boolean,
+    showSeconds?: boolean,
+    showMilliSeconds?: boolean
+) : string {
     const parts = splitDateTimeFormat(rawDateTimeFormat);
     if (parts.length === 1) return parts[0];
+    if (!parts[1]) return parts[0];
     return (
         parts[0] +
         ' ' +
@@ -199,7 +203,7 @@ export function getDateFromISO(
 export function getDateTimeDisplayValue(date: Date, queryColumn: QueryColumn): string {
     const { dateFormat, timeFormat } = getPickerDateAndTimeFormat(queryColumn, false, date);
     if (queryColumn.isTimeColumn) return formatTime(date, timeFormat);
-    if (queryColumn.isDateOnlyColumn) formatDate(date, null, dateFormat);
+    if (queryColumn.isDateOnlyColumn) return formatDate(date, null, dateFormat);
     return formatDateTime(date, null, dateFormat);
 }
 
@@ -228,9 +232,11 @@ export function parseFNSTimeFormat(timePart: string): string {
     if (!timePart || timePart.indexOf(':') === -1) return undefined;
 
     if (timePart.indexOf('H') > -1 || timePart.indexOf('k') > -1) {
+        if (timePart.indexOf('.S') > 0) return 'HH:mm:ss.SSS'; // 13:30:00.000
         if (timePart.indexOf('s') > 0) return 'HH:mm:ss'; // 13:30:00
         return 'HH:mm'; // 13:30
     } else if (timePart.indexOf('h') > -1 || timePart.indexOf('K') > -1) {
+        if (timePart.indexOf('.S') > 0) return 'hh:mm:ss.SSS a'; // 01:30:00.000 PM
         if (timePart.indexOf('s') > 0) return 'hh:mm:ss a'; // 01:30:00 PM
         return 'hh:mm a'; // 01:30 PM
     }
@@ -459,18 +465,16 @@ export function parseTimeParts(h: string, m?: string, s?: string, ms?: string, p
     if (period && period.toUpperCase() !== 'AM' && period.toUpperCase() !== 'PM') return null;
 
     // Invalid hours for AM/PM, 0 might be considered invalid as well
-    if (period && (hours < 0 || hours > 12)) {
-        return null;
-    }
-
-    // Convert hours for AM/PM
-    const adjustedHours = period ? (hours % 12) + (period.toUpperCase() === 'PM' ? 12 : 0) : hours;
+    if (period && (hours < 0 || hours > 12)) return null;
 
     if (isNaN(minutes) || minutes < 0 || minutes > 59) return null;
 
     if (isNaN(seconds) || seconds < 0 || seconds > 59) return null;
 
     if (isNaN(milliseconds) || milliseconds < 0 || milliseconds > 999) return null;
+
+    // Convert hours for AM/PM
+    const adjustedHours = period ? (hours % 12) + (period.toUpperCase() === 'PM' ? 12 : 0) : hours;
 
     const date = new Date();
     date.setHours(adjustedHours, minutes, seconds, milliseconds);
@@ -491,68 +495,17 @@ export function parseTime(time: string | Date): Date {
         return null;
     } else if (typeof time !== 'string') return null;
 
-    // Regular expressions for different time formats
-    const timeFormats = [
-        {
-            regex: /^(\d{1,2})$/, // HH
-            handler: ([, h]: RegExpMatchArray) => {
-                return parseTimeParts(h);
-            },
-        },
-        {
-            regex: /^(\d{1,2}):(\d{2})$/, // HH:mm
-            handler: ([, h, m]: RegExpMatchArray) => {
-                return parseTimeParts(h, m);
-            },
-        },
-        {
-            regex: /^(\d{1,2}):(\d{2}):(\d{2})$/, // HH:mm:ss
-            handler: ([, h, m, s]: RegExpMatchArray) => {
-                return parseTimeParts(h, m, s);
-            },
-        },
-        {
-            regex: /^(\d{1,2}):(\d{2}):(\d{2})\.(\d{1,3}\d*)$/, // HH:mm:ss.SSS (truncate extra digits)
-            handler: ([, h, m, s, ms]: RegExpMatchArray) => {
-                return parseTimeParts(h, m, s, ms);
-            },
-        },
-        {
-            regex: /^(\d{1,2})\s*(AM|PM)$/i, // HH AM/PM
-            handler: ([, h, period]: RegExpMatchArray) => {
-                return parseTimeParts(h, null, null, null, period);
-            },
-        },
-        {
-            regex: /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i, // HH:mm AM/PM
-            handler: ([, h, m, period]: RegExpMatchArray) => {
-                return parseTimeParts(h, m, null, null, period);
-            },
-        },
-        {
-            regex: /^(\d{1,2}):(\d{2}):(\d{2})\s*(AM|PM)$/i, // HH:mm:ss AM/PM
-            handler: ([, h, m, s, period]: RegExpMatchArray) => {
-                return parseTimeParts(h, m, s, null, period);
-            },
-        },
-        {
-            regex: /^(\d{1,2}):(\d{2}):(\d{2})\.(\d{1,3}\d*)\s*(AM|PM)$/i, // HH:mm:ss.SSS AM/PM (truncate extra digits)
-            handler: ([, h, m, s, ms, period]: RegExpMatchArray) => {
-                return parseTimeParts(h, m, s, ms, period);
-            },
-        },
-    ];
+    // Format: HH(:mm(:ss(.SSS))) (AM|PM) -- (truncate extra digits)
+    const timeRegex = /^(\d{1,2})(?::(\d{2})(?::(\d{2})(?:\.(\d{1,3}\d*))?)?)?(?:\s*(AM|PM))?$/i;
+    const match = time.match(timeRegex);
 
-    for (const { regex, handler } of timeFormats) {
-        const match = time.match(regex);
-        if (match) {
-            const date = handler(match);
-            if (isValid(date)) return date;
-        }
+    if (match) {
+        const [, h, m, s, ms, period] = match;
+        const date = parseTimeParts(h, m, s, ms, period);
+        if (isValid(date)) return date;
     }
 
-    return null;
-}
+    return null;}
 
 function safeParse(dateStr: string, formatStr: string, referenceDate: number | Date, options?: any): Date {
     try {

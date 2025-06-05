@@ -156,9 +156,7 @@ export const EditInlineField: FC<Props> = memo(props => {
             if (!date) {
                 if (isDate) setDateValue(undefined);
                 else setTimeJsonValue(undefined);
-            }
-
-            if (typeof date === 'string') {
+            } else if (typeof date === 'string') {
                 if (!isDate) setTimeJsonValue(date);
             } else {
                 if (isDate) setDateValue(date);

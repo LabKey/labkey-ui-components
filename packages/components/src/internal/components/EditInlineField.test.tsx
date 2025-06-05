@@ -43,7 +43,6 @@ describe('EditInlineField', () => {
         }
 
         expect(document.querySelectorAll('.date-input')).toHaveLength(type?.date ?? 0);
-        expect(document.querySelectorAll('.date-input')).toHaveLength(type?.date ?? 0);
         expect(document.querySelectorAll('textarea')).toHaveLength(type?.textarea ?? 0);
         expect(document.querySelectorAll('input')).toHaveLength(type?.text ?? type?.date ?? 0);
 
@@ -212,7 +211,7 @@ describe('EditInlineField', () => {
         renderWithAppContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
-                value="18:00:00.123"
+                value="18:00:00.1234"
                 column={
                     new QueryColumn({
                         format: 'hh:mm a',

@@ -708,14 +708,13 @@ import { ColumnSelectionModal } from './internal/components/ColumnSelectionModal
 
 import { AppReducers, ProductMenuReducers, ServerNotificationReducers } from './internal/app/reducers';
 import {
+    biologicsIsPrimaryApp,
     isBiologicsEnabled,
     isFreezerManagementEnabled,
-    isLIMSEnabled,
-    isPremiumProductEnabled,
-    isSampleManagerEnabled,
+    isPremiumApplication,
+    limsIsPrimaryApp,
 } from './internal/app/products';
 import {
-    biologicsIsPrimaryApp,
     CloseEventCode,
     freezerManagerIsCurrentApp,
     getAppHomeFolderId,
@@ -760,7 +759,6 @@ import {
     isSharedContainer,
     isSourceTypeEnabled,
     isWorkflowEnabled,
-    limsIsPrimaryApp,
     setFolderDataExclusion,
     setProductFolders,
     useMenuSectionConfigs,
@@ -823,7 +821,6 @@ import {
     AUDIT_KEY,
     BIOLOGICS_APP_PROPERTIES,
     BOXES_KEY,
-    ITEMS_KEY,
     CROSS_TYPE_KEY,
     DATA_CLASS_KEY,
     ELN_KEY,
@@ -839,6 +836,7 @@ import {
     FREEZERS_KEY,
     GRID_INSERT_SAMPLES_HREF,
     HOME_KEY,
+    ITEMS_KEY,
     LIMS_APP_PROPERTIES,
     MEDIA_KEY,
     MINE_KEY,
@@ -965,10 +963,8 @@ const App = {
     isELNEnabled,
     isFreezerManagementEnabled,
     isPlatesEnabled,
-    isSampleManagerEnabled,
     isBiologicsEnabled,
-    isLIMSEnabled,
-    isPremiumProductEnabled,
+    isPremiumApplication,
     isSampleAliquotSelectorEnabled,
     isProjectContainer,
     isProtectedDataEnabled,
@@ -2049,5 +2045,6 @@ export type { ImportTemplate } from './public/QueryInfo';
 export type { RequestHandler, RequestOptions } from './internal/request';
 export type { UseRequestHandler } from './internal/util/RequestHandler';
 export type { UseTimeout } from './internal/hooks';
+export type { Loader } from './internal/useLoadableState';
 export type { QueryParamValue } from './internal/url/AppURL';
 export type { NavigateFn } from './internal/url/useAppNavigate';

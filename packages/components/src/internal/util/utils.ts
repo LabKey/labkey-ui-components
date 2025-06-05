@@ -200,16 +200,18 @@ export function valueIsEmpty(value: any): boolean {
  *
  * @param data Map between ids and a map of data for the ids (i.e, a row of data for that id)
  */
-export function getCommonDataValues(data: Map<any, any>): any {
+export function getCommonDataValues(data: Map<any, any>, fileFields?: string[]): any {
     let valueMap = Map<string, any>(); // map from fields to the value shared by all rows
     let fieldsInConflict = ImmutableSet<string>();
     let emptyFields = ImmutableSet<string>(); // those fields that are empty
+    const fileMap = {};
     data.map((rowData, id) => {
         if (rowData) {
             rowData.forEach((data, key) => {
                 if (!fieldsInConflict.has(key)) {
                     // skip fields that are already in conflict
                     let value = data;
+                    const rawValue = data;
 
                     // Convert from immutable to regular JS
                     if (Iterable.isIterable(data)) {
@@ -233,6 +235,9 @@ export function getCommonDataValues(data: Map<any, any>): any {
                             fieldsInConflict = fieldsInConflict.add(key);
                         } else if (!havePreviousValue) {
                             valueMap = valueMap.set(key, value);
+                            if (fileFields?.indexOf(key) > -1) {
+                                fileMap[key] = rawValue;
+                            }
                         }
                         if (arrayNotEqual) {
                             fieldsInConflict = fieldsInConflict.add(key);
@@ -254,6 +259,12 @@ export function getCommonDataValues(data: Map<any, any>): any {
             console.error('Unable to find data for selection id ' + id);
         }
     });
+
+    // return full file data map (url, displayValue, value) for file fields
+    fileFields?.forEach(fileField => {
+        if (valueMap.has(fileField)) valueMap = valueMap.set(fileField, fileMap[fileField]);
+    });
+
     return valueMap.toObject();
 }
 

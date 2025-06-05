@@ -27,6 +27,8 @@ import { getPermissionRestrictionMessage } from '../../util/messaging';
 import { EntityDataType, OperationConfirmationData } from './models';
 import { getEntityNoun } from './utils';
 import { EntityMoveConfirmationModal } from './EntityMoveConfirmationModal';
+import { getPrimaryAppProductId } from '../../app/products';
+import { useServerContext } from '../base/ServerContext';
 
 export interface EntityMoveModalProps {
     api?: ComponentsAPIWrapper;
@@ -63,6 +65,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
     const [error, setError] = useState<string>();
     const [showProgress, setShowProgress] = useState<boolean>(false);
     const [numConfirmed, setNumConfirmed] = useState<number>(0);
+    const { moduleContext } = useServerContext();
 
     let rowIds;
     let numSelected = 0;
@@ -129,7 +132,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                 });
 
                 let containerUrl = buildURL(
-                    getPrimaryAppProperties()?.productId,
+                    getPrimaryAppProductId(moduleContext),
                     `${ActionURL.getAction() || 'app'}.view`,
                     undefined,
                     { container: targetContainerPath, returnUrl: false }

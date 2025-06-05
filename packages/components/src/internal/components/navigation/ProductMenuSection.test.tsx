@@ -3,14 +3,10 @@ import { List } from 'immutable';
 
 import { AppURL } from '../../url/AppURL';
 
-import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
-
-import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
-
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 import { ProductMenuSection } from './ProductMenuSection';
-import { MenuSectionModel, MenuSectionConfig } from './model';
+import { MenuSectionConfig, MenuSectionModel } from './model';
 
 describe('ProductMenuSection', () => {
     const sampleSetItems = List<MenuSectionModel>([
@@ -83,17 +79,6 @@ describe('ProductMenuSection', () => {
         },
     ]);
 
-    function getDefaultServerContext() {
-        return {
-            container: TEST_PROJECT_CONTAINER,
-            moduleContext: {
-                api: {
-                    moduleNames: ['samplemanagement', 'premium'],
-                },
-                samplemanagement: { productId: SAMPLE_MANAGER_APP_PROPERTIES.productId },
-            },
-        };
-    }
 
     test('empty section no text', () => {
         const section = MenuSectionModel.create({
@@ -112,7 +97,6 @@ describe('ProductMenuSection', () => {
                     })
                 }
             />,
-            { serverContext: getDefaultServerContext() }
         );
 
         expect(document.querySelectorAll('li').length).toBe(2); // header and hr
@@ -132,9 +116,7 @@ describe('ProductMenuSection', () => {
             key: 'samples',
         });
 
-        renderWithAppContext(<ProductMenuSection config={config} containerPath="/test/path" section={section} />, {
-            serverContext: getDefaultServerContext(),
-        });
+        renderWithAppContext(<ProductMenuSection config={config} containerPath="/test/path" section={section} />);
 
         expect(document.querySelectorAll('li.empty-section').length).toBe(1);
         expect(document.querySelector('.empty-section').textContent).toBe('Test empty text');
@@ -158,9 +140,7 @@ describe('ProductMenuSection', () => {
             key: 'samples',
         });
 
-        renderWithAppContext(<ProductMenuSection config={config} containerPath="/test/path" section={section} />, {
-            serverContext: getDefaultServerContext(),
-        });
+        renderWithAppContext(<ProductMenuSection config={config} containerPath="/test/path" section={section} />);
 
         expect(document.querySelectorAll('.empty-section').length).toBe(1);
         expect(document.querySelector('.empty-section').textContent).not.toContain('Test empty text');
@@ -184,9 +164,7 @@ describe('ProductMenuSection', () => {
             key: 'samples',
         });
 
-        renderWithAppContext(<ProductMenuSection config={config} containerPath="/test/path" section={section} />, {
-            serverContext: getDefaultServerContext(),
-        });
+        renderWithAppContext(<ProductMenuSection config={config} containerPath="/test/path" section={section} />);
 
         expect(document.querySelectorAll('.empty-section').length).toBe(0);
         expect(document.querySelectorAll('li').length).toBe(3);
@@ -210,8 +188,7 @@ describe('ProductMenuSection', () => {
                         headerText: 'Custom Sample Sets',
                     })
                 }
-            />,
-            { serverContext: getDefaultServerContext() }
+            />
         );
 
         expect(document.querySelectorAll('.menu-section-header').length).toBe(1);
@@ -236,8 +213,7 @@ describe('ProductMenuSection', () => {
                         iconURL: '/testProduct3Columns/images/samples.svg',
                     })
                 }
-            />,
-            { serverContext: getDefaultServerContext() }
+            />
         );
         expect(document.querySelectorAll('ul').length).toBe(2);
         expect(document.querySelectorAll('i.fa-spinner').length).toBe(1); // verify active job indicator
@@ -261,8 +237,7 @@ describe('ProductMenuSection', () => {
         });
 
         renderWithAppContext(
-            <ProductMenuSection section={section} containerPath="/test/path" config={sectionConfig} />,
-            { serverContext: getDefaultServerContext() }
+            <ProductMenuSection section={section} containerPath="/test/path" config={sectionConfig} />
         );
 
         expect(document.querySelectorAll('ul').length).toBe(2);
@@ -291,8 +266,7 @@ describe('ProductMenuSection', () => {
                         showActiveJobIcon: false,
                     })
                 }
-            />,
-            { serverContext: getDefaultServerContext() }
+            />
         );
 
         expect(document.querySelectorAll('i.fa-spinner').length).toBe(0);
@@ -314,8 +288,7 @@ describe('ProductMenuSection', () => {
                         activeJobIconCls: 'job-running-icon',
                     })
                 }
-            />,
-            { serverContext: getDefaultServerContext() }
+            />
         );
 
         expect(document.querySelectorAll('i.fa-spinner').length).toBe(0);
@@ -340,8 +313,7 @@ describe('ProductMenuSection', () => {
                         emptyURLText: 'Create it',
                     })
                 }
-            />,
-            { serverContext: getDefaultServerContext() }
+            />
         );
 
         expect(document.querySelector('.empty-section').textContent).toBe('Testing empty');
@@ -369,8 +341,7 @@ describe('ProductMenuSection', () => {
                         useOriginalURL: true,
                     })
                 }
-            />,
-            { serverContext: getDefaultServerContext() }
+            />
         );
 
         expect(document.querySelectorAll('.menu-section-header').length).toBe(1);

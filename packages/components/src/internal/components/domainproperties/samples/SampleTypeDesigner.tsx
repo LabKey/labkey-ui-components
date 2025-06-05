@@ -21,7 +21,7 @@ import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesi
 
 import { PropDescType, UNIQUE_ID_TYPE } from '../PropDescType';
 
-import { biologicsIsPrimaryApp, getAppHomeFolderPath, hasModule, isCommunityDistribution } from '../../../app/utils';
+import { getAppHomeFolderPath, hasModule, isCommunityDistribution } from '../../../app/utils';
 
 import { NameExpressionValidationModal } from '../validation/NameExpressionValidationModal';
 
@@ -52,6 +52,7 @@ import { Container } from '../../base/models/Container';
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
+import { biologicsIsPrimaryApp } from '../../../app/products';
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,

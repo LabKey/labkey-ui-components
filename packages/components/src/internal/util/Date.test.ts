@@ -39,7 +39,9 @@ import {
     getNonStandardDateTimeFormatWarning,
     getNonStandardFormatWarning,
     getParsedRelativeDateStr,
-    getPickerDateAndTimeFormat, getPickerFormatWithPrecision, getPickerTimeFormatWithPrecision,
+    getPickerDateAndTimeFormat,
+    getPickerFormatWithPrecision,
+    getPickerTimeFormatWithPrecision,
     isDateBetween,
     isDateTimeInPast,
     isRelativeDateFilterValue,
@@ -457,7 +459,6 @@ describe('Date Utilities', () => {
                 dateFormat: 'HH:mm:ss.SSS',
                 timeFormat: 'HH:mm:ss.SSS',
             });
-
         });
 
         test('datePlaceholder without col.rangeURI', () => {
@@ -499,7 +500,6 @@ describe('Date Utilities', () => {
                 timeFormat: undefined,
             });
 
-
             const timeCol = new QueryColumn({ shortCaption: 'TimeCol', rangeURI: undefined });
             expect(getColDateFormat(timeCol, 'Time')).toBe('HH:mm');
 
@@ -522,7 +522,6 @@ describe('Date Utilities', () => {
                 dateFormat: 'yyyy-MM-dd HH:mm:ss.SSS',
                 timeFormat: 'HH:mm:ss.SSS',
             });
-
         });
 
         test('queryColumn.format', () => {
@@ -793,9 +792,9 @@ describe('Date Utilities', () => {
 
     describe('getPickerTimeFormatWithPrecision', () => {
         test('invalid', () => {
-            expect(getPickerTimeFormatWithPrecision(undefined)).toBe('')
-            expect(getPickerTimeFormatWithPrecision(null)).toBe('')
-            expect(getPickerTimeFormatWithPrecision('')).toBe('')
+            expect(getPickerTimeFormatWithPrecision(undefined)).toBe('');
+            expect(getPickerTimeFormatWithPrecision(null)).toBe('');
+            expect(getPickerTimeFormatWithPrecision('')).toBe('');
             expect(getPickerTimeFormatWithPrecision('null')).toBe('null');
         });
 
@@ -815,7 +814,7 @@ describe('Date Utilities', () => {
         });
 
         test('am/pm', () => {
-            expect(getPickerTimeFormatWithPrecision('hh:mm:ss.SSS a')).toBe('hh:mm:ss.SSS a')
+            expect(getPickerTimeFormatWithPrecision('hh:mm:ss.SSS a')).toBe('hh:mm:ss.SSS a');
             expect(getPickerTimeFormatWithPrecision('hh:mm:ss.SSS a', true, false, false)).toBe('hh:mm:ss.SSS a');
             expect(getPickerTimeFormatWithPrecision('hh:mm:ss.SSS a', false, true, false)).toBe('hh:mm:ss.SSS a');
             expect(getPickerTimeFormatWithPrecision('hh:mm:ss.SSS a', false, false, true)).toBe('hh:mm:ss.SSS a');
@@ -832,38 +831,62 @@ describe('Date Utilities', () => {
 
     describe('getPickerFormatWithPrecision', () => {
         test('invalid', () => {
-            expect(getPickerFormatWithPrecision(undefined)).toBe('')
-            expect(getPickerFormatWithPrecision(null)).toBe('')
-            expect(getPickerFormatWithPrecision('')).toBe('')
+            expect(getPickerFormatWithPrecision(undefined)).toBe('');
+            expect(getPickerFormatWithPrecision(null)).toBe('');
+            expect(getPickerFormatWithPrecision('')).toBe('');
             expect(getPickerFormatWithPrecision('null')).toBe('null');
         });
 
         test('Date only', () => {
-            expect(getPickerFormatWithPrecision('yyyy-MM-dd')).toBe('yyyy-MM-dd')
-            expect(getPickerFormatWithPrecision('MMMM dd yyyy')).toBe('MMMM dd yyyy')
+            expect(getPickerFormatWithPrecision('yyyy-MM-dd')).toBe('yyyy-MM-dd');
+            expect(getPickerFormatWithPrecision('MMMM dd yyyy')).toBe('MMMM dd yyyy');
         });
 
         test('Datetime', () => {
             expect(getPickerFormatWithPrecision('yyyy-MM-dd HH:mm:ss.SSS')).toBe('yyyy-MM-dd HH:mm:ss.SSS');
             expect(getPickerFormatWithPrecision('MMMM dd yyyy HH:mm:ss.SSS')).toBe('MMMM dd yyyy HH:mm:ss.SSS');
-            expect(getPickerFormatWithPrecision('yyyy-MM-dd HH:mm:ss.SSS', true, false, false)).toBe('yyyy-MM-dd HH:mm:ss.SSS');
-            expect(getPickerFormatWithPrecision('MMMM dd yyyy HH:mm:ss.SSS', true, false, false)).toBe('MMMM dd yyyy HH:mm:ss.SSS');
+            expect(getPickerFormatWithPrecision('yyyy-MM-dd HH:mm:ss.SSS', true, false, false)).toBe(
+                'yyyy-MM-dd HH:mm:ss.SSS'
+            );
+            expect(getPickerFormatWithPrecision('MMMM dd yyyy HH:mm:ss.SSS', true, false, false)).toBe(
+                'MMMM dd yyyy HH:mm:ss.SSS'
+            );
             expect(getPickerFormatWithPrecision('yyyy-MM-dd HH:mm:ss')).toBe('yyyy-MM-dd HH:mm:ss');
             expect(getPickerFormatWithPrecision('MMMM dd yyyy HH:mm:ss')).toBe('MMMM dd yyyy HH:mm:ss');
-            expect(getPickerFormatWithPrecision('yyyy-MM-dd HH:mm:ss', false, false, true)).toBe('yyyy-MM-dd HH:mm:ss.SSS');
-            expect(getPickerFormatWithPrecision('MMMM dd yyyy HH:mm:ss', false, false, true)).toBe('MMMM dd yyyy HH:mm:ss.SSS');
+            expect(getPickerFormatWithPrecision('yyyy-MM-dd HH:mm:ss', false, false, true)).toBe(
+                'yyyy-MM-dd HH:mm:ss.SSS'
+            );
+            expect(getPickerFormatWithPrecision('MMMM dd yyyy HH:mm:ss', false, false, true)).toBe(
+                'MMMM dd yyyy HH:mm:ss.SSS'
+            );
             expect(getPickerFormatWithPrecision('yyyy-MM-dd HH:mm', false, true, false)).toBe('yyyy-MM-dd HH:mm:ss');
-            expect(getPickerFormatWithPrecision('MMMM dd yyyy HH:mm', false, true, false)).toBe('MMMM dd yyyy HH:mm:ss');
-            expect(getPickerFormatWithPrecision('yyyy-MM-dd HH:mm', false, false, true)).toBe('yyyy-MM-dd HH:mm:ss.SSS');
-            expect(getPickerFormatWithPrecision('MMMM dd yyyy HH:mm', false, false, true)).toBe('MMMM dd yyyy HH:mm:ss.SSS');
-            expect(getPickerFormatWithPrecision('MMMM dd yyyy hh:mm:ss.SSS a')).toBe('MMMM dd yyyy hh:mm:ss.SSS a')
-            expect(getPickerFormatWithPrecision('yyyy-MM-dd hh:mm:ss.SSS a', true, false, false)).toBe('yyyy-MM-dd hh:mm:ss.SSS a');
-            expect(getPickerFormatWithPrecision('yyyy-MM-dd hh:mm:ss a', false, false, true)).toBe('yyyy-MM-dd hh:mm:ss.SSS a');
-            expect(getPickerFormatWithPrecision('MMMM dd yyyy hh:mm:ss a', false, false, true)).toBe('MMMM dd yyyy hh:mm:ss.SSS a');
+            expect(getPickerFormatWithPrecision('MMMM dd yyyy HH:mm', false, true, false)).toBe(
+                'MMMM dd yyyy HH:mm:ss'
+            );
+            expect(getPickerFormatWithPrecision('yyyy-MM-dd HH:mm', false, false, true)).toBe(
+                'yyyy-MM-dd HH:mm:ss.SSS'
+            );
+            expect(getPickerFormatWithPrecision('MMMM dd yyyy HH:mm', false, false, true)).toBe(
+                'MMMM dd yyyy HH:mm:ss.SSS'
+            );
+            expect(getPickerFormatWithPrecision('MMMM dd yyyy hh:mm:ss.SSS a')).toBe('MMMM dd yyyy hh:mm:ss.SSS a');
+            expect(getPickerFormatWithPrecision('yyyy-MM-dd hh:mm:ss.SSS a', true, false, false)).toBe(
+                'yyyy-MM-dd hh:mm:ss.SSS a'
+            );
+            expect(getPickerFormatWithPrecision('yyyy-MM-dd hh:mm:ss a', false, false, true)).toBe(
+                'yyyy-MM-dd hh:mm:ss.SSS a'
+            );
+            expect(getPickerFormatWithPrecision('MMMM dd yyyy hh:mm:ss a', false, false, true)).toBe(
+                'MMMM dd yyyy hh:mm:ss.SSS a'
+            );
             expect(getPickerFormatWithPrecision('MMMM dd yyyy hh:mm a')).toBe('MMMM dd yyyy hh:mm a');
             expect(getPickerFormatWithPrecision('yyyy-MM-dd hh:mm a', true, false, false)).toBe('yyyy-MM-dd hh:mm a');
-            expect(getPickerFormatWithPrecision('yyyy-MM-dd hh:mm a', false, true, false)).toBe('yyyy-MM-dd hh:mm:ss a');
-            expect(getPickerFormatWithPrecision('MMMM dd yyyy hh:mm a', false, false, true)).toBe('MMMM dd yyyy hh:mm:ss.SSS a');
+            expect(getPickerFormatWithPrecision('yyyy-MM-dd hh:mm a', false, true, false)).toBe(
+                'yyyy-MM-dd hh:mm:ss a'
+            );
+            expect(getPickerFormatWithPrecision('MMMM dd yyyy hh:mm a', false, false, true)).toBe(
+                'MMMM dd yyyy hh:mm:ss.SSS a'
+            );
         });
     });
 

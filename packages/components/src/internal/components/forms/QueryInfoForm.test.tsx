@@ -205,7 +205,7 @@ describe('getUpdatedFields', () => {
     test('without ::enabled', () => {
         expect(getUpdatedFields(MIXTURE_QUERY_INFO, formData).toJS()).toEqual({
             expirationTime: '22:20:00.000',
-            extraTestColumn: 'abc'
+            extraTestColumn: 'abc',
         });
     });
 
@@ -213,27 +213,35 @@ describe('getUpdatedFields', () => {
         expect(getUpdatedFields(MIXTURE_QUERY_INFO, formData, ['numItems']).toJS()).toEqual({
             expirationTime: '22:20:00.000',
             extraTestColumn: 'abc',
-            numItems: 10
+            numItems: 10,
         });
     });
 
     test('with ::enabled=false', () => {
-        expect(getUpdatedFields(MIXTURE_QUERY_INFO, {
-            ...formData,
-            'extraTestColumn::enabled': false
-        }).toJS()).toEqual({
+        expect(
+            getUpdatedFields(MIXTURE_QUERY_INFO, {
+                ...formData,
+                'extraTestColumn::enabled': false,
+            }).toJS()
+        ).toEqual({
             expirationTime: '22:20:00.000',
         });
     });
 
     test('with ::enabled=false, with additionalFields', () => {
-        expect(getUpdatedFields(MIXTURE_QUERY_INFO, {
-            ...formData,
-            'extraTestColumn::enabled': false
-        }, ['numItems', 'extraTestColumn']).toJS()).toEqual({
+        expect(
+            getUpdatedFields(
+                MIXTURE_QUERY_INFO,
+                {
+                    ...formData,
+                    'extraTestColumn::enabled': false,
+                },
+                ['numItems', 'extraTestColumn']
+            ).toJS()
+        ).toEqual({
             expirationTime: '22:20:00.000',
             extraTestColumn: 'abc',
-            numItems: 10
+            numItems: 10,
         });
     });
 });

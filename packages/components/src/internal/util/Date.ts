@@ -99,7 +99,7 @@ export function isDateTimeCol(col: QueryColumn): boolean {
     return false;
 }
 
-function _toAmPm(rawTimeFormat: string, toAMPM: boolean) : string {
+function _toAmPm(rawTimeFormat: string, toAMPM: boolean): string {
     if (!toAMPM) return rawTimeFormat;
 
     if (rawTimeFormat.indexOf(' a') > -1) return rawTimeFormat;
@@ -112,9 +112,8 @@ export function getPickerTimeFormatWithPrecision(
     showMinute?: boolean,
     showSeconds?: boolean,
     showMilliSeconds?: boolean
-) : string {
-    if (!timeFormat)
-        return '';
+): string {
+    if (!timeFormat) return '';
 
     const useAmPm = timeFormat.indexOf(' a') > -1;
     if (timeFormat.indexOf('.SSS') > -1) return timeFormat;
@@ -141,7 +140,7 @@ export function getPickerFormatWithPrecision(
     showMinute?: boolean,
     showSeconds?: boolean,
     showMilliSeconds?: boolean
-) : string {
+): string {
     const parts = splitDateTimeFormat(rawDateTimeFormat);
     if (parts.length === 1) return parts[0];
     if (!parts[1]) return parts[0];
@@ -505,7 +504,8 @@ export function parseTime(time: string | Date): Date {
         if (isValid(date)) return date;
     }
 
-    return null;}
+    return null;
+}
 
 function safeParse(dateStr: string, formatStr: string, referenceDate: number | Date, options?: any): Date {
     try {

@@ -191,10 +191,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         if (onFormChangeWithData) {
             const row = this.formRef?.['current']?.['getModel']?.();
             if (row) {
-                const updatedRow = getUpdatedFields(queryInfo, row, [
-                    'numItems',
-                    'creationType',
-                ]);
+                const updatedRow = getUpdatedFields(queryInfo, row, ['numItems', 'creationType']);
                 onFormChangeWithData(updatedRow);
             }
         }

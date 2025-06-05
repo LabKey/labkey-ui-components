@@ -449,7 +449,7 @@ async function convertRowToEditorModelData(
     let message: CellMessage;
     let valueDescriptors = List<ValueDescriptor>();
 
-    if (data && col && col.isPublicLookup()) {
+    if (data && col?.isPublicLookup()) {
         // value had better be the rowId here, but it may be several in a comma-separated list.
         // If it's the display value, which happens to be a number, much confusion will arise.
         const values = data.toString().split(',');
@@ -461,7 +461,7 @@ async function convertRowToEditorModelData(
         }
     } else {
         let display = data;
-        if (col.isTimeOrDateTimeColumn && typeof data === 'string') {
+        if (col?.isTimeOrDateTimeColumn && typeof data === 'string') {
             display = getDateTimeDisplayValueFromStr(data, col);
         }
         valueDescriptors = valueDescriptors.push({ display, raw: data });

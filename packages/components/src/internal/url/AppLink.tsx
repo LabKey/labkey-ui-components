@@ -1,4 +1,4 @@
-import React, { FC, memo, PropsWithChildren, StyleHTMLAttributes, MouseEvent } from 'react';
+import React, { AnchorHTMLAttributes, DetailedHTMLProps, FC, memo, useMemo } from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -34,17 +34,19 @@ export function parseAppPath(href: string): string | undefined {
 }
 
 /**
+ * This is a subset of AnchorHTMLAttributes<HTMLAnchorElement> that are passed through to the anchor tag.
+ */
+type InheritedHTMLAnchorProps = Omit<
+    DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>,
+    'href' // overridden by AppLink which uses "to" instead
+>;
+
+/**
  * DO NOT USE onMouseEnter or onMouseLeave, they are only needed because  the ProductNavigationItem applies a new CSS
  * class on hover. This component will be updated in the near future to use a css :hover selector to apply the styling.
  */
-interface Props extends PropsWithChildren {
-    className?: string;
-    onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
-    onMouseEnter?: (event: MouseEvent<HTMLAnchorElement>) => void;
-    onMouseLeave?: (event: MouseEvent<HTMLAnchorElement>) => void;
-    style?: StyleHTMLAttributes<HTMLAnchorElement>;
+interface Props extends InheritedHTMLAnchorProps {
     targetBlank?: boolean;
-    title?: string;
     to: string | AppURL;
 }
 
@@ -53,27 +55,23 @@ interface Props extends PropsWithChildren {
  * handles all the corner cases around moving within our apps, between our apps, to other parts of LKS, and externally.
  */
 export const AppLink: FC<Props> = memo(props => {
-    const { children, className, onClick, onMouseEnter, onMouseLeave, style, targetBlank, title, to } = props;
-    let appPath;
+    const { children, rel, target, targetBlank, to, ...anchorProps } = props;
 
-    if (to instanceof AppURL && to.isAppPath()) {
-        appPath = to.toString();
-    } else if (typeof to === 'string') {
-        appPath = parseAppPath(to);
-    }
+    const appPath = useMemo<string | undefined>(() => {
+        if (to instanceof AppURL && to.isAppPath()) {
+            return to.toString();
+        } else if (typeof to === 'string') {
+            return parseAppPath(to);
+        }
+
+        return undefined;
+    }, [to]);
 
     // React Router <Link> components render as empty strings in the test environment, so we force them to render as
     // anchor tags in our tests.
     if (appPath && !isTestEnv()) {
         return (
-            <Link
-                className={className}
-                onClick={onClick}
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}
-                style={style}
-                to={appPath}
-            >
+            <Link {...anchorProps} to={appPath}>
                 {children}
             </Link>
         );
@@ -81,15 +79,10 @@ export const AppLink: FC<Props> = memo(props => {
 
     return (
         <a
-            className={className}
+            {...anchorProps}
             href={to.toString()}
-            onClick={onClick}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            rel={targetBlank ? URL_REL : undefined}
-            style={style}
-            target={targetBlank ? TARGET_BLANK : undefined}
-            title={title}
+            rel={targetBlank ? URL_REL : rel}
+            target={targetBlank ? TARGET_BLANK : target}
         >
             {children}
         </a>

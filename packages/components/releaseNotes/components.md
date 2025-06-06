@@ -1,12 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.X
-*Released*: X May 2025
+### version 6.46.1
+*Released*: 6 June 2025
 - Issue 53071: Entering more than three digits for milliseconds in a time field causes the value to disappear
 - Issue 52820: Sample Manager: editing datetime/time fields in app with display format could result in time precision loss
   - Updated `parseTime` util to be more flexible
-  - TODO
+  - Added `getPickerFormatWithPrecision` util that respects both field's format and selected date/time precision
 
 ### version 6.46.0
 *Released*: 4 June 2025

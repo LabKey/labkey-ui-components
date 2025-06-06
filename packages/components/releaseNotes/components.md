@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.47.0
+*Released*: 6 June 2025
+- Issue 52595: Storage editor check in fails if user doesn't have perm to update sample amount/units
+  - export updateSampleStorageData() and SampleStorageData
+  - add isDiscard param to updateSampleStorageData()
+
 ### version 6.46.1
 *Released*: 6 June 2025
 - Issue 53071: Entering more than three digits for milliseconds in a time field causes the value to disappear

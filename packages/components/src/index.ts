@@ -396,6 +396,7 @@ import {
     getSampleTypeDetails,
     getSelectedSampleIdsFromSelectionKey,
     getSelectionLineageData,
+    updateSampleStorageData,
 } from './internal/components/samples/actions';
 import { SampleTypeEmptyAlert } from './internal/components/samples/SampleTypeEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
@@ -1387,6 +1388,7 @@ export {
     getSampleTypeDetails,
     getLookupRowIdsFromSelection,
     getSelectionLineageData,
+    updateSampleStorageData,
     getGroupedSampleDomainFields,
     getGroupedSampleDisplayColumns,
     getParentTypeDataForLineage,
@@ -2006,7 +2008,7 @@ export type { MeasurementUnit } from './internal/util/measurement';
 export type { SamplesTabbedGridPanelComponentProps } from './internal/sampleModels';
 export type { SearchHit, SearchMetadata, SearchResult, SearchOptions } from './internal/components/search/actions';
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
-export type { GroupedSampleDisplayColumns } from './internal/components/samples/actions';
+export type { GroupedSampleDisplayColumns, SampleStorageData } from './internal/components/samples/actions';
 export type { PicklistDeletionData } from './internal/components/picklist/actions';
 export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetailPanel';
 export type { ComponentsAPIWrapper } from './internal/APIWrapper';

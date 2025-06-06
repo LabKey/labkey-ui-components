@@ -598,7 +598,7 @@ export function getTimelineEvents(sampleId: number, timezone?: string): Promise<
     });
 }
 
-interface SampleStorageData {
+export interface SampleStorageData {
     freezeThawCount?: number;
     itemId?: number;
     materialId: number;
@@ -609,7 +609,8 @@ interface SampleStorageData {
 export function updateSampleStorageData(
     sampleStorageData: SampleStorageData[],
     containerPath?: string,
-    userComment?: string
+    userComment?: string,
+    isDiscard = false
 ): Promise<any> {
     if (sampleStorageData.length === 0) {
         return Promise.resolve();
@@ -617,12 +618,11 @@ export function updateSampleStorageData(
 
     return new Promise<any>((resolve, reject) => {
         return Ajax.request({
-            // TODO: We no longer allow editing of freezethaw and amount at the same time, so
-            //  UpdateSampleStorageDataAction can probably be refactored/simplified
             url: buildURL('inventory', 'updateSampleStorageData.api', undefined, { container: containerPath }),
             jsonData: {
                 sampleRows: sampleStorageData,
                 [STORED_AMOUNT_FIELDS.AUDIT_COMMENT]: userComment,
+                isDiscard,
             },
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);

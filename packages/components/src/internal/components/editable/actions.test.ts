@@ -11,6 +11,8 @@ import { ComponentsAPIWrapper, getTestAPIWrapper } from '../../APIWrapper';
 
 import { Row } from '../../query/selectRows';
 
+import { DATETIME_RANGE_URI, TIME_RANGE_URI } from '../domainproperties/constants';
+
 import {
     addColumns,
     changeColumn,
@@ -1121,11 +1123,22 @@ describe('loadEditorModelData', () => {
             name: 'Name',
         }),
         new QueryColumn({
+            fieldKey: 'TimeField$P$S$C$D$A',
+            fieldKeyArray: ['TimeField./,$&'],
+            fieldKeyPath: 'TimeField$P$S$C$D$A',
+            derivationDataScope: 'ParentOnly',
+            name: 'TimeField./,$&',
+            rangeURI: TIME_RANGE_URI,
+            format: 'hh:mm a',
+        }),
+        new QueryColumn({
             fieldKey: 'DtField$P$S$C$D$A',
             fieldKeyArray: ['DtField./,$&'],
             fieldKeyPath: 'DtField$P$S$C$D$A',
             derivationDataScope: 'ParentOnly',
             name: 'DtField./,$&',
+            rangeURI: DATETIME_RANGE_URI,
+            format: 'yyyy-MMM-dd HH:mm',
         }),
         new QueryColumn({
             fieldKey: 'IntField$P$S$C$D$A',
@@ -1214,11 +1227,11 @@ describe('loadEditorModelData', () => {
             'flagField./,$&': '555',
         },
         '2811466': {
-            'TimeField./,$&': '16:20',
+            'TimeField./,$&': '16:20:00.123',
             'IntField./,$&': 3,
             LSID: 'urn:lsid:labkey.com:Sample.Folder-519.24:27',
             'tcField./,$&': '3',
-            'DtField./,$&': [{ displayValue: '04Feb2025', value: '2025-02-04 00:00:00.000' }],
+            'DtField./,$&': [{ displayValue: '04Feb2025', value: '2025-02-04 00:00:11.234' }],
             'txtField./,$&': '7',
             MaterialExpDate: [{ displayValue: '10Feb25 00:00:00.000', value: '2025-02-10 00:00:00.000' }],
             SampleState: [{ displayValue: 'Available', value: 70 }],
@@ -1281,13 +1294,15 @@ describe('loadEditorModelData', () => {
             'samplefield$p$s$c$d$a&&0': [{ display: '<2675720>', raw: 2675720 }],
             'samplefield$p$s$c$d$a&&1': [{ display: '10-1-1', raw: 117334 }],
             'intfield$p$s$c$d$a&&0': [{ display: 3, raw: 3 }],
-            'dtfield$p$s$c$d$a&&0': [{ display: '04Feb2025', raw: '2025-02-04 00:00:00.000' }],
+            'dtfield$p$s$c$d$a&&0': [{ display: '2025-Feb-04 00:00:11.234', raw: '2025-02-04 00:00:11.234' }],
             'intfield$p$s$c$d$a&&1': [{ display: 333, raw: 333 }],
             'aliqfield$d$c$p$s&&0': [{ display: '123', raw: '123' }],
-            'dtfield$p$s$c$d$a&&1': [{ display: '07Feb2025', raw: '2025-02-07 00:00:00.000' }],
+            'dtfield$p$s$c$d$a&&1': [{ display: '2025-Feb-07 00:00', raw: '2025-02-07 00:00:00.000' }],
             'aliqfield$d$c$p$s&&1': [{ display: undefined, raw: undefined }],
             'lkfield$p$s$c$d$a&&0': [{ display: 'DAS Testing', raw: 42876 }],
             'lkfield$p$s$c$d$a&&1': [{ display: 'Assay Required File', raw: 37721 }],
+            'timefield$p$s$c$d$a&&0': [{ display: '04:20:00.123 PM', raw: '16:20:00.123' }],
+            'timefield$p$s$c$d$a&&1': [{ display: '04:10 PM', raw: '16:10' }],
         });
 
         // Issue 52311: Expect lookup validation warnings

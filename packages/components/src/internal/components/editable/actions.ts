@@ -6,7 +6,7 @@ import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { cancelEvent, getPasteValue, setCopyValue } from '../../events';
-import { formatDate, formatDateTime, parseDate } from '../../util/Date';
+import { formatDate, formatDateTime, getDateTimeDisplayValueFromStr, parseDate } from '../../util/Date';
 import {
     caseInsensitive,
     isFloat,
@@ -217,7 +217,10 @@ function resolveValueDescriptors(
         }
     }
 
-    const display = value?.displayValue ?? raw;
+    let display = value?.displayValue ?? raw;
+    if (col.isTimeOrDateTimeColumn) {
+        display = getDateTimeDisplayValueFromStr(raw, col);
+    }
 
     return [
         {
@@ -439,14 +442,14 @@ interface CellData {
 }
 
 async function convertRowToEditorModelData(
-    data: Map<string, string | number | boolean>,
+    data: string | number | boolean,
     col: QueryColumn,
     containerPath: string
 ): Promise<CellData> {
     let message: CellMessage;
     let valueDescriptors = List<ValueDescriptor>();
 
-    if (data && col && col.isPublicLookup()) {
+    if (data && col?.isPublicLookup()) {
         // value had better be the rowId here, but it may be several in a comma-separated list.
         // If it's the display value, which happens to be a number, much confusion will arise.
         const values = data.toString().split(',');
@@ -457,7 +460,11 @@ async function convertRowToEditorModelData(
             message = messageAndValue.message;
         }
     } else {
-        valueDescriptors = valueDescriptors.push({ display: data, raw: data });
+        let display = data;
+        if (col?.isTimeOrDateTimeColumn && typeof data === 'string') {
+            display = getDateTimeDisplayValueFromStr(data, col);
+        }
+        valueDescriptors = valueDescriptors.push({ display, raw: data });
     }
 
     return { message, valueDescriptors };

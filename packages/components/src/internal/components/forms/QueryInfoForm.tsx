@@ -42,7 +42,11 @@ import { QueryFormInputs, QueryFormInputsProps } from './QueryFormInputs';
 import { getFieldEnabledFieldName } from './utils';
 import { CommentTextArea } from './input/CommentTextArea';
 
-export const getUpdatedFields = (queryInfo: QueryInfo, data: any, submitForEdit?: boolean, additionalFields?: string[]): OrderedMap<string, any> => {
+export const getUpdatedFields = (
+    queryInfo: QueryInfo,
+    data: any,
+    additionalFields?: string[]
+): OrderedMap<string, any> => {
     const fieldsToUpdate = queryInfo.columns.filter(column => {
         const enabledKey = getFieldEnabledFieldName(column);
         return data[enabledKey] === undefined || data[enabledKey] === 'true';
@@ -51,17 +55,9 @@ export const getUpdatedFields = (queryInfo: QueryInfo, data: any, submitForEdit?
     let filteredData = OrderedMap<string, any>();
     for (const key in data) {
         if (data.hasOwnProperty(key)) {
-            if (fieldsToUpdate.has(key.toLowerCase()) || additionalFields.indexOf(key) !== -1) {
-                // Date values are Dates not strings. We convert them to strings in the desired format here.
-                // They are converted back to Dates when saving to the server.
+            if (fieldsToUpdate.has(key.toLowerCase()) || (additionalFields && additionalFields?.indexOf(key) !== -1)) {
                 const col = queryInfo?.getColumn(key);
-                if (submitForEdit && col?.jsonType === 'date') {
-                    if (col.isDateOnlyColumn)
-                        filteredData = filteredData.set(key, formatDate(data[key], null, col.format));
-                    else filteredData = filteredData.set(key, formatDateTime(data[key], null, col.format));
-                } else if (submitForEdit && col?.jsonType === 'time') {
-                    filteredData = filteredData.set(key, formatTime(data[key], col.format));
-                } else if (col?.jsonType === 'string' && typeof data[key] === 'string') {
+                if (col?.jsonType === 'string' && typeof data[key] === 'string') {
                     filteredData = filteredData.set(key, data[key]?.trim());
                 } else {
                     filteredData = filteredData.set(key, data[key]);
@@ -195,7 +191,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         if (onFormChangeWithData) {
             const row = this.formRef?.['current']?.['getModel']?.();
             if (row) {
-                const updatedRow = getUpdatedFields(queryInfo, row, this.state.submitForEdit, ['numItems', 'creationType']);
+                const updatedRow = getUpdatedFields(queryInfo, row, ['numItems', 'creationType']);
                 onFormChangeWithData(updatedRow);
             }
         }
@@ -222,7 +218,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
             errorMsg: undefined,
             isSubmitting: true,
         });
-        const updatedRow = getUpdatedFields(this.props.queryInfo, row, submitForEdit, ['numItems', 'creationType']);
+        const updatedRow = getUpdatedFields(this.props.queryInfo, row, ['numItems', 'creationType']);
         const submitFn = submitForEdit ? onSubmitForEdit : onSubmit;
 
         submitFn(updatedRow, comment).then(

@@ -21,6 +21,7 @@ import { DomainDesign, FieldErrors } from '../models';
 import { AppURL } from '../../../url/AppURL';
 import { getAppHomeFolderPath } from '../../../app/utils';
 import { Container } from '../../base/models/Container';
+import { ASSAYS_KEY } from '../../../app/constants';
 
 // See ExpProtocol.Status in 'platform' repository.
 export enum Status {
@@ -242,6 +243,6 @@ export class AssayProtocolModel extends ImmutableRecord({
     }
 
     getUrl(): AppURL {
-        return AppURL.create('assays', this.providerName, this.name);
+        return AppURL.create(ASSAYS_KEY, this.providerName, this.name);
     }
 }

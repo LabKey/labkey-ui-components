@@ -34,13 +34,10 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
     const [findField, setFindField] = useState<FindField>(undefined);
     const [showFindModal, setShowFindModal] = useState<boolean>(false);
 
-    const onShowFind = useCallback(
-        (findField: FindField) => {
-            setFindField(findField);
-            setShowFindModal(true);
-        },
-        [setShowFindModal]
-    );
+    const onShowFind = useCallback((findField_: FindField) => {
+        setFindField(findField_);
+        setShowFindModal(true);
+    }, []);
 
     const onHideFindModal = useCallback(() => {
         setFindField(undefined);
@@ -60,8 +57,8 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
     }, [api]);
 
     const capNoun = capitalizeFirstChar(findNounPlural);
-    const findByBarcodeClicked = useCallback(() => onShowFind(UNIQUE_ID_FIND_FIELD), []);
-    const findByIdClicked = useCallback(() => onShowFind(SAMPLE_ID_FIND_FIELD), []);
+    const findByBarcodeClicked = useCallback(() => onShowFind(UNIQUE_ID_FIND_FIELD), [onShowFind]);
+    const findByIdClicked = useCallback(() => onShowFind(SAMPLE_ID_FIND_FIELD), [onShowFind]);
 
     return (
         <>
@@ -76,7 +73,7 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
                         </MenuItem>
                     </>
                 )}
-                <MenuItem onClick={onSampleFinder} href={FIND_SAMPLES_BY_FILTER_HREF.toHref()}>
+                <MenuItem onClick={onSampleFinder} href={FIND_SAMPLES_BY_FILTER_HREF}>
                     <i className="fa fa-sitemap" /> Sample Finder
                 </MenuItem>
                 {!!onSearch && (
@@ -96,3 +93,4 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
         </>
     );
 });
+FindAndSearchDropdown.displayName = 'FindAndSearchDropdown';

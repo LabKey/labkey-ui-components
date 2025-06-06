@@ -47,7 +47,7 @@ type InheritedHTMLAnchorProps = Omit<
  */
 interface Props extends InheritedHTMLAnchorProps {
     targetBlank?: boolean;
-    to: string | AppURL;
+    to: string | AppURL | undefined;
 }
 
 /**
@@ -80,7 +80,7 @@ export const AppLink: FC<Props> = memo(props => {
     return (
         <a
             {...anchorProps}
-            href={to.toString()}
+            href={to?.toString()}
             rel={targetBlank ? URL_REL : rel}
             target={targetBlank ? TARGET_BLANK : target}
         >

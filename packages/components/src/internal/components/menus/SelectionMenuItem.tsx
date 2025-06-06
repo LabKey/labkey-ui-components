@@ -21,9 +21,10 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { MenuItem } from '../../dropdowns';
 import { useOverlayTriggerState } from '../../OverlayTrigger';
 import { Popover } from '../../Popover';
+import { AppURL } from '../../url/AppURL';
 
 interface Props {
-    href?: string;
+    href?: string | AppURL;
     maxSelection?: number;
     maxSelectionDisabledMsg?: string;
     nounPlural: string; // always used, doesn't need default value

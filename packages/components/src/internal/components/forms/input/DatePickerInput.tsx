@@ -19,14 +19,14 @@ import DatePicker from 'react-datepicker';
 import { FormsyInjectedProps, withFormsy } from '../formsy';
 import { FieldLabel } from '../FieldLabel';
 import {
-    getFormattedStringFromDate,
+    getDateFromISO,
+    getDateTimeDisplayValue,
     getJsonDateFormatString,
     getJsonDateTimeFormatString,
     getJsonTimeFormatString,
     getPickerDateAndTimeFormat,
     isDateTimeCol,
     isRelativeDateFilterValue,
-    parseDate,
     parseTime,
 } from '../../../util/Date';
 
@@ -43,7 +43,6 @@ export interface DatePickerInputProps extends DisableableInputProps {
     disabled?: boolean;
     formsy?: boolean;
     hideTime?: boolean;
-    initValueFormatted?: boolean;
     inlineEdit?: boolean;
     inputClassName?: string;
     inputWrapperClassName?: string;
@@ -54,7 +53,7 @@ export interface DatePickerInputProps extends DisableableInputProps {
     name?: string;
     onBlur?: () => void;
     onCalendarClose?: () => void;
-    onChange?: (rawDate?: Date | string, dateStr?: string) => void;
+    onChange?: (rawDate?: Date | string, formatted?: string) => void;
     onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
     placeholderText?: string;
     queryColumn: QueryColumn;
@@ -79,7 +78,6 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         allowDisable: false,
         containerClassName: INPUT_CONTAINER_CLASS_NAME,
         initiallyDisabled: false,
-        initValueFormatted: false,
         inputClassName: 'form-control',
         inputWrapperClassName: 'block',
         isClearable: true,
@@ -156,22 +154,12 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
     };
 
     getInitDate(props: DatePickerInputProps, minDate?: Date): Date {
-        const { allowRelativeInput, initValueFormatted, queryColumn, value } = props;
-
-        if (!value || (allowRelativeInput && isRelativeDateFilterValue(value))) return undefined;
-
-        if (queryColumn.isTimeColumn) {
-            return parseTime(value);
-        }
-
-        // Issue 45140: props.value is the original formatted date, so pass the date format
-        // to parseDate when getting the initial value.
-        const dateFormat = initValueFormatted ? this.getDateFormat() : undefined;
-        return parseDate(value, dateFormat, minDate, false, queryColumn.isDateOnlyColumn);
+        const { allowRelativeInput, queryColumn, value } = props;
+        return getDateFromISO(value, queryColumn, allowRelativeInput, minDate);
     }
 
     onChange = (date: Date, event?: any, raw?: boolean): void => {
-        const { formsy, hideTime, inlineEdit, queryColumn } = this.props;
+        const { onChange, formsy, hideTime, inlineEdit, queryColumn } = this.props;
 
         if (!event && !raw && date?.getMilliseconds() > 0) {
             date.setMilliseconds(0); // react-datepicker milliseconds are not 0 when selecting time
@@ -180,11 +168,10 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         this.setState({ selectedDate: date, invalid: false, invalidStart: false });
 
         if (this.state.relativeInputValue) {
-            this.props.onChange?.(this.state.relativeInputValue, this.state.relativeInputValue);
+            onChange?.(this.state.relativeInputValue);
         } else {
-            const formatted = getFormattedStringFromDate(date, queryColumn, hideTime);
-
-            this.props.onChange?.(queryColumn.isTimeColumn ? formatted : date, formatted);
+            const formatted = getDateTimeDisplayValue(date, queryColumn);
+            onChange?.(queryColumn.isTimeColumn ? formatted : date, formatted);
 
             if (formsy) {
                 this.props.setValue?.(this.getFormsyValue(date));
@@ -251,7 +238,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
             inlineEdit,
         } = this.props;
         const { isDisabled, selectedDate, invalid, invalidStart } = this.state;
-        const { dateFormat, timeFormat } = getPickerDateAndTimeFormat(queryColumn, hideTime);
+        const { dateFormat, timeFormat } = getPickerDateAndTimeFormat(queryColumn, hideTime, selectedDate);
         const validValueInvalidStart = !invalid && invalidStart;
         const isTimeOnly = queryColumn.isTimeColumn;
         const picker = (

@@ -7,6 +7,7 @@ import {
     getDateFNSDateFormat,
     getJsonDateTimeFormatString,
     getJsonDateFormatString,
+    getDateTimeDisplayValueFromStr,
 } from '../util/Date';
 import { Key, useEnterEscape } from '../../public/useEnterEscape';
 
@@ -80,7 +81,9 @@ export const EditInlineField: FC<Props> = memo(props => {
 
     const displayValue = useMemo<ReactNode>(() => {
         let value_: ReactNode;
-        if (value?.formattedValue) {
+        if (column?.isTimeOrDateTimeColumn && !!_value && typeof _value === 'string') {
+            value_ = getDateTimeDisplayValueFromStr(_value, column);
+        } else if (value?.formattedValue) {
             value_ = value.formattedValue;
         } else if (value?.displayValue) {
             value_ = value.displayValue;
@@ -153,14 +156,10 @@ export const EditInlineField: FC<Props> = memo(props => {
             if (!date) {
                 if (isDate) setDateValue(undefined);
                 else setTimeJsonValue(undefined);
-            }
-
-            if (typeof date === 'string') {
+            } else if (typeof date === 'string') {
                 if (!isDate) setTimeJsonValue(date);
-            }
-            else {
-                if (isDate)
-                    setDateValue(date);
+            } else {
+                if (isDate) setDateValue(date);
             }
         },
         [isDate]

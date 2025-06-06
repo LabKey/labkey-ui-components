@@ -99,16 +99,83 @@ export function isDateTimeCol(col: QueryColumn): boolean {
     return false;
 }
 
+function _toAmPm(rawTimeFormat: string, toAMPM: boolean): string {
+    if (!toAMPM) return rawTimeFormat;
+
+    if (rawTimeFormat.indexOf(' a') > -1) return rawTimeFormat;
+
+    return rawTimeFormat.replace('HH', 'hh') + ' a';
+}
+
+export function getPickerTimeFormatWithPrecision(
+    timeFormat: string,
+    showMinute?: boolean,
+    showSeconds?: boolean,
+    showMilliSeconds?: boolean
+): string {
+    if (!timeFormat) return '';
+
+    const useAmPm = timeFormat.indexOf(' a') > -1;
+    if (timeFormat.indexOf('.SSS') > -1) return timeFormat;
+
+    if (showMilliSeconds) return _toAmPm(ISO_LONG_TIME_FORMAT_STRING, useAmPm);
+
+    if (timeFormat.indexOf(':ss') > -1) return timeFormat;
+
+    if (showSeconds) return _toAmPm(ISO_TIME_FORMAT_STRING, useAmPm);
+
+    if (timeFormat.indexOf(':mm') > -1) return timeFormat;
+
+    if (showMinute) return _toAmPm(ISO_SHORT_TIME_FORMAT_STRING, useAmPm);
+
+    return timeFormat;
+}
+
+// convert rawDateTimeFormat to adjust precision
+// for example:
+// 'yyyy-MM-dd HH:mm' -> 'yyyy-MM-dd HH:mm:ss' if showSeconds is true and showMilliSeconds is false
+// 'yyyy-MM-dd hh:mm a' -> 'yyyy-MM-dd hh:mm:ss.SSS a' if showSeconds is true and showMilliSeconds is true
+export function getPickerFormatWithPrecision(
+    rawDateTimeFormat: string,
+    showMinute?: boolean,
+    showSeconds?: boolean,
+    showMilliSeconds?: boolean
+): string {
+    const parts = splitDateTimeFormat(rawDateTimeFormat);
+    if (parts.length === 1) return parts[0];
+    if (!parts[1]) return parts[0];
+    return (
+        parts[0] +
+        ' ' +
+        getPickerTimeFormatWithPrecision(parts[1], showMinute, showSeconds, showMilliSeconds)
+    ).trim();
+}
+
 export function getPickerDateAndTimeFormat(
     column: QueryColumn,
-    hideTime?: boolean
+    hideTime?: boolean,
+    initDate?: Date
 ): { dateFormat: string; timeFormat: string } {
-    const dateFormat = getColDateFormat(column, hideTime ? DateFormatType.Date : undefined, column.isDateOnlyColumn);
+    const hasMsPrecision = initDate?.getMilliseconds() > 0;
+    const hasSecondsPrecision = hasMsPrecision || initDate?.getSeconds() > 0;
+    const hasMinutePrecision = hasSecondsPrecision || initDate?.getMinutes() > 0 || initDate?.getHours() > 0;
 
+    const dateFormat_ = getColDateFormat(column, hideTime ? DateFormatType.Date : undefined, column.isDateOnlyColumn);
+    let dateFormat =
+        column.isTimeColumn || column.isDateOnlyColumn
+            ? dateFormat_
+            : getPickerFormatWithPrecision(dateFormat_, hasMinutePrecision, hasSecondsPrecision, hasMsPrecision);
     let timeFormat: string;
     if (!hideTime) {
         if (column.isTimeColumn) {
             timeFormat = parseFNSTimeFormat(getColDateFormat(column, column?.format ?? DateFormatType.Time));
+            timeFormat = getPickerTimeFormatWithPrecision(
+                timeFormat,
+                hasMinutePrecision,
+                hasSecondsPrecision,
+                hasMsPrecision
+            );
+            dateFormat = timeFormat;
         } else {
             timeFormat = parseDateFNSTimeFormat(dateFormat);
         }
@@ -117,30 +184,32 @@ export function getPickerDateAndTimeFormat(
     return { dateFormat, timeFormat };
 }
 
-export function getFormattedStringFromDate(date: Date, column: QueryColumn, hideTime?: boolean): string {
-    if (!isValid(date)) return undefined;
+export function getDateFromISO(
+    value: string,
+    queryColumn: QueryColumn,
+    allowRelativeInput?: boolean,
+    minDate?: Date
+): Date {
+    if (!value || (allowRelativeInput && isRelativeDateFilterValue(value))) return undefined;
 
-    let dateFormat = column.format;
-    if (!dateFormat) {
-        if (column.isTimeColumn) {
-            dateFormat = DateFormatType.Time;
-        } else if (column.isDateOnlyColumn || hideTime) {
-            dateFormat = DateFormatType.Date;
-        } else {
-            dateFormat = DateFormatType.DateTime;
-        }
+    if (queryColumn.isTimeColumn) {
+        return parseTime(value);
     }
 
-    const formatStr = getColDateFormat(column, dateFormat);
-    if (!formatStr) {
-        return getJsonFormatString(date, dateFormat);
-    }
+    return parseDate(value, undefined, minDate, false, queryColumn.isDateOnlyColumn);
+}
 
-    try {
-        return format(date, toDateFNSFormatString(formatStr));
-    } catch (e) {
-        return getJsonFormatString(date, dateFormat);
-    }
+export function getDateTimeDisplayValue(date: Date, queryColumn: QueryColumn): string {
+    const { dateFormat, timeFormat } = getPickerDateAndTimeFormat(queryColumn, false, date);
+    if (queryColumn.isTimeColumn) return formatTime(date, timeFormat);
+    if (queryColumn.isDateOnlyColumn) return formatDate(date, null, dateFormat);
+    return formatDateTime(date, null, dateFormat);
+}
+
+export function getDateTimeDisplayValueFromStr(isoValue: string, queryColumn: QueryColumn): string {
+    if (!isoValue || typeof isoValue !== 'string') return null;
+    const date = getDateFromISO(isoValue, queryColumn);
+    return getDateTimeDisplayValue(date, queryColumn);
 }
 
 export function getColDateFormat(column: QueryColumn, dateFormat?: string, dateOnly?: boolean): string {
@@ -162,9 +231,11 @@ export function parseFNSTimeFormat(timePart: string): string {
     if (!timePart || timePart.indexOf(':') === -1) return undefined;
 
     if (timePart.indexOf('H') > -1 || timePart.indexOf('k') > -1) {
+        if (timePart.indexOf('.S') > 0) return 'HH:mm:ss.SSS'; // 13:30:00.000
         if (timePart.indexOf('s') > 0) return 'HH:mm:ss'; // 13:30:00
         return 'HH:mm'; // 13:30
     } else if (timePart.indexOf('h') > -1 || timePart.indexOf('K') > -1) {
+        if (timePart.indexOf('.S') > 0) return 'hh:mm:ss.SSS a'; // 01:30:00.000 PM
         if (timePart.indexOf('s') > 0) return 'hh:mm:ss a'; // 01:30:00 PM
         return 'hh:mm a'; // 01:30 PM
     }
@@ -215,26 +286,6 @@ export function getColFormattedDateFilterValue(column: QueryColumn, value: strin
         return value.map(v => _getColFormattedDateFilterValue(column, v));
     }
     return _getColFormattedDateFilterValue(column, value);
-}
-
-function includesAMPM(rawValue: string): boolean {
-    if (!rawValue || typeof rawValue !== 'string') return false;
-    const lower = rawValue.toLowerCase();
-    return lower.indexOf('am') > -1 || lower.indexOf('pm') > -1;
-}
-
-function includesSeconds(rawValue: string): boolean {
-    if (!rawValue || typeof rawValue !== 'string') return false;
-    return rawValue.split(':').length > 2;
-}
-
-function includesMilliSeconds(rawValue: string): boolean {
-    if (!rawValue || typeof rawValue !== 'string') return false;
-    const parts = rawValue.split(':');
-    if (parts.length <= 2) return false;
-
-    const msParts = parts[2].split('.');
-    return msParts.length > 1;
 }
 
 function _getColFormattedTimeFilterValue(column: QueryColumn, value: string): string {
@@ -400,31 +451,60 @@ export function parseDate(
     return validDate ? validDate : null;
 }
 
+export function parseTimeParts(h: string, m?: string, s?: string, ms?: string, period?: string): Date {
+    if (!h) return null;
+
+    const hours = parseInt(h);
+    const minutes = m ? parseInt(m) : 0;
+    const seconds = s ? parseInt(s) : 0;
+    const milliseconds = ms ? parseInt(ms.slice(0, 3)) : 0; // truncate extra digits
+
+    if (isNaN(hours) || hours < 0 || hours > 23) return null;
+
+    if (period && period.toUpperCase() !== 'AM' && period.toUpperCase() !== 'PM') return null;
+
+    // Invalid hours for AM/PM, 0 might be considered invalid as well
+    if (period && (hours < 0 || hours > 12)) return null;
+
+    if (isNaN(minutes) || minutes < 0 || minutes > 59) return null;
+
+    if (isNaN(seconds) || seconds < 0 || seconds > 59) return null;
+
+    if (isNaN(milliseconds) || milliseconds < 0 || milliseconds > 999) return null;
+
+    // Convert hours for AM/PM
+    const adjustedHours = period ? (hours % 12) + (period.toUpperCase() === 'PM' ? 12 : 0) : hours;
+
+    const date = new Date();
+    date.setHours(adjustedHours, minutes, seconds, milliseconds);
+
+    return date;
+}
+
 /**
  * Attempts to parse a time value from a string. Will only return a valid date or null.
  * NOTE: This is only for time strings. This does not resolve time from date-like strings
  * with a time pre- or post-fixed to a date. You're better off using parseDate() in that case.
  */
-export function parseTime(time: string): Date {
-    if (!time || typeof time !== 'string') return null;
-    let timeFormat: string;
+export function parseTime(time: string | Date): Date {
+    if (!time) return null;
 
-    if (includesMilliSeconds(time)) {
-        timeFormat = ISO_LONG_TIME_FORMAT_STRING;
-    } else if (includesSeconds(time)) {
-        timeFormat = ISO_TIME_FORMAT_STRING;
-    } else {
-        timeFormat = ISO_SHORT_TIME_FORMAT_STRING;
+    if (time instanceof Date) {
+        if (isValid(time)) return time;
+        return null;
+    } else if (typeof time !== 'string') return null;
+
+    // Format: HH(:mm(:ss(.SSS))) (AM|PM) -- (truncate extra digits)
+    const timeRegex = /^(\d{1,2})(?::(\d{2})(?::(\d{2})(?:\.(\d{1,3}\d*))?)?)?(?:\s*(AM|PM))?$/i;
+    const match = time.match(timeRegex);
+
+    if (match) {
+        const [, h, m, s, ms, period] = match;
+        const date = parseTimeParts(h, m, s, ms, period);
+        if (isValid(date)) return date;
     }
 
-    if (includesAMPM(time)) {
-        timeFormat = timeFormat.replace('HH', 'hh');
-        timeFormat += ' a';
-    }
-
-    // https://stackoverflow.com/a/68727535
-    const date = safeParse(time, timeFormat, new Date());
-    return isValid(date) ? date : null;
+    return null;
 }
 
 function safeParse(dateStr: string, formatStr: string, referenceDate: number | Date, options?: any): Date {
@@ -607,11 +687,11 @@ export function formatDateTime(date: Date | string | number, timezone?: string, 
     return _formatDate(date, dateFormat ?? getDateFNSDateTimeFormat(), timezone);
 }
 
-export function formatTime(timeStr: string, timeFormat?: string): string {
-    const timeObj = parseTime(timeStr);
-    if (!timeObj)
-        return undefined;
-    return format(timeObj, timeFormat ?? getDateFNSTimeFormat());
+export function formatTime(timeValue: Date | string, timeFormat?: string): string {
+    const timeObj = parseTime(timeValue);
+    if (!timeObj) return undefined;
+    const _timeFormat = toDateFNSFormatString(timeFormat ?? getDateFNSTimeFormat());
+    return format(timeObj, _timeFormat);
 }
 
 // Issue 44398: see DateUtil.java getJsonDateTimeFormatString(), this function is to match the format, which is

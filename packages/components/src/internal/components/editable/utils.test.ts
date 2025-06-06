@@ -211,11 +211,11 @@ describe('getValidatedEditableGridValue', () => {
         });
 
         validValues = ['1:00 AM', '1:00 PM', '13:24'];
-        results = [' 01:00', ' 13:00', ' 13:24'];
+        results = ['01:00:00.000', '13:00:00.000', '13:24:00.000'];
         validValues.forEach((value, ind) => {
             const result = getValidatedEditableGridValue(value, timeCol);
             expect(result.message).toBeUndefined();
-            expect(result.value).toContain(results[ind]);
+            expect(result.value).toBe(results[ind]);
         });
 
         const invalidValues = ['Bogus', true, NaN];

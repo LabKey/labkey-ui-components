@@ -4,9 +4,9 @@ import { Operation, QueryColumn } from '../../../public/QueryColumn';
 
 import {
     getColDateFormat,
-    getFormattedStringFromDate,
     getJsonDateFormatString,
     getJsonDateTimeFormatString,
+    getJsonTimeFormatString,
     parseDate,
     parseTime,
 } from '../../util/Date';
@@ -55,7 +55,7 @@ export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn):
             if (validValues.indexOf(trimmed) === -1) message = `'${trimmed}' is not a valid choice`;
         } else if (jsonType === 'time') {
             const time = parseTime(value);
-            if (time) value = getFormattedStringFromDate(time, col, false);
+            if (time) value = getJsonTimeFormatString(time);
             else message = 'Invalid time';
         } else if (jsonType === 'boolean' && !isBoolean(value)) {
             message = 'Invalid boolean';

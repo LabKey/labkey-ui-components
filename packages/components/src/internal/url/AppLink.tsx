@@ -12,7 +12,7 @@ const TARGET_BLANK = '_blank';
 const URL_REL = 'noopener noreferrer';
 
 /**
- * If the given href points to our current container & product, return the react router path, in all other cases
+ * If the given href points to our current container & product, return the react-router path, in all other cases
  * return undefined.
  * @param href
  */

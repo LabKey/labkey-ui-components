@@ -9,6 +9,7 @@ import { QueryColumn } from '../../public/QueryColumn';
 import { TEST_USER_EDITOR } from '../userFixtures';
 
 import { EditInlineField } from './EditInlineField';
+import { DATETIME_RANGE_URI, TIME_RANGE_URI } from './domainproperties/constants';
 
 describe('EditInlineField', () => {
     const DEFAULT_PROPS = {
@@ -164,7 +165,13 @@ describe('EditInlineField', () => {
                 {...DEFAULT_PROPS}
                 type="date"
                 value="2022-08-11 18:00:00"
-                column={new QueryColumn({ format: 'MM/dd/YYYY HH:mm:ss', caption: 'DateField' })}
+                column={
+                    new QueryColumn({
+                        format: 'MM/dd/YYYY HH:mm:ss',
+                        caption: 'DateField',
+                        rangeURI: DATETIME_RANGE_URI,
+                    })
+                }
             />,
             { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
         );
@@ -173,6 +180,54 @@ describe('EditInlineField', () => {
         validate(true, true, { date: 1 });
         expect(document.querySelectorAll('.react-datepicker')).toHaveLength(1);
         expect(document.querySelector('.react-datepicker__input-container input')).toHaveValue('08/11/2022 18:00:00');
+    });
+
+    test('isDate, with initial value with extra precision and QueryColumn format', async () => {
+        renderWithAppContext(
+            <EditInlineField
+                {...DEFAULT_PROPS}
+                type="date"
+                value="2022-08-11 18:00:00.123"
+                column={
+                    new QueryColumn({
+                        format: 'MM/dd/YYYY HH:mm:ss',
+                        caption: 'DateField',
+                        rangeURI: DATETIME_RANGE_URI,
+                    })
+                }
+            />,
+            { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
+        );
+        validate();
+        await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
+        validate(true, true, { date: 1 });
+        expect(document.querySelectorAll('.react-datepicker')).toHaveLength(1);
+        expect(document.querySelector('.react-datepicker__input-container input')).toHaveValue(
+            '08/11/2022 18:00:00.123'
+        );
+    });
+
+    test('isTime, with initial value with extra precision and QueryColumn format', async () => {
+        renderWithAppContext(
+            <EditInlineField
+                {...DEFAULT_PROPS}
+                value="18:00:00.1234"
+                column={
+                    new QueryColumn({
+                        format: 'hh:mm a',
+                        caption: 'TimeField',
+                        jsonType: 'time',
+                        rangeURI: TIME_RANGE_URI,
+                    })
+                }
+            />,
+            { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
+        );
+        validate();
+        await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
+        validate(true, true, { date: 1 });
+        expect(document.querySelectorAll('.react-datepicker')).toHaveLength(1);
+        expect(document.querySelector('.react-datepicker__input-container input')).toHaveValue('06:00:00.123 PM');
     });
 
     test('resolveDetailEditRenderer', async () => {

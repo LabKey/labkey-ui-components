@@ -21,7 +21,7 @@ export default defineConfig([
     typeScriptESLint.configs.stylistic,
     pluginReact.configs.flat.recommended,
     pluginReactHooks.configs['recommended-latest'],
-    perfectionist.configs["recommended-natural"],
+    perfectionist.configs['recommended-natural'],
     {
         files: ['src/**/*.{ts,tsx}'],
         extends: [importPlugin.flatConfigs.recommended, importPlugin.flatConfigs.typescript],

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.48.0
+*Released*: 9 June 2025
 - Issue 52556: Add data-fieldkey attribute to grid header elements and input elements (part 2)
   - FileInput: drop the "-fileUpload" suffix from inputId
   - EntityParentType model not to use capitalizeFirstChar() in generateFieldKey()

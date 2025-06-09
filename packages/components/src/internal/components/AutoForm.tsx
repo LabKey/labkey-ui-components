@@ -265,7 +265,7 @@ export const AutoForm: FC<Props> = props => {
         labelCls = 'control-label col-sm-4',
         labelWrapperCls,
         onChange,
-        fieldWrapperCls = 'form-group',
+        fieldWrapperCls = 'form-group auto-form-field-wrapper-class',
         values,
         wrapperCls = 'form-horizontal',
     } = props;

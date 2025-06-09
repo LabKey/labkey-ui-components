@@ -945,16 +945,15 @@ export const getOriginalParentsFromLineage = async (
         // filter out additional parent alias columns that's already added
         const additionalParentTypeSchemaQueryKeys = [];
         additionalParentTypes?.forEach(parentType => {
-            additionalParentTypeSchemaQueryKeys.push(
-                parentType.toString().toLowerCase()
-            );
+            additionalParentTypeSchemaQueryKeys.push(parentType.toString().toLowerCase());
         });
         parentTypeOptions = parentTypeOptions.set(
             dataType.typeListingSchemaQuery.queryName,
             validParentTypeOptions
                 .filter(option => {
-                    const schemaQueryKey =
-                        new SchemaQuery(option.entityDataType.instanceSchemaName, option.query).toString().toLowerCase();
+                    const schemaQueryKey = new SchemaQuery(option.entityDataType.instanceSchemaName, option.query)
+                        .toString()
+                        .toLowerCase();
                     return (
                         originalParentTypeLsids.indexOf(option.lsid) === -1 &&
                         additionalParentTypeSchemaQueryKeys.indexOf(schemaQueryKey) === -1

@@ -104,7 +104,9 @@ describe('EntityParentType', () => {
     test('generateFieldKey', () => {
         expect(EntityParentType.create({ query: 'test' }).generateFieldKey()).toBe('MaterialInputs/test');
         expect(EntityParentType.create({ query: 'test,./' }).generateFieldKey()).toBe('MaterialInputs/test$C$P$S');
-        expect(EntityParentType.create({ query: 'Test', label: 'TEST' }).generateFieldKey()).toBe('MaterialInputs/Test');
+        expect(EntityParentType.create({ query: 'Test', label: 'TEST' }).generateFieldKey()).toBe(
+            'MaterialInputs/Test'
+        );
         expect(EntityParentType.create({ query: 'test', isAliquotParent: true }).generateFieldKey()).toBe(
             'AliquotedFrom'
         );

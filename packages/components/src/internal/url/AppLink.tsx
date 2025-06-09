@@ -33,18 +33,13 @@ export function parseAppPath(href: string): string | undefined {
     return undefined;
 }
 
-/**
- * This is a subset of AnchorHTMLAttributes<HTMLAnchorElement> that are passed through to the anchor tag.
- */
+/** This is a subset of AnchorHTMLAttributes<HTMLAnchorElement> that are passed through to the anchor tag. */
 type InheritedHTMLAnchorProps = Omit<
     DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>,
     'href' // overridden by AppLink which uses "to" instead
 >;
 
-/**
- * DO NOT USE onMouseEnter or onMouseLeave, they are only needed because  the ProductNavigationItem applies a new CSS
- * class on hover. This component will be updated in the near future to use a css :hover selector to apply the styling.
- */
+/** These props are specific to <AppLink>. */
 interface Props extends InheritedHTMLAnchorProps {
     targetBlank?: boolean;
     to: string | AppURL | undefined;

@@ -2,6 +2,7 @@ import importPlugin from 'eslint-plugin-import';
 import perfectionist from 'eslint-plugin-perfectionist';
 import pluginReact from 'eslint-plugin-react';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
+import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import globals from 'globals';
 import typeScriptESLint from 'typescript-eslint';
@@ -22,6 +23,7 @@ export default defineConfig([
     pluginReact.configs.flat.recommended,
     pluginReactHooks.configs['recommended-latest'],
     perfectionist.configs['recommended-natural'],
+    prettierRecommended,
     {
         files: ['src/**/*.{ts,tsx}'],
         extends: [importPlugin.flatConfigs.recommended, importPlugin.flatConfigs.typescript],
@@ -57,6 +59,23 @@ export default defineConfig([
             'perfectionist/sort-union-types': 'warn',
             'perfectionist/sort-variable-declarations': 'warn',
             'prefer-const': 'warn',
+            'prettier/prettier': ['warn', {
+                // https://prettier.io/docs/options.html
+                arrowParens: 'avoid',
+                bracketSpacing: true,
+                endOfLine: 'auto',
+                insertPragma: false,
+                jsxBracketSameLine: false,
+                jsxSingleQuote: false,
+                printWidth: 120,
+                proseWrap: 'never',
+                quoteProps: 'as-needed',
+                semi: true,
+                singleQuote: true,
+                tabWidth: 4,
+                trailingComma: 'es5',
+                useTabs: false,
+            }],
             'react/display-name': 'warn',
             'react/no-unescaped-entities': 'off',
             'react/prop-types': 'off',

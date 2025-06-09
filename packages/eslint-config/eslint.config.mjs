@@ -1,4 +1,4 @@
-import importPlugin from 'eslint-plugin-import'; // TODO: Use "eslint-plugin-import-x" instead
+import importPlugin from 'eslint-plugin-import';
 import perfectionist from 'eslint-plugin-perfectionist';
 import pluginReact from 'eslint-plugin-react';
 import pluginReactHooks from 'eslint-plugin-react-hooks';

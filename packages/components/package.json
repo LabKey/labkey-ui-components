@@ -76,7 +76,7 @@
   },
   "devDependencies": {
     "@labkey/build": "8.5.0",
-    "@labkey/eslint-config": "0.0.1-fb-eslint-config.2",
+    "@labkey/eslint-config": "0.0.1-fb-eslint-config.4",
     "@types/history": "4.7.11",
     "@types/jest": "29.5.14",
     "@types/node": "20.14.11",

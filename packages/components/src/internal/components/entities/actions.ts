@@ -300,7 +300,7 @@ function resolveSampleParentTypes(
             EntityParentType.create({
                 index,
                 schema: 'samples',
-                query: sampleType?.toLowerCase(),
+                query: sampleType,
                 label: sampleType,
                 value: orderedRowIds
                     ? List<DisplayObject>(data.sort(_getEntitySort(orderedRowIds)))
@@ -364,7 +364,7 @@ async function initParents(
         return getSelectedParents(schemaQuery, filterArray, isAliquotParent, selectionResponse.selected);
     } else if (initialParents?.length > 0) {
         const [parent] = initialParents;
-        const [schema, query, value] = parseEntityParentKey(parent.toLowerCase());
+        const [schema, query, value] = parseEntityParentKey(parent);
 
         // if the parent key doesn't have a value, we don't need to make the request to getSelectedParents
         if (value === undefined) {
@@ -431,7 +431,7 @@ function resolveEntityParentTypeFromIds(
         EntityParentType.create({
             index: 1,
             schema: schemaQuery.schemaName,
-            query: schemaQuery.queryName,
+            query: dataClass ?? schemaQuery.queryName,
             label: dataClass,
             value: List(data),
             isAliquotParent,
@@ -945,16 +945,15 @@ export const getOriginalParentsFromLineage = async (
         // filter out additional parent alias columns that's already added
         const additionalParentTypeSchemaQueryKeys = [];
         additionalParentTypes?.forEach(parentType => {
-            additionalParentTypeSchemaQueryKeys.push(
-                parentType.toString().toLowerCase()
-            );
+            additionalParentTypeSchemaQueryKeys.push(parentType.toString().toLowerCase());
         });
         parentTypeOptions = parentTypeOptions.set(
             dataType.typeListingSchemaQuery.queryName,
             validParentTypeOptions
                 .filter(option => {
-                    const schemaQueryKey =
-                        new SchemaQuery(option.entityDataType.instanceSchemaName, option.query).toString().toLowerCase();
+                    const schemaQueryKey = new SchemaQuery(option.entityDataType.instanceSchemaName, option.query)
+                        .toString()
+                        .toLowerCase();
                     return (
                         originalParentTypeLsids.indexOf(option.lsid) === -1 &&
                         additionalParentTypeSchemaQueryKeys.indexOf(schemaQueryKey) === -1

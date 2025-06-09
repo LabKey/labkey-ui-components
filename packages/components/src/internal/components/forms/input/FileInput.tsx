@@ -199,8 +199,7 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
         } = this.props;
         const { data, file, isDisabled, isHover } = this.state;
 
-        const name = this.getInputName();
-        const inputId = `${name}-fileUpload`;
+        const inputId = this.getInputName();
         let body;
 
         if (file) {
@@ -236,7 +235,7 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
                         disabled={this.state.isDisabled}
                         type="file"
                         className="file-upload__input" // This class makes the file input hidden
-                        name={name}
+                        name={inputId}
                         id={inputId}
                         multiple={false}
                         onChange={this.onChange}

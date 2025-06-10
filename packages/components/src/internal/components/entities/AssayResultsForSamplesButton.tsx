@@ -9,19 +9,19 @@ import { User } from '../base/models/User';
 import { incrementClientSideMetricCount } from '../../actions';
 import { userCanReadAssays } from '../../app/utils';
 import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
-import { SampleTypeDataType } from './constants';
+
 import { MAX_SELECTION_ACTION_ROWS } from '../../constants';
+
+import { SampleTypeDataType } from './constants';
 
 function getAssayResultsHref(
     model: QueryModel,
     picklistName?: string,
     isAssay?: boolean,
-    sampleFieldKey?: string,
-): string {
-    // TODO: update this to return AppURL when MenuItem is updated to render AppLink and take AppURl
+    sampleFieldKey?: string
+): AppURL {
     const params = getURLParamsForSampleSelectionKey(model, picklistName, isAssay, sampleFieldKey);
-    const actionUrl = AppURL.create(ASSAYS_KEY, 'sampleresults').addParams(params);
-    return actionUrl.toHref();
+    return AppURL.create(ASSAYS_KEY, 'sampleresults').addParams(params);
 }
 
 interface Props {
@@ -65,7 +65,7 @@ export const AssayResultsForSamplesButton: FC<Props> = memo(props => {
     if (!userCanReadAssays(user)) return null;
 
     return (
-        <ResponsiveMenuButton className="sample-reports-menu" text="Reports" asSubMenu={asSubMenu} >
+        <ResponsiveMenuButton className="sample-reports-menu" text="Reports" asSubMenu={asSubMenu}>
             <AssayResultsForSamplesMenuItem {...props} />
         </ResponsiveMenuButton>
     );

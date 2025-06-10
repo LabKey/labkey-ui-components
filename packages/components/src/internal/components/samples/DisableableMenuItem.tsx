@@ -6,12 +6,13 @@ import { useOverlayTriggerState } from '../../OverlayTrigger';
 import { MenuItem } from '../../dropdowns';
 import { Popover } from '../../Popover';
 import { Placement } from '../../useOverlayPositioning';
+import { AppURL } from '../../url/AppURL';
 
 export interface DisableableMenuItemProps extends PropsWithChildren {
     className?: string;
     disabled?: boolean;
     disabledMessage?: ReactNode;
-    href?: string;
+    href?: string | AppURL;
     onClick?: () => void;
     placement?: Placement;
 }

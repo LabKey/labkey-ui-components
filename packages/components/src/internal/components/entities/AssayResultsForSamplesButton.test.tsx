@@ -23,7 +23,7 @@ describe('AssayResultsForSamplesButton', () => {
         // expect(document.querySelectorAll('.lk-menu-item').prop('nounPlural')).toBe('samples');
         expect(document.querySelector('.lk-menu-item a')).toHaveAttribute(
             'href',
-            '#/assays/sampleresults?selectionKey=model'
+            '/assays/sampleresults?selectionKey=model'
         );
     });
 
@@ -32,7 +32,7 @@ describe('AssayResultsForSamplesButton', () => {
         expect(document.querySelector('.lk-menu-item a')).toBeInTheDocument();
         expect(document.querySelector('.lk-menu-item a')).toHaveAttribute(
             'href',
-            '#/assays/sampleresults?selectionKey=model&picklistName=query'
+            '/assays/sampleresults?selectionKey=model&picklistName=query'
         );
     });
 

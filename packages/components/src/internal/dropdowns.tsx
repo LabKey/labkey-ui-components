@@ -18,6 +18,8 @@ import classNames from 'classnames';
 
 import { generateId } from './util/utils';
 import { cancelEvent } from './events';
+import { AppLink } from './url/AppLink';
+import { AppURL } from './url/AppURL';
 
 export type BSStyle = 'success' | 'danger' | 'default' | 'primary' | 'info';
 const DROPDOWN_MENU_CLASS = 'dropdown-menu';
@@ -300,7 +302,7 @@ export interface MenuItemProps {
     children: ReactNode;
     className?: string;
     disabled?: boolean;
-    href?: string;
+    href?: string | AppURL;
     onClick?: () => void;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
@@ -342,12 +344,12 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
         },
         [disabled, href, onClick]
     );
-    // TODO: Use AppLink (needs support for role and rel), this will be completed in a follow-on PR
+
     return (
         <li className={className} role="presentation" ref={ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-            <a onClick={onClick_} href={href} rel={rel} role="menuitem" target={target} title={title}>
+            <AppLink onClick={onClick_} rel={rel} role="menuitem" target={target} title={title} to={href}>
                 {children}
-            </a>
+            </AppLink>
         </li>
     );
 });

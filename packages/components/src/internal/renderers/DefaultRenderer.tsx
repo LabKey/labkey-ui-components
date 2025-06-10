@@ -16,8 +16,6 @@
 import React, { FC, memo } from 'react';
 import { List } from 'immutable';
 
-import { Link } from 'react-router-dom';
-
 import { QueryColumn } from '../../public/QueryColumn';
 
 import { getDataStyling } from '../util/utils';

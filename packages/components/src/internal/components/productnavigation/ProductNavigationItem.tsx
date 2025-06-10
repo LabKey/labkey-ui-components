@@ -1,4 +1,5 @@
 import React, { FC, memo, PropsWithChildren, useCallback, useState } from 'react';
+
 import { AppLink } from '../../url/AppLink';
 import { AppURL } from '../../url/AppURL';
 
@@ -13,6 +14,9 @@ export const ProductNavigationItem: FC<ProductClickableItemProps> = memo(({ chil
     const onEnter = useCallback(() => setHovered(true), [setHovered]);
     const onLeave = useCallback(() => setHovered(false), [setHovered]);
 
+    // FIXME Do not use onMouseEnter or onMouseLeave.
+    // They are only needed because this applies a new CSS class on hover.
+    // Update to use a css :hover selector to apply the styling.
     return (
         <AppLink
             to={url}

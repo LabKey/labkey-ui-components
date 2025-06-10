@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.48.1
+*Released*: 10 June 2025
+- Update `AppLink` to extend all props of `AnchorHTMLAttributes`
+- Update `MenuItem` to use `AppLink`
+- Update all usages of `MenuItem` to pass `AppURL` where possible
+
 ### version 6.48.0
 *Released*: 9 June 2025
 - Issue 52556: Add data-fieldkey attribute to grid header elements and input elements (part 2)

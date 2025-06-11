@@ -1222,7 +1222,7 @@ describe('addSourcesSectionConfig', () => {
         expect(sectionConfig.headerURLPart).toBe(undefined);
         expect(sectionConfig.headerText).toBe(undefined);
         if (canDesign) {
-            expect(sectionConfig.emptyAppURL?.toHref()).toContain('#/sourceType/new');
+            expect(sectionConfig.emptyAppURL?.toHref()).toContain('#/sources/new');
             expect(sectionConfig.emptyURLText).toBe('Create a source type');
         } else {
             expect(sectionConfig.emptyAppURL).toBe(undefined);

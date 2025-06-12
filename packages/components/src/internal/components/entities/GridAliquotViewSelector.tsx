@@ -28,12 +28,7 @@ interface Props {
     actions?: Actions;
     initAliquotMode?: ALIQUOT_FILTER_MODE; // allow to set aliquot filter from a init value
     queryModel?: QueryModel;
-    updateFilter?: (
-        filter: Filter.IFilter,
-        filterColumnToRemove?: string,
-        newModel?: ALIQUOT_FILTER_MODE,
-        queryModel?: QueryModel
-    ) => void;
+    updateFilter?: (filter: Filter.IFilter, newModel: ALIQUOT_FILTER_MODE) => void;
 }
 
 interface State {
@@ -89,10 +84,11 @@ export class GridAliquotViewSelector extends Component<Props, State> {
         }
 
         if (updateFilter) {
-            updateFilter(newFilter, aliquotColName, newMode, queryModel);
+            updateFilter(newFilter, newMode);
+            return;
         }
 
-        if (queryModel?.queryInfo && actions) {
+        if (queryModel.queryInfo && actions) {
             // keep any existing filters that do not match the aliquot column name
             const updatedFilters = queryModel.filterArray.filter(filter => {
                 return aliquotColName.toLowerCase() !== filter.getColumnName().toLowerCase();

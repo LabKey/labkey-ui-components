@@ -26,7 +26,7 @@ interface Props {
     allLabel?: string;
     headerLabel?: string;
     samplesLabel?: string;
-    updateAliquotFilter: (newMode?: ALIQUOT_FILTER_MODE) => void;
+    updateAliquotFilter: (newMode: ALIQUOT_FILTER_MODE) => void;
 }
 
 export const SampleAliquotViewSelector: FC<Props> = props => {

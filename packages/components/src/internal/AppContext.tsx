@@ -32,7 +32,7 @@ import { EntityDataType } from './components/entities/models';
 import { DetailRenderer } from './components/forms/detail/DetailDisplay';
 import { ALIQUOT_FILTER_MODE } from './components/samples/constants';
 import { SampleStorageButton, WorkflowGrid } from './components/samples/models';
-import { SampleGridButton, SamplesEditableGridProps, SamplesTabbedGridPanel } from './sampleModels';
+import { SamplesEditableGridProps } from './sampleModels';
 
 export interface AdminAppContext {
     FolderStorageSelectionComponent?: FolderStorageSelection;
@@ -45,9 +45,7 @@ export interface AdminAppContext {
 }
 
 export interface SampleTypeAppContext {
-    SampleGridButtonComponent: SampleGridButton;
     SampleStorageButtonComponent: SampleStorageButton;
-    SamplesTabbedGridPanelComponent: SamplesTabbedGridPanel;
     WorkflowGridComponent: WorkflowGrid;
     assayProviderType?: string;
     controllerName: string;

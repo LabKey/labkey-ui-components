@@ -68,8 +68,8 @@ export function isEqual(first: List<Filter.IFilter>, second: List<Filter.IFilter
     return isEqual;
 }
 
-export function getLegalIdentifier(columnName: string, tableAlias?: string): string {
-    const columnNameParts = columnName.split('/');
+export function getLegalIdentifier(columnName: string, tableAlias?: string, separator = '/'): string {
+    const columnNameParts = columnName.split(separator);
     const formattedParts = [];
     columnNameParts.forEach(part => {
         if (part) {

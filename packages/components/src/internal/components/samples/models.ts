@@ -170,22 +170,3 @@ export class SampleState {
         };
     }
 }
-
-export interface SampleGridButtonProps {
-    afterSampleActionComplete?: () => void;
-    afterSampleDelete?: (rowsToKeep: any[]) => void;
-    createBtnParentEntityType?: EntityDataType;
-    createBtnParentKey?: string;
-    currentProductId?: string;
-    excludeAddButton?: boolean;
-    excludedMenuKeys?: SamplesEditButtonSections[];
-    includesMedia?: boolean;
-    initAliquotMode?: ALIQUOT_FILTER_MODE;
-    metricFeatureArea?: string;
-    navigate?: (url: string | AppURL) => void;
-    onTabbedViewAliquotSelectorUpdate?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
-    sampleFinderBaseProps?: Record<string, any>;
-    showBulkUpdate?: (statusData?: OperationConfirmationData) => void;
-    toggleEditLineage?: (statusData?: OperationConfirmationData) => void;
-    toggleEditSamples?: (statusData?: OperationConfirmationData) => void;
-}

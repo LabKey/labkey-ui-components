@@ -1959,7 +1959,6 @@ export type {
 export type {
     EntityCreationTypeModel,
     SampleStatus,
-    SampleGridButtonProps,
     GroupedSampleFields,
     FindField,
     StorageActionStatusCounts,
@@ -2003,7 +2002,6 @@ export type {
 } from './internal/components/labelPrinting/LabelPrintingContextProvider';
 export type { SamplesEditableGridProps } from './internal/sampleModels';
 export type { MeasurementUnit } from './internal/util/measurement';
-export type { SamplesTabbedGridPanelComponentProps } from './internal/sampleModels';
 export type { SearchHit, SearchMetadata, SearchResult, SearchOptions } from './internal/components/search/actions';
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
 export type { GroupedSampleDisplayColumns, SampleStorageData } from './internal/components/samples/actions';

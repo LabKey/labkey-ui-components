@@ -86,6 +86,7 @@ const QUERY_INFO = QueryInfo.fromJsonForTests({
 const MODEL = makeTestQueryModel(new SchemaQuery('samples', 'query', VIEW_NAME), QUERY_INFO).mutate({
     baseFilters: [Filter.create('a', null, Filter.Types.ISBLANK)],
     filterArray: [Filter.create('b', null, Filter.Types.ISBLANK)],
+    rowCount: 1,
 });
 
 describe('FindDerivativesButton', () => {
@@ -98,6 +99,15 @@ describe('FindDerivativesButton', () => {
         renderWithAppContext(<FindDerivativesMenuItem {...DEFAULT_PROPS} asSubMenu />);
         expect(document.querySelectorAll('.lk-menu-item')).toHaveLength(1);
         expect(document.querySelectorAll('.lk-menu-item.disabled')).toHaveLength(0);
+    });
+
+    test('disable menu item for grid with no rows', () => {
+        const model2 = MODEL.mutate({
+            rowCount: 0,
+        });
+        renderWithAppContext(<FindDerivativesMenuItem {...DEFAULT_PROPS} model={model2} asSubMenu />);
+        expect(document.querySelectorAll('.lk-menu-item')).toHaveLength(1);
+        expect(document.querySelectorAll('.lk-menu-item.disabled')).toHaveLength(1);
     });
 
     test('invalidFilterNames from search, disabled button', () => {

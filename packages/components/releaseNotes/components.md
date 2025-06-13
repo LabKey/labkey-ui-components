@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - GH Issue 796: App assay Samples > Find Derivatives in Sample Finder not working for field with special characters
   - update getLegalIdentifier to include separator param
   - FindDerivativesMenuItem update to allow titleCol prop to be passed in
+- GH Issue 740: Disable "Find Derivatives in Sample Finder" if grid has no rows
 
 ### version 6.49.0
 *Released*: 11 June 2025

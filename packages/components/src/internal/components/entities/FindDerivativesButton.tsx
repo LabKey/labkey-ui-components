@@ -224,10 +224,10 @@ export const FindDerivativesMenuItem: FC<Props> = memo(props => {
     if (!model.queryInfo) return null;
 
     const validSelection = !model.selections?.size || model.selections.size <= MAX_SELECTION;
-    const disabled = !validSelection || invalidFilterNames !== '';
-    const disabledMessage = !validSelection
-        ? 'At most ' + MAX_SELECTION + ' can be selected'
-        : DISABLED_FIND_DERIVATIVES_MSG + ' (' + invalidFilterNames + ').';
+    const disabled = model.rowCount === 0 || !validSelection || invalidFilterNames !== '';
+    let disabledMessage = DISABLED_FIND_DERIVATIVES_MSG + ' (' + invalidFilterNames + ').';
+    if (!validSelection) disabledMessage = 'At most ' + MAX_SELECTION + ' can be selected.';
+    if (model.rowCount === 0) disabledMessage = 'No samples available in the current grid view.';
 
     return (
         <DisableableMenuItem disabled={disabled} disabledMessage={disabledMessage} onClick={onClick} placement="right">

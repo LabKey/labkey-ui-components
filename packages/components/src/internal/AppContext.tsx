@@ -56,19 +56,6 @@ export interface SampleTypeAppContext {
     downloadTemplateExcludeColumns?: string[];
     getMetricUnitOptions: (unitTypeStr?: string, includeLongLabel?: boolean) => any[];
     getSamplesEditableGridProps: (user: User) => Partial<SamplesEditableGridProps>;
-    getWorkflowGridQueryConfigs?: (
-        visibleTabs: string[],
-        gridPrefix: string,
-        userId: number,
-        userGroupIds: number[],
-        schemaQuery?: SchemaQuery,
-        initialFilters?: Filter.IFilter[],
-        sampleLSID?: string,
-        sourceLSID?: string,
-        activeSampleAliquotType?: ALIQUOT_FILTER_MODE,
-        containerPath?: string,
-        containerFilter?: Query.ContainerFilter
-    ) => QueryConfigMap;
     hideConditionalFormatting: boolean;
     importHelpLinkTopic: string;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;

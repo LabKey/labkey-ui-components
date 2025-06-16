@@ -2,7 +2,7 @@ import { Filter } from '@labkey/api';
 
 import { formatDate, getNDaysStrFromToday } from '../util/Date';
 
-import { COLUMN_NOT_IN_FILTER_TYPE, getFilterLabKeySql } from './filter';
+import { COLUMN_NOT_IN_FILTER_TYPE, getFilterLabKeySql, getLegalIdentifier } from './filter';
 
 const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Los_Angeles
 const testDate = new Date(datePOSIX);
@@ -533,5 +533,28 @@ describe('getFilterLabKeySql', () => {
 
     test('filter types not supported', () => {
         expect(getFilterLabKeySql(Filter.create('StringField', 'abc', Filter.Types.MEMBER_OF), 'string')).toBeNull();
+    });
+});
+
+describe('getLegalIdentifier', () => {
+    test('columnName', () => {
+        expect(getLegalIdentifier('testColumn')).toBe('"testColumn"');
+        expect(getLegalIdentifier('test"Column')).toBe('"test""Column"');
+        expect(getLegalIdentifier('test""Column')).toBe('"test""""Column"');
+        expect(getLegalIdentifier('test$S$P$CColumn')).toBe('"test/.,Column"');
+        expect(getLegalIdentifier('test/Column')).toBe('"test"."Column"');
+    });
+
+    test('tableAlias', () => {
+        expect(getLegalIdentifier('test', undefined)).toBe('"test"');
+        expect(getLegalIdentifier('test', null)).toBe('"test"');
+        expect(getLegalIdentifier('test', 'alias')).toBe('alias."test"');
+        expect(getLegalIdentifier('test/column', 'alias')).toBe('alias."test"."column"');
+    });
+
+    test('separator', () => {
+        expect(getLegalIdentifier('test', undefined, '.')).toBe('"test"');
+        expect(getLegalIdentifier('test/a/b/c', undefined, '.')).toBe('"test/a/b/c"');
+        expect(getLegalIdentifier('test.a.b.c', undefined, '.')).toBe('"test"."a"."b"."c"');
     });
 });

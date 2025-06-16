@@ -540,6 +540,7 @@ describe('getLegalIdentifier', () => {
     test('columnName', () => {
         expect(getLegalIdentifier('testColumn')).toBe('"testColumn"');
         expect(getLegalIdentifier('test"Column')).toBe('"test""Column"');
+        expect(getLegalIdentifier('test""Column')).toBe('"test""""Column"');
         expect(getLegalIdentifier('test$S$P$CColumn')).toBe('"test/.,Column"');
         expect(getLegalIdentifier('test/Column')).toBe('"test"."Column"');
     });

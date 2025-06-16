@@ -68,8 +68,12 @@ export function isEqual(first: List<Filter.IFilter>, second: List<Filter.IFilter
     return isEqual;
 }
 
-export function getLegalIdentifier(columnName: string, tableAlias?: string): string {
-    const columnNameParts = columnName.split('/');
+/**
+ * Make a legal LK SQL identifier from the column name by decoding parts, escaping quotes, and adding table alias if provided.
+ * See usage in ui-premium entities/utils.tsx getLabKeySql()
+ */
+export function getLegalIdentifier(columnName: string, tableAlias?: string, separator = '/'): string {
+    const columnNameParts = columnName.split(separator);
     const formattedParts = [];
     columnNameParts.forEach(part => {
         if (part) {

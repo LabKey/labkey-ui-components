@@ -8,14 +8,13 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
-import { DisableableMenuItem } from '../samples/DisableableMenuItem';
-
 import { TestTypeDataType, TestTypeDataTypeWithEntityFilter } from '../../../test/data/constants';
 
 import { FieldFilter } from '../search/models';
 
 import { SCHEMAS } from '../../schemas';
+
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 import {
     FindDerivativesMenuItem,
@@ -87,6 +86,7 @@ const QUERY_INFO = QueryInfo.fromJsonForTests({
 const MODEL = makeTestQueryModel(new SchemaQuery('samples', 'query', VIEW_NAME), QUERY_INFO).mutate({
     baseFilters: [Filter.create('a', null, Filter.Types.ISBLANK)],
     filterArray: [Filter.create('b', null, Filter.Types.ISBLANK)],
+    rowCount: 1,
 });
 
 describe('FindDerivativesButton', () => {
@@ -96,11 +96,18 @@ describe('FindDerivativesButton', () => {
     };
 
     test('default props', () => {
-        const wrapper = mountWithAppServerContext(<FindDerivativesMenuItem {...DEFAULT_PROPS} asSubMenu />);
-        expect(wrapper.find(DisableableMenuItem)).toHaveLength(1);
-        expect(wrapper.find(DisableableMenuItem).prop('disabled')).toBe(false);
-        expect(wrapper.find(DisableableMenuItem).prop('disabledMessage')).toContain(' ()');
-        wrapper.unmount();
+        renderWithAppContext(<FindDerivativesMenuItem {...DEFAULT_PROPS} asSubMenu />);
+        expect(document.querySelectorAll('.lk-menu-item')).toHaveLength(1);
+        expect(document.querySelectorAll('.lk-menu-item.disabled')).toHaveLength(0);
+    });
+
+    test('disable menu item for grid with no rows', () => {
+        const model2 = MODEL.mutate({
+            rowCount: 0,
+        });
+        renderWithAppContext(<FindDerivativesMenuItem {...DEFAULT_PROPS} model={model2} asSubMenu />);
+        expect(document.querySelectorAll('.lk-menu-item')).toHaveLength(1);
+        expect(document.querySelectorAll('.lk-menu-item.disabled')).toHaveLength(1);
     });
 
     test('invalidFilterNames from search, disabled button', () => {
@@ -110,22 +117,18 @@ describe('FindDerivativesButton', () => {
                 Filter.create('*', 'test', Filter.Types.CONTIANS),
             ],
         });
-        const wrapper = mountWithAppServerContext(<FindDerivativesMenuItem {...DEFAULT_PROPS} model={model2} />);
-        expect(wrapper.find(DisableableMenuItem)).toHaveLength(1);
-        expect(wrapper.find(DisableableMenuItem).prop('disabled')).toBe(true);
-        expect(wrapper.find(DisableableMenuItem).prop('disabledMessage')).toContain(' (Search Filter)');
-        wrapper.unmount();
+        renderWithAppContext(<FindDerivativesMenuItem {...DEFAULT_PROPS} model={model2} />);
+        expect(document.querySelectorAll('.lk-menu-item')).toHaveLength(1);
+        expect(document.querySelectorAll('.lk-menu-item.disabled')).toHaveLength(1);
     });
 
     test('invalidFilterNames from MVFK, disabled button', () => {
         const model2 = MODEL.mutate({
             filterArray: [Filter.create('e', null, Filter.Types.ISBLANK)],
         });
-        const wrapper = mountWithAppServerContext(<FindDerivativesMenuItem {...DEFAULT_PROPS} model={model2} />);
-        expect(wrapper.find(DisableableMenuItem)).toHaveLength(1);
-        expect(wrapper.find(DisableableMenuItem).prop('disabled')).toBe(true);
-        expect(wrapper.find(DisableableMenuItem).prop('disabledMessage')).toContain(' (FieldE)');
-        wrapper.unmount();
+        renderWithAppContext(<FindDerivativesMenuItem {...DEFAULT_PROPS} model={model2} />);
+        expect(document.querySelectorAll('.lk-menu-item')).toHaveLength(1);
+        expect(document.querySelectorAll('.lk-menu-item.disabled')).toHaveLength(1);
     });
 });
 
@@ -160,23 +163,23 @@ describe('getFieldFilter', () => {
 });
 
 describe('getSessionSearchFilterProps', () => {
-    test('no filters', () => {
-        const props = getSessionSearchFilterProps(SampleTypeDataType, MODEL, []);
+    test('no filters', async () => {
+        const props = await getSessionSearchFilterProps(SampleTypeDataType, MODEL, []);
         expect(props).toHaveLength(1);
         expect(props[0].filterArray).toHaveLength(0);
         expect(props[0].dataTypeDisplayName).toBe('query');
         expect(props[0].entityDataType).toBe(SampleTypeDataType);
     });
 
-    test('with model title', () => {
+    test('with model title', async () => {
         const model2 = MODEL.mutate({ title: 'TestingTitle' });
-        const props = getSessionSearchFilterProps(SampleTypeDataType, model2, []);
+        const props = await getSessionSearchFilterProps(SampleTypeDataType, model2, []);
         expect(props).toHaveLength(1);
         expect(props[0].dataTypeDisplayName).toBe('TestingTitle');
     });
 
-    test('with filters', () => {
-        const props = getSessionSearchFilterProps(SampleTypeDataType, MODEL, [
+    test('with filters', async () => {
+        const props = await getSessionSearchFilterProps(SampleTypeDataType, MODEL, [
             Filter.create('a', 'val1'),
             Filter.create('b', 'val2'),
         ]);
@@ -184,19 +187,19 @@ describe('getSessionSearchFilterProps', () => {
         expect(props[0].filterArray).toHaveLength(2);
     });
 
-    test('baseFilter, without baseModel', () => {
-        const props = getSessionSearchFilterProps(SampleTypeDataType, MODEL, [], undefined, undefined, [
+    test('baseFilter, without baseModel', async () => {
+        const props = await getSessionSearchFilterProps(SampleTypeDataType, MODEL, [], undefined, undefined, [
             Filter.create('a', 'Something'),
         ]);
         expect(props).toHaveLength(1);
         expect(props[0].filterArray).toHaveLength(1);
     });
 
-    test('baseFilter, with baseModel for sample type', () => {
+    test('baseFilter, with baseModel for sample type', async () => {
         const baseModel = MODEL.mutate({
             schemaQuery: new SchemaQuery('samples', 'query2'),
         });
-        const props = getSessionSearchFilterProps(SampleTypeDataType, MODEL, [], SampleTypeDataType, baseModel, [
+        const props = await getSessionSearchFilterProps(SampleTypeDataType, MODEL, [], SampleTypeDataType, baseModel, [
             Filter.create('a', 'Something'),
         ]);
         expect(props).toHaveLength(2);
@@ -206,11 +209,11 @@ describe('getSessionSearchFilterProps', () => {
         expect(props[1].filterArray).toHaveLength(0);
     });
 
-    test('baseFilter, with baseModel for data class', () => {
+    test('baseFilter, with baseModel for data class', async () => {
         const baseModel = MODEL.mutate({
             schemaQuery: new SchemaQuery('exp.data', 'query3'),
         });
-        const props = getSessionSearchFilterProps(SampleTypeDataType, MODEL, [], DataClassDataType, baseModel, [
+        const props = await getSessionSearchFilterProps(SampleTypeDataType, MODEL, [], DataClassDataType, baseModel, [
             Filter.create('a', 'Something'),
         ]);
         expect(props).toHaveLength(2);

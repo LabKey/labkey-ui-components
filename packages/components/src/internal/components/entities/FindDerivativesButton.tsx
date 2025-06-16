@@ -18,8 +18,9 @@ import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
 import { getSelectedDataDeprecated } from '../../actions';
 import { caseInsensitive } from '../../util/utils';
 
-import { EntityDataType, FilterProps } from './models';
 import { getPrimaryAppProductId } from '../../app/products';
+
+import { EntityDataType, FilterProps } from './models';
 
 export const SAMPLE_FINDER_SESSION_PREFIX = 'Searched ';
 
@@ -62,7 +63,8 @@ export const getSessionSearchFilterProps = async (
     filters: Filter.IFilter[],
     baseEntityDataType?: EntityDataType,
     baseModel?: QueryModel,
-    baseFilter?: Filter.IFilter[]
+    baseFilter?: Filter.IFilter[],
+    titleCol?: QueryColumn
 ): Promise<FilterProps[]> => {
     let fieldFilters = [];
     // optionally include baseFilter when passed without a baseModel (i.e. apply to the same schemaQuery as the other filters)
@@ -75,13 +77,13 @@ export const getSessionSearchFilterProps = async (
     // Issue 47087: if model has selections, include those as IN clause
     if (model.hasSelections && model.queryInfo.pkCols?.length === 1 && model.queryInfo.titleColumn) {
         const pkCol = model.queryInfo.getPkCols()[0];
-        const titleCol = model.queryInfo.getColumn(model.queryInfo.titleColumn);
+        const titleCol_ = titleCol ?? model.queryInfo.getColumnFromName(model.queryInfo.titleColumn);
 
         const selectedData = await getSelectedDataDeprecated(
             model.schemaName,
             model.queryName,
             Array.from(model.selections),
-            [pkCol.fieldKey, titleCol.fieldKey],
+            [pkCol.fieldKey, titleCol_.fieldKey],
             undefined,
             model.queryParameters,
             model.viewName,
@@ -89,14 +91,14 @@ export const getSessionSearchFilterProps = async (
         );
         const selectedValues = [];
         selectedData.data.forEach(row => {
-            selectedValues.push(caseInsensitive(row.toJS(), titleCol.fieldKey).value);
+            selectedValues.push(caseInsensitive(row.toJS(), titleCol_.name).value);
         });
 
         fieldFilters.push({
-            fieldKey: titleCol.fieldKey,
+            fieldKey: titleCol_.fieldKey,
             fieldCaption: 'Selection',
-            filter: Filter.create(titleCol.fieldKey, selectedValues, Filter.Types.IN),
-            jsonType: titleCol.jsonType,
+            filter: Filter.create(titleCol_.fieldKey, selectedValues, Filter.Types.IN),
+            jsonType: titleCol_.jsonType,
         });
     }
 
@@ -171,10 +173,11 @@ interface Props {
     entityDataType: EntityDataType;
     metricFeatureArea?: string;
     model: QueryModel;
+    titleCol?: QueryColumn;
 }
 
 export const FindDerivativesMenuItem: FC<Props> = memo(props => {
-    const { baseEntityDataType, baseModel, baseFilter, model, entityDataType, metricFeatureArea } = props;
+    const { baseEntityDataType, baseModel, baseFilter, model, entityDataType, metricFeatureArea, titleCol } = props;
     const { api } = useAppContext();
 
     const viewAndUserFilters = useMemo(
@@ -207,7 +210,8 @@ export const FindDerivativesMenuItem: FC<Props> = memo(props => {
             viewAndUserFilters,
             baseEntityDataType,
             baseModel,
-            baseFilter
+            baseFilter,
+            titleCol
         );
 
         sessionStorage.setItem(getSampleFinderLocalStorageKey(), searchFiltersToJson(filterProps, 0, currentTimestamp));
@@ -221,10 +225,10 @@ export const FindDerivativesMenuItem: FC<Props> = memo(props => {
     if (!model.queryInfo) return null;
 
     const validSelection = !model.selections?.size || model.selections.size <= MAX_SELECTION;
-    const disabled = !validSelection || invalidFilterNames !== '';
-    const disabledMessage = !validSelection
-        ? 'At most ' + MAX_SELECTION + ' can be selected'
-        : DISABLED_FIND_DERIVATIVES_MSG + ' (' + invalidFilterNames + ').';
+    const disabled = model.rowCount === 0 || !validSelection || invalidFilterNames !== '';
+    let disabledMessage = DISABLED_FIND_DERIVATIVES_MSG + ' (' + invalidFilterNames + ').';
+    if (!validSelection) disabledMessage = 'At most ' + MAX_SELECTION + ' can be selected.';
+    if (model.rowCount === 0) disabledMessage = 'No samples available in the current grid view.';
 
     return (
         <DisableableMenuItem disabled={disabled} disabledMessage={disabledMessage} onClick={onClick} placement="right">

@@ -18,8 +18,9 @@ import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
 import { getSelectedDataDeprecated } from '../../actions';
 import { caseInsensitive } from '../../util/utils';
 
-import { EntityDataType, FilterProps } from './models';
 import { getPrimaryAppProductId } from '../../app/products';
+
+import { EntityDataType, FilterProps } from './models';
 
 export const SAMPLE_FINDER_SESSION_PREFIX = 'Searched ';
 

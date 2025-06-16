@@ -907,7 +907,7 @@ export interface GridResponse {
  *
  * Implementations that do asynchronously load data:
  * - StorageEditableGridLoaderFromSelection (uses getSelectedData)
- * - EditableGridLoaderFromSelection (uses getSelectedData)
+ * - EditableGridLoaderFromSelectionKey (uses getSelectedRows)
  */
 export interface GridLoader {
     fetch: () => Promise<GridResponse>;

@@ -279,8 +279,6 @@ import { NOT_ANY_FILTER_TYPE } from './internal/url/NotAnyFilterType';
 import { genCellKey, incrementRowCountMetric, parseCellKey } from './internal/components/editable/utils';
 import { EditableGrid, EditableGridTabs } from './internal/components/editable/EditableGrid';
 
-import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
-
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { ANCESTOR_LOOKUP_CONCEPT_URI, AncestorRenderer } from './internal/renderers/AncestorRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
@@ -1192,7 +1190,6 @@ export {
     initEditorModel,
     MAX_SELECTION_ACTION_ROWS,
     MAX_EDITABLE_GRID_ROWS,
-    EditableGridLoaderFromSelection,
     EditableGrid,
     EditableGridTabs,
     EditorModel,

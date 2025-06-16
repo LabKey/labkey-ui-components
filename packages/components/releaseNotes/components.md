@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.49.1
+*Released*: 16 June 2025
 - GH Issue 796: App assay Samples > Find Derivatives in Sample Finder not working for field with special characters
   - update getLegalIdentifier to include separator param
   - FindDerivativesMenuItem update to allow titleCol prop to be passed in

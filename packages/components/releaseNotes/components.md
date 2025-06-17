@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.49.2
+*Released*: 17 June 2025
+- GitHub Issue 748: "View Assay Results for Selected" gives error when no rows have sample IDs
+
 ### version 6.49.1
 *Released*: 16 June 2025
 - GH Issue 796: App assay Samples > Find Derivatives in Sample Finder not working for field with special characters

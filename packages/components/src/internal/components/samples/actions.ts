@@ -445,6 +445,12 @@ export async function createSessionAssayRunSummaryQuery(sampleIds: number[]): Pr
         assayRunsQuery = 'AssayRunsPerSampleChildFolder';
     }
 
+    // GitHub Issue 748: need to account for the case with no sampleIds
+    let whereClause = 'WHERE RowId IN (' + sampleIds.join(',') + ')\n';
+    if (sampleIds.length === 0) {
+        whereClause = 'WHERE 1 = 0\n'; // add where clause that will always result in zero rows
+    }
+
     return await selectRowsDeprecated({
         saveInSession: true,
         schemaName: 'exp',
@@ -453,9 +459,7 @@ export async function createSessionAssayRunSummaryQuery(sampleIds: number[]): Pr
             "FROM (SELECT RowId, SampleID, SampleType, Assay || ' Run Count' AS Assay FROM " +
             assayRunsQuery +
             ') X\n' +
-            'WHERE RowId IN (' +
-            sampleIds.join(',') +
-            ')\n' +
+            whereClause +
             'GROUP BY RowId, SampleID, SampleType, Assay\n' +
             'PIVOT RunCount BY Assay',
         maxRows: 0, // we don't need any data back here, we just need to get the temp session schema/query

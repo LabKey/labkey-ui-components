@@ -13,40 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Filter, Query } from '@labkey/api';
 import React, { createContext, PropsWithChildren, ReactElement, useContext, useMemo } from 'react';
-
-import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
-import { SchemaQuery } from '../public/SchemaQuery';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from './APIWrapper';
 import {
-    NotebookNotificationSettings,
-    NotebookContainerSettings,
     FolderStorageSelection,
+    NotebookContainerSettings,
+    NotebookNotificationSettings,
     WorkflowNotificationSettings,
 } from './app/models';
-import { User } from './components/base/models/User';
 import { DomainDetails } from './components/domainproperties/models';
 import { EntityDataType } from './components/entities/models';
 import { DetailRenderer } from './components/forms/detail/DetailDisplay';
-import { ALIQUOT_FILTER_MODE } from './components/samples/constants';
 import { SampleStorageButton, WorkflowGrid } from './components/samples/models';
-import { SamplesEditableGridProps } from './sampleModels';
+import { SchemaQuery } from '../public/SchemaQuery';
 
 export interface AdminAppContext {
+    extraPermissionRoles: string[][];
+    folderDataTypes?: EntityDataType[];
     FolderStorageSelectionComponent?: FolderStorageSelection;
     NotebookContainerSettingsComponent: NotebookContainerSettings;
     NotebookNotificationSettingsComponent: NotebookNotificationSettings;
-    WorkflowNotificationSettingsComponent: WorkflowNotificationSettings;
-    extraPermissionRoles: string[][];
-    folderDataTypes?: EntityDataType[];
     sampleTypeDataType?: EntityDataType;
+    WorkflowNotificationSettingsComponent: WorkflowNotificationSettings;
 }
 
 export interface SampleTypeAppContext {
-    SampleStorageButtonComponent: SampleStorageButton;
-    WorkflowGridComponent: WorkflowGrid;
     assayProviderType?: string;
     controllerName: string;
     dataClassAliasCaption?: string;
@@ -55,19 +47,21 @@ export interface SampleTypeAppContext {
     detailRenderer?: DetailRenderer;
     downloadTemplateExcludeColumns?: string[];
     getMetricUnitOptions: (unitTypeStr?: string, includeLongLabel?: boolean) => any[];
-    getSamplesEditableGridProps: (user: User) => Partial<SamplesEditableGridProps>;
     hideConditionalFormatting: boolean;
     importHelpLinkTopic: string;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
     lineagePagePermissions: string[];
+    omitParentAliases: ((schemaQuery: SchemaQuery) => boolean) | undefined;
     parentDataTypes: EntityDataType[];
     readOnlyQueryNames?: string[];
-    sampleTypeListingCaption: string;
     samplesGridRequiredColumns: string[];
+    SampleStorageButtonComponent: SampleStorageButton; // TODO: can this be removed, and replaced with direct imports?
+    sampleTypeListingCaption: string;
     showParentLabelPrefix: boolean;
     showStudyProperties: boolean;
     useSeparateDataClassesAliasMenu: boolean;
     validateNewSampleTypeUnit: (sampleSet: DomainDetails, newUnit: string) => Promise<any>;
+    WorkflowGridComponent: WorkflowGrid;
 }
 
 export interface AssayAppContext {
@@ -88,7 +82,7 @@ export interface AppContext {
     sampleType?: SampleTypeAppContext;
 }
 
-export type ExtendableAppContext<T> = T & AppContext;
+export type ExtendableAppContext<T> = AppContext & T;
 
 // The "any" used here should be fine, it gets re-typed in useAppContext, so as long as you're using that and providing
 // a type (e.g. useAppContext<MyAppContextType>()) you'll be fine.

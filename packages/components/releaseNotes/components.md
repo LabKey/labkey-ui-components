@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.49.2
+*Released*: 17 June 2025
 - GitHub Issue 748: "View Assay Results for Selected" gives error when no rows have sample IDs
 
 ### version 6.49.1

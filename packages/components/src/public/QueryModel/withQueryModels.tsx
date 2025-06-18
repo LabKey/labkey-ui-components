@@ -258,7 +258,17 @@ function applySavedSettings(id: string, model: QueryModel): QueryModel {
             }
         }
 
-        return model.mutate(mutations as Partial<QueryModel>);
+        const modelWithSavedSettings = model.mutate(mutations as Partial<QueryModel>);
+
+        if (model.useSavedSettings === SavedSettings.noFilters) {
+            // If we're retrieving saved settings, but ignoring filters, we need to resave the settings without the
+            // filters or app behavior will be confusing. For example: you create a sample, and are navigated to a grid
+            // with no filters, then you edit a sample on that grid. When you navigate back, after editing, the filter
+            // that was removed after creation is now back.
+            saveSettingsToLocalStorage(modelWithSavedSettings);
+        }
+
+        return modelWithSavedSettings;
     }
     return model;
 }

@@ -11,6 +11,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Remove SampleGridButtonProps
 - Remove SamplesTabbedGridPanelComponentProps
 - Remove EditableGridLoaderFromSelection
+- withQueryModels: resave settings when loading without filters
+  - This prevents unexpected grid state in our apps when navigating after creating and editing rows
 
 ### Version 6.50.1
 *Released*: 23 June 2025

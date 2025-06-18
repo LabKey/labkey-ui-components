@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.50.0
+*Released*: 18 June 2025
+- Update ESLint configuration and depend on `@labkey/eslint-config`
+
 ### version 6.49.2
 *Released*: 17 June 2025
 - GitHub Issue 748: "View Assay Results for Selected" gives error when no rows have sample IDs

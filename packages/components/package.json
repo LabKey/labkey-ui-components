@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "6.49.2",
+  "version": "6.50.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -76,7 +76,7 @@
   },
   "devDependencies": {
     "@labkey/build": "8.5.0",
-    "@labkey/eslint-config-react": "0.0.15",
+    "@labkey/eslint-config": "1.0.0",
     "@types/history": "4.7.11",
     "@types/jest": "29.5.14",
     "@types/node": "20.14.11",

@@ -5,7 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: ? June 2025
 - SampleAliquotViewSelector, GridAliquotViewSelector: Fix props types
 - SampleTypeAppContext:
-  - Remove SampleGridButtonComponent, SamplesTabbedGridPanel, getSamplesEditableGridProps, getWorkflowGridQueryConfigs
+  - Remove SampleGridButtonComponent, SamplesTabbedGridPanel, getSamplesEditableGridProps, getWorkflowGridQueryConfigs,
+    SampleStorageButtonComponent, WorkflowGridComponent
   - Add omitParentAliases
 - useLoadableState: call load function if loader changes
 - Remove SampleGridButtonProps

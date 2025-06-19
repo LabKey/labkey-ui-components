@@ -25,7 +25,6 @@ import {
 import { DomainDetails } from './components/domainproperties/models';
 import { EntityDataType } from './components/entities/models';
 import { DetailRenderer } from './components/forms/detail/DetailDisplay';
-import { SampleStorageButton, WorkflowGrid } from './components/samples/models';
 import { SchemaQuery } from '../public/SchemaQuery';
 
 export interface AdminAppContext {
@@ -55,13 +54,11 @@ export interface SampleTypeAppContext {
     parentDataTypes: EntityDataType[];
     readOnlyQueryNames?: string[];
     samplesGridRequiredColumns: string[];
-    SampleStorageButtonComponent: SampleStorageButton; // TODO: can this be removed, and replaced with direct imports?
     sampleTypeListingCaption: string;
     showParentLabelPrefix: boolean;
     showStudyProperties: boolean;
     useSeparateDataClassesAliasMenu: boolean;
     validateNewSampleTypeUnit: (sampleSet: DomainDetails, newUnit: string) => Promise<any>;
-    WorkflowGridComponent: WorkflowGrid;
 }
 
 export interface AssayAppContext {

@@ -4,11 +4,10 @@ import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
-import { SampleState } from './models';
+import { SampleState, SampleStateType } from './models';
 import { ManageSampleStatusesPanel, SampleStatusDetail, SampleStatusesList } from './ManageSampleStatusesPanel';
 
 import { getSamplesTestAPIWrapper } from './APIWrapper';
-import { SampleStateType } from './constants';
 import { render } from '@testing-library/react';
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 

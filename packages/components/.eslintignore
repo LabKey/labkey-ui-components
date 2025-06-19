@@ -1,9 +1,0 @@
-# exclude everything by default
-*.*
-
-# allowed list
-!*.ts
-!*.tsx
-
-# blocked list
-jest.setup.ts

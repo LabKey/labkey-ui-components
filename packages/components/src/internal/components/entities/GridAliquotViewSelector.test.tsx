@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { render } from '@testing-library/react';
 import { Filter } from '@labkey/api';
 
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
@@ -7,7 +7,6 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { IS_ALIQUOT_COL } from '../samples/constants';
 
 import { GridAliquotViewSelector } from './GridAliquotViewSelector';
-import { render } from '@testing-library/react';
 
 describe('<GridAliquotViewSelector/>', () => {
     beforeEach(() => {

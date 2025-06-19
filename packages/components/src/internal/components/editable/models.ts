@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Filter, Query, Utils } from '@labkey/api';
-import { fromJS, Iterable, List, Map, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
+import { fromJS, Record as ImmutableRecord, Set as ImmutableSet, Iterable, List, Map } from 'immutable';
 import { ReactNode } from 'react';
 
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -118,7 +118,7 @@ export enum EditorMode {
 }
 
 export const FOLDER_COL = 'Folder';
-export type UpdatedRowValue = string | string[] | number | number[] | boolean | boolean[];
+export type UpdatedRowValue = boolean | boolean[] | number | number[] | string | string[];
 export type UpdatedRow = Record<string, UpdatedRowValue>;
 
 export class EditorModel
@@ -662,7 +662,7 @@ export class EditorModel
         return SELECTION_EVENTS.find(e => e === event) !== undefined;
     }
 
-    static getEditorDataFromQueryValueMap(valueMap: any): List<any> | any {
+    static getEditorDataFromQueryValueMap(valueMap: any): any | List<any> {
         // Editor expects to get either a single value or an array of an object with fields displayValue and value
         if (List.isList(valueMap)) {
             return (valueMap as List<any>)
@@ -690,7 +690,7 @@ export class EditorModel
     }
 
     static convertQueryDataToEditorData(
-        data: Map<string, any>, // this map is keyed by column name
+        data: Map<string, any> // this map is keyed by column name
     ): Map<string, Map<string, any>> {
         return data
             .map((valueMap, id) => {

@@ -1,7 +1,7 @@
 import React, { ComponentType, FC, PureComponent, ReactNode } from 'react';
 import { Filter } from '@labkey/api';
 // eslint cannot find Draft for some reason, but Intellij can.
-// eslint-disable-next-line import/named
+
 import { Draft, produce, WritableDraft } from 'immer';
 import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
 
@@ -35,13 +35,13 @@ export interface SearchParamsProps {
     setSearchParams: SetURLSearchParams;
 }
 
-type WithSearchParamsComponent<T> = ComponentType<T & SearchParamsProps>;
+type WithSearchParamsComponent<T> = ComponentType<SearchParamsProps & T>;
 
 const DEFAULT_SEARCH_PARAMS = new URLSearchParams();
 const DEFAULT_SET_SEARCH_PARAMS = () => {};
 
 export function withSearchParams<T>(Component: WithSearchParamsComponent<T>): ComponentType<T> {
-    const Wrapped: FC<T & SearchParamsProps> = (props: T) => {
+    const Wrapped: FC<SearchParamsProps & T> = (props: T) => {
         let searchParams;
         let setSearchParams;
         try {
@@ -126,7 +126,7 @@ export interface Actions {
     selectPage: (id: string, checked: boolean) => void;
     selectReport: (id: string, reportId: string) => void;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    selectRow: (id: string, checked: boolean, row: { [key: string]: any }, useSelectionPivot?: boolean) => void;
+    selectRow: (id: string, checked: boolean, row: Record<string, any>, useSelectionPivot?: boolean) => void;
     setFilters: (id: string, filters: Filter.IFilter[], loadSelections?: boolean) => void;
     setMaxRows: (id: string, maxRows: number) => void;
     setOffset: (id: string, offset: number, reloadModel?: boolean) => void;
@@ -143,11 +143,11 @@ export interface RequiresModelAndActions {
 
 export interface InjectedQueryModels {
     actions: Actions;
-    queryModels: { [key: string]: QueryModel };
+    queryModels: Record<string, QueryModel>;
 }
 
-export type QueryConfigMap = { [id: string]: QueryConfig };
-export type QueryModelMap = { [id: string]: QueryModel };
+export type QueryConfigMap = Record<string, QueryConfig>;
+export type QueryModelMap = Record<string, QueryModel>;
 
 export interface MakeQueryModels {
     autoLoad?: boolean;
@@ -279,9 +279,9 @@ function applySavedSettings(id: string, model: QueryModel): QueryModel {
  * @returns A react ComponentType that implements generic Props and MakeQueryModels.
  */
 export function withQueryModels<Props>(
-    ComponentToWrap: ComponentType<Props & InjectedQueryModels>
-): ComponentType<Props & MakeQueryModels> {
-    type WrappedProps = Props & MakeQueryModels & SearchParamsProps;
+    ComponentToWrap: ComponentType<InjectedQueryModels & Props>
+): ComponentType<MakeQueryModels & Props> {
+    type WrappedProps = MakeQueryModels & Props & SearchParamsProps;
 
     const initModels = (props: WrappedProps): QueryModelMap => {
         const { searchParams, queryConfigs } = props;
@@ -640,7 +640,7 @@ export function withQueryModels<Props>(
         };
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        selectRow = (id: string, checked: boolean, row: { [key: string]: any }, useSelectionPivot?: boolean): void => {
+        selectRow = (id: string, checked: boolean, row: Record<string, any>, useSelectionPivot?: boolean): void => {
             const model = this.state.queryModels[id];
             const pkCols = model.queryInfo.getPkCols();
 
@@ -1289,7 +1289,7 @@ export function withQueryModels<Props>(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { queryConfigs, modelLoader, ...props } = this.props;
             return (
-                <ComponentToWrap queryModels={this.state.queryModels} actions={this.actions} {...(props as Props)} />
+                <ComponentToWrap actions={this.actions} queryModels={this.state.queryModels} {...(props as Props)} />
             );
         }
     }
@@ -1305,5 +1305,5 @@ export function withQueryModels<Props>(
         useSavedSettings: SavedSettings.none,
     };
 
-    return withSearchParams(ComponentWithQueryModels) as ComponentType<Props & MakeQueryModels>;
+    return withSearchParams(ComponentWithQueryModels) as ComponentType<MakeQueryModels & Props>;
 }

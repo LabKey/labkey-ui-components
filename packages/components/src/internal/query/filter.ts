@@ -127,7 +127,7 @@ export function getDateFieldLabKeySql(filter: Filter.IFilter, tableAlias?: strin
     const filterType = filter.getFilterType();
     const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
 
-    let startDateStart, startDateEnd, endDateStart, endDateEnd: string;
+    let endDateEnd: string, endDateStart, startDateEnd, startDateStart;
     const urlSuffix = filterType.getURLSuffix();
     if (filterType.isDataValueRequired()) {
         if (filterType.isMultiValued()) {

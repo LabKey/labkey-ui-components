@@ -87,9 +87,9 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
 
         const panel = (
             <DiscardConsumedSamplesPanel
+                discardTitle={`Remove sample${isBulkForm ? '(s)' : ''} from storage?`}
                 shouldDiscard={shouldDiscard}
                 toggleShouldDiscard={toggleShouldDiscard}
-                discardTitle={`Remove sample${isBulkForm ? '(s)' : ''} from storage?`}
             />
         );
 

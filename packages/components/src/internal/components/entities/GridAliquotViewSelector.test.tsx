@@ -21,7 +21,7 @@ describe('<GridAliquotViewSelector/>', () => {
     test('experimental flag disabled', () => {
         LABKEY.moduleContext = { samplemanagement: { 'experimental-sample-aliquot-selector': false } };
         const model = makeTestQueryModel(new SchemaQuery('a', 'b'));
-        render(<GridAliquotViewSelector queryModel={model} />)
+        render(<GridAliquotViewSelector queryModel={model} />);
         expect(document.querySelector('.aliquot-view-selector')).not.toBeInTheDocument();
     });
 

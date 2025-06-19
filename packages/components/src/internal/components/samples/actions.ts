@@ -391,7 +391,7 @@ export function saveIdsToFind(fieldType: FindField, ids: string[], sessionKey: s
     });
 }
 
-export function getSampleAliquotRows(sampleId: number | string): Promise<Array<Record<string, any>>> {
+export function getSampleAliquotRows(sampleId: number | string): Promise<Record<string, any>[]> {
     return new Promise((resolve, reject) => {
         Query.executeSql({
             containerFilter: getContainerFilter(),

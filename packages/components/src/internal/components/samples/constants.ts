@@ -4,7 +4,7 @@ import { IDomainField, LOOKUP_VALIDATOR } from '../domainproperties/models';
 
 import { SAMPLE_TYPE } from '../domainproperties/PropDescType';
 
-import { FindField } from './models';
+import { FindField, SampleStateType } from './models';
 import { List } from 'immutable';
 
 export enum ALIQUOT_FILTER_MODE {
@@ -67,12 +67,6 @@ export enum SampleOperation {
     LinkToStudy,
     RecallFromStudy,
     Move,
-}
-
-export enum SampleStateType {
-    Available = 'Available',
-    Consumed = 'Consumed',
-    Locked = 'Locked',
 }
 
 export const permittedOps = {

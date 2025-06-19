@@ -550,6 +550,7 @@ import {
     EntityCreationType,
     INDEPENDENT_SAMPLE_CREATION,
     POOLED_SAMPLE_CREATION,
+    SampleStateType,
 } from './internal/components/samples/models';
 import { DEFAULT_ALIQUOT_NAMING_PATTERN, SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
@@ -672,7 +673,6 @@ import {
     SAMPLE_STORAGE_COLUMNS,
     SampleOperation,
     SAMPLES_WITH_TYPES_FILTER,
-    SampleStateType,
     SELECTION_KEY_TYPE,
     UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';

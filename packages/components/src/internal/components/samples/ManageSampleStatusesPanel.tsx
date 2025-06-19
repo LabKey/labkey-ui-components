@@ -29,10 +29,10 @@ import { ColorPickerInput } from '../forms/input/ColorPickerInput';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
-import { SampleState } from './models';
+import { SampleState, SampleStateType } from './models';
 import { getSampleStatusColor, getSampleStatusLockedMessage } from './utils';
 import { SampleStatusTag } from './SampleStatusTag';
-import { SAMPLE_STATUS_COLORS, SampleStateType } from './constants';
+import { SAMPLE_STATUS_COLORS } from './constants';
 import { isAppHomeFolder } from '../../app/utils';
 import { useServerContext } from '../base/ServerContext';
 

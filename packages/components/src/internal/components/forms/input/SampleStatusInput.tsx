@@ -8,7 +8,7 @@ import {
 import { Alert } from '../../base/Alert';
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { QuerySelect, QuerySelectChange, QuerySelectOwnProps } from '../QuerySelect';
-import { SampleStateType } from '../../samples/constants';
+import { SampleStateType } from '../../samples/models';
 import { userCanEditStorageData } from '../../../app/utils';
 import { useServerContext } from '../../base/ServerContext';
 

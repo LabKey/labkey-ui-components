@@ -1,7 +1,5 @@
 import { immerable, produce } from 'immer';
 
-import { SampleStateType } from './constants';
-
 export enum EntityCreationType {
     Aliquots = 'Aliquot',
     Derivatives = 'Derive',
@@ -72,6 +70,12 @@ export interface FindField {
     nounPlural: string;
     nounSingular: string;
     storageKeyPrefix: string;
+}
+
+export enum SampleStateType {
+    Available = 'Available',
+    Consumed = 'Consumed',
+    Locked = 'Locked',
 }
 
 export interface SampleStatus {

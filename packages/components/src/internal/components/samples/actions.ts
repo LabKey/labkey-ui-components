@@ -94,7 +94,7 @@ export function getSampleTypeDetails(
     });
 }
 
-export function deleteSampleSet(rowId: number, containerPath?: string, auditUserComment?: string): Promise<any> {
+export function deleteSampleSet(rowId: number, containerPath?: string, auditUserComment?: string): Promise<void> {
     return deleteEntityType('deleteSampleTypes', rowId, containerPath, auditUserComment);
 }
 

@@ -675,20 +675,21 @@ export function getEntityTypeData(
     });
 }
 
-export function deleteEntityType(
+export async function deleteEntityType(
     deleteActionName: string,
     rowId: number,
     containerPath?: string,
     auditUserComment?: string
-): Promise<any> {
-    return request({
-        url: ActionURL.buildURL('experiment', deleteActionName + '.api', containerPath),
-        method: 'POST',
-        jsonData: {
+): Promise<void> {
+    // This is only currently used to POST against HTML-based actions (e.g. experiment-deleteDataClass) which are
+    // expecting parameters on the URL rather than in the request payload.
+    await request({
+        url: ActionURL.buildURL('experiment', deleteActionName + '.api', containerPath, {
             singleObjectRowId: rowId,
             forceDelete: true,
             userComment: auditUserComment,
-        },
+        }),
+        method: 'POST',
         errorLogMsg: 'Failed to delete entity type.',
     });
 }

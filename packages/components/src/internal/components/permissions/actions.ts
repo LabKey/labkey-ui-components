@@ -11,9 +11,10 @@ import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
 import { Container } from '../base/models/Container';
 import { FetchContainerOptions } from '../security/APIWrapper';
 
-import { APPLICATION_ROLES_LABELS, APPLICATION_ROLES_DESCRIPTIONS } from '../administration/constants';
+import { APPLICATION_ROLES_DESCRIPTIONS, APPLICATION_ROLES_LABELS } from '../administration/constants';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
+import { executeSql } from '../../query/executeSql';
 
 export function processGetRolesResponse(rawRoles: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
@@ -35,35 +36,15 @@ export function getRolesByUniqueName(roles: List<SecurityRole>): Map<string, Sec
     return rolesByUniqueName;
 }
 
-function processPrincipalsResponse(data: ISelectRowsResult, resolve) {
-    const models = fromJS(data.models[data.key]);
-    let principals = List<Principal>();
-
-    data.orderedModels[data.key].forEach(modelKey => {
-        const row = models.get(modelKey);
-        const principal = Principal.createFromSelectRow(row);
-        principals = principals.push(principal);
+export async function getPrincipals(): Promise<List<Principal>> {
+    const result = await executeSql({
+        saveInSession: true, // needed so that we can call getQueryDetails
+        schemaName: 'core',
+        // Issue 17704: add displayName for users
+        sql: "SELECT p.*, u.DisplayName FROM Principals p LEFT JOIN Users u ON p.type='u' AND p.UserId=u.UserId",
     });
 
-    resolve(principals);
-}
-
-export function getPrincipals(): Promise<List<Principal>> {
-    return new Promise((resolve, reject) => {
-        selectRowsDeprecated({
-            saveInSession: true, // needed so that we can call getQueryDetails
-            schemaName: 'core',
-            // issue 17704, add displayName for users
-            sql: "SELECT p.*, u.DisplayName FROM Principals p LEFT JOIN Users u ON p.type='u' AND p.UserId=u.UserId",
-        })
-            .then((data: ISelectRowsResult) => {
-                processPrincipalsResponse(data, resolve);
-            })
-            .catch(response => {
-                console.error(response);
-                reject(response.message);
-            });
-    });
+    return result.rows.reduce<List<Principal>>((p, row) => p.push(Principal.createFromSelectRow(fromJS(row))), List());
 }
 
 export function getInactiveUsers(): Promise<List<Principal>> {

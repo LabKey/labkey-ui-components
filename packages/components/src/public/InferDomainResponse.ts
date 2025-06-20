@@ -1,9 +1,6 @@
 import { fromJS, List, Record } from 'immutable';
 
-import { Ajax, Utils } from '@labkey/api';
-
-import { buildURL } from '../internal/url/AppURL';
-import { processRequest } from '../internal/query/api';
+import { ActionURL, Ajax, Utils } from '@labkey/api';
 
 import { QueryColumn } from './QueryColumn';
 
@@ -61,11 +58,10 @@ export function inferDomainFromFile(
         }
 
         Ajax.request({
-            url: buildURL('property', 'inferDomain'),
+            url: ActionURL.buildURL('property', 'inferDomain.api'),
             method: 'POST',
             form,
-            success: Utils.getCallbackWrapper((response, request) => {
-                if (processRequest(response, request, reject)) return;
+            success: Utils.getCallbackWrapper(response => {
                 resolve(InferDomainResponse.create(response));
             }),
             failure: Utils.getCallbackWrapper(error => {

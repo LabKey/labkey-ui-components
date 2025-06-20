@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
+import { fromJS, Record as ImmutableRecord, Set as ImmutableSet, List, Map } from 'immutable';
 import { immerable } from 'immer';
 import { normalize, schema } from 'normalizr';
 import { ActionURL, Ajax, AuditBehaviorTypes, Filter, Query, QueryDOM, Utils } from '@labkey/api';
@@ -93,7 +93,7 @@ export function invalidateQueryDetailsCache(
 }
 
 interface GetQueryDetailsBasic
-    extends Omit<Query.GetQueryDetailsOptions, 'method' | 'schemaName' | 'queryName' | 'viewName'> {
+    extends Omit<Query.GetQueryDetailsOptions, 'method' | 'queryName' | 'schemaName' | 'viewName'> {
     lookup?: QueryLookup;
 }
 
@@ -458,20 +458,18 @@ export interface ISelectRowsResult {
     messages?: List<Map<string, string>>;
     models: any;
     orderedModels: List<any>;
-    queries: {
-        [key: string]: QueryInfo;
-    };
+    queries: Record<string, QueryInfo>;
     rowCount: number;
 }
 
 /**
- * @deprecated use selectRows() instead.
+ * @deprecated use selectRows() or executeSql() instead.
  * Fetches an API response and normalizes the result JSON according to schema.
  * This makes every API response have the same shape, regardless of how nested it was.
  */
 export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsResult> {
     return new Promise((resolve, reject) => {
-        let schemaQuery, key;
+        let key, schemaQuery;
         if (userConfig.queryName) {
             schemaQuery = new SchemaQuery(userConfig.schemaName, userConfig.queryName, userConfig.viewName);
             key = schemaQuery.getKey();
@@ -624,7 +622,7 @@ export function handleSelectRowsResponse(response: Query.Response, queryInfo: Qu
         qsKey = 'queries',
         rowCount = response.rowCount || 0;
 
-    let metadataKey: string, metadataAltKey: string;
+    let metadataAltKey: string, metadataKey: string;
     if (resolved.metaData) {
         // If metaData is present, then use its "id" value regardless of presence of a queryInfo
         metadataKey = resolved.metaData.id;
@@ -836,7 +834,7 @@ export class InsertRowsErrorResponse extends ImmutableRecord({
 }
 
 export interface InsertRowsOptions
-    extends Omit<Query.QueryRequestOptions, 'apiVersion' | 'schemaName' | 'queryName' | 'rows'> {
+    extends Omit<Query.QueryRequestOptions, 'apiVersion' | 'queryName' | 'rows' | 'schemaName'> {
     fillEmptyFields?: boolean;
     rows: List<any>; // TODO: convert to Array<Record<string, any>>
     schemaQuery: SchemaQuery;
@@ -956,7 +954,7 @@ function ensureNullForUndefined(row: Map<string, any>): Map<string, any> {
     return row.reduce((map, v, k) => map.set(k, v === undefined ? null : v), Map<string, any>());
 }
 
-export interface UpdateRowsOptions extends Omit<Query.QueryRequestOptions, 'schemaName' | 'queryName'> {
+export interface UpdateRowsOptions extends Omit<Query.QueryRequestOptions, 'queryName' | 'schemaName'> {
     schemaQuery: SchemaQuery;
 }
 
@@ -1005,7 +1003,7 @@ export function updateRowsByContainer(
     rows: any[],
     containerPaths: string[],
     auditUserComment: string,
-    containerField: string = 'Folder'
+    containerField = 'Folder'
 ): Promise<Query.SaveRowsResponse | QueryCommandResponse> {
     // if all rows are in the same container, we can use updateRows (which supports file/attachments)
     if (containerPaths.length < 2) {
@@ -1031,7 +1029,7 @@ export function updateRowsByContainer(
     }
 }
 
-export interface DeleteRowsOptions extends Omit<Query.QueryRequestOptions, 'schemaName' | 'queryName'> {
+export interface DeleteRowsOptions extends Omit<Query.QueryRequestOptions, 'queryName' | 'schemaName'> {
     schemaQuery: SchemaQuery;
 }
 
@@ -1093,7 +1091,7 @@ export function splitRowsByContainer(rows: any[], containerField: string): Recor
 
 export function saveRowsByContainer(
     options: SaveRowsOptions,
-    containerField: string = 'Folder'
+    containerField = 'Folder'
 ): Promise<Query.SaveRowsResponse> {
     const commands = []; // TODO type as Query.Command
 
@@ -1120,7 +1118,7 @@ export function saveRowsByContainer(
 
 export function deleteRowsByContainer(
     options: DeleteRowsOptions,
-    containerField: string = 'ContainerPath'
+    containerField = 'ContainerPath'
 ): Promise<QueryCommandResponse> {
     const commands = [];
 
@@ -1187,7 +1185,7 @@ export enum InsertOptions {
     CREATE, // synonymous with Import for server-side; used for better messaging client-side
 }
 
-export function getVerbForInsertOption(option: string, defaultVerb: string = 'imported'): string {
+export function getVerbForInsertOption(option: string, defaultVerb = 'imported'): string {
     if (option === InsertOptions.MERGE.toString()) {
         return defaultVerb + ' or updated';
     } else if (option === InsertOptions.UPDATE.toString()) {
@@ -1340,7 +1338,7 @@ export function getContainerFilterForLookups(moduleContext?: ModuleContext): Que
     return Query.ContainerFilter.currentPlusProjectAndShared;
 }
 
-export interface SelectDistinctOptions extends Omit<Query.SelectDistinctOptions, 'success' | 'failure'> {
+export interface SelectDistinctOptions extends Omit<Query.SelectDistinctOptions, 'failure' | 'success'> {
     requestHandler?: RequestHandler;
 }
 

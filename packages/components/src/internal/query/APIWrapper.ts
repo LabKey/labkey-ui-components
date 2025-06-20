@@ -65,6 +65,7 @@ import {
     updateRowsByContainer,
     UpdateRowsOptions,
 } from './api';
+import { executeSql, ExecuteSqlOptions, ExecuteSqlResponse } from './executeSql';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
 
 export interface QueryAPIWrapper {
@@ -74,6 +75,7 @@ export interface QueryAPIWrapper {
     deleteRows: (options: DeleteRowsOptions) => Promise<QueryCommandResponse>;
     deleteRowsByContainer: (options: DeleteRowsOptions, containerField: string) => Promise<QueryCommandResponse>;
     deleteView: (schemaQuery: SchemaQuery, containerPath: string, viewName?: string, revert?: boolean) => Promise<void>;
+    executeSql: <T extends ExecuteSqlOptions>(options: T) => Promise<ExecuteSqlResponse<T>>;
     getDataTypeFolderDataCount: (
         entityDataType: EntityDataType,
         dataTypeRowId: number,
@@ -175,6 +177,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     deleteRows = deleteRows;
     deleteRowsByContainer = deleteRowsByContainer;
     deleteView = deleteView;
+    executeSql = executeSql;
     getDataTypeFolderDataCount = getDataTypeFolderDataCount;
     getEntityTypeOptions = getEntityTypeOptionsWithExclusions;
     getGridViews = getGridViews;
@@ -215,6 +218,7 @@ export function getQueryTestAPIWrapper(
         deleteRows: mockFn(),
         deleteRowsByContainer: mockFn(),
         deleteView: mockFn(),
+        executeSql: mockFn(),
         getDataTypeFolderDataCount: mockFn(),
         getEntityTypeOptions: mockFn(),
         getGridViews: mockFn(),

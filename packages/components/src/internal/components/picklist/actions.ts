@@ -385,7 +385,6 @@ export const getPicklistFromId = async (listId: number, loadSampleTypes = true):
         containerFilter: getPicklistListingContainerFilter(),
         schemaName: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.schemaName,
         queryName: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.queryName,
-        requiredColumns: ['Category'],
         filterArray: [Filter.create('listId', listId)],
     });
     const listRow = listData.models[listData.key][listId];

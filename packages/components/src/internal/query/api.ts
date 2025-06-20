@@ -1015,7 +1015,7 @@ export function updateRowsByContainer(
             schemaQuery,
         });
     } else {
-        const commands = [];
+        const commands: Query.Command[] = [];
         commands.push({
             command: 'update',
             schemaName: schemaQuery.schemaName,
@@ -1093,7 +1093,7 @@ export function saveRowsByContainer(
     options: SaveRowsOptions,
     containerField = 'Folder'
 ): Promise<Query.SaveRowsResponse> {
-    const commands = []; // TODO type as Query.Command
+    const commands: Query.Command[] = [];
 
     // for each original command, split it into multiple commands for each container in the rows
     options.commands.forEach(command => {
@@ -1120,7 +1120,7 @@ export function deleteRowsByContainer(
     options: DeleteRowsOptions,
     containerField = 'ContainerPath'
 ): Promise<QueryCommandResponse> {
-    const commands = [];
+    const commands: Query.Command[] = [];
 
     const allRows = options.rows;
     if (

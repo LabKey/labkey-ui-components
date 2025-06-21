@@ -471,90 +471,61 @@ export type SelectRowsDeprecatedOptions = Omit<
  * Fetches an API response and normalizes the result JSON according to schema.
  * This makes every API response have the same shape, regardless of how nested it was.
  */
-export function selectRowsDeprecated(options: SelectRowsDeprecatedOptions): Promise<ISelectRowsResult> {
-    if (options.hasOwnProperty('sql')) {
-        throw new Error('selectRowsDeprecated() no longer supports the "sql" property. Use executeSql() instead.');
+export async function selectRowsDeprecated(options: SelectRowsDeprecatedOptions): Promise<ISelectRowsResult> {
+    const schemaQuery = new SchemaQuery(options.schemaName, options.queryName, options.viewName);
+
+    const columns = options.columns ? options.columns : '*';
+    const [queryInfo, response] = await Promise.all([
+        getQueryDetails(options),
+        new Promise<Query.Response>((resolve, reject) => {
+            Query.selectRows({
+                ...options,
+                requiredVersion: 17.1,
+                method: 'POST',
+                // put on this another parameter!
+                columns,
+                containerFilter: options.containerFilter ?? getContainerFilter(options.containerPath),
+                includeMetadata: isSelectRowMetadataRequired(options.includeMetadata, columns),
+                includeTotalCount: options.includeTotalCount ?? false, // default to false to improve performance
+                success: response_ => {
+                    resolve(response_);
+                },
+                failure: (data, request) => {
+                    // If we hit a communication failure, try to get better error messaging from the request.responseText (Issues 51232 and 51204)
+                    if (
+                        data.exception?.toLowerCase().indexOf('communication failure') === 0 &&
+                        processRequest(undefined, request, reject)
+                    ) {
+                        return;
+                    }
+
+                    console.error('There was a problem retrieving the data', data);
+                    reject({
+                        exceptionClass: data.exceptionClass,
+                        message: data.exception,
+                        schemaQuery,
+                        status: request.status,
+                    });
+                },
+            });
+        }),
+    ]);
+
+    const result = handleSelectRowsResponse(response, queryInfo);
+
+    let key = schemaQuery.getKey();
+    if (key !== result.key) {
+        key = result.key; // default to model key
     }
 
-    return new Promise((resolve, reject) => {
-        let key: string;
-        let schemaQuery: SchemaQuery;
-        if (options.queryName) {
-            schemaQuery = new SchemaQuery(options.schemaName, options.queryName, options.viewName);
-            key = schemaQuery.getKey();
-        }
-
-        let hasDetails = false;
-        let details: QueryInfo;
-        let hasResults = false;
-        let result;
-
-        function doResolve() {
-            if (hasDetails && hasResults) {
-                result = handleSelectRowsResponse(result, details);
-                if (key !== result.key) {
-                    key = result.key; // default to model key
-                }
-
-                resolve({
-                    key,
-                    models: result.models,
-                    orderedModels: result.orderedModels,
-                    queries: {
-                        [key]: details,
-                    },
-                    rowCount: result.rowCount,
-                    messages: result.messages,
-                });
-            }
-        }
-
-        const columns = options.columns ? options.columns : '*';
-        Query.selectRows({
-            ...options,
-            requiredVersion: 17.1,
-            filterArray: options.filterArray,
-            method: 'POST',
-            // put on this another parameter!
-            columns,
-            containerFilter: options.containerFilter ?? getContainerFilter(options.containerPath),
-            includeMetadata: isSelectRowMetadataRequired(options.includeMetadata, columns),
-            includeTotalCount: options.includeTotalCount ?? false, // default to false to improve performance
-            success: json => {
-                result = json;
-                hasResults = true;
-                doResolve();
-            },
-            failure: (data, request) => {
-                // If we hit a communication failure, try to get better error messaging from the request.responseText (Issues 51232 and 51204)
-                if (
-                    data.exception?.toLowerCase().indexOf('communication failure') === 0 &&
-                    processRequest(undefined, request, reject)
-                ) {
-                    return;
-                }
-
-                console.error('There was a problem retrieving the data', data);
-                reject({
-                    exceptionClass: data.exceptionClass,
-                    message: data.exception,
-                    schemaQuery,
-                    status: request.status,
-                });
-            },
-        });
-
-        getQueryDetails(options)
-            .then(d => {
-                hasDetails = true;
-                details = d;
-                doResolve();
-            })
-            .catch(error => {
-                console.error('There was a problem retrieving the data', error);
-                reject(error);
-            });
-    });
+    return {
+        key,
+        models: result.models,
+        orderedModels: result.orderedModels,
+        queries: { [key]: queryInfo },
+        rowCount: result.rowCount,
+        messages: result.messages,
+    };
 }
 
 export function handleSelectRowsResponse(response: Query.Response, queryInfo: QueryInfo): any {

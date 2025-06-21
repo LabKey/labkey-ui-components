@@ -42,7 +42,7 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
 
     const [queryInfo, response] = await Promise.all([
         getQueryDetails({ containerPath: options.containerPath, schemaQuery }),
-        new Promise<any>((resolve, reject) => {
+        new Promise<Query.Response>((resolve, reject) => {
             Query.selectRows({
                 ...selectRowsOptions,
                 columns,

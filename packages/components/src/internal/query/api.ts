@@ -1151,12 +1151,20 @@ export function importData(config: IImportData): Promise<any> {
     });
 }
 
-export function processRequest(response: any, request: any, reject: (reason?: any) => void): boolean {
+export function processRequest(response: any, request: XMLHttpRequest, reject: (reason?: any) => void): boolean {
     if (!response && request?.responseText) {
-        const resp = JSON.parse(request.responseText);
-        if (!resp?.success) {
-            console.error(resp);
-            reject(resp);
+        let json: any;
+        try {
+            json = JSON.parse(request.responseText);
+        } catch (e) {
+            // Issue 53120: Unable to parse JSON. Do not attempt to process this request any further.
+            console.error(`Failed to parse response as JSON. ResponseURL: ${request.responseURL}`, e);
+            return false;
+        }
+
+        if (!json?.success) {
+            console.error(json);
+            reject(json);
             return true;
         }
     }

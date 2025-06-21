@@ -463,7 +463,7 @@ export interface ISelectRowsResult {
 
 export type SelectRowsDeprecatedOptions = Omit<
     Query.SelectRowsOptions,
-    'failure' | 'method' | 'requiredVersion' | 'success'
+    'failure' | 'method' | 'requiredVersion' | 'scope' | 'success'
 >;
 
 /**

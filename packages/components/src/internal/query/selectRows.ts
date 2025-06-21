@@ -7,7 +7,10 @@ import { URLResolver } from '../url/URLResolver';
 import { getContainerFilter, getQueryDetails, isSelectRowMetadataRequired } from './api';
 
 export interface SelectRowsOptions
-    extends Omit<Query.SelectRowsOptions, 'queryName' | 'requiredVersion' | 'schemaName' | 'scope'> {
+    extends Omit<
+        Query.SelectRowsOptions,
+        'failure' | 'queryName' | 'requiredVersion' | 'schemaName' | 'scope' | 'success'
+    > {
     schemaQuery: SchemaQuery;
 }
 
@@ -20,7 +23,7 @@ export interface RowValue {
 export type Row = Record<string, RowValue>;
 
 export interface SelectRowsResponse {
-    messages: Array<Record<string, string>>;
+    messages: Record<string, string>[];
     queryInfo: QueryInfo;
     rowCount: number;
     rows: Row[];

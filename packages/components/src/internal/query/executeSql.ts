@@ -7,7 +7,8 @@ import { QueryInfo } from '../../public/QueryInfo';
 import { URLResolver } from '../url/URLResolver';
 import { RequestHandler } from '../request';
 
-export interface ExecuteSqlOptions extends Omit<Query.ExecuteSqlOptions, 'requiredVersion' | 'scope'> {
+export interface ExecuteSqlOptions
+    extends Omit<Query.ExecuteSqlOptions, 'failure' | 'requiredVersion' | 'scope' | 'success'> {
     requestHandler?: RequestHandler;
 }
 

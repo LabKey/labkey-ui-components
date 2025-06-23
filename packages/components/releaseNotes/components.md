@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### Version 6.50.1
+*Released*: 23 June 2025
+- Issue 53267: Display 0 values for identifying fields
+
 ### version 6.50.0
 *Released*: 18 June 2025
 - Update ESLint configuration and depend on `@labkey/eslint-config`

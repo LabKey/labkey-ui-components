@@ -1394,7 +1394,7 @@ export function getSampleIdentifyingFieldGridData(
                 sampleIdentifyingColumns.forEach(c => {
                     // Issue 52038: the Row has data keyed by name so make sure we do the same here (see QueryColumn index() comments)
                     const colData = caseInsensitive(row, c.name);
-                    if (colData?.value) {
+                    if (colData?.value != null) {
                         d[c.index] = colData?.formattedValue ?? colData?.displayValue ?? colData?.value;
                     }
                 });

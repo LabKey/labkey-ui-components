@@ -8,7 +8,7 @@ import {
 import { Alert } from '../../base/Alert';
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { QuerySelect, QuerySelectChange, QuerySelectOwnProps } from '../QuerySelect';
-import { SampleStateType } from '../../samples/constants';
+import { SampleStateType } from '../../samples/models';
 import { userCanEditStorageData } from '../../../app/utils';
 import { useServerContext } from '../../base/ServerContext';
 
@@ -87,9 +87,9 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
 
         const panel = (
             <DiscardConsumedSamplesPanel
+                discardTitle={`Remove sample${isBulkForm ? '(s)' : ''} from storage?`}
                 shouldDiscard={shouldDiscard}
                 toggleShouldDiscard={toggleShouldDiscard}
-                discardTitle={`Remove sample${isBulkForm ? '(s)' : ''} from storage?`}
             />
         );
 

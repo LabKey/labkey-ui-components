@@ -29,10 +29,10 @@ import { ColorPickerInput } from '../forms/input/ColorPickerInput';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
-import { SampleState } from './models';
+import { SampleState, SampleStateType } from './models';
 import { getSampleStatusColor, getSampleStatusLockedMessage } from './utils';
 import { SampleStatusTag } from './SampleStatusTag';
-import { SAMPLE_STATUS_COLORS, SampleStateType } from './constants';
+import { SAMPLE_STATUS_COLORS } from './constants';
 import { isAppHomeFolder } from '../../app/utils';
 import { useServerContext } from '../base/ServerContext';
 
@@ -72,7 +72,7 @@ export function resolveDuplicateStatusLabel(errorMsg: string, noun: string, noun
 // exported for jest testing
 export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
     const { state, addNew, onActionComplete, onChange, container } = props;
-    const [typeOptions, setTypeOptions] = useState<Array<Record<string, any>>>();
+    const [typeOptions, setTypeOptions] = useState<Record<string, any>[]>();
     const [updatedState, setUpdatedState] = useState<SampleState>();
     const [dirty, setDirty] = useState<boolean>();
     const [saving, setSaving] = useState<boolean>();
@@ -164,9 +164,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     onActionComplete(stateToSave.label);
                 })
                 .catch(reason => {
-                    setError(
-                        resolveErrorMessage(reason, 'status', 'statuses', 'update', resolveDuplicateStatusLabel)
-                    );
+                    setError(resolveErrorMessage(reason, 'status', 'statuses', 'update', resolveDuplicateStatusLabel));
                     setSaving(false);
                 });
         } else {
@@ -181,13 +179,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                 })
                 .catch(response => {
                     setError(
-                        resolveErrorMessage(
-                            response.error,
-                            'status',
-                            'status',
-                            'insert',
-                            resolveDuplicateStatusLabel
-                        )
+                        resolveErrorMessage(response.error, 'status', 'status', 'insert', resolveDuplicateStatusLabel)
                     );
                     setSaving(false);
                 });
@@ -235,9 +227,9 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                         <div className="col-sm-8">
                             <input
                                 className="form-control"
+                                disabled={saving || !updatedState.isLocal}
                                 name="label"
                                 onChange={onFormChange}
-                                disabled={saving || !updatedState.isLocal}
                                 placeholder="Enter status label"
                                 type="text"
                                 value={updatedState.label ?? ''}
@@ -250,12 +242,12 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                         </div>
                         <div className="col-sm-8">
                             <ColorPickerInput
-                                name="color"
-                                value={updatedState.color}
-                                onChange={onSelectChange}
                                 allowRemove
-                                disabled={saving || !updatedState.isLocal}
                                 colors={Object.keys(SAMPLE_STATUS_COLORS)}
+                                disabled={saving || !updatedState.isLocal}
+                                name="color"
+                                onChange={onSelectChange}
+                                value={updatedState.color}
                             />
                         </div>
                     </div>
@@ -266,9 +258,9 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                         <div className="col-sm-8">
                             <textarea
                                 className="form-control"
+                                disabled={saving || !updatedState.isLocal}
                                 name="description"
                                 onChange={onFormChange}
-                                disabled={saving || !updatedState.isLocal}
                                 value={updatedState.description ?? ''}
                             />
                         </div>
@@ -279,12 +271,12 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                         </div>
                         <div className="col-sm-8">
                             <SelectInput
-                                name="stateType"
+                                clearable={false}
+                                disabled={updatedState.inUse || !updatedState.isLocal || saving}
                                 inputClass="col-sm-12"
                                 labelKey="value"
-                                clearable={false}
+                                name="stateType"
                                 onChange={onSelectChange}
-                                disabled={updatedState.inUse || !updatedState.isLocal || saving}
                                 options={typeOptions}
                                 value={updatedState.stateType}
                             />
@@ -371,22 +363,22 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
                             {statesByType[stateType].map((state, index) => (
                                 <ChoicesListItem
                                     active={index === selected && stateType === selectedGroup}
-                                    group={stateType}
-                                    index={index}
-                                    key={state.rowId}
-                                    label={<SampleStatusTag status={state.toSampleStatus()} hideDescription={true} />}
-                                    onSelect={onSelect}
                                     componentRight={
                                         (state.inUse || !state.isLocal) && (
                                             <LockIcon
+                                                body={getSampleStatusLockedMessage(state, false)}
                                                 className="pull-right"
                                                 iconCls="choices-list__locked"
-                                                body={getSampleStatusLockedMessage(state, false)}
                                                 id="sample-state-lock-icon"
                                                 title={SAMPLE_STATUS_LOCKED_TITLE}
                                             />
                                         )
                                     }
+                                    group={stateType}
+                                    index={index}
+                                    key={state.rowId}
+                                    label={<SampleStatusTag hideDescription={true} status={state.toSampleStatus()} />}
+                                    onSelect={onSelect}
                                 />
                             ))}
                         </div>
@@ -403,13 +395,13 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
 SampleStatusesList.displayName = 'SampleStatusesList';
 
 interface ManageSampleStatusesPanelProps extends InjectedRouteLeaveProps {
+    addFromHomeOnly?: boolean;
     api?: ComponentsAPIWrapper;
     homeContainer?: Container;
-    addFromHomeOnly?: boolean;
 }
 
 export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = memo(props => {
-    const { api = getDefaultAPIWrapper(), setIsDirty, homeContainer, addFromHomeOnly} = props;
+    const { api = getDefaultAPIWrapper(), setIsDirty, homeContainer, addFromHomeOnly } = props;
     const [states, setStates] = useState<Record<string, SampleState[]>>();
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
@@ -486,21 +478,21 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
                     <div className="row choices-container">
                         <div className="col-lg-4 col-md-6 choices-container-left-panel">
                             <SampleStatusesList
-                                statesByType={states}
+                                onSelect={onSetSelected}
                                 selected={selected}
                                 selectedGroup={selectedGroup}
-                                onSelect={onSetSelected}
+                                statesByType={states}
                             />
-                            {showAdd && <AddEntityButton onClick={onAddState} entity="New Status" disabled={addNew} />}
+                            {showAdd && <AddEntityButton disabled={addNew} entity="New Status" onClick={onAddState} />}
                         </div>
                         <div className="col-lg-8 col-md-6">
                             <SampleStatusDetail
-                                // use null to indicate that no statuses exist to be selected, so don't show the empty message
-                                state={Object.keys(states).length === 0 ? null : states[selectedGroup]?.[selected]}
                                 addNew={addNew}
+                                container={homeContainer}
                                 onActionComplete={onActionComplete}
                                 onChange={onChange}
-                                container={homeContainer}
+                                // use null to indicate that no statuses exist to be selected, so don't show the empty message
+                                state={Object.keys(states).length === 0 ? null : states[selectedGroup]?.[selected]}
                             />
                         </div>
                     </div>

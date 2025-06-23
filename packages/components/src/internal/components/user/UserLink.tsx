@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState, useEffect, Fragment } from 'react';
+import React, { FC, Fragment, useCallback, useEffect, useState } from 'react';
 
 import { userCanReadUserDetails } from '../../app/utils';
 
@@ -72,17 +72,17 @@ export const UserLink: FC<UserLinkProps> = props => {
 
     return (
         <>
-            <a onClick={toggleDetailsModal} className="clickable user-link">
+            <a className="clickable user-link" onClick={toggleDetailsModal}>
                 {targetUserDisplayValue}
             </a>
             {showDetails && (
                 <UserDetailsPanel
                     container={container}
                     currentUser={user}
-                    userId={userId}
                     displayName={targetUserDisplayValue}
-                    toggleDetailsModal={toggleDetailsModal}
                     isSelf={!userCanReadUserDetails(user) && isSelf}
+                    toggleDetailsModal={toggleDetailsModal}
+                    userId={userId}
                 />
             )}
         </>
@@ -106,7 +106,7 @@ export const UserLinkList: FC<UserLinkListProps> = ({ users }) => {
                 <Fragment key={u.id}>
                     {i > 0 && ', '}
                     {u.type === 'u' || u.type === undefined ? (
-                        <UserLink userId={u.id} userDisplayValue={u.displayName} />
+                        <UserLink userDisplayValue={u.displayName} userId={u.id} />
                     ) : (
                         <span>{u.displayName}</span>
                     )}

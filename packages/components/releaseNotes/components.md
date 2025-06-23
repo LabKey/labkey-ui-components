@@ -1,6 +1,20 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.51.0
+*Released*: 23 June 2025
+- SampleAliquotViewSelector, GridAliquotViewSelector: Fix props types
+- SampleTypeAppContext:
+  - Remove SampleGridButtonComponent, SamplesTabbedGridPanel, getSamplesEditableGridProps, getWorkflowGridQueryConfigs,
+    SampleStorageButtonComponent, WorkflowGridComponent
+  - Add omitParentAliases
+- useLoadableState: call load function if loader changes
+- Remove SampleGridButtonProps
+- Remove SamplesTabbedGridPanelComponentProps
+- Remove EditableGridLoaderFromSelection
+- withQueryModels: resave settings when loading without filters
+  - This prevents unexpected grid state in our apps when navigating after creating and editing rows
+
 ### Version 6.50.1
 *Released*: 23 June 2025
 - Issue 53267: Display 0 values for identifying fields

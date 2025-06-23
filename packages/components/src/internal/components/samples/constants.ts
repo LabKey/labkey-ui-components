@@ -4,7 +4,7 @@ import { IDomainField, LOOKUP_VALIDATOR } from '../domainproperties/models';
 
 import { SAMPLE_TYPE } from '../domainproperties/PropDescType';
 
-import { FindField } from './models';
+import { FindField, SampleStateType } from './models';
 import { List } from 'immutable';
 
 export enum ALIQUOT_FILTER_MODE {
@@ -69,12 +69,6 @@ export enum SampleOperation {
     Move,
 }
 
-export enum SampleStateType {
-    Available = 'Available',
-    Consumed = 'Consumed',
-    Locked = 'Locked',
-}
-
 export const permittedOps = {
     [SampleStateType.Available]: new Set(
         Object.keys(SampleOperation)
@@ -82,17 +76,17 @@ export const permittedOps = {
             .map(val => parseInt(val))
     ),
     [SampleStateType.Consumed]: new Set([
-        SampleOperation.EditMetadata,
-        SampleOperation.EditLineage,
-        SampleOperation.RemoveFromStorage,
-        SampleOperation.AddToPicklist,
-        SampleOperation.Delete,
-        SampleOperation.AddToWorkflow,
-        SampleOperation.RemoveFromWorkflow,
         SampleOperation.AddAssayData,
+        SampleOperation.AddToPicklist,
+        SampleOperation.AddToWorkflow,
+        SampleOperation.Delete,
+        SampleOperation.EditLineage,
+        SampleOperation.EditMetadata,
         SampleOperation.LinkToStudy,
-        SampleOperation.RecallFromStudy,
         SampleOperation.Move,
+        SampleOperation.RecallFromStudy,
+        SampleOperation.RemoveFromStorage,
+        SampleOperation.RemoveFromWorkflow,
     ]),
     [SampleStateType.Locked]: new Set([SampleOperation.AddToPicklist]),
 };

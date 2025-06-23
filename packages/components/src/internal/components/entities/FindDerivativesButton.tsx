@@ -240,7 +240,7 @@ FindDerivativesMenuItem.displayName = 'FindDerivativesMenuItem';
 
 export const FindDerivativesButton: FC<Props> = memo(props => {
     return (
-        <ResponsiveMenuButton className="sample-reports-menu" text="Reports" asSubMenu={props.asSubMenu}>
+        <ResponsiveMenuButton asSubMenu={props.asSubMenu} className="sample-reports-menu" text="Reports">
             <FindDerivativesMenuItem {...props} />
         </ResponsiveMenuButton>
     );

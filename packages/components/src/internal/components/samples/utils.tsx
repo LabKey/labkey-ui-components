@@ -32,10 +32,9 @@ import {
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleOperation,
-    SampleStateType,
 } from './constants';
 
-import { SampleState, SampleStatus } from './models';
+import { SampleState, SampleStateType, SampleStatus } from './models';
 
 export function getOmittedSampleTypeColumns(user: User, moduleContext?: ModuleContext): string[] {
     let cols: string[] = [];

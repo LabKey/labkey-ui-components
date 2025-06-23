@@ -21,6 +21,7 @@ export function useLoadableState<T>(loader: Loader<T>): LoadableState<T> {
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [value, setValue] = useState<T>(undefined);
     const load = useCallback(async () => {
+        setError(undefined);
         setLoadingState(LoadingState.LOADING);
 
         try {
@@ -31,6 +32,9 @@ export function useLoadableState<T>(loader: Loader<T>): LoadableState<T> {
             // then you may not know an error happened, so this way we at least have some trace of an issue.
             console.error(e);
             setError(resolveErrorMessage(e));
+            // We set value to undefined here because it's possible we loaded something correctly once before, but the
+            // loader changed and load got triggered again.
+            setValue(undefined);
         } finally {
             setLoadingState(LoadingState.LOADED);
         }
@@ -50,7 +54,7 @@ export function useLoadableState<T>(loader: Loader<T>): LoadableState<T> {
 
     useEffect(() => {
         load();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [load]);
 
     return state;
 }

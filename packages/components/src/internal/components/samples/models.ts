@@ -1,15 +1,4 @@
-import { ComponentType } from 'react';
 import { immerable, produce } from 'immer';
-import { Filter, Query } from '@labkey/api';
-
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { User } from '../base/models/User';
-import { AppURL } from '../../url/AppURL';
-
-import { EntityDataType, OperationConfirmationData } from '../entities/models';
-
-import { SamplesEditButtonSections } from './utils';
-import { ALIQUOT_FILTER_MODE, SampleStateType } from './constants';
 
 export enum EntityCreationType {
     Aliquots = 'Aliquot',
@@ -83,6 +72,12 @@ export interface FindField {
     storageKeyPrefix: string;
 }
 
+export enum SampleStateType {
+    Available = 'Available',
+    Consumed = 'Consumed',
+    Locked = 'Locked',
+}
+
 export interface SampleStatus {
     color: string;
     description?: string;
@@ -101,35 +96,6 @@ export interface StorageActionStatusCounts {
     notInStorage?: number;
     total: number;
 }
-
-// Note: this should stay in sync with the freezermanager/src/components/StorageButton.tsx props
-interface SampleStorageButtonComponentProps {
-    afterStorageUpdate?: () => void;
-    isPicklist?: boolean;
-    metricFeatureArea?: string;
-    nounPlural?: string;
-    queryModel: QueryModel;
-    user: User;
-}
-
-export type SampleStorageButton = ComponentType<SampleStorageButtonComponentProps>;
-
-// Note: this should stay in sync with the workflow/src/Components/WorkflowGrid.tsx props
-interface WorkflowGridComponentProps {
-    containerFilter?: Query.ContainerFilter;
-    containerPath?: string;
-    gridPrefix?: string;
-    sampleAliquotType?: ALIQUOT_FILTER_MODE;
-    sampleId?: number;
-    sampleLSID?: string;
-    showAliquotViewSelector?: boolean;
-    showStartButton?: boolean;
-    showTemplateTabs?: boolean;
-    user: User;
-    visibleTabs?: string[];
-}
-
-export type WorkflowGrid = ComponentType<WorkflowGridComponentProps>;
 
 export class SampleState {
     [immerable] = true;
@@ -169,23 +135,4 @@ export class SampleState {
             statusType: SampleStateType[this.stateType],
         };
     }
-}
-
-export interface SampleGridButtonProps {
-    afterSampleActionComplete?: () => void;
-    afterSampleDelete?: (rowsToKeep: any[]) => void;
-    createBtnParentEntityType?: EntityDataType;
-    createBtnParentKey?: string;
-    currentProductId?: string;
-    excludeAddButton?: boolean;
-    excludedMenuKeys?: SamplesEditButtonSections[];
-    includesMedia?: boolean;
-    initAliquotMode?: ALIQUOT_FILTER_MODE;
-    metricFeatureArea?: string;
-    navigate?: (url: string | AppURL) => void;
-    onTabbedViewAliquotSelectorUpdate?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
-    sampleFinderBaseProps?: Record<string, any>;
-    showBulkUpdate?: (statusData?: OperationConfirmationData) => void;
-    toggleEditLineage?: (statusData?: OperationConfirmationData) => void;
-    toggleEditSamples?: (statusData?: OperationConfirmationData) => void;
 }

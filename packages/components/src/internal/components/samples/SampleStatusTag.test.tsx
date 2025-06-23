@@ -8,8 +8,8 @@ import {
     DEFAULT_AVAILABLE_STATUS_COLOR,
     DEFAULT_CONSUMED_STATUS_COLOR,
     DEFAULT_LOCKED_STATUS_COLOR,
-    SampleStateType,
 } from './constants';
+import { SampleStateType } from './models';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 

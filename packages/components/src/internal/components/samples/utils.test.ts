@@ -20,7 +20,6 @@ import {
     DEFAULT_LOCKED_STATUS_COLOR,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleOperation,
-    SampleStateType,
 } from './constants';
 import {
     getFilterForSampleOperation,
@@ -35,7 +34,7 @@ import {
     isSampleOperationPermitted,
     isSamplesSchema,
 } from './utils';
-import { SampleState } from './models';
+import { SampleState, SampleStateType } from './models';
 
 const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
 const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;

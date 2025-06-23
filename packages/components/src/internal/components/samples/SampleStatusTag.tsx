@@ -12,15 +12,15 @@ import { useServerContext } from '../base/ServerContext';
 
 import { useAppContext } from '../../AppContext';
 
-import { SampleStatus } from './models';
-import { SAMPLE_STATUS_COLORS, SampleStateType } from './constants';
+import { SampleStateType, SampleStatus } from './models';
+import { SAMPLE_STATUS_COLORS } from './constants';
 import { getSampleStatusColor } from './utils';
 
 interface Props {
     className?: string;
     hideDescription?: boolean;
     iconOnly?: boolean;
-    placement?: 'top' | 'right' | 'bottom' | 'left';
+    placement?: 'bottom' | 'left' | 'right' | 'top';
     status: SampleStatus;
 }
 

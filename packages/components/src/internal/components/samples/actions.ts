@@ -57,11 +57,10 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import {
     AMOUNT_AND_UNITS_COLUMNS_LC,
     SAMPLE_STORAGE_COLUMNS_LC,
-    SampleStateType,
     SELECTION_KEY_TYPE,
     STORED_AMOUNT_FIELDS,
 } from './constants';
-import { FindField, GroupedSampleFields, SampleState } from './models';
+import { FindField, GroupedSampleFields, SampleState, SampleStateType } from './models';
 
 export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
     return new Promise<any>((resolve, reject) => {
@@ -392,7 +391,7 @@ export function saveIdsToFind(fieldType: FindField, ids: string[], sessionKey: s
     });
 }
 
-export function getSampleAliquotRows(sampleId: number | string): Promise<Array<Record<string, any>>> {
+export function getSampleAliquotRows(sampleId: number | string): Promise<Record<string, any>[]> {
     return new Promise((resolve, reject) => {
         Query.executeSql({
             containerFilter: getContainerFilter(),

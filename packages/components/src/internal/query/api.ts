@@ -491,14 +491,6 @@ export async function selectRowsDeprecated(options: SelectRowsDeprecatedOptions)
                     resolve(response_);
                 },
                 failure: (data, request) => {
-                    // If we hit a communication failure, try to get better error messaging from the request.responseText (Issues 51232 and 51204)
-                    if (
-                        data.exception?.toLowerCase().indexOf('communication failure') === 0 &&
-                        processRequest(undefined, request, reject)
-                    ) {
-                        return;
-                    }
-
                     console.error('There was a problem retrieving the data', data);
                     reject({
                         exceptionClass: data.exceptionClass,
@@ -803,9 +795,7 @@ export function insertRows(options: InsertRowsOptions): Promise<QueryCommandResp
                     ? true
                     : options.skipReselectRows,
             apiVersion: 13.2,
-            success: (response, request) => {
-                if (processRequest(response, request, reject)) return;
-
+            success: response => {
                 resolve(
                     new QueryCommandResponse({
                         schemaQuery,
@@ -886,9 +876,7 @@ export function updateRows(options: UpdateRowsOptions): Promise<QueryCommandResp
                 options.skipReselectRows === null || options.skipReselectRows === undefined
                     ? true
                     : options.skipReselectRows,
-            success: (response, request) => {
-                if (processRequest(response, request, reject)) return;
-
+            success: response => {
                 resolve(
                     new QueryCommandResponse({
                         schemaQuery,
@@ -1149,27 +1137,6 @@ export function importData(config: IImportData): Promise<any> {
             })
         );
     });
-}
-
-export function processRequest(response: any, request: XMLHttpRequest, reject: (reason?: any) => void): boolean {
-    if (!response && request?.responseText) {
-        let json: any;
-        try {
-            json = JSON.parse(request.responseText);
-        } catch (e) {
-            // Issue 53120: Unable to parse JSON. Do not attempt to process this request any further.
-            console.error(`Failed to parse response as JSON. ResponseURL: ${request.responseURL}`, e);
-            return false;
-        }
-
-        if (!json?.success) {
-            console.error(json);
-            reject(json);
-            return true;
-        }
-    }
-
-    return false;
 }
 
 /**

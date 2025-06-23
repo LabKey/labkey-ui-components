@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.??.?
-*Released*: ? June 2025
+### version 6.51.0
+*Released*: 23 June 2025
 - SampleAliquotViewSelector, GridAliquotViewSelector: Fix props types
 - SampleTypeAppContext:
   - Remove SampleGridButtonComponent, SamplesTabbedGridPanel, getSamplesEditableGridProps, getWorkflowGridQueryConfigs,

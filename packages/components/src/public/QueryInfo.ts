@@ -446,7 +446,7 @@ export class QueryInfo {
             const viewInfo = this.getView(view);
 
             if (viewInfo) {
-                return viewInfo.sorts;
+                return viewInfo.sorts ?? []; // Issue 53212
             }
 
             console.warn('Unable to find view:', view, '(' + this.schemaName + '.' + this.name + ')');

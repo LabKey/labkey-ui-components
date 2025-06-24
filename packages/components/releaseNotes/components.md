@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 53326: Don't filter `QuerySelect` in `PrintLabelsModal`
+- Issue 53213: Defensive check for view `sorts` array
+
 ### version 6.51.0
 *Released*: 23 June 2025
 - SampleAliquotViewSelector, GridAliquotViewSelector: Fix props types

@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { ActionURL, Domain } from '@labkey/api';
 
-import { ActionURL, Ajax, Domain, Utils } from '@labkey/api';
-
-import { fromJS, List } from 'immutable';
+import { List } from 'immutable';
 
 import { SelectInputOption } from '../../forms/input/SelectInput';
-import { selectRowsDeprecated } from '../../../query/api';
 import { DomainDesign } from '../models';
 
 import {
@@ -37,12 +35,14 @@ import {
 import { DatasetModel } from './models';
 import { StudyProperties } from './utils';
 import { executeSql } from '../../../query/executeSql';
+import { SCHEMAS } from '../../../schemas';
+import { selectRows } from '../../../query/selectRows';
+import { caseInsensitive } from '../../../util/utils';
+import { request } from '../../../request';
 
 export async function fetchCategories(): Promise<SelectInputOption[]> {
-    // TODO: Does this need to be using executeSql? Would selectRows be able to accomplish the same thing?
     const result = await executeSql({
-        saveInSession: true,
-        schemaName: 'study',
+        schemaName: SCHEMAS.STUDY_TABLES.SCHEMA,
         sql: 'SELECT DISTINCT CategoryId.Label, CategoryId.RowId FROM DataSets',
     });
 
@@ -87,30 +87,16 @@ export function getAdditionalKeyFields(domain: DomainDesign, timepointType: stri
     return additionalKeyFields;
 }
 
-export function fetchCohorts(): Promise<SelectInputOption[]> {
-    return new Promise((resolve, reject) => {
-        selectRowsDeprecated({
-            schemaName: 'study',
-            queryName: 'Cohort',
-        })
-            .then(data => {
-                const models = fromJS(data.models[data.key]);
-                const cohorts = [];
-
-                data.orderedModels[data.key].forEach(modelKey => {
-                    const row = models.get(modelKey);
-                    const value = row.getIn(['rowid', 'value']);
-                    const label = row.getIn(['label', 'value']);
-
-                    cohorts.push({ value, label });
-                });
-
-                resolve(cohorts);
-            })
-            .catch(response => {
-                reject(response.message);
-            });
+export async function fetchCohorts(): Promise<SelectInputOption[]> {
+    const results = await selectRows({
+        columns: ['Label', 'RowId'],
+        schemaQuery: SCHEMAS.STUDY_TABLES.COHORT,
     });
+
+    return results.rows.map(row => ({
+        label: caseInsensitive(row, 'Label').value,
+        value: caseInsensitive(row, 'RowId').value,
+    }));
 }
 
 export function getHelpTip(fieldName: string, studyProperties: StudyProperties): string {
@@ -159,19 +145,14 @@ export function getHelpTip(fieldName: string, studyProperties: StudyProperties):
     return helpTip;
 }
 
-function getDatasetProperties(datasetId?: number): Promise<DatasetModel> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: ActionURL.buildURL('study', 'getDataset.api'),
-            params: { datasetId },
-            success: Utils.getCallbackWrapper(data => {
-                resolve(DatasetModel.create(data, undefined));
-            }),
-            failure: Utils.getCallbackWrapper(error => {
-                reject(error);
-            }),
-        });
+async function getDatasetProperties(datasetId?: number): Promise<DatasetModel> {
+    const result = await request({
+        url: ActionURL.buildURL('study', 'getDataset.api'),
+        params: { datasetId },
+        errorLogMsg: 'Failed to load dataset properties',
     });
+
+    return DatasetModel.create(result);
 }
 
 export function fetchDatasetDesign(datasetId?: number): Promise<DatasetModel> {

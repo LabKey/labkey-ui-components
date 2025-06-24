@@ -247,7 +247,6 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                                     placeholder="Select or type to search..."
                                     required={false}
                                     schemaQuery={model.schemaQuery}
-                                    queryFilters={List(model.filters)}
                                     displayColumn={displayColumn}
                                     valueColumn={valueColumn}
                                     value={this.props.sampleIds?.join(',')}

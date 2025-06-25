@@ -14,8 +14,8 @@ import {
     createSessionAssayRunSummaryQuery,
     getDefaultDiscardStatus,
     getDistinctAssaysPerSample,
-    getLookupRowIdsFromSelection,
     getGroupedSampleDomainFields,
+    getLookupRowIdsFromSelection,
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
     getSampleCounter,
@@ -30,13 +30,17 @@ import {
 } from './actions';
 import { GroupedSampleFields, SampleState } from './models';
 import { SampleOperation } from './constants';
+import { ExecuteSqlResponseWithSession } from '../../query/executeSql';
+import { Row } from '../../query/selectRows';
 
 export interface SamplesAPIWrapper {
-    createSessionAssayRunSummaryQuery: (sampleIds: number[]) => Promise<ISelectRowsResult>;
+    createSessionAssayRunSummaryQuery: (sampleIds: number[]) => Promise<ExecuteSqlResponseWithSession>;
 
     getDefaultDiscardStatus: (containerPath?: string) => Promise<number>;
 
     getDistinctAssaysPerSample: (sampleIds: number[]) => Promise<string[]>;
+
+    getGroupedSampleDomainFields: (sampleType: string) => Promise<GroupedSampleFields>;
 
     getLookupRowIdsFromSelection: (
         schemaName: string,
@@ -45,9 +49,7 @@ export interface SamplesAPIWrapper {
         fieldKey: string
     ) => Promise<number[]>;
 
-    getGroupedSampleDomainFields: (sampleType: string) => Promise<GroupedSampleFields>;
-
-    getSampleAliquotRows: (sampleId: number | string) => Promise<Array<Record<string, any>>>;
+    getSampleAliquotRows: (sampleId: number | string) => Promise<Row[]>;
 
     getSampleAssayResultViewConfigs: () => Promise<SampleAssayResultViewConfig[]>;
 

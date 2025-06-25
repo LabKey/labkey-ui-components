@@ -22,7 +22,7 @@ import { deleteEntityType, getSelectedItemSamples } from '../entities/actions';
 import { getSelectedDataDeprecated, getSelection, getSnapshotSelections } from '../../actions';
 
 import { caseInsensitive } from '../../util/utils';
-import { handleRequestFailure } from '../../request';
+import { request } from '../../request';
 
 import { ParentEntityLineageColumns } from '../entities/constants';
 
@@ -34,7 +34,6 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { SCHEMAS } from '../../schemas';
 
 import {
-    getContainerFilter,
     getQueryDetails,
     invalidateFullQueryDetailsCache,
     ISelectRowsResult,
@@ -48,9 +47,7 @@ import { getSelectedPicklistSamples } from '../picklist/actions';
 import { resolveErrorMessage } from '../../util/messaging';
 import { TimelineEventModel } from '../auditlog/models';
 
-import { buildURL } from '../../url/AppURL';
-
-import { selectRows } from '../../query/selectRows';
+import { Row, selectRows } from '../../query/selectRows';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
@@ -61,18 +58,16 @@ import {
     STORED_AMOUNT_FIELDS,
 } from './constants';
 import { FindField, GroupedSampleFields, SampleState, SampleStateType } from './models';
+import { executeSql, ExecuteSqlResponseWithSession } from '../../query/executeSql';
 
-export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL('experiment', 'getSampleTypeApi.api'),
-            params: config,
-            success: Utils.getCallbackWrapper(response => {
-                resolve(Map(response));
-            }),
-            failure: handleRequestFailure(reject, 'Failed to fetch sample type'),
-        });
+export async function getSampleSet(config: IEntityTypeDetails): Promise<any> {
+    const response = await request({
+        url: ActionURL.buildURL('experiment', 'getSampleType.api'),
+        params: config,
+        errorLogMsg: 'Failed to fetch sample type',
     });
+
+    return Map(response);
 }
 
 // TODO: This should share implementation with api.domain.fetchDomainDetails / api.domain.getDataClassDetails
@@ -99,7 +94,7 @@ export function getSampleTypeDetails(
     });
 }
 
-export function deleteSampleSet(rowId: number, containerPath?: string, auditUserComment?: string): Promise<any> {
+export function deleteSampleSet(rowId: number, containerPath?: string, auditUserComment?: string): Promise<void> {
     return deleteEntityType('deleteSampleTypes', rowId, containerPath, auditUserComment);
 }
 
@@ -391,22 +386,13 @@ export function saveIdsToFind(fieldType: FindField, ids: string[], sessionKey: s
     });
 }
 
-export function getSampleAliquotRows(sampleId: number | string): Promise<Record<string, any>[]> {
-    return new Promise((resolve, reject) => {
-        Query.executeSql({
-            containerFilter: getContainerFilter(),
-            sql: `SELECT RowId, Name FROM materials WHERE RowId <> RootMaterialRowId AND RootMaterialRowId = ${sampleId}`,
-            schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
-            requiredVersion: 17.1,
-            success: result => {
-                resolve(result.rows);
-            },
-            failure: reason => {
-                console.error(reason);
-                reject(reason);
-            },
-        });
+export async function getSampleAliquotRows(sampleId: number | string): Promise<Row[]> {
+    const result = await executeSql({
+        schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
+        sql: `SELECT RowId, Name FROM materials WHERE RowId <> RootMaterialRowId AND RootMaterialRowId = ${sampleId}`,
     });
+
+    return result.rows;
 }
 
 export type SampleAssayResultViewConfig = {
@@ -420,22 +406,16 @@ export type SampleAssayResultViewConfig = {
     viewName?: string;
 };
 
-export function getSampleAssayResultViewConfigs(): Promise<SampleAssayResultViewConfig[]> {
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getSampleAssayResultsViewConfigs.api'),
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response.configs ?? []);
-            }),
-            failure: Utils.getCallbackWrapper(response => {
-                console.error(response);
-                reject(response);
-            }),
-        });
+export async function getSampleAssayResultViewConfigs(): Promise<SampleAssayResultViewConfig[]> {
+    const response = await request<{ configs: SampleAssayResultViewConfig[] }>({
+        url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getSampleAssayResultsViewConfigs.api'),
+        errorLogMsg: 'Failed to load sample assay result view configuration',
     });
+
+    return response.configs ?? [];
 }
 
-export async function createSessionAssayRunSummaryQuery(sampleIds: number[]): Promise<ISelectRowsResult> {
+export function createSessionAssayRunSummaryQuery(sampleIds: number[]): Promise<ExecuteSqlResponseWithSession> {
     // issue with temp table re-use of queryName, invalidate cache to clear any queryDetails for old temp table
     invalidateFullQueryDetailsCache();
 
@@ -450,9 +430,9 @@ export async function createSessionAssayRunSummaryQuery(sampleIds: number[]): Pr
         whereClause = 'WHERE 1 = 0\n'; // add where clause that will always result in zero rows
     }
 
-    return await selectRowsDeprecated({
+    return executeSql({
         saveInSession: true,
-        schemaName: 'exp',
+        schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
         sql:
             'SELECT RowId, SampleID, SampleType, Assay, COUNT(*) AS RunCount\n' +
             "FROM (SELECT RowId, SampleID, SampleType, Assay || ' Run Count' AS Assay FROM " +
@@ -621,7 +601,7 @@ export function updateSampleStorageData(
 
     return new Promise<any>((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('inventory', 'updateSampleStorageData.api', undefined, { container: containerPath }),
+            url: ActionURL.buildURL('inventory', 'updateSampleStorageData.api', containerPath),
             jsonData: {
                 sampleRows: sampleStorageData,
                 [STORED_AMOUNT_FIELDS.AUDIT_COMMENT]: userComment,
@@ -685,7 +665,7 @@ export function saveSampleCounter(
     });
 }
 
-export function hasExistingSamples(isRoot?: boolean, containerPath?: string): Promise<boolean> {
+export async function hasExistingSamples(isRoot?: boolean, containerPath?: string): Promise<boolean> {
     let dataCountSql =
         'SELECT m.Name As SampleName ' +
         '\n' +
@@ -695,18 +675,12 @@ export function hasExistingSamples(isRoot?: boolean, containerPath?: string): Pr
     if (isRoot) dataCountSql += ' AND mi.RootMaterialRowId = mi.RowId';
     dataCountSql += ')';
 
-    return new Promise((resolve, reject) => {
-        Query.executeSql({
-            containerPath,
-            containerFilter: Query.ContainerFilter.allInProject,
-            schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
-            sql: dataCountSql,
-            success: async data => {
-                resolve(!!data.rows[0]?.SampleName);
-            },
-            failure: error => {
-                reject(error);
-            },
-        });
+    const result = await executeSql({
+        containerPath,
+        containerFilter: Query.ContainerFilter.allInProject,
+        schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+        sql: dataCountSql,
     });
+
+    return !!result.rows[0]?.SampleName?.value;
 }

@@ -245,6 +245,7 @@ import {
     NOT_IN_EXP_DESCENDANTS_OF_FILTER_TYPE,
     registerFilterType,
 } from './internal/query/filter';
+import { executeSql } from './internal/query/executeSql';
 import { getSelectedRows, selectRows } from './internal/query/selectRows';
 import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
 import {
@@ -1304,6 +1305,7 @@ export {
     EntityMoveModal,
     EntityParentType,
     EntityTypeOption,
+    executeSql,
     ExpandableContainer,
     ExpandableFilterToggle,
     EXPERIMENT_AUDIT_EVENT,
@@ -1967,6 +1969,13 @@ export type { UseTimeout } from './internal/hooks';
 export type { ModalProps } from './internal/Modal';
 export type { TriggerType } from './internal/OverlayTrigger';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
+export type {
+    ExecuteSqlOptions,
+    ExecuteSqlResponse,
+    ExecuteSqlResponseBase,
+    ExecuteSqlResponseWithoutSession,
+    ExecuteSqlResponseWithSession,
+} from './internal/query/executeSql';
 export type { Row, RowValue, SelectRowsOptions, SelectRowsResponse } from './internal/query/selectRows';
 export type { IAttachment } from './internal/renderers/AttachmentCard';
 export type { RequestHandler, RequestOptions } from './internal/request';

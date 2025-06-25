@@ -11,7 +11,7 @@ import { Ajax, Utils } from '@labkey/api';
  *
  * new Promise((resolve, reject) => {
  *     return Ajax.request({
- *         // ... url, success handler, etc
+ *         // ... url, success handler, etc.
  *         failure: handleRequestFailure(reject, 'This optional message is logged to console.error'),
  *     });
  * });

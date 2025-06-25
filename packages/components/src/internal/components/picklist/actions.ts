@@ -21,6 +21,7 @@ import { getOrderedSelectedMappedKeys } from '../entities/actions';
 
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
+import { executeSql } from '../../query/executeSql';
 
 export function getPicklistsForInsert(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
@@ -147,38 +148,28 @@ export interface SampleTypeCount {
     SampleType: string;
 }
 
-export function getPicklistCountsBySampleType(listName: string): Promise<SampleTypeCount[]> {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const { key, models, orderedModels } = await selectRowsDeprecated({
-                schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
-                queryName: listName,
-                sql: [
-                    'SELECT COUNT(*) as ItemCount,',
-                    'SampleId.SampleSet.Name AS SampleType,',
-                    'SampleId.LabelColor',
-                    `FROM ${SCHEMAS.PICKLIST_TABLES.SCHEMA}."${listName}"`,
-                    'WHERE SampleId.Name IS NOT NULL',
-                    'GROUP BY SampleId.SampleSet.Name, SampleId.LabelColor',
-                    'ORDER BY SampleId.SampleSet.Name',
-                ].join('\n'),
-            });
-
-            const counts = orderedModels[key]
-                .map(idx => models[key][idx])
-                .map(row => ({
-                    ItemCount: row.ItemCount.value,
-                    LabelColor: row.LabelColor.value,
-                    SampleType: row.SampleType.value,
-                }))
-                .toArray();
-
-            resolve(counts);
-        } catch (e) {
-            console.error('Failed to get picklist counts by sample type', e);
-            reject(e);
-        }
+export async function getPicklistCountsBySampleType(listName: string): Promise<SampleTypeCount[]> {
+    const result = await executeSql({
+        schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
+        sql: [
+            'SELECT COUNT(*) as ItemCount,',
+            'SampleId.SampleSet.Name AS SampleType,',
+            'SampleId.LabelColor',
+            `FROM ${SCHEMAS.PICKLIST_TABLES.SCHEMA}."${listName}"`,
+            'WHERE SampleId.Name IS NOT NULL',
+            'GROUP BY SampleId.SampleSet.Name, SampleId.LabelColor',
+            'ORDER BY SampleId.SampleSet.Name',
+        ].join('\n'),
     });
+
+    return result.rows.reduce<SampleTypeCount[]>((counts, row) => {
+        counts.push({
+            ItemCount: row.ItemCount.value,
+            LabelColor: row.LabelColor.value,
+            SampleType: row.SampleType.value,
+        });
+        return counts;
+    }, []);
 }
 
 export function getPicklistSamples(listName: string): Promise<Set<number>> {
@@ -394,7 +385,6 @@ export const getPicklistFromId = async (listId: number, loadSampleTypes = true):
         containerFilter: getPicklistListingContainerFilter(),
         schemaName: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.schemaName,
         queryName: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.queryName,
-        requiredColumns: ['Category'],
         filterArray: [Filter.create('listId', listId)],
     });
     const listRow = listData.models[listData.key][listId];
@@ -402,20 +392,16 @@ export const getPicklistFromId = async (listId: number, loadSampleTypes = true):
     let picklist = Picklist.create(listRow);
 
     if (loadSampleTypes) {
-        const listSampleTypeData = await selectRowsDeprecated({
+        const result = await executeSql({
             schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
             sql: `SELECT DISTINCT SampleID.SampleSet, SampleID.SampleSet.Category FROM "${picklist.name}" WHERE SampleID.SampleSet IS NOT NULL`,
         });
 
         picklist = picklist.mutate({
-            sampleTypes: Object.values(listSampleTypeData.models[listSampleTypeData.key])
+            hasMedia: !!result.rows.find(row => caseInsensitive(row, 'Category')?.value === 'media'),
+            sampleTypes: result.rows
                 .map(row => caseInsensitive(row, 'SampleSet')?.displayValue)
                 .filter(value => !!value),
-        });
-        picklist = picklist.mutate({
-            hasMedia: !!Object.values(listSampleTypeData.models[listSampleTypeData.key]).find(
-                row => caseInsensitive(row, 'Category')?.value === 'media'
-            ),
         });
     }
 

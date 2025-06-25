@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- GitHub Issue 787: DomainField JSON file import should respect required boolean for SampleId field
+
 ### version 6.52.0
 *Released*: 24 June 2025
 - Improve ExecuteSql endpoint wrapper. See #1813.

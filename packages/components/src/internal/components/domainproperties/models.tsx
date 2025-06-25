@@ -1179,7 +1179,10 @@ export class DomainField
                 field.dataType = SAMPLE_TYPE;
                 field.conceptURI = SAMPLE_TYPE.conceptURI;
                 field.rangeURI = SAMPLE_TYPE.rangeURI;
-                field.required = true;
+                // GitHub Issue 787
+                if (raw.required === undefined) {
+                    field.required = true;
+                }
             }
         }
 

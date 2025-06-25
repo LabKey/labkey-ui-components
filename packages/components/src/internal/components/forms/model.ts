@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap, Record as ImmutableRecord } from 'immutable';
+import { fromJS, Record as ImmutableRecord, List, Map, OrderedMap } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -38,6 +38,8 @@ import { SelectInputOption } from './input/SelectInput';
 import { DELIMITER } from './constants';
 import { QuerySelectOwnProps } from './QuerySelect';
 import { resolveDetailFieldLabel, resolveDetailFieldValue } from './utils';
+import { ALIQUOTED_FROM_COL } from '../samples/constants';
+import { SCHEMAS } from '../../schemas';
 
 function formatOption(model: QuerySelectModel, result: any): SelectInputOption {
     const { displayColumn, valueColumn } = model;
@@ -391,6 +393,13 @@ function validValue(value: any): boolean {
     return value !== undefined && value !== null && value !== '';
 }
 
+function isAliquotedFromColumn(props: QuerySelectOwnProps): boolean {
+    return (
+        props.name?.toLowerCase() === ALIQUOTED_FROM_COL.toLowerCase() &&
+        props.schemaQuery.schemaName === SCHEMAS.SAMPLE_SETS.SCHEMA
+    );
+}
+
 function initSelectedItems(
     props: QuerySelectOwnProps,
     queryInfo: QueryInfo,
@@ -423,7 +432,12 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
     let selectedItems: ISelectRowsResult;
 
     if (validValue(value)) {
-        const { expectedValueCount, filter } = buildValueFilter(value, valueColumn, multiple, delimiter);
+        // HACK: Issue 53153: This is a workaround for the AliquotedFrom column to allow for filtering the value
+        // by the display column. The reason for this is the value given is a name of sample rather than a rowId
+        // even though the value column is "RowId".
+        const valueFilterColumn = isAliquotedFromColumn(props) ? displayColumn : valueColumn;
+
+        const { expectedValueCount, filter } = buildValueFilter(value, valueFilterColumn, multiple, delimiter);
         selectedItems = await initSelectedItems(props, queryInfo, valueColumn, displayColumn, groupByColumn, filter);
         const selectedRows = selectedItems.models[selectedItems.key];
 

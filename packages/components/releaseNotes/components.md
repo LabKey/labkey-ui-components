@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - GitHub Issue 787: DomainField JSON file import should respect required boolean for SampleId field
+- Issue 53325: withQueryModels to use col fieldKey instead of name when setting omittedColumns for errant calculated fields
 
 ### version 6.52.0
 *Released*: 24 June 2025

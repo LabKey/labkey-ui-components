@@ -737,7 +737,7 @@ export function withQueryModels<Props>(
                         const calcFieldNames = model.queryInfo
                             .getAllColumns()
                             .filter(c => c.isCalculatedField)
-                            .map(c => c.name);
+                            .map(c => c.fieldKey); // Issue 53325
                         let rowsError = resolveErrorMessage(error, 'data', undefined, 'load');
 
                         if (rowsError === undefined) {

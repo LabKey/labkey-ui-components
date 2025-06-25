@@ -84,7 +84,7 @@ export interface QueryAPIWrapper {
     getDefaultVisibleColumns: (options: GetQueryDetailsOptions) => Promise<QueryColumn[]>;
     getEntityTypeOptions: (
         entityDataType: EntityDataType,
-        dataTypeExclusions?: { [key: string]: number[] },
+        dataTypeExclusions?: Record<string, number[]>,
         containerPath?: string
     ) => Promise<Map<string, List<IEntityTypeOption>>>;
     getFolderConfigurableEntityTypeOptions: (
@@ -147,7 +147,7 @@ export interface QueryAPIWrapper {
     setSelected: (
         key: string,
         checked: boolean,
-        ids: string[] | string,
+        ids: string | string[],
         containerPath?: string,
         validateIds?: boolean,
         schemaName?: string,
@@ -157,7 +157,7 @@ export interface QueryAPIWrapper {
     ) => Promise<SelectResponse>;
     setSnapshotSelections: (
         key: string,
-        ids: string[] | string | number[],
+        ids: number[] | string | string[],
         containerPath?: string
     ) => Promise<SelectResponse>; // deprecated
     updateRows: (options: UpdateRowsOptions) => Promise<QueryCommandResponse>;

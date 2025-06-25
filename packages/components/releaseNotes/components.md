@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 53326: Don't filter `QuerySelect` in `PrintLabelsModal`
 - Issue 53213: Defensive check for view `sorts` array
 
+### version 6.52.1
+*Released*: 25 June 2025
+- Issue 53120: remove processRequest, use getCallbackWrapper
+
 ### version 6.52.0
 *Released*: 24 June 2025
 - Improve ExecuteSql endpoint wrapper. See #1813.

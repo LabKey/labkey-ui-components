@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
+import { fromJS, Record as ImmutableRecord, Set as ImmutableSet, List, Map } from 'immutable';
 import { immerable } from 'immer';
 import { normalize, schema } from 'normalizr';
 import { ActionURL, Ajax, AuditBehaviorTypes, Filter, Query, QueryDOM, Utils } from '@labkey/api';
@@ -93,7 +93,7 @@ export function invalidateQueryDetailsCache(
 }
 
 interface GetQueryDetailsBasic
-    extends Omit<Query.GetQueryDetailsOptions, 'method' | 'schemaName' | 'queryName' | 'viewName'> {
+    extends Omit<Query.GetQueryDetailsOptions, 'method' | 'queryName' | 'schemaName' | 'viewName'> {
     lookup?: QueryLookup;
 }
 
@@ -453,165 +453,79 @@ export function isSelectRowMetadataRequired(includeMetadata?: boolean, columns?:
 }
 
 export interface ISelectRowsResult {
-    caller?: any;
     key: string;
     messages?: List<Map<string, string>>;
     models: any;
     orderedModels: List<any>;
-    queries: {
-        [key: string]: QueryInfo;
-    };
+    queries: Record<string, QueryInfo>;
     rowCount: number;
 }
 
+export type SelectRowsDeprecatedOptions = Omit<
+    Query.SelectRowsOptions,
+    'failure' | 'method' | 'requiredVersion' | 'scope' | 'success'
+>;
+
 /**
- * @deprecated use selectRows() instead.
+ * @deprecated use selectRows() or executeSql() instead.
  * Fetches an API response and normalizes the result JSON according to schema.
  * This makes every API response have the same shape, regardless of how nested it was.
  */
-export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsResult> {
-    return new Promise((resolve, reject) => {
-        let schemaQuery, key;
-        if (userConfig.queryName) {
-            schemaQuery = new SchemaQuery(userConfig.schemaName, userConfig.queryName, userConfig.viewName);
-            key = schemaQuery.getKey();
-        }
+export async function selectRowsDeprecated(options: SelectRowsDeprecatedOptions): Promise<ISelectRowsResult> {
+    const schemaQuery = new SchemaQuery(options.schemaName, options.queryName, options.viewName);
 
-        let hasDetails = false;
-        let details: QueryInfo;
-        let hasResults = false;
-        let result;
+    const columns = options.columns ? options.columns : '*';
+    const [queryInfo, response] = await Promise.all([
+        getQueryDetails(options),
+        new Promise<Query.Response>((resolve, reject) => {
+            Query.selectRows({
+                ...options,
+                requiredVersion: 17.1,
+                method: 'POST',
+                // put on this another parameter!
+                columns,
+                containerFilter: options.containerFilter ?? getContainerFilter(options.containerPath),
+                includeMetadata: isSelectRowMetadataRequired(options.includeMetadata, columns),
+                includeTotalCount: options.includeTotalCount ?? false, // default to false to improve performance
+                success: response_ => {
+                    resolve(response_);
+                },
+                failure: (data, request) => {
+                    // If we hit a communication failure, try to get better error messaging from the request.responseText (Issues 51232 and 51204)
+                    if (
+                        data.exception?.toLowerCase().indexOf('communication failure') === 0 &&
+                        processRequest(undefined, request, reject)
+                    ) {
+                        return;
+                    }
 
-        function doResolve() {
-            if (hasDetails && hasResults) {
-                result = handleSelectRowsResponse(result, details);
+                    console.error('There was a problem retrieving the data', data);
+                    reject({
+                        exceptionClass: data.exceptionClass,
+                        message: data.exception,
+                        schemaQuery,
+                        status: request.status,
+                    });
+                },
+            });
+        }),
+    ]);
 
-                if (key !== result.key) {
-                    key = result.key; // default to model key
-                }
-                resolve(
-                    Object.assign(
-                        {},
-                        {
-                            key,
-                            models: result.models,
-                            orderedModels: result.orderedModels,
-                            queries: {
-                                [key]: details,
-                            },
-                            rowCount: result.rowCount,
-                            messages: result.messages,
-                            caller,
-                        }
-                    )
-                );
-            }
-        }
+    const result = handleSelectRowsResponse(response, queryInfo);
 
-        if (userConfig.hasOwnProperty('sql')) {
-            const saveInSession = userConfig.saveInSession === true;
-            Query.executeSql(
-                Object.assign({}, userConfig, {
-                    method: 'POST',
-                    requiredVersion: 17.1,
-                    sql: userConfig.sql,
-                    saveInSession,
-                    containerFilter: userConfig.containerFilter ?? getContainerFilter(userConfig.containerPath),
-                    success: json => {
-                        result = json;
-                        hasResults = true;
-                        let resultSchemaQuery: SchemaQuery;
+    let key = schemaQuery.getKey();
+    if (key !== result.key) {
+        key = result.key; // default to model key
+    }
 
-                        if (saveInSession) {
-                            resultSchemaQuery = new SchemaQuery(userConfig.schemaName, json.queryName);
-                            key = resultSchemaQuery.getKey();
-                        } else {
-                            resultSchemaQuery = schemaQuery;
-                        }
-
-                        // We're not guaranteed to have a schemaQuery provided. When executing with SQL
-                        // the user only needs to supply a schemaName. If they do not saveInSession then
-                        // a queryName is not generated and getQueryDetails() is unable to fetch details.
-                        if (resultSchemaQuery) {
-                            getQueryDetails(resultSchemaQuery)
-                                .then(d => {
-                                    hasDetails = true;
-                                    details = d;
-                                    doResolve();
-                                })
-                                .catch(error => reject(error));
-                        } else {
-                            hasDetails = true;
-                            doResolve();
-                        }
-                    },
-                    failure: (data, request) => {
-                        // If we hit a communication failure, try to get better error messaging from the request.responseText (Issues 51232 and 51204)
-                        if (
-                            data.exception?.toLowerCase().indexOf('communication failure') === 0 &&
-                            processRequest(undefined, request, reject)
-                        ) {
-                            return;
-                        }
-
-                        console.error('There was a problem retrieving the data', data);
-                        reject({
-                            exceptionClass: data.exceptionClass,
-                            message: data.exception,
-                            status: request.status,
-                        });
-                    },
-                })
-            );
-        } else {
-            const columns = userConfig.columns ? userConfig.columns : '*';
-            Query.selectRows(
-                Object.assign({}, userConfig, {
-                    requiredVersion: 17.1,
-                    filterArray: userConfig.filterArray,
-                    method: 'POST',
-                    // put on this another parameter!
-                    columns,
-                    containerFilter: userConfig.containerFilter ?? getContainerFilter(userConfig.containerPath),
-                    includeMetadata: isSelectRowMetadataRequired(userConfig.includeMetadata, columns),
-                    includeTotalCount: userConfig.includeTotalCount ?? false, // default to false to improve performance
-                    success: json => {
-                        result = json;
-                        hasResults = true;
-                        doResolve();
-                    },
-                    failure: (data, request) => {
-                        // If we hit a communication failure, try to get better error messaging from the request.responseText (Issues 51232 and 51204)
-                        if (
-                            data.exception?.toLowerCase().indexOf('communication failure') === 0 &&
-                            processRequest(undefined, request, reject)
-                        ) {
-                            return;
-                        }
-
-                        console.error('There was a problem retrieving the data', data);
-                        reject({
-                            exceptionClass: data.exceptionClass,
-                            message: data.exception,
-                            schemaQuery,
-                            status: request.status,
-                        });
-                    },
-                })
-            );
-
-            getQueryDetails(userConfig)
-                .then(d => {
-                    hasDetails = true;
-                    details = d;
-                    doResolve();
-                })
-                .catch(error => {
-                    console.error('There was a problem retrieving the data', error);
-                    reject(error);
-                });
-        }
-    });
+    return {
+        key,
+        models: result.models,
+        orderedModels: result.orderedModels,
+        queries: { [key]: queryInfo },
+        rowCount: result.rowCount,
+        messages: result.messages,
+    };
 }
 
 export function handleSelectRowsResponse(response: Query.Response, queryInfo: QueryInfo): any {
@@ -624,7 +538,7 @@ export function handleSelectRowsResponse(response: Query.Response, queryInfo: Qu
         qsKey = 'queries',
         rowCount = response.rowCount || 0;
 
-    let metadataKey: string, metadataAltKey: string;
+    let metadataAltKey: string, metadataKey: string;
     if (resolved.metaData) {
         // If metaData is present, then use its "id" value regardless of presence of a queryInfo
         metadataKey = resolved.metaData.id;
@@ -836,7 +750,7 @@ export class InsertRowsErrorResponse extends ImmutableRecord({
 }
 
 export interface InsertRowsOptions
-    extends Omit<Query.QueryRequestOptions, 'apiVersion' | 'schemaName' | 'queryName' | 'rows'> {
+    extends Omit<Query.QueryRequestOptions, 'apiVersion' | 'queryName' | 'rows' | 'schemaName'> {
     fillEmptyFields?: boolean;
     rows: List<any>; // TODO: convert to Array<Record<string, any>>
     schemaQuery: SchemaQuery;
@@ -956,7 +870,7 @@ function ensureNullForUndefined(row: Map<string, any>): Map<string, any> {
     return row.reduce((map, v, k) => map.set(k, v === undefined ? null : v), Map<string, any>());
 }
 
-export interface UpdateRowsOptions extends Omit<Query.QueryRequestOptions, 'schemaName' | 'queryName'> {
+export interface UpdateRowsOptions extends Omit<Query.QueryRequestOptions, 'queryName' | 'schemaName'> {
     schemaQuery: SchemaQuery;
 }
 
@@ -1005,7 +919,7 @@ export function updateRowsByContainer(
     rows: any[],
     containerPaths: string[],
     auditUserComment: string,
-    containerField: string = 'Folder'
+    containerField = 'Folder'
 ): Promise<Query.SaveRowsResponse | QueryCommandResponse> {
     // if all rows are in the same container, we can use updateRows (which supports file/attachments)
     if (containerPaths.length < 2) {
@@ -1017,7 +931,7 @@ export function updateRowsByContainer(
             schemaQuery,
         });
     } else {
-        const commands = [];
+        const commands: Query.Command[] = [];
         commands.push({
             command: 'update',
             schemaName: schemaQuery.schemaName,
@@ -1031,7 +945,7 @@ export function updateRowsByContainer(
     }
 }
 
-export interface DeleteRowsOptions extends Omit<Query.QueryRequestOptions, 'schemaName' | 'queryName'> {
+export interface DeleteRowsOptions extends Omit<Query.QueryRequestOptions, 'queryName' | 'schemaName'> {
     schemaQuery: SchemaQuery;
 }
 
@@ -1093,9 +1007,9 @@ export function splitRowsByContainer(rows: any[], containerField: string): Recor
 
 export function saveRowsByContainer(
     options: SaveRowsOptions,
-    containerField: string = 'Folder'
+    containerField = 'Folder'
 ): Promise<Query.SaveRowsResponse> {
-    const commands = []; // TODO type as Query.Command
+    const commands: Query.Command[] = [];
 
     // for each original command, split it into multiple commands for each container in the rows
     options.commands.forEach(command => {
@@ -1120,9 +1034,9 @@ export function saveRowsByContainer(
 
 export function deleteRowsByContainer(
     options: DeleteRowsOptions,
-    containerField: string = 'ContainerPath'
+    containerField = 'ContainerPath'
 ): Promise<QueryCommandResponse> {
-    const commands = [];
+    const commands: Query.Command[] = [];
 
     const allRows = options.rows;
     if (
@@ -1187,7 +1101,7 @@ export enum InsertOptions {
     CREATE, // synonymous with Import for server-side; used for better messaging client-side
 }
 
-export function getVerbForInsertOption(option: string, defaultVerb: string = 'imported'): string {
+export function getVerbForInsertOption(option: string, defaultVerb = 'imported'): string {
     if (option === InsertOptions.MERGE.toString()) {
         return defaultVerb + ' or updated';
     } else if (option === InsertOptions.UPDATE.toString()) {
@@ -1340,7 +1254,7 @@ export function getContainerFilterForLookups(moduleContext?: ModuleContext): Que
     return Query.ContainerFilter.currentPlusProjectAndShared;
 }
 
-export interface SelectDistinctOptions extends Omit<Query.SelectDistinctOptions, 'success' | 'failure'> {
+export interface SelectDistinctOptions extends Omit<Query.SelectDistinctOptions, 'failure' | 'success'> {
     requestHandler?: RequestHandler;
 }
 

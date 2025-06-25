@@ -3,13 +3,12 @@ import { List, Map } from 'immutable';
 
 import { getSelected, getSelectedDataDeprecated, setSnapshotSelections } from '../../actions';
 
-import { buildURL } from '../../url/AppURL';
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
 import { importData, InsertOptions } from '../../query/api';
 import { caseInsensitive, generateId } from '../../util/utils';
-import { handleRequestFailure } from '../../request';
+import { request } from '../../request';
 import { EntityCreationType } from '../samples/models';
 
 import { SHARED_CONTAINER_PATH } from '../../constants';
@@ -69,10 +68,11 @@ import {
     OperationConfirmationData,
     RemappedKeyValues,
 } from './models';
+import { executeSql } from '../../query/executeSql';
 
 export async function getOperationConfirmationData(
     dataType: EntityDataType,
-    rowIds: string[] | number[],
+    rowIds: number[] | string[],
     selectionKey?: string,
     useSnapshotSelection?: boolean,
     extraParams?: Record<string, any>,
@@ -152,7 +152,7 @@ export function getContainersForPermission(permission: PermissionTypes): Promise
 export type GetDeleteConfirmationDataOptions = {
     containerPath?: string;
     dataType: EntityDataType;
-    rowIds: string[] | number[];
+    rowIds: number[] | string[];
     schemaQuery?: SchemaQuery;
     selectionKey?: string;
     useSnapshotSelection?: boolean;
@@ -195,7 +195,7 @@ export function getDeleteConfirmationData(
 }
 
 async function getAssayResultOperationConfirmationData(
-    rowIds: string[] | number[],
+    rowIds: number[] | string[],
     schemaQuery: SchemaQuery,
     containerPath?: string
 ): Promise<OperationConfirmationData> {
@@ -219,7 +219,7 @@ async function getAssayResultOperationConfirmationData(
 
 export function getSampleOperationConfirmationData(
     operation: SampleOperation,
-    rowIds?: string[] | number[],
+    rowIds?: number[] | string[],
     selectionKey?: string,
     useSnapshotSelection?: boolean,
     containerPath?: string
@@ -278,7 +278,7 @@ function resolveSampleParentTypes(
     isAliquotParent?: boolean,
     orderedRowIds?: string[]
 ): List<EntityParentType> {
-    const groups: { [key: string]: any[] } = {};
+    const groups: Record<string, any[]> = {};
     const results = [];
 
     // The transformation done here makes the entities compatible with the editable grid
@@ -493,9 +493,9 @@ export async function getChosenParentData(
         );
 
         // if we have an initial parent, we want to start with a row in the grid (entityCount = 1) otherwise we start with none
-        let totalParentValueCount = 0,
-            isParentTypeOnly = false,
-            parentEntityDataType;
+        let isParentTypeOnly = false,
+            parentEntityDataType,
+            totalParentValueCount = 0;
         chosenParents.forEach(chosenParent => {
             if (chosenParent.value !== undefined && parentSchemaNames.contains(chosenParent.schema)) {
                 totalParentValueCount += chosenParent.value.size;
@@ -530,7 +530,7 @@ export async function getChosenParentData(
 
 export async function getEntityTypeOptionsWithExclusions(
     entityDataType: EntityDataType,
-    dataTypeExclusions?: { [key: string]: number[] },
+    dataTypeExclusions?: Record<string, number[]>,
     containerPath?: string
 ): Promise<Map<string, List<IEntityTypeOption>>> {
     return getEntityTypeOptions(entityDataType, containerPath, undefined, undefined, undefined, dataTypeExclusions);
@@ -544,7 +544,7 @@ export async function getEntityTypeOptions(
     containerFilter?: Query.ContainerFilter,
     skipFolderDataExclusion?: boolean,
     requiredParentTypes?: string[],
-    dataTypeExclusions?: { [key: string]: number[] }
+    dataTypeExclusions?: Record<string, number[]>
 ): Promise<Map<string, List<IEntityTypeOption>>> {
     const { typeListingSchemaQuery, filterArray, instanceSchemaName } = entityDataType;
 
@@ -631,7 +631,7 @@ export function getEntityTypeData(
     isItemSamples: boolean
 ): Promise<Partial<EntityIdCreationModel>> {
     return new Promise((resolve, reject) => {
-        const promises: Array<Promise<any>> = [
+        const promises: Promise<any>[] = [
             getEntityTypeOptions(entityDataType),
             // get all the parent schemaQuery data
             getChosenParentData(model, parentSchemaQueries, allowParents, isItemSamples, targetQueryName),
@@ -675,26 +675,22 @@ export function getEntityTypeData(
     });
 }
 
-export function deleteEntityType(
+export async function deleteEntityType(
     deleteActionName: string,
     rowId: number,
     containerPath?: string,
     auditUserComment?: string
-): Promise<any> {
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL('experiment', deleteActionName + '.api', undefined, { container: containerPath }),
-            method: 'POST',
-            params: {
-                singleObjectRowId: rowId,
-                forceDelete: true,
-                userComment: auditUserComment,
-            },
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response);
-            }),
-            failure: handleRequestFailure(reject, 'Failed to delete entity type.'),
-        });
+): Promise<void> {
+    // This is only currently used to POST against HTML-based actions (e.g. experiment-deleteDataClass) which are
+    // expecting parameters on the URL rather than in the request payload.
+    await request({
+        url: ActionURL.buildURL('experiment', deleteActionName + '.api', containerPath, {
+            singleObjectRowId: rowId,
+            forceDelete: true,
+            userComment: auditUserComment,
+        }),
+        method: 'POST',
+        errorLogMsg: 'Failed to delete entity type.',
     });
 }
 
@@ -739,7 +735,7 @@ export function handleEntityFileImport(
 }
 
 export function getDataDeleteConfirmationData(
-    rowIds: string[] | number[],
+    rowIds: number[] | string[],
     selectionKey?: string,
     useSnapshotSelection?: boolean
 ): Promise<OperationConfirmationData> {
@@ -748,7 +744,7 @@ export function getDataDeleteConfirmationData(
 
 export function getDataOperationConfirmationData(
     operation: DataOperation,
-    rowIds: string[] | number[],
+    rowIds: number[] | string[],
     selectionKey?: string,
     useSnapshotSelection?: boolean
 ): Promise<OperationConfirmationData> {
@@ -768,7 +764,7 @@ export function getCrossFolderSelectionResult(
     dataRegionSelectionKey: string,
     dataType: string, // 'samples' | 'exp.data' | 'assay',
     useSnapshotSelection?: boolean,
-    rowIds?: string[] | number[],
+    rowIds?: number[] | string[],
     picklistName?: string
 ): Promise<CrossFolderSelectionResult> {
     if (!dataRegionSelectionKey && !rowIds?.length) {
@@ -777,7 +773,7 @@ export function getCrossFolderSelectionResult(
 
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('experiment', 'getCrossFolderDataSelection.api'),
+            url: ActionURL.buildURL('experiment', 'getCrossFolderDataSelection.api'),
             method: 'POST',
             jsonData: {
                 dataRegionSelectionKey,
@@ -806,7 +802,7 @@ export function getCrossFolderSelectionResult(
 }
 
 export type ParentIdData = {
-    parentId: string | number;
+    parentId: number | string;
     rowId: number;
 };
 
@@ -823,7 +819,7 @@ async function getParentRowIdAndDataType(
         filterArray: [Filter.create('LSID', parentIDs, Filter.Types.IN)],
     });
 
-    const filteredParentItems = {};
+    const filteredParentItems: Record<string, ParentIdData> = {};
     response.rows.forEach(row => {
         const lsid = caseInsensitive(row, 'LSID').value;
         filteredParentItems[lsid] = {
@@ -968,7 +964,7 @@ export const getOriginalParentsFromLineage = async (
 
 export function getMoveConfirmationData(
     dataType: EntityDataType,
-    rowIds: string[] | number[],
+    rowIds: number[] | string[],
     selectionKey?: string,
     useSnapshotSelection?: boolean
 ): Promise<OperationConfirmationData> {
@@ -992,7 +988,7 @@ export function getMoveConfirmationData(
     );
 }
 
-export interface MoveEntitiesOptions extends Omit<Query.MoveRowsOptions, 'rows' | 'success' | 'failure' | 'scope'> {
+export interface MoveEntitiesOptions extends Omit<Query.MoveRowsOptions, 'failure' | 'rows' | 'scope' | 'success'> {
     entityDataType: EntityDataType;
     rowIds?: number[];
 }
@@ -1039,9 +1035,7 @@ export const initParentOptionsSelects = (
     parentAliases: Map<string, IParentAlias>;
     parentOptions: IParentOption[];
 }> => {
-    const promises: Array<Promise<SelectRowsResponse>> = [];
-
-    const dataTypeExclusions = getFolderDataExclusion();
+    const promises: Promise<SelectRowsResponse>[] = [];
 
     // Get Sample Types
     if (includeSampleTypes) {
@@ -1106,7 +1100,6 @@ export const initParentOptionsSelects = (
                 let parentAliases = Map<string, IParentAlias>();
 
                 if (importAliases) {
-                    const initialAlias = importAliases;
                     Object.keys(importAliases).forEach(key => {
                         const val = importAliases[key];
                         const newId = generateId(idPrefix);
@@ -1137,12 +1130,12 @@ export const initParentOptionsSelects = (
     });
 };
 
-export const getFolderDataTypeExclusions = (
+export const getFolderDataTypeExclusions = async (
     excludedContainer?: string,
     reload?: boolean
-): Promise<{ [key: string]: number[] }> => {
+): Promise<Record<string, number[]>> => {
     if (!hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName)) {
-        return Promise.resolve(undefined);
+        return undefined;
     }
 
     let isCurrentContainer = true;
@@ -1153,22 +1146,16 @@ export const getFolderDataTypeExclusions = (
     }
 
     if (isCurrentContainer && !reload) {
-        return new Promise(resolve => resolve(getFolderDataExclusion()));
+        return getFolderDataExclusion();
     }
 
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getDataTypeExclusion.api'),
-            method: 'GET',
-            params: {
-                excludedContainer,
-            },
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response['excludedDataTypes']);
-            }),
-            failure: handleRequestFailure(reject, 'Failed to get excluded data types'),
-        });
+    const response = await request<{ excludedDataTypes: Record<string, number[]> }>({
+        url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getDataTypeExclusion.api'),
+        params: { excludedContainer },
+        errorLogMsg: 'Failed to get excluded data types',
     });
+
+    return response.excludedDataTypes;
 };
 
 export const getFolderExcludedDataTypes = (dataType: string, excludedContainer?: string): Promise<number[]> => {
@@ -1319,27 +1306,20 @@ function getDataTypeDataExistSql(dataType: FolderConfigurableDataType, lsid?: st
     return `SELECT count(*) as HasData FROM (SELECT 1 FROM ${from} ${where} limit 1)`;
 }
 
-export function isDataTypeEmpty(
+export async function isDataTypeEmpty(
     dataType: FolderConfigurableDataType,
     lsid?: string,
     rowId?: number,
     containerPath?: string
 ): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-        Query.executeSql({
-            containerPath,
-            containerFilter: Query.ContainerFilter.allInProject,
-            schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
-            sql: getDataTypeDataExistSql(dataType, lsid, rowId),
-            success: result => {
-                resolve(caseInsensitive(result.rows[0], 'HasData') === 0);
-            },
-            failure: error => {
-                console.error(error);
-                reject(error);
-            },
-        });
+    const result = await executeSql({
+        containerPath,
+        containerFilter: Query.ContainerFilter.allInProject,
+        schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+        sql: getDataTypeDataExistSql(dataType, lsid, rowId),
     });
+
+    return caseInsensitive(result.rows[0], 'HasData')?.value === 0;
 }
 
 export function getDataTypesWithRequiredLineage(
@@ -1347,16 +1327,10 @@ export function getDataTypesWithRequiredLineage(
     sampleParent?: boolean,
     containerPath?: string
 ): Promise<{ dataClasses: string[]; sampleTypes: string[] }> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: ActionURL.buildURL('experiment', 'getDataTypesWithRequiredLineage.api', containerPath),
-            params: { parentDataTypeRowId, sampleParent },
-            scope: this,
-            success: Utils.getCallbackWrapper(data => {
-                resolve(data);
-            }),
-            failure: handleRequestFailure(reject, 'Failed to get data types with required lineage.'),
-        });
+    return request({
+        url: ActionURL.buildURL('experiment', 'getDataTypesWithRequiredLineage.api', containerPath),
+        params: { parentDataTypeRowId, sampleParent },
+        errorLogMsg: 'Failed to get data types with required lineage.',
     });
 }
 
@@ -1419,7 +1393,7 @@ export function updateCellValuesForSampleIds(
     samplesQueryInfo?: QueryInfo,
     sampleFieldKeyPrefix?: string
 ): Promise<{
-    cellKeyChanges: { toAddOrUpdate: { [key: string]: number }; toRemove: string[] };
+    cellKeyChanges: { toAddOrUpdate: Record<string, number>; toRemove: string[] };
     editorModelChanges: Partial<EditorModel>;
 }> {
     return new Promise((resolve, reject) => {

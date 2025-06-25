@@ -38,7 +38,7 @@ import { handleRequestFailure } from '../../request';
 
 import { getExcludedDataTypeNames } from '../entities/actions';
 
-import { getQueryDetails, selectRowsDeprecated } from '../../query/api';
+import { getQueryDetails } from '../../query/api';
 
 import { selectRows } from '../../query/selectRows';
 
@@ -104,6 +104,7 @@ import {
 } from './models';
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
+import { executeSql } from '../../query/executeSql';
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -248,8 +249,8 @@ export function getRequiredParentTypes(
             success: response => {
                 const domainDetails: DomainDetails = DomainDetails.create(Map(response));
                 const importAliases: Record<string, IImportAlias> = domainDetails.options?.get('importAliases');
-                const sampleTypes = [],
-                    dataClasses = [];
+                const dataClasses = [],
+                    sampleTypes = [];
                 if (importAliases && Object.keys(importAliases).length > 0) {
                     Object.values(importAliases).forEach(alias => {
                         if (alias.required) {
@@ -317,11 +318,11 @@ export function getExcludedSchemaQueryNames(schemaName: string, queryContainerPa
     switch (schemaName) {
         case 'assay':
             return getExcludedDataTypeNames(SCHEMAS.ASSAY_TABLES.ASSAY_LIST, 'AssayDesign', queryContainerPath);
-        case 'samples':
-        case 'exp.materials':
-            return getExcludedDataTypeNames(SCHEMAS.EXP_TABLES.SAMPLE_SETS, 'SampleType', queryContainerPath);
         case 'exp.data':
             return getExcludedDataTypeNames(SCHEMAS.EXP_TABLES.DATA_CLASSES, 'DataClass', queryContainerPath);
+        case 'exp.materials':
+        case 'samples':
+            return getExcludedDataTypeNames(SCHEMAS.EXP_TABLES.SAMPLE_SETS, 'SampleType', queryContainerPath);
     }
     return new Promise(resolve => {
         resolve([]);
@@ -423,21 +424,21 @@ export function getMaxPhiLevel(containerPath?: string): Promise<string> {
 export function getCastStatement(key: string, type: string): string {
     const quotedKey = key.replace(/"/g, '""'); // Issue 52608: escape double quotes in key
     switch (type) {
+        case 'BOOLEAN':
+            return `CAST(TRUE AS BOOLEAN) AS "${quotedKey}"`;
+        case 'DATE':
+            return `CAST(CURDATE() AS DATE) AS "${quotedKey}"`;
+        case 'DATETIME':
+        case 'VISITDATE':
+            return `CAST(CURDATE() AS TIMESTAMP) AS "${quotedKey}"`;
+        case 'DECIMAL (FLOATING POINT)':
+        case 'DOUBLE':
+        case 'VISITID':
+            return `CAST(1.1 AS DOUBLE) AS "${quotedKey}"`;
         case 'INTEGER':
         case 'SAMPLE':
         case 'USERS':
             return `CAST(1 AS INTEGER) AS "${quotedKey}"`;
-        case 'DOUBLE':
-        case 'DECIMAL (FLOATING POINT)':
-        case 'VISITID':
-            return `CAST(1.1 AS DOUBLE) AS "${quotedKey}"`;
-        case 'BOOLEAN':
-            return `CAST(TRUE AS BOOLEAN) AS "${quotedKey}"`;
-        case 'DATETIME':
-        case 'VISITDATE':
-            return `CAST(CURDATE() AS TIMESTAMP) AS "${quotedKey}"`;
-        case 'DATE':
-            return `CAST(CURDATE() AS DATE) AS "${quotedKey}"`;
         case 'TIME':
             return `CAST('13:00' AS TIME) AS "${quotedKey}"`;
         default:
@@ -461,14 +462,12 @@ export async function parseCalculatedColumn(
             expression +
             '\nFROM (SELECT ' +
             Object.keys(columnMap)
-                .map(key => {
-                    return getCastStatement(key, columnMap[key]);
-                })
+                .map(key => getCastStatement(key, columnMap[key]))
                 .join(',\n') +
             ') AS x' +
             ' WHERE 1=0';
 
-        await selectRowsDeprecated({
+        await executeSql({
             schemaName: 'core',
             sql,
             includeTotalCount: false,
@@ -811,17 +810,8 @@ export function updateDomainField(domain: DomainDesign, change: IFieldChange): D
         let newField = isSelection ? field : (field.set('updatedField', true) as DomainField);
 
         switch (type) {
-            case DOMAIN_FIELD_TYPE:
-                newField = updateDataType(newField, change.value);
-                break;
             case DOMAIN_FIELD_LOOKUP_CONTAINER:
                 newField = updateLookup(newField, change.value);
-                break;
-            case DOMAIN_FIELD_LOOKUP_SCHEMA:
-                newField = updateLookup(newField, newField.lookupContainer, change.value);
-                break;
-            case DOMAIN_FIELD_SAMPLE_TYPE:
-                newField = updateSampleField(newField, change.value);
                 break;
             case DOMAIN_FIELD_LOOKUP_QUERY:
                 const { queryName, rangeURI } = decodeLookup(change.value);
@@ -833,15 +823,23 @@ export function updateDomainField(domain: DomainDesign, change: IFieldChange): D
                     lookupIsValid: true,
                 }) as DomainField;
                 break;
+            case DOMAIN_FIELD_LOOKUP_SCHEMA:
+                newField = updateLookup(newField, newField.lookupContainer, change.value);
+                break;
             case DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT:
                 const concept = change.value as ConceptModel;
                 newField = newField.merge({ principalConceptCode: concept?.code }) as DomainField;
+                break;
+            case DOMAIN_FIELD_SAMPLE_TYPE:
+                newField = updateSampleField(newField, change.value);
+                break;
+            case DOMAIN_FIELD_TYPE:
+                newField = updateDataType(newField, change.value);
                 break;
             case DOMAIN_FIELD_NAME:
                 // Note: it's important to update filter criteria names, because if the field we're updating is new
                 // we rely on the name when saving. For existing fields we can rely on propertyId.
                 newField = updateFilterCriteriaNames(newField, change.value);
-            // eslint-disable-next-line no-fallthrough -- Intentionally falling through here
             default:
                 newField = newField.set(type, change.value) as DomainField;
                 break;
@@ -1357,12 +1355,14 @@ export function getDomainNamePreviews(
     });
 }
 
+type TextChoiceInUseValues = Record<string, { count: number; locked: boolean }>;
+
 export async function getTextChoiceInUseValues(
     field: DomainField,
     schemaName: string,
     queryName: string,
     lockedSqlFragment: string
-): Promise<Record<string, any>> {
+): Promise<TextChoiceInUseValues> {
     const containerFilter = Query.ContainerFilter.allInProjectPlusShared; // to account for a shared domain at project or /Shared
     const fieldName = field.original?.name ?? field.name;
 
@@ -1376,7 +1376,7 @@ export async function getTextChoiceInUseValues(
             schemaQuery: new SchemaQuery(schemaName, queryName),
         });
 
-        const values = {};
+        const values: TextChoiceInUseValues = {};
         result.rows.forEach(row => {
             const value = row[fieldName]?.value;
             if (isValidTextChoiceValue(value)) {
@@ -1391,33 +1391,25 @@ export async function getTextChoiceInUseValues(
         return values;
     }
 
-    return new Promise((resolve, reject) => {
-        Query.executeSql({
-            containerFilter,
-            schemaName,
-            sql: `SELECT "${fieldName}", ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE "${fieldName}" IS NOT NULL GROUP BY "${fieldName}"`,
-            success: response => {
-                const values = response.rows
-                    .filter(row => isValidTextChoiceValue(row[fieldName]))
-                    .reduce((prev, current) => {
-                        prev[current[fieldName]] = {
-                            count: current['RowCount'],
-                            locked: current['IsLocked'] === 1,
-                        };
-                        return prev;
-                    }, {});
-
-                resolve(values);
-            },
-            failure: error => {
-                console.error('Error fetching distinct values for the text field: ', error);
-                reject(error);
-            },
-        });
+    const response = await executeSql({
+        containerFilter,
+        schemaName,
+        sql: `SELECT "${fieldName}", ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE "${fieldName}" IS NOT NULL GROUP BY "${fieldName}"`,
     });
+
+    return response.rows
+        .filter(row => isValidTextChoiceValue(row[fieldName].value))
+        .reduce<TextChoiceInUseValues>((prev, row) => {
+            const value = row[fieldName].value;
+            prev[value] = {
+                count: row.RowCount.value,
+                locked: row.IsLocked.value === 1,
+            };
+            return prev;
+        }, {});
 }
 
-export function getGenId(rowId: number, kindName: 'SampleSet' | 'DataClass', containerPath?: string): Promise<number> {
+export function getGenId(rowId: number, kindName: 'DataClass' | 'SampleSet', containerPath?: string): Promise<number> {
     return new Promise((resolve, reject) => {
         Experiment.getEntitySequence({
             containerPath,
@@ -1440,7 +1432,7 @@ export function getGenId(rowId: number, kindName: 'SampleSet' | 'DataClass', con
 
 export function setGenId(
     rowId: number,
-    kindName: 'SampleSet' | 'DataClass',
+    kindName: 'DataClass' | 'SampleSet',
     genId: number,
     containerPath?: string
 ): Promise<any> {

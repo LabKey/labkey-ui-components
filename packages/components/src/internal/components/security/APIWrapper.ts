@@ -1,29 +1,29 @@
 import { List, Map } from 'immutable';
-import { ActionURL, Ajax, Filter, Query, Security, Utils, User } from '@labkey/api';
+import { ActionURL, Filter, Query, Security, User, Utils } from '@labkey/api';
 
 import { Container } from '../base/models/Container';
 import {
+    fetchContainers,
     fetchContainerSecurityPolicy,
-    UserLimitSettings,
     getUserLimitSettings,
     processGetRolesResponse,
-    fetchContainers,
+    UserLimitSettings,
 } from '../permissions/actions';
 import { Principal, SecurityPolicy, SecurityRole } from '../permissions/models';
 import { selectRows } from '../../query/selectRows';
 import { SCHEMAS } from '../../schemas';
 import { naturalSortByProperty } from '../../../public/sort';
 import { caseInsensitive } from '../../util/utils';
-import { handleRequestFailure } from '../../request';
+import { request } from '../../request';
 import { getUserProperties } from '../user/actions';
 import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { deleteRows, processRequest, QueryCommandResponse } from '../../query/api';
+import { deleteRows, QueryCommandResponse } from '../../query/api';
 import { GroupMembership } from '../administration/models';
 import { getUsersWithPermissions } from '../forms/actions';
 import { checkPermissions } from '../base/models/User';
 
-type NonRequestCallback<T extends Utils.RequestCallbackOptions> = Omit<T, 'success' | 'failure' | 'scope'>;
+type NonRequestCallback<T extends Utils.RequestCallbackOptions> = Omit<T, 'failure' | 'scope' | 'success'>;
 export type DeleteContainerOptions = NonRequestCallback<Security.DeleteContainerOptions>;
 export type FetchContainerOptions = NonRequestCallback<Security.GetContainersOptions>;
 export type GetUserPermissionsOptions = NonRequestCallback<Security.GetUserPermissionsOptions>;
@@ -64,7 +64,7 @@ export interface SecurityAPIWrapper {
         projectPath: string,
         permissions?: string | string[],
         checkIsAdmin?: boolean,
-        permissionCheck?: 'any' | 'all'
+        permissionCheck?: 'all' | 'any'
     ) => Promise<FetchedGroup[]>;
     fetchPolicy: (
         containerId: string,
@@ -72,7 +72,7 @@ export interface SecurityAPIWrapper {
         inactiveUsersById?: Map<number, Principal>
     ) => Promise<SecurityPolicy>;
     fetchRoles: () => Promise<List<SecurityRole>>;
-    getAuditLogDate: (filterCol: string, filterVal: string | number) => Promise<string>;
+    getAuditLogDate: (filterCol: string, filterVal: number | string) => Promise<string>;
     getDeletionSummaries: (containerPath?: string) => Promise<Summary[]>;
     getGroupMemberships: () => Promise<GroupMembership[]>;
     getInheritedContainers: (container: Container) => Promise<string[]>;
@@ -116,18 +116,15 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    createApiKey = (type = 'apikey', description?: string): Promise<string> => {
-        return new Promise((resolve, reject) => {
-            Ajax.request({
-                url: ActionURL.buildURL('security', 'createApiKey.api'),
-                method: 'POST',
-                jsonData: { type, description },
-                success: Utils.getCallbackWrapper(response => {
-                    resolve(response.apikey);
-                }),
-                failure: handleRequestFailure(reject, 'Problem generating the apiKey for this user.'),
-            });
+    createApiKey = async (type = 'apikey', description?: string): Promise<string> => {
+        const response = await request<{ apikey: string }>({
+            url: ActionURL.buildURL('security', 'createApiKey.api'),
+            method: 'POST',
+            jsonData: { type, description },
+            errorLogMsg: 'Problem generating the apiKey for this user.',
         });
+
+        return response.apikey;
     };
 
     deleteApiKeys(selections: Set<string>): Promise<QueryCommandResponse> {
@@ -241,7 +238,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    getAuditLogDate = async (filterCol: string, filterVal: string | number): Promise<string> => {
+    getAuditLogDate = async (filterCol: string, filterVal: number | string): Promise<string> => {
         const result = await selectRows({
             columns: ['Date'],
             containerFilter: Query.ContainerFilter.allFolders,
@@ -259,18 +256,13 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         return dateRow.formattedValue ?? dateRow.value;
     };
 
-    getDeletionSummaries = (containerPath?: string): Promise<Summary[]> => {
-        return new Promise((resolve, reject) => {
-            Ajax.request({
-                url: ActionURL.buildURL('core', 'getModuleSummary.api', containerPath),
-                success: Utils.getCallbackWrapper(response => {
-                    const { moduleSummary } = response;
-                    moduleSummary.sort(naturalSortByProperty('noun'));
-                    resolve(moduleSummary);
-                }),
-                failure: handleRequestFailure(reject, 'Failed to retrieve deletion summary.'),
-            });
+    getDeletionSummaries = async (containerPath?: string): Promise<Summary[]> => {
+        const { moduleSummary } = await request<{ moduleSummary: Summary[] }>({
+            url: ActionURL.buildURL('core', 'getModuleSummary.api', containerPath),
+            errorLogMsg: 'Failed to retrieve deletion summary.',
         });
+        moduleSummary.sort(naturalSortByProperty('noun'));
+        return moduleSummary;
     };
 
     getGroupMemberships = async (): Promise<GroupMembership[]> => {
@@ -360,43 +352,34 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    updateUserDetails = (data: FormData): Promise<any> => {
-        return new Promise((resolve, reject) => {
-            Ajax.request({
-                url: ActionURL.buildURL('user', 'updateUserDetails.api'),
-                method: 'POST',
-                form: data,
-                success: Utils.getCallbackWrapper((response, request) => {
-                    if (processRequest(response, request, reject)) return;
-                    resolve(response);
-                }),
-                failure: handleRequestFailure(reject, 'Failed to update user details'),
-            });
+    updateUserDetails = (form: FormData): Promise<any> => {
+        return request({
+            url: ActionURL.buildURL('user', 'updateUserDetails.api'),
+            method: 'POST',
+            form,
+            errorLogMsg: 'Failed to update user details',
         });
     };
 
-    getInheritedContainers = (container: Container): Promise<string[]> => {
-        return new Promise((resolve, reject) => {
-            Ajax.request({
-                url: ActionURL.buildURL('core', 'getExtSecurityContainerTree.api', container.path),
-                params: {
-                    requiredPermission: Security.PermissionTypes.Admin,
-                    nodeId: container.id,
-                },
-                success: Utils.getCallbackWrapper(containers => {
-                    const inherited = [];
-                    containers.forEach(proj => {
-                        if (proj.inherit) {
-                            const name = proj.text.substring(0, proj.text.length - 1); // remove trailing *
-                            inherited.push(name);
-                        }
-                    });
-
-                    resolve(inherited);
-                }),
-                failure: handleRequestFailure(reject, 'Failed to get folders'),
-            });
+    getInheritedContainers = async (container: Container): Promise<string[]> => {
+        const containers = await request<{ inherit: boolean; text: string }[]>({
+            url: ActionURL.buildURL('core', 'getExtSecurityContainerTree.api', container.path),
+            params: {
+                requiredPermission: Security.PermissionTypes.Admin,
+                nodeId: container.id,
+            },
+            errorLogMsg: 'Failed to get folders',
         });
+
+        const inherited: string[] = [];
+        containers.forEach(c => {
+            if (c.inherit) {
+                const name = c.text.substring(0, c.text.length - 1); // remove trailing *
+                inherited.push(name);
+            }
+        });
+
+        return inherited;
     };
 
     savePolicy = (policy: any, containerPath?: string): Promise<any> => {

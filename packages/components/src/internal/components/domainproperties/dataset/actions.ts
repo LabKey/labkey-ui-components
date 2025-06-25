@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { ActionURL, Domain } from '@labkey/api';
 
-import { ActionURL, Ajax, Domain, Utils } from '@labkey/api';
-
-import { fromJS, List } from 'immutable';
+import { List } from 'immutable';
 
 import { SelectInputOption } from '../../forms/input/SelectInput';
-import { selectRowsDeprecated } from '../../../query/api';
 import { DomainDesign } from '../models';
 
 import {
@@ -36,38 +34,30 @@ import {
 } from './constants';
 import { DatasetModel } from './models';
 import { StudyProperties } from './utils';
+import { executeSql } from '../../../query/executeSql';
+import { SCHEMAS } from '../../../schemas';
+import { selectRows } from '../../../query/selectRows';
+import { caseInsensitive } from '../../../util/utils';
+import { request } from '../../../request';
 
-export function fetchCategories(): Promise<SelectInputOption[]> {
-    return new Promise((resolve, reject) => {
-        selectRowsDeprecated({
-            saveInSession: true,
-            schemaName: 'study',
-            sql: 'SELECT DISTINCT CategoryId.Label, CategoryId.RowId FROM DataSets',
-        })
-            .then(data => {
-                const models = fromJS(data.models[data.key]);
-                const categories = [];
-
-                data.orderedModels[data.key].forEach(modelKey => {
-                    const row = models.get(modelKey);
-                    const value = row.getIn(['Label', 'value']);
-                    const label = row.getIn(['Label', 'value']);
-
-                    categories.push({ value, label });
-                });
-
-                resolve(categories);
-            })
-            .catch(response => {
-                reject(response.message);
-            });
+export async function fetchCategories(): Promise<SelectInputOption[]> {
+    const result = await executeSql({
+        schemaName: SCHEMAS.STUDY_TABLES.SCHEMA,
+        sql: 'SELECT DISTINCT CategoryId.Label, CategoryId.RowId FROM DataSets',
     });
+
+    return result.rows.reduce<SelectInputOption[]>((option, row) => {
+        const label = row.Label.value;
+        // TODO: Seems odd that we are fetching the rowId but not using it as the value
+        option.push({ label, value: label });
+        return option;
+    }, []);
 }
 
 export function getVisitDateColumns(domain: DomainDesign): List<SelectInputOption> {
     let visitDateColumns = List<SelectInputOption>();
 
-    // date field is a built in field for a dataset for a date based study
+    // date field is a built-in field for a dataset for a date based study
     visitDateColumns = visitDateColumns.push({ value: 'date', label: 'date' });
 
     domain.fields.map(field => {
@@ -97,56 +87,36 @@ export function getAdditionalKeyFields(domain: DomainDesign, timepointType: stri
     return additionalKeyFields;
 }
 
-export function fetchCohorts(): Promise<SelectInputOption[]> {
-    return new Promise((resolve, reject) => {
-        selectRowsDeprecated({
-            schemaName: 'study',
-            queryName: 'Cohort',
-        })
-            .then(data => {
-                const models = fromJS(data.models[data.key]);
-                const cohorts = [];
-
-                data.orderedModels[data.key].forEach(modelKey => {
-                    const row = models.get(modelKey);
-                    const value = row.getIn(['rowid', 'value']);
-                    const label = row.getIn(['label', 'value']);
-
-                    cohorts.push({ value, label });
-                });
-
-                resolve(cohorts);
-            })
-            .catch(response => {
-                reject(response.message);
-            });
+export async function fetchCohorts(): Promise<SelectInputOption[]> {
+    const results = await selectRows({
+        columns: ['Label', 'RowId'],
+        schemaQuery: SCHEMAS.STUDY_TABLES.COHORT,
     });
+
+    return results.rows.map(row => ({
+        label: caseInsensitive(row, 'Label').value,
+        value: caseInsensitive(row, 'RowId').value,
+    }));
 }
 
 export function getHelpTip(fieldName: string, studyProperties: StudyProperties): string {
     let helpTip = '';
 
     switch (fieldName) {
-        case 'name':
-            helpTip = DATASET_NAME_TIP;
-            break;
-        case 'label':
-            helpTip = DATASET_LABEL_TIP;
-            break;
         case 'category':
             helpTip = DATASET_CATEGORY_TIP;
-            break;
-        case 'datasetId':
-            helpTip = DATASET_ID_TIP;
-            break;
-        case 'visitDateColumn':
-            helpTip = VISIT_DATE_TIP;
             break;
         case 'cohort':
             helpTip = COHORT_TIP;
             break;
-        case 'tag':
-            helpTip = TAG_TIP;
+        case 'dataRowUniqueness':
+            helpTip =
+                'Choose criteria for how ' +
+                studyProperties.SubjectNounPlural.toLowerCase() +
+                ' and visits/timepoints are paired with, or without, an additional data column.';
+            break;
+        case 'datasetId':
+            helpTip = DATASET_ID_TIP;
             break;
         case 'dataspace':
             helpTip =
@@ -159,30 +129,30 @@ export function getHelpTip(fieldName: string, studyProperties: StudyProperties):
                 studyProperties.SubjectNounPlural.toLowerCase() +
                 ' that are part of that study.';
             break;
-        case 'dataRowUniqueness':
-            helpTip =
-                'Choose criteria for how ' +
-                studyProperties.SubjectNounPlural.toLowerCase() +
-                ' and visits/timepoints are paired with, or without, an additional data column.';
+        case 'label':
+            helpTip = DATASET_LABEL_TIP;
+            break;
+        case 'name':
+            helpTip = DATASET_NAME_TIP;
+            break;
+        case 'tag':
+            helpTip = TAG_TIP;
+            break;
+        case 'visitDateColumn':
+            helpTip = VISIT_DATE_TIP;
             break;
     }
     return helpTip;
 }
 
-function getDatasetProperties(datasetId?: number): Promise<DatasetModel> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: ActionURL.buildURL('study', 'getDataset.api'),
-            method: 'GET',
-            params: { datasetId },
-            success: Utils.getCallbackWrapper(data => {
-                resolve(DatasetModel.create(data, undefined));
-            }),
-            failure: Utils.getCallbackWrapper(error => {
-                reject(error);
-            }),
-        });
+async function getDatasetProperties(datasetId?: number): Promise<DatasetModel> {
+    const result = await request({
+        url: ActionURL.buildURL('study', 'getDataset.api'),
+        params: { datasetId },
+        errorLogMsg: 'Failed to load dataset properties',
     });
+
+    return DatasetModel.create(result);
 }
 
 export function fetchDatasetDesign(datasetId?: number): Promise<DatasetModel> {

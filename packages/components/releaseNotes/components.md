@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - GitHub Issue 787: DomainField JSON file import should respect required boolean for SampleId field
 - Issue 53325: withQueryModels to use col fieldKey instead of name when setting omittedColumns for errant calculated fields
 
+### version 6.52.1
+*Released*: 25 June 2025
+- Issue 53120: remove processRequest, use getCallbackWrapper
+
 ### version 6.52.0
 *Released*: 24 June 2025
 - Improve ExecuteSql endpoint wrapper. See #1813.

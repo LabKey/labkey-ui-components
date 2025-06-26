@@ -1448,7 +1448,7 @@ describe('resolveBaseProperties', () => {
         expect(field.dataType).toBe(SAMPLE_TYPE);
         expect(field.conceptURI).toBe(SAMPLE_TYPE.conceptURI);
         expect(field.rangeURI).toBe(SAMPLE_TYPE.rangeURI);
-        expect(field.required).toBe(undefined);
+        expect(field.required).toBe(false);
     });
 
     test('lockType', () => {

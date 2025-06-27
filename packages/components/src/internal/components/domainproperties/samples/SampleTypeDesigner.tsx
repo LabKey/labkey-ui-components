@@ -357,14 +357,14 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         });
     };
 
-    onFinish = (auditUserComment?: string): void => {
+    onFinish = (comment?: string): void => {
         const { defaultSampleFieldConfig, setSubmitting, metricUnitProps } = this.props;
-        const { model, uniqueIdsConfirmed } = this.state;
+        const { model, uniqueIdsConfirmed, auditUserComment } = this.state;
 
         if (!model.isNew() && this.getNumNewUniqueIdFields() > 0 && !uniqueIdsConfirmed) {
             this.setState({
                 showUniqueIdConfirmation: true,
-                auditUserComment
+                auditUserComment: comment,
             });
             return;
         }
@@ -397,7 +397,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             this.setState(
                 {
                     model: updatedModel,
-                    auditUserComment,
+                    auditUserComment: comment,
                 },
                 () => {
                     scrollDomainErrorIntoView();

@@ -447,7 +447,7 @@ async function convertRowToEditorModelData(
     containerPath: string
 ): Promise<CellData> {
     let message: CellMessage;
-    let valueDescriptors = List<ValueDescriptor>();
+    const valueDescriptors: ValueDescriptor[] = [];
 
     if (data && col?.isPublicLookup()) {
         // value had better be the rowId here, but it may be several in a comma-separated list.
@@ -456,18 +456,21 @@ async function convertRowToEditorModelData(
 
         for (const val of values) {
             const messageAndValue = await getLookupDisplayValue(col, parseIntIfNumber(val), containerPath);
-            valueDescriptors = valueDescriptors.push(messageAndValue.valueDescriptor);
             message = messageAndValue.message;
+
+            if (messageAndValue.valueDescriptor) {
+                valueDescriptors.push(messageAndValue.valueDescriptor);
+            }
         }
     } else {
         let display = data;
         if (col?.isTimeOrDateTimeColumn && typeof data === 'string') {
             display = getDateTimeDisplayValueFromStr(data, col);
         }
-        valueDescriptors = valueDescriptors.push({ display, raw: data });
+        valueDescriptors.push({ display, raw: data });
     }
 
-    return { message, valueDescriptors };
+    return { message, valueDescriptors: List(valueDescriptors) };
 }
 
 async function prepareInsertRowDataFromBulkForm(

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.52.2
+*Released*: 27 June 2025
 - Issue 53326: Don't filter `QuerySelect` in `PrintLabelsModal`
 - Issue 53213: Defensive check for view `sorts` array
 

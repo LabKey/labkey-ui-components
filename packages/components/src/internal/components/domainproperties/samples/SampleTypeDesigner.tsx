@@ -475,6 +475,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                                 nameExpressionWarnings: response.warnings,
                                 namePreviews: response.previews,
                                 showUniqueIdConfirmation: false,
+                                auditUserComment: comment,
                             }),
                             () => {
                                 scrollDomainErrorIntoView();

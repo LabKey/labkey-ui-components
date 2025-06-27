@@ -1,5 +1,4 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { List } from 'immutable';
 
 import { Modal } from '../../Modal';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
@@ -223,7 +222,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                 <>
                     <div className="bottom-padding">{message}</div>
                     <div>
-                        <strong>Number of copies</strong>
+                        <label>Number of copies</label>
                         <input
                             className="form-control label-printing--copies"
                             min={1}
@@ -234,7 +233,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                         />
                         {showSelection && (
                             <div className="top-padding">
-                                <strong>Selected samples to print</strong>
+                                <label>Selected samples to print</label>
                                 <QuerySelect
                                     formsy={false}
                                     fireQSChangeOnInit={true}
@@ -247,7 +246,6 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                                     placeholder="Select or type to search..."
                                     required={false}
                                     schemaQuery={model.schemaQuery}
-                                    queryFilters={List(model.filters)}
                                     displayColumn={displayColumn}
                                     valueColumn={valueColumn}
                                     value={this.props.sampleIds?.join(',')}
@@ -255,7 +253,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                             </div>
                         )}
                         <div className="top-padding">
-                            <strong>Label template</strong>
+                            <label>Label template</label>
                             <QuerySelect
                                 formsy={false}
                                 fireQSChangeOnInit

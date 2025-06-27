@@ -282,6 +282,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         maxRows={10}
                                         multiple={multiple}
                                         name={fieldKey}
+                                        notFoundValuesEnabled={!(col.isExpInput() || col.isAliquotParent())} // Issue 53153
                                         onQSChange={this.onSelectChange}
                                         onToggleDisable={this.onToggleDisable}
                                         placeholder="Select or type to search..."

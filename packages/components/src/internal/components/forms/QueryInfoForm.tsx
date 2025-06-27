@@ -27,7 +27,6 @@ import { FormButtons } from '../../FormButtons';
 
 import { EntityCreationTypeModel } from '../samples/models';
 import { QueryInfo } from '../../../public/QueryInfo';
-import { formatDate, formatDateTime, formatTime } from '../../util/Date';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -56,7 +55,7 @@ export const getUpdatedFields = (
     for (const key in data) {
         if (data.hasOwnProperty(key)) {
             if (fieldsToUpdate.has(key.toLowerCase()) || (additionalFields && additionalFields?.indexOf(key) !== -1)) {
-                const col = queryInfo?.getColumn(key);
+                const col = queryInfo.getColumn(key);
                 if (col?.jsonType === 'string' && typeof data[key] === 'string') {
                     filteredData = filteredData.set(key, data[key]?.trim());
                 } else {

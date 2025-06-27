@@ -341,6 +341,7 @@ export function resolveDetailEditRenderer(
                         maxRows={10}
                         multiple={multiple}
                         name={col.fieldKey}
+                        notFoundValuesEnabled={!(col.isExpInput() || col.isAliquotParent())} // Issue 53153
                         onBlur={options?.onBlur}
                         onQSChange={options?.onSelectChange}
                         placeholder={options?.placeholder ?? 'Select or type to search...'}

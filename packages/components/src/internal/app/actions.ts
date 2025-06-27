@@ -121,7 +121,7 @@ export function registerWebSocketListeners(
 ): void {
     if (notificationListeners) {
         notificationListeners.forEach(listener => {
-            LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
+            LABKEY_WEBSOCKET?.addServerEventListener(listener, function (evt) {
                 // not checking evt.wasClean since we want this event for all user sessions
                 window.setTimeout(() => store.dispatch({ type: SERVER_NOTIFICATIONS_INVALIDATE }), 1000);
             });
@@ -130,7 +130,7 @@ export function registerWebSocketListeners(
 
     if (menuReloadListeners) {
         menuReloadListeners.forEach(listener => {
-            LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
+            LABKEY_WEBSOCKET?.addServerEventListener(listener, function (evt) {
                 // not checking evt.wasClean since we want this event for all user sessions
                 window.setTimeout(() => {
                     store.dispatch(menuReload());

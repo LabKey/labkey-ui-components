@@ -113,13 +113,13 @@ export class ViewInfo {
         const name_ = isDefault || name === undefined || name === '' ? ViewInfo.DEFAULT_NAME : name;
 
         return new ViewInfo({
+            ...rest,
             columns: columns !== undefined ? [...columns] : [],
             filters: getFiltersFromView(filter),
             isDefault,
             label: label_,
             name: name_,
             sorts: getSortsFromView(sort),
-            ...rest,
         });
     }
 

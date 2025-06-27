@@ -20,7 +20,7 @@ export class BarTenderConfiguration implements BarTenderConfigurationModel {
     static create(config?: { defaultLabel: string; serviceURL: string }): BarTenderConfiguration {
         return new BarTenderConfiguration({
             serviceURL: config.serviceURL,
-            defaultLabel: parseInt(config.defaultLabel, 10),
+            defaultLabel: config.defaultLabel ? parseInt(config.defaultLabel, 10) : undefined,
         });
     }
 

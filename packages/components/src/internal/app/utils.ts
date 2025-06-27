@@ -559,7 +559,6 @@ export function addAssaysSectionConfig(
         emptyText: 'No assays have been defined',
         filteredEmptyText: 'No assays available',
         iconURL: imageURL('_images', 'assay.svg'),
-        headerURLParams: { 'allassaysgrid.sort': 'Name', 'activeassaysgrid.sort': 'Name' }, // Issue 52472
     });
     if (user && user.hasDesignAssaysPermission()) {
         assaysMenuConfig = assaysMenuConfig.merge({

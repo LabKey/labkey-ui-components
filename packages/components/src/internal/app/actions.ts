@@ -9,7 +9,7 @@ import {
     LABKEY_WEBSOCKET,
     PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
     PIPELINE_JOB_NOTIFICATION_EVENT_START,
-    PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS
+    PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
 } from '../constants';
 
 import {
@@ -121,7 +121,7 @@ export function registerWebSocketListeners(
 ): void {
     if (notificationListeners) {
         notificationListeners.forEach(listener => {
-            LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
+            LABKEY_WEBSOCKET?.addServerEventListener(listener, function (evt) {
                 // not checking evt.wasClean since we want this event for all user sessions
                 window.setTimeout(() => store.dispatch({ type: SERVER_NOTIFICATIONS_INVALIDATE }), 1000);
             });
@@ -130,7 +130,7 @@ export function registerWebSocketListeners(
 
     if (menuReloadListeners) {
         menuReloadListeners.forEach(listener => {
-            LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
+            LABKEY_WEBSOCKET?.addServerEventListener(listener, function (evt) {
                 // not checking evt.wasClean since we want this event for all user sessions
                 window.setTimeout(() => {
                     store.dispatch(menuReload());
@@ -147,5 +147,5 @@ const PIPELINE_JOB_NOTIFICATION_EVENTS = [
 ];
 
 export function registerPipelineWebSocketListeners(store): void {
-    registerWebSocketListeners(store, PIPELINE_JOB_NOTIFICATION_EVENTS, PIPELINE_JOB_NOTIFICATION_EVENTS)
+    registerWebSocketListeners(store, PIPELINE_JOB_NOTIFICATION_EVENTS, PIPELINE_JOB_NOTIFICATION_EVENTS);
 }

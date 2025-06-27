@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 53360: Pass user comment through after naming pattern warning
 
+### version 6.52.3
+*Released*: 27 June 2025
+- GitHub Issue 787: DomainField JSON file import should respect required boolean for SampleId field
+- Issue 53325: withQueryModels to use col fieldKey instead of name when setting omittedColumns for errant calculated fields
+
 ### version 6.52.2
 *Released*: 27 June 2025
 - Issue 53326: Don't filter `QuerySelect` in `PrintLabelsModal`

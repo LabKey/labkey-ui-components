@@ -55,11 +55,11 @@ import {
     DomainDesign,
     DomainField,
     DomainIndex,
-    IDomainIndex,
     FieldErrors,
     getValidValuesDetailStr,
     getValidValuesFromArray,
     IDomainField,
+    IDomainIndex,
     isPropertyTypeAllowed,
     isValidTextChoiceValue,
     PropertyValidator,
@@ -67,26 +67,26 @@ import {
 } from './models';
 import {
     BOOLEAN_RANGE_URI,
+    CALCULATED_CONCEPT_URI,
     CONCEPT_CODE_CONCEPT_URI,
+    DATE_RANGE_URI,
+    DATETIME_RANGE_URI,
+    DERIVATION_DATA_SCOPES,
     DOMAIN_FIELD_FULLY_LOCKED,
     DOMAIN_FIELD_NOT_LOCKED,
     DOMAIN_FIELD_PARTIALLY_LOCKED,
+    DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
     INT_RANGE_URI,
     MULTILINE_RANGE_URI,
-    PHILEVEL_NOT_PHI,
     PHILEVEL_FULL_PHI,
     PHILEVEL_LIMITED_PHI,
+    PHILEVEL_NOT_PHI,
     PHILEVEL_RESTRICTED_PHI,
     SAMPLE_TYPE_CONCEPT_URI,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
     STRING_RANGE_URI,
     TEXT_CHOICE_CONCEPT_URI,
-    DERIVATION_DATA_SCOPES,
-    DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
-    DATETIME_RANGE_URI,
-    DATE_RANGE_URI,
     TIME_RANGE_URI,
-    CALCULATED_CONCEPT_URI,
 } from './constants';
 
 beforeAll(() => {
@@ -1417,5 +1417,56 @@ describe('isValidTextChoiceValue', () => {
         expect(isValidTextChoiceValue(' a')).toBeTruthy();
         expect(isValidTextChoiceValue('a ')).toBeTruthy();
         expect(isValidTextChoiceValue(' a ')).toBeTruthy();
+    });
+});
+
+describe('resolveBaseProperties', () => {
+    test('infer SampleId', () => {
+        let field = DomainField.resolveBaseProperties({ name: 'OtherId' });
+        expect(field.dataType).toBe(TEXT_TYPE);
+        expect(field.conceptURI).toBe(undefined);
+        expect(field.rangeURI).toBe(undefined);
+        expect(field.required).toBe(undefined);
+
+        field = DomainField.resolveBaseProperties({
+            propertyId: 1,
+            name: 'SampleId',
+        });
+        expect(field.dataType).toBe(LOOKUP_TYPE);
+        expect(field.conceptURI).toBe(undefined);
+        expect(field.rangeURI).toBe(undefined);
+        expect(field.required).toBe(undefined);
+
+        field = DomainField.resolveBaseProperties({ name: 'SampleId' });
+        expect(field.dataType).toBe(SAMPLE_TYPE);
+        expect(field.conceptURI).toBe(SAMPLE_TYPE.conceptURI);
+        expect(field.rangeURI).toBe(SAMPLE_TYPE.rangeURI);
+        expect(field.required).toBe(true);
+
+        // GitHub Issue 787
+        field = DomainField.resolveBaseProperties({ name: 'SampleId', required: false });
+        expect(field.dataType).toBe(SAMPLE_TYPE);
+        expect(field.conceptURI).toBe(SAMPLE_TYPE.conceptURI);
+        expect(field.rangeURI).toBe(SAMPLE_TYPE.rangeURI);
+        expect(field.required).toBe(false);
+    });
+
+    test('lockType', () => {
+        expect(DomainField.resolveBaseProperties({}).lockType).toBe(DOMAIN_FIELD_NOT_LOCKED);
+        expect(DomainField.resolveBaseProperties({ lockType: DOMAIN_FIELD_PARTIALLY_LOCKED }).lockType).toBe(
+            DOMAIN_FIELD_PARTIALLY_LOCKED
+        );
+        expect(DomainField.resolveBaseProperties({ lockType: DOMAIN_FIELD_FULLY_LOCKED }).lockType).toBe(
+            DOMAIN_FIELD_FULLY_LOCKED
+        );
+        expect(DomainField.resolveBaseProperties({ name: 'test1' }, List(['test2'])).lockType).toBe(
+            DOMAIN_FIELD_NOT_LOCKED
+        );
+        expect(DomainField.resolveBaseProperties({ name: 'test1' }, List(['test1'])).lockType).toBe(
+            DOMAIN_FIELD_PARTIALLY_LOCKED
+        );
+        expect(DomainField.resolveBaseProperties({ name: 'TEST1' }, List(['test1'])).lockType).toBe(
+            DOMAIN_FIELD_PARTIALLY_LOCKED
+        );
     });
 });

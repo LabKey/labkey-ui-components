@@ -68,22 +68,22 @@ declare var LABKEY: LabKey;
 // Type definition not provided for event codes so here we provide our own
 // Source: https://www.iana.org/assignments/websocket/websocket.xml#close-code-number
 export enum CloseEventCode {
-    NORMAL_CLOSURE = 1000,
-    GOING_AWAY = 1001,
-    PROTOCOL_ERROR = 1002,
-    UNSUPPORTED_DATA = 1003,
-    RESERVED = 1004,
-    NO_STATUS_RCVD = 1005,
     ABNORMAL_CLOSURE = 1006,
+    BAD_GATEWAY = 1014,
+    GOING_AWAY = 1001,
+    INTERNAL_ERROR = 1011,
     INVALID_FRAME_PAYLOAD_DATA = 1007,
-    POLICY_VIOLATION = 1008,
     MESSAGE_TOO_BIG = 1009,
     MISSING_EXT = 1010,
-    INTERNAL_ERROR = 1011,
+    NO_STATUS_RCVD = 1005,
+    NORMAL_CLOSURE = 1000,
+    POLICY_VIOLATION = 1008,
+    PROTOCOL_ERROR = 1002,
+    RESERVED = 1004,
     SERVICE_RESTART = 1012,
-    TRY_AGAIN_LATER = 1013,
-    BAD_GATEWAY = 1014,
     TLS_HANDSHAKE = 1015,
+    TRY_AGAIN_LATER = 1013,
+    UNSUPPORTED_DATA = 1003,
 }
 
 export function userCanReadAssays(user: User): boolean {
@@ -250,13 +250,13 @@ export function isProductFoldersDataListingScopedToFolder(moduleContext?: Module
     return resolveModuleContext(moduleContext)?.query?.[EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED] === true;
 }
 
-export function getFolderDataExclusion(moduleContext?: ModuleContext): { [key: string]: number[] } {
+export function getFolderDataExclusion(moduleContext?: ModuleContext): Record<string, number[]> {
     return resolveModuleContext(moduleContext)?.samplemanagement?.[FOLDER_DATA_TYPE_EXCLUSIONS];
 }
 
 export function setFolderDataExclusion(
     moduleContext: ModuleContext,
-    dataTypeExclusions: { [key: string]: number[] }
+    dataTypeExclusions: Record<string, number[]>
 ): ModuleContext {
     // side-effect set global moduleContext
     if (LABKEY?.moduleContext?.samplemanagement) {

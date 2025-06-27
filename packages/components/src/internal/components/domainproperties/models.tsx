@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map as ImmutableMap, Record as ImmutableRecord } from 'immutable';
+import { fromJS, Map as ImmutableMap, Record as ImmutableRecord, List } from 'immutable';
 import { ActionURL, Domain, Filter, getServerContext, Utils } from '@labkey/api';
 import React, { ReactNode } from 'react';
 
@@ -128,7 +128,7 @@ export interface ITypeDependentProps {
 }
 
 export interface FieldDetails {
-    detailsInfo: { [key: string]: string };
+    detailsInfo: Record<string, string>;
     ontologyLookupIndices: number[];
 }
 
@@ -490,7 +490,7 @@ export class DomainDesign
         appPropertiesOnly: boolean,
         hasOntologyModule: boolean,
         showFilterCriteria: boolean
-    ): List<GridColumn | DomainPropertiesGridColumn> {
+    ): List<DomainPropertiesGridColumn | GridColumn> {
         const selectionCol = new GridColumn({
             index: GRID_SELECTION_INDEX,
             title: GRID_SELECTION_INDEX,
@@ -504,9 +504,9 @@ export class DomainDesign
                 const changes = List.of({ id: formInputId, value: !selected });
                 return (
                     <DomainDesignerCheckbox
+                        checked={selected}
                         className="domain-summary-selection"
                         id={formInputId}
-                        checked={selected}
                         onChange={() => {
                             onFieldsChange(changes, fieldIndex, false);
                         }}
@@ -524,7 +524,7 @@ export class DomainDesign
                 const fieldIndex = row.get('fieldIndex');
 
                 return (
-                    <a onClick={() => scrollFunction(fieldIndex)} className="clickable">
+                    <a className="clickable" onClick={() => scrollFunction(fieldIndex)}>
                         {text}
                     </a>
                 );
@@ -556,8 +556,8 @@ export class DomainDesign
 }
 
 export interface IDomainIndex {
-    columns: string[] | List<string>;
-    type: 'primary' | 'unique' | 'nonunique';
+    columns: List<string> | string[];
+    type: 'nonunique' | 'primary' | 'unique';
 }
 
 export class DomainIndex
@@ -568,7 +568,7 @@ export class DomainIndex
     implements IDomainIndex
 {
     declare columns: List<string>;
-    declare type: 'primary' | 'unique' | 'nonunique';
+    declare type: 'nonunique' | 'primary' | 'unique';
 
     static fromJS(rawIndices: IDomainIndex[]): List<DomainIndex> {
         let indices = List<DomainIndex>();
@@ -643,7 +643,7 @@ export class ConditionalFormat
     declare textColor?: string;
     declare backgroundColor?: string;
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: Record<string, any>) {
         // filter is a reserved work on Records so change to formatFilter and update for HASANYVALUE lacking a filter symbol
         if (values && !values.get('formatFilter')) {
             values = values.set(
@@ -693,7 +693,7 @@ export class PropertyValidatorProperties
     declare validValues: string[];
     declare valueUpdates: Record<string, string>;
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: Record<string, any>) {
         if (typeof values?.failOnMatch === 'string') {
             values.failOnMatch = values.failOnMatch.toLowerCase() === 'true';
         }
@@ -860,8 +860,6 @@ interface ILookupConfig {
 }
 
 export interface IDomainField {
-    PHI?: string;
-    URL?: string;
     conceptImportColumn?: string;
     conceptLabelColumn?: string;
     conceptSubtree?: string;
@@ -894,6 +892,7 @@ export interface IDomainField {
     mvEnabled?: boolean;
     name: string;
     original: Partial<IDomainField>;
+    PHI?: string;
     primaryKey?: boolean;
     principalConceptCode?: string;
     propertyId?: number;
@@ -913,6 +912,7 @@ export interface IDomainField {
     textChoiceValidator?: PropertyValidator;
     uniqueConstraint?: boolean;
     updatedField: boolean;
+    URL?: string;
     visible: boolean;
 }
 
@@ -938,7 +938,7 @@ export interface FilterCriteria {
     op: string;
     propertyId: number;
     referencePropertyId?: number;
-    value: string | number | boolean;
+    value: boolean | number | string;
 }
 // Note: this is a regular Javascript Map, not an Immutable Map
 export type FilterCriteriaMap = Map<number, FilterCriteria[]>;
@@ -1387,10 +1387,10 @@ export class DomainField
 
     static defaultValues(prop: string, type: PropDescType): any {
         switch (prop) {
-            case DOMAIN_FIELD_MEASURE:
-                return type === INTEGER_TYPE || type === DOUBLE_TYPE;
             case DOMAIN_FIELD_DIMENSION:
                 return type === LOOKUP_TYPE || type === USERS_TYPE || type === SAMPLE_TYPE;
+            case DOMAIN_FIELD_MEASURE:
+                return type === INTEGER_TYPE || type === DOUBLE_TYPE;
             default:
                 return false;
         }
@@ -1455,7 +1455,7 @@ export class DomainField
                         message: FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG,
                         severity: SEVERITY_LEVEL_WARN,
                     });
-                    details.push(<DomainRowWarning key="domain-row-text-choice-error" fieldError={fieldError} />);
+                    details.push(<DomainRowWarning fieldError={fieldError} key="domain-row-text-choice-error" />);
                 }
             }
             period = '. ';
@@ -2130,7 +2130,7 @@ export interface IAppDomainHeader {
     onDomainChange?: (index: number, updatedDomain: DomainDesign) => void;
 }
 
-export type DomainPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';
+export type DomainPanelStatus = 'COMPLETE' | 'INPROGRESS' | 'NONE' | 'TODO';
 
 export interface IDomainFormDisplayOptions {
     derivationDataScopeConfig?: IDerivationDataScope;

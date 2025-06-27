@@ -265,6 +265,9 @@ export function getUpdateFilterExpressionFilter(
         } else if (!value && field.getDisplayFieldJsonType() === 'boolean') {
             value = 'false';
         } else if (value && filterType.isMultiValued()) {
+            // Issue 53118: if the value is not an array, convert it to a string
+            if (!Array.isArray(value) && !Utils.isString(value)) value = value.toString();
+
             // Issue 52068: for multivalued filter types, split on new line to get an array of values
             value = value.indexOf('\n') > -1 ? value.split('\n') : filterType.parseValue(value);
         }

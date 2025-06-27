@@ -285,8 +285,10 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             }
 
             if (filterType.multiValue && !filterType.betweenOperator) {
-                // Issue 52068: if the valueRaw is an array, just join it by new lines (not replacing semicolons)
-                const value = Array.isArray(valueRaw) ? valueRaw.join('\n') : (valueRaw?.replaceAll(';', '\n') ?? '');
+                // Issue 52068/53118: if the valueRaw is an array, just join it by new lines (not replacing semicolons)
+                const value = Array.isArray(valueRaw)
+                    ? valueRaw.join('\n')
+                    : (valueRaw?.toString().replaceAll(';', '\n') ?? '');
 
                 return (
                     <textarea

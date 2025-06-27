@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 53118: Filter modal change to multiValue type to account for numeric value when parsing
+
 ### version 6.52.3
 *Released*: 27 June 2025
 - GitHub Issue 787: DomainField JSON file import should respect required boolean for SampleId field

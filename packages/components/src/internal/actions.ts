@@ -603,6 +603,7 @@ export interface SelectionResponse {
     selected: any[];
 }
 
+// TODO: remove
 export async function getSelection(
     searchParams: URLSearchParams,
     schemaName?: string,
@@ -612,14 +613,12 @@ export async function getSelection(
     if (selectionKey) {
         let { keys, schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);
 
-        if (keys !== undefined) {
+        if (keys !== undefined && keys !== '') {
             return { resolved: true, schemaQuery, selected: keys.split(';') };
         }
 
-        if (!schemaQuery) {
-            if (schemaName && queryName) {
-                schemaQuery = new SchemaQuery(schemaName, queryName);
-            }
+        if (!schemaQuery && schemaName && queryName) {
+            schemaQuery = new SchemaQuery(schemaName, queryName);
         }
 
         if (!schemaQuery) {

@@ -347,10 +347,6 @@ import {
 } from './internal/components/entities/models';
 import { EntityMoveModal } from './internal/components/entities/EntityMoveModal';
 import { EntityMoveConfirmationModal } from './internal/components/entities/EntityMoveConfirmationModal';
-import {
-    AssayResultsForSamplesButton,
-    AssayResultsForSamplesMenuItem,
-} from './internal/components/entities/AssayResultsForSamplesButton';
 import { SampleAliquotViewSelector } from './internal/components/entities/SampleAliquotViewSelector';
 import { GridAliquotViewSelector } from './internal/components/entities/GridAliquotViewSelector';
 import {
@@ -1170,8 +1166,6 @@ export {
     AssayPickerTabs,
     AssayProtocolModel,
     AssayResultDataType,
-    AssayResultsForSamplesButton,
-    AssayResultsForSamplesMenuItem,
     AssayRunDataType,
     AssayRunOperation,
     AssayStateModel,

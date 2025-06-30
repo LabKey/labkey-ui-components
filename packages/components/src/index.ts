@@ -560,6 +560,7 @@ import { Pagination } from './internal/components/pagination/Pagination';
 import {
     createOrderedSnapshotSelectionKey,
     createSnapshotSelectionKey,
+    createSnapshotSelectionKeyStr,
     getQueryModelExportParams,
     runDetailsColumnsForQueryModel,
 } from './public/QueryModel/utils';
@@ -1229,6 +1230,7 @@ export {
     createMockWithRouteLeave,
     createOrderedSnapshotSelectionKey,
     createSnapshotSelectionKey,
+    createSnapshotSelectionKeyStr,
     createWebDavDirectory,
     DATA_CLASS_DESIGNER_ROLE,
     DATA_IMPORT_FILE_SIZE_LIMITS,

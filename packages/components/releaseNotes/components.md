@@ -7,6 +7,8 @@ Components, models, actions, and utility functions for LabKey applications and p
   - moved to ui-premium
 - Add createSnapshotSelectionKeyStr
 - Remove getJobCreationHref
+- Remove getSelectedSampleIdsFromSelectionKey
+- Remove getURLParamsForSampleSelectionKey
 
 ### version 6.52.5
 *Released*: 30 June 2025

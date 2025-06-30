@@ -106,7 +106,7 @@ export const FindByIdsModal: FC<Props> = memo(props => {
         <Modal
             confirmText={`Find ${capitalNounPlural}`}
             confirmingText={`Finding ${capitalNounPlural}...`}
-            canConfirm={idString && idString.trim().length > 0}
+            canConfirm={idString !== undefined && idString.trim().length > 0}
             isConfirming={submitting}
             onCancel={closeModal}
             onConfirm={_onFind}

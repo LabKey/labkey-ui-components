@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - ProductMenu shows 'Dashboard' instead of 'Storage' as subtitle in FM /home route
+- Issue 53371: Find Samples by ID JS error when clicking "Find Samples" button without entering anything into the text area
 
 ### version 6.52.4
 *Released*: 30 June 2025

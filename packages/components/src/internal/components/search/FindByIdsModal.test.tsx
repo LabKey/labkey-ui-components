@@ -58,5 +58,6 @@ describe('FindByIdsModal', () => {
         expect(textArea.getAttribute('placeholder')).toBe('List Barcodes here (max: 1,000)');
         const findButton = document.querySelector('button.btn-success');
         expect(findButton.textContent).toBe('Find Tests');
+        expect(findButton.hasAttribute('disabled')).toBe(true);
     });
 });

@@ -127,8 +127,8 @@ export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: stri
 }
 
 export function getFieldFiltersValidationResult(
-    dataTypeFilters: { [key: string]: FieldFilter[] },
-    queryLabels?: { [key: string]: string },
+    dataTypeFilters: Record<string, FieldFilter[]>,
+    queryLabels?: Record<string, string>,
     maxMultiValuedValues: number = MAX_MULTI_VALUE_FILTER_VALUES
 ): string {
     const missingValueFields = {};
@@ -302,6 +302,9 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
         case '':
         case 'any':
             return allValues;
+        case 'eq':
+        case 'in':
+            return filterValues;
         case 'isblank':
             return [EMPTY_VALUE_DISPLAY];
         case 'isnonblank':
@@ -311,9 +314,6 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
         case 'neq':
         case 'neqornull':
             return allValues.filter(value => value !== filterValues[0] && value !== ALL_VALUE_DISPLAY);
-        case 'eq':
-        case 'in':
-            return filterValues;
         case 'notin':
             return allValues?.filter(value => filterValues.indexOf(value) === -1 && value !== ALL_VALUE_DISPLAY);
         default:

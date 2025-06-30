@@ -13,9 +13,9 @@ import { DatePickerInput } from '../forms/input/DatePickerInput';
 import { OntologyBrowserFilterPanel } from '../ontology/OntologyBrowserFilterPanel';
 
 import {
+    getFilterOptionsForType,
     getFilterSelections,
     getFilterTypePlaceHolder,
-    getFilterOptionsForType,
     getUpdatedFilters,
     getUpdatedFilterSelection,
 } from './utils';
@@ -229,16 +229,12 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 return (
                     <DatePickerInput
                         allowRelativeInput={allowRelativeDateFilter}
-                        formsy={false}
-                        inputClassName="form-control filter-expression__input"
-                        wrapperClassName="form-group col-sm-12 filter-expression__input-wrapper"
-                        queryColumn={field}
-                        name={'field-value-date' + suffix}
-                        value={valueRaw}
-                        showLabel={false}
-                        isClearable
-                        hideTime={!isTimeOnly} // filter date and datetime by date only, without timepicker
                         disabled={disabled}
+                        formsy={false}
+                        hideTime={!isTimeOnly} // filter date and datetime by date only, without timepicker
+                        inputClassName="form-control filter-expression__input"
+                        isClearable
+                        name={'field-value-date' + suffix}
                         onChange={newDate => {
                             let dateStr = newDate;
                             if (typeof newDate !== 'string')
@@ -247,6 +243,10 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                                     : getJsonDateFormatString(newDate);
                             updateDateFilterFieldValue(filterIndex, dateStr, isSecondInput);
                         }}
+                        queryColumn={field}
+                        showLabel={false}
+                        value={valueRaw}
+                        wrapperClassName="form-group col-sm-12 filter-expression__input-wrapper"
                     />
                 );
             } else if (jsonType === 'boolean') {
@@ -257,11 +257,11 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                                 <input
                                     checked={valueRaw == 'true'}
                                     className=""
-                                    type="radio"
-                                    name={'field-value-bool' + suffix}
-                                    value="true"
                                     disabled={disabled}
+                                    name={'field-value-bool' + suffix}
                                     onChange={event => updateBooleanFilterFieldValue(filterIndex, event)}
+                                    type="radio"
+                                    value="true"
                                 />{' '}
                                 TRUE
                             </label>
@@ -271,11 +271,11 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                                 <input
                                     checked={valueRaw && valueRaw != 'true'}
                                     className=""
-                                    type="radio"
-                                    name={'field-value-bool' + suffix}
-                                    value="false"
                                     disabled={disabled}
+                                    name={'field-value-bool' + suffix}
                                     onChange={event => updateBooleanFilterFieldValue(filterIndex, event)}
+                                    type="radio"
+                                    value="false"
                                 />{' '}
                                 FALSE
                             </label>
@@ -293,12 +293,12 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 return (
                     <textarea
                         className="form-control filter-expression__textarea"
+                        defaultValue={value}
                         name={'field-value-text' + suffix}
                         onChange={event => updateTextFilterFieldValue(filterIndex, event)}
-                        defaultValue={value}
-                        rows={3}
-                        required
                         placeholder={placeholder}
+                        required
+                        rows={3}
                     />
                 );
             }
@@ -307,15 +307,15 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 return (
                     <input
                         className="form-control filter-expression__input"
-                        step={jsonType === 'int' ? 1 : undefined}
+                        disabled={disabled}
                         name={'field-value-text' + suffix}
                         onChange={event => updateTextFilterFieldValue(filterIndex, event, true)}
                         pattern={jsonType === 'int' ? '-?[0-9]*' : undefined}
-                        type="number"
-                        value={valueRaw ?? ''}
                         placeholder={placeholder}
                         required
-                        disabled={disabled}
+                        step={jsonType === 'int' ? 1 : undefined}
+                        type="number"
+                        value={valueRaw ?? ''}
                     />
                 );
             }
@@ -323,13 +323,13 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const textInput = (
                 <input
                     className="form-control filter-expression__input"
+                    disabled={disabled}
                     name={'field-value-text' + suffix}
-                    type="text"
-                    value={valueRaw ?? ''}
                     onChange={event => updateTextFilterFieldValue(filterIndex, event)}
                     placeholder={placeholder}
                     required
-                    disabled={disabled}
+                    type="text"
+                    value={valueRaw ?? ''}
                 />
             );
 
@@ -351,13 +351,13 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                             </a>
                             {expanded && (
                                 <OntologyBrowserFilterPanel
-                                    ontologyId={field.sourceOntology}
                                     conceptSubtree={field.conceptSubtree}
-                                    filterValue={valueRaw}
                                     filterType={Filter.getFilterTypeForURLSuffix(filterType.value)}
+                                    filterValue={valueRaw}
                                     onFilterChange={filterValue =>
                                         updateOntologyFieldValue(filterIndex, filterValue, isSecondInput)
                                     }
+                                    ontologyId={field.sourceOntology}
                                 />
                             )}
                         </div>
@@ -411,31 +411,31 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     return (
         <div className="filter-expression__panel">
             <SelectInput
+                containerClass="form-group filter-expression__input-wrapper"
+                disabled={disabled}
+                inputClass="filter-expression__input-select"
                 key={'filter-expression-field-filter-type-' + removeFilterCount} // we need to recreate this component when a filter is removed
                 name="filter-expression-field-filter-type"
-                containerClass="form-group filter-expression__input-wrapper"
-                inputClass="filter-expression__input-select"
-                placeholder="Select a filter type..."
-                value={activeFilters[0]?.filterType?.value}
                 onChange={onUpdateFirstField}
                 options={unusedFilterOptions(0)}
-                disabled={disabled}
+                placeholder="Select a filter type..."
+                value={activeFilters[0]?.filterType?.value}
             />
             {renderFilterTypeInputs(0)}
             {shouldShowSecondFilter && (
                 <>
                     <div className="field-modal__col-sub-title">and</div>
                     <SelectInput
-                        key="filter-expression-field-filter-type"
-                        name="filter-expression-field-filter-type"
                         containerClass="form-group filter-expression__input-wrapper"
+                        disabled={disabled}
                         inputClass="filter-expression__input-select"
-                        placeholder="Select a filter type..."
-                        value={activeFilters[1]?.filterType?.value}
+                        key="filter-expression-field-filter-type"
+                        menuPosition="fixed"
+                        name="filter-expression-field-filter-type"
                         onChange={onUpdateSecondField}
                         options={unusedFilterOptions(1)}
-                        menuPosition="fixed"
-                        disabled={disabled}
+                        placeholder="Select a filter type..."
+                        value={activeFilters[1]?.filterType?.value}
                     />
                     {renderFilterTypeInputs(1)}
                 </>

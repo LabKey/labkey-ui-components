@@ -16,6 +16,7 @@ import {
     ALL_VALUE_DISPLAY,
     decodeErrorMessage,
     EMPTY_VALUE_DISPLAY,
+    escapeSearchQuery,
     getCheckedFilterValues,
     getFieldFiltersValidationResult,
     getFilterSelections,
@@ -27,7 +28,6 @@ import {
     getUpdatedFilterSelection,
     getUpdateFilterExpressionFilter,
     isValidFilterField,
-    escapeSearchQuery,
 } from './utils';
 import { SearchCategory } from './constants';
 import { FieldFilter } from './models';

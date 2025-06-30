@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.52.4
+*Released*: 30 June 2025
 - Issue 53118: Filter modal change to multiValue type to account for numeric value when parsing
 
 ### version 6.52.3

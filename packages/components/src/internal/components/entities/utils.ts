@@ -7,18 +7,11 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { EditableColumnMetadata, EditorModel } from '../editable/models';
 import { SCHEMAS } from '../../schemas';
 
-import { getURLParamsForSampleSelectionKey } from '../samples/utils';
-import { AppURL } from '../../url/AppURL';
-import { WORKFLOW_KEY } from '../../app/constants';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-
 import { genCellKey } from '../editable/utils';
 
 import { ViewInfo } from '../../ViewInfo';
 
 import { QueryColumn } from '../../../public/QueryColumn';
-
-import { SELECTION_KEY_TYPE } from '../samples/constants';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 

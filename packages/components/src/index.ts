@@ -900,6 +900,7 @@ import { ModalButtons } from './internal/ModalButtons';
 import { getSecurityTestAPIWrapper } from './internal/components/security/APIWrapper';
 import { getFolderTestAPIWrapper } from './internal/components/container/FolderAPIWrapper';
 import { getLabelsTestAPIWrapper } from './internal/components/labels/APIWrapper';
+import { getSamplesTestAPIWrapper } from './internal/components/samples/APIWrapper';
 import { OverlayTrigger, useOverlayTriggerState } from './internal/OverlayTrigger';
 import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
@@ -1431,6 +1432,7 @@ export {
     getSampleStatusColor,
     getSampleStatusContainerFilter,
     getSampleStatusType,
+    getSamplesTestAPIWrapper,
     getSampleTypeDetails,
     getSampleTypesFromTransactionIds,
     getSchemaQuery,

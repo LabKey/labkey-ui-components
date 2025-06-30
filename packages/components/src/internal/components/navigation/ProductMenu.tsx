@@ -49,6 +49,7 @@ import {
     FREEZERS_KEY,
     BOXES_KEY,
     PLATES_KEY,
+    FREEZER_MANAGER_APP_PROPERTIES,
 } from '../../app/constants';
 
 import { useNavMenuState } from '../../useNavMenuState';
@@ -202,20 +203,21 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
 ProductMenu.displayName = 'ProductMenu';
 
 interface ProductMenuButtonTitle {
+    appProperties?: AppProperties;
     container: Container;
     folderItems: FolderMenuItem[];
     location: Location;
 }
 
 export const ProductMenuButtonTitle: FC<ProductMenuButtonTitle> = memo(props => {
-    const { container, folderItems, location } = props;
+    const { container, folderItems, location, appProperties = getCurrentAppProperties() } = props;
     const title = useMemo(() => {
         return folderItems?.length > 1 ? (container.path === HOME_PATH ? HOME_TITLE : container.title) : 'Menu';
     }, [container.path, container.title, folderItems?.length]);
 
     const subtitle = useMemo(() => {
-        return getHeaderMenuSubtitle(location?.pathname);
-    }, [location]);
+        return getHeaderMenuSubtitle(location?.pathname, appProperties);
+    }, [location, appProperties]);
 
     return (
         <>
@@ -369,7 +371,8 @@ function getBaseRoute(pathname: string): string {
 }
 
 // export for jest testing
-export function getHeaderMenuSubtitle(pathname: string): string {
+export function getHeaderMenuSubtitle(pathname: string, appProperties?: AppProperties): string {
+    if (appProperties === FREEZER_MANAGER_APP_PROPERTIES) return 'Storage';
     return HEADER_MENU_SUBTITLE_MAP[getBaseRoute(pathname)] ?? 'Dashboard';
 }
 

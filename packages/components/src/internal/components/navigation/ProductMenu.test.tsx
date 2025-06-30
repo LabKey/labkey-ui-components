@@ -7,7 +7,7 @@ import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { TEST_ARCHIVED_FOLDER_CONTAINER, TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 import { ServerContext } from '../base/ServerContext';
-import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
+import { FREEZER_MANAGER_APP_PROPERTIES, SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';
 
@@ -21,7 +21,7 @@ import { getNavigationTestAPIWrapper } from './NavigationAPIWrapper';
 
 import { FolderMenuItem } from './FolderMenu';
 
-import { MenuSectionModel, ProductMenuModel, MenuSectionConfig } from './model';
+import { MenuSectionConfig, MenuSectionModel, ProductMenuModel } from './model';
 import {
     createFolderItem,
     getHeaderMenuSubtitle,
@@ -354,5 +354,15 @@ describe('getHeaderMenuSubtitle', () => {
         expect(getHeaderMenuSubtitle('/assaydesign')).toBe('Assays');
         expect(getHeaderMenuSubtitle('/sampleType')).toBe('Sample Types');
         expect(getHeaderMenuSubtitle('/sampleType')).toBe('Sample Types');
+        expect(getHeaderMenuSubtitle('/freezers')).toBe('Storage');
+    });
+
+    test('AppProperties mapping', () => {
+        expect(getHeaderMenuSubtitle(undefined, undefined)).toBe('Dashboard');
+        expect(getHeaderMenuSubtitle(undefined, null)).toBe('Dashboard');
+        expect(getHeaderMenuSubtitle(undefined, SAMPLE_MANAGER_APP_PROPERTIES)).toBe('Dashboard');
+        expect(getHeaderMenuSubtitle(undefined, FREEZER_MANAGER_APP_PROPERTIES)).toBe('Storage');
+        expect(getHeaderMenuSubtitle('/home', SAMPLE_MANAGER_APP_PROPERTIES)).toBe('Dashboard');
+        expect(getHeaderMenuSubtitle('/home', FREEZER_MANAGER_APP_PROPERTIES)).toBe('Storage');
     });
 });

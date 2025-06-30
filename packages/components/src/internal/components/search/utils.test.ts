@@ -16,6 +16,7 @@ import {
     ALL_VALUE_DISPLAY,
     decodeErrorMessage,
     EMPTY_VALUE_DISPLAY,
+    escapeSearchQuery,
     getCheckedFilterValues,
     getFieldFiltersValidationResult,
     getFilterSelections,
@@ -27,7 +28,6 @@ import {
     getUpdatedFilterSelection,
     getUpdateFilterExpressionFilter,
     isValidFilterField,
-    escapeSearchQuery,
 } from './utils';
 import { SearchCategory } from './constants';
 import { FieldFilter } from './models';
@@ -467,6 +467,12 @@ describe('getUpdateFilterExpressionFilter', () => {
     });
 
     test('in filter type with value string', () => {
+        expect(getUpdateFilterExpressionFilter(oneOfOption, stringField, null, null, '123')).toStrictEqual(
+            Filter.create(fieldKey, ['123'], Filter.Types.IN)
+        );
+        expect(getUpdateFilterExpressionFilter(oneOfOption, stringField, null, null, 123)).toStrictEqual(
+            Filter.create(fieldKey, ['123'], Filter.Types.IN)
+        );
         expect(getUpdateFilterExpressionFilter(oneOfOption, stringField, null, null, 'a;b;c')).toStrictEqual(
             Filter.create(fieldKey, ['a', 'b', 'c'], Filter.Types.IN)
         );

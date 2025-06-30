@@ -91,7 +91,7 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
             .concat(requiredColumns);
     }
 
-    componentDidUpdate = async (prevProps: BulkUpdateFormProps, prevState: State): Promise<void> => {
+    componentDidUpdate = async (prevProps: BulkUpdateFormProps): Promise<void> => {
         if (
             prevProps.viewName != this.props.viewName ||
             prevProps.selectedIds.join(',') != this.props.selectedIds.join(',') ||

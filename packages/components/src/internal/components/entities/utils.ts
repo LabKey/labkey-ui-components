@@ -150,26 +150,6 @@ export function isAssayResultEntity(dataType: EntityDataType): boolean {
     return dataType.sampleFinderCardType === 'assaydata';
 }
 
-export function getJobCreationHref(
-    model: QueryModel,
-    templateId?: string | number,
-    samplesIncluded?: boolean,
-    picklistName?: string,
-    isAssay?: boolean,
-    sampleFieldKey?: string,
-    ignoreFilter?: boolean
-): AppURL {
-    const hasFilters = model.filterArray.length > 0;
-    const params = getURLParamsForSampleSelectionKey(model, picklistName, isAssay, sampleFieldKey, ignoreFilter);
-
-    if (templateId) params['templateId'] = templateId;
-    if (!samplesIncluded) params['sampleTab'] = 'search'; // i.e. JOB_SAMPLE_SEARCH_TAB_ID
-    // If we have filters and are explicitly ignoring filters, then we're using a selection snapshot
-    if (ignoreFilter && hasFilters) params.selectionKeyType = SELECTION_KEY_TYPE.snapshot;
-
-    return AppURL.create(WORKFLOW_KEY, 'new').addParams(params);
-}
-
 export function getIdentifyingColumns(queryInfo: QueryInfo): QueryColumn[] {
     const idView = queryInfo?.getView(ViewInfo.IDENTIFYING_FIELDS_VIEW_NAME);
     if (!idView) {

@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Remove AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem
   - moved to ui-premium
 - Add createSnapshotSelectionKeyStr
+- Remove getJobCreationHref
 
 ### version 6.52.5
 *Released*: 30 June 2025

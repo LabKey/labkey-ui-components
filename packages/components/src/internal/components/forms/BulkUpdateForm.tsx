@@ -92,13 +92,19 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
     }
 
     componentDidUpdate = async (prevProps: BulkUpdateFormProps, prevState: State): Promise<void> => {
-        if (this.getQueryColumns(prevProps.queryInfo).sort().join(",") != this.getQueryColumns(this.props.queryInfo).sort().join(",")) {
-            this.initData();
+        if (
+            prevProps.viewName != this.props.viewName ||
+            prevProps.selectedIds.join(',') != this.props.selectedIds.join(',') ||
+            prevProps.sortString != this.props.sortString ||
+            this.getQueryColumns(prevProps.queryInfo).sort().join(',') !=
+                this.getQueryColumns(this.props.queryInfo).sort().join(',')
+        ) {
+            await this.initData();
         }
     };
 
     componentDidMount = async (): Promise<void> => {
-       this.initData();
+        await this.initData();
     };
 
     initData = async (): Promise<void> => {

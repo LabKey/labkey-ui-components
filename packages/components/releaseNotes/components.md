@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-- Issue 53022: Reload data in `BulkdUpdateForm` when columns change because of aliquot or sample selections
+- Issue 53022: Reload data in `BulkUpdateForm` when columns change because of aliquot or sample selections
 
 ### version 6.52.4
 *Released*: 30 June 2025

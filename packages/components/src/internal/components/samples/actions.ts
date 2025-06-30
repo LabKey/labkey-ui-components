@@ -471,22 +471,29 @@ export async function getDefaultDiscardStatus(containerPath?: string): Promise<n
  * @param queryName of selected rows
  * @param selected rowIds to pull sampleIds for
  * @param fieldKey field key for the Lookup
+ * @param keyColumn the pkCol
  */
 export async function getLookupRowIdsFromSelection(
     schemaName: string,
     queryName: string,
     selected: any[],
-    fieldKey: string
+    fieldKey: string,
+    keyColumn = 'RowId'
 ): Promise<number[]> {
     const sampleIds = new Set<number>();
 
     if (fieldKey) {
         const rowIdFieldKey = `${fieldKey}/RowId`; // Pull the rowId of the lookup
+        const columns = [keyColumn, rowIdFieldKey].join(',');
         const { data, dataIds } = await getSelectedDataDeprecated(
             schemaName,
             queryName,
             selected,
-            'RowId,' + rowIdFieldKey
+            columns,
+            undefined,
+            undefined,
+            undefined,
+            keyColumn
         ); // Include the RowId column to prevent warnings
         if (data) {
             const rows = data.toJS();

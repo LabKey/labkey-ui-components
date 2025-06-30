@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Remove getJobCreationHref
 - Remove getSelectedSampleIdsFromSelectionKey
 - Remove getURLParamsForSampleSelectionKey
+- getLookupRowIdsFromSelection: Add optional keyColumn arg
 
 ### version 6.52.5
 *Released*: 30 June 2025

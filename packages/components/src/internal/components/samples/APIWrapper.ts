@@ -46,7 +46,8 @@ export interface SamplesAPIWrapper {
         schemaName: string,
         queryName: string,
         selected: any[],
-        fieldKey: string
+        fieldKey: string,
+        keyColumn?: string
     ) => Promise<number[]>;
 
     getSampleAliquotRows: (sampleId: number | string) => Promise<Row[]>;

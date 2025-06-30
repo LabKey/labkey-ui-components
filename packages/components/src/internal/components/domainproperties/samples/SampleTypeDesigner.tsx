@@ -372,7 +372,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         const metricUnitRequired = metricUnitProps?.metricUnitRequired;
         const isValid = model.isValid(defaultSampleFieldConfig, metricUnitRequired);
 
-        this.props.onFinish(isValid, () => this.saveDomain(false, auditUserComment));
+        this.props.onFinish(isValid, () => this.saveDomain(false, comment ?? auditUserComment));
 
         if (isValid) return;
 

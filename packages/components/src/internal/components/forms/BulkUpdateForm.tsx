@@ -82,15 +82,29 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
         };
     }
 
-    componentDidMount = async (): Promise<void> => {
-        const { onCancel, pluralNoun, queryInfo, selectedIds, sortString, viewName, requiredColumns } = this.props;
-        const { schemaName, name } = queryInfo;
-
-        const columns = queryInfo
+    getQueryColumns(queryInfo: QueryInfo): string[] {
+        const { requiredColumns } = this.props;
+        return queryInfo
             .getPkCols()
             .concat(queryInfo.getUpdateColumns())
             .map(c => c.fieldKey)
             .concat(requiredColumns);
+    }
+
+    componentDidUpdate = async (prevProps: BulkUpdateFormProps, prevState: State): Promise<void> => {
+        if (this.getQueryColumns(prevProps.queryInfo).sort().join(",") != this.getQueryColumns(this.props.queryInfo).sort().join(",")) {
+            this.initData();
+        }
+    };
+
+    componentDidMount = async (): Promise<void> => {
+       this.initData();
+    };
+
+    initData = async (): Promise<void> => {
+        const { onCancel, pluralNoun, queryInfo, selectedIds, sortString, viewName } = this.props;
+        const { schemaName, name } = queryInfo;
+        const columns = this.getQueryColumns(queryInfo);
 
         try {
             const { data, dataIds } = await getSelectedDataDeprecated(

@@ -154,9 +154,13 @@ export function getSelectRowCountColumnsStr(
     return columns[0];
 }
 
+export function createSnapshotSelectionKeyStr(selectionKey: string) {
+    return selectionKey + SELECTION_SNAPSHOT_SEP + Utils.generateUUID();
+}
+
 // Do not use this directly, use createSnapshotSelectionKey or createOrderedSnapshotSelectionKey below
 async function _createSnapshotSelectionKey(model: QueryModel, selections: string[]): Promise<string> {
-    const key = model.selectionKey + SELECTION_SNAPSHOT_SEP + Utils.generateUUID();
+    const key = createSnapshotSelectionKeyStr(model.selectionKey);
     await setSelected(key, true, selections, model.selectionContainerPath, false, model.schemaName, model.queryName);
     return key;
 }
@@ -167,9 +171,10 @@ async function _createSnapshotSelectionKey(model: QueryModel, selections: string
  * as an example) . Using this method is not compatible with the useSnapshotSelections param supported by some of our
  * APIs. If you use this do not set the useSnapshotSelections flag in your API call.
  * @param model the QueryModel used to create a snapshot selection key
+ * @param selections an array of rowIds to select,
  */
-export function createSnapshotSelectionKey(model: QueryModel): Promise<string> {
-    return _createSnapshotSelectionKey(model, Array.from(model.selections));
+export function createSnapshotSelectionKey(model: QueryModel, selections?: string[]): Promise<string> {
+    return _createSnapshotSelectionKey(model, selections ?? Array.from(model.selections));
 }
 
 /**

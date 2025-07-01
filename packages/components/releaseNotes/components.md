@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.??.?
-*Released*: ?? June 2025
+### version 6.53.0
+*Released*: 1 July 2025
 - Remove AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem
   - moved to ui-premium
 - Add createSnapshotSelectionKeyStr

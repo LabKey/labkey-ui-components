@@ -160,7 +160,7 @@ export function createSnapshotSelectionKeyStr(selectionKey: string) {
 
 // Do not use this directly, use createSnapshotSelectionKey or createOrderedSnapshotSelectionKey below
 async function _createSnapshotSelectionKey(model: QueryModel, selections: string[]): Promise<string> {
-    const key = model.selectionKey + SELECTION_SNAPSHOT_SEP + Utils.generateUUID();
+    const key = createSnapshotSelectionKeyStr(model.selectionKey);
     await setSelected(key, true, selections, model.selectionContainerPath, false, model.schemaName, model.queryName);
     return key;
 }

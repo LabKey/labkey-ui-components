@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.53.2
+*Released*: 1 July 2025
+* Issue 53141: Should set a dirty bit when setting or updating the hit selection criteria for an assay
+
 ### version 6.53.1
 *Released*: 3 July 2025
 - Issue 53153: Disable value validation for expInput, aliquotParent columns

@@ -12,10 +12,10 @@ import { useLoadableState } from './useLoadableState';
 import { LoadingSpinner } from './components/base/LoadingSpinner';
 import { ChoicesListItem } from './components/base/ChoicesListItem';
 import { FilterExpressionView } from './components/search/FilterExpressionView';
-import { useAppContext } from './AppContext';
 import { FilterCriteriaColumns } from './components/assay/models';
 import { AssayProtocolModel } from './components/domainproperties/assay/models';
 import { Alert } from './components/base/Alert';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from './APIWrapper';
 
 type BaseFilterCriteriaField = Omit<FilterCriteria, 'op' | 'value'>;
 interface FilterCriteriaField extends BaseFilterCriteriaField {
@@ -100,16 +100,21 @@ FilterCriteriaChoice.displayName = 'FilterCriteriaChoice';
  * openTo: The propertyId of the domain field you want to open the modal to
  */
 interface Props {
+    api?: ComponentsAPIWrapper;
     onClose: () => void;
     onSave: (filterCriteria: FilterCriteriaMap) => void;
     openTo?: number;
     protocolModel: AssayProtocolModel;
 }
 
-export const FilterCriteriaModal: FC<Props> = memo(({ onClose, onSave, openTo, protocolModel }) => {
-    const { api } = useAppContext();
+export const FilterCriteriaModal: FC<Props> = memo(props => {
+    // Note: we cannot fetch api from useAppContext, because this component can be rendered in LKS, which does not set
+    // up an AppContext
+    const { api = getDefaultAPIWrapper(), onClose, onSave, openTo, protocolModel } = props;
     const { protocolId, container } = protocolModel;
     const domain = useMemo(() => protocolModel.getDomainByNameSuffix('Data'), [protocolModel]);
+    // Intentionally not using withRouteLeave, that is handled above this component, after onSave is called
+    const [isDirty, setIsDirty] = useState(false);
     const [filterCriteria, setFilterCriteria] = useState<FilterCriteriaMap>(() => {
         return domain.fields.reduce((result, field) => {
             if (field.filterCriteria) result.set(field.propertyId, [...field.filterCriteria]);
@@ -135,6 +140,7 @@ export const FilterCriteriaModal: FC<Props> = memo(({ onClose, onSave, openTo, p
 
     const onFieldFilterUpdate = useCallback(
         (newFilters: Filter.IFilter[]) => {
+            setIsDirty(true);
             setFilterCriteria(current => {
                 const filterCriteriaField = filterCriteriaFields.find(field => field.propertyId === selectedFieldId);
                 // Use the referencePropertyId if it exists, because all filterCriteria are stored on the parent field
@@ -186,7 +192,14 @@ export const FilterCriteriaModal: FC<Props> = memo(({ onClose, onSave, openTo, p
     const hasFields = fieldsToRender !== undefined && fieldsToRender.length > 0;
 
     return (
-        <Modal bsSize="lg" title="Hit Selection Criteria" onCancel={onClose} onConfirm={onConfirm} confirmText="Apply">
+        <Modal
+            bsSize="lg"
+            canConfirm={isDirty}
+            confirmText="Apply"
+            onCancel={onClose}
+            onConfirm={onConfirm}
+            title="Hit Selection Criteria"
+        >
             {loading && <LoadingSpinner />}
             {!loading && !error && (
                 <div className="filter-criteria-modal-body field-modal__container row">

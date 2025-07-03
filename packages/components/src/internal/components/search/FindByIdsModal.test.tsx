@@ -26,7 +26,7 @@ const TEST_FIELD_WITH_HELP: FindField = {
 
 describe('FindFieldOption', () => {
     test('field without help text, checked', () => {
-        render(<FindFieldOption field={TEST_FIELD} checked={true} onFieldChange={jest.fn()} />);
+        render(<FindFieldOption checked={true} field={TEST_FIELD} onFieldChange={jest.fn()} />);
         expect(document.querySelector('label').textContent).toBe(TEST_FIELD.label);
         const input = document.querySelector('input');
         expect(input.getAttribute('name')).toBe(TEST_FIELD.name);
@@ -36,7 +36,7 @@ describe('FindFieldOption', () => {
     });
 
     test('field with help text, not checked', () => {
-        render(<FindFieldOption field={TEST_FIELD_WITH_HELP} checked={false} onFieldChange={jest.fn()} />);
+        render(<FindFieldOption checked={false} field={TEST_FIELD_WITH_HELP} onFieldChange={jest.fn()} />);
 
         expect(document.querySelector('label').textContent).toBe(TEST_FIELD_WITH_HELP.label);
         const input = document.querySelector('input');
@@ -49,7 +49,7 @@ describe('FindFieldOption', () => {
 
 describe('FindByIdsModal', () => {
     test('default view', () => {
-        render(<FindByIdsModal onCancel={jest.fn()} onFind={jest.fn()} nounPlural="tests" />);
+        render(<FindByIdsModal nounPlural="tests" onCancel={jest.fn()} onFind={jest.fn()} />);
         expect(document.querySelector('.modal-title').textContent).toBe('Find Tests');
         expect(document.querySelector('.modal-body').textContent).toContain('Find tests using');
         const uniqueIdsInput = document.querySelector('[name=' + UNIQUE_ID_FIND_FIELD.name + ']');

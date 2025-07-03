@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { MouseEvent, FC, memo, useCallback, useState, useEffect, useMemo, MutableRefObject } from 'react';
+import React, { FC, memo, MouseEvent, MutableRefObject, useCallback, useEffect, useMemo, useState } from 'react';
 import { List, Map } from 'immutable';
 import { Location } from 'history';
 import { ActionURL } from '@labkey/api';
@@ -34,22 +34,22 @@ import { Container } from '../base/models/Container';
 import { buildURL } from '../../url/AppURL';
 
 import {
+    ASSAY_DESIGN_KEY,
+    ASSAYS_KEY,
     AUDIT_KEY,
+    BOXES_KEY,
+    ELN_KEY,
+    FREEZER_MANAGER_APP_PROPERTIES,
+    FREEZERS_KEY,
     MEDIA_KEY,
+    PICKLIST_KEY,
+    PLATES_KEY,
     REGISTRY_KEY,
     SAMPLE_TYPE_KEY,
     SAMPLES_KEY,
     SEARCH_KEY,
-    WORKFLOW_KEY,
-    ASSAY_DESIGN_KEY,
-    ASSAYS_KEY,
-    PICKLIST_KEY,
-    ELN_KEY,
     SOURCES_KEY,
-    FREEZERS_KEY,
-    BOXES_KEY,
-    PLATES_KEY,
-    FREEZER_MANAGER_APP_PROPERTIES,
+    WORKFLOW_KEY,
 } from '../../app/constants';
 
 import { useNavMenuState } from '../../useNavMenuState';
@@ -176,17 +176,16 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                             // this can happen if a user has different perm in different project folders
                             .filter((_, i) => sectionConfigKeysWithInfo[i].length > 0)
                             .map((sectionConfig, i) => (
-                                // eslint-disable-next-line react/no-array-index-key
-                                <div key={i} className="menu-section col-product-section">
+                                <div className="menu-section col-product-section" key={i}>
                                     {sectionConfig
                                         .entrySeq()
                                         .filter(([key]) => getSectionModel(key) !== undefined)
                                         .map(([key, menuConfig]) => {
                                             return (
                                                 <ProductMenuSection
-                                                    key={key}
                                                     config={menuConfig}
                                                     containerPath={menuModel.containerPath}
+                                                    key={key}
                                                     section={getSectionModel(key)}
                                                 />
                                             );
@@ -295,8 +294,8 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
     return (
         <div className="product-menu">
             <button
-                aria-haspopup="true"
                 aria-expanded={show}
+                aria-haspopup="true"
                 className="product-menu-button"
                 onClick={toggleMenu}
                 ref={toggleRef}

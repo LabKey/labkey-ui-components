@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.53.1
+*Released*: 3 July 2025
+- Issue 53153: Disable value validation for expInput, aliquotParent columns
+
 ### version 6.53.0
 *Released*: 1 July 2025
 - Remove AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem

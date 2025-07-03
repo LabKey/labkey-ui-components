@@ -27,7 +27,6 @@ import { FormButtons } from '../../FormButtons';
 
 import { EntityCreationTypeModel } from '../samples/models';
 import { QueryInfo } from '../../../public/QueryInfo';
-import { formatDate, formatDateTime, formatTime } from '../../util/Date';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -56,7 +55,7 @@ export const getUpdatedFields = (
     for (const key in data) {
         if (data.hasOwnProperty(key)) {
             if (fieldsToUpdate.has(key.toLowerCase()) || (additionalFields && additionalFields?.indexOf(key) !== -1)) {
-                const col = queryInfo?.getColumn(key);
+                const col = queryInfo.getColumn(key);
                 if (col?.jsonType === 'string' && typeof data[key] === 'string') {
                     filteredData = filteredData.set(key, data[key]?.trim());
                 } else {
@@ -72,8 +71,8 @@ export const getUpdatedFields = (
 export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFieldsEnabledChange'> {
     api?: ComponentsAPIWrapper;
     asModal?: boolean;
-    canSubmitNotDirty?: boolean;
     cancelText?: string;
+    canSubmitNotDirty?: boolean;
     countText?: string;
     creationTypeOptions?: EntityCreationTypeModel[];
     disabled?: boolean;
@@ -347,9 +346,9 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                     <CommentTextArea
                         actionName="Update"
                         containerClassName="inline-comment"
+                        inline
                         onChange={this.onCommentChange}
                         requiresUserComment={requiresUserComment}
-                        inline
                     />
                 )}
 
@@ -434,17 +433,17 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                     {!showErrorsAtBottom && this.renderError()}
                     <Formsy
                         className="form-horizontal"
-                        onValidSubmit={this.handleValidSubmit}
-                        onValid={this.enableSubmitButton}
                         onChange={this.handleChange}
                         onInvalid={this.disableSubmitButton}
+                        onValid={this.enableSubmitButton}
+                        onValidSubmit={this.handleValidSubmit}
                         ref={this.formRef}
                     >
                         <QueryInfoQuantity
+                            countText={countText}
                             creationTypeOptions={creationTypeOptions}
                             includeCountField={includeCountField}
                             maxCount={maxCount}
-                            countText={countText}
                             onCountChange={this.onCountChange}
                         />
                         {(header || showQuantityHeader) && <hr />}

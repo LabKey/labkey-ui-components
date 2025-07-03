@@ -21,8 +21,8 @@ export const FindFieldOption: FC<{
     }, [field, onFieldChange]);
 
     return (
-        <label key={field.name} className="find-by-ids-field-label">
-            <input name={field.name} type="radio" onChange={onChange} value={field.name} checked={checked} />
+        <label className="find-by-ids-field-label" key={field.name}>
+            <input checked={checked} name={field.name} onChange={onChange} type="radio" value={field.name} />
             {field.label}
             {field.helpText && (
                 <LabelHelpTip placement="right" title={field.helpTextTitle}>
@@ -104,9 +104,9 @@ export const FindByIdsModal: FC<Props> = memo(props => {
 
     return (
         <Modal
-            confirmText={`Find ${capitalNounPlural}`}
+            canConfirm={idString !== undefined && idString.trim().length > 0}
             confirmingText={`Finding ${capitalNounPlural}...`}
-            canConfirm={idString && idString.trim().length > 0}
+            confirmText={`Find ${capitalNounPlural}`}
             isConfirming={submitting}
             onCancel={closeModal}
             onConfirm={_onFind}
@@ -115,21 +115,21 @@ export const FindByIdsModal: FC<Props> = memo(props => {
             <Alert>{error}</Alert>
             <p>Find {nounPlural} using:</p>
             <FindFieldOption
-                field={UNIQUE_ID_FIND_FIELD}
                 checked={fieldType.name === UNIQUE_ID_FIND_FIELD.name}
+                field={UNIQUE_ID_FIND_FIELD}
                 onFieldChange={onFieldTypeChange}
             />
             <FindFieldOption
-                field={SAMPLE_ID_FIND_FIELD}
                 checked={fieldType.name === SAMPLE_ID_FIND_FIELD.name}
+                field={SAMPLE_ID_FIND_FIELD}
                 onFieldChange={onFieldTypeChange}
             />
             <textarea
-                rows={8}
-                cols={50}
                 className="form-control textarea-fullwidth"
-                placeholder={`List ${fieldType.nounPlural} here (max: ${MAX_IDS.toLocaleString()})`}
+                cols={50}
                 onChange={onIdTextChange}
+                placeholder={`List ${fieldType.nounPlural} here (max: ${MAX_IDS.toLocaleString()})`}
+                rows={8}
                 value={idString}
             />
         </Modal>

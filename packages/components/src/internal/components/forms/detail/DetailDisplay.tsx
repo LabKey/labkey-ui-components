@@ -341,6 +341,7 @@ export function resolveDetailEditRenderer(
                         maxRows={10}
                         multiple={multiple}
                         name={col.fieldKey}
+                        notFoundValuesEnabled={!(col.isExpInput() || col.isAliquotParent())} // Issue 53153
                         onBlur={options?.onBlur}
                         onQSChange={options?.onSelectChange}
                         placeholder={options?.placeholder ?? 'Select or type to search...'}
@@ -358,15 +359,15 @@ export function resolveDetailEditRenderer(
         if (col.validValues) {
             return (
                 <TextChoiceInput
+                    autoFocus={options?.autoFocus}
                     formsy
                     inputClass={DETAIL_INPUT_WRAPPER_CLASS_NAME}
-                    queryColumn={col}
-                    value={value}
-                    autoFocus={options?.autoFocus}
                     onBlur={options?.onBlur}
                     onChange={options?.onSelectChange}
                     placeholder={options?.placeholder ?? 'Select or type to search...'}
+                    queryColumn={col}
                     showLabel={showLabel}
+                    value={value}
                 />
             );
         }
@@ -425,6 +426,7 @@ export function resolveDetailEditRenderer(
                 return (
                     <TextInput
                         elementWrapperClassName={DETAIL_INPUT_WRAPPER_CLASS_NAME}
+                        includeSpacesWarning={options.includeSpacesWarning}
                         isUpdate={true}
                         queryColumn={col}
                         // Issue 43561: Support name expression fields
@@ -434,7 +436,6 @@ export function resolveDetailEditRenderer(
                         // required if the nameExpression is not defined to force the form to require a value.
                         required={col.required || col.nameExpression !== undefined}
                         showLabel={showLabel}
-                        includeSpacesWarning={options.includeSpacesWarning}
                         validatePristine
                         validationError={validationError}
                         value={value}
@@ -449,20 +450,17 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
 
     if (column?.detailRenderer) {
         switch (column.detailRenderer.toLowerCase()) {
-            case 'multivaluedetailrenderer':
-                renderer = d => <MultiValueRenderer data={d} />;
-                break;
             case 'aliasrenderer':
                 renderer = d => <AliasRenderer data={d} view="detail" />;
                 break;
             case 'appendunits':
-                renderer = d => <AppendUnits data={d} col={column} />;
+                renderer = d => <AppendUnits col={column} data={d} />;
                 break;
             case 'assayrunreference':
                 renderer = d => <AssayRunReferenceRenderer data={d} />;
                 break;
-            case 'labelcolorrenderer':
-                renderer = d => <LabelColorRenderer data={d} />;
+            case 'expirationdatecolumnrenderer':
+                renderer = d => <ExpirationDateColumnRenderer col={column} data={d} tableCell={false} />;
                 break;
             case 'filecolumnrenderer':
                 renderer = d => <FileColumnRenderer data={d} isFileLink={column.rangeURI === FILELINK_RANGE_URI} />;
@@ -470,8 +468,17 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
             case 'foldercolumnrenderer':
                 renderer = d => <FolderColumnRenderer data={d} />;
                 break;
+            case 'labelcolorrenderer':
+                renderer = d => <LabelColorRenderer data={d} />;
+                break;
+            case 'multivaluedetailrenderer':
+                renderer = d => <MultiValueRenderer data={d} />;
+                break;
             case 'nolinkrenderer':
                 renderer = d => <NoLinkRenderer data={d} />;
+                break;
+            case 'samplestatusrenderer':
+                renderer = (d, r) => <SampleStatusRenderer row={r} />;
                 break;
             case 'sampletypeimportaliasrenderer':
                 renderer = d => <SampleTypeImportAliasRenderer data={d} />;
@@ -479,14 +486,8 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
             case 'sourcetypeimportaliasrenderer':
                 renderer = d => <SourceTypeImportAliasRenderer data={d} />;
                 break;
-            case 'samplestatusrenderer':
-                renderer = (d, r) => <SampleStatusRenderer row={r} />;
-                break;
             case 'userdetailsrenderer':
                 renderer = d => <UserDetailsRenderer data={d} />;
-                break;
-            case 'expirationdatecolumnrenderer':
-                renderer = d => <ExpirationDateColumnRenderer data={d} col={column} tableCell={false} />;
                 break;
             default:
                 break;

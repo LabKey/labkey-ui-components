@@ -123,27 +123,27 @@ const AssayDomainForm: FC<AssayDomainFormProps> = memo(props => {
     ]);
     return (
         <DomainForm
-            key={domain.domainId || index}
             api={api}
-            index={domain.domainId || index}
-            domainIndex={index}
-            domain={domain}
-            headerPrefix={headerPrefix}
+            appDomainHeaderRenderer={appDomainHeaderRenderer}
+            appPropertiesOnly={hideAdvancedProperties}
             controlledCollapse
+            domain={domain}
+            domainFormDisplayOptions={displayOptions}
+            domainIndex={index}
+            headerPrefix={headerPrefix}
+            helpTopic={null} // null so that we don't show the "learn more about this tool" link for these domains
+            index={domain.domainId || index}
             initCollapsed={currentPanelIndex !== index + DOMAIN_PANEL_INDEX}
-            validate={validatePanel === index + DOMAIN_PANEL_INDEX}
+            key={domain.domainId || index}
+            modelDomains={protocolModel.domains}
+            onChange={onChange}
+            onToggle={onToggle}
             panelStatus={
                 protocolModel.isNew()
                     ? getDomainPanelStatus(index + DOMAIN_PANEL_INDEX, currentPanelIndex, visitedPanels, firstState)
                     : 'COMPLETE'
             }
-            helpTopic={null} // null so that we don't show the "learn more about this tool" link for these domains
-            onChange={onChange}
-            onToggle={onToggle}
-            appDomainHeaderRenderer={appDomainHeaderRenderer}
-            modelDomains={protocolModel.domains}
-            appPropertiesOnly={hideAdvancedProperties}
-            domainFormDisplayOptions={displayOptions}
+            validate={validatePanel === index + DOMAIN_PANEL_INDEX}
         >
             <div>{domain.description}</div>
         </DomainForm>
@@ -336,40 +336,43 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
     };
 
     saveFilterCriteria = (filterCriteria: FilterCriteriaMap) => {
-        this.setState(current => {
-            const protocolModel = current.protocolModel;
-            const resultsIndex = current.protocolModel.domains.findIndex((domain: DomainDesign): boolean =>
-                domain.isNameSuffixMatch('Data')
-            );
-            const domains = current.protocolModel.domains;
-            let resultsDomain = domains.get(resultsIndex);
-            // Clear the existing values first
-            let fields = resultsDomain.fields.map(f => f.set('filterCriteria', []) as DomainField).toList();
+        this.setState(
+            current => {
+                const protocolModel = current.protocolModel;
+                const resultsIndex = current.protocolModel.domains.findIndex((domain: DomainDesign): boolean =>
+                    domain.isNameSuffixMatch('Data')
+                );
+                const domains = current.protocolModel.domains;
+                let resultsDomain = domains.get(resultsIndex);
+                // Clear the existing values first
+                let fields = resultsDomain.fields.map(f => f.set('filterCriteria', []) as DomainField).toList();
 
-            filterCriteria.forEach((fieldCriteria, propertyId) => {
-                const domainFieldIdx = fields.findIndex(d => d.propertyId === propertyId);
+                filterCriteria.forEach((fieldCriteria, propertyId) => {
+                    const domainFieldIdx = fields.findIndex(d => d.propertyId === propertyId);
 
-                if (domainFieldIdx < 0) {
-                    console.warn(`Unable to find domain field with property id ${propertyId}`);
-                    return;
-                }
+                    if (domainFieldIdx < 0) {
+                        console.warn(`Unable to find domain field with property id ${propertyId}`);
+                        return;
+                    }
 
-                let domainField = fields.get(domainFieldIdx);
-                domainField = domainField.set('filterCriteria', fieldCriteria) as DomainField;
-                fields = fields.set(domainFieldIdx, domainField);
-            });
+                    let domainField = fields.get(domainFieldIdx);
+                    domainField = domainField.set('filterCriteria', fieldCriteria) as DomainField;
+                    fields = fields.set(domainFieldIdx, domainField);
+                });
 
-            resultsDomain = resultsDomain.set('fields', fields) as DomainDesign;
+                resultsDomain = resultsDomain.set('fields', fields) as DomainDesign;
 
-            return {
-                modalOpen: false,
-                openTo: undefined,
-                protocolModel: protocolModel.set(
-                    'domains',
-                    protocolModel.domains.set(resultsIndex, resultsDomain)
-                ) as AssayProtocolModel,
-            };
-        });
+                return {
+                    modalOpen: false,
+                    openTo: undefined,
+                    protocolModel: protocolModel.set(
+                        'domains',
+                        protocolModel.domains.set(resultsIndex, resultsDomain)
+                    ) as AssayProtocolModel,
+                };
+            },
+            () => this.props.onChange?.(this.state.protocolModel)
+        );
     };
 
     togglePropertiesPanel = (collapsed, callback): void => {
@@ -409,32 +412,32 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
 
         return (
             <BaseDomainDesigner
-                name={protocolModel.name}
-                exception={protocolModel.exception}
                 domains={protocolModel.domains}
+                exception={protocolModel.exception}
                 hasValidProperties={protocolModel.hasValidProperties()}
-                visitedPanels={visitedPanels}
-                submitting={submitting}
+                name={protocolModel.name}
                 onCancel={onCancel}
                 onFinish={this.onFinish}
                 saveBtnText={saveBtnText}
                 showUserComment={!initModel.isNew() && appPropertiesOnly}
+                submitting={submitting}
+                visitedPanels={visitedPanels}
             >
                 <FilterCriteriaContext.Provider value={filterCriteriaState}>
                     <AssayPropertiesPanel
-                        model={protocolModel}
-                        onChange={this.onAssayPropertiesChange}
-                        controlledCollapse
-                        initCollapsed={currentPanelIndex !== PROPERTIES_PANEL_INDEX}
-                        panelStatus={panelStatus}
-                        validate={validatePanel === PROPERTIES_PANEL_INDEX}
                         appPropertiesOnly={appPropertiesOnly}
+                        canRename={isGpat}
+                        controlledCollapse
                         hideAdvancedProperties={hideAdvancedProperties}
                         hideStudyProperties={
                             !!domainFormDisplayOptions && domainFormDisplayOptions.hideStudyPropertyTypes
                         }
+                        initCollapsed={currentPanelIndex !== PROPERTIES_PANEL_INDEX}
+                        model={protocolModel}
+                        onChange={this.onAssayPropertiesChange}
                         onToggle={this.togglePropertiesPanel}
-                        canRename={isGpat}
+                        panelStatus={panelStatus}
+                        validate={validatePanel === PROPERTIES_PANEL_INDEX}
                     />
                     {/* Note: We cannot filter this array because onChange needs the correct index for each domain */}
                     {protocolModel.domains.toArray().map((domain, i) => {
@@ -445,16 +448,16 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                             <AssayDomainForm
                                 api={api}
                                 appDomainHeaders={appDomainHeaders}
+                                currentPanelIndex={currentPanelIndex}
                                 domain={domain}
                                 domainFormDisplayOptions={domainFormDisplayOptions}
+                                firstState={firstState}
                                 headerPrefix={initModel?.name}
                                 index={i}
                                 key={domain.name}
                                 onDomainChange={this.onDomainChange}
-                                protocolModel={protocolModel}
-                                currentPanelIndex={currentPanelIndex}
-                                firstState={firstState}
                                 onTogglePanel={onTogglePanel}
+                                protocolModel={protocolModel}
                                 validatePanel={validatePanel}
                                 visitedPanels={visitedPanels}
                             />
@@ -463,8 +466,8 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                     {modalOpen && (
                         <FilterCriteriaModal
                             onClose={this.closeModal}
-                            openTo={openTo}
                             onSave={this.saveFilterCriteria}
+                            openTo={openTo}
                             protocolModel={protocolModel}
                         />
                     )}
@@ -472,8 +475,8 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                 {appPropertiesOnly && allowFolderExclusion && (
                     <DataTypeFoldersPanel
                         controlledCollapse
-                        dataTypeRowId={protocolModel?.protocolId}
                         dataTypeName={protocolModel?.name}
+                        dataTypeRowId={protocolModel?.protocolId}
                         entityDataType={AssayRunDataType}
                         initCollapsed={currentPanelIndex !== protocolModel.domains.size + 1}
                         onToggle={this.toggleFoldersPanel}

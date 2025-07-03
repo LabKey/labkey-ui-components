@@ -5,6 +5,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD July 2025
 - Issue 53394: FileInput revert removal of the "-fileUpload" suffix from inputId
 
+### version 6.53.2
+*Released*: 3 July 2025
+* Issue 53141: Should set a dirty bit when setting or updating the hit selection criteria for an assay
+
+### version 6.53.1
+*Released*: 3 July 2025
+- Issue 53153: Disable value validation for expInput, aliquotParent columns
+
 ### version 6.53.0
 *Released*: 1 July 2025
 - Remove AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem

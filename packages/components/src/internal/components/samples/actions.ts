@@ -144,55 +144,6 @@ export async function fetchSamples(
     return data.asImmutable();
 }
 
-/**
- * Get an array of sample RowIds from a URL selectionKey for the following scenarios:
- *  - sample grid
- *  - picklist
- *  - assay
- *  - storage items
- */
-export async function getSelectedSampleIdsFromSelectionKey(searchParams: URLSearchParams): Promise<number[]> {
-    const key = searchParams.get('selectionKey');
-    let sampleIds;
-    const selectionType = searchParams.get('selectionKeyType');
-    const isSnapshot = selectionType === SELECTION_KEY_TYPE.snapshot;
-
-    if (selectionType === SELECTION_KEY_TYPE.inventoryItems) {
-        const response = await getSnapshotSelections(key);
-        sampleIds = await getSelectedItemSamples(response.selected);
-    } else if (searchParams.get('isAssay')) {
-        const schemaName = searchParams.get('assayProtocol');
-        const sampleFieldKey = searchParams.get('sampleFieldKey');
-        const queryName = SCHEMAS.ASSAY_TABLES.RESULTS_QUERYNAME;
-        let response;
-
-        if (isSnapshot) {
-            response = await getSnapshotSelections(key);
-        } else {
-            response = await getSelection(searchParams, schemaName, queryName);
-        }
-
-        sampleIds = await getLookupRowIdsFromSelection(schemaName, queryName, response?.selected, sampleFieldKey);
-    } else {
-        const picklistName = searchParams.get('picklistName');
-        let response;
-
-        if (isSnapshot && key) {
-            response = await getSnapshotSelections(key);
-        } else {
-            response = await getSelection(searchParams, SCHEMAS.PICKLIST_TABLES.SCHEMA, picklistName);
-        }
-
-        if (picklistName) {
-            sampleIds = await getSelectedPicklistSamples(picklistName, response.selected, false, undefined);
-        } else {
-            sampleIds = response.selected.map(Number);
-        }
-    }
-
-    return sampleIds;
-}
-
 export async function getGroupedSampleDomainFields(sampleType: string): Promise<GroupedSampleFields> {
     // use domain fields as we only want to include fields defined by the user, but use queryInfo to map to fieldKey
     const sampleTypeDomain = await getSampleTypeDetails(new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType));
@@ -520,22 +471,29 @@ export async function getDefaultDiscardStatus(containerPath?: string): Promise<n
  * @param queryName of selected rows
  * @param selected rowIds to pull sampleIds for
  * @param fieldKey field key for the Lookup
+ * @param keyColumn the pkCol
  */
 export async function getLookupRowIdsFromSelection(
     schemaName: string,
     queryName: string,
     selected: any[],
-    fieldKey: string
+    fieldKey: string,
+    keyColumn = 'RowId'
 ): Promise<number[]> {
     const sampleIds = new Set<number>();
 
     if (fieldKey) {
         const rowIdFieldKey = `${fieldKey}/RowId`; // Pull the rowId of the lookup
+        const columns = [keyColumn, rowIdFieldKey].join(',');
         const { data, dataIds } = await getSelectedDataDeprecated(
             schemaName,
             queryName,
             selected,
-            'RowId,' + rowIdFieldKey
+            columns,
+            undefined,
+            undefined,
+            undefined,
+            keyColumn
         ); // Include the RowId column to prevent warnings
         if (data) {
             const rows = data.toJS();

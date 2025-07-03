@@ -6,6 +6,21 @@ Components, models, actions, and utility functions for LabKey applications and p
 - ProductMenu shows 'Dashboard' instead of 'Storage' as subtitle in FM /home route
 - Issue 53371: Find Samples by ID JS error when clicking "Find Samples" button without entering anything into the text area
 
+### version 6.53.0
+*Released*: 1 July 2025
+- Remove AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem
+  - moved to ui-premium
+- Add createSnapshotSelectionKeyStr
+- Remove getJobCreationHref
+- Remove getSelectedSampleIdsFromSelectionKey
+- Remove getURLParamsForSampleSelectionKey
+- getLookupRowIdsFromSelection: Add optional keyColumn arg
+- Export getSamplesTestAPIWrapper
+
+### version 6.52.5
+*Released*: 30 June 2025
+- Issue 53360: Pass user comment through after naming pattern warning
+
 ### version 6.52.4
 *Released*: 30 June 2025
 - Issue 53118: Filter modal change to multiValue type to account for numeric value when parsing

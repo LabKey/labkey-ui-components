@@ -10,10 +10,6 @@ import { SCHEMAS } from '../../schemas';
 import { OperationConfirmationData } from '../entities/models';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
-
-import { QueryInfo } from '../../../public/QueryInfo';
-
 import {
     DEFAULT_AVAILABLE_STATUS_COLOR,
     DEFAULT_CONSUMED_STATUS_COLOR,
@@ -30,7 +26,6 @@ import {
     getSampleStatusColor,
     getSampleStatusLockedMessage,
     getSampleStatusType,
-    getURLParamsForSampleSelectionKey,
     isSampleOperationPermitted,
     isSamplesSchema,
 } from './utils';
@@ -344,40 +339,6 @@ describe('getSampleStatus', () => {
         expect(getSampleStatus({ 'SampleID/SampleState/Description': { value: 'Desc2' } }).description).toBe('Desc2');
         expect(getSampleStatus({ Description: { value: undefined } }).description).toBeUndefined();
         expect(getSampleStatus({ Description: { value: 'Desc3' } }).description).toBe('Desc3');
-    });
-});
-
-const TEST_SQ = new SchemaQuery('schema', 'query');
-const TEST_QUERY_INFO = new QueryInfo({ schemaQuery: TEST_SQ, pkCols: ['RowId'] });
-const TEST_MODEL = makeTestQueryModel(TEST_SQ, TEST_QUERY_INFO).mutate({ id: 'model-id' });
-
-describe('getURLParamsForSampleSelectionKey', () => {
-    test('default props', () => {
-        expect(getURLParamsForSampleSelectionKey(TEST_MODEL)).toStrictEqual({ selectionKey: 'model-id' });
-    });
-
-    test('picklist', () => {
-        expect(getURLParamsForSampleSelectionKey(TEST_MODEL, 'picklist1')).toStrictEqual({
-            selectionKey: 'model-id',
-            picklistName: 'picklist1',
-        });
-    });
-
-    test('assay', () => {
-        expect(getURLParamsForSampleSelectionKey(TEST_MODEL, undefined, true, 'Name')).toStrictEqual({
-            selectionKey: 'model-id',
-            assayProtocol: 'schema',
-            isAssay: true,
-            sampleFieldKey: 'Name',
-        });
-    });
-
-    test('keyValue', () => {
-        const model = TEST_MODEL.mutate({ keyValue: 123 });
-        expect(getURLParamsForSampleSelectionKey(model)).toStrictEqual({
-            'query.RowId~eq': 123,
-            selectionKey: 'appkey|schema/query|123',
-        });
     });
 });
 

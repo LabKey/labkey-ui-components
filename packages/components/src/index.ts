@@ -347,10 +347,6 @@ import {
 } from './internal/components/entities/models';
 import { EntityMoveModal } from './internal/components/entities/EntityMoveModal';
 import { EntityMoveConfirmationModal } from './internal/components/entities/EntityMoveConfirmationModal';
-import {
-    AssayResultsForSamplesButton,
-    AssayResultsForSamplesMenuItem,
-} from './internal/components/entities/AssayResultsForSamplesButton';
 import { SampleAliquotViewSelector } from './internal/components/entities/SampleAliquotViewSelector';
 import { GridAliquotViewSelector } from './internal/components/entities/GridAliquotViewSelector';
 import {
@@ -393,7 +389,6 @@ import {
     getLookupRowIdsFromSelection,
     getSampleSet,
     getSampleTypeDetails,
-    getSelectedSampleIdsFromSelectionKey,
     getSelectionLineageData,
     updateSampleStorageData,
 } from './internal/components/samples/actions';
@@ -416,7 +411,6 @@ import {
     getSampleStatusColor,
     getSampleStatusContainerFilter,
     getSampleStatusType,
-    getURLParamsForSampleSelectionKey,
     isAllSamplesSchema,
     isSampleOperationPermitted,
     isSamplesSchema,
@@ -535,7 +529,6 @@ import {
     getEntityDescription,
     getEntityNoun,
     getInitialParentChoices,
-    getJobCreationHref,
     getSampleIdCellKey,
     getUniqueIdColumnMetadata,
     isDataClassEntity,
@@ -560,6 +553,7 @@ import { Pagination } from './internal/components/pagination/Pagination';
 import {
     createOrderedSnapshotSelectionKey,
     createSnapshotSelectionKey,
+    createSnapshotSelectionKeyStr,
     getQueryModelExportParams,
     runDetailsColumnsForQueryModel,
 } from './public/QueryModel/utils';
@@ -906,6 +900,7 @@ import { ModalButtons } from './internal/ModalButtons';
 import { getSecurityTestAPIWrapper } from './internal/components/security/APIWrapper';
 import { getFolderTestAPIWrapper } from './internal/components/container/FolderAPIWrapper';
 import { getLabelsTestAPIWrapper } from './internal/components/labels/APIWrapper';
+import { getSamplesTestAPIWrapper } from './internal/components/samples/APIWrapper';
 import { OverlayTrigger, useOverlayTriggerState } from './internal/OverlayTrigger';
 import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
@@ -1169,8 +1164,6 @@ export {
     AssayPickerTabs,
     AssayProtocolModel,
     AssayResultDataType,
-    AssayResultsForSamplesButton,
-    AssayResultsForSamplesMenuItem,
     AssayRunDataType,
     AssayRunOperation,
     AssayStateModel,
@@ -1229,6 +1222,7 @@ export {
     createMockWithRouteLeave,
     createOrderedSnapshotSelectionKey,
     createSnapshotSelectionKey,
+    createSnapshotSelectionKeyStr,
     createWebDavDirectory,
     DATA_CLASS_DESIGNER_ROLE,
     DATA_IMPORT_FILE_SIZE_LIMITS,
@@ -1394,7 +1388,6 @@ export {
     getImmediateChildLineageFilterValue,
     getInactiveUsers,
     getInitialParentChoices,
-    getJobCreationHref,
     getJsonDateFormatString,
     getJsonDateTimeFormatString,
     getJsonFormatString,
@@ -1439,6 +1432,7 @@ export {
     getSampleStatusColor,
     getSampleStatusContainerFilter,
     getSampleStatusType,
+    getSamplesTestAPIWrapper,
     getSampleTypeDetails,
     getSampleTypesFromTransactionIds,
     getSchemaQuery,
@@ -1448,14 +1442,12 @@ export {
     getSelectedDataDeprecated,
     getSelectedPicklistSamples,
     getSelectedRows,
-    getSelectedSampleIdsFromSelectionKey,
     getSelectionLineageData,
     getSourceDomainDefaultSystemFields,
     getStoredAmountDisplay,
     getTestAPIWrapper,
     getTimelineEntityUrl,
     getUniqueIdColumnMetadata,
-    getURLParamsForSampleSelectionKey,
     getUserProperties,
     getUserRoleDisplay,
     getUsersWithPermissions,

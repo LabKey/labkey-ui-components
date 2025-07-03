@@ -7,18 +7,11 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { EditableColumnMetadata, EditorModel } from '../editable/models';
 import { SCHEMAS } from '../../schemas';
 
-import { getURLParamsForSampleSelectionKey } from '../samples/utils';
-import { AppURL } from '../../url/AppURL';
-import { WORKFLOW_KEY } from '../../app/constants';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-
 import { genCellKey } from '../editable/utils';
 
 import { ViewInfo } from '../../ViewInfo';
 
 import { QueryColumn } from '../../../public/QueryColumn';
-
-import { SELECTION_KEY_TYPE } from '../samples/constants';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
@@ -148,26 +141,6 @@ export function isAssayDesignEntity(dataType: EntityDataType): boolean {
 
 export function isAssayResultEntity(dataType: EntityDataType): boolean {
     return dataType.sampleFinderCardType === 'assaydata';
-}
-
-export function getJobCreationHref(
-    model: QueryModel,
-    templateId?: string | number,
-    samplesIncluded?: boolean,
-    picklistName?: string,
-    isAssay?: boolean,
-    sampleFieldKey?: string,
-    ignoreFilter?: boolean
-): AppURL {
-    const hasFilters = model.filterArray.length > 0;
-    const params = getURLParamsForSampleSelectionKey(model, picklistName, isAssay, sampleFieldKey, ignoreFilter);
-
-    if (templateId) params['templateId'] = templateId;
-    if (!samplesIncluded) params['sampleTab'] = 'search'; // i.e. JOB_SAMPLE_SEARCH_TAB_ID
-    // If we have filters and are explicitly ignoring filters, then we're using a selection snapshot
-    if (ignoreFilter && hasFilters) params.selectionKeyType = SELECTION_KEY_TYPE.snapshot;
-
-    return AppURL.create(WORKFLOW_KEY, 'new').addParams(params);
 }
 
 export function getIdentifyingColumns(queryInfo: QueryInfo): QueryColumn[] {

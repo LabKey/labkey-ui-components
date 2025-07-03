@@ -1,5 +1,4 @@
 import { List, Map } from 'immutable';
-import { Filter } from '@labkey/api';
 
 import {
     TEST_LKS_STARTER_MODULE_CONTEXT,
@@ -11,8 +10,6 @@ import {
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { QueryInfo } from '../../../public/QueryInfo';
-
-import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 
 import { ViewInfo } from '../../ViewInfo';
 
@@ -28,7 +25,6 @@ import {
     getEntityNoun,
     getIdentifyingColumns,
     getInitialParentChoices,
-    getJobCreationHref,
     getSampleIdCellKey,
     parseEntityParentKey,
     sampleDeleteDependencyText,
@@ -272,60 +268,6 @@ describe('sampleDeleteDependencyText', () => {
     test('cannot delete no workflow or assay', () => {
         LABKEY.moduleContext = { ...TEST_LKSM_STARTER_MODULE_CONTEXT };
         expect(sampleDeleteDependencyText()).toBe('derived sample dependencies or status that prevents deletion');
-    });
-});
-
-describe('getJobCreationHref', () => {
-    const schemaQuery = new SchemaQuery('s', 'q');
-    const queryInfo = new QueryInfo({ pkCols: ['pk'], schemaQuery });
-    const modelId = 'id';
-    const queryModel = makeTestQueryModel(schemaQuery, queryInfo, undefined, undefined, undefined, modelId);
-
-    test('singleSelect', () => {
-        expect(getJobCreationHref(queryModel).toString()).toContain('selectionKey=id');
-        const queryModelWithKeyValue = queryModel.mutate({ keyValue: 'key' });
-        expect(getJobCreationHref(queryModelWithKeyValue).toString()).toContain('selectionKey=appkey%7Cs%2Fq%7Ckey');
-    });
-    test('filters', () => {
-        expect(getJobCreationHref(queryModel, undefined, true).toString()).toBe('/workflow/new?selectionKey=id');
-
-        const queryModelWithFilters = queryModel.mutate({ filterArray: [Filter.create('TEST COL', 'TEST VALUE')] });
-        expect(getJobCreationHref(queryModelWithFilters, undefined, true).toString()).toBe(
-            '/workflow/new?selectionKey=id&query.TEST%20COL~eq=TEST%20VALUE'
-        );
-    });
-    test('with filters but ignoreFilter', () => {
-        expect(getJobCreationHref(queryModel, undefined, true).toString()).toBe('/workflow/new?selectionKey=id');
-
-        const queryModelWithFilters = queryModel.mutate({ filterArray: [Filter.create('TEST COL', 'TEST VALUE')] });
-        expect(
-            getJobCreationHref(queryModelWithFilters, undefined, true, undefined, false, null, true).toString()
-        ).toBe('/workflow/new?selectionKey=id&selectionKeyType=snapshot');
-    });
-    test('templateId', () => {
-        expect(getJobCreationHref(queryModel).toString()).not.toContain('templateId');
-        expect(getJobCreationHref(queryModel, 1).toString()).toContain('templateId=1');
-        expect(getJobCreationHref(queryModel, '1').toString()).toContain('templateId=1');
-    });
-    test('samplesIncluded', () => {
-        expect(getJobCreationHref(queryModel).toString()).toBe('/workflow/new?selectionKey=id&sampleTab=search');
-        expect(getJobCreationHref(queryModel, undefined, true).toString()).toBe('/workflow/new?selectionKey=id');
-    });
-    test('picklistName', () => {
-        expect(getJobCreationHref(queryModel).toString()).not.toContain('picklistName');
-        expect(getJobCreationHref(queryModel, undefined, false, 'name').toString()).toContain('picklistName=name');
-    });
-    test('isAssay', () => {
-        expect(getJobCreationHref(queryModel).toString()).not.toContain('isAssay');
-        expect(getJobCreationHref(queryModel, undefined, true, undefined, true).toString()).toBe(
-            '/workflow/new?selectionKey=id'
-        );
-        expect(getJobCreationHref(queryModel, undefined, true, undefined, false, 'sampleFieldKey').toString()).toBe(
-            '/workflow/new?selectionKey=id'
-        );
-        expect(getJobCreationHref(queryModel, undefined, true, undefined, true, 'sampleFieldKey').toString()).toBe(
-            '/workflow/new?selectionKey=id&assayProtocol=s&isAssay=true&sampleFieldKey=sampleFieldKey'
-        );
     });
 });
 

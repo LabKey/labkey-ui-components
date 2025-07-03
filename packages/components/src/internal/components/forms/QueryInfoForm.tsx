@@ -71,8 +71,8 @@ export const getUpdatedFields = (
 export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFieldsEnabledChange'> {
     api?: ComponentsAPIWrapper;
     asModal?: boolean;
-    canSubmitNotDirty?: boolean;
     cancelText?: string;
+    canSubmitNotDirty?: boolean;
     countText?: string;
     creationTypeOptions?: EntityCreationTypeModel[];
     disabled?: boolean;
@@ -346,9 +346,9 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                     <CommentTextArea
                         actionName="Update"
                         containerClassName="inline-comment"
+                        inline
                         onChange={this.onCommentChange}
                         requiresUserComment={requiresUserComment}
-                        inline
                     />
                 )}
 
@@ -433,17 +433,17 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                     {!showErrorsAtBottom && this.renderError()}
                     <Formsy
                         className="form-horizontal"
-                        onValidSubmit={this.handleValidSubmit}
-                        onValid={this.enableSubmitButton}
                         onChange={this.handleChange}
                         onInvalid={this.disableSubmitButton}
+                        onValid={this.enableSubmitButton}
+                        onValidSubmit={this.handleValidSubmit}
                         ref={this.formRef}
                     >
                         <QueryInfoQuantity
+                            countText={countText}
                             creationTypeOptions={creationTypeOptions}
                             includeCountField={includeCountField}
                             maxCount={maxCount}
-                            countText={countText}
                             onCountChange={this.onCountChange}
                         />
                         {(header || showQuantityHeader) && <hr />}

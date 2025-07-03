@@ -270,7 +270,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                             getContainerFilterForLookups()
                                         }
                                         containerPath={col.lookup.containerPath ?? containerPath}
-                                        toggleDisabledTooltip={toggleDisabledTooltip}
                                         description={col.description}
                                         displayColumn={col.lookup.displayColumn}
                                         fireQSChangeOnInit={fireQSChangeOnInit}
@@ -291,6 +290,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         required={col.required}
                                         schemaQuery={col.lookup.schemaQuery}
                                         showLabel
+                                        toggleDisabledTooltip={toggleDisabledTooltip}
                                         value={value}
                                         valueColumn={col.lookup.keyColumn}
                                     />
@@ -304,6 +304,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             <TextChoiceInput
                                 addLabelAsterisk={showAsteriskSymbol}
                                 allowDisable={allowFieldDisable}
+                                description={col.description}
                                 formsy
                                 initiallyDisabled={shouldDisableField}
                                 key={fieldKey}
@@ -312,7 +313,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 placeholder="Select or type to search..."
                                 queryColumn={col}
                                 renderFieldLabel={renderFieldLabel}
-                                description={col.description}
                                 value={value}
                             />
                         );
@@ -321,80 +321,80 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (col.inputType === 'textarea') {
                         return (
                             <TextAreaInput
-                                key={fieldKey}
-                                queryColumn={col}
-                                value={value}
+                                addLabelAsterisk={showAsteriskSymbol}
                                 allowDisable={allowFieldDisable}
                                 initiallyDisabled={shouldDisableField}
+                                key={fieldKey}
                                 onToggleDisable={this.onToggleDisable}
-                                addLabelAsterisk={showAsteriskSymbol}
+                                queryColumn={col}
                                 renderFieldLabel={renderFieldLabel}
+                                value={value}
                             />
                         );
                     } else if (col.inputType === 'file' && renderFileInputs) {
                         return (
                             <FileInput
-                                formsy
-                                key={fieldKey}
-                                queryColumn={col}
-                                initialValue={value}
-                                name={fieldKey}
-                                allowDisable={allowFieldDisable}
-                                initiallyDisabled={shouldDisableField}
-                                onToggleDisable={this.onToggleDisable}
                                 addLabelAsterisk={showAsteriskSymbol}
+                                allowDisable={allowFieldDisable}
+                                formsy
+                                initiallyDisabled={shouldDisableField}
+                                initialValue={value}
+                                key={fieldKey}
+                                name={fieldKey}
+                                onToggleDisable={this.onToggleDisable}
+                                queryColumn={col}
                                 renderFieldLabel={renderFieldLabel}
                                 showLabel
                             />
                         );
                     }
                     switch (col.jsonType) {
+                        case 'boolean':
+                            return (
+                                <CheckboxInput
+                                    addLabelAsterisk={showAsteriskSymbol}
+                                    allowDisable={allowFieldDisable}
+                                    initiallyDisabled={shouldDisableField}
+                                    key={fieldKey}
+                                    onToggleDisable={this.onToggleDisable}
+                                    queryColumn={col}
+                                    renderFieldLabel={renderFieldLabel}
+                                    value={value}
+                                />
+                            );
                         case 'date':
                         case 'time':
                             return (
                                 <DatePickerInput
-                                    key={fieldKey}
-                                    queryColumn={col}
-                                    value={value}
+                                    addLabelAsterisk={showAsteriskSymbol}
                                     allowDisable={allowFieldDisable}
                                     initiallyDisabled={shouldDisableField}
-                                    onToggleDisable={this.onToggleDisable}
-                                    addLabelAsterisk={showAsteriskSymbol}
-                                    renderFieldLabel={renderFieldLabel}
-                                />
-                            );
-                        case 'boolean':
-                            return (
-                                <CheckboxInput
                                     key={fieldKey}
-                                    queryColumn={col}
-                                    value={value}
-                                    allowDisable={allowFieldDisable}
-                                    initiallyDisabled={shouldDisableField}
                                     onToggleDisable={this.onToggleDisable}
-                                    addLabelAsterisk={showAsteriskSymbol}
+                                    queryColumn={col}
                                     renderFieldLabel={renderFieldLabel}
+                                    value={value}
                                 />
                             );
                         default:
                             return (
                                 <React.Fragment key={fieldKey}>
                                     <TextInput
-                                        queryColumn={col}
-                                        value={value ? String(value) : value}
+                                        addLabelAsterisk={showAsteriskSymbol}
                                         allowDisable={allowFieldDisable}
                                         initiallyDisabled={shouldDisableField}
                                         onToggleDisable={this.onToggleDisable}
-                                        addLabelAsterisk={showAsteriskSymbol}
+                                        queryColumn={col}
                                         renderFieldLabel={renderFieldLabel}
+                                        value={value ? String(value) : value}
                                     />
                                     {internalSpacesWarningFieldKeys?.indexOf(fieldKey.toLowerCase()) > -1 && (
                                         <div className="row shift-margin-to-bottom">
                                             <div className="col-sm-3 col-xs-12" />
                                             <div className="col-sm-9 col-xs-12 text-danger">
                                                 <InternalSpacesWarning
-                                                    value={value}
                                                     fieldName={col.caption?.toLowerCase() ?? col.name.toLowerCase()}
+                                                    value={value}
                                                 />
                                             </div>
                                         </div>

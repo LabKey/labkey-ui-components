@@ -210,10 +210,10 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
             body = (
                 <div
                     className={attachedFileClass}
-                    onDrop={this.onDrop}
                     onDragEnter={this.onDrag}
-                    onDragOver={this.onDrag}
                     onDragLeave={this.onDragLeave}
+                    onDragOver={this.onDrag}
+                    onDrop={this.onDrop}
                 >
                     <span className="fa fa-times-circle attached-file__remove-icon" onClick={this.onRemove} />
                     <span className="fa fa-file-text attached-file--icon" />
@@ -224,8 +224,8 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
         } else if (data?.get('value')) {
             body = (
                 <FileColumnRenderer
-                    isFileLink={queryColumn?.rangeURI === FILELINK_RANGE_URI}
                     data={data}
+                    isFileLink={queryColumn?.rangeURI === FILELINK_RANGE_URI}
                     onRemove={isDisabled ? undefined : this.onRemove}
                 />
             );
@@ -233,14 +233,14 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
             body = (
                 <>
                     <input
-                        disabled={this.state.isDisabled}
-                        type="file"
                         className="file-upload__input" // This class makes the file input hidden
-                        name={name}
+                        disabled={this.state.isDisabled}
                         id={inputId}
                         multiple={false}
+                        name={name}
                         onChange={this.onChange}
                         ref={this.fileInput}
+                        type="file"
                     />
 
                     {/* We render a label here so click and drag events propagate to the input above */}
@@ -250,12 +250,12 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
                             'file-upload__is-hover': isHover && !isDisabled,
                         })}
                         htmlFor={inputId}
-                        onDrop={this.onDrop}
                         onDragEnter={this.onDrag}
-                        onDragOver={this.onDrag}
                         onDragLeave={this.onDragLeave}
+                        onDragOver={this.onDrag}
+                        onDrop={this.onDrop}
                     >
-                        <i className="fa fa-cloud-upload" aria-hidden="true" />
+                        <i aria-hidden="true" className="fa fa-cloud-upload" />
                         &nbsp;
                         <span>Select file or drag and drop here.</span>
                         <div className="file-upload__error-message">{this.state.error}</div>
@@ -279,11 +279,11 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
                     renderFieldLabel(queryColumn)
                 ) : (
                     <FieldLabel
+                        column={queryColumn}
+                        isDisabled={isDisabled}
                         labelOverlayProps={labelOverlayProps}
                         showLabel={showLabel}
                         showToggle={allowDisable}
-                        column={queryColumn}
-                        isDisabled={isDisabled}
                         toggleProps={{
                             onClick: toggleDisabledTooltip ? undefined : this.toggleDisabled,
                             toolTip: toggleDisabledTooltip,

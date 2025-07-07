@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.53.TBD
-*Released*: TBD July 2025
+### version 6.53.3
+*Released*: 7 July 2025
 - Issue 53394: FileInput revert removal of the "-fileUpload" suffix from inputId
 
 ### version 6.53.2

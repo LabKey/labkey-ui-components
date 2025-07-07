@@ -12,7 +12,7 @@ jest.mock('./SelectInput', () => ({
 
 describe('TextChoiceInput', () => {
     const DEFAULT_PROPS = {
-        queryColumn: new QueryColumn(),
+        queryColumn: new QueryColumn({}),
     };
 
     beforeEach(() => {

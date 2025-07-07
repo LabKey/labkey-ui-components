@@ -11,17 +11,7 @@ import {
 
 import { ServerActivityList } from './ServerActivityList';
 
-beforeAll(() => {
-    LABKEY.container = {
-        formats: {
-            dateFormat: 'yyyy-MM-dd',
-            dateTimeFormat: 'yyyy-MM-dd HH:mm',
-            numberFormat: null,
-        },
-    };
-});
-
-describe('<ServerActivityList>', () => {
+describe('ServerActivityList', () => {
     test('No data', () => {
         const { container } = renderWithAppContext(
             <ServerActivityList

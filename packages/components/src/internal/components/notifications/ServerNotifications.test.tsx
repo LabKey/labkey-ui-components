@@ -10,17 +10,7 @@ import {
 import { ServerNotificationModel } from './model';
 import { ServerNotifications } from './ServerNotifications';
 
-beforeAll(() => {
-    LABKEY.container = {
-        formats: {
-            dateFormat: 'yyyy-MM-dd',
-            dateTimeFormat: 'yyyy-MM-dd HH:mm',
-            numberFormat: null,
-        },
-    };
-});
-
-describe('<ServerNotifications/>', () => {
+describe('ServerNotifications', () => {
     test('error', () => {
         const errorText = 'Something is wrong';
         const serverActivity = new ServerNotificationModel({

@@ -4,7 +4,7 @@ import { TEST_USER_READER } from '../../userFixtures';
 import { NotificationItemModel } from './model';
 import { NotificationItem } from './NotificationItem';
 
-describe('<NotificationItem />', () => {
+describe('NotificationItem', () => {
     test('not dismissible item', () => {
         const item = new NotificationItemModel({
             message: 'A message',

@@ -40,6 +40,7 @@ export const IN_PROGRESS = new ServerActivityData({
     ContentType: 'text/plain',
     Created: '2020-01-22 13:47:32.317',
     inProgress: true,
+    RowId: 20,
 });
 
 export const UNREAD_WITH_ERROR = new ServerActivityData({

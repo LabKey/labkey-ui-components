@@ -224,7 +224,7 @@ export const LineageSettings: FC<Props> = memo(props => {
 
                 {options.originalFilters.map(filter => (
                     <div key={filter.field}>
-                        <input defaultChecked onChange={onFilterChange} name={filter.field} type="checkbox" />
+                        <input defaultChecked onChange={onFilterChange} name={filter.field}  aria-label={filter.field} type="checkbox" />
                         <span className="lineage-settings__filter-label">
                             {filter.field} = {filter.value.join(' OR ')}
                         </span>

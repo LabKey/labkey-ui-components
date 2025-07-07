@@ -30,7 +30,7 @@ export const DetailsList: FC<DetailsListProps> = memo(props => {
     }, []);
 
     return (
-        <details open={open}>
+        <details data-testid="details-list" open={open}>
             <summary className="lineage-name">
                 <h6 className="no-margin-bottom">
                     {title}
@@ -88,8 +88,14 @@ export const DetailsListSteps: FC<DetailsListStepProps> = memo(({ node, onSelect
         <DetailsList title="Run steps">
             {node.steps.map((step, i) => (
                 <div className="lineage-name" key={`${node.lsid}.step.${i}`}>
-                    <SVGIcon className="lineage-sm-icon" iconSrc={step.iconProps?.iconURL ?? DEFAULT_ICON_URL} />
-                    <span className="lineage-sm-name spacer-right">{step.protocol?.name || step.name}</span>
+                    <SVGIcon
+                        className="lineage-sm-icon"
+                        data-testid="lineage-step-icon"
+                        iconSrc={step.iconProps?.iconURL ?? DEFAULT_ICON_URL}
+                    />
+                    <span className="lineage-sm-name spacer-right" data-testid="lineage-step-name">
+                        {step.protocol?.name || step.name}
+                    </span>
                     <LineageDataLink
                         onClick={() => {
                             onSelect(i);

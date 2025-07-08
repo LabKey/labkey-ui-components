@@ -71,14 +71,14 @@ interface RendererProps {
 // exported for jest testing
 export const CustomPropertiesRenderer: FC<RendererProps> = memo(({ data }) => {
     return (
-        <table className="lineage-detail-prop-table">
+        <table className="lineage-detail-prop-table" data-testid="custom-properties-table">
             <tbody>
                 {data?.map(row => {
                     const fieldKey = row.get('fieldKey');
                     const name = fieldKey.substring(fieldKey.indexOf('#') + 1);
 
                     return (
-                        <tr key={fieldKey}>
+                        <tr key={fieldKey} className="lineage-detail-prop-row">
                             <td className="lineage-detail-prop-cell">{name}</td>
                             <td className="lineage-detail-prop-cell">{row.get('value')}</td>
                         </tr>

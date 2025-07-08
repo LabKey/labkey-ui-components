@@ -426,6 +426,7 @@ export class EditorModel
         let keyValues = Map<number, List<string>>(); // map from row number to list of key values on that row
         let uniqueKeyMap = Map<string, List<number>>(); // map from value to rows with that value
         let missingRequired = Map<string, List<number>>(); // map from column caption to list of rows missing a value for that column
+        const originalUniqueValMap = {}
         for (let rn = 0; rn < this.rowCount; rn++) {
             columns.forEach(col => {
                 const fieldKey = col.fieldKey;
@@ -476,11 +477,13 @@ export class EditorModel
                     // there better be only one of these
                     const valueDescriptor = values.get(0);
                     if (valueDescriptor && this.hasRawValue(valueDescriptor)) {
-                        const stringVal = valueDescriptor.raw.toString().trim().toLowerCase();
-                        if (uniqueKeyMap.has(stringVal)) {
-                            uniqueKeyMap = uniqueKeyMap.set(stringVal, uniqueKeyMap.get(stringVal).push(rn + 1));
+                        const rawStringVal = valueDescriptor.raw.toString().trim();
+                        const stringValLc = rawStringVal.toLowerCase();
+                        if (uniqueKeyMap.has(stringValLc)) {
+                            uniqueKeyMap = uniqueKeyMap.set(stringValLc, uniqueKeyMap.get(stringValLc).push(rn + 1));
                         } else {
-                            uniqueKeyMap = uniqueKeyMap.set(stringVal, List<number>([rn + 1]));
+                            originalUniqueValMap[stringValLc] = rawStringVal;
+                            uniqueKeyMap = uniqueKeyMap.set(stringValLc, List<number>([rn + 1]));
                         }
                     }
                 }
@@ -488,7 +491,14 @@ export class EditorModel
         }
 
         let uniqueKeyViolations = Map<string, Map<string, List<number>>>();
-        const duplicates = uniqueKeyMap.filter(rowNumbers => rowNumbers.size > 1).toMap();
+        const duplicates = uniqueKeyMap
+            .filter(rowNumbers => rowNumbers.size > 1)
+            .reduce((keyMap, values, uniqueValueLc) => {
+                const uniqueValueOriginal = originalUniqueValMap[uniqueValueLc];
+                if (uniqueValueOriginal) return keyMap.set(uniqueValueOriginal, values);
+                else return keyMap.set(uniqueValueLc, values);
+            }, Map<string, List<number>>())
+            .toMap();
         if (duplicates.size > 0 && uniqueFieldCol) {
             uniqueKeyViolations = uniqueKeyViolations.set(uniqueFieldCol.caption, duplicates);
         }

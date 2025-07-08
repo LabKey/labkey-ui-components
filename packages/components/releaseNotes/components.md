@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 52657: LKSM: We shouldn't allow creating sample names that differ only in case
   - Use original case in duplicate name error message
 
+### version 6.54.1
+*Released*: 8 July 2025
+- Issue 53134: Set dirty bit after adding uniqueId field
+
 ### version 6.54.0
 *Released*: 3 July 2025
 - ProductMenu shows 'Dashboard' instead of 'Storage' as subtitle in FM /home route

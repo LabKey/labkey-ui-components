@@ -426,7 +426,7 @@ export class EditorModel
         let keyValues = Map<number, List<string>>(); // map from row number to list of key values on that row
         let uniqueKeyMap = Map<string, List<number>>(); // map from value to rows with that value
         let missingRequired = Map<string, List<number>>(); // map from column caption to list of rows missing a value for that column
-        const originalUniqueValMap = {}
+        const originalUniqueValMap = {};
         for (let rn = 0; rn < this.rowCount; rn++) {
             columns.forEach(col => {
                 const fieldKey = col.fieldKey;

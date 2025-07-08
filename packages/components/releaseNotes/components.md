@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.54.1
+*Released*: 8 July 2025
+- Issue 53134: Set dirty bit after adding uniqueId field
+
 ### version 6.54.0
 *Released*: 3 July 2025
 - ProductMenu shows 'Dashboard' instead of 'Storage' as subtitle in FM /home route

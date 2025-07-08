@@ -535,9 +535,14 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
     };
 
     onAddUniqueIdField = (fieldConfig: Partial<IDomainField>): void => {
-        this.setState(state => ({
-            model: state.model.set('domain', addDomainField(state.model.domain, fieldConfig)) as SampleTypeModel,
-        }));
+        this.setState(
+            state => ({
+                model: state.model.set('domain', addDomainField(state.model.domain, fieldConfig)) as SampleTypeModel,
+            }),
+            () => {
+                this.props.onChange?.(this.state.model);
+            }
+        );
     };
 
     uniqueIdBannerRenderer = (config: IAppDomainHeader): ReactNode => {

@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { List, Map } from 'immutable';
+import { List } from 'immutable';
 
 import { Operation } from '../../../public/QueryColumn';
 
@@ -18,9 +18,9 @@ type BaseProps = Omit<
     | 'hideButtons'
     | 'includeCountField'
     | 'initiallyDisableFields'
+    | 'queryInfo'
     | 'showLabelAsterisk'
     | 'title'
-    | 'queryInfo'
 >;
 
 interface BulkAddUpdateFormProps extends BaseProps {

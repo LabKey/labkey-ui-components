@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`ColorPickerInput allowRemove 1`] = `
 <div>
@@ -529,7 +529,7 @@ exports[`ColorPickerInput showPicker 1`] = `
                 style="position: absolute; top: 6px; left: 5px; height: 9px; width: 9px; background: rgb(0, 0, 0);"
               />
               <div
-                style="position: relative; flex: 6;"
+                style="position: relative; flex: 6 1 0%;"
               >
                 <input
                   id="rc-editable-input-1"
@@ -545,7 +545,7 @@ exports[`ColorPickerInput showPicker 1`] = `
                 </label>
               </div>
               <div
-                style="position: relative; flex: 3;"
+                style="position: relative; flex: 3 1 0%;"
               >
                 <input
                   id="rc-editable-input-2"
@@ -561,7 +561,7 @@ exports[`ColorPickerInput showPicker 1`] = `
                 </label>
               </div>
               <div
-                style="position: relative; flex: 3;"
+                style="position: relative; flex: 3 1 0%;"
               >
                 <input
                   id="rc-editable-input-3"
@@ -577,7 +577,7 @@ exports[`ColorPickerInput showPicker 1`] = `
                 </label>
               </div>
               <div
-                style="position: relative; flex: 3;"
+                style="position: relative; flex: 3 1 0%;"
               >
                 <input
                   id="rc-editable-input-4"

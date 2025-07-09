@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 6.??.?
 *Released*: ? July 2025
-- makeCommaSeparatedString: Add lastSeparator and postfix args.
+- makeCommaSeparatedString: Add lastSeparator and postfix args, export
 
 ### version 6.54.3
 *Released*: 10 July 2025

@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.54.2
+*Released*: 9 July 2025
+- Merge from release25.7-SNAPSHOT to develop
+    - includes changes from 6.53.1 #1824
+    - includes changes from 6.53.2 #1823
+    - includes changes from 6.53.3 #1825
+
 ### version 6.54.1
 *Released*: 8 July 2025
 - Issue 53134: Set dirty bit after adding uniqueId field

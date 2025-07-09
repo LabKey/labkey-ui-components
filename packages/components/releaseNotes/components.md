@@ -6,6 +6,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 52657: LKSM: We shouldn't allow creating sample names that differ only in case
   - Use original case in duplicate name error message
 
+### version 6.54.2
+*Released*: 9 July 2025
+- Merge from release25.7-SNAPSHOT to develop
+    - includes changes from 6.53.1 #1824
+    - includes changes from 6.53.2 #1823
+    - includes changes from 6.53.3 #1825
+
 ### version 6.54.1
 *Released*: 8 July 2025
 - Issue 53134: Set dirty bit after adding uniqueId field
@@ -14,6 +21,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 3 July 2025
 - ProductMenu shows 'Dashboard' instead of 'Storage' as subtitle in FM /home route
 - Issue 53371: Find Samples by ID JS error when clicking "Find Samples" button without entering anything into the text area
+
+### version 6.53.3
+*Released*: 7 July 2025
+- Issue 53394: FileInput revert removal of the "-fileUpload" suffix from inputId
+
+### version 6.53.2
+*Released*: 3 July 2025
+* Issue 53141: Should set a dirty bit when setting or updating the hit selection criteria for an assay
+
+### version 6.53.1
+*Released*: 3 July 2025
+- Issue 53153: Disable value validation for expInput, aliquotParent columns
 
 ### version 6.53.0
 *Released*: 1 July 2025

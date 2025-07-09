@@ -1416,6 +1416,24 @@ describe('makeCommaSeparatedString', () => {
         expect(makeCommaSeparatedString([123, 456])).toBe('123 and 456');
         expect(makeCommaSeparatedString([123, 'blood', true])).toBe('123, blood and true');
     });
+
+    test('lastSeparator', () => {
+        expect(makeCommaSeparatedString(['blood'], ', or ')).toBe('blood');
+        expect(makeCommaSeparatedString(['blood', 'saliva', 'dna'], ', or ')).toEqual('blood, saliva, or dna');
+        expect(makeCommaSeparatedString([1, 2, 3], ', and ')).toEqual('1, 2, and 3');
+    });
+
+    test('postfix', () => {
+        expect(makeCommaSeparatedString(['blood'], undefined, '.')).toBe('blood.');
+        expect(makeCommaSeparatedString(['blood', 'saliva', 'dna'], undefined, '.')).toEqual('blood, saliva and dna.');
+        expect(makeCommaSeparatedString([1, 2, 3], undefined, '.')).toEqual('1, 2 and 3.');
+    });
+
+    test('lastSeparator & postfix', () => {
+        expect(makeCommaSeparatedString(['blood'], ', or ', '.')).toBe('blood.');
+        expect(makeCommaSeparatedString(['blood', 'saliva', 'dna'], ', or ', '.')).toEqual('blood, saliva, or dna.');
+        expect(makeCommaSeparatedString([1, 2, 3], ', and ', '.')).toEqual('1, 2, and 3.');
+    });
 });
 
 describe('getValuesSummary', () => {

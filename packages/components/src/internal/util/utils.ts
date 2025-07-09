@@ -694,13 +694,13 @@ export function getValueFromRow(row: Record<string, any>, col: string): string |
     return val;
 }
 
-export function makeCommaSeparatedString<T>(values: T[]): string {
+export function makeCommaSeparatedString<T>(values: T[], lastSeparator = ' and ', postfix = ''): string {
     if (!values || values.length === 0) return '';
-    if (values.length === 1) return values[0] + '';
+    if (values.length === 1) return values[0] + postfix;
 
     const firsts = values.slice(0, values.length - 1);
     const last = values[values.length - 1];
-    return firsts.join(', ') + ' and ' + last;
+    return firsts.join(', ') + lastSeparator + last + postfix;
 }
 
 /**

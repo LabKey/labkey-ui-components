@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.??.?
-*Released*: ? July 2025
+### version 6.55.0
+*Released*: 10 July 2025
 - makeCommaSeparatedString: Add lastSeparator and postfix args, export
 
 ### version 6.54.3

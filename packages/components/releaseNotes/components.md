@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.54.3
+*Released*: 10 July 2025
+- Issue 52657: LKSM: We shouldn't allow creating sample names that differ only in case
+  - Use original case in duplicate name error message
+
 ### version 6.54.2
 *Released*: 9 July 2025
 - Merge from release25.7-SNAPSHOT to develop

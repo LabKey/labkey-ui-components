@@ -252,15 +252,16 @@ describe('EditorModel', () => {
             expect(uniqueKeyViolations.get(colOneCaption).size).toBe(3);
             expect(uniqueKeyViolations.get(colOneCaption).has('a')).toBe(true);
             expect(uniqueKeyViolations.get(colOneCaption).get('a')).toEqual(List<number>([1, 2]));
-            expect(uniqueKeyViolations.get(colOneCaption).has('caseinsensitive')).toBe(true);
-            expect(uniqueKeyViolations.get(colOneCaption).get('caseinsensitive')).toEqual(List<number>([3, 4]));
-            expect(uniqueKeyViolations.get(colOneCaption).has('spacedupe')).toBe(true);
-            expect(uniqueKeyViolations.get(colOneCaption).get('spacedupe')).toEqual(List<number>([5, 6]));
+            expect(uniqueKeyViolations.get(colOneCaption).has('caseinsensitive')).toBe(false);
+            expect(uniqueKeyViolations.get(colOneCaption).has('caseInSenSiTive')).toBe(true);
+            expect(uniqueKeyViolations.get(colOneCaption).get('caseInSenSiTive')).toEqual(List<number>([3, 4]));
+            expect(uniqueKeyViolations.get(colOneCaption).has('spaceDupe')).toBe(true);
+            expect(uniqueKeyViolations.get(colOneCaption).get('spaceDupe')).toEqual(List<number>([5, 6]));
             const errors = editorModel.getValidationErrors(colOneFk);
             expect(errors.errors).toEqual([
                 `Duplicate value (a) for ${colOneCaption} on rows 1, 2.`,
-                `Duplicate value (caseinsensitive) for ${colOneCaption} on rows 3, 4.`,
-                `Duplicate value (spacedupe) for ${colOneCaption} on rows 5, 6.`,
+                `Duplicate value (caseInSenSiTive) for ${colOneCaption} on rows 3, 4.`,
+                `Duplicate value (spaceDupe) for ${colOneCaption} on rows 5, 6.`,
             ]);
         });
 
@@ -290,11 +291,11 @@ describe('EditorModel', () => {
             expect(uniqueKeyViolations.size).toBe(1);
             expect(uniqueKeyViolations.has(colOneCaption)).toBe(true);
             expect(uniqueKeyViolations.get(colOneCaption).size).toBe(1);
-            expect(uniqueKeyViolations.get(colOneCaption).has('caseinsensitive')).toBe(true);
-            expect(uniqueKeyViolations.get(colOneCaption).get('caseinsensitive')).toEqual(List<number>([3, 4]));
+            expect(uniqueKeyViolations.get(colOneCaption).has('caseInSenSiTive')).toBe(true);
+            expect(uniqueKeyViolations.get(colOneCaption).get('caseInSenSiTive')).toEqual(List<number>([3, 4]));
             const errors = editorModel.getValidationErrors(colOneFk);
             expect(errors.errors).toEqual([
-                `Duplicate value (caseinsensitive) for ${colOneCaption} on rows 3, 4.`,
+                `Duplicate value (caseInSenSiTive) for ${colOneCaption} on rows 3, 4.`,
                 `${colOneCaption} is missing from row 1.`,
             ]);
             expect(errors.cellMessages.toJS()).toStrictEqual({
@@ -929,7 +930,7 @@ describe('EditorModel', () => {
             });
 
             test('with original multi values, multiple same values, but ordering is changed', () => {
-                let updatedRows = emMultipleComplexInputs.getUpdatedData(
+                const updatedRows = emMultipleComplexInputs.getUpdatedData(
                     fromJS({
                         0: {
                             [expInputCol.fieldKey]: [
@@ -940,7 +941,7 @@ describe('EditorModel', () => {
                                 {
                                     value: 123,
                                     displayValue: 'Value 123',
-                                }
+                                },
                             ],
                         },
                         1: {

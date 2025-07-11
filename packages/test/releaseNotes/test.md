@@ -1,6 +1,10 @@
 # @labkey/test
 Utilities and configurations for running JavaScript tests with LabKey Server.
 
+### version 1.9.0
+*Released*: 11 July 2025
+- Package updates
+
 ### version 1.8.1
 *Released*: 23 April 2025
 - Define text encoder and decoder supplied by node in Jest/JSDOM environments

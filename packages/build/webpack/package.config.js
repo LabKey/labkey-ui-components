@@ -7,7 +7,6 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const constants = require('./constants');
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const CircularDependencyPlugin = require('circular-dependency-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const tsCheckerConfig = {
@@ -34,11 +33,6 @@ const plugins = [
                 to: 'assets/scss/theme'
             }
         ]
-    }),
-    new CircularDependencyPlugin({
-        exclude: /node_modules/,
-        include: /src/,
-        failOnError: true,
     }),
 ];
 if (process.env.ANALYZE) {

@@ -8,7 +8,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const CircularDependencyPlugin = require('circular-dependency-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const cwd = path.resolve('./').split(path.sep);
@@ -387,12 +386,6 @@ module.exports = {
         }));
 
         allPlugins.push(new ForkTsCheckerWebpackPlugin(TS_CHECKER_CONFIG));
-
-        allPlugins.push(new CircularDependencyPlugin({
-            exclude: /node_modules/,
-            include: /src/,
-            failOnError: false, // TODO: When all App circular deps have been resolved this should be set to true
-        }));
 
         if (process.env.ANALYZE) {
             allPlugins.push(new BundleAnalyzerPlugin());

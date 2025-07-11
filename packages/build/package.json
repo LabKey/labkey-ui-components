@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "8.5.0",
+  "version": "8.6.0",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"
@@ -12,17 +12,16 @@
   "author": "LabKey",
   "license": "Apache-2.0",
   "dependencies": {
-    "@babel/core": "~7.26.10",
-    "@babel/plugin-transform-class-properties": "~7.25.9",
-    "@babel/plugin-transform-object-rest-spread": "~7.25.9",
-    "@babel/preset-env": "~7.26.9",
-    "@babel/preset-react": "~7.26.3",
-    "@babel/preset-typescript": "~7.27.0",
-    "@pmmmwh/react-refresh-webpack-plugin": "~0.5.16",
+    "@babel/core": "~7.28.0",
+    "@babel/plugin-transform-class-properties": "~7.27.1",
+    "@babel/plugin-transform-object-rest-spread": "~7.28.0",
+    "@babel/preset-env": "~7.28.0",
+    "@babel/preset-react": "~7.27.1",
+    "@babel/preset-typescript": "~7.27.1",
+    "@pmmmwh/react-refresh-webpack-plugin": "~0.6.1",
     "ajv": "~8.17.1",
     "babel-loader": "~10.0.0",
     "bootstrap-sass": "~3.4.3",
-    "circular-dependency-plugin": "~5.2.2",
     "copy-webpack-plugin": "~13.0.0",
     "cross-env": "~7.0.3",
     "css-loader": "~7.1.2",
@@ -37,9 +36,9 @@
     "source-map-loader": "~5.0.0",
     "style-loader": "~4.0.0",
     "typescript": "~5.8.3",
-    "webpack": "~5.99.6",
+    "webpack": "~5.100.0",
     "webpack-bundle-analyzer": "~4.10.2",
     "webpack-cli": "~6.0.1",
-    "webpack-dev-server": "~5.2.1"
+    "webpack-dev-server": "~5.2.2"
   }
 }

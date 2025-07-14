@@ -13,6 +13,7 @@ export class AuditDetailsModel extends Record({
     eventDateFormatted: undefined,
     oldData: undefined,
     newData: undefined,
+    originalValues: undefined,
     userComment: undefined,
 }) {
     declare rowId?: number;
@@ -21,6 +22,7 @@ export class AuditDetailsModel extends Record({
     declare eventDateFormatted?: string;
     declare oldData?: Map<string, string>;
     declare newData?: Map<string, string>;
+    declare originalValues?: Map<string, string>;
     declare userComment?: string;
 
     static create(raw: any): AuditDetailsModel {
@@ -28,6 +30,7 @@ export class AuditDetailsModel extends Record({
             ...raw,
             oldData: raw.oldData ? fromJS(raw.oldData) : undefined,
             newData: raw.newData ? fromJS(raw.newData) : undefined,
+            originalValues: raw.originalValues ? fromJS(raw.originalValues) : undefined,
         });
     }
 
@@ -65,6 +68,7 @@ export class TimelineEventModel extends Record({
     metadata: undefined,
     oldData: undefined,
     newData: undefined,
+    originalValues: undefined, // map from field name to user-provided values that were converted
     userComment: undefined,
 }) {
     declare rowId?: number;
@@ -80,6 +84,7 @@ export class TimelineEventModel extends Record({
     declare metadata?: List<Map<string, any>>;
     declare oldData?: Map<string, string>;
     declare newData?: Map<string, string>;
+    declare originalValues?: Map<string, string>;
     declare userComment?: string;
 
     constructor(values?: { [key: string]: any }) {
@@ -118,6 +123,7 @@ export class TimelineEventModel extends Record({
 
         if (raw.oldData) fields.oldData = fromJS(raw.oldData);
         if (raw.newData) fields.newData = fromJS(raw.newData);
+        if (raw.originalValues) fields.originalValues = fromJS(raw.originalValues);
 
         return new TimelineEventModel(fields);
     }
@@ -129,6 +135,7 @@ export class TimelineEventModel extends Record({
             rowId: this.rowId,
             oldData: this.oldData,
             newData: this.newData,
+            originalValues: this.originalValues,
             userComment: this.userComment,
         });
     }

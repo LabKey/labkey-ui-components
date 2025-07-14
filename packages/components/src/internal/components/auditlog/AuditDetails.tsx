@@ -14,6 +14,7 @@ import { UserLink } from '../user/UserLink';
 
 import { getEventDataValueDisplay } from './utils';
 import { AuditDetailsModel } from './models';
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface Props extends PropsWithChildren {
     changeDetails?: AuditDetailsModel;
@@ -52,7 +53,7 @@ export class AuditDetails extends Component<Props> {
         return displayVal;
     };
 
-    renderRow(field: string, oldVal: string, newVal: string, isUpdate: boolean, isInsert: boolean): ReactNode {
+    renderRow(field: string, oldVal: string, newVal: string, originalVal: string, isUpdate: boolean, isInsert: boolean): ReactNode {
         const { user } = this.props;
 
         if (!user.isSignedIn && AuditDetails.isUserFieldLabel(field)) return null;
@@ -64,7 +65,17 @@ export class AuditDetails extends Component<Props> {
         return (
             <div className="row margin-bottom" key={field}>
                 <div className="left-padding right-padding">
-                    <span className="audit-detail-row-label right-padding">{capitalizeFirstChar(field)}</span>
+                    <span className="audit-detail-row-label right-padding">
+                        {capitalizeFirstChar(field)}
+                        {originalVal != null && (
+                            <LabelHelpTip
+                                iconComponent={<i className="original-value-icon fa fa-info-circle left-padding" />}
+                                placement="right"
+                            >
+                                <div className="ws-pre-wrap">Original value: {originalVal}</div>
+                            </LabelHelpTip>
+                        )}
+                    </span>
                 </div>
                 <div className="left-padding right-padding">
                     {isInsert && <span className="new-audit-value">{newValue}</span>}
@@ -91,7 +102,7 @@ export class AuditDetails extends Component<Props> {
         const isInsert = changeDetails.isInsert();
         const usedFields = [];
 
-        let oldFields, newFields;
+        let newFields, oldFields;
         if (changeDetails.oldData) {
             oldFields = changeDetails.oldData.entrySeq().map(([field, value]) => {
                 let newValue;
@@ -99,16 +110,23 @@ export class AuditDetails extends Component<Props> {
                     newValue = changeDetails.newData.get(field);
                     usedFields.push(field);
                 }
+                let originalValue;
+                if (changeDetails.originalValues) {
+                    originalValue = changeDetails.originalValues.get(field);
+                }
 
-                return this.renderRow(field, value, newValue, isUpdate, isInsert);
+                return this.renderRow(field, value, newValue, originalValue, isUpdate, isInsert);
             });
         }
 
         if (changeDetails.newData) {
             newFields = changeDetails.newData.entrySeq().map(([field, value]) => {
                 if (usedFields.indexOf(field) >= 0) return null;
-
-                return this.renderRow(field, undefined, value, isUpdate, isInsert);
+                let originalValue;
+                if (changeDetails.originalValues) {
+                    originalValue = changeDetails.originalValues.get(field);
+                }
+                return this.renderRow(field, undefined, value, originalValue, isUpdate, isInsert);
             });
         }
 

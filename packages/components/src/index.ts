@@ -286,6 +286,7 @@ import { ANCESTOR_LOOKUP_CONCEPT_URI, AncestorRenderer } from './internal/render
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
 import { StoredAmountRenderer } from './internal/renderers/StoredAmountRenderer';
 import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
+import { TransactionAuditIdRenderer } from './internal/renderers/TransactionAuditIdRenderer';
 import { ExpirationDateColumnRenderer } from './internal/renderers/ExpirationDateColumnRenderer';
 import { FolderColumnRenderer } from './internal/renderers/FolderColumnRenderer';
 import { AppendUnits } from './internal/renderers/AppendUnits';
@@ -1745,6 +1746,7 @@ export {
     StorageAmountInput,
     StorageStatusRenderer,
     StoredAmountRenderer,
+    TransactionAuditIdRenderer,
     SVGIcon,
     Tab,
     TabbedGridPanel,

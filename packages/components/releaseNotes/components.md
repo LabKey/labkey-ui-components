@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Add file system audit events for apps
+- Add `TransactionAuditIdRenderer` for displaying link to page of audit records associated with a transaction id
+
 ### version 6.56.0
 *Released*: 11 July 2025
 - Package updates

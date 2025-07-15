@@ -4,7 +4,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SCHEMAS } from '../../schemas';
 
-import { TEXT_TYPE } from '../domainproperties/PropDescType';
+import { INTEGER_TYPE, TEXT_TYPE } from '../domainproperties/PropDescType';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
@@ -370,6 +370,12 @@ describe('getUpdateFilterExpressionFilter', () => {
         jsonType: 'string',
         fieldKey,
     });
+    const integerField = new QueryColumn({
+        name: 'integerField',
+        rangeURI: INTEGER_TYPE.rangeURI,
+        jsonType: 'int',
+        fieldKey: 'integerField',
+    });
 
     const anyOp = {
         betweenOperator: false,
@@ -446,11 +452,17 @@ describe('getUpdateFilterExpressionFilter', () => {
         expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', 'a')).toStrictEqual(
             Filter.create(fieldKey, 'a,z', Filter.Types.BETWEEN)
         );
+        expect(getUpdateFilterExpressionFilter(betweenOp, integerField, 1, 100, 11)).toStrictEqual(
+            Filter.create(integerField.fieldKey, '11,100', Filter.Types.BETWEEN)
+        );
     });
 
     test('update between filter second value', () => {
         expect(getUpdateFilterExpressionFilter(betweenOp, stringField, null, null, 'y', true)).toStrictEqual(
             Filter.create(fieldKey, 'y', Filter.Types.BETWEEN)
+        );
+        expect(getUpdateFilterExpressionFilter(betweenOp, integerField, null, null, 11, true)).toStrictEqual(
+            Filter.create(integerField.fieldKey, '11', Filter.Types.BETWEEN)
         );
     });
 
@@ -458,11 +470,17 @@ describe('getUpdateFilterExpressionFilter', () => {
         expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', null, true)).toStrictEqual(
             Filter.create(fieldKey, 'x', Filter.Types.BETWEEN)
         );
+        expect(getUpdateFilterExpressionFilter(betweenOp, integerField, 10, 100, null, true)).toStrictEqual(
+            Filter.create(integerField.fieldKey, '10', Filter.Types.BETWEEN)
+        );
     });
 
     test('clear between filter values', () => {
         expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', null, null, true)).toStrictEqual(
             Filter.create(fieldKey, null, Filter.Types.BETWEEN)
+        );
+        expect(getUpdateFilterExpressionFilter(betweenOp, integerField, 10, 100, null, null, true)).toStrictEqual(
+            Filter.create(integerField.fieldKey, null, Filter.Types.BETWEEN)
         );
     });
 

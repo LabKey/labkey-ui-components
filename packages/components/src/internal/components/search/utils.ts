@@ -251,13 +251,15 @@ export function getUpdateFilterExpressionFilter(
                 value = null;
             } else if (isSecondValue) {
                 if (newFilterValue == null) {
-                    value = previousFirstFilterValue != null ? previousFirstFilterValue : '';
+                    value = previousFirstFilterValue != null ? previousFirstFilterValue.toString() : '';
                 } else {
-                    value = (previousFirstFilterValue != null ? previousFirstFilterValue + ',' : '') + newFilterValue;
+                    value =
+                        (previousFirstFilterValue != null ? previousFirstFilterValue + ',' : '') +
+                        newFilterValue.toString();
                 }
             } else {
                 if (newFilterValue == null) {
-                    value = previousSecondFilterValue != null ? previousSecondFilterValue : '';
+                    value = previousSecondFilterValue != null ? previousSecondFilterValue.toString() : '';
                 } else {
                     value = newFilterValue + (previousSecondFilterValue != null ? ',' + previousSecondFilterValue : '');
                 }

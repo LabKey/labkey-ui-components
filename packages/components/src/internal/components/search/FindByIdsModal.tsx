@@ -71,6 +71,8 @@ export const FindByIdsModal: FC<Props> = memo(props => {
     }, []);
 
     const _onFind = useCallback(async () => {
+        if (!idString) return;
+
         const ids = idString
             .split('\n')
             .map(id => id.trim())

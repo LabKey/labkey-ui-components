@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- null checks for exceptions reported to Mothership
+
 ### version 6.56.0
 *Released*: 11 July 2025
 - Package updates

@@ -14,6 +14,7 @@ import { ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE } from '../../query/filter';
 
 import {
     ALL_VALUE_DISPLAY,
+    concatValuesWithComma,
     decodeErrorMessage,
     EMPTY_VALUE_DISPLAY,
     escapeSearchQuery,
@@ -511,6 +512,30 @@ describe('getUpdateFilterExpressionFilter', () => {
         expect(getUpdateFilterExpressionFilter(equalOp, stringField, null, null, 'a\nb\nc')).toStrictEqual(
             Filter.create(fieldKey, 'a\nb\nc', Filter.Types.EQAUL)
         );
+    });
+});
+
+describe('concatValuesWithComma', () => {
+    test('empty values', () => {
+        expect(concatValuesWithComma(undefined, undefined)).toBe('');
+        expect(concatValuesWithComma(undefined, null)).toBe('');
+        expect(concatValuesWithComma(null, undefined)).toBe('');
+        expect(concatValuesWithComma(null, null)).toBe('');
+        expect(concatValuesWithComma(null, '')).toBe('');
+        expect(concatValuesWithComma('', null)).toBe('');
+        expect(concatValuesWithComma('', '')).toBe(',');
+    });
+
+    test('single value', () => {
+        expect(concatValuesWithComma(' a ', undefined)).toBe('a');
+        expect(concatValuesWithComma(' a ', null)).toBe('a');
+        expect(concatValuesWithComma(null, ' b ')).toBe('b');
+        expect(concatValuesWithComma('', ' c ')).toBe(',c');
+        expect(concatValuesWithComma(' d ', '')).toBe('d,');
+    });
+
+    test('both values', () => {
+        expect(concatValuesWithComma(' a ', ' b ')).toBe('a,b');
     });
 });
 

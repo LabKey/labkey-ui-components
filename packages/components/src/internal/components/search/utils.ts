@@ -223,6 +223,14 @@ export function getFilterForFilterSelection(filterSelection: FilterSelection, fi
     );
 }
 
+// concat a and b with a comma in between, check for nulls/undefined, and trim()
+export function concatValuesWithComma(a, b): string {
+    if (a == null && b == null) return '';
+    if (a == null) return b.toString().trim();
+    if (b == null) return a.toString().trim();
+    return a.toString().trim() + ',' + b.toString().trim();
+}
+
 export function getUpdateFilterExpressionFilter(
     newFilterType: FieldFilterOption,
     field?: QueryColumn,
@@ -250,19 +258,9 @@ export function getUpdateFilterExpressionFilter(
             if (clearBothValues) {
                 value = null;
             } else if (isSecondValue) {
-                if (newFilterValue == null) {
-                    value = previousFirstFilterValue != null ? previousFirstFilterValue.toString() : '';
-                } else {
-                    value =
-                        (previousFirstFilterValue != null ? previousFirstFilterValue + ',' : '') +
-                        newFilterValue.toString();
-                }
+                value = concatValuesWithComma(previousFirstFilterValue, newFilterValue);
             } else {
-                if (newFilterValue == null) {
-                    value = previousSecondFilterValue != null ? previousSecondFilterValue.toString() : '';
-                } else {
-                    value = newFilterValue + (previousSecondFilterValue != null ? ',' + previousSecondFilterValue : '');
-                }
+                value = concatValuesWithComma(newFilterValue, previousSecondFilterValue);
             }
         } else if (!value && field.getDisplayFieldJsonType() === 'boolean') {
             value = 'false';

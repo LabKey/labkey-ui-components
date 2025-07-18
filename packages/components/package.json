@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "6.56.0-betweenFilter53451.1",
+  "version": "6.56.0-betweenFilter53451.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

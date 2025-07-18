@@ -142,7 +142,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
         var source = e.dataTransfer.getData('dragIndex');
         const target = this.state.dragTarget;
         if (source && target && source !== target) {
-            this.props?.onColumnDrop(source, target);
+            this.props.onColumnDrop?.(source, target); // Issue 53443
         }
     };
 

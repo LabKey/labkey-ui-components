@@ -150,10 +150,11 @@ export function getFieldFiltersValidationResult(
                 if (value === undefined || value === null || (Utils.isString(value) && !value)) {
                     missingValueError = true;
                 } else if (isBetween) {
-                    if (!Array.isArray(value) || value.length < 2) {
+                    // Issue 53451: for between filters, we expect an array of two values and neither can be empty
+                    if (!Array.isArray(value) || value.length != 2) {
                         missingValueError = true;
                     } else {
-                        if ((Utils.isString(value[0]) && !value[0]) || (Utils.isString(value[1]) && !value[1])) {
+                        if (isEmptyValue(value[0]) || isEmptyValue(value[1])) {
                             missingValueError = true;
                         }
                     }
@@ -229,6 +230,11 @@ export function concatValuesWithComma(a, b): string {
     if (a == null) return b.toString().trim();
     if (b == null) return a.toString().trim();
     return a.toString().trim() + ',' + b.toString().trim();
+}
+
+// check if a value is an empty string
+export function isEmptyValue(value): boolean {
+    return value === '' || value === null || value === undefined;
 }
 
 export function getUpdateFilterExpressionFilter(

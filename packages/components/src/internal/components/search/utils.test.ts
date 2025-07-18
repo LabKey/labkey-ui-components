@@ -28,6 +28,7 @@ import {
     getUpdatedFilters,
     getUpdatedFilterSelection,
     getUpdateFilterExpressionFilter,
+    isEmptyValue,
     isValidFilterField,
 } from './utils';
 import { SearchCategory } from './constants';
@@ -536,6 +537,23 @@ describe('concatValuesWithComma', () => {
 
     test('both values', () => {
         expect(concatValuesWithComma(' a ', ' b ')).toBe('a,b');
+    });
+});
+
+describe('isEmptyValue', () => {
+    test('empty', () => {
+        expect(isEmptyValue(null)).toBe(true);
+        expect(isEmptyValue(undefined)).toBe(true);
+        expect(isEmptyValue('')).toBe(true);
+    });
+
+    test('not empty', () => {
+        expect(isEmptyValue(' ')).toBe(false);
+        expect(isEmptyValue('a')).toBe(false);
+        expect(isEmptyValue(0)).toBe(false);
+        expect(isEmptyValue(1)).toBe(false);
+        expect(isEmptyValue([])).toBe(false);
+        expect(isEmptyValue({})).toBe(false);
     });
 });
 

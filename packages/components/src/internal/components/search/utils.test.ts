@@ -445,7 +445,7 @@ describe('getUpdateFilterExpressionFilter', () => {
     });
 
     test('update filter value', () => {
-        expect(getUpdateFilterExpressionFilter(equalOp, stringField, 'abc', null, 'def')).toStrictEqual(
+        expect(getUpdateFilterExpressionFilter(equalOp, stringField, 'abc', null, ' def ')).toStrictEqual(
             Filter.create(fieldKey, 'def', Filter.Types.EQ)
         );
     });

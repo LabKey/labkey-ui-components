@@ -260,6 +260,8 @@ export function getUpdateFilterExpressionFilter(
         filter = Filter.create(fieldKey, null, filterType);
     } else {
         let value = newFilterValue;
+        if (Utils.isString(newFilterValue)) value = value.trim();
+
         if (newFilterType?.betweenOperator) {
             if (clearBothValues) {
                 value = null;

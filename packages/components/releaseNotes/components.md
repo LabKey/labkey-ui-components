@@ -4,7 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Issue 53451: JS error when deleting numeric filter values with Between operator
-- Also fixes for filter modal Between operator handling of empty inputs and leading/trailing spaces
+- Fixes for filter modal Between operator handling of empty inputs and leading/trailing spaces
+- Fixes for trimming values for any non-CONTAINS filter operators
 
 ### version 6.56.1
 *Released*: 18 July 1015

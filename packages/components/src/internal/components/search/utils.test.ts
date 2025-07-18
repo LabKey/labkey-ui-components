@@ -14,10 +14,10 @@ import { ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE } from '../../query/filter';
 
 import {
     ALL_VALUE_DISPLAY,
-    concatValuesWithComma,
     decodeErrorMessage,
     EMPTY_VALUE_DISPLAY,
     escapeSearchQuery,
+    getArrayFromValues,
     getCheckedFilterValues,
     getFieldFiltersValidationResult,
     getFilterSelections,
@@ -397,6 +397,15 @@ describe('getUpdateFilterExpressionFilter', () => {
         isSoleFilter: true,
     };
 
+    const containsOp = {
+        betweenOperator: false,
+        label: 'Contains',
+        multiValue: false,
+        value: 'contains',
+        valueRequired: true,
+        isSoleFilter: true,
+    };
+
     const betweenOp = {
         betweenOperator: true,
         label: 'Between',
@@ -450,8 +459,14 @@ describe('getUpdateFilterExpressionFilter', () => {
         );
     });
 
+    test('do not trim for contains', () => {
+        expect(getUpdateFilterExpressionFilter(containsOp, stringField, 'abc', null, ' def ')).toStrictEqual(
+            Filter.create(fieldKey, ' def ', Filter.Types.CONTAINS)
+        );
+    });
+
     test('update between filter first value', () => {
-        expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', 'a')).toStrictEqual(
+        expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', ' a ')).toStrictEqual(
             Filter.create(fieldKey, 'a,z', Filter.Types.BETWEEN)
         );
         expect(getUpdateFilterExpressionFilter(betweenOp, integerField, 1, 100, 11)).toStrictEqual(
@@ -460,20 +475,20 @@ describe('getUpdateFilterExpressionFilter', () => {
     });
 
     test('update between filter second value', () => {
-        expect(getUpdateFilterExpressionFilter(betweenOp, stringField, null, null, 'y', true)).toStrictEqual(
-            Filter.create(fieldKey, 'y', Filter.Types.BETWEEN)
+        expect(getUpdateFilterExpressionFilter(betweenOp, stringField, null, null, ' y ', true)).toStrictEqual(
+            Filter.create(fieldKey, [null, 'y'], Filter.Types.BETWEEN)
         );
         expect(getUpdateFilterExpressionFilter(betweenOp, integerField, null, null, 11, true)).toStrictEqual(
-            Filter.create(integerField.fieldKey, '11', Filter.Types.BETWEEN)
+            Filter.create(integerField.fieldKey, [null, '11'], Filter.Types.BETWEEN)
         );
     });
 
     test('remove between filter second value', () => {
         expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', null, true)).toStrictEqual(
-            Filter.create(fieldKey, 'x', Filter.Types.BETWEEN)
+            Filter.create(fieldKey, ['x', null], Filter.Types.BETWEEN)
         );
         expect(getUpdateFilterExpressionFilter(betweenOp, integerField, 10, 100, null, true)).toStrictEqual(
-            Filter.create(integerField.fieldKey, '10', Filter.Types.BETWEEN)
+            Filter.create(integerField.fieldKey, ['10', null], Filter.Types.BETWEEN)
         );
     });
 
@@ -516,27 +531,27 @@ describe('getUpdateFilterExpressionFilter', () => {
     });
 });
 
-describe('concatValuesWithComma', () => {
+describe('getArrayFromValues', () => {
     test('empty values', () => {
-        expect(concatValuesWithComma(undefined, undefined)).toBe('');
-        expect(concatValuesWithComma(undefined, null)).toBe('');
-        expect(concatValuesWithComma(null, undefined)).toBe('');
-        expect(concatValuesWithComma(null, null)).toBe('');
-        expect(concatValuesWithComma(null, '')).toBe('');
-        expect(concatValuesWithComma('', null)).toBe('');
-        expect(concatValuesWithComma('', '')).toBe(',');
+        expect(getArrayFromValues(undefined, undefined)).toStrictEqual([]);
+        expect(getArrayFromValues(undefined, null)).toStrictEqual([]);
+        expect(getArrayFromValues(null, undefined)).toStrictEqual([]);
+        expect(getArrayFromValues(null, null)).toStrictEqual([]);
+        expect(getArrayFromValues(null, ' ')).toStrictEqual([null, '']);
+        expect(getArrayFromValues(' ', null)).toStrictEqual(['', null]);
+        expect(getArrayFromValues(' ', '')).toStrictEqual(['', '']);
     });
 
     test('single value', () => {
-        expect(concatValuesWithComma(' a ', undefined)).toBe('a');
-        expect(concatValuesWithComma(' a ', null)).toBe('a');
-        expect(concatValuesWithComma(null, ' b ')).toBe('b');
-        expect(concatValuesWithComma('', ' c ')).toBe(',c');
-        expect(concatValuesWithComma(' d ', '')).toBe('d,');
+        expect(getArrayFromValues(' a ', undefined)).toStrictEqual(['a', null]);
+        expect(getArrayFromValues(' a ', null)).toStrictEqual(['a', null]);
+        expect(getArrayFromValues(null, ' b ')).toStrictEqual([null, 'b']);
+        expect(getArrayFromValues('', ' c ')).toStrictEqual(['', 'c']);
+        expect(getArrayFromValues(' d ', '')).toStrictEqual(['d', '']);
     });
 
     test('both values', () => {
-        expect(concatValuesWithComma(' a ', ' b ')).toBe('a,b');
+        expect(getArrayFromValues(' a ', ' b ')).toStrictEqual(['a', 'b']);
     });
 });
 

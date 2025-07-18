@@ -33,8 +33,12 @@ const CHOOSE_VALUE_FILTERS = [
     Filter.Types.NOT_IN.getURLSuffix(),
 ];
 
-export function isBetweenOperator(urlSuffix: string): boolean {
+function isBetweenOperator(urlSuffix: string): boolean {
     return ['between', 'notbetween'].indexOf(urlSuffix) > -1;
+}
+
+function isContainsOperator(urlSuffix: string): boolean {
+    return urlSuffix?.indexOf('contain') > -1;
 }
 
 export const FILTER_URL_SUFFIX_ANY_ALT = 'any';
@@ -224,12 +228,12 @@ export function getFilterForFilterSelection(filterSelection: FilterSelection, fi
     );
 }
 
-// concat a and b with a comma in between, check for nulls/undefined, and trim()
-export function concatValuesWithComma(a, b): string {
-    if (a == null && b == null) return '';
-    if (a == null) return b.toString().trim();
-    if (b == null) return a.toString().trim();
-    return a.toString().trim() + ',' + b.toString().trim();
+// create an array of values, check for nulls/undefined, and trim()
+export function getArrayFromValues(a, b): string[] {
+    if (a == null && b == null) return [];
+    if (a == null) return [null, b.toString().trim()];
+    if (b == null) return [a.toString().trim(), null];
+    return [a.toString().trim(), b.toString().trim()];
 }
 
 // check if a value is an empty string
@@ -246,9 +250,7 @@ export function getUpdateFilterExpressionFilter(
     isSecondValue?: boolean,
     clearBothValues?: boolean
 ): Filter.IFilter {
-    if (!newFilterType) {
-        return null;
-    }
+    if (!newFilterType) return null;
 
     const filterType = resolveFilterType(newFilterType?.value, field);
     if (!filterType) return null;
@@ -260,15 +262,19 @@ export function getUpdateFilterExpressionFilter(
         filter = Filter.create(fieldKey, null, filterType);
     } else {
         let value = newFilterValue;
-        if (Utils.isString(newFilterValue)) value = value.trim();
+
+        // Issue 53451: trim string values for all filter types except the CONTAINS operators
+        if (Utils.isString(newFilterValue) && !isContainsOperator(filterType.getURLSuffix())) {
+            value = value.trim();
+        }
 
         if (newFilterType?.betweenOperator) {
             if (clearBothValues) {
                 value = null;
             } else if (isSecondValue) {
-                value = concatValuesWithComma(previousFirstFilterValue, newFilterValue);
+                value = getArrayFromValues(previousFirstFilterValue, newFilterValue);
             } else {
-                value = concatValuesWithComma(newFilterValue, previousSecondFilterValue);
+                value = getArrayFromValues(newFilterValue, previousSecondFilterValue);
             }
         } else if (!value && field.getDisplayFieldJsonType() === 'boolean') {
             value = 'false';

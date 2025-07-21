@@ -23,7 +23,7 @@ import { Container } from '../base/models/Container';
 
 import { CheckboxLK } from '../../Checkbox';
 
-import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
+import { saveNameExpressionOptions } from './actions';
 import { useAppContext } from '../../AppContext';
 
 const TITLE = 'ID/Name Settings';
@@ -31,9 +31,6 @@ const TITLE = 'ID/Name Settings';
 export interface NameIdSettingsFormProps extends InjectedRouteLeaveProps {
     container: Container;
     isAppHome?: boolean;
-    loadNameExpressionOptions: (
-        containerPath?: string
-    ) => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
     saveNameExpressionOptions: (key: string, value: boolean | string, containerPath?: string) => Promise<string[]>;
 }
 
@@ -83,7 +80,7 @@ const initialState: State = {
 };
 
 export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
-    const { loadNameExpressionOptions, saveNameExpressionOptions, setIsDirty, isAppHome, container } = props;
+    const { saveNameExpressionOptions, setIsDirty, isAppHome, container } = props;
     const [state, setState] = useReducer(
         (currentState: State, newState: Partial<State>): State => ({ ...currentState, ...newState }),
         initialState
@@ -118,7 +115,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
 
     const initializeNamingPattern = async (): Promise<void> => {
         try {
-            const payload = await loadNameExpressionOptions(container.path);
+            const payload = await api.entity.loadNameExpressionOptions(container.path);
             setState({
                 prefix: payload.prefix ?? '',
                 allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
@@ -518,11 +515,7 @@ NameIdSettingsForm.displayName = 'NameIdSettingsForm';
 export const NameIdSettings: FC<NameIdSettingsProps> = memo(props => {
     return (
         <RequiresPermission perms={PermissionTypes.Admin}>
-            <NameIdSettingsForm
-                {...props}
-                loadNameExpressionOptions={loadNameExpressionOptions}
-                saveNameExpressionOptions={saveNameExpressionOptions}
-            />
+            <NameIdSettingsForm {...props} saveNameExpressionOptions={saveNameExpressionOptions} />
         </RequiresPermission>
     );
 });

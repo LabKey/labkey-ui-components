@@ -17,15 +17,23 @@ import { ModuleContext } from '../base/ServerContext';
 
 describe('NameIdSettings', () => {
     function defaultContext(api?: ComponentsAPIWrapper, moduleContext?: ModuleContext): AppContextTestProviderProps {
+        const testApi = getTestAPIWrapper(jest.fn);
+
         return {
             appContext: {
-                api:
-                    api ??
-                    getTestAPIWrapper(jest.fn, {
-                        samples: getSamplesTestAPIWrapper(jest.fn, {
-                            getSampleCounter: jest.fn().mockResolvedValue(0),
-                        }),
-                    }),
+                api: api ?? {
+                    ...testApi,
+                    entity: {
+                        ...testApi.entity,
+                        loadNameExpressionOptions: jest
+                            .fn()
+                            .mockResolvedValue({ allowUserSpecifiedNames: false, prefix: 'ABC-' }),
+                    },
+                    samples: {
+                        ...testApi.samples,
+                        getSampleCounter: jest.fn().mockResolvedValue(0),
+                    },
+                },
             },
             serverContext: {
                 moduleContext: moduleContext ?? {
@@ -42,22 +50,14 @@ describe('NameIdSettings', () => {
             container: TEST_FOLDER_CONTAINER,
             getIsDirty: jest.fn(),
             isAppHome: true,
-            loadNameExpressionOptions: jest.fn(async () => {
-                return { prefix: 'ABC-', allowUserSpecifiedNames: false };
-            }),
-            saveNameExpressionOptions: jest.fn(async () => {
-                return [];
-            }),
+            saveNameExpressionOptions: jest.fn().mockResolvedValue([]),
             setIsDirty: jest.fn(),
         };
     }
 
     test('on init', async () => {
-        const loadNameExpressionOptions = jest.fn();
-        renderWithAppContext(
-            <NameIdSettingsForm {...defaultProps()} loadNameExpressionOptions={loadNameExpressionOptions} />,
-            defaultContext()
-        );
+        const context = defaultContext();
+        renderWithAppContext(<NameIdSettingsForm {...defaultProps()} />, context);
         expect(document.querySelectorAll('.fa-spinner')).toHaveLength(3);
         expect(document.querySelectorAll('.name-id-setting__prefix-field')).toHaveLength(0);
         expect(document.querySelectorAll('.checkbox')).toHaveLength(0);
@@ -72,7 +72,7 @@ describe('NameIdSettings', () => {
         expect(document.querySelectorAll('.checkbox')).toHaveLength(1);
         expect(document.querySelectorAll('.form-control')).toHaveLength(3);
         expect(document.querySelectorAll('button')).toHaveLength(3);
-        expect(loadNameExpressionOptions).toHaveBeenCalled();
+        expect(context.appContext.api.entity.loadNameExpressionOptions).toHaveBeenCalled();
 
         const counterLabel = document.querySelectorAll('div.sample-counter__prefix-label');
         expect(counterLabel).toHaveLength(2);
@@ -86,15 +86,8 @@ describe('NameIdSettings', () => {
     });
 
     test('not app home', async () => {
-        const loadNameExpressionOptions = jest.fn();
-        renderWithAppContext(
-            <NameIdSettingsForm
-                {...defaultProps()}
-                isAppHome={false}
-                loadNameExpressionOptions={loadNameExpressionOptions}
-            />,
-            defaultContext()
-        );
+        const context = defaultContext();
+        renderWithAppContext(<NameIdSettingsForm {...defaultProps()} isAppHome={false} />, context);
         expect(document.querySelectorAll('.fa-spinner')).toHaveLength(2);
         expect(document.querySelectorAll('.name-id-setting__prefix-field')).toHaveLength(0);
         expect(document.querySelectorAll('.checkbox')).toHaveLength(0);
@@ -109,7 +102,7 @@ describe('NameIdSettings', () => {
         expect(document.querySelectorAll('.checkbox')).toHaveLength(1);
         expect(document.querySelectorAll('.form-control')).toHaveLength(1);
         expect(document.querySelectorAll('button')).toHaveLength(1);
-        expect(loadNameExpressionOptions).toHaveBeenCalled();
+        expect(context.appContext.api.entity.loadNameExpressionOptions).toHaveBeenCalled();
 
         const counterLabel = document.querySelectorAll('div.sample-counter__prefix-label');
         expect(counterLabel).toHaveLength(0);

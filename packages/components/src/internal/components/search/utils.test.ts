@@ -4,7 +4,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SCHEMAS } from '../../schemas';
 
-import { TEXT_TYPE } from '../domainproperties/PropDescType';
+import { INTEGER_TYPE, TEXT_TYPE } from '../domainproperties/PropDescType';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
@@ -17,6 +17,7 @@ import {
     decodeErrorMessage,
     EMPTY_VALUE_DISPLAY,
     escapeSearchQuery,
+    getArrayFromValues,
     getCheckedFilterValues,
     getFieldFiltersValidationResult,
     getFilterSelections,
@@ -27,6 +28,7 @@ import {
     getUpdatedFilters,
     getUpdatedFilterSelection,
     getUpdateFilterExpressionFilter,
+    isEmptyValue,
     isValidFilterField,
 } from './utils';
 import { SearchCategory } from './constants';
@@ -370,6 +372,12 @@ describe('getUpdateFilterExpressionFilter', () => {
         jsonType: 'string',
         fieldKey,
     });
+    const integerField = new QueryColumn({
+        name: 'integerField',
+        rangeURI: INTEGER_TYPE.rangeURI,
+        jsonType: 'int',
+        fieldKey: 'integerField',
+    });
 
     const anyOp = {
         betweenOperator: false,
@@ -385,6 +393,15 @@ describe('getUpdateFilterExpressionFilter', () => {
         label: 'Equals',
         multiValue: false,
         value: 'eq',
+        valueRequired: true,
+        isSoleFilter: true,
+    };
+
+    const containsOp = {
+        betweenOperator: false,
+        label: 'Contains',
+        multiValue: false,
+        value: 'contains',
         valueRequired: true,
         isSoleFilter: true,
     };
@@ -437,32 +454,50 @@ describe('getUpdateFilterExpressionFilter', () => {
     });
 
     test('update filter value', () => {
-        expect(getUpdateFilterExpressionFilter(equalOp, stringField, 'abc', null, 'def')).toStrictEqual(
+        expect(getUpdateFilterExpressionFilter(equalOp, stringField, 'abc', null, ' def ')).toStrictEqual(
             Filter.create(fieldKey, 'def', Filter.Types.EQ)
         );
     });
 
+    test('do not trim for contains', () => {
+        expect(getUpdateFilterExpressionFilter(containsOp, stringField, 'abc', null, ' def ')).toStrictEqual(
+            Filter.create(fieldKey, ' def ', Filter.Types.CONTAINS)
+        );
+    });
+
     test('update between filter first value', () => {
-        expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', 'a')).toStrictEqual(
+        expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', ' a ')).toStrictEqual(
             Filter.create(fieldKey, 'a,z', Filter.Types.BETWEEN)
+        );
+        expect(getUpdateFilterExpressionFilter(betweenOp, integerField, 1, 100, 11)).toStrictEqual(
+            Filter.create(integerField.fieldKey, '11,100', Filter.Types.BETWEEN)
         );
     });
 
     test('update between filter second value', () => {
-        expect(getUpdateFilterExpressionFilter(betweenOp, stringField, null, null, 'y', true)).toStrictEqual(
-            Filter.create(fieldKey, 'y', Filter.Types.BETWEEN)
+        expect(getUpdateFilterExpressionFilter(betweenOp, stringField, null, null, ' y ', true)).toStrictEqual(
+            Filter.create(fieldKey, [null, 'y'], Filter.Types.BETWEEN)
+        );
+        expect(getUpdateFilterExpressionFilter(betweenOp, integerField, null, null, 11, true)).toStrictEqual(
+            Filter.create(integerField.fieldKey, [null, '11'], Filter.Types.BETWEEN)
         );
     });
 
     test('remove between filter second value', () => {
         expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', null, true)).toStrictEqual(
-            Filter.create(fieldKey, 'x', Filter.Types.BETWEEN)
+            Filter.create(fieldKey, ['x', null], Filter.Types.BETWEEN)
+        );
+        expect(getUpdateFilterExpressionFilter(betweenOp, integerField, 10, 100, null, true)).toStrictEqual(
+            Filter.create(integerField.fieldKey, ['10', null], Filter.Types.BETWEEN)
         );
     });
 
     test('clear between filter values', () => {
         expect(getUpdateFilterExpressionFilter(betweenOp, stringField, 'x', 'z', null, null, true)).toStrictEqual(
             Filter.create(fieldKey, null, Filter.Types.BETWEEN)
+        );
+        expect(getUpdateFilterExpressionFilter(betweenOp, integerField, 10, 100, null, null, true)).toStrictEqual(
+            Filter.create(integerField.fieldKey, null, Filter.Types.BETWEEN)
         );
     });
 
@@ -493,6 +528,47 @@ describe('getUpdateFilterExpressionFilter', () => {
         expect(getUpdateFilterExpressionFilter(equalOp, stringField, null, null, 'a\nb\nc')).toStrictEqual(
             Filter.create(fieldKey, 'a\nb\nc', Filter.Types.EQAUL)
         );
+    });
+});
+
+describe('getArrayFromValues', () => {
+    test('empty values', () => {
+        expect(getArrayFromValues(undefined, undefined)).toStrictEqual([]);
+        expect(getArrayFromValues(undefined, null)).toStrictEqual([]);
+        expect(getArrayFromValues(null, undefined)).toStrictEqual([]);
+        expect(getArrayFromValues(null, null)).toStrictEqual([]);
+        expect(getArrayFromValues(null, ' ')).toStrictEqual([null, '']);
+        expect(getArrayFromValues(' ', null)).toStrictEqual(['', null]);
+        expect(getArrayFromValues(' ', '')).toStrictEqual(['', '']);
+    });
+
+    test('single value', () => {
+        expect(getArrayFromValues(' a ', undefined)).toStrictEqual(['a', null]);
+        expect(getArrayFromValues(' a ', null)).toStrictEqual(['a', null]);
+        expect(getArrayFromValues(null, ' b ')).toStrictEqual([null, 'b']);
+        expect(getArrayFromValues('', ' c ')).toStrictEqual(['', 'c']);
+        expect(getArrayFromValues(' d ', '')).toStrictEqual(['d', '']);
+    });
+
+    test('both values', () => {
+        expect(getArrayFromValues(' a ', ' b ')).toStrictEqual(['a', 'b']);
+    });
+});
+
+describe('isEmptyValue', () => {
+    test('empty', () => {
+        expect(isEmptyValue(null)).toBe(true);
+        expect(isEmptyValue(undefined)).toBe(true);
+        expect(isEmptyValue('')).toBe(true);
+    });
+
+    test('not empty', () => {
+        expect(isEmptyValue(' ')).toBe(false);
+        expect(isEmptyValue('a')).toBe(false);
+        expect(isEmptyValue(0)).toBe(false);
+        expect(isEmptyValue(1)).toBe(false);
+        expect(isEmptyValue([])).toBe(false);
+        expect(isEmptyValue({})).toBe(false);
     });
 });
 

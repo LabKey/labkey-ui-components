@@ -33,8 +33,12 @@ const CHOOSE_VALUE_FILTERS = [
     Filter.Types.NOT_IN.getURLSuffix(),
 ];
 
-export function isBetweenOperator(urlSuffix: string): boolean {
+function isBetweenOperator(urlSuffix: string): boolean {
     return ['between', 'notbetween'].indexOf(urlSuffix) > -1;
+}
+
+function isContainsOperator(urlSuffix: string): boolean {
+    return urlSuffix?.indexOf('contain') > -1;
 }
 
 export const FILTER_URL_SUFFIX_ANY_ALT = 'any';
@@ -150,10 +154,11 @@ export function getFieldFiltersValidationResult(
                 if (value === undefined || value === null || (Utils.isString(value) && !value)) {
                     missingValueError = true;
                 } else if (isBetween) {
-                    if (!Array.isArray(value) || value.length < 2) {
+                    // Issue 53451: for between filters, we expect an array of two values and neither can be empty
+                    if (!Array.isArray(value) || value.length != 2) {
                         missingValueError = true;
                     } else {
-                        if ((Utils.isString(value[0]) && !value[0]) || (Utils.isString(value[1]) && !value[1])) {
+                        if (isEmptyValue(value[0]) || isEmptyValue(value[1])) {
                             missingValueError = true;
                         }
                     }
@@ -223,6 +228,19 @@ export function getFilterForFilterSelection(filterSelection: FilterSelection, fi
     );
 }
 
+// create an array of values, check for nulls/undefined, and trim()
+export function getArrayFromValues(a, b): string[] {
+    if (a == null && b == null) return [];
+    if (a == null) return [null, b.toString().trim()];
+    if (b == null) return [a.toString().trim(), null];
+    return [a.toString().trim(), b.toString().trim()];
+}
+
+// check if a value is an empty string
+export function isEmptyValue(value): boolean {
+    return value === '' || value === null || value === undefined;
+}
+
 export function getUpdateFilterExpressionFilter(
     newFilterType: FieldFilterOption,
     field?: QueryColumn,
@@ -232,9 +250,7 @@ export function getUpdateFilterExpressionFilter(
     isSecondValue?: boolean,
     clearBothValues?: boolean
 ): Filter.IFilter {
-    if (!newFilterType) {
-        return null;
-    }
+    if (!newFilterType) return null;
 
     const filterType = resolveFilterType(newFilterType?.value, field);
     if (!filterType) return null;
@@ -246,21 +262,19 @@ export function getUpdateFilterExpressionFilter(
         filter = Filter.create(fieldKey, null, filterType);
     } else {
         let value = newFilterValue;
+
+        // Issue 53451: trim string values for all filter types except the CONTAINS operators
+        if (Utils.isString(newFilterValue) && !isContainsOperator(filterType.getURLSuffix())) {
+            value = value.trim();
+        }
+
         if (newFilterType?.betweenOperator) {
             if (clearBothValues) {
                 value = null;
             } else if (isSecondValue) {
-                if (newFilterValue == null) {
-                    value = previousFirstFilterValue != null ? previousFirstFilterValue : '';
-                } else {
-                    value = (previousFirstFilterValue != null ? previousFirstFilterValue + ',' : '') + newFilterValue;
-                }
+                value = getArrayFromValues(previousFirstFilterValue, newFilterValue);
             } else {
-                if (newFilterValue == null) {
-                    value = previousSecondFilterValue != null ? previousSecondFilterValue : '';
-                } else {
-                    value = newFilterValue + (previousSecondFilterValue != null ? ',' + previousSecondFilterValue : '');
-                }
+                value = getArrayFromValues(newFilterValue, previousSecondFilterValue);
             }
         } else if (!value && field.getDisplayFieldJsonType() === 'boolean') {
             value = 'false';

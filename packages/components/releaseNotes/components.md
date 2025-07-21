@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.56.2
+*Released*: 21 July 1015
 - Issue 53451: JS error when deleting numeric filter values with Between operator
 - Fixes for filter modal Between operator handling of empty inputs and leading/trailing spaces
 - Fixes for trimming values for any non-CONTAINS filter operators

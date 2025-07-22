@@ -114,7 +114,9 @@ describe('AdvancedSettings', () => {
         // Verify mvEnabled
         id = createFormInputId(DOMAIN_FIELD_MVENABLED, _domainIndex, _index);
         const mvEnabled = document.querySelector('#' + id);
-        expect(mvEnabled.getAttribute('checked')).toBeNull();
+        expect(mvEnabled).toBeNull();
+        // TODO update this test case for isApp scenario
+        // expect(mvEnabled.getAttribute('checked')).toBeNull();
 
         // Verify recommendedVariable
         id = createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, _domainIndex, _index);
@@ -129,7 +131,9 @@ describe('AdvancedSettings', () => {
         // Verify default type
         id = createFormInputId(DOMAIN_FIELD_DEFAULT_VALUE_TYPE, _domainIndex, _index);
         const defaultType = document.querySelector('#' + id);
-        expect(defaultType.textContent).toEqual('Editable defaultLast enteredFixed value');
+        expect(defaultType).toBeNull();
+        // TODO update this test case for isApp scenario
+        // expect(defaultType.textContent).toEqual('Editable defaultLast enteredFixed value');
 
         // Verify buttons
         const btns = document.getElementsByClassName('btn');

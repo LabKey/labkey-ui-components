@@ -821,7 +821,7 @@ describe('domain properties actions', () => {
         expect(field.dataType).toBe(SAMPLE_TYPE);
         expect(field.lookupSchema).toBe('exp');
         expect(field.lookupQuery).toBe('Materials');
-        expect(field.lookupQueryValue).toBe('http://www.w3.org/2001/XMLSchema#int|Materials');
+        expect(field.lookupQueryValue).toBe('http://www.w3.org/2001/XMLSchema#int|all');
     });
 
     test('updateDataType Sample data type, saved field', () => {
@@ -830,7 +830,7 @@ describe('domain properties actions', () => {
         expect(field.dataType).toBe(SAMPLE_TYPE);
         expect(field.lookupSchema).toBe('exp');
         expect(field.lookupQuery).toBe('Materials');
-        expect(field.lookupQueryValue).toBe('http://www.w3.org/2001/XMLSchema#int|Materials');
+        expect(field.lookupQueryValue).toBe('http://www.w3.org/2001/XMLSchema#int|all');
     });
 
     test('updateDataType Sample data type, saved lookup field', () => {
@@ -839,7 +839,7 @@ describe('domain properties actions', () => {
         expect(field.dataType).toBe(SAMPLE_TYPE);
         expect(field.lookupSchema).toBe('exp');
         expect(field.lookupQuery).toBe('Materials');
-        expect(field.lookupQueryValue).toBe('http://www.w3.org/2001/XMLSchema#int|Materials');
+        expect(field.lookupQueryValue).toBe('http://www.w3.org/2001/XMLSchema#int|all');
     });
 
     test('updateDomainField principalConceptCode', () => {

@@ -1124,12 +1124,12 @@ export class DomainField
     }
 
     static resolveLookupConfig(rawField: Partial<IDomainField>, dataType: PropDescType): ILookupConfig {
+        const isSampleType = dataType === SAMPLE_TYPE;
         const lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
         const lookupContainer = rawField.lookupContainer === null ? undefined : rawField.lookupContainer;
         const lookupSchema = resolveLookupSchema(rawField, dataType);
-        const lookupQuery =
-            rawField.lookupQuery || (dataType === SAMPLE_TYPE ? SCHEMAS.EXP_TABLES.MATERIALS.queryName : undefined);
-        const lookupQueryValue = encodeLookup(lookupQuery, lookupType);
+        const lookupQuery = rawField.lookupQuery || (dataType === SAMPLE_TYPE ? SCHEMAS.EXP_TABLES.MATERIALS.queryName : undefined);
+        const lookupQueryValue = resolveLookupQueryValue(lookupType, lookupSchema, lookupQuery, isSampleType);
 
         return {
             lookupContainer,
@@ -1542,6 +1542,23 @@ function resolveLookupSchema(rawField: Partial<IDomainField>, dataType: PropDesc
     return undefined;
 }
 
+// TODO add jest coverage
+function resolveLookupQueryValue(
+    lookupType: PropDescType,
+    lookupSchema: string,
+    lookupQuery: string,
+    isSampleType = false
+): string {
+    if (
+        isSampleType &&
+        lookupSchema === SCHEMAS.EXP_TABLES.SCHEMA &&
+        lookupQuery === SCHEMAS.EXP_TABLES.MATERIALS.queryName
+    ) {
+        return SAMPLE_TYPE_OPTION_VALUE;
+    }
+    return encodeLookup(lookupQuery, lookupType);
+}
+
 export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?: string): DomainField {
     const { queryName, rangeURI = INT_RANGE_URI } = decodeLookup(sampleQueryValue);
     const lookupType = field.lookupType || LOOKUP_TYPE;
@@ -1561,7 +1578,7 @@ export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?
                   // use the samples.<SampleType> table for specific sample types
                   lookupSchema: SCHEMAS.SAMPLE_SETS.SCHEMA,
                   lookupQuery: queryName,
-                  lookupQueryValue: sampleQueryValue || SAMPLE_TYPE_OPTION_VALUE,
+                  lookupQueryValue: sampleQueryValue,
                   lookupType: lookupType.set('rangeURI', rangeURI),
                   lookupValidator: LOOKUP_VALIDATOR,
                   propertyValidators: List([LOOKUP_VALIDATOR]),

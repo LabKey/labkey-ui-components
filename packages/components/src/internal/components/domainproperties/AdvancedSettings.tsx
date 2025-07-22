@@ -3,7 +3,7 @@ import { List } from 'immutable';
 import { ActionURL } from '@labkey/api';
 
 import { Modal } from '../../Modal';
-import { getSubmitButtonClass } from '../../app/utils';
+import { getSubmitButtonClass, isApp } from '../../app/utils';
 
 import {
     ADVANCED_FIELD_EDITOR_TOPIC,
@@ -243,6 +243,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     showDefaultValues = () => {
         const { field, showDefaultValueSettings } = this.props;
 
+        // GitHub Issue #783: we don't yet support default values in the App
+        if (isApp()) return false;
+
         // some domains just don't support default values
         if (!showDefaultValueSettings) return false;
 
@@ -479,7 +482,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         </div>
                     </LabelHelpTip>
                 </CheckboxLK>
-                {PropDescType.isMvEnableable(field.dataType.rangeURI) && !field.isCalculatedField() && (
+                {PropDescType.isMvEnableable(field.dataType.rangeURI) && !field.isCalculatedField() && !isApp() && (
                     <CheckboxLK
                         checked={mvEnabled}
                         onChange={this.handleCheckbox}

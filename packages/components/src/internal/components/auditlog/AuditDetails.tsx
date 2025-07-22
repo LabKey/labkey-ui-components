@@ -6,7 +6,7 @@ import React, { Component, PropsWithChildren, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 
 import { User } from '../base/models/User';
-import { capitalizeFirstChar } from '../../util/utils';
+import { capitalizeFirstChar, caseInsensitive } from '../../util/utils';
 import { GridColumn } from '../base/models/GridColumn';
 import { Grid } from '../base/Grid';
 
@@ -110,11 +110,7 @@ export class AuditDetails extends Component<Props> {
                     newValue = changeDetails.newData.get(field);
                     usedFields.push(field);
                 }
-                let originalValue;
-                if (changeDetails.originalValues) {
-                    originalValue = changeDetails.originalValues.get(field);
-                }
-
+                const originalValue = caseInsensitive(changeDetails.originalValues, field);
                 return this.renderRow(field, value, newValue, originalValue, isUpdate, isInsert);
             });
         }
@@ -122,10 +118,7 @@ export class AuditDetails extends Component<Props> {
         if (changeDetails.newData) {
             newFields = changeDetails.newData.entrySeq().map(([field, value]) => {
                 if (usedFields.indexOf(field) >= 0) return null;
-                let originalValue;
-                if (changeDetails.originalValues) {
-                    originalValue = changeDetails.originalValues.get(field);
-                }
+                const originalValue = caseInsensitive(changeDetails.originalValues, field);
                 return this.renderRow(field, undefined, value, originalValue, isUpdate, isInsert);
             });
         }

@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { fromJS, Map, Record, List } from 'immutable';
+import { fromJS, List, Map, Record } from 'immutable';
 
 import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
 
@@ -22,7 +22,7 @@ export class AuditDetailsModel extends Record({
     declare eventDateFormatted?: string;
     declare oldData?: Map<string, string>;
     declare newData?: Map<string, string>;
-    declare originalValues?: Map<string, string>;
+    declare originalValues?: Record<string, string>;
     declare userComment?: string;
 
     static create(raw: any): AuditDetailsModel {
@@ -30,7 +30,7 @@ export class AuditDetailsModel extends Record({
             ...raw,
             oldData: raw.oldData ? fromJS(raw.oldData) : undefined,
             newData: raw.newData ? fromJS(raw.newData) : undefined,
-            originalValues: raw.originalValues ? fromJS(raw.originalValues) : undefined,
+            originalValues: raw.originalValues,
         });
     }
 
@@ -123,7 +123,7 @@ export class TimelineEventModel extends Record({
 
         if (raw.oldData) fields.oldData = fromJS(raw.oldData);
         if (raw.newData) fields.newData = fromJS(raw.newData);
-        if (raw.originalValues) fields.originalValues = fromJS(raw.originalValues);
+        if (raw.originalValues) fields.originalValues = raw.originalValues;
 
         return new TimelineEventModel(fields);
     }

@@ -33,7 +33,7 @@ export const INVENTORY_AUDIT_QUERY: AuditQuery = {
     label: 'Storage Management Events',
     value: 'inventoryauditevent',
 };
-export const LIST_AUDIT_QUERY: AuditQuery = { label: 'List Events', value: 'listauditevent' };
+export const LIST_AUDIT_QUERY: AuditQuery = { hasTransactionId: true, label: 'List Events', value: 'listauditevent' };
 export const GROUP_AUDIT_QUERY: AuditQuery = {
     containerFilter: Query.ContainerFilter.allFolders,
     label: 'Roles and Assignment Events',

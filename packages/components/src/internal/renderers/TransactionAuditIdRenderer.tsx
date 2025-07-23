@@ -11,10 +11,16 @@ interface Props {
 export class TransactionAuditIdRenderer extends PureComponent<Props> {
     render(): ReactNode {
         const { row } = this.props;
-        const id = caseInsensitive(row.toJS(), 'transactionId')?.value;
+        const _row = row.toJS();
+        const id = caseInsensitive(_row, 'transactionId')?.value;
         if (!id) {
             return null;
         }
-        return <AppLink to={AppURL.create('audit', id)}>{id}</AppLink>;
+        let url = AppURL.create('audit', id);
+        const activeTab = caseInsensitive(_row, 'EventType')?.value.toLowerCase();
+        if (activeTab) {
+            url = url.addParam('tab', activeTab);
+        }
+        return <AppLink to={url}>{id}</AppLink>;
     }
 }

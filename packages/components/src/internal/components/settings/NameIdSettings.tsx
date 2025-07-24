@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useEffect, useReducer } from 'react';
 
 import { PermissionTypes } from '@labkey/api';
 
-import { isNamingPrefixEnabled, isRegistryEnabled } from '../../app/utils';
+import { isNamingPrefixEnabled } from '../../app/utils';
 
 import { invalidateFullQueryDetailsCache } from '../../query/api';
 
@@ -16,8 +16,6 @@ import { useServerContext } from '../base/ServerContext';
 
 import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-
 import { HelpLink } from '../../util/helpLinks';
 import { SAMPLE_TYPE_NAME_EXPRESSION_TOPIC } from '../samples/constants';
 
@@ -25,29 +23,24 @@ import { Container } from '../base/models/Container';
 
 import { CheckboxLK } from '../../Checkbox';
 
-import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
+import { saveNameExpressionOptions } from './actions';
+import { useAppContext } from '../../AppContext';
 
 const TITLE = 'ID/Name Settings';
 
-interface NameIdSettingsFormProps extends InjectedRouteLeaveProps {
-    api?: ComponentsAPIWrapper;
+export interface NameIdSettingsFormProps extends InjectedRouteLeaveProps {
     container: Container;
     isAppHome?: boolean;
-    loadNameExpressionOptions: (
-        containerPath?: string
-    ) => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
-    saveNameExpressionOptions: (key: string, value: string | boolean, containerPath?: string) => Promise<string[]>;
+    saveNameExpressionOptions: (key: string, value: boolean | string, containerPath?: string) => Promise<string[]>;
 }
 
 interface NameIdSettingsProps extends InjectedRouteLeaveProps {
-    api?: ComponentsAPIWrapper;
     container: Container;
     isAppHome?: boolean;
 }
 
 interface State {
     allowUserSpecifiedNames: boolean;
-    api?: ComponentsAPIWrapper;
     confirmCounterModalOpen?: boolean;
     confirmModalOpen: boolean;
     error: string;
@@ -87,18 +80,12 @@ const initialState: State = {
 };
 
 export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
-    const {
-        api = getDefaultAPIWrapper(),
-        loadNameExpressionOptions,
-        saveNameExpressionOptions,
-        setIsDirty,
-        isAppHome,
-        container,
-    } = props;
+    const { saveNameExpressionOptions, setIsDirty, isAppHome, container } = props;
     const [state, setState] = useReducer(
         (currentState: State, newState: Partial<State>): State => ({ ...currentState, ...newState }),
         initialState
     );
+    const { api } = useAppContext();
     const { moduleContext } = useServerContext();
 
     const {
@@ -128,7 +115,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
 
     const initializeNamingPattern = async (): Promise<void> => {
         try {
-            const payload = await loadNameExpressionOptions(container.path);
+            const payload = await api.entity.loadNameExpressionOptions(container.path);
             setState({
                 prefix: payload.prefix ?? '',
                 allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
@@ -168,12 +155,12 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         initialize();
     }, [isAppHome, container]);
 
-    const displayError = (err): void => {
+    const displayError = useCallback(err => {
         setState({
             error: err.exception ?? 'Error saving setting',
             savingAllowUserSpecifiedNames: false,
         });
-    };
+    }, []);
 
     const saveAllowUserSpecifiedNames = useCallback(async () => {
         setState({ savingAllowUserSpecifiedNames: true });
@@ -193,7 +180,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         } catch (err) {
             displayError(err);
         }
-    }, [allowUserSpecifiedNames, saveNameExpressionOptions, container.path]);
+    }, [allowUserSpecifiedNames, displayError, saveNameExpressionOptions, container.path]);
 
     const savePrefix = useCallback(async () => {
         setState({ savingPrefix: true });
@@ -211,7 +198,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
             prefixIneligibleSampleTypeNames: response ?? [],
         });
         setIsDirty(false);
-    }, [prefix, saveNameExpressionOptions, setIsDirty, container.path]);
+    }, [displayError, prefix, saveNameExpressionOptions, setIsDirty, container.path]);
 
     const prefixOnChange = useCallback(
         (evt: any) => {
@@ -254,7 +241,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         const newCount = isReset ? 0 : isRoot ? newRootSampleCount : newSampleCount;
         try {
             await api.samples.saveSampleCounter(newCount, isRoot ? 'rootSampleCount' : 'sampleCount');
-            if (isRoot)
+            if (isRoot) {
                 setState({
                     rootSampleCount: newCount,
                     confirmCounterModalOpen: false,
@@ -263,7 +250,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     prefixIneligibleSampleTypeNames: [],
                     hasRootSampleCountChange: false,
                 });
-            else
+            } else {
                 setState({
                     sampleCount: newCount,
                     confirmCounterModalOpen: false,
@@ -272,6 +259,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     prefixIneligibleSampleTypeNames: [],
                     hasSampleCountChange: false,
                 });
+            }
             setIsDirty(false);
         } catch (error) {
             if (isRoot) {
@@ -288,7 +276,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                 });
             }
         }
-    }, [isRoot, isReset, newRootSampleCount, newSampleCount, setIsDirty, rootSampleCount, sampleCount]);
+    }, [isReset, isRoot, newRootSampleCount, newSampleCount, api.samples, setIsDirty, rootSampleCount, sampleCount]);
 
     return (
         <div className="name-id-settings-panel panel panel-default">
@@ -312,10 +300,10 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     {!loadingNamingOptions && (
                         <form>
                             <CheckboxLK
+                                checked={allowUserSpecifiedNames}
+                                disabled={savingAllowUserSpecifiedNames}
                                 name="allowUserSpecifiedNames"
                                 onChange={saveAllowUserSpecifiedNames}
-                                disabled={savingAllowUserSpecifiedNames}
-                                checked={allowUserSpecifiedNames}
                             >
                                 Allow users to create/import their own IDs/Names in this folder
                                 <LabelHelpTip title="User Defined ID/Names">
@@ -352,17 +340,17 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         <input
                                             className="form-control"
                                             name="prefix"
-                                            type="text"
-                                            placeholder="Enter Prefix"
                                             onChange={prefixOnChange}
+                                            placeholder="Enter Prefix"
+                                            type="text"
                                             value={prefix}
                                         />
                                     </div>
 
                                     <button
                                         className="btn btn-success"
-                                        onClick={openConfirmModal}
                                         disabled={savingPrefix || !hasPrefixChange}
+                                        onClick={openConfirmModal}
                                         type="button"
                                     >
                                         Apply Prefix
@@ -375,17 +363,17 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                 {confirmModalOpen && (
                                     <Modal
                                         confirmClass="btn-danger"
-                                        title="Apply Prefix?"
+                                        confirmText="Yes, Save and Apply Prefix"
                                         onCancel={closeConfirmModal}
                                         onConfirm={savePrefix}
-                                        confirmText="Yes, Save and Apply Prefix"
+                                        title="Apply Prefix?"
                                     >
                                         <div>
                                             <p>
                                                 This action will change the Naming Pattern for all new and existing
-                                                Sample Types and Source Types. No
-                                                existing IDs/Names will be affected but any new IDs/Names will have the
-                                                prefix applied. Are you sure you want to apply the prefix?
+                                                Sample Types and Source Types. No existing IDs/Names will be affected
+                                                but any new IDs/Names will have the prefix applied. Are you sure you
+                                                want to apply the prefix?
                                             </p>
                                         </div>
                                     </Modal>
@@ -400,9 +388,9 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                         <div className="list__bold-text margin-bottom">Naming Pattern Elements/Tokens</div>
                         <div>
                             The following tokens/counters are utilized in naming patterns for the application and all
-                            folders. To modify a counter, simply enter a number greater than the current value and
-                            click "Apply". Please be aware that once a counter is changed, the action cannot be
-                            reversed. For additional information regarding these tokens, you can refer to this{' '}
+                            folders. To modify a counter, simply enter a number greater than the current value and click
+                            "Apply". Please be aware that once a counter is changed, the action cannot be reversed. For
+                            additional information regarding these tokens, you can refer to this{' '}
                             <HelpLink topic={SAMPLE_TYPE_NAME_EXPRESSION_TOPIC}>link</HelpLink>.
                         </div>
 
@@ -417,21 +405,21 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         <input
                                             className="form-control update-samplecount-input"
                                             min={sampleCount}
-                                            step={1}
                                             name="newSampleCount"
                                             onChange={(event: any) => setNewSampleCount(event?.target?.value, false)}
+                                            placeholder="Enter new sampleCount..."
+                                            step={1}
                                             type="number"
                                             value={newSampleCount}
-                                            placeholder="Enter new sampleCount..."
                                         />
                                     </div>
                                     <div className="col-sm-8">
                                         <button
                                             className="btn btn-success sample-counter-btn"
+                                            disabled={updatingCounter || !hasSampleCountChange}
                                             onClick={() => {
                                                 openSetCounterConfirmModal(false, false);
                                             }}
-                                            disabled={updatingCounter || !hasSampleCountChange}
                                             type="button"
                                         >
                                             Apply New sampleCount
@@ -439,10 +427,10 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         {!hasSamples && sampleCount > 0 && (
                                             <button
                                                 className="btn btn-success sample-counter-btn"
+                                                disabled={updatingCounter}
                                                 onClick={() => {
                                                     openSetCounterConfirmModal(false, true);
                                                 }}
-                                                disabled={updatingCounter}
                                                 type="button"
                                             >
                                                 Reset sampleCount
@@ -458,21 +446,21 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         <input
                                             className="form-control update-samplecount-input"
                                             min={rootSampleCount}
-                                            step={1}
                                             name="newRootSampleCount"
                                             onChange={(event: any) => setNewSampleCount(event?.target?.value, true)}
+                                            placeholder="Enter new rootSampleCount..."
+                                            step={1}
                                             type="number"
                                             value={newRootSampleCount}
-                                            placeholder="Enter new rootSampleCount..."
                                         />
                                     </div>
                                     <div className="col-sm-8">
                                         <button
                                             className="btn btn-success sample-counter-btn"
+                                            disabled={updatingCounter || !hasRootSampleCountChange}
                                             onClick={() => {
                                                 openSetCounterConfirmModal(true, false);
                                             }}
-                                            disabled={updatingCounter || !hasRootSampleCountChange}
                                             type="button"
                                         >
                                             Apply New rootSampleCount
@@ -480,10 +468,10 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         {!hasRootSamples && rootSampleCount > 0 && (
                                             <button
                                                 className="btn btn-success sample-counter-btn"
+                                                disabled={updatingCounter}
                                                 onClick={() => {
                                                     openSetCounterConfirmModal(true, true);
                                                 }}
-                                                disabled={updatingCounter}
                                                 type="button"
                                             >
                                                 Reset rootSampleCount
@@ -494,13 +482,13 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                 {confirmCounterModalOpen && (
                                     <Modal
                                         confirmClass="btn-danger"
+                                        confirmText={'Yes, ' + (isReset ? 'Reset' : 'Update')}
+                                        onCancel={closeCounterConfirmModal}
+                                        onConfirm={saveSampleCounter}
                                         title={
                                             (isReset ? 'Reset ' : 'Update ') +
                                             (isRoot ? 'rootSampleCount' : 'sampleCount')
                                         }
-                                        onCancel={closeCounterConfirmModal}
-                                        onConfirm={saveSampleCounter}
-                                        confirmText={'Yes, ' + (isReset ? 'Reset' : 'Update')}
                                     >
                                         <div>
                                             <p>
@@ -527,11 +515,7 @@ NameIdSettingsForm.displayName = 'NameIdSettingsForm';
 export const NameIdSettings: FC<NameIdSettingsProps> = memo(props => {
     return (
         <RequiresPermission perms={PermissionTypes.Admin}>
-            <NameIdSettingsForm
-                {...props}
-                saveNameExpressionOptions={saveNameExpressionOptions}
-                loadNameExpressionOptions={loadNameExpressionOptions}
-            />
+            <NameIdSettingsForm {...props} saveNameExpressionOptions={saveNameExpressionOptions} />
         </RequiresPermission>
     );
 });

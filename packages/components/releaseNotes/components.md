@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.56.3
+*Released*: 24 July 2025
+- Address Issue 53366 by not putting `undefined` into `List<ValueDescriptor>`
+- Address Issue 53443 by fixing where we check for optional prop
+- Export `ValueDescriptor` for external usage
+- Update `NameIdSettings`, `BarTenderSettingsForm` and `ManageSampleStatusesPanel` to use app context for api
+
 ### version 6.56.2
 *Released*: 21 July 2025
 - Issue 53451: JS error when deleting numeric filter values with Between operator

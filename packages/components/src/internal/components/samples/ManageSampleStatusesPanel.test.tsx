@@ -1,4 +1,5 @@
 import React, { act } from 'react';
+import { render, waitFor } from '@testing-library/react';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 
@@ -8,23 +9,35 @@ import { SampleState, SampleStateType } from './models';
 import { ManageSampleStatusesPanel, SampleStatusDetail, SampleStatusesList } from './ManageSampleStatusesPanel';
 
 import { getSamplesTestAPIWrapper } from './APIWrapper';
-import { render } from '@testing-library/react';
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+import { AppContextTestProviderProps } from '../../test/testHelpers';
 
 describe('ManageSampleStatusesPanel', () => {
-    const DEFAULT_PROPS = {
-        api: getTestAPIWrapper(jest.fn, {
-            samples: getSamplesTestAPIWrapper(jest.fn, {
-                getSampleStatuses: jest.fn().mockResolvedValue([new SampleState({ isLocal: true, rowId: 1 })]),
-            }),
-        }),
-        getIsDirty: jest.fn(),
-        setIsDirty: jest.fn(),
-    };
+    function defaultContext(states = [new SampleState({ isLocal: true, rowId: 1 })]): AppContextTestProviderProps {
+        return {
+            appContext: {
+                api: getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleStatuses: jest.fn().mockResolvedValue(states),
+                    }),
+                }),
+            },
+        };
+    }
 
-    function validate(hasError = false): void {
-        expect(document.querySelector('.fa-spinner')).toBeNull();
-        expect(document.querySelectorAll('.alert')).toHaveLength(hasError ? 1 : 0);
+    function defaultProps() {
+        return {
+            getIsDirty: jest.fn(),
+            homeContainer: TEST_PROJECT_CONTAINER,
+            setIsDirty: jest.fn(),
+        };
+    }
+
+    async function validate(hasError = false): Promise<void> {
+        await waitFor(() => {
+            expect(document.querySelector('.fa-spinner')).toBeNull();
+            expect(document.querySelectorAll('.alert')).toHaveLength(hasError ? 1 : 0);
+        });
 
         expect(document.querySelectorAll('.panel')).toHaveLength(1);
         expect(document.querySelectorAll('.panel-heading')).toHaveLength(1);
@@ -34,45 +47,26 @@ describe('ManageSampleStatusesPanel', () => {
     }
 
     test('initial state', async () => {
-        await act(async () => {
-            renderWithAppContext(<ManageSampleStatusesPanel {...DEFAULT_PROPS} homeContainer={TEST_PROJECT_CONTAINER} />);
-        });
-        validate();
+        renderWithAppContext(<ManageSampleStatusesPanel {...defaultProps()} />, defaultContext());
+        await validate();
     });
 
     test('no states', async () => {
-        await act(async () => {
-            renderWithAppContext(
-                <ManageSampleStatusesPanel
-                    {...DEFAULT_PROPS}
-                    homeContainer={TEST_PROJECT_CONTAINER}
-                    api={getTestAPIWrapper(jest.fn, {
-                        samples: getSamplesTestAPIWrapper(jest.fn, {
-                            getSampleStatuses: jest.fn().mockResolvedValue([]),
-                        }),
-                    })}
-                />
-            );
-        });
-
-        validate();
+        renderWithAppContext(<ManageSampleStatusesPanel {...defaultProps()} />, defaultContext([]));
+        await validate();
     });
 
     test('error retrieving states', async () => {
-        await act(async () => {
-            renderWithAppContext(
-                <ManageSampleStatusesPanel
-                    {...DEFAULT_PROPS}
-                    homeContainer={TEST_PROJECT_CONTAINER}
-                    api={getTestAPIWrapper(jest.fn, {
-                        samples: getSamplesTestAPIWrapper(jest.fn, {
-                            getSampleStatuses: () => Promise.reject({ exception: 'Failure' }),
-                        }),
-                    })}
-                />
-            );
+        renderWithAppContext(<ManageSampleStatusesPanel {...defaultProps()} />, {
+            appContext: {
+                api: getTestAPIWrapper(jest.fn, {
+                    samples: getSamplesTestAPIWrapper(jest.fn, {
+                        getSampleStatuses: jest.fn().mockRejectedValue({ exception: 'Failure' }),
+                    }),
+                }),
+            },
         });
-        validate(true);
+        await validate(true);
     });
 });
 
@@ -90,7 +84,7 @@ describe('SampleStatusesList', () => {
         const listGroups = document.querySelectorAll('.list-group');
         if (groupCount === 0) {
             expect(listGroups).toHaveLength(1);
-            expect(listGroups.item(0).textContent).toBe('No sample statuses defined.');
+            expect(listGroups.item(0)).toHaveTextContent('No sample statuses defined.');
         } else {
             expect(listGroups).toHaveLength(groupCount);
             const stateLists = Object.values(statesByType);
@@ -111,9 +105,7 @@ describe('SampleStatusesList', () => {
                 new SampleState({ label: 'First', isLocal: true, rowId: 1 }),
                 new SampleState({ label: 'Second', isLocal: true, rowId: 2 }),
             ],
-            [SampleStateType.Consumed]: [
-                new SampleState({ label: 'Third', isLocal: true, rowId: 3 }),
-            ]
+            [SampleStateType.Consumed]: [new SampleState({ label: 'Third', isLocal: true, rowId: 3 })],
         };
         renderWithAppContext(<SampleStatusesList {...DEFAULT_PROPS} statesByType={states} />);
         validate(states);
@@ -130,9 +122,9 @@ describe('SampleStatusesList', () => {
         renderWithAppContext(
             <SampleStatusesList
                 {...DEFAULT_PROPS}
-                statesByType={states}
                 selected={1}
                 selectedGroup={SampleStateType.Available}
+                statesByType={states}
             />
         );
         validate(states);
@@ -166,9 +158,9 @@ describe('SampleStatusesList', () => {
         renderWithAppContext(
             <SampleStatusesList
                 {...DEFAULT_PROPS}
-                statesByType={unsortedStates}
                 selected={1}
                 selectedGroup={SampleStateType.Consumed}
+                statesByType={unsortedStates}
             />
         );
         validate(states);
@@ -269,13 +261,13 @@ describe('SampleStatusDetail', () => {
         expect(document.querySelector('textarea').value).toBe(STATE.description);
         expect(document.querySelector('textarea').getAttribute('disabled')).toBeFalsy();
         const selectInput = document.querySelector('.select-input__single-value');
-        expect(selectInput.textContent).toBe(STATE.stateType);
+        expect(selectInput).toHaveTextContent(STATE.stateType);
         expect(selectInput.getAttribute('class')).not.toContain('select-input__single-value--is-disabled');
         const buttons = document.querySelectorAll('button');
         expect(buttons).toHaveLength(3);
         expect(buttons.item(1).textContent).toContain('Delete');
         expect(buttons.item(1).getAttribute('disabled')).toBeFalsy();
-        expect(buttons.item(2).textContent).toBe('Save');
+        expect(buttons.item(2)).toHaveTextContent('Save');
         expect(buttons.item(2).getAttribute('disabled')).not.toBeNull(); // save initially disabled
     });
 
@@ -306,7 +298,7 @@ describe('SampleStatusDetail', () => {
         expect(buttons).toHaveLength(3);
         expect(buttons.item(1).textContent).toContain('Delete');
         expect(buttons.item(1).getAttribute('disabled')).not.toBeNull(); // delete disabled
-        expect(buttons.item(2).textContent).toBe('Save');
+        expect(buttons.item(2)).toHaveTextContent('Save');
         expect(buttons.item(2).getAttribute('disabled')).not.toBeNull(); // save initially disabled
     });
 

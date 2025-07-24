@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap, Record as ImmutableRecord } from 'immutable';
+import { fromJS, Record as ImmutableRecord, List, Map, OrderedMap } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
 import { QueryInfo } from '../../../public/QueryInfo';

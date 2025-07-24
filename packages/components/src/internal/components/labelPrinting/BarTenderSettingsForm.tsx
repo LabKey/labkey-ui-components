@@ -6,8 +6,6 @@ import { HelpLink } from '../../util/helpLinks';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-
 import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -23,14 +21,7 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { BarTenderConfiguration } from './models';
 import { BAR_TENDER_TOPIC, BARTENDER_CONFIGURATION_TITLE } from './constants';
 import { LabelsConfigurationPanel } from './LabelsConfigurationPanel';
-
-interface Props extends InjectedRouteLeaveProps {
-    api?: ComponentsAPIWrapper;
-    container: Container;
-    onChange: () => void;
-    onSuccess: () => void;
-    title?: string;
-}
+import { useAppContext } from '../../AppContext';
 
 const SUCCESSFUL_NOTIFICATION_MESSAGE = 'Successfully connected to BarTender web service.';
 const FAILED_NOTIFICATION_MESSAGE = 'Failed to connect to BarTender web service.';
@@ -68,12 +59,12 @@ const SettingsInput: FC<SettingsInputProps> = memo(({ children, description, lab
             <div>
                 <input
                     className="form-control"
-                    type={type}
                     id={name}
                     name={name}
-                    value={value}
                     onChange={onChange_}
                     placeholder="BarTender Web Service URL"
+                    type={type}
+                    value={value}
                 />
             </div>
         </div>
@@ -90,15 +81,16 @@ const btTestConnectionTemplate = (): string => {
         </XMLScript>`;
 };
 
-// exported for jest testing
-export const BarTenderSettingsForm: FC<Props> = memo(props => {
-    const {
-        api = getDefaultAPIWrapper(),
-        container,
-        title = BARTENDER_CONFIGURATION_TITLE,
-        onChange,
-        onSuccess,
-    } = props;
+export interface BarTenderSettingsFormProps extends InjectedRouteLeaveProps {
+    container: Container;
+    onChange: () => void;
+    onSuccess: () => void;
+    title?: string;
+}
+
+export const BarTenderSettingsForm: FC<BarTenderSettingsFormProps> = memo(props => {
+    const { container, onChange, onSuccess, title = BARTENDER_CONFIGURATION_TITLE } = props;
+    const { api } = useAppContext();
     const [btServiceURL, setBtServiceURL] = useState<string>();
     const [error, setError] = useState<string>();
     const [defaultLabel, setDefaultLabel] = useState<number>();
@@ -211,7 +203,7 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
                             value={btServiceURL}
                         >
                             <div className="pull-right">
-                                <HelpLink topic={BAR_TENDER_TOPIC} className="label-printing--help-link">
+                                <HelpLink className="label-printing--help-link" topic={BAR_TENDER_TOPIC}>
                                     Learn more about BarTender
                                 </HelpLink>
                             </div>
@@ -232,8 +224,8 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
                             {isTestable && (
                                 <button
                                     className="button-right-margin pull-right btn btn-success"
-                                    onClick={onVerifyBarTenderConfiguration}
                                     disabled={testing}
+                                    onClick={onVerifyBarTenderConfiguration}
                                     type="button"
                                 >
                                     Test Connection
@@ -245,8 +237,8 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
                                 <LabelsConfigurationPanel
                                     {...props}
                                     api={api}
-                                    defaultLabel={defaultLabel}
                                     container={container}
+                                    defaultLabel={defaultLabel}
                                 />
                             </div>
                         )}

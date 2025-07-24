@@ -139,7 +139,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
         }
     };
     handleDrop = (e): void => {
-        var source = e.dataTransfer.getData('dragIndex');
+        const source = e.dataTransfer.getData('dragIndex');
         const target = this.state.dragTarget;
         if (source && target && source !== target) {
             this.props.onColumnDrop?.(source, target); // Issue 53443
@@ -200,24 +200,24 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
 
                                 return (
                                     <th
+                                        className={className}
+                                        data-fieldkey={column.raw?.fieldKeyPath}
+                                        draggable={draggable}
                                         id={index}
                                         key={index}
-                                        className={className}
+                                        onClick={this.handleHeaderClick}
+                                        onDragEnd={this.handleDragEnd}
+                                        onDragEnter={this.handleDragEnter}
+                                        onDragOver={this.handleDragOver}
+                                        onDragStart={this.handleDragStart}
+                                        onDrop={this.handleDrop}
                                         style={style}
                                         title={hideTooltip ? undefined : description}
-                                        draggable={draggable}
-                                        onDragStart={this.handleDragStart}
-                                        onDragOver={this.handleDragOver}
-                                        onDrop={this.handleDrop}
-                                        onDragEnter={this.handleDragEnter}
-                                        onDragEnd={this.handleDragEnd}
-                                        onClick={this.handleHeaderClick}
-                                        data-fieldkey={column.raw?.fieldKeyPath}
                                     >
                                         {headerCell ? headerCell(column, i, columns.size) : title}
                                         {/* headerCell will render the helpTip, so only render here if not using headerCell() */}
                                         {!headerCell && column.helpTipRenderer && (
-                                            <LabelHelpTip title={title} popoverClassName="label-help-arrow-top">
+                                            <LabelHelpTip popoverClassName="label-help-arrow-top" title={title}>
                                                 <HelpTipRenderer type={column.helpTipRenderer} />
                                             </LabelHelpTip>
                                         )}
@@ -242,7 +242,6 @@ const GridMessages: FC<GridMessagesProps> = memo(({ messages }) => (
         {messages
             .map((message: Map<string, string>, i) => {
                 return (
-                    // eslint-disable-next-line react/no-array-index-key
                     <div className={classNames('grid-message', message.get('type'))} key={i}>
                         {message.get('content')}
                     </div>
@@ -297,7 +296,7 @@ interface EmptyGridRowProps {
 }
 
 const EmptyGridRow: FC<EmptyGridRowProps> = memo(({ colSpan, emptyText, isLoading, loadingText }) => (
-    <tr key="grid-default-row" className={isLoading ? 'grid-loading' : 'grid-empty'}>
+    <tr className={isLoading ? 'grid-loading' : 'grid-empty'} key="grid-default-row">
         <td colSpan={colSpan}>{isLoading ? loadingText : emptyText}</td>
     </tr>
 ));
@@ -339,7 +338,7 @@ const GridBody: FC<GridBodyProps> = memo(props => {
 });
 GridBody.displayName = 'GridBody';
 
-export type GridData = Array<Record<string, any>> | List<Map<string, any>>;
+export type GridData = List<Map<string, any>> | Record<string, any>[];
 
 export interface GridProps {
     bordered?: boolean;

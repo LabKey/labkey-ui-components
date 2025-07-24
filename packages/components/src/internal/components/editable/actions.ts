@@ -191,7 +191,7 @@ interface MessageAndValue {
     valueDescriptor: ValueDescriptor;
 }
 
-type MessageAndValueMap = { [colKey: string]: MessageAndValue[] };
+type MessageAndValueMap = Record<string, MessageAndValue[]>;
 
 function resolveValueDescriptors(
     col: QueryColumn,
@@ -442,7 +442,7 @@ interface CellData {
 }
 
 async function convertRowToEditorModelData(
-    data: string | number | boolean,
+    data: boolean | number | string,
     col: QueryColumn,
     containerPath: string
 ): Promise<CellData> {
@@ -513,7 +513,6 @@ async function addBulkRowsToEditorModel(
     const rowCount = editorModel.rowCount + numToAdd;
 
     for (let rowIdx = editorModel.rowCount; rowIdx < rowCount; rowIdx++) {
-        // eslint-disable-next-line no-loop-func
         rowData.forEach((value, colIdx) => {
             const fieldKey = editorModel.getFieldKeyByIndex(colIdx);
             const cellKey = genCellKey(fieldKey, rowIdx);
@@ -597,7 +596,6 @@ export function addColumns(
     let newCellValues = editorModel.cellValues;
 
     for (let rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
-        // eslint-disable-next-line no-loop-func
         queryColumns.forEach((value: QueryColumn) => {
             newCellValues = newCellValues.set(genCellKey(value.fieldKey, rowIdx), List<ValueDescriptor>());
         });
@@ -748,7 +746,7 @@ export async function updateGridFromBulkForm(
     lockedOrReadonlyRows?: number[],
     isIncludedColumn?: (col: QueryColumn) => boolean,
     containerPath?: string,
-    useEditorModelCols: boolean = false
+    useEditorModelCols = false
 ): Promise<Partial<EditorModel>> {
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
@@ -823,7 +821,7 @@ type PrefixAndNumber = [string | undefined, string | undefined];
  * number the number suffix is undefined. If the entire string is a number the prefix will be undefined. This method
  * intentionally does not parse the numbers.
  */
-export function splitPrefixedNumber(value: string | number): PrefixAndNumber {
+export function splitPrefixedNumber(value: number | string): PrefixAndNumber {
     if (value === undefined || value === null || value === '') return [undefined, undefined];
     const text = value.toString();
     const matches = text?.toString().match(POSTFIX_REGEX);
@@ -874,7 +872,7 @@ interface SelectionIncrement {
     direction: IncrementDirection;
     increment?: number;
     incrementType: IncrementType;
-    initialSelectionValues: Array<List<ValueDescriptor>>; // yes this is a very odd type, but we can clean it up when we rip out Immutable
+    initialSelectionValues: List<ValueDescriptor>[]; // yes this is a very odd type, but we can clean it up when we rip out Immutable
     padLength?: number;
     prefix?: string;
     startingValue: number | string;
@@ -1044,7 +1042,7 @@ export function generateFillCellKeys(
 export function parsePastedLookup(
     column: QueryColumn,
     descriptors: ValueDescriptor[],
-    value: string[] | string
+    value: string | string[]
 ): CellData {
     const originalValues = List([{ display: value, raw: value }]);
 
@@ -1105,7 +1103,7 @@ async function getParsedLookup(
     column: QueryColumn,
     lookupValueCache: LookupValueCache,
     display: any[],
-    value: string[] | string,
+    value: string | string[],
     cellKey: string,
     forUpdate: boolean,
     targetContainerPath: string,

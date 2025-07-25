@@ -1889,6 +1889,7 @@ export type {
     GridResponse,
     UpdatedRow,
     UpdatedRowValue,
+    ValueDescriptor,
 } from './internal/components/editable/models';
 export type { GetParentTypeDataForLineage } from './internal/components/entities/actions';
 export type {

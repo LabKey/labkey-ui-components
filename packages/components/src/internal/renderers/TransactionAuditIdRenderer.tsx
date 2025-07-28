@@ -17,7 +17,7 @@ export class TransactionAuditIdRenderer extends PureComponent<Props> {
             return null;
         }
         let url = AppURL.create('audit', id);
-        const activeTab = caseInsensitive(_row, 'EventType')?.value.toLowerCase();
+        const activeTab = caseInsensitive(_row, 'EventType')?.value;
         if (activeTab) {
             url = url.addParam('tab', activeTab);
         }

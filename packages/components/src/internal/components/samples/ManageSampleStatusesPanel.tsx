@@ -15,8 +15,6 @@ import { caseInsensitive } from '../../util/utils';
 import { SCHEMAS } from '../../schemas';
 import { resolveErrorMessage } from '../../util/messaging';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-
 import { DisableableButton } from '../buttons/DisableableButton';
 
 import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
@@ -396,16 +394,16 @@ SampleStatusesList.displayName = 'SampleStatusesList';
 
 interface ManageSampleStatusesPanelProps extends InjectedRouteLeaveProps {
     addFromHomeOnly?: boolean;
-    api?: ComponentsAPIWrapper;
     homeContainer?: Container;
 }
 
 export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = memo(props => {
-    const { api = getDefaultAPIWrapper(), setIsDirty, homeContainer, addFromHomeOnly } = props;
+    const { setIsDirty, homeContainer, addFromHomeOnly } = props;
     const [states, setStates] = useState<Record<string, SampleState[]>>();
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
     const [selectedGroup, setSelectedGroup] = useState<string>();
+    const { api } = useAppContext();
     const { container, moduleContext } = useServerContext();
     const showAdd = !addFromHomeOnly || isAppHomeFolder(container, moduleContext);
     const addNew = useMemo(() => selected === NEW_STATUS_INDEX, [selected]);

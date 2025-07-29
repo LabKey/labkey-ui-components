@@ -5,25 +5,34 @@ import { Container } from '../base/models/Container';
 
 import { getLabelPrintingTestAPIWrapper } from './APIWrapper';
 
-import { BarTenderSettingsForm } from './BarTenderSettingsForm';
+import { BarTenderSettingsForm, BarTenderSettingsFormProps } from './BarTenderSettingsForm';
 import { BarTenderConfiguration } from './models';
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 import { waitFor } from '@testing-library/dom';
 import { userEvent } from '@testing-library/user-event';
+import { AppContextTestProviderProps } from '../../test/testHelpers';
+import { TEST_FOLDER_CONTAINER } from '../../containerFixtures';
 
 describe('BarTenderSettingsForm', () => {
-    const DEFAULT_PROPS = {
-        api: getTestAPIWrapper(jest.fn, {
-            labelprinting: getLabelPrintingTestAPIWrapper(jest.fn),
-        }),
-        canPrintLabels: false,
-        printServiceUrl: '',
-        onChange: jest.fn(),
-        onSuccess: jest.fn(),
-        getIsDirty: jest.fn(),
-        setIsDirty: jest.fn(),
-        defaultLabel: 1,
-    };
+    function defaultContext(): AppContextTestProviderProps {
+        return {
+            appContext: {
+                api: getTestAPIWrapper(jest.fn, {
+                    labelprinting: getLabelPrintingTestAPIWrapper(jest.fn),
+                }),
+            },
+        };
+    }
+
+    function defaultProps(): BarTenderSettingsFormProps {
+        return {
+            container: TEST_FOLDER_CONTAINER,
+            getIsDirty: jest.fn(),
+            onChange: jest.fn(),
+            onSuccess: jest.fn(),
+            setIsDirty: jest.fn(),
+        };
+    }
 
     function validate(withHeading = true): void {
         expect(document.querySelectorAll('.panel-heading')).toHaveLength(withHeading ? 1 : 0);
@@ -36,22 +45,23 @@ describe('BarTenderSettingsForm', () => {
         expect(buttons).toHaveLength(1);
         const button = buttons.item(0);
         if (canTest) {
-            expect(button.textContent).toBe('Test Connection');
-            expect(button.getAttribute('disabled')).toBeNull();
+            expect(button).toHaveTextContent('Test Connection');
+            expect(button).not.toBeDisabled();
         } else {
-            expect(button.textContent).toBe('Save');
+            expect(button).toHaveTextContent('Save');
 
             if (canSave) {
-                expect(button.getAttribute('disabled')).toBeNull();
+                expect(button).not.toBeDisabled();
             } else {
-                expect(button.getAttribute('disabled')).toBeDefined();
+                expect(button).toBeDisabled();
             }
         }
     }
 
     test('default props, home project', async () => {
         renderWithAppContext(
-            <BarTenderSettingsForm {...DEFAULT_PROPS} container={new Container({ path: '/Test' })} />
+            <BarTenderSettingsForm {...defaultProps()} container={new Container({ path: '/Test' })} />,
+            defaultContext()
         );
         await waitFor(() => {
             expect(document.querySelectorAll('.label-templates-container')).toHaveLength(1);
@@ -61,17 +71,12 @@ describe('BarTenderSettingsForm', () => {
     });
 
     test('default props, product folder', async () => {
-        renderWithAppContext(
-            <BarTenderSettingsForm
-                {...DEFAULT_PROPS}
-                container={new Container({ path: '/Test/Folder', type: 'folder' })}
-            />,
-            {
-                serverContext: {
-                    moduleContext: { query: { isProductFoldersEnabled: true } },
-                },
-            }
-        );
+        renderWithAppContext(<BarTenderSettingsForm {...defaultProps()} />, {
+            ...defaultContext(),
+            serverContext: {
+                moduleContext: { query: { isProductFoldersEnabled: true } },
+            },
+        });
 
         await waitFor(() => {
             expect(document.querySelectorAll('.fa-spinner')).toHaveLength(0);
@@ -84,19 +89,14 @@ describe('BarTenderSettingsForm', () => {
     });
 
     test('default props, subfolder without folders', async () => {
-        renderWithAppContext(
-            <BarTenderSettingsForm
-                {...DEFAULT_PROPS}
-                container={new Container({ path: '/Test/Folder', type: 'folder' })}
-            />,
-            {
-                serverContext: {
-                    moduleContext: {
-                        query: { isProductFoldersEnabled: false },
-                    },
+        renderWithAppContext(<BarTenderSettingsForm {...defaultProps()} />, {
+            ...defaultContext(),
+            serverContext: {
+                moduleContext: {
+                    query: { isProductFoldersEnabled: false },
                 },
-            }
-        );
+            },
+        });
 
         await waitFor(() => {
             expect(document.querySelectorAll('.label-templates-container')).toHaveLength(1);
@@ -107,19 +107,17 @@ describe('BarTenderSettingsForm', () => {
     });
 
     test('with initial form values', async () => {
-        renderWithAppContext(
-            <BarTenderSettingsForm
-                {...DEFAULT_PROPS}
-                container={new Container({ path: '/Test' })}
-                api={getTestAPIWrapper(jest.fn, {
+        renderWithAppContext(<BarTenderSettingsForm {...defaultProps()} />, {
+            appContext: {
+                api: getTestAPIWrapper(jest.fn, {
                     labelprinting: getLabelPrintingTestAPIWrapper(jest.fn, {
                         fetchBarTenderConfiguration: jest
                             .fn()
                             .mockResolvedValue(new BarTenderConfiguration({ serviceURL: 'testServerURL' })),
                     }),
-                })}
-            />
-        );
+                }),
+            },
+        });
         await waitFor(() => {
             expect(document.querySelectorAll('.label-templates-container')).toHaveLength(1);
         });
@@ -129,8 +127,7 @@ describe('BarTenderSettingsForm', () => {
         const urlInput = document.querySelector('input');
         expect(urlInput.getAttribute('value')).toBe('testServerURL');
         await userEvent.click(urlInput);
-        const newUrl = 'changeURL';
-        await userEvent.paste(newUrl);
+        await userEvent.paste('changeURL');
         validateButtons(false, true);
     });
 });

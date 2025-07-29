@@ -62,7 +62,7 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                 .toList();
 
             let isValidOptions = true;
-            if (value !== SAMPLE_TYPE_OPTION_VALUE && sampleTypes.size > 0) {
+            if (value !== SAMPLE_TYPE_OPTION_VALUE) {
                 const optionValues = sampleTypes.map(st => encodeLookup(st.name, st.type));
                 isValidOptions = optionValues.includes(value);
             }

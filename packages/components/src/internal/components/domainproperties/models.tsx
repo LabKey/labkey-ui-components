@@ -1542,8 +1542,8 @@ function resolveLookupSchema(rawField: Partial<IDomainField>, dataType: PropDesc
     return undefined;
 }
 
-// TODO add jest coverage
-function resolveLookupQueryValue(
+// export for jest testing
+export function resolveLookupQueryValue(
     lookupType: PropDescType,
     lookupSchema: string,
     lookupQuery: string,

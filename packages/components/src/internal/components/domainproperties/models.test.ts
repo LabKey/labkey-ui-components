@@ -64,6 +64,7 @@ import {
     isValidTextChoiceValue,
     PropertyValidator,
     PropertyValidatorProperties,
+    resolveLookupQueryValue,
 } from './models';
 import {
     BOOLEAN_RANGE_URI,
@@ -1468,5 +1469,23 @@ describe('resolveBaseProperties', () => {
         expect(DomainField.resolveBaseProperties({ name: 'TEST1' }, List(['test1'])).lockType).toBe(
             DOMAIN_FIELD_PARTIALLY_LOCKED
         );
+    });
+});
+
+describe('resolveLookupQueryValue', () => {
+    test('isSampleType', () => {
+        expect(resolveLookupQueryValue(TEXT_TYPE, 'schema', 'query', false)).toBe('http://www.w3.org/2001/XMLSchema#string|query');
+        expect(resolveLookupQueryValue(TEXT_TYPE, 'schema', 'query', true)).toBe('http://www.w3.org/2001/XMLSchema#string|query');
+        expect(resolveLookupQueryValue(TEXT_TYPE, 'exp', 'query', false)).toBe('http://www.w3.org/2001/XMLSchema#string|query');
+        expect(resolveLookupQueryValue(TEXT_TYPE, 'exp', 'query', true)).toBe('http://www.w3.org/2001/XMLSchema#string|query');
+        expect(resolveLookupQueryValue(TEXT_TYPE, 'exp', 'Materials', false)).toBe('http://www.w3.org/2001/XMLSchema#string|Materials');
+        expect(resolveLookupQueryValue(TEXT_TYPE, 'exp', 'Materials', true)).toBe('http://www.w3.org/2001/XMLSchema#int|all');
+    });
+
+    test('lookupType', () => {
+        expect(resolveLookupQueryValue(TEXT_TYPE, 'schema', 'query', false)).toBe('http://www.w3.org/2001/XMLSchema#string|query');
+        expect(resolveLookupQueryValue(INTEGER_TYPE, 'schema', 'query', false)).toBe('http://www.w3.org/2001/XMLSchema#int|query');
+        expect(resolveLookupQueryValue(DATETIME_TYPE, 'schema', 'query', false)).toBe('http://www.w3.org/2001/XMLSchema#dateTime|query');
+        expect(resolveLookupQueryValue(SAMPLE_TYPE, 'schema', 'query', false)).toBe('http://www.w3.org/2001/XMLSchema#int|query');
     });
 });

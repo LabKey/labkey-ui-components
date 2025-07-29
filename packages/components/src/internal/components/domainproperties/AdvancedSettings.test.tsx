@@ -27,6 +27,12 @@ import {
 import { AdvancedSettings } from './AdvancedSettings';
 import { DomainField } from './models';
 
+// mock isApp() to return false for this test case, affects MV enabled checkbox and Default Value Type
+jest.mock('../../app/utils', () => ({
+    ...jest.requireActual('../../app/utils'),
+    isApp: () => false,
+}));
+
 describe('AdvancedSettings', () => {
     const _fieldName = 'Marty';
     const _title = 'Advanced Settings and Properties';
@@ -114,9 +120,7 @@ describe('AdvancedSettings', () => {
         // Verify mvEnabled
         id = createFormInputId(DOMAIN_FIELD_MVENABLED, _domainIndex, _index);
         const mvEnabled = document.querySelector('#' + id);
-        expect(mvEnabled).toBeNull();
-        // TODO update this test case for isApp scenario
-        // expect(mvEnabled.getAttribute('checked')).toBeNull();
+        expect(mvEnabled.getAttribute('checked')).toBeNull(); // Note mock of isApp above
 
         // Verify recommendedVariable
         id = createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, _domainIndex, _index);
@@ -131,9 +135,7 @@ describe('AdvancedSettings', () => {
         // Verify default type
         id = createFormInputId(DOMAIN_FIELD_DEFAULT_VALUE_TYPE, _domainIndex, _index);
         const defaultType = document.querySelector('#' + id);
-        expect(defaultType).toBeNull();
-        // TODO update this test case for isApp scenario
-        // expect(defaultType.textContent).toEqual('Editable defaultLast enteredFixed value');
+        expect(defaultType.textContent).toEqual('Editable defaultLast enteredFixed value'); // Note mock of isApp above
 
         // Verify buttons
         const btns = document.getElementsByClassName('btn');

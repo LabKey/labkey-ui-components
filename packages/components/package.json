@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "6.56.4-fb-filePathIssues.1",
+  "version": "6.57.1-fb-filePathIssues.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

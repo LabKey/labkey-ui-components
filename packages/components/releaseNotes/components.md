@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - File handling - File path related issue bundle
   - Invalid file (that exist but isn't accessible) should show red triangle icon
 
+### version 6.57.0
+*Released*: 30 July 2025
+- Add file system audit events for apps
+- Add `TransactionAuditIdRenderer` for displaying link to page of audit records associated with a transaction id
+
 ### version 6.56.3
 *Released*: 24 July 2025
 - Address Issue 53366 by not putting `undefined` into `List<ValueDescriptor>`

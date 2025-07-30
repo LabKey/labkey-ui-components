@@ -138,7 +138,7 @@ export interface DomainPropertiesGridColumn {
     sortable: boolean;
 }
 
-export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
+export const SAMPLE_TYPE_ALL_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
 
 interface IDomainDesign {
     allowAttachmentProperties: boolean;
@@ -1554,7 +1554,7 @@ export function resolveLookupQueryValue(
         lookupSchema === SCHEMAS.EXP_TABLES.SCHEMA &&
         lookupQuery === SCHEMAS.EXP_TABLES.MATERIALS.queryName
     ) {
-        return SAMPLE_TYPE_OPTION_VALUE;
+        return SAMPLE_TYPE_ALL_OPTION_VALUE;
     }
     return encodeLookup(lookupQuery, lookupType);
 }

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Add `StoragePositionNumber` as a sample storage column
+
 ### version 6.57.0
 *Released*: 30 July 2025
 - Add file system audit events for apps

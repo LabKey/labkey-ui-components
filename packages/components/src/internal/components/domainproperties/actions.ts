@@ -866,6 +866,7 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             rangeURI: dataType.rangeURI,
             lookupSchema: dataType.lookupSchema,
             lookupQuery: dataType.lookupQuery,
+            lookupIsValid: true,
             sourceOntology: undefined,
             conceptSubtree: undefined,
             conceptLabelColumn: undefined,

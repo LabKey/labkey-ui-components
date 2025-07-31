@@ -35,7 +35,6 @@ interface SampleFieldProps extends ITypeDependentProps {
 }
 
 interface State {
-    isValidOption?: boolean;
     loadingState: LoadingState;
     sampleTypes: List<LookupInfo>;
     validateLookup: boolean;
@@ -49,7 +48,7 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
     };
 
     componentDidMount = async (): Promise<void> => {
-        const { original, field, value } = this.props;
+        const { original, field } = this.props;
 
         this.setState({ loadingState: LoadingState.LOADING });
 
@@ -61,14 +60,7 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                 .filter(st => st.type.isInteger()) // Remove rowId duplicates
                 .toList();
 
-            let isValidOption = true;
-            if (value !== SAMPLE_TYPE_ALL_OPTION_VALUE) {
-                const optionValues = sampleTypes.map(st => encodeLookup(st.name, st.type));
-                isValidOption = optionValues.includes(value);
-            }
-
             this.setState({
-                isValidOption,
                 loadingState: LoadingState.LOADED,
                 sampleTypes,
                 validateLookup: field.isNew() || !!field.lookupValidator,
@@ -81,7 +73,6 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
 
     onFieldChange = (evt): void => {
         this.props.onChange(evt.target.id, evt.target.value);
-        this.setState({ isValidOption: true });
     };
 
     addLookupValidator = (evt): void => {
@@ -98,7 +89,7 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
 
     render() {
         const { index, label, lockType, value, domainIndex, field } = this.props;
-        const { loadingState, sampleTypes, validateLookup, isValidOption } = this.state;
+        const { loadingState, sampleTypes, validateLookup } = this.state;
         const isLoaded = !isLoading(loadingState);
 
         const id = createFormInputId(DOMAIN_FIELD_SAMPLE_TYPE, domainIndex, index);
@@ -144,7 +135,7 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                                     Loading...
                                 </option>
                             )}
-                            {!isValidOption && (
+                            {field && !field.lookupIsValid && (
                                 <option
                                     key={createFormInputId(
                                         DOMAIN_FIELD_SAMPLE_TYPE + '-empty-' + index,

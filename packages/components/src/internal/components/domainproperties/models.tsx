@@ -1422,6 +1422,17 @@ export class DomainField
                     ? ALL_SAMPLES_DISPLAY_TEXT
                     : this.lookupQuery;
             details.push(period + detailsText);
+
+            if (!this.lookupIsValid) {
+                const fieldError = new DomainFieldError({
+                    extraInfo:
+                        'The selected sample type may have been deleted or renamed. Expand the row to select a valid sample lookup.',
+                    message: 'Invalid sample type',
+                    severity: SEVERITY_LEVEL_ERROR,
+                });
+                details.push(<DomainRowWarning fieldError={fieldError} key="domain-row-sample-error" />);
+            }
+
             period = '. ';
         } else if (this.dataType.isLookup() && this.lookupSchema && this.lookupQuery) {
             // only show the query as a link in LKS, for now
@@ -1571,6 +1582,7 @@ export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?
                   lookupQueryValue: sampleQueryValue,
                   lookupType: field.lookupType.set('rangeURI', rangeURI),
                   lookupValidator: LOOKUP_VALIDATOR,
+                  lookupIsValid: true,
                   propertyValidators: List([LOOKUP_VALIDATOR]),
                   rangeURI,
               }
@@ -1581,6 +1593,7 @@ export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?
                   lookupQueryValue: sampleQueryValue,
                   lookupType: lookupType.set('rangeURI', rangeURI),
                   lookupValidator: LOOKUP_VALIDATOR,
+                  lookupIsValid: true,
                   propertyValidators: List([LOOKUP_VALIDATOR]),
                   rangeURI,
               };

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.58.0
+*Released*: 4 August 2025
 - GitHub Issue 783: Hide domain designer field Advanced Settings that are not currently implemented in app
 - GitHub Issue 788: Domain Designer better handling of invalid lookup query value for Sample data type
 

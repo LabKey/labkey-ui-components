@@ -123,9 +123,9 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                         </div>
                         <select
                             className="form-control"
+                            disabled={isFieldFullyLocked(lockType)}
                             id={id}
                             key={id}
-                            disabled={isFieldFullyLocked(lockType)}
                             name={createFormInputName(DOMAIN_FIELD_SAMPLE_TYPE)}
                             onChange={this.onFieldChange}
                             value={value || SAMPLE_TYPE_ALL_OPTION_VALUE}
@@ -175,10 +175,10 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                     <div className="col-xs-6">
                         <div className="domain-field-label">Lookup Validator</div>
                         <DomainDesignerCheckbox
+                            checked={validateLookup}
                             className="domain-field-checkbox-margin"
                             id={createFormInputId(DOMAIN_VALIDATOR_LOOKUP, domainIndex, index)}
                             name={createFormInputName(DOMAIN_VALIDATOR_LOOKUP)}
-                            checked={validateLookup}
                             onChange={this.addLookupValidator}
                         >
                             <span className="domain-lookup-validator-text">Ensure Value Exists in Lookup Target</span>

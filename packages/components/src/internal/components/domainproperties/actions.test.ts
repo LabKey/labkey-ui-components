@@ -22,8 +22,8 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { ConceptModel, OntologyModel } from '../ontology/models';
 
 import {
-    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
     TEST_LKS_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from '../../productFixtures';
 

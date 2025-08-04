@@ -1128,7 +1128,8 @@ export class DomainField
         const lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
         const lookupContainer = rawField.lookupContainer === null ? undefined : rawField.lookupContainer;
         const lookupSchema = resolveLookupSchema(rawField, dataType);
-        const lookupQuery = rawField.lookupQuery || (dataType === SAMPLE_TYPE ? SCHEMAS.EXP_TABLES.MATERIALS.queryName : undefined);
+        const lookupQuery =
+            rawField.lookupQuery || (dataType === SAMPLE_TYPE ? SCHEMAS.EXP_TABLES.MATERIALS.queryName : undefined);
         const lookupQueryValue = resolveLookupQueryValue(lookupType, lookupSchema, lookupQuery, isSampleType);
 
         return {

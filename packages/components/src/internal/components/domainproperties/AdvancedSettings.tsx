@@ -60,7 +60,6 @@ interface AdvancedSettingsProps {
 }
 
 interface AdvancedSettingsState {
-    PHI?: string;
     defaultDisplayValue?: string;
     defaultValueType?: string;
     dimension?: boolean;
@@ -68,7 +67,8 @@ interface AdvancedSettingsState {
     hidden?: boolean;
     measure?: boolean;
     mvEnabled?: boolean;
-    phiLevels?: Array<{ label: string; value: string; }>;
+    PHI?: string;
+    phiLevels?: { label: string; value: string }[];
     recommendedVariable?: boolean;
     shownInDetailsView?: boolean;
     shownInInsertView?: boolean;
@@ -265,9 +265,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 <div>These options configure how and in which views this field will be visible.</div>
                 <CheckboxLK
                     checked={hidden === false}
-                    onChange={this.handleCheckbox}
-                    name={createFormInputName(DOMAIN_FIELD_HIDDEN)}
                     id={createFormInputId(DOMAIN_FIELD_HIDDEN, domainIndex, index)}
+                    name={createFormInputName(DOMAIN_FIELD_HIDDEN)}
+                    onChange={this.handleCheckbox}
                 >
                     Show field on default view of the grid
                 </CheckboxLK>
@@ -275,17 +275,17 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     <>
                         <CheckboxLK
                             checked={shownInUpdateView === true}
-                            onChange={this.handleCheckbox}
-                            name={createFormInputName(DOMAIN_FIELD_SHOWNINUPDATESVIEW)}
                             id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, domainIndex, index)}
+                            name={createFormInputName(DOMAIN_FIELD_SHOWNINUPDATESVIEW)}
+                            onChange={this.handleCheckbox}
                         >
                             Show on update form when updating a single row of data
                         </CheckboxLK>
                         <CheckboxLK
                             checked={shownInInsertView === true}
-                            onChange={this.handleCheckbox}
-                            name={createFormInputName(DOMAIN_FIELD_SHOWNININSERTVIEW)}
                             id={createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, domainIndex, index)}
+                            name={createFormInputName(DOMAIN_FIELD_SHOWNININSERTVIEW)}
+                            onChange={this.handleCheckbox}
                         >
                             Show on insert form when updating a single row of data
                         </CheckboxLK>
@@ -293,9 +293,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 )}
                 <CheckboxLK
                     checked={shownInDetailsView === true}
-                    onChange={this.handleCheckbox}
-                    name={createFormInputName(DOMAIN_FIELD_SHOWNINDETAILSVIEW)}
                     id={createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, domainIndex, index)}
+                    name={createFormInputName(DOMAIN_FIELD_SHOWNINDETAILSVIEW)}
+                    onChange={this.handleCheckbox}
                 >
                     Show on details page for a single row
                 </CheckboxLK>
@@ -312,21 +312,23 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 <div className="domain-adv-misc-options">Default Value Options</div>
                 <div className="row domain-adv-thick-row">
                     <div className="col-xs-3">
-                        <DomainFieldLabel label="Default Type" helpTipBody={this.getDefaultTypeHelpText()} />
+                        <DomainFieldLabel helpTipBody={this.getDefaultTypeHelpText()} label="Default Type" />
                     </div>
                     <div className="col-xs-6">
                         <select
                             className="form-control"
-                            name={createFormInputName(DOMAIN_FIELD_DEFAULT_VALUE_TYPE)}
                             id={createFormInputId(DOMAIN_FIELD_DEFAULT_VALUE_TYPE, domainIndex, index)}
+                            name={createFormInputName(DOMAIN_FIELD_DEFAULT_VALUE_TYPE)}
                             onChange={this.handleChange}
                             value={defaultValueType}
                         >
-                            {defaultValueOptions.map(level => (
-                                <option key={level} value={level}>
-                                    {DOMAIN_DEFAULT_TYPES[level]}
-                                </option>
-                            )).toArray()}
+                            {defaultValueOptions
+                                .map(level => (
+                                    <option key={level} value={level}>
+                                        {DOMAIN_DEFAULT_TYPES[level]}
+                                    </option>
+                                ))
+                                .toArray()}
                         </select>
                     </div>
                     <div className="col-xs-3" />
@@ -342,9 +344,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 : ''}
                         </span>
                         <a
-                            style={{ marginLeft: '20px' }}
-                            onClick={this.handleSetDefaultValues}
                             className="domain-adv-link"
+                            onClick={this.handleSetDefaultValues}
+                            style={{ marginLeft: '20px' }}
                         >
                             Set Default Values
                         </a>
@@ -378,16 +380,16 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 {!field.isCalculatedField() && (
                     <div className="row">
                         <div className="col-xs-3">
-                            <DomainFieldLabel label="PHI Level" helpTipBody={this.getPhiHelpText()} />
+                            <DomainFieldLabel helpTipBody={this.getPhiHelpText()} label="PHI Level" />
                         </div>
                         <div className="col-xs-6">
                             <select
                                 className="form-control"
-                                name={createFormInputName(DOMAIN_FIELD_PHI)}
+                                disabled={disablePhiSelect}
                                 id={createFormInputId(DOMAIN_FIELD_PHI, domainIndex, index)}
+                                name={createFormInputName(DOMAIN_FIELD_PHI)}
                                 onChange={this.handleChange}
                                 value={PHI}
-                                disabled={disablePhiSelect}
                             >
                                 {!currentValueExists && (
                                     <option key={PHI} value={PHI}>
@@ -407,9 +409,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 {field.dataType === DATETIME_TYPE && (
                     <CheckboxLK
                         checked={excludeFromShifting}
-                        onChange={this.handleCheckbox}
-                        name={createFormInputName(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING)}
                         id={createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, domainIndex, index)}
+                        name={createFormInputName(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING)}
+                        onChange={this.handleCheckbox}
                     >
                         Exclude from "Participant Date Shifting" on export/publication
                         <LabelHelpTip title="Exclude from Date Shifting">
@@ -421,9 +423,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 {PropDescType.isMeasure(field.dataType.rangeURI) && (
                     <CheckboxLK
                         checked={measure}
-                        onChange={this.handleCheckbox}
-                        name={createFormInputName(DOMAIN_FIELD_MEASURE)}
                         id={createFormInputId(DOMAIN_FIELD_MEASURE, domainIndex, index)}
+                        name={createFormInputName(DOMAIN_FIELD_MEASURE)}
+                        onChange={this.handleCheckbox}
                     >
                         Make this field available as a measure
                         <LabelHelpTip title="Measure">
@@ -446,9 +448,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 {PropDescType.isDimension(field.dataType.rangeURI) && (
                     <CheckboxLK
                         checked={dimension}
-                        onChange={this.handleCheckbox}
-                        name={createFormInputName(DOMAIN_FIELD_DIMENSION)}
                         id={createFormInputId(DOMAIN_FIELD_DIMENSION, domainIndex, index)}
+                        name={createFormInputName(DOMAIN_FIELD_DIMENSION)}
+                        onChange={this.handleCheckbox}
                     >
                         Make this field available as a dimension
                         <LabelHelpTip title="Data Dimension">
@@ -470,9 +472,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 )}
                 <CheckboxLK
                     checked={recommendedVariable}
-                    onChange={this.handleCheckbox}
-                    name={createFormInputName(DOMAIN_FIELD_RECOMMENDEDVARIABLE)}
                     id={createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, domainIndex, index)}
+                    name={createFormInputName(DOMAIN_FIELD_RECOMMENDEDVARIABLE)}
+                    onChange={this.handleCheckbox}
                 >
                     Make this field a recommended variable
                     <LabelHelpTip title="Recommended Variable">
@@ -485,10 +487,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 {PropDescType.isMvEnableable(field.dataType.rangeURI) && !field.isCalculatedField() && !isApp() && (
                     <CheckboxLK
                         checked={mvEnabled}
-                        onChange={this.handleCheckbox}
-                        name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
-                        id={createFormInputId(DOMAIN_FIELD_MVENABLED, domainIndex, index)}
                         disabled={domainFormDisplayOptions.disableMvEnabled}
+                        id={createFormInputId(DOMAIN_FIELD_MVENABLED, domainIndex, index)}
+                        name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
+                        onChange={this.handleCheckbox}
                     >
                         Track reason for missing data values
                         <LabelHelpTip title="Missing Value Indicators">
@@ -510,9 +512,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     <CheckboxLK
                         checked={uniqueConstraint || field.isPrimaryKey}
                         disabled={field.isPrimaryKey}
-                        onChange={this.handleCheckbox}
-                        name={createFormInputName(DOMAIN_FIELD_UNIQUECONSTRAINT)}
                         id={createFormInputId(DOMAIN_FIELD_UNIQUECONSTRAINT, domainIndex, index)}
+                        name={createFormInputName(DOMAIN_FIELD_UNIQUECONSTRAINT)}
+                        onChange={this.handleCheckbox}
                     >
                         Require all values to be unique
                         <LabelHelpTip title="Unique Constraint">
@@ -536,7 +538,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 >
                     Cancel
                 </button>
-                <HelpLink topic={ADVANCED_FIELD_EDITOR_TOPIC} className="domain-adv-footer domain-adv-link">
+                <HelpLink className="domain-adv-footer domain-adv-link" topic={ADVANCED_FIELD_EDITOR_TOPIC}>
                     Get help with field designer settings
                 </HelpLink>
                 <button

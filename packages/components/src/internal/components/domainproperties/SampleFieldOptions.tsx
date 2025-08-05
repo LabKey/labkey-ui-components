@@ -11,7 +11,7 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { fetchQueries } from './actions';
 import { createFormInputId, createFormInputName } from './utils';
-import { ALL_SAMPLES_DISPLAY_TEXT, DOMAIN_FIELD_SAMPLE_TYPE, DOMAIN_VALIDATOR_LOOKUP } from './constants';
+import { DOMAIN_FIELD_SAMPLE_TYPE, DOMAIN_VALIDATOR_LOOKUP } from './constants';
 import {
     DomainField,
     encodeLookup,
@@ -20,7 +20,7 @@ import {
     ITypeDependentProps,
     LOOKUP_VALIDATOR,
     LookupInfo,
-    SAMPLE_TYPE_OPTION_VALUE,
+    SAMPLE_TYPE_ALL_OPTION_VALUE,
 } from './models';
 
 import { SectionHeading } from './SectionHeading';
@@ -88,8 +88,7 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
     };
 
     render() {
-        const { index, label, lockType, value, domainIndex } = this.props;
-
+        const { index, label, lockType, value, domainIndex, field } = this.props;
         const { loadingState, sampleTypes, validateLookup } = this.state;
         const isLoaded = !isLoading(loadingState);
 
@@ -124,16 +123,28 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                         </div>
                         <select
                             className="form-control"
+                            disabled={isFieldFullyLocked(lockType)}
                             id={id}
                             key={id}
-                            disabled={isFieldFullyLocked(lockType)}
                             name={createFormInputName(DOMAIN_FIELD_SAMPLE_TYPE)}
                             onChange={this.onFieldChange}
-                            value={value || ALL_SAMPLES_DISPLAY_TEXT}
+                            value={value || SAMPLE_TYPE_ALL_OPTION_VALUE}
                         >
                             {!isLoaded && (
                                 <option disabled key="_loading" value={value}>
                                     Loading...
+                                </option>
+                            )}
+                            {field && !field.lookupIsValid && (
+                                <option
+                                    key={createFormInputId(
+                                        DOMAIN_FIELD_SAMPLE_TYPE + '-empty-' + index,
+                                        domainIndex,
+                                        index
+                                    )}
+                                    value={undefined}
+                                >
+                                    &lt;Invalid sample type: {field?.lookupQuery}&gt;
                                 </option>
                             )}
                             {isLoaded && (
@@ -143,7 +154,7 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                                         domainIndex,
                                         index
                                     )}
-                                    value={SAMPLE_TYPE_OPTION_VALUE}
+                                    value={SAMPLE_TYPE_ALL_OPTION_VALUE}
                                 >
                                     All Samples
                                 </option>
@@ -164,10 +175,10 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                     <div className="col-xs-6">
                         <div className="domain-field-label">Lookup Validator</div>
                         <DomainDesignerCheckbox
+                            checked={validateLookup}
                             className="domain-field-checkbox-margin"
                             id={createFormInputId(DOMAIN_VALIDATOR_LOOKUP, domainIndex, index)}
                             name={createFormInputName(DOMAIN_VALIDATOR_LOOKUP)}
-                            checked={validateLookup}
                             onChange={this.addLookupValidator}
                         >
                             <span className="domain-lookup-validator-text">Ensure Value Exists in Lookup Target</span>

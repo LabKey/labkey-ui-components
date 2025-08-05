@@ -138,7 +138,7 @@ export interface DomainPropertiesGridColumn {
     sortable: boolean;
 }
 
-export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
+export const SAMPLE_TYPE_ALL_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
 
 interface IDomainDesign {
     allowAttachmentProperties: boolean;
@@ -1124,12 +1124,13 @@ export class DomainField
     }
 
     static resolveLookupConfig(rawField: Partial<IDomainField>, dataType: PropDescType): ILookupConfig {
+        const isSampleType = dataType === SAMPLE_TYPE;
         const lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
         const lookupContainer = rawField.lookupContainer === null ? undefined : rawField.lookupContainer;
         const lookupSchema = resolveLookupSchema(rawField, dataType);
         const lookupQuery =
             rawField.lookupQuery || (dataType === SAMPLE_TYPE ? SCHEMAS.EXP_TABLES.MATERIALS.queryName : undefined);
-        const lookupQueryValue = encodeLookup(lookupQuery, lookupType);
+        const lookupQueryValue = resolveLookupQueryValue(lookupType, lookupSchema, lookupQuery, isSampleType);
 
         return {
             lookupContainer,
@@ -1422,6 +1423,17 @@ export class DomainField
                     ? ALL_SAMPLES_DISPLAY_TEXT
                     : this.lookupQuery;
             details.push(period + detailsText);
+
+            if (!this.lookupIsValid) {
+                const fieldError = new DomainFieldError({
+                    extraInfo:
+                        'The selected sample type may have been deleted or renamed. Expand the row to select a valid sample lookup.',
+                    message: 'Invalid sample type',
+                    severity: SEVERITY_LEVEL_ERROR,
+                });
+                details.push(<DomainRowWarning fieldError={fieldError} key="domain-row-sample-error" />);
+            }
+
             period = '. ';
         } else if (this.dataType.isLookup() && this.lookupSchema && this.lookupQuery) {
             // only show the query as a link in LKS, for now
@@ -1542,6 +1554,23 @@ function resolveLookupSchema(rawField: Partial<IDomainField>, dataType: PropDesc
     return undefined;
 }
 
+// export for jest testing
+export function resolveLookupQueryValue(
+    lookupType: PropDescType,
+    lookupSchema: string,
+    lookupQuery: string,
+    isSampleType = false
+): string {
+    if (
+        isSampleType &&
+        lookupSchema === SCHEMAS.EXP_TABLES.SCHEMA &&
+        lookupQuery === SCHEMAS.EXP_TABLES.MATERIALS.queryName
+    ) {
+        return SAMPLE_TYPE_ALL_OPTION_VALUE;
+    }
+    return encodeLookup(lookupQuery, lookupType);
+}
+
 export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?: string): DomainField {
     const { queryName, rangeURI = INT_RANGE_URI } = decodeLookup(sampleQueryValue);
     const lookupType = field.lookupType || LOOKUP_TYPE;
@@ -1554,6 +1583,7 @@ export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?
                   lookupQueryValue: sampleQueryValue,
                   lookupType: field.lookupType.set('rangeURI', rangeURI),
                   lookupValidator: LOOKUP_VALIDATOR,
+                  lookupIsValid: true,
                   propertyValidators: List([LOOKUP_VALIDATOR]),
                   rangeURI,
               }
@@ -1561,9 +1591,10 @@ export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?
                   // use the samples.<SampleType> table for specific sample types
                   lookupSchema: SCHEMAS.SAMPLE_SETS.SCHEMA,
                   lookupQuery: queryName,
-                  lookupQueryValue: sampleQueryValue || SAMPLE_TYPE_OPTION_VALUE,
+                  lookupQueryValue: sampleQueryValue,
                   lookupType: lookupType.set('rangeURI', rangeURI),
                   lookupValidator: LOOKUP_VALIDATOR,
+                  lookupIsValid: true,
                   propertyValidators: List([LOOKUP_VALIDATOR]),
                   rangeURI,
               };

@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - File handling - File path related issue bundle
   - Invalid file (that exist but isn't accessible) should show red triangle icon
 
+### version 6.58.0
+*Released*: 4 August 2025
+- GitHub Issue 783: Hide domain designer field Advanced Settings that are not currently implemented in app
+- GitHub Issue 788: Domain Designer better handling of invalid lookup query value for Sample data type
+
 ### version 6.57.0
 *Released*: 30 July 2025
 - Add file system audit events for apps

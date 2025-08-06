@@ -158,6 +158,7 @@ export const DEFAULT_SAMPLE_FIELD_CONFIG = {
     lookupQuery: 'Materials',
     lookupType: { ...SAMPLE_TYPE },
     lookupValidator: LOOKUP_VALIDATOR,
+    lookupIsValid: true,
     propertyValidators: List([LOOKUP_VALIDATOR]),
     name: 'SampleID',
     label: 'Sample ID',

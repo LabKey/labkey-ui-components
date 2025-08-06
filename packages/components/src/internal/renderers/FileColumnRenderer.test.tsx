@@ -95,6 +95,13 @@ describe('getAttachmentCardProp', () => {
             iconFontCls: 'fa fa-file-image-o',
             unavailable: false,
         });
+        const dataUnavailable = { url: 'testurl', value: 'test.png (unavailable)' };
+        validate(getAttachmentCardProp(dataUnavailable), true, 'attachment', false, 'testurl', {
+            name: 'test.png',
+            title: 'test.png',
+            iconFontCls: 'fa fa-exclamation-triangle',
+            unavailable: true,
+        });
     });
 
     test('allowRemove', () => {

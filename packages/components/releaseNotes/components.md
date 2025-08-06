@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Add `StoragePositionNumber` as a sample storage column
 
+### version 6.58.1
+*Released*: 5 August 2025
+- File handling - File path related issue bundle
+  - Invalid file (that exist but isn't accessible) should show red triangle icon
+
 ### version 6.58.0
 *Released*: 4 August 2025
 - GitHub Issue 783: Hide domain designer field Advanced Settings that are not currently implemented in app

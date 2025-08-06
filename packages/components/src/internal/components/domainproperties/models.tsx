@@ -883,6 +883,7 @@ export interface IDomainField {
     lockExistingField?: boolean;
     lockType: string;
     lookupContainer?: string;
+    lookupIsValid?: boolean;
     lookupQuery?: string;
     lookupQueryValue: string;
     lookupSchema?: string;

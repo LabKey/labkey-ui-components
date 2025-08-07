@@ -2,6 +2,10 @@
 Components, models, actions, and utility functions for LabKey applications and pages
 
 ### version 6.58.2
+*Released*: 7 August 2025
+- Add `StoragePositionNumber` as a sample storage column
+
+### version 6.58.2
 *Released*: 6 August 2025
 - GitHub Issue 788: LKSM Default sample lookup for assay design should default to lookupIsValid
 

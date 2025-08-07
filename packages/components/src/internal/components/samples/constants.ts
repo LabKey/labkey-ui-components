@@ -173,6 +173,7 @@ export const AMOUNT_AND_UNITS_COLUMNS_LC = AMOUNT_AND_UNITS_COLUMNS.map(col => c
 
 export const SAMPLE_STORAGE_COLUMNS = [
     'StorageLocation',
+    'StoragePositionNumber',
     'StorageRow',
     'StorageCol',
     'StorageUnit',

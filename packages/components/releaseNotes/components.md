@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.58.2
+*Released*: 7 August 2025
 - Add `StoragePositionNumber` as a sample storage column
 
 ### version 6.58.2

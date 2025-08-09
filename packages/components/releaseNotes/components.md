@@ -5,7 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X August 2025
 - Adding new parent alias on designer doesn't always add the bottom of the list
 
-### version 6.58.2
+### version 6.58.3
 *Released*: 7 August 2025
 - Add `StoragePositionNumber` as a sample storage column
 

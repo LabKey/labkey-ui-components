@@ -867,17 +867,17 @@ describe('domain properties actions', () => {
         expect(getCastStatement('key', 'VISITDATE')).toBe('CAST(CURDATE() AS TIMESTAMP) AS "key"');
         expect(getCastStatement('key', 'DATE')).toBe('CAST(CURDATE() AS DATE) AS "key"');
         expect(getCastStatement('key', 'TIME')).toBe('CAST(\'13:00\' AS TIME) AS "key"');
-        expect(getCastStatement('key', 'TEXT')).toBe('CAST(\'Testing\' AS VARCHAR) AS "key"');
-        expect(getCastStatement('key', 'OTHER')).toBe('CAST(\'Testing\' AS VARCHAR) AS "key"');
+        expect(getCastStatement('key', 'TEXT')).toBe('CAST(\'1\' AS VARCHAR) AS "key"');
+        expect(getCastStatement('key', 'OTHER')).toBe('CAST(\'1\' AS VARCHAR) AS "key"');
     });
 
     // Issue 52608
     test('getCastStatement for special char field', () => {
         expect(getCastStatement('a"key" with quotes', 'TEXT')).toBe(
-            'CAST(\'Testing\' AS VARCHAR) AS "a""key"" with quotes"'
+            'CAST(\'1\' AS VARCHAR) AS "a""key"" with quotes"'
         );
         expect(getCastStatement('a,./key with!@#$specCHARS', 'TEXT')).toBe(
-            'CAST(\'Testing\' AS VARCHAR) AS "a,./key with!@#$specCHARS"'
+            'CAST(\'1\' AS VARCHAR) AS "a,./key with!@#$specCHARS"'
         );
     });
 

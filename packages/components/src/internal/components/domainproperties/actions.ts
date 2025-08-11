@@ -443,7 +443,7 @@ export function getCastStatement(key: string, type: string): string {
         case 'TIME':
             return `CAST('13:00' AS TIME) AS "${quotedKey}"`;
         default:
-            return `CAST('Testing' AS VARCHAR) AS "${quotedKey}"`;
+            return `CAST('1' AS VARCHAR) AS "${quotedKey}"`;
     }
 }
 

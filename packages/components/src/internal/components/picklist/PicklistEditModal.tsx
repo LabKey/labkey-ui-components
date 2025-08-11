@@ -3,23 +3,14 @@ import { Utils } from '@labkey/api';
 
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
-
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-
 import { useNotificationsContext } from '../notifications/NotificationsContext';
-
 import { Modal } from '../../Modal';
-
 import { CheckboxLK } from '../../Checkbox';
-
 import { useAppContext } from '../../AppContext';
-
 import { AppURL } from '../../url/AppURL';
-
 import { PICKLIST_KEY } from '../../app/constants';
-
 import { AppLink } from '../../url/AppLink';
-
 import { Picklist } from './models';
 import { createPicklist, updatePicklist } from './actions';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
@@ -179,8 +170,8 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
     return (
         <Modal
             canConfirm={!!name}
-            confirmText={finishVerb + ' Picklist'}
             confirmingText={finishingVerb + ' Picklist...'}
+            confirmText={finishVerb + ' Picklist'}
             isConfirming={submitting}
             onCancel={onHide}
             onConfirm={onSavePicklist}
@@ -192,21 +183,21 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
                     <label className="control-label">Name *</label>
 
                     <input
-                        placeholder="Give this list a name"
                         className="form-control"
-                        value={name}
                         onChange={onNameChange}
+                        placeholder="Give this list a name"
                         type="text"
+                        value={name}
                     />
                 </div>
                 <div className="form-group">
                     <label className="control-label">Description</label>
 
                     <textarea
-                        placeholder="Add a description"
                         className="form-control"
-                        value={description}
                         onChange={onDescriptionChange}
+                        placeholder="Add a description"
+                        value={description}
                     />
 
                     <CheckboxLK checked={shared} name="shared" onChange={onSharedChanged}>
@@ -220,7 +211,6 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
 
 PicklistEditModalDisplay.displayName = 'PicklistEditModalDisplay';
 
-// eslint-disable-next-line no-warning-comments
 // FIXME: This does not need to be a separate component. It is solely initializing the "sampleIds" prop.
 export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
     const { queryModel, sampleFieldKey, sampleIds } = props;

@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 6.X
 *Released*: X August 2025
-- Adding new parent alias on designer doesn't always add the bottom of the list
+- Adding new parent alias on designer doesn't always add to the bottom of the list
 
 ### version 6.58.3
 *Released*: 7 August 2025

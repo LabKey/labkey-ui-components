@@ -1,62 +1,49 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-
-import { ActionURL, AuditBehaviorTypes } from '@labkey/api';
+import { AuditBehaviorTypes } from '@labkey/api';
 
 import { Progress } from '../base/Progress';
 import { Modal } from '../../Modal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { Container } from '../base/models/Container';
-
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { capitalizeFirstChar } from '../../util/utils';
 import { HelpLink, MOVE_SAMPLES_TOPIC } from '../../util/helpLinks';
-
 import { isLoading, LoadingState } from '../../../public/LoadingState';
-
-import { AppURL, buildURL } from '../../url/AppURL';
-
-import { getPrimaryAppProperties } from '../../app/utils';
-
+import { AppURL } from '../../url/AppURL';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-
 import { getPermissionRestrictionMessage } from '../../util/messaging';
-
 import { EntityDataType, OperationConfirmationData } from './models';
 import { getEntityNoun } from './utils';
 import { EntityMoveConfirmationModal } from './EntityMoveConfirmationModal';
-import { getPrimaryAppProductId } from '../../app/products';
-import { useServerContext } from '../base/ServerContext';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { AppLink } from '../../url/AppLink';
 
 export interface EntityMoveModalProps {
     api?: ComponentsAPIWrapper;
     currentContainer?: Container; // used in the single move case when the item is not in the current container
     dataTypeRowId?: number;
     entityDataType: EntityDataType;
-    hideHelp?: boolean;
     maxSelected: number;
     onAfterMove: () => void;
     onCancel: () => void;
-    queryModel: QueryModel;
-    targetAppURL?: AppURL;
-    useSelected: boolean; // jest only
+    rowIds: string[];
+    schemaQuery: SchemaQuery;
+    targetAppURL: AppURL;
 }
 
 export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
     const {
         api = getDefaultAPIWrapper(),
-        onAfterMove,
         currentContainer,
-        queryModel,
-        onCancel,
-        useSelected,
+        dataTypeRowId,
         entityDataType,
         maxSelected,
+        onAfterMove,
+        onCancel,
+        rowIds,
+        schemaQuery,
         targetAppURL,
-        dataTypeRowId,
-        hideHelp,
     } = props;
     const { nounPlural } = entityDataType;
     const { createNotification } = useNotificationsContext();
@@ -65,17 +52,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
     const [error, setError] = useState<string>();
     const [showProgress, setShowProgress] = useState<boolean>(false);
     const [numConfirmed, setNumConfirmed] = useState<number>(0);
-    const { moduleContext } = useServerContext();
-
-    let rowIds;
-    let numSelected = 0;
-    let selectionKey: string;
-    if (useSelected) {
-        selectionKey = queryModel.selectionKey;
-    } else if (queryModel.hasData) {
-        rowIds = [Object.keys(queryModel.rows)[0]];
-        numSelected = 1;
-    }
+    const numSelected = rowIds.length;
 
     useEffect(
         () => {
@@ -83,16 +60,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                 setLoading(LoadingState.LOADING);
 
                 try {
-                    const useSnapshotSelection = queryModel?.filterArray.length > 0;
-                    if (useSnapshotSelection) {
-                        await api.query.setSnapshotSelections(selectionKey, [...queryModel.selections]);
-                    }
-                    const confirmationData_ = await api.entity.getMoveConfirmationData(
-                        entityDataType,
-                        rowIds,
-                        selectionKey,
-                        useSnapshotSelection
-                    );
+                    const confirmationData_ = await api.entity.getMoveConfirmationData(entityDataType, rowIds);
                     setConfirmationData(confirmationData_);
                 } catch (e) {
                     setError('There was a problem retrieving the move confirmation data.');
@@ -101,9 +69,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                 }
             })();
         },
-        [
-            /* on mount only */
-        ]
+        [] //eslint-disable-line react-hooks/exhaustive-deps
     );
 
     const onConfirm = useCallback(
@@ -114,43 +80,30 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
             setNumConfirmed(count);
             setShowProgress(true);
 
-            const rowIds_ = !useSelected || !movingAll ? confirmationData.getActionableIds() : undefined;
-            const useSnapshotSelection = useSelected && movingAll && queryModel.filterArray.length > 0;
+            const rowIds_ = !movingAll ? confirmationData.getActionableIds() : undefined;
 
             try {
                 const moveResponse = await api.entity.moveEntities({
                     containerPath: currentContainer?.path,
                     targetContainerPath,
                     entityDataType,
-                    schemaName: queryModel.schemaName,
-                    queryName: queryModel.queryName,
+                    schemaName: schemaQuery.schemaName,
+                    queryName: schemaQuery.queryName,
                     rowIds: rowIds_,
-                    dataRegionSelectionKey: selectionKey,
-                    useSnapshotSelection,
                     auditBehavior: AuditBehaviorTypes.DETAILED,
                     auditUserComment,
                 });
-
-                let containerUrl = buildURL(
-                    getPrimaryAppProductId(moduleContext),
-                    `${ActionURL.getAction() || 'app'}.view`,
-                    undefined,
-                    { container: targetContainerPath, returnUrl: false }
-                );
-                if (targetAppURL) {
-                    containerUrl = containerUrl + targetAppURL.toHref();
-                }
-
+                const updatedUrl = targetAppURL.setContainerPath(targetContainerPath);
                 const movedCount =
                     moveResponse.updateCounts[(entityDataType.moveNoun ?? entityDataType.nounPlural).toLowerCase()];
                 const movedNoun = getEntityNoun(entityDataType, movedCount)?.toLowerCase();
                 if (movedCount) {
+                    const message = `Successfully moved ${movedCount} ${movedNoun} to`;
                     createNotification(
                         {
                             message: (
                                 <>
-                                    Successfully moved {movedCount} {movedNoun} to <a href={containerUrl}>{targetName}</a>
-                                    .
+                                    {message} <AppLink to={updatedUrl}>{targetName}</AppLink>.
                                 </>
                             ),
                             alertClass: 'success',
@@ -178,29 +131,26 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     { alertClass: 'danger', message: 'There was a problem moving the ' + noun + '. ' + message },
                     true
                 );
-                if (useSelected) onAfterMove();
             } finally {
                 onCancel();
             }
         },
         [
-            currentContainer,
             confirmationData,
             entityDataType,
-            useSelected,
-            queryModel.queryName,
-            queryModel.filterArray.length,
-            selectionKey,
+            api.entity,
+            currentContainer?.path,
+            schemaQuery,
             targetAppURL,
-            createNotification,
             onAfterMove,
+            createNotification,
             onCancel,
         ]
     );
 
-    if (useSelected && maxSelected && numSelected > maxSelected) {
+    if (maxSelected && numSelected > maxSelected) {
         return (
-            <Modal title={'Cannot Move ' + capitalizeFirstChar(nounPlural)} onCancel={onCancel} cancelText="Dismiss">
+            <Modal cancelText="Dismiss" onCancel={onCancel} title={'Cannot Move ' + capitalizeFirstChar(nounPlural)}>
                 You cannot move more than {maxSelected} individual {nounPlural.toLowerCase()} at a time. Please select
                 fewer {nounPlural.toLowerCase()} and try again.
             </Modal>
@@ -209,7 +159,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
 
     if (isLoading(loading)) {
         return (
-            <Modal title="Move to Folder" onCancel={onCancel}>
+            <Modal onCancel={onCancel} title="Move to Folder">
                 <LoadingSpinner msg="Loading confirmation data..." />
             </Modal>
         );
@@ -217,7 +167,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
 
     if (error) {
         return (
-            <Modal title="Move to Folder" onCancel={onCancel} cancelText="Dismiss">
+            <Modal cancelText="Dismiss" onCancel={onCancel} title="Move to Folder">
                 <Alert>{error}</Alert>
             </Modal>
         );
@@ -226,13 +176,12 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
     const { canMove, message, title } = getMoveConfirmationProperties(
         confirmationData,
         entityDataType.nounSingular,
-        entityDataType.nounPlural,
-        hideHelp
+        entityDataType.nounPlural
     );
 
     if (!canMove) {
         return (
-            <Modal title={'Cannot Move ' + capitalizeFirstChar(nounPlural)} onCancel={onCancel} cancelText="Dismiss">
+            <Modal cancelText="Dismiss" onCancel={onCancel} title={'Cannot Move ' + capitalizeFirstChar(nounPlural)}>
                 {message}
             </Modal>
         );
@@ -243,21 +192,21 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
             {!showProgress && (
                 <EntityMoveConfirmationModal
                     confirmText="Move"
-                    nounPlural={nounPlural}
-                    onCancel={onCancel}
-                    onConfirm={onConfirm}
                     currentContainer={currentContainer}
-                    title={title}
                     dataType={entityDataType.folderConfigurableDataType}
                     dataTypeRowId={dataTypeRowId}
                     excludeCurrentAsTarget={maxSelected === 1}
+                    nounPlural={nounPlural}
+                    onCancel={onCancel}
+                    onConfirm={onConfirm}
+                    title={title}
                 >
                     {message}
                 </EntityMoveConfirmationModal>
             )}
             <Progress
-                modal={true}
                 estimate={numConfirmed * 10}
+                modal={true}
                 title={`Moving ${numConfirmed} ${getEntityNoun(entityDataType, numConfirmed)}`}
                 toggle={showProgress}
             />
@@ -266,73 +215,58 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
 });
 EntityMoveModal.displayName = 'EntityMoveModal';
 
+const dependencyText = 'status that prevents moving';
+const dependencyPermissionText = `${dependencyText} or you lack the proper permissions.`;
+
 // exported for jest testing
 export const getMoveConfirmationProperties = (
     confirmationData: OperationConfirmationData,
     nounSingular: string,
-    nounPlural: string,
-    hideHelp?: boolean
+    nounPlural: string
 ): { canMove: boolean; message: any; title: string } => {
     if (!confirmationData) return undefined;
 
     const capNounSingular = capitalizeFirstChar(nounSingular);
     const capNounPlural = capitalizeFirstChar(nounPlural);
-    const dependencyText = 'status that prevents moving';
     const numCanMove = confirmationData.totalActionable;
     const numCannotMove = confirmationData.totalNotActionable;
     const numNotAllowed = confirmationData.notAllowed.length;
     const numNotPermitted = confirmationData.notPermitted.length;
     const canMoveNoun = numCanMove === 1 ? capNounSingular : capNounPlural;
-
     const totalNum = confirmationData.totalCount;
-    const totalNoun = totalNum === 1 ? nounSingular : nounPlural;
+    const noun = totalNum === 1 ? nounSingular : nounPlural;
 
-    let text;
+    let text: string;
     if (totalNum === 0) {
-        text =
-            'Either no ' +
-            nounPlural +
-            ' are selected for moving or the selected ' +
-            nounPlural +
-            ' are no longer valid.';
+        text = `Either no ${nounPlural} are selected for moving, or the selected ${nounPlural} are no longer valid.`;
     } else if (numCannotMove === 0) {
-        text = totalNum === 1 ? 'The selected ' : totalNum === 2 ? 'Both ' : 'All ' + totalNum + ' ';
-        text += totalNoun + ' will be moved.';
+        if (totalNum === 1) text = 'The selected';
+        else if (totalNum == 2) text = 'Both';
+        else text = `All ${totalNum}`;
+        text = `${text} ${noun} will be moved.`;
     } else if (numCanMove === 0 && numNotPermitted < numCannotMove) {
         if (totalNum === 1) {
-            text =
-                'The ' +
-                totalNoun +
-                " you've selected cannot be moved because it has a " +
-                dependencyText +
-                ' or you lack the proper permissions. ';
+            text = `The ${noun} you've selected cannot be moved because it has a `;
         } else {
-            text = numCannotMove === 2 ? 'Neither of' : 'None of';
-            text += ' the ' + totalNum + ' ' + totalNoun + " you've selected can be moved";
-            text += ' because they have a ' + dependencyText + ' or you lack the proper permissions.';
+            const countText = numCannotMove === 2 ? 'Neither of' : 'None of';
+            text = `${countText} the ${totalNum} ${noun} you've selected can be moved because they have a `;
         }
+        text += dependencyPermissionText;
     } else if (numCanMove > 0) {
-        text = [];
-        let firstText = "You've selected " + totalNum + ' ' + totalNoun + ' but only ' + numCanMove + ' can be moved. ';
+        text = `You've selected ${totalNum} ${noun} but only ${numCanMove} can be moved.`;
         if (numNotAllowed > 0) {
             const cannotMoveNoun = numNotAllowed === 1 ? nounSingular : nounPlural;
-            firstText += numNotAllowed + ' ' + cannotMoveNoun + ' cannot be moved because ';
-            firstText += (numNotAllowed === 1 ? ' it has ' : ' they have ') + dependencyText + '. ';
+            const pronoun = numNotAllowed === 1 ? ' it has ' : ' they have ';
+            text += ` ${numNotAllowed} ${cannotMoveNoun} cannot be moved because ${pronoun} ${dependencyText}.`;
         }
-        text.push(<React.Fragment key="commonText">{firstText}</React.Fragment>);
     }
 
     let message;
     if (numCannotMove > 0) {
+        const permMsg = getPermissionRestrictionMessage(totalNum, numNotPermitted, nounSingular, nounPlural, 'move');
         message = (
             <>
-                {text}
-                {getPermissionRestrictionMessage(totalNum, numNotPermitted, nounSingular, nounPlural, 'move')}
-                {!hideHelp && (
-                    <>
-                        &nbsp;(<HelpLink topic={MOVE_SAMPLES_TOPIC}>more info</HelpLink>)
-                    </>
-                )}
+                {text} {permMsg} <HelpLink topic={MOVE_SAMPLES_TOPIC}>more info</HelpLink>
             </>
         );
     }
@@ -340,14 +274,11 @@ export const getMoveConfirmationProperties = (
         message = <Alert bsStyle="warning">{message}</Alert>;
     }
 
-    return {
-        message,
-        title:
-            numCanMove > 0
-                ? 'Move ' + numCanMove + ' ' + canMoveNoun
-                : totalNum === 1
-                  ? 'Cannot Move ' + capNounSingular
-                  : 'No ' + capNounPlural + ' Can Be Moved',
-        canMove: numCanMove > 0,
-    };
+    let title: string;
+
+    if (numCanMove > 0) title = `Move ${numCanMove} ${canMoveNoun}`;
+    else if (totalNum === 1) title = `Cannot Move ${capNounSingular}`;
+    else title = `No ${capNounPlural} Can Be Moved`;
+
+    return { message, title, canMove: numCanMove > 0 };
 };

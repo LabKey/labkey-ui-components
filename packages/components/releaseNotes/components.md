@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 6.??.?
 *Released*: ?? August 2025
 - QueryModel.getSelectedIds: optimize when filterIds are not passed
+- EntityMoveModal: Don't use selectionKey, simplify props
 
 ### version 6.60.1
 *Released*: 3 September 2025

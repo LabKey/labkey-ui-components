@@ -67,43 +67,43 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
         <>
             {useSelection ? (
                 <SelectionMenuItem
-                    text="Add to Picklist"
-                    onClick={onClick}
-                    queryModel={queryModel}
                     maxSelection={MAX_SELECTIONS_PER_ADD}
                     nounPlural="samples"
+                    onClick={onClick}
+                    queryModel={queryModel}
+                    text="Add to Picklist"
                 />
             ) : (
                 <DisableableMenuItem
-                    onClick={onClick}
                     disabled={!operationPermitted || numSelected > MAX_SELECTIONS_PER_ADD}
                     disabledMessage={numSelected > MAX_SELECTIONS_PER_ADD ? MAX_SELECTIONS_MESSAGE : undefined}
+                    onClick={onClick}
                 >
                     Add to Picklist
                 </DisableableMenuItem>
             )}
             {showChoosePicklist && (
                 <ChoosePicklistModal
-                    onCancel={closeAddToPicklist}
                     afterAddToPicklist={afterAddToPicklist}
-                    user={user}
-                    selectionKey={selectionKey}
-                    numSelected={numSelected}
-                    sampleIds={sampleIds}
                     metricFeatureArea={metricFeatureArea}
+                    numSelected={numSelected}
+                    onCancel={closeAddToPicklist}
                     queryModel={queryModel}
                     sampleFieldKey={sampleFieldKey}
+                    sampleIds={sampleIds}
+                    selectionKey={selectionKey}
+                    user={user}
                 />
             )}
             {showCreatePicklist && (
                 <PicklistEditModal
-                    sampleIds={sampleIds}
-                    onFinish={afterCreatePicklist}
-                    onCancel={closeCreatePicklist}
-                    showNotification
                     metricFeatureArea={metricFeatureArea}
+                    onCancel={closeCreatePicklist}
+                    onFinish={afterCreatePicklist}
                     queryModel={queryModel}
                     sampleFieldKey={sampleFieldKey}
+                    sampleIds={sampleIds}
+                    showNotification
                 />
             )}
         </>

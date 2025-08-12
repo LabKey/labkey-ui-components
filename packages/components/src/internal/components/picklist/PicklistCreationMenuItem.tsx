@@ -54,28 +54,28 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
         <>
             {queryModel && (
                 <SelectionMenuItem
-                    text={itemText}
+                    maxSelection={MAX_SELECTIONS_PER_ADD}
+                    nounPlural="samples"
                     onClick={onClick}
                     queryModel={queryModel}
-                    nounPlural="samples"
-                    maxSelection={MAX_SELECTIONS_PER_ADD}
+                    text={itemText}
                 />
             )}
             {!queryModel && asMenuItem && (
                 <DisableableMenuItem
-                    onClick={onClick}
                     disabled={excessSamples}
                     disabledMessage={MAX_SELECTIONS_MESSAGE}
+                    onClick={onClick}
                 >
                     {itemText}
                 </DisableableMenuItem>
             )}
             {!queryModel && !asMenuItem && (
                 <button
-                    disabled={excessSamples}
-                    title={excessSamples ? MAX_SELECTIONS_MESSAGE : undefined}
                     className="btn btn-success"
+                    disabled={excessSamples}
                     onClick={onClick}
+                    title={excessSamples ? MAX_SELECTIONS_MESSAGE : undefined}
                     type="button"
                 >
                     {itemText}
@@ -86,9 +86,9 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
                     queryModel={queryModel}
                     sampleIds={sampleIds}
                     {...editModalProps}
-                    showNotification
-                    onFinish={onFinish}
                     onCancel={onCancel}
+                    onFinish={onFinish}
+                    showNotification
                 />
             )}
         </>

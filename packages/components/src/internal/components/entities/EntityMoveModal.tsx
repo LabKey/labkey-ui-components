@@ -74,13 +74,10 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
 
     const onConfirm = useCallback(
         async (targetContainerPath: string, targetName: string, auditUserComment: string) => {
-            const movingAll = confirmationData.totalNotActionable === 0;
             const count = confirmationData.totalActionable;
             const noun = getEntityNoun(entityDataType, count)?.toLowerCase();
             setNumConfirmed(count);
             setShowProgress(true);
-
-            const rowIds_ = !movingAll ? confirmationData.getActionableIds() : undefined;
 
             try {
                 const moveResponse = await api.entity.moveEntities({
@@ -89,7 +86,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     entityDataType,
                     schemaName: schemaQuery.schemaName,
                     queryName: schemaQuery.queryName,
-                    rowIds: rowIds_,
+                    rowIds: confirmationData.getActionableIds(),
                     auditBehavior: AuditBehaviorTypes.DETAILED,
                     auditUserComment,
                 });

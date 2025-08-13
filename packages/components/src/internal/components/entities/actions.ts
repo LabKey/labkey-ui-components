@@ -1,5 +1,5 @@
 import { ActionURL, Ajax, Filter, getServerContext, PermissionTypes, Query, Security, Utils } from '@labkey/api';
-import { List, Map } from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 
 import { getSelected, getSelectedDataDeprecated, setSnapshotSelections } from '../../actions';
 
@@ -1032,7 +1032,7 @@ export const initParentOptionsSelects = (
     idPrefix?: string,
     formatLabel?: (name: string, prefix: string, isDataClass?: boolean, containerPath?: string) => string
 ): Promise<{
-    parentAliases: Map<string, IParentAlias>;
+    parentAliases: OrderedMap<string, IParentAlias>;
     parentOptions: IParentOption[];
 }> => {
     const promises: Promise<SelectRowsResponse>[] = [];
@@ -1097,7 +1097,8 @@ export const initParentOptionsSelects = (
 
                 const parentOptions = allOptions.sort(naturalSortByProperty('label'));
 
-                let parentAliases = Map<string, IParentAlias>();
+                // used ordered map so new import aliases are added after existing aliases on the UI
+                let parentAliases = OrderedMap<string, IParentAlias>();
 
                 if (importAliases) {
                     Object.keys(importAliases).forEach(key => {

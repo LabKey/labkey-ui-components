@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.X
-*Released*: X August 2025
+### version 6.58.4
+*Released*: 12 August 2025
 - Adding new parent alias on designer doesn't always add to the bottom of the list
 
 ### version 6.58.3

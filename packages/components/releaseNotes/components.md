@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - add comment tag to executeSql query to indicate it is from a calculated column validation
   - use string value compatible with CAST to NUMERIC for parseCalculatedColumn() temp data
 
+### version 6.58.4
+*Released*: 12 August 2025
+- Adding new parent alias on designer doesn't always add to the bottom of the list
+
 ### version 6.58.3
 *Released*: 7 August 2025
 - Add `StoragePositionNumber` as a sample storage column

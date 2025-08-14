@@ -22,17 +22,23 @@ import { getOrderedSelectedMappedKeys } from '../entities/actions';
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 import { executeSql } from '../../query/executeSql';
-import { getSelectedRows, selectRows } from '../../query/selectRows';
+import { getSelectedRows, Row, selectRows } from '../../query/selectRows';
+import { request } from '../../request';
 
 export async function getPicklistsForInsert(): Promise<Picklist[]> {
-    const { rows } = await selectRows({
-        containerFilter: isProductFoldersEnabled() ? Query.ContainerFilter.current : undefined,
-        schemaQuery: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS,
-        sort: 'Name',
-        filterArray: [Filter.create('Category', null, Filter.Types.NONBLANK)],
-    });
+    try {
+        const { rows } = await selectRows({
+            containerFilter: isProductFoldersEnabled() ? Query.ContainerFilter.current : undefined,
+            schemaQuery: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS,
+            sort: 'Name',
+            filterArray: [Filter.create('Category', null, Filter.Types.NONBLANK)],
+        });
 
-    return rows.map(row => Picklist.create(row));
+        return rows.map(row => Picklist.create(row));
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
 }
 
 export function createPicklist(
@@ -153,10 +159,13 @@ export async function getPicklistCountsBySampleType(listName: string): Promise<S
 }
 
 export async function getPicklistSamples(listName: string): Promise<Set<number>> {
-    const { rows } = await selectRows({
-        schemaQuery: new SchemaQuery(SCHEMAS.PICKLIST_TABLES.SCHEMA, listName),
-    });
-    return new Set(rows.map(row => row.SampleId.value));
+    try {
+        const { rows } = await selectRows({ schemaQuery: new SchemaQuery(SCHEMAS.PICKLIST_TABLES.SCHEMA, listName) });
+        return new Set(rows.map(row => caseInsensitive(row, PICKLIST_SAMPLE_ID_COLUMN).value));
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
 }
 
 export function getOrderedSelectedPicklistSamples(queryModel: QueryModel, saveSnapshot?: boolean): Promise<number[]> {
@@ -172,6 +181,11 @@ export function getOrderedSelectedPicklistSamples(queryModel: QueryModel, saveSn
     );
 }
 
+// TODO: drop the selectionKey and saveSnapshot args
+//  - We need to update storage/actions.ts::getValidSampleItemsWithFullPath to not use selectionKey and saveSnapshot
+//  when calling getOrderedSelectedPicklistSamples, which calls this method
+//  - In order to update getValidSampleItemsWithFullPath to not use selectionKey and saveSnapshot we need to change how
+//  the StorageActionModals works when adding samples to storage after samples are created. It is not straightforward.
 export async function getSelectedPicklistSamples(
     picklistName: string,
     selectedIds: string[],
@@ -181,23 +195,28 @@ export async function getSelectedPicklistSamples(
     queryParameters?: Record<string, any>,
     viewName?: string
 ): Promise<number[]> {
-    const result = await getOrderedSelectedMappedKeys(
-        PICKLIST_KEY_COLUMN,
-        PICKLIST_SAMPLE_ID_COLUMN,
-        SCHEMAS.PICKLIST_TABLES.SCHEMA,
-        picklistName,
-        selectedIds,
-        sorts,
-        queryParameters,
-        viewName
-    );
+    try {
+        const result = await getOrderedSelectedMappedKeys(
+            PICKLIST_KEY_COLUMN,
+            PICKLIST_SAMPLE_ID_COLUMN,
+            SCHEMAS.PICKLIST_TABLES.SCHEMA,
+            picklistName,
+            selectedIds,
+            sorts,
+            queryParameters,
+            viewName
+        );
 
-    if (saveSnapshot) {
-        const rowIds = result.mapFromValues;
-        setSnapshotSelections(selectionKey, rowIds);
+        if (saveSnapshot) {
+            const rowIds = result.mapFromValues;
+            setSnapshotSelections(selectionKey, rowIds);
+        }
+
+        return result.mapToValues;
+    } catch (error) {
+        console.error(error);
+        throw error;
     }
-
-    return result.mapToValues;
 }
 
 export async function getSamplesNotInList(listName: string, sampleIds: number[]): Promise<number[]> {
@@ -230,12 +249,19 @@ export interface PicklistDeletionData {
 }
 
 export async function getPicklistDeleteData(model: QueryModel, user: User): Promise<PicklistDeletionData> {
-    const { rows } = await getSelectedRows({
-        columns: ['Name', 'listId', 'category', 'createdBy'],
-        keyColumn: 'listId',
-        schemaQuery: model.schemaQuery,
-        selections: model.selections,
-    });
+    let rows: Row[];
+    try {
+        const result = await getSelectedRows({
+            columns: ['Name', 'listId', 'category', 'createdBy'],
+            keyColumn: 'listId',
+            schemaQuery: model.schemaQuery,
+            selections: model.selections,
+        });
+        rows = result.rows;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
 
     return rows.reduce(
         (result, row) => {
@@ -258,39 +284,14 @@ export async function getPicklistDeleteData(model: QueryModel, user: User): Prom
     );
 }
 
-export function deletePicklists(picklists: Picklist[], selectionKey?: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-        let params;
-        if (picklists.length === 1) {
-            params = {
-                listId: picklists[0].listId,
-            };
-        } else if (selectionKey) {
-            params = {
-                dataRegionSelectionKey: selectionKey,
-            };
-        } else {
-            const listIds = [];
-            picklists.forEach(picklist => {
-                listIds.push(picklist.listId);
-            });
-            params = {
-                listIds,
-            };
-        }
-        return Ajax.request({
-            url: buildURL('list', 'deleteListDefinition.api'),
-            method: 'POST',
-            params,
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response);
-            }),
-            failure: Utils.getCallbackWrapper(response => {
-                console.error(response);
-                reject(response);
-            }),
-        });
-    });
+export async function deletePicklists(picklists: Picklist[]): Promise<void> {
+    const params: Record<string, number | number[]> = {};
+
+    if (picklists.length === 1) params.listId = picklists[0].listId;
+    else params.listIds = picklists.map(picklist => picklist.listId);
+
+    const url = buildURL('list', 'deleteListDefinition.api');
+    await request({ url, method: 'POST', params });
 }
 
 export const getPicklistFromId = async (listId: number, loadSampleTypes = true): Promise<Picklist> => {

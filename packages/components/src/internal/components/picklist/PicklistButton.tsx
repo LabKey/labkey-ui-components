@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import { PermissionTypes } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -22,22 +22,21 @@ interface Props {
 
 export const PicklistButton: FC<Props> = memo(props => {
     const { model, user, metricFeatureArea, asSubMenu, sampleIds } = props;
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- getSelectedIds changes when selections changes
+    const selectedRowIds = useMemo(() => sampleIds ?? model.getSelectedIds(), [sampleIds, model.selections]);
 
     return (
         <RequiresPermission permissionCheck="any" perms={PermissionTypes.ManagePicklists}>
             <ResponsiveMenuButton asSubMenu={asSubMenu} className="samples-picklist-menu" text="Picklists">
                 <AddToPicklistMenuItem
                     metricFeatureArea={metricFeatureArea}
-                    queryModel={model}
-                    sampleIds={sampleIds}
+                    selectedRowIds={selectedRowIds}
                     user={user}
                 />
                 <PicklistCreationMenuItem
                     asMenuItem
-                    key="picklist"
                     metricFeatureArea={metricFeatureArea}
-                    queryModel={sampleIds ? undefined : model}
-                    sampleIds={sampleIds}
+                    selectedRowIds={selectedRowIds}
                     user={user}
                 />
             </ResponsiveMenuButton>

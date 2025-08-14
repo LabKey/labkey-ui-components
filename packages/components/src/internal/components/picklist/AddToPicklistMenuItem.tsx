@@ -1,11 +1,6 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback } from 'react';
 
 import { userCanManagePicklists } from '../../app/utils';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { SelectionMenuItem } from '../menus/SelectionMenuItem';
-
-import { getSampleStatusType, isSampleOperationPermitted } from '../samples/utils';
-import { SampleOperation } from '../samples/constants';
 import { DisableableMenuItem } from '../samples/DisableableMenuItem';
 
 import { User } from '../base/models/User';
@@ -13,96 +8,63 @@ import { User } from '../base/models/User';
 import { PicklistEditModal } from './PicklistEditModal';
 import { ChoosePicklistModal } from './ChoosePicklistModal';
 import { MAX_SELECTIONS_MESSAGE, MAX_SELECTIONS_PER_ADD } from './constants';
+import { useModalState } from '../../hooks';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 interface Props {
     metricFeatureArea?: string;
-    queryModel?: QueryModel;
     sampleFieldKey?: string;
-    sampleIds?: number[];
+    schemaQuery?: SchemaQuery;
+    selectedRowIds?: number[] | string[] | undefined;
     user: User;
 }
 
 export const AddToPicklistMenuItem: FC<Props> = memo(props => {
-    const { sampleIds, user, queryModel, metricFeatureArea, sampleFieldKey } = props;
-    const [showChoosePicklist, setShowChoosePicklist] = useState<boolean>(false);
-    const [showCreatePicklist, setShowCreatePicklist] = useState<boolean>(false);
+    const { user, metricFeatureArea, sampleFieldKey, selectedRowIds, schemaQuery } = props;
+    const { close: closeChoose, open: openChoose, show: showChoose } = useModalState();
+    const { close: closeCreate, open: openCreate, show: showCreate } = useModalState();
 
-    const closeAddToPicklist = useCallback((closeToCreate?: boolean) => {
-        setShowChoosePicklist(false);
-        if (closeToCreate) {
-            setShowCreatePicklist(true);
-        }
-    }, []);
-
-    const afterAddToPicklist = useCallback(() => {
-        setShowChoosePicklist(false);
-    }, []);
-
-    const closeCreatePicklist = useCallback(() => {
-        setShowCreatePicklist(false);
-    }, []);
-
-    const afterCreatePicklist = useCallback(() => {
-        setShowCreatePicklist(false);
-    }, []);
-
-    const onClick = useCallback(() => {
-        if (queryModel?.hasSelections || sampleIds?.length) {
-            setShowChoosePicklist(true);
-        }
-    }, [queryModel, sampleIds]);
+    const closeAddToPicklist = useCallback(
+        (closeToCreate?: boolean) => {
+            closeChoose();
+            if (closeToCreate) openCreate();
+        },
+        [closeChoose, openCreate]
+    );
 
     if (!userCanManagePicklists(user)) {
         return null;
     }
 
-    const useSelection = sampleIds === undefined;
-    const selectionKey = sampleIds ? undefined : queryModel?.selectionKey;
-    const numSelected = sampleIds ? sampleIds.length : queryModel.selections?.size;
-    const operationPermitted = isSampleOperationPermitted(
-        getSampleStatusType(queryModel.getRow()),
-        SampleOperation.AddToPicklist
-    );
     return (
         <>
-            {useSelection ? (
-                <SelectionMenuItem
-                    maxSelection={MAX_SELECTIONS_PER_ADD}
-                    nounPlural="samples"
-                    onClick={onClick}
-                    queryModel={queryModel}
-                    text="Add to Picklist"
-                />
-            ) : (
-                <DisableableMenuItem
-                    disabled={!operationPermitted || numSelected > MAX_SELECTIONS_PER_ADD}
-                    disabledMessage={numSelected > MAX_SELECTIONS_PER_ADD ? MAX_SELECTIONS_MESSAGE : undefined}
-                    onClick={onClick}
-                >
-                    Add to Picklist
-                </DisableableMenuItem>
-            )}
-            {showChoosePicklist && (
+            <DisableableMenuItem
+                disabled={selectedRowIds?.length > MAX_SELECTIONS_PER_ADD}
+                disabledMessage={MAX_SELECTIONS_MESSAGE}
+                onClick={openChoose}
+            >
+                Add to Picklist
+            </DisableableMenuItem>
+
+            {showChoose && (
                 <ChoosePicklistModal
-                    afterAddToPicklist={afterAddToPicklist}
+                    afterAddToPicklist={closeChoose}
                     metricFeatureArea={metricFeatureArea}
-                    numSelected={numSelected}
                     onCancel={closeAddToPicklist}
-                    queryModel={queryModel}
                     sampleFieldKey={sampleFieldKey}
-                    sampleIds={sampleIds}
-                    selectionKey={selectionKey}
+                    schemaQuery={schemaQuery}
+                    selectedRowIds={selectedRowIds}
                     user={user}
                 />
             )}
-            {showCreatePicklist && (
+            {showCreate && (
                 <PicklistEditModal
                     metricFeatureArea={metricFeatureArea}
-                    onCancel={closeCreatePicklist}
-                    onFinish={afterCreatePicklist}
-                    queryModel={queryModel}
+                    onCancel={closeCreate}
+                    onFinish={closeCreate}
                     sampleFieldKey={sampleFieldKey}
-                    sampleIds={sampleIds}
+                    schemaQuery={schemaQuery}
+                    selectedRowIds={selectedRowIds}
                     showNotification
                 />
             )}

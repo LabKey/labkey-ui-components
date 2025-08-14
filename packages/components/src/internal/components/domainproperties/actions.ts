@@ -49,6 +49,7 @@ import { IImportAlias } from '../entities/models';
 import { DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX } from '../entities/constants';
 
 import {
+    CALCULATED_COLUMN_SQL_TAG,
     DOMAIN_ERROR_ID,
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
@@ -442,7 +443,7 @@ export function getCastStatement(key: string, type: string): string {
         case 'TIME':
             return `CAST('13:00' AS TIME) AS "${quotedKey}"`;
         default:
-            return `CAST('Testing' AS VARCHAR) AS "${quotedKey}"`;
+            return `CAST('1' AS VARCHAR) AS "${quotedKey}"`;
     }
 }
 
@@ -465,7 +466,8 @@ export async function parseCalculatedColumn(
                 .map(key => getCastStatement(key, columnMap[key]))
                 .join(',\n') +
             ') AS x' +
-            ' WHERE 1=0';
+            ' WHERE 1=0' +
+            CALCULATED_COLUMN_SQL_TAG; // Issue 52026 and 51862
 
         await executeSql({
             schemaName: 'core',

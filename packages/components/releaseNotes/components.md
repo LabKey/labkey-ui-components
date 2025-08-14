@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD August 2025
+### version 6.58.5
+*Released*: 14 August 2025
 - Issue 52026 and 51862: Reduce the logging for calculated expression column SQL errors
   - add comment tag to executeSql query to indicate it is from a calculated column validation
   - use string value compatible with CAST to NUMERIC for parseCalculatedColumn() temp data

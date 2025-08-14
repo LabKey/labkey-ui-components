@@ -4,7 +4,7 @@ import { LoadingState } from '../public/LoadingState';
 
 import { resolveErrorMessage } from './util/messaging';
 
-interface LoadableState<T> {
+export interface LoadableState<T> {
     error: string;
     load: () => Promise<void>;
     loadingState: LoadingState;

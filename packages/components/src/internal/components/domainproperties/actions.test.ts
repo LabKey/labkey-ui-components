@@ -873,9 +873,7 @@ describe('domain properties actions', () => {
 
     // Issue 52608
     test('getCastStatement for special char field', () => {
-        expect(getCastStatement('a"key" with quotes', 'TEXT')).toBe(
-            'CAST(\'1\' AS VARCHAR) AS "a""key"" with quotes"'
-        );
+        expect(getCastStatement('a"key" with quotes', 'TEXT')).toBe('CAST(\'1\' AS VARCHAR) AS "a""key"" with quotes"');
         expect(getCastStatement('a,./key with!@#$specCHARS', 'TEXT')).toBe(
             'CAST(\'1\' AS VARCHAR) AS "a,./key with!@#$specCHARS"'
         );

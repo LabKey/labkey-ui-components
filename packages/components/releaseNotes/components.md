@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.X
+*Released*: X August 2025
+- Update default audit level
+  - Add `Assay Result Events` audit even type
+
 ### version 6.58.5
 *Released*: 14 August 2025
 - Issue 52026 and 51862: Reduce the logging for calculated expression column SQL errors

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.53.4
+*Released*: ? August 2025
+- SamplesAPIWrapper: add sort arg to getSelectionLineageData
+  - Issue 53702: Selection order is not retained when editing multiple samples in grid
+
 ### version 6.53.3
 *Released*: 7 July 2025
 - Issue 53394: FileInput revert removal of the "-fileUpload" suffix from inputId

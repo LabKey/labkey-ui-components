@@ -1,12 +1,4 @@
-import {
-    convertUnitDisplay,
-    convertUnitsForInput,
-    getAltUnitKeys,
-    getMetricUnitOptions,
-    getStoredAmountDisplay,
-    isValuePrecisionValid,
-    UnitModel,
-} from './measurement';
+import { getAltUnitKeys, getMetricUnitOptions, isValuePrecisionValid, UnitModel } from './measurement';
 
 describe('UnitModel', () => {
     test('constructor and operators', () => {
@@ -125,62 +117,6 @@ describe('MetricUnit utils', () => {
         expect(getAltUnitKeys(null).length).toBe(0);
         expect(getAltUnitKeys('').length).toBe(0);
         expect(getAltUnitKeys('bad').length).toBe(0);
-    });
-
-    test('convertUnitsForInput', () => {
-        expect(convertUnitsForInput(null, null, null)).toBeNull();
-        expect(convertUnitsForInput(1000, null, null)).toBe(1000);
-        expect(convertUnitsForInput(1000, 'mL', null)).toBe(1000);
-        expect(convertUnitsForInput(1000, 'mL', null)).toBe(1000);
-        expect(convertUnitsForInput(1000, 'mL', 'mL')).toBe(1000);
-        expect(convertUnitsForInput(1234, 'mL', 'L')).toBe(1.234);
-        expect(convertUnitsForInput(12.34, 'L', 'mL')).toBe(12340);
-        expect(convertUnitsForInput(12, 'g', 'kg')).toBe(0.012);
-    });
-
-    test('convertUnitDisplay', () => {
-        expect(convertUnitDisplay(null, null, null, false)).toBe('');
-        expect(convertUnitDisplay(null, null, null, false, 'empty')).toBe('empty');
-
-        expect(convertUnitDisplay(10, null, null, false)).toBe('10');
-        expect(convertUnitDisplay(10000, null, null, false)).toBe('10,000');
-        expect(convertUnitDisplay(10, 'mL', null, false)).toBe('10');
-        expect(convertUnitDisplay(10, 'mL', null, true)).toBe('10 mL');
-        expect(convertUnitDisplay(10, null, 'kg', false)).toBe('10');
-        expect(convertUnitDisplay(10, null, 'kg', true)).toBe('10 kg');
-
-        expect(convertUnitDisplay(10, 'mL', 'bad', false)).toBe('10');
-        expect(convertUnitDisplay(10, 'mL', 'bad', true)).toBe('10 mL');
-
-        expect(convertUnitDisplay(99999, 'uL', 'L', true)).toBe('0.099999 L');
-        expect(convertUnitDisplay(99999.133, 'uL', 'L', true)).toBe('0.099999133 L');
-        expect(convertUnitDisplay(99999.1334544, 'uL', 'L', true)).toBe('0.099999133 L');
-        expect(convertUnitDisplay(10, 'mL', 'L', true)).toBe('0.01 L');
-        expect(convertUnitDisplay(10, 'L', 'mL', true)).toBe('10,000 mL');
-        expect(convertUnitDisplay(10, 'g', 'kg', true)).toBe('0.01 kg');
-        expect(convertUnitDisplay(10, 'g', 'kg', false)).toBe('0.01');
-
-        expect(convertUnitDisplay(10, 'unit', 'unit', true)).toBe('10 unit');
-        expect(convertUnitDisplay(10000, 'unit', 'unit', true)).toBe('10,000 unit');
-    });
-
-    test('getStoredAmountDisplay', () => {
-        expect(getStoredAmountDisplay('99999 uL (L)')).toBe('0.099999');
-        expect(getStoredAmountDisplay('99999 uL (L)', true)).toBe('0.099999 L');
-        expect(getStoredAmountDisplay('99999.123 uL (L)')).toBe('0.099999123');
-        expect(getStoredAmountDisplay('99999.123 uL (L)', true)).toBe('0.099999123 L');
-        expect(getStoredAmountDisplay('99999.12345 uL (L)')).toBe('0.099999123');
-        expect(getStoredAmountDisplay('99999.12345 uL (L)', true)).toBe('0.099999123 L');
-        expect(getStoredAmountDisplay('10 mL (L)', true)).toBe('0.01 L');
-        expect(getStoredAmountDisplay('10 L (L)', true)).toBe('10 L');
-        expect(getStoredAmountDisplay('10 mL')).toBe('10');
-        expect(getStoredAmountDisplay('10 mL', true)).toBe('10 mL');
-        expect(getStoredAmountDisplay('10 (mL)')).toBe('10');
-        expect(getStoredAmountDisplay('10 (mL)', true)).toBe('10 mL');
-        expect(getStoredAmountDisplay('10', true)).toBe('10');
-        expect(getStoredAmountDisplay('0 (mL)', true)).toBe('0 mL');
-        expect(getStoredAmountDisplay(null)).toBe(null);
-        expect(getStoredAmountDisplay(null, true)).toBe(null);
     });
 });
 

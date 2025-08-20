@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Sample Type Amounts and Units updates for Quantity
+  - remove unused amount and unit conversion code from measurement.ts
+
 ### version 6.58.5
 *Released*: 14 August 2025
 - Issue 52026 and 51862: Reduce the logging for calculated expression column SQL errors

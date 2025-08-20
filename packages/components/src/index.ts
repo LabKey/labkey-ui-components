@@ -881,11 +881,8 @@ import { GENERAL_ASSAY_PROVIDER_NAME } from './internal/components/assay/constan
 import { GlobalStateContextProvider } from './internal/GlobalStateContext';
 import {
     areUnitsCompatible,
-    convertUnitDisplay,
-    convertUnitsForInput,
     getAltUnitKeys,
     getMetricUnitOptions,
-    getStoredAmountDisplay,
     isValuePrecisionValid,
     MEASUREMENT_UNITS,
     UnitModel,
@@ -1213,8 +1210,6 @@ export {
     CONTAINER_AUDIT_QUERY,
     ContentGroup,
     ContentGroupLabel,
-    convertUnitDisplay,
-    convertUnitsForInput,
     CreatedModified,
     createEntityParentKey,
     createFormInputId,
@@ -1446,7 +1441,6 @@ export {
     getSelectedRows,
     getSelectionLineageData,
     getSourceDomainDefaultSystemFields,
-    getStoredAmountDisplay,
     getTestAPIWrapper,
     getTimelineEntityUrl,
     getUniqueIdColumnMetadata,

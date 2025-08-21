@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 5.53.4
-*Released*: ? August 2025
+### version 6.53.4
+*Released*: 21 August 2025
 - SamplesAPIWrapper: add sort arg to getSelectionLineageData
   - Issue 53702: Selection order is not retained when editing multiple samples in grid
 

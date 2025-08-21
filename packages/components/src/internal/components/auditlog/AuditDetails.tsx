@@ -70,9 +70,9 @@ export class AuditDetails extends Component<Props> {
                         {originalVal != null && (
                             <LabelHelpTip
                                 iconComponent={<i className="original-value-icon fa fa-info-circle left-padding" />}
-                                placement="right"
+                                placement="top"
                             >
-                                <div className="ws-pre-wrap">Original value: {originalVal}</div>
+                                <div className="ws-pre-wrap">Provided value: {originalVal}</div>
                             </LabelHelpTip>
                         )}
                     </span>

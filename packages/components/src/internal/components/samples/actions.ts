@@ -201,20 +201,22 @@ export function getSelectionLineageData(
     schema: string,
     query: string,
     viewName: string,
-    extraColumns: string[] = []
+    extraColumns: string[] = [],
+    sort: string | undefined
 ): Promise<ISelectRowsResult> {
     if (selections?.size === 0) return Promise.reject('No data is selected.');
     const rowIds = Array.from(selections).map(s => parseInt(s, 10));
 
     return selectRowsDeprecated({
-        schemaName: schema,
-        queryName: query,
-        viewName,
         columns: List.of('RowId', 'Name', 'LSID', 'Folder')
             .concat(ParentEntityLineageColumns)
             .toArray()
             .concat(extraColumns),
         filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
+        queryName: query,
+        schemaName: schema,
+        sort,
+        viewName,
     });
 }
 

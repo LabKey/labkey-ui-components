@@ -18,7 +18,7 @@ import { QueryInfoForm } from './QueryInfoForm';
 type UpdateRows = (schemaQuery: SchemaQuery, rows: any[], comment?: string) => Promise<any>;
 type UpdateModel = (changes: any) => Promise<void>;
 
-function isUpdateModel(fn: UpdateRows | UpdateModel): fn is UpdateModel {
+function isUpdateModel(fn: UpdateModel | UpdateRows): fn is UpdateModel {
     return fn.length === 1; // UpdateModel has only one parameter
 }
 
@@ -48,7 +48,7 @@ export interface BulkUpdateFormProps {
     // sortString is used so we render editable grids with the proper sorts when using onSubmitForEdit
     sortString?: string;
     uniqueFieldKey?: string;
-    updateRows: UpdateRows | UpdateModel;
+    updateRows: UpdateModel | UpdateRows;
     // queryInfo.schemaQuery.viewName is likely undefined (i.e., not the current viewName)
     viewName: string;
 }
@@ -235,28 +235,28 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
                 containerFilter={containerFilter}
                 containerPath={containerPath}
                 disabled={disabled}
-                preventCrossFolderEnable={preventCrossFolderEnable}
                 fieldValues={values}
                 header={this.renderBulkUpdateHeader()}
                 includeCommentField={includeCommentField}
                 includeCountField={false}
                 initiallyDisableFields
                 isLoading={isLoadingDataForSelection}
-                onHide={onCancel}
-                operation={Operation.update}
+                onAdditionalFormDataChange={onAdditionalFormDataChange}
                 onFormChangeWithData={this.onFormChangeWithData}
-                onSubmitForEdit={_onSubmitForEdit}
+                onHide={onCancel}
                 onSubmit={this.onSubmit}
+                onSubmitForEdit={_onSubmitForEdit}
                 onSuccess={onComplete}
-                renderFileInputs
-                queryInfo={queryInfo}
+                operation={Operation.update}
+                pluralNoun={pluralNoun}
+                preventCrossFolderEnable={preventCrossFolderEnable}
                 queryFilters={queryFilters}
+                queryInfo={queryInfo}
+                renderFileInputs
                 showLabelAsterisk
                 submitForEditText="Edit with Grid"
                 submitText={`Update ${capitalizeFirstChar(pluralNoun)}`}
-                pluralNoun={pluralNoun}
                 title={this.getTitle()}
-                onAdditionalFormDataChange={onAdditionalFormDataChange}
             />
         );
     }

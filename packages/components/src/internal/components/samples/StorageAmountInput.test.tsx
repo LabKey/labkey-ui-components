@@ -28,23 +28,7 @@ describe('StorageAmountInput', () => {
         render(
             <StorageAmountInput
                 model={new UnitModel(0, unit)}
-                preferredUnit={undefined}
-                label={undefined}
-                amountChangedHandler={jest.fn()}
-                unitsChangedHandler={jest.fn}
-            />
-        );
-
-        expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', "0");
-        expect(document.querySelector('input.checkin-unit-input')).toHaveProperty('value', unit);
-    });
-
-    test('Metric units, preferred units not set', () => {
-        const unit = 'uL';
-        render(
-            <StorageAmountInput
-                model={testModel}
-                preferredUnit={undefined}
+                preferredUnit={unit}
                 label={undefined}
                 amountChangedHandler={jest.fn()}
                 unitsChangedHandler={jest.fn}

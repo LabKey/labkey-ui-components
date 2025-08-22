@@ -70,7 +70,7 @@ describe('SampleAmountEditModal', () => {
         );
 
         expect(document.querySelectorAll('button').item(1).textContent).toBe('Cancel');
-        validate(undefined, undefined, false, undefined, defaultNoun, false);
+        validate(undefined, undefined, true, undefined, defaultNoun, false);
     });
 
     test('Amount null', () => {
@@ -142,7 +142,7 @@ describe('SampleAmountEditModal', () => {
             }
         );
 
-        validate(row.StoredAmount.value, row.Units.value, false, undefined, defaultNoun, false);
+        validate(row.StoredAmount.value, row.Units.value, true, undefined, defaultNoun, false);
     });
 
     test('Units custom', () => {

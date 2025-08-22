@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - remove unused amount and unit conversion code from measurement.ts
   - Update language in `AuditDetails`
   - `BASE_UNITS` -> `UNITS_KIND` and add `baseUnit` field to match server-side concept
+  - StorageAmountInput to not allow SelectInput for units to be cleared if sample type has display units
 
 ### version 6.58.5
 *Released*: 14 August 2025

@@ -50,8 +50,8 @@ export const StorageAmountInput: FC<Props> = memo(props => {
         // IF we don't have a way to change the supported value show it as static text.
         unitDisplay = <span className="storage-item-unit-text margin-left">{preferredUnit || unitText}</span>;
     }
-    // If preferred unit isn't set or is an unsupported value allow editing as text
-    else if (preferredUnit == undefined || !MEASUREMENT_UNITS.hasOwnProperty(preferredUnit.toLowerCase())) {
+    // If preferred unit is provided and not a supported unit type, allow editing as text
+    else if (preferredUnit && !MEASUREMENT_UNITS.hasOwnProperty(preferredUnit.toLowerCase())) {
         unitDisplay = (
             <input
                 type="text"
@@ -62,7 +62,7 @@ export const StorageAmountInput: FC<Props> = memo(props => {
             />
         );
     } else {
-        // IFF preferred units are supplied and are a supported type, then show possible conversions
+        // IFF preferred units nor provided or are a supported type, then show possible conversions
         unitDisplay = (
             <SelectInput
                 containerClass="checkin-unit-select-container"
@@ -77,7 +77,7 @@ export const StorageAmountInput: FC<Props> = memo(props => {
             />
         );
 
-        if (model.unit !== null && !isMeasurementUnitIgnoreCase(model.unit, preferredUnit)) {
+        if (preferredUnit && model.unit !== null && !isMeasurementUnitIgnoreCase(model.unit, preferredUnit)) {
             const preferredUnitText = model.as(preferredUnit).toString();
             preferredUnitMessage = (
                 <div>

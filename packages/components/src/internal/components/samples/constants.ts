@@ -311,6 +311,7 @@ export const STORED_AMOUNT_FIELDS = {
     RAW_UNITS: 'RawUnits',
     FREEZE_THAW_COUNT: 'FreezeThawCount',
     AUDIT_COMMENT: 'auditUserComment',
+    SAMPLE_TYPE_UNITS: 'SampleTypeUnits',
 };
 
 export const SAMPLE_TYPE_NAME_EXPRESSION_TOPIC = 'sampleIDs#patterns';

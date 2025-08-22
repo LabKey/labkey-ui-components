@@ -45,10 +45,11 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
         [STORED_AMOUNT_FIELDS.ROWID]: rowId,
         [STORED_AMOUNT_FIELDS.UNITS]: Units,
         [STORED_AMOUNT_FIELDS.AMOUNT]: initStorageAmount,
+        [STORED_AMOUNT_FIELDS.SAMPLE_TYPE_UNITS]: sampleTypeUnits,
     } = row;
 
     const sampleContainer = caseInsensitive(row, 'Container/Path')?.value;
-    const initStorageUnits = Units?.value as string;
+    const initStorageUnits = Units?.value ?? sampleTypeUnits?.value;
     const [amount, setStorageAmount] = useState<number>(
         initStorageAmount?.displayValue ?? initStorageAmount?.value ?? undefined
     );

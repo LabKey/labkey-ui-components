@@ -181,7 +181,7 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
 
     getSelectionCount(): number {
         const { editStatusData, selectedIds } = this.props;
-        if (editStatusData) return editStatusData.totalActionable;
+        if (editStatusData) return editStatusData.totalCount;
         return selectedIds.length;
     }
 

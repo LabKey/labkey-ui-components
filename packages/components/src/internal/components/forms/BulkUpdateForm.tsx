@@ -125,7 +125,7 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
     }
 
     componentDidMount = async (): Promise<void> => {
-        const { onCancel, nounPlural, queryInfo, selectedIds, viewName, requiredColumns } = this.props;
+        const { onCancel, nounPlural, queryInfo, viewName, requiredColumns } = this.props;
         const { schemaName, name } = queryInfo;
 
         const columns = queryInfo
@@ -138,7 +138,7 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
             const { data, dataIds } = await getSelectedDataDeprecated(
                 schemaName,
                 name,
-                selectedIds,
+                this.getValidSelectedIds(),
                 columns,
                 undefined,
                 undefined,
@@ -156,6 +156,14 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
             this.props.onError?.('There was a problem loading the data for the selected ' + nounPlural + '.');
             onCancel();
         }
+    };
+
+    getValidSelectedIds = (): string[] => {
+        const { editStatusData, selectedIds } = this.props;
+        if (editStatusData) {
+            return editStatusData.getActionableIds().map(id => id.toString(10));
+        }
+        return selectedIds;
     };
 
     getContainerPaths(data: Map<string, any>): string[] {

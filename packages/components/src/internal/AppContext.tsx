@@ -57,7 +57,6 @@ export interface SampleTypeAppContext {
     showParentLabelPrefix: boolean;
     showStudyProperties: boolean;
     useSeparateDataClassesAliasMenu: boolean;
-    validateNewSampleTypeUnit: (sampleSet: DomainDetails, newUnit: string) => Promise<any>;
 }
 
 export interface AssayAppContext {

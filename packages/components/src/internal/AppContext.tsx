@@ -45,7 +45,6 @@ export interface SampleTypeAppContext {
     dataClassTypeCaption?: string;
     detailRenderer?: DetailRenderer;
     downloadTemplateExcludeColumns?: string[];
-    getMetricUnitOptions: (unitTypeStr?: string, includeLongLabel?: boolean) => any[];
     hideConditionalFormatting: boolean;
     importHelpLinkTopic: string;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;

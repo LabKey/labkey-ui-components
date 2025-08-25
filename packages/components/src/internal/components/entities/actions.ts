@@ -70,6 +70,12 @@ import {
 } from './models';
 import { executeSql } from '../../query/executeSql';
 
+interface OperationConfirmationDataResponse {
+    data: Record<string, any>;
+    exception?: string;
+    success: boolean;
+}
+
 export async function getOperationConfirmationData(
     dataType: EntityDataType,
     rowIds: number[] | string[],
@@ -78,27 +84,22 @@ export async function getOperationConfirmationData(
     extraParams?: Record<string, any>,
     containerPath?: string
 ): Promise<OperationConfirmationData> {
-    if (!selectionKey && !rowIds?.length) {
-        return new OperationConfirmationData();
+    if (!selectionKey && !rowIds?.length) return new OperationConfirmationData();
+
+    let params: Record<string, any>;
+    if (selectionKey) {
+        params = { dataRegionSelectionKey: selectionKey };
+        if (useSnapshotSelection) {
+            params.useSnapshotSelection = true;
+        }
+    } else {
+        params = { rowIds };
     }
 
-    return new Promise((resolve, reject) => {
-        let params: Record<string, any>;
-        if (selectionKey) {
-            params = {
-                dataRegionSelectionKey: selectionKey,
-            };
-            if (useSnapshotSelection) {
-                params.useSnapshotSelection = true;
-            }
-        } else {
-            params = { rowIds };
-        }
-        if (extraParams) {
-            params = Object.assign(params, extraParams);
-        }
+    if (extraParams) params = Object.assign(params, extraParams);
 
-        return Ajax.request({
+    try {
+        const resp = await request<OperationConfirmationDataResponse>({
             url: ActionURL.buildURL(
                 dataType.operationConfirmationControllerName,
                 dataType.operationConfirmationActionName,
@@ -106,20 +107,13 @@ export async function getOperationConfirmationData(
             ),
             method: 'POST',
             jsonData: params,
-            success: Utils.getCallbackWrapper(async response => {
-                if (response.success) {
-                    resolve(new OperationConfirmationData(response.data));
-                } else {
-                    console.error('Response failure when getting operation confirmation data', response.exception);
-                    reject(response.exception);
-                }
-            }),
-            failure: Utils.getCallbackWrapper(response => {
-                console.error('Error getting operation confirmation data', response);
-                reject(response ? response.exception : 'Unknown error getting operation confirmation data.');
-            }),
         });
-    });
+        return new OperationConfirmationData(resp.data);
+    } catch (error) {
+        console.error('Error getting operation confirmation data', error);
+        if (error.exception) throw error.exception;
+        throw 'Unknown error getting operation confirmation data';
+    }
 }
 
 export function getContainersForPermission(permission: PermissionTypes): Promise<string[]> {

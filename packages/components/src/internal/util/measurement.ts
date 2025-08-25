@@ -221,13 +221,9 @@ export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolea
 
 export function getAltUnitKeys(unitTypeStr): string[] {
     const unit: MeasurementUnit = MEASUREMENT_UNITS[unitTypeStr?.toLowerCase()];
-    if (!unit) {
-        return [];
-    }
-
     const options = [];
     Object.values(MEASUREMENT_UNITS).forEach(value => {
-        if (value.kind === unit.kind) {
+        if (!unit || value.kind === unit.kind) {
             options.push(value.label);
         }
     });

@@ -114,9 +114,10 @@ describe('MetricUnit utils', () => {
 
         expect(getAltUnitKeys('unit')).toEqual(['unit']);
 
-        expect(getAltUnitKeys(null).length).toBe(0);
-        expect(getAltUnitKeys('').length).toBe(0);
-        expect(getAltUnitKeys('bad').length).toBe(0);
+        // include all options when no unitTypeStr or an invalid unitTypeStr is provided
+        expect(getAltUnitKeys(null).length).toBe(7);
+        expect(getAltUnitKeys('').length).toBe(7);
+        expect(getAltUnitKeys('bad').length).toBe(7);
     });
 });
 

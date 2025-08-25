@@ -365,7 +365,7 @@ export class EntityIdCreationModel extends Record({
         return entityTypeName ? new SchemaQuery(this.entityDataType.instanceSchemaName, entityTypeName) : undefined;
     }
 
-    getGridValues(queryInfo: QueryInfo, separateParents?: boolean): Map<any, any> {
+    getGridValues(queryInfo: QueryInfo, separateParents?: boolean, defaultMetricUnit?: string): Map<any, any> {
         let data = List<Map<string, any>>();
         const parentCols = [];
         let values = Map<string, any>();
@@ -393,6 +393,9 @@ export class EntityIdCreationModel extends Record({
                     selected = this.entityParents.reduce((found, parentList) => {
                         return found || parentList.find(parent => parent.isAliquotParent);
                     }, undefined);
+                } else if (col.isUnitsLookup() && defaultMetricUnit) {
+                    // default the sample type display unit if provided
+                    values = values.set(colName, List([{ value: defaultMetricUnit }]));
                 }
 
                 if (selected && selected.value) {
@@ -406,7 +409,8 @@ export class EntityIdCreationModel extends Record({
                     parentCols.forEach(parentCol => {
                         const parents: any[] = values.get(parentCol);
                         parents.forEach(parent => {
-                            let singleParentValues = Map<string, any>();
+                            // create a copy of the values map, to retain other non-parent values, and then update the parentCol
+                            let singleParentValues = Map<string, any>(values);
                             singleParentValues = singleParentValues.set(parentCol, List<any>([parent]));
                             for (let c = 0; c < this.numPerParent; c++) {
                                 data = data.push(singleParentValues);

@@ -233,9 +233,7 @@ export async function getOperationConfirmationDataForModel(
     dataType: EntityDataType,
     extraParams?: Record<string, any>
 ): Promise<OperationConfirmationData> {
-    const useSnapshotSelection = model.filterArray.length > 0;
-    if (useSnapshotSelection) await setSnapshotSelections(model.selectionKey, [...model.selections]);
-    return getOperationConfirmationData(dataType, undefined, model.selectionKey, useSnapshotSelection, extraParams);
+    return getOperationConfirmationData(dataType, model.getSelectedIds(), undefined, undefined, extraParams);
 }
 
 async function getSelectedParents(

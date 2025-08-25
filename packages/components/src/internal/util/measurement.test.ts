@@ -1,4 +1,10 @@
-import { getAltUnitKeys, getMetricUnitOptions, isValuePrecisionValid, UnitModel } from './measurement';
+import {
+    areUnitsCompatible,
+    getAltUnitKeys,
+    getMetricUnitOptions,
+    isValuePrecisionValid,
+    UnitModel
+} from './measurement';
 
 describe('UnitModel', () => {
     test('constructor and operators', () => {
@@ -157,5 +163,58 @@ describe('isValuePrecisionValid', () => {
         expect(isValuePrecisionValid(1.999999, 6)).toBeTruthy();
         expect(isValuePrecisionValid(1.9999991, 6)).toBeFalsy();
         expect(isValuePrecisionValid(1.9999999, 6)).toBeFalsy();
+    });
+});
+
+describe('areUnitsCompatible', () => {
+    test('true because of equal or empty', () => {
+        expect(areUnitsCompatible(undefined, undefined)).toBeTruthy();
+        expect(areUnitsCompatible(null, null)).toBeTruthy();
+        expect(areUnitsCompatible('', '')).toBeTruthy();
+        expect(areUnitsCompatible('mL', 'mL')).toBeTruthy();
+        expect(areUnitsCompatible('bogus', 'bogus')).toBeTruthy();
+        expect(areUnitsCompatible('unit', 'unit')).toBeTruthy();
+    });
+
+    test('true because of compatible kind', () => {
+        expect(areUnitsCompatible('mL', 'uL')).toBeTruthy();
+        expect(areUnitsCompatible('mL', 'L')).toBeTruthy();
+        expect(areUnitsCompatible('uL', 'L')).toBeTruthy();
+        expect(areUnitsCompatible('uL', 'mL')).toBeTruthy();
+        expect(areUnitsCompatible('kg', 'g')).toBeTruthy();
+        expect(areUnitsCompatible('kg', 'mg')).toBeTruthy();
+        expect(areUnitsCompatible('mg', 'g')).toBeTruthy();
+        expect(areUnitsCompatible('mg', 'kg')).toBeTruthy();
+    });
+
+    test('false because of one empty', () => {
+        expect(areUnitsCompatible(undefined, 'mL')).toBeFalsy();
+        expect(areUnitsCompatible(null, 'mL')).toBeFalsy();
+        expect(areUnitsCompatible('', 'mL')).toBeFalsy();
+        expect(areUnitsCompatible('kg', undefined)).toBeFalsy();
+        expect(areUnitsCompatible('kg', null)).toBeFalsy();
+        expect(areUnitsCompatible('kg', '')).toBeFalsy();
+    });
+
+    test('false because of incompatible kind', () => {
+        expect(areUnitsCompatible('mL', 'kg')).toBeFalsy();
+        expect(areUnitsCompatible('mL', 'mg')).toBeFalsy();
+        expect(areUnitsCompatible('mL', 'g')).toBeFalsy();
+        expect(areUnitsCompatible('mL', 'unit')).toBeFalsy();
+        expect(areUnitsCompatible('uL', 'kg')).toBeFalsy();
+        expect(areUnitsCompatible('uL', 'mg')).toBeFalsy();
+        expect(areUnitsCompatible('uL', 'g')).toBeFalsy();
+        expect(areUnitsCompatible('uL', 'unit')).toBeFalsy();
+        expect(areUnitsCompatible('kg', 'mL')).toBeFalsy();
+        expect(areUnitsCompatible('kg', 'uL')).toBeFalsy();
+        expect(areUnitsCompatible('kg', 'L')).toBeFalsy();
+        expect(areUnitsCompatible('kg', 'unit')).toBeFalsy();
+    });
+
+    test('false because of bogus unit', () => {
+        expect(areUnitsCompatible('bogus', 'mL')).toBeFalsy();
+        expect(areUnitsCompatible('bogus', 'kg')).toBeFalsy();
+        expect(areUnitsCompatible('mL', 'bogus')).toBeFalsy();
+        expect(areUnitsCompatible('kg', 'bogus')).toBeFalsy();
     });
 });

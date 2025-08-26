@@ -120,8 +120,7 @@ const PicklistEditModalDisplay: FC<ModalProps> = memo(props => {
         if (!sampleCount) {
             title = 'Create an Empty Picklist';
         } else if (sampleCount > 1) {
-            const pluralizedNoun = Utils.pluralize(sampleCount, 'Sample', 'Samples');
-            title = `Create a New Picklist with the Selected ${pluralizedNoun}`;
+            title = `Create a New Picklist with the ${sampleCount.toLocaleString()} Selected Samples`;
         } else if (sampleCount === 1) {
             title = 'Create a New Picklist with This Sample';
         }

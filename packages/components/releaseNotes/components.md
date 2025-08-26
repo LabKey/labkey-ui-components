@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Update default audit level
   - Add `Assay Result Events` audit event type
 
+### version 6.58.6
+*Released*: 26 August 2025
+- Merge from release25.7-SNAPSHOT to develop
+    - includes changes from 6.53.4 #1843
+
 ### version 6.58.5
 *Released*: 14 August 2025
 - Issue 52026 and 51862: Reduce the logging for calculated expression column SQL errors
@@ -84,6 +89,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 3 July 2025
 - ProductMenu shows 'Dashboard' instead of 'Storage' as subtitle in FM /home route
 - Issue 53371: Find Samples by ID JS error when clicking "Find Samples" button without entering anything into the text area
+
+### version 6.53.4
+*Released*: 21 August 2025
+- SamplesAPIWrapper: add sort arg to getSelectionLineageData
+  - Issue 53702: Selection order is not retained when editing multiple samples in grid
 
 ### version 6.53.3
 *Released*: 7 July 2025

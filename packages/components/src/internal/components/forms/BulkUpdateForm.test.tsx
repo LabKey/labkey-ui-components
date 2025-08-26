@@ -9,7 +9,7 @@ import { GridResponse } from '../editable/models';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 
-import { BulkUpdateForm, BulkUpdateFormProps, SelectionWarning } from './BulkUpdateForm';
+import { BulkUpdateForm, BulkUpdateFormProps, errorMessage, SelectionWarning } from './BulkUpdateForm';
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
 
@@ -134,27 +134,24 @@ describe('SelectionWarning', () => {
     const TWO_NOT_PERMITTED_WARN =
         'The selection includes 2 samples that you do not have permission to edit. Updates will only be made to the samples you have edit permission for.';
 
-    test('samples and one aliquot, no editStatusData', () => {
-        render(
-            <SelectionWarning
-                aliquots={[1]}
-                editStatusData={undefined}
-                nounPlural="samples"
-                nounSingular="sample"
-                sampleOperation={SampleOperation.EditMetadata}
-            />
-        );
-        expect(document.querySelector('.alert').textContent).toBe(SINGLE_ALIQUOT_WARN);
-    });
-
     test('samples and 2 aliquots', () => {
         render(
             <SelectionWarning
                 aliquots={[1, 2]}
-                editStatusData={undefined}
+                editStatusData={
+                    new OperationConfirmationData({
+                        allowed: [
+                            { Name: 'A-1', RowId: 1 },
+                            { Name: 'A-2', RowId: 2 },
+                            { Name: 'A-3', RowId: 3 },
+                            { Name: 'A-4', RowId: 4 },
+                        ],
+                    })
+                }
                 nounPlural="samples"
                 nounSingular="sample"
                 sampleOperation={SampleOperation.EditMetadata}
+                selectedCount={4}
             />
         );
         expect(document.querySelector('.alert').textContent).toBe(MULTI_ALIQUOTS_WARN);
@@ -164,13 +161,42 @@ describe('SelectionWarning', () => {
         render(
             <SelectionWarning
                 aliquots={[1, 2]}
-                editStatusData={undefined}
+                editStatusData={
+                    new OperationConfirmationData({
+                        allowed: [
+                            { Name: 'A-1', RowId: 1 },
+                            { Name: 'A-2', RowId: 2 },
+                        ],
+                    })
+                }
                 nounPlural="samples"
                 nounSingular="sample"
                 sampleOperation={SampleOperation.EditMetadata}
+                selectedCount={2}
             />
         );
         expect(document.querySelector('.alert').textContent).toBe(MULTI_ALIQUOTS_WARN);
+    });
+
+    test('one aliquot', () => {
+        render(
+            <SelectionWarning
+                aliquots={[1]}
+                editStatusData={
+                    new OperationConfirmationData({
+                        allowed: [
+                            { Name: 'A-1', RowId: 1 },
+                            { Name: 'A-2', RowId: 2 },
+                        ],
+                    })
+                }
+                nounPlural="samples"
+                nounSingular="sample"
+                sampleOperation={SampleOperation.EditMetadata}
+                selectedCount={2}
+            />
+        );
+        expect(document.querySelector('.alert').textContent).toBe(SINGLE_ALIQUOT_WARN);
     });
 
     test('only aliquots, some locked', () => {
@@ -179,23 +205,14 @@ describe('SelectionWarning', () => {
                 aliquots={[1, 2]}
                 editStatusData={
                     new OperationConfirmationData({
-                        allowed: [
-                            {
-                                Name: 'A-1',
-                                RowId: 1,
-                            },
-                        ],
-                        notAllowed: [
-                            {
-                                Name: 'A-2',
-                                RowId: 2,
-                            },
-                        ],
+                        allowed: [{ Name: 'A-1', RowId: 1 }],
+                        notAllowed: [{ Name: 'A-2', RowId: 2 }],
                     })
                 }
                 nounPlural="samples"
                 nounSingular="sample"
                 sampleOperation={SampleOperation.EditMetadata}
+                selectedCount={2}
             />
         );
         expect(document.querySelector('.alert').textContent).toBe(MULTI_ALIQUOTS_WARN + ONE_LOCKED_WARN);
@@ -207,27 +224,17 @@ describe('SelectionWarning', () => {
                 aliquots={[1, 2]}
                 editStatusData={
                     new OperationConfirmationData({
-                        allowed: [
-                            {
-                                Name: 'A-1',
-                                RowId: 1,
-                            },
-                        ],
+                        allowed: [{ Name: 'A-1', RowId: 1 }],
                         notAllowed: [
-                            {
-                                Name: 'A-2',
-                                RowId: 2,
-                            },
-                            {
-                                Name: 'A-3',
-                                RowId: 3,
-                            },
+                            { Name: 'A-2', RowId: 2 },
+                            { Name: 'A-3', RowId: 3 },
                         ],
                     })
                 }
                 nounPlural="samples"
                 nounSingular="sample"
                 sampleOperation={SampleOperation.EditMetadata}
+                selectedCount={3}
             />
         );
         expect(document.querySelector('.alert').textContent).toBe(MULTI_ALIQUOTS_WARN + ONE_LOCKED_WARN);
@@ -239,27 +246,17 @@ describe('SelectionWarning', () => {
                 aliquots={[]}
                 editStatusData={
                     new OperationConfirmationData({
-                        allowed: [
-                            {
-                                Name: 'A-1',
-                                RowId: 1,
-                            },
-                        ],
+                        allowed: [{ Name: 'A-1', RowId: 1 }],
                         notAllowed: [
-                            {
-                                Name: 'A-2',
-                                RowId: 2,
-                            },
-                            {
-                                Name: 'A-3',
-                                RowId: 3,
-                            },
+                            { Name: 'A-2', RowId: 2 },
+                            { Name: 'A-3', RowId: 3 },
                         ],
                     })
                 }
                 nounPlural="samples"
                 nounSingular="sample"
                 sampleOperation={SampleOperation.EditMetadata}
+                selectedCount={3}
             />
         );
         expect(document.querySelector('.alert').textContent).toBe(TWO_LOCKED_WARN);
@@ -272,24 +269,16 @@ describe('SelectionWarning', () => {
                 editStatusData={
                     new OperationConfirmationData({
                         allowed: [
-                            {
-                                Name: 'A-1',
-                                RowId: 1,
-                            },
-                            {
-                                Name: 'A-2',
-                                RowId: 2,
-                            },
-                            {
-                                Name: 'A-3',
-                                RowId: 3,
-                            },
+                            { Name: 'A-1', RowId: 1 },
+                            { Name: 'A-2', RowId: 2 },
+                            { Name: 'A-3', RowId: 3 },
                         ],
                     })
                 }
                 nounPlural="samples"
                 nounSingular="sample"
                 sampleOperation={SampleOperation.EditMetadata}
+                selectedCount={3}
             />
         );
         expect(document.querySelector('.alert')).toBeNull();
@@ -302,30 +291,18 @@ describe('SelectionWarning', () => {
                 editStatusData={
                     new OperationConfirmationData({
                         allowed: [
-                            {
-                                Name: 'A-1',
-                                RowId: 1,
-                            },
-                            {
-                                Name: 'A-2',
-                                RowId: 2,
-                            },
-                            {
-                                Name: 'A-3',
-                                RowId: 3,
-                            },
+                            { Name: 'A-1', RowId: 1 },
+                            { Name: 'A-2', RowId: 2 },
+                            { Name: 'A-3', RowId: 3 },
+                            { Name: 'A-4', RowId: 4 },
                         ],
-                        notPermitted: [
-                            {
-                                Name: 'A-4',
-                                RowId: 4,
-                            },
-                        ],
+                        notPermitted: [{ Name: 'A-4', RowId: 4 }],
                     })
                 }
                 nounPlural="samples"
                 nounSingular="sample"
                 sampleOperation={SampleOperation.EditMetadata}
+                selectedCount={4}
             />
         );
         expect(document.querySelector('.alert').textContent).toBe(ONE_NOT_PERMITTED_WARN);
@@ -338,36 +315,76 @@ describe('SelectionWarning', () => {
                 editStatusData={
                     new OperationConfirmationData({
                         allowed: [
-                            {
-                                Name: 'A-1',
-                                RowId: 1,
-                            },
-                            {
-                                Name: 'A-2',
-                                RowId: 2,
-                            },
-                            {
-                                Name: 'A-3',
-                                RowId: 3,
-                            },
+                            { Name: 'A-1', RowId: 1 },
+                            { Name: 'A-2', RowId: 2 },
+                            { Name: 'A-3', RowId: 3 },
+                            { Name: 'A-4', RowId: 4 },
+                            { Name: 'A-5', RowId: 5 },
                         ],
                         notPermitted: [
-                            {
-                                Name: 'A-4',
-                                RowId: 4,
-                            },
-                            {
-                                Name: 'A-5',
-                                RowId: 5,
-                            },
+                            { Name: 'A-4', RowId: 4 },
+                            { Name: 'A-5', RowId: 5 },
                         ],
                     })
                 }
                 nounPlural="samples"
                 nounSingular="sample"
                 sampleOperation={SampleOperation.EditMetadata}
+                selectedCount={5}
             />
         );
         expect(document.querySelector('.alert').textContent).toBe(TWO_NOT_PERMITTED_WARN);
+    });
+
+    test('some deleted', () => {});
+
+    test('some deleted, not permitted', () => {});
+
+    test('some delete, not permitted, not allowed', () => {});
+});
+
+describe('errorMessage', () => {
+    test('all deleted', () => {
+        const editStatusData = new OperationConfirmationData({
+            allowed: [],
+            notAllowed: [],
+        });
+        let error = errorMessage(editStatusData, 'things', 'thing', 4);
+        expect(error).toEqual('Cannot edit selected things, they may have been deleted.');
+        error = errorMessage(editStatusData, 'things', 'thing', 1);
+        expect(error).toEqual('Cannot edit selected thing, it may have been deleted.');
+    });
+    test('all not permitted', () => {
+        let editStatusData = new OperationConfirmationData({
+            allowed: [
+                { Name: 'A-1', RowId: 1 },
+                { Name: 'A-2', RowId: 2 },
+            ],
+            notAllowed: [],
+            notPermitted: [
+                { Name: 'A-1', RowId: 1 },
+                { Name: 'A-2', RowId: 2 },
+            ],
+        });
+        let error = errorMessage(editStatusData, 'things', 'thing', 2);
+        expect(error).toEqual('Cannot edit selected things, you do not have the required permissions.');
+        editStatusData = new OperationConfirmationData({
+            allowed: [{ Name: 'A-1', RowId: 1 }],
+            notAllowed: [],
+            notPermitted: [{ Name: 'A-1', RowId: 1 }],
+        });
+        error = errorMessage(editStatusData, 'things', 'thing', 1);
+        expect(error).toEqual('Cannot edit selected thing, you do not have the required permissions.');
+    });
+    test('mix of deleted and not permitted', () => {
+        const editStatusData = new OperationConfirmationData({
+            allowed: [{ Name: 'A-1', RowId: 1 }],
+            notAllowed: [],
+            notPermitted: [{ Name: 'A-1', RowId: 1 }],
+        });
+        const error = errorMessage(editStatusData, 'things', 'thing', 2);
+        expect(error).toEqual(
+            'Cannot edit selected things, you do not have the required permissions, or they may have been deleted.'
+        );
     });
 });

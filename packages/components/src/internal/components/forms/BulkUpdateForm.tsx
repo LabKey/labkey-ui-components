@@ -1,6 +1,6 @@
 import { Filter, Query, Utils } from '@labkey/api';
 import { List, Map } from 'immutable';
-import React, { FC, PureComponent, ReactNode } from 'react';
+import React, { FC, PureComponent } from 'react';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 
@@ -9,7 +9,13 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { getSelectedDataDeprecated } from '../../actions';
 
-import { capitalizeFirstChar, caseInsensitive, getCommonDataValues, getUpdatedData } from '../../util/utils';
+import {
+    capitalizeFirstChar,
+    caseInsensitive,
+    getCommonDataValues,
+    getUpdatedData,
+    makeCommaSeparatedString,
+} from '../../util/utils';
 
 import { ComponentsAPIWrapper } from '../../APIWrapper';
 
@@ -18,6 +24,7 @@ import { OperationConfirmationData } from '../entities/models';
 import { SampleOperation } from '../samples/constants';
 import { getOperationNotAllowedMessage, getOperationNotPermittedMessage } from '../samples/utils';
 import { Alert } from '../base/Alert';
+import { Modal } from '../../Modal';
 
 type UpdateRows = (schemaQuery: SchemaQuery, rows: any[], comment?: string) => Promise<any>;
 type UpdateModel = (changes: any) => Promise<void>;
@@ -32,11 +39,14 @@ interface SelectionWarningProps {
     nounPlural: string;
     nounSingular: string;
     sampleOperation?: SampleOperation;
-    selectedIds: string[];
+    selectedCount: number;
 }
 
 export const SelectionWarning: FC<SelectionWarningProps> = props => {
-    const { aliquots, editStatusData, nounPlural, nounSingular, sampleOperation, selectedIds } = props;
+    const { aliquots, editStatusData, nounPlural, nounSingular, sampleOperation, selectedCount } = props;
+    const totalCount = editStatusData.totalCount;
+    const missingCount = selectedCount - totalCount;
+    const notPermittedCount = editStatusData.notPermitted.length;
     const messages = [];
 
     if (aliquots?.length > 0) {
@@ -46,18 +56,22 @@ export const SelectionWarning: FC<SelectionWarningProps> = props => {
             `Since ${count} aliquot${nounConjunction} among the selected samples, only the aliquot-editable fields are shown below.`
         );
     }
-    if (sampleOperation !== undefined && !editStatusData?.allActionable) {
-        messages.push(getOperationNotAllowedMessage(sampleOperation, editStatusData, aliquots));
-    }
-    if (editStatusData?.notPermitted?.length > 0) {
-        messages.push(getOperationNotPermittedMessage(editStatusData, nounSingular, nounPlural));
+
+    if (sampleOperation !== undefined && editStatusData.notAllowed.length > 0) {
+        messages.push(getOperationNotAllowedMessage(sampleOperation, editStatusData, aliquots, selectedCount));
     }
 
-    // TODO: compare selectedIds with editStatusData and issue warnings for missing rows like we did for derive cases
+    if (notPermittedCount > 0) {
+        messages.push(getOperationNotPermittedMessage(editStatusData, nounSingular, nounPlural, selectedCount));
+    }
+
+    if (missingCount > 0) {
+        const pronoun = missingCount > 1 ? 'they' : 'it';
+        messages.push(`Cannot edit ${missingCount} of the selected ${nounPlural}, ${pronoun} may have been deleted.`);
+    }
 
     if (messages.length === 0) return null;
 
-    // TODO: If there are no actionable rows (e.g. all not permitted, not allowed, or missing) change bsStyle to error.
     return (
         <Alert bsStyle="warning">
             {messages.map((message, i) => (
@@ -69,6 +83,34 @@ export const SelectionWarning: FC<SelectionWarningProps> = props => {
     );
 };
 SelectionWarning.displayName = 'SelectionWarning';
+
+/**
+ * Returns undefined if the selection state is invalid. Returns a string if the selection state is invalid (e.g. all
+ * selected items are deleted/missing or the user doesn't have permission to edit any of the selected items).
+ */
+export function errorMessage(
+    editStatusData: OperationConfirmationData,
+    nounPlural: string,
+    nounSingular: string,
+    selectedCount: number
+): string | undefined {
+    if (!editStatusData) return undefined;
+
+    const missingCount = selectedCount - editStatusData.totalCount;
+    const notPermittedCount = editStatusData.notPermitted.length;
+
+    if (missingCount + notPermittedCount !== selectedCount) return undefined;
+
+    const noun = selectedCount > 1 ? nounPlural : nounSingular;
+    const pronoun = selectedCount > 1 ? 'they' : 'it';
+    const parts = [];
+
+    if (notPermittedCount > 0) parts.push(`you do not have the required permissions`);
+
+    if (missingCount > 0) parts.push(`${pronoun} may have been deleted`);
+
+    return `Cannot edit selected ${noun}, ${makeCommaSeparatedString(parts, ', or ', '.')}`;
+}
 
 export interface BulkUpdateFormProps {
     aliquots?: number[];
@@ -240,7 +282,7 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
                     sampleOperation={sampleOperation}
-                    selectedIds={selectedIds}
+                    selectedCount={selectedIds.length}
                 />
             </>
         );
@@ -251,14 +293,17 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
         const {
             api,
             containerFilter,
+            disabled,
+            editStatusData,
+            includeCommentField,
+            nounPlural,
+            nounSingular,
+            onAdditionalFormDataChange,
             onCancel,
             onComplete,
-            nounPlural,
             queryFilters,
             queryInfo,
-            onAdditionalFormDataChange,
-            disabled,
-            includeCommentField,
+            selectedIds,
         } = this.props;
         const fileFields = queryInfo.columns.valueArray.filter(col => col.isFileInput).map(col => col.name);
         const fieldValues =
@@ -271,6 +316,16 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
         const containerPath = containerPaths?.length === 1 ? containerPaths[0] : undefined;
         const preventCrossFolderEnable = containerPaths?.length > 1;
         const values = formData ? { ...fieldValues, ...formData.toJS() } : fieldValues;
+        const error = errorMessage(editStatusData, nounPlural, nounSingular, selectedIds.length);
+
+        if (error) {
+            const noun = capitalizeFirstChar(selectedIds.length === 1 ? nounSingular : nounPlural);
+            return (
+                <Modal cancelText="Dismiss" onCancel={onCancel} title={`Cannot Edit Selected ${noun}`}>
+                    <p>{error}</p>
+                </Modal>
+            );
+        }
 
         return (
             <QueryInfoForm

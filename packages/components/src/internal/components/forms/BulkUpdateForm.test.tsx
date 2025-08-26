@@ -460,6 +460,50 @@ describe('SelectionWarning', () => {
 });
 
 describe('errorMessage', () => {
+    test('some valid', () => {
+        let editStatusData = new OperationConfirmationData({
+            allowed: [{ Name: 'A-1', RowId: 1 }],
+            notAllowed: [],
+        });
+        // 3 deleted, 1 allowed, is valid state
+        let error = errorMessage(editStatusData, 'things', 'thing', 4);
+        expect(error).toEqual(undefined);
+
+        // 1 allowed is valid state
+        error = errorMessage(editStatusData, 'things', 'thing', 1);
+        expect(error).toEqual(undefined);
+
+        editStatusData = new OperationConfirmationData({
+            allowed: [],
+            notAllowed: [{ Name: 'A-1', RowId: 1 }],
+            notPermitted: [],
+        });
+
+        // 1 not allowed, 4 deleted is valid state
+        error = errorMessage(editStatusData, 'things', 'thing', 4);
+        expect(error).toEqual(undefined);
+
+        // 1 not allowed is valid state
+        error = errorMessage(editStatusData, 'things', 'thing', 1);
+        expect(error).toEqual(undefined);
+
+        editStatusData = new OperationConfirmationData({
+            allowed: [
+                { Name: 'A-1', RowId: 1 },
+                { Name: 'A-2', RowId: 2 },
+            ],
+            notAllowed: [],
+            notPermitted: [{ Name: 'A-1', RowId: 1 }],
+        });
+
+        // 1 allowed, 1 not permitted, 2 deleted is valid state
+        error = errorMessage(editStatusData, 'things', 'thing', 4);
+        expect(error).toEqual(undefined);
+
+        // 1 allowed, 1 not permitted is valid state
+        error = errorMessage(editStatusData, 'things', 'thing', 2);
+        expect(error).toEqual(undefined);
+    });
     test('all deleted', () => {
         const editStatusData = new OperationConfirmationData({
             allowed: [],

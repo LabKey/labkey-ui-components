@@ -25,6 +25,32 @@ describe('UnitModel', () => {
         expect(new UnitModel(undefined, 'mL').compareTo(new UnitModel(9, 'L')) > 0).toBeFalsy();
         expect(new UnitModel(undefined, 'mL').compareTo(new UnitModel(undefined, 'L')) > 0).toBeFalsy();
     });
+
+    test('isSupportedUnitType', () => {
+        expect(new UnitModel(10, null).isSupportedUnitType()).toBeFalsy();
+        expect(new UnitModel(10, 'mL').isSupportedUnitType()).toBeTruthy();
+        expect(new UnitModel(10, 'bad').isSupportedUnitType()).toBeFalsy();
+    });
+
+    test('canConvert', () => {
+        expect(new UnitModel(10, null).canConvert(null)).toBeTruthy();
+        expect(new UnitModel(10, null).canConvert('mL')).toBeFalsy();
+        expect(new UnitModel(10, 'mL').canConvert('mL')).toBeTruthy();
+        expect(new UnitModel(10, 'mL').canConvert('uL')).toBeTruthy();
+        expect(new UnitModel(10, 'mL').canConvert('kg')).toBeFalsy();
+        expect(new UnitModel(10, 'bad').canConvert('mL')).toBeFalsy();
+    });
+
+    test('isValidForSubmit', () => {
+        expect(new UnitModel(undefined, null).isValidForSubmit()).toBeTruthy();
+        expect(new UnitModel(null, null).isValidForSubmit()).toBeTruthy();
+        expect(new UnitModel(null, 'mL').isValidForSubmit()).toBeTruthy();
+        expect(new UnitModel(null, 'bad').isValidForSubmit()).toBeTruthy();
+        expect(new UnitModel(0, null).isValidForSubmit()).toBeFalsy();
+        expect(new UnitModel(0, null).isValidForSubmit()).toBeFalsy();
+        expect(new UnitModel(0, 'mL').isValidForSubmit()).toBeTruthy();
+        expect(new UnitModel(0, 'bad').isValidForSubmit()).toBeFalsy();
+    });
 });
 
 describe('MetricUnit utils', () => {

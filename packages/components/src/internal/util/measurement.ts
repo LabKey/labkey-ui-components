@@ -99,6 +99,9 @@ export class UnitModel {
         return (this.value ? this.value.toLocaleString() : 0) + (this.unit ? (' ' + this.unit.label) : '');
     }
 
+    isValidForSubmit(): boolean {
+        return this.value == undefined || (this.value != undefined && this.unit != null);
+    }
 }
 
 export interface MeasurementUnit {

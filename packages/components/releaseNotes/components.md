@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.58.6
+*Released*: 26 August 2025
+- Merge from release25.7-SNAPSHOT to develop
+    - includes changes from 6.53.4 #1843
+
 ### version 6.58.5
 *Released*: 14 August 2025
 - Issue 52026 and 51862: Reduce the logging for calculated expression column SQL errors

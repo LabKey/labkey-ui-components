@@ -133,6 +133,8 @@ describe('SelectionWarning', () => {
         'The selection includes 1 sample that you do not have permission to edit. Updates will only be made to the samples you have edit permission for.';
     const TWO_NOT_PERMITTED_WARN =
         'The selection includes 2 samples that you do not have permission to edit. Updates will only be made to the samples you have edit permission for.';
+    const ONE_DELETED = 'Cannot edit 1 of the selected samples, it may have been deleted.';
+    const TWO_DELETED = 'Cannot edit 2 of the selected samples, they may have been deleted.';
 
     test('samples and 2 aliquots', () => {
         render(
@@ -319,28 +321,142 @@ describe('SelectionWarning', () => {
                             { Name: 'A-2', RowId: 2 },
                             { Name: 'A-3', RowId: 3 },
                             { Name: 'A-4', RowId: 4 },
-                            { Name: 'A-5', RowId: 5 },
                         ],
                         notPermitted: [
+                            { Name: 'A-3', RowId: 3 },
                             { Name: 'A-4', RowId: 4 },
-                            { Name: 'A-5', RowId: 5 },
                         ],
                     })
                 }
                 nounPlural="samples"
                 nounSingular="sample"
                 sampleOperation={SampleOperation.EditMetadata}
-                selectedCount={5}
+                selectedCount={4}
             />
         );
         expect(document.querySelector('.alert').textContent).toBe(TWO_NOT_PERMITTED_WARN);
     });
 
-    test('some deleted', () => {});
+    test('one deleted', () => {
+        render(
+            <SelectionWarning
+                aliquots={undefined}
+                editStatusData={
+                    new OperationConfirmationData({
+                        allowed: [
+                            { Name: 'A-1', RowId: 1 },
+                            { Name: 'A-2', RowId: 2 },
+                        ],
+                    })
+                }
+                nounPlural="samples"
+                nounSingular="sample"
+                sampleOperation={SampleOperation.EditMetadata}
+                selectedCount={3}
+            />
+        );
+        expect(document.querySelector('.alert').textContent).toBe(ONE_DELETED);
+    });
 
-    test('some deleted, not permitted', () => {});
+    test('some deleted', () => {
+        render(
+            <SelectionWarning
+                aliquots={undefined}
+                editStatusData={
+                    new OperationConfirmationData({
+                        allowed: [
+                            { Name: 'A-1', RowId: 1 },
+                            { Name: 'A-2', RowId: 2 },
+                        ],
+                    })
+                }
+                nounPlural="samples"
+                nounSingular="sample"
+                sampleOperation={SampleOperation.EditMetadata}
+                selectedCount={4}
+            />
+        );
+        expect(document.querySelector('.alert').textContent).toBe(TWO_DELETED);
+    });
 
-    test('some delete, not permitted, not allowed', () => {});
+    test('some deleted, not permitted', () => {
+        render(
+            <SelectionWarning
+                aliquots={undefined}
+                editStatusData={
+                    new OperationConfirmationData({
+                        allowed: [
+                            { Name: 'A-1', RowId: 1 },
+                            { Name: 'A-2', RowId: 2 },
+                        ],
+                        notPermitted: [{ Name: 'A-2', RowId: 2 }],
+                    })
+                }
+                nounPlural="samples"
+                nounSingular="sample"
+                sampleOperation={SampleOperation.EditMetadata}
+                selectedCount={4}
+            />
+        );
+        expect(document.querySelector('.alert').textContent).toBe(ONE_NOT_PERMITTED_WARN + TWO_DELETED);
+    });
+
+    test('1 deleted, 1 not permitted, 1 not allowed', () => {
+        render(
+            <SelectionWarning
+                aliquots={undefined}
+                editStatusData={
+                    new OperationConfirmationData({
+                        allowed: [
+                            { Name: 'A-1', RowId: 1 },
+                            { Name: 'A-3', RowId: 3 },
+                        ],
+                        notAllowed: [{ Name: 'A-2', RowId: 2 }],
+                        notPermitted: [{ Name: 'A-3', RowId: 3 }],
+                    })
+                }
+                nounPlural="samples"
+                nounSingular="sample"
+                sampleOperation={SampleOperation.EditMetadata}
+                selectedCount={4}
+            />
+        );
+        expect(document.querySelector('.alert').textContent).toBe(
+            ONE_LOCKED_WARN + ONE_NOT_PERMITTED_WARN + ONE_DELETED
+        );
+    });
+
+    test('some deleted, some not permitted, some not allowed', () => {
+        render(
+            <SelectionWarning
+                aliquots={undefined}
+                editStatusData={
+                    new OperationConfirmationData({
+                        allowed: [
+                            { Name: 'A-1', RowId: 1 },
+                            { Name: 'A-2', RowId: 2 },
+                            { Name: 'A-3', RowId: 3 },
+                        ],
+                        notAllowed: [
+                            { Name: 'A-4', RowId: 4 },
+                            { Name: 'A-5', RowId: 5 },
+                        ],
+                        notPermitted: [
+                            { Name: 'A-2', RowId: 2 },
+                            { Name: 'A-3', RowId: 3 },
+                        ],
+                    })
+                }
+                nounPlural="samples"
+                nounSingular="sample"
+                sampleOperation={SampleOperation.EditMetadata}
+                selectedCount={7}
+            />
+        );
+        expect(document.querySelector('.alert').textContent).toBe(
+            TWO_LOCKED_WARN + TWO_NOT_PERMITTED_WARN + TWO_DELETED
+        );
+    });
 });
 
 describe('errorMessage', () => {

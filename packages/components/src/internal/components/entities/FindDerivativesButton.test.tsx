@@ -314,7 +314,7 @@ describe('isValidFilterFieldSampleFinder', () => {
             supportGroupConcatSubSelect: true,
         });
         expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            false
+            true
         );
     });
 

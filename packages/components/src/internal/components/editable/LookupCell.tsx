@@ -98,7 +98,7 @@ const QueryLookupCell: FC<QueryLookupCellProps> = memo(props => {
 
     let selectValue = isMultiple ? rawValues : rawValues[0];
 
-    // Issue 49502: Some column types have special handling of raw data, i.e. StoredAmount and Units
+    // Issue 49502: Some column types have special handling of raw data, i.e. Alias
     if (columnRenderer) {
         const renderer = getQueryColumnRenderers()[columnRenderer.toLowerCase()];
         if (renderer?.getEditableRawValue) {

@@ -10,6 +10,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Update `StorageAmountInput` to not allow SelectInput for units to be cleared if sample type has display units
   - Update `AuditDetails` to be able to display provided delta amounts
   - Remove StoredAmountRenderer
+  - Allow for "Units" column to be filterable in the various samples grids
 
 ### version 6.58.6
 *Released*: 26 August 2025

@@ -79,7 +79,8 @@ export interface SamplesAPIWrapper {
         schema: string,
         query: string,
         viewName: string,
-        columns?: string[]
+        columns: string[] | undefined,
+        sort: string | undefined
     ) => Promise<ISelectRowsResult>;
 
     getTimelineEvents: (sampleId: number, timezone?: string) => Promise<TimelineEventModel[]>;

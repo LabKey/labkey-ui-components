@@ -176,52 +176,71 @@ export function getOperationNotAllowedMessageFromCounts(
     totalCount: number,
     notAllowedCount: number
 ): string {
-    let notAllowedMsg: string = null;
-    if (totalCount === 0) {
-        return null;
-    }
+    if (totalCount === 0 || notAllowedCount === 0) return null;
+
     if (notAllowedCount === totalCount) {
         return `All selected samples have a status that prevents ${operationRestrictionMessage[operation].all}.`;
     }
-    if (notAllowedCount > 0) {
-        notAllowedMsg = `The current status of ${notAllowedCount.toLocaleString()} selected sample${
-            notAllowedCount === 1 ? '' : 's'
-        } prevents ${getOperationMessageAndRecommendation(operation, notAllowedCount, false)}.`;
-    }
-    return notAllowedMsg;
+
+    const noun = notAllowedCount === 1 ? 'sample' : 'samples';
+    const count = notAllowedCount.toLocaleString();
+    const operationMsg = getOperationMessageAndRecommendation(operation, notAllowedCount, false);
+    return `The current status of ${count} selected ${noun} prevents ${operationMsg}.`;
 }
 
+/**
+ * Note: totalCount is needed because OperationConfirmationData doesn't include selections that have been deleted, so we
+ * need to pass a separate totalCount variable to avoid producing confusing error messages.
+ * e.g. if you made 3 selections, 2 were deleted, and 1 has invalid status, then you wouldn't want to say "All selected
+ * samples".
+ *
+ * TODO: update all usages of getOperationNotAllowedMessage to pass in totalCount so they don't suffer from the
+ *  selection issue outlined above.
+ */
 export function getOperationNotAllowedMessage(
     operation: SampleOperation,
     statusData: OperationConfirmationData,
-    aliquotIds?: number[]
+    aliquotIds?: number[],
+    totalCount?: number
 ): string {
-    if (statusData) {
-        const noAliquots = !aliquotIds || aliquotIds.length === 0;
-        let notAllowed = [];
-        // no aliquots or only aliquots, we show a status message about all that are not allowed
-        if (noAliquots || aliquotIds.length === statusData.totalCount) {
-            notAllowed = statusData.notAllowed;
-        } else {
-            // some aliquots, some not, filter out the aliquots from the status message
-            notAllowed = statusData.notAllowed.filter(data => aliquotIds.indexOf(caseInsensitive(data, 'rowId')) < 0);
-        }
-        return getOperationNotAllowedMessageFromCounts(operation, statusData.totalCount, notAllowed.length);
+    if (!statusData) return null;
+
+    const noAliquots = !aliquotIds || aliquotIds.length === 0;
+    let notAllowed = [];
+    // no aliquots or only aliquots, we show a status message about all that are not allowed
+    if (noAliquots || aliquotIds.length === statusData.totalCount) {
+        notAllowed = statusData.notAllowed;
+    } else {
+        // some aliquots, some not, filter out the aliquots from the status message
+        notAllowed = statusData.notAllowed.filter(data => aliquotIds.indexOf(caseInsensitive(data, 'rowId')) < 0);
     }
-    return null;
+
+    return getOperationNotAllowedMessageFromCounts(operation, totalCount ?? statusData.totalCount, notAllowed.length);
 }
 
+/**
+ * See intent behind totalCount in comment above for getOperationNotAllowedMessage
+ */
 export function getOperationNotPermittedMessage(
     statusData: OperationConfirmationData,
     nounSingular = 'sample',
-    nounPlural = 'samples'
+    nounPlural = 'samples',
+    totalCount: number
 ): string {
-    if (statusData && statusData.notPermitted?.length > 0) {
-        const notPermittedCount = statusData.notPermitted.length;
-        const noun = notPermittedCount === 1 ? nounSingular : nounPlural;
-        return `The selection includes ${notPermittedCount.toLocaleString()} ${noun.toLowerCase()} that you do not have permission to edit. Updates will only be made to the ${nounPlural.toLowerCase()} you have edit permission for.`;
+    if (!statusData || statusData.notPermitted.length === 0) return null;
+
+    const notPermittedCount = statusData.notPermitted.length;
+    const noun = (notPermittedCount === 1 ? nounSingular : nounPlural).toLowerCase();
+    const countStr = notPermittedCount.toLocaleString();
+
+    if (notPermittedCount < totalCount) {
+        let message = `The selection includes ${countStr} ${noun} that you do not have permission to edit. `;
+        message += `Updates will only be made to the ${nounPlural.toLowerCase()} you have edit permission for.`;
+        return message;
     }
-    return null;
+
+    const amountText = notPermittedCount > 1 ? 'any of the' : 'the';
+    return `You do not have permission to edit ${amountText} selected ${noun}.`;
 }
 
 export enum SamplesEditButtonSections {

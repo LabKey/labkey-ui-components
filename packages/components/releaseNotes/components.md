@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 6.X
 *Released*: X August 2025
 - Update default audit level
-  - Add `Assay Result Events` audit even type
+  - Add `Assay Result Events` audit event type
 
 ### version 6.58.5
 *Released*: 14 August 2025

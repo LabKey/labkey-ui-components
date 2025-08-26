@@ -15,6 +15,7 @@ import { UserLink } from '../user/UserLink';
 import { getEventDataValueDisplay } from './utils';
 import { AuditDetailsModel } from './models';
 import { LabelHelpTip } from '../base/LabelHelpTip';
+import { DELTA_PREFIX } from './constants';
 
 interface Props extends PropsWithChildren {
     changeDetails?: AuditDetailsModel;
@@ -61,7 +62,12 @@ export class AuditDetails extends Component<Props> {
         const oldValue = this.getValueDisplay(field, oldVal);
         const newValue = this.getValueDisplay(field, newVal);
         const changed = oldValue !== newValue;
-
+        const providedAsDelta = originalVal?.startsWith(DELTA_PREFIX);
+        let providedValueLabel = 'Provided value';
+        if (providedAsDelta) {
+            originalVal = originalVal.substring(DELTA_PREFIX.length);
+            providedValueLabel = 'Provided value change';
+        }
         return (
             <div className="row margin-bottom" key={field}>
                 <div className="left-padding right-padding">
@@ -72,7 +78,9 @@ export class AuditDetails extends Component<Props> {
                                 iconComponent={<i className="original-value-icon fa fa-info-circle left-padding" />}
                                 placement="top"
                             >
-                                <div className="ws-pre-wrap">Provided value: {originalVal}</div>
+                                <div className="ws-pre-wrap">
+                                    {providedValueLabel}: {originalVal}
+                                </div>
                             </LabelHelpTip>
                         )}
                     </span>

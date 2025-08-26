@@ -578,6 +578,7 @@ import {
     SOURCE_AUDIT_QUERY,
     USER_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
+    DELTA_PREFIX,
 } from './internal/components/auditlog/constants';
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';
 import { TimelineView } from './internal/components/auditlog/TimelineView';
@@ -1253,6 +1254,7 @@ export {
     deleteSampleSet,
     deleteSuccessMessage,
     deleteWebDavResource,
+    DELTA_PREFIX,
     DERIVATION_DATA_SCOPES,
     DERIVATIVE_CREATION,
     DesignerDetailTooltip,

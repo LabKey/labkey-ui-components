@@ -284,7 +284,6 @@ import { EditableGrid, EditableGridTabs } from './internal/components/editable/E
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { ANCESTOR_LOOKUP_CONCEPT_URI, AncestorRenderer } from './internal/renderers/AncestorRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
-import { StoredAmountRenderer } from './internal/renderers/StoredAmountRenderer';
 import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
 import { TransactionAuditIdRenderer } from './internal/renderers/TransactionAuditIdRenderer';
 import { ExpirationDateColumnRenderer } from './internal/renderers/ExpirationDateColumnRenderer';
@@ -1741,7 +1740,6 @@ export {
     STORAGE_UNIQUE_ID_CONCEPT_URI,
     StorageAmountInput,
     StorageStatusRenderer,
-    StoredAmountRenderer,
     TransactionAuditIdRenderer,
     SVGIcon,
     Tab,

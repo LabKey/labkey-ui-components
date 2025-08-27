@@ -13,7 +13,8 @@ export class AuditDetailsModel extends Record({
     eventDateFormatted: undefined,
     oldData: undefined,
     newData: undefined,
-    originalValues: undefined,
+    providedValues: undefined,
+    providedDeltaValues: undefined,
     userComment: undefined,
 }) {
     declare rowId?: number;
@@ -22,7 +23,8 @@ export class AuditDetailsModel extends Record({
     declare eventDateFormatted?: string;
     declare oldData?: Map<string, string>;
     declare newData?: Map<string, string>;
-    declare originalValues?: Record<string, string>;
+    declare providedValues?: Record<string, string>;
+    declare providedDeltaValues?: Record<string, string>;
     declare userComment?: string;
 
     static create(raw: any): AuditDetailsModel {
@@ -30,7 +32,8 @@ export class AuditDetailsModel extends Record({
             ...raw,
             oldData: raw.oldData ? fromJS(raw.oldData) : undefined,
             newData: raw.newData ? fromJS(raw.newData) : undefined,
-            originalValues: raw.originalValues,
+            providedValues: raw.providedValues,
+            providedDeltaValues: raw.providedDeltaValues,
         });
     }
 
@@ -68,7 +71,8 @@ export class TimelineEventModel extends Record({
     metadata: undefined,
     oldData: undefined,
     newData: undefined,
-    originalValues: undefined, // map from field name to user-provided values that were converted
+    providedValues: undefined, // map from field name to user-provided values that were converted
+    providedDeltaValues: undefined, // map from field name to user-provided values that were used to alter the value
     userComment: undefined,
 }) {
     declare rowId?: number;
@@ -84,7 +88,8 @@ export class TimelineEventModel extends Record({
     declare metadata?: List<Map<string, any>>;
     declare oldData?: Map<string, string>;
     declare newData?: Map<string, string>;
-    declare originalValues?: Map<string, string>;
+    declare providedValues?: Map<string, string>;
+    declare providedDeltaValues?: Map<string, string>;
     declare userComment?: string;
 
     constructor(values?: { [key: string]: any }) {
@@ -123,7 +128,8 @@ export class TimelineEventModel extends Record({
 
         if (raw.oldData) fields.oldData = fromJS(raw.oldData);
         if (raw.newData) fields.newData = fromJS(raw.newData);
-        if (raw.originalValues) fields.originalValues = raw.originalValues;
+        if (raw.providedValues) fields.providedValues = raw.providedValues;
+        if (raw.providedDeltaValues) fields.providedDeltaValues = raw.providedDeltaValues;
 
         return new TimelineEventModel(fields);
     }
@@ -135,7 +141,8 @@ export class TimelineEventModel extends Record({
             rowId: this.rowId,
             oldData: this.oldData,
             newData: this.newData,
-            originalValues: this.originalValues,
+            providedValues: this.providedValues,
+            providedDeltaValues: this.providedDeltaValues,
             userComment: this.userComment,
         });
     }

@@ -49,6 +49,7 @@ export class UnitModel {
         return new UnitModel(parseFloat(newValue.toFixed(newUnit.displayPrecision)), newUnit.label.toLowerCase());
     }
 
+    // TODO remove? I think the only usage of this client-side was for check in, and now the math is done server side instead.
     add(deltaValue: number, deltaUnitStr?: string) {
         let deltaUnit: MeasurementUnit = this.unit;
         if (deltaUnitStr) {

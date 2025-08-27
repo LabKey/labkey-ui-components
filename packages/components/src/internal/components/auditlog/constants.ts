@@ -114,4 +114,3 @@ export const COMMON_AUDIT_QUERIES: AuditQuery[] = [
 ];
 
 export const EXPERIMENT_AUDIT_EVENT = 'experimentauditevent';
-export const DELTA_PREFIX = ':::delta_provided:::';

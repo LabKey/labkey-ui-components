@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { Component, PropsWithChildren, ReactNode } from 'react';
+import React, { Component, PropsWithChildren } from 'react';
 import { List, Map } from 'immutable';
 
 import { User } from '../base/models/User';
@@ -15,7 +15,6 @@ import { UserLink } from '../user/UserLink';
 import { getEventDataValueDisplay } from './utils';
 import { AuditDetailsModel } from './models';
 import { LabelHelpTip } from '../base/LabelHelpTip';
-import { DELTA_PREFIX } from './constants';
 
 interface Props extends PropsWithChildren {
     changeDetails?: AuditDetailsModel;
@@ -54,7 +53,15 @@ export class AuditDetails extends Component<Props> {
         return displayVal;
     };
 
-    renderRow(field: string, oldVal: string, newVal: string, originalVal: string, isUpdate: boolean, isInsert: boolean): ReactNode {
+    renderRow(
+        field: string,
+        oldVal: string,
+        newVal: string,
+        providedVal: string,
+        providedDeltaVal: string,
+        isUpdate: boolean,
+        isInsert: boolean
+    ): React.ReactNode {
         const { user } = this.props;
 
         if (!user.isSignedIn && AuditDetails.isUserFieldLabel(field)) return null;
@@ -62,24 +69,25 @@ export class AuditDetails extends Component<Props> {
         const oldValue = this.getValueDisplay(field, oldVal);
         const newValue = this.getValueDisplay(field, newVal);
         const changed = oldValue !== newValue;
-        const providedAsDelta = originalVal?.startsWith(DELTA_PREFIX);
-        let providedValueLabel = 'Provided value';
-        if (providedAsDelta) {
-            originalVal = originalVal.substring(DELTA_PREFIX.length);
-            providedValueLabel = 'Provided value change';
+        const providedVals = [];
+        if (providedDeltaVal) {
+            providedVals.push('Provided value change: ' + providedDeltaVal);
+        }
+        if (providedVal) {
+            providedVals.push('Provided value: ' + providedVal);
         }
         return (
             <div className="row margin-bottom" key={field}>
                 <div className="left-padding right-padding">
                     <span className="audit-detail-row-label right-padding">
                         {capitalizeFirstChar(field)}
-                        {originalVal != null && (
+                        {!!providedVals.length && (
                             <LabelHelpTip
                                 iconComponent={<i className="original-value-icon fa fa-info-circle left-padding" />}
                                 placement="top"
                             >
                                 <div className="ws-pre-wrap">
-                                    {providedValueLabel}: {originalVal}
+                                    {providedVals}
                                 </div>
                             </LabelHelpTip>
                         )}
@@ -118,16 +126,18 @@ export class AuditDetails extends Component<Props> {
                     newValue = changeDetails.newData.get(field);
                     usedFields.push(field);
                 }
-                const originalValue = caseInsensitive(changeDetails.originalValues, field);
-                return this.renderRow(field, value, newValue, originalValue, isUpdate, isInsert);
+                const providedValue = caseInsensitive(changeDetails.providedValues, field);
+                const providedDeltaValue = caseInsensitive(changeDetails.providedDeltaValues, field);
+                return this.renderRow(field, value, newValue, providedValue, providedDeltaValue, isUpdate, isInsert);
             });
         }
 
         if (changeDetails.newData) {
             newFields = changeDetails.newData.entrySeq().map(([field, value]) => {
                 if (usedFields.indexOf(field) >= 0) return null;
-                const originalValue = caseInsensitive(changeDetails.originalValues, field);
-                return this.renderRow(field, undefined, value, originalValue, isUpdate, isInsert);
+                const providedValue = caseInsensitive(changeDetails.providedValues, field);
+                const providedDeltaValue = caseInsensitive(changeDetails.providedDeltaValues, field);
+                return this.renderRow(field, undefined, value, providedValue, providedDeltaValue, isUpdate, isInsert);
             });
         }
 

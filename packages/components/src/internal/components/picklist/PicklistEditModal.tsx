@@ -15,6 +15,8 @@ import { createPicklist, updatePicklist } from './actions';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { useSampleSelections } from './usePIcklistSelections';
+import { isLoading } from '../../../public/LoadingState';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 export interface SharedProps {
     metricFeatureArea?: string;
@@ -28,7 +30,7 @@ export interface ModalProps extends SharedProps {
     sampleIds: number[];
 }
 
-const PicklistEditModalDisplay: FC<ModalProps> = memo(props => {
+export const PicklistEditModalDisplay: FC<ModalProps> = memo(props => {
     const { onCancel, onFinish, sampleIds, picklist, showNotification, metricFeatureArea } = props;
     const [name, setName] = useState<string>(picklist?.name ?? '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
@@ -173,27 +175,40 @@ export interface PicklistEditModalProps extends SharedProps {
     // If sampleFieldKey is present the modal queries the rowIds in order to fetch sampleIds via sampleFieldKey
     sampleFieldKey?: string;
     schemaQuery?: SchemaQuery;
-    // The exported modal component accepts a generic rowIds prop and optionally converts those rowIds to sampleIds
     selectedRowIds?: number[] | string[];
 }
 
 export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
-    const { metricFeatureArea, onCancel, onFinish, sampleFieldKey, schemaQuery, selectedRowIds, showNotification } =
-        props;
-
     const {
-        error: sampleIdsError,
-        loadingState: sampleIdsLoadingState,
-        value: sampleIds,
-    } = useSampleSelections(selectedRowIds, sampleFieldKey, schemaQuery);
+        metricFeatureArea,
+        onCancel,
+        onFinish,
+        picklist,
+        sampleFieldKey,
+        schemaQuery,
+        selectedRowIds,
+        showNotification,
+    } = props;
 
-    // TODO: Need some error handling
+    const { error, loadingState, value: sampleIds } = useSampleSelections(selectedRowIds, sampleFieldKey, schemaQuery);
+    const loading = isLoading(loadingState);
+
+    if (loading || error !== undefined) {
+        const title = loading ? 'Loading Selection Data' : 'Error Loading Selection Data';
+        return (
+            <Modal cancelText="Dismiss" onCancel={onCancel} title={title}>
+                {loading && <LoadingSpinner />}
+                {error}
+            </Modal>
+        );
+    }
 
     return (
         <PicklistEditModalDisplay
             metricFeatureArea={metricFeatureArea}
             onCancel={onCancel}
             onFinish={onFinish}
+            picklist={picklist}
             sampleIds={sampleIds}
             showNotification={showNotification}
         />

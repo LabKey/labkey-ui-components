@@ -10,10 +10,9 @@ import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants
 
 import { PicklistEditModal, PicklistEditModalProps } from './PicklistEditModal';
 import { Picklist } from './models';
+import { waitFor } from '@testing-library/dom';
 
 describe('PicklistEditModal', () => {
-    const queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'));
-
     function defaultProps(): PicklistEditModalProps {
         return {
             onCancel: jest.fn(),
@@ -21,7 +20,14 @@ describe('PicklistEditModal', () => {
         };
     }
 
-    function validateText(expectedTitle: string, expectedFinishText: string): void {
+    async function waitForLoaded() {
+        await waitFor(() => {
+            expect(document.querySelector('.fa-pulse')).not.toBeInTheDocument();
+        });
+    }
+
+    async function validateText(expectedTitle: string, expectedFinishText: string): Promise<void> {
+        await waitForLoaded();
         const title = document.querySelector('.modal-title');
         expect(title.textContent).toBe(expectedTitle);
         const buttons = document.querySelectorAll('.modal-footer .btn');
@@ -29,9 +35,9 @@ describe('PicklistEditModal', () => {
         expect(buttons[1].textContent).toBe(expectedFinishText);
     }
 
-    test('create empty picklist', () => {
-        renderWithAppContext(<PicklistEditModal onCancel={jest.fn()} onFinish={jest.fn()} />);
-        validateText('Create an Empty Picklist', 'Create Picklist');
+    test('create empty picklist', async () => {
+        renderWithAppContext(<PicklistEditModal {...defaultProps()} />);
+        await validateText('Create an Empty Picklist', 'Create Picklist');
 
         const labels = document.querySelectorAll('label');
         expect(labels).toHaveLength(3);
@@ -45,46 +51,24 @@ describe('PicklistEditModal', () => {
         expect(inputs[1].checked).toBe(false);
     });
 
-    test('create picklist from multiple selections', () => {
-        renderWithAppContext(
-            <PicklistEditModal
-                {...defaultProps()}
-                queryModel={queryModel.mutate({ selections: new Set(['1', '2']) })}
-            />
-        );
-        validateText('Create a New Picklist with the 2 Selected Samples', 'Create Picklist');
+    test('create picklist from multiple selections', async () => {
+        renderWithAppContext(<PicklistEditModal {...defaultProps()} selectedRowIds={['1', '2']} />);
+        await validateText('Create a New Picklist with the 2 Selected Samples', 'Create Picklist');
     });
 
-    test('create picklist from one selection', () => {
-        renderWithAppContext(
-            <PicklistEditModal {...defaultProps()} queryModel={queryModel.mutate({ selections: new Set(['1']) })} />
-        );
-        validateText('Create a New Picklist with the 1 Selected Sample', 'Create Picklist');
+    test('create picklist from one selection', async () => {
+        renderWithAppContext(<PicklistEditModal {...defaultProps()} selectedRowIds={['1']} />);
+        await validateText('Create a New Picklist with This Sample', 'Create Picklist');
     });
 
-    test('create empty picklist from sampleIds', () => {
-        renderWithAppContext(<PicklistEditModal {...defaultProps()} sampleIds={[]} />);
-        validateText('Create an Empty Picklist', 'Create Picklist');
-    });
-
-    test('create picklist from one sampleId', () => {
-        renderWithAppContext(<PicklistEditModal {...defaultProps()} sampleIds={['1']} />);
-        validateText('Create a New Picklist with This Sample', 'Create Picklist');
-    });
-
-    test('create picklist from multiple sampleIds', () => {
-        renderWithAppContext(<PicklistEditModal {...defaultProps()} sampleIds={['1', '2']} />);
-        validateText('Create a New Picklist with These Samples', 'Create Picklist');
-    });
-
-    test('Update private picklist', () => {
+    test('Update private picklist', async () => {
         const existingList = new Picklist({
             Category: PRIVATE_PICKLIST_CATEGORY,
             name: 'Existing list',
             Description: 'My test description',
         });
         renderWithAppContext(<PicklistEditModal {...defaultProps()} picklist={existingList} />);
-        validateText('Update Picklist Data', 'Update Picklist');
+        await validateText('Update Picklist Data', 'Update Picklist');
 
         const labels = document.querySelectorAll('label');
         expect(labels).toHaveLength(3);
@@ -101,13 +85,14 @@ describe('PicklistEditModal', () => {
         expect(textarea.value).toBe(existingList.Description);
     });
 
-    test('Update public picklist', () => {
+    test('Update public picklist', async () => {
         const existingList = new Picklist({
             Category: PUBLIC_PICKLIST_CATEGORY,
             name: 'Existing list',
             Description: 'My test description',
         });
         renderWithAppContext(<PicklistEditModal {...defaultProps()} picklist={existingList} />);
+        await waitForLoaded();
         const inputs = document.querySelectorAll('input');
         expect(inputs).toHaveLength(2);
         expect(inputs[1].checked).toBe(true);

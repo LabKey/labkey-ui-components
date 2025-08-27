@@ -266,21 +266,40 @@ describe('getOperationNotAllowedMessage', () => {
 
 describe('getOperationNotPermittedMessage', () => {
     test('no statusData', () => {
-        expect(getOperationNotPermittedMessage(undefined)).toBeNull();
+        expect(getOperationNotPermittedMessage(undefined, 'sample', 'samples', 1)).toBeNull();
     });
 
     test('no notPermitted', () => {
-        expect(getOperationNotPermittedMessage(new OperationConfirmationData({ notPermitted: undefined }))).toBeNull();
-        expect(getOperationNotPermittedMessage(new OperationConfirmationData({ notPermitted: [] }))).toBeNull();
+        expect(
+            getOperationNotPermittedMessage(
+                new OperationConfirmationData({ notPermitted: undefined }),
+                'sample',
+                'samples',
+                1
+            )
+        ).toBeNull();
+        expect(
+            getOperationNotPermittedMessage(new OperationConfirmationData({ notPermitted: [] }), 'sample', 'samples', 1)
+        ).toBeNull();
     });
 
     test('with notPermitted', () => {
-        expect(getOperationNotPermittedMessage(new OperationConfirmationData({ notPermitted: [1] }))).toBe(
-            'The selection includes 1 sample that you do not have permission to edit. Updates will only be made to the samples you have edit permission for.'
-        );
-        expect(getOperationNotPermittedMessage(new OperationConfirmationData({ notPermitted: [1, 2] }))).toBe(
-            'The selection includes 2 samples that you do not have permission to edit. Updates will only be made to the samples you have edit permission for.'
-        );
+        expect(
+            getOperationNotPermittedMessage(
+                new OperationConfirmationData({ notPermitted: [1] }),
+                'sample',
+                'samples',
+                1
+            )
+        ).toBe('You do not have permission to edit the selected sample.');
+        expect(
+            getOperationNotPermittedMessage(
+                new OperationConfirmationData({ notPermitted: [1, 2] }),
+                'sample',
+                'samples',
+                2
+            )
+        ).toBe('You do not have permission to edit any of the selected samples.');
     });
 });
 

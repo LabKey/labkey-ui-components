@@ -223,8 +223,8 @@ export function getOperationNotAllowedMessage(
  */
 export function getOperationNotPermittedMessage(
     statusData: OperationConfirmationData,
-    nounSingular = 'sample',
-    nounPlural = 'samples',
+    nounSingular: string,
+    nounPlural: string,
     totalCount: number
 ): string {
     if (!statusData || statusData.notPermitted.length === 0) return null;

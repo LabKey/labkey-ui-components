@@ -597,49 +597,6 @@ export function getSnapshotSelections(key: string, containerPath?: string): Prom
     });
 }
 
-export interface SelectionResponse {
-    resolved: boolean;
-    schemaQuery?: SchemaQuery;
-    selected: any[];
-}
-
-// TODO: this method is only used by AssayImportPanels, and is needed in order to correctly get the filters needed when
-//  fetching the selected samples. We should remove this method when we address Issue 53378. AssayImportDropdownSection,
-//  and getImportItemsForAssayDefinitions, should be updated to create a snapshot selection key against exp.materials
-//  before navigating to the assay import page, similar to what we do when creating workflow jobs.
-export async function getSelection(
-    searchParams: URLSearchParams,
-    schemaName?: string,
-    queryName?: string
-): Promise<SelectionResponse> {
-    const selectionKey = searchParams.get('selectionKey');
-    if (selectionKey) {
-        let { keys, schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);
-
-        if (keys !== undefined && keys !== '') {
-            return { resolved: true, schemaQuery, selected: keys.split(';') };
-        }
-
-        if (!schemaQuery && schemaName && queryName) {
-            schemaQuery = new SchemaQuery(schemaName, queryName);
-        }
-
-        if (!schemaQuery) {
-            throw new Error(
-                `No schema found for selection with selectionKey ${selectionKey} schemaName ${schemaName} queryName ${queryName}`
-            );
-        }
-
-        const params = getQueryParams(searchParams);
-        const filters = Filter.getFiltersFromParameters(params);
-        const response = await getSelected(selectionKey, false, schemaQuery, filters);
-
-        return { resolved: true, schemaQuery, selected: response.selected };
-    }
-
-    return { resolved: false, selected: [] };
-}
-
 export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): Promise<DataViewInfo[]> {
     return new Promise((resolve, reject) => {
         Ajax.request({

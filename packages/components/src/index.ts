@@ -1841,7 +1841,7 @@ export {
     wrapDraggable,
 };
 
-export type { ClearSelectedOptions, ReplaceSelectedOptions, SelectionResponse } from './internal/actions';
+export type { ClearSelectedOptions, ReplaceSelectedOptions } from './internal/actions';
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { ComponentsAPIWrapper } from './internal/APIWrapper';

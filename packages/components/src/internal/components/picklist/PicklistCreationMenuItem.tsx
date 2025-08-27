@@ -38,22 +38,33 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
         return null;
     }
 
-    const numSamples = selectedRowIds?.length ?? 0;
-    const excessSamples = numSamples > MAX_SELECTIONS_PER_ADD;
+    const disabled = !selectedRowIds || selectedRowIds.length === 0 || selectedRowIds.length > MAX_SELECTIONS_PER_ADD;
+    let disabledMessage: string;
+
+    if (!selectedRowIds || selectedRowIds.length === 0) {
+        disabledMessage = 'Select one or more samples.';
+    } else if (selectedRowIds.length > MAX_SELECTIONS_PER_ADD) {
+        disabledMessage = MAX_SELECTIONS_MESSAGE;
+    }
 
     return (
         <>
             {asMenuItem && (
-                <DisableableMenuItem disabled={excessSamples} disabledMessage={MAX_SELECTIONS_MESSAGE} onClick={open}>
+                <DisableableMenuItem
+                    disabled={disabled}
+                    disabledMessage={disabledMessage}
+                    onClick={open}
+                    placement="right"
+                >
                     {itemText}
                 </DisableableMenuItem>
             )}
             {!asMenuItem && (
                 <button
                     className="btn btn-success"
-                    disabled={excessSamples}
+                    disabled={disabled}
                     onClick={open}
-                    title={excessSamples ? MAX_SELECTIONS_MESSAGE : undefined}
+                    title={disabledMessage}
                     type="button"
                 >
                     {itemText}

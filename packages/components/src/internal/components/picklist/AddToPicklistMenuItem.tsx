@@ -36,13 +36,18 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
         return null;
     }
 
+    const disabled = !selectedRowIds || selectedRowIds.length === 0 || selectedRowIds.length > MAX_SELECTIONS_PER_ADD;
+    let disabledMessage: string;
+
+    if (!selectedRowIds || selectedRowIds.length === 0) {
+        disabledMessage = 'Select one or more samples.';
+    } else if (selectedRowIds.length > MAX_SELECTIONS_PER_ADD) {
+        disabledMessage = MAX_SELECTIONS_MESSAGE;
+    }
+
     return (
         <>
-            <DisableableMenuItem
-                disabled={selectedRowIds?.length > MAX_SELECTIONS_PER_ADD}
-                disabledMessage={MAX_SELECTIONS_MESSAGE}
-                onClick={openChoose}
-            >
+            <DisableableMenuItem disabled={disabled} disabledMessage={disabledMessage} onClick={openChoose} placement="right">
                 Add to Picklist
             </DisableableMenuItem>
 

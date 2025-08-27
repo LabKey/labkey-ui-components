@@ -23,42 +23,12 @@ jest.mock('../../query/api', () => ({
 }));
 
 describe('AddToPicklistMenuItem', () => {
-    const expectedText = 'Add to Picklist';
-    const queryModelWithoutSelections = makeTestQueryModel(new SchemaQuery('test', 'query'));
-    let queryModelWithSelections = makeTestQueryModel(new SchemaQuery('test', 'query'));
-    queryModelWithSelections = queryModelWithSelections.mutate({
-        rowCount: 2,
-        selections: new Set(['1', '2']),
-    });
-
-    test('with queryModel', async () => {
-        renderWithAppContext(<AddToPicklistMenuItem queryModel={queryModelWithSelections} user={TEST_USER_EDITOR} />);
-        const menuItem = document.querySelectorAll('.lk-menu-item');
-        expect(menuItem).toHaveLength(1);
-        expect(menuItem[0]).toHaveTextContent(expectedText);
-
-        await validateMenuItemClick(true);
-        const picklistModal = document.querySelectorAll('.modal');
-        expect(picklistModal).toHaveLength(1);
-        expect(document.querySelector('.alert-info')).toHaveTextContent('Adding 2 samples to selected picklist.');
-    });
-
-    test('with selectedIds', async () => {
-        renderWithAppContext(
-            <AddToPicklistMenuItem queryModel={queryModelWithoutSelections} sampleIds={[1]} user={TEST_USER_EDITOR} />
-        );
-        const menuItem = document.querySelectorAll('.lk-menu-item');
-        expect(menuItem).toHaveLength(1);
-        expect(menuItem[0]).toHaveTextContent(expectedText);
-
-        await validateMenuItemClick(true);
-        const picklistModal = document.querySelectorAll('.modal');
-        expect(picklistModal).toHaveLength(1);
-        expect(document.querySelector('.alert-info')).toHaveTextContent('Adding 1 sample to selected picklist.');
-    });
+    const schemaQuery = new SchemaQuery('test', 'query');
 
     test('not Editor', () => {
-        renderWithAppContext(<AddToPicklistMenuItem sampleIds={[1]} user={TEST_USER_READER} />);
+        renderWithAppContext(
+            <AddToPicklistMenuItem schemaQuery={schemaQuery} selectedRowIds={['1', '2']} user={TEST_USER_READER} />
+        );
         expect(document.querySelectorAll('.lk-menu-item')).toHaveLength(0);
     });
 
@@ -73,37 +43,22 @@ describe('AddToPicklistMenuItem', () => {
         });
     }
 
-    test('modal open on click, queryModel without selections', async () => {
+    test('modal opens when there are selectedRowIds', async () => {
         renderWithAppContext(
-            <AddToPicklistMenuItem queryModel={queryModelWithoutSelections} user={TEST_USER_EDITOR} />
+            <AddToPicklistMenuItem schemaQuery={schemaQuery} selectedRowIds={[1]} user={TEST_USER_EDITOR} />
+        );
+        await validateMenuItemClick(true);
+    });
+
+    test('modal does not open when there are no selectedRowIds', async () => {
+        renderWithAppContext(
+            <AddToPicklistMenuItem schemaQuery={schemaQuery} selectedRowIds={[]} user={TEST_USER_EDITOR} />
         );
         await validateMenuItemClick(false);
     });
 
-    test('modal open on click, queryModel with selections', async () => {
-        renderWithAppContext(<AddToPicklistMenuItem queryModel={queryModelWithSelections} user={TEST_USER_EDITOR} />);
-        await validateMenuItemClick(true);
-    });
-
-    test('modal open on click, sampleIds', async () => {
-        renderWithAppContext(
-            <AddToPicklistMenuItem queryModel={queryModelWithoutSelections} sampleIds={[1]} user={TEST_USER_EDITOR} />
-        );
-        await validateMenuItemClick(true);
-    });
-
-    test('sample with status', async () => {
-        let model = makeTestQueryModel(new SchemaQuery('test', 'query'));
-        model = model.mutate({
-            rows: {
-                '1': {
-                    RowId: { value: 1 },
-                    [SAMPLE_STATE_TYPE_COLUMN_NAME]: { value: 'Locked' },
-                },
-            },
-            orderedRows: ['1'],
-        });
-        renderWithAppContext(<AddToPicklistMenuItem queryModel={model} sampleIds={[1]} user={TEST_USER_EDITOR} />);
-        await validateMenuItemClick(true);
+    test('modal does not open when selectedRowIds is undefined', async () => {
+        renderWithAppContext(<AddToPicklistMenuItem schemaQuery={schemaQuery} user={TEST_USER_EDITOR} />);
+        await validateMenuItemClick(false);
     });
 });

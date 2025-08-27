@@ -459,7 +459,6 @@ export class QueryColumn implements IQueryColumn {
         const isLineageLookup = this.isAncestorInput() || this.isExpInput();
         return (
             (!isLineageLookup && this.caption?.toLowerCase() === lcName) ||
-            (!isLineageLookup && this.caption?.replaceAll(' ', '').toLowerCase() === lcName) || // Issue 52193: allow for "SampleID" when caption is "Sample ID", but don't match for simply fewer spaces
             this.name?.toLowerCase() === lcName ||
             this.fieldKey?.toLowerCase() === lcName
         );

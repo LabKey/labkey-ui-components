@@ -16,6 +16,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Add props: aliquots, sampleOperation, editStatusData
   - Render errors
 - QueryAPIWrapper: remove getSelection
+- EntityServerAPIWrapper.getCrossFolderSelectionResult: remove useSnapshotSelection argument
 
 ### version 6.60.1
 *Released*: 3 September 2025

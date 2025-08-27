@@ -755,7 +755,6 @@ export function getDataOperationConfirmationData(
 export function getCrossFolderSelectionResult(
     dataRegionSelectionKey: string,
     dataType: string, // 'samples' | 'exp.data' | 'assay',
-    useSnapshotSelection?: boolean,
     rowIds?: number[] | string[],
     picklistName?: string
 ): Promise<CrossFolderSelectionResult> {
@@ -772,7 +771,6 @@ export function getCrossFolderSelectionResult(
                 rowIds,
                 dataType,
                 picklistName,
-                useSnapshotSelection,
             },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {

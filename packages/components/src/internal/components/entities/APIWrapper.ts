@@ -48,7 +48,6 @@ export interface EntityAPIWrapper {
     getCrossFolderSelectionResult: (
         dataRegionSelectionKey: string,
         dataType: string, // 'samples' | 'exp.data' | 'assay',
-        useSnapshotSelection?: boolean,
         rowIds?: string[] | number[],
         picklistName?: string
     ) => Promise<CrossFolderSelectionResult>;

@@ -176,7 +176,7 @@ export function getOperationNotAllowedMessageFromCounts(
     totalCount: number,
     notAllowedCount: number
 ): string {
-    if (totalCount === 0 || notAllowedCount === 0) return null;
+    if (!totalCount || !notAllowedCount) return null;
 
     if (notAllowedCount === totalCount) {
         return `All selected samples have a status that prevents ${operationRestrictionMessage[operation].all}.`;

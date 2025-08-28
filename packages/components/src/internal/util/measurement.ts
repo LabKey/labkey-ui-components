@@ -49,28 +49,6 @@ export class UnitModel {
         return new UnitModel(parseFloat(newValue.toFixed(newUnit.displayPrecision)), newUnit.label.toLowerCase());
     }
 
-    // TODO remove? I think the only usage of this client-side was for check in, and now the math is done server side instead.
-    add(deltaValue: number, deltaUnitStr?: string) {
-        let deltaUnit: MeasurementUnit = this.unit;
-        if (deltaUnitStr) {
-            if (!this.canConvert(deltaUnitStr)) {
-                throw new Error('Cannot add "' + deltaUnitStr + '" to "' + this.unit?.label + '"');
-            }
-
-            deltaUnit = MEASUREMENT_UNITS[deltaUnitStr.toLowerCase()];
-            if (!deltaUnit) {
-                throw new Error('Unit type not supported "' + deltaUnitStr + '"');
-            }
-        }
-
-        if (!this.unit) {
-            return new UnitModel(this.value + deltaValue, this.unit?.label?.toLowerCase());
-        }
-
-        const newValue = this.value + deltaValue * (deltaUnit.ratio / this.unit.ratio);
-        return new UnitModel(newValue, this.unit.label.toLowerCase());
-    }
-
     compareTo(other: UnitModel) {
         const unitStr = this.unit?.label;
         const otherUnitStr = other.unit?.label;

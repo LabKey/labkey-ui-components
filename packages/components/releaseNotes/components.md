@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Sample Type Amounts and Units updates for Quantity
-  - remove unused amount and unit conversion code from measurement.ts
+  - remove unused amount and unit conversion code from measurement.ts and remove the `UnitsModel.add` method
   - Update language in `AuditDetails`
   - `BASE_UNITS` -> `UNITS_KIND` and add `baseUnit` field to match server-side concept
   - Update `StorageAmountInput` usages to allow clearing of the unit select input value

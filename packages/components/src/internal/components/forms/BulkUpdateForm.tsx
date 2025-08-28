@@ -202,8 +202,14 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
 
     getValidSelectedIds = (): string[] => {
         const { editStatusData, selectedIds } = this.props;
+
         if (editStatusData) {
-            return editStatusData.getActionableIds().map(id => id.toString(10));
+            const notPermitted = new Set(
+                editStatusData.notPermitted.map(row => caseInsensitive(row, 'RowId').toString(10))
+            );
+            // Only return the permitted IDs. The notAllowed IDs are considered valid because the user can change
+            // values (e.g. sample status) in the form to make them allowed
+            return selectedIds.filter(id => !notPermitted.has(id));
         }
         return selectedIds;
     };

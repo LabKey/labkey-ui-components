@@ -1,15 +1,14 @@
 import React, { FC, memo, useCallback } from 'react';
 
 import { userCanManagePicklists } from '../../app/utils';
-import { DisableableMenuItem } from '../samples/DisableableMenuItem';
 
 import { User } from '../base/models/User';
 
 import { PicklistEditModal } from './PicklistEditModal';
 import { ChoosePicklistModal } from './ChoosePicklistModal';
-import { MAX_SELECTIONS_MESSAGE, MAX_SELECTIONS_PER_ADD } from './constants';
 import { useModalState } from '../../hooks';
 import { SchemaQuery } from '../../../public/SchemaQuery';
+import { PicklistMenuItem } from './PicklistMenuItem';
 
 interface Props {
     metricFeatureArea?: string;
@@ -32,24 +31,11 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
         [closeChoose, openCreate]
     );
 
-    if (!userCanManagePicklists(user)) {
-        return null;
-    }
-
-    const disabled = !selectedRowIds || selectedRowIds.length === 0 || selectedRowIds.length > MAX_SELECTIONS_PER_ADD;
-    let disabledMessage: string;
-
-    if (!selectedRowIds || selectedRowIds.length === 0) {
-        disabledMessage = 'Select one or more samples.';
-    } else if (selectedRowIds.length > MAX_SELECTIONS_PER_ADD) {
-        disabledMessage = MAX_SELECTIONS_MESSAGE;
-    }
+    if (!userCanManagePicklists(user)) return null;
 
     return (
         <>
-            <DisableableMenuItem disabled={disabled} disabledMessage={disabledMessage} onClick={openChoose} placement="right">
-                Add to Picklist
-            </DisableableMenuItem>
+            <PicklistMenuItem itemText="Add to Picklist" open={openChoose} selectedRowIds={selectedRowIds} />
 
             {showChoose && (
                 <ChoosePicklistModal

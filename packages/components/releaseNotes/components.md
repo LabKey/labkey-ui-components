@@ -7,7 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - remove unused amount and unit conversion code from measurement.ts
   - Update language in `AuditDetails`
   - `BASE_UNITS` -> `UNITS_KIND` and add `baseUnit` field to match server-side concept
-  - Update `StorageAmountInput` to not allow SelectInput for units to be cleared if sample type has display units
+  - Update `StorageAmountInput` usages to allow clearing of the unit select input value
   - Update `AuditDetails` to be able to display provided delta amounts
   - Remove StoredAmountRenderer
   - Allow for "Units" column to be filterable in the various samples grids

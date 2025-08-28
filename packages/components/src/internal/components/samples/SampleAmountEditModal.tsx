@@ -132,7 +132,7 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
 
     const unitsChangeHandler = useCallback(
         (newUnits: string) => {
-            const units = newUnits ?? initStorageUnits;
+            const units = newUnits ?? null;
             setStorageUnits(units);
             setIsDirty(
                 _isDirty => _isDirty || units?.localeCompare(initStorageUnits, 'en-US', { sensitivity: 'base' }) !== 0

@@ -73,7 +73,6 @@ export const StorageAmountInput: FC<Props> = memo(props => {
                     unitsChangedHandler(formValue === undefined && option ? option.id : formValue);
                 }}
                 value={preferredUnit}
-                clearable={false} // if we know the unit type, don't allow clearing from those options
             />
         );
 

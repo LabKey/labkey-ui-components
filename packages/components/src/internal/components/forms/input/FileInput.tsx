@@ -33,6 +33,25 @@ import { getTransferItemDirectoryEntry } from '../../files/FileAttachmentContain
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
+type FileInputData = Map<string, any> | string | undefined;
+
+export function initializeValue(initialValue: any): { data: FileInputData; formValue: string | undefined } {
+    let data: Map<string, any> | string | undefined;
+    let formValue: string;
+    if (Map.isMap(initialValue)) {
+        data = initialValue;
+        formValue = initialValue.get('value');
+    } else if (typeof initialValue === 'string') {
+        const trimmedValue = initialValue.trim();
+        if (trimmedValue !== '') {
+            data = trimmedValue;
+            formValue = trimmedValue;
+        }
+    }
+
+    return { data, formValue };
+}
+
 export interface FileInputProps extends DisableableInputProps {
     acceptedFormats?: string;
     addLabelAsterisk?: boolean;
@@ -54,7 +73,7 @@ export interface FileInputProps extends DisableableInputProps {
 type FileInputImplProps = FileInputProps & FormsyInjectedProps<any>;
 
 interface State extends DisableableInputState {
-    data: any;
+    data: FileInputData;
     error: string;
     file: File;
     isHover: boolean;
@@ -77,19 +96,18 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
         this.toggleDisabled = this.toggleDisabled.bind(this);
 
         this.fileInput = React.createRef<HTMLInputElement>();
+        const { data, formValue } = initializeValue(props.initialValue);
+
         this.state = {
-            data: props.initialValue,
-            isHover: false,
+            data,
             file: null,
             error: '',
             isDisabled: props.initiallyDisabled,
+            isHover: false,
         };
 
-        if (Map.isMap(props.initialValue)) {
-            // call setValue so to populate form data (for diff compare)
-            props.setValue?.(props.initialValue.get('value'));
-        } else if (typeof props.initialValue === 'string') {
-            props.setValue?.(props.initialValue);
+        if (formValue) {
+            props.setValue?.(formValue);
         }
     }
 
@@ -206,7 +224,7 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
                 >
                     <span className="fa fa-times-circle attached-file__remove-icon" onClick={this.onRemove} />
                     <span className="fa fa-file-text attached-file--icon" />
-                    <span>{file ? file.name : data}</span>
+                    <span>{file ? file.name : (data as string)}</span>
                     <div className="file-upload__error-message">{error}</div>
                 </div>
             );

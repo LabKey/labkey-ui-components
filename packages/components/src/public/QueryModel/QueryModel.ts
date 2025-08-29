@@ -85,14 +85,14 @@ export function locationHasQueryParamSettings(prefix: string, searchParams?: URL
 }
 
 /**
- * Creates a QueryModel ID for a given SchemaQuery. The id is just the SchemaQuery snake-cased as
+ * Creates a QueryModel ID for a given SchemaQuery. The id is just the SchemaQuery snake-cased as encoded
  * schemaName.queryName.
  *
  * @param schemaQuery: SchemaQuery
  */
 export function createQueryModelId(schemaQuery: SchemaQuery): string {
     const { schemaName, queryName } = schemaQuery;
-    return `${schemaName}.${queryName}`;
+    return `${encodePart(schemaName)}.${encodePart(queryName)}`;
 }
 
 const sortStringMapper = (s: QuerySort): string => s.toRequestString();

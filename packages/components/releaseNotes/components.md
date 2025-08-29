@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.X
-*Released*: X August 2025
+### version 6.58.7
+*Released*: 29 August 2025
 - Update default audit level
   - Add `Assay Result Events` audit event type
 

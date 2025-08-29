@@ -566,6 +566,7 @@ import { ItemsLegend } from './internal/components/chart/ItemsLegend';
 import { AuditDetailsModel, TimelineEventModel } from './internal/components/auditlog/models';
 import {
     ASSAY_AUDIT_QUERY,
+    ASSAY_RESULT_AUDIT_QUERY,
     AUDIT_EVENT_TYPE_PARAM,
     CONTAINER_AUDIT_QUERY,
     DATACLASS_DATA_UPDATE_AUDIT_QUERY,
@@ -1153,6 +1154,7 @@ export {
     areUnitsCompatible,
     arrayEquals,
     ASSAY_AUDIT_QUERY,
+    ASSAY_RESULT_AUDIT_QUERY,
     ASSAY_DESIGNER_ROLE,
     AssayContext,
     AssayContextConsumer,

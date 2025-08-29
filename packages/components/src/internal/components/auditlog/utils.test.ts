@@ -16,6 +16,7 @@ import {
 import { getAuditQueries, getEventDataValueDisplay, getTimelineEntityUrl } from './utils';
 import {
     ASSAY_AUDIT_QUERY,
+    ASSAY_RESULT_AUDIT_QUERY,
     DATACLASS_DATA_UPDATE_AUDIT_QUERY,
     INVENTORY_AUDIT_QUERY,
     NOTEBOOK_AUDIT_QUERY,
@@ -28,9 +29,10 @@ import {
 describe('getAuditQueries', () => {
     test('LKS starter', () => {
         const auditQueries = getAuditQueries(TEST_LKS_STARTER_MODULE_CONTEXT);
-        expect(auditQueries.length).toBe(13);
+        expect(auditQueries.length).toBe(14);
         expect(auditQueries.findIndex(entry => entry === ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
-        expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(11);
+        expect(auditQueries.findIndex(entry => entry === ASSAY_RESULT_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(12);
         expect(auditQueries.findIndex(entry => entry === WORKFLOW_AUDIT_QUERY)).toBe(-1);
         expect(auditQueries.findIndex(entry => entry === SOURCE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
     });
@@ -40,14 +42,15 @@ describe('getAuditQueries', () => {
         expect(auditQueries.length).toBe(12);
         expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(10);
         expect(auditQueries.findIndex(entry => entry === ASSAY_AUDIT_QUERY)).toBe(-1);
+        expect(auditQueries.findIndex(entry => entry === ASSAY_RESULT_AUDIT_QUERY)).toBe(-1);
         expect(auditQueries.findIndex(entry => entry === WORKFLOW_AUDIT_QUERY)).toBe(-1);
         expect(auditQueries.findIndex(entry => entry === SOURCE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
     });
 
     test('LKSM professional', () => {
         const auditQueries = getAuditQueries(TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT);
-        expect(auditQueries.length).toBe(16);
-        expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(14);
+        expect(auditQueries.length).toBe(17);
+        expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(15);
         expect(auditQueries.findIndex(entry => entry === ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === WORKFLOW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === SOURCE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
@@ -69,9 +72,10 @@ describe('getAuditQueries', () => {
             },
         };
         const auditQueries = getAuditQueries(moduleContext);
-        expect(auditQueries.length).toBe(17);
-        expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(15);
+        expect(auditQueries.length).toBe(18);
+        expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(16);
         expect(auditQueries.findIndex(entry => entry === ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === ASSAY_RESULT_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === WORKFLOW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === NOTEBOOK_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === NOTEBOOK_REVIEW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);

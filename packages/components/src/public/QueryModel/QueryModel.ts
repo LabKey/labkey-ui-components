@@ -894,10 +894,8 @@ export class QueryModel {
     /**
      * Returns the data for the specified key parameter on the QueryModel.rows object.
      * If no key parameter is provided, the first data row will be returned.
-     * @param key
-     * @param flattenValues True to flatten the row object to just the key: value pairs
      */
-    getRow(key?: string, flattenValues = false): any {
+    getRow(key?: string): Record<string, any> | undefined {
         if (!this.hasRows) {
             return undefined;
         }
@@ -906,8 +904,7 @@ export class QueryModel {
             key = this.orderedRows[0];
         }
 
-        const row = this.rows[key];
-        return flattenValues ? flattenValuesFromRow(row, this.queryInfo.getColumnFieldKeys()) : row;
+        return this.rows[key];
     }
 
     /**

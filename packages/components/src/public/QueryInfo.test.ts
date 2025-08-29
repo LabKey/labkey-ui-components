@@ -284,7 +284,7 @@ describe('QueryInfo', () => {
         );
 
         test('with disabledSystemFields and addToSystemView fields', () => {
-            let added: Set<string> = new Set();
+            let added = new Set<string>();
             let extras = queryInfoWithAddAndDisabledSystemFields.getExtraDisplayColumns(added, []);
             expect(extras.length).toBe(1);
             expect(extras[0].fieldKey).toBe('test2');

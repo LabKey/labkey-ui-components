@@ -17,7 +17,7 @@ import { naturalSortByProperty } from '../sort';
 import { PaginationData } from '../../internal/components/pagination/Pagination';
 import { SelectRowsOptions } from '../../internal/query/selectRows';
 
-export function flattenValuesFromRow(row: any, keys: string[]): { [key: string]: any } {
+export function flattenValuesFromRow(row: any, keys: string[]): Record<string, any> {
     const values = {};
     if (row && keys) {
         keys.forEach((key: string) => {
@@ -182,7 +182,7 @@ export interface QueryConfig {
      * Query parameters used as input to a parameterized query.
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    queryParameters?: { [key: string]: any };
+    queryParameters?: Record<string, any>;
     /**
      * Array of column names to be explicitly included in the column list in the [[QueryModel]] data load.
      */
@@ -328,7 +328,7 @@ export class QueryModel {
      * Query parameters used as input to a parameterized query.
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    readonly queryParameters?: { [key: string]: any };
+    readonly queryParameters?: Record<string, any>;
     /**
      * Array of column names to be explicitly included from the column list in the QueryModel data load.
      */
@@ -400,7 +400,7 @@ export class QueryModel {
      * and the object values is the row values for the given key.
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    readonly rows?: { [key: string]: any };
+    readonly rows?: Record<string, any>;
     /**
      * The count of rows returned from the query for the given QueryModel. If includeTotalCount is true, this will
      * be the total count of rows for the query parameters.
@@ -696,7 +696,7 @@ export class QueryModel {
         const _omittedColumns = omittedColumns ?? this.omittedColumns;
 
         // Note: ES6 Set is being used here, not Immutable Set
-        const uniqueFieldKeys: Set<string> = new Set();
+        const uniqueFieldKeys = new Set<string>();
         this.keyColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
 
         this.uniqueIdColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
@@ -720,8 +720,8 @@ export class QueryModel {
         }
 
         // remove duplicate
-        const fieldKeysLc = new Set(),
-            fieldKeysCleaned = [];
+        const fieldKeysCleaned = [],
+            fieldKeysLc = new Set();
         fieldKeys.forEach(fieldKey => {
             if (!fieldKeysLc.has(fieldKey.toLowerCase())) {
                 fieldKeysCleaned.push(fieldKey);
@@ -776,7 +776,7 @@ export class QueryModel {
      * Returns the data needed for a <Grid /> component to render.
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    get gridData(): Array<{ [key: string]: any }> {
+    get gridData(): Record<string, any>[] {
         const { selections } = this;
 
         return this.orderedRows.map(value => {

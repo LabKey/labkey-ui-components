@@ -32,13 +32,17 @@ import {
     SOURCE_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
     REPORT_AUDIT_QUERY,
+    ASSAY_RESULT_AUDIT_QUERY,
 } from './constants';
 
 export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
     const queries = [...COMMON_AUDIT_QUERIES];
     if (isProductFoldersEnabled(ctx)) queries.push(CONTAINER_AUDIT_QUERY);
     if (isWorkflowEnabled(ctx)) queries.push(WORKFLOW_AUDIT_QUERY);
-    if (isAssayEnabled(ctx)) queries.push(ASSAY_AUDIT_QUERY);
+    if (isAssayEnabled(ctx)) {
+        queries.push(ASSAY_AUDIT_QUERY);
+        queries.push(ASSAY_RESULT_AUDIT_QUERY);
+    }
     if (isSampleManagerEnabled(ctx) && !isRegistryEnabled(ctx)) queries.push(SOURCE_AUDIT_QUERY);
     if (isRegistryEnabled(ctx)) {
         queries.push(DATACLASS_DATA_UPDATE_AUDIT_QUERY);

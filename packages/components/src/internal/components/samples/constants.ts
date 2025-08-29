@@ -203,6 +203,7 @@ export const SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR = [
 ];
 
 export const SAMPLE_INSERT_EXTRA_COLUMNS = [...AMOUNT_AND_UNITS_COLUMNS, ...SAMPLE_STORAGE_COLUMNS, ALIQUOTED_FROM_COL];
+export const SAMPLE_IMPORT_EXTRA_ALLOWED_COLUMNS = [...SAMPLE_INSERT_EXTRA_COLUMNS, "SampleID", "EnteredStorage", "ExpirationDate"];
 
 // those lookup values are at Home project level, no need to reload on target folder change
 export const SAMPLE_ALL_PROJECT_LOOKUP_FIELDS = ['SampleState', 'Units'];

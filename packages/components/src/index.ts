@@ -565,6 +565,7 @@ import { ItemsLegend } from './internal/components/chart/ItemsLegend';
 import { AuditDetailsModel, TimelineEventModel } from './internal/components/auditlog/models';
 import {
     ASSAY_AUDIT_QUERY,
+    ASSAY_RESULT_AUDIT_QUERY,
     AUDIT_EVENT_TYPE_PARAM,
     CONTAINER_AUDIT_QUERY,
     DATACLASS_DATA_UPDATE_AUDIT_QUERY,
@@ -663,6 +664,7 @@ import {
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_INSERT_EXTRA_COLUMNS,
+    SAMPLE_IMPORT_EXTRA_ALLOWED_COLUMNS,
     SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -1149,6 +1151,7 @@ export {
     areUnitsCompatible,
     arrayEquals,
     ASSAY_AUDIT_QUERY,
+    ASSAY_RESULT_AUDIT_QUERY,
     ASSAY_DESIGNER_ROLE,
     AssayContext,
     AssayContextConsumer,
@@ -1669,6 +1672,7 @@ export {
     SAMPLE_ID_FIELD_KEY,
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_INSERT_EXTRA_COLUMNS,
+    SAMPLE_IMPORT_EXTRA_ALLOWED_COLUMNS,
     SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,

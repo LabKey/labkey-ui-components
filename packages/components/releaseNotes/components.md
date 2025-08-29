@@ -1,10 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.X
-*Released*: X August 2025
+### version 6.58.8
+*Released*: 29 August 2025
 - Issue 53773: Updating a field whose name contains a space via file will silently be ignored if the space is not included in the file
   - Stop aggressively infer column based on removed internal spaces
+
+### version 6.58.7
+*Released*: 29 August 2025
+- Update default audit level
+  - Add `Assay Result Events` audit event type
 
 ### version 6.58.6
 *Released*: 26 August 2025

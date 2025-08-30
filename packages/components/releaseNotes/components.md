@@ -6,6 +6,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 53742: Sample Manager: Unable to perform actions from various pages on sample type with a '/'
   - Update `createQueryModelId` to use encode schema/query
 
+### version 6.59.0
+*Released*: 29 August 2025
+- Support string values for `FileInput` so that values can be round-tripped.
+- Removed unused `QueryInfo.getColumnFieldKeys()`
+- Remove unused `QueryModel.getRow()` property `flattenValues`
+
 ### version 6.58.8
 *Released*: 29 August 2025
 - Issue 53773: Updating a field whose name contains a space via file will silently be ignored if the space is not included in the file

@@ -487,21 +487,6 @@ export class QueryInfo {
         return this.iconURL;
     }
 
-    /**
-     * Get an array of fieldKeys for the column keys provided.
-     * Default to getting all column fieldKeys if no parameter provided
-     * @param keys The column keys to filter by
-     */
-    getColumnFieldKeys(keys?: string[]): string[] {
-        if (this.columns) {
-            return this.columns
-                .filter((col, key) => !keys || keys.indexOf(key) > -1)
-                .valueArray.map(col => col.fieldKey);
-        }
-
-        return [];
-    }
-
     getColumnIndex(fieldKey: string): number {
         if (!fieldKey) return -1;
 

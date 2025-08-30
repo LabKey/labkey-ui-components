@@ -69,27 +69,6 @@ const QUERY_INFO_WITH_ID_VIEW_NAME_ONLY = QueryInfo.fromJsonForTests(
     true
 );
 
-describe('getColumnFieldKeys', () => {
-    test('missing params', () => {
-        const queryInfo = new QueryInfo({});
-
-        expect(JSON.stringify(queryInfo.getColumnFieldKeys(undefined))).toBe('[]');
-        expect(JSON.stringify(queryInfo.getColumnFieldKeys(['test']))).toBe('[]');
-    });
-
-    test('queryInfo with columns', () => {
-        const queryInfo = QueryInfo.fromJsonForTests({
-            columns: [{ fieldKey: 'test1' }, { fieldKey: 'test2' }, { fieldKey: 'test3' }],
-        });
-
-        expect(JSON.stringify(queryInfo.getColumnFieldKeys(undefined))).toBe('["test1","test2","test3"]');
-        expect(JSON.stringify(queryInfo.getColumnFieldKeys(['test0']))).toBe('[]');
-        expect(JSON.stringify(queryInfo.getColumnFieldKeys(['test1']))).toBe('["test1"]');
-        expect(JSON.stringify(queryInfo.getColumnFieldKeys(['test1', 'test2']))).toBe('["test1","test2"]');
-        expect(JSON.stringify(queryInfo.getColumnFieldKeys(['test1', 'test2', 'test4']))).toBe('["test1","test2"]');
-    });
-});
-
 describe('QueryInfo', () => {
     const queryInfo = QueryInfo.fromJsonForTests(sampleSetQueryInfo);
 
@@ -305,7 +284,7 @@ describe('QueryInfo', () => {
         );
 
         test('with disabledSystemFields and addToSystemView fields', () => {
-            let added: Set<string> = new Set();
+            let added = new Set<string>();
             let extras = queryInfoWithAddAndDisabledSystemFields.getExtraDisplayColumns(added, []);
             expect(extras.length).toBe(1);
             expect(extras[0].fieldKey).toBe('test2');

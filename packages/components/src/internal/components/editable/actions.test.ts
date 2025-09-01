@@ -1114,6 +1114,28 @@ describe('insertPastedData', () => {
 });
 
 describe('loadEditorModelData', () => {
+    const ancestorColumn = new QueryColumn({
+        conceptURI: 'http://www.labkey.org/types#ancestorLookup',
+        displayField: 'Ancestors/RegistryAndSources/cells/Name',
+        fieldKey: 'Ancestors/RegistryAndSources/cells',
+        fieldKeyArray: ['Ancestors', 'RegistryAndSources', 'cells'],
+        lookup: {
+            displayColumn: 'Name',
+            displayColumnFieldKey: 'Name',
+            isPublic: true,
+            keyColumn: 'RowId',
+            public: true,
+            queryName: 'Cells',
+            schema: 'exp.data',
+            schemaName: 'exp.data',
+            table: 'Cells',
+        },
+        name: 'Ancestors/RegistryAndSources/cells',
+    });
+
+    // Verify assumption about structure of ancestor column
+    expect(ancestorColumn.isAncestorInput()).toBe(true);
+
     const columns = [
         new QueryColumn({
             fieldKey: 'Name',
@@ -1193,12 +1215,14 @@ describe('loadEditorModelData', () => {
             name: 'aliqAndParent$,./',
             derivationDataScope: 'All',
         }),
+        ancestorColumn,
     ];
 
     const orderedRows = ['2811466', '2805931'];
 
     const rows = {
         '2805931': {
+            'Ancestors/RegistryAndSources/cells': [{ displayValue: 'Cell-1', value: 32433 }],
             'TimeField./,$&': '16:10',
             'IntField./,$&': 333,
             LSID: 'urn:lsid:labkey.com:Sample.Folder-519.24:26',
@@ -1227,6 +1251,7 @@ describe('loadEditorModelData', () => {
             'flagField./,$&': '555',
         },
         '2811466': {
+            'Ancestors/RegistryAndSources/cells': [{ displayValue: '5 values', value: -5 }],
             'TimeField./,$&': '16:20:00.123',
             'IntField./,$&': 3,
             LSID: 'urn:lsid:labkey.com:Sample.Folder-519.24:27',
@@ -1291,6 +1316,8 @@ describe('loadEditorModelData', () => {
             'name&&1': [{ display: 'S-26', raw: 'S-26' }],
             'aliqandparent$d$c$p$s&&0': [{ display: '456', raw: '456' }],
             'aliqandparent$d$c$p$s&&1': [{ display: '888', raw: '888' }],
+            'ancestors/registryandsources/cells&&0': [{ display: '5 values', raw: -5 }],
+            'ancestors/registryandsources/cells&&1': [{ display: 'Cell-1', raw: 32433 }],
             'samplefield$p$s$c$d$a&&0': [{ display: '<2675720>', raw: 2675720 }],
             'samplefield$p$s$c$d$a&&1': [{ display: '10-1-1', raw: 117334 }],
             'intfield$p$s$c$d$a&&0': [{ display: 3, raw: 3 }],

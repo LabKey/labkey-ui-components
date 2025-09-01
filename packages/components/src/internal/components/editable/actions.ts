@@ -316,7 +316,8 @@ async function getLookupValueDescriptors(
 
     // for each lookup column, find the unique values in the rows and query for those values when they look like ids
     const lookupPromises = columns
-        .filter(col => col.isPublicLookup())
+        // Issue 53801: Skip validation of ancestor columns
+        .filter(col => col.isPublicLookup() && !col.isAncestorInput())
         .map(async col => {
             const allValues = new Set<number>();
             const valueFolderMap: Record<string, Set<number>> = {};

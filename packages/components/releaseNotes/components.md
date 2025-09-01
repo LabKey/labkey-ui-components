@@ -11,6 +11,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Update `AuditDetails` to be able to display provided delta amounts
   - Remove StoredAmountRenderer
   - Allow for "Units" column to be filterable in the various samples grids
+  - BulkUpdateForm getUpdatedData() to include both amount and units values when either has been changed
 
 ### version 6.58.8
 *Released*: 29 August 2025

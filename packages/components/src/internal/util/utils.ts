@@ -19,6 +19,7 @@ import { ChangeEvent, CSSProperties } from 'react';
 
 import { hasParameter, toggleParameter } from '../url/ActionURL';
 import { QueryInfo } from '../../public/QueryInfo';
+import {STORED_AMOUNT_FIELDS} from "../components/samples/constants";
 
 // Case-insensitive Object reference. Returns undefined if either object or prop does not resolve.
 // If both casings exist (e.g. 'x' and 'X' are props) then either value may be returned.
@@ -268,6 +269,30 @@ export function getCommonDataValues(data: Map<any, any>, fileFields?: string[]):
     return valueMap.toObject();
 }
 
+function hasAmountOrUnitChanged(updatedValuesMap: Map<string, any>, originalRowMap: Map<string, any>): boolean {
+    // if we have an updated value for amount and it has been changed, return true
+    if (
+        updatedValuesMap.has(STORED_AMOUNT_FIELDS.AMOUNT) &&
+        !isSameWithStringCompare(
+            updatedValuesMap.get(STORED_AMOUNT_FIELDS.AMOUNT),
+            originalRowMap.get(STORED_AMOUNT_FIELDS.AMOUNT).get('value')
+        )
+    ) {
+        return true;
+    }
+    // if we have an updated value for units and it has been changed, return true
+    if (
+        updatedValuesMap.has(STORED_AMOUNT_FIELDS.UNITS) &&
+        !isSameWithStringCompare(
+            updatedValuesMap.get(STORED_AMOUNT_FIELDS.UNITS),
+            originalRowMap.get(STORED_AMOUNT_FIELDS.UNITS).get('value')
+        )
+    ) {
+        return true;
+    }
+    return false;
+}
+
 function isSameWithStringCompare(value1: any, value2: any): boolean {
     if (value1 === value2 || (valueIsEmpty(value1) && valueIsEmpty(value2))) return true;
     if (value1 && value2) {
@@ -323,16 +348,19 @@ export function getUpdatedData(
             }
 
             if (fieldValueMap?.has('value')) {
+                const colValueIsIncluded = updateValuesMap.has(col.fieldKey);
+                const updatedValue = updateValuesMap.get(col.fieldKey) == undefined ? null : updateValuesMap.get(col.fieldKey);
+                const valueIsChanged = !isSameWithStringCompare(updateValuesMap.get(col.fieldKey), fieldValueMap.get('value'));
+                const isStoredAmountField = col.fieldKey === STORED_AMOUNT_FIELDS.AMOUNT || col.fieldKey === STORED_AMOUNT_FIELDS.UNITS;
+
                 if (isPKCol) {
                     return m.set(key, fieldValueMap.get('value'));
-                } else if (
-                    updateValuesMap.has(col.fieldKey) &&
-                    !isSameWithStringCompare(updateValuesMap.get(col.fieldKey), fieldValueMap.get('value'))
-                ) {
-                    return m.set(
-                        key,
-                        updateValuesMap.get(col.fieldKey) == undefined ? null : updateValuesMap.get(col.fieldKey)
-                    );
+                } else if (colValueIsIncluded && valueIsChanged) {
+                    return m.set(key, updatedValue);
+                } else if (colValueIsIncluded && isStoredAmountField) {
+                    // If you update amount or units, the saved row has to include both so include even if the value hasn't changed
+                    if (hasAmountOrUnitChanged(updateValuesMap, originalRowMap)) return m.set(key, updatedValue);
+                    else return m;
                 } else {
                     return m;
                 }

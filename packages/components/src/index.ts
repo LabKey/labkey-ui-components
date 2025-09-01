@@ -672,6 +672,7 @@ import {
     SampleOperation,
     SAMPLES_WITH_TYPES_FILTER,
     SELECTION_KEY_TYPE,
+    STORED_AMOUNT_FIELDS,
     UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
 import { createMockWithRouteLeave } from './internal/mockUtils';
@@ -1764,6 +1765,7 @@ export {
     toggleParameter,
     Tooltip,
     uncapitalizeFirstChar,
+    STORED_AMOUNT_FIELDS,
     UNIQUE_ID_FIND_FIELD,
     UnitModel,
     updateCellKeySampleIdMap,

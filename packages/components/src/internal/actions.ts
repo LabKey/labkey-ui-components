@@ -37,7 +37,6 @@ import {
     VIEW_NOT_FOUND_EXCEPTION_CLASS,
 } from './constants';
 import { DataViewInfo } from './DataViewInfo';
-import { getQueryParams } from './util/URL';
 
 import { handleRequestFailure } from './request';
 import { resolveErrorMessage } from './util/messaging';

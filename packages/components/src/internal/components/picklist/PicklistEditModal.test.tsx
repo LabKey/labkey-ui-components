@@ -1,9 +1,5 @@
 import React from 'react';
 
-import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
-
-import { SchemaQuery } from '../../../public/SchemaQuery';
-
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';

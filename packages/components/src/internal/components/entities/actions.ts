@@ -1,7 +1,7 @@
 import { ActionURL, Ajax, Filter, getServerContext, PermissionTypes, Query, Security, Utils } from '@labkey/api';
 import { List, Map, OrderedMap } from 'immutable';
 
-import { getSelected, getSelectedDataDeprecated, setSnapshotSelections } from '../../actions';
+import { getSelected, getSelectedDataDeprecated } from '../../actions';
 
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -257,12 +257,6 @@ async function getSelectedParents(
     }
 
     return resolveEntityParentTypeFromIds(schemaQuery, response, isAliquotParent, orderedRowIds);
-}
-
-export async function getSelectedItemSamples(selectedItemIds: string[]): Promise<number[]> {
-    const { queryName, schemaName } = SCHEMAS.INVENTORY.ITEMS;
-    const { data } = await getSelectedDataDeprecated(schemaName, queryName, selectedItemIds, 'RowId, MaterialId');
-    return data.map(row => row.getIn(['MaterialId', 'value'])).toArray();
 }
 
 function resolveSampleParentTypes(
@@ -752,6 +746,7 @@ export function getDataOperationConfirmationData(
     );
 }
 
+// TODO: I believe we can drop the dataRegionSelectionKey arg and make rowIds required.
 export function getCrossFolderSelectionResult(
     dataRegionSelectionKey: string,
     dataType: string, // 'samples' | 'exp.data' | 'assay',

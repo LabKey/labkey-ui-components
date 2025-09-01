@@ -13,7 +13,7 @@ type PicklistSelectionState = LoadableState<number[]>;
  * @param sampleFieldKey the sampleFieldKey if the selectedRowIds aren't sample rowIds
  * @param schemaQuery the schemaQuery needed to fetch the SampleIds, required if you pass sampleFieldKey.
  */
-export function useSampleSelections(
+export function usePicklistSampleSelections(
     selectedRowIds: number[] | string[] | undefined,
     sampleFieldKey: string | undefined,
     schemaQuery: SchemaQuery | undefined

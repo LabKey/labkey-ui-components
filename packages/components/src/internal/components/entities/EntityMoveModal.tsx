@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 'react';
 import { AuditBehaviorTypes } from '@labkey/api';
 
 import { Progress } from '../base/Progress';
@@ -220,7 +220,7 @@ export const getMoveConfirmationProperties = (
     confirmationData: OperationConfirmationData,
     nounSingular: string,
     nounPlural: string
-): { canMove: boolean; message: any; title: string } => {
+): { canMove: boolean; message: ReactNode; title: string } => {
     if (!confirmationData) return undefined;
 
     const capNounSingular = capitalizeFirstChar(nounSingular);

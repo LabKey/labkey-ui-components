@@ -14,7 +14,7 @@ import { Picklist } from './models';
 import { createPicklist, updatePicklist } from './actions';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { useSampleSelections } from './usePIcklistSelections';
+import { usePicklistSampleSelections } from './usePicklistSampleSelections';
 import { isLoading } from '../../../public/LoadingState';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -190,7 +190,7 @@ export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
         showNotification,
     } = props;
 
-    const { error, loadingState, value: sampleIds } = useSampleSelections(selectedRowIds, sampleFieldKey, schemaQuery);
+    const { error, loadingState, value: sampleIds } = usePicklistSampleSelections(selectedRowIds, sampleFieldKey, schemaQuery);
     const loading = isLoading(loadingState);
 
     if (loading || error !== undefined) {

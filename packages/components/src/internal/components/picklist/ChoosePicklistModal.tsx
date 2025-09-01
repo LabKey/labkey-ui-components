@@ -24,7 +24,7 @@ import { PICKLIST_KEY } from '../../app/constants';
 
 import { addSamplesToPicklist, getPicklistsForInsert, SampleTypeCount } from './actions';
 import { Picklist } from './models';
-import { useSampleSelections } from './usePIcklistSelections';
+import { usePicklistSampleSelections } from './usePicklistSampleSelections';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { useLoadableState } from '../../useLoadableState';
 
@@ -411,7 +411,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
         error: sampleIdsError,
         loadingState: sampleIdsLoadingState,
         value: sampleIds,
-    } = useSampleSelections(selectedRowIds, sampleFieldKey, schemaQuery);
+    } = usePicklistSampleSelections(selectedRowIds, sampleFieldKey, schemaQuery);
     const {
         error: picklistError,
         loadingState: picklistLoadingState,

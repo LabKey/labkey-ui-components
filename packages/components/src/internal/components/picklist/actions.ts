@@ -1,4 +1,4 @@
-import { Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
+import { Domain, Filter, Query } from '@labkey/api';
 
 import { List } from 'immutable';
 
@@ -22,23 +22,18 @@ import { getOrderedSelectedMappedKeys } from '../entities/actions';
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 import { executeSql } from '../../query/executeSql';
-import { getSelectedRows, Row, selectRows } from '../../query/selectRows';
+import { getSelectedRows, selectRows } from '../../query/selectRows';
 import { request } from '../../request';
 
 export async function getPicklistsForInsert(): Promise<Picklist[]> {
-    try {
-        const { rows } = await selectRows({
-            containerFilter: isProductFoldersEnabled() ? Query.ContainerFilter.current : undefined,
-            schemaQuery: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS,
-            sort: 'Name',
-            filterArray: [Filter.create('Category', null, Filter.Types.NONBLANK)],
-        });
+    const { rows } = await selectRows({
+        containerFilter: isProductFoldersEnabled() ? Query.ContainerFilter.current : undefined,
+        schemaQuery: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS,
+        sort: 'Name',
+        filterArray: [Filter.create('Category', null, Filter.Types.NONBLANK)],
+    });
 
-        return rows.map(row => Picklist.create(row));
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
+    return rows.map(row => Picklist.create(row));
 }
 
 export function createPicklist(
@@ -195,28 +190,23 @@ export async function getSelectedPicklistSamples(
     queryParameters?: Record<string, any>,
     viewName?: string
 ): Promise<number[]> {
-    try {
-        const result = await getOrderedSelectedMappedKeys(
-            PICKLIST_KEY_COLUMN,
-            PICKLIST_SAMPLE_ID_COLUMN,
-            SCHEMAS.PICKLIST_TABLES.SCHEMA,
-            picklistName,
-            selectedIds,
-            sorts,
-            queryParameters,
-            viewName
-        );
+    const result = await getOrderedSelectedMappedKeys(
+        PICKLIST_KEY_COLUMN,
+        PICKLIST_SAMPLE_ID_COLUMN,
+        SCHEMAS.PICKLIST_TABLES.SCHEMA,
+        picklistName,
+        selectedIds,
+        sorts,
+        queryParameters,
+        viewName
+    );
 
-        if (saveSnapshot) {
-            const rowIds = result.mapFromValues;
-            setSnapshotSelections(selectionKey, rowIds);
-        }
-
-        return result.mapToValues;
-    } catch (error) {
-        console.error(error);
-        throw error;
+    if (saveSnapshot) {
+        const rowIds = result.mapFromValues;
+        setSnapshotSelections(selectionKey, rowIds);
     }
+
+    return result.mapToValues;
 }
 
 export async function getSamplesNotInList(listName: string, sampleIds: number[]): Promise<number[]> {
@@ -227,7 +217,7 @@ export async function getSamplesNotInList(listName: string, sampleIds: number[])
 export async function addSamplesToPicklist(listName: string, sampleIds: number[]): Promise<QueryCommandResponse> {
     const sampleIdsToAdd = await getSamplesNotInList(listName, sampleIds);
     const rows = List(sampleIdsToAdd.map(id => ({ SampleId: id })));
-    const schemaQuery = new SchemaQuery('lists', listName);
+    const schemaQuery = new SchemaQuery(SCHEMAS.PICKLIST_TABLES.SCHEMA, listName);
 
     if (rows.size > 0) {
         return await insertRows({ schemaQuery, rows });
@@ -249,21 +239,14 @@ export interface PicklistDeletionData {
 }
 
 export async function getPicklistDeleteData(model: QueryModel, user: User): Promise<PicklistDeletionData> {
-    let rows: Row[];
-    try {
-        const result = await getSelectedRows({
-            columns: ['Name', 'listId', 'category', 'createdBy'],
-            keyColumn: 'listId',
-            schemaQuery: model.schemaQuery,
-            selections: model.selections,
-        });
-        rows = result.rows;
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
+    const result = await getSelectedRows({
+        columns: ['Name', 'listId', 'category', 'createdBy'],
+        keyColumn: 'listId',
+        schemaQuery: model.schemaQuery,
+        selections: model.selections,
+    });
 
-    return rows.reduce(
+    return result.rows.reduce(
         (result, row) => {
             const picklist = Picklist.create(row);
             if (picklist.isDeletable(user)) {

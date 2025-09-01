@@ -348,14 +348,15 @@ export function getUpdatedData(
             }
 
             if (fieldValueMap?.has('value')) {
+                if (isPKCol) {
+                    return m.set(key, fieldValueMap.get('value'));
+                }
+
                 const colValueIsIncluded = updateValuesMap.has(col.fieldKey);
                 const updatedValue = updateValuesMap.get(col.fieldKey) == undefined ? null : updateValuesMap.get(col.fieldKey);
                 const valueIsChanged = !isSameWithStringCompare(updateValuesMap.get(col.fieldKey), fieldValueMap.get('value'));
                 const isStoredAmountField = col.fieldKey === STORED_AMOUNT_FIELDS.AMOUNT || col.fieldKey === STORED_AMOUNT_FIELDS.UNITS;
-
-                if (isPKCol) {
-                    return m.set(key, fieldValueMap.get('value'));
-                } else if (colValueIsIncluded && valueIsChanged) {
+                if (colValueIsIncluded && valueIsChanged) {
                     return m.set(key, updatedValue);
                 } else if (colValueIsIncluded && isStoredAmountField) {
                     // If you update amount or units, the saved row has to include both so include even if the value hasn't changed

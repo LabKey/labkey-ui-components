@@ -46,7 +46,6 @@ import {
 
 export interface EntityAPIWrapper {
     getCrossFolderSelectionResult: (
-        dataRegionSelectionKey: string,
         dataType: string, // 'samples' | 'exp.data' | 'assay',
         rowIds?: string[] | number[],
         picklistName?: string

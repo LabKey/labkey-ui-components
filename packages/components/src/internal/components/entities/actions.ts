@@ -746,27 +746,18 @@ export function getDataOperationConfirmationData(
     );
 }
 
-// TODO: I believe we can drop the dataRegionSelectionKey arg and make rowIds required.
 export function getCrossFolderSelectionResult(
-    dataRegionSelectionKey: string,
     dataType: string, // 'samples' | 'exp.data' | 'assay',
-    rowIds?: number[] | string[],
+    rowIds: number[] | string[],
     picklistName?: string
 ): Promise<CrossFolderSelectionResult> {
-    if (!dataRegionSelectionKey && !rowIds?.length) {
-        return Promise.resolve(undefined);
-    }
+    if (!rowIds?.length) return Promise.resolve(undefined);
 
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: ActionURL.buildURL('experiment', 'getCrossFolderDataSelection.api'),
             method: 'POST',
-            jsonData: {
-                dataRegionSelectionKey,
-                rowIds,
-                dataType,
-                picklistName,
-            },
+            jsonData: { rowIds, dataType, picklistName },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
                     resolve({

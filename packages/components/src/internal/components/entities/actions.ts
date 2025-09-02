@@ -750,7 +750,7 @@ export function getCrossFolderSelectionResult(
     dataType: string, // 'samples' | 'exp.data' | 'assay',
     rowIds: number[] | string[],
     picklistName?: string
-): Promise<CrossFolderSelectionResult> {
+): Promise<CrossFolderSelectionResult | undefined> {
     if (!rowIds?.length) return Promise.resolve(undefined);
 
     return new Promise((resolve, reject) => {

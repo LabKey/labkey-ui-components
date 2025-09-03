@@ -15,6 +15,7 @@ import { ViewInfo } from '../../internal/ViewInfo';
 import { getQueryParams } from '../../internal/util/URL';
 
 import {
+    createQueryModelId,
     DEFAULT_MAX_ROWS,
     DEFAULT_OFFSET,
     flattenValuesFromRow,
@@ -56,7 +57,7 @@ describe('QueryModel', () => {
         expect(model.queryName).toEqual('mixtures');
         expect(model.viewName).toEqual(undefined);
         // Auto-generated model ids are based off of the SchemaQuery in the QueryConfig
-        expect(model.id).toEqual('exp.data.mixtures');
+        expect(model.id).toEqual('exp$Pdata.mixtures');
         const schemaQuery = new SchemaQuery('exp.data', 'mixtures', 'someViewName');
         model = new QueryModel({ schemaQuery });
         expect(model.viewName).toEqual('someViewName');
@@ -313,6 +314,16 @@ describe('QueryModel', () => {
 
         expect(model.detailFilters).toHaveLength(1);
         expect(model.detailFilters[0].getColumnName()).toBe('replaced');
+    });
+});
+
+describe('createQueryModelId', () => {
+    test('with/without special characters in schema/query', () => {
+        expect(createQueryModelId(new SchemaQuery("samples", "Blood"))).toBe('samples.Blood');
+        expect(createQueryModelId(new SchemaQuery("exp.data", "participant"))).toBe('exp$Pdata.participant');
+        expect(createQueryModelId(new SchemaQuery("samples", "Blood Plasma"))).toBe('samples.Blood Plasma');
+        expect(createQueryModelId(new SchemaQuery("samples", "Blood/Plasma"))).toBe('samples.Blood$SPlasma');
+        expect(createQueryModelId(new SchemaQuery("exp.data", "Blood/Plasma"))).toBe('exp$Pdata.Blood$SPlasma');
     });
 });
 

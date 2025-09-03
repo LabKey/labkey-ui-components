@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.60.0
+*Released*: 3 September 2025
+- Issue 53801: Filter out columns for validation where `isAncestorInput()` is true
+
 ### version 6.59.0
 *Released*: 29 August 2025
 - Support string values for `FileInput` so that values can be round-tripped.

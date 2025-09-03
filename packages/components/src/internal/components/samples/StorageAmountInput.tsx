@@ -80,9 +80,7 @@ export const StorageAmountInput: FC<Props> = memo(props => {
             const preferredUnitText = model.as(preferredUnit).toString();
             preferredUnitMessage = (
                 <div>
-                    <span className="storage-item-check-in-preferred-display">
-                        {preferredUnitText} equivalent (preferred)
-                    </span>
+                    <span className="storage-item-check-in-preferred-display">Displayed as {preferredUnitText}</span>
                 </div>
             );
         }

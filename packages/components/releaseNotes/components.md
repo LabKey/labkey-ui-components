@@ -12,6 +12,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Remove StoredAmountRenderer
   - Allow for "Units" column to be filterable in the various samples grids
   - BulkUpdateForm getUpdatedData() to include both amount and units values when either has been changed
+  - `SampleAmountInput` update preferred unit message
 
 ### version 6.59.0
 *Released*: 29 August 2025

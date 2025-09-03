@@ -13,6 +13,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Allow for "Units" column to be filterable in the various samples grids
   - BulkUpdateForm getUpdatedData() to include both amount and units values when either has been changed
   - `SampleAmountInput` update preferred unit message
+  - `SampleAmountEditModal` updated so all users go through `updateSampleStorageData`
 
 ### version 6.59.0
 *Released*: 29 August 2025

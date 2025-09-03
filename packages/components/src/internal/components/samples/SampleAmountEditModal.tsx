@@ -71,32 +71,14 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
         if (!isValuePrecisionValid(amount, precision)) {
             return Promise.reject(AMOUNT_PRECISION_ERROR_TEXT);
         }
-
-        // users that can update samples use regular updateRows, but users with storage editor permission use a special controller action
-        if (user.canUpdate) {
-            return api.query.updateRows({
-                schemaQuery,
-                rows: [
-                    {
-                        rowId: rowId?.value,
-                        [STORED_AMOUNT_FIELDS.AMOUNT]: amount,
-                        [STORED_AMOUNT_FIELDS.UNITS]: storageUnits,
-                    },
-                ],
-                [STORED_AMOUNT_FIELDS.AUDIT_COMMENT]: comment,
-                containerPath: sampleContainer,
-                auditBehavior: AuditBehaviorTypes.DETAILED,
-            });
-        } else {
-            const sampleData = [
-                {
-                    materialId: rowId?.value,
-                    [STORED_AMOUNT_FIELDS.AMOUNT]: amount,
-                    [STORED_AMOUNT_FIELDS.UNITS]: storageUnits,
-                },
-            ];
-            return updateSampleStorageData(sampleData, sampleContainer, comment);
-        }
+        const sampleData = [
+            {
+                materialId: rowId?.value,
+                [STORED_AMOUNT_FIELDS.AMOUNT]: amount,
+                [STORED_AMOUNT_FIELDS.UNITS]: storageUnits,
+            },
+        ];
+        return updateSampleStorageData(sampleData, sampleContainer, comment);
     };
 
     const onSubmit = useCallback(async () => {
@@ -113,7 +95,7 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
             onClose();
         } catch (e) {
             setSubmitting(false);
-            setError(e.exception);
+            setError(e);
         }
     }, [amount, storageUnits, handleUpdateSampleRow, updateListener, onClose]);
 

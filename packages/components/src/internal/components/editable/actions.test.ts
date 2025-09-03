@@ -17,6 +17,7 @@ import {
     addColumns,
     changeColumn,
     detectPadLength,
+    generateColumnFillValues,
     loadEditorModelData,
     parseIntIfNumber,
     parsePastedLookup,
@@ -24,7 +25,6 @@ import {
     removeColumns,
     splitPrefixedNumber,
     validateAndInsertPastedData,
-    generateColumnFillValues,
 } from './actions';
 import { CellMessage, EditorModel, ValueDescriptor } from './models';
 import { genCellKey } from './utils';

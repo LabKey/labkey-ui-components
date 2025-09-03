@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.X
-*Released*: X 2025
+### version 6.60.1
+*Released*: 3 September 2025
 - Issue 53742: Sample Manager: Unable to perform actions from various pages on sample type with a '/'
   - Update `createQueryModelId` to use encode schema/query
 

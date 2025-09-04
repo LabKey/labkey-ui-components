@@ -14,6 +14,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - BulkUpdateForm getUpdatedData() to include both amount and units values when either has been changed
   - `SampleAmountInput` update preferred unit message
   - `SampleAmountEditModal` updated so all users go through `updateSampleStorageData`
+  - Mark `RawAmount` and `RawUnits` as ignored system fields
 
 ### version 6.60.0
 *Released*: 3 September 2025

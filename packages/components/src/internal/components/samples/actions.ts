@@ -17,9 +17,9 @@ import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Domain, Experiment, Filter, Query, Utils } from '@labkey/api';
 
 import { IEntityTypeDetails } from '../entities/models';
-import { deleteEntityType, getSelectedItemSamples } from '../entities/actions';
+import { deleteEntityType } from '../entities/actions';
 
-import { getSelectedDataDeprecated, getSelection, getSnapshotSelections } from '../../actions';
+import { getSelectedDataDeprecated } from '../../actions';
 
 import { caseInsensitive } from '../../util/utils';
 import { request } from '../../request';
@@ -43,7 +43,6 @@ import {
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { DomainDetails } from '../domainproperties/models';
 import { QueryColumn } from '../../../public/QueryColumn';
-import { getSelectedPicklistSamples } from '../picklist/actions';
 import { resolveErrorMessage } from '../../util/messaging';
 import { TimelineEventModel } from '../auditlog/models';
 
@@ -52,10 +51,9 @@ import { Row, selectRows } from '../../query/selectRows';
 import { QueryInfo } from '../../../public/QueryInfo';
 
 import {
-    AMOUNT_AND_UNITS_COLUMNS_LC,
+    ALL_AMOUNT_AND_UNITS_COLUMNS_LC,
     SAMPLE_STORAGE_COLUMNS_LC,
-    SELECTION_KEY_TYPE,
-    STORED_AMOUNT_FIELDS,
+    STORED_AMOUNT_FIELDS
 } from './constants';
 import { FindField, GroupedSampleFields, SampleState, SampleStateType } from './models';
 import { executeSql, ExecuteSqlResponseWithSession } from '../../query/executeSql';
@@ -251,7 +249,7 @@ export function getGroupedSampleDisplayColumns(
         if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(lcFieldKey) > -1) {
             return;
         }
-        if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(lcFieldKey) > -1 && canBeInStorage) {
+        if (ALL_AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(lcFieldKey) > -1 && canBeInStorage) {
             return;
         }
         if (isAliquot) {
@@ -278,7 +276,7 @@ export function getGroupedSampleDisplayColumns(
         if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(lcFieldKey) > -1) {
             return;
         }
-        if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(lcFieldKey) > -1 && canBeInStorage) {
+        if (ALL_AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(lcFieldKey) > -1 && canBeInStorage) {
             return;
         }
         if (sampleTypeDomainFields.independentFields.indexOf(lcFieldKey) > -1) {

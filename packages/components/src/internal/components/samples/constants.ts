@@ -169,7 +169,9 @@ const STATUS_COL = 'Status';
 
 export const AMOUNT_AND_UNITS_COLUMNS = ['StoredAmount', 'Units'];
 
-export const AMOUNT_AND_UNITS_COLUMNS_LC = AMOUNT_AND_UNITS_COLUMNS.map(col => col.toLowerCase());
+export const ALL_AMOUNT_AND_UNITS_COLUMNS_LC = [...AMOUNT_AND_UNITS_COLUMNS, 'RawAmount', 'RawUnits'].map(col =>
+    col.toLowerCase()
+);
 
 export const SAMPLE_STORAGE_COLUMNS = [
     'StorageLocation',
@@ -178,8 +180,6 @@ export const SAMPLE_STORAGE_COLUMNS = [
     'StorageCol',
     'StorageUnit',
     'StorageUnitLabel',
-    'RawAmount',
-    'RawUnits',
     'FreezeThawCount',
     'EnteredStorage',
     'CheckedOut',
@@ -202,8 +202,17 @@ export const SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR = [
     'StorageLocation',
 ];
 
-export const SAMPLE_INSERT_EXTRA_COLUMNS = [...AMOUNT_AND_UNITS_COLUMNS, ...SAMPLE_STORAGE_COLUMNS, ALIQUOTED_FROM_COL];
-export const SAMPLE_IMPORT_EXTRA_ALLOWED_COLUMNS = [...SAMPLE_INSERT_EXTRA_COLUMNS, "SampleID", "EnteredStorage", "ExpirationDate"];
+export const SAMPLE_INSERT_EXTRA_COLUMNS = [
+    ...AMOUNT_AND_UNITS_COLUMNS,
+    ...SAMPLE_STORAGE_COLUMNS,
+    ALIQUOTED_FROM_COL,
+];
+export const SAMPLE_IMPORT_EXTRA_ALLOWED_COLUMNS = [
+    ...SAMPLE_INSERT_EXTRA_COLUMNS,
+    'SampleID',
+    'EnteredStorage',
+    'ExpirationDate',
+];
 
 // those lookup values are at Home project level, no need to reload on target folder change
 export const SAMPLE_ALL_PROJECT_LOOKUP_FIELDS = ['SampleState', 'Units'];

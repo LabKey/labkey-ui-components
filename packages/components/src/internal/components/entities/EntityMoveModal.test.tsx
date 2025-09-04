@@ -76,7 +76,7 @@ describe('EntityMoveModal', () => {
         });
 
         expect(document.querySelector('.modal-body')).toHaveTextContent(
-            "The sample you've selected cannot be moved because it has a status that prevents moving or you lack the proper permissions."
+            'Cannot move the selected sample, it has a status that prevents moving.'
         );
     });
 
@@ -84,13 +84,14 @@ describe('EntityMoveModal', () => {
         confirmationData: OperationConfirmationData;
         nounPlural: string;
         nounSingular: string;
+        selectedCount: number;
     }
 
     // This component is necessary because getMoveConfirmationProperties renders a HelpLink, which uses useServerContext
     // so we need to be able to render something with renderWithAppContext
     const TestMoveConfirmationProperties: FC<TestMoveConfirmationPropertiesProps> = props => {
-        const { confirmationData, nounPlural, nounSingular } = props;
-        const moveProps = getMoveConfirmationProperties(confirmationData, nounSingular, nounPlural);
+        const { confirmationData, nounPlural, nounSingular, selectedCount } = props;
+        const moveProps = getMoveConfirmationProperties(confirmationData, nounSingular, nounPlural, selectedCount);
 
         if (moveProps === undefined) return <div id="empty-result" />;
 
@@ -113,6 +114,7 @@ describe('EntityMoveModal', () => {
                     confirmationData={undefined}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
+                    selectedCount={1}
                 />
             );
             expect(document.querySelector('#empty-result')).toBeInTheDocument();
@@ -132,6 +134,7 @@ describe('EntityMoveModal', () => {
                     confirmationData={confirmationData}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
+                    selectedCount={0}
                 />
             );
             expect(document.querySelector('#canMove')).toHaveTextContent('false');
@@ -150,6 +153,7 @@ describe('EntityMoveModal', () => {
                     confirmationData={confirmationData}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
+                    selectedCount={1}
                 />
             );
             expect(document.querySelector('#canMove')).toHaveTextContent('true');
@@ -168,6 +172,7 @@ describe('EntityMoveModal', () => {
                     confirmationData={confirmationData}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
+                    selectedCount={2}
                 />
             );
             expect(document.querySelector('#canMove')).toHaveTextContent('true');
@@ -186,13 +191,14 @@ describe('EntityMoveModal', () => {
                     confirmationData={confirmationData}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
+                    selectedCount={1}
                 />
             );
             expect(document.querySelector('#canMove')).toHaveTextContent('false');
             expect(document.querySelector('#title')).toHaveTextContent('Cannot Move Sample');
 
             expect(document.querySelector('#message')).toHaveTextContent(
-                "The sample you've selected cannot be moved because it has a status that prevents moving or you lack the proper permissions."
+                'Cannot move the selected sample, it has a status that prevents moving.'
             );
             expect(document.querySelector('.alert')).not.toBeInTheDocument();
         });
@@ -208,6 +214,7 @@ describe('EntityMoveModal', () => {
                     confirmationData={confirmationData}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
+                    selectedCount={2}
                 />
             );
             expect(document.querySelector('#canMove')).toHaveTextContent('false');
@@ -215,7 +222,7 @@ describe('EntityMoveModal', () => {
 
             expect(document.querySelector('.alert')).toBeNull();
             expect(document.querySelector('#message')).toHaveTextContent(
-                "Neither of the 2 samples you've selected can be moved because they have a status that prevents moving or you lack the proper permissions."
+                'Cannot move the selected samples, they have a status that prevents moving.'
             );
         });
 
@@ -230,13 +237,14 @@ describe('EntityMoveModal', () => {
                     confirmationData={confirmationData}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
+                    selectedCount={2}
                 />
             );
 
             expect(document.querySelector('#canMove')).toHaveTextContent('true');
             expect(document.querySelector('#title')).toHaveTextContent('Move 1 Sample');
             expect(document.querySelector('.alert')).toHaveTextContent(
-                "You've selected 2 samples but only 1 can be moved. 1 sample cannot be moved because it has status that prevents moving."
+                "You've selected 2 samples but only 1 can be moved. 1 sample cannot be moved because it has a status that prevents moving."
             );
         });
 
@@ -251,6 +259,7 @@ describe('EntityMoveModal', () => {
                     confirmationData={confirmationData}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
+                    selectedCount={4}
                 />
             );
 
@@ -258,7 +267,7 @@ describe('EntityMoveModal', () => {
             expect(document.querySelector('#title')).toHaveTextContent('Move 2 Samples');
 
             expect(document.querySelector('.alert')).toHaveTextContent(
-                "You've selected 4 samples but only 2 can be moved. 2 samples cannot be moved because they have status that prevents moving."
+                "You've selected 4 samples but only 2 can be moved. 2 samples cannot be moved because they have a status that prevents moving."
             );
         });
 
@@ -273,13 +282,14 @@ describe('EntityMoveModal', () => {
                     confirmationData={confirmationData}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
+                    selectedCount={4}
                 />
             );
 
             expect(document.querySelector('#canMove')).toHaveTextContent('true');
             expect(document.querySelector('#title')).toHaveTextContent('Move 2 Samples');
             expect(document.querySelector('.alert')).toHaveTextContent(
-                "You've selected 4 samples but only 2 can be moved. 2 samples cannot be moved because they have status that prevents moving. Selection includes 1 sample that you do not have permission to move."
+                "You've selected 4 samples but only 2 can be moved. 2 samples cannot be moved because you lack the proper permissions, or they have a status that prevents moving."
             );
         });
 
@@ -294,13 +304,14 @@ describe('EntityMoveModal', () => {
                     confirmationData={confirmationData}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
+                    selectedCount={3}
                 />
             );
 
             expect(document.querySelector('#canMove')).toHaveTextContent('true');
             expect(document.querySelector('#title')).toHaveTextContent('Move 2 Samples');
             expect(document.querySelector('.alert')).toHaveTextContent(
-                "You've selected 3 samples but only 2 can be moved. Selection includes 1 sample that you do not have permission to move."
+                "You've selected 3 samples but only 2 can be moved. 1 sample cannot be moved because you lack the proper permissions."
             );
         });
 
@@ -316,6 +327,7 @@ describe('EntityMoveModal', () => {
                     confirmationData={confirmationData}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
+                    selectedCount={5}
                 />
             );
 
@@ -323,7 +335,7 @@ describe('EntityMoveModal', () => {
             expect(document.querySelector('#title')).toHaveTextContent('Move 2 Samples');
 
             expect(document.querySelector('.alert')).toHaveTextContent(
-                "You've selected 5 samples but only 2 can be moved. 2 samples cannot be moved because they have status that prevents moving. Selection includes 2 samples that you do not have permission to move."
+                "You've selected 5 samples but only 2 can be moved. 3 samples cannot be moved because you lack the proper permissions, or they have a status that prevents moving."
             );
         });
 
@@ -339,6 +351,7 @@ describe('EntityMoveModal', () => {
                     confirmationData={confirmationData}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
+                    selectedCount={3}
                 />
             );
 
@@ -346,7 +359,127 @@ describe('EntityMoveModal', () => {
             expect(document.querySelector('#title')).toHaveTextContent('No Samples Can Be Moved');
             expect(document.querySelector('.alert')).not.toBeInTheDocument();
             expect(document.querySelector('#message')).toHaveTextContent(
-                "You don't have the required permission to move the selected samples."
+                'Cannot move the selected samples, you lack the proper permissions, or they have a status that prevents moving.'
+            );
+        });
+
+        test('some allowed, some deleted', () => {
+            const confirmationData = new OperationConfirmationData({
+                allowed: [{ rowId: 1 }, { rowId: 3 }],
+                notAllowed: [],
+                notPermitted: [],
+            });
+
+            renderWithAppContext(
+                <TestMoveConfirmationProperties
+                    confirmationData={confirmationData}
+                    nounPlural={nounPlural}
+                    nounSingular={nounSingular}
+                    selectedCount={3}
+                />
+            );
+
+            expect(document.querySelector('#canMove')).toHaveTextContent('true');
+            expect(document.querySelector('#title')).toHaveTextContent('Move 2 Samples');
+            expect(document.querySelector('.alert')).toBeInTheDocument();
+            expect(document.querySelector('#message')).toHaveTextContent(
+                "You've selected 3 samples but only 2 can be moved. 1 sample cannot be moved because it may have been deleted."
+            );
+        });
+
+        test('some allowed, some deleted, some not allowed', () => {
+            const confirmationData = new OperationConfirmationData({
+                allowed: [{ rowId: 1 }],
+                notAllowed: [{ rowId: 3 }],
+                notPermitted: [],
+            });
+
+            renderWithAppContext(
+                <TestMoveConfirmationProperties
+                    confirmationData={confirmationData}
+                    nounPlural={nounPlural}
+                    nounSingular={nounSingular}
+                    selectedCount={3}
+                />
+            );
+
+            expect(document.querySelector('#canMove')).toHaveTextContent('true');
+            expect(document.querySelector('#title')).toHaveTextContent('Move 1 Sample');
+            expect(document.querySelector('.alert')).toBeInTheDocument();
+            expect(document.querySelector('#message')).toHaveTextContent(
+                "You've selected 3 samples but only 1 can be moved. 2 samples cannot be moved because they have a status that prevents moving, or they may have been deleted."
+            );
+        });
+
+        test('some allowed, some deleted, some not permitted', () => {
+            const confirmationData = new OperationConfirmationData({
+                allowed: [{ rowId: 1 }, { rowId: 3 }],
+                notAllowed: [],
+                notPermitted: [{ rowId: 3 }],
+            });
+
+            renderWithAppContext(
+                <TestMoveConfirmationProperties
+                    confirmationData={confirmationData}
+                    nounPlural={nounPlural}
+                    nounSingular={nounSingular}
+                    selectedCount={3}
+                />
+            );
+
+            expect(document.querySelector('#canMove')).toHaveTextContent('true');
+            expect(document.querySelector('#title')).toHaveTextContent('Move 1 Sample');
+            expect(document.querySelector('.alert')).toBeInTheDocument();
+            expect(document.querySelector('#message')).toHaveTextContent(
+                "You've selected 3 samples but only 1 can be moved. 2 samples cannot be moved because you lack the proper permissions, or they may have been deleted."
+            );
+        });
+
+        test('some allowed, some deleted, some not allowed, some not permitted', () => {
+            const confirmationData = new OperationConfirmationData({
+                allowed: [{ rowId: 1 }, { rowId: 4 }],
+                notAllowed: [{ rowId: 3 }],
+                notPermitted: [{ rowId: 4 }],
+            });
+
+            renderWithAppContext(
+                <TestMoveConfirmationProperties
+                    confirmationData={confirmationData}
+                    nounPlural={nounPlural}
+                    nounSingular={nounSingular}
+                    selectedCount={4}
+                />
+            );
+
+            expect(document.querySelector('#canMove')).toHaveTextContent('true');
+            expect(document.querySelector('#title')).toHaveTextContent('Move 1 Sample');
+            expect(document.querySelector('.alert')).toBeInTheDocument();
+            expect(document.querySelector('#message')).toHaveTextContent(
+                "You've selected 4 samples but only 1 can be moved. 3 samples cannot be moved because you lack the proper permissions, they have a status that prevents moving, or they may have been deleted."
+            );
+        });
+
+        test('all deleted', () => {
+            const confirmationData = new OperationConfirmationData({
+                allowed: [],
+                notAllowed: [],
+                notPermitted: [],
+            });
+
+            renderWithAppContext(
+                <TestMoveConfirmationProperties
+                    confirmationData={confirmationData}
+                    nounPlural={nounPlural}
+                    nounSingular={nounSingular}
+                    selectedCount={3}
+                />
+            );
+
+            expect(document.querySelector('#canMove')).toHaveTextContent('false');
+            expect(document.querySelector('#title')).toHaveTextContent('No Samples Can Be Moved');
+            expect(document.querySelector('.alert')).not.toBeInTheDocument();
+            expect(document.querySelector('#message')).toHaveTextContent(
+                'Cannot move the selected samples, they may have been deleted.'
             );
         });
     });

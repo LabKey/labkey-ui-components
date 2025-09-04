@@ -7,7 +7,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { Container } from '../base/models/Container';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
-import { capitalizeFirstChar } from '../../util/utils';
+import { capitalizeFirstChar, makeCommaSeparatedString } from '../../util/utils';
 import { HelpLink, MOVE_SAMPLES_TOPIC } from '../../util/helpLinks';
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { AppURL } from '../../url/AppURL';
@@ -173,7 +173,8 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
     const { canMove, message, title } = getMoveConfirmationProperties(
         confirmationData,
         entityDataType.nounSingular,
-        entityDataType.nounPlural
+        entityDataType.nounPlural,
+        rowIds.length
     );
 
     if (!canMove) {
@@ -212,58 +213,55 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
 });
 EntityMoveModal.displayName = 'EntityMoveModal';
 
-const dependencyText = 'status that prevents moving';
-const dependencyPermissionText = `${dependencyText} or you lack the proper permissions.`;
-
 // exported for jest testing
 export const getMoveConfirmationProperties = (
     confirmationData: OperationConfirmationData,
     nounSingular: string,
-    nounPlural: string
+    nounPlural: string,
+    selectedCount: number
 ): { canMove: boolean; message: ReactNode; title: string } => {
     if (!confirmationData) return undefined;
 
     const capNounSingular = capitalizeFirstChar(nounSingular);
     const capNounPlural = capitalizeFirstChar(nounPlural);
     const numCanMove = confirmationData.totalActionable;
-    const numCannotMove = confirmationData.totalNotActionable;
+    const numMissing = selectedCount - confirmationData.totalCount;
+    const numCannotMove = confirmationData.totalNotActionable + numMissing;
     const numNotAllowed = confirmationData.notAllowed.length;
     const numNotPermitted = confirmationData.notPermitted.length;
     const canMoveNoun = numCanMove === 1 ? capNounSingular : capNounPlural;
-    const totalNum = confirmationData.totalCount;
-    const noun = totalNum === 1 ? nounSingular : nounPlural;
+    const noun = selectedCount === 1 ? nounSingular : nounPlural;
 
     let text: string;
-    if (totalNum === 0) {
-        text = `Either no ${nounPlural} are selected for moving, or the selected ${nounPlural} are no longer valid.`;
-    } else if (numCannotMove === 0) {
-        if (totalNum === 1) text = 'The selected';
-        else if (totalNum == 2) text = 'Both';
-        else text = `All ${totalNum}`;
+    if (numCannotMove === 0) {
+        if (selectedCount === 1) text = 'The selected';
+        else if (selectedCount == 2) text = 'Both';
+        else text = `All ${selectedCount}`;
         text = `${text} ${noun} will be moved.`;
-    } else if (numCanMove === 0 && numNotPermitted < numCannotMove) {
-        if (totalNum === 1) {
-            text = `The ${noun} you've selected cannot be moved because it has a `;
+    } else {
+        const cannotMoveNoun = numCannotMove === 1 ? nounSingular : nounPlural;
+        const pronoun = numCannotMove === 1 ? 'it' : 'they';
+        const verb = numCannotMove === 1 ? 'has' : 'have';
+        const parts = [];
+        if (numNotPermitted > 0) parts.push('you lack the proper permissions');
+        if (numNotAllowed > 0) parts.push(`${pronoun} ${verb} a status that prevents moving`);
+        if (numMissing > 0) parts.push(`${pronoun} may have been deleted`);
+        const error = makeCommaSeparatedString(parts, ', or ', '.');
+
+        if (numCanMove === 0) {
+            text = `Cannot move the selected ${cannotMoveNoun}, ${error}`;
         } else {
-            const countText = numCannotMove === 2 ? 'Neither of' : 'None of';
-            text = `${countText} the ${totalNum} ${noun} you've selected can be moved because they have a `;
-        }
-        text += dependencyPermissionText;
-    } else if (numCanMove > 0) {
-        text = `You've selected ${totalNum} ${noun} but only ${numCanMove} can be moved.`;
-        if (numNotAllowed > 0) {
-            const cannotMoveNoun = numNotAllowed === 1 ? nounSingular : nounPlural;
-            const pronoun = numNotAllowed === 1 ? ' it has ' : ' they have ';
-            text += ` ${numNotAllowed} ${cannotMoveNoun} cannot be moved because ${pronoun} ${dependencyText}.`;
+            text = `You've selected ${selectedCount} ${noun} but only ${numCanMove} can be moved. `;
+            text += `${numCannotMove} ${cannotMoveNoun} cannot be moved because ${error}`;
         }
     }
 
     let message;
+
     if (numCannotMove > 0) {
-        const permMsg = getPermissionRestrictionMessage(totalNum, numNotPermitted, nounSingular, nounPlural, 'move');
         message = (
             <>
-                {text} {permMsg} <HelpLink topic={MOVE_SAMPLES_TOPIC}>more info</HelpLink>
+                {text} <HelpLink topic={MOVE_SAMPLES_TOPIC}>More info</HelpLink>.
             </>
         );
     }
@@ -274,7 +272,7 @@ export const getMoveConfirmationProperties = (
     let title: string;
 
     if (numCanMove > 0) title = `Move ${numCanMove} ${canMoveNoun}`;
-    else if (totalNum === 1) title = `Cannot Move ${capNounSingular}`;
+    else if (selectedCount === 1) title = `Cannot Move ${capNounSingular}`;
     else title = `No ${capNounPlural} Can Be Moved`;
 
     return { message, title, canMove: numCanMove > 0 };

@@ -72,11 +72,11 @@ export const StorageAmountInput: FC<Props> = memo(props => {
                 onChange={(name, formValue, option: SelectInputOption) => {
                     unitsChangedHandler(formValue === undefined && option ? option.id : formValue);
                 }}
-                value={preferredUnit}
+                value={model.unit?.label}
             />
         );
 
-        if (preferredUnit && model.unit !== null && !isMeasurementUnitIgnoreCase(model.unit, preferredUnit)) {
+        if (preferredUnit && model.unit !== null && model.value && !isMeasurementUnitIgnoreCase(model.unit, preferredUnit)) {
             const preferredUnitText = model.as(preferredUnit).toString();
             preferredUnitMessage = (
                 <div>

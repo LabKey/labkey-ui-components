@@ -43,12 +43,13 @@ describe('UnitModel', () => {
     test('isValidForSubmit', () => {
         expect(new UnitModel(undefined, null).isValidForSubmit()).toBeTruthy();
         expect(new UnitModel(null, null).isValidForSubmit()).toBeTruthy();
-        expect(new UnitModel(null, 'mL').isValidForSubmit()).toBeTruthy();
         expect(new UnitModel(null, 'bad').isValidForSubmit()).toBeTruthy();
+        expect(new UnitModel(null, 'mL').isValidForSubmit()).toBeFalsy();
         expect(new UnitModel(0, null).isValidForSubmit()).toBeFalsy();
         expect(new UnitModel(0, null).isValidForSubmit()).toBeFalsy();
-        expect(new UnitModel(0, 'mL').isValidForSubmit()).toBeTruthy();
         expect(new UnitModel(0, 'bad').isValidForSubmit()).toBeFalsy();
+        expect(new UnitModel(0, 'mL').isValidForSubmit()).toBeTruthy();
+        expect(new UnitModel(1, 'uL').isValidForSubmit()).toBeTruthy();
     });
 });
 

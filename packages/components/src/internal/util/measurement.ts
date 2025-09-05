@@ -79,7 +79,9 @@ export class UnitModel {
     }
 
     isValidForSubmit(): boolean {
-        return this.value == undefined || (this.value != undefined && this.unit != null);
+        const hasBoth = this.value != undefined && this.unit != null;
+        const hasNeither = this.value == undefined && this.unit == null;
+        return hasBoth || hasNeither;
     }
 }
 
@@ -234,7 +236,7 @@ export function isMeasurementUnitIgnoreCase(expected: MeasurementUnit, val: stri
 }
 
 export function isValuePrecisionValid(value: number, precision: number): boolean {
-    if (!value) {
+    if (!value || !precision) {
         return true;
     }
     if (value < 0) {

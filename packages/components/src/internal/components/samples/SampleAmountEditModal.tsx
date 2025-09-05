@@ -1,14 +1,11 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { AuditBehaviorTypes } from '@labkey/api';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { useServerContext } from '../base/ServerContext';
 import { caseInsensitive } from '../../util/utils';
 import { Alert } from '../base/Alert';
 
 import { isValuePrecisionValid, MEASUREMENT_UNITS, UnitModel } from '../../util/measurement';
 
-import { useAppContext } from '../../AppContext';
 import { Modal } from '../../Modal';
 
 import { CommentTextArea } from '../forms/input/CommentTextArea';
@@ -27,19 +24,27 @@ interface Props {
     updateListener: () => void;
 }
 
-const isPrecisionValid = (amount: number, storageUnits: string): boolean => {
+// exported for jest testing
+export const isPrecisionValid = (amount: number, storageUnits: string): boolean => {
     const units = MEASUREMENT_UNITS[storageUnits?.toLowerCase()];
     return isValuePrecisionValid(amount, units?.displayPrecision);
 };
 
-const isValid = (amount: number, units: string): boolean => {
-    return amount === undefined || (amount >= 0 && isPrecisionValid(amount, units));
+// exported for jest testing
+export const isValid = (amount: number, units: string): boolean => {
+    const hasAmount = amount !== undefined && amount !== null;
+    const hasUnits = units !== undefined && units !== null;
+    const hasBoth = hasAmount && hasUnits;
+    const hasNeither = !hasAmount && !hasUnits;
+
+    if (hasBoth) {
+        return amount >= 0 && isPrecisionValid(amount, units);
+    }
+    return hasNeither;
 };
 
 export const SampleAmountEditModal: FC<Props> = memo(props => {
-    const { schemaQuery, noun, onClose, updateListener, row } = props;
-    const { api } = useAppContext();
-    const { user } = useServerContext();
+    const { noun, onClose, updateListener, row } = props;
 
     const {
         [STORED_AMOUNT_FIELDS.ROWID]: rowId,
@@ -49,7 +54,7 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
     } = row;
 
     const sampleContainer = caseInsensitive(row, 'Container/Path')?.value;
-    const initStorageUnits = Units?.value ?? sampleTypeUnits?.value;
+    const initStorageUnits = Units?.value;
     const [amount, setStorageAmount] = useState<number>(
         initStorageAmount?.displayValue ?? initStorageAmount?.value ?? undefined
     );
@@ -127,8 +132,6 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
         setComment(_comment);
     }, []);
 
-    const amountCaption = initStorageUnits === storageUnits ? `Amount (${storageUnits})` : 'Amount';
-
     let canConfirm = isDirty && isValid(amount, storageUnits);
     if (requiresUserComment) canConfirm = canConfirm && hasValidUserComment;
 
@@ -145,10 +148,10 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
             <Alert bsStyle="danger">{error}</Alert>
             <StorageAmountInput
                 model={unitModel}
-                preferredUnit={initStorageUnits}
+                preferredUnit={sampleTypeUnits?.value}
                 amountChangedHandler={amountChangeHandler}
                 unitsChangedHandler={unitsChangeHandler}
-                label={amountCaption}
+                label="Amount"
             />
             <CommentTextArea
                 containerClassName="form-group storage-action-form-group"

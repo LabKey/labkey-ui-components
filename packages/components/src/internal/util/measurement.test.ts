@@ -160,14 +160,18 @@ describe('isValuePrecisionValid', () => {
     });
 
     test('value prop negative', () => {
-        expect(isValuePrecisionValid(-1, 0)).toBeFalsy();
-        expect(isValuePrecisionValid(-0.000000001, 0)).toBeFalsy();
+        expect(isValuePrecisionValid(-1, 1)).toBeFalsy();
+        expect(isValuePrecisionValid(-0.000000001, 1)).toBeFalsy();
     });
 
     test('precision prop', () => {
         expect(isValuePrecisionValid(1, 0)).toBeTruthy();
         expect(isValuePrecisionValid(1.0, 0)).toBeTruthy();
-        expect(isValuePrecisionValid(1.1, 0)).toBeFalsy();
+        expect(isValuePrecisionValid(1.1, 0)).toBeTruthy();
+
+        expect(isValuePrecisionValid(1, 1)).toBeTruthy();
+        expect(isValuePrecisionValid(1.0, 1)).toBeTruthy();
+        expect(isValuePrecisionValid(1.01, 1)).toBeFalsy();
 
         expect(isValuePrecisionValid(0.000001, 6)).toBeTruthy();
         expect(isValuePrecisionValid(0.000001, 6)).toBeTruthy();

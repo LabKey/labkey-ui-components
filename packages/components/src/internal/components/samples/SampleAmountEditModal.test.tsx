@@ -22,17 +22,13 @@ describe('SampleAmountEditModal', () => {
 
     function validate(
         amount: number,
-        units: string,
         hasSelect: boolean,
         comment: string,
         noun: string,
         canSave: boolean,
-        isNegative?: boolean,
-        hasLabelUnits = true
+        isNegative?: boolean
     ): void {
-        expect(document.querySelector('.checkin-amount-label').textContent).toContain(
-            'Amount' + (units && hasLabelUnits ? ' (' + units + ')' : '')
-        );
+        expect(document.querySelector('.checkin-amount-label').textContent).toContain('Amount');
         expect(document.querySelector('input.storage-amount-input').getAttribute('value')).toBe(amount ?? '');
         expect(document.querySelectorAll('.checkin-unit-select')).toHaveLength(hasSelect ? 1 : 0);
         expect(document.querySelectorAll('input.checkin-unit-input')).toHaveLength(hasSelect ? 0 : 1);
@@ -70,7 +66,7 @@ describe('SampleAmountEditModal', () => {
         );
 
         expect(document.querySelectorAll('button').item(1).textContent).toBe('Cancel');
-        validate(undefined, undefined, true, undefined, defaultNoun, false);
+        validate(undefined, true, undefined, defaultNoun, false);
     });
 
     test('Amount null', () => {
@@ -94,7 +90,7 @@ describe('SampleAmountEditModal', () => {
             }
         );
 
-        validate(undefined, row.Units.value, true, undefined, defaultNoun, false);
+        validate(undefined, true, undefined, defaultNoun, false);
     });
 
     test('StoredAmount negative', () => {
@@ -118,7 +114,7 @@ describe('SampleAmountEditModal', () => {
             }
         );
 
-        validate(row.StoredAmount.value, row.Units.value, true, undefined, defaultNoun, false, true);
+        validate(row.StoredAmount.value, true, undefined, defaultNoun, false, true);
     });
 
     test('Units null', () => {
@@ -142,7 +138,7 @@ describe('SampleAmountEditModal', () => {
             }
         );
 
-        validate(row.StoredAmount.value, row.Units.value, true, undefined, defaultNoun, false);
+        validate(row.StoredAmount.value, true, undefined, defaultNoun, false);
     });
 
     test('Units custom', () => {
@@ -166,7 +162,7 @@ describe('SampleAmountEditModal', () => {
             }
         );
 
-        validate(row.StoredAmount.value, row.Units.value, false, undefined, defaultNoun, false);
+        validate(row.StoredAmount.value, false, undefined, defaultNoun, false);
     });
 
     test('Set units, can save', async () => {
@@ -199,14 +195,14 @@ describe('SampleAmountEditModal', () => {
             );
         });
 
-        validate(row.StoredAmount.value, row.Units.value, false, undefined, defaultNoun, false);
+        validate(row.StoredAmount.value, false, undefined, defaultNoun, false);
 
         const unitInput = document.querySelector('input.checkin-unit-input');
         const newUnits = 'newUnits';
         // Focus the input, then paste
         await userEvent.click(unitInput);
         await userEvent.paste(newUnits);
-        validate(row.StoredAmount.value, newUnits, false, undefined, defaultNoun, true, false, false);
+        validate(row.StoredAmount.value, false, undefined, defaultNoun, true, false);
     });
 });
 

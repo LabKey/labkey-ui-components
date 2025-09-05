@@ -48,10 +48,10 @@ export const StorageAmountInput: FC<Props> = memo(props => {
     let unitDisplay;
     if (!unitsChangedHandler) {
         // IF we don't have a way to change the supported value show it as static text.
-        unitDisplay = <span className="storage-item-unit-text margin-left">{preferredUnit || unitText}</span>;
+        unitDisplay = <span className="storage-item-unit-text margin-left">{unitText || preferredUnit}</span>;
     }
-    // If preferred unit is provided and not a supported unit type, allow editing as text
-    else if (preferredUnit && !MEASUREMENT_UNITS.hasOwnProperty(preferredUnit.toLowerCase())) {
+    // If unitText is provided and not a supported unit type, allow editing as text
+    else if (unitText && !MEASUREMENT_UNITS.hasOwnProperty(unitText.toLowerCase())) {
         unitDisplay = (
             <input
                 type="text"

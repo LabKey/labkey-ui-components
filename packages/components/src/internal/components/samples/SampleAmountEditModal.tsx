@@ -33,7 +33,7 @@ export const isPrecisionValid = (amount: number, storageUnits: string): boolean 
 // exported for jest testing
 export const isValid = (amount: number, units: string): boolean => {
     const hasAmount = amount !== undefined && amount !== null;
-    const hasUnits = units !== undefined && units !== null;
+    const hasUnits = units !== undefined && units !== null && units !== '';
     const hasBoth = hasAmount && hasUnits;
     const hasNeither = !hasAmount && !hasUnits;
 
@@ -58,7 +58,7 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
     const [amount, setStorageAmount] = useState<number>(
         initStorageAmount?.displayValue ?? initStorageAmount?.value ?? undefined
     );
-    const [storageUnits, setStorageUnits] = useState<string>(initStorageUnits ?? '');
+    const [storageUnits, setStorageUnits] = useState<string>(initStorageUnits ?? null);
     const [comment, setComment] = useState<string>('');
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState();

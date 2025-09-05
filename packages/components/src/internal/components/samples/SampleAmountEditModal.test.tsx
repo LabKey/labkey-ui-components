@@ -246,6 +246,7 @@ describe('isValid', () => {
     test('has one but not the other', () => {
         expect(isValid(0, undefined)).toBe(false);
         expect(isValid(0, null)).toBe(false);
+        expect(isValid(0, '')).toBe(false);
         expect(isValid(undefined, 'L')).toBe(false);
         expect(isValid(null, 'L')).toBe(false);
     });

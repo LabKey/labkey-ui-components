@@ -107,7 +107,7 @@ export const StorageAmountInput: FC<Props> = memo(props => {
                     name={inputName ?? 'amountDelta'}
                     onChange={onChange}
                     type="number"
-                    value={model.value}
+                    value={model.value ?? ''}
                     placeholder="Enter amount..."
                 />
                 {unitDisplay}

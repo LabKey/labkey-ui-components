@@ -1,15 +1,12 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 
 import { userCanManagePicklists } from '../../app/utils';
 
-import { SelectionMenuItem } from '../menus/SelectionMenuItem';
-
 import { User } from '../base/models/User';
 
-import { DisableableMenuItem } from '../samples/DisableableMenuItem';
-
 import { PicklistEditModal, PicklistEditModalProps } from './PicklistEditModal';
-import { MAX_SELECTIONS_MESSAGE, MAX_SELECTIONS_PER_ADD } from './constants';
+import { useModalState } from '../../hooks';
+import { PicklistMenuItem } from './PicklistMenuItem';
 
 interface Props extends Omit<PicklistEditModalProps, 'onCancel' | 'onFinish' | 'showNotification'> {
     asMenuItem?: boolean;
@@ -22,73 +19,38 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
     const {
         asMenuItem,
         itemText = 'Create a New Picklist',
-        user,
+        metricFeatureArea,
         onCreatePicklist,
-        queryModel,
-        sampleIds,
-        ...editModalProps
+        sampleFieldKey,
+        schemaQuery,
+        selectedRowIds,
+        user,
     } = props;
-    const [showModal, setShowModal] = useState<boolean>(false);
-
+    const { close, open, show } = useModalState();
     const onFinish = useCallback(() => {
-        setShowModal(false);
+        close();
         onCreatePicklist?.();
-    }, [onCreatePicklist]);
+    }, [close, onCreatePicklist]);
 
-    const onCancel = useCallback(() => {
-        setShowModal(false);
-    }, []);
-
-    const onClick = useCallback(() => {
-        setShowModal(true);
-    }, []);
-
-    if (!userCanManagePicklists(user)) {
-        return null;
-    }
-
-    const numSamples = sampleIds?.length ?? queryModel?.selections?.size ?? 0;
-    const excessSamples = numSamples > MAX_SELECTIONS_PER_ADD;
+    if (!userCanManagePicklists(user)) return null;
 
     return (
         <>
-            {queryModel && (
-                <SelectionMenuItem
-                    text={itemText}
-                    onClick={onClick}
-                    queryModel={queryModel}
-                    nounPlural="samples"
-                    maxSelection={MAX_SELECTIONS_PER_ADD}
-                />
-            )}
-            {!queryModel && asMenuItem && (
-                <DisableableMenuItem
-                    onClick={onClick}
-                    disabled={excessSamples}
-                    disabledMessage={MAX_SELECTIONS_MESSAGE}
-                >
-                    {itemText}
-                </DisableableMenuItem>
-            )}
-            {!queryModel && !asMenuItem && (
-                <button
-                    disabled={excessSamples}
-                    title={excessSamples ? MAX_SELECTIONS_MESSAGE : undefined}
-                    className="btn btn-success"
-                    onClick={onClick}
-                    type="button"
-                >
+            {asMenuItem && <PicklistMenuItem itemText={itemText} open={open} selectedRowIds={selectedRowIds} />}
+            {!asMenuItem && (
+                <button className="btn btn-success" onClick={open} type="button">
                     {itemText}
                 </button>
             )}
-            {showModal && (
+            {show && (
                 <PicklistEditModal
-                    queryModel={queryModel}
-                    sampleIds={sampleIds}
-                    {...editModalProps}
-                    showNotification
+                    metricFeatureArea={metricFeatureArea}
+                    onCancel={close}
                     onFinish={onFinish}
-                    onCancel={onCancel}
+                    sampleFieldKey={sampleFieldKey}
+                    schemaQuery={schemaQuery}
+                    selectedRowIds={selectedRowIds}
+                    showNotification
                 />
             )}
         </>

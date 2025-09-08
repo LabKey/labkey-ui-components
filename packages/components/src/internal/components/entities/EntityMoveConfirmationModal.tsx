@@ -131,7 +131,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
 
     if (isLoading(loading)) {
         return (
-            <Modal title={confirmModalProps.title} onCancel={confirmModalProps.onCancel}>
+            <Modal onCancel={confirmModalProps.onCancel} title={confirmModalProps.title}>
                 <LoadingSpinner msg="Loading target folders..." />
             </Modal>
         );
@@ -139,7 +139,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
 
     if (error) {
         return (
-            <Modal title={confirmModalProps.title} onCancel={confirmModalProps.onCancel} cancelText="Dismiss">
+            <Modal cancelText="Dismiss" onCancel={confirmModalProps.onCancel} title={confirmModalProps.title}>
                 <Alert>{error}</Alert>
             </Modal>
         );
@@ -147,7 +147,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
 
     if (containerOptions?.length === 0) {
         return (
-            <Modal title={confirmModalProps.title} onCancel={confirmModalProps.onCancel} cancelText="Dismiss">
+            <Modal cancelText="Dismiss" onCancel={confirmModalProps.onCancel} title={confirmModalProps.title}>
                 You do not have permission to move {nounPlural} to any of the available folders.
             </Modal>
         );
@@ -156,8 +156,8 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
     return (
         <Modal
             {...confirmModalProps}
-            onConfirm={onConfirmCallback}
             canConfirm={!!selectedContainerOption && (!requiresUserComment || hasValidUserComment)}
+            onConfirm={onConfirmCallback}
         >
             {children}
             <div className="top-padding">

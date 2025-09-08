@@ -50,11 +50,7 @@ import { Row, selectRows } from '../../query/selectRows';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import {
-    ALL_AMOUNT_AND_UNITS_COLUMNS_LC,
-    SAMPLE_STORAGE_COLUMNS_LC,
-    STORED_AMOUNT_FIELDS
-} from './constants';
+import { ALL_AMOUNT_AND_UNITS_COLUMNS_LC, SAMPLE_STORAGE_COLUMNS_LC, STORED_AMOUNT_FIELDS } from './constants';
 import { FindField, GroupedSampleFields, SampleState, SampleStateType } from './models';
 import { executeSql, ExecuteSqlResponseWithSession } from '../../query/executeSql';
 

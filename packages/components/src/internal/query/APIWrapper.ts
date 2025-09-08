@@ -20,7 +20,6 @@ import {
     deleteView,
     getGridViews,
     GetSelectedResponse,
-    getSelection,
     getSnapshotSelections,
     incrementClientSideMetricCount,
     renameGridView,
@@ -28,7 +27,6 @@ import {
     ReplaceSelectedOptions,
     saveGridView,
     saveSessionView,
-    SelectionResponse,
     SelectResponse,
     setSelected,
     setSnapshotSelections,
@@ -106,11 +104,6 @@ export interface QueryAPIWrapper {
         includeHidden?: boolean
     ) => Promise<ViewInfo[]>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
-    getSelection: (
-        searchParams: URLSearchParams,
-        schemaName?: string,
-        queryName?: string
-    ) => Promise<SelectionResponse>;
     getServerDate: () => Promise<Date>;
     getSnapshotSelections: (key: string, containerPath?: string) => Promise<GetSelectedResponse>; // deprecated
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
@@ -185,7 +178,6 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     getFolderDataTypeDataCount = getFolderDataTypeDataCount;
     getQueryDetails = getQueryDetails;
     getSnapshotSelections = getSnapshotSelections; // deprecated
-    getSelection = getSelection;
     getServerDate = getServerDate;
     incrementClientSideMetricCount = incrementClientSideMetricCount;
     incrementRowCountMetric = incrementRowCountMetric;
@@ -226,7 +218,6 @@ export function getQueryTestAPIWrapper(
         getFolderDataTypeDataCount: mockFn(),
         getQueryDetails: mockFn(),
         getSnapshotSelections: mockFn(),
-        getSelection: mockFn(),
         getServerDate: () => Promise.resolve(new Date()),
         incrementClientSideMetricCount: mockFn(),
         incrementRowCountMetric: mockFn(),

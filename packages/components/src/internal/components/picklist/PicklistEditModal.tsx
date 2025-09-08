@@ -1,54 +1,49 @@
-import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useMemo, useState } from 'react';
 import { Utils } from '@labkey/api';
 
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
-
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-
 import { useNotificationsContext } from '../notifications/NotificationsContext';
-
 import { Modal } from '../../Modal';
-
 import { CheckboxLK } from '../../Checkbox';
-
 import { useAppContext } from '../../AppContext';
-
 import { AppURL } from '../../url/AppURL';
-
 import { PICKLIST_KEY } from '../../app/constants';
-
 import { AppLink } from '../../url/AppLink';
-
 import { Picklist } from './models';
 import { createPicklist, updatePicklist } from './actions';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { usePicklistSampleSelections } from './usePicklistSampleSelections';
+import { isLoading } from '../../../public/LoadingState';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 export interface PicklistEditModalProps {
     metricFeatureArea?: string;
     onCancel: () => void;
     onFinish: (picklist: Picklist) => void;
     picklist?: Picklist;
-    queryModel?: QueryModel;
+    // If sampleFieldKey is present the modal queries the rowIds in order to fetch sampleIds via sampleFieldKey
     sampleFieldKey?: string;
-    sampleIds?: number[];
+    schemaQuery?: SchemaQuery;
+    selectedRowIds?: number[] | string[];
     showNotification?: boolean;
 }
 
-const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
-    const { onCancel, onFinish, sampleFieldKey, sampleIds, picklist, showNotification, metricFeatureArea, queryModel } =
-        props;
-    const useSnapshotSelection = queryModel?.filterArray.length > 0;
+export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
+    const {
+        onCancel,
+        onFinish,
+        picklist,
+        sampleFieldKey,
+        schemaQuery,
+        selectedRowIds,
+        showNotification,
+        metricFeatureArea,
+    } = props;
     const [name, setName] = useState<string>(picklist?.name ?? '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
-    const validCount = useMemo(
-        () => sampleIds?.length || queryModel?.selections.size,
-        [sampleIds, queryModel?.selections]
-    );
-    const selectionKey = useMemo(
-        () => (sampleFieldKey ? undefined : queryModel?.selectionKey),
-        [sampleFieldKey, queryModel?.selectionKey]
-    );
+
     const [description, setDescription] = useState<string>(picklist?.Description ?? '');
     const onDescriptionChange = useCallback(
         (evt: ChangeEvent<HTMLTextAreaElement>) => setDescription(evt.target.value),
@@ -60,16 +55,9 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         []
     );
     const [submitting, setSubmitting] = useState<boolean>(false);
-    const [error, setError] = useState<string>(undefined);
+    const [saveError, setSaveError] = useState<string>(undefined);
     const { api } = useAppContext();
     const { createNotification } = useNotificationsContext();
-
-    useEffect(() => {
-        if (!useSnapshotSelection) return;
-        (async () => {
-            await api.query.setSnapshotSelections(selectionKey, [...queryModel.selections]);
-        })();
-    }, [api.query, useSnapshotSelection, selectionKey, queryModel?.selections]);
 
     const { finishVerb, finishingVerb, isUpdate } = useMemo(() => {
         const isUpdate_ = picklist !== undefined;
@@ -80,18 +68,13 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         };
     }, [picklist]);
 
-    const reset = useCallback((): void => {
-        setError(undefined);
-        setSubmitting(false);
-        setName(undefined);
-        setDescription(undefined);
-        setShared(false);
-    }, []);
-
-    const onHide = useCallback(() => {
-        reset();
-        onCancel();
-    }, [onCancel, reset]);
+    const {
+        error,
+        loadingState,
+        value: sampleIds,
+    } = usePicklistSampleSelections(selectedRowIds, sampleFieldKey, schemaQuery);
+    const loading = isLoading(loadingState);
+    const sampleCount = sampleIds?.length;
 
     const onSavePicklist = useCallback(async (): Promise<void> => {
         setSubmitting(true);
@@ -109,22 +92,13 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
                     })
                 );
             } else {
-                updatedList = await createPicklist(
-                    trimmedName,
-                    description,
-                    shared,
-                    selectionKey,
-                    useSnapshotSelection,
-                    sampleIds
-                );
+                updatedList = await createPicklist(trimmedName, description, shared, sampleIds);
                 api.query.incrementClientSideMetricCount(metricFeatureArea, 'createPicklist');
             }
 
-            reset();
-
             if (showNotification) {
                 const url = AppURL.create(PICKLIST_KEY, updatedList.listId);
-                const noun = validCount ? Utils.pluralize(validCount, 'sample', 'samples') : ' no samples';
+                const noun = sampleCount ? Utils.pluralize(sampleCount, 'sample', 'samples') : ' no samples';
                 createNotification({
                     message: (
                         <>
@@ -138,7 +112,7 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
 
             onFinish(updatedList);
         } catch (e) {
-            setError(resolveErrorMessage(e));
+            setSaveError(resolveErrorMessage(e));
             setSubmitting(false);
         }
     }, [
@@ -151,104 +125,73 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         onFinish,
         picklist?.Container,
         picklist?.listId,
-        reset,
         sampleIds,
-        selectionKey,
         shared,
         showNotification,
-        useSnapshotSelection,
-        validCount,
+        sampleCount,
     ]);
 
     let title: string;
-    if (isUpdate) {
+    if (loading) {
+        title = 'Loading Selection Data...';
+    } else if (error) {
+        title = 'Error Loading Selection Data';
+    } else if (isUpdate) {
         title = 'Update Picklist Data';
     } else {
-        if (!validCount) {
+        if (!sampleCount) {
             title = 'Create an Empty Picklist';
-        } else if (selectionKey && validCount) {
-            const pluralizedNoun = Utils.pluralize(validCount, 'Selected Sample', 'Selected Samples');
-            title = `Create a New Picklist with the ${pluralizedNoun}`;
-        } else if (validCount === 1) {
+        } else if (sampleCount > 1) {
+            title = `Create a New Picklist with the ${sampleCount.toLocaleString()} Selected Samples`;
+        } else if (sampleCount === 1) {
             title = 'Create a New Picklist with This Sample';
-        } else {
-            title = 'Create a New Picklist with These Samples';
         }
     }
+
+    const showForm = !error && !loading;
 
     return (
         <Modal
             canConfirm={!!name}
-            confirmText={finishVerb + ' Picklist'}
             confirmingText={finishingVerb + ' Picklist...'}
+            confirmText={finishVerb + ' Picklist'}
             isConfirming={submitting}
-            onCancel={onHide}
+            onCancel={onCancel}
             onConfirm={onSavePicklist}
             title={title}
         >
-            <Alert>{error}</Alert>
-            <form>
-                <div className="form-group">
-                    <label className="control-label">Name *</label>
+            <Alert>{error || saveError}</Alert>
+            {loading && <LoadingSpinner />}
+            {showForm && (
+                <form>
+                    <div className="form-group">
+                        <label className="control-label">Name *</label>
 
-                    <input
-                        placeholder="Give this list a name"
-                        className="form-control"
-                        value={name}
-                        onChange={onNameChange}
-                        type="text"
-                    />
-                </div>
-                <div className="form-group">
-                    <label className="control-label">Description</label>
+                        <input
+                            className="form-control"
+                            onChange={onNameChange}
+                            placeholder="Give this list a name"
+                            type="text"
+                            value={name}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label className="control-label">Description</label>
 
-                    <textarea
-                        placeholder="Add a description"
-                        className="form-control"
-                        value={description}
-                        onChange={onDescriptionChange}
-                    />
+                        <textarea
+                            className="form-control"
+                            onChange={onDescriptionChange}
+                            placeholder="Add a description"
+                            value={description}
+                        />
 
-                    <CheckboxLK checked={shared} name="shared" onChange={onSharedChanged}>
-                        Share this picklist
-                    </CheckboxLK>
-                </div>
-            </form>
+                        <CheckboxLK checked={shared} name="shared" onChange={onSharedChanged}>
+                            Share this picklist
+                        </CheckboxLK>
+                    </div>
+                </form>
+            )}
         </Modal>
     );
 });
-
-PicklistEditModalDisplay.displayName = 'PicklistEditModalDisplay';
-
-// eslint-disable-next-line no-warning-comments
-// FIXME: This does not need to be a separate component. It is solely initializing the "sampleIds" prop.
-export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
-    const { queryModel, sampleFieldKey, sampleIds } = props;
-    const [ids, setIds] = useState<number[]>(sampleIds);
-    const { api } = useAppContext();
-
-    useEffect(() => {
-        (async () => {
-            // Look up SampleIds from the selected row ids.
-            // Using sampleFieldKey as proxy flag to determine if lookup is needed
-            if (sampleFieldKey && queryModel && !queryModel.isLoadingSelections) {
-                try {
-                    const ids_ = await api.samples.getLookupRowIdsFromSelection(
-                        queryModel.schemaQuery.schemaName,
-                        queryModel.schemaQuery.queryName,
-                        [...queryModel.selections],
-                        sampleFieldKey
-                    );
-                    setIds(ids_);
-                    await api.query.setSnapshotSelections(queryModel.selectionKey, [...queryModel.selections]);
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-        })();
-    }, [api, sampleFieldKey, queryModel]);
-
-    return <PicklistEditModalDisplay {...props} sampleIds={ids} />;
-});
-
 PicklistEditModal.displayName = 'PicklistEditModal';

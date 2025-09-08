@@ -1,7 +1,7 @@
 import { ActionURL, Ajax, Filter, getServerContext, PermissionTypes, Query, Security, Utils } from '@labkey/api';
 import { List, Map, OrderedMap } from 'immutable';
 
-import { getSelected, getSelectedDataDeprecated, setSnapshotSelections } from '../../actions';
+import { getSelected, getSelectedDataDeprecated } from '../../actions';
 
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -70,6 +70,12 @@ import {
 } from './models';
 import { executeSql } from '../../query/executeSql';
 
+interface OperationConfirmationDataResponse {
+    data: Record<string, any>;
+    exception?: string;
+    success: boolean;
+}
+
 export async function getOperationConfirmationData(
     dataType: EntityDataType,
     rowIds: number[] | string[],
@@ -78,27 +84,22 @@ export async function getOperationConfirmationData(
     extraParams?: Record<string, any>,
     containerPath?: string
 ): Promise<OperationConfirmationData> {
-    if (!selectionKey && !rowIds?.length) {
-        return new OperationConfirmationData();
+    if (!selectionKey && !rowIds?.length) return new OperationConfirmationData();
+
+    let params: Record<string, any>;
+    if (selectionKey) {
+        params = { dataRegionSelectionKey: selectionKey };
+        if (useSnapshotSelection) {
+            params.useSnapshotSelection = true;
+        }
+    } else {
+        params = { rowIds };
     }
 
-    return new Promise((resolve, reject) => {
-        let params: Record<string, any>;
-        if (selectionKey) {
-            params = {
-                dataRegionSelectionKey: selectionKey,
-            };
-            if (useSnapshotSelection) {
-                params.useSnapshotSelection = true;
-            }
-        } else {
-            params = { rowIds };
-        }
-        if (extraParams) {
-            params = Object.assign(params, extraParams);
-        }
+    if (extraParams) params = Object.assign(params, extraParams);
 
-        return Ajax.request({
+    try {
+        const resp = await request<OperationConfirmationDataResponse>({
             url: ActionURL.buildURL(
                 dataType.operationConfirmationControllerName,
                 dataType.operationConfirmationActionName,
@@ -106,20 +107,13 @@ export async function getOperationConfirmationData(
             ),
             method: 'POST',
             jsonData: params,
-            success: Utils.getCallbackWrapper(async response => {
-                if (response.success) {
-                    resolve(new OperationConfirmationData(response.data));
-                } else {
-                    console.error('Response failure when getting operation confirmation data', response.exception);
-                    reject(response.exception);
-                }
-            }),
-            failure: Utils.getCallbackWrapper(response => {
-                console.error('Error getting operation confirmation data', response);
-                reject(response ? response.exception : 'Unknown error getting operation confirmation data.');
-            }),
         });
-    });
+        return new OperationConfirmationData(resp.data);
+    } catch (error) {
+        console.error('Error getting operation confirmation data', error);
+        if (error.exception) throw error.exception;
+        throw 'Unknown error getting operation confirmation data';
+    }
 }
 
 export function getContainersForPermission(permission: PermissionTypes): Promise<string[]> {
@@ -239,9 +233,7 @@ export async function getOperationConfirmationDataForModel(
     dataType: EntityDataType,
     extraParams?: Record<string, any>
 ): Promise<OperationConfirmationData> {
-    const useSnapshotSelection = model.filterArray.length > 0;
-    if (useSnapshotSelection) await setSnapshotSelections(model.selectionKey, [...model.selections]);
-    return getOperationConfirmationData(dataType, undefined, model.selectionKey, useSnapshotSelection, extraParams);
+    return getOperationConfirmationData(dataType, model.getSelectedIds(), undefined, undefined, extraParams);
 }
 
 async function getSelectedParents(
@@ -265,12 +257,6 @@ async function getSelectedParents(
     }
 
     return resolveEntityParentTypeFromIds(schemaQuery, response, isAliquotParent, orderedRowIds);
-}
-
-export async function getSelectedItemSamples(selectedItemIds: string[]): Promise<number[]> {
-    const { queryName, schemaName } = SCHEMAS.INVENTORY.ITEMS;
-    const { data } = await getSelectedDataDeprecated(schemaName, queryName, selectedItemIds, 'RowId, MaterialId');
-    return data.map(row => row.getIn(['MaterialId', 'value'])).toArray();
 }
 
 function resolveSampleParentTypes(
@@ -761,27 +747,17 @@ export function getDataOperationConfirmationData(
 }
 
 export function getCrossFolderSelectionResult(
-    dataRegionSelectionKey: string,
     dataType: string, // 'samples' | 'exp.data' | 'assay',
-    useSnapshotSelection?: boolean,
-    rowIds?: number[] | string[],
+    rowIds: number[] | string[],
     picklistName?: string
-): Promise<CrossFolderSelectionResult> {
-    if (!dataRegionSelectionKey && !rowIds?.length) {
-        return Promise.resolve(undefined);
-    }
+): Promise<CrossFolderSelectionResult | undefined> {
+    if (!rowIds?.length) return Promise.resolve(undefined);
 
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: ActionURL.buildURL('experiment', 'getCrossFolderDataSelection.api'),
             method: 'POST',
-            jsonData: {
-                dataRegionSelectionKey,
-                rowIds,
-                dataType,
-                picklistName,
-                useSnapshotSelection,
-            },
+            jsonData: { rowIds, dataType, picklistName },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
                     resolve({

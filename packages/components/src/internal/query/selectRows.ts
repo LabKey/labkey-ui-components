@@ -84,12 +84,9 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
     };
 }
 
-/**
- * selections: The selections object from a QueryModel
- */
 interface GetSelectedRowsOptions extends SelectRowsOptions {
     keyColumn?: string;
-    selections: Set<string>;
+    selections: Set<string>; // The selections object from a QueryModel
 }
 
 export function getSelectedRows(options: GetSelectedRowsOptions): Promise<SelectRowsResponse> {

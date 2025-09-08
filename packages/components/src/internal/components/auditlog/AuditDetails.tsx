@@ -19,7 +19,7 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 interface Props extends PropsWithChildren {
     changeDetails?: AuditDetailsModel;
     emptyMsg?: string;
-    fieldValueRenderer?: (label, value, displayValue) => any;
+    fieldValueRenderer?: (label, value, displayValue, hasProvidedValue?: boolean) => any;
     gridColumnRenderer?: (data: any, row: any, displayValue: any) => any;
     gridData?: List<Map<string, any>>;
     rowId?: number;
@@ -38,7 +38,7 @@ export class AuditDetails extends Component<Props> {
         return ['created by', 'createdby', 'modified by', 'modifiedby'].indexOf(field.toLowerCase()) > -1;
     }
 
-    getValueDisplay = (field: string, value: string): any => {
+    getValueDisplay = (field: string, value: string, hasProvidedValues: boolean): any => {
         const { fieldValueRenderer } = this.props;
 
         let displayVal: any = value;
@@ -48,7 +48,7 @@ export class AuditDetails extends Component<Props> {
             displayVal = <UserLink userId={parseInt(value, 10)} />;
         }
 
-        if (fieldValueRenderer) displayVal = fieldValueRenderer(field, value, displayVal);
+        if (fieldValueRenderer) displayVal = fieldValueRenderer(field, value, displayVal, hasProvidedValues);
 
         return displayVal;
     };
@@ -66,8 +66,8 @@ export class AuditDetails extends Component<Props> {
 
         if (!user.isSignedIn && AuditDetails.isUserFieldLabel(field)) return null;
 
-        const oldValue = this.getValueDisplay(field, oldVal);
-        const newValue = this.getValueDisplay(field, newVal);
+        const oldValue = this.getValueDisplay(field, oldVal, !!(providedVal || providedDeltaVal));
+        const newValue = this.getValueDisplay(field, newVal, !!(providedVal || providedDeltaVal));
         const changed = oldValue !== newValue;
         const providedVals = [];
         if (providedDeltaVal) {

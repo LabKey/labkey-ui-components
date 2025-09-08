@@ -12,7 +12,7 @@ describe('StorageAmountInput', () => {
         render(
             <StorageAmountInput
                 model={testModel}
-                preferredUnit={undefined}
+                preferredUnit={'mL'}
                 label={undefined}
                 amountChangedHandler={jest.fn()}
             />
@@ -40,11 +40,10 @@ describe('StorageAmountInput', () => {
     });
 
     test('Metric units, preferred units same', () => {
-        const unit = 'uL';
         render(
             <StorageAmountInput
                 model={testModel}
-                preferredUnit={unit}
+                preferredUnit={'uL'}
                 label={undefined}
                 amountChangedHandler={jest.fn()}
                 unitsChangedHandler={jest.fn}
@@ -53,7 +52,42 @@ describe('StorageAmountInput', () => {
 
         expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', "0");
         expect(document.querySelectorAll('.checkin-unit-select')).toHaveLength(1);
-        expect(document.querySelector('.checkin-unit-select').textContent).toBe(unit);
+        expect(document.querySelector('.checkin-unit-select').textContent).toBe('uL');
+        expect(document.querySelectorAll('.storage-item-check-in-preferred-display')).toHaveLength(0);
+    });
+
+    test('Metric units, preferred units different', () => {
+        render(
+            <StorageAmountInput
+                model={testModel}
+                preferredUnit="mL"
+                label={undefined}
+                amountChangedHandler={jest.fn()}
+                unitsChangedHandler={jest.fn}
+            />
+        );
+
+        expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', "0");
+        expect(document.querySelectorAll('.checkin-unit-select')).toHaveLength(1);
+        expect(document.querySelector('.checkin-unit-select').textContent).toBe('uL');
+        expect(document.querySelectorAll('.storage-item-check-in-preferred-display')).toHaveLength(0);
+    });
+
+    test('Metric unit with display in preferred units', () => {
+        render(
+            <StorageAmountInput
+                model={new UnitModel(10, 'uL')}
+                preferredUnit="mL"
+                label={undefined}
+                amountChangedHandler={jest.fn()}
+                unitsChangedHandler={jest.fn}
+            />
+        );
+
+        expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', "10");
+        expect(document.querySelectorAll('.checkin-unit-select')).toHaveLength(1);
+        expect(document.querySelector('.checkin-unit-select').textContent).toBe('uL');
+        expect(document.querySelector('.storage-item-check-in-preferred-display').textContent).toBe('Displayed as 0.01 mL');
     });
 
     test('Label check', () => {

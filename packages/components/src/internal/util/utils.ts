@@ -269,7 +269,8 @@ export function getCommonDataValues(data: Map<any, any>, fileFields?: string[]):
     return valueMap.toObject();
 }
 
-function hasAmountOrUnitChanged(updatedValuesMap: Map<string, any>, originalRowMap: Map<string, any>): boolean {
+// exported for jest testing
+export function hasAmountOrUnitChanged(updatedValuesMap: Map<string, any>, originalRowMap: Map<string, any>): boolean {
     // if we have an updated value for amount and it has been changed, return true
     if (
         updatedValuesMap.has(STORED_AMOUNT_FIELDS.AMOUNT) &&
@@ -293,7 +294,8 @@ function hasAmountOrUnitChanged(updatedValuesMap: Map<string, any>, originalRowM
     return false;
 }
 
-function isSameWithStringCompare(value1: any, value2: any): boolean {
+// export for jest testing
+export function isSameWithStringCompare(value1: any, value2: any): boolean {
     if (value1 === value2 || (valueIsEmpty(value1) && valueIsEmpty(value2))) return true;
     if (value1 && value2) {
         const strVal1 = value1.toString();

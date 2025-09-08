@@ -34,6 +34,7 @@ import {
     getUpdatedData,
     getValueFromRow,
     getValuesSummary,
+    hasAmountOrUnitChanged,
     isBoolean,
     isImage,
     isInteger,
@@ -41,6 +42,7 @@ import {
     isNonNegativeFloat,
     isNonNegativeInteger,
     isQuotedWithDelimiters,
+    isSameWithStringCompare,
     isSetEqual,
     makeCommaSeparatedString,
     parseCsvString,
@@ -474,6 +476,12 @@ describe('getUpdatedData', () => {
             Other: {
                 value: null,
             },
+            StoredAmount: {
+                value: 1,
+            },
+            Units: {
+                value: 'mL',
+            },
         },
     });
 
@@ -511,6 +519,14 @@ describe('getUpdatedData', () => {
             intvalue: new QueryColumn({
                 name: 'IntValue',
                 fieldKey: 'IntValue',
+            }),
+            storedamount: new QueryColumn({
+                name: 'StoredAmount',
+                fieldKey: 'StoredAmount',
+            }),
+            units: new QueryColumn({
+                name: 'Units',
+                fieldKey: 'Units',
             }),
         }),
     });
@@ -557,6 +573,40 @@ describe('getUpdatedData', () => {
             RowId: 448,
             Value: 'val',
             Other: 'other3',
+        });
+    });
+
+    test('changed value for amount but not units', () => {
+        const updatedData = getUpdatedData(
+            originalData,
+            {
+                StoredAmount: 2,
+                Units: 'mL',
+            },
+            queryInfo
+        );
+        expect(updatedData).toHaveLength(1);
+        expect(updatedData[0]).toStrictEqual({
+            RowId: 445,
+            StoredAmount: 2,
+            Units: 'mL',
+        });
+    });
+
+    test('changed value for units but not amount', () => {
+        const updatedData = getUpdatedData(
+            originalData,
+            {
+                StoredAmount: 1,
+                Units: 'uL',
+            },
+            queryInfo
+        );
+        expect(updatedData).toHaveLength(1);
+        expect(updatedData[0]).toStrictEqual({
+            RowId: 445,
+            StoredAmount: 1,
+            Units: 'uL',
         });
     });
 
@@ -1563,5 +1613,61 @@ describe('isSetEqual', () => {
         );
         expect(isSetEqual([getDomainDetailsJSON, 1], [getDomainDetailsJSON, 1, 1])).toBe(true);
         expect(isSetEqual([getDomainDetailsJSON, 1], [getDomainDetailsJSON, 1, 2])).toBe(false);
+    });
+});
+
+describe('hasAmountOrUnitChanged', () => {
+     test('updated amount', () => {
+        const originalRowMap = fromJS({ StoredAmount: { value: 5 }, Units: { value: 'mg' } });
+        expect(hasAmountOrUnitChanged(Map({ Amount: 10, Units: 'mg' }), originalRowMap)).toBe(false);
+        expect(hasAmountOrUnitChanged(Map({ StoredAmount: 5, Units: 'mg' }), originalRowMap)).toBe(false);
+        expect(hasAmountOrUnitChanged(Map({ StoredAmount: 5.1, Units: 'mg' }), originalRowMap)).toBe(true);
+        expect(hasAmountOrUnitChanged(Map({ StoredAmount: 10, Units: 'mg' }), originalRowMap)).toBe(true);
+        expect(hasAmountOrUnitChanged(Map({ StoredAmount: null, Units: 'mg' }), originalRowMap)).toBe(true);
+        expect(hasAmountOrUnitChanged(Map({ StoredAmount: undefined, Units: 'mg' }), originalRowMap)).toBe(true);
+    });
+
+     test('updated unit', () => {
+        const originalRowMap = fromJS({ StoredAmount: { value: 5 }, Units: { value: 'mg' } });
+        expect(hasAmountOrUnitChanged(Map({ StoredAmount: 5, RawUnits: 'mg' }), originalRowMap)).toBe(false);
+        expect(hasAmountOrUnitChanged(Map({ StoredAmount: 5, Units: 'mg' }), originalRowMap)).toBe(false);
+        expect(hasAmountOrUnitChanged(Map({ StoredAmount: 5, Units: 'g' }), originalRowMap)).toBe(true);
+        expect(hasAmountOrUnitChanged(Map({ StoredAmount: 5, Units: null }), originalRowMap)).toBe(true);
+        expect(hasAmountOrUnitChanged(Map({ StoredAmount: 5, Units: undefined }), originalRowMap)).toBe(true);
+     });
+});
+
+describe('isSameWithStringCompare', () => {
+    test('both empty', () => {
+        expect(isSameWithStringCompare(undefined, undefined)).toBe(true);
+        expect(isSameWithStringCompare(null, null)).toBe(true);
+        expect(isSameWithStringCompare('', '')).toBe(true);
+    });
+
+    test('one empty', () => {
+        expect(isSameWithStringCompare(undefined, 'abc')).toBe(false);
+        expect(isSameWithStringCompare(null, 123)).toBe(false);
+        expect(isSameWithStringCompare('', true)).toBe(false);
+        expect(isSameWithStringCompare('abc', undefined)).toBe(false);
+        expect(isSameWithStringCompare(123, null)).toBe(false);
+        expect(isSameWithStringCompare(true, '')).toBe(false);
+    });
+
+    test('non-empty values', () => {
+        expect(isSameWithStringCompare('abc', 'abc')).toBe(true);
+        expect(isSameWithStringCompare('abc ', 'abc')).toBe(false);
+        expect(isSameWithStringCompare('abc', 'ABC')).toBe(false);
+        expect(isSameWithStringCompare(' abc', 'abc')).toBe(false);
+        expect(isSameWithStringCompare('abc', 'abcd')).toBe(false);
+        expect(isSameWithStringCompare('abc', 'ab')).toBe(false);
+    });
+
+    test('numeric values', () => {
+        expect(isSameWithStringCompare(123, 123)).toBe(true);
+        expect(isSameWithStringCompare(123, '123')).toBe(true);
+        expect(isSameWithStringCompare(123, ' 123')).toBe(false);
+        expect(isSameWithStringCompare(123, '123 ')).toBe(false);
+        expect(isSameWithStringCompare(123, 123.0)).toBe(true);
+        expect(isSameWithStringCompare(123, 123.1)).toBe(false);
     });
 });

@@ -1,6 +1,6 @@
 import { Filter, Query, Utils } from '@labkey/api';
-import { List, Map, OrderedMap } from 'immutable';
-import React, { PureComponent, ReactNode } from 'react';
+import { List, Map } from 'immutable';
+import React, { FC, PureComponent } from 'react';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 
@@ -9,46 +9,130 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { getSelectedDataDeprecated } from '../../actions';
 
-import { capitalizeFirstChar, caseInsensitive, getCommonDataValues, getUpdatedData } from '../../util/utils';
+import {
+    capitalizeFirstChar,
+    caseInsensitive,
+    getCommonDataValues,
+    getUpdatedData,
+    makeCommaSeparatedString,
+} from '../../util/utils';
 
 import { ComponentsAPIWrapper } from '../../APIWrapper';
 
 import { QueryInfoForm } from './QueryInfoForm';
+import { OperationConfirmationData } from '../entities/models';
+import { SampleOperation } from '../samples/constants';
+import { getOperationNotAllowedMessage, getOperationNotPermittedMessage } from '../samples/utils';
+import { Alert } from '../base/Alert';
+import { Modal } from '../../Modal';
 
 type UpdateRows = (schemaQuery: SchemaQuery, rows: any[], comment?: string) => Promise<any>;
 type UpdateModel = (changes: any) => Promise<void>;
 
-function isUpdateModel(fn: UpdateRows | UpdateModel): fn is UpdateModel {
+function isUpdateModel(fn: UpdateModel | UpdateRows): fn is UpdateModel {
     return fn.length === 1; // UpdateModel has only one parameter
 }
 
+interface SelectionWarningProps {
+    aliquots?: number[];
+    editStatusData: OperationConfirmationData;
+    nounPlural: string;
+    nounSingular: string;
+    sampleOperation?: SampleOperation;
+    selectedCount: number;
+}
+
+export const SelectionWarning: FC<SelectionWarningProps> = props => {
+    const { aliquots, editStatusData, nounPlural, nounSingular, sampleOperation, selectedCount } = props;
+    const totalCount = editStatusData.totalCount;
+    const missingCount = selectedCount - totalCount;
+    const notPermittedCount = editStatusData.notPermitted.length;
+    const messages = [];
+
+    if (aliquots?.length > 0) {
+        const count = aliquots.length;
+        const nounConjunction = count > 1 ? 's were' : ' was';
+        messages.push(
+            `Since ${count} aliquot${nounConjunction} among the selected samples, only the aliquot-editable fields are shown below.`
+        );
+    }
+
+    if (sampleOperation !== undefined && editStatusData.notAllowed.length > 0) {
+        messages.push(getOperationNotAllowedMessage(sampleOperation, editStatusData, aliquots, selectedCount));
+    }
+
+    if (notPermittedCount > 0) {
+        messages.push(getOperationNotPermittedMessage(editStatusData, nounSingular, nounPlural, selectedCount));
+    }
+
+    if (missingCount > 0) {
+        const pronoun = missingCount > 1 ? 'they' : 'it';
+        messages.push(`Cannot edit ${missingCount} of the selected ${nounPlural}, ${pronoun} may have been deleted.`);
+    }
+
+    if (messages.length === 0) return null;
+
+    return (
+        <Alert bsStyle="warning">
+            {messages.map((message, i) => (
+                <div className={i > 0 ? 'top-padding-less' : ''} key={message}>
+                    {message}
+                </div>
+            ))}
+        </Alert>
+    );
+};
+SelectionWarning.displayName = 'SelectionWarning';
+
+/**
+ * Returns undefined if the selection state is invalid. Returns a string if the selection state is invalid (e.g. all
+ * selected items are deleted/missing or the user doesn't have permission to edit any of the selected items).
+ */
+export function errorMessage(
+    editStatusData: OperationConfirmationData,
+    nounPlural: string,
+    nounSingular: string,
+    selectedCount: number
+): string | undefined {
+    if (!editStatusData) return undefined;
+
+    const missingCount = selectedCount - editStatusData.totalCount;
+    const notPermittedCount = editStatusData.notPermitted.length;
+
+    if (missingCount + notPermittedCount !== selectedCount) return undefined;
+
+    const noun = selectedCount > 1 ? nounPlural : nounSingular;
+    const pronoun = selectedCount > 1 ? 'they' : 'it';
+    const parts = [];
+
+    if (notPermittedCount > 0) parts.push(`you do not have the required permissions`);
+
+    if (missingCount > 0) parts.push(`${pronoun} may have been deleted`);
+
+    return `Cannot edit selected ${noun}, ${makeCommaSeparatedString(parts, ', or ', '.')}`;
+}
+
 export interface BulkUpdateFormProps {
+    aliquots?: number[];
     api?: ComponentsAPIWrapper;
     containerFilter?: Query.ContainerFilter;
     disabled?: boolean;
-    header?: ReactNode;
+    editStatusData?: OperationConfirmationData;
     includeCommentField?: boolean;
     itemLabel?: string;
+    nounPlural: string;
+    nounSingular: string;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
     onCancel: () => void;
     onComplete: (data: any, submitForEdit: boolean, auditUserComment?: string) => void;
     onError?: (message: string) => void;
-    onSubmitForEdit?: (
-        updateData: OrderedMap<string, any>,
-        dataForSelection: Map<string, any>,
-        dataIdsForSelection: List<any>,
-        comment?: string
-    ) => any;
-    pluralNoun?: string;
     queryFilters?: Record<string, List<Filter.IFilter>>;
     queryInfo: QueryInfo;
     requiredColumns?: string[]; // Columns we must retrieve data for
+    sampleOperation?: SampleOperation;
     selectedIds: string[];
-    singularNoun?: string;
-    // sortString is used so we render editable grids with the proper sorts when using onSubmitForEdit
-    sortString?: string;
     uniqueFieldKey?: string;
-    updateRows: UpdateRows | UpdateModel;
+    updateRows: UpdateModel | UpdateRows;
     // queryInfo.schemaQuery.viewName is likely undefined (i.e., not the current viewName)
     viewName: string;
 }
@@ -64,8 +148,8 @@ interface State {
 
 export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
     static defaultProps = {
-        pluralNoun: 'rows',
-        singularNoun: 'row',
+        nounPlural: 'rows',
+        nounSingular: 'row',
         includeCommentField: true,
     };
 
@@ -83,7 +167,7 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
     }
 
     componentDidMount = async (): Promise<void> => {
-        const { onCancel, pluralNoun, queryInfo, selectedIds, sortString, viewName, requiredColumns } = this.props;
+        const { onCancel, nounPlural, queryInfo, viewName, requiredColumns } = this.props;
         const { schemaName, name } = queryInfo;
 
         const columns = queryInfo
@@ -96,9 +180,9 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
             const { data, dataIds } = await getSelectedDataDeprecated(
                 schemaName,
                 name,
-                selectedIds,
+                this.getValidSelectedIds(),
                 columns,
-                sortString,
+                undefined,
                 undefined,
                 viewName
             );
@@ -111,9 +195,23 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
             });
         } catch (reason) {
             console.error(reason);
-            this.props.onError?.('There was a problem loading the data for the selected ' + pluralNoun + '.');
+            this.props.onError?.('There was a problem loading the data for the selected ' + nounPlural + '.');
             onCancel();
         }
+    };
+
+    getValidSelectedIds = (): string[] => {
+        const { editStatusData, selectedIds } = this.props;
+
+        if (editStatusData) {
+            const notPermitted = new Set(
+                editStatusData.notPermitted.map(row => caseInsensitive(row, 'RowId').toString(10))
+            );
+            // Only return the permitted IDs. The notAllowed IDs are considered valid because the user can change
+            // values (e.g. sample status) in the form to make them allowed
+            return selectedIds.filter(id => !notPermitted.has(id));
+        }
+        return selectedIds;
     };
 
     getContainerPaths(data: Map<string, any>): string[] {
@@ -130,12 +228,14 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
     }
 
     getSelectionCount(): number {
-        return this.props.selectedIds.length;
+        const { editStatusData, selectedIds } = this.props;
+        if (editStatusData) return editStatusData.totalCount;
+        return selectedIds.length;
     }
 
     getSelectionNoun(): string {
-        const { singularNoun, pluralNoun } = this.props;
-        return this.getSelectionCount() === 1 ? singularNoun.toLowerCase() : pluralNoun.toLowerCase();
+        const { nounSingular, nounPlural } = this.props;
+        return this.getSelectionCount() === 1 ? nounSingular.toLowerCase() : nounPlural.toLowerCase();
     }
 
     getTitle(): string {
@@ -167,16 +267,9 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
         return updateRows(queryInfo.schemaQuery, rows, comment);
     };
 
-    onSubmitForEdit = (updateData: OrderedMap<string, any>, comment?: string) => {
-        const { dataForSelection, dataIdsForSelection } = this.state;
-        // TODO: 100% of usages return Promise.resolve(dataForSelection), so we really don't need to expect
-        //  onSubmitForEdit to return anything.
-        return this.props.onSubmitForEdit(updateData, dataForSelection, dataIdsForSelection, comment);
-    };
-
     renderBulkUpdateHeader() {
-        const { header, onSubmitForEdit } = this.props;
-        if (!header) return null;
+        const { aliquots, editStatusData, nounPlural, nounSingular, sampleOperation, selectedIds } = this.props;
+        if (!editStatusData) return null;
 
         const noun = this.getSelectionNoun();
 
@@ -187,11 +280,16 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
                         Make changes to the selected {noun}. Enable a field to update or remove the value for the
                         selected {noun}.
                     </p>
-                    {this.getSelectionCount() > 1 && onSubmitForEdit && (
-                        <p>To update individual {noun} in this selection group, select "Edit with Grid".</p>
-                    )}
                 </div>
-                {header}
+
+                <SelectionWarning
+                    aliquots={aliquots}
+                    editStatusData={editStatusData}
+                    nounPlural={nounPlural}
+                    nounSingular={nounSingular}
+                    sampleOperation={sampleOperation}
+                    selectedCount={selectedIds.length}
+                />
             </>
         );
     }
@@ -201,15 +299,17 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
         const {
             api,
             containerFilter,
+            disabled,
+            editStatusData,
+            includeCommentField,
+            nounPlural,
+            nounSingular,
+            onAdditionalFormDataChange,
             onCancel,
             onComplete,
-            pluralNoun,
             queryFilters,
             queryInfo,
-            onAdditionalFormDataChange,
-            disabled,
-            includeCommentField,
-            onSubmitForEdit,
+            selectedIds,
         } = this.props;
         const fileFields = queryInfo.columns.valueArray.filter(col => col.isFileInput).map(col => col.name);
         const fieldValues =
@@ -221,9 +321,17 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
         // if selections are from multiple containerPaths, disable the lookup and file field inputs
         const containerPath = containerPaths?.length === 1 ? containerPaths[0] : undefined;
         const preventCrossFolderEnable = containerPaths?.length > 1;
-
-        const _onSubmitForEdit = onSubmitForEdit ? this.onSubmitForEdit : undefined;
         const values = formData ? { ...fieldValues, ...formData.toJS() } : fieldValues;
+        const error = errorMessage(editStatusData, nounPlural, nounSingular, selectedIds.length);
+
+        if (error) {
+            const noun = capitalizeFirstChar(selectedIds.length === 1 ? nounSingular : nounPlural);
+            return (
+                <Modal cancelText="Dismiss" onCancel={onCancel} title={`Cannot Edit Selected ${noun}`}>
+                    <p>{error}</p>
+                </Modal>
+            );
+        }
 
         return (
             <QueryInfoForm
@@ -235,28 +343,27 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
                 containerFilter={containerFilter}
                 containerPath={containerPath}
                 disabled={disabled}
-                preventCrossFolderEnable={preventCrossFolderEnable}
                 fieldValues={values}
                 header={this.renderBulkUpdateHeader()}
                 includeCommentField={includeCommentField}
                 includeCountField={false}
                 initiallyDisableFields
                 isLoading={isLoadingDataForSelection}
-                onHide={onCancel}
-                operation={Operation.update}
+                onAdditionalFormDataChange={onAdditionalFormDataChange}
                 onFormChangeWithData={this.onFormChangeWithData}
-                onSubmitForEdit={_onSubmitForEdit}
+                onHide={onCancel}
                 onSubmit={this.onSubmit}
                 onSuccess={onComplete}
-                renderFileInputs
-                queryInfo={queryInfo}
+                operation={Operation.update}
+                pluralNoun={nounPlural}
+                preventCrossFolderEnable={preventCrossFolderEnable}
                 queryFilters={queryFilters}
+                queryInfo={queryInfo}
+                renderFileInputs
                 showLabelAsterisk
                 submitForEditText="Edit with Grid"
-                submitText={`Update ${capitalizeFirstChar(pluralNoun)}`}
-                pluralNoun={pluralNoun}
+                submitText={`Update ${capitalizeFirstChar(nounPlural)}`}
                 title={this.getTitle()}
-                onAdditionalFormDataChange={onAdditionalFormDataChange}
             />
         );
     }

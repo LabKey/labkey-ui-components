@@ -1,6 +1,23 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.61.0
+*Released*: 8 September 2025
+- QueryModel.getSelectedIds: optimize when filterIds are not passed
+- EntityMoveModal: Don't use selectionKey, simplify props, improve error messaging
+- Refactor PicklistEditModal, ChoosePicklistModal
+  - Don't rely on selectionKey
+  - Don't rely on QueryModel
+- Add usePicklistSelections to get rid of duplicate selection loading logic
+- Update AddToPicklistMenuItem, PicklistCreationMenuItem
+- BulkUpdateForm
+  - Remove props: header, onSubmitForEdit, sortString
+  - Rename props: pluralNoun, singularNoun -> nounPlural, nounSingular
+  - Add props: aliquots, sampleOperation, editStatusData
+  - Render errors
+- QueryAPIWrapper: remove getSelection
+- EntityServerAPIWrapper.getCrossFolderSelectionResult: remove useSnapshotSelection argument
+
 ### version 6.60.1
 *Released*: 3 September 2025
 - Issue 53742: Sample Manager: Unable to perform actions from various pages on sample type with a '/'

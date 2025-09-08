@@ -1841,7 +1841,7 @@ export {
     wrapDraggable,
 };
 
-export type { ClearSelectedOptions, ReplaceSelectedOptions, SelectionResponse } from './internal/actions';
+export type { ClearSelectedOptions, ReplaceSelectedOptions } from './internal/actions';
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { ComponentsAPIWrapper } from './internal/APIWrapper';
@@ -1985,7 +1985,7 @@ export type { QueryParamValue } from './internal/url/AppURL';
 export type { AppRouteResolver } from './internal/url/models';
 export type { URLMapper } from './internal/url/URLResolver';
 export type { NavigateFn } from './internal/url/useAppNavigate';
-export type { Loader } from './internal/useLoadableState';
+export type { LoadableState, Loader } from './internal/useLoadableState';
 export type { ContainerFormats, DateTimeSettingProp } from './internal/util/Date';
 export type { MeasurementUnit } from './internal/util/measurement';
 export type { UseRequestHandler } from './internal/util/RequestHandler';

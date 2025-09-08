@@ -12,8 +12,6 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ColorIcon } from '../base/ColorIcon';
 import { Tab, Tabs } from '../../Tabs';
 
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 
 import { useAppContext } from '../../AppContext';
@@ -26,6 +24,9 @@ import { PICKLIST_KEY } from '../../app/constants';
 
 import { addSamplesToPicklist, getPicklistsForInsert, SampleTypeCount } from './actions';
 import { Picklist } from './models';
+import { usePicklistSampleSelections } from './usePicklistSampleSelections';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { useLoadableState } from '../../useLoadableState';
 
 interface PicklistListProps {
     activeItem: Picklist;
@@ -50,14 +51,14 @@ export const PicklistList: FC<PicklistListProps> = memo(props => {
             {items.map((item, index) => (
                 <ChoicesListItem
                     active={activeItem?.listId === item.listId}
-                    index={index}
-                    key={item.listId}
-                    label={item.name}
-                    onSelect={onClick}
                     componentRight={
                         showSharedIcon &&
                         item.isPublic() && <span className="fa fa-users pull-right" title="Team Picklist" />
                     }
+                    index={index}
+                    key={item.listId}
+                    label={item.name}
+                    onSelect={onClick}
                 />
             ))}
             {items.length === 0 && <p className="choices-list__empty-message">{emptyMessage}</p>}
@@ -95,16 +96,14 @@ export const PicklistItemsSummary: FC<PicklistItemsSummaryProps> = memo(({ pickl
     const hasItems = picklist.ItemCount > 0;
 
     return (
-        <div key="picklist-items-summary">
-            <div key="header" className="picklist-items__header">
-                Sample Counts
-            </div>
+        <div>
+            <div className="picklist-items__header">Sample Counts</div>
             {!isLoaded && <LoadingSpinner />}
             {isLoaded && (
                 <>
                     {hasCounts &&
                         countsByType.map(countData => (
-                            <div key={countData.SampleType} className="row picklist-items__row">
+                            <div className="row picklist-items__row" key={countData.SampleType}>
                                 <span className="col-md-1">
                                     <ColorIcon useSmall value={countData.LabelColor} />
                                 </span>
@@ -114,13 +113,9 @@ export const PicklistItemsSummary: FC<PicklistItemsSummaryProps> = memo(({ pickl
                                 <span className="col-md-4 picklist-items__item-count">{countData.ItemCount}</span>
                             </div>
                         ))}
-                    {hasItems && !hasCounts && (
-                        <div key="summary">{Utils.pluralize(picklist.ItemCount, 'sample', 'samples')}</div>
-                    )}
+                    {hasItems && !hasCounts && <div>{Utils.pluralize(picklist.ItemCount, 'sample', 'samples')}</div>}
                     {!hasItems && !hasCounts && (
-                        <div key="summary" className="choices-detail__empty-message">
-                            This list is empty.
-                        </div>
+                        <div className="choices-detail__empty-message">This list is empty.</div>
                     )}
                 </>
             )}
@@ -202,11 +197,11 @@ interface ChoosePicklistModalDisplayProps {
     loading: boolean;
     picklistLoadError: ReactNode;
     picklists: Picklist[];
-    validCount: number;
+    sampleIds: number[];
 }
 
 // export for jest testing
-export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePicklistModalDisplayProps> = memo(
+export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalDisplayProps & ChoosePicklistModalProps> = memo(
     props => {
         const {
             picklists,
@@ -215,11 +210,10 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             onCancel,
             afterAddToPicklist,
             user,
-            selectionKey,
             sampleIds,
             metricFeatureArea,
-            validCount,
         } = props;
+        const selectionCount = sampleIds?.length ?? 0;
         const [search, setSearch] = useState<string>('');
         const [error, setError] = useState<string>(undefined);
         const [submitting, setSubmitting] = useState<boolean>(false);
@@ -261,7 +255,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             let numAdded = 0;
 
             try {
-                const response = await addSamplesToPicklist(activeItem.name, false, selectionKey, sampleIds);
+                const response = await addSamplesToPicklist(activeItem.name, sampleIds);
                 api.query.incrementClientSideMetricCount(metricFeatureArea, 'addSamplesToPicklist');
                 numAdded = response.rows.length;
                 setSubmitting(false);
@@ -273,22 +267,17 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
 
             createNotification({
                 message: (
-                    <AddedToPicklistNotification picklist={activeItem} numAdded={numAdded} numSelected={validCount} />
+                    <AddedToPicklistNotification
+                        numAdded={numAdded}
+                        numSelected={sampleIds.length}
+                        picklist={activeItem}
+                    />
                 ),
                 alertClass: numAdded === 0 ? 'info' : 'success',
             });
 
             afterAddToPicklist();
-        }, [
-            createNotification,
-            activeItem,
-            validCount,
-            afterAddToPicklist,
-            selectionKey,
-            sampleIds,
-            api.query,
-            metricFeatureArea,
-        ]);
+        }, [createNotification, activeItem, afterAddToPicklist, sampleIds, api.query, metricFeatureArea]);
 
         const closeModal = useCallback(() => {
             setError(undefined);
@@ -316,7 +305,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             if (isSearching) {
                 suffix = ' matching your search';
             }
-            suffix += ' to add ' + (validCount === 1 ? 'this sample to.' : 'these samples to.');
+            suffix += ' to add ' + (selectionCount === 1 ? 'this sample to.' : 'these samples to.');
             myEmptyMessage += suffix;
             teamEmptyMessage += suffix;
             if (!isSearching) {
@@ -336,7 +325,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                     <div className="row">
                         <div className="col-md-12">
                             <Alert bsStyle="info">
-                                Adding {Utils.pluralize(validCount, 'sample', 'samples')} to selected picklist.{' '}
+                                Adding {Utils.pluralize(selectionCount, 'sample', 'samples')} to selected picklist.{' '}
                             </Alert>
                         </div>
                     </div>
@@ -358,9 +347,9 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                                     <PicklistList
                                         activeItem={activeItem}
                                         emptyMessage={myEmptyMessage}
+                                        items={myItems}
                                         onSelect={setActiveItem}
                                         showSharedIcon
-                                        items={myItems}
                                     />
                                 </Tab>
 
@@ -368,8 +357,8 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                                     <PicklistList
                                         activeItem={activeItem}
                                         emptyMessage={teamEmptyMessage}
-                                        onSelect={setActiveItem}
                                         items={teamItems}
+                                        onSelect={setActiveItem}
                                     />
                                 </Tab>
                             </Tabs>
@@ -391,8 +380,8 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             <Modal
                 bsSize="lg"
                 canConfirm={activeItem !== undefined && !loading}
-                confirmText="Add to Picklist"
                 confirmingText="Adding to Picklist..."
+                confirmText="Add to Picklist"
                 isConfirming={submitting}
                 onCancel={closeModal}
                 onConfirm={onAddClicked}
@@ -409,122 +398,36 @@ ChoosePicklistModalDisplay.displayName = 'ChoosePicklistModalDisplay';
 interface ChoosePicklistModalProps {
     afterAddToPicklist: () => void;
     metricFeatureArea?: string;
-    numSelected: number;
     onCancel: (cancelToCreate?: boolean) => void;
-    queryModel?: QueryModel;
     sampleFieldKey?: string;
-    sampleIds?: number[];
-    selectionKey?: string;
+    schemaQuery: SchemaQuery;
+    selectedRowIds?: number[] | string[];
     user: User;
 }
 
 export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
-    const { numSelected, selectionKey, queryModel, sampleFieldKey, sampleIds } = props;
-    const [error, setError] = useState<string>();
-    const [items, setItems] = useState<Picklist[]>([]);
-    const [idsLoading, setIdsLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
-    const [itemsLoading, setItemsLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
-    const [ids, setIds] = useState<number[]>(sampleIds);
-    const [validCount, setValidCount] = useState<number>(numSelected);
-    const [selectionsLoading, setSelectionsLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
-    const useSnapshotSelection = queryModel.filterArray.length > 0;
-    const schemaQuery = queryModel.schemaQuery;
-    const selections = queryModel.selections;
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- intSelections is keyed off of selections because that's
-    // what is what backs the getter. Without this useMemo we'll generate a new intSelections every render cycle and
-    // trigger an infinite number of calls to getLookupRowIdsFromSelection in the useEffect below.
-    const intSelections = useMemo(() => queryModel.intSelections, [selections]);
-    const { api } = useAppContext();
-
-    useEffect(() => {
-        (async () => {
-            if (selectionsLoading === LoadingState.INITIALIZED) {
-                setItemsLoading(LoadingState.LOADING);
-                try {
-                    const picklists = await getPicklistsForInsert();
-                    setItems(picklists);
-                } catch (e) {
-                    console.error(e);
-                    setError(resolveErrorMessage(e) ?? 'Failed to retrieve picklists.');
-                }
-                setItemsLoading(LoadingState.LOADED);
-            }
-            if (useSnapshotSelection) {
-                if (!queryModel?.isLoadingSelections) {
-                    try {
-                        await api.query.setSnapshotSelections(queryModel.selectionKey, [...selections]);
-                    } catch (reason) {
-                        console.error(
-                            'There was a problem loading the filtered selection data. Your actions will not obey these filters.',
-                            reason
-                        );
-                    }
-                    setSelectionsLoading(LoadingState.LOADED);
-                }
-            } else {
-                setSelectionsLoading(LoadingState.LOADED);
-            }
-        })();
-    }, [
-        api.query,
-        selectionsLoading,
-        queryModel?.selectionKey,
-        selections,
-        queryModel?.isLoadingSelections,
-        useSnapshotSelection,
-    ]);
-
-    useEffect(() => {
-        setIdsLoading(LoadingState.LOADING);
-        if (selectionsLoading === LoadingState.LOADED) {
-            (async () => {
-                // This method is responsible for:
-                // 1. Determining the sample IDs for the set of samples to be added to the picklist.
-                // 2. Verifying what operations are allowed for those samples.
-                let ids_: number[];
-                if (sampleIds) {
-                    ids_ = sampleIds;
-                } else if (sampleFieldKey && schemaQuery) {
-                    // Look up SampleIds from the selected row ids.
-                    // Using sampleFieldKey as proxy flag to determine if lookup is needed.
-                    try {
-                        ids_ = await api.samples.getLookupRowIdsFromSelection(
-                            schemaQuery.schemaName,
-                            schemaQuery.queryName,
-                            intSelections,
-                            sampleFieldKey
-                        );
-                    } catch (e) {
-                        setError(resolveErrorMessage(e) ?? 'Failed to retrieve picklist selection.');
-                    }
-                } else if (intSelections) {
-                    ids_ = intSelections;
-                }
-                setIds(ids_);
-                setValidCount(ids_?.length ?? 0);
-                setIdsLoading(LoadingState.LOADED);
-            })();
-        }
-    }, [
-        api.samples,
-        intSelections,
-        selectionsLoading,
-        sampleFieldKey,
-        sampleIds,
-        schemaQuery,
-        selectionKey,
-        useSnapshotSelection,
-    ]);
+    const { afterAddToPicklist, onCancel, sampleFieldKey, schemaQuery, selectedRowIds, user } = props;
+    const {
+        error: sampleIdsError,
+        loadingState: sampleIdsLoadingState,
+        value: sampleIds,
+    } = usePicklistSampleSelections(selectedRowIds, sampleFieldKey, schemaQuery);
+    const {
+        error: picklistError,
+        loadingState: picklistLoadingState,
+        value: picklists,
+    } = useLoadableState(getPicklistsForInsert);
 
     return (
         <ChoosePicklistModalDisplay
-            {...props}
-            loading={isLoading(itemsLoading) || isLoading(idsLoading) || isLoading(selectionsLoading)}
-            picklists={items}
-            picklistLoadError={error}
-            sampleIds={ids}
-            selectionKey={selectionKey}
-            validCount={validCount}
+            afterAddToPicklist={afterAddToPicklist}
+            loading={isLoading(picklistLoadingState, sampleIdsLoadingState)}
+            onCancel={onCancel}
+            picklistLoadError={picklistError || sampleIdsError}
+            picklists={picklists ?? []}
+            sampleIds={sampleIds}
+            schemaQuery={schemaQuery}
+            user={user}
         />
     );
 });

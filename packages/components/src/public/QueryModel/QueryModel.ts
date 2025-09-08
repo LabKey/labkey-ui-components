@@ -720,8 +720,9 @@ export class QueryModel {
         }
 
         // remove duplicate
-        const fieldKeysCleaned = [],
-            fieldKeysLc = new Set();
+        const fieldKeysLc = new Set();
+        const fieldKeysCleaned = [];
+
         fieldKeys.forEach(fieldKey => {
             if (!fieldKeysLc.has(fieldKey.toLowerCase())) {
                 fieldKeysCleaned.push(fieldKey);
@@ -1015,7 +1016,9 @@ export class QueryModel {
      */
     getSelectedIds(filterIds: number[] = []): string[] {
         if (this.selections) {
-            return Array.from(this.selections).filter(s => filterIds.indexOf(parseInt(s, 10)) === -1);
+            const selections = Array.from(this.selections);
+            if (filterIds.length > 0) return selections.filter(s => filterIds.indexOf(parseInt(s, 10)) === -1);
+            return selections;
         }
         return undefined;
     }

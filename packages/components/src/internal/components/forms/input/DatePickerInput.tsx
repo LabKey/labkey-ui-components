@@ -159,7 +159,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
     }
 
     onChange = (date: Date, event?: any, raw?: boolean): void => {
-        const { onChange, formsy, hideTime, inlineEdit, queryColumn } = this.props;
+        const { onChange, formsy, inlineEdit, queryColumn } = this.props;
 
         if (!event && !raw && date?.getMilliseconds() > 0) {
             date.setMilliseconds(0); // react-datepicker milliseconds are not 0 when selecting time
@@ -197,11 +197,6 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         }
     };
 
-    getDateFormat(): string {
-        const { queryColumn, hideTime } = this.props;
-        return getPickerDateAndTimeFormat(queryColumn, hideTime).dateFormat;
-    }
-
     onIconClick = (): void => {
         this.input.current?.setFocus();
     };
@@ -209,6 +204,26 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
     onSelect = (): void => {
         // focus the input so an onBlur action gets triggered after selection has been made
         this.input.current?.setFocus();
+    };
+
+    /**
+     * This method returns the current value OR the current date with seconds and milliseconds set to zero. It is
+     * important to set milliseconds to zero because there is a bug in react-datepicker that causes it to set the
+     * milliseconds to the current milliseconds when the user first selects a value, even if the UI shows 0
+     * milliseconds. If there is a pre-existing value, or openToDate has zero ms, then the selections will always be
+     * correct.
+     *
+     * See Issue 53577
+     */
+    getOpenToDate = (): Date => {
+        const { selectedDate } = this.state;
+
+        if (selectedDate) return selectedDate;
+
+        const now = new Date();
+        now.setSeconds(0);
+        now.setMilliseconds(0);
+        return now;
     };
 
     render(): ReactNode {
@@ -256,6 +271,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                 onChange={this.onChange}
                 onChangeRaw={allowRelativeInput || isTimeOnly ? this.onChangeRaw : undefined}
                 onKeyDown={onKeyDown}
+                openToDate={this.getOpenToDate()}
                 onMonthChange={this.onChange}
                 placeholderText={placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`}
                 selected={invalid ? null : selectedDate}

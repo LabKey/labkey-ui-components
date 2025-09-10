@@ -258,7 +258,6 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         const isTimeOnly = queryColumn.isTimeColumn;
         const picker = (
             <DatePicker
-                ref={this.input}
                 autoComplete="off"
                 autoFocus={autoFocus}
                 className={inputClassName}
@@ -267,23 +266,24 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                 id={queryColumn.fieldKey}
                 isClearable={isClearable}
                 name={name ? name : queryColumn.fieldKey}
+                onBlur={inlineEdit ? onBlur : undefined}
                 onCalendarClose={onCalendarClose}
                 onChange={this.onChange}
                 onChangeRaw={allowRelativeInput || isTimeOnly ? this.onChangeRaw : undefined}
                 onKeyDown={onKeyDown}
-                openToDate={this.getOpenToDate()}
                 onMonthChange={this.onChange}
+                onSelect={inlineEdit ? this.onSelect : undefined}
+                openToDate={this.getOpenToDate()}
                 placeholderText={placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`}
+                ref={this.input}
                 selected={invalid ? null : selectedDate}
+                shouldCloseOnSelect={inlineEdit ? false : undefined}
                 showTimeSelect={!hideTime && (isDateTimeCol(queryColumn) || isTimeOnly) && !validValueInvalidStart}
                 showTimeSelectOnly={!hideTime && isTimeOnly}
-                timeIntervals={isTimeOnly ? 10 : 30}
                 timeFormat={timeFormat}
+                timeIntervals={isTimeOnly ? 10 : 30}
                 value={allowRelativeInput && !isTimeOnly && isRelativeDateFilterValue(value) ? value : undefined}
                 wrapperClassName={inputWrapperClassName}
-                onSelect={inlineEdit ? this.onSelect : undefined}
-                onBlur={inlineEdit ? onBlur : undefined}
-                shouldCloseOnSelect={inlineEdit ? false : undefined}
             />
         );
 
@@ -309,6 +309,8 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                     </label>
                 ) : (
                     <FieldLabel
+                        column={queryColumn}
+                        isDisabled={isDisabled}
                         label={label}
                         labelOverlayProps={{
                             isFormsy: false,
@@ -319,8 +321,6 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                         }}
                         showLabel={showLabel}
                         showToggle={allowDisable}
-                        column={queryColumn}
-                        isDisabled={isDisabled}
                         toggleProps={{
                             onClick: this.toggleDisabled,
                         }}

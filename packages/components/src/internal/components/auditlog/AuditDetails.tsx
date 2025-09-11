@@ -86,7 +86,7 @@ export class AuditDetails extends Component<Props> {
                                 iconComponent={<i className="original-value-icon fa fa-info-circle left-padding" />}
                                 placement="top"
                             >
-                                <div className="ws-pre-wrap original-value-display">{providedVals}</div>
+                                <div className="ws-pre-wrap">{providedVals}</div>
                             </LabelHelpTip>
                         )}
                     </span>

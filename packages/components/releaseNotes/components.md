@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages
 
 ### version 6.61.1
-*Released*: 10 September 2025
+*Released*: 12 September 2025
 - DatePickerInput: don't add milliseconds when entering current time (Issue 53577)
 
 ### version 6.61.0

@@ -131,10 +131,11 @@ export function getPickerTimeFormatWithPrecision(
     return timeFormat;
 }
 
-// convert rawDateTimeFormat to adjust precision
-// for example:
-// 'yyyy-MM-dd HH:mm' -> 'yyyy-MM-dd HH:mm:ss' if showSeconds is true and showMilliSeconds is false
-// 'yyyy-MM-dd hh:mm a' -> 'yyyy-MM-dd hh:mm:ss.SSS a' if showSeconds is true and showMilliSeconds is true
+/**
+ * This method is takes a date format, and adds additional precision to it as necessary:
+ *  'yyyy-MM-dd HH:mm' -> 'yyyy-MM-dd HH:mm:ss' if showSeconds is true and showMilliSeconds is false
+ *  'yyyy-MM-dd hh:mm a' -> 'yyyy-MM-dd hh:mm:ss.SSS a' if showSeconds is true and showMilliSeconds is true
+ */
 export function getPickerFormatWithPrecision(
     rawDateTimeFormat: string,
     showMinute?: boolean,
@@ -151,6 +152,21 @@ export function getPickerFormatWithPrecision(
     ).trim();
 }
 
+/**
+ * Given a QueryColumn and an initDate value this method will return a date and time format. By default, we will return
+ * the date/time format from the QueryColumn, however, in some cases we may return a date/time format that has higher
+ * precision (see getPickerFormatWithPrecision above).
+ *
+ * Changing the precision of a date or time format is necessary for a few reasons:
+ *  - LabKey uses date formats for display reasons only, we actually always store fully precise dates and times
+ *  - We want to allow users to enter very precise dates and times if needed, and if they do enter a very precise date
+ *  then we want to render what they entered, so they do not falsely believe that we are truncating their data
+ *  - If the user enters a date/time that matches the existing format, we want to display it in that format, in order
+ *  to reduce visual clutter (react-datepicker looks worse when using highly precise date formats)
+ *  - react-datepicker uses date formats as display and value formats, if you pass a strict date format it will only
+ *  give you values that match the format, it will truncate more precise values entered by users, which is a data
+ *  integrity problem (See Issue 52820).
+ */
 export function getPickerDateAndTimeFormat(
     column: QueryColumn,
     hideTime?: boolean,

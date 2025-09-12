@@ -16,6 +16,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - `SampleAmountEditModal` updated so all users go through `updateSampleStorageData`
   - Mark `RawAmount` and `RawUnits` as ignored system fields
 
+### version 6.61.1
+*Released*: 12 September 2025
+- DatePickerInput: don't add milliseconds when entering current time (Issue 53577)
+
 ### version 6.61.0
 *Released*: 8 September 2025
 - QueryModel.getSelectedIds: optimize when filterIds are not passed

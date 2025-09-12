@@ -158,12 +158,8 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         return getDateFromISO(value, queryColumn, allowRelativeInput, minDate);
     }
 
-    onChange = (date: Date, event?: any, raw?: boolean): void => {
-        const { onChange, formsy, hideTime, inlineEdit, queryColumn } = this.props;
-
-        if (!event && !raw && date?.getMilliseconds() > 0) {
-            date.setMilliseconds(0); // react-datepicker milliseconds are not 0 when selecting time
-        }
+    onChange = (date: Date, event?: any): void => {
+        const { onChange, formsy, inlineEdit, queryColumn } = this.props;
 
         this.setState({ selectedDate: date, invalid: false, invalidStart: false });
 
@@ -188,7 +184,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
 
         if (queryColumn.isTimeColumn) {
             // Issue 50010: Time picker enters the wrong time if a time field has a format set
-            this.onChange(parseTime(value), undefined, true);
+            this.onChange(parseTime(value), undefined);
         } else if (isRelativeDateFilterValue(value)) {
             this.setState({ relativeInputValue: value });
             this.props.onChange?.(value);
@@ -197,11 +193,6 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         }
     };
 
-    getDateFormat(): string {
-        const { queryColumn, hideTime } = this.props;
-        return getPickerDateAndTimeFormat(queryColumn, hideTime).dateFormat;
-    }
-
     onIconClick = (): void => {
         this.input.current?.setFocus();
     };
@@ -209,6 +200,26 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
     onSelect = (): void => {
         // focus the input so an onBlur action gets triggered after selection has been made
         this.input.current?.setFocus();
+    };
+
+    /**
+     * This method returns the current value OR the current date with seconds and milliseconds set to zero. It is
+     * important to set milliseconds to zero because there is a bug in react-datepicker that causes it to set the
+     * milliseconds to the current milliseconds when the user first selects a value, even if the UI shows 0
+     * milliseconds. If there is a pre-existing value, or openToDate has zero ms, then the selections will always be
+     * correct.
+     *
+     * See Issue 53577
+     */
+    getOpenToDate = (): Date => {
+        const { selectedDate } = this.state;
+
+        if (selectedDate) return selectedDate;
+
+        const now = new Date();
+        now.setSeconds(0);
+        now.setMilliseconds(0);
+        return now;
     };
 
     render(): ReactNode {
@@ -243,7 +254,6 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         const isTimeOnly = queryColumn.isTimeColumn;
         const picker = (
             <DatePicker
-                ref={this.input}
                 autoComplete="off"
                 autoFocus={autoFocus}
                 className={inputClassName}
@@ -252,22 +262,24 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                 id={queryColumn.fieldKey}
                 isClearable={isClearable}
                 name={name ? name : queryColumn.fieldKey}
+                onBlur={inlineEdit ? onBlur : undefined}
                 onCalendarClose={onCalendarClose}
                 onChange={this.onChange}
                 onChangeRaw={allowRelativeInput || isTimeOnly ? this.onChangeRaw : undefined}
                 onKeyDown={onKeyDown}
                 onMonthChange={this.onChange}
+                onSelect={inlineEdit ? this.onSelect : undefined}
+                openToDate={this.getOpenToDate()}
                 placeholderText={placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`}
+                ref={this.input}
                 selected={invalid ? null : selectedDate}
+                shouldCloseOnSelect={inlineEdit ? false : undefined}
                 showTimeSelect={!hideTime && (isDateTimeCol(queryColumn) || isTimeOnly) && !validValueInvalidStart}
                 showTimeSelectOnly={!hideTime && isTimeOnly}
-                timeIntervals={isTimeOnly ? 10 : 30}
                 timeFormat={timeFormat}
+                timeIntervals={isTimeOnly ? 10 : 30}
                 value={allowRelativeInput && !isTimeOnly && isRelativeDateFilterValue(value) ? value : undefined}
                 wrapperClassName={inputWrapperClassName}
-                onSelect={inlineEdit ? this.onSelect : undefined}
-                onBlur={inlineEdit ? onBlur : undefined}
-                shouldCloseOnSelect={inlineEdit ? false : undefined}
             />
         );
 
@@ -293,6 +305,8 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                     </label>
                 ) : (
                     <FieldLabel
+                        column={queryColumn}
+                        isDisabled={isDisabled}
                         label={label}
                         labelOverlayProps={{
                             isFormsy: false,
@@ -303,8 +317,6 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                         }}
                         showLabel={showLabel}
                         showToggle={allowDisable}
-                        column={queryColumn}
-                        isDisabled={isDisabled}
                         toggleProps={{
                             onClick: this.toggleDisabled,
                         }}

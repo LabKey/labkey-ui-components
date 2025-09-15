@@ -190,15 +190,6 @@ function inputCellFactory(
         // If we're updating then we want to use the container path from each row if present
         if (forUpdate && rowContainer) containerPath = rowContainer;
 
-        let linkedValues;
-        if (columnMetadata?.getFilteredLookupKeys) {
-            const linkedFieldKey = editorModel.getFieldKeyByIndex(columnMetadata.linkedColInd);
-            linkedValues = editorModel
-                .getValue(linkedFieldKey, rowIdx)
-                .map(vd => vd.raw)
-                .toArray();
-        }
-
         const { isSparseSelection, selectionCells } = editorModel;
         const renderDragHandle = !isSparseSelection && editorModel.lastSelection(fieldKey, rowIdx);
         let inSelection = editorModel.inSelection(fieldKey, rowIdx);
@@ -256,7 +247,6 @@ function inputCellFactory(
                     selection={inSelection}
                     renderDragHandle={renderDragHandle}
                     values={editorModel.getValue(fieldKey, rowIdx)}
-                    linkedValues={linkedValues}
                     containerPath={containerPath}
                 />
             </td>

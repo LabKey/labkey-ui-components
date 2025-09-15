@@ -178,7 +178,6 @@ export interface CellProps extends SharedProps {
     containerPath?: string;
     focused?: boolean;
     forUpdate: boolean;
-    linkedValues?: any[];
     name?: string;
     readOnly?: boolean;
     renderDragHandle?: boolean;
@@ -187,11 +186,7 @@ export interface CellProps extends SharedProps {
     values?: List<ValueDescriptor>;
 }
 
-interface State {
-    filteredLookupKeys?: List<any>;
-}
-
-export class Cell extends React.PureComponent<CellProps, State> {
+export class Cell extends React.PureComponent<CellProps, undefined> {
     private changeTO: number;
     private displayEl: React.RefObject<HTMLDivElement>;
     // This is used to record the dimensions of the cell before focusing so that the
@@ -216,7 +211,6 @@ export class Cell extends React.PureComponent<CellProps, State> {
 
     constructor(props: CellProps) {
         super(props);
-        this.state = { filteredLookupKeys: props.columnMetadata?.filteredLookupKeys };
         this.displayEl = React.createRef();
         this.preFocusDOMRect = React.createRef();
     }
@@ -246,25 +240,12 @@ export class Cell extends React.PureComponent<CellProps, State> {
             if (prevProps.focused) {
                 this.preFocusDOMRect.current = null;
             }
-            if (!prevProps.selected) {
-                this.loadFilteredLookupKeys();
-            }
         }
     }
 
     focusCell = (colIdx: number, rowIdx: number, clearValue?: boolean): void => {
         this.preFocusDOMRect.current = this.displayEl?.current?.getBoundingClientRect();
         this.props.cellActions.focusCell(colIdx, rowIdx, clearValue);
-    };
-
-    loadFilteredLookupKeys = async (): Promise<void> => {
-        const { columnMetadata, linkedValues, readOnly } = this.props;
-
-        if (!columnMetadata?.getFilteredLookupKeys || readOnly) return;
-
-        const linkedFilteredLookupKeys = await columnMetadata.getFilteredLookupKeys(linkedValues);
-
-        this.setState({ filteredLookupKeys: linkedFilteredLookupKeys });
     };
 
     handleSelectionBlur = (): void => {
@@ -613,7 +594,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     defaultInputValue={this.recordedKeys}
                     disabled={this.isReadOnly}
                     lookupValueFilters={columnMetadata?.lookupValueFilters}
-                    filteredLookupKeys={this.state.filteredLookupKeys}
+                    filteredLookupKeys={columnMetadata?.filteredLookupKeys}
                     filteredLookupValues={columnMetadata?.filteredLookupValues}
                     forUpdate={forUpdate}
                     modifyCell={cellActions.modifyCell}

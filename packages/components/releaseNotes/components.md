@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 53926: More custom assay queries to assay schema
+
 ### version 6.61.1
 *Released*: 12 September 2025
 - DatePickerInput: don't add milliseconds when entering current time (Issue 53577)

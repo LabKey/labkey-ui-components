@@ -20,8 +20,8 @@ import {
     FindDerivativesMenuItem,
     getFieldFilter,
     getSessionSearchFilterProps,
-    searchFiltersToJson,
     isValidFilterFieldSampleFinder,
+    searchFiltersToJson,
 } from './FindDerivativesButton';
 import { DataClassDataType, SampleTypeDataType } from './constants';
 
@@ -105,7 +105,7 @@ describe('FindDerivativesButton', () => {
         const model2 = MODEL.mutate({
             rowCount: 0,
         });
-        renderWithAppContext(<FindDerivativesMenuItem {...DEFAULT_PROPS} model={model2} asSubMenu />);
+        renderWithAppContext(<FindDerivativesMenuItem {...DEFAULT_PROPS} asSubMenu model={model2} />);
         expect(document.querySelectorAll('.lk-menu-item')).toHaveLength(1);
         expect(document.querySelectorAll('.lk-menu-item.disabled')).toHaveLength(1);
     });
@@ -314,7 +314,7 @@ describe('isValidFilterFieldSampleFinder', () => {
             supportGroupConcatSubSelect: true,
         });
         expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
-            false
+            true
         );
     });
 

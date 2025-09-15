@@ -1,6 +1,6 @@
 import { immerable } from 'immer';
 
-export enum BASE_UNITS {
+export enum UNITS_KIND {
     COUNT = 'Count',
     MASS = 'Mass',
     VOLUME = 'Volume',
@@ -15,7 +15,7 @@ export class UnitModel {
 
     constructor(value: number, unitStr: string) {
         const unit = MEASUREMENT_UNITS[unitStr?.toLowerCase()] || null;
-        Object.assign(this, {value, unitStr, unit});
+        Object.assign(this, { value, unitStr, unit });
     }
 
     isSupportedUnitType(): boolean {
@@ -28,7 +28,7 @@ export class UnitModel {
         }
 
         const newUnit: MeasurementUnit = MEASUREMENT_UNITS[newUnitStr.toLowerCase()];
-        return newUnit?.baseUnit == this.unit?.baseUnit;
+        return newUnit?.kind == this.unit?.kind;
     }
 
     as(newUnitStr: string): UnitModel {
@@ -47,27 +47,6 @@ export class UnitModel {
 
         const newValue = this.value * (this.unit.ratio / newUnit.ratio);
         return new UnitModel(parseFloat(newValue.toFixed(newUnit.displayPrecision)), newUnit.label.toLowerCase());
-    }
-
-    add(deltaValue: number, deltaUnitStr?: string) {
-        let deltaUnit: MeasurementUnit = this.unit;
-        if (deltaUnitStr) {
-            if (!this.canConvert(deltaUnitStr)) {
-                throw new Error('Cannot add "' + deltaUnitStr + '" to "' + this.unit?.label + '"');
-            }
-
-            deltaUnit = MEASUREMENT_UNITS[deltaUnitStr.toLowerCase()];
-            if (!deltaUnit) {
-                throw new Error('Unit type not supported "' + deltaUnitStr + '"');
-            }
-        }
-
-        if (!this.unit) {
-            return new UnitModel(this.value + deltaValue, this.unit?.label?.toLowerCase());
-        }
-
-        const newValue = this.value + deltaValue * (deltaUnit.ratio / this.unit.ratio);
-        return new UnitModel(newValue, this.unit.label.toLowerCase());
     }
 
     compareTo(other: UnitModel) {
@@ -92,19 +71,25 @@ export class UnitModel {
     }
 
     toString(): string {
-        return this.value + (this.unit ? (' ' + this.unit.label) : '');
+        return this.value + (this.unit ? ' ' + this.unit.label : '');
     }
 
     toDisplayString(): string {
-        return (this.value ? this.value.toLocaleString() : 0) + (this.unit ? (' ' + this.unit.label) : '');
+        return (this.value ? this.value.toLocaleString() : 0) + (this.unit ? ' ' + this.unit.label : '');
     }
 
+    isValidForSubmit(): boolean {
+        const hasBoth = this.value != undefined && this.unit != null;
+        const hasNeither = this.value == undefined && this.unit == null;
+        return hasBoth || hasNeither;
+    }
 }
 
 export interface MeasurementUnit {
-    baseUnit: BASE_UNITS;
+    baseUnit: string;
     // Number of decimal places allowed when unit is displayed
     displayPrecision: number;
+    kind: UNITS_KIND;
     label: string;
     longLabelPlural: string;
     longLabelSingular: string;
@@ -114,57 +99,64 @@ export interface MeasurementUnit {
 export const MEASUREMENT_UNITS: { [key: string]: MeasurementUnit } = {
     g: {
         label: 'g',
+        baseUnit: 'g',
         longLabelSingular: 'gram',
         longLabelPlural: 'grams',
-        baseUnit: BASE_UNITS.MASS,
+        kind: UNITS_KIND.MASS,
         ratio: 1,
         displayPrecision: 9, // enable smallest precision of ng
     },
     mg: {
+        baseUnit: 'g',
         label: 'mg',
         longLabelSingular: 'milligram',
         longLabelPlural: 'milligrams',
-        baseUnit: BASE_UNITS.MASS,
+        kind: UNITS_KIND.MASS,
         ratio: 0.001,
         displayPrecision: 6,
     },
     kg: {
+        baseUnit: 'g',
         label: 'kg',
         longLabelSingular: 'kilogram',
         longLabelPlural: 'kilograms',
-        baseUnit: BASE_UNITS.MASS,
+        kind: UNITS_KIND.MASS,
         ratio: 1000,
         displayPrecision: 12, // enable smallest precision of ng
     },
     ml: {
+        baseUnit: 'mL',
         label: 'mL',
         longLabelSingular: 'milliliter',
         longLabelPlural: 'milliliters',
-        baseUnit: BASE_UNITS.VOLUME,
+        kind: UNITS_KIND.VOLUME,
         ratio: 1,
         displayPrecision: 6, // enable smallest precision of nanoliters
     },
     ul: {
+        baseUnit: 'mL',
         label: 'uL',
         longLabelSingular: 'microliter',
         longLabelPlural: 'microliters',
-        baseUnit: BASE_UNITS.VOLUME,
+        kind: UNITS_KIND.VOLUME,
         ratio: 0.001,
         displayPrecision: 3,
     },
     l: {
+        baseUnit: 'mL',
         label: 'L',
         longLabelSingular: 'liter',
         longLabelPlural: 'liters',
-        baseUnit: BASE_UNITS.VOLUME,
+        kind: UNITS_KIND.VOLUME,
         ratio: 1000,
         displayPrecision: 9,
     },
     unit: {
+        baseUnit: 'unit',
         label: 'unit',
         longLabelSingular: 'unit',
         longLabelPlural: 'unit',
-        baseUnit: BASE_UNITS.COUNT,
+        kind: UNITS_KIND.COUNT,
         ratio: 1,
         displayPrecision: 2,
     },
@@ -192,7 +184,7 @@ export function areUnitsCompatible(unitAStr: string, unitBStr: string) {
     if (!unitA || !unitB) {
         return false;
     }
-    return unitA.baseUnit == unitB.baseUnit;
+    return unitA.kind == unitB.kind;
 }
 
 export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolean): any[] {
@@ -200,8 +192,8 @@ export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolea
 
     const options = [];
     for (const [key, value] of Object.entries(MEASUREMENT_UNITS)) {
-        if (!unit || value.baseUnit === unit.baseUnit) {
-            if (!showLongLabel || value.baseUnit === BASE_UNITS.COUNT) {
+        if (!unit || value.kind === unit.kind) {
+            if (!showLongLabel || value.kind === UNITS_KIND.COUNT) {
                 options.push({ value: value.label, label: value.label });
             } else {
                 options.push({ value: value.label, label: value.label + ' (' + value.longLabelPlural + ')' });
@@ -213,107 +205,17 @@ export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolea
 
 export function getAltUnitKeys(unitTypeStr): string[] {
     const unit: MeasurementUnit = MEASUREMENT_UNITS[unitTypeStr?.toLowerCase()];
-    if (!unit) {
-        return [];
-    }
-
     const options = [];
     Object.values(MEASUREMENT_UNITS).forEach(value => {
-        if (value.baseUnit === unit.baseUnit) {
+        if (!unit || value.kind === unit.kind) {
             options.push(value.label);
         }
     });
 
     return options;
 }
-export function convertUnitsForInput(amount: number, unit: string, displayUnit: string): number {
-    if (!amount || !displayUnit || !unit) {
-        return amount;
-    }
-    const currentUnit: MeasurementUnit = MEASUREMENT_UNITS[unit.toLowerCase()];
-    const targetUnit: MeasurementUnit = MEASUREMENT_UNITS[displayUnit.toLowerCase()];
-    if (!currentUnit || !targetUnit) {
-        return amount;
-    }
-    // show up to 6 decimal places
-    return parseFloat((amount * (currentUnit.ratio / targetUnit.ratio)).toFixed(targetUnit.displayPrecision));
-}
 
-export function convertUnitDisplay(
-    amount: number,
-    unit: string,
-    displayUnit: string,
-    includeUnits: boolean,
-    emptyDisplay?: string
-): string {
-    const convertedAmount = convertUnitsForInput(amount, unit, displayUnit);
-    // Allow for 0 so can't use !amount
-    if (convertedAmount == null) {
-        return emptyDisplay ? emptyDisplay : '';
-    }
-    if (!displayUnit) {
-        return convertedAmount.toLocaleString() + (includeUnits && unit ? ' ' + unit : '');
-    }
-    if (!unit) {
-        return convertedAmount.toLocaleString() + (includeUnits && displayUnit ? ' ' + displayUnit : '');
-    }
-
-    const currentUnit: MeasurementUnit = MEASUREMENT_UNITS[unit.toLowerCase()];
-    const targetUnit: MeasurementUnit = MEASUREMENT_UNITS[displayUnit.toLowerCase()];
-    if (!currentUnit || !targetUnit) {
-        return convertedAmount.toLocaleString() + (includeUnits ? ' ' + unit : '');
-    }
-
-    return (
-        (convertedAmount > 1000 ? convertedAmount.toLocaleString() : convertedAmount) +
-        (includeUnits ? ' ' + displayUnit : '')
-    );
-}
-
-// volume unit (displayUnit): 10 mL (L)
-// volume unit: 10 mL
-// volume (displayUnit): 10 (L)
-// volume: 10
-// volume not set: null
-export function getStoredAmountDisplay(rawValue: string, includeUnits?: boolean): string {
-    if (!rawValue || !rawValue.trim()) {
-        return null;
-    }
-
-    const parts: string[] = rawValue.trim().split(/\b\s+/);
-    if (parts.length === 1) {
-        return rawValue.toLocaleString();
-    }
-
-    if (parts.length === 2) {
-        if (includeUnits) {
-            const unit = parts[1];
-            if (unit.indexOf('(') === 0 && unit.indexOf(')') === unit.length - 1) {
-                return parts[0].toLocaleString() + ' ' + unit.substring(1, unit.length - 1);
-            } else {
-                return rawValue.toLocaleString();
-            }
-        } else {
-            return parts[0].toLocaleString();
-        }
-    }
-
-    if (parts.length === 3) {
-        const volume = parts[0];
-        const currentUnit = parts[1];
-        const targetUnit = parts[2];
-        return convertUnitDisplay(
-            parseFloat(volume),
-            currentUnit,
-            targetUnit.substring(1, targetUnit.length - 1),
-            includeUnits
-        );
-    }
-
-    return rawValue;
-}
-
-export function getVolumeMinStep(sampleTypeUnit?: string | MeasurementUnit) {
+export function getVolumeMinStep(sampleTypeUnit?: MeasurementUnit | string) {
     const step = 0.01;
     if (!sampleTypeUnit) {
         return step;
@@ -330,11 +232,11 @@ export function getVolumeMinStep(sampleTypeUnit?: string | MeasurementUnit) {
 }
 
 export function isMeasurementUnitIgnoreCase(expected: MeasurementUnit, val: string) {
-    return expected.label.localeCompare(val, 'en-US', {sensitivity: 'base'}) === 0;
+    return expected.label.localeCompare(val, 'en-US', { sensitivity: 'base' }) === 0;
 }
 
 export function isValuePrecisionValid(value: number, precision: number): boolean {
-    if (!value) {
+    if (!value || !precision) {
         return true;
     }
     if (value < 0) {

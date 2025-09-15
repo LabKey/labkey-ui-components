@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Iterable, List, Map, Set as ImmutableSet } from 'immutable';
+import { Set as ImmutableSet, Iterable, List, Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 import { ChangeEvent, CSSProperties } from 'react';
 
 import { hasParameter, toggleParameter } from '../url/ActionURL';
 import { QueryInfo } from '../../public/QueryInfo';
+import { STORED_AMOUNT_FIELDS } from '../components/samples/constants';
 
 // Case-insensitive Object reference. Returns undefined if either object or prop does not resolve.
 // If both casings exist (e.g. 'x' and 'X' are props) then either value may be returned.
@@ -268,7 +269,33 @@ export function getCommonDataValues(data: Map<any, any>, fileFields?: string[]):
     return valueMap.toObject();
 }
 
-function isSameWithStringCompare(value1: any, value2: any): boolean {
+// exported for jest testing
+export function hasAmountOrUnitChanged(updatedValuesMap: Map<string, any>, originalRowMap: Map<string, any>): boolean {
+    // if we have an updated value for amount and it has been changed, return true
+    if (
+        updatedValuesMap.has(STORED_AMOUNT_FIELDS.AMOUNT) &&
+        !isSameWithStringCompare(
+            updatedValuesMap.get(STORED_AMOUNT_FIELDS.AMOUNT),
+            originalRowMap.get(STORED_AMOUNT_FIELDS.AMOUNT)?.get('value')
+        )
+    ) {
+        return true;
+    }
+    // if we have an updated value for units and it has been changed, return true
+    if (
+        updatedValuesMap.has(STORED_AMOUNT_FIELDS.UNITS) &&
+        !isSameWithStringCompare(
+            updatedValuesMap.get(STORED_AMOUNT_FIELDS.UNITS),
+            originalRowMap.get(STORED_AMOUNT_FIELDS.UNITS)?.get('value')
+        )
+    ) {
+        return true;
+    }
+    return false;
+}
+
+// export for jest testing
+export function isSameWithStringCompare(value1: any, value2: any): boolean {
     if (value1 === value2 || (valueIsEmpty(value1) && valueIsEmpty(value2))) return true;
     if (value1 && value2) {
         const strVal1 = value1.toString();
@@ -307,6 +334,8 @@ export function getUpdatedData(
     if (folderKey) pkColsLc.add(folderKey.toLowerCase());
 
     const updatedData = originalData.map(originalRowMap => {
+        const amountOrUnitChanged = hasAmountOrUnitChanged(updateValuesMap, originalRowMap);
+
         return originalRowMap.reduce((m, fieldValueMap, key) => {
             const isPKCol = pkColsLc.has(key.toLowerCase());
 
@@ -325,14 +354,26 @@ export function getUpdatedData(
             if (fieldValueMap?.has('value')) {
                 if (isPKCol) {
                     return m.set(key, fieldValueMap.get('value'));
-                } else if (
-                    updateValuesMap.has(col.fieldKey) &&
-                    !isSameWithStringCompare(updateValuesMap.get(col.fieldKey), fieldValueMap.get('value'))
-                ) {
-                    return m.set(
-                        key,
-                        updateValuesMap.get(col.fieldKey) == undefined ? null : updateValuesMap.get(col.fieldKey)
-                    );
+                }
+
+                const colValueIsIncluded = updateValuesMap.has(col.fieldKey);
+                const updatedValue =
+                    updateValuesMap.get(col.fieldKey) == undefined ? null : updateValuesMap.get(col.fieldKey);
+                const valueIsChanged = !isSameWithStringCompare(
+                    updateValuesMap.get(col.fieldKey),
+                    fieldValueMap.get('value')
+                );
+                const isStoredAmountField =
+                    col.fieldKey === STORED_AMOUNT_FIELDS.AMOUNT || col.fieldKey === STORED_AMOUNT_FIELDS.UNITS;
+                if (colValueIsIncluded && valueIsChanged) {
+                    return m.set(key, updatedValue);
+                } else if (colValueIsIncluded && isStoredAmountField) {
+                    // If you update amount or units, the saved row has to include both so include even if the value hasn't changed
+                    if (amountOrUnitChanged) {
+                        return m.set(key, updatedValue);
+                    } else {
+                        return m;
+                    }
                 } else {
                     return m;
                 }
@@ -374,7 +415,7 @@ export const blurActiveElement = (): void => {
 const TRUE_STRINGS = ['true', 't', 'yes', 'y', 'on', '1'];
 const FALSE_STRINGS = ['false', 'f', 'no', 'n', 'off', '0'];
 
-export function isBoolean(value: any, allowNull: boolean = true): boolean {
+export function isBoolean(value: any, allowNull = true): boolean {
     if (typeof value === 'boolean') return true;
 
     if (!value) return allowNull;
@@ -682,7 +723,7 @@ export function arrayEquals(a: string[], b: string[], ignoreOrder = true, caseIn
     return caseInsensitive ? aStr.toLowerCase() === bStr.toLowerCase() : aStr === bStr;
 }
 
-export function getValueFromRow(row: Record<string, any>, col: string): string | number {
+export function getValueFromRow(row: Record<string, any>, col: string): number | string {
     if (!row) return undefined;
 
     const val = caseInsensitive(row, col);
@@ -758,7 +799,7 @@ export function styleStringToObj(styleString: string): CSSProperties {
         }, {});
 
     return Object.keys(obj).reduce((prev, key) => {
-        var camelCased = key.replace(/-[a-z]/g, g => g[1].toUpperCase());
+        const camelCased = key.replace(/-[a-z]/g, g => g[1].toUpperCase());
         prev[camelCased] = obj[key];
         return prev;
     }, {});

@@ -43,7 +43,7 @@ export interface EditableColumnMetadata {
     containerFilter?: Query.ContainerFilter;
     filteredLookupKeys?: List<any>;
     filteredLookupValues?: List<string>;
-    getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
+    getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>; // TODO can this be removed? I don't see any usages (if so, also remove linkedColInd)
     hideTitleTooltip?: boolean;
     isReadOnlyCell?: (rowKey: string) => boolean;
     linkedColInd?: number; // TODO: change to linkedColFieldKey
@@ -802,14 +802,6 @@ export class EditorModel
 
                     // Convert empty cell to null
                     if (value === '') value = null;
-
-                    // Some column types have special handling of raw data, i.e. StoredAmount and Units (issue 49502)
-                    if (col.columnRenderer) {
-                        const renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
-                        if (renderer?.getOriginalRawValue) {
-                            originalValue = renderer.getOriginalRawValue(originalValue);
-                        }
-                    }
 
                     // Lookup columns store a list but grid only holds a single value
                     if (List.isList(originalValue) && !Array.isArray(value)) {

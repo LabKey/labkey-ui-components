@@ -11,10 +11,10 @@ describe('StorageAmountInput', () => {
     test('minimal props', () => {
         render(
             <StorageAmountInput
-                model={testModel}
-                preferredUnit={undefined}
-                label={undefined}
                 amountChangedHandler={jest.fn()}
+                label={undefined}
+                model={testModel}
+                preferredUnit={'mL'}
             />
         );
 
@@ -27,49 +27,69 @@ describe('StorageAmountInput', () => {
         const unit = 'abcd';
         render(
             <StorageAmountInput
+                amountChangedHandler={jest.fn()}
+                label={undefined}
                 model={new UnitModel(0, unit)}
-                preferredUnit={undefined}
-                label={undefined}
-                amountChangedHandler={jest.fn()}
+                preferredUnit={unit}
                 unitsChangedHandler={jest.fn}
             />
         );
 
-        expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', "0");
-        expect(document.querySelector('input.checkin-unit-input')).toHaveProperty('value', unit);
-    });
-
-    test('Metric units, preferred units not set', () => {
-        const unit = 'uL';
-        render(
-            <StorageAmountInput
-                model={testModel}
-                preferredUnit={undefined}
-                label={undefined}
-                amountChangedHandler={jest.fn()}
-                unitsChangedHandler={jest.fn}
-            />
-        );
-
-        expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', "0");
+        expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', '0');
         expect(document.querySelector('input.checkin-unit-input')).toHaveProperty('value', unit);
     });
 
     test('Metric units, preferred units same', () => {
-        const unit = 'uL';
         render(
             <StorageAmountInput
-                model={testModel}
-                preferredUnit={unit}
-                label={undefined}
                 amountChangedHandler={jest.fn()}
+                label={undefined}
+                model={testModel}
+                preferredUnit={'uL'}
                 unitsChangedHandler={jest.fn}
             />
         );
 
-        expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', "0");
+        expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', '0');
         expect(document.querySelectorAll('.checkin-unit-select')).toHaveLength(1);
-        expect(document.querySelector('.checkin-unit-select').textContent).toBe(unit);
+        expect(document.querySelector('.checkin-unit-select').textContent).toBe('uL');
+        expect(document.querySelectorAll('.storage-item-check-in-preferred-display')).toHaveLength(0);
+    });
+
+    test('Metric units, preferred units different', () => {
+        render(
+            <StorageAmountInput
+                amountChangedHandler={jest.fn()}
+                label={undefined}
+                model={testModel}
+                preferredUnit="mL"
+                unitsChangedHandler={jest.fn}
+            />
+        );
+
+        expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', '0');
+        expect(document.querySelectorAll('.checkin-unit-select')).toHaveLength(1);
+        expect(document.querySelector('.checkin-unit-select').textContent).toBe('uL');
+        expect(document.querySelectorAll('.storage-item-check-in-preferred-display')).toHaveLength(0);
+    });
+
+    test('Metric unit with display in preferred units', () => {
+        render(
+            <StorageAmountInput
+                amountChangedHandler={jest.fn()}
+                label={undefined}
+                model={new UnitModel(10, 'uL')}
+                preferredUnit="mL"
+                unitsChangedHandler={jest.fn}
+            />
+        );
+
+        expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', '10');
+        expect(document.querySelectorAll('.checkin-unit-select')).toHaveLength(1);
+        expect(document.querySelector('.checkin-unit-select').textContent).toBe('uL');
+        expect(document.querySelector('.storage-item-check-in-preferred-display').textContent).toBe(
+            'Displayed as 0.01 mL'
+        );
     });
 
     test('Label check', () => {
@@ -77,16 +97,16 @@ describe('StorageAmountInput', () => {
         const tipText = 'Some helpful text';
         render(
             <StorageAmountInput
+                amountChangedHandler={undefined}
+                label={amountLabel}
                 model={testModel}
                 preferredUnit={undefined}
-                label={amountLabel}
                 tipText={tipText}
-                amountChangedHandler={undefined}
                 unitsChangedHandler={undefined}
             />
         );
 
-        expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', "0");
+        expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', '0');
         expect(document.querySelector('.checkin-amount-label').textContent).toBe(amountLabel);
         expect(document.querySelector('.label-help-target')).not.toBeNull();
     });
@@ -96,14 +116,14 @@ describe('StorageAmountInput', () => {
         const model = new UnitModel(-1, unit);
         render(
             <StorageAmountInput
+                amountChangedHandler={undefined}
+                label={undefined}
                 model={model}
                 preferredUnit={undefined}
-                label={undefined}
-                amountChangedHandler={undefined}
             />
         );
 
-        expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', "-1");
+        expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', '-1');
         expect(document.querySelector('.storage-item-precision-alert').textContent).toBe(
             'Amount must be a positive value.'
         );

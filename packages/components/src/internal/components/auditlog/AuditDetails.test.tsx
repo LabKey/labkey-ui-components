@@ -22,7 +22,7 @@ describe('AuditDetails', () => {
     });
 
     test('emptyMsg', () => {
-        renderWithAppContext(<AuditDetails rowId={undefined} user={TEST_USER_APP_ADMIN} emptyMsg="test empty" />, {
+        renderWithAppContext(<AuditDetails emptyMsg="test empty" rowId={undefined} user={TEST_USER_APP_ADMIN} />, {
             serverContext: {
                 user: TEST_USER_APP_ADMIN,
             },
@@ -33,7 +33,7 @@ describe('AuditDetails', () => {
 
     test('summary and title', () => {
         renderWithAppContext(
-            <AuditDetails rowId={1} user={TEST_USER_APP_ADMIN} summary="test summary" title="test title" />,
+            <AuditDetails rowId={1} summary="test summary" title="test title" user={TEST_USER_APP_ADMIN} />,
             { serverContext: { user: TEST_USER_APP_ADMIN } }
         );
         expect(document.querySelector('.panel-heading').textContent).toBe('test title');
@@ -44,9 +44,9 @@ describe('AuditDetails', () => {
     test('gridData', () => {
         renderWithAppContext(
             <AuditDetails
+                gridData={fromJS([{ field: 'a', value: { value: 'test' } }])}
                 rowId={1}
                 user={TEST_USER_APP_ADMIN}
-                gridData={fromJS([{ field: 'a', value: { value: 'test' } }])}
             />,
             { serverContext: { user: TEST_USER_APP_ADMIN } }
         );
@@ -58,9 +58,9 @@ describe('AuditDetails', () => {
     test('gridData, isUser', () => {
         renderWithAppContext(
             <AuditDetails
+                gridData={fromJS([{ field: 'a', value: 1, isUser: true }])}
                 rowId={1}
                 user={TEST_USER_APP_ADMIN}
-                gridData={fromJS([{ field: 'a', value: 1, isUser: true }])}
             />,
             { serverContext: { user: TEST_USER_APP_ADMIN } }
         );
@@ -75,9 +75,9 @@ describe('AuditDetails', () => {
     test('gridData, urlType user', () => {
         renderWithAppContext(
             <AuditDetails
+                gridData={fromJS([{ field: 'a', value: { value: 1, displayValue: 'test', urlType: 'user' } }])}
                 rowId={1}
                 user={TEST_USER_APP_ADMIN}
-                gridData={fromJS([{ field: 'a', value: { value: 1, displayValue: 'test', urlType: 'user' } }])}
             />,
             { serverContext: { user: TEST_USER_APP_ADMIN } }
         );
@@ -102,14 +102,34 @@ describe('AuditDetails', () => {
         expect(document.querySelectorAll('.user-link')).toHaveLength(0);
         expect(document.querySelector('.panel-body').textContent).toBe('a12');
     });
-    test('original data', () => {
+    test('provided data', () => {
         renderWithAppContext(
             <AuditDetails
                 changeDetails={AuditDetailsModel.create({
                     oldData: { a: 'file.txt' },
                     newData: { a: 'new-1.txt' },
-                    originalValues: {
+                    providedValues: {
                         a: 'new.txt',
+                    },
+                })}
+                rowId={1}
+                user={TEST_USER_APP_ADMIN}
+            />,
+            { serverContext: { user: TEST_USER_APP_ADMIN } }
+        );
+        expect(document.querySelectorAll('.table-responsive')).toHaveLength(0);
+        expect(document.querySelectorAll('.user-link')).toHaveLength(0);
+        expect(document.querySelector('.panel-body').textContent).toBe('afile.txtnew-1.txt');
+        expect(document.querySelector('.original-value-icon')).toBeInTheDocument();
+    });
+    test('provided data delta', () => {
+        renderWithAppContext(
+            <AuditDetails
+                changeDetails={AuditDetailsModel.create({
+                    oldData: { a: 'file.txt' },
+                    newData: { a: 'new-1.txt' },
+                    providedDeltaValues: {
+                        a: '3L',
                     },
                 })}
                 rowId={1}

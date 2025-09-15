@@ -11,28 +11,24 @@ import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
-import { SampleAmountEditModal } from './SampleAmountEditModal';
+import { isPrecisionValid, isValid, SampleAmountEditModal } from './SampleAmountEditModal';
 
 describe('SampleAmountEditModal', () => {
     const testSchemaQuery = new SchemaQuery('schema', 'query', 'view');
     const emptyRow = {};
     const defaultNoun = 'noun';
 
-    const DEFAULT_APP_CONTEXT = { user: TEST_USER_EDITOR, container :TEST_PROJECT_CONTAINER };
+    const DEFAULT_APP_CONTEXT = { user: TEST_USER_EDITOR, container: TEST_PROJECT_CONTAINER };
 
     function validate(
         amount: number,
-        units: string,
         hasSelect: boolean,
         comment: string,
         noun: string,
         canSave: boolean,
-        isNegative?: boolean,
-        hasLabelUnits = true
+        isNegative?: boolean
     ): void {
-        expect(document.querySelector('.checkin-amount-label').textContent).toContain(
-            'Amount' + (units && hasLabelUnits ? ' (' + units + ')' : '')
-        );
+        expect(document.querySelector('.checkin-amount-label').textContent).toContain('Amount');
         expect(document.querySelector('input.storage-amount-input').getAttribute('value')).toBe(amount ?? '');
         expect(document.querySelectorAll('.checkin-unit-select')).toHaveLength(hasSelect ? 1 : 0);
         expect(document.querySelectorAll('input.checkin-unit-input')).toHaveLength(hasSelect ? 0 : 1);
@@ -58,11 +54,11 @@ describe('SampleAmountEditModal', () => {
     test('minimal props', () => {
         renderWithAppContext(
             <SampleAmountEditModal
-                schemaQuery={testSchemaQuery}
-                row={emptyRow}
                 noun={defaultNoun}
-                updateListener={jest.fn()}
                 onClose={jest.fn()}
+                row={emptyRow}
+                schemaQuery={testSchemaQuery}
+                updateListener={jest.fn()}
             />,
             {
                 serverContext: DEFAULT_APP_CONTEXT,
@@ -70,7 +66,7 @@ describe('SampleAmountEditModal', () => {
         );
 
         expect(document.querySelectorAll('button').item(1).textContent).toBe('Cancel');
-        validate(undefined, undefined, false, undefined, defaultNoun, false);
+        validate(undefined, true, undefined, defaultNoun, false);
     });
 
     test('Amount null', () => {
@@ -83,18 +79,18 @@ describe('SampleAmountEditModal', () => {
 
         renderWithAppContext(
             <SampleAmountEditModal
-                schemaQuery={testSchemaQuery}
-                row={row}
                 noun={defaultNoun}
-                updateListener={jest.fn()}
                 onClose={jest.fn()}
+                row={row}
+                schemaQuery={testSchemaQuery}
+                updateListener={jest.fn()}
             />,
             {
                 serverContext: DEFAULT_APP_CONTEXT,
             }
         );
 
-        validate(undefined, row.Units.value, true, undefined, defaultNoun, false);
+        validate(undefined, true, undefined, defaultNoun, false);
     });
 
     test('StoredAmount negative', () => {
@@ -107,18 +103,18 @@ describe('SampleAmountEditModal', () => {
 
         renderWithAppContext(
             <SampleAmountEditModal
-                schemaQuery={testSchemaQuery}
-                row={row}
                 noun={defaultNoun}
-                updateListener={jest.fn()}
                 onClose={jest.fn()}
+                row={row}
+                schemaQuery={testSchemaQuery}
+                updateListener={jest.fn()}
             />,
             {
                 serverContext: DEFAULT_APP_CONTEXT,
             }
         );
 
-        validate(row.StoredAmount.value, row.Units.value, true, undefined, defaultNoun, false, true);
+        validate(row.StoredAmount.value, true, undefined, defaultNoun, false, true);
     });
 
     test('Units null', () => {
@@ -131,18 +127,18 @@ describe('SampleAmountEditModal', () => {
 
         renderWithAppContext(
             <SampleAmountEditModal
-                schemaQuery={testSchemaQuery}
-                row={row}
                 noun={defaultNoun}
-                updateListener={jest.fn()}
                 onClose={jest.fn()}
+                row={row}
+                schemaQuery={testSchemaQuery}
+                updateListener={jest.fn()}
             />,
             {
                 serverContext: DEFAULT_APP_CONTEXT,
             }
         );
 
-        validate(row.StoredAmount.value, row.Units.value, false, undefined, defaultNoun, false);
+        validate(row.StoredAmount.value, true, undefined, defaultNoun, false);
     });
 
     test('Units custom', () => {
@@ -155,18 +151,18 @@ describe('SampleAmountEditModal', () => {
 
         renderWithAppContext(
             <SampleAmountEditModal
-                schemaQuery={testSchemaQuery}
-                row={row}
                 noun={defaultNoun}
-                updateListener={jest.fn()}
                 onClose={jest.fn()}
+                row={row}
+                schemaQuery={testSchemaQuery}
+                updateListener={jest.fn()}
             />,
             {
                 serverContext: DEFAULT_APP_CONTEXT,
             }
         );
 
-        validate(row.StoredAmount.value, row.Units.value, false, undefined, defaultNoun, false);
+        validate(row.StoredAmount.value, false, undefined, defaultNoun, false);
     });
 
     test('Set units, can save', async () => {
@@ -180,11 +176,11 @@ describe('SampleAmountEditModal', () => {
         await act(async () => {
             renderWithAppContext(
                 <SampleAmountEditModal
-                    schemaQuery={testSchemaQuery}
-                    row={row}
                     noun={defaultNoun}
-                    updateListener={jest.fn()}
                     onClose={jest.fn()}
+                    row={row}
+                    schemaQuery={testSchemaQuery}
+                    updateListener={jest.fn()}
                 />,
                 {
                     appContext: {
@@ -199,13 +195,70 @@ describe('SampleAmountEditModal', () => {
             );
         });
 
-        validate(row.StoredAmount.value, row.Units.value, false, undefined, defaultNoun, false);
+        validate(row.StoredAmount.value, false, undefined, defaultNoun, false);
 
         const unitInput = document.querySelector('input.checkin-unit-input');
         const newUnits = 'newUnits';
         // Focus the input, then paste
         await userEvent.click(unitInput);
         await userEvent.paste(newUnits);
-        validate(row.StoredAmount.value, newUnits, false, undefined, defaultNoun, true, false, false);
+        validate(row.StoredAmount.value, false, undefined, defaultNoun, true, false);
+    });
+});
+
+describe('isPrecisionValid', () => {
+    test('no amount and no units', () => {
+        expect(isPrecisionValid(undefined, undefined)).toBe(true);
+        expect(isPrecisionValid(undefined, null)).toBe(true);
+        expect(isPrecisionValid(undefined, 'bogus')).toBe(true);
+        expect(isPrecisionValid(undefined, 'mL')).toBe(true);
+        expect(isPrecisionValid(undefined, 'mg')).toBe(true);
+        expect(isPrecisionValid(0, undefined)).toBe(true);
+        expect(isPrecisionValid(1, undefined)).toBe(true);
+    });
+
+    test('with amount and units', () => {
+        expect(isPrecisionValid(1, 'mg')).toBe(true);
+        expect(isPrecisionValid(0.1, 'mg')).toBe(true);
+        expect(isPrecisionValid(0.01, 'mg')).toBe(true);
+        expect(isPrecisionValid(0.001, 'mg')).toBe(true);
+        expect(isPrecisionValid(0.0001, 'mg')).toBe(true);
+        expect(isPrecisionValid(0.00001, 'mg')).toBe(true);
+        expect(isPrecisionValid(0.000001, 'mg')).toBe(true);
+        expect(isPrecisionValid(0.0000001, 'mg')).toBe(false);
+        expect(isPrecisionValid(10.0000001, 'mg')).toBe(false);
+    });
+
+    test('with negative amount', () => {
+        expect(isPrecisionValid(-1, 'mg')).toBe(false);
+        expect(isPrecisionValid(-0.001, 'mg')).toBe(false);
+    });
+});
+
+describe('isValid', () => {
+    test('has neither', () => {
+        expect(isValid(undefined, undefined)).toBe(true);
+        expect(isValid(undefined, null)).toBe(true);
+        expect(isValid(null, null)).toBe(true);
+        expect(isValid(null, undefined)).toBe(true);
+    });
+
+    test('has one but not the other', () => {
+        expect(isValid(0, undefined)).toBe(false);
+        expect(isValid(0, null)).toBe(false);
+        expect(isValid(0, '')).toBe(false);
+        expect(isValid(undefined, 'L')).toBe(false);
+        expect(isValid(null, 'L')).toBe(false);
+    });
+
+    test('has both', () => {
+        expect(isValid(-10, 'uL')).toBe(false);
+        expect(isValid(0, 'uL')).toBe(true);
+        expect(isValid(10, 'uL')).toBe(true);
+        expect(isValid(0.1, 'uL')).toBe(true);
+        expect(isValid(0.01, 'uL')).toBe(true);
+        expect(isValid(0.001, 'uL')).toBe(true);
+        expect(isValid(0.0001, 'uL')).toBe(false);
+        expect(isValid(10.0001, 'uL')).toBe(false);
     });
 });

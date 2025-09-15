@@ -918,7 +918,7 @@ describe('isValidFilterField', () => {
             name: 'test',
             supportGroupConcatSubSelect: true,
         });
-        expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(false);
+        expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
     });
 
     test('group concat field not supported', () => {

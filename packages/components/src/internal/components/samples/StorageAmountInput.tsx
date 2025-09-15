@@ -48,41 +48,44 @@ export const StorageAmountInput: FC<Props> = memo(props => {
     let unitDisplay;
     if (!unitsChangedHandler) {
         // IF we don't have a way to change the supported value show it as static text.
-        unitDisplay = <span className="storage-item-unit-text margin-left">{preferredUnit || unitText}</span>;
+        unitDisplay = <span className="storage-item-unit-text margin-left">{unitText || preferredUnit}</span>;
     }
-    // If preferred unit isn't set or is an unsupported value allow editing as text
-    else if (preferredUnit == undefined || !MEASUREMENT_UNITS.hasOwnProperty(preferredUnit.toLowerCase())) {
+    // If unitText is provided and not a supported unit type, allow editing as text
+    else if (unitText && !MEASUREMENT_UNITS.hasOwnProperty(unitText.toLowerCase())) {
         unitDisplay = (
             <input
-                type="text"
                 className="form-control checkin-unit-input"
-                value={unitText}
-                placeholder="Enter volume units..."
                 onChange={(evt: any) => unitsChangedHandler(evt.target.value)}
+                placeholder="Enter volume units..."
+                type="text"
+                value={unitText}
             />
         );
     } else {
-        // IFF preferred units are supplied and are a supported type, then show possible conversions
+        // IFF preferred units nor provided or are a supported type, then show possible conversions
         unitDisplay = (
             <SelectInput
                 containerClass="checkin-unit-select-container"
                 inputClass="checkin-unit-select"
                 name="unitType"
-                options={getMetricUnitOptions(preferredUnit)}
                 onChange={(name, formValue, option: SelectInputOption) => {
                     unitsChangedHandler(formValue === undefined && option ? option.id : formValue);
                 }}
-                value={preferredUnit}
+                options={getMetricUnitOptions(preferredUnit)}
+                value={model.unit?.label}
             />
         );
 
-        if (model.unit !== null && !isMeasurementUnitIgnoreCase(model.unit, preferredUnit)) {
+        if (
+            preferredUnit &&
+            model.unit !== null &&
+            model.value &&
+            !isMeasurementUnitIgnoreCase(model.unit, preferredUnit)
+        ) {
             const preferredUnitText = model.as(preferredUnit).toString();
             preferredUnitMessage = (
                 <div>
-                    <span className="storage-item-check-in-preferred-display">
-                        {preferredUnitText} equivalent (preferred)
-                    </span>
+                    <span className="storage-item-check-in-preferred-display">Displayed as {preferredUnitText}</span>
                 </div>
             );
         }
@@ -105,12 +108,12 @@ export const StorageAmountInput: FC<Props> = memo(props => {
                     className="form-control storage-item-check-in-text storage-amount-input "
                     id="checkin-amount"
                     min={0}
-                    step={getVolumeMinStep(model.unit)}
                     name={inputName ?? 'amountDelta'}
                     onChange={onChange}
-                    type="number"
-                    value={model.value}
                     placeholder="Enter amount..."
+                    step={getVolumeMinStep(model.unit)}
+                    type="number"
+                    value={model.value ?? ''}
                 />
                 {unitDisplay}
                 {preferredUnitMessage}

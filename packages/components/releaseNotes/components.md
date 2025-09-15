@@ -5,6 +5,21 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 53926: More custom assay queries to assay schema
 
+### version 6.62.0
+*Released*: 15 September 2025
+- Sample Type Amounts and Units updates for Quantity
+  - remove unused amount and unit conversion code from measurement.ts and remove the `UnitsModel.add` method
+  - Update language in `AuditDetails`
+  - `BASE_UNITS` -> `UNITS_KIND` and add `baseUnit` field to match server-side concept
+  - Update `StorageAmountInput` usages to allow clearing of the unit select input value
+  - Update `AuditDetails` to be able to display provided delta amounts
+  - Remove StoredAmountRenderer
+  - Allow for "Units" column to be filterable in the various samples grids
+  - BulkUpdateForm getUpdatedData() to include both amount and units values when either has been changed
+  - `SampleAmountInput` update preferred unit message
+  - `SampleAmountEditModal` updated so all users go through `updateSampleStorageData`
+  - Mark `RawAmount` and `RawUnits` as ignored system fields
+
 ### version 6.61.1
 *Released*: 12 September 2025
 - DatePickerInput: don't add milliseconds when entering current time (Issue 53577)

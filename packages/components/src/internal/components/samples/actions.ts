@@ -50,7 +50,7 @@ import { Row, selectRows } from '../../query/selectRows';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { AMOUNT_AND_UNITS_COLUMNS_LC, SAMPLE_STORAGE_COLUMNS_LC, STORED_AMOUNT_FIELDS } from './constants';
+import { ALL_AMOUNT_AND_UNITS_COLUMNS_LC, SAMPLE_STORAGE_COLUMNS_LC, STORED_AMOUNT_FIELDS } from './constants';
 import { FindField, GroupedSampleFields, SampleState, SampleStateType } from './models';
 import { executeSql, ExecuteSqlResponseWithSession } from '../../query/executeSql';
 
@@ -245,7 +245,7 @@ export function getGroupedSampleDisplayColumns(
         if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(lcFieldKey) > -1) {
             return;
         }
-        if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(lcFieldKey) > -1 && canBeInStorage) {
+        if (ALL_AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(lcFieldKey) > -1 && canBeInStorage) {
             return;
         }
         if (isAliquot) {
@@ -272,7 +272,7 @@ export function getGroupedSampleDisplayColumns(
         if (SAMPLE_STORAGE_COLUMNS_LC.indexOf(lcFieldKey) > -1) {
             return;
         }
-        if (AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(lcFieldKey) > -1 && canBeInStorage) {
+        if (ALL_AMOUNT_AND_UNITS_COLUMNS_LC.indexOf(lcFieldKey) > -1 && canBeInStorage) {
             return;
         }
         if (sampleTypeDomainFields.independentFields.indexOf(lcFieldKey) > -1) {

@@ -45,7 +45,6 @@ export interface SampleTypeAppContext {
     dataClassTypeCaption?: string;
     detailRenderer?: DetailRenderer;
     downloadTemplateExcludeColumns?: string[];
-    getMetricUnitOptions: (unitTypeStr?: string, includeLongLabel?: boolean) => any[];
     hideConditionalFormatting: boolean;
     importHelpLinkTopic: string;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
@@ -58,7 +57,6 @@ export interface SampleTypeAppContext {
     showParentLabelPrefix: boolean;
     showStudyProperties: boolean;
     useSeparateDataClassesAliasMenu: boolean;
-    validateNewSampleTypeUnit: (sampleSet: DomainDetails, newUnit: string) => Promise<any>;
 }
 
 export interface AssayAppContext {

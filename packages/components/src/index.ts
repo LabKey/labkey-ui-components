@@ -284,7 +284,6 @@ import { EditableGrid, EditableGridTabs } from './internal/components/editable/E
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { ANCESTOR_LOOKUP_CONCEPT_URI, AncestorRenderer } from './internal/renderers/AncestorRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
-import { StoredAmountRenderer } from './internal/renderers/StoredAmountRenderer';
 import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
 import { TransactionAuditIdRenderer } from './internal/renderers/TransactionAuditIdRenderer';
 import { ExpirationDateColumnRenderer } from './internal/renderers/ExpirationDateColumnRenderer';
@@ -664,8 +663,8 @@ import {
     SAMPLE_ALL_PROJECT_LOOKUP_FIELDS,
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_ID_FIND_FIELD,
-    SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_IMPORT_EXTRA_ALLOWED_COLUMNS,
+    SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -673,6 +672,7 @@ import {
     SampleOperation,
     SAMPLES_WITH_TYPES_FILTER,
     SELECTION_KEY_TYPE,
+    STORED_AMOUNT_FIELDS,
     UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
 import { createMockWithRouteLeave } from './internal/mockUtils';
@@ -883,11 +883,8 @@ import { GENERAL_ASSAY_PROVIDER_NAME } from './internal/components/assay/constan
 import { GlobalStateContextProvider } from './internal/GlobalStateContext';
 import {
     areUnitsCompatible,
-    convertUnitDisplay,
-    convertUnitsForInput,
     getAltUnitKeys,
     getMetricUnitOptions,
-    getStoredAmountDisplay,
     isValuePrecisionValid,
     MEASUREMENT_UNITS,
     UnitModel,
@@ -1155,8 +1152,8 @@ export {
     areUnitsCompatible,
     arrayEquals,
     ASSAY_AUDIT_QUERY,
-    ASSAY_RESULT_AUDIT_QUERY,
     ASSAY_DESIGNER_ROLE,
+    ASSAY_RESULT_AUDIT_QUERY,
     AssayContext,
     AssayContextConsumer,
     AssayContextProvider,
@@ -1216,8 +1213,6 @@ export {
     CONTAINER_AUDIT_QUERY,
     ContentGroup,
     ContentGroupLabel,
-    convertUnitDisplay,
-    convertUnitsForInput,
     CreatedModified,
     createEntityParentKey,
     createFormInputId,
@@ -1449,7 +1444,6 @@ export {
     getSelectedRows,
     getSelectionLineageData,
     getSourceDomainDefaultSystemFields,
-    getStoredAmountDisplay,
     getTestAPIWrapper,
     getTimelineEntityUrl,
     getUniqueIdColumnMetadata,
@@ -1678,8 +1672,8 @@ export {
     SAMPLE_FINDER_SESSION_PREFIX,
     SAMPLE_ID_FIELD_KEY,
     SAMPLE_ID_FIND_FIELD,
-    SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_IMPORT_EXTRA_ALLOWED_COLUMNS,
+    SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -1749,8 +1743,7 @@ export {
     STORAGE_UNIQUE_ID_CONCEPT_URI,
     StorageAmountInput,
     StorageStatusRenderer,
-    StoredAmountRenderer,
-    TransactionAuditIdRenderer,
+    STORED_AMOUNT_FIELDS,
     SVGIcon,
     Tab,
     TabbedGridPanel,
@@ -1771,6 +1764,7 @@ export {
     ToggleIcon,
     toggleParameter,
     Tooltip,
+    TransactionAuditIdRenderer,
     uncapitalizeFirstChar,
     UNIQUE_ID_FIND_FIELD,
     UnitModel,

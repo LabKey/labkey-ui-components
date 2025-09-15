@@ -1,14 +1,11 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { AuditBehaviorTypes } from '@labkey/api';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { useServerContext } from '../base/ServerContext';
 import { caseInsensitive } from '../../util/utils';
 import { Alert } from '../base/Alert';
 
 import { isValuePrecisionValid, MEASUREMENT_UNITS, UnitModel } from '../../util/measurement';
 
-import { useAppContext } from '../../AppContext';
 import { Modal } from '../../Modal';
 
 import { CommentTextArea } from '../forms/input/CommentTextArea';
@@ -27,32 +24,41 @@ interface Props {
     updateListener: () => void;
 }
 
-const isPrecisionValid = (amount: number, storageUnits: string): boolean => {
+// exported for jest testing
+export const isPrecisionValid = (amount: number, storageUnits: string): boolean => {
     const units = MEASUREMENT_UNITS[storageUnits?.toLowerCase()];
     return isValuePrecisionValid(amount, units?.displayPrecision);
 };
 
-const isValid = (amount: number, units: string): boolean => {
-    return amount === undefined || (amount >= 0 && isPrecisionValid(amount, units));
+// exported for jest testing
+export const isValid = (amount: number, units: string): boolean => {
+    const hasAmount = amount !== undefined && amount !== null;
+    const hasUnits = units !== undefined && units !== null && units !== '';
+    const hasBoth = hasAmount && hasUnits;
+    const hasNeither = !hasAmount && !hasUnits;
+
+    if (hasBoth) {
+        return amount >= 0 && isPrecisionValid(amount, units);
+    }
+    return hasNeither;
 };
 
 export const SampleAmountEditModal: FC<Props> = memo(props => {
-    const { schemaQuery, noun, onClose, updateListener, row } = props;
-    const { api } = useAppContext();
-    const { user } = useServerContext();
+    const { noun, onClose, updateListener, row } = props;
 
     const {
         [STORED_AMOUNT_FIELDS.ROWID]: rowId,
         [STORED_AMOUNT_FIELDS.UNITS]: Units,
         [STORED_AMOUNT_FIELDS.AMOUNT]: initStorageAmount,
+        [STORED_AMOUNT_FIELDS.SAMPLE_TYPE_UNITS]: sampleTypeUnits,
     } = row;
 
     const sampleContainer = caseInsensitive(row, 'Container/Path')?.value;
-    const initStorageUnits = Units?.value as string;
+    const initStorageUnits = Units?.value;
     const [amount, setStorageAmount] = useState<number>(
         initStorageAmount?.displayValue ?? initStorageAmount?.value ?? undefined
     );
-    const [storageUnits, setStorageUnits] = useState<string>(initStorageUnits ?? '');
+    const [storageUnits, setStorageUnits] = useState<string>(initStorageUnits ?? null);
     const [comment, setComment] = useState<string>('');
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState();
@@ -70,32 +76,14 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
         if (!isValuePrecisionValid(amount, precision)) {
             return Promise.reject(AMOUNT_PRECISION_ERROR_TEXT);
         }
-
-        // users that can update samples use regular updateRows, but users with storage editor permission use a special controller action
-        if (user.canUpdate) {
-            return api.query.updateRows({
-                schemaQuery,
-                rows: [
-                    {
-                        rowId: rowId?.value,
-                        [STORED_AMOUNT_FIELDS.AMOUNT]: amount,
-                        [STORED_AMOUNT_FIELDS.UNITS]: storageUnits,
-                    },
-                ],
-                [STORED_AMOUNT_FIELDS.AUDIT_COMMENT]: comment,
-                containerPath: sampleContainer,
-                auditBehavior: AuditBehaviorTypes.DETAILED,
-            });
-        } else {
-            const sampleData = [
-                {
-                    materialId: rowId?.value,
-                    [STORED_AMOUNT_FIELDS.AMOUNT]: amount,
-                    [STORED_AMOUNT_FIELDS.UNITS]: storageUnits,
-                },
-            ];
-            return updateSampleStorageData(sampleData, sampleContainer, comment);
-        }
+        const sampleData = [
+            {
+                materialId: rowId?.value,
+                [STORED_AMOUNT_FIELDS.AMOUNT]: amount,
+                [STORED_AMOUNT_FIELDS.UNITS]: storageUnits,
+            },
+        ];
+        return updateSampleStorageData(sampleData, sampleContainer, comment);
     };
 
     const onSubmit = useCallback(async () => {
@@ -112,7 +100,7 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
             onClose();
         } catch (e) {
             setSubmitting(false);
-            setError(e.exception);
+            setError(e);
         }
     }, [amount, storageUnits, handleUpdateSampleRow, updateListener, onClose]);
 
@@ -131,7 +119,7 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
 
     const unitsChangeHandler = useCallback(
         (newUnits: string) => {
-            const units = newUnits ?? initStorageUnits;
+            const units = newUnits ?? null;
             setStorageUnits(units);
             setIsDirty(
                 _isDirty => _isDirty || units?.localeCompare(initStorageUnits, 'en-US', { sensitivity: 'base' }) !== 0
@@ -143,8 +131,6 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
     const commentChangeHandler = useCallback(_comment => {
         setComment(_comment);
     }, []);
-
-    const amountCaption = initStorageUnits === storageUnits ? `Amount (${storageUnits})` : 'Amount';
 
     let canConfirm = isDirty && isValid(amount, storageUnits);
     if (requiresUserComment) canConfirm = canConfirm && hasValidUserComment;
@@ -161,15 +147,15 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
         >
             <Alert bsStyle="danger">{error}</Alert>
             <StorageAmountInput
-                model={unitModel}
-                preferredUnit={initStorageUnits}
                 amountChangedHandler={amountChangeHandler}
+                label="Amount"
+                model={unitModel}
+                preferredUnit={sampleTypeUnits?.value}
                 unitsChangedHandler={unitsChangeHandler}
-                label={amountCaption}
             />
             <CommentTextArea
-                containerClassName="form-group storage-action-form-group"
                 actionName="Update"
+                containerClassName="form-group storage-action-form-group"
                 onChange={commentChangeHandler}
                 requiresUserComment={requiresUserComment}
             />

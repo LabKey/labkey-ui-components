@@ -276,7 +276,7 @@ export function hasAmountOrUnitChanged(updatedValuesMap: Map<string, any>, origi
         updatedValuesMap.has(STORED_AMOUNT_FIELDS.AMOUNT) &&
         !isSameWithStringCompare(
             updatedValuesMap.get(STORED_AMOUNT_FIELDS.AMOUNT),
-            originalRowMap.get(STORED_AMOUNT_FIELDS.AMOUNT).get('value')
+            originalRowMap.get(STORED_AMOUNT_FIELDS.AMOUNT)?.get('value')
         )
     ) {
         return true;
@@ -286,7 +286,7 @@ export function hasAmountOrUnitChanged(updatedValuesMap: Map<string, any>, origi
         updatedValuesMap.has(STORED_AMOUNT_FIELDS.UNITS) &&
         !isSameWithStringCompare(
             updatedValuesMap.get(STORED_AMOUNT_FIELDS.UNITS),
-            originalRowMap.get(STORED_AMOUNT_FIELDS.UNITS).get('value')
+            originalRowMap.get(STORED_AMOUNT_FIELDS.UNITS)?.get('value')
         )
     ) {
         return true;
@@ -334,6 +334,8 @@ export function getUpdatedData(
     if (folderKey) pkColsLc.add(folderKey.toLowerCase());
 
     const updatedData = originalData.map(originalRowMap => {
+        const amountOrUnitChanged = hasAmountOrUnitChanged(updateValuesMap, originalRowMap);
+
         return originalRowMap.reduce((m, fieldValueMap, key) => {
             const isPKCol = pkColsLc.has(key.toLowerCase());
 
@@ -362,8 +364,11 @@ export function getUpdatedData(
                     return m.set(key, updatedValue);
                 } else if (colValueIsIncluded && isStoredAmountField) {
                     // If you update amount or units, the saved row has to include both so include even if the value hasn't changed
-                    if (hasAmountOrUnitChanged(updateValuesMap, originalRowMap)) return m.set(key, updatedValue);
-                    else return m;
+                    if (amountOrUnitChanged) {
+                        return m.set(key, updatedValue);
+                    } else {
+                        return m;
+                    }
                 } else {
                     return m;
                 }

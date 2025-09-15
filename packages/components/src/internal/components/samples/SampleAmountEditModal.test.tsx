@@ -18,7 +18,7 @@ describe('SampleAmountEditModal', () => {
     const emptyRow = {};
     const defaultNoun = 'noun';
 
-    const DEFAULT_APP_CONTEXT = { user: TEST_USER_EDITOR, container :TEST_PROJECT_CONTAINER };
+    const DEFAULT_APP_CONTEXT = { user: TEST_USER_EDITOR, container: TEST_PROJECT_CONTAINER };
 
     function validate(
         amount: number,
@@ -54,11 +54,11 @@ describe('SampleAmountEditModal', () => {
     test('minimal props', () => {
         renderWithAppContext(
             <SampleAmountEditModal
-                schemaQuery={testSchemaQuery}
-                row={emptyRow}
                 noun={defaultNoun}
-                updateListener={jest.fn()}
                 onClose={jest.fn()}
+                row={emptyRow}
+                schemaQuery={testSchemaQuery}
+                updateListener={jest.fn()}
             />,
             {
                 serverContext: DEFAULT_APP_CONTEXT,
@@ -79,11 +79,11 @@ describe('SampleAmountEditModal', () => {
 
         renderWithAppContext(
             <SampleAmountEditModal
-                schemaQuery={testSchemaQuery}
-                row={row}
                 noun={defaultNoun}
-                updateListener={jest.fn()}
                 onClose={jest.fn()}
+                row={row}
+                schemaQuery={testSchemaQuery}
+                updateListener={jest.fn()}
             />,
             {
                 serverContext: DEFAULT_APP_CONTEXT,
@@ -103,11 +103,11 @@ describe('SampleAmountEditModal', () => {
 
         renderWithAppContext(
             <SampleAmountEditModal
-                schemaQuery={testSchemaQuery}
-                row={row}
                 noun={defaultNoun}
-                updateListener={jest.fn()}
                 onClose={jest.fn()}
+                row={row}
+                schemaQuery={testSchemaQuery}
+                updateListener={jest.fn()}
             />,
             {
                 serverContext: DEFAULT_APP_CONTEXT,
@@ -127,11 +127,11 @@ describe('SampleAmountEditModal', () => {
 
         renderWithAppContext(
             <SampleAmountEditModal
-                schemaQuery={testSchemaQuery}
-                row={row}
                 noun={defaultNoun}
-                updateListener={jest.fn()}
                 onClose={jest.fn()}
+                row={row}
+                schemaQuery={testSchemaQuery}
+                updateListener={jest.fn()}
             />,
             {
                 serverContext: DEFAULT_APP_CONTEXT,
@@ -151,11 +151,11 @@ describe('SampleAmountEditModal', () => {
 
         renderWithAppContext(
             <SampleAmountEditModal
-                schemaQuery={testSchemaQuery}
-                row={row}
                 noun={defaultNoun}
-                updateListener={jest.fn()}
                 onClose={jest.fn()}
+                row={row}
+                schemaQuery={testSchemaQuery}
+                updateListener={jest.fn()}
             />,
             {
                 serverContext: DEFAULT_APP_CONTEXT,
@@ -176,11 +176,11 @@ describe('SampleAmountEditModal', () => {
         await act(async () => {
             renderWithAppContext(
                 <SampleAmountEditModal
-                    schemaQuery={testSchemaQuery}
-                    row={row}
                     noun={defaultNoun}
-                    updateListener={jest.fn()}
                     onClose={jest.fn()}
+                    row={row}
+                    schemaQuery={testSchemaQuery}
+                    updateListener={jest.fn()}
                 />,
                 {
                     appContext: {

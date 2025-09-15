@@ -1617,7 +1617,7 @@ describe('isSetEqual', () => {
 });
 
 describe('hasAmountOrUnitChanged', () => {
-     test('updated amount', () => {
+    test('updated amount', () => {
         const originalRowMap = fromJS({ StoredAmount: { value: 5 }, Units: { value: 'mg' } });
         expect(hasAmountOrUnitChanged(Map({ Amount: 10, Units: 'mg' }), originalRowMap)).toBe(false);
         expect(hasAmountOrUnitChanged(Map({ StoredAmount: 5, Units: 'mg' }), originalRowMap)).toBe(false);
@@ -1627,14 +1627,14 @@ describe('hasAmountOrUnitChanged', () => {
         expect(hasAmountOrUnitChanged(Map({ StoredAmount: undefined, Units: 'mg' }), originalRowMap)).toBe(true);
     });
 
-     test('updated unit', () => {
+    test('updated unit', () => {
         const originalRowMap = fromJS({ StoredAmount: { value: 5 }, Units: { value: 'mg' } });
         expect(hasAmountOrUnitChanged(Map({ StoredAmount: 5, RawUnits: 'mg' }), originalRowMap)).toBe(false);
         expect(hasAmountOrUnitChanged(Map({ StoredAmount: 5, Units: 'mg' }), originalRowMap)).toBe(false);
         expect(hasAmountOrUnitChanged(Map({ StoredAmount: 5, Units: 'g' }), originalRowMap)).toBe(true);
         expect(hasAmountOrUnitChanged(Map({ StoredAmount: 5, Units: null }), originalRowMap)).toBe(true);
         expect(hasAmountOrUnitChanged(Map({ StoredAmount: 5, Units: undefined }), originalRowMap)).toBe(true);
-     });
+    });
 });
 
 describe('isSameWithStringCompare', () => {

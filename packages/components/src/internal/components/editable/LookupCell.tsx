@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo, useCallback, useMemo, KeyboardEvent } from 'react';
+import React, { FC, KeyboardEvent, memo, useCallback, useMemo } from 'react';
 import { Filter, Query } from '@labkey/api';
 import { List } from 'immutable';
 
@@ -178,9 +178,9 @@ export const LookupCell: FC<LookupCellProps> = memo(props => {
     return (
         <QueryLookupCell
             {...props}
+            containerPath={containerPath}
             onSelectChange={onSelectChange}
             rawValues={rawValues}
-            containerPath={containerPath}
         />
     );
 });

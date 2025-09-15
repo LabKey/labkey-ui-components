@@ -164,7 +164,7 @@ export class AuditDetails extends Component<Props> {
                     if (row.get('isUser')) {
                         display = <UserLink userId={row.get('value')} />;
                     } else if (Map.isMap(data) && data.get('urlType') === 'user') {
-                        display = <UserLink userId={data.get('value')} userDisplayValue={data.get('displayValue')} />;
+                        display = <UserLink userDisplayValue={data.get('displayValue')} userId={data.get('value')} />;
                     } else {
                         display = getEventDataValueDisplay(data, user.isAdmin);
                     }
@@ -193,7 +193,7 @@ export class AuditDetails extends Component<Props> {
                                     <div className="col-xs-12">{summary}</div>
                                 </div>
                             )}
-                            {gridData && <Grid data={gridData} columns={this.getGridColumns()} showHeader={false} />}
+                            {gridData && <Grid columns={this.getGridColumns()} data={gridData} showHeader={false} />}
                             {changeDetails && this.renderChanges()}
                         </>
                     )}

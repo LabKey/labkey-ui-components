@@ -15,7 +15,7 @@ export class UnitModel {
 
     constructor(value: number, unitStr: string) {
         const unit = MEASUREMENT_UNITS[unitStr?.toLowerCase()] || null;
-        Object.assign(this, {value, unitStr, unit});
+        Object.assign(this, { value, unitStr, unit });
     }
 
     isSupportedUnitType(): boolean {
@@ -71,11 +71,11 @@ export class UnitModel {
     }
 
     toString(): string {
-        return this.value + (this.unit ? (' ' + this.unit.label) : '');
+        return this.value + (this.unit ? ' ' + this.unit.label : '');
     }
 
     toDisplayString(): string {
-        return (this.value ? this.value.toLocaleString() : 0) + (this.unit ? (' ' + this.unit.label) : '');
+        return (this.value ? this.value.toLocaleString() : 0) + (this.unit ? ' ' + this.unit.label : '');
     }
 
     isValidForSubmit(): boolean {
@@ -215,7 +215,7 @@ export function getAltUnitKeys(unitTypeStr): string[] {
     return options;
 }
 
-export function getVolumeMinStep(sampleTypeUnit?: string | MeasurementUnit) {
+export function getVolumeMinStep(sampleTypeUnit?: MeasurementUnit | string) {
     const step = 0.01;
     if (!sampleTypeUnit) {
         return step;
@@ -232,7 +232,7 @@ export function getVolumeMinStep(sampleTypeUnit?: string | MeasurementUnit) {
 }
 
 export function isMeasurementUnitIgnoreCase(expected: MeasurementUnit, val: string) {
-    return expected.label.localeCompare(val, 'en-US', {sensitivity: 'base'}) === 0;
+    return expected.label.localeCompare(val, 'en-US', { sensitivity: 'base' }) === 0;
 }
 
 export function isValuePrecisionValid(value: number, precision: number): boolean {

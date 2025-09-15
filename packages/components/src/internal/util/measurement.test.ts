@@ -3,7 +3,7 @@ import {
     getAltUnitKeys,
     getMetricUnitOptions,
     isValuePrecisionValid,
-    UnitModel
+    UnitModel,
 } from './measurement';
 
 describe('UnitModel', () => {

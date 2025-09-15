@@ -54,11 +54,11 @@ export const StorageAmountInput: FC<Props> = memo(props => {
     else if (unitText && !MEASUREMENT_UNITS.hasOwnProperty(unitText.toLowerCase())) {
         unitDisplay = (
             <input
-                type="text"
                 className="form-control checkin-unit-input"
-                value={unitText}
-                placeholder="Enter volume units..."
                 onChange={(evt: any) => unitsChangedHandler(evt.target.value)}
+                placeholder="Enter volume units..."
+                type="text"
+                value={unitText}
             />
         );
     } else {
@@ -68,15 +68,20 @@ export const StorageAmountInput: FC<Props> = memo(props => {
                 containerClass="checkin-unit-select-container"
                 inputClass="checkin-unit-select"
                 name="unitType"
-                options={getMetricUnitOptions(preferredUnit)}
                 onChange={(name, formValue, option: SelectInputOption) => {
                     unitsChangedHandler(formValue === undefined && option ? option.id : formValue);
                 }}
+                options={getMetricUnitOptions(preferredUnit)}
                 value={model.unit?.label}
             />
         );
 
-        if (preferredUnit && model.unit !== null && model.value && !isMeasurementUnitIgnoreCase(model.unit, preferredUnit)) {
+        if (
+            preferredUnit &&
+            model.unit !== null &&
+            model.value &&
+            !isMeasurementUnitIgnoreCase(model.unit, preferredUnit)
+        ) {
             const preferredUnitText = model.as(preferredUnit).toString();
             preferredUnitMessage = (
                 <div>
@@ -103,12 +108,12 @@ export const StorageAmountInput: FC<Props> = memo(props => {
                     className="form-control storage-item-check-in-text storage-amount-input "
                     id="checkin-amount"
                     min={0}
-                    step={getVolumeMinStep(model.unit)}
                     name={inputName ?? 'amountDelta'}
                     onChange={onChange}
+                    placeholder="Enter amount..."
+                    step={getVolumeMinStep(model.unit)}
                     type="number"
                     value={model.value ?? ''}
-                    placeholder="Enter amount..."
                 />
                 {unitDisplay}
                 {preferredUnitMessage}

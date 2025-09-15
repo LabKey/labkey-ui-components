@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Iterable, List, Map, Set as ImmutableSet } from 'immutable';
+import { Set as ImmutableSet, Iterable, List, Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 import { ChangeEvent, CSSProperties } from 'react';
 
 import { hasParameter, toggleParameter } from '../url/ActionURL';
 import { QueryInfo } from '../../public/QueryInfo';
-import {STORED_AMOUNT_FIELDS} from "../components/samples/constants";
+import { STORED_AMOUNT_FIELDS } from '../components/samples/constants';
 
 // Case-insensitive Object reference. Returns undefined if either object or prop does not resolve.
 // If both casings exist (e.g. 'x' and 'X' are props) then either value may be returned.
@@ -357,9 +357,14 @@ export function getUpdatedData(
                 }
 
                 const colValueIsIncluded = updateValuesMap.has(col.fieldKey);
-                const updatedValue = updateValuesMap.get(col.fieldKey) == undefined ? null : updateValuesMap.get(col.fieldKey);
-                const valueIsChanged = !isSameWithStringCompare(updateValuesMap.get(col.fieldKey), fieldValueMap.get('value'));
-                const isStoredAmountField = col.fieldKey === STORED_AMOUNT_FIELDS.AMOUNT || col.fieldKey === STORED_AMOUNT_FIELDS.UNITS;
+                const updatedValue =
+                    updateValuesMap.get(col.fieldKey) == undefined ? null : updateValuesMap.get(col.fieldKey);
+                const valueIsChanged = !isSameWithStringCompare(
+                    updateValuesMap.get(col.fieldKey),
+                    fieldValueMap.get('value')
+                );
+                const isStoredAmountField =
+                    col.fieldKey === STORED_AMOUNT_FIELDS.AMOUNT || col.fieldKey === STORED_AMOUNT_FIELDS.UNITS;
                 if (colValueIsIncluded && valueIsChanged) {
                     return m.set(key, updatedValue);
                 } else if (colValueIsIncluded && isStoredAmountField) {
@@ -410,7 +415,7 @@ export const blurActiveElement = (): void => {
 const TRUE_STRINGS = ['true', 't', 'yes', 'y', 'on', '1'];
 const FALSE_STRINGS = ['false', 'f', 'no', 'n', 'off', '0'];
 
-export function isBoolean(value: any, allowNull: boolean = true): boolean {
+export function isBoolean(value: any, allowNull = true): boolean {
     if (typeof value === 'boolean') return true;
 
     if (!value) return allowNull;
@@ -718,7 +723,7 @@ export function arrayEquals(a: string[], b: string[], ignoreOrder = true, caseIn
     return caseInsensitive ? aStr.toLowerCase() === bStr.toLowerCase() : aStr === bStr;
 }
 
-export function getValueFromRow(row: Record<string, any>, col: string): string | number {
+export function getValueFromRow(row: Record<string, any>, col: string): number | string {
     if (!row) return undefined;
 
     const val = caseInsensitive(row, col);
@@ -794,7 +799,7 @@ export function styleStringToObj(styleString: string): CSSProperties {
         }, {});
 
     return Object.keys(obj).reduce((prev, key) => {
-        var camelCased = key.replace(/-[a-z]/g, g => g[1].toUpperCase());
+        const camelCased = key.replace(/-[a-z]/g, g => g[1].toUpperCase());
         prev[camelCased] = obj[key];
         return prev;
     }, {});

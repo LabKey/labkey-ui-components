@@ -147,15 +147,15 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
         >
             <Alert bsStyle="danger">{error}</Alert>
             <StorageAmountInput
+                amountChangedHandler={amountChangeHandler}
+                label="Amount"
                 model={unitModel}
                 preferredUnit={sampleTypeUnits?.value}
-                amountChangedHandler={amountChangeHandler}
                 unitsChangedHandler={unitsChangeHandler}
-                label="Amount"
             />
             <CommentTextArea
-                containerClassName="form-group storage-action-form-group"
                 actionName="Update"
+                containerClassName="form-group storage-action-form-group"
                 onChange={commentChangeHandler}
                 requiresUserComment={requiresUserComment}
             />

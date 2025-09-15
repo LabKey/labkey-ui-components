@@ -4,6 +4,8 @@ export type AuditQuery = {
     containerFilter?: Query.ContainerFilter;
     hasDetail?: boolean;
     hasTransactionId?: boolean;
+    /** Indicates that the audit event is backed by a query update event. */
+    isQueryUpdateEvent?: boolean;
     label: string;
     value: string;
 };
@@ -23,6 +25,7 @@ export const QUERY_UPDATE_AUDIT_QUERY: AuditQuery = {
 export const DATACLASS_DATA_UPDATE_AUDIT_QUERY: AuditQuery = {
     hasDetail: true,
     hasTransactionId: true,
+    isQueryUpdateEvent: true,
     label: 'Data Update Events',
     value: 'dataclassdataauditevent',
 };
@@ -68,6 +71,7 @@ export const ASSAY_AUDIT_QUERY: AuditQuery = {
 export const ASSAY_RESULT_AUDIT_QUERY: AuditQuery = {
     hasDetail: true,
     hasTransactionId: true,
+    isQueryUpdateEvent: true,
     label: 'Assay Result Events',
     value: 'assayresultauditevent',
 };
@@ -79,6 +83,7 @@ export const WORKFLOW_AUDIT_QUERY: AuditQuery = {
 export const SOURCE_AUDIT_QUERY: AuditQuery = {
     hasDetail: true,
     hasTransactionId: true,
+    isQueryUpdateEvent: true,
     label: 'Sources Events',
     value: 'sourcesauditevent',
 };
@@ -105,15 +110,23 @@ export const FILE_SYSTEM_AUDIT_QUERY: AuditQuery = {
 
 export const AUDIT_EVENT_TYPE_PARAM = 'eventType';
 
+export const PLATE_DATA_AUDIT_QUERY: AuditQuery = {
+    hasDetail: true,
+    hasTransactionId: true,
+    isQueryUpdateEvent: true,
+    label: 'Plate Data Events',
+    value: 'PlateDataAuditEvent',
+};
+
 export const COMMON_AUDIT_QUERIES: AuditQuery[] = [
     ATTACHMENT_AUDIT_QUERY,
     DOMAIN_AUDIT_QUERY,
     DOMAIN_PROPERTY_AUDIT_QUERY,
     FILE_SYSTEM_AUDIT_QUERY,
-    QUERY_UPDATE_AUDIT_QUERY,
+    GROUP_AUDIT_QUERY,
     INVENTORY_AUDIT_QUERY,
     LIST_AUDIT_QUERY,
-    GROUP_AUDIT_QUERY,
+    QUERY_UPDATE_AUDIT_QUERY,
     SAMPLE_TYPE_AUDIT_QUERY,
     SAMPLE_TIMELINE_AUDIT_QUERY,
     USER_AUDIT_QUERY,

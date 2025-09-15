@@ -4,12 +4,14 @@
  */
 import React, { ReactNode } from 'react';
 import { Map, OrderedMap } from 'immutable';
+import { QueryKey } from '@labkey/api';
 
 import { FREEZER_MANAGER_PRODUCT_ID, isSampleManagerEnabled } from '../../app/products';
 import {
     isAssayEnabled,
     isChartBuilderEnabled,
     isELNEnabled,
+    isPlatesEnabled,
     isProductFoldersEnabled,
     isRegistryEnabled,
     isWorkflowEnabled,
@@ -30,12 +32,12 @@ import {
     DATACLASS_DATA_UPDATE_AUDIT_QUERY,
     NOTEBOOK_AUDIT_QUERY,
     NOTEBOOK_REVIEW_AUDIT_QUERY,
+    PLATE_DATA_AUDIT_QUERY,
     REGISTRY_AUDIT_QUERY,
     REPORT_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
 } from './constants';
-import { QueryKey } from '@labkey/api';
 
 export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
     const queries = [...COMMON_AUDIT_QUERIES];
@@ -55,6 +57,7 @@ export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
         queries.push(NOTEBOOK_REVIEW_AUDIT_QUERY);
     }
     if (isChartBuilderEnabled(ctx)) queries.push(REPORT_AUDIT_QUERY);
+    if (isPlatesEnabled(ctx)) queries.push(PLATE_DATA_AUDIT_QUERY);
     return queries.sort(naturalSortByProperty('label'));
 }
 

@@ -379,7 +379,7 @@ export function createSessionAssayRunSummaryQuery(sampleIds: number[]): Promise<
 
     return executeSql({
         saveInSession: true,
-        schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+        schemaName: SCHEMAS.ASSAY_TABLES.SCHEMA,
         sql:
             'SELECT RowId, SampleID, SampleType, Assay, COUNT(*) AS RunCount\n' +
             "FROM (SELECT RowId, SampleID, SampleType, Assay || ' Run Count' AS Assay FROM " +
@@ -400,7 +400,7 @@ export async function getDistinctAssaysPerSample(sampleIds: number[]): Promise<s
 
     try {
         const results = await selectDistinctRows({
-            schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+            schemaName: SCHEMAS.ASSAY_TABLES.SCHEMA,
             queryName: assayRunsQuery,
             column: 'Assay',
             filterArray: [Filter.create('RowId', sampleIds, Filter.Types.IN)],

@@ -20,7 +20,7 @@ export function getFolderDataTypeDataCountSql(dataType: FolderConfigurableDataTy
         where = 'WHERE DataClass IS NOT NULL ';
     } else if (dataType === 'AssayDesign') {
         typeField = 'protocol';
-        from = 'exp.AssayRuns ';
+        from = 'assay.AssayRuns ';
     }
 
     const select = 'SELECT ' + typeField + ' as Type, COUNT(*) as DataCount ';

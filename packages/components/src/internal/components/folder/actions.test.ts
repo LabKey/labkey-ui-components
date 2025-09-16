@@ -24,7 +24,7 @@ describe('getFolderDataTypeDataCountSql', () => {
 
     test('AssayDesign', () => {
         expect(getFolderDataTypeDataCountSql('AssayDesign')).toBe(
-            'SELECT protocol as Type, COUNT(*) as DataCount FROM exp.AssayRuns GROUP BY protocol'
+            'SELECT protocol as Type, COUNT(*) as DataCount FROM assay.AssayRuns GROUP BY protocol'
         );
     });
 });

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.62.1
+*Released*: 16 September 2025
+- EditableColumnMetadata cleanup of unused getFilteredLookupKeys and linkedColInd props
+
 ### version 6.62.0
 *Released*: 15 September 2025
 - Sample Type Amounts and Units updates for Quantity

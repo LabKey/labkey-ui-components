@@ -43,10 +43,8 @@ export interface EditableColumnMetadata {
     containerFilter?: Query.ContainerFilter;
     filteredLookupKeys?: List<any>;
     filteredLookupValues?: List<string>;
-    getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>; // TODO can this be removed? I don't see any usages (if so, also remove linkedColInd)
     hideTitleTooltip?: boolean;
     isReadOnlyCell?: (rowKey: string) => boolean;
-    linkedColInd?: number; // TODO: change to linkedColFieldKey
     lookupValueFilters?: Filter.IFilter[];
     minWidth?: number;
     onRemoveColumn?: (col: QueryColumn) => void;

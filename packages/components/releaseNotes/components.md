@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-- Issue 53926: More custom assay queries to assay schema
+- Issue 53926: Move custom assay queries to assay schema
 
 ### version 6.62.0
 *Released*: 15 September 2025

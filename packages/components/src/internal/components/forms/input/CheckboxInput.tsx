@@ -119,6 +119,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputImplProps, Checkbo
                         labelOverlayProps={{
                             isFormsy: false,
                             inputId: queryColumn.fieldKey,
+                            required: queryColumn?.required,
                             addLabelAsterisk,
                         }}
                         showLabel={showLabel}

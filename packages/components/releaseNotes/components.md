@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.X
+*Released*: X September 2025
+- Workflow: Change Required Template Fields to be Required at the start of a Job
+  - Update required field label display to show overlay before asterisk
+  - Fix CheckBoxInput required field display on Formsy forms
+
 ### version 6.62.0
 *Released*: 15 September 2025
 - Sample Type Amounts and Units updates for Quantity

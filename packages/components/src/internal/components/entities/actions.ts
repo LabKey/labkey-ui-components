@@ -1276,7 +1276,7 @@ function getDataTypeDataExistSql(dataType: FolderConfigurableDataType, lsid?: st
         from = 'exp.data ';
         where = 'WHERE DataClass = ' + rowId;
     } else if (dataType === 'AssayDesign') {
-        from = 'exp.AssayRuns ';
+        from = 'assay.AssayRuns ';
         where = "WHERE protocol = '" + lsid + "'";
     }
 

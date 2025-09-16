@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.62.2
+*Released*: 16 September 2025
 - Issue 53926: Move custom assay queries to assay schema
 
 ### version 6.62.1

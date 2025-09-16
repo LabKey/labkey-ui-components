@@ -3,33 +3,32 @@ import { render } from '@testing-library/react';
 import { LabelOverlay } from './LabelOverlay';
 
 describe('LabelOverlay', () => {
-
     it('renders label with overlay, not formsy', () => {
-        render(<LabelOverlay label="Test Label" isFormsy={false} />);
+        render(<LabelOverlay isFormsy={false} label="Test Label" />);
         expect(document.querySelector('label')?.textContent).toBe('Test Label ');
         expect(document.querySelectorAll('.fa-question-circle')).toHaveLength(1);
     });
 
     it('renders label with overlay and required symbol when required, not formsy', () => {
-        render(<LabelOverlay label="Test Label" required={true}  isFormsy={false}/>);
+        render(<LabelOverlay isFormsy={false} label="Test Label" required={true} />);
         expect(document.querySelector('label')?.textContent).toBe('Test Label * ');
         expect(document.querySelectorAll('.fa-question-circle')).toHaveLength(1);
     });
 
     it('renders label with overlay and required, but addLabelAsterisk = false, not formsy', () => {
-        render(<LabelOverlay label="Test Label" required={true} addLabelAsterisk={false}  isFormsy={false} />);
+        render(<LabelOverlay addLabelAsterisk={false} isFormsy={false} label="Test Label" required={true} />);
         expect(document.querySelector('label')?.textContent).toBe('Test Label * ');
         expect(document.querySelectorAll('.fa-question-circle')).toHaveLength(1);
     });
 
     it('renders label with overlay, required = false, and addLabelAsterisk = true, , not formsy', () => {
-        render(<LabelOverlay label="Test Label" required={false} addLabelAsterisk={true}  isFormsy={false} />);
+        render(<LabelOverlay addLabelAsterisk={true} isFormsy={false} label="Test Label" required={false} />);
         expect(document.querySelector('label')?.textContent).toBe('Test Label * ');
         expect(document.querySelectorAll('.fa-question-circle')).toHaveLength(1);
     });
 
     it('renders label with no overlay and required symbol when required, not formsy', () => {
-        render(<LabelOverlay label="Test Label" required={true} helpTipRenderer='NONE' isFormsy={false} />);
+        render(<LabelOverlay helpTipRenderer="NONE" isFormsy={false} label="Test Label" required={true} />);
         expect(document.querySelector('label')?.textContent).toBe('Test Label * ');
         expect(document.querySelectorAll('.fa-question-circle')).toHaveLength(0);
     });
@@ -42,17 +41,16 @@ describe('LabelOverlay', () => {
     });
 
     it('renders label with overlay and required', () => {
-        render(<LabelOverlay label="Test Label" isFormsy={true} required={true} />);
+        render(<LabelOverlay isFormsy={true} label="Test Label" required={true} />);
         expect(document.querySelector('label')).toBeNull();
         expect(document.querySelector('span')?.textContent).toBe('Test Label * ');
         expect(document.querySelectorAll('.fa-question-circle')).toHaveLength(1);
     });
 
     it('renders label with overlay and addLabelAsterisk', () => {
-        render(<LabelOverlay label="Test Label" isFormsy={true} addLabelAsterisk={true} />);
+        render(<LabelOverlay addLabelAsterisk={true} isFormsy={true} label="Test Label" />);
         expect(document.querySelector('label')).toBeNull();
         expect(document.querySelector('span')?.textContent).toBe('Test Label * ');
         expect(document.querySelectorAll('.fa-question-circle')).toHaveLength(1);
     });
-
 });

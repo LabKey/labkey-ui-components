@@ -17,7 +17,11 @@ import { naturalSortByProperty } from '../sort';
 import { PaginationData } from '../../internal/components/pagination/Pagination';
 import { SelectRowsOptions } from '../../internal/query/selectRows';
 
-export function flattenValuesFromRow(row: any, columns: string[], colFieldKeyMap?: Record<string, string>): Record<string, any> {
+export function flattenValuesFromRow(
+    row: any,
+    columns: string[],
+    colFieldKeyMap?: Record<string, string>
+): Record<string, any> {
     const values = {};
     if (row && columns) {
         columns.forEach((col: string) => {

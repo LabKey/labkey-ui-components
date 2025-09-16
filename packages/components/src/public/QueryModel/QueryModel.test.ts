@@ -342,12 +342,51 @@ describe('flattenValuesFromRow', () => {
             test4: undefined,
         };
 
-        expect(flattenValuesFromRow(data, Object.keys(data)).test0).toBe(undefined);
+        expect(flattenValuesFromRow(data, Object.keys(data))).toEqual({
+            test1: 123,
+            test2: 456,
+            test3: null
+        });
         expect(flattenValuesFromRow(data, Object.keys(data)).test1).toBe(123);
         expect(flattenValuesFromRow(data, Object.keys(data)).test2).toBe(456);
         expect(flattenValuesFromRow(data, Object.keys(data)).test3).toBe(null);
         expect(flattenValuesFromRow(data, Object.keys(data)).test4).toBe(undefined);
+        expect(flattenValuesFromRow(data, Object.keys(data)).test0).toBe(undefined);
     });
+
+    test('with values and colFieldKeyMap', () => {
+        const data = {
+            "test/1": { value: 123, displayValue: 'TEST123' },
+            "test$2": { value: 456 },
+            "test.3": { value: 789 },
+            "test4": { value: 101 },
+        };
+
+        expect(flattenValuesFromRow(data, Object.keys(data))).toEqual(
+            { 'test/1': 123, 'test$2': 456, 'test.3': 789, test4: 101 }
+        );
+
+        const colFieldKeyMap = {
+            'test/1': 'test$S1',
+            'test$2': 'test$D2',
+            'test.3': 'test$P3',
+            test4: 'test4',
+        };
+
+        expect(flattenValuesFromRow(data, Object.keys(data), colFieldKeyMap)).toEqual(
+            { 'test$S1': 123, 'test$D2': 456, 'test$P3': 789, test4: 101 }
+        );
+
+        const colFieldKeyMapPartial = {
+            'test/1': 'test$S1',
+            test4: null,
+        };
+
+        expect(flattenValuesFromRow(data, Object.keys(data), colFieldKeyMapPartial)).toEqual(
+            { 'test$S1': 123, 'test$2': 456, 'test.3': 789, test4: 101 }
+        );
+    });
+
 });
 
 describe('locationHasQueryParamSettings', () => {

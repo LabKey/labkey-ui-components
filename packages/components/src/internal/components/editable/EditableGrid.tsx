@@ -154,7 +154,7 @@ const COUNT_COL = new GridColumn({
     ),
 });
 
-type GridMouseEvent = React.MouseEvent<HTMLDivElement> | MouseEvent;
+type GridMouseEvent = MouseEvent | React.MouseEvent<HTMLDivElement>;
 
 // the column index for cell values and cell messages does not include either the selection
 // column or the row number column, so we adjust the value passed to <Cell> to accommodate.
@@ -227,27 +227,27 @@ function inputCellFactory(
         return (
             <td className={className} key={inputCellKey(c.raw, row)} style={style}>
                 <Cell
-                    borderMaskTop={borderMask[0]}
-                    borderMaskRight={borderMask[1]}
                     borderMaskBottom={borderMask[2]}
                     borderMaskLeft={borderMask[3]}
+                    borderMaskRight={borderMask[1]}
+                    borderMaskTop={borderMask[0]}
                     cellActions={cellActions}
                     col={c.raw}
                     colIdx={colIdx}
                     columnMetadata={columnMetadata}
-                    row={focused ? editorModel.getRowValue(rowIdx) : undefined}
                     containerFilter={containerFilter}
-                    placeholder={columnMetadata?.placeholder}
-                    readOnly={isReadonlyRow || isReadonlyCell}
-                    rowIdx={rowIdx}
+                    containerPath={containerPath}
                     focused={focused}
                     forUpdate={forUpdate}
                     message={editorModel.getMessage(fieldKey, rowIdx)}
+                    placeholder={columnMetadata?.placeholder}
+                    readOnly={isReadonlyRow || isReadonlyCell}
+                    renderDragHandle={renderDragHandle}
+                    row={focused ? editorModel.getRowValue(rowIdx) : undefined}
+                    rowIdx={rowIdx}
                     selected={editorModel.isSelected(colIdx, rowIdx)}
                     selection={inSelection}
-                    renderDragHandle={renderDragHandle}
                     values={editorModel.getValue(fieldKey, rowIdx)}
-                    containerPath={containerPath}
                 />
             </td>
         );
@@ -837,10 +837,10 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 title: '&nbsp;',
                 cell: (selected: boolean, row) => (
                     <input
-                        className="grid-panel__checkbox"
                         checked={this.state.selected.contains(row.get(GRID_EDIT_INDEX))}
-                        type="checkbox"
+                        className="grid-panel__checkbox"
                         onChange={this.select.bind(this, row)}
+                        type="checkbox"
                     />
                 ),
             });
@@ -910,7 +910,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     </>
                 )}
                 {showOverlayFromMetadata && (
-                    <LabelHelpTip title={label} popoverClassName={metadata?.popoverClassName} placement="bottom">
+                    <LabelHelpTip placement="bottom" popoverClassName={metadata?.popoverClassName} title={label}>
                         <>{metadata?.toolTip}</>
                     </LabelHelpTip>
                 )}
@@ -921,8 +921,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     <DropdownMenu
                         asAnchor={false}
                         className="grid-panel__menu-toggle pull-right"
-                        title={<i className="fa fa-chevron-circle-down" />}
                         pullRight
+                        title={<i className="fa fa-chevron-circle-down" />}
                     >
                         <RemoveColumnMenuItem column={qColumn} onClick={metadata.onRemoveColumn} />
                     </DropdownMenu>
@@ -1456,26 +1456,26 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const maxToAdd = maxRows && amountLeft < MAX_EDITABLE_GRID_ROWS ? amountLeft : MAX_EDITABLE_GRID_ROWS;
         return (
             <QueryInfoForm
-                onSubmitForEdit={this.bulkAdd}
                 asModal
                 checkRequiredFields={false}
-                showLabelAsterisk
-                submitForEditText={`Add ${capitalizeFirstChar(addControlProps?.nounPlural)} to Grid`}
-                maxCount={maxToAdd}
-                onHide={this.toggleBulkAdd}
-                operation={forUpdate ? Operation.update : Operation.insert}
-                onSuccess={this.toggleBulkAdd}
-                queryInfo={queryInfo.getInsertQueryInfo()}
-                queryFilters={bulkAddProps?.queryFilters}
+                columnFilter={bulkAddProps?.columnFilter}
+                containerPath={containerPath}
+                countText={bulkAddProps?.countText}
+                creationTypeOptions={bulkAddProps?.creationTypeOptions}
+                fieldValues={bulkAddProps?.fieldValues}
                 header={
                     !!bulkAddProps?.header && <div className="editable-grid__bulk-header">{bulkAddProps.header}</div>
                 }
-                fieldValues={bulkAddProps?.fieldValues}
-                columnFilter={bulkAddProps?.columnFilter}
+                maxCount={maxToAdd}
+                onHide={this.toggleBulkAdd}
+                onSubmitForEdit={this.bulkAdd}
+                onSuccess={this.toggleBulkAdd}
+                operation={forUpdate ? Operation.update : Operation.insert}
+                queryFilters={bulkAddProps?.queryFilters}
+                queryInfo={queryInfo.getInsertQueryInfo()}
+                showLabelAsterisk
+                submitForEditText={`Add ${capitalizeFirstChar(addControlProps?.nounPlural)} to Grid`}
                 title={bulkAddProps?.title}
-                countText={bulkAddProps?.countText}
-                creationTypeOptions={bulkAddProps?.creationTypeOptions}
-                containerPath={containerPath}
             />
         );
     };

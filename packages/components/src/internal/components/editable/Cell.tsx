@@ -20,7 +20,7 @@ import { Query } from '@labkey/api';
 
 import { createPortal } from 'react-dom';
 
-import { cancelEvent, isFillDown, isCtrlOrMetaKey, isSelectAll } from '../../events';
+import { cancelEvent, isCtrlOrMetaKey, isFillDown, isSelectAll } from '../../events';
 
 import { CELL_SELECTION_HANDLE_CLASSNAME, KEYS } from '../../constants';
 import { Key } from '../../../public/useEnterEscape';
@@ -593,10 +593,10 @@ export class Cell extends React.PureComponent<CellProps, undefined> {
                     containerPath={containerPath}
                     defaultInputValue={this.recordedKeys}
                     disabled={this.isReadOnly}
-                    lookupValueFilters={columnMetadata?.lookupValueFilters}
                     filteredLookupKeys={columnMetadata?.filteredLookupKeys}
                     filteredLookupValues={columnMetadata?.filteredLookupValues}
                     forUpdate={forUpdate}
+                    lookupValueFilters={columnMetadata?.lookupValueFilters}
                     modifyCell={cellActions.modifyCell}
                     onBlur={this.handleSelectionBlur}
                     onKeyDown={this.handleFocusedDropdownKeys}

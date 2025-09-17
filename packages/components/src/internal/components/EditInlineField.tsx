@@ -20,6 +20,7 @@ import { useServerContext } from './base/ServerContext';
 import { resolveDetailEditRenderer } from './forms/detail/DetailDisplay';
 import { UserLink } from './user/UserLink';
 import { DatePickerInput } from './forms/input/DatePickerInput';
+import { isBlankValue } from '../util/utils';
 
 interface Props {
     allowBlank?: boolean;
@@ -128,7 +129,7 @@ export const EditInlineField: FC<Props> = memo(props => {
     const saveEdit = useCallback(() => {
         const inputValue = getInputValue();
 
-        if (allowBlank === false && !isDate && inputValue.trim() === '') {
+        if (allowBlank === false && !isDate && isBlankValue(inputValue)) {
             return;
         }
 
@@ -140,7 +141,7 @@ export const EditInlineField: FC<Props> = memo(props => {
 
     const onBlur = useCallback((): void => {
         if (!state.ignoreBlur) {
-            if (allowBlank === false && !isDate && getInputValue().trim() === '') {
+            if (allowBlank === false && !isDate && isBlankValue(getInputValue())) {
                 onCancel();
             } else {
                 saveEdit();
@@ -154,6 +155,11 @@ export const EditInlineField: FC<Props> = memo(props => {
             if (date instanceof Array) throw new Error('Unsupported date/time type');
 
             if (!date) {
+                if (allowBlank === false) {
+                    onCancel();
+                    return;
+                }
+
                 if (isDate) setDateValue(undefined);
                 else setTimeJsonValue(undefined);
             } else if (typeof date === 'string') {
@@ -162,7 +168,7 @@ export const EditInlineField: FC<Props> = memo(props => {
                 if (isDate) setDateValue(date);
             }
         },
-        [isDate]
+        [isDate, allowBlank]
     );
 
     const onFormsyColumnChange = useCallback(

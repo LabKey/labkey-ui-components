@@ -35,6 +35,7 @@ import {
     getValueFromRow,
     getValuesSummary,
     hasAmountOrUnitChanged,
+    isBlankValue,
     isBoolean,
     isImage,
     isInteger,
@@ -1671,3 +1672,24 @@ describe('isSameWithStringCompare', () => {
         expect(isSameWithStringCompare(123, 123.1)).toBe(false);
     });
 });
+
+describe('isBlankValue', () => {
+    it('blank', () => {
+        expect(isBlankValue(undefined)).toBe(true);
+        expect(isBlankValue(null)).toBe(true);
+        expect(isBlankValue('')).toBe(true);
+        expect(isBlankValue('   ')).toBe(true);
+    });
+
+    it('not blank', () => {
+        expect(isBlankValue('value')).toBe(false);
+        expect(isBlankValue(' value ')).toBe(false);
+        expect(isBlankValue(0)).toBe(false);
+        expect(isBlankValue({})).toBe(false);
+        expect(isBlankValue([])).toBe(false);
+        expect(isBlankValue(true)).toBe(false);
+        expect(isBlankValue(false)).toBe(false);
+        expect(isBlankValue(new Date())).toBe(false);
+    });
+});
+

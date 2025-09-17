@@ -842,6 +842,12 @@ export function isSetEqual<T = any>(a: Collection<T>, b: Collection<T>): boolean
     return toJsonSet(a) === toJsonSet(b);
 }
 
+export function isBlankValue(val: any): boolean {
+    if (val === undefined || val === null) return true;
+    if (typeof val !== 'string') return false;
+    return val.toString().trim() === '';
+}
+
 /**
  * When this package is exported this environment variable reference is inline rewritten as
  * `const IS_NODE_TEST_ENV = "production" === 'test';`

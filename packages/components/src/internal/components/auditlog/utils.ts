@@ -32,6 +32,7 @@ import {
     DATACLASS_DATA_UPDATE_AUDIT_QUERY,
     NOTEBOOK_AUDIT_QUERY,
     NOTEBOOK_REVIEW_AUDIT_QUERY,
+    PLATE_AUDIT_QUERY,
     PLATE_DATA_AUDIT_QUERY,
     REGISTRY_AUDIT_QUERY,
     REPORT_AUDIT_QUERY,
@@ -41,23 +42,16 @@ import {
 
 export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
     const queries = [...COMMON_AUDIT_QUERIES];
+
     if (isProductFoldersEnabled(ctx)) queries.push(CONTAINER_AUDIT_QUERY);
     if (isWorkflowEnabled(ctx)) queries.push(WORKFLOW_AUDIT_QUERY);
-    if (isAssayEnabled(ctx)) {
-        queries.push(ASSAY_AUDIT_QUERY);
-        queries.push(ASSAY_RESULT_AUDIT_QUERY);
-    }
+    if (isAssayEnabled(ctx)) queries.push(ASSAY_AUDIT_QUERY, ASSAY_RESULT_AUDIT_QUERY);
     if (isSampleManagerEnabled(ctx) && !isRegistryEnabled(ctx)) queries.push(SOURCE_AUDIT_QUERY);
-    if (isRegistryEnabled(ctx)) {
-        queries.push(DATACLASS_DATA_UPDATE_AUDIT_QUERY);
-        queries.push(REGISTRY_AUDIT_QUERY);
-    }
-    if (isELNEnabled(ctx)) {
-        queries.push(NOTEBOOK_AUDIT_QUERY);
-        queries.push(NOTEBOOK_REVIEW_AUDIT_QUERY);
-    }
+    if (isRegistryEnabled(ctx)) queries.push(DATACLASS_DATA_UPDATE_AUDIT_QUERY, REGISTRY_AUDIT_QUERY);
+    if (isELNEnabled(ctx)) queries.push(NOTEBOOK_AUDIT_QUERY, NOTEBOOK_REVIEW_AUDIT_QUERY);
     if (isChartBuilderEnabled(ctx)) queries.push(REPORT_AUDIT_QUERY);
-    if (isPlatesEnabled(ctx)) queries.push(PLATE_DATA_AUDIT_QUERY);
+    if (isPlatesEnabled(ctx)) queries.push(PLATE_AUDIT_QUERY, PLATE_DATA_AUDIT_QUERY);
+
     return queries.sort(naturalSortByProperty('label'));
 }
 

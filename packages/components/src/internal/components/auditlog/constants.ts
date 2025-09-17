@@ -110,6 +110,13 @@ export const FILE_SYSTEM_AUDIT_QUERY: AuditQuery = {
 
 export const AUDIT_EVENT_TYPE_PARAM = 'eventType';
 
+export const PLATE_AUDIT_QUERY: AuditQuery = {
+    hasDetail: true,
+    hasTransactionId: true,
+    label: 'Plate Events',
+    value: 'PlateEvent',
+};
+
 export const PLATE_DATA_AUDIT_QUERY: AuditQuery = {
     hasDetail: true,
     hasTransactionId: true,

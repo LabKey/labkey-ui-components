@@ -5,9 +5,9 @@ import {
     formatDate,
     getColDateFormat,
     getDateFNSDateFormat,
-    getJsonDateTimeFormatString,
-    getJsonDateFormatString,
     getDateTimeDisplayValueFromStr,
+    getJsonDateFormatString,
+    getJsonDateTimeFormatString,
 } from '../util/Date';
 import { Key, useEnterEscape } from '../../public/useEnterEscape';
 
@@ -100,7 +100,7 @@ export const EditInlineField: FC<Props> = memo(props => {
         // Issue 48196: if the domain column has been setup with a "url" prop, use it in the EditInlineField value display
         if (value_ !== undefined && value?.url) {
             value_ = (
-                <a href={value.url} target="_blank" rel="noopener noreferrer">
+                <a href={value.url} rel="noopener noreferrer" target="_blank">
                     {value_}
                 </a>
             );
@@ -220,38 +220,38 @@ export const EditInlineField: FC<Props> = memo(props => {
             {state.editing && isDateOrTime && !!column && (
                 <DatePickerInput
                     autoFocus
-                    name={name}
                     formsy={false}
+                    inlineEdit
+                    inputWrapperClassName="form-control"
+                    name={name}
+                    onBlur={onBlur}
+                    onChange={onDateChange}
+                    onKeyDown={onKeyDown}
+                    placeholderText={placeholder}
                     queryColumn={column}
                     showLabel={false}
                     value={isDate ? dateValue : _value}
-                    inputWrapperClassName="form-control"
-                    onBlur={onBlur}
-                    onKeyDown={onKeyDown}
-                    onChange={onDateChange}
-                    placeholderText={placeholder}
-                    inlineEdit
                 />
             )}
             {state.editing && isDateOrTime && !column && (
                 <DateInput
                     autoFocus
                     container={container}
+                    dateFormat={dateInputDateFormat}
                     endDate={endDate}
-                    minDate={startDate}
                     maxDate={endDate}
+                    minDate={startDate}
                     name={name}
                     onBlur={onBlur}
-                    onKeyDown={onKeyDown}
                     onChange={onDateChange}
+                    onKeyDown={onKeyDown}
                     onMonthChange={onDateChange}
                     placeholderText={placeholder}
                     selected={dateValue}
                     selectsEnd={startDate !== undefined}
                     selectsStart={endDate !== undefined}
-                    startDate={startDate}
                     showTimeSelect={!!column}
-                    dateFormat={dateInputDateFormat}
+                    startDate={startDate}
                 />
             )}
             {state.editing && isTextArea && (
@@ -261,10 +261,10 @@ export const EditInlineField: FC<Props> = memo(props => {
                         className="form-control"
                         cols={100}
                         defaultValue={_value}
+                        name={name}
                         onBlur={onBlur}
                         onFocus={onTextAreaFocus}
                         onKeyDown={onKeyDown}
-                        name={name}
                         placeholder={placeholder}
                         ref={inputRef}
                         rows={5}
@@ -284,14 +284,14 @@ export const EditInlineField: FC<Props> = memo(props => {
                         autoFocus
                         className="form-control"
                         defaultValue={_value}
-                        onBlur={onBlur}
-                        onKeyDown={onKeyDown}
                         name={name}
+                        onBlur={onBlur}
+                        onInput={onInputChange}
+                        onKeyDown={onKeyDown}
                         placeholder={placeholder}
                         ref={inputRef}
-                        type={inputType}
                         size={Math.max(_value?.length ?? 0, 20)}
-                        onInput={onInputChange}
+                        type={inputType}
                     />
                 </span>
             )}
@@ -300,13 +300,13 @@ export const EditInlineField: FC<Props> = memo(props => {
                     {label && (
                         <span
                             className="edit-inline-field__label"
-                            unselectable="on"
                             title={allowEdit ? tooltip : undefined}
+                            unselectable="on"
                         >
                             {label}
                         </span>
                     )}
-                    {isUser && <UserLink userId={value?.value} userDisplayValue={value?.displayValue} />}
+                    {isUser && <UserLink userDisplayValue={value?.displayValue} userId={value?.value} />}
                     <span
                         className={classNames({ 'edit-inline-field__toggle': allowEdit, 'ws-pre-wrap': isTextArea })}
                         onClick={toggleEdit}

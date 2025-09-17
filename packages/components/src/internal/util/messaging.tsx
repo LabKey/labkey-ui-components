@@ -236,7 +236,7 @@ export function getPermissionRestrictionMessage(
 }
 
 export function lookupValidationErrorMessage(
-    value: string | number | boolean,
+    value: boolean | number | string,
     fromPaste?: boolean,
     displayValue?: any
 ): string {

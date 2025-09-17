@@ -1692,4 +1692,3 @@ describe('isBlankValue', () => {
         expect(isBlankValue(new Date())).toBe(false);
     });
 });
-

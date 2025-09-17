@@ -27,6 +27,10 @@ const ASSAY_SCHEMA = 'assay';
 export const ASSAY_TABLES = {
     ASSAY_LIST: new SchemaQuery(ASSAY_SCHEMA, 'AssayList'),
     ASSAY_DETAILS_SQ: new SchemaQuery(ASSAY_SCHEMA, 'AssayList', ViewInfo.DETAIL_NAME),
+    ASSAY_RUN_COUNTS: new SchemaQuery(ASSAY_SCHEMA, 'AssayRunCounts'),
+    ASSAY_RUNS: new SchemaQuery(ASSAY_SCHEMA, 'AssayRuns'),
+    ASSAY_RUNS_PER_SAMPLE: new SchemaQuery(ASSAY_SCHEMA, 'AssayRunsPerSample'),
+    ASSAY_RUNS_PER_SAMPLE_CHILD_FOLDER: new SchemaQuery(ASSAY_SCHEMA, 'AssayRunsPerSampleChildFolder'),
     RESULTS_QUERYNAME: 'Data',
     SCHEMA: ASSAY_SCHEMA,
 };
@@ -34,7 +38,6 @@ export const ASSAY_TABLES = {
 // EXP
 const EXP_SCHEMA = 'exp';
 export const EXP_TABLES = {
-    ASSAY_RUNS: new SchemaQuery(EXP_SCHEMA, 'AssayRuns'),
     DATA: new SchemaQuery(EXP_SCHEMA, 'Data'),
     DATA_CLASSES: new SchemaQuery(EXP_SCHEMA, 'DataClasses'),
     DATA_CLASS_CATEGORY_TYPE: new SchemaQuery(EXP_SCHEMA, 'DataClassCategoryType'),

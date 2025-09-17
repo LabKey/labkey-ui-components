@@ -25,7 +25,7 @@ const ASSAY_RESULTS_OPERATION_CONFIRMATION_ACTION = 'getAssayResultsOperationCon
 export const AssayRunDataType: EntityDataType = {
     deleteHelpLinkTopic: DELETE_ASSAY_RUNS_TOPIC,
     typeListingSchemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
-    listingSchemaQuery: SCHEMAS.EXP_TABLES.ASSAY_RUNS,
+    listingSchemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_RUNS,
     instanceSchemaName: SCHEMAS.ASSAY_TABLES.SCHEMA,
     operationConfirmationControllerName: 'assay',
     operationConfirmationActionName: ASSAY_RUN_OPERATION_CONFIRMATION_ACTION,

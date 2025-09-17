@@ -155,7 +155,7 @@ describe('defaultTitleRenderer', () => {
         });
         render(<div>{defaultTitleRenderer(col)}</div>);
         expect(document.querySelector('span').innerHTML).toEqual(
-            'test&nbsp;<span class="required-symbol">* </span><div class="overlay-trigger"><i class="fa fa-question-circle"></i></div>'
+            'test&nbsp;<div class="overlay-trigger"><i class="fa fa-question-circle"></i></div><span class="required-symbol">* </span>'
         );
     });
 

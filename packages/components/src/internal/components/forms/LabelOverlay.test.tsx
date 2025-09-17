@@ -21,7 +21,7 @@ describe('LabelOverlay', () => {
         expect(document.querySelectorAll('.fa-question-circle')).toHaveLength(1);
     });
 
-    it('renders label with overlay, required = false, and addLabelAsterisk = true, , not formsy', () => {
+    it('renders label with overlay, required = false, and addLabelAsterisk = true, not formsy', () => {
         render(<LabelOverlay addLabelAsterisk={true} isFormsy={false} label="Test Label" required={false} />);
         expect(document.querySelector('label')?.textContent).toBe('Test Label * ');
         expect(document.querySelectorAll('.fa-question-circle')).toHaveLength(1);

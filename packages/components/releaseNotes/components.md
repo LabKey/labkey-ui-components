@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Fix CheckBoxInput required field display on Formsy forms
   - Add optional `colFieldKeyMap` param to `flattenValuesFromRow` to convert field names to field keys
 
+### version 6.62.2
+*Released*: 16 September 2025
+- Issue 53926: Move custom assay queries to assay schema
+
 ### version 6.62.1
 *Released*: 16 September 2025
 - EditableColumnMetadata cleanup of unused getFilteredLookupKeys and linkedColInd props

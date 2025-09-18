@@ -111,6 +111,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
         if (isFormsy) {
             // when being used as a label for a formsy component directly this will use just a span without the
             // classes applied as well as not needing to handle 'required' display
+            // TODO: remove space for required-symbol after *
             return (
                 <span>
                     {label}&nbsp;
@@ -120,6 +121,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
             );
         }
 
+        // TODO: remove space for required-symbol after *
         return (
             <label className={(labelClass ? labelClass + ' ' : '') + 'text__truncate-and-wrap'} htmlFor={inputId}>
                 <span>{label}</span>&nbsp;

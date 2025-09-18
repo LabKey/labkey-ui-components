@@ -149,8 +149,8 @@ export function generateId(prefix?: string): string {
 export function debounce(func, wait, immediate?: boolean): () => void {
     let timeout: number;
     return function () {
-        const context = this,
-            args = arguments;
+        const args = arguments,
+            context = this;
         const later = function (): void {
             timeout = null;
             if (!immediate) func.apply(context, args);
@@ -764,7 +764,7 @@ export function getValuesSummary<T>(values: T[], nounSingular: string, nounPlura
  * fields in that row. If no column is provided, the data is expected to be a single field's data.
  * @param data either a row of data or a single field's data
  */
-export function getDataStyling(data: Map<string, any> | any): CSSProperties {
+export function getDataStyling(data: any | Map<string, any>): CSSProperties {
     if (!data) {
         return undefined;
     }
@@ -840,6 +840,12 @@ const toJsonSet = (s): string => JSON.stringify([...new Set(s)].sort(), stringif
  */
 export function isSetEqual<T = any>(a: Collection<T>, b: Collection<T>): boolean {
     return toJsonSet(a) === toJsonSet(b);
+}
+
+export function isBlankValue(val: any): boolean {
+    if (val === undefined || val === null) return true;
+    if (typeof val !== 'string') return false;
+    return val.toString().trim() === '';
 }
 
 /**

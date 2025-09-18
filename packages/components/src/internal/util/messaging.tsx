@@ -197,6 +197,8 @@ export function resolveErrorMessage(
         } else if (errorMsg.indexOf('null value in column "name"') > -1) {
             const noun = errorMsg.indexOf('material') > -1 ? 'Sample ID' : 'ID';
             return noun + ' cannot be blank.';
+        } else if (noun === 'job' && errorMsg.indexOf('when it contains rows with blank values') > -1) {
+            return errorMsg.replace('it contains rows with blank values', 'there are already jobs using this template');
         }
     }
     return errorMsg;
@@ -234,7 +236,7 @@ export function getPermissionRestrictionMessage(
 }
 
 export function lookupValidationErrorMessage(
-    value: string | number | boolean,
+    value: boolean | number | string,
     fromPaste?: boolean,
     displayValue?: any
 ): string {

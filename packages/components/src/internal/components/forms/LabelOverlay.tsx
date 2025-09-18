@@ -61,14 +61,14 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
 
         if (column?.helpTipRenderer || helpTipRenderer) {
             return (
-                <HelpTipRenderer type={column?.helpTipRenderer || helpTipRenderer} column={column}>
+                <HelpTipRenderer column={column} type={column?.helpTipRenderer || helpTipRenderer}>
                     {children}
                 </HelpTipRenderer>
             );
         }
 
         return (
-            <DomainFieldHelpTipContents column={column} required={required} description={description} type={type}>
+            <DomainFieldHelpTipContents column={column} description={description} required={required} type={type}>
                 {children}
             </DomainFieldHelpTipContents>
         );
@@ -84,7 +84,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
                 : undefined;
         const body = this.overlayBody();
         return (
-            <Popover id={this._popoverId} title={label} placement={placement} className={popoverClassName}>
+            <Popover className={popoverClassName} id={this._popoverId} placement={placement} title={label}>
                 {body}
             </Popover>
         );
@@ -111,20 +111,22 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
         if (isFormsy) {
             // when being used as a label for a formsy component directly this will use just a span without the
             // classes applied as well as not needing to handle 'required' display
+            // TODO: remove space for required-symbol after *
             return (
                 <span>
                     {label}&nbsp;
-                    {required || addLabelAsterisk ? <span className="required-symbol">* </span> : null}
                     {overlay}
+                    {required || addLabelAsterisk ? <span className="required-symbol">* </span> : null}
                 </span>
             );
         }
 
+        // TODO: remove space for required-symbol after *
         return (
             <label className={(labelClass ? labelClass + ' ' : '') + 'text__truncate-and-wrap'} htmlFor={inputId}>
                 <span>{label}</span>&nbsp;
-                {required || addLabelAsterisk ? <span className="required-symbol">* </span> : null}
                 {overlay}
+                {required || addLabelAsterisk ? <span className="required-symbol">* </span> : null}
             </label>
         );
     }

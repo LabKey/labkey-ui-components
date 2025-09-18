@@ -115,16 +115,17 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputImplProps, Checkbo
                     </label>
                 ) : (
                     <FieldLabel
+                        column={queryColumn}
+                        isDisabled={isDisabled}
                         label={label}
                         labelOverlayProps={{
                             isFormsy: false,
                             inputId: queryColumn.fieldKey,
+                            required: queryColumn?.required,
                             addLabelAsterisk,
                         }}
                         showLabel={showLabel}
                         showToggle={allowDisable}
-                        column={queryColumn}
-                        isDisabled={isDisabled}
                         toggleProps={{
                             onClick: this.toggleDisabled,
                         }}
@@ -132,16 +133,16 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputImplProps, Checkbo
                 )}
                 <div className={wrapperClassName}>
                     <input
+                        checked={checked}
                         disabled={isDisabled}
                         id={queryColumn.fieldKey}
                         name={queryColumn.fieldKey}
+                        onChange={this.onChange}
                         // Issue 43299: Ignore "required" property for boolean columns as this will
                         // cause any false value (i.e. unchecked) to prevent submission.
                         // required={queryColumn.required}
                         type="checkbox"
                         value={formsy ? value : checked}
-                        checked={checked}
-                        onChange={this.onChange}
                     />
                 </div>
             </div>

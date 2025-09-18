@@ -1,4 +1,4 @@
-import { List, fromJS } from 'immutable';
+import { fromJS, List } from 'immutable';
 import React from 'react';
 import { render } from '@testing-library/react';
 
@@ -11,7 +11,7 @@ import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceR
 import { LabelColorRenderer } from '../../../renderers/LabelColorRenderer';
 import { FileColumnRenderer } from '../../../renderers/FileColumnRenderer';
 
-import { DetailDisplay, resolveDetailRenderer, defaultTitleRenderer, Renderer } from './DetailDisplay';
+import { defaultTitleRenderer, DetailDisplay, Renderer, resolveDetailRenderer } from './DetailDisplay';
 
 describe('DetailDisplay', () => {
     const namePatternCol = new QueryColumn({
@@ -132,9 +132,9 @@ describe('DetailDisplay', () => {
         render(
             <DetailDisplay
                 asPanel={true}
-                editingMode={false}
                 data={data}
                 displayColumns={cols}
+                editingMode={false}
                 fieldHelpTexts={fieldHelpText}
             />
         );
@@ -155,7 +155,7 @@ describe('defaultTitleRenderer', () => {
         });
         render(<div>{defaultTitleRenderer(col)}</div>);
         expect(document.querySelector('span').innerHTML).toEqual(
-            'test&nbsp;<span class="required-symbol">* </span><div class="overlay-trigger"><i class="fa fa-question-circle"></i></div>'
+            'test&nbsp;<div class="overlay-trigger"><i class="fa fa-question-circle"></i></div><span class="required-symbol">* </span>'
         );
     });
 

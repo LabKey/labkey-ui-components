@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.62.3
+*Released*: 18 September 2025
+- Workflow: Change Required Template Fields to be Required at the start of a Job
+  - Update required field label display to show overlay before asterisk
+  - Fix CheckBoxInput required field display on Formsy forms
+  - Add optional `colFieldKeyMap` param to `flattenValuesFromRow` to convert field names to field keys
+
 ### version 6.62.2
 *Released*: 16 September 2025
 - Issue 53926: Move custom assay queries to assay schema

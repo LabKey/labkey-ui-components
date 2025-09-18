@@ -17,12 +17,27 @@ import { naturalSortByProperty } from '../sort';
 import { PaginationData } from '../../internal/components/pagination/Pagination';
 import { SelectRowsOptions } from '../../internal/query/selectRows';
 
-export function flattenValuesFromRow(row: any, keys: string[]): Record<string, any> {
+export function flattenValuesFromRow(
+    row: any,
+    columns: string[],
+    colFieldKeyMap?: Record<string, string>
+): Record<string, any> {
     const values = {};
-    if (row && keys) {
-        keys.forEach((key: string) => {
-            if (row[key]) {
-                values[key] = row[key].value;
+    if (row && columns) {
+        columns.forEach((col: string) => {
+            if (row[col]) {
+                values[col] = row[col].value;
+            }
+        });
+    }
+
+    // convert values[key] to values[fieldKey] if fieldKeyMap provided
+    if (colFieldKeyMap) {
+        Object.keys(colFieldKeyMap).forEach(col => {
+            const fieldKey = colFieldKeyMap[col];
+            if (fieldKey && fieldKey !== col && values[col] !== undefined) {
+                values[fieldKey] = values[col];
+                delete values[col];
             }
         });
     }

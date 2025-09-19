@@ -34,6 +34,7 @@ import {
     NOTEBOOK_REVIEW_AUDIT_QUERY,
     PLATE_AUDIT_QUERY,
     PLATE_DATA_AUDIT_QUERY,
+    PLATE_SET_AUDIT_QUERY,
     REGISTRY_AUDIT_QUERY,
     REPORT_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
@@ -50,7 +51,7 @@ export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
     if (isRegistryEnabled(ctx)) queries.push(DATACLASS_DATA_UPDATE_AUDIT_QUERY, REGISTRY_AUDIT_QUERY);
     if (isELNEnabled(ctx)) queries.push(NOTEBOOK_AUDIT_QUERY, NOTEBOOK_REVIEW_AUDIT_QUERY);
     if (isChartBuilderEnabled(ctx)) queries.push(REPORT_AUDIT_QUERY);
-    if (isPlatesEnabled(ctx)) queries.push(PLATE_AUDIT_QUERY, PLATE_DATA_AUDIT_QUERY);
+    if (isPlatesEnabled(ctx)) queries.push(PLATE_AUDIT_QUERY, PLATE_DATA_AUDIT_QUERY, PLATE_SET_AUDIT_QUERY);
 
     return queries.sort(naturalSortByProperty('label'));
 }

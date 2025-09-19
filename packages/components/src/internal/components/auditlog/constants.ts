@@ -125,6 +125,13 @@ export const PLATE_DATA_AUDIT_QUERY: AuditQuery = {
     value: 'PlateDataAuditEvent',
 };
 
+export const PLATE_SET_AUDIT_QUERY: AuditQuery = {
+    hasDetail: true,
+    hasTransactionId: true,
+    label: 'Plate Set Events',
+    value: 'PlateSetEvent',
+};
+
 export const COMMON_AUDIT_QUERIES: AuditQuery[] = [
     ATTACHMENT_AUDIT_QUERY,
     DOMAIN_AUDIT_QUERY,

@@ -83,7 +83,11 @@ export interface SamplesAPIWrapper {
         sort: string | undefined
     ) => Promise<ISelectRowsResult>;
 
-    getTimelineEvents: (sampleId: number, timezone?: string, inheritedFields?: string[]) => Promise<TimelineEventModel[]>;
+    getTimelineEvents: (
+        sampleId: number,
+        timezone?: string,
+        inheritedFields?: string[]
+    ) => Promise<TimelineEventModel[]>;
 
     hasExistingSamples: (isRoot?: boolean, containerPath?: string) => Promise<boolean>;
 

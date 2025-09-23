@@ -23,11 +23,11 @@ interface Props extends PropsWithChildren {
     fieldValueRenderer?: (label, value, displayValue, hasProvidedValue?: boolean) => any;
     gridColumnRenderer?: (data: any, row: any, displayValue: any) => any;
     gridData?: List<Map<string, any>>;
+    inheritedFieldMsg?: string;
     rowId?: number;
     summary?: string;
     title?: string;
     user: User;
-    inheritedFieldMsg?: string;
 }
 
 export class AuditDetails extends Component<Props> {
@@ -43,8 +43,7 @@ export class AuditDetails extends Component<Props> {
     getValueDisplay = (field: string, value: string, hasProvidedValues: boolean, isInherited?: boolean): any => {
         const { fieldValueRenderer } = this.props;
 
-        if (isInherited)
-            return <span className="timeline-inherited-data display-light">Inherited</span>;
+        if (isInherited) return <span className="timeline-inherited-data display-light">Inherited</span>;
 
         let displayVal: any = value;
         if (value == null || value === '') displayVal = 'NA';
@@ -71,7 +70,12 @@ export class AuditDetails extends Component<Props> {
 
         if (!user.isSignedIn && AuditDetails.isUserFieldLabel(field)) return null;
 
-        const oldValue = this.getValueDisplay(field, oldVal, !!(providedVal || providedDeltaVal), oldVal === AUDIT_DETAIL_FIELD_VALUE_INHERITED);
+        const oldValue = this.getValueDisplay(
+            field,
+            oldVal,
+            !!(providedVal || providedDeltaVal),
+            oldVal === AUDIT_DETAIL_FIELD_VALUE_INHERITED
+        );
 
         const isInherited = newVal === AUDIT_DETAIL_FIELD_VALUE_INHERITED;
 
@@ -97,7 +101,7 @@ export class AuditDetails extends Component<Props> {
                                 <div className="ws-pre-wrap">{providedVals}</div>
                             </LabelHelpTip>
                         )}
-                        {(isInherited && !!inheritedFieldMsg )&& (
+                        {isInherited && !!inheritedFieldMsg && (
                             <LabelHelpTip
                                 iconComponent={<i className="fa fa-info-circle left-padding" />}
                                 placement="top"

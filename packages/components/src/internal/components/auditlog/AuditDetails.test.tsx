@@ -166,7 +166,7 @@ describe('AuditDetails', () => {
             <AuditDetails
                 changeDetails={AuditDetailsModel.create({
                     newData: { a: AUDIT_DETAIL_FIELD_VALUE_INHERITED },
-                    oldData: {}
+                    oldData: {},
                 })}
                 inheritedFieldMsg="This value is inherited from a parent folder."
                 rowId={1}
@@ -183,7 +183,7 @@ describe('AuditDetails', () => {
             <AuditDetails
                 changeDetails={AuditDetailsModel.create({
                     newData: { a: AUDIT_DETAIL_FIELD_VALUE_INHERITED },
-                    oldData: {}
+                    oldData: {},
                 })}
                 rowId={1}
                 user={TEST_USER_APP_ADMIN}
@@ -227,5 +227,4 @@ describe('AuditDetails', () => {
         expect(document.querySelector('.panel-body').textContent).toBe('aInherited1');
         expect(document.querySelectorAll('.fa-info-circle')).toHaveLength(0);
     });
-
 });

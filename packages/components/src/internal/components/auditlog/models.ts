@@ -93,7 +93,7 @@ export class TimelineEventModel extends Record({
     declare providedDeltaValues?: Map<string, string>;
     declare userComment?: string;
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: Record<string, any>) {
         super(values);
     }
 

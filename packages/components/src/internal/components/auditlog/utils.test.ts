@@ -16,7 +16,8 @@ import {
 import { getAuditDetailMap, getAuditQueries, getEventDataValueDisplay, getTimelineEntityUrl } from './utils';
 import {
     ASSAY_AUDIT_QUERY,
-    ASSAY_RESULT_AUDIT_QUERY, AUDIT_DETAIL_FIELD_VALUE_INHERITED,
+    ASSAY_RESULT_AUDIT_QUERY,
+    AUDIT_DETAIL_FIELD_VALUE_INHERITED,
     DATACLASS_DATA_UPDATE_AUDIT_QUERY,
     INVENTORY_AUDIT_QUERY,
     NOTEBOOK_AUDIT_QUERY,
@@ -68,7 +69,12 @@ describe('getAuditQueries', () => {
             inventory: {},
             biologics: {},
             core: {
-                productFeatures: [ProductFeature.Workflow, ProductFeature.ELN, ProductFeature.Assay, ProductFeature.BiologicsRegistry],
+                productFeatures: [
+                    ProductFeature.Workflow,
+                    ProductFeature.ELN,
+                    ProductFeature.Assay,
+                    ProductFeature.BiologicsRegistry,
+                ],
             },
         };
         const auditQueries = getAuditQueries(moduleContext);
@@ -158,7 +164,9 @@ describe('utils', () => {
         expect(getTimelineEntityUrl({ urlType: 'inventoryLocation', value: ['freezer1', 101] }).toHref()).toEqual(
             '#/rd/freezerLocation/101'
         );
-        expect(getTimelineEntityUrl({ urlType: 'inventoryBox', value: 101 }).toHref()).toEqual('/labkey/DefaultTestContainer/freezermanager-app.view#/boxes/101');
+        expect(getTimelineEntityUrl({ urlType: 'inventoryBox', value: 101 }).toHref()).toEqual(
+            '/labkey/DefaultTestContainer/freezermanager-app.view#/boxes/101'
+        );
     });
 
     describe('getAuditDetailMap', () => {
@@ -204,5 +212,4 @@ describe('utils', () => {
             expect(result.toJS()).toEqual(data);
         });
     });
-
 });

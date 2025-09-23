@@ -13,10 +13,10 @@ import {
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from '../../productFixtures';
 
-import { getAuditQueries, getEventDataValueDisplay, getTimelineEntityUrl } from './utils';
+import { getAuditDetailMap, getAuditQueries, getEventDataValueDisplay, getTimelineEntityUrl } from './utils';
 import {
     ASSAY_AUDIT_QUERY,
-    ASSAY_RESULT_AUDIT_QUERY,
+    ASSAY_RESULT_AUDIT_QUERY, AUDIT_DETAIL_FIELD_VALUE_INHERITED,
     DATACLASS_DATA_UPDATE_AUDIT_QUERY,
     INVENTORY_AUDIT_QUERY,
     NOTEBOOK_AUDIT_QUERY,
@@ -160,4 +160,49 @@ describe('utils', () => {
         );
         expect(getTimelineEntityUrl({ urlType: 'inventoryBox', value: 101 }).toHref()).toEqual('/labkey/DefaultTestContainer/freezermanager-app.view#/boxes/101');
     });
+
+    describe('getAuditDetailMap', () => {
+        it('data is empty', () => {
+            expect(getAuditDetailMap(null).isEmpty()).toBe(true);
+            expect(getAuditDetailMap(undefined).isEmpty()).toBe(true);
+            expect(getAuditDetailMap({}).isEmpty()).toBe(true);
+            expect(getAuditDetailMap({}, ['field1']).isEmpty()).toBe(true);
+        });
+
+        it('when no inherited fields are provided', () => {
+            const data = { field1: 'value1', field2: 'value2' };
+            const result = getAuditDetailMap(data);
+            expect(result.toJS()).toEqual(data);
+        });
+
+        it('moves inherited fields to the bottom of the OrderedMap', () => {
+            const data = { field1: 'value1', field2: null, field3: 'value3' };
+            const inheritedFields = ['field2'];
+            const result = getAuditDetailMap(data, inheritedFields);
+            expect(result.toJS()).toEqual({
+                field1: 'value1',
+                field3: 'value3',
+                field2: AUDIT_DETAIL_FIELD_VALUE_INHERITED,
+            });
+        });
+
+        it('case-insensitive inherited fields', () => {
+            const data = { Field1: 'value1', FIELD2: null, field3: 'value3' };
+            const inheritedFields = ['field2'];
+            const result = getAuditDetailMap(data, inheritedFields);
+            expect(result.toJS()).toEqual({
+                Field1: 'value1',
+                field3: 'value3',
+                FIELD2: AUDIT_DETAIL_FIELD_VALUE_INHERITED,
+            });
+        });
+
+        it('absent inherited fields', () => {
+            const data = { field1: 'value1', field2: 'value2' };
+            const inheritedFields = ['field3'];
+            const result = getAuditDetailMap(data, inheritedFields);
+            expect(result.toJS()).toEqual(data);
+        });
+    });
+
 });

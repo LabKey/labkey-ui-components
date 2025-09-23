@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { ReactNode } from 'react';
-import { Map } from 'immutable';
+import { Map, OrderedMap } from 'immutable';
 
 import { FREEZER_MANAGER_PRODUCT_ID, isSampleManagerEnabled } from '../../app/products';
 import {
@@ -32,8 +32,9 @@ import {
     SOURCE_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
     REPORT_AUDIT_QUERY,
-    ASSAY_RESULT_AUDIT_QUERY,
+    ASSAY_RESULT_AUDIT_QUERY, AUDIT_DETAIL_FIELD_VALUE_INHERITED,
 } from './constants';
+import { QueryKey } from '@labkey/api';
 
 export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
     const queries = [...COMMON_AUDIT_QUERIES];
@@ -143,4 +144,26 @@ export function getTimelineEntityUrl(d: Record<string, any>): AppURL {
     }
 
     return url;
+}
+
+export function getAuditDetailMap(data: Record<string, string>, inheritedFields?: string[]): OrderedMap<string, string> {
+    if (inheritedFields?.length > 0) {
+        // sort fields.newData so that inherited fields are at the bottom
+        const inheritedFieldsLc = inheritedFields.map(f => f.toLowerCase());
+        const newData = data ?? {};
+        const sortedNewData = {} as any;
+        const last = {};
+        for (const field of Object.keys(newData)) {
+            if (!newData[field] && inheritedFieldsLc.indexOf(QueryKey.encodePart(field).toLowerCase()) > -1) {
+                last[field] = AUDIT_DETAIL_FIELD_VALUE_INHERITED;
+            }
+            else {
+                sortedNewData[field] = newData[field];
+            }
+        }
+        Object.assign(sortedNewData, last);
+        return OrderedMap(sortedNewData);
+    }
+
+    return OrderedMap(data);
 }

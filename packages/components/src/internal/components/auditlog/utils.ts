@@ -40,6 +40,7 @@ import {
     SOURCE_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
 } from './constants';
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../assay/constants';
 
 export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
     const queries = [...COMMON_AUDIT_QUERIES];
@@ -111,11 +112,17 @@ export function getTimelineEntityUrl(d: Record<string, any>): AppURL {
         switch (urlType) {
             case 'assayRun':
                 if (Array.isArray(value) && value.length > 1) {
-                    url = AppURL.create(ASSAYS_KEY, 'general', value[0], 'runs', value[1]);
+                    url = AppURL.create(
+                        ASSAYS_KEY,
+                        GENERAL_ASSAY_PROVIDER_NAME.toLowerCase(),
+                        value[0],
+                        'runs',
+                        value[1]
+                    );
                 }
                 break;
             case ASSAYS_KEY:
-                url = AppURL.create(ASSAYS_KEY, 'general', value);
+                url = AppURL.create(ASSAYS_KEY, GENERAL_ASSAY_PROVIDER_NAME.toLowerCase(), value);
                 break;
             case 'inventoryBox':
                 url = AppURL.create(BOXES_KEY, value).setProductId(FREEZER_MANAGER_PRODUCT_ID);

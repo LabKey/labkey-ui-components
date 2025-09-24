@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 53957: Update error messaging to be more precise
+
 ### version 6.62.3
 *Released*: 18 September 2025
 - Workflow: Change Required Template Fields to be Required at the start of a Job

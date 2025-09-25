@@ -127,17 +127,17 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         } = rest;
         let { validations } = inputProps;
 
-        let type = 'text';
         let step: string;
 
         if (queryColumn && !validations) {
+            // Issue 53979: don't set input type = "number" for integer or float columns because that prevents
+            // entry of values like "5.48490684590685e+7200" which are valid numbers, and are dropped when the input
+            // type = "number".  We will rely on the isInt / isFloat validation instead.
             if (queryColumn.jsonType === 'int') {
                 step = '1';
-                type = 'number';
                 validations = 'isInt';
             } else if (queryColumn.jsonType === 'float') {
                 step = 'any';
-                type = 'number';
                 validations = 'isFloat';
             }
         }
@@ -163,7 +163,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
                     labelClassName={showLabel ? labelClassName : 'hide-label'}
                     onChange={this.onChange}
                     step={step}
-                    type={type}
+                    type="text"
                     validations={validations}
                     value={this.getInputValue()}
                 />

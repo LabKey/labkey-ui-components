@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD September 2025
+- Issue 53979: TextInput to handle non-finite numeric values
+  - don't set input type = "number" since it will drop non-finite values
+
 ### version 6.62.3
 *Released*: 18 September 2025
 - Workflow: Change Required Template Fields to be Required at the start of a Job

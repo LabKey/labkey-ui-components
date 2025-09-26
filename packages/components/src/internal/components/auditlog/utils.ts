@@ -149,11 +149,11 @@ export function getTimelineEntityUrl(d: Record<string, any>): AppURL {
 
 export function getAuditDetailMap(
     data: Record<string, string>,
-    inheritedFields?: string[]
+    inheritedFieldKeys?: string[]
 ): OrderedMap<string, string> {
-    if (inheritedFields?.length > 0) {
+    if (inheritedFieldKeys?.length > 0) {
         // sort fields.newData so that inherited fields are at the bottom
-        const inheritedFieldsLc = inheritedFields.map(f => f.toLowerCase());
+        const inheritedFieldsLc = inheritedFieldKeys.map(f => f.toLowerCase());
         const newData = data ?? {};
         const sortedNewData = {} as any;
         const last = {};

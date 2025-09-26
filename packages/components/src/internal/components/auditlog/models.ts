@@ -102,7 +102,7 @@ export class TimelineEventModel extends Record({
     }
 
     // timezoneStr used for jest test only, to accommodate teamcity timezone difference
-    static create(raw: any, timezoneStr?: string, inheritedFields?: string[]): TimelineEventModel {
+    static create(raw: any, timezoneStr?: string, inheritedFieldKeys?: string[]): TimelineEventModel {
         const fields = {} as TimelineEventModel;
         fields.rowId = raw['rowId'];
         fields.eventType = raw['eventType'];
@@ -127,8 +127,8 @@ export class TimelineEventModel extends Record({
             fields.metadata = fromJS(metaRows);
         }
 
-        if (raw.oldData) fields.oldData = getAuditDetailMap(raw.oldData, inheritedFields);
-        if (raw.newData) fields.newData = getAuditDetailMap(raw.newData, inheritedFields);
+        if (raw.oldData) fields.oldData = getAuditDetailMap(raw.oldData, inheritedFieldKeys);
+        if (raw.newData) fields.newData = getAuditDetailMap(raw.newData, inheritedFieldKeys);
         if (raw.providedValues) fields.providedValues = raw.providedValues;
         if (raw.providedDeltaValues) fields.providedDeltaValues = raw.providedDeltaValues;
 

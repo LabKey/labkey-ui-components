@@ -9,6 +9,7 @@ import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 import { AuditDetails } from './AuditDetails';
 
 import { AuditDetailsModel } from './models';
+import { AUDIT_DETAIL_FIELD_VALUE_INHERITED } from './constants';
 
 describe('AuditDetails', () => {
     test('default props, empty', () => {
@@ -141,5 +142,89 @@ describe('AuditDetails', () => {
         expect(document.querySelectorAll('.user-link')).toHaveLength(0);
         expect(document.querySelector('.panel-body').textContent).toBe('afile.txtnew-1.txt');
         expect(document.querySelector('.original-value-icon')).toBeInTheDocument();
+    });
+
+    test('with inheritedFieldMsg, without inherited value', () => {
+        renderWithAppContext(
+            <AuditDetails
+                changeDetails={AuditDetailsModel.create({
+                    oldData: { a: 1 },
+                    newData: { a: 2 },
+                })}
+                inheritedFieldMsg="This value is inherited from a parent folder."
+                rowId={1}
+                user={TEST_USER_APP_ADMIN}
+            />,
+            { serverContext: { user: TEST_USER_APP_ADMIN } }
+        );
+        expect(document.querySelector('.panel-body').textContent).toBe('a12');
+        expect(document.querySelectorAll('.fa-info-circle')).toHaveLength(0);
+    });
+
+    test('with inherited value', () => {
+        renderWithAppContext(
+            <AuditDetails
+                changeDetails={AuditDetailsModel.create({
+                    newData: { a: AUDIT_DETAIL_FIELD_VALUE_INHERITED },
+                    oldData: {},
+                })}
+                inheritedFieldMsg="This value is inherited from a parent folder."
+                rowId={1}
+                user={TEST_USER_APP_ADMIN}
+            />,
+            { serverContext: { user: TEST_USER_APP_ADMIN } }
+        );
+        expect(document.querySelector('.panel-body').textContent).toBe('aInherited');
+        expect(document.querySelectorAll('.fa-info-circle')).toHaveLength(1);
+    });
+
+    test('with inherited value, no inheritedFieldMsg', () => {
+        renderWithAppContext(
+            <AuditDetails
+                changeDetails={AuditDetailsModel.create({
+                    newData: { a: AUDIT_DETAIL_FIELD_VALUE_INHERITED },
+                    oldData: {},
+                })}
+                rowId={1}
+                user={TEST_USER_APP_ADMIN}
+            />,
+            { serverContext: { user: TEST_USER_APP_ADMIN } }
+        );
+        expect(document.querySelector('.panel-body').textContent).toBe('aInherited');
+        expect(document.querySelectorAll('.fa-info-circle')).toHaveLength(0);
+    });
+
+    test('with inherited value, with oldData', () => {
+        renderWithAppContext(
+            <AuditDetails
+                changeDetails={AuditDetailsModel.create({
+                    oldData: { a: 1 },
+                    newData: { a: AUDIT_DETAIL_FIELD_VALUE_INHERITED },
+                })}
+                inheritedFieldMsg="This value is inherited from a parent folder."
+                rowId={1}
+                user={TEST_USER_APP_ADMIN}
+            />,
+            { serverContext: { user: TEST_USER_APP_ADMIN } }
+        );
+        expect(document.querySelector('.panel-body').textContent).toBe('a1Inherited');
+        expect(document.querySelectorAll('.fa-info-circle')).toHaveLength(1);
+    });
+
+    test('with inherited value, with oldData inherited', () => {
+        renderWithAppContext(
+            <AuditDetails
+                changeDetails={AuditDetailsModel.create({
+                    oldData: { a: AUDIT_DETAIL_FIELD_VALUE_INHERITED },
+                    newData: { a: 1 },
+                })}
+                inheritedFieldMsg="This value is inherited from a parent folder."
+                rowId={1}
+                user={TEST_USER_APP_ADMIN}
+            />,
+            { serverContext: { user: TEST_USER_APP_ADMIN } }
+        );
+        expect(document.querySelector('.panel-body').textContent).toBe('aInherited1');
+        expect(document.querySelectorAll('.fa-info-circle')).toHaveLength(0);
     });
 });

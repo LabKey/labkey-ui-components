@@ -5,6 +5,7 @@
 import { fromJS, List, Map, Record } from 'immutable';
 
 import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
+import { getAuditDetailMap } from './utils';
 
 export class AuditDetailsModel extends Record({
     rowId: undefined,
@@ -92,7 +93,7 @@ export class TimelineEventModel extends Record({
     declare providedDeltaValues?: Map<string, string>;
     declare userComment?: string;
 
-    constructor(values?: { [key: string]: any }) {
+    constructor(values?: Record<string, any>) {
         super(values);
     }
 
@@ -101,7 +102,7 @@ export class TimelineEventModel extends Record({
     }
 
     // timezoneStr used for jest test only, to accommodate teamcity timezone difference
-    static create(raw: any, timezoneStr?: string): TimelineEventModel {
+    static create(raw: any, timezoneStr?: string, inheritedFieldKeys?: string[]): TimelineEventModel {
         const fields = {} as TimelineEventModel;
         fields.rowId = raw['rowId'];
         fields.eventType = raw['eventType'];
@@ -126,8 +127,8 @@ export class TimelineEventModel extends Record({
             fields.metadata = fromJS(metaRows);
         }
 
-        if (raw.oldData) fields.oldData = fromJS(raw.oldData);
-        if (raw.newData) fields.newData = fromJS(raw.newData);
+        if (raw.oldData) fields.oldData = getAuditDetailMap(raw.oldData, inheritedFieldKeys);
+        if (raw.newData) fields.newData = getAuditDetailMap(raw.newData, inheritedFieldKeys);
         if (raw.providedValues) fields.providedValues = raw.providedValues;
         if (raw.providedDeltaValues) fields.providedDeltaValues = raw.providedDeltaValues;
 

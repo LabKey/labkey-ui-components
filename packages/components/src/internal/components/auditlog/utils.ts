@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { ReactNode } from 'react';
-import { Map } from 'immutable';
+import { Map, OrderedMap } from 'immutable';
 
 import { FREEZER_MANAGER_PRODUCT_ID, isSampleManagerEnabled } from '../../app/products';
 import {
@@ -22,18 +22,20 @@ import { ModuleContext } from '../base/ServerContext';
 
 import {
     ASSAY_AUDIT_QUERY,
+    ASSAY_RESULT_AUDIT_QUERY,
+    AUDIT_DETAIL_FIELD_VALUE_INHERITED,
     AuditQuery,
     COMMON_AUDIT_QUERIES,
+    CONTAINER_AUDIT_QUERY,
     DATACLASS_DATA_UPDATE_AUDIT_QUERY,
     NOTEBOOK_AUDIT_QUERY,
     NOTEBOOK_REVIEW_AUDIT_QUERY,
-    CONTAINER_AUDIT_QUERY,
     REGISTRY_AUDIT_QUERY,
+    REPORT_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
-    REPORT_AUDIT_QUERY,
-    ASSAY_RESULT_AUDIT_QUERY,
 } from './constants';
+import { QueryKey } from '@labkey/api';
 
 export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
     const queries = [...COMMON_AUDIT_QUERIES];
@@ -109,33 +111,33 @@ export function getTimelineEntityUrl(d: Record<string, any>): AppURL {
         const { urlType, value } = d;
 
         switch (urlType) {
-            case SAMPLES_KEY:
-                url = AppURL.create('rd', SAMPLES_KEY, value);
-                break;
-            case WORKFLOW_KEY:
-                url = AppURL.create(WORKFLOW_KEY, value);
-                break;
-            case ASSAYS_KEY:
-                url = AppURL.create(ASSAYS_KEY, 'general', value);
-                break;
-            case 'workflowTemplate':
-                url = AppURL.create(WORKFLOW_KEY, 'template', value);
-                break;
-            case USER_KEY:
-                url = undefined; // handle display render via UserLink
-                break;
             case 'assayRun':
                 if (Array.isArray(value) && value.length > 1) {
                     url = AppURL.create(ASSAYS_KEY, 'general', value[0], 'runs', value[1]);
                 }
+                break;
+            case ASSAYS_KEY:
+                url = AppURL.create(ASSAYS_KEY, 'general', value);
+                break;
+            case 'inventoryBox':
+                url = AppURL.create(BOXES_KEY, value).setProductId(FREEZER_MANAGER_PRODUCT_ID);
                 break;
             case 'inventoryLocation':
                 if (Array.isArray(value) && value.length > 1) {
                     url = AppURL.create('rd', 'freezerLocation', value[1]);
                 }
                 break;
-            case 'inventoryBox':
-                url = AppURL.create(BOXES_KEY, value).setProductId(FREEZER_MANAGER_PRODUCT_ID);
+            case SAMPLES_KEY:
+                url = AppURL.create('rd', SAMPLES_KEY, value);
+                break;
+            case USER_KEY:
+                url = undefined; // handle display render via UserLink
+                break;
+            case WORKFLOW_KEY:
+                url = AppURL.create(WORKFLOW_KEY, value);
+                break;
+            case 'workflowTemplate':
+                url = AppURL.create(WORKFLOW_KEY, 'template', value);
                 break;
             default:
                 break;
@@ -143,4 +145,28 @@ export function getTimelineEntityUrl(d: Record<string, any>): AppURL {
     }
 
     return url;
+}
+
+export function getAuditDetailMap(
+    data: Record<string, string>,
+    inheritedFieldKeys?: string[]
+): OrderedMap<string, string> {
+    if (inheritedFieldKeys?.length > 0) {
+        // sort fields.newData so that inherited fields are at the bottom
+        const inheritedFieldsLc = inheritedFieldKeys.map(f => f.toLowerCase());
+        const newData = data ?? {};
+        const sortedNewData = {} as any;
+        const last = {};
+        for (const field of Object.keys(newData)) {
+            if (!newData[field] && inheritedFieldsLc.indexOf(QueryKey.encodePart(field).toLowerCase()) > -1) {
+                last[field] = AUDIT_DETAIL_FIELD_VALUE_INHERITED;
+            } else {
+                sortedNewData[field] = newData[field];
+            }
+        }
+        Object.assign(sortedNewData, last);
+        return OrderedMap(sortedNewData);
+    }
+
+    return OrderedMap(data);
 }

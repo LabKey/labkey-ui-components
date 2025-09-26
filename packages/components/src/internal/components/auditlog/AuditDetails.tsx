@@ -15,6 +15,7 @@ import { UserLink } from '../user/UserLink';
 import { getEventDataValueDisplay } from './utils';
 import { AuditDetailsModel } from './models';
 import { LabelHelpTip } from '../base/LabelHelpTip';
+import { AUDIT_DETAIL_FIELD_VALUE_INHERITED } from './constants';
 
 interface Props extends PropsWithChildren {
     changeDetails?: AuditDetailsModel;
@@ -22,6 +23,7 @@ interface Props extends PropsWithChildren {
     fieldValueRenderer?: (label, value, displayValue, hasProvidedValue?: boolean) => any;
     gridColumnRenderer?: (data: any, row: any, displayValue: any) => any;
     gridData?: List<Map<string, any>>;
+    inheritedFieldMsg?: string;
     rowId?: number;
     summary?: string;
     title?: string;
@@ -38,8 +40,10 @@ export class AuditDetails extends Component<Props> {
         return ['created by', 'createdby', 'modified by', 'modifiedby'].indexOf(field.toLowerCase()) > -1;
     }
 
-    getValueDisplay = (field: string, value: string, hasProvidedValues: boolean): any => {
+    getValueDisplay = (field: string, value: string, hasProvidedValues: boolean, isInherited?: boolean): any => {
         const { fieldValueRenderer } = this.props;
+
+        if (isInherited) return <span className="timeline-inherited-data display-light">Inherited</span>;
 
         let displayVal: any = value;
         if (value == null || value === '') displayVal = 'NA';
@@ -62,12 +66,20 @@ export class AuditDetails extends Component<Props> {
         isUpdate: boolean,
         isInsert: boolean
     ): React.ReactNode {
-        const { user } = this.props;
+        const { user, inheritedFieldMsg } = this.props;
 
         if (!user.isSignedIn && AuditDetails.isUserFieldLabel(field)) return null;
 
-        const oldValue = this.getValueDisplay(field, oldVal, !!(providedVal || providedDeltaVal));
-        const newValue = this.getValueDisplay(field, newVal, !!(providedVal || providedDeltaVal));
+        const oldValue = this.getValueDisplay(
+            field,
+            oldVal,
+            !!(providedVal || providedDeltaVal),
+            oldVal === AUDIT_DETAIL_FIELD_VALUE_INHERITED
+        );
+
+        const isInherited = newVal === AUDIT_DETAIL_FIELD_VALUE_INHERITED;
+
+        const newValue = this.getValueDisplay(field, newVal, !!(providedVal || providedDeltaVal), isInherited);
         const changed = oldValue !== newValue;
         const providedVals = [];
         if (providedDeltaVal) {
@@ -87,6 +99,14 @@ export class AuditDetails extends Component<Props> {
                                 placement="top"
                             >
                                 <div className="ws-pre-wrap">{providedVals}</div>
+                            </LabelHelpTip>
+                        )}
+                        {isInherited && !!inheritedFieldMsg && (
+                            <LabelHelpTip
+                                iconComponent={<i className="fa fa-info-circle left-padding" />}
+                                placement="top"
+                            >
+                                <div className="ws-pre-wrap">{inheritedFieldMsg}</div>
                             </LabelHelpTip>
                         )}
                     </span>

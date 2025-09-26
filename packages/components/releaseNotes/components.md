@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.X
-*Released*: X September 2025
+### version 6.62.4
+*Released*: 26 September 2025
 - Issue 53036: LKSM: Aliquot registration event in timeline polish
   - Display "inherited" instead of NA for aliquot's parent fields in timeline view
 

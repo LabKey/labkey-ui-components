@@ -36,7 +36,7 @@ describe('SampleAmountEditModal', () => {
         expect(document.querySelector('textarea').getAttribute('value')).toBe(comment ?? null);
         expect(document.querySelectorAll('.alert')).toHaveLength(isNegative ? 1 : 0);
         if (isNegative) {
-            expect(document.querySelectorAll('.alert').item(0).textContent).toBe('Amount must be a positive value.');
+            expect(document.querySelectorAll('.alert').item(0).textContent).toBe('Amount must be a non-negative value.');
         }
         validateSubmitButton(noun, canSave);
     }

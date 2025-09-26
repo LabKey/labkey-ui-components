@@ -153,7 +153,7 @@ describe('SampleTypePropertiesPanel', () => {
                     appPropertiesOnly
                     metricUnitProps={{
                         includeMetricUnitProperty: true,
-                        metricUnitLabel: 'Stored Amount Display Unit',
+                        metricUnitLabel: 'Display Units',
                         metricUnitRequired: true,
                         metricUnitHelpMsg: 'Sample storage volume will be displayed using the selected metric unit.',
                         metricUnitOptions: [

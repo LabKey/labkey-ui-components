@@ -21,7 +21,7 @@ const deltaTooPreciseMessage = (
 );
 const negativeValueMessage = (
     <Alert bsStyle="danger" className="storage-item-precision-alert">
-        Amount must be a positive value.
+        Amount must be a non-negative value.
     </Alert>
 );
 

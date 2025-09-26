@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.62.5
+*Released*: 26 September 2025
+- Issue 53957: Update error messaging to be more precise
+
 ### version 6.62.4
 *Released*: 26 September 2025
 - Issue 53036: LKSM: Aliquot registration event in timeline polish

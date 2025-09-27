@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.62.7
+*Released*: 29 September 2025
+- Enumerate plate, plate set auditing events
+- Introduce `isQueryUpdateEvent` to flag which events are backed by query audit events
+
 ### version 6.62.6
 *Released*: 29 September 2025
 - Issue 53979: TextInput to handle non-finite numeric values

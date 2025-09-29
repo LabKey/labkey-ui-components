@@ -125,22 +125,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
             isUpdate,
             ...inputProps
         } = rest;
-        let { validations } = inputProps;
 
-        let type = 'text';
-        let step: string;
-
-        if (queryColumn && !validations) {
-            if (queryColumn.jsonType === 'int') {
-                step = '1';
-                type = 'number';
-                validations = 'isInt';
-            } else if (queryColumn.jsonType === 'float') {
-                step = 'any';
-                type = 'number';
-                validations = 'isFloat';
-            }
-        }
 
         let help: string;
         // Issue 52367: Don't show the message if we have a name that can be edited
@@ -162,9 +147,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
                     label={this.renderLabel()}
                     labelClassName={showLabel ? labelClassName : 'hide-label'}
                     onChange={this.onChange}
-                    step={step}
-                    type={type}
-                    validations={validations}
+                    type="text"
                     value={this.getInputValue()}
                 />
                 {includeSpacesWarning && <InternalSpacesWarning value={this.state.inputValue} />}

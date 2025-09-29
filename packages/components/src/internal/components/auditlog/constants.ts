@@ -120,3 +120,5 @@ export const COMMON_AUDIT_QUERIES: AuditQuery[] = [
 ];
 
 export const EXPERIMENT_AUDIT_EVENT = 'experimentauditevent';
+
+export const AUDIT_DETAIL_FIELD_VALUE_INHERITED = '$$aliquot-inherited-field$$';

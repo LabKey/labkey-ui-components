@@ -125,7 +125,7 @@ describe('StorageAmountInput', () => {
 
         expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', '-1');
         expect(document.querySelector('.storage-item-precision-alert').textContent).toBe(
-            'Amount must be a positive value.'
+            'Amount must be a non-negative value.'
         );
     });
 });

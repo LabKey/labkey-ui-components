@@ -6,6 +6,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 53979: TextInput to handle non-finite numeric values
   - don't set input type = "number" since it will drop non-finite values
 
+### version 6.62.5
+*Released*: 26 September 2025
+- Issue 53957: Update error messaging to be more precise
+
+### version 6.62.4
+*Released*: 26 September 2025
+- Issue 53036: LKSM: Aliquot registration event in timeline polish
+  - Display "inherited" instead of NA for aliquot's parent fields in timeline view
+
 ### version 6.62.3
 *Released*: 18 September 2025
 - Workflow: Change Required Template Fields to be Required at the start of a Job

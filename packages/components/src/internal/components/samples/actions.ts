@@ -506,7 +506,11 @@ export async function getLookupRowIdsFromSelection(
 }
 
 // optional timezone param used for teamcity jest test only
-export function getTimelineEvents(sampleId: number, timezone?: string): Promise<TimelineEventModel[]> {
+export function getTimelineEvents(
+    sampleId: number,
+    timezone?: string,
+    inheritedFields?: string[]
+): Promise<TimelineEventModel[]> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getTimeline.api'),
@@ -516,7 +520,7 @@ export function getTimelineEvents(sampleId: number, timezone?: string): Promise<
                     const events: TimelineEventModel[] = [];
                     if (response.events) {
                         (response.events as []).forEach(event =>
-                            events.push(TimelineEventModel.create(event, timezone))
+                            events.push(TimelineEventModel.create(event, timezone, inheritedFields))
                         );
                     }
                     resolve(events);

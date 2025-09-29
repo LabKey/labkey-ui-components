@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { Component, PropsWithChildren } from 'react';
+import React, { Component, PropsWithChildren, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 
 import { User } from '../base/models/User';
@@ -17,11 +17,17 @@ import { AuditDetailsModel } from './models';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { AUDIT_DETAIL_FIELD_VALUE_INHERITED } from './constants';
 
+const USER_FIELDS = ['created by', 'createdby', 'modified by', 'modifiedby'];
+
+function isUserFieldLabel(field: string): boolean {
+    return USER_FIELDS.indexOf(field.toLowerCase()) > -1;
+}
+
 interface Props extends PropsWithChildren {
     changeDetails?: AuditDetailsModel;
     emptyMsg?: string;
-    fieldValueRenderer?: (label, value, displayValue, hasProvidedValue?: boolean) => any;
-    gridColumnRenderer?: (data: any, row: any, displayValue: any) => any;
+    fieldValueRenderer?: (label: string, value: any, displayValue: any, hasProvidedValue?: boolean) => ReactNode;
+    gridColumnRenderer?: (data: any, row: any, displayValue: any) => ReactNode;
     gridData?: List<Map<string, any>>;
     inheritedFieldMsg?: string;
     rowId?: number;
@@ -36,10 +42,6 @@ export class AuditDetails extends Component<Props> {
         emptyMsg: 'No audit event selected.',
     };
 
-    static isUserFieldLabel(field: string): boolean {
-        return ['created by', 'createdby', 'modified by', 'modifiedby'].indexOf(field.toLowerCase()) > -1;
-    }
-
     getValueDisplay = (field: string, value: string, hasProvidedValues: boolean, isInherited?: boolean): any => {
         const { fieldValueRenderer } = this.props;
 
@@ -48,7 +50,7 @@ export class AuditDetails extends Component<Props> {
         let displayVal: any = value;
         if (value == null || value === '') displayVal = 'NA';
 
-        if (AuditDetails.isUserFieldLabel(field) && value !== undefined) {
+        if (isUserFieldLabel(field) && value !== undefined) {
             displayVal = <UserLink userId={parseInt(value, 10)} />;
         }
 
@@ -68,7 +70,7 @@ export class AuditDetails extends Component<Props> {
     ): React.ReactNode {
         const { user, inheritedFieldMsg } = this.props;
 
-        if (!user.isSignedIn && AuditDetails.isUserFieldLabel(field)) return null;
+        if (!user.isSignedIn && isUserFieldLabel(field)) return null;
 
         const oldValue = this.getValueDisplay(
             field,
@@ -88,6 +90,7 @@ export class AuditDetails extends Component<Props> {
         if (providedVal) {
             providedVals.push('Provided value: ' + providedVal);
         }
+
         return (
             <div className="row margin-bottom" key={field}>
                 <div className="left-padding right-padding">
@@ -131,10 +134,9 @@ export class AuditDetails extends Component<Props> {
 
     renderChanges() {
         const { changeDetails } = this.props;
-
         const isUpdate = changeDetails.isUpdate();
         const isInsert = changeDetails.isInsert();
-        const usedFields = [];
+        const usedFields: string[] = [];
 
         let newFields, oldFields;
         if (changeDetails.oldData) {

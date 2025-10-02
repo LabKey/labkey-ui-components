@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 53328: AssayDefinitionModel.hasLookup to only consider the first sample lookup column for assay import cases
+
 ### version 6.62.7
 *Released*: 29 September 2025
 - Enumerate plate, plate set auditing events

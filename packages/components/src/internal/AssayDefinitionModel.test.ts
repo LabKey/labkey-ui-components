@@ -37,11 +37,27 @@ describe('AssayDefinitionModel', () => {
         expect(sampleColumn.column.fieldKey).toBe('SampleID');
     });
 
-    test('hasLookup()', () => {
+    test('hasLookup() with sample lookup', () => {
         const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
         expect(modelWithSampleId.hasLookup(new SchemaQuery('samples', 'Samples'))).toBeTruthy();
+        expect(modelWithSampleId.hasLookup(new SchemaQuery('samples', 'Samples'), true)).toBeTruthy();
+        expect(modelWithSampleId.hasLookup(new SchemaQuery('samples', 'Samples'), false, true)).toBeTruthy();
         expect(modelWithSampleId.hasLookup(new SchemaQuery('study', 'Study'))).toBeTruthy();
+        expect(modelWithSampleId.hasLookup(new SchemaQuery('study', 'Study'), true)).toBeTruthy();
+        expect(modelWithSampleId.hasLookup(new SchemaQuery('study', 'Study'), false, true)).toBeFalsy();
         expect(modelWithSampleId.hasLookup(new SchemaQuery('study', 'Other'))).toBeFalsy();
+        expect(modelWithSampleId.hasLookup(new SchemaQuery('study', 'Other'), true)).toBeFalsy();
+        expect(modelWithSampleId.hasLookup(new SchemaQuery('study', 'Other'), false, true)).toBeFalsy();
+    });
+
+    test('hasLookup() with sample lookup', () => {
+        const modelWithout = AssayDefinitionModel.create(assayDefNoSampleIdJSON);
+        expect(modelWithout.hasLookup(new SchemaQuery('samples', 'Samples'))).toBeFalsy();
+        expect(modelWithout.hasLookup(new SchemaQuery('samples', 'Samples'), true)).toBeFalsy();
+        expect(modelWithout.hasLookup(new SchemaQuery('samples', 'Samples'), false, true)).toBeFalsy();
+        expect(modelWithout.hasLookup(new SchemaQuery('study', 'Study'))).toBeTruthy();
+        expect(modelWithout.hasLookup(new SchemaQuery('study', 'Study'), true)).toBeTruthy();
+        expect(modelWithout.hasLookup(new SchemaQuery('study', 'Study'), false, true)).toBeFalsy();
     });
 
     test('getSampleColumnFieldKeys()', () => {

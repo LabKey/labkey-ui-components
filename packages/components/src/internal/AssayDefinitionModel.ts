@@ -1,4 +1,4 @@
-import { fromJS, List, Map, Record as ImmutableRecord } from 'immutable';
+import { fromJS, Record as ImmutableRecord, List, Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { ExtendedMap } from '../public/ExtendedMap';
@@ -14,6 +14,7 @@ import { AppURL } from './url/AppURL';
 import { SCHEMAS } from './schemas';
 import { ASSAYS_KEY } from './app/constants';
 import { ComponentsAPIWrapper } from './APIWrapper';
+import { isAllSamplesSchema } from './components/samples/utils';
 
 export enum AssayDomainTypes {
     BATCH = 'Batch',
@@ -125,7 +126,7 @@ export class AssayDefinitionModel extends ImmutableRecord({
         selectionKey?: string,
         filters?: Filter.IFilter[],
         containerPath?: string,
-        params?: Record<string, string | number | boolean>
+        params?: Record<string, boolean | number | string>
     ): string {
         let url: string;
         // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links
@@ -162,7 +163,7 @@ export class AssayDefinitionModel extends ImmutableRecord({
         return AppURL.create(ASSAYS_KEY, this.type, this.name, 'runs');
     }
 
-    hasLookup(targetSQ: SchemaQuery, isPicklist?: boolean): boolean {
+    hasLookup(targetSQ: SchemaQuery, isPicklist?: boolean, forImport = false): boolean {
         const isSampleSet = targetSQ.hasSchema(SCHEMAS.SAMPLE_SETS.SCHEMA);
 
         // 44339: the SourceSamples custom query is backed by exp.materials
@@ -173,13 +174,12 @@ export class AssayDefinitionModel extends ImmutableRecord({
         const findLookup = (col: QueryColumn): boolean => {
             if (col.isLookup()) {
                 const lookupSQ = col.lookup.schemaQuery;
-                const isMatch =
-                    targetSQ.isEqual(lookupSQ) ||
-                    (isTargetAllSamples && SCHEMAS.EXP_TABLES.MATERIALS.isEqual(lookupSQ));
+                const isAllSamplesLookup = isAllSamplesSchema(lookupSQ);
+                const isMatch = targetSQ.isEqual(lookupSQ) || (isTargetAllSamples && isAllSamplesLookup);
 
                 // 35881: If targetSQ is a Sample Set then allow targeting exp.materials table as well
                 if (isSampleSet) {
-                    return isMatch || SCHEMAS.EXP_TABLES.MATERIALS.isEqual(lookupSQ);
+                    return isMatch || isAllSamplesLookup;
                 }
 
                 return isMatch;
@@ -187,6 +187,12 @@ export class AssayDefinitionModel extends ImmutableRecord({
 
             return false;
         };
+
+        // Issue 53328: only consider the first sample lookup column here since it will be used on the assay import page
+        if (forImport) {
+            const sampleLookupCol = this.getSampleColumn();
+            return sampleLookupCol ? findLookup(sampleLookupCol.column) : false;
+        }
 
         // Traditional for loop so we can short circuit.
         for (const k of Object.keys(AssayDomainTypes)) {

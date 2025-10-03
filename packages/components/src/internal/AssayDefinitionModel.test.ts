@@ -50,7 +50,7 @@ describe('AssayDefinitionModel', () => {
         expect(modelWithSampleId.hasLookup(new SchemaQuery('study', 'Other'), false, true)).toBeFalsy();
     });
 
-    test('hasLookup() with sample lookup', () => {
+    test('hasLookup() without sample lookup', () => {
         const modelWithout = AssayDefinitionModel.create(assayDefNoSampleIdJSON);
         expect(modelWithout.hasLookup(new SchemaQuery('samples', 'Samples'))).toBeFalsy();
         expect(modelWithout.hasLookup(new SchemaQuery('samples', 'Samples'), true)).toBeFalsy();

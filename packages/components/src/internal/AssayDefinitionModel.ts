@@ -14,6 +14,7 @@ import { AppURL } from './url/AppURL';
 import { SCHEMAS } from './schemas';
 import { ASSAYS_KEY } from './app/constants';
 import { ComponentsAPIWrapper } from './APIWrapper';
+import {isAllSamplesSchema} from "./components/samples/utils";
 
 export enum AssayDomainTypes {
     BATCH = 'Batch',
@@ -173,7 +174,7 @@ export class AssayDefinitionModel extends ImmutableRecord({
         const findLookup = (col: QueryColumn): boolean => {
             if (col.isLookup()) {
                 const lookupSQ = col.lookup.schemaQuery;
-                const isAllSamplesLookup = SCHEMAS.EXP_TABLES.MATERIALS.isEqual(lookupSQ);
+                const isAllSamplesLookup = isAllSamplesSchema(lookupSQ);
                 const isMatch = targetSQ.isEqual(lookupSQ) || (isTargetAllSamples && isAllSamplesLookup);
 
                 // 35881: If targetSQ is a Sample Set then allow targeting exp.materials table as well

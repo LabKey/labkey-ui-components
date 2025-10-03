@@ -22,6 +22,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 6.62.7
 *Released*: 29 September 2025
+- AssayDefinitionModel: add plateEnabled flag
+
+### version 6.62.7
+*Released*: 29 September 2025
 - Enumerate plate, plate set auditing events
 - Introduce `isQueryUpdateEvent` to flag which events are backed by query audit events
 

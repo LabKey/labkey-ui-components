@@ -452,6 +452,10 @@ export class QueryColumn implements IQueryColumn {
         return !!this.description || !!this.format || !!this.phiProtected;
     }
 
+    get isNumericJsonType(): boolean {
+        return this.jsonType === 'int' || this.jsonType === 'float' || this.jsonType === 'double';
+    }
+
     isIdentifiedByImportName(importName: string): boolean {
         if (!importName) return false;
 

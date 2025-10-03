@@ -4,6 +4,8 @@ import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
 
 import { RequiresModelAndActions } from './withQueryModels';
 
+const MAX_SELECTION_SIZE = 1_000;
+
 export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, model }) => {
     const { isLoading, isLoadingSelections, isLoadingTotalCount, maxRows, rowCount, selections } = model;
     const selectionSize = selections?.size;
@@ -53,11 +55,21 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
         );
     }
 
-    if (rowCount > maxRows && selectionSize !== rowCount && rowCount > 0) {
+    if (
+        rowCount > maxRows &&
+        selectionSize !== rowCount &&
+        rowCount > 0 &&
+        !isLoadingTotalCount &&
+        selectionSize < MAX_SELECTION_SIZE
+    ) {
+        // TODO: Should we clear pagination argument if this is clicked so they go back to the first page if the selection is maxed out?
+        // TODO: Need to handle error better in grid
+        const tooManyRows = rowCount > MAX_SELECTION_SIZE;
         selectAllButton = (
             <span className="selection-status__select-all">
                 <button className="btn btn-default btn-xs" onClick={selectAll} type="button">
-                    Select all {!isLoadingTotalCount ? rowCount.toLocaleString() : ''}
+                    {tooManyRows && <>Select first {MAX_SELECTION_SIZE.toLocaleString()}</>}
+                    {!tooManyRows && <>Select all {rowCount.toLocaleString()}</>}
                 </button>
             </span>
         );

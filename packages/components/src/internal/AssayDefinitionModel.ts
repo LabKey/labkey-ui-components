@@ -1,4 +1,4 @@
-import { fromJS, List, Map, Record as ImmutableRecord } from 'immutable';
+import { fromJS, Record as ImmutableRecord, List, Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { ExtendedMap } from '../public/ExtendedMap';
@@ -14,7 +14,7 @@ import { AppURL } from './url/AppURL';
 import { SCHEMAS } from './schemas';
 import { ASSAYS_KEY } from './app/constants';
 import { ComponentsAPIWrapper } from './APIWrapper';
-import {isAllSamplesSchema} from "./components/samples/utils";
+import { isAllSamplesSchema } from './components/samples/utils';
 
 export enum AssayDomainTypes {
     BATCH = 'Batch',
@@ -126,7 +126,7 @@ export class AssayDefinitionModel extends ImmutableRecord({
         selectionKey?: string,
         filters?: Filter.IFilter[],
         containerPath?: string,
-        params?: Record<string, string | number | boolean>
+        params?: Record<string, boolean | number | string>
     ): string {
         let url: string;
         // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links

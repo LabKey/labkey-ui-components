@@ -307,8 +307,6 @@ export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
     { Name: 'StorageCol', Label: 'Storage Col', DataType: 'Text', Required: false, Description: '', Disableable: true },
 ];
 
-export const AMOUNT_PRECISION_ERROR_TEXT = 'Amount used is too precise for selected units.';
-
 export const STORED_AMOUNT_FIELDS = {
     ROWID: 'RowId',
     AMOUNT: 'StoredAmount',

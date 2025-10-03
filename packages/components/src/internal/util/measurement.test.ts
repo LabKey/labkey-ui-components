@@ -2,7 +2,6 @@ import {
     areUnitsCompatible,
     getAltUnitKeys,
     getMetricUnitOptions,
-    isValuePrecisionValid,
     UnitModel,
 } from './measurement';
 
@@ -150,49 +149,6 @@ describe('MetricUnit utils', () => {
         expect(getAltUnitKeys(null).length).toBe(7);
         expect(getAltUnitKeys('').length).toBe(7);
         expect(getAltUnitKeys('bad').length).toBe(7);
-    });
-});
-
-describe('isValuePrecisionValid', () => {
-    test('value prop missing', () => {
-        expect(isValuePrecisionValid(undefined, 0)).toBeTruthy();
-        expect(isValuePrecisionValid(null, 0)).toBeTruthy();
-    });
-
-    test('value prop negative', () => {
-        expect(isValuePrecisionValid(-1, 1)).toBeFalsy();
-        expect(isValuePrecisionValid(-0.000000001, 1)).toBeFalsy();
-    });
-
-    test('precision prop', () => {
-        expect(isValuePrecisionValid(1, 0)).toBeTruthy();
-        expect(isValuePrecisionValid(1.0, 0)).toBeTruthy();
-        expect(isValuePrecisionValid(1.1, 0)).toBeTruthy();
-
-        expect(isValuePrecisionValid(1, 1)).toBeTruthy();
-        expect(isValuePrecisionValid(1.0, 1)).toBeTruthy();
-        expect(isValuePrecisionValid(1.01, 1)).toBeFalsy();
-
-        expect(isValuePrecisionValid(0.000001, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(0.000001, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(0.0000011, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(0.0000019, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(1.000001, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(1.000001, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(1.0000011, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(1.0000019, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(1.100001, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(1.100001, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(1.1000011, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(1.1000019, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(0.999999, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(0.999999, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(0.9999991, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(0.9999999, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(1.999999, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(1.999999, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(1.9999991, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(1.9999999, 6)).toBeFalsy();
     });
 });
 

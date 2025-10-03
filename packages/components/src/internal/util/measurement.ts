@@ -234,15 +234,3 @@ export function getVolumeMinStep(sampleTypeUnit?: MeasurementUnit | string) {
 export function isMeasurementUnitIgnoreCase(expected: MeasurementUnit, val: string) {
     return expected.label.localeCompare(val, 'en-US', { sensitivity: 'base' }) === 0;
 }
-
-export function isValuePrecisionValid(value: number, precision: number): boolean {
-    if (!value || !precision) {
-        return true;
-    }
-    if (value < 0) {
-        return false;
-    }
-
-    const valueValidator = new RegExp(`^\\d*(\\.\\d{0,${precision}})?$`);
-    return valueValidator.test(value.toString());
-}

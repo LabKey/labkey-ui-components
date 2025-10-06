@@ -193,7 +193,8 @@ interface MessageAndValue {
 
 type MessageAndValueMap = Record<string, MessageAndValue[]>;
 
-function resolveValueDescriptors(
+// export for jest testing
+export function resolveValueDescriptors(
     col: QueryColumn,
     lookupValues: MessageAndValueMap,
     cellMessages: Record<string, CellMessage>,

@@ -32,7 +32,7 @@ interface ViewInfoColumn {
 interface ViewInfoFilter {
     fieldKey: string;
     op: string;
-    value: string | number | boolean;
+    value: boolean | number | string;
 }
 
 export interface ViewInfoJson {
@@ -216,4 +216,3 @@ export class ViewInfo {
         });
     }
 }
-

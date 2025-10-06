@@ -220,7 +220,7 @@ function resolveValueDescriptors(
     let display = value?.displayValue ?? raw;
     if (col.isTimeOrDateTimeColumn) {
         display = getDateTimeDisplayValueFromStr(raw, col);
-    } else if (col.isNumericJsonType) {
+    } else if (!col.isLookup() && col.isNumericJsonType) {
         display = raw; // Issue 53934: don't use displayValue for numeric columns
     }
 

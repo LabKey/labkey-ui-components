@@ -479,14 +479,14 @@ describe('QueryColumn', () => {
         expect(new QueryColumn({ conceptURI: CALCULATED_CONCEPT_URI }).isCalculatedField).toBeTruthy();
     });
 
-    test('isNumericJsonType', () => {
-        expect(new QueryColumn({}).isNumericJsonType).toBeFalsy();
-        expect(new QueryColumn({ jsonType: 'string' }).isNumericJsonType).toBeFalsy();
-        expect(new QueryColumn({ jsonType: 'boolean' }).isNumericJsonType).toBeFalsy();
-        expect(new QueryColumn({ jsonType: 'date' }).isNumericJsonType).toBeFalsy();
-        expect(new QueryColumn({ jsonType: 'int' }).isNumericJsonType).toBeTruthy();
-        expect(new QueryColumn({ jsonType: 'float' }).isNumericJsonType).toBeTruthy();
-        expect(new QueryColumn({ jsonType: 'double' }).isNumericJsonType).toBeTruthy();
+    test('isDecimalJsonType', () => {
+        expect(new QueryColumn({}).isDecimalJsonType).toBeFalsy();
+        expect(new QueryColumn({ jsonType: 'string' }).isDecimalJsonType).toBeFalsy();
+        expect(new QueryColumn({ jsonType: 'boolean' }).isDecimalJsonType).toBeFalsy();
+        expect(new QueryColumn({ jsonType: 'date' }).isDecimalJsonType).toBeFalsy();
+        expect(new QueryColumn({ jsonType: 'int' }).isDecimalJsonType).toBeFalsy();
+        expect(new QueryColumn({ jsonType: 'float' }).isDecimalJsonType).toBeTruthy();
+        expect(new QueryColumn({ jsonType: 'double' }).isDecimalJsonType).toBeTruthy();
     });
 
     test('isSingleSampleTypeLookup', () => {

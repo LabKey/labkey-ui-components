@@ -1405,13 +1405,15 @@ describe('resolveValueDescriptors', () => {
         expect(resolveValueDescriptors(col, {}, {}, 'cellKey', { value: 1, displayValue: '1.00' })).toStrictEqual([{ display: '1.00', raw: 1 }]);
     });
 
-    test('isNumericJsonType, non lookup', () => {
+    test('isDecimalJsonType, non lookup', () => {
         const intCol = new QueryColumn({ fieldKey: 'col1', name: 'col1', jsonType: 'int' });
         const floatCol = new QueryColumn({ fieldKey: 'col1', name: 'col1', jsonType: 'float' });
         const intLookupCol = new QueryColumn({ fieldKey: 'col1', name: 'col1', jsonType: 'int', lookup: { keyColumn: 'id', displayColumn: 'name' } });
-        expect(resolveValueDescriptors(intCol, {}, {}, 'cellKey', { value: 10, displayValue: '010' })).toStrictEqual([{ display: 10, raw: 10 }]);
-        expect(resolveValueDescriptors(floatCol, {}, {}, 'cellKey', { value: 1.005, displayValue: 1.01 })).toStrictEqual([{ display: 1.005, raw: 1.005 }]);
-        expect(resolveValueDescriptors(intCol, {}, {}, 'cellKey', { value: 1, displayValue: 'Sample 1' })).toStrictEqual([{ display: 1, raw: 1 }]);
+        const floatLookupCol = new QueryColumn({ fieldKey: 'col1', name: 'col1', jsonType: 'float', lookup: { keyColumn: 'id', displayColumn: 'name' } });
+        expect(resolveValueDescriptors(intCol, {}, {}, 'cellKey', { value: 10, displayValue: '010' })).toStrictEqual([{ display: '010', raw: 10 }]);
+        expect(resolveValueDescriptors(intCol, {}, {}, 'cellKey', { value: 1, displayValue: 'Sample 1' })).toStrictEqual([{ display: 'Sample 1', raw: 1 }]);
         expect(resolveValueDescriptors(intLookupCol, {}, {}, 'cellKey', { value: 1, displayValue: 'Sample 1' })).toStrictEqual([{ display: 'Sample 1', raw: 1 }]);
+        expect(resolveValueDescriptors(floatCol, {}, {}, 'cellKey', { value: 1.005, displayValue: 1.01 })).toStrictEqual([{ display: 1.005, raw: 1.005 }]);
+        expect(resolveValueDescriptors(floatLookupCol, {}, {}, 'cellKey', { value: 1, displayValue: 'Sample 1' })).toStrictEqual([{ display: 'Sample 1', raw: 1 }]);
     });
 });

@@ -1,7 +1,7 @@
 import { ExtendedMap } from '../public/ExtendedMap';
 
 import { QueryInfo } from '../public/QueryInfo';
-import { QueryColumn } from '../public/QueryColumn';
+import { IQueryColumn, QueryColumn } from '../public/QueryColumn';
 
 import { ViewInfo } from './ViewInfo';
 
@@ -35,6 +35,11 @@ describe('ViewInfo', () => {
         view = ViewInfo.fromJson({ sort: [sortObj] });
         expect((ViewInfo.serialize(view) as any).sorts).toBe(undefined);
         expect(ViewInfo.serialize(view).sort).toStrictEqual([sortObj]);
+
+        view = ViewInfo.fromJson({ columns: [{ name: 'col1', key: 'col1', fieldKey: 'col1' }], fields: [{name: 'col1'} as IQueryColumn] });
+        expect((ViewInfo.serialize(view) as any).fields).toBeUndefined()
+        expect(ViewInfo.serialize(view).fields).toBeUndefined();
+        expect(ViewInfo.serialize(view).columns).toStrictEqual([{ name: 'col1', key: 'col1', fieldKey: 'col1' }]);
     });
 
     test('isVisible', () => {

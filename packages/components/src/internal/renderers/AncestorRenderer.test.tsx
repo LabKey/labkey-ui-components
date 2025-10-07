@@ -38,7 +38,7 @@ describe('AncestorRenderer', () => {
             displayValue: 'a.txt',
             url: 'http://samples.org/Sample-123',
         };
-        render(<AncestorRenderer data={Map(data)} col={new QueryColumn({type: 'file'})}/>);
+        render(<AncestorRenderer col={new QueryColumn({ type: 'file' })} data={Map(data)} />);
         expect(document.querySelectorAll('span.text-muted')).toHaveLength(0);
         expect(document.querySelectorAll('.attachment-card')).toHaveLength(1);
     });

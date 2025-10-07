@@ -37,7 +37,7 @@ describe('FilterAction::actionValueFromFilter', () => {
         const filter = Filter.create('U mg$SL', '10', Filter.Types.EQUAL);
         const value: ActionValue = action.actionValueFromFilter(filter);
         expect(value.displayValue).toBe('U mg/L = 10');
-        expect(value.value).toBe('"U mg$SL" = 10');
+        expect(value.value).toBe('"U mg/L" = 10');
     });
 
     test('with label from QueryColumn', () => {
@@ -79,5 +79,18 @@ describe('FilterAction::actionValueFromFilter', () => {
         const filter = Filter.create('TimeCol', '01:02', Filter.Types.EQUAL);
         const value: ActionValue = action.actionValueFromFilter(filter, col);
         expect(value.displayValue).toBe('TimeCol = 01:02:00');
+    });
+
+    test('decodePart label vs column name', () => {
+        const col = new QueryColumn({ shortCaption: '$Bool Field./,$&' });
+        const filter = Filter.create('$DBoolField$P$S$C$D$A', true, Filter.Types.EQUAL);
+
+        let value: ActionValue = action.actionValueFromFilter(filter, col);
+        expect(value.displayValue).toBe('$Bool Field./,$& = true');
+        expect(value.value).toBe('"$Bool Field./,$&" = true');
+
+        value = action.actionValueFromFilter(filter);
+        expect(value.displayValue).toBe('$BoolField./,$& = true');
+        expect(value.value).toBe('"$BoolField./,$&" = true');
     });
 });

@@ -15,14 +15,21 @@
  */
 import React, { FC, Fragment, memo, ReactNode } from 'react';
 import { Map } from 'immutable';
+import { QueryColumn } from '../../public/QueryColumn';
+import { FileColumnRenderer } from './FileColumnRenderer';
 
 export interface MultiValueRendererProps {
     data: Map<any, any>;
+    col?: QueryColumn;
 }
 
-export const MultiValueRenderer: FC<MultiValueRendererProps> = memo(({ data }) => {
+export const MultiValueRenderer: FC<MultiValueRendererProps> = memo(({ data, col }) => {
     if (!data || data.size === 0) {
         return null;
+    }
+
+    if (data.size === 1 && (col?.type?.toLowerCase() === 'file' || col?.inputType?.toLowerCase() === 'file')) {
+        return <FileColumnRenderer data={data.get(0)} />;
     }
 
     let i = -1;

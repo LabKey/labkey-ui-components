@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.62.9
+*Released*: 7 October 2025
 - Issue 53934: Remove stored amount "too precise" validation check on setting amount modal
   - remove isValuePrecisionValid() and the related isPrecisionValid()
   - use amount value instead of displayValue for EditableGrid and SampleAmountEditModal

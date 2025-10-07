@@ -1,14 +1,15 @@
 import React, { FC, memo, useCallback, useMemo } from 'react';
 
+import { getServerContext } from '@labkey/api';
+
 import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
 
 import { RequiresModelAndActions } from './withQueryModels';
 
-const MAX_SELECTION_SIZE = 1_000;
-
 export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, model }) => {
     const { isLoading, isLoadingSelections, isLoadingTotalCount, maxRows, rowCount, selections } = model;
     const selectionSize = selections?.size;
+    const maxSelectionSize = useMemo(() => getServerContext().getModuleContext('query').maxQuerySelection, []);
 
     const clearSelections = useCallback((): void => {
         actions.clearSelections(model.id);
@@ -60,15 +61,14 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
         selectionSize !== rowCount &&
         rowCount > 0 &&
         !isLoadingTotalCount &&
-        selectionSize < MAX_SELECTION_SIZE
+        selectionSize < maxSelectionSize
     ) {
         // TODO: Should we clear pagination argument if this is clicked so they go back to the first page if the selection is maxed out?
-        // TODO: Need to handle error better in grid
-        const tooManyRows = rowCount > MAX_SELECTION_SIZE;
+        const tooManyRows = rowCount > maxSelectionSize;
         selectAllButton = (
             <span className="selection-status__select-all">
                 <button className="btn btn-default btn-xs" onClick={selectAll} type="button">
-                    {tooManyRows && <>Select first {MAX_SELECTION_SIZE.toLocaleString()}</>}
+                    {tooManyRows && <>Select first {maxSelectionSize.toLocaleString()}</>}
                     {!tooManyRows && <>Select all {rowCount.toLocaleString()}</>}
                 </button>
             </span>

@@ -6,6 +6,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 52878: Attachment thumbnails from ancestor columns not rendered in Sample Type grid
   - Modify `AncestorRenderer` and `MultiValueRenderer` to handle file/attachment columns
 
+### version 6.63.0
+*Released*: 7 October 2025
+- Issue 53934: Remove stored amount "too precise" validation check on setting amount modal
+  - remove isValuePrecisionValid() and the related isPrecisionValid()
+  - use amount value instead of displayValue for EditableGrid and SampleAmountEditModal
+
 ### version 6.62.8
 *Released*: 3 October 2025
 - Issue 53328: AssayDefinitionModel.hasLookup to only consider the first sample lookup column for assay import cases

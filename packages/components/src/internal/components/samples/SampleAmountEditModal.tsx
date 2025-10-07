@@ -4,7 +4,7 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { caseInsensitive } from '../../util/utils';
 import { Alert } from '../base/Alert';
 
-import { isValuePrecisionValid, MEASUREMENT_UNITS, UnitModel } from '../../util/measurement';
+import { UnitModel } from '../../util/measurement';
 
 import { Modal } from '../../Modal';
 
@@ -13,7 +13,7 @@ import { CommentTextArea } from '../forms/input/CommentTextArea';
 import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
 import { updateSampleStorageData } from './actions';
-import { AMOUNT_PRECISION_ERROR_TEXT, STORED_AMOUNT_FIELDS } from './constants';
+import { STORED_AMOUNT_FIELDS } from './constants';
 import { StorageAmountInput } from './StorageAmountInput';
 
 interface Props {
@@ -25,12 +25,6 @@ interface Props {
 }
 
 // exported for jest testing
-export const isPrecisionValid = (amount: number, storageUnits: string): boolean => {
-    const units = MEASUREMENT_UNITS[storageUnits?.toLowerCase()];
-    return isValuePrecisionValid(amount, units?.displayPrecision);
-};
-
-// exported for jest testing
 export const isValid = (amount: number, units: string): boolean => {
     const hasAmount = amount !== undefined && amount !== null;
     const hasUnits = units !== undefined && units !== null && units !== '';
@@ -38,7 +32,7 @@ export const isValid = (amount: number, units: string): boolean => {
     const hasNeither = !hasAmount && !hasUnits;
 
     if (hasBoth) {
-        return amount >= 0 && isPrecisionValid(amount, units);
+        return amount >= 0;
     }
     return hasNeither;
 };
@@ -48,16 +42,15 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
 
     const {
         [STORED_AMOUNT_FIELDS.ROWID]: rowId,
-        [STORED_AMOUNT_FIELDS.UNITS]: Units,
-        [STORED_AMOUNT_FIELDS.AMOUNT]: initStorageAmount,
+        [STORED_AMOUNT_FIELDS.UNITS]: units,
+        [STORED_AMOUNT_FIELDS.AMOUNT]: storedAmount,
         [STORED_AMOUNT_FIELDS.SAMPLE_TYPE_UNITS]: sampleTypeUnits,
     } = row;
 
     const sampleContainer = caseInsensitive(row, 'Container/Path')?.value;
-    const initStorageUnits = Units?.value;
-    const [amount, setStorageAmount] = useState<number>(
-        initStorageAmount?.displayValue ?? initStorageAmount?.value ?? undefined
-    );
+    const initStorageUnits = units?.value;
+    const initStorageAmount = storedAmount?.value;
+    const [amount, setStorageAmount] = useState<number>(initStorageAmount);
     const [storageUnits, setStorageUnits] = useState<string>(initStorageUnits ?? null);
     const [comment, setComment] = useState<string>('');
     const [submitting, setSubmitting] = useState(false);
@@ -71,11 +64,6 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
     }, [onClose]);
 
     const handleUpdateSampleRow = (): Promise<any> => {
-        // Issue 41931: html input number step value only validates to a certain precision
-        const precision = storageUnits ? MEASUREMENT_UNITS[storageUnits.toLowerCase()]?.displayPrecision : 2;
-        if (!isValuePrecisionValid(amount, precision)) {
-            return Promise.reject(AMOUNT_PRECISION_ERROR_TEXT);
-        }
         const sampleData = [
             {
                 materialId: rowId?.value,

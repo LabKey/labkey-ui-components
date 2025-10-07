@@ -479,6 +479,16 @@ describe('QueryColumn', () => {
         expect(new QueryColumn({ conceptURI: CALCULATED_CONCEPT_URI }).isCalculatedField).toBeTruthy();
     });
 
+    test('isDecimalJsonType', () => {
+        expect(new QueryColumn({}).isDecimalJsonType).toBeFalsy();
+        expect(new QueryColumn({ jsonType: 'string' }).isDecimalJsonType).toBeFalsy();
+        expect(new QueryColumn({ jsonType: 'boolean' }).isDecimalJsonType).toBeFalsy();
+        expect(new QueryColumn({ jsonType: 'date' }).isDecimalJsonType).toBeFalsy();
+        expect(new QueryColumn({ jsonType: 'int' }).isDecimalJsonType).toBeFalsy();
+        expect(new QueryColumn({ jsonType: 'float' }).isDecimalJsonType).toBeTruthy();
+        expect(new QueryColumn({ jsonType: 'double' }).isDecimalJsonType).toBeTruthy();
+    });
+
     test('isSingleSampleTypeLookup', () => {
         expect(new QueryColumn({}).isCalculatedField).toBeFalsy();
 

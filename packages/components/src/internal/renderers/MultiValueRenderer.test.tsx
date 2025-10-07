@@ -4,6 +4,7 @@ import { fromJS, Map } from 'immutable';
 import { render } from '@testing-library/react';
 
 import { MultiValueRenderer } from './MultiValueRenderer';
+import { QueryColumn } from '../../public/QueryColumn';
 
 describe('MultiValueRenderer', () => {
     test('empty data', () => {
@@ -21,6 +22,20 @@ describe('MultiValueRenderer', () => {
         const data = fromJS({ 24: { value: 24 } });
         render(<MultiValueRenderer data={data} />);
         expect(document.body.textContent).toBe('24');
+    });
+
+    test('data shapes, value, file column', () => {
+        const data = fromJS({24: {value: 'a.txt', url: 'a.txt' }});
+        render(<MultiValueRenderer data={data} col={new QueryColumn({type: 'file'})} />);
+        expect(document.body.textContent).toBe('a.txt');
+        expect(document.querySelectorAll('.attachment-card')).toHaveLength(0);
+    });
+
+    test('data list, value, file column', () => {
+        const data = fromJS([{value: 'a.txt', url: 'a.txt' }]);
+        render(<MultiValueRenderer data={data} col={new QueryColumn({type: 'file'})} />);
+        expect(document.body.textContent).toBe('a.txtDownload');
+        expect(document.querySelectorAll('.attachment-card')).toHaveLength(1);
     });
 
     test('data shapes, displayValue', () => {
@@ -57,6 +72,26 @@ describe('MultiValueRenderer', () => {
         const link = spans[2].querySelectorAll('a');
         expect(link).toHaveLength(1);
         expect(link[0].getAttribute('href')).toEqual('https://www.mariners.com/ichiro');
+    });
+
+    test('multiple values, file column', () => {
+        const data = fromJS({
+            11: { value: 'a.txt', url: 'a.txt'},
+            24: { value: 'b.txt', url: 'b.txt' },
+            51: { value: 'c.txt', url: 'c.txt' },
+        });
+        render(<MultiValueRenderer data={data} col={new QueryColumn({type: 'file'})} />);
+        const spans = document.querySelectorAll('span');
+        expect(spans.length).toBe(3);
+        expect(spans[0].textContent).toEqual('a.txt');
+        expect(spans[1].textContent).toEqual(', b.txt');
+        expect(spans[2].textContent).toEqual(', c.txt');
+
+        const link = spans[2].querySelectorAll('a');
+        expect(link).toHaveLength(1);
+        expect(link[0].getAttribute('href')).toEqual('c.txt');
+
+        expect(document.querySelectorAll('.attachment-card')).toHaveLength(0);
     });
 
     test('non-Map values', () => {

@@ -4,6 +4,7 @@ import { Map } from 'immutable';
 import { render } from '@testing-library/react';
 
 import { AncestorRenderer } from './AncestorRenderer';
+import { QueryColumn } from '../../public/QueryColumn';
 
 describe('AncestorRenderer', () => {
     test('No data', () => {
@@ -28,6 +29,18 @@ describe('AncestorRenderer', () => {
         expect(links).toHaveLength(1);
         expect(links[0].getAttribute('href')).toBe(data.url);
         expect(links[0].textContent).toBe(data.displayValue);
+        expect(document.querySelectorAll('.attachment-card')).toHaveLength(0);
+    });
+
+    test('positive value, and file type column', () => {
+        const data = {
+            value: 'a.txt',
+            displayValue: 'a.txt',
+            url: 'http://samples.org/Sample-123',
+        };
+        render(<AncestorRenderer data={Map(data)} col={new QueryColumn({type: 'file'})}/>);
+        expect(document.querySelectorAll('span.text-muted')).toHaveLength(0);
+        expect(document.querySelectorAll('.attachment-card')).toHaveLength(1);
     });
 
     test('negative value', () => {

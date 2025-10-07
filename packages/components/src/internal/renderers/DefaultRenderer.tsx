@@ -77,7 +77,7 @@ export const DefaultRenderer: FC<Props> = memo(({ col, data, noLink }) => {
             if (url && !noLink) {
                 const targetBlank = data.get('urlTarget') === TARGET_BLANK;
                 return (
-                    <AppLink className={className} to={url} targetBlank={targetBlank} style={style}>
+                    <AppLink className={className} style={style} targetBlank={targetBlank} to={url}>
                         {display}
                     </AppLink>
                 );

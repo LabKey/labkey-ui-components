@@ -21,8 +21,8 @@ import { DefaultRenderer } from './DefaultRenderer';
 export const ANCESTOR_LOOKUP_CONCEPT_URI = 'http://www.labkey.org/types#ancestorLookup';
 
 interface Props {
-    data: Map<any, any>;
     col?: any;
+    data: Map<any, any>;
 }
 
 export const AncestorRenderer: FC<Props> = memo(({ data, col }) => {
@@ -36,7 +36,7 @@ export const AncestorRenderer: FC<Props> = memo(({ data, col }) => {
             );
         }
 
-        return <DefaultRenderer data={data} col={col} />;
+        return <DefaultRenderer col={col} data={data} />;
     }
 
     return null;

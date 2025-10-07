@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 import React, { FC, Fragment, memo, ReactNode } from 'react';
-import { Map } from 'immutable';
+import { List, Map } from 'immutable';
 import { QueryColumn } from '../../public/QueryColumn';
 import { FileColumnRenderer } from './FileColumnRenderer';
 
 export interface MultiValueRendererProps {
-    data: Map<any, any>;
     col?: QueryColumn;
+    data: Map<any, any>;
 }
 
 export const MultiValueRenderer: FC<MultiValueRendererProps> = memo(({ data, col }) => {
@@ -28,7 +28,7 @@ export const MultiValueRenderer: FC<MultiValueRendererProps> = memo(({ data, col
         return null;
     }
 
-    if (data.size === 1 && (col?.type?.toLowerCase() === 'file' || col?.inputType?.toLowerCase() === 'file')) {
+    if (List.isList(data) && data.size === 1 && (col?.type?.toLowerCase() === 'file' || col?.inputType?.toLowerCase() === 'file')) {
         return <FileColumnRenderer data={data.get(0)} />;
     }
 
@@ -65,7 +65,7 @@ export const MultiValueRenderer: FC<MultiValueRendererProps> = memo(({ data, col
                     return (
                         // IntelliJ mistakenly presumes that key is an index.
                         // In fact, it is the key of the map which is unique.
-                        // eslint-disable-next-line react/no-array-index-key
+
                         <span key={key}>
                             {++i > 0 ? ', ' : ''}
                             {url ? <a href={url}>{text}</a> : text}

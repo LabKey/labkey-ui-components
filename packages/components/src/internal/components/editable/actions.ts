@@ -193,7 +193,8 @@ interface MessageAndValue {
 
 type MessageAndValueMap = Record<string, MessageAndValue[]>;
 
-function resolveValueDescriptors(
+// export for jest testing
+export function resolveValueDescriptors(
     col: QueryColumn,
     lookupValues: MessageAndValueMap,
     cellMessages: Record<string, CellMessage>,
@@ -220,6 +221,8 @@ function resolveValueDescriptors(
     let display = value?.displayValue ?? raw;
     if (col.isTimeOrDateTimeColumn) {
         display = getDateTimeDisplayValueFromStr(raw, col);
+    } else if (!col.isLookup() && col.isDecimalJsonType) {
+        display = raw; // Issue 53934: don't use displayValue for numeric columns
     }
 
     return [

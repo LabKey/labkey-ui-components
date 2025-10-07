@@ -271,7 +271,7 @@ export class QueryColumn implements IQueryColumn {
     declare tableCell: boolean;
     declare width: number;
 
-    constructor(rawColumn: Partial<QueryColumn | IQueryColumn>) {
+    constructor(rawColumn: Partial<IQueryColumn | QueryColumn>) {
         Object.assign(this, defaultQueryColumn, rawColumn);
 
         if (rawColumn && rawColumn.lookup !== undefined) {
@@ -452,6 +452,10 @@ export class QueryColumn implements IQueryColumn {
         return !!this.description || !!this.format || !!this.phiProtected;
     }
 
+    get isDecimalJsonType(): boolean {
+        return this.jsonType === 'float' || this.jsonType === 'double';
+    }
+
     isIdentifiedByImportName(importName: string): boolean {
         if (!importName) return false;
 
@@ -489,10 +493,10 @@ export class QueryColumn implements IQueryColumn {
 
     allowFaceting(): boolean {
         switch (this.facetingBehaviorType) {
-            case 'ALWAYS_ON':
-                return true;
             case 'ALWAYS_OFF':
                 return false;
+            case 'ALWAYS_ON':
+                return true;
             case 'AUTOMATIC':
                 // auto rules are if the column is a lookup or dimension
                 // OR if it is of type : (boolean, int, date, text), multiline excluded

@@ -11,7 +11,7 @@ import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
-import { isPrecisionValid, isValid, SampleAmountEditModal } from './SampleAmountEditModal';
+import { isValid, SampleAmountEditModal } from './SampleAmountEditModal';
 
 describe('SampleAmountEditModal', () => {
     const testSchemaQuery = new SchemaQuery('schema', 'query', 'view');
@@ -36,7 +36,9 @@ describe('SampleAmountEditModal', () => {
         expect(document.querySelector('textarea').getAttribute('value')).toBe(comment ?? null);
         expect(document.querySelectorAll('.alert')).toHaveLength(isNegative ? 1 : 0);
         if (isNegative) {
-            expect(document.querySelectorAll('.alert').item(0).textContent).toBe('Amount must be a non-negative value.');
+            expect(document.querySelectorAll('.alert').item(0).textContent).toBe(
+                'Amount must be a non-negative value.'
+            );
         }
         validateSubmitButton(noun, canSave);
     }
@@ -206,35 +208,6 @@ describe('SampleAmountEditModal', () => {
     });
 });
 
-describe('isPrecisionValid', () => {
-    test('no amount and no units', () => {
-        expect(isPrecisionValid(undefined, undefined)).toBe(true);
-        expect(isPrecisionValid(undefined, null)).toBe(true);
-        expect(isPrecisionValid(undefined, 'bogus')).toBe(true);
-        expect(isPrecisionValid(undefined, 'mL')).toBe(true);
-        expect(isPrecisionValid(undefined, 'mg')).toBe(true);
-        expect(isPrecisionValid(0, undefined)).toBe(true);
-        expect(isPrecisionValid(1, undefined)).toBe(true);
-    });
-
-    test('with amount and units', () => {
-        expect(isPrecisionValid(1, 'mg')).toBe(true);
-        expect(isPrecisionValid(0.1, 'mg')).toBe(true);
-        expect(isPrecisionValid(0.01, 'mg')).toBe(true);
-        expect(isPrecisionValid(0.001, 'mg')).toBe(true);
-        expect(isPrecisionValid(0.0001, 'mg')).toBe(true);
-        expect(isPrecisionValid(0.00001, 'mg')).toBe(true);
-        expect(isPrecisionValid(0.000001, 'mg')).toBe(true);
-        expect(isPrecisionValid(0.0000001, 'mg')).toBe(false);
-        expect(isPrecisionValid(10.0000001, 'mg')).toBe(false);
-    });
-
-    test('with negative amount', () => {
-        expect(isPrecisionValid(-1, 'mg')).toBe(false);
-        expect(isPrecisionValid(-0.001, 'mg')).toBe(false);
-    });
-});
-
 describe('isValid', () => {
     test('has neither', () => {
         expect(isValid(undefined, undefined)).toBe(true);
@@ -256,9 +229,6 @@ describe('isValid', () => {
         expect(isValid(0, 'uL')).toBe(true);
         expect(isValid(10, 'uL')).toBe(true);
         expect(isValid(0.1, 'uL')).toBe(true);
-        expect(isValid(0.01, 'uL')).toBe(true);
-        expect(isValid(0.001, 'uL')).toBe(true);
-        expect(isValid(0.0001, 'uL')).toBe(false);
-        expect(isValid(10.0001, 'uL')).toBe(false);
+        expect(isValid(10.000000001, 'uL')).toBe(true);
     });
 });

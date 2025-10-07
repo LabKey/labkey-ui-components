@@ -885,7 +885,6 @@ import {
     areUnitsCompatible,
     getAltUnitKeys,
     getMetricUnitOptions,
-    isValuePrecisionValid,
     MEASUREMENT_UNITS,
     UnitModel,
 } from './internal/util/measurement';
@@ -1527,7 +1526,6 @@ export {
     IssuesListDefDesignerPanels,
     IssuesListDefModel,
     isValidFilterField,
-    isValuePrecisionValid,
     ItemsLegend,
     JavaDocsLink,
     joinDateTimeFormat,

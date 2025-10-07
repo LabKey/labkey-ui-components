@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.62.9
+*Released*: 7 October 2025
+- Issue 53934: Remove stored amount "too precise" validation check on setting amount modal
+  - remove isValuePrecisionValid() and the related isPrecisionValid()
+  - use amount value instead of displayValue for EditableGrid and SampleAmountEditModal
+
 ### version 6.62.8
 *Released*: 3 October 2025
 - Issue 53328: AssayDefinitionModel.hasLookup to only consider the first sample lookup column for assay import cases

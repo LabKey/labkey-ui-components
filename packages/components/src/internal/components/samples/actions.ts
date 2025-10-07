@@ -216,6 +216,7 @@ export function getSelectionLineageData(
 
 export interface GroupedSampleDisplayColumns {
     aliquotHeaderDisplayColumns: QueryColumn[];
+    aliquotOnlyColumns: string[]; // should hide from parent panel
     displayColumns: QueryColumn[];
     editColumns: QueryColumn[];
 }
@@ -239,6 +240,7 @@ export function getGroupedSampleDisplayColumns(
     const editColumns = [];
     const displayColumns = [];
     const aliquotHeaderDisplayColumns = [];
+    const aliquotOnlyColumns = [];
 
     allDisplayColumns.forEach(col => {
         const lcFieldKey = col.fieldKey.toLowerCase();
@@ -259,6 +261,8 @@ export function getGroupedSampleDisplayColumns(
                 sampleTypeDomainFields.independentFields.indexOf(lcFieldKey) > -1
             ) {
                 aliquotHeaderDisplayColumns.push(col);
+                if (sampleTypeDomainFields.aliquotFields.indexOf(lcFieldKey) > -1)
+                    aliquotOnlyColumns.push(col.fieldKey);
             }
         } else {
             if (sampleTypeDomainFields.aliquotFields.indexOf(lcFieldKey) === -1) {
@@ -294,6 +298,7 @@ export function getGroupedSampleDisplayColumns(
 
     return {
         aliquotHeaderDisplayColumns,
+        aliquotOnlyColumns,
         displayColumns,
         editColumns,
     };

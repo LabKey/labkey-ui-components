@@ -5,7 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Filter.actionValueFromFilter fix to move decode columnName out of getDisplayValue()
 
-### version 6.62.9
+### version 6.63.0
 *Released*: 7 October 2025
 - Issue 53934: Remove stored amount "too precise" validation check on setting amount modal
   - remove isValuePrecisionValid() and the related isPrecisionValid()

@@ -46,7 +46,9 @@ export class UnitModel {
         }
 
         const newValue = this.value * (this.unit.ratio / newUnit.ratio);
-        return new UnitModel(parseFloat(newValue.toFixed(newUnit.displayPrecision)), newUnit.label.toLowerCase());
+        const factor = Math.pow(10, newUnit.displayPrecision);
+        const displayValue = Math.round(newValue * factor) / factor;
+        return new UnitModel(displayValue, newUnit.label.toLowerCase());
     }
 
     compareTo(other: UnitModel) {

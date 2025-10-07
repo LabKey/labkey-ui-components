@@ -1,9 +1,4 @@
-import {
-    areUnitsCompatible,
-    getAltUnitKeys,
-    getMetricUnitOptions,
-    UnitModel,
-} from './measurement';
+import { areUnitsCompatible, getAltUnitKeys, getMetricUnitOptions, UnitModel } from './measurement';
 
 describe('UnitModel', () => {
     test('constructor and operators', () => {
@@ -16,6 +11,9 @@ describe('UnitModel', () => {
         expect(new UnitModel(99999.13345678, 'mg').as('kg').toString()).toBe('0.099999133457 kg');
         expect(new UnitModel(10, 'mL').as('L').toString()).toBe('0.01 L');
         expect(new UnitModel(undefined, 'mL').as('L').toString()).toBe('undefined L');
+        expect(new UnitModel(0.0005, 'mL').as('mL').toString()).toBe('0.0005 mL');
+        expect(new UnitModel(0.0005, 'uL').as('mL').toString()).toBe('0.000001 mL');
+        expect(new UnitModel(0.0005, 'L').as('mL').toString()).toBe('0.5 mL');
 
         expect(new UnitModel(10, 'mL').compareTo(new UnitModel(9, 'mL')) > 0).toBeTruthy();
         expect(new UnitModel(10, 'mL').compareTo(new UnitModel(9, 'L')) > 0).toBeFalsy();

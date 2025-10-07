@@ -7,18 +7,10 @@ import {
     getMetricUnitOptions,
     getVolumeMinStep,
     isMeasurementUnitIgnoreCase,
-    isValuePrecisionValid,
     MEASUREMENT_UNITS,
     UnitModel,
 } from '../../util/measurement';
 
-import { AMOUNT_PRECISION_ERROR_TEXT } from './constants';
-
-const deltaTooPreciseMessage = (
-    <Alert bsStyle="danger" className="storage-item-precision-alert">
-        {AMOUNT_PRECISION_ERROR_TEXT}
-    </Alert>
-);
 const negativeValueMessage = (
     <Alert bsStyle="danger" className="storage-item-precision-alert">
         Amount must be a non-negative value.
@@ -41,7 +33,6 @@ export const StorageAmountInput: FC<Props> = memo(props => {
         props;
 
     const isNegativeValue = model?.value < 0;
-    const isDeltaValid = isValuePrecisionValid(model?.value, model?.unit?.displayPrecision);
     const unitText = model?.unit?.label || model.unitStr;
     let preferredUnitMessage;
 
@@ -96,7 +87,7 @@ export const StorageAmountInput: FC<Props> = memo(props => {
     return (
         <>
             <div className={containerClassName}>
-                <div className={'checkin-amount-label ' + (isDeltaValid ? '' : 'has-error ')}>
+                <div className={'checkin-amount-label'}>
                     <label htmlFor="checkin-amount">{label}</label>
                     {tipText && (
                         <LabelHelpTip title="Stored Amount Delta">
@@ -119,7 +110,6 @@ export const StorageAmountInput: FC<Props> = memo(props => {
                 {preferredUnitMessage}
             </div>
             {isNegativeValue ? negativeValueMessage : undefined}
-            {!isNegativeValue && !isDeltaValid ? deltaTooPreciseMessage : undefined}
         </>
     );
 });

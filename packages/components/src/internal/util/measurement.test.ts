@@ -1,10 +1,4 @@
-import {
-    areUnitsCompatible,
-    getAltUnitKeys,
-    getMetricUnitOptions,
-    isValuePrecisionValid,
-    UnitModel,
-} from './measurement';
+import { areUnitsCompatible, getAltUnitKeys, getMetricUnitOptions, UnitModel } from './measurement';
 
 describe('UnitModel', () => {
     test('constructor and operators', () => {
@@ -17,6 +11,9 @@ describe('UnitModel', () => {
         expect(new UnitModel(99999.13345678, 'mg').as('kg').toString()).toBe('0.099999133457 kg');
         expect(new UnitModel(10, 'mL').as('L').toString()).toBe('0.01 L');
         expect(new UnitModel(undefined, 'mL').as('L').toString()).toBe('undefined L');
+        expect(new UnitModel(0.0005, 'mL').as('mL').toString()).toBe('0.0005 mL');
+        expect(new UnitModel(0.0005, 'uL').as('mL').toString()).toBe('0.000001 mL');
+        expect(new UnitModel(0.0005, 'L').as('mL').toString()).toBe('0.5 mL');
 
         expect(new UnitModel(10, 'mL').compareTo(new UnitModel(9, 'mL')) > 0).toBeTruthy();
         expect(new UnitModel(10, 'mL').compareTo(new UnitModel(9, 'L')) > 0).toBeFalsy();
@@ -150,49 +147,6 @@ describe('MetricUnit utils', () => {
         expect(getAltUnitKeys(null).length).toBe(7);
         expect(getAltUnitKeys('').length).toBe(7);
         expect(getAltUnitKeys('bad').length).toBe(7);
-    });
-});
-
-describe('isValuePrecisionValid', () => {
-    test('value prop missing', () => {
-        expect(isValuePrecisionValid(undefined, 0)).toBeTruthy();
-        expect(isValuePrecisionValid(null, 0)).toBeTruthy();
-    });
-
-    test('value prop negative', () => {
-        expect(isValuePrecisionValid(-1, 1)).toBeFalsy();
-        expect(isValuePrecisionValid(-0.000000001, 1)).toBeFalsy();
-    });
-
-    test('precision prop', () => {
-        expect(isValuePrecisionValid(1, 0)).toBeTruthy();
-        expect(isValuePrecisionValid(1.0, 0)).toBeTruthy();
-        expect(isValuePrecisionValid(1.1, 0)).toBeTruthy();
-
-        expect(isValuePrecisionValid(1, 1)).toBeTruthy();
-        expect(isValuePrecisionValid(1.0, 1)).toBeTruthy();
-        expect(isValuePrecisionValid(1.01, 1)).toBeFalsy();
-
-        expect(isValuePrecisionValid(0.000001, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(0.000001, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(0.0000011, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(0.0000019, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(1.000001, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(1.000001, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(1.0000011, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(1.0000019, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(1.100001, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(1.100001, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(1.1000011, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(1.1000019, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(0.999999, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(0.999999, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(0.9999991, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(0.9999999, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(1.999999, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(1.999999, 6)).toBeTruthy();
-        expect(isValuePrecisionValid(1.9999991, 6)).toBeFalsy();
-        expect(isValuePrecisionValid(1.9999999, 6)).toBeFalsy();
     });
 });
 

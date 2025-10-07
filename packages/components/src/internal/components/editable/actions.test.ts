@@ -23,6 +23,7 @@ import {
     parsePastedLookup,
     removeColumn,
     removeColumns,
+    resolveValueDescriptors,
     splitPrefixedNumber,
     validateAndInsertPastedData,
 } from './actions';
@@ -1168,6 +1169,15 @@ describe('loadEditorModelData', () => {
             fieldKeyPath: 'IntField$P$S$C$D$A',
             derivationDataScope: 'ParentOnly',
             name: 'IntField./,$&',
+            jsonType: 'int',
+        }),
+        new QueryColumn({
+            fieldKey: 'DecField$P$S$C$D$A',
+            fieldKeyArray: ['DecField./,$&'],
+            fieldKeyPath: 'DecField$P$S$C$D$A',
+            derivationDataScope: 'ParentOnly',
+            name: 'DecField./,$&',
+            jsonType: 'float',
         }),
         new QueryColumn({
             fieldKey: 'lkField$P$S$C$D$A',
@@ -1241,7 +1251,7 @@ describe('loadEditorModelData', () => {
             'DtTimeField./,$&': [{ displayValue: '2025-02-07 16:30', value: '2025-02-07 16:30:00.000' }],
             'lkField./,$&': [{ displayValue: 'Assay Required File', value: 37721 }],
             RowId: 2805931,
-            'DecField./,$&': 222,
+            'DecField./,$&': { displayValue: 22.3, value: 22.26 },
             'aliqAndParent$,./': '888',
             StoredAmount: 99,
             Description: '111',
@@ -1322,6 +1332,8 @@ describe('loadEditorModelData', () => {
             'samplefield$p$s$c$d$a&&1': [{ display: '10-1-1', raw: 117334 }],
             'intfield$p$s$c$d$a&&0': [{ display: 3, raw: 3 }],
             'dtfield$p$s$c$d$a&&0': [{ display: '2025-Feb-04 00:00:11.234', raw: '2025-02-04 00:00:11.234' }],
+            'decfield$p$s$c$d$a&&0': [{ display: 22, raw: 22 }],
+            'decfield$p$s$c$d$a&&1': [{ display: 22.26, raw: 22.26 }],
             'intfield$p$s$c$d$a&&1': [{ display: 333, raw: 333 }],
             'aliqfield$d$c$p$s&&0': [{ display: '123', raw: '123' }],
             'dtfield$p$s$c$d$a&&1': [{ display: '2025-Feb-07 00:00', raw: '2025-02-07 00:00:00.000' }],
@@ -1376,5 +1388,60 @@ describe('loadEditorModelData', () => {
 
         // Expect both lookup columns to have been validated
         expect(api.query.selectRows).toHaveBeenCalledTimes(2);
+    });
+});
+
+describe('resolveValueDescriptors', () => {
+    test('default raw and displayValue', () => {
+        const col = new QueryColumn({ fieldKey: 'col1', name: 'col1' });
+        expect(resolveValueDescriptors(col, {}, {}, 'cellKey', 1)).toStrictEqual([{ display: 1, raw: 1 }]);
+        expect(resolveValueDescriptors(col, {}, {}, 'cellKey', 'value')).toStrictEqual([
+            { display: 'value', raw: 'value' },
+        ]);
+        expect(resolveValueDescriptors(col, {}, {}, 'cellKey', true)).toStrictEqual([{ display: true, raw: true }]);
+        expect(resolveValueDescriptors(col, {}, {}, 'cellKey', false)).toStrictEqual([{ display: false, raw: false }]);
+        expect(resolveValueDescriptors(col, {}, {}, 'cellKey', null)).toStrictEqual([
+            { display: undefined, raw: undefined },
+        ]);
+        expect(resolveValueDescriptors(col, {}, {}, 'cellKey', undefined)).toStrictEqual([
+            { display: undefined, raw: undefined },
+        ]);
+
+        expect(resolveValueDescriptors(col, {}, {}, 'cellKey', { value: 1 })).toStrictEqual([{ display: 1, raw: 1 }]);
+        expect(resolveValueDescriptors(col, {}, {}, 'cellKey', { value: 1, displayValue: '1.00' })).toStrictEqual([
+            { display: '1.00', raw: 1 },
+        ]);
+    });
+
+    test('isDecimalJsonType, non lookup', () => {
+        const intCol = new QueryColumn({ fieldKey: 'col1', name: 'col1', jsonType: 'int' });
+        const floatCol = new QueryColumn({ fieldKey: 'col1', name: 'col1', jsonType: 'float' });
+        const intLookupCol = new QueryColumn({
+            fieldKey: 'col1',
+            name: 'col1',
+            jsonType: 'int',
+            lookup: { keyColumn: 'id', displayColumn: 'name' },
+        });
+        const floatLookupCol = new QueryColumn({
+            fieldKey: 'col1',
+            name: 'col1',
+            jsonType: 'float',
+            lookup: { keyColumn: 'id', displayColumn: 'name' },
+        });
+        expect(resolveValueDescriptors(intCol, {}, {}, 'cellKey', { value: 10, displayValue: '010' })).toStrictEqual([
+            { display: '010', raw: 10 },
+        ]);
+        expect(
+            resolveValueDescriptors(intCol, {}, {}, 'cellKey', { value: 1, displayValue: 'Sample 1' })
+        ).toStrictEqual([{ display: 'Sample 1', raw: 1 }]);
+        expect(
+            resolveValueDescriptors(intLookupCol, {}, {}, 'cellKey', { value: 1, displayValue: 'Sample 1' })
+        ).toStrictEqual([{ display: 'Sample 1', raw: 1 }]);
+        expect(
+            resolveValueDescriptors(floatCol, {}, {}, 'cellKey', { value: 1.005, displayValue: 1.01 })
+        ).toStrictEqual([{ display: 1.005, raw: 1.005 }]);
+        expect(
+            resolveValueDescriptors(floatLookupCol, {}, {}, 'cellKey', { value: 1, displayValue: 'Sample 1' })
+        ).toStrictEqual([{ display: 'Sample 1', raw: 1 }]);
     });
 });

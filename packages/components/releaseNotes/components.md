@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.X
-*Released*: X October 2025
+### version 6.63.2
+*Released*: 8 October 2025
 - Issue 53324: LKSM: Custom Grid View Column Limit
   - Don't serialize ViewInfoJson.fields
 

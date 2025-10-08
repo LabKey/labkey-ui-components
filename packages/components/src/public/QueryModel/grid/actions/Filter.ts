@@ -160,7 +160,7 @@ export class FilterAction implements Action {
         filterType: Filter.IFilterType,
         rawValue: string | string[]
     ): { displayValue: string; inputValue: string } {
-        let value: string, inputValue: string;
+        let inputValue: string, value: string;
         const displayParts = [columnName, resolveSymbol(filterType)];
         const inputDisplayParts = [`"${displayParts[0]}"`, displayParts[1]]; // need to quote column name for input display
 

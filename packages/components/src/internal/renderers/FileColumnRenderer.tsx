@@ -56,11 +56,11 @@ export const getAttachmentCardProp = (
     let url, value, display;
     if (Iterable.isIterable(data)) {
         url = data.get('url');
-        value = data.get('value');
+        value = data.get('value')?.toString();
         display = getFileDisplayValue(data.get('displayValue') ?? value);
     } else {
         url = caseInsensitive(data, 'url');
-        value = caseInsensitive(data, 'value');
+        value = caseInsensitive(data, 'value')?.toString();
         display = getFileDisplayValue(caseInsensitive(data, 'displayValue') ?? value);
     }
     const titleStyle = isConditionalFormattingEnabled() ? getDataStyling(data) : undefined;

@@ -55,7 +55,7 @@ export const DefaultRenderer: FC<Props> = memo(({ col, data, noLink }) => {
             display = data ? 'true' : 'false';
         } else if (List.isList(data)) {
             // defensively return a MultiValueRenderer, this column likely wasn't declared properly as "multiValue"
-            return <MultiValueRenderer data={data} />;
+            return <MultiValueRenderer data={data} col={col} />;
         } else if (col?.type?.toLowerCase() === 'file' || col?.inputType?.toLowerCase() === 'file') {
             return <FileColumnRenderer data={data} />;
         } else {

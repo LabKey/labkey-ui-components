@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 52878: Attachment thumbnails from ancestor columns not rendered in Sample Type grid
   - Modify `AncestorRenderer` and `MultiValueRenderer` to handle file/attachment columns
 
+### version 6.63.1
+*Released*: 8 October 2025
+- Filter.actionValueFromFilter fix to move decode columnName out of getDisplayValue()
+
 ### version 6.63.0
 *Released*: 7 October 2025
 - Issue 53934: Remove stored amount "too precise" validation check on setting amount modal

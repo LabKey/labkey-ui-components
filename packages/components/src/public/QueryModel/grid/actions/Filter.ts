@@ -160,8 +160,8 @@ export class FilterAction implements Action {
         filterType: Filter.IFilterType,
         rawValue: string | string[]
     ): { displayValue: string; inputValue: string } {
-        let value: string, inputValue: string;
-        const displayParts = [decodePart(columnName), resolveSymbol(filterType)];
+        let inputValue: string, value: string;
+        const displayParts = [columnName, resolveSymbol(filterType)];
         const inputDisplayParts = [`"${displayParts[0]}"`, displayParts[1]]; // need to quote column name for input display
 
         if (!filterType.isDataValueRequired()) {
@@ -210,7 +210,7 @@ export class FilterAction implements Action {
 
     actionValueFromFilter(filter: Filter.IFilter, column?: QueryColumn, isReadOnly?: string): ActionValue {
         const label = column?.shortCaption;
-        const columnName = filter.getColumnName();
+        const columnName = decodePart(filter.getColumnName());
         const filterType = filter.getFilterType();
         const operator = resolveSymbol(filter.getFilterType());
         let value = filter.getValue();

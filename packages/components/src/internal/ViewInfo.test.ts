@@ -40,7 +40,6 @@ describe('ViewInfo', () => {
             columns: [{ name: 'col1', key: 'col1', fieldKey: 'col1' }],
             fields: [{ name: 'col1' } as IQueryColumn],
         });
-        expect((ViewInfo.serialize(view) as any).fields).toBeUndefined();
         expect(ViewInfo.serialize(view).fields).toBeUndefined();
         expect(ViewInfo.serialize(view).columns).toStrictEqual([{ name: 'col1', key: 'col1', fieldKey: 'col1' }]);
     });

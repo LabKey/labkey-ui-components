@@ -32,7 +32,7 @@ interface ViewInfoColumn {
 interface ViewInfoFilter {
     fieldKey: string;
     op: string;
-    value: string | number | boolean;
+    value: boolean | number | string;
 }
 
 export interface ViewInfoJson {
@@ -127,6 +127,7 @@ export class ViewInfo {
         const { columns, filters, isDefault, sorts, ...rest } = viewInfo;
         const json = rest as unknown as ViewInfoJson;
 
+        delete json.fields; // Issue 53324: not needed for serialization and takes up space
         json.columns = [...columns];
         json.default = isDefault;
 
@@ -215,4 +216,3 @@ export class ViewInfo {
         });
     }
 }
-

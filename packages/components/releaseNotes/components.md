@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.63.2
+*Released*: 8 October 2025
+- Issue 53324: LKSM: Custom Grid View Column Limit
+  - Don't serialize ViewInfoJson.fields
+
 ### version 6.63.1
 *Released*: 8 October 2025
 - Filter.actionValueFromFilter fix to move decode columnName out of getDisplayValue()

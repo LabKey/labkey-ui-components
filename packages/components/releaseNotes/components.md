@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.63.1
+*Released*: 8 October 2025
 - Filter.actionValueFromFilter fix to move decode columnName out of getDisplayValue()
 
 ### version 6.63.0

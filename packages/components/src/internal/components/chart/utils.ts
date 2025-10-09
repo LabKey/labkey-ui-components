@@ -1,4 +1,5 @@
 import { Map } from 'immutable';
+import { ChartFieldInfo, ChartTypeInfo } from './models';
 
 export interface HorizontalBarData {
     backgroundColor?: string;
@@ -73,4 +74,16 @@ export function createHorizontalBarCountLegendData(
 export const getFieldDataType = (fieldData: Record<string, any>): string => {
     if (!fieldData) return undefined;
     return fieldData.displayFieldJsonType || fieldData.jsonType || fieldData.type;
+};
+
+export const shouldShowRangeScaleOptions = (field: ChartFieldInfo, selectedType: ChartTypeInfo): boolean => {
+    const showForX = field.name === 'x' && (selectedType.name === 'scatter_plot' || selectedType.name === 'line_plot');
+    const showForY =
+        field.name === 'y' &&
+        (selectedType.name === 'scatter_plot' || selectedType.name === 'line_plot' || selectedType.name === 'box_plot');
+    return showForX || showForY;
+};
+
+export const shouldShowAggregateOptions = (field: ChartFieldInfo, selectedType: ChartTypeInfo): boolean => {
+    return field.name === 'y' && selectedType.name === 'bar_chart';
 };

@@ -1,6 +1,13 @@
 import { Map } from 'immutable';
 
-import { createHorizontalBarLegendData, createHorizontalBarCountLegendData, getFieldDataType } from './utils';
+import {
+    createHorizontalBarCountLegendData,
+    createHorizontalBarLegendData,
+    getFieldDataType,
+    shouldShowAggregateOptions,
+    shouldShowRangeScaleOptions,
+} from './utils';
+import { ChartFieldInfo, ChartTypeInfo } from './models';
 
 describe('createHorizontalBarLegendData', () => {
     test('all different', () => {
@@ -299,5 +306,54 @@ describe('getFieldDataType', () => {
         expect(getFieldDataType({ displayFieldJsonType: 'string', jsonType: 'int', type: 'date' })).toBe('string');
         expect(getFieldDataType({ displayFieldJsonType: undefined, jsonType: 'int', type: 'date' })).toBe('int');
         expect(getFieldDataType({ displayFieldJsonType: undefined, jsonType: undefined, type: 'date' })).toBe('date');
+    });
+});
+
+const BAR_CHART_TYPE = {
+    name: 'bar_chart',
+} as ChartTypeInfo;
+const BOX_PLOT_TYPE = {
+    name: 'box_plot',
+} as ChartTypeInfo;
+const SCATTER_PLOT_TYPE = {
+    name: 'scatter_plot',
+} as ChartTypeInfo;
+const LINE_PLOT_TYPE = {
+    name: 'line_plot',
+} as ChartTypeInfo;
+
+const xField = { name: 'x' } as ChartFieldInfo;
+const yField = { name: 'y' } as ChartFieldInfo;
+
+describe('shouldShowRangeScaleOptions', () => {
+    test('based on chart type', () => {
+        expect(shouldShowRangeScaleOptions(xField, BAR_CHART_TYPE)).toBe(false);
+        expect(shouldShowRangeScaleOptions(yField, BAR_CHART_TYPE)).toBe(false);
+        expect(shouldShowRangeScaleOptions(xField, BOX_PLOT_TYPE)).toBe(false);
+        expect(shouldShowRangeScaleOptions(yField, BOX_PLOT_TYPE)).toBe(true);
+        expect(shouldShowRangeScaleOptions(xField, SCATTER_PLOT_TYPE)).toBe(true);
+        expect(shouldShowRangeScaleOptions(yField, SCATTER_PLOT_TYPE)).toBe(true);
+        expect(shouldShowRangeScaleOptions(xField, LINE_PLOT_TYPE)).toBe(true);
+        expect(shouldShowRangeScaleOptions(yField, LINE_PLOT_TYPE)).toBe(true);
+    });
+
+    test('based on field name', () => {
+        expect(shouldShowRangeScaleOptions({ name: 'series' } as ChartFieldInfo, BAR_CHART_TYPE)).toBe(false);
+        expect(shouldShowRangeScaleOptions({ name: 'series' } as ChartFieldInfo, BOX_PLOT_TYPE)).toBe(false);
+        expect(shouldShowRangeScaleOptions({ name: 'series' } as ChartFieldInfo, SCATTER_PLOT_TYPE)).toBe(false);
+        expect(shouldShowRangeScaleOptions({ name: 'series' } as ChartFieldInfo, LINE_PLOT_TYPE)).toBe(false);
+    });
+});
+
+describe('shouldShowAggregateOptions', () => {
+    test('based on chart type', () => {
+        expect(shouldShowAggregateOptions(xField, BAR_CHART_TYPE)).toBe(false);
+        expect(shouldShowAggregateOptions(yField, BAR_CHART_TYPE)).toBe(true);
+        expect(shouldShowAggregateOptions(xField, BOX_PLOT_TYPE)).toBe(false);
+        expect(shouldShowAggregateOptions(yField, BOX_PLOT_TYPE)).toBe(false);
+        expect(shouldShowAggregateOptions(xField, SCATTER_PLOT_TYPE)).toBe(false);
+        expect(shouldShowAggregateOptions(yField, SCATTER_PLOT_TYPE)).toBe(false);
+        expect(shouldShowAggregateOptions(xField, LINE_PLOT_TYPE)).toBe(false);
+        expect(shouldShowAggregateOptions(yField, LINE_PLOT_TYPE)).toBe(false);
     });
 });

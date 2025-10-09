@@ -500,10 +500,12 @@ describe('ChartBuilderModal', () => {
 
         await userEvent.click(document.querySelectorAll('.fa-gear')[0]); // x-axis options icon, click to close
         await userEvent.click(document.querySelectorAll('.fa-gear')[1]); // y-axis options icon
-        expect(document.querySelectorAll('.radioinput-label.selected')[0].textContent).toBe('Log');
+        expect(document.querySelectorAll('.radioinput-label.selected')).toHaveLength(3); // error bar, scale, range
+        expect(document.querySelectorAll('.radioinput-label.selected')[0].textContent).toBe('None');
+        expect(document.querySelectorAll('.radioinput-label.selected')[1].textContent).toBe('Log');
+        expect(document.querySelectorAll('.radioinput-label.selected')[2].textContent).toBe('Automatic');
         expect(document.querySelectorAll('input[name=scaleTrans]')[0].hasAttribute('checked')).toBe(false); // linear
         expect(document.querySelectorAll('input[name=scaleTrans]')[1].hasAttribute('checked')).toBe(true); // log
-        expect(document.querySelectorAll('.radioinput-label.selected')[1].textContent).toBe('Automatic');
     });
 
     test('canDelete and canShare false', () => {

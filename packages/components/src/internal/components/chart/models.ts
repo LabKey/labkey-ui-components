@@ -46,3 +46,28 @@ export interface TrendlineType {
     showMin?: boolean;
     value: string;
 }
+
+interface AggregateFieldInfo {
+    name: string;
+    value: string;
+}
+
+export interface ChartFieldInfo {
+    aggregate?: AggregateFieldInfo;
+    altSelectionOnly?: boolean;
+    // allowMultiple?: boolean; // not yet supported, will be part of a future dev story
+    label: string;
+    name: string;
+    nonNumericOnly?: boolean;
+    numericOnly?: boolean;
+    numericOrDateOnly?: boolean;
+    required: boolean;
+}
+
+export interface ChartTypeInfo {
+    fields: ChartFieldInfo[];
+    hidden?: boolean;
+    imgUrl: string;
+    name: string;
+    title: string;
+}

@@ -48,6 +48,7 @@ export class AssayDefinitionModel extends ImmutableRecord({
     importController: undefined,
     links: Map<AssayLink, string>(),
     name: undefined,
+    plateEnabled: undefined,
     projectLevel: undefined,
     protocolSchemaName: undefined,
     requireCommentOnQCStateChange: undefined,
@@ -64,6 +65,7 @@ export class AssayDefinitionModel extends ImmutableRecord({
     declare importController: string;
     declare links: Map<AssayLink, string>;
     declare name: string;
+    declare plateEnabled: boolean;
     declare projectLevel: boolean;
     declare protocolSchemaName: string;
     declare requireCommentOnQCStateChange: boolean;
@@ -230,11 +232,18 @@ export class AssayDefinitionModel extends ImmutableRecord({
         return this.getSampleColumns(domainType)[0];
     }
 
+    private isWellLsidColumn(domain: AssayDomainTypes, col: QueryColumn): boolean {
+        return this.plateEnabled && domain === AssayDomainTypes.RESULT && col.fieldKey.toLowerCase() === 'welllsid';
+    }
+
     /**
      * returns the FieldKey string of the sample column relative from the assay Results table.
      */
     sampleColumnFieldKey(sampleCol: ScopedSampleColumn): string {
         if (sampleCol.domain === AssayDomainTypes.RESULT) {
+            // Note: The Results Domain will never have the Well column on it, only WellLsid and WellLocation, but this
+            // column is present when querying the data, so this does work when used to create filters on a grid.
+            if (this.isWellLsidColumn(sampleCol.domain, sampleCol.column)) return `Well/SampleId`;
             return sampleCol.column.fieldKey;
         } else if (sampleCol.domain === AssayDomainTypes.RUN) {
             return `Run/${sampleCol.column.fieldKey}`;
@@ -248,7 +257,7 @@ export class AssayDefinitionModel extends ImmutableRecord({
      * returns the FieldKey string of the sample columns relative from the assay Results table.
      */
     getSampleColumnFieldKeys(domainType?: AssayDomainTypes): string[] {
-        return this.getSampleColumns(domainType).map(this.sampleColumnFieldKey);
+        return this.getSampleColumns(domainType).map(scopedCol => this.sampleColumnFieldKey(scopedCol));
     }
 
     getDomainColumns(type: AssayDomainTypes): ExtendedMap<string, QueryColumn> {
@@ -267,16 +276,13 @@ export class AssayDefinitionModel extends ImmutableRecord({
         return this.getDomainColumns(type).filter(col => col.isFileInput).valueArray;
     }
 
-    private getSampleColumnsByDomain(domainType: AssayDomainTypes): ScopedSampleColumn[] {
-        const columns: ScopedSampleColumn[] = [];
+    private getSampleColumnsByDomain(domain: AssayDomainTypes): ScopedSampleColumn[] {
+        const columns = this.getDomainByType(domain)
+            ?.filter(column => column.isSampleLookup() || this.isWellLsidColumn(domain, column))
+            .map(column => ({ column, domain }))
+            .toArray();
 
-        this.getDomainByType(domainType)?.forEach(column => {
-            if (column.isSampleLookup()) {
-                columns.push({ column, domain: domainType });
-            }
-        });
-
-        return columns;
+        return columns ?? [];
     }
 
     isSampleColInResults(column: QueryColumn, domain: AssayDomainTypes): boolean {

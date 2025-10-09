@@ -1,5 +1,5 @@
 import { Filter } from '@labkey/api';
-import { IQueryColumn } from '../public/QueryColumn';
+import { IQueryColumn } from '../public/IQueryColumn';
 
 import { QuerySort, QuerySortJson } from '../public/QuerySort';
 import { QueryInfo } from '../public/QueryInfo';

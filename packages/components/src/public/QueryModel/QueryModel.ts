@@ -432,7 +432,7 @@ export class QueryModel {
     /**
      * ReportId, from the URL, to be used for showing a chart via the [[ChartMenu]].
      */
-    readonly selectedReportId: string;
+    readonly selectedReportIds: string[];
     /**
      * [[SelectionPivot]] object that describes the current selection pivot row for shift-select behavior.
      */
@@ -527,7 +527,7 @@ export class QueryModel {
         this.rows = undefined;
         this.rowCount = undefined;
         this.rowsLoadingState = LoadingState.INITIALIZED;
-        this.selectedReportId = undefined;
+        this.selectedReportIds = [];
         this.selectionPivot = undefined;
         this.selections = undefined;
         this.selectionsError = undefined;
@@ -814,7 +814,7 @@ export class QueryModel {
      * true.
      */
     get urlQueryParams(): Record<string, string> {
-        const { currentPage, urlPrefix, filterArray, maxRows, selectedReportId, sorts, viewName } = this;
+        const { currentPage, urlPrefix, filterArray, maxRows, selectedReportIds, sorts, viewName } = this;
         const filters = filterArray.filter(f => f.getColumnName() !== '*');
         const searches = filterArray
             .filter(f => f.getColumnName() === '*')
@@ -843,8 +843,8 @@ export class QueryModel {
             modelParams[`${urlPrefix}.q`] = searches;
         }
 
-        if (selectedReportId) {
-            modelParams[`${urlPrefix}.reportId`] = selectedReportId;
+        if (selectedReportIds.length > 0) {
+            modelParams[`${urlPrefix}.selectedReportIds`] = selectedReportIds.join(';');
         }
 
         filters.forEach((filter): void => {
@@ -1215,7 +1215,7 @@ export class QueryModel {
         if (isNaN(maxRows)) maxRows = DEFAULT_MAX_ROWS;
         let offset = offsetFromString(maxRows, searchParams.get(`${prefix}.p`)) ?? DEFAULT_OFFSET;
         let schemaQuery = new SchemaQuery(this.schemaName, this.queryName, viewName);
-        let selectedReportId = searchParams.get(`${prefix}.reportId`) ?? undefined;
+        let selectedReportIds = searchParams.get(`${prefix}.selectedReportIds`)?.split(';') ?? [];
         let sorts = querySortsFromString(searchParams.get(`${prefix}.sort`)) ?? [];
 
         // If useExistingValues is true we'll assume any value not present on the URL can be overridden by the current
@@ -1237,8 +1237,8 @@ export class QueryModel {
                 schemaQuery = this.schemaQuery;
             }
 
-            if (selectedReportId === undefined && this.selectedReportId) {
-                selectedReportId = this.selectedReportId;
+            if (selectedReportIds.length === 0 && this.selectedReportIds.length > 0) {
+                selectedReportIds = this.selectedReportIds;
             }
 
             if (sorts.length === 0 && this.sorts.length > 0) {
@@ -1246,7 +1246,7 @@ export class QueryModel {
             }
         }
 
-        return { filterArray, maxRows, offset, schemaQuery, selectedReportId, sorts };
+        return { filterArray, maxRows, offset, schemaQuery, selectedReportIds, sorts };
     }
 
     /**
@@ -1263,7 +1263,7 @@ export class QueryModel {
 
 type QueryModelURLState = Pick<
     QueryModel,
-    'filterArray' | 'maxRows' | 'offset' | 'schemaQuery' | 'selectedReportId' | 'sorts'
+    'filterArray' | 'maxRows' | 'offset' | 'schemaQuery' | 'selectedReportIds' | 'sorts'
 >;
 type QueryModelSettings = Partial<Pick<QueryModel, 'filterArray' | 'maxRows' | 'sorts' | 'viewName'>>;
 const LOCAL_STORAGE_PREFIX = 'QUERY_MODEL_SETTINGS';

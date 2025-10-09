@@ -61,6 +61,7 @@ export const makeTestActions = (mockFn = (): any => () => {}, overrides: Partial
     const defaultActions: Actions = {
         addModel: mockFn(),
         addMessage: mockFn(),
+        clearSelectedReportIds: mockFn(),
         clearSelections: mockFn(),
         loadModel: mockFn(),
         loadAllModels: mockFn(),

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.64.0
+*Released*: 9 October 2025
+- AssayDefinitionModel: add plateEnabled flag
+- Fix circular dependency caused by IQueryColumn interface
+
 ### version 6.63.2
 *Released*: 8 October 2025
 - Issue 53324: LKSM: Custom Grid View Column Limit
@@ -19,10 +24,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 6.62.8
 *Released*: 3 October 2025
 - Issue 53328: AssayDefinitionModel.hasLookup to only consider the first sample lookup column for assay import cases
-
-### version 6.62.7
-*Released*: 29 September 2025
-- AssayDefinitionModel: add plateEnabled flag
 
 ### version 6.62.7
 *Released*: 29 September 2025

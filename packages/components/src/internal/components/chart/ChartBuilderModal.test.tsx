@@ -19,15 +19,13 @@ import {
 
 import {
     ChartBuilderModal,
-    ChartTypeInfo,
     getChartBuilderChartConfig,
     getChartBuilderQueryConfig,
     getChartRenderMsg,
     getDefaultBarChartAxisLabel,
-    MAX_POINT_DISPLAY,
-    MAX_ROWS_PREVIEW,
 } from './ChartBuilderModal';
-import { ChartConfig, ChartQueryConfig, GenericChartModel } from './models';
+import { MAX_POINT_DISPLAY, MAX_ROWS_PREVIEW } from './constants';
+import { ChartConfig, ChartQueryConfig, ChartTypeInfo, GenericChartModel } from './models';
 
 const BAR_CHART_TYPE = {
     name: 'bar_chart',
@@ -319,7 +317,7 @@ describe('ChartBuilderModal', () => {
         validate(false, true, true);
     });
 
-    test('init from bar chart with y axis value and default aggregate method', () => {
+    test('init from bar chart with y axis value and default aggregate method', async () => {
         const savedChartModel = {
             canShare: true,
             canDelete: true,
@@ -348,12 +346,15 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, true, true);
-        expect(document.querySelectorAll('input')).toHaveLength(8);
+        expect(document.querySelectorAll('input')).toHaveLength(6);
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
+        expect(document.querySelectorAll('.fa-gear')).toHaveLength(1); // gear icon for y-axis
+        await userEvent.click(document.querySelector('.fa-gear'));
+        expect(document.querySelectorAll('input')).toHaveLength(8);
         expect(document.querySelector('input[name=aggregate-method]').getAttribute('value')).toBe('SUM');
     });
 
-    test('init from bar chart with y axis value and aggregate method', () => {
+    test('init from bar chart with y axis value and aggregate method', async () => {
         const savedChartModel = {
             canShare: true,
             canDelete: true,
@@ -382,8 +383,11 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, true, true);
-        expect(document.querySelectorAll('input')).toHaveLength(8);
+        expect(document.querySelectorAll('input')).toHaveLength(6);
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
+        expect(document.querySelectorAll('.fa-gear')).toHaveLength(1); // gear icon for y-axis
+        await userEvent.click(document.querySelector('.fa-gear'));
+        expect(document.querySelectorAll('input')).toHaveLength(8);
         expect(document.querySelector('input[name=aggregate-method]').getAttribute('value')).toBe('MEAN');
         expect(document.querySelectorAll('input[name=trendlineType]')).toHaveLength(0);
     });

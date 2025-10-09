@@ -774,14 +774,10 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
         setSaving(true);
         setError(undefined);
         try {
-            const response = await saveChart(_reportConfig);
+            await saveChart(_reportConfig);
             setSaving(false);
             onHide(`Successfully ${savedChartModel ? 'updated' : 'created'} chart: ${_reportConfig.name}.`);
-
-            // clear the selected report, if we are saving/updating it, so that it will refresh in ChartPanel.tsx
-            await actions.selectReport(model.id, undefined);
-            await actions.loadCharts(model.id);
-            actions.selectReport(model.id, response.reportId);
+            actions.loadCharts(model.id);
         } catch (e) {
             setError(e.exception ?? e);
             setSaving(false);
@@ -790,8 +786,8 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
 
     const afterDelete = useCallback(async () => {
         onHide('Successfully deleted chart: ' + savedChartModel.name + '.');
-        await actions.selectReport(model.id, undefined);
-        await actions.loadCharts(model.id);
+        actions.selectReport(model.id, savedChartModel.reportId, false);
+        actions.loadCharts(model.id);
     }, [actions, model.id, onHide, savedChartModel]);
 
     const onCancel = useCallback(() => {

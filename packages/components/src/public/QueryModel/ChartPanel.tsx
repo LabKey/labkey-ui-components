@@ -17,10 +17,11 @@ import { RequiresModelAndActions } from './withQueryModels';
 
 interface Props extends RequiresModelAndActions {
     api?: ChartAPIWrapper;
+    reportId: string; // Maybe pass the chart
 }
 
-export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_WRAPPER }) => {
-    const { charts, containerPath, id, queryInfo, selectedReportId } = model;
+export const ChartPanel: FC<Props> = memo(({ actions, api = DEFAULT_API_WRAPPER, model, reportId }) => {
+    const { charts, containerPath, id } = model;
     const [savedChartModel, setSavedChartModel] = useState<GenericChartModel>(undefined);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
     const { moduleContext } = useServerContext();
@@ -28,32 +29,32 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
     // useNotificationsContext will not always be available depending on if the app wraps the NotificationsContext.Provider
     let _createNotification;
     try {
+        // ESLint incorrectly complains that useNotificationsContext is called conditionally. Itt's always called, even
+        // though it's in a try/catch.
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         _createNotification = useNotificationsContext().createNotification;
-    } catch (e) {
+    } catch {
         // this is expected for LKS usages, so don't throw or console.error
     }
 
-    const selectedChart = useMemo(
-        () => charts?.find(chart => chart.reportId === selectedReportId),
-        [selectedReportId, charts]
-    );
+    const chart = useMemo(() => charts?.find(chart => chart.reportId === reportId), [charts, reportId]);
 
     useEffect(() => {
         (async () => {
             setSavedChartModel(undefined);
             // only allowing edit of generic charts in the apps at this time
-            if (selectedChart && GENERIC_CHART_REPORTS.indexOf(selectedChart.type) > -1) {
+            if (chart && GENERIC_CHART_REPORTS.indexOf(chart.type) > -1) {
                 try {
-                    const savedChartModel_ = await api.fetchGenericChart(selectedChart.reportId);
+                    const savedChartModel_ = await api.fetchGenericChart(chart.reportId);
                     setSavedChartModel(savedChartModel_);
                 } catch (e) {
                     // no-op as we are only using this to determine if we can edit the chart
                 }
             }
         })();
-    }, [api, selectedChart]);
+    }, [api, chart]);
 
-    const clearChart = useCallback(() => actions.selectReport(id, undefined), [actions, id]);
+    const clearChart = useCallback(() => actions.selectReport(id, reportId, false), [actions, id, reportId]);
 
     const onShowEditChart = useCallback(() => {
         setShowEditModal(true);
@@ -63,10 +64,10 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
         (type: string) => {
             const svg = document.querySelector('.chart-panel svg');
             if (svg) {
-                LABKEY_VIS.SVGConverter.convert(svg, type, selectedChart.name);
+                LABKEY_VIS.SVGConverter.convert(svg, type, chart.name);
             }
         },
-        [selectedChart]
+        [chart]
     );
 
     const onExportChartPDF = useCallback(() => {
@@ -87,24 +88,21 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
         [_createNotification]
     );
 
-    // If we don't have a queryInfo we can't get filters off the model, so we can't render the chart
-    const showChart = queryInfo !== undefined && selectedChart !== undefined;
-
-    if (!showChart) return null;
+    if (chart === undefined) return null;
 
     return (
         <div className="chart-panel">
             <div className="chart-panel__heading">
                 <div className="chart-panel__heading-title">
-                    {selectedChart.name}
+                    {chart.name}
 
                     {savedChartModel?.canEdit && isChartBuilderEnabled(moduleContext) && (
                         <span className="margin-left">
                             <button
-                                type="button"
-                                title="Edit chart"
                                 className="btn btn-default"
                                 onClick={onShowEditChart}
+                                title="Edit chart"
+                                type="button"
                             >
                                 <span className="fa fa-pencil" />
                             </button>
@@ -113,8 +111,8 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
                     <span className="margin-left">
                         <DropdownButton
                             buttonClassName="chart-panel-export-btn"
-                            title={<i className="fa fa-download" />}
                             noCaret
+                            title={<i className="fa fa-download" />}
                         >
                             <MenuHeader text="Export Chart" />
                             <MenuItem onClick={onExportChartPDF}>
@@ -130,17 +128,19 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
                 </div>
 
                 <div className="chart-panel__hide-icon">
-                    <button type="button" title="Hide chart" className="btn btn-default" onClick={clearChart}>
+                    <button className="btn btn-default" onClick={clearChart} title="Hide chart" type="button">
                         <span className="fa fa-close" /> Close
                     </button>
                 </div>
             </div>
 
+            {/* Note: we use chart.modified as the key here so the chart reloads when the user edits the chart */}
             <Chart
                 api={api}
-                chart={selectedChart}
+                chart={chart}
                 container={containerPath}
                 filters={model.filters}
+                key={chart.modified.toString()}
                 queryParameters={model.queryParameters}
             />
 
@@ -155,3 +155,20 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
         </div>
     );
 });
+ChartPanel.displayName = 'ChartPanel';
+
+export const ChartList: FC<RequiresModelAndActions> = memo(({ actions, model }) => {
+    const { queryInfo, selectedReportIds } = model;
+
+    // If we don't have a queryInfo we can't get filters off the model, so we can't render any charts
+    if (queryInfo === undefined || selectedReportIds.length === 0) return null;
+
+    return (
+        <div className="chart-list">
+            {model.selectedReportIds.map(reportId => (
+                <ChartPanel actions={actions} key={reportId} model={model} reportId={reportId} />
+            ))}
+        </div>
+    );
+});
+ChartList.displayName = 'ChartList';

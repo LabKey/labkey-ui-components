@@ -74,7 +74,7 @@ import { SaveViewModal } from './SaveViewModal';
 import { CustomizeGridViewModal } from './CustomizeGridViewModal';
 import { ManageViewsModal } from './ManageViewsModal';
 import { Actions, InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
-import { ChartPanel } from './ChartPanel';
+import { ChartList, ChartPanel } from './ChartPanel';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     advancedExportOptions?: Record<string, any>;
@@ -947,8 +947,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }
 
         // since the grid ChartMenu filters to charts for a given view, when the view changes clear the selectedReportId
-        if (model.selectedReportId) {
-            actions.selectReport(model.id, undefined);
+        if (model.selectedReportIds.length > 0) {
+            actions.clearSelectedReports(model.id);
         }
     };
 
@@ -1133,7 +1133,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     <div
                         className={classNames('grid-panel__body', { 'panel-body': asPanel, 'top-padding': !hasHeader })}
                     >
-                        {!gridIsLoading && <ChartPanel actions={actions} model={model} />}
+                        {!gridIsLoading && <ChartList actions={actions} model={model} />}
 
                         {showButtonBar && (
                             <ButtonBar

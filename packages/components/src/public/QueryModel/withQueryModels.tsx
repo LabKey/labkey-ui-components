@@ -110,7 +110,7 @@ export type ModelChange = AddChange | DeleteChange | UpdateChange;
 export interface Actions {
     addMessage: (id: string, message: GridMessage, duration?: number) => void;
     addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
-    clearSelectedReportIds: (id: string) => void;
+    clearSelectedReports: (id: string) => void;
     clearSelections: (id: string) => void;
     loadAllModels: (loadSelections?: boolean, reloadTotalCount?: boolean) => void;
     loadCharts: (id: string) => void;
@@ -319,7 +319,7 @@ export function withQueryModels<Props>(
             this.actions = {
                 addModel: this.addModel,
                 addMessage: this.addMessage,
-                clearSelectedReportIds: this.clearSelectedReportIds,
+                clearSelectedReports: this.clearSelectedReports,
                 clearSelections: this.clearSelections,
                 loadModel: this.loadModel,
                 loadAllModels: this.loadAllModels,
@@ -705,7 +705,7 @@ export function withQueryModels<Props>(
             );
         };
 
-        clearSelectedReportIds = (id: string): void => {
+        clearSelectedReports = (id: string): void => {
             this.setState(
                 produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];

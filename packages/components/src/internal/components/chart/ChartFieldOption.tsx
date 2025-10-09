@@ -104,6 +104,13 @@ export const ChartFieldOption: FC<ChartFieldOptionProps> = memo(props => {
                         setScale={setScale}
                     />
                 )}
+                {showAggregateOptions && (
+                    <ChartFieldAggregateOptions
+                        field={field}
+                        fieldValues={fieldValues}
+                        onSelectFieldChange={onSelectFieldChange}
+                    />
+                )}
             </div>
         </div>
     );

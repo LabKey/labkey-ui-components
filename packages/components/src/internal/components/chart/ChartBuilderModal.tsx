@@ -7,7 +7,7 @@ import { generateId } from '../../util/utils';
 import { LABKEY_VIS } from '../../constants';
 import { Modal } from '../../Modal';
 
-import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
+import { SelectInputOption } from '../forms/input/SelectInput';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -24,65 +24,22 @@ import { getContainerFilterForFolder } from '../../query/api';
 
 import { SVGIcon } from '../base/SVGIcon';
 
-import { LabelOverlay } from '../forms/LabelOverlay';
-
 import { isAppHomeFolder } from '../../app/utils';
-
 import { deleteChart, saveChart, SaveReportConfig } from './actions';
+import {
+    BAR_CHART_AGGREGATE_NAME,
+    BLUE_HEX_COLOR,
+    HIDDEN_CHART_TYPES,
+    ICONS,
+    MAX_POINT_DISPLAY,
+    MAX_ROWS_PREVIEW,
+    RIGHT_COL_FIELDS,
+} from './constants';
 
-import { ChartConfig, ChartQueryConfig, GenericChartModel, TrendlineType } from './models';
+import { ChartConfig, ChartQueryConfig, ChartTypeInfo, GenericChartModel, TrendlineType } from './models';
 import { TrendlineOption } from './TrendlineOption';
 import { ChartFieldOption } from './ChartFieldOption';
 import { getFieldDataType } from './utils';
-
-interface AggregateFieldInfo {
-    name: string;
-    value: string;
-}
-
-export interface ChartFieldInfo {
-    aggregate?: AggregateFieldInfo;
-    altSelectionOnly?: boolean;
-    // allowMultiple?: boolean; // not yet supported, will be part of a future dev story
-    label: string;
-    name: string;
-    nonNumericOnly?: boolean;
-    numericOnly?: boolean;
-    numericOrDateOnly?: boolean;
-    required: boolean;
-}
-
-export interface ChartTypeInfo {
-    fields: ChartFieldInfo[];
-    hidden?: boolean;
-    imgUrl: string;
-    name: string;
-    title: string;
-}
-
-const HIDDEN_CHART_TYPES = ['time_chart'];
-const RIGHT_COL_FIELDS = ['color', 'shape', 'series', 'trendline'];
-export const MAX_ROWS_PREVIEW = 10000;
-export const MAX_POINT_DISPLAY = 10000;
-const BLUE_HEX_COLOR = '3366FF';
-const BAR_CHART_AGGREGATE_NAME = 'aggregate-method';
-const BAR_CHART_AGGREGATE_METHODS = [
-    { label: 'Count (non-blank)', value: 'COUNT' },
-    { label: 'Sum', value: 'SUM' },
-    { label: 'Min', value: 'MIN' },
-    { label: 'Max', value: 'MAX' },
-    { label: 'Mean', value: 'MEAN' },
-    { label: 'Median', value: 'MEDIAN' },
-];
-const BAR_CHART_AGGREGATE_METHOD_TIP =
-    'The aggregate method that will be used to determine the bar height for a given x-axis category / dimension. Field values that are blank are not included in calculated aggregate values.';
-const ICONS = {
-    bar_chart: 'bar_chart',
-    box_plot: 'box_plot',
-    pie_chart: 'pie_chart',
-    scatter_plot: 'xy_scatter',
-    line_plot: 'xy_line',
-};
 
 export const getChartRenderMsg = (chartConfig: ChartConfig, rowCount: number, isPreview: boolean): string => {
     const msg = [];
@@ -384,7 +341,7 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
                             onSelectFieldChange={onSelectFieldChange}
                             onScaleChange={onFieldScaleChange}
                             selectedType={selectedType}
-                            fieldValue={fieldValues[field.name]}
+                            fieldValues={fieldValues}
                             scaleValues={fieldValues.scales?.value[field.name]}
                         />
                     ))}
@@ -399,27 +356,9 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
                                 onSelectFieldChange={onSelectFieldChange}
                                 onScaleChange={onFieldScaleChange}
                                 selectedType={selectedType}
-                                fieldValue={fieldValues[field.name]}
+                                fieldValues={fieldValues}
                                 scaleValues={fieldValues.scales?.value[field.name]}
                             />
-                            {selectedType.name === 'bar_chart' && fieldValues.y?.value && (
-                                <div>
-                                    <label>
-                                        Y Axis Aggregate Method{' '}
-                                        <LabelOverlay placement="bottom">{BAR_CHART_AGGREGATE_METHOD_TIP}</LabelOverlay>
-                                    </label>
-                                    <SelectInput
-                                        showLabel={false}
-                                        clearable={false}
-                                        inputClass="col-xs-12"
-                                        placeholder="Select aggregate method"
-                                        name={BAR_CHART_AGGREGATE_NAME}
-                                        options={BAR_CHART_AGGREGATE_METHODS}
-                                        onChange={onSelectFieldChange}
-                                        value={fieldValues[BAR_CHART_AGGREGATE_NAME]?.value ?? 'SUM'}
-                                    />
-                                </div>
-                            )}
                         </Fragment>
                     ))}
                     {hasTrendlineOption && (

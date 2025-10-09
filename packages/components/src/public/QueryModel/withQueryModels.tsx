@@ -482,6 +482,7 @@ export function withQueryModels<Props>(
 
                     console.error(`Error setting selections for model ${id}:`, selectionsError);
                     model.selectionsError = selectionsError;
+                    model.selectionsLoadingState = LoadingState.LOADED;
                     removeSettingsFromLocalStorage(this.state.queryModels[id]);
                 })
             );
@@ -708,7 +709,9 @@ export function withQueryModels<Props>(
 
             this.setState(
                 produce<State>((draft: WritableDraft<State>) => {
-                    draft.queryModels[id].rowsLoadingState = LoadingState.LOADING;
+                    const model = draft.queryModels[id];
+                    model.rowsLoadingState = LoadingState.LOADING;
+                    model.selectionsError = undefined;
                 })
             );
 

@@ -63,7 +63,6 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
         !isLoadingTotalCount &&
         selectionSize < maxSelectionSize
     ) {
-        // TODO: Should we clear pagination argument if this is clicked so they go back to the first page if the selection is maxed out?
         const tooManyRows = rowCount > maxSelectionSize;
         selectAllButton = (
             <span className="selection-status__select-all">

@@ -6,7 +6,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 - ChartBuilderModal support for bar/line chart aggregate method and error bar options
   - useOverlayTriggerState update to not close popover on document click that is a select option target
   - Factor ChartFieldRangeScaleOptions.tsx out of ChartFieldOption.tsx
-  - ChartFieldAggregateOptions.tsx and move y-axis bar chart aggregate method dropdown into tooltip
+  - Create ChartFieldAggregateOptions.tsx and move y-axis bar chart aggregate method dropdown into tooltip
+  - ChartFieldAggregateOptions.tsx support for error bar radio options
 
 ### version 6.63.2
 *Released*: 8 October 2025

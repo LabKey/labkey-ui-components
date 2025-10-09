@@ -350,8 +350,11 @@ describe('ChartBuilderModal', () => {
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
         expect(document.querySelectorAll('.fa-gear')).toHaveLength(1); // gear icon for y-axis
         await userEvent.click(document.querySelector('.fa-gear'));
-        expect(document.querySelectorAll('input')).toHaveLength(8);
+        expect(document.querySelectorAll('input')).toHaveLength(11);
         expect(document.querySelector('input[name=aggregate-method]').getAttribute('value')).toBe('SUM');
+        expect(document.querySelectorAll('input[name=error-bar-method]')).toHaveLength(3);
+        expect(document.querySelector('input[value=SD]').hasAttribute('checked')).toBe(false);
+        expect(document.querySelector('input[value=SEM]').hasAttribute('checked')).toBe(false);
     });
 
     test('init from bar chart with y axis value and aggregate method', async () => {
@@ -364,7 +367,7 @@ describe('ChartBuilderModal', () => {
             visualizationConfig: {
                 chartConfig: {
                     renderType: 'bar_chart',
-                    measures: { x: { name: 'field1' }, y: { name: 'field2', aggregate: { value: 'MEAN' } } },
+                    measures: { x: { name: 'field1' }, y: { name: 'field2', aggregate: { value: 'MEAN' }, errorBars: 'SEM' } },
                     labels: { x: 'Field 1', y: 'Field 2' },
                 },
                 queryConfig: {
@@ -387,8 +390,11 @@ describe('ChartBuilderModal', () => {
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
         expect(document.querySelectorAll('.fa-gear')).toHaveLength(1); // gear icon for y-axis
         await userEvent.click(document.querySelector('.fa-gear'));
-        expect(document.querySelectorAll('input')).toHaveLength(8);
+        expect(document.querySelectorAll('input')).toHaveLength(11);
         expect(document.querySelector('input[name=aggregate-method]').getAttribute('value')).toBe('MEAN');
+        expect(document.querySelectorAll('input[name=error-bar-method]')).toHaveLength(3);
+        expect(document.querySelector('input[value=SD]').hasAttribute('checked')).toBe(false);
+        expect(document.querySelector('input[value=SEM]').hasAttribute('checked')).toBe(true);
         expect(document.querySelectorAll('input[name=trendlineType]')).toHaveLength(0);
     });
 

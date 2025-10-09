@@ -1,10 +1,10 @@
-import React, { ChangeEvent, FC, memo, useCallback, useMemo } from 'react';
+import React, { FC, memo, useCallback, useMemo } from 'react';
 import { OverlayTrigger } from '../../OverlayTrigger';
 import { Popover } from '../../Popover';
 import { RadioGroupInput, RadioGroupOption } from '../forms/input/RadioGroupInput';
 
-import { BAR_CHART_AGGREGATE_NAME } from './constants';
-import { ChartFieldInfo, ChartTypeInfo } from './models';
+import { BAR_CHART_AGGREGATE_NAME, BAR_CHART_ERROR_BAR_NAME } from './constants';
+import { ChartFieldInfo } from './models';
 import { LabelOverlay } from '../forms/LabelOverlay';
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 
@@ -18,9 +18,11 @@ const BAR_CHART_AGGREGATE_METHODS = [
 ];
 const BAR_CHART_AGGREGATE_METHOD_TIP =
     'The aggregate method that will be used to determine the bar height for a given x-axis category / dimension. Field values that are blank are not included in calculated aggregate values.';
+const BAR_CHART_ERROR_BAR_TIP =
+    'Show error bars on each bar representing Standard Deviation or Standard Error of the Mean. Only applicable for MEAN aggregate method.';
 
 const ERROR_BAR_TYPES = [
-    { value: null, label: 'None' },
+    { value: undefined, label: 'None' },
     { value: 'SD', label: 'Standard Deviation' },
     { value: 'SEM', label: 'Standard Error of the Mean' },
 ];
@@ -28,31 +30,43 @@ const ERROR_BAR_TYPES = [
 interface Props {
     field: ChartFieldInfo;
     fieldValues: Record<string, SelectInputOption>;
+    onErrorBarChange: (name: string, value: string) => void;
     onSelectFieldChange: (name: string, value: string, selectedOption: SelectInputOption) => void;
 }
 
 export const ChartFieldAggregateOptions: FC<Props> = memo(props => {
-    const { field, fieldValues, onSelectFieldChange } = props;
+    const { field, fieldValues, onSelectFieldChange, onErrorBarChange } = props;
     const fieldValue = fieldValues?.[field.name];
     const aggregateValue = fieldValues?.[BAR_CHART_AGGREGATE_NAME]?.value;
+    const errorBarValue = fieldValues?.[BAR_CHART_ERROR_BAR_NAME]?.value;
+    const errorBarRadioEnabled = useMemo(() => aggregateValue === 'MEAN', [aggregateValue]);
 
     const errorBarOptions = useMemo(() => {
         return ERROR_BAR_TYPES.map(
             option =>
                 ({
                     ...option,
-                    selected: null === option.value, // TODO
+                    disabled: !errorBarRadioEnabled,
+                    selected: errorBarValue === option.value,
                 }) as RadioGroupOption
         );
-    }, []);
+    }, [errorBarRadioEnabled, errorBarValue]);
 
-    const onErrorBarChange = useCallback(
-        (selected: string) => {
-            console.log(field.name, selected);
+    const onAggregateChange = useCallback(
+        (name: string, value: string, selectedOption: SelectInputOption) => {
+            onSelectFieldChange(name, value, selectedOption);
         },
-        [field.name]
+        [onSelectFieldChange]
     );
 
+    const onErrorBarValueChange = useCallback(
+        (value: string) => {
+            onErrorBarChange(BAR_CHART_ERROR_BAR_NAME, value);
+        },
+        [onErrorBarChange]
+    );
+
+    // Only show the aggregate options if there is a field selected
     if (!fieldValue?.value) {
         return null;
     }
@@ -71,23 +85,25 @@ export const ChartFieldAggregateOptions: FC<Props> = memo(props => {
                                 clearable={false}
                                 inputClass="col-xs-12"
                                 name={BAR_CHART_AGGREGATE_NAME}
-                                onChange={onSelectFieldChange}
+                                onChange={onAggregateChange}
                                 options={BAR_CHART_AGGREGATE_METHODS}
                                 placeholder="Select aggregate method"
                                 showLabel={false}
                                 value={aggregateValue ?? 'SUM'}
                             />
                         </div>
-                        {/*<div className="field-option-radio-group">*/}
-                        {/*    <label>Error Bars</label>*/}
-                        {/*    <br/>*/}
-                        {/*    <RadioGroupInput*/}
-                        {/*        formsy={false}*/}
-                        {/*        name="errorBars"*/}
-                        {/*        onValueChange={onErrorBarChange}*/}
-                        {/*        options={errorBarOptions}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
+                        <div className="field-option-radio-group">
+                            <label>
+                                Error Bars <LabelOverlay placement="bottom">{BAR_CHART_ERROR_BAR_TIP}</LabelOverlay>
+                            </label>
+                            <br />
+                            <RadioGroupInput
+                                formsy={false}
+                                name={BAR_CHART_ERROR_BAR_NAME}
+                                onValueChange={onErrorBarValueChange}
+                                options={errorBarOptions}
+                            />
+                        </div>
                     </Popover>
                 }
                 triggerType="click"

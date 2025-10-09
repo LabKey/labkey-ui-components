@@ -42,6 +42,7 @@ interface ChartFieldOptionProps {
     field: ChartFieldInfo;
     fieldValues?: Record<string, SelectInputOption>;
     model: QueryModel;
+    onErrorBarChange: (name: string, value: string) => void;
     onScaleChange: (field: string, key: string, value: number | string, reset?: boolean) => void;
     onSelectFieldChange: (name: string, value: string, selectedOption: SelectInputOption) => void;
     scaleValues?: Record<string, number | string>;
@@ -49,7 +50,16 @@ interface ChartFieldOptionProps {
 }
 
 export const ChartFieldOption: FC<ChartFieldOptionProps> = memo(props => {
-    const { field, model, selectedType, onSelectFieldChange, scaleValues, fieldValues, onScaleChange } = props;
+    const {
+        field,
+        model,
+        selectedType,
+        onSelectFieldChange,
+        scaleValues,
+        fieldValues,
+        onScaleChange,
+        onErrorBarChange,
+    } = props;
     const fieldValue = fieldValues?.[field.name];
     const [scale, setScale] = useState<Record<string, number | string>>(scaleValues ?? {});
 
@@ -108,6 +118,7 @@ export const ChartFieldOption: FC<ChartFieldOptionProps> = memo(props => {
                     <ChartFieldAggregateOptions
                         field={field}
                         fieldValues={fieldValues}
+                        onErrorBarChange={onErrorBarChange}
                         onSelectFieldChange={onSelectFieldChange}
                     />
                 )}

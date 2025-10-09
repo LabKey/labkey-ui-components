@@ -28,6 +28,7 @@ import { isAppHomeFolder } from '../../app/utils';
 import { deleteChart, saveChart, SaveReportConfig } from './actions';
 import {
     BAR_CHART_AGGREGATE_NAME,
+    BAR_CHART_ERROR_BAR_NAME,
     BLUE_HEX_COLOR,
     HIDDEN_CHART_TYPES,
     ICONS,
@@ -155,9 +156,12 @@ export const getChartBuilderChartConfig = (
                 type: getFieldDataType(fieldConfig.data),
             };
 
-            // check if the field has an aggregate method (bar chart y-axis only)
+            // check if the field has an aggregate method and error bar method (bar chart y-axis only)
             if (fieldValues[BAR_CHART_AGGREGATE_NAME] && field.name === 'y') {
                 config.measures[field.name].aggregate = { ...fieldValues[BAR_CHART_AGGREGATE_NAME] };
+                if (fieldValues[BAR_CHART_ERROR_BAR_NAME]) {
+                    config.measures[field.name].errorBars = fieldValues[BAR_CHART_ERROR_BAR_NAME]?.value;
+                }
             }
 
             // update axis label if it is a new report or if the saved report that didn't have this measure or was using the default field label for the axis label
@@ -279,6 +283,10 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
         [selectedType]
     );
 
+    const onErrorBarChange = useCallback((name: string, value: string) => {
+        onFieldChange(name, { value } as SelectInputOption);
+    }, [onFieldChange]);
+
     const onSelectFieldChange = useCallback(
         (key: string, _: never, selectedOption: SelectInputOption) => {
             // clear / reset trendline option here if x change
@@ -335,14 +343,15 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
                 <div className="col-xs-4 fields-col">
                     {leftColFields.map(field => (
                         <ChartFieldOption
-                            key={field.name}
                             field={field}
-                            model={model}
-                            onSelectFieldChange={onSelectFieldChange}
-                            onScaleChange={onFieldScaleChange}
-                            selectedType={selectedType}
                             fieldValues={fieldValues}
+                            key={field.name}
+                            model={model}
+                            onErrorBarChange={onErrorBarChange}
+                            onScaleChange={onFieldScaleChange}
+                            onSelectFieldChange={onSelectFieldChange}
                             scaleValues={fieldValues.scales?.value[field.name]}
+                            selectedType={selectedType}
                         />
                     ))}
                 </div>
@@ -350,14 +359,15 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
                     {rightColFields.map(field => (
                         <Fragment key={field.name}>
                             <ChartFieldOption
-                                key={field.name}
                                 field={field}
-                                model={model}
-                                onSelectFieldChange={onSelectFieldChange}
-                                onScaleChange={onFieldScaleChange}
-                                selectedType={selectedType}
                                 fieldValues={fieldValues}
+                                key={field.name}
+                                model={model}
+                                onErrorBarChange={onErrorBarChange}
+                                onScaleChange={onFieldScaleChange}
+                                onSelectFieldChange={onSelectFieldChange}
                                 scaleValues={fieldValues.scales?.value[field.name]}
+                                selectedType={selectedType}
                             />
                         </Fragment>
                     ))}
@@ -637,9 +647,12 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
                     fieldValues_['scales'] = { value: { ...chartConfig.scales } };
                 }
 
-                // handle bar chart aggregate method
+                // handle bar chart aggregate method and error bars
                 if (measures.y?.aggregate) {
                     fieldValues_[BAR_CHART_AGGREGATE_NAME] = { ...measures.y.aggregate };
+                    if (measures.y.errorBars) {
+                        fieldValues_[BAR_CHART_ERROR_BAR_NAME] = { value: measures.y.errorBars };
+                    }
                 }
 
                 // handle trendline options

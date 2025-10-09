@@ -25,14 +25,14 @@ const RadioGroupOption: FC<RadioGroupOptionImplProps> = memo(props => {
     const { isSelected, name, option, showDescriptions, onSetValue } = props;
 
     const onLabelClick = useCallback(() => {
-        onSetValue(option.value);
-    }, [onSetValue, option.value]);
+        if (!option.disabled) onSetValue(option.value);
+    }, [onSetValue, option.value, option.disabled]);
 
     const onRadioChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
-            onSetValue(evt.target.value);
+            if (!option.disabled) onSetValue(evt.target.value);
         },
-        [onSetValue]
+        [onSetValue, option.disabled]
     );
 
     return (
@@ -107,7 +107,7 @@ const RadioGroupInputImpl: FC<RadioGroupInputProps> = memo(props => {
         <>
             {options?.map(option => (
                 <RadioGroupOption
-                    key={option.value}
+                    key={option.value ?? 'NONE'}
                     name={name}
                     onSetValue={onSetValue}
                     option={option}

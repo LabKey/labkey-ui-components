@@ -13,8 +13,8 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { ViewInfo } from '../../ViewInfo';
 
-import { ChartFieldOption, getSelectOptions, shouldShowFieldOptions } from './ChartFieldOption';
-import { ChartFieldInfo, ChartTypeInfo } from './ChartBuilderModal';
+import { ChartFieldOption, getSelectOptions } from './ChartFieldOption';
+import { ChartFieldInfo, ChartTypeInfo } from './models';
 
 LABKEY_VIS = {
     GenericChartHelper: {
@@ -79,29 +79,6 @@ describe('getSelectOptions', () => {
         const field = { name: 'x' } as ChartFieldInfo;
         const options = getSelectOptions(model, BAR_CHART_TYPE, field);
         expect(options.length).toBe(3);
-    });
-});
-
-describe('shouldShowFieldOptions', () => {
-    const xField = { name: 'x' } as ChartFieldInfo;
-    const yField = { name: 'y' } as ChartFieldInfo;
-
-    test('based on chart type', () => {
-        expect(shouldShowFieldOptions(xField, BAR_CHART_TYPE)).toBe(false);
-        expect(shouldShowFieldOptions(yField, BAR_CHART_TYPE)).toBe(false);
-        expect(shouldShowFieldOptions(xField, BOX_PLOT_TYPE)).toBe(false);
-        expect(shouldShowFieldOptions(yField, BOX_PLOT_TYPE)).toBe(true);
-        expect(shouldShowFieldOptions(xField, SCATTER_PLOT_TYPE)).toBe(true);
-        expect(shouldShowFieldOptions(yField, SCATTER_PLOT_TYPE)).toBe(true);
-        expect(shouldShowFieldOptions(xField, LINE_PLOT_TYPE)).toBe(true);
-        expect(shouldShowFieldOptions(yField, LINE_PLOT_TYPE)).toBe(true);
-    });
-
-    test('based on field name', () => {
-        expect(shouldShowFieldOptions({ name: 'series' } as ChartFieldInfo, BAR_CHART_TYPE)).toBe(false);
-        expect(shouldShowFieldOptions({ name: 'series' } as ChartFieldInfo, BOX_PLOT_TYPE)).toBe(false);
-        expect(shouldShowFieldOptions({ name: 'series' } as ChartFieldInfo, SCATTER_PLOT_TYPE)).toBe(false);
-        expect(shouldShowFieldOptions({ name: 'series' } as ChartFieldInfo, LINE_PLOT_TYPE)).toBe(false);
     });
 });
 

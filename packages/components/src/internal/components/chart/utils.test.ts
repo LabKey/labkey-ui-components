@@ -354,6 +354,6 @@ describe('shouldShowAggregateOptions', () => {
         expect(shouldShowAggregateOptions(xField, SCATTER_PLOT_TYPE)).toBe(false);
         expect(shouldShowAggregateOptions(yField, SCATTER_PLOT_TYPE)).toBe(false);
         expect(shouldShowAggregateOptions(xField, LINE_PLOT_TYPE)).toBe(false);
-        expect(shouldShowAggregateOptions(yField, LINE_PLOT_TYPE)).toBe(false);
+        expect(shouldShowAggregateOptions(yField, LINE_PLOT_TYPE)).toBe(true);
     });
 });

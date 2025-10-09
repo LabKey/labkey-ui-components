@@ -77,13 +77,16 @@ export const getFieldDataType = (fieldData: Record<string, any>): string => {
 };
 
 export const shouldShowRangeScaleOptions = (field: ChartFieldInfo, selectedType: ChartTypeInfo): boolean => {
-    const showForX = field.name === 'x' && (selectedType.name === 'scatter_plot' || selectedType.name === 'line_plot');
-    const showForY =
-        field.name === 'y' &&
-        (selectedType.name === 'scatter_plot' || selectedType.name === 'line_plot' || selectedType.name === 'box_plot');
+    const isScatter = selectedType.name === 'scatter_plot';
+    const isLine = selectedType.name === 'line_plot';
+    const isBox = selectedType.name === 'box_plot';
+    const showForX = field.name === 'x' && (isScatter || isLine);
+    const showForY = field.name === 'y' && (isScatter || isLine || isBox);
     return showForX || showForY;
 };
 
 export const shouldShowAggregateOptions = (field: ChartFieldInfo, selectedType: ChartTypeInfo): boolean => {
-    return field.name === 'y' && selectedType.name === 'bar_chart';
+    const isBar = selectedType.name === 'bar_chart';
+    const isLine = selectedType.name === 'line_plot';
+    return field.name === 'y' && (isBar || isLine);
 };

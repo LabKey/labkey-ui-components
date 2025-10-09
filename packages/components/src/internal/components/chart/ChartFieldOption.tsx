@@ -38,7 +38,7 @@ export const getSelectOptions = (
 
 const DEFAULT_SCALE_VALUES = { type: 'automatic', trans: 'linear' };
 
-interface ChartFieldOptionProps {
+interface OwnProps {
     field: ChartFieldInfo;
     fieldValues?: Record<string, SelectInputOption>;
     model: QueryModel;
@@ -49,7 +49,7 @@ interface ChartFieldOptionProps {
     selectedType: ChartTypeInfo;
 }
 
-export const ChartFieldOption: FC<ChartFieldOptionProps> = memo(props => {
+export const ChartFieldOption: FC<OwnProps> = memo(props => {
     const {
         field,
         model,
@@ -70,6 +70,8 @@ export const ChartFieldOption: FC<ChartFieldOptionProps> = memo(props => {
     );
     const showRangeScaleOptions = isNumericType && shouldShowRangeScaleOptions(field, selectedType);
     const showAggregateOptions = isNumericType && shouldShowAggregateOptions(field, selectedType);
+    const isBar = selectedType.name === 'bar_chart';
+    const isLine = selectedType.name === 'line_plot';
 
     // Issue 52050: use fieldKey for special characters
     const selectInputValue = useMemo(() => fieldValue?.data.fieldKey ?? fieldValue?.value, [fieldValue]);
@@ -112,12 +114,26 @@ export const ChartFieldOption: FC<ChartFieldOptionProps> = memo(props => {
                         onScaleChange={onScaleChange}
                         scale={scale}
                         setScale={setScale}
-                    />
+                    >
+                        {isLine && showAggregateOptions && (
+                            <ChartFieldAggregateOptions
+                                asOverlay={false}
+                                field={field}
+                                fieldValues={fieldValues}
+                                includeCount={isBar}
+                                includeNone={isLine}
+                                onErrorBarChange={onErrorBarChange}
+                                onSelectFieldChange={onSelectFieldChange}
+                            />
+                        )}
+                    </ChartFieldRangeScaleOptions>
                 )}
-                {showAggregateOptions && (
+                {isBar && showAggregateOptions && (
                     <ChartFieldAggregateOptions
                         field={field}
                         fieldValues={fieldValues}
+                        includeCount={isBar}
+                        includeNone={isLine}
                         onErrorBarChange={onErrorBarChange}
                         onSelectFieldChange={onSelectFieldChange}
                     />

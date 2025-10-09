@@ -286,6 +286,13 @@
         cursor: default;
     }
 }
+.field-option-radio-group-block {
+    padding-bottom: 10px;
+
+    .radio-input-wrapper {
+        display: block;
+    }
+}
 
 .chart-builder-preview-body {
     min-height: 355px;

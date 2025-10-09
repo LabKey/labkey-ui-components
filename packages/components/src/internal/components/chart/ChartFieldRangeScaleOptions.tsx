@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, memo, useCallback, useMemo } from 'react';
+import React, {ChangeEvent, FC, memo, PropsWithChildren, useCallback, useMemo} from 'react';
 import { OverlayTrigger } from '../../OverlayTrigger';
 import { Popover } from '../../Popover';
 import { RadioGroupInput, RadioGroupOption } from '../forms/input/RadioGroupInput';
@@ -15,15 +15,15 @@ const SCALE_RANGE_TYPES = [
     { value: 'manual', label: 'Manual' },
 ];
 
-interface Props {
+interface OwnProps extends PropsWithChildren {
     field: ChartFieldInfo;
     onScaleChange: (field: string, key: string, value: number | string, reset?: boolean) => void;
     scale: Record<string, number | string>;
     setScale: (scale) => void;
 }
 
-export const ChartFieldRangeScaleOptions: FC<Props> = memo(props => {
-    const { field, scale, setScale, onScaleChange } = props;
+export const ChartFieldRangeScaleOptions: FC<OwnProps> = memo(props => {
+    const { field, scale, setScale, onScaleChange, children } = props;
 
     const scaleTransOptions = useMemo(() => {
         return SCALE_TRANS_TYPES.map(
@@ -102,6 +102,7 @@ export const ChartFieldRangeScaleOptions: FC<Props> = memo(props => {
             <OverlayTrigger
                 overlay={
                     <Popover id="chart-field-option-popover" placement="bottom">
+                        {children}
                         <div className="field-option-radio-group">
                             <label>Scale</label>
                             <RadioGroupInput

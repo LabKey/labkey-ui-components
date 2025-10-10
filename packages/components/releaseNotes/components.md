@@ -6,6 +6,20 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 52878: Attachment thumbnails from ancestor columns not rendered in Sample Type grid
   - Modify `AncestorRenderer` and `MultiValueRenderer` to handle file/attachment columns
 
+### version 6.64.1
+*Released*: 9 October 2025
+- Issue 53997: Establish a maximum size for query selections
+
+### version 6.64.0
+*Released*: 9 October 2025
+- AssayDefinitionModel: add plateEnabled flag
+- Fix circular dependency caused by IQueryColumn interface
+
+### version 6.63.2
+*Released*: 8 October 2025
+- Issue 53324: LKSM: Custom Grid View Column Limit
+  - Don't serialize ViewInfoJson.fields
+
 ### version 6.63.1
 *Released*: 8 October 2025
 - Filter.actionValueFromFilter fix to move decode columnName out of getDisplayValue()

@@ -18,11 +18,11 @@ import { HeaderCellDropdown, HeaderSelectionCell, isFilterColumnNameMatch } from
 
 import {
     getGridView,
-    revertViewEdit,
-    saveGridView,
-    saveAsSessionView,
-    saveSessionView,
     incrementClientSideMetricCount,
+    revertViewEdit,
+    saveAsSessionView,
+    saveGridView,
+    saveSessionView,
 } from '../../internal/actions';
 
 import { hasServerContext, useServerContext } from '../../internal/components/base/ServerContext';
@@ -77,15 +77,15 @@ import { Actions, InjectedQueryModels, RequiresModelAndActions, withQueryModels 
 import { ChartPanel } from './ChartPanel';
 
 export interface GridPanelProps<ButtonsComponentProps> {
-    ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
-    ButtonsComponentRight?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
-    advancedExportOptions?: { [key: string]: any };
+    advancedExportOptions?: Record<string, any>;
     allowFiltering?: boolean;
     allowSelections?: boolean;
     allowSorting?: boolean;
     allowViewCustomization?: boolean;
     asPanel?: boolean;
+    ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
     buttonsComponentProps?: ButtonsComponentProps;
+    ButtonsComponentRight?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
     emptyText?: string;
     getEmptyText?: (model: QueryModel) => string;
     getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
@@ -93,13 +93,13 @@ export interface GridPanelProps<ButtonsComponentProps> {
     hideEmptyViewMenu?: boolean;
     highlightLastSelectedRow?: boolean;
     loadOnMount?: boolean;
-    onExport?: { [key: string]: (modelId?: string) => any };
+    onExport?: Record<string, (modelId?: string) => any>;
     pageSizes?: number[];
     showButtonBar?: boolean;
     showChartMenu?: boolean;
     showExport?: boolean;
-    showFilterStatus?: boolean;
     showFiltersButton?: boolean;
+    showFilterStatus?: boolean;
     showHeader?: boolean;
     showPagination?: boolean;
     showSearchInput?: boolean;
@@ -174,9 +174,10 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             supportedExportTypes,
         } = this.props;
 
-        const { hasData, queryInfo, queryInfoError, rowCount, rowsError, selectionsError } = model;
-        const hasError = queryInfoError !== undefined || rowsError !== undefined || selectionsError !== undefined;
-        const paginate = showPagination && rowCount > 0 && !hasError;
+        const { hasData, queryInfo, rowCount, rowsError, selectionsError } = model;
+        const hasLoadErrors = model.hasLoadErrors;
+        const hasError = hasLoadErrors || selectionsError !== undefined;
+        const paginate = showPagination && rowCount > 0 && !hasLoadErrors;
         const canExport = showExport && !hasError;
         // Don't disable view selection when there is an error because it's possible the error may be caused by the view
         const canSelectView = showViewMenu && queryInfo !== undefined;
@@ -190,10 +191,10 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
         const paginationComp = (
             <Pagination
                 {...model.paginationData}
-                loadNextPage={this.loadNextPage}
                 loadFirstPage={this.loadFirstPage}
-                loadPreviousPage={this.loadPreviousPage}
                 loadLastPage={this.loadLastPage}
+                loadNextPage={this.loadNextPage}
+                loadPreviousPage={this.loadPreviousPage}
                 pageSizes={pageSizes}
                 setPageSize={this.setPageSize}
             />
@@ -205,7 +206,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                     <div className="grid-panel__button-bar-left">
                         <div className="button-bar__section">
                             {showButtonsComponent && (
-                                <ButtonsComponent {...buttonsComponentProps} model={model} actions={actions} />
+                                <ButtonsComponent {...buttonsComponentProps} actions={actions} model={model} />
                             )}
 
                             <div className={'button-bar__filter-search ' + hiddenWithLeftButtonsCls}>
@@ -221,26 +222,26 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                             {canExport && (
                                 <ExportMenu
                                     actions={actions}
-                                    model={model}
                                     advancedOptions={advancedExportOptions}
-                                    supportedTypes={supportedExportTypes?.toJS()}
+                                    model={model}
                                     onExport={onExport}
+                                    supportedTypes={supportedExportTypes?.toJS()}
                                 />
                             )}
                             {showChartMenu && <ChartMenu actions={actions} model={model} />}
                             {canSelectView && (
                                 <ViewMenu
                                     allowViewCustomization={allowViewCustomization}
+                                    hideEmptyViewMenu={hideEmptyViewMenu}
                                     model={model}
-                                    onViewSelect={onViewSelect}
-                                    onSaveView={onSaveView}
                                     onCustomizeView={onCustomizeView}
                                     onManageViews={onManageViews}
-                                    hideEmptyViewMenu={hideEmptyViewMenu}
+                                    onSaveView={onSaveView}
+                                    onViewSelect={onViewSelect}
                                 />
                             )}
                             {ButtonsComponentRight !== undefined && (
-                                <ButtonsComponentRight {...buttonsComponentProps} model={model} actions={actions} />
+                                <ButtonsComponentRight {...buttonsComponentProps} actions={actions} model={model} />
                             )}
                         </div>
                     </div>
@@ -259,7 +260,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                     <div className="grid-panel__button-bar margin-top">
                         <div className="grid-panel__button-bar-left">
                             <div className="button-bar__section">
-                                {showFiltersButton && <FiltersButton onFilter={onFilter} iconOnly />}
+                                {showFiltersButton && <FiltersButton iconOnly onFilter={onFilter} />}
                                 {showSearchInput && <SearchBox actionValues={searchActionValues} onSearch={onSearch} />}
                             </div>
                         </div>
@@ -362,7 +363,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
             )}
             {showSave && canSaveCurrent && (
                 <SplitButton bsStyle="success" onClick={_onSaveCurrentView} title="Save">
-                    <MenuItem title="Save as new view" onClick={onSaveNewView} key="saveNewGridView">
+                    <MenuItem key="saveNewGridView" onClick={onSaveNewView} title="Save as new view">
                         Save as...
                     </MenuItem>
                 </SplitButton>
@@ -974,7 +975,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                             checked={selected === true}
                             className="grid-panel__row-checkbox"
                             disabled={isLoading || isLoadingSelections}
-                            onChange={this.selectRow.bind(this, row)} // eslint-disable-line
+                            onChange={this.selectRow.bind(this, row)}
                             type="checkbox"
                         />
                     );
@@ -1117,16 +1118,16 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             <>
                 <div className={classNames('grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
                     <GridTitle
-                        model={model}
-                        view={view}
-                        title={title}
                         actions={actions}
                         allowSelections={allowSelections}
                         allowViewCustomization={allowViewCustomization}
-                        onRevertView={this.onRevertView}
-                        onSaveView={this.onSaveCurrentView}
-                        onSaveNewView={this.onSaveNewView}
                         isUpdated={isViewSaved}
+                        model={model}
+                        onRevertView={this.onRevertView}
+                        onSaveNewView={this.onSaveNewView}
+                        onSaveView={this.onSaveCurrentView}
+                        title={title}
+                        view={view}
                     />
 
                     <div
@@ -1138,14 +1139,14 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                             <ButtonBar
                                 {...this.props}
                                 actionValues={actionValues}
-                                searchActionValues={searchActionValues}
+                                onCustomizeView={this.toggleCustomizeView}
                                 onExport={onExport}
                                 onFilter={this.showFilterModal}
+                                onManageViews={this.onManageViews}
+                                onSaveView={this.onSaveNewView}
                                 onSearch={this.onSearch}
                                 onViewSelect={this.onViewSelect}
-                                onSaveView={this.onSaveNewView}
-                                onCustomizeView={this.toggleCustomizeView}
-                                onManageViews={this.onManageViews}
+                                searchActionValues={searchActionValues}
                             />
                         )}
 
@@ -1156,7 +1157,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                         <LoadingSpinner msg={loadingMessage} />
                                     </div>
                                 )}
-                                {allowSelections && <SelectionStatus model={model} actions={actions} />}
+                                {allowSelections && <SelectionStatus actions={actions} model={model} />}
                                 {showFilterStatus && (
                                     <FilterStatus
                                         actionValues={actionValues}
@@ -1178,20 +1179,20 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
                             {hasData && (
                                 <Grid
+                                    calcWidths={allowSorting || allowFiltering}
+                                    columns={this.getGridColumns()}
+                                    condensed
+                                    data={model.gridData}
+                                    emptyText={gridEmptyText}
+                                    fixedHeight
+                                    gridId={id}
                                     headerCell={this.headerCell}
+                                    highlightRowIndexes={this.getHighlightRowIndexes()}
+                                    messages={fromJS(messages)}
                                     onColumnDrop={
                                         allowViewCustomization && !disableColumnDrag ? this.onColumnDrop : undefined
                                     }
                                     showHeader={showHeader}
-                                    calcWidths={allowSorting || allowFiltering}
-                                    condensed
-                                    emptyText={gridEmptyText}
-                                    fixedHeight
-                                    gridId={id}
-                                    messages={fromJS(messages)}
-                                    columns={this.getGridColumns()}
-                                    data={model.gridData}
-                                    highlightRowIndexes={this.getHighlightRowIndexes()}
                                 />
                             )}
                         </div>
@@ -1200,17 +1201,17 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 {showFilterModalFieldKey && (
                     <GridFilterModal
                         fieldKey={showFilterModalFieldKey}
-                        selectDistinctOptions={this.getSelectDistinctOptions()}
                         initFilters={model.filterArray} // using filterArray to indicate user-defined filters only
                         model={model}
                         onApply={this.handleApplyFilters}
                         onCancel={this.closeFilterModal}
+                        selectDistinctOptions={this.getSelectDistinctOptions()}
                     />
                 )}
                 {showSaveViewModal && (
                     <SaveViewModal
-                        gridLabel={queryInfo?.schemaQuery?.queryName}
                         currentView={view}
+                        gridLabel={queryInfo?.schemaQuery?.queryName}
                         onCancel={this.closeSaveViewModal}
                         onConfirmSave={this.onSaveView}
                     />
@@ -1225,10 +1226,10 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 )}
                 {showManageViewsModal && (
                     <ManageViewsModal
-                        schemaQuery={model.schemaQuery}
                         containerPath={model.containerPath}
                         currentView={view}
                         onDone={this.closeManageViewsModal}
+                        schemaQuery={model.schemaQuery}
                     />
                 )}
             </>

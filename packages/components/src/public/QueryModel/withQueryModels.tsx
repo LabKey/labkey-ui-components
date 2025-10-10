@@ -19,6 +19,7 @@ import { incrementClientSideMetricCount } from '../../internal/actions';
 
 import { filterArraysEqual, getSelectRowCountColumnsStr, sortArraysEqual } from './utils';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
+import { RequestHandler } from '../../internal/request';
 import {
     getSettingsFromLocalStorage,
     GridMessage,
@@ -309,6 +310,39 @@ export function withQueryModels<Props>(
     };
 
     class ComponentWithQueryModels extends PureComponent<WrappedProps, State> {
+        // N.B. This is very similar to useRequestHandler() but we cannot use a hook here so we have to use class
+        // variables instead. Additionally, we cannot make use of React.createRef() since that returns an immutable
+        // reference unlike React.useRef() which is mutable.
+
+        // TODO: Not married to this structure, just first thoughts on coalescing requests by model.
+        private _requests: Record<string, Record<string, undefined | XMLHttpRequest>> = {};
+
+        private cancelAllRequests = (): void => {
+            Object.values(this._requests).forEach(allReq => {
+                Object.values(allReq).forEach(req => {
+                    req?.abort();
+                });
+            });
+            this._requests = {};
+        };
+
+        private getRequestHandler =
+            (id: string, requestType: string): RequestHandler =>
+            request => {
+                if (!this._requests.hasOwnProperty(id)) {
+                    this._requests[id] = {};
+                }
+
+                this._requests[id][requestType]?.abort();
+                this._requests[id][requestType] = request;
+            };
+
+        private resetRequestHandler = (id: string, requestType: string): void => {
+            if (this._requests[id] !== undefined) {
+                this._requests[id][requestType] = undefined;
+            }
+        };
+
         static defaultProps;
 
         constructor(props: WrappedProps) {
@@ -412,6 +446,10 @@ export function withQueryModels<Props>(
                         }
                     });
             }
+        }
+
+        componentWillUnmount(): void {
+            this.cancelAllRequests();
         }
 
         actions: Actions;
@@ -736,7 +774,9 @@ export function withQueryModels<Props>(
             );
 
             try {
-                const result = await loadRows(this.state.queryModels[id]);
+                const requestType = 'loadRows';
+                const result = await loadRows(this.state.queryModels[id], this.getRequestHandler(id, requestType));
+                this.resetRequestHandler(id, requestType);
                 const { messages, rows, orderedRows, rowCount } = result;
 
                 this.setState(
@@ -753,6 +793,7 @@ export function withQueryModels<Props>(
                     () => this.maybeLoad(id, false, false, loadSelections, false, selectionsForReplace)
                 );
             } catch (error) {
+                if (error?.status === 0) return;
                 let viewDoesNotExist = false;
                 this.setState(
                     produce<State>((draft: WritableDraft<State>) => {
@@ -845,6 +886,8 @@ export function withQueryModels<Props>(
                     loadRowsConfig.filterArray,
                     queryInfo?.getPkCols()
                 );
+
+                const requestType = 'loadTotalCount';
                 const { rowCount } = await selectRows({
                     ...loadRowsConfig,
                     columns,
@@ -855,7 +898,9 @@ export function withQueryModels<Props>(
                     maxRows: 1,
                     offset: 0,
                     sort: undefined,
+                    requestHandler: this.getRequestHandler(id, requestType),
                 });
+                this.resetRequestHandler(id, requestType);
 
                 this.setState(
                     produce<State>((draft: WritableDraft<State>) => {
@@ -866,6 +911,7 @@ export function withQueryModels<Props>(
                     })
                 );
             } catch (error) {
+                if (error?.status === 0) return;
                 this.setState(
                     produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
@@ -946,6 +992,9 @@ export function withQueryModels<Props>(
             reloadTotalCount = false,
             selectionsForReplace?: string[]
         ): void => {
+            // TODO: Consider how to incorporate stale request handling.
+            //   Feels like we should never be cancelling query info loading -- just to keep it simple. Already cached, etc.
+            //   Definitely want to cancel loading selections. Need to make sure caller is requeuing the load.
             if (loadQueryInfo) {
                 // Postpone loading any rows or selections if we're loading the QueryInfo.
                 this.loadQueryInfo(id, loadRows, loadSelections);

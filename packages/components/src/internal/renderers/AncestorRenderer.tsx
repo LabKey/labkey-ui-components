@@ -21,10 +21,11 @@ import { DefaultRenderer } from './DefaultRenderer';
 export const ANCESTOR_LOOKUP_CONCEPT_URI = 'http://www.labkey.org/types#ancestorLookup';
 
 interface Props {
+    col?: any;
     data: Map<any, any>;
 }
 
-export const AncestorRenderer: FC<Props> = memo(({ data }) => {
+export const AncestorRenderer: FC<Props> = memo(({ data, col }) => {
     if (Map.isMap(data) && data.size > 0) {
         const { displayValue, value } = data.toJS();
         if (value < 0 && displayValue) {
@@ -35,7 +36,7 @@ export const AncestorRenderer: FC<Props> = memo(({ data }) => {
             );
         }
 
-        return <DefaultRenderer data={data} />;
+        return <DefaultRenderer col={col} data={data} />;
     }
 
     return null;

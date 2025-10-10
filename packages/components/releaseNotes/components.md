@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.64.2
+*Released*: 10 October 2025
+- Issue 52878: Attachment thumbnails from ancestor columns not rendered in Sample Type grid
+  - Modify `AncestorRenderer` and `MultiValueRenderer` to handle file/attachment columns
+
 ### version 6.64.1
 *Released*: 9 October 2025
 - Issue 53997: Establish a maximum size for query selections

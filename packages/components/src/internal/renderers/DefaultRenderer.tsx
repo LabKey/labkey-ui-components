@@ -56,17 +56,16 @@ export const DefaultRenderer: FC<Props> = memo(({ col, data, noLink }) => {
         } else if (List.isList(data)) {
             // defensively return a MultiValueRenderer, this column likely wasn't declared properly as "multiValue"
             return <MultiValueRenderer data={data} col={col} />;
-        } else {
+        } if ((col?.isFileInput)) {
+            return <FileColumnRenderer data={data} />;
+        }
+        else {
             if (isConditionalFormattingEnabled()) {
                 style = getDataStyling(data);
                 if (style?.backgroundColor) {
                     className += ' status-pill';
                 }
             }
-
-            if (!style && (col?.type?.toLowerCase() === 'file' || col?.inputType?.toLowerCase() === 'file'))
-                return <FileColumnRenderer data={data} />;
-
             if (data.has('formattedValue')) {
                 display = data.get('formattedValue');
             } else {

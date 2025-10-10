@@ -31,7 +31,7 @@ export const MultiValueRenderer: FC<MultiValueRendererProps> = memo(({ data, col
     if (
         List.isList(data) &&
         data.size === 1 &&
-        (col?.type?.toLowerCase() === 'file' || col?.inputType?.toLowerCase() === 'file')
+        (col?.isFileInput)
     ) {
         return <FileColumnRenderer data={data.get(0)} />;
     }

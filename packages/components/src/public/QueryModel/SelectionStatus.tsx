@@ -1,5 +1,7 @@
 import React, { FC, memo, useCallback, useMemo } from 'react';
 
+import { getServerContext } from '@labkey/api';
+
 import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
 
 import { RequiresModelAndActions } from './withQueryModels';
@@ -7,6 +9,7 @@ import { RequiresModelAndActions } from './withQueryModels';
 export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, model }) => {
     const { isLoading, isLoadingSelections, isLoadingTotalCount, maxRows, rowCount, selections } = model;
     const selectionSize = selections?.size;
+    const maxSelectionSize = useMemo(() => getServerContext().moduleContext?.query?.maxQuerySelection, []);
 
     const clearSelections = useCallback((): void => {
         actions.clearSelections(model.id);
@@ -53,11 +56,19 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
         );
     }
 
-    if (rowCount > maxRows && selectionSize !== rowCount && rowCount > 0) {
+    if (
+        rowCount > maxRows &&
+        selectionSize !== rowCount &&
+        rowCount > 0 &&
+        !isLoadingTotalCount &&
+        selectionSize < maxSelectionSize
+    ) {
+        const tooManyRows = rowCount > maxSelectionSize;
         selectAllButton = (
             <span className="selection-status__select-all">
                 <button className="btn btn-default btn-xs" onClick={selectAll} type="button">
-                    Select all {!isLoadingTotalCount ? rowCount.toLocaleString() : ''}
+                    {tooManyRows && <>Select first {maxSelectionSize.toLocaleString()}</>}
+                    {!tooManyRows && <>Select all {rowCount.toLocaleString()}</>}
                 </button>
             </span>
         );

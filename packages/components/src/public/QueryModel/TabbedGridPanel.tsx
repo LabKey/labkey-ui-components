@@ -58,6 +58,7 @@ const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, 
         </li>
     );
 });
+GridTab.displayName = 'GridTab';
 
 export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
     /**
@@ -326,3 +327,4 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         </>
     );
 });
+TabbedGridPanel.displayName = 'TabbedGridPanel';

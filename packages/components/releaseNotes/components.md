@@ -10,6 +10,15 @@ Components, models, actions, and utility functions for LabKey applications and p
     - support for error bar radio options as separate overlay or to be included in axis options overlay
   - Update ChartBuilderModal to pass down aggregate and error bar options to ChartConfig
 
+### version 6.64.1
+*Released*: 9 October 2025
+- Issue 53997: Establish a maximum size for query selections
+
+### version 6.64.0
+*Released*: 9 October 2025
+- AssayDefinitionModel: add plateEnabled flag
+- Fix circular dependency caused by IQueryColumn interface
+
 ### version 6.63.2
 *Released*: 8 October 2025
 - Issue 53324: LKSM: Custom Grid View Column Limit

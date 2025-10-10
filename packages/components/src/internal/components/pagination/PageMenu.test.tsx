@@ -54,7 +54,6 @@ describe('PageMenu', () => {
         }
     };
 
-    // eslint-disable-next-line jest/expect-expect -- this test does use expect, via expectPageMenuItems
     test('render', () => {
         const { rerender } = render(<PageMenu {...props} />);
         expectPageMenuItems(false, false, false, '2', '34 Total Pages');

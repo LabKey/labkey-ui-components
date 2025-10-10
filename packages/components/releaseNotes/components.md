@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.X
-*Released*: X October 2025
+### version 6.64.2
+*Released*: 10 October 2025
 - Issue 52878: Attachment thumbnails from ancestor columns not rendered in Sample Type grid
   - Modify `AncestorRenderer` and `MultiValueRenderer` to handle file/attachment columns
 

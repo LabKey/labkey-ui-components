@@ -26,14 +26,14 @@ describe('MultiValueRenderer', () => {
 
     test('data shapes, value, file column', () => {
         const data = fromJS({ 24: { value: 'a.txt', url: 'a.txt' } });
-        render(<MultiValueRenderer col={new QueryColumn({ type: 'file' })} data={data} />);
+        render(<MultiValueRenderer col={new QueryColumn({ inputType: 'file' })} data={data} />);
         expect(document.body.textContent).toBe('a.txt');
         expect(document.querySelectorAll('.attachment-card')).toHaveLength(0);
     });
 
     test('data list, value, file column', () => {
         const data = fromJS([{ value: 'a.txt', url: 'a.txt' }]);
-        render(<MultiValueRenderer col={new QueryColumn({ type: 'file' })} data={data} />);
+        render(<MultiValueRenderer col={new QueryColumn({ inputType: 'file' })} data={data} />);
         expect(document.body.textContent).toBe('a.txtDownload');
         expect(document.querySelectorAll('.attachment-card')).toHaveLength(1);
     });
@@ -80,7 +80,7 @@ describe('MultiValueRenderer', () => {
             24: { value: 'b.txt', url: 'b.txt' },
             51: { value: 'c.txt', url: 'c.txt' },
         });
-        render(<MultiValueRenderer col={new QueryColumn({ type: 'file' })} data={data} />);
+        render(<MultiValueRenderer col={new QueryColumn({ inputType: 'file' })} data={data} />);
         const spans = document.querySelectorAll('span');
         expect(spans.length).toBe(3);
         expect(spans[0].textContent).toEqual('a.txt');

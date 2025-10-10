@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.64.1
+*Released*: 9 October 2025
+- Issue 53997: Establish a maximum size for query selections
+
 ### version 6.64.0
 *Released*: 9 October 2025
 - AssayDefinitionModel: add plateEnabled flag

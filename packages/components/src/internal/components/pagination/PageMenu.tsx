@@ -32,7 +32,7 @@ export const PageMenu: FC<Props> = props => {
         pageSizes,
         setPageSize,
     } = props;
-    const totalPagesText = disabled ? '...' : `${pageCount} Total Pages`;
+    const totalPagesText = disabled ? '...' : `${pageCount.toLocaleString()} Total Pages`;
     // We have to manually wire up a Tooltip here because we're rendering PageMenu within a btn-group so any extra
     // wrapping elements cause it to render incorrectly.
     const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLDivElement>(
@@ -51,11 +51,11 @@ export const PageMenu: FC<Props> = props => {
         <DropdownButton
             buttonClassName="current-page-dropdown"
             disabled={disabled}
-            pullRight
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            title={currentPage}
+            pullRight
             ref={targetRef}
+            title={currentPage.toLocaleString()}
         >
             <MenuHeader text="Jump To" />
             <MenuItem disabled={disabled || isFirstPage} onClick={loadFirstPage}>
@@ -68,8 +68,8 @@ export const PageMenu: FC<Props> = props => {
             <MenuDivider />
             <MenuHeader text="Page Size" />
             {pageSizes?.map(size => (
-                <MenuItem key={size} active={size === pageSize} onClick={() => setPageSize(size)}>
-                    {size}
+                <MenuItem active={size === pageSize} key={size} onClick={() => setPageSize(size)}>
+                    {size.toLocaleString()}
                 </MenuItem>
             ))}
             {show && createPortal(tooltip, portalEl)}

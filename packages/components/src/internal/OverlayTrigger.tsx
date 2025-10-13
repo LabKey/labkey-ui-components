@@ -86,7 +86,8 @@ export function useOverlayTriggerState<T extends Element = HTMLDivElement>(
         event => {
             const isToggle = event.target === targetRef.current;
             const insideToggle = portalEl?.contains(event.target);
-            const isSelectOption = (event.target as HTMLElement).classList.contains('select-input__option');
+            const isSelectOption =
+                event.target instanceof HTMLElement && event.target.classList.contains('select-input__option');
             if (!isToggle && !insideToggle && !isSelectOption) {
                 setShow(false);
             }

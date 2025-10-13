@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.64.3
+*Released*: 13 October 2025
+- Search: escape all quotes in search terms
+
 ### version 6.64.2
 *Released*: 10 October 2025
 - Issue 52878: Attachment thumbnails from ancestor columns not rendered in Sample Type grid

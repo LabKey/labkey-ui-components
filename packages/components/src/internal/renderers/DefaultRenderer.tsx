@@ -24,6 +24,7 @@ import { isConditionalFormattingEnabled } from '../app/utils';
 import { AppLink } from '../url/AppLink';
 
 import { MultiValueRenderer } from './MultiValueRenderer';
+import { FileColumnRenderer } from './FileColumnRenderer';
 
 interface Props {
     col?: QueryColumn;
@@ -54,8 +55,11 @@ export const DefaultRenderer: FC<Props> = memo(({ col, data, noLink }) => {
             display = data ? 'true' : 'false';
         } else if (List.isList(data)) {
             // defensively return a MultiValueRenderer, this column likely wasn't declared properly as "multiValue"
-            return <MultiValueRenderer data={data} />;
-        } else {
+            return <MultiValueRenderer data={data} col={col} />;
+        } else if (col?.isFileInput) {
+            return <FileColumnRenderer data={data} />;
+        }
+        else {
             if (isConditionalFormattingEnabled()) {
                 style = getDataStyling(data);
                 if (style?.backgroundColor) {
@@ -74,7 +78,7 @@ export const DefaultRenderer: FC<Props> = memo(({ col, data, noLink }) => {
             if (url && !noLink) {
                 const targetBlank = data.get('urlTarget') === TARGET_BLANK;
                 return (
-                    <AppLink className={className} to={url} targetBlank={targetBlank} style={style}>
+                    <AppLink className={className} style={style} targetBlank={targetBlank} to={url}>
                         {display}
                     </AppLink>
                 );

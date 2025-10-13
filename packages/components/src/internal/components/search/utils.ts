@@ -690,18 +690,16 @@ export function escapeSearchQuery(q: string, escapeQuotes = false): string {
 
         // Escape special lucene characters: + - && || ! ( ) { } [ ] ^ " ~ * ? : \
         // https://lucene.apache.org/core/2_9_4/queryparsersyntax.html#Escaping%20Special%20Characters
-        q = q
-            .replace(/(?<specialChar>[\+\-!\(\){}\[\]^~*?:\\])/gi, '\\$<specialChar>')
-            .replace('&&', '\\&&')
-            .replace('||', '\\||');
+        q = q.trim().replace(/&&|\|\||[+\-!(){}\[\]^~*?:\\]/g, m => `\\${m}`);
+
         if (escapeQuotes) {
-            q = q.replace('"', '\\"');
+            q = q.replace(/"/g, '\\"');
         }
 
         // Append an additional wildcard search clause to include prefix matching
         // Example: "M-" will result in a query of "M\- OR M\-*"
         if (!hasQuotes || escapeQuotes) {
-            q = [q, `${q.trim()}*`].join(' OR ');
+            q = [q, `${q}*`].join(' OR ');
         }
     }
 

@@ -1589,13 +1589,28 @@ describe('escapeSearchQuery', () => {
         luceneCharacters.forEach(char => {
             expect(escapeSearchQuery(char, true)).toEqual(`\\${char} OR \\${char}*`);
         });
+        expect(escapeSearchQuery('a && b || c && d', true)).toEqual(
+            'a \\&& b \\|| c \\&& d OR a \\&& b \\|| c \\&& d*'
+        );
+        expect(escapeSearchQuery('a|b', true)).toEqual('a|b OR a|b*');
+        expect(escapeSearchQuery('a&b', true)).toEqual('a&b OR a&b*');
     });
     test('handles UTF-8 characters', () => {
         expect(escapeSearchQuery('(I am a little 🫖)')).toEqual('\\(I am a little 🫖\\) OR \\(I am a little 🫖\\)*');
         expect(escapeSearchQuery('野球が大好きです')).toEqual('野球が大好きです OR 野球が大好きです*');
+        expect(escapeSearchQuery('🙂-(ok)', true)).toEqual('🙂\\-\\(ok\\) OR 🙂\\-\\(ok\\)*');
     });
     test('handles quotes well', () => {
         expect(escapeSearchQuery('"Fresh" and "Flowers"', false)).toEqual('"Fresh" and "Flowers"');
         expect(escapeSearchQuery('Fl"ower', true)).toEqual('Fl\\"ower OR Fl\\"ower*');
+        expect(escapeSearchQuery('D_"fee{-e>4_b4"', false)).toEqual('D_"fee\\{\\-e>4_b4"');
+        expect(escapeSearchQuery('D_"fee{-e>4_b4"', true)).toEqual(
+            'D_\\"fee\\{\\-e>4_b4\\" OR D_\\"fee\\{\\-e>4_b4\\"*'
+        );
+    });
+    test('trims', () => {
+        expect(escapeSearchQuery('   test  &&    sp"ace    ', true)).toEqual(
+            'test  \\&&    sp\\"ace OR test  \\&&    sp\\"ace*'
+        );
     });
 });

@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Chart } from '../../internal/components/chart/Chart';
 
@@ -25,6 +25,7 @@ export const ChartPanel: FC<Props> = memo(({ actions, api = DEFAULT_API_WRAPPER,
     const [savedChartModel, setSavedChartModel] = useState<GenericChartModel>(undefined);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
     const { moduleContext } = useServerContext();
+    const divRef = useRef(undefined);
 
     // useNotificationsContext will not always be available depending on if the app wraps the NotificationsContext.Provider
     let _createNotification;
@@ -62,7 +63,7 @@ export const ChartPanel: FC<Props> = memo(({ actions, api = DEFAULT_API_WRAPPER,
 
     const onExportChart = useCallback(
         (type: string) => {
-            const svg = document.querySelector('.chart-panel svg');
+            const svg = divRef.current.querySelector('.chart-panel svg');
             if (svg) {
                 LABKEY_VIS.SVGConverter.convert(svg, type, chart.name);
             }
@@ -91,7 +92,7 @@ export const ChartPanel: FC<Props> = memo(({ actions, api = DEFAULT_API_WRAPPER,
     if (chart === undefined) return null;
 
     return (
-        <div className="chart-panel">
+        <div className="chart-panel" ref={divRef}>
             <div className="chart-panel__heading">
                 <div className="chart-panel__heading-title">
                     {chart.name}

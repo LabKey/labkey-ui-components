@@ -29,7 +29,7 @@ export const ChartPanel: FC<Props> = memo(({ actions, api = DEFAULT_API_WRAPPER,
     // useNotificationsContext will not always be available depending on if the app wraps the NotificationsContext.Provider
     let _createNotification;
     try {
-        // ESLint incorrectly complains that useNotificationsContext is called conditionally. Itt's always called, even
+        // ESLint incorrectly complains that useNotificationsContext is called conditionally. It's always called, even
         // though it's in a try/catch.
         // eslint-disable-next-line react-hooks/rules-of-hooks
         _createNotification = useNotificationsContext().createNotification;

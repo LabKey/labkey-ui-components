@@ -17,7 +17,7 @@ import { RequiresModelAndActions } from './withQueryModels';
 import { DisableableMenuItem } from '../../internal/components/samples/DisableableMenuItem';
 
 const MAX_CHARTS = 5;
-const DISABLED_MESSAGE = `Only ${MAX_CHARTS} charts can be shown at once`;
+const DISABLED_MESSAGE = `Only ${MAX_CHARTS} charts can be shown at once.`;
 
 interface ChartMenuItemProps {
     chart: DataViewInfo;

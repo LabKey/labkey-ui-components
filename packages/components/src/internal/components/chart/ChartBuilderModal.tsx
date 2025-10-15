@@ -774,10 +774,11 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
         setSaving(true);
         setError(undefined);
         try {
-            await saveChart(_reportConfig);
+            const response = await saveChart(_reportConfig);
             setSaving(false);
             onHide(`Successfully ${savedChartModel ? 'updated' : 'created'} chart: ${_reportConfig.name}.`);
             actions.loadCharts(model.id);
+            actions.selectReport(model.id, response.reportId, true);
         } catch (e) {
             setError(e.exception ?? e);
             setSaving(false);

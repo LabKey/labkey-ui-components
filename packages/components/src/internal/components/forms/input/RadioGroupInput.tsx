@@ -46,7 +46,10 @@ const RadioGroupOption: FC<RadioGroupOptionImplProps> = memo(props => {
                 onChange={onRadioChange}
                 disabled={option.disabled}
             />
-            <span className={classNames('radioinput-label', { selected: isSelected })} onClick={onLabelClick}>
+            <span
+                className={classNames('radioinput-label', { selected: isSelected, disabled: option.disabled })}
+                onClick={onLabelClick}
+            >
                 {option.label}
             </span>
             {showDescriptions && option.description && (

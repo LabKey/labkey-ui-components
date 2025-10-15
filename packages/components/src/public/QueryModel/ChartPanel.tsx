@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } fr
 
 import { Chart } from '../../internal/components/chart/Chart';
 
-import { GENERIC_CHART_REPORTS, LABKEY_VIS } from '../../internal/constants';
+import { DataViewInfoTypes, GENERIC_CHART_REPORTS, LABKEY_VIS } from '../../internal/constants';
 import { ChartAPIWrapper, DEFAULT_API_WRAPPER } from '../../internal/components/chart/api';
 import { GenericChartModel } from '../../internal/components/chart/models';
 import { ChartBuilderModal } from '../../internal/components/chart/ChartBuilderModal';
@@ -91,6 +91,8 @@ export const ChartPanel: FC<Props> = memo(({ actions, api = DEFAULT_API_WRAPPER,
 
     if (chart === undefined) return null;
 
+    const isSvg = chart.type !== DataViewInfoTypes.RReport;
+
     return (
         <div className="chart-panel" ref={divRef}>
             <div className="chart-panel__heading">
@@ -109,23 +111,25 @@ export const ChartPanel: FC<Props> = memo(({ actions, api = DEFAULT_API_WRAPPER,
                             </button>
                         </span>
                     )}
-                    <span className="margin-left">
-                        <DropdownButton
-                            buttonClassName="chart-panel-export-btn"
-                            noCaret
-                            title={<i className="fa fa-download" />}
-                        >
-                            <MenuHeader text="Export Chart" />
-                            <MenuItem onClick={onExportChartPDF}>
-                                <i className="fa fa-file-pdf-o" />
-                                &nbsp; PDF
-                            </MenuItem>
-                            <MenuItem onClick={onExportChartPNG}>
-                                <i className="fa fa-file-image-o" />
-                                &nbsp; PNG
-                            </MenuItem>
-                        </DropdownButton>
-                    </span>
+                    {isSvg && (
+                        <span className="margin-left">
+                            <DropdownButton
+                                buttonClassName="chart-panel-export-btn"
+                                noCaret
+                                title={<i className="fa fa-download" />}
+                            >
+                                <MenuHeader text="Export Chart" />
+                                <MenuItem onClick={onExportChartPDF}>
+                                    <span className="fa fa-file-pdf-o" />
+                                    &nbsp; PDF
+                                </MenuItem>
+                                <MenuItem onClick={onExportChartPNG}>
+                                    <span className="fa fa-file-image-o" />
+                                    &nbsp; PNG
+                                </MenuItem>
+                            </DropdownButton>
+                        </span>
+                    )}
                 </div>
 
                 <div className="chart-panel__hide-icon">

@@ -98,7 +98,15 @@ export const ChartMenu: FC<RequiresModelAndActions> = memo(({ actions, model }) 
             >
                 {chartsError !== undefined && <MenuItem>{chartsError}</MenuItem>}
 
-                {showCreateChart && <ChartBuilderMenuItem actions={actions} model={model} />}
+                {showCreateChart && (
+                    <ChartBuilderMenuItem
+                        actions={actions}
+                        disabledMessage={DISABLED_MESSAGE}
+                        maxCharts={MAX_CHARTS}
+                        model={model}
+                        selectedReportIds={selectedReportIds}
+                    />
+                )}
 
                 {showCreateChartDivider && <MenuDivider />}
 

@@ -110,7 +110,7 @@ const RadioGroupInputImpl: FC<RadioGroupInputProps> = memo(props => {
         <>
             {options?.map(option => (
                 <RadioGroupOption
-                    key={option.value ?? 'NONE'}
+                    key={option.value ?? `radio-${option.label}`}
                     name={name}
                     onSetValue={onSetValue}
                     option={option}

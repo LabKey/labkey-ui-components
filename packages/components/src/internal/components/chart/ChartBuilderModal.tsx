@@ -646,10 +646,11 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
                 }
 
                 // handle bar chart aggregate method and error bars
-                if (measures.y?.aggregate) {
-                    fieldValues_[BAR_CHART_AGGREGATE_NAME] = { ...measures.y.aggregate };
-                    if (measures.y.errorBars) {
-                        fieldValues_[BAR_CHART_ERROR_BAR_NAME] = { value: measures.y.errorBars };
+                const y = Utils.isArray(measures.y) ? measures.y[0] : measures.y;
+                if (y?.aggregate) {
+                    fieldValues_[BAR_CHART_AGGREGATE_NAME] = Utils.isObject(y.aggregate) ? { ...y.aggregate } : { value: y.aggregate };
+                    if (y.errorBars) {
+                        fieldValues_[BAR_CHART_ERROR_BAR_NAME] = { value: y.errorBars };
                     }
                 }
 

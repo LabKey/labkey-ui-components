@@ -2,7 +2,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { ChartFieldAggregateOptions } from './ChartFieldAggregateOptions';
-import { BAR_CHART_AGGREGATE_NAME, BAR_CHART_ERROR_BAR_NAME } from "./constants";
+import { BAR_CHART_AGGREGATE_NAME, BAR_CHART_ERROR_BAR_NAME } from './constants';
+import { ChartTypeInfo } from './models';
 
 const field = { name: 'testField', label: 'Test Label', required: false };
 const fieldValues = {
@@ -16,10 +17,9 @@ function renderComponent(props = {}) {
         <ChartFieldAggregateOptions
             field={field}
             fieldValues={fieldValues}
-            includeCount={true}
-            includeNone={true}
             onErrorBarChange={jest.fn}
             onSelectFieldChange={jest.fn}
+            selectedType={{ name: 'bar_chart' } as ChartTypeInfo}
             {...props}
         />
     );

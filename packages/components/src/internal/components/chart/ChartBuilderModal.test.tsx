@@ -350,7 +350,9 @@ describe('ChartBuilderModal', () => {
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
         expect(document.querySelectorAll('.fa-gear')).toHaveLength(1); // gear icon for y-axis
         await userEvent.click(document.querySelector('.fa-gear'));
-        expect(document.querySelectorAll('input')).toHaveLength(11);
+        expect(document.querySelectorAll('input')).toHaveLength(13);
+        expect(document.querySelector('input[value=automatic]').hasAttribute('checked')).toBe(true);
+        expect(document.querySelector('input[value=manual]').hasAttribute('checked')).toBe(false);
         expect(document.querySelector('input[name=aggregate-method]').getAttribute('value')).toBe('SUM');
         expect(document.querySelectorAll('input[name=error-bar-method]')).toHaveLength(3);
         expect(document.querySelector('input[value=SD]').hasAttribute('checked')).toBe(false);
@@ -390,7 +392,9 @@ describe('ChartBuilderModal', () => {
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
         expect(document.querySelectorAll('.fa-gear')).toHaveLength(1); // gear icon for y-axis
         await userEvent.click(document.querySelector('.fa-gear'));
-        expect(document.querySelectorAll('input')).toHaveLength(11);
+        expect(document.querySelectorAll('input')).toHaveLength(13);
+        expect(document.querySelector('input[value=automatic]').hasAttribute('checked')).toBe(true);
+        expect(document.querySelector('input[value=manual]').hasAttribute('checked')).toBe(false);
         expect(document.querySelector('input[name=aggregate-method]').getAttribute('value')).toBe('MEAN');
         expect(document.querySelectorAll('input[name=error-bar-method]')).toHaveLength(3);
         expect(document.querySelector('input[value=SD]').hasAttribute('checked')).toBe(false);

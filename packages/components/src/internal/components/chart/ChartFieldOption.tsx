@@ -70,8 +70,6 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
     );
     const showRangeScaleOptions = isNumericType && shouldShowRangeScaleOptions(field, selectedType);
     const showAggregateOptions = isNumericType && shouldShowAggregateOptions(field, selectedType);
-    const isBar = selectedType.name === 'bar_chart';
-    const isLine = selectedType.name === 'line_plot';
 
     // Issue 52050: use fieldKey for special characters
     const selectInputValue = useMemo(() => fieldValue?.data.fieldKey ?? fieldValue?.value, [fieldValue]);
@@ -108,29 +106,19 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
                         onScaleChange={onScaleChange}
                         scale={scale}
                         setScale={setScale}
+                        showScaleTrans={selectedType.name !== 'bar_chart'}
                     >
-                        {isLine && showAggregateOptions && (
+                        {showAggregateOptions && (
                             <ChartFieldAggregateOptions
                                 asOverlay={false}
                                 field={field}
                                 fieldValues={fieldValues}
-                                includeCount={isBar}
-                                includeNone={isLine}
                                 onErrorBarChange={onErrorBarChange}
                                 onSelectFieldChange={onSelectFieldChange}
+                                selectedType={selectedType}
                             />
                         )}
                     </ChartFieldRangeScaleOptions>
-                )}
-                {isBar && showAggregateOptions && (
-                    <ChartFieldAggregateOptions
-                        field={field}
-                        fieldValues={fieldValues}
-                        includeCount={isBar}
-                        includeNone={isLine}
-                        onErrorBarChange={onErrorBarChange}
-                        onSelectFieldChange={onSelectFieldChange}
-                    />
                 )}
             </div>
         </div>

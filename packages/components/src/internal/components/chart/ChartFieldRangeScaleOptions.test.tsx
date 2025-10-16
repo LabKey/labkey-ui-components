@@ -2,12 +2,19 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { ChartFieldRangeScaleOptions } from './ChartFieldRangeScaleOptions';
+import { ScaleType } from './models';
 
 const field = { name: 'testField', label: 'Test Label', required: false };
 
-function renderComponent(scale = {}) {
+function renderComponent(scale = {} as ScaleType) {
     return render(
-        <ChartFieldRangeScaleOptions field={field} onScaleChange={jest.fn} scale={scale} setScale={jest.fn}>
+        <ChartFieldRangeScaleOptions
+            field={field}
+            onScaleChange={jest.fn}
+            scale={scale}
+            setScale={jest.fn}
+            showScaleTrans
+        >
             <div className="child-content">Children Content</div>
         </ChartFieldRangeScaleOptions>
     );
@@ -62,12 +69,12 @@ describe('ChartFieldRangeScaleOptions', () => {
     });
 
     test('does not show invalid range warning when min is undefined', async () => {
-        renderComponent({ type: 'manual', min: undefined, max: 10 });
+        renderComponent({ type: 'manual', min: undefined, max: 10 } as ScaleType);
         await userEvent.click(document.querySelector('.fa-gear'));
         expect(document.querySelectorAll('.text-danger')).toHaveLength(0);
     });
     test('does not show invalid range warning when max is undefined', async () => {
-        renderComponent({ type: 'manual', min: 5, max: undefined });
+        renderComponent({ type: 'manual', min: 5, max: undefined } as ScaleType);
         await userEvent.click(document.querySelector('.fa-gear'));
         expect(document.querySelectorAll('.text-danger')).toHaveLength(0);
     });

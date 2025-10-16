@@ -80,8 +80,9 @@ export const shouldShowRangeScaleOptions = (field: ChartFieldInfo, selectedType:
     const isScatter = selectedType.name === 'scatter_plot';
     const isLine = selectedType.name === 'line_plot';
     const isBox = selectedType.name === 'box_plot';
+    const isBar = selectedType.name === 'bar_chart';
     const showForX = field.name === 'x' && (isScatter || isLine);
-    const showForY = field.name === 'y' && (isScatter || isLine || isBox);
+    const showForY = field.name === 'y' && (isScatter || isLine || isBox || isBar);
     return showForX || showForY;
 };
 

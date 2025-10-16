@@ -328,7 +328,7 @@ const yField = { name: 'y' } as ChartFieldInfo;
 describe('shouldShowRangeScaleOptions', () => {
     test('based on chart type', () => {
         expect(shouldShowRangeScaleOptions(xField, BAR_CHART_TYPE)).toBe(false);
-        expect(shouldShowRangeScaleOptions(yField, BAR_CHART_TYPE)).toBe(false);
+        expect(shouldShowRangeScaleOptions(yField, BAR_CHART_TYPE)).toBe(true);
         expect(shouldShowRangeScaleOptions(xField, BOX_PLOT_TYPE)).toBe(false);
         expect(shouldShowRangeScaleOptions(yField, BOX_PLOT_TYPE)).toBe(true);
         expect(shouldShowRangeScaleOptions(xField, SCATTER_PLOT_TYPE)).toBe(true);

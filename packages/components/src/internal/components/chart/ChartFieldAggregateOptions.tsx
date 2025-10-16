@@ -1,10 +1,10 @@
 import React, { FC, memo, useCallback, useMemo } from 'react';
 import { OverlayTrigger } from '../../OverlayTrigger';
 import { Popover } from '../../Popover';
-import { RadioGroupInput, RadioGroupOption } from '../forms/input/RadioGroupInput';
+import { RadioGroupInput } from '../forms/input/RadioGroupInput';
 
 import { BAR_CHART_AGGREGATE_NAME, BAR_CHART_ERROR_BAR_NAME } from './constants';
-import { ChartFieldInfo } from './models';
+import { ChartFieldInfo, ChartTypeInfo } from './models';
 import { LabelOverlay } from '../forms/LabelOverlay';
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 
@@ -32,25 +32,18 @@ interface OwnProps {
     asOverlay?: boolean;
     field: ChartFieldInfo;
     fieldValues: Record<string, SelectInputOption>;
-    includeCount: boolean;
-    includeNone: boolean;
     onErrorBarChange: (name: string, value: string) => void;
     onSelectFieldChange: (name: string, value: string, selectedOption: SelectInputOption) => void;
+    selectedType: ChartTypeInfo;
 }
 
 export const ChartFieldAggregateOptions: FC<OwnProps> = memo(props => {
-    const {
-        field,
-        fieldValues,
-        onSelectFieldChange,
-        onErrorBarChange,
-        includeCount,
-        includeNone,
-        asOverlay = true,
-    } = props;
+    const { field, fieldValues, onSelectFieldChange, onErrorBarChange, asOverlay = true, selectedType } = props;
     const fieldValue = fieldValues?.[field.name];
     const aggregateValue = fieldValues?.[BAR_CHART_AGGREGATE_NAME]?.value;
     const errorBarValue = fieldValues?.[BAR_CHART_ERROR_BAR_NAME]?.value;
+    const includeNone = selectedType.name === 'line_plot';
+    const includeCount = selectedType.name === 'bar_chart';
     const defaultAggregateValue = useMemo(() => (includeNone ? '' : 'SUM'), [includeNone]);
     const errorBarRadioEnabled = useMemo(() => aggregateValue === 'MEAN', [aggregateValue]);
 

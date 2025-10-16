@@ -20,10 +20,12 @@ interface OwnProps extends PropsWithChildren {
     onScaleChange: (field: string, key: string, value: number | string, reset?: boolean) => void;
     scale: ScaleType;
     setScale: (scale: ScaleType) => void;
+    showScaleTrans: boolean;
 }
 
 export const ChartFieldRangeScaleOptions: FC<OwnProps> = memo(props => {
-    const { field, scale, setScale, onScaleChange, children } = props;
+    const { field, scale, setScale, onScaleChange, showScaleTrans, children } = props;
+    const placement = useMemo(() => (!showScaleTrans && children ? 'left' : 'bottom'), [showScaleTrans, children]);
 
     const scaleTransOptions = useMemo(() => {
         return SCALE_TRANS_TYPES.map(option => ({ ...option, selected: scale.trans === option.value }));
@@ -89,17 +91,19 @@ export const ChartFieldRangeScaleOptions: FC<OwnProps> = memo(props => {
         <div className="field-option-icon">
             <OverlayTrigger
                 overlay={
-                    <Popover id="chart-field-option-popover" placement="bottom">
+                    <Popover id="chart-field-option-popover" placement={placement}>
                         {children}
-                        <div className="field-option-radio-group">
-                            <label>Scale</label>
-                            <RadioGroupInput
-                                formsy={false}
-                                name="scaleTrans"
-                                onValueChange={onScaleTransChange}
-                                options={scaleTransOptions}
-                            />
-                        </div>
+                        {showScaleTrans && (
+                            <div className="field-option-radio-group">
+                                <label>Scale</label>
+                                <RadioGroupInput
+                                    formsy={false}
+                                    name="scaleTrans"
+                                    onValueChange={onScaleTransChange}
+                                    options={scaleTransOptions}
+                                />
+                            </div>
+                        )}
                         <div className="field-option-radio-group">
                             <label>Range</label>
                             <RadioGroupInput

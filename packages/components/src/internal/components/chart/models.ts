@@ -71,3 +71,10 @@ export interface ChartTypeInfo {
     name: string;
     title: string;
 }
+
+export interface ScaleType {
+    max?: number | string;
+    min?: number | string;
+    trans: string;
+    type: string;
+}

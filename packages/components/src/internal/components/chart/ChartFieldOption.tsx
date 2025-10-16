@@ -8,7 +8,7 @@ import { LABKEY_VIS } from '../../constants';
 import { naturalSortByProperty } from '../../../public/sort';
 
 import { ChartFieldRangeScaleOptions } from './ChartFieldRangeScaleOptions';
-import { ChartFieldInfo, ChartTypeInfo } from './models';
+import { ChartFieldInfo, ChartTypeInfo, ScaleType } from './models';
 import { getFieldDataType, shouldShowAggregateOptions, shouldShowRangeScaleOptions } from './utils';
 import { ChartFieldAggregateOptions } from './ChartFieldAggregateOptions';
 
@@ -45,7 +45,7 @@ interface OwnProps {
     onErrorBarChange: (name: string, value: string) => void;
     onScaleChange: (field: string, key: string, value: number | string, reset?: boolean) => void;
     onSelectFieldChange: (name: string, value: string, selectedOption: SelectInputOption) => void;
-    scaleValues?: Record<string, number | string>;
+    scaleValues?: ScaleType;
     selectedType: ChartTypeInfo;
 }
 
@@ -61,7 +61,7 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
         onErrorBarChange,
     } = props;
     const fieldValue = fieldValues?.[field.name];
-    const [scale, setScale] = useState<Record<string, number | string>>(scaleValues ?? {});
+    const [scale, setScale] = useState<ScaleType>(scaleValues ?? ({} as ScaleType));
 
     const options = useMemo(() => getSelectOptions(model, selectedType, field), [model, selectedType, field]);
     const isNumericType = useMemo(

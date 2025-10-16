@@ -1,9 +1,9 @@
-import React, {ChangeEvent, FC, memo, PropsWithChildren, useCallback, useMemo} from 'react';
+import React, { ChangeEvent, FC, memo, PropsWithChildren, useCallback, useMemo } from 'react';
 import { OverlayTrigger } from '../../OverlayTrigger';
 import { Popover } from '../../Popover';
 import { RadioGroupInput, RadioGroupOption } from '../forms/input/RadioGroupInput';
 
-import { ChartFieldInfo } from './models';
+import { ChartFieldInfo, ScaleType } from './models';
 
 const SCALE_TRANS_TYPES = [
     { value: 'linear', label: 'Linear' },
@@ -18,8 +18,8 @@ const SCALE_RANGE_TYPES = [
 interface OwnProps extends PropsWithChildren {
     field: ChartFieldInfo;
     onScaleChange: (field: string, key: string, value: number | string, reset?: boolean) => void;
-    scale: Record<string, number | string>;
-    setScale: (scale) => void;
+    scale: ScaleType;
+    setScale: (scale: ScaleType) => void;
 }
 
 export const ChartFieldRangeScaleOptions: FC<OwnProps> = memo(props => {
@@ -58,14 +58,14 @@ export const ChartFieldRangeScaleOptions: FC<OwnProps> = memo(props => {
     const onScaleTransChange = useCallback(
         (selected: string) => {
             onScaleChange(field.name, 'trans', selected);
-            setScale(prev => ({ ...prev, trans: selected }));
+            setScale({ ...scale, trans: selected });
         },
-        [field.name, onScaleChange, setScale]
+        [field.name, onScaleChange, setScale, scale]
     );
 
     const onScaleTypeChange = useCallback(
         (selected: string) => {
-            let scale_: Record<string, number | string> = { ...scale, type: selected };
+            let scale_ = { ...scale, type: selected };
             onScaleChange(field.name, 'type', selected);
             if (selected === 'automatic') {
                 onScaleChange(field.name, 'min', undefined);
@@ -79,16 +79,16 @@ export const ChartFieldRangeScaleOptions: FC<OwnProps> = memo(props => {
 
     const onScaleMinChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
-            setScale(prev => ({ ...prev, min: event.target.value }));
+            setScale({ ...scale, min: event.target.value });
         },
-        [setScale]
+        [setScale, scale]
     );
 
     const onScaleMaxChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
-            setScale(prev => ({ ...prev, max: event.target.value }));
+            setScale({ ...scale, max: event.target.value });
         },
-        [setScale]
+        [setScale, scale]
     );
 
     const onScaleRangeBlur = useCallback(() => {

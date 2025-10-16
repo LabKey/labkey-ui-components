@@ -26,23 +26,11 @@ export const ChartFieldRangeScaleOptions: FC<OwnProps> = memo(props => {
     const { field, scale, setScale, onScaleChange, children } = props;
 
     const scaleTransOptions = useMemo(() => {
-        return SCALE_TRANS_TYPES.map(
-            option =>
-                ({
-                    ...option,
-                    selected: scale.trans === option.value,
-                }) as RadioGroupOption
-        );
+        return SCALE_TRANS_TYPES.map(option => ({ ...option, selected: scale.trans === option.value }));
     }, [scale.trans]);
 
     const scaleTypeOptions = useMemo(() => {
-        return SCALE_RANGE_TYPES.map(
-            option =>
-                ({
-                    ...option,
-                    selected: scale.type === option.value,
-                }) as RadioGroupOption
-        );
+        return SCALE_RANGE_TYPES.map(option => ({ ...option, selected: scale.type === option.value }));
     }, [scale.type]);
 
     const invalidRange = useMemo(
@@ -132,7 +120,7 @@ export const ChartFieldRangeScaleOptions: FC<OwnProps> = memo(props => {
                                     type="number"
                                     value={scale.min ?? ''}
                                 />
-                                <span>&nbsp;&nbsp;-&nbsp;</span>
+                                <span className="chart-builder-field-footer-input">-</span>
                                 <input
                                     className="chart-builder-field-footer-input"
                                     name="scaleMax"

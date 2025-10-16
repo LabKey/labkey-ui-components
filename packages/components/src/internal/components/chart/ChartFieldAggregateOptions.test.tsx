@@ -44,7 +44,9 @@ describe('ChartFieldAggregateOptions', () => {
         expect(document.querySelectorAll('.field-option-radio-group')).toHaveLength(1);
         expect(document.querySelectorAll('.select-input-container')).toHaveLength(1);
         expect(document.querySelectorAll('input[type="radio"]')).toHaveLength(3); // None, SD, SEM
-        expect(document.querySelectorAll('input[type="radio"]:disabled')).toHaveLength(3); // None, SD, SEM disabled
+        expect(document.querySelector('input[name="error-bar-method"][value=""]').hasAttribute('disabled')).toBeTruthy();
+        expect(document.querySelector('input[name="error-bar-method"][value="SD"]').hasAttribute('disabled')).toBeTruthy();
+        expect(document.querySelector('input[name="error-bar-method"][value="SEM"]').hasAttribute('disabled')).toBeTruthy();
         expect(document.querySelectorAll('.radioinput-label.selected')[0].textContent).toBe('None');
     });
 
@@ -55,7 +57,9 @@ describe('ChartFieldAggregateOptions', () => {
         };
         renderComponent({ fieldValues: fieldValuesMean });
         await userEvent.click(document.querySelector('.fa-gear'));
-        expect(document.querySelectorAll('input[type="radio"]:disabled')).toHaveLength(0);
+        expect(document.querySelector('input[name="error-bar-method"][value=""]').hasAttribute('disabled')).toBeFalsy();
+        expect(document.querySelector('input[name="error-bar-method"][value="SD"]').hasAttribute('disabled')).toBeFalsy();
+        expect(document.querySelector('input[name="error-bar-method"][value="SEM"]').hasAttribute('disabled')).toBeFalsy();
         expect(document.querySelectorAll('.radioinput-label.selected')[0].textContent).toBe('None');
     });
 
@@ -67,7 +71,9 @@ describe('ChartFieldAggregateOptions', () => {
         };
         renderComponent({ fieldValues: fieldValuesSEM });
         await userEvent.click(document.querySelector('.fa-gear'));
-        expect(document.querySelectorAll('input[type="radio"]:disabled')).toHaveLength(0);
+        expect(document.querySelector('input[name="error-bar-method"][value=""]').hasAttribute('disabled')).toBeFalsy();
+        expect(document.querySelector('input[name="error-bar-method"][value="SD"]').hasAttribute('disabled')).toBeFalsy();
+        expect(document.querySelector('input[name="error-bar-method"][value="SEM"]').hasAttribute('disabled')).toBeFalsy();
         expect(document.querySelectorAll('.radioinput-label.selected')[0].textContent).toBe('Standard Error of the Mean');
     });
 

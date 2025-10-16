@@ -284,7 +284,7 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
     );
 
     const onErrorBarChange = useCallback((name: string, value: string) => {
-        onFieldChange(name, { value } as SelectInputOption);
+        onFieldChange(name, { value });
     }, [onFieldChange]);
 
     const onSelectFieldChange = useCallback(
@@ -408,8 +408,6 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
 
         if (!hasRequiredValues) return;
 
-        const width = ref?.current.getBoundingClientRect().width || 750;
-
         const chartConfig = getChartBuilderChartConfig(
             selectedType,
             fieldValues,
@@ -469,6 +467,7 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
                 }
 
                 // adjust height, width, and marginTop for the chart config for the preview, but not to save with the chart
+                const width = ref?.current.getBoundingClientRect().width || 750;
                 const chartConfig_ = {
                     ...chartConfig,
                     height: 350,
@@ -596,8 +595,11 @@ interface ChartBuilderModalProps extends RequiresModelAndActions {
 }
 
 export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, model, onHide, savedChartModel }) => {
-    const CHART_TYPES = LABKEY_VIS?.GenericChartHelper.getRenderTypes();
-    const TRENDLINE_OPTIONS: TrendlineType[] = Object.values(LABKEY_VIS.GenericChartHelper.TRENDLINE_OPTIONS);
+    const CHART_TYPES = useMemo(() => LABKEY_VIS?.GenericChartHelper.getRenderTypes(), []);
+    const TRENDLINE_OPTIONS: TrendlineType[] = useMemo(
+        () => Object.values(LABKEY_VIS.GenericChartHelper.TRENDLINE_OPTIONS),
+        []
+    );
 
     const { user, container, moduleContext } = useServerContext();
     const canShare = useMemo(
@@ -613,24 +615,20 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
         () => CHART_TYPES.filter(type => !type.hidden && !HIDDEN_CHART_TYPES.includes(type.name)),
         [CHART_TYPES]
     );
+    const chartConfig = useMemo(() => savedChartModel?.visualizationConfig?.chartConfig, [savedChartModel]);
     const [saving, setSaving] = useState<boolean>(false);
     const [error, setError] = useState<string>();
     const [reportConfig, setReportConfig] = useState<SaveReportConfig>();
-    const [selectedType, setSelectedChartType] = useState<ChartTypeInfo>(chartTypes[0]);
-    const [name, setName] = useState<string>('');
-    const [shared, setShared] = useState<boolean>(canShare);
-    const [inheritable, setInheritable] = useState<boolean>(false);
-    const [fieldValues, setFieldValues] = useState<Record<string, SelectInputOption>>({});
+    const [selectedType, setSelectedChartType] = useState<ChartTypeInfo>(
+        chartTypes.find(c => chartConfig?.renderType === c.name) ?? chartTypes[0]
+    );
+    const [name, setName] = useState<string>(savedChartModel?.name ?? '');
+    const [shared, setShared] = useState<boolean>(savedChartModel?.shared ?? canShare);
+    const [inheritable, setInheritable] = useState<boolean>(savedChartModel?.inheritable ?? false);
 
-    useEffect(
+    const initFieldValues = useMemo(
         () => {
             if (savedChartModel) {
-                const chartConfig = savedChartModel.visualizationConfig?.chartConfig;
-                setSelectedChartType(chartTypes.find(c => chartConfig?.renderType === c.name));
-                setName(savedChartModel.name);
-                setShared(savedChartModel.shared);
-                setInheritable(savedChartModel.inheritable);
-
                 const measures = chartConfig?.measures || {};
                 const fieldValues_ = Object.keys(measures).reduce((result, key) => {
                     let measure = measures[key];
@@ -672,13 +670,14 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
                     }
                 }
 
-                setFieldValues(fieldValues_);
+                return fieldValues_;
             }
+
+            return {};
         },
-        [
-            /* on mount only */
-        ]
+        [savedChartModel, chartConfig, TRENDLINE_OPTIONS]
     );
+    const [fieldValues, setFieldValues] = useState<Record<string, SelectInputOption>>(initFieldValues);
 
     const hasName = useMemo(() => name?.trim().length > 0, [name]);
     const hasRequiredValues = useMemo(() => {

@@ -34,6 +34,8 @@ describe('ChartFieldRangeScaleOptions', () => {
         expect(document.querySelectorAll('label')[1].textContent).toBe('Range');
         expect(document.querySelectorAll('.select-input-container')).toHaveLength(0);
         expect(document.querySelectorAll('input[type="radio"]')).toHaveLength(4); // 2 for scale, 2 for range
+        expect(document.querySelectorAll('input[name="scaleTrans"]')).toHaveLength(2);
+        expect(document.querySelectorAll('input[name="scaleType"]')).toHaveLength(2);
         expect(document.querySelectorAll('.radioinput-label.selected')[0].textContent).toBe('Linear');
         expect(document.querySelectorAll('.radioinput-label.selected')[1].textContent).toBe('Automatic');
         expect(document.querySelectorAll('input[type="number"]')).toHaveLength(0); // manual range inputs hidden by default

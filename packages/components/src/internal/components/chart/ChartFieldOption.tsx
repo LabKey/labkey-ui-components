@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 
@@ -40,12 +40,12 @@ const DEFAULT_SCALE_VALUES = { type: 'automatic', trans: 'linear' };
 
 interface OwnProps {
     field: ChartFieldInfo;
-    fieldValues?: Record<string, SelectInputOption>;
+    fieldValues: Record<string, SelectInputOption>;
     model: QueryModel;
     onErrorBarChange: (name: string, value: string) => void;
     onScaleChange: (field: string, key: string, value: number | string, reset?: boolean) => void;
     onSelectFieldChange: (name: string, value: string, selectedOption: SelectInputOption) => void;
-    scaleValues?: ScaleType;
+    scaleValues: ScaleType;
     selectedType: ChartTypeInfo;
 }
 
@@ -61,7 +61,7 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
         onErrorBarChange,
     } = props;
     const fieldValue = fieldValues?.[field.name];
-    const [scale, setScale] = useState<ScaleType>(scaleValues ?? ({} as ScaleType));
+    const [scale, setScale] = useState<ScaleType>(scaleValues?.type ? scaleValues : DEFAULT_SCALE_VALUES);
 
     const options = useMemo(() => getSelectOptions(model, selectedType, field), [model, selectedType, field]);
     const isNumericType = useMemo(
@@ -75,12 +75,6 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
 
     // Issue 52050: use fieldKey for special characters
     const selectInputValue = useMemo(() => fieldValue?.data.fieldKey ?? fieldValue?.value, [fieldValue]);
-
-    useEffect(() => {
-        if (showRangeScaleOptions && !scale.type) {
-            setScale(scaleValues?.type ? scaleValues : DEFAULT_SCALE_VALUES);
-        }
-    }, [showRangeScaleOptions, scale.type, scaleValues]);
 
     const onSelectFieldChange_ = useCallback(
         (name: string, value: string, selectedOption: SelectInputOption) => {

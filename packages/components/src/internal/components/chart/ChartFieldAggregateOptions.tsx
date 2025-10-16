@@ -59,31 +59,18 @@ export const ChartFieldAggregateOptions: FC<OwnProps> = memo(props => {
             if (option.value === 'COUNT' && !includeCount) {
                 return false;
             }
-            if (option.value === '' && !includeNone) {
-                return false;
-            }
-            return true;
+            return !(option.value === '' && !includeNone);
         });
 
-        return options.map(
-            option =>
-                ({
-                    ...option,
-                    selected: aggregateValue === option.value,
-                }) as RadioGroupOption
-        );
+        return options.map(option => ({ ...option, selected: aggregateValue === option.value }));
     }, [aggregateValue, includeCount, includeNone]);
 
     const errorBarOptions = useMemo(() => {
-        return ERROR_BAR_TYPES.map(
-            option =>
-                ({
-                    ...option,
-                    className: 'display-block',
-                    disabled: !errorBarRadioEnabled,
-                    selected: errorBarValue === option.value,
-                }) as RadioGroupOption
-        );
+        return ERROR_BAR_TYPES.map(option => ({
+            ...option,
+            disabled: !errorBarRadioEnabled,
+            selected: errorBarValue === option.value,
+        }));
     }, [errorBarRadioEnabled, errorBarValue]);
 
     const onAggregateChange = useCallback(

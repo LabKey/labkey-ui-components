@@ -15,6 +15,7 @@ import { LABKEY_VIS } from '../../internal/constants';
 
 import { makeTestActions, makeTestQueryModel } from './testUtils';
 import { ChartMenu, ChartMenuItem } from './ChartMenu';
+import { userEvent } from '@testing-library/user-event';
 
 LABKEY_VIS = {
     GenericChartHelper: {
@@ -25,22 +26,40 @@ LABKEY_VIS = {
 describe('ChartMenuItem', () => {
     test('use chart icon', () => {
         const chart = { name: 'TestChart', icon: 'icon.png', iconCls: 'fa-icon' } as DataViewInfo;
-        render(<ChartMenuItem chart={chart} showChart={jest.fn()} />);
+        render(<ChartMenuItem chart={chart} selectChart={jest.fn()} selectedReportIds={[]} />);
 
         expect(document.querySelector('.chart-menu-label').textContent).toBe('TestChart');
         expect(document.querySelectorAll('img')).toHaveLength(0);
         expect(document.querySelectorAll('.chart-menu-icon')).toHaveLength(1);
         expect(document.querySelectorAll('.fa-icon')).toHaveLength(1);
+        expect(document.querySelector('.chart-menu-checkbox')).toHaveClass('fa-square-o');
     });
 
     test('use svg img', () => {
         const chart = { name: 'TestChart', icon: 'icon.svg', iconCls: 'fa-icon' } as DataViewInfo;
-        render(<ChartMenuItem chart={chart} showChart={jest.fn()} />);
+        render(<ChartMenuItem chart={chart} selectChart={jest.fn()} selectedReportIds={[]} />);
 
         expect(document.querySelector('.chart-menu-label').textContent).toBe('TestChart');
         expect(document.querySelectorAll('img')).toHaveLength(1);
         expect(document.querySelectorAll('.chart-menu-icon')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-icon')).toHaveLength(0);
+        expect(document.querySelector('.chart-menu-checkbox')).toHaveClass('fa-square-o');
+    });
+
+    test('selectChart', async () => {
+        const selectChart = jest.fn();
+        const chart = { name: 'TestChart', icon: 'icon.png', iconCls: 'fa-icon', reportId: 'db:12' } as DataViewInfo;
+        const { rerender } = render(<ChartMenuItem chart={chart} selectChart={selectChart} selectedReportIds={[]} />);
+
+        expect(document.querySelector('.chart-menu-checkbox')).toHaveClass('fa-square-o');
+        await userEvent.click(document.querySelector('a'));
+        expect(selectChart).toHaveBeenCalledWith('db:12', true);
+
+        rerender(<ChartMenuItem chart={chart} selectChart={selectChart} selectedReportIds={['db:12']} />);
+
+        expect(document.querySelector('.chart-menu-checkbox')).toHaveClass('fa-check-square');
+        await userEvent.click(document.querySelector('a'));
+        expect(selectChart).toHaveBeenCalledWith('db:12', false);
     });
 });
 

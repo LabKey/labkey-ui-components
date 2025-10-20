@@ -130,7 +130,7 @@ export function formatSavedResults(
     const { key, orderedModels } = result;
     const models = fromJS(result.models[key]);
     const filteredResults = orderedModels[key]
-        .filter(k => !selectedItems.has(k))
+        // .filter(k => !selectedItems.has(k))
         .reduce((ordered, k) => ordered.set(k, models.get(k)), OrderedMap<string, any>());
 
     return formatResults(model, filteredResults, token);

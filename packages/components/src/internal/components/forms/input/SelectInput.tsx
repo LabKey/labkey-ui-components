@@ -222,6 +222,7 @@ export interface SelectInputProps {
     formsy?: boolean;
     help?: ReactNode;
     helpTipRenderer?: string;
+    hideSelectedOptions?: boolean;
     id?: any;
     initiallyDisabled?: boolean;
     inputClass?: string;
@@ -289,11 +290,12 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
         allowDisable: false,
         autoValue: true,
         clearable: true,
-        clearCacheOnChange: true,
+        clearCacheOnChange: false,
         closeMenuOnSelect: true,
         containerClass: INPUT_CONTAINER_CLASS_NAME,
         defaultOptions: true,
         delimiter: DELIMITER,
+        hideSelectedOptions: true,
         initiallyDisabled: false,
         inputClass: INPUT_WRAPPER_CLASS_NAME,
         labelClass: INPUT_LABEL_CLASS_NAME,

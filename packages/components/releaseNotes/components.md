@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages
 
 ### version 6.65.0
-*Released*: ? October 2025
+*Released*: 20 October 2025
 - QueryModel: remove selectedReportId, add selectedReportIds
 - withQueryModels: update selectReport, add clearSelectedReports
 - ChartMenu: support multiple report selections

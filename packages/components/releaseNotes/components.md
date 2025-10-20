@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 6.xx.x
+### version 6.65.0
 *Released*: ? October 2025
 - QueryModel: remove selectedReportId, add selectedReportIds
 - withQueryModels: update selectReport, add clearSelectedReports

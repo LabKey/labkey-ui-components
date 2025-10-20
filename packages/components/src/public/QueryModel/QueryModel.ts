@@ -779,7 +779,7 @@ export class QueryModel {
         }
 
         let sortStrings = sorts.map(sortStringMapper);
-        const viewSorts = queryInfo.getSorts(viewName).map(sortStringMapper);
+        const viewSorts = queryInfo.getSorts(viewName)?.map(sortStringMapper) ?? [];
 
         if (viewSorts.length > 0) {
             sortStrings = sortStrings.concat(viewSorts);

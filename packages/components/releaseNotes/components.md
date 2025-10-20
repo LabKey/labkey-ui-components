@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Various minor fixes for exception reports
+
 ### version 6.64.3
 *Released*: 13 October 2025
 - Search: escape all quotes in search terms

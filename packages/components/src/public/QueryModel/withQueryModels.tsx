@@ -110,6 +110,7 @@ export type ModelChange = AddChange | DeleteChange | UpdateChange;
 export interface Actions {
     addMessage: (id: string, message: GridMessage, duration?: number) => void;
     addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
+    clearSelectedReports: (id: string) => void;
     clearSelections: (id: string) => void;
     loadAllModels: (loadSelections?: boolean, reloadTotalCount?: boolean) => void;
     loadCharts: (id: string) => void;
@@ -124,7 +125,7 @@ export interface Actions {
     resetTotalCountState: () => void;
     selectAllRows: (id: string) => void;
     selectPage: (id: string, checked: boolean) => void;
-    selectReport: (id: string, reportId: string) => void;
+    selectReport: (id: string, reportId: string, selected: boolean) => void;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     selectRow: (id: string, checked: boolean, row: Record<string, any>, useSelectionPivot?: boolean) => void;
     setFilters: (id: string, filters: Filter.IFilter[], loadSelections?: boolean) => void;
@@ -318,6 +319,7 @@ export function withQueryModels<Props>(
             this.actions = {
                 addModel: this.addModel,
                 addMessage: this.addMessage,
+                clearSelectedReports: this.clearSelectedReports,
                 clearSelections: this.clearSelections,
                 loadModel: this.loadModel,
                 loadAllModels: this.loadAllModels,
@@ -685,11 +687,29 @@ export function withQueryModels<Props>(
             this.setSelections(id, checked, this.state.queryModels[id].orderedRows);
         };
 
-        selectReport = (id: string, reportId: string): void => {
+        selectReport = (id: string, reportId: string, selected: boolean): void => {
             this.setState(
                 produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
-                    model.selectedReportId = reportId;
+                    if (selected && !model.selectedReportIds.includes(reportId)) {
+                        model.selectedReportIds.push(reportId);
+                    } else if (!selected) {
+                        model.selectedReportIds = model.selectedReportIds.filter(id => id !== reportId);
+                    }
+                }),
+                () => {
+                    if (this.state.queryModels[id].bindURL) {
+                        this.bindURL(id);
+                    }
+                }
+            );
+        };
+
+        clearSelectedReports = (id: string): void => {
+            this.setState(
+                produce<State>((draft: WritableDraft<State>) => {
+                    const model = draft.queryModels[id];
+                    model.selectedReportIds = [];
                 }),
                 () => {
                     if (this.state.queryModels[id].bindURL) {

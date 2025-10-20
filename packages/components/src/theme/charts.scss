@@ -118,6 +118,17 @@
 .report-list__chart-preview .chart-body {
     min-height: 300px;
 }
+.chart-menu-checkbox {
+    margin-right: 8px;
+}
+.chart-menu-checkbox.fa-check-square {
+    color: $grid-action-item-color;
+}
+.chart-list {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
 .chart-panel__heading {
     display: flex;
 }
@@ -127,10 +138,7 @@
     vertical-align: middle;
 }
 .chart-panel {
-    margin-bottom: 16px;
     min-height: 100px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
     padding: 15px;
 }
 .chart-panel__hide-icon {

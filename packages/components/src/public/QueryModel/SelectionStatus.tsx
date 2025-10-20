@@ -43,7 +43,7 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
         selectionCount = (
             <span className="selection-status__count">
                 {selectionSize.toLocaleString()} of{' '}
-                {isLoadingTotalCount ? <LoadingSpinner msg="" /> : rowCount.toLocaleString()} selected
+                {isLoadingTotalCount ? <LoadingSpinner msg="" /> : rowCount?.toLocaleString()} selected
             </span>
         );
 

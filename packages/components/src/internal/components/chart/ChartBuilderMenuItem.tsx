@@ -1,13 +1,20 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 
-import { MenuItem } from '../../dropdowns';
 import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { ChartBuilderModal } from './ChartBuilderModal';
+import { DisableableMenuItem } from '../samples/DisableableMenuItem';
 
-export const ChartBuilderMenuItem: FC<RequiresModelAndActions> = memo(({ actions, model }) => {
+interface Props extends RequiresModelAndActions {
+    disabledMessage: string;
+    maxCharts: number;
+    selectedReportIds: string[];
+}
+
+export const ChartBuilderMenuItem: FC<Props> = memo(props => {
+    const { actions, disabledMessage, maxCharts, model, selectedReportIds } = props;
     const [showModal, setShowModal] = useState<boolean>(false);
     const { createNotification } = useNotificationsContext();
 
@@ -24,13 +31,14 @@ export const ChartBuilderMenuItem: FC<RequiresModelAndActions> = memo(({ actions
         },
         [createNotification]
     );
+    const disabled = selectedReportIds.length >= maxCharts;
 
     return (
         <>
-            <MenuItem onClick={onShowModal}>
+            <DisableableMenuItem disabled={disabled} disabledMessage={disabledMessage} onClick={onShowModal}>
                 <i className="fa fa-plus-circle" />
                 <span className="chart-menu-label">Create Chart</span>
-            </MenuItem>
+            </DisableableMenuItem>
             {showModal && <ChartBuilderModal actions={actions} model={model} onHide={onHideModal} />}
         </>
     );

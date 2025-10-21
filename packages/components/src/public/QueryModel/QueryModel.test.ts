@@ -404,7 +404,8 @@ describe('locationHasQueryParamSettings', () => {
     });
 
     test('with matching queryParams', () => {
-        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.reportId': '1' }))).toBe(true);
+        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedReportIds': '1' }))).toBe(true);
+        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedReportIds': '1;2' }))).toBe(true);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.view': '1' }))).toBe(true);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.q': '1' }))).toBe(true);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.sort': '1' }))).toBe(true);
@@ -414,7 +415,7 @@ describe('locationHasQueryParamSettings', () => {
     });
 
     test('with mismatched prefix', () => {
-        expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.reportId': '1' }))).toBe(false);
+        expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.selectedReportIds': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.view': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.q': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.sort': '1' }))).toBe(false);
@@ -426,6 +427,8 @@ describe('locationHasQueryParamSettings', () => {
     test('with mismatched queryParams', () => {
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.reportid': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.reportIdd': '1' }))).toBe(false);
+        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedreportids': '1' }))).toBe(false);
+        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedReportIdss': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.bogus': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.col~eq': '1' }))).toBe(true);
     });
@@ -438,7 +441,7 @@ describe('attributesForURLQueryParams', () => {
             maxRows: DEFAULT_MAX_ROWS,
             offset: DEFAULT_OFFSET,
             schemaQuery: SCHEMA_QUERY,
-            selectedReportId: undefined,
+            selectedReportIds: [],
             sorts: [],
         };
         const model = new QueryModel({
@@ -477,12 +480,12 @@ describe('attributesForURLQueryParams', () => {
 
         // reportId should be honored
         searchParams = new URLSearchParams({
-            'query.reportId': 'db:99',
+            'query.selectedReportIds': 'db:99',
         });
         values = model.attributesForURLQueryParams(searchParams);
         expect(values).toEqual({
             ...defaultExpected,
-            selectedReportId: 'db:99',
+            selectedReportIds: ['db:99'],
         });
 
         // custom views should alter schemaQuery
@@ -527,7 +530,7 @@ describe('attributesForURLQueryParams', () => {
             'query.otherCol~neq=': '1',
             'query.p': '3',
             'query.pageSize': '100',
-            'query.reportId': 'db:99',
+            'query.selectedReportIds': 'db:99;db:100',
             'query.sort': '-testCol,otherCol',
             'query.view': 'custom view',
         });
@@ -537,7 +540,7 @@ describe('attributesForURLQueryParams', () => {
             maxRows: 100,
             offset: 200,
             schemaQuery: new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'custom view'),
-            selectedReportId: 'db:99',
+            selectedReportIds: ['db:99', 'db:100'],
             sorts: expectedSorts,
         });
     });
@@ -548,10 +551,10 @@ describe('attributesForURLQueryParams', () => {
             maxRows: 10,
             offset: 60,
             schemaQuery: new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'existing custom view'),
-            selectedReportId: 'db:900',
+            selectedReportIds: ['db:900'],
             sorts: [new QuerySort({ dir: '-', fieldKey: 'existingCol' })],
         };
-        const model = new QueryModel({ ...defaultExpected }).mutate({ selectedReportId: 'db:900' });
+        const model = new QueryModel({ ...defaultExpected }).mutate({ selectedReportIds: ['db:900'] });
         let searchParams = new URLSearchParams({});
 
         let values = model.attributesForURLQueryParams(searchParams, true);
@@ -582,12 +585,20 @@ describe('attributesForURLQueryParams', () => {
 
         // reportId should be honored
         searchParams = new URLSearchParams({
-            'query.reportId': 'db:99',
+            'query.selectedReportIds': 'db:99',
         });
         values = model.attributesForURLQueryParams(searchParams, true);
         expect(values).toEqual({
             ...defaultExpected,
-            selectedReportId: 'db:99',
+            selectedReportIds: ['db:99'],
+        });
+        searchParams = new URLSearchParams({
+            'query.selectedReportIds': 'db:99;db:100',
+        });
+        values = model.attributesForURLQueryParams(searchParams, true);
+        expect(values).toEqual({
+            ...defaultExpected,
+            selectedReportIds: ['db:99', 'db:100'],
         });
 
         // custom views should alter schemaQuery
@@ -632,7 +643,7 @@ describe('attributesForURLQueryParams', () => {
             'query.otherCol~neq=': '1',
             'query.p': '3',
             'query.pageSize': '100',
-            'query.reportId': 'db:99',
+            'query.selectedReportIds': 'db:99',
             'query.sort': '-testCol,otherCol',
             'query.view': 'custom view',
         });
@@ -642,7 +653,7 @@ describe('attributesForURLQueryParams', () => {
             maxRows: 100,
             offset: 200,
             schemaQuery: new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'custom view'),
-            selectedReportId: 'db:99',
+            selectedReportIds: ['db:99'],
             sorts: expectedSorts,
         });
     });

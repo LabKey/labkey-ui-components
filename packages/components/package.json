@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "6.64.4-miscExceptionFixes-2511.1",
+  "version": "6.65.2-miscExceptionFixes-2511.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

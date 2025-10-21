@@ -295,7 +295,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
         containerClass: INPUT_CONTAINER_CLASS_NAME,
         defaultOptions: true,
         delimiter: DELIMITER,
-        hideSelectedOptions: true,
+        hideSelectedOptions: false,
         initiallyDisabled: false,
         inputClass: INPUT_WRAPPER_CLASS_NAME,
         labelClass: INPUT_LABEL_CLASS_NAME,

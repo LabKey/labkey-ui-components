@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released* TBD
 - Issue 52310: Change application single-value dropdowns to include the current value in the listed options
 
+### version TBD
+*Released*: TBD
+- Various minor fixes for exception reports
+
 ### version 6.65.1
 *Released*: 20 October 2025
 - SelectionStatus null check for rowCount

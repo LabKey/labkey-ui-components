@@ -142,7 +142,7 @@ export function checkPermissions(
  * @param perms Array of permission strings (See models/constants)
  * @param checkIsAdmin Indicates if user.isAdmin should override check. Defaults to true.
  * @param permissionCheck Sets which "has permissions" check logic is used.
- *   `all` - Require user to have all of the specified permissions (default).
+ *   `all` - Require user to have all the specified permissions (default).
  *   `any` - Require user to have any of the specified permissions.
  */
 export function hasPermissions(
@@ -151,7 +151,7 @@ export function hasPermissions(
     checkIsAdmin = true,
     permissionCheck: 'all' | 'any' = 'all'
 ): boolean {
-    return checkPermissions(user.isAdmin, user.permissionsList, perms, checkIsAdmin, permissionCheck);
+    return checkPermissions(user?.isAdmin, user?.permissionsList, perms, checkIsAdmin, permissionCheck);
 }
 
 /**

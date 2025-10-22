@@ -10,6 +10,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - support for error bar radio options as separate overlay or to be included in axis options overlay
   - Update ChartBuilderModal to pass down aggregate and error bar options to ChartConfig
 
+### version 6.65.2
+*Released*: 22 October 2025
+- Various minor fixes for exception reports
+
 ### version 6.65.1
 *Released*: 20 October 2025
 - SelectionStatus null check for rowCount

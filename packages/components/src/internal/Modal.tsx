@@ -25,9 +25,9 @@ export const BaseModal: FC<BaseModalProps> = ({ bsSize, children, className }) =
 
     useEffect(() => {
         // Prevent scrolling the body when a modal is shown
-        document.body.classList.toggle('no-scroll', true);
+        document.body.classList?.toggle('no-scroll', true);
         return () => {
-            document.body.classList.toggle('no-scroll', false);
+            document.body.classList?.toggle('no-scroll', false);
         };
     }, []);
 

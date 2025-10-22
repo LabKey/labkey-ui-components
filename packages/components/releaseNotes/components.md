@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Various minor fixes for exception reports
+
 ### version 6.65.1
 *Released*: 20 October 2025
 - SelectionStatus null check for rowCount

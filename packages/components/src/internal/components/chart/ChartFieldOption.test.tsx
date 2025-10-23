@@ -13,8 +13,8 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { ViewInfo } from '../../ViewInfo';
 
-import { ChartFieldOption, getSelectOptions, shouldShowFieldOptions } from './ChartFieldOption';
-import { ChartFieldInfo, ChartTypeInfo } from './ChartBuilderModal';
+import { ChartFieldOption, getSelectOptions } from './ChartFieldOption';
+import { ChartFieldInfo, ChartTypeInfo } from './models';
 
 LABKEY_VIS = {
     GenericChartHelper: {
@@ -82,35 +82,12 @@ describe('getSelectOptions', () => {
     });
 });
 
-describe('shouldShowFieldOptions', () => {
-    const xField = { name: 'x' } as ChartFieldInfo;
-    const yField = { name: 'y' } as ChartFieldInfo;
-
-    test('based on chart type', () => {
-        expect(shouldShowFieldOptions(xField, BAR_CHART_TYPE)).toBe(false);
-        expect(shouldShowFieldOptions(yField, BAR_CHART_TYPE)).toBe(false);
-        expect(shouldShowFieldOptions(xField, BOX_PLOT_TYPE)).toBe(false);
-        expect(shouldShowFieldOptions(yField, BOX_PLOT_TYPE)).toBe(true);
-        expect(shouldShowFieldOptions(xField, SCATTER_PLOT_TYPE)).toBe(true);
-        expect(shouldShowFieldOptions(yField, SCATTER_PLOT_TYPE)).toBe(true);
-        expect(shouldShowFieldOptions(xField, LINE_PLOT_TYPE)).toBe(true);
-        expect(shouldShowFieldOptions(yField, LINE_PLOT_TYPE)).toBe(true);
-    });
-
-    test('based on field name', () => {
-        expect(shouldShowFieldOptions({ name: 'series' } as ChartFieldInfo, BAR_CHART_TYPE)).toBe(false);
-        expect(shouldShowFieldOptions({ name: 'series' } as ChartFieldInfo, BOX_PLOT_TYPE)).toBe(false);
-        expect(shouldShowFieldOptions({ name: 'series' } as ChartFieldInfo, SCATTER_PLOT_TYPE)).toBe(false);
-        expect(shouldShowFieldOptions({ name: 'series' } as ChartFieldInfo, LINE_PLOT_TYPE)).toBe(false);
-    });
-});
-
 describe('ChartFieldOption', () => {
     test('line chart for x, showFieldOptions for int', async () => {
         render(
             <ChartFieldOption
                 field={{ name: 'x', label: 'X Axis', required: true } as ChartFieldInfo}
-                fieldValue={{ value: 'field1', data: { type: 'int' } }}
+                fieldValues={{ x: { value: 'field1', data: { type: 'int' } } }}
                 model={model}
                 onScaleChange={jest.fn()}
                 onSelectFieldChange={jest.fn()}
@@ -129,7 +106,7 @@ describe('ChartFieldOption', () => {
         render(
             <ChartFieldOption
                 field={{ name: 'x', label: 'X Axis', required: true } as ChartFieldInfo}
-                fieldValue={{ value: 'field1', data: { type: 'date' } }}
+                fieldValues={{ x: { value: 'field1', data: { type: 'date' } } }}
                 model={model}
                 onScaleChange={jest.fn()}
                 onSelectFieldChange={jest.fn()}
@@ -148,7 +125,7 @@ describe('ChartFieldOption', () => {
         render(
             <ChartFieldOption
                 field={{ name: 'x', label: 'X Axis', required: true } as ChartFieldInfo}
-                fieldValue={{ value: 'field1', data: { type: 'int' } }}
+                fieldValues={{ x: { value: 'field1', data: { type: 'int' } } }}
                 model={model}
                 onScaleChange={jest.fn()}
                 onSelectFieldChange={jest.fn()}
@@ -167,7 +144,7 @@ describe('ChartFieldOption', () => {
         render(
             <ChartFieldOption
                 field={{ name: 'x', label: 'X Axis', required: false } as ChartFieldInfo}
-                fieldValue={{ value: 'field1', data: { type: 'date' } }}
+                fieldValues={{ x: { value: 'field1', data: { type: 'date' } } }}
                 model={model}
                 onScaleChange={jest.fn()}
                 onSelectFieldChange={jest.fn()}
@@ -184,7 +161,7 @@ describe('ChartFieldOption', () => {
         render(
             <ChartFieldOption
                 field={{ name: 'x', label: 'X Axis', required: true } as ChartFieldInfo}
-                fieldValue={{ value: 'field1', data: { type: 'int' } }}
+                fieldValues={{ x: { value: 'field1', data: { type: 'int' } } }}
                 model={model}
                 onScaleChange={jest.fn()}
                 onSelectFieldChange={jest.fn()}
@@ -215,11 +192,11 @@ describe('ChartFieldOption', () => {
         render(
             <ChartFieldOption
                 field={{ name: 'x', label: 'X Axis', required: true } as ChartFieldInfo}
-                fieldValue={{ value: 'field1', data: { type: 'int' } }}
-                scaleValues={{ trans: 'log', type: 'manual', min: '3', max: '20' }}
+                fieldValues={{ x: { value: 'field1', data: { type: 'int' } } }}
                 model={model}
                 onScaleChange={jest.fn()}
                 onSelectFieldChange={jest.fn()}
+                scaleValues={{ trans: 'log', type: 'manual', min: '3', max: '20' }}
                 selectedType={LINE_PLOT_TYPE}
             />
         );
@@ -252,11 +229,11 @@ describe('ChartFieldOption', () => {
         render(
             <ChartFieldOption
                 field={{ name: 'x', label: 'X Axis', required: true } as ChartFieldInfo}
-                fieldValue={{ value: 'field1', data: { type: 'int' } }}
-                scaleValues={{ trans: 'log', type: 'manual', min: '1', max: '0' }}
+                fieldValues={{ x: { value: 'field1', data: { type: 'int' } } }}
                 model={model}
                 onScaleChange={jest.fn()}
                 onSelectFieldChange={jest.fn()}
+                scaleValues={{ trans: 'log', type: 'manual', min: '1', max: '0' }}
                 selectedType={LINE_PLOT_TYPE}
             />
         );

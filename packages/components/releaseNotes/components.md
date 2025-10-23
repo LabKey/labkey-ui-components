@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.66.0
+*Released*: 23 October 2025
 - ChartBuilderModal support for bar/line chart aggregate method and error bar options
   - useOverlayTriggerState update to not close popover on document click that is a select option target
   - Factor ChartFieldRangeScaleOptions.tsx out of ChartFieldOption.tsx

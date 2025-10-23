@@ -218,9 +218,9 @@ const ChartTypeSideBar: FC<ChartTypeSideBarProps> = memo(props => {
 
                 return (
                     <div
-                        key={type.name}
                         className={classNames('chart-builder-type', { selected, selectable })}
                         data-name={type.name}
+                        key={type.name}
                         onClick={onChange}
                     >
                         <SVGIcon height={null} iconSrc={!selected ? ICONS[type.name] + '_gray' : ICONS[type.name]} />
@@ -283,9 +283,12 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
         [selectedType]
     );
 
-    const onErrorBarChange = useCallback((name: string, value: string) => {
-        onFieldChange(name, { value });
-    }, [onFieldChange]);
+    const onErrorBarChange = useCallback(
+        (name: string, value: string) => {
+            onFieldChange(name, { value });
+        },
+        [onFieldChange]
+    );
 
     const onSelectFieldChange = useCallback(
         (key: string, _: never, selectedOption: SelectInputOption) => {
@@ -300,7 +303,7 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
     );
 
     const onFieldScaleChange = useCallback(
-        (field: string, key: string, value: string | number, reset = false) => {
+        (field: string, key: string, value: number | string, reset = false) => {
             const scales = fieldValues.scales?.value ?? {};
             if (!scales[field] || reset) scales[field] = { type: 'automatic', trans: 'linear' };
             if (key) scales[field][key] = value;
@@ -317,24 +320,24 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
                     <input
                         className="form-control"
                         name="name"
+                        onChange={onNameChange}
                         placeholder="Enter a name"
                         type="text"
-                        onChange={onNameChange}
                         value={name}
                     />
                     {canShare && (
                         <div className="checkbox-input">
-                            <input name="shared" type="checkbox" checked={shared} onChange={onToggleShared} />
+                            <input checked={shared} name="shared" onChange={onToggleShared} type="checkbox" />
                             <span onClick={onToggleShared}>Make this chart available to all users</span>
                         </div>
                     )}
                     {allowInherit && (
                         <div className="checkbox-input">
                             <input
-                                name="inheritable"
-                                type="checkbox"
                                 checked={inheritable}
+                                name="inheritable"
                                 onChange={onToggleInheritable}
+                                type="checkbox"
                             />
                             <span onClick={onToggleInheritable}>Make this chart available in child folders</span>
                         </div>
@@ -496,7 +499,7 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
                     {loadingData && (
                         <div className="chart-loading-mask">
                             <div className="chart-loading-mask__background" />
-                            <LoadingSpinner wrapperClassName="loading-spinner" msg="Loading Preview..." />
+                            <LoadingSpinner msg="Loading Preview..." wrapperClassName="loading-spinner" />
                         </div>
                     )}
                     <div className="svg-chart__chart" id={divId} ref={ref} />
@@ -554,10 +557,10 @@ const ChartBuilderFooter: FC<ChartBuilderFooterProps> = memo(props => {
                 <div className="form-buttons__left" />
                 <div className="form-buttons__right">
                     Are you sure you want to permanently delete this chart?
-                    <button className="btn btn-default" onClick={onCancelDelete} type="button" disabled={deleting}>
+                    <button className="btn btn-default" disabled={deleting} onClick={onCancelDelete} type="button">
                         Cancel
                     </button>
-                    <button className="btn btn-danger" onClick={onConfirmDelete} type="button" disabled={deleting}>
+                    <button className="btn btn-danger" disabled={deleting} onClick={onConfirmDelete} type="button">
                         {deleting ? 'Deleting...' : 'Delete'}
                     </button>
                 </div>
@@ -575,7 +578,7 @@ const ChartBuilderFooter: FC<ChartBuilderFooterProps> = memo(props => {
                     Delete Chart
                 </button>
             )}
-            <button className="btn btn-success" onClick={onSaveChart} type="button" disabled={saving || disabled}>
+            <button className="btn btn-success" disabled={saving || disabled} onClick={onSaveChart} type="button">
                 {saving
                     ? savedChartModel
                         ? 'Saving Chart...'
@@ -626,58 +629,57 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
     const [shared, setShared] = useState<boolean>(savedChartModel?.shared ?? canShare);
     const [inheritable, setInheritable] = useState<boolean>(savedChartModel?.inheritable ?? false);
 
-    const initFieldValues = useMemo(
-        () => {
-            if (savedChartModel) {
-                const measures = chartConfig?.measures || {};
-                const fieldValues_ = Object.keys(measures).reduce((result, key) => {
-                    let measure = measures[key];
-                    if (measure) {
-                        // Currently only supporting a single measure per axis (i.e. not supporting y-axis left/right)
-                        if (Utils.isArray(measure)) measure = measure[0];
-                        result[key] = { label: measure.label, value: measure.name, data: measure };
-                    }
-                    return result;
-                }, {});
-
-                // handle scales
-                if (chartConfig?.scales) {
-                    fieldValues_['scales'] = { value: { ...chartConfig.scales } };
+    const initFieldValues = useMemo(() => {
+        if (savedChartModel) {
+            const measures = chartConfig?.measures || {};
+            const fieldValues_ = Object.keys(measures).reduce((result, key) => {
+                let measure = measures[key];
+                if (measure) {
+                    // Currently only supporting a single measure per axis (i.e. not supporting y-axis left/right)
+                    if (Utils.isArray(measure)) measure = measure[0];
+                    result[key] = { label: measure.label, value: measure.name, data: measure };
                 }
+                return result;
+            }, {});
 
-                // handle bar chart aggregate method and error bars
-                const y = Utils.isArray(measures.y) ? measures.y[0] : measures.y;
-                if (y?.aggregate) {
-                    fieldValues_[BAR_CHART_AGGREGATE_NAME] = Utils.isObject(y.aggregate) ? { ...y.aggregate } : { value: y.aggregate };
-                    if (y.errorBars) {
-                        fieldValues_[BAR_CHART_ERROR_BAR_NAME] = { value: y.errorBars };
-                    }
-                }
-
-                // handle trendline options
-                if (chartConfig?.geomOptions?.trendlineType) {
-                    fieldValues_['trendlineType'] = TRENDLINE_OPTIONS.find(
-                        option => option.value === chartConfig.geomOptions.trendlineType
-                    );
-                    if (chartConfig.geomOptions.trendlineAsymptoteMin) {
-                        fieldValues_['trendlineAsymptoteMin'] = {
-                            value: chartConfig.geomOptions.trendlineAsymptoteMin,
-                        };
-                    }
-                    if (chartConfig.geomOptions.trendlineAsymptoteMax) {
-                        fieldValues_['trendlineAsymptoteMax'] = {
-                            value: chartConfig.geomOptions.trendlineAsymptoteMax,
-                        };
-                    }
-                }
-
-                return fieldValues_;
+            // handle scales
+            if (chartConfig?.scales) {
+                fieldValues_['scales'] = { value: { ...chartConfig.scales } };
             }
 
-            return {};
-        },
-        [savedChartModel, chartConfig, TRENDLINE_OPTIONS]
-    );
+            // handle bar chart aggregate method and error bars
+            const y = Utils.isArray(measures.y) ? measures.y[0] : measures.y;
+            if (y?.aggregate) {
+                fieldValues_[BAR_CHART_AGGREGATE_NAME] = Utils.isObject(y.aggregate)
+                    ? { ...y.aggregate }
+                    : { value: y.aggregate };
+                if (y.errorBars) {
+                    fieldValues_[BAR_CHART_ERROR_BAR_NAME] = { value: y.errorBars };
+                }
+            }
+
+            // handle trendline options
+            if (chartConfig?.geomOptions?.trendlineType) {
+                fieldValues_['trendlineType'] = TRENDLINE_OPTIONS.find(
+                    option => option.value === chartConfig.geomOptions.trendlineType
+                );
+                if (chartConfig.geomOptions.trendlineAsymptoteMin) {
+                    fieldValues_['trendlineAsymptoteMin'] = {
+                        value: chartConfig.geomOptions.trendlineAsymptoteMin,
+                    };
+                }
+                if (chartConfig.geomOptions.trendlineAsymptoteMax) {
+                    fieldValues_['trendlineAsymptoteMax'] = {
+                        value: chartConfig.geomOptions.trendlineAsymptoteMax,
+                    };
+                }
+            }
+
+            return fieldValues_;
+        }
+
+        return {};
+    }, [savedChartModel, chartConfig, TRENDLINE_OPTIONS]);
     const [fieldValues, setFieldValues] = useState<Record<string, SelectInputOption>>(initFieldValues);
 
     const hasName = useMemo(() => name?.trim().length > 0, [name]);
@@ -762,9 +764,9 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
     return (
         <Modal
             className="chart-builder-modal"
+            footer={footer}
             onCancel={onCancel}
             title={savedChartModel ? 'Edit Chart' : 'Create Chart'}
-            footer={footer}
         >
             {error && <Alert>{error}</Alert>}
             <div className="row">
@@ -772,8 +774,8 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
                     <ChartTypeSideBar
                         chartTypes={chartTypes}
                         onChange={onChartTypeChange}
-                        selectedType={selectedType}
                         savedChartModel={savedChartModel}
+                        selectedType={selectedType}
                     />
                 </div>
                 <div className="col-xs-11 col-right">
@@ -784,21 +786,21 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
                         inheritable={inheritable}
                         model={model}
                         name={name}
-                        onNameChange={onNameChange}
                         onFieldChange={onFieldChange}
+                        onNameChange={onNameChange}
                         onToggleInheritable={onToggleInheritable}
                         onToggleShared={onToggleShared}
                         savedChartModel={savedChartModel}
-                        shared={shared}
                         selectedType={selectedType}
+                        shared={shared}
                     />
                     <div className="row margin-top">
                         <div className="col-xs-12">
                             <ChartPreview
-                                savedChartModel={savedChartModel}
                                 fieldValues={fieldValues}
-                                model={model}
                                 hasRequiredValues={hasRequiredValues}
+                                model={model}
+                                savedChartModel={savedChartModel}
                                 selectedType={selectedType}
                                 setReportConfig={setReportConfig}
                             />

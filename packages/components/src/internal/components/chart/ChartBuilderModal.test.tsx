@@ -369,7 +369,10 @@ describe('ChartBuilderModal', () => {
             visualizationConfig: {
                 chartConfig: {
                     renderType: 'bar_chart',
-                    measures: { x: { name: 'field1' }, y: { name: 'field2', aggregate: { value: 'MEAN' }, errorBars: 'SEM' } },
+                    measures: {
+                        x: { name: 'field1' },
+                        y: { name: 'field2', aggregate: { value: 'MEAN' }, errorBars: 'SEM' },
+                    },
                     labels: { x: 'Field 1', y: 'Field 2' },
                 },
                 queryConfig: {

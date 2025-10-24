@@ -232,6 +232,7 @@ import {
     selectDistinctRows,
     selectRowsDeprecated,
     updateRows,
+    saveRows,
 } from './internal/query/api';
 import { processSchemas } from './internal/query/utils';
 import {
@@ -254,6 +255,7 @@ import {
     AssayUploadTabs,
     DataViewInfoTypes,
     EXPORT_TYPES,
+    EDIT_METHOD,
     GRID_CHECKBOX_OPTIONS,
     IMPORT_DATA_FORM_TYPES,
     MAX_EDITABLE_GRID_ROWS,
@@ -337,7 +339,6 @@ import {
     getUsersWithPermissions,
     handleInputTab,
     handleTabKeyOnTextArea,
-    updateRowFieldValue,
     useUsersWithPermissions,
 } from './internal/components/forms/actions';
 import { FormStep, FormTabs, withFormSteps } from './internal/components/forms/FormStep';
@@ -1307,6 +1308,7 @@ export {
     ExperimentRunResolver,
     ExpirationDateColumnRenderer,
     EXPORT_TYPES,
+    EDIT_METHOD,
     ExtendedMap,
     fetchContainerSecurityPolicy,
     fetchDataClass,
@@ -1772,8 +1774,8 @@ export {
     updateCellValuesForSampleIds,
     updateGridFromBulkForm,
     updatePicklist,
-    updateRowFieldValue,
     updateRows,
+    saveRows,
     updateSampleStorageData,
     uploadWebDavFile,
     URL_MAPPERS,

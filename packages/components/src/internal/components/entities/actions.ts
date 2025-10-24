@@ -980,8 +980,12 @@ export function moveEntities(options: MoveEntitiesOptions): Promise<Query.MoveRo
             }, []);
         }
 
+        const requestLocation = window.location.hash;
+        const requestSource = requestLocation ? {sourcePage: requestLocation} : null;
+
         Query.moveRows({
             ...params,
+            auditDetails,
             success: (response: Query.MoveRowsResponse) => {
                 if (response.success) {
                     resolve(response);

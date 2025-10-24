@@ -568,6 +568,7 @@ export function updateSampleStorageData(
             jsonData: {
                 sampleRows: sampleStorageData,
                 [STORED_AMOUNT_FIELDS.AUDIT_COMMENT]: userComment,
+                requestSource: window.location.hash,
                 isDiscard,
             },
             success: Utils.getCallbackWrapper(response => {

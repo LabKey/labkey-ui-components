@@ -49,6 +49,16 @@ export enum EXPORT_TYPES {
     LABEL_TEMPLATE,
 }
 
+export enum EDIT_METHOD {
+    DETAIL_EDIT = 'DetailEdit',
+    FORM_INSERT = 'FormInsert',
+    GRID_EDIT = 'GridEdit',
+    GRID_INSERT = 'GridInsert',
+    BULK_EDIT = 'BulkEdit',
+    BULK_EDIT_LINEAGE = 'BulkEditLineage',
+    DETAIL_EDIT_LINEAGE = 'DetailEditLineage',
+}
+
 export enum KEYS {
     Backspace = 8,
     Tab = 9,

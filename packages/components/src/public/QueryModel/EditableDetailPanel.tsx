@@ -21,6 +21,7 @@ import { useAppContext } from '../../internal/AppContext';
 import { QueryModel } from './QueryModel';
 
 import { DetailPanel, DetailPanelWithModel } from './DetailPanel';
+import { EDIT_METHOD } from '../../internal/constants';
 
 export interface EditableDetailPanelProps {
     appEditable?: boolean;
@@ -139,6 +140,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
                 onBeforeUpdate?.(updatedValues);
 
                 await api.query.updateRows({
+                    editMethod: EDIT_METHOD.DETAIL_EDIT,
                     auditBehavior: AuditBehaviorTypes.DETAILED,
                     containerPath,
                     rows: [updatedValues],

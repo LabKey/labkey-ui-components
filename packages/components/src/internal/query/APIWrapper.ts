@@ -60,11 +60,13 @@ import {
     SelectDistinctOptions,
     selectDistinctRows,
     updateRows,
+    saveRows,
     updateRowsByContainer,
     UpdateRowsOptions,
 } from './api';
 import { executeSql, ExecuteSqlOptions, ExecuteSqlResponse } from './executeSql';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
+import { EDIT_METHOD } from '../constants';
 
 export interface QueryAPIWrapper {
     clearSelected: (options: ClearSelectedOptions) => Promise<SelectResponse>;
@@ -125,6 +127,7 @@ export interface QueryAPIWrapper {
         inherit: boolean,
         shared: boolean
     ) => Promise<void>;
+    saveRows: (options: SaveRowsOptions) => Promise<Query.SaveRowsResponse>;
     saveRowsByContainer: (options: SaveRowsOptions, containerField?: string) => Promise<Query.SaveRowsResponse>;
     saveSessionView: (
         schemaQuery: SchemaQuery,
@@ -159,6 +162,7 @@ export interface QueryAPIWrapper {
         rows: any[],
         containerPaths: string[],
         auditUserComment: string,
+        editMethod?: EDIT_METHOD,
         containerField?: string
     ) => Promise<Query.SaveRowsResponse | QueryCommandResponse>;
 }
@@ -182,6 +186,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     incrementClientSideMetricCount = incrementClientSideMetricCount;
     incrementRowCountMetric = incrementRowCountMetric;
     insertRows = insertRows;
+    saveRows = saveRows;
     renameGridView = renameGridView;
     replaceSelected = replaceSelected;
     saveGridView = saveGridView;
@@ -225,6 +230,7 @@ export function getQueryTestAPIWrapper(
         renameGridView: mockFn(),
         replaceSelected: mockFn(),
         saveGridView: mockFn(),
+        saveRows: mockFn(),
         saveRowsByContainer: mockFn(),
         saveSessionView: mockFn(),
         selectRows: mockFn(),

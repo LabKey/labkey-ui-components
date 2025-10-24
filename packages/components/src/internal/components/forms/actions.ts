@@ -116,4 +116,3 @@ export function useUsersWithPermissions(
 
     return { error, loadingState, users };
 }
-

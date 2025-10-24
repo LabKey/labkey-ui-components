@@ -164,10 +164,10 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
     const panel = (
         <div className={`panel ${editing ? 'panel-info' : 'panel-default'}`}>
             <DetailPanelHeader
-                isEditable={isEditable && canUpdate}
                 editing={editing}
-                title={title}
+                isEditable={isEditable && canUpdate}
                 onClick={toggleEditing}
+                title={title}
                 warning={warning}
             />
 
@@ -218,27 +218,27 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
         return (
             <Formsy
                 onChange={handleFormChange}
-                onValidSubmit={handleSubmit}
-                onValid={enableSubmitButton}
                 onInvalid={disableSubmitButton}
+                onValid={enableSubmitButton}
+                onValidSubmit={handleSubmit}
             >
                 {panel}
 
                 <FormButtons>
-                    <button className="btn btn-default" type="button" onClick={toggleEditing}>
+                    <button className="btn btn-default" onClick={toggleEditing} type="button">
                         Cancel
                     </button>
                     <CommentTextArea
                         actionName="Update"
                         containerClassName="inline-comment"
+                        inline
                         onChange={_onCommentChange}
                         requiresUserComment={requiresUserComment}
-                        inline
                     />
                     <button
                         className="btn btn-success"
-                        type="submit"
                         disabled={!canSubmit || (requiresUserComment && !hasValidUserComment) || disabled}
+                        type="submit"
                     >
                         {submitText}
                     </button>

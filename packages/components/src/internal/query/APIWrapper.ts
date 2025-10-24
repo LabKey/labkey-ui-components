@@ -55,12 +55,12 @@ import {
     insertRows,
     InsertRowsOptions,
     QueryCommandResponse,
+    saveRows,
     saveRowsByContainer,
     SaveRowsOptions,
     SelectDistinctOptions,
     selectDistinctRows,
     updateRows,
-    saveRows,
     updateRowsByContainer,
     UpdateRowsOptions,
 } from './api';

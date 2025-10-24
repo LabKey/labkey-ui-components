@@ -50,13 +50,13 @@ export enum EXPORT_TYPES {
 }
 
 export enum EDIT_METHOD {
+    BULK_EDIT = 'BulkEdit',
+    BULK_EDIT_LINEAGE = 'BulkEditLineage',
     DETAIL_EDIT = 'DetailEdit',
+    DETAIL_EDIT_LINEAGE = 'DetailEditLineage',
     FORM_INSERT = 'FormInsert',
     GRID_EDIT = 'GridEdit',
     GRID_INSERT = 'GridInsert',
-    BULK_EDIT = 'BulkEdit',
-    BULK_EDIT_LINEAGE = 'BulkEditLineage',
-    DETAIL_EDIT_LINEAGE = 'DetailEditLineage',
 }
 
 export enum KEYS {

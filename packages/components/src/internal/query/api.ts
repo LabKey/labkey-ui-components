@@ -746,7 +746,8 @@ export interface QueryRequestOptionsBase {
     editMethod?: EDIT_METHOD;
 }
 export interface InsertRowsOptions
-    extends Omit<Query.QueryRequestOptions, 'apiVersion' | 'queryName' | 'rows' | 'schemaName'>, QueryRequestOptionsBase {
+    extends Omit<Query.QueryRequestOptions, 'apiVersion' | 'queryName' | 'rows' | 'schemaName'>,
+        QueryRequestOptionsBase {
     fillEmptyFields?: boolean;
     rows: List<any>; // TODO: convert to Array<Record<string, any>>
     schemaQuery: SchemaQuery;
@@ -789,8 +790,7 @@ function getRequestAuditDetail(editMethod?: EDIT_METHOD): Record<string, string>
         auditDetails['editMethod'] = editMethod;
     }
     const requestLocation = window.location.hash;
-    if (requestLocation)
-        auditDetails['requestSource'] = requestLocation;
+    if (requestLocation) auditDetails['requestSource'] = requestLocation;
 
     return auditDetails;
 }
@@ -878,7 +878,9 @@ function ensureNullForUndefined(row: Map<string, any>): Map<string, any> {
     return row.reduce((map, v, k) => map.set(k, v === undefined ? null : v), Map<string, any>());
 }
 
-export interface UpdateRowsOptions extends Omit<Query.QueryRequestOptions, 'queryName' | 'schemaName'>, QueryRequestOptionsBase {
+export interface UpdateRowsOptions
+    extends Omit<Query.QueryRequestOptions, 'queryName' | 'schemaName'>,
+        QueryRequestOptionsBase {
     schemaQuery: SchemaQuery;
 }
 
@@ -937,7 +939,7 @@ export function updateRowsByContainer(
             auditUserComment,
             rows,
             schemaQuery,
-            editMethod
+            editMethod,
         });
     } else {
         const commands: Query.Command[] = [];
@@ -950,14 +952,19 @@ export function updateRowsByContainer(
             auditUserComment,
             skipReselectRows: true,
         });
-        return saveRowsByContainer({
-            commands,
-            editMethod
-        }, containerField);
+        return saveRowsByContainer(
+            {
+                commands,
+                editMethod,
+            },
+            containerField
+        );
     }
 }
 
-export interface DeleteRowsOptions extends Omit<Query.QueryRequestOptions, 'queryName' | 'schemaName'>, QueryRequestOptionsBase {
+export interface DeleteRowsOptions
+    extends Omit<Query.QueryRequestOptions, 'queryName' | 'schemaName'>,
+        QueryRequestOptionsBase {
     schemaQuery: SchemaQuery;
 }
 
@@ -989,7 +996,7 @@ export function deleteRows(options: DeleteRowsOptions): Promise<QueryCommandResp
     });
 }
 
-export interface SaveRowsOptions extends Omit<Query.SaveRowsOptions, 'failure' | 'success'>, QueryRequestOptionsBase {};
+export interface SaveRowsOptions extends Omit<Query.SaveRowsOptions, 'failure' | 'success'>, QueryRequestOptionsBase {}
 
 export function saveRows(options: SaveRowsOptions): Promise<Query.SaveRowsResponse> {
     return new Promise((resolve, reject) => {

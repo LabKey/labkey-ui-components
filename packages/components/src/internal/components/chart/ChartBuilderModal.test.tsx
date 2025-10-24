@@ -19,15 +19,13 @@ import {
 
 import {
     ChartBuilderModal,
-    ChartTypeInfo,
     getChartBuilderChartConfig,
     getChartBuilderQueryConfig,
     getChartRenderMsg,
     getDefaultBarChartAxisLabel,
-    MAX_POINT_DISPLAY,
-    MAX_ROWS_PREVIEW,
 } from './ChartBuilderModal';
-import { ChartConfig, ChartQueryConfig, GenericChartModel } from './models';
+import { MAX_POINT_DISPLAY, MAX_ROWS_PREVIEW } from './constants';
+import { ChartConfig, ChartQueryConfig, ChartTypeInfo, GenericChartModel } from './models';
 
 const BAR_CHART_TYPE = {
     name: 'bar_chart',
@@ -319,7 +317,7 @@ describe('ChartBuilderModal', () => {
         validate(false, true, true);
     });
 
-    test('init from bar chart with y axis value and default aggregate method', () => {
+    test('init from bar chart with y axis value and default aggregate method', async () => {
         const savedChartModel = {
             canShare: true,
             canDelete: true,
@@ -348,12 +346,20 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, true, true);
-        expect(document.querySelectorAll('input')).toHaveLength(8);
+        expect(document.querySelectorAll('input')).toHaveLength(6);
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
+        expect(document.querySelectorAll('.fa-gear')).toHaveLength(1); // gear icon for y-axis
+        await userEvent.click(document.querySelector('.fa-gear'));
+        expect(document.querySelectorAll('input')).toHaveLength(13);
+        expect(document.querySelector('input[value=automatic]').hasAttribute('checked')).toBe(true);
+        expect(document.querySelector('input[value=manual]').hasAttribute('checked')).toBe(false);
         expect(document.querySelector('input[name=aggregate-method]').getAttribute('value')).toBe('SUM');
+        expect(document.querySelectorAll('input[name=error-bar-method]')).toHaveLength(3);
+        expect(document.querySelector('input[value=SD]').hasAttribute('checked')).toBe(false);
+        expect(document.querySelector('input[value=SEM]').hasAttribute('checked')).toBe(false);
     });
 
-    test('init from bar chart with y axis value and aggregate method', () => {
+    test('init from bar chart with y axis value and aggregate method', async () => {
         const savedChartModel = {
             canShare: true,
             canDelete: true,
@@ -363,7 +369,10 @@ describe('ChartBuilderModal', () => {
             visualizationConfig: {
                 chartConfig: {
                     renderType: 'bar_chart',
-                    measures: { x: { name: 'field1' }, y: { name: 'field2', aggregate: { value: 'MEAN' } } },
+                    measures: {
+                        x: { name: 'field1' },
+                        y: { name: 'field2', aggregate: { value: 'MEAN' }, errorBars: 'SEM' },
+                    },
                     labels: { x: 'Field 1', y: 'Field 2' },
                 },
                 queryConfig: {
@@ -382,9 +391,17 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, true, true);
-        expect(document.querySelectorAll('input')).toHaveLength(8);
+        expect(document.querySelectorAll('input')).toHaveLength(6);
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
+        expect(document.querySelectorAll('.fa-gear')).toHaveLength(1); // gear icon for y-axis
+        await userEvent.click(document.querySelector('.fa-gear'));
+        expect(document.querySelectorAll('input')).toHaveLength(13);
+        expect(document.querySelector('input[value=automatic]').hasAttribute('checked')).toBe(true);
+        expect(document.querySelector('input[value=manual]').hasAttribute('checked')).toBe(false);
         expect(document.querySelector('input[name=aggregate-method]').getAttribute('value')).toBe('MEAN');
+        expect(document.querySelectorAll('input[name=error-bar-method]')).toHaveLength(3);
+        expect(document.querySelector('input[value=SD]').hasAttribute('checked')).toBe(false);
+        expect(document.querySelector('input[value=SEM]').hasAttribute('checked')).toBe(true);
         expect(document.querySelectorAll('input[name=trendlineType]')).toHaveLength(0);
     });
 
@@ -490,10 +507,12 @@ describe('ChartBuilderModal', () => {
 
         await userEvent.click(document.querySelectorAll('.fa-gear')[0]); // x-axis options icon, click to close
         await userEvent.click(document.querySelectorAll('.fa-gear')[1]); // y-axis options icon
-        expect(document.querySelectorAll('.radioinput-label.selected')[0].textContent).toBe('Log');
+        expect(document.querySelectorAll('.radioinput-label.selected')).toHaveLength(3); // error bar, scale, range
+        expect(document.querySelectorAll('.radioinput-label.selected')[0].textContent).toBe('None');
+        expect(document.querySelectorAll('.radioinput-label.selected')[1].textContent).toBe('Log');
+        expect(document.querySelectorAll('.radioinput-label.selected')[2].textContent).toBe('Automatic');
         expect(document.querySelectorAll('input[name=scaleTrans]')[0].hasAttribute('checked')).toBe(false); // linear
         expect(document.querySelectorAll('input[name=scaleTrans]')[1].hasAttribute('checked')).toBe(true); // log
-        expect(document.querySelectorAll('.radioinput-label.selected')[1].textContent).toBe('Automatic');
     });
 
     test('canDelete and canShare false', () => {

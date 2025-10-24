@@ -1,16 +1,16 @@
 import React, {
-    cloneElement,
     Children,
-    FC,
-    useRef,
-    ReactElement,
-    useState,
-    useCallback,
-    MutableRefObject,
+    cloneElement,
     CSSProperties,
-    useMemo,
+    FC,
+    MutableRefObject,
     PropsWithChildren,
+    ReactElement,
+    useCallback,
     useEffect,
+    useMemo,
+    useRef,
+    useState,
 } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -86,7 +86,9 @@ export function useOverlayTriggerState<T extends Element = HTMLDivElement>(
         event => {
             const isToggle = event.target === targetRef.current;
             const insideToggle = portalEl?.contains(event.target);
-            if (!isToggle && !insideToggle) {
+            const isSelectOption =
+                event.target instanceof HTMLElement && event.target.classList.contains('select-input__option');
+            if (!isToggle && !insideToggle && !isSelectOption) {
                 setShow(false);
             }
         },
@@ -168,9 +170,9 @@ export const OverlayTrigger: FC<Props> = ({
     return (
         <div
             className={className_}
+            onClick={onClick}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            onClick={onClick}
             style={style}
         >
             {clonedChild}

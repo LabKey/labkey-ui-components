@@ -7,7 +7,7 @@ import { generateId } from '../../util/utils';
 import { LABKEY_VIS } from '../../constants';
 import { Modal } from '../../Modal';
 
-import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
+import { SelectInputOption } from '../forms/input/SelectInput';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -24,65 +24,23 @@ import { getContainerFilterForFolder } from '../../query/api';
 
 import { SVGIcon } from '../base/SVGIcon';
 
-import { LabelOverlay } from '../forms/LabelOverlay';
-
 import { isAppHomeFolder } from '../../app/utils';
-
 import { deleteChart, saveChart, SaveReportConfig } from './actions';
+import {
+    BAR_CHART_AGGREGATE_NAME,
+    BAR_CHART_ERROR_BAR_NAME,
+    BLUE_HEX_COLOR,
+    HIDDEN_CHART_TYPES,
+    ICONS,
+    MAX_POINT_DISPLAY,
+    MAX_ROWS_PREVIEW,
+    RIGHT_COL_FIELDS,
+} from './constants';
 
-import { ChartConfig, ChartQueryConfig, GenericChartModel, TrendlineType } from './models';
+import { ChartConfig, ChartQueryConfig, ChartTypeInfo, GenericChartModel, TrendlineType } from './models';
 import { TrendlineOption } from './TrendlineOption';
 import { ChartFieldOption } from './ChartFieldOption';
 import { getFieldDataType } from './utils';
-
-interface AggregateFieldInfo {
-    name: string;
-    value: string;
-}
-
-export interface ChartFieldInfo {
-    aggregate?: AggregateFieldInfo;
-    altSelectionOnly?: boolean;
-    // allowMultiple?: boolean; // not yet supported, will be part of a future dev story
-    label: string;
-    name: string;
-    nonNumericOnly?: boolean;
-    numericOnly?: boolean;
-    numericOrDateOnly?: boolean;
-    required: boolean;
-}
-
-export interface ChartTypeInfo {
-    fields: ChartFieldInfo[];
-    hidden?: boolean;
-    imgUrl: string;
-    name: string;
-    title: string;
-}
-
-const HIDDEN_CHART_TYPES = ['time_chart'];
-const RIGHT_COL_FIELDS = ['color', 'shape', 'series', 'trendline'];
-export const MAX_ROWS_PREVIEW = 10000;
-export const MAX_POINT_DISPLAY = 10000;
-const BLUE_HEX_COLOR = '3366FF';
-const BAR_CHART_AGGREGATE_NAME = 'aggregate-method';
-const BAR_CHART_AGGREGATE_METHODS = [
-    { label: 'Count (non-blank)', value: 'COUNT' },
-    { label: 'Sum', value: 'SUM' },
-    { label: 'Min', value: 'MIN' },
-    { label: 'Max', value: 'MAX' },
-    { label: 'Mean', value: 'MEAN' },
-    { label: 'Median', value: 'MEDIAN' },
-];
-const BAR_CHART_AGGREGATE_METHOD_TIP =
-    'The aggregate method that will be used to determine the bar height for a given x-axis category / dimension. Field values that are blank are not included in calculated aggregate values.';
-const ICONS = {
-    bar_chart: 'bar_chart',
-    box_plot: 'box_plot',
-    pie_chart: 'pie_chart',
-    scatter_plot: 'xy_scatter',
-    line_plot: 'xy_line',
-};
 
 export const getChartRenderMsg = (chartConfig: ChartConfig, rowCount: number, isPreview: boolean): string => {
     const msg = [];
@@ -198,9 +156,12 @@ export const getChartBuilderChartConfig = (
                 type: getFieldDataType(fieldConfig.data),
             };
 
-            // check if the field has an aggregate method (bar chart y-axis only)
+            // check if the field has an aggregate method and error bar method (bar chart y-axis only)
             if (fieldValues[BAR_CHART_AGGREGATE_NAME] && field.name === 'y') {
                 config.measures[field.name].aggregate = { ...fieldValues[BAR_CHART_AGGREGATE_NAME] };
+                if (fieldValues[BAR_CHART_ERROR_BAR_NAME]) {
+                    config.measures[field.name].errorBars = fieldValues[BAR_CHART_ERROR_BAR_NAME]?.value;
+                }
             }
 
             // update axis label if it is a new report or if the saved report that didn't have this measure or was using the default field label for the axis label
@@ -257,9 +218,9 @@ const ChartTypeSideBar: FC<ChartTypeSideBarProps> = memo(props => {
 
                 return (
                     <div
-                        key={type.name}
                         className={classNames('chart-builder-type', { selected, selectable })}
                         data-name={type.name}
+                        key={type.name}
                         onClick={onChange}
                     >
                         <SVGIcon height={null} iconSrc={!selected ? ICONS[type.name] + '_gray' : ICONS[type.name]} />
@@ -322,6 +283,13 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
         [selectedType]
     );
 
+    const onErrorBarChange = useCallback(
+        (name: string, value: string) => {
+            onFieldChange(name, { value });
+        },
+        [onFieldChange]
+    );
+
     const onSelectFieldChange = useCallback(
         (key: string, _: never, selectedOption: SelectInputOption) => {
             // clear / reset trendline option here if x change
@@ -335,7 +303,7 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
     );
 
     const onFieldScaleChange = useCallback(
-        (field: string, key: string, value: string | number, reset = false) => {
+        (field: string, key: string, value: number | string, reset = false) => {
             const scales = fieldValues.scales?.value ?? {};
             if (!scales[field] || reset) scales[field] = { type: 'automatic', trans: 'linear' };
             if (key) scales[field][key] = value;
@@ -352,24 +320,24 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
                     <input
                         className="form-control"
                         name="name"
+                        onChange={onNameChange}
                         placeholder="Enter a name"
                         type="text"
-                        onChange={onNameChange}
                         value={name}
                     />
                     {canShare && (
                         <div className="checkbox-input">
-                            <input name="shared" type="checkbox" checked={shared} onChange={onToggleShared} />
+                            <input checked={shared} name="shared" onChange={onToggleShared} type="checkbox" />
                             <span onClick={onToggleShared}>Make this chart available to all users</span>
                         </div>
                     )}
                     {allowInherit && (
                         <div className="checkbox-input">
                             <input
-                                name="inheritable"
-                                type="checkbox"
                                 checked={inheritable}
+                                name="inheritable"
                                 onChange={onToggleInheritable}
+                                type="checkbox"
                             />
                             <span onClick={onToggleInheritable}>Make this chart available in child folders</span>
                         </div>
@@ -378,14 +346,15 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
                 <div className="col-xs-4 fields-col">
                     {leftColFields.map(field => (
                         <ChartFieldOption
-                            key={field.name}
                             field={field}
+                            fieldValues={fieldValues}
+                            key={field.name}
                             model={model}
-                            onSelectFieldChange={onSelectFieldChange}
+                            onErrorBarChange={onErrorBarChange}
                             onScaleChange={onFieldScaleChange}
-                            selectedType={selectedType}
-                            fieldValue={fieldValues[field.name]}
+                            onSelectFieldChange={onSelectFieldChange}
                             scaleValues={fieldValues.scales?.value[field.name]}
+                            selectedType={selectedType}
                         />
                     ))}
                 </div>
@@ -393,33 +362,16 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
                     {rightColFields.map(field => (
                         <Fragment key={field.name}>
                             <ChartFieldOption
-                                key={field.name}
                                 field={field}
+                                fieldValues={fieldValues}
+                                key={field.name}
                                 model={model}
-                                onSelectFieldChange={onSelectFieldChange}
+                                onErrorBarChange={onErrorBarChange}
                                 onScaleChange={onFieldScaleChange}
-                                selectedType={selectedType}
-                                fieldValue={fieldValues[field.name]}
+                                onSelectFieldChange={onSelectFieldChange}
                                 scaleValues={fieldValues.scales?.value[field.name]}
+                                selectedType={selectedType}
                             />
-                            {selectedType.name === 'bar_chart' && fieldValues.y?.value && (
-                                <div>
-                                    <label>
-                                        Y Axis Aggregate Method{' '}
-                                        <LabelOverlay placement="bottom">{BAR_CHART_AGGREGATE_METHOD_TIP}</LabelOverlay>
-                                    </label>
-                                    <SelectInput
-                                        showLabel={false}
-                                        clearable={false}
-                                        inputClass="col-xs-12"
-                                        placeholder="Select aggregate method"
-                                        name={BAR_CHART_AGGREGATE_NAME}
-                                        options={BAR_CHART_AGGREGATE_METHODS}
-                                        onChange={onSelectFieldChange}
-                                        value={fieldValues[BAR_CHART_AGGREGATE_NAME]?.value ?? 'SUM'}
-                                    />
-                                </div>
-                            )}
                         </Fragment>
                     ))}
                     {hasTrendlineOption && (
@@ -458,8 +410,6 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
         setPreviewMsg(undefined);
 
         if (!hasRequiredValues) return;
-
-        const width = ref?.current.getBoundingClientRect().width || 750;
 
         const chartConfig = getChartBuilderChartConfig(
             selectedType,
@@ -520,6 +470,7 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
                 }
 
                 // adjust height, width, and marginTop for the chart config for the preview, but not to save with the chart
+                const width = ref?.current.getBoundingClientRect().width || 750;
                 const chartConfig_ = {
                     ...chartConfig,
                     height: 350,
@@ -548,7 +499,7 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
                     {loadingData && (
                         <div className="chart-loading-mask">
                             <div className="chart-loading-mask__background" />
-                            <LoadingSpinner wrapperClassName="loading-spinner" msg="Loading Preview..." />
+                            <LoadingSpinner msg="Loading Preview..." wrapperClassName="loading-spinner" />
                         </div>
                     )}
                     <div className="svg-chart__chart" id={divId} ref={ref} />
@@ -606,10 +557,10 @@ const ChartBuilderFooter: FC<ChartBuilderFooterProps> = memo(props => {
                 <div className="form-buttons__left" />
                 <div className="form-buttons__right">
                     Are you sure you want to permanently delete this chart?
-                    <button className="btn btn-default" onClick={onCancelDelete} type="button" disabled={deleting}>
+                    <button className="btn btn-default" disabled={deleting} onClick={onCancelDelete} type="button">
                         Cancel
                     </button>
-                    <button className="btn btn-danger" onClick={onConfirmDelete} type="button" disabled={deleting}>
+                    <button className="btn btn-danger" disabled={deleting} onClick={onConfirmDelete} type="button">
                         {deleting ? 'Deleting...' : 'Delete'}
                     </button>
                 </div>
@@ -627,7 +578,7 @@ const ChartBuilderFooter: FC<ChartBuilderFooterProps> = memo(props => {
                     Delete Chart
                 </button>
             )}
-            <button className="btn btn-success" onClick={onSaveChart} type="button" disabled={saving || disabled}>
+            <button className="btn btn-success" disabled={saving || disabled} onClick={onSaveChart} type="button">
                 {saving
                     ? savedChartModel
                         ? 'Saving Chart...'
@@ -647,8 +598,11 @@ interface ChartBuilderModalProps extends RequiresModelAndActions {
 }
 
 export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, model, onHide, savedChartModel }) => {
-    const CHART_TYPES = LABKEY_VIS?.GenericChartHelper.getRenderTypes();
-    const TRENDLINE_OPTIONS: TrendlineType[] = Object.values(LABKEY_VIS.GenericChartHelper.TRENDLINE_OPTIONS);
+    const CHART_TYPES = useMemo(() => LABKEY_VIS?.GenericChartHelper.getRenderTypes(), []);
+    const TRENDLINE_OPTIONS: TrendlineType[] = useMemo(
+        () => Object.values(LABKEY_VIS.GenericChartHelper.TRENDLINE_OPTIONS),
+        []
+    );
 
     const { user, container, moduleContext } = useServerContext();
     const canShare = useMemo(
@@ -664,69 +618,69 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
         () => CHART_TYPES.filter(type => !type.hidden && !HIDDEN_CHART_TYPES.includes(type.name)),
         [CHART_TYPES]
     );
+    const chartConfig = useMemo(() => savedChartModel?.visualizationConfig?.chartConfig, [savedChartModel]);
     const [saving, setSaving] = useState<boolean>(false);
     const [error, setError] = useState<string>();
     const [reportConfig, setReportConfig] = useState<SaveReportConfig>();
-    const [selectedType, setSelectedChartType] = useState<ChartTypeInfo>(chartTypes[0]);
-    const [name, setName] = useState<string>('');
-    const [shared, setShared] = useState<boolean>(canShare);
-    const [inheritable, setInheritable] = useState<boolean>(false);
-    const [fieldValues, setFieldValues] = useState<Record<string, SelectInputOption>>({});
-
-    useEffect(
-        () => {
-            if (savedChartModel) {
-                const chartConfig = savedChartModel.visualizationConfig?.chartConfig;
-                setSelectedChartType(chartTypes.find(c => chartConfig?.renderType === c.name));
-                setName(savedChartModel.name);
-                setShared(savedChartModel.shared);
-                setInheritable(savedChartModel.inheritable);
-
-                const measures = chartConfig?.measures || {};
-                const fieldValues_ = Object.keys(measures).reduce((result, key) => {
-                    let measure = measures[key];
-                    if (measure) {
-                        // Currently only supporting a single measure per axis (i.e. not supporting y-axis left/right)
-                        if (Utils.isArray(measure)) measure = measure[0];
-                        result[key] = { label: measure.label, value: measure.name, data: measure };
-                    }
-                    return result;
-                }, {});
-
-                // handle scales
-                if (chartConfig?.scales) {
-                    fieldValues_['scales'] = { value: { ...chartConfig.scales } };
-                }
-
-                // handle bar chart aggregate method
-                if (measures.y?.aggregate) {
-                    fieldValues_[BAR_CHART_AGGREGATE_NAME] = { ...measures.y.aggregate };
-                }
-
-                // handle trendline options
-                if (chartConfig?.geomOptions?.trendlineType) {
-                    fieldValues_['trendlineType'] = TRENDLINE_OPTIONS.find(
-                        option => option.value === chartConfig.geomOptions.trendlineType
-                    );
-                    if (chartConfig.geomOptions.trendlineAsymptoteMin) {
-                        fieldValues_['trendlineAsymptoteMin'] = {
-                            value: chartConfig.geomOptions.trendlineAsymptoteMin,
-                        };
-                    }
-                    if (chartConfig.geomOptions.trendlineAsymptoteMax) {
-                        fieldValues_['trendlineAsymptoteMax'] = {
-                            value: chartConfig.geomOptions.trendlineAsymptoteMax,
-                        };
-                    }
-                }
-
-                setFieldValues(fieldValues_);
-            }
-        },
-        [
-            /* on mount only */
-        ]
+    const [selectedType, setSelectedChartType] = useState<ChartTypeInfo>(
+        chartTypes.find(c => chartConfig?.renderType === c.name) ?? chartTypes[0]
     );
+    const [name, setName] = useState<string>(savedChartModel?.name ?? '');
+    const [shared, setShared] = useState<boolean>(savedChartModel?.shared ?? canShare);
+    const [inheritable, setInheritable] = useState<boolean>(savedChartModel?.inheritable ?? false);
+
+    const initFieldValues = useMemo(() => {
+        if (savedChartModel) {
+            const measures = chartConfig?.measures || {};
+            const fieldValues_ = Object.keys(measures).reduce((result, key) => {
+                let measure = measures[key];
+                if (measure) {
+                    // Currently only supporting a single measure per axis (i.e. not supporting y-axis left/right)
+                    if (Utils.isArray(measure)) measure = measure[0];
+                    result[key] = { label: measure.label, value: measure.name, data: measure };
+                }
+                return result;
+            }, {});
+
+            // handle scales
+            if (chartConfig?.scales) {
+                fieldValues_['scales'] = { value: { ...chartConfig.scales } };
+            }
+
+            // handle bar chart aggregate method and error bars
+            const y = Utils.isArray(measures.y) ? measures.y[0] : measures.y;
+            if (y?.aggregate) {
+                fieldValues_[BAR_CHART_AGGREGATE_NAME] = Utils.isObject(y.aggregate)
+                    ? { ...y.aggregate }
+                    : { value: y.aggregate };
+                if (y.errorBars) {
+                    fieldValues_[BAR_CHART_ERROR_BAR_NAME] = { value: y.errorBars };
+                }
+            }
+
+            // handle trendline options
+            if (chartConfig?.geomOptions?.trendlineType) {
+                fieldValues_['trendlineType'] = TRENDLINE_OPTIONS.find(
+                    option => option.value === chartConfig.geomOptions.trendlineType
+                );
+                if (chartConfig.geomOptions.trendlineAsymptoteMin) {
+                    fieldValues_['trendlineAsymptoteMin'] = {
+                        value: chartConfig.geomOptions.trendlineAsymptoteMin,
+                    };
+                }
+                if (chartConfig.geomOptions.trendlineAsymptoteMax) {
+                    fieldValues_['trendlineAsymptoteMax'] = {
+                        value: chartConfig.geomOptions.trendlineAsymptoteMax,
+                    };
+                }
+            }
+
+            return fieldValues_;
+        }
+
+        return {};
+    }, [savedChartModel, chartConfig, TRENDLINE_OPTIONS]);
+    const [fieldValues, setFieldValues] = useState<Record<string, SelectInputOption>>(initFieldValues);
 
     const hasName = useMemo(() => name?.trim().length > 0, [name]);
     const hasRequiredValues = useMemo(() => {
@@ -810,9 +764,9 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
     return (
         <Modal
             className="chart-builder-modal"
+            footer={footer}
             onCancel={onCancel}
             title={savedChartModel ? 'Edit Chart' : 'Create Chart'}
-            footer={footer}
         >
             {error && <Alert>{error}</Alert>}
             <div className="row">
@@ -820,8 +774,8 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
                     <ChartTypeSideBar
                         chartTypes={chartTypes}
                         onChange={onChartTypeChange}
-                        selectedType={selectedType}
                         savedChartModel={savedChartModel}
+                        selectedType={selectedType}
                     />
                 </div>
                 <div className="col-xs-11 col-right">
@@ -832,21 +786,21 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
                         inheritable={inheritable}
                         model={model}
                         name={name}
-                        onNameChange={onNameChange}
                         onFieldChange={onFieldChange}
+                        onNameChange={onNameChange}
                         onToggleInheritable={onToggleInheritable}
                         onToggleShared={onToggleShared}
                         savedChartModel={savedChartModel}
-                        shared={shared}
                         selectedType={selectedType}
+                        shared={shared}
                     />
                     <div className="row margin-top">
                         <div className="col-xs-12">
                             <ChartPreview
-                                savedChartModel={savedChartModel}
                                 fieldValues={fieldValues}
-                                model={model}
                                 hasRequiredValues={hasRequiredValues}
+                                model={model}
+                                savedChartModel={savedChartModel}
                                 selectedType={selectedType}
                                 setReportConfig={setReportConfig}
                             />

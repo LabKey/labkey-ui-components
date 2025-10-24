@@ -25,28 +25,31 @@ const RadioGroupOption: FC<RadioGroupOptionImplProps> = memo(props => {
     const { isSelected, name, option, showDescriptions, onSetValue } = props;
 
     const onLabelClick = useCallback(() => {
-        onSetValue(option.value);
-    }, [onSetValue, option.value]);
+        if (!option.disabled) onSetValue(option.value);
+    }, [onSetValue, option.value, option.disabled]);
 
     const onRadioChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
-            onSetValue(evt.target.value);
+            if (!option.disabled) onSetValue(evt.target.value);
         },
-        [onSetValue]
+        [onSetValue, option.disabled]
     );
 
     return (
         <div className="radio-input-wrapper">
             <input
-                className="radioinput-input"
                 checked={isSelected && !option.disabled}
-                type="radio"
-                name={name}
-                value={option.value}
-                onChange={onRadioChange}
+                className="radioinput-input"
                 disabled={option.disabled}
+                name={name}
+                onChange={onRadioChange}
+                type="radio"
+                value={option.value}
             />
-            <span className={classNames('radioinput-label', { selected: isSelected })} onClick={onLabelClick}>
+            <span
+                className={classNames('radioinput-label', { selected: isSelected, disabled: option.disabled })}
+                onClick={onLabelClick}
+            >
                 {option.label}
             </span>
             {showDescriptions && option.description && (
@@ -67,7 +70,7 @@ interface OwnProps {
     showDescriptions?: boolean;
 }
 
-type RadioGroupInputProps = OwnProps & FormsyInjectedProps<any>;
+type RadioGroupInputProps = FormsyInjectedProps<any> & OwnProps;
 
 const RadioGroupInputImpl: FC<RadioGroupInputProps> = memo(props => {
     const { options, name, showDescriptions, formsy, setValue, onValueChange } = props;
@@ -97,7 +100,7 @@ const RadioGroupInputImpl: FC<RadioGroupInputProps> = memo(props => {
 
     if (options?.length === 1) {
         return (
-            <div key={options[0].value} className="radio-input-wrapper">
+            <div className="radio-input-wrapper" key={options[0].value}>
                 <input checked hidden name={name} onChange={onValueChange_} type="radio" value={options[0].value} />
             </div>
         );
@@ -107,11 +110,11 @@ const RadioGroupInputImpl: FC<RadioGroupInputProps> = memo(props => {
         <>
             {options?.map(option => (
                 <RadioGroupOption
-                    key={option.value}
+                    isSelected={selectedValue === option.value}
+                    key={option.value ?? `radio-${option.label}`}
                     name={name}
                     onSetValue={onSetValue}
                     option={option}
-                    isSelected={selectedValue === option.value}
                     showDescriptions={showDescriptions}
                 />
             ))}

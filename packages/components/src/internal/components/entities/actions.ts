@@ -985,7 +985,7 @@ export function moveEntities(options: MoveEntitiesOptions): Promise<Query.MoveRo
 
         Query.moveRows({
             ...params,
-            auditDetails,
+            auditDetails: requestSource,
             success: (response: Query.MoveRowsResponse) => {
                 if (response.success) {
                     resolve(response);

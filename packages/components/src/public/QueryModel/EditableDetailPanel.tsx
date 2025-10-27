@@ -111,7 +111,6 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
         return <FileInput formsy initialValue={data} name={col.fieldKey} queryColumn={col} showLabel={false} />;
     }, []);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleSubmit = useCallback(
         async (values: Record<string, any>): Promise<void> => {
             const { queryInfo } = model;
@@ -149,8 +148,8 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
                 });
 
                 setEditing(false);
-                onUpdate?.(); // eslint-disable-line no-unused-expressions
-                onEditToggle?.(false); // eslint-disable-line no-unused-expressions
+                onUpdate?.();
+                onEditToggle?.(false);
             } catch (e) {
                 setError(resolveErrorMessage(e, 'data', undefined, 'update'));
                 setWarning(undefined);

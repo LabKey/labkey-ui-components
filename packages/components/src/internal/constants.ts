@@ -57,6 +57,7 @@ export enum EDIT_METHOD {
     FORM_INSERT = 'FormInsert',
     GRID_EDIT = 'GridEdit',
     GRID_INSERT = 'GridInsert',
+    STORAGE_VIEW_ACTION = 'StorageViewAction'
 }
 
 export enum KEYS {

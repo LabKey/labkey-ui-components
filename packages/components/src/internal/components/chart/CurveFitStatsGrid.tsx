@@ -313,8 +313,8 @@ export const CurveFitStatsGrid: FC<Props> = memo(({ name, plot, trendLineData })
 
     return (
         <div className="curve-fit-statistics">
-            <div className="curve-fit-statistics__header">
-                <h5 className="curve-fit-statistics__title">Statistics</h5>
+            <div className="curve-fit-statistics__header margin-bottom">
+                <div className="curve-fit-statistics__title">Statistics</div>
                 <DropdownButton
                     buttonClassName="curve-fit-statistics__dropdown-button"
                     className="curve-fit-statistics__export-menu"

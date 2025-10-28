@@ -293,6 +293,17 @@
         padding-left: 5px;
         cursor: default;
     }
+
+    .radioinput-label.disabled {
+        color: $text-muted;
+    }
+}
+.field-option-radio-group-block {
+    padding-bottom: 10px;
+
+    .radio-input-wrapper {
+        display: block;
+    }
 }
 
 .chart-builder-preview-body {

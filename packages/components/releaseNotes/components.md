@@ -5,8 +5,17 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released* TBD
 - Issue 52310: Change application single-value dropdowns to include the current value in the listed options
 
-### version TBD
-*Released*: TBD
+### version 6.66.0
+*Released*: 23 October 2025
+- ChartBuilderModal support for bar/line chart aggregate method and error bar options
+  - useOverlayTriggerState update to not close popover on document click that is a select option target
+  - Factor ChartFieldRangeScaleOptions.tsx out of ChartFieldOption.tsx
+  - Create ChartFieldAggregateOptions.tsx and move y-axis bar chart aggregate method dropdown into tooltip
+    - support for error bar radio options as separate overlay or to be included in axis options overlay
+  - Update ChartBuilderModal to pass down aggregate and error bar options to ChartConfig
+
+### version 6.65.2
+*Released*: 22 October 2025
 - Various minor fixes for exception reports
 
 ### version 6.65.1

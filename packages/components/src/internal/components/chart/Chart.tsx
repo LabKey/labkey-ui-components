@@ -192,7 +192,9 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, query
             {(isLoading(loadingState) || loadingData) && <ChartLoadingMask />}
             {renderMsg && <span className="gray-text pull-right">{renderMsg}</span>}
             <div className="svg-chart__chart" id={divId} ref={ref} />
-            {trendlineData !== undefined && <CurveFitStatsGrid plot={plot} trendLineData={trendlineData} />}
+            {trendlineData !== undefined && (
+                <CurveFitStatsGrid name={chart.name} plot={plot} trendLineData={trendlineData} />
+            )}
         </div>
     );
 });

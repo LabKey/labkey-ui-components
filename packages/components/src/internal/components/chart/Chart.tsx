@@ -27,6 +27,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ChartAPIWrapper, DEFAULT_API_WRAPPER } from './api';
 import { ChartConfig, ChartQueryConfig } from './models';
 import { getChartRenderMsg } from './ChartBuilderModal';
+import { CurveFitStatsGrid } from './CurveFitStatsGrid';
 
 interface ChartLoadingMaskProps {
     msg?: string;
@@ -95,6 +96,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, query
     const [loadingData, setLoadingData] = useState<boolean>(false);
     const [measureStore, setMeasureStore] = useState<any>(undefined);
     const [trendlineData, setTrendlineData] = useState<any>(undefined);
+    const [plot, setPlot] = useState(undefined);
     const [renderMsg, setRenderMsg] = useState<string>(undefined);
     const [loadError, setLoadError] = useState<string>(undefined);
     const filterKey = useMemo(() => computeFilterKey(filters), [filters]);
@@ -163,7 +165,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, query
                         }
                     );
                 } else {
-                    LABKEY_VIS.GenericChartHelper.generateChartSVG(
+                    const plots = LABKEY_VIS.GenericChartHelper.generateChartSVG(
                         divId,
                         {
                             ...chartConfig,
@@ -173,6 +175,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, query
                         measureStore,
                         trendlineData
                     );
+                    setPlot(plots[0]);
                 }
             }
         };
@@ -189,6 +192,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, query
             {(isLoading(loadingState) || loadingData) && <ChartLoadingMask />}
             {renderMsg && <span className="gray-text pull-right">{renderMsg}</span>}
             <div className="svg-chart__chart" id={divId} ref={ref} />
+            {trendlineData !== undefined && <CurveFitStatsGrid trendLineData={trendlineData} plot={plot} />}
         </div>
     );
 });

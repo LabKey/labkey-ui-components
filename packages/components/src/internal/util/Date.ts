@@ -423,6 +423,17 @@ export function parseDate(
         if (isValid(date)) {
             validDate = date;
         }
+        else {
+            const altFormats = getAltNonUSParseFormats(dateFormat, dateValue);
+            for (const altFormat of altFormats) {
+                const _altFormat = toDateFNSFormatString(altFormat);
+                const altDate = safeParse(dateValue, _altFormat, new Date());
+                if (isValid(altDate)) {
+                    validDate = altDate;
+                    break;
+                }
+            }
+        }
     }
 
     // Issue 45140: If we failed to parse from a dateFormat or a dateFormat was not provided,
@@ -810,3 +821,72 @@ export function isDateTimeInPast(date: Date | string | number, timezone?: string
     const zonedTime = fromZonedTime(date_, timezone_);
     return zonedTime.getTime() <= new Date().getTime();
 }
+
+/**
+ * Given a current non-us date format (DMY), assuming useMDYDateParsing is false, return accepted alternative parse formats.
+ * In order to be able to parse DMY dates, all possible combinations of MDY date and/or datetime formats need to be considered.
+ * To help narrow down the list of formats, an optional inputDateStr can be provided.
+ * @param currentFormat The configured field/container/folder date/datetime format
+ * @param inputDateStr An optional input date string to help narrow down the list of formats to test
+ */
+export function getAltNonUSParseFormats(currentFormat: string, inputDateStr?: string/*helps narrow down list of formats*/): string | string[] {
+    const { useMDYDateParsing } = getServerContext();
+    if (useMDYDateParsing || !currentFormat.toLowerCase().startsWith('d')) {
+        return currentFormat;
+    }
+    const dayPart = ['dd'];
+    const monthPart = ['MM', 'MMM', 'MMMM'];
+    const yearParts = ['yy', 'yyyy'];
+
+    let seperators = ['-', '/', ''];
+    let altDateFormats = [currentFormat];
+    let hasTime = true;
+    let timeParts = ['hh:mm:ss.SSS a', 'hh:mm:ss a', 'hh:mm a', 'hh a', 'HH:mm:ss.SSS', 'HH:mm:ss', 'HH:mm', 'HH']; // favor am/pm formats first, instead of current time format
+
+    if (inputDateStr) {
+        const sep = inputDateStr.indexOf('-') > -1 ? '-' : inputDateStr.indexOf('/') > -1 ? '/' : '';
+        seperators = [sep];
+
+        let currentDateFormat = currentFormat;
+        hasTime = inputDateStr.indexOf(' ') > -1; // check dateStr instead of currentFormat for time part, we need to be able to parse datetime into date even if format contains only date portion
+        timeParts = ['HH:mm:ss.SSS', 'HH:mm:ss', 'HH:mm', 'HH'];
+        let hasAMPM = false;
+        if (hasTime) {
+            hasAMPM = inputDateStr.toLowerCase().indexOf(' am') > -1 || inputDateStr.toLowerCase().indexOf(' pm') > -1;
+            if (hasAMPM)
+                timeParts = ['hh:mm:ss.SSS a', 'hh:mm:ss a', 'hh:mm a', 'hh a'];
+            const splitInd = currentFormat.indexOf(' ');
+            if (splitInd > -1)
+                currentDateFormat = currentFormat.substring(0, splitInd);
+        }
+        altDateFormats = [currentDateFormat];
+    }
+
+    for (const p1 of dayPart) {
+        for (const p2 of monthPart) {
+            for (const p3 of yearParts) {
+                for (const sep of seperators) {
+                    const format = p1 + sep + p2 + sep + p3;
+                    if (altDateFormats.indexOf(format) === -1)
+                        altDateFormats.push(format);
+                }
+            }
+        }
+    }
+
+    if (!hasTime)
+        return altDateFormats;
+
+    const altDateTimeFormats = altDateFormats.indexOf(currentFormat) > -1 ? [...altDateFormats] : [currentFormat, ...altDateFormats];
+
+    for (const dateFormat of altDateFormats) {
+        for (const timeFormat of timeParts) {
+            const dateTimeFormat = dateFormat + ' ' + timeFormat;
+            if (altDateTimeFormats.indexOf(dateTimeFormat) === -1)
+                altDateTimeFormats.push(dateTimeFormat);
+        }
+    }
+
+    return altDateTimeFormats;
+}
+

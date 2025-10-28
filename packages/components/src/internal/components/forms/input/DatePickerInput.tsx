@@ -19,6 +19,7 @@ import DatePicker from 'react-datepicker';
 import { FormsyInjectedProps, withFormsy } from '../formsy';
 import { FieldLabel } from '../FieldLabel';
 import {
+    getAltNonUSParseFormats,
     getDateFromISO,
     getDateTimeDisplayValue,
     getJsonDateFormatString,
@@ -257,7 +258,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                 autoComplete="off"
                 autoFocus={autoFocus}
                 className={inputClassName}
-                dateFormat={dateFormat}
+                dateFormat={getAltNonUSParseFormats(dateFormat)}
                 disabled={isDisabled}
                 id={queryColumn.fieldKey}
                 isClearable={isClearable}

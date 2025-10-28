@@ -26,6 +26,7 @@ import {
     formatDateTime,
     formatTime,
     generateNameWithTimestamp,
+    getAltNonUSParseFormats,
     getColDateFormat,
     getColFormattedDateFilterValue,
     getColFormattedTimeFilterValue,
@@ -751,6 +752,7 @@ describe('Date Utilities', () => {
         });
 
         test('valid date with dateFormat', () => {
+            LABKEY.useMDYDateParsing = true;
             expect(parseDate('01:02 2022-04-19', 'HH:mm yyyy-MM-dd').toString()).toContain('Apr 19 2022');
             expect(parseDate('19/04/2022', 'dd/MM/yyyy').toString()).toContain('Apr 19 2022');
             expect(parseDate('4/11/2022', 'dd/MM/yyyy').toString()).toContain('Nov 04 2022');
@@ -763,6 +765,8 @@ describe('Date Utilities', () => {
             expect(parseDate('22-04-11', 'YY-MM-DD').toString()).toContain('Apr 11 2022');
             expect(parseDate('22/04/11', 'yy/MM/dd').toString()).toContain('Apr 11 2022');
             expect(parseDate('22/04/11', 'YY/MM/DD').toString()).toContain('Apr 11 2022');
+            // because useMDYDateParsing = true and the format doesn't match the provided string, this won't be parsed as Nov 4
+            expect(parseDate('4/11/2022', 'dd-MM-yyyy').toString()).toContain('Apr 11 2022');
         });
 
         test('minDate', () => {
@@ -787,6 +791,26 @@ describe('Date Utilities', () => {
             expect(parseDate('1985-09-11 12:50:22', undefined, undefined, true).toString()).toContain(
                 'Sep 11 1985 12:50:22'
             );
+        });
+
+        test('useMDYDateParsing = false', () => {
+            LABKEY.useMDYDateParsing = false;
+            expect(parseDate('4/11/2022', 'dd/MM/yyyy').toString()).toContain('Nov 04 2022');
+            expect(parseDate('4/11/2022', 'ddMMMMyy').toString()).toContain('Nov 04 2022');
+            expect(parseDate('4/11/2022', 'dd-MM-yyyy').toString()).toContain('Nov 04 2022');
+            expect(parseDate('4/11/2022', 'dd/MM/yy').toString()).toContain('Nov 04 2022');
+            expect(parseDate('4/11/2022 11:30', 'dd/MM/yy').toString()).toContain('Nov 04 2022 11:30');
+            expect(parseDate('4/11/2022 11:30 PM', 'dd/MM/yy').toString()).toContain('Nov 04 2022 23:30');
+            expect(parseDate('4/11/2022 11:30', 'dd-MM-yy').toString()).toContain('Nov 04 2022 11:30');
+            expect(parseDate('4/11/2022 11:30 PM', 'dd-MM-yy').toString()).toContain('Nov 04 2022 23:30');
+            expect(parseDate('4/11/2022 11:30:30 PM', 'dd/MM/yy HH:mm').toString()).toContain('Nov 04 2022 23:30:30');
+            expect(parseDate('4/11/2022 11:30', 'dd-MM-yy hh:mm:ss').toString()).toContain('Nov 04 2022 11:30');
+            expect(parseDate('4/11/2022 11:30:30.123 PM', 'dd-MM-yy hh:mm').toString()).toContain('Nov 04 2022 23:30:30');
+            // without a dateFormat, use DMY parsing even if useMDYDateParsing = false
+            expect(parseDate('4/11/2022').toString()).toContain('Apr 11 2022');
+            expect(parseDate('4/11/2022 11:30').toString()).toContain('Apr 11 2022');
+            expect(parseDate('4/11/2022 11:30 PM').toString()).toContain('Apr 11 2022');
+            LABKEY.useMDYDateParsing = true;
         });
     });
 
@@ -1172,4 +1196,307 @@ describe('Date Utilities', () => {
             expect(checkFormat('XXX', tz)).toBe('-05:00');
         });
     });
+
+    describe('getAltDateParseFormats', () => {
+
+        it('when useMDYDateParsing is true', () => {
+            LABKEY.useMDYDateParsing = true;
+            expect(getAltNonUSParseFormats('MM-DD-yy')).toEqual('MM-DD-yy');
+            expect(getAltNonUSParseFormats('dd-MM-yy')).toEqual('dd-MM-yy');
+        });
+
+        it('when current format does not start with d', () => {
+            LABKEY.useMDYDateParsing = false;
+            expect(getAltNonUSParseFormats('MM-DD-yy')).toEqual('MM-DD-yy');
+            expect(getAltNonUSParseFormats('yy-MM-DD')).toEqual('yy-MM-DD');
+            LABKEY.useMDYDateParsing = true;
+        });
+
+        it('when useMDYDateParsing is false and the current format starts with d, without inputDateStr', () => {
+            LABKEY.useMDYDateParsing = false;
+            expect(getAltNonUSParseFormats('DD-MM-yy')).toEqual(
+                ["DD-MM-yy",
+                "dd-MM-yy",
+                "dd/MM/yy",
+                "ddMMyy",
+                "dd-MM-yyyy",
+                "dd/MM/yyyy",
+                "ddMMyyyy",
+                "dd-MMM-yy",
+                "dd/MMM/yy",
+                "ddMMMyy",
+                "dd-MMM-yyyy",
+                "dd/MMM/yyyy",
+                "ddMMMyyyy",
+                "dd-MMMM-yy",
+                "dd/MMMM/yy",
+                "ddMMMMyy",
+                "dd-MMMM-yyyy",
+                "dd/MMMM/yyyy",
+                "ddMMMMyyyy",
+                "DD-MM-yy hh:mm:ss.SSS a",
+                "DD-MM-yy hh:mm:ss a",
+                "DD-MM-yy hh:mm a",
+                "DD-MM-yy hh a",
+                "DD-MM-yy HH:mm:ss.SSS",
+                "DD-MM-yy HH:mm:ss",
+                "DD-MM-yy HH:mm",
+                "DD-MM-yy HH",
+                "dd-MM-yy hh:mm:ss.SSS a",
+                "dd-MM-yy hh:mm:ss a",
+                "dd-MM-yy hh:mm a",
+                "dd-MM-yy hh a",
+                "dd-MM-yy HH:mm:ss.SSS",
+                "dd-MM-yy HH:mm:ss",
+                "dd-MM-yy HH:mm",
+                "dd-MM-yy HH",
+                "dd/MM/yy hh:mm:ss.SSS a",
+                "dd/MM/yy hh:mm:ss a",
+                "dd/MM/yy hh:mm a",
+                "dd/MM/yy hh a",
+                "dd/MM/yy HH:mm:ss.SSS",
+                "dd/MM/yy HH:mm:ss",
+                "dd/MM/yy HH:mm",
+                "dd/MM/yy HH",
+                "ddMMyy hh:mm:ss.SSS a",
+                "ddMMyy hh:mm:ss a",
+                "ddMMyy hh:mm a",
+                "ddMMyy hh a",
+                "ddMMyy HH:mm:ss.SSS",
+                "ddMMyy HH:mm:ss",
+                "ddMMyy HH:mm",
+                "ddMMyy HH",
+                "dd-MM-yyyy hh:mm:ss.SSS a",
+                "dd-MM-yyyy hh:mm:ss a",
+                "dd-MM-yyyy hh:mm a",
+                "dd-MM-yyyy hh a",
+                "dd-MM-yyyy HH:mm:ss.SSS",
+                "dd-MM-yyyy HH:mm:ss",
+                "dd-MM-yyyy HH:mm",
+                "dd-MM-yyyy HH",
+                "dd/MM/yyyy hh:mm:ss.SSS a",
+                "dd/MM/yyyy hh:mm:ss a",
+                "dd/MM/yyyy hh:mm a",
+                "dd/MM/yyyy hh a",
+                "dd/MM/yyyy HH:mm:ss.SSS",
+                "dd/MM/yyyy HH:mm:ss",
+                "dd/MM/yyyy HH:mm",
+                "dd/MM/yyyy HH",
+                "ddMMyyyy hh:mm:ss.SSS a",
+                "ddMMyyyy hh:mm:ss a",
+                "ddMMyyyy hh:mm a",
+                "ddMMyyyy hh a",
+                "ddMMyyyy HH:mm:ss.SSS",
+                "ddMMyyyy HH:mm:ss",
+                "ddMMyyyy HH:mm",
+                "ddMMyyyy HH",
+                "dd-MMM-yy hh:mm:ss.SSS a",
+                "dd-MMM-yy hh:mm:ss a",
+                "dd-MMM-yy hh:mm a",
+                "dd-MMM-yy hh a",
+                "dd-MMM-yy HH:mm:ss.SSS",
+                "dd-MMM-yy HH:mm:ss",
+                "dd-MMM-yy HH:mm",
+                "dd-MMM-yy HH",
+                "dd/MMM/yy hh:mm:ss.SSS a",
+                "dd/MMM/yy hh:mm:ss a",
+                "dd/MMM/yy hh:mm a",
+                "dd/MMM/yy hh a",
+                "dd/MMM/yy HH:mm:ss.SSS",
+                "dd/MMM/yy HH:mm:ss",
+                "dd/MMM/yy HH:mm",
+                "dd/MMM/yy HH",
+                "ddMMMyy hh:mm:ss.SSS a",
+                "ddMMMyy hh:mm:ss a",
+                "ddMMMyy hh:mm a",
+                "ddMMMyy hh a",
+                "ddMMMyy HH:mm:ss.SSS",
+                "ddMMMyy HH:mm:ss",
+                "ddMMMyy HH:mm",
+                "ddMMMyy HH",
+                "dd-MMM-yyyy hh:mm:ss.SSS a",
+                "dd-MMM-yyyy hh:mm:ss a",
+                "dd-MMM-yyyy hh:mm a",
+                "dd-MMM-yyyy hh a",
+                "dd-MMM-yyyy HH:mm:ss.SSS",
+                "dd-MMM-yyyy HH:mm:ss",
+                "dd-MMM-yyyy HH:mm",
+                "dd-MMM-yyyy HH",
+                "dd/MMM/yyyy hh:mm:ss.SSS a",
+                "dd/MMM/yyyy hh:mm:ss a",
+                "dd/MMM/yyyy hh:mm a",
+                "dd/MMM/yyyy hh a",
+                "dd/MMM/yyyy HH:mm:ss.SSS",
+                "dd/MMM/yyyy HH:mm:ss",
+                "dd/MMM/yyyy HH:mm",
+                "dd/MMM/yyyy HH",
+                "ddMMMyyyy hh:mm:ss.SSS a",
+                "ddMMMyyyy hh:mm:ss a",
+                "ddMMMyyyy hh:mm a",
+                "ddMMMyyyy hh a",
+                "ddMMMyyyy HH:mm:ss.SSS",
+                "ddMMMyyyy HH:mm:ss",
+                "ddMMMyyyy HH:mm",
+                "ddMMMyyyy HH",
+                "dd-MMMM-yy hh:mm:ss.SSS a",
+                "dd-MMMM-yy hh:mm:ss a",
+                "dd-MMMM-yy hh:mm a",
+                "dd-MMMM-yy hh a",
+                "dd-MMMM-yy HH:mm:ss.SSS",
+                "dd-MMMM-yy HH:mm:ss",
+                "dd-MMMM-yy HH:mm",
+                "dd-MMMM-yy HH",
+                "dd/MMMM/yy hh:mm:ss.SSS a",
+                "dd/MMMM/yy hh:mm:ss a",
+                "dd/MMMM/yy hh:mm a",
+                "dd/MMMM/yy hh a",
+                "dd/MMMM/yy HH:mm:ss.SSS",
+                "dd/MMMM/yy HH:mm:ss",
+                "dd/MMMM/yy HH:mm",
+                "dd/MMMM/yy HH",
+                "ddMMMMyy hh:mm:ss.SSS a",
+                "ddMMMMyy hh:mm:ss a",
+                "ddMMMMyy hh:mm a",
+                "ddMMMMyy hh a",
+                "ddMMMMyy HH:mm:ss.SSS",
+                "ddMMMMyy HH:mm:ss",
+                "ddMMMMyy HH:mm",
+                "ddMMMMyy HH",
+                "dd-MMMM-yyyy hh:mm:ss.SSS a",
+                "dd-MMMM-yyyy hh:mm:ss a",
+                "dd-MMMM-yyyy hh:mm a",
+                "dd-MMMM-yyyy hh a",
+                "dd-MMMM-yyyy HH:mm:ss.SSS",
+                "dd-MMMM-yyyy HH:mm:ss",
+                "dd-MMMM-yyyy HH:mm",
+                "dd-MMMM-yyyy HH",
+                "dd/MMMM/yyyy hh:mm:ss.SSS a",
+                "dd/MMMM/yyyy hh:mm:ss a",
+                "dd/MMMM/yyyy hh:mm a",
+                "dd/MMMM/yyyy hh a",
+                "dd/MMMM/yyyy HH:mm:ss.SSS",
+                "dd/MMMM/yyyy HH:mm:ss",
+                "dd/MMMM/yyyy HH:mm",
+                "dd/MMMM/yyyy HH",
+                "ddMMMMyyyy hh:mm:ss.SSS a",
+                "ddMMMMyyyy hh:mm:ss a",
+                "ddMMMMyyyy hh:mm a",
+                "ddMMMMyyyy hh a",
+                "ddMMMMyyyy HH:mm:ss.SSS",
+                "ddMMMMyyyy HH:mm:ss",
+                "ddMMMMyyyy HH:mm",
+                "ddMMMMyyyy HH",]);
+
+            LABKEY.useMDYDateParsing = true;
+        });
+
+        it('useMDYDateParsing is false, with inputDateStr that is a date', () => {
+            LABKEY.useMDYDateParsing = false;
+            expect(getAltNonUSParseFormats('dd-MM-yy', '02-04-2025')).toEqual([
+                "dd-MM-yy",
+            "dd-MM-yyyy",
+            "dd-MMM-yy",
+            "dd-MMM-yyyy",
+            "dd-MMMM-yy",
+            "dd-MMMM-yyyy",
+            ]);
+            expect(getAltNonUSParseFormats('dd-MM-yy', '02/04/2025')).toEqual([
+            "dd-MM-yy",
+            "dd/MM/yy",
+            "dd/MM/yyyy",
+            "dd/MMM/yy",
+            "dd/MMM/yyyy",
+            "dd/MMMM/yy",
+            "dd/MMMM/yyyy",
+            ]);
+            expect(getAltNonUSParseFormats('dd/MM/yy', '02042025')).toEqual([
+                "dd/MM/yy",
+                "ddMMyy",
+            "ddMMyyyy",
+            "ddMMMyy",
+            "ddMMMyyyy",
+            "ddMMMMyy",
+            "ddMMMMyyyy",
+            ]);
+
+            LABKEY.useMDYDateParsing = true;
+        });
+
+        it('useMDYDateParsing is false, with inputDateStr that is a datetime', () => {
+            LABKEY.useMDYDateParsing = false;
+            expect(getAltNonUSParseFormats('dd-MM-yy', '02-04-2025 11:30')).toEqual([
+                "dd-MM-yy",
+                "dd-MM-yyyy",
+                "dd-MMM-yy",
+                "dd-MMM-yyyy",
+                "dd-MMMM-yy",
+                "dd-MMMM-yyyy",
+            "dd-MM-yy HH:mm:ss.SSS",
+            "dd-MM-yy HH:mm:ss",
+            "dd-MM-yy HH:mm",
+            "dd-MM-yy HH",
+            "dd-MM-yyyy HH:mm:ss.SSS",
+            "dd-MM-yyyy HH:mm:ss",
+            "dd-MM-yyyy HH:mm",
+            "dd-MM-yyyy HH",
+            "dd-MMM-yy HH:mm:ss.SSS",
+            "dd-MMM-yy HH:mm:ss",
+            "dd-MMM-yy HH:mm",
+            "dd-MMM-yy HH",
+            "dd-MMM-yyyy HH:mm:ss.SSS",
+            "dd-MMM-yyyy HH:mm:ss",
+            "dd-MMM-yyyy HH:mm",
+            "dd-MMM-yyyy HH",
+            "dd-MMMM-yy HH:mm:ss.SSS",
+            "dd-MMMM-yy HH:mm:ss",
+            "dd-MMMM-yy HH:mm",
+            "dd-MMMM-yy HH",
+            "dd-MMMM-yyyy HH:mm:ss.SSS",
+            "dd-MMMM-yyyy HH:mm:ss",
+            "dd-MMMM-yyyy HH:mm",
+            "dd-MMMM-yyyy HH",
+            ]);
+            expect(getAltNonUSParseFormats('dd-MM-yy', '02/04/2025 11:30 PM')).toEqual([
+                "dd-MM-yy",
+                "dd/MM/yy",
+                "dd/MM/yyyy",
+                "dd/MMM/yy",
+                "dd/MMM/yyyy",
+                "dd/MMMM/yy",
+                "dd/MMMM/yyyy",
+            "dd-MM-yy hh:mm:ss.SSS a",
+            "dd-MM-yy hh:mm:ss a",
+            "dd-MM-yy hh:mm a",
+            "dd-MM-yy hh a",
+            "dd/MM/yy hh:mm:ss.SSS a",
+            "dd/MM/yy hh:mm:ss a",
+            "dd/MM/yy hh:mm a",
+            "dd/MM/yy hh a",
+            "dd/MM/yyyy hh:mm:ss.SSS a",
+            "dd/MM/yyyy hh:mm:ss a",
+            "dd/MM/yyyy hh:mm a",
+            "dd/MM/yyyy hh a",
+            "dd/MMM/yy hh:mm:ss.SSS a",
+            "dd/MMM/yy hh:mm:ss a",
+            "dd/MMM/yy hh:mm a",
+            "dd/MMM/yy hh a",
+            "dd/MMM/yyyy hh:mm:ss.SSS a",
+            "dd/MMM/yyyy hh:mm:ss a",
+            "dd/MMM/yyyy hh:mm a",
+            "dd/MMM/yyyy hh a",
+            "dd/MMMM/yy hh:mm:ss.SSS a",
+            "dd/MMMM/yy hh:mm:ss a",
+            "dd/MMMM/yy hh:mm a",
+            "dd/MMMM/yy hh a",
+            "dd/MMMM/yyyy hh:mm:ss.SSS a",
+            "dd/MMMM/yyyy hh:mm:ss a",
+            "dd/MMMM/yyyy hh:mm a",
+            "dd/MMMM/yyyy hh a",
+            ]);
+
+            LABKEY.useMDYDateParsing = true;
+        });
+
+    });
+
 });

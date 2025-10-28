@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.65.X
+*Released*: X October 2025
+- Issue 54160: Non US date parsing in the app
+  - Added `getAltNonUSParseFormats` date utility function to provide alternative parse formats for common non-US date/datetime formats
+  - Update DatePickerInput to use alternative parse formats when server date format is non-US
+  - Update parseDate utility function to use alternative non-US parse formats
+
 ### version 6.66.0
 *Released*: 23 October 2025
 - ChartBuilderModal support for bar/line chart aggregate method and error bar options

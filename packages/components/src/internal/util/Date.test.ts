@@ -1119,9 +1119,8 @@ describe('Date Utilities', () => {
             expect(isDateTimeInPast(datePlusHours(utcNow, -1), TZ)).toBeTruthy();
             expect(isDateTimeInPast(datePlusHours(utcNow, 1), TZ)).toBeTruthy();
             expect(isDateTimeInPast(datePlusHours(utcNow, 2), TZ)).toBeTruthy();
-            expect(isDateTimeInPast(datePlusHours(utcNow, 3), TZ)).toBeTruthy();
 
-            // Europe/Kyiv timezone is +3 hours UTC
+            // Europe/Kyiv timezone is +2 (EET) or +3 (EEST) hours UTC
             expect(isDateTimeInPast(datePlusHours(utcNow, 4), TZ)).toBeFalsy();
             expect(isDateTimeInPast(datePlusHours(utcNow, 5), TZ)).toBeFalsy();
             expect(isDateTimeInPast(datePlusHours(utcNow, 6), TZ)).toBeFalsy();

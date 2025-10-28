@@ -83,7 +83,7 @@ interface Props {
     chart: DataViewInfo;
     container?: string;
     filters?: Filter.IFilter[];
-    queryParameters?: { [key: string]: any };
+    queryParameters?: Record<string, any>;
 }
 
 export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, queryParameters }) => {
@@ -192,18 +192,20 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, query
             {(isLoading(loadingState) || loadingData) && <ChartLoadingMask />}
             {renderMsg && <span className="gray-text pull-right">{renderMsg}</span>}
             <div className="svg-chart__chart" id={divId} ref={ref} />
-            {trendlineData !== undefined && <CurveFitStatsGrid trendLineData={trendlineData} plot={plot} />}
+            {trendlineData !== undefined && <CurveFitStatsGrid plot={plot} trendLineData={trendlineData} />}
         </div>
     );
 });
 SVGChart.displayName = 'SVGChart';
 
+interface FileAnchor {
+    href: string;
+    text: string;
+}
+
 interface RReportData {
     error?: string;
-    fileAnchors: Array<{
-        href: string;
-        text: string;
-    }>;
+    fileAnchors: FileAnchor[];
     imageUrls: string[];
 }
 
@@ -313,7 +315,7 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
             {imageUrls !== undefined && (
                 <div className="r-report__images">
                     {imageUrls.map(url => (
-                        <div key={url} className="r-report__image">
+                        <div className="r-report__image" key={url}>
                             <img alt="R Report Image Output" src={url} />
                         </div>
                     ))}

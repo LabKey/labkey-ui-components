@@ -8,7 +8,7 @@ import { List as ImmutableList } from 'immutable';
 import { naturalSortByProperty } from '../../../public/sort';
 import { DropdownButton, MenuHeader, MenuItem } from '../../dropdowns';
 
-enum DelimiterType {
+enum ExportType {
     COMMA = 'COMMA',
     EXCEL = 'EXCEL',
     TAB = 'TAB',
@@ -26,7 +26,7 @@ const ADJUSTED_R_SQUARED_COLUMN = new GridColumn({
     title: 'Adjusted R-Squared',
     cell: roundedCell,
 });
-const RSS_COLUMN = new GridColumn({ index: 'RSS', title: 'TSS', cell: roundedCell });
+const RSS_COLUMN = new GridColumn({ index: 'RSS', title: 'RSS', cell: roundedCell });
 const TSS_COLUMN = new GridColumn({ index: 'TSS', title: 'TSS', cell: roundedCell });
 const RMSE_COLUMN = new GridColumn({ index: 'RMSE', title: 'RMSE', cell: roundedCell });
 const SLOPE_COLUMN = new GridColumn({ index: 'slope', title: 'Slope', cell: roundedCell });
@@ -289,33 +289,27 @@ export const CurveFitStatsGrid: FC<Props> = memo(({ name, plot, trendLineData })
     }, [type, hasSeries, colorScale, shapeScale]);
 
     const onExportTextFile = useCallback(
-        (delimiter: DelimiterType) => {
+        (delimiter: ExportType) => {
             const exportData = curveFitRowsToExportFormat(hasSeries, type, gridData);
 
-            if (delimiter === DelimiterType.EXCEL) {
+            if (delimiter === ExportType.EXCEL) {
                 UtilsDOM.convertToExcel({
                     fileName: `${name}_statistics.xlsx`,
-                    sheets: [
-                        {
-                            name: 'statistics',
-                            data: exportData,
-                        },
-                    ],
+                    sheets: [{ name: 'statistics', data: exportData }],
                 });
             } else {
                 UtilsDOM.convertToTable({
                     fileNamePrefix: `${name}_statistics`,
-                    delim:
-                        delimiter === DelimiterType.COMMA ? UtilsDOM.DelimiterType.COMMA : UtilsDOM.DelimiterType.TAB,
+                    delim: delimiter === ExportType.COMMA ? UtilsDOM.DelimiterType.COMMA : UtilsDOM.DelimiterType.TAB,
                     rows: exportData,
                 });
             }
         },
         [gridData, hasSeries, name, type]
     );
-    const onExportCsv = useCallback(() => onExportTextFile(DelimiterType.COMMA), [onExportTextFile]);
-    const onExportExcel = useCallback(() => onExportTextFile(DelimiterType.EXCEL), [onExportTextFile]);
-    const onExportTsv = useCallback(() => onExportTextFile(DelimiterType.TAB), [onExportTextFile]);
+    const onExportCsv = useCallback(() => onExportTextFile(ExportType.COMMA), [onExportTextFile]);
+    const onExportExcel = useCallback(() => onExportTextFile(ExportType.EXCEL), [onExportTextFile]);
+    const onExportTsv = useCallback(() => onExportTextFile(ExportType.TAB), [onExportTextFile]);
 
     return (
         <div className="curve-fit-statistics">

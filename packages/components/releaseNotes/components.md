@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.67.0
+*Released* 29 October 2025
+- Issue 52310: Change application single-value dropdowns to include the current value in the listed options
+
 ### version 6.66.0
 *Released*: 23 October 2025
 - ChartBuilderModal support for bar/line chart aggregate method and error bar options

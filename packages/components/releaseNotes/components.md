@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 6.67.1
+*Released* 29 October 2025
 - Issue 53563: Domain designer lookups don't show newly added entity types after initial load/view
   - Remove fetchQueries from client cache
 

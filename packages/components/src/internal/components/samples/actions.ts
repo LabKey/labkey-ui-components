@@ -571,7 +571,7 @@ export function updateSampleStorageData(
                 sampleRows: sampleStorageData,
                 [STORED_AMOUNT_FIELDS.AUDIT_COMMENT]: userComment,
                 requestSource: window.location.hash,
-                editMethod: editMethod,
+                editMethod,
                 isDiscard,
             },
             success: Utils.getCallbackWrapper(response => {

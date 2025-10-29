@@ -928,7 +928,7 @@ export function updateRowsByContainer(
     rows: any[],
     containerPaths: string[],
     auditUserComment: string,
-    editMethod: EDIT_METHOD,
+    editMethod?: EDIT_METHOD,
     containerField = 'Folder'
 ): Promise<Query.SaveRowsResponse | QueryCommandResponse> {
     // if all rows are in the same container, we can use updateRows (which supports file/attachments)

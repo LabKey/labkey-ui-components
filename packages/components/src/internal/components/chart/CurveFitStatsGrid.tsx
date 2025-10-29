@@ -38,6 +38,7 @@ const STATS_COLUMNS = [RSS_COLUMN, TSS_COLUMN, RMSE_COLUMN, R_SQUARED_COLUMN];
 const NONLINEAR_COLUMNS = [
     MIN_COL,
     MAX_COL,
+    SLOPE_COLUMN,
     ASYMMETRY_COLUMN,
     INFLECTION_COLUMN,
     ...STATS_COLUMNS,
@@ -90,6 +91,7 @@ interface NonlinearCurveFitData {
     inflection: number;
     max: number;
     min: number;
+    slope: number;
 }
 
 interface NonlinearCurveFit extends CurveFit, NonlinearCurveFitData {
@@ -144,21 +146,21 @@ function trendLineToCurveFitRow(trendline: PossibleTrendlines): CurveFitRow {
     if (curveFit.type === 'Polynomial') {
         return {
             ...stats,
-            series,
             coefficient1: curveFit.coefficients[0],
             coefficient2: curveFit.coefficients[1],
             coefficient3: curveFit.coefficients[2],
+            series,
         };
     }
 
     if (curveFit.type === 'Linear') {
         const { intercept, slope } = curveFit;
-        return { ...stats, series, intercept, slope };
+        return { ...stats, intercept, series, slope };
     }
 
     if (isNonlinearTrendline(trendline)) {
-        const { asymmetry, inflection, max, min } = curveFit;
-        return { ...(stats as NonlinearCurveFitStats), series, asymmetry, inflection, max, min };
+        const { asymmetry, inflection, max, min, slope } = curveFit;
+        return { ...(stats as NonlinearCurveFitStats), asymmetry, inflection, max, min, series, slope };
     }
 
     return undefined;

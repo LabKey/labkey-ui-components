@@ -308,7 +308,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
         showDropdownIndicator: true,
         showDropdownMenu: true,
         showIndicatorSeparator: true,
-        tabSelectsValue: true,
+        tabSelectsValue: false,
         valueKey: 'value',
     };
 

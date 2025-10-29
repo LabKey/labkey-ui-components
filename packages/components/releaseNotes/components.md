@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released* TBD
+### version 6.67.0
+*Released* 29 October 2025
 - Issue 52310: Change application single-value dropdowns to include the current value in the listed options
 
 ### version 6.66.0

@@ -18,7 +18,7 @@ enum ExportType {
 const roundedCell = (value: number) => Utils.roundNumber(value, 4);
 const MIN_COL = new GridColumn({ index: 'min', title: 'Min', cell: roundedCell });
 const MAX_COL = new GridColumn({ index: 'max', title: 'Max', cell: roundedCell });
-const ASYMMETRY_COLUMN = new GridColumn({ index: 'asymmetry', title: 'Asymmetry' });
+const ASYMMETRY_COLUMN = new GridColumn({ index: 'asymmetry', title: 'Asymmetry', cell: roundedCell });
 const INFLECTION_COLUMN = new GridColumn({ index: 'inflection', title: 'Inflection', cell: roundedCell });
 const R_SQUARED_COLUMN = new GridColumn({ index: 'RSquared', title: 'R-Squared', cell: roundedCell });
 const ADJUSTED_R_SQUARED_COLUMN = new GridColumn({
@@ -169,7 +169,15 @@ function trendLineToCurveFitRow(trendline: PossibleTrendlines): CurveFitRow {
 const STATS_EXPORT_COLS = ['RSS', 'TSS', 'RMSE', 'RSquared'];
 const LINEAR_EXPORT_COLS = ['slope', 'intercept', ...STATS_EXPORT_COLS];
 const POLYNOMIAL_EXPORT_COLS = ['coefficient1', 'coefficient2', 'coefficient3', ...STATS_EXPORT_COLS];
-const NONLINEAR_EXPORT_COLS = ['min', 'max', 'asymmetry', 'inflection', ...STATS_EXPORT_COLS, 'adjustedRSquared'];
+const NONLINEAR_EXPORT_COLS = [
+    'min',
+    'max',
+    'slope',
+    'asymmetry',
+    'inflection',
+    ...STATS_EXPORT_COLS,
+    'adjustedRSquared',
+];
 
 const STATS_EXPORT_HEADERS = ['RSS', 'TSS', 'RMSE', 'R-Squared'];
 const LINEAR_EXPORT_HEADERS = ['Slope', 'Intercept', ...STATS_EXPORT_HEADERS];
@@ -177,6 +185,7 @@ const POLYNOMIAL_EXPORT_HEADERS = ['Coefficient 1', 'Coefficient 2', 'Coefficien
 const NONLINEAR_EXPORT_HEADERS = [
     'Min',
     'Max',
+    'Slope',
     'Asymmetry',
     'Inflection',
     ...STATS_EXPORT_HEADERS,
@@ -250,10 +259,14 @@ const SeriesCell: FC<SeriesCellProps> = memo(({ colorScale, series, shapeScale }
 });
 SeriesCell.displayName = 'SeriesCell';
 
+type PossibleTrendlineArrays =
+    | Trendline<LinearRegressionCurveFit>[]
+    | Trendline<NonlinearCurveFit, NonlinearCurveFitStats>[]
+    | Trendline<PolynomialCurveFit>[];
 interface Props {
     name: string;
     plot: PlotObject | undefined;
-    trendLineData: Trendline<LinearRegressionCurveFit>[] | Trendline<PolynomialCurveFit>[];
+    trendLineData: PossibleTrendlineArrays;
 }
 
 export const CurveFitStatsGrid: FC<Props> = memo(({ name, plot, trendLineData }) => {

@@ -41,6 +41,7 @@ import { ExpirationDateColumnRenderer } from '../../../renderers/ExpirationDateC
 import { getContainerFilterForLookups } from '../../../query/api';
 import { FolderColumnRenderer } from '../../../renderers/FolderColumnRenderer';
 import { FILELINK_RANGE_URI } from '../../domainproperties/constants';
+import { LOOKUP_DEFAULT_SIZE } from '../../../constants';
 
 export type Renderer = (data: any, row?: any) => ReactNode;
 
@@ -338,7 +339,7 @@ export function resolveDetailEditRenderer(
                         joinValues={joinValues}
                         key={col.fieldKey}
                         label={col.caption}
-                        maxRows={10}
+                        maxRows={LOOKUP_DEFAULT_SIZE}
                         multiple={multiple}
                         name={col.fieldKey}
                         notFoundValuesEnabled={!(col.isExpInput() || col.isAliquotParent())} // Issue 53153

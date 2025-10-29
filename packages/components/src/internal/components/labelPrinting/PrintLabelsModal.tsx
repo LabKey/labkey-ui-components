@@ -17,6 +17,7 @@ import { BarTenderResponse } from './models';
 import { BAR_TENDER_TOPIC, LABEL_NOT_FOUND_ERROR, LABEL_TEMPLATE_SQ } from './constants';
 import { ViewInfo } from '../../ViewInfo';
 import { SchemaQuery } from '../../../public/SchemaQuery';
+import { LOOKUP_DEFAULT_SIZE } from '../../constants';
 
 export interface PrintModalProps {
     afterPrint?: (numSamples: number, numLabels: number) => void;
@@ -239,7 +240,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                                     fireQSChangeOnInit={true}
                                     showLabel={false}
                                     loadOnFocus
-                                    maxRows={10}
+                                    maxRows={LOOKUP_DEFAULT_SIZE}
                                     multiple={true}
                                     name="label-samples"
                                     onQSChange={this.changeSampleSelection}
@@ -259,7 +260,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                                 fireQSChangeOnInit
                                 showLabel={false}
                                 loadOnFocus
-                                maxRows={10}
+                                maxRows={LOOKUP_DEFAULT_SIZE}
                                 name="label-template"
                                 onQSChange={this.changeTemplateSelection}
                                 placeholder="Select or type to search..."

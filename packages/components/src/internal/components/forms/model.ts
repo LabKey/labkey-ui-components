@@ -121,7 +121,7 @@ export function formatSavedResults(
     result: ISelectRowsResult,
     token?: string
 ): SelectInputOption[] {
-    const { queryInfo, selectedItems } = model;
+    const { queryInfo } = model;
 
     if (!queryInfo) {
         return [];
@@ -129,11 +129,10 @@ export function formatSavedResults(
 
     const { key, orderedModels } = result;
     const models = fromJS(result.models[key]);
-    const filteredResults = orderedModels[key]
-        .filter(k => !selectedItems.has(k))
+    const orderedResults = orderedModels[key]
         .reduce((ordered, k) => ordered.set(k, models.get(k)), OrderedMap<string, any>());
 
-    return formatResults(model, filteredResults, token);
+    return formatResults(model, orderedResults, token);
 }
 
 export function saveSearchResults(model: QuerySelectModel, result: ISelectRowsResult): QuerySelectModel {

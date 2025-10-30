@@ -42,6 +42,7 @@ import { TextChoiceInput } from './input/TextChoiceInput';
 
 import { getQueryFormLabelFieldName, isQueryFormLabelField } from './utils';
 import { InternalSpacesWarning } from './InternalSpacesWarning';
+import { LOOKUP_DEFAULT_SIZE } from '../../constants';
 
 export interface QueryFormInputsProps {
     allowFieldDisable?: boolean;
@@ -278,7 +279,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         joinValues={joinValues}
                                         label={col.caption}
                                         loadOnFocus
-                                        maxRows={10}
+                                        maxRows={LOOKUP_DEFAULT_SIZE}
                                         multiple={multiple}
                                         name={fieldKey}
                                         notFoundValuesEnabled={!(col.isExpInput() || col.isAliquotParent())} // Issue 53153

@@ -208,27 +208,20 @@ export function fetchDomainDetails(options: FetchDomainDetailsOptions): Promise<
 }
 
 export function fetchQueries(containerPath: string, schemaName: string): Promise<QueryInfoLite[]> {
-    const key = [containerPath, schemaName].join('|').toLowerCase();
-
-    return cache<QueryInfoLite[]>(
-        'query-cache',
-        key,
-        () =>
-            new Promise(resolve => {
-                if (schemaName) {
-                    Query.getQueries({
-                        containerPath,
-                        schemaName,
-                        queryDetailColumns: true,
-                        success: data => {
-                            resolve(processQueries(data));
-                        },
-                    });
-                } else {
-                    resolve(null);
-                }
-            })
-    );
+    return new Promise(resolve => {
+        if (schemaName) {
+            Query.getQueries({
+                containerPath,
+                schemaName,
+                queryDetailColumns: true,
+                success: data => {
+                    resolve(processQueries(data));
+                },
+            });
+        } else {
+            resolve(null);
+        }
+    });
 }
 
 export function getRequiredParentTypes(

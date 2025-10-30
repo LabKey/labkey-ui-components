@@ -323,6 +323,7 @@ export const CurveFitStatsGrid: FC<Props> = memo(({ name, plot, trendLineData })
                 UtilsDOM.convertToTable({
                     fileNamePrefix: `${name}_statistics`,
                     delim: delimiter === ExportType.COMMA ? UtilsDOM.DelimiterType.COMMA : UtilsDOM.DelimiterType.TAB,
+                    quoteChar: UtilsDOM.QuoteCharType.DOUBLE,
                     rows: exportData,
                 });
             }

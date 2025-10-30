@@ -143,8 +143,10 @@ function isNonlinearTrendline(
 }
 
 function trendLineToCurveFitRow(trendline: PossibleTrendlines): CurveFitRow {
-    const { curveFit, stats } = trendline.data;
     const series = trendline.name;
+    // We want to render empty rows in the grid if the series doesn't have data
+    if (trendline.data === undefined) return { series } as CurveFitRow;
+    const { curveFit, stats } = trendline.data;
 
     if (curveFit.type === 'Polynomial') {
         return {
@@ -271,20 +273,24 @@ interface Props {
 }
 
 export const CurveFitStatsGrid: FC<Props> = memo(({ name, plot, trendLineData }) => {
-    const type = trendLineData[0].data.curveFit.type;
+    // A trendline will not have a data attribute if the series doesn't have enough data
+    const validTrendlines = trendLineData.filter(t => t.data !== undefined);
+    const hasValidTrendlines = validTrendlines.length > 0;
+    const type = validTrendlines[0]?.data.curveFit.type;
     const hasSeries = !(trendLineData.length === 1 && trendLineData[0].name === 'All');
-    const gridData = useMemo<CurveFitRow[]>(
-        () => trendLineData.map(trendLineToCurveFitRow).sort(naturalSortByProperty('series')),
-        [trendLineData]
-    );
-    const colorScale = plot?.scales.color;
-    const shapeScale = plot?.scales.shape;
+    const gridData = useMemo<CurveFitRow[]>(() => {
+        if (!hasValidTrendlines) return undefined;
+        return trendLineData.map(trendLineToCurveFitRow).sort(naturalSortByProperty('series'));
+    }, [hasValidTrendlines, trendLineData]);
 
     const gridColumns = useMemo(() => {
+        if (!hasValidTrendlines) return undefined;
         let seriesColumn: GridColumn;
 
         if (hasSeries) {
             const colConfig = { cell: undefined, index: 'series', title: 'Series' };
+            const colorScale = plot?.scales.color;
+            const shapeScale = plot?.scales.shape;
 
             if (colorScale && shapeScale) {
                 colConfig.cell = (series: string) => (
@@ -302,7 +308,7 @@ export const CurveFitStatsGrid: FC<Props> = memo(({ name, plot, trendLineData })
         else columns = columns.concat(NONLINEAR_COLUMNS);
 
         return ImmutableList(columns);
-    }, [type, hasSeries, colorScale, shapeScale]);
+    }, [hasSeries, hasValidTrendlines, plot, type]);
 
     const onExportTextFile = useCallback(
         (delimiter: ExportType) => {
@@ -326,6 +332,8 @@ export const CurveFitStatsGrid: FC<Props> = memo(({ name, plot, trendLineData })
     const onExportCsv = useCallback(() => onExportTextFile(ExportType.COMMA), [onExportTextFile]);
     const onExportExcel = useCallback(() => onExportTextFile(ExportType.EXCEL), [onExportTextFile]);
     const onExportTsv = useCallback(() => onExportTextFile(ExportType.TAB), [onExportTextFile]);
+
+    if (!hasValidTrendlines) return null;
 
     return (
         <div className="curve-fit-statistics">

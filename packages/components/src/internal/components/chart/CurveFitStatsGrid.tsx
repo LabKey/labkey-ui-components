@@ -15,25 +15,28 @@ enum ExportType {
 }
 
 // Equivalent to what we're doing when generating the hoverText in GenericChartHelper generateTrendlinePathHover
-const roundedCell = (value: number) => Utils.roundNumber(value, 4);
-const MIN_COL = new GridColumn({ index: 'min', title: 'Min', cell: roundedCell });
-const MAX_COL = new GridColumn({ index: 'max', title: 'Max', cell: roundedCell });
-const ASYMMETRY_COLUMN = new GridColumn({ index: 'asymmetry', title: 'Asymmetry', cell: roundedCell });
-const INFLECTION_COLUMN = new GridColumn({ index: 'inflection', title: 'Inflection', cell: roundedCell });
-const R_SQUARED_COLUMN = new GridColumn({ index: 'RSquared', title: 'R-Squared', cell: roundedCell });
+const roundedValue = (value: number) => {
+    const rounded = Utils.roundNumber(value, 4);
+    return !isNaN(rounded) ? rounded : value;
+};
+const MIN_COL = new GridColumn({ index: 'min', title: 'Min', cell: roundedValue });
+const MAX_COL = new GridColumn({ index: 'max', title: 'Max', cell: roundedValue });
+const ASYMMETRY_COLUMN = new GridColumn({ index: 'asymmetry', title: 'Asymmetry', cell: roundedValue });
+const INFLECTION_COLUMN = new GridColumn({ index: 'inflection', title: 'Inflection', cell: roundedValue });
+const R_SQUARED_COLUMN = new GridColumn({ index: 'RSquared', title: 'R-Squared', cell: roundedValue });
 const ADJUSTED_R_SQUARED_COLUMN = new GridColumn({
     index: 'adjustedRSquared',
     title: 'Adjusted R-Squared',
-    cell: roundedCell,
+    cell: roundedValue,
 });
-const RSS_COLUMN = new GridColumn({ index: 'RSS', title: 'RSS', cell: roundedCell });
-const TSS_COLUMN = new GridColumn({ index: 'TSS', title: 'TSS', cell: roundedCell });
-const RMSE_COLUMN = new GridColumn({ index: 'RMSE', title: 'RMSE', cell: roundedCell });
-const SLOPE_COLUMN = new GridColumn({ index: 'slope', title: 'Slope', cell: roundedCell });
-const INTERCEPT_COLUMN = new GridColumn({ index: 'intercept', title: 'Intercept', cell: roundedCell });
-const COEFFICIENT_1_COLUMN = new GridColumn({ index: 'coefficient1', title: 'Coefficient 1', cell: roundedCell });
-const COEFFICIENT_2_COLUMN = new GridColumn({ index: 'coefficient2', title: 'Coefficient 2', cell: roundedCell });
-const COEFFICIENT_3_COLUMN = new GridColumn({ index: 'coefficient3', title: 'Coefficient 3', cell: roundedCell });
+const RSS_COLUMN = new GridColumn({ index: 'RSS', title: 'RSS', cell: roundedValue });
+const TSS_COLUMN = new GridColumn({ index: 'TSS', title: 'TSS', cell: roundedValue });
+const RMSE_COLUMN = new GridColumn({ index: 'RMSE', title: 'RMSE', cell: roundedValue });
+const SLOPE_COLUMN = new GridColumn({ index: 'slope', title: 'Slope', cell: roundedValue });
+const INTERCEPT_COLUMN = new GridColumn({ index: 'intercept', title: 'Intercept', cell: roundedValue });
+const COEFFICIENT_1_COLUMN = new GridColumn({ index: 'coefficient1', title: 'Coefficient 1', cell: roundedValue });
+const COEFFICIENT_2_COLUMN = new GridColumn({ index: 'coefficient2', title: 'Coefficient 2', cell: roundedValue });
+const COEFFICIENT_3_COLUMN = new GridColumn({ index: 'coefficient3', title: 'Coefficient 3', cell: roundedValue });
 const STATS_COLUMNS = [RSS_COLUMN, TSS_COLUMN, RMSE_COLUMN, R_SQUARED_COLUMN];
 const NONLINEAR_COLUMNS = [
     MIN_COL,
@@ -209,9 +212,7 @@ function curveFitRowsToExportFormat(hasSeries: boolean, type: string, rows: Curv
         cols = cols.concat(NONLINEAR_EXPORT_COLS);
     }
 
-    const exportRows = rows.map((row: CurveFitRow) => {
-        return cols.map(col => row[col]);
-    });
+    const exportRows = rows.map((row: CurveFitRow) => cols.map(col => roundedValue(row[col])?.toString(10)));
     exportRows.unshift(headers);
     return exportRows;
 }

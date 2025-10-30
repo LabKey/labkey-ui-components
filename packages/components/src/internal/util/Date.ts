@@ -415,7 +415,7 @@ export function parseDate(
     }
     if (typeof dateValue !== 'string') return null;
 
-    let validDate: Date;
+    let validDate: Date, strictMode = false;
     if (dateFormat) {
         const _dateFormat = toDateFNSFormatString(dateFormat);
         const date = safeParse(dateValue, _dateFormat, new Date());
@@ -424,6 +424,7 @@ export function parseDate(
             validDate = date;
         } else {
             const altFormats = getAltNonUSParseFormats(dateFormat, dateValue);
+            strictMode = altFormats.length > 1;
             for (const altFormat of altFormats) {
                 const _altFormat = toDateFNSFormatString(altFormat);
                 const altDate = safeParse(dateValue, _altFormat, new Date());
@@ -462,9 +463,11 @@ export function parseDate(
             // date-fns does not provide a format-speculative parse() function.
             // Recommendation is to fall back to new Date() / Date.parse().
             // See https://github.com/orgs/date-fns/discussions/2231
-            date = new Date(dateValue);
-            if (isValid(date)) {
-                validDate = date;
+            if (!strictMode) {
+                date = new Date(dateValue);
+                if (isValid(date)) {
+                    validDate = date;
+                }
             }
         }
     }
@@ -833,20 +836,20 @@ export function getAltNonUSParseFormats(
     inputDateStr?: string /*helps narrow down list of formats*/
 ): string | string[] {
     const { useMDYDateParsing } = getServerContext();
-    if (useMDYDateParsing || !currentFormat.toLowerCase().startsWith('d')) {
+    if (useMDYDateParsing || currentFormat.toLowerCase().startsWith('m')) {
         return currentFormat;
     }
     const dayPart = ['dd'];
-    const monthPart = ['MM', 'MMM', 'MMMM'];
+    const monthPart = ['MM', 'MMM'];
     const yearParts = ['yy', 'yyyy'];
 
-    let seperators = ['-', '/', ''];
+    let seperators = ['-', '/', '.'];
     let altDateFormats = [currentFormat];
     let hasTime = true;
     let timeParts = ['hh:mm:ss.SSS a', 'hh:mm:ss a', 'hh:mm a', 'hh a', 'HH:mm:ss.SSS', 'HH:mm:ss', 'HH:mm', 'HH']; // favor am/pm formats first, instead of current time format
 
     if (inputDateStr) {
-        const sep = inputDateStr.indexOf('-') > -1 ? '-' : inputDateStr.indexOf('/') > -1 ? '/' : '';
+        const sep = inputDateStr.indexOf('-') > -1 ? '-' : inputDateStr.indexOf('/') > -1 ? '/' : '.';
         seperators = [sep];
 
         let currentDateFormat = currentFormat;

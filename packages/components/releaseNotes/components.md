@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released* TBD
+- Issue 52063: Domain designer to handle lookup to a query with a pipe character
+  - don't just split on '|', as the queryName could contain '|' characters
+
 ### version 6.67.1
 *Released* 29 October 2025
 - Issue 53563: Domain designer lookups don't show newly added entity types after initial load/view

@@ -170,6 +170,7 @@ export class LineageRunStep implements LineageRunStepConfig {
     readonly activityDate: string;
     readonly activitySequence: number;
     readonly container: string;
+    readonly containerPath: string;
     readonly created: string;
     readonly createdBy: string;
     readonly dataInputs: LineageIO[];
@@ -202,6 +203,7 @@ export class LineageIO implements LineageItemWithMetadata {
     [immerable] = true;
 
     readonly container: string;
+    readonly containerPath: string;
     readonly created: string;
     readonly createdBy: string;
     readonly expType: string;

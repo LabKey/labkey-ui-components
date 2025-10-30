@@ -75,7 +75,7 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, Lin
                 <LineageDetail item={node} />
                 <LineageSummary
                     {...lineageOptions}
-                    containerPath={node.container}
+                    containerPath={node.containerPath}
                     highlightNode={highlightNode}
                     key={node.lsid}
                     lsid={node.lsid}

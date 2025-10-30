@@ -49,7 +49,7 @@ export const LineageDetail: FC<LineageDetailProps> = memo(({ item }) => {
         () => ({
             model: {
                 baseFilters: item.pkFilters.map(pkFilter => Filter.create(pkFilter.fieldKey, pkFilter.value)),
-                containerPath: item.container,
+                containerPath: item.containerPath,
                 // Issue 45028: Display details view columns in lineage
                 schemaQuery: new SchemaQuery(item.schemaName, item.queryName, ViewInfo.DETAIL_NAME),
                 // Must specify '*' columns be requested to resolve "properties" columns

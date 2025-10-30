@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+###  version 6.??.?
+*Released*: ?? October 2025
+- Chart: render curve fit statistics when available
+
 ### version 6.68.1
 *Released* 2 November 2025
 - Issue 52063: Domain designer to handle lookup to a query with a pipe character

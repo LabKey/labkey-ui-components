@@ -1160,8 +1160,9 @@ export interface IImportData {
 
 export function importData(config: IImportData): Promise<any> {
     return new Promise((resolve, reject) => {
+        const auditDetails = getRequestAuditDetail();
         QueryDOM.importData(
-            Object.assign({}, config, {
+            Object.assign({auditDetails}, config, {
                 success: response => {
                     if (response && response.exception) {
                         reject(response);

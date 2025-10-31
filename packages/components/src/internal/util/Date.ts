@@ -844,7 +844,7 @@ export function getAltParseFormats(
         return [currentFormat];
     }
     const dayPart = ['dd'];
-    const monthPart = ['MM', 'MMM'];
+    const monthPart = ['MM', 'MMM', 'MMMM'];
     const yearParts = ['yy', 'yyyy'];
 
     let separators = ['-', '/', '.'];

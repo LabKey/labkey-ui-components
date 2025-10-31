@@ -784,7 +784,7 @@ export class QueryCommandResponse {
     }
 }
 
-function getRequestAuditDetail(editMethod?: EDIT_METHOD): Record<string, string> {
+export function getRequestAuditDetail(editMethod?: EDIT_METHOD): Record<string, string> {
     const auditDetails = {};
     if (editMethod) {
         auditDetails['editMethod'] = editMethod;

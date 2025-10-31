@@ -35,6 +35,7 @@ import { SCHEMAS } from '../../schemas';
 
 import {
     getQueryDetails,
+    getRequestAuditDetail,
     invalidateFullQueryDetailsCache,
     ISelectRowsResult,
     selectDistinctRows,
@@ -570,8 +571,7 @@ export function updateSampleStorageData(
             jsonData: {
                 sampleRows: sampleStorageData,
                 [STORED_AMOUNT_FIELDS.AUDIT_COMMENT]: userComment,
-                requestSource: window.location.hash,
-                editMethod,
+                ...getRequestAuditDetail(editMethod),
                 isDiscard,
             },
             success: Utils.getCallbackWrapper(response => {

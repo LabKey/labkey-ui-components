@@ -339,6 +339,7 @@ import {
     getUsersWithPermissions,
     handleInputTab,
     handleTabKeyOnTextArea,
+    updateRowFieldValue,
     useUsersWithPermissions,
 } from './internal/components/forms/actions';
 import { FormStep, FormTabs, withFormSteps } from './internal/components/forms/FormStep';
@@ -1775,6 +1776,7 @@ export {
     updateCellValuesForSampleIds,
     updateGridFromBulkForm,
     updatePicklist,
+    updateRowFieldValue,
     updateRows,
     updateSampleStorageData,
     uploadWebDavFile,

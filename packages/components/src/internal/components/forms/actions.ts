@@ -116,3 +116,16 @@ export function useUsersWithPermissions(
 
     return { error, loadingState, users };
 }
+
+export function updateRowFieldValue(model: QueryModel, name: string, value: any): Promise<any> {
+    return updateRows({
+        schemaQuery: model.schemaQuery,
+        rows: [
+            {
+                rowId: model.getRowValue('rowId'),
+                [name]: value,
+            },
+        ],
+        containerPath: model.containerPath,
+    });
+}

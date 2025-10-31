@@ -6,7 +6,7 @@ import { getSelected, getSelectedDataDeprecated } from '../../actions';
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
-import { importData, InsertOptions } from '../../query/api';
+import { getRequestAuditDetail, importData, InsertOptions } from '../../query/api';
 import { caseInsensitive, generateId } from '../../util/utils';
 import { request } from '../../request';
 import { EntityCreationType } from '../samples/models';
@@ -980,12 +980,9 @@ export function moveEntities(options: MoveEntitiesOptions): Promise<Query.MoveRo
             }, []);
         }
 
-        const requestLocation = window.location.hash;
-        const requestSource = requestLocation ? { sourcePage: requestLocation } : null;
-
         Query.moveRows({
             ...params,
-            auditDetails: requestSource,
+            auditDetails: getRequestAuditDetail(),
             success: (response: Query.MoveRowsResponse) => {
                 if (response.success) {
                     resolve(response);

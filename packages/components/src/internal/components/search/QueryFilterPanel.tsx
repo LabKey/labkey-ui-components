@@ -9,6 +9,7 @@ import { ChoicesListItem } from '../base/ChoicesListItem';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
+import { naturalSortByProperty } from '../../../public/sort';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
@@ -146,7 +147,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         setActiveField(undefined);
         if (!queryInfo) return;
 
-        let validFields;
+        let validFields: QueryColumn[];
         if (fields) validFields = fields;
         else {
             const qFields = skipDefaultViewCheck
@@ -157,6 +158,11 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                     field.filterable &&
                     (!validFilterField || validFilterField(field, queryInfo, entityDataType?.exprColumnsWithSubSelect))
             );
+        }
+
+        // Issue 53983: Sort fields by caption
+        if (validFields) {
+            validFields = validFields.sort(naturalSortByProperty('caption'));
         }
 
         setQueryFields(validFields);

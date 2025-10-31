@@ -5,6 +5,7 @@ import classNames from 'classnames';
 
 import { QueryColumn } from '../../public/QueryColumn';
 import { QueryInfo } from '../../public/QueryInfo';
+import { naturalSortByProperty } from '../../public/sort';
 
 import { Modal, ModalProps } from '../Modal';
 
@@ -219,6 +220,7 @@ export const ColumnChoiceGroup: FC<ColumnChoiceGroupProps> = memo(props => {
             {isLookupExpanded &&
                 expandedColumns[column.index].columns.valueArray
                     .filter(fkCol => expandedColumnFilter?.(fkCol, showAllColumns) ?? true)
+                    .sort(naturalSortByProperty('caption')) // Issue 53983: Sort fields by caption
                     .map(fkCol => (
                         <ColumnChoiceGroup
                             column={fkCol}
@@ -506,7 +508,8 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
         if (!isLoaded || !queryInfo) return [];
         return queryInfo.columns.valueArray
             .filter(c => expandedColumnFilter?.(c, showAllColumns) ?? true)
-            .filter(c => c.fieldKeyArray.length === 1); // at the top level don't include lookup fields
+            .filter(c => c.fieldKeyArray.length === 1) // at the top level don't include lookup fields
+            .sort(naturalSortByProperty('caption')); // Issue 53983: Sort fields by caption
     }, [expandedColumnFilter, isLoaded, queryInfo, showAllColumns]);
 
     const disabledMsg = useMemo<string>(() => {

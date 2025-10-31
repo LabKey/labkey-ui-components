@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { immerable, produce } from 'immer';
-import { List, Map, Record as ImmutableRecord } from 'immutable';
+import { Record as ImmutableRecord, List, Map } from 'immutable';
 import { DataSet } from 'vis-data';
 import { Edge, IdType, Node } from 'vis-network';
 
@@ -159,9 +159,9 @@ export interface LineageIOWithMetadata extends LineageIOConfig {
     objectOutputs?: LineageItemWithMetadata[];
 }
 
-export interface LineageItemWithIOMetadata extends LineageItemWithMetadata, LineageIOWithMetadata {}
+export interface LineageItemWithIOMetadata extends LineageIOWithMetadata, LineageItemWithMetadata {}
 
-export interface LineageRunStepConfig extends Experiment.LineageRunStepBase, LineageItemWithIOMetadata {}
+export interface LineageRunStepConfig extends LineageItemWithIOMetadata, Experiment.LineageRunStepBase {}
 
 export class LineageRunStep implements LineageRunStepConfig {
     [immerable] = true;
@@ -170,6 +170,7 @@ export class LineageRunStep implements LineageRunStepConfig {
     readonly activityDate: string;
     readonly activitySequence: number;
     readonly container: string;
+    readonly containerPath: string;
     readonly created: string;
     readonly createdBy: string;
     readonly dataInputs: LineageIO[];
@@ -202,6 +203,7 @@ export class LineageIO implements LineageItemWithMetadata {
     [immerable] = true;
 
     readonly container: string;
+    readonly containerPath: string;
     readonly created: string;
     readonly createdBy: string;
     readonly expType: string;
@@ -246,15 +248,15 @@ export class LineageIO implements LineageItemWithMetadata {
 }
 
 interface LineageNodeConfig
-    extends Omit<Experiment.LineageNodeBase, 'children' | 'parents' | 'steps'>,
-        LineageItemWithIOMetadata {
-    children: List<LineageLink> | LineageLink[] | ILineageLink[];
+    extends LineageItemWithIOMetadata,
+        Omit<Experiment.LineageNodeBase, 'children' | 'parents' | 'steps'> {
+    children: ILineageLink[] | LineageLink[] | List<LineageLink>;
     // computed properties
     distance: number;
     listURL: string;
 
     meta: LineageNodeMetadata;
-    parents: List<LineageLink> | LineageLink[] | ILineageLink[];
+    parents: ILineageLink[] | LineageLink[] | List<LineageLink>;
     steps: List<LineageRunStep>;
 }
 
@@ -394,11 +396,11 @@ export class LineageResult extends ImmutableRecord({
         });
     }
 
-    filterIn(field: string, value: undefined | string | string[]): LineageResult {
+    filterIn(field: string, value: string | string[] | undefined): LineageResult {
         return LineageResult._filter(this, field, value, true);
     }
 
-    filterOut(field: string, value: undefined | string | string[]): LineageResult {
+    filterOut(field: string, value: string | string[] | undefined): LineageResult {
         return LineageResult._filter(this, field, value, false);
     }
 
@@ -412,7 +414,7 @@ export class LineageResult extends ImmutableRecord({
     private static _filter(
         result: LineageResult,
         field: string,
-        value: undefined | string | string[],
+        value: string | string[] | undefined,
         filterIn: boolean
     ): LineageResult {
         if (field === undefined) throw new Error('field must not be undefined');
@@ -459,7 +461,7 @@ export class LineageResult extends ImmutableRecord({
     private static _matches(
         node: LineageNode,
         field: string,
-        value: undefined | string | string[],
+        value: string | string[] | undefined,
         filterIn: boolean
     ): boolean {
         if (filterIn) {
@@ -510,7 +512,7 @@ export class LineageResult extends ImmutableRecord({
         value: any,
         filterIn: boolean,
         walked: Record<string, string>
-    ): Array<{ lsid: string; role: string }> {
+    ): { lsid: string; role: string }[] {
         let heritage = [];
         const lsid = edge.lsid;
         const toNode = nodes.get(lsid);
@@ -631,7 +633,7 @@ export class Lineage {
 export class LineageGridModel {
     [immerable] = true;
 
-    readonly columns: List<string | GridColumn> = LINEAGE_GRID_COLUMNS;
+    readonly columns: List<GridColumn | string> = LINEAGE_GRID_COLUMNS;
     readonly data: List<LineageNode> = List();
     readonly distance: number = DEFAULT_LINEAGE_DISTANCE;
     readonly isError: boolean = false;
@@ -690,7 +692,7 @@ interface VisGraphClusterNode {
     nodesInCluster: VisGraphNodeType[];
 }
 
-export type VisGraphNodeType = VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode;
+export type VisGraphNodeType = VisGraphClusterNode | VisGraphCombinedNode | VisGraphNode;
 
 export function isBasicNode(item: VisGraphNodeType): item is VisGraphNode {
     return item && item.kind === 'node';
@@ -709,7 +711,7 @@ export class VisGraphOptions {
 
     readonly edges: DataSet<Edge>;
     readonly initialSelection: string[];
-    readonly nodes: DataSet<VisGraphNode | VisGraphCombinedNode>;
+    readonly nodes: DataSet<VisGraphCombinedNode | VisGraphNode>;
     readonly options: Record<string, any>;
 
     constructor(config?: Partial<VisGraphOptions>) {
@@ -730,7 +732,7 @@ function makeEdgeId(fromId: IdType, toId: IdType): string {
 type EdgesRecord = Record<string, Edge>;
 type LineageNodesRecord = Record<string, LineageNode>;
 type NodesInCombinedNode = Record<string, string[]>;
-type VisNodesRecord = Record<string, VisGraphNode | VisGraphCombinedNode>;
+type VisNodesRecord = Record<string, VisGraphCombinedNode | VisGraphNode>;
 
 /**
  * Create an edge between fromId -> toId when dir === Child.
@@ -986,7 +988,7 @@ export interface LineageNodeCollection {
     queryName: string;
 }
 
-export function isAliquotNode(node: LineageNodeCollection | LineageNode): boolean {
+export function isAliquotNode(node: LineageNode | LineageNodeCollection): boolean {
     return node.materialLineageType === 'Aliquot';
 }
 
@@ -1149,7 +1151,7 @@ function groupingBoundary(
     grouping: LineageGroupingOptions,
     depth: number,
     dir: LINEAGE_DIRECTIONS,
-    depthSets: Array<Record<string, string>>
+    depthSets: Record<string, string>[]
 ): boolean {
     if (grouping) {
         // Nearest only examines the first parent and child generations (depth = 1) from seed
@@ -1206,7 +1208,7 @@ function level(depth: number, dir: LINEAGE_DIRECTIONS, combined: boolean): numbe
  * level, however, after further walking the graph it could be that this node needs to be moved to a different level
  * given a parent/child at a higher/lower depth. See Issue 51425.
  */
-function reprocessLevel(visNode: VisGraphNode | VisGraphCombinedNode, dir: LINEAGE_DIRECTIONS, depth: number): void {
+function reprocessLevel(visNode: VisGraphCombinedNode | VisGraphNode, dir: LINEAGE_DIRECTIONS, depth: number): void {
     if (!visNode) return;
 
     const currentLevel = visNode.level;
@@ -1261,7 +1263,7 @@ function processNodes(
     nodesInCombinedNode: NodesInCombinedNode,
     depth = 0,
     processed: Record<string, boolean> = {},
-    depthSets: Array<Record<string, string>> = []
+    depthSets: Record<string, string>[] = []
 ): void {
     if (processed[lsid] === true) {
         // We have already seen this node, however, this now might be at a greater depth so reprocess the level
@@ -1467,7 +1469,7 @@ export function generate(result: LineageResult, options?: LineageOptions): VisGr
     const { edges, nodes } = generateNodesAndEdges(result, options);
 
     return new VisGraphOptions({
-        nodes: new DataSet<VisGraphNode | VisGraphCombinedNode>(Object.values(nodes)),
+        nodes: new DataSet<VisGraphCombinedNode | VisGraphNode>(Object.values(nodes)),
         edges: new DataSet<Edge>(Object.values(edges)),
 
         // vis.js options described in detail here: https://visjs.github.io/vis-network/docs/network/

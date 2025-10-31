@@ -10,9 +10,9 @@ import { LineageSummary } from '../LineageSummary';
 import {
     createLineageNodeCollections,
     isAliquotNode,
-    LineageNodeCollectionByType,
     LineageIOWithMetadata,
     LineageNode,
+    LineageNodeCollectionByType,
 } from '../models';
 import { LineageOptions } from '../types';
 
@@ -148,10 +148,10 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
                     );
                     return (
                         <DetailsListNodes
-                            key={groupName}
-                            title={groupDisplayName}
-                            nodes={nodesByType[groupName]}
                             highlightNode={highlightNode}
+                            key={groupName}
+                            nodes={nodesByType[groupName]}
+                            title={groupDisplayName}
                         />
                     );
                 })}
@@ -192,7 +192,7 @@ const RunStepNodeDetail: FC<RunStepNodeDetailProps> = memo(props => {
                     <DetailsListLineageIO item={step} />
                 </Tab>
                 {hasProvenanceModule && (
-                    <Tab eventKey="provenanceMap" title="Provenance Map" className="lineage-run-step-provenance-map">
+                    <Tab className="lineage-run-step-provenance-map" eventKey="provenanceMap" title="Provenance Map">
                         <RunStepProvenanceMap item={step} />
                     </Tab>
                 )}

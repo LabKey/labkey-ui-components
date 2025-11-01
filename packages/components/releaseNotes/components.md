@@ -1,6 +1,18 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 6.67.3
+*Released*: 1 November 2025
+- Issue 54160: Non US date parsing in the app
+    - Added `getAltNonUSParseFormats` date utility function to provide alternative parse formats for common non-US date/datetime formats
+    - Update DatePickerInput to use alternative parse formats when server date format is non-US
+    - Update parseDate utility function to use alternative non-US parse formats
+
+### version 6.67.2
+*Released* 31 October 2025
+- Issue 53449: resolve lineage items from container path
+  - Refer to `item.containerPath` instead of `item.container` in lineage details
+
 ### version 6.67.1
 *Released* 29 October 2025
 - Issue 53563: Domain designer lookups don't show newly added entity types after initial load/view
@@ -9,13 +21,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 6.67.0
 *Released* 29 October 2025
 - Issue 52310: Change application single-value dropdowns to include the current value in the listed options
-
-### version 6.65.X
-*Released*: X October 2025
-- Issue 54160: Non US date parsing in the app
-  - Added `getAltNonUSParseFormats` date utility function to provide alternative parse formats for common non-US date/datetime formats
-  - Update DatePickerInput to use alternative parse formats when server date format is non-US
-  - Update parseDate utility function to use alternative non-US parse formats
 
 ### version 6.66.0
 *Released*: 23 October 2025

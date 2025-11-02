@@ -35,6 +35,7 @@ import { SCHEMAS } from '../../schemas';
 
 import {
     getQueryDetails,
+    getRequestAuditDetail,
     invalidateFullQueryDetailsCache,
     ISelectRowsResult,
     selectDistinctRows,
@@ -53,6 +54,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { ALL_AMOUNT_AND_UNITS_COLUMNS_LC, SAMPLE_STORAGE_COLUMNS_LC, STORED_AMOUNT_FIELDS } from './constants';
 import { FindField, GroupedSampleFields, SampleState, SampleStateType } from './models';
 import { executeSql, ExecuteSqlResponseWithSession } from '../../query/executeSql';
+import { EDIT_METHOD } from '../../constants';
 
 export async function getSampleSet(config: IEntityTypeDetails): Promise<any> {
     const response = await request({
@@ -556,7 +558,8 @@ export function updateSampleStorageData(
     sampleStorageData: SampleStorageData[],
     containerPath?: string,
     userComment?: string,
-    isDiscard = false
+    isDiscard = false,
+    editMethod?: EDIT_METHOD
 ): Promise<any> {
     if (sampleStorageData.length === 0) {
         return Promise.resolve();
@@ -568,6 +571,7 @@ export function updateSampleStorageData(
             jsonData: {
                 sampleRows: sampleStorageData,
                 [STORED_AMOUNT_FIELDS.AUDIT_COMMENT]: userComment,
+                ...getRequestAuditDetail(editMethod),
                 isDiscard,
             },
             success: Utils.getCallbackWrapper(response => {

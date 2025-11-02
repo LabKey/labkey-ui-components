@@ -22,6 +22,8 @@ import { handleRequestFailure } from '../../request';
 import { AssayProtocolModel } from '../domainproperties/assay/models';
 
 import { AssayUploadResultModel } from './models';
+import { getRequestAuditDetail } from '../../query/api';
+import { EDIT_METHOD } from '../../constants';
 
 let assayDefinitionCache: { [key: string]: Promise<AssayDefinitionModel[]> } = {};
 let protocolCache: Record<string, Promise<AssayProtocolModel>> = {};
@@ -94,12 +96,16 @@ export function getProtocol(options: GetProtocolOptions): Promise<AssayProtocolM
     return protocolCache[key];
 }
 
-export type ImportAssayRunOptions = Omit<AssayDOM.ImportRunOptions, 'success' | 'failure' | 'scope'>;
+export interface ImportAssayRunOptions extends Omit<AssayDOM.ImportRunOptions, 'success' | 'failure' | 'scope'> {
+    editMethod?: EDIT_METHOD;
+}
 
 export function importAssayRun(config: ImportAssayRunOptions): Promise<AssayUploadResultModel> {
     return new Promise((resolve, reject) => {
+        const { editMethod, ...importConfig } = config;
+        importConfig['auditDetails'] = getRequestAuditDetail(editMethod);
         AssayDOM.importRun({
-            ...config,
+            ...importConfig,
             success: rawModel => {
                 resolve(new AssayUploadResultModel(rawModel));
             },

@@ -21,6 +21,7 @@ import { useAppContext } from '../../internal/AppContext';
 import { QueryModel } from './QueryModel';
 
 import { DetailPanel, DetailPanelWithModel } from './DetailPanel';
+import { EDIT_METHOD } from '../../internal/constants';
 
 export interface EditableDetailPanelProps {
     appEditable?: boolean;
@@ -110,7 +111,6 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
         return <FileInput formsy initialValue={data} name={col.fieldKey} queryColumn={col} showLabel={false} />;
     }, []);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleSubmit = useCallback(
         async (values: Record<string, any>): Promise<void> => {
             const { queryInfo } = model;
@@ -139,6 +139,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
                 onBeforeUpdate?.(updatedValues);
 
                 await api.query.updateRows({
+                    editMethod: EDIT_METHOD.DETAIL_EDIT,
                     auditBehavior: AuditBehaviorTypes.DETAILED,
                     containerPath,
                     rows: [updatedValues],
@@ -147,8 +148,8 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
                 });
 
                 setEditing(false);
-                onUpdate?.(); // eslint-disable-line no-unused-expressions
-                onEditToggle?.(false); // eslint-disable-line no-unused-expressions
+                onUpdate?.();
+                onEditToggle?.(false);
             } catch (e) {
                 setError(resolveErrorMessage(e, 'data', undefined, 'update'));
                 setWarning(undefined);
@@ -162,10 +163,10 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
     const panel = (
         <div className={`panel ${editing ? 'panel-info' : 'panel-default'}`}>
             <DetailPanelHeader
-                isEditable={isEditable && canUpdate}
                 editing={editing}
-                title={title}
+                isEditable={isEditable && canUpdate}
                 onClick={toggleEditing}
+                title={title}
                 warning={warning}
             />
 
@@ -216,27 +217,27 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
         return (
             <Formsy
                 onChange={handleFormChange}
-                onValidSubmit={handleSubmit}
-                onValid={enableSubmitButton}
                 onInvalid={disableSubmitButton}
+                onValid={enableSubmitButton}
+                onValidSubmit={handleSubmit}
             >
                 {panel}
 
                 <FormButtons>
-                    <button className="btn btn-default" type="button" onClick={toggleEditing}>
+                    <button className="btn btn-default" onClick={toggleEditing} type="button">
                         Cancel
                     </button>
                     <CommentTextArea
                         actionName="Update"
                         containerClassName="inline-comment"
+                        inline
                         onChange={_onCommentChange}
                         requiresUserComment={requiresUserComment}
-                        inline
                     />
                     <button
                         className="btn btn-success"
-                        type="submit"
                         disabled={!canSubmit || (requiresUserComment && !hasValidUserComment) || disabled}
+                        type="submit"
                     >
                         {submitText}
                     </button>

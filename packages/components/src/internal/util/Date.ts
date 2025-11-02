@@ -400,7 +400,7 @@ export function fromNow(date: Date, addSuffix = true): string {
  * Will only return a valid date or null.
  */
 export function parseDate(
-    dateValue: Date | string | number,
+    dateValue: Date | number | string,
     dateFormat?: string,
     minDate?: Date,
     timeOnly?: boolean,
@@ -415,13 +415,25 @@ export function parseDate(
     }
     if (typeof dateValue !== 'string') return null;
 
-    let validDate: Date;
+    let strictMode = false,
+        validDate: Date;
     if (dateFormat) {
         const _dateFormat = toDateFNSFormatString(dateFormat);
         const date = safeParse(dateValue, _dateFormat, new Date());
 
         if (isValid(date)) {
             validDate = date;
+        } else {
+            const altFormats = getAltParseFormats(dateFormat, dateValue);
+            strictMode = altFormats.length > 1;
+            for (const altFormat of altFormats) {
+                const _altFormat = toDateFNSFormatString(altFormat);
+                const altDate = safeParse(dateValue, _altFormat, new Date());
+                if (isValid(altDate)) {
+                    validDate = altDate;
+                    break;
+                }
+            }
         }
     }
 
@@ -452,9 +464,11 @@ export function parseDate(
             // date-fns does not provide a format-speculative parse() function.
             // Recommendation is to fall back to new Date() / Date.parse().
             // See https://github.com/orgs/date-fns/discussions/2231
-            date = new Date(dateValue);
-            if (isValid(date)) {
-                validDate = date;
+            if (!strictMode) {
+                date = new Date(dateValue);
+                if (isValid(date)) {
+                    validDate = date;
+                }
             }
         }
     }
@@ -502,7 +516,7 @@ export function parseTimeParts(h: string, m?: string, s?: string, ms?: string, p
  * NOTE: This is only for time strings. This does not resolve time from date-like strings
  * with a time pre- or post-fixed to a date. You're better off using parseDate() in that case.
  */
-export function parseTime(time: string | Date): Date {
+export function parseTime(time: Date | string): Date {
     if (!time) return null;
 
     if (time instanceof Date) {
@@ -523,7 +537,7 @@ export function parseTime(time: string | Date): Date {
     return null;
 }
 
-function safeParse(dateStr: string, formatStr: string, referenceDate: number | Date, options?: any): Date {
+function safeParse(dateStr: string, formatStr: string, referenceDate: Date | number, options?: any): Date {
     try {
         return parse(dateStr, formatStr, referenceDate, options);
     } catch (e) {
@@ -544,8 +558,8 @@ export function splitDateTimeFormat(dateTimeFormatStr: string): string[] {
     const dateTimeFormat = dateTimeFormatStr?.trim();
     if (!dateTimeFormat) return ['', ''];
 
-    let standardDatePart = null,
-        restTimePart = '';
+    let restTimePart = '',
+        standardDatePart = null;
     STANDARD_DATE_DISPLAY_FORMATS.forEach(standardDate => {
         if (dateTimeFormat.startsWith(standardDate)) {
             if (dateTimeFormat.length === standardDate.length) {
@@ -684,7 +698,7 @@ export const getDateTimeSettingWarning = (setting: DateTimeSettingProp, allowAlt
     return getNonStandardFormatWarning(formatType, getDateTimeSettingFormat(setting, true), allowAltFormat);
 };
 
-function _formatDate(date: Date | string | number, dateFormat: string, timezone?: string): string {
+function _formatDate(date: Date | number | string, dateFormat: string, timezone?: string): string {
     const date_ = parseDate(date);
     if (!date_) return undefined;
 
@@ -695,11 +709,11 @@ function _formatDate(date: Date | string | number, dateFormat: string, timezone?
     return format(date_, _dateFormat);
 }
 
-export function formatDate(date: Date | string | number, timezone?: string, dateFormat?: string): string {
+export function formatDate(date: Date | number | string, timezone?: string, dateFormat?: string): string {
     return _formatDate(date, dateFormat ?? getDateFNSDateFormat(), timezone);
 }
 
-export function formatDateTime(date: Date | string | number, timezone?: string, dateFormat?: string): string {
+export function formatDateTime(date: Date | number | string, timezone?: string, dateFormat?: string): string {
     return _formatDate(date, dateFormat ?? getDateFNSDateTimeFormat(), timezone);
 }
 
@@ -712,19 +726,19 @@ export function formatTime(timeValue: Date | string, timeFormat?: string): strin
 
 // Issue 44398: see DateUtil.java getJsonDateTimeFormatString(), this function is to match the format, which is
 // provided by the LabKey server for the API response, from a JS Date object
-export function getJsonDateTimeFormatString(date: Date | string | number): string {
+export function getJsonDateTimeFormatString(date: Date | number | string): string {
     return _formatDate(date, ISO_DATE_TIME_FORMAT_STRING);
 }
 
-export function getJsonTimeFormatString(date: Date | string | number): string {
+export function getJsonTimeFormatString(date: Date | number | string): string {
     return _formatDate(date, ISO_LONG_TIME_FORMAT_STRING);
 }
 
-export function getJsonDateFormatString(date: Date | string | number): string {
+export function getJsonDateFormatString(date: Date | number | string): string {
     return _formatDate(date, ISO_DATE_FORMAT_STRING);
 }
 
-export function getJsonFormatString(date: Date | string | number, rawFormat: string): string {
+export function getJsonFormatString(date: Date | number | string, rawFormat: string): string {
     if (!isValid(date)) return undefined;
     if (rawFormat === DateFormatType.DateTime) return getJsonDateTimeFormatString(date);
     if (rawFormat === DateFormatType.Time) return getJsonTimeFormatString(date);
@@ -742,7 +756,7 @@ export function generateNameWithTimestamp(name: string): string {
 // From a current date string, get the next N date string
 // example, from "2022-02-02", get next 1 day, return "2022-02-03"
 // example, from "2022-02-02", get next -1 day, return "2022-02-01"
-export function getNextDateStr(date: Date | string | number, numberOfDays: number = 1): string {
+export function getNextDateStr(date: Date | number | string, numberOfDays = 1): string {
     const seedDate = parseDate(date);
     if (!isValid(seedDate)) return undefined;
 
@@ -801,7 +815,7 @@ export function getParsedRelativeDateStr(dateVal: string): { days: number; posit
  * Returns true if the date has a timestamp that is before now.
  * If a timezone is not provided, then it will assume the provided date is in the server's timezone
  */
-export function isDateTimeInPast(date: Date | string | number, timezone?: string): boolean {
+export function isDateTimeInPast(date: Date | number | string, timezone?: string): boolean {
     const date_ = parseDate(date);
     if (!isValid(date_)) return false;
 
@@ -809,4 +823,82 @@ export function isDateTimeInPast(date: Date | string | number, timezone?: string
     const timezone_ = timezone ?? getServerContext().timezone;
     const zonedTime = fromZonedTime(date_, timezone_);
     return zonedTime.getTime() <= new Date().getTime();
+}
+
+/**
+ * Given a current date format (DMY or YMD), assuming useMDYDateParsing is false, return accepted alternative parse formats.
+ * In order to be able to parse DMY dates, all possible combinations of MDY date and/or datetime formats need to be considered.
+ * To help narrow down the list of formats, an optional inputDateStr can be provided.
+ * @param currentFormat The configured field/container/folder date/datetime format
+ * @param inputDateStr An optional input date string to help narrow down the list of formats to test
+ */
+export function getAltParseFormats(
+    currentFormat: string,
+    inputDateStr?: string /*helps narrow down list of formats*/
+): string[] {
+    const { useMDYDateParsing } = getServerContext();
+    // if starts with 'yy', don't use alt formats to avoid ambiguity with ddMMyy
+    const canUseAltFormat =
+        currentFormat.toLowerCase().startsWith('d') || currentFormat.toLowerCase().startsWith('yyyy');
+    if (useMDYDateParsing || !canUseAltFormat) {
+        return [currentFormat];
+    }
+    const dayPart = ['dd'];
+    const monthPart = ['MM', 'MMM', 'MMMM'];
+    const yearParts = ['yy', 'yyyy'];
+
+    let separators = ['-', '/', '.'];
+    let altDateFormats = [currentFormat];
+    let hasTime = true;
+    let timeParts = ['hh:mm:ss.SSS a', 'hh:mm:ss a', 'hh:mm a', 'hh a', 'HH:mm:ss.SSS', 'HH:mm:ss', 'HH:mm', 'HH']; // favor am/pm formats first, instead of current time format
+
+    if (inputDateStr) {
+        const sep = inputDateStr.indexOf('-') > -1 ? '-' : inputDateStr.indexOf('/') > -1 ? '/' : '.';
+        separators = [sep];
+
+        let currentDateFormat = currentFormat;
+        hasTime = inputDateStr.indexOf(' ') > -1; // check dateStr instead of currentFormat for time part, we need to be able to parse datetime into date even if format contains only date portion
+        timeParts = ['HH:mm:ss.SSS', 'HH:mm:ss', 'HH:mm', 'HH'];
+        let hasAMPM = false;
+        if (hasTime) {
+            hasAMPM = inputDateStr.toLowerCase().indexOf(' am') > -1 || inputDateStr.toLowerCase().indexOf(' pm') > -1;
+            if (hasAMPM) timeParts = ['hh:mm:ss.SSS a', 'hh:mm:ss a', 'hh:mm a', 'hh a'];
+            const splitInd = currentFormat.indexOf(' ');
+            if (splitInd > -1) currentDateFormat = currentFormat.substring(0, splitInd);
+        }
+        altDateFormats = [currentDateFormat];
+    }
+
+    for (const p1 of dayPart) {
+        for (const p2 of monthPart) {
+            for (const p3 of yearParts) {
+                for (const sep of separators) {
+                    const format = p1 + sep + p2 + sep + p3;
+                    if (altDateFormats.indexOf(format) === -1) altDateFormats.push(format);
+                }
+            }
+        }
+    }
+
+    // also allow yyyy M D like format, but not yy M D to avoid ambiguity with D M yy
+    for (const month of monthPart) {
+        for (const sep of separators) {
+            const format = 'yyyy' + sep + month + sep + 'dd';
+            if (altDateFormats.indexOf(format) === -1) altDateFormats.push(format);
+        }
+    }
+
+    if (!hasTime) return altDateFormats;
+
+    const altDateTimeFormats =
+        altDateFormats.indexOf(currentFormat) > -1 ? [...altDateFormats] : [currentFormat, ...altDateFormats];
+
+    for (const dateFormat of altDateFormats) {
+        for (const timeFormat of timeParts) {
+            const dateTimeFormat = dateFormat + ' ' + timeFormat;
+            if (altDateTimeFormats.indexOf(dateTimeFormat) === -1) altDateTimeFormats.push(dateTimeFormat);
+        }
+    }
+
+    return altDateTimeFormats;
 }

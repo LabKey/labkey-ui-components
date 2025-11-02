@@ -18,7 +18,7 @@ export interface LineageDetailProps {
     item: Experiment.LineageItemBase;
 }
 
-const LineageDetailImpl: FC<LineageDetailProps & InjectedQueryModels> = memo(props => {
+const LineageDetailImpl: FC<InjectedQueryModels & LineageDetailProps> = memo(props => {
     const { queryModels } = props;
     if (queryModels.model.isLoading) return <LoadingSpinner />;
     if (queryModels.model.hasLoadErrors) return <Alert>{queryModels.model.loadErrors[0]}</Alert>;
@@ -33,10 +33,10 @@ const LineageDetailImpl: FC<LineageDetailProps & InjectedQueryModels> = memo(pro
 
     return (
         <DetailPanel
-            tableCls="detail-component--table__auto"
+            detailRenderer={_resolveDetailRenderer}
             model={queryModels.model}
             queryColumns={detailColumns}
-            detailRenderer={_resolveDetailRenderer}
+            tableCls="detail-component--table__auto"
         />
     );
 });
@@ -49,7 +49,7 @@ export const LineageDetail: FC<LineageDetailProps> = memo(({ item }) => {
         () => ({
             model: {
                 baseFilters: item.pkFilters.map(pkFilter => Filter.create(pkFilter.fieldKey, pkFilter.value)),
-                containerPath: item.container,
+                containerPath: item.containerPath,
                 // Issue 45028: Display details view columns in lineage
                 schemaQuery: new SchemaQuery(item.schemaName, item.queryName, ViewInfo.DETAIL_NAME),
                 // Must specify '*' columns be requested to resolve "properties" columns
@@ -60,7 +60,7 @@ export const LineageDetail: FC<LineageDetailProps> = memo(({ item }) => {
     );
 
     // providing "key" to allow for reload on lsid change
-    return <LineageDetailWithQueryModels key={item.lsid} autoLoad queryConfigs={queryConfigs} item={item} />;
+    return <LineageDetailWithQueryModels autoLoad item={item} key={item.lsid} queryConfigs={queryConfigs} />;
 });
 LineageDetail.displayName = 'LineageDetail';
 
@@ -73,17 +73,19 @@ export const CustomPropertiesRenderer: FC<RendererProps> = memo(({ data }) => {
     return (
         <table className="lineage-detail-prop-table" data-testid="custom-properties-table">
             <tbody>
-                {data?.map(row => {
-                    const fieldKey = row.get('fieldKey');
-                    const name = fieldKey.substring(fieldKey.indexOf('#') + 1);
+                {data
+                    ?.map(row => {
+                        const fieldKey = row.get('fieldKey');
+                        const name = fieldKey.substring(fieldKey.indexOf('#') + 1);
 
-                    return (
-                        <tr key={fieldKey} className="lineage-detail-prop-row">
-                            <td className="lineage-detail-prop-cell">{name}</td>
-                            <td className="lineage-detail-prop-cell">{row.get('value')}</td>
-                        </tr>
-                    );
-                }).toArray()}
+                        return (
+                            <tr className="lineage-detail-prop-row" key={fieldKey}>
+                                <td className="lineage-detail-prop-cell">{name}</td>
+                                <td className="lineage-detail-prop-cell">{row.get('value')}</td>
+                            </tr>
+                        );
+                    })
+                    .toArray()}
             </tbody>
         </table>
     );

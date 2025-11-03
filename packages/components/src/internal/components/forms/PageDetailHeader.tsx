@@ -17,7 +17,7 @@ import React, { PropsWithChildren, PureComponent, ReactNode } from 'react';
 
 import { SVGIcon } from '../base/SVGIcon';
 
-export interface PageDetailHeaderProps extends PropsWithChildren {
+interface PageDetailHeaderProps extends PropsWithChildren {
     description?: ReactNode;
     iconAltText?: string;
     iconDir?: string;

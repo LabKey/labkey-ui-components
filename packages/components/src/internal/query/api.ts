@@ -36,6 +36,7 @@ import { ViewInfo, ViewInfoJson } from '../ViewInfo';
 import { URLResolver } from '../url/URLResolver';
 import { ModuleContext } from '../components/base/ServerContext';
 import { handleRequestFailure, RequestHandler } from '../request';
+import { EDIT_METHOD } from '../constants';
 
 let queryDetailsCache: Record<string, Promise<QueryInfo>> = {};
 
@@ -741,8 +742,12 @@ export class InsertRowsErrorResponse extends ImmutableRecord({
     }
 }
 
+export interface QueryRequestOptionsBase {
+    editMethod?: EDIT_METHOD;
+}
 export interface InsertRowsOptions
-    extends Omit<Query.QueryRequestOptions, 'apiVersion' | 'queryName' | 'rows' | 'schemaName'> {
+    extends Omit<Query.QueryRequestOptions, 'apiVersion' | 'queryName' | 'rows' | 'schemaName'>,
+        QueryRequestOptionsBase {
     fillEmptyFields?: boolean;
     rows: List<any>; // TODO: convert to Array<Record<string, any>>
     schemaQuery: SchemaQuery;
@@ -779,10 +784,23 @@ export class QueryCommandResponse {
     }
 }
 
+export function getRequestAuditDetail(editMethod?: EDIT_METHOD): Record<string, string> {
+    const auditDetails = {};
+    if (editMethod) {
+        auditDetails['editMethod'] = editMethod;
+    }
+    const requestLocation = window.location.hash;
+    if (requestLocation) auditDetails['requestSource'] = requestLocation;
+
+    return auditDetails;
+}
+
 export function insertRows(options: InsertRowsOptions): Promise<QueryCommandResponse> {
     return new Promise((resolve, reject) => {
-        const { fillEmptyFields, rows, schemaQuery, ...insertRowsOptions } = options;
+        const { fillEmptyFields, editMethod, rows, schemaQuery, ...insertRowsOptions } = options;
         const _rows = fillEmptyFields === true ? ensureAllFieldsInAllRows(rows) : rows;
+
+        insertRowsOptions['auditDetails'] = getRequestAuditDetail(editMethod);
 
         Query.insertRows({
             autoFormFileData: true,
@@ -860,13 +878,16 @@ function ensureNullForUndefined(row: Map<string, any>): Map<string, any> {
     return row.reduce((map, v, k) => map.set(k, v === undefined ? null : v), Map<string, any>());
 }
 
-export interface UpdateRowsOptions extends Omit<Query.QueryRequestOptions, 'queryName' | 'schemaName'> {
+export interface UpdateRowsOptions
+    extends Omit<Query.QueryRequestOptions, 'queryName' | 'schemaName'>,
+        QueryRequestOptionsBase {
     schemaQuery: SchemaQuery;
 }
 
 export function updateRows(options: UpdateRowsOptions): Promise<QueryCommandResponse> {
     return new Promise((resolve, reject) => {
-        const { schemaQuery, ...updateRowOptions } = options;
+        const { schemaQuery, editMethod, ...updateRowOptions } = options;
+        updateRowOptions['auditDetails'] = getRequestAuditDetail(editMethod);
         Query.updateRows({
             autoFormFileData: true,
             ...updateRowOptions,
@@ -907,6 +928,7 @@ export function updateRowsByContainer(
     rows: any[],
     containerPaths: string[],
     auditUserComment: string,
+    editMethod?: EDIT_METHOD,
     containerField = 'Folder'
 ): Promise<Query.SaveRowsResponse | QueryCommandResponse> {
     // if all rows are in the same container, we can use updateRows (which supports file/attachments)
@@ -917,6 +939,7 @@ export function updateRowsByContainer(
             auditUserComment,
             rows,
             schemaQuery,
+            editMethod,
         });
     } else {
         const commands: Query.Command[] = [];
@@ -929,17 +952,26 @@ export function updateRowsByContainer(
             auditUserComment,
             skipReselectRows: true,
         });
-        return saveRowsByContainer({ commands }, containerField);
+        return saveRowsByContainer(
+            {
+                commands,
+                editMethod,
+            },
+            containerField
+        );
     }
 }
 
-export interface DeleteRowsOptions extends Omit<Query.QueryRequestOptions, 'queryName' | 'schemaName'> {
+export interface DeleteRowsOptions
+    extends Omit<Query.QueryRequestOptions, 'queryName' | 'schemaName'>,
+        QueryRequestOptionsBase {
     schemaQuery: SchemaQuery;
 }
 
 export function deleteRows(options: DeleteRowsOptions): Promise<QueryCommandResponse> {
     return new Promise((resolve, reject) => {
-        const { schemaQuery, ...deleteRowsOptions } = options;
+        const { schemaQuery, editMethod, ...deleteRowsOptions } = options;
+        deleteRowsOptions['auditDetails'] = getRequestAuditDetail(editMethod);
         Query.deleteRows({
             apiVersion: 13.2,
             ...deleteRowsOptions,
@@ -964,13 +996,15 @@ export function deleteRows(options: DeleteRowsOptions): Promise<QueryCommandResp
     });
 }
 
-export type SaveRowsOptions = Omit<Query.SaveRowsOptions, 'failure' | 'success'>;
+export interface SaveRowsOptions extends Omit<Query.SaveRowsOptions, 'failure' | 'success'>, QueryRequestOptionsBase {}
 
 export function saveRows(options: SaveRowsOptions): Promise<Query.SaveRowsResponse> {
     return new Promise((resolve, reject) => {
+        const { editMethod, ...saveOptions } = options;
+        saveOptions['auditDetails'] = getRequestAuditDetail(editMethod);
         Query.saveRows({
             apiVersion: 13.2,
-            ...options,
+            ...saveOptions,
             success: response => {
                 resolve(response);
             },
@@ -1044,10 +1078,11 @@ export function deleteRowsByContainer(
         });
     }
 
+    const { editMethod, ...deleteOptions } = options;
     Object.keys(containerRows).forEach(containerPath => {
         const rows = containerRows[containerPath];
         commands.push({
-            ...options,
+            ...deleteOptions,
             command: 'delete',
             schemaName: options.schemaQuery.schemaName,
             queryName: options.schemaQuery.queryName,
@@ -1058,6 +1093,8 @@ export function deleteRowsByContainer(
 
     return new Promise((resolve, reject) => {
         saveRows({
+            ...deleteOptions,
+            editMethod,
             commands,
         })
             .then(response => {
@@ -1123,8 +1160,9 @@ export interface IImportData {
 
 export function importData(config: IImportData): Promise<any> {
     return new Promise((resolve, reject) => {
+        const auditDetails = getRequestAuditDetail();
         QueryDOM.importData(
-            Object.assign({}, config, {
+            Object.assign({auditDetails}, config, {
                 success: response => {
                     if (response && response.exception) {
                         reject(response);

@@ -34,8 +34,8 @@ export const MAX_EDITABLE_GRID_ROWS = MAX_SELECTION_ACTION_ROWS;
 export const LOOKUP_DEFAULT_SIZE = 25;
 
 export enum AssayUploadTabs {
-    Grid = 1,
     Files = 2,
+    Grid = 1,
 }
 
 export enum EXPORT_TYPES {
@@ -47,6 +47,17 @@ export enum EXPORT_TYPES {
     LABEL,
     STORAGE_MAP,
     LABEL_TEMPLATE,
+}
+
+export enum EDIT_METHOD {
+    BULK_EDIT = 'BulkEdit',
+    BULK_EDIT_LINEAGE = 'BulkEditLineage',
+    DETAIL_EDIT = 'DetailEdit',
+    DETAIL_EDIT_LINEAGE = 'DetailEditLineage',
+    FORM_INSERT = 'FormInsert',
+    GRID_EDIT = 'GridEdit',
+    GRID_INSERT = 'GridInsert',
+    STORAGE_VIEW_ACTION = 'StorageViewAction',
 }
 
 export enum KEYS {

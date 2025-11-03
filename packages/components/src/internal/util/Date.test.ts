@@ -26,6 +26,7 @@ import {
     formatDateTime,
     formatTime,
     generateNameWithTimestamp,
+    getAltParseFormats,
     getColDateFormat,
     getColFormattedDateFilterValue,
     getColFormattedTimeFilterValue,
@@ -751,6 +752,7 @@ describe('Date Utilities', () => {
         });
 
         test('valid date with dateFormat', () => {
+            LABKEY.useMDYDateParsing = true;
             expect(parseDate('01:02 2022-04-19', 'HH:mm yyyy-MM-dd').toString()).toContain('Apr 19 2022');
             expect(parseDate('19/04/2022', 'dd/MM/yyyy').toString()).toContain('Apr 19 2022');
             expect(parseDate('4/11/2022', 'dd/MM/yyyy').toString()).toContain('Nov 04 2022');
@@ -763,6 +765,8 @@ describe('Date Utilities', () => {
             expect(parseDate('22-04-11', 'YY-MM-DD').toString()).toContain('Apr 11 2022');
             expect(parseDate('22/04/11', 'yy/MM/dd').toString()).toContain('Apr 11 2022');
             expect(parseDate('22/04/11', 'YY/MM/DD').toString()).toContain('Apr 11 2022');
+            // because useMDYDateParsing = true and the format doesn't match the provided string, this won't be parsed as Nov 4
+            expect(parseDate('4/11/2022', 'dd-MM-yyyy').toString()).toContain('Apr 11 2022');
         });
 
         test('minDate', () => {
@@ -787,6 +791,28 @@ describe('Date Utilities', () => {
             expect(parseDate('1985-09-11 12:50:22', undefined, undefined, true).toString()).toContain(
                 'Sep 11 1985 12:50:22'
             );
+        });
+
+        test('useMDYDateParsing = false', () => {
+            LABKEY.useMDYDateParsing = false;
+            expect(parseDate('4/11/2022', 'dd/MM/yyyy').toString()).toContain('Nov 04 2022');
+            expect(parseDate('4/11/2022', 'ddMMMMyy').toString()).toContain('Nov 04 2022');
+            expect(parseDate('4/11/2022', 'dd-MM-yyyy').toString()).toContain('Nov 04 2022');
+            expect(parseDate('4/11/2022', 'dd/MM/yy').toString()).toContain('Nov 04 2022');
+            expect(parseDate('4/11/2022 11:30', 'dd/MM/yy').toString()).toContain('Nov 04 2022 11:30');
+            expect(parseDate('4/11/2022 11:30 PM', 'dd/MM/yy').toString()).toContain('Nov 04 2022 23:30');
+            expect(parseDate('4/11/2022 11:30', 'dd-MM-yy').toString()).toContain('Nov 04 2022 11:30');
+            expect(parseDate('4/11/2022 11:30 PM', 'dd-MM-yy').toString()).toContain('Nov 04 2022 23:30');
+            expect(parseDate('4/11/2022 11:30:30 PM', 'dd/MM/yy HH:mm').toString()).toContain('Nov 04 2022 23:30:30');
+            expect(parseDate('4/11/2022 11:30', 'dd-MM-yy hh:mm:ss').toString()).toContain('Nov 04 2022 11:30');
+            expect(parseDate('4/11/2022 11:30:30.123 PM', 'dd-MM-yy hh:mm').toString()).toContain(
+                'Nov 04 2022 23:30:30'
+            );
+            // without a dateFormat, use DMY parsing even if useMDYDateParsing = false
+            expect(parseDate('4/11/2022').toString()).toContain('Apr 11 2022');
+            expect(parseDate('4/11/2022 11:30').toString()).toContain('Apr 11 2022');
+            expect(parseDate('4/11/2022 11:30 PM').toString()).toContain('Apr 11 2022');
+            LABKEY.useMDYDateParsing = true;
         });
     });
 
@@ -1093,7 +1119,8 @@ describe('Date Utilities', () => {
             expect(isDateTimeInPast(datePlusHours(utcNow, -1), TZ)).toBeTruthy();
             expect(isDateTimeInPast(datePlusHours(utcNow, 1), TZ)).toBeTruthy();
             expect(isDateTimeInPast(datePlusHours(utcNow, 2), TZ)).toBeTruthy();
-            // Europe/Kyiv timezone is +3 hours UTC
+
+            // Europe/Kyiv timezone is +2 (EET) or +3 (EEST) hours UTC
             expect(isDateTimeInPast(datePlusHours(utcNow, 4), TZ)).toBeFalsy();
             expect(isDateTimeInPast(datePlusHours(utcNow, 5), TZ)).toBeFalsy();
             expect(isDateTimeInPast(datePlusHours(utcNow, 6), TZ)).toBeFalsy();
@@ -1168,6 +1195,423 @@ describe('Date Utilities', () => {
             expect(checkFormat('X', tz)).toBe('-05');
             expect(checkFormat('XX', tz)).toBe('-0500');
             expect(checkFormat('XXX', tz)).toBe('-05:00');
+        });
+    });
+
+    describe('getAltDateParseFormats', () => {
+        beforeEach(() => {
+            LABKEY.useMDYDateParsing = true;
+        });
+
+        it('when useMDYDateParsing is true', () => {
+            expect(getAltParseFormats('MM-DD-yy')).toEqual(['MM-DD-yy']);
+            expect(getAltParseFormats('dd-MM-yy')).toEqual(['dd-MM-yy']);
+        });
+
+        it('when current format does not start with d', () => {
+            LABKEY.useMDYDateParsing = false;
+            expect(getAltParseFormats('MM-DD-yy')).toEqual(['MM-DD-yy']);
+            expect(getAltParseFormats('yy-MM-DD')).toEqual(['yy-MM-DD']);
+        });
+
+        it('when useMDYDateParsing is false and the current format starts with d, without inputDateStr', () => {
+            LABKEY.useMDYDateParsing = false;
+            expect(getAltParseFormats('DD-MM-yy')).toEqual([
+                'DD-MM-yy',
+                'dd-MM-yy',
+                'dd/MM/yy',
+                'dd.MM.yy',
+                'dd-MM-yyyy',
+                'dd/MM/yyyy',
+                'dd.MM.yyyy',
+                'dd-MMM-yy',
+                'dd/MMM/yy',
+                'dd.MMM.yy',
+                'dd-MMM-yyyy',
+                'dd/MMM/yyyy',
+                'dd.MMM.yyyy',
+                'dd-MMMM-yy',
+                'dd/MMMM/yy',
+                'dd.MMMM.yy',
+                'dd-MMMM-yyyy',
+                'dd/MMMM/yyyy',
+                'dd.MMMM.yyyy',
+                'yyyy-MM-dd',
+                'yyyy/MM/dd',
+                'yyyy.MM.dd',
+                'yyyy-MMM-dd',
+                'yyyy/MMM/dd',
+                'yyyy.MMM.dd',
+                'yyyy-MMMM-dd',
+                'yyyy/MMMM/dd',
+                'yyyy.MMMM.dd',
+                'DD-MM-yy hh:mm:ss.SSS a',
+                'DD-MM-yy hh:mm:ss a',
+                'DD-MM-yy hh:mm a',
+                'DD-MM-yy hh a',
+                'DD-MM-yy HH:mm:ss.SSS',
+                'DD-MM-yy HH:mm:ss',
+                'DD-MM-yy HH:mm',
+                'DD-MM-yy HH',
+                'dd-MM-yy hh:mm:ss.SSS a',
+                'dd-MM-yy hh:mm:ss a',
+                'dd-MM-yy hh:mm a',
+                'dd-MM-yy hh a',
+                'dd-MM-yy HH:mm:ss.SSS',
+                'dd-MM-yy HH:mm:ss',
+                'dd-MM-yy HH:mm',
+                'dd-MM-yy HH',
+                'dd/MM/yy hh:mm:ss.SSS a',
+                'dd/MM/yy hh:mm:ss a',
+                'dd/MM/yy hh:mm a',
+                'dd/MM/yy hh a',
+                'dd/MM/yy HH:mm:ss.SSS',
+                'dd/MM/yy HH:mm:ss',
+                'dd/MM/yy HH:mm',
+                'dd/MM/yy HH',
+                'dd.MM.yy hh:mm:ss.SSS a',
+                'dd.MM.yy hh:mm:ss a',
+                'dd.MM.yy hh:mm a',
+                'dd.MM.yy hh a',
+                'dd.MM.yy HH:mm:ss.SSS',
+                'dd.MM.yy HH:mm:ss',
+                'dd.MM.yy HH:mm',
+                'dd.MM.yy HH',
+                'dd-MM-yyyy hh:mm:ss.SSS a',
+                'dd-MM-yyyy hh:mm:ss a',
+                'dd-MM-yyyy hh:mm a',
+                'dd-MM-yyyy hh a',
+                'dd-MM-yyyy HH:mm:ss.SSS',
+                'dd-MM-yyyy HH:mm:ss',
+                'dd-MM-yyyy HH:mm',
+                'dd-MM-yyyy HH',
+                'dd/MM/yyyy hh:mm:ss.SSS a',
+                'dd/MM/yyyy hh:mm:ss a',
+                'dd/MM/yyyy hh:mm a',
+                'dd/MM/yyyy hh a',
+                'dd/MM/yyyy HH:mm:ss.SSS',
+                'dd/MM/yyyy HH:mm:ss',
+                'dd/MM/yyyy HH:mm',
+                'dd/MM/yyyy HH',
+                'dd.MM.yyyy hh:mm:ss.SSS a',
+                'dd.MM.yyyy hh:mm:ss a',
+                'dd.MM.yyyy hh:mm a',
+                'dd.MM.yyyy hh a',
+                'dd.MM.yyyy HH:mm:ss.SSS',
+                'dd.MM.yyyy HH:mm:ss',
+                'dd.MM.yyyy HH:mm',
+                'dd.MM.yyyy HH',
+                'dd-MMM-yy hh:mm:ss.SSS a',
+                'dd-MMM-yy hh:mm:ss a',
+                'dd-MMM-yy hh:mm a',
+                'dd-MMM-yy hh a',
+                'dd-MMM-yy HH:mm:ss.SSS',
+                'dd-MMM-yy HH:mm:ss',
+                'dd-MMM-yy HH:mm',
+                'dd-MMM-yy HH',
+                'dd/MMM/yy hh:mm:ss.SSS a',
+                'dd/MMM/yy hh:mm:ss a',
+                'dd/MMM/yy hh:mm a',
+                'dd/MMM/yy hh a',
+                'dd/MMM/yy HH:mm:ss.SSS',
+                'dd/MMM/yy HH:mm:ss',
+                'dd/MMM/yy HH:mm',
+                'dd/MMM/yy HH',
+                'dd.MMM.yy hh:mm:ss.SSS a',
+                'dd.MMM.yy hh:mm:ss a',
+                'dd.MMM.yy hh:mm a',
+                'dd.MMM.yy hh a',
+                'dd.MMM.yy HH:mm:ss.SSS',
+                'dd.MMM.yy HH:mm:ss',
+                'dd.MMM.yy HH:mm',
+                'dd.MMM.yy HH',
+                'dd-MMM-yyyy hh:mm:ss.SSS a',
+                'dd-MMM-yyyy hh:mm:ss a',
+                'dd-MMM-yyyy hh:mm a',
+                'dd-MMM-yyyy hh a',
+                'dd-MMM-yyyy HH:mm:ss.SSS',
+                'dd-MMM-yyyy HH:mm:ss',
+                'dd-MMM-yyyy HH:mm',
+                'dd-MMM-yyyy HH',
+                'dd/MMM/yyyy hh:mm:ss.SSS a',
+                'dd/MMM/yyyy hh:mm:ss a',
+                'dd/MMM/yyyy hh:mm a',
+                'dd/MMM/yyyy hh a',
+                'dd/MMM/yyyy HH:mm:ss.SSS',
+                'dd/MMM/yyyy HH:mm:ss',
+                'dd/MMM/yyyy HH:mm',
+                'dd/MMM/yyyy HH',
+                'dd.MMM.yyyy hh:mm:ss.SSS a',
+                'dd.MMM.yyyy hh:mm:ss a',
+                'dd.MMM.yyyy hh:mm a',
+                'dd.MMM.yyyy hh a',
+                'dd.MMM.yyyy HH:mm:ss.SSS',
+                'dd.MMM.yyyy HH:mm:ss',
+                'dd.MMM.yyyy HH:mm',
+                'dd.MMM.yyyy HH',
+                'dd-MMMM-yy hh:mm:ss.SSS a',
+                'dd-MMMM-yy hh:mm:ss a',
+                'dd-MMMM-yy hh:mm a',
+                'dd-MMMM-yy hh a',
+                'dd-MMMM-yy HH:mm:ss.SSS',
+                'dd-MMMM-yy HH:mm:ss',
+                'dd-MMMM-yy HH:mm',
+                'dd-MMMM-yy HH',
+                'dd/MMMM/yy hh:mm:ss.SSS a',
+                'dd/MMMM/yy hh:mm:ss a',
+                'dd/MMMM/yy hh:mm a',
+                'dd/MMMM/yy hh a',
+                'dd/MMMM/yy HH:mm:ss.SSS',
+                'dd/MMMM/yy HH:mm:ss',
+                'dd/MMMM/yy HH:mm',
+                'dd/MMMM/yy HH',
+                'dd.MMMM.yy hh:mm:ss.SSS a',
+                'dd.MMMM.yy hh:mm:ss a',
+                'dd.MMMM.yy hh:mm a',
+                'dd.MMMM.yy hh a',
+                'dd.MMMM.yy HH:mm:ss.SSS',
+                'dd.MMMM.yy HH:mm:ss',
+                'dd.MMMM.yy HH:mm',
+                'dd.MMMM.yy HH',
+                'dd-MMMM-yyyy hh:mm:ss.SSS a',
+                'dd-MMMM-yyyy hh:mm:ss a',
+                'dd-MMMM-yyyy hh:mm a',
+                'dd-MMMM-yyyy hh a',
+                'dd-MMMM-yyyy HH:mm:ss.SSS',
+                'dd-MMMM-yyyy HH:mm:ss',
+                'dd-MMMM-yyyy HH:mm',
+                'dd-MMMM-yyyy HH',
+                'dd/MMMM/yyyy hh:mm:ss.SSS a',
+                'dd/MMMM/yyyy hh:mm:ss a',
+                'dd/MMMM/yyyy hh:mm a',
+                'dd/MMMM/yyyy hh a',
+                'dd/MMMM/yyyy HH:mm:ss.SSS',
+                'dd/MMMM/yyyy HH:mm:ss',
+                'dd/MMMM/yyyy HH:mm',
+                'dd/MMMM/yyyy HH',
+                'dd.MMMM.yyyy hh:mm:ss.SSS a',
+                'dd.MMMM.yyyy hh:mm:ss a',
+                'dd.MMMM.yyyy hh:mm a',
+                'dd.MMMM.yyyy hh a',
+                'dd.MMMM.yyyy HH:mm:ss.SSS',
+                'dd.MMMM.yyyy HH:mm:ss',
+                'dd.MMMM.yyyy HH:mm',
+                'dd.MMMM.yyyy HH',
+                'yyyy-MM-dd hh:mm:ss.SSS a',
+                'yyyy-MM-dd hh:mm:ss a',
+                'yyyy-MM-dd hh:mm a',
+                'yyyy-MM-dd hh a',
+                'yyyy-MM-dd HH:mm:ss.SSS',
+                'yyyy-MM-dd HH:mm:ss',
+                'yyyy-MM-dd HH:mm',
+                'yyyy-MM-dd HH',
+                'yyyy/MM/dd hh:mm:ss.SSS a',
+                'yyyy/MM/dd hh:mm:ss a',
+                'yyyy/MM/dd hh:mm a',
+                'yyyy/MM/dd hh a',
+                'yyyy/MM/dd HH:mm:ss.SSS',
+                'yyyy/MM/dd HH:mm:ss',
+                'yyyy/MM/dd HH:mm',
+                'yyyy/MM/dd HH',
+                'yyyy.MM.dd hh:mm:ss.SSS a',
+                'yyyy.MM.dd hh:mm:ss a',
+                'yyyy.MM.dd hh:mm a',
+                'yyyy.MM.dd hh a',
+                'yyyy.MM.dd HH:mm:ss.SSS',
+                'yyyy.MM.dd HH:mm:ss',
+                'yyyy.MM.dd HH:mm',
+                'yyyy.MM.dd HH',
+                'yyyy-MMM-dd hh:mm:ss.SSS a',
+                'yyyy-MMM-dd hh:mm:ss a',
+                'yyyy-MMM-dd hh:mm a',
+                'yyyy-MMM-dd hh a',
+                'yyyy-MMM-dd HH:mm:ss.SSS',
+                'yyyy-MMM-dd HH:mm:ss',
+                'yyyy-MMM-dd HH:mm',
+                'yyyy-MMM-dd HH',
+                'yyyy/MMM/dd hh:mm:ss.SSS a',
+                'yyyy/MMM/dd hh:mm:ss a',
+                'yyyy/MMM/dd hh:mm a',
+                'yyyy/MMM/dd hh a',
+                'yyyy/MMM/dd HH:mm:ss.SSS',
+                'yyyy/MMM/dd HH:mm:ss',
+                'yyyy/MMM/dd HH:mm',
+                'yyyy/MMM/dd HH',
+                'yyyy.MMM.dd hh:mm:ss.SSS a',
+                'yyyy.MMM.dd hh:mm:ss a',
+                'yyyy.MMM.dd hh:mm a',
+                'yyyy.MMM.dd hh a',
+                'yyyy.MMM.dd HH:mm:ss.SSS',
+                'yyyy.MMM.dd HH:mm:ss',
+                'yyyy.MMM.dd HH:mm',
+                'yyyy.MMM.dd HH',
+                'yyyy-MMMM-dd hh:mm:ss.SSS a',
+                'yyyy-MMMM-dd hh:mm:ss a',
+                'yyyy-MMMM-dd hh:mm a',
+                'yyyy-MMMM-dd hh a',
+                'yyyy-MMMM-dd HH:mm:ss.SSS',
+                'yyyy-MMMM-dd HH:mm:ss',
+                'yyyy-MMMM-dd HH:mm',
+                'yyyy-MMMM-dd HH',
+                'yyyy/MMMM/dd hh:mm:ss.SSS a',
+                'yyyy/MMMM/dd hh:mm:ss a',
+                'yyyy/MMMM/dd hh:mm a',
+                'yyyy/MMMM/dd hh a',
+                'yyyy/MMMM/dd HH:mm:ss.SSS',
+                'yyyy/MMMM/dd HH:mm:ss',
+                'yyyy/MMMM/dd HH:mm',
+                'yyyy/MMMM/dd HH',
+                'yyyy.MMMM.dd hh:mm:ss.SSS a',
+                'yyyy.MMMM.dd hh:mm:ss a',
+                'yyyy.MMMM.dd hh:mm a',
+                'yyyy.MMMM.dd hh a',
+                'yyyy.MMMM.dd HH:mm:ss.SSS',
+                'yyyy.MMMM.dd HH:mm:ss',
+                'yyyy.MMMM.dd HH:mm',
+                'yyyy.MMMM.dd HH',
+            ]);
+        });
+
+        it('useMDYDateParsing is false, with inputDateStr that is a date', () => {
+            LABKEY.useMDYDateParsing = false;
+            expect(getAltParseFormats('dd-MM-yy', '02-04-2025')).toEqual([
+                'dd-MM-yy',
+                'dd-MM-yyyy',
+                'dd-MMM-yy',
+                'dd-MMM-yyyy',
+                'dd-MMMM-yy',
+                'dd-MMMM-yyyy',
+                'yyyy-MM-dd',
+                'yyyy-MMM-dd',
+                'yyyy-MMMM-dd',
+            ]);
+            expect(getAltParseFormats('dd-MM-yy', '02/04/2025')).toEqual([
+                'dd-MM-yy',
+                'dd/MM/yy',
+                'dd/MM/yyyy',
+                'dd/MMM/yy',
+                'dd/MMM/yyyy',
+                'dd/MMMM/yy',
+                'dd/MMMM/yyyy',
+                'yyyy/MM/dd',
+                'yyyy/MMM/dd',
+                'yyyy/MMMM/dd',
+            ]);
+            expect(getAltParseFormats('dd/MM/yy', '02042025')).toEqual([
+                'dd/MM/yy',
+                'dd.MM.yy',
+                'dd.MM.yyyy',
+                'dd.MMM.yy',
+                'dd.MMM.yyyy',
+                'dd.MMMM.yy',
+                'dd.MMMM.yyyy',
+                'yyyy.MM.dd',
+                'yyyy.MMM.dd',
+                'yyyy.MMMM.dd',
+            ]);
+        });
+
+        it('useMDYDateParsing is false, with inputDateStr that is a datetime', () => {
+            LABKEY.useMDYDateParsing = false;
+            expect(getAltParseFormats('dd-MM-yy', '02-04-2025 11:30')).toEqual([
+                'dd-MM-yy',
+                'dd-MM-yyyy',
+                'dd-MMM-yy',
+                'dd-MMM-yyyy',
+                'dd-MMMM-yy',
+                'dd-MMMM-yyyy',
+                'yyyy-MM-dd',
+                'yyyy-MMM-dd',
+                'yyyy-MMMM-dd',
+                'dd-MM-yy HH:mm:ss.SSS',
+                'dd-MM-yy HH:mm:ss',
+                'dd-MM-yy HH:mm',
+                'dd-MM-yy HH',
+                'dd-MM-yyyy HH:mm:ss.SSS',
+                'dd-MM-yyyy HH:mm:ss',
+                'dd-MM-yyyy HH:mm',
+                'dd-MM-yyyy HH',
+                'dd-MMM-yy HH:mm:ss.SSS',
+                'dd-MMM-yy HH:mm:ss',
+                'dd-MMM-yy HH:mm',
+                'dd-MMM-yy HH',
+                'dd-MMM-yyyy HH:mm:ss.SSS',
+                'dd-MMM-yyyy HH:mm:ss',
+                'dd-MMM-yyyy HH:mm',
+                'dd-MMM-yyyy HH',
+                'dd-MMMM-yy HH:mm:ss.SSS',
+                'dd-MMMM-yy HH:mm:ss',
+                'dd-MMMM-yy HH:mm',
+                'dd-MMMM-yy HH',
+                'dd-MMMM-yyyy HH:mm:ss.SSS',
+                'dd-MMMM-yyyy HH:mm:ss',
+                'dd-MMMM-yyyy HH:mm',
+                'dd-MMMM-yyyy HH',
+                'yyyy-MM-dd HH:mm:ss.SSS',
+                'yyyy-MM-dd HH:mm:ss',
+                'yyyy-MM-dd HH:mm',
+                'yyyy-MM-dd HH',
+                'yyyy-MMM-dd HH:mm:ss.SSS',
+                'yyyy-MMM-dd HH:mm:ss',
+                'yyyy-MMM-dd HH:mm',
+                'yyyy-MMM-dd HH',
+                'yyyy-MMMM-dd HH:mm:ss.SSS',
+                'yyyy-MMMM-dd HH:mm:ss',
+                'yyyy-MMMM-dd HH:mm',
+                'yyyy-MMMM-dd HH',
+            ]);
+            expect(getAltParseFormats('dd-MM-yy', '02/04/2025 11:30 PM')).toEqual([
+                'dd-MM-yy',
+                'dd/MM/yy',
+                'dd/MM/yyyy',
+                'dd/MMM/yy',
+                'dd/MMM/yyyy',
+                'dd/MMMM/yy',
+                'dd/MMMM/yyyy',
+                'yyyy/MM/dd',
+                'yyyy/MMM/dd',
+                'yyyy/MMMM/dd',
+                'dd-MM-yy hh:mm:ss.SSS a',
+                'dd-MM-yy hh:mm:ss a',
+                'dd-MM-yy hh:mm a',
+                'dd-MM-yy hh a',
+                'dd/MM/yy hh:mm:ss.SSS a',
+                'dd/MM/yy hh:mm:ss a',
+                'dd/MM/yy hh:mm a',
+                'dd/MM/yy hh a',
+                'dd/MM/yyyy hh:mm:ss.SSS a',
+                'dd/MM/yyyy hh:mm:ss a',
+                'dd/MM/yyyy hh:mm a',
+                'dd/MM/yyyy hh a',
+                'dd/MMM/yy hh:mm:ss.SSS a',
+                'dd/MMM/yy hh:mm:ss a',
+                'dd/MMM/yy hh:mm a',
+                'dd/MMM/yy hh a',
+                'dd/MMM/yyyy hh:mm:ss.SSS a',
+                'dd/MMM/yyyy hh:mm:ss a',
+                'dd/MMM/yyyy hh:mm a',
+                'dd/MMM/yyyy hh a',
+                'dd/MMMM/yy hh:mm:ss.SSS a',
+                'dd/MMMM/yy hh:mm:ss a',
+                'dd/MMMM/yy hh:mm a',
+                'dd/MMMM/yy hh a',
+                'dd/MMMM/yyyy hh:mm:ss.SSS a',
+                'dd/MMMM/yyyy hh:mm:ss a',
+                'dd/MMMM/yyyy hh:mm a',
+                'dd/MMMM/yyyy hh a',
+                'yyyy/MM/dd hh:mm:ss.SSS a',
+                'yyyy/MM/dd hh:mm:ss a',
+                'yyyy/MM/dd hh:mm a',
+                'yyyy/MM/dd hh a',
+                'yyyy/MMM/dd hh:mm:ss.SSS a',
+                'yyyy/MMM/dd hh:mm:ss a',
+                'yyyy/MMM/dd hh:mm a',
+                'yyyy/MMM/dd hh a',
+                'yyyy/MMMM/dd hh:mm:ss.SSS a',
+                'yyyy/MMMM/dd hh:mm:ss a',
+                'yyyy/MMMM/dd hh:mm a',
+                'yyyy/MMMM/dd hh a',
+            ]);
         });
     });
 });

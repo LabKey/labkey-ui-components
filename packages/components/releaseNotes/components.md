@@ -5,6 +5,28 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Update URLResolver to reference new controller for workflow-related actions
 
+### version 6.68.1
+*Released* 2 November 2025
+- Issue 52063: Domain designer to handle lookup to a query with a pipe character
+  - don't just split on '|', as the queryName could contain '|' characters
+
+### version 6.68.0
+*Released* 2 November 2025
+- Add auditing of what method was used for CRUD
+  - Modified api.query.insertRows/updateRows/deleteRows/saveRows and moveEntities to accept and process editMethod parameter and record request hash in 'requestSource`
+
+### version 6.67.3
+*Released*: 1 November 2025
+- Issue 54160: Non US date parsing in the app
+  - Added `getAltNonUSParseFormats` date utility function to provide alternative parse formats for common non-US date/datetime formats
+  - Update DatePickerInput to use alternative parse formats when server date format is non-US
+  - Update parseDate utility function to use alternative non-US parse formats
+
+### version 6.67.2
+*Released* 31 October 2025
+- Issue 53449: resolve lineage items from container path
+  - Refer to `item.containerPath` instead of `item.container` in lineage details
+
 ### version 6.67.1
 *Released* 29 October 2025
 - Issue 53563: Domain designer lookups don't show newly added entity types after initial load/view

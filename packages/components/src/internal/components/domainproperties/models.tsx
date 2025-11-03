@@ -1531,7 +1531,10 @@ export function getValidValuesDetailStr(validValues: string[]): string {
 }
 
 export function decodeLookup(value: string): { queryName: string; rangeURI: string } {
-    const [rangeURI, queryName] = value ? value.split('|') : [undefined, undefined];
+    // Issue 52063: don't just split on '|', as the queryName could contain '|' characters
+    const separatorIndex = value?.indexOf('|') ?? -1;
+    const rangeURI = separatorIndex === -1 ? value : value.substring(0, separatorIndex);
+    const queryName = separatorIndex === -1 ? undefined : value.substring(separatorIndex + 1);
 
     return {
         queryName,

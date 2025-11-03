@@ -51,6 +51,7 @@ import {
 
 import {
     acceptablePropertyType,
+    decodeLookup,
     DEFAULT_TEXT_CHOICE_VALIDATOR,
     DomainDesign,
     DomainField,
@@ -1520,5 +1521,53 @@ describe('resolveLookupQueryValue', () => {
         expect(resolveLookupQueryValue(SAMPLE_TYPE, 'schema', 'query', false)).toBe(
             'http://www.w3.org/2001/XMLSchema#int|query'
         );
+    });
+});
+
+describe('decodeLookup', () => {
+    test('base', () => {
+        let result = decodeLookup('http://www.w3.org/2001/XMLSchema#string|query');
+        expect(result.rangeURI).toBe('http://www.w3.org/2001/XMLSchema#string');
+        expect(result.queryName).toBe('query');
+
+        result = decodeLookup('http://www.w3.org/2001/XMLSchema#int|anotherQuery');
+        expect(result.rangeURI).toBe('http://www.w3.org/2001/XMLSchema#int');
+        expect(result.queryName).toBe('anotherQuery');
+
+        result = decodeLookup('http://www.w3.org/2001/XMLSchema#dateTime|dateQuery');
+        expect(result.rangeURI).toBe('http://www.w3.org/2001/XMLSchema#dateTime');
+        expect(result.queryName).toBe('dateQuery');
+    });
+
+    test('invalid', () => {
+        let result = decodeLookup(undefined);
+        expect(result.rangeURI).toBeUndefined();
+        expect(result.queryName).toBeUndefined();
+
+        result = decodeLookup('invalidStringWithoutDelimiter');
+        expect(result.rangeURI).toBe('invalidStringWithoutDelimiter');
+        expect(result.queryName).toBeUndefined();
+
+        result = decodeLookup('');
+        expect(result.rangeURI).toBe('');
+        expect(result.queryName).toBeUndefined();
+
+        result = decodeLookup('onlyDelimiter|');
+        expect(result.rangeURI).toBe('onlyDelimiter');
+        expect(result.queryName).toBe('');
+
+        result = decodeLookup('|onlyQueryName');
+        expect(result.rangeURI).toBe('');
+        expect(result.queryName).toBe('onlyQueryName');
+    });
+
+    test('multipl | delimiters', () => {
+        let result = decodeLookup('http://www.w3.org/2001/XMLSchema#string|query|extra');
+        expect(result.rangeURI).toBe('http://www.w3.org/2001/XMLSchema#string');
+        expect(result.queryName).toBe('query|extra');
+
+        result = decodeLookup('http://www.w3.org/2001/XMLSchema#int|another|query|with|pipes');
+        expect(result.rangeURI).toBe('http://www.w3.org/2001/XMLSchema#int');
+        expect(result.queryName).toBe('another|query|with|pipes');
     });
 });

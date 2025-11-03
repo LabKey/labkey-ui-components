@@ -321,3 +321,28 @@
     font-family: monospace;
     font-size: 13px;
 }
+
+.curve-fit-statistics__header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.curve-fit-statistics__title {
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.curve-fit-series-cell {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.curve-fit-series-cell__name {
+    padding-top: 2px;
+}
+
+.curve-fit-value-cell {
+    text-align: right;
+}

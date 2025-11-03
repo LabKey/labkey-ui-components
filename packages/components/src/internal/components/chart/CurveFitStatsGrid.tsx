@@ -19,24 +19,28 @@ const roundedValue = (value: number) => {
     const rounded = Utils.roundNumber(value, 4);
     return !isNaN(rounded) ? rounded : value;
 };
-const MIN_COL = new GridColumn({ index: 'min', title: 'Min', cell: roundedValue });
-const MAX_COL = new GridColumn({ index: 'max', title: 'Max', cell: roundedValue });
-const ASYMMETRY_COLUMN = new GridColumn({ index: 'asymmetry', title: 'Asymmetry', cell: roundedValue });
-const INFLECTION_COLUMN = new GridColumn({ index: 'inflection', title: 'Inflection', cell: roundedValue });
-const R_SQUARED_COLUMN = new GridColumn({ index: 'RSquared', title: 'R-Squared', cell: roundedValue });
+const roundedColumn = (value: number) => {
+    const str = roundedValue(value);
+    return <div className="curve-fit-value-cell">{str}</div>;
+};
+const MIN_COL = new GridColumn({ index: 'min', title: 'Min', cell: roundedColumn });
+const MAX_COL = new GridColumn({ index: 'max', title: 'Max', cell: roundedColumn });
+const ASYMMETRY_COLUMN = new GridColumn({ index: 'asymmetry', title: 'Asymmetry', cell: roundedColumn });
+const INFLECTION_COLUMN = new GridColumn({ index: 'inflection', title: 'Inflection', cell: roundedColumn });
+const R_SQUARED_COLUMN = new GridColumn({ index: 'RSquared', title: 'R-Squared', cell: roundedColumn });
 const ADJUSTED_R_SQUARED_COLUMN = new GridColumn({
     index: 'adjustedRSquared',
     title: 'Adjusted R-Squared',
-    cell: roundedValue,
+    cell: roundedColumn,
 });
-const RSS_COLUMN = new GridColumn({ index: 'RSS', title: 'RSS', cell: roundedValue });
-const TSS_COLUMN = new GridColumn({ index: 'TSS', title: 'TSS', cell: roundedValue });
-const RMSE_COLUMN = new GridColumn({ index: 'RMSE', title: 'RMSE', cell: roundedValue });
-const SLOPE_COLUMN = new GridColumn({ index: 'slope', title: 'Slope', cell: roundedValue });
-const INTERCEPT_COLUMN = new GridColumn({ index: 'intercept', title: 'Intercept', cell: roundedValue });
-const COEFFICIENT_1_COLUMN = new GridColumn({ index: 'coefficient1', title: 'Coefficient 1', cell: roundedValue });
-const COEFFICIENT_2_COLUMN = new GridColumn({ index: 'coefficient2', title: 'Coefficient 2', cell: roundedValue });
-const COEFFICIENT_3_COLUMN = new GridColumn({ index: 'coefficient3', title: 'Coefficient 3', cell: roundedValue });
+const RSS_COLUMN = new GridColumn({ index: 'RSS', title: 'RSS', cell: roundedColumn });
+const TSS_COLUMN = new GridColumn({ index: 'TSS', title: 'TSS', cell: roundedColumn });
+const RMSE_COLUMN = new GridColumn({ index: 'RMSE', title: 'RMSE', cell: roundedColumn });
+const SLOPE_COLUMN = new GridColumn({ index: 'slope', title: 'Slope', cell: roundedColumn });
+const INTERCEPT_COLUMN = new GridColumn({ index: 'intercept', title: 'Intercept', cell: roundedColumn });
+const COEFFICIENT_1_COLUMN = new GridColumn({ index: 'coefficient1', title: 'Coefficient 1', cell: roundedColumn });
+const COEFFICIENT_2_COLUMN = new GridColumn({ index: 'coefficient2', title: 'Coefficient 2', cell: roundedColumn });
+const COEFFICIENT_3_COLUMN = new GridColumn({ index: 'coefficient3', title: 'Coefficient 3', cell: roundedColumn });
 const STATS_COLUMNS = [RSS_COLUMN, TSS_COLUMN, RMSE_COLUMN, R_SQUARED_COLUMN];
 const NONLINEAR_COLUMNS = [
     MIN_COL,
@@ -256,7 +260,7 @@ const SeriesCell: FC<SeriesCellProps> = memo(({ colorScale, series, shapeScale }
             <svg height={15} width={15}>
                 <path d={shape} fill={color} stroke={color} transform="translate(7.5, 7.5)" />
             </svg>
-            <span className="margin-left-small">{series}</span>
+            <div className="curve-fit-series-cell__name">{series}</div>
         </div>
     );
 });

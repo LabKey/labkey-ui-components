@@ -5,6 +5,7 @@ import classNames from 'classnames';
 
 import { QueryColumn } from '../../public/QueryColumn';
 import { QueryInfo } from '../../public/QueryInfo';
+import { naturalSortByProperty } from '../../public/sort';
 
 import { Modal, ModalProps } from '../Modal';
 
@@ -62,13 +63,13 @@ export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
         return (
             <input
                 autoFocus
-                placeholder={undefined}
                 className="form-control"
                 defaultValue={title}
+                maxLength={MAX_LABEL_LENGTH}
                 onBlur={onBlur}
                 onChange={onChange}
+                placeholder={undefined}
                 type="text"
-                maxLength={MAX_LABEL_LENGTH}
             />
         );
     }
@@ -135,11 +136,10 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
     );
 
     return (
-        <div className="list-group-item flex" key={column.index} data-fieldkey={column.fieldKeyPath}>
+        <div className="list-group-item flex" data-fieldkey={column.fieldKeyPath} key={column.index}>
             {supportsExpand && (
                 <>
                     {parentFieldKeys.map((parent, index) => (
-                        // eslint-disable-next-line react/no-array-index-key
                         <div className="field-expand-icon" key={`${column.index}|${index}`} />
                     ))}
                     <div className="field-expand-icon">
@@ -161,11 +161,11 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
             {!isInView && column.selectable && (
                 <div
                     className={'pull-right view-field__action ' + (disabledMsg ? ' disabled ' : '')}
-                    title={disabled ? undefined : 'Add this field to the view.'}
                     onClick={disabled ? undefined : _onAddColumn}
                     onMouseEnter={onMouseEnter}
                     onMouseLeave={onMouseLeave}
                     ref={targetRef}
+                    title={disabled ? undefined : 'Add this field to the view.'}
                 >
                     <i className="fa fa-plus" />
                     {show && createPortal(popover, portalEl)}
@@ -219,19 +219,20 @@ export const ColumnChoiceGroup: FC<ColumnChoiceGroupProps> = memo(props => {
             {isLookupExpanded &&
                 expandedColumns[column.index].columns.valueArray
                     .filter(fkCol => expandedColumnFilter?.(fkCol, showAllColumns) ?? true)
+                    .sort(naturalSortByProperty('caption')) // Issue 53983: Sort fields by caption
                     .map(fkCol => (
                         <ColumnChoiceGroup
                             column={fkCol}
-                            disabledMsg={disabledMsg}
-                            key={fkCol.index}
-                            isInView={isColumnInView(fkCol)}
-                            onAddColumn={onAddColumn}
-                            isExpanded={!!expandedColumns[fkCol.index]}
-                            onExpandColumn={onExpandColumn}
-                            expandedColumnFilter={expandedColumnFilter}
-                            onCollapseColumn={onCollapseColumn}
-                            expandedColumns={expandedColumns}
                             columnsInView={columnsInView}
+                            disabledMsg={disabledMsg}
+                            expandedColumnFilter={expandedColumnFilter}
+                            expandedColumns={expandedColumns}
+                            isExpanded={!!expandedColumns[fkCol.index]}
+                            isInView={isColumnInView(fkCol)}
+                            key={fkCol.index}
+                            onAddColumn={onAddColumn}
+                            onCollapseColumn={onCollapseColumn}
+                            onExpandColumn={onExpandColumn}
                             showAllColumns={showAllColumns}
                         />
                     ))}
@@ -292,7 +293,7 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
     }, [onEditTitle]);
 
     return (
-        <Draggable key={key} draggableId={key} index={index} isDragDisabled={isDragDisabled}>
+        <Draggable draggableId={key} index={index} isDragDisabled={isDragDisabled} key={key}>
             {(dragProvided, snapshot) => (
                 <div
                     className={classNames('list-group-item flex draggable', { active: selected && !editing })}
@@ -306,8 +307,8 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
                     </div>
                     <FieldLabelDisplay
                         column={column}
-                        includeFieldKey
                         editing={editing}
+                        includeFieldKey
                         onEditComplete={_onUpdateTitle}
                     />
                     {!editing && (
@@ -315,17 +316,17 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
                             {allowEditLabel && (
                                 <span
                                     className="edit-inline-field__toggle"
-                                    title="Edit the field's label for this view."
                                     onClick={_onEditTitle}
+                                    title="Edit the field's label for this view."
                                 >
-                                    <i id={'select-' + index} className="fa fa-pencil" />
+                                    <i className="fa fa-pencil" id={'select-' + index} />
                                 </span>
                             )}
                             {!disableDelete && (
                                 <span
                                     className="view-field__action clickable"
-                                    title="Remove this field from the view."
                                     onClick={_onRemoveColumn}
+                                    title="Remove this field from the view."
                                 >
                                     <i className="fa fa-times" />
                                 </span>
@@ -341,7 +342,7 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
 
 ColumnInView.displayName = 'ColumnInView';
 
-export interface ColumnSelectionModalProps extends Omit<ModalProps, 'canConfirm' | 'onConfirm' | 'cancelText'> {
+export interface ColumnSelectionModalProps extends Omit<ModalProps, 'cancelText' | 'canConfirm' | 'onConfirm'> {
     allowEditLabel?: boolean;
     allowEmptySelection?: boolean;
     allowShowAll?: boolean;
@@ -506,7 +507,8 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
         if (!isLoaded || !queryInfo) return [];
         return queryInfo.columns.valueArray
             .filter(c => expandedColumnFilter?.(c, showAllColumns) ?? true)
-            .filter(c => c.fieldKeyArray.length === 1); // at the top level don't include lookup fields
+            .filter(c => c.fieldKeyArray.length === 1) // at the top level don't include lookup fields
+            .sort(naturalSortByProperty('caption')); // Issue 53983: Sort fields by caption
     }, [expandedColumnFilter, isLoaded, queryInfo, showAllColumns]);
 
     const disabledMsg = useMemo<string>(() => {
@@ -528,28 +530,28 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
             {isLoaded && (
                 <div className="field-modal__container row">
                     <div className="col-xs-12 col-sm-6 field-modal__col-2">
-                        <div key="title" className="field-modal__col-title">
+                        <div className="field-modal__col-title" key="title">
                             {leftColumnTitle}
                         </div>
-                        <div key="field-list" className="list-group field-modal__col-content">
+                        <div className="list-group field-modal__col-content" key="field-list">
                             {availableColumns.map(column => (
                                 <ColumnChoiceGroup
                                     column={column}
-                                    key={column.index}
-                                    onAddColumn={onAddColumn}
-                                    onExpandColumn={onExpand ? onExpandColumn : undefined}
-                                    onCollapseColumn={onCollapseColumn}
+                                    columnsInView={selectedColumns}
+                                    disabledMsg={disabledMsg}
                                     expandedColumnFilter={expandedColumnFilter}
                                     expandedColumns={expandedColumns}
-                                    columnsInView={selectedColumns}
+                                    key={column.index}
+                                    onAddColumn={onAddColumn}
+                                    onCollapseColumn={onCollapseColumn}
+                                    onExpandColumn={onExpand ? onExpandColumn : undefined}
                                     showAllColumns={showAllColumns}
-                                    disabledMsg={disabledMsg}
                                 />
                             ))}
                         </div>
                         {allowShowAll && (
-                            <div key="toggleAll" className="field-modal__footer">
-                                <input type="checkbox" checked={showAllColumns} onChange={onToggleShowAll} />
+                            <div className="field-modal__footer" key="toggleAll">
+                                <input checked={showAllColumns} onChange={onToggleShowAll} type="checkbox" />
                                 &nbsp;Show all system and user-defined fields
                             </div>
                         )}
@@ -575,16 +577,16 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
                                         {selectedColumns.map((column, index) => (
                                             <ColumnInView
                                                 allowEditLabel={allowEditLabel}
-                                                disableDelete={fixedFieldKeys?.indexOf(column.fieldKey) >= 0}
-                                                key={column.index}
                                                 column={column}
+                                                disableDelete={fixedFieldKeys?.indexOf(column.fieldKey) >= 0}
                                                 index={index}
                                                 isDragDisabled={editingColumnTitle}
-                                                onRemoveColumn={onRemoveColumn}
-                                                selected={selectedIndex === index}
+                                                key={column.index}
                                                 onClick={onSelectField}
                                                 onEditTitle={onEditTitle}
+                                                onRemoveColumn={onRemoveColumn}
                                                 onUpdateTitle={onUpdateTitle}
+                                                selected={selectedIndex === index}
                                             />
                                         ))}
                                         {dropProvided.placeholder}

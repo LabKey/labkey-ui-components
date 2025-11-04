@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+###  version 6.68.3
+*Released*: 4 November 2025
+- Issue 53983: Sort fields by caption
+- Issue 53927: Adjust column view layout to wrap
+
 ###  version 6.68.2
 *Released*: 3 November 2025
 - SVGChart: render curve fit statistics when available

@@ -25,6 +25,10 @@
     .list-group-item .field-caption {
         flex: 1;
         cursor: default;
+
+        // Issue 53927: Prevent clipping/overlap with field caption
+        overflow: hidden;
+        word-wrap: break-word;
     }
 
     .list-group-item .field-expand-icon {

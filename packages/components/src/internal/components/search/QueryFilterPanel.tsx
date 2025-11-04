@@ -41,7 +41,7 @@ interface Props {
     entityDataType?: EntityDataType;
     fieldKey?: string;
     fields?: QueryColumn[];
-    filters: { [key: string]: FieldFilter[] };
+    filters: Record<string, FieldFilter[]>;
     fullWidth?: boolean;
     hasNotInQueryFilter?: boolean;
     hasNotInQueryFilterLabel?: string;
@@ -245,11 +245,11 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                         {entityDataType?.supportHasNoValueInQuery && (
                             <div className="form-check list-group-item">
                                 <input
+                                    checked={hasNotInQueryFilter}
                                     className="form-check-input filter-faceted__checkbox"
-                                    type="checkbox"
                                     name="field-value-nodata-check"
                                     onChange={event => onHasNoValueInQueryChange(event.target.checked)}
-                                    checked={hasNotInQueryFilter}
+                                    type="checkbox"
                                 />
                                 <div className="filter-modal__fields-col-nodata-msg">
                                     {hasNotInQueryFilterLabel ?? 'Without data from this type'}
@@ -267,14 +267,14 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                 return (
                                     <ChoicesListItem
                                         active={currFieldKey === activeFieldKey}
-                                        index={index}
-                                        key={field.fieldKeyPath}
-                                        label={<span data-fieldkey={field.fieldKeyPath}>{caption}</span>}
-                                        onSelect={() => onFieldClick(field)}
                                         componentRight={
                                             hasFilters(field) && <span className="pull-right field-modal__field_dot" />
                                         }
                                         disabled={hasNotInQueryFilter}
+                                        index={index}
+                                        key={field.fieldKeyPath}
+                                        label={<span data-fieldkey={field.fieldKeyPath}>{caption}</span>}
+                                        onSelect={() => onFieldClick(field)}
                                     />
                                 );
                             })}
@@ -297,15 +297,15 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                 {activeTab === FieldFilterTabs.Filter && (
                                     <FilterExpressionView
                                         allowRelativeDateFilter={allowRelativeDateFilter}
-                                        key={activeFieldKey}
+                                        disabled={hasNotInQueryFilter}
                                         field={activeField}
                                         fieldFilters={currentFieldFilters?.map(filter => filter.filter)}
-                                        onFieldFilterUpdate={(newFilters, index) =>
-                                            onFilterUpdate(activeField, newFilters, index)
-                                        }
-                                        disabled={hasNotInQueryFilter}
                                         includeAllAncestorFilter={
                                             isAncestor && activeField?.fieldKey.toLowerCase() === 'name'
+                                        }
+                                        key={activeFieldKey}
+                                        onFieldFilterUpdate={(newFilters, index) =>
+                                            onFilterUpdate(activeField, newFilters, index)
                                         }
                                     />
                                 )}
@@ -316,6 +316,14 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                         Find values for {activeField.caption}
                                     </div>
                                     <FilterFacetedSelector
+                                        canBeBlank={!activeField?.required && !activeField.nameExpression}
+                                        disabled={hasNotInQueryFilter}
+                                        fieldFilters={currentFieldFilters?.map(filter => filter.filter)}
+                                        fieldKey={activeFieldKey}
+                                        key={activeFieldKey}
+                                        onFieldFilterUpdate={(newFilters, index) =>
+                                            onFilterUpdate(activeField, newFilters, index)
+                                        }
                                         selectDistinctOptions={{
                                             ...selectDistinctOptions,
                                             column: activeFieldKey,
@@ -324,14 +332,6 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                             viewName,
                                             filterArray: fieldDistinctValueFilters,
                                         }}
-                                        fieldFilters={currentFieldFilters?.map(filter => filter.filter)}
-                                        fieldKey={activeFieldKey}
-                                        canBeBlank={!activeField?.required && !activeField.nameExpression}
-                                        key={activeFieldKey}
-                                        onFieldFilterUpdate={(newFilters, index) =>
-                                            onFilterUpdate(activeField, newFilters, index)
-                                        }
-                                        disabled={hasNotInQueryFilter}
                                     />
                                 </Tab>
                             )}

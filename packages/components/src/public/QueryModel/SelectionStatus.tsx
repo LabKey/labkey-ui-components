@@ -1,15 +1,17 @@
 import React, { FC, memo, useCallback, useMemo } from 'react';
 
-import { getServerContext } from '@labkey/api';
-
 import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
-
 import { RequiresModelAndActions } from './withQueryModels';
+import { useServerContext } from '../../internal/components/base/ServerContext';
 
 export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, model }) => {
     const { isLoading, isLoadingSelections, isLoadingTotalCount, maxRows, rowCount, selections } = model;
     const selectionSize = selections?.size;
-    const maxSelectionSize = useMemo(() => getServerContext().moduleContext?.query?.maxQuerySelection, []);
+    const { moduleContext } = useServerContext();
+    const maxSelectionSize = useMemo(
+        () => moduleContext?.query?.maxQuerySelection,
+        [moduleContext?.query?.maxQuerySelection]
+    );
 
     const clearSelections = useCallback((): void => {
         actions.clearSelections(model.id);

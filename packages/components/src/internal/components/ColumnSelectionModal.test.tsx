@@ -10,9 +10,9 @@ import { wrapDraggable } from '../test/testHelpers';
 
 import {
     ColumnChoice,
-    ColumnChoiceProps,
     ColumnChoiceGroup,
     ColumnChoiceGroupProps,
+    ColumnChoiceProps,
     ColumnInView,
     ColumnInViewProps,
     ColumnSelectionModal,
@@ -52,7 +52,7 @@ describe('ColumnSelectionModal', () => {
 
         test('isInView', () => {
             render(<ColumnChoice {...defaultProps()} isInView />);
-            expect(document.querySelector('.field-caption').textContent).toBe('Test Column');
+            expect(document.querySelector('.field-caption')).toHaveTextContent('Test Column');
             expect(document.querySelectorAll('.fa-check')).toHaveLength(1);
             expect(document.querySelectorAll('.fa-plus')).toHaveLength(0);
             expect(document.querySelectorAll('.field-expand-icon')).toHaveLength(1);
@@ -62,7 +62,7 @@ describe('ColumnSelectionModal', () => {
 
         test('not isInView', () => {
             render(<ColumnChoice {...defaultProps()} isInView={false} />);
-            expect(document.querySelector('.field-caption').textContent).toBe('Test Column');
+            expect(document.querySelector('.field-caption')).toHaveTextContent('Test Column');
             expect(document.querySelectorAll('.fa-check')).toHaveLength(0);
             expect(document.querySelectorAll('.fa-plus')).toHaveLength(1);
             expect(document.querySelectorAll('.field-expand-icon')).toHaveLength(1);
@@ -72,7 +72,7 @@ describe('ColumnSelectionModal', () => {
 
         test('lookup, collapsed', () => {
             render(<ColumnChoice {...defaultProps()} column={QUERY_COL_LOOKUP} isInView={false} />);
-            expect(document.querySelector('.field-caption').textContent).toBe('Test Column');
+            expect(document.querySelector('.field-caption')).toHaveTextContent('Test Column');
             expect(document.querySelectorAll('.fa-check')).toHaveLength(0);
             expect(document.querySelectorAll('.fa-plus')).toHaveLength(1);
             expect(document.querySelectorAll('.field-expand-icon')).toHaveLength(3);
@@ -82,7 +82,7 @@ describe('ColumnSelectionModal', () => {
 
         test('lookup, expanded', () => {
             render(<ColumnChoice {...defaultProps()} column={QUERY_COL_LOOKUP} isExpanded isInView={false} />);
-            expect(document.querySelector('.field-caption').textContent).toBe('Test Column');
+            expect(document.querySelector('.field-caption')).toHaveTextContent('Test Column');
             expect(document.querySelectorAll('.fa-check')).toHaveLength(0);
             expect(document.querySelectorAll('.fa-plus')).toHaveLength(1);
             expect(document.querySelectorAll('.field-expand-icon')).toHaveLength(3);
@@ -116,7 +116,7 @@ describe('ColumnSelectionModal', () => {
         }
 
         function validate(column: QueryColumn, deleteDisabled: boolean): void {
-            expect(document.querySelector('.field-caption span').textContent).toBe(column.caption);
+            expect(document.querySelector('.field-caption span')).toHaveTextContent(column.caption);
             const removeIcon = document.querySelector('.fa-times');
             if (deleteDisabled) {
                 expect(removeIcon).toBeFalsy();
@@ -184,7 +184,7 @@ describe('ColumnSelectionModal', () => {
     describe('FieldLabelDisplay', () => {
         test('not lookup', () => {
             render(<FieldLabelDisplay column={QUERY_COL} includeFieldKey />);
-            expect(document.querySelector('.field-caption span').textContent).toBe(QUERY_COL.caption);
+            expect(document.querySelector('.field-caption span')).toHaveTextContent(QUERY_COL.caption);
             expect(document.querySelectorAll('.overlay-trigger')).toHaveLength(1);
             expect(document.querySelectorAll('input')).toHaveLength(0);
         });
@@ -266,8 +266,8 @@ describe('ColumnSelectionModal', () => {
                 <ColumnChoiceGroup
                     {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
-                    expandedColumns={{ [QUERY_COL_LOOKUP.index]: new QueryInfo({}) }}
                     columnsInView={[QUERY_COL_LOOKUP]}
+                    expandedColumns={{ [QUERY_COL_LOOKUP.index]: new QueryInfo({}) }}
                 />
             );
             validate(true, true);
@@ -279,8 +279,8 @@ describe('ColumnSelectionModal', () => {
                 <ColumnChoiceGroup
                     {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
-                    expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
                     columnsInView={[QUERY_COL_LOOKUP]}
+                    expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
                 />
             );
             validate(true, true, true);
@@ -292,8 +292,8 @@ describe('ColumnSelectionModal', () => {
                 <ColumnChoiceGroup
                     {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
-                    expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
                     columnsInView={[QUERY_COL_LOOKUP, QUERY_COL]}
+                    expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
                 />
             );
             validate(true, true, true);
@@ -321,8 +321,8 @@ describe('ColumnSelectionModal', () => {
                 <ColumnChoiceGroup
                     {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
-                    expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
                     columnsInView={[QUERY_COL_LOOKUP, colHidden]}
+                    expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
                     showAllColumns
                 />
             );
@@ -336,9 +336,9 @@ describe('ColumnSelectionModal', () => {
                 <ColumnChoiceGroup
                     {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
+                    columnsInView={[QUERY_COL_LOOKUP]}
                     expandedColumnFilter={jest.fn().mockImplementation(c => !c.removeFromViews)}
                     expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
-                    columnsInView={[QUERY_COL_LOOKUP]}
                 />
             );
             validate(true, true);
@@ -376,14 +376,66 @@ describe('ColumnSelectionModal', () => {
                 <ColumnChoiceGroup
                     {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
+                    columnsInView={[QUERY_COL_LOOKUP]}
                     expandedColumnFilter={jest.fn().mockImplementation(c => !c.isJunctionLookup())}
                     expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
-                    columnsInView={[QUERY_COL_LOOKUP]}
                     showAllColumns
                 />
             );
             validate(true, true, true);
             expect(document.querySelectorAll('.list-group-item')).toHaveLength(2);
+        });
+
+        // Issue 53983
+        test('Expanded lookup child fields are sorted by caption', () => {
+            const parent = new QueryColumn({
+                caption: 'Parent',
+                name: 'parent',
+                fieldKey: 'parent',
+                fieldKeyArray: ['parent'],
+                fieldKeyPath: 'parent',
+                selectable: true,
+                lookup: new QueryLookup({}),
+            });
+            const childZ = new QueryColumn({
+                caption: 'zeta',
+                name: 'z',
+                fieldKey: 'z',
+                fieldKeyArray: ['z'],
+                fieldKeyPath: 'parent/z',
+                selectable: true,
+            });
+            const childA = new QueryColumn({
+                caption: 'Alpha',
+                name: 'a',
+                fieldKey: 'a',
+                fieldKeyArray: ['a'],
+                fieldKeyPath: 'parent/a',
+                selectable: true,
+            });
+
+            const expandedInfo = new QueryInfo({
+                columns: new ExtendedMap({
+                    [childZ.fieldKey]: childZ,
+                    [childA.fieldKey]: childA,
+                }),
+            });
+
+            render(
+                <ColumnChoiceGroup
+                    {...defaultProps()}
+                    column={parent}
+                    expandedColumns={{ [parent.index]: expandedInfo }}
+                    showAllColumns
+                />
+            );
+
+            // Expect list to contain parent followed by children sorted by caption: Alpha, zeta
+            const items = Array.from(document.querySelectorAll('.list-group-item .field-caption')).map(el =>
+                el.textContent.trim()
+            );
+
+            expect(items).toEqual(['Parent', 'Alpha', 'zeta']);
         });
     });
 
@@ -404,8 +456,8 @@ describe('ColumnSelectionModal', () => {
             expect(titles).toHaveLength(2);
 
             expect(document.querySelectorAll('.list-group-item')).toHaveLength(2);
-            expect(titles[0].textContent).toContain('Available Fields');
-            expect(titles[1].textContent).toContain('Selected Fields');
+            expect(titles[0]).toHaveTextContent('Available Fields');
+            expect(titles[1]).toHaveTextContent('Selected Fields');
             expect(document.querySelector('.field-modal__footer')).toBeFalsy();
         });
 
@@ -431,6 +483,61 @@ describe('ColumnSelectionModal', () => {
 
             // verify useEffect initialization of selectedIndex, selectedColumns
             expect(document.querySelectorAll('.list-group-item.active')).toHaveLength(1);
+        });
+
+        // Issue 53983
+        test('Available Fields list is sorted by caption', () => {
+            const colB = new QueryColumn({
+                caption: 'b Beta',
+                name: 'b',
+                fieldKey: 'b',
+                fieldKeyArray: ['b'],
+                fieldKeyPath: 'b',
+                selectable: true,
+            });
+            const colA = new QueryColumn({
+                caption: 'A Alpha',
+                name: 'a',
+                fieldKey: 'a',
+                fieldKeyArray: ['a'],
+                fieldKeyPath: 'a',
+                selectable: true,
+            });
+            const col10 = new QueryColumn({
+                caption: 'Item 10',
+                name: 'item10',
+                fieldKey: 'item10',
+                fieldKeyArray: ['item10'],
+                fieldKeyPath: 'item10',
+                selectable: true,
+            });
+            const col2 = new QueryColumn({
+                caption: 'Item 2',
+                name: 'item2',
+                fieldKey: 'item2',
+                fieldKeyArray: ['item2'],
+                fieldKeyPath: 'item2',
+                selectable: true,
+            });
+
+            const queryInfo = new QueryInfo({
+                columns: new ExtendedMap({
+                    [colB.fieldKey]: colB,
+                    [colA.fieldKey]: colA,
+                    [col10.fieldKey]: col10,
+                    [col2.fieldKey]: col2,
+                }),
+            });
+
+            render(<ColumnSelectionModal {...defaultProps()} queryInfo={queryInfo} />);
+
+            // Available Fields (left column)
+            const availableFields = document.querySelector('.field-modal__col-content');
+            const captions = [...availableFields.querySelectorAll('.list-group-item .field-caption')].map(
+                el => el.textContent?.trim() ?? ''
+            );
+
+            expect(captions).toEqual(['A Alpha', 'b Beta', 'Item 2', 'Item 10']);
         });
     });
 });

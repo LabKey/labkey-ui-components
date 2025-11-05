@@ -27,6 +27,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ChartAPIWrapper, DEFAULT_API_WRAPPER } from './api';
 import { ChartConfig, ChartQueryConfig } from './models';
 import { getChartRenderMsg } from './ChartBuilderModal';
+import { CurveFitStatsGrid } from './CurveFitStatsGrid';
 
 interface ChartLoadingMaskProps {
     msg?: string;
@@ -82,7 +83,7 @@ interface Props {
     chart: DataViewInfo;
     container?: string;
     filters?: Filter.IFilter[];
-    queryParameters?: { [key: string]: any };
+    queryParameters?: Record<string, any>;
 }
 
 export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, queryParameters }) => {
@@ -95,6 +96,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, query
     const [loadingData, setLoadingData] = useState<boolean>(false);
     const [measureStore, setMeasureStore] = useState<any>(undefined);
     const [trendlineData, setTrendlineData] = useState<any>(undefined);
+    const [plot, setPlot] = useState(undefined);
     const [renderMsg, setRenderMsg] = useState<string>(undefined);
     const [loadError, setLoadError] = useState<string>(undefined);
     const filterKey = useMemo(() => computeFilterKey(filters), [filters]);
@@ -163,7 +165,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, query
                         }
                     );
                 } else {
-                    LABKEY_VIS.GenericChartHelper.generateChartSVG(
+                    const plots = LABKEY_VIS.GenericChartHelper.generateChartSVG(
                         divId,
                         {
                             ...chartConfig,
@@ -173,6 +175,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, query
                         measureStore,
                         trendlineData
                     );
+                    setPlot(plots[0]);
                 }
             }
         };
@@ -189,17 +192,22 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, query
             {(isLoading(loadingState) || loadingData) && <ChartLoadingMask />}
             {renderMsg && <span className="gray-text pull-right">{renderMsg}</span>}
             <div className="svg-chart__chart" id={divId} ref={ref} />
+            {trendlineData !== undefined && (
+                <CurveFitStatsGrid name={chart.name} plot={plot} trendLineData={trendlineData} />
+            )}
         </div>
     );
 });
 SVGChart.displayName = 'SVGChart';
 
+interface FileAnchor {
+    href: string;
+    text: string;
+}
+
 interface RReportData {
     error?: string;
-    fileAnchors: Array<{
-        href: string;
-        text: string;
-    }>;
+    fileAnchors: FileAnchor[];
     imageUrls: string[];
 }
 
@@ -309,7 +317,7 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
             {imageUrls !== undefined && (
                 <div className="r-report__images">
                     {imageUrls.map(url => (
-                        <div key={url} className="r-report__image">
+                        <div className="r-report__image" key={url}>
                             <img alt="R Report Image Output" src={url} />
                         </div>
                     ))}

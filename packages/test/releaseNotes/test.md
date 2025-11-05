@@ -1,6 +1,10 @@
 # @labkey/test
 Utilities and configurations for running JavaScript tests with LabKey Server.
 
+### version 1.10.0
+*Released*: 5 November 2025
+- Package updates
+
 ### version 1.9.0
 *Released*: 11 July 2025
 - Package updates

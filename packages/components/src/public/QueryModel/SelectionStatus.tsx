@@ -8,10 +8,7 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
     const { isLoading, isLoadingSelections, isLoadingTotalCount, maxRows, rowCount, selections } = model;
     const selectionSize = selections?.size;
     const { moduleContext } = useServerContext();
-    const maxSelectionSize = useMemo(
-        () => moduleContext?.query?.maxQuerySelection,
-        [moduleContext?.query?.maxQuerySelection]
-    );
+    const maxSelectionSize = moduleContext?.query?.maxQuerySelection;
 
     const clearSelections = useCallback((): void => {
         actions.clearSelections(model.id);

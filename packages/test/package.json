@@ -1,6 +1,6 @@
 {
   "name": "@labkey/test",
-  "version": "1.9.1-fb-package-updates-1025.1",
+  "version": "1.10.0",
   "description": "Configurations and utilities for JavaScript-based testing",
   "main": "dist/test.js",
   "module": "dist/test.js",

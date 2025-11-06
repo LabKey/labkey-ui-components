@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+###  version TBD
+*Released*: TBD
+- Line chart trendline options for provided parameters to CalculateCurveFit API
+  - ChartBuilderModal update to include trendline option for provided parameters
+
 ###  version 6.70.1
 *Released*: 6 November 2025
 - use export-tools to remove unused package exports

@@ -7,9 +7,15 @@ import { LABKEY_VIS } from '../../constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { TrendlineOption } from './TrendlineOption';
+import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
+import {QueryInfo} from "../../../public/QueryInfo";
+import {ViewInfo} from "../../ViewInfo";
+import {ChartTypeInfo} from "./models";
 
 LABKEY_VIS = {
     GenericChartHelper: {
+        getAllowableTypes: () => ['text'],
+        isMeasureDimensionMatch: () => true,
         TRENDLINE_OPTIONS: [
             { value: 'option1', label: 'Option 1', schemaPrefix: undefined },
             { value: 'option2', label: 'Option 2', schemaPrefix: null },
@@ -19,13 +25,43 @@ LABKEY_VIS = {
     },
 };
 
+const LINE_PLOT_TYPE = {
+    name: 'line_plot',
+} as ChartTypeInfo;
+
+const columns = [
+    { fieldKey: 'intCol', jsonType: 'int' },
+    { fieldKey: 'doubleCol', jsonType: 'double' },
+    { fieldKey: 'textCol', jsonType: 'string' },
+];
+
+const model = makeTestQueryModel(
+    new SchemaQuery('schema', 'query', 'view'),
+    QueryInfo.fromJsonForTests(
+        {
+            columns,
+            name: 'query',
+            schemaName: 'schema',
+            views: [
+                { columns, name: ViewInfo.DEFAULT_NAME },
+                { columns, name: 'view' },
+            ],
+        },
+        true
+    ),
+    [],
+    0
+);
+
 describe('TrendlineOption', () => {
     test('hidden without x-axis value selected', async () => {
         render(
             <TrendlineOption
                 fieldValues={{}}
+                model={model}
                 onFieldChange={jest.fn()}
                 schemaQuery={new SchemaQuery('assay', 'query')}
+                selectedType={LINE_PLOT_TYPE}
             />
         );
         await waitFor(() => {
@@ -47,8 +83,10 @@ describe('TrendlineOption', () => {
         render(
             <TrendlineOption
                 fieldValues={fieldValues}
+                model={model}
                 onFieldChange={jest.fn()}
                 schemaQuery={new SchemaQuery('assay', 'query')}
+                selectedType={LINE_PLOT_TYPE}
             />
         );
         await waitFor(() => {
@@ -77,8 +115,10 @@ describe('TrendlineOption', () => {
         render(
             <TrendlineOption
                 fieldValues={fieldValues}
+                model={model}
                 onFieldChange={jest.fn()}
                 schemaQuery={new SchemaQuery('assay', 'query')}
+                selectedType={LINE_PLOT_TYPE}
             />
         );
         await waitFor(() => {
@@ -98,8 +138,10 @@ describe('TrendlineOption', () => {
         render(
             <TrendlineOption
                 fieldValues={fieldValues}
+                model={model}
                 onFieldChange={jest.fn()}
                 schemaQuery={new SchemaQuery('assay', 'query')}
+                selectedType={LINE_PLOT_TYPE}
             />
         );
         await waitFor(() => {
@@ -120,8 +162,10 @@ describe('TrendlineOption', () => {
         render(
             <TrendlineOption
                 fieldValues={fieldValues}
+                model={model}
                 onFieldChange={jest.fn()}
                 schemaQuery={new SchemaQuery('assay', 'query')}
+                selectedType={LINE_PLOT_TYPE}
             />
         );
         await waitFor(() => {
@@ -158,8 +202,10 @@ describe('TrendlineOption', () => {
         render(
             <TrendlineOption
                 fieldValues={fieldValues}
+                model={model}
                 onFieldChange={jest.fn()}
                 schemaQuery={new SchemaQuery('assay', 'query')}
+                selectedType={LINE_PLOT_TYPE}
             />
         );
         await waitFor(() => {

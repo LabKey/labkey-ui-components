@@ -3,11 +3,23 @@ import { Map } from 'immutable';
 import {
     createHorizontalBarCountLegendData,
     createHorizontalBarLegendData,
-    getFieldDataType,
+    getFieldDataType, getSelectOptions,
     shouldShowAggregateOptions,
     shouldShowRangeScaleOptions,
 } from './utils';
 import { ChartFieldInfo, ChartTypeInfo } from './models';
+import { LABKEY_VIS } from "../../constants";
+import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {QueryInfo} from "../../../public/QueryInfo";
+import {ViewInfo} from "../../ViewInfo";
+
+LABKEY_VIS = {
+    GenericChartHelper: {
+        getAllowableTypes: () => ['int', 'double'],
+        isNumericType: (type: string) => type === 'int',
+    },
+};
 
 describe('createHorizontalBarLegendData', () => {
     test('all different', () => {
@@ -355,5 +367,51 @@ describe('shouldShowAggregateOptions', () => {
         expect(shouldShowAggregateOptions(yField, SCATTER_PLOT_TYPE)).toBe(false);
         expect(shouldShowAggregateOptions(xField, LINE_PLOT_TYPE)).toBe(false);
         expect(shouldShowAggregateOptions(yField, LINE_PLOT_TYPE)).toBe(true);
+    });
+});
+
+describe('getSelectOptions', () => {
+    const columns = [
+        { fieldKey: 'intCol', jsonType: 'int' },
+        { fieldKey: 'doubleCol', jsonType: 'double' },
+        { fieldKey: 'textCol', jsonType: 'string' },
+    ];
+
+    const model = makeTestQueryModel(
+        new SchemaQuery('schema', 'query', 'view'),
+        QueryInfo.fromJsonForTests(
+            {
+                columns,
+                name: 'query',
+                schemaName: 'schema',
+                views: [
+                    { columns, name: ViewInfo.DEFAULT_NAME },
+                    { columns, name: 'view' },
+                ],
+            },
+            true
+        ),
+        [],
+        0
+    );
+
+    test('hasMatchingType', () => {
+        LABKEY_VIS.GenericChartHelper = {
+            ...LABKEY_VIS.GenericChartHelper,
+            isMeasureDimensionMatch: () => false,
+        };
+        const field = { name: 'x' } as ChartFieldInfo;
+        const options = getSelectOptions(model, BAR_CHART_TYPE, field);
+        expect(options.length).toBe(2);
+    });
+
+    test('isMeasureDimensionMatch', () => {
+        LABKEY_VIS.GenericChartHelper = {
+            ...LABKEY_VIS.GenericChartHelper,
+            isMeasureDimensionMatch: () => true,
+        };
+        const field = { name: 'x' } as ChartFieldInfo;
+        const options = getSelectOptions(model, BAR_CHART_TYPE, field);
+        expect(options.length).toBe(3);
     });
 });

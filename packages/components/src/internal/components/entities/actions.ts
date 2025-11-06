@@ -6,7 +6,7 @@ import { getSelected, getSelectedDataDeprecated } from '../../actions';
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
-import { getRequestAuditDetail, importData, InsertOptions } from '../../query/api';
+import { getQueryDetails, getRequestAuditDetail, importData, InsertOptions } from '../../query/api';
 import { caseInsensitive, generateId } from '../../util/utils';
 import { request } from '../../request';
 import { EntityCreationType } from '../samples/models';
@@ -1314,6 +1314,44 @@ export function getDataTypesWithRequiredLineage(
 
 const DEFAULT_SAMPLE_EDITABLE_GRID_COLUMNS = ['rowid', 'name'];
 
+
+export function getSingleSampleTypeQueryInfo(
+    sampleIds: number[] | string[]
+): Promise<QueryInfo> {
+    if (!sampleIds || sampleIds?.length === 0)
+        return Promise.resolve(null);
+
+    return new Promise(async (resolve, reject) => {
+        try {
+            let sampleTypeQueryInfo = null;
+            const response = await selectRows({
+                schemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
+                filterArray: [Filter.create('RowId', sampleIds, Filter.Types.IN)],
+                columns: ['SampleSet/Name'],
+            });
+            const sampleTypes = new Set<string>();
+            for (const row of response.rows) {
+                const sampleType = caseInsensitive(row, 'SampleSet/Name').value;
+                sampleTypes.add(sampleType);
+                if (sampleTypes.size > 1) {
+                    resolve(null); // multiple sample types found
+                    return;
+                }
+            }
+            const sampleTypeName = Array.from(sampleTypes)[0];
+            if (sampleTypeName) {
+                const sampleTypeSQ = new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleTypeName);
+                sampleTypeQueryInfo = getQueryDetails(sampleTypeSQ);
+            }
+            resolve(sampleTypeQueryInfo);
+        }
+        catch (e) {
+            console.error('Unable to retrieve sample type', e);
+            reject(resolveErrorMessage(e));
+        }
+    });
+
+}
 export function getSampleIdentifyingFieldGridData(
     sampleIds: number[] | string[],
     sampleQueryInfo?: QueryInfo,

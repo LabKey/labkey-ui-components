@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+###  version 6.X
+*Released*: X November 2025
+- Ability to show identifying fields during assay import of a single sample type
+  - TODO
+
 ###  version 6.70.0
 *Released*: 5 November 2025
 - Package updates

@@ -120,12 +120,12 @@ export const ChartPanel: FC<Props> = memo(({ actions, api = DEFAULT_API_WRAPPER,
                             >
                                 <MenuHeader text="Export Chart" />
                                 <MenuItem onClick={onExportChartPDF}>
-                                    <span className="fa fa-file-pdf-o" />
-                                    &nbsp; PDF
+                                    <span className="fa fa-file-pdf-o margin-right-small" />
+                                    PDF
                                 </MenuItem>
                                 <MenuItem onClick={onExportChartPNG}>
-                                    <span className="fa fa-file-image-o" />
-                                    &nbsp; PNG
+                                    <span className="fa fa-file-image-o margin-right-small" />
+                                    PNG
                                 </MenuItem>
                             </DropdownButton>
                         </span>

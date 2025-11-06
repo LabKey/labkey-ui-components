@@ -1314,12 +1314,8 @@ export function getDataTypesWithRequiredLineage(
 
 const DEFAULT_SAMPLE_EDITABLE_GRID_COLUMNS = ['rowid', 'name'];
 
-
-export function getSingleSampleTypeQueryInfo(
-    sampleIds: number[] | string[]
-): Promise<QueryInfo> {
-    if (!sampleIds || sampleIds?.length === 0)
-        return Promise.resolve(null);
+export function getSingleSampleTypeQueryInfo(sampleIds: number[] | string[]): Promise<QueryInfo> {
+    if (!sampleIds || sampleIds?.length === 0) return Promise.resolve(null);
 
     return new Promise(async (resolve, reject) => {
         try {
@@ -1344,13 +1340,11 @@ export function getSingleSampleTypeQueryInfo(
                 sampleTypeQueryInfo = getQueryDetails(sampleTypeSQ);
             }
             resolve(sampleTypeQueryInfo);
-        }
-        catch (e) {
+        } catch (e) {
             console.error('Unable to retrieve sample type', e);
             reject(resolveErrorMessage(e));
         }
     });
-
 }
 export function getSampleIdentifyingFieldGridData(
     sampleIds: number[] | string[],

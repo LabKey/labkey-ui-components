@@ -172,7 +172,11 @@ export const initEditorModel = async (
     } as Partial<EditorModelProps>);
 };
 
-export const updateColumnLookup = (editorModel : EditorModel, columnKey: string, lookupSchemaQuery: SchemaQuery): Partial<EditorModel> => {
+export const updateColumnLookup = (
+    editorModel: EditorModel,
+    columnKey: string,
+    lookupSchemaQuery: SchemaQuery
+): Partial<EditorModel> => {
     const targetCol = editorModel.queryInfo.getColumn(columnKey);
     const originalLookup = targetCol.lookup;
 
@@ -183,13 +187,13 @@ export const updateColumnLookup = (editorModel : EditorModel, columnKey: string,
     });
 
     const updatedCol = targetCol.mutate({
-        lookup: updatedLookup
+        lookup: updatedLookup,
     });
 
     let queryInfoColumns = editorModel.queryInfo.columns;
     queryInfoColumns = queryInfoColumns.set(targetCol.fieldKey.toLowerCase(), updatedCol);
-    editorModel.queryInfo.mutate({columns: queryInfoColumns});
-    const updatedQueryInfo = editorModel.queryInfo.mutate({columns: queryInfoColumns});
+    editorModel.queryInfo.mutate({ columns: queryInfoColumns });
+    const updatedQueryInfo = editorModel.queryInfo.mutate({ columns: queryInfoColumns });
 
     const updatedColumnMap = editorModel.columnMap.set(targetCol.fieldKey.toLowerCase(), updatedCol);
 
@@ -197,7 +201,7 @@ export const updateColumnLookup = (editorModel : EditorModel, columnKey: string,
         columnMap: updatedColumnMap,
         queryInfo: updatedQueryInfo,
     } as Partial<EditorModelProps>;
-}
+};
 
 export function parseIntIfNumber(val: any): number | string {
     const intVal = !isNaN(val) ? parseInt(val, 10) : undefined;

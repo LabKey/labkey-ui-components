@@ -193,9 +193,9 @@ import {
     addColumns,
     changeColumn,
     initEditorModel,
-    updateColumnLookup,
     removeColumn,
     removeColumns,
+    updateColumnLookup,
     updateGridFromBulkForm,
 } from './internal/components/editable/actions';
 import {
@@ -1499,7 +1499,6 @@ export {
     inferDomainFromFile,
     InferDomainResponse,
     initEditorModel,
-    updateColumnLookup,
     initQueryGridState,
     InputRenderContext,
     insertColumnFilter,
@@ -1778,6 +1777,7 @@ export {
     UnitModel,
     updateCellKeySampleIdMap,
     updateCellValuesForSampleIds,
+    updateColumnLookup,
     updateGridFromBulkForm,
     updatePicklist,
     updateRowFieldValue,

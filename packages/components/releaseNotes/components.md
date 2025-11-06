@@ -5,6 +5,25 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released* TBD
 - use export-tools to remove unused package exports
 
+###  version 6.70.0
+*Released*: 5 November 2025
+- Package updates
+
+###  version 6.69.0
+*Released*: 5 November 2025
+- Merge from release25.11-SNAPSHOT to develop
+  - includes changes from 6.68.2 #1878
+  - includes changes from 6.68.3 #1884
+
+###  version 6.68.3
+*Released*: 4 November 2025
+- Issue 53983: Sort fields by caption
+- Issue 53927: Adjust column view layout to wrap
+
+###  version 6.68.2
+*Released*: 3 November 2025
+- SVGChart: render curve fit statistics when available
+
 ### version 6.68.1
 *Released* 2 November 2025
 - Issue 52063: Domain designer to handle lookup to a query with a pipe character

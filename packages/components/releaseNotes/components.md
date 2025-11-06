@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+###  version 6.70.1
+*Released*: 6 November 2025
+- use export-tools to remove unused package exports
+
 ###  version 6.70.0
 *Released*: 5 November 2025
 - Package updates

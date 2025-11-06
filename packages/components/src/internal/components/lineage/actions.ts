@@ -232,10 +232,6 @@ export function getLineageFilterValue(lsid: string, depth: number | string): str
     return '{json:' + JSON.stringify(filterVals) + '}';
 }
 
-export function getImmediateChildLineageFilterValue(lsid: string): string {
-    return getLineageFilterValue(lsid, 1);
-}
-
 export interface LineageAPIWrapper {
     loadLineageResult: (
         seed: string,

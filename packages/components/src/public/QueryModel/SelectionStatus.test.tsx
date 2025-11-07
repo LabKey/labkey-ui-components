@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
-
 import { SchemaQuery } from '../SchemaQuery';
 
 import { LoadingState } from '../LoadingState';
 
 import { SelectionStatus } from './SelectionStatus';
 import { makeTestActions, makeTestQueryModel } from './testUtils';
+import { renderWithAppContext } from '../../internal/test/reactTestLibraryHelpers';
 
 describe('SelectionStatus', () => {
     const MODEL_LOADING = makeTestQueryModel(new SchemaQuery('schema', 'query'), undefined, [], 0).mutate({
@@ -25,13 +24,10 @@ describe('SelectionStatus', () => {
         rowCount: 1,
     });
     const ACTIONS = makeTestActions();
-
-    beforeEach(() => {
-        LABKEY.moduleContext.query = { maxQuerySelection: 100_000 };
-    });
+    const APP_CONTEXT = { serverContext: { moduleContext: { query: { maxQuerySelection: 100_000 } } } };
 
     test('loading', () => {
-        render(<SelectionStatus actions={ACTIONS} model={MODEL_LOADING} />);
+        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={MODEL_LOADING} />);
         expect(document.querySelectorAll('.selection-status')).toHaveLength(0);
         expect(document.querySelectorAll('.selection-status__count')).toHaveLength(0);
         expect(document.querySelectorAll('.selection-status__clear-all')).toHaveLength(0);
@@ -40,7 +36,7 @@ describe('SelectionStatus', () => {
 
     test('no selections, rowCount less than maxRows', () => {
         const model = MODEL_LOADED.mutate({ selections: new Set() });
-        render(<SelectionStatus actions={ACTIONS} model={model} />);
+        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />);
         expect(document.querySelectorAll('.selection-status')).toHaveLength(1);
         expect(document.querySelectorAll('.selection-status__count')).toHaveLength(0);
         expect(document.querySelectorAll('.selection-status__clear-all')).toHaveLength(0);
@@ -49,7 +45,10 @@ describe('SelectionStatus', () => {
 
     test('no selections, rowCount greater than maxRows', () => {
         const model = MODEL_LOADED.mutate({ selections: new Set(), rowCount: 21 });
-        render(<SelectionStatus actions={ACTIONS} model={model} />);
+        renderWithAppContext(
+            <SelectionStatus actions={ACTIONS} model={model} />,
+            APP_CONTEXT
+        );
         expect(document.querySelectorAll('.selection-status')).toHaveLength(1);
         expect(document.querySelectorAll('.selection-status__count')).toHaveLength(0);
         expect(document.querySelectorAll('.selection-status__clear-all')).toHaveLength(0);
@@ -63,7 +62,7 @@ describe('SelectionStatus', () => {
             rowCount: 21,
             totalCountLoadingState: LoadingState.LOADING,
         });
-        render(<SelectionStatus actions={ACTIONS} model={model} />);
+        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />);
         expect(document.querySelectorAll('.selection-status')).toHaveLength(1);
         expect(document.querySelectorAll('.selection-status__count')).toHaveLength(0);
         expect(document.querySelectorAll('.selection-status__clear-all')).toHaveLength(0);
@@ -71,7 +70,7 @@ describe('SelectionStatus', () => {
     });
 
     test('has selection, rowCount less than maxRows', () => {
-        render(<SelectionStatus actions={ACTIONS} model={MODEL_LOADED} />);
+        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={MODEL_LOADED} />);
         expect(document.querySelectorAll('.selection-status')).toHaveLength(1);
         expect(document.querySelectorAll('.selection-status__count')).toHaveLength(1);
         expect(document.querySelector('.selection-status__count')).toHaveTextContent('1 of 1 selected');
@@ -82,7 +81,10 @@ describe('SelectionStatus', () => {
 
     test('has selections, rowCount greater than maxRows', () => {
         const model = MODEL_LOADED.mutate({ rowCount: 21 });
-        render(<SelectionStatus actions={ACTIONS} model={model} />);
+        renderWithAppContext(
+            <SelectionStatus actions={ACTIONS} model={model} />,
+            APP_CONTEXT
+        );
         expect(document.querySelectorAll('.selection-status')).toHaveLength(1);
         expect(document.querySelectorAll('.selection-status__count')).toHaveLength(1);
         expect(document.querySelector('.selection-status__count')).toHaveTextContent('1 of 21 selected');
@@ -98,7 +100,10 @@ describe('SelectionStatus', () => {
             selectionSet.push(i.toString());
         }
         const model = MODEL_LOADED.mutate({ rowCount: 41321, selections: new Set(selectionSet) });
-        render(<SelectionStatus actions={ACTIONS} model={model} />);
+        renderWithAppContext(
+            <SelectionStatus actions={ACTIONS} model={model} />,
+            APP_CONTEXT
+        );
         expect(document.querySelectorAll('.selection-status')).toHaveLength(1);
         expect(document.querySelectorAll('.selection-status__count')).toHaveLength(1);
         expect(document.querySelector('.selection-status__count')).toHaveTextContent('1,031 of 41,321 selected');
@@ -110,7 +115,7 @@ describe('SelectionStatus', () => {
 
     test('has selections, rowCount greater than maxRows but isLoadingTotalCount', () => {
         const model = MODEL_LOADED.mutate({ rowCount: 21, totalCountLoadingState: LoadingState.LOADING });
-        render(<SelectionStatus actions={ACTIONS} model={model} />);
+        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />);
         expect(document.querySelectorAll('.selection-status')).toHaveLength(1);
         expect(document.querySelectorAll('.selection-status__count')).toHaveLength(1);
         expect(document.querySelector('.selection-status__count')).toHaveTextContent('1 of selected');
@@ -121,7 +126,10 @@ describe('SelectionStatus', () => {
 
     test('selection loaded, rowCount greater than maxRows and maxSelectionSize', () => {
         const model = MODEL_LOADED.mutate({ rowCount: 1_115_000 });
-        render(<SelectionStatus actions={ACTIONS} model={model} />);
+        renderWithAppContext(
+            <SelectionStatus actions={ACTIONS} model={model} />,
+            APP_CONTEXT
+        );
         expect(document.querySelectorAll('.selection-status__select-all')).toHaveLength(1);
         expect(document.querySelector('.selection-status__select-all')).toHaveTextContent('Select first 100,000');
     });

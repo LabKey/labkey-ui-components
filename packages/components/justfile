@@ -119,7 +119,7 @@ major:
 
 # Bumps the minor version
 minor:
-    npm version major --no-git-tag-version
+    npm version minor --no-git-tag-version
 
 # Bumps the patch version
 patch:
@@ -128,3 +128,6 @@ patch:
 # Publishes the current version, must be a production version
 publish:
     npm publish
+
+pb: publish sleep bump
+pba: publish sleep bumpApps

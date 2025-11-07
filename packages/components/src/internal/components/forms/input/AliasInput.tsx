@@ -36,7 +36,7 @@ export const AliasSelectInput: FC<Props> = memo(props => {
             ?.map(a => {
                 if (!a) return a;
                 if (typeof a === 'string') return a;
-                if (typeof a === 'object') return a.displayValue;
+                if (typeof a === 'object') return a.value;
                 return undefined;
             })
             .filter(a => !!a);

@@ -76,7 +76,7 @@
   },
   "devDependencies": {
     "@labkey/build": "8.7.0",
-    "@labkey/eslint-config": "1.1.0",
+    "@labkey/eslint-config": "1.1.1",
     "@types/history": "4.7.11",
     "@types/jest": "30.0.0",
     "@types/node": "24.10.0",

@@ -290,6 +290,15 @@ export class AssayDefinitionModel extends ImmutableRecord({
         return column && domain === AssayDomainTypes.RESULT;
     }
 
+    getSampleColInResults() : QueryColumn {
+        const sampleColumnData = this.getSampleColumn();
+        const sampleColInResults = this.isSampleColInResults(
+            sampleColumnData?.column,
+            sampleColumnData?.domain
+        );
+        return sampleColInResults ? sampleColumnData.column : null;
+    }
+
     async getResultsSampleTypeQueryInfo(
         api: ComponentsAPIWrapper,
         sampleIds?: number[] | string[]

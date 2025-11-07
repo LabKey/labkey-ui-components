@@ -111,7 +111,7 @@ export function not(predicate: (...args: any[]) => boolean): (...args: any[]) =>
     };
 }
 
-export function applyDevTools() {
+function applyDevTools() {
     if (devToolsActive() && window['devToolsExtension']) {
         return window['devToolsExtension']();
     }

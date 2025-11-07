@@ -210,9 +210,6 @@ export const SAMPLE_IMPORT_EXTRA_ALLOWED_COLUMNS = [
     'ExpirationDate',
 ];
 
-// those lookup values are at Home project level, no need to reload on target folder change
-export const SAMPLE_ALL_PROJECT_LOOKUP_FIELDS = ['SampleState', 'Units'];
-
 export const SAMPLE_DATA_EXPORT_CONFIG = {
     'exportAlias.name': DEFAULT_SAMPLE_FIELD_CONFIG.label,
     'exportAlias.aliquotedFromLSID': ALIQUOTED_FROM_COL,

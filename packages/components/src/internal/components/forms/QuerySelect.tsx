@@ -83,7 +83,7 @@ export interface QuerySelectOptionProps extends Pick<SelectInputOption, 'label' 
     row: Row;
 }
 
-export type QuerySelectOptionComponent = ComponentType<QuerySelectOptionProps>;
+type QuerySelectOptionComponent = ComponentType<QuerySelectOptionProps>;
 
 interface OptionRendererProps extends Pick<SelectInputOption, 'label' | 'value'> {
     OptionComponent?: QuerySelectOptionComponent;

@@ -16,7 +16,7 @@
 import { Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { SAMPLE_MANAGEMENT, SCHEMAS } from '../schemas';
+import { SCHEMAS } from '../schemas';
 
 import { selectRows } from '../query/selectRows';
 import { caseInsensitive } from '../util/utils';
@@ -100,6 +100,7 @@ export class ListResolver implements AppRouteResolver {
 }
 
 /**
+ * TODO Remove unless needed for assay run resolution
  * Resolves experiment runs to workflow jobs if appropriate
  * /rd/run/14/... -> /workflow/14/...
  * If this doesn't correspond to a job, the link won't resolve.
@@ -129,7 +130,7 @@ export class ExperimentRunResolver implements AppRouteResolver {
         }
         try {
             const result = await selectRows({
-                schemaQuery: SAMPLE_MANAGEMENT.JOBS,
+                schemaQuery: SCHEMAS.WORKFLOW.JOBS,
                 filterArray: [Filter.create('RowId', rowId)],
                 columns: 'RowId',
             });

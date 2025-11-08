@@ -278,7 +278,8 @@ export function isAllSamplesSchema(schemaQuery: SchemaQuery): boolean {
     if (lcSchemaName === SCHEMAS.SAMPLE_MANAGEMENT.SCHEMA) {
         return (
             lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.queryName.toLowerCase() ||
-            lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.INPUT_SAMPLES_SQ.queryName.toLowerCase()
+            lcQueryName === SCHEMAS.WORKFLOW.INPUT_SAMPLES_SQ.queryName.toLowerCase() ||
+            lcQueryName === SCHEMAS.WORKFLOW.WORK_ENTITY.queryName.toLowerCase()
         );
     }
 

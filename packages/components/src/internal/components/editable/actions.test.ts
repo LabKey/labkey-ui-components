@@ -17,14 +17,16 @@ import {
     addColumns,
     changeColumn,
     detectPadLength,
-    generateColumnFillValues, initEditorModel,
+    generateColumnFillValues,
+    initEditorModel,
     loadEditorModelData,
     parseIntIfNumber,
     parsePastedLookup,
     removeColumn,
     removeColumns,
     resolveValueDescriptors,
-    splitPrefixedNumber, updateColumnLookup,
+    splitPrefixedNumber,
+    updateColumnLookup,
     validateAndInsertPastedData,
 } from './actions';
 import { CellMessage, EditorModel, ValueDescriptor } from './models';
@@ -1399,12 +1401,16 @@ describe('updateColumnLookup', () => {
         const loader = new MockEditableGridLoader(queryInfo);
         const editorModel = await initEditorModel(loader);
 
-        expect(editorModel.columnMap.get('lookup')['lookup'].schemaQuery).toEqual(new SchemaQuery('samples', 'name expression set'));
-        const updates = updateColumnLookup(editorModel, 'lookup', new SchemaQuery("exp", "Materials"));
+        expect(editorModel.columnMap.get('lookup')['lookup'].schemaQuery).toEqual(
+            new SchemaQuery('samples', 'name expression set')
+        );
+        const updates = updateColumnLookup(editorModel, 'lookup', new SchemaQuery('exp', 'Materials'));
         expect(updates.columnMap.size).toBe(10);
         expect(updates.columnMap.get('lookup')['lookup'].schemaQuery).toEqual(new SchemaQuery('exp', 'Materials'));
         expect(updates.queryInfo.columns.size).toBe(28);
-        expect(updates.queryInfo.columns.get('lookup')['lookup'].schemaQuery).toEqual(new SchemaQuery('exp', 'Materials'));
+        expect(updates.queryInfo.columns.get('lookup')['lookup'].schemaQuery).toEqual(
+            new SchemaQuery('exp', 'Materials')
+        );
     });
 });
 

@@ -256,10 +256,13 @@ describe('getValidatedEditableGridValue', () => {
 
         const validValues = [null, undefined, '', ' ', 0, -1, 100, 1.1e3, '100', '0.0', 1.11, '1.11', 123.456e2];
         validValues.forEach(value => {
-            expect(getValidatedEditableGridValue(value, floatCol)).toStrictEqual({ message: undefined, value: Utils.isString(value) ? value.trim() : value });
+            expect(getValidatedEditableGridValue(value, floatCol)).toStrictEqual({
+                message: undefined,
+                value: Utils.isString(value) ? value.trim() : value,
+            });
         });
 
-        const invalidValues = [ 'Bogus', true, NaN];
+        const invalidValues = ['Bogus', true, NaN];
         invalidValues.forEach(value => {
             expect(getValidatedEditableGridValue(value, floatCol)).toStrictEqual({
                 message: {
@@ -306,7 +309,7 @@ describe('getValidatedEditableGridValue', () => {
                 message: {
                     message: 'Invalid boolean',
                 },
-                value
+                value,
             });
         });
     });

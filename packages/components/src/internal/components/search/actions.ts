@@ -29,7 +29,7 @@ export interface SearchHit {
     url?: string;
 }
 
-export interface SearchMetadata {
+interface SearchMetadata {
     idProperty: string;
     root: string;
     successProperty: string;
@@ -117,11 +117,11 @@ export const search: Search = (options, moduleContext, applyURLResolver = true, 
     });
 };
 
-export interface SearchHitWithCardData extends SearchHit {
+interface SearchHitWithCardData extends SearchHit {
     cardData: SearchResultCardData;
 }
 
-export interface SearchResultWithCardData extends Omit<SearchResult, 'hits'> {
+interface SearchResultWithCardData extends Omit<SearchResult, 'hits'> {
     hits: SearchHitWithCardData[];
 }
 

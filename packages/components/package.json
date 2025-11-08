@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "6.70.1-fb-assayIdentityFields.2",
+  "version": "6.70.4-fb-assayIdentityFields.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -76,7 +76,7 @@
   },
   "devDependencies": {
     "@labkey/build": "8.7.0",
-    "@labkey/eslint-config": "1.1.0",
+    "@labkey/eslint-config": "1.1.1",
     "@types/history": "4.7.11",
     "@types/jest": "30.0.0",
     "@types/node": "24.10.0",

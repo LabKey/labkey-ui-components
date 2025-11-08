@@ -17,7 +17,7 @@ import React, { FC, PropsWithChildren } from 'react';
 
 import { Notifications } from '../notifications/Notifications';
 
-export interface PageHeaderProps extends PropsWithChildren {
+interface PageHeaderProps extends PropsWithChildren {
     iconCls?: string;
     showNotifications?: boolean;
     title?: string;

@@ -21,7 +21,7 @@ export default defineConfig([
     typeScriptESLint.configs.recommended,
     typeScriptESLint.configs.stylistic,
     pluginReact.configs.flat.recommended,
-    pluginReactHooks.configs['recommended-latest'],
+    pluginReactHooks.configs.flat['recommended-latest'],
     perfectionist.configs['recommended-natural'],
     prettierRecommended,
     {

@@ -302,10 +302,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     } = props;
     const { viewName } = model;
     const [errorMsg, setErrorMsg] = useState<string>();
-
-    // TODO: unable to get jest to pass with useServerContext() due to GridPanel being Component instead of FC
-    // const { user } = useServerContext();
-    const user = hasServerContext() ? useServerContext().user : getServerContext().user;
+    const { user } = useServerContext();
 
     const currentView = view ?? model.currentView;
     let displayTitle = title;

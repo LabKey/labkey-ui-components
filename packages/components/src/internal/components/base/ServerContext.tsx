@@ -71,7 +71,7 @@ export const useServerContextDispatch = (): AppLabKeyDispatch => {
     return context;
 };
 
-export const ServerContextConsumer = Context.Consumer;
+const ServerContextConsumer = Context.Consumer;
 
 export const withAppUser = (ctx: LabKey): ServerContext => {
     return Object.assign({}, ctx, {

@@ -5,6 +5,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Update URLResolver to reference new controller for workflow-related actions
 
+### version 6.70.2
+*Released*: 6 November 2025
+- GridPanel
+  - Convert tests to RTL
+  - Always use userServerContext instead of optionally using getServerContext
+- SelectionStatus: use useServerContext instead of getServerContext
+
 ###  version 6.70.2
 *Released*: 7 November 2025
 - Issue 53567: Improve "Alias" column performance

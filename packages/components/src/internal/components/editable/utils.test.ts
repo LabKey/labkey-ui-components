@@ -19,7 +19,7 @@ import {
 import { initEditorModel } from './actions';
 import { Utils } from '@labkey/api';
 
-class MockEditableGridLoader implements EditableGridLoader {
+export class MockEditableGridLoader implements EditableGridLoader {
     columns: QueryColumn[];
     extraColumns: QueryColumn[];
     id: string;

@@ -132,7 +132,6 @@ export const WORKFLOW = {
     JOB_DEFINITIONS: new SchemaQuery(SAMPLE_MANAGEMENT.SCHEMA, 'JobDefinitions'),
     JOBS: new SchemaQuery(SAMPLE_MANAGEMENT.SCHEMA, 'Jobs'),
     JOBS_LISTING: new SchemaQuery(SAMPLE_MANAGEMENT.SCHEMA, 'JobsListing'),
-    TASK_DEFINITIONS: new SchemaQuery(SAMPLE_MANAGEMENT.SCHEMA, 'TaskDefinitions'),
     TASKS: new SchemaQuery(SAMPLE_MANAGEMENT.SCHEMA, 'Tasks'),
     INPUT_SAMPLES_SQ: new SchemaQuery(SAMPLE_MANAGEMENT_SCHEMA, 'InputSamples'),
 }

@@ -218,7 +218,14 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
                                     )}
                                     <div className="top-padding">
                                         <label>
-                                            Provided Parameters <LabelOverlay placement="bottom">TODO...</LabelOverlay>
+                                            Provided Parameters{' '}
+                                            <LabelOverlay placement="bottom">
+                                                Select the field in the data which has the already computed / saved
+                                                curve fit parameters object for the selected Trendline type. These
+                                                provided parameters will then be used in the trendline display instead
+                                                of calculating new parameters based on the current data points in the
+                                                grid.
+                                            </LabelOverlay>
                                         </label>
                                         <SelectInput
                                             inputClass="col-xs-12"

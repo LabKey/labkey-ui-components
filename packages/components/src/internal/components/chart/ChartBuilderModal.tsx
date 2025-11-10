@@ -74,7 +74,7 @@ export const getChartBuilderQueryConfig = (
         viewName: savedConfig?.viewName || viewName,
         columns: Object.values(fieldValues)
             .filter(field => field?.value && typeof field.value === 'string') // just those fields with values
-            .filter(field => !field.equation) // exclude the trendlineType
+            .filter(field => !field.equation) // exclude the trendlineType field (which has an equation value)
             .map(field => field.data?.fieldKey ?? field.value), // Issue 52050: use fieldKey for special characters
         sort: LABKEY_VIS.GenericChartHelper.getQueryConfigSortKey(chartConfig.measures),
         filterArray: savedConfig?.filterArray ?? [],

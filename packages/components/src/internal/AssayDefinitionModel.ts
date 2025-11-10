@@ -172,7 +172,7 @@ export class AssayDefinitionModel extends ImmutableRecord({
         const isTargetAllSamples =
             targetSQ.isEqual(SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES) ||
             targetSQ.isEqual(SCHEMAS.WORKFLOW.INPUT_SAMPLES_SQ) ||
-            targetSQ.isEqual(SCHEMAS.WORKFLOW.WORK_ENTITY) ||
+            targetSQ.isEqual(SCHEMAS.WORKFLOW.JOB_INPUT_SAMPLES) ||
             (isPicklist && targetSQ.hasSchema(SCHEMAS.PICKLIST_TABLES.SCHEMA));
         const findLookup = (col: QueryColumn): boolean => {
             if (col.isLookup()) {

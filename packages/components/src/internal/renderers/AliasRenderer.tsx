@@ -53,7 +53,7 @@ export class AliasRenderer extends React.Component<Props, State> {
         if (data?.size > 0) {
             const truncationLength = view === 'detail' ? DETAIL_ALIAS_WORD_LENGTH : GRID_ALIAS_WORD_LENGTH;
             const extraCount = data.size - truncationLength;
-            const aliases = data.map(alias => alias.get('displayValue'));
+            const aliases = data.map(alias => alias.get('value'));
 
             return (
                 <div className="alias-renderer" title={aliases.join(', ')}>

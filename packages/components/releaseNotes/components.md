@@ -7,6 +7,18 @@ Components, models, actions, and utility functions for LabKey applications and p
   - ChartBuilderModal update to include trendline option for provided parameters
   - Include new 5 Parameter nonlinear curve fit option in trendline select
 
+### version 6.70.2
+*Released*: 6 November 2025
+- GridPanel
+  - Convert tests to RTL
+  - Always use userServerContext instead of optionally using getServerContext
+- SelectionStatus: use useServerContext instead of getServerContext
+
+###  version 6.70.2
+*Released*: 7 November 2025
+- Issue 53567: Improve "Alias" column performance
+  - Update "Alias" column usages to refer to "value" instead of "displayValue" on select rows responses.
+
 ###  version 6.70.1
 *Released*: 6 November 2025
 - use export-tools to remove unused package exports

@@ -178,6 +178,9 @@ export const updateColumnLookup = (
     lookupSchemaQuery: SchemaQuery
 ): Partial<EditorModel> => {
     const targetCol = editorModel.queryInfo.getColumn(columnKey);
+    if (!targetCol || !targetCol.isLookup()) {
+        return {};
+    }
     const originalLookup = targetCol.lookup;
 
     const updatedLookup = new QueryLookup({
@@ -192,7 +195,6 @@ export const updateColumnLookup = (
 
     let queryInfoColumns = editorModel.queryInfo.columns;
     queryInfoColumns = queryInfoColumns.set(targetCol.fieldKey.toLowerCase(), updatedCol);
-    editorModel.queryInfo.mutate({ columns: queryInfoColumns });
     const updatedQueryInfo = editorModel.queryInfo.mutate({ columns: queryInfoColumns });
 
     const updatedColumnMap = editorModel.columnMap.set(targetCol.fieldKey.toLowerCase(), updatedCol);

@@ -4,7 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ###  version 6.X
 *Released*: X November 2025
 - Ability to show identifying fields during assay import of a single sample type
-  - TODO
+  - Modified AssayDefinitionModel.getResultsSampleTypeQueryInfo and getSingleSampleTypeQueryInfo to allow retrieving QueryInfo from a list of sample IDs
+  - Added updateColumnLookup function to mutate column lookup schema/query for EditorModel
 
 ### version 6.70.2
 *Released*: 6 November 2025

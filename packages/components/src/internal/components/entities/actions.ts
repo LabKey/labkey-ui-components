@@ -1338,7 +1338,7 @@ export function getSingleSampleTypeQueryInfo(sampleIds: number[] | string[]): Pr
             .catch(e => {
                 console.error('Unable to retrieve sample type', e);
                 reject(resolveErrorMessage(e));
-        });
+            });
     });
 }
 export function getSampleIdentifyingFieldGridData(

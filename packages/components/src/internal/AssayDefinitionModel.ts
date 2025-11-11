@@ -300,10 +300,10 @@ export class AssayDefinitionModel extends ImmutableRecord({
         api: ComponentsAPIWrapper,
         sampleIds?: number[] | string[]
     ): Promise<QueryInfo> {
-        const sampleColumnData = this.getSampleColumn();
-        if (sampleColumnData && this.isSampleColInResults(sampleColumnData.column, sampleColumnData.domain)) {
-            if (sampleColumnData.column.isSingleSampleTypeLookup())
-                return api.query.getQueryDetails(sampleColumnData.column.lookup.schemaQuery);
+        const sampleResultColumnData = this.getSampleColInResults();
+        if (sampleResultColumnData) {
+            if (sampleResultColumnData.isSingleSampleTypeLookup())
+                return api.query.getQueryDetails(sampleResultColumnData.lookup.schemaQuery);
             else if (sampleIds?.length > 0) {
                 return getSingleSampleTypeQueryInfo(sampleIds);
             }

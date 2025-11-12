@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+###  version 6.X
+*Released*: X November 2025
+- Issue 54186: App actions for picklists and assay run delete don't get TransactionAuditEvent
+  - Add 'auditBehavior' to insertRows, updateRows, deleteRows usages so app actions get TransactionAuditEvent
+
 ### version 6.70.2
 *Released*: 6 November 2025
 - GridPanel

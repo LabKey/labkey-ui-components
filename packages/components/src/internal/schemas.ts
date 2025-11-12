@@ -126,6 +126,7 @@ export const WORKFLOW_SCHEMA = "workflow";
 export const WORKFLOW = {
     SCHEMA: WORKFLOW_SCHEMA,
     JOB: new SchemaQuery(WORKFLOW_SCHEMA, 'Job'),
+    JOB_TEMPLATE: new SchemaQuery(WORKFLOW_SCHEMA, 'JobTemplate'),
     JOB_PRIORITY: new SchemaQuery(WORKFLOW_SCHEMA, 'WorkflowJobPriority'),
     JOB_INPUT_SAMPLES: new SchemaQuery(WORKFLOW_SCHEMA, 'JobInputSamples'),
     // legacy to be removed

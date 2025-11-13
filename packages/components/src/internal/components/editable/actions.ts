@@ -3,7 +3,7 @@ import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { addDays, subDays } from 'date-fns';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
-import { QueryColumn } from '../../../public/QueryColumn';
+import { QueryColumn, QueryLookup } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { cancelEvent, getPasteValue, setCopyValue } from '../../events';
 import { formatDate, formatDateTime, getDateTimeDisplayValueFromStr, parseDate } from '../../util/Date';
@@ -34,6 +34,7 @@ import {
 } from './models';
 
 import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGridValue, parseCellKey } from './utils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 /**
  * Do not use this method directly, use initEditorModel instead.
@@ -169,6 +170,39 @@ export const initEditorModel = async (
         queryInfo,
         rowCount: orderedRows.length,
     } as Partial<EditorModelProps>);
+};
+
+export const updateColumnLookup = (
+    editorModel: EditorModel,
+    columnKey: string,
+    lookupSchemaQuery: SchemaQuery
+): Partial<EditorModel> => {
+    const targetCol = editorModel.queryInfo.getColumn(columnKey);
+    if (!targetCol || !targetCol.isLookup()) {
+        return {};
+    }
+    const originalLookup = targetCol.lookup;
+
+    const updatedLookup = new QueryLookup({
+        ...originalLookup,
+        queryName: lookupSchemaQuery.queryName,
+        schemaName: lookupSchemaQuery.schemaName,
+    });
+
+    const updatedCol = targetCol.mutate({
+        lookup: updatedLookup,
+    });
+
+    let queryInfoColumns = editorModel.queryInfo.columns;
+    queryInfoColumns = queryInfoColumns.set(targetCol.fieldKey.toLowerCase(), updatedCol);
+    const updatedQueryInfo = editorModel.queryInfo.mutate({ columns: queryInfoColumns });
+
+    const updatedColumnMap = editorModel.columnMap.set(targetCol.fieldKey.toLowerCase(), updatedCol);
+
+    return {
+        columnMap: updatedColumnMap,
+        queryInfo: updatedQueryInfo,
+    } as Partial<EditorModelProps>;
 };
 
 export function parseIntIfNumber(val: any): number | string {

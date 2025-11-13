@@ -6,7 +6,7 @@ import { getSelected, getSelectedDataDeprecated } from '../../actions';
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
-import { getRequestAuditDetail, importData, InsertOptions } from '../../query/api';
+import { getQueryDetails, getRequestAuditDetail, importData, InsertOptions, selectDistinctRows } from '../../query/api';
 import { caseInsensitive, generateId } from '../../util/utils';
 import { request } from '../../request';
 import { EntityCreationType } from '../samples/models';
@@ -1314,6 +1314,33 @@ export function getDataTypesWithRequiredLineage(
 
 const DEFAULT_SAMPLE_EDITABLE_GRID_COLUMNS = ['rowid', 'name'];
 
+export function getSingleSampleTypeQueryInfo(sampleIds: number[] | string[]): Promise<QueryInfo> {
+    if (!sampleIds?.length) return Promise.resolve(null);
+
+    return new Promise((resolve, reject) => {
+        let sampleTypeQueryInfo = null;
+        selectDistinctRows({
+            schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
+            queryName: SCHEMAS.EXP_TABLES.MATERIALS.queryName,
+            column: 'SampleSet/Name',
+            filterArray: [Filter.create('RowId', sampleIds, Filter.Types.IN)],
+        })
+            .then(result => {
+                const sampleTypes = result.values;
+                if (sampleTypes.length > 1) {
+                    resolve(null); // multiple sample types found
+                    return;
+                }
+                const sampleTypeSQ = new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleTypes[0]);
+                sampleTypeQueryInfo = getQueryDetails(sampleTypeSQ);
+                resolve(sampleTypeQueryInfo);
+            })
+            .catch(e => {
+                console.error('Unable to retrieve sample type', e);
+                reject(resolveErrorMessage(e));
+            });
+    });
+}
 export function getSampleIdentifyingFieldGridData(
     sampleIds: number[] | string[],
     sampleQueryInfo?: QueryInfo,

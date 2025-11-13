@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { PermissionTypes, Security, User } from '@labkey/api';
+import { AuditBehaviorTypes, PermissionTypes, Security, User } from '@labkey/api';
 import { useCallback, useEffect, useState } from 'react';
 
 import { updateRows } from '../../query/api';
@@ -127,5 +127,6 @@ export function updateRowFieldValue(model: QueryModel, name: string, value: any)
             },
         ],
         containerPath: model.containerPath,
+        auditBehavior: AuditBehaviorTypes.DETAILED,
     });
 }

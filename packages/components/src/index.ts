@@ -267,7 +267,7 @@ import {
     JavaDocsLink,
     SAMPLE_IMPORT_TOPIC,
 } from './internal/util/helpLinks';
-import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
+import { ListResolver } from './internal/url/AppURLResolver';
 import { NOT_ANY_FILTER_TYPE } from './internal/url/NotAnyFilterType';
 import { genCellKey, incrementRowCountMetric, parseCellKey } from './internal/components/editable/utils';
 import { EditableGrid } from './internal/components/editable/EditableGrid';
@@ -1266,7 +1266,6 @@ export {
     ExpandableContainer,
     ExpandableFilterToggle,
     EXPERIMENT_AUDIT_EVENT,
-    ExperimentRunResolver,
     ExpirationDateColumnRenderer,
     EXPORT_TYPES,
     ExtendedMap,

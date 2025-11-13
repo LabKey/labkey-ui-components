@@ -5,7 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Updates for new Workflow implementation
   - Update URLResolver to reference new controller for workflow-related actions
-  - add `WORKFLOW` schema and queries
+  - add `WORKFLOW` schema and queries and remove legacy job schema/query references
 
 ### version 6.70.2
 *Released*: 6 November 2025

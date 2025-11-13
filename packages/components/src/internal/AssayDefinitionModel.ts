@@ -171,7 +171,6 @@ export class AssayDefinitionModel extends ImmutableRecord({
         // 44339: the SourceSamples custom query is backed by exp.materials
         const isTargetAllSamples =
             targetSQ.isEqual(SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES) ||
-            targetSQ.isEqual(SCHEMAS.WORKFLOW.INPUT_SAMPLES_SQ) ||
             targetSQ.isEqual(SCHEMAS.WORKFLOW.JOB_INPUT_SAMPLES) ||
             (isPicklist && targetSQ.hasSchema(SCHEMAS.PICKLIST_TABLES.SCHEMA));
         const findLookup = (col: QueryColumn): boolean => {

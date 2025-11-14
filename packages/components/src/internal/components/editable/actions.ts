@@ -1153,11 +1153,19 @@ async function getParsedLookup(
     if (!lookupValueCache.hasOwnProperty(cacheKey)) {
         const columnMetadata = editorModel.getColumnMetadata(column.fieldKey);
 
+        const lookupFilters = getLookupFilters(
+            column,
+            columnMetadata?.filteredLookupKeys?.toArray(),
+            columnMetadata?.filteredLookupValues?.toArray(),
+            columnMetadata?.lookupValueFilters,
+                forUpdate
+            );
+
         lookupValueCache[cacheKey] = findLookupValues({
             column,
             containerPath,
             forUpdate,
-            lookupValueFilters: columnMetadata?.lookupValueFilters,
+            lookupValueFilters: lookupFilters,
             lookupValues: display,
         });
     }

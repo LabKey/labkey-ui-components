@@ -1158,8 +1158,8 @@ async function getParsedLookup(
             columnMetadata?.filteredLookupKeys?.toArray(),
             columnMetadata?.filteredLookupValues?.toArray(),
             columnMetadata?.lookupValueFilters,
-                forUpdate
-            );
+            forUpdate
+        );
 
         lookupValueCache[cacheKey] = findLookupValues({
             column,

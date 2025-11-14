@@ -10,6 +10,19 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 6.70.2
 *Released*: 6 November 2025
+###  version 6.70.5
+*Released*: 13 November 2025
+- Issue 54186: App actions for picklists and assay run delete don't get TransactionAuditEvent
+    - Add 'auditBehavior' to insertRows, updateRows, deleteRows usages so app actions get TransactionAuditEvent
+
+###  version 6.70.4
+*Released*: 13 November 2025
+- Ability to show identifying fields during assay import of a single sample type
+  - Modified AssayDefinitionModel.getResultsSampleTypeQueryInfo and getSingleSampleTypeQueryInfo to allow retrieving QueryInfo from a list of sample IDs
+  - Added updateColumnLookup function to mutate column lookup schema/query for EditorModel
+
+### version 6.70.3
+*Released*: 7 November 2025
 - GridPanel
   - Convert tests to RTL
   - Always use userServerContext instead of optionally using getServerContext

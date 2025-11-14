@@ -186,6 +186,7 @@ import {
     initEditorModel,
     removeColumn,
     removeColumns,
+    updateColumnLookup,
     updateGridFromBulkForm,
 } from './internal/components/editable/actions';
 import {
@@ -1701,6 +1702,7 @@ export {
     UnitModel,
     updateCellKeySampleIdMap,
     updateCellValuesForSampleIds,
+    updateColumnLookup,
     updateGridFromBulkForm,
     updateRowFieldValue,
     updateRows,

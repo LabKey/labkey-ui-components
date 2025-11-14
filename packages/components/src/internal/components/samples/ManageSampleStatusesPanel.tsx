@@ -1,6 +1,8 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { List } from 'immutable';
 
+import { AuditBehaviorTypes } from '@labkey/api';
+
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { LockIcon } from '../base/LockIcon';
@@ -157,6 +159,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
                     rows: [stateToSave],
                     containerPath: container?.path,
+                    auditBehavior: AuditBehaviorTypes.DETAILED,
                 })
                 .then(() => {
                     onActionComplete(stateToSave.label);
@@ -171,6 +174,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
                     rows: List([stateToSave]),
                     containerPath: container?.path,
+                    auditBehavior: AuditBehaviorTypes.DETAILED,
                 })
                 .then(() => {
                     onActionComplete(stateToSave.label);
@@ -192,6 +196,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
                     containerPath: container?.path,
                     rows: [updatedState],
+                    auditBehavior: AuditBehaviorTypes.DETAILED,
                 })
                 .then(() => {
                     onActionComplete(undefined, true);

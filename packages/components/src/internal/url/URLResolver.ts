@@ -766,7 +766,7 @@ export class URLResolver {
                             url = url.substring(0, index);
                         }
                         return row.set('url', this.mapURL({ url, row }));
-                    } else if (url.indexOf('samplemanager-downloadAttachments') >= 0) {
+                    } else if (url.indexOf('workflow-downloadAttachments') >= 0) {
                         return row.set('url', this.mapURL({ url, row }));
                     } else if (url.indexOf('notebook') >= 0) {
                         return row.set('url', this.mapURL({ url, row }));

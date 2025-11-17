@@ -3,7 +3,7 @@ import { List, Map } from 'immutable';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { QueryColumn, QueryLookup } from '../../../public/QueryColumn';
 
-import { DATE_RANGE_URI } from '../domainproperties/constants';
+import { DATE_RANGE_URI, NON_NEGATIVE_NUMBER_CONCEPT_URI } from '../domainproperties/constants';
 
 import sampleSetQueryInfoJSON from '../../../test/data/sampleSetAllFieldTypes-getQueryDetails.json';
 
@@ -267,6 +267,38 @@ describe('getValidatedEditableGridValue', () => {
             expect(getValidatedEditableGridValue(value, floatCol)).toStrictEqual({
                 message: {
                     message: 'Invalid decimal',
+                },
+                value,
+            });
+        });
+    });
+
+    test('amount column', () => {
+        const amountCol = new QueryColumn({ jsonType: 'float', conceptURI: NON_NEGATIVE_NUMBER_CONCEPT_URI, caption: 'Amount' });
+
+        const validValues = [null, undefined, '', ' ', 0, 1.1e3, '100', '0.0', 1.11, '1.11', 123.456e2];
+        validValues.forEach(value => {
+            expect(getValidatedEditableGridValue(value, amountCol)).toStrictEqual({
+                message: undefined,
+                value: Utils.isString(value) ? value.trim() : value,
+            });
+        });
+
+        const invalidValues = ['Bogus', true, NaN];
+        invalidValues.forEach(value => {
+            expect(getValidatedEditableGridValue(value, amountCol)).toStrictEqual({
+                message: {
+                    message: 'Invalid decimal',
+                },
+                value,
+            });
+        });
+
+        const invalidNegative = ['-1', '-1.1', -1, -1.1, -1.1e3, -123.456e2];
+        invalidNegative.forEach(value => {
+            expect(getValidatedEditableGridValue(value, amountCol)).toStrictEqual({
+                message: {
+                    message: 'Invalid Amount, must be non-negative',
                 },
                 value,
             });

@@ -274,7 +274,11 @@ describe('getValidatedEditableGridValue', () => {
     });
 
     test('amount column', () => {
-        const amountCol = new QueryColumn({ jsonType: 'float', conceptURI: NON_NEGATIVE_NUMBER_CONCEPT_URI, caption: 'Amount' });
+        const amountCol = new QueryColumn({
+            jsonType: 'float',
+            conceptURI: NON_NEGATIVE_NUMBER_CONCEPT_URI,
+            caption: 'Amount',
+        });
 
         const validValues = [null, undefined, '', ' ', 0, 1.1e3, '100', '0.0', 1.11, '1.11', 123.456e2];
         validValues.forEach(value => {

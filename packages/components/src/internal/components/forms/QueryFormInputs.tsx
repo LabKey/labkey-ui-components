@@ -225,6 +225,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             <ColumnInputRenderer
                                 allowFieldDisable={allowFieldDisable}
                                 col={col}
+                                containerFilter={containerFilter}
                                 data={fieldValues}
                                 formsy
                                 initiallyDisabled={shouldDisableField}
@@ -236,7 +237,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 showAsteriskSymbol={showAsteriskSymbol}
                                 showLabel
                                 value={value}
-                                containerFilter={containerFilter}
                             />
                         );
                     }

@@ -158,6 +158,7 @@ export const MODIFIED_TIMESTAMP_CONCEPT_URI = 'http://www.labkey.org/types#modif
 export const SMILES_CONCEPT_URI = 'http://www.labkey.org/exp/xml#smiles';
 export const AUTO_INT_CONCEPT_URI = 'http://www.labkey.org/types#autoInt';
 export const CALCULATED_CONCEPT_URI = 'http://www.labkey.org/exp/xml#calculated';
+export const NON_NEGATIVE_NUMBER_CONCEPT_URI = 'http://www.labkey.org/types#nonNegativeNumber';
 
 export const UNLIMITED_TEXT_LENGTH = 2147483647; // Integer.MAX_VALUE
 export const MAX_TEXT_LENGTH = 4000;

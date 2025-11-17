@@ -236,6 +236,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 showAsteriskSymbol={showAsteriskSymbol}
                                 showLabel
                                 value={value}
+                                containerFilter={containerFilter}
                             />
                         );
                     }

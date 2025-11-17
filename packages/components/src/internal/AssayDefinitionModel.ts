@@ -15,6 +15,7 @@ import { SCHEMAS } from './schemas';
 import { ASSAYS_KEY } from './app/constants';
 import { ComponentsAPIWrapper } from './APIWrapper';
 import { isAllSamplesSchema } from './components/samples/utils';
+import { getSingleSampleTypeQueryInfo } from './components/entities/actions';
 
 export enum AssayDomainTypes {
     BATCH = 'Batch',
@@ -289,14 +290,23 @@ export class AssayDefinitionModel extends ImmutableRecord({
         return column && domain === AssayDomainTypes.RESULT;
     }
 
-    async getResultsSampleTypeQueryInfo(api: ComponentsAPIWrapper): Promise<QueryInfo> {
+    getSampleColInResults(): QueryColumn {
         const sampleColumnData = this.getSampleColumn();
-        if (
-            sampleColumnData &&
-            this.isSampleColInResults(sampleColumnData.column, sampleColumnData.domain) &&
-            sampleColumnData.column.isSingleSampleTypeLookup()
-        ) {
-            return api.query.getQueryDetails(sampleColumnData.column.lookup.schemaQuery);
+        const sampleColInResults = this.isSampleColInResults(sampleColumnData?.column, sampleColumnData?.domain);
+        return sampleColInResults ? sampleColumnData.column : null;
+    }
+
+    async getResultsSampleTypeQueryInfo(
+        api: ComponentsAPIWrapper,
+        sampleIds?: number[] | string[]
+    ): Promise<QueryInfo> {
+        const sampleResultColumnData = this.getSampleColInResults();
+        if (sampleResultColumnData) {
+            if (sampleResultColumnData.isSingleSampleTypeLookup())
+                return api.query.getQueryDetails(sampleResultColumnData.lookup.schemaQuery);
+            else if (sampleIds?.length > 0) {
+                return getSingleSampleTypeQueryInfo(sampleIds);
+            }
         }
         return undefined;
     }

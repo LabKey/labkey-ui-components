@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+###  version 6.70.6
+*Released*: 18 November 2025
+- Issue 52560: Need sample-type specific error for incorrect units during multi-sample-type creation
+    - Build the correct lookupFilters for units validation for `insertPastedData`
+
 ###  version 6.70.5
 *Released*: 13 November 2025
 - Issue 54186: App actions for picklists and assay run delete don't get TransactionAuditEvent

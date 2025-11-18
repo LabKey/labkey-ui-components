@@ -1,9 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-###  version 6.X
-*Released*: X November 2025
+###  version 6.70.7
+*Released*: 18 November 2025
 - Exclude plate well column lookup for identifying fields determination
+
+###  version 6.70.6
+*Released*: 18 November 2025
+- Issue 52560: Need sample-type specific error for incorrect units during multi-sample-type creation
+    - Build the correct lookupFilters for units validation for `insertPastedData`
 
 ###  version 6.70.5
 *Released*: 13 November 2025

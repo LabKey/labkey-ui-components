@@ -1458,7 +1458,7 @@ describe('resolveBaseProperties', () => {
         expect(field.rangeURI).toBe(SAMPLE_TYPE.rangeURI);
         expect(field.required).toBe(true);
 
-        // GitHub Issue 787 (https://github.com/LabKey/kanban/issues/787)
+        // GitHub Issue #656
         field = DomainField.resolveBaseProperties({ name: 'SampleId', required: false });
         expect(field.dataType).toBe(SAMPLE_TYPE);
         expect(field.conceptURI).toBe(SAMPLE_TYPE.conceptURI);

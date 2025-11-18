@@ -6,6 +6,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Disallow negative sample amounts
     - Update `getValidatedEditableGridValue` to check for negative amount values
 
+###  version 6.70.7
+*Released*: 18 November 2025
+- Exclude plate well column lookup for identifying fields determination
+
+###  version 6.70.6
+*Released*: 18 November 2025
+- Issue 52560: Need sample-type specific error for incorrect units during multi-sample-type creation
+    - Build the correct lookupFilters for units validation for `insertPastedData`
+
 ###  version 6.70.5
 *Released*: 13 November 2025
 - Issue 54186: App actions for picklists and assay run delete don't get TransactionAuditEvent

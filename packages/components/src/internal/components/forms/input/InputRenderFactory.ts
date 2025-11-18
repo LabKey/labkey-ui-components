@@ -6,6 +6,7 @@ import { InputRendererProps } from './types';
 import { AliasGridInput, AliasInput } from './AliasInput';
 import { AppendUnitsInput } from './AppendUnitsInput';
 import { SampleStatusInputRenderer } from './SampleStatusInput';
+import { AmountUnitInput } from './AmountUnitInput';
 
 export type InputRendererComponent = ComponentType<InputRendererProps>;
 export type InputRendererFactory = (col: QueryColumn, isGridInput?: boolean) => InputRendererComponent;
@@ -48,4 +49,5 @@ export function registerInputRenderers(): void {
     registerInputRenderer('ExperimentAlias', AliasGridInput, InputRenderContext.Grid);
     registerInputRenderer('ExperimentAlias', AliasInput, InputRenderContext.Form);
     registerInputRenderer('SampleStatusInput', SampleStatusInputRenderer);
+    registerInputRenderer('AmountUnitInput', AmountUnitInput, InputRenderContext.Form);
 }

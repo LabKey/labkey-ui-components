@@ -5,6 +5,7 @@ import { Query } from '@labkey/api';
 import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { SelectInputChange, SelectInputProps } from './SelectInput';
+import { ExtendedMap } from '../../../../public/ExtendedMap';
 
 export interface InputRendererProps {
     allowFieldDisable?: boolean;
@@ -25,4 +26,5 @@ export interface InputRendererProps {
     showLabel?: boolean;
     value: any;
     values?: any;
+    allColumns?: ExtendedMap<string, QueryColumn>;
 }

@@ -34,6 +34,7 @@ export interface TextInputProps extends DisableableInputProps, Omit<FormsyInputP
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     showLabel?: boolean;
     startFocused?: boolean;
+    disableInput?: boolean;
 }
 
 interface TextInputState extends DisableableInputState {
@@ -142,7 +143,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
                     required={queryColumn.required}
                     {...inputProps}
                     componentRef={this.textInput}
-                    disabled={this.state.isDisabled}
+                    disabled={this.state.isDisabled || this.props.disableInput}
                     help={help}
                     label={this.renderLabel()}
                     labelClassName={showLabel ? labelClassName : 'hide-label'}

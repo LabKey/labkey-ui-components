@@ -267,6 +267,7 @@ export interface SelectInputProps {
     valueKey?: string;
     valueRenderer?: any;
     warning?: ReactNode;
+    disableInput?: boolean;
 }
 
 type SelectInputImplProps = SelectInputProps & FormsyInjectedProps<any>;
@@ -686,7 +687,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             id: this.getId(),
             inputId,
             isClearable: clearable,
-            isDisabled: disabled || this.state.isDisabled,
+            isDisabled: disabled || this.state.isDisabled || this.props.disableInput,
             isLoading,
             isMulti: multiple,
             isValidNewOption,

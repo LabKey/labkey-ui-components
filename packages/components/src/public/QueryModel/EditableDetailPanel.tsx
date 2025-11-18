@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useCallback, useState } from 'react';
 import { fromJS } from 'immutable';
-import { AuditBehaviorTypes, Query } from '@labkey/api';
+import { Query } from '@labkey/api';
 
 import { Formsy } from '../../internal/components/forms/formsy';
 import { DetailPanelHeader } from '../../internal/components/forms/detail/DetailPanelHeader';
@@ -140,7 +140,6 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
 
                 await api.query.updateRows({
                     editMethod: EDIT_METHOD.DETAIL_EDIT,
-                    auditBehavior: AuditBehaviorTypes.DETAILED,
                     containerPath,
                     rows: [updatedValues],
                     schemaQuery: queryInfo.schemaQuery,

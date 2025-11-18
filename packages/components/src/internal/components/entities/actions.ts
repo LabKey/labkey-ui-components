@@ -1,4 +1,14 @@
-import { ActionURL, Ajax, Filter, getServerContext, PermissionTypes, Query, Security, Utils } from '@labkey/api';
+import {
+    ActionURL,
+    Ajax,
+    AuditBehaviorTypes,
+    Filter,
+    getServerContext,
+    PermissionTypes,
+    Query,
+    Security,
+    Utils,
+} from '@labkey/api';
 import { List, Map, OrderedMap } from 'immutable';
 
 import { getSelected, getSelectedDataDeprecated } from '../../actions';
@@ -981,6 +991,7 @@ export function moveEntities(options: MoveEntitiesOptions): Promise<Query.MoveRo
         }
 
         Query.moveRows({
+            auditBehavior: AuditBehaviorTypes.DETAILED,
             ...params,
             auditDetails: getRequestAuditDetail(),
             success: (response: Query.MoveRowsResponse) => {

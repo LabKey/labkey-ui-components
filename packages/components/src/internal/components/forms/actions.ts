@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AuditBehaviorTypes, PermissionTypes, Security, User } from '@labkey/api';
+import { PermissionTypes, Security, User } from '@labkey/api';
 import { useCallback, useEffect, useState } from 'react';
 
-import { updateRows } from '../../query/api';
+import { QueryCommandResponse, updateRows } from '../../query/api';
 
 import { naturalSortByProperty } from '../../../public/sort';
 
@@ -117,7 +117,10 @@ export function useUsersWithPermissions(
     return { error, loadingState, users };
 }
 
-export function updateRowFieldValue(model: QueryModel, name: string, value: any): Promise<any> {
+/**
+ * @deprecated Use api.query.updateRows instead
+ */
+export function updateRowFieldValue(model: QueryModel, name: string, value: any): Promise<QueryCommandResponse> {
     return updateRows({
         schemaQuery: model.schemaQuery,
         rows: [
@@ -127,6 +130,5 @@ export function updateRowFieldValue(model: QueryModel, name: string, value: any)
             },
         ],
         containerPath: model.containerPath,
-        auditBehavior: AuditBehaviorTypes.DETAILED,
     });
 }

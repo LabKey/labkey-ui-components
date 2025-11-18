@@ -1,5 +1,4 @@
 import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 'react';
-import { AuditBehaviorTypes } from '@labkey/api';
 
 import { Progress } from '../base/Progress';
 import { Modal } from '../../Modal';
@@ -12,7 +11,6 @@ import { HelpLink, MOVE_SAMPLES_TOPIC } from '../../util/helpLinks';
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { AppURL } from '../../url/AppURL';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-import { getPermissionRestrictionMessage } from '../../util/messaging';
 import { EntityDataType, OperationConfirmationData } from './models';
 import { getEntityNoun } from './utils';
 import { EntityMoveConfirmationModal } from './EntityMoveConfirmationModal';
@@ -87,7 +85,6 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     schemaName: schemaQuery.schemaName,
                     queryName: schemaQuery.queryName,
                     rowIds: confirmationData.getActionableIds(),
-                    auditBehavior: AuditBehaviorTypes.DETAILED,
                     auditUserComment,
                 });
                 const updatedUrl = targetAppURL.setContainerPath(targetContainerPath);

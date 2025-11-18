@@ -223,6 +223,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (ColumnInputRenderer) {
                         return (
                             <ColumnInputRenderer
+                                allColumns={columns}
                                 allowFieldDisable={allowFieldDisable}
                                 col={col}
                                 containerFilter={containerFilter}
@@ -237,7 +238,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 showAsteriskSymbol={showAsteriskSymbol}
                                 showLabel
                                 value={value}
-                                allColumns={columns}
                             />
                         );
                     }

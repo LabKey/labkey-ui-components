@@ -8,6 +8,7 @@ import { SelectInputChange, SelectInputProps } from './SelectInput';
 import { ExtendedMap } from '../../../../public/ExtendedMap';
 
 export interface InputRendererProps {
+    allColumns?: ExtendedMap<string, QueryColumn>;
     allowFieldDisable?: boolean;
     col: QueryColumn;
     containerFilter?: Query.ContainerFilter;
@@ -26,5 +27,4 @@ export interface InputRendererProps {
     showLabel?: boolean;
     value: any;
     values?: any;
-    allColumns?: ExtendedMap<string, QueryColumn>;
 }

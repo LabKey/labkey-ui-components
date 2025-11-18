@@ -3,8 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ###  version 6.X
 *Released*: X November 2025
-- Disallow negative sample amounts
-    - Update `getValidatedEditableGridValue` to check for negative amount values
+- Sample Amount/Units polish
+  - Disallow negative sample amounts: Update `getValidatedEditableGridValue` to check for negative amount values
+  - Added `AmountUnitInput` to show amount/units input side-by-side on bulk add/edit
 
 ###  version 6.70.7
 *Released*: 18 November 2025

@@ -27,6 +27,7 @@ import { InternalSpacesWarning } from '../InternalSpacesWarning';
 
 export interface TextInputProps extends DisableableInputProps, Omit<FormsyInputProps, 'onChange'> {
     addLabelAsterisk?: boolean;
+    disableInput?: boolean;
     includeSpacesWarning?: boolean;
     isUpdate?: boolean;
     onChange?: (value: any) => void;
@@ -34,7 +35,6 @@ export interface TextInputProps extends DisableableInputProps, Omit<FormsyInputP
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     showLabel?: boolean;
     startFocused?: boolean;
-    disableInput?: boolean;
 }
 
 interface TextInputState extends DisableableInputState {
@@ -92,12 +92,12 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
 
         return (
             <FieldLabel
-                label={label}
-                showLabel={showLabel}
-                labelOverlayProps={{ isFormsy: true, addLabelAsterisk }}
-                showToggle={allowDisable}
                 column={queryColumn}
                 isDisabled={isDisabled}
+                label={label}
+                labelOverlayProps={{ isFormsy: true, addLabelAsterisk }}
+                showLabel={showLabel}
+                showToggle={allowDisable}
                 toggleProps={{
                     onClick: this.toggleDisabled,
                 }}
@@ -126,7 +126,6 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
             isUpdate,
             ...inputProps
         } = rest;
-
 
         let help: string;
         // Issue 52367: Don't show the message if we have a name that can be edited

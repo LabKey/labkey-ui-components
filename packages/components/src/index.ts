@@ -474,6 +474,7 @@ import {
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
+    NON_NEGATIVE_NUMBER_CONCEPT_URI,
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { Principal, SecurityAssignment, SecurityPolicy, SecurityRole } from './internal/components/permissions/models';
@@ -1678,6 +1679,7 @@ export {
     SplitButton,
     splitDateTimeFormat,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
+    NON_NEGATIVE_NUMBER_CONCEPT_URI,
     StorageAmountInput,
     StorageStatusRenderer,
     STORED_AMOUNT_FIELDS,

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+###  version 6.X
+*Released*: X November 2025
+- Exclude plate well column lookup for identifying fields determination
+
 ###  version 6.70.5
 *Released*: 13 November 2025
 - Issue 54186: App actions for picklists and assay run delete don't get TransactionAuditEvent

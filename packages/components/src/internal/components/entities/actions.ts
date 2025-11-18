@@ -1327,8 +1327,8 @@ export function getSingleSampleTypeQueryInfo(sampleIds: number[] | string[]): Pr
         })
             .then(result => {
                 const sampleTypes = result.values;
-                if (sampleTypes.length > 1) {
-                    resolve(null); // multiple sample types found
+                if (sampleTypes.length !== 1) {
+                    resolve(null);
                     return;
                 }
                 const sampleTypeSQ = new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleTypes[0]);

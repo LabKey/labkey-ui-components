@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-###  version TBD
-*Released*: TBD November 2025
+###  version 6.68.4
+*Released*: 18 November 2025
 - GitHub Issue 111: Query metadata editor indicates all fields as "New Field"
   - use the field.lockExistingField property to determine if field is new or existing
 

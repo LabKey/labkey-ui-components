@@ -1136,7 +1136,8 @@ describe('DomainField', () => {
         );
     });
 
-    test('getDetailsTextArray, queryMetadata editor', () => { // Issue 54226
+    test('getDetailsTextArray, queryMetadata editor', () => {
+        // Issue 54226
         const field = DomainField.create({ propertyId: -1, name: 'test', lockExistingField: true });
         expect(field.getDetailsArray().join('')).toBe('');
     });

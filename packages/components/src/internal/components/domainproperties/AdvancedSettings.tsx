@@ -243,7 +243,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     showDefaultValues = () => {
         const { field, showDefaultValueSettings } = this.props;
 
-        // GitHub Issue #783: we don't yet support default values in the App
+        // GitHub Issue #298: we don't yet support default values in the App
         if (isApp()) return false;
 
         // some domains just don't support default values

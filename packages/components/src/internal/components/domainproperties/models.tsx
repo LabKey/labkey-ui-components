@@ -1181,7 +1181,7 @@ export class DomainField
                 field.dataType = SAMPLE_TYPE;
                 field.conceptURI = SAMPLE_TYPE.conceptURI;
                 field.rangeURI = SAMPLE_TYPE.rangeURI;
-                field.required = !!(raw.required ?? true); // GitHub Issue 787
+                field.required = !!(raw.required ?? true); // GitHub Issue #656
             }
         }
 
@@ -1407,7 +1407,8 @@ export class DomainField
         const details = [];
         let period = '';
 
-        if (this.isNew()) {
+        // Issue 54226: queryMetadata editor uses lockExistingField to mark existing fields
+        if (this.isNew() && !this.lockExistingField) {
             details.push('New Field');
             period = '. ';
         } else if (this.updatedField) {

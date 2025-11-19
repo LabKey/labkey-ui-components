@@ -301,7 +301,7 @@ export class AssayDefinitionModel extends ImmutableRecord({
         sampleIds?: number[] | string[]
     ): Promise<QueryInfo> {
         const sampleResultColumnData = this.getSampleColInResults();
-        if (sampleResultColumnData) {
+        if (sampleResultColumnData && sampleResultColumnData.isSampleLookup() /*skip plate well column*/) {
             if (sampleResultColumnData.isSingleSampleTypeLookup())
                 return api.query.getQueryDetails(sampleResultColumnData.lookup.schemaQuery);
             else if (sampleIds?.length > 0) {

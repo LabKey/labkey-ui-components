@@ -8,8 +8,21 @@ Components, models, actions, and utility functions for LabKey applications and p
   - add `WORKFLOW` schema and queries and remove legacy job schema/query references
   - remove ExperimentRunResolver
 
-### version 6.70.2
-*Released*: 6 November 2025
+
+###  version 6.70.8
+*Released*: 19 November 2025
+- Merge from release25.11-SNAPSHOT to develop
+    - includes changes from 6.68.4 #1892
+
+###  version 6.70.7
+*Released*: 18 November 2025
+- Exclude plate well column lookup for identifying fields determination
+
+###  version 6.70.6
+*Released*: 18 November 2025
+- Issue 52560: Need sample-type specific error for incorrect units during multi-sample-type creation
+    - Build the correct lookupFilters for units validation for `insertPastedData`
+
 ###  version 6.70.5
 *Released*: 13 November 2025
 - Issue 54186: App actions for picklists and assay run delete don't get TransactionAuditEvent
@@ -46,6 +59,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Merge from release25.11-SNAPSHOT to develop
   - includes changes from 6.68.2 #1878
   - includes changes from 6.68.3 #1884
+
+###  version 6.68.4
+*Released*: 18 November 2025
+- GitHub Issue 111: Query metadata editor indicates all fields as "New Field"
+  - use the field.lockExistingField property to determine if field is new or existing
 
 ###  version 6.68.3
 *Released*: 4 November 2025

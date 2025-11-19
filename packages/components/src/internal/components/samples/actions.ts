@@ -378,7 +378,7 @@ export function createSessionAssayRunSummaryQuery(sampleIds: number[]): Promise<
         assayRunsQuery = 'AssayRunsPerSampleChildFolder';
     }
 
-    // GitHub Issue 748: need to account for the case with no sampleIds
+    // GitHub Issue #643: need to account for the case with no sampleIds
     let whereClause = 'WHERE RowId IN (' + sampleIds.join(',') + ')\n';
     if (sampleIds.length === 0) {
         whereClause = 'WHERE 1 = 0\n'; // add where clause that will always result in zero rows

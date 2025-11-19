@@ -248,6 +248,8 @@ export interface DomainFormProps extends PropsWithChildren {
     systemFields?: SystemField[];
     todoIconHelpMsg?: string;
     validate?: boolean;
+    // Map of grouped system fields, that should be enabled/disabled together
+    groupedSystemFields?: Record<string, string[]>;
 }
 
 interface State {
@@ -701,8 +703,12 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
     };
 
     onSystemFieldEnable = (field: string, enable: boolean): void => {
-        const { domain } = this.props;
-        this.onDomainChange(handleSystemFieldUpdates(domain, field, enable));
+        const { domain, groupedSystemFields } = this.props;
+        let updatedDomain = handleSystemFieldUpdates(domain, field, enable);
+        groupedSystemFields?.[field.toLowerCase()]?.forEach(groupedField => {
+            updatedDomain = handleSystemFieldUpdates(updatedDomain, groupedField, enable);
+        });
+        this.onDomainChange(updatedDomain);
     };
 
     onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean, skipDirtyCheck = false): void => {

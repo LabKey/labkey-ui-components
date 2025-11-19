@@ -1,4 +1,5 @@
 import React, { FC, memo, useCallback, useState } from 'react';
+import { List } from 'immutable';
 
 import { TextInput } from './TextInput';
 import { QuerySelect } from '../QuerySelect';
@@ -7,6 +8,7 @@ import { FieldLabel } from '../FieldLabel';
 import { InputRendererProps } from './types';
 import { caseInsensitive, generateId } from '../../../util/utils';
 import { FormsyInput } from './FormsyReactComponents';
+import { Operation } from '../../../../public/QueryColumn';
 
 export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
     const {
@@ -18,6 +20,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
         containerPath,
         allColumns,
         data,
+        queryFilters,
     } = props;
     const [disabled, setDisabled] = useState<boolean>(initiallyDisabled && allowFieldDisable);
 
@@ -26,6 +29,9 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
     const unitCol = allColumns.filter(col => col.name.toLowerCase() === 'units').valueArray?.[0];
     const amountValue = caseInsensitive(data, amountCol.name);
     const unitValue = caseInsensitive(data, unitCol.name);
+    const queryFilter = unitCol.lookup.hasQueryFilters(Operation.insert)
+        ? List(unitCol.lookup.getQueryFilters(Operation.insert))
+        : queryFilters?.[unitCol.fieldKey];
 
     const onToggleChange = useCallback(() => {
         setDisabled(prevDisabled => {
@@ -78,6 +84,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                 showLabel={false}
                 value={unitValue}
                 valueColumn={unitCol.lookup.keyColumn}
+                queryFilters={queryFilter}
             />
             {allowFieldDisable && !disabled && (
                 <FormsyInput name={unitCol.name + '::enabled'} type="hidden" value="true" />

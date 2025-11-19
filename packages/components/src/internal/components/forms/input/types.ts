@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
+import { List } from 'immutable';
 
-import { Query } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
@@ -27,4 +28,5 @@ export interface InputRendererProps {
     showLabel?: boolean;
     value: any;
     values?: any;
+    queryFilters?: Record<string, List<Filter.IFilter>>;
 }

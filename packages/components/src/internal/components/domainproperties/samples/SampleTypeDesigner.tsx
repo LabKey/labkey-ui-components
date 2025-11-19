@@ -765,6 +765,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                     onChange={this.domainChangeHandler}
                     onToggle={this.formToggle}
                     appPropertiesOnly={appPropertiesOnly}
+                    groupedSystemFields={{storedamount: ['units'], units: ['storedamount']}}
                     domainFormDisplayOptions={{
                         ...domainFormDisplayOptions,
                         hideStudyPropertyTypes: !_showLinkToStudy,

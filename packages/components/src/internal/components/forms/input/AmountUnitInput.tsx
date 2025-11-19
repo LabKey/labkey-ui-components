@@ -49,7 +49,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                 isDisabled={disabled}
                 labelOverlayProps={{
                     inputId: amountCol.name,
-                    description: 'TODO',
+                    description: 'The amount of this sample, in the display unit for the sample type, currently on hand.',
                     label: 'Amount and Units',
                     isFormsy: false,
                 }}
@@ -86,8 +86,8 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                 value={unitValue}
                 valueColumn={unitCol.lookup.keyColumn}
             />
-            {allowFieldDisable && !disabled && (
-                <FormsyInput name={unitCol.name + '::enabled'} type="hidden" value="true" />
+            {allowFieldDisable && (
+                <FormsyInput name={unitCol.name + '::enabled'} type="hidden" value={disabled ? "false" : "true"} />
             )}
         </div>
     );

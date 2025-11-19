@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+###  version 6.70.8
+*Released*: 19 November 2025
+- Merge from release25.11-SNAPSHOT to develop
+    - includes changes from 6.68.4 #1892
+
 ###  version 6.70.7
 *Released*: 18 November 2025
 - Exclude plate well column lookup for identifying fields determination

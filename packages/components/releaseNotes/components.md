@@ -47,6 +47,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   - includes changes from 6.68.2 #1878
   - includes changes from 6.68.3 #1884
 
+###  version 6.68.4
+*Released*: 18 November 2025
+- GitHub Issue 111: Query metadata editor indicates all fields as "New Field"
+  - use the field.lockExistingField property to determine if field is new or existing
+
 ###  version 6.68.3
 *Released*: 4 November 2025
 - Issue 53983: Sort fields by caption

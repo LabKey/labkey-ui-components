@@ -1136,6 +1136,12 @@ describe('DomainField', () => {
         );
     });
 
+    test('getDetailsTextArray, queryMetadata editor', () => {
+        // Issue 54226
+        const field = DomainField.create({ propertyId: -1, name: 'test', lockExistingField: true });
+        expect(field.getDetailsArray().join('')).toBe('');
+    });
+
     test('serialize, name trim', () => {
         expect(DomainField.serialize(DomainField.create({})).name).toBe(undefined);
         expect(DomainField.serialize(DomainField.create({ name: '' })).name).toBe('');

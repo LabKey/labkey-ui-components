@@ -1407,7 +1407,8 @@ export class DomainField
         const details = [];
         let period = '';
 
-        if (this.isNew()) {
+        // Issue 54226: queryMetadata editor uses lockExistingField to mark existing fields
+        if (this.isNew() && !this.lockExistingField) {
             details.push('New Field');
             period = '. ';
         } else if (this.updatedField) {

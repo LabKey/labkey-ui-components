@@ -471,10 +471,10 @@ import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
     DOMAIN_RANGE_VALIDATOR,
+    NON_NEGATIVE_NUMBER_CONCEPT_URI,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
-    NON_NEGATIVE_NUMBER_CONCEPT_URI,
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { Principal, SecurityAssignment, SecurityPolicy, SecurityRole } from './internal/components/permissions/models';
@@ -1536,6 +1536,7 @@ export {
     NavigationBar,
     NO_UPDATES_MESSAGE,
     NoLinkRenderer,
+    NON_NEGATIVE_NUMBER_CONCEPT_URI,
     NOT_ANY_FILTER_TYPE,
     NOT_IN_EXP_DESCENDANTS_OF_FILTER_TYPE,
     Notifications,
@@ -1679,7 +1680,6 @@ export {
     SplitButton,
     splitDateTimeFormat,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
-    NON_NEGATIVE_NUMBER_CONCEPT_URI,
     StorageAmountInput,
     StorageStatusRenderer,
     STORED_AMOUNT_FIELDS,

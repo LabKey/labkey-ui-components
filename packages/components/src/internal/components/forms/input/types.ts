@@ -22,11 +22,11 @@ export interface InputRendererProps {
     onAdditionalFormDataChange?: (name: string, value: any) => void;
     onSelectChange?: SelectInputChange;
     onToggleDisable?: (disabled: boolean) => void;
+    queryFilters?: Record<string, List<Filter.IFilter>>;
     renderLabelField?: (col: QueryColumn) => ReactNode;
     selectInputProps?: Omit<SelectInputProps, 'onChange'>;
     showAsteriskSymbol?: boolean;
     showLabel?: boolean;
     value: any;
     values?: any;
-    queryFilters?: Record<string, List<Filter.IFilter>>;
 }

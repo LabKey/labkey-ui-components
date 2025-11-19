@@ -80,11 +80,11 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                 name={unitCol.fieldKey}
                 onQSChange={onSelectChange}
                 placeholder="Select or type to search..."
+                queryFilters={queryFilter}
                 schemaQuery={unitCol.lookup.schemaQuery}
                 showLabel={false}
                 value={unitValue}
                 valueColumn={unitCol.lookup.keyColumn}
-                queryFilters={queryFilter}
             />
             {allowFieldDisable && !disabled && (
                 <FormsyInput name={unitCol.name + '::enabled'} type="hidden" value="true" />

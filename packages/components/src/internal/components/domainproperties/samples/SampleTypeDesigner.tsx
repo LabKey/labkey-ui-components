@@ -29,7 +29,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 
 import { GENID_SYNTAX_STRING } from '../NameExpressionGenIdBanner';
 
-import { IImportAlias, IParentAlias, IParentOption, FolderConfigurableDataType } from '../../entities/models';
+import { FolderConfigurableDataType, IImportAlias, IParentAlias, IParentOption } from '../../entities/models';
 import { SCHEMAS } from '../../../schemas';
 import {
     getHelpLink,
@@ -115,10 +115,10 @@ interface Props {
     onCancel: () => void;
     onChange?: (model: SampleTypeModel) => void;
     onComplete: (response: DomainDesign) => void;
+    sampleAliasCaption?: string;
     sampleTypeCaption?: string;
     saveBtnText?: string;
     showAliquotOptions?: boolean;
-    sampleAliasCaption?: string;
     showLinkToStudy?: boolean;
     showParentLabelPrefix?: boolean;
     useSeparateDataClassesAliasMenu?: boolean;
@@ -138,7 +138,7 @@ interface State {
     uniqueIdsConfirmed: boolean;
 }
 // Exported for testing
-export class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
+export class SampleTypeDesignerImpl extends React.PureComponent<InjectedBaseDomainDesignerProps & Props, State> {
     static defaultProps = {
         api: getDefaultAPIWrapper(),
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
@@ -156,7 +156,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         validateNameExpressions: true,
     };
 
-    constructor(props: Props & InjectedBaseDomainDesignerProps) {
+    constructor(props: InjectedBaseDomainDesignerProps & Props) {
         super(props);
 
         let domainDetails = this.props.initModel || DomainDetails.create();
@@ -550,7 +550,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         if (isCommunityDistribution() || !model.isNew() || model.domain?.fields?.isEmpty()) {
             return null;
         }
-        return <UniqueIdBanner model={this.state.model} isFieldsPanel={true} onAddField={config.onAddField} />;
+        return <UniqueIdBanner isFieldsPanel={true} model={this.state.model} onAddField={config.onAddField} />;
     };
 
     getNumNewUniqueIdFields(): number {
@@ -558,7 +558,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         return model.domain.fields.filter(field => field.isNew() && field.isUniqueIdField()).count();
     }
 
-    getDomainDetails = (): { [key: string]: any } => {
+    getDomainDetails = (): Record<string, any> => {
         const { model } = this.state;
 
         const {
@@ -683,56 +683,31 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
 
         return (
             <BaseDomainDesigner
-                name={model.name}
-                exception={model.exception}
                 domains={List.of(model.domain)}
+                exception={model.exception}
                 hasValidProperties={model.hasValidProperties()}
-                visitedPanels={visitedPanels}
-                submitting={submitting}
+                name={model.name}
                 onCancel={onCancel}
                 onFinish={this.onFinish}
                 saveBtnText={saveBtnText}
                 showUserComment={isUpdate && appPropertiesOnly}
+                submitting={submitting}
+                visitedPanels={visitedPanels}
             >
                 <SampleTypePropertiesPanel
+                    aliquotNamePatternProps={aliquotNamePatternProps}
                     api={api}
-                    nounSingular={nounSingular}
-                    nounPlural={nounPlural}
-                    nameExpressionInfoUrl={nameExpressionInfoUrl}
-                    nameExpressionPlaceholder={nameExpressionPlaceholder}
+                    appPropertiesOnly={appPropertiesOnly}
+                    controlledCollapse
+                    dataClassAliasCaption={dataClassAliasCaption}
+                    dataClassParentageLabel={dataClassParentageLabel}
+                    dataClassTypeCaption={dataClassTypeCaption}
                     headerText={headerText}
                     helpTopic={helpTopic}
-                    model={model}
-                    parentOptions={parentOptions}
                     includeDataClasses={includeDataClasses}
-                    useSeparateDataClassesAliasMenu={useSeparateDataClassesAliasMenu}
-                    sampleAliasCaption={sampleAliasCaption}
-                    sampleTypeCaption={sampleTypeCaption}
-                    dataClassAliasCaption={dataClassAliasCaption}
-                    dataClassTypeCaption={dataClassTypeCaption}
-                    dataClassParentageLabel={dataClassParentageLabel}
-                    onParentAliasChange={this.parentAliasChange}
-                    onAddParentAlias={this.addParentAlias}
-                    onRemoveParentAlias={this.removeParentAlias}
-                    updateDupeParentAliases={this.updateDupes}
-                    updateModel={this.onFieldChange}
-                    controlledCollapse
                     initCollapsed={currentPanelIndex !== PROPERTIES_PANEL_INDEX}
-                    panelStatus={
-                        model.isNew()
-                            ? getDomainPanelStatus(PROPERTIES_PANEL_INDEX, currentPanelIndex, visitedPanels, firstState)
-                            : 'COMPLETE'
-                    }
-                    validate={validatePanel === PROPERTIES_PANEL_INDEX}
-                    onToggle={this.propertiesToggle}
-                    appPropertiesOnly={appPropertiesOnly}
-                    showLinkToStudy={_showLinkToStudy}
                     metricUnitProps={metricUnitProps}
-                    onAddUniqueIdField={this.onAddUniqueIdField}
-                    aliquotNamePatternProps={aliquotNamePatternProps}
-                    namePreviewsLoading={namePreviewsLoading}
-                    namePreviews={namePreviews}
-                    onNameFieldHover={this.onNameFieldHover}
+                    model={model}
                     nameExpressionGenIdProps={
                         isUpdate && options && hasGenIdInExpression
                             ? {
@@ -745,27 +720,38 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                               }
                             : undefined
                     }
+                    nameExpressionInfoUrl={nameExpressionInfoUrl}
+                    nameExpressionPlaceholder={nameExpressionPlaceholder}
+                    namePreviews={namePreviews}
+                    namePreviewsLoading={namePreviewsLoading}
+                    nounPlural={nounPlural}
+                    nounSingular={nounSingular}
+                    onAddParentAlias={this.addParentAlias}
+                    onAddUniqueIdField={this.onAddUniqueIdField}
+                    onNameFieldHover={this.onNameFieldHover}
+                    onParentAliasChange={this.parentAliasChange}
+                    onRemoveParentAlias={this.removeParentAlias}
+                    onToggle={this.propertiesToggle}
+                    panelStatus={
+                        model.isNew()
+                            ? getDomainPanelStatus(PROPERTIES_PANEL_INDEX, currentPanelIndex, visitedPanels, firstState)
+                            : 'COMPLETE'
+                    }
+                    parentOptions={parentOptions}
+                    sampleAliasCaption={sampleAliasCaption}
+                    sampleTypeCaption={sampleTypeCaption}
+                    showLinkToStudy={_showLinkToStudy}
+                    updateDupeParentAliases={this.updateDupes}
+                    updateModel={this.onFieldChange}
+                    useSeparateDataClassesAliasMenu={useSeparateDataClassesAliasMenu}
+                    validate={validatePanel === PROPERTIES_PANEL_INDEX}
                 />
                 <DomainForm
                     api={api.domain}
-                    key={model.domain.domainId || 0}
                     appDomainHeaderRenderer={this.uniqueIdBannerRenderer}
-                    domainIndex={0}
-                    domain={model.domain}
-                    headerTitle="Fields"
-                    helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
-                    controlledCollapse
-                    initCollapsed={currentPanelIndex !== DOMAIN_PANEL_INDEX}
-                    validate={validatePanel === DOMAIN_PANEL_INDEX}
-                    panelStatus={
-                        model.isNew()
-                            ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
-                            : 'COMPLETE'
-                    }
-                    onChange={this.domainChangeHandler}
-                    onToggle={this.formToggle}
                     appPropertiesOnly={appPropertiesOnly}
-                    groupedSystemFields={{storedamount: ['units'], units: ['storedamount']}}
+                    controlledCollapse
+                    domain={model.domain}
                     domainFormDisplayOptions={{
                         ...domainFormDisplayOptions,
                         hideStudyPropertyTypes: !_showLinkToStudy,
@@ -792,47 +778,61 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                                 "Updating a 'Samples Only' field to be 'Samples and Aliquots' will blank out the field values for all aliquots. This action cannot be undone. ",
                         },
                     }}
+                    domainIndex={0}
+                    groupedSystemFields={{ storedamount: ['units'], units: ['storedamount'] }}
+                    headerTitle="Fields"
+                    helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
+                    initCollapsed={currentPanelIndex !== DOMAIN_PANEL_INDEX}
+                    key={model.domain.domainId || 0}
                     newFieldConfig={{
                         derivationDataScope: DERIVATION_DATA_SCOPES.PARENT_ONLY,
                     }}
+                    onChange={this.domainChangeHandler}
+                    onToggle={this.formToggle}
+                    panelStatus={
+                        model.isNew()
+                            ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
+                            : 'COMPLETE'
+                    }
                     systemFields={options?.get('systemFields')}
+                    validate={validatePanel === DOMAIN_PANEL_INDEX}
                 />
                 {appPropertiesOnly && allowFolderExclusion && (
                     // appPropertiesOnly check will prevent this panel from showing in LKS and in LKB media types
                     <DataTypeFoldersPanel
                         controlledCollapse
-                        dataTypeRowId={model?.rowId}
                         dataTypeName={model?.name}
+                        dataTypeRowId={model?.rowId}
                         entityDataType={SampleTypeDataType}
-                        relatedFolderConfigurableDataType="DashboardSampleType"
-                        relatedDataTypeLabel="Include in Dashboard Insights graphs"
                         initCollapsed={currentPanelIndex !== FOLDERS_PANEL_INDEX}
                         onToggle={this.foldersToggle}
                         onUpdateExcludedFolders={this.onUpdateExcludedFolders}
+                        relatedDataTypeLabel="Include in Dashboard Insights graphs"
+                        relatedFolderConfigurableDataType="DashboardSampleType"
                     />
                 )}
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}
                 {showUniqueIdConfirmation && (
                     <Modal
+                        confirmText="Continue"
+                        onCancel={this.onUniqueIdCancel}
+                        onConfirm={this.onUniqueIdConfirm}
                         title={
                             'Updating ' +
                             SampleTypeDataType.typeNounSingular +
                             ' with Unique ID field' +
                             (numNewUniqueIdFields !== 1 ? 's' : '')
                         }
-                        onCancel={this.onUniqueIdCancel}
-                        onConfirm={this.onUniqueIdConfirm}
-                        confirmText="Continue"
                     >
                         {confirmModalMessage}
                     </Modal>
                 )}
                 <NameExpressionValidationModal
-                    onHide={this.onNameExpressionWarningCancel}
                     onConfirm={this.onNameExpressionWarningConfirm}
-                    warnings={nameExpressionWarnings}
+                    onHide={this.onNameExpressionWarningCancel}
                     previews={namePreviews}
                     show={!!nameExpressionWarnings && !model.exception}
+                    warnings={nameExpressionWarnings}
                 />
             </BaseDomainDesigner>
         );

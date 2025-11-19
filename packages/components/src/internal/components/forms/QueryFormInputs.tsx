@@ -234,11 +234,11 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 onAdditionalFormDataChange={onAdditionalFormDataChange}
                                 onSelectChange={this.onSelectChange}
                                 onToggleDisable={this.onToggleDisable}
+                                queryFilters={queryFilters}
                                 renderLabelField={this.renderLabelField}
                                 showAsteriskSymbol={showAsteriskSymbol}
                                 showLabel
                                 value={value}
-                                queryFilters={queryFilters}
                             />
                         );
                     }

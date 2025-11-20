@@ -27,11 +27,11 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
     const id = generateId('selectinput-');
     const amountCol = allColumns.filter(col => col.name.toLowerCase() === 'storedamount').valueArray?.[0];
     const unitCol = allColumns.filter(col => col.name.toLowerCase() === 'units').valueArray?.[0];
-    const amountValue = caseInsensitive(data, amountCol.name);
-    const unitValue = caseInsensitive(data, unitCol.name);
-    const queryFilter = unitCol.lookup.hasQueryFilters(Operation.insert)
-        ? List(unitCol.lookup.getQueryFilters(Operation.insert))
-        : queryFilters?.[unitCol.fieldKey];
+    const amountValue = caseInsensitive(data, amountCol?.name);
+    const unitValue = caseInsensitive(data, unitCol?.name);
+    const queryFilter = unitCol?.lookup.hasQueryFilters(Operation.insert)
+        ? List(unitCol?.lookup.getQueryFilters(Operation.insert))
+        : queryFilters?.[unitCol?.fieldKey];
 
     const onToggleChange = useCallback(() => {
         setDisabled(prevDisabled => {

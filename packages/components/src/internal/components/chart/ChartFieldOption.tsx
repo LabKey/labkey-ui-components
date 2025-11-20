@@ -59,10 +59,12 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
                 let geomOptions = current.geomOptions;
                 const measures = { ...current.measures };
                 const scales = { ...current.scales };
+                const labels = { ...current.labels };
 
                 if (!col) {
                     delete measures[name];
                     delete scales[name];
+                    delete labels[name];
                 } else {
                     measures[name] = {
                         fieldKey: col.fieldKey,
@@ -71,6 +73,7 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
                         type: col.jsonType,
                     };
                     scales[name] = DEFAULT_SCALE_VALUES;
+                    labels[name] = col.caption;
                 }
 
                 if (name === 'x' && hasTrendline(selectedType)) {

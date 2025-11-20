@@ -72,6 +72,7 @@ describe('TrendlineOption', () => {
         expect(document.querySelectorAll('.field-option-icon')).toHaveLength(0);
         expect(document.querySelectorAll('input[name="trendlineAsymptoteMin"]')).toHaveLength(0);
         expect(document.querySelectorAll('input[name="trendlineAsymptoteMax"]')).toHaveLength(0);
+        expect(document.querySelectorAll('input[name="trendlineParameters"]')).toHaveLength(0);
     });
 
     test('shown with x-axis value selected, non-date', async () => {
@@ -79,6 +80,7 @@ describe('TrendlineOption', () => {
             x: { data: { jsonType: 'int' }, value: 'field1' },
             trendlineAsymptoteMin: { value: undefined },
             trendlineAsymptoteMax: { value: undefined },
+            trendlineParameters: { value: undefined },
         };
         render(
             <TrendlineOption
@@ -111,6 +113,7 @@ describe('TrendlineOption', () => {
             x: { data: { jsonType: 'date' }, value: 'field1' },
             trendlineAsymptoteMin: { value: undefined },
             trendlineAsymptoteMax: { value: undefined },
+            trendlineParameters: { value: undefined },
         };
         render(
             <TrendlineOption
@@ -134,6 +137,7 @@ describe('TrendlineOption', () => {
             x: { data: { type: 'time' }, value: 'field1' },
             trendlineAsymptoteMin: { value: undefined },
             trendlineAsymptoteMax: { value: undefined },
+            trendlineParameters: { value: undefined },
         };
         render(
             <TrendlineOption
@@ -158,6 +162,7 @@ describe('TrendlineOption', () => {
             trendlineType: { value: 'option1', showMin: true, showMax: true },
             trendlineAsymptoteMin: { value: '0.1' },
             trendlineAsymptoteMax: { value: '1.0' },
+            trendlineParameters: { value: undefined },
         };
         render(
             <TrendlineOption
@@ -198,6 +203,7 @@ describe('TrendlineOption', () => {
             trendlineType: { value: 'option1', showMin: true, showMax: false },
             trendlineAsymptoteMin: { value: '0.1' },
             trendlineAsymptoteMax: { value: undefined },
+            trendlineParameters: { value: undefined },
         };
         render(
             <TrendlineOption
@@ -230,5 +236,35 @@ describe('TrendlineOption', () => {
         expect(document.querySelectorAll('input[type="number"]')).toHaveLength(1);
         expect(document.querySelectorAll('input[name="trendlineAsymptoteMax"]')).toHaveLength(0);
         expect(document.querySelector('input[name="trendlineAsymptoteMin"]').getAttribute('value')).toBe('');
+    });
+
+    test('show provided parameters in trendline gear tooltip', async () => {
+        const fieldValues = {
+            x: { data: { jsonType: 'int' }, value: 'field1' },
+            trendlineType: { value: 'option1', showMin: true, showMax: true },
+            trendlineAsymptoteMin: { value: undefined },
+            trendlineAsymptoteMax: { value: undefined },
+            trendlineParameters: { value: 'field1' },
+        };
+        render(
+            <TrendlineOption
+                fieldValues={fieldValues}
+                model={model}
+                onFieldChange={jest.fn()}
+                schemaQuery={new SchemaQuery('assay', 'query')}
+                selectedType={LINE_PLOT_TYPE}
+            />
+        );
+        await waitFor(() => {
+            expect(document.querySelectorAll('.trendline-option')).toHaveLength(1);
+        });
+
+        expect(document.querySelectorAll('.select-input')).toHaveLength(1); // trendline type
+        expect(document.querySelectorAll('.field-option-icon')).toHaveLength(1);
+
+        await userEvent.click(document.querySelector('.fa-gear'));
+        expect(document.querySelectorAll('.select-input')).toHaveLength(2); // trendline type and now provided parameters
+        expect(document.querySelectorAll('input[name="trendlineParameters"]')).toHaveLength(1);
+        expect(document.querySelector('input[name="trendlineParameters"]').getAttribute('value')).toBe('field1');
     });
 });

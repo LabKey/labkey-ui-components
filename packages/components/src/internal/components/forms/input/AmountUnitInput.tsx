@@ -91,7 +91,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                 valueColumn={unitCol.lookup.keyColumn}
             />
             {allowFieldDisable && (
-                <FormsyInput name={unitCol.name + '::enabled'} type="hidden" value={disabled ? "false" : "true"} />
+                <FormsyInput name={unitCol.name + '::enabled'} type="hidden" value={disabled ? 'false' : 'true'} />
             )}
         </div>
     );

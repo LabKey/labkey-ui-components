@@ -294,7 +294,10 @@ export function resolveDetailEditRenderer(
         }
         let value = resolveDetailFieldValue(data);
 
-        const ColumnInputRenderer = col.conceptURI === NON_NEGATIVE_NUMBER_CONCEPT_URI ? null /* Use standard forminput for media amount/unit */ : resolveInputRenderer(col);
+        const ColumnInputRenderer =
+            col.conceptURI === NON_NEGATIVE_NUMBER_CONCEPT_URI
+                ? null /* Use standard forminput for media amount/unit */
+                : resolveInputRenderer(col);
         if (ColumnInputRenderer) {
             return (
                 <ColumnInputRenderer

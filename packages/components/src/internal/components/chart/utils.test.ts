@@ -3,16 +3,17 @@ import { Map } from 'immutable';
 import {
     createHorizontalBarCountLegendData,
     createHorizontalBarLegendData,
-    getFieldDataType, getSelectOptions,
+    getFieldDataType,
+    getSelectOptions,
     shouldShowAggregateOptions,
     shouldShowRangeScaleOptions,
 } from './utils';
 import { ChartFieldInfo, ChartTypeInfo } from './models';
-import { LABKEY_VIS } from "../../constants";
-import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {ViewInfo} from "../../ViewInfo";
+import { LABKEY_VIS } from '../../constants';
+import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { ViewInfo } from '../../ViewInfo';
 
 LABKEY_VIS = {
     GenericChartHelper: {

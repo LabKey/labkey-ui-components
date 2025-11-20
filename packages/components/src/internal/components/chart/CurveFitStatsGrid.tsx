@@ -138,7 +138,14 @@ type PossibleTrendlines =
     | Trendline<NonlinearCurveFit, NonlinearCurveFitStats>
     | Trendline<PolynomialCurveFit>;
 
-const nonLinearTrendlineTypes = ['3 Parameter', '4 Parameter', '5 Parameter', 'Five Parameter', 'Four Parameter', 'Three Parameter'];
+const nonLinearTrendlineTypes = [
+    '3 Parameter',
+    '4 Parameter',
+    '5 Parameter',
+    'Five Parameter',
+    'Four Parameter',
+    'Three Parameter',
+];
 function isNonlinearTrendline(
     trendline: PossibleTrendlines
 ): trendline is Trendline<NonlinearCurveFit, NonlinearCurveFitStats> {

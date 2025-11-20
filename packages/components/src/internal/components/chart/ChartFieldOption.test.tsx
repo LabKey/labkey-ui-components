@@ -14,7 +14,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { ViewInfo } from '../../ViewInfo';
 
 import { ChartFieldOption } from './ChartFieldOption';
-import {ChartFieldInfo, ChartTypeInfo} from './models';
+import { ChartFieldInfo, ChartTypeInfo } from './models';
 
 LABKEY_VIS = {
     GenericChartHelper: {

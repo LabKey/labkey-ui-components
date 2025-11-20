@@ -7,10 +7,10 @@ import { LABKEY_VIS } from '../../constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { TrendlineOption } from './TrendlineOption';
-import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {ViewInfo} from "../../ViewInfo";
-import {ChartTypeInfo} from "./models";
+import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { ViewInfo } from '../../ViewInfo';
+import { ChartTypeInfo } from './models';
 
 LABKEY_VIS = {
     GenericChartHelper: {

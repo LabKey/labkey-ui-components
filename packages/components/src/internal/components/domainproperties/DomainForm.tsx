@@ -140,6 +140,7 @@ const DomainFormToolbar: FC<DomainFormToolbarProps> = memo(props => {
         (event: ChangeEvent<HTMLInputElement>) => onSearch(event.target.value),
         [onSearch]
     );
+
     return (
         <div className="row domain-field-toolbar">
             <div className="col-xs-4">
@@ -151,15 +152,16 @@ const DomainFormToolbar: FC<DomainFormToolbarProps> = memo(props => {
                         onClick={onAddField}
                     />
                 )}
-                <ActionButton
-                    containerClass="container--toolbar-button"
-                    buttonClass="domain-toolbar-delete-btn"
-                    onClick={onBulkDeleteClick}
-                    disabled={visibleSelection.size === 0}
-                >
-                    <i className="fa fa-trash domain-toolbar-export-btn-icon" /> Delete
-                </ActionButton>
-
+                {!domainFormDisplayOptions?.hideAddFieldsButton && (
+                    <ActionButton
+                        containerClass="container--toolbar-button"
+                        buttonClass="domain-toolbar-delete-btn"
+                        onClick={onBulkDeleteClick}
+                        disabled={visibleSelection.size === 0}
+                    >
+                        <i className="fa fa-trash domain-toolbar-export-btn-icon" /> Delete
+                    </ActionButton>
+                )}
                 {shouldShowImportExport && (
                     <ActionButton
                         containerClass="container--toolbar-button"
@@ -1386,6 +1388,7 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
                                     {showToolbar && (
                                         <DomainFormToolbar
                                             disableExport={disableExport}
+                                            domainFormDisplayOptions={domainFormDisplayOptions}
                                             domainIndex={domainIndex}
                                             fields={fields}
                                             onAddField={this.onAddField}

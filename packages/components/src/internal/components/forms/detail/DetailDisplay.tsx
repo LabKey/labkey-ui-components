@@ -40,7 +40,7 @@ import { UserDetailsRenderer } from '../../../renderers/UserDetailsRenderer';
 import { ExpirationDateColumnRenderer } from '../../../renderers/ExpirationDateColumnRenderer';
 import { getContainerFilterForLookups } from '../../../query/api';
 import { FolderColumnRenderer } from '../../../renderers/FolderColumnRenderer';
-import { FILELINK_RANGE_URI } from '../../domainproperties/constants';
+import { FILELINK_RANGE_URI, NON_NEGATIVE_NUMBER_CONCEPT_URI } from '../../domainproperties/constants';
 import { LOOKUP_DEFAULT_SIZE } from '../../../constants';
 
 export type Renderer = (data: any, row?: any) => ReactNode;
@@ -294,7 +294,7 @@ export function resolveDetailEditRenderer(
         }
         let value = resolveDetailFieldValue(data);
 
-        const ColumnInputRenderer = resolveInputRenderer(col);
+        const ColumnInputRenderer = col.conceptURI === NON_NEGATIVE_NUMBER_CONCEPT_URI ? null /* Use standard forminput for media amount/unit */ : resolveInputRenderer(col);
         if (ColumnInputRenderer) {
             return (
                 <ColumnInputRenderer

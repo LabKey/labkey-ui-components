@@ -6,16 +6,21 @@ import { QueryColumn } from '../../../../public/QueryColumn';
 import { Formsy } from '../formsy/index';
 
 describe('AmountUnitInput', () => {
-
     const amountCol = { name: 'StoredAmount', caption: 'amount', fieldKey: 'amountKey' };
-    const unitCol = { name: 'Units', caption: 'unit', fieldKey: 'unitKey',
+    const unitCol = {
+        name: 'Units',
+        caption: 'unit',
+        fieldKey: 'unitKey',
         lookup: {
             hasQueryFilters: jest.fn(),
-            displayColumn: new QueryColumn({caption: 'test'})
-        }
+            displayColumn: new QueryColumn({ caption: 'test' }),
+        },
     };
     const data = { StoredAmount: 12.5, Units: 'mg' };
-    const allColumns = new ExtendedMap<string, QueryColumn>({ [amountCol.fieldKey]: amountCol, [unitCol.fieldKey]: unitCol });
+    const allColumns = new ExtendedMap<string, QueryColumn>({
+        [amountCol.fieldKey]: amountCol,
+        [unitCol.fieldKey]: unitCol,
+    });
 
     const CAN_DISABLE: any = {
         allowFieldDisable: true,
@@ -31,12 +36,12 @@ describe('AmountUnitInput', () => {
 
     const DISABLED: any = {
         ...CAN_DISABLE,
-        initiallyDisabled: true
+        initiallyDisabled: true,
     };
 
     const NOT_DISABLABLE: any = {
         ...CAN_DISABLE,
-        allowFieldDisable: false
+        allowFieldDisable: false,
     };
 
     test('returns null when required columns are missing', () => {
@@ -44,16 +49,16 @@ describe('AmountUnitInput', () => {
 
         const someColumns = new ExtendedMap<string, QueryColumn>({ [amountCol.fieldKey]: amountCol });
         const { container } = render(
-            <Formsy className='inner-test'>
+            <Formsy className="inner-test">
                 <AmountUnitInput
+                    allColumns={someColumns}
                     allowFieldDisable={false}
-                    onSelectChange={jest.fn()}
-                    onToggleDisable={jest.fn()}
-                    initiallyDisabled={false}
                     containerFilter={undefined}
                     containerPath={undefined}
-                    allColumns={someColumns}
                     data={{}}
+                    initiallyDisabled={false}
+                    onSelectChange={jest.fn()}
+                    onToggleDisable={jest.fn()}
                     queryFilters={{}}
                 />
             </Formsy>
@@ -64,12 +69,11 @@ describe('AmountUnitInput', () => {
     });
 
     test('with amount and unit column, can disable', () => {
-
         const { container } = render(
             <Formsy>
                 <AmountUnitInput {...CAN_DISABLE} />
             </Formsy>
-            );
+        );
         expect(document.querySelectorAll('.form-group.row')).toHaveLength(1);
         expect(document.querySelectorAll('label')).toHaveLength(2);
         expect(document.querySelectorAll('label')[0].textContent).toBe('Amount and Units ');
@@ -87,11 +91,9 @@ describe('AmountUnitInput', () => {
         expect(inputs[3].getAttribute('name')).toBe('Units::enabled');
         expect(inputs[3].getAttribute('value')).toBe('true');
         expect(inputs[3].getAttribute('type')).toBe('hidden');
-
     });
 
     test('with amount and unit column, can disable and disabled', () => {
-
         const { container } = render(
             <Formsy>
                 <AmountUnitInput {...DISABLED} />
@@ -114,11 +116,9 @@ describe('AmountUnitInput', () => {
         expect(inputs[3].getAttribute('name')).toBe('Units::enabled');
         expect(inputs[3].getAttribute('value')).toBe('false');
         expect(inputs[3].getAttribute('type')).toBe('hidden');
-
     });
 
     test('with amount and unit column, cannot disable', () => {
-
         const { container } = render(
             <Formsy>
                 <AmountUnitInput {...NOT_DISABLABLE} />
@@ -136,4 +136,4 @@ describe('AmountUnitInput', () => {
         expect(inputs[0].getAttribute('name')).toBe('amountKey');
         expect(inputs[1].getAttribute('role')).toBe('combobox');
     });
-})
+});

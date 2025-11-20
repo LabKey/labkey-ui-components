@@ -1,5 +1,5 @@
 import { Map } from 'immutable';
-import { ChartFieldInfo, ChartTypeInfo } from './models';
+import { ChartConfig, ChartFieldInfo, ChartTypeInfo } from './models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SelectInputOption } from '../forms/input/SelectInput';
 import { naturalSortByProperty } from '../../../public/sort';
@@ -96,6 +96,36 @@ export const shouldShowAggregateOptions = (field: ChartFieldInfo, selectedType: 
     const isLine = selectedType.name === 'line_plot';
     return field.name === 'y' && (isBar || isLine);
 };
+
+/**
+ * Deep copies an existing ChartConfig or creates an empty one. Use before manipulating an existing chart config.
+ */
+export function deepCopyChartConfig(chartConfig: ChartConfig): ChartConfig {
+    if (!chartConfig) {
+        return {
+            geomOptions: {},
+            gridLinesVisible: 'both',
+            height: undefined,
+            labels: {},
+            measures: {},
+            pointType: 'outliers',
+            renderType: 'bar_chart',
+            scales: {},
+            width: undefined,
+        };
+    }
+    return {
+        ...chartConfig,
+        geomOptions: { ...chartConfig.geomOptions },
+        labels: { ...chartConfig.labels },
+        measures: { ...chartConfig.measures },
+        scales: { ...chartConfig.scales },
+    };
+}
+
+export function hasTrendline(chartType: ChartTypeInfo) {
+    return chartType.fields.find(f => f.name === 'trendline') !== undefined;
+}
 
 export const getSelectOptions = (model: QueryModel, chartType: ChartTypeInfo, field: ChartFieldInfo): QueryColumn[] => {
     const allowableTypes = LABKEY_VIS.GenericChartHelper.getAllowableTypes(field);

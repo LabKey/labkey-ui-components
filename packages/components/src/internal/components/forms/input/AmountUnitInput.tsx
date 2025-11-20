@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { List } from 'immutable';
 
 import { TextInput } from './TextInput';
@@ -9,6 +9,7 @@ import { InputRendererProps } from './types';
 import { caseInsensitive, generateId } from '../../../util/utils';
 import { FormsyInput } from './FormsyReactComponents';
 import { Operation } from '../../../../public/QueryColumn';
+import { STORED_AMOUNT_FIELDS } from '../../samples/constants';
 
 export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
     const {
@@ -24,14 +25,15 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
     } = props;
     const [disabled, setDisabled] = useState<boolean>(initiallyDisabled && allowFieldDisable);
 
-    const id = generateId('selectinput-');
-    const amountCol = allColumns.filter(col => col.name.toLowerCase() === 'storedamount').valueArray?.[0];
-    const unitCol = allColumns.filter(col => col.name.toLowerCase() === 'units').valueArray?.[0];
+    const amountCol = allColumns.find(col => col.name.toLowerCase() === STORED_AMOUNT_FIELDS.AMOUNT.toLowerCase());
+    const unitCol = allColumns.find(col => col.name.toLowerCase() === STORED_AMOUNT_FIELDS.UNITS.toLowerCase());
     const amountValue = caseInsensitive(data, amountCol?.name);
     const unitValue = caseInsensitive(data, unitCol?.name);
     const queryFilter = unitCol?.lookup.hasQueryFilters(Operation.insert)
         ? List(unitCol?.lookup.getQueryFilters(Operation.insert))
         : queryFilters?.[unitCol?.fieldKey];
+
+    const id = useMemo(() => generateId('amount-unit-input-'), []);
 
     const onToggleChange = useCallback(() => {
         setDisabled(prevDisabled => {

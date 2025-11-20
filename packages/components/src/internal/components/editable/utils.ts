@@ -65,7 +65,7 @@ export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn):
         } else if (jsonType === 'float' && !isFloat(value)) {
             message = 'Invalid decimal';
         } else if (NON_NEGATIVE_NUMBER_CONCEPT_URI === col?.conceptURI && Number(value) < 0) {
-            message = 'Invalid ' + col.caption + ', must be non-negative';
+            message = col.caption + ' must be non-negative';
         } else if (jsonType === 'string' && scale) {
             if (value.toString().trim().length > scale)
                 message = value.toString().trim().length + '/' + scale + ' characters';

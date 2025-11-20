@@ -533,7 +533,7 @@ export class Cell extends React.PureComponent<CellProps, undefined> {
                 .filter(vd => vd && vd.display !== undefined)
                 .reduce((v, vd, i) => v + (i > 0 ? ', ' : '') + vd.display, '');
 
-            const showMenu = (showLookup || !!col.inputRenderer) && (NON_NEGATIVE_NUMBER_CONCEPT_URI !== col?.conceptURI);
+            const showMenu = (showLookup || !!col.inputRenderer) && (NON_NEGATIVE_NUMBER_CONCEPT_URI !== col?.conceptURI /*storedamount has inputRenderer but shouldn't show menu*/);
 
             return (
                 <>

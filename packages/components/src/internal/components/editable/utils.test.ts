@@ -302,7 +302,7 @@ describe('getValidatedEditableGridValue', () => {
         invalidNegative.forEach(value => {
             expect(getValidatedEditableGridValue(value, amountCol)).toStrictEqual({
                 message: {
-                    message: 'Invalid Amount, must be non-negative',
+                    message: 'Amount must be non-negative',
                 },
                 value,
             });

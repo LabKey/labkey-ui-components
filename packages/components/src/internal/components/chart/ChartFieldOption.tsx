@@ -26,13 +26,14 @@ interface OwnProps {
 export const ChartFieldOption: FC<OwnProps> = memo(props => {
     const { chartConfig, field, model, selectedType, setChartConfig } = props;
     const { measures, scales } = chartConfig;
-    const scaleValues = scales[field.name] ?? {};
-    const fieldValue = measures?.[field.name];
-    const [scale, setScale] = useState<ScaleType>(scaleValues?.type ? scaleValues : DEFAULT_SCALE_VALUES);
+    const measure = measures?.[field.name];
+    const [scale, setScale] = useState<ScaleType>(() => {
+        return scales[field.name] ?? DEFAULT_SCALE_VALUES;
+    });
     const options = useMemo(() => getSelectOptions(model, selectedType, field), [model, selectedType, field]);
     const isNumericType = useMemo(
-        () => LABKEY_VIS.GenericChartHelper.isNumericType(getFieldDataType(fieldValue)),
-        [fieldValue]
+        () => LABKEY_VIS.GenericChartHelper.isNumericType(getFieldDataType(measure)),
+        [measure]
     );
     const showRangeScaleOptions = isNumericType && shouldShowRangeScaleOptions(field, selectedType);
     const showAggregateOptions = isNumericType && shouldShowAggregateOptions(field, selectedType);
@@ -44,7 +45,7 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
             if (!localOnly) {
                 setChartConfig(current => {
                     let updatedScale = current.scales?.[field.name] ?? DEFAULT_SCALE_VALUES;
-                    updatedScale = { ...updatedScale, scale };
+                    updatedScale = { ...updatedScale, ...scale };
                     return { ...current, scales: { ...current.scales, [field.name]: updatedScale } };
                 });
             }
@@ -104,7 +105,7 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
                     placeholder="Select a field"
                     showLabel={false}
                     // Issue 52050: use fieldKey for special characters
-                    value={fieldValue?.fieldKey}
+                    value={measure?.fieldKey}
                     valueKey="fieldKey"
                 />
                 {showRangeScaleOptions && (
@@ -113,7 +114,7 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
                         scale={scale}
                         showScaleTrans={selectedType.name !== 'bar_chart'}
                     >
-                        {fieldValue && showAggregateOptions && (
+                        {measure && showAggregateOptions && (
                             <ChartFieldAggregateOptions
                                 asOverlay={false}
                                 chartConfig={chartConfig}

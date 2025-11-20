@@ -1,15 +1,15 @@
 import { Filter, Query, Visualization } from '@labkey/api';
 
 export interface ChartConfig {
-    geomOptions: any;
+    geomOptions: Record<string, boolean | number | string>;
     gridLinesVisible: string;
-    height: number;
-    labels: any;
-    measures: any;
+    height?: number;
+    labels: Record<string, string>;
+    measures: Record<string, Record<string, any>>; // TODO: we can probably do better than any
     pointType: string;
     renderType: string;
-    scales: any;
-    width: number;
+    scales: Record<string, ScaleType>;
+    width?: number;
 }
 
 export type ChartConfigMutator = (currentConfig: ChartConfig) => ChartConfig;

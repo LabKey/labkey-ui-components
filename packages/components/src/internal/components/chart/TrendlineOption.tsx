@@ -55,8 +55,8 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
     useEffect(() => {
         if (loadingTrendlineOptions && (!!geomOptions?.trendlineAsymptoteMin || !!geomOptions?.trendlineAsymptoteMax)) {
             setAsymptoteType('manual');
-            setAsymptoteMin(geomOptions?.trendlineAsymptoteMin?.value);
-            setAsymptoteMax(geomOptions?.trendlineAsymptoteMax?.value);
+            setAsymptoteMin(geomOptions?.trendlineAsymptoteMin?.toString());
+            setAsymptoteMax(geomOptions?.trendlineAsymptoteMax?.toString());
             setLoadingTrendlineOptions(false);
         }
     }, [geomOptions, loadingTrendlineOptions]);

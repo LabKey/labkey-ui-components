@@ -190,6 +190,7 @@ export class QueryColumn implements IQueryColumn {
     declare inputRenderer: string;
     declare sorts: '+' | '-';
     declare removeFromViews: boolean; // strips this column from all ViewInfo definitions
+    declare removeFromFormInput: boolean; // strips this column from QueryFormInputs
     declare units: string;
     declare derivationDataScope: string;
 

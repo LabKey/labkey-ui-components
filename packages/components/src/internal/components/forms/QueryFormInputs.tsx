@@ -194,7 +194,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         // QueryFormInputs to be a rendering factory for the columns that are in the set.
         if (columns) {
             return columns.valueArray
-                .filter(col => filter(col))
+                .filter(col => filter(col) && !col.removeFromFormInput)
                 .map(col => {
                     const { fieldKey, name, required } = col;
                     const shouldDisableField = initiallyDisableFields || disabledFields.contains(name.toLowerCase());
@@ -223,8 +223,10 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (ColumnInputRenderer) {
                         return (
                             <ColumnInputRenderer
+                                allColumns={columns}
                                 allowFieldDisable={allowFieldDisable}
                                 col={col}
+                                containerFilter={containerFilter}
                                 data={fieldValues}
                                 formsy
                                 initiallyDisabled={shouldDisableField}
@@ -232,6 +234,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 onAdditionalFormDataChange={onAdditionalFormDataChange}
                                 onSelectChange={this.onSelectChange}
                                 onToggleDisable={this.onToggleDisable}
+                                queryFilters={queryFilters}
                                 renderLabelField={this.renderLabelField}
                                 showAsteriskSymbol={showAsteriskSymbol}
                                 showLabel

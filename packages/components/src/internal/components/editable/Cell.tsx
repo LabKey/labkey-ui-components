@@ -44,6 +44,7 @@ import {
 } from './utils';
 import { LookupCell } from './LookupCell';
 import { DateInputCell } from './DateInputCell';
+import { NON_NEGATIVE_NUMBER_CONCEPT_URI } from '../domainproperties/constants';
 
 // CSS Order: top, right, bottom, left
 export type BorderMask = [boolean, boolean, boolean, boolean];
@@ -532,6 +533,8 @@ export class Cell extends React.PureComponent<CellProps, undefined> {
                 .filter(vd => vd && vd.display !== undefined)
                 .reduce((v, vd, i) => v + (i > 0 ? ', ' : '') + vd.display, '');
 
+            const showMenu = (showLookup || !!col.inputRenderer) && (NON_NEGATIVE_NUMBER_CONCEPT_URI !== col?.conceptURI /*storedamount has inputRenderer but shouldn't show menu*/);
+
             return (
                 <>
                     <DisplayCell
@@ -551,7 +554,7 @@ export class Cell extends React.PureComponent<CellProps, undefined> {
                         placeholder={placeholder}
                         selected={selected}
                         selection={selection}
-                        showMenu={showLookup || !!col.inputRenderer}
+                        showMenu={showMenu}
                         targetRef={this.displayEl}
                     />
                     {renderDragHandle && !this.isReadOnly && (

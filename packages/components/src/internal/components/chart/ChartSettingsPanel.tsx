@@ -208,7 +208,8 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
             {showTrendline && (
                 <TrendlineOption
                     chartConfig={chartConfig}
-                    schemaQuery={model.schemaQuery}
+                    model={model}
+                    selectedType={chartType}
                     setChartConfig={setChartConfig}
                 />
             )}

@@ -4,6 +4,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SelectInputOption } from '../forms/input/SelectInput';
 import { naturalSortByProperty } from '../../../public/sort';
 import { LABKEY_VIS } from '../../constants';
+import { QueryColumn } from '../../../public/QueryColumn';
 
 export interface HorizontalBarData {
     backgroundColor?: string;
@@ -96,11 +97,7 @@ export const shouldShowAggregateOptions = (field: ChartFieldInfo, selectedType: 
     return field.name === 'y' && (isBar || isLine);
 };
 
-export const getSelectOptions = (
-    model: QueryModel,
-    chartType: ChartTypeInfo,
-    field: ChartFieldInfo
-): SelectInputOption[] => {
+export const getSelectOptions = (model: QueryModel, chartType: ChartTypeInfo, field: ChartFieldInfo): QueryColumn[] => {
     const allowableTypes = LABKEY_VIS.GenericChartHelper.getAllowableTypes(field);
 
     return model.queryInfo
@@ -116,6 +113,5 @@ export const getSelectOptions = (
             );
             return hasMatchingType || isMeasureDimensionMatch;
         })
-        .sort(naturalSortByProperty('caption'))
-        .map(col => ({ label: col.caption, value: col.fieldKey, data: col }));
+        .sort(naturalSortByProperty('caption'));
 };

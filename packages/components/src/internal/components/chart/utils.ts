@@ -1,7 +1,7 @@
 import { Map } from 'immutable';
 import { ChartConfig, ChartFieldInfo, ChartTypeInfo } from './models';
+import { BLUE_HEX_COLOR, MAX_POINT_DISPLAY } from './constants';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { SelectInputOption } from '../forms/input/SelectInput';
 import { naturalSortByProperty } from '../../../public/sort';
 import { LABKEY_VIS } from '../../constants';
 import { QueryColumn } from '../../../public/QueryColumn';
@@ -97,19 +97,56 @@ export const shouldShowAggregateOptions = (field: ChartFieldInfo, selectedType: 
     return field.name === 'y' && (isBar || isLine);
 };
 
+const makeGeomOptions = (chartType: string) => ({
+    binShape: 'hex',
+    binSingleColor: '000000',
+    binThreshold: MAX_POINT_DISPLAY,
+    boxFillColor: chartType === 'box_plot' ? 'none' : BLUE_HEX_COLOR,
+    chartLayout: 'single',
+    chartSubjectSelection: 'subjects',
+    colorPaletteScale: 'ColorDiscrete',
+    colorRange: 'BlueWhite',
+    displayIndividual: true,
+    displayAggregate: false,
+    errorBars: 'None',
+    gradientColor: 'FFFFFF',
+    gradientPercentage: 95,
+    hideDataPoints: false,
+    hideTrendLine: false,
+    lineColor: '000000',
+    lineWidth: chartType === 'line_plot' ? 3 : 1,
+    marginBottom: null,
+    marginLeft: null,
+    marginRight: null,
+    marginTop: 20, // this will be saved with the chartConfig, but we will override it for the preview in the modal
+    opacity: chartType === 'bar_chart' || chartType === 'line_plot' ? 1.0 : 0.5,
+    pieHideWhenLessThanPercentage: 5,
+    pieInnerRadius: 0,
+    pieOuterRadius: 80,
+    piePercentagesColor: '333333',
+    pointFillColor: BLUE_HEX_COLOR,
+    pointSize: chartType === 'box_plot' ? 3 : 5,
+    position: chartType === 'box_plot' ? 'jitter' : null,
+    showOutliers: true,
+    showPiePercentages: true,
+    trendlineType: undefined,
+    trendlineAsymptoteMin: undefined,
+    trendlineAsymptoteMax: undefined,
+});
+
 /**
  * Deep copies an existing ChartConfig or creates an empty one. Use before manipulating an existing chart config.
  */
-export function deepCopyChartConfig(chartConfig: ChartConfig): ChartConfig {
+export function deepCopyChartConfig(chartConfig: ChartConfig, chartType = 'bar_chart'): ChartConfig {
     if (!chartConfig) {
         return {
-            geomOptions: {},
+            geomOptions: makeGeomOptions(chartType),
             gridLinesVisible: 'both',
             height: undefined,
             labels: {},
             measures: {},
             pointType: 'outliers',
-            renderType: 'bar_chart',
+            renderType: chartType,
             scales: {},
             width: undefined,
         };

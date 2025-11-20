@@ -143,11 +143,12 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
 
     const onTypeChange = useCallback(
         (type: ChartTypeInfo) => {
-            setChartConfig(current => ({
-                ...deepCopyChartConfig(undefined),
-                labels: { ...current.labels },
-                renderType: type.name,
-            }));
+            setChartConfig(current => {
+                return {
+                    ...deepCopyChartConfig(undefined, type.name),
+                    labels: { ...current.labels },
+                };
+            });
         },
         [setChartConfig]
     );

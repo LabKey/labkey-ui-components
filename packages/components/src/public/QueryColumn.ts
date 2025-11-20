@@ -128,6 +128,7 @@ export class QueryColumn implements IQueryColumn {
     declare description: string;
     declare dimension: boolean;
     declare displayAsLookup: boolean;
+    declare displayWidth: number | string;
     // declare excludeFromShifting: boolean;
     // declare ext: any;
     declare facetingBehaviorType: string;

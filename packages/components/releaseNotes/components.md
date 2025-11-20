@@ -1,11 +1,18 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-###  version 6.X
-*Released*: X November 2025
+###  version 6.71.1
+*Released*: 20 November 2025
 - Sample Amount/Units polish
   - Disallow negative sample amounts: Update `getValidatedEditableGridValue` to check for negative amount values
   - Added `AmountUnitInput` to show amount/units input side-by-side on bulk add/edit
+
+###  version 6.71.0
+*Released*: 20 November 2025
+- Line chart trendline options for provided parameters to CalculateCurveFit API
+  - ChartBuilderModal update to include trendline option for provided parameters
+  - Include new 5 Parameter nonlinear curve fit option in trendline select
+  - Use column metadata displayWidth in app grid column render calcWidths
 
 ###  version 6.70.8
 *Released*: 19 November 2025

@@ -10,8 +10,9 @@ import { OverlayTrigger } from '../../OverlayTrigger';
 import { Popover } from '../../Popover';
 import { RadioGroupInput, RadioGroupOption } from '../forms/input/RadioGroupInput';
 
-import { TrendlineType } from './models';
-import { getFieldDataType } from './utils';
+import { ChartFieldInfo, ChartTypeInfo, TrendlineType } from './models';
+import { getFieldDataType, getSelectOptions } from './utils';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 const ASYMPTOTE_TYPES = [
     { value: 'automatic', label: 'Automatic' },
@@ -20,14 +21,16 @@ const ASYMPTOTE_TYPES = [
 
 interface TrendlineOptionProps {
     fieldValues: Record<string, SelectInputOption>;
+    model: QueryModel;
     onFieldChange: (key: string, value: SelectInputOption) => void;
     schemaQuery: SchemaQuery;
+    selectedType: ChartTypeInfo;
 }
 
 export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
     const TRENDLINE_OPTIONS: TrendlineType[] = Object.values(LABKEY_VIS.GenericChartHelper.TRENDLINE_OPTIONS);
-    const { fieldValues, onFieldChange, schemaQuery } = props;
-    const showFieldOptions = fieldValues.trendlineType?.showMin || fieldValues.trendlineType?.showMax;
+    const { fieldValues, onFieldChange, schemaQuery, model, selectedType } = props;
+    const showFieldOptions = fieldValues.trendlineType && fieldValues.trendlineType.value !== '';
 
     // hide the trendline option if no x-axis value selected and for date field selection on x-axis
     const hidden = useMemo(() => {
@@ -39,10 +42,7 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
     const [asymptoteType, setAsymptoteType] = useState<string>('automatic');
     const [asymptoteMin, setAsymptoteMin] = useState<string>('');
     const [asymptoteMax, setAsymptoteMax] = useState<string>('');
-    const invalidRange = useMemo(
-        () => !!asymptoteMin && !!asymptoteMax && asymptoteMax <= asymptoteMin,
-        [asymptoteMin, asymptoteMax]
-    );
+
     useEffect(() => {
         if (loadingTrendlineOptions && (!!fieldValues.trendlineAsymptoteMin || !!fieldValues.trendlineAsymptoteMax)) {
             setAsymptoteType('manual');
@@ -59,12 +59,6 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
     const onTrendlineAsymptoteMax = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setAsymptoteMax(event.target.value);
     }, []);
-
-    const applyTrendlineAsymptote = useCallback(() => {
-        if (invalidRange) return;
-        onFieldChange('trendlineAsymptoteMin', { value: asymptoteMin });
-        onFieldChange('trendlineAsymptoteMax', { value: asymptoteMax });
-    }, [onFieldChange, asymptoteMin, asymptoteMax, invalidRange]);
 
     const clearTrendlineAsymptote = useCallback(() => {
         setAsymptoteMin('');
@@ -98,16 +92,6 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
         [clearTrendlineAsymptote]
     );
 
-    const asymptoteTypeOptions = useMemo(() => {
-        return ASYMPTOTE_TYPES.map(
-            option =>
-                ({
-                    ...option,
-                    selected: asymptoteType === option.value,
-                }) as RadioGroupOption
-        );
-    }, [asymptoteType]);
-
     if (hidden) return null;
 
     return (
@@ -129,64 +113,36 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
             </label>
             <div className="form-group row">
                 <SelectInput
-                    showLabel={false}
                     clearable={false}
                     containerClass=""
                     inputClass={showFieldOptions ? 'col-xs-11' : 'col-xs-12'}
-                    placeholder="Select trendline option"
                     name="trendlineType"
-                    options={trendlineOptions}
                     onChange={onTrendlineFieldChange}
+                    options={trendlineOptions}
+                    placeholder="Select trendline option"
+                    showLabel={false}
                     value={fieldValues.trendlineType?.value ?? ''}
                 />
                 {showFieldOptions && (
                     <div className="field-option-icon">
                         <OverlayTrigger
-                            triggerType="click"
                             overlay={
                                 <Popover id="chart-field-option-popover" placement="left">
-                                    <div className="field-option-radio-group">
-                                        <label>Asymptote</label>
-                                        <RadioGroupInput
-                                            name="asymptoteType"
-                                            options={asymptoteTypeOptions}
-                                            onValueChange={onAsymptoteTypeChange}
-                                            formsy={false}
-                                        />
-                                    </div>
-                                    {asymptoteType === 'manual' && (
-                                        <div className="chart-builder-asymptote-inputs">
-                                            {fieldValues.trendlineType?.showMin && (
-                                                <input
-                                                    name="trendlineAsymptoteMin"
-                                                    type="number"
-                                                    className="chart-builder-field-footer-input"
-                                                    placeholder="Min"
-                                                    onBlur={applyTrendlineAsymptote}
-                                                    onChange={onTrendlineAsymptoteMin}
-                                                    value={asymptoteMin}
-                                                />
-                                            )}
-                                            {fieldValues.trendlineType?.showMin &&
-                                                fieldValues.trendlineType?.showMax && <span> -</span>}
-                                            {fieldValues.trendlineType?.showMax && (
-                                                <input
-                                                    name="trendlineAsymptoteMax"
-                                                    type="number"
-                                                    className="chart-builder-field-footer-input"
-                                                    placeholder="Max"
-                                                    onBlur={applyTrendlineAsymptote}
-                                                    onChange={onTrendlineAsymptoteMax}
-                                                    value={asymptoteMax}
-                                                />
-                                            )}
-                                            {invalidRange && (
-                                                <div className="text-danger">Invalid range (Max &lt;= Min)</div>
-                                            )}
-                                        </div>
-                                    )}
+                                    <TrendlineOptionPopover
+                                        asymptoteMax={asymptoteMax}
+                                        asymptoteMin={asymptoteMin}
+                                        asymptoteType={asymptoteType}
+                                        fieldValues={fieldValues}
+                                        model={model}
+                                        onAsymptoteTypeChange={onAsymptoteTypeChange}
+                                        onFieldChange={onFieldChange}
+                                        onTrendlineAsymptoteMax={onTrendlineAsymptoteMax}
+                                        onTrendlineAsymptoteMin={onTrendlineAsymptoteMin}
+                                        selectedType={selectedType}
+                                    />
                                 </Popover>
                             }
+                            triggerType="click"
                         >
                             <span className="fa fa-gear" />
                         </OverlayTrigger>
@@ -197,3 +153,142 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
     );
 });
 TrendlineOption.displayName = 'TrendlineOption';
+
+interface TrendlineOptionPopoverProps {
+    asymptoteMax: string;
+    asymptoteMin: string;
+    asymptoteType: string;
+    fieldValues: Record<string, SelectInputOption>;
+    model: QueryModel;
+    onAsymptoteTypeChange: (selected: string) => void;
+    onFieldChange: (key: string, value: SelectInputOption) => void;
+    onTrendlineAsymptoteMax: (event: ChangeEvent<HTMLInputElement>) => void;
+    onTrendlineAsymptoteMin: (event: ChangeEvent<HTMLInputElement>) => void;
+    selectedType: ChartTypeInfo;
+}
+
+const TrendlineOptionPopover: FC<TrendlineOptionPopoverProps> = props => {
+    const {
+        fieldValues,
+        model,
+        selectedType,
+        asymptoteType,
+        onAsymptoteTypeChange,
+        onFieldChange,
+        asymptoteMin,
+        asymptoteMax,
+        onTrendlineAsymptoteMin,
+        onTrendlineAsymptoteMax,
+    } = props;
+    const showAsymptoteOptions = fieldValues.trendlineType?.showMin || fieldValues.trendlineType?.showMax;
+    const invalidRange = useMemo(
+        () => !!asymptoteMin && !!asymptoteMax && asymptoteMax <= asymptoteMin,
+        [asymptoteMin, asymptoteMax]
+    );
+
+    const options = useMemo(() => {
+        const field = {
+            name: 'parameters',
+            textOnly: true,
+            label: 'Provided Parameters',
+            required: false,
+        } as ChartFieldInfo;
+        return getSelectOptions(model, selectedType, field);
+    }, [model, selectedType]);
+    // Issue 52050: use fieldKey for special characters
+    const parameterInputValue = useMemo(() => {
+        if (fieldValues?.trendlineParameters) {
+            return fieldValues.trendlineParameters.data?.fieldKey ?? fieldValues.trendlineParameters.value;
+        }
+        return undefined;
+    }, [fieldValues]);
+
+    const asymptoteTypeOptions = useMemo(() => {
+        return ASYMPTOTE_TYPES.map(
+            option =>
+                ({
+                    ...option,
+                    selected: asymptoteType === option.value,
+                }) as RadioGroupOption
+        );
+    }, [asymptoteType]);
+
+    const applyTrendlineAsymptote = useCallback(() => {
+        if (invalidRange) return;
+        onFieldChange('trendlineAsymptoteMin', { value: asymptoteMin });
+        onFieldChange('trendlineAsymptoteMax', { value: asymptoteMax });
+    }, [onFieldChange, asymptoteMin, asymptoteMax, invalidRange]);
+
+    const onParameterFieldChange = useCallback(
+        (name: string, _: string, selectedOption: SelectInputOption) => {
+            onFieldChange(name, selectedOption);
+        },
+        [onFieldChange]
+    );
+
+    return (
+        <div>
+            {showAsymptoteOptions && (
+                <>
+                    <div className="field-option-radio-group">
+                        <label>Asymptote</label>
+                        <RadioGroupInput
+                            formsy={false}
+                            name="asymptoteType"
+                            onValueChange={onAsymptoteTypeChange}
+                            options={asymptoteTypeOptions}
+                        />
+                    </div>
+                    {asymptoteType === 'manual' && (
+                        <div className="chart-builder-asymptote-inputs">
+                            {fieldValues.trendlineType?.showMin && (
+                                <input
+                                    className="chart-builder-field-footer-input"
+                                    name="trendlineAsymptoteMin"
+                                    onBlur={applyTrendlineAsymptote}
+                                    onChange={onTrendlineAsymptoteMin}
+                                    placeholder="Min"
+                                    type="number"
+                                    value={asymptoteMin}
+                                />
+                            )}
+                            {fieldValues.trendlineType?.showMin && fieldValues.trendlineType?.showMax && (
+                                <span> -</span>
+                            )}
+                            {fieldValues.trendlineType?.showMax && (
+                                <input
+                                    className="chart-builder-field-footer-input"
+                                    name="trendlineAsymptoteMax"
+                                    onBlur={applyTrendlineAsymptote}
+                                    onChange={onTrendlineAsymptoteMax}
+                                    placeholder="Max"
+                                    type="number"
+                                    value={asymptoteMax}
+                                />
+                            )}
+                            {invalidRange && <div className="text-danger">Invalid range (Max &lt;= Min)</div>}
+                        </div>
+                    )}
+                </>
+            )}
+            <div className="margin-top">
+                <label>
+                    Provided Parameters{' '}
+                    <LabelOverlay placement="bottom">
+                        Select the field in the data which has the already computed / saved curve fit parameters object
+                        for the selected Trendline type. These provided parameters will then be used in the trendline
+                        display instead of calculating new parameters based on the current data points in the grid.
+                    </LabelOverlay>
+                </label>
+                <SelectInput
+                    inputClass="col-xs-12"
+                    name="trendlineParameters"
+                    onChange={onParameterFieldChange}
+                    options={options}
+                    showLabel={false}
+                    value={parameterInputValue}
+                />
+            </div>
+        </div>
+    );
+};

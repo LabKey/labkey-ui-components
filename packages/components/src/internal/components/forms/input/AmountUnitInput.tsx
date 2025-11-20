@@ -41,6 +41,10 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
         });
     }, [setDisabled]);
 
+    if (!amountCol || !unitCol) {
+        return null;
+    }
+
     return (
         <div className="form-group row">
             <FieldLabel
@@ -49,7 +53,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                 isDisabled={disabled}
                 labelOverlayProps={{
                     inputId: amountCol.name,
-                    description: 'The amount of this sample, in the display unit for the sample type, currently on hand.',
+                    description: 'The amount and units of this sample, currently on hand.',
                     label: 'Amount and Units',
                     isFormsy: false,
                 }}

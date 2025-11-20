@@ -55,7 +55,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                 isDisabled={disabled}
                 labelOverlayProps={{
                     inputId: amountCol.name,
-                    description: 'The amount and units of this sample, currently on hand.',
+                    description: 'The amount and units of this sample currently on hand.',
                     label: 'Amount and Units',
                     isFormsy: false,
                 }}

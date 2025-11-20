@@ -4,11 +4,12 @@ import { Popover } from '../../Popover';
 import { RadioGroupInput } from '../forms/input/RadioGroupInput';
 
 import { BAR_CHART_AGGREGATE_NAME, BAR_CHART_ERROR_BAR_NAME } from './constants';
-import { ChartFieldInfo, ChartTypeInfo } from './models';
+import { ChartConfig, ChartConfigSetter, ChartFieldInfo, ChartTypeInfo } from './models';
 import { LabelOverlay } from '../forms/LabelOverlay';
-import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
+import { SelectInput } from '../forms/input/SelectInput';
+import { Utils } from '@labkey/api';
 
-const BAR_CHART_AGGREGATE_METHODS = [
+const AGGREGATE_METHODS = [
     { label: 'None', value: '' },
     { label: 'Count (non-blank)', value: 'COUNT' },
     { label: 'Sum', value: 'SUM' },
@@ -29,29 +30,27 @@ const ERROR_BAR_TYPES = [
 ];
 
 interface OwnProps {
-    asOverlay?: boolean;
+    asOverlay?: boolean; // TODO: defaults to true, but is always passed as false. Can be removed?
+    chartConfig: ChartConfig;
     field: ChartFieldInfo;
-    fieldValues: Record<string, SelectInputOption>;
-    onErrorBarChange: (name: string, value: string) => void;
-    onSelectFieldChange: (name: string, value: string, selectedOption: SelectInputOption) => void;
     selectedType: ChartTypeInfo;
+    setChartConfig: ChartConfigSetter;
 }
 
 export const ChartFieldAggregateOptions: FC<OwnProps> = memo(props => {
-    const { field, fieldValues, onSelectFieldChange, onErrorBarChange, asOverlay = true, selectedType } = props;
-    const fieldValue = fieldValues?.[field.name];
-    const aggregateValue = fieldValues?.[BAR_CHART_AGGREGATE_NAME]?.value;
-    const errorBarValue = fieldValues?.[BAR_CHART_ERROR_BAR_NAME]?.value;
+    const { asOverlay = true, chartConfig, field, selectedType, setChartConfig } = props;
+    const yMeasure = Array.isArray(chartConfig.measures.y) ? chartConfig.measures.y[0] : chartConfig.measures.y;
+    // Some older charts stored aggregate as an object that looked like: { label: 'Mean', value: 'MEAN' }
+    const aggregateValue = Utils.isObject(yMeasure.aggregate) ? yMeasure.aggregate.value : yMeasure.aggregate;
+    const errorBarValue = yMeasure.errorBars;
     const includeNone = selectedType.name === 'line_plot';
     const includeCount = selectedType.name === 'bar_chart';
-    const defaultAggregateValue = useMemo(() => (includeNone ? '' : 'SUM'), [includeNone]);
-    const errorBarRadioEnabled = useMemo(() => aggregateValue === 'MEAN', [aggregateValue]);
+    const defaultAggregateValue = includeNone ? '' : 'SUM';
+    const errorBarRadioEnabled = aggregateValue === 'MEAN';
 
     const aggregateOptions = useMemo(() => {
-        const options = BAR_CHART_AGGREGATE_METHODS.filter(option => {
-            if (option.value === 'COUNT' && !includeCount) {
-                return false;
-            }
+        const options = AGGREGATE_METHODS.filter(option => {
+            if (option.value === 'COUNT' && !includeCount) return false;
             return !(option.value === '' && !includeNone);
         });
 
@@ -66,24 +65,21 @@ export const ChartFieldAggregateOptions: FC<OwnProps> = memo(props => {
         }));
     }, [errorBarRadioEnabled, errorBarValue]);
 
-    const onAggregateChange = useCallback(
-        (name: string, value: string, selectedOption: SelectInputOption) => {
-            onSelectFieldChange(name, value, selectedOption);
+    const onChange = useCallback(
+        (propName: string, value: string) => {
+            setChartConfig(current => ({
+                ...current,
+                measures: {
+                    ...current.measures,
+                    [field.name]: { ...current.measures[field.name], [propName]: value },
+                },
+            }));
         },
-        [onSelectFieldChange]
+        [field.name, setChartConfig]
     );
 
-    const onErrorBarValueChange = useCallback(
-        (value: string) => {
-            onErrorBarChange(BAR_CHART_ERROR_BAR_NAME, value);
-        },
-        [onErrorBarChange]
-    );
-
-    // Only show the aggregate options if there is a field selected
-    if (!fieldValue?.value) {
-        return null;
-    }
+    const onAggregateChange = useCallback((_: never, value: string) => onChange('aggregate', value), [onChange]);
+    const onErrorBarValueChange = useCallback((value: string) => onChange('errorBars', value), [onChange]);
 
     const inputs = (
         <>

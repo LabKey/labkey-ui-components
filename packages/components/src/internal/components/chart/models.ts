@@ -12,6 +12,9 @@ export interface ChartConfig {
     width: number;
 }
 
+export type ChartConfigMutator = (currentConfig: ChartConfig) => ChartConfig;
+export type ChartConfigSetter = (mutator: ChartConfigMutator) => void;
+
 export interface ChartQueryConfig {
     columns: string[];
     containerFilter: Query.ContainerFilter;
@@ -37,6 +40,15 @@ export interface VisualizationConfigModel {
 export interface GenericChartModel extends Visualization.VisualizationGetResponse {
     visualizationConfig: VisualizationConfigModel;
 }
+
+export interface BaseChartModel {
+    inheritable: boolean;
+    name: string;
+    shared: boolean;
+}
+
+export type BaseChartModelMutator = (currentModel: BaseChartModel) => BaseChartModel;
+export type BaseChartModelSetter = (mutator: BaseChartModelMutator) => void;
 
 export interface TrendlineType {
     equation?: string;

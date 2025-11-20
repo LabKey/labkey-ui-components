@@ -195,11 +195,27 @@
     width: calc(100% - 100px);
     min-width: 850px;
 }
-.chart-builder-modal .col-left {
-    height: 560px;
-    width: 116px;
-    border-right: solid 1px $gray-border-light;
+.chart-builder-modal__body {
+    display: flex;
 }
+
+.chart-builder-modal__settings-panel {
+    height: 560px;
+    width: 300px;
+    border-right: solid 1px $gray-border-light;
+    overflow-y: auto;
+    padding-right: 15px;
+}
+
+.chart-builder-modal__settings-panel h4 {
+    margin: 0 0 8px;
+}
+
+.chart-builder-modal__chart-preview {
+    flex: 1;
+    padding: 8px;
+}
+
 .chart-builder-modal .col-right {
     height: 560px;
     width: calc(100% - 116px)

@@ -38,15 +38,18 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
     const showAggregateOptions = isNumericType && shouldShowAggregateOptions(field, selectedType);
 
     const onScaleChange = useCallback(
-        (field: string, key: string, value: number | string, reset = false) => {
-            setChartConfig(current => {
-                const scales = current.scales ? { ...current.scales } : {};
-                if (!scales[field] || reset) scales[field] = DEFAULT_SCALE_VALUES;
-                if (key) scales[field][key] = value;
-                return { ...current, scales };
-            });
+        (scale: ScaleType, localOnly = false) => {
+            setScale(current => ({ ...current, ...scale }));
+
+            if (!localOnly) {
+                setChartConfig(current => {
+                    let updatedScale = current.scales?.[field.name] ?? DEFAULT_SCALE_VALUES;
+                    updatedScale = { ...updatedScale, scale };
+                    return { ...current, scales: { ...current.scales, [field.name]: updatedScale } };
+                });
+            }
         },
-        [setChartConfig]
+        [field.name, setChartConfig]
     );
 
     const onSelectChange = useCallback(
@@ -103,10 +106,8 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
                 />
                 {showRangeScaleOptions && (
                     <ChartFieldRangeScaleOptions
-                        field={field}
                         onScaleChange={onScaleChange}
                         scale={scale}
-                        setScale={setScale}
                         showScaleTrans={selectedType.name !== 'bar_chart'}
                     >
                         {fieldValue && showAggregateOptions && (

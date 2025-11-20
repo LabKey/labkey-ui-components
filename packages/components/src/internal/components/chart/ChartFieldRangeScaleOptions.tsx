@@ -1,9 +1,9 @@
 import React, { ChangeEvent, FC, memo, PropsWithChildren, useCallback, useMemo } from 'react';
 import { OverlayTrigger } from '../../OverlayTrigger';
 import { Popover } from '../../Popover';
-import { RadioGroupInput, RadioGroupOption } from '../forms/input/RadioGroupInput';
+import { RadioGroupInput } from '../forms/input/RadioGroupInput';
 
-import { ChartFieldInfo, ScaleType } from './models';
+import { ScaleType } from './models';
 
 const SCALE_TRANS_TYPES = [
     { value: 'linear', label: 'Linear' },
@@ -16,15 +16,13 @@ const SCALE_RANGE_TYPES = [
 ];
 
 interface OwnProps extends PropsWithChildren {
-    field: ChartFieldInfo;
-    onScaleChange: (field: string, key: string, value: number | string, reset?: boolean) => void;
+    onScaleChange: (scale: Partial<ScaleType>, localOnly?: boolean) => void;
     scale: ScaleType;
-    setScale: (scale: ScaleType) => void;
     showScaleTrans: boolean;
 }
 
 export const ChartFieldRangeScaleOptions: FC<OwnProps> = memo(props => {
-    const { field, scale, setScale, onScaleChange, showScaleTrans, children } = props;
+    const { scale, onScaleChange, showScaleTrans, children } = props;
     const placement = useMemo(() => (!showScaleTrans && children ? 'left' : 'bottom'), [showScaleTrans, children]);
 
     const scaleTransOptions = useMemo(() => {
@@ -47,45 +45,41 @@ export const ChartFieldRangeScaleOptions: FC<OwnProps> = memo(props => {
 
     const onScaleTransChange = useCallback(
         (selected: string) => {
-            onScaleChange(field.name, 'trans', selected);
-            setScale({ ...scale, trans: selected });
+            onScaleChange({ trans: selected });
         },
-        [field.name, onScaleChange, setScale, scale]
+        [onScaleChange]
     );
 
     const onScaleTypeChange = useCallback(
         (selected: string) => {
-            let scale_ = { ...scale, type: selected };
-            onScaleChange(field.name, 'type', selected);
-            if (selected === 'automatic') {
-                onScaleChange(field.name, 'min', undefined);
-                onScaleChange(field.name, 'max', undefined);
-                scale_ = { ...scale_, min: undefined, max: undefined };
-            }
-            setScale(scale_);
+            let scale_: Partial<ScaleType> = { type: selected };
+            if (selected === 'automatic') scale_ = { ...scale_, min: undefined, max: undefined };
+            onScaleChange(scale_);
         },
-        [field.name, onScaleChange, scale, setScale]
+        [onScaleChange]
     );
 
     const onScaleMinChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
-            setScale({ ...scale, min: event.target.value });
+            onScaleChange({ min: event.target.value }, true);
         },
-        [setScale, scale]
+        [onScaleChange]
     );
 
     const onScaleMaxChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
-            setScale({ ...scale, max: event.target.value });
+            onScaleChange({ max: event.target.value }, true);
         },
-        [setScale, scale]
+        [onScaleChange]
     );
 
     const onScaleRangeBlur = useCallback(() => {
         if (invalidRange) return;
-        onScaleChange(field.name, 'min', parseFloat(scale.min?.toString()));
-        onScaleChange(field.name, 'max', parseFloat(scale.max?.toString()));
-    }, [field.name, onScaleChange, scale.max, scale.min, invalidRange]);
+        onScaleChange({
+            min: parseFloat(scale.min?.toString()),
+            max: parseFloat(scale.max?.toString()),
+        });
+    }, [invalidRange, onScaleChange, scale]);
 
     return (
         <div className="field-option-icon">

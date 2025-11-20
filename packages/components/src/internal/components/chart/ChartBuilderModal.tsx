@@ -74,6 +74,7 @@ export const getChartBuilderQueryConfig = (
         viewName: savedConfig?.viewName || viewName,
         columns: Object.values(fieldValues)
             .filter(field => field?.value && typeof field.value === 'string') // just those fields with values
+            .filter(field => !field.equation) // exclude the trendlineType field (which has an equation value)
             .map(field => field.data?.fieldKey ?? field.value), // Issue 52050: use fieldKey for special characters
         sort: LABKEY_VIS.GenericChartHelper.getQueryConfigSortKey(chartConfig.measures),
         filterArray: savedConfig?.filterArray ?? [],
@@ -140,6 +141,7 @@ export const getChartBuilderChartConfig = (
             trendlineType: undefined,
             trendlineAsymptoteMin: undefined,
             trendlineAsymptoteMax: undefined,
+            trendlineParameters: undefined,
             ...savedConfig?.geomOptions,
         },
     } as ChartConfig;
@@ -186,6 +188,7 @@ export const getChartBuilderChartConfig = (
         config.geomOptions.trendlineType = type === '' ? undefined : type;
         config.geomOptions.trendlineAsymptoteMin = fieldValues.trendlineAsymptoteMin?.value;
         config.geomOptions.trendlineAsymptoteMax = fieldValues.trendlineAsymptoteMax?.value;
+        config.geomOptions.trendlineParameters = fieldValues.trendlineParameters?.value;
     }
 
     if (
@@ -377,8 +380,10 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
                     {hasTrendlineOption && (
                         <TrendlineOption
                             fieldValues={fieldValues}
+                            model={model}
                             onFieldChange={onFieldChange}
                             schemaQuery={model.schemaQuery}
+                            selectedType={selectedType}
                         />
                     )}
                 </div>
@@ -671,6 +676,11 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
                 if (chartConfig.geomOptions.trendlineAsymptoteMax) {
                     fieldValues_['trendlineAsymptoteMax'] = {
                         value: chartConfig.geomOptions.trendlineAsymptoteMax,
+                    };
+                }
+                if (chartConfig.geomOptions.trendlineParameters) {
+                    fieldValues_['trendlineParameters'] = {
+                        value: chartConfig.geomOptions.trendlineParameters,
                     };
                 }
             }

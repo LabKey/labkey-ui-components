@@ -5,36 +5,11 @@ import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { LABKEY_VIS } from '../../constants';
-import { naturalSortByProperty } from '../../../public/sort';
 
 import { ChartFieldRangeScaleOptions } from './ChartFieldRangeScaleOptions';
 import { ChartFieldInfo, ChartTypeInfo, ScaleType } from './models';
-import { getFieldDataType, shouldShowAggregateOptions, shouldShowRangeScaleOptions } from './utils';
+import { getFieldDataType, getSelectOptions, shouldShowAggregateOptions, shouldShowRangeScaleOptions } from './utils';
 import { ChartFieldAggregateOptions } from './ChartFieldAggregateOptions';
-
-export const getSelectOptions = (
-    model: QueryModel,
-    chartType: ChartTypeInfo,
-    field: ChartFieldInfo
-): SelectInputOption[] => {
-    const allowableTypes = LABKEY_VIS.GenericChartHelper.getAllowableTypes(field);
-
-    return model.queryInfo
-        .getDisplayColumns(model.viewName)
-        .filter(col => {
-            const colType = getFieldDataType(col);
-            const hasMatchingType = allowableTypes.indexOf(colType) > -1;
-            const isMeasureDimensionMatch = LABKEY_VIS.GenericChartHelper.isMeasureDimensionMatch(
-                chartType.name,
-                field,
-                col.measure,
-                col.dimension
-            );
-            return hasMatchingType || isMeasureDimensionMatch;
-        })
-        .sort(naturalSortByProperty('caption'))
-        .map(col => ({ label: col.caption, value: col.fieldKey, data: col }));
-};
 
 const DEFAULT_SCALE_VALUES = { type: 'automatic', trans: 'linear' };
 

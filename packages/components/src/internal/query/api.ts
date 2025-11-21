@@ -374,8 +374,7 @@ function applyViewColumns(
 export class Renderers {
     static _check(columnMetadata, rawColumn, field, metadata) {
         const columnValue = columnMetadata[field];
-        if (columnValue)
-            return columnValue;
+        if (columnValue) return columnValue;
 
         if (columnMetadata.conceptURI || rawColumn.conceptURI) {
             const concept = metadata.getIn([

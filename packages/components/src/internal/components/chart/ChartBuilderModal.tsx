@@ -149,9 +149,6 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
                     height: 350,
                     width,
                 };
-                if (!savedChartModel || savedChartModel.visualizationConfig.chartConfig.geomOptions.marginTop === 20) {
-                    chartConfig_.geomOptions.marginTop = 15;
-                }
 
                 if (ref.current) ref.current.innerHTML = ''; // clear again, right before render
                 LABKEY_VIS.GenericChartHelper.generateChartSVG(divId, chartConfig_, measureStore, trendlineData);

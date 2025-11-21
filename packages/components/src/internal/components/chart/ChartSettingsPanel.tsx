@@ -27,7 +27,13 @@ const LabelInput: FC<LabelInputProps> = memo(({ label, name, onChange, value }) 
     return (
         <div>
             <label>{label}</label>
-            <input className="form-control" name={name as string} onChange={onChange_} type="text" value={value} />
+            <input
+                className="form-control"
+                name={name as string}
+                onChange={onChange_}
+                type="text"
+                value={value ?? ''}
+            />
         </div>
     );
 });
@@ -157,7 +163,23 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
 
     const onLabelChange = useCallback(
         (key: LabelKey, value: string) => {
-            setChartConfig(current => ({ ...current, labels: { ...current.labels, [key]: value } }));
+            setChartConfig(current => {
+                const labels = { ...current.labels, [key]: value };
+                let geomOptions = current.geomOptions;
+                let marginTop = 15;
+                const hasTitle = !!labels.main?.trim();
+                const hasSubtitle = !!labels.subtitle?.trim();
+
+                if (hasTitle && hasSubtitle) marginTop += 50;
+                else if (hasTitle) marginTop += 25;
+                // Yes, really, subtitle only gets the most padding. Our charting library is probably setting some
+                // default amount if main is present
+                else if (hasSubtitle) marginTop += 55;
+
+                if (marginTop != geomOptions.marginTop) geomOptions = { ...geomOptions, marginTop };
+
+                return { ...current, labels, geomOptions };
+            });
         },
         [setChartConfig]
     );

@@ -118,7 +118,7 @@ const makeGeomOptions = (chartType: string) => ({
     marginBottom: null,
     marginLeft: null,
     marginRight: null,
-    marginTop: 20, // this will be saved with the chartConfig, but we will override it for the preview in the modal
+    marginTop: 15,
     opacity: chartType === 'bar_chart' || chartType === 'line_plot' ? 1.0 : 0.5,
     pieHideWhenLessThanPercentage: 5,
     pieInnerRadius: 0,

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+###  version 6.72.0
+*Released*: 20 November 2025
+- Default to detailed audit behavior
+
 ###  version 6.71.1
 *Released*: 20 November 2025
 - Sample Amount/Units polish

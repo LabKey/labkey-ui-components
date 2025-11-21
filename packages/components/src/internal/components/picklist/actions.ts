@@ -1,4 +1,4 @@
-import { AuditBehaviorTypes, Domain, Filter, Query } from '@labkey/api';
+import { Domain, Filter, Query } from '@labkey/api';
 
 import { List } from 'immutable';
 
@@ -220,11 +220,7 @@ export async function addSamplesToPicklist(listName: string, sampleIds: number[]
     const schemaQuery = new SchemaQuery(SCHEMAS.PICKLIST_TABLES.SCHEMA, listName);
 
     if (rows.size > 0) {
-        return await insertRows({
-            schemaQuery,
-            rows,
-            auditBehavior: AuditBehaviorTypes.DETAILED,
-        });
+        return await insertRows({ rows, schemaQuery });
     }
 
     return new QueryCommandResponse({

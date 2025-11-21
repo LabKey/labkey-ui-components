@@ -128,6 +128,7 @@ export class QueryColumn implements IQueryColumn {
     declare description: string;
     declare dimension: boolean;
     declare displayAsLookup: boolean;
+    declare displayWidth: number | string;
     // declare excludeFromShifting: boolean;
     // declare ext: any;
     declare facetingBehaviorType: string;
@@ -189,6 +190,7 @@ export class QueryColumn implements IQueryColumn {
     declare inputRenderer: string;
     declare sorts: '+' | '-';
     declare removeFromViews: boolean; // strips this column from all ViewInfo definitions
+    declare removeFromFormInput: boolean; // strips this column from QueryFormInputs
     declare units: string;
     declare derivationDataScope: string;
 

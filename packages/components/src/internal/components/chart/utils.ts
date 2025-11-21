@@ -1,5 +1,9 @@
 import { Map } from 'immutable';
 import { ChartFieldInfo, ChartTypeInfo } from './models';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { SelectInputOption } from '../forms/input/SelectInput';
+import { naturalSortByProperty } from '../../../public/sort';
+import { LABKEY_VIS } from '../../constants';
 
 export interface HorizontalBarData {
     backgroundColor?: string;
@@ -90,4 +94,28 @@ export const shouldShowAggregateOptions = (field: ChartFieldInfo, selectedType: 
     const isBar = selectedType.name === 'bar_chart';
     const isLine = selectedType.name === 'line_plot';
     return field.name === 'y' && (isBar || isLine);
+};
+
+export const getSelectOptions = (
+    model: QueryModel,
+    chartType: ChartTypeInfo,
+    field: ChartFieldInfo
+): SelectInputOption[] => {
+    const allowableTypes = LABKEY_VIS.GenericChartHelper.getAllowableTypes(field);
+
+    return model.queryInfo
+        .getDisplayColumns(model.viewName)
+        .filter(col => {
+            const colType = getFieldDataType(col);
+            const hasMatchingType = allowableTypes.indexOf(colType) > -1;
+            const isMeasureDimensionMatch = LABKEY_VIS.GenericChartHelper.isMeasureDimensionMatch(
+                chartType.name,
+                field,
+                col.measure,
+                col.dimension
+            );
+            return hasMatchingType || isMeasureDimensionMatch;
+        })
+        .sort(naturalSortByProperty('caption'))
+        .map(col => ({ label: col.caption, value: col.fieldKey, data: col }));
 };

@@ -145,7 +145,7 @@ export type SelectInputChange = (
 // Copied from @types/react-select/src/Select.d.ts
 export type FilterOption = ((option: SelectInputOption, rawInput: string) => boolean) | null;
 
-function initOptionFromPrimitive(value: string | number, props: SelectInputProps): SelectInputOption {
+function initOptionFromPrimitive(value: number | string, props: SelectInputProps): SelectInputOption {
     const { labelKey = 'label', options, valueKey = 'value' } = props;
     const result = options?.find(o => o[valueKey] === value);
     if (result) return result;
@@ -205,8 +205,8 @@ export interface SelectInputProps {
     autoValue?: boolean;
     backspaceRemovesValue?: boolean;
     cacheOptions?: boolean;
-    clearCacheOnChange?: boolean;
     clearable?: boolean;
+    clearCacheOnChange?: boolean;
     closeMenuOnSelect?: boolean;
     containerClass?: string;
     customStyles?: Record<string, any>;
@@ -216,6 +216,7 @@ export interface SelectInputProps {
     delimiter?: string;
     description?: string;
     disabled?: boolean;
+    disableInput?: boolean;
     filterOption?: FilterOption;
     formatCreateLabel?: (inputValue: string) => ReactNode;
     formatGroupLabel?: (data: any) => ReactNode;
@@ -269,7 +270,7 @@ export interface SelectInputProps {
     warning?: ReactNode;
 }
 
-type SelectInputImplProps = SelectInputProps & FormsyInjectedProps<any>;
+type SelectInputImplProps = FormsyInjectedProps<any> & SelectInputProps;
 
 interface State {
     // This state property is used in conjunction with the prop "clearCacheOnChange" which when true
@@ -537,8 +538,9 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
 
                 return (
                     <FieldLabel
-                        id={this.getId()}
                         fieldName={name}
+                        id={this.getId()}
+                        isDisabled={isDisabled}
                         labelOverlayProps={{
                             inputId: name,
                             description: description_,
@@ -551,7 +553,6 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
                         }}
                         showLabel={showLabel}
                         showToggle={allowDisable}
-                        isDisabled={isDisabled}
                         toggleProps={{
                             onClick: toggleDisabledTooltip ? undefined : this.onToggleChange,
                             toolTip: toggleDisabledTooltip,
@@ -686,7 +687,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             id: this.getId(),
             inputId,
             isClearable: clearable,
-            isDisabled: disabled || this.state.isDisabled,
+            isDisabled: disabled || this.state.isDisabled || this.props.disableInput,
             isLoading,
             isMulti: multiple,
             isValidNewOption,

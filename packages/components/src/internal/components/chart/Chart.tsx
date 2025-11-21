@@ -175,7 +175,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, query
                         measureStore,
                         trendlineData
                     );
-                    setPlot(plots[0]);
+                    if (plots) setPlot(plots[0]);
                 }
             }
         };

@@ -85,7 +85,7 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
                 }
 
                 if (name === 'x' && hasTrendline(selectedType)) {
-                    const trendlineType = LABKEY_VIS.GenericChartHelper.TRENDLINE_OPTIONS[''];
+                    const trendlineType = LABKEY_VIS.GenericChartHelper.TRENDLINE_OPTIONS[''].value;
                     geomOptions = { ...geomOptions, trendlineType };
                 }
 

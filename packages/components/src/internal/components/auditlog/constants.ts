@@ -79,6 +79,7 @@ export const ASSAY_RESULT_AUDIT_QUERY: AuditQuery = {
 };
 export const WORKFLOW_AUDIT_QUERY: AuditQuery = {
     hasDetail: true,
+    hasTransactionId: true,
     label: 'Sample Workflow Events',
     value: 'SamplesWorkflowAuditEvent',
 };

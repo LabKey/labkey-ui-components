@@ -117,13 +117,15 @@ interface Props {
     chartConfig: ChartConfig;
     chartModel: BaseChartModel;
     chartType: ChartTypeInfo;
+    isNew: boolean;
     model: QueryModel;
     setChartConfig: ChartConfigSetter;
     setChartModel: BaseChartModelSetter;
 }
 
 export const ChartSettingsPanel: FC<Props> = memo(props => {
-    const { allowInherit, canShare, chartConfig, chartType, chartModel, model, setChartConfig, setChartModel } = props;
+    const { allowInherit, canShare, chartConfig, chartType, chartModel, isNew, model, setChartConfig, setChartModel } =
+        props;
     const showTrendline = hasTrendline(chartType);
     const fields = chartType.fields.filter(f => f.name !== 'trendline');
 
@@ -193,7 +195,7 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
                 />
             )}
 
-            {!chartModel && <ChartTypeDropdown onChange={onTypeChange} selectedType={chartType} />}
+            {!isNew && <ChartTypeDropdown onChange={onTypeChange} selectedType={chartType} />}
 
             {fields.map(field => (
                 <ChartFieldOption

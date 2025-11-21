@@ -9,7 +9,14 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { ChartFieldRangeScaleOptions } from './ChartFieldRangeScaleOptions';
 import { ChartConfig, ChartConfigSetter, ChartFieldInfo, ChartTypeInfo, ScaleType } from './models';
-import { getFieldDataType, getSelectOptions, hasTrendline, shouldShowAggregateOptions, shouldShowRangeScaleOptions } from './utils';
+import {
+    getBarChartAxisLabel,
+    getFieldDataType,
+    getSelectOptions,
+    hasTrendline,
+    shouldShowAggregateOptions,
+    shouldShowRangeScaleOptions,
+} from './utils';
 
 import { ChartFieldAggregateOptions } from './ChartFieldAggregateOptions';
 
@@ -82,7 +89,13 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
                     geomOptions = { ...geomOptions, trendlineType };
                 }
 
-                return { ...current, geomOptions, measures };
+                const updatedConfig = { ...current, geomOptions, measures, labels };
+
+                if (selectedType.name === 'bar_chart') {
+                    updatedConfig.labels.y = getBarChartAxisLabel(updatedConfig, current);
+                }
+
+                return updatedConfig;
             });
         },
         [selectedType, setChartConfig]

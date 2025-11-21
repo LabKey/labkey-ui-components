@@ -3,21 +3,13 @@ import { OverlayTrigger } from '../../OverlayTrigger';
 import { Popover } from '../../Popover';
 import { RadioGroupInput } from '../forms/input/RadioGroupInput';
 
-import { BAR_CHART_AGGREGATE_NAME, BAR_CHART_ERROR_BAR_NAME } from './constants';
 import { ChartConfig, ChartConfigSetter, ChartFieldInfo, ChartTypeInfo } from './models';
 import { LabelOverlay } from '../forms/LabelOverlay';
 import { SelectInput } from '../forms/input/SelectInput';
 import { Utils } from '@labkey/api';
+import { getBarChartAxisLabel } from './utils';
+import { AGGREGATE_METHODS } from './constants';
 
-const AGGREGATE_METHODS = [
-    { label: 'None', value: '' },
-    { label: 'Count (non-blank)', value: 'COUNT' },
-    { label: 'Sum', value: 'SUM' },
-    { label: 'Min', value: 'MIN' },
-    { label: 'Max', value: 'MAX' },
-    { label: 'Mean', value: 'MEAN' },
-    { label: 'Median', value: 'MEDIAN' },
-];
 const BAR_CHART_AGGREGATE_METHOD_TIP =
     'The aggregate method that will be used to determine the bar height for a given x-axis category / dimension. Field values that are blank are not included in calculated aggregate values.';
 const BAR_CHART_ERROR_BAR_TIP =
@@ -67,15 +59,26 @@ export const ChartFieldAggregateOptions: FC<OwnProps> = memo(props => {
 
     const onChange = useCallback(
         (propName: string, value: string) => {
-            setChartConfig(current => ({
-                ...current,
-                measures: {
-                    ...current.measures,
-                    [field.name]: { ...current.measures[field.name], [propName]: value },
-                },
-            }));
+            setChartConfig(current => {
+                const updatedConfig = {
+                    ...current,
+                    measures: {
+                        ...current.measures,
+                        [field.name]: { ...current.measures[field.name], [propName]: value },
+                    },
+                };
+
+                if (selectedType.name === 'bar_chart') {
+                    updatedConfig.labels = {
+                        ...updatedConfig.labels,
+                        y: getBarChartAxisLabel(updatedConfig, current),
+                    };
+                }
+
+                return updatedConfig;
+            });
         },
-        [field.name, setChartConfig]
+        [field.name, selectedType.name, setChartConfig]
     );
 
     const onAggregateChange = useCallback((_: never, value: string) => onChange('aggregate', value), [onChange]);
@@ -90,7 +93,7 @@ export const ChartFieldAggregateOptions: FC<OwnProps> = memo(props => {
                 <SelectInput
                     clearable={false}
                     inputClass="col-xs-12"
-                    name={BAR_CHART_AGGREGATE_NAME}
+                    name="aggreegate-method"
                     onChange={onAggregateChange}
                     options={aggregateOptions}
                     placeholder="Select aggregate method"
@@ -104,7 +107,7 @@ export const ChartFieldAggregateOptions: FC<OwnProps> = memo(props => {
                 </label>
                 <RadioGroupInput
                     formsy={false}
-                    name={BAR_CHART_ERROR_BAR_NAME}
+                    name="error-bar-method"
                     onValueChange={onErrorBarValueChange}
                     options={errorBarOptions}
                 />

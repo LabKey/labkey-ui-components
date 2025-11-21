@@ -85,7 +85,7 @@ export const ChartFieldRangeScaleOptions: FC<OwnProps> = memo(props => {
         <div className="field-option-icon">
             <OverlayTrigger
                 overlay={
-                    <Popover id="chart-field-option-popover" placement={placement}>
+                    <Popover id="chart-field-option-popover" placement="right">
                         {children}
                         {showScaleTrans && (
                             <div className="field-option-radio-group">

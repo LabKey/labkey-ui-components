@@ -1,6 +1,6 @@
 import { Map } from 'immutable';
 import { ChartConfig, ChartFieldInfo, ChartTypeInfo } from './models';
-import { BLUE_HEX_COLOR, MAX_POINT_DISPLAY } from './constants';
+import { AGGREGATE_METHODS, BLUE_HEX_COLOR, MAX_POINT_DISPLAY } from './constants';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { naturalSortByProperty } from '../../../public/sort';
 import { LABKEY_VIS } from '../../constants';
@@ -145,7 +145,7 @@ export function deepCopyChartConfig(chartConfig: ChartConfig, chartType = 'bar_c
             height: undefined,
             labels: {},
             measures: {},
-            pointType: 'outliers',
+            pointType: 'all',
             renderType: chartType,
             scales: {},
             width: undefined,
@@ -163,6 +163,24 @@ export function deepCopyChartConfig(chartConfig: ChartConfig, chartType = 'bar_c
 export function hasTrendline(chartType: ChartTypeInfo) {
     return chartType.fields.find(f => f.name === 'trendline') !== undefined;
 }
+
+export const getDefaultBarChartAxisLabel = (config: ChartConfig): string => {
+    const aggregate = config.measures.y?.aggregate;
+    const label = AGGREGATE_METHODS.find(m => m.value === aggregate)?.label;
+    const prefix = (label ?? aggregate ?? 'Sum') + ' of ';
+    return config.measures.y ? prefix + config.measures.y.label : 'Count';
+};
+
+export const getBarChartAxisLabel = (updated: ChartConfig, prev: ChartConfig) => {
+    const emptyLabel = !updated.labels.y?.trim();
+    const isPrevUsingDefault = prev.labels.y === getDefaultBarChartAxisLabel(prev);
+
+    if (emptyLabel || isPrevUsingDefault) {
+        return getDefaultBarChartAxisLabel(updated);
+    }
+
+    return updated.labels.y;
+};
 
 export const getSelectOptions = (model: QueryModel, chartType: ChartTypeInfo, field: ChartFieldInfo): QueryColumn[] => {
     const allowableTypes = LABKEY_VIS.GenericChartHelper.getAllowableTypes(field);

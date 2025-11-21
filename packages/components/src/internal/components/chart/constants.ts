@@ -1,5 +1,4 @@
 export const HIDDEN_CHART_TYPES = ['time_chart'];
-export const RIGHT_COL_FIELDS = ['color', 'shape', 'series', 'trendline'];
 export const MAX_ROWS_PREVIEW = 10000;
 export const MAX_POINT_DISPLAY = 10000;
 export const BLUE_HEX_COLOR = '3366FF';
@@ -12,3 +11,13 @@ export const ICONS = {
     scatter_plot: 'xy_scatter',
     line_plot: 'xy_line',
 };
+
+export const AGGREGATE_METHODS = [
+    { label: 'None', value: '' },
+    { label: 'Count (non-blank)', value: 'COUNT' },
+    { label: 'Sum', value: 'SUM' },
+    { label: 'Min', value: 'MIN' },
+    { label: 'Max', value: 'MAX' },
+    { label: 'Mean', value: 'MEAN' },
+    { label: 'Median', value: 'MEDIAN' },
+];

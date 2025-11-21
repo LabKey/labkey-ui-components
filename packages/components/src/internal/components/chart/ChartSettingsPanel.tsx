@@ -9,6 +9,7 @@ import { ChartFieldOption } from './ChartFieldOption';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { TrendlineOption } from './TrendlineOption';
 import { deepCopyChartConfig, hasTrendline } from './utils';
+import classNames from 'classnames';
 
 type LabelKey = keyof ChartConfig['labels'];
 
@@ -60,16 +61,34 @@ const BoolSettingInput: FC<BoolSettingInputProps> = memo(({ label, name, onChang
 });
 BoolSettingInput.displayName = 'BoolSettingInput';
 
-// TODO: use the same icons as the ChartMenu
-//  - Not the most straightforward because those icons are set server-side
-function chartTypeOptionRenderer(option: SelectInputOption) {
-    const data = option.data.data;
+interface ChartTypeOptionRendererProps {
+    chartType: ChartTypeInfo;
+    isValueRenderer: boolean;
+}
+const ChartTypeOptionRenderer: FC<ChartTypeOptionRendererProps> = memo(({ chartType, isValueRenderer }) => {
+    const icon = ICONS[chartType.name];
+    const isSvg = icon.endsWith('.svg');
+    const className = classNames('chart-builder-type-option', { 'chart-builder-type-option--value': isValueRenderer });
     return (
-        <div className="chart-builder-type-option">
-            <SVGIcon height={null} iconSrc={ICONS[data.name] + '_gray'} width={32} />
-            <span>{data.title}</span>
-        </div>
+        <span className={className}>
+            {isSvg && (
+                <SVGIcon height={null} iconDir="visualization/report" iconSrc={icon.replace('.svg', '')} width={16} />
+            )}
+            {!isSvg && <span className={`fa ${icon}`} />}
+            <span>{chartType.title}</span>
+        </span>
     );
+});
+ChartTypeOptionRenderer.displayName = 'ChartTypeOptionRenderer';
+
+function chartTypeOptionRenderer(option) {
+    const chartType: ChartTypeInfo = option.data as ChartTypeInfo;
+    return <ChartTypeOptionRenderer chartType={chartType} isValueRenderer={false} />;
+}
+
+function chartTypeValueRenderer(option) {
+    const chartType: ChartTypeInfo = option.data as ChartTypeInfo;
+    return <ChartTypeOptionRenderer chartType={chartType} isValueRenderer />;
 }
 
 interface ChartTypeDropdownProps {
@@ -80,17 +99,11 @@ interface ChartTypeDropdownProps {
 const ChartTypeDropdown: FC<ChartTypeDropdownProps> = memo(({ onChange, selectedType }) => {
     const chartTypes = useMemo(() => {
         const allTypes = LABKEY_VIS?.GenericChartHelper.getRenderTypes();
-        return allTypes
-            .filter(type => !type.hidden && !HIDDEN_CHART_TYPES.includes(type.name))
-            .map(type => ({
-                data: type,
-                label: type.title,
-                value: type.name,
-            }));
+        return allTypes.filter(type => !type.hidden && !HIDDEN_CHART_TYPES.includes(type.name));
     }, []);
     const onChange_ = useCallback(
         (_, __, opt) => {
-            onChange(opt.data);
+            onChange(opt);
         },
         [onChange]
     );
@@ -103,13 +116,14 @@ const ChartTypeDropdown: FC<ChartTypeDropdownProps> = memo(({ onChange, selected
                     clearable={false}
                     containerClass=""
                     inputClass="col-xs-12"
+                    labelKey="title"
                     name="chartType"
                     onChange={onChange_}
                     optionRenderer={chartTypeOptionRenderer}
                     options={chartTypes}
                     value={selectedType.name}
-                    // TODO: using chartTypeOptionRenderer as valueRenderer makes the dropdown too tall
-                    // valueRenderer={chartTypeOptionRenderer}
+                    valueKey="name"
+                    valueRenderer={chartTypeValueRenderer}
                 />
             </div>
         </div>

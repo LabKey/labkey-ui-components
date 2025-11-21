@@ -2,14 +2,12 @@ export const HIDDEN_CHART_TYPES = ['time_chart'];
 export const MAX_ROWS_PREVIEW = 10000;
 export const MAX_POINT_DISPLAY = 10000;
 export const BLUE_HEX_COLOR = '3366FF';
-export const BAR_CHART_AGGREGATE_NAME = 'aggregate-method';
-export const BAR_CHART_ERROR_BAR_NAME = 'error-bar-method';
 export const ICONS = {
-    bar_chart: 'bar_chart',
-    box_plot: 'box_plot',
-    pie_chart: 'pie_chart',
-    scatter_plot: 'xy_scatter',
-    line_plot: 'xy_line',
+    bar_chart: 'fa-bar-chart',
+    box_plot: 'box_plot_icon.svg',
+    line_plot: 'fa-line-chart',
+    pie_chart: 'fa-pie-chart',
+    scatter_plot: 'scatter_plot_icon.svg',
 };
 
 export const AGGREGATE_METHODS = [

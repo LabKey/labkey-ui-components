@@ -191,6 +191,15 @@
     text-decoration: none;
 }
 
+.chart-builder-type-option > img,
+.chart-builder-type-option > .fa {
+    margin-right: 5px;
+}
+.chart-builder-type-option--value {
+    margin-top: -27px;
+    margin-left: 5px;
+}
+
 .chart-builder-modal {
     width: calc(100% - 100px);
     min-width: 850px;

@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ###  version TBD
 *Released*: TBD November 2025
-- GridColumn to only apply displayWidth to multiLine columns (see changes from v6.71.0)
+- QueryColumn to only apply displayWidth for multiLine columns
 
 ###  version 6.72.0
 *Released*: 20 November 2025

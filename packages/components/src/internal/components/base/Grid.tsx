@@ -37,6 +37,9 @@ function processColumns(columns: List<any>): List<GridColumn> {
                 });
             }
 
+            // only apply the displayWidth, if avaialble, to multiLine text columns
+            const _displayWidth = c.rangeURI?.endsWith('multiLine') ? c.displayWidth : undefined;
+
             return new GridColumn({
                 align: c.align,
                 cell: c.cell,
@@ -48,7 +51,7 @@ function processColumns(columns: List<any>): List<GridColumn> {
                 raw: c,
                 tableCell: c.tableCell,
                 title: c.title || c.caption,
-                width: c.width || c.displayWidth,
+                width: c.width || _displayWidth,
             });
         })
         .toList();

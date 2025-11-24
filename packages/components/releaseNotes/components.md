@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+###  version TBD
+*Released*: TBD November 2025
+- GridColumn to only apply displayWidth to multiLine columns (see changes from v6.71.0)
+
 ###  version 6.72.0
 *Released*: 20 November 2025
 - Default to detailed audit behavior

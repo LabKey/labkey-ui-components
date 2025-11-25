@@ -205,6 +205,11 @@ export class QueryColumn implements IQueryColumn {
         if (rawColumn && rawColumn.lookup !== undefined) {
             Object.assign(this, { lookup: new QueryLookup(rawColumn.lookup) });
         }
+
+        // only apply the displayWidth, if available, to multiLine text columns for now
+        if (rawColumn?.displayWidth && this.width === undefined && this.rangeURI?.endsWith('multiLine')) {
+            Object.assign(this, { width: rawColumn.displayWidth });
+        }
     }
 
     static ANCESTORS_PREFIX = 'Ancestors';

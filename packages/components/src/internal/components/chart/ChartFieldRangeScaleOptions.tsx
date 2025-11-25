@@ -23,8 +23,6 @@ interface OwnProps extends PropsWithChildren {
 
 export const ChartFieldRangeScaleOptions: FC<OwnProps> = memo(props => {
     const { scale, onScaleChange, showScaleTrans, children } = props;
-    const placement = useMemo(() => (!showScaleTrans && children ? 'left' : 'bottom'), [showScaleTrans, children]);
-
     const scaleTransOptions = useMemo(() => {
         return SCALE_TRANS_TYPES.map(option => ({ ...option, selected: scale.trans === option.value }));
     }, [scale.trans]);

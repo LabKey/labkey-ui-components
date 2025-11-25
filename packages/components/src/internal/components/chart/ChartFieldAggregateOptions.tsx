@@ -1,6 +1,4 @@
 import React, { FC, memo, useCallback, useMemo } from 'react';
-import { OverlayTrigger } from '../../OverlayTrigger';
-import { Popover } from '../../Popover';
 import { RadioGroupInput } from '../forms/input/RadioGroupInput';
 
 import { ChartConfig, ChartConfigSetter, ChartFieldInfo, ChartTypeInfo } from './models';
@@ -22,7 +20,6 @@ const ERROR_BAR_TYPES = [
 ];
 
 interface OwnProps {
-    asOverlay?: boolean; // TODO: defaults to true, but is always passed as false. Can be removed?
     chartConfig: ChartConfig;
     field: ChartFieldInfo;
     selectedType: ChartTypeInfo;
@@ -30,7 +27,7 @@ interface OwnProps {
 }
 
 export const ChartFieldAggregateOptions: FC<OwnProps> = memo(props => {
-    const { asOverlay = true, chartConfig, field, selectedType, setChartConfig } = props;
+    const { chartConfig, field, selectedType, setChartConfig } = props;
     const yMeasure = Array.isArray(chartConfig.measures.y) ? chartConfig.measures.y[0] : chartConfig.measures.y;
     // Some older charts stored aggregate as an object that looked like: { label: 'Mean', value: 'MEAN' }
     const aggregateValue = Utils.isObject(yMeasure.aggregate) ? yMeasure.aggregate.value : yMeasure.aggregate;
@@ -84,7 +81,7 @@ export const ChartFieldAggregateOptions: FC<OwnProps> = memo(props => {
     const onAggregateChange = useCallback((_: never, value: string) => onChange('aggregate', value), [onChange]);
     const onErrorBarValueChange = useCallback((value: string) => onChange('errorBars', value), [onChange]);
 
-    const inputs = (
+    return (
         <>
             <div>
                 <label>
@@ -113,25 +110,6 @@ export const ChartFieldAggregateOptions: FC<OwnProps> = memo(props => {
                 />
             </div>
         </>
-    );
-
-    if (!asOverlay) {
-        return inputs;
-    }
-
-    return (
-        <div className="field-option-icon">
-            <OverlayTrigger
-                overlay={
-                    <Popover id="chart-field-option-popover" placement="left">
-                        {inputs}
-                    </Popover>
-                }
-                triggerType="click"
-            >
-                <span className="fa fa-gear" />
-            </OverlayTrigger>
-        </div>
     );
 });
 ChartFieldAggregateOptions.displayName = 'ChartFieldAggregateOptions';

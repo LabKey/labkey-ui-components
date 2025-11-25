@@ -129,7 +129,6 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
                     >
                         {measure && showAggregateOptions && (
                             <ChartFieldAggregateOptions
-                                asOverlay={false}
                                 chartConfig={chartConfig}
                                 field={field}
                                 selectedType={selectedType}

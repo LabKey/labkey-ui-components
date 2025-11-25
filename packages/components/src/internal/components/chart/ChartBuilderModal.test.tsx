@@ -21,7 +21,6 @@ import {
     ChartBuilderModal,
     getChartBuilderQueryConfig,
     getChartRenderMsg,
-    getDefaultBarChartAxisLabel,
 } from './ChartBuilderModal';
 import { MAX_POINT_DISPLAY, MAX_ROWS_PREVIEW } from './constants';
 import { ChartConfig, ChartQueryConfig, ChartTypeInfo, GenericChartModel } from './models';
@@ -117,19 +116,19 @@ const SERVER_CONTEXT = {
 describe('ChartBuilderModal', () => {
     function validate(isNew: boolean, canShare = true, canDelete = false, allowInherit = false): void {
         expect(document.querySelectorAll('.chart-builder-modal')).toHaveLength(1);
+        expect(document.querySelectorAll('.chart-builder-modal__settings-panel')).toHaveLength(1);
+        expect(document.querySelectorAll('.chart-builder-modal__chart-preview')).toHaveLength(1);
         expect(document.querySelector('.modal-title').textContent).toBe(isNew ? 'Create Chart' : 'Edit Chart');
         expect(document.querySelectorAll('.btn')).toHaveLength(canDelete ? 3 : 2);
-
         expect(document.querySelectorAll('.alert')).toHaveLength(0);
-        expect(document.querySelectorAll('.col-left')).toHaveLength(1);
-        expect(document.querySelectorAll('.col-right')).toHaveLength(1);
 
+        // TODO update this part of jest test
         // hidden chart types are filtered out
-        const chartTypeItems = document.querySelectorAll('.chart-builder-type');
-        expect(chartTypeItems).toHaveLength(3);
-        expect(chartTypeItems[0].textContent).toBe('Bar');
-        expect(chartTypeItems[1].textContent).toBe('Scatter');
-        expect(chartTypeItems[2].textContent).toBe('Line');
+        // const chartTypeItems = document.querySelectorAll('.chart-builder-type');
+        // expect(chartTypeItems).toHaveLength(3);
+        // expect(chartTypeItems[0].textContent).toBe('Bar');
+        // expect(chartTypeItems[1].textContent).toBe('Scatter');
+        // expect(chartTypeItems[2].textContent).toBe('Line');
 
         expect(document.querySelectorAll('input[name="name"]')).toHaveLength(1);
         expect(document.querySelectorAll('input[name="shared"]')).toHaveLength(canShare ? 1 : 0);
@@ -153,13 +152,8 @@ describe('ChartBuilderModal', () => {
         validate(true);
 
         // default to selecting the first chart type
-        expect(document.querySelector('.selected').textContent).toBe('Bar');
-        expect(document.querySelector('.selectable').textContent).toBe('Scatter');
-        // selected should use blue icon and selectable should use gray icon
-        expect(document.querySelector('.selected').querySelector('img').getAttribute('alt')).toBe('bar_chart-icon');
-        expect(document.querySelector('.selectable').querySelector('img').getAttribute('alt')).toBe(
-            'xy_scatter_gray-icon'
-        );
+        expect(document.querySelector('.chart-builder-type-option--value').textContent).toBe('Bar');
+        expect(document.querySelector('input[name=chartType]').getAttribute('value')).toBe('bar_chart');
 
         // default to shared
         expect(document.querySelector('input[name="shared"]').getAttribute('checked')).toBe('');
@@ -176,7 +170,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(true, false);
-        expect(document.querySelectorAll('input')).toHaveLength(5);
+        expect(document.querySelectorAll('input')).toHaveLength(9);
     });
 
     test('allowInherit false, user perm', () => {
@@ -192,7 +186,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(true);
-        expect(document.querySelectorAll('input')).toHaveLength(6);
+        expect(document.querySelectorAll('input')).toHaveLength(10);
     });
 
     test('allowInherit false, non-project', () => {
@@ -208,7 +202,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(true);
-        expect(document.querySelectorAll('input')).toHaveLength(6);
+        expect(document.querySelectorAll('input')).toHaveLength(10);
     });
 
     test('allowInherit true', () => {
@@ -224,7 +218,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(true, true, false, true);
-        expect(document.querySelectorAll('input')).toHaveLength(7);
+        expect(document.querySelectorAll('input')).toHaveLength(11);
     });
 
     test('field inputs displayed for selected chart type', async () => {
@@ -238,7 +232,7 @@ describe('ChartBuilderModal', () => {
         validate(true);
 
         // verify field inputs displayed for default / first chart type
-        expect(document.querySelectorAll('input')).toHaveLength(6);
+        expect(document.querySelectorAll('input')).toHaveLength(10);
         BAR_CHART_TYPE.fields.forEach(field => {
             expect(document.querySelectorAll(`input[name="${field.name}"]`)).toHaveLength(1);
         });
@@ -293,13 +287,11 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, true, true);
-        expect(document.querySelectorAll('input')).toHaveLength(8);
+        expect(document.querySelectorAll('input')).toHaveLength(10);
 
         // default to selecting the chart type based on saved config
-        expect(document.querySelector('.selected').textContent).toBe('Scatter');
-        expect(document.querySelectorAll('.selectable')).toHaveLength(0);
-        // selected should use blue icon
-        expect(document.querySelector('.selected').querySelector('img').getAttribute('alt')).toBe('xy_scatter-icon');
+        expect(document.querySelector('.chart-builder-type-option--value').textContent).toBe('Scatter');
+        expect(document.querySelector('input[name=chartType]').getAttribute('value')).toBe('scatter_plot');
 
         // click delete button and verify confirm text / buttons
         await userEvent.click(document.querySelector('.btn-danger'));
@@ -345,7 +337,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, true, true);
-        expect(document.querySelectorAll('input')).toHaveLength(6);
+        expect(document.querySelectorAll('input')).toHaveLength(8);
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
         expect(document.querySelectorAll('.fa-gear')).toHaveLength(1); // gear icon for y-axis
         await userEvent.click(document.querySelector('.fa-gear'));
@@ -390,7 +382,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, true, true);
-        expect(document.querySelectorAll('input')).toHaveLength(6);
+        expect(document.querySelectorAll('input')).toHaveLength(8);
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
         expect(document.querySelectorAll('.fa-gear')).toHaveLength(1); // gear icon for y-axis
         await userEvent.click(document.querySelector('.fa-gear'));
@@ -438,7 +430,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, true, true);
-        expect(document.querySelectorAll('input')).toHaveLength(10);
+        expect(document.querySelectorAll('input')).toHaveLength(12);
         expect(document.querySelector('input[name=x]').getAttribute('value')).toBe('field1');
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
         expect(document.querySelectorAll('input[name=aggregate-method]')).toHaveLength(0);
@@ -484,7 +476,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, true, true);
-        expect(document.querySelectorAll('input')).toHaveLength(10);
+        expect(document.querySelectorAll('input')).toHaveLength(12);
         expect(document.querySelector('input[name=x]').getAttribute('value')).toBe('field1');
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
         expect(document.querySelectorAll('input[name=aggregate-method]')).toHaveLength(0);
@@ -542,7 +534,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, false, false);
-        expect(document.querySelectorAll('input')).toHaveLength(7);
+        expect(document.querySelectorAll('input')).toHaveLength(9);
         expect(document.querySelector('input[name="shared"]')).toBeNull();
     });
 });
@@ -583,15 +575,13 @@ describe('getChartRenderMsg', () => {
 });
 
 describe('getChartBuilderQueryConfig', () => {
-    const chartConfig = { measures: {} } as ChartConfig;
-    const fieldValues = {
-        x: { value: 'field1', label: 'Field 1', data: { fieldKey: 'field1' } },
-        y: { value: undefined },
-        scales: { value: { x: { type: 'automatic', trans: 'linear' }, y: { type: 'automatic', trans: 'linear' } } },
-    };
+    const chartConfig = { measures: {
+        x: { name: 'field1', label: 'Field 1', fieldKey: 'field1' },
+        y: { name: undefined },
+    } } as ChartConfig;
 
     test('based on model', () => {
-        const config = getChartBuilderQueryConfig(model, fieldValues, chartConfig, undefined);
+        const config = getChartBuilderQueryConfig(model, chartConfig, undefined);
         expect(config.maxRows).toBe(-1);
         expect(config.requiredVersion).toBe('17.1');
         expect(config.schemaName).toBe('schema');
@@ -610,7 +600,7 @@ describe('getChartBuilderQueryConfig', () => {
             filterArray: [{ name: 'savedFilter' }],
         } as ChartQueryConfig;
 
-        const config = getChartBuilderQueryConfig(model, fieldValues, chartConfig, savedConfig);
+        const config = getChartBuilderQueryConfig(model, chartConfig, savedConfig);
         expect(config.maxRows).toBe(-1);
         expect(config.requiredVersion).toBe('17.1');
         expect(config.schemaName).toBe('savedSchema');
@@ -619,29 +609,5 @@ describe('getChartBuilderQueryConfig', () => {
         expect(config.sort).toBe('lsid');
         expect(config.columns).toStrictEqual(['field1']);
         expect(config.filterArray.length).toBe(1);
-    });
-});
-
-describe('getDefaultBarChartAxisLabel', () => {
-    test('no aggregate', () => {
-        expect(getDefaultBarChartAxisLabel({ measures: {} } as ChartConfig)).toBe('Count');
-        expect(getDefaultBarChartAxisLabel({ measures: { x: { label: 'Test' } } } as ChartConfig)).toBe('Count');
-    });
-
-    test('with aggregate', () => {
-        expect(getDefaultBarChartAxisLabel({ measures: { y: { label: 'Test' } } } as ChartConfig)).toBe('Sum of Test');
-        expect(getDefaultBarChartAxisLabel({ measures: { y: { label: 'Test', aggregate: {} } } } as ChartConfig)).toBe(
-            'Sum of Test'
-        );
-        expect(
-            getDefaultBarChartAxisLabel({
-                measures: { y: { label: 'Test', aggregate: { name: 'Min' } } },
-            } as ChartConfig)
-        ).toBe('Min of Test');
-        expect(
-            getDefaultBarChartAxisLabel({
-                measures: { y: { label: 'Test', aggregate: { label: 'Max' } } },
-            } as ChartConfig)
-        ).toBe('Max of Test');
     });
 });

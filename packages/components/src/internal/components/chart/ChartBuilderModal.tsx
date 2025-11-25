@@ -142,11 +142,9 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
                     }
                 }
 
-                // adjust height, width, and marginTop for the chart config for the preview, but not to save with the chart
-                const width = ref?.current?.getBoundingClientRect().width || 750;
+                const width = chartConfig.width ?? (ref?.current?.getBoundingClientRect().width || 750);
                 const chartConfig_ = {
                     ...chartConfig,
-                    height: 350,
                     width,
                 };
 

@@ -142,7 +142,7 @@ export function deepCopyChartConfig(chartConfig: ChartConfig, chartType = 'bar_c
         return {
             geomOptions: makeGeomOptions(chartType),
             gridLinesVisible: 'both',
-            height: undefined,
+            height: 500,
             labels: {},
             measures: {},
             pointType: 'all',

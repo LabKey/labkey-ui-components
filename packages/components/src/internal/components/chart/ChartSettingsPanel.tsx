@@ -1,8 +1,8 @@
-import React, { ChangeEvent, FC, memo, useCallback, useMemo } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useMemo, useState } from 'react';
 import { BaseChartModel, BaseChartModelSetter, ChartConfig, ChartConfigSetter, ChartTypeInfo } from './models';
 import { LABKEY_VIS } from '../../constants';
 import { HIDDEN_CHART_TYPES, ICONS } from './constants';
-import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
+import { SelectInput } from '../forms/input/SelectInput';
 import { SVGIcon } from '../base/SVGIcon';
 import { CheckboxLK } from '../../Checkbox';
 import { ChartFieldOption } from './ChartFieldOption';
@@ -10,14 +10,19 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { TrendlineOption } from './TrendlineOption';
 import { deepCopyChartConfig, hasTrendline } from './utils';
 import classNames from 'classnames';
+import { useEnterEscape } from '../../../public/useEnterEscape';
+
+interface InputProps {
+    label: string;
+    name: string;
+    value: string;
+}
 
 type LabelKey = keyof ChartConfig['labels'];
 
-interface LabelInputProps {
-    label: string;
+interface LabelInputProps extends InputProps {
     name: LabelKey;
     onChange: (name: LabelKey, value: string) => void;
-    value: string;
 }
 
 const LabelInput: FC<LabelInputProps> = memo(({ label, name, onChange, value }) => {
@@ -26,26 +31,27 @@ const LabelInput: FC<LabelInputProps> = memo(({ label, name, onChange, value }) 
         [name, onChange]
     );
     return (
-        <div>
-            <label>{label}</label>
-            <input
-                className="form-control"
-                name={name as string}
-                onChange={onChange_}
-                type="text"
-                value={value ?? ''}
-            />
+        <div className="form-group row">
+            <div className="col-xs-12">
+                <label>{label}</label>
+                <input
+                    className="form-control"
+                    name={name as string}
+                    onChange={onChange_}
+                    type="text"
+                    value={value ?? ''}
+                />
+            </div>
         </div>
     );
 });
 LabelInput.displayName = 'LabelInput';
 
-interface BoolSettingInputProps {
-    label: string;
-    name: string;
+interface BoolSettingInputProps extends Omit<InputProps, 'value'> {
     onChange: (name: LabelKey, value: boolean) => void;
     value: boolean;
 }
+
 const BoolSettingInput: FC<BoolSettingInputProps> = memo(({ label, name, onChange, value }) => {
     const onChange_ = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
@@ -60,6 +66,121 @@ const BoolSettingInput: FC<BoolSettingInputProps> = memo(({ label, name, onChang
     );
 });
 BoolSettingInput.displayName = 'BoolSettingInput';
+
+interface NumberInputProps extends Omit<InputProps, 'value'> {
+    disabled: boolean;
+    name: 'height' | 'width';
+    onBlur: () => void;
+    onChange: (name: 'height' | 'width', value: string) => void;
+    value: string;
+}
+
+const NumberInput: FC<NumberInputProps> = memo(({ disabled, label, name, onBlur, onChange, value }) => {
+    const onInputChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => onChange(name, event.target.value),
+        [name, onChange]
+    );
+    const onKeyDown = useEnterEscape(onBlur);
+
+    return (
+        <div>
+            <label>{label}</label>
+            <input
+                className="form-control is-invalid"
+                disabled={disabled}
+                name={name}
+                onBlur={onBlur}
+                onChange={onInputChange}
+                onKeyDown={onKeyDown}
+                type="text"
+                value={value}
+            />
+        </div>
+    );
+});
+NumberInput.displayName = 'NumberInput';
+
+interface SizeInputsProps {
+    height: number;
+    setChartConfig: ChartConfigSetter;
+    width: number;
+}
+const SizeInputs: FC<SizeInputsProps> = memo(({ height, setChartConfig, width }) => {
+    // We store sizes in a separate useState so the user can edit the  values without us rerendering on every keystroke,
+    // and so we can easily handle invalid values.
+    const [sizes, setSizes] = useState<Record<string, string>>(() => ({
+        height: height?.toString() ?? '',
+        width: width?.toString() ?? '',
+    }));
+    const [useFullWidth, setUseFullWidth] = useState(width === undefined);
+    const onCheckboxChange = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            const checked = e.target.checked;
+
+            if (checked) {
+                console.log('Setting full width, clearing entered width value');
+                setChartConfig(current => ({ ...current, width: undefined }));
+                setSizes(current => ({ ...current, width: '' }));
+            }
+
+            setUseFullWidth(checked);
+        },
+        [setChartConfig]
+    );
+    const onNumberChange = useCallback((name, value) => setSizes(current => ({ ...current, [name]: value })), []);
+    const onBlur = useCallback(() => {
+        setChartConfig(current => {
+            const updatedHeight = parseInt(sizes.height, 10);
+            const updatedWidth = parseInt(sizes.width, 10);
+            const heightChanged = !isNaN(updatedHeight) && updatedHeight !== current.height;
+            const widthChanged = !isNaN(updatedWidth) && updatedWidth !== current.width;
+
+            if (!heightChanged && !widthChanged) return current;
+
+            return {
+                ...current,
+                height: heightChanged ? updatedHeight : current.height,
+                width: widthChanged ? updatedWidth : current.width,
+            };
+        });
+    }, [setChartConfig, sizes]);
+
+    return (
+        <>
+            {/* intentionally not setting form-group class on the div below */}
+            <div className="row">
+                <div className="col-xs-6">
+                    <NumberInput
+                        disabled={useFullWidth}
+                        label="Width (px)"
+                        name="width"
+                        onBlur={onBlur}
+                        onChange={onNumberChange}
+                        value={sizes.width}
+                    />
+                </div>
+                <div className="col-xs-6">
+                    <NumberInput
+                        disabled={false}
+                        label="Height (px)"
+                        name="height"
+                        onBlur={onBlur}
+                        onChange={onNumberChange}
+                        value={sizes.height}
+                    />
+                </div>
+            </div>
+            <div className="form-group row">
+                <div className="col-xs-12">
+                    <CheckboxLK checked={useFullWidth} name="use-full-width" onChange={onCheckboxChange}>
+                        Full Width
+                    </CheckboxLK>
+                </div>
+            </div>
+        </>
+    );
+});
+SizeInputs.displayName = 'SizeInputs';
 
 interface ChartTypeOptionRendererProps {
     chartType: ChartTypeInfo;
@@ -199,7 +320,7 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
     );
 
     return (
-        <div className="chart-builder-modal__settings-panel">
+        <form className="chart-builder-modal__settings-panel">
             <h4>Settings</h4>
             <div>
                 <label>Name *</label>
@@ -261,8 +382,8 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
                 onChange={onLabelChange}
                 value={chartConfig?.labels?.subtitle}
             />
-            {/*  TODO: width/height  */}
-        </div>
+            <SizeInputs height={chartConfig.height} setChartConfig={setChartConfig} width={chartConfig.width} />
+        </form>
     );
 });
 ChartSettingsPanel.displayName = 'ChartSettingsPanel';

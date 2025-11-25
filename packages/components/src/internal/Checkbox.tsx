@@ -19,7 +19,6 @@ export const CheckboxLK: FC<Props> = memo(props => {
             <label>
                 <input
                     checked={checked}
-                    className=""
                     disabled={disabled}
                     id={id}
                     name={name}
@@ -30,6 +29,6 @@ export const CheckboxLK: FC<Props> = memo(props => {
                 {children}
             </label>
         </div>
-    )
+    );
 });
 CheckboxLK.displayName = 'Checkbox';

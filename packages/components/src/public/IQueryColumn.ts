@@ -18,6 +18,7 @@ export interface IQueryColumn {
     displayField?: string;
     displayFieldJsonType?: string;
     displayFieldSqlType?: string;
+    displayWidth: number | string;
     // excludeFromShifting: boolean;
     // ext: any;
     facetingBehaviorType: string;

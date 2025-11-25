@@ -48,7 +48,7 @@ function processColumns(columns: List<any>): List<GridColumn> {
                 raw: c,
                 tableCell: c.tableCell,
                 title: c.title || c.caption,
-                width: c.width || c.displayWidth,
+                width: c.width,
             });
         })
         .toList();

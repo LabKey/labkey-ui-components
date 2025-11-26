@@ -30,18 +30,18 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
     const TRENDLINE_OPTIONS: TrendlineType[] = Object.values(LABKEY_VIS.GenericChartHelper.TRENDLINE_OPTIONS);
     const { chartConfig, model, selectedType, setChartConfig } = props;
     const schemaQuery = model.schemaQuery;
-    const geomOptions = chartConfig?.geomOptions;
-    const measures = chartConfig?.measures;
-    const selectedTrendlineType = useMemo(() => {
-        return TRENDLINE_OPTIONS.find(option => option.value === geomOptions?.trendlineType);
-    }, [TRENDLINE_OPTIONS, geomOptions?.trendlineType]);
-    const showFieldOptions = selectedTrendlineType?.showMin || selectedTrendlineType?.showMax;
+    const { geomOptions, measures } = chartConfig;
+    const selectedTrendlineType = useMemo(
+        () => TRENDLINE_OPTIONS.find(option => option.value === geomOptions.trendlineType),
+        [TRENDLINE_OPTIONS, geomOptions.trendlineType]
+    );
+    const showFieldOptions = !!geomOptions.trendlineType;
 
     // hide the trendline option if no x-axis value selected and for date field selection on x-axis
     const hidden = useMemo(() => {
-        const jsonType = getFieldDataType(measures?.x);
-        return !measures?.x || jsonType === 'date' || jsonType === 'time';
-    }, [measures?.x]);
+        const jsonType = getFieldDataType(measures.x);
+        return !measures.x || jsonType === 'date' || jsonType === 'time';
+    }, [measures.x]);
 
     const [loadingTrendlineOptions, setLoadingTrendlineOptions] = useState<boolean>(true);
     const [asymptoteType, setAsymptoteType] = useState<string>('automatic');
@@ -53,10 +53,10 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
     );
 
     useEffect(() => {
-        if (loadingTrendlineOptions && (!!geomOptions?.trendlineAsymptoteMin || !!geomOptions?.trendlineAsymptoteMax)) {
+        if (loadingTrendlineOptions && (!!geomOptions.trendlineAsymptoteMin || !!geomOptions.trendlineAsymptoteMax)) {
             setAsymptoteType('manual');
-            setAsymptoteMin(geomOptions?.trendlineAsymptoteMin?.toString());
-            setAsymptoteMax(geomOptions?.trendlineAsymptoteMax?.toString());
+            setAsymptoteMin(geomOptions.trendlineAsymptoteMin?.toString());
+            setAsymptoteMax(geomOptions.trendlineAsymptoteMax?.toString());
             setLoadingTrendlineOptions(false);
         }
     }, [geomOptions, loadingTrendlineOptions]);
@@ -159,7 +159,11 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
                     <div className="field-option-icon">
                         <OverlayTrigger
                             overlay={
-                                <Popover id="chart-field-option-popover" placement="left">
+                                <Popover
+                                    className="chart-field-trendline-options"
+                                    id="chart-field-option-popover"
+                                    placement="right"
+                                >
                                     <TrendlineOptionPopover
                                         applyTrendlineAsymptote={applyTrendlineAsymptote}
                                         asymptoteMax={asymptoteMax}
@@ -218,8 +222,8 @@ const TrendlineOptionPopover: FC<TrendlineOptionPopoverProps> = props => {
     const geomOptions = chartConfig.geomOptions;
     const TRENDLINE_OPTIONS: TrendlineType[] = Object.values(LABKEY_VIS.GenericChartHelper.TRENDLINE_OPTIONS);
     const selectedTrendlineType = useMemo(() => {
-        return TRENDLINE_OPTIONS.find(option => option.value === geomOptions?.trendlineType);
-    }, [TRENDLINE_OPTIONS, geomOptions?.trendlineType]);
+        return TRENDLINE_OPTIONS.find(option => option.value === geomOptions.trendlineType);
+    }, [TRENDLINE_OPTIONS, geomOptions.trendlineType]);
     const showAsymptoteOptions = selectedTrendlineType?.showMin || selectedTrendlineType?.showMax;
     const invalidRange = useMemo(
         () => !!asymptoteMin && !!asymptoteMax && asymptoteMax <= asymptoteMin,

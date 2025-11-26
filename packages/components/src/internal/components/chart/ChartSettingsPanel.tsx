@@ -191,7 +191,7 @@ const ChartTypeOptionRenderer: FC<ChartTypeOptionRendererProps> = memo(({ chartT
     const isSvg = icon.endsWith('.svg');
     const className = classNames('chart-builder-type-option', { 'chart-builder-type-option--value': isValueRenderer });
     return (
-        <span className={className}>
+        <span className={className} data-chart-type={chartType.name}>
             {isSvg && (
                 <SVGIcon height={null} iconDir="visualization/report" iconSrc={icon.replace('.svg', '')} width={16} />
             )}
@@ -321,7 +321,7 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
     );
 
     return (
-        <form className="chart-builder-modal__settings-panel">
+        <div className="chart-builder-modal__settings-panel">
             <h4>Settings</h4>
             <div>
                 <label>Name *</label>
@@ -384,7 +384,7 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
                 value={chartConfig?.labels?.subtitle}
             />
             <SizeInputs height={chartConfig.height} setChartConfig={setChartConfig} width={chartConfig.width} />
-        </form>
+        </div>
     );
 });
 ChartSettingsPanel.displayName = 'ChartSettingsPanel';

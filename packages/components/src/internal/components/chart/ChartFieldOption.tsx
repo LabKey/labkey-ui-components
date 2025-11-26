@@ -7,18 +7,10 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { LABKEY_VIS } from '../../constants';
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import { ChartFieldRangeScaleOptions } from './ChartFieldRangeScaleOptions';
 import { ChartConfig, ChartConfigSetter, ChartFieldInfo, ChartTypeInfo, ScaleType } from './models';
-import {
-    getBarChartAxisLabel,
-    getFieldDataType,
-    getSelectOptions,
-    hasTrendline,
-    shouldShowAggregateOptions,
-    shouldShowRangeScaleOptions,
-} from './utils';
+import { getBarChartAxisLabel, getSelectOptions, hasTrendline } from './utils';
 
-import { ChartFieldAggregateOptions } from './ChartFieldAggregateOptions';
+import { ChartFieldAdditionalOptions } from './ChartFieldAdditionalOptions';
 
 const DEFAULT_SCALE_VALUES = { type: 'automatic', trans: 'linear' };
 
@@ -38,12 +30,7 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
         return scales[field.name] ?? DEFAULT_SCALE_VALUES;
     });
     const options = useMemo(() => getSelectOptions(model, selectedType, field), [model, selectedType, field]);
-    const isNumericType = useMemo(
-        () => LABKEY_VIS.GenericChartHelper.isNumericType(getFieldDataType(measure)),
-        [measure]
-    );
-    const showRangeScaleOptions = isNumericType && shouldShowRangeScaleOptions(field, selectedType);
-    const showAggregateOptions = isNumericType && shouldShowAggregateOptions(field, selectedType);
+    const showAdditionalOptions = measure && (field.name === 'x' || field.name === 'y');
 
     const onScaleChange = useCallback(
         (scale: ScaleType, localOnly = false) => {
@@ -110,7 +97,7 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
             <div className="form-group row">
                 <SelectInput
                     containerClass=""
-                    inputClass={showRangeScaleOptions || showAggregateOptions ? 'col-xs-11' : 'col-xs-12'}
+                    inputClass={showAdditionalOptions ? 'col-xs-11' : 'col-xs-12'}
                     labelKey="caption"
                     name={field.name}
                     onChange={onSelectChange}
@@ -121,21 +108,15 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
                     value={measure?.fieldKey}
                     valueKey="fieldKey"
                 />
-                {showRangeScaleOptions && (
-                    <ChartFieldRangeScaleOptions
+                {showAdditionalOptions && (
+                    <ChartFieldAdditionalOptions
+                        chartConfig={chartConfig}
+                        field={field}
                         onScaleChange={onScaleChange}
                         scale={scale}
-                        showScaleTrans={selectedType.name !== 'bar_chart'}
-                    >
-                        {measure && showAggregateOptions && (
-                            <ChartFieldAggregateOptions
-                                chartConfig={chartConfig}
-                                field={field}
-                                selectedType={selectedType}
-                                setChartConfig={setChartConfig}
-                            />
-                        )}
-                    </ChartFieldRangeScaleOptions>
+                        selectedType={selectedType}
+                        setChartConfig={setChartConfig}
+                    />
                 )}
             </div>
         </div>

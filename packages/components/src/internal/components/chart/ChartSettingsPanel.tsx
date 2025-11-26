@@ -287,9 +287,10 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
     const onTypeChange = useCallback(
         (type: ChartTypeInfo) => {
             setChartConfig(current => {
+                const { main, subtitle } = current.labels;
                 return {
                     ...deepCopyChartConfig(undefined, type.name),
-                    labels: { ...current.labels },
+                    labels: { main, subtitle },
                 };
             });
         },

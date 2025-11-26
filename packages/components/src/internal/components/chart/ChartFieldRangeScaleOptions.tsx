@@ -1,6 +1,4 @@
-import React, { ChangeEvent, FC, memo, PropsWithChildren, useCallback, useMemo } from 'react';
-import { OverlayTrigger } from '../../OverlayTrigger';
-import { Popover } from '../../Popover';
+import React, { ChangeEvent, FC, memo, useCallback, useMemo } from 'react';
 import { RadioGroupInput } from '../forms/input/RadioGroupInput';
 
 import { ScaleType } from './models';
@@ -15,14 +13,14 @@ const SCALE_RANGE_TYPES = [
     { value: 'manual', label: 'Manual' },
 ];
 
-interface OwnProps extends PropsWithChildren {
+interface OwnProps {
     onScaleChange: (scale: Partial<ScaleType>, localOnly?: boolean) => void;
     scale: ScaleType;
     showScaleTrans: boolean;
 }
 
 export const ChartFieldRangeScaleOptions: FC<OwnProps> = memo(props => {
-    const { scale, onScaleChange, showScaleTrans, children } = props;
+    const { scale, onScaleChange, showScaleTrans } = props;
     const scaleTransOptions = useMemo(() => {
         return SCALE_TRANS_TYPES.map(option => ({ ...option, selected: scale.trans === option.value }));
     }, [scale.trans]);
@@ -80,61 +78,51 @@ export const ChartFieldRangeScaleOptions: FC<OwnProps> = memo(props => {
     }, [invalidRange, onScaleChange, scale]);
 
     return (
-        <div className="field-option-icon">
-            <OverlayTrigger
-                overlay={
-                    <Popover id="chart-field-option-popover" placement="right">
-                        {children}
-                        {showScaleTrans && (
-                            <div className="field-option-radio-group">
-                                <label>Scale</label>
-                                <RadioGroupInput
-                                    formsy={false}
-                                    name="scaleTrans"
-                                    onValueChange={onScaleTransChange}
-                                    options={scaleTransOptions}
-                                />
-                            </div>
-                        )}
-                        <div className="field-option-radio-group">
-                            <label>Range</label>
-                            <RadioGroupInput
-                                formsy={false}
-                                name="scaleType"
-                                onValueChange={onScaleTypeChange}
-                                options={scaleTypeOptions}
-                            />
-                        </div>
-                        {scale.type === 'manual' && (
-                            <div className="chart-builder-scale-range-inputs">
-                                <input
-                                    className="chart-builder-field-footer-input"
-                                    name="scaleMin"
-                                    onBlur={onScaleRangeBlur}
-                                    onChange={onScaleMinChange}
-                                    placeholder="Min"
-                                    type="number"
-                                    value={scale.min ?? ''}
-                                />
-                                <span className="chart-builder-field-footer-input">-</span>
-                                <input
-                                    className="chart-builder-field-footer-input"
-                                    name="scaleMax"
-                                    onBlur={onScaleRangeBlur}
-                                    onChange={onScaleMaxChange}
-                                    placeholder="Max"
-                                    type="number"
-                                    value={scale.max ?? ''}
-                                />
-                                {invalidRange && <div className="text-danger">Invalid range (Max &lt;= Min)</div>}
-                            </div>
-                        )}
-                    </Popover>
-                }
-                triggerType="click"
-            >
-                <span className="fa fa-gear" />
-            </OverlayTrigger>
+        <div className="chart-field-range-scale-options">
+            {showScaleTrans && (
+                <div className="field-option-radio-group">
+                    <label>Scale</label>
+                    <RadioGroupInput
+                        formsy={false}
+                        name="scaleTrans"
+                        onValueChange={onScaleTransChange}
+                        options={scaleTransOptions}
+                    />
+                </div>
+            )}
+            <div className="field-option-radio-group">
+                <label>Range</label>
+                <RadioGroupInput
+                    formsy={false}
+                    name="scaleType"
+                    onValueChange={onScaleTypeChange}
+                    options={scaleTypeOptions}
+                />
+            </div>
+            {scale.type === 'manual' && (
+                <div className="chart-builder-scale-range-inputs">
+                    <input
+                        className="chart-builder-field-footer-input"
+                        name="scaleMin"
+                        onBlur={onScaleRangeBlur}
+                        onChange={onScaleMinChange}
+                        placeholder="Min"
+                        type="number"
+                        value={scale.min ?? ''}
+                    />
+                    <span className="chart-builder-field-footer-input">-</span>
+                    <input
+                        className="chart-builder-field-footer-input"
+                        name="scaleMax"
+                        onBlur={onScaleRangeBlur}
+                        onChange={onScaleMaxChange}
+                        placeholder="Max"
+                        type="number"
+                        value={scale.max ?? ''}
+                    />
+                    {invalidRange && <div className="text-danger">Invalid range (Max &lt;= Min)</div>}
+                </div>
+            )}
         </div>
     );
 });

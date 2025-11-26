@@ -54,6 +54,8 @@ export const getChartBuilderQueryConfig = (
         .map(measure => measure?.fieldKey)
         .filter(fk => fk !== undefined);
 
+    if (chartConfig.geomOptions.trendlineParameters) columns.push(chartConfig.geomOptions.trendlineParameters);
+
     return {
         maxRows: -1, // this will be saved with the queryConfig, but we will override it for the preview in the modal
         requiredVersion: '17.1', // Issue 47898: include formattedValue in response row objects

@@ -145,10 +145,8 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
                 }
 
                 const width = chartConfig.width ?? (ref?.current?.getBoundingClientRect().width || 750);
-                const chartConfig_ = {
-                    ...chartConfig,
-                    width,
-                };
+                const height = chartConfig.height ?? 500;
+                const chartConfig_ = { ...chartConfig, height, width };
 
                 if (ref.current) ref.current.innerHTML = ''; // clear again, right before render
                 LABKEY_VIS.GenericChartHelper.generateChartSVG(divId, chartConfig_, measureStore, trendlineData);

@@ -245,7 +245,7 @@ const TrendlineOptionPopover: FC<TrendlineOptionPopoverProps> = props => {
     // chartConfig.geomOptions.trendlineParameters,
     const onParameterFieldChange = useCallback(
         (_: never, __: never, col: QueryColumn) => {
-            setGeomOptions({ trendlineParameters: col.fieldKey });
+            setGeomOptions({ trendlineParameters: col?.fieldKey });
         },
         [setGeomOptions]
     );

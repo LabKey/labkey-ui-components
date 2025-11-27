@@ -49,6 +49,12 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { AliquotNamePatternProps, DEFAULT_ALIQUOT_NAMING_PATTERN, MetricUnitProps, SampleTypeModel } from './models';
+import {
+    getMeasurementUnit,
+    getMetricUnitOptions,
+    getMetricUnitOptionsFromKind,
+    UNITS_KIND
+} from '../../../util/measurement';
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');
@@ -67,6 +73,22 @@ const AddEntityHelpTip: FC<{ parentageLabel?: string }> = memo(({ parentageLabel
         </>
     );
 });
+
+const UnitKinds = {
+    [UNITS_KIND.NONE]: {
+        value: UNITS_KIND.NONE, label: 'Any', hideSubSelect: true, msg: 'Amounts can be entered in any unit and won’t be converted.'
+    },
+    [UNITS_KIND.MASS]: {
+        value: UNITS_KIND.MASS, label: 'Mass'
+    },
+    [UNITS_KIND.VOLUME]: {
+        value: UNITS_KIND.VOLUME, label: 'Volume'
+    },
+    [UNITS_KIND.COUNT]: {
+        value: UNITS_KIND.COUNT, label: 'Other', hideSubSelect: true, msg: 'Amounts can be entered as unit, pcs, pack, blocks, slides, cells, box, kit, tests, or bottle and won’t be converted.'
+    },
+}
+
 AddEntityHelpTip.displayName = 'AddEntityHelpTip';
 
 const AutoLinkDataToStudyHelpTip: FC = () => (
@@ -153,6 +175,8 @@ interface State {
     loadingError: string;
     prefix: string;
     sampleTypeCategory: string;
+    metricUnitKind: { value: string; label: string, hideSubSelect?: boolean, msg?: string };
+    validMetricUnitOptions: { value: string; label: string, hideSubSelect?: boolean, msg?: string }[];
 }
 
 type Props = OwnProps & EntityProps & BasePropertiesPanelProps;
@@ -186,10 +210,12 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
         loadingError: undefined,
         prefix: undefined,
         sampleTypeCategory: undefined,
+        metricUnitKind: undefined,
+        validMetricUnitOptions: [],
     };
 
     componentDidMount = async (): Promise<void> => {
-        const { api, model } = this.props;
+        const { api, model, metricUnitProps } = this.props;
 
         try {
             const result = await api.query.selectRows({
@@ -198,7 +224,12 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                 filterArray: [Filter.create('RowId', model.rowId)],
                 schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
             });
-            this.setState({ sampleTypeCategory: result.rows[0]?.Category.value });
+            const unitKind = getMeasurementUnit(model?.metricUnit)?.kind ?? (model.isNew() ? null : UNITS_KIND.NONE);
+            this.setState({
+                sampleTypeCategory: result.rows[0]?.Category.value,
+                metricUnitKind: unitKind ? UnitKinds[unitKind] : null,
+                validMetricUnitOptions: metricUnitProps?.metricUnitOptions
+            });
         } catch (e) {
             this.setState({ loadingError: 'There was a problem retrieving the Sample Type category.' });
         }
@@ -248,6 +279,26 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
         this.updateValidStatus(this.props.model.set(key, value) as SampleTypeModel);
     };
 
+    onMetricUnitKindChange = (key: string, value: any): void => {
+        this.updateValidStatus(this.props.model.set('metricUnit', '') as SampleTypeModel);
+        const unitKind = value ? UnitKinds[value] : null;
+        const unitOptions = getMetricUnitOptionsFromKind(unitKind?.value, true);
+        this.setState({ metricUnitKind: unitKind, validMetricUnitOptions: unitOptions });
+    };
+
+    onUnitChange = (key: string, value: any): void => {
+        const { model } = this.props;
+        const { metricUnitKind } = this.state;
+        if (value) {
+            const unitOptions = getMetricUnitOptions(value, true);
+            const unitKind = getMeasurementUnit(value)?.kind ?? (model.isNew() ? null : UNITS_KIND.NONE);
+            if (unitKind && unitKind !== metricUnitKind?.value) {
+                this.setState({ metricUnitKind: UnitKinds[unitKind], validMetricUnitOptions: unitOptions });
+            }
+        }
+        this.updateValidStatus(this.props.model.set('metricUnit', value) as SampleTypeModel);
+    };
+
     onNameFieldHover = (): void => {
         this.props.onNameFieldHover?.();
     };
@@ -278,7 +329,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
             namePreviewsLoading,
             nameExpressionGenIdProps,
         } = this.props;
-        const { isValid, containers, prefix, loadingError, sampleTypeCategory } = this.state;
+        const { isValid, containers, prefix, loadingError, sampleTypeCategory, validMetricUnitOptions, metricUnitKind } = this.state;
 
         const showAliquotNameExpression = aliquotNamePatternProps?.showAliquotNameExpression;
         const aliquotNameExpressionInfoUrl = aliquotNamePatternProps?.aliquotNameExpressionInfoUrl;
@@ -492,47 +543,72 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                             </div>
                         </div>
                         {includeMetricUnitProperty && (
-                            <div className="row margin-top">
-                                <div className="col-xs-2">
-                                    <DomainFieldLabel
-                                        label={metricUnitLabel}
-                                        required={metricUnitRequired}
-                                        helpTipBody={metricUnitHelpMsg}
-                                    />
-                                </div>
-                                <div className="col-xs-3">
-                                    {metricUnitProps?.metricUnitOptions ? (
+                            <>
+                                <div className="row margin-top">
+                                    <div className="col-xs-2">
+                                        <DomainFieldLabel
+                                            label="Amount Type"
+                                            required={metricUnitRequired}
+                                        />
+                                    </div>
+                                    <div className="col-xs-3">
                                         <SelectInput
-                                            containerClass="sampleset-metric-unit-select-container"
-                                            inputClass="sampleset-metric-unit-select"
-                                            name="metricUnit"
-                                            options={metricUnitProps.metricUnitOptions}
+                                            containerClass="sampleset-unit-type-select-container"
+                                            inputClass="sampleset-unit-type-select"
+                                            name="metricUnitKind"
+                                            options={Object.values(UnitKinds)}
                                             required={metricUnitRequired}
                                             clearable={!metricUnitRequired}
                                             onChange={(name, formValue, option: SelectInputOption) => {
-                                                this.onFieldChange(
+                                                this.onMetricUnitKindChange(
                                                     name,
                                                     formValue === undefined && option ? option.id : formValue
                                                 );
                                             }}
-                                            placeholder="Select a unit..."
-                                            value={model.metricUnit}
+                                            placeholder="Select a type..."
+                                            value={metricUnitKind}
+                                            disabled={metricUnitProps?.lockUnitKind}
                                         />
-                                    ) : (
-                                        <input
-                                            className="form-control"
-                                            name="metricUnit"
-                                            type="text"
-                                            placeholder="Enter a unit"
-                                            required={metricUnitRequired}
-                                            value={model.metricUnit}
-                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                                this.onFieldChange(e.target.name, e.target.value);
-                                            }}
-                                        />
-                                    )}
+                                    </div>
                                 </div>
-                            </div>
+                                {!metricUnitKind?.hideSubSelect && (
+                                    <div className="row margin-top">
+                                        <div className="col-xs-2">
+                                            <DomainFieldLabel
+                                                label={metricUnitLabel}
+                                                required={metricUnitRequired}
+                                                helpTipBody={metricUnitHelpMsg}
+                                            />
+                                        </div>
+                                        <div className="col-xs-3">
+                                            <SelectInput
+                                                containerClass="sampleset-metric-unit-select-container"
+                                                inputClass="sampleset-metric-unit-select"
+                                                name="metricUnit"
+                                                options={validMetricUnitOptions}
+                                                required={metricUnitRequired}
+                                                clearable={!metricUnitRequired}
+                                                onChange={(name, formValue, option: SelectInputOption) => {
+                                                    this.onUnitChange(
+                                                        name,
+                                                        formValue === undefined && option ? option.id : formValue
+                                                    );
+                                                }}
+                                                placeholder="Select a unit..."
+                                                value={model.metricUnit}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+                                {metricUnitKind?.msg && (
+                                    <div className="row margin-top">
+                                        <div className="col-xs-2" />
+                                        <div className="col-xs-10">
+                                            <em>{metricUnitKind.msg}</em>
+                                        </div>
+                                    </div>
+                                )}
+                            </>
                         )}
                     </>
                 )}

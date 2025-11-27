@@ -4,6 +4,7 @@ export enum UNITS_KIND {
     COUNT = 'Count',
     MASS = 'Mass',
     VOLUME = 'Volume',
+    NONE = 'None'
 }
 
 export class UnitModel {
@@ -14,7 +15,7 @@ export class UnitModel {
     readonly unit?: MeasurementUnit;
 
     constructor(value: number, unitStr: string) {
-        const unit = MEASUREMENT_UNITS[unitStr?.toLowerCase()] || null;
+        const unit = getMeasurementUnit(unitStr) || null;
         Object.assign(this, { value, unitStr, unit });
     }
 
@@ -27,7 +28,7 @@ export class UnitModel {
             return this.unit == null;
         }
 
-        const newUnit: MeasurementUnit = MEASUREMENT_UNITS[newUnitStr.toLowerCase()];
+        const newUnit: MeasurementUnit = getMeasurementUnit(newUnitStr);
         return newUnit?.kind == this.unit?.kind;
     }
 
@@ -36,7 +37,7 @@ export class UnitModel {
             throw new Error('Cannot convert to "' + newUnitStr + '"');
         }
 
-        const newUnit = MEASUREMENT_UNITS[newUnitStr?.toLowerCase()];
+        const newUnit = getMeasurementUnit(newUnitStr);
         if (!newUnit) {
             throw new Error('Unit type not supported "' + newUnitStr + '"');
         }
@@ -96,6 +97,7 @@ export interface MeasurementUnit {
     longLabelPlural: string;
     longLabelSingular: string;
     ratio: number;
+    altLabels?: string[];
 }
 
 export const MEASUREMENT_UNITS: { [key: string]: MeasurementUnit } = {
@@ -125,6 +127,33 @@ export const MEASUREMENT_UNITS: { [key: string]: MeasurementUnit } = {
         kind: UNITS_KIND.MASS,
         ratio: 1000,
         displayPrecision: 12, // enable smallest precision of ng
+    },
+    ug: {
+        baseUnit: 'g',
+        label: 'ug',
+        longLabelSingular: 'microgram',
+        longLabelPlural: 'micrograms',
+        kind: UNITS_KIND.MASS,
+        ratio: 0.000001,
+        displayPrecision: 3, // enable smallest precision of ng
+    },
+    ng: {
+        baseUnit: 'g',
+        label: 'ng',
+        longLabelSingular: 'nanogram',
+        longLabelPlural: 'nanograms',
+        kind: UNITS_KIND.MASS,
+        ratio: 0.000000001,
+        displayPrecision: 3,
+    },
+    pg: {
+        baseUnit: 'g',
+        label: 'pg',
+        longLabelSingular: 'picogram',
+        longLabelPlural: 'picograms',
+        kind: UNITS_KIND.MASS,
+        ratio: 0.000000000001,
+        displayPrecision: 3,
     },
     ml: {
         baseUnit: 'mL',
@@ -161,8 +190,30 @@ export const MEASUREMENT_UNITS: { [key: string]: MeasurementUnit } = {
         kind: UNITS_KIND.COUNT,
         ratio: 1,
         displayPrecision: 2,
+        altLabels: ['blocks', 'bottle', 'box', 'cells', 'kit', 'pack', 'pcs', 'slides', 'tests']
     },
 };
+
+export function getMeasurementUnit(unitStr: string): MeasurementUnit {
+    if (!unitStr)
+        return null;
+
+    const unit = MEASUREMENT_UNITS[unitStr?.toLowerCase()];
+    if (unit)
+        return unit;
+
+    const unitStrLc = unitStr.toLowerCase();
+    if (MEASUREMENT_UNITS.unit.altLabels.indexOf(unitStrLc) > -1) {
+        return {
+            ...MEASUREMENT_UNITS.unit,
+            label: unitStrLc,
+            longLabelSingular: unitStrLc,
+            longLabelPlural: unitStrLc,
+        };
+    }
+
+    return null;
+}
 
 /**
  * @param unitAStr
@@ -181,16 +232,16 @@ export function areUnitsCompatible(unitAStr: string, unitBStr: string) {
     if (!unitAStr && unitBStr) {
         return false;
     }
-    const unitA: MeasurementUnit = MEASUREMENT_UNITS[unitAStr.toLowerCase()];
-    const unitB: MeasurementUnit = MEASUREMENT_UNITS[unitBStr.toLowerCase()];
+    const unitA: MeasurementUnit = getMeasurementUnit(unitAStr);
+    const unitB: MeasurementUnit = getMeasurementUnit(unitBStr);
     if (!unitA || !unitB) {
         return false;
     }
     return unitA.kind == unitB.kind;
 }
 
-export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolean): any[] {
-    const unit: MeasurementUnit = MEASUREMENT_UNITS[metricUnit?.toLowerCase()];
+export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolean): { value: string, label: string }[] {
+    const unit: MeasurementUnit = getMeasurementUnit(metricUnit);
 
     const options = [];
     for (const [key, value] of Object.entries(MEASUREMENT_UNITS)) {
@@ -200,17 +251,42 @@ export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolea
             } else {
                 options.push({ value: value.label, label: value.label + ' (' + value.longLabelPlural + ')' });
             }
+
+            if (unit && value.kind === unit.kind) {
+                unit.altLabels?.forEach(altLabel => {
+                    options.push({ value: altLabel, label: altLabel });
+                })
+            }
         }
     }
     return options;
 }
 
+export function getMetricUnitOptionsFromKind(unitKind?: UNITS_KIND, showLongLabel?: boolean): { value: string, label: string }[] {
+    let metricUnit: string = null;
+    switch (unitKind){
+        case UNITS_KIND.MASS:
+            metricUnit = 'g';
+            break;
+        case UNITS_KIND.VOLUME:
+            metricUnit = 'mL';
+            break;
+        case UNITS_KIND.COUNT:
+            metricUnit = 'unit';
+            break;
+    }
+    return getMetricUnitOptions(metricUnit, showLongLabel);
+}
+
 export function getAltUnitKeys(unitTypeStr): string[] {
-    const unit: MeasurementUnit = MEASUREMENT_UNITS[unitTypeStr?.toLowerCase()];
+    const unit: MeasurementUnit = getMeasurementUnit(unitTypeStr);
     const options = [];
     Object.values(MEASUREMENT_UNITS).forEach(value => {
         if (!unit || value.kind === unit.kind) {
             options.push(value.label);
+            if (value.altLabels) {
+                options.push(...value.altLabels);
+            }
         }
     });
 
@@ -223,10 +299,10 @@ export function getVolumeMinStep(sampleTypeUnit?: MeasurementUnit | string) {
         return step;
     }
 
-    const unit = typeof sampleTypeUnit === 'string' ? MEASUREMENT_UNITS[sampleTypeUnit.toLowerCase()] : sampleTypeUnit;
+    const unit = typeof sampleTypeUnit === 'string' ? getMeasurementUnit(sampleTypeUnit) : sampleTypeUnit;
 
     // If we don't know the units, or it is 'unit' then use the default
-    if (!unit || unit === MEASUREMENT_UNITS.unit) {
+    if (!unit || unit.baseUnit === MEASUREMENT_UNITS.unit.baseUnit) {
         return step;
     }
 

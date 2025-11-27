@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+###  version 6.X
+*Released*: X 2025
+- Sample Amount/Units: support additional unit types
+    - TODO
+
 ###  version 6.72.1
 *Released*: 25 November 2025
 - QueryColumn to only apply displayWidth for multiLine columns

@@ -1,4 +1,11 @@
-import { areUnitsCompatible, getAltUnitKeys, getMetricUnitOptions, UnitModel } from './measurement';
+import {
+    areUnitsCompatible,
+    getAltUnitKeys,
+    getMeasurementUnit,
+    getMetricUnitOptions,
+    MEASUREMENT_UNITS,
+    UnitModel
+} from './measurement';
 
 describe('UnitModel', () => {
     test('constructor and operators', () => {
@@ -127,9 +134,9 @@ describe('MetricUnit utils', () => {
             ])
         );
 
-        expect(getMetricUnitOptions(null).length).toBe(7);
-        expect(getMetricUnitOptions('').length).toBe(7);
-        expect(getMetricUnitOptions('bad').length).toBe(7);
+        expect(getMetricUnitOptions(null).length).toBe(10);
+        expect(getMetricUnitOptions('').length).toBe(10);
+        expect(getMetricUnitOptions('bad').length).toBe(10);
     });
 
     test('getAltUnitKeys', () => {
@@ -137,17 +144,34 @@ describe('MetricUnit utils', () => {
         expect(getAltUnitKeys('uL')).toEqual(expectedUlOptions);
         expect(getAltUnitKeys('mL')).toEqual(expectedUlOptions);
 
-        const expectedGOptions = ['g', 'mg', 'kg'];
+        const expectedGOptions = ['g', 'mg', 'kg', 'ug', 'ng', 'pg'];
         expect(getAltUnitKeys('g')).toEqual(expectedGOptions);
         expect(getAltUnitKeys('kg')).toEqual(expectedGOptions);
 
-        expect(getAltUnitKeys('unit')).toEqual(['unit']);
+        expect(getAltUnitKeys('unit')).toEqual(['unit', 'blocks', 'bottle', 'box', 'cells', 'kit', 'pack', 'pcs', 'slides', 'tests']);
 
         // include all options when no unitTypeStr or an invalid unitTypeStr is provided
-        expect(getAltUnitKeys(null).length).toBe(7);
-        expect(getAltUnitKeys('').length).toBe(7);
-        expect(getAltUnitKeys('bad').length).toBe(7);
+        expect(getAltUnitKeys(null).length).toBe(19);
+        expect(getAltUnitKeys('').length).toBe(19);
+        expect(getAltUnitKeys('bad').length).toBe(19);
     });
+
+    describe('getMeasurementUnit', () => {
+        expect(getMeasurementUnit(undefined)).toBeNull();
+        expect(getMeasurementUnit('')).toBeNull();
+        expect(getMeasurementUnit('invalidUnit')).toBeNull();
+        expect(getMeasurementUnit('mL')).toEqual(MEASUREMENT_UNITS.ml);
+        expect(getMeasurementUnit('ML')).toEqual(MEASUREMENT_UNITS.ml);
+        const unit = getMeasurementUnit('pcs');
+        expect(unit).toEqual({
+            ...MEASUREMENT_UNITS.unit,
+            label: 'pcs',
+            longLabelSingular: 'pcs',
+            longLabelPlural: 'pcs',
+        });
+    });
+
+
 });
 
 describe('areUnitsCompatible', () => {

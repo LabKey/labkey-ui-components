@@ -108,8 +108,9 @@ export interface MetricUnitProps {
     includeMetricUnitProperty?: boolean;
     metricUnitHelpMsg?: string;
     metricUnitLabel?: string;
-    metricUnitOptions?: any[];
+    metricUnitOptions?: { value: string; label: string }[];
     metricUnitRequired?: boolean;
+    lockUnitKind?: boolean;
 }
 
 export interface AliquotNamePatternProps {

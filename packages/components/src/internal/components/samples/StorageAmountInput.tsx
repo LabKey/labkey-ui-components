@@ -4,10 +4,10 @@ import { Alert } from '../base/Alert';
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import {
+    getMeasurementUnit,
     getMetricUnitOptions,
     getVolumeMinStep,
     isMeasurementUnitIgnoreCase,
-    MEASUREMENT_UNITS,
     UnitModel,
 } from '../../util/measurement';
 
@@ -42,7 +42,7 @@ export const StorageAmountInput: FC<Props> = memo(props => {
         unitDisplay = <span className="storage-item-unit-text margin-left">{unitText || preferredUnit}</span>;
     }
     // If unitText is provided and not a supported unit type, allow editing as text
-    else if (unitText && !MEASUREMENT_UNITS.hasOwnProperty(unitText.toLowerCase())) {
+    else if (unitText && !getMeasurementUnit(unitText)) {
         unitDisplay = (
             <input
                 className="form-control checkin-unit-input"

@@ -16,7 +16,7 @@
 import { Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { SAMPLE_MANAGEMENT, SCHEMAS } from '../schemas';
+import { SCHEMAS } from '../schemas';
 
 import { selectRows } from '../query/selectRows';
 import { caseInsensitive } from '../util/utils';
@@ -96,60 +96,5 @@ export class ListResolver implements AppRouteResolver {
 
         // skip it
         return undefined;
-    }
-}
-
-/**
- * Resolves experiment runs to workflow jobs if appropriate
- * /rd/run/14/... -> /workflow/14/...
- * If this doesn't correspond to a job, the link won't resolve.
- *
- * Ideally we would resolve to the original URL if it's not a job, but since that's a link out to LKS
- * it's not currently supported by AppRouteResolvers.  Alternatively, and perhaps more ideally, we'd resolve
- * to the lineage page for a sample, but the URL here doesn't have any info about the related entity.
- */
-export class ExperimentRunResolver implements AppRouteResolver {
-    jobs: Set<number>; // set of rowIds that are jobs
-
-    constructor(jobs?: Set<number>) {
-        this.jobs = jobs !== undefined ? jobs : new Set();
-    }
-
-    async fetch(parts: any[]): Promise<AppURL> {
-        const rowIdIndex = 2;
-        const rowId = parseInt(parts[rowIdIndex], 10);
-
-        if (isNaN(rowId)) {
-            // skip it
-            return undefined;
-        }
-        if (this.jobs.has(rowId)) {
-            // resolve it
-            return AppURL.create(WORKFLOW_KEY, rowId);
-        }
-        try {
-            const result = await selectRows({
-                schemaQuery: SAMPLE_MANAGEMENT.JOBS,
-                filterArray: [Filter.create('RowId', rowId)],
-                columns: 'RowId',
-            });
-
-            if (result.rows.length > 0) {
-                // resolve it
-                this.jobs.add(rowId);
-                return AppURL.create(WORKFLOW_KEY, rowId);
-            } else {
-                return AppURL.create('rd', 'assayrun', rowId);
-            }
-        } catch (e) {
-            // skip it
-        }
-
-        // skip it
-        return undefined;
-    }
-
-    matches(route: string): boolean {
-        return /\/rd\/run\/\d+$/.test(route);
     }
 }

@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.0.0
+*Released*: 1 December 2025
+- Updates for new Workflow implementation
+  - Update URLResolver to reference new controller for workflow-related actions
+  - add `WORKFLOW` schema and queries and remove legacy job schema/query references
+  - remove ExperimentRunResolver
+
 ###  version 6.72.1
 *Released*: 25 November 2025
 - QueryColumn to only apply displayWidth for multiLine columns

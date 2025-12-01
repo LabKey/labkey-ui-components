@@ -12,6 +12,15 @@ import { deepCopyChartConfig, hasTrendline } from './utils';
 import classNames from 'classnames';
 import { useEnterEscape } from '../../../public/useEnterEscape';
 
+function changedValue(strVal: string, currentVal: number): [value: number, changed: boolean] {
+    strVal = strVal.trim();
+    const value = strVal === '' ? undefined : parseInt(strVal, 10);
+    // If the number is NaN then we don't want to trigger change
+    const changed = (value === undefined || !isNaN(value)) && value !== currentVal;
+
+    return [value, changed];
+}
+
 interface InputProps {
     label: string;
     name: string;
@@ -130,17 +139,15 @@ const SizeInputs: FC<SizeInputsProps> = memo(({ height, setChartConfig, width })
     const onNumberChange = useCallback((name, value) => setSizes(current => ({ ...current, [name]: value })), []);
     const onBlur = useCallback(() => {
         setChartConfig(current => {
-            const updatedHeight = parseInt(sizes.height, 10);
-            const updatedWidth = parseInt(sizes.width, 10);
-            const heightChanged = !isNaN(updatedHeight) && updatedHeight !== current.height;
-            const widthChanged = !isNaN(updatedWidth) && updatedWidth !== current.width;
+            const [height, heightChanged] = changedValue(sizes.height, current.height);
+            const [width, widthChanged] = changedValue(sizes.width, current.width);
 
             if (!heightChanged && !widthChanged) return current;
 
             return {
                 ...current,
-                height: heightChanged ? updatedHeight : current.height,
-                width: widthChanged ? updatedWidth : current.width,
+                height: heightChanged ? height : current.height,
+                width: widthChanged ? width : current.width,
             };
         });
     }, [setChartConfig, sizes]);

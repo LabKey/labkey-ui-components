@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.0.0
+*Released*: 1 December 2025
 - Updates for new Workflow implementation
   - Update URLResolver to reference new controller for workflow-related actions
   - add `WORKFLOW` schema and queries and remove legacy job schema/query references

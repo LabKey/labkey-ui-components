@@ -30,7 +30,8 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
         return scales[field.name] ?? DEFAULT_SCALE_VALUES;
     });
     const options = useMemo(() => getSelectOptions(model, selectedType, field), [model, selectedType, field]);
-    const showAdditionalOptions = measure && (field.name === 'x' || field.name === 'y');
+    const isPieChart = selectedType.name === 'pie_chart';
+    const showAdditionalOptions = !isPieChart && measure && (field.name === 'x' || field.name === 'y');
 
     const onScaleChange = useCallback(
         (scale: ScaleType, localOnly = false) => {

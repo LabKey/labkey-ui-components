@@ -21,6 +21,20 @@ function changedValue(strVal: string, currentVal: number): [value: number, chang
     return [value, changed];
 }
 
+function computeMarginTop(main: string, subtitle: string): number {
+    let marginTop = 15;
+    const hasTitle = !!main?.trim();
+    const hasSubtitle = !!subtitle?.trim();
+
+    if (hasTitle && hasSubtitle) marginTop += 50;
+    else if (hasTitle) marginTop += 25;
+    // Yes, really, subtitle only gets the most padding. Our charting library is probably setting some
+    // default amount if main is present
+    else if (hasSubtitle) marginTop += 55;
+
+    return marginTop;
+}
+
 interface InputProps {
     label: string;
     name: string;
@@ -295,9 +309,12 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
         (type: ChartTypeInfo) => {
             setChartConfig(current => {
                 const { main, subtitle } = current.labels;
+                const newConfig = deepCopyChartConfig(undefined, type.name);
                 return {
-                    ...deepCopyChartConfig(undefined, type.name),
+                    ...newConfig,
                     labels: { main, subtitle },
+                    // Keep marginTop to account for main / subtitle labels
+                    geomOptions: { ...newConfig.geomOptions, marginTop: computeMarginTop(main, subtitle) },
                 };
             });
         },
@@ -309,16 +326,7 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
             setChartConfig(current => {
                 const labels = { ...current.labels, [key]: value };
                 let geomOptions = current.geomOptions;
-                let marginTop = 15;
-                const hasTitle = !!labels.main?.trim();
-                const hasSubtitle = !!labels.subtitle?.trim();
-
-                if (hasTitle && hasSubtitle) marginTop += 50;
-                else if (hasTitle) marginTop += 25;
-                // Yes, really, subtitle only gets the most padding. Our charting library is probably setting some
-                // default amount if main is present
-                else if (hasSubtitle) marginTop += 55;
-
+                const marginTop = computeMarginTop(labels.main, labels.subtitle);
                 if (marginTop != geomOptions.marginTop) geomOptions = { ...geomOptions, marginTop };
 
                 return { ...current, labels, geomOptions };

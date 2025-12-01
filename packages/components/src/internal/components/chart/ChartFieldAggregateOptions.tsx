@@ -85,7 +85,7 @@ export const ChartFieldAggregateOptions: FC<OwnProps> = memo(props => {
         <>
             <div>
                 <label>
-                    Aggregate Method <LabelOverlay placement="bottom">{BAR_CHART_AGGREGATE_METHOD_TIP}</LabelOverlay>
+                    Aggregate Method <LabelOverlay placement="right">{BAR_CHART_AGGREGATE_METHOD_TIP}</LabelOverlay>
                 </label>
                 <SelectInput
                     clearable={false}
@@ -100,7 +100,7 @@ export const ChartFieldAggregateOptions: FC<OwnProps> = memo(props => {
             </div>
             <div className="field-option-radio-group field-option-radio-group-block">
                 <label>
-                    Error Bars <LabelOverlay placement="bottom">{BAR_CHART_ERROR_BAR_TIP}</LabelOverlay>
+                    Error Bars <LabelOverlay placement="right">{BAR_CHART_ERROR_BAR_TIP}</LabelOverlay>
                 </label>
                 <RadioGroupInput
                     formsy={false}

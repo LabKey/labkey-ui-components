@@ -130,7 +130,7 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
         <div className="trendline-option">
             <label>
                 Trendline{' '}
-                <LabelOverlay placement="bottom">
+                <LabelOverlay placement="right">
                     {trendlineOptions
                         .filter(option => option.equation)
                         .map(option => (
@@ -300,7 +300,7 @@ const TrendlineOptionPopover: FC<TrendlineOptionPopoverProps> = props => {
             <div className="margin-top">
                 <label>
                     Provided Parameters{' '}
-                    <LabelOverlay placement="bottom">
+                    <LabelOverlay placement="right">
                         Select the field in the data which has the already computed / saved curve fit parameters object
                         for the selected Trendline type. These provided parameters will then be used in the trendline
                         display instead of calculating new parameters based on the current data points in the grid.

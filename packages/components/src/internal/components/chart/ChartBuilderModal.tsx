@@ -144,7 +144,7 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
                     }
                 }
 
-                const width = chartConfig.width ?? (ref?.current?.getBoundingClientRect().width || 750);
+                const width = chartConfig.width ?? (ref?.current?.getBoundingClientRect().width - 15 || 750);
                 const height = chartConfig.height ?? 500;
                 const chartConfig_ = { ...chartConfig, height, width };
 
@@ -159,7 +159,7 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
 
     return (
         <div className="chart-builder-modal__chart-preview">
-            <label>Preview</label>
+            <h4>Preview</h4>
             {previewMsg && <span className="chart-builder-preview-msg gray-text pull-right">{previewMsg}</span>}
             {!hasRequiredValues && <div className="gray-text">Select required fields to preview the chart.</div>}
             {hasRequiredValues && (
@@ -355,27 +355,25 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
             title={savedChartModel ? 'Edit Chart' : 'Create Chart'}
         >
             {error && <Alert>{error}</Alert>}
-            <div className="chart-builder-modal__body">
-                <ChartSettingsPanel
-                    allowInherit={allowInherit}
-                    canShare={canShare}
-                    chartConfig={chartConfig}
-                    chartModel={chartModel}
-                    chartType={selectedType}
-                    isNew={savedChartModel !== undefined}
-                    model={model}
-                    setChartConfig={setChartConfig}
-                    setChartModel={setChartModel}
-                />
-                <ChartPreview
-                    chartConfig={chartConfig}
-                    hasRequiredValues={hasRequiredValues}
-                    model={model}
-                    savedChartModel={savedChartModel}
-                    selectedType={selectedType}
-                    setReportConfig={setReportConfig}
-                />
-            </div>
+            <ChartSettingsPanel
+                allowInherit={allowInherit}
+                canShare={canShare}
+                chartConfig={chartConfig}
+                chartModel={chartModel}
+                chartType={selectedType}
+                isNew={savedChartModel !== undefined}
+                model={model}
+                setChartConfig={setChartConfig}
+                setChartModel={setChartModel}
+            />
+            <ChartPreview
+                chartConfig={chartConfig}
+                hasRequiredValues={hasRequiredValues}
+                model={model}
+                savedChartModel={savedChartModel}
+                selectedType={selectedType}
+                setReportConfig={setReportConfig}
+            />
         </Modal>
     );
 });

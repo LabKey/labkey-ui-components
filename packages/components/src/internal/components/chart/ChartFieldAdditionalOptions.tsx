@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, memo, useCallback, useMemo } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useMemo, useState } from 'react';
 import { OverlayTrigger } from '../../OverlayTrigger';
 import { Popover } from '../../Popover';
 import { ChartConfig, ChartConfigSetter, ChartFieldInfo, ChartTypeInfo, ScaleType } from './models';
@@ -6,6 +6,7 @@ import { getFieldDataType, shouldShowAggregateOptions, shouldShowRangeScaleOptio
 import { LABKEY_VIS } from '../../constants';
 import { ChartFieldAggregateOptions } from './ChartFieldAggregateOptions';
 import { ChartFieldRangeScaleOptions } from './ChartFieldRangeScaleOptions';
+import { useEnterEscape } from '../../../public/useEnterEscape';
 
 interface FieldLabelInputProps {
     label: string;
@@ -15,17 +16,25 @@ interface FieldLabelInputProps {
 }
 
 const FieldLabelInput: FC<FieldLabelInputProps> = memo(({ label, name, setChartConfig, value }) => {
-    const onChange = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            setChartConfig(current => ({ ...current, labels: { ...current.labels, [name]: e.target.value } }));
-        },
-        [name, setChartConfig]
-    );
+    const [inputValue, setInputValue] = useState<string>(value ?? '');
+    const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value), []);
+    const onBlur = useCallback(() => {
+        setChartConfig(current => ({ ...current, labels: { ...current.labels, [name]: inputValue.trim() } }));
+    }, [inputValue, name, setChartConfig]);
+    const onKeyDown = useEnterEscape(onBlur);
 
     return (
         <div className="form-group">
             <label>{label} Label</label>
-            <input className="form-control" name={name as string} onChange={onChange} type="text" value={value ?? ''} />
+            <input
+                className="form-control"
+                name={name as string}
+                onBlur={onBlur}
+                onChange={onChange}
+                onKeyDown={onKeyDown}
+                type="text"
+                value={inputValue}
+            />
         </div>
     );
 });

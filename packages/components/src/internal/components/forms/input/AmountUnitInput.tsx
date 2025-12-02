@@ -76,17 +76,19 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                 <TextInput
                     disableInput={disabled}
                     elementWrapperClassName=""
+                    onChange={onAmountChange}
                     queryColumn={amountCol}
                     rowClassName={'col-sm-5 col-xs-6'}
                     showLabel={false}
-                    value={amountValue ? String(amountValue) : amountValue}
+                    type="number"
                     validations="sampleAmount"
-                    type='number'
-                    onChange={onAmountChange}
+                    value={amountValue ? String(amountValue) : amountValue}
                 />
                 <QuerySelect
                     containerClass={'col-sm-4 col-xs-6'}
-                    containerFilter={unitCol.lookup.containerFilter ?? containerFilter ?? getContainerFilterForLookups()}
+                    containerFilter={
+                        unitCol.lookup.containerFilter ?? containerFilter ?? getContainerFilterForLookups()
+                    }
                     containerPath={unitCol.lookup.containerPath ?? containerPath}
                     description={unitCol.description}
                     disableInput={disabled}

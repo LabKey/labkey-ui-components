@@ -3,8 +3,8 @@ import { immerable } from 'immer';
 export enum UNITS_KIND {
     COUNT = 'Count',
     MASS = 'Mass',
+    NONE = 'None',
     VOLUME = 'Volume',
-    NONE = 'None'
 }
 
 export class UnitModel {
@@ -89,6 +89,7 @@ export class UnitModel {
 }
 
 export interface MeasurementUnit {
+    altLabels?: string[];
     baseUnit: string;
     // Number of decimal places allowed when unit is displayed
     displayPrecision: number;
@@ -97,10 +98,9 @@ export interface MeasurementUnit {
     longLabelPlural: string;
     longLabelSingular: string;
     ratio: number;
-    altLabels?: string[];
 }
 
-export const MEASUREMENT_UNITS: { [key: string]: MeasurementUnit } = {
+export const MEASUREMENT_UNITS: Record<string, MeasurementUnit> = {
     g: {
         label: 'g',
         baseUnit: 'g',
@@ -190,17 +190,15 @@ export const MEASUREMENT_UNITS: { [key: string]: MeasurementUnit } = {
         kind: UNITS_KIND.COUNT,
         ratio: 1,
         displayPrecision: 2,
-        altLabels: ['blocks', 'bottle', 'box', 'cells', 'kit', 'pack', 'pcs', 'slides', 'tests']
+        altLabels: ['blocks', 'bottle', 'box', 'cells', 'kit', 'pack', 'pcs', 'slides', 'tests'],
     },
 };
 
 export function getMeasurementUnit(unitStr: string): MeasurementUnit {
-    if (!unitStr)
-        return null;
+    if (!unitStr) return null;
 
     const unit = MEASUREMENT_UNITS[unitStr?.toLowerCase()];
-    if (unit)
-        return unit;
+    if (unit) return unit;
 
     const unitStrLc = unitStr.toLowerCase();
     if (MEASUREMENT_UNITS.unit.altLabels.indexOf(unitStrLc) > -1) {
@@ -240,7 +238,7 @@ export function areUnitsCompatible(unitAStr: string, unitBStr: string) {
     return unitA.kind == unitB.kind;
 }
 
-export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolean): { value: string, label: string }[] {
+export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolean): { label: string; value: string }[] {
     const unit: MeasurementUnit = getMeasurementUnit(metricUnit);
 
     const options = [];
@@ -255,24 +253,27 @@ export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolea
             if (unit && value.kind === unit.kind) {
                 unit.altLabels?.forEach(altLabel => {
                     options.push({ value: altLabel, label: altLabel });
-                })
+                });
             }
         }
     }
     return options;
 }
 
-export function getMetricUnitOptionsFromKind(unitKind?: UNITS_KIND, showLongLabel?: boolean): { value: string, label: string }[] {
+export function getMetricUnitOptionsFromKind(
+    unitKind?: UNITS_KIND,
+    showLongLabel?: boolean
+): { label: string; value: string }[] {
     let metricUnit: string = null;
-    switch (unitKind){
+    switch (unitKind) {
+        case UNITS_KIND.COUNT:
+            metricUnit = 'unit';
+            break;
         case UNITS_KIND.MASS:
             metricUnit = 'g';
             break;
         case UNITS_KIND.VOLUME:
             metricUnit = 'mL';
-            break;
-        case UNITS_KIND.COUNT:
-            metricUnit = 'unit';
             break;
     }
     return getMetricUnitOptions(metricUnit, showLongLabel);

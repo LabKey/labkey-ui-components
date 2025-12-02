@@ -77,11 +77,14 @@ export const StorageAmountInput: FC<Props> = memo(props => {
         }
     }
 
-    const onChange = useCallback(event => {
-        const newValue = event?.target?.value;
-        amountChangedHandler(newValue);
-        setAmountInput(newValue);
-    }, [amountChangedHandler]);
+    const onChange = useCallback(
+        event => {
+            const newValue = event?.target?.value;
+            amountChangedHandler(newValue);
+            setAmountInput(newValue);
+        },
+        [amountChangedHandler]
+    );
 
     const containerClassName = className ?? 'form-group storage-item-check-in-sampletype-row ';
     return (

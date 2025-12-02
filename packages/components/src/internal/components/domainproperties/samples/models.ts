@@ -4,7 +4,6 @@ import { DomainDesign, DomainDetails, IDomainField } from '../models';
 import { IImportAlias, IParentAlias } from '../../entities/models';
 import { getDuplicateAlias, parentAliasInvalid } from '../utils';
 
-// eslint-disable-next-line no-template-curly-in-string
 export const DEFAULT_ALIQUOT_NAMING_PATTERN = '${${AliquotedFrom}-:withCounter}';
 
 export class SampleTypeModel extends Record({
@@ -106,11 +105,11 @@ export class SampleTypeModel extends Record({
 
 export interface MetricUnitProps {
     includeMetricUnitProperty?: boolean;
+    lockUnitKind?: boolean;
     metricUnitHelpMsg?: string;
     metricUnitLabel?: string;
-    metricUnitOptions?: { value: string; label: string }[];
+    metricUnitOptions?: { label: string; value: string }[];
     metricUnitRequired?: boolean;
-    lockUnitKind?: boolean;
 }
 
 export interface AliquotNamePatternProps {

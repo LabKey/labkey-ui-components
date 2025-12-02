@@ -53,7 +53,7 @@ import {
     getMeasurementUnit,
     getMetricUnitOptions,
     getMetricUnitOptionsFromKind,
-    UNITS_KIND
+    UNITS_KIND,
 } from '../../../util/measurement';
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
@@ -76,18 +76,26 @@ const AddEntityHelpTip: FC<{ parentageLabel?: string }> = memo(({ parentageLabel
 
 const UnitKinds = {
     [UNITS_KIND.NONE]: {
-        value: UNITS_KIND.NONE, label: 'Any', hideSubSelect: true, msg: 'Amounts can be entered in any unit and won’t be converted.'
+        value: UNITS_KIND.NONE,
+        label: 'Any',
+        hideSubSelect: true,
+        msg: 'Amounts can be entered in any unit and won’t be converted.',
     },
     [UNITS_KIND.MASS]: {
-        value: UNITS_KIND.MASS, label: 'Mass'
+        value: UNITS_KIND.MASS,
+        label: 'Mass',
     },
     [UNITS_KIND.VOLUME]: {
-        value: UNITS_KIND.VOLUME, label: 'Volume'
+        value: UNITS_KIND.VOLUME,
+        label: 'Volume',
     },
     [UNITS_KIND.COUNT]: {
-        value: UNITS_KIND.COUNT, label: 'Other', hideSubSelect: true, msg: 'Amounts can be entered as unit, pcs, pack, blocks, slides, cells, box, kit, tests, or bottle and won’t be converted.'
+        value: UNITS_KIND.COUNT,
+        label: 'Other',
+        hideSubSelect: true,
+        msg: 'Amounts can be entered as unit, pcs, pack, blocks, slides, cells, box, kit, tests, or bottle and won’t be converted.',
     },
-}
+};
 
 AddEntityHelpTip.displayName = 'AddEntityHelpTip';
 
@@ -173,21 +181,21 @@ interface State {
     containers: Container[];
     isValid: boolean;
     loadingError: string;
+    metricUnitKind: { hideSubSelect?: boolean; label: string; msg?: string; value: string };
     prefix: string;
     sampleTypeCategory: string;
-    metricUnitKind: { value: string; label: string, hideSubSelect?: boolean, msg?: string };
-    validMetricUnitOptions: { value: string; label: string, hideSubSelect?: boolean, msg?: string }[];
+    validMetricUnitOptions: { hideSubSelect?: boolean; label: string; msg?: string; value: string }[];
 }
 
-type Props = OwnProps & EntityProps & BasePropertiesPanelProps;
+type Props = BasePropertiesPanelProps & EntityProps & OwnProps;
 
-class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
+class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainPropertiesPanelCollapseProps & Props, State> {
     static defaultProps = {
         api: getDefaultAPIWrapper(),
         nounSingular: SAMPLE_SET_DISPLAY_TEXT,
         nounPlural: SAMPLE_SET_DISPLAY_TEXT + 's',
         nameExpressionInfoUrl: getHelpLink('sampleIDs'),
-        // eslint-disable-next-line no-template-curly-in-string
+
         nameExpressionPlaceholder: 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})',
         appPropertiesOnly: false,
         showLinkToStudy: true,
@@ -228,7 +236,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
             this.setState({
                 sampleTypeCategory: result.rows[0]?.Category.value,
                 metricUnitKind: unitKind ? UnitKinds[unitKind] : null,
-                validMetricUnitOptions: metricUnitProps?.metricUnitOptions
+                validMetricUnitOptions: metricUnitProps?.metricUnitOptions,
             });
         } catch (e) {
             this.setState({ loadingError: 'There was a problem retrieving the Sample Type category.' });
@@ -329,7 +337,15 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
             namePreviewsLoading,
             nameExpressionGenIdProps,
         } = this.props;
-        const { isValid, containers, prefix, loadingError, sampleTypeCategory, validMetricUnitOptions, metricUnitKind } = this.state;
+        const {
+            isValid,
+            containers,
+            prefix,
+            loadingError,
+            sampleTypeCategory,
+            validMetricUnitOptions,
+            metricUnitKind,
+        } = this.state;
 
         const showAliquotNameExpression = aliquotNamePatternProps?.showAliquotNameExpression;
         const aliquotNameExpressionInfoUrl = aliquotNamePatternProps?.aliquotNameExpressionInfoUrl;
@@ -371,9 +387,9 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
             <BasePropertiesPanel
                 {...this.props}
                 headerId={PROPERTIES_HEADER_ID}
+                isValid={isValid}
                 title="Sample Type Properties"
                 updateValidStatus={this.updateValidStatus}
-                isValid={isValid}
                 warning={warning}
             >
                 <div className="row margin-bottom">
@@ -388,25 +404,24 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                 </div>
                 {appPropertiesOnly && <SectionHeading title="General Properties" />}
                 <EntityDetailsForm
-                    noun={nounSingular}
-                    onFormChange={this.onFormChange}
                     data={model}
-                    nameReadOnly={model.nameReadOnly}
+                    nameExpressionGenIdProps={nameExpressionGenIdProps}
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
-                    warning={warning}
-                    showPreviewName={!!model.nameExpression}
-                    onNameFieldHover={this.onNameFieldHover}
                     namePreviewsLoading={namePreviewsLoading}
+                    nameReadOnly={model.nameReadOnly}
+                    noun={nounSingular}
+                    onFormChange={this.onFormChange}
+                    onNameFieldHover={this.onNameFieldHover}
                     previewName={namePreviews?.[0]}
-                    nameExpressionGenIdProps={nameExpressionGenIdProps}
+                    showPreviewName={!!model.nameExpression}
+                    warning={warning}
                 />
                 {showAliquotNameExpression && (
                     <div className="row margin-bottom">
                         <div className="col-xs-2">
                             <div onMouseEnter={this.onNameFieldHover}>
                                 <DomainFieldLabel
-                                    label="Aliquot Naming Pattern"
                                     helpTipBody={
                                         <>
                                             <p>Pattern used for generating unique Ids for Aliquots.</p>
@@ -420,21 +435,22 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                                             </p>
                                             {model.aliquotNameExpression && (
                                                 <NameExpressionPreview
-                                                    previewName={namePreviews?.[1]}
                                                     isPreviewLoading={namePreviewsLoading}
+                                                    previewName={namePreviews?.[1]}
                                                 />
                                             )}
                                             <p>
                                                 <a
-                                                    target="_blank"
                                                     href={aliquotNameExpressionInfoUrl ?? ALIQUOT_HELP_LINK}
                                                     rel="noopener noreferrer"
+                                                    target="_blank"
                                                 >
                                                     More info
                                                 </a>
                                             </p>
                                         </>
                                     }
+                                    label="Aliquot Naming Pattern"
                                 />
                             </div>
                         </div>
@@ -444,11 +460,11 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                                     'naming-pattern-border-warning': warning?.startsWith('Aliquot'),
                                 })}
                                 name="aliquotNameExpression"
-                                type="text"
-                                placeholder={aliquotNameExpressionPlaceholder ?? ALIQUOT_NAME_PLACEHOLDER}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     this.onFieldChange(e.target.name, e.target.value);
                                 }}
+                                placeholder={aliquotNameExpressionPlaceholder ?? ALIQUOT_NAME_PLACEHOLDER}
+                                type="text"
                                 value={model.aliquotNameExpression}
                             />
                         </div>
@@ -456,29 +472,29 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                 )}
                 {showAddParentAlias && (
                     <>
-                        <SectionHeading title="Lineage Settings" cls="top-padding bottom-padding" />
+                        <SectionHeading cls="top-padding bottom-padding" title="Lineage Settings" />
                         <DomainParentAliases
                             {...this.props}
-                            parentAliases={model.parentAliases}
-                            idPrefix="sampletype-parent-import-alias-"
-                            schema={SCHEMAS.SAMPLE_SETS.SCHEMA}
                             addEntityHelp={<AddEntityHelpTip />}
-                            includeSampleSet
-                            includeDataClass={includeDataClasses && !useSeparateDataClassesAliasMenu}
-                            showAddBtn={showAddParentAlias}
                             hideRequiredCheck={!appPropertiesOnly}
+                            idPrefix="sampletype-parent-import-alias-"
+                            includeDataClass={includeDataClasses && !useSeparateDataClassesAliasMenu}
+                            includeSampleSet
+                            parentAliases={model.parentAliases}
+                            schema={SCHEMAS.SAMPLE_SETS.SCHEMA}
+                            showAddBtn={showAddParentAlias}
                         />
                     </>
                 )}
                 {showDataClass && (
                     <DomainParentAliases
                         {...this.props}
-                        parentAliases={model.parentAliases}
-                        idPrefix="sampletype-parent-import-alias-"
-                        schema={SCHEMAS.DATA_CLASSES.SCHEMA}
                         addEntityHelp={<AddEntityHelpTip parentageLabel={dataClassParentageLabel} />}
-                        includeSampleSet={false}
+                        idPrefix="sampletype-parent-import-alias-"
                         includeDataClass
+                        includeSampleSet={false}
+                        parentAliases={model.parentAliases}
+                        schema={SCHEMAS.DATA_CLASSES.SCHEMA}
                         showAddBtn
                     />
                 )}
@@ -487,15 +503,15 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                         <div className="row margin-top">
                             <div className="col-xs-2">
                                 <DomainFieldLabel
-                                    label="Auto-Link Data to Study"
                                     helpTipBody={<AutoLinkDataToStudyHelpTip />}
+                                    label="Auto-Link Data to Study"
                                 />
                             </div>
                             <div className="col-xs-5">
                                 <AutoLinkToStudyDropdown
+                                    autoLinkTarget={ENTITY_FORM_IDS.AUTO_LINK_TARGET}
                                     containers={containers}
                                     onChange={this.onFormChange}
-                                    autoLinkTarget={ENTITY_FORM_IDS.AUTO_LINK_TARGET}
                                     value={model.autoLinkTargetContainerId}
                                 />
                             </div>
@@ -503,17 +519,17 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                         <div className="row margin-top">
                             <div className="col-xs-2">
                                 <DomainFieldLabel
-                                    label="Linked Dataset Category"
                                     helpTipBody={<LinkedDatasetCategoryHelpTip />}
+                                    label="Linked Dataset Category"
                                 />
                             </div>
 
                             <div className="col-xs-5">
                                 <input
                                     className="form-control"
-                                    type="text"
                                     id={ENTITY_FORM_IDS.AUTO_LINK_CATEGORY}
                                     onChange={this.onFormChange}
+                                    type="text"
                                     value={model.autoLinkCategory || ''}
                                 />
                             </div>
@@ -529,16 +545,16 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                         <div className="row margin-top">
                             <div className="col-xs-2">
                                 <DomainFieldLabel
-                                    label="Label Color"
                                     helpTipBody="The label color will be used to distinguish this sample type in various views in the application."
+                                    label="Label Color"
                                 />
                             </div>
                             <div className="col-xs-10">
                                 <ColorPickerInput
-                                    name="labelColor"
-                                    value={model.labelColor}
-                                    onChange={this.onFieldChange}
                                     allowRemove
+                                    name="labelColor"
+                                    onChange={this.onFieldChange}
+                                    value={model.labelColor}
                                 />
                             </div>
                         </div>
@@ -546,28 +562,25 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                             <>
                                 <div className="row margin-top">
                                     <div className="col-xs-2">
-                                        <DomainFieldLabel
-                                            label="Amount Type"
-                                            required={metricUnitRequired}
-                                        />
+                                        <DomainFieldLabel label="Amount Type" required={metricUnitRequired} />
                                     </div>
                                     <div className="col-xs-3">
                                         <SelectInput
+                                            clearable={!metricUnitRequired}
                                             containerClass="sampleset-unit-type-select-container"
+                                            disabled={metricUnitProps?.lockUnitKind}
                                             inputClass="sampleset-unit-type-select"
                                             name="metricUnitKind"
-                                            options={Object.values(UnitKinds)}
-                                            required={metricUnitRequired}
-                                            clearable={!metricUnitRequired}
                                             onChange={(name, formValue, option: SelectInputOption) => {
                                                 this.onMetricUnitKindChange(
                                                     name,
                                                     formValue === undefined && option ? option.id : formValue
                                                 );
                                             }}
+                                            options={Object.values(UnitKinds)}
                                             placeholder="Select a type..."
+                                            required={metricUnitRequired}
                                             value={metricUnitKind}
-                                            disabled={metricUnitProps?.lockUnitKind}
                                         />
                                     </div>
                                 </div>
@@ -575,26 +588,26 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                                     <div className="row margin-top">
                                         <div className="col-xs-2">
                                             <DomainFieldLabel
+                                                helpTipBody={metricUnitHelpMsg}
                                                 label={metricUnitLabel}
                                                 required={metricUnitRequired}
-                                                helpTipBody={metricUnitHelpMsg}
                                             />
                                         </div>
                                         <div className="col-xs-3">
                                             <SelectInput
+                                                clearable={!metricUnitRequired}
                                                 containerClass="sampleset-metric-unit-select-container"
                                                 inputClass="sampleset-metric-unit-select"
                                                 name="metricUnit"
-                                                options={validMetricUnitOptions}
-                                                required={metricUnitRequired}
-                                                clearable={!metricUnitRequired}
                                                 onChange={(name, formValue, option: SelectInputOption) => {
                                                     this.onUnitChange(
                                                         name,
                                                         formValue === undefined && option ? option.id : formValue
                                                     );
                                                 }}
+                                                options={validMetricUnitOptions}
                                                 placeholder="Select a unit..."
+                                                required={metricUnitRequired}
                                                 value={model.metricUnit}
                                             />
                                         </div>
@@ -615,10 +628,10 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                 {!isCommunityDistribution() && (
                     <div className="row margin-top">
                         <div className="col-xs-2">
-                            <DomainFieldLabel label="Barcodes" helpTipBody={<UniqueIdHelpTip />} />
+                            <DomainFieldLabel helpTipBody={<UniqueIdHelpTip />} label="Barcodes" />
                         </div>
                         <div className="col-xs-10">
-                            <UniqueIdBanner model={model} isFieldsPanel={false} onAddField={onAddUniqueIdField} />
+                            <UniqueIdBanner isFieldsPanel={false} model={model} onAddField={onAddUniqueIdField} />
                         </div>
                     </div>
                 )}

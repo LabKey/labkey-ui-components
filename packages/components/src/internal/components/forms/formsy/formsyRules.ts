@@ -62,7 +62,7 @@ export const formsyRules: Record<string, ValidationFunction<any>> = {
     matchRegexp,
     maxLength: (_values, value: string, length: number) => !isExisty(value) || value.length <= length,
     minLength: (_values, value: string, length: number) => !isExisty(value) || isEmpty(value) || value.length >= length,
-    sampleAmount: <V>(values, value: V) => isAllowedSampleAmount(value) ,
+    sampleAmount: <V>(values, value: V) => isAllowedSampleAmount(value),
 };
 
 // Formerly "addValidationRule". Renamed so it is clear from the name that this applies only to Formsy.

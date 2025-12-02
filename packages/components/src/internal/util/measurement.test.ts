@@ -4,7 +4,7 @@ import {
     getMeasurementUnit,
     getMetricUnitOptions,
     MEASUREMENT_UNITS,
-    UnitModel
+    UnitModel,
 } from './measurement';
 
 describe('UnitModel', () => {
@@ -148,7 +148,18 @@ describe('MetricUnit utils', () => {
         expect(getAltUnitKeys('g')).toEqual(expectedGOptions);
         expect(getAltUnitKeys('kg')).toEqual(expectedGOptions);
 
-        expect(getAltUnitKeys('unit')).toEqual(['unit', 'blocks', 'bottle', 'box', 'cells', 'kit', 'pack', 'pcs', 'slides', 'tests']);
+        expect(getAltUnitKeys('unit')).toEqual([
+            'unit',
+            'blocks',
+            'bottle',
+            'box',
+            'cells',
+            'kit',
+            'pack',
+            'pcs',
+            'slides',
+            'tests',
+        ]);
 
         // include all options when no unitTypeStr or an invalid unitTypeStr is provided
         expect(getAltUnitKeys(null).length).toBe(19);
@@ -170,8 +181,6 @@ describe('MetricUnit utils', () => {
             longLabelPlural: 'pcs',
         });
     });
-
-
 });
 
 describe('areUnitsCompatible', () => {

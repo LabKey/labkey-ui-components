@@ -1,10 +1,17 @@
 import { Filter, Query, Visualization } from '@labkey/api';
 
+export interface ChartLabels {
+    main?: string;
+    subtitle?: string;
+    x?: string;
+    y?: string;
+}
+
 export interface ChartConfig {
     geomOptions: Record<string, boolean | number | string>;
     gridLinesVisible: string;
     height?: number;
-    labels: Record<string, string>;
+    labels: ChartLabels;
     measures: Record<string, Record<string, any>>; // TODO: we can probably do better than any
     pointType: string;
     renderType: string;

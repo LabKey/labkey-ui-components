@@ -7,7 +7,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { LABKEY_VIS } from '../../constants';
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import { ChartConfig, ChartConfigSetter, ChartFieldInfo, ChartTypeInfo, ScaleType } from './models';
+import { ChartConfig, ChartConfigSetter, ChartFieldInfo, ChartLabels, ChartTypeInfo, ScaleType } from './models';
 import { getBarChartAxisLabel, getSelectOptions, hasTrendline } from './utils';
 
 import { ChartFieldAdditionalOptions } from './ChartFieldAdditionalOptions';
@@ -18,12 +18,13 @@ interface OwnProps {
     chartConfig: ChartConfig;
     field: ChartFieldInfo;
     model: QueryModel;
+    onLabelChange: (key: keyof ChartLabels, value: string) => void;
     selectedType: ChartTypeInfo;
     setChartConfig: ChartConfigSetter;
 }
 
 export const ChartFieldOption: FC<OwnProps> = memo(props => {
-    const { chartConfig, field, model, selectedType, setChartConfig } = props;
+    const { chartConfig, field, model, onLabelChange, selectedType, setChartConfig } = props;
     const { measures, scales } = chartConfig;
     const measure = measures?.[field.name];
     const [scale, setScale] = useState<ScaleType>(() => {
@@ -113,6 +114,7 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
                     <ChartFieldAdditionalOptions
                         chartConfig={chartConfig}
                         field={field}
+                        onLabelChange={onLabelChange}
                         onScaleChange={onScaleChange}
                         scale={scale}
                         selectedType={selectedType}

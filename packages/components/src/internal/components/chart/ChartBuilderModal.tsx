@@ -51,7 +51,7 @@ export const getChartBuilderQueryConfig = (
     const { schemaName, queryName, viewName } = schemaQuery;
 
     const columns = Object.values(chartConfig.measures)
-        .map(measure => measure?.fieldKey)
+        .map(measure => measure?.fieldKey) // Issue 52050: use fieldKey for special characters
         .filter(fk => fk !== undefined);
 
     if (chartConfig.geomOptions.trendlineParameters) columns.push(chartConfig.geomOptions.trendlineParameters);

@@ -1,51 +1,17 @@
-import React, { ChangeEvent, FC, memo, useCallback, useMemo, useState } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import { OverlayTrigger } from '../../OverlayTrigger';
 import { Popover } from '../../Popover';
-import { ChartConfig, ChartConfigSetter, ChartFieldInfo, ChartTypeInfo, ScaleType } from './models';
+import { ChartConfig, ChartConfigSetter, ChartFieldInfo, ChartLabels, ChartTypeInfo, ScaleType } from './models';
 import { getFieldDataType, shouldShowAggregateOptions, shouldShowRangeScaleOptions } from './utils';
 import { LABKEY_VIS } from '../../constants';
 import { ChartFieldAggregateOptions } from './ChartFieldAggregateOptions';
 import { ChartFieldRangeScaleOptions } from './ChartFieldRangeScaleOptions';
-import { useEnterEscape } from '../../../public/useEnterEscape';
-
-interface FieldLabelInputProps {
-    label: string;
-    name: string;
-    setChartConfig: ChartConfigSetter;
-    value: string;
-}
-
-const FieldLabelInput: FC<FieldLabelInputProps> = memo(({ label, name, setChartConfig, value }) => {
-    const [inputValue, setInputValue] = useState<string>(value ?? '');
-    const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value), []);
-    const onBlur = useCallback(() => {
-        if (inputValue.trim() !== value) {
-            setChartConfig(current => ({ ...current, labels: { ...current.labels, [name]: inputValue.trim() } }));
-        }
-    }, [inputValue, name, setChartConfig, value]);
-    const onKeyDown = useEnterEscape(onBlur);
-    const inputName = `${name}-label`;
-
-    return (
-        <div className="form-group">
-            <label>{label} Label</label>
-            <input
-                className="form-control"
-                name={inputName}
-                onBlur={onBlur}
-                onChange={onChange}
-                onKeyDown={onKeyDown}
-                type="text"
-                value={inputValue}
-            />
-        </div>
-    );
-});
-FieldLabelInput.displayName = 'FieldLabelInput';
+import { ChartLabelInput } from './ChartLabelInput';
 
 interface Props {
     chartConfig: ChartConfig;
     field: ChartFieldInfo;
+    onLabelChange: (key: keyof ChartLabels, value: string) => void;
     onScaleChange: (scale: Partial<ScaleType>, localOnly?: boolean) => void;
     scale: ScaleType;
     selectedType: ChartTypeInfo;
@@ -53,7 +19,7 @@ interface Props {
 }
 
 export const ChartFieldAdditionalOptions: FC<Props> = memo(props => {
-    const { chartConfig, field, onScaleChange, scale, selectedType, setChartConfig } = props;
+    const { chartConfig, field, onLabelChange, onScaleChange, scale, selectedType, setChartConfig } = props;
     const { measures } = chartConfig;
     const measure = measures?.[field.name];
     const isNumericType = useMemo(
@@ -64,10 +30,10 @@ export const ChartFieldAdditionalOptions: FC<Props> = memo(props => {
     const showAggregateOptions = isNumericType && shouldShowAggregateOptions(field, selectedType);
     const overlay = (
         <Popover className="chart-field-additional-options" id="chart-field-option-popover" placement="right">
-            <FieldLabelInput
+            <ChartLabelInput
                 label={field.label}
-                name={field.name}
-                setChartConfig={setChartConfig}
+                name={field.name as keyof ChartLabels}
+                onChange={onLabelChange}
                 value={chartConfig.labels[field.name]}
             />
             {showAggregateOptions && (

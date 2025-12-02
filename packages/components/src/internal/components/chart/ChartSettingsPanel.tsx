@@ -1,5 +1,12 @@
 import React, { ChangeEvent, FC, memo, useCallback, useMemo, useState } from 'react';
-import { BaseChartModel, BaseChartModelSetter, ChartConfig, ChartConfigSetter, ChartTypeInfo } from './models';
+import {
+    BaseChartModel,
+    BaseChartModelSetter,
+    ChartConfig,
+    ChartConfigSetter,
+    ChartLabels,
+    ChartTypeInfo,
+} from './models';
 import { LABKEY_VIS } from '../../constants';
 import { HIDDEN_CHART_TYPES, ICONS } from './constants';
 import { SelectInput } from '../forms/input/SelectInput';
@@ -11,8 +18,9 @@ import { TrendlineOption } from './TrendlineOption';
 import { deepCopyChartConfig, hasTrendline } from './utils';
 import classNames from 'classnames';
 import { useEnterEscape } from '../../../public/useEnterEscape';
+import { ChartLabelInput } from './ChartLabelInput';
 
-function changedValue(strVal: string, currentVal: number): [value: number, changed: boolean] {
+function changedIntValue(strVal: string, currentVal: number): [value: number, changed: boolean] {
     strVal = strVal.trim();
     const value = strVal === '' ? undefined : parseInt(strVal, 10);
     // If the number is NaN then we don't want to trigger change
@@ -41,43 +49,8 @@ interface InputProps {
     value: string;
 }
 
-type LabelKey = keyof ChartConfig['labels'];
-
-interface LabelInputProps extends InputProps {
-    name: LabelKey;
-    onChange: (name: LabelKey, value: string) => void;
-}
-
-const LabelInput: FC<LabelInputProps> = memo(({ label, name, onChange, value }) => {
-    const [inputValue, setInputValue] = useState<string>(value ?? '');
-    const onChange_ = useCallback((e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value), []);
-    const onBlur = useCallback(() => {
-        if (inputValue.trim() !== value) onChange(name, inputValue.trim());
-    }, [inputValue, name, onChange, value]);
-    const onKeyDown = useEnterEscape(onBlur);
-    const inputName = `${name}-label`;
-
-    return (
-        <div className="form-group row">
-            <div className="col-xs-12">
-                <label>{label}</label>
-                <input
-                    className="form-control"
-                    name={inputName}
-                    onBlur={onBlur}
-                    onChange={onChange_}
-                    onKeyDown={onKeyDown}
-                    type="text"
-                    value={inputValue}
-                />
-            </div>
-        </div>
-    );
-});
-LabelInput.displayName = 'LabelInput';
-
 interface BoolSettingInputProps extends Omit<InputProps, 'value'> {
-    onChange: (name: LabelKey, value: boolean) => void;
+    onChange: (name: string, value: boolean) => void;
     value: boolean;
 }
 
@@ -147,7 +120,6 @@ const SizeInputs: FC<SizeInputsProps> = memo(({ height, setChartConfig, width })
             const checked = e.target.checked;
 
             if (checked) {
-                console.log('Setting full width, clearing entered width value');
                 setChartConfig(current => ({ ...current, width: undefined }));
                 setSizes(current => ({ ...current, width: '' }));
             }
@@ -159,8 +131,8 @@ const SizeInputs: FC<SizeInputsProps> = memo(({ height, setChartConfig, width })
     const onNumberChange = useCallback((name, value) => setSizes(current => ({ ...current, [name]: value })), []);
     const onBlur = useCallback(() => {
         setChartConfig(current => {
-            const [height, heightChanged] = changedValue(sizes.height, current.height);
-            const [width, widthChanged] = changedValue(sizes.width, current.width);
+            const [height, heightChanged] = changedIntValue(sizes.height, current.height);
+            const [width, widthChanged] = changedIntValue(sizes.width, current.width);
 
             if (!heightChanged && !widthChanged) return current;
 
@@ -328,7 +300,7 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
     );
 
     const onLabelChange = useCallback(
-        (key: LabelKey, value: string) => {
+        (key: keyof ChartLabels, value: string) => {
             setChartConfig(current => {
                 const labels = { ...current.labels, [key]: value };
                 let geomOptions = current.geomOptions;
@@ -382,6 +354,7 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
                     field={field}
                     key={field.name}
                     model={model}
+                    onLabelChange={onLabelChange}
                     selectedType={chartType}
                     setChartConfig={setChartConfig}
                 />
@@ -397,8 +370,8 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
             )}
 
             <h4>Customize</h4>
-            <LabelInput label="Title" name="main" onChange={onLabelChange} value={chartConfig?.labels?.main} />
-            <LabelInput
+            <ChartLabelInput label="Title" name="main" onChange={onLabelChange} value={chartConfig?.labels?.main} />
+            <ChartLabelInput
                 label="Subtitle"
                 name="subtitle"
                 onChange={onLabelChange}

@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 
 import { Alert } from '../base/Alert';
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
@@ -6,16 +6,10 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 import {
     getMeasurementUnit,
     getMetricUnitOptions,
-    getVolumeMinStep,
     isMeasurementUnitIgnoreCase,
     UnitModel,
 } from '../../util/measurement';
-
-const negativeValueMessage = (
-    <Alert bsStyle="danger" className="storage-item-precision-alert">
-        Amount must be a non-negative value.
-    </Alert>
-);
+import { isValidSampleAmountWithError } from '../../util/utils';
 
 interface Props {
     amountChangedHandler: (amount: string) => void;
@@ -32,7 +26,8 @@ export const StorageAmountInput: FC<Props> = memo(props => {
     const { className, model, preferredUnit, inputName, label, tipText, amountChangedHandler, unitsChangedHandler } =
         props;
 
-    const isNegativeValue = model?.value < 0;
+    const [amountInput, setAmountInput] = useState<string>(model?.value ? model?.value + '' : '');
+
     const unitText = model?.unit?.label || model.unitStr;
     let preferredUnitMessage;
 
@@ -82,7 +77,12 @@ export const StorageAmountInput: FC<Props> = memo(props => {
         }
     }
 
-    const onChange = useCallback(event => amountChangedHandler(event?.target?.value), [amountChangedHandler]);
+    const onChange = useCallback(event => {
+        const newValue = event?.target?.value;
+        amountChangedHandler(newValue);
+        setAmountInput(newValue);
+    }, [amountChangedHandler]);
+
     const containerClassName = className ?? 'form-group storage-item-check-in-sampletype-row ';
     return (
         <>
@@ -98,18 +98,18 @@ export const StorageAmountInput: FC<Props> = memo(props => {
                 <input
                     className="form-control storage-item-check-in-text storage-amount-input "
                     id="checkin-amount"
-                    min={0}
                     name={inputName ?? 'amountDelta'}
                     onChange={onChange}
                     placeholder="Enter amount..."
-                    step={getVolumeMinStep(model.unit)}
-                    type="number"
-                    value={model.value ?? ''}
+                    type="text"
+                    value={amountInput}
                 />
                 {unitDisplay}
                 {preferredUnitMessage}
             </div>
-            {isNegativeValue ? negativeValueMessage : undefined}
+            <Alert bsStyle="danger" className="storage-item-precision-alert">
+                {isValidSampleAmountWithError(amountInput)}
+            </Alert>
         </>
     );
 });

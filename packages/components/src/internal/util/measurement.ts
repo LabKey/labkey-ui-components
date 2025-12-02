@@ -108,7 +108,7 @@ export const MEASUREMENT_UNITS: { [key: string]: MeasurementUnit } = {
         longLabelPlural: 'grams',
         kind: UNITS_KIND.MASS,
         ratio: 1,
-        displayPrecision: 9, // enable smallest precision of ng
+        displayPrecision: 12, // enable smallest precision of pg
     },
     mg: {
         baseUnit: 'g',
@@ -117,7 +117,7 @@ export const MEASUREMENT_UNITS: { [key: string]: MeasurementUnit } = {
         longLabelPlural: 'milligrams',
         kind: UNITS_KIND.MASS,
         ratio: 0.001,
-        displayPrecision: 6,
+        displayPrecision: 9,
     },
     kg: {
         baseUnit: 'g',
@@ -126,7 +126,7 @@ export const MEASUREMENT_UNITS: { [key: string]: MeasurementUnit } = {
         longLabelPlural: 'kilograms',
         kind: UNITS_KIND.MASS,
         ratio: 1000,
-        displayPrecision: 12, // enable smallest precision of ng
+        displayPrecision: 15, // enable smallest precision of pg
     },
     ug: {
         baseUnit: 'g',
@@ -135,7 +135,7 @@ export const MEASUREMENT_UNITS: { [key: string]: MeasurementUnit } = {
         longLabelPlural: 'micrograms',
         kind: UNITS_KIND.MASS,
         ratio: 0.000001,
-        displayPrecision: 3, // enable smallest precision of ng
+        displayPrecision: 6, // enable smallest precision of pg
     },
     ng: {
         baseUnit: 'g',
@@ -153,7 +153,7 @@ export const MEASUREMENT_UNITS: { [key: string]: MeasurementUnit } = {
         longLabelPlural: 'picograms',
         kind: UNITS_KIND.MASS,
         ratio: 0.000000000001,
-        displayPrecision: 3,
+        displayPrecision: 0,
     },
     ml: {
         baseUnit: 'mL',

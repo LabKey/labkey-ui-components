@@ -230,5 +230,7 @@ describe('isValid', () => {
         expect(isValid(10, 'uL')).toBe(true);
         expect(isValid(0.1, 'uL')).toBe(true);
         expect(isValid(10.000000001, 'uL')).toBe(true);
+        expect(isValid(-1, 'uL')).toBe(false);
+        expect(isValid(Infinity, 'uL')).toBe(false);
     });
 });

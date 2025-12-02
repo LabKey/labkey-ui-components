@@ -447,6 +447,29 @@ export function isNonNegativeFloat(value: number | string): boolean {
     return isFloat(value) && Number(value) >= 0;
 }
 
+export function isAllowedSampleAmount(value: unknown): boolean {
+    if (!value) return true;
+
+    if (typeof value === 'number' || typeof value === 'string')
+        return isNonNegativeFloat(value) && Number.isFinite(Number(value));
+
+    return false;
+}
+
+export const isValidSampleAmountWithError = (v: any): any => {
+    if (isAllowedSampleAmount(v))
+        return null;
+
+    if (!isFloat(v))
+        return 'Please enter a valid numeric value for amount.';
+    if (!isNonNegativeFloat(v))
+        return 'Amount must be a non-negative value.';
+    else if (!Number.isFinite(Number(v)))
+        return 'Infinite or extremely large values are not allowed for amount.';
+
+    return null;
+}
+
 // works with string that might contain Scientific Notation
 export function parseScientificInt(value: any): number {
     if (value == null) return undefined;

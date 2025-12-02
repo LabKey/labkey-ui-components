@@ -19,7 +19,7 @@ import { registerDefaultURLMappers } from '../test/testHelpers';
 
 import { QueryInfo } from '../../public/QueryInfo';
 
-import { ExperimentRunResolver, ListResolver } from './AppURLResolver';
+import { ListResolver } from './AppURLResolver';
 import { URLResolver } from './URLResolver';
 import { AppURL } from './AppURL';
 import { encodeListResolverPath } from './utils';
@@ -442,27 +442,6 @@ describe('App Route Resolvers', () => {
             }),
             listResolver.fetch(['q', 'lists', encodeListResolverPath('/JaZz'), '7', 17, '?']).then((url: AppURL) => {
                 expect(url.toString()).toBe('/q/lists/PistolPete/17/%3F');
-            }),
-        ]);
-    });
-
-    test('Should resolve /rd/run/### routes', () => {
-        const jobsResolver = new ExperimentRunResolver(new Set([4, 5, 10]));
-
-        // test regex
-        expect(jobsResolver.matches(undefined)).toBe(false);
-        expect(jobsResolver.matches('/rd/samples/4')).toBe(false);
-        expect(jobsResolver.matches('/rd/run/b')).toBe(false);
-        expect(jobsResolver.matches('/a/rd/run/b')).toBe(false);
-        expect(jobsResolver.matches('/rd/run/4')).toBe(true);
-        expect(jobsResolver.matches('/rd/run/141345')).toBe(true);
-
-        return Promise.all([
-            jobsResolver.fetch(['rd', 'runs', 'notanumber']).then(result => {
-                expect(result).toBe(undefined);
-            }),
-            jobsResolver.fetch(['rd', 'runs', 4]).then((result: AppURL) => {
-                expect(result.toString()).toBe('/workflow/4');
             }),
         ]);
     });

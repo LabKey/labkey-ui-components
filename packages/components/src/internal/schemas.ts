@@ -119,8 +119,17 @@ export const SAMPLE_MANAGEMENT = {
     SAMPLE_TYPE_INSIGHTS: new SchemaQuery(SAMPLE_MANAGEMENT_SCHEMA, 'SampleTypeInsights'),
     SAMPLE_STATUS_COUNTS: new SchemaQuery(SAMPLE_MANAGEMENT_SCHEMA, 'SampleStatusCounts'),
     SOURCE_SAMPLES: new SchemaQuery(SAMPLE_MANAGEMENT_SCHEMA, 'SourceSamples'),
-    INPUT_SAMPLES_SQ: new SchemaQuery(SAMPLE_MANAGEMENT_SCHEMA, 'InputSamples'),
-    JOBS: new SchemaQuery(SAMPLE_MANAGEMENT_SCHEMA, 'Jobs'),
+};
+
+// WORKFLOW
+export const WORKFLOW_SCHEMA = "workflow";
+export const WORKFLOW = {
+    SCHEMA: WORKFLOW_SCHEMA,
+    JOB: new SchemaQuery(WORKFLOW_SCHEMA, 'Job'),
+    ACTION: new SchemaQuery(WORKFLOW_SCHEMA, 'Action'),
+    JOB_TEMPLATE: new SchemaQuery(WORKFLOW_SCHEMA, 'JobTemplate'),
+    JOB_PRIORITY: new SchemaQuery(WORKFLOW_SCHEMA, 'WorkflowJobPriority'),
+    JOB_INPUT_SAMPLES: new SchemaQuery(WORKFLOW_SCHEMA, 'JobInputSamples'),
 };
 
 // STUDY
@@ -178,4 +187,5 @@ export const SCHEMAS = {
     PICKLIST_TABLES,
     PLATE_TABLES,
     SAMPLE_MANAGEMENT,
+    WORKFLOW,
 };

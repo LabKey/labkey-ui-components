@@ -19,16 +19,19 @@ const FieldLabelInput: FC<FieldLabelInputProps> = memo(({ label, name, setChartC
     const [inputValue, setInputValue] = useState<string>(value ?? '');
     const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value), []);
     const onBlur = useCallback(() => {
-        setChartConfig(current => ({ ...current, labels: { ...current.labels, [name]: inputValue.trim() } }));
-    }, [inputValue, name, setChartConfig]);
+        if (inputValue.trim() !== value) {
+            setChartConfig(current => ({ ...current, labels: { ...current.labels, [name]: inputValue.trim() } }));
+        }
+    }, [inputValue, name, setChartConfig, value]);
     const onKeyDown = useEnterEscape(onBlur);
+    const inputName = `${name}-label`;
 
     return (
         <div className="form-group">
             <label>{label} Label</label>
             <input
                 className="form-control"
-                name={name as string}
+                name={inputName}
                 onBlur={onBlur}
                 onChange={onChange}
                 onKeyDown={onKeyDown}

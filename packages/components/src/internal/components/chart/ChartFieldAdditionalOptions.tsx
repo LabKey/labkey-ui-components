@@ -34,7 +34,7 @@ export const ChartFieldAdditionalOptions: FC<Props> = memo(props => {
                 label={field.label}
                 name={field.name as keyof ChartLabels}
                 onChange={onLabelChange}
-                value={chartConfig.labels[field.name]}
+                value={chartConfig.labels?.[field.name]}
             />
             {showAggregateOptions && (
                 <ChartFieldAggregateOptions

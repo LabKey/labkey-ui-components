@@ -212,7 +212,7 @@
     overflow: hidden;
 }
 
-.chart-builder-modal__settings-panel {
+.chart-settings {
     width: 300px;
     border-right: solid 1px $gray-border-light;
     padding: 15px;
@@ -220,7 +220,7 @@
 }
 
 .chart-builder-modal__chart-preview h4,
-.chart-builder-modal__settings-panel h4 {
+.chart-settings h4 {
     margin: 0 0 8px;
 }
 

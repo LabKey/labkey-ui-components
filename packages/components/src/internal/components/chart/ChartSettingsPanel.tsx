@@ -229,7 +229,7 @@ const ChartTypeDropdown: FC<ChartTypeDropdownProps> = memo(({ onChange, selected
     );
 
     return (
-        <div>
+        <div className="chart-settings__chart-type">
             <label>Chart Type</label>
             <div className="form-group row">
                 <SelectInput
@@ -314,7 +314,7 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
     );
 
     return (
-        <div className="chart-builder-modal__settings-panel">
+        <div className="chart-settings">
             <h4>Settings</h4>
             <div>
                 <label>Name *</label>

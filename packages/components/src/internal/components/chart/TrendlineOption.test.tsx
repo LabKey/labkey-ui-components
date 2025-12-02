@@ -31,7 +31,7 @@ const baseChartConfig = {
     labels: {},
     measures: {},
     pointType: undefined,
-    renderType: 'bar_chart',
+    renderType: 'line_plot',
     scales: {},
 } as ChartConfig;
 
@@ -69,9 +69,8 @@ describe('TrendlineOption', () => {
             <TrendlineOption
                 chartConfig={baseChartConfig}
                 model={model}
-                schemaQuery={new SchemaQuery('assay', 'query')}
-                setChartConfig={jest.fn()}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
         await waitFor(() => {
@@ -85,25 +84,30 @@ describe('TrendlineOption', () => {
         expect(document.querySelectorAll('input[name="trendlineParameters"]')).toHaveLength(0);
     });
 
-    test('shown with x-axis value selected, non-date', async () => {
+    test('shown with x-axis value selected, options filtered by schemaPrefix', async () => {
         const chartConfig = {
             ...baseChartConfig,
             geomOptions: {
                 trendlineAsymptoteMin: undefined,
                 trendlineAsymptoteMax: undefined,
-            trendlineParameters: { value: undefined },
-        },
+                trendlineParameters: undefined,
+            },
             measures: {
-                x: { name: 'field1', jsonType: 'int' },
+                x: { fieldKey: 'field1', jsonType: 'int' },
             },
         } as ChartConfig;
+        const assayModel = makeTestQueryModel(
+            new SchemaQuery('assay', 'query'),
+            QueryInfo.fromJsonForTests({ columns, name: 'query', schemaName: 'assay' }),
+            [],
+            0
+        );
         render(
             <TrendlineOption
                 chartConfig={chartConfig}
-                model={model}
-                schemaQuery={new SchemaQuery('assay', 'query')}
-                setChartConfig={jest.fn()}
+                model={assayModel}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
         await waitFor(() => {
@@ -129,8 +133,8 @@ describe('TrendlineOption', () => {
             geomOptions: {
                 trendlineAsymptoteMin: undefined,
                 trendlineAsymptoteMax: undefined,
-            trendlineParameters: { value: undefined },
-        },
+                trendlineParameters: undefined,
+            },
             measures: {
                 x: { name: 'field1', jsonType: 'date' },
             },
@@ -139,8 +143,8 @@ describe('TrendlineOption', () => {
             <TrendlineOption
                 chartConfig={chartConfig}
                 model={model}
-                setChartConfig={jest.fn()}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
         await waitFor(() => {
@@ -157,8 +161,8 @@ describe('TrendlineOption', () => {
             geomOptions: {
                 trendlineAsymptoteMin: undefined,
                 trendlineAsymptoteMax: undefined,
-            trendlineParameters: { value: undefined },
-        },
+                trendlineParameters: undefined,
+            },
             measures: {
                 x: { name: 'field1', jsonType: 'time' },
             },
@@ -167,8 +171,8 @@ describe('TrendlineOption', () => {
             <TrendlineOption
                 chartConfig={chartConfig}
                 model={model}
-                setChartConfig={jest.fn()}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
         await waitFor(() => {
@@ -186,8 +190,8 @@ describe('TrendlineOption', () => {
                 trendlineType: 'option3',
                 trendlineAsymptoteMin: 0.1,
                 trendlineAsymptoteMax: 1.0,
-            trendlineParameters: { value: undefined },
-        },
+                trendlineParameters: undefined,
+            },
             measures: {
                 x: { name: 'field1', jsonType: 'int' },
             },
@@ -196,8 +200,8 @@ describe('TrendlineOption', () => {
             <TrendlineOption
                 chartConfig={chartConfig}
                 model={model}
-                setChartConfig={jest.fn()}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
         await waitFor(() => {
@@ -231,8 +235,8 @@ describe('TrendlineOption', () => {
                 trendlineType: 'option4',
                 trendlineAsymptoteMin: 0.1,
                 trendlineAsymptoteMax: undefined,
-            trendlineParameters: { value: undefined },
-        },
+                trendlineParameters: undefined,
+            },
             measures: {
                 x: { name: 'field1', jsonType: 'int' },
             },
@@ -241,6 +245,7 @@ describe('TrendlineOption', () => {
             <TrendlineOption
                 chartConfig={chartConfig}
                 model={model}
+                selectedType={LINE_PLOT_TYPE}
                 setChartConfig={jest.fn()}
             />
         );
@@ -269,20 +274,24 @@ describe('TrendlineOption', () => {
     });
 
     test('show provided parameters in trendline gear tooltip', async () => {
-        const fieldValues = {
-            x: { data: { jsonType: 'int' }, value: 'field1' },
-            trendlineType: { value: 'option1', showMin: true, showMax: true },
-            trendlineAsymptoteMin: { value: undefined },
-            trendlineAsymptoteMax: { value: undefined },
-            trendlineParameters: { value: 'field1' },
+        const chartConfig = {
+            ...baseChartConfig,
+            geomOptions: {
+                trendlineType: 'option1',
+                trendlineAsymptoteMin: undefined,
+                trendlineAsymptoteMax: undefined,
+                trendlineParameters: 'field1',
+            },
+            measures: {
+                x: { name: 'field1', jsonType: 'int' },
+            },
         };
         render(
             <TrendlineOption
-                fieldValues={fieldValues}
+                chartConfig={chartConfig}
                 model={model}
-                onFieldChange={jest.fn()}
-                schemaQuery={new SchemaQuery('assay', 'query')}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
         await waitFor(() => {

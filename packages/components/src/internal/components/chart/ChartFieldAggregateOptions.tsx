@@ -90,7 +90,7 @@ export const ChartFieldAggregateOptions: FC<OwnProps> = memo(props => {
                 <SelectInput
                     clearable={false}
                     inputClass="col-xs-12"
-                    name="aggreegate-method"
+                    name="aggregate-method"
                     onChange={onAggregateChange}
                     options={aggregateOptions}
                     placeholder="Select aggregate method"

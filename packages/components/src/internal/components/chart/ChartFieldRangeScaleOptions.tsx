@@ -13,13 +13,13 @@ const SCALE_RANGE_TYPES = [
     { value: 'manual', label: 'Manual' },
 ];
 
-interface OwnProps {
+interface Props {
     onScaleChange: (scale: Partial<ScaleType>, localOnly?: boolean) => void;
     scale: ScaleType;
     showScaleTrans: boolean;
 }
 
-export const ChartFieldRangeScaleOptions: FC<OwnProps> = memo(props => {
+export const ChartFieldRangeScaleOptions: FC<Props> = memo(props => {
     const { scale, onScaleChange, showScaleTrans } = props;
     const scaleTransOptions = useMemo(() => {
         return SCALE_TRANS_TYPES.map(option => ({ ...option, selected: scale.trans === option.value }));

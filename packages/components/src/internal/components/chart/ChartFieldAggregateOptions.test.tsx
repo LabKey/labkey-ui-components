@@ -33,16 +33,6 @@ function renderComponent(props = {}) {
 }
 
 describe('ChartFieldAggregateOptions', () => {
-    test('renders gear icon and overlay', async () => {
-        renderComponent();
-        expect(document.querySelectorAll('.field-option-icon')).toHaveLength(1);
-        expect(document.querySelectorAll('.fa-gear')).toHaveLength(1);
-        expect(document.querySelectorAll('.lk-popover')).toHaveLength(0);
-
-        await userEvent.click(document.querySelector('.fa-gear'));
-        expect(document.querySelectorAll('.lk-popover')).toHaveLength(1);
-    });
-
     test('shows aggregate method select and error bar radio group in overlay', async () => {
         renderComponent();
         await userEvent.click(document.querySelector('.fa-gear'));

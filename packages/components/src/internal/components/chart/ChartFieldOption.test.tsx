@@ -83,7 +83,7 @@ describe('ChartFieldOption', () => {
         expect(document.querySelectorAll('.field-option-icon')).toHaveLength(1);
     });
 
-    test('line chart for x, not showFieldOptions for date', async () => {
+    test('line chart for x, date field', async () => {
         render(
             <ChartFieldOption
                 chartConfig={{
@@ -101,10 +101,10 @@ describe('ChartFieldOption', () => {
             expect(document.querySelector('label').textContent).toBe('X Axis *');
         });
         expect(document.querySelectorAll('.select-input')).toHaveLength(1);
-        expect(document.querySelectorAll('.field-option-icon')).toHaveLength(0);
+        expect(document.querySelectorAll('.field-option-icon')).toHaveLength(1);
     });
 
-    test('bar chart for x, not showFieldOptions', async () => {
+    test('bar chart for x', async () => {
         render(
             <ChartFieldOption
                 chartConfig={{
@@ -122,7 +122,7 @@ describe('ChartFieldOption', () => {
             expect(document.querySelector('label').textContent).toBe('X Axis *');
         });
         expect(document.querySelectorAll('.select-input')).toHaveLength(1);
-        expect(document.querySelectorAll('.field-option-icon')).toHaveLength(0);
+        expect(document.querySelectorAll('.field-option-icon')).toHaveLength(1);
     });
 
     test('label for not required', async () => {
@@ -164,12 +164,12 @@ describe('ChartFieldOption', () => {
         expect(document.querySelectorAll('.select-input')).toHaveLength(1);
         expect(document.querySelectorAll('.field-option-icon')).toHaveLength(1);
 
-        // scale options not shown until clicking on the gear icon
+        // additional options not shown until clicking on the gear icon
         expect(document.querySelectorAll('.radioinput-label')).toHaveLength(0);
         expect(document.querySelectorAll('input')).toHaveLength(2);
         await userEvent.click(document.querySelector('.fa-gear'));
         expect(document.querySelectorAll('.radioinput-label')).toHaveLength(4);
-        expect(document.querySelectorAll('input')).toHaveLength(6);
+        expect(document.querySelectorAll('input')).toHaveLength(7);
 
         expect(document.querySelectorAll('.radioinput-label.selected')[0].textContent).toBe('Linear');
         expect(document.querySelectorAll('.radioinput-label.selected')[1].textContent).toBe('Automatic');

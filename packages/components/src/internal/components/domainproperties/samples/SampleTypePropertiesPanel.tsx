@@ -55,6 +55,7 @@ import {
     getMetricUnitOptionsFromKind,
     UNITS_KIND,
 } from '../../../util/measurement';
+import { Alert } from '../../base/Alert';
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');
@@ -74,7 +75,7 @@ const AddEntityHelpTip: FC<{ parentageLabel?: string }> = memo(({ parentageLabel
     );
 });
 
-const UnitKinds = {
+const UnitKinds : Record<UNITS_KIND, UnitKindType> = {
     [UNITS_KIND.NONE]: {
         value: UNITS_KIND.NONE,
         label: 'Any',
@@ -96,6 +97,20 @@ const UnitKinds = {
         msg: 'Amounts can be entered as unit, pcs, pack, blocks, slides, cells, box, kit, tests, or bottle and won’t be converted.',
     },
 };
+
+const getValidUnitKinds = (lockUnitKind?: boolean, metricUnit?: string) : UnitKindType[] => {
+    if (!lockUnitKind)
+        return Object.values(UnitKinds);
+
+    const validOptions = [UnitKinds[UNITS_KIND.NONE]]; // any unit can switch to no unit type
+
+    if (metricUnit) {
+        const unitKind = getMeasurementUnit(metricUnit)?.kind;
+        validOptions.push(UnitKinds[unitKind]);
+    }
+
+    return validOptions;
+}
 
 AddEntityHelpTip.displayName = 'AddEntityHelpTip';
 
@@ -177,14 +192,21 @@ interface EntityProps {
     nounSingular?: string;
 }
 
+interface UnitKindType {
+    hideSubSelect?: boolean; label: string; msg?: string; value: string
+}
+
 interface State {
     containers: Container[];
     isValid: boolean;
     loadingError: string;
-    metricUnitKind: { hideSubSelect?: boolean; label: string; msg?: string; value: string };
+    metricUnitKind: UnitKindType;
+    validUnitKinds: UnitKindType[];
     prefix: string;
     sampleTypeCategory: string;
     validMetricUnitOptions: { hideSubSelect?: boolean; label: string; msg?: string; value: string }[];
+    originalUnit: string;
+    unitChangeWarning: string;
 }
 
 type Props = BasePropertiesPanelProps & EntityProps & OwnProps;
@@ -219,7 +241,10 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
         prefix: undefined,
         sampleTypeCategory: undefined,
         metricUnitKind: undefined,
+        validUnitKinds: [],
         validMetricUnitOptions: [],
+        originalUnit: undefined,
+        unitChangeWarning: undefined,
     };
 
     componentDidMount = async (): Promise<void> => {
@@ -232,11 +257,16 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                 filterArray: [Filter.create('RowId', model.rowId)],
                 schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
             });
+
+            const validUnitKinds = metricUnitProps?.includeMetricUnitProperty ? getValidUnitKinds(metricUnitProps?.lockUnitKind, model?.metricUnit) : null;
+
             const unitKind = getMeasurementUnit(model?.metricUnit)?.kind ?? (model.isNew() ? null : UNITS_KIND.NONE);
             this.setState({
                 sampleTypeCategory: result.rows[0]?.Category.value,
                 metricUnitKind: unitKind ? UnitKinds[unitKind] : null,
+                validUnitKinds: validUnitKinds,
                 validMetricUnitOptions: metricUnitProps?.metricUnitOptions,
+                originalUnit: model?.metricUnit
             });
         } catch (e) {
             this.setState({ loadingError: 'There was a problem retrieving the Sample Type category.' });
@@ -288,10 +318,19 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
     };
 
     onMetricUnitKindChange = (key: string, value: any): void => {
-        this.updateValidStatus(this.props.model.set('metricUnit', '') as SampleTypeModel);
+        const { originalUnit } = this.state;
         const unitKind = value ? UnitKinds[value] : null;
         const unitOptions = getMetricUnitOptionsFromKind(unitKind?.value, true);
-        this.setState({ metricUnitKind: unitKind, validMetricUnitOptions: unitOptions });
+        let unitToSelect = value === UNITS_KIND.COUNT ? 'unit' : '';
+        let unitChangeWarning = null;
+        if (originalUnit && value == UNITS_KIND.NONE)
+            unitChangeWarning = "Once switched to 'Any' amount type, you cannot switch back to '" + getMeasurementUnit(originalUnit)?.kind + "' amount type.";
+
+        if (originalUnit && getMeasurementUnit(originalUnit)?.kind == value) {
+            unitToSelect = originalUnit;
+        }
+        this.updateValidStatus(this.props.model.set('metricUnit', unitToSelect) as SampleTypeModel);
+        this.setState({ metricUnitKind: unitKind, validMetricUnitOptions: unitOptions, unitChangeWarning });
     };
 
     onUnitChange = (key: string, value: any): void => {
@@ -345,6 +384,8 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
             sampleTypeCategory,
             validMetricUnitOptions,
             metricUnitKind,
+            validUnitKinds,
+            unitChangeWarning,
         } = this.state;
 
         const showAliquotNameExpression = aliquotNamePatternProps?.showAliquotNameExpression;
@@ -568,7 +609,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                                         <SelectInput
                                             clearable={!metricUnitRequired}
                                             containerClass="sampleset-unit-type-select-container"
-                                            disabled={metricUnitProps?.lockUnitKind}
+                                            disabled={metricUnitProps?.lockUnitKind && validUnitKinds?.length <= 1}
                                             inputClass="sampleset-unit-type-select"
                                             name="metricUnitKind"
                                             onChange={(name, formValue, option: SelectInputOption) => {
@@ -577,7 +618,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                                                     formValue === undefined && option ? option.id : formValue
                                                 );
                                             }}
-                                            options={Object.values(UnitKinds)}
+                                            options={validUnitKinds}
                                             placeholder="Select a type..."
                                             required={metricUnitRequired}
                                             value={metricUnitKind}
@@ -621,6 +662,15 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                                         </div>
                                     </div>
                                 )}
+                                {unitChangeWarning && (
+                                    <div className="row margin-top">
+                                        <div className="col-xs-2" />
+                                        <div className="col-xs-10">
+                                            <Alert bsStyle="warning">{unitChangeWarning}</Alert>
+                                        </div>
+                                    </div>
+                                )}
+
                             </>
                         )}
                     </>

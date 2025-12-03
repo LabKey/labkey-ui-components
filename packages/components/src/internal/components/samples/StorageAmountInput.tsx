@@ -26,7 +26,7 @@ export const StorageAmountInput: FC<Props> = memo(props => {
     const { className, model, preferredUnit, inputName, label, tipText, amountChangedHandler, unitsChangedHandler } =
         props;
 
-    const [amountInput, setAmountInput] = useState<string>(model?.value ? model?.value + '' : '');
+    const [amountInput, setAmountInput] = useState<string>(model?.value?.toString() || '');
 
     const unitText = model?.unit?.label || model.unitStr;
     let preferredUnitMessage;

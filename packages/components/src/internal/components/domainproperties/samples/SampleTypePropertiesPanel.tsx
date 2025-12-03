@@ -75,7 +75,7 @@ const AddEntityHelpTip: FC<{ parentageLabel?: string }> = memo(({ parentageLabel
     );
 });
 
-const UnitKinds : Record<UNITS_KIND, UnitKindType> = {
+export const UnitKinds: Record<UNITS_KIND, UnitKindType> = {
     [UNITS_KIND.NONE]: {
         value: UNITS_KIND.NONE,
         label: 'Any',
@@ -98,15 +98,13 @@ const UnitKinds : Record<UNITS_KIND, UnitKindType> = {
     },
 };
 
-const getValidUnitKinds = (lockUnitKind?: boolean, metricUnit?: string) : UnitKindType[] => {
-    if (!lockUnitKind || !metricUnit)
-        return Object.values(UnitKinds);
+export const getValidUnitKinds = (lockUnitKind?: boolean, metricUnit?: string): UnitKindType[] => {
+    if (!lockUnitKind || !metricUnit) return Object.values(UnitKinds);
 
     const validOptions = [UnitKinds[UNITS_KIND.NONE]]; // any unit can switch to no unit type
 
     const unitKind = getMeasurementUnit(metricUnit)?.kind;
-    if (unitKind)
-        validOptions.push(UnitKinds[unitKind]);
+    if (unitKind) validOptions.push(UnitKinds[unitKind]);
 
     return validOptions;
 };
@@ -192,7 +190,10 @@ interface EntityProps {
 }
 
 interface UnitKindType {
-    hideSubSelect?: boolean; label: string; msg?: string; value: string
+    hideSubSelect?: boolean;
+    label: string;
+    msg?: string;
+    value: string;
 }
 
 interface State {
@@ -200,12 +201,12 @@ interface State {
     isValid: boolean;
     loadingError: string;
     metricUnitKind: UnitKindType;
-    validUnitKinds: UnitKindType[];
+    originalUnit: string;
     prefix: string;
     sampleTypeCategory: string;
-    validMetricUnitOptions: { hideSubSelect?: boolean; label: string; msg?: string; value: string }[];
-    originalUnit: string;
     unitChangeWarning: string;
+    validMetricUnitOptions: UnitKindType[];
+    validUnitKinds: UnitKindType[];
 }
 
 type Props = BasePropertiesPanelProps & EntityProps & OwnProps;
@@ -257,7 +258,9 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                 schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
             });
 
-            const validUnitKinds = metricUnitProps?.includeMetricUnitProperty ? getValidUnitKinds(metricUnitProps?.lockUnitKind, model?.metricUnit) : null;
+            const validUnitKinds = metricUnitProps?.includeMetricUnitProperty
+                ? getValidUnitKinds(metricUnitProps?.lockUnitKind, model?.metricUnit)
+                : null;
 
             const unitKind = getMeasurementUnit(model?.metricUnit)?.kind ?? (model.isNew() ? null : UNITS_KIND.NONE);
             this.setState({
@@ -265,7 +268,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                 metricUnitKind: unitKind ? UnitKinds[unitKind] : null,
                 validUnitKinds: validUnitKinds,
                 validMetricUnitOptions: metricUnitProps?.metricUnitOptions,
-                originalUnit: model?.metricUnit
+                originalUnit: model?.metricUnit,
             });
         } catch (e) {
             this.setState({ loadingError: 'There was a problem retrieving the Sample Type category.' });
@@ -323,7 +326,10 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
         let unitToSelect = value === UNITS_KIND.COUNT ? 'unit' : '';
         let unitChangeWarning = null;
         if (originalUnit && value === UNITS_KIND.NONE)
-            unitChangeWarning = "Once switched to 'Any' amount type, you cannot switch back to '" + getMeasurementUnit(originalUnit)?.kind + "' amount type.";
+            unitChangeWarning =
+                "Once switched to 'Any' amount type, you cannot switch back to '" +
+                getMeasurementUnit(originalUnit)?.kind +
+                "' amount type.";
 
         if (originalUnit && getMeasurementUnit(originalUnit)?.kind === value) {
             unitToSelect = originalUnit;
@@ -669,7 +675,6 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                                         </div>
                                     </div>
                                 )}
-
                             </>
                         )}
                     </>

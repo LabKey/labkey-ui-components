@@ -3,8 +3,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ###  version 6.X
 *Released*: X 2025
-- Sample Amount/Units: support additional unit types
-    - TODO
+- Sample Amount/Units polish: part 2
+  - Introduced a two-tier unit selection system (Amount Type, Display Units) in sample designer
+  - Added new measurement units (ug, ng, pg) with updated display precision for existing units
+  - Added a new formsy rule `sampleAmount` for validating sample amount/units input on forms
+  - Disallow large amount (>1.79769E308) for amounts input on form, editable grid, and sample storage editor
 
 ### version 7.0.0
 *Released*: 1 December 2025

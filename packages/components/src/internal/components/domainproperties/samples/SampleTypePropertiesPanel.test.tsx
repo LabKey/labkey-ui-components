@@ -9,8 +9,9 @@ import { DomainDetails, DomainPanelStatus } from '../models';
 
 import { getTestAPIWrapper } from '../../../APIWrapper';
 
-import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
+import { getValidUnitKinds, SampleTypePropertiesPanel, UnitKinds } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';
+import { UNITS_KIND } from '../../../util/measurement';
 
 describe('SampleTypePropertiesPanel', () => {
     const BASE_PROPS = {
@@ -270,4 +271,32 @@ describe('SampleTypePropertiesPanel', () => {
         const aliquotField = fields[4];
         expect(aliquotField.textContent).toEqual('Aliquot Naming Pattern');
     });
+
+    test('getValidUnitKinds', () => {
+        it('returns all unit kinds when lockUnitKind and metricUnit are undefined', () => {
+            const result = getValidUnitKinds();
+            expect(result).toEqual(Object.values(UnitKinds));
+        });
+
+        it('returns all unit kinds when lockUnitKind is false', () => {
+            const result = getValidUnitKinds(false, 'mL');
+            expect(result).toEqual(Object.values(UnitKinds));
+        });
+
+        it('returns NONE and the unit kind matching the metricUnit when lockUnitKind is true', () => {
+            const result = getValidUnitKinds(true, 'mL');
+            expect(result).toEqual([UnitKinds[UNITS_KIND.NONE], UnitKinds[UNITS_KIND.VOLUME]]);
+        });
+
+        it('returns only NONE when lockUnitKind is true and metricUnit is invalid', () => {
+            const result = getValidUnitKinds(true, 'invalidUnit');
+            expect(result).toEqual([UnitKinds[UNITS_KIND.NONE]]);
+        });
+
+        it('returns only NONE when lockUnitKind is true and metricUnit is undefined', () => {
+            const result = getValidUnitKinds(true);
+            expect(result).toEqual([UnitKinds[UNITS_KIND.NONE]]);
+        });
+    });
+
 });

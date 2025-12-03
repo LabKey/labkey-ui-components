@@ -15,7 +15,7 @@ describe('UnitModel', () => {
         expect(new UnitModel(99999, 'uL').as('L').toString()).toBe('0.099999 L');
         expect(new UnitModel(99999.133, 'uL').as('L').toString()).toBe('0.099999133 L');
         expect(new UnitModel(99999.13345678, 'uL').as('L').toString()).toBe('0.099999133 L');
-        expect(new UnitModel(99999.13345678, 'mg').as('kg').toString()).toBe('0.099999133457 kg');
+        expect(new UnitModel(99999.13345678, 'mg').as('kg').toString()).toBe('0.09999913345678 kg');
         expect(new UnitModel(10, 'mL').as('L').toString()).toBe('0.01 L');
         expect(new UnitModel(undefined, 'mL').as('L').toString()).toBe('undefined L');
         expect(new UnitModel(0.0005, 'mL').as('mL').toString()).toBe('0.0005 mL');

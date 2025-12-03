@@ -1,61 +1,93 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 
-import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
+import { SelectInput } from '../forms/input/SelectInput';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { LABKEY_VIS } from '../../constants';
+import { QueryColumn } from '../../../public/QueryColumn';
 
-import { ChartFieldRangeScaleOptions } from './ChartFieldRangeScaleOptions';
-import { ChartFieldInfo, ChartTypeInfo, ScaleType } from './models';
-import { getFieldDataType, getSelectOptions, shouldShowAggregateOptions, shouldShowRangeScaleOptions } from './utils';
-import { ChartFieldAggregateOptions } from './ChartFieldAggregateOptions';
+import { ChartConfig, ChartConfigSetter, ChartFieldInfo, ChartLabels, ChartTypeInfo, ScaleType } from './models';
+import { getBarChartAxisLabel, getSelectOptions, hasTrendline } from './utils';
+
+import { ChartFieldAdditionalOptions } from './ChartFieldAdditionalOptions';
 
 const DEFAULT_SCALE_VALUES = { type: 'automatic', trans: 'linear' };
 
 interface OwnProps {
+    chartConfig: ChartConfig;
     field: ChartFieldInfo;
-    fieldValues: Record<string, SelectInputOption>;
     model: QueryModel;
-    onErrorBarChange: (name: string, value: string) => void;
-    onScaleChange: (field: string, key: string, value: number | string, reset?: boolean) => void;
-    onSelectFieldChange: (name: string, value: string, selectedOption: SelectInputOption) => void;
-    scaleValues: ScaleType;
+    onLabelChange: (key: keyof ChartLabels, value: string) => void;
     selectedType: ChartTypeInfo;
+    setChartConfig: ChartConfigSetter;
 }
 
 export const ChartFieldOption: FC<OwnProps> = memo(props => {
-    const {
-        field,
-        model,
-        selectedType,
-        onSelectFieldChange,
-        scaleValues,
-        fieldValues,
-        onScaleChange,
-        onErrorBarChange,
-    } = props;
-    const fieldValue = fieldValues?.[field.name];
-    const [scale, setScale] = useState<ScaleType>(scaleValues?.type ? scaleValues : DEFAULT_SCALE_VALUES);
-
+    const { chartConfig, field, model, onLabelChange, selectedType, setChartConfig } = props;
+    const { measures, scales } = chartConfig;
+    const measure = measures?.[field.name];
+    const [scale, setScale] = useState<ScaleType>(() => {
+        return scales[field.name] ?? DEFAULT_SCALE_VALUES;
+    });
     const options = useMemo(() => getSelectOptions(model, selectedType, field), [model, selectedType, field]);
-    const isNumericType = useMemo(
-        () => LABKEY_VIS.GenericChartHelper.isNumericType(getFieldDataType(fieldValue?.data)),
-        [fieldValue?.data]
-    );
-    const showRangeScaleOptions = isNumericType && shouldShowRangeScaleOptions(field, selectedType);
-    const showAggregateOptions = isNumericType && shouldShowAggregateOptions(field, selectedType);
+    const isPieChart = selectedType.name === 'pie_chart';
+    const showAdditionalOptions = !isPieChart && measure && (field.name === 'x' || field.name === 'y');
 
-    // Issue 52050: use fieldKey for special characters
-    const selectInputValue = useMemo(() => fieldValue?.data.fieldKey ?? fieldValue?.value, [fieldValue]);
+    const onScaleChange = useCallback(
+        (scale: ScaleType, localOnly = false) => {
+            setScale(current => ({ ...current, ...scale }));
 
-    const onSelectFieldChange_ = useCallback(
-        (name: string, value: string, selectedOption: SelectInputOption) => {
-            onScaleChange(field.name, undefined, undefined, true);
-            setScale(DEFAULT_SCALE_VALUES);
-            onSelectFieldChange(name, value, selectedOption);
+            if (!localOnly) {
+                setChartConfig(current => {
+                    let updatedScale = current.scales?.[field.name] ?? DEFAULT_SCALE_VALUES;
+                    updatedScale = { ...updatedScale, ...scale };
+                    return { ...current, scales: { ...current.scales, [field.name]: updatedScale } };
+                });
+            }
         },
-        [field.name, onScaleChange, onSelectFieldChange]
+        [field.name, setChartConfig]
+    );
+
+    const onSelectChange = useCallback(
+        (name: string, _: never, col: QueryColumn) => {
+            setScale(DEFAULT_SCALE_VALUES);
+            setChartConfig(current => {
+                let geomOptions = current.geomOptions;
+                const measures = { ...current.measures };
+                const scales = { ...current.scales };
+                const labels = { ...current.labels };
+
+                if (!col) {
+                    delete measures[name];
+                    delete scales[name];
+                    delete labels[name];
+                } else {
+                    measures[name] = {
+                        fieldKey: col.fieldKey,
+                        label: col.caption,
+                        name: col.name,
+                        type: col.jsonType,
+                    };
+                    scales[name] = DEFAULT_SCALE_VALUES;
+                    labels[name] = col.caption;
+                }
+
+                if (name === 'x' && hasTrendline(selectedType)) {
+                    const trendlineType = LABKEY_VIS.GenericChartHelper.TRENDLINE_OPTIONS[''].value;
+                    geomOptions = { ...geomOptions, trendlineType };
+                }
+
+                const updatedConfig = { ...current, geomOptions, measures, labels };
+
+                if (selectedType.name === 'bar_chart') {
+                    updatedConfig.labels.y = getBarChartAxisLabel(updatedConfig, current);
+                }
+
+                return updatedConfig;
+            });
+        },
+        [selectedType, setChartConfig]
     );
 
     return (
@@ -67,33 +99,27 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
             <div className="form-group row">
                 <SelectInput
                     containerClass=""
-                    inputClass={showRangeScaleOptions || showAggregateOptions ? 'col-xs-11' : 'col-xs-12'}
+                    inputClass={showAdditionalOptions ? 'col-xs-11' : 'col-xs-12'}
+                    labelKey="caption"
                     name={field.name}
-                    onChange={onSelectFieldChange_}
+                    onChange={onSelectChange}
                     options={options}
                     placeholder="Select a field"
                     showLabel={false}
-                    value={selectInputValue}
+                    // Issue 52050: use fieldKey for special characters
+                    value={measure?.fieldKey}
+                    valueKey="fieldKey"
                 />
-                {showRangeScaleOptions && (
-                    <ChartFieldRangeScaleOptions
+                {showAdditionalOptions && (
+                    <ChartFieldAdditionalOptions
+                        chartConfig={chartConfig}
                         field={field}
+                        onLabelChange={onLabelChange}
                         onScaleChange={onScaleChange}
                         scale={scale}
-                        setScale={setScale}
-                        showScaleTrans={selectedType.name !== 'bar_chart'}
-                    >
-                        {showAggregateOptions && (
-                            <ChartFieldAggregateOptions
-                                asOverlay={false}
-                                field={field}
-                                fieldValues={fieldValues}
-                                onErrorBarChange={onErrorBarChange}
-                                onSelectFieldChange={onSelectFieldChange}
-                                selectedType={selectedType}
-                            />
-                        )}
-                    </ChartFieldRangeScaleOptions>
+                        selectedType={selectedType}
+                        setChartConfig={setChartConfig}
+                    />
                 )}
             </div>
         </div>

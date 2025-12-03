@@ -4,7 +4,7 @@
 
 [private]
 default:
-    just --list
+    @just --list
 
 currentBranch := `git branch --show-current`
 branchAsTag := replace(currentBranch, '_', '-')
@@ -129,5 +129,8 @@ patch:
 publish:
     npm publish
 
+# Runs publish sleep bump
 pb: publish sleep bump
+
+# Runs publish sleep bumpApps
 pba: publish sleep bumpApps

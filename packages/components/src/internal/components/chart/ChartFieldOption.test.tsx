@@ -65,14 +65,14 @@ describe('ChartFieldOption', () => {
     test('line chart for x, showFieldOptions for int', async () => {
         render(
             <ChartFieldOption
+                chartConfig={{
+                    measures: { x: { name: 'field1', jsonType: 'int' } },
+                    scales: {},
+                }}
                 field={{ name: 'x', label: 'X Axis', required: true } as ChartFieldInfo}
-                fieldValues={{ x: { value: 'field1', data: { type: 'int' } } }}
                 model={model}
-                onErrorBarChange={jest.fn()}
-                onScaleChange={jest.fn()}
-                onSelectFieldChange={jest.fn()}
-                scaleValues={undefined}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
 
@@ -83,17 +83,17 @@ describe('ChartFieldOption', () => {
         expect(document.querySelectorAll('.field-option-icon')).toHaveLength(1);
     });
 
-    test('line chart for x, not showFieldOptions for date', async () => {
+    test('line chart for x, date field', async () => {
         render(
             <ChartFieldOption
+                chartConfig={{
+                    measures: { x: { name: 'field1', jsonType: 'date' } },
+                    scales: {},
+                }}
                 field={{ name: 'x', label: 'X Axis', required: true } as ChartFieldInfo}
-                fieldValues={{ x: { value: 'field1', data: { type: 'date' } } }}
                 model={model}
-                onErrorBarChange={jest.fn()}
-                onScaleChange={jest.fn()}
-                onSelectFieldChange={jest.fn()}
-                scaleValues={undefined}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
 
@@ -101,20 +101,20 @@ describe('ChartFieldOption', () => {
             expect(document.querySelector('label').textContent).toBe('X Axis *');
         });
         expect(document.querySelectorAll('.select-input')).toHaveLength(1);
-        expect(document.querySelectorAll('.field-option-icon')).toHaveLength(0);
+        expect(document.querySelectorAll('.field-option-icon')).toHaveLength(1);
     });
 
-    test('bar chart for x, not showFieldOptions', async () => {
+    test('bar chart for x', async () => {
         render(
             <ChartFieldOption
+                chartConfig={{
+                    measures: { x: { name: 'field1', jsonType: 'int' } },
+                    scales: {},
+                }}
                 field={{ name: 'x', label: 'X Axis', required: true } as ChartFieldInfo}
-                fieldValues={{ x: { value: 'field1', data: { type: 'int' } } }}
                 model={model}
-                onErrorBarChange={jest.fn()}
-                onScaleChange={jest.fn()}
-                onSelectFieldChange={jest.fn()}
-                scaleValues={undefined}
                 selectedType={BAR_CHART_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
 
@@ -122,20 +122,20 @@ describe('ChartFieldOption', () => {
             expect(document.querySelector('label').textContent).toBe('X Axis *');
         });
         expect(document.querySelectorAll('.select-input')).toHaveLength(1);
-        expect(document.querySelectorAll('.field-option-icon')).toHaveLength(0);
+        expect(document.querySelectorAll('.field-option-icon')).toHaveLength(1);
     });
 
     test('label for not required', async () => {
         render(
             <ChartFieldOption
+                chartConfig={{
+                    measures: { x: { name: 'field1', jsonType: 'date' } },
+                    scales: {},
+                }}
                 field={{ name: 'x', label: 'X Axis', required: false } as ChartFieldInfo}
-                fieldValues={{ x: { value: 'field1', data: { type: 'date' } } }}
                 model={model}
-                onErrorBarChange={jest.fn()}
-                onScaleChange={jest.fn()}
-                onSelectFieldChange={jest.fn()}
-                scaleValues={undefined}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
 
@@ -147,14 +147,14 @@ describe('ChartFieldOption', () => {
     test('default values set for scale', async () => {
         render(
             <ChartFieldOption
+                chartConfig={{
+                    measures: { x: { name: 'field1', jsonType: 'int' } },
+                    scales: {},
+                }}
                 field={{ name: 'x', label: 'X Axis', required: true } as ChartFieldInfo}
-                fieldValues={{ x: { value: 'field1', data: { type: 'int' } } }}
                 model={model}
-                onErrorBarChange={jest.fn()}
-                onScaleChange={jest.fn()}
-                onSelectFieldChange={jest.fn()}
-                scaleValues={undefined}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
 
@@ -164,12 +164,12 @@ describe('ChartFieldOption', () => {
         expect(document.querySelectorAll('.select-input')).toHaveLength(1);
         expect(document.querySelectorAll('.field-option-icon')).toHaveLength(1);
 
-        // scale options not shown until clicking on the gear icon
+        // additional options not shown until clicking on the gear icon
         expect(document.querySelectorAll('.radioinput-label')).toHaveLength(0);
         expect(document.querySelectorAll('input')).toHaveLength(2);
         await userEvent.click(document.querySelector('.fa-gear'));
         expect(document.querySelectorAll('.radioinput-label')).toHaveLength(4);
-        expect(document.querySelectorAll('input')).toHaveLength(6);
+        expect(document.querySelectorAll('input')).toHaveLength(7);
 
         expect(document.querySelectorAll('.radioinput-label.selected')[0].textContent).toBe('Linear');
         expect(document.querySelectorAll('.radioinput-label.selected')[1].textContent).toBe('Automatic');
@@ -180,14 +180,14 @@ describe('ChartFieldOption', () => {
     test('initial values set from scaleValues', async () => {
         render(
             <ChartFieldOption
+                chartConfig={{
+                    measures: { x: { name: 'field1', jsonType: 'int' } },
+                    scales: { x: { trans: 'log', type: 'manual', min: '3', max: '20' } },
+                }}
                 field={{ name: 'x', label: 'X Axis', required: true } as ChartFieldInfo}
-                fieldValues={{ x: { value: 'field1', data: { type: 'int' } } }}
                 model={model}
-                onErrorBarChange={jest.fn()}
-                onScaleChange={jest.fn()}
-                onSelectFieldChange={jest.fn()}
-                scaleValues={{ trans: 'log', type: 'manual', min: '3', max: '20' }}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
 
@@ -218,14 +218,14 @@ describe('ChartFieldOption', () => {
     test('invalid scale range, max < min', async () => {
         render(
             <ChartFieldOption
+                chartConfig={{
+                    measures: { x: { name: 'field1', jsonType: 'int' } },
+                    scales: { x: { trans: 'log', type: 'manual', min: '1', max: '0' } },
+                }}
                 field={{ name: 'x', label: 'X Axis', required: true } as ChartFieldInfo}
-                fieldValues={{ x: { value: 'field1', data: { type: 'int' } } }}
                 model={model}
-                onErrorBarChange={jest.fn()}
-                onScaleChange={jest.fn()}
-                onSelectFieldChange={jest.fn()}
-                scaleValues={{ trans: 'log', type: 'manual', min: '1', max: '0' }}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
 

@@ -3,12 +3,13 @@ import { Map } from 'immutable';
 import {
     createHorizontalBarCountLegendData,
     createHorizontalBarLegendData,
+    getDefaultBarChartAxisLabel,
     getFieldDataType,
     getSelectOptions,
     shouldShowAggregateOptions,
     shouldShowRangeScaleOptions,
 } from './utils';
-import { ChartFieldInfo, ChartTypeInfo } from './models';
+import { ChartConfig, ChartFieldInfo, ChartTypeInfo } from './models';
 import { LABKEY_VIS } from '../../constants';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -368,6 +369,30 @@ describe('shouldShowAggregateOptions', () => {
         expect(shouldShowAggregateOptions(yField, SCATTER_PLOT_TYPE)).toBe(false);
         expect(shouldShowAggregateOptions(xField, LINE_PLOT_TYPE)).toBe(false);
         expect(shouldShowAggregateOptions(yField, LINE_PLOT_TYPE)).toBe(true);
+    });
+});
+
+describe('getDefaultBarChartAxisLabel', () => {
+    test('no aggregate', () => {
+        expect(getDefaultBarChartAxisLabel({ measures: {} } as ChartConfig)).toBe('Count');
+        expect(getDefaultBarChartAxisLabel({ measures: { x: { label: 'Test' } } } as ChartConfig)).toBe('Count');
+    });
+
+    test('with aggregate', () => {
+        expect(getDefaultBarChartAxisLabel({ measures: { y: { label: 'Test' } } } as ChartConfig)).toBe('Sum of Test');
+        expect(getDefaultBarChartAxisLabel({ measures: { y: { label: 'Test', aggregate: undefined } } } as ChartConfig)).toBe(
+            'Sum of Test'
+        );
+        expect(
+            getDefaultBarChartAxisLabel({
+                measures: { y: { label: 'Test', aggregate: 'Min' } },
+            } as ChartConfig)
+        ).toBe('Min of Test');
+        expect(
+            getDefaultBarChartAxisLabel({
+                measures: { y: { label: 'Test', aggregate: 'Max' } },
+            } as ChartConfig)
+        ).toBe('Max of Test');
     });
 });
 

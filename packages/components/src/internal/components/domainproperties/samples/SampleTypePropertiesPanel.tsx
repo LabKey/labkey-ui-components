@@ -99,7 +99,7 @@ const UnitKinds : Record<UNITS_KIND, UnitKindType> = {
 };
 
 const getValidUnitKinds = (lockUnitKind?: boolean, metricUnit?: string) : UnitKindType[] => {
-    if (!lockUnitKind)
+    if (!lockUnitKind || !metricUnit)
         return Object.values(UnitKinds);
 
     const validOptions = [UnitKinds[UNITS_KIND.NONE]]; // any unit can switch to no unit type

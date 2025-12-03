@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-###  version 6.X
+###  version 7.X
 *Released*: X 2025
 - Sample Amount/Units polish: part 2
   - Introduced a two-tier unit selection system (Amount Type, Display Units) in sample designer

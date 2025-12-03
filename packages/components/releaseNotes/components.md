@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 7.x.0
-*Released*: ? December 2025
+### version 7.1.0
+*Released*: 3 December 2025
 - ChartBuilderModal
   - Update to two-column layout
   - Add options for axis labels

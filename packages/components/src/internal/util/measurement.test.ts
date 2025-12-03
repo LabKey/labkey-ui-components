@@ -167,7 +167,7 @@ describe('MetricUnit utils', () => {
         expect(getAltUnitKeys('bad').length).toBe(19);
     });
 
-    describe('getMeasurementUnit', () => {
+    test('getMeasurementUnit', () => {
         expect(getMeasurementUnit(undefined)).toBeNull();
         expect(getMeasurementUnit('')).toBeNull();
         expect(getMeasurementUnit('invalidUnit')).toBeNull();

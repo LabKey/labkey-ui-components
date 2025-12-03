@@ -104,13 +104,12 @@ const getValidUnitKinds = (lockUnitKind?: boolean, metricUnit?: string) : UnitKi
 
     const validOptions = [UnitKinds[UNITS_KIND.NONE]]; // any unit can switch to no unit type
 
-    if (metricUnit) {
-        const unitKind = getMeasurementUnit(metricUnit)?.kind;
+    const unitKind = getMeasurementUnit(metricUnit)?.kind;
+    if (unitKind)
         validOptions.push(UnitKinds[unitKind]);
-    }
 
     return validOptions;
-}
+};
 
 AddEntityHelpTip.displayName = 'AddEntityHelpTip';
 
@@ -323,10 +322,10 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
         const unitOptions = getMetricUnitOptionsFromKind(unitKind?.value, true);
         let unitToSelect = value === UNITS_KIND.COUNT ? 'unit' : '';
         let unitChangeWarning = null;
-        if (originalUnit && value == UNITS_KIND.NONE)
+        if (originalUnit && value === UNITS_KIND.NONE)
             unitChangeWarning = "Once switched to 'Any' amount type, you cannot switch back to '" + getMeasurementUnit(originalUnit)?.kind + "' amount type.";
 
-        if (originalUnit && getMeasurementUnit(originalUnit)?.kind == value) {
+        if (originalUnit && getMeasurementUnit(originalUnit)?.kind === value) {
             unitToSelect = originalUnit;
         }
         this.updateValidStatus(this.props.model.set('metricUnit', unitToSelect) as SampleTypeModel);

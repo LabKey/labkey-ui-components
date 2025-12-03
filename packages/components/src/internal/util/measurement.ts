@@ -235,7 +235,7 @@ export function areUnitsCompatible(unitAStr: string, unitBStr: string) {
     if (!unitA || !unitB) {
         return false;
     }
-    return unitA.kind == unitB.kind;
+    return unitA.kind === unitB.kind;
 }
 
 export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolean): { label: string; value: string }[] {

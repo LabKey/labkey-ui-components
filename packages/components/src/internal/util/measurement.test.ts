@@ -144,7 +144,7 @@ describe('MetricUnit utils', () => {
         expect(getAltUnitKeys('uL')).toEqual(expectedUlOptions);
         expect(getAltUnitKeys('mL')).toEqual(expectedUlOptions);
 
-        const expectedGOptions = ['g', 'mg', 'kg', 'ug', 'ng', 'pg'];
+        const expectedGOptions = ['g', 'mg', 'kg', 'ug', 'ng'];
         expect(getAltUnitKeys('g')).toEqual(expectedGOptions);
         expect(getAltUnitKeys('kg')).toEqual(expectedGOptions);
 

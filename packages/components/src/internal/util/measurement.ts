@@ -108,7 +108,7 @@ export const MEASUREMENT_UNITS: Record<string, MeasurementUnit> = {
         longLabelPlural: 'grams',
         kind: UNITS_KIND.MASS,
         ratio: 1,
-        displayPrecision: 12, // enable smallest precision of pg
+        displayPrecision: 12, // enable smallest precision of pg and allow up to 3 decimal places for ng
     },
     mg: {
         baseUnit: 'g',
@@ -126,7 +126,7 @@ export const MEASUREMENT_UNITS: Record<string, MeasurementUnit> = {
         longLabelPlural: 'kilograms',
         kind: UNITS_KIND.MASS,
         ratio: 1000,
-        displayPrecision: 15, // enable smallest precision of pg
+        displayPrecision: 15,
     },
     ug: {
         baseUnit: 'g',
@@ -135,7 +135,7 @@ export const MEASUREMENT_UNITS: Record<string, MeasurementUnit> = {
         longLabelPlural: 'micrograms',
         kind: UNITS_KIND.MASS,
         ratio: 0.000001,
-        displayPrecision: 6, // enable smallest precision of pg
+        displayPrecision: 6,
     },
     ng: {
         baseUnit: 'g',
@@ -145,15 +145,6 @@ export const MEASUREMENT_UNITS: Record<string, MeasurementUnit> = {
         kind: UNITS_KIND.MASS,
         ratio: 0.000000001,
         displayPrecision: 3,
-    },
-    pg: {
-        baseUnit: 'g',
-        label: 'pg',
-        longLabelSingular: 'picogram',
-        longLabelPlural: 'picograms',
-        kind: UNITS_KIND.MASS,
-        ratio: 0.000000000001,
-        displayPrecision: 0,
     },
     ml: {
         baseUnit: 'mL',

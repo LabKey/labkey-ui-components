@@ -282,6 +282,14 @@ textarea.form-control {
     width: 12px;
 }
 
+.color-icon__chip-small {
+    display: inline-block;
+    border-radius: 2px;
+    border: solid 1px $gray;
+    height: 12px;
+    width: 12px;
+}
+
 .color-icon__circle {
     display: inline-block;
     border-radius: 50%;

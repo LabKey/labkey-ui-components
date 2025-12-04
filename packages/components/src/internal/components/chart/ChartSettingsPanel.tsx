@@ -1,4 +1,5 @@
 import React, { ChangeEvent, FC, memo, useCallback, useMemo, useState } from 'react';
+import classNames from 'classnames';
 import {
     BaseChartModel,
     BaseChartModelSetter,
@@ -16,9 +17,9 @@ import { ChartFieldOption } from './ChartFieldOption';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { TrendlineOption } from './TrendlineOption';
 import { deepCopyChartConfig, hasTrendline } from './utils';
-import classNames from 'classnames';
 import { useEnterEscape } from '../../../public/useEnterEscape';
 import { ChartLabelInput } from './ChartLabelInput';
+import { ChartColorInputs } from './ChartColorInputs';
 
 function changedIntValue(strVal: string, currentVal: number): [value: number, changed: boolean] {
     strVal = strVal.trim();
@@ -378,6 +379,7 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
                 value={chartConfig?.labels?.subtitle}
             />
             <SizeInputs height={chartConfig.height} setChartConfig={setChartConfig} width={chartConfig.width} />
+            <ChartColorInputs chartConfig={chartConfig} model={model} setChartConfig={setChartConfig} />
         </div>
     );
 });

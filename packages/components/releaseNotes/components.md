@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD December 2025
+- Chart builder updates for series color scale options
+  - ChartColorInputs for single color geomOptions and series specific color and shape value map
+  - ChartConfig measuresOptions to store per series mapping object
+  - Hide and show color options based on selected chart type and measures
+  - ColorPickerInput update to support fixed position
+
 ### version 7.1.0
 *Released*: 3 December 2025
 - ChartBuilderModal

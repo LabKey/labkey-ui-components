@@ -9,6 +9,7 @@ import { selectDistinctRows } from '../../query/api';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { ColorIcon } from '../base/ColorIcon';
 import { LABKEY_VIS } from '../../constants';
+import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 
 const showColorOption = function (chartConfig: ChartConfig, optionName: string): boolean {
     const chartType = chartConfig.renderType;
@@ -184,11 +185,7 @@ export const ChartColorInputs: FC<ChartColorInputsProps> = memo(({ chartConfig, 
                 <div className="form-group row">
                     <div className="col-xs-12">
                         <label>Line Color</label>
-                        <ColorPickerInput
-                            name="lineColor"
-                            onChange={onLineColorChange}
-                            value={lineColor}
-                        />
+                        <ColorPickerInput name="lineColor" onChange={onLineColorChange} value={lineColor} />
                     </div>
                 </div>
             )}
@@ -326,6 +323,10 @@ export const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chart
         [onSeriesOptionChange, selectedSeries]
     );
 
+    const onSeriesShapeRemove = useCallback(() => {
+        onSeriesOptionChange(selectedSeries, 'shape', undefined);
+    }, [onSeriesOptionChange, selectedSeries]);
+
     const seriesValueRenderer = useCallback(option => seriesOptionRenderer(option, seriesOptionMap), [seriesOptionMap]);
 
     if (!distinctSeriesOptions) {
@@ -365,8 +366,9 @@ export const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chart
                     <div className="col-xs-6">
                         <div>Shape</div>
                         <SelectInput
-                            containerClass="row"
-                            inputClass="col-xs-12"
+                            clearable={false}
+                            containerClass="inline-block"
+                            inputClass=""
                             menuPlacement="top"
                             onChange={onSeriesShapeChange}
                             optionRenderer={shapeOptionRenderer}
@@ -375,6 +377,9 @@ export const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chart
                             value={seriesOptionMap[selectedSeries]?.shape}
                             valueRenderer={shapeValueRenderer}
                         />
+                        {seriesOptionMap[selectedSeries]?.shape && (
+                            <RemoveEntityButton labelClass="color-picker__remove" onClick={onSeriesShapeRemove} />
+                        )}
                     </div>
                 </div>
             )}

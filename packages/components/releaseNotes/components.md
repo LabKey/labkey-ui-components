@@ -9,6 +9,14 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Added a new formsy rule `sampleAmount` for validating sample amount/units input on forms
   - Disallow large amount (>1.79769E308) for amounts input on form, editable grid, and sample storage editor
 
+### version 7.1.0
+*Released*: 3 December 2025
+- ChartBuilderModal
+  - Update to two-column layout
+  - Add options for axis labels
+  - Add options for title / subtitle
+  - Add options for height / width
+
 ### version 7.0.0
 *Released*: 1 December 2025
 - Updates for new Workflow implementation

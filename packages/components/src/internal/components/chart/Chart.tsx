@@ -59,23 +59,28 @@ interface Dimensions {
     width: number;
 }
 
-const MAX_HEIGHT = 500;
+const MAX_DEFAULT_HEIGHT = 500;
 
 function computeDimensions(chartConfig: ChartConfig, measureStore, defaultWidth: number): Dimensions {
-    // Issue 49754: use getChartTypeBasedWidth() to determine width
-    const width = LABKEY_VIS.GenericChartHelper.getChartTypeBasedWidth(
-        chartConfig.renderType,
-        chartConfig.measures,
-        measureStore,
-        defaultWidth
-    );
-    const dimensions = {
-        width,
-        height: (width * 9) / 16, // 16:9 aspect ratio
-    };
-    if (dimensions.height > MAX_HEIGHT) dimensions.height = MAX_HEIGHT;
+    let width = chartConfig.width;
+    let height = chartConfig.height;
 
-    return dimensions;
+    if (width === undefined) {
+        // Issue 49754: use getChartTypeBasedWidth() to determine width
+        width = LABKEY_VIS.GenericChartHelper.getChartTypeBasedWidth(
+            chartConfig.renderType,
+            chartConfig.measures,
+            measureStore,
+            defaultWidth
+        );
+    }
+
+    if (height === undefined) {
+        height = (width * 9) / 16; // 16:9 aspect ratio
+        if (height > MAX_DEFAULT_HEIGHT) height = MAX_DEFAULT_HEIGHT;
+    }
+
+    return { height, width };
 }
 
 interface Props {

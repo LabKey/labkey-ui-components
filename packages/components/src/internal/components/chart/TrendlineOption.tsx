@@ -1,7 +1,6 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
-import { SchemaQuery } from '../../../public/SchemaQuery';
+import { SelectInput } from '../forms/input/SelectInput';
 
 import { LABKEY_VIS } from '../../constants';
 import { LabelOverlay } from '../forms/LabelOverlay';
@@ -10,9 +9,10 @@ import { OverlayTrigger } from '../../OverlayTrigger';
 import { Popover } from '../../Popover';
 import { RadioGroupInput, RadioGroupOption } from '../forms/input/RadioGroupInput';
 
-import { ChartFieldInfo, ChartTypeInfo, TrendlineType } from './models';
+import { ChartConfig, ChartConfigSetter, ChartFieldInfo, ChartTypeInfo, TrendlineType } from './models';
 import { getFieldDataType, getSelectOptions } from './utils';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { QueryColumn } from '../../../public/QueryColumn';
 
 const ASYMPTOTE_TYPES = [
     { value: 'automatic', label: 'Automatic' },
@@ -20,37 +20,46 @@ const ASYMPTOTE_TYPES = [
 ];
 
 interface TrendlineOptionProps {
-    fieldValues: Record<string, SelectInputOption>;
+    chartConfig: ChartConfig;
     model: QueryModel;
-    onFieldChange: (key: string, value: SelectInputOption) => void;
-    schemaQuery: SchemaQuery;
     selectedType: ChartTypeInfo;
+    setChartConfig: ChartConfigSetter;
 }
 
 export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
     const TRENDLINE_OPTIONS: TrendlineType[] = Object.values(LABKEY_VIS.GenericChartHelper.TRENDLINE_OPTIONS);
-    const { fieldValues, onFieldChange, schemaQuery, model, selectedType } = props;
-    const showFieldOptions = fieldValues.trendlineType && fieldValues.trendlineType.value !== '';
+    const { chartConfig, model, selectedType, setChartConfig } = props;
+    const schemaQuery = model.schemaQuery;
+    const { geomOptions, measures } = chartConfig;
+    const selectedTrendlineType = useMemo(
+        () => TRENDLINE_OPTIONS.find(option => option.value === geomOptions.trendlineType),
+        [TRENDLINE_OPTIONS, geomOptions.trendlineType]
+    );
+    const showFieldOptions = !!geomOptions.trendlineType;
 
     // hide the trendline option if no x-axis value selected and for date field selection on x-axis
     const hidden = useMemo(() => {
-        const jsonType = getFieldDataType(fieldValues.x?.data);
-        return !fieldValues.x?.value || jsonType === 'date' || jsonType === 'time';
-    }, [fieldValues.x]);
+        const jsonType = getFieldDataType(measures.x);
+        return !measures.x || jsonType === 'date' || jsonType === 'time';
+    }, [measures.x]);
 
     const [loadingTrendlineOptions, setLoadingTrendlineOptions] = useState<boolean>(true);
     const [asymptoteType, setAsymptoteType] = useState<string>('automatic');
     const [asymptoteMin, setAsymptoteMin] = useState<string>('');
     const [asymptoteMax, setAsymptoteMax] = useState<string>('');
+    const invalidRange = useMemo(
+        () => !!asymptoteMin && !!asymptoteMax && asymptoteMax <= asymptoteMin,
+        [asymptoteMin, asymptoteMax]
+    );
 
     useEffect(() => {
-        if (loadingTrendlineOptions && (!!fieldValues.trendlineAsymptoteMin || !!fieldValues.trendlineAsymptoteMax)) {
+        if (loadingTrendlineOptions && (!!geomOptions.trendlineAsymptoteMin || !!geomOptions.trendlineAsymptoteMax)) {
             setAsymptoteType('manual');
-            setAsymptoteMin(fieldValues.trendlineAsymptoteMin?.value);
-            setAsymptoteMax(fieldValues.trendlineAsymptoteMax?.value);
+            setAsymptoteMin(geomOptions.trendlineAsymptoteMin?.toString());
+            setAsymptoteMax(geomOptions.trendlineAsymptoteMax?.toString());
             setLoadingTrendlineOptions(false);
         }
-    }, [fieldValues, loadingTrendlineOptions]);
+    }, [geomOptions, loadingTrendlineOptions]);
 
     const onTrendlineAsymptoteMin = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setAsymptoteMin(event.target.value);
@@ -60,20 +69,43 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
         setAsymptoteMax(event.target.value);
     }, []);
 
-    const clearTrendlineAsymptote = useCallback(() => {
-        setAsymptoteMin('');
-        onFieldChange('trendlineAsymptoteMin', undefined);
-        setAsymptoteMax('');
-        onFieldChange('trendlineAsymptoteMax', undefined);
-    }, [onFieldChange]);
+    const setGeomOptions = useCallback(
+        options => {
+            setChartConfig(current => ({
+                ...current,
+                geomOptions: { ...current.geomOptions, ...options },
+            }));
+        },
+        [setChartConfig]
+    );
+
+    const applyTrendlineAsymptote = useCallback(() => {
+        if (invalidRange) return;
+        setGeomOptions({ trendlineAsymptoteMin: asymptoteMin, trendlineAsymptoteMax: asymptoteMax });
+    }, [asymptoteMin, asymptoteMax, invalidRange, setGeomOptions]);
+
+    const clearTrendlineAsymptote = useCallback(
+        (updateChartConfig: boolean) => {
+            setAsymptoteMin('');
+            setAsymptoteMax('');
+            if (updateChartConfig) {
+                setGeomOptions({ trendlineAsymptoteMin: undefined, trendlineAsymptoteMax: undefined });
+            }
+        },
+        [setGeomOptions]
+    );
 
     const onTrendlineFieldChange = useCallback(
-        (key: string, _, selectedOption: SelectInputOption) => {
+        (_: never, value: string) => {
             setAsymptoteType('automatic');
-            clearTrendlineAsymptote();
-            onFieldChange(key, selectedOption);
+            clearTrendlineAsymptote(false);
+            setGeomOptions({
+                trendlineType: value,
+                trendlineAsymptoteMin: undefined,
+                trendlineAsymptoteMax: undefined,
+            });
         },
-        [clearTrendlineAsymptote, onFieldChange]
+        [clearTrendlineAsymptote, setGeomOptions]
     );
 
     const trendlineOptions = useMemo(() => {
@@ -85,7 +117,7 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
     const onAsymptoteTypeChange = useCallback(
         (selected: string) => {
             if (selected === 'automatic') {
-                clearTrendlineAsymptote();
+                clearTrendlineAsymptote(true);
             }
             setAsymptoteType(selected);
         },
@@ -98,7 +130,7 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
         <div className="trendline-option">
             <label>
                 Trendline{' '}
-                <LabelOverlay placement="bottom">
+                <LabelOverlay placement="right">
                     {trendlineOptions
                         .filter(option => option.equation)
                         .map(option => (
@@ -121,24 +153,29 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
                     options={trendlineOptions}
                     placeholder="Select trendline option"
                     showLabel={false}
-                    value={fieldValues.trendlineType?.value ?? ''}
+                    value={selectedTrendlineType?.value ?? ''}
                 />
                 {showFieldOptions && (
                     <div className="field-option-icon">
                         <OverlayTrigger
                             overlay={
-                                <Popover id="chart-field-option-popover" placement="left">
+                                <Popover
+                                    className="chart-field-trendline-options"
+                                    id="chart-field-option-popover"
+                                    placement="right"
+                                >
                                     <TrendlineOptionPopover
+                                        applyTrendlineAsymptote={applyTrendlineAsymptote}
                                         asymptoteMax={asymptoteMax}
                                         asymptoteMin={asymptoteMin}
                                         asymptoteType={asymptoteType}
-                                        fieldValues={fieldValues}
+                                        chartConfig={chartConfig}
                                         model={model}
                                         onAsymptoteTypeChange={onAsymptoteTypeChange}
-                                        onFieldChange={onFieldChange}
                                         onTrendlineAsymptoteMax={onTrendlineAsymptoteMax}
                                         onTrendlineAsymptoteMin={onTrendlineAsymptoteMin}
                                         selectedType={selectedType}
+                                        setGeomOptions={setGeomOptions}
                                     />
                                 </Popover>
                             }
@@ -155,32 +192,39 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
 TrendlineOption.displayName = 'TrendlineOption';
 
 interface TrendlineOptionPopoverProps {
+    applyTrendlineAsymptote: () => void;
     asymptoteMax: string;
     asymptoteMin: string;
     asymptoteType: string;
-    fieldValues: Record<string, SelectInputOption>;
+    chartConfig: ChartConfig;
     model: QueryModel;
     onAsymptoteTypeChange: (selected: string) => void;
-    onFieldChange: (key: string, value: SelectInputOption) => void;
     onTrendlineAsymptoteMax: (event: ChangeEvent<HTMLInputElement>) => void;
     onTrendlineAsymptoteMin: (event: ChangeEvent<HTMLInputElement>) => void;
     selectedType: ChartTypeInfo;
+    setGeomOptions: (options: Record<string, string>) => void;
 }
 
 const TrendlineOptionPopover: FC<TrendlineOptionPopoverProps> = props => {
     const {
-        fieldValues,
+        applyTrendlineAsymptote,
         model,
         selectedType,
         asymptoteType,
+        chartConfig,
         onAsymptoteTypeChange,
-        onFieldChange,
         asymptoteMin,
         asymptoteMax,
         onTrendlineAsymptoteMin,
         onTrendlineAsymptoteMax,
+        setGeomOptions,
     } = props;
-    const showAsymptoteOptions = fieldValues.trendlineType?.showMin || fieldValues.trendlineType?.showMax;
+    const geomOptions = chartConfig.geomOptions;
+    const TRENDLINE_OPTIONS: TrendlineType[] = Object.values(LABKEY_VIS.GenericChartHelper.TRENDLINE_OPTIONS);
+    const selectedTrendlineType = useMemo(() => {
+        return TRENDLINE_OPTIONS.find(option => option.value === geomOptions.trendlineType);
+    }, [TRENDLINE_OPTIONS, geomOptions.trendlineType]);
+    const showAsymptoteOptions = selectedTrendlineType?.showMin || selectedTrendlineType?.showMax;
     const invalidRange = useMemo(
         () => !!asymptoteMin && !!asymptoteMax && asymptoteMax <= asymptoteMin,
         [asymptoteMin, asymptoteMax]
@@ -195,35 +239,16 @@ const TrendlineOptionPopover: FC<TrendlineOptionPopoverProps> = props => {
         } as ChartFieldInfo;
         return getSelectOptions(model, selectedType, field);
     }, [model, selectedType]);
-    // Issue 52050: use fieldKey for special characters
-    const parameterInputValue = useMemo(() => {
-        if (fieldValues?.trendlineParameters) {
-            return fieldValues.trendlineParameters.data?.fieldKey ?? fieldValues.trendlineParameters.value;
-        }
-        return undefined;
-    }, [fieldValues]);
 
     const asymptoteTypeOptions = useMemo(() => {
         return ASYMPTOTE_TYPES.map(
-            option =>
-                ({
-                    ...option,
-                    selected: asymptoteType === option.value,
-                }) as RadioGroupOption
+            option => ({ ...option, selected: asymptoteType === option.value }) as RadioGroupOption
         );
     }, [asymptoteType]);
 
-    const applyTrendlineAsymptote = useCallback(() => {
-        if (invalidRange) return;
-        onFieldChange('trendlineAsymptoteMin', { value: asymptoteMin });
-        onFieldChange('trendlineAsymptoteMax', { value: asymptoteMax });
-    }, [onFieldChange, asymptoteMin, asymptoteMax, invalidRange]);
-
     const onParameterFieldChange = useCallback(
-        (name: string, _: string, selectedOption: SelectInputOption) => {
-            onFieldChange(name, selectedOption);
-        },
-        [onFieldChange]
+        (_: never, __: never, col: QueryColumn) => setGeomOptions({ trendlineParameters: col?.fieldKey }),
+        [setGeomOptions]
     );
 
     return (
@@ -241,7 +266,7 @@ const TrendlineOptionPopover: FC<TrendlineOptionPopoverProps> = props => {
                     </div>
                     {asymptoteType === 'manual' && (
                         <div className="chart-builder-asymptote-inputs">
-                            {fieldValues.trendlineType?.showMin && (
+                            {selectedTrendlineType?.showMin && (
                                 <input
                                     className="chart-builder-field-footer-input"
                                     name="trendlineAsymptoteMin"
@@ -252,10 +277,8 @@ const TrendlineOptionPopover: FC<TrendlineOptionPopoverProps> = props => {
                                     value={asymptoteMin}
                                 />
                             )}
-                            {fieldValues.trendlineType?.showMin && fieldValues.trendlineType?.showMax && (
-                                <span> -</span>
-                            )}
-                            {fieldValues.trendlineType?.showMax && (
+                            {selectedTrendlineType?.showMin && selectedTrendlineType?.showMax && <span> -</span>}
+                            {selectedTrendlineType?.showMax && (
                                 <input
                                     className="chart-builder-field-footer-input"
                                     name="trendlineAsymptoteMax"
@@ -274,7 +297,7 @@ const TrendlineOptionPopover: FC<TrendlineOptionPopoverProps> = props => {
             <div className="margin-top">
                 <label>
                     Provided Parameters{' '}
-                    <LabelOverlay placement="bottom">
+                    <LabelOverlay placement="right">
                         Select the field in the data which has the already computed / saved curve fit parameters object
                         for the selected Trendline type. These provided parameters will then be used in the trendline
                         display instead of calculating new parameters based on the current data points in the grid.
@@ -282,11 +305,13 @@ const TrendlineOptionPopover: FC<TrendlineOptionPopoverProps> = props => {
                 </label>
                 <SelectInput
                     inputClass="col-xs-12"
+                    labelKey="caption"
                     name="trendlineParameters"
                     onChange={onParameterFieldChange}
                     options={options}
                     showLabel={false}
-                    value={parameterInputValue}
+                    value={chartConfig.geomOptions.trendlineParameters}
+                    valueKey="fieldKey"
                 />
             </div>
         </div>

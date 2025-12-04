@@ -10,20 +10,30 @@ import { TrendlineOption } from './TrendlineOption';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { ViewInfo } from '../../ViewInfo';
-import { ChartTypeInfo } from './models';
+import { ChartConfig, ChartTypeInfo } from './models';
 
 LABKEY_VIS = {
     GenericChartHelper: {
         getAllowableTypes: () => ['text'],
         isMeasureDimensionMatch: () => true,
         TRENDLINE_OPTIONS: [
-            { value: 'option1', label: 'Option 1', schemaPrefix: undefined },
-            { value: 'option2', label: 'Option 2', schemaPrefix: null },
-            { value: 'option3', label: 'Option 3', schemaPrefix: 'other' },
-            { value: 'option4', label: 'Option 4', schemaPrefix: 'assay' },
+            { value: 'option1', label: 'Option 1', schemaPrefix: undefined, showMin: false, showMax: false },
+            { value: 'option2', label: 'Option 2', schemaPrefix: null, showMin: false, showMax: false },
+            { value: 'option3', label: 'Option 3', schemaPrefix: 'other', showMin: true, showMax: true },
+            { value: 'option4', label: 'Option 4', schemaPrefix: 'assay', showMin: true, showMax: false },
         ],
     },
 };
+
+const baseChartConfig = {
+    geomOptions: {},
+    gridLinesVisible: undefined,
+    labels: {},
+    measures: {},
+    pointType: undefined,
+    renderType: 'line_plot',
+    scales: {},
+} as ChartConfig;
 
 const LINE_PLOT_TYPE = {
     name: 'line_plot',
@@ -57,11 +67,10 @@ describe('TrendlineOption', () => {
     test('hidden without x-axis value selected', async () => {
         render(
             <TrendlineOption
-                fieldValues={{}}
+                chartConfig={baseChartConfig}
                 model={model}
-                onFieldChange={jest.fn()}
-                schemaQuery={new SchemaQuery('assay', 'query')}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
         await waitFor(() => {
@@ -75,20 +84,30 @@ describe('TrendlineOption', () => {
         expect(document.querySelectorAll('input[name="trendlineParameters"]')).toHaveLength(0);
     });
 
-    test('shown with x-axis value selected, non-date', async () => {
-        const fieldValues = {
-            x: { data: { jsonType: 'int' }, value: 'field1' },
-            trendlineAsymptoteMin: { value: undefined },
-            trendlineAsymptoteMax: { value: undefined },
-            trendlineParameters: { value: undefined },
-        };
+    test('shown with x-axis value selected, options filtered by schemaPrefix', async () => {
+        const chartConfig = {
+            ...baseChartConfig,
+            geomOptions: {
+                trendlineAsymptoteMin: undefined,
+                trendlineAsymptoteMax: undefined,
+                trendlineParameters: undefined,
+            },
+            measures: {
+                x: { fieldKey: 'field1', jsonType: 'int' },
+            },
+        } as ChartConfig;
+        const assayModel = makeTestQueryModel(
+            new SchemaQuery('assay', 'query'),
+            QueryInfo.fromJsonForTests({ columns, name: 'query', schemaName: 'assay' }),
+            [],
+            0
+        );
         render(
             <TrendlineOption
-                fieldValues={fieldValues}
-                model={model}
-                onFieldChange={jest.fn()}
-                schemaQuery={new SchemaQuery('assay', 'query')}
+                chartConfig={chartConfig}
+                model={assayModel}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
         await waitFor(() => {
@@ -109,19 +128,23 @@ describe('TrendlineOption', () => {
     });
 
     test('hidden with x-axis value selected, date', async () => {
-        const fieldValues = {
-            x: { data: { jsonType: 'date' }, value: 'field1' },
-            trendlineAsymptoteMin: { value: undefined },
-            trendlineAsymptoteMax: { value: undefined },
-            trendlineParameters: { value: undefined },
-        };
+        const chartConfig = {
+            ...baseChartConfig,
+            geomOptions: {
+                trendlineAsymptoteMin: undefined,
+                trendlineAsymptoteMax: undefined,
+                trendlineParameters: undefined,
+            },
+            measures: {
+                x: { name: 'field1', jsonType: 'date' },
+            },
+        } as ChartConfig;
         render(
             <TrendlineOption
-                fieldValues={fieldValues}
+                chartConfig={chartConfig}
                 model={model}
-                onFieldChange={jest.fn()}
-                schemaQuery={new SchemaQuery('assay', 'query')}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
         await waitFor(() => {
@@ -133,19 +156,23 @@ describe('TrendlineOption', () => {
     });
 
     test('hidden with x-axis value selected, time', async () => {
-        const fieldValues = {
-            x: { data: { type: 'time' }, value: 'field1' },
-            trendlineAsymptoteMin: { value: undefined },
-            trendlineAsymptoteMax: { value: undefined },
-            trendlineParameters: { value: undefined },
-        };
+        const chartConfig = {
+            ...baseChartConfig,
+            geomOptions: {
+                trendlineAsymptoteMin: undefined,
+                trendlineAsymptoteMax: undefined,
+                trendlineParameters: undefined,
+            },
+            measures: {
+                x: { name: 'field1', jsonType: 'time' },
+            },
+        } as ChartConfig;
         render(
             <TrendlineOption
-                fieldValues={fieldValues}
+                chartConfig={chartConfig}
                 model={model}
-                onFieldChange={jest.fn()}
-                schemaQuery={new SchemaQuery('assay', 'query')}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
         await waitFor(() => {
@@ -157,20 +184,24 @@ describe('TrendlineOption', () => {
     });
 
     test('show asymptote min and max', async () => {
-        const fieldValues = {
-            x: { data: { jsonType: 'int' }, value: 'field1' },
-            trendlineType: { value: 'option1', showMin: true, showMax: true },
-            trendlineAsymptoteMin: { value: '0.1' },
-            trendlineAsymptoteMax: { value: '1.0' },
-            trendlineParameters: { value: undefined },
-        };
+        const chartConfig = {
+            ...baseChartConfig,
+            geomOptions: {
+                trendlineType: 'option3',
+                trendlineAsymptoteMin: 0.1,
+                trendlineAsymptoteMax: 1.0,
+                trendlineParameters: undefined,
+            },
+            measures: {
+                x: { name: 'field1', jsonType: 'int' },
+            },
+        } as ChartConfig;
         render(
             <TrendlineOption
-                fieldValues={fieldValues}
+                chartConfig={chartConfig}
                 model={model}
-                onFieldChange={jest.fn()}
-                schemaQuery={new SchemaQuery('assay', 'query')}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
         await waitFor(() => {
@@ -186,7 +217,7 @@ describe('TrendlineOption', () => {
         await userEvent.click(document.querySelector('input[value="manual"]'));
         expect(document.querySelectorAll('input[type="number"]')).toHaveLength(2);
         expect(document.querySelector('input[name="trendlineAsymptoteMin"]').getAttribute('value')).toBe('0.1');
-        expect(document.querySelector('input[name="trendlineAsymptoteMax"]').getAttribute('value')).toBe('1.0');
+        expect(document.querySelector('input[name="trendlineAsymptoteMax"]').getAttribute('value')).toBe('1');
 
         // clicking automatic should hide the inputs and clear values
         await userEvent.click(document.querySelector('input[value="automatic"]'));
@@ -198,20 +229,24 @@ describe('TrendlineOption', () => {
     });
 
     test('show asymptote min but not max', async () => {
-        const fieldValues = {
-            x: { data: { jsonType: 'int' }, value: 'field1' },
-            trendlineType: { value: 'option1', showMin: true, showMax: false },
-            trendlineAsymptoteMin: { value: '0.1' },
-            trendlineAsymptoteMax: { value: undefined },
-            trendlineParameters: { value: undefined },
-        };
+        const chartConfig = {
+            ...baseChartConfig,
+            geomOptions: {
+                trendlineType: 'option4',
+                trendlineAsymptoteMin: 0.1,
+                trendlineAsymptoteMax: undefined,
+                trendlineParameters: undefined,
+            },
+            measures: {
+                x: { name: 'field1', jsonType: 'int' },
+            },
+        } as ChartConfig;
         render(
             <TrendlineOption
-                fieldValues={fieldValues}
+                chartConfig={chartConfig}
                 model={model}
-                onFieldChange={jest.fn()}
-                schemaQuery={new SchemaQuery('assay', 'query')}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
         await waitFor(() => {
@@ -239,20 +274,24 @@ describe('TrendlineOption', () => {
     });
 
     test('show provided parameters in trendline gear tooltip', async () => {
-        const fieldValues = {
-            x: { data: { jsonType: 'int' }, value: 'field1' },
-            trendlineType: { value: 'option1', showMin: true, showMax: true },
-            trendlineAsymptoteMin: { value: undefined },
-            trendlineAsymptoteMax: { value: undefined },
-            trendlineParameters: { value: 'field1' },
+        const chartConfig = {
+            ...baseChartConfig,
+            geomOptions: {
+                trendlineType: 'option1',
+                trendlineAsymptoteMin: undefined,
+                trendlineAsymptoteMax: undefined,
+                trendlineParameters: 'field1',
+            },
+            measures: {
+                x: { name: 'field1', jsonType: 'int' },
+            },
         };
         render(
             <TrendlineOption
-                fieldValues={fieldValues}
+                chartConfig={chartConfig}
                 model={model}
-                onFieldChange={jest.fn()}
-                schemaQuery={new SchemaQuery('assay', 'query')}
                 selectedType={LINE_PLOT_TYPE}
+                setChartConfig={jest.fn()}
             />
         );
         await waitFor(() => {

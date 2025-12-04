@@ -1,9 +1,10 @@
 import { Map } from 'immutable';
-import { ChartFieldInfo, ChartTypeInfo } from './models';
+import { ChartConfig, ChartFieldInfo, ChartTypeInfo } from './models';
+import { AGGREGATE_METHODS, BLUE_HEX_COLOR, MAX_POINT_DISPLAY } from './constants';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { SelectInputOption } from '../forms/input/SelectInput';
 import { naturalSortByProperty } from '../../../public/sort';
 import { LABKEY_VIS } from '../../constants';
+import { QueryColumn } from '../../../public/QueryColumn';
 
 export interface HorizontalBarData {
     backgroundColor?: string;
@@ -96,11 +97,92 @@ export const shouldShowAggregateOptions = (field: ChartFieldInfo, selectedType: 
     return field.name === 'y' && (isBar || isLine);
 };
 
-export const getSelectOptions = (
-    model: QueryModel,
-    chartType: ChartTypeInfo,
-    field: ChartFieldInfo
-): SelectInputOption[] => {
+const makeGeomOptions = (chartType: string) => ({
+    binShape: 'hex',
+    binSingleColor: '000000',
+    binThreshold: MAX_POINT_DISPLAY,
+    boxFillColor: chartType === 'box_plot' ? 'none' : BLUE_HEX_COLOR,
+    chartLayout: 'single',
+    chartSubjectSelection: 'subjects',
+    colorPaletteScale: 'ColorDiscrete',
+    colorRange: 'BlueWhite',
+    displayIndividual: true,
+    displayAggregate: false,
+    errorBars: 'None',
+    gradientColor: 'FFFFFF',
+    gradientPercentage: 95,
+    hideDataPoints: false,
+    hideTrendLine: false,
+    lineColor: '000000',
+    lineWidth: chartType === 'line_plot' ? 3 : 1,
+    marginBottom: null,
+    marginLeft: null,
+    marginRight: null,
+    marginTop: 15,
+    opacity: chartType === 'bar_chart' || chartType === 'line_plot' ? 1.0 : 0.5,
+    pieHideWhenLessThanPercentage: 5,
+    pieInnerRadius: 0,
+    pieOuterRadius: 80,
+    piePercentagesColor: '333333',
+    pointFillColor: BLUE_HEX_COLOR,
+    pointSize: chartType === 'box_plot' ? 3 : 5,
+    position: chartType === 'box_plot' ? 'jitter' : null,
+    showOutliers: true,
+    showPiePercentages: true,
+    trendlineType: undefined,
+    trendlineAsymptoteMin: undefined,
+    trendlineAsymptoteMax: undefined,
+});
+
+/**
+ * Deep copies an existing ChartConfig or creates an empty one. Use before manipulating an existing chart config.
+ */
+export function deepCopyChartConfig(chartConfig: ChartConfig, chartType = 'bar_chart'): ChartConfig {
+    if (!chartConfig) {
+        return {
+            geomOptions: makeGeomOptions(chartType),
+            gridLinesVisible: 'both',
+            height: 500,
+            labels: {},
+            measures: {},
+            pointType: 'all',
+            renderType: chartType,
+            scales: {},
+            width: undefined,
+        };
+    }
+    return {
+        ...chartConfig,
+        geomOptions: { ...chartConfig.geomOptions },
+        labels: { ...chartConfig.labels },
+        measures: { ...chartConfig.measures },
+        scales: { ...chartConfig.scales },
+    };
+}
+
+export function hasTrendline(chartType: ChartTypeInfo) {
+    return chartType.fields.find(f => f.name === 'trendline') !== undefined;
+}
+
+export const getDefaultBarChartAxisLabel = (config: ChartConfig): string => {
+    const aggregate = config.measures.y?.aggregate;
+    const label = AGGREGATE_METHODS.find(m => m.value === aggregate)?.label;
+    const prefix = (label ?? aggregate ?? 'Sum') + ' of ';
+    return config.measures.y ? prefix + config.measures.y.label : 'Count';
+};
+
+export const getBarChartAxisLabel = (updated: ChartConfig, prev: ChartConfig) => {
+    const emptyLabel = !updated.labels.y?.trim();
+    const isPrevUsingDefault = prev.labels.y === getDefaultBarChartAxisLabel(prev);
+
+    if (emptyLabel || isPrevUsingDefault) {
+        return getDefaultBarChartAxisLabel(updated);
+    }
+
+    return updated.labels.y;
+};
+
+export const getSelectOptions = (model: QueryModel, chartType: ChartTypeInfo, field: ChartFieldInfo): QueryColumn[] => {
     const allowableTypes = LABKEY_VIS.GenericChartHelper.getAllowableTypes(field);
 
     return model.queryInfo
@@ -116,6 +198,5 @@ export const getSelectOptions = (
             );
             return hasMatchingType || isMeasureDimensionMatch;
         })
-        .sort(naturalSortByProperty('caption'))
-        .map(col => ({ label: col.caption, value: col.fieldKey, data: col }));
+        .sort(naturalSortByProperty('caption'));
 };

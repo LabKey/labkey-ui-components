@@ -1,16 +1,26 @@
 import { Filter, Query, Visualization } from '@labkey/api';
 
+export interface ChartLabels {
+    main?: string;
+    subtitle?: string;
+    x?: string;
+    y?: string;
+}
+
 export interface ChartConfig {
-    geomOptions: any;
+    geomOptions: Record<string, boolean | number | string>;
     gridLinesVisible: string;
-    height: number;
-    labels: any;
-    measures: any;
+    height?: number;
+    labels: ChartLabels;
+    measures: Record<string, Record<string, any>>; // TODO: we can probably do better than any
     pointType: string;
     renderType: string;
-    scales: any;
-    width: number;
+    scales: Record<string, ScaleType>;
+    width?: number;
 }
+
+export type ChartConfigMutator = (currentConfig: ChartConfig) => ChartConfig;
+export type ChartConfigSetter = (mutator: ChartConfigMutator) => void;
 
 export interface ChartQueryConfig {
     columns: string[];
@@ -37,6 +47,15 @@ export interface VisualizationConfigModel {
 export interface GenericChartModel extends Visualization.VisualizationGetResponse {
     visualizationConfig: VisualizationConfigModel;
 }
+
+export interface BaseChartModel {
+    inheritable: boolean;
+    name: string;
+    shared: boolean;
+}
+
+export type BaseChartModelMutator = (currentModel: BaseChartModel) => BaseChartModel;
+export type BaseChartModelSetter = (mutator: BaseChartModelMutator) => void;
 
 export interface TrendlineType {
     equation?: string;

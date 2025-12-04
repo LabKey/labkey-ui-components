@@ -83,7 +83,16 @@ const SeriesOptionRenderer: FC<SeriesOptionRendererProps> = memo(({ name, series
     const className = classNames('chart-builder-type-option', { 'chart-builder-type-option--value': isValueRenderer });
     return (
         <span className={className} data-series-shape={name}>
-            <ColorIcon asSquare cls="color-icon__chip-small" value={value} /> {name}
+            {value && (
+                <>
+                    <ColorIcon asSquare cls="color-icon__chip-small" value={value} /> {name}
+                </>
+            )}
+            {!value && (
+                <>
+                    <LetterIcon letter="A" /> {name}
+                </>
+            )}
         </span>
     );
 });
@@ -387,3 +396,12 @@ export const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chart
     );
 });
 SeriesLineStyleInput.displayName = 'SeriesLineStyleInput';
+
+const LetterIcon: FC<{ letter: string }> = ({ letter }) => {
+    return (
+        <div className='letter-icon'>
+            {letter}
+        </div>
+    );
+};
+LetterIcon.displayName = 'LetterIcon';

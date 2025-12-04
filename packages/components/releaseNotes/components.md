@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - ChartConfig measuresOptions to store per series mapping object
   - Hide and show color options based on selected chart type and measures
   - ColorPickerInput update to support fixed position
+  - Add LetterIcon for use with "Auto" set series values
 
 ### version 7.1.0
 *Released*: 3 December 2025

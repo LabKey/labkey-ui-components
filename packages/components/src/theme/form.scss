@@ -298,6 +298,20 @@ textarea.form-control {
     width: 16px;
 }
 
+.letter-icon {
+    display: inline-flex;
+    width: 12px;
+    height: 12px;
+    font-size: 10px;
+    line-height: 12px;
+    align-items: center;
+    justify-content: center;
+    vertical-align: text-top;
+    border: 1px solid $gray;
+    border-radius: 2px;
+    margin-top: 1px;
+}
+
 .content-form {
     label {
         font-weight: normal;

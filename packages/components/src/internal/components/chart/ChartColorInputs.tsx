@@ -117,6 +117,7 @@ export const ChartColorInputs: FC<ChartColorInputsProps> = memo(({ chartConfig, 
     const showPointFillColor = useMemo(() => showColorOption(chartConfig, 'pointFillColor'), [chartConfig]);
     const colorPaletteScale = chartConfig.geomOptions.colorPaletteScale;
     const showColorPaletteScale = useMemo(() => showColorOption(chartConfig, 'colorPaletteScale'), [chartConfig]);
+    const showSeriesLineStyle = isLinePlot && chartConfig.measures?.series !== undefined;
 
     const setGeomOptions = useCallback(
         options => {
@@ -220,7 +221,14 @@ export const ChartColorInputs: FC<ChartColorInputsProps> = memo(({ chartConfig, 
                     </div>
                 </div>
             )}
-            <SeriesLineStyleInput chartConfig={chartConfig} model={model} setChartConfig={setChartConfig} />
+            {showSeriesLineStyle && (
+                <SeriesLineStyleInput
+                    chartConfig={chartConfig}
+                    key={chartConfig.measures.series.fieldKey} // reset component state when series field changes
+                    model={model}
+                    setChartConfig={setChartConfig}
+                />
+            )}
         </>
     );
 });

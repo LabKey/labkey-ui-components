@@ -117,16 +117,9 @@ describe('ChartBuilderModal', () => {
         expect(document.querySelectorAll('.chart-settings')).toHaveLength(1);
         expect(document.querySelectorAll('.chart-builder-modal__chart-preview')).toHaveLength(1);
         expect(document.querySelector('.modal-title').textContent).toBe(isNew ? 'Create Chart' : 'Edit Chart');
-        expect(document.querySelectorAll('.btn')).toHaveLength(canDelete ? 3 : 2);
+        expect(document.querySelectorAll('.btn:not(.color-picker__button)')).toHaveLength(canDelete ? 3 : 2);
         expect(document.querySelectorAll('.alert')).toHaveLength(0);
-
-        // TODO update this part of jest test
-        // hidden chart types are filtered out
-        // const chartTypeItems = document.querySelectorAll('.chart-builder-type');
-        // expect(chartTypeItems).toHaveLength(3);
-        // expect(chartTypeItems[0].textContent).toBe('Bar');
-        // expect(chartTypeItems[1].textContent).toBe('Scatter');
-        // expect(chartTypeItems[2].textContent).toBe('Line');
+        expect(document.querySelectorAll('.chart-settings__chart-type')).toHaveLength(isNew ? 1 : 0);
 
         expect(document.querySelectorAll('input[name="name"]')).toHaveLength(1);
         expect(document.querySelectorAll('input[name="shared"]')).toHaveLength(canShare ? 1 : 0);
@@ -291,7 +284,7 @@ describe('ChartBuilderModal', () => {
 
         // click delete button and verify confirm text / buttons
         await userEvent.click(document.querySelector('.btn-danger'));
-        const btnItems = document.querySelectorAll('.btn');
+        const btnItems = document.querySelectorAll('.btn:not(.color-picker__button)');
         expect(btnItems).toHaveLength(2);
         expect(btnItems[0].textContent).toBe('Cancel');
         expect(btnItems[1].textContent).toBe('Delete');

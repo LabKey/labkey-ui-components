@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback, useState, useRef } from 'react';
 import { ColorResult, CompactPicker } from 'react-color';
 import classNames from 'classnames';
 
@@ -9,7 +9,6 @@ interface Props {
     allowRemove?: boolean;
     colors?: string[];
     disabled?: boolean;
-    fixedPosition?: boolean;
     name?: string;
     noValueText?: string;
     onChange: (name: string, value: string) => void;
@@ -27,8 +26,10 @@ export const ColorPickerInput: FC<Props> = memo(props => {
         text,
         value,
         noValueText = 'None',
-        fixedPosition = false,
     } = props;
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
+    const [fixedTop, setFixedTop] = useState<number>();
+    const [fixedLeft, setFixedLeft] = useState<number>();
     const [showPicker, setShowPicker] = useState<boolean>(false);
     const onChangeComplete = useCallback(
         (color?: ColorResult) => {
@@ -40,21 +41,17 @@ export const ColorPickerInput: FC<Props> = memo(props => {
         onChangeComplete();
     }, [onChangeComplete]);
     const togglePicker = useCallback(() => {
+        if (buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            setFixedTop(rect.bottom + 5);
+            setFixedLeft(rect.left);
+        }
+
         setShowPicker(s => !s);
     }, []);
 
     // if value doesn't start with '#', add it
     const value_ = value && !value.startsWith('#') ? `#${value}` : value;
-
-    // get the position of the button to position the picker
-    const [fixedTop, fixedLeft] = (() => {
-        const button = document.querySelector('.color-picker__button');
-        if (!fixedPosition || !button) {
-            return [0, 0];
-        }
-        const rect = button.getBoundingClientRect();
-        return [rect.bottom + 5, rect.left];
-    })();
 
     const compactPicker = <CompactPicker onChangeComplete={onChangeComplete} color={value_} colors={colors} />;
 
@@ -65,6 +62,7 @@ export const ColorPickerInput: FC<Props> = memo(props => {
                 className="color-picker__button btn btn-default"
                 onClick={togglePicker}
                 disabled={disabled}
+                ref={buttonRef}
             >
                 {text ? text : value ? <ColorIcon cls="color-picker__chip-small" asSquare value={value_} /> : noValueText}
                 <i className={classNames('fa', { 'fa-caret-up': showPicker, 'fa-caret-down': !showPicker })} />
@@ -80,10 +78,11 @@ export const ColorPickerInput: FC<Props> = memo(props => {
                 {showPicker && (
                     <>
                         <div className="color-picker__mask" onClick={togglePicker} />
-                        {fixedPosition && (
-                            <div style={{position: 'fixed', top: fixedTop, left: fixedLeft}}>{compactPicker}</div>
+                        {fixedTop && fixedLeft ? (
+                            <div style={{ position: 'fixed', top: fixedTop, left: fixedLeft }}>{compactPicker}</div>
+                        ) : (
+                            compactPicker
                         )}
-                        {!fixedPosition && compactPicker}
                     </>
                 )}
             </div>

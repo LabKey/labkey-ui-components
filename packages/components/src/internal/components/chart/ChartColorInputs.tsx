@@ -172,7 +172,6 @@ export const ChartColorInputs: FC<ChartColorInputsProps> = memo(({ chartConfig, 
                         <label>Fill Color</label>
                         <ColorPickerInput
                             allowRemove={isBoxPlot}
-                            fixedPosition
                             name="boxFillColor"
                             onChange={onBoxFillColorChange}
                             value={boxFillColor}
@@ -185,7 +184,6 @@ export const ChartColorInputs: FC<ChartColorInputsProps> = memo(({ chartConfig, 
                     <div className="col-xs-12">
                         <label>Line Color</label>
                         <ColorPickerInput
-                            fixedPosition
                             name="lineColor"
                             onChange={onLineColorChange}
                             value={lineColor}
@@ -198,7 +196,6 @@ export const ChartColorInputs: FC<ChartColorInputsProps> = memo(({ chartConfig, 
                     <div className="col-xs-12">
                         <label>{isLinePlot ? '' : 'Point '}Color</label>
                         <ColorPickerInput
-                            fixedPosition
                             name="pointFillColor"
                             onChange={onPointFillColorChange}
                             value={pointFillColor}
@@ -352,7 +349,6 @@ export const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chart
                         <div>Color</div>
                         <ColorPickerInput
                             allowRemove
-                            fixedPosition
                             noValueText="Auto"
                             onChange={onSeriesColorChange}
                             value={seriesOptionMap[selectedSeries]?.color}

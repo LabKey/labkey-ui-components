@@ -7,7 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - ChartColorInputs for single color geomOptions and series specific color and shape value map
   - ChartConfig measuresOptions to store per series mapping object
   - Hide and show color options based on selected chart type and measures
-  - ColorPickerInput update to use fixed position by default
+  - ColorPickerInput update to use fixed position by default and new DEFAULT_COLORS constant
   - Add LetterIcon for use with "Auto" set series values
 
 ### version 7.1.0

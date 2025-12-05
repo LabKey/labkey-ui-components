@@ -20,6 +20,11 @@ describe('ColorPickerInput', () => {
         expect(container).toMatchSnapshot();
     });
 
+    test('with noValueText', () => {
+        const { container } = render(<ColorPickerInput value={undefined} noValueText="Auto" onChange={jest.fn} />);
+        expect(container).toMatchSnapshot();
+    });
+
     test('showPicker', async () => {
         const { container } = render(<ColorPickerInput value="#000000" onChange={jest.fn} />);
         await userEvent.click(document.querySelector('.color-picker__button'));

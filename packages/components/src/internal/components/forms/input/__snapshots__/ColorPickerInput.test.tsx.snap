@@ -890,6 +890,27 @@ exports[`ColorPickerInput with button text 1`] = `
 </div>
 `;
 
+exports[`ColorPickerInput with noValueText 1`] = `
+<div>
+  <div
+    class="color-picker"
+  >
+    <button
+      class="color-picker__button btn btn-default"
+      type="button"
+    >
+      Auto
+      <i
+        class="fa fa-caret-down"
+      />
+    </button>
+    <div
+      class="color-picker__picker"
+    />
+  </div>
+</div>
+`;
+
 exports[`ColorPickerInput without value 1`] = `
 <div>
   <div

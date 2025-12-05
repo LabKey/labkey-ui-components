@@ -128,6 +128,7 @@ export const ChartColorInputs: FC<ChartColorInputsProps> = memo(({ chartConfig, 
     const colorPaletteScale = chartConfig.geomOptions.colorPaletteScale;
     const showColorPaletteScale = useMemo(() => showColorOption(chartConfig, 'colorPaletteScale'), [chartConfig]);
     const showSeriesLineStyle = isLinePlot && chartConfig.measures?.series !== undefined;
+    const showAnyColorOptions = showBoxFillColor || showLineColor || showPointFillColor;
 
     const setGeomOptions = useCallback(
         options => {
@@ -177,37 +178,35 @@ export const ChartColorInputs: FC<ChartColorInputsProps> = memo(({ chartConfig, 
 
     return (
         <>
-            {showBoxFillColor && (
+            {showAnyColorOptions && (
                 <div className="form-group row">
-                    <div className="col-xs-12">
-                        <label>Fill Color</label>
-                        <ColorPickerInput
-                            allowRemove={isBoxPlot}
-                            name="boxFillColor"
-                            onChange={onBoxFillColorChange}
-                            value={boxFillColor}
-                        />
-                    </div>
-                </div>
-            )}
-            {showLineColor && (
-                <div className="form-group row">
-                    <div className="col-xs-12">
-                        <label>Line Color</label>
-                        <ColorPickerInput name="lineColor" onChange={onLineColorChange} value={lineColor} />
-                    </div>
-                </div>
-            )}
-            {showPointFillColor && (
-                <div className="form-group row">
-                    <div className="col-xs-12">
-                        <label>{isLinePlot ? '' : 'Point '}Color</label>
-                        <ColorPickerInput
-                            name="pointFillColor"
-                            onChange={onPointFillColorChange}
-                            value={pointFillColor}
-                        />
-                    </div>
+                    {showBoxFillColor && (
+                        <div className="col-xs-4">
+                            <label>Fill Color</label>
+                            <ColorPickerInput
+                                allowRemove={isBoxPlot}
+                                name="boxFillColor"
+                                onChange={onBoxFillColorChange}
+                                value={boxFillColor}
+                            />
+                        </div>
+                    )}
+                    {showLineColor && (
+                        <div className="col-xs-4">
+                            <label>Line Color</label>
+                            <ColorPickerInput name="lineColor" onChange={onLineColorChange} value={lineColor} />
+                        </div>
+                    )}
+                    {showPointFillColor && (
+                        <div className="col-xs-4">
+                            <label>{isLinePlot ? '' : 'Point '}Color</label>
+                            <ColorPickerInput
+                                name="pointFillColor"
+                                onChange={onPointFillColorChange}
+                                value={pointFillColor}
+                            />
+                        </div>
+                    )}
                 </div>
             )}
             {showColorPaletteScale && (
@@ -363,7 +362,7 @@ export const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chart
             </div>
             {selectedSeries && (
                 <div className="row">
-                    <div className="col-xs-6">
+                    <div className="col-xs-4">
                         <div>Color</div>
                         <ColorPickerInput
                             allowRemove
@@ -372,7 +371,7 @@ export const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chart
                             value={seriesOptionMap[selectedSeries]?.color}
                         />
                     </div>
-                    <div className="col-xs-6">
+                    <div className="col-xs-8">
                         <div>Shape</div>
                         <SelectInput
                             clearable={false}

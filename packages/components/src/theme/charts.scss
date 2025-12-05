@@ -206,14 +206,14 @@
 
 .lk-modal .chart-builder-modal .modal-body {
     display: flex;
-    flex: 1;
     gap: 8px;
     padding: 0;
     overflow: hidden;
 }
 
 .chart-settings {
-    width: 300px;
+    flex: 1;
+    min-width: 330px;
     border-right: solid 1px $gray-border-light;
     padding: 15px;
     overflow-y: auto;
@@ -225,7 +225,7 @@
 }
 
 .chart-builder-modal__chart-preview {
-    flex: 1;
+    flex: 3;
     overflow: auto;
     padding-top: 15px;
     display: flex;

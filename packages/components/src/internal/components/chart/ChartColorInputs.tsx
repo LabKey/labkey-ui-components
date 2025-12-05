@@ -11,7 +11,8 @@ import { ColorIcon } from '../base/ColorIcon';
 import { LABKEY_VIS } from '../../constants';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 
-const showColorOption = function (chartConfig: ChartConfig, optionName: string): boolean {
+// export for jest testing
+export const showColorOption = function (chartConfig: ChartConfig, optionName: string): boolean {
     const chartType = chartConfig.renderType;
     const isBarChart = chartType === 'bar_chart';
     const isBoxPlot = chartType === 'box_plot';
@@ -50,7 +51,9 @@ interface ShapeOptionRendererProps {
     isValueRenderer: boolean;
     name: string;
 }
-const ShapeOptionRenderer: FC<ShapeOptionRendererProps> = memo(({ name, isValueRenderer }) => {
+
+// export for jest testing
+export const ShapeOptionRenderer: FC<ShapeOptionRendererProps> = memo(({ name, isValueRenderer }) => {
     const size = 10;
     const iconSize = name === 'diamond' ? size / 2.5 : size / 2;
     const icon = LABKEY_VIS.Scale.ShapeMap[name](iconSize);
@@ -78,24 +81,30 @@ interface SeriesOptionRendererProps {
     name: string;
     seriesOptionMap: Record<string, Record<string, string>>;
 }
-const SeriesOptionRenderer: FC<SeriesOptionRendererProps> = memo(({ name, seriesOptionMap, isValueRenderer }) => {
-    const value = seriesOptionMap?.[name]?.color;
-    const className = classNames('chart-builder-type-option', { 'chart-builder-type-option--value': isValueRenderer });
-    return (
-        <span className={className} data-series-shape={name}>
-            {value && (
-                <>
-                    <ColorIcon asSquare cls="color-icon__chip-small" value={value} /> {name}
-                </>
-            )}
-            {!value && (
-                <>
-                    <LetterIcon letter="A" /> {name}
-                </>
-            )}
-        </span>
-    );
-});
+
+// export for jest testing
+export const SeriesOptionRenderer: FC<SeriesOptionRendererProps> = memo(
+    ({ name, seriesOptionMap, isValueRenderer }) => {
+        const value = seriesOptionMap?.[name]?.color;
+        const className = classNames('chart-builder-type-option', {
+            'chart-builder-type-option--value': isValueRenderer,
+        });
+        return (
+            <span className={className} data-series-shape={name}>
+                {value && (
+                    <>
+                        <ColorIcon asSquare cls="color-icon__chip-small" value={value} /> {name}
+                    </>
+                )}
+                {!value && (
+                    <>
+                        <LetterIcon letter="A" /> {name}
+                    </>
+                )}
+            </span>
+        );
+    }
+);
 SeriesOptionRenderer.displayName = 'SeriesOptionRenderer';
 
 function seriesOptionRenderer(option, seriesOptionMap) {
@@ -244,7 +253,7 @@ interface SeriesLineStyleInputProps {
     model: QueryModel;
     setChartConfig: ChartConfigSetter;
 }
-export const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig, model, setChartConfig }) => {
+const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig, model, setChartConfig }) => {
     const [distinctSeriesOptions, setDistinctSeriesOptions] = useState<{ label: string; value: string }[]>();
     const [selectedSeries, setSelectedSeries] = useState<string>();
     const [seriesOptionMap, setSeriesOptionMap] = useState<Record<string, MeasureOption>>(
@@ -397,10 +406,6 @@ export const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chart
 SeriesLineStyleInput.displayName = 'SeriesLineStyleInput';
 
 const LetterIcon: FC<{ letter: string }> = ({ letter }) => {
-    return (
-        <div className='letter-icon'>
-            {letter}
-        </div>
-    );
+    return <div className="letter-icon">{letter}</div>;
 };
 LetterIcon.displayName = 'LetterIcon';

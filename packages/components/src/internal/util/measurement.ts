@@ -235,16 +235,15 @@ export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolea
     const options = [];
     for (const [key, value] of Object.entries(MEASUREMENT_UNITS)) {
         if (!unit || value.kind === unit.kind) {
-            if (!showLongLabel || value.kind === UNITS_KIND.COUNT) {
-                options.push({ value: value.label, label: value.label });
-            } else {
-                options.push({ value: value.label, label: value.label + ' (' + value.longLabelPlural + ')' });
-            }
-
-            if (unit && value.kind === unit.kind) {
+            if (value.kind === UNITS_KIND.COUNT) {
                 unit.altLabels?.forEach(altLabel => {
                     options.push({ value: altLabel, label: altLabel });
                 });
+            }
+            else if (!showLongLabel) {
+                options.push({ value: value.label, label: value.label });
+            } else {
+                options.push({ value: value.label, label: value.label + ' (' + value.longLabelPlural + ')' });
             }
         }
     }

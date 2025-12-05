@@ -155,7 +155,6 @@ describe('SampleTypePropertiesPanel', () => {
                     metricUnitProps={{
                         includeMetricUnitProperty: true,
                         metricUnitLabel: 'Display Units',
-                        metricUnitRequired: true,
                         metricUnitHelpMsg: 'Sample storage volume will be displayed using the selected metric unit.',
                         metricUnitOptions: [
                             { id: 'mL', label: 'ml' },

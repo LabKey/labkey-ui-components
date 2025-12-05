@@ -80,7 +80,7 @@ export const UnitKinds: Record<UNITS_KIND, UnitKindType> = {
         value: UNITS_KIND.NONE,
         label: 'Any',
         hideSubSelect: true,
-        msg: 'Amounts can be entered in any unit and won’t be converted.',
+        msg: 'Amounts can be entered in any unit and won\'t be converted when stored or displayed.',
     },
     [UNITS_KIND.MASS]: {
         value: UNITS_KIND.MASS,
@@ -94,7 +94,7 @@ export const UnitKinds: Record<UNITS_KIND, UnitKindType> = {
         value: UNITS_KIND.COUNT,
         label: 'Other',
         hideSubSelect: true,
-        msg: 'Amounts can be entered as unit, pcs, pack, blocks, slides, cells, box, kit, tests, or bottle and won’t be converted.',
+        msg: 'Amounts can be entered as bottles, blocks, boxes, cells, kits, packs, pieces, slides, tests, or unit and won\'t be converted.',
     },
 };
 
@@ -295,8 +295,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
         const { model, updateModel, metricUnitProps } = this.props;
 
         const updatedModel = newModel || model;
-        const isValid =
-            updatedModel?.hasValidProperties() && updatedModel?.isMetricUnitValid(metricUnitProps?.metricUnitRequired);
+        const isValid = updatedModel?.hasValidProperties() && updatedModel?.isMetricUnitValid();
 
         this.setState(
             () => ({ isValid }),
@@ -323,11 +322,11 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
         const { originalUnit } = this.state;
         const unitKind = value ? UnitKinds[value] : null;
         const unitOptions = getMetricUnitOptionsFromKind(unitKind?.value, true);
-        let unitToSelect = value === UNITS_KIND.COUNT ? 'unit' : '';
+        let unitToSelect = value === UNITS_KIND.COUNT ? 'unit' : (value === UNITS_KIND.NONE ? '' : null);
         let unitChangeWarning = null;
         if (originalUnit && value === UNITS_KIND.NONE)
             unitChangeWarning =
-                "Once switched to 'Any' amount type, you cannot switch back to '" +
+                "Once switched to 'Any' amount type, you may not be able to switch back to '" +
                 getMeasurementUnit(originalUnit)?.kind +
                 "' amount type.";
 
@@ -401,7 +400,6 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
         const metricUnitLabel = metricUnitProps?.metricUnitLabel || 'Metric Unit';
         const metricUnitHelpMsg =
             metricUnitProps?.metricUnitHelpMsg || 'The unit of measurement used for the sample type.';
-        const metricUnitRequired = !!metricUnitProps?.metricUnitRequired;
         const allowTimepointProperties = model.domain.get('allowTimepointProperties');
 
         // Issue 48776: Suppress import parent aliasing for media Mixture Batches
@@ -608,11 +606,11 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                             <>
                                 <div className="row margin-top">
                                     <div className="col-xs-2">
-                                        <DomainFieldLabel label="Amount Type" required={metricUnitRequired} />
+                                        <DomainFieldLabel label="Amount Type" required />
                                     </div>
                                     <div className="col-xs-3">
                                         <SelectInput
-                                            clearable={!metricUnitRequired}
+                                            clearable={false}
                                             containerClass="sampleset-unit-type-select-container"
                                             disabled={metricUnitProps?.lockUnitKind && validUnitKinds?.length <= 1}
                                             inputClass="sampleset-unit-type-select"
@@ -625,7 +623,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                                             }}
                                             options={validUnitKinds}
                                             placeholder="Select a type..."
-                                            required={metricUnitRequired}
+                                            required
                                             value={metricUnitKind}
                                         />
                                     </div>
@@ -636,12 +634,12 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                                             <DomainFieldLabel
                                                 helpTipBody={metricUnitHelpMsg}
                                                 label={metricUnitLabel}
-                                                required={metricUnitRequired}
+                                                required
                                             />
                                         </div>
                                         <div className="col-xs-3">
                                             <SelectInput
-                                                clearable={!metricUnitRequired}
+                                                clearable={false}
                                                 containerClass="sampleset-metric-unit-select-container"
                                                 inputClass="sampleset-metric-unit-select"
                                                 name="metricUnit"
@@ -653,7 +651,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                                                 }}
                                                 options={validMetricUnitOptions}
                                                 placeholder="Select a unit..."
-                                                required={metricUnitRequired}
+                                                required
                                                 value={model.metricUnit}
                                             />
                                         </div>

@@ -46,7 +46,7 @@ import {
     isQuotedWithDelimiters,
     isSameWithStringCompare,
     isSetEqual,
-    isValidSampleAmountWithError,
+    getInvalidSampleAmountMessage,
     makeCommaSeparatedString,
     parseCsvString,
     parseScientificInt,
@@ -1231,59 +1231,59 @@ describe('isAllowedSampleAmount', () => {
     });
 });
 
-describe('isValidSampleAmountWithError', () => {
+describe('getInvalidSampleAmountMessage', () => {
     it('returns undefined for null or undefined', () => {
-        expect(isValidSampleAmountWithError(null)).toBeNull();
-        expect(isValidSampleAmountWithError(undefined)).toBeNull();
-        expect(isValidSampleAmountWithError('')).toBeNull();
+        expect(getInvalidSampleAmountMessage(null)).toBeNull();
+        expect(getInvalidSampleAmountMessage(undefined)).toBeNull();
+        expect(getInvalidSampleAmountMessage('')).toBeNull();
     });
 
     it('returns undefined for valid in range numeric values', () => {
-        expect(isValidSampleAmountWithError(0)).toBeNull();
-        expect(isValidSampleAmountWithError(123)).toBeNull();
-        expect(isValidSampleAmountWithError(123.45)).toBeNull();
-        expect(isValidSampleAmountWithError(1.1e-100)).toBeNull();
-        expect(isValidSampleAmountWithError(1.1e100)).toBeNull();
+        expect(getInvalidSampleAmountMessage(0)).toBeNull();
+        expect(getInvalidSampleAmountMessage(123)).toBeNull();
+        expect(getInvalidSampleAmountMessage(123.45)).toBeNull();
+        expect(getInvalidSampleAmountMessage(1.1e-100)).toBeNull();
+        expect(getInvalidSampleAmountMessage(1.1e100)).toBeNull();
     });
 
     it('returns undefined for valid numeric strings', () => {
-        expect(isValidSampleAmountWithError('0')).toBeNull();
-        expect(isValidSampleAmountWithError('123')).toBeNull();
-        expect(isValidSampleAmountWithError('123.45')).toBeNull();
-        expect(isValidSampleAmountWithError('1.1E-100')).toBeNull();
-        expect(isValidSampleAmountWithError('1.1E100')).toBeNull();
-        expect(isValidSampleAmountWithError(1.7e308)).toBeNull();
+        expect(getInvalidSampleAmountMessage('0')).toBeNull();
+        expect(getInvalidSampleAmountMessage('123')).toBeNull();
+        expect(getInvalidSampleAmountMessage('123.45')).toBeNull();
+        expect(getInvalidSampleAmountMessage('1.1E-100')).toBeNull();
+        expect(getInvalidSampleAmountMessage('1.1E100')).toBeNull();
+        expect(getInvalidSampleAmountMessage(1.7e308)).toBeNull();
     });
 
     it('returns error message for non-numeric values', () => {
-        expect(isValidSampleAmountWithError({})).toBe('Please enter a valid numeric value for amount.');
-        expect(isValidSampleAmountWithError([])).toBe('Please enter a valid numeric value for amount.');
-        expect(isValidSampleAmountWithError('abc')).toBe('Please enter a valid numeric value for amount.');
-        expect(isValidSampleAmountWithError('123abc')).toBe('Please enter a valid numeric value for amount.');
+        expect(getInvalidSampleAmountMessage({})).toBe('Please enter a valid numeric value for amount.');
+        expect(getInvalidSampleAmountMessage([])).toBe('Please enter a valid numeric value for amount.');
+        expect(getInvalidSampleAmountMessage('abc')).toBe('Please enter a valid numeric value for amount.');
+        expect(getInvalidSampleAmountMessage('123abc')).toBe('Please enter a valid numeric value for amount.');
     });
 
     it('returns error message for negative values', () => {
-        expect(isValidSampleAmountWithError(-1)).toBe('Amount must be a non-negative value.');
-        expect(isValidSampleAmountWithError('-1')).toBe('Amount must be a non-negative value.');
-        expect(isValidSampleAmountWithError(-0.0001)).toBe('Amount must be a non-negative value.');
-        expect(isValidSampleAmountWithError('-0.0001')).toBe('Amount must be a non-negative value.');
-        expect(isValidSampleAmountWithError(-1.1e-100)).toBe('Amount must be a non-negative value.');
-        expect(isValidSampleAmountWithError(-1.1e100)).toBe('Amount must be a non-negative value.');
-        expect(isValidSampleAmountWithError('-1.1E-100')).toBe('Amount must be a non-negative value.');
-        expect(isValidSampleAmountWithError('-1.1E100')).toBe('Amount must be a non-negative value.');
-        expect(isValidSampleAmountWithError(-Infinity)).toBe('Amount must be a non-negative value.');
-        expect(isValidSampleAmountWithError('-Infinity')).toBe('Amount must be a non-negative value.');
-        expect(isValidSampleAmountWithError(-1.8e308)).toBe('Amount must be a non-negative value.');
+        expect(getInvalidSampleAmountMessage(-1)).toBe('Amount must be a non-negative value.');
+        expect(getInvalidSampleAmountMessage('-1')).toBe('Amount must be a non-negative value.');
+        expect(getInvalidSampleAmountMessage(-0.0001)).toBe('Amount must be a non-negative value.');
+        expect(getInvalidSampleAmountMessage('-0.0001')).toBe('Amount must be a non-negative value.');
+        expect(getInvalidSampleAmountMessage(-1.1e-100)).toBe('Amount must be a non-negative value.');
+        expect(getInvalidSampleAmountMessage(-1.1e100)).toBe('Amount must be a non-negative value.');
+        expect(getInvalidSampleAmountMessage('-1.1E-100')).toBe('Amount must be a non-negative value.');
+        expect(getInvalidSampleAmountMessage('-1.1E100')).toBe('Amount must be a non-negative value.');
+        expect(getInvalidSampleAmountMessage(-Infinity)).toBe('Amount must be a non-negative value.');
+        expect(getInvalidSampleAmountMessage('-Infinity')).toBe('Amount must be a non-negative value.');
+        expect(getInvalidSampleAmountMessage(-1.8e308)).toBe('Amount must be a non-negative value.');
     });
 
     it('returns error message for infinite number', () => {
-        expect(isValidSampleAmountWithError(Infinity)).toBe(
+        expect(getInvalidSampleAmountMessage(Infinity)).toBe(
             'Infinite or extremely large values are not allowed for amount.'
         );
-        expect(isValidSampleAmountWithError('Infinity')).toBe(
+        expect(getInvalidSampleAmountMessage('Infinity')).toBe(
             'Infinite or extremely large values are not allowed for amount.'
         );
-        expect(isValidSampleAmountWithError(1.8e308)).toBe(
+        expect(getInvalidSampleAmountMessage(1.8e308)).toBe(
             'Infinite or extremely large values are not allowed for amount.'
         );
     });

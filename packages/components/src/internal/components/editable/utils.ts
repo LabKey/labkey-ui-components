@@ -15,7 +15,7 @@ import { SelectInputOption, SelectInputProps } from '../forms/input/SelectInput'
 
 import { QuerySelectOwnProps } from '../forms/QuerySelect';
 
-import { isBoolean, isFloat, isInteger, isValidSampleAmountWithError } from '../../util/utils';
+import { isBoolean, isFloat, isInteger, getInvalidSampleAmountMessage } from '../../util/utils';
 import { incrementClientSideMetricCount } from '../../actions';
 
 import { CellMessage } from './models';
@@ -66,7 +66,7 @@ export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn):
             message = 'Invalid decimal';
         } else if (NON_NEGATIVE_NUMBER_CONCEPT_URI === col?.conceptURI) {
             if (Number(value) < 0) message = col.caption + ' must be non-negative';
-            else if (col?.fieldKey?.toLowerCase() === 'storedamount') message = isValidSampleAmountWithError(value);
+            else if (col?.fieldKey?.toLowerCase() === 'storedamount') message = getInvalidSampleAmountMessage(value);
         } else if (jsonType === 'string' && scale) {
             if (value.toString().trim().length > scale)
                 message = value.toString().trim().length + '/' + scale + ' characters';

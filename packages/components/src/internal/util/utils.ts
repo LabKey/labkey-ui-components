@@ -456,7 +456,7 @@ export function isAllowedSampleAmount(value: unknown): boolean {
     return false;
 }
 
-export const isValidSampleAmountWithError = (v: any): any => {
+export const getInvalidSampleAmountMessage = (v: any): any => {
     if (isAllowedSampleAmount(v)) return null;
 
     if (!isFloat(v)) return 'Please enter a valid numeric value for amount.';

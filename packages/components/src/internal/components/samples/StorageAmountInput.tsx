@@ -9,7 +9,7 @@ import {
     isMeasurementUnitIgnoreCase,
     UnitModel,
 } from '../../util/measurement';
-import { isValidSampleAmountWithError } from '../../util/utils';
+import { getInvalidSampleAmountMessage } from '../../util/utils';
 
 interface Props {
     amountChangedHandler: (amount: string) => void;
@@ -111,7 +111,7 @@ export const StorageAmountInput: FC<Props> = memo(props => {
                 {preferredUnitMessage}
             </div>
             <Alert bsStyle="danger" className="storage-item-precision-alert">
-                {isValidSampleAmountWithError(amountInput)}
+                {getInvalidSampleAmountMessage(amountInput)}
             </Alert>
         </>
     );

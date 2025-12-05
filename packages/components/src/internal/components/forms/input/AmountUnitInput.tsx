@@ -6,7 +6,7 @@ import { QuerySelect } from '../QuerySelect';
 import { getContainerFilterForLookups } from '../../../query/api';
 import { FieldLabel } from '../FieldLabel';
 import { InputRendererProps } from './types';
-import { caseInsensitive, generateId, isValidSampleAmountWithError } from '../../../util/utils';
+import { caseInsensitive, generateId, getInvalidSampleAmountMessage } from '../../../util/utils';
 import { FormsyInput } from './FormsyReactComponents';
 import { Operation } from '../../../../public/QueryColumn';
 import { STORED_AMOUNT_FIELDS } from '../../samples/constants';
@@ -46,7 +46,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
     }, [setDisabled]);
 
     const onAmountChange = useCallback((name: string, value: any) => {
-        const errorMsg = isValidSampleAmountWithError(value);
+        const errorMsg = getInvalidSampleAmountMessage(value);
         setAmountError(errorMsg);
     }, []);
 

@@ -236,7 +236,7 @@ export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolea
     for (const [key, value] of Object.entries(MEASUREMENT_UNITS)) {
         if (!unit || value.kind === unit.kind) {
             if (value.kind === UNITS_KIND.COUNT) {
-                unit.altLabels?.forEach(altLabel => {
+                value.altLabels?.forEach(altLabel => {
                     options.push({ value: altLabel, label: altLabel });
                 });
             }
@@ -274,10 +274,11 @@ export function getAltUnitKeys(unitTypeStr): string[] {
     const options = [];
     Object.values(MEASUREMENT_UNITS).forEach(value => {
         if (!unit || value.kind === unit.kind) {
-            options.push(value.label);
             if (value.altLabels) {
                 options.push(...value.altLabels);
             }
+            else
+                options.push(value.label);
         }
     });
 

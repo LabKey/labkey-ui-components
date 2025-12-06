@@ -134,9 +134,9 @@ describe('MetricUnit utils', () => {
             ])
         );
 
-        expect(getMetricUnitOptions(null).length).toBe(9);
-        expect(getMetricUnitOptions('').length).toBe(9);
-        expect(getMetricUnitOptions('bad').length).toBe(9);
+        expect(getMetricUnitOptions(null).length).toBe(18);
+        expect(getMetricUnitOptions('').length).toBe(18);
+        expect(getMetricUnitOptions('bad').length).toBe(18);
     });
 
     test('getAltUnitKeys', () => {
@@ -148,18 +148,7 @@ describe('MetricUnit utils', () => {
         expect(getAltUnitKeys('g')).toEqual(expectedGOptions);
         expect(getAltUnitKeys('kg')).toEqual(expectedGOptions);
 
-        expect(getAltUnitKeys('unit')).toEqual([
-            'unit',
-            'blocks',
-            'bottle',
-            'box',
-            'cells',
-            'kit',
-            'pack',
-            'pcs',
-            'slides',
-            'tests',
-        ]);
+        expect(getAltUnitKeys('unit')).toEqual(['bottles', 'blocks', 'boxes', 'cells', 'kits', 'packs', 'pieces', 'slides', 'tests', 'unit']);
 
         // include all options when no unitTypeStr or an invalid unitTypeStr is provided
         expect(getAltUnitKeys(null).length).toBe(18);
@@ -173,12 +162,12 @@ describe('MetricUnit utils', () => {
         expect(getMeasurementUnit('invalidUnit')).toBeNull();
         expect(getMeasurementUnit('mL')).toEqual(MEASUREMENT_UNITS.ml);
         expect(getMeasurementUnit('ML')).toEqual(MEASUREMENT_UNITS.ml);
-        const unit = getMeasurementUnit('pcs');
+        const unit = getMeasurementUnit('pieces');
         expect(unit).toEqual({
             ...MEASUREMENT_UNITS.unit,
-            label: 'pcs',
-            longLabelSingular: 'pcs',
-            longLabelPlural: 'pcs',
+            label: 'pieces',
+            longLabelSingular: 'pieces',
+            longLabelPlural: 'pieces',
         });
     });
 });

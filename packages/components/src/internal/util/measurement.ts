@@ -236,14 +236,16 @@ export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolea
     for (const [key, value] of Object.entries(MEASUREMENT_UNITS)) {
         if (!unit || value.kind === unit.kind) {
             if (value.kind === UNITS_KIND.COUNT) {
-                value.altLabels?.forEach(altLabel => {
-                    options.push({ value: altLabel, label: altLabel });
-                });
+                if (showLongLabel) // used by designer
+                    options.push({ value: value.label, label: value.label });
+                else {
+                    value.altLabels?.forEach(altLabel => {
+                        options.push({ value: altLabel, label: altLabel });
+                    });
+                }
             }
-            else if (!showLongLabel) {
-                options.push({ value: value.label, label: value.label });
-            } else {
-                options.push({ value: value.label, label: value.label + ' (' + value.longLabelPlural + ')' });
+            else {
+                options.push({ value: value.label, label: value.label + (showLongLabel ? ' (' + value.longLabelPlural + ')' : '') });
             }
         }
     }

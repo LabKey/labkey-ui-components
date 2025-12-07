@@ -51,7 +51,7 @@ export class SampleTypeModel extends Record({
             importAliases = { ...aliases };
         }
 
-        let metricUnit = options?.get('metricUnit');
+        let metricUnit = options?.get('metricUnit') || undefined;
         if (!metricUnit && options?.get('rowId'))
             metricUnit = ''; // use '' instead of undefined for existing designer with no (Any) display unit
         return new SampleTypeModel({

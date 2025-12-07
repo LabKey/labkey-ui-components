@@ -128,4 +128,22 @@ describe('StorageAmountInput', () => {
             'Amount must be a non-negative value.'
         );
     });
+
+    test('Large amount error', () => {
+        const unit = 'uL';
+        const model = new UnitModel(1E310, unit);
+        render(
+            <StorageAmountInput
+                amountChangedHandler={undefined}
+                label={undefined}
+                model={model}
+                preferredUnit={undefined}
+            />
+        );
+
+        expect(document.querySelector('input.storage-amount-input')).toHaveProperty('value', 'Infinity');
+        expect(document.querySelector('.storage-item-precision-alert').textContent).toBe(
+            'Infinite or extremely large values are not allowed for amount.'
+        );
+    });
 });

@@ -148,7 +148,7 @@ describe('MetricUnit utils', () => {
         expect(getAltUnitKeys('g')).toEqual(expectedGOptions);
         expect(getAltUnitKeys('kg')).toEqual(expectedGOptions);
 
-        expect(getAltUnitKeys('unit')).toEqual(['bottles', 'blocks', 'boxes', 'cells', 'kits', 'packs', 'pieces', 'slides', 'tests', 'unit']);
+        expect(getAltUnitKeys('unit')).toEqual(['blocks', 'bottles', 'boxes', 'cells', 'kits', 'packs', 'pieces', 'slides', 'tests', 'unit']);
 
         // include all options when no unitTypeStr or an invalid unitTypeStr is provided
         expect(getAltUnitKeys(null).length).toBe(18);

@@ -18,6 +18,7 @@ export interface ChartConfig {
     gridLinesVisible: string;
     height?: number;
     labels: ChartLabels;
+    legendPos?: 'bottom' | 'right';
     measures: Record<string, Record<string, any>>; // TODO: we can probably do better than any
     measuresOptions?: Record<string, Record<string, MeasureOption>>; // map from measures to the options for the distinct values of that measure
     pointType: string;

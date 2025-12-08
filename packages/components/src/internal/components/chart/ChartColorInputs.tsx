@@ -375,6 +375,7 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                         <div>Color</div>
                         <ColorPickerInput
                             allowRemove
+                            name="seriesColor"
                             noValueText="Auto"
                             onChange={onSeriesColorChange}
                             value={seriesOptionMap[selectedSeries]?.color}

@@ -369,8 +369,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<InjectedBaseDoma
             return;
         }
 
-        const metricUnitRequired = metricUnitProps?.metricUnitRequired;
-        const isValid = model.isValid(defaultSampleFieldConfig, metricUnitRequired);
+        const isValid = model.isValid(defaultSampleFieldConfig);
 
         this.props.onFinish(isValid, () => this.saveDomain(false, comment ?? auditUserComment));
 
@@ -386,7 +385,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<InjectedBaseDoma
         } else if (getDuplicateAlias(model.parentAliases, true).size > 0) {
             exception =
                 'Duplicate parent alias header found: ' + getDuplicateAlias(model.parentAliases, true).join(', ');
-        } else if (!model.isMetricUnitValid(metricUnitRequired)) {
+        } else if (!model.isMetricUnitValid()) {
             exception = metricUnitProps?.metricUnitLabel + ' field is required.';
         } else {
             exception = model.domain.getFirstFieldError();

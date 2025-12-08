@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { caseInsensitive } from '../../util/utils';
+import { caseInsensitive, isAllowedSampleAmount } from '../../util/utils';
 import { Alert } from '../base/Alert';
 
 import { UnitModel } from '../../util/measurement';
@@ -32,7 +32,7 @@ export const isValid = (amount: number, units: string): boolean => {
     const hasNeither = !hasAmount && !hasUnits;
 
     if (hasBoth) {
-        return amount >= 0;
+        return isAllowedSampleAmount(amount);
     }
     return hasNeither;
 };

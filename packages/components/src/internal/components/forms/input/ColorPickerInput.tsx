@@ -119,7 +119,7 @@ export const ColorPickerInput: FC<Props> = memo(props => {
     const compactPicker = <CompactPicker onChangeComplete={onChangeComplete} color={value_} colors={colors} />;
 
     return (
-        <div className="color-picker">
+        <div className="color-picker" data-name={name}>
             <button
                 type="button"
                 className="color-picker__button btn btn-default"

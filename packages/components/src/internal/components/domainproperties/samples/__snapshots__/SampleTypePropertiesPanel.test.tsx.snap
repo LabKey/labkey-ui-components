@@ -224,6 +224,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
             >
               <div
                 class="color-picker"
+                data-name="labelColor"
               >
                 <button
                   class="color-picker__button btn btn-default"
@@ -489,6 +490,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
           >
             <div
               class="color-picker"
+              data-name="labelColor"
             >
               <button
                 class="color-picker__button btn btn-default"

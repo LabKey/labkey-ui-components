@@ -115,15 +115,15 @@ describe('SampleTypePropertiesPanel', () => {
             container = renderWithAppContext(
                 <SampleTypePropertiesPanel
                     {...BASE_PROPS}
+                    dataClassAliasCaption="Source"
+                    dataClassParentageLabel="source"
+                    dataClassTypeCaption="source type"
+                    includeDataClasses
                     model={sampleTypeModel}
                     parentOptions={[{ schema: 'exp.data' }]}
-                    includeDataClasses
-                    useSeparateDataClassesAliasMenu
                     sampleAliasCaption="Parent"
                     sampleTypeCaption="sample type"
-                    dataClassAliasCaption="Source"
-                    dataClassTypeCaption="source type"
-                    dataClassParentageLabel="source"
+                    useSeparateDataClassesAliasMenu
                 />
             );
         });
@@ -180,9 +180,9 @@ describe('SampleTypePropertiesPanel', () => {
             renderWithAppContext(
                 <SampleTypePropertiesPanel
                     {...BASE_PROPS}
-                    showLinkToStudy
                     appPropertiesOnly={false}
                     model={sampleTypeModelWithTimepoint}
+                    showLinkToStudy
                 />
             );
         });
@@ -201,9 +201,9 @@ describe('SampleTypePropertiesPanel', () => {
             renderWithAppContext(
                 <SampleTypePropertiesPanel
                     {...BASE_PROPS}
-                    showLinkToStudy={false}
                     appPropertiesOnly={false}
                     model={sampleTypeModelWithTimepoint}
+                    showLinkToStudy={false}
                 />
             );
         });
@@ -255,11 +255,11 @@ describe('SampleTypePropertiesPanel', () => {
             renderWithAppContext(
                 <SampleTypePropertiesPanel
                     {...BASE_PROPS}
-                    model={SampleTypeModel.create(data)}
-                    appPropertiesOnly={false}
                     aliquotNamePatternProps={{
                         showAliquotNameExpression: true,
                     }}
+                    appPropertiesOnly={false}
+                    model={SampleTypeModel.create(data)}
                     namePreviews={[null, 'S-parentSample-1']}
                 />
             );
@@ -270,7 +270,6 @@ describe('SampleTypePropertiesPanel', () => {
         const aliquotField = fields[4];
         expect(aliquotField.textContent).toEqual('Aliquot Naming Pattern');
     });
-
 });
 
 describe('getValidUnitKinds', () => {

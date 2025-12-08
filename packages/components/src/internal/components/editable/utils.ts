@@ -15,7 +15,7 @@ import { SelectInputOption, SelectInputProps } from '../forms/input/SelectInput'
 
 import { QuerySelectOwnProps } from '../forms/QuerySelect';
 
-import { isBoolean, isFloat, isInteger, getInvalidSampleAmountMessage } from '../../util/utils';
+import { getInvalidSampleAmountMessage, isBoolean, isFloat, isInteger } from '../../util/utils';
 import { incrementClientSideMetricCount } from '../../actions';
 
 import { CellMessage } from './models';

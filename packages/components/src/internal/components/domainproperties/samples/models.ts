@@ -52,8 +52,7 @@ export class SampleTypeModel extends Record({
         }
 
         let metricUnit = options?.get('metricUnit') || undefined;
-        if (!metricUnit && options?.get('rowId'))
-            metricUnit = ''; // use '' instead of undefined for existing designer with no (Any) display unit
+        if (!metricUnit && options?.get('rowId')) metricUnit = ''; // use '' instead of undefined for existing designer with no (Any) display unit
         return new SampleTypeModel({
             ...options?.toJS(),
             aliquotNameExpression: options?.get('aliquotNameExpression') || DEFAULT_ALIQUOT_NAMING_PATTERN,

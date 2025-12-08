@@ -131,7 +131,7 @@ describe('StorageAmountInput', () => {
 
     test('Large amount error', () => {
         const unit = 'uL';
-        const model = new UnitModel(1E310, unit);
+        const model = new UnitModel(1e310, unit);
         render(
             <StorageAmountInput
                 amountChangedHandler={undefined}

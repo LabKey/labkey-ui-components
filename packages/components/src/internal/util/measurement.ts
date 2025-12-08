@@ -236,16 +236,19 @@ export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolea
     for (const [key, value] of Object.entries(MEASUREMENT_UNITS)) {
         if (!unit || value.kind === unit.kind) {
             if (value.kind === UNITS_KIND.COUNT) {
-                if (showLongLabel) // used by designer
+                if (showLongLabel)
+                    // used by designer
                     options.push({ value: value.label, label: value.label });
                 else {
                     value.altLabels?.forEach(altLabel => {
                         options.push({ value: altLabel, label: altLabel });
                     });
                 }
-            }
-            else {
-                options.push({ value: value.label, label: value.label + (showLongLabel ? ' (' + value.longLabelPlural + ')' : '') });
+            } else {
+                options.push({
+                    value: value.label,
+                    label: value.label + (showLongLabel ? ' (' + value.longLabelPlural + ')' : ''),
+                });
             }
         }
     }
@@ -278,9 +281,7 @@ export function getAltUnitKeys(unitTypeStr): string[] {
         if (!unit || value.kind === unit.kind) {
             if (value.altLabels) {
                 options.push(...value.altLabels);
-            }
-            else
-                options.push(value.label);
+            } else options.push(value.label);
         }
     });
 

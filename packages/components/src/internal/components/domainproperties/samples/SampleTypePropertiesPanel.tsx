@@ -80,7 +80,7 @@ export const UnitKinds: Record<UNITS_KIND, UnitKindType> = {
         value: UNITS_KIND.NONE,
         label: 'Any',
         hideSubSelect: true,
-        msg: 'Amounts can be entered in any unit and won\'t be converted when stored or displayed.',
+        msg: "Amounts can be entered in any unit and won't be converted when stored or displayed.",
     },
     [UNITS_KIND.MASS]: {
         value: UNITS_KIND.MASS,
@@ -94,7 +94,7 @@ export const UnitKinds: Record<UNITS_KIND, UnitKindType> = {
         value: UNITS_KIND.COUNT,
         label: 'Other',
         hideSubSelect: true,
-        msg: 'Amounts can be entered as bottles, blocks, boxes, cells, kits, packs, pieces, slides, tests, or unit and won\'t be converted.',
+        msg: "Amounts can be entered as bottles, blocks, boxes, cells, kits, packs, pieces, slides, tests, or unit and won't be converted.",
     },
 };
 
@@ -322,7 +322,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
         const { originalUnit } = this.state;
         const unitKind = value ? UnitKinds[value] : null;
         const unitOptions = getMetricUnitOptionsFromKind(unitKind?.value, true);
-        let unitToSelect = value === UNITS_KIND.COUNT ? 'unit' : (value === UNITS_KIND.NONE ? '' : null);
+        let unitToSelect = value === UNITS_KIND.COUNT ? 'unit' : value === UNITS_KIND.NONE ? '' : null;
         let unitChangeWarning = null;
         if (originalUnit && value === UNITS_KIND.NONE)
             unitChangeWarning =

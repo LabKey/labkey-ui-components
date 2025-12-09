@@ -54,6 +54,7 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
             setScale(DEFAULT_SCALE_VALUES);
             setChartConfig(current => {
                 let geomOptions = current.geomOptions;
+                const measuresOptions = current.measuresOptions;
                 const measures = { ...current.measures };
                 const scales = { ...current.scales };
                 const labels = { ...current.labels };
@@ -78,7 +79,12 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
                     geomOptions = { ...geomOptions, trendlineType };
                 }
 
-                const updatedConfig = { ...current, geomOptions, measures, labels };
+                // reset the measureOptions.series when field changes
+                if (name === 'series' && measuresOptions.series !== undefined) {
+                    delete measuresOptions.series;
+                }
+
+                const updatedConfig = { ...current, geomOptions, measures, measuresOptions, labels };
 
                 if (selectedType.name === 'bar_chart') {
                     updatedConfig.labels.y = getBarChartAxisLabel(updatedConfig, current);

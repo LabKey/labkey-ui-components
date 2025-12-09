@@ -224,14 +224,19 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
             >
               <div
                 class="color-picker"
+                data-name="labelColor"
               >
                 <button
                   class="color-picker__button btn btn-default"
                   type="button"
                 >
-                  None
+                  <span
+                    class="color-picker__placeholder"
+                  >
+                    None
+                  </span>
                   <i
-                    class="fa fa-caret-down"
+                    class="fa fa-lg fa-angle-down"
                   />
                 </button>
                 <div
@@ -489,14 +494,19 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
           >
             <div
               class="color-picker"
+              data-name="labelColor"
             >
               <button
                 class="color-picker__button btn btn-default"
                 type="button"
               >
-                None
+                <span
+                  class="color-picker__placeholder"
+                >
+                  None
+                </span>
                 <i
-                  class="fa fa-caret-down"
+                  class="fa fa-lg fa-angle-down"
                 />
               </button>
               <div

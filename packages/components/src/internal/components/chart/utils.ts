@@ -145,6 +145,7 @@ export function deepCopyChartConfig(chartConfig: ChartConfig, chartType = 'bar_c
             height: 500,
             labels: {},
             measures: {},
+            measuresOptions: {},
             pointType: 'all',
             renderType: chartType,
             scales: {},
@@ -156,6 +157,7 @@ export function deepCopyChartConfig(chartConfig: ChartConfig, chartType = 'bar_c
         geomOptions: { ...chartConfig.geomOptions },
         labels: { ...chartConfig.labels },
         measures: { ...chartConfig.measures },
+        measuresOptions: { ...chartConfig.measuresOptions },
         scales: { ...chartConfig.scales },
     };
 }

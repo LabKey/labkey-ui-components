@@ -7,12 +7,19 @@ export interface ChartLabels {
     y?: string;
 }
 
+export interface MeasureOption {
+    color?: string;
+    shape?: string;
+    // lineType?: string;
+}
+
 export interface ChartConfig {
     geomOptions: Record<string, boolean | number | string>;
     gridLinesVisible: string;
     height?: number;
     labels: ChartLabels;
     measures: Record<string, Record<string, any>>; // TODO: we can probably do better than any
+    measuresOptions?: Record<string, Record<string, MeasureOption>>; // map from measures to the options for the distinct values of that measure
     pointType: string;
     renderType: string;
     scales: Record<string, ScaleType>;

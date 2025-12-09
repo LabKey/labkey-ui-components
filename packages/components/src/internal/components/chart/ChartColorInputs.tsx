@@ -283,8 +283,8 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
 
                     // map response.values to SelectOption format
                     const options = response.values.map(value => ({
-                        label: value === null ? '[Blank]' : value.toString(), // TODO verify this
-                        value: value === null ? '[Blank]' : value.toString(),
+                        label: value === null ? 'n/a' : value.toString(),
+                        value: value === null ? 'n/a' : value.toString(),
                     }));
                     setDistinctSeriesOptions(options);
                 } catch (error) {

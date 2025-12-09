@@ -10,6 +10,14 @@ Components, models, actions, and utility functions for LabKey applications and p
   - ColorPickerInput update to use fixed position by default and new DEFAULT_COLORS constant
   - Add LetterIcon for use with "Auto" set series values
 
+###  version 7.1.1
+*Released*: 8 December 2025
+- Sample Amount/Units polish: part 2
+  - Introduced a two-tier unit selection system (Amount Type, Display Units) in sample designer
+  - Added new measurement units (ug, ng) with updated display precision for existing units
+  - Added a new formsy rule `sampleAmount` for validating sample amount/units input on forms
+  - Disallow large amount (>1.79769E308) for amounts input on form, editable grid, and sample storage editor
+
 ### version 7.1.0
 *Released*: 3 December 2025
 - ChartBuilderModal

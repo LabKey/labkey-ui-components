@@ -1,4 +1,11 @@
-import { areUnitsCompatible, getAltUnitKeys, getMetricUnitOptions, UnitModel } from './measurement';
+import {
+    areUnitsCompatible,
+    getAltUnitKeys,
+    getMeasurementUnit,
+    getMetricUnitOptions,
+    MEASUREMENT_UNITS,
+    UnitModel,
+} from './measurement';
 
 describe('UnitModel', () => {
     test('constructor and operators', () => {
@@ -8,7 +15,7 @@ describe('UnitModel', () => {
         expect(new UnitModel(99999, 'uL').as('L').toString()).toBe('0.099999 L');
         expect(new UnitModel(99999.133, 'uL').as('L').toString()).toBe('0.099999133 L');
         expect(new UnitModel(99999.13345678, 'uL').as('L').toString()).toBe('0.099999133 L');
-        expect(new UnitModel(99999.13345678, 'mg').as('kg').toString()).toBe('0.099999133457 kg');
+        expect(new UnitModel(99999.13345678, 'mg').as('kg').toString()).toBe('0.09999913345678 kg');
         expect(new UnitModel(10, 'mL').as('L').toString()).toBe('0.01 L');
         expect(new UnitModel(undefined, 'mL').as('L').toString()).toBe('undefined L');
         expect(new UnitModel(0.0005, 'mL').as('mL').toString()).toBe('0.0005 mL');
@@ -127,9 +134,9 @@ describe('MetricUnit utils', () => {
             ])
         );
 
-        expect(getMetricUnitOptions(null).length).toBe(7);
-        expect(getMetricUnitOptions('').length).toBe(7);
-        expect(getMetricUnitOptions('bad').length).toBe(7);
+        expect(getMetricUnitOptions(null).length).toBe(18);
+        expect(getMetricUnitOptions('').length).toBe(18);
+        expect(getMetricUnitOptions('bad').length).toBe(18);
     });
 
     test('getAltUnitKeys', () => {
@@ -137,16 +144,42 @@ describe('MetricUnit utils', () => {
         expect(getAltUnitKeys('uL')).toEqual(expectedUlOptions);
         expect(getAltUnitKeys('mL')).toEqual(expectedUlOptions);
 
-        const expectedGOptions = ['g', 'mg', 'kg'];
+        const expectedGOptions = ['g', 'mg', 'kg', 'ug', 'ng'];
         expect(getAltUnitKeys('g')).toEqual(expectedGOptions);
         expect(getAltUnitKeys('kg')).toEqual(expectedGOptions);
 
-        expect(getAltUnitKeys('unit')).toEqual(['unit']);
+        expect(getAltUnitKeys('unit')).toEqual([
+            'blocks',
+            'bottles',
+            'boxes',
+            'cells',
+            'kits',
+            'packs',
+            'pieces',
+            'slides',
+            'tests',
+            'unit',
+        ]);
 
         // include all options when no unitTypeStr or an invalid unitTypeStr is provided
-        expect(getAltUnitKeys(null).length).toBe(7);
-        expect(getAltUnitKeys('').length).toBe(7);
-        expect(getAltUnitKeys('bad').length).toBe(7);
+        expect(getAltUnitKeys(null).length).toBe(18);
+        expect(getAltUnitKeys('').length).toBe(18);
+        expect(getAltUnitKeys('bad').length).toBe(18);
+    });
+
+    test('getMeasurementUnit', () => {
+        expect(getMeasurementUnit(undefined)).toBeNull();
+        expect(getMeasurementUnit('')).toBeNull();
+        expect(getMeasurementUnit('invalidUnit')).toBeNull();
+        expect(getMeasurementUnit('mL')).toEqual(MEASUREMENT_UNITS.ml);
+        expect(getMeasurementUnit('ML')).toEqual(MEASUREMENT_UNITS.ml);
+        const unit = getMeasurementUnit('pieces');
+        expect(unit).toEqual({
+            ...MEASUREMENT_UNITS.unit,
+            label: 'pieces',
+            longLabelSingular: 'pieces',
+            longLabelPlural: 'pieces',
+        });
     });
 });
 

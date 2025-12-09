@@ -30,7 +30,7 @@ export interface TextInputProps extends DisableableInputProps, Omit<FormsyInputP
     disableInput?: boolean;
     includeSpacesWarning?: boolean;
     isUpdate?: boolean;
-    onChange?: (value: any) => void;
+    onChange?: (name: string, value: any) => void;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     showLabel?: boolean;
@@ -107,7 +107,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
 
     onChange = (name: string, value: any): void => {
         this.setState({ inputValue: value });
-        this.props.onChange?.(value);
+        this.props.onChange?.(name, value);
     };
 
     render() {
@@ -117,6 +117,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         // Extract TextInputProps
         const {
             addLabelAsterisk,
+            disableInput,
             labelClassName,
             renderFieldLabel,
             queryColumn,
@@ -142,7 +143,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
                     required={queryColumn.required}
                     {...inputProps}
                     componentRef={this.textInput}
-                    disabled={this.state.isDisabled || this.props.disableInput}
+                    disabled={this.state.isDisabled || disableInput}
                     help={help}
                     label={this.renderLabel()}
                     labelClassName={showLabel ? labelClassName : 'hide-label'}

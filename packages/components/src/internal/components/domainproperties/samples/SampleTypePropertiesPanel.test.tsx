@@ -9,8 +9,9 @@ import { DomainDetails, DomainPanelStatus } from '../models';
 
 import { getTestAPIWrapper } from '../../../APIWrapper';
 
-import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
+import { getValidUnitKinds, SampleTypePropertiesPanel, UnitKinds } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';
+import { UNITS_KIND } from '../../../util/measurement';
 
 describe('SampleTypePropertiesPanel', () => {
     const BASE_PROPS = {
@@ -114,15 +115,15 @@ describe('SampleTypePropertiesPanel', () => {
             container = renderWithAppContext(
                 <SampleTypePropertiesPanel
                     {...BASE_PROPS}
+                    dataClassAliasCaption="Source"
+                    dataClassParentageLabel="source"
+                    dataClassTypeCaption="source type"
+                    includeDataClasses
                     model={sampleTypeModel}
                     parentOptions={[{ schema: 'exp.data' }]}
-                    includeDataClasses
-                    useSeparateDataClassesAliasMenu
                     sampleAliasCaption="Parent"
                     sampleTypeCaption="sample type"
-                    dataClassAliasCaption="Source"
-                    dataClassTypeCaption="source type"
-                    dataClassParentageLabel="source"
+                    useSeparateDataClassesAliasMenu
                 />
             );
         });
@@ -154,7 +155,6 @@ describe('SampleTypePropertiesPanel', () => {
                     metricUnitProps={{
                         includeMetricUnitProperty: true,
                         metricUnitLabel: 'Display Units',
-                        metricUnitRequired: true,
                         metricUnitHelpMsg: 'Sample storage volume will be displayed using the selected metric unit.',
                         metricUnitOptions: [
                             { id: 'mL', label: 'ml' },
@@ -180,9 +180,9 @@ describe('SampleTypePropertiesPanel', () => {
             renderWithAppContext(
                 <SampleTypePropertiesPanel
                     {...BASE_PROPS}
-                    showLinkToStudy
                     appPropertiesOnly={false}
                     model={sampleTypeModelWithTimepoint}
+                    showLinkToStudy
                 />
             );
         });
@@ -201,9 +201,9 @@ describe('SampleTypePropertiesPanel', () => {
             renderWithAppContext(
                 <SampleTypePropertiesPanel
                     {...BASE_PROPS}
-                    showLinkToStudy={false}
                     appPropertiesOnly={false}
                     model={sampleTypeModelWithTimepoint}
+                    showLinkToStudy={false}
                 />
             );
         });
@@ -255,11 +255,11 @@ describe('SampleTypePropertiesPanel', () => {
             renderWithAppContext(
                 <SampleTypePropertiesPanel
                     {...BASE_PROPS}
-                    model={SampleTypeModel.create(data)}
-                    appPropertiesOnly={false}
                     aliquotNamePatternProps={{
                         showAliquotNameExpression: true,
                     }}
+                    appPropertiesOnly={false}
+                    model={SampleTypeModel.create(data)}
                     namePreviews={[null, 'S-parentSample-1']}
                 />
             );
@@ -269,5 +269,32 @@ describe('SampleTypePropertiesPanel', () => {
         expect(fields).toHaveLength(5);
         const aliquotField = fields[4];
         expect(aliquotField.textContent).toEqual('Aliquot Naming Pattern');
+    });
+});
+
+describe('getValidUnitKinds', () => {
+    test('returns all unit kinds when lockUnitKind and metricUnit are undefined', () => {
+        const result = getValidUnitKinds();
+        expect(result).toEqual(Object.values(UnitKinds));
+    });
+
+    test('returns all unit kinds when lockUnitKind is false', () => {
+        const result = getValidUnitKinds(false, 'mL');
+        expect(result).toEqual(Object.values(UnitKinds));
+    });
+
+    test('returns NONE and the unit kind matching the metricUnit when lockUnitKind is true', () => {
+        const result = getValidUnitKinds(true, 'mL');
+        expect(result).toEqual([UnitKinds[UNITS_KIND.NONE], UnitKinds[UNITS_KIND.VOLUME]]);
+    });
+
+    test('returns only NONE when lockUnitKind is true and metricUnit is invalid', () => {
+        const result = getValidUnitKinds(true, 'invalidUnit');
+        expect(result).toEqual([UnitKinds[UNITS_KIND.NONE]]);
+    });
+
+    test('returns only all when lockUnitKind is true and metricUnit is undefined', () => {
+        const result = getValidUnitKinds(true);
+        expect(result).toEqual(Object.values(UnitKinds));
     });
 });

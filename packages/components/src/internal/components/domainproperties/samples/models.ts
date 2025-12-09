@@ -4,7 +4,6 @@ import { DomainDesign, DomainDetails, IDomainField } from '../models';
 import { IImportAlias, IParentAlias } from '../../entities/models';
 import { getDuplicateAlias, parentAliasInvalid } from '../utils';
 
-// eslint-disable-next-line no-template-curly-in-string
 export const DEFAULT_ALIQUOT_NAMING_PATTERN = '${${AliquotedFrom}-:withCounter}';
 
 export class SampleTypeModel extends Record({
@@ -52,6 +51,8 @@ export class SampleTypeModel extends Record({
             importAliases = { ...aliases };
         }
 
+        let metricUnit = options?.get('metricUnit') || undefined;
+        if (!metricUnit && options?.get('rowId')) metricUnit = ''; // use '' instead of undefined for existing designer with no (Any) display unit
         return new SampleTypeModel({
             ...options?.toJS(),
             aliquotNameExpression: options?.get('aliquotNameExpression') || DEFAULT_ALIQUOT_NAMING_PATTERN,
@@ -59,7 +60,7 @@ export class SampleTypeModel extends Record({
             nameReadOnly: raw?.nameReadOnly,
             importAliases,
             labelColor: options?.get('labelColor') || undefined, // helps to convert null to undefined
-            metricUnit: options?.get('metricUnit') || undefined,
+            metricUnit,
             domain: raw?.domainDesign ?? DomainDesign.create({}),
         });
     }
@@ -73,18 +74,18 @@ export class SampleTypeModel extends Record({
         return !this.rowId;
     }
 
-    isValid(defaultNameFieldConfig?: Partial<IDomainField>, metricUnitRequired?: boolean) {
+    isValid(defaultNameFieldConfig?: Partial<IDomainField>) {
         return (
             this.hasValidProperties() &&
             !this.hasInvalidNameField(defaultNameFieldConfig) &&
             getDuplicateAlias(this.parentAliases, true).size === 0 &&
             !this.domain.hasInvalidFields() &&
-            this.isMetricUnitValid(metricUnitRequired)
+            this.isMetricUnitValid()
         );
     }
 
-    isMetricUnitValid(metricUnitRequired?: boolean) {
-        return !metricUnitRequired || this.metricUnit != null;
+    isMetricUnitValid() {
+        return this.metricUnit != null;
     }
 
     hasValidProperties(): boolean {
@@ -106,10 +107,10 @@ export class SampleTypeModel extends Record({
 
 export interface MetricUnitProps {
     includeMetricUnitProperty?: boolean;
+    lockUnitKind?: boolean;
     metricUnitHelpMsg?: string;
     metricUnitLabel?: string;
-    metricUnitOptions?: any[];
-    metricUnitRequired?: boolean;
+    metricUnitOptions?: { label: string; value: string }[];
 }
 
 export interface AliquotNamePatternProps {

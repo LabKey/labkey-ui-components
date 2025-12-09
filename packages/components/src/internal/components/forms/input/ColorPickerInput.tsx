@@ -80,16 +80,7 @@ interface Props {
 }
 
 export const ColorPickerInput: FC<Props> = memo(props => {
-    const {
-        allowRemove,
-        colors = DEFAULT_COLORS,
-        disabled,
-        name,
-        onChange,
-        text,
-        value,
-        placeholder = 'None',
-    } = props;
+    const { allowRemove, colors = DEFAULT_COLORS, disabled, name, onChange, text, value, placeholder = 'None' } = props;
     const buttonRef = useRef<HTMLButtonElement | null>(null);
     const [fixedTop, setFixedTop] = useState<number>();
     const [fixedLeft, setFixedLeft] = useState<number>();
@@ -116,31 +107,31 @@ export const ColorPickerInput: FC<Props> = memo(props => {
     // if value doesn't start with '#', add it
     const value_ = value && !value.startsWith('#') ? `#${value}` : value;
 
-    const compactPicker = <CompactPicker onChangeComplete={onChangeComplete} color={value_} colors={colors} />;
+    const compactPicker = <CompactPicker color={value_} colors={colors} onChangeComplete={onChangeComplete} />;
 
     return (
         <div className="color-picker" data-name={name}>
             <button
-                type="button"
                 className="color-picker__button btn btn-default"
-                onClick={togglePicker}
                 disabled={disabled}
+                onClick={togglePicker}
                 ref={buttonRef}
+                type="button"
             >
                 {text ? (
                     text
                 ) : value ? (
-                    <ColorIcon cls="color-picker__chip-small" asSquare value={value_} />
+                    <ColorIcon asSquare cls="color-picker__chip-small" value={value_} />
                 ) : (
                     <span className="color-picker__placeholder">{placeholder}</span>
                 )}
                 <i className={classNames('fa fa-lg', { 'fa-angle-up': showPicker, 'fa-angle-down': !showPicker })} />
             </button>
 
-            {text !== undefined && <ColorIcon cls="color-picker__chip" asSquare value={value_} />}
+            {text !== undefined && <ColorIcon asSquare cls="color-picker__chip" value={value_} />}
 
             {allowRemove && value_ && !disabled && (
-                <RemoveEntityButton onClick={onRemove} labelClass="color-picker__remove" />
+                <RemoveEntityButton labelClass="color-picker__remove" onClick={onRemove} />
             )}
 
             <div className="color-picker__picker">

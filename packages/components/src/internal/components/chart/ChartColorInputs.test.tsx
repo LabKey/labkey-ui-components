@@ -3,9 +3,9 @@ import { render } from '@testing-library/react';
 import { ChartConfig } from './models';
 import { LABKEY_VIS } from '../../constants';
 
-import { ChartColorInputs, ShapeOptionRenderer, SeriesOptionRenderer, showColorOption } from './ChartColorInputs';
-import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
-import {SchemaQuery} from "../../../public/SchemaQuery";
+import { ChartColorInputs, SeriesOptionRenderer, ShapeOptionRenderer, showColorOption } from './ChartColorInputs';
+import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 LABKEY_VIS = {
     Scale: {
@@ -141,13 +141,7 @@ describe('SeriesOptionRenderer', () => {
     });
 
     test('with seriesOptionMap value', () => {
-        render(
-            <SeriesOptionRenderer
-                isValueRenderer
-                name="series1"
-                seriesOptionMap={{ series1: { color: 'red' } }}
-            />
-        );
+        render(<SeriesOptionRenderer isValueRenderer name="series1" seriesOptionMap={{ series1: { color: 'red' } }} />);
         expect(document.querySelector('.chart-builder-type-option').textContent).toBe(' series1');
         expect(document.querySelectorAll('.color-icon__chip-small')).toHaveLength(1);
         expect(document.querySelectorAll('i')).toHaveLength(1);
@@ -214,7 +208,13 @@ describe('ChartColorInputs', () => {
     test('scatter plot with color', () => {
         render(
             <ChartColorInputs
-                chartConfig={{ renderType: 'scatter_plot', geomOptions: {}, measures: { color: { name: 'test' } }, } as ChartConfig}
+                chartConfig={
+                    {
+                        renderType: 'scatter_plot',
+                        geomOptions: {},
+                        measures: { color: { name: 'test' } },
+                    } as ChartConfig
+                }
                 model={model}
                 setChartConfig={jest.fn()}
             />
@@ -240,11 +240,13 @@ describe('ChartColorInputs', () => {
     test('line plot with series', () => {
         render(
             <ChartColorInputs
-                chartConfig={{
-                    renderType: 'line_plot',
-                    geomOptions: {},
-                    measures: { series: { name: 'test' } },
-                } as ChartConfig}
+                chartConfig={
+                    {
+                        renderType: 'line_plot',
+                        geomOptions: {},
+                        measures: { series: { name: 'test' } },
+                    } as ChartConfig
+                }
                 model={model}
                 setChartConfig={jest.fn()}
             />

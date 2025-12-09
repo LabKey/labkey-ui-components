@@ -140,9 +140,15 @@ export const ChartColorInputs: FC<ChartColorInputsProps> = memo(({ chartConfig, 
     const lineColor = chartConfig.geomOptions.lineColor as string;
     const showLineColor = useMemo(() => showColorOption(chartConfig, COLOR_OPTIONS.LINE_COLOR), [chartConfig]);
     const pointFillColor = chartConfig.geomOptions.pointFillColor as string;
-    const showPointFillColor = useMemo(() => showColorOption(chartConfig, COLOR_OPTIONS.POINT_FILL_COLOR), [chartConfig]);
+    const showPointFillColor = useMemo(
+        () => showColorOption(chartConfig, COLOR_OPTIONS.POINT_FILL_COLOR),
+        [chartConfig]
+    );
     const colorPaletteScale = chartConfig.geomOptions.colorPaletteScale;
-    const showColorPaletteScale = useMemo(() => showColorOption(chartConfig, COLOR_OPTIONS.COLOR_PALETTE_SCALE), [chartConfig]);
+    const showColorPaletteScale = useMemo(
+        () => showColorOption(chartConfig, COLOR_OPTIONS.COLOR_PALETTE_SCALE),
+        [chartConfig]
+    );
     const showSeriesLineStyle = isLinePlot && chartConfig.measures?.series !== undefined;
     const showAnyColorOptions = showBoxFillColor || showLineColor || showPointFillColor;
 

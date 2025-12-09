@@ -213,7 +213,7 @@
 
 .chart-settings {
     flex: 1;
-    min-width: 330px;
+    min-width: 350px;
     border-right: solid 1px $gray-border-light;
     padding: 15px;
     overflow-y: auto;
@@ -358,4 +358,18 @@
 
 .curve-fit-value-cell {
     text-align: right;
+}
+
+.letter-icon {
+    display: inline-flex;
+    width: 12px;
+    height: 12px;
+    font-size: 10px;
+    line-height: 12px;
+    align-items: center;
+    justify-content: center;
+    vertical-align: text-top;
+    border: 1px solid $gray;
+    border-radius: 2px;
+    margin-top: 1px;
 }

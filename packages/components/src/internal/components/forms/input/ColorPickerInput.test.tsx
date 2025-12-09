@@ -20,9 +20,10 @@ describe('ColorPickerInput', () => {
         expect(container).toMatchSnapshot();
     });
 
-    test('with noValueText', () => {
-        const { container } = render(<ColorPickerInput value={undefined} noValueText="Auto" onChange={jest.fn} />);
-        expect(container).toMatchSnapshot();
+    test('with placeholder', () => {
+        render(<ColorPickerInput value={undefined} placeholder="Auto" onChange={jest.fn} />);
+        expect(document.querySelector('.color-picker__button')?.textContent).toBe('Auto');
+        expect(document.querySelectorAll('.color-picker__placeholder')).toHaveLength(1);
     });
 
     test('showPicker', async () => {

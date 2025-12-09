@@ -11,8 +11,15 @@ import { ColorIcon } from '../base/ColorIcon';
 import { LABKEY_VIS } from '../../constants';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 
+enum COLOR_OPTIONS {
+    BOX_FILL_COLOR = 'boxFillColor',
+    COLOR_PALETTE_SCALE = 'colorPaletteScale',
+    LINE_COLOR = 'lineColor',
+    POINT_FILL_COLOR = 'pointFillColor',
+}
+
 // export for jest testing
-export const showColorOption = function (chartConfig: ChartConfig, optionName: string): boolean {
+export const showColorOption = function (chartConfig: ChartConfig, optionName: COLOR_OPTIONS): boolean {
     const chartType = chartConfig.renderType;
     const isBarChart = chartType === 'bar_chart';
     const isBoxPlot = chartType === 'box_plot';
@@ -23,9 +30,9 @@ export const showColorOption = function (chartConfig: ChartConfig, optionName: s
     const hasColor = chartConfig.measures?.color !== undefined;
 
     switch (optionName) {
-        case 'boxFillColor':
+        case COLOR_OPTIONS.BOX_FILL_COLOR:
             return COLOR_OPTIONS_PER_TYPE.boxFillColor.indexOf(chartType) > -1 && (!isBarChart || !hasXSub); // bar chart if config has groupBy measure
-        case 'colorPaletteScale':
+        case COLOR_OPTIONS.COLOR_PALETTE_SCALE:
             return (
                 COLOR_OPTIONS_PER_TYPE.colorPaletteScale.indexOf(chartType) > -1 &&
                 (!isLinePlot || hasSeries) && // line plot if config has series measure
@@ -33,9 +40,9 @@ export const showColorOption = function (chartConfig: ChartConfig, optionName: s
                 (!isBoxPlot || hasColor) && // box plot if config has color measure
                 (!isScatterPlot || hasColor) // scatter plot if config has color measure
             );
-        case 'lineColor':
+        case COLOR_OPTIONS.LINE_COLOR:
             return COLOR_OPTIONS_PER_TYPE.lineColor.indexOf(chartType) > -1 && (!isBarChart || !hasXSub); // bar chart if config has groupBy measure
-        case 'pointFillColor':
+        case COLOR_OPTIONS.POINT_FILL_COLOR:
             return (
                 COLOR_OPTIONS_PER_TYPE.pointFillColor.indexOf(chartType) > -1 &&
                 (!isLinePlot || !hasSeries) && // line plot if config has series measure
@@ -129,13 +136,13 @@ export const ChartColorInputs: FC<ChartColorInputsProps> = memo(({ chartConfig, 
 
     const boxFillColor =
         chartConfig.geomOptions.boxFillColor === 'none' ? undefined : (chartConfig.geomOptions.boxFillColor as string);
-    const showBoxFillColor = useMemo(() => showColorOption(chartConfig, 'boxFillColor'), [chartConfig]);
+    const showBoxFillColor = useMemo(() => showColorOption(chartConfig, COLOR_OPTIONS.BOX_FILL_COLOR), [chartConfig]);
     const lineColor = chartConfig.geomOptions.lineColor as string;
-    const showLineColor = useMemo(() => showColorOption(chartConfig, 'lineColor'), [chartConfig]);
+    const showLineColor = useMemo(() => showColorOption(chartConfig, COLOR_OPTIONS.LINE_COLOR), [chartConfig]);
     const pointFillColor = chartConfig.geomOptions.pointFillColor as string;
-    const showPointFillColor = useMemo(() => showColorOption(chartConfig, 'pointFillColor'), [chartConfig]);
+    const showPointFillColor = useMemo(() => showColorOption(chartConfig, COLOR_OPTIONS.POINT_FILL_COLOR), [chartConfig]);
     const colorPaletteScale = chartConfig.geomOptions.colorPaletteScale;
-    const showColorPaletteScale = useMemo(() => showColorOption(chartConfig, 'colorPaletteScale'), [chartConfig]);
+    const showColorPaletteScale = useMemo(() => showColorOption(chartConfig, COLOR_OPTIONS.COLOR_PALETTE_SCALE), [chartConfig]);
     const showSeriesLineStyle = isLinePlot && chartConfig.measures?.series !== undefined;
     const showAnyColorOptions = showBoxFillColor || showLineColor || showPointFillColor;
 
@@ -168,19 +175,19 @@ export const ChartColorInputs: FC<ChartColorInputsProps> = memo(({ chartConfig, 
     );
     const onBoxFillColorChange = useCallback(
         (_: never, value: string) => {
-            onColorChange('boxFillColor', value ?? 'none');
+            onColorChange(COLOR_OPTIONS.BOX_FILL_COLOR, value ?? 'none');
         },
         [onColorChange]
     );
     const onLineColorChange = useCallback(
         (_: never, value: string) => {
-            onColorChange('lineColor', value);
+            onColorChange(COLOR_OPTIONS.LINE_COLOR, value);
         },
         [onColorChange]
     );
     const onPointFillColorChange = useCallback(
         (_: never, value: string) => {
-            onColorChange('pointFillColor', value);
+            onColorChange(COLOR_OPTIONS.POINT_FILL_COLOR, value);
         },
         [onColorChange]
     );
@@ -194,7 +201,7 @@ export const ChartColorInputs: FC<ChartColorInputsProps> = memo(({ chartConfig, 
                             <label>Fill Color</label>
                             <ColorPickerInput
                                 allowRemove={isBoxPlot}
-                                name="boxFillColor"
+                                name={COLOR_OPTIONS.BOX_FILL_COLOR}
                                 onChange={onBoxFillColorChange}
                                 value={boxFillColor}
                             />
@@ -210,7 +217,7 @@ export const ChartColorInputs: FC<ChartColorInputsProps> = memo(({ chartConfig, 
                         <div className="col-xs-4">
                             <label>{isLinePlot ? '' : 'Point '}Color</label>
                             <ColorPickerInput
-                                name="pointFillColor"
+                                name={COLOR_OPTIONS.POINT_FILL_COLOR}
                                 onChange={onPointFillColorChange}
                                 value={pointFillColor}
                             />
@@ -226,7 +233,7 @@ export const ChartColorInputs: FC<ChartColorInputsProps> = memo(({ chartConfig, 
                             clearable={false}
                             containerClass="row"
                             inputClass="col-xs-12"
-                            name="colorPaletteScale"
+                            name={COLOR_OPTIONS.COLOR_PALETTE_SCALE}
                             onChange={onColorPaletteChange}
                             options={COLOR_PALETTE_OPTIONS}
                             showLabel={false}
@@ -376,8 +383,8 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                         <ColorPickerInput
                             allowRemove
                             name="seriesColor"
-                            noValueText="Auto"
                             onChange={onSeriesColorChange}
+                            placeholder="Auto"
                             value={seriesOptionMap[selectedSeries]?.color}
                         />
                     </div>

@@ -73,8 +73,8 @@ interface Props {
     colors?: string[];
     disabled?: boolean;
     name?: string;
-    noValueText?: string;
     onChange: (name: string, value: string) => void;
+    placeholder?: string;
     text?: string;
     value: string;
 }
@@ -88,7 +88,7 @@ export const ColorPickerInput: FC<Props> = memo(props => {
         onChange,
         text,
         value,
-        noValueText = 'None',
+        placeholder = 'None',
     } = props;
     const buttonRef = useRef<HTMLButtonElement | null>(null);
     const [fixedTop, setFixedTop] = useState<number>();
@@ -127,8 +127,14 @@ export const ColorPickerInput: FC<Props> = memo(props => {
                 disabled={disabled}
                 ref={buttonRef}
             >
-                {text ? text : value ? <ColorIcon cls="color-picker__chip-small" asSquare value={value_} /> : noValueText}
-                <i className={classNames('fa', { 'fa-caret-up': showPicker, 'fa-caret-down': !showPicker })} />
+                {text ? (
+                    text
+                ) : value ? (
+                    <ColorIcon cls="color-picker__chip-small" asSquare value={value_} />
+                ) : (
+                    <span className="color-picker__placeholder">{placeholder}</span>
+                )}
+                <i className={classNames('fa fa-lg', { 'fa-angle-up': showPicker, 'fa-angle-down': !showPicker })} />
             </button>
 
             {text !== undefined && <ColorIcon cls="color-picker__chip" asSquare value={value_} />}

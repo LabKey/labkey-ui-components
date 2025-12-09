@@ -1,5 +1,5 @@
 import React, { FC, memo, ReactNode } from 'react';
-import { List, Map } from 'immutable';
+import { List } from 'immutable';
 import { Domain, getServerContext } from '@labkey/api';
 
 import {

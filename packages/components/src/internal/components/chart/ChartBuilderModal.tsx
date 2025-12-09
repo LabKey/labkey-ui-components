@@ -14,7 +14,6 @@ import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryMod
 import { useServerContext } from '../base/ServerContext';
 import { hasPermissions } from '../base/models/User';
 
-import { Alert } from '../base/Alert';
 import { FormButtons } from '../../FormButtons';
 
 import { getContainerFilterForFolder } from '../../query/api';
@@ -354,13 +353,13 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
             onCancel={onCancel}
             title={savedChartModel ? 'Edit Chart' : 'Create Chart'}
         >
-            {error && <Alert>{error}</Alert>}
             <ChartSettingsPanel
                 allowInherit={allowInherit}
                 canShare={canShare}
                 chartConfig={chartConfig}
                 chartModel={chartModel}
                 chartType={selectedType}
+                error={error}
                 isNew={savedChartModel !== undefined}
                 model={model}
                 setChartConfig={setChartConfig}

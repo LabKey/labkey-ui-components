@@ -20,6 +20,7 @@ import { deepCopyChartConfig, hasTrendline } from './utils';
 import { useEnterEscape } from '../../../public/useEnterEscape';
 import { ChartLabelInput } from './ChartLabelInput';
 import { ChartColorInputs } from './ChartColorInputs';
+import { Alert } from '../base/Alert';
 
 function changedIntValue(strVal: string, currentVal: number): [value: number, changed: boolean] {
     strVal = strVal.trim();
@@ -258,6 +259,7 @@ interface Props {
     chartConfig: ChartConfig;
     chartModel: BaseChartModel;
     chartType: ChartTypeInfo;
+    error: string;
     isNew: boolean;
     model: QueryModel;
     setChartConfig: ChartConfigSetter;
@@ -265,8 +267,18 @@ interface Props {
 }
 
 export const ChartSettingsPanel: FC<Props> = memo(props => {
-    const { allowInherit, canShare, chartConfig, chartType, chartModel, isNew, model, setChartConfig, setChartModel } =
-        props;
+    const {
+        allowInherit,
+        canShare,
+        chartConfig,
+        chartType,
+        chartModel,
+        error,
+        isNew,
+        model,
+        setChartConfig,
+        setChartModel,
+    } = props;
     const showTrendline = hasTrendline(chartType);
     const fields = chartType.fields.filter(f => f.name !== 'trendline');
 
@@ -316,6 +328,7 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
 
     return (
         <div className="chart-settings">
+            {error && <Alert>{error}</Alert>}
             <h4>Settings</h4>
             <div>
                 <label>Name *</label>

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+###  version TBD
+*Released*: TBD
+- ConditionalFormatOptions refactor to use ColorPickerInput
+
 ###  version 7.2.0
 *Released*: 9 December 2025
 - Chart builder updates for series color scale options

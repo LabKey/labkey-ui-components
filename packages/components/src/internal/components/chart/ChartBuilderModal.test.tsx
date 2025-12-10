@@ -20,8 +20,8 @@ import {
 
 import { ChartBuilderModal, getChartBuilderQueryConfig, getChartRenderMsg } from './ChartBuilderModal';
 import { MAX_POINT_DISPLAY, MAX_ROWS_PREVIEW } from './constants';
-import { ChartConfig, ChartQueryConfig, ChartTypeInfo, GenericChartModel } from './models';
-import { waitFor } from '@testing-library/dom';
+import { ChartConfig, ChartQueryConfig, ChartTypeInfo, GenericChartModel, VisualizationConfigModel } from './models';
+import { deepCopyChartConfig } from './utils';
 
 const BAR_CHART_TYPE = {
     name: 'bar_chart',
@@ -111,6 +111,34 @@ const SERVER_CONTEXT = {
     user: TEST_USER_EDITOR,
 };
 
+const defaultChartModel: Partial<GenericChartModel> = {
+    canEdit: true,
+    canShare: true,
+    canDelete: true,
+    inheritable: true,
+    createdBy: 1000,
+    description: '',
+    id: 'db:100',
+    name: 'SavedChart',
+    ownerId: 1000,
+    queryName: 'savedQuery',
+    reportId: 'reportId',
+    reportProps: undefined,
+    schemaName: 'savedSchema',
+    shared: false,
+    thumbnailURL: undefined,
+    type: undefined,
+};
+const defaultQueryConfig: Partial<GenericChartModel['visualizationConfig']['queryConfig']> = {
+    columns: [],
+    containerFilter: undefined,
+    containerPath: undefined,
+    filterArray: [],
+    schemaName: 'savedSchema',
+    queryName: 'savedQuery',
+    viewName: 'savedView',
+};
+
 describe('ChartBuilderModal', () => {
     function validate(isNew: boolean, canShare = true, canDelete = false, allowInherit = false): void {
         expect(document.querySelectorAll('.chart-builder-modal')).toHaveLength(1);
@@ -161,7 +189,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(true, false);
-        expect(document.querySelectorAll('input')).toHaveLength(12);
+        expect(document.querySelectorAll('input')).toHaveLength(14);
     });
 
     test('allowInherit false, user perm', () => {
@@ -177,7 +205,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(true);
-        expect(document.querySelectorAll('input')).toHaveLength(13);
+        expect(document.querySelectorAll('input')).toHaveLength(15);
     });
 
     test('allowInherit false, non-project', () => {
@@ -193,7 +221,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(true);
-        expect(document.querySelectorAll('input')).toHaveLength(13);
+        expect(document.querySelectorAll('input')).toHaveLength(15);
     });
 
     test('allowInherit true', () => {
@@ -209,7 +237,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(true, true, false, true);
-        expect(document.querySelectorAll('input')).toHaveLength(14);
+        expect(document.querySelectorAll('input')).toHaveLength(16);
     });
 
     test('field inputs displayed for selected chart type', async () => {
@@ -223,7 +251,7 @@ describe('ChartBuilderModal', () => {
         validate(true);
 
         // verify field inputs displayed for default / first chart type
-        expect(document.querySelectorAll('input')).toHaveLength(13);
+        expect(document.querySelectorAll('input')).toHaveLength(15);
         BAR_CHART_TYPE.fields.forEach(field => {
             expect(document.querySelectorAll(`input[name="${field.name}"]`)).toHaveLength(1);
         });
@@ -234,7 +262,7 @@ describe('ChartBuilderModal', () => {
         const scatterOption = screen.getByText('Scatter');
         await userEvent.click(scatterOption);
 
-        expect(document.querySelectorAll('input')).toHaveLength(15);
+        expect(document.querySelectorAll('input')).toHaveLength(17);
         SCATTER_PLOT_TYPE.fields.forEach(field => {
             expect(document.querySelectorAll(`input[name="${field.name}"]`)).toHaveLength(1);
         });
@@ -244,7 +272,7 @@ describe('ChartBuilderModal', () => {
         await userEvent.click(typeDropdown);
         const lineOption = screen.getByText('Line');
         await userEvent.click(lineOption);
-        expect(document.querySelectorAll('input')).toHaveLength(15);
+        expect(document.querySelectorAll('input')).toHaveLength(17);
         LINE_PLOT_TYPE.fields.forEach(field => {
             if (field.name !== 'trendline') {
                 expect(document.querySelectorAll(`input[name="${field.name}"]`)).toHaveLength(1);
@@ -254,21 +282,13 @@ describe('ChartBuilderModal', () => {
 
     test('init from savedChartModel', async () => {
         const savedChartModel = {
-            canShare: true,
-            canDelete: true,
-            name: 'SavedChart',
-            reportId: 'reportId',
-            shared: false,
+            ...defaultChartModel,
             visualizationConfig: {
                 chartConfig: {
-                    renderType: 'scatter_plot',
-                    measures: { x: 'field1', y: 'field2' },
+                    ...deepCopyChartConfig(undefined, 'scatter_plot'),
+                    measures: { x: { fieldKey: 'field1' }, y: { fieldKey: 'field2' } },
                 },
-                queryConfig: {
-                    schemaName: 'savedSchema',
-                    queryName: 'savedQuery',
-                    viewName: 'savedView',
-                },
+                queryConfig: defaultQueryConfig,
             },
         } as GenericChartModel;
 
@@ -280,7 +300,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, true, true);
-        expect(document.querySelectorAll('input')).toHaveLength(13);
+        expect(document.querySelectorAll('input')).toHaveLength(15);
 
         // click delete button and verify confirm text / buttons
         await userEvent.click(document.querySelector('.btn-danger'));
@@ -299,22 +319,15 @@ describe('ChartBuilderModal', () => {
 
     test('init from bar chart with y axis value and default aggregate method', async () => {
         const savedChartModel = {
-            canShare: true,
-            canDelete: true,
-            name: 'SavedChart',
-            reportId: 'reportId',
-            shared: false,
+            ...defaultChartModel,
             visualizationConfig: {
                 chartConfig: {
+                    ...deepCopyChartConfig(undefined),
                     renderType: 'bar_chart',
                     measures: { x: { fieldKey: 'field1' }, y: { fieldKey: 'field2' } },
                     labels: { x: 'Field 1', y: 'Field 2' },
                 },
-                queryConfig: {
-                    schemaName: 'savedSchema',
-                    queryName: 'savedQuery',
-                    viewName: 'savedView',
-                },
+                queryConfig: defaultQueryConfig,
             },
         } as GenericChartModel;
 
@@ -326,11 +339,11 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, true, true);
-        expect(document.querySelectorAll('input')).toHaveLength(11);
+        expect(document.querySelectorAll('input')).toHaveLength(13);
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
         expect(document.querySelectorAll('.fa-gear')).toHaveLength(2); // gear icon for x and y axes
         await userEvent.click(document.querySelectorAll('.fa-gear')[1]);
-        expect(document.querySelectorAll('input')).toHaveLength(19);
+        expect(document.querySelectorAll('input')).toHaveLength(21);
         expect(document.querySelector('input[value=automatic]').hasAttribute('checked')).toBe(true);
         expect(document.querySelector('input[value=manual]').hasAttribute('checked')).toBe(false);
         expect(document.querySelector('input[name=aggregate-method]').getAttribute('value')).toBe('SUM');
@@ -341,6 +354,7 @@ describe('ChartBuilderModal', () => {
 
     test('init from bar chart with y axis value and aggregate method', async () => {
         const savedChartModel = {
+            ...defaultChartModel,
             canShare: true,
             canDelete: true,
             name: 'SavedChart',
@@ -348,18 +362,14 @@ describe('ChartBuilderModal', () => {
             shared: false,
             visualizationConfig: {
                 chartConfig: {
-                    renderType: 'bar_chart',
+                    ...deepCopyChartConfig(undefined, 'bar_chart'),
                     measures: {
                         x: { fieldKey: 'field1' },
                         y: { fieldKey: 'field2', aggregate: { value: 'MEAN' }, errorBars: 'SEM' },
                     },
                     labels: { x: 'Field 1', y: 'Field 2' },
                 },
-                queryConfig: {
-                    schemaName: 'savedSchema',
-                    queryName: 'savedQuery',
-                    viewName: 'savedView',
-                },
+                queryConfig: defaultQueryConfig,
             },
         } as GenericChartModel;
 
@@ -371,11 +381,11 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, true, true);
-        expect(document.querySelectorAll('input')).toHaveLength(11);
+        expect(document.querySelectorAll('input')).toHaveLength(13);
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
         expect(document.querySelectorAll('.fa-gear')).toHaveLength(2); // gear icon for x and y axes
         await userEvent.click(document.querySelectorAll('.fa-gear')[1]);
-        expect(document.querySelectorAll('input')).toHaveLength(19);
+        expect(document.querySelectorAll('input')).toHaveLength(21);
         expect(document.querySelector('input[value=automatic]').hasAttribute('checked')).toBe(true);
         expect(document.querySelector('input[value=manual]').hasAttribute('checked')).toBe(false);
         expect(document.querySelector('input[name=aggregate-method]').getAttribute('value')).toBe('MEAN');
@@ -387,14 +397,10 @@ describe('ChartBuilderModal', () => {
 
     test('init from line chart with trendline options', async () => {
         const savedChartModel = {
-            canShare: true,
-            canDelete: true,
-            name: 'SavedChart',
-            reportId: 'reportId',
-            shared: false,
+            ...defaultChartModel,
             visualizationConfig: {
                 chartConfig: {
-                    renderType: 'line_plot',
+                    ...deepCopyChartConfig(undefined, 'line_plot'),
                     measures: { x: { fieldKey: 'field1' }, y: { fieldKey: 'field2' } },
                     labels: { x: 'Field 1', y: 'Field 2' },
                     geomOptions: {
@@ -403,11 +409,7 @@ describe('ChartBuilderModal', () => {
                         trendlineAsymptoteMax: '1.0',
                     },
                 },
-                queryConfig: {
-                    schemaName: 'savedSchema',
-                    queryName: 'savedQuery',
-                    viewName: 'savedView',
-                },
+                queryConfig: defaultQueryConfig,
             },
         } as GenericChartModel;
 
@@ -419,7 +421,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, true, true);
-        expect(document.querySelectorAll('input')).toHaveLength(15);
+        expect(document.querySelectorAll('input')).toHaveLength(17);
         expect(document.querySelector('input[name=x]').getAttribute('value')).toBe('field1');
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
         expect(document.querySelectorAll('input[name=aggregate-method]')).toHaveLength(0);
@@ -434,14 +436,10 @@ describe('ChartBuilderModal', () => {
 
     test('init from line chart with axis options', async () => {
         const savedChartModel = {
-            canShare: true,
-            canDelete: true,
-            name: 'SavedChart',
-            reportId: 'reportId',
-            shared: false,
+            ...defaultChartModel,
             visualizationConfig: {
                 chartConfig: {
-                    renderType: 'line_plot',
+                    ...deepCopyChartConfig(undefined, 'line_plot'),
                     measures: { x: { fieldKey: 'field1' }, y: { fieldKey: 'field2' } },
                     labels: { x: 'Field 1', y: 'Field 2' },
                     scales: {
@@ -449,11 +447,7 @@ describe('ChartBuilderModal', () => {
                         y: { trans: 'log', type: 'automatic' },
                     },
                 },
-                queryConfig: {
-                    schemaName: 'savedSchema',
-                    queryName: 'savedQuery',
-                    viewName: 'savedView',
-                },
+                queryConfig: defaultQueryConfig,
             },
         } as GenericChartModel;
 
@@ -465,7 +459,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, true, true);
-        expect(document.querySelectorAll('input')).toHaveLength(15);
+        expect(document.querySelectorAll('input')).toHaveLength(17);
         expect(document.querySelector('input[name=x]').getAttribute('value')).toBe('field1');
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
         expect(document.querySelectorAll('input[name=aggregate-method]')).toHaveLength(0);
@@ -473,45 +467,41 @@ describe('ChartBuilderModal', () => {
         expect(document.querySelectorAll('.field-option-icon')).toHaveLength(2); // gear icon for x and y axis
 
         await userEvent.click(document.querySelectorAll('.fa-gear')[0]); // x-axis options icon
-        expect(document.querySelectorAll('.radioinput-label.selected')[0].textContent).toBe('Linear');
-        expect(document.querySelectorAll('input[name=scaleTrans]')[0].hasAttribute('checked')).toBe(true); // linear
-        expect(document.querySelectorAll('input[name=scaleTrans]')[1].hasAttribute('checked')).toBe(false); // log
-        expect(document.querySelectorAll('.radioinput-label.selected')[1].textContent).toBe('Manual');
-        expect(document.querySelector('input[name=scaleMin]').getAttribute('value')).toBe('0');
-        expect(document.querySelector('input[name=scaleMax]').getAttribute('value')).toBe('100');
+        let settingsPanel = document.querySelector('.chart-field-additional-options');
+        expect(settingsPanel.querySelectorAll('.radioinput-label.selected')[0].textContent).toBe('Linear');
+        expect(settingsPanel.querySelectorAll('input[name=scaleTrans]')[0].hasAttribute('checked')).toBe(true); // linear
+        expect(settingsPanel.querySelectorAll('input[name=scaleTrans]')[1].hasAttribute('checked')).toBe(false); // log
+        expect(settingsPanel.querySelectorAll('.radioinput-label.selected')[1].textContent).toBe('Manual');
+        expect(settingsPanel.querySelector('input[name=scaleMin]').getAttribute('value')).toBe('0');
+        expect(settingsPanel.querySelector('input[name=scaleMax]').getAttribute('value')).toBe('100');
 
         await userEvent.click(document.querySelectorAll('.radioinput-label')[2]); // click 'Automatic' to verify clear min/max
         await userEvent.click(document.querySelectorAll('.radioinput-label')[3]); // click 'Manual'
-        expect(document.querySelector('input[name=scaleMin]').getAttribute('value')).toBe('');
-        expect(document.querySelector('input[name=scaleMax]').getAttribute('value')).toBe('');
+        expect(settingsPanel.querySelector('input[name=scaleMin]').getAttribute('value')).toBe('');
+        expect(settingsPanel.querySelector('input[name=scaleMax]').getAttribute('value')).toBe('');
 
         await userEvent.click(document.querySelectorAll('.fa-gear')[0]); // x-axis options icon, click to close
         await userEvent.click(document.querySelectorAll('.fa-gear')[1]); // y-axis options icon
-        expect(document.querySelectorAll('.radioinput-label.selected')).toHaveLength(3); // error bar, scale, range
-        expect(document.querySelectorAll('.radioinput-label.selected')[0].textContent).toBe('None');
-        expect(document.querySelectorAll('.radioinput-label.selected')[1].textContent).toBe('Log');
-        expect(document.querySelectorAll('.radioinput-label.selected')[2].textContent).toBe('Automatic');
-        expect(document.querySelectorAll('input[name=scaleTrans]')[0].hasAttribute('checked')).toBe(false); // linear
-        expect(document.querySelectorAll('input[name=scaleTrans]')[1].hasAttribute('checked')).toBe(true); // log
+        settingsPanel = document.querySelector('.chart-field-additional-options');
+        expect(settingsPanel.querySelectorAll('.radioinput-label.selected')).toHaveLength(3); // error bar, scale, range
+        expect(settingsPanel.querySelectorAll('.radioinput-label.selected')[0].textContent).toBe('None');
+        expect(settingsPanel.querySelectorAll('.radioinput-label.selected')[1].textContent).toBe('Log');
+        expect(settingsPanel.querySelectorAll('.radioinput-label.selected')[2].textContent).toBe('Automatic');
+        expect(settingsPanel.querySelectorAll('input[name=scaleTrans]')[0].hasAttribute('checked')).toBe(false); // linear
+        expect(settingsPanel.querySelectorAll('input[name=scaleTrans]')[1].hasAttribute('checked')).toBe(true); // log
     });
 
     test('canDelete and canShare false', () => {
         const savedChartModel = {
-            canShare: false,
+            ...defaultChartModel,
             canDelete: false,
-            name: 'SavedChart',
-            reportId: 'reportId',
-            shared: false,
+            canShare: false,
             visualizationConfig: {
                 chartConfig: {
-                    renderType: 'scatter_plot',
-                    measures: { x: 'field1', y: 'field2' },
+                    ...deepCopyChartConfig(undefined, 'scatter_plot'),
+                    measures: { x: { fieldKey: 'field1' }, y: { fieldKey: 'field2' } },
                 },
-                queryConfig: {
-                    schemaName: 'savedSchema',
-                    queryName: 'savedQuery',
-                    viewName: 'savedView',
-                },
+                queryConfig: defaultQueryConfig,
             },
         } as GenericChartModel;
 
@@ -523,7 +513,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, false, false);
-        expect(document.querySelectorAll('input')).toHaveLength(12);
+        expect(document.querySelectorAll('input')).toHaveLength(14);
         expect(document.querySelector('input[name="shared"]')).toBeNull();
     });
 });
@@ -565,6 +555,7 @@ describe('getChartRenderMsg', () => {
 
 describe('getChartBuilderQueryConfig', () => {
     const chartConfig = {
+        ...deepCopyChartConfig(undefined),
         geomOptions: {},
         measures: {
             x: { name: 'field1', label: 'Field 1', fieldKey: 'field1' },

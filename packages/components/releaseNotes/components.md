@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ###  version TBD
 *Released*: TBD
 - ConditionalFormatOptions refactor to use ColorPickerInput
+- Fix for LKS sample type designer issue with isValid check when metricUnit is not required
 
 ###  version 7.2.0
 *Released*: 9 December 2025

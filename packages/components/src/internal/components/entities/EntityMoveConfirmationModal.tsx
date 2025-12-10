@@ -26,6 +26,7 @@ export interface EntityMoveConfirmationModalProps extends Omit<ModalProps, 'onCo
     excludeCurrentAsTarget?: boolean;
     nounPlural: string;
     onConfirm: (targetContainer: string, targetName: string, userComment: string) => void;
+    permissionType?: Security.PermissionTypes;
 }
 
 // exported for jest testing
@@ -35,14 +36,15 @@ export async function getContainerOptions(
     moduleContext: ModuleContext,
     excludeCurrentAsTarget: boolean,
     dataType: FolderConfigurableDataType,
-    dataTypeRowId: number
+    dataTypeRowId: number,
+    permissionType: Security.PermissionTypes = Security.PermissionTypes.Insert
 ): Promise<SelectInputOption[]> {
     let folders = await api.folder.getContainers(container, moduleContext, true, true, true, true);
 
     const excludedFolders = await api.folder.getDataTypeExcludedContainers(dataType, dataTypeRowId);
 
     // filter to folders that the user has InsertPermissions
-    folders = folders?.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Insert) > -1);
+    folders = folders?.filter(c => c.effectivePermissions.indexOf(permissionType) > -1);
 
     // filter out the current container, if requested
     if (excludeCurrentAsTarget) {
@@ -70,6 +72,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
         currentContainer,
         dataType,
         dataTypeRowId,
+        permissionType,
         ...confirmModalProps
     } = props;
     const [error, setError] = useState<string>();
@@ -96,7 +99,8 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                         moduleContext,
                         excludeCurrentAsTarget,
                         dataType,
-                        dataTypeRowId
+                        dataTypeRowId,
+                        permissionType
                     );
 
                     setContainerOptions(options);

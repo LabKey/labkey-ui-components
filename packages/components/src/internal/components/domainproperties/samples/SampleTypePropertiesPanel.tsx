@@ -295,7 +295,9 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
         const { model, updateModel, metricUnitProps } = this.props;
 
         const updatedModel = newModel || model;
-        const isValid = updatedModel?.hasValidProperties() && updatedModel?.isMetricUnitValid();
+        const isValid =
+            updatedModel?.hasValidProperties() &&
+            updatedModel?.isMetricUnitValid(metricUnitProps?.includeMetricUnitProperty);
 
         this.setState(
             () => ({ isValid }),

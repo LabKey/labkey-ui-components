@@ -74,18 +74,18 @@ export class SampleTypeModel extends Record({
         return !this.rowId;
     }
 
-    isValid(defaultNameFieldConfig?: Partial<IDomainField>, metricUnitRequired?: boolean) {
+    isValid(defaultNameFieldConfig?: Partial<IDomainField>, includeMetricUnitProperty?: boolean): boolean {
         return (
             this.hasValidProperties() &&
             !this.hasInvalidNameField(defaultNameFieldConfig) &&
             getDuplicateAlias(this.parentAliases, true).size === 0 &&
             !this.domain.hasInvalidFields() &&
-            this.isMetricUnitValid(metricUnitRequired)
+            this.isMetricUnitValid(includeMetricUnitProperty)
         );
     }
 
-    isMetricUnitValid(metricUnitRequired?: boolean) {
-        return !metricUnitRequired || this.metricUnit != null;
+    isMetricUnitValid(includeMetricUnitProperty: boolean): boolean {
+        return !includeMetricUnitProperty || this.metricUnit != null;
     }
 
     hasValidProperties(): boolean {

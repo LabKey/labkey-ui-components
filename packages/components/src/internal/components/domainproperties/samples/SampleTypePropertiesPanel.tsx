@@ -294,8 +294,9 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
     updateValidStatus = (newModel?: SampleTypeModel): void => {
         const { metricUnitProps, model, updateModel } = this.props;
         const updatedModel = newModel ?? model;
+        const isValid = updatedModel.hasValidProperties() && updatedModel.isMetricUnitValid(metricUnitProps);
 
-        this.setState({ isValid: updatedModel.isMetricUnitValid(metricUnitProps) }, () => {
+        this.setState({ isValid }, () => {
             // Issue 39918: only consider the model changed if there is a newModel param
             if (newModel) {
                 updateModel(newModel);

@@ -5,6 +5,8 @@ import { userEvent } from '@testing-library/user-event';
 
 import { waitFor } from '@testing-library/dom';
 
+import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
+
 import { DomainDetails } from '../models';
 
 import { getTestAPIWrapper } from '../../../APIWrapper';
@@ -15,7 +17,12 @@ import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
 import { TEST_LKS_STARTER_MODULE_CONTEXT } from '../../../productFixtures';
 
-import { SampleTypeDesigner, SampleTypeDesignerImpl, SampleTypeDesignerProps } from './SampleTypeDesigner';
+import {
+    SampleTypeDesigner,
+    SampleTypeDesignerImpl,
+    SampleTypeDesignerImplProps,
+    SampleTypeDesignerProps,
+} from './SampleTypeDesigner';
 import { getQueryTestAPIWrapper } from '../../../query/APIWrapper';
 
 const SERVER_CONTEXT = {
@@ -56,7 +63,7 @@ const PARENT_OPTIONS = [
     },
 ];
 
-const BASE_PROPS: SampleTypeDesignerProps = {
+const DESIGNER_PROPS: SampleTypeDesignerProps = {
     api: getTestAPIWrapper(jest.fn, {
         entity: getEntityTestAPIWrapper(jest.fn, {
             initParentOptionsSelects: jest.fn().mockResolvedValue({
@@ -70,21 +77,25 @@ const BASE_PROPS: SampleTypeDesignerProps = {
         }),
     }),
     appPropertiesOnly: true,
+    onCancel: jest.fn(),
+    onComplete: jest.fn(),
+};
+
+const DESIGNER_IMPL_PROPS: SampleTypeDesignerImplProps = {
     currentPanelIndex: 0,
     firstState: true,
-    onComplete: jest.fn(),
-    onCancel: jest.fn(),
     onFinish: jest.fn(),
     onTogglePanel: jest.fn(),
     setSubmitting: jest.fn(),
     submitting: false,
     validatePanel: 0,
     visitedPanels: List(),
+    ...DESIGNER_PROPS,
 };
 
 describe('SampleTypeDesigner', () => {
     test('default properties', async () => {
-        renderWithAppContext(<SampleTypeDesignerImpl {...BASE_PROPS} />, { serverContext: SERVER_CONTEXT });
+        renderWithAppContext(<SampleTypeDesignerImpl {...DESIGNER_IMPL_PROPS} />, { serverContext: SERVER_CONTEXT });
 
         await waitFor(() => {
             expect(document.getElementsByClassName('domain-form-panel')).toHaveLength(2);
@@ -95,7 +106,7 @@ describe('SampleTypeDesigner', () => {
     });
 
     test('allowFolderExclusion', async () => {
-        renderWithAppContext(<SampleTypeDesignerImpl {...BASE_PROPS} allowFolderExclusion />, {
+        renderWithAppContext(<SampleTypeDesignerImpl {...DESIGNER_IMPL_PROPS} allowFolderExclusion />, {
             serverContext: SERVER_CONTEXT,
         });
 
@@ -111,7 +122,7 @@ describe('SampleTypeDesigner', () => {
     test('initModel with name URL props', async () => {
         const form = (
             <SampleTypeDesignerImpl
-                {...BASE_PROPS}
+                {...DESIGNER_IMPL_PROPS}
                 domainFormDisplayOptions={{
                     hideConditionalFormatting: true,
                 }}
@@ -140,7 +151,8 @@ describe('SampleTypeDesigner', () => {
     });
 
     test('open fields panel, with barcodes', async () => {
-        renderWithAppContext(<SampleTypeDesigner {...BASE_PROPS} />, {
+        // NOTE: Here we are calling the full designer, SampleTypeDesigner, not the SampleTypeDesignerImpl
+        renderWithAppContext(<SampleTypeDesigner {...DESIGNER_PROPS} />, {
             serverContext: {
                 moduleContext: {
                     ...TEST_LKS_STARTER_MODULE_CONTEXT,
@@ -155,6 +167,9 @@ describe('SampleTypeDesigner', () => {
         const panelHeader = document.querySelector('div#domain-header');
         await userEvent.click(panelHeader);
         const alerts = document.getElementsByClassName('alert');
-        expect(alerts).toHaveLength(0);
+        // still expect to have only two alerts.  We don't show the Barcode header in the file import panel.
+        // Jest doesn't want to switch to that panel.
+        expect(alerts[0]).toHaveTextContent(PROPERTIES_PANEL_ERROR_MSG);
+        expect(alerts[1]).toHaveTextContent('Please correct errors in the properties panel before saving.');
     });
 });

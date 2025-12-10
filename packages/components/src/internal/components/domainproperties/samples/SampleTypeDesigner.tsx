@@ -90,7 +90,8 @@ const AliquotOptionsHelp: FC<{ helpTopic: string }> = memo(({ helpTopic }) => {
 });
 AliquotOptionsHelp.displayName = 'AliquotOptionsHelp';
 
-interface OwnProps {
+// Exported for testing
+export interface SampleTypeDesignerProps {
     aliquotNamePatternProps?: AliquotNamePatternProps;
     allowFolderExclusion?: boolean;
     api?: ComponentsAPIWrapper;
@@ -139,9 +140,10 @@ interface State {
 }
 
 // Exported for testing
-export type SampleTypeDesignerProps = InjectedBaseDomainDesignerProps & OwnProps;
+export type SampleTypeDesignerImplProps = InjectedBaseDomainDesignerProps & SampleTypeDesignerProps;
 
-export class SampleTypeDesignerImpl extends React.PureComponent<SampleTypeDesignerProps, State> {
+// Exported for testing
+export class SampleTypeDesignerImpl extends React.PureComponent<SampleTypeDesignerImplProps, State> {
     static defaultProps = {
         api: getDefaultAPIWrapper(),
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
@@ -159,7 +161,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<SampleTypeDesign
         validateNameExpressions: true,
     };
 
-    constructor(props: SampleTypeDesignerProps) {
+    constructor(props: SampleTypeDesignerImplProps) {
         super(props);
 
         let domainDetails = this.props.initModel || DomainDetails.create();
@@ -841,4 +843,4 @@ export class SampleTypeDesignerImpl extends React.PureComponent<SampleTypeDesign
     }
 }
 
-export const SampleTypeDesigner = withBaseDomainDesigner<OwnProps>(SampleTypeDesignerImpl);
+export const SampleTypeDesigner = withBaseDomainDesigner<SampleTypeDesignerProps>(SampleTypeDesignerImpl);

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.3.0
+*Released*: 10 December 2025
+- CharBuilderModal: add UI for legend position
+
 ###  version 7.2.0
 *Released*: 9 December 2025
 - Chart builder updates for series color scale options

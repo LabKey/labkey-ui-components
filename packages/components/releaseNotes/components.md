@@ -3,7 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-- Update `EntityMoveConfirmationModal` and `EntityMoveModal` to add an optional `permissionType`, overriding the default `Insert` permission check
+- Add support for moving jobs
+  - Update `EntityMoveConfirmationModal` and `EntityMoveModal` to add an optional `permissionType`, overriding the default `Insert` permission check
+  - Add `JobOperation` enum and `isJobEntity` utility
 
 ###  version 7.2.0
 *Released*: 9 December 2025

@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Update `EntityMoveConfirmationModal` and `EntityMoveModal` to add an optional `permissionType`, overriding the default `Insert` permission check
   - Add `JobOperation` enum and `isJobEntity` utility
 
+### version 7.3.0
+*Released*: 10 December 2025
+- CharBuilderModal: add UI for legend position
+
 ###  version 7.2.0
 *Released*: 9 December 2025
 - Chart builder updates for series color scale options

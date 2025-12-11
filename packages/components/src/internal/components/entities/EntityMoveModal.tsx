@@ -245,7 +245,7 @@ export const getMoveConfirmationProperties = (
         const verb = numCannotMove === 1 ? 'has' : 'have';
         const parts = [];
         if (numNotPermitted > 0) parts.push('you lack the proper permissions');
-        if (numNotAllowed > 0) parts.push(`${pronoun} ${verb} a status that prevents moving`);
+        if (numNotAllowed > 0) parts.push(`${pronoun} ${verb} a status or related data that prevents moving`);
         if (numMissing > 0) parts.push(`${pronoun} may have been deleted`);
         const error = makeCommaSeparatedString(parts, ', or ', '.');
 

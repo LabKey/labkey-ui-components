@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 10 December 2025
 - CharBuilderModal: add UI for legend position
 
+###  version TBD
+*Released*: TBD
+- Chart builder updates for series line type option
+
 ###  version 7.2.0
 *Released*: 9 December 2025
 - Chart builder updates for series color scale options

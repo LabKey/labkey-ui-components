@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 import { ChartConfig, ChartConfigSetter, MeasureOption } from './models';
 import { ColorPickerInput } from '../forms/input/ColorPickerInput';
-import { COLOR_OPTIONS_PER_TYPE, COLOR_PALETTE_OPTIONS, SHAPE_OPTIONS } from './constants';
+import {COLOR_OPTIONS_PER_TYPE, COLOR_PALETTE_OPTIONS, LINE_TYPE_OPTIONS, SHAPE_OPTIONS} from './constants';
 import { SelectInput } from '../forms/input/SelectInput';
 import { selectDistinctRows } from '../../query/api';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -346,6 +346,17 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
         [onSeriesOptionChange, selectedSeries]
     );
 
+    const onSeriesLineTypeChange = useCallback(
+        (_: never, value: string) => {
+            onSeriesOptionChange(selectedSeries, 'lineType', value);
+        },
+        [onSeriesOptionChange, selectedSeries]
+    );
+
+    const onSeriesLineTypeRemove = useCallback(() => {
+        onSeriesOptionChange(selectedSeries, 'lineType', undefined);
+    }, [onSeriesOptionChange, selectedSeries]);
+
     const onSeriesShapeChange = useCallback(
         (_: never, value: string) => {
             onSeriesOptionChange(selectedSeries, 'shape', value);
@@ -383,36 +394,58 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                 </div>
             </div>
             {selectedSeries && (
-                <div className="row">
-                    <div className="col-xs-4">
-                        <div>Color</div>
-                        <ColorPickerInput
-                            allowRemove
-                            name="seriesColor"
-                            onChange={onSeriesColorChange}
-                            placeholder="Auto"
-                            value={seriesOptionMap[selectedSeries]?.color}
-                        />
+                <>
+                    <div className="row">
+                        <div className="col-xs-4">
+                            <div>Color</div>
+                            <ColorPickerInput
+                                allowRemove
+                                name="seriesColor"
+                                onChange={onSeriesColorChange}
+                                placeholder="Auto"
+                                value={seriesOptionMap[selectedSeries]?.color}
+                            />
+                        </div>
+                        <div className="col-xs-8">
+                            <div>Shape</div>
+                            <SelectInput
+                                clearable={false}
+                                containerClass="inline-block"
+                                inputClass=""
+                                menuPlacement="top"
+                                onChange={onSeriesShapeChange}
+                                optionRenderer={shapeOptionRenderer}
+                                options={SHAPE_OPTIONS}
+                                placeholder="Auto"
+                                value={seriesOptionMap[selectedSeries]?.shape}
+                                valueRenderer={shapeValueRenderer}
+                            />
+                            {seriesOptionMap[selectedSeries]?.shape && (
+                                <RemoveEntityButton labelClass="color-picker__remove" onClick={onSeriesShapeRemove} />
+                            )}
+                        </div>
                     </div>
-                    <div className="col-xs-8">
-                        <div>Shape</div>
-                        <SelectInput
-                            clearable={false}
-                            containerClass="inline-block"
-                            inputClass=""
-                            menuPlacement="top"
-                            onChange={onSeriesShapeChange}
-                            optionRenderer={shapeOptionRenderer}
-                            options={SHAPE_OPTIONS}
-                            placeholder="Auto"
-                            value={seriesOptionMap[selectedSeries]?.shape}
-                            valueRenderer={shapeValueRenderer}
-                        />
-                        {seriesOptionMap[selectedSeries]?.shape && (
-                            <RemoveEntityButton labelClass="color-picker__remove" onClick={onSeriesShapeRemove} />
-                        )}
+                    <div className="row">
+                        <div className="col-xs-12">
+                            <div>Line Type</div>
+                            <SelectInput
+                                clearable={false}
+                                containerClass="inline-block"
+                                inputClass=""
+                                menuPlacement="top"
+                                onChange={onSeriesLineTypeChange}
+                                options={LINE_TYPE_OPTIONS}
+                                placeholder="Auto"
+                                value={seriesOptionMap[selectedSeries]?.lineType}
+                                // optionRenderer={lineTypeOptionRenderer}
+                                // valueRenderer={lineTypeValueRenderer}
+                            />
+                            {seriesOptionMap[selectedSeries]?.lineType && (
+                                <RemoveEntityButton labelClass="color-picker__remove" onClick={onSeriesLineTypeRemove} />
+                            )}
+                        </div>
                     </div>
-                </div>
+                </>
             )}
         </>
     );

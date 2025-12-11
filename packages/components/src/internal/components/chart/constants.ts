@@ -35,6 +35,12 @@ export const SHAPE_OPTIONS = [
     { label: 'Cross', value: 'x' },
 ];
 
+export const LINE_TYPE_OPTIONS = [
+    { label: 'Solid', value: 'solid' },
+    { label: 'Dashed', value: 'dashed' },
+    { label: 'Dotted', value: 'dotted' },
+];
+
 export const COLOR_OPTIONS_PER_TYPE = {
     boxFillColor: ['bar_chart', 'box_plot'],
     colorPaletteScale: ['bar_chart', 'box_plot', 'line_plot', 'scatter_plot', 'pie_chart'],

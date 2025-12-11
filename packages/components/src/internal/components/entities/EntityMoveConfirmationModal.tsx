@@ -43,7 +43,7 @@ export async function getContainerOptions(
 
     const excludedFolders = await api.folder.getDataTypeExcludedContainers(dataType, dataTypeRowId);
 
-    // filter to folders that the user has InsertPermissions
+    // filter to folders that the user has the proper permissions for
     folders = folders?.filter(c => c.effectivePermissions.indexOf(permissionType) > -1);
 
     // filter out the current container, if requested

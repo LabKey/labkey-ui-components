@@ -41,7 +41,7 @@ export interface IDerivePayload {
     materialDefault?: any;
     materialInputs?: EntityInputProps[];
     materialOutputCount?: number;
-    materialOutputs?: Array<{ [key: string]: any }>;
+    materialOutputs?: Record<string, any>[];
     targetType: string;
 }
 
@@ -434,14 +434,14 @@ export interface IEntityTypeDetails extends IEntityDetails {
     importAliasValues?: string[];
 }
 
-export type SampleFinderCardType = 'sampleproperty' | 'sampleparent' | 'dataclassparent' | 'assaydata';
+export type SampleFinderCardType = 'assaydata' | 'dataclassparent' | 'sampleparent' | 'sampleproperty';
 export type FolderConfigurableDataType =
-    | 'SampleType'
+    | 'AssayDesign'
+    | 'Container'
     | 'DashboardSampleType'
     | 'DataClass'
-    | 'AssayDesign'
-    | 'StorageLocation'
-    | 'Container';
+    | 'SampleType'
+    | 'StorageLocation';
 
 /**
  *  Avoid inline comment or above line comments for properties due to es-lint's limitation on moving comments:
@@ -507,6 +507,7 @@ export interface EntityDataType {
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
     sampleFinderCardType?: SampleFinderCardType;
+    supportAllValueInQuery?: boolean;
     supportHasNoValueInQuery?: boolean;
     supportsCrossTypeImport?: boolean;
     typeIcon?: string;
@@ -514,7 +515,6 @@ export interface EntityDataType {
     typeNounAsParentSingular: string;
     typeNounSingular: string;
     uniqueFieldKey: string;
-    supportAllValueInQuery?: boolean;
 }
 
 interface OperationContainerInfo {

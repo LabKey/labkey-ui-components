@@ -21,9 +21,9 @@ import { ActionValue } from './actions/Action';
 interface ValueProps {
     actionValue: ActionValue;
     index: number;
+    lockReadOnlyForDelete?: boolean;
     onClick?: (actionValue: ActionValue, event: any) => void;
     onRemove?: (actionValueIndex: number, event: any) => void;
-    lockReadOnlyForDelete?: boolean;
 }
 
 interface ValueState {

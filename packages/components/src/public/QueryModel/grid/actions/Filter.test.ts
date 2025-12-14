@@ -97,7 +97,6 @@ describe('FilterAction::actionValueFromFilter', () => {
     });
 });
 
-
 describe('actionValueFromEntityFieldFilter', () => {
     const action = new FilterAction();
 
@@ -206,7 +205,10 @@ describe('removeFilterValueForFilterProps', () => {
     });
 
     it('handles an empty filter array gracefully', () => {
-        const emptyFilterProps: FilterProps = { schemaQuery: { schemaName: 'schema', queryName: 'query' }, filterArray: [] } as FilterProps;
+        const emptyFilterProps: FilterProps = {
+            schemaQuery: { schemaName: 'schema', queryName: 'query' },
+            filterArray: [],
+        } as FilterProps;
         const updatedFilters = removeFilterValueForFilterProps(emptyFilterProps, actionValues, 0);
         expect(updatedFilters.length).toBe(0);
     });

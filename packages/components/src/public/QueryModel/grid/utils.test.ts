@@ -85,4 +85,3 @@ describe('filterActionValuesByType', () => {
         expect(result[1].isReadOnly).toBe('locked');
     });
 });
-

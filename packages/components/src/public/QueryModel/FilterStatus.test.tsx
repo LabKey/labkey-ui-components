@@ -35,11 +35,11 @@ describe('FilterStatus', () => {
     };
     const filterAction1Locked = {
         ...filterAction1,
-        isReadOnly: 'locked filter'
+        isReadOnly: 'locked filter',
     };
     const filterAction2Locked = {
         ...filterAction2,
-        isReadOnly: 'locked filter'
+        isReadOnly: 'locked filter',
     };
     const searchAction = {
         action: new SearchAction(),
@@ -116,7 +116,13 @@ describe('FilterStatus', () => {
     });
 
     test('multiple locked filter actionValue, cannot remove', async () => {
-        render(<FilterStatus {...DEFAULT_PROPS} actionValues={[filterAction1Locked, filterAction2Locked]} lockReadOnlyForDelete />);
+        render(
+            <FilterStatus
+                {...DEFAULT_PROPS}
+                actionValues={[filterAction1Locked, filterAction2Locked]}
+                lockReadOnlyForDelete
+            />
+        );
         expect(document.querySelectorAll('.fa-table')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-search')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-filter')).toHaveLength(0);
@@ -126,5 +132,4 @@ describe('FilterStatus', () => {
         expect(document.querySelectorAll('.fa-close')).toHaveLength(0);
         expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(0);
     });
-
 });

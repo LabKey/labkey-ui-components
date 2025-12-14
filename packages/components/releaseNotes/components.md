@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.X
+*Released*: x December 2025
+- Workflow Automation: Task action to filter samples for selected task
+  - TODO
+
 ### version 7.3.1
 *Released*: 13 December 2025
 - Remove LSID column from provisioned sample tables

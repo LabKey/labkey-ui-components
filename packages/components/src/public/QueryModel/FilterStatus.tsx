@@ -6,10 +6,10 @@ import { filterActionValuesByType } from './grid/utils';
 
 interface Props {
     actionValues: ActionValue[];
+    lockReadOnlyForDelete?: boolean;
     onClick: (actionValue: ActionValue, event: any) => void;
     onRemove: (actionValueIndex: number, event: any) => void;
     onRemoveAll?: () => void;
-    lockReadOnlyForDelete?: boolean;
 }
 
 export const FilterStatus: FC<Props> = memo(props => {
@@ -46,12 +46,12 @@ export const FilterStatus: FC<Props> = memo(props => {
 
                     return (
                         <Value
-                            key={index}
-                            index={index}
                             actionValue={actionValue}
+                            index={index}
+                            key={index}
+                            lockReadOnlyForDelete={lockReadOnlyForDelete}
                             onClick={_onClick}
                             onRemove={_onRemove}
-                            lockReadOnlyForDelete={lockReadOnlyForDelete}
                         />
                     );
                 })}

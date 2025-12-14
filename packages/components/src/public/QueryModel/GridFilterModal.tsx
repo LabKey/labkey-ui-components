@@ -105,8 +105,8 @@ export const GridFilterModal: FC<Props> = memo(props => {
         >
             <Alert>{filterError}</Alert>
             <QueryFilterPanel
-                asRow
                 api={api}
+                asRow
                 fieldKey={fieldKey}
                 filters={{ [queryInfo.name.toLowerCase()]: filters }}
                 fullWidth

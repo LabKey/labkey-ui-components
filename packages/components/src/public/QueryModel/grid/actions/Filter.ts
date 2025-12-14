@@ -149,11 +149,14 @@ function resolveSymbol(filterType: Filter.IFilterType): string {
     return getURLSuffix(filterType);
 }
 
-export function getActionValuesForFilterProps(entityFilterProps: FilterProps, queryTypeLabel: string, isReadOnly?: string): ActionValue[] {
+export function getActionValuesForFilterProps(
+    entityFilterProps: FilterProps,
+    queryTypeLabel: string,
+    isReadOnly?: string
+): ActionValue[] {
     const action = new FilterAction();
     const actionValues: ActionValue[] = [];
-    if (!entityFilterProps || !entityFilterProps.schemaQuery)
-        return null
+    if (!entityFilterProps || !entityFilterProps.schemaQuery) return null;
     if (!entityFilterProps.filterArray || entityFilterProps.filterArray.length === 0) {
         const filterValue = `${queryTypeLabel} = ${entityFilterProps.dataTypeDisplayName}`;
         actionValues.push({
@@ -163,24 +166,26 @@ export function getActionValuesForFilterProps(entityFilterProps: FilterProps, qu
             value: filterValue,
             valueObject: null,
         });
-
     } else {
         entityFilterProps.filterArray.forEach(filter => {
             actionValues.push(action.actionValueFromEntityFieldFilter(filter, isReadOnly));
-        })
+        });
     }
 
     return actionValues;
 }
 
-export function removeFilterValueForFilterProps(entityFilterProps: FilterProps, actionValues: ActionValue[], valueIndex: number): EntityFieldFilter[] {
+export function removeFilterValueForFilterProps(
+    entityFilterProps: FilterProps,
+    actionValues: ActionValue[],
+    valueIndex: number
+): EntityFieldFilter[] {
     const value = actionValues[valueIndex]?.valueObject;
-    if (!value)
-        return entityFilterProps.filterArray;
+    if (!value) return entityFilterProps.filterArray;
     const viewFilterIndex = entityFilterProps.filterArray.findIndex(f => filtersEqual(f.filter, value)) ?? -1;
     const updatedFilterArray = [...entityFilterProps.filterArray];
     if (viewFilterIndex > -1) {
-        updatedFilterArray.splice(viewFilterIndex, 1)
+        updatedFilterArray.splice(viewFilterIndex, 1);
     }
     return updatedFilterArray;
 }

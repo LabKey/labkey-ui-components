@@ -27,14 +27,10 @@ describe('QueryFilterPanel', () => {
 
     const TestAllowAllEntityType = {
         ...SamplePropertyDataType,
-        supportAllValueInQuery: true
+        supportAllValueInQuery: true,
     } as EntityDataType;
 
-    function validate(
-        fieldItems: number,
-        showFilterExpression = false,
-        showChooseValues = false
-    ): void {
+    function validate(fieldItems: number, showFilterExpression = false, showChooseValues = false): void {
         expect(document.querySelectorAll('.filter-modal__col_fields')).toHaveLength(1);
         expect(document.querySelectorAll('.filter-modal__col_filter_exp')).toHaveLength(1);
         // ChoicesListItem renders as button.list-group-item
@@ -71,7 +67,7 @@ describe('QueryFilterPanel', () => {
 
     test('no queryName emptyMsg', () => {
         const { unmount } = render(
-            <QueryFilterPanel {...DEFAULT_PROPS} queryInfo={undefined} emptyMsg="Select a query" />
+            <QueryFilterPanel {...DEFAULT_PROPS} emptyMsg="Select a query" queryInfo={undefined} />
         );
         validate(0);
         expect(document.querySelectorAll('.field-modal__empty-msg')).toHaveLength(1);
@@ -173,8 +169,8 @@ describe('QueryFilterPanel', () => {
         const { unmount } = render(
             <QueryFilterPanel
                 {...DEFAULT_PROPS}
-                entityDataType={AssayResultDataType}
                 emptyMsg="Select a query"
+                entityDataType={AssayResultDataType}
                 hasNotInQueryFilterLabel={hasNotInQueryFilterLabel}
             />
         );
@@ -191,8 +187,8 @@ describe('QueryFilterPanel', () => {
         const { unmount } = render(
             <QueryFilterPanel
                 {...DEFAULT_PROPS}
-                entityDataType={AssayResultDataType}
                 emptyMsg="Select a query"
+                entityDataType={AssayResultDataType}
                 hasNotInQueryFilter={true}
             />
         );
@@ -209,9 +205,8 @@ describe('QueryFilterPanel', () => {
         const { unmount } = render(
             <QueryFilterPanel
                 {...DEFAULT_PROPS}
-                entityDataType={AssayResultDataType}
                 emptyMsg="Select a query"
-                hasNotInQueryFilter={true}
+                entityDataType={AssayResultDataType}
                 fieldKey="Text"
                 filters={{
                     [DEFAULT_PROPS.queryInfo.name.toLowerCase()]: [
@@ -221,6 +216,7 @@ describe('QueryFilterPanel', () => {
                         } as EntityFieldFilter,
                     ],
                 }}
+                hasNotInQueryFilter={true}
             />
         );
         expect(document.querySelector('.filter-modal__fields-col-nodata-msg')!.textContent).toBe(
@@ -233,18 +229,12 @@ describe('QueryFilterPanel', () => {
 
     test('supportAllValueInQuery checkbox, not checked', () => {
         const { unmount } = render(
-            <QueryFilterPanel
-                {...DEFAULT_PROPS}
-                entityDataType={TestAllowAllEntityType}
-                emptyMsg="Select a query"
-            />
+            <QueryFilterPanel {...DEFAULT_PROPS} emptyMsg="Select a query" entityDataType={TestAllowAllEntityType} />
         );
         validate(10);
-        expect(document.querySelector('.filter-modal__fields-col-any-msg')!.textContent).toBe(
-            'All Samples'
-        );
+        expect(document.querySelector('.filter-modal__fields-col-any-msg')!.textContent).toBe('All Samples');
         // query by name field-value-nodata-check
-        expect(document.querySelector('input[name="field-value-allvalues-check"]').getAttribute('checked')).toBe(null)
+        expect(document.querySelector('input[name="field-value-allvalues-check"]').getAttribute('checked')).toBe(null);
         expect(document.querySelectorAll('.field-modal__col-content-disabled')).toHaveLength(0);
 
         unmount();
@@ -254,15 +244,13 @@ describe('QueryFilterPanel', () => {
         const { unmount } = render(
             <QueryFilterPanel
                 {...DEFAULT_PROPS}
-                entityDataType={TestAllowAllEntityType}
                 emptyMsg="Select a query"
+                entityDataType={TestAllowAllEntityType}
                 hasAllValuesInQuery
             />
         );
         validate(10);
-        expect(document.querySelector('.filter-modal__fields-col-any-msg')!.textContent).toBe(
-            'All Samples'
-        );
+        expect(document.querySelector('.filter-modal__fields-col-any-msg')!.textContent).toBe('All Samples');
         expect(document.querySelector('input[name="field-value-allvalues-check"]').getAttribute('checked')).toBe('');
         expect(document.querySelectorAll('.field-modal__col-content-disabled')).toHaveLength(0);
 

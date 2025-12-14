@@ -625,7 +625,11 @@ import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
 import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
 import { FilterStatus } from './public/QueryModel/FilterStatus';
-import { FilterAction, getActionValuesForFilterProps, removeFilterValueForFilterProps } from './public/QueryModel/grid/actions/Filter';
+import {
+    FilterAction,
+    getActionValuesForFilterProps,
+    removeFilterValueForFilterProps,
+} from './public/QueryModel/grid/actions/Filter';
 
 import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
@@ -1232,10 +1236,6 @@ export {
     DetailPanel,
     DetailPanelHeader,
     DetailPanelWithModel,
-    FilterStatus,
-    FilterAction,
-    getActionValuesForFilterProps,
-    removeFilterValueForFilterProps,
     DisableableAnchor,
     DisableableButton,
     DisableableMenuItem,
@@ -1294,7 +1294,9 @@ export {
     FileColumnRenderer,
     FileInput,
     FileTree,
+    FilterAction,
     FilterCriteriaRenderer,
+    FilterStatus,
     FIND_BY_IDS_QUERY_PARAM,
     FindByIdsModal,
     FindDerivativesButton,
@@ -1322,6 +1324,7 @@ export {
     generateId,
     generateNameWithTimestamp,
     getActionErrorMessage,
+    getActionValuesForFilterProps,
     getAltUnitKeys,
     getAssayDefinitions,
     getAuditQueries,
@@ -1604,6 +1607,7 @@ export {
     removeColumn,
     removeColumns,
     RemoveEntityButton,
+    removeFilterValueForFilterProps,
     removeParameters,
     renderWithAppContext,
     replaceParameters,
@@ -1904,9 +1908,11 @@ export type { QueryParams } from './internal/util/URL';
 export type { FileSizeLimitProps } from './public/files/models';
 export type { ImportTemplate } from './public/QueryInfo';
 export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetailPanel';
+export type { Action, ActionValue } from './public/QueryModel/grid/actions/Action';
 export type { QueryConfig } from './public/QueryModel/QueryModel';
 export type { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
+
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
 //  the typescript compiler option "isolatedModules", which do not export types from modules, so types must be exported
 //  separately.
@@ -1919,9 +1925,3 @@ export type {
     QueryModelMap,
     RequiresModelAndActions,
 } from './public/QueryModel/withQueryModels';
-
-export type {
-    Action,
-    ActionValue
-} from './public/QueryModel/grid/actions/Action'
-

@@ -29,7 +29,7 @@ import { SCHEMAS } from '../../schemas';
 import { EntityCreationType } from '../samples/models';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { ViewInfo } from '../../ViewInfo';
-import { FieldFilter } from '../search/models';
+import { EntityFieldFilter } from '../search/models';
 
 export interface EntityInputProps {
     role: string;
@@ -514,6 +514,7 @@ export interface EntityDataType {
     typeNounAsParentSingular: string;
     typeNounSingular: string;
     uniqueFieldKey: string;
+    supportAllValueInQuery?: boolean;
 }
 
 interface OperationContainerInfo {
@@ -649,7 +650,7 @@ export interface FilterProps {
     disabled?: boolean;
     entityDataType: EntityDataType;
     // the filters to be used in conjunction with the schemaQuery
-    filterArray?: FieldFilter[];
+    filterArray?: EntityFieldFilter[];
     index?: number;
     schemaQuery?: SchemaQuery;
     selectColumnFieldKey?: string;

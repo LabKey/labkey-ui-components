@@ -10,7 +10,7 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { TestTypeDataType, TestTypeDataTypeWithEntityFilter } from '../../../test/data/constants';
 
-import { FieldFilter } from '../search/models';
+import { EntityFieldFilter } from '../search/models';
 
 import { SCHEMAS } from '../../schemas';
 
@@ -232,14 +232,14 @@ const anyValueFilter = {
     fieldCaption: 'textField',
     filter: Filter.create('textField', null, Filter.Types.HAS_ANY_VALUE),
     jsonType: 'string',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 const stringBetweenFilter = {
     fieldKey: 'strField',
     fieldCaption: 'strField',
     filter: Filter.create('strField', ['1', '5'], Filter.Types.BETWEEN),
     jsonType: 'string',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 const card = {
     entityDataType: TestTypeDataType,

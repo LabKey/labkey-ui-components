@@ -33,6 +33,14 @@ describe('FilterStatus', () => {
         value: 'test2',
         valueObject: Filter.create('A', undefined, Filter.Types.NONBLANK),
     };
+    const filterAction1Locked = {
+        ...filterAction1,
+        isReadOnly: 'locked filter'
+    };
+    const filterAction2Locked = {
+        ...filterAction2,
+        isReadOnly: 'locked filter'
+    };
     const searchAction = {
         action: new SearchAction(),
         value: 'foo',
@@ -94,4 +102,29 @@ describe('FilterStatus', () => {
         await userEvent.click(document.querySelector('.remove-all-filters'));
         expect(ON_REMOVE_ALL).toHaveBeenCalledTimes(1);
     });
+
+    test('multiple locked filter actionValue', async () => {
+        render(<FilterStatus {...DEFAULT_PROPS} actionValues={[filterAction1Locked, filterAction2Locked]} />);
+        validate(2, 2);
+        expect(document.querySelectorAll('.fa-table')).toHaveLength(0);
+        expect(document.querySelectorAll('.fa-search')).toHaveLength(0);
+        expect(document.querySelectorAll('.fa-filter')).toHaveLength(2);
+        expect(document.querySelectorAll('.filter-status-value')[0].textContent).toBe('test1');
+        expect(document.querySelectorAll('.filter-status-value')[1].textContent).toBe('test2');
+        expect(document.querySelectorAll('.fa-close')).toHaveLength(0);
+        expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(1);
+    });
+
+    test('multiple locked filter actionValue, cannot remove', async () => {
+        render(<FilterStatus {...DEFAULT_PROPS} actionValues={[filterAction1Locked, filterAction2Locked]} lockReadOnlyForDelete />);
+        expect(document.querySelectorAll('.fa-table')).toHaveLength(0);
+        expect(document.querySelectorAll('.fa-search')).toHaveLength(0);
+        expect(document.querySelectorAll('.fa-filter')).toHaveLength(0);
+        expect(document.querySelectorAll('.fa-lock')).toHaveLength(2);
+        expect(document.querySelectorAll('.filter-status-value')[0].textContent).toBe('test1');
+        expect(document.querySelectorAll('.filter-status-value')[1].textContent).toBe('test2');
+        expect(document.querySelectorAll('.fa-close')).toHaveLength(0);
+        expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(0);
+    });
+
 });

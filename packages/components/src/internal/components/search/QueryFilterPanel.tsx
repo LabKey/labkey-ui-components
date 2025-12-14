@@ -21,8 +21,9 @@ import { Tab, Tabs } from '../../Tabs';
 
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
-import { FieldFilter } from './models';
+import { EntityFieldFilter } from './models';
 import { isChooseValuesFilter } from './utils';
+import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE } from './constants';
 
 enum FieldFilterTabs {
     ChooseValues = 'ChooseValues',
@@ -41,14 +42,16 @@ interface Props {
     entityDataType?: EntityDataType;
     fieldKey?: string;
     fields?: QueryColumn[];
-    filters: Record<string, FieldFilter[]>;
+    filters: Record<string, EntityFieldFilter[]>;
     fullWidth?: boolean;
     hasNotInQueryFilter?: boolean;
     hasNotInQueryFilterLabel?: string;
     isAncestor?: boolean;
     metricFeatureArea?: string;
     onFilterUpdate: (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => void;
+    hasAllValuesInQuery?: boolean;
     onHasNoValueInQueryChange?: (check: boolean) => void;
+    onAllValuesInQueryChange?: (check: boolean) => void;
     queryInfo: QueryInfo;
     selectDistinctOptions?: Partial<Query.SelectDistinctOptions>;
     skipDefaultViewCheck?: boolean;
@@ -60,6 +63,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     const {
         allowRelativeDateFilter,
         hasNotInQueryFilter,
+        hasAllValuesInQuery,
         asRow,
         api = getDefaultAPIWrapper(),
         queryInfo,
@@ -74,6 +78,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         fullWidth,
         selectDistinctOptions,
         onHasNoValueInQueryChange,
+        onAllValuesInQueryChange,
         hasNotInQueryFilterLabel,
         altQueryName,
         fields,
@@ -188,10 +193,10 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         return activeField?.getDisplayFieldKey();
     }, [activeField]);
 
-    const currentFieldFilters = useMemo((): FieldFilter[] => {
+    const currentFieldFilters = useMemo((): EntityFieldFilter[] => {
         if (!filters || !activeField) return null;
 
-        const activeQueryFilters: FieldFilter[] = filters[filterQueryKey];
+        const activeQueryFilters: EntityFieldFilter[] = filters[filterQueryKey];
         return activeQueryFilters?.filter(filter => filter.fieldKey === activeFieldKey);
     }, [activeField, filterQueryKey, filters, activeFieldKey]);
 
@@ -242,6 +247,20 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                 {queryName && (
                     <div className="list-group field-modal__col-content filter-modal__fields-col-content">
                         {!queryFields && <LoadingSpinner wrapperClassName="loading-spinner" />}
+                        {(entityDataType?.supportAllValueInQuery && altQueryName !== SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query) && (
+                            <div className="form-check list-group-item">
+                                <input
+                                    checked={hasAllValuesInQuery}
+                                    className="form-check-input filter-faceted__checkbox"
+                                    name="field-value-allvalues-check"
+                                    onChange={event => onAllValuesInQueryChange(event.target.checked)}
+                                    type="checkbox"
+                                />
+                                <div className="filter-modal__fields-col-any-msg">
+                                    All {entityDataType.nounAsParentPlural ?? entityDataType.nounPlural}
+                                </div>
+                            </div>
+                        )}
                         {entityDataType?.supportHasNoValueInQuery && (
                             <div className="form-check list-group-item">
                                 <input

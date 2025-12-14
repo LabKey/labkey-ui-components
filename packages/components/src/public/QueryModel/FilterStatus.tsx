@@ -9,11 +9,12 @@ interface Props {
     onClick: (actionValue: ActionValue, event: any) => void;
     onRemove: (actionValueIndex: number, event: any) => void;
     onRemoveAll?: () => void;
+    lockReadOnlyForDelete?: boolean;
 }
 
 export const FilterStatus: FC<Props> = memo(props => {
-    const { actionValues, onClick, onRemove, onRemoveAll } = props;
-    const showRemoveAll = filterActionValuesByType(actionValues, 'filter').length > 1;
+    const { actionValues, onClick, onRemove, onRemoveAll, lockReadOnlyForDelete } = props;
+    const showRemoveAll = filterActionValuesByType(actionValues, 'filter', lockReadOnlyForDelete).length > 1;
 
     return (
         <div className="grid-panel__filter-status">
@@ -50,6 +51,7 @@ export const FilterStatus: FC<Props> = memo(props => {
                             actionValue={actionValue}
                             onClick={_onClick}
                             onRemove={_onRemove}
+                            lockReadOnlyForDelete={lockReadOnlyForDelete}
                         />
                     );
                 })}

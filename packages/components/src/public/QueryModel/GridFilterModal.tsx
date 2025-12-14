@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { Filter, Query } from '@labkey/api';
 
 import { Modal } from '../../internal/Modal';
-import { FieldFilter } from '../../internal/components/search/models';
+import { EntityFieldFilter } from '../../internal/components/search/models';
 import { QueryColumn } from '../QueryColumn';
 
 import { Alert } from '../../internal/components/base/Alert';
@@ -38,12 +38,12 @@ export const GridFilterModal: FC<Props> = memo(props => {
     } = props;
     const { queryInfo } = model;
     const [filterError, setFilterError] = useState<string>(undefined);
-    const [filters, setFilters] = useState<FieldFilter[]>(
+    const [filters, setFilters] = useState<EntityFieldFilter[]>(
         initFilters.map(filter => {
             return {
                 fieldKey: filter.getColumnName(),
                 filter,
-            } as FieldFilter;
+            } as EntityFieldFilter;
         })
     );
 
@@ -85,7 +85,7 @@ export const GridFilterModal: FC<Props> = memo(props => {
                             fieldCaption: field.caption,
                             filter: newFilter,
                             jsonType: field.getDisplayFieldJsonType(),
-                        } as FieldFilter);
+                        } as EntityFieldFilter);
                     });
             }
 

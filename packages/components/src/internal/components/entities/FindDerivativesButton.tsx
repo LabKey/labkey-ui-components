@@ -10,7 +10,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { isValidFilterField } from '../search/utils';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { FieldFilter } from '../search/models';
+import { EntityFieldFilter } from '../search/models';
 
 import { useAppContext } from '../../AppContext';
 import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
@@ -44,7 +44,7 @@ export function isValidFilterFieldSampleFinder(
 }
 
 // exported for unit test coverage
-export const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter => {
+export const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): EntityFieldFilter => {
     const colName = filter.getColumnName();
     const column = model.getColumn(colName);
 
@@ -53,7 +53,7 @@ export const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): Field
         fieldCaption: column?.caption ?? colName,
         filter,
         jsonType: column?.isLookup() ? column.displayFieldJsonType : (column?.jsonType ?? 'string'),
-    } as FieldFilter;
+    } as EntityFieldFilter;
 };
 
 // exported for unit test coverage
@@ -126,27 +126,30 @@ function filterToJson(filter: Filter.IFilter): string {
     return encodeURIComponent(filter.getURLParameterName()) + '=' + encodeURIComponent(filter.getURLParameterValue());
 }
 
+export function getSearchFilterObj(filterProp: FilterProps): any {
+    const filterPropObj = { ...filterProp };
+    delete filterPropObj['entityDataType'];
+    // don't persist the entire entitydatatype
+    filterPropObj['sampleFinderCardType'] = filterProp.entityDataType.sampleFinderCardType;
+
+    const filterArrayObjs = [];
+    [...filterPropObj.filterArray].forEach(field => {
+        filterArrayObjs.push({
+            fieldKey: field.fieldKey,
+            fieldCaption: field.fieldCaption,
+            filter: filterToJson(field.filter),
+            jsonType: field.jsonType,
+        });
+    });
+    filterPropObj.filterArray = filterArrayObjs;
+    return filterPropObj;
+}
+
 export function getSearchFilterObjs(filterProps: FilterProps[]): any[] {
     const filterPropsObj = [];
 
     filterProps.forEach(filterProp => {
-        const filterPropObj = { ...filterProp };
-        delete filterPropObj['entityDataType'];
-        // don't persist the entire entitydatatype
-        filterPropObj['sampleFinderCardType'] = filterProp.entityDataType.sampleFinderCardType;
-
-        const filterArrayObjs = [];
-        [...filterPropObj.filterArray].forEach(field => {
-            filterArrayObjs.push({
-                fieldKey: field.fieldKey,
-                fieldCaption: field.fieldCaption,
-                filter: filterToJson(field.filter),
-                jsonType: field.jsonType,
-            });
-        });
-        filterPropObj.filterArray = filterArrayObjs;
-
-        filterPropsObj.push(filterPropObj);
+        filterPropsObj.push(getSearchFilterObj(filterProp));
     });
 
     return filterPropsObj;

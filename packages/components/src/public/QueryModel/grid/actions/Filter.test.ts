@@ -19,8 +19,10 @@ import { QueryColumn } from '../../../QueryColumn';
 
 import { TIME_RANGE_URI } from '../../../../internal/components/domainproperties/constants';
 
-import { FilterAction } from './Filter';
+import { FilterAction, removeFilterValueForFilterProps } from './Filter';
 import { ActionValue } from './Action';
+import { EntityFieldFilter } from '../../../../internal/components/search/models';
+import { FilterProps } from '../../../../internal/components/entities/models';
 
 describe('FilterAction::actionValueFromFilter', () => {
     const action = new FilterAction();
@@ -92,5 +94,126 @@ describe('FilterAction::actionValueFromFilter', () => {
         value = action.actionValueFromFilter(filter);
         expect(value.displayValue).toBe('$BoolField./,$& = true');
         expect(value.value).toBe('"$BoolField./,$&" = true');
+    });
+});
+
+
+describe('actionValueFromEntityFieldFilter', () => {
+    const action = new FilterAction();
+
+    it('returns correct ActionValue for date field with formatted value', () => {
+        const entityFieldFilter: EntityFieldFilter = {
+            fieldCaption: 'DateField',
+            filter: Filter.create('DateField', '10-01-2023', Filter.Types.EQUAL),
+            jsonType: 'date',
+        } as EntityFieldFilter;
+        const value = action.actionValueFromEntityFieldFilter(entityFieldFilter);
+        expect(value.displayValue).toBe('DateField = 2023-10-01');
+        expect(value.value).toBe('"DateField" = 2023-10-01');
+    });
+
+    it('returns correct ActionValue for time field with formatted value', () => {
+        const entityFieldFilter: EntityFieldFilter = {
+            fieldCaption: 'TimeField',
+            filter: Filter.create('TimeField', '12:30:00.123', Filter.Types.EQUAL),
+            jsonType: 'time',
+        } as EntityFieldFilter;
+        const value = action.actionValueFromEntityFieldFilter(entityFieldFilter);
+        expect(value.displayValue).toBe('TimeField = 12:30');
+        expect(value.value).toBe('"TimeField" = 12:30');
+    });
+
+    it('returns correct ActionValue for string field', () => {
+        const entityFieldFilter: EntityFieldFilter = {
+            fieldCaption: 'StringField',
+            filter: Filter.create('StringField', 'testValue', Filter.Types.EQUAL),
+        } as EntityFieldFilter;
+        const value = action.actionValueFromEntityFieldFilter(entityFieldFilter);
+        expect(value.displayValue).toBe('StringField = testValue');
+        expect(value.value).toBe('"StringField" = testValue');
+    });
+
+    it('handles missing fieldCaption gracefully', () => {
+        const entityFieldFilter: EntityFieldFilter = {
+            filter: Filter.create('UnnamedField', 'value', Filter.Types.EQUAL),
+        } as EntityFieldFilter;
+        const value = action.actionValueFromEntityFieldFilter(entityFieldFilter);
+        expect(value.displayValue).toBe('UnnamedField = value');
+        expect(value.value).toBe('"UnnamedField" = value');
+    });
+
+    it('handles null filter value', () => {
+        const entityFieldFilter: EntityFieldFilter = {
+            fieldCaption: 'NullField',
+            filter: Filter.create('NullField', null, Filter.Types.ISBLANK),
+        } as EntityFieldFilter;
+        const value = action.actionValueFromEntityFieldFilter(entityFieldFilter);
+        expect(value.displayValue).toBe('NullField Is Blank');
+        expect(value.value).toBe('"NullField" Is Blank null');
+    });
+});
+
+describe('removeFilterValueForFilterProps', () => {
+    const filter1 = Filter.create('PropA', 'a');
+    const filter2 = Filter.create('PropB', 'b');
+    const filter3 = Filter.create('PropB', 'c');
+
+    const entityFilterProps: FilterProps = {
+        schemaQuery: { schemaName: 'schema', queryName: 'query' },
+        filterArray: [{ filter: filter2 }, { filter: filter1 }, { filter: filter3 }],
+    } as FilterProps;
+    const actionValues: ActionValue[] = [
+        {
+            action: new FilterAction(),
+            displayValue: 'PropA = a',
+            value: '"PropA" = a',
+            valueObject: filter1,
+        },
+        {
+            action: new FilterAction(),
+            displayValue: 'PropB = b',
+            value: '"PropB" = b',
+            valueObject: filter2,
+        },
+        {
+            action: new FilterAction(),
+            displayValue: 'PropC = c',
+            value: '"PropC" = c',
+            valueObject: filter3,
+        },
+    ];
+
+    it('removes the filter value when it exists in the filter array', () => {
+        const updatedFilters = removeFilterValueForFilterProps(entityFilterProps, actionValues, 0);
+        expect(updatedFilters.length).toBe(2);
+        expect(updatedFilters[0].filter).toBe(filter2);
+        expect(updatedFilters[1].filter).toBe(filter3);
+    });
+
+    it('does not modify the filter array when the value does not exist', () => {
+        const nonMatchingFilter = Filter.create('OtherField', 'otherValue', Filter.Types.EQUAL);
+        const nonMatchingActionValues: ActionValue[] = [
+            {
+                action: new FilterAction(),
+                displayValue: 'OtherField = otherValue',
+                value: '"OtherField" = otherValue',
+                valueObject: nonMatchingFilter,
+            },
+        ];
+        const updatedFilters = removeFilterValueForFilterProps(entityFilterProps, nonMatchingActionValues, 0);
+        expect(updatedFilters.length).toBe(3);
+        expect(updatedFilters[0].filter).toBe(filter2);
+    });
+
+    it('handles an empty filter array gracefully', () => {
+        const emptyFilterProps: FilterProps = { schemaQuery: { schemaName: 'schema', queryName: 'query' }, filterArray: [] } as FilterProps;
+        const updatedFilters = removeFilterValueForFilterProps(emptyFilterProps, actionValues, 0);
+        expect(updatedFilters.length).toBe(0);
+    });
+
+    it('does not throw an error when valueIndex is out of bounds', () => {
+        const updatedFilters = removeFilterValueForFilterProps(entityFilterProps, actionValues, 3);
+        expect(updatedFilters.length).toBe(3);
+        expect(updatedFilters[0].filter).toBe(filter2);
     });
 });

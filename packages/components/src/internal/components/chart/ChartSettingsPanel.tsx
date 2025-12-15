@@ -280,7 +280,6 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
         setChartConfig,
         setChartModel,
     } = props;
-    const legendPos = chartConfig.legendPos;
     const showTrendline = hasTrendline(chartType);
     const fields = chartType.fields.filter(f => f.name !== 'trendline');
 
@@ -330,17 +329,37 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
 
     const legendOptions = useMemo(() => {
         return [
-            { label: 'Right', selected: !legendPos || legendPos === 'right', value: 'right' },
-            { label: 'Bottom', selected: legendPos === 'bottom', value: 'bottom' },
+            { label: 'Right', selected: !chartConfig.legendPos || chartConfig.legendPos === 'right', value: 'right' },
+            { label: 'Bottom', selected: chartConfig.legendPos === 'bottom', value: 'bottom' },
         ];
-    }, [legendPos]);
+    }, [chartConfig.legendPos]);
 
     const onLegendPosChange = useCallback(
         value => setChartConfig(current => ({ ...current, legendPos: value })),
         [setChartConfig]
     );
 
+    const hideDataPointsOptions = useMemo(() => {
+        return [
+            {
+                label: 'Show',
+                selected:
+                    chartConfig.geomOptions.hideDataPoints === undefined ||
+                    chartConfig.geomOptions.hideDataPoints === false,
+                value: 'false',
+            },
+            { label: 'Hide', selected: chartConfig.geomOptions.hideDataPoints === true, value: 'true' },
+        ];
+    }, [chartConfig.geomOptions.hideDataPoints]);
+
+    const onHideDataPointsChange = useCallback(
+        value =>
+            setChartConfig(current => ({ ...current, geomOptions: { ...current.geomOptions, hideDataPoints: value === 'true' } })),
+        [setChartConfig]
+    );
+
     const showLegendPos = chartType.name !== 'pie_chart';
+    const showPointsOption = chartType.name === 'line_plot';
 
     return (
         <div className="chart-settings">
@@ -420,6 +439,22 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
                             onValueChange={onLegendPosChange}
                             options={legendOptions}
                         />
+                    </div>
+                </div>
+            )}
+
+            {showPointsOption && (
+                <div className="chart-settings__radio-group form-group row">
+                    <div className="col-xs-12">
+                        <label>Points</label>
+                        <div className="chart-settings__radio-group-values">
+                            <RadioGroupInput
+                                formsy={false}
+                                name="hideDataPoints"
+                                onValueChange={onHideDataPointsChange}
+                                options={hideDataPointsOptions}
+                            />
+                        </div>
                     </div>
                 </div>
             )}

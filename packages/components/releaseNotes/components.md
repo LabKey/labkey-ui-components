@@ -3,7 +3,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ###  version TBD
 *Released*: TBD
-- Chart builder updates for series line type option
+- Chart builder updates for per-series line type option
+- Chart builder option for show/hide data points for line chart type
 
 ### version 7.3.2
 *Released*: 15 December 2025

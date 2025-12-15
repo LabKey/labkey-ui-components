@@ -1,5 +1,5 @@
 import React, { FC, memo, ReactNode } from 'react';
-import { List, Map } from 'immutable';
+import { List } from 'immutable';
 import { Domain, getServerContext } from '@labkey/api';
 
 import {
@@ -90,7 +90,8 @@ const AliquotOptionsHelp: FC<{ helpTopic: string }> = memo(({ helpTopic }) => {
 });
 AliquotOptionsHelp.displayName = 'AliquotOptionsHelp';
 
-interface Props {
+// Exported for testing
+export interface SampleTypeDesignerProps {
     aliquotNamePatternProps?: AliquotNamePatternProps;
     allowFolderExclusion?: boolean;
     api?: ComponentsAPIWrapper;
@@ -137,8 +138,12 @@ interface State {
     showUniqueIdConfirmation: boolean;
     uniqueIdsConfirmed: boolean;
 }
+
 // Exported for testing
-export class SampleTypeDesignerImpl extends React.PureComponent<InjectedBaseDomainDesignerProps & Props, State> {
+export type SampleTypeDesignerImplProps = InjectedBaseDomainDesignerProps & SampleTypeDesignerProps;
+
+// Exported for testing
+export class SampleTypeDesignerImpl extends React.PureComponent<SampleTypeDesignerImplProps, State> {
     static defaultProps = {
         api: getDefaultAPIWrapper(),
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
@@ -156,7 +161,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<InjectedBaseDoma
         validateNameExpressions: true,
     };
 
-    constructor(props: InjectedBaseDomainDesignerProps & Props) {
+    constructor(props: SampleTypeDesignerImplProps) {
         super(props);
 
         let domainDetails = this.props.initModel || DomainDetails.create();
@@ -369,7 +374,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<InjectedBaseDoma
             return;
         }
 
-        const isValid = model.isValid(defaultSampleFieldConfig);
+        const isValid = model.isValid(defaultSampleFieldConfig, metricUnitProps);
 
         this.props.onFinish(isValid, () => this.saveDomain(false, comment ?? auditUserComment));
 
@@ -385,8 +390,8 @@ export class SampleTypeDesignerImpl extends React.PureComponent<InjectedBaseDoma
         } else if (getDuplicateAlias(model.parentAliases, true).size > 0) {
             exception =
                 'Duplicate parent alias header found: ' + getDuplicateAlias(model.parentAliases, true).join(', ');
-        } else if (!model.isMetricUnitValid()) {
-            exception = metricUnitProps?.metricUnitLabel + ' field is required.';
+        } else if (!model.isMetricUnitValid(metricUnitProps)) {
+            exception = (metricUnitProps?.metricUnitLabel ?? 'Units') + ' field is required.';
         } else {
             exception = model.domain.getFirstFieldError();
         }
@@ -838,4 +843,4 @@ export class SampleTypeDesignerImpl extends React.PureComponent<InjectedBaseDoma
     }
 }
 
-export const SampleTypeDesigner = withBaseDomainDesigner<Props>(SampleTypeDesignerImpl);
+export const SampleTypeDesigner = withBaseDomainDesigner<SampleTypeDesignerProps>(SampleTypeDesignerImpl);

@@ -62,7 +62,7 @@ describe('ConditionalFormatOptions', () => {
         );
         expect(strike.item(0).getAttribute('checked')).toBeNull();
 
-        const colorPreviews = document.querySelectorAll('.domain-color-preview');
+        const colorPreviews = document.querySelectorAll('.color-picker__chip');
         expect(colorPreviews.length).toEqual(2);
         expect(colorPreviews.item(0).getAttribute('style')).toEqual('background-color: rgb(255, 99, 71);');
         expect(colorPreviews.item(1).getAttribute('style')).toEqual('background-color: rgb(0, 0, 128);');

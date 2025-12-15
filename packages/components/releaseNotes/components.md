@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add support for moving jobs
   - Update `EntityMoveConfirmationModal` and `EntityMoveModal` to add an optional `permissionType`, overriding the default `Insert` permission check
   - Add `JobOperation` enum and `isJobEntity` utility
+  - in `userContainerUser` check that we have data for the `containerUsers` when reporting `isLoaded` state
 
 ### version 7.3.0
 *Released*: 10 December 2025

@@ -76,7 +76,7 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
 
     firstFilterTooltip = (): ReactNode => {
         return (
-            <LabelHelpTip title="First Condition" required>
+            <LabelHelpTip required title="First Condition">
                 Add a condition to this format rule that will be tested against the value for this field.
             </LabelHelpTip>
         );
@@ -89,9 +89,9 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
             <div className="row">
                 <div className="col-xs-12 domain-validation-display-checkbox-row">
                     <DomainDesignerCheckbox
+                        checked={value}
                         id={createFormInputId(name, domainIndex, validatorIndex)}
                         name={createFormInputName(name)}
-                        checked={value}
                         onChange={this.onFieldChange}
                     >
                         {label}
@@ -133,9 +133,8 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
                 <div className="col-xs-3">
                     <input
                         className="form-control"
-                        type="text"
-                        id={'domain-validator-preview-' + validatorIndex}
                         defaultValue="Preview Text"
+                        id={'domain-validator-preview-' + validatorIndex}
                         style={{
                             fontSize: '12px',
                             width: '100px',
@@ -145,6 +144,7 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
                             fontStyle: validator.italic ? 'italic' : 'normal',
                             textDecoration: validator.strikethrough ? 'line-through' : '',
                         }}
+                        type="text"
                     />
                 </div>
             </div>
@@ -162,14 +162,14 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
                 {expanded && (
                     <div>
                         <Filters
-                            validatorIndex={validatorIndex}
                             domainIndex={domainIndex}
-                            onChange={this.onFilterChange}
-                            type={type}
-                            mvEnabled={mvEnabled}
                             expression={validator.formatFilter}
-                            prefix={DOMAIN_CONDITIONAL_FORMAT_PREFIX}
                             firstFilterTooltip={this.firstFilterTooltip()}
+                            mvEnabled={mvEnabled}
+                            onChange={this.onFilterChange}
+                            prefix={DOMAIN_CONDITIONAL_FORMAT_PREFIX}
+                            type={type}
+                            validatorIndex={validatorIndex}
                         />
                         <div className="domain-validation-subtitle">Display Options</div>
                         {this.renderDisplayCheckbox(DOMAIN_VALIDATOR_BOLD, 'Bold', validator.bold)}

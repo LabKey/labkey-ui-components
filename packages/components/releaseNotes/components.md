@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+###  version TBD
+*Released*: TBD
+- Chart builder updates for series line type option
+
 ### version 7.3.2
 *Released*: 15 December 2025
 - ConditionalFormatOptions refactor to use ColorPickerInput
@@ -14,10 +18,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 7.3.0
 *Released*: 10 December 2025
 - CharBuilderModal: add UI for legend position
-
-###  version TBD
-*Released*: TBD
-- Chart builder updates for series line type option
 
 ###  version 7.2.0
 *Released*: 9 December 2025

@@ -306,9 +306,10 @@ export function isSameWithStringCompare(value1: any, value2: any): boolean {
 }
 
 /**
- * Constructs an array of objects (suitable for the rows parameter of updateRows) where each object contains the
- * values that are different from the ones in originalData object as well as the primary key values for that row.
- * If updatedValues is empty or all of the originalData values are the same as the updatedValues, returns an empty array.
+ * Constructs an array of objects, suitable for the "rows" parameter of updateRows, where each object contains the
+ * values that are different from the ones in the originalData object as well as the primary key values for that row.
+ * If updatedValues are empty, or all the originalData values are the same as the updatedValues, then it returns an
+ * empty array.
  *
  * @param originalData a map from an id field to a Map from fieldKeys to an object with a 'value' field
  * @param updatedValues an object mapping fieldKeys to values that are being updated
@@ -323,10 +324,11 @@ export function getUpdatedData(
 ): any[] {
     const updateValuesMap = Map<any, any>(updatedValues);
     const pkColsLc = new Set<string>();
+    const pkColsInUse = new Set<string>();
     queryInfo.pkCols.forEach(key => pkColsLc.add(key.toLowerCase()));
     additionalCols?.forEach(col => pkColsLc.add(col.toLowerCase()));
 
-    // if the originalData has the container/folder values, keep those as well (i.e. treat it as a primary key)
+    // if the originalData has the container/folder values, keep those as well (i.e., treat it as a primary key)
     const folderKey = originalData
         .first()
         .keySeq()
@@ -353,6 +355,7 @@ export function getUpdatedData(
 
             if (fieldValueMap?.has('value')) {
                 if (isPKCol) {
+                    pkColsInUse.add(key.toLowerCase());
                     return m.set(key, fieldValueMap.get('value'));
                 }
 
@@ -399,7 +402,7 @@ export function getUpdatedData(
     });
     // we want the rows that contain more than just the primaryKeys
     return updatedData
-        .filter(rowData => rowData.size > pkColsLc.size)
+        .filter(rowData => rowData.size > pkColsInUse.size)
         .map(rowData => rowData.toJS())
         .toArray();
 }

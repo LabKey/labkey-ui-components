@@ -17,7 +17,13 @@ import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
 import { TEST_LKS_STARTER_MODULE_CONTEXT } from '../../../productFixtures';
 
-import { SampleTypeDesigner, SampleTypeDesignerImpl } from './SampleTypeDesigner';
+import {
+    SampleTypeDesigner,
+    SampleTypeDesignerImpl,
+    SampleTypeDesignerImplProps,
+    SampleTypeDesignerProps,
+} from './SampleTypeDesigner';
+import { getQueryTestAPIWrapper } from '../../../query/APIWrapper';
 
 const SERVER_CONTEXT = {
     moduleContext: {
@@ -57,65 +63,50 @@ const PARENT_OPTIONS = [
     },
 ];
 
-const BASE_PROPS = {
-    appPropertiesOnly: true,
-    onComplete: jest.fn(),
-    onCancel: jest.fn(),
+const DESIGNER_PROPS: SampleTypeDesignerProps = {
     api: getTestAPIWrapper(jest.fn, {
         entity: getEntityTestAPIWrapper(jest.fn, {
             initParentOptionsSelects: jest.fn().mockResolvedValue({
                 parentOptions: PARENT_OPTIONS,
                 parentAliases: Map(),
             }),
+            loadNameExpressionOptions: jest.fn().mockResolvedValue({}),
+        }),
+        query: getQueryTestAPIWrapper(jest.fn, {
+            selectRows: jest.fn().mockResolvedValue({ rows: [] }),
         }),
     }),
+    appPropertiesOnly: true,
+    onCancel: jest.fn(),
+    onComplete: jest.fn(),
+};
+
+const DESIGNER_IMPL_PROPS: SampleTypeDesignerImplProps = {
+    currentPanelIndex: 0,
+    firstState: true,
+    onFinish: jest.fn(),
+    onTogglePanel: jest.fn(),
+    setSubmitting: jest.fn(),
+    submitting: false,
+    validatePanel: 0,
+    visitedPanels: List(),
+    ...DESIGNER_PROPS,
 };
 
 describe('SampleTypeDesigner', () => {
     test('default properties', async () => {
-        const form = (
-            <SampleTypeDesignerImpl
-                {...BASE_PROPS}
-                currentPanelIndex={0}
-                firstState={true}
-                onFinish={jest.fn()}
-                onTogglePanel={jest.fn()}
-                setSubmitting={jest.fn()}
-                submitting={false}
-                validatePanel={0}
-                visitedPanels={List()}
-            />
-        );
-
-        renderWithAppContext(form, {
-            serverContext: SERVER_CONTEXT,
-        });
+        renderWithAppContext(<SampleTypeDesignerImpl {...DESIGNER_IMPL_PROPS} />, { serverContext: SERVER_CONTEXT });
 
         await waitFor(() => {
             expect(document.getElementsByClassName('domain-form-panel')).toHaveLength(2);
         });
         const panelTitles = document.querySelectorAll('.domain-panel-title');
-        expect(panelTitles[0].textContent).toBe('Sample Type Properties');
-        expect(panelTitles[1].textContent).toBe('Fields');
+        expect(panelTitles[0]).toHaveTextContent('Sample Type Properties');
+        expect(panelTitles[1]).toHaveTextContent('Fields');
     });
 
     test('allowFolderExclusion', async () => {
-        const form = (
-            <SampleTypeDesignerImpl
-                {...BASE_PROPS}
-                currentPanelIndex={0}
-                firstState={true}
-                onFinish={jest.fn()}
-                onTogglePanel={jest.fn()}
-                setSubmitting={jest.fn()}
-                submitting={false}
-                validatePanel={0}
-                visitedPanels={List()}
-                allowFolderExclusion
-            />
-        );
-
-        renderWithAppContext(form, {
+        renderWithAppContext(<SampleTypeDesignerImpl {...DESIGNER_IMPL_PROPS} allowFolderExclusion />, {
             serverContext: SERVER_CONTEXT,
         });
 
@@ -123,15 +114,15 @@ describe('SampleTypeDesigner', () => {
             expect(document.getElementsByClassName('domain-form-panel')).toHaveLength(3);
         });
         const panelTitles = document.querySelectorAll('.domain-panel-title');
-        expect(panelTitles[0].textContent).toBe('Sample Type Properties');
-        expect(panelTitles[1].textContent).toBe('Fields');
-        expect(panelTitles[2].textContent).toBe('Folders');
+        expect(panelTitles[0]).toHaveTextContent('Sample Type Properties');
+        expect(panelTitles[1]).toHaveTextContent('Fields');
+        expect(panelTitles[2]).toHaveTextContent('Folders');
     });
 
     test('initModel with name URL props', async () => {
         const form = (
             <SampleTypeDesignerImpl
-                {...BASE_PROPS}
+                {...DESIGNER_IMPL_PROPS}
                 domainFormDisplayOptions={{
                     hideConditionalFormatting: true,
                 }}
@@ -146,31 +137,22 @@ describe('SampleTypeDesigner', () => {
                         nameReadOnly: true,
                     })
                 )}
-                currentPanelIndex={0}
-                firstState={true}
-                onFinish={jest.fn()}
-                onTogglePanel={jest.fn()}
-                setSubmitting={jest.fn()}
-                submitting={false}
-                validatePanel={0}
-                visitedPanels={List()}
             />
         );
-        renderWithAppContext(form, {
-            serverContext: SERVER_CONTEXT,
-        });
+        renderWithAppContext(form, { serverContext: SERVER_CONTEXT });
 
         await waitFor(() => {
             expect(document.querySelectorAll('.domain-form-panel')).toHaveLength(2);
         });
         const panelTitles = document.querySelectorAll('.domain-panel-title');
-        expect(panelTitles[0].textContent).toBe('Sample Type Properties');
-        expect(panelTitles[1].textContent).toBe('Fields');
+        expect(panelTitles[0]).toHaveTextContent('Sample Type Properties');
+        expect(panelTitles[1]).toHaveTextContent('Fields');
         expect(document.getElementsByClassName('translator--toggle__wizard')).toHaveLength(1);
     });
 
     test('open fields panel, with barcodes', async () => {
-        renderWithAppContext(<SampleTypeDesigner {...BASE_PROPS} />, {
+        // NOTE: Here we are calling the full designer, SampleTypeDesigner, not the SampleTypeDesignerImpl
+        renderWithAppContext(<SampleTypeDesigner {...DESIGNER_PROPS} />, {
             serverContext: {
                 moduleContext: {
                     ...TEST_LKS_STARTER_MODULE_CONTEXT,
@@ -187,8 +169,7 @@ describe('SampleTypeDesigner', () => {
         const alerts = document.getElementsByClassName('alert');
         // still expect to have only two alerts.  We don't show the Barcode header in the file import panel.
         // Jest doesn't want to switch to that panel.
-        expect(alerts).toHaveLength(2);
-        expect(alerts[0].textContent).toEqual(PROPERTIES_PANEL_ERROR_MSG);
-        expect(alerts[1].textContent).toEqual('Please correct errors in the properties panel before saving.');
+        expect(alerts[0]).toHaveTextContent(PROPERTIES_PANEL_ERROR_MSG);
+        expect(alerts[1]).toHaveTextContent('Please correct errors in the properties panel before saving.');
     });
 });

@@ -8,6 +8,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Add `JobOperation` enum and `isJobEntity` utility
   - in `userContainerUser` check that we have data for the `containerUsers` when reporting `isLoaded` state
 
+### version 7.3.1
+*Released*: 13 December 2025
+- Remove LSID column from provisioned sample tables
+- Update `getUpdatedData()` utility method to only check for primary keys actually used in data iteration.
+
 ### version 7.3.0
 *Released*: 10 December 2025
 - CharBuilderModal: add UI for legend position

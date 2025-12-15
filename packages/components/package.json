@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.3.1-moveJobs.1",
+  "version": "7.3.2-moveJobs.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

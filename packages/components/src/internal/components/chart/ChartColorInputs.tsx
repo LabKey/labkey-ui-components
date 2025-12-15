@@ -427,8 +427,8 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
             </div>
             {selectedSeries && (
                 <>
-                    <div className="row">
-                        <div className="col-xs-4">
+                    <div className="chart-color-inputs">
+                        <div className="chart-color-input">
                             <div>Color</div>
                             <ColorPickerInput
                                 allowRemove
@@ -438,7 +438,7 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                                 value={seriesOptionMap[selectedSeries]?.color}
                             />
                         </div>
-                        <div className="col-xs-8">
+                        <div className="chart-color-input">
                             <div>Shape</div>
                             <SelectInput
                                 clearable={false}
@@ -456,9 +456,7 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                                 <RemoveEntityButton labelClass="color-picker__remove" onClick={onSeriesShapeRemove} />
                             )}
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-xs-12">
+                        <div className="chart-color-input">
                             <div>Line Type</div>
                             <SelectInput
                                 clearable={false}

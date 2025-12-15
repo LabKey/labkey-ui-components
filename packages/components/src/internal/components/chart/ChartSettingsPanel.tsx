@@ -429,16 +429,17 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
             <SizeInputs height={chartConfig.height} setChartConfig={setChartConfig} width={chartConfig.width} />
 
             {showLegendPos && (
-                <div className="chart-settings__legend-pos">
-                    <label>Legend Position</label>
-
-                    <div className="chart-settings__legend-pos-values">
-                        <RadioGroupInput
-                            formsy={false}
-                            name="legendPos"
-                            onValueChange={onLegendPosChange}
-                            options={legendOptions}
-                        />
+                <div className="chart-settings__radio-group form-group row">
+                    <div className="col-xs-12">
+                        <label>Legend Position</label>
+                        <div className="chart-settings__radio-group-values">
+                            <RadioGroupInput
+                                formsy={false}
+                                name="legendPos"
+                                onValueChange={onLegendPosChange}
+                                options={legendOptions}
+                            />
+                        </div>
                     </div>
                 </div>
             )}

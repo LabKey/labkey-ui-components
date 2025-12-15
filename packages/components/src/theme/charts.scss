@@ -219,21 +219,28 @@
     overflow-y: auto;
 }
 
+.chart-color-inputs {
+    display: flex;
+}
+.chart-color-input {
+    flex: 1;
+}
+
 .chart-builder-modal__chart-preview h4,
 .chart-settings h4 {
     margin: 0 0 8px;
 }
 
-.chart-settings__legend-pos-values {
+.chart-settings__radio-group-values {
     display: flex;
     gap: 8px;
 }
 
-.chart-settings__legend-pos-values .radio-input-wrapper input {
+.chart-settings__radio-group-values .radio-input-wrapper input {
     margin-right: 4px;
 }
 
-.chart-settings__legend-pos-values .radioinput-label {
+.chart-settings__radio-group-values .radioinput-label {
     cursor: pointer;
 }
 

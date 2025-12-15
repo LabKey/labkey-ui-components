@@ -83,6 +83,38 @@ function shapeValueRenderer(option) {
     return <ShapeOptionRenderer isValueRenderer name={option.data.value} />;
 }
 
+interface LineTypeOptionRendererProps {
+    isValueRenderer: boolean;
+    name: string;
+}
+
+// export for jest testing
+export const LineTypeOptionRenderer: FC<LineTypeOptionRendererProps> = memo(({ name, isValueRenderer }) => {
+    const dashedPath = <path d="M 0 5 H 30" stroke="#000000" stroke-width="3" stroke-dasharray="12, 3" fill="none" />;
+    const dottedPath = <path d="M 0 5 H 30" stroke="#000000" stroke-width="3" stroke-dasharray="2, 2" fill="none" />;
+    const solidPath = <path d="M 0 5 H 30" stroke="#000000" stroke-width="3" fill="none" />;
+
+    const className = classNames('chart-builder-type-option', { 'chart-builder-type-option--value': isValueRenderer });
+    return (
+        <span className={className} data-series-linetype={name}>
+            <svg width="30" height="10">
+                {name === 'dashed' && dashedPath}
+                {name === 'dotted' && dottedPath}
+                {name === 'solid' && solidPath}
+            </svg>
+        </span>
+    );
+});
+LineTypeOptionRenderer.displayName = 'LineTypeOptionRenderer';
+
+function lineTypeOptionRenderer(option) {
+    return <LineTypeOptionRenderer isValueRenderer={false} name={option.data.value} />;
+}
+
+function lineTypeValueRenderer(option) {
+    return <LineTypeOptionRenderer isValueRenderer name={option.data.value} />;
+}
+
 interface SeriesOptionRendererProps {
     isValueRenderer: boolean;
     name: string;
@@ -434,11 +466,11 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                                 inputClass=""
                                 menuPlacement="top"
                                 onChange={onSeriesLineTypeChange}
+                                optionRenderer={lineTypeOptionRenderer}
                                 options={LINE_TYPE_OPTIONS}
                                 placeholder="Auto"
                                 value={seriesOptionMap[selectedSeries]?.lineType}
-                                // optionRenderer={lineTypeOptionRenderer}
-                                // valueRenderer={lineTypeValueRenderer}
+                                valueRenderer={lineTypeValueRenderer}
                             />
                             {seriesOptionMap[selectedSeries]?.lineType && (
                                 <RemoveEntityButton labelClass="color-picker__remove" onClick={onSeriesLineTypeRemove} />

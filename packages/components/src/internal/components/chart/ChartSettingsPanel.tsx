@@ -21,6 +21,7 @@ import { useEnterEscape } from '../../../public/useEnterEscape';
 import { ChartLabelInput } from './ChartLabelInput';
 import { ChartColorInputs } from './ChartColorInputs';
 import { Alert } from '../base/Alert';
+import { RadioGroupInput } from '../forms/input/RadioGroupInput';
 
 function changedIntValue(strVal: string, currentVal: number): [value: number, changed: boolean] {
     strVal = strVal.trim();
@@ -279,6 +280,7 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
         setChartConfig,
         setChartModel,
     } = props;
+    const legendPos = chartConfig.legendPos;
     const showTrendline = hasTrendline(chartType);
     const fields = chartType.fields.filter(f => f.name !== 'trendline');
 
@@ -325,6 +327,20 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
         },
         [setChartConfig]
     );
+
+    const legendOptions = useMemo(() => {
+        return [
+            { label: 'Right', selected: !legendPos || legendPos === 'right', value: 'right' },
+            { label: 'Bottom', selected: legendPos === 'bottom', value: 'bottom' },
+        ];
+    }, [legendPos]);
+
+    const onLegendPosChange = useCallback(
+        value => setChartConfig(current => ({ ...current, legendPos: value })),
+        [setChartConfig]
+    );
+
+    const showLegendPos = chartType.name !== 'pie_chart';
 
     return (
         <div className="chart-settings">
@@ -392,6 +408,22 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
                 value={chartConfig?.labels?.subtitle}
             />
             <SizeInputs height={chartConfig.height} setChartConfig={setChartConfig} width={chartConfig.width} />
+
+            {showLegendPos && (
+                <div className="chart-settings__legend-pos">
+                    <label>Legend Position</label>
+
+                    <div className="chart-settings__legend-pos-values">
+                        <RadioGroupInput
+                            formsy={false}
+                            name="legendPos"
+                            onValueChange={onLegendPosChange}
+                            options={legendOptions}
+                        />
+                    </div>
+                </div>
+            )}
+
             <ChartColorInputs chartConfig={chartConfig} model={model} setChartConfig={setChartConfig} />
         </div>
     );

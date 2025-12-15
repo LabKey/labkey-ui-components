@@ -1,4 +1,4 @@
-import { fromJS, Map, OrderedMap, Record } from 'immutable';
+import { OrderedMap, Record } from 'immutable';
 
 import { DomainDesign, DomainDetails, IDomainField } from '../models';
 import { IImportAlias, IParentAlias } from '../../entities/models';
@@ -74,18 +74,18 @@ export class SampleTypeModel extends Record({
         return !this.rowId;
     }
 
-    isValid(defaultNameFieldConfig?: Partial<IDomainField>, includeMetricUnitProperty?: boolean): boolean {
+    isValid(defaultNameFieldConfig?: Partial<IDomainField>, metricUnitProps?: MetricUnitProps): boolean {
         return (
             this.hasValidProperties() &&
             !this.hasInvalidNameField(defaultNameFieldConfig) &&
             getDuplicateAlias(this.parentAliases, true).size === 0 &&
             !this.domain.hasInvalidFields() &&
-            this.isMetricUnitValid(includeMetricUnitProperty)
+            this.isMetricUnitValid(metricUnitProps)
         );
     }
 
-    isMetricUnitValid(includeMetricUnitProperty: boolean): boolean {
-        return !includeMetricUnitProperty || this.metricUnit != null;
+    isMetricUnitValid(metricUnitProps?: MetricUnitProps): boolean {
+        return !metricUnitProps?.includeMetricUnitProperty || this.metricUnit != null;
     }
 
     hasValidProperties(): boolean {

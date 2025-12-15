@@ -224,6 +224,19 @@
     margin: 0 0 8px;
 }
 
+.chart-settings__legend-pos-values {
+    display: flex;
+    gap: 8px;
+}
+
+.chart-settings__legend-pos-values .radio-input-wrapper input {
+    margin-right: 4px;
+}
+
+.chart-settings__legend-pos-values .radioinput-label {
+    cursor: pointer;
+}
+
 .chart-builder-modal__chart-preview {
     flex: 3;
     overflow: auto;

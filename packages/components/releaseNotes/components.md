@@ -6,6 +6,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 - ConditionalFormatOptions refactor to use ColorPickerInput
 - Fix for LKS sample type designer issue with isValid check when metricUnit is not required
 
+### version 7.3.1
+*Released*: 13 December 2025
+- Remove LSID column from provisioned sample tables
+- Update `getUpdatedData()` utility method to only check for primary keys actually used in data iteration.
+
+### version 7.3.0
+*Released*: 10 December 2025
+- CharBuilderModal: add UI for legend position
+
 ###  version 7.2.0
 *Released*: 9 December 2025
 - Chart builder updates for series color scale options

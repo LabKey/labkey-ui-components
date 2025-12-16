@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 import { ChartConfig, ChartConfigSetter, MeasureOption } from './models';
 import { ColorPickerInput } from '../forms/input/ColorPickerInput';
-import {COLOR_OPTIONS_PER_TYPE, COLOR_PALETTE_OPTIONS, LINE_TYPE_OPTIONS, SHAPE_OPTIONS} from './constants';
+import { COLOR_OPTIONS_PER_TYPE, COLOR_PALETTE_OPTIONS, LINE_TYPE_OPTIONS, SHAPE_OPTIONS } from './constants';
 import { SelectInput } from '../forms/input/SelectInput';
 import { selectDistinctRows } from '../../query/api';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -85,22 +85,16 @@ function shapeValueRenderer(option) {
 
 interface LineTypeOptionRendererProps {
     isValueRenderer: boolean;
-    name: string;
+    strokeValue: string;
 }
 
 // export for jest testing
-export const LineTypeOptionRenderer: FC<LineTypeOptionRendererProps> = memo(({ name, isValueRenderer }) => {
-    const dashedPath = <path d="M 0 5 H 30" stroke="#000000" stroke-width="3" stroke-dasharray="12, 3" fill="none" />;
-    const dottedPath = <path d="M 0 5 H 30" stroke="#000000" stroke-width="3" stroke-dasharray="2, 2" fill="none" />;
-    const solidPath = <path d="M 0 5 H 30" stroke="#000000" stroke-width="3" fill="none" />;
-
+export const LineTypeOptionRenderer: FC<LineTypeOptionRendererProps> = memo(({ strokeValue, isValueRenderer }) => {
     const className = classNames('chart-builder-type-option', { 'chart-builder-type-option--value': isValueRenderer });
     return (
         <span className={className} data-series-linetype={name}>
-            <svg width="30" height="10">
-                {name === 'dashed' && dashedPath}
-                {name === 'dotted' && dottedPath}
-                {name === 'solid' && solidPath}
+            <svg height="10" width="30">
+                <path d="M 0 5 H 30" fill="none" stroke="#000000" strokeDasharray={strokeValue} strokeWidth="3" />
             </svg>
         </span>
     );
@@ -108,11 +102,11 @@ export const LineTypeOptionRenderer: FC<LineTypeOptionRendererProps> = memo(({ n
 LineTypeOptionRenderer.displayName = 'LineTypeOptionRenderer';
 
 function lineTypeOptionRenderer(option) {
-    return <LineTypeOptionRenderer isValueRenderer={false} name={option.data.value} />;
+    return <LineTypeOptionRenderer isValueRenderer={false} strokeValue={option.data.value} />;
 }
 
 function lineTypeValueRenderer(option) {
-    return <LineTypeOptionRenderer isValueRenderer name={option.data.value} />;
+    return <LineTypeOptionRenderer isValueRenderer strokeValue={option.data.value} />;
 }
 
 interface SeriesOptionRendererProps {
@@ -473,7 +467,7 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                             value={seriesOptionMap[selectedSeries]?.lineType}
                             valueRenderer={lineTypeValueRenderer}
                         />
-                        {seriesOptionMap[selectedSeries]?.lineType && (
+                        {seriesOptionMap[selectedSeries]?.lineType !== undefined && (
                             <RemoveEntityButton labelClass="color-picker__remove" onClick={onSeriesLineTypeRemove} />
                         )}
                     </div>

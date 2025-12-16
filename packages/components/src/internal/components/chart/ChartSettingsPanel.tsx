@@ -339,8 +339,8 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
         [setChartConfig]
     );
 
-    const hideDataPointsOptions = useMemo(() => {
-        return [
+    const hideDataPointsOptions = useMemo(
+        () => [
             {
                 label: 'Show',
                 selected:
@@ -349,12 +349,16 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
                 value: 'false',
             },
             { label: 'Hide', selected: chartConfig.geomOptions.hideDataPoints === true, value: 'true' },
-        ];
-    }, [chartConfig.geomOptions.hideDataPoints]);
+        ],
+        [chartConfig.geomOptions.hideDataPoints]
+    );
 
     const onHideDataPointsChange = useCallback(
-        value =>
-            setChartConfig(current => ({ ...current, geomOptions: { ...current.geomOptions, hideDataPoints: value === 'true' } })),
+        (value: string) =>
+            setChartConfig(current => ({
+                ...current,
+                geomOptions: { ...current.geomOptions, hideDataPoints: value === 'true' },
+            })),
         [setChartConfig]
     );
 

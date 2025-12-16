@@ -429,7 +429,7 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                 <>
                     <div className="chart-color-inputs">
                         <div className="chart-color-input">
-                            <div>Color</div>
+                            <label className="label-weight-normal">Color</label>
                             <ColorPickerInput
                                 allowRemove
                                 name="seriesColor"
@@ -439,7 +439,7 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                             />
                         </div>
                         <div className="chart-color-input">
-                            <div>Shape</div>
+                            <label className="label-weight-normal">Shape</label>
                             <SelectInput
                                 clearable={false}
                                 containerClass="inline-block"
@@ -457,7 +457,7 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                             )}
                         </div>
                         <div className="chart-color-input">
-                            <div>Line Type</div>
+                            <label className="label-weight-normal">Line Type</label>
                             <SelectInput
                                 clearable={false}
                                 containerClass="inline-block"

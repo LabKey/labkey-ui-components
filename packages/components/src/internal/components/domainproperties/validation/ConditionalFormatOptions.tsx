@@ -1,6 +1,4 @@
-import classNames from 'classnames';
 import React, { PureComponent, ReactNode } from 'react';
-import { CompactPicker } from 'react-color';
 
 import { DomainDesignerCheckbox } from '../DomainDesignerCheckbox';
 
@@ -22,6 +20,7 @@ import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 import { Filters } from './Filters';
 import { ValidatorModal } from './ValidatorModal';
+import { ColorPickerInput } from '../../forms/input/ColorPickerInput';
 
 interface ConditionalFormatOptionsProps {
     dataType: PropDescType;
@@ -36,21 +35,7 @@ interface ConditionalFormatOptionsProps {
     validatorIndex: number;
 }
 
-interface ConditionalFormatState {
-    showFillColor: boolean;
-    showTextColor: boolean;
-}
-
-export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOptionsProps, ConditionalFormatState> {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            showTextColor: false,
-            showFillColor: false,
-        };
-    }
-
+export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOptionsProps> {
     static isValid = (validator: PropertyValidator): boolean => {
         return Filters.isValid(validator.get('formatFilter'), DOMAIN_CONDITIONAL_FORMAT_PREFIX);
     };
@@ -91,7 +76,7 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
 
     firstFilterTooltip = (): ReactNode => {
         return (
-            <LabelHelpTip title="First Condition" required>
+            <LabelHelpTip required title="First Condition">
                 Add a condition to this format rule that will be tested against the value for this field.
             </LabelHelpTip>
         );
@@ -104,9 +89,9 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
             <div className="row">
                 <div className="col-xs-12 domain-validation-display-checkbox-row">
                     <DomainDesignerCheckbox
+                        checked={value}
                         id={createFormInputId(name, domainIndex, validatorIndex)}
                         name={createFormInputName(name)}
-                        checked={value}
                         onChange={this.onFieldChange}
                     >
                         {label}
@@ -116,68 +101,40 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
         );
     };
 
-    onColorShow = (evt): void => {
-        const { showTextColor, showFillColor } = this.state;
-        let name = getNameFromId(evt.target.id);
-
-        // If click on caret icon
-        if (!name) {
-            name = getNameFromId(evt.target.parentElement.parentElement.id);
-        }
-
-        // Strange little border between icon and button
-        if (!name) {
-            name = getNameFromId(evt.target.parentElement.id);
-        }
-
-        if (name === DOMAIN_CONDITION_FORMAT_TEXT_COLOR) {
-            this.setState(() => ({ showTextColor: !showTextColor, showFillColor: false }));
-        }
-
-        if (name === DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR) {
-            this.setState(() => ({ showFillColor: !showFillColor, showTextColor: false }));
-        }
-    };
-
-    onColorChange = (color): void => {
+    onColorChange = (name: string, hexValue: string): void => {
         const { onChange, validator, validatorIndex } = this.props;
-        const { showTextColor } = this.state;
-        const name = showTextColor ? DOMAIN_CONDITION_FORMAT_TEXT_COLOR : DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR;
-        onChange(validator.set(name, color.hex.substring(1)), validatorIndex);
+        onChange(validator.set(name, hexValue.substring(1)), validatorIndex);
     };
 
     renderColorPickers = (): ReactNode => {
         const { validator, validatorIndex } = this.props;
-        const { showTextColor, showFillColor } = this.state;
 
         const textColor = validator.textColor ? '#' + validator.textColor : 'black';
         const fillColor = validator.backgroundColor ? '#' + validator.backgroundColor : 'white';
 
         return (
             <div className="row domain-validator-color-row">
-                <div className="col-xs-4">
-                    {this.getColorPickerButton(
-                        DOMAIN_CONDITION_FORMAT_TEXT_COLOR,
-                        'Text Color',
-                        textColor,
-                        showTextColor
-                    )}
+                <div className="col-xs-5">
+                    <ColorPickerInput
+                        name={DOMAIN_CONDITION_FORMAT_TEXT_COLOR}
+                        onChange={this.onColorChange}
+                        text="Text Color"
+                        value={textColor}
+                    />
                 </div>
                 <div className="col-xs-4">
-                    {this.getColorPickerButton(
-                        DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR,
-                        'Fill Color',
-                        fillColor,
-                        showFillColor
-                    )}
+                    <ColorPickerInput
+                        name={DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR}
+                        onChange={this.onColorChange}
+                        text="Fill Color"
+                        value={fillColor}
+                    />
                 </div>
-                <div className="col-xs-1" />
                 <div className="col-xs-3">
                     <input
                         className="form-control"
-                        type="text"
-                        id={'domain-validator-preview-' + validatorIndex}
                         defaultValue="Preview Text"
+                        id={'domain-validator-preview-' + validatorIndex}
                         style={{
                             fontSize: '12px',
                             width: '100px',
@@ -187,43 +144,9 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
                             fontStyle: validator.italic ? 'italic' : 'normal',
                             textDecoration: validator.strikethrough ? 'line-through' : '',
                         }}
+                        type="text"
                     />
                 </div>
-            </div>
-        );
-    };
-
-    getColorPickerButton = (name: string, label: string, color: string, showColorPicker: boolean): ReactNode => {
-        const { validatorIndex, domainIndex } = this.props;
-        const iconClassName = classNames('domain-color-caret', 'fa', 'fa-lg', {
-            'fa-caret-up': showColorPicker,
-            'fa-caret-down': !showColorPicker,
-        });
-
-        return (
-            <div style={{ width: '100%' }}>
-                <button
-                    className="domain-color-picker-btn btn btn-default"
-                    id={createFormInputId(name, domainIndex, validatorIndex)}
-                    key={createFormInputId(name, domainIndex, validatorIndex)}
-                    name={createFormInputName(name)}
-                    onClick={this.onColorShow}
-                    type="button"
-                >
-                    {label}
-                    <span className={iconClassName} />
-                </button>
-                {showColorPicker && (
-                    <div className="domain-validator-color-popover">
-                        <div
-                            className="domain-validator-color-cover"
-                            id={createFormInputId(name, domainIndex, validatorIndex)}
-                            onClick={this.onColorShow}
-                        />
-                        <CompactPicker onChangeComplete={this.onColorChange} color={color} />
-                    </div>
-                )}
-                <div className="domain-color-preview" style={{ backgroundColor: color }} />
             </div>
         );
     };
@@ -239,14 +162,14 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
                 {expanded && (
                     <div>
                         <Filters
-                            validatorIndex={validatorIndex}
                             domainIndex={domainIndex}
-                            onChange={this.onFilterChange}
-                            type={type}
-                            mvEnabled={mvEnabled}
                             expression={validator.formatFilter}
-                            prefix={DOMAIN_CONDITIONAL_FORMAT_PREFIX}
                             firstFilterTooltip={this.firstFilterTooltip()}
+                            mvEnabled={mvEnabled}
+                            onChange={this.onFilterChange}
+                            prefix={DOMAIN_CONDITIONAL_FORMAT_PREFIX}
+                            type={type}
+                            validatorIndex={validatorIndex}
                         />
                         <div className="domain-validation-subtitle">Display Options</div>
                         {this.renderDisplayCheckbox(DOMAIN_VALIDATOR_BOLD, 'Bold', validator.bold)}

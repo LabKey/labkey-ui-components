@@ -6,10 +6,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Workflow Automation: Task action to filter samples for selected task
   - TODO
 
+### version 7.3.2
+*Released*: 15 December 2025
+- ConditionalFormatOptions refactor to use ColorPickerInput
+
 ### version 7.3.1
 *Released*: 13 December 2025
 - Remove LSID column from provisioned sample tables
 - Update `getUpdatedData()` utility method to only check for primary keys actually used in data iteration.
+- Fix for LKS sample type designer issue with isValid check when metricUnit is not required
 
 ### version 7.3.0
 *Released*: 10 December 2025

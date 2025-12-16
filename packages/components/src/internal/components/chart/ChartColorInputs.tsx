@@ -129,7 +129,7 @@ export const SeriesOptionRenderer: FC<SeriesOptionRendererProps> = memo(
             'chart-builder-type-option--value': isValueRenderer,
         });
         return (
-            <span className={className} data-series-shape={name}>
+            <span className={className} data-series-option={name}>
                 {value && (
                     <>
                         <ColorIcon asSquare cls="color-icon__chip-small" value={value} /> {name}

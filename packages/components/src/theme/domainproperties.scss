@@ -616,24 +616,6 @@
   margin-top: 20px;
 }
 
-.domain-validator-color-popover {
-  position: absolute;
-  z-index: 2;
-}
-
-.domain-validator-color-cover {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-
-.domain-validator-modal-apply {
-  display: inline-flex;
-  float: right;
-}
-
 .domain-annotation-table td {
     vertical-align: top;
 
@@ -646,28 +628,6 @@
             color: $gray;
         }
     }
-}
-
-.domain-color-preview {
-  height: 25px;
-  width: 25px;
-  border: 1px solid;
-  display: inline-flex;
-  vertical-align: bottom;
-  margin-bottom: 1px;
-}
-
-.domain-color-picker-btn {
-  display: inline-flex;
-  font-size: 12px;
-  margin-right: 20px;
-  width: 70%;
-}
-
-.domain-color-caret {
-  margin-left: 40%;
-  position: absolute;
-  float: left;
 }
 
 .domain-validator-collapse-icon {

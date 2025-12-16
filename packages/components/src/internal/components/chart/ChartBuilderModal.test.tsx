@@ -20,7 +20,7 @@ import {
 
 import { ChartBuilderModal, getChartBuilderQueryConfig, getChartRenderMsg } from './ChartBuilderModal';
 import { MAX_POINT_DISPLAY, MAX_ROWS_PREVIEW } from './constants';
-import { ChartConfig, ChartQueryConfig, ChartTypeInfo, GenericChartModel, VisualizationConfigModel } from './models';
+import { ChartConfig, ChartQueryConfig, ChartTypeInfo, GenericChartModel } from './models';
 import { deepCopyChartConfig } from './utils';
 
 const BAR_CHART_TYPE = {

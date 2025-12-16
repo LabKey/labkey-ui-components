@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { ChartConfig } from './models';
 import { LABKEY_VIS } from '../../constants';
 
-import { ChartColorInputs, SeriesOptionRenderer, ShapeOptionRenderer, showColorOption } from './ChartColorInputs';
+import { ChartColorInputs, SeriesOptionRenderer, ShapeOptionRenderer, showColorOption, LineTypeOptionRenderer } from './ChartColorInputs';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
@@ -147,6 +147,32 @@ describe('SeriesOptionRenderer', () => {
         expect(document.querySelectorAll('i')).toHaveLength(1);
         expect(document.querySelector('i').getAttribute('style')).toBe('background-color: red;');
         expect(document.querySelectorAll('.letter-icon')).toHaveLength(0);
+    });
+});
+
+describe('LineTypeOptionRenderer', () => {
+    test('isValueRenderer false', () => {
+        render(<LineTypeOptionRenderer isValueRenderer={false} name="solid" />);
+        expect(document.querySelectorAll('.chart-builder-type-option')).toHaveLength(1);
+        expect(document.querySelectorAll('.chart-builder-type-option--value')).toHaveLength(0);
+        expect(document.querySelector('svg path').hasAttribute('style')).toBe(false);
+    });
+
+    test('isValueRenderer true', () => {
+        render(<LineTypeOptionRenderer isValueRenderer name="solid" />);
+        expect(document.querySelectorAll('.chart-builder-type-option')).toHaveLength(1);
+        expect(document.querySelectorAll('.chart-builder-type-option--value')).toHaveLength(1);
+        expect(document.querySelector('svg path').hasAttribute('stroke-dasharray')).toBe(false);
+    });
+
+    test('dashed line type', () => {
+        render(<LineTypeOptionRenderer isValueRenderer name="dashed" />);
+        expect(document.querySelector('svg path').getAttribute("stroke-dasharray")).toBe('12, 3');
+    });
+
+    test('dotted line type', () => {
+        render(<LineTypeOptionRenderer isValueRenderer name="dotted" />);
+        expect(document.querySelector('svg path').getAttribute("stroke-dasharray")).toBe('2, 2');
     });
 });
 

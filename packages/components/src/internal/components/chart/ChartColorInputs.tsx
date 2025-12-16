@@ -312,11 +312,15 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
 
             if (chartConfig.measures?.series) {
                 try {
+                    const seriesColumn = model.getColumn(chartConfig.measures?.series.fieldKey);
                     const response = await selectDistinctRows({
                         schemaName: model.schemaQuery.schemaName,
                         queryName: model.schemaQuery.queryName,
                         viewName: model.schemaQuery.viewName,
-                        column: chartConfig.measures?.series.fieldKey,
+                        // if the series measure is a lookup, we need to get distinct values from the display column
+                        column:
+                            chartConfig.measures?.series.fieldKey +
+                            (seriesColumn?.isLookup() ? '/' + seriesColumn.lookup.displayColumnFieldKey : ''),
                     });
 
                     // map response.values to SelectOption format

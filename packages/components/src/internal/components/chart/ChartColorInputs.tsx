@@ -85,14 +85,15 @@ function shapeValueRenderer(option) {
 
 interface LineTypeOptionRendererProps {
     isValueRenderer: boolean;
+    label: string;
     strokeValue: string;
 }
 
 // export for jest testing
-export const LineTypeOptionRenderer: FC<LineTypeOptionRendererProps> = memo(({ strokeValue, isValueRenderer }) => {
+export const LineTypeOptionRenderer: FC<LineTypeOptionRendererProps> = memo(({ label, strokeValue, isValueRenderer }) => {
     const className = classNames('chart-builder-type-option', { 'chart-builder-type-option--value': isValueRenderer });
     return (
-        <span className={className} data-series-linetype={name}>
+        <span className={className} data-series-linetype={label}>
             <svg height="10" width="30">
                 <path d="M 0 5 H 30" fill="none" stroke="#000000" strokeDasharray={strokeValue} strokeWidth="3" />
             </svg>
@@ -102,11 +103,11 @@ export const LineTypeOptionRenderer: FC<LineTypeOptionRendererProps> = memo(({ s
 LineTypeOptionRenderer.displayName = 'LineTypeOptionRenderer';
 
 function lineTypeOptionRenderer(option) {
-    return <LineTypeOptionRenderer isValueRenderer={false} strokeValue={option.data.value} />;
+    return <LineTypeOptionRenderer isValueRenderer={false} label={option.data.label} strokeValue={option.data.value} />;
 }
 
 function lineTypeValueRenderer(option) {
-    return <LineTypeOptionRenderer isValueRenderer strokeValue={option.data.value} />;
+    return <LineTypeOptionRenderer isValueRenderer label={option.data.label} strokeValue={option.data.value} />;
 }
 
 interface SeriesOptionRendererProps {

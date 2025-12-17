@@ -5,11 +5,12 @@ import classNames from 'classnames';
 
 import { QueryColumn } from '../../public/QueryColumn';
 import { isDateTimeInPast } from '../util/Date';
+import { getTextAlignClassName } from '../components/base/models/GridColumn';
 
 export interface ExpirationDateColumnRendererProps {
     col?: QueryColumn;
     columnIndex?: number;
-    data: Map<any, any> | { [key: string]: any };
+    data: Map<any, any> | Record<string, any>;
     tableCell?: boolean;
 }
 
@@ -35,19 +36,10 @@ export const ExpirationDateColumnRenderer: FC<ExpirationDateColumnRendererProps>
         if (tableCell) {
             return (
                 <td
+                    className={classNames(getTextAlignClassName(col), { 'expired-grid-cell': expired })}
                     key={columnIndex ?? col?.name}
-                    className={classNames({
-                        'expired-grid-cell': expired,
-                    })}
-                    style={{ textAlign: col?.align || 'left' } as any}
                 >
-                    <div
-                        className={classNames({
-                            'expired-grid-cell-content': expired,
-                        })}
-                    >
-                        {displayValue}
-                    </div>
+                    <div className={classNames({ 'expired-grid-cell-content': expired })}>{displayValue}</div>
                 </td>
             );
         }

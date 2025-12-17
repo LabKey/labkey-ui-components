@@ -86,3 +86,19 @@ export class GridColumn implements ColumnProps {
         this.hideTooltip = config.hideTooltip === true; // defaults to false
     }
 }
+
+// Special interface that lets us pass GridColumn and EditableColumnMetadata to getTextAlignClassname
+interface WithAlignment {
+    align?: string;
+    jsonType?: string;
+}
+
+const TEXT_ALIGN_CLASSES = {
+    center: 'text-center',
+    left: 'text-left',
+    right: 'text-right',
+};
+
+export function getTextAlignClassName(column: WithAlignment): string {
+    return TEXT_ALIGN_CLASSES[column?.align] ?? TEXT_ALIGN_CLASSES.left;
+}

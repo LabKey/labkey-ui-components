@@ -36,7 +36,7 @@ import { HeaderSelectionCell } from '../../renderers';
 import { blurActiveElement, capitalizeFirstChar, not } from '../../util/utils';
 import { Grid } from '../base/Grid';
 
-import { GridColumn, GridColumnCellRenderer } from '../base/models/GridColumn';
+import { getTextAlignClassName, GridColumn, GridColumnCellRenderer } from '../base/models/GridColumn';
 
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
@@ -148,7 +148,7 @@ const COUNT_COL = new GridColumn({
     // style cast to "any" type due to @types/react@16.3.14 switch to csstype package usage which does not declare
     // "textAlign" property correctly for <td> elements.
     cell: (d, r, c, rn) => (
-        <td className="cellular-count" key={c.index} style={{ textAlign: c.align || 'left' } as any}>
+        <td className={classNames('cellular-count', getTextAlignClassName(c))} key={c.index}>
             <div className="cellular-count-static-content">{rn + 1}</div>
         </td>
     ),
@@ -184,8 +184,9 @@ function inputCellFactory(
         const { isReadonlyCell, isReadonlyRow } = editorModel.getCellReadStatus(fieldKey, rowIdx, readonlyRows);
         const rowContainer = editorModel.getFolderValueForRow(rowIdx);
         const focused = editorModel.isFocused(colIdx, rowIdx);
-        const className = classNames({ 'grid-col-with-width': hasCellWidthOverride(columnMetadata) });
-        const style = { textAlign: columnMetadata?.align ?? c.align ?? 'left' } as any;
+        const className = classNames(getTextAlignClassName(columnMetadata), {
+            'grid-col-with-width': hasCellWidthOverride(columnMetadata),
+        });
 
         // If we're updating then we want to use the container path from each row if present
         if (forUpdate && rowContainer) containerPath = rowContainer;
@@ -225,7 +226,7 @@ function inputCellFactory(
         }
 
         return (
-            <td className={className} key={inputCellKey(c.raw, row)} style={style}>
+            <td className={className} key={inputCellKey(c.raw, row)}>
                 <Cell
                     borderMaskBottom={borderMask[2]}
                     borderMaskLeft={borderMask[3]}

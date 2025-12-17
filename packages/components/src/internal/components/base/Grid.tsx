@@ -22,7 +22,7 @@ import { HelpTipRenderer } from '../forms/HelpTipRenderer';
 import { GRID_HEADER_CELL_BODY, GRID_SELECTION_INDEX } from '../../constants';
 
 import { LabelHelpTip } from './LabelHelpTip';
-import { GridColumn } from './models/GridColumn';
+import { getTextAlignClassName, GridColumn } from './models/GridColumn';
 
 function processColumns(columns: List<any>): List<GridColumn> {
     return columns
@@ -211,7 +211,6 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                         onDragOver={this.handleDragOver}
                                         onDragStart={this.handleDragStart}
                                         onDrop={this.handleDrop}
-                                        style={style}
                                         title={hideTooltip ? undefined : description}
                                     >
                                         {headerCell ? headerCell(column, i, columns.size) : title}
@@ -224,7 +223,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                     </th>
                                 );
                             }
-                            return <th key={index} style={{ minWidth: style?.minWidth }} />;
+                            return <th key={index} />;
                         }, this)
                         .toArray()}
                 </tr>
@@ -259,33 +258,36 @@ interface GridRowProps {
     rowIdx: number;
 }
 
-const GridRow: FC<GridRowProps> = memo(({ columns, highlight, row, rowIdx }) => {
-    // style cast to "any" type due to @types/react@16.3.14 switch to csstype package usage which does not declare
-    // "textAlign" property correctly for <td> elements.
-    return (
-        <tr
-            className={classNames({
-                'grid-row-highlight': highlight,
-                'grid-row-alternate': rowIdx % 2 === 0,
-                'grid-row': rowIdx % 2 === 1,
-            })}
-        >
-            {columns
-                .map((column: GridColumn, c: number) =>
-                    column.tableCell ? (
+const GridRow: FC<GridRowProps> = memo(({ columns, highlight, row, rowIdx }) => (
+    <tr
+        className={classNames({
+            'grid-row-highlight': highlight,
+            'grid-row-alternate': rowIdx % 2 === 0,
+            'grid-row': rowIdx % 2 === 1,
+        })}
+    >
+        {columns
+            .map((column: GridColumn, c: number) => {
+                if (column.tableCell) {
+                    return (
                         <Fragment key={column.index}>
                             {column.cell(row.get(column.index), row, column, rowIdx, c)}
                         </Fragment>
-                    ) : (
-                        <td key={column.index} style={{ textAlign: column.align || 'left' } as any}>
+                    );
+                }
+
+                const className = getTextAlignClassName(column);
+                return (
+                    <td className={className} key={column.index}>
+                        <div className="table-cell-content">
                             {column.cell(row.get(column.index), row, column, rowIdx, c)}
-                        </td>
-                    )
-                )
-                .toArray()}
-        </tr>
-    );
-});
+                        </div>
+                    </td>
+                );
+            })
+            .toArray()}
+    </tr>
+));
 GridRow.displayName = 'GridRow';
 
 interface EmptyGridRowProps {
@@ -410,7 +412,7 @@ export const Grid: FC<GridProps> = memo(props => {
         highlightRowIndexes,
     };
 
-    const tableClasses = classNames({
+    const tableClasses = classNames('read-only-table', {
         table: !cellular,
         'table-cellular': cellular,
         'table-striped': striped,

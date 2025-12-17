@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 7.?.?
 *Released*: ?? December 2025
 - GridColumn: remove width, fixedWidth properties
+  - Add css class for text align and getTextAlignClassName helper
 - Grid: improve styling for columns
 
 ### version 7.9.0

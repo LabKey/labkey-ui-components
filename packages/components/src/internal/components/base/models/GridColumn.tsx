@@ -16,12 +16,10 @@ interface ColumnProps {
     helpTipRenderer?: string;
     hideTooltip?: boolean;
     index: string;
-    fixedWidth?: number;
     raw?: any;
     showHeader?: boolean;
     tableCell?: boolean;
     title: string;
-    width?: number;
 }
 
 const defaultCell: GridColumnCellRenderer = d => {
@@ -56,23 +54,19 @@ export class GridColumn implements ColumnProps {
     helpTipRenderer?: string;
     hideTooltip?: boolean;
     index: string;
-    fixedWidth: number;
     raw: any;
     tableCell: boolean;
     title: string;
     showHeader: boolean;
-    width: number;
 
     constructor(config: ColumnProps) {
         this.align = config.align;
         this.cell = config.cell ?? defaultCell;
         this.format = config.format;
         this.index = config.index;
-        this.fixedWidth = config.fixedWidth;
         this.raw = config.raw;
         this.headerCls = config.headerCls;
         this.helpTipRenderer = config.helpTipRenderer;
-        this.width = config.width;
 
         // react render displays '&nbsp', see: https://facebook.github.io/react/docs/jsx-gotchas.html
         if (config.title && config.title == '&nbsp;') {

@@ -40,7 +40,6 @@ export const LINEAGE_GRID_COLUMNS = List([
     new GridColumn({
         index: 'name',
         title: 'ID',
-        width: 270,
         cell: (name: string, node: Map<string, any>) => {
             const indent = node.get('distance') * 10;
             const dupeCount = node.get('duplicateCount');
@@ -70,7 +69,6 @@ export const LINEAGE_GRID_COLUMNS = List([
     new GridColumn({
         index: 'distance',
         title: 'Distance',
-        width: 60,
         cell: (distance: any, node: Map<string, any>) => {
             const gen = distance > 1 ? ' generations' : ' generation';
 
@@ -86,7 +84,6 @@ export const LINEAGE_GRID_COLUMNS = List([
     new GridColumn({
         index: 'lsid',
         title: 'Change Seed',
-        width: 70,
         cell: (lsid: string, node: Map<string, any>) => {
             const lineageDistance = node.get('lineageDistance');
             const baseURL = AppURL.create('lineage').addParams({

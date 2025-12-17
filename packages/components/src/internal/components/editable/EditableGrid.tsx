@@ -98,10 +98,6 @@ function moveUp(colIdx: number, rowIdx: number): CellCoordinates {
     return { colIdx, rowIdx: rowIdx - 1 };
 }
 
-function hasCellWidthOverride(metadata: EditableColumnMetadata): boolean {
-    return !!metadata?.minWidth || !!metadata?.width;
-}
-
 function computeSelectionCellKeys(
     editorModel: EditorModel,
     minColIdx: number,
@@ -144,9 +140,6 @@ const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,
     tableCell: true,
     title: 'Row',
-    width: 45,
-    // style cast to "any" type due to @types/react@16.3.14 switch to csstype package usage which does not declare
-    // "textAlign" property correctly for <td> elements.
     cell: (d, r, c, rn) => (
         <td className={classNames('cellular-count', getTextAlignClassName(c))} key={c.index}>
             <div className="cellular-count-static-content">{rn + 1}</div>
@@ -184,9 +177,7 @@ function inputCellFactory(
         const { isReadonlyCell, isReadonlyRow } = editorModel.getCellReadStatus(fieldKey, rowIdx, readonlyRows);
         const rowContainer = editorModel.getFolderValueForRow(rowIdx);
         const focused = editorModel.isFocused(colIdx, rowIdx);
-        const className = classNames(getTextAlignClassName(columnMetadata), {
-            'grid-col-with-width': hasCellWidthOverride(columnMetadata),
-        });
+        const className = getTextAlignClassName(columnMetadata);
 
         // If we're updating then we want to use the container path from each row if present
         if (forUpdate && rowContainer) containerPath = rowContainer;
@@ -854,14 +845,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         editorModel.orderedColumns.forEach(fieldKey => {
             const qCol = editorModel.columnMap.get(fieldKey);
             const metadata = editorModel.getColumnMetadata(qCol.fieldKey);
-            let width = 100;
-            let fixedWidth;
-            if (hasCellWidthOverride(metadata)) {
-                fixedWidth = metadata.width;
-                if (!fixedWidth) {
-                    width = metadata.minWidth;
-                }
-            }
             const hideTooltip = metadata?.hideTitleTooltip ?? qCol.hasHelpTipData;
             gridColumns = gridColumns.push(
                 new GridColumn({
@@ -879,10 +862,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         containerPath
                     ),
                     index: qCol.fieldKey,
-                    fixedWidth,
                     raw: qCol,
                     title: metadata?.caption ?? qCol.caption,
-                    width,
                     hideTooltip,
                     tableCell: true,
                 })
@@ -1590,7 +1571,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     onMouseUp={this.onMouseUp}
                 >
                     <Grid
-                        calcWidths
                         cellular
                         columns={this.generateColumns()}
                         data={this.getGridData()}

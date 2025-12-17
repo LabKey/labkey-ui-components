@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { CSSProperties, FC, Fragment, memo, PureComponent, ReactNode, RefObject } from 'react';
+import React, { FC, Fragment, memo, PureComponent, ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
 
@@ -44,11 +44,9 @@ function processColumns(columns: List<any>): List<GridColumn> {
                 helpTipRenderer: c.helpTipRenderer,
                 hideTooltip: c.helpTipRenderer !== undefined,
                 index: c.index,
-                fixedWidth: c.fixedWidth,
                 raw: c,
                 tableCell: c.tableCell,
                 title: c.title || c.caption,
-                width: c.width,
             });
         })
         .toList();
@@ -96,7 +94,6 @@ export function getColumnHoverText(info: any): string {
 }
 
 interface GridHeaderProps {
-    calcWidths?: boolean;
     columns: List<GridColumn>;
     headerCell?: any;
     onColumnDrop?: (sourceIndex: string, targetIndex: string) => void;
@@ -156,7 +153,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
     };
 
     render() {
-        const { calcWidths, columns, headerCell, showHeader, onColumnDrop } = this.props;
+        const { columns, headerCell, showHeader, onColumnDrop } = this.props;
         const { dragTarget } = this.state;
 
         if (!showHeader) {
@@ -169,25 +166,8 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                 <tr>
                     {columns
                         .map((column, i) => {
-                            const { headerCls, index, fixedWidth, raw, title, width, hideTooltip } = column;
+                            const { headerCls, index, raw, title, hideTooltip } = column;
                             const draggable = onColumnDrop !== undefined;
-
-                            let style: CSSProperties;
-                            if (fixedWidth) {
-                                style = {
-                                    width: `${fixedWidth}px`,
-                                };
-                            }
-
-                            let colMinWidth = width;
-                            if (colMinWidth === undefined) {
-                                // the additional 45px is to account for the grid column header icons for sort/filter and the dropdown toggle
-                                colMinWidth = calcWidths && title ? Math.max(45 + title.length * 8, 150) : undefined;
-                            }
-                            if (!fixedWidth && colMinWidth !== undefined) {
-                                if (!style) style = {};
-                                style.minWidth = `${colMinWidth}px`;
-                            }
 
                             if (column.showHeader) {
                                 const className = classNames(headerCls, {
@@ -344,7 +324,6 @@ export type GridData = List<Map<string, any>> | Record<string, any>[];
 
 export interface GridProps {
     bordered?: boolean;
-    calcWidths?: boolean;
     cellular?: boolean;
     columns?: List<any>;
     condensed?: boolean;
@@ -372,7 +351,6 @@ export interface GridProps {
 export const Grid: FC<GridProps> = memo(props => {
     const {
         bordered = true,
-        calcWidths = false,
         cellular = false,
         condensed = false,
         data = List<Map<string, any>>(),
@@ -395,7 +373,6 @@ export const Grid: FC<GridProps> = memo(props => {
     const gridData = processData(data);
     const gridColumns = columns !== undefined ? processColumns(columns) : resolveColumns(gridData);
     const headerProps: GridHeaderProps = {
-        calcWidths,
         columns: gridColumns,
         headerCell,
         onColumnDrop,

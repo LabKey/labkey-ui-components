@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.?.?
+*Released*: ?? December 2025
+- GridColumn: remove width, fixedWidth properties
+- Grid: improve styling for columns
+
 ### version 7.9.0
 *Released*: 6 January 2026
 - GitHub Issue 503: Field editor URL option to set target window (i.e. _blank)

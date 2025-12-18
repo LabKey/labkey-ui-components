@@ -33,6 +33,7 @@ enum FieldFilterTabs {
 const DEFAULT_VIEW_NAME = ''; // always use default view for selection, if none provided
 
 interface Props {
+    allInQueryFilterLabel?: string;
     allowRelativeDateFilter?: boolean;
     altQueryName?: string;
     api?: ComponentsAPIWrapper;
@@ -47,7 +48,6 @@ interface Props {
     hasAllValuesInQuery?: boolean;
     hasNotInQueryFilter?: boolean;
     hasNotInQueryFilterLabel?: string;
-    allInQueryFilterLabel?: string;
     isAncestor?: boolean;
     metricFeatureArea?: string;
     onAllValuesInQueryChange?: (check: boolean) => void;

@@ -35,12 +35,10 @@ export const SHAPE_OPTIONS = [
     { label: 'Cross', value: 'x' },
 ];
 
-export const LINE_TYPE_STROKES = { dashed: '12, 3', dotted: '2, 2', solid: '' };
-
 export const LINE_TYPE_OPTIONS = [
-    { label: 'Solid', value: LINE_TYPE_STROKES.solid },
-    { label: 'Dashed', value: LINE_TYPE_STROKES.dashed },
-    { label: 'Dotted', value: LINE_TYPE_STROKES.dotted },
+    { label: 'Solid', value: '' },
+    { label: 'Dashed', value: 'dashed' },
+    { label: 'Dotted', value: 'dotted' },
 ];
 
 export const COLOR_OPTIONS_PER_TYPE = {

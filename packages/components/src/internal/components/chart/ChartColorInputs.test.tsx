@@ -152,27 +152,29 @@ describe('SeriesOptionRenderer', () => {
 
 describe('LineTypeOptionRenderer', () => {
     test('isValueRenderer false', () => {
-        render(<LineTypeOptionRenderer isValueRenderer={false} strokeValue="" />);
+        render(<LineTypeOptionRenderer isValueRenderer={false} label="Solid" value="" />);
         expect(document.querySelectorAll('.chart-builder-type-option')).toHaveLength(1);
         expect(document.querySelectorAll('.chart-builder-type-option--value')).toHaveLength(0);
-        expect(document.querySelector('svg path').getAttribute('stroke-dasharray')).toBe('');
+        expect(document.querySelector('svg path').getAttribute('stroke-dasharray')).toBe(null);
     });
 
     test('isValueRenderer true', () => {
-        render(<LineTypeOptionRenderer isValueRenderer strokeValue="" />);
+        render(<LineTypeOptionRenderer isValueRenderer label="Solid" value="" />);
         expect(document.querySelectorAll('.chart-builder-type-option')).toHaveLength(1);
         expect(document.querySelectorAll('.chart-builder-type-option--value')).toHaveLength(1);
-        expect(document.querySelector('svg path').getAttribute('stroke-dasharray')).toBe('');
+        expect(document.querySelector('svg path').getAttribute('stroke-dasharray')).toBe(null);
     });
 
     test('dashed line type', () => {
-        render(<LineTypeOptionRenderer isValueRenderer strokeValue="12, 3" />);
-        expect(document.querySelector('svg path').getAttribute("stroke-dasharray")).toBe('12, 3');
+        render(<LineTypeOptionRenderer isValueRenderer label="Dashed" value="dashed" />);
+        expect(document.querySelector('svg path').getAttribute("stroke-dasharray")).toBe('6,6');
+        expect(document.querySelector('svg path').getAttribute("stroke-linecap")).toBe(null);
     });
 
     test('dotted line type', () => {
-        render(<LineTypeOptionRenderer isValueRenderer strokeValue="1, 1" />);
-        expect(document.querySelector('svg path').getAttribute("stroke-dasharray")).toBe('1, 1');
+        render(<LineTypeOptionRenderer isValueRenderer label="Dotted" value="dotted" />);
+        expect(document.querySelector('svg path').getAttribute("stroke-dasharray")).toBe('0.1,6');
+        expect(document.querySelector('svg path').getAttribute("stroke-linecap")).toBe('round');
     });
 });
 

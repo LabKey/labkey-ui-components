@@ -225,6 +225,9 @@
 .chart-color-input {
     flex: 1;
 }
+.chart-color-input label {
+    display: block;
+}
 
 .chart-builder-modal__chart-preview h4,
 .chart-settings h4 {

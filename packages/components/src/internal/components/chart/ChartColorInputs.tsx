@@ -86,16 +86,25 @@ function shapeValueRenderer(option) {
 interface LineTypeOptionRendererProps {
     isValueRenderer: boolean;
     label: string;
-    strokeValue: string;
+    value: string;
 }
 
 // export for jest testing
-export const LineTypeOptionRenderer: FC<LineTypeOptionRendererProps> = memo(({ label, strokeValue, isValueRenderer }) => {
+export const LineTypeOptionRenderer: FC<LineTypeOptionRendererProps> = memo(({ label, value, isValueRenderer }) => {
     const className = classNames('chart-builder-type-option', { 'chart-builder-type-option--value': isValueRenderer });
+    const strokeValue = value === 'dashed' ? '6,6' : value === 'dotted' ? '0.1,6' : undefined;
+    const strokeLineCap = value === 'dotted' ? 'round' : undefined;
     return (
         <span className={className} data-series-linetype={label}>
-            <svg height="10" width="30">
-                <path d="M 0 5 H 30" fill="none" stroke="#000000" strokeDasharray={strokeValue} strokeWidth="3" />
+            <svg height="10" width="25">
+                <path
+                    d="M 5 5 H 25"
+                    fill="none"
+                    stroke="#000000"
+                    strokeDasharray={strokeValue}
+                    strokeLinecap={strokeLineCap}
+                    strokeWidth="3"
+                />
             </svg>
         </span>
     );
@@ -103,11 +112,11 @@ export const LineTypeOptionRenderer: FC<LineTypeOptionRendererProps> = memo(({ l
 LineTypeOptionRenderer.displayName = 'LineTypeOptionRenderer';
 
 function lineTypeOptionRenderer(option) {
-    return <LineTypeOptionRenderer isValueRenderer={false} label={option.data.label} strokeValue={option.data.value} />;
+    return <LineTypeOptionRenderer isValueRenderer={false} label={option.data.label} value={option.data.value} />;
 }
 
 function lineTypeValueRenderer(option) {
-    return <LineTypeOptionRenderer isValueRenderer label={option.data.label} strokeValue={option.data.value} />;
+    return <LineTypeOptionRenderer isValueRenderer label={option.data.label} value={option.data.value} />;
 }
 
 interface SeriesOptionRendererProps {

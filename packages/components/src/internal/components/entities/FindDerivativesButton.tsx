@@ -130,18 +130,22 @@ export function getSearchFilterObj(filterProp: FilterProps): any {
     const filterPropObj = { ...filterProp };
     delete filterPropObj['entityDataType'];
     // don't persist the entire entitydatatype
-    filterPropObj['sampleFinderCardType'] = filterProp.entityDataType.sampleFinderCardType;
+    if (filterProp.entityDataType)
+        filterPropObj['sampleFinderCardType'] = filterProp.entityDataType.sampleFinderCardType;
 
     const filterArrayObjs = [];
-    [...filterPropObj.filterArray].forEach(field => {
-        filterArrayObjs.push({
-            fieldKey: field.fieldKey,
-            fieldCaption: field.fieldCaption,
-            filter: filterToJson(field.filter),
-            jsonType: field.jsonType,
+    if (filterPropObj.filterArray) {
+        [...filterPropObj.filterArray]?.forEach(field => {
+            filterArrayObjs.push({
+                fieldKey: field.fieldKey,
+                fieldCaption: field.fieldCaption,
+                filter: filterToJson(field.filter),
+                jsonType: field.jsonType,
+            });
         });
-    });
-    filterPropObj.filterArray = filterArrayObjs;
+        filterPropObj.filterArray = filterArrayObjs;
+    }
+
     return filterPropObj;
 }
 

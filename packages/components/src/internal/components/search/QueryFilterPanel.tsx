@@ -47,6 +47,7 @@ interface Props {
     hasAllValuesInQuery?: boolean;
     hasNotInQueryFilter?: boolean;
     hasNotInQueryFilterLabel?: string;
+    allInQueryFilterLabel?: string;
     isAncestor?: boolean;
     metricFeatureArea?: string;
     onAllValuesInQueryChange?: (check: boolean) => void;
@@ -80,6 +81,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         onHasNoValueInQueryChange,
         onAllValuesInQueryChange,
         hasNotInQueryFilterLabel,
+        allInQueryFilterLabel,
         altQueryName,
         fields,
         isAncestor,
@@ -258,7 +260,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                         type="checkbox"
                                     />
                                     <div className="filter-modal__fields-col-any-msg">
-                                        All {entityDataType.nounAsParentPlural ?? entityDataType.nounPlural}
+                                        {allInQueryFilterLabel ?? 'All data'}
                                     </div>
                                 </div>
                             )}

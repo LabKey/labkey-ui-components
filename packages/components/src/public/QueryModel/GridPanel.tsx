@@ -690,10 +690,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     };
 
     showFilterModal = (actionValue?: ActionValue): void => {
-        const { model, allowFiltering, showFiltersButton, allowViewCustomization } = this.props;
+        const { model } = this.props;
         const displayColumns = model.displayColumns;
-
-        if (!allowFiltering && !showFiltersButton && !allowViewCustomization) return;
 
         // if the user clicked to edit an existing filter, use that filter's column name when opening the modal
         // else open modal with the first field selected

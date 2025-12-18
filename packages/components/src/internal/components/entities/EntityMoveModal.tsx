@@ -250,7 +250,7 @@ export const getMoveConfirmationProperties = (
         const error = makeCommaSeparatedString(parts, ', or ', '.');
 
         if (numCanMove === 0) {
-            text = `Cannot move the selected ${cannotMoveNoun}, ${error}`;
+            text = `Cannot move the selected ${cannotMoveNoun}. ${capitalizeFirstChar(error)}`;
         } else {
             text = `You've selected ${selectedCount} ${noun} but only ${numCanMove} can be moved. `;
             text += `${numCannotMove} ${cannotMoveNoun} cannot be moved because ${error}`;

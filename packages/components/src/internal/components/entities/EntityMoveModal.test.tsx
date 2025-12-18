@@ -359,7 +359,7 @@ describe('EntityMoveModal', () => {
             expect(document.querySelector('#title')).toHaveTextContent('No Samples Can Be Moved');
             expect(document.querySelector('.alert')).not.toBeInTheDocument();
             expect(document.querySelector('#message')).toHaveTextContent(
-                'Cannot move the selected samples, you lack the proper permissions, or they have a status or related data that prevents moving.'
+                'Cannot move the selected samples. You lack the proper permissions, or they have a status or related data that prevents moving.'
             );
         });
 

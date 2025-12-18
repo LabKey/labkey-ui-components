@@ -182,12 +182,17 @@ export function removeFilterValueForFilterProps(
 ): EntityFieldFilter[] {
     const value = actionValues[valueIndex]?.valueObject;
     if (!value) return entityFilterProps.filterArray;
-    const viewFilterIndex = entityFilterProps.filterArray.findIndex(f => filtersEqual(f.filter, value)) ?? -1;
-    const updatedFilterArray = [...entityFilterProps.filterArray];
-    if (viewFilterIndex > -1) {
-        updatedFilterArray.splice(viewFilterIndex, 1);
+
+    if (entityFilterProps.filterArray) {
+        const viewFilterIndex = entityFilterProps.filterArray.findIndex(f => filtersEqual(f.filter, value));
+        const updatedFilterArray = [...entityFilterProps.filterArray];
+        if (viewFilterIndex > -1) {
+            updatedFilterArray.splice(viewFilterIndex, 1);
+        }
+        return updatedFilterArray
     }
-    return updatedFilterArray;
+
+    return null;
 }
 
 export class FilterAction implements Action {

@@ -135,7 +135,7 @@ export function getSearchFilterObj(filterProp: FilterProps): any {
 
     const filterArrayObjs = [];
     if (filterPropObj.filterArray) {
-        [...filterPropObj.filterArray]?.forEach(field => {
+        [...filterPropObj.filterArray].forEach(field => {
             filterArrayObjs.push({
                 fieldKey: field.fieldKey,
                 fieldCaption: field.fieldCaption,

@@ -72,7 +72,7 @@ describe('filterActionValuesByType', () => {
         expect(result.length).toBe(0);
     });
 
-    it('returns an empty array when all matching action values are read-only and lockReadOnlyForDelete is true', () => {
+    it('returns non-readonly filter action values when lockReadOnlyForDelete is true', () => {
         const result = filterActionValuesByType(mockActionValues, 'filter', true);
         expect(result.length).toBe(1);
         expect(result[0].isReadOnly).toBeUndefined();

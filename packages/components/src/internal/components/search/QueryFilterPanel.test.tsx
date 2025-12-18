@@ -229,7 +229,7 @@ describe('QueryFilterPanel', () => {
 
     test('supportAllValueInQuery checkbox, not checked', () => {
         const { unmount } = render(
-            <QueryFilterPanel {...DEFAULT_PROPS} emptyMsg="Select a query" entityDataType={TestAllowAllEntityType} />
+            <QueryFilterPanel {...DEFAULT_PROPS} emptyMsg="Select a query" entityDataType={TestAllowAllEntityType} allInQueryFilterLabel="All Samples" />
         );
         validate(10);
         expect(document.querySelector('.filter-modal__fields-col-any-msg')!.textContent).toBe('All Samples');
@@ -250,7 +250,7 @@ describe('QueryFilterPanel', () => {
             />
         );
         validate(10);
-        expect(document.querySelector('.filter-modal__fields-col-any-msg')!.textContent).toBe('All Samples');
+        expect(document.querySelector('.filter-modal__fields-col-any-msg')!.textContent).toBe('All data');
         expect(document.querySelector('input[name="field-value-allvalues-check"]').getAttribute('checked')).toBe('');
         expect(document.querySelectorAll('.field-modal__col-content-disabled')).toHaveLength(0);
 

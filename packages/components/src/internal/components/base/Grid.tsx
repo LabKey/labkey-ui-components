@@ -197,10 +197,11 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                         {!headerCell && (
                                             <div className={GRID_HEADER_CELL_BODY}>
                                                 {title}
-                                                {/* headerCell will render the helpTip, so only render here if not using headerCell() */}
-                                                <LabelHelpTip popoverClassName="label-help-arrow-top" title={title}>
-                                                    <HelpTipRenderer type={column.helpTipRenderer} />
-                                                </LabelHelpTip>
+                                                {column.helpTipRenderer && (
+                                                    <LabelHelpTip popoverClassName="label-help-arrow-top" title={title}>
+                                                        <HelpTipRenderer type={column.helpTipRenderer} />
+                                                    </LabelHelpTip>
+                                                )}
                                             </div>
                                         )}
                                     </th>

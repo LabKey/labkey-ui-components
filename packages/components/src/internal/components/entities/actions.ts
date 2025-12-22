@@ -49,6 +49,7 @@ import {
     isAssayDesignEntity,
     isAssayResultEntity,
     isDataClassEntity,
+    isJobEntity,
     isSampleEntity,
     parseEntityParentKey,
     SAMPLE_ID_FIELD_KEY,
@@ -58,6 +59,7 @@ import {
     DATA_CLASS_IMPORT_PREFIX,
     DataClassDataType,
     DataOperation,
+    JobOperation,
     SAMPLE_SET_IMPORT_PREFIX,
     SampleTypeDataType,
 } from './constants';
@@ -186,6 +188,8 @@ export function getDeleteConfirmationData(
         extraParams = { dataOperation: DataOperation.Delete };
     } else if (isAssayDesignEntity(dataType)) {
         extraParams = { dataOperation: AssayRunOperation.Delete };
+    } else if (isJobEntity(dataType)) {
+        extraParams = { dataOperation: JobOperation.Delete };
     }
 
     return getOperationConfirmationData(
@@ -969,7 +973,9 @@ export function getMoveConfirmationData(
               }
             : isAssayDesignEntity(dataType)
               ? { dataOperation: AssayRunOperation.Move }
-              : undefined,
+              : isJobEntity(dataType)
+                ? { dataOperation: JobOperation.Move }
+                : undefined,
         undefined
     );
 }

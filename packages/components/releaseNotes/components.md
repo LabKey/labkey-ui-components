@@ -6,6 +6,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Chart builder updates for per-series line type option
 - Chart builder option for show/hide data points for line chart type
 
+### version 7.4.0
+*Released*: 22 December 2025
+- Add support for moving jobs
+  - Update `EntityMoveConfirmationModal` and `EntityMoveModal` to add an optional `permissionType`, overriding the default `Insert` permission check
+  - Add `JobOperation` enum and `isJobEntity` utility
+  - in `userContainerUser` check that we have data for the `containerUsers` when reporting `isLoaded` state
+  - export `JOB_TYPES_SCHEMA` constant
+- Update punctuation for messaging in operation restrictions.
+
 ### version 7.3.2
 *Released*: 15 December 2025
 - ConditionalFormatOptions refactor to use ColorPickerInput

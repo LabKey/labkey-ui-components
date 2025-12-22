@@ -445,24 +445,26 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                             value={seriesOptionMap[selectedSeries]?.color}
                         />
                     </div>
-                    <div className="chart-color-input">
-                        <label className="label-weight-normal">Shape</label>
-                        <SelectInput
-                            clearable={false}
-                            containerClass="inline-block"
-                            inputClass=""
-                            menuPlacement="top"
-                            onChange={onSeriesShapeChange}
-                            optionRenderer={shapeOptionRenderer}
-                            options={SHAPE_OPTIONS}
-                            placeholder="Auto"
-                            value={seriesOptionMap[selectedSeries]?.shape}
-                            valueRenderer={shapeValueRenderer}
-                        />
-                        {seriesOptionMap[selectedSeries]?.shape && (
-                            <RemoveEntityButton labelClass="color-picker__remove" onClick={onSeriesShapeRemove} />
-                        )}
-                    </div>
+                    {!chartConfig.geomOptions?.hideDataPoints && (
+                        <div className="chart-color-input">
+                            <label className="label-weight-normal">Shape</label>
+                            <SelectInput
+                                clearable={false}
+                                containerClass="inline-block"
+                                inputClass=""
+                                menuPlacement="top"
+                                onChange={onSeriesShapeChange}
+                                optionRenderer={shapeOptionRenderer}
+                                options={SHAPE_OPTIONS}
+                                placeholder="Auto"
+                                value={seriesOptionMap[selectedSeries]?.shape}
+                                valueRenderer={shapeValueRenderer}
+                            />
+                            {seriesOptionMap[selectedSeries]?.shape && (
+                                <RemoveEntityButton labelClass="color-picker__remove" onClick={onSeriesShapeRemove} />
+                            )}
+                        </div>
+                    )}
                     <div className="chart-color-input">
                         <label className="label-weight-normal">Line Type</label>
                         <SelectInput

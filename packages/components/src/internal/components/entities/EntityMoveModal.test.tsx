@@ -76,7 +76,7 @@ describe('EntityMoveModal', () => {
         });
 
         expect(document.querySelector('.modal-body')).toHaveTextContent(
-            'Cannot move the selected sample, it has a status or related data that prevents moving.'
+            'Cannot move the selected sample. It has a status or related data that prevents moving.'
         );
     });
 
@@ -198,7 +198,7 @@ describe('EntityMoveModal', () => {
             expect(document.querySelector('#title')).toHaveTextContent('Cannot Move Sample');
 
             expect(document.querySelector('#message')).toHaveTextContent(
-                'Cannot move the selected sample, it has a status or related data that prevents moving.'
+                'Cannot move the selected sample. It has a status or related data that prevents moving.'
             );
             expect(document.querySelector('.alert')).not.toBeInTheDocument();
         });
@@ -222,7 +222,7 @@ describe('EntityMoveModal', () => {
 
             expect(document.querySelector('.alert')).toBeNull();
             expect(document.querySelector('#message')).toHaveTextContent(
-                'Cannot move the selected samples, they have a status or related data that prevents moving.'
+                'Cannot move the selected samples. They have a status or related data that prevents moving.'
             );
         });
 
@@ -479,7 +479,7 @@ describe('EntityMoveModal', () => {
             expect(document.querySelector('#title')).toHaveTextContent('No Samples Can Be Moved');
             expect(document.querySelector('.alert')).not.toBeInTheDocument();
             expect(document.querySelector('#message')).toHaveTextContent(
-                'Cannot move the selected samples, they may have been deleted.'
+                'Cannot move the selected samples. They may have been deleted. More info.'
             );
         });
     });

@@ -46,10 +46,10 @@
 }
 
 .grid-header-cell {
-  position: relative;
-  padding: 0 9px;
-  font-weight: bold;
-  vertical-align: top !important; // important because bootstrap has a highly specific selector that sets it to bottom
+    position: relative;
+    padding: 0 9px;
+    font-weight: bold;
+    vertical-align: top !important; // important because bootstrap has a highly specific selector that sets it to bottom
 
     input:not([type=checkbox]) {
         width: 100%
@@ -59,6 +59,11 @@
 .grid-header-cell__body {
     display: flex;
     gap: 8px;
+    // Note: we have to have max-height and overflow-y set because some grid configurations can lead to extremely tall
+    // table headers that take up 100% of the table height, completely blocking the table rows. To repro add a column
+    // with a really long name (at or near the max length of 200 chars) and keep all values blank.
+    max-height: 250px;
+    overflow-y: auto;
 }
 
 .grid-header-cell__title-wrapper {

@@ -27,6 +27,7 @@ import {
     CELL_SELECTION_HANDLE_CLASSNAME,
     GRID_CHECKBOX_OPTIONS,
     GRID_EDIT_INDEX,
+    GRID_HEADER_CELL_BODY,
     GRID_SELECTION_INDEX,
     MAX_EDITABLE_GRID_ROWS,
 } from '../../constants';
@@ -884,7 +885,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         // TODO should be able to just use LabelOverlay here since it can handle an alternate tooltip renderer
         return (
-            <>
+            <div className={GRID_HEADER_CELL_BODY}>
                 {!showLabelOverlay && (
                     <>
                         {label}
@@ -909,7 +910,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         <RemoveColumnMenuItem column={qColumn} onClick={metadata.onRemoveColumn} />
                     </DropdownMenu>
                 )}
-            </>
+            </div>
         );
     };
 

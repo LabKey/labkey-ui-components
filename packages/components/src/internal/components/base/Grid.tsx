@@ -193,12 +193,15 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                         onDrop={this.handleDrop}
                                         title={hideTooltip ? undefined : description}
                                     >
-                                        {headerCell ? headerCell(column, i, columns.size) : title}
-                                        {/* headerCell will render the helpTip, so only render here if not using headerCell() */}
-                                        {!headerCell && column.helpTipRenderer && (
-                                            <LabelHelpTip popoverClassName="label-help-arrow-top" title={title}>
-                                                <HelpTipRenderer type={column.helpTipRenderer} />
-                                            </LabelHelpTip>
+                                        {headerCell && headerCell(column, i, columns.size)}
+                                        {!headerCell && (
+                                            <div className={GRID_HEADER_CELL_BODY}>
+                                                {title}
+                                                {/* headerCell will render the helpTip, so only render here if not using headerCell() */}
+                                                <LabelHelpTip popoverClassName="label-help-arrow-top" title={title}>
+                                                    <HelpTipRenderer type={column.helpTipRenderer} />
+                                                </LabelHelpTip>
+                                            </div>
                                         )}
                                     </th>
                                 );

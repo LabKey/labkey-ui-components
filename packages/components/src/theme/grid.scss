@@ -628,6 +628,7 @@ $table-cell-padding: 4px 2px;
 td > .expired-grid-cell-content {
     padding: 5px;
     background-image: linear-gradient(225deg, red, red 5px, transparent 5px, transparent);
+    white-space: nowrap;
 }
 
 td > .expired-form-field {

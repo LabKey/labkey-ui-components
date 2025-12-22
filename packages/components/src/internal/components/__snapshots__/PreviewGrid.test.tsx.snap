@@ -34,7 +34,7 @@ exports[`PreviewGrid render PreviewGrid with data 1`] = `
         class="grid-messages"
       />
       <table
-        class="table table-striped table-bordered"
+        class="read-only-table table table-striped table-bordered"
       >
         <thead>
           <tr>
@@ -47,7 +47,11 @@ exports[`PreviewGrid render PreviewGrid with data 1`] = `
 If not provided, a unique name will be generated from the expression:
 null (Name)"
             >
-              Name
+              <div
+                class="grid-header-cell__body"
+              >
+                Name
+              </div>
             </th>
             <th
               class="grid-header-cell"
@@ -56,7 +60,11 @@ null (Name)"
               id="Flag"
               title="Contains a reference to a user-editable comment about this row (Flag)"
             >
-              Flag
+              <div
+                class="grid-header-cell__body"
+              >
+                Flag
+              </div>
             </th>
             <th
               class="grid-header-cell"
@@ -65,7 +73,11 @@ null (Name)"
               id="mixtureTypeId"
               title="mixtureTypeId"
             >
-              Mixture Type
+              <div
+                class="grid-header-cell__body"
+              >
+                Mixture Type
+              </div>
             </th>
             <th
               class="grid-header-cell"
@@ -74,7 +86,11 @@ null (Name)"
               id="expirationTime"
               title="The expiration period in days. (expirationTime)"
             >
-              Expiration Time
+              <div
+                class="grid-header-cell__body"
+              >
+                Expiration Time
+              </div>
             </th>
           </tr>
         </thead>
@@ -83,120 +99,138 @@ null (Name)"
             class="grid-row-alternate"
           >
             <td
-              style="text-align: left;"
+              class="text-left"
             >
-              <a
-                class="ws-pre-wrap"
-                href="/labkey/testContainer/experiment-showData.view?rowId=41426"
+              <div
+                class="table-cell-content"
               >
-                DMEXP
-              </a>
+                <a
+                  href="/labkey/testContainer/experiment-showData.view?rowId=41426"
+                >
+                  DMEXP
+                </a>
+              </div>
             </td>
             <td
-              style="text-align: left;"
+              class="text-left"
             >
-              <span
-                class="ws-pre-wrap"
+              <div
+                class="table-cell-content"
               />
             </td>
             <td
-              style="text-align: left;"
+              class="text-left"
             >
-              <a
-                class="ws-pre-wrap"
-                href="/labkey/testContainer/list-details.view?listId=15&pk=2"
+              <div
+                class="table-cell-content"
               >
-                Solution
-              </a>
+                <a
+                  href="/labkey/testContainer/list-details.view?listId=15&pk=2"
+                >
+                  Solution
+                </a>
+              </div>
             </td>
             <td
-              style="text-align: right;"
+              class="text-right"
             >
-              <span
-                class="ws-pre-wrap"
+              <div
+                class="table-cell-content"
               >
                 30
-              </span>
+              </div>
             </td>
           </tr>
           <tr
             class="grid-row"
           >
             <td
-              style="text-align: left;"
+              class="text-left"
             >
-              <a
-                class="ws-pre-wrap"
-                href="/labkey/testContainer/experiment-showData.view?rowId=41425"
+              <div
+                class="table-cell-content"
               >
-                TBS
-              </a>
+                <a
+                  href="/labkey/testContainer/experiment-showData.view?rowId=41425"
+                >
+                  TBS
+                </a>
+              </div>
             </td>
             <td
-              style="text-align: left;"
+              class="text-left"
             >
-              <span
-                class="ws-pre-wrap"
+              <div
+                class="table-cell-content"
               />
             </td>
             <td
-              style="text-align: left;"
+              class="text-left"
             >
-              <a
-                class="ws-pre-wrap"
-                href="/labkey/testContainer/list-details.view?listId=15&pk=2"
+              <div
+                class="table-cell-content"
               >
-                Solution
-              </a>
+                <a
+                  href="/labkey/testContainer/list-details.view?listId=15&pk=2"
+                >
+                  Solution
+                </a>
+              </div>
             </td>
             <td
-              style="text-align: right;"
+              class="text-right"
             >
-              <span
-                class="ws-pre-wrap"
+              <div
+                class="table-cell-content"
               >
                 30
-              </span>
+              </div>
             </td>
           </tr>
           <tr
             class="grid-row-alternate"
           >
             <td
-              style="text-align: left;"
+              class="text-left"
             >
-              <a
-                class="ws-pre-wrap"
-                href="/labkey/testContainer/experiment-showData.view?rowId=41424"
+              <div
+                class="table-cell-content"
               >
-                PBS
-              </a>
+                <a
+                  href="/labkey/testContainer/experiment-showData.view?rowId=41424"
+                >
+                  PBS
+                </a>
+              </div>
             </td>
             <td
-              style="text-align: left;"
+              class="text-left"
             >
-              <span
-                class="ws-pre-wrap"
+              <div
+                class="table-cell-content"
               />
             </td>
             <td
-              style="text-align: left;"
+              class="text-left"
             >
-              <a
-                class="ws-pre-wrap"
-                href="/labkey/testContainer/list-details.view?listId=15&pk=2"
+              <div
+                class="table-cell-content"
               >
-                Solution
-              </a>
+                <a
+                  href="/labkey/testContainer/list-details.view?listId=15&pk=2"
+                >
+                  Solution
+                </a>
+              </div>
             </td>
             <td
-              style="text-align: right;"
+              class="text-right"
             >
-              <span
-                class="ws-pre-wrap"
+              <div
+                class="table-cell-content"
               >
                 30
-              </span>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -221,7 +255,7 @@ exports[`PreviewGrid render PreviewGrid with different numCols and numRows 1`] =
         class="grid-messages"
       />
       <table
-        class="table table-striped table-bordered"
+        class="read-only-table table table-striped table-bordered"
       >
         <thead>
           <tr>
@@ -234,7 +268,11 @@ exports[`PreviewGrid render PreviewGrid with different numCols and numRows 1`] =
 If not provided, a unique name will be generated from the expression:
 null (Name)"
             >
-              Name
+              <div
+                class="grid-header-cell__body"
+              >
+                Name
+              </div>
             </th>
             <th
               class="grid-header-cell"
@@ -243,7 +281,11 @@ null (Name)"
               id="Flag"
               title="Contains a reference to a user-editable comment about this row (Flag)"
             >
-              Flag
+              <div
+                class="grid-header-cell__body"
+              >
+                Flag
+              </div>
             </th>
           </tr>
         </thead>
@@ -252,20 +294,23 @@ null (Name)"
             class="grid-row-alternate"
           >
             <td
-              style="text-align: left;"
+              class="text-left"
             >
-              <a
-                class="ws-pre-wrap"
-                href="/labkey/testContainer/experiment-showData.view?rowId=41426"
+              <div
+                class="table-cell-content"
               >
-                DMEXP
-              </a>
+                <a
+                  href="/labkey/testContainer/experiment-showData.view?rowId=41426"
+                >
+                  DMEXP
+                </a>
+              </div>
             </td>
             <td
-              style="text-align: left;"
+              class="text-left"
             >
-              <span
-                class="ws-pre-wrap"
+              <div
+                class="table-cell-content"
               />
             </td>
           </tr>
@@ -273,20 +318,23 @@ null (Name)"
             class="grid-row"
           >
             <td
-              style="text-align: left;"
+              class="text-left"
             >
-              <a
-                class="ws-pre-wrap"
-                href="/labkey/testContainer/experiment-showData.view?rowId=41425"
+              <div
+                class="table-cell-content"
               >
-                TBS
-              </a>
+                <a
+                  href="/labkey/testContainer/experiment-showData.view?rowId=41425"
+                >
+                  TBS
+                </a>
+              </div>
             </td>
             <td
-              style="text-align: left;"
+              class="text-left"
             >
-              <span
-                class="ws-pre-wrap"
+              <div
+                class="table-cell-content"
               />
             </td>
           </tr>

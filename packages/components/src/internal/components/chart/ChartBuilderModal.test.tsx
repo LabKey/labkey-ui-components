@@ -20,7 +20,7 @@ import {
 
 import { ChartBuilderModal, getChartBuilderQueryConfig, getChartRenderMsg } from './ChartBuilderModal';
 import { MAX_POINT_DISPLAY, MAX_ROWS_PREVIEW } from './constants';
-import { ChartConfig, ChartQueryConfig, ChartTypeInfo, GenericChartModel, VisualizationConfigModel } from './models';
+import { ChartConfig, ChartQueryConfig, ChartTypeInfo, GenericChartModel } from './models';
 import { deepCopyChartConfig } from './utils';
 
 const BAR_CHART_TYPE = {
@@ -272,7 +272,7 @@ describe('ChartBuilderModal', () => {
         await userEvent.click(typeDropdown);
         const lineOption = screen.getByText('Line');
         await userEvent.click(lineOption);
-        expect(document.querySelectorAll('input')).toHaveLength(17);
+        expect(document.querySelectorAll('input')).toHaveLength(19);
         LINE_PLOT_TYPE.fields.forEach(field => {
             if (field.name !== 'trendline') {
                 expect(document.querySelectorAll(`input[name="${field.name}"]`)).toHaveLength(1);
@@ -421,7 +421,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, true, true);
-        expect(document.querySelectorAll('input')).toHaveLength(17);
+        expect(document.querySelectorAll('input')).toHaveLength(19);
         expect(document.querySelector('input[name=x]').getAttribute('value')).toBe('field1');
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
         expect(document.querySelectorAll('input[name=aggregate-method]')).toHaveLength(0);
@@ -459,7 +459,7 @@ describe('ChartBuilderModal', () => {
         );
 
         validate(false, true, true);
-        expect(document.querySelectorAll('input')).toHaveLength(17);
+        expect(document.querySelectorAll('input')).toHaveLength(19);
         expect(document.querySelector('input[name=x]').getAttribute('value')).toBe('field1');
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
         expect(document.querySelectorAll('input[name=aggregate-method]')).toHaveLength(0);

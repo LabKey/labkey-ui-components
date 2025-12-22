@@ -122,9 +122,10 @@ export const SAMPLE_MANAGEMENT = {
 };
 
 // WORKFLOW
-export const WORKFLOW_SCHEMA = "workflow";
+export const WORKFLOW_SCHEMA = 'workflow';
 export const WORKFLOW = {
     SCHEMA: WORKFLOW_SCHEMA,
+    JOB_TYPES_SCHEMA: 'workflow.jobtypes',
     JOB: new SchemaQuery(WORKFLOW_SCHEMA, 'Job'),
     ACTION: new SchemaQuery(WORKFLOW_SCHEMA, 'Action'),
     JOB_TEMPLATE: new SchemaQuery(WORKFLOW_SCHEMA, 'JobTemplate'),

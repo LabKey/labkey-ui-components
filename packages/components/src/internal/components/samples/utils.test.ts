@@ -140,7 +140,7 @@ describe('getOperationNotAllowedMessage', () => {
                     ],
                 })
             )
-        ).toBe('All selected samples have a status that prevents adding them to storage.');
+        ).toBe('All selected samples have a status or related data that prevents adding them to storage.');
     });
 
     test('some not allowed, without aliquots', () => {

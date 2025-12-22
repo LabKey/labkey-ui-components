@@ -76,7 +76,7 @@ describe('EntityMoveModal', () => {
         });
 
         expect(document.querySelector('.modal-body')).toHaveTextContent(
-            'Cannot move the selected sample, it has a status that prevents moving.'
+            'Cannot move the selected sample. It has a status or related data that prevents moving.'
         );
     });
 
@@ -198,7 +198,7 @@ describe('EntityMoveModal', () => {
             expect(document.querySelector('#title')).toHaveTextContent('Cannot Move Sample');
 
             expect(document.querySelector('#message')).toHaveTextContent(
-                'Cannot move the selected sample, it has a status that prevents moving.'
+                'Cannot move the selected sample. It has a status or related data that prevents moving.'
             );
             expect(document.querySelector('.alert')).not.toBeInTheDocument();
         });
@@ -222,7 +222,7 @@ describe('EntityMoveModal', () => {
 
             expect(document.querySelector('.alert')).toBeNull();
             expect(document.querySelector('#message')).toHaveTextContent(
-                'Cannot move the selected samples, they have a status that prevents moving.'
+                'Cannot move the selected samples. They have a status or related data that prevents moving.'
             );
         });
 
@@ -244,7 +244,7 @@ describe('EntityMoveModal', () => {
             expect(document.querySelector('#canMove')).toHaveTextContent('true');
             expect(document.querySelector('#title')).toHaveTextContent('Move 1 Sample');
             expect(document.querySelector('.alert')).toHaveTextContent(
-                "You've selected 2 samples but only 1 can be moved. 1 sample cannot be moved because it has a status that prevents moving."
+                "You've selected 2 samples but only 1 can be moved. 1 sample cannot be moved because it has a status or related data that prevents moving."
             );
         });
 
@@ -267,7 +267,7 @@ describe('EntityMoveModal', () => {
             expect(document.querySelector('#title')).toHaveTextContent('Move 2 Samples');
 
             expect(document.querySelector('.alert')).toHaveTextContent(
-                "You've selected 4 samples but only 2 can be moved. 2 samples cannot be moved because they have a status that prevents moving."
+                "You've selected 4 samples but only 2 can be moved. 2 samples cannot be moved because they have a status or related data that prevents moving."
             );
         });
 
@@ -289,7 +289,7 @@ describe('EntityMoveModal', () => {
             expect(document.querySelector('#canMove')).toHaveTextContent('true');
             expect(document.querySelector('#title')).toHaveTextContent('Move 2 Samples');
             expect(document.querySelector('.alert')).toHaveTextContent(
-                "You've selected 4 samples but only 2 can be moved. 2 samples cannot be moved because you lack the proper permissions, or they have a status that prevents moving."
+                "You've selected 4 samples but only 2 can be moved. 2 samples cannot be moved because you lack the proper permissions, or they have a status or related data that prevents moving."
             );
         });
 
@@ -335,7 +335,7 @@ describe('EntityMoveModal', () => {
             expect(document.querySelector('#title')).toHaveTextContent('Move 2 Samples');
 
             expect(document.querySelector('.alert')).toHaveTextContent(
-                "You've selected 5 samples but only 2 can be moved. 3 samples cannot be moved because you lack the proper permissions, or they have a status that prevents moving."
+                "You've selected 5 samples but only 2 can be moved. 3 samples cannot be moved because you lack the proper permissions, or they have a status or related data that prevents moving."
             );
         });
 
@@ -359,7 +359,7 @@ describe('EntityMoveModal', () => {
             expect(document.querySelector('#title')).toHaveTextContent('No Samples Can Be Moved');
             expect(document.querySelector('.alert')).not.toBeInTheDocument();
             expect(document.querySelector('#message')).toHaveTextContent(
-                'Cannot move the selected samples, you lack the proper permissions, or they have a status that prevents moving.'
+                'Cannot move the selected samples. You lack the proper permissions, or they have a status or related data that prevents moving.'
             );
         });
 
@@ -407,7 +407,7 @@ describe('EntityMoveModal', () => {
             expect(document.querySelector('#title')).toHaveTextContent('Move 1 Sample');
             expect(document.querySelector('.alert')).toBeInTheDocument();
             expect(document.querySelector('#message')).toHaveTextContent(
-                "You've selected 3 samples but only 1 can be moved. 2 samples cannot be moved because they have a status that prevents moving, or they may have been deleted."
+                "You've selected 3 samples but only 1 can be moved. 2 samples cannot be moved because they have a status or related data that prevents moving, or they may have been deleted."
             );
         });
 
@@ -455,7 +455,7 @@ describe('EntityMoveModal', () => {
             expect(document.querySelector('#title')).toHaveTextContent('Move 1 Sample');
             expect(document.querySelector('.alert')).toBeInTheDocument();
             expect(document.querySelector('#message')).toHaveTextContent(
-                "You've selected 4 samples but only 1 can be moved. 3 samples cannot be moved because you lack the proper permissions, they have a status that prevents moving, or they may have been deleted."
+                "You've selected 4 samples but only 1 can be moved. 3 samples cannot be moved because you lack the proper permissions, they have a status or related data that prevents moving, or they may have been deleted."
             );
         });
 
@@ -479,7 +479,7 @@ describe('EntityMoveModal', () => {
             expect(document.querySelector('#title')).toHaveTextContent('No Samples Can Be Moved');
             expect(document.querySelector('.alert')).not.toBeInTheDocument();
             expect(document.querySelector('#message')).toHaveTextContent(
-                'Cannot move the selected samples, they may have been deleted.'
+                'Cannot move the selected samples. They may have been deleted. More info.'
             );
         });
     });

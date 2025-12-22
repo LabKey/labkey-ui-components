@@ -16,6 +16,7 @@ import { getEntityNoun } from './utils';
 import { EntityMoveConfirmationModal } from './EntityMoveConfirmationModal';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { AppLink } from '../../url/AppLink';
+import { Security } from '@labkey/api';
 
 export interface EntityMoveModalProps {
     api?: ComponentsAPIWrapper;
@@ -25,6 +26,7 @@ export interface EntityMoveModalProps {
     maxSelected: number;
     onAfterMove: () => void;
     onCancel: () => void;
+    permissionType?: Security.PermissionTypes;
     rowIds: string[];
     schemaQuery: SchemaQuery;
     targetAppURL: AppURL;
@@ -42,6 +44,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
         rowIds,
         schemaQuery,
         targetAppURL,
+        permissionType,
     } = props;
     const { nounPlural } = entityDataType;
     const { createNotification } = useNotificationsContext();
@@ -194,6 +197,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     nounPlural={nounPlural}
                     onCancel={onCancel}
                     onConfirm={onConfirm}
+                    permissionType={permissionType}
                     title={title}
                 >
                     {message}
@@ -241,12 +245,12 @@ export const getMoveConfirmationProperties = (
         const verb = numCannotMove === 1 ? 'has' : 'have';
         const parts = [];
         if (numNotPermitted > 0) parts.push('you lack the proper permissions');
-        if (numNotAllowed > 0) parts.push(`${pronoun} ${verb} a status that prevents moving`);
+        if (numNotAllowed > 0) parts.push(`${pronoun} ${verb} a status or related data that prevents moving`);
         if (numMissing > 0) parts.push(`${pronoun} may have been deleted`);
         const error = makeCommaSeparatedString(parts, ', or ', '.');
 
         if (numCanMove === 0) {
-            text = `Cannot move the selected ${cannotMoveNoun}, ${error}`;
+            text = `Cannot move the selected ${cannotMoveNoun}. ${capitalizeFirstChar(error)}`;
         } else {
             text = `You've selected ${selectedCount} ${noun} but only ${numCanMove} can be moved. `;
             text += `${numCannotMove} ${cannotMoveNoun} cannot be moved because ${error}`;

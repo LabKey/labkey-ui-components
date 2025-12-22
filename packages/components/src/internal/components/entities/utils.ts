@@ -139,6 +139,10 @@ export function isAssayDesignEntity(dataType: EntityDataType): boolean {
     return dataType.instanceSchemaName === SCHEMAS.ASSAY_TABLES.SCHEMA;
 }
 
+export function isJobEntity(dataType: EntityDataType): boolean {
+    return dataType.instanceSchemaName === SCHEMAS.WORKFLOW.SCHEMA;
+}
+
 export function isAssayResultEntity(dataType: EntityDataType): boolean {
     return dataType.sampleFinderCardType === 'assaydata';
 }

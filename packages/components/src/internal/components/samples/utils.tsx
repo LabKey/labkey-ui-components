@@ -179,7 +179,7 @@ export function getOperationNotAllowedMessageFromCounts(
     if (!totalCount || !notAllowedCount) return null;
 
     if (notAllowedCount === totalCount) {
-        return `All selected samples have a status that prevents ${operationRestrictionMessage[operation].all}.`;
+        return `All selected samples have a status or related data that prevents ${operationRestrictionMessage[operation].all}.`;
     }
 
     const noun = notAllowedCount === 1 ? 'sample' : 'samples';

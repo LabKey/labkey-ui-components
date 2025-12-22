@@ -167,6 +167,7 @@ export function useContainerUser(containerIdOrPath: string, options?: UseContain
                 setContainerUsers(containerUsers_);
             } catch (e) {
                 setError(resolveErrorMessage(e));
+                setContainerUsers({[containerIdOrPath]: undefined})
             }
 
             setLoadingState(LoadingState.LOADED);
@@ -178,7 +179,7 @@ export function useContainerUser(containerIdOrPath: string, options?: UseContain
         container: containerUsers[containerIdOrPath]?.container,
         containerUsers,
         error,
-        isLoaded: !isLoading(loadingState),
+        isLoaded: !isLoading(loadingState) && containerUsers.hasOwnProperty(containerIdOrPath),
         user: containerUsers[containerIdOrPath]?.user,
     };
 }

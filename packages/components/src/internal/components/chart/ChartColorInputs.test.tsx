@@ -3,7 +3,13 @@ import { render } from '@testing-library/react';
 import { ChartConfig } from './models';
 import { LABKEY_VIS } from '../../constants';
 
-import { ChartColorInputs, SeriesOptionRenderer, ShapeOptionRenderer, showColorOption, LineTypeOptionRenderer } from './ChartColorInputs';
+import {
+    ChartColorInputs,
+    LineTypeOptionRenderer,
+    SeriesOptionRenderer,
+    ShapeOptionRenderer,
+    showColorOption,
+} from './ChartColorInputs';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
@@ -167,14 +173,14 @@ describe('LineTypeOptionRenderer', () => {
 
     test('dashed line type', () => {
         render(<LineTypeOptionRenderer isValueRenderer label="Dashed" value="dashed" />);
-        expect(document.querySelector('svg path').getAttribute("stroke-dasharray")).toBe('6,6');
-        expect(document.querySelector('svg path').getAttribute("stroke-linecap")).toBe(null);
+        expect(document.querySelector('svg path').getAttribute('stroke-dasharray')).toBe('6,6');
+        expect(document.querySelector('svg path').getAttribute('stroke-linecap')).toBe(null);
     });
 
     test('dotted line type', () => {
         render(<LineTypeOptionRenderer isValueRenderer label="Dotted" value="dotted" />);
-        expect(document.querySelector('svg path').getAttribute("stroke-dasharray")).toBe('0.1,6');
-        expect(document.querySelector('svg path').getAttribute("stroke-linecap")).toBe('round');
+        expect(document.querySelector('svg path').getAttribute('stroke-dasharray')).toBe('0.1,6');
+        expect(document.querySelector('svg path').getAttribute('stroke-linecap')).toBe('round');
     });
 });
 

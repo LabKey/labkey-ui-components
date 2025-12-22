@@ -9,8 +9,8 @@ export interface ChartLabels {
 
 export interface MeasureOption {
     color?: string;
+    lineType?: string;
     shape?: string;
-    // lineType?: string;
 }
 
 export interface ChartConfig {

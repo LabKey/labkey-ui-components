@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 import { ChartConfig, ChartConfigSetter, MeasureOption } from './models';
 import { ColorPickerInput } from '../forms/input/ColorPickerInput';
-import { COLOR_OPTIONS_PER_TYPE, COLOR_PALETTE_OPTIONS, SHAPE_OPTIONS } from './constants';
+import { COLOR_OPTIONS_PER_TYPE, COLOR_PALETTE_OPTIONS, LINE_TYPE_OPTIONS, SHAPE_OPTIONS } from './constants';
 import { SelectInput } from '../forms/input/SelectInput';
 import { selectDistinctRows } from '../../query/api';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -83,6 +83,42 @@ function shapeValueRenderer(option) {
     return <ShapeOptionRenderer isValueRenderer name={option.data.value} />;
 }
 
+interface LineTypeOptionRendererProps {
+    isValueRenderer: boolean;
+    label: string;
+    value: string;
+}
+
+// export for jest testing
+export const LineTypeOptionRenderer: FC<LineTypeOptionRendererProps> = memo(({ label, value, isValueRenderer }) => {
+    const className = classNames('chart-builder-type-option', { 'chart-builder-type-option--value': isValueRenderer });
+    const strokeValue = value === 'dashed' ? '6,6' : value === 'dotted' ? '0.1,6' : undefined;
+    const strokeLineCap = value === 'dotted' ? 'round' : undefined;
+    return (
+        <span className={className} data-series-linetype={label}>
+            <svg height="10" width="25">
+                <path
+                    d="M 5 5 H 25"
+                    fill="none"
+                    stroke="#000000"
+                    strokeDasharray={strokeValue}
+                    strokeLinecap={strokeLineCap}
+                    strokeWidth="3"
+                />
+            </svg>
+        </span>
+    );
+});
+LineTypeOptionRenderer.displayName = 'LineTypeOptionRenderer';
+
+function lineTypeOptionRenderer(option) {
+    return <LineTypeOptionRenderer isValueRenderer={false} label={option.data.label} value={option.data.value} />;
+}
+
+function lineTypeValueRenderer(option) {
+    return <LineTypeOptionRenderer isValueRenderer label={option.data.label} value={option.data.value} />;
+}
+
 interface SeriesOptionRendererProps {
     isValueRenderer: boolean;
     name: string;
@@ -97,7 +133,7 @@ export const SeriesOptionRenderer: FC<SeriesOptionRendererProps> = memo(
             'chart-builder-type-option--value': isValueRenderer,
         });
         return (
-            <span className={className} data-series-shape={name}>
+            <span className={className} data-series-option={name}>
                 {value && (
                     <>
                         <ColorIcon asSquare cls="color-icon__chip-small" value={value} /> {name}
@@ -280,11 +316,15 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
 
             if (chartConfig.measures?.series) {
                 try {
+                    const seriesColumn = model.getColumn(chartConfig.measures?.series.fieldKey);
                     const response = await selectDistinctRows({
                         schemaName: model.schemaQuery.schemaName,
                         queryName: model.schemaQuery.queryName,
                         viewName: model.schemaQuery.viewName,
-                        column: chartConfig.measures?.series.fieldKey,
+                        // if the series measure is a lookup, we need to get distinct values from the display column
+                        column:
+                            chartConfig.measures?.series.fieldKey +
+                            (seriesColumn?.isLookup() ? '/' + seriesColumn.lookup.displayColumnFieldKey : ''),
                     });
 
                     // map response.values to SelectOption format
@@ -346,6 +386,17 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
         [onSeriesOptionChange, selectedSeries]
     );
 
+    const onSeriesLineTypeChange = useCallback(
+        (_: never, value: string) => {
+            onSeriesOptionChange(selectedSeries, 'lineType', value);
+        },
+        [onSeriesOptionChange, selectedSeries]
+    );
+
+    const onSeriesLineTypeRemove = useCallback(() => {
+        onSeriesOptionChange(selectedSeries, 'lineType', undefined);
+    }, [onSeriesOptionChange, selectedSeries]);
+
     const onSeriesShapeChange = useCallback(
         (_: never, value: string) => {
             onSeriesOptionChange(selectedSeries, 'shape', value);
@@ -383,9 +434,9 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                 </div>
             </div>
             {selectedSeries && (
-                <div className="row">
-                    <div className="col-xs-4">
-                        <div>Color</div>
+                <div className="chart-color-inputs">
+                    <div className="chart-color-input">
+                        <label className="label-weight-normal">Color</label>
                         <ColorPickerInput
                             allowRemove
                             name="seriesColor"
@@ -394,22 +445,42 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                             value={seriesOptionMap[selectedSeries]?.color}
                         />
                     </div>
-                    <div className="col-xs-8">
-                        <div>Shape</div>
+                    {!chartConfig.geomOptions?.hideDataPoints && (
+                        <div className="chart-color-input">
+                            <label className="label-weight-normal">Shape</label>
+                            <SelectInput
+                                clearable={false}
+                                containerClass="inline-block"
+                                inputClass=""
+                                menuPlacement="top"
+                                onChange={onSeriesShapeChange}
+                                optionRenderer={shapeOptionRenderer}
+                                options={SHAPE_OPTIONS}
+                                placeholder="Auto"
+                                value={seriesOptionMap[selectedSeries]?.shape}
+                                valueRenderer={shapeValueRenderer}
+                            />
+                            {seriesOptionMap[selectedSeries]?.shape && (
+                                <RemoveEntityButton labelClass="color-picker__remove" onClick={onSeriesShapeRemove} />
+                            )}
+                        </div>
+                    )}
+                    <div className="chart-color-input">
+                        <label className="label-weight-normal">Line Type</label>
                         <SelectInput
                             clearable={false}
                             containerClass="inline-block"
                             inputClass=""
                             menuPlacement="top"
-                            onChange={onSeriesShapeChange}
-                            optionRenderer={shapeOptionRenderer}
-                            options={SHAPE_OPTIONS}
+                            onChange={onSeriesLineTypeChange}
+                            optionRenderer={lineTypeOptionRenderer}
+                            options={LINE_TYPE_OPTIONS}
                             placeholder="Auto"
-                            value={seriesOptionMap[selectedSeries]?.shape}
-                            valueRenderer={shapeValueRenderer}
+                            value={seriesOptionMap[selectedSeries]?.lineType}
+                            valueRenderer={lineTypeValueRenderer}
                         />
-                        {seriesOptionMap[selectedSeries]?.shape && (
-                            <RemoveEntityButton labelClass="color-picker__remove" onClick={onSeriesShapeRemove} />
+                        {seriesOptionMap[selectedSeries]?.lineType !== undefined && (
+                            <RemoveEntityButton labelClass="color-picker__remove" onClick={onSeriesLineTypeRemove} />
                         )}
                     </div>
                 </div>

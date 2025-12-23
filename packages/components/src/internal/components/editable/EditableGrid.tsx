@@ -37,7 +37,7 @@ import { HeaderSelectionCell } from '../../renderers';
 import { blurActiveElement, capitalizeFirstChar, not } from '../../util/utils';
 import { Grid } from '../base/Grid';
 
-import { getTextAlignClassName, GridColumn, GridColumnCellRenderer } from '../base/models/GridColumn';
+import { GridColumn, GridColumnCellRenderer } from '../base/models/GridColumn';
 
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
@@ -142,8 +142,8 @@ const COUNT_COL = new GridColumn({
     tableCell: true,
     title: 'Row',
     cell: (d, r, c, rn) => (
-        <td className={classNames('cellular-count', getTextAlignClassName(c))} key={c.index}>
-            <div className="cellular-count-static-content">{rn + 1}</div>
+        <td className="cellular-count" key={c.index}>
+            {rn + 1}
         </td>
     ),
 });

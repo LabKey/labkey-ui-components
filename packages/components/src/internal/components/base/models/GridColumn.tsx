@@ -81,10 +81,9 @@ export class GridColumn implements ColumnProps {
     }
 }
 
-// Special interface that lets us pass GridColumn and EditableColumnMetadata to getTextAlignClassname
+// Special interface that lets us pass GridColumn and QueryColumn to getTextAlignClassname
 interface WithAlignment {
     align?: string;
-    jsonType?: string;
 }
 
 const TEXT_ALIGN_CLASSES = {

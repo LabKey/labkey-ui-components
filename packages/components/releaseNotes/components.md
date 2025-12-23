@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- [GitHub Issue 734](https://github.com/LabKey/internal-issues/issues/734) Update sizing of comment input box for better display in narrow screens
+- [GitHub Issue 457](https://github.com/LabKey/internal-issues/issues/457) Update messaging for deleting samples linked to studies
+
 ### version 7.5.0
 *Released*: 22 December 2025
 - Chart builder updates for per-series line type option

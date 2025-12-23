@@ -24,7 +24,11 @@ export function deleteSuccessMessage(noun: string, count?: number, additionalInf
     return 'Successfully deleted ' + countStr.toLocaleString() + ' ' + noun + '. ' + (additionalInfo || '');
 }
 
-export function deleteErrorMessage(noun: string): ReactNode {
+export function deleteErrorMessage(noun: string, error?: any): ReactNode {
+    const errorMsg = extractMessageFromError(error);
+    if (errorMsg && errorMsg.indexOf('Cannot delete rows from dataset') >= 0) {
+        return `There was a problem deleting the ${noun.toLowerCase()} because of references from a study dataset. Recall or remove the ${noun.toLowerCase()} from the study and try again.`;
+    }
     return getActionErrorMessage('There was a problem deleting the ' + noun + '. ', noun);
 }
 
@@ -87,6 +91,25 @@ export function makePresentParticiple(verb: string): string {
     }
 }
 
+function extractMessageFromError(error: any) {
+    let errorMsg;
+    if (!error) {
+        return undefined;
+    }
+    if (typeof error === 'string') {
+        errorMsg = error;
+    } else if (error.message) {
+        errorMsg = error.message;
+    } else if (error.msg) {
+        errorMsg = error.msg;
+    } else if (error.exception) {
+        errorMsg = error.exception;
+    } else if (error.error) {
+        errorMsg = error.error.exception;
+    }
+    return errorMsg;
+}
+
 export function resolveErrorMessage(
     error: any,
     noun = 'data',
@@ -101,19 +124,8 @@ export function resolveErrorMessage(
     returnInitialMsg = false
 ): string {
     const verbPresParticiple = makePresentParticiple(verbPresent);
-    let errorMsg;
-    if (!error) {
-        return undefined;
-    }
-    if (typeof error === 'string') {
-        errorMsg = error;
-    } else if (error.message) {
-        errorMsg = error.message;
-    } else if (error.msg) {
-        errorMsg = error.msg;
-    } else if (error.exception) {
-        errorMsg = error.exception;
-    }
+    const errorMsg = extractMessageFromError(error);
+
     if (returnInitialMsg) {
         return errorMsg;
     } else if (errorMsg) {
@@ -199,6 +211,8 @@ export function resolveErrorMessage(
             return noun + ' cannot be blank.';
         } else if (noun === 'job' && errorMsg.indexOf('when it contains rows with blank values') > -1) {
             return errorMsg.replace('it contains rows with blank values', 'there are already jobs using this template');
+        } else if (lcMessage.indexOf('cannot delete rows from dataset') >= 0) {
+            return `There was a problem deleting your ${noun.toLowerCase() || 'data'} because it is linked to a study dataset. Recall or remove those samples from the study and try again.`;
         }
     }
     return errorMsg;

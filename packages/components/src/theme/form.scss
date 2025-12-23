@@ -427,7 +427,12 @@ textarea.form-control {
         margin-bottom: 0;
         textarea {
             min-height: 20px;
-            min-width: 450px;
+            @media (max-width: 924px) {
+                min-width: 300px;
+            }
+            @media (min-width: 925px) {
+                min-width: 450px;
+            }
             resize: none;
             overflow-y: hidden;
         }

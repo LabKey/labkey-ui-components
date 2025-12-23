@@ -464,6 +464,10 @@ $table-cell-padding: 4px 2px;
         width: 100%;
       }
 
+      .cell-align-right {
+        text-align: right;
+      }
+
       .cell-content-value, .cell-menu-value {
         display: inline-block;
         padding: $table-cell-padding;

@@ -178,7 +178,6 @@ function inputCellFactory(
         const { isReadonlyCell, isReadonlyRow } = editorModel.getCellReadStatus(fieldKey, rowIdx, readonlyRows);
         const rowContainer = editorModel.getFolderValueForRow(rowIdx);
         const focused = editorModel.isFocused(colIdx, rowIdx);
-        const className = getTextAlignClassName(columnMetadata);
 
         // If we're updating then we want to use the container path from each row if present
         if (forUpdate && rowContainer) containerPath = rowContainer;
@@ -218,7 +217,7 @@ function inputCellFactory(
         }
 
         return (
-            <td className={className} key={inputCellKey(c.raw, row)}>
+            <td key={inputCellKey(c.raw, row)}>
                 <Cell
                     borderMaskBottom={borderMask[2]}
                     borderMaskLeft={borderMask[3]}

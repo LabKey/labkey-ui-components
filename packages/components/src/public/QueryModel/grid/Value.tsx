@@ -87,7 +87,7 @@ export class Value extends React.Component<ValueProps, ValueState> {
 
         const className = classNames(valueClassName, {
             'is-active': this.state.isActive,
-            'is-disabled': this.state.isDisabled,
+            'is-disabled': this.state.isDisabled || (lockReadOnlyForDelete && isReadOnly),
             'is-readonly': isReadOnly !== undefined,
         });
 
@@ -103,9 +103,10 @@ export class Value extends React.Component<ValueProps, ValueState> {
                 onClick={this.onClick}
                 onMouseEnter={this.onMouseEnter}
                 onMouseLeave={this.onMouseLeave}
+                title={isReadOnly}
             >
                 {(!lockReadOnlyForDelete || !isReadOnly) && <i className={iconClassNames} onClick={this.onIconClick} />}
-                {isReadOnly ? <i className="read-lock fa fa-lock" title={isReadOnly} /> : null}
+                {isReadOnly ? <i className="read-lock fa fa-lock"/> : null}
                 <span>{displayValue ?? value}</span>
             </div>
         );

@@ -185,14 +185,14 @@ export const MEASUREMENT_UNITS: Record<string, MeasurementUnit> = {
     },
 };
 
-export function getMeasurementUnit(unitStr: string): MeasurementUnit {
+export function getMeasurementUnit(unitStr: string): MeasurementUnit | null {
     if (!unitStr) return null;
+    const unitStrLc = unitStr.toLowerCase();
 
-    const unit = MEASUREMENT_UNITS[unitStr?.toLowerCase()];
+    const unit = MEASUREMENT_UNITS[unitStrLc];
     if (unit) return unit;
 
-    const unitStrLc = unitStr.toLowerCase();
-    if (MEASUREMENT_UNITS.unit.altLabels.indexOf(unitStrLc) > -1) {
+    if (MEASUREMENT_UNITS.unit.altLabels?.indexOf(unitStrLc) > -1) {
         return {
             ...MEASUREMENT_UNITS.unit,
             label: unitStrLc,
@@ -204,11 +204,7 @@ export function getMeasurementUnit(unitStr: string): MeasurementUnit {
     return null;
 }
 
-/**
- * @param unitAStr
- * @param unitBStr
- */
-export function areUnitsCompatible(unitAStr: string, unitBStr: string) {
+export function areUnitsCompatible(unitAStr: string, unitBStr: string): boolean {
     if (unitAStr == unitBStr) {
         return true;
     }
@@ -221,8 +217,8 @@ export function areUnitsCompatible(unitAStr: string, unitBStr: string) {
     if (!unitAStr && unitBStr) {
         return false;
     }
-    const unitA: MeasurementUnit = getMeasurementUnit(unitAStr);
-    const unitB: MeasurementUnit = getMeasurementUnit(unitBStr);
+    const unitA = getMeasurementUnit(unitAStr);
+    const unitB = getMeasurementUnit(unitBStr);
     if (!unitA || !unitB) {
         return false;
     }
@@ -230,10 +226,10 @@ export function areUnitsCompatible(unitAStr: string, unitBStr: string) {
 }
 
 export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolean): { label: string; value: string }[] {
-    const unit: MeasurementUnit = getMeasurementUnit(metricUnit);
+    const unit = getMeasurementUnit(metricUnit);
 
     const options = [];
-    for (const [key, value] of Object.entries(MEASUREMENT_UNITS)) {
+    for (const value of Object.values(MEASUREMENT_UNITS)) {
         if (!unit || value.kind === unit.kind) {
             if (value.kind === UNITS_KIND.COUNT) {
                 if (showLongLabel)
@@ -274,36 +270,20 @@ export function getMetricUnitOptionsFromKind(
     return getMetricUnitOptions(metricUnit, showLongLabel);
 }
 
-export function getAltUnitKeys(unitTypeStr): string[] {
-    const unit: MeasurementUnit = getMeasurementUnit(unitTypeStr);
+export function getAltUnitKeys(unitTypeStr: string): string[] {
+    const unit = getMeasurementUnit(unitTypeStr);
     const options = [];
-    Object.values(MEASUREMENT_UNITS).forEach(value => {
+    for (const value of Object.values(MEASUREMENT_UNITS)) {
         if (!unit || value.kind === unit.kind) {
             if (value.altLabels) {
                 options.push(...value.altLabels);
             } else options.push(value.label);
         }
-    });
+    }
 
     return options;
 }
 
-export function getVolumeMinStep(sampleTypeUnit?: MeasurementUnit | string) {
-    const step = 0.01;
-    if (!sampleTypeUnit) {
-        return step;
-    }
-
-    const unit = typeof sampleTypeUnit === 'string' ? getMeasurementUnit(sampleTypeUnit) : sampleTypeUnit;
-
-    // If we don't know the units, or it is 'unit' then use the default
-    if (!unit || unit.baseUnit === MEASUREMENT_UNITS.unit.baseUnit) {
-        return step;
-    }
-
-    return Math.pow(10, -unit.displayPrecision); // Track uL and mg to a single unit
-}
-
-export function isMeasurementUnitIgnoreCase(expected: MeasurementUnit, val: string) {
+export function isMeasurementUnitIgnoreCase(expected: MeasurementUnit, val: string): boolean {
     return expected.label.localeCompare(val, 'en-US', { sensitivity: 'base' }) === 0;
 }

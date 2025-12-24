@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.5.1
+*Released*: 24 December 2025
+- Add `displaySelectedOptions` prop and respect setting when passing `selectedOptions` to the underlying `SelectInput`
+
 ### version 7.5.0
 *Released*: 22 December 2025
 - Chart builder updates for per-series line type option

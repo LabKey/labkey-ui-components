@@ -211,8 +211,6 @@ export function resolveErrorMessage(
             return noun + ' cannot be blank.';
         } else if (noun === 'job' && errorMsg.indexOf('when it contains rows with blank values') > -1) {
             return errorMsg.replace('it contains rows with blank values', 'there are already jobs using this template');
-        } else if (lcMessage.indexOf('cannot delete rows from dataset') >= 0) {
-            return `There was a problem deleting your ${noun.toLowerCase() || 'data'} because it is linked to a study dataset. Recall or remove those samples from the study and try again.`;
         }
     }
     return errorMsg;

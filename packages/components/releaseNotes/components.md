@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Copy folder access settings when copying freezers and assay designs
+  - GitHub Issue #284: Freezer copy
+  - GitHub Issue #305: Assay design copy
+
 ### version 7.5.1
 *Released*: 24 December 2025
 - Add `displaySelectedOptions` prop and respect setting when passing `selectedOptions` to the underlying `SelectInput`

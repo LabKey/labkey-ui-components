@@ -21,6 +21,7 @@ import {
 } from './DomainPropertiesPanelCollapse';
 
 interface OwnProps {
+    dataTypeCopyId?: number; // RowId for the data type being copied, if applicable
     dataTypeName?: string;
     dataTypeRowId?: number;
     entityDataType: EntityDataType;
@@ -35,6 +36,7 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
         collapsed,
         togglePanel,
         controlledCollapse,
+        dataTypeCopyId,
         dataTypeRowId,
         dataTypeName,
         onUpdateExcludedFolders,
@@ -53,6 +55,8 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
     const [excludedContainerIdsDB, setExcludedContainerIdsDB] = useState<string[]>();
     const [excludedContainerIds, setExcludedContainerIds] = useState<string[]>();
     const [relatedExcludedContainerIdsDB, setRelatedExcludedContainerIdsDB] = useState<string[]>();
+    const copy = !!dataTypeCopyId && !dataTypeRowId;
+    const isNewEntity = !dataTypeRowId && !copy;
 
     useEffect(
         () => {
@@ -62,6 +66,7 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
 
                 try {
                     const containers = await api.folder.getContainers(container, moduleContext, true, true, true);
+                    const dataTypeRowId_ = copy ? dataTypeCopyId : dataTypeRowId;
 
                     const allContainers_ = containers.map(container_ => {
                         return {
@@ -77,10 +82,13 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
 
                     const excludedContainerIds_ = await api.folder.getDataTypeExcludedContainers(
                         entityDataType.folderConfigurableDataType,
-                        dataTypeRowId
+                        dataTypeRowId_
                     );
                     setExcludedContainerIdsDB(excludedContainerIds_);
                     setExcludedContainerIds(excludedContainerIds_);
+                    if (copy) {
+                        onUpdateExcludedFolders(entityDataType.folderConfigurableDataType, excludedContainerIds_);
+                    }
 
                     const allDataCounts_ = await api.query.getDataTypeFolderDataCount(
                         entityDataType,
@@ -178,7 +186,7 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
                                 noHeader
                                 columns={2}
                                 inactiveSectionLabel="Archived Folders"
-                                isNewEntity={!dataTypeRowId}
+                                isNewEntity={isNewEntity}
                                 showUncheckedWarning={!!dataTypeRowId}
                             />
                         </div>
@@ -194,7 +202,7 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
                                     uncheckedEntitiesDB={excludedContainerIdsDB}
                                     dataTypeLabel="Include in Folders"
                                     inactiveSectionLabel="Archived Folders"
-                                    isNewEntity={!dataTypeRowId}
+                                    isNewEntity={isNewEntity}
                                     showUncheckedWarning={!!dataTypeRowId}
                                 />
                             </div>
@@ -208,7 +216,7 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
                                     hiddenEntities={excludedContainerIds}
                                     dataTypeLabel={relatedDataTypeLabel}
                                     inactiveSectionLabel="Archived Folders"
-                                    isNewEntity={!dataTypeRowId}
+                                    isNewEntity={isNewEntity}
                                     showUncheckedWarning={false}
                                 />
                             </div>

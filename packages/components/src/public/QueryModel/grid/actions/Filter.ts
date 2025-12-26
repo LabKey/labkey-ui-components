@@ -189,7 +189,7 @@ export function removeFilterValueForFilterProps(
         if (viewFilterIndex > -1) {
             updatedFilterArray.splice(viewFilterIndex, 1);
         }
-        return updatedFilterArray
+        return updatedFilterArray;
     }
 
     return null;

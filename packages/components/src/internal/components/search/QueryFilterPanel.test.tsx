@@ -229,7 +229,12 @@ describe('QueryFilterPanel', () => {
 
     test('supportAllValueInQuery checkbox, not checked', () => {
         const { unmount } = render(
-            <QueryFilterPanel {...DEFAULT_PROPS} emptyMsg="Select a query" entityDataType={TestAllowAllEntityType} allInQueryFilterLabel="All Samples" />
+            <QueryFilterPanel
+                {...DEFAULT_PROPS}
+                allInQueryFilterLabel="All Samples"
+                emptyMsg="Select a query"
+                entityDataType={TestAllowAllEntityType}
+            />
         );
         validate(10);
         expect(document.querySelector('.filter-modal__fields-col-any-msg')!.textContent).toBe('All Samples');

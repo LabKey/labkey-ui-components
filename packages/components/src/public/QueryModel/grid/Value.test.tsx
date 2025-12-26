@@ -102,10 +102,18 @@ describe('Value', () => {
     test('isReadOnly and lockReadOnlyForDelete', async () => {
         const onClick = jest.fn();
         const onRemove = jest.fn();
-        render(<Value {...DEFAULT_PROPS} actionValue={readOnlyAction} onClick={onClick} onRemove={onRemove} lockReadOnlyForDelete={true} />);
+        render(
+            <Value
+                {...DEFAULT_PROPS}
+                actionValue={readOnlyAction}
+                lockReadOnlyForDelete={true}
+                onClick={onClick}
+                onRemove={onRemove}
+            />
+        );
         expect(document.querySelectorAll('.filter-status-value')).toHaveLength(1);
         expect(document.querySelectorAll('.is-active')).toHaveLength(0);
-        expect(document.querySelectorAll('.is-disabled')).toHaveLength(0);
+        expect(document.querySelectorAll('.is-disabled')).toHaveLength(1);
         expect(document.querySelectorAll('.is-readonly')).toHaveLength(1);
         expect(document.querySelectorAll('.read-lock')).toHaveLength(1);
         expect(document.querySelectorAll('.symbol')).toHaveLength(0);
@@ -116,7 +124,6 @@ describe('Value', () => {
         await userEvent.click(document.querySelector('.filter-status-value span'));
         expect(onClick).toHaveBeenCalledTimes(0);
         expect(onRemove).toHaveBeenCalledTimes(0);
-
     });
 
     test('click nonRemovableAction action', async () => {

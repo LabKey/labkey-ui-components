@@ -9,6 +9,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Added new filter action helper functions: `getActionValuesForFilterProps` and `removeFilterValueForFilterProps` to simplify reading and updating filter values.
   - Added support for `supportAllValueInQuery` in entity data types so workflow filters can include an "All" option when querying entities.
 
+### version 7.5.1
+*Released*: 24 December 2025
+- Add `displaySelectedOptions` prop and respect setting when passing `selectedOptions` to the underlying `SelectInput`
+
 ### version 7.5.0
 *Released*: 22 December 2025
 - Chart builder updates for per-series line type option

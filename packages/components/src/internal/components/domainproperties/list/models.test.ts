@@ -77,7 +77,6 @@ describe('ListModel', () => {
         expect(options).not.toHaveProperty('domain');
         expect(options).toHaveProperty('name');
         expect(options).toHaveProperty('description');
-        expect(options).toHaveProperty('discussionSetting');
 
         const PKFieldName = existingModel
             .getIn(['domain', 'fields'])

@@ -126,7 +126,6 @@
     "allowDelete" : true,
     "allowUpload" : true,
     "allowExport" : true,
-    "discussionSetting" : 0,
     "entireListTitleTemplate" : null,
     "entireListIndexSetting" : 0,
     "entireListBodySetting" : 0,

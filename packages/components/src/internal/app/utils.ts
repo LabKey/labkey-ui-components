@@ -24,7 +24,6 @@ import {
     ARCHIVED_FOLDERS,
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
-    DEPRECATED_OBJECT_LEVEL_DISCUSSIONS,
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
     EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED,
     EXPERIMENTAL_REQUESTS_MENU,
@@ -415,10 +414,6 @@ export function isFeatureEnabled(flag: ProductFeature, moduleContext?: ModuleCon
 
 export function isSampleAliquotSelectorEnabled(moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.samplemanagement?.[EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR] === true;
-}
-
-export function isObjectLevelDiscussionsEnabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.core?.[DEPRECATED_OBJECT_LEVEL_DISCUSSIONS] === true;
 }
 
 export function hasModule(moduleName: string, moduleContext?: ModuleContext): boolean {

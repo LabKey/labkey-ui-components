@@ -13,21 +13,13 @@ import getDomainDetailsJSON from '../../../../test/data/list-getDomainDetails.js
 
 import { DomainField } from '../models';
 
-import { AdvancedSettings, DisplayTitle, SearchIndexing, IndexField } from './ListPropertiesAdvancedSettings';
+import { AdvancedSettings, DisplayTitle, IndexField, SearchIndexing } from './ListPropertiesAdvancedSettings';
 import { ListModel } from './models';
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
 
 describe('AdvancedSettings', () => {
-    beforeEach(() => {
-        LABKEY.moduleContext = {
-            core: {
-                deprecatedObjectLevelDiscussions: false,
-            },
-        };
-    });
-
     test('default properties', () => {
         const advancedSettings = (
             <AdvancedSettings title="Advanced Settings" model={emptyNewModel} applyAdvancedProperties={jest.fn()} />

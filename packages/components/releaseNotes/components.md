@@ -1,6 +1,9 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+- Remove support for discussions in lists
+
 ### version 7.5.1
 *Released*: 24 December 2025
 - Add `displaySelectedOptions` prop and respect setting when passing `selectedOptions` to the underlying `SelectInput`

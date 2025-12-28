@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, PureComponent, ReactNode, useCallback, useMemo, useState } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useMemo, useState } from 'react';
 import { List } from 'immutable';
 
 import { Tab, Tabs } from '../../../Tabs';
@@ -12,6 +12,7 @@ import {
     isAliquotNode,
     LineageIOWithMetadata,
     LineageNode,
+    LineageNodeCollection,
     LineageNodeCollectionByType,
 } from '../models';
 import { LineageOptions } from '../types';
@@ -32,81 +33,53 @@ interface LineageNodeDetailProps {
     seed: string;
 }
 
-interface LineageNodeDetailState {
-    stepIdx: number;
-    tabKey: string;
-}
+export const LineageNodeDetail: FC<LineageNodeDetailProps> = memo(props => {
+    const { seed, node, highlightNode, lineageOptions } = props;
+    const { isRun, restricted } = node;
+    const [stepIdx, setStepIdx] = useState<number>(undefined);
+    const [tabKey, setTabKey] = useState<string>('details');
+    const onBack = useCallback(() => setStepIdx(undefined), []);
 
-const initialState: LineageNodeDetailState = {
-    stepIdx: undefined,
-    tabKey: 'details',
-};
-
-export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, LineageNodeDetailState> {
-    readonly state: LineageNodeDetailState = initialState;
-
-    componentDidUpdate(prevProps: Readonly<LineageNodeDetailProps>): void {
-        const prevNode = prevProps.node;
-        const { node } = this.props;
-
-        if ((prevNode.isRun || node.isRun) && prevNode.lsid !== node.lsid) {
-            this.setState(initialState);
-        }
+    if (isRun && stepIdx !== undefined) {
+        return <RunStepNodeDetail node={node} onBack={onBack} stepIdx={stepIdx} />;
     }
 
-    changeTab = (tabKey: string): void => {
-        this.setState({ tabKey });
-    };
+    const nodeDetails = (
+        <>
+            <LineageDetail item={node} />
+            {!restricted && (
+                <LineageSummary
+                    {...lineageOptions}
+                    containerPath={node.containerPath}
+                    highlightNode={highlightNode}
+                    key={node.lsid}
+                    lsid={node.lsid}
+                    prefetchSeed={false}
+                />
+            )}
+        </>
+    );
 
-    selectStep = (stepIdx: number): void => {
-        this.setState({ stepIdx });
-    };
-
-    render(): ReactNode {
-        const { seed, node, highlightNode, lineageOptions } = this.props;
-        const { stepIdx, tabKey } = this.state;
-        const { isRun, restricted } = node;
-
-        if (isRun && stepIdx !== undefined) {
-            return <RunStepNodeDetail node={node} onBack={() => this.selectStep(undefined)} stepIdx={stepIdx} />;
-        }
-
-        const nodeDetails = (
-            <>
-                <LineageDetail item={node} />
-                {!restricted && (
-                    <LineageSummary
-                        {...lineageOptions}
-                        containerPath={node.containerPath}
-                        highlightNode={highlightNode}
-                        key={node.lsid}
-                        lsid={node.lsid}
-                        prefetchSeed={false}
-                    />
-                )}
-            </>
-        );
-
-        return (
-            <div className="lineage-node-detail">
-                <NodeDetailHeader node={node} seed={seed} />
-                {isRun && !restricted ? (
-                    <Tabs activeKey={tabKey} onSelect={this.changeTab}>
-                        <Tab eventKey="details" title="Details">
-                            {nodeDetails}
-                        </Tab>
-                        <Tab eventKey="runProperties" title="Run Properties">
-                            <DetailsListSteps node={node} onSelect={this.selectStep} />
-                            <DetailsListLineageIO item={node} />
-                        </Tab>
-                    </Tabs>
-                ) : (
-                    nodeDetails
-                )}
-            </div>
-        );
-    }
-}
+    return (
+        <div className="lineage-node-detail">
+            <NodeDetailHeader node={node} seed={seed} />
+            {isRun && !restricted ? (
+                <Tabs activeKey={tabKey} onSelect={setTabKey}>
+                    <Tab eventKey="details" title="Details">
+                        {nodeDetails}
+                    </Tab>
+                    <Tab eventKey="runProperties" title="Run Properties">
+                        <DetailsListSteps node={node} onSelect={setStepIdx} />
+                        <DetailsListLineageIO item={node} />
+                    </Tab>
+                </Tabs>
+            ) : (
+                nodeDetails
+            )}
+        </div>
+    );
+});
+LineageNodeDetail.displayName = 'LineageNodeDetail';
 
 interface ClusterNodeDetailProps {
     highlightNode?: string;
@@ -116,52 +89,43 @@ interface ClusterNodeDetailProps {
     parentNodeName?: string;
 }
 
-export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
-    static getGroupDisplayName(nodesByType, groupName, parentNodeName?) {
-        const group = nodesByType[groupName];
-        const isAliquot = isAliquotNode(group);
-        const aliquotDisplayName = (parentNodeName ? parentNodeName + ' ' : '') + 'Aliquots';
-        return isAliquot ? aliquotDisplayName : group.displayType;
-    }
-
-    render(): ReactNode {
-        const { highlightNode, nodes, options, parentNodeName } = this.props;
-
-        const nodesByType = this.props.nodesByType ?? createLineageNodeCollections(nodes, options);
-        const groups = Object.keys(nodesByType).sort();
-
-        let iconURL;
-        let title;
-        if (groups.length === 1) {
-            title = nodes.length + ' ' + ClusterNodeDetail.getGroupDisplayName(nodesByType, groups[0]);
-            iconURL = nodes[0].iconProps.iconURL;
-        } else {
-            title = nodes.length + ' items of different types';
-            iconURL = 'default';
-        }
-
-        return (
-            <div className="cluster-node-detail">
-                <DetailHeader header={title} iconSrc={iconURL} />
-                {groups.map(groupName => {
-                    const groupDisplayName = ClusterNodeDetail.getGroupDisplayName(
-                        nodesByType,
-                        groupName,
-                        parentNodeName
-                    );
-                    return (
-                        <DetailsListNodes
-                            highlightNode={highlightNode}
-                            key={groupName}
-                            nodes={nodesByType[groupName]}
-                            title={groupDisplayName}
-                        />
-                    );
-                })}
-            </div>
-        );
-    }
+function getGroupDisplayName(nodeCollection: LineageNodeCollection, parentNodeName?: string): string {
+    if (isAliquotNode(nodeCollection)) return (parentNodeName ? parentNodeName + ' ' : '') + 'Aliquots';
+    return nodeCollection.displayType;
 }
+
+export const ClusterNodeDetail: FC<ClusterNodeDetailProps> = memo(props => {
+    const { highlightNode, nodes, options, parentNodeName } = props;
+    const { groups, nodesByType } = useMemo(() => {
+        const nodesByType = props.nodesByType ?? createLineageNodeCollections(nodes, options);
+        return { groups: Object.keys(nodesByType).sort(), nodesByType };
+    }, [nodes, options, props.nodesByType]);
+
+    let iconURL: string;
+    let title: ReactNode;
+    if (groups.length === 1) {
+        title = nodes.length + ' ' + getGroupDisplayName(nodesByType[groups[0]]);
+        iconURL = nodes[0].iconProps.iconURL;
+    } else {
+        title = nodes.length + ' items of different types';
+        iconURL = 'default';
+    }
+
+    return (
+        <div className="cluster-node-detail">
+            <DetailHeader header={title} iconSrc={iconURL} />
+            {groups.map(groupName => (
+                <DetailsListNodes
+                    highlightNode={highlightNode}
+                    key={groupName}
+                    nodes={nodesByType[groupName]}
+                    title={getGroupDisplayName(nodesByType[groupName], parentNodeName)}
+                />
+            ))}
+        </div>
+    );
+});
+ClusterNodeDetail.displayName = 'ClusterNodeDetail';
 
 interface RunStepNodeDetailProps {
     node: LineageNode;

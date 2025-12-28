@@ -105,6 +105,8 @@ export function resolveIconAndShapeForNode(
 
     if (queryInfoIconURL && queryInfoIconURL !== DEFAULT_ICON_URL) {
         iconURL = queryInfoIconURL.toLowerCase();
+    } else if (item?.restricted) {
+        iconURL = 'lock';
     } else if (item) {
         const schemaName = item.schemaName?.toLowerCase() ?? '';
         const queryName = item.queryName?.toLowerCase() ?? '';
@@ -139,6 +141,8 @@ export function resolveIconAndShapeForNode(
     if (NON_CIRCULAR_IMAGES.indexOf(iconURL) > -1) {
         imageShape = 'image';
     }
+
+    console.log('iconURL', imageFromIdentifier(iconURL, isSeed, false));
 
     return {
         iconURL,

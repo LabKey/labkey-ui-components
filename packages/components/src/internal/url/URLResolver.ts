@@ -618,6 +618,10 @@ export class URLResolver {
             overview: item.url,
         };
 
+        if (item.restricted) {
+            return metadata;
+        }
+
         if (item.type && acceptedTypes.indexOf(item.type) >= 0 && (item.queryName || item.cpasType || item.lsid)) {
             // Issue 48836: Resolve lineage item URL from queryName if available
             let name = item.queryName;

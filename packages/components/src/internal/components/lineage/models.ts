@@ -287,6 +287,7 @@ export class LineageNode
         pkFilters: undefined,
         properties: undefined,
         queryName: undefined,
+        restricted: undefined,
         schemaName: undefined,
         steps: undefined,
         type: undefined,
@@ -327,6 +328,7 @@ export class LineageNode
     declare pkFilters: Experiment.LineagePKFilter[];
     declare properties: any;
     declare queryName: string;
+    declare restricted: boolean;
     declare schemaName: string;
     declare steps: List<LineageRunStep>;
     declare type: string;
@@ -352,6 +354,9 @@ export class LineageNode
                 ...{
                     children: LineageLink.createList(values.children),
                     lsid,
+                    name: values.restricted
+                        ? `Restricted ${values.type === 'Data' ? 'Source' : values.type}`
+                        : values.name,
                     parents: LineageLink.createList(values.parents),
                     steps: List(values.steps?.map(stepProps => new LineageRunStep(stepProps))),
                 },

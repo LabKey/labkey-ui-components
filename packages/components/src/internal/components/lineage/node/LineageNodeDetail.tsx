@@ -65,29 +65,32 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, Lin
     render(): ReactNode {
         const { seed, node, highlightNode, lineageOptions } = this.props;
         const { stepIdx, tabKey } = this.state;
+        const { isRun, restricted } = node;
 
-        if (node.isRun && stepIdx !== undefined) {
+        if (isRun && stepIdx !== undefined) {
             return <RunStepNodeDetail node={node} onBack={() => this.selectStep(undefined)} stepIdx={stepIdx} />;
         }
 
         const nodeDetails = (
             <>
                 <LineageDetail item={node} />
-                <LineageSummary
-                    {...lineageOptions}
-                    containerPath={node.containerPath}
-                    highlightNode={highlightNode}
-                    key={node.lsid}
-                    lsid={node.lsid}
-                    prefetchSeed={false}
-                />
+                {!restricted && (
+                    <LineageSummary
+                        {...lineageOptions}
+                        containerPath={node.containerPath}
+                        highlightNode={highlightNode}
+                        key={node.lsid}
+                        lsid={node.lsid}
+                        prefetchSeed={false}
+                    />
+                )}
             </>
         );
 
         return (
             <div className="lineage-node-detail">
                 <NodeDetailHeader node={node} seed={seed} />
-                {node.isRun ? (
+                {isRun && !restricted ? (
                     <Tabs activeKey={tabKey} onSelect={this.changeTab}>
                         <Tab eventKey="details" title="Details">
                             {nodeDetails}

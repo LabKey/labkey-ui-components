@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.6.0
+*Released*: 29 December 2025
 - Copy folder access settings when copying freezers and assay designs
   - GitHub Issue #284: Freezer copy
   - GitHub Issue #305: Assay design copy

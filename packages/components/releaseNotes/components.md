@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- GitHub Issue 73: Field editor Advanced Settings to allow for non-unique constraint / index
+    - update UI to allow for single field non-unique and unique constraints
+    - update DomainField model to support nonUniqueConstraint in addition to uniqueConstraint
+
 ### version 7.7.0
 *Released*: 29 December 2025
 - Workflow Automation: Task action to filter samples for selected task

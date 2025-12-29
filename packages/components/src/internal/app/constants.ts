@@ -112,7 +112,6 @@ export const EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS = 'queryProductAllFolderLoo
 export const EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED = 'queryProductProjectDataListingScoped';
 export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu';
 export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot-selector';
-export const DEPRECATED_OBJECT_LEVEL_DISCUSSIONS = 'deprecatedObjectLevelDiscussions';
 
 export const FOLDER_DATA_TYPE_EXCLUSIONS = 'dataTypeExclusions';
 export const ARCHIVED_FOLDERS = 'archivedContainers';

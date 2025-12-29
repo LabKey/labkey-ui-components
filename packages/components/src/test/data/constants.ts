@@ -89,7 +89,6 @@ export const DEFAULT_LIST_SETTINGS = {
     allowDelete: true,
     allowUpload: true,
     allowExport: true,
-    discussionSetting: 0,
     entireListTitleTemplate: '',
     entireListIndexSetting: 0,
     entireListBodySetting: 0,

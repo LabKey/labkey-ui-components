@@ -36,7 +36,6 @@ export interface EntireListSettings {
 }
 
 export interface AdvancedSettingsForm extends EachItemSettings, EntireListSettings {
-    discussionSetting: number;
     eachItemIndex: boolean;
     entireListIndex: boolean;
     fileAttachmentIndex: boolean;
@@ -60,7 +59,6 @@ export class ListModel extends Record({
     titleColumn: undefined,
     domainId: undefined,
     keyType: undefined,
-    discussionSetting: undefined,
     allowDelete: undefined,
     allowUpload: undefined,
     allowExport: undefined,
@@ -75,7 +73,6 @@ export class ListModel extends Record({
     eachItemBodyTemplate: undefined,
     fileAttachmentIndex: undefined,
     listId: undefined,
-    discussionSettingEnum: undefined,
     containerPath: undefined,
     category: undefined,
 }) {
@@ -89,7 +86,6 @@ export class ListModel extends Record({
     declare titleColumn: string;
     declare domainId: number;
     declare keyType: string;
-    declare discussionSetting: number;
     declare allowDelete: true;
     declare allowUpload: true;
     declare allowExport: true;
@@ -104,7 +100,6 @@ export class ListModel extends Record({
     declare eachItemBodyTemplate: string;
     declare fileAttachmentIndex: false;
     declare listId: number;
-    declare discussionSettingEnum: string;
     declare containerPath: string;
     declare category: string;
 

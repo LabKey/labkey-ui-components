@@ -1,6 +1,9 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+- Remove support for discussions in lists
+
 ### version 7.7.0
 *Released*: 29 December 2025
 - Workflow Automation: Task action to filter samples for selected task

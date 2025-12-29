@@ -245,7 +245,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     getSingleFieldIndexHelpText = () => {
         return (
             <div>
-                <p>Add a single-field constraint via a database-level index for this field.</p>
+                <p>Add a single-field database index for this field.</p>
                 <p>Unique: require all values to be unique</p>
                 <p>Non-Unique: index without requiring unique values</p>
             </div>
@@ -463,7 +463,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 onChange={this.handleSingleFieldIndexChange}
                                 value={singleFieldConstraintType}
                             >
-                                <option key="None" value=""></option>
+                                <option key="None" value="">None</option>
                                 <option key="Unique" value={DOMAIN_FIELD_UNIQUECONSTRAINT}>Unique</option>
                                 <option key="Non-Unique" value={DOMAIN_FIELD_NONUNIQUECONSTRAINT}>Non-Unique</option>
                             </select>

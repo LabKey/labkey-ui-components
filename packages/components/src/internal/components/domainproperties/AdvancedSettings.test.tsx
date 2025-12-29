@@ -134,7 +134,7 @@ describe('AdvancedSettings', () => {
         expect(singleFieldIndex.getAttribute('disabled')).toBeNull();
         let options = singleFieldIndex.querySelectorAll('option');
         expect(options).toHaveLength(3);
-        expect(options[0].textContent).toBe('');
+        expect(options[0].textContent).toBe('None');
         expect(options[1].textContent).toBe('Unique');
         expect(options[2].textContent).toBe('Non-Unique');
 

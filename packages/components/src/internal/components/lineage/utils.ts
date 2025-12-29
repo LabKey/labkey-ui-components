@@ -142,8 +142,6 @@ export function resolveIconAndShapeForNode(
         imageShape = 'image';
     }
 
-    console.log('iconURL', imageFromIdentifier(iconURL, isSeed, false));
-
     return {
         iconURL,
         image: imageFromIdentifier(iconURL, isSeed, false),

@@ -39,6 +39,7 @@ import {
     DOMAIN_FIELD_UNIQUECONSTRAINT,
     DOMAIN_FIELD_NONUNIQUECONSTRAINT,
     DOMAIN_PHI_LEVELS,
+    DOMAIN_FIELD_CONSTRAINT,
 } from './constants';
 
 import { DomainFieldLabel } from './DomainFieldLabel';
@@ -181,26 +182,23 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         });
     };
 
-    handleSingleFieldConstraintCheckbox = evt => {
-        let value = getCheckedValue(evt);
-        const fieldName = getNameFromId(evt.target.id);
-
-        if (fieldName === DOMAIN_FIELD_UNIQUECONSTRAINT) {
-            // only one of uniqueConstraint or nonUniqueConstraint can be true at a time, so we need to toggle
-            // the non-unique when the unique is changed
+    handleSingleFieldIndexChange = evt => {
+        // only one of uniqueConstraint or nonUniqueConstraint can be true at a time
+        const value = evt.target.value;
+        if (value === DOMAIN_FIELD_UNIQUECONSTRAINT) {
             this.setState({
-                uniqueConstraint: value,
-                nonUniqueConstraint: !value,
+                uniqueConstraint: true,
+                nonUniqueConstraint: false,
             });
-        } else if (fieldName === DOMAIN_FIELD_NONUNIQUECONSTRAINT && !value) {
-            // if non-unique is being unchecked, we need to also uncheck unique
+        } else if (value === DOMAIN_FIELD_NONUNIQUECONSTRAINT) {
             this.setState({
                 uniqueConstraint: false,
-                nonUniqueConstraint: false,
+                nonUniqueConstraint: true,
             });
         } else {
             this.setState({
-                [fieldName]: value,
+                uniqueConstraint: false,
+                nonUniqueConstraint: false,
             });
         }
     };
@@ -240,6 +238,16 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 <p>
                     Learn more about <HelpLink topic={PROPERTY_FIELDS_PHI_TOPIC}>protecting PHI</HelpLink> in LabKey.
                 </p>
+            </div>
+        );
+    };
+
+    getSingleFieldIndexHelpText = () => {
+        return (
+            <div>
+                <p>Add a single-field constraint via a database-level index for this field.</p>
+                <p>Unique: require all values to be unique</p>
+                <p>Non-Unique: index without requiring unique values</p>
             </div>
         );
     };
@@ -396,7 +404,12 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             excludeFromShifting,
             phiLevels,
         } = this.state;
-        const hasSingleFieldConstraint = uniqueConstraint || nonUniqueConstraint || field.isPrimaryKey;
+        const singleFieldConstraintType =
+            uniqueConstraint || field.isPrimaryKey
+                ? DOMAIN_FIELD_UNIQUECONSTRAINT
+                : nonUniqueConstraint
+                  ? DOMAIN_FIELD_NONUNIQUECONSTRAINT
+                  : '';
         const currentValueExists = phiLevels?.find(level => level.value === PHI) !== undefined;
         const disablePhiSelect =
             domainFormDisplayOptions.phiLevelDisabled ||
@@ -407,7 +420,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             <>
                 <div className="domain-adv-misc-options">Miscellaneous Options</div>
                 {!field.isCalculatedField() && (
-                    <div className="row">
+                    <div className="row domain-adv-thick-row">
                         <div className="col-xs-3">
                             <DomainFieldLabel helpTipBody={this.getPhiHelpText()} label="PHI Level" />
                         </div>
@@ -430,6 +443,29 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                         {level.label}
                                     </option>
                                 ))}
+                            </select>
+                        </div>
+                        <div className="col-xs-3" />
+                    </div>
+                )}
+
+                {allowUniqueConstraintProperties && !field.isCalculatedField() && (
+                    <div className="row">
+                        <div className="col-xs-3">
+                            <DomainFieldLabel helpTipBody={this.getSingleFieldIndexHelpText()} label="Index" />
+                        </div>
+                        <div className="col-xs-6">
+                            <select
+                                className="form-control"
+                                disabled={field.isPrimaryKey}
+                                id={createFormInputId(DOMAIN_FIELD_CONSTRAINT, domainIndex, index)}
+                                name={createFormInputName(DOMAIN_FIELD_CONSTRAINT)}
+                                onChange={this.handleSingleFieldIndexChange}
+                                value={singleFieldConstraintType}
+                            >
+                                <option key="None" value=""></option>
+                                <option key="Unique" value={DOMAIN_FIELD_UNIQUECONSTRAINT}>Unique</option>
+                                <option key="Non-Unique" value={DOMAIN_FIELD_NONUNIQUECONSTRAINT}>Non-Unique</option>
                             </select>
                         </div>
                         <div className="col-xs-3" />
@@ -536,34 +572,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             </div>
                         </LabelHelpTip>
                     </CheckboxLK>
-                )}
-                {allowUniqueConstraintProperties && !field.isCalculatedField() && (
-                    <>
-                        <CheckboxLK
-                            checked={hasSingleFieldConstraint}
-                            id={createFormInputId(DOMAIN_FIELD_NONUNIQUECONSTRAINT, domainIndex, index)}
-                            name={createFormInputName(DOMAIN_FIELD_NONUNIQUECONSTRAINT)}
-                            onChange={this.handleSingleFieldConstraintCheckbox}
-                        >
-                            Add a single-field index / constraint for this field
-                            <LabelHelpTip title="Non-Unique Constraint">
-                                <div>Add a non-unique constraint via a database-level index for this field.</div>
-                            </LabelHelpTip>
-                        </CheckboxLK>
-                        <CheckboxLK
-                            checked={uniqueConstraint || field.isPrimaryKey}
-                            className="margin-left-more"
-                            disabled={!hasSingleFieldConstraint || field.isPrimaryKey}
-                            id={createFormInputId(DOMAIN_FIELD_UNIQUECONSTRAINT, domainIndex, index)}
-                            name={createFormInputName(DOMAIN_FIELD_UNIQUECONSTRAINT)}
-                            onChange={this.handleSingleFieldConstraintCheckbox}
-                        >
-                            Require all values to be unique
-                            <LabelHelpTip title="Unique Constraint">
-                                <div>Add a unique constraint via a database-level index for this field.</div>
-                            </LabelHelpTip>
-                        </CheckboxLK>
-                    </>
                 )}
             </>
         );

@@ -39,6 +39,7 @@ export const DOMAIN_FIELD_DIMENSION = 'dimension';
 export const DOMAIN_FIELD_HIDDEN = 'hidden';
 export const DOMAIN_FIELD_MVENABLED = 'mvEnabled';
 export const DOMAIN_FIELD_PHI = 'PHI';
+export const DOMAIN_FIELD_CONSTRAINT = 'singleFieldConstraint';
 export const DOMAIN_FIELD_UNIQUECONSTRAINT = 'uniqueConstraint';
 export const DOMAIN_FIELD_NONUNIQUECONSTRAINT = 'nonUniqueConstraint';
 export const DOMAIN_FIELD_RECOMMENDEDVARIABLE = 'recommendedVariable';

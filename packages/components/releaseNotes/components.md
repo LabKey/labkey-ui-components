@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - GitHub Issue 73: Field editor Advanced Settings to allow for non-unique constraint / index
-    - update UI to allow for single field non-unique and unique constraints
+    - update UI to allow for single field non-unique and unique constraints via select dropdown
     - update DomainField model to support nonUniqueConstraint in addition to uniqueConstraint
 
 ### version 7.7.0

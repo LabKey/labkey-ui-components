@@ -29,7 +29,7 @@ import { isTestEnv } from '../../util/utils';
 
 import { useTimeout } from '../../hooks';
 
-import { SelectInputOption, SelectInput, SelectInputProps, SelectInputChange } from './input/SelectInput';
+import { SelectInput, SelectInputChange, SelectInputOption, SelectInputProps } from './input/SelectInput';
 import { resolveDetailFieldLabel } from './utils';
 import {
     fetchSearchResults,
@@ -86,8 +86,8 @@ export interface QuerySelectOptionProps extends Pick<SelectInputOption, 'label' 
 type QuerySelectOptionComponent = ComponentType<QuerySelectOptionProps>;
 
 interface OptionRendererProps extends Pick<SelectInputOption, 'label' | 'value'> {
-    OptionComponent?: QuerySelectOptionComponent;
     model: QuerySelectModel;
+    OptionComponent?: QuerySelectOptionComponent;
 }
 
 const OptionRenderer: FC<OptionRendererProps> = props => {
@@ -161,20 +161,20 @@ type InheritedSelectInputProps = Omit<
     | 'labelKey'
     | 'loadOptions'
     | 'onChange' // overridden by QuerySelect. See onQSChange().
-    | 'options'
     | 'optionRenderer' // overridden by QuerySelect. Use "OptionComponent" instead.
+    | 'options'
     | 'selectedOptions'
     | 'valueKey'
 >;
 
 export interface QuerySelectOwnProps extends InheritedSelectInputProps {
-    OptionComponent?: QuerySelectOptionComponent;
     autoInit?: boolean;
     containerFilter?: Query.ContainerFilter;
     /** The path to the LK container that the queries should be scoped to. */
     containerPath?: string;
     delimiter?: string;
     displayColumn?: string;
+    displaySelectedOptions?: boolean;
     fireQSChangeOnInit?: boolean;
     groupByColumn?: string;
     loadOnFocus?: boolean;
@@ -183,6 +183,7 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     notFoundValuesEnabled?: boolean;
     onInitValue?: (value: any, selectedValues: List<any>) => void;
     onQSChange?: QuerySelectChange;
+    OptionComponent?: QuerySelectOptionComponent;
     preLoad?: boolean;
     queryFilters?: List<Filter.IFilter>;
     queryParams?: Record<string, any>;
@@ -197,7 +198,7 @@ type DefaultOptions = boolean | SelectInputOption[];
 type Search = {
     input: string;
     reject: (reason?: any) => any;
-    resolve: (value: SelectInputOption[] | PromiseLike<SelectInputOption[]>) => void;
+    resolve: (value: PromiseLike<SelectInputOption[]> | SelectInputOption[]) => void;
 };
 
 export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
@@ -209,6 +210,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         containerPath,
         delimiter = DELIMITER,
         displayColumn,
+        displaySelectedOptions = true,
         fireQSChangeOnInit = false,
         groupByColumn,
         loadOnFocus = false,
@@ -268,7 +270,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     const debounceTO = useTimeout();
     const shouldLoadOnFocus = loadOnFocus && !loadOnFocusLock;
     const { notFoundValues, selectedOptions } = useMemo(() => {
-        const notFoundValues_ = new Set<string | number | boolean>();
+        const notFoundValues_ = new Set<boolean | number | string>();
         const options = model.isInit ? model.selectedOptions : undefined;
 
         if (options) {
@@ -416,7 +418,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
 
     const optionRenderer = useCallback(
         option => (
-            <OptionRenderer OptionComponent={OptionComponent} label={option.label} model={model} value={option.value} />
+            <OptionRenderer label={option.label} model={model} OptionComponent={OptionComponent} value={option.value} />
         ),
         [OptionComponent, model]
     );
@@ -440,8 +442,8 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
                 formsy={formsy}
                 helpTipRenderer={helpTipRenderer}
                 initiallyDisabled={initiallyDisabled}
-                isLoading={false}
                 inputClass={inputClass}
+                isLoading={false}
                 label={label}
                 labelClass={labelClass}
                 menuPosition={menuPosition}
@@ -474,7 +476,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
             options={undefined} // prevent override
             // Issue 52773: Allow for submission of required fields whose value is not found
             required={notFoundValues.size > 0 ? false : required}
-            selectedOptions={selectedOptions}
+            selectedOptions={displaySelectedOptions ? selectedOptions : undefined}
             value={getValue(model, multiple)} // needed to initialize the Formsy "value" properly
             warning={warning}
         />

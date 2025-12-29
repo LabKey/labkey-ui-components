@@ -21,7 +21,7 @@ import { REGISTRY_KEY } from '../../app/constants';
 import { makeCommaSeparatedString } from '../../util/utils';
 
 import { SearchCategory, SearchScope } from './constants';
-import { FieldFilter, FieldFilterOption, FilterSelection, SearchResultCardData } from './models';
+import { EntityFieldFilter, FieldFilterOption, FilterSelection, SearchResultCardData } from './models';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
@@ -131,7 +131,7 @@ export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: stri
 }
 
 export function getFieldFiltersValidationResult(
-    dataTypeFilters: Record<string, FieldFilter[]>,
+    dataTypeFilters: Record<string, EntityFieldFilter[]>,
     queryLabels?: Record<string, string>,
     maxMultiValuedValues: number = MAX_MULTI_VALUE_FILTER_VALUES
 ): string {

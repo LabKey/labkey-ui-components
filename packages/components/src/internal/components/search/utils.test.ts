@@ -32,7 +32,7 @@ import {
     isValidFilterField,
 } from './utils';
 import { SearchCategory } from './constants';
-import { FieldFilter } from './models';
+import { EntityFieldFilter } from './models';
 
 beforeAll(() => {
     LABKEY.container = {
@@ -50,14 +50,14 @@ const anyValueFilter = {
     fieldCaption: 'textField',
     filter: Filter.create('textField', null, Filter.Types.HAS_ANY_VALUE),
     jsonType: 'string',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 const matchesAllFilter = {
     fieldKey: 'textField',
     fieldCaption: 'textField',
     filter: Filter.create('textField', ['a', 'b'], ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE),
     jsonType: 'string',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 const matchesAllBadFilter = {
     fieldKey: 'textField',
@@ -68,14 +68,14 @@ const matchesAllBadFilter = {
         ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE
     ),
     jsonType: 'string',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 const matchesAllEmptyFilter = {
     fieldKey: 'textField',
     fieldCaption: 'textField',
     filter: Filter.create('textField', [], ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE),
     jsonType: 'string',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 const containsOneOfBadFilter = {
     fieldKey: 'textField',
@@ -86,7 +86,7 @@ const containsOneOfBadFilter = {
         Filter.Types.CONTAINS_ONE_OF
     ),
     jsonType: 'string',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 const containsNoneOfBadFilter = {
     fieldKey: 'otherTextField',
@@ -97,7 +97,7 @@ const containsNoneOfBadFilter = {
         Filter.Types.CONTAINS_NONE_OF
     ),
     jsonType: 'string',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 const equalsNoneOfBadFilter = {
     fieldKey: 'textField',
@@ -108,63 +108,63 @@ const equalsNoneOfBadFilter = {
         Filter.Types.EQUALS_NONE_OF
     ),
     jsonType: 'string',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 const intEqFilter = {
     fieldKey: 'intField',
     fieldCaption: 'intField',
     filter: Filter.create('intField', 1),
     jsonType: 'int',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 const stringBetweenFilter = {
     fieldKey: 'strField',
     fieldCaption: 'strField',
     filter: Filter.create('strField', ['1', '5'], Filter.Types.BETWEEN),
     jsonType: 'string',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 const stringEqualFilter = {
     fieldKey: 'strField',
     fieldCaption: 'strField',
     filter: Filter.create('strField', '2', Filter.Types.EQ),
     jsonType: 'string',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 const emptyStringBetweenFilter = {
     fieldKey: 'strField',
     fieldCaption: 'strField',
     filter: Filter.create('strField', ['', '5'], Filter.Types.BETWEEN),
     jsonType: 'string',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 const emptyStringLessThanFilter = {
     fieldKey: 'strField',
     fieldCaption: 'strField',
     filter: Filter.create('strField', '', Filter.Types.LT),
     jsonType: 'string',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 const floatBetweenFilter = {
     fieldKey: 'floatField2',
     fieldCaption: 'floatField2',
     filter: Filter.create('floatField2', '1,5', Filter.Types.BETWEEN),
     jsonType: 'float',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 const badIntFilter = {
     fieldKey: 'intField',
     fieldCaption: 'intField',
     filter: Filter.create('intField', null),
     jsonType: 'int',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 const badBetweenFilter = {
     fieldKey: 'doubleField',
     fieldCaption: 'doubleField',
     filter: Filter.create('doubleField', '1', Filter.Types.BETWEEN),
     jsonType: 'float',
-} as FieldFilter;
+} as EntityFieldFilter;
 
 describe('getFilterValuesAsArray', () => {
     test('array value', () => {

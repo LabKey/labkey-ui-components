@@ -10,7 +10,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { isValidFilterField } from '../search/utils';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { FieldFilter } from '../search/models';
+import { EntityFieldFilter } from '../search/models';
 
 import { useAppContext } from '../../AppContext';
 import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
@@ -44,7 +44,7 @@ export function isValidFilterFieldSampleFinder(
 }
 
 // exported for unit test coverage
-export const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter => {
+export const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): EntityFieldFilter => {
     const colName = filter.getColumnName();
     const column = model.getColumn(colName);
 
@@ -53,7 +53,7 @@ export const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): Field
         fieldCaption: column?.caption ?? colName,
         filter,
         jsonType: column?.isLookup() ? column.displayFieldJsonType : (column?.jsonType ?? 'string'),
-    } as FieldFilter;
+    } as EntityFieldFilter;
 };
 
 // exported for unit test coverage
@@ -126,16 +126,15 @@ function filterToJson(filter: Filter.IFilter): string {
     return encodeURIComponent(filter.getURLParameterName()) + '=' + encodeURIComponent(filter.getURLParameterValue());
 }
 
-export function getSearchFilterObjs(filterProps: FilterProps[]): any[] {
-    const filterPropsObj = [];
-
-    filterProps.forEach(filterProp => {
-        const filterPropObj = { ...filterProp };
-        delete filterPropObj['entityDataType'];
-        // don't persist the entire entitydatatype
+export function getSearchFilterObj(filterProp: FilterProps): any {
+    const filterPropObj = { ...filterProp };
+    delete filterPropObj['entityDataType'];
+    // don't persist the entire entitydatatype
+    if (filterProp.entityDataType)
         filterPropObj['sampleFinderCardType'] = filterProp.entityDataType.sampleFinderCardType;
 
-        const filterArrayObjs = [];
+    const filterArrayObjs = [];
+    if (filterPropObj.filterArray) {
         [...filterPropObj.filterArray].forEach(field => {
             filterArrayObjs.push({
                 fieldKey: field.fieldKey,
@@ -145,8 +144,16 @@ export function getSearchFilterObjs(filterProps: FilterProps[]): any[] {
             });
         });
         filterPropObj.filterArray = filterArrayObjs;
+    }
 
-        filterPropsObj.push(filterPropObj);
+    return filterPropObj;
+}
+
+export function getSearchFilterObjs(filterProps: FilterProps[]): any[] {
+    const filterPropsObj = [];
+
+    filterProps.forEach(filterProp => {
+        filterPropsObj.push(getSearchFilterObj(filterProp));
     });
 
     return filterPropsObj;

@@ -56,7 +56,7 @@ export interface SearchResultCardData {
     typeName?: string;
 }
 
-export interface FieldFilter {
+export interface EntityFieldFilter {
     fieldCaption: string;
     fieldKey: string;
     filter: Filter.IFilter;

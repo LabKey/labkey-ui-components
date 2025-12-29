@@ -6,6 +6,24 @@ Components, models, actions, and utility functions for LabKey applications and p
 - [GitHub Issue 734](https://github.com/LabKey/internal-issues/issues/734) Update sizing of comment input box for better display in narrow screens
 - [GitHub Issue 457](https://github.com/LabKey/internal-issues/issues/457) Update messaging for deleting samples linked to studies
 
+### version 7.7.0
+*Released*: 29 December 2025
+- Workflow Automation: Task action to filter samples for selected task
+  - Added `lockReadOnlyForDelete` prop for workflow filter components to prevent modification of read-only filters used for deletion.
+  - Introduced `EntityFieldFilter` type (renamed from `FieldFilter`) for improved clarity and consistency across workflow task filters.
+  - Added new filter action helper functions: `getActionValuesForFilterProps` and `removeFilterValueForFilterProps` to simplify reading and updating filter values.
+  - Added support for `supportAllValueInQuery` in entity data types so workflow filters can include an "All" option when querying entities.
+
+### version 7.6.0
+*Released*: 29 December 2025
+- Copy folder access settings when copying freezers and assay designs
+  - GitHub Issue #284: Freezer copy
+  - GitHub Issue #305: Assay design copy
+
+### version 7.5.1
+*Released*: 24 December 2025
+- Add `displaySelectedOptions` prop and respect setting when passing `selectedOptions` to the underlying `SelectInput`
+
 ### version 7.5.0
 *Released*: 22 December 2025
 - Chart builder updates for per-series line type option

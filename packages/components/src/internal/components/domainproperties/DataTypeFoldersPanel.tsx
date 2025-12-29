@@ -21,6 +21,7 @@ import {
 } from './DomainPropertiesPanelCollapse';
 
 interface OwnProps {
+    dataTypeCopyId?: number; // RowId for the data type being copied, if applicable
     dataTypeName?: string;
     dataTypeRowId?: number;
     entityDataType: EntityDataType;
@@ -30,11 +31,12 @@ interface OwnProps {
 }
 
 // export for jest testing
-export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelCollapseProps> = memo(props => {
+export const DataTypeFoldersPanelImpl: FC<InjectedDomainPropertiesPanelCollapseProps & OwnProps> = memo(props => {
     const {
         collapsed,
         togglePanel,
         controlledCollapse,
+        dataTypeCopyId,
         dataTypeRowId,
         dataTypeName,
         onUpdateExcludedFolders,
@@ -53,6 +55,8 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
     const [excludedContainerIdsDB, setExcludedContainerIdsDB] = useState<string[]>();
     const [excludedContainerIds, setExcludedContainerIds] = useState<string[]>();
     const [relatedExcludedContainerIdsDB, setRelatedExcludedContainerIdsDB] = useState<string[]>();
+    const copy = !!dataTypeCopyId && !dataTypeRowId;
+    const isNewEntity = !dataTypeRowId && !copy;
 
     useEffect(
         () => {
@@ -62,6 +66,7 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
 
                 try {
                     const containers = await api.folder.getContainers(container, moduleContext, true, true, true);
+                    const dataTypeRowId_ = copy ? dataTypeCopyId : dataTypeRowId;
 
                     const allContainers_ = containers.map(container_ => {
                         return {
@@ -77,10 +82,13 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
 
                     const excludedContainerIds_ = await api.folder.getDataTypeExcludedContainers(
                         entityDataType.folderConfigurableDataType,
-                        dataTypeRowId
+                        dataTypeRowId_
                     );
                     setExcludedContainerIdsDB(excludedContainerIds_);
                     setExcludedContainerIds(excludedContainerIds_);
+                    if (copy) {
+                        onUpdateExcludedFolders(entityDataType.folderConfigurableDataType, excludedContainerIds_);
+                    }
 
                     const allDataCounts_ = await api.query.getDataTypeFolderDataCount(
                         entityDataType,
@@ -138,19 +146,19 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
 
     return (
         <BasePropertiesPanel
-            headerId="domain-folders-hdr"
-            title="Folders"
             collapsed={collapsed}
             controlledCollapse={controlledCollapse}
+            headerId="domain-folders-hdr"
             isValid
             panelStatus={collapsed && isValid ? 'COMPLETE' : isValid ? 'INPROGRESS' : 'TODO'}
-            updateValidStatus={updateValidStatus}
+            title="Folders"
             todoIconHelpMsg={
                 'This section defines which folders use this ' +
                 entityDataType.typeNounSingular.toLowerCase() +
                 '. You may want to review.'
             }
             togglePanel={togglePanel}
+            updateValidStatus={updateValidStatus}
         >
             <div className="bottom-padding">
                 Select which folders can use this {entityDataType.typeNounSingular.toLowerCase()}.
@@ -169,17 +177,17 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
                     {!relatedFolderConfigurableDataType && (
                         <div className="col-xs-12 bottom-padding">
                             <DataTypeSelector
-                                entityDataType={entityDataType}
                                 allDataCounts={allDataCounts}
                                 allDataTypes={childFolders}
-                                updateUncheckedTypes={updateExcludedFolders}
-                                uncheckedEntitiesDB={excludedContainerIdsDB}
-                                dataTypeLabel="folders"
-                                noHeader
                                 columns={2}
+                                dataTypeLabel="folders"
+                                entityDataType={entityDataType}
                                 inactiveSectionLabel="Archived Folders"
-                                isNewEntity={!dataTypeRowId}
+                                isNewEntity={isNewEntity}
+                                noHeader
                                 showUncheckedWarning={!!dataTypeRowId}
+                                uncheckedEntitiesDB={excludedContainerIdsDB}
+                                updateUncheckedTypes={updateExcludedFolders}
                             />
                         </div>
                     )}
@@ -187,29 +195,29 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
                         <>
                             <div className="col-xs-6 bottom-padding">
                                 <DataTypeSelector
-                                    entityDataType={entityDataType}
                                     allDataCounts={allDataCounts}
                                     allDataTypes={childFolders}
-                                    updateUncheckedTypes={updateExcludedFolders}
-                                    uncheckedEntitiesDB={excludedContainerIdsDB}
                                     dataTypeLabel="Include in Folders"
+                                    entityDataType={entityDataType}
                                     inactiveSectionLabel="Archived Folders"
-                                    isNewEntity={!dataTypeRowId}
+                                    isNewEntity={isNewEntity}
                                     showUncheckedWarning={!!dataTypeRowId}
+                                    uncheckedEntitiesDB={excludedContainerIdsDB}
+                                    updateUncheckedTypes={updateExcludedFolders}
                                 />
                             </div>
                             <div className="col-xs-6 bottom-padding">
                                 <DataTypeSelector
+                                    allDataTypes={allContainers}
+                                    dataTypeLabel={relatedDataTypeLabel}
                                     dataTypePrefix="Dashboard"
                                     entityDataType={entityDataType}
-                                    allDataTypes={allContainers}
-                                    updateUncheckedTypes={updateRelatedExcludedFolders}
-                                    uncheckedEntitiesDB={relatedExcludedContainerIdsDB}
                                     hiddenEntities={excludedContainerIds}
-                                    dataTypeLabel={relatedDataTypeLabel}
                                     inactiveSectionLabel="Archived Folders"
-                                    isNewEntity={!dataTypeRowId}
+                                    isNewEntity={isNewEntity}
                                     showUncheckedWarning={false}
+                                    uncheckedEntitiesDB={relatedExcludedContainerIdsDB}
+                                    updateUncheckedTypes={updateRelatedExcludedFolders}
                                 />
                             </div>
                         </>

@@ -163,6 +163,7 @@ export interface AssayDesignerPanelsProps {
     hideAdvancedProperties?: boolean;
     hideEmptyBatchDomain?: boolean;
     initModel: AssayProtocolModel;
+    initProtocolId?: number; // used for copy assay design since initModel will not have the protocolId in that case
     onCancel: () => void;
     onChange?: (model: AssayProtocolModel) => void;
     onComplete: (model: AssayProtocolModel) => void;
@@ -392,6 +393,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
             appPropertiesOnly,
             hideAdvancedProperties,
             initModel,
+            initProtocolId,
             domainFormDisplayOptions,
             currentPanelIndex,
             validatePanel,
@@ -475,6 +477,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                 {appPropertiesOnly && allowFolderExclusion && (
                     <DataTypeFoldersPanel
                         controlledCollapse
+                        dataTypeCopyId={initProtocolId}
                         dataTypeName={protocolModel?.name}
                         dataTypeRowId={protocolModel?.protocolId}
                         entityDataType={AssayRunDataType}

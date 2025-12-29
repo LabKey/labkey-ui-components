@@ -21,6 +21,7 @@ import { ActionValue } from './actions/Action';
 interface ValueProps {
     actionValue: ActionValue;
     index: number;
+    lockReadOnlyForDelete?: boolean;
     onClick?: (actionValue: ActionValue, event: any) => void;
     onRemove?: (actionValueIndex: number, event: any) => void;
 }
@@ -80,13 +81,13 @@ export class Value extends React.Component<ValueProps, ValueState> {
     };
 
     render(): ReactNode {
-        const { actionValue } = this.props;
+        const { actionValue, lockReadOnlyForDelete } = this.props;
         const { action, value, displayValue, isReadOnly, isRemovable } = actionValue;
         const showRemoveIcon = this.state.isActive && isRemovable !== false && actionValue.action.keyword !== 'view';
 
         const className = classNames(valueClassName, {
             'is-active': this.state.isActive,
-            'is-disabled': this.state.isDisabled,
+            'is-disabled': this.state.isDisabled || (lockReadOnlyForDelete && isReadOnly),
             'is-readonly': isReadOnly !== undefined,
         });
 
@@ -102,9 +103,10 @@ export class Value extends React.Component<ValueProps, ValueState> {
                 onClick={this.onClick}
                 onMouseEnter={this.onMouseEnter}
                 onMouseLeave={this.onMouseLeave}
+                title={isReadOnly}
             >
-                <i className={iconClassNames} onClick={this.onIconClick} />
-                {isReadOnly ? <i className="read-lock fa fa-lock" title={isReadOnly} /> : null}
+                {(!lockReadOnlyForDelete || !isReadOnly) && <i className={iconClassNames} onClick={this.onIconClick} />}
+                {isReadOnly ? <i className="read-lock fa fa-lock" /> : null}
                 <span>{displayValue ?? value}</span>
             </div>
         );

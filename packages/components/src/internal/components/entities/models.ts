@@ -29,7 +29,7 @@ import { SCHEMAS } from '../../schemas';
 import { EntityCreationType } from '../samples/models';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { ViewInfo } from '../../ViewInfo';
-import { FieldFilter } from '../search/models';
+import { EntityFieldFilter } from '../search/models';
 
 export interface EntityInputProps {
     role: string;
@@ -41,7 +41,7 @@ export interface IDerivePayload {
     materialDefault?: any;
     materialInputs?: EntityInputProps[];
     materialOutputCount?: number;
-    materialOutputs?: Array<{ [key: string]: any }>;
+    materialOutputs?: Record<string, any>[];
     targetType: string;
 }
 
@@ -434,14 +434,14 @@ export interface IEntityTypeDetails extends IEntityDetails {
     importAliasValues?: string[];
 }
 
-export type SampleFinderCardType = 'sampleproperty' | 'sampleparent' | 'dataclassparent' | 'assaydata';
+export type SampleFinderCardType = 'assaydata' | 'dataclassparent' | 'sampleparent' | 'sampleproperty';
 export type FolderConfigurableDataType =
-    | 'SampleType'
+    | 'AssayDesign'
+    | 'Container'
     | 'DashboardSampleType'
     | 'DataClass'
-    | 'AssayDesign'
-    | 'StorageLocation'
-    | 'Container';
+    | 'SampleType'
+    | 'StorageLocation';
 
 /**
  *  Avoid inline comment or above line comments for properties due to es-lint's limitation on moving comments:
@@ -507,6 +507,7 @@ export interface EntityDataType {
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
     sampleFinderCardType?: SampleFinderCardType;
+    supportAllValueInQuery?: boolean;
     supportHasNoValueInQuery?: boolean;
     supportsCrossTypeImport?: boolean;
     typeIcon?: string;
@@ -649,7 +650,7 @@ export interface FilterProps {
     disabled?: boolean;
     entityDataType: EntityDataType;
     // the filters to be used in conjunction with the schemaQuery
-    filterArray?: FieldFilter[];
+    filterArray?: EntityFieldFilter[];
     index?: number;
     schemaQuery?: SchemaQuery;
     selectColumnFieldKey?: string;

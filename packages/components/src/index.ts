@@ -346,6 +346,7 @@ import {
     FindDerivativesButton,
     FindDerivativesMenuItem,
     getSampleFinderLocalStorageKey,
+    getSearchFilterObj,
     getSearchFilterObjs,
     SAMPLE_FINDER_SESSION_PREFIX,
     searchFiltersToJson,
@@ -624,6 +625,13 @@ import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
 import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
 import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
+import { FilterStatus } from './public/QueryModel/FilterStatus';
+import {
+    FilterAction,
+    getActionValuesForFilterProps,
+    removeFilterValueForFilterProps,
+} from './public/QueryModel/grid/actions/Filter';
+
 import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
@@ -1287,7 +1295,9 @@ export {
     FileColumnRenderer,
     FileInput,
     FileTree,
+    FilterAction,
     FilterCriteriaRenderer,
+    FilterStatus,
     FIND_BY_IDS_QUERY_PARAM,
     FindByIdsModal,
     FindDerivativesButton,
@@ -1315,6 +1325,7 @@ export {
     generateId,
     generateNameWithTimestamp,
     getActionErrorMessage,
+    getActionValuesForFilterProps,
     getAltUnitKeys,
     getAssayDefinitions,
     getAuditQueries,
@@ -1393,6 +1404,7 @@ export {
     getSampleTypeDetails,
     getSampleTypesFromTransactionIds,
     getSchemaQuery,
+    getSearchFilterObj,
     getSearchFilterObjs,
     getSearchScopeFromContainerFilter,
     getSelected,
@@ -1597,6 +1609,7 @@ export {
     removeColumn,
     removeColumns,
     RemoveEntityButton,
+    removeFilterValueForFilterProps,
     removeParameters,
     renderWithAppContext,
     replaceParameters,
@@ -1865,7 +1878,7 @@ export type {
     StorageActionStatusCounts,
 } from './internal/components/samples/models';
 export type { SearchHit, SearchOptions } from './internal/components/search/actions';
-export type { FieldFilter } from './internal/components/search/models';
+export type { EntityFieldFilter } from './internal/components/search/models';
 export type { SecurityAPIWrapper } from './internal/components/security/APIWrapper';
 export type { IDataViewInfo } from './internal/DataViewInfo';
 export type { BSStyle } from './internal/dropdowns';
@@ -1897,9 +1910,11 @@ export type { QueryParams } from './internal/util/URL';
 export type { FileSizeLimitProps } from './public/files/models';
 export type { ImportTemplate } from './public/QueryInfo';
 export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetailPanel';
+export type { Action, ActionValue } from './public/QueryModel/grid/actions/Action';
 export type { QueryConfig } from './public/QueryModel/QueryModel';
 export type { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
+
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
 //  the typescript compiler option "isolatedModules", which do not export types from modules, so types must be exported
 //  separately.

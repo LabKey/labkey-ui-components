@@ -134,8 +134,10 @@
         }
 
         &.is-disabled {
-            background-color: $grid-action-item-disabled-bg;
-            border: 1px solid $grid-action-item-disabled-border-color;
+            opacity: 0.6;
+            cursor: not-allowed;
+            background-color: $input-bg-disabled;
+            border: 1px solid $border-color;
             color: $grid-action-item-disabled-color;
 
             i.symbol {
@@ -143,13 +145,6 @@
                 border-color: $grid-action-item-disabled-border-color;
             }
 
-            &:hover,
-            &:focus {
-                background-color: $grid-action-item-disabled-bg;
-            }
-            &:active {
-                background-color: $grid-action-item-disabled-bg;
-            }
         }
     }
 

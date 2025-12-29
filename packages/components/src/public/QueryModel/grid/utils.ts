@@ -65,6 +65,12 @@ export function getSearchValueAction(actionValues: ActionValue[], value: string)
     return change;
 }
 
-export function filterActionValuesByType(actionValues: ActionValue[], keyword: string): ActionValue[] {
-    return actionValues.filter(actionValue => actionValue.action.keyword === keyword);
+export function filterActionValuesByType(
+    actionValues: ActionValue[],
+    keyword: string,
+    lockReadOnlyForDelete: boolean
+): ActionValue[] {
+    return actionValues
+        .filter(actionValue => actionValue.action.keyword === keyword)
+        .filter(actionValue => !actionValue.isReadOnly || !lockReadOnlyForDelete);
 }

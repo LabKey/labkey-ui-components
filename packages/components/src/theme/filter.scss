@@ -262,7 +262,7 @@
     cursor:pointer;
 }
 
-.filter-modal__fields-col-nodata-msg {
+.filter-modal__fields-col-nodata-msg, .filter-modal__fields-col-any-msg {
     display: inline-block;
     margin-left: 20px;
     padding-right: 5px;

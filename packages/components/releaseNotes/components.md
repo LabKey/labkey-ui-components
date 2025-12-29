@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.7.0
+*Released*: 29 December 2025
+- Workflow Automation: Task action to filter samples for selected task
+  - Added `lockReadOnlyForDelete` prop for workflow filter components to prevent modification of read-only filters used for deletion.
+  - Introduced `EntityFieldFilter` type (renamed from `FieldFilter`) for improved clarity and consistency across workflow task filters.
+  - Added new filter action helper functions: `getActionValuesForFilterProps` and `removeFilterValueForFilterProps` to simplify reading and updating filter values.
+  - Added support for `supportAllValueInQuery` in entity data types so workflow filters can include an "All" option when querying entities.
+
 ### version 7.6.0
 *Released*: 29 December 2025
 - Copy folder access settings when copying freezers and assay designs

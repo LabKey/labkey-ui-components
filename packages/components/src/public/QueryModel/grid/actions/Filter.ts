@@ -27,6 +27,9 @@ import { QueryColumn } from '../../../QueryColumn';
 import { ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE } from '../../../../internal/query/filter';
 
 import { Action, ActionValue } from './Action';
+import { FilterProps } from '../../../../internal/components/entities/models';
+import { EntityFieldFilter } from '../../../../internal/components/search/models';
+import { filtersEqual } from '../../utils';
 
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances
@@ -146,6 +149,52 @@ function resolveSymbol(filterType: Filter.IFilterType): string {
     return getURLSuffix(filterType);
 }
 
+export function getActionValuesForFilterProps(
+    entityFilterProps: FilterProps,
+    queryTypeLabel: string,
+    isReadOnly?: string
+): ActionValue[] {
+    const action = new FilterAction();
+    const actionValues: ActionValue[] = [];
+    if (!entityFilterProps || !entityFilterProps.schemaQuery) return null;
+    if (!entityFilterProps.filterArray || entityFilterProps.filterArray.length === 0) {
+        const filterValue = `${queryTypeLabel} = ${entityFilterProps.dataTypeDisplayName}`;
+        actionValues.push({
+            action,
+            displayValue: filterValue,
+            isReadOnly,
+            value: filterValue,
+            valueObject: null,
+        });
+    } else {
+        entityFilterProps.filterArray.forEach(filter => {
+            actionValues.push(action.actionValueFromEntityFieldFilter(filter, isReadOnly));
+        });
+    }
+
+    return actionValues;
+}
+
+export function removeFilterValueForFilterProps(
+    entityFilterProps: FilterProps,
+    actionValues: ActionValue[],
+    valueIndex: number
+): EntityFieldFilter[] {
+    const value = actionValues[valueIndex]?.valueObject;
+    if (!value) return entityFilterProps.filterArray;
+
+    if (entityFilterProps.filterArray) {
+        const viewFilterIndex = entityFilterProps.filterArray.findIndex(f => filtersEqual(f.filter, value));
+        const updatedFilterArray = [...entityFilterProps.filterArray];
+        if (viewFilterIndex > -1) {
+            updatedFilterArray.splice(viewFilterIndex, 1);
+        }
+        return updatedFilterArray;
+    }
+
+    return null;
+}
+
 export class FilterAction implements Action {
     iconCls = 'filter';
     keyword = 'filter';
@@ -208,19 +257,10 @@ export class FilterAction implements Action {
         return { displayValue: displayParts.join(' '), inputValue };
     }
 
-    actionValueFromFilter(filter: Filter.IFilter, column?: QueryColumn, isReadOnly?: string): ActionValue {
-        const label = column?.shortCaption;
+    _actionValueFromFilter(filter: Filter.IFilter, value: any, label: string, isReadOnly?: string): ActionValue {
         const columnName = decodePart(filter.getColumnName());
         const filterType = filter.getFilterType();
         const operator = resolveSymbol(filter.getFilterType());
-        let value = filter.getValue();
-
-        // Issue 45140: match date display format in grid filter status pill display
-        if (column?.isTimeColumn) {
-            value = getColFormattedTimeFilterValue(column, value);
-        } else if (column?.getDisplayFieldJsonType() === 'date') {
-            value = getColFormattedDateFilterValue(column, value);
-        }
 
         const { displayValue, inputValue } = this.getDisplayValue(label ?? columnName, filterType, value);
 
@@ -231,5 +271,34 @@ export class FilterAction implements Action {
             value: inputValue ? inputValue : `"${label ?? columnName}" ${operator} ${value}`,
             valueObject: filter,
         };
+    }
+
+    actionValueFromFilter(filter: Filter.IFilter, column?: QueryColumn, isReadOnly?: string): ActionValue {
+        const label = column?.shortCaption;
+        let value = filter.getValue();
+
+        // Issue 45140: match date display format in grid filter status pill display
+        if (column?.isTimeColumn) {
+            value = getColFormattedTimeFilterValue(column, value);
+        } else if (column?.getDisplayFieldJsonType() === 'date') {
+            value = getColFormattedDateFilterValue(column, value);
+        }
+
+        return this._actionValueFromFilter(filter, value, label, isReadOnly);
+    }
+
+    actionValueFromEntityFieldFilter(entityFieldFilter: EntityFieldFilter, isReadOnly?: string): ActionValue {
+        const label = entityFieldFilter.fieldCaption;
+        const filter = entityFieldFilter.filter;
+        let value = filter.getValue();
+
+        // use folder level display format since queryColumn is not available
+        if (entityFieldFilter?.jsonType === 'time') {
+            value = getColFormattedTimeFilterValue(null, value);
+        } else if (entityFieldFilter?.jsonType === 'date') {
+            value = getColFormattedDateFilterValue(null, value);
+        }
+
+        return this._actionValueFromFilter(filter, value, label, isReadOnly);
     }
 }

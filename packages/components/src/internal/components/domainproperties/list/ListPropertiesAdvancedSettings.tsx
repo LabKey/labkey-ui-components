@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { Modal } from '../../../Modal';
 
-import { getSubmitButtonClass, isObjectLevelDiscussionsEnabled } from '../../../app/utils';
+import { getSubmitButtonClass } from '../../../app/utils';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
@@ -33,8 +33,6 @@ export const DISPLAY_TITLE_TIP = (
         </ul>
     </>
 );
-export const DISCUSSION_LINKS_TIP =
-    'Optionally allow one or more discussion links to be shown on the details view of each list item.';
 export const SEARCH_INDEXING_TIP = 'Controls how this list is indexed for search within LabKey Server.';
 
 interface DisplayTitleProps {
@@ -65,45 +63,6 @@ export const DisplayTitle: FC<DisplayTitleProps> = memo(({ model, onSelectChange
     );
 });
 DisplayTitle.displayName = 'DisplayTitle';
-
-interface DiscussionLinksProps {
-    discussionSetting: number;
-    onRadioChange: (evt: any) => void;
-}
-
-// TODO: use RadioGroupInput instead
-const DISCUSSION_RADIO_NAME = 'discussionSetting';
-const DiscussionInputs: FC<DiscussionLinksProps> = memo(({ onRadioChange, discussionSetting }) => (
-    <div className="form-group">
-        <DomainDesignerRadio
-            name={DISCUSSION_RADIO_NAME}
-            value={0}
-            checked={discussionSetting === 0}
-            onChange={onRadioChange}
-        >
-            Disable discussions
-        </DomainDesignerRadio>
-
-        <DomainDesignerRadio
-            name={DISCUSSION_RADIO_NAME}
-            value={1}
-            checked={discussionSetting === 1}
-            onChange={onRadioChange}
-        >
-            Allow one discussion per item
-        </DomainDesignerRadio>
-
-        <DomainDesignerRadio
-            name={DISCUSSION_RADIO_NAME}
-            value={2}
-            checked={discussionSetting === 2}
-            onChange={onRadioChange}
-        >
-            Allow multiple discussions per item
-        </DomainDesignerRadio>
-    </div>
-));
-DiscussionInputs.displayName = 'DiscussionInputs';
 
 interface TitleIndexFieldProps {
     name: string;
@@ -435,7 +394,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         return {
             titleColumn: model.titleColumn,
-            discussionSetting: model.discussionSetting,
             fileAttachmentIndex: model.fileAttachmentIndex,
 
             // entire list
@@ -503,7 +461,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     render(): ReactNode {
         const {
             modalOpen,
-            discussionSetting,
             fileAttachmentIndex,
             entireListIndex,
             entireListTitleTemplate,
@@ -567,15 +524,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 titleColumn={titleColumn}
                             />
                         </SettingsContainer>
-
-                        {isObjectLevelDiscussionsEnabled() && (
-                            <SettingsContainer title="Discussion Threads" tipBody={DISCUSSION_LINKS_TIP}>
-                                <DiscussionInputs
-                                    onRadioChange={this.onRadioChange}
-                                    discussionSetting={discussionSetting}
-                                />
-                            </SettingsContainer>
-                        )}
 
                         <SettingsContainer title="Search Indexing Options" tipBody={SEARCH_INDEXING_TIP}>
                             <SearchIndexing

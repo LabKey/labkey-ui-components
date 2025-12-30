@@ -1244,19 +1244,6 @@ describe('DomainIndex', () => {
         expect(index.isSingleFieldUniqueConstraint()).toBe(false);
     });
 
-    test('isMSSQLHashedSingleFieldUniqueConstraint', () => {
-        let index = DomainIndex.fromJS([{ columnNames: ['a'], unique: true } as IDomainIndex]).get(0);
-        expect(index.isMSSQLHashedSingleFieldUniqueConstraint()).toBe(false);
-        index = DomainIndex.fromJS([{ columnNames: ['a'], unique: false } as IDomainIndex]).get(0);
-        expect(index.isMSSQLHashedSingleFieldUniqueConstraint()).toBe(false);
-        index = DomainIndex.fromJS([{ columnNames: ['_hashed_a'], unique: true } as IDomainIndex]).get(0);
-        expect(index.isMSSQLHashedSingleFieldUniqueConstraint()).toBe(false);
-        index = DomainIndex.fromJS([{ columnNames: ['_hashed_a'], unique: false } as IDomainIndex]).get(0);
-        expect(index.isMSSQLHashedSingleFieldUniqueConstraint()).toBe(true);
-        index = DomainIndex.fromJS([{ columnNames: ['_hashed_a', 'b'], unique: false } as IDomainIndex]).get(0);
-        expect(index.isMSSQLHashedSingleFieldUniqueConstraint()).toBe(false);
-    });
-
     test('isSingleFieldNonUniqueConstraint', () => {
         let index = DomainIndex.fromJS([{ columnNames: ['a'], unique: false } as IDomainIndex]).get(0);
         expect(index.isSingleFieldNonUniqueConstraint()).toBe(true);

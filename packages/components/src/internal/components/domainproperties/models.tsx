@@ -254,20 +254,19 @@ export class DomainDesign
                     .map(index => index.columns.get(0))
                     .toList();
 
-                // Hack: SQL server uses a hashed field for unique constraints on text columns, see
-                // BaseMicrosoftSqlServerDialect.addCreateIndexStatements (where it talks about HASHBYTES)
                 indices
-                    .filter(index => index.isMSSQLHashedSingleFieldUniqueConstraint())
-                    .forEach(index => {
-                        uniqueConstraintFieldNames = uniqueConstraintFieldNames.push(
-                            index.columns.get(0).replace('_hashed_', '')
-                        );
-                    });
-
-                nonUniqueConstraintFieldNames = indices
                     .filter(index => index.isSingleFieldNonUniqueConstraint())
-                    .map(index => index.columns.get(0))
-                    .toList();
+                    .forEach(index => {
+                        // Hack: SQL server uses a hashed field for unique constraints on text columns, see
+                        // BaseMicrosoftSqlServerDialect.addCreateIndexStatements (where it talks about HASHBYTES)
+                        if (index.columns.get(0).startsWith('_hashed_')) {
+                            uniqueConstraintFieldNames = uniqueConstraintFieldNames.push(
+                                index.columns.get(0).replace('_hashed_', '')
+                            );
+                        } else {
+                            nonUniqueConstraintFieldNames = nonUniqueConstraintFieldNames.push(index.columns.get(0));
+                        }
+                    });
             }
 
             if (rawModel.fields) {
@@ -314,7 +313,6 @@ export class DomainDesign
             .filter(
                 index =>
                     !index.isSingleFieldUniqueConstraint() &&
-                    !index.isMSSQLHashedSingleFieldUniqueConstraint() &&
                     !index.isSingleFieldNonUniqueConstraint()
             )
             .map(index => DomainIndex.serialize(index))
@@ -613,10 +611,6 @@ export class DomainIndex
 
     isSingleFieldUniqueConstraint(): boolean {
         return this.type === 'unique' && this.columns.size === 1;
-    }
-
-    isMSSQLHashedSingleFieldUniqueConstraint(): boolean {
-        return this.isSingleFieldNonUniqueConstraint() && this.columns.get(0).startsWith('_hashed_');
     }
 
     isSingleFieldNonUniqueConstraint(): boolean {

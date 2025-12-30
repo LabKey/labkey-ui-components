@@ -246,8 +246,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return (
             <div>
                 <p>Add a single-field database index for this field.</p>
-                <p>Unique: require all values to be unique</p>
-                <p>Non-Unique: index without requiring unique values</p>
+                <p>Optionally, also require all values to be unique for this field.</p>
             </div>
         );
     };
@@ -421,7 +420,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 <div className="domain-adv-misc-options">Miscellaneous Options</div>
                 {!field.isCalculatedField() && (
                     <div className="row domain-adv-thick-row">
-                        <div className="col-xs-3">
+                        <div className="col-xs-4">
                             <DomainFieldLabel helpTipBody={this.getPhiHelpText()} label="PHI Level" />
                         </div>
                         <div className="col-xs-6">
@@ -445,14 +444,14 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 ))}
                             </select>
                         </div>
-                        <div className="col-xs-3" />
+                        <div className="col-xs-2" />
                     </div>
                 )}
 
                 {allowUniqueConstraintProperties && !field.isCalculatedField() && (
                     <div className="row">
-                        <div className="col-xs-3">
-                            <DomainFieldLabel helpTipBody={this.getSingleFieldIndexHelpText()} label="Index" />
+                        <div className="col-xs-4">
+                            <DomainFieldLabel helpTipBody={this.getSingleFieldIndexHelpText()} label="Uniqueness & Index" />
                         </div>
                         <div className="col-xs-6">
                             <select
@@ -463,12 +462,12 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 onChange={this.handleSingleFieldIndexChange}
                                 value={singleFieldConstraintType}
                             >
-                                <option key="None" value="">None</option>
-                                <option key="Unique" value={DOMAIN_FIELD_UNIQUECONSTRAINT}>Unique</option>
-                                <option key="Non-Unique" value={DOMAIN_FIELD_NONUNIQUECONSTRAINT}>Non-Unique</option>
+                                <option key="None" value="">No Index</option>
+                                <option key="Non-Unique" value={DOMAIN_FIELD_NONUNIQUECONSTRAINT}>Index</option>
+                                <option key="Unique" value={DOMAIN_FIELD_UNIQUECONSTRAINT}>Index and require unique values</option>
                             </select>
                         </div>
-                        <div className="col-xs-3" />
+                        <div className="col-xs-2" />
                     </div>
                 )}
                 {field.dataType === DATETIME_TYPE && (

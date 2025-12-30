@@ -134,9 +134,9 @@ describe('AdvancedSettings', () => {
         expect(singleFieldIndex.getAttribute('disabled')).toBeNull();
         let options = singleFieldIndex.querySelectorAll('option');
         expect(options).toHaveLength(3);
-        expect(options[0].textContent).toBe('None');
-        expect(options[1].textContent).toBe('Unique');
-        expect(options[2].textContent).toBe('Non-Unique');
+        expect(options[0].textContent).toBe('No Index');
+        expect(options[1].textContent).toBe('Index');
+        expect(options[2].textContent).toBe('Index and require unique values');
 
         // Verify default type
         id = createFormInputId(DOMAIN_FIELD_DEFAULT_VALUE_TYPE, _domainIndex, _index);

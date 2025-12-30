@@ -549,7 +549,14 @@ export class DomainDesign
         if (!showFilterCriteria) delete columns.filterCriteria;
 
         const unsortedColumns = List(
-            Object.keys(columns).map(key => ({ index: key, caption: camelCaseToTitleCase(key), sortable: true }))
+            Object.keys(columns).map(key => {
+                let caption = camelCaseToTitleCase(key);
+                // special case for url and urltarget
+                if (key.toLowerCase() === 'url') caption = 'URL';
+                if (key.toLowerCase() === 'urltarget') caption = 'URL Target';
+
+                return { index: key, caption, sortable: true };
+            })
         );
         return specialCols.concat(unsortedColumns.sort(reorderSummaryColumns)).toList();
     }

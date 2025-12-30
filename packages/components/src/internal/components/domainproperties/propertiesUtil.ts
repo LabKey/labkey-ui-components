@@ -147,6 +147,7 @@ export function reorderSummaryColumns(a: DomainPropertiesGridColumn, b: DomainPr
         'label',
         'importAliases',
         'url',
+        'urltarget',
         'conditionalFormats',
         'propertyValidators',
         'valueExpression',

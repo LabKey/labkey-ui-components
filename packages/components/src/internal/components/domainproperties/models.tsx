@@ -914,6 +914,7 @@ export interface IDomainField {
     uniqueConstraint?: boolean;
     updatedField: boolean;
     URL?: string;
+    URLTargetWindow?: string;
     visible: boolean;
 }
 
@@ -985,6 +986,7 @@ export class DomainField
         required: false,
         scale: MAX_TEXT_LENGTH,
         URL: undefined,
+        URLTargetWindow: undefined,
         shownInDetailsView: true,
         shownInInsertView: true,
         shownInUpdateView: true,
@@ -1047,6 +1049,7 @@ export class DomainField
     declare scale?: number;
     declare scannable?: boolean;
     declare URL?: string;
+    declare URLTargetWindow?: string;
     declare shownInDetailsView?: boolean;
     declare shownInInsertView?: boolean;
     declare shownInUpdateView?: boolean;
@@ -1190,6 +1193,11 @@ export class DomainField
             field.rangeURI = raw.rangeURI;
         }
 
+        // handle URLTargetWindow prop casing mismatch
+        if (raw['urltargetWindow']) {
+            field.URLTargetWindow = raw['urltargetWindow'];
+        }
+
         return field;
     }
 
@@ -1214,6 +1222,10 @@ export class DomainField
             if (json.URL !== undefined) {
                 json.url = json.URL;
                 delete json.URL;
+            }
+            if (json.URLTargetWindow !== undefined) {
+                json.urlTargetWindow = json.URLTargetWindow;
+                delete json.URLTargetWindow;
             }
             if (json.PHI !== undefined) {
                 json.phi = json.PHI;

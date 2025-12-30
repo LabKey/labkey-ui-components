@@ -16,6 +16,7 @@ import {
     DOMAIN_FIELD_LABEL,
     DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT,
     DOMAIN_FIELD_URL,
+    DOMAIN_FIELD_URL_TARGET_WINDOW,
 } from './constants';
 import { DomainField, IDomainFormDisplayOptions } from './models';
 import { SectionHeading } from './SectionHeading';
@@ -37,6 +38,12 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
 
     onChange = (id: string, value: any): void => {
         this.props?.onChange(id, value);
+    };
+
+    handleURLTargetWindowChange = (evt: any): void => {
+        const id = evt.target.id;
+        const isChecked = evt.target.checked;
+        this.onChange(id, isChecked ? '_blank' : null);
     };
 
     getImportAliasHelpText = (): ReactNode => {
@@ -120,6 +127,16 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                             )}
                     </div>
                     <div className="col-xs-4">
+                        {!appPropertiesOnly &&
+                            hasModule(ONTOLOGY_MODULE_NAME) &&
+                            !field.isUniqueIdField() &&
+                            !field.isCalculatedField() && (
+                                <OntologyConceptAnnotation
+                                    field={field}
+                                    id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT, domainIndex, index)}
+                                    onChange={this.onChange}
+                                />
+                            )}
                         <div className="domain-field-label">
                             <DomainFieldLabel label="URL" helpTipBody={this.getURLHelpText()} />
                         </div>
@@ -132,16 +149,19 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                             onChange={this.handleChange}
                             disabled={isFieldFullyLocked(field.lockType)}
                         />
-                        {!appPropertiesOnly &&
-                            hasModule(ONTOLOGY_MODULE_NAME) &&
-                            !field.isUniqueIdField() &&
-                            !field.isCalculatedField() && (
-                                <OntologyConceptAnnotation
-                                    id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT, domainIndex, index)}
-                                    field={field}
-                                    onChange={this.onChange}
-                                />
-                            )}
+                        {/*GitHub Issue 503: Field editor URL option to set target window (i.e. _blank)*/}
+                        <div className="domain-text-options-col">
+                            <input
+                                type="checkbox"
+                                id={createFormInputId(DOMAIN_FIELD_URL_TARGET_WINDOW, domainIndex, index)}
+                                name={createFormInputName(DOMAIN_FIELD_URL_TARGET_WINDOW)}
+                                className="form-control domain-text-option-urltargetwindow"
+                                checked={field.URLTargetWindow === '_blank'}
+                                onChange={this.handleURLTargetWindowChange}
+                                disabled={isFieldFullyLocked(field.lockType)}
+                            />
+                            <span>Open links in a new tab</span>
+                        </div>
                     </div>
                 </div>
             </div>

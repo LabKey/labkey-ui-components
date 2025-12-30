@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- [GitHub Issue #495](https://github.com/LabKey/internal-issues/issues/495) Remove some gratuitous capitalization of types and field names
+
 ### version 7.7.1
 *Released*: 29 December 2025
 - [GitHub Issue 734](https://github.com/LabKey/internal-issues/issues/734) Update sizing of comment input box for better display in narrow screens

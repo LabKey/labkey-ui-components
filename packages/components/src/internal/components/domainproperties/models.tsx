@@ -1224,7 +1224,7 @@ export class DomainField
                 delete json.URL;
             }
             if (json.URLTargetWindow !== undefined) {
-                json.urlTargetWindow = json.URLTargetWindow;
+                json.urltargetWindow = json.URLTargetWindow; // note casing because of GWTPropertyDescriptor behavior on server side
                 delete json.URLTargetWindow;
             }
             if (json.PHI !== undefined) {

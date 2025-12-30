@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 29 December 2025
 - [GitHub Issue 734](https://github.com/LabKey/internal-issues/issues/734) Update sizing of comment input box for better display in narrow screens
 - [GitHub Issue 457](https://github.com/LabKey/internal-issues/issues/457) Update messaging for deleting samples linked to studies
+- Remove support for discussions in lists
 
 ### version 7.7.0
 *Released*: 29 December 2025

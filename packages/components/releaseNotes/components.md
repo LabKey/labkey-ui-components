@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-- [GitHub Issue #495](https://github.com/LabKey/internal-issues/issues/495) Remove some gratuitous capitalization of types and field names
+- [GitHub Issue #495](https://github.com/LabKey/internal-issues/issues/495) Remove some gratuitous capitalization of field names in audit event details
 
 ### version 7.7.1
 *Released*: 29 December 2025

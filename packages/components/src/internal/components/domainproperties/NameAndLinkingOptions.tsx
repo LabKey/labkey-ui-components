@@ -16,7 +16,7 @@ import {
     DOMAIN_FIELD_LABEL,
     DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT,
     DOMAIN_FIELD_URL,
-    DOMAIN_FIELD_URL_TARGET_WINDOW,
+    DOMAIN_FIELD_URL_TARGET,
 } from './constants';
 import { DomainField, IDomainFormDisplayOptions } from './models';
 import { SectionHeading } from './SectionHeading';
@@ -40,7 +40,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
         this.props?.onChange(id, value);
     };
 
-    handleURLTargetWindowChange = (evt: any): void => {
+    handleURLTargetChange = (evt: any): void => {
         const id = evt.target.id;
         const isChecked = evt.target.checked;
         this.onChange(id, isChecked ? '_blank' : null);
@@ -153,11 +153,11 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                         <div className="domain-text-options-col">
                             <input
                                 type="checkbox"
-                                id={createFormInputId(DOMAIN_FIELD_URL_TARGET_WINDOW, domainIndex, index)}
-                                name={createFormInputName(DOMAIN_FIELD_URL_TARGET_WINDOW)}
-                                className="form-control domain-text-option-urltargetwindow"
-                                checked={field.URLTargetWindow === '_blank'}
-                                onChange={this.handleURLTargetWindowChange}
+                                id={createFormInputId(DOMAIN_FIELD_URL_TARGET, domainIndex, index)}
+                                name={createFormInputName(DOMAIN_FIELD_URL_TARGET)}
+                                className="form-control domain-text-option-urltarget"
+                                checked={field.URLTarget === '_blank'}
+                                onChange={this.handleURLTargetChange}
                                 disabled={isFieldFullyLocked(field.lockType)}
                             />
                             <span>Open links in a new tab</span>

@@ -122,6 +122,7 @@ const gridDataAppPropsOnlyConst = [
         scale: 4000,
         name: 'a',
         URL: '',
+        URLTarget: '',
         conceptURI: '',
         rangeURI: 'http://www.w3.org/2001/XMLSchema#int',
         PHI: '',
@@ -188,6 +189,7 @@ const nameCol = new GridColumn({
 const gridColumnsConst = [
     selectionCol,
     nameCol,
+    { index: 'URLTarget', caption: 'URL Target', sortable: true },
     { index: 'URL', caption: 'URL', sortable: true },
     { index: 'PHI', caption: 'PHI', sortable: true },
     { index: 'rangeURI', caption: 'Range URI', sortable: true },
@@ -1489,6 +1491,13 @@ describe('resolveBaseProperties', () => {
         expect(DomainField.resolveBaseProperties({ name: 'TEST1' }, List(['test1'])).lockType).toBe(
             DOMAIN_FIELD_PARTIALLY_LOCKED
         );
+    });
+
+    test('URLTarget', () => {
+        expect(DomainField.resolveBaseProperties({}).URLTarget).toBeUndefined();
+        expect(DomainField.resolveBaseProperties({ URLTarget: '_self' }).URLTarget).toBeUndefined();
+        expect(DomainField.resolveBaseProperties({ urltarget: '_self' }).URLTarget).toBe('_self');
+        expect(DomainField.resolveBaseProperties({ urltarget: '_blank' }).URLTarget).toBe('_blank');
     });
 });
 

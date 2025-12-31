@@ -153,9 +153,9 @@ export function _getGroupedSampleDomainFields(
     sampleTypeDomain: DomainDetails,
     queryInfo: QueryInfo
 ): GroupedSampleFields {
-    const metaFields = [];
-    const independentFields = [];
-    const aliquotFields = [];
+    const aliquotFields: string[] = [];
+    const independentFields: string[] = [];
+    const metaFields: string[] = [];
 
     sampleTypeDomain.domainDesign.fields.forEach(field => {
         const col = queryInfo.getColumnFromName(field.name);

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.7.2
+*Released*: 30 December 2025
+- Remove unused `getVolumeMinStep` method
+- Improve typings, test checks
+
 ### version 7.7.1
 *Released*: 29 December 2025
 - [GitHub Issue 734](https://github.com/LabKey/internal-issues/issues/734) Update sizing of comment input box for better display in narrow screens

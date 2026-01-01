@@ -13,14 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ChangeEventHandler, FC, ReactNode } from 'react';
+import React, { ChangeEventHandler, FC, ReactNode, useEffect, useRef } from 'react';
 
 import { FormsyInjectedProps, withFormsy } from '../formsy';
 import { FieldLabel } from '../FieldLabel';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
-import { INPUT_CONTAINER_CLASS_NAME, INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME } from '../constants';
+import {
+    INPUT_CONTAINER_CLASS_NAME,
+    INPUT_LABEL_CLASS_NAME,
+    INPUT_WRAPPER_CLASS_NAME,
+    MIXED_VALUE_DISPLAY
+} from '../constants';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
@@ -97,6 +102,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputImplProps, Checkbo
             renderFieldLabel,
             value,
             wrapperClassName,
+            hasMixedValue
         } = this.props;
         const { checked, isDisabled } = this.state;
 
@@ -132,18 +138,23 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputImplProps, Checkbo
                     />
                 )}
                 <div className={wrapperClassName}>
-                    <input
-                        checked={checked}
-                        disabled={isDisabled}
-                        id={queryColumn.fieldKey}
-                        name={queryColumn.fieldKey}
-                        onChange={this.onChange}
-                        // Issue 43299: Ignore "required" property for boolean columns as this will
-                        // cause any false value (i.e. unchecked) to prevent submission.
-                        // required={queryColumn.required}
-                        type="checkbox"
-                        value={formsy ? value : checked}
-                    />
+                    {
+                        hasMixedValue && isDisabled ? <IndeterminateCheckbox disabled={isDisabled} queryColumn={queryColumn} title={MIXED_VALUE_DISPLAY} /> :
+                            (
+                                <input
+                                    checked={checked}
+                                    disabled={isDisabled}
+                                    id={queryColumn.fieldKey}
+                                    name={queryColumn.fieldKey}
+                                    onChange={this.onChange}
+                                    // Issue 43299: Ignore "required" property for boolean columns as this will
+                                    // cause any false value (i.e. unchecked) to prevent submission.
+                                    // required={queryColumn.required}
+                                    type="checkbox"
+                                    value={formsy ? value : checked}
+                                />
+                            )
+                    }
                 </div>
             </div>
         );
@@ -165,3 +176,28 @@ export const CheckboxInput: FC<CheckboxInputProps> = props => {
 };
 
 CheckboxInput.displayName = 'CheckboxInput';
+
+interface IndeterminateCheckboxProps extends CheckboxInputProps {
+    disabled: boolean;
+    title: string;
+}
+
+export const IndeterminateCheckbox: FC<IndeterminateCheckboxProps> = props => {
+    const { queryColumn, ...rest } = props;
+    const ref = useRef(undefined);
+
+    useEffect(() => {
+        ref.current.indeterminate = true;
+    }, [ref]);
+
+    return (
+        <input
+            type="checkbox"
+            ref={ref}
+            id={queryColumn.fieldKey}
+            {...rest}
+        />
+    );
+}
+
+IndeterminateCheckbox.displayName = 'IndeterminateCheckbox';

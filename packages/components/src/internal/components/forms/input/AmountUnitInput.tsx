@@ -23,6 +23,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
         allColumns,
         data,
         queryFilters,
+        fieldWithMixedValues,
     } = props;
     const [disabled, setDisabled] = useState<boolean>(initiallyDisabled && allowFieldDisable);
     const [amountError, setAmountError] = useState<string>(undefined);
@@ -31,6 +32,8 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
     const unitCol = allColumns.find(col => col.name.toLowerCase() === STORED_AMOUNT_FIELDS.UNITS.toLowerCase());
     const amountValue = caseInsensitive(data, amountCol?.name);
     const unitValue = caseInsensitive(data, unitCol?.name);
+    const hasMixedAmountValue = fieldWithMixedValues?.includes(amountCol?.name.toLowerCase());
+    const hasMixedUnitValue = fieldWithMixedValues?.includes(unitCol?.name.toLowerCase());
     const queryFilter = unitCol?.lookup.hasQueryFilters(Operation.insert)
         ? List(unitCol?.lookup.getQueryFilters(Operation.insert))
         : queryFilters?.[unitCol?.fieldKey];
@@ -83,6 +86,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     type="number"
                     validations="sampleAmount"
                     value={amountValue ? String(amountValue) : amountValue}
+                    hasMixedValue={hasMixedAmountValue}
                 />
                 <QuerySelect
                     containerClass={'col-sm-4 col-xs-6'}
@@ -104,6 +108,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     showLabel={false}
                     value={unitValue}
                     valueColumn={unitCol.lookup.keyColumn}
+                    hasMixedValue={hasMixedUnitValue}
                 />
                 {allowFieldDisable && (
                     <FormsyInput name={unitCol.name + '::enabled'} type="hidden" value={disabled ? 'false' : 'true'} />

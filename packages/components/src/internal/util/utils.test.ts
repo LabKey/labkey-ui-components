@@ -196,7 +196,9 @@ describe('getCommonDataForSelection', () => {
                 },
             },
         });
-        expect(getCommonDataValues(data)).toEqual({});
+        const res1 = getCommonDataValues(data);
+        expect(res1.fieldValues).toEqual({});
+        expect(res1.fieldsInConflict).toEqual(['field1', 'field2']);
     });
 
     test('undefined and missing values', () => {
@@ -231,7 +233,10 @@ describe('getCommonDataForSelection', () => {
             },
         });
         expect(getCommonDataValues(data)).toEqual({
-            field4: 'same',
+            fieldValues: {
+                field4: 'same',
+            },
+            fieldsInConflict: ['field1', 'field2', 'field3']
         });
     });
 
@@ -374,19 +379,25 @@ describe('getCommonDataForSelection', () => {
             },
         });
         expect(getCommonDataValues(data)).toEqual({
-            AndAgain: 'again',
-            Data: 'data1',
-            Pdf: '/root/lk/Sample%20Management/blood.pdf',
+            fieldValues: {
+                AndAgain: 'again',
+                    Data: 'data1',
+                Pdf: '/root/lk/Sample%20Management/blood.pdf',
+            },
+            fieldsInConflict: ['RowId', 'Value', 'Name', 'Other']
         });
         expect(getCommonDataValues(data, ['Pdf'])).toEqual({
-            AndAgain: 'again',
-            Data: 'data1',
-            Pdf: fromJS({
-                value: '/root/lk/Sample%20Management/blood.pdf',
-                displayValue: 'sampletype/blood.pdf',
-                url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
-            }),
-        });
+                fieldValues: {
+                    AndAgain: 'again',
+                    Data: 'data1',
+                    Pdf: fromJS({
+                        value: '/root/lk/Sample%20Management/blood.pdf',
+                        displayValue: 'sampletype/blood.pdf',
+                        url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
+                    }),
+                },
+                fieldsInConflict: ['RowId', 'Value', 'Name', 'Other']
+            });
     });
 });
 

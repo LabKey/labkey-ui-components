@@ -55,6 +55,7 @@ export interface QueryFormInputsProps {
     containerPath?: string;
     disabledFields?: List<string>;
     fieldValues?: any;
+    fieldWithMixedValues?: string[];
     fireQSChangeOnInit?: boolean;
     includeLabelField?: boolean;
     initiallyDisableFields?: boolean;
@@ -171,6 +172,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             preventCrossFolderEnable,
             pluralNoun = 'rows',
             fieldValues,
+            fieldWithMixedValues,
             fireQSChangeOnInit,
             checkRequiredFields,
             showLabelAsterisk,
@@ -189,6 +191,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
 
         const filter = columnFilter ?? insertColumnFilter;
         const columns = queryInfo ? queryInfo.columns : queryColumns;
+        const fieldWithMixedValuesLc = fieldWithMixedValues?.map(f => f.toLowerCase()) || [];
 
         // CONSIDER: separately establishing the set of columns and allow
         // QueryFormInputs to be a rendering factory for the columns that are in the set.
@@ -219,6 +222,8 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         value = false;
                     }
 
+                    const hasMixedValue = fieldWithMixedValuesLc.indexOf(name.toLowerCase()) > -1;
+
                     const ColumnInputRenderer = resolveInputRenderer(col);
                     if (ColumnInputRenderer) {
                         return (
@@ -239,6 +244,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 showAsteriskSymbol={showAsteriskSymbol}
                                 showLabel
                                 value={value}
+                                fieldWithMixedValues={fieldWithMixedValuesLc}
                             />
                         );
                     }
@@ -266,6 +272,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 <React.Fragment key={fieldKey}>
                                     {this.renderLabelField(col)}
                                     <QuerySelect
+                                        hasMixedValue={hasMixedValue}
                                         addLabelAsterisk={showAsteriskSymbol}
                                         allowDisable={allowFieldDisable}
                                         containerFilter={
@@ -306,6 +313,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (col.validValues) {
                         return (
                             <TextChoiceInput
+                                hasMixedValue={hasMixedValue}
                                 addLabelAsterisk={showAsteriskSymbol}
                                 allowDisable={allowFieldDisable}
                                 description={col.description}
@@ -325,6 +333,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (col.inputType === 'textarea') {
                         return (
                             <TextAreaInput
+                                hasMixedValue={hasMixedValue}
                                 addLabelAsterisk={showAsteriskSymbol}
                                 allowDisable={allowFieldDisable}
                                 initiallyDisabled={shouldDisableField}
@@ -338,6 +347,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     } else if (col.inputType === 'file' && renderFileInputs) {
                         return (
                             <FileInput
+                                hasMixedValue={hasMixedValue}
                                 addLabelAsterisk={showAsteriskSymbol}
                                 allowDisable={allowFieldDisable}
                                 formsy
@@ -356,6 +366,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         case 'boolean':
                             return (
                                 <CheckboxInput
+                                    hasMixedValue={hasMixedValue}
                                     addLabelAsterisk={showAsteriskSymbol}
                                     allowDisable={allowFieldDisable}
                                     initiallyDisabled={shouldDisableField}
@@ -370,6 +381,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         case 'time':
                             return (
                                 <DatePickerInput
+                                    hasMixedValue={hasMixedValue}
                                     addLabelAsterisk={showAsteriskSymbol}
                                     allowDisable={allowFieldDisable}
                                     initiallyDisabled={shouldDisableField}
@@ -384,6 +396,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             return (
                                 <React.Fragment key={fieldKey}>
                                     <TextInput
+                                        hasMixedValue={hasMixedValue}
                                         addLabelAsterisk={showAsteriskSymbol}
                                         allowDisable={allowFieldDisable}
                                         initiallyDisabled={shouldDisableField}

@@ -18,7 +18,7 @@ import classNames from 'classnames';
 import { Map } from 'immutable';
 
 import { FormsyInjectedProps, withFormsy } from '../formsy';
-import { INPUT_WRAPPER_CLASS_NAME } from '../constants';
+import { INPUT_WRAPPER_CLASS_NAME, MIXED_VALUE_DISPLAY } from '../constants';
 import { FieldLabel } from '../FieldLabel';
 import { cancelEvent } from '../../../events';
 
@@ -206,6 +206,7 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
             renderFieldLabel,
             showLabel,
             toggleDisabledTooltip,
+            hasMixedValue
         } = this.props;
         const { data, error, file, isDisabled, isHover } = this.state;
 
@@ -262,10 +263,15 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
                         onDragOver={this.onDrag}
                         onDrop={this.onDrop}
                     >
-                        <i aria-hidden="true" className="fa fa-cloud-upload" />
-                        &nbsp;
-                        <span>Select file or drag and drop here.</span>
-                        <div className="file-upload__error-message">{error}</div>
+                        {(isDisabled && hasMixedValue) ?
+                            <span className="field__un-editable">{MIXED_VALUE_DISPLAY}</span> :
+                            <>
+                                <i aria-hidden="true" className="fa fa-cloud-upload" />
+                                &nbsp;
+                                <span>Select file or drag and drop here.</span>
+                                <div className="file-upload__error-message">{error}</div>
+                            </>
+                        }
                     </label>
                 </>
             );

@@ -19,3 +19,5 @@ export const INPUT_LABEL_CLASS_NAME = 'control-label col-sm-3 col-xs-12 text-lef
 export const INPUT_WRAPPER_CLASS_NAME = 'col-sm-9 col-xs-12';
 
 export const DELIMITER = ',';
+
+export const MIXED_VALUE_DISPLAY = '[Mixed]'

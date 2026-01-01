@@ -19,7 +19,7 @@ import { FieldLabel } from '../FieldLabel';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
-import { INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME } from '../constants';
+import { INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME, MIXED_VALUE_DISPLAY } from '../constants';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 import { FormsyTextArea, FormsyTextAreaProps } from './FormsyReactComponents';
@@ -88,7 +88,7 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
     render() {
         // Extract DisableableInputProps
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { allowDisable, initiallyDisabled, onToggleDisable, ...rest } = this.props;
+        const { allowDisable, initiallyDisabled, onToggleDisable, hasMixedValue, ...rest } = this.props;
         // Extract TextAreaInputProps
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { addLabelAsterisk, onChange, queryColumn, renderFieldLabel, showLabel, ...textAreaProps } = rest;
@@ -98,7 +98,7 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
             <FormsyTextArea
                 id={queryColumn.fieldKey}
                 name={queryColumn.fieldKey}
-                placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
+                placeholder={hasMixedValue && this.state.isDisabled ? MIXED_VALUE_DISPLAY : `Enter ${queryColumn.caption.toLowerCase()}`}
                 required={queryColumn.required}
                 {...textAreaProps}
                 disabled={this.state.isDisabled}

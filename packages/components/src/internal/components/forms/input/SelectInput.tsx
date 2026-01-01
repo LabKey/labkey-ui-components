@@ -23,7 +23,13 @@ import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 import { FormsyInjectedProps, withFormsy } from '../formsy';
-import { DELIMITER, INPUT_CONTAINER_CLASS_NAME, INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME } from '../constants';
+import {
+    DELIMITER,
+    INPUT_CONTAINER_CLASS_NAME,
+    INPUT_LABEL_CLASS_NAME,
+    INPUT_WRAPPER_CLASS_NAME,
+    MIXED_VALUE_DISPLAY
+} from '../constants';
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { generateId } from '../../../util/utils';
 
@@ -201,6 +207,7 @@ export interface SelectInputProps {
     addLabelAsterisk?: boolean;
     allowCreate?: boolean;
     allowDisable?: boolean;
+    hasMixedValue?: boolean;
     autoFocus?: boolean;
     autoValue?: boolean;
     backspaceRemovesValue?: boolean;
@@ -289,6 +296,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
     static defaultProps = {
         allowCreate: false,
         allowDisable: false,
+        hasMixedValue: false,
         autoValue: true,
         clearable: true,
         clearCacheOnChange: false,
@@ -641,6 +649,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             tabSelectsValue,
             valueKey,
             valueRenderer,
+            hasMixedValue,
         } = this.props;
 
         const components: any = { Input: this.Input };
@@ -669,6 +678,9 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             }
         }
 
+        const isDisabled = disabled || this.state.isDisabled || this.props.disableInput;
+        const placeholderText = hasMixedValue && isDisabled ? MIXED_VALUE_DISPLAY : placeholder;
+
         const selectProps: any = {
             autoFocus,
             backspaceRemovesValue,
@@ -687,7 +699,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             id: this.getId(),
             inputId,
             isClearable: clearable,
-            isDisabled: disabled || this.state.isDisabled || this.props.disableInput,
+            isDisabled,
             isLoading,
             isMulti: multiple,
             isValidNewOption,
@@ -704,7 +716,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             openMenuOnClick,
             openMenuOnFocus,
             options,
-            placeholder,
+            placeholder: placeholderText,
             ref: this.reactSelect,
             styles: { ..._customStyles, ...customStyles },
             tabSelectsValue,

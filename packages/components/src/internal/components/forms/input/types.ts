@@ -29,4 +29,5 @@ export interface InputRendererProps {
     showLabel?: boolean;
     value: any;
     values?: any;
+    fieldWithMixedValues?: string[];
 }

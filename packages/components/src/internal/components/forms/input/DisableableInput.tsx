@@ -5,6 +5,7 @@ export interface DisableableInputProps {
     initiallyDisabled?: boolean;
     onToggleDisable?: (disabled: boolean) => void;
     value?: any;
+    hasMixedValue?: boolean;
 }
 
 export interface DisableableInputState {

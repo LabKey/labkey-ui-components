@@ -125,7 +125,7 @@ describe('AmountUnitInput', () => {
     test('with amount and unit column, can disable and disabled, has mixed value', () => {
         const { container } = render(
             <Formsy>
-                <AmountUnitInput {...DISABLED} fieldWithMixedValues={['storedamount', 'units']}/>
+                <AmountUnitInput {...DISABLED} fieldWithMixedValues={['storedamount', 'units']} />
             </Formsy>
         );
         expect(document.querySelectorAll('.form-group.row')).toHaveLength(1);

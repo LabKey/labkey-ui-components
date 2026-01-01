@@ -236,7 +236,7 @@ describe('getCommonDataForSelection', () => {
             fieldValues: {
                 field4: 'same',
             },
-            fieldsInConflict: ['field1', 'field2', 'field3']
+            fieldsInConflict: ['field1', 'field2', 'field3'],
         });
     });
 
@@ -381,23 +381,23 @@ describe('getCommonDataForSelection', () => {
         expect(getCommonDataValues(data)).toEqual({
             fieldValues: {
                 AndAgain: 'again',
-                    Data: 'data1',
+                Data: 'data1',
                 Pdf: '/root/lk/Sample%20Management/blood.pdf',
             },
-            fieldsInConflict: ['RowId', 'Value', 'Name', 'Other']
+            fieldsInConflict: ['RowId', 'Value', 'Name', 'Other'],
         });
         expect(getCommonDataValues(data, ['Pdf'])).toEqual({
-                fieldValues: {
-                    AndAgain: 'again',
-                    Data: 'data1',
-                    Pdf: fromJS({
-                        value: '/root/lk/Sample%20Management/blood.pdf',
-                        displayValue: 'sampletype/blood.pdf',
-                        url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
-                    }),
-                },
-                fieldsInConflict: ['RowId', 'Value', 'Name', 'Other']
-            });
+            fieldValues: {
+                AndAgain: 'again',
+                Data: 'data1',
+                Pdf: fromJS({
+                    value: '/root/lk/Sample%20Management/blood.pdf',
+                    displayValue: 'sampletype/blood.pdf',
+                    url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
+                }),
+            },
+            fieldsInConflict: ['RowId', 'Value', 'Name', 'Other'],
+        });
     });
 });
 

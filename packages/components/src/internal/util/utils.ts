@@ -201,10 +201,13 @@ export function valueIsEmpty(value: any): boolean {
  *
  * @param data Map between ids and a map of data for the ids (i.e, a row of data for that id)
  */
-export function getCommonDataValues(data: Map<any, any>, fileFields?: string[]): {
-    fieldValues: Record<string, any>,
-    fieldsInConflict: string[]
-}{
+export function getCommonDataValues(
+    data: Map<any, any>,
+    fileFields?: string[]
+): {
+    fieldsInConflict: string[];
+    fieldValues: Record<string, any>;
+} {
     let valueMap = Map<string, any>(); // map from fields to the value shared by all rows
     let fieldsInConflict = ImmutableSet<string>();
     let emptyFields = ImmutableSet<string>(); // those fields that are empty
@@ -271,7 +274,7 @@ export function getCommonDataValues(data: Map<any, any>, fileFields?: string[]):
 
     return {
         fieldValues: valueMap.toObject(),
-        fieldsInConflict: fieldsInConflict.toArray()
+        fieldsInConflict: fieldsInConflict.toArray(),
     };
 }
 

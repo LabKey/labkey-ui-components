@@ -41,7 +41,7 @@ export const BulkAddUpdateForm: FC<BulkAddUpdateFormProps> = props => {
     const title =
         'Update ' + selectedRowIndexes.size + ' ' + (selectedRowIndexes.size === 1 ? singularNoun : pluralNoun);
 
-    const {fieldValues, fieldsInConflict } = useMemo(() => {
+    const { fieldValues, fieldsInConflict } = useMemo(() => {
         const editorData = editorModel
             .getDataForServerUpload(false)
             .filter((val, index) => selectedRowIndexes.contains(index))

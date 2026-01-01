@@ -141,7 +141,9 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
                 <FormsyInput
                     id={queryColumn.fieldKey}
                     name={queryColumn.fieldKey}
-                    placeholder={hasMixedValue && isDisabled ? MIXED_VALUE_DISPLAY : `Enter ${queryColumn.caption.toLowerCase()}`}
+                    placeholder={
+                        hasMixedValue && isDisabled ? MIXED_VALUE_DISPLAY : `Enter ${queryColumn.caption.toLowerCase()}`
+                    }
                     required={queryColumn.required}
                     {...inputProps}
                     componentRef={this.textInput}

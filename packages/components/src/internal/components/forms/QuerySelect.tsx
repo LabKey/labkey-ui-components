@@ -441,6 +441,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
                 description={description}
                 disabled
                 formsy={formsy}
+                hasMixedValue={hasMixedValue}
                 helpTipRenderer={helpTipRenderer}
                 initiallyDisabled={initiallyDisabled}
                 inputClass={inputClass}
@@ -454,7 +455,6 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
                 openMenuOnFocus={openMenuOnFocus}
                 placeholder={`Error: ${error}`}
                 required={required}
-                hasMixedValue={hasMixedValue}
             />
         );
     }

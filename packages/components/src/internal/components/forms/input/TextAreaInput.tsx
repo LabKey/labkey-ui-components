@@ -64,12 +64,12 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
 
         return (
             <FieldLabel
-                label={label}
-                showLabel={showLabel}
-                labelOverlayProps={{ isFormsy: true, addLabelAsterisk }}
-                showToggle={allowDisable}
                 column={queryColumn}
                 isDisabled={isDisabled}
+                label={label}
+                labelOverlayProps={{ isFormsy: true, addLabelAsterisk }}
+                showLabel={showLabel}
+                showToggle={allowDisable}
                 toggleProps={{
                     onClick: this.toggleDisabled,
                 }}
@@ -98,13 +98,17 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
             <FormsyTextArea
                 id={queryColumn.fieldKey}
                 name={queryColumn.fieldKey}
-                placeholder={hasMixedValue && this.state.isDisabled ? MIXED_VALUE_DISPLAY : `Enter ${queryColumn.caption.toLowerCase()}`}
+                placeholder={
+                    hasMixedValue && this.state.isDisabled
+                        ? MIXED_VALUE_DISPLAY
+                        : `Enter ${queryColumn.caption.toLowerCase()}`
+                }
                 required={queryColumn.required}
                 {...textAreaProps}
                 disabled={this.state.isDisabled}
-                onChange={this.onChange}
                 label={this.renderLabel()}
                 labelClassName={showLabel ? labelClassName : 'hide-label'}
+                onChange={this.onChange}
                 value={this.getInputValue()}
             />
         );

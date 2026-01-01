@@ -206,7 +206,7 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
             renderFieldLabel,
             showLabel,
             toggleDisabledTooltip,
-            hasMixedValue
+            hasMixedValue,
         } = this.props;
         const { data, error, file, isDisabled, isHover } = this.state;
 
@@ -263,15 +263,16 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
                         onDragOver={this.onDrag}
                         onDrop={this.onDrop}
                     >
-                        {(isDisabled && hasMixedValue) ?
-                            <span className="field__un-editable">{MIXED_VALUE_DISPLAY}</span> :
+                        {isDisabled && hasMixedValue ? (
+                            <span className="field__un-editable">{MIXED_VALUE_DISPLAY}</span>
+                        ) : (
                             <>
                                 <i aria-hidden="true" className="fa fa-cloud-upload" />
                                 &nbsp;
                                 <span>Select file or drag and drop here.</span>
                                 <div className="file-upload__error-message">{error}</div>
                             </>
-                        }
+                        )}
                     </label>
                 </>
             );

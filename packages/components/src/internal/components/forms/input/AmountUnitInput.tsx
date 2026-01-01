@@ -79,6 +79,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                 <TextInput
                     disableInput={disabled}
                     elementWrapperClassName=""
+                    hasMixedValue={hasMixedAmountValue}
                     onChange={onAmountChange}
                     queryColumn={amountCol}
                     rowClassName={'col-sm-5 col-xs-6'}
@@ -86,7 +87,6 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     type="number"
                     validations="sampleAmount"
                     value={amountValue ? String(amountValue) : amountValue}
-                    hasMixedValue={hasMixedAmountValue}
                 />
                 <QuerySelect
                     containerClass={'col-sm-4 col-xs-6'}
@@ -98,6 +98,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     disableInput={disabled}
                     displayColumn={unitCol.lookup.displayColumn}
                     formsy
+                    hasMixedValue={hasMixedUnitValue}
                     id={id}
                     inputClass={''}
                     name={unitCol.fieldKey}
@@ -108,7 +109,6 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     showLabel={false}
                     value={unitValue}
                     valueColumn={unitCol.lookup.keyColumn}
-                    hasMixedValue={hasMixedUnitValue}
                 />
                 {allowFieldDisable && (
                     <FormsyInput name={unitCol.name + '::enabled'} type="hidden" value={disabled ? 'false' : 'true'} />

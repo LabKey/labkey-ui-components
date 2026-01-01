@@ -164,13 +164,13 @@ export const SampleStatusInputRenderer: FC<InputRendererProps> = memo(props => {
             col={col}
             containerPath={containerPath}
             formsy={formsy}
+            hasMixedValue={hasMixedValue}
             initiallyDisabled={initiallyDisabled}
             onAdditionalFormDataChange={onAdditionalFormDataChange}
             onQSChange={onSelectChange}
             onToggleDisable={onToggleDisable}
             renderLabelField={renderLabelField}
             value={value}
-            hasMixedValue={hasMixedValue}
         />
     );
 });

@@ -233,6 +233,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 col={col}
                                 containerFilter={containerFilter}
                                 data={fieldValues}
+                                fieldWithMixedValues={fieldWithMixedValuesLc}
                                 formsy
                                 initiallyDisabled={shouldDisableField}
                                 key={fieldKey}
@@ -244,7 +245,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 showAsteriskSymbol={showAsteriskSymbol}
                                 showLabel
                                 value={value}
-                                fieldWithMixedValues={fieldWithMixedValuesLc}
                             />
                         );
                     }
@@ -272,7 +272,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 <React.Fragment key={fieldKey}>
                                     {this.renderLabelField(col)}
                                     <QuerySelect
-                                        hasMixedValue={hasMixedValue}
                                         addLabelAsterisk={showAsteriskSymbol}
                                         allowDisable={allowFieldDisable}
                                         containerFilter={
@@ -285,6 +284,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         displayColumn={col.lookup.displayColumn}
                                         fireQSChangeOnInit={fireQSChangeOnInit}
                                         formsy
+                                        hasMixedValue={hasMixedValue}
                                         initiallyDisabled={shouldDisableField}
                                         joinValues={joinValues}
                                         label={col.caption}
@@ -313,11 +313,11 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (col.validValues) {
                         return (
                             <TextChoiceInput
-                                hasMixedValue={hasMixedValue}
                                 addLabelAsterisk={showAsteriskSymbol}
                                 allowDisable={allowFieldDisable}
                                 description={col.description}
                                 formsy
+                                hasMixedValue={hasMixedValue}
                                 initiallyDisabled={shouldDisableField}
                                 key={fieldKey}
                                 onChange={this.onSelectChange}
@@ -333,9 +333,9 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (col.inputType === 'textarea') {
                         return (
                             <TextAreaInput
-                                hasMixedValue={hasMixedValue}
                                 addLabelAsterisk={showAsteriskSymbol}
                                 allowDisable={allowFieldDisable}
+                                hasMixedValue={hasMixedValue}
                                 initiallyDisabled={shouldDisableField}
                                 key={fieldKey}
                                 onToggleDisable={this.onToggleDisable}
@@ -347,10 +347,10 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     } else if (col.inputType === 'file' && renderFileInputs) {
                         return (
                             <FileInput
-                                hasMixedValue={hasMixedValue}
                                 addLabelAsterisk={showAsteriskSymbol}
                                 allowDisable={allowFieldDisable}
                                 formsy
+                                hasMixedValue={hasMixedValue}
                                 initiallyDisabled={shouldDisableField}
                                 initialValue={value}
                                 key={fieldKey}
@@ -366,9 +366,9 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         case 'boolean':
                             return (
                                 <CheckboxInput
-                                    hasMixedValue={hasMixedValue}
                                     addLabelAsterisk={showAsteriskSymbol}
                                     allowDisable={allowFieldDisable}
+                                    hasMixedValue={hasMixedValue}
                                     initiallyDisabled={shouldDisableField}
                                     key={fieldKey}
                                     onToggleDisable={this.onToggleDisable}
@@ -381,9 +381,9 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         case 'time':
                             return (
                                 <DatePickerInput
-                                    hasMixedValue={hasMixedValue}
                                     addLabelAsterisk={showAsteriskSymbol}
                                     allowDisable={allowFieldDisable}
+                                    hasMixedValue={hasMixedValue}
                                     initiallyDisabled={shouldDisableField}
                                     key={fieldKey}
                                     onToggleDisable={this.onToggleDisable}
@@ -396,9 +396,9 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             return (
                                 <React.Fragment key={fieldKey}>
                                     <TextInput
-                                        hasMixedValue={hasMixedValue}
                                         addLabelAsterisk={showAsteriskSymbol}
                                         allowDisable={allowFieldDisable}
+                                        hasMixedValue={hasMixedValue}
                                         initiallyDisabled={shouldDisableField}
                                         onToggleDisable={this.onToggleDisable}
                                         queryColumn={col}

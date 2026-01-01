@@ -2,10 +2,10 @@ import React from 'react';
 
 export interface DisableableInputProps {
     allowDisable?: boolean;
+    hasMixedValue?: boolean;
     initiallyDisabled?: boolean;
     onToggleDisable?: (disabled: boolean) => void;
     value?: any;
-    hasMixedValue?: boolean;
 }
 
 export interface DisableableInputState {

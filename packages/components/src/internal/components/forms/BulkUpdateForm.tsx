@@ -312,10 +312,8 @@ export class BulkUpdateForm extends PureComponent<BulkUpdateFormProps, State> {
             selectedIds,
         } = this.props;
         const fileFields = queryInfo.columns.valueArray.filter(col => col.isFileInput).map(col => col.name);
-        const {fieldValues, fieldsInConflict} =
-            isLoadingDataForSelection || !dataForSelection
-                ? {}
-                : getCommonDataValues(dataForSelection, fileFields);
+        const { fieldValues, fieldsInConflict } =
+            isLoadingDataForSelection || !dataForSelection ? {} : getCommonDataValues(dataForSelection, fileFields);
 
         // if all selectedIds are from the same containerPath, use that for the lookups via QueryFormInputs > QuerySelect,
         // if selections are from multiple containerPaths, disable the lookup and file field inputs

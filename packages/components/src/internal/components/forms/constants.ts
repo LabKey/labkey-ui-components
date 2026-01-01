@@ -20,4 +20,4 @@ export const INPUT_WRAPPER_CLASS_NAME = 'col-sm-9 col-xs-12';
 
 export const DELIMITER = ',';
 
-export const MIXED_VALUE_DISPLAY = '[Mixed]'
+export const MIXED_VALUE_DISPLAY = '[Mixed]';

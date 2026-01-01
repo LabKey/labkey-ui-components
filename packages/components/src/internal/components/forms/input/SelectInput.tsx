@@ -28,7 +28,7 @@ import {
     INPUT_CONTAINER_CLASS_NAME,
     INPUT_LABEL_CLASS_NAME,
     INPUT_WRAPPER_CLASS_NAME,
-    MIXED_VALUE_DISPLAY
+    MIXED_VALUE_DISPLAY,
 } from '../constants';
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { generateId } from '../../../util/utils';
@@ -207,7 +207,6 @@ export interface SelectInputProps {
     addLabelAsterisk?: boolean;
     allowCreate?: boolean;
     allowDisable?: boolean;
-    hasMixedValue?: boolean;
     autoFocus?: boolean;
     autoValue?: boolean;
     backspaceRemovesValue?: boolean;
@@ -228,6 +227,7 @@ export interface SelectInputProps {
     formatCreateLabel?: (inputValue: string) => ReactNode;
     formatGroupLabel?: (data: any) => ReactNode;
     formsy?: boolean;
+    hasMixedValue?: boolean;
     help?: ReactNode;
     helpTipRenderer?: string;
     hideSelectedOptions?: boolean;

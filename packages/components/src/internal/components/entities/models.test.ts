@@ -27,19 +27,19 @@ describe('EntityParentType', () => {
             'Display Column',
             SCHEMAS.DATA_CLASSES.SCHEMA
         );
-        expect(col.caption).toBe('Dataclass Parents');
+        expect(col.caption).toBe('dataclass Parents');
 
         col = EntityParentType.create({ schema: SCHEMAS.DATA_CLASSES.SCHEMA, query: 'dataclass' }).generateColumn(
             'Display Column',
             SCHEMAS.SAMPLE_SETS.SCHEMA
         );
-        expect(col.caption).toBe('Dataclass');
+        expect(col.caption).toBe('dataclass');
 
         col = EntityParentType.create({ schema: SCHEMAS.SAMPLE_SETS.SCHEMA, query: 'sampletype' }).generateColumn(
             'Display Column',
             SCHEMAS.SAMPLE_SETS.SCHEMA
         );
-        expect(col.caption).toBe('Sampletype Parents');
+        expect(col.caption).toBe('sampletype Parents');
 
         col = EntityParentType.create({
             schema: SCHEMAS.SAMPLE_SETS.SCHEMA,

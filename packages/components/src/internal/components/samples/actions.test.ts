@@ -84,13 +84,8 @@ describe('getGroupedSampleDomainFields', () => {
 
     test('field split by derivationDataScope', () => {
         const result = _getGroupedSampleDomainFields(sampleTypeDomain, queryInfo);
-        expect(result.aliquotFields.length).toBe(1);
-        expect(result.aliquotFields[0]).toBe('aliq$c$d$s');
-        expect(result.independentFields.length).toBe(1);
-        expect(result.independentFields[0]).toBe('all$c$d$s');
-        expect(result.metaFields.length).toBe(3);
-        expect(result.metaFields[0]).toBe('name');
-        expect(result.metaFields[1]).toBe('spec char$c$d$s');
-        expect(result.metaFields[2]).toBe('parent$c$d$s');
+        expect(result.aliquotFields).toEqual(['aliq$c$d$s']);
+        expect(result.independentFields).toEqual(['all$c$d$s']);
+        expect(result.metaFields).toEqual(['name', 'spec char$c$d$s', 'parent$c$d$s']);
     });
 });

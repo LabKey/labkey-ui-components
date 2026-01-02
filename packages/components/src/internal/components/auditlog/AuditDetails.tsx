@@ -95,7 +95,7 @@ export class AuditDetails extends Component<Props> {
             <div className="row margin-bottom" key={field}>
                 <div className="left-padding right-padding">
                     <span className="audit-detail-row-label right-padding">
-                        {capitalizeFirstChar(field)}
+                        {field}
                         {!!providedVals.length && (
                             <LabelHelpTip
                                 iconComponent={<i className="original-value-icon fa fa-info-circle left-padding" />}

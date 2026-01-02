@@ -23,7 +23,7 @@ import { ExtendedMap } from '../../../public/ExtendedMap';
 import { decodePart, encodePart, SchemaQuery } from '../../../public/SchemaQuery';
 import { IEntityDetails } from '../domainproperties/entities/models';
 import { SelectInputOption } from '../forms/input/SelectInput';
-import { capitalizeFirstChar, caseInsensitive, generateId } from '../../util/utils';
+import { caseInsensitive, generateId } from '../../util/utils';
 import { QueryColumn, QueryLookup } from '../../../public/QueryColumn';
 import { SCHEMAS } from '../../schemas';
 import { EntityCreationType } from '../samples/models';
@@ -107,7 +107,7 @@ export class EntityParentType extends Record({
     }
 
     generateColumn(displayColumn: string, targetSchema: string): QueryColumn {
-        const label_ = this.label ?? capitalizeFirstChar(this.query);
+        const label_ = this.label ?? this.query;
         const parentColName = this.generateFieldKey();
 
         // Issue 40233: SM app allows for two types of parents, sources and samples, and its confusing if both use

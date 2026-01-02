@@ -89,7 +89,7 @@ describe('QueryFormInputs', () => {
     });
 
     test('disabledFields', () => {
-        const { container } = render(
+        render(
             <Formsy>
                 <QueryFormInputs
                     disabledFields={List<string>(['date', 'ParticipantID', 'textarea'])}
@@ -107,7 +107,7 @@ describe('QueryFormInputs', () => {
     });
 
     test('disabledFields, with fieldWithMixedValues', () => {
-        const { container } = render(
+        render(
             <Formsy>
                 <QueryFormInputs
                     disabledFields={List<string>(['date', 'healthy'])}

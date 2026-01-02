@@ -201,6 +201,57 @@ describe('getCommonDataForSelection', () => {
         expect(res1.fieldsInConflict).toEqual(['field1', 'field2']);
     });
 
+    test('empty values', () => {
+        const data = fromJS({
+            '1': {
+                field1: {
+                    value: '',
+                },
+                field2: {
+                    value: null,
+                },
+            },
+            '2': {
+                field1: {
+                    value: '',
+                },
+                field2: {
+                    value: undefined,
+                },
+            },
+        });
+        const res1 = getCommonDataValues(data);
+        expect(res1.fieldValues).toEqual({});
+        expect(res1.fieldsInConflict).toEqual([]);
+    });
+
+    test('not empty, but falsy values', () => {
+        const data = fromJS({
+            '1': {
+                field1: {
+                    value: false,
+                },
+                field2: {
+                    value: 0,
+                },
+            },
+            '2': {
+                field1: {
+                    value: false,
+                },
+                field2: {
+                    value: 0,
+                },
+            },
+        });
+        const res1 = getCommonDataValues(data);
+        expect(res1.fieldValues).toEqual({
+            field1: false,
+            field2: 0,
+        });
+        expect(res1.fieldsInConflict).toEqual([]);
+    });
+
     test('undefined and missing values', () => {
         const data = fromJS({
             '1': {

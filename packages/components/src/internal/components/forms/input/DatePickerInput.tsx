@@ -260,7 +260,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         const altDateFormats = getAltParseFormats(dateFormat);
         const validValueInvalidStart = !invalid && invalidStart;
         const isTimeOnly = queryColumn.isTimeColumn;
-        const placeHolderText =
+        const placeHolderDisplay =
             hasMixedValue && isDisabled
                 ? MIXED_VALUE_DISPLAY
                 : (placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`);
@@ -282,7 +282,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                 onMonthChange={this.onChange}
                 onSelect={inlineEdit ? this.onSelect : undefined}
                 openToDate={this.getOpenToDate()}
-                placeholderText={placeHolderText}
+                placeholderText={placeHolderDisplay}
                 ref={this.input}
                 selected={invalid ? null : selectedDate}
                 shouldCloseOnSelect={inlineEdit ? false : undefined}

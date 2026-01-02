@@ -187,11 +187,12 @@ interface IndeterminateCheckboxProps extends CheckboxInputProps {
 
 export const IndeterminateCheckbox: FC<IndeterminateCheckboxProps> = props => {
     const { queryColumn, ...rest } = props;
-    const ref = useRef(undefined);
+    const ref = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        ref.current.indeterminate = true;
-    }, [ref]);
+        if (ref?.current)
+            ref.current.indeterminate = true;
+    }, [ref?.current]);
 
     return <input id={queryColumn.fieldKey} ref={ref} type="checkbox" {...rest} />;
 };

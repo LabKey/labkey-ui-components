@@ -186,7 +186,7 @@ export function unorderedEqual(array1: any[], array2: any[]): boolean {
  * @param value
  */
 export function valueIsEmpty(value: any): boolean {
-    if (!value) return true;
+    if (value === null || value === undefined || value === '') return true;
     if (typeof value === 'string' && value === '') return true;
     return Array.isArray(value) && value.length === 0;
 }

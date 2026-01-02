@@ -69,7 +69,7 @@ describe('AmountUnitInput', () => {
     });
 
     test('with amount and unit column, can disable', () => {
-        const { container } = render(
+        render(
             <Formsy>
                 <AmountUnitInput {...CAN_DISABLE} />
             </Formsy>
@@ -96,7 +96,7 @@ describe('AmountUnitInput', () => {
     });
 
     test('with amount and unit column, can disable and disabled', () => {
-        const { container } = render(
+        render(
             <Formsy>
                 <AmountUnitInput {...DISABLED} />
             </Formsy>
@@ -123,7 +123,7 @@ describe('AmountUnitInput', () => {
     });
 
     test('with amount and unit column, can disable and disabled, has mixed value', () => {
-        const { container } = render(
+        render(
             <Formsy>
                 <AmountUnitInput {...DISABLED} fieldWithMixedValues={['storedamount', 'units']} />
             </Formsy>
@@ -150,7 +150,7 @@ describe('AmountUnitInput', () => {
     });
 
     test('with amount and unit column, cannot disable', () => {
-        const { container } = render(
+        render(
             <Formsy>
                 <AmountUnitInput {...NOT_DISABLABLE} />
             </Formsy>

@@ -69,7 +69,7 @@ describe('AmountUnitInput', () => {
     });
 
     test('with amount and unit column, can disable', () => {
-        const { container } = render(
+        render(
             <Formsy>
                 <AmountUnitInput {...CAN_DISABLE} />
             </Formsy>
@@ -91,10 +91,12 @@ describe('AmountUnitInput', () => {
         expect(inputs[3].getAttribute('name')).toBe('Units::enabled');
         expect(inputs[3].getAttribute('value')).toBe('true');
         expect(inputs[3].getAttribute('type')).toBe('hidden');
+        expect(inputs[1].getAttribute('placeholder')).toBe('Enter amount');
+        expect(document.querySelector('.select-input__placeholder').textContent).toBe('Select or type to search...');
     });
 
     test('with amount and unit column, can disable and disabled', () => {
-        const { container } = render(
+        render(
             <Formsy>
                 <AmountUnitInput {...DISABLED} />
             </Formsy>
@@ -112,14 +114,43 @@ describe('AmountUnitInput', () => {
         expect(inputs[0].getAttribute('name')).toBe('StoredAmount::enabled');
         expect(inputs[1].getAttribute('value')).toBe('12.5');
         expect(inputs[1].getAttribute('name')).toBe('amountKey');
+        expect(inputs[1].getAttribute('placeholder')).toBe('Enter amount');
         expect(inputs[2].getAttribute('role')).toBe('combobox');
         expect(inputs[3].getAttribute('name')).toBe('Units::enabled');
         expect(inputs[3].getAttribute('value')).toBe('false');
         expect(inputs[3].getAttribute('type')).toBe('hidden');
+        expect(document.querySelector('.select-input__placeholder').textContent).toBe('Select or type to search...');
+    });
+
+    test('with amount and unit column, can disable and disabled, has mixed value', () => {
+        render(
+            <Formsy>
+                <AmountUnitInput {...DISABLED} fieldWithMixedValues={['storedamount', 'units']} />
+            </Formsy>
+        );
+        expect(document.querySelectorAll('.form-group.row')).toHaveLength(1);
+        expect(document.querySelectorAll('label')).toHaveLength(2);
+        expect(document.querySelectorAll('label')[0].textContent).toBe('Amount and Units ');
+        expect(document.querySelectorAll('label')[1].textContent).toBe('');
+        expect(document.querySelectorAll('.fa-toggle-on')).toHaveLength(0);
+        expect(document.querySelectorAll('.fa-toggle-off')).toHaveLength(1);
+        const inputs = document.querySelectorAll('input');
+        expect(inputs).toHaveLength(4);
+        expect(inputs[0].getAttribute('value')).toBe('false');
+        expect(inputs[0].getAttribute('type')).toBe('hidden');
+        expect(inputs[0].getAttribute('name')).toBe('StoredAmount::enabled');
+        expect(inputs[1].getAttribute('value')).toBe('12.5');
+        expect(inputs[1].getAttribute('name')).toBe('amountKey');
+        expect(inputs[1].getAttribute('placeholder')).toBe('[Mixed]');
+        expect(inputs[2].getAttribute('role')).toBe('combobox');
+        expect(inputs[3].getAttribute('name')).toBe('Units::enabled');
+        expect(inputs[3].getAttribute('value')).toBe('false');
+        expect(inputs[3].getAttribute('type')).toBe('hidden');
+        expect(document.querySelector('.select-input__placeholder').textContent).toBe('[Mixed]');
     });
 
     test('with amount and unit column, cannot disable', () => {
-        const { container } = render(
+        render(
             <Formsy>
                 <AmountUnitInput {...NOT_DISABLABLE} />
             </Formsy>
@@ -135,5 +166,7 @@ describe('AmountUnitInput', () => {
         expect(inputs[0].getAttribute('value')).toBe('12.5');
         expect(inputs[0].getAttribute('name')).toBe('amountKey');
         expect(inputs[1].getAttribute('role')).toBe('combobox');
+        expect(inputs[0].getAttribute('placeholder')).toBe('Enter amount');
+        expect(document.querySelector('.select-input__placeholder').textContent).toBe('Select or type to search...');
     });
 });

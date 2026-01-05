@@ -196,7 +196,60 @@ describe('getCommonDataForSelection', () => {
                 },
             },
         });
-        expect(getCommonDataValues(data)).toEqual({});
+        const res1 = getCommonDataValues(data);
+        expect(res1.fieldValues).toEqual({});
+        expect(res1.fieldsInConflict).toEqual(['field1', 'field2']);
+    });
+
+    test('empty values', () => {
+        const data = fromJS({
+            '1': {
+                field1: {
+                    value: '',
+                },
+                field2: {
+                    value: null,
+                },
+            },
+            '2': {
+                field1: {
+                    value: '',
+                },
+                field2: {
+                    value: undefined,
+                },
+            },
+        });
+        const res1 = getCommonDataValues(data);
+        expect(res1.fieldValues).toEqual({});
+        expect(res1.fieldsInConflict).toEqual([]);
+    });
+
+    test('not empty, but falsy values', () => {
+        const data = fromJS({
+            '1': {
+                field1: {
+                    value: false,
+                },
+                field2: {
+                    value: 0,
+                },
+            },
+            '2': {
+                field1: {
+                    value: false,
+                },
+                field2: {
+                    value: 0,
+                },
+            },
+        });
+        const res1 = getCommonDataValues(data);
+        expect(res1.fieldValues).toEqual({
+            field1: false,
+            field2: 0,
+        });
+        expect(res1.fieldsInConflict).toEqual([]);
     });
 
     test('undefined and missing values', () => {
@@ -231,7 +284,10 @@ describe('getCommonDataForSelection', () => {
             },
         });
         expect(getCommonDataValues(data)).toEqual({
-            field4: 'same',
+            fieldValues: {
+                field4: 'same',
+            },
+            fieldsInConflict: ['field1', 'field2', 'field3'],
         });
     });
 
@@ -374,18 +430,24 @@ describe('getCommonDataForSelection', () => {
             },
         });
         expect(getCommonDataValues(data)).toEqual({
-            AndAgain: 'again',
-            Data: 'data1',
-            Pdf: '/root/lk/Sample%20Management/blood.pdf',
+            fieldValues: {
+                AndAgain: 'again',
+                Data: 'data1',
+                Pdf: '/root/lk/Sample%20Management/blood.pdf',
+            },
+            fieldsInConflict: ['RowId', 'Value', 'Name', 'Other'],
         });
         expect(getCommonDataValues(data, ['Pdf'])).toEqual({
-            AndAgain: 'again',
-            Data: 'data1',
-            Pdf: fromJS({
-                value: '/root/lk/Sample%20Management/blood.pdf',
-                displayValue: 'sampletype/blood.pdf',
-                url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
-            }),
+            fieldValues: {
+                AndAgain: 'again',
+                Data: 'data1',
+                Pdf: fromJS({
+                    value: '/root/lk/Sample%20Management/blood.pdf',
+                    displayValue: 'sampletype/blood.pdf',
+                    url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
+                }),
+            },
+            fieldsInConflict: ['RowId', 'Value', 'Name', 'Other'],
         });
     });
 });

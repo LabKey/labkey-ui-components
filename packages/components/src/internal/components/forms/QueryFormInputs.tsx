@@ -55,6 +55,7 @@ export interface QueryFormInputsProps {
     containerPath?: string;
     disabledFields?: List<string>;
     fieldValues?: any;
+    fieldWithMixedValues?: string[];
     fireQSChangeOnInit?: boolean;
     includeLabelField?: boolean;
     initiallyDisableFields?: boolean;
@@ -171,6 +172,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             preventCrossFolderEnable,
             pluralNoun = 'rows',
             fieldValues,
+            fieldWithMixedValues,
             fireQSChangeOnInit,
             checkRequiredFields,
             showLabelAsterisk,
@@ -189,6 +191,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
 
         const filter = columnFilter ?? insertColumnFilter;
         const columns = queryInfo ? queryInfo.columns : queryColumns;
+        const fieldWithMixedValuesLc = fieldWithMixedValues?.map(f => f.toLowerCase()) || [];
 
         // CONSIDER: separately establishing the set of columns and allow
         // QueryFormInputs to be a rendering factory for the columns that are in the set.
@@ -219,6 +222,8 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         value = false;
                     }
 
+                    const hasMixedValue = fieldWithMixedValuesLc.indexOf(name.toLowerCase()) > -1;
+
                     const ColumnInputRenderer = resolveInputRenderer(col);
                     if (ColumnInputRenderer) {
                         return (
@@ -228,6 +233,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 col={col}
                                 containerFilter={containerFilter}
                                 data={fieldValues}
+                                fieldWithMixedValues={fieldWithMixedValuesLc}
                                 formsy
                                 initiallyDisabled={shouldDisableField}
                                 key={fieldKey}
@@ -278,6 +284,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         displayColumn={col.lookup.displayColumn}
                                         fireQSChangeOnInit={fireQSChangeOnInit}
                                         formsy
+                                        hasMixedValue={hasMixedValue}
                                         initiallyDisabled={shouldDisableField}
                                         joinValues={joinValues}
                                         label={col.caption}
@@ -310,6 +317,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 allowDisable={allowFieldDisable}
                                 description={col.description}
                                 formsy
+                                hasMixedValue={hasMixedValue}
                                 initiallyDisabled={shouldDisableField}
                                 key={fieldKey}
                                 onChange={this.onSelectChange}
@@ -327,6 +335,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             <TextAreaInput
                                 addLabelAsterisk={showAsteriskSymbol}
                                 allowDisable={allowFieldDisable}
+                                hasMixedValue={hasMixedValue}
                                 initiallyDisabled={shouldDisableField}
                                 key={fieldKey}
                                 onToggleDisable={this.onToggleDisable}
@@ -341,6 +350,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 addLabelAsterisk={showAsteriskSymbol}
                                 allowDisable={allowFieldDisable}
                                 formsy
+                                hasMixedValue={hasMixedValue}
                                 initiallyDisabled={shouldDisableField}
                                 initialValue={value}
                                 key={fieldKey}
@@ -358,6 +368,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 <CheckboxInput
                                     addLabelAsterisk={showAsteriskSymbol}
                                     allowDisable={allowFieldDisable}
+                                    hasMixedValue={hasMixedValue}
                                     initiallyDisabled={shouldDisableField}
                                     key={fieldKey}
                                     onToggleDisable={this.onToggleDisable}
@@ -372,6 +383,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 <DatePickerInput
                                     addLabelAsterisk={showAsteriskSymbol}
                                     allowDisable={allowFieldDisable}
+                                    hasMixedValue={hasMixedValue}
                                     initiallyDisabled={shouldDisableField}
                                     key={fieldKey}
                                     onToggleDisable={this.onToggleDisable}
@@ -386,6 +398,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     <TextInput
                                         addLabelAsterisk={showAsteriskSymbol}
                                         allowDisable={allowFieldDisable}
+                                        hasMixedValue={hasMixedValue}
                                         initiallyDisabled={shouldDisableField}
                                         onToggleDisable={this.onToggleDisable}
                                         queryColumn={col}

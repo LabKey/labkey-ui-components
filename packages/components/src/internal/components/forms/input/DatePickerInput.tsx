@@ -32,7 +32,12 @@ import {
 } from '../../../util/Date';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
-import { INPUT_CONTAINER_CLASS_NAME, INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME } from '../constants';
+import {
+    INPUT_CONTAINER_CLASS_NAME,
+    INPUT_LABEL_CLASS_NAME,
+    INPUT_WRAPPER_CLASS_NAME,
+    MIXED_VALUE_DISPLAY,
+} from '../constants';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
@@ -248,12 +253,17 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
             wrapperClassName,
             onBlur,
             inlineEdit,
+            hasMixedValue,
         } = this.props;
         const { isDisabled, selectedDate, invalid, invalidStart } = this.state;
         const { dateFormat, timeFormat } = getPickerDateAndTimeFormat(queryColumn, hideTime, selectedDate);
         const altDateFormats = getAltParseFormats(dateFormat);
         const validValueInvalidStart = !invalid && invalidStart;
         const isTimeOnly = queryColumn.isTimeColumn;
+        const placeHolderDisplay =
+            hasMixedValue && isDisabled
+                ? MIXED_VALUE_DISPLAY
+                : (placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`);
         const picker = (
             <DatePicker
                 autoComplete="off"
@@ -272,7 +282,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                 onMonthChange={this.onChange}
                 onSelect={inlineEdit ? this.onSelect : undefined}
                 openToDate={this.getOpenToDate()}
-                placeholderText={placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`}
+                placeholderText={placeHolderDisplay}
                 ref={this.input}
                 selected={invalid ? null : selectedDate}
                 shouldCloseOnSelect={inlineEdit ? false : undefined}

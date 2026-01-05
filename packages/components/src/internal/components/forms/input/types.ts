@@ -16,6 +16,7 @@ export interface InputRendererProps {
     containerPath?: string;
     // The data for the entire row/form section
     data: any;
+    fieldWithMixedValues?: string[];
     formsy?: boolean;
     initiallyDisabled?: boolean;
     inputClass?: string;

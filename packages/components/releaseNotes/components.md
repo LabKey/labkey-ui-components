@@ -5,6 +5,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - GitHub Issue 503: Field editor URL option to set target window (i.e. _blank)
 
+### version 7.8.0
+*Released*: 5 January 2026
+- Add a “Mixed” state in Bulk Edit when values differ across selected samples
+  - Modified getCommonDataValues utility to return both common field values and a list of fields with conflicting values
+  - Added hasMixedValue prop support across all input components (TextInput, SelectInput, CheckboxInput, DatePickerInput, FileInput, TextAreaInput, AmountUnitInput)
+  - Updated BulkUpdateForm and BulkAddUpdateForm to pass conflicting fields information to form inputs
+
 ### version 7.7.3
 *Released*: 31 December 2025
 - [GitHub Issue #495](https://github.com/LabKey/internal-issues/issues/495)

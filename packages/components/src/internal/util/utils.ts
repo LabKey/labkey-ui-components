@@ -186,7 +186,7 @@ export function unorderedEqual(array1: any[], array2: any[]): boolean {
  * @param value
  */
 export function valueIsEmpty(value: any): boolean {
-    if (!value) return true;
+    if (value === null || value === undefined || value === '') return true;
     if (typeof value === 'string' && value === '') return true;
     return Array.isArray(value) && value.length === 0;
 }
@@ -201,7 +201,13 @@ export function valueIsEmpty(value: any): boolean {
  *
  * @param data Map between ids and a map of data for the ids (i.e, a row of data for that id)
  */
-export function getCommonDataValues(data: Map<any, any>, fileFields?: string[]): any {
+export function getCommonDataValues(
+    data: Map<any, any>,
+    fileFields?: string[]
+): {
+    fieldsInConflict: string[];
+    fieldValues: Record<string, any>;
+} {
     let valueMap = Map<string, any>(); // map from fields to the value shared by all rows
     let fieldsInConflict = ImmutableSet<string>();
     let emptyFields = ImmutableSet<string>(); // those fields that are empty
@@ -266,7 +272,10 @@ export function getCommonDataValues(data: Map<any, any>, fileFields?: string[]):
         if (valueMap.has(fileField)) valueMap = valueMap.set(fileField, fileMap[fileField]);
     });
 
-    return valueMap.toObject();
+    return {
+        fieldValues: valueMap.toObject(),
+        fieldsInConflict: fieldsInConflict.toArray(),
+    };
 }
 
 // exported for jest testing

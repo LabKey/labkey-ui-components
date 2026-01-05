@@ -132,7 +132,7 @@ const gridDataAppPropsOnlyConst = [
         format: '',
         fieldIndex: 0,
         importAliases: '',
-        selected: '',
+        selected: false,
         description: '',
         required: 'false',
         scannable: 'false',

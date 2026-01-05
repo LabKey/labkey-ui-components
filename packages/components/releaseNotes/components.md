@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 7.X
-*Released*: X
+### version 7.8.0
+*Released*: 5 January 2026
 - Add a “Mixed” state in Bulk Edit when values differ across selected samples
   - Modified getCommonDataValues utility to return both common field values and a list of fields with conflicting values
   - Added hasMixedValue prop support across all input components (TextInput, SelectInput, CheckboxInput, DatePickerInput, FileInput, TextAreaInput, AmountUnitInput)

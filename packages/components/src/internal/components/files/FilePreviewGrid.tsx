@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { List, Map } from 'immutable';
 
 import { FileGridPreviewProps } from '../../../public/files/models';
@@ -8,7 +8,7 @@ import { Grid } from '../base/Grid';
 
 export interface PreviewData {
     data: List<Map<string, any>>;
-    warningMsg?: string;
+    warningMsg?: ReactNode;
 }
 
 type Props = FileGridPreviewProps & {
@@ -35,12 +35,12 @@ export class FilePreviewGrid extends React.Component<Props, any> {
                 ) : (
                     <>
                         <strong>{header}</strong>
-                        <Alert className="margin-top" bsStyle="warning">
-                            {warningMsg}
-                        </Alert>
-                        <Alert className="margin-top" bsStyle="warning">
-                            {previewData?.warningMsg}
-                        </Alert>
+                        {(warningMsg || previewData?.warningMsg) && (
+                            <Alert className="margin-top" bsStyle="warning">
+                                {warningMsg}
+                                {previewData?.warningMsg}
+                            </Alert>
+                        )}
                         <p className="margin-top">
                             <span>
                                 The {numRows === 1 ? 'one row ' : 'first ' + numRows + ' rows '} of your data file{' '}

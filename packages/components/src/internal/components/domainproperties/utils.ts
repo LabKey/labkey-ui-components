@@ -121,3 +121,7 @@ export function parentAliasInvalid(alias: Partial<IParentAlias>): boolean {
 export function getSourceDomainDefaultSystemFields(): SystemField[] {
     return SOURCE_DOMAIN_SYSTEM_FIELDS;
 }
+
+export function isEmptyString(value: string): boolean {
+    return !value || value.trim() === '';
+}

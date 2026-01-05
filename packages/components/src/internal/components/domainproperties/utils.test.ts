@@ -2,7 +2,7 @@ import { Set, OrderedMap } from 'immutable';
 
 import { IParentAlias } from '../entities/models';
 
-import { getDuplicateAlias, parentAliasInvalid } from './utils';
+import {getDuplicateAlias, isEmptyString, parentAliasInvalid} from './utils';
 
 describe('domain property utils', () => {
     test('parentAliasInvalid', () => {
@@ -61,5 +61,15 @@ describe('getDuplicateAlias', () => {
         });
         expect(getDuplicateAlias(parentAliases)).toEqual(new Set(['id3']));
         expect(getDuplicateAlias(parentAliases, true)).toEqual(new Set(['alias1']));
+    });
+});
+
+describe('isEmptyString', () => {
+    test('various values', () => {
+        expect(isEmptyString(undefined)).toBe(true);
+        expect(isEmptyString(null)).toBe(true);
+        expect(isEmptyString('')).toBe(true);
+        expect(isEmptyString('   ')).toBe(true);
+        expect(isEmptyString('not empty')).toBe(false);
     });
 });

@@ -1,4 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react';
+import {List} from "immutable";
 
 import { HelpLink, URL_ENCODING_TOPIC } from '../../util/helpLinks';
 
@@ -9,7 +10,7 @@ import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
 import { hasModule } from '../../app/utils';
 
 import { isFieldFullyLocked } from './propertiesUtil';
-import { createFormInputId, createFormInputName } from './utils';
+import { createFormInputId, createFormInputName, isEmptyString } from './utils';
 import {
     DOMAIN_FIELD_DESCRIPTION,
     DOMAIN_FIELD_IMPORTALIASES,
@@ -18,7 +19,7 @@ import {
     DOMAIN_FIELD_URL,
     DOMAIN_FIELD_URL_TARGET,
 } from './constants';
-import { DomainField, IDomainFormDisplayOptions } from './models';
+import {DomainField, IDomainFormDisplayOptions, IFieldChange} from './models';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
 
@@ -29,6 +30,7 @@ interface NameAndLinkingProps {
     field: DomainField;
     index: number;
     onChange: (string, any) => void;
+    onMultiChange: (changes: List<IFieldChange>) => void;
 }
 
 export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
@@ -37,7 +39,23 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
     };
 
     onChange = (id: string, value: any): void => {
-        this.props?.onChange(id, value);
+        this.props.onChange(id, value);
+    };
+
+    handleURLChange = (evt: any): void => {
+        const { index, domainIndex } = this.props;
+        const val = evt.target.value;
+        const isEmpty = isEmptyString(val);
+
+        // make sure to uncheck the "open in new tab" option if URL is cleared out
+        if (isEmpty) {
+            let changes = List<IFieldChange>();
+            changes = changes.push({ id: evt.target.id, value: null });
+            changes = changes.push({ id: createFormInputId(DOMAIN_FIELD_URL_TARGET, domainIndex, index), value: null });
+            this.props.onMultiChange(changes);
+        } else {
+            this.onChange(evt.target.id, isEmpty ? null : val);
+        }
     };
 
     handleURLTargetChange = (evt: any): void => {
@@ -146,7 +164,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                             value={field.URL || ''}
                             id={createFormInputId(DOMAIN_FIELD_URL, domainIndex, index)}
                             name={createFormInputName(DOMAIN_FIELD_URL)}
-                            onChange={this.handleChange}
+                            onChange={this.handleURLChange}
                             disabled={isFieldFullyLocked(field.lockType)}
                         />
                         {/*GitHub Issue 503: Field editor URL option to set target window (i.e. _blank)*/}
@@ -158,7 +176,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                                 className="form-control domain-text-option-urltarget"
                                 checked={field.URLTarget === '_blank'}
                                 onChange={this.handleURLTargetChange}
-                                disabled={isFieldFullyLocked(field.lockType)}
+                                disabled={isFieldFullyLocked(field.lockType) || isEmptyString(field.URL)}
                             />
                             <span>Open links in a new tab</span>
                         </div>

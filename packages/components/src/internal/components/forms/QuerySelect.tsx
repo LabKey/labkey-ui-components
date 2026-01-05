@@ -246,6 +246,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         openMenuOnFocus,
         required,
         value,
+        hasMixedValue,
     } = selectInputProps;
     const [defaultOptions, setDefaultOptions] = useState<DefaultOptions>(() =>
         // See note in onFocus() regarding support for "loadOnFocus"
@@ -440,6 +441,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
                 description={description}
                 disabled
                 formsy={formsy}
+                hasMixedValue={hasMixedValue}
                 helpTipRenderer={helpTipRenderer}
                 initiallyDisabled={initiallyDisabled}
                 inputClass={inputClass}

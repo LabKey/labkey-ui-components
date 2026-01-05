@@ -6,6 +6,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 - GitHub 562: Combine warning messages for file preview unknown/system fields with the warning for duplicate columns
   - FilePreviewGrid to combine warningMsg with previewData.warningMsg in a single Alert
 
+### version 7.8.0
+*Released*: 5 January 2026
+- Add a “Mixed” state in Bulk Edit when values differ across selected samples
+  - Modified getCommonDataValues utility to return both common field values and a list of fields with conflicting values
+  - Added hasMixedValue prop support across all input components (TextInput, SelectInput, CheckboxInput, DatePickerInput, FileInput, TextAreaInput, AmountUnitInput)
+  - Updated BulkUpdateForm and BulkAddUpdateForm to pass conflicting fields information to form inputs
+
 ### version 7.7.3
 *Released*: 31 December 2025
 - [GitHub Issue #495](https://github.com/LabKey/internal-issues/issues/495)

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.8.1
+*Released*: 6 January 2026
 - GitHub 562: Combine warning messages for file preview unknown/system fields with the warning for duplicate columns
   - FilePreviewGrid to combine warningMsg with previewData.warningMsg in a single Alert
 

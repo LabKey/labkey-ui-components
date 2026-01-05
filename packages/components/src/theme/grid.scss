@@ -66,6 +66,15 @@
     overflow-y: auto;
 }
 
+// Note: this is necessary because the editable grid column headers use a normal dropdown menu, not the custom one
+// defined in HeaderCellDropdownMenu. This forces the dropdown icon for editable grid dropdowns to the bottom right of
+// the th element.
+.dropdown.editable-grid-column-header__dropdown {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+}
+
 .grid-header-cell__title-wrapper {
     flex: 1;
 }

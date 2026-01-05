@@ -902,7 +902,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 {metadata?.onRemoveColumn && (
                     <DropdownMenu
                         asAnchor={false}
-                        className="grid-panel__menu-toggle pull-right"
+                        className="grid-panel__menu-toggle editable-grid-column-header__dropdown"
                         pullRight
                         title={<i className="fa fa-chevron-circle-down" />}
                     >

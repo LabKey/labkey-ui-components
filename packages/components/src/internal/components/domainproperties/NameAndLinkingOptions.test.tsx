@@ -31,7 +31,7 @@ const field = DomainField.create({
     label: _label,
     importAliases: _importAliases,
     URL: _URL,
-    URLTarget: '_blank',
+    isTargetBlank: true,
     propertyURI: 'test',
 });
 

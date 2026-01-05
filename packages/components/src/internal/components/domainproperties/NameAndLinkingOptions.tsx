@@ -51,7 +51,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
         if (isEmpty) {
             let changes = List<IFieldChange>();
             changes = changes.push({ id: evt.target.id, value: null });
-            changes = changes.push({ id: createFormInputId(DOMAIN_FIELD_URL_TARGET, domainIndex, index), value: null });
+            changes = changes.push({ id: createFormInputId(DOMAIN_FIELD_URL_TARGET, domainIndex, index), value: false });
             this.props.onMultiChange(changes);
         } else {
             this.onChange(evt.target.id, isEmpty ? null : val);
@@ -59,9 +59,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
     };
 
     handleURLTargetChange = (evt: any): void => {
-        const id = evt.target.id;
-        const isChecked = evt.target.checked;
-        this.onChange(id, isChecked ? '_blank' : null);
+        this.onChange(evt.target.id, evt.target.checked);
     };
 
     getImportAliasHelpText = (): ReactNode => {
@@ -173,8 +171,8 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                                 type="checkbox"
                                 id={createFormInputId(DOMAIN_FIELD_URL_TARGET, domainIndex, index)}
                                 name={createFormInputName(DOMAIN_FIELD_URL_TARGET)}
-                                className="form-control domain-text-option-urltarget"
-                                checked={field.URLTarget === '_blank'}
+                                className="form-control domain-text-option-istargetblank"
+                                checked={field.isTargetBlank}
                                 onChange={this.handleURLTargetChange}
                                 disabled={isFieldFullyLocked(field.lockType) || isEmptyString(field.URL)}
                             />

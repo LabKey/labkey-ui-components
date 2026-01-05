@@ -921,7 +921,7 @@ export interface IDomainField {
     uniqueConstraint?: boolean;
     updatedField: boolean;
     URL?: string;
-    URLTarget?: string;
+    isTargetBlank?: boolean;
     visible: boolean;
 }
 
@@ -993,7 +993,7 @@ export class DomainField
         required: false,
         scale: MAX_TEXT_LENGTH,
         URL: undefined,
-        URLTarget: undefined,
+        isTargetBlank: false,
         shownInDetailsView: true,
         shownInInsertView: true,
         shownInUpdateView: true,
@@ -1056,7 +1056,7 @@ export class DomainField
     declare scale?: number;
     declare scannable?: boolean;
     declare URL?: string;
-    declare URLTarget?: string;
+    declare isTargetBlank?: boolean;
     declare shownInDetailsView?: boolean;
     declare shownInInsertView?: boolean;
     declare shownInUpdateView?: boolean;
@@ -1201,8 +1201,8 @@ export class DomainField
         }
 
         // handle URLTarget prop casing mismatch
-        if (raw['urltarget']) {
-            field.URLTarget = raw['urltarget'];
+        if (raw['urltarget'] === '_blank' || raw['URLTarget'] === '_blank') {
+            field.isTargetBlank = true;
         }
 
         return field;
@@ -1224,15 +1224,16 @@ export class DomainField
             json.lookupContainer = null;
         }
 
+        if (json.hasOwnProperty('isTargetBlank')) {
+            json.urltarget = json.isTargetBlank ? '_blank' : null;
+            delete json.isTargetBlank;
+        }
+
         // for some reason the property binding server side cares about casing here for 'URL' and 'PHI'
         if (fixCaseSensitivity) {
             if (json.URL !== undefined) {
                 json.url = json.URL;
                 delete json.URL;
-            }
-            if (json.URLTarget !== undefined) {
-                json.urltarget = json.URLTarget; // note casing because of GWTPropertyDescriptor behavior on server side
-                delete json.URLTarget;
             }
             if (json.PHI !== undefined) {
                 json.phi = json.PHI;

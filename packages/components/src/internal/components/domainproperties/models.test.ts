@@ -122,7 +122,7 @@ const gridDataAppPropsOnlyConst = [
         scale: 4000,
         name: 'a',
         URL: '',
-        URLTarget: '',
+        urltarget: '',
         conceptURI: '',
         rangeURI: 'http://www.w3.org/2001/XMLSchema#int',
         PHI: '',
@@ -189,7 +189,6 @@ const nameCol = new GridColumn({
 const gridColumnsConst = [
     selectionCol,
     nameCol,
-    { index: 'URLTarget', caption: 'URL Target', sortable: true },
     { index: 'URL', caption: 'URL', sortable: true },
     { index: 'PHI', caption: 'PHI', sortable: true },
     { index: 'rangeURI', caption: 'Range URI', sortable: true },
@@ -209,6 +208,7 @@ const gridColumnsConst = [
     { index: 'description', caption: 'Description', sortable: true },
     { index: 'label', caption: 'Label', sortable: true },
     { index: 'importAliases', caption: 'Import Aliases', sortable: true },
+    { index: 'urltarget', caption: 'URL Target', sortable: true },
     {
         index: 'conditionalFormats',
         caption: 'Conditional Formats',
@@ -1493,11 +1493,12 @@ describe('resolveBaseProperties', () => {
         );
     });
 
-    test('URLTarget', () => {
-        expect(DomainField.resolveBaseProperties({}).URLTarget).toBeUndefined();
-        expect(DomainField.resolveBaseProperties({ URLTarget: '_self' }).URLTarget).toBeUndefined();
-        expect(DomainField.resolveBaseProperties({ urltarget: '_self' }).URLTarget).toBe('_self');
-        expect(DomainField.resolveBaseProperties({ urltarget: '_blank' }).URLTarget).toBe('_blank');
+    test('isTargetBlank', () => {
+        expect(DomainField.resolveBaseProperties({}).isTargetBlank).toBeUndefined();
+        expect(DomainField.resolveBaseProperties({ urltarget: '_self' }).isTargetBlank).toBeUndefined();
+        expect(DomainField.resolveBaseProperties({ URLTarget: '_self' }).isTargetBlank).toBeUndefined();
+        expect(DomainField.resolveBaseProperties({ urltarget: '_blank' }).isTargetBlank).toBe(true);
+        expect(DomainField.resolveBaseProperties({ URLTarget: '_blank' }).isTargetBlank).toBe(true);
     });
 });
 

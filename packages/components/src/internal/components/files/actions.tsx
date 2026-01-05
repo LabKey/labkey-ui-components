@@ -2,6 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+import React from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 
 import { parseScientificInt } from '../../util/utils';
@@ -80,9 +81,11 @@ export function convertRowDataIntoPreviewData(
     return {
         data: rows,
         warningMsg:
-            duplicateColumns.size > 0
-                ? 'Duplicate column(s) provided: ' + [...duplicateColumns].join(', ') + '.'
-                : undefined,
+            duplicateColumns.size > 0 ? (
+                <p>
+                    Duplicate column(s) provided: <b>{[...duplicateColumns].join(', ')}</b>.
+                </p>
+            ) : null,
     };
 }
 

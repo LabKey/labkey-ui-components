@@ -142,8 +142,12 @@ describe('NameAndLinkingOptions', () => {
         render(<NameAndLinkingOptions {...DEFAULT_PROPS} field={calculatedField} />);
         expect(document.querySelectorAll('#' + createFormInputId(DOMAIN_FIELD_IMPORTALIASES, 1, 1))).toHaveLength(0);
 
-        expect(document.querySelector('#' + createFormInputId(DOMAIN_FIELD_URL, 1, 1)).getAttribute('value')).toEqual('');
-        expect(document.querySelector('#' + createFormInputId(DOMAIN_FIELD_URL_TARGET, 1, 1)).hasAttribute('checked')).toEqual(false);
+        expect(document.querySelector('#' + createFormInputId(DOMAIN_FIELD_URL, 1, 1)).getAttribute('value')).toEqual(
+            ''
+        );
+        expect(
+            document.querySelector('#' + createFormInputId(DOMAIN_FIELD_URL_TARGET, 1, 1)).hasAttribute('checked')
+        ).toEqual(false);
     });
 
     test('hideImportAliases', () => {
@@ -160,10 +164,20 @@ describe('NameAndLinkingOptions', () => {
 
     test('locked field', () => {
         render(<NameAndLinkingOptions {...DEFAULT_PROPS} field={lockedField} />);
-        expect(document.querySelector('#' + createFormInputId(DOMAIN_FIELD_LABEL, 1, 1)).hasAttribute('disabled')).toEqual(true);
-        expect(document.querySelector('#' + createFormInputId(DOMAIN_FIELD_DESCRIPTION, 1, 1)).hasAttribute('disabled')).toEqual(true);
-        expect(document.querySelector('#' + createFormInputId(DOMAIN_FIELD_IMPORTALIASES, 1, 1)).hasAttribute('disabled')).toEqual(true);
-        expect(document.querySelector('#' + createFormInputId(DOMAIN_FIELD_URL, 1, 1)).hasAttribute('disabled')).toEqual(true);
-        expect(document.querySelector('#' + createFormInputId(DOMAIN_FIELD_URL_TARGET, 1, 1)).hasAttribute('disabled')).toEqual(true);
+        expect(
+            document.querySelector('#' + createFormInputId(DOMAIN_FIELD_LABEL, 1, 1)).hasAttribute('disabled')
+        ).toEqual(true);
+        expect(
+            document.querySelector('#' + createFormInputId(DOMAIN_FIELD_DESCRIPTION, 1, 1)).hasAttribute('disabled')
+        ).toEqual(true);
+        expect(
+            document.querySelector('#' + createFormInputId(DOMAIN_FIELD_IMPORTALIASES, 1, 1)).hasAttribute('disabled')
+        ).toEqual(true);
+        expect(
+            document.querySelector('#' + createFormInputId(DOMAIN_FIELD_URL, 1, 1)).hasAttribute('disabled')
+        ).toEqual(true);
+        expect(
+            document.querySelector('#' + createFormInputId(DOMAIN_FIELD_URL_TARGET, 1, 1)).hasAttribute('disabled')
+        ).toEqual(true);
     });
 });

@@ -1,8 +1,8 @@
-import { Set, OrderedMap } from 'immutable';
+import { OrderedMap, Set } from 'immutable';
 
 import { IParentAlias } from '../entities/models';
 
-import {getDuplicateAlias, isEmptyString, parentAliasInvalid} from './utils';
+import { getDuplicateAlias, isEmptyString, parentAliasInvalid } from './utils';
 
 describe('domain property utils', () => {
     test('parentAliasInvalid', () => {

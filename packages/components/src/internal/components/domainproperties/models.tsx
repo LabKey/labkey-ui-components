@@ -886,6 +886,7 @@ export interface IDomainField {
     hidden?: boolean;
     importAliases?: string;
     isPrimaryKey: boolean;
+    isTargetBlank?: boolean;
     label?: string;
     lockExistingField?: boolean;
     lockType: string;
@@ -921,7 +922,6 @@ export interface IDomainField {
     uniqueConstraint?: boolean;
     updatedField: boolean;
     URL?: string;
-    isTargetBlank?: boolean;
     visible: boolean;
 }
 

@@ -725,11 +725,6 @@ exports[`<FilePreviewGrid/> warning message and previewData.warningMsg 1`] = `
     role="alert"
   >
     Testing warning message
-  </div>
-  <div
-    class="margin-top alert alert-warning"
-    role="alert"
-  >
     Duplicate fields
   </div>
   <p

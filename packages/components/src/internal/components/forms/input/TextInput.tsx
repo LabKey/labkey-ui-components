@@ -19,7 +19,7 @@ import { FieldLabel } from '../FieldLabel';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
-import { INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME } from '../constants';
+import { INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME, MIXED_VALUE_DISPLAY } from '../constants';
 
 import { FormsyInput, FormsyInputProps } from './FormsyReactComponents';
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
@@ -125,6 +125,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
             startFocused,
             includeSpacesWarning,
             isUpdate,
+            hasMixedValue,
             ...inputProps
         } = rest;
 
@@ -134,16 +135,19 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
             help = `A ${queryColumn.caption} will be generated if one is not given.`;
         }
 
+        const isDisabled = this.state.isDisabled || disableInput;
         return (
             <>
                 <FormsyInput
                     id={queryColumn.fieldKey}
                     name={queryColumn.fieldKey}
-                    placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
+                    placeholder={
+                        hasMixedValue && isDisabled ? MIXED_VALUE_DISPLAY : `Enter ${queryColumn.caption.toLowerCase()}`
+                    }
                     required={queryColumn.required}
                     {...inputProps}
                     componentRef={this.textInput}
-                    disabled={this.state.isDisabled || disableInput}
+                    disabled={isDisabled}
                     help={help}
                     label={this.renderLabel()}
                     labelClassName={showLabel ? labelClassName : 'hide-label'}

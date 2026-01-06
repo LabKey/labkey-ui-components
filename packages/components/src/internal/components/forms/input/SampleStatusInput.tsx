@@ -151,7 +151,10 @@ export const SampleStatusInputRenderer: FC<InputRendererProps> = memo(props => {
         selectInputProps,
         showAsteriskSymbol,
         value,
+        fieldWithMixedValues,
     } = props;
+
+    const hasMixedValue = fieldWithMixedValues?.includes(col.name.toLowerCase());
 
     return (
         <SampleStatusInput
@@ -161,6 +164,7 @@ export const SampleStatusInputRenderer: FC<InputRendererProps> = memo(props => {
             col={col}
             containerPath={containerPath}
             formsy={formsy}
+            hasMixedValue={hasMixedValue}
             initiallyDisabled={initiallyDisabled}
             onAdditionalFormDataChange={onAdditionalFormDataChange}
             onQSChange={onSelectChange}

@@ -270,7 +270,12 @@ export class DomainDesign
             }
 
             if (rawModel.fields) {
-                fields = DomainField.fromJS(rawModel.fields, mandatoryFieldNames, uniqueConstraintFieldNames, nonUniqueConstraintFieldNames);
+                fields = DomainField.fromJS(
+                    rawModel.fields,
+                    mandatoryFieldNames,
+                    uniqueConstraintFieldNames,
+                    nonUniqueConstraintFieldNames
+                );
             }
 
             // allow calculated fields if the feature is enabled and the domain kind allows it,
@@ -310,11 +315,7 @@ export class DomainDesign
         // GitHub Issue 73: allow for per-field non-unique constraints to be added via the field editor UI
         json.indices = dd.indices
             // filter out the single field indices, and keep the others
-            .filter(
-                index =>
-                    !index.isSingleFieldUniqueConstraint() &&
-                    !index.isSingleFieldNonUniqueConstraint()
-            )
+            .filter(index => !index.isSingleFieldUniqueConstraint() && !index.isSingleFieldNonUniqueConstraint())
             .map(index => DomainIndex.serialize(index))
             .toArray();
         // add in the new set of single field unique indices
@@ -912,6 +913,7 @@ export interface IDomainField {
     measure?: boolean;
     mvEnabled?: boolean;
     name: string;
+    nonUniqueConstraint?: boolean;
     original: Partial<IDomainField>;
     PHI?: string;
     primaryKey?: boolean;
@@ -932,7 +934,6 @@ export interface IDomainField {
     sourceOntology?: string;
     textChoiceValidator?: PropertyValidator;
     uniqueConstraint?: boolean;
-    nonUniqueConstraint?: boolean;
     updatedField: boolean;
     URL?: string;
     visible: boolean;
@@ -1180,7 +1181,8 @@ export class DomainField
         for (let i = 0; i < rawFields.length; i++) {
             const rawField = rawFields[i];
             rawField.uniqueConstraint = lowerUniqueConstraintFieldNames?.indexOf(rawField.name?.toLowerCase()) > -1;
-            rawField.nonUniqueConstraint = lowerNonUniqueConstraintFieldNames?.indexOf(rawField.name?.toLowerCase()) > -1;
+            rawField.nonUniqueConstraint =
+                lowerNonUniqueConstraintFieldNames?.indexOf(rawField.name?.toLowerCase()) > -1;
             fields = fields.push(DomainField.create(rawField, undefined, mandatoryFieldNames));
         }
 

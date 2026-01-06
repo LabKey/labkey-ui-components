@@ -25,21 +25,21 @@ import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DOMAIN_DEFAULT_TYPES,
     DOMAIN_EDITABLE_DEFAULT,
+    DOMAIN_FIELD_CONSTRAINT,
     DOMAIN_FIELD_DEFAULT_VALUE_TYPE,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING,
     DOMAIN_FIELD_HIDDEN,
     DOMAIN_FIELD_MEASURE,
     DOMAIN_FIELD_MVENABLED,
+    DOMAIN_FIELD_NONUNIQUECONSTRAINT,
     DOMAIN_FIELD_PHI,
     DOMAIN_FIELD_RECOMMENDEDVARIABLE,
     DOMAIN_FIELD_SHOWNINDETAILSVIEW,
     DOMAIN_FIELD_SHOWNININSERTVIEW,
     DOMAIN_FIELD_SHOWNINUPDATESVIEW,
     DOMAIN_FIELD_UNIQUECONSTRAINT,
-    DOMAIN_FIELD_NONUNIQUECONSTRAINT,
     DOMAIN_PHI_LEVELS,
-    DOMAIN_FIELD_CONSTRAINT,
 } from './constants';
 
 import { DomainFieldLabel } from './DomainFieldLabel';
@@ -69,6 +69,7 @@ interface AdvancedSettingsState {
     hidden?: boolean;
     measure?: boolean;
     mvEnabled?: boolean;
+    nonUniqueConstraint?: boolean;
     PHI?: string;
     phiLevels?: { label: string; value: string }[];
     recommendedVariable?: boolean;
@@ -76,7 +77,6 @@ interface AdvancedSettingsState {
     shownInInsertView?: boolean;
     shownInUpdateView?: boolean;
     uniqueConstraint?: boolean;
-    nonUniqueConstraint?: boolean;
 }
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
@@ -451,7 +451,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 {allowUniqueConstraintProperties && !field.isCalculatedField() && (
                     <div className="row">
                         <div className="col-xs-4">
-                            <DomainFieldLabel helpTipBody={this.getSingleFieldIndexHelpText()} label="Uniqueness & Index" />
+                            <DomainFieldLabel
+                                helpTipBody={this.getSingleFieldIndexHelpText()}
+                                label="Uniqueness & Index"
+                            />
                         </div>
                         <div className="col-xs-6">
                             <select
@@ -462,9 +465,15 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 onChange={this.handleSingleFieldIndexChange}
                                 value={singleFieldConstraintType}
                             >
-                                <option key="None" value="">No Index</option>
-                                <option key="Non-Unique" value={DOMAIN_FIELD_NONUNIQUECONSTRAINT}>Index</option>
-                                <option key="Unique" value={DOMAIN_FIELD_UNIQUECONSTRAINT}>Index and require unique values</option>
+                                <option key="None" value="">
+                                    No Index
+                                </option>
+                                <option key="Non-Unique" value={DOMAIN_FIELD_NONUNIQUECONSTRAINT}>
+                                    Index
+                                </option>
+                                <option key="Unique" value={DOMAIN_FIELD_UNIQUECONSTRAINT}>
+                                    Index and require unique values
+                                </option>
                             </select>
                         </div>
                         <div className="col-xs-2" />

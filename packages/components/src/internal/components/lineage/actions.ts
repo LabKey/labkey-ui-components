@@ -323,10 +323,6 @@ export class ServerLineageAPIWrapper implements LineageAPIWrapper {
             container = currentContainerId;
         }
 
-        if (fetchOptions.includeRestrictedNodes === undefined) {
-            fetchOptions.includeRestrictedNodes = true;
-        }
-
         // Lineage API currently responds with the container's entity ID.
         // Only apply container if it doesn't match the current container.
         if (container !== currentContainerId) {
@@ -346,7 +342,6 @@ export class ServerLineageAPIWrapper implements LineageAPIWrapper {
             fetchOptions.includeInputsAndOutputs === true,
             fetchOptions.includeRunSteps === true,
             fetchOptions.includeProperties === true,
-            fetchOptions.includeRestrictedNodes === true,
             options?.runProtocolLsid ?? '',
         ].join('|');
 

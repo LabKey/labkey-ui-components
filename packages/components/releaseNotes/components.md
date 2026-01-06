@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - GitHub Issue 503: Field editor URL option to set target window (i.e. _blank)
 
+### version 7.8.1
+*Released*: 6 January 2026
+- GitHub 562: Combine warning messages for file preview unknown/system fields with the warning for duplicate columns
+  - FilePreviewGrid to combine warningMsg with previewData.warningMsg in a single Alert
+
 ### version 7.8.0
 *Released*: 5 January 2026
 - Add a “Mixed” state in Bulk Edit when values differ across selected samples

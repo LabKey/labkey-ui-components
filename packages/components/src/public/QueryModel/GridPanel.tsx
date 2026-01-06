@@ -1057,8 +1057,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const {
             actions,
             allowSelections,
-            allowFiltering,
-            allowSorting,
             allowViewCustomization,
             hasHeader,
             asPanel,
@@ -1176,7 +1174,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
                             {hasData && (
                                 <Grid
-                                    calcWidths={allowSorting || allowFiltering}
                                     columns={this.getGridColumns()}
                                     condensed
                                     data={model.gridData}

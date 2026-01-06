@@ -2,31 +2,19 @@
 
 exports[`DefaultRenderer boolean 1`] = `
 <div>
-  <span
-    class="ws-pre-wrap"
-  >
-    true
-  </span>
+  true
 </div>
 `;
 
 exports[`DefaultRenderer displayValue 1`] = `
 <div>
-  <span
-    class="ws-pre-wrap"
-  >
-    Value 1
-  </span>
+  Value 1
 </div>
 `;
 
 exports[`DefaultRenderer formattedValue 1`] = `
 <div>
-  <span
-    class="ws-pre-wrap"
-  >
-    Value 1.00
-  </span>
+  Value 1.00
 </div>
 `;
 
@@ -46,37 +34,22 @@ exports[`DefaultRenderer list 1`] = `
 
 exports[`DefaultRenderer new line 1`] = `
 <div>
-  <span
-    class="ws-pre-wrap"
-  >
-    test1
+  test1
 test2
-  </span>
 </div>
 `;
 
 exports[`DefaultRenderer string 1`] = `
 <div>
-  <span
-    class="ws-pre-wrap"
-  >
-    test string
-  </span>
+  test string
 </div>
 `;
 
-exports[`DefaultRenderer undefined 1`] = `
-<div>
-  <span
-    class="ws-pre-wrap"
-  />
-</div>
-`;
+exports[`DefaultRenderer undefined 1`] = `<div />`;
 
 exports[`DefaultRenderer url 1`] = `
 <div>
   <a
-    class="ws-pre-wrap"
     href="labkey.com"
   >
     Value 1
@@ -86,28 +59,20 @@ exports[`DefaultRenderer url 1`] = `
 
 exports[`DefaultRenderer url, but noLink 1`] = `
 <div>
-  <span
-    class="ws-pre-wrap"
-  >
-    Value 1
-  </span>
+  Value 1
 </div>
 `;
 
 exports[`DefaultRenderer value 1`] = `
 <div>
-  <span
-    class="ws-pre-wrap"
-  >
-    1
-  </span>
+  1
 </div>
 `;
 
 exports[`DefaultRenderer with style, conditional formatting enabled 1`] = `
 <div>
   <span
-    class="ws-pre-wrap status-pill"
+    class="status-pill"
     style="background-color: blue;"
   >
     Value 1.00
@@ -117,10 +82,6 @@ exports[`DefaultRenderer with style, conditional formatting enabled 1`] = `
 
 exports[`DefaultRenderer with style, conditional formatting not enabled 1`] = `
 <div>
-  <span
-    class="ws-pre-wrap"
-  >
-    Value 1.00
-  </span>
+  Value 1.00
 </div>
 `;

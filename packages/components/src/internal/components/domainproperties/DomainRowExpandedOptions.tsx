@@ -265,6 +265,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
             field,
             index,
             onChange,
+            onMultiChange,
             showingModal,
             appPropertiesOnly,
             domainIndex,
@@ -311,6 +312,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                             domainIndex={domainIndex}
                             field={field}
                             onChange={onChange}
+                            onMultiChange={onMultiChange}
                             appPropertiesOnly={appPropertiesOnly}
                             domainFormDisplayOptions={domainFormDisplayOptions}
                         />

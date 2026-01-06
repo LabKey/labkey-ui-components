@@ -203,15 +203,16 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
         let left;
 
         if (toggleEl.current && menuEl.current) {
-            const headerRect = toggleEl.current.parentElement.getBoundingClientRect();
+            //  The third parentElement is the <th> element, and we want to pin the menu to the bottom of that
+            const headerRect = toggleEl.current.parentElement.parentElement.parentElement.getBoundingClientRect();
             const menuRect = menuEl.current.getBoundingClientRect();
-            left = headerRect.x - menuRect.width + 18 + 'px';
-            top = headerRect.y + headerRect.height + 5 + 'px';
+            left = headerRect.right - menuRect.width + 'px';
+            top = headerRect.bottom + 'px';
 
             // Issue 45553
             // Render the dropdown menu above the header if the header is too close to the bottom of the screen.
             if (headerRect.bottom + menuRect.height > window.innerHeight) {
-                top = headerRect.y - menuRect.height - 10 + 'px';
+                top = headerRect.top - menuRect.height - 10 + 'px';
             }
         }
 
@@ -329,7 +330,7 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
     );
 
     return (
-        <div className="pull-right grid-panel__menu-toggle">
+        <div className="grid-panel__menu-toggle">
             {/* Note: we don't need a click handler on this icon because there is one on the wrapping div above */}
             <span className="fa fa-chevron-circle-down" ref={toggleEl} />
             {createPortal(body, portalRef)}
@@ -401,7 +402,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     return (
         <div className={GRID_HEADER_CELL_BODY} onClick={click}>
-            <span>
+            <div className="grid-header-cell__title-wrapper">
                 <EditableColumnTitle
                     column={queryColumn}
                     onChange={onColumnTitleUpdate}
@@ -431,7 +432,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                         <HelpTipRenderer type={column.helpTipRenderer} column={queryColumn} />
                     </LabelHelpTip>
                 )}
-            </span>
+            </div>
             {includeDropdown && !editingTitle && (
                 <HeaderCellDropdownMenu
                     allowColFilter={allowColFilter}

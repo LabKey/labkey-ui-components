@@ -507,7 +507,6 @@ export class DomainDesign
         const selectionCol = new GridColumn({
             index: GRID_SELECTION_INDEX,
             title: GRID_SELECTION_INDEX,
-            width: 20,
             cell: (data, row) => {
                 const domainIndex = row.get('domainIndex');
                 const fieldIndex = row.get('fieldIndex');
@@ -562,7 +561,14 @@ export class DomainDesign
         if (!showFilterCriteria) delete columns.filterCriteria;
 
         const unsortedColumns = List(
-            Object.keys(columns).map(key => ({ index: key, caption: camelCaseToTitleCase(key), sortable: true }))
+            Object.keys(columns).map(key => {
+                let caption = camelCaseToTitleCase(key);
+                // special case for url and urltarget
+                if (key.toLowerCase() === 'url') caption = 'URL';
+                if (key.toLowerCase() === 'urltarget') caption = 'URL Target';
+
+                return { index: key, caption, sortable: true };
+            })
         );
         return specialCols.concat(unsortedColumns.sort(reorderSummaryColumns)).toList();
     }
@@ -892,6 +898,7 @@ export interface IDomainField {
     hidden?: boolean;
     importAliases?: string;
     isPrimaryKey: boolean;
+    isTargetBlank?: boolean;
     label?: string;
     lockExistingField?: boolean;
     lockType: string;
@@ -1000,6 +1007,7 @@ export class DomainField
         required: false,
         scale: MAX_TEXT_LENGTH,
         URL: undefined,
+        isTargetBlank: false,
         shownInDetailsView: true,
         shownInInsertView: true,
         shownInUpdateView: true,
@@ -1063,6 +1071,7 @@ export class DomainField
     declare scale?: number;
     declare scannable?: boolean;
     declare URL?: string;
+    declare isTargetBlank?: boolean;
     declare shownInDetailsView?: boolean;
     declare shownInInsertView?: boolean;
     declare shownInUpdateView?: boolean;
@@ -1209,6 +1218,11 @@ export class DomainField
             field.rangeURI = raw.rangeURI;
         }
 
+        // handle URLTarget prop casing mismatch
+        if (raw['urltarget'] === '_blank' || raw['URLTarget'] === '_blank') {
+            field.isTargetBlank = true;
+        }
+
         return field;
     }
 
@@ -1226,6 +1240,11 @@ export class DomainField
 
         if (json.lookupContainer === undefined) {
             json.lookupContainer = null;
+        }
+
+        if (json.hasOwnProperty('isTargetBlank')) {
+            json.urltarget = json.isTargetBlank ? '_blank' : null;
+            delete json.isTargetBlank;
         }
 
         // for some reason the property binding server side cares about casing here for 'URL' and 'PHI'

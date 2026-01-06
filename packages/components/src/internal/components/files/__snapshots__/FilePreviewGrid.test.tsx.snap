@@ -25,7 +25,7 @@ exports[`<FilePreviewGrid/> custom column headers 1`] = `
       class="grid-messages"
     />
     <table
-      class="table table-striped table-bordered"
+      class="read-only-table table table-striped table-bordered"
     >
       <thead>
         <tr>
@@ -34,21 +34,33 @@ exports[`<FilePreviewGrid/> custom column headers 1`] = `
             draggable="false"
             id="col1"
           >
-            First Column
+            <div
+              class="grid-header-cell__body"
+            >
+              First Column
+            </div>
           </th>
           <th
             class="grid-header-cell"
             draggable="false"
             id="col2"
           >
-            Second Column
+            <div
+              class="grid-header-cell__body"
+            >
+              Second Column
+            </div>
           </th>
           <th
             class="grid-header-cell"
             draggable="false"
             id="col3"
           >
-            Third Column
+            <div
+              class="grid-header-cell__body"
+            >
+              Third Column
+            </div>
           </th>
         </tr>
       </thead>
@@ -57,57 +69,93 @@ exports[`<FilePreviewGrid/> custom column headers 1`] = `
           class="grid-row-alternate"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            abc
+            <div
+              class="table-cell-content"
+            >
+              abc
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            123
+            <div
+              class="table-cell-content"
+            >
+              123
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-01
+            <div
+              class="table-cell-content"
+            >
+              2019-01-01
+            </div>
           </td>
         </tr>
         <tr
           class="grid-row"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            def
+            <div
+              class="table-cell-content"
+            >
+              def
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            456
+            <div
+              class="table-cell-content"
+            >
+              456
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-02
+            <div
+              class="table-cell-content"
+            >
+              2019-01-02
+            </div>
           </td>
         </tr>
         <tr
           class="grid-row-alternate"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            ghi
+            <div
+              class="table-cell-content"
+            >
+              ghi
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            789
+            <div
+              class="table-cell-content"
+            >
+              789
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-03
+            <div
+              class="table-cell-content"
+            >
+              2019-01-03
+            </div>
           </td>
         </tr>
       </tbody>
@@ -142,7 +190,7 @@ exports[`<FilePreviewGrid/> custom header and info message 1`] = `
       class="grid-messages"
     />
     <table
-      class="table table-striped table-bordered"
+      class="read-only-table table table-striped table-bordered"
     >
       <thead>
         <tr>
@@ -151,21 +199,33 @@ exports[`<FilePreviewGrid/> custom header and info message 1`] = `
             draggable="false"
             id="col1"
           >
-            col1
+            <div
+              class="grid-header-cell__body"
+            >
+              col1
+            </div>
           </th>
           <th
             class="grid-header-cell"
             draggable="false"
             id="col2"
           >
-            col2
+            <div
+              class="grid-header-cell__body"
+            >
+              col2
+            </div>
           </th>
           <th
             class="grid-header-cell"
             draggable="false"
             id="col3"
           >
-            col3
+            <div
+              class="grid-header-cell__body"
+            >
+              col3
+            </div>
           </th>
         </tr>
       </thead>
@@ -174,57 +234,93 @@ exports[`<FilePreviewGrid/> custom header and info message 1`] = `
           class="grid-row-alternate"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            abc
+            <div
+              class="table-cell-content"
+            >
+              abc
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            123
+            <div
+              class="table-cell-content"
+            >
+              123
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-01
+            <div
+              class="table-cell-content"
+            >
+              2019-01-01
+            </div>
           </td>
         </tr>
         <tr
           class="grid-row"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            def
+            <div
+              class="table-cell-content"
+            >
+              def
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            456
+            <div
+              class="table-cell-content"
+            >
+              456
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-02
+            <div
+              class="table-cell-content"
+            >
+              2019-01-02
+            </div>
           </td>
         </tr>
         <tr
           class="grid-row-alternate"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            ghi
+            <div
+              class="table-cell-content"
+            >
+              ghi
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            789
+            <div
+              class="table-cell-content"
+            >
+              789
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-03
+            <div
+              class="table-cell-content"
+            >
+              2019-01-03
+            </div>
           </td>
         </tr>
       </tbody>
@@ -280,7 +376,7 @@ exports[`<FilePreviewGrid/> no data 1`] = `
       class="grid-messages"
     />
     <table
-      class="table table-striped table-bordered"
+      class="read-only-table table table-striped table-bordered"
     >
       <thead>
         <tr />
@@ -326,7 +422,7 @@ exports[`<FilePreviewGrid/> one row of data 1`] = `
       class="grid-messages"
     />
     <table
-      class="table table-striped table-bordered"
+      class="read-only-table table table-striped table-bordered"
     >
       <thead>
         <tr>
@@ -335,7 +431,11 @@ exports[`<FilePreviewGrid/> one row of data 1`] = `
             draggable="false"
             id="test"
           >
-            test
+            <div
+              class="grid-header-cell__body"
+            >
+              test
+            </div>
           </th>
         </tr>
       </thead>
@@ -344,9 +444,13 @@ exports[`<FilePreviewGrid/> one row of data 1`] = `
           class="grid-row-alternate"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            123
+            <div
+              class="table-cell-content"
+            >
+              123
+            </div>
           </td>
         </tr>
       </tbody>
@@ -386,7 +490,7 @@ exports[`<FilePreviewGrid/> previewData.warningMsg 1`] = `
       class="grid-messages"
     />
     <table
-      class="table table-striped table-bordered"
+      class="read-only-table table table-striped table-bordered"
     >
       <thead>
         <tr>
@@ -395,21 +499,33 @@ exports[`<FilePreviewGrid/> previewData.warningMsg 1`] = `
             draggable="false"
             id="col1"
           >
-            col1
+            <div
+              class="grid-header-cell__body"
+            >
+              col1
+            </div>
           </th>
           <th
             class="grid-header-cell"
             draggable="false"
             id="col2"
           >
-            col2
+            <div
+              class="grid-header-cell__body"
+            >
+              col2
+            </div>
           </th>
           <th
             class="grid-header-cell"
             draggable="false"
             id="col3"
           >
-            col3
+            <div
+              class="grid-header-cell__body"
+            >
+              col3
+            </div>
           </th>
         </tr>
       </thead>
@@ -418,57 +534,93 @@ exports[`<FilePreviewGrid/> previewData.warningMsg 1`] = `
           class="grid-row-alternate"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            abc
+            <div
+              class="table-cell-content"
+            >
+              abc
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            123
+            <div
+              class="table-cell-content"
+            >
+              123
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-01
+            <div
+              class="table-cell-content"
+            >
+              2019-01-01
+            </div>
           </td>
         </tr>
         <tr
           class="grid-row"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            def
+            <div
+              class="table-cell-content"
+            >
+              def
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            456
+            <div
+              class="table-cell-content"
+            >
+              456
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-02
+            <div
+              class="table-cell-content"
+            >
+              2019-01-02
+            </div>
           </td>
         </tr>
         <tr
           class="grid-row-alternate"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            ghi
+            <div
+              class="table-cell-content"
+            >
+              ghi
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            789
+            <div
+              class="table-cell-content"
+            >
+              789
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-03
+            <div
+              class="table-cell-content"
+            >
+              2019-01-03
+            </div>
           </td>
         </tr>
       </tbody>
@@ -502,7 +654,7 @@ exports[`<FilePreviewGrid/> three rows of data 1`] = `
       class="grid-messages"
     />
     <table
-      class="table table-striped table-bordered"
+      class="read-only-table table table-striped table-bordered"
     >
       <thead>
         <tr>
@@ -511,21 +663,33 @@ exports[`<FilePreviewGrid/> three rows of data 1`] = `
             draggable="false"
             id="col1"
           >
-            col1
+            <div
+              class="grid-header-cell__body"
+            >
+              col1
+            </div>
           </th>
           <th
             class="grid-header-cell"
             draggable="false"
             id="col2"
           >
-            col2
+            <div
+              class="grid-header-cell__body"
+            >
+              col2
+            </div>
           </th>
           <th
             class="grid-header-cell"
             draggable="false"
             id="col3"
           >
-            col3
+            <div
+              class="grid-header-cell__body"
+            >
+              col3
+            </div>
           </th>
         </tr>
       </thead>
@@ -534,57 +698,93 @@ exports[`<FilePreviewGrid/> three rows of data 1`] = `
           class="grid-row-alternate"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            abc
+            <div
+              class="table-cell-content"
+            >
+              abc
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            123
+            <div
+              class="table-cell-content"
+            >
+              123
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-01
+            <div
+              class="table-cell-content"
+            >
+              2019-01-01
+            </div>
           </td>
         </tr>
         <tr
           class="grid-row"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            def
+            <div
+              class="table-cell-content"
+            >
+              def
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            456
+            <div
+              class="table-cell-content"
+            >
+              456
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-02
+            <div
+              class="table-cell-content"
+            >
+              2019-01-02
+            </div>
           </td>
         </tr>
         <tr
           class="grid-row-alternate"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            ghi
+            <div
+              class="table-cell-content"
+            >
+              ghi
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            789
+            <div
+              class="table-cell-content"
+            >
+              789
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-03
+            <div
+              class="table-cell-content"
+            >
+              2019-01-03
+            </div>
           </td>
         </tr>
       </tbody>
@@ -624,7 +824,7 @@ exports[`<FilePreviewGrid/> warning message 1`] = `
       class="grid-messages"
     />
     <table
-      class="table table-striped table-bordered"
+      class="read-only-table table table-striped table-bordered"
     >
       <thead>
         <tr>
@@ -633,21 +833,33 @@ exports[`<FilePreviewGrid/> warning message 1`] = `
             draggable="false"
             id="col1"
           >
-            col1
+            <div
+              class="grid-header-cell__body"
+            >
+              col1
+            </div>
           </th>
           <th
             class="grid-header-cell"
             draggable="false"
             id="col2"
           >
-            col2
+            <div
+              class="grid-header-cell__body"
+            >
+              col2
+            </div>
           </th>
           <th
             class="grid-header-cell"
             draggable="false"
             id="col3"
           >
-            col3
+            <div
+              class="grid-header-cell__body"
+            >
+              col3
+            </div>
           </th>
         </tr>
       </thead>
@@ -656,57 +868,93 @@ exports[`<FilePreviewGrid/> warning message 1`] = `
           class="grid-row-alternate"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            abc
+            <div
+              class="table-cell-content"
+            >
+              abc
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            123
+            <div
+              class="table-cell-content"
+            >
+              123
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-01
+            <div
+              class="table-cell-content"
+            >
+              2019-01-01
+            </div>
           </td>
         </tr>
         <tr
           class="grid-row"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            def
+            <div
+              class="table-cell-content"
+            >
+              def
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            456
+            <div
+              class="table-cell-content"
+            >
+              456
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-02
+            <div
+              class="table-cell-content"
+            >
+              2019-01-02
+            </div>
           </td>
         </tr>
         <tr
           class="grid-row-alternate"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            ghi
+            <div
+              class="table-cell-content"
+            >
+              ghi
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            789
+            <div
+              class="table-cell-content"
+            >
+              789
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-03
+            <div
+              class="table-cell-content"
+            >
+              2019-01-03
+            </div>
           </td>
         </tr>
       </tbody>
@@ -747,7 +995,7 @@ exports[`<FilePreviewGrid/> warning message and previewData.warningMsg 1`] = `
       class="grid-messages"
     />
     <table
-      class="table table-striped table-bordered"
+      class="read-only-table table table-striped table-bordered"
     >
       <thead>
         <tr>
@@ -756,21 +1004,33 @@ exports[`<FilePreviewGrid/> warning message and previewData.warningMsg 1`] = `
             draggable="false"
             id="col1"
           >
-            col1
+            <div
+              class="grid-header-cell__body"
+            >
+              col1
+            </div>
           </th>
           <th
             class="grid-header-cell"
             draggable="false"
             id="col2"
           >
-            col2
+            <div
+              class="grid-header-cell__body"
+            >
+              col2
+            </div>
           </th>
           <th
             class="grid-header-cell"
             draggable="false"
             id="col3"
           >
-            col3
+            <div
+              class="grid-header-cell__body"
+            >
+              col3
+            </div>
           </th>
         </tr>
       </thead>
@@ -779,57 +1039,93 @@ exports[`<FilePreviewGrid/> warning message and previewData.warningMsg 1`] = `
           class="grid-row-alternate"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            abc
+            <div
+              class="table-cell-content"
+            >
+              abc
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            123
+            <div
+              class="table-cell-content"
+            >
+              123
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-01
+            <div
+              class="table-cell-content"
+            >
+              2019-01-01
+            </div>
           </td>
         </tr>
         <tr
           class="grid-row"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            def
+            <div
+              class="table-cell-content"
+            >
+              def
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            456
+            <div
+              class="table-cell-content"
+            >
+              456
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-02
+            <div
+              class="table-cell-content"
+            >
+              2019-01-02
+            </div>
           </td>
         </tr>
         <tr
           class="grid-row-alternate"
         >
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            ghi
+            <div
+              class="table-cell-content"
+            >
+              ghi
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            789
+            <div
+              class="table-cell-content"
+            >
+              789
+            </div>
           </td>
           <td
-            style="text-align: left;"
+            class="text-left"
           >
-            2019-01-03
+            <div
+              class="table-cell-content"
+            >
+              2019-01-03
+            </div>
           </td>
         </tr>
       </tbody>

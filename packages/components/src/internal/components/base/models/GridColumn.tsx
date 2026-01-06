@@ -16,12 +16,10 @@ interface ColumnProps {
     helpTipRenderer?: string;
     hideTooltip?: boolean;
     index: string;
-    fixedWidth?: number;
     raw?: any;
     showHeader?: boolean;
     tableCell?: boolean;
     title: string;
-    width?: number;
 }
 
 const defaultCell: GridColumnCellRenderer = d => {
@@ -56,23 +54,19 @@ export class GridColumn implements ColumnProps {
     helpTipRenderer?: string;
     hideTooltip?: boolean;
     index: string;
-    fixedWidth: number;
     raw: any;
     tableCell: boolean;
     title: string;
     showHeader: boolean;
-    width: number;
 
     constructor(config: ColumnProps) {
         this.align = config.align;
         this.cell = config.cell ?? defaultCell;
         this.format = config.format;
         this.index = config.index;
-        this.fixedWidth = config.fixedWidth;
         this.raw = config.raw;
         this.headerCls = config.headerCls;
         this.helpTipRenderer = config.helpTipRenderer;
-        this.width = config.width;
 
         // react render displays '&nbsp', see: https://facebook.github.io/react/docs/jsx-gotchas.html
         if (config.title && config.title == '&nbsp;') {
@@ -85,4 +79,19 @@ export class GridColumn implements ColumnProps {
         this.tableCell = config.tableCell === true; // defaults to false
         this.hideTooltip = config.hideTooltip === true; // defaults to false
     }
+}
+
+// Special interface that lets us pass GridColumn and QueryColumn to getTextAlignClassname
+interface WithAlignment {
+    align?: string;
+}
+
+const TEXT_ALIGN_CLASSES = {
+    center: 'text-center',
+    left: 'text-left',
+    right: 'text-right',
+};
+
+export function getTextAlignClassName(column: WithAlignment): string {
+    return TEXT_ALIGN_CLASSES[column?.align] ?? TEXT_ALIGN_CLASSES.left;
 }

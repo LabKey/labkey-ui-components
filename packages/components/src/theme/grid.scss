@@ -46,10 +46,10 @@
 }
 
 .grid-header-cell {
-  position: relative;
-  padding: 0 9px;
-  font-weight: bold;
-  vertical-align: bottom;
+    position: relative;
+    padding: 0 9px;
+    font-weight: bold;
+    vertical-align: top !important; // important because bootstrap has a highly specific selector that sets it to bottom
 
     input:not([type=checkbox]) {
         width: 100%
@@ -57,7 +57,26 @@
 }
 
 .grid-header-cell__body {
-    width: 100%;
+    display: flex;
+    gap: 8px;
+    // Note: we have to have max-height and overflow-y set because some grid configurations can lead to extremely tall
+    // table headers that take up 100% of the table height, completely blocking the table rows. To repro add a column
+    // with a really long name (at or near the max length of 200 chars) and keep all values blank.
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+// Note: this is necessary because the editable grid column headers use a normal dropdown menu, not the custom one
+// defined in HeaderCellDropdownMenu. This forces the dropdown icon for editable grid dropdowns to the bottom right of
+// the th element.
+.dropdown.editable-grid-column-header__dropdown {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+}
+
+.grid-header-cell__title-wrapper {
+    flex: 1;
 }
 
 .dropdown-menu.grid-header-cell__dropdown-menu {
@@ -238,19 +257,6 @@ $table-cell-padding: 4px 2px;
       font-size: small;
       text-align: center;
       width: 45px;
-
-      .cellular-count-content {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        top: 0;
-        margin-top: 6px;
-      }
-
-      .cellular-count-static-content {
-        text-align: center;
-      }
     }
 
     .cellular-display {
@@ -454,6 +460,10 @@ $table-cell-padding: 4px 2px;
         width: 100%;
       }
 
+      .cell-align-right {
+        text-align: right;
+      }
+
       .cell-content-value, .cell-menu-value {
         display: inline-block;
         padding: $table-cell-padding;
@@ -618,6 +628,7 @@ $table-cell-padding: 4px 2px;
 td > .expired-grid-cell-content {
     padding: 5px;
     background-image: linear-gradient(225deg, red, red 5px, transparent 5px, transparent);
+    white-space: nowrap;
 }
 
 td > .expired-form-field {
@@ -642,4 +653,31 @@ td > .expired-form-field {
     & .cellular-display {
         scroll-margin: 0;
     }
+}
+
+.text-left {
+    text-align: left;
+}
+.text-right {
+    text-align: right;
+}
+.text-center {
+    text-align: center;
+}
+
+.read-only-table td,
+.read-only-table th {
+    white-space: pre-wrap; // pre-wrap for multiline column cells
+    vertical-align: top;
+}
+
+.read-only-table .table-cell-content {
+    // min-width: 100% is needed to ensure that table-cell-content will always fill the available space, otherwise it
+    // will only get as wide as the content, which negates the right-aligned style we give for numbers.
+    min-width: 100%;
+    max-width: 300px;
+    // width: max-content makes the table-cell-content elements grow as wide as their content will allow, up to 300px,
+    // which is the behavior we want, instead of the typical table layout algorithm.
+    width: max-content;
+    word-break: break-word;
 }

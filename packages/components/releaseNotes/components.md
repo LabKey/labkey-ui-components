@@ -7,8 +7,18 @@ Components, models, actions, and utility functions for LabKey applications and p
     - update UI to allow for single field non-unique index and unique constraint via select dropdown
     - update DomainField model to support nonUniqueConstraint in addition to uniqueConstraint
 
-### version 7.8.1
+### version 7.10.0
 *Released*: 6 January 2026
+- GridColumn: remove width, fixedWidth properties
+  - Add css class for text align and getTextAlignClassName helper
+- Grid: improve styling for columns
+
+### version 7.9.0
+*Released*: 6 January 2026
+- GitHub Issue 503: Field editor URL option to set target window (i.e. _blank)
+
+### version 7.8.1
+*Released*: 5 January 2026
 - GitHub 562: Combine warning messages for file preview unknown/system fields with the warning for duplicate columns
   - FilePreviewGrid to combine warningMsg with previewData.warningMsg in a single Alert
 

@@ -14,7 +14,7 @@ export class StorageStatusRenderer extends React.PureComponent<StorageStatusProp
         const value = data.get('value');
 
         if (value?.toLowerCase() === 'not in storage' || value?.toLowerCase() === 'removed') {
-            return <span>{value}</span>;
+            return value;
         } else {
             return <a href={data.get('url')}>{value}</a>;
         }

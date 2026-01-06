@@ -7,6 +7,7 @@ import { createFormInputId } from './utils';
 import {
     CALCULATED_CONCEPT_URI,
     DOMAIN_EDITABLE_DEFAULT,
+    DOMAIN_FIELD_CONSTRAINT,
     DOMAIN_FIELD_DEFAULT_VALUE_TYPE,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_HIDDEN,
@@ -128,9 +129,14 @@ describe('AdvancedSettings', () => {
         expect(recommendedVariable.getAttribute('checked')).toEqual('');
 
         // Verify uniqueConstraint
-        id = createFormInputId(DOMAIN_FIELD_UNIQUECONSTRAINT, _domainIndex, _index);
-        const uniqueConstraint = document.querySelector('#' + id);
-        expect(uniqueConstraint.getAttribute('checked')).toEqual('');
+        id = createFormInputId(DOMAIN_FIELD_CONSTRAINT, _domainIndex, _index);
+        const singleFieldIndex = document.querySelector('#' + id);
+        expect(singleFieldIndex.getAttribute('disabled')).toBeNull();
+        let options = singleFieldIndex.querySelectorAll('option');
+        expect(options).toHaveLength(3);
+        expect(options[0].textContent).toBe('No Index');
+        expect(options[1].textContent).toBe('Index');
+        expect(options[2].textContent).toBe('Index and require unique values');
 
         // Verify default type
         id = createFormInputId(DOMAIN_FIELD_DEFAULT_VALUE_TYPE, _domainIndex, _index);
@@ -148,8 +154,7 @@ describe('AdvancedSettings', () => {
         id = createFormInputId(DOMAIN_FIELD_PHI, _domainIndex, _index);
         const phi = document.querySelector('#' + id);
         expect(phi.getAttribute('disabled')).toBeNull();
-
-        const options = phi.querySelectorAll('option');
+        options = phi.querySelectorAll('option');
         expect(options).toHaveLength(3);
         expect(options[0].textContent).toBe('Not PHI');
         expect(options[1].textContent).toBe('Limited PHI');

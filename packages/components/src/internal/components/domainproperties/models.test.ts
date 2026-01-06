@@ -827,17 +827,17 @@ describe('DomainDesign', () => {
                 { columnNames: ['a', 'b', 'c'], unique: true },
                 { columnNames: ['a'], unique: true },
                 { columnNames: ['b'], unique: false },
-                { columnNames: ['c'], unique: true },
+                { columnNames: ['c'], unique: true }, // should be omitted since 'c' is not a field
             ],
         });
         const ddJson = DomainDesign.serialize(dd);
         expect(ddJson.indices.length).toBe(3);
         expect(ddJson.indices[0].columnNames).toStrictEqual(['a', 'b', 'c']);
         expect(ddJson.indices[0].unique).toBe(true);
-        expect(ddJson.indices[1].columnNames).toStrictEqual(['b']);
-        expect(ddJson.indices[1].unique).toBe(false);
-        expect(ddJson.indices[2].columnNames).toStrictEqual(['a']);
-        expect(ddJson.indices[2].unique).toBe(true);
+        expect(ddJson.indices[1].columnNames).toStrictEqual(['a']);
+        expect(ddJson.indices[1].unique).toBe(true);
+        expect(ddJson.indices[2].columnNames).toStrictEqual(['b']);
+        expect(ddJson.indices[2].unique).toBe(false);
     });
 });
 
@@ -1211,8 +1211,26 @@ describe('DomainField', () => {
             List.of('A', 'b', 'd')
         );
         expect(fields.get(0).uniqueConstraint).toBe(true); // field a
+        expect(fields.get(0).nonUniqueConstraint).toBe(false); // field a
         expect(fields.get(1).uniqueConstraint).toBe(true); // field b
+        expect(fields.get(1).nonUniqueConstraint).toBe(false); // field b
         expect(fields.get(2).uniqueConstraint).toBe(false); // field c
+        expect(fields.get(2).nonUniqueConstraint).toBe(false); // field c
+    });
+
+    test('nonUniqueConstraintFieldNames in fromJS', () => {
+        const fields = DomainField.fromJS(
+            [{ name: 'a' } as IDomainField, { name: 'b' } as IDomainField, { name: 'c' } as IDomainField],
+            undefined,
+            List.of('A', 'b', 'd'),
+            List.of('c', 'd')
+        );
+        expect(fields.get(0).uniqueConstraint).toBe(true); // field a
+        expect(fields.get(0).nonUniqueConstraint).toBe(false); // field a
+        expect(fields.get(1).uniqueConstraint).toBe(true); // field b
+        expect(fields.get(1).nonUniqueConstraint).toBe(false); // field b
+        expect(fields.get(2).uniqueConstraint).toBe(false); // field c
+        expect(fields.get(2).nonUniqueConstraint).toBe(true); // field c
     });
 
     // TODO add other test cases for DomainField.serialize code
@@ -1228,17 +1246,13 @@ describe('DomainIndex', () => {
         expect(index.isSingleFieldUniqueConstraint()).toBe(false);
     });
 
-    test('isMSSQLHashedSingleFieldUniqueConstraint', () => {
-        let index = DomainIndex.fromJS([{ columnNames: ['a'], unique: true } as IDomainIndex]).get(0);
-        expect(index.isMSSQLHashedSingleFieldUniqueConstraint()).toBe(false);
-        index = DomainIndex.fromJS([{ columnNames: ['a'], unique: false } as IDomainIndex]).get(0);
-        expect(index.isMSSQLHashedSingleFieldUniqueConstraint()).toBe(false);
-        index = DomainIndex.fromJS([{ columnNames: ['_hashed_a'], unique: true } as IDomainIndex]).get(0);
-        expect(index.isMSSQLHashedSingleFieldUniqueConstraint()).toBe(false);
-        index = DomainIndex.fromJS([{ columnNames: ['_hashed_a'], unique: false } as IDomainIndex]).get(0);
-        expect(index.isMSSQLHashedSingleFieldUniqueConstraint()).toBe(true);
-        index = DomainIndex.fromJS([{ columnNames: ['_hashed_a', 'b'], unique: false } as IDomainIndex]).get(0);
-        expect(index.isMSSQLHashedSingleFieldUniqueConstraint()).toBe(false);
+    test('isSingleFieldNonUniqueConstraint', () => {
+        let index = DomainIndex.fromJS([{ columnNames: ['a'], unique: false } as IDomainIndex]).get(0);
+        expect(index.isSingleFieldNonUniqueConstraint()).toBe(true);
+        index = DomainIndex.fromJS([{ columnNames: ['a'], unique: true } as IDomainIndex]).get(0);
+        expect(index.isSingleFieldNonUniqueConstraint()).toBe(false);
+        index = DomainIndex.fromJS([{ columnNames: ['a', 'b'], unique: false } as IDomainIndex]).get(0);
+        expect(index.isSingleFieldNonUniqueConstraint()).toBe(false);
     });
 });
 

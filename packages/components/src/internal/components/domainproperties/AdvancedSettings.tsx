@@ -25,12 +25,14 @@ import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DOMAIN_DEFAULT_TYPES,
     DOMAIN_EDITABLE_DEFAULT,
+    DOMAIN_FIELD_CONSTRAINT,
     DOMAIN_FIELD_DEFAULT_VALUE_TYPE,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING,
     DOMAIN_FIELD_HIDDEN,
     DOMAIN_FIELD_MEASURE,
     DOMAIN_FIELD_MVENABLED,
+    DOMAIN_FIELD_NONUNIQUECONSTRAINT,
     DOMAIN_FIELD_PHI,
     DOMAIN_FIELD_RECOMMENDEDVARIABLE,
     DOMAIN_FIELD_SHOWNINDETAILSVIEW,
@@ -67,6 +69,7 @@ interface AdvancedSettingsState {
     hidden?: boolean;
     measure?: boolean;
     mvEnabled?: boolean;
+    nonUniqueConstraint?: boolean;
     PHI?: string;
     phiLevels?: { label: string; value: string }[];
     recommendedVariable?: boolean;
@@ -117,6 +120,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             recommendedVariable: field.recommendedVariable,
             excludeFromShifting: field.excludeFromShifting,
             uniqueConstraint: field.uniqueConstraint,
+            nonUniqueConstraint: field.nonUniqueConstraint,
             PHI: field.PHI,
             phiLevels,
         };
@@ -178,6 +182,27 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         });
     };
 
+    handleSingleFieldIndexChange = evt => {
+        // only one of uniqueConstraint or nonUniqueConstraint can be true at a time
+        const value = evt.target.value;
+        if (value === DOMAIN_FIELD_UNIQUECONSTRAINT) {
+            this.setState({
+                uniqueConstraint: true,
+                nonUniqueConstraint: false,
+            });
+        } else if (value === DOMAIN_FIELD_NONUNIQUECONSTRAINT) {
+            this.setState({
+                uniqueConstraint: false,
+                nonUniqueConstraint: true,
+            });
+        } else {
+            this.setState({
+                uniqueConstraint: false,
+                nonUniqueConstraint: false,
+            });
+        }
+    };
+
     hasValidDomainId(): boolean {
         const { domainId } = this.props;
         return !(domainId === undefined || domainId === null || domainId === 0);
@@ -213,6 +238,15 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 <p>
                     Learn more about <HelpLink topic={PROPERTY_FIELDS_PHI_TOPIC}>protecting PHI</HelpLink> in LabKey.
                 </p>
+            </div>
+        );
+    };
+
+    getSingleFieldIndexHelpText = () => {
+        return (
+            <div>
+                <p>Add a single-field database index for this field.</p>
+                <p>Optionally, also require all values to be unique for this field.</p>
             </div>
         );
     };
@@ -364,10 +398,17 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             mvEnabled,
             recommendedVariable,
             uniqueConstraint,
+            nonUniqueConstraint,
             PHI,
             excludeFromShifting,
             phiLevels,
         } = this.state;
+        const singleFieldConstraintType =
+            uniqueConstraint || field.isPrimaryKey
+                ? DOMAIN_FIELD_UNIQUECONSTRAINT
+                : nonUniqueConstraint
+                  ? DOMAIN_FIELD_NONUNIQUECONSTRAINT
+                  : '';
         const currentValueExists = phiLevels?.find(level => level.value === PHI) !== undefined;
         const disablePhiSelect =
             domainFormDisplayOptions.phiLevelDisabled ||
@@ -378,8 +419,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             <>
                 <div className="domain-adv-misc-options">Miscellaneous Options</div>
                 {!field.isCalculatedField() && (
-                    <div className="row">
-                        <div className="col-xs-3">
+                    <div className="row domain-adv-thick-row">
+                        <div className="col-xs-4">
                             <DomainFieldLabel helpTipBody={this.getPhiHelpText()} label="PHI Level" />
                         </div>
                         <div className="col-xs-6">
@@ -403,7 +444,39 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 ))}
                             </select>
                         </div>
-                        <div className="col-xs-3" />
+                        <div className="col-xs-2" />
+                    </div>
+                )}
+
+                {allowUniqueConstraintProperties && !field.isCalculatedField() && (
+                    <div className="row">
+                        <div className="col-xs-4">
+                            <DomainFieldLabel
+                                helpTipBody={this.getSingleFieldIndexHelpText()}
+                                label="Uniqueness & Index"
+                            />
+                        </div>
+                        <div className="col-xs-6">
+                            <select
+                                className="form-control"
+                                disabled={field.isPrimaryKey}
+                                id={createFormInputId(DOMAIN_FIELD_CONSTRAINT, domainIndex, index)}
+                                name={createFormInputName(DOMAIN_FIELD_CONSTRAINT)}
+                                onChange={this.handleSingleFieldIndexChange}
+                                value={singleFieldConstraintType}
+                            >
+                                <option key="None" value="">
+                                    No Index
+                                </option>
+                                <option key="Non-Unique" value={DOMAIN_FIELD_NONUNIQUECONSTRAINT}>
+                                    Index
+                                </option>
+                                <option key="Unique" value={DOMAIN_FIELD_UNIQUECONSTRAINT}>
+                                    Index and require unique values
+                                </option>
+                            </select>
+                        </div>
+                        <div className="col-xs-2" />
                     </div>
                 )}
                 {field.dataType === DATETIME_TYPE && (
@@ -505,20 +578,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                     <HelpLink topic={MISSING_VALUES_TOPIC}>Missing Value Indicators</HelpLink>
                                 </p>
                             </div>
-                        </LabelHelpTip>
-                    </CheckboxLK>
-                )}
-                {allowUniqueConstraintProperties && !field.isCalculatedField() && (
-                    <CheckboxLK
-                        checked={uniqueConstraint || field.isPrimaryKey}
-                        disabled={field.isPrimaryKey}
-                        id={createFormInputId(DOMAIN_FIELD_UNIQUECONSTRAINT, domainIndex, index)}
-                        name={createFormInputName(DOMAIN_FIELD_UNIQUECONSTRAINT)}
-                        onChange={this.handleCheckbox}
-                    >
-                        Require all values to be unique
-                        <LabelHelpTip title="Unique Constraint">
-                            <div>Add a unique constraint via a database-level index for this field.</div>
                         </LabelHelpTip>
                     </CheckboxLK>
                 )}

@@ -238,6 +238,7 @@ export class DomainDesign
         let defaultValueOptions = List<DomainField>();
         let mandatoryFieldNames = List<string>();
         let uniqueConstraintFieldNames = List<string>();
+        let nonUniqueConstraintFieldNames = List<string>();
 
         const domainException = DomainException.create(exception, exception ? exception.severity : undefined);
 
@@ -253,19 +254,28 @@ export class DomainDesign
                     .map(index => index.columns.get(0))
                     .toList();
 
-                // Hack: SQL server uses a hashed field for unique constraints on text columns, see
-                // BaseMicrosoftSqlServerDialect.addCreateIndexStatements (where it talks about HASHBYTES)
                 indices
-                    .filter(index => index.isMSSQLHashedSingleFieldUniqueConstraint())
+                    .filter(index => index.isSingleFieldNonUniqueConstraint())
                     .forEach(index => {
-                        uniqueConstraintFieldNames = uniqueConstraintFieldNames.push(
-                            index.columns.get(0).replace('_hashed_', '')
-                        );
+                        // Hack: SQL server uses a hashed field for unique constraints on text columns, see
+                        // BaseMicrosoftSqlServerDialect.addCreateIndexStatements (where it talks about HASHBYTES)
+                        if (index.columns.get(0).startsWith('_hashed_')) {
+                            uniqueConstraintFieldNames = uniqueConstraintFieldNames.push(
+                                index.columns.get(0).replace('_hashed_', '')
+                            );
+                        } else {
+                            nonUniqueConstraintFieldNames = nonUniqueConstraintFieldNames.push(index.columns.get(0));
+                        }
                     });
             }
 
             if (rawModel.fields) {
-                fields = DomainField.fromJS(rawModel.fields, mandatoryFieldNames, uniqueConstraintFieldNames);
+                fields = DomainField.fromJS(
+                    rawModel.fields,
+                    mandatoryFieldNames,
+                    uniqueConstraintFieldNames,
+                    nonUniqueConstraintFieldNames
+                );
             }
 
             // allow calculated fields if the feature is enabled and the domain kind allows it,
@@ -276,7 +286,8 @@ export class DomainDesign
                 const calcFields = DomainField.fromJS(
                     rawModel.calculatedFields,
                     mandatoryFieldNames,
-                    uniqueConstraintFieldNames
+                    uniqueConstraintFieldNames,
+                    nonUniqueConstraintFieldNames
                 );
                 fields = fields.push(...calcFields.toArray());
             }
@@ -301,11 +312,10 @@ export class DomainDesign
         const json = dd.toJS();
 
         // Issue 41677: allow for per-field unique constraints to be added via the field editor UI
+        // GitHub Issue 73: allow for per-field non-unique constraints to be added via the field editor UI
         json.indices = dd.indices
-            // filter out the single field unique indices, and keep the others
-            .filter(
-                index => !index.isSingleFieldUniqueConstraint() && !index.isMSSQLHashedSingleFieldUniqueConstraint()
-            )
+            // filter out the single field indices, and keep the others
+            .filter(index => !index.isSingleFieldUniqueConstraint() && !index.isSingleFieldNonUniqueConstraint())
             .map(index => DomainIndex.serialize(index))
             .toArray();
         // add in the new set of single field unique indices
@@ -313,6 +323,10 @@ export class DomainDesign
             if (field.uniqueConstraint) {
                 json.indices.push(
                     DomainIndex.serialize(new DomainIndex({ columns: List.of(field.name?.trim()), type: 'unique' }))
+                );
+            } else if (field.nonUniqueConstraint) {
+                json.indices.push(
+                    DomainIndex.serialize(new DomainIndex({ columns: List.of(field.name?.trim()), type: 'nonunique' }))
                 );
             }
         });
@@ -606,8 +620,8 @@ export class DomainIndex
         return this.type === 'unique' && this.columns.size === 1;
     }
 
-    isMSSQLHashedSingleFieldUniqueConstraint(): boolean {
-        return this.type === 'nonunique' && this.columns.size === 1 && this.columns.get(0).startsWith('_hashed_');
+    isSingleFieldNonUniqueConstraint(): boolean {
+        return this.type === 'nonunique' && this.columns.size === 1;
     }
 }
 
@@ -899,6 +913,7 @@ export interface IDomainField {
     measure?: boolean;
     mvEnabled?: boolean;
     name: string;
+    nonUniqueConstraint?: boolean;
     original: Partial<IDomainField>;
     PHI?: string;
     primaryKey?: boolean;
@@ -989,6 +1004,7 @@ export class DomainField
         textChoiceValidator: undefined,
         recommendedVariable: false,
         uniqueConstraint: false,
+        nonUniqueConstraint: false,
         required: false,
         scale: MAX_TEXT_LENGTH,
         URL: undefined,
@@ -1051,6 +1067,7 @@ export class DomainField
     declare textChoiceValidator?: PropertyValidator;
     declare recommendedVariable: boolean;
     declare uniqueConstraint: boolean;
+    declare nonUniqueConstraint: boolean;
     declare required?: boolean;
     declare scale?: number;
     declare scannable?: boolean;
@@ -1154,14 +1171,18 @@ export class DomainField
     static fromJS(
         rawFields: IDomainField[],
         mandatoryFieldNames?: List<string>,
-        uniqueConstraintFieldNames?: List<string>
+        uniqueConstraintFieldNames?: List<string>,
+        nonUniqueConstraintFieldNames?: List<string>
     ): List<DomainField> {
         let fields = List<DomainField>();
         const lowerUniqueConstraintFieldNames = uniqueConstraintFieldNames?.map(f => f.toLowerCase()).toArray();
+        const lowerNonUniqueConstraintFieldNames = nonUniqueConstraintFieldNames?.map(f => f.toLowerCase()).toArray();
 
         for (let i = 0; i < rawFields.length; i++) {
             const rawField = rawFields[i];
             rawField.uniqueConstraint = lowerUniqueConstraintFieldNames?.indexOf(rawField.name?.toLowerCase()) > -1;
+            rawField.nonUniqueConstraint =
+                lowerNonUniqueConstraintFieldNames?.indexOf(rawField.name?.toLowerCase()) > -1;
             fields = fields.push(DomainField.create(rawField, undefined, mandatoryFieldNames));
         }
 
@@ -1288,6 +1309,7 @@ export class DomainField
         delete json.selected;
         delete json.lookupIsValid;
         delete json.uniqueConstraint;
+        delete json.nonUniqueConstraint;
 
         return json;
     }

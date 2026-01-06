@@ -153,55 +153,6 @@ describe('Grid', () => {
         expect(document.querySelector('.table-striped')).toBeNull();
     });
 
-    test('header title and calcWidths', () => {
-        render(
-            <Grid
-                data={gridData}
-                columns={List([
-                    {
-                        index: 'name',
-                        caption: 'Player Name',
-                        showHeader: true,
-                        title: 'My test grid title',
-                        phiProtected: true,
-                    },
-                ])}
-                calcWidths
-            />
-        );
-
-        expect(document.querySelector('.grid-header-cell').getAttribute('style')).toBe('min-width: 189px;');
-        expect(document.querySelector('.grid-header-cell')).not.toBeNull();
-        expect(document.querySelector('.phi-protected')).not.toBeNull();
-    });
-
-    test('rendering with fixedWidth and width', () => {
-        const columns = List([
-            {
-                index: 'name',
-                showHeader: true,
-                fixedWidth: 321,
-                width: 567,
-            },
-            {
-                index: 'number',
-                showHeader: true,
-                width: 123,
-            },
-            {
-                index: 'position',
-                showHeader: true,
-                fixedWidth: 567,
-            },
-        ]);
-        render(<Grid data={gridData} columns={columns} />);
-        const headerCells = document.querySelectorAll('.grid-header-cell');
-        expect(headerCells).toHaveLength(3);
-        expect(headerCells[0].getAttribute('style')).toBe('width: 321px;');
-        expect(headerCells[1].getAttribute('style')).toBe('min-width: 123px;');
-        expect(headerCells[2].getAttribute('style')).toBe('width: 567px;');
-    });
-
     test('render with messages', () => {
         render(<Grid data={gridData} messages={gridMessages} />);
         validateHasData();

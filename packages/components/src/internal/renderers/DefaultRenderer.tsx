@@ -43,10 +43,6 @@ const TARGET_BLANK = '_blank';
 export const DefaultRenderer: FC<Props> = memo(({ col, data, noLink }) => {
     let display = null;
     let style;
-    // Issue 43474: Prevent text wrapping for date columns
-    const noWrap = col?.jsonType === 'date' || col?.jsonType === 'time';
-    // Issue 36941: when using the default renderer, add css so that line breaks as preserved
-    let className = noWrap ? 'ws-no-wrap' : 'ws-pre-wrap';
 
     if (data) {
         if (typeof data === 'string') {
@@ -55,15 +51,15 @@ export const DefaultRenderer: FC<Props> = memo(({ col, data, noLink }) => {
             display = data ? 'true' : 'false';
         } else if (List.isList(data)) {
             // defensively return a MultiValueRenderer, this column likely wasn't declared properly as "multiValue"
-            return <MultiValueRenderer data={data} col={col} />;
+            return <MultiValueRenderer col={col} data={data} />;
         } else if (col?.isFileInput) {
             return <FileColumnRenderer data={data} />;
-        }
-        else {
+        } else {
+            let className: string;
             if (isConditionalFormattingEnabled()) {
                 style = getDataStyling(data);
                 if (style?.backgroundColor) {
-                    className += ' status-pill';
+                    className = 'status-pill';
                 }
             }
             if (data.has('formattedValue')) {
@@ -83,14 +79,18 @@ export const DefaultRenderer: FC<Props> = memo(({ col, data, noLink }) => {
                     </AppLink>
                 );
             }
+
+            if (style !== undefined) {
+                return (
+                    <span className={className} style={style}>
+                        {display}
+                    </span>
+                );
+            }
         }
     }
 
-    return (
-        <span className={className} style={style}>
-            {display}
-        </span>
-    );
+    return display;
 });
 
 DefaultRenderer.displayName = 'DefaultRenderer';

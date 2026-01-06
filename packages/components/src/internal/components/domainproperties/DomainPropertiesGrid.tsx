@@ -194,6 +194,6 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
     render() {
         const { visibleGridData, gridColumns } = this.state;
 
-        return <Grid data={visibleGridData} columns={gridColumns} headerCell={this.headerCell} condensed calcWidths />;
+        return <Grid data={visibleGridData} columns={gridColumns} headerCell={this.headerCell} condensed />;
     }
 }

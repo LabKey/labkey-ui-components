@@ -27,6 +27,7 @@ import {
     CELL_SELECTION_HANDLE_CLASSNAME,
     GRID_CHECKBOX_OPTIONS,
     GRID_EDIT_INDEX,
+    GRID_HEADER_CELL_BODY,
     GRID_SELECTION_INDEX,
     MAX_EDITABLE_GRID_ROWS,
 } from '../../constants';
@@ -98,10 +99,6 @@ function moveUp(colIdx: number, rowIdx: number): CellCoordinates {
     return { colIdx, rowIdx: rowIdx - 1 };
 }
 
-function hasCellWidthOverride(metadata: EditableColumnMetadata): boolean {
-    return !!metadata?.minWidth || !!metadata?.width;
-}
-
 function computeSelectionCellKeys(
     editorModel: EditorModel,
     minColIdx: number,
@@ -144,12 +141,9 @@ const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,
     tableCell: true,
     title: 'Row',
-    width: 45,
-    // style cast to "any" type due to @types/react@16.3.14 switch to csstype package usage which does not declare
-    // "textAlign" property correctly for <td> elements.
     cell: (d, r, c, rn) => (
-        <td className="cellular-count" key={c.index} style={{ textAlign: c.align || 'left' } as any}>
-            <div className="cellular-count-static-content">{rn + 1}</div>
+        <td className="cellular-count" key={c.index}>
+            {rn + 1}
         </td>
     ),
 });
@@ -184,8 +178,6 @@ function inputCellFactory(
         const { isReadonlyCell, isReadonlyRow } = editorModel.getCellReadStatus(fieldKey, rowIdx, readonlyRows);
         const rowContainer = editorModel.getFolderValueForRow(rowIdx);
         const focused = editorModel.isFocused(colIdx, rowIdx);
-        const className = classNames({ 'grid-col-with-width': hasCellWidthOverride(columnMetadata) });
-        const style = { textAlign: columnMetadata?.align ?? c.align ?? 'left' } as any;
 
         // If we're updating then we want to use the container path from each row if present
         if (forUpdate && rowContainer) containerPath = rowContainer;
@@ -225,7 +217,7 @@ function inputCellFactory(
         }
 
         return (
-            <td className={className} key={inputCellKey(c.raw, row)} style={style}>
+            <td key={inputCellKey(c.raw, row)}>
                 <Cell
                     borderMaskBottom={borderMask[2]}
                     borderMaskLeft={borderMask[3]}
@@ -853,14 +845,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         editorModel.orderedColumns.forEach(fieldKey => {
             const qCol = editorModel.columnMap.get(fieldKey);
             const metadata = editorModel.getColumnMetadata(qCol.fieldKey);
-            let width = 100;
-            let fixedWidth;
-            if (hasCellWidthOverride(metadata)) {
-                fixedWidth = metadata.width;
-                if (!fixedWidth) {
-                    width = metadata.minWidth;
-                }
-            }
             const hideTooltip = metadata?.hideTitleTooltip ?? qCol.hasHelpTipData;
             gridColumns = gridColumns.push(
                 new GridColumn({
@@ -878,10 +862,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         containerPath
                     ),
                     index: qCol.fieldKey,
-                    fixedWidth,
                     raw: qCol,
                     title: metadata?.caption ?? qCol.caption,
-                    width,
                     hideTooltip,
                     tableCell: true,
                 })
@@ -902,7 +884,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         // TODO should be able to just use LabelOverlay here since it can handle an alternate tooltip renderer
         return (
-            <>
+            <div className={GRID_HEADER_CELL_BODY}>
                 {!showLabelOverlay && (
                     <>
                         {label}
@@ -920,14 +902,14 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 {metadata?.onRemoveColumn && (
                     <DropdownMenu
                         asAnchor={false}
-                        className="grid-panel__menu-toggle pull-right"
+                        className="grid-panel__menu-toggle editable-grid-column-header__dropdown"
                         pullRight
                         title={<i className="fa fa-chevron-circle-down" />}
                     >
                         <RemoveColumnMenuItem column={qColumn} onClick={metadata.onRemoveColumn} />
                     </DropdownMenu>
                 )}
-            </>
+            </div>
         );
     };
 
@@ -1589,7 +1571,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     onMouseUp={this.onMouseUp}
                 >
                     <Grid
-                        calcWidths
                         cellular
                         columns={this.generateColumns()}
                         data={this.getGridData()}

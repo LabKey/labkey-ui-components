@@ -494,7 +494,6 @@ export class DomainDesign
         const selectionCol = new GridColumn({
             index: GRID_SELECTION_INDEX,
             title: GRID_SELECTION_INDEX,
-            width: 20,
             cell: (data, row) => {
                 const domainIndex = row.get('domainIndex');
                 const fieldIndex = row.get('fieldIndex');

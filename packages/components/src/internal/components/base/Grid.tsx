@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { CSSProperties, FC, Fragment, memo, PureComponent, ReactNode, RefObject } from 'react';
+import React, { FC, Fragment, memo, PureComponent, ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
 
@@ -22,7 +22,7 @@ import { HelpTipRenderer } from '../forms/HelpTipRenderer';
 import { GRID_HEADER_CELL_BODY, GRID_SELECTION_INDEX } from '../../constants';
 
 import { LabelHelpTip } from './LabelHelpTip';
-import { GridColumn } from './models/GridColumn';
+import { getTextAlignClassName, GridColumn } from './models/GridColumn';
 
 function processColumns(columns: List<any>): List<GridColumn> {
     return columns
@@ -44,11 +44,9 @@ function processColumns(columns: List<any>): List<GridColumn> {
                 helpTipRenderer: c.helpTipRenderer,
                 hideTooltip: c.helpTipRenderer !== undefined,
                 index: c.index,
-                fixedWidth: c.fixedWidth,
                 raw: c,
                 tableCell: c.tableCell,
                 title: c.title || c.caption,
-                width: c.width,
             });
         })
         .toList();
@@ -96,7 +94,6 @@ export function getColumnHoverText(info: any): string {
 }
 
 interface GridHeaderProps {
-    calcWidths?: boolean;
     columns: List<GridColumn>;
     headerCell?: any;
     onColumnDrop?: (sourceIndex: string, targetIndex: string) => void;
@@ -156,7 +153,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
     };
 
     render() {
-        const { calcWidths, columns, headerCell, showHeader, onColumnDrop } = this.props;
+        const { columns, headerCell, showHeader, onColumnDrop } = this.props;
         const { dragTarget } = this.state;
 
         if (!showHeader) {
@@ -169,25 +166,8 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                 <tr>
                     {columns
                         .map((column, i) => {
-                            const { headerCls, index, fixedWidth, raw, title, width, hideTooltip } = column;
+                            const { headerCls, index, raw, title, hideTooltip } = column;
                             const draggable = onColumnDrop !== undefined;
-
-                            let style: CSSProperties;
-                            if (fixedWidth) {
-                                style = {
-                                    width: `${fixedWidth}px`,
-                                };
-                            }
-
-                            let colMinWidth = width;
-                            if (colMinWidth === undefined) {
-                                // the additional 45px is to account for the grid column header icons for sort/filter and the dropdown toggle
-                                colMinWidth = calcWidths && title ? Math.max(45 + title.length * 8, 150) : undefined;
-                            }
-                            if (!fixedWidth && colMinWidth !== undefined) {
-                                if (!style) style = {};
-                                style.minWidth = `${colMinWidth}px`;
-                            }
 
                             if (column.showHeader) {
                                 const className = classNames(headerCls, {
@@ -211,20 +191,23 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                         onDragOver={this.handleDragOver}
                                         onDragStart={this.handleDragStart}
                                         onDrop={this.handleDrop}
-                                        style={style}
                                         title={hideTooltip ? undefined : description}
                                     >
-                                        {headerCell ? headerCell(column, i, columns.size) : title}
-                                        {/* headerCell will render the helpTip, so only render here if not using headerCell() */}
-                                        {!headerCell && column.helpTipRenderer && (
-                                            <LabelHelpTip popoverClassName="label-help-arrow-top" title={title}>
-                                                <HelpTipRenderer type={column.helpTipRenderer} />
-                                            </LabelHelpTip>
+                                        {headerCell && headerCell(column, i, columns.size)}
+                                        {!headerCell && (
+                                            <div className={GRID_HEADER_CELL_BODY}>
+                                                {title}
+                                                {column.helpTipRenderer && (
+                                                    <LabelHelpTip popoverClassName="label-help-arrow-top" title={title}>
+                                                        <HelpTipRenderer type={column.helpTipRenderer} />
+                                                    </LabelHelpTip>
+                                                )}
+                                            </div>
                                         )}
                                     </th>
                                 );
                             }
-                            return <th key={index} style={{ minWidth: style?.minWidth }} />;
+                            return <th key={index} />;
                         }, this)
                         .toArray()}
                 </tr>
@@ -259,33 +242,36 @@ interface GridRowProps {
     rowIdx: number;
 }
 
-const GridRow: FC<GridRowProps> = memo(({ columns, highlight, row, rowIdx }) => {
-    // style cast to "any" type due to @types/react@16.3.14 switch to csstype package usage which does not declare
-    // "textAlign" property correctly for <td> elements.
-    return (
-        <tr
-            className={classNames({
-                'grid-row-highlight': highlight,
-                'grid-row-alternate': rowIdx % 2 === 0,
-                'grid-row': rowIdx % 2 === 1,
-            })}
-        >
-            {columns
-                .map((column: GridColumn, c: number) =>
-                    column.tableCell ? (
+const GridRow: FC<GridRowProps> = memo(({ columns, highlight, row, rowIdx }) => (
+    <tr
+        className={classNames({
+            'grid-row-highlight': highlight,
+            'grid-row-alternate': rowIdx % 2 === 0,
+            'grid-row': rowIdx % 2 === 1,
+        })}
+    >
+        {columns
+            .map((column: GridColumn, c: number) => {
+                if (column.tableCell) {
+                    return (
                         <Fragment key={column.index}>
                             {column.cell(row.get(column.index), row, column, rowIdx, c)}
                         </Fragment>
-                    ) : (
-                        <td key={column.index} style={{ textAlign: column.align || 'left' } as any}>
+                    );
+                }
+
+                const className = getTextAlignClassName(column);
+                return (
+                    <td className={className} key={column.index}>
+                        <div className="table-cell-content">
                             {column.cell(row.get(column.index), row, column, rowIdx, c)}
-                        </td>
-                    )
-                )
-                .toArray()}
-        </tr>
-    );
-});
+                        </div>
+                    </td>
+                );
+            })
+            .toArray()}
+    </tr>
+));
 GridRow.displayName = 'GridRow';
 
 interface EmptyGridRowProps {
@@ -342,7 +328,6 @@ export type GridData = List<Map<string, any>> | Record<string, any>[];
 
 export interface GridProps {
     bordered?: boolean;
-    calcWidths?: boolean;
     cellular?: boolean;
     columns?: List<any>;
     condensed?: boolean;
@@ -370,7 +355,6 @@ export interface GridProps {
 export const Grid: FC<GridProps> = memo(props => {
     const {
         bordered = true,
-        calcWidths = false,
         cellular = false,
         condensed = false,
         data = List<Map<string, any>>(),
@@ -393,7 +377,6 @@ export const Grid: FC<GridProps> = memo(props => {
     const gridData = processData(data);
     const gridColumns = columns !== undefined ? processColumns(columns) : resolveColumns(gridData);
     const headerProps: GridHeaderProps = {
-        calcWidths,
         columns: gridColumns,
         headerCell,
         onColumnDrop,
@@ -410,7 +393,7 @@ export const Grid: FC<GridProps> = memo(props => {
         highlightRowIndexes,
     };
 
-    const tableClasses = classNames({
+    const tableClasses = classNames('read-only-table', {
         table: !cellular,
         'table-cellular': cellular,
         'table-striped': striped,

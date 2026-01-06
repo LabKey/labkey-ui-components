@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 7.?.?
-*Released*: ?? December 2025
+### version 7.9.0
+*Released*: 6 January 2026
 - GridColumn: remove width, fixedWidth properties
   - Add css class for text align and getTextAlignClassName helper
 - Grid: improve styling for columns

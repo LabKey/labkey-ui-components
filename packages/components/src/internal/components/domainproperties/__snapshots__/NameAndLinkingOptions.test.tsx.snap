@@ -110,6 +110,20 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
           type="text"
           value="This is a URL"
         />
+        <div
+          class="domain-text-options-col"
+        >
+          <input
+            checked=""
+            class="form-control domain-text-option-istargetblank"
+            id="domainpropertiesrow-isTargetBlank-1-1"
+            name="domainpropertiesrow-isTargetBlank"
+            type="checkbox"
+          />
+          <span>
+            Open links in a new tab
+          </span>
+        </div>
       </div>
     </div>
   </div>

@@ -81,6 +81,10 @@ function applyLineageMetadata(
             meta: metadata[node.lsid],
         };
 
+        if (!config.meta && node.restricted) {
+            config.meta = new LineageNodeMetadata({ displayType: 'Restricted' });
+        }
+
         // Unfortunately, Immutable.merge converts all types to Immutable types (e.g. {} -> Map) which
         // is not acceptable. Doing a manual merge...
         Object.keys(config).forEach(prop => {
@@ -239,7 +243,7 @@ export interface LineageAPIWrapper {
         distance?: number,
         options?: LineageOptions
     ) => Promise<LineageResult>;
-    loadNodeMetadata: (lineage: LineageResult) => Array<Promise<ISelectRowsResult>>;
+    loadNodeMetadata: (lineage: LineageResult) => Promise<ISelectRowsResult>[];
     loadSampleStats: (lineageResult: LineageResult) => Promise<any>;
     loadSeedResult: (seed: string, container?: string, options?: LineageOptions) => Promise<LineageResult>;
 }
@@ -352,7 +356,7 @@ export class ServerLineageAPIWrapper implements LineageAPIWrapper {
         return lineageResultCache[key];
     };
 
-    loadNodeMetadata = (lineage: LineageResult): Array<Promise<ISelectRowsResult>> => {
+    loadNodeMetadata = (lineage: LineageResult): Promise<ISelectRowsResult>[] => {
         // Node metadata does not support nodes with multiple primary keys. These could be supported, however,
         // each node would require it's own request for the unique keys combination. Also, nodes without any primary
         // keys cannot be filtered upon and thus are also not supported.
@@ -414,7 +418,7 @@ export class TestLineageAPIWrapper extends ServerLineageAPIWrapper {
         this.result = result;
         this.metadata = metadata;
     }
-    loadNodeMetadata = (lineage: LineageResult): Array<Promise<ISelectRowsResult>> => {
+    loadNodeMetadata = (lineage: LineageResult): Promise<ISelectRowsResult>[] => {
         return this.metadata.map(m => Promise.resolve(m));
     };
 

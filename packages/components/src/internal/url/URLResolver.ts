@@ -38,7 +38,7 @@ let resolvers = OrderedSet<AppRouteResolver>();
 
 let urlMappers: List<URLMapper> = List<URLMapper>();
 
-export type URLMapperResolverValue = AppURL | string | boolean;
+export type URLMapperResolverValue = AppURL | boolean | string;
 export type URLMapperResolver = (
     url: string,
     row: Map<string, any>,
@@ -617,6 +617,10 @@ export class URLResolver {
             list: undefined,
             overview: item.url,
         };
+
+        if (item.restricted) {
+            return metadata;
+        }
 
         if (item.type && acceptedTypes.indexOf(item.type) >= 0 && (item.queryName || item.cpasType || item.lsid)) {
             // Issue 48836: Resolve lineage item URL from queryName if available

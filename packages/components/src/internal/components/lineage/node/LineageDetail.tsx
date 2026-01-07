@@ -45,8 +45,10 @@ LineageDetailImpl.displayName = 'LineageDetailImpl';
 const LineageDetailWithQueryModels = withQueryModels<LineageDetailProps>(LineageDetailImpl);
 
 export const LineageDetail: FC<LineageDetailProps> = memo(({ item }) => {
-    const queryConfigs = useMemo<QueryConfigMap>(
-        () => ({
+    const queryConfigs = useMemo<QueryConfigMap>(() => {
+        if (item.restricted) return {};
+
+        return {
             model: {
                 baseFilters: item.pkFilters.map(pkFilter => Filter.create(pkFilter.fieldKey, pkFilter.value)),
                 containerPath: item.containerPath,
@@ -55,9 +57,12 @@ export const LineageDetail: FC<LineageDetailProps> = memo(({ item }) => {
                 // Must specify '*' columns be requested to resolve "properties" columns
                 requiredColumns: ['*', SAMPLE_STATE_COLOR_COLUMN_NAME, SAMPLE_STATE_TYPE_COLUMN_NAME],
             },
-        }),
-        [item]
-    );
+        };
+    }, [item]);
+
+    if (item.restricted) {
+        return <Alert bsStyle="info">This {item.name} cannot be viewed.</Alert>;
+    }
 
     // providing "key" to allow for reload on lsid change
     return <LineageDetailWithQueryModels autoLoad item={item} key={item.lsid} queryConfigs={queryConfigs} />;

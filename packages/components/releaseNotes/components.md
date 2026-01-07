@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.12.0
+*Released*: 7 January 2026
+- Lineage: add "restricted" property
+
 ### version 7.11.0
 *Released*: 6 January 2026
 - GitHub Issue 73: Field editor Advanced Settings to allow for non-unique constraint / index

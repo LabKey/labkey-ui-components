@@ -105,6 +105,8 @@ export function resolveIconAndShapeForNode(
 
     if (queryInfoIconURL && queryInfoIconURL !== DEFAULT_ICON_URL) {
         iconURL = queryInfoIconURL.toLowerCase();
+    } else if (item?.restricted) {
+        iconURL = 'lock';
     } else if (item) {
         const schemaName = item.schemaName?.toLowerCase() ?? '';
         const queryName = item.queryName?.toLowerCase() ?? '';

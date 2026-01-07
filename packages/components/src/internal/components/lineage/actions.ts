@@ -81,6 +81,10 @@ function applyLineageMetadata(
             meta: metadata[node.lsid],
         };
 
+        if (!config.meta && node.restricted) {
+            config.meta = new LineageNodeMetadata({ displayType: 'Restricted' });
+        }
+
         // Unfortunately, Immutable.merge converts all types to Immutable types (e.g. {} -> Map) which
         // is not acceptable. Doing a manual merge...
         Object.keys(config).forEach(prop => {

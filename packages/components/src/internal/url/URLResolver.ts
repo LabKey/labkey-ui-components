@@ -38,7 +38,7 @@ let resolvers = OrderedSet<AppRouteResolver>();
 
 let urlMappers: List<URLMapper> = List<URLMapper>();
 
-export type URLMapperResolverValue = AppURL | string | boolean;
+export type URLMapperResolverValue = AppURL | boolean | string;
 export type URLMapperResolver = (
     url: string,
     row: Map<string, any>,

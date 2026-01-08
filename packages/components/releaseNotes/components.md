@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.7.4
+*Released*: 8 January 2026
+- [GitHub Issue #723](https://github.com/LabKey/internal-issues/issues/723)
+  - EditableDetailPanel: use `useRouteLeave`
+
 ### version 7.7.3
 *Released*: 31 December 2025
 - [GitHub Issue #495](https://github.com/LabKey/internal-issues/issues/495)

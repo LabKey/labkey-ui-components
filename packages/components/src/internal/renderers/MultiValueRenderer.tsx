@@ -36,10 +36,16 @@ export const MultiValueRenderer: FC<MultiValueRendererProps> = memo(({ data, col
         return <FileColumnRenderer data={data.get(0)} />;
     }
 
+
+    let valueArray = data;
+    if (col?.isMultiChoice) {
+        valueArray = data.get('value');
+    }
+
     let i = -1;
     return (
         <div>
-            {data
+            {valueArray
                 .map((item, key) => {
                     let text: ReactNode;
                     let url: string;

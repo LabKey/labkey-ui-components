@@ -335,7 +335,7 @@ export class EditorModel
 
             if (renderer?.getEditableRawValue) {
                 row = row.set(col.name, renderer.getEditableRawValue(values));
-            } else if (col.isLookup()) {
+            } else if (col.isLookup() || col.isMultiChoice) {
                 if (col.isExpInput() || col.isAliquotParent()) {
                     // We have to use display values for ExpInput and AliquotParent because of name expressions
                     row = row.set(
@@ -345,13 +345,16 @@ export class EditorModel
                             .map(vd => quoteValueWithDelimiters(vd.display, ','))
                             .join(', ')
                     );
-                } else if (col.isJunctionLookup()) {
+                } else if (col.isJunctionLookup() || col.isMultiChoice) {
+                    let valueArray = values
+                        .filter(vd => vd.raw !== undefined && vd.raw !== null)
+                        .map(vd => vd.raw)
+                        .toArray();
+                    if (valueArray?.length === 0)
+                        valueArray = null;
                     row = row.set(
                         col.name,
-                        values
-                            .filter(vd => vd.raw !== undefined && vd.raw !== null)
-                            .map(vd => vd.raw)
-                            .toArray()
+                        valueArray
                     );
                 } else if (col.lookup.displayColumn === col.lookup.keyColumn) {
                     row = row.set(
@@ -816,7 +819,7 @@ export class EditorModel
                                 .join(', ');
                         } else {
                             const valueObj = originalValue.get(0);
-                            originalValue = Map.isMap(valueObj) ? valueObj.get('value') : valueObj.value;
+                            originalValue = Map.isMap(valueObj) ? valueObj.get('value') : valueObj?.value;
                         }
                     }
 
@@ -834,9 +837,9 @@ export class EditorModel
                     }
 
                     // If col is a multi-value column, compare all values for changes
-                    if ((List.isList(originalValue) || originalValue === undefined) && Array.isArray(value)) {
-                        if ((originalValue?.size ?? 0) !== value.length) {
-                            row[key] = value;
+                    if ((List.isList(originalValue) || originalValue === undefined) && (Array.isArray(value) || value === null)) {
+                        if ((originalValue?.size ?? 0) !== (value?.length ?? 0)) {
+                            row[key] = value.length === 0 ? null : value;
                         } else if (originalValue) {
                             if (Map.isMap(originalValue.get(0))) {
                                 // filter to those values that no longer exist in the new value array
@@ -853,7 +856,7 @@ export class EditorModel
                                     o => value.indexOf(o.value) === -1 && value.indexOf(o.displayValue) === -1
                                 ) !== -1
                             ) {
-                                row[key] = value;
+                                row[key] = value.length === 0 ? null : value;
                             }
                         }
                     } else if (!(originalValue == undefined && value == undefined) && originalValue !== value) {

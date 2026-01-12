@@ -480,7 +480,7 @@ interface CellData {
 }
 
 async function convertRowToEditorModelData(
-    data: boolean | number | string,
+    data: boolean | number | string | [],
     col: QueryColumn,
     containerPath: string
 ): Promise<CellData> {
@@ -500,6 +500,9 @@ async function convertRowToEditorModelData(
                 valueDescriptors.push(messageAndValue.valueDescriptor);
             }
         }
+    } else if (col.isMultiChoice && Array.isArray(data)) {
+        const values = data.filter(item => !!item).map(item => ({ raw: item, display: item }));
+        valueDescriptors.push(...values);
     } else {
         let display = data;
         if (col?.isTimeOrDateTimeColumn && typeof data === 'string') {

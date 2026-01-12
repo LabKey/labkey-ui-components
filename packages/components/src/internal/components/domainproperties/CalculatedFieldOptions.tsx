@@ -12,7 +12,7 @@ import { DOMAIN_FIELD_CLIENT_SIDE_ERROR, DOMAIN_FIELD_VALUE_EXPRESSION, SEVERITY
 import { DomainField, DomainFieldError, SystemField } from './models';
 import { SectionHeading } from './SectionHeading';
 import { isFieldFullyLocked, isFieldPartiallyLocked } from './propertiesUtil';
-import { CALCULATED_TYPE, PropDescType } from './PropDescType';
+import { CALCULATED_TYPE, MULTI_CHOICE_TYPE, PropDescType } from './PropDescType';
 import { parseCalculatedColumn } from './actions';
 
 // export for jest testing
@@ -47,7 +47,7 @@ export const getColumnTypeMap = (
         colTypeMap[df.Name] = df.DataType.toUpperCase();
     });
     domainFields?.forEach(df => {
-        if (df.dataType.name !== CALCULATED_TYPE.name) {
+        if (df.dataType.name !== CALCULATED_TYPE.name && df.dataType.name !== MULTI_CHOICE_TYPE.name) {
             colTypeMap[df.name] = df.dataType.name.toLowerCase() === 'int' ? 'INTEGER' : df.dataType.name.toUpperCase();
         }
     });

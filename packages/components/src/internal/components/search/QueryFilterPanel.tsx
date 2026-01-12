@@ -101,7 +101,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
 
     const viewName = useMemo(() => props.viewName ?? DEFAULT_VIEW_NAME, [props.viewName]);
     const allowFaceting = (col: QueryColumn): boolean => {
-        return col?.allowFaceting() && col?.getDisplayFieldJsonType() === 'string'; // current plan is to only support facet for string fields, to reduce scope
+        return col?.isMultiChoice || col?.allowFaceting() && col?.getDisplayFieldJsonType() === 'string'; // current plan is to only support facet for string fields, to reduce scope
     };
 
     const filterStatus = useMemo(() => {
@@ -130,6 +130,9 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
 
     const getDefaultActiveTab = useCallback(
         (field: QueryColumn) => {
+            if (field.isMultiChoice)
+                return FieldFilterTabs.ChooseValues;
+
             if (!allowFaceting(field)) {
                 return FieldFilterTabs.Filter;
             }
@@ -314,30 +317,33 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                         })}
                     >
                         <Tabs activeKey={activeTab} className="field-modal__tabs content-tabs" onSelect={onTabChange}>
-                            <Tab eventKey={FieldFilterTabs.Filter} title="Filter">
-                                <div className="field-modal__col-sub-title">Find values for {activeField.caption}</div>
-                                {activeTab === FieldFilterTabs.Filter && (
-                                    <FilterExpressionView
-                                        allowRelativeDateFilter={allowRelativeDateFilter}
-                                        disabled={hasNotInQueryFilter}
-                                        field={activeField}
-                                        fieldFilters={currentFieldFilters?.map(filter => filter.filter)}
-                                        includeAllAncestorFilter={
-                                            isAncestor && activeField?.fieldKey.toLowerCase() === 'name'
-                                        }
-                                        key={activeFieldKey}
-                                        onFieldFilterUpdate={(newFilters, index) =>
-                                            onFilterUpdate(activeField, newFilters, index)
-                                        }
-                                    />
-                                )}
-                            </Tab>
+                            {!activeField.isMultiChoice && (
+                                <Tab eventKey={FieldFilterTabs.Filter} title="Filter">
+                                    <div className="field-modal__col-sub-title">Find values for {activeField.caption}</div>
+                                    {activeTab === FieldFilterTabs.Filter && (
+                                        <FilterExpressionView
+                                            allowRelativeDateFilter={allowRelativeDateFilter}
+                                            disabled={hasNotInQueryFilter}
+                                            field={activeField}
+                                            fieldFilters={currentFieldFilters?.map(filter => filter.filter)}
+                                            includeAllAncestorFilter={
+                                                isAncestor && activeField?.fieldKey.toLowerCase() === 'name'
+                                            }
+                                            key={activeFieldKey}
+                                            onFieldFilterUpdate={(newFilters, index) =>
+                                                onFilterUpdate(activeField, newFilters, index)
+                                            }
+                                        />
+                                    )}
+                                </Tab>
+                            )}
                             {allowFaceting(activeField) && (
                                 <Tab eventKey={FieldFilterTabs.ChooseValues} title="Choose values">
                                     <div className="field-modal__col-sub-title">
                                         Find values for {activeField.caption}
                                     </div>
                                     <FilterFacetedSelector
+                                        field={activeField}
                                         canBeBlank={!activeField?.required && !activeField.nameExpression}
                                         disabled={hasNotInQueryFilter}
                                         fieldFilters={currentFieldFilters?.map(filter => filter.filter)}

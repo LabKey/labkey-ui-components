@@ -18,6 +18,7 @@ import {
     INT_RANGE_URI,
     LONG_RANGE_URI,
     MODIFIED_TIMESTAMP_CONCEPT_URI,
+    MULTI_CHOICE_RANGE_URI,
     MULTILINE_RANGE_URI,
     PARTICIPANTID_CONCEPT_URI,
     SAMPLE_TYPE_CONCEPT_URI,
@@ -88,6 +89,10 @@ export class PropDescType
         // in the case of the field editor row data type select input change, the field input name is provided
         // so check for that case here as well
         return name === TEXT_CHOICE_CONCEPT_URI || name === TEXT_CHOICE_TYPE.name;
+    }
+
+    static isMultiChoice(name: string): boolean {
+        return name === MULTI_CHOICE_RANGE_URI || name === MULTI_CHOICE_TYPE.name;
     }
 
     static isLookup(name: string): boolean {
@@ -204,6 +209,10 @@ export class PropDescType
 
     isTextChoice(): boolean {
         return PropDescType.isTextChoice(this.conceptURI);
+    }
+
+    isMultiChoice(): boolean {
+        return PropDescType.isMultiChoice(this.rangeURI);
     }
 
     isTime(): boolean {
@@ -345,6 +354,12 @@ export const TEXT_CHOICE_TYPE = new PropDescType({
     conceptURI: TEXT_CHOICE_CONCEPT_URI,
 });
 
+export const MULTI_CHOICE_TYPE = new PropDescType({
+    name: 'multiChoice',
+    display: 'Multi Choice',
+    rangeURI: MULTI_CHOICE_RANGE_URI,
+});
+
 export const SMILES_TYPE = new PropDescType({
     name: 'smiles',
     display: 'SMILES',
@@ -381,6 +396,7 @@ export const PROP_DESC_TYPES = List([
     VISIT_LABEL_TYPE,
     UNIQUE_ID_TYPE,
     TEXT_CHOICE_TYPE,
+    MULTI_CHOICE_TYPE,
     CALCULATED_TYPE,
 ]);
 

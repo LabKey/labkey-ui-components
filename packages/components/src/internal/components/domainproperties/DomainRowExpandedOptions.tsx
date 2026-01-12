@@ -223,6 +223,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                     />
                 );
             case 'textChoice':
+            case 'multiChoice':
                 // don't show Text Choice options for query metadata editor
                 if (domainFormDisplayOptions?.hideValidators) return null;
 

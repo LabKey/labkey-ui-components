@@ -293,8 +293,12 @@ export function getUpdateFilterExpressionFilter(
 }
 
 // this util is only for string field type
-export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string[]): string[] {
+export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string[], multiChoices?: string[]): string[] {
     if (!filter && !allValues) return [];
+
+    if (filter?.getFilterType().getURLSuffix().indexOf('array') === 0) {
+        return filter.getValue() ?? [];
+    }
 
     const filterUrlSuffix = filter?.getFilterType()?.getURLSuffix();
     // if allValues is undefined, then we don't know the full set of values so filter must be an Equals/Equals one of
@@ -368,6 +372,7 @@ export function getUpdatedChooseValuesFilter(
 ): Filter.IFilter {
     const isAncestorMatchesAllFilter =
         oldFilter?.getFilterType().getURLSuffix() === ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE.getURLSuffix();
+    const isArrayFilter = oldFilter?.getFilterType().getURLSuffix().indexOf('array') === 0;
     const hasBlank = allValues ? allValues.findIndex(value => value === EMPTY_VALUE_DISPLAY) !== -1 : false;
     // if check all, or everything is checked, this is essentially "no filter", unless there is no blank value
     // then it's an NONBLANK filter
@@ -378,6 +383,12 @@ export function getUpdatedChooseValuesFilter(
                 allValues.filter(v => v !== ALL_VALUE_DISPLAY),
                 ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE
             );
+        if (isArrayFilter)
+            return Filter.create(
+            fieldKey,
+            allValues.filter(v => v !== ALL_VALUE_DISPLAY),
+                oldFilter.getFilterType()
+        );
         return hasBlank ? null : Filter.create(fieldKey, null, Filter.Types.NONBLANK);
     }
 
@@ -394,6 +405,12 @@ export function getUpdatedChooseValuesFilter(
         if ((newValue === ALL_VALUE_DISPLAY && !check) || newCheckedValues.length === 0)
             return Filter.create(fieldKey, [], ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE);
         return Filter.create(fieldKey, newCheckedValues, ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE);
+    }
+
+    if (isArrayFilter) {
+        if ((newValue === ALL_VALUE_DISPLAY && !check) || newCheckedValues.length === 0)
+            return Filter.create(fieldKey, [], oldFilter.getFilterType());
+        return Filter.create(fieldKey, newCheckedValues, oldFilter.getFilterType());
     }
 
     // if everything is checked, this is the same as not filtering

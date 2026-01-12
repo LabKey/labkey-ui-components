@@ -323,7 +323,7 @@ export function resolveDetailEditRenderer(
             if (col.displayAsLookup !== false) {
                 // Issue 29232: When displaying a lookup, always use the value
                 const multiple = col.isJunctionLookup();
-                const joinValues = multiple && !col.isDataInput();
+                const joinValues = multiple && !col.isDataInput() && !col.isMultiChoice;
                 const queryFilters = col.lookup.hasQueryFilters(Operation.update)
                     ? List(col.lookup.getQueryFilters(Operation.update))
                     : undefined;

@@ -78,6 +78,7 @@ import {
     SAMPLE_TYPE,
     SMILES_TYPE,
     TEXT_CHOICE_TYPE,
+    MULTI_CHOICE_TYPE,
     UNIQUE_ID_TYPE,
     USERS_TYPE,
     VISIT_DATE_TYPE,
@@ -364,6 +365,10 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
     }
 
     if (type === TEXT_CHOICE_TYPE && !domain.allowTextChoiceProperties) {
+        return false;
+    }
+
+    if (type === MULTI_CHOICE_TYPE && !domain.allowMultiChoiceProperties) {
         return false;
     }
 
@@ -878,7 +883,7 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             field = field.merge(DomainField.resolveLookupConfig(field, dataType)) as DomainField;
         }
 
-        if (field.isTextChoiceField()) {
+        if (field.isTextChoiceField() || field.isMultiChoiceField()) {
             // when changing a field to a Text Choice, add the default textChoiceValidator and
             // remove/reset all other propertyValidators and other text option settings
             field = field.merge({

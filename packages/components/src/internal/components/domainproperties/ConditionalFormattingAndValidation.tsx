@@ -206,7 +206,7 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
     render() {
         const { index, field, domainFormDisplayOptions } = this.props;
         const { showCondFormat, showRegex, showRange } = this.state;
-        const showCondFormatSection = !domainFormDisplayOptions.hideConditionalFormatting;
+        const showCondFormatSection = !domainFormDisplayOptions.hideConditionalFormatting && DomainField.allowConditionalFormats(field);
         const showRegexSection = !domainFormDisplayOptions.hideValidators && DomainField.hasRegExValidation(field);
         const showRangeSection = !domainFormDisplayOptions.hideValidators && DomainField.hasRangeValidation(field);
         const showValidation = showRegexSection || showRangeSection;

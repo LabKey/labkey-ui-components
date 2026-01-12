@@ -495,7 +495,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
                         return arr;
                     }, []);
 
-                    if (!joinValues) {
+                    if (joinValues) {
                         // consider removing altogether?
                         formValue = formValue.join(delimiter);
                     }

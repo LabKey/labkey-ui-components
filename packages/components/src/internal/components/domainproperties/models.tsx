@@ -55,7 +55,7 @@ import {
     INT_RANGE_URI,
     LONG_RANGE_URI,
     LOOKUP_VALIDATOR_VALUES,
-    MAX_TEXT_LENGTH,
+    MAX_TEXT_LENGTH, MULTI_CHOICE_RANGE_URI,
     NUMBER_CONVERT_URIS,
     PHILEVEL_NOT_PHI,
     SAMPLE_TYPE_CONCEPT_URI,
@@ -147,6 +147,7 @@ interface IDomainDesign {
     allowFlagProperties: boolean;
     allowSampleSubjectProperties: boolean;
     allowTextChoiceProperties: boolean;
+    allowMultiChoiceProperties: boolean;
     allowTimepointProperties: boolean;
     allowUniqueConstraintProperties: boolean;
     allowUserProperties: boolean;
@@ -182,6 +183,7 @@ export class DomainDesign
         allowFlagProperties: true,
         allowSampleSubjectProperties: true,
         allowTextChoiceProperties: true,
+        allowMultiChoiceProperties: true,
         allowTimepointProperties: false,
         allowUniqueConstraintProperties: false,
         allowUserProperties: true,
@@ -213,6 +215,7 @@ export class DomainDesign
     declare allowFlagProperties: boolean;
     declare allowSampleSubjectProperties: boolean;
     declare allowTextChoiceProperties: boolean;
+    declare allowMultiChoiceProperties: boolean;
     declare allowTimepointProperties: boolean;
     declare allowUniqueConstraintProperties: boolean;
     declare allowUserProperties: boolean;
@@ -809,7 +812,7 @@ export class PropertyValidator
                     const hasExpressionStr = expressionStr !== undefined && expressionStr !== null;
 
                     // if we are loading a textChoiceValidator from JSON, we need to set the properties.validValues
-                    if (type === 'TextChoice' && !rawPropertyValidator[i]?.properties?.validValues) {
+                    if ((type === 'TextChoice' || type === 'MultiChoice') && !rawPropertyValidator[i]?.properties?.validValues) {
                         rawPropertyValidator[i].properties.validValues =
                             PropertyValidator.splitValidValues(expressionStr);
                     }
@@ -1376,6 +1379,10 @@ export class DomainField
         return this.conceptURI === TEXT_CHOICE_CONCEPT_URI;
     }
 
+    isMultiChoiceField(): boolean {
+        return this.rangeURI === MULTI_CHOICE_RANGE_URI;
+    }
+
     isCalculatedField(): boolean {
         return this.conceptURI === CALCULATED_CONCEPT_URI;
     }
@@ -1402,6 +1409,14 @@ export class DomainField
             field.dataType === USERS_TYPE ||
             field.dataType === LOOKUP_TYPE
         );
+    }
+
+    static allowConditionalFormats(field: DomainField): boolean {
+        return !field.isMultiChoiceField();
+    }
+
+    static allowAdvancedSettings(field: DomainField): boolean {
+        return !field.isMultiChoiceField();
     }
 
     static hasRegExValidation(field: DomainField): boolean {
@@ -1496,7 +1511,7 @@ export class DomainField
         } else if (this.dataType.isOntologyLookup() && this.sourceOntology) {
             details.push(period + this.sourceOntology);
             period = '. ';
-        } else if (this.dataType.isTextChoice()) {
+        } else if (this.dataType.isTextChoice() || this.dataType.isMultiChoice()) {
             const validValuesStr = getValidValuesDetailStr(this.textChoiceValidator?.properties.validValues);
             if (this.isPHI() && this.PHI !== undefined && validValuesStr) {
                 details.push(period + TEXT_CHOICE_PHI_NOTE);

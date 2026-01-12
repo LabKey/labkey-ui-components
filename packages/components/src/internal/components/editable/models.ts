@@ -837,7 +837,7 @@ export class EditorModel
                     // If col is a multi-value column, compare all values for changes
                     if ((List.isList(originalValue) || originalValue === undefined) && (Array.isArray(value) || value === null)) {
                         if ((originalValue?.size ?? 0) !== (value?.length ?? 0)) {
-                            row[key] = value.length === 0 ? null : value;
+                            row[key] = value;
                         } else if (originalValue) {
                             if (Map.isMap(originalValue.get(0))) {
                                 // filter to those values that no longer exist in the new value array
@@ -854,7 +854,7 @@ export class EditorModel
                                     o => value.indexOf(o.value) === -1 && value.indexOf(o.displayValue) === -1
                                 ) !== -1
                             ) {
-                                row[key] = value.length === 0 ? null : value;
+                                row[key] = value;
                             }
                         }
                     } else if (!(originalValue == undefined && value == undefined) && originalValue !== value) {

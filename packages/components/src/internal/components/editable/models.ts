@@ -350,8 +350,6 @@ export class EditorModel
                         .filter(vd => vd.raw !== undefined && vd.raw !== null)
                         .map(vd => vd.raw)
                         .toArray();
-                    if (valueArray?.length === 0)
-                        valueArray = null;
                     row = row.set(
                         col.name,
                         valueArray

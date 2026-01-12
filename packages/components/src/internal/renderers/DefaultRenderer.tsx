@@ -49,7 +49,7 @@ export const DefaultRenderer: FC<Props> = memo(({ col, data, noLink }) => {
             display = data;
         } else if (typeof data === 'boolean') {
             display = data ? 'true' : 'false';
-        } else if (List.isList(data) || col.isMultiChoice) {
+        } else if (List.isList(data) || col?.isMultiChoice) {
             // defensively return a MultiValueRenderer, this column likely wasn't declared properly as "multiValue"
             return <MultiValueRenderer col={col} data={data} />;
         } else if (col?.isFileInput) {

@@ -478,6 +478,12 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
         }
 
         if (autoValue) {
+            if (Array.isArray(selectedOptions))
+                selectedOptions.sort((a, b) => {
+                    const aValue = valueKey ? a[valueKey] : a.value;
+                    const bValue = valueKey ? b[valueKey] : b.value;
+                    return aValue - bValue;
+                });
             this.setState({ selectedOptions });
         }
 
@@ -491,7 +497,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
                     formValue = selectedOptions.reduce((arr, option) => {
                         arr.push(valueKey ? option[valueKey] : option.value);
                         return arr;
-                    }, []);
+                    }, []).sort();
 
                     if (!skipJoinValues) {
                         // consider removing altogether?

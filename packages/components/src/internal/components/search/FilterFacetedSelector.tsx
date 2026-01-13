@@ -215,12 +215,12 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                 fieldKey,
                 value,
                 checked,
-                fieldFilters?.[0], // choose values applies only to the first filter
+                fieldFilters?.[0] ?? (multiChoices ? Filter.create(fieldKey, [], Filter.Types.ARRAY_CONTAINS_ALL) : null), // choose values applies only to the first filter
                 uncheckOthers
             );
             onFieldFilterUpdate([newFilter], 0);
         },
-        [disabled, allShown, fieldDistinctValues, fieldKey, fieldFilters, onFieldFilterUpdate]
+        [disabled, allShown, fieldDistinctValues, fieldKey, fieldFilters, onFieldFilterUpdate, multiChoices]
     );
 
     const filteredFieldDistinctValues = useMemo(() => {
@@ -250,12 +250,15 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
             if (!newActiveFilterType) return newFilters;
 
             const filterType = resolveFilterType(newActiveFilterType?.value, field);
+            let updatedFilterValues = fieldFilters[0]?.getValue();
+            if (updatedFilterValues && multiChoices && !filterType.isMultiValued())
+                updatedFilterValues = null;
 
-            newFilters = [Filter.create(fieldKey, fieldFilters[0]?.getValue(), filterType), null];
+            newFilters = [Filter.create(fieldKey, updatedFilterValues, filterType), null];
 
             onFieldFilterUpdate(newFilters, 0);
         },
-        [onFieldFilterUpdate, filterOptions, field, fieldFilters, fieldKey]
+        [onFieldFilterUpdate, filterOptions, field, fieldFilters, fieldKey, multiChoices]
     );
 
     if (!fieldDistinctValues || allShown === undefined) return <LoadingSpinner />;
@@ -275,7 +278,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                         options={filterOptions}
                         placeholder="Select a filter type..."
                         required={true}
-                        value={fieldFilters?.[0]?.getFilterType()?.getURLSuffix() || ''}
+                        value={fieldFilters?.[0]?.getFilterType()?.getURLSuffix() || 'arraycontainsall'}
                     />
                 }
                 {(fieldDistinctValues?.length > showSearchLength || searchStr) && (

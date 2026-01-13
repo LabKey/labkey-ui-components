@@ -294,10 +294,12 @@ export function getUpdateFilterExpressionFilter(
 
 // this util is only for string field type
 export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string[], multiChoices?: string[]): string[] {
-    if (!filter && !allValues) return [];
+    if (!filter && (!allValues || multiChoices?.length > 0)) return [];
 
     if (filter?.getFilterType().getURLSuffix().indexOf('array') === 0) {
-        return filter.getValue() ?? [];
+        const checked = filter.getValue() ?? [];
+        if (checked.length === multiChoices?.length) return allValues;
+        return checked;
     }
 
     const filterUrlSuffix = filter?.getFilterType()?.getURLSuffix();

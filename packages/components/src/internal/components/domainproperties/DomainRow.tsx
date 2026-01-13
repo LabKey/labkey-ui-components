@@ -149,13 +149,13 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
 
         if (fieldError) {
             details.push(details.length > 0 ? '. ' : '');
-            details.push(<DomainRowWarning key="domain-row-field-error" fieldError={fieldError} />);
+            details.push(<DomainRowWarning fieldError={fieldError} key="domain-row-field-error" />);
         }
 
         return (
             <div
-                id={createFormInputId(DOMAIN_FIELD_DETAILS, domainIndex, index)}
                 className={expanded ? 'domain-field-details-expanded' : 'domain-field-details'}
+                id={createFormInputId(DOMAIN_FIELD_DETAILS, domainIndex, index)}
             >
                 {details}
             </div>
@@ -401,25 +401,25 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                         tabIndex={index}
                     >
                         <div
-                            key={createFormInputId('domainrow', domainIndex, index)}
                             className="row domain-row-container"
+                            key={createFormInputId('domainrow', domainIndex, index)}
                         >
                             {showAdv && (
                                 <AdvancedSettings
-                                    domainIndex={domainIndex}
-                                    domainId={domainId}
-                                    helpNoun={helpNoun}
-                                    index={index}
-                                    maxPhiLevel={maxPhiLevel}
-                                    field={field}
-                                    onApply={this.onMultiFieldChange}
-                                    onHide={this.onHideAdvanced}
-                                    label={field.name}
-                                    showDefaultValueSettings={showDefaultValueSettings}
                                     allowUniqueConstraintProperties={allowUniqueConstraintProperties}
                                     defaultDefaultValueType={defaultDefaultValueType}
                                     defaultValueOptions={defaultValueOptions}
                                     domainFormDisplayOptions={domainFormDisplayOptions}
+                                    domainId={domainId}
+                                    domainIndex={domainIndex}
+                                    field={field}
+                                    helpNoun={helpNoun}
+                                    index={index}
+                                    label={field.name}
+                                    maxPhiLevel={maxPhiLevel}
+                                    onApply={this.onMultiFieldChange}
+                                    onHide={this.onHideAdvanced}
+                                    showDefaultValueSettings={showDefaultValueSettings}
                                 />
                             )}
                             <div
@@ -437,18 +437,18 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                             </div>
                             <div className="domain-row-action-section">
                                 <DomainDesignerCheckbox
-                                    className="domain-field-check-icon"
-                                    name={createFormInputName(DOMAIN_FIELD_SELECTED)}
-                                    id={createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, index)}
                                     checked={selected}
-                                    onChange={this.onFieldChange}
+                                    className="domain-field-check-icon"
                                     disabled={false}
+                                    id={createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, index)}
+                                    name={createFormInputName(DOMAIN_FIELD_SELECTED)}
+                                    onChange={this.onFieldChange}
                                 />
                                 <FieldExpansionToggle
                                     cls="domain-field-expand-icon"
+                                    collapsedTitle="Show additional field properties"
                                     expanded={expanded}
                                     expandedTitle="Hide additional field properties"
-                                    collapsedTitle="Show additional field properties"
                                     id={createFormInputId(DOMAIN_FIELD_EXPAND, domainIndex, index)}
                                     onClick={this.onExpand}
                                 />
@@ -459,20 +459,20 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                         <div className="col-xs-6">
                                             <input
                                                 className="form-control"
+                                                disabled={this.disableNameInput(field)}
+                                                id={createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index)}
+                                                name={createFormInputName(DOMAIN_FIELD_NAME)}
+                                                onChange={this.onNameChange}
                                                 type="text"
                                                 value={field.name || ''}
-                                                name={createFormInputName(DOMAIN_FIELD_NAME)}
-                                                id={createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index)}
-                                                onChange={this.onNameChange}
-                                                disabled={this.disableNameInput(field)}
                                             />
                                         </div>
                                         <div className="col-xs-4">
                                             <select
                                                 className="form-control"
-                                                name={createFormInputName(DOMAIN_FIELD_TYPE)}
                                                 disabled={this.disableTypeInput(field)}
                                                 id={createFormInputId(DOMAIN_FIELD_TYPE, domainIndex, index)}
+                                                name={createFormInputName(DOMAIN_FIELD_TYPE)}
                                                 onChange={this.onDataTypeChange}
                                                 value={field.dataType.name}
                                             >
@@ -503,19 +503,19 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                                 {!domainFormDisplayOptions.hideRequired &&
                                                     !field.isCalculatedField() && (
                                                         <DomainDesignerCheckbox
+                                                            checked={field.required}
                                                             className="domain-field-checkbox"
-                                                            name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
+                                                            disabled={
+                                                                isFieldFullyLocked(field.lockType) ||
+                                                                isPrimaryKeyFieldLocked(field.lockType)
+                                                            }
                                                             id={createFormInputId(
                                                                 DOMAIN_FIELD_REQUIRED,
                                                                 domainIndex,
                                                                 index
                                                             )}
-                                                            checked={field.required}
+                                                            name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
                                                             onChange={this.onFieldChange}
-                                                            disabled={
-                                                                isFieldFullyLocked(field.lockType) ||
-                                                                isPrimaryKeyFieldLocked(field.lockType)
-                                                            }
                                                         />
                                                     )}
                                             </div>
@@ -527,24 +527,27 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                     <div
                                         className={expanded ? 'domain-field-buttons-expanded' : 'domain-field-buttons'}
                                     >
-                                        {expanded && !isFieldFullyLocked(field.lockType) && !appPropertiesOnly && DomainField.allowAdvancedSettings(field) && (
-                                            <button
-                                                className="domain-row-button btn btn-default"
-                                                disabled={isFieldFullyLocked(field.lockType)}
-                                                id={createFormInputId(DOMAIN_FIELD_ADV, domainIndex, index)}
-                                                name={createFormInputName(DOMAIN_FIELD_ADV)}
-                                                onClick={this.onShowAdvanced}
-                                                type="button"
-                                            >
-                                                Advanced Settings
-                                            </button>
-                                        )}
+                                        {expanded &&
+                                            !isFieldFullyLocked(field.lockType) &&
+                                            !appPropertiesOnly &&
+                                            DomainField.allowAdvancedSettings(field) && (
+                                                <button
+                                                    className="domain-row-button btn btn-default"
+                                                    disabled={isFieldFullyLocked(field.lockType)}
+                                                    id={createFormInputId(DOMAIN_FIELD_ADV, domainIndex, index)}
+                                                    name={createFormInputName(DOMAIN_FIELD_ADV)}
+                                                    onClick={this.onShowAdvanced}
+                                                    type="button"
+                                                >
+                                                    Advanced Settings
+                                                </button>
+                                            )}
                                         {isFieldDeletable(field) && (
                                             <DeleteIcon
-                                                id={createFormInputId(DOMAIN_FIELD_DELETE, domainIndex, index)}
-                                                title="Remove field"
                                                 iconCls="domain-field-delete-icon"
+                                                id={createFormInputId(DOMAIN_FIELD_DELETE, domainIndex, index)}
                                                 onDelete={this.onDelete}
+                                                title="Remove field"
                                             />
                                         )}
                                     </div>
@@ -554,27 +557,27 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                         <Collapsible expanded={expanded}>
                             <div>
                                 <DomainRowExpandedOptions
-                                    field={field}
-                                    index={index}
-                                    domainIndex={domainIndex}
-                                    getDomainFields={getDomainFields}
-                                    onMultiChange={this.onMultiFieldChange}
-                                    onChange={this.onSingleFieldChange}
-                                    showingModal={this.showingModal}
                                     appPropertiesOnly={appPropertiesOnly}
-                                    domainFormDisplayOptions={domainFormDisplayOptions}
                                     domainContainerPath={domainContainerPath}
-                                    schemaName={schemaName}
+                                    domainFormDisplayOptions={domainFormDisplayOptions}
+                                    domainIndex={domainIndex}
+                                    field={field}
+                                    getDomainFields={getDomainFields}
+                                    index={index}
+                                    onChange={this.onSingleFieldChange}
+                                    onMultiChange={this.onMultiFieldChange}
                                     queryName={queryName}
+                                    schemaName={schemaName}
+                                    showingModal={this.showingModal}
                                 />
                             </div>
                         </Collapsible>
                         {dataTypeChangeToConfirm && (
                             <ConfirmDataTypeChangeModal
-                                originalRangeURI={field.original.rangeURI}
                                 newDataType={PropDescType.fromName(dataTypeChangeToConfirm)}
-                                onConfirm={this.onConfirmTypeChange}
                                 onCancel={this.onHideConfirmTypeChange}
+                                onConfirm={this.onConfirmTypeChange}
+                                originalRangeURI={field.original.rangeURI}
                             />
                         )}
                     </div>

@@ -346,14 +346,11 @@ export class EditorModel
                             .join(', ')
                     );
                 } else if (col.isJunctionLookup() || col.isMultiChoice) {
-                    let valueArray = values
+                    const valueArray = values
                         .filter(vd => vd.raw !== undefined && vd.raw !== null)
                         .map(vd => vd.raw)
                         .toArray();
-                    row = row.set(
-                        col.name,
-                        valueArray
-                    );
+                    row = row.set(col.name, valueArray);
                 } else if (col.lookup.displayColumn === col.lookup.keyColumn) {
                     row = row.set(
                         col.name,
@@ -835,7 +832,10 @@ export class EditorModel
                     }
 
                     // If col is a multi-value column, compare all values for changes
-                    if ((List.isList(originalValue) || originalValue === undefined) && (Array.isArray(value) || value === null)) {
+                    if (
+                        (List.isList(originalValue) || originalValue === undefined) &&
+                        (Array.isArray(value) || value === null)
+                    ) {
                         if ((originalValue?.size ?? 0) !== (value?.length ?? 0)) {
                             row[key] = value;
                         } else if (originalValue) {

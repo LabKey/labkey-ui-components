@@ -387,10 +387,10 @@ export function getUpdatedChooseValuesFilter(
             );
         if (isArrayFilter)
             return Filter.create(
-            fieldKey,
-            allValues.filter(v => v !== ALL_VALUE_DISPLAY),
+                fieldKey,
+                allValues.filter(v => v !== ALL_VALUE_DISPLAY),
                 oldFilter.getFilterType()
-        );
+            );
         return hasBlank ? null : Filter.create(fieldKey, null, Filter.Types.NONBLANK);
     }
 

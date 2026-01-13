@@ -28,14 +28,9 @@ export const MultiValueRenderer: FC<MultiValueRendererProps> = memo(({ data, col
         return null;
     }
 
-    if (
-        List.isList(data) &&
-        data.size === 1 &&
-        (col?.isFileInput)
-    ) {
+    if (List.isList(data) && data.size === 1 && col?.isFileInput) {
         return <FileColumnRenderer data={data.get(0)} />;
     }
-
 
     let valueArray = data;
     if (col?.isMultiChoice) {

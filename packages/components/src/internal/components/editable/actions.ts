@@ -480,7 +480,7 @@ interface CellData {
 }
 
 async function convertRowToEditorModelData(
-    data: boolean | number | string | [],
+    data: [] | boolean | number | string,
     col: QueryColumn,
     containerPath: string
 ): Promise<CellData> {

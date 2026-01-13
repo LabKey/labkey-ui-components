@@ -166,13 +166,13 @@ export const LookupCell: FC<LookupCellProps> = memo(props => {
                 autoFocus
                 defaultInputValue={defaultInputValue}
                 disabled={disabled}
+                multiple={col.isMultiChoice}
                 onBlur={onBlur}
                 onChange={onSelectChange}
                 onKeyDown={onKeyDown}
                 queryColumn={col}
-                value={col.isMultiChoice ? rawValues : rawValues[0]}
-                multiple={col.isMultiChoice}
                 skipJoinValues={true}
+                value={col.isMultiChoice ? rawValues : rawValues[0]}
             />
         );
     }

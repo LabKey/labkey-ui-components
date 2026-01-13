@@ -226,8 +226,7 @@ export function getCommonDataValues(
                             value = data.toJS();
                         } else {
                             value = data.get('value');
-                            if (List.isList(value))
-                                value = value.toJS();
+                            if (List.isList(value)) value = value.toJS();
                         }
                     }
 
@@ -254,8 +253,7 @@ export function getCommonDataValues(
                                 fieldsInConflict = fieldsInConflict.add(key);
                                 valueMap = valueMap.delete(key);
                             }
-                        }
-                        else if (valueMap.get(key) !== value) {
+                        } else if (valueMap.get(key) !== value) {
                             fieldsInConflict = fieldsInConflict.add(key);
                             valueMap = valueMap.delete(key);
                         }

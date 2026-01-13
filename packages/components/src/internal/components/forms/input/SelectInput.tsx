@@ -237,9 +237,6 @@ export interface SelectInputProps {
     inputId?: string;
     isLoading?: boolean;
     isValidNewOption?: (inputValue: string) => boolean;
-    // FIXME: this is named incorrectly. I would expect that if this is true it would join the values, nope, it joins
-    //   the values when false.
-    skipJoinValues?: boolean;
     label?: ReactNode;
     labelClass?: string;
     labelKey?: string;
@@ -269,6 +266,7 @@ export interface SelectInputProps {
     showDropdownMenu?: boolean;
     showIndicatorSeparator?: boolean;
     showLabel?: boolean;
+    skipJoinValues?: boolean;
     tabSelectsValue?: boolean;
     toggleDisabledTooltip?: string;
     value?: any;

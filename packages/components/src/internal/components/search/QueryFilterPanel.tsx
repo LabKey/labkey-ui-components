@@ -101,7 +101,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
 
     const viewName = useMemo(() => props.viewName ?? DEFAULT_VIEW_NAME, [props.viewName]);
     const allowFaceting = (col: QueryColumn): boolean => {
-        return col?.isMultiChoice || col?.allowFaceting() && col?.getDisplayFieldJsonType() === 'string'; // current plan is to only support facet for string fields, to reduce scope
+        return col?.isMultiChoice || (col?.allowFaceting() && col?.getDisplayFieldJsonType() === 'string'); // current plan is to only support facet for string fields, to reduce scope
     };
 
     const filterStatus = useMemo(() => {
@@ -130,8 +130,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
 
     const getDefaultActiveTab = useCallback(
         (field: QueryColumn) => {
-            if (field.isMultiChoice)
-                return FieldFilterTabs.ChooseValues;
+            if (field.isMultiChoice) return FieldFilterTabs.ChooseValues;
 
             if (!allowFaceting(field)) {
                 return FieldFilterTabs.Filter;
@@ -319,7 +318,9 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                         <Tabs activeKey={activeTab} className="field-modal__tabs content-tabs" onSelect={onTabChange}>
                             {!activeField.isMultiChoice && (
                                 <Tab eventKey={FieldFilterTabs.Filter} title="Filter">
-                                    <div className="field-modal__col-sub-title">Find values for {activeField.caption}</div>
+                                    <div className="field-modal__col-sub-title">
+                                        Find values for {activeField.caption}
+                                    </div>
                                     {activeTab === FieldFilterTabs.Filter && (
                                         <FilterExpressionView
                                             allowRelativeDateFilter={allowRelativeDateFilter}
@@ -343,9 +344,9 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                         Find values for {activeField.caption}
                                     </div>
                                     <FilterFacetedSelector
-                                        field={activeField}
                                         canBeBlank={!activeField?.required && !activeField.nameExpression}
                                         disabled={hasNotInQueryFilter}
+                                        field={activeField}
                                         fieldFilters={currentFieldFilters?.map(filter => filter.filter)}
                                         fieldKey={activeFieldKey}
                                         key={activeFieldKey}

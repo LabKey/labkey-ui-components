@@ -31,7 +31,7 @@ import {
     VISITID_CONCEPT_URI,
 } from './constants';
 
-export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string' | 'time';
+export type JsonType = 'array' | 'boolean' | 'date' | 'float' | 'int' | 'string' | 'time';
 
 interface IPropDescType {
     conceptURI: string;
@@ -157,15 +157,17 @@ export class PropDescType
     getJsonType(): JsonType {
         // TODO should this change to default to returning this.name and just catch the diff cases?
         switch (this.name) {
+            case 'array':
+                return 'array';
             case 'boolean':
                 return 'boolean';
-            case 'int':
-                return 'int';
+            case 'date':
+            case 'dateTime':
+                return 'date';
             case 'double':
                 return 'float';
-            case 'dateTime':
-            case 'date':
-                return 'date';
+            case 'int':
+                return 'int';
             default:
                 return 'string';
         }

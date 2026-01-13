@@ -163,20 +163,20 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
         >
             <div className="row">
                 <div className="col-xs-12 col-md-6">
-                    <SectionHeading title="Expression" cls="bottom-padding" helpTipBody={HELP_TIP_BODY} />
+                    <SectionHeading cls="bottom-padding" helpTipBody={HELP_TIP_BODY} title="Expression" />
                     <textarea
                         className="form-control"
-                        rows={6}
-                        value={field.valueExpression || ''}
-                        id={createFormInputId(DOMAIN_FIELD_VALUE_EXPRESSION, domainIndex, index)}
-                        name={createFormInputName(DOMAIN_FIELD_VALUE_EXPRESSION)}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
                         disabled={
                             isFieldPartiallyLocked(field.lockType) ||
                             isFieldFullyLocked(field.lockType) ||
                             field.lockExistingField
                         }
+                        id={createFormInputId(DOMAIN_FIELD_VALUE_EXPRESSION, domainIndex, index)}
+                        name={createFormInputName(DOMAIN_FIELD_VALUE_EXPRESSION)}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        rows={6}
+                        value={field.valueExpression || ''}
                     />
                     <div className="domain-field-calc-footer">
                         {error && <div className="error">{error}</div>}

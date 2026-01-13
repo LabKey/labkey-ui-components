@@ -55,7 +55,8 @@ import {
     INT_RANGE_URI,
     LONG_RANGE_URI,
     LOOKUP_VALIDATOR_VALUES,
-    MAX_TEXT_LENGTH, MULTI_CHOICE_RANGE_URI,
+    MAX_TEXT_LENGTH,
+    MULTI_CHOICE_RANGE_URI,
     NUMBER_CONVERT_URIS,
     PHILEVEL_NOT_PHI,
     SAMPLE_TYPE_CONCEPT_URI,
@@ -145,9 +146,9 @@ interface IDomainDesign {
     allowCalculatedFields: boolean;
     allowFileLinkProperties: boolean;
     allowFlagProperties: boolean;
+    allowMultiChoiceProperties: boolean;
     allowSampleSubjectProperties: boolean;
     allowTextChoiceProperties: boolean;
-    allowMultiChoiceProperties: boolean;
     allowTimepointProperties: boolean;
     allowUniqueConstraintProperties: boolean;
     allowUserProperties: boolean;
@@ -812,7 +813,10 @@ export class PropertyValidator
                     const hasExpressionStr = expressionStr !== undefined && expressionStr !== null;
 
                     // if we are loading a textChoiceValidator from JSON, we need to set the properties.validValues
-                    if ((type === 'TextChoice' || type === 'MultiChoice') && !rawPropertyValidator[i]?.properties?.validValues) {
+                    if (
+                        (type === 'TextChoice' || type === 'MultiChoice') &&
+                        !rawPropertyValidator[i]?.properties?.validValues
+                    ) {
                         rawPropertyValidator[i].properties.validValues =
                             PropertyValidator.splitValidValues(expressionStr);
                     }

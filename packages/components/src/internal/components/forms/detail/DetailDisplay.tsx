@@ -339,7 +339,6 @@ export function resolveDetailEditRenderer(
                         displayColumn={col.lookup.displayColumn}
                         formsy
                         inputClass={DETAIL_INPUT_WRAPPER_CLASS_NAME}
-                        skipJoinValues={skipJoinValues}
                         key={col.fieldKey}
                         label={col.caption}
                         maxRows={LOOKUP_DEFAULT_SIZE}
@@ -353,6 +352,7 @@ export function resolveDetailEditRenderer(
                         required={col.required}
                         schemaQuery={col.lookup.schemaQuery}
                         showLabel={showLabel}
+                        skipJoinValues={skipJoinValues}
                         value={value}
                         valueColumn={col.lookup.keyColumn}
                     />

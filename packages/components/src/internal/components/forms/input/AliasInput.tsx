@@ -50,7 +50,6 @@ export const AliasSelectInput: FC<Props> = memo(props => {
             formsy
             id={generatedId}
             isValidNewOption={isValidNewOption}
-            skipJoinValues
             label={col.caption}
             multiple
             name={col.fieldKey}
@@ -59,6 +58,7 @@ export const AliasSelectInput: FC<Props> = memo(props => {
             required={col.required}
             saveOnBlur
             showLabel
+            skipJoinValues
             {...selectProps}
             resolveFormValue={resolveFormValue}
             value={value}

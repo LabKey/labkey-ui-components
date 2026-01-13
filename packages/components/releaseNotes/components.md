@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- GitHub Issue 764: Editable grid border display issue on very small screens
+  - override default bootstrap table-responsive style for xs scren table border
+
 ### version 7.12.0
 *Released*: 7 January 2026
 - Lineage: add "restricted" property

@@ -165,7 +165,7 @@ export class LookupSelectInput extends React.PureComponent<OwnProps, StateProps>
         // if multiValued = 'junction', the select should support MultiSelect and the value should be joined as an array of strings
         // !Except for the faked up parent column (DataInputs/<DataClassName> in Insert.tsx) where a comma separated string is required
         const multiple = queryColumn.isJunctionLookup(),
-            joinValues = multiple && !queryColumn.isDataInput(),
+            skipJoinValues = multiple && !queryColumn.isDataInput(),
             id = this._id;
 
         const inputProps = Object.assign(
@@ -180,10 +180,10 @@ export class LookupSelectInput extends React.PureComponent<OwnProps, StateProps>
             this.props,
             {
                 // properties that cannot be changed
-                joinValues,
+                skipJoinValues,
                 options,
                 // If joinValues is true, and a value is present ensure value is passed in as an Array<string>
-                value: joinValues && value && !Array.isArray(value) ? [value] : value,
+                value: skipJoinValues && value && !Array.isArray(value) ? [value] : value,
             }
         );
 

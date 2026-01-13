@@ -22,7 +22,7 @@ export class TextChoiceInput extends DisableableInput<Props, DisableableInputSta
                 {...selectInputProps}
                 options={options}
                 multiple={queryColumn.isMultiChoice}
-                joinValues={false}
+                skipJoinValues={true}
             />
         );
     }

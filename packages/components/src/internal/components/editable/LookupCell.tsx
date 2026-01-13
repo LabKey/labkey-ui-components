@@ -172,7 +172,7 @@ export const LookupCell: FC<LookupCellProps> = memo(props => {
                 queryColumn={col}
                 value={col.isMultiChoice ? rawValues : rawValues[0]}
                 multiple={col.isMultiChoice}
-                joinValues={false}
+                skipJoinValues={true}
             />
         );
     }

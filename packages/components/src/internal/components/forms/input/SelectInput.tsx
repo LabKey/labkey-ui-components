@@ -239,7 +239,7 @@ export interface SelectInputProps {
     isValidNewOption?: (inputValue: string) => boolean;
     // FIXME: this is named incorrectly. I would expect that if this is true it would join the values, nope, it joins
     //   the values when false.
-    joinValues?: boolean;
+    skipJoinValues?: boolean;
     label?: ReactNode;
     labelClass?: string;
     labelKey?: string;
@@ -470,7 +470,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
     };
 
     _setOptionsAndValue(options: any): any {
-        const { autoValue, delimiter, formsy, joinValues, multiple, setValue, valueKey } = this.props;
+        const { autoValue, delimiter, formsy, skipJoinValues, multiple, setValue, valueKey } = this.props;
         let selectedOptions;
 
         if (options === undefined || options === null || (Array.isArray(options) && options.length === 0)) {
@@ -495,7 +495,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
                         return arr;
                     }, []);
 
-                    if (joinValues) {
+                    if (!skipJoinValues) {
                         // consider removing altogether?
                         formValue = formValue.join(delimiter);
                     }

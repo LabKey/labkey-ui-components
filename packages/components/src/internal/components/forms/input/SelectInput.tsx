@@ -482,7 +482,11 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
                 selectedOptions.sort((a, b) => {
                     const aValue = valueKey ? a[valueKey] : a.value;
                     const bValue = valueKey ? b[valueKey] : b.value;
-                    return aValue - bValue;
+                    if (!aValue)
+                        return -1;
+                    if (!bValue)
+                        return 1;
+                    return aValue.toLocaleString().localeCompare(bValue.toLocaleString());
                 });
             this.setState({ selectedOptions });
         }

@@ -859,7 +859,8 @@ export function updateDataType(field: DomainField, value: any): DomainField {
 
     if (propType) {
         const dataType = propType.isLookup() ? field.lookupType : propType;
-
+        const wasTextChoice = field.isTextChoiceField() || field.isMultiChoiceField();
+        const isTextChoice = propType.isTextChoice() || propType.isMultiChoice();
         field = field.merge({
             dataType,
             conceptURI: dataType.conceptURI,
@@ -872,8 +873,8 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             conceptLabelColumn: undefined,
             conceptImportColumn: undefined,
             scannable: undefined,
-            textChoiceValidator: undefined,
-            valueExpression: undefined,
+            textChoiceValidator: isTextChoice ? field.textChoiceValidator: undefined,
+            valueExpression: isTextChoice ? field.valueExpression: undefined,
         }) as DomainField;
 
         if (field.isNew()) {
@@ -886,13 +887,16 @@ export function updateDataType(field: DomainField, value: any): DomainField {
         if (field.isTextChoiceField() || field.isMultiChoiceField()) {
             // when changing a field to a Text Choice, add the default textChoiceValidator and
             // remove/reset all other propertyValidators and other text option settings
-            field = field.merge({
-                textChoiceValidator: DEFAULT_TEXT_CHOICE_VALIDATOR,
-                lookupValidator: undefined,
-                rangeValidators: [],
-                regexValidators: [],
-                scale: MAX_TEXT_LENGTH,
-            }) as DomainField;
+            if (!wasTextChoice) {
+                field = field.merge({
+                    textChoiceValidator: DEFAULT_TEXT_CHOICE_VALIDATOR,
+                    lookupValidator: undefined,
+                    rangeValidators: [],
+                    regexValidators: [],
+                    scale: MAX_TEXT_LENGTH,
+                    valueExpression: undefined,
+                }) as DomainField;
+            }
         } else if (field.isCalculatedField()) {
             field = field.merge({
                 importAliases: undefined,

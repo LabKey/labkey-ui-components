@@ -61,6 +61,7 @@ import {
     FILE_TYPE,
     FLAG_TYPE,
     INTEGER_TYPE,
+    MULTI_CHOICE_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
     PARTICIPANT_TYPE,
     SAMPLE_TYPE,
@@ -371,6 +372,7 @@ describe('domain properties actions', () => {
             allowTextChoiceProperties: true,
             allowSampleSubjectProperties: true,
             allowCalculatedFields: true,
+            allowMultiChoiceProperties: true
         });
         const available = getAvailableTypes(domain);
         expect(available.contains(FLAG_TYPE)).toBeTruthy();
@@ -386,6 +388,7 @@ describe('domain properties actions', () => {
         expect(available.contains(SAMPLE_TYPE)).toBeTruthy();
         expect(available.contains(PARTICIPANT_TYPE)).toBeTruthy();
         expect(available.contains(CALCULATED_TYPE)).toBeFalsy();
+        expect(available.contains(MULTI_CHOICE_TYPE)).toBeTruthy();
     });
 
     test('getAvailableTypes, no optional allowed', () => {
@@ -399,6 +402,7 @@ describe('domain properties actions', () => {
             allowTextChoiceProperties: false,
             allowSampleSubjectProperties: false,
             allowCalculatedFields: false,
+            allowMultiChoiceProperties: false,
         });
         const available = getAvailableTypes(domain);
         expect(available.contains(FLAG_TYPE)).toBeFalsy();
@@ -414,6 +418,7 @@ describe('domain properties actions', () => {
         expect(available.contains(SAMPLE_TYPE)).toBeFalsy();
         expect(available.contains(PARTICIPANT_TYPE)).toBeFalsy();
         expect(available.contains(CALCULATED_TYPE)).toBeFalsy();
+        expect(available.contains(MULTI_CHOICE_TYPE)).toBeFalsy();
     });
 
     test('getAvailableTypes calculated fields, LKSM Starter', () => {

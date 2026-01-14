@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.12.1
+*Released*: 14 January 2026
+- Merge from release26.1-SNAPSHOT to develop
+    - includes changes from 7.7.4 #1921
+
 ### version 7.12.0
 *Released*: 7 January 2026
 - Lineage: add "restricted" property

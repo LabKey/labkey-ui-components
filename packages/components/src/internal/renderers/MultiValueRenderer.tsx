@@ -33,7 +33,7 @@ export const MultiValueRenderer: FC<MultiValueRendererProps> = memo(({ data, col
     }
 
     let valueArray = data;
-    if (col?.isMultiChoice) {
+    if (col?.isMultiChoice && Map.isMap(data) && data.has('value')) {
         valueArray = data.get('value');
     }
 

@@ -1,4 +1,4 @@
-import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Filter, Query } from '@labkey/api';
 
@@ -260,7 +260,8 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
 
             const filterType = resolveFilterType(newActiveFilterType?.value, field);
             let updatedFilterValues = fieldFilters[0]?.getValue();
-            if (updatedFilterValues && multiChoices && !filterType.isMultiValued()) updatedFilterValues = null;
+            const shouldClearUpdatedFilterValues = updatedFilterValues && multiChoices && !filterType.isMultiValued();
+            if (shouldClearUpdatedFilterValues) updatedFilterValues = null;
 
             newFilters = [Filter.create(fieldKey, updatedFilterValues, filterType), null];
 

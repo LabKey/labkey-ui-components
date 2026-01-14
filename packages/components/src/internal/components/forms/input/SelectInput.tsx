@@ -273,6 +273,7 @@ export interface SelectInputProps {
     valueKey?: string;
     valueRenderer?: any;
     warning?: ReactNode;
+    sortValues?: boolean;
 }
 
 type SelectInputImplProps = FormsyInjectedProps<any> & SelectInputProps;
@@ -317,6 +318,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
         showIndicatorSeparator: true,
         tabSelectsValue: false, // Issue 52310
         valueKey: 'value',
+        sortValues: false,
     };
 
     private readonly _id: string;
@@ -468,7 +470,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
     };
 
     _setOptionsAndValue(options: any): any {
-        const { autoValue, delimiter, formsy, skipJoinValues, multiple, setValue, valueKey } = this.props;
+        const { sortValues, autoValue, delimiter, formsy, skipJoinValues, multiple, setValue, valueKey } = this.props;
         let selectedOptions;
 
         if (options === undefined || options === null || (Array.isArray(options) && options.length === 0)) {
@@ -478,7 +480,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
         }
 
         if (autoValue) {
-            if (Array.isArray(selectedOptions))
+            if (sortValues && Array.isArray(selectedOptions))
                 selectedOptions.sort((a, b) => {
                     const aValue = valueKey ? a[valueKey] : a.value;
                     const bValue = valueKey ? b[valueKey] : b.value;

@@ -1522,7 +1522,35 @@ async function insertPastedData(
                     );
                     cv = valueDescriptors;
                     msg = message;
-                } else {
+                } else if (col?.isMultiChoice && Utils.isString(val)) {
+                    const parsedValues = parseCsvString(val, ',', true);
+
+                    const unmatched: string[] = [];
+                    let values = [];
+
+                    parsedValues.forEach(v => {
+                        const vt = v.trim();
+                        if (!vt) return;
+
+                        const vl = vt.toLowerCase();
+                        const vd = col.validValues.find(d => d === vl);
+                        values.push({ display: vt, raw: vt });
+
+                        if (vd) return;
+
+                        unmatched.push(vt);
+                    });
+
+                    if (unmatched.length) {
+                        const valueStr = unmatched
+                            .slice(0, 4)
+                            .map(u => '"' + u + '"')
+                            .join(', ');
+                        msg = { message: lookupValidationErrorMessage(valueStr, true) };
+                    }
+                    cv = List(values);
+                }
+                else {
                     const { message, value } = getValidatedEditableGridValue(val, col);
                     let display = value;
 

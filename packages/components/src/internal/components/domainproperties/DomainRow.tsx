@@ -529,8 +529,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                     >
                                         {expanded &&
                                             !isFieldFullyLocked(field.lockType) &&
-                                            !appPropertiesOnly &&
-                                            DomainField.allowAdvancedSettings(field) && (
+                                            !appPropertiesOnly && (
                                                 <button
                                                     className="domain-row-button btn btn-default"
                                                     disabled={isFieldFullyLocked(field.lockType)}

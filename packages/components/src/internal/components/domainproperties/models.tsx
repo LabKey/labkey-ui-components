@@ -1419,10 +1419,6 @@ export class DomainField
         return !field.isMultiChoiceField();
     }
 
-    static allowAdvancedSettings(field: DomainField): boolean {
-        return !field.isMultiChoiceField();
-    }
-
     static hasRegExValidation(field: DomainField): boolean {
         return (
             field.dataType.isString() &&

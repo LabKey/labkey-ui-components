@@ -32,6 +32,7 @@ import {
 } from '../constants';
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { generateId } from '../../../util/utils';
+import {naturalSortByProperty} from "../../../../public/sort";
 
 const WARN_COLOR = '#8A6D3B';
 const WARN_BG_COLOR = '#FCF8E3';
@@ -481,15 +482,8 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
 
         if (autoValue) {
             if (sortValues && Array.isArray(selectedOptions))
-                selectedOptions.sort((a, b) => {
-                    const aValue = valueKey ? a[valueKey] : a.value;
-                    const bValue = valueKey ? b[valueKey] : b.value;
-                    if (!aValue)
-                        return -1;
-                    if (!bValue)
-                        return 1;
-                    return aValue.toLocaleString().localeCompare(bValue.toLocaleString());
-                });
+                selectedOptions.sort(naturalSortByProperty(valueKey ?? 'value'));
+
             this.setState({ selectedOptions });
         }
 
@@ -500,10 +494,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
         } else if (selectedOptions !== undefined) {
             if (multiple) {
                 if (Array.isArray(selectedOptions)) {
-                    formValue = selectedOptions.reduce((arr, option) => {
-                        arr.push(valueKey ? option[valueKey] : option.value);
-                        return arr;
-                    }, []).sort();
+                    formValue = selectedOptions.map(option => (valueKey ? option[valueKey] : option.value));
 
                     if (!skipJoinValues) {
                         // consider removing altogether?

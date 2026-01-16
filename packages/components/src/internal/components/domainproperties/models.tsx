@@ -811,10 +811,11 @@ export class PropertyValidator
                 if (rawPropertyValidator[i].type === type) {
                     const expressionStr = rawPropertyValidator[i].expression;
                     const hasExpressionStr = expressionStr !== undefined && expressionStr !== null;
+                    const isChoice = type === 'TextChoice' || type === 'MultiChoice';
 
                     // if we are loading a textChoiceValidator from JSON, we need to set the properties.validValues
                     if (
-                        (type === 'TextChoice' || type === 'MultiChoice') &&
+                        isChoice &&
                         !rawPropertyValidator[i]?.properties?.validValues
                     ) {
                         rawPropertyValidator[i].properties.validValues =

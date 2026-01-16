@@ -35,7 +35,7 @@ interface Props {
     field?: QueryColumn;
     fieldFilters: Filter.IFilter[];
     fieldKey: string;
-    onFieldFilterUpdate?: (newFilters: Filter.IFilter[], index) => void;
+    onFieldFilterUpdate?: (newFilter: Filter.IFilter[]) => void;
     selectDistinctOptions: Query.SelectDistinctOptions;
     // show search box if number of unique values > N
     showSearchLength?: number;
@@ -82,9 +82,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps -- only on fieldKey change, reload selection values
     }, [fieldKey]);
 
-    const multiChoices = useMemo(() => {
-        return field?.isMultiChoice ? field.validValues : null;
-    }, [field]);
+    const multiChoices = field?.isMultiChoice ? field.validValues : null;
 
     const filterOptions = useMemo(() => {
         return field?.isMultiChoice ? getFilterOptionsForType(field, false) : null;
@@ -100,11 +98,8 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
 
                 let allValues: any[] = [];
                 if (!multiChoices) {
-                    const filterArray = searchStr
-                        ? [Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS)].concat(
-                              selectDistinctOptions?.filterArray
-                          )
-                        : selectDistinctOptions?.filterArray;
+                    const filterArray = selectDistinctOptions?.filterArray ?? [];
+                    if (searchStr) filterArray.push(Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS));
 
                     // if multi value, get all options
                     const result = await api.query.selectDistinctRows({
@@ -218,16 +213,18 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         (value: string, checked: boolean, uncheckOthers?: boolean) => {
             if (disabled) return;
 
+            let oldFilter = fieldFilters?.[0]; // choose values applies only to the first filter
+            if (!oldFilter && multiChoices) oldFilter = Filter.create(fieldKey, [], Filter.Types.ARRAY_CONTAINS_ALL);
+
             const newFilter = getUpdatedChooseValuesFilter(
                 allShown ? fieldDistinctValues : undefined,
                 fieldKey,
                 value,
                 checked,
-                fieldFilters?.[0] ??
-                    (multiChoices ? Filter.create(fieldKey, [], Filter.Types.ARRAY_CONTAINS_ALL) : null), // choose values applies only to the first filter
+                oldFilter,
                 uncheckOthers
             );
-            onFieldFilterUpdate([newFilter], 0);
+            onFieldFilterUpdate([newFilter]);
         },
         [disabled, allShown, fieldDistinctValues, fieldKey, fieldFilters, onFieldFilterUpdate, multiChoices]
     );
@@ -253,19 +250,18 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     const onUpdateFilterType = useCallback(
         (_, filterUrlSuffix: string) => {
             let newFilters = [];
-            if (!filterUrlSuffix) return newFilters;
+            if (filterUrlSuffix) {
+                const newActiveFilterType = filterOptions.find(option => option.value === filterUrlSuffix);
+                if (newActiveFilterType) {
+                    const filterType = resolveFilterType(newActiveFilterType?.value, field);
+                    let updatedFilterValues = fieldFilters[0]?.getValue();
+                    const shouldClearUpdatedFilterValues = updatedFilterValues && multiChoices && !filterType.isMultiValued();
+                    if (shouldClearUpdatedFilterValues) updatedFilterValues = null;
+                    newFilters = [Filter.create(fieldKey, updatedFilterValues, filterType)];
+                }
+            }
 
-            const newActiveFilterType = filterOptions?.find(option => option.value === filterUrlSuffix);
-            if (!newActiveFilterType) return newFilters;
-
-            const filterType = resolveFilterType(newActiveFilterType?.value, field);
-            let updatedFilterValues = fieldFilters[0]?.getValue();
-            const shouldClearUpdatedFilterValues = updatedFilterValues && multiChoices && !filterType.isMultiValued();
-            if (shouldClearUpdatedFilterValues) updatedFilterValues = null;
-
-            newFilters = [Filter.create(fieldKey, updatedFilterValues, filterType), null];
-
-            onFieldFilterUpdate(newFilters, 0);
+            onFieldFilterUpdate(newFilters);
         },
         [onFieldFilterUpdate, filterOptions, field, fieldFilters, fieldKey, multiChoices]
     );
@@ -287,7 +283,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                         options={filterOptions}
                         placeholder="Select a filter type..."
                         required={true}
-                        value={fieldFilters?.[0]?.getFilterType()?.getURLSuffix() || 'arraycontainsall'}
+                        value={fieldFilters?.[0]?.getFilterType().getURLSuffix() || 'arraycontainsall'}
                     />
                 )}
                 {(fieldDistinctValues?.length > showSearchLength || searchStr) && (

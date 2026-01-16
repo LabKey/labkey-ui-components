@@ -884,19 +884,17 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             field = field.merge(DomainField.resolveLookupConfig(field, dataType)) as DomainField;
         }
 
-        if (field.isTextChoiceField() || field.isMultiChoiceField()) {
+        if ((field.isTextChoiceField() || field.isMultiChoiceField()) && !wasTextChoice) {
             // when changing a field to a Text Choice, add the default textChoiceValidator and
             // remove/reset all other propertyValidators and other text option settings
-            if (!wasTextChoice) {
-                field = field.merge({
-                    textChoiceValidator: DEFAULT_TEXT_CHOICE_VALIDATOR,
-                    lookupValidator: undefined,
-                    rangeValidators: [],
-                    regexValidators: [],
-                    scale: MAX_TEXT_LENGTH,
-                    valueExpression: undefined,
-                }) as DomainField;
-            }
+            field = field.merge({
+                textChoiceValidator: DEFAULT_TEXT_CHOICE_VALIDATOR,
+                lookupValidator: undefined,
+                rangeValidators: [],
+                regexValidators: [],
+                scale: MAX_TEXT_LENGTH,
+                valueExpression: undefined,
+            }) as DomainField;
         } else if (field.isCalculatedField()) {
             field = field.merge({
                 importAliases: undefined,

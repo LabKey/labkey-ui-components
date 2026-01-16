@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, Fragment, memo, ReactNode } from 'react';
+import React, { FC, memo, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { QueryColumn } from '../../public/QueryColumn';
 import { FileColumnRenderer } from './FileColumnRenderer';

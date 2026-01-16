@@ -22,6 +22,7 @@ import { QueryModel } from './QueryModel';
 
 import { DetailPanel, DetailPanelWithModel } from './DetailPanel';
 import { EDIT_METHOD } from '../../internal/constants';
+import { useRouteLeave } from '../../internal/util/RouteLeave';
 
 export interface EditableDetailPanelProps {
     appEditable?: boolean;
@@ -71,6 +72,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
     } = props;
 
     const { api } = useAppContext();
+    const [_, setIsDirty] = useRouteLeave();
     const [canSubmit, setCanSubmit] = useState<boolean>(false);
     const [editing, setEditing] = useState<boolean>(false);
     const [error, setError] = useState<string>(undefined);
@@ -90,10 +92,11 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
     const toggleEditing = useCallback((): void => {
         const updated = !editing;
         setEditing(updated);
+        setIsDirty(false);
         setWarning(undefined);
         setError(undefined);
         onEditToggle?.(updated);
-    }, [editing, onEditToggle]);
+    }, [editing, onEditToggle, setIsDirty]);
 
     const disableSubmitButton = useCallback((): void => {
         setCanSubmit(false);
@@ -103,9 +106,13 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
         setCanSubmit(true);
     }, []);
 
-    const handleFormChange = useCallback((): void => {
-        setWarning(undefined);
-    }, []);
+    const handleFormChange = useCallback(
+        (_: never, isChanged: boolean): void => {
+            setWarning(undefined);
+            if (isChanged) setIsDirty(true);
+        },
+        [setIsDirty]
+    );
 
     const fileInputRenderer = useCallback((col: QueryColumn, data: any): ReactNode => {
         return <FileInput formsy initialValue={data} name={col.fieldKey} queryColumn={col} showLabel={false} />;
@@ -121,6 +128,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
                 setCanSubmit(false);
                 setError(undefined);
                 setWarning('No changes detected. Please update the form and click save.');
+                setIsDirty(false);
                 return;
             }
 
@@ -146,6 +154,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
                     auditUserComment: comment,
                 });
 
+                setIsDirty(false);
                 setEditing(false);
                 onUpdate?.();
                 onEditToggle?.(false);
@@ -154,7 +163,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
                 setWarning(undefined);
             }
         },
-        [model, onBeforeUpdate, api.query, containerPath, comment, onUpdate, onEditToggle]
+        [model, onBeforeUpdate, api.query, containerPath, comment, onUpdate, onEditToggle, setIsDirty]
     );
 
     const isEditable = !model.isLoading && model.hasRows && (model.queryInfo?.isAppEditable() || appEditable);

@@ -385,10 +385,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         const draggableId = createFormInputId('domaindrag', domainIndex, index);
         // Use undefined instead of false to allow for css to handle the highlight color for hover
         const highlighted = dragging ? true : isDragDisabled ? false : undefined;
-        const showAdvancedSettingsButton =
-            expanded &&
-            !isFieldFullyLocked(field.lockType) &&
-            !appPropertiesOnly;
+        const showAdvancedSettingsButton = expanded && !isFieldFullyLocked(field.lockType) && !appPropertiesOnly;
 
         return (
             <Draggable
@@ -532,17 +529,17 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                         className={expanded ? 'domain-field-buttons-expanded' : 'domain-field-buttons'}
                                     >
                                         {showAdvancedSettingsButton && (
-                                                <button
-                                                    className="domain-row-button btn btn-default"
-                                                    disabled={isFieldFullyLocked(field.lockType)}
-                                                    id={createFormInputId(DOMAIN_FIELD_ADV, domainIndex, index)}
-                                                    name={createFormInputName(DOMAIN_FIELD_ADV)}
-                                                    onClick={this.onShowAdvanced}
-                                                    type="button"
-                                                >
-                                                    Advanced Settings
-                                                </button>
-                                            )}
+                                            <button
+                                                className="domain-row-button btn btn-default"
+                                                disabled={isFieldFullyLocked(field.lockType)}
+                                                id={createFormInputId(DOMAIN_FIELD_ADV, domainIndex, index)}
+                                                name={createFormInputName(DOMAIN_FIELD_ADV)}
+                                                onClick={this.onShowAdvanced}
+                                                type="button"
+                                            >
+                                                Advanced Settings
+                                            </button>
+                                        )}
                                         {isFieldDeletable(field) && (
                                             <DeleteIcon
                                                 iconCls="domain-field-delete-icon"

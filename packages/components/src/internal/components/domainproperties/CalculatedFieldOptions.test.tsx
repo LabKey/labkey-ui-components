@@ -20,10 +20,10 @@ describe('CalculatedFieldOptions', () => {
             renderWithAppContext(
                 <CalculatedFieldOptions
                     domainIndex={0}
+                    field={DomainField.create({ rangeURI: STRING_RANGE_URI })}
                     getDomainFields={jest.fn()}
                     index={0}
                     onChange={jest.fn()}
-                    field={DomainField.create({ rangeURI: STRING_RANGE_URI })}
                 />
             );
         });
@@ -41,10 +41,10 @@ describe('CalculatedFieldOptions', () => {
             renderWithAppContext(
                 <CalculatedFieldOptions
                     domainIndex={0}
+                    field={DomainField.create({ valueExpression: '1=0', rangeURI: INT_RANGE_URI })}
                     getDomainFields={jest.fn()}
                     index={0}
                     onChange={jest.fn()}
-                    field={DomainField.create({ valueExpression: '1=0', rangeURI: INT_RANGE_URI })}
                 />
             );
         });
@@ -62,10 +62,10 @@ describe('CalculatedFieldOptions', () => {
             renderWithAppContext(
                 <CalculatedFieldOptions
                     domainIndex={0}
+                    field={DomainField.create({ valueExpression: '1=0', lockType: DOMAIN_FIELD_PARTIALLY_LOCKED })}
                     getDomainFields={jest.fn()}
                     index={0}
                     onChange={jest.fn()}
-                    field={DomainField.create({ valueExpression: '1=0', lockType: DOMAIN_FIELD_PARTIALLY_LOCKED })}
                 />
             );
         });

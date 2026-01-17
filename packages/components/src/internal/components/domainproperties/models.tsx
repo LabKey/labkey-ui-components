@@ -80,7 +80,8 @@ import {
     FILE_TYPE,
     FLAG_TYPE,
     INTEGER_TYPE,
-    LOOKUP_TYPE, MULTI_CHOICE_TYPE,
+    LOOKUP_TYPE,
+    MULTI_CHOICE_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
     PROP_DESC_TYPES,
     PropDescType,
@@ -814,10 +815,7 @@ export class PropertyValidator
                     const isChoice = type === 'TextChoice';
 
                     // if we are loading a textChoiceValidator from JSON, we need to set the properties.validValues
-                    if (
-                        isChoice &&
-                        !rawPropertyValidator[i]?.properties?.validValues
-                    ) {
+                    if (isChoice && !rawPropertyValidator[i]?.properties?.validValues) {
                         rawPropertyValidator[i].properties.validValues =
                             PropertyValidator.splitValidValues(expressionStr);
                     }

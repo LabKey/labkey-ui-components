@@ -35,7 +35,7 @@ import {
 
 import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGridValue, parseCellKey } from './utils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import {naturalSort} from "../../../public/sort";
+import { naturalSort } from '../../../public/sort';
 
 /**
  * Do not use this method directly, use initEditorModel instead.
@@ -1527,7 +1527,7 @@ async function insertPastedData(
                     const parsedValues = parseCsvString(val, ',', true).sort(naturalSort);
 
                     const unmatched: string[] = [];
-                    let values = [];
+                    const values = [];
 
                     parsedValues.forEach(v => {
                         const vt = v.trim();
@@ -1549,8 +1549,7 @@ async function insertPastedData(
                         msg = { message: lookupValidationErrorMessage(valueStr, true) };
                     }
                     cv = List(values);
-                }
-                else {
+                } else {
                     const { message, value } = getValidatedEditableGridValue(val, col);
                     let display = value;
 

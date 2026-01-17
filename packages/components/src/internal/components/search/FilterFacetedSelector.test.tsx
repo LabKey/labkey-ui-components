@@ -9,9 +9,9 @@ import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 import { FilterFacetedSelector } from './FilterFacetedSelector';
-import {QueryColumn} from "../../../public/QueryColumn";
-import {MULTI_CHOICE_TYPE} from "../domainproperties/PropDescType";
-import {naturalSort} from "../../../public/sort";
+import { QueryColumn } from '../../../public/QueryColumn';
+import { MULTI_CHOICE_TYPE } from '../domainproperties/PropDescType';
+import { naturalSort } from '../../../public/sort';
 
 const valuesListShort = ['ed', 'ned', '', 'ted', 'red', 'bed'];
 const allDisplayValuesShort = ['[All]', '[blank]', 'bed', 'ed', 'ned', 'red', 'ted'];
@@ -348,18 +348,13 @@ describe('FilterFacetedSelector', () => {
 
     test('multi choice field, no filter', async () => {
         await act(async () => {
-            render(
-                <FilterFacetedSelector
-                    {...DEFAULT_PROPS}
-                    field={mvtcField}
-                />
-            );
+            render(<FilterFacetedSelector {...DEFAULT_PROPS} field={mvtcField} />);
         });
 
         expect(document.querySelector('.fa-spinner')).toBeNull();
 
         expect(document.querySelectorAll('.filter-expression__input-select')).toHaveLength(1);
-        expect(document.querySelector('div.select-input__single-value').textContent).toBe("Contains All");
+        expect(document.querySelector('div.select-input__single-value').textContent).toBe('Contains All');
 
         validate([], [], ['[All]', ...mvtcField.validValues].sort(naturalSort), false);
     });
@@ -370,16 +365,14 @@ describe('FilterFacetedSelector', () => {
                 <FilterFacetedSelector
                     {...DEFAULT_PROPS}
                     field={mvtcField}
-                    fieldFilters={[
-                        Filter.create('stringField', ['bed', 'red'], Filter.Types.ARRAY_CONTAINS_ALL),
-                    ]}
+                    fieldFilters={[Filter.create('stringField', ['bed', 'red'], Filter.Types.ARRAY_CONTAINS_ALL)]}
                 />
             );
         });
 
         expect(document.querySelector('.fa-spinner')).toBeNull();
         expect(document.querySelectorAll('.filter-expression__input-select')).toHaveLength(1);
-        expect(document.querySelector('div.select-input__single-value').textContent).toBe("Contains All");
+        expect(document.querySelector('div.select-input__single-value').textContent).toBe('Contains All');
 
         validate(['bed', 'red'], ['bed', 'red'], ['[All]', ...mvtcField.validValues].sort(naturalSort), false);
     });
@@ -399,7 +392,7 @@ describe('FilterFacetedSelector', () => {
 
         expect(document.querySelector('.fa-spinner')).toBeNull();
 
-        expect(document.querySelector('div.select-input__single-value').textContent).toBe("Contains None");
+        expect(document.querySelector('div.select-input__single-value').textContent).toBe('Contains None');
 
         validate(['[All]', ...mvtcField.validValues], [], ['[All]', ...mvtcField.validValues].sort(naturalSort), false);
     });

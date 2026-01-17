@@ -543,7 +543,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         </LabelHelpTip>
                     </CheckboxLK>
                 )}
-                {!field.isMultiChoiceField() &&
+                {!field.isMultiChoiceField() && (
                     <CheckboxLK
                         checked={recommendedVariable}
                         id={createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, domainIndex, index)}
@@ -558,7 +558,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             </div>
                         </LabelHelpTip>
                     </CheckboxLK>
-                }
+                )}
                 {PropDescType.isMvEnableable(field.dataType.rangeURI) && !field.isCalculatedField() && !isApp() && (
                     <CheckboxLK
                         checked={mvEnabled}

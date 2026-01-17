@@ -670,7 +670,9 @@ describe('getCheckedFilterValues', () => {
 
     test('array filter with all multiChoices selected returns allValues', () => {
         const arrayContainsEvery = Filter.create(fieldKey, multiChoices, Filter.Types.ARRAY_CONTAINS_ALL);
-        expect(getCheckedFilterValues(arrayContainsEvery, distinctValuesNoBlank, multiChoices)).toEqual(distinctValuesNoBlank);
+        expect(getCheckedFilterValues(arrayContainsEvery, distinctValuesNoBlank, multiChoices)).toEqual(
+            distinctValuesNoBlank
+        );
     });
 
     test('array filter with no values and multiChoices returns empty list', () => {

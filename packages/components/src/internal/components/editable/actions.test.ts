@@ -33,7 +33,7 @@ import { CellMessage, EditorModel, ValueDescriptor } from './models';
 import { genCellKey } from './utils';
 import sampleSetQueryInfoJSON from '../../../test/data/sampleSetAllFieldTypes-getQueryDetails.json';
 import { MockEditableGridLoader } from './utils.test';
-import {MULTI_CHOICE_TYPE} from "../domainproperties/PropDescType";
+import { MULTI_CHOICE_TYPE } from '../domainproperties/PropDescType';
 
 describe('column mutation actions', () => {
     const queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);
@@ -943,13 +943,13 @@ describe('insertPastedData', () => {
             ]),
             [genCellKey(mvtc, 0)]: List<ValueDescriptor>([
                 {
-                    "raw": "a",
-                    "display": "a"
+                    raw: 'a',
+                    display: 'a',
                 },
                 {
-                    "raw": "cD",
-                    "display": "cD"
-                }
+                    raw: 'cD',
+                    display: 'cD',
+                },
             ]),
         }),
         orderedColumns: List([fkOne, fkTwo, dateFk, mvtc]),
@@ -1153,20 +1153,27 @@ describe('insertPastedData', () => {
         );
         const cellValues = changes.cellValues;
         expect(cellValues.get(genCellKey(mvtc, 0))).toEqual(
-            List([{ display: 'A,B', raw: 'A,B' }, { display: 'cD', raw: 'cD' }])
+            List([
+                { display: 'A,B', raw: 'A,B' },
+                { display: 'cD', raw: 'cD' },
+            ])
         );
         expect(cellValues.get(genCellKey(mvtc, 1))).toEqual(
-            List([{ display: 'cc', raw: 'cc' }, { display: 'de', raw: 'de' }])
+            List([
+                { display: 'cc', raw: 'cc' },
+                { display: 'de', raw: 'de' },
+            ])
         );
         expect(cellValues.get(genCellKey(mvtc, 2))).toEqual(
-            List([{ display: 'ab', raw: 'ab' }, { display: 'bad', raw: 'bad' }])
+            List([
+                { display: 'ab', raw: 'ab' },
+                { display: 'bad', raw: 'bad' },
+            ])
         );
         const cellMessages = changes.cellMessages;
         expect(cellMessages.get(genCellKey(mvtc, 0))).toBeUndefined();
         expect(cellMessages.get(genCellKey(mvtc, 1))).toBeUndefined();
-        expect(cellMessages.get(genCellKey(mvtc, 2))).toEqual(
-            {message: 'Could not find "bad"' }
-        );
+        expect(cellMessages.get(genCellKey(mvtc, 2))).toEqual({ message: 'Could not find "bad"' });
     });
 });
 

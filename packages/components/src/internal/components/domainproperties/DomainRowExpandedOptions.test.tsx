@@ -14,7 +14,8 @@ import {
     DATETIME_TYPE,
     DOUBLE_TYPE,
     FLAG_TYPE,
-    INTEGER_TYPE, MULTI_CHOICE_TYPE,
+    INTEGER_TYPE,
+    MULTI_CHOICE_TYPE,
     MULTILINE_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
     SAMPLE_TYPE,
@@ -142,10 +143,10 @@ describe('DomainRowExpandedOptions', () => {
         render(
             <DomainRowExpandedOptions
                 {...DEFAULT_PROPS}
-                field={field}
                 domainFormDisplayOptions={{
                     hideTextOptions: true,
                 }}
+                field={field}
             />
         );
 

@@ -467,7 +467,7 @@ describe('getCommonDataForSelection', () => {
                 AndAgain: 'again',
                 Data: 'data1',
                 Pdf: '/root/lk/Sample%20Management/blood.pdf',
-                MVTC: ['a', 'b']
+                MVTC: ['a', 'b'],
             },
             fieldsInConflict: ['RowId', 'Value', 'Name', 'Other'],
         });

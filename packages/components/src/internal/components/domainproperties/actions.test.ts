@@ -372,7 +372,7 @@ describe('domain properties actions', () => {
             allowTextChoiceProperties: true,
             allowSampleSubjectProperties: true,
             allowCalculatedFields: true,
-            allowMultiChoiceProperties: true
+            allowMultiChoiceProperties: true,
         });
         const available = getAvailableTypes(domain);
         expect(available.contains(FLAG_TYPE)).toBeTruthy();

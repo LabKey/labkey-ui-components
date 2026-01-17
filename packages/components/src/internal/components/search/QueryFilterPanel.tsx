@@ -245,11 +245,14 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
 
     const includeAllAncestorFilter = useMemo(() => {
         return isAncestor && activeField?.fieldKey.toLowerCase() === 'name';
-    }, [isAncestor, activeField])
+    }, [isAncestor, activeField]);
 
-    const onFieldFilterUpdate = useCallback((newFilters: Filter.IFilter[], index : number = 0) => {
-        onFilterUpdate(activeField, newFilters, index)
-    }, [onFilterUpdate, activeField])
+    const onFieldFilterUpdate = useCallback(
+        (newFilters: Filter.IFilter[], index = 0) => {
+            onFilterUpdate(activeField, newFilters, index);
+        },
+        [onFilterUpdate, activeField]
+    );
 
     const facetSelectDistinctOptions = useMemo(() => {
         return {
@@ -259,7 +262,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
             queryName,
             viewName,
             filterArray: fieldDistinctValueFilters,
-        }
+        };
     }, [selectDistinctOptions, activeFieldKey, queryInfo, fieldDistinctValueFilters, queryName, viewName]);
 
     const fieldsClassName = `col-xs-${fullWidth ? 12 : 6} col-sm-${

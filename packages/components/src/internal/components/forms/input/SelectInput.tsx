@@ -32,7 +32,7 @@ import {
 } from '../constants';
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { generateId } from '../../../util/utils';
-import {naturalSortByProperty} from "../../../../public/sort";
+import { naturalSortByProperty } from '../../../../public/sort';
 
 const WARN_COLOR = '#8A6D3B';
 const WARN_BG_COLOR = '#FCF8E3';
@@ -268,13 +268,13 @@ export interface SelectInputProps {
     showIndicatorSeparator?: boolean;
     showLabel?: boolean;
     skipJoinValues?: boolean;
+    sortValues?: boolean;
     tabSelectsValue?: boolean;
     toggleDisabledTooltip?: string;
     value?: any;
     valueKey?: string;
     valueRenderer?: any;
     warning?: ReactNode;
-    sortValues?: boolean;
 }
 
 type SelectInputImplProps = FormsyInjectedProps<any> & SelectInputProps;

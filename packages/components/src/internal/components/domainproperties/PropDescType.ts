@@ -134,7 +134,9 @@ export class PropDescType
     }
 
     static isMeasure(rangeURI: string): boolean {
-        return rangeURI !== ATTACHMENT_RANGE_URI && rangeURI !== FILELINK_RANGE_URI && rangeURI !== MULTI_CHOICE_RANGE_URI;
+        return (
+            rangeURI !== ATTACHMENT_RANGE_URI && rangeURI !== FILELINK_RANGE_URI && rangeURI !== MULTI_CHOICE_RANGE_URI
+        );
     }
 
     static isDimension(rangeURI: string): boolean {
@@ -147,7 +149,12 @@ export class PropDescType
     }
 
     static isMvEnableable(rangeURI: string): boolean {
-        return rangeURI !== ATTACHMENT_RANGE_URI && rangeURI !== FILELINK_RANGE_URI && rangeURI !== MULTILINE_RANGE_URI && rangeURI !== MULTI_CHOICE_RANGE_URI;
+        return (
+            rangeURI !== ATTACHMENT_RANGE_URI &&
+            rangeURI !== FILELINK_RANGE_URI &&
+            rangeURI !== MULTILINE_RANGE_URI &&
+            rangeURI !== MULTI_CHOICE_RANGE_URI
+        );
     }
 
     static isAutoIncrement(dataType: PropDescType): boolean {

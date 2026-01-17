@@ -873,8 +873,8 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             conceptLabelColumn: undefined,
             conceptImportColumn: undefined,
             scannable: undefined,
-            textChoiceValidator: isTextChoice ? field.textChoiceValidator: undefined,
-            valueExpression: isTextChoice ? field.valueExpression: undefined,
+            textChoiceValidator: isTextChoice ? field.textChoiceValidator : undefined,
+            valueExpression: isTextChoice ? field.valueExpression : undefined,
         }) as DomainField;
 
         if (field.isNew()) {

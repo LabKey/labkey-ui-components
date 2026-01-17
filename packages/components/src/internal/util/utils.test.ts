@@ -186,6 +186,9 @@ describe('getCommonDataForSelection', () => {
                 field2: {
                     value: 'value2',
                 },
+                field3: {
+                    value: ['value2'],
+                },
             },
             '2': {
                 field1: {
@@ -194,11 +197,14 @@ describe('getCommonDataForSelection', () => {
                 field2: {
                     value: 'value4',
                 },
+                field3: {
+                    value: ['value2', 'value4'],
+                },
             },
         });
         const res1 = getCommonDataValues(data);
         expect(res1.fieldValues).toEqual({});
-        expect(res1.fieldsInConflict).toEqual(['field1', 'field2']);
+        expect(res1.fieldsInConflict).toEqual(['field1', 'field2', 'field3']);
     });
 
     test('empty values', () => {
@@ -210,6 +216,9 @@ describe('getCommonDataForSelection', () => {
                 field2: {
                     value: null,
                 },
+                field3: {
+                    value: null,
+                },
             },
             '2': {
                 field1: {
@@ -217,6 +226,9 @@ describe('getCommonDataForSelection', () => {
                 },
                 field2: {
                     value: undefined,
+                },
+                field3: {
+                    value: [],
                 },
             },
         });
@@ -234,6 +246,9 @@ describe('getCommonDataForSelection', () => {
                 field2: {
                     value: 0,
                 },
+                field3: {
+                    value: [],
+                },
             },
             '2': {
                 field1: {
@@ -241,6 +256,9 @@ describe('getCommonDataForSelection', () => {
                 },
                 field2: {
                     value: 0,
+                },
+                field3: {
+                    value: [],
                 },
             },
         });
@@ -319,6 +337,9 @@ describe('getCommonDataForSelection', () => {
                     displayValue: 'sampletype/blood.pdf',
                     url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
                 },
+                MVTC: {
+                    value: ['a', 'b'],
+                },
             },
             '447': {
                 RowId: {
@@ -345,6 +366,9 @@ describe('getCommonDataForSelection', () => {
                     value: '/root/lk/Sample%20Management/blood.pdf',
                     displayValue: 'sampletype/blood.pdf',
                     url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
+                },
+                MVTC: {
+                    value: ['a', 'b'],
                 },
             },
             '446': {
@@ -373,6 +397,9 @@ describe('getCommonDataForSelection', () => {
                     displayValue: 'sampletype/blood.pdf',
                     url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
                 },
+                MVTC: {
+                    value: ['a', 'b'],
+                },
             },
             '445': {
                 RowId: {
@@ -399,6 +426,9 @@ describe('getCommonDataForSelection', () => {
                     value: '/root/lk/Sample%20Management/blood.pdf',
                     displayValue: 'sampletype/blood.pdf',
                     url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
+                },
+                MVTC: {
+                    value: ['a', 'b'],
                 },
             },
             '367': {
@@ -427,6 +457,9 @@ describe('getCommonDataForSelection', () => {
                     displayValue: 'sampletype/blood.pdf',
                     url: '/labkey/Sample%20Management/core-downloadFileLink.view?propertyId=552',
                 },
+                MVTC: {
+                    value: ['b', 'a'],
+                },
             },
         });
         expect(getCommonDataValues(data)).toEqual({
@@ -434,6 +467,7 @@ describe('getCommonDataForSelection', () => {
                 AndAgain: 'again',
                 Data: 'data1',
                 Pdf: '/root/lk/Sample%20Management/blood.pdf',
+                MVTC: ['a', 'b']
             },
             fieldsInConflict: ['RowId', 'Value', 'Name', 'Other'],
         });
@@ -441,6 +475,7 @@ describe('getCommonDataForSelection', () => {
             fieldValues: {
                 AndAgain: 'again',
                 Data: 'data1',
+                MVTC: ['a', 'b'],
                 Pdf: fromJS({
                     value: '/root/lk/Sample%20Management/blood.pdf',
                     displayValue: 'sampletype/blood.pdf',

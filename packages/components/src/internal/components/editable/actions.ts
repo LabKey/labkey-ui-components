@@ -35,6 +35,7 @@ import {
 
 import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGridValue, parseCellKey } from './utils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
+import {naturalSort} from "../../../public/sort";
 
 /**
  * Do not use this method directly, use initEditorModel instead.
@@ -1523,7 +1524,7 @@ async function insertPastedData(
                     cv = valueDescriptors;
                     msg = message;
                 } else if (col?.isMultiChoice && Utils.isString(val)) {
-                    const parsedValues = parseCsvString(val, ',', true);
+                    const parsedValues = parseCsvString(val, ',', true).sort(naturalSort);
 
                     const unmatched: string[] = [];
                     let values = [];
@@ -1532,8 +1533,7 @@ async function insertPastedData(
                         const vt = v.trim();
                         if (!vt) return;
 
-                        const vl = vt.toLowerCase();
-                        const vd = col.validValues.find(d => d === vl);
+                        const vd = col.validValues?.find(d => d === vt);
                         values.push({ display: vt, raw: vt });
 
                         if (vd) return;
@@ -1630,6 +1630,7 @@ export function validateAndInsertPastedData(
     let selectedColIdx: number;
     let selectedRowIdx: number;
 
+    console.log(value);
     if (editorModel.isMultiSelect) {
         // Issue 51359 - When pasting during multiselect we want to paste from the first cell in the selection,
         // otherwise we'll paste from the initially selected cell, which will fill the wrong area. This is most obvious

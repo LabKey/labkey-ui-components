@@ -33,6 +33,7 @@ import { CellMessage, EditorModel, ValueDescriptor } from './models';
 import { genCellKey } from './utils';
 import sampleSetQueryInfoJSON from '../../../test/data/sampleSetAllFieldTypes-getQueryDetails.json';
 import { MockEditableGridLoader } from './utils.test';
+import {MULTI_CHOICE_TYPE} from "../domainproperties/PropDescType";
 
 describe('column mutation actions', () => {
     const queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);
@@ -828,6 +829,7 @@ describe('insertPastedData', () => {
     const fkOne = 'field_one';
     const fkTwo = 'field_two';
     const dateFk = 'date';
+    const mvtc = 'mvtc';
     const queryInfo = QueryInfo.fromJsonForTests({
         pkCols: [pkFk],
         columns: {
@@ -851,6 +853,13 @@ describe('insertPastedData', () => {
                 fieldKey: dateFk,
                 inputType: 'string',
                 jsonType: 'date',
+            }),
+            [mvtc]: new QueryColumn({
+                caption: 'Multi Value TC',
+                fieldKey: mvtc,
+                jsonType: 'ARRAY',
+                rangeURI: MULTI_CHOICE_TYPE.rangeURI,
+                validValues: ['a', 'ab', 'cc', 'cD', 'A,B', 'de'],
             }),
         },
     });
@@ -932,9 +941,19 @@ describe('insertPastedData', () => {
                     raw: '2025-04-23',
                 },
             ]),
+            [genCellKey(mvtc, 0)]: List<ValueDescriptor>([
+                {
+                    "raw": "a",
+                    "display": "a"
+                },
+                {
+                    "raw": "cD",
+                    "display": "cD"
+                }
+            ]),
         }),
-        orderedColumns: List([fkOne, fkTwo, dateFk]),
-        columnMap: [fkOne, fkTwo, dateFk].reduce((result, key) => {
+        orderedColumns: List([fkOne, fkTwo, dateFk, mvtc]),
+        columnMap: [fkOne, fkTwo, dateFk, mvtc].reduce((result, key) => {
             return result.set(key, queryInfo.getColumn(key));
         }, Map<string, QueryColumn>()),
         queryInfo,
@@ -1114,6 +1133,39 @@ describe('insertPastedData', () => {
         );
         expect(cellValues.get(genCellKey(dateFk, 2))).toEqual(
             List([{ display: '2025-04-24', raw: '2025-04-24 00:00:00.000' }])
+        );
+    });
+
+    test('pasting multi values', async () => {
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(mvtc, 0)],
+            selectedColIdx: 3,
+            selectedRowIdx: 0,
+        });
+        const changes = await validateAndInsertPastedData(
+            em,
+            '"A,B",cD\nde,cc\nab,bad',
+            undefined,
+            true,
+            true,
+            undefined,
+            true
+        );
+        const cellValues = changes.cellValues;
+        expect(cellValues.get(genCellKey(mvtc, 0))).toEqual(
+            List([{ display: 'A,B', raw: 'A,B' }, { display: 'cD', raw: 'cD' }])
+        );
+        expect(cellValues.get(genCellKey(mvtc, 1))).toEqual(
+            List([{ display: 'cc', raw: 'cc' }, { display: 'de', raw: 'de' }])
+        );
+        expect(cellValues.get(genCellKey(mvtc, 2))).toEqual(
+            List([{ display: 'ab', raw: 'ab' }, { display: 'bad', raw: 'bad' }])
+        );
+        const cellMessages = changes.cellMessages;
+        expect(cellMessages.get(genCellKey(mvtc, 0))).toBeUndefined();
+        expect(cellMessages.get(genCellKey(mvtc, 1))).toBeUndefined();
+        expect(cellMessages.get(genCellKey(mvtc, 2))).toEqual(
+            {message: 'Could not find "bad"' }
         );
     });
 });

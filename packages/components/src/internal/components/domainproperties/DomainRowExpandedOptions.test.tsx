@@ -14,7 +14,7 @@ import {
     DATETIME_TYPE,
     DOUBLE_TYPE,
     FLAG_TYPE,
-    INTEGER_TYPE,
+    INTEGER_TYPE, MULTI_CHOICE_TYPE,
     MULTILINE_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
     SAMPLE_TYPE,
@@ -238,6 +238,21 @@ describe('DomainRowExpandedOptions', () => {
             expect(headers[0].textContent).toBe('Text Choice Options');
             expect(headers[1].textContent).toBe('Name and Linking Options');
             expect(headers[2].textContent).toBe('Conditional Formatting Options');
+        });
+    });
+
+    test('Multi-Value Text Choice data type', async () => {
+        const field = DomainField.create({
+            rangeURI: MULTI_CHOICE_TYPE.rangeURI,
+        });
+
+        render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
+
+        await waitFor(() => {
+            const headers = document.querySelectorAll('.domain-field-section-heading');
+            expect(headers.length).toBe(2);
+            expect(headers[0].textContent).toBe('Text Choice Options');
+            expect(headers[1].textContent).toBe('Name and Linking Options');
         });
     });
 

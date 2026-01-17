@@ -123,6 +123,7 @@ describe('CalculatedFieldOptions', () => {
                 List.of(
                     { name: 'b', dataType: { name: 'text' } } as DomainField,
                     { name: 'c', dataType: { name: 'calculation' } } as DomainField,
+                    { name: 'c', dataType: { name: 'multiChoice' } } as DomainField,
                     { name: 'd', dataType: { name: 'INT' } } as DomainField
                 ),
                 [{ Name: 'a', DataType: 'integer' } as SystemField]

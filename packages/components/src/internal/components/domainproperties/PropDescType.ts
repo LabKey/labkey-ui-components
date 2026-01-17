@@ -158,6 +158,7 @@ export class PropDescType
         // TODO should this change to default to returning this.name and just catch the diff cases?
         switch (this.name) {
             case 'array':
+            case 'multiChoice':
                 return 'array';
             case 'boolean':
                 return 'boolean';

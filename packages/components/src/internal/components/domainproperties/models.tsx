@@ -80,7 +80,7 @@ import {
     FILE_TYPE,
     FLAG_TYPE,
     INTEGER_TYPE,
-    LOOKUP_TYPE,
+    LOOKUP_TYPE, MULTI_CHOICE_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
     PROP_DESC_TYPES,
     PropDescType,
@@ -811,7 +811,7 @@ export class PropertyValidator
                 if (rawPropertyValidator[i].type === type) {
                     const expressionStr = rawPropertyValidator[i].expression;
                     const hasExpressionStr = expressionStr !== undefined && expressionStr !== null;
-                    const isChoice = type === 'TextChoice' || type === 'MultiChoice';
+                    const isChoice = type === 'TextChoice';
 
                     // if we are loading a textChoiceValidator from JSON, we need to set the properties.validValues
                     if (
@@ -1225,6 +1225,10 @@ export class DomainField
 
         // If calculated field, set the rangeURI to the calculated field type
         if (field.dataType === CALCULATED_TYPE) {
+            field.rangeURI = raw.rangeURI;
+        }
+
+        if (field.dataType === MULTI_CHOICE_TYPE) {
             field.rangeURI = raw.rangeURI;
         }
 
@@ -1797,6 +1801,7 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
         if (rawField.conceptURI === SAMPLE_TYPE_CONCEPT_URI) return SAMPLE_TYPE;
         if (rawField.conceptURI === SMILES_CONCEPT_URI) return SMILES_TYPE;
         if (rawField.conceptURI === CALCULATED_CONCEPT_URI) return CALCULATED_TYPE;
+        if (rawField.rangeURI === MULTI_CHOICE_RANGE_URI) return MULTI_CHOICE_TYPE;
 
         if (rawField.dataType) {
             return rawField.dataType;

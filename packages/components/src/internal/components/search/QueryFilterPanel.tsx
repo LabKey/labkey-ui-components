@@ -255,7 +255,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         return {
             ...selectDistinctOptions,
             column: activeFieldKey,
-            schemaName: queryInfo.schemaName,
+            schemaName: queryInfo?.schemaName,
             queryName,
             viewName,
             filterArray: fieldDistinctValueFilters,

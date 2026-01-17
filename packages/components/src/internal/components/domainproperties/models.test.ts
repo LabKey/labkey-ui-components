@@ -41,6 +41,7 @@ import {
     PropDescType,
     SAMPLE_TYPE,
     TEXT_CHOICE_TYPE,
+    MULTI_CHOICE_TYPE,
     TEXT_TYPE,
     TIME_TYPE,
     UNIQUE_ID_TYPE,
@@ -287,6 +288,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isInteger(PARTICIPANT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isInteger(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isInteger(TEXT_CHOICE_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isInteger(MULTI_CHOICE_TYPE.rangeURI)).toBeFalsy();
     });
 
     test('isString', () => {
@@ -305,6 +307,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isString(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isString(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isString(TEXT_CHOICE_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isString(MULTI_CHOICE_TYPE.rangeURI)).toBeFalsy();
     });
 
     test('isNumeric', () => {
@@ -323,6 +326,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isNumeric(PARTICIPANT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isNumeric(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isNumeric(TEXT_CHOICE_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isNumeric(MULTI_CHOICE_TYPE.rangeURI)).toBeFalsy();
     });
 
     test('isMeasure', () => {
@@ -341,6 +345,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isMeasure(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMeasure(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMeasure(TEXT_CHOICE_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMeasure(MULTI_CHOICE_TYPE.rangeURI)).toBeFalsy();
     });
 
     test('isDimension', () => {
@@ -359,6 +364,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isDimension(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isDimension(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isDimension(TEXT_CHOICE_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(MULTI_CHOICE_TYPE.rangeURI)).toBeFalsy();
     });
 
     test('isMvEnableable', () => {
@@ -377,6 +383,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isMvEnableable(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMvEnableable(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMvEnableable(TEXT_CHOICE_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMvEnableable(MULTI_CHOICE_TYPE.rangeURI)).toBeFalsy();
     });
 
     test('isUser', () => {
@@ -405,8 +412,20 @@ describe('PropDescType', () => {
         expect(PropDescType.isTextChoice(null)).toBeFalsy();
         expect(PropDescType.isTextChoice(SAMPLE_TYPE_CONCEPT_URI)).toBeFalsy();
         expect(PropDescType.isTextChoice(TEXT_CHOICE_CONCEPT_URI)).toBeTruthy();
+        expect(PropDescType.isTextChoice(MULTI_CHOICE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isTextChoice('testing')).toBeFalsy();
         expect(PropDescType.isTextChoice('textChoice')).toBeTruthy();
+    });
+
+    test('isMultiChoice', () => {
+        expect(PropDescType.isMultiChoice(undefined)).toBeFalsy();
+        expect(PropDescType.isMultiChoice(null)).toBeFalsy();
+        expect(PropDescType.isMultiChoice(SAMPLE_TYPE_CONCEPT_URI)).toBeFalsy();
+        expect(PropDescType.isMultiChoice(TEXT_CHOICE_CONCEPT_URI)).toBeFalsy();
+        expect(PropDescType.isMultiChoice(MULTI_CHOICE_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMultiChoice('testing')).toBeFalsy();
+        expect(PropDescType.isMultiChoice('textChoice')).toBeFalsy();
+        expect(PropDescType.isMultiChoice('multiChoice')).toBeTruthy();
     });
 
     test('isUniqueIdField', () => {
@@ -460,6 +479,7 @@ describe('PropDescType', () => {
         expect(INTEGER_TYPE.getJsonType()).toBe('int');
         expect(DOUBLE_TYPE.getJsonType()).toBe('float');
         expect(DATETIME_TYPE.getJsonType()).toBe('date');
+        expect(MULTI_CHOICE_TYPE.getJsonType()).toBe('array');
     });
 
     test('isPropertyTypeAllowed', () => {
@@ -1068,10 +1088,10 @@ describe('DomainField', () => {
         );
     });
 
-    test('getDetailsTextArray, textChoiceValidator', () => {
+    function verifyGetDetailsTextChoiceArray(dataType: PropDescType) {
         let field = DomainField.create({ propertyId: undefined, name: 'test' });
         field = field.merge({
-            dataType: TEXT_CHOICE_TYPE,
+            dataType,
             textChoiceValidator: DEFAULT_TEXT_CHOICE_VALIDATOR,
         }) as DomainField;
         expect(field.getDetailsArray().join('')).toBe('New Field. ');
@@ -1136,6 +1156,14 @@ describe('DomainField', () => {
         expect(fieldSaved.getDetailsArray().join('')).toBe(
             'Note: These text choice options are visible to all administrators, including those not granted any PHI reader role.'
         );
+    }
+
+    test('getDetailsTextArray, text Choice', () => {
+        verifyGetDetailsTextChoiceArray(TEXT_CHOICE_TYPE);
+    });
+
+    test('getDetailsTextArray, multi-value text Choice', () => {
+        verifyGetDetailsTextChoiceArray(MULTI_CHOICE_TYPE);
     });
 
     test('getDetailsTextArray, queryMetadata editor', () => {

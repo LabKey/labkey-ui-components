@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - GitHub Issue 764: Editable grid border display issue on very small screens
   - override default bootstrap table-responsive style for xs scren table border
 
+### version 7.12.1
+*Released*: 14 January 2026
+- Merge from release26.1-SNAPSHOT to develop
+    - includes changes from 7.7.4 #1921
+
 ### version 7.12.0
 *Released*: 7 January 2026
 - Lineage: add "restricted" property
@@ -37,6 +42,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Modified getCommonDataValues utility to return both common field values and a list of fields with conflicting values
   - Added hasMixedValue prop support across all input components (TextInput, SelectInput, CheckboxInput, DatePickerInput, FileInput, TextAreaInput, AmountUnitInput)
   - Updated BulkUpdateForm and BulkAddUpdateForm to pass conflicting fields information to form inputs
+
+### version 7.7.4
+*Released*: 8 January 2026
+- [GitHub Issue #723](https://github.com/LabKey/internal-issues/issues/723)
+  - EditableDetailPanel: use `useRouteLeave`
 
 ### version 7.7.3
 *Released*: 31 December 2025

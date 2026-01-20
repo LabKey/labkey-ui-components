@@ -35,6 +35,7 @@ import {
 
 import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGridValue, parseCellKey } from './utils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
+import { naturalSort } from '../../../public/sort';
 
 /**
  * Do not use this method directly, use initEditorModel instead.
@@ -480,7 +481,7 @@ interface CellData {
 }
 
 async function convertRowToEditorModelData(
-    data: boolean | number | string,
+    data: boolean | number | string | string[],
     col: QueryColumn,
     containerPath: string
 ): Promise<CellData> {
@@ -500,6 +501,9 @@ async function convertRowToEditorModelData(
                 valueDescriptors.push(messageAndValue.valueDescriptor);
             }
         }
+    } else if (col.isMultiChoice && Array.isArray(data)) {
+        const values = data.filter(item => !!item).map(item => ({ raw: item, display: item }));
+        valueDescriptors.push(...values);
     } else {
         let display = data;
         if (col?.isTimeOrDateTimeColumn && typeof data === 'string') {
@@ -1519,6 +1523,32 @@ async function insertPastedData(
                     );
                     cv = valueDescriptors;
                     msg = message;
+                } else if (col?.isMultiChoice && Utils.isString(val)) {
+                    const parsedValues = parseCsvString(val, ',', true).sort(naturalSort);
+
+                    const unmatched: string[] = [];
+                    const values = [];
+
+                    parsedValues.forEach(v => {
+                        const vt = v.trim();
+                        if (!vt) return;
+
+                        const vd = col.validValues?.find(d => d === vt);
+                        values.push({ display: vt, raw: vt });
+
+                        if (vd) return;
+
+                        unmatched.push(vt);
+                    });
+
+                    if (unmatched.length) {
+                        const valueStr = unmatched
+                            .slice(0, 4)
+                            .map(u => '"' + u + '"')
+                            .join(', ');
+                        msg = { message: lookupValidationErrorMessage(valueStr, true) };
+                    }
+                    cv = List(values);
                 } else {
                     const { message, value } = getValidatedEditableGridValue(val, col);
                     let display = value;
@@ -1599,6 +1629,7 @@ export function validateAndInsertPastedData(
     let selectedColIdx: number;
     let selectedRowIdx: number;
 
+    console.log(value);
     if (editorModel.isMultiSelect) {
         // Issue 51359 - When pasting during multiselect we want to paste from the first cell in the selection,
         // otherwise we'll paste from the initially selected cell, which will fill the wrong area. This is most obvious

@@ -226,15 +226,12 @@ export function getCommonDataValues(
                             value = data.toJS();
                         } else {
                             value = data.get('value');
+                            if (List.isList(value)) value = value.toJS();
                         }
                     }
 
                     const currentValueEmpty = valueIsEmpty(value);
                     const havePreviousValue = valueMap.has(key);
-                    const arrayNotEqual =
-                        Array.isArray(value) &&
-                        valueMap.get(key) &&
-                        (!Array.isArray(valueMap.get(key)) || !unorderedEqual(valueMap.get(key), value));
 
                     if (!currentValueEmpty) {
                         // non-empty value, so let's see if we have the same value
@@ -246,9 +243,16 @@ export function getCommonDataValues(
                                 fileMap[key] = rawValue;
                             }
                         }
-                        if (arrayNotEqual) {
-                            fieldsInConflict = fieldsInConflict.add(key);
-                            valueMap = valueMap.delete(key);
+
+                        if (Array.isArray(value)) {
+                            const arrayNotEqual =
+                                valueMap.get(key) &&
+                                (!Array.isArray(valueMap.get(key)) || !unorderedEqual(valueMap.get(key), value));
+
+                            if (arrayNotEqual) {
+                                fieldsInConflict = fieldsInConflict.add(key);
+                                valueMap = valueMap.delete(key);
+                            }
                         } else if (valueMap.get(key) !== value) {
                             fieldsInConflict = fieldsInConflict.add(key);
                             valueMap = valueMap.delete(key);

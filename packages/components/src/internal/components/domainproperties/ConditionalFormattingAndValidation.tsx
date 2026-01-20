@@ -91,7 +91,7 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
         onChange(evt.target.id, evt.target.value);
     };
 
-    onApply = (validator: List<PropertyValidator | ConditionalFormat>, type: string): void => {
+    onApply = (validator: List<ConditionalFormat | PropertyValidator>, type: string): void => {
         const { onChange, index, domainIndex } = this.props;
         onChange(createFormInputId(type, domainIndex, index), validator);
     };
@@ -99,19 +99,28 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
     showHideConditionalFormat = (): void => {
         const { showingModal } = this.props;
 
-        this.setState(state => ({ showCondFormat: !state.showCondFormat }), () => showingModal(this.state.showCondFormat));
+        this.setState(
+            state => ({ showCondFormat: !state.showCondFormat }),
+            () => showingModal(this.state.showCondFormat)
+        );
     };
 
     showHideRegexValidator = (): void => {
         const { showingModal } = this.props;
 
-        this.setState(state => ({ showRegex: !state.showRegex }), () => showingModal(this.state.showRegex));
+        this.setState(
+            state => ({ showRegex: !state.showRegex }),
+            () => showingModal(this.state.showRegex)
+        );
     };
 
     showHideRangeValidator = (): void => {
         const { showingModal } = this.props;
 
-        this.setState(state => ({ showRange: !state.showRange }), () => showingModal(this.state.showRange));
+        this.setState(
+            state => ({ showRange: !state.showRange }),
+            () => showingModal(this.state.showRange)
+        );
     };
 
     renderValidator = (range: boolean): ReactNode => {
@@ -123,8 +132,8 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
             <div className={range ? '' : 'domain-validation-group'}>
                 <div className="domain-field-label domain-no-wrap">
                     <DomainFieldLabel
-                        label={'Create ' + (range ? 'Range' : 'Regular Expression') + ' Validator'}
                         helpTipBody={range ? <RangeValidatorHelpText /> : <RegexValidatorHelpText />}
+                        label={'Create ' + (range ? 'Range' : 'Regular Expression') + ' Validator'}
                     />
                 </div>
                 <div>
@@ -151,8 +160,8 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
                                 isFieldFullyLocked(field.lockType)
                                     ? () => {}
                                     : range
-                                    ? this.showHideRangeValidator
-                                    : this.showHideRegexValidator
+                                      ? this.showHideRangeValidator
+                                      : this.showHideRegexValidator
                             }
                         >
                             {'' + count + ' Active validator' + (count > 1 ? 's' : '')}
@@ -173,8 +182,8 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
             <div className="domain-validation-group">
                 <div className="domain-field-label domain-no-wrap">
                     <DomainFieldLabel
-                        label="Create Conditional Format Criteria"
                         helpTipBody={<ConditionalFormatHelpText />}
+                        label="Create Conditional Format Criteria"
                     />
                 </div>
                 <div>
@@ -206,7 +215,8 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
     render() {
         const { index, field, domainFormDisplayOptions } = this.props;
         const { showCondFormat, showRegex, showRange } = this.state;
-        const showCondFormatSection = !domainFormDisplayOptions.hideConditionalFormatting;
+        const showCondFormatSection =
+            !domainFormDisplayOptions.hideConditionalFormatting && DomainField.allowConditionalFormats(field);
         const showRegexSection = !domainFormDisplayOptions.hideValidators && DomainField.hasRegExValidation(field);
         const showRangeSection = !domainFormDisplayOptions.hideValidators && DomainField.hasRangeValidation(field);
         const showValidation = showRegexSection || showRangeSection;
@@ -225,7 +235,7 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
             <div>
                 <div className="row">
                     <div className="col-xs-12">
-                        <SectionHeading title={title} cls="domain-field-section-hdr" />
+                        <SectionHeading cls="domain-field-section-hdr" title={title} />
                     </div>
                 </div>
                 <div className="row">
@@ -235,41 +245,41 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
                         {showRangeSection && this.renderValidator(true)}
                         {showCondFormat && (
                             <ConditionalFormatOptionsModal
-                                title={'Conditional Formatting ' + (field.name ? 'for ' + field.name : '')}
                                 addName="Formatting"
-                                index={index}
-                                type={DOMAIN_COND_FORMAT}
-                                mvEnabled={field.mvEnabled}
-                                validators={field.conditionalFormats}
                                 dataType={field.dataType}
-                                onHide={this.showHideConditionalFormat}
+                                index={index}
+                                mvEnabled={field.mvEnabled}
                                 onApply={this.onApply}
+                                onHide={this.showHideConditionalFormat}
+                                title={'Conditional Formatting ' + (field.name ? 'for ' + field.name : '')}
+                                type={DOMAIN_COND_FORMAT}
+                                validators={field.conditionalFormats}
                             />
                         )}
                         {showRegex && (
                             <RegexValidationOptionsModal
-                                title={'Regular Expression Validator(s) ' + (field.name ? 'for ' + field.name : '')}
                                 addName="Validator"
-                                index={index}
-                                type={DOMAIN_REGEX_VALIDATOR}
-                                mvEnabled={field.mvEnabled}
-                                validators={field.regexValidators}
                                 dataType={field.dataType}
-                                onHide={this.showHideRegexValidator}
+                                index={index}
+                                mvEnabled={field.mvEnabled}
                                 onApply={this.onApply}
+                                onHide={this.showHideRegexValidator}
+                                title={'Regular Expression Validator(s) ' + (field.name ? 'for ' + field.name : '')}
+                                type={DOMAIN_REGEX_VALIDATOR}
+                                validators={field.regexValidators}
                             />
                         )}
                         {showRange && (
                             <RangeValidationOptionsModal
-                                title={'Range Validator(s) ' + (field.name ? 'for ' + field.name : '')}
                                 addName="Validator"
-                                index={index}
-                                type={DOMAIN_RANGE_VALIDATOR}
-                                mvEnabled={field.mvEnabled}
-                                validators={field.rangeValidators}
                                 dataType={field.dataType}
-                                onHide={this.showHideRangeValidator}
+                                index={index}
+                                mvEnabled={field.mvEnabled}
                                 onApply={this.onApply}
+                                onHide={this.showHideRangeValidator}
+                                title={'Range Validator(s) ' + (field.name ? 'for ' + field.name : '')}
+                                type={DOMAIN_RANGE_VALIDATOR}
+                                validators={field.rangeValidators}
                             />
                         )}
                     </div>

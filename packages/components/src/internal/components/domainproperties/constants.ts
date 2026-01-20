@@ -130,9 +130,11 @@ export const DECIMAL_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#decimal';
 export const FLOAT_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#float';
 export const LONG_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#long';
 export const TIME_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#time';
+export const MULTI_CHOICE_RANGE_URI = 'http://cpas.fhcrc.org/exp/xml#multiChoice';
 export const RANGE_URIS = {
     STRING: STRING_RANGE_URI,
     MULTILINE: MULTILINE_RANGE_URI,
+    MULTICHOICE: MULTI_CHOICE_RANGE_URI,
     BOOLEAN: BOOLEAN_RANGE_URI,
     INT: INT_RANGE_URI,
     DOUBLE: DOUBLE_RANGE_URI,

@@ -32,6 +32,7 @@ import {
 } from '../constants';
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { generateId } from '../../../util/utils';
+import { naturalSortByProperty } from '../../../../public/sort';
 
 const WARN_COLOR = '#8A6D3B';
 const WARN_BG_COLOR = '#FCF8E3';
@@ -237,9 +238,6 @@ export interface SelectInputProps {
     inputId?: string;
     isLoading?: boolean;
     isValidNewOption?: (inputValue: string) => boolean;
-    // FIXME: this is named incorrectly. I would expect that if this is true it would join the values, nope, it joins
-    //   the values when false.
-    joinValues?: boolean;
     label?: ReactNode;
     labelClass?: string;
     labelKey?: string;
@@ -269,6 +267,8 @@ export interface SelectInputProps {
     showDropdownMenu?: boolean;
     showIndicatorSeparator?: boolean;
     showLabel?: boolean;
+    skipJoinValues?: boolean;
+    sortValues?: boolean;
     tabSelectsValue?: boolean;
     toggleDisabledTooltip?: string;
     value?: any;
@@ -319,6 +319,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
         showIndicatorSeparator: true,
         tabSelectsValue: false, // Issue 52310
         valueKey: 'value',
+        sortValues: false,
     };
 
     private readonly _id: string;
@@ -470,7 +471,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
     };
 
     _setOptionsAndValue(options: any): any {
-        const { autoValue, delimiter, formsy, joinValues, multiple, setValue, valueKey } = this.props;
+        const { sortValues, autoValue, delimiter, formsy, skipJoinValues, multiple, setValue, valueKey } = this.props;
         let selectedOptions;
 
         if (options === undefined || options === null || (Array.isArray(options) && options.length === 0)) {
@@ -480,6 +481,9 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
         }
 
         if (autoValue) {
+            if (sortValues && Array.isArray(selectedOptions))
+                selectedOptions.sort(naturalSortByProperty(valueKey ?? 'value'));
+
             this.setState({ selectedOptions });
         }
 
@@ -490,12 +494,9 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
         } else if (selectedOptions !== undefined) {
             if (multiple) {
                 if (Array.isArray(selectedOptions)) {
-                    formValue = selectedOptions.reduce((arr, option) => {
-                        arr.push(valueKey ? option[valueKey] : option.value);
-                        return arr;
-                    }, []);
+                    formValue = selectedOptions.map(option => (valueKey ? option[valueKey] : option.value));
 
-                    if (!joinValues) {
+                    if (!skipJoinValues) {
                         // consider removing altogether?
                         formValue = formValue.join(delimiter);
                     }

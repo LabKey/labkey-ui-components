@@ -22,6 +22,7 @@ import {
     DOMAIN_LAST_ENTERED_DEFAULT,
     DOMAIN_NON_EDITABLE_DEFAULT,
     INT_RANGE_URI,
+    MULTI_CHOICE_RANGE_URI,
     PHILEVEL_FULL_PHI,
     PHILEVEL_LIMITED_PHI,
 } from './constants';
@@ -225,5 +226,39 @@ describe('AdvancedSettings', () => {
         expect(document.querySelectorAll('#' + id)).toHaveLength(0);
         id = createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, _domainIndex, _index);
         expect(document.querySelectorAll('#' + id)).toHaveLength(1);
+    });
+
+    test('Multi-value Text Choice hidden properties', async () => {
+        await act(async () => {
+            renderWithAppContext(
+                <AdvancedSettings
+                    {...props}
+                    field={DomainField.create({ ...fieldProps, rangeURI: MULTI_CHOICE_RANGE_URI })}
+                />
+            );
+        });
+
+        let id = createFormInputId(DOMAIN_FIELD_DEFAULT_VALUE_TYPE, _domainIndex, _index);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(1);
+        id = createFormInputId(DOMAIN_FIELD_HIDDEN, _domainIndex, _index);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(1);
+        id = createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, _domainIndex, _index);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(1);
+        id = createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, _domainIndex, _index);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(1);
+        id = createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, _domainIndex, _index);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(1);
+        id = createFormInputId(DOMAIN_FIELD_PHI, _domainIndex, _index);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(1);
+        id = createFormInputId(DOMAIN_FIELD_CONSTRAINT, _domainIndex, _index);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(0);
+        id = createFormInputId(DOMAIN_FIELD_MEASURE, _domainIndex, _index);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(0);
+        id = createFormInputId(DOMAIN_FIELD_DIMENSION, _domainIndex, _index);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(0);
+        id = createFormInputId(DOMAIN_FIELD_MVENABLED, _domainIndex, _index);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(0);
+        id = createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, _domainIndex, _index);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(0);
     });
 });

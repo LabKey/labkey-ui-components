@@ -335,7 +335,7 @@ export class EditorModel
 
             if (renderer?.getEditableRawValue) {
                 row = row.set(col.name, renderer.getEditableRawValue(values));
-            } else if (col.isLookup()) {
+            } else if (col.isLookup() || col.isMultiChoice) {
                 if (col.isExpInput() || col.isAliquotParent()) {
                     // We have to use display values for ExpInput and AliquotParent because of name expressions
                     row = row.set(
@@ -345,14 +345,12 @@ export class EditorModel
                             .map(vd => quoteValueWithDelimiters(vd.display, ','))
                             .join(', ')
                     );
-                } else if (col.isJunctionLookup()) {
-                    row = row.set(
-                        col.name,
-                        values
-                            .filter(vd => vd.raw !== undefined && vd.raw !== null)
-                            .map(vd => vd.raw)
-                            .toArray()
-                    );
+                } else if (col.isJunctionLookup() || col.isMultiChoice) {
+                    const valueArray = values
+                        .filter(vd => vd.raw !== undefined && vd.raw !== null)
+                        .map(vd => vd.raw)
+                        .toArray();
+                    row = row.set(col.name, valueArray);
                 } else if (col.lookup.displayColumn === col.lookup.keyColumn) {
                     row = row.set(
                         col.name,
@@ -816,7 +814,7 @@ export class EditorModel
                                 .join(', ');
                         } else {
                             const valueObj = originalValue.get(0);
-                            originalValue = Map.isMap(valueObj) ? valueObj.get('value') : valueObj.value;
+                            originalValue = Map.isMap(valueObj) ? valueObj.get('value') : valueObj?.value;
                         }
                     }
 
@@ -834,8 +832,11 @@ export class EditorModel
                     }
 
                     // If col is a multi-value column, compare all values for changes
-                    if ((List.isList(originalValue) || originalValue === undefined) && Array.isArray(value)) {
-                        if ((originalValue?.size ?? 0) !== value.length) {
+                    if (
+                        (List.isList(originalValue) || originalValue === undefined) &&
+                        (Array.isArray(value) || value === null)
+                    ) {
+                        if ((originalValue?.size ?? 0) !== (value?.length ?? 0)) {
                             row[key] = value;
                         } else if (originalValue) {
                             if (Map.isMap(originalValue.get(0))) {

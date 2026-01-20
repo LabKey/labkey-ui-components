@@ -254,7 +254,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         // Must be explicitly false to prevent drop-down.
                         if (col.displayAsLookup !== false) {
                             const multiple = col.isJunctionLookup();
-                            const joinValues = multiple;
                             const queryFilter = col.lookup.hasQueryFilters(operation)
                                 ? List(col.lookup.getQueryFilters(operation))
                                 : queryFilters?.[fieldKey];
@@ -286,7 +285,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         formsy
                                         hasMixedValue={hasMixedValue}
                                         initiallyDisabled={shouldDisableField}
-                                        joinValues={joinValues}
                                         label={col.caption}
                                         loadOnFocus
                                         maxRows={LOOKUP_DEFAULT_SIZE}
@@ -301,6 +299,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         required={col.required}
                                         schemaQuery={col.lookup.schemaQuery}
                                         showLabel
+                                        skipJoinValues={multiple}
                                         toggleDisabledTooltip={toggleDisabledTooltip}
                                         value={value}
                                         valueColumn={col.lookup.keyColumn}

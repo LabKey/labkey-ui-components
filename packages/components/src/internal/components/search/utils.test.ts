@@ -591,6 +591,8 @@ const matchAllFilter = Filter.create(fieldKey, 'ed;ned;ted', ANCESTOR_MATCHES_AL
 const matchAll0Filter = Filter.create(fieldKey, [], ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE);
 const matchAll1Filter = Filter.create(fieldKey, 'ed', ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE);
 const matchAllEveryFilter = Filter.create(fieldKey, distinctValuesExcludeAll, ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE);
+const arrayContainsAll = Filter.create(fieldKey, ['red', 'ted', 'ned'], Filter.Types.ARRAY_CONTAINS_ALL);
+const multiChoices = ['ed', 'ned', 'ted', 'red', 'bed'];
 
 describe('getCheckedFilterValues', () => {
     test('no filter or values', () => {
@@ -655,6 +657,27 @@ describe('getCheckedFilterValues', () => {
         expect(getCheckedFilterValues(matchAll1Filter, distinctValues)).toEqual(['ed']);
         expect(getCheckedFilterValues(matchAll0Filter, distinctValues)).toEqual([]);
         expect(getCheckedFilterValues(matchAllEveryFilter, distinctValues)).toEqual(distinctValues);
+    });
+
+    // new tests for multiChoices param
+    test('no filter with multiChoices returns empty list', () => {
+        expect(getCheckedFilterValues(null, distinctValues, multiChoices)).toEqual([]);
+    });
+
+    test('array filter with subset of multiChoices returns checked values', () => {
+        expect(getCheckedFilterValues(arrayContainsAll, distinctValues, multiChoices)).toEqual(['red', 'ted', 'ned']);
+    });
+
+    test('array filter with all multiChoices selected returns allValues', () => {
+        const arrayContainsEvery = Filter.create(fieldKey, multiChoices, Filter.Types.ARRAY_CONTAINS_ALL);
+        expect(getCheckedFilterValues(arrayContainsEvery, distinctValuesNoBlank, multiChoices)).toEqual(
+            distinctValuesNoBlank
+        );
+    });
+
+    test('array filter with no values and multiChoices returns empty list', () => {
+        const arrayContainsNone = Filter.create(fieldKey, [], Filter.Types.ARRAY_CONTAINS_ALL);
+        expect(getCheckedFilterValues(arrayContainsNone, distinctValues, multiChoices)).toEqual([]);
     });
 });
 

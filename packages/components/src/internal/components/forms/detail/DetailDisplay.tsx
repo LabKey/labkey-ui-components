@@ -323,7 +323,7 @@ export function resolveDetailEditRenderer(
             if (col.displayAsLookup !== false) {
                 // Issue 29232: When displaying a lookup, always use the value
                 const multiple = col.isJunctionLookup();
-                const joinValues = multiple && !col.isDataInput();
+                const skipJoinValues = multiple && !col.isDataInput();
                 const queryFilters = col.lookup.hasQueryFilters(Operation.update)
                     ? List(col.lookup.getQueryFilters(Operation.update))
                     : undefined;
@@ -339,7 +339,6 @@ export function resolveDetailEditRenderer(
                         displayColumn={col.lookup.displayColumn}
                         formsy
                         inputClass={DETAIL_INPUT_WRAPPER_CLASS_NAME}
-                        joinValues={joinValues}
                         key={col.fieldKey}
                         label={col.caption}
                         maxRows={LOOKUP_DEFAULT_SIZE}
@@ -353,6 +352,7 @@ export function resolveDetailEditRenderer(
                         required={col.required}
                         schemaQuery={col.lookup.schemaQuery}
                         showLabel={showLabel}
+                        skipJoinValues={skipJoinValues}
                         value={value}
                         valueColumn={col.lookup.keyColumn}
                     />

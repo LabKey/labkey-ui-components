@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 
 import { MultiValueRenderer } from './MultiValueRenderer';
 import { QueryColumn } from '../../public/QueryColumn';
+import { MULTI_CHOICE_RANGE_URI } from '../components/domainproperties/constants';
 
 describe('MultiValueRenderer', () => {
     test('empty data', () => {
@@ -72,6 +73,27 @@ describe('MultiValueRenderer', () => {
         const link = spans[2].querySelectorAll('a');
         expect(link).toHaveLength(1);
         expect(link[0].getAttribute('href')).toEqual('https://www.mariners.com/ichiro');
+    });
+
+    test('multiple values', () => {
+        const data = fromJS({
+            value: ['a', 'b', 'c'],
+        });
+        const queryCol = new QueryColumn({
+            fieldKey: 'mv',
+            name: 'mv',
+            caption: 'MVTC',
+            rangeURI: MULTI_CHOICE_RANGE_URI,
+        });
+        render(<MultiValueRenderer col={queryCol} data={data} />);
+        const spans = document.querySelectorAll('span');
+        expect(spans.length).toBe(3);
+        expect(spans[0].textContent).toEqual('a');
+        expect(spans[1].textContent).toEqual(', b');
+        expect(spans[2].textContent).toEqual(', c');
+
+        const link = spans[0].querySelectorAll('a');
+        expect(link).toHaveLength(0);
     });
 
     test('multiple values, file column', () => {

@@ -115,7 +115,6 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 displayColumn={col.lookup.displayColumn}
                 formsy
                 helpTipRenderer={col.helpTipRenderer}
-                joinValues={col.isJunctionLookup()}
                 label={col.caption}
                 maxRows={LOOKUP_DEFAULT_SIZE}
                 multiple={col.isJunctionLookup()}
@@ -123,6 +122,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 openMenuOnFocus={!col.isJunctionLookup()}
                 required={col.required}
                 showLoading={false}
+                skipJoinValues={col.isJunctionLookup()}
                 {...querySelectProps}
                 containerFilter={getSampleStatusContainerFilter()}
                 onQSChange={onChange}

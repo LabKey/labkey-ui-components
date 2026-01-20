@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.13.0
+*Released*: 20 January 2026
+- Multi value text choices
+    - Added new MULTI_CHOICE_RANGE_URI for defining MVTC fields and updated utils to check against data type
+    - renamed joinValues prop for SelectInput to skipJoinValues to align with its actual usage
+    - Modified FilterFacetedSelector and QueryFilterPanel to handle array value selecting for MVTC
+
 ### version 7.12.2
 *Released*: 19 January 2026
 - GitHub Issue 764: Editable grid border display issue on very small screens

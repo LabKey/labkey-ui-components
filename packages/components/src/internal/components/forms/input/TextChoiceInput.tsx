@@ -20,7 +20,10 @@ export class TextChoiceInput extends DisableableInput<Props, DisableableInputSta
                 name={queryColumn.fieldKey}
                 required={queryColumn.required}
                 {...selectInputProps}
+                multiple={queryColumn.isMultiChoice}
                 options={options}
+                skipJoinValues={true}
+                sortValues={true}
             />
         );
     }

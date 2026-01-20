@@ -18,6 +18,7 @@ import { SAMPLES_WITH_TYPES_FILTER } from '../internal/components/samples/consta
 
 import { SchemaQuery } from './SchemaQuery';
 import { IQueryColumn } from './IQueryColumn';
+import { PropDescType } from '../internal/components/domainproperties/PropDescType';
 
 export enum Operation {
     insert = 'insert',
@@ -424,6 +425,10 @@ export class QueryColumn implements IQueryColumn {
         return this.inputType === 'file';
     }
 
+    get isMultiChoice(): boolean {
+        return PropDescType.isMultiChoice(this.rangeURI);
+    }
+
     allowFaceting(): boolean {
         switch (this.facetingBehaviorType) {
             case 'ALWAYS_OFF':
@@ -434,6 +439,7 @@ export class QueryColumn implements IQueryColumn {
                 // auto rules are if the column is a lookup or dimension
                 // OR if it is of type : (boolean, int, date, text), multiline excluded
                 if (this.lookup || this.dimension) return true;
+                else if (this.isMultiChoice) return true;
                 else if (
                     this.jsonType === 'boolean' ||
                     this.jsonType === 'int' ||

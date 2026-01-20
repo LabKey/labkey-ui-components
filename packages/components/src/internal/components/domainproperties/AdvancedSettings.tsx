@@ -448,7 +448,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     </div>
                 )}
 
-                {allowUniqueConstraintProperties && !field.isCalculatedField() && (
+                {allowUniqueConstraintProperties && !field.isCalculatedField() && !field.isMultiChoiceField() && (
                     <div className="row">
                         <div className="col-xs-4">
                             <DomainFieldLabel
@@ -543,20 +543,22 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         </LabelHelpTip>
                     </CheckboxLK>
                 )}
-                <CheckboxLK
-                    checked={recommendedVariable}
-                    id={createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, domainIndex, index)}
-                    name={createFormInputName(DOMAIN_FIELD_RECOMMENDEDVARIABLE)}
-                    onChange={this.handleCheckbox}
-                >
-                    Make this field a recommended variable
-                    <LabelHelpTip title="Recommended Variable">
-                        <div>
-                            Indicates that this is an important variable. These variables will be displayed as
-                            recommended when creating new charts or reports.
-                        </div>
-                    </LabelHelpTip>
-                </CheckboxLK>
+                {!field.isMultiChoiceField() && (
+                    <CheckboxLK
+                        checked={recommendedVariable}
+                        id={createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, domainIndex, index)}
+                        name={createFormInputName(DOMAIN_FIELD_RECOMMENDEDVARIABLE)}
+                        onChange={this.handleCheckbox}
+                    >
+                        Make this field a recommended variable
+                        <LabelHelpTip title="Recommended Variable">
+                            <div>
+                                Indicates that this is an important variable. These variables will be displayed as
+                                recommended when creating new charts or reports.
+                            </div>
+                        </LabelHelpTip>
+                    </CheckboxLK>
+                )}
                 {PropDescType.isMvEnableable(field.dataType.rangeURI) && !field.isCalculatedField() && !isApp() && (
                     <CheckboxLK
                         checked={mvEnabled}

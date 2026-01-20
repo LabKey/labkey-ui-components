@@ -18,6 +18,7 @@ import {
     INT_RANGE_URI,
     LONG_RANGE_URI,
     MODIFIED_TIMESTAMP_CONCEPT_URI,
+    MULTI_CHOICE_RANGE_URI,
     MULTILINE_RANGE_URI,
     PARTICIPANTID_CONCEPT_URI,
     SAMPLE_TYPE_CONCEPT_URI,
@@ -30,7 +31,7 @@ import {
     VISITID_CONCEPT_URI,
 } from './constants';
 
-export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string' | 'time';
+export type JsonType = 'array' | 'boolean' | 'date' | 'float' | 'int' | 'string' | 'time';
 
 interface IPropDescType {
     conceptURI: string;
@@ -90,6 +91,10 @@ export class PropDescType
         return name === TEXT_CHOICE_CONCEPT_URI || name === TEXT_CHOICE_TYPE.name;
     }
 
+    static isMultiChoice(name: string): boolean {
+        return name === MULTI_CHOICE_RANGE_URI || name === MULTI_CHOICE_TYPE.name;
+    }
+
     static isLookup(name: string): boolean {
         return name === 'lookup';
     }
@@ -129,7 +134,9 @@ export class PropDescType
     }
 
     static isMeasure(rangeURI: string): boolean {
-        return rangeURI !== ATTACHMENT_RANGE_URI && rangeURI !== FILELINK_RANGE_URI;
+        return (
+            rangeURI !== ATTACHMENT_RANGE_URI && rangeURI !== FILELINK_RANGE_URI && rangeURI !== MULTI_CHOICE_RANGE_URI
+        );
     }
 
     static isDimension(rangeURI: string): boolean {
@@ -142,7 +149,12 @@ export class PropDescType
     }
 
     static isMvEnableable(rangeURI: string): boolean {
-        return rangeURI !== ATTACHMENT_RANGE_URI && rangeURI !== FILELINK_RANGE_URI && rangeURI !== MULTILINE_RANGE_URI;
+        return (
+            rangeURI !== ATTACHMENT_RANGE_URI &&
+            rangeURI !== FILELINK_RANGE_URI &&
+            rangeURI !== MULTILINE_RANGE_URI &&
+            rangeURI !== MULTI_CHOICE_RANGE_URI
+        );
     }
 
     static isAutoIncrement(dataType: PropDescType): boolean {
@@ -152,15 +164,18 @@ export class PropDescType
     getJsonType(): JsonType {
         // TODO should this change to default to returning this.name and just catch the diff cases?
         switch (this.name) {
+            case 'array':
+            case 'multiChoice':
+                return 'array';
             case 'boolean':
                 return 'boolean';
-            case 'int':
-                return 'int';
+            case 'date':
+            case 'dateTime':
+                return 'date';
             case 'double':
                 return 'float';
-            case 'dateTime':
-            case 'date':
-                return 'date';
+            case 'int':
+                return 'int';
             default:
                 return 'string';
         }
@@ -204,6 +219,10 @@ export class PropDescType
 
     isTextChoice(): boolean {
         return PropDescType.isTextChoice(this.conceptURI);
+    }
+
+    isMultiChoice(): boolean {
+        return PropDescType.isMultiChoice(this.rangeURI);
     }
 
     isTime(): boolean {
@@ -345,6 +364,12 @@ export const TEXT_CHOICE_TYPE = new PropDescType({
     conceptURI: TEXT_CHOICE_CONCEPT_URI,
 });
 
+export const MULTI_CHOICE_TYPE = new PropDescType({
+    name: 'multiChoice',
+    display: 'Multi Choice',
+    rangeURI: MULTI_CHOICE_RANGE_URI,
+});
+
 export const SMILES_TYPE = new PropDescType({
     name: 'smiles',
     display: 'SMILES',
@@ -381,6 +406,7 @@ export const PROP_DESC_TYPES = List([
     VISIT_LABEL_TYPE,
     UNIQUE_ID_TYPE,
     TEXT_CHOICE_TYPE,
+    MULTI_CHOICE_TYPE,
     CALCULATED_TYPE,
 ]);
 

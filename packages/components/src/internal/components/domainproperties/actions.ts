@@ -71,6 +71,7 @@ import {
     CALCULATED_TYPE,
     FILE_TYPE,
     FLAG_TYPE,
+    MULTI_CHOICE_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
     PARTICIPANT_TYPE,
     PROP_DESC_TYPES,
@@ -364,6 +365,10 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
     }
 
     if (type === TEXT_CHOICE_TYPE && !domain.allowTextChoiceProperties) {
+        return false;
+    }
+
+    if (type === MULTI_CHOICE_TYPE && !domain.allowMultiChoiceProperties) {
         return false;
     }
 
@@ -684,6 +689,13 @@ export function processJsonImport(content: string, domain: DomainDesign): Simple
             };
         }
 
+        if (!domain?.allowMultiChoiceProperties && field.rangeURI === MULTI_CHOICE_TYPE.rangeURI) {
+            return {
+                success: false,
+                msg: `Error on importing field '${field.name}': Data type '${MULTI_CHOICE_TYPE.name}' is not supported.`,
+            };
+        }
+
         if (!domainType?.includes('List') && field.lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED) {
             return {
                 success: false,
@@ -854,7 +866,8 @@ export function updateDataType(field: DomainField, value: any): DomainField {
 
     if (propType) {
         const dataType = propType.isLookup() ? field.lookupType : propType;
-
+        const wasTextChoice = field.isTextChoiceField() || field.isMultiChoiceField();
+        const isTextChoice = propType.isTextChoice() || propType.isMultiChoice();
         field = field.merge({
             dataType,
             conceptURI: dataType.conceptURI,
@@ -867,8 +880,8 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             conceptLabelColumn: undefined,
             conceptImportColumn: undefined,
             scannable: undefined,
-            textChoiceValidator: undefined,
-            valueExpression: undefined,
+            textChoiceValidator: isTextChoice ? field.textChoiceValidator : undefined,
+            valueExpression: isTextChoice ? field.valueExpression : undefined,
         }) as DomainField;
 
         if (field.isNew()) {
@@ -878,7 +891,7 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             field = field.merge(DomainField.resolveLookupConfig(field, dataType)) as DomainField;
         }
 
-        if (field.isTextChoiceField()) {
+        if ((field.isTextChoiceField() || field.isMultiChoiceField()) && !wasTextChoice) {
             // when changing a field to a Text Choice, add the default textChoiceValidator and
             // remove/reset all other propertyValidators and other text option settings
             field = field.merge({
@@ -887,6 +900,7 @@ export function updateDataType(field: DomainField, value: any): DomainField {
                 rangeValidators: [],
                 regexValidators: [],
                 scale: MAX_TEXT_LENGTH,
+                valueExpression: undefined,
             }) as DomainField;
         } else if (field.isCalculatedField()) {
             field = field.merge({

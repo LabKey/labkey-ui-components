@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState, ReactNode } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Filter, Query } from '@labkey/api';
 
@@ -15,7 +15,16 @@ import { FolderColumnRenderer } from '../../renderers/FolderColumnRenderer';
 
 import { useTimeout } from '../../hooks';
 
-import { ALL_VALUE_DISPLAY, EMPTY_VALUE_DISPLAY, getCheckedFilterValues, getUpdatedChooseValuesFilter } from './utils';
+import {
+    ALL_VALUE_DISPLAY,
+    EMPTY_VALUE_DISPLAY,
+    getCheckedFilterValues,
+    getFilterOptionsForType,
+    getUpdatedChooseValuesFilter,
+} from './utils';
+import { SelectInput } from '../forms/input/SelectInput';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { resolveFilterType } from '../../../public/QueryModel/grid/actions/Filter';
 
 const MAX_DISTINCT_FILTER_OPTIONS = 250;
 
@@ -23,9 +32,10 @@ interface Props {
     api?: ComponentsAPIWrapper;
     canBeBlank: boolean;
     disabled?: boolean;
+    field?: QueryColumn;
     fieldFilters: Filter.IFilter[];
     fieldKey: string;
-    onFieldFilterUpdate?: (newFilters: Filter.IFilter[], index) => void;
+    onFieldFilterUpdate?: (newFilter: Filter.IFilter[]) => void;
     selectDistinctOptions: Query.SelectDistinctOptions;
     // show search box if number of unique values > N
     showSearchLength?: number;
@@ -44,6 +54,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         fieldKey,
         fieldFilters,
         onFieldFilterUpdate,
+        field,
         showSearchLength = 20,
     } = props;
 
@@ -71,6 +82,12 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps -- only on fieldKey change, reload selection values
     }, [fieldKey]);
 
+    const multiChoices = field?.isMultiChoice ? field.validValues : null;
+
+    const filterOptions = useMemo(() => {
+        return field?.isMultiChoice ? getFilterOptionsForType(field, false) : null;
+    }, [field]);
+
     const setDistinctValues = useCallback(
         async (checkForAll: boolean, searchStr?: string) => {
             let aborted = false;
@@ -79,21 +96,34 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                 setError(undefined);
                 timer.clear();
 
-                const filterArray = searchStr
-                    ? [Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS)].concat(
-                          selectDistinctOptions?.filterArray
-                      )
-                    : selectDistinctOptions?.filterArray;
+                let allValues: any[] = [];
+                if (!multiChoices) {
+                    const filterArray = selectDistinctOptions?.filterArray ?? [];
+                    if (searchStr) filterArray.push(Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS));
 
-                const result = await api.query.selectDistinctRows({
-                    ...selectDistinctOptions,
-                    filterArray,
-                    maxRows: MAX_DISTINCT_FILTER_OPTIONS + 1,
-                    requestHandler,
-                });
-                resetRequestHandler();
+                    // if multi value, get all options
+                    const result = await api.query.selectDistinctRows({
+                        ...selectDistinctOptions,
+                        filterArray,
+                        maxRows: MAX_DISTINCT_FILTER_OPTIONS + 1,
+                        requestHandler,
+                    });
+                    resetRequestHandler();
+                    allValues = result.values;
+                } else {
+                    allValues = multiChoices;
+                    if (searchStr) {
+                        // filter multiChoices based on search string
+                        allValues = allValues.filter(val => {
+                            if (val === null || val === undefined) {
+                                return EMPTY_VALUE_DISPLAY.includes(searchStr);
+                            }
+                            return val.toString().toLowerCase().includes(searchStr.toLowerCase());
+                        });
+                    }
+                }
 
-                const toShow = result.values.slice(0, MAX_DISTINCT_FILTER_OPTIONS);
+                const toShow = allValues.slice(0, MAX_DISTINCT_FILTER_OPTIONS);
                 const distinctValues = toShow.sort(naturalSort).map(val => {
                     if (val === '' || val === null || val === undefined) return EMPTY_VALUE_DISPLAY;
                     return val;
@@ -106,15 +136,12 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     distinctValues.splice(distinctValues.indexOf(EMPTY_VALUE_DISPLAY), 1);
                 }
                 // Issue 47544: don't show 'blank' if we have all the values and none are blank
-                if (
-                    toShow.length > 0 &&
-                    (hasBlank || (canBeBlank && result.values.length > MAX_DISTINCT_FILTER_OPTIONS))
-                ) {
+                if (toShow.length > 0 && (hasBlank || (canBeBlank && allValues.length > MAX_DISTINCT_FILTER_OPTIONS))) {
                     distinctValues.unshift(EMPTY_VALUE_DISPLAY);
                 }
 
                 // add [All] to first if the total distinct values is < 250
-                const hasAllValues = !searchStr && result.values.length <= MAX_DISTINCT_FILTER_OPTIONS;
+                const hasAllValues = !searchStr && allValues.length <= MAX_DISTINCT_FILTER_OPTIONS;
                 if (hasAllValues) distinctValues.unshift(ALL_VALUE_DISPLAY);
                 if (checkForAll) {
                     setAllShown(hasAllValues);
@@ -144,7 +171,16 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                 }
             }
         },
-        [api.query, canBeBlank, fieldKey, requestHandler, resetRequestHandler, selectDistinctOptions, timer]
+        [
+            api.query,
+            canBeBlank,
+            fieldKey,
+            requestHandler,
+            resetRequestHandler,
+            selectDistinctOptions,
+            timer,
+            multiChoices,
+        ]
     );
 
     const setDistinctValuesForSearch = useCallback(
@@ -157,8 +193,8 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     );
 
     const checkedValues = useMemo(() => {
-        return getCheckedFilterValues(fieldFilters?.[0], allShown ? fieldDistinctValues : undefined);
-    }, [fieldFilters?.[0], fieldKey, fieldDistinctValues, allShown]); // need to add fieldKey
+        return getCheckedFilterValues(fieldFilters?.[0], allShown ? fieldDistinctValues : undefined, multiChoices);
+    }, [fieldFilters?.[0], fieldKey, fieldDistinctValues, allShown, multiChoices]); // need to add fieldKey
 
     const taggedValues = useMemo(() => {
         if (checkedValues?.indexOf(ALL_VALUE_DISPLAY) > -1) return [];
@@ -177,17 +213,20 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         (value: string, checked: boolean, uncheckOthers?: boolean) => {
             if (disabled) return;
 
+            let oldFilter = fieldFilters?.[0]; // choose values applies only to the first filter
+            if (!oldFilter && multiChoices) oldFilter = Filter.create(fieldKey, [], Filter.Types.ARRAY_CONTAINS_ALL);
+
             const newFilter = getUpdatedChooseValuesFilter(
                 allShown ? fieldDistinctValues : undefined,
                 fieldKey,
                 value,
                 checked,
-                fieldFilters?.[0], // choose values applies only to the first filter
+                oldFilter,
                 uncheckOthers
             );
-            onFieldFilterUpdate([newFilter], 0);
+            onFieldFilterUpdate([newFilter]);
         },
-        [disabled, allShown, fieldDistinctValues, fieldKey, fieldFilters, onFieldFilterUpdate]
+        [disabled, allShown, fieldDistinctValues, fieldKey, fieldFilters, onFieldFilterUpdate, multiChoices]
     );
 
     const filteredFieldDistinctValues = useMemo(() => {
@@ -208,22 +247,56 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         [isFolderField]
     );
 
+    const onUpdateFilterType = useCallback(
+        (_, filterUrlSuffix: string) => {
+            let newFilters = [];
+            if (filterUrlSuffix) {
+                const newActiveFilterType = filterOptions.find(option => option.value === filterUrlSuffix);
+                if (newActiveFilterType) {
+                    const filterType = resolveFilterType(newActiveFilterType?.value, field);
+                    let updatedFilterValues = fieldFilters[0]?.getValue();
+                    const shouldClearUpdatedFilterValues =
+                        updatedFilterValues && multiChoices && !filterType.isMultiValued();
+                    if (shouldClearUpdatedFilterValues) updatedFilterValues = null;
+                    newFilters = [Filter.create(fieldKey, updatedFilterValues, filterType)];
+                }
+            }
+
+            onFieldFilterUpdate(newFilters);
+        },
+        [onFieldFilterUpdate, filterOptions, field, fieldFilters, fieldKey, multiChoices]
+    );
+
     if (!fieldDistinctValues || allShown === undefined) return <LoadingSpinner />;
 
     return (
         <>
             {error && <Alert>{error}</Alert>}
             <div className="filter-faceted__panel">
+                {multiChoices && (
+                    <SelectInput
+                        containerClass="form-group filter-expression__input-wrapper"
+                        disabled={disabled}
+                        inputClass="filter-expression__input-select"
+                        key={'filter-expression-field-filter-type'}
+                        name="filter-expression-field-filter-type"
+                        onChange={onUpdateFilterType}
+                        options={filterOptions}
+                        placeholder="Select a filter type..."
+                        required={true}
+                        value={fieldFilters?.[0]?.getFilterType().getURLSuffix() || 'arraycontainsall'}
+                    />
+                )}
                 {(fieldDistinctValues?.length > showSearchLength || searchStr) && (
                     <div>
                         <input
-                            id="filter-faceted__typeahead-input"
                             className="form-control filter-faceted__typeahead-input"
-                            value={searchStr ?? ''}
-                            onChange={onSearchStrChange}
-                            type="text"
-                            placeholder="Type to filter"
                             disabled={disabled}
+                            id="filter-faceted__typeahead-input"
+                            onChange={onSearchStrChange}
+                            placeholder="Type to filter"
+                            type="text"
+                            value={searchStr ?? ''}
                         />
                     </div>
                 )}
@@ -247,15 +320,15 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                     if (value === null || value === undefined) displayValue = '[blank]';
 
                                     return (
-                                        <li key={index} className="filter-faceted__li">
+                                        <li className="filter-faceted__li" key={index}>
                                             <div className="form-check">
                                                 <input
+                                                    checked={checkedValues.indexOf(value) > -1}
                                                     className="form-check-input filter-faceted__checkbox"
-                                                    type="checkbox"
+                                                    disabled={disabled}
                                                     name={'field-value-' + index}
                                                     onChange={event => onChange(value, event.target.checked)}
-                                                    checked={checkedValues.indexOf(value) > -1}
-                                                    disabled={disabled}
+                                                    type="checkbox"
                                                 />
                                                 <div
                                                     className="filter-faceted__value"
@@ -283,7 +356,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                     if (value === null || value === undefined) displayValue = '[blank]';
 
                                     return (
-                                        <li key={index} className="filter-status__faceted">
+                                        <li className="filter-status__faceted" key={index}>
                                             <div className="filter-status-value">
                                                 <i
                                                     className="symbol fa fa-close"

@@ -689,6 +689,13 @@ export function processJsonImport(content: string, domain: DomainDesign): Simple
             };
         }
 
+        if (!domain?.allowMultiChoiceProperties && field.rangeURI === MULTI_CHOICE_TYPE.rangeURI) {
+            return {
+                success: false,
+                msg: `Error on importing field '${field.name}': Data type '${MULTI_CHOICE_TYPE.name}' is not supported.`,
+            };
+        }
+
         if (!domainType?.includes('List') && field.lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED) {
             return {
                 success: false,

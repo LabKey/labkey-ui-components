@@ -36,34 +36,40 @@ export type JsonType = 'array' | 'boolean' | 'date' | 'float' | 'int' | 'string'
 interface IPropDescType {
     conceptURI: string;
     display: string;
+    longDisplay?: string;
     lookupQuery?: string;
     lookupSchema?: string;
     name: string;
     rangeURI: string;
     shortDisplay?: string;
+    hideFromDomainRow?: boolean;
 }
 
 export class PropDescType
     extends Record({
         conceptURI: undefined,
         display: undefined,
+        longDisplay: undefined,
         name: undefined,
         rangeURI: undefined,
         alternateRangeURI: undefined,
         shortDisplay: undefined,
         lookupSchema: undefined,
         lookupQuery: undefined,
+        hideFromDomainRow: false,
     })
     implements IPropDescType
 {
     declare conceptURI: string;
     declare display: string;
+    declare longDisplay?: string;
     declare name: string;
     declare rangeURI: string;
     declare alternateRangeURI: string;
     declare shortDisplay: string;
     declare lookupSchema?: string;
     declare lookupQuery?: string;
+    declare hideFromDomainRow?: boolean;
 
     static fromName(name: string): PropDescType {
         return PROP_DESC_TYPES.find(type => type.name === name);
@@ -360,14 +366,17 @@ export const UNIQUE_ID_TYPE = new PropDescType({
 export const TEXT_CHOICE_TYPE = new PropDescType({
     name: 'textChoice',
     display: 'Text Choice',
+    longDisplay: 'Text Choice (single select)',
     rangeURI: STRING_RANGE_URI,
     conceptURI: TEXT_CHOICE_CONCEPT_URI,
 });
 
 export const MULTI_CHOICE_TYPE = new PropDescType({
     name: 'multiChoice',
-    display: 'Multi Choice',
+    display: 'Text Choice',
+    longDisplay: 'Text Choice (multiple select)',
     rangeURI: MULTI_CHOICE_RANGE_URI,
+    hideFromDomainRow: true,
 });
 
 export const SMILES_TYPE = new PropDescType({

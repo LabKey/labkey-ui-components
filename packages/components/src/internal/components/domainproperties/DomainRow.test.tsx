@@ -31,9 +31,10 @@ import {
     TEXT_TYPE,
 } from './PropDescType';
 
-import { DomainRow, DomainRowProps } from './DomainRow';
+import { DomainRow, DomainRowProps, shouldShowConfirmDataTypeChange } from './DomainRow';
 import {
     ATTACHMENT_RANGE_URI,
+    DATETIME_RANGE_URI,
     DOMAIN_EDITABLE_DEFAULT,
     DOMAIN_FIELD_ADV,
     DOMAIN_FIELD_DELETE,
@@ -44,12 +45,15 @@ import {
     DOMAIN_FIELD_TYPE,
     DOMAIN_LAST_ENTERED_DEFAULT,
     DOMAIN_NON_EDITABLE_DEFAULT,
+    DOUBLE_RANGE_URI,
     FIELD_NAME_CHAR_WARNING_INFO,
     FIELD_NAME_CHAR_WARNING_MSG,
     INT_RANGE_URI,
+    MULTI_CHOICE_RANGE_URI,
     PHILEVEL_RESTRICTED_PHI,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
+    STRING_RANGE_URI, TEXT_CHOICE_CONCEPT_URI,
 } from './constants';
 
 import { createFormInputId } from './utils';
@@ -403,5 +407,40 @@ describe('DomainRow', () => {
         expect(rowDetails.length).toEqual(1);
         const expected = 'New Field. ' + severity + ': ' + message;
         expect(rowDetails[0].textContent).toContain(expected);
+    });
+});
+
+describe('shouldShowConfirmDataTypeChange', () => {
+    test('should return false for same type', () => {
+        expect(shouldShowConfirmDataTypeChange(STRING_RANGE_URI, STRING_RANGE_URI)).toBe(false);
+    });
+
+    test('should return true for converting to number', () => {
+        expect(shouldShowConfirmDataTypeChange(STRING_RANGE_URI, DOUBLE_RANGE_URI)).toBe(true);
+        expect(shouldShowConfirmDataTypeChange(INT_RANGE_URI, DOUBLE_RANGE_URI)).toBe(true);
+    });
+
+    test('should return true for converting to date', () => {
+        expect(shouldShowConfirmDataTypeChange(STRING_RANGE_URI, DATETIME_RANGE_URI)).toBe(true);
+    });
+
+    test('should return true for converting to multi-choice', () => {
+        expect(shouldShowConfirmDataTypeChange(STRING_RANGE_URI, MULTI_CHOICE_RANGE_URI)).toBe(true);
+    });
+
+    test('should return true for converting non-string/non-multichoice to string', () => {
+        expect(shouldShowConfirmDataTypeChange(INT_RANGE_URI, STRING_RANGE_URI)).toBe(true);
+    });
+
+    test('should return false for converting multichoice to string', () => {
+        expect(shouldShowConfirmDataTypeChange(MULTI_CHOICE_RANGE_URI, STRING_RANGE_URI)).toBe(false);
+    });
+
+    test('should return false for converting multichoice to textChoice', () => {
+        expect(shouldShowConfirmDataTypeChange(MULTI_CHOICE_RANGE_URI, TEXT_CHOICE_CONCEPT_URI)).toBe(true);
+    });
+
+    test('should return false for converting textChoice to multiChoice', () => {
+        expect(shouldShowConfirmDataTypeChange(TEXT_CHOICE_CONCEPT_URI, MULTI_CHOICE_RANGE_URI)).toBe(true);
     });
 });

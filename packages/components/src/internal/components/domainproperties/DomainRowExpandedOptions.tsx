@@ -49,6 +49,7 @@ interface Props {
     queryName?: string;
     schemaName?: string;
     showingModal: (boolean) => void;
+    handleDataTypeChange: (targetId: string, value: any) => void;
 }
 
 export class DomainRowExpandedOptions extends React.Component<Props> {
@@ -65,6 +66,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
             domainContainerPath,
             schemaName,
             queryName,
+            handleDataTypeChange,
         } = this.props;
 
         // In most cases we will use the selected data type to determine which field options to show,
@@ -239,6 +241,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                         schemaName={schemaName}
                         lockedForDomain={domainFormDisplayOptions.textChoiceLockedForDomain}
                         lockedSqlFragment={domainFormDisplayOptions.textChoiceLockedSqlFragment}
+                        handleDataTypeChange={handleDataTypeChange}
                     />
                 );
             case 'fileLink':

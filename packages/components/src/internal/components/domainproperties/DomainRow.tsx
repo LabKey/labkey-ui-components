@@ -263,26 +263,28 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         this.props.onChange(nameAndErrorList, index, false);
     };
 
-    onDataTypeChange = (evt: any): void => {
-        const { field } = this.props;
-        const { value } = evt.target;
+    handleDataTypeChange = (targetId: string, value: any): void => {
+        const { field, index } = this.props;
 
         // warn for a saved field changing from any non-string -> string OR int/long -> double/float/decimal
         if (field.isSaved()) {
             const typeConvertingTo = PropDescType.fromName(value);
-            if (shouldShowConfirmDataTypeChange(field.original.rangeURI, typeConvertingTo.rangeURI)) {
+            if (shouldShowConfirmDataTypeChange(field.original.rangeURI ?? field.original.conceptURI, typeConvertingTo.rangeURI ?? typeConvertingTo.conceptURI)) {
                 this.onShowConfirmTypeChange(value);
                 return;
             }
         }
 
-        this.onFieldChange(
-            evt,
-            PropDescType.isLookup(value) ||
-                PropDescType.isTextChoice(value) ||
-                PropDescType.isUser(value) ||
-                PropDescType.isCalculation(value)
-        );
+        const expand = PropDescType.isLookup(value) ||
+            PropDescType.isTextChoice(value) ||
+            PropDescType.isUser(value) ||
+            PropDescType.isCalculation(value);
+
+        this.onSingleFieldChange(targetId, value, index, expand);
+    };
+
+    onDataTypeChange = (evt: any): void => {
+        this.handleDataTypeChange(evt.target.id, evt.target.value);
     };
 
     onShowConfirmTypeChange = (dataTypeChangeToConfirm: string): void => {
@@ -567,6 +569,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                     queryName={queryName}
                                     schemaName={schemaName}
                                     showingModal={this.showingModal}
+                                    handleDataTypeChange={this.handleDataTypeChange}
                                 />
                             </div>
                         </Collapsible>
@@ -575,7 +578,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                 newDataType={PropDescType.fromName(dataTypeChangeToConfirm)}
                                 onCancel={this.onHideConfirmTypeChange}
                                 onConfirm={this.onConfirmTypeChange}
-                                originalRangeURI={field.original.rangeURI}
+                                original={field.original}
                             />
                         )}
                     </div>
@@ -585,13 +588,16 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
     }
 }
 
-const shouldShowConfirmDataTypeChange = (originalRangeURI: string, newRangeURI: string): boolean => {
+export const shouldShowConfirmDataTypeChange = (originalRangeURI: string, newRangeURI: string): boolean => {
     if (newRangeURI && originalRangeURI !== newRangeURI) {
         const wasString = STRING_CONVERT_URIS.indexOf(originalRangeURI) > -1;
         const toString = STRING_CONVERT_URIS.indexOf(newRangeURI) > -1;
         const toNumber = NUMBER_CONVERT_URIS.indexOf(newRangeURI) > -1;
         const toDate = DATETIME_CONVERT_URIS.indexOf(newRangeURI) > -1;
-        return toNumber || (toString && !wasString) || toDate;
+        const wasMultiChoice = PropDescType.isMultiChoice(originalRangeURI);
+        const newTextChoice = PropDescType.isTextChoice(newRangeURI);
+        const toMultiChoice = PropDescType.isMultiChoice(newRangeURI);
+        return toNumber || (toString && !wasString && !wasMultiChoice) || toDate || toMultiChoice || (wasMultiChoice && newTextChoice);
     }
     return false;
 };

@@ -53,7 +53,8 @@ import {
     PHILEVEL_RESTRICTED_PHI,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
-    STRING_RANGE_URI, TEXT_CHOICE_CONCEPT_URI,
+    STRING_RANGE_URI,
+    TEXT_CHOICE_CONCEPT_URI,
 } from './constants';
 
 import { createFormInputId } from './utils';
@@ -121,7 +122,7 @@ describe('DomainRow', () => {
         await act(async () => {
             renderWithAppContext(
                 wrapDraggable(
-                    <DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />
+                    <DomainRow {...getDefaultProps()} domainIndex={_domainIndex} field={field} index={_index} />
                 )
             );
         });
@@ -153,7 +154,7 @@ describe('DomainRow', () => {
         await act(async () => {
             renderWithAppContext(
                 wrapDraggable(
-                    <DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />
+                    <DomainRow {...getDefaultProps()} domainIndex={_domainIndex} field={field} index={_index} />
                 )
             );
         });
@@ -185,7 +186,7 @@ describe('DomainRow', () => {
         await act(async () => {
             renderWithAppContext(
                 wrapDraggable(
-                    <DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />
+                    <DomainRow {...getDefaultProps()} domainIndex={_domainIndex} field={field} index={_index} />
                 )
             );
         });
@@ -217,7 +218,7 @@ describe('DomainRow', () => {
         await act(async () => {
             renderWithAppContext(
                 wrapDraggable(
-                    <DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />
+                    <DomainRow {...getDefaultProps()} domainIndex={_domainIndex} field={field} index={_index} />
                 )
             );
         });
@@ -267,10 +268,10 @@ describe('DomainRow', () => {
                 wrapDraggable(
                     <DomainRow
                         {...getDefaultProps()}
-                        index={_index}
                         domainIndex={_domainIndex}
-                        field={field}
                         expanded
+                        field={field}
+                        index={_index}
                     />
                 )
             );
@@ -321,7 +322,7 @@ describe('DomainRow', () => {
         await act(async () => {
             renderWithAppContext(
                 wrapDraggable(
-                    <DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />
+                    <DomainRow {...getDefaultProps()} domainIndex={_domainIndex} field={field} index={_index} />
                 )
             );
         });

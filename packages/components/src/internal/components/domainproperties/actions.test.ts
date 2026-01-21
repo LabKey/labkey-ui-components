@@ -857,7 +857,7 @@ describe('domain properties actions', () => {
             recommendedVariable: true,
             uniqueConstraint: true,
             nonUniqueConstraint: true,
-            rangeURI: STRING_RANGE_URI
+            rangeURI: STRING_RANGE_URI,
         });
         expect(field.dataType).toBe(TEXT_TYPE);
         expect(field.scale).toBe(10);

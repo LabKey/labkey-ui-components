@@ -892,7 +892,7 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             field = field.merge(DomainField.resolveLookupConfig(field, dataType)) as DomainField;
         }
 
-        if ((field.isTextChoiceField() || field.isMultiChoiceField())) {
+        if (field.isTextChoiceField() || field.isMultiChoiceField()) {
             // when changing a field to a Text Choice, add the default textChoiceValidator and
             // remove/reset all other propertyValidators and other text option settings
             if (!wasTextChoice) {
@@ -918,10 +918,9 @@ export function updateDataType(field: DomainField, value: any): DomainField {
                     recommendedVariable: false,
                     uniqueConstraint: false,
                     nonUniqueConstraint: false,
-                    conditionalFormats: List<ConditionalFormat>()
+                    conditionalFormats: List<ConditionalFormat>(),
                 }) as DomainField;
             }
-
         } else if (field.isCalculatedField()) {
             field = field.merge({
                 importAliases: undefined,
@@ -1386,8 +1385,8 @@ export function getDomainNamePreviews(
 }
 
 export type TextChoiceInUseValues = {
-    useCount: Record<string, { count: number; locked: boolean }>,
-    hasMultiValue: boolean,
+    hasMultiValue: boolean;
+    useCount: Record<string, { count: number; locked: boolean }>;
 };
 
 export async function getTextChoiceInUseValues(
@@ -1395,7 +1394,7 @@ export async function getTextChoiceInUseValues(
     schemaName: string,
     queryName: string,
     lockedSqlFragment: string,
-    isMultiField: boolean,
+    isMultiField: boolean
 ): Promise<TextChoiceInUseValues> {
     const containerFilter = Query.ContainerFilter.allInProjectPlusShared; // to account for a shared domain at project or /Shared
     const fieldName = field.original?.name ?? field.name;
@@ -1414,15 +1413,13 @@ export async function getTextChoiceInUseValues(
 
         result.rows.forEach(row => {
             const value = row[fieldName]?.value;
-            if (!isMultiField && !isValidTextChoiceValue(value))
-                return;
+            if (!isMultiField && !isValidTextChoiceValue(value)) return;
 
-            const values : string[] = [];
+            const values: string[] = [];
             if (isMultiField && Array.isArray(value)) {
                 values.push(...value);
                 hasMultiValue = hasMultiValue || value.length > 1;
-            }
-            else {
+            } else {
                 values.push(value);
             }
 
@@ -1432,10 +1429,8 @@ export async function getTextChoiceInUseValues(
                     useCount[val] = { count: 0, locked: false };
                 }
                 useCount[val].count++;
-                useCount[val].locked =
-                    useCount[val].locked || rowLocked;
-            })
-
+                useCount[val].locked = useCount[val].locked || rowLocked;
+            });
         });
         return {
             useCount,
@@ -1449,48 +1444,42 @@ export async function getTextChoiceInUseValues(
         sql: `SELECT "${fieldName}", ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE "${fieldName}" IS NOT NULL GROUP BY "${fieldName}"`,
     });
 
-    response.rows
-        .forEach((row) => {
-            if (!isMultiField && !isValidTextChoiceValue(row[fieldName].value))
-                return;
+    response.rows.forEach(row => {
+        if (!isMultiField && !isValidTextChoiceValue(row[fieldName].value)) return;
 
-            const value = row[fieldName].value;
-            const values : string[] = [];
-            if (isMultiField && Array.isArray(value)) {
-                values.push(...value);
-                hasMultiValue = hasMultiValue || value.length > 1;
+        const value = row[fieldName].value;
+        const values: string[] = [];
+        if (isMultiField && Array.isArray(value)) {
+            values.push(...value);
+            hasMultiValue = hasMultiValue || value.length > 1;
+        } else {
+            values.push(value);
+        }
+
+        const rowLocked = row.IsLocked.value === 1;
+        const rowCount = row.RowCount.value;
+
+        values.forEach(val => {
+            if (!useCount[val]) {
+                useCount[val] = { count: 0, locked: false };
             }
-            else {
-                values.push(value);
-            }
-
-            const rowLocked = row.IsLocked.value === 1;
-            const rowCount = row.RowCount.value;
-
-            values.forEach(val => {
-                if (!useCount[val]) {
-                    useCount[val] = { count: 0, locked: false };
-                }
-                useCount[val].count++;
-                useCount[val].locked =
-                    useCount[val].locked || rowLocked;
-            })
-
-            values.forEach(val => {
-                if (!useCount[val]) {
-                    useCount[val] = { count: 0, locked: false };
-                }
-                useCount[val].count += rowCount;
-                useCount[val].locked =
-                    useCount[val].locked || rowLocked;
-            })
+            useCount[val].count++;
+            useCount[val].locked = useCount[val].locked || rowLocked;
         });
+
+        values.forEach(val => {
+            if (!useCount[val]) {
+                useCount[val] = { count: 0, locked: false };
+            }
+            useCount[val].count += rowCount;
+            useCount[val].locked = useCount[val].locked || rowLocked;
+        });
+    });
 
     return {
         useCount,
         hasMultiValue,
     };
-
 }
 
 export function getGenId(rowId: number, kindName: 'DataClass' | 'SampleSet', containerPath?: string): Promise<number> {

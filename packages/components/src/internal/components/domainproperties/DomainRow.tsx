@@ -269,13 +269,19 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         // warn for a saved field changing from any non-string -> string OR int/long -> double/float/decimal
         if (field.isSaved()) {
             const typeConvertingTo = PropDescType.fromName(value);
-            if (shouldShowConfirmDataTypeChange(field.original.rangeURI ?? field.original.conceptURI, typeConvertingTo.rangeURI ?? typeConvertingTo.conceptURI)) {
+            if (
+                shouldShowConfirmDataTypeChange(
+                    field.original.rangeURI ?? field.original.conceptURI,
+                    typeConvertingTo.rangeURI ?? typeConvertingTo.conceptURI
+                )
+            ) {
                 this.onShowConfirmTypeChange(value);
                 return;
             }
         }
 
-        const expand = PropDescType.isLookup(value) ||
+        const expand =
+            PropDescType.isLookup(value) ||
             PropDescType.isTextChoice(value) ||
             PropDescType.isUser(value) ||
             PropDescType.isCalculation(value);
@@ -563,13 +569,13 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                     domainIndex={domainIndex}
                                     field={field}
                                     getDomainFields={getDomainFields}
+                                    handleDataTypeChange={this.handleDataTypeChange}
                                     index={index}
                                     onChange={this.onSingleFieldChange}
                                     onMultiChange={this.onMultiFieldChange}
                                     queryName={queryName}
                                     schemaName={schemaName}
                                     showingModal={this.showingModal}
-                                    handleDataTypeChange={this.handleDataTypeChange}
                                 />
                             </div>
                         </Collapsible>
@@ -597,7 +603,13 @@ export const shouldShowConfirmDataTypeChange = (originalRangeURI: string, newRan
         const wasMultiChoice = PropDescType.isMultiChoice(originalRangeURI);
         const newTextChoice = PropDescType.isTextChoice(newRangeURI);
         const toMultiChoice = PropDescType.isMultiChoice(newRangeURI);
-        return toNumber || (toString && !wasString && !wasMultiChoice) || toDate || toMultiChoice || (wasMultiChoice && newTextChoice);
+        return (
+            toNumber ||
+            (toString && !wasString && !wasMultiChoice) ||
+            toDate ||
+            toMultiChoice ||
+            (wasMultiChoice && newTextChoice)
+        );
     }
     return false;
 };

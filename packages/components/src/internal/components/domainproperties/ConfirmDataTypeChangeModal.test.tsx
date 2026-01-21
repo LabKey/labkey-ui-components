@@ -5,68 +5,71 @@ import { ConfirmDataTypeChangeModal, getDataTypeConfirmDisplayText } from './Con
 import {
     BOOLEAN_TYPE,
     DATE_TYPE,
-    DATETIME_TYPE, FILE_TYPE,
-    INTEGER_TYPE, MULTI_CHOICE_TYPE,
+    DATETIME_TYPE,
+    FILE_TYPE,
+    INTEGER_TYPE,
+    MULTI_CHOICE_TYPE,
     MULTILINE_TYPE,
-    PROP_DESC_TYPES, TEXT_CHOICE_TYPE,
+    PROP_DESC_TYPES,
+    TEXT_CHOICE_TYPE,
     TEXT_TYPE,
-    TIME_TYPE
+    TIME_TYPE,
 } from './PropDescType';
 import {
     BOOLEAN_RANGE_URI,
     DATETIME_RANGE_URI,
     FILELINK_RANGE_URI,
-    INT_RANGE_URI, MULTI_CHOICE_RANGE_URI,
-    MULTILINE_RANGE_URI, TEXT_CHOICE_CONCEPT_URI,
+    MULTI_CHOICE_RANGE_URI,
+    MULTILINE_RANGE_URI,
+    TEXT_CHOICE_CONCEPT_URI,
     TIME_RANGE_URI,
 } from './constants';
 
 describe('ConfirmDataTypeChangeModal', () => {
-
     const stringType = {
         rangeURI: 'http://www.w3.org/2001/XMLSchema#boolean',
         dataType: TEXT_TYPE,
-    }
+    };
 
-    const intType ={
+    const intType = {
         rangeURI: 'http://www.w3.org/2001/XMLSchema#int',
         dataType: INTEGER_TYPE,
-    }
+    };
 
-    const multiLineType ={
+    const multiLineType = {
         rangeURI: MULTILINE_RANGE_URI,
         dataType: MULTILINE_TYPE,
-    }
+    };
 
-    const fileLinkType ={
+    const fileLinkType = {
         rangeURI: FILELINK_RANGE_URI,
         dataType: FILE_TYPE,
-    }
+    };
 
-    const booleanType ={
+    const booleanType = {
         rangeURI: BOOLEAN_RANGE_URI,
         dataType: BOOLEAN_TYPE,
-    }
+    };
 
-    const dateTimeType ={
+    const dateTimeType = {
         rangeURI: DATETIME_RANGE_URI,
         dataType: DATETIME_TYPE,
-    }
+    };
 
-    const timeType ={
+    const timeType = {
         rangeURI: TIME_RANGE_URI,
         dataType: TIME_TYPE,
-    }
+    };
 
-    const multiChoiceType ={
+    const multiChoiceType = {
         rangeURI: MULTI_CHOICE_RANGE_URI,
         dataType: MULTI_CHOICE_TYPE,
-    }
+    };
 
     const textChoiceType = {
         conceptURI: TEXT_CHOICE_CONCEPT_URI,
         dataType: TEXT_CHOICE_TYPE,
-    }
+    };
 
     const DEFAULT_PROPS = {
         original: {
@@ -94,43 +97,24 @@ describe('ConfirmDataTypeChangeModal', () => {
         expect(getDataTypeConfirmDisplayText(dateTimeType.dataType)).toBe('dateTime');
         expect(getDataTypeConfirmDisplayText(multiChoiceType.dataType)).toBe('Text Choice (multiple select)');
         expect(getDataTypeConfirmDisplayText(textChoiceType.dataType)).toBe('Text Choice (single select)');
-
     });
 
     test('from datetime to time', () => {
-        render(
-            <ConfirmDataTypeChangeModal
-                {...DEFAULT_PROPS}
-                original={dateTimeType}
-                newDataType={TIME_TYPE}
-            />
-        );
+        render(<ConfirmDataTypeChangeModal {...DEFAULT_PROPS} newDataType={TIME_TYPE} original={dateTimeType} />);
         expect(document.body).toHaveTextContent(
             'This change will convert the values in the field from dateTime to time. This will cause the Date portion of the value to be removed. Once you save your changes, you will not be able to change it back to dateTime.'
         );
     });
 
     test('from datetime to date', () => {
-        render(
-            <ConfirmDataTypeChangeModal
-                {...DEFAULT_PROPS}
-                original={dateTimeType}
-                newDataType={DATE_TYPE}
-            />
-        );
+        render(<ConfirmDataTypeChangeModal {...DEFAULT_PROPS} newDataType={DATE_TYPE} original={dateTimeType} />);
         expect(document.body).toHaveTextContent(
             'This change will convert the values in the field from dateTime to date. This will cause the Time portion of the value to be removed.'
         );
     });
 
     test('from date to datetime', () => {
-        render(
-            <ConfirmDataTypeChangeModal
-                {...DEFAULT_PROPS}
-                original={timeType}
-                newDataType={DATETIME_TYPE}
-            />
-        );
+        render(<ConfirmDataTypeChangeModal {...DEFAULT_PROPS} newDataType={DATETIME_TYPE} original={timeType} />);
         expect(document.body).toHaveTextContent(
             'This change will convert the values in the field from time to dateTime. Once you save your changes, you will not be able to change it back to time.'
         );
@@ -140,8 +124,8 @@ describe('ConfirmDataTypeChangeModal', () => {
         render(
             <ConfirmDataTypeChangeModal
                 {...DEFAULT_PROPS}
-                original={textChoiceType}
                 newDataType={multiChoiceType.dataType}
+                original={textChoiceType}
             />
         );
         expect(document.body).toHaveTextContent(
@@ -153,14 +137,12 @@ describe('ConfirmDataTypeChangeModal', () => {
         render(
             <ConfirmDataTypeChangeModal
                 {...DEFAULT_PROPS}
-                original={multiChoiceType}
                 newDataType={textChoiceType.dataType}
+                original={multiChoiceType}
             />
         );
         expect(document.body).toHaveTextContent(
             'This change will convert the values in the field from Text Choice (multiple select) to Text Choice (single select). Filters in saved views might not function as expected'
         );
     });
-
-
 });

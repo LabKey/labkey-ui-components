@@ -36,13 +36,13 @@ export type JsonType = 'array' | 'boolean' | 'date' | 'float' | 'int' | 'string'
 interface IPropDescType {
     conceptURI: string;
     display: string;
+    hideFromDomainRow?: boolean;
     longDisplay?: string;
     lookupQuery?: string;
     lookupSchema?: string;
     name: string;
     rangeURI: string;
     shortDisplay?: string;
-    hideFromDomainRow?: boolean;
 }
 
 export class PropDescType

@@ -150,8 +150,8 @@ describe('TextChoiceOptions', () => {
         render(
             <TextChoiceOptionsImpl
                 {...DEFAULT_PROPS}
-                validValues={['a', 'b']}
                 fieldValues={{ b: { locked: false, count: 1 } }}
+                validValues={['a', 'b']}
             />
         );
         validate(false, 2, 1);
@@ -174,9 +174,9 @@ describe('TextChoiceOptions', () => {
         const { rerender } = render(
             <TextChoiceOptionsImpl
                 {...DEFAULT_PROPS}
+                fieldValues={{ b: { locked: false, count: 1 } }}
                 replaceValues={replaceValues}
                 validValues={['a', 'b']}
-                fieldValues={{ b: { locked: false, count: 1 } }}
             />
         );
         validate(false, 2, 1);
@@ -199,8 +199,8 @@ describe('TextChoiceOptions', () => {
         render(
             <TextChoiceOptionsImpl
                 {...DEFAULT_PROPS}
-                validValues={['a', 'b']}
                 fieldValues={{ b: { locked: true, count: 1 } }}
+                validValues={['a', 'b']}
             />
         );
         validate(false, 2, 1);
@@ -244,8 +244,8 @@ describe('TextChoiceOptions', () => {
         render(
             <TextChoiceOptionsImpl
                 {...DEFAULT_PROPS}
-                validValues={['a', 'b']}
                 fieldValues={{ b: { locked: false, count: 1 } }}
+                validValues={['a', 'b']}
             />
         );
         validate(false, 2, 1);

@@ -11,13 +11,13 @@ import {
     MULTILINE_RANGE_URI,
     TIME_RANGE_URI,
 } from './constants';
-import {IDomainField} from "./models";
+import { IDomainField } from './models';
 
 interface Props {
-    original: Partial<IDomainField>;
     newDataType: PropDescType;
-    onConfirm: () => void;
     onCancel: () => void;
+    onConfirm: () => void;
+    original: Partial<IDomainField>;
 }
 
 export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
@@ -38,16 +38,12 @@ export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
     if (newMultiChoice) {
         dataLossWarning = (
             <>
-                Filters in saved views might not function as expected and any conditional formatting configured for this field will be <span className="bold-text">removed</span>.{' '}
-            </>)
-        ;
-    }
-    else if (oldMultiChoice && newTextChoice) {
-        dataLossWarning = (
-            <>
-                Filters in saved views might not function as expected.{' '}
-            </>)
-        ;
+                Filters in saved views might not function as expected and any conditional formatting configured for this
+                field will be <span className="bold-text">removed</span>.{' '}
+            </>
+        );
+    } else if (oldMultiChoice && newTextChoice) {
+        dataLossWarning = <>Filters in saved views might not function as expected. </>;
     } else if (
         originalRangeURI === DATETIME_RANGE_URI &&
         (newDataType.rangeURI === DATE_RANGE_URI || newDataType.rangeURI === TIME_RANGE_URI)
@@ -60,13 +56,13 @@ export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
         );
     }
 
-        return (
+    return (
         <Modal
-            title="Confirm Data Type Change"
-            onConfirm={onConfirm}
-            onCancel={onCancel}
             confirmClass="btn-danger"
             confirmText="Yes, Change Data Type"
+            onCancel={onCancel}
+            onConfirm={onConfirm}
+            title="Confirm Data Type Change"
         >
             <div>
                 This change will convert the values in the field from{' '}

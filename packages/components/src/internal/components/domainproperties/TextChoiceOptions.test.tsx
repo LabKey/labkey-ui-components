@@ -18,6 +18,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { TextChoiceOptionsImpl } from './TextChoiceOptions';
 import { DomainField } from './models';
+import { MULTI_CHOICE_RANGE_URI } from './constants';
 
 describe('TextChoiceOptions', () => {
     const DEFAULT_PROPS = {
@@ -92,11 +93,45 @@ describe('TextChoiceOptions', () => {
         const addBtn = document.querySelector('span.container--action-button');
         expect(addBtn.textContent).toBe(' Add Values');
         expect(addBtn.getAttribute('class').indexOf('disabled')).toBe(-1);
+
+        // verify multi-choice checkbox exists, is unchecked, and enabled by default
+        const multiCheckbox = document.querySelector('input.domain-text-choice-multi') as HTMLInputElement;
+        expect(multiCheckbox).toBeInTheDocument();
+        expect(multiCheckbox.checked).toBe(false);
+        expect(multiCheckbox).toBeEnabled();
+        expect(screen.getByText('Allow multiple selections')).toBeInTheDocument();
     });
 
     test('loading', () => {
         render(<TextChoiceOptionsImpl {...DEFAULT_PROPS} loading />);
         validate(true);
+    });
+
+    test('multi-choice checkbox checked when field is multi-choice', () => {
+        render(
+            <TextChoiceOptionsImpl
+                {...DEFAULT_PROPS}
+                field={DomainField.create({ rangeURI: MULTI_CHOICE_RANGE_URI })}
+            />
+        );
+        const multiCheckbox = document.querySelector('input.domain-text-choice-multi') as HTMLInputElement;
+        expect(multiCheckbox).toBeInTheDocument();
+        expect(multiCheckbox).toBeEnabled();
+        expect(multiCheckbox.checked).toBe(true);
+    });
+
+    test('multi-choice checkbox disabled when multi values are in use', () => {
+        render(
+            <TextChoiceOptionsImpl
+                {...DEFAULT_PROPS}
+                hasMultiValueInUse
+            />
+        );
+        const multiCheckbox = document.querySelector('input.domain-text-choice-multi') as HTMLInputElement;
+        expect(multiCheckbox).toBeInTheDocument();
+        expect(multiCheckbox).toBeDisabled();
+        const labelSpan = screen.getByText('Allow multiple selections');
+        expect(labelSpan.getAttribute('title')).toBe('Multiple values are currently used by at least one data row.');
     });
 
     test('with validValues, no selection', () => {

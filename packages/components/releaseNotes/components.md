@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Update `FilterStatus` to optionally include an "Add Filter" button
+
 ### version 7.13.0
 *Released*: 20 January 2026
 - Multi value text choices

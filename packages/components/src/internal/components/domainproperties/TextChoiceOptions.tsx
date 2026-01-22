@@ -421,7 +421,7 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
                         // that is being changed to data type = Text Choice (that "is new field" check is above),
                         // then we will use the existing distinct values for that field as the initial options
                         if (!field.textChoiceValidator?.rowId) {
-                            replaceValues(Object.keys(values).sort());
+                            replaceValues(Object.keys(values.useCount).sort());
                         }
 
                         setLoading(false);

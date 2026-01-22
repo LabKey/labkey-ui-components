@@ -1412,7 +1412,7 @@ export async function getTextChoiceInUseValues(
         });
 
         result.rows.forEach(row => {
-            const value = row[fieldName]?.value;
+            const value = caseInsensitive(row, fieldName)?.value;
             if (!isMultiField && !isValidTextChoiceValue(value)) return;
 
             const values: string[] = [];
@@ -1445,9 +1445,10 @@ export async function getTextChoiceInUseValues(
     });
 
     response.rows.forEach(row => {
-        if (!isMultiField && !isValidTextChoiceValue(row[fieldName].value)) return;
+        const value = caseInsensitive(row, fieldName)?.value;
 
-        const value = row[fieldName].value;
+        if (!isMultiField && !isValidTextChoiceValue(value)) return;
+
         const values: string[] = [];
         if (isMultiField && Array.isArray(value)) {
             values.push(...value);

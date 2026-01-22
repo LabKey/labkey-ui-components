@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.7.5
+*Released*: TBD
+- [GitHub Issue #798](https://github.com/LabKey/internal-issues/issues/798) - add product feature flag for advanced workflow
+
 ### version 7.7.4
 *Released*: 8 January 2026
 - [GitHub Issue #723](https://github.com/LabKey/internal-issues/issues/723)

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.X
+*Released*: X January 2026
+- Multi value text choices: field type conversion
+    - TODO
+
 ### version 7.13.0
 *Released*: 20 January 2026
 - Multi value text choices

@@ -121,12 +121,7 @@ describe('TextChoiceOptions', () => {
     });
 
     test('multi-choice checkbox disabled when multi values are in use', () => {
-        render(
-            <TextChoiceOptionsImpl
-                {...DEFAULT_PROPS}
-                hasMultiValueInUse
-            />
-        );
+        render(<TextChoiceOptionsImpl {...DEFAULT_PROPS} hasMultiValueInUse />);
         const multiCheckbox = document.querySelector('input.domain-text-choice-multi') as HTMLInputElement;
         expect(multiCheckbox).toBeInTheDocument();
         expect(multiCheckbox).toBeDisabled();

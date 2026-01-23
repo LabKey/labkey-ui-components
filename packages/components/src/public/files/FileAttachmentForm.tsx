@@ -306,9 +306,13 @@ export class FileAttachmentForm extends PureComponent<FileAttachmentFormProps, S
             }
         }
 
-        this.updatePreviewStatus('Uploading file...');
-
-        inferDomainFromFile(file, previewGridProps.previewCount, previewGridProps.domainKindName)
+        this.updatePreviewStatus('Loading file preview...');
+        inferDomainFromFile(
+            file,
+            previewGridProps.previewCount,
+            previewGridProps.domainKindName,
+            previewGridProps.distinctValueColumns
+        )
             .then(response => {
                 this.updatePreviewStatus(null);
 

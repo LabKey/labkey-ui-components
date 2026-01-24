@@ -41,6 +41,7 @@ interface IPropDescType {
     lookupQuery?: string;
     lookupSchema?: string;
     name: string;
+    altName?: string;
     rangeURI: string;
     shortDisplay?: string;
 }
@@ -56,6 +57,7 @@ export class PropDescType
         shortDisplay: undefined,
         lookupSchema: undefined,
         lookupQuery: undefined,
+        altName: undefined,
         hideFromDomainRow: false,
     })
     implements IPropDescType
@@ -64,6 +66,7 @@ export class PropDescType
     declare display: string;
     declare longDisplay?: string;
     declare name: string;
+    declare altName?: string;
     declare rangeURI: string;
     declare alternateRangeURI: string;
     declare shortDisplay: string;
@@ -242,6 +245,10 @@ export class PropDescType
     isDateTime(): boolean {
         return PropDescType.isDateTime(this.rangeURI);
     }
+
+    get selectName(): string {
+        return this.altName ?? this.name;
+    }
 }
 
 export const TEXT_TYPE = new PropDescType({
@@ -373,6 +380,7 @@ export const TEXT_CHOICE_TYPE = new PropDescType({
 
 export const MULTI_CHOICE_TYPE = new PropDescType({
     name: 'multiChoice',
+    altName: 'textChoice',
     display: 'Text Choice',
     longDisplay: 'Text Choice (multiple select)',
     rangeURI: MULTI_CHOICE_RANGE_URI,

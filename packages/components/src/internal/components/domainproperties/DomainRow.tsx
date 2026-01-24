@@ -483,10 +483,10 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                                 id={createFormInputId(DOMAIN_FIELD_TYPE, domainIndex, index)}
                                                 name={createFormInputName(DOMAIN_FIELD_TYPE)}
                                                 onChange={this.onDataTypeChange}
-                                                value={field.dataType.name}
+                                                value={field.dataType.selectName}
                                             >
                                                 {isPrimaryKeyFieldLocked(field.lockType) ? (
-                                                    <option value={field.dataType.name}>
+                                                    <option value={field.dataType.selectName}>
                                                         {field.dataType.display}
                                                     </option>
                                                 ) : (
@@ -499,7 +499,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                                     )
                                                         .sort(naturalSortByProperty('display'))
                                                         .map(type => (
-                                                            <option key={type.name} value={type.name}>
+                                                            <option key={type.selectName} value={type.selectName}>
                                                                 {type.display}
                                                             </option>
                                                         ))

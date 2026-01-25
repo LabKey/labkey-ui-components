@@ -63,6 +63,7 @@ interface Props extends ITypeDependentProps {
     lockedSqlFragment?: string;
     queryName?: string;
     schemaName?: string;
+    allowMultiChoice: boolean;
 }
 
 interface ImplProps extends Props {
@@ -91,6 +92,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
         index,
         handleDataTypeChange,
         hasMultiValueInUse,
+        allowMultiChoice,
     } = props;
     const [selectedIndex, setSelectedIndex] = useState<number>();
     const [currentValue, setCurrentValue] = useState<string>();
@@ -277,21 +279,26 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                             onClick={toggleAddValues}
                             title={`Add Values (max ${maxValueCount})`}
                         />
-                        <input
-                            checked={field.dataType.name === 'multiChoice'}
-                            className="domain-text-choice-multi"
-                            disabled={isFieldFullyLocked(field.lockType) || hasMultiValueInUse}
-                            id={createFormInputId(DOMAIN_FIELD_TEXTCHOICE_MULTI, domainIndex, index)}
-                            onChange={onAllowMultiChange}
-                            type="checkbox"
-                        />
-                        <span
-                            title={
-                                hasMultiValueInUse ? 'Multiple values are currently used by at least one data row.' : ''
-                            }
-                        >
-                            Allow multiple selections
-                        </span>
+                        {allowMultiChoice && (
+                            <>
+                                <input
+                                    checked={field.dataType.name === 'multiChoice'}
+                                    className="domain-text-choice-multi"
+                                    disabled={isFieldFullyLocked(field.lockType) || hasMultiValueInUse}
+                                    id={createFormInputId(DOMAIN_FIELD_TEXTCHOICE_MULTI, domainIndex, index)}
+                                    onChange={onAllowMultiChange}
+                                    type="checkbox"
+                                />
+                                <span
+                                    title={
+                                        hasMultiValueInUse ? 'Multiple values are currently used by at least one data row.' : ''
+                                    }
+                                >
+                                    Allow multiple selections
+                                </span>
+                            </>
+                        )}
+
                     </div>
                     <div className="col-xs-6 col-lg-4">
                         {validValues.length > 0 && selectedIndex === undefined && (

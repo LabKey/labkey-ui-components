@@ -99,6 +99,7 @@ export interface DomainRowProps {
     queryName?: string;
     schemaName?: string;
     showDefaultValueSettings: boolean;
+    allowMultiChoiceField: boolean;
 }
 
 interface DomainRowState {
@@ -384,6 +385,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             defaultValueOptions,
             appPropertiesOnly,
             domainFormDisplayOptions,
+            allowMultiChoiceField,
             getDomainFields,
             domainContainerPath,
             schemaName,
@@ -576,6 +578,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                     queryName={queryName}
                                     schemaName={schemaName}
                                     showingModal={this.showingModal}
+                                    allowMultiChoiceField={allowMultiChoiceField}
                                 />
                             </div>
                         </Collapsible>

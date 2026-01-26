@@ -74,6 +74,7 @@ import { ConfirmDataTypeChangeModal } from './ConfirmDataTypeChangeModal';
 import { Collapsible } from './Collapsible';
 
 export interface DomainRowProps {
+    allowMultiChoiceField: boolean;
     allowUniqueConstraintProperties: boolean;
     appPropertiesOnly?: boolean;
     availableTypes: List<PropDescType>;
@@ -99,7 +100,6 @@ export interface DomainRowProps {
     queryName?: string;
     schemaName?: string;
     showDefaultValueSettings: boolean;
-    allowMultiChoiceField: boolean;
 }
 
 interface DomainRowState {
@@ -565,6 +565,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                         <Collapsible expanded={expanded}>
                             <div>
                                 <DomainRowExpandedOptions
+                                    allowMultiChoiceField={allowMultiChoiceField}
                                     appPropertiesOnly={appPropertiesOnly}
                                     domainContainerPath={domainContainerPath}
                                     domainFormDisplayOptions={domainFormDisplayOptions}
@@ -578,7 +579,6 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                     queryName={queryName}
                                     schemaName={schemaName}
                                     showingModal={this.showingModal}
-                                    allowMultiChoiceField={allowMultiChoiceField}
                                 />
                             </div>
                         </Collapsible>

@@ -34,6 +34,7 @@ import {
 export type JsonType = 'array' | 'boolean' | 'date' | 'float' | 'int' | 'string' | 'time';
 
 interface IPropDescType {
+    altName?: string;
     conceptURI: string;
     display: string;
     hideFromDomainRow?: boolean;
@@ -41,7 +42,6 @@ interface IPropDescType {
     lookupQuery?: string;
     lookupSchema?: string;
     name: string;
-    altName?: string;
     rangeURI: string;
     shortDisplay?: string;
 }

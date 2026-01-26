@@ -57,13 +57,13 @@ const VALUE_LOCKED = (
 );
 
 interface Props extends ITypeDependentProps {
+    allowMultiChoice: boolean;
     field: DomainField;
     handleDataTypeChange: (targetId: string, value: any) => void;
     lockedForDomain?: boolean;
     lockedSqlFragment?: string;
     queryName?: string;
     schemaName?: string;
-    allowMultiChoice: boolean;
 }
 
 interface ImplProps extends Props {
@@ -291,14 +291,15 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                 />
                                 <span
                                     title={
-                                        hasMultiValueInUse ? 'Multiple values are currently used by at least one data row.' : ''
+                                        hasMultiValueInUse
+                                            ? 'Multiple values are currently used by at least one data row.'
+                                            : ''
                                     }
                                 >
                                     Allow multiple selections
                                 </span>
                             </>
                         )}
-
                     </div>
                     <div className="col-xs-6 col-lg-4">
                         {validValues.length > 0 && selectedIndex === undefined && (

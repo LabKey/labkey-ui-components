@@ -1464,14 +1464,6 @@ export async function getTextChoiceInUseValues(
             if (!useCount[val]) {
                 useCount[val] = { count: 0, locked: false };
             }
-            useCount[val].count++;
-            useCount[val].locked = useCount[val].locked || rowLocked;
-        });
-
-        values.forEach(val => {
-            if (!useCount[val]) {
-                useCount[val] = { count: 0, locked: false };
-            }
             useCount[val].count += rowCount;
             useCount[val].locked = useCount[val].locked || rowLocked;
         });

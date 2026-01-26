@@ -24,9 +24,9 @@ import { DomainFieldLabel } from './DomainFieldLabel';
 
 import { TextChoiceAddValuesModal } from './TextChoiceAddValuesModal';
 import { getTextChoiceInUseValues, TextChoiceInUseValues } from './actions';
-import { createFormInputId, createFormInputName } from './utils';
+import { createFormInputId } from './utils';
 import { isFieldFullyLocked } from './propertiesUtil';
-import { MULTI_CHOICE_TYPE, PropDescType, TEXT_CHOICE_TYPE } from './PropDescType';
+import { MULTI_CHOICE_TYPE, TEXT_CHOICE_TYPE } from './PropDescType';
 
 const MIN_VALUES_FOR_SEARCH_COUNT = 2;
 const HELP_TIP_BODY = <p>The set of values to be used as drop-down options to restrict data entry into this field.</p>;

@@ -33,6 +33,7 @@ describe('TextChoiceOptions', () => {
         onChange: jest.fn(),
         handleDataTypeChange: jest.fn(),
         lockType: undefined,
+        allowMultiChoice: true,
     };
 
     function validate(
@@ -127,6 +128,11 @@ describe('TextChoiceOptions', () => {
         expect(multiCheckbox).toBeDisabled();
         const labelSpan = screen.getByText('Allow multiple selections');
         expect(labelSpan.getAttribute('title')).toBe('Multiple values are currently used by at least one data row.');
+    });
+
+    test('multi-choice checkbox not present', () => {
+        render(<TextChoiceOptionsImpl {...DEFAULT_PROPS} allowMultiChoice={false} />);
+        expect(document.querySelectorAll('input.domain-text-choice-multi')).toHaveLength(0);
     });
 
     test('with validValues, no selection', () => {

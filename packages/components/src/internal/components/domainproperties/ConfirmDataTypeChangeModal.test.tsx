@@ -26,11 +26,6 @@ import {
 } from './constants';
 
 describe('ConfirmDataTypeChangeModal', () => {
-    const stringType = {
-        rangeURI: 'http://www.w3.org/2001/XMLSchema#boolean',
-        dataType: TEXT_TYPE,
-    };
-
     const intType = {
         rangeURI: 'http://www.w3.org/2001/XMLSchema#int',
         dataType: INTEGER_TYPE,

@@ -437,11 +437,11 @@ describe('shouldShowConfirmDataTypeChange', () => {
         expect(shouldShowConfirmDataTypeChange(MULTI_CHOICE_RANGE_URI, STRING_RANGE_URI)).toBe(false);
     });
 
-    test('should return false for converting multichoice to textChoice', () => {
+    test('should return true for converting multichoice to textChoice', () => {
         expect(shouldShowConfirmDataTypeChange(MULTI_CHOICE_RANGE_URI, TEXT_CHOICE_CONCEPT_URI)).toBe(true);
     });
 
-    test('should return false for converting textChoice to multiChoice', () => {
+    test('should return true for converting textChoice to multiChoice', () => {
         expect(shouldShowConfirmDataTypeChange(TEXT_CHOICE_CONCEPT_URI, MULTI_CHOICE_RANGE_URI)).toBe(true);
     });
 });

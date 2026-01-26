@@ -120,6 +120,7 @@ export const BASE_APP_HELP_LINK = 'https://www.labkey.org/SampleManagerHelp/wiki
 
 // The enum values here should align with the ProductFeature.java enum values (some not currently used but included for completeness)
 export enum ProductFeature {
+    AdvancedWorkflow = 'AdvancedWorkflow',
     ApiKeys = 'ApiKeys',
     Assay = 'Assay',
     AssayQC = 'AssayQC',

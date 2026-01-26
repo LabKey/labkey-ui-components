@@ -384,6 +384,13 @@ export function isWorkflowEnabled(moduleContext?: ModuleContext): boolean {
     );
 }
 
+export function isAdvancedWorkflowEnabled(moduleContext?: ModuleContext): boolean {
+    return (
+        hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName, moduleContext) &&
+        isFeatureEnabled(ProductFeature.AdvancedWorkflow, moduleContext)
+    );
+}
+
 export function isDataChangeCommentRequirementFeatureEnabled(moduleContext?: ModuleContext): boolean {
     return isFeatureEnabled(ProductFeature.DataChangeCommentRequirement, moduleContext);
 }

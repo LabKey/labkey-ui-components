@@ -1,17 +1,36 @@
 import {
     BIOLOGICS_APP_PROPERTIES,
     FREEZER_MANAGER_APP_PROPERTIES,
+    LIMS_APP_PROPERTIES,
     ProductFeature,
     SAMPLE_MANAGER_APP_PROPERTIES,
 } from './app/constants';
-import {
-    BIOLOGICS_ENTERPRISE_PRODUCT_KEY,
-    BIOLOGICS_PRODUCT_ID,
-    BIOLOGICS_STARTER_PRODUCT_KEY,
-    SAMPLE_MANAGER_PRODUCT_ID,
-    SAMPLE_MANAGER_PROFESSIONAL_PRODUCT_KEY,
-    SAMPLE_MANAGER_STARTER_PRODUCT_KEY
-} from './app/products';
+import { BIOLOGICS_PRODUCT_ID, LIMS_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from './app/products';
+
+export const TEST_LK_LIMS_MODULE_CONTEXT = {
+    api: {
+        moduleNames: ['samplemanagement', 'inventory', 'assay', 'labbook'],
+    },
+    samplemanagement: {
+        productId: LIMS_APP_PROPERTIES.productId,
+    },
+    inventory: {
+        productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
+    },
+    core: {
+        productFeatures: [
+            ProductFeature.Workflow,
+            ProductFeature.ELN,
+            ProductFeature.Assay,
+            ProductFeature.ApiKeys,
+            ProductFeature.CalculatedFields,
+            ProductFeature.DataChangeCommentRequirement,
+            ProductFeature.CustomImportTemplates,
+            ProductFeature.AdvancedWorkflow,
+        ],
+        primaryApplicationId: LIMS_PRODUCT_ID,
+    }
+};
 
 export const TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT = {
     api: {

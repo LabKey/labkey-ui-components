@@ -50,6 +50,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Added hasMixedValue prop support across all input components (TextInput, SelectInput, CheckboxInput, DatePickerInput, FileInput, TextAreaInput, AmountUnitInput)
   - Updated BulkUpdateForm and BulkAddUpdateForm to pass conflicting fields information to form inputs
 
+### version 7.7.5
+*Released*: 22 January 2026
+- [GitHub Issue #798](https://github.com/LabKey/internal-issues/issues/798) - add product feature flag for advanced workflow
+
 ### version 7.7.4
 *Released*: 8 January 2026
 - [GitHub Issue #723](https://github.com/LabKey/internal-issues/issues/723)

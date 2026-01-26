@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   - InferDomain API call and response to include distinctValues for specified column keys
   - EntityIdCreationModel.getSchemaQuery to include optional targetQueryName param
 
+### version 7.13.1
+*Released*: 26 January 2026
+- Merge from release26.1-SNAPSHOT to develop
+    - includes changes from 7.7.5 #1926
+
 ### version 7.13.0
 *Released*: 20 January 2026
 - Multi value text choices
@@ -55,6 +60,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Modified getCommonDataValues utility to return both common field values and a list of fields with conflicting values
   - Added hasMixedValue prop support across all input components (TextInput, SelectInput, CheckboxInput, DatePickerInput, FileInput, TextAreaInput, AmountUnitInput)
   - Updated BulkUpdateForm and BulkAddUpdateForm to pass conflicting fields information to form inputs
+
+### version 7.7.5
+*Released*: 22 January 2026
+- [GitHub Issue #798](https://github.com/LabKey/internal-issues/issues/798) - add product feature flag for advanced workflow
 
 ### version 7.7.4
 *Released*: 8 January 2026

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.13.1
+*Released*: 26 January 2026
+- Merge from release26.1-SNAPSHOT to develop
+    - includes changes from 7.7.5 #1926
+
 ### version 7.13.0
 *Released*: 20 January 2026
 - Multi value text choices

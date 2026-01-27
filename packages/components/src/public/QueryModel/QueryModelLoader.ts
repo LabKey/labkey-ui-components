@@ -52,7 +52,7 @@ export interface RowsResponse {
     orderedRows: string[];
     rowCount: number;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    rows: { [key: string]: any };
+    rows: Record<string, any>;
 }
 
 export interface QueryModelLoader {

@@ -310,7 +310,7 @@ export function withQueryModels<Props>(
     };
 
     class ComponentWithQueryModels extends PureComponent<WrappedProps, State> {
-        // N.B. This is very similar to useRequestHandler() but we cannot use a hook here so we have to use class
+        // N.B. This is very similar to useRequestHandler() but we cannot use a hook here, so we have to use class
         // variables instead. Additionally, we cannot make use of React.createRef() since that returns an immutable
         // reference unlike React.useRef() which is mutable.
 
@@ -538,7 +538,12 @@ export function withQueryModels<Props>(
             );
 
             try {
-                const selections = await loadSelections(this.state.queryModels[id]);
+                const requestType = 'loadSelections';
+                const selections = await loadSelections(
+                    this.state.queryModels[id],
+                    this.getRequestHandler(id, requestType)
+                );
+                this.resetRequestHandler(id, requestType);
 
                 this.setState(
                     produce<State>((draft: WritableDraft<State>) => {

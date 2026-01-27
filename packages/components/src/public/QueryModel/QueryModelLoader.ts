@@ -84,7 +84,7 @@ export interface QueryModelLoader {
      * Loads the selected RowIds (or PK values) for the specified model.
      * @param model: QueryModel
      */
-    loadSelections: (model: QueryModel) => Promise<Set<string>>;
+    loadSelections: (model: QueryModel, requestHandler?: RequestHandler) => Promise<Set<string>>;
 
     /**
      * Replaces the currently selected items with the given set of selections.
@@ -158,7 +158,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
             });
         }
     },
-    async loadSelections(model) {
+    async loadSelections(model, requestHandler) {
         const { containerFilter, selectionKey, schemaQuery, filters, queryParameters, selectionContainerPath } = model;
         const result = await getSelected(
             selectionKey,
@@ -167,7 +167,8 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
             filters,
             selectionContainerPath,
             queryParameters,
-            containerFilter
+            containerFilter,
+            requestHandler
         );
         return new Set(result?.selected ?? []);
     },

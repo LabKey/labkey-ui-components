@@ -52,6 +52,7 @@ describe('FilterStatus', () => {
     };
     const sortAction = {
         action: new SortAction(),
+        value: 'sort',
     };
 
     function validate(valueCount: number, filterCount: number): void {
@@ -130,6 +131,21 @@ describe('FilterStatus', () => {
         expect(document.querySelectorAll('.filter-status-value')[0].textContent).toBe('test1');
         expect(document.querySelectorAll('.filter-status-value')[1].textContent).toBe('test2');
         expect(document.querySelectorAll('.fa-close')).toHaveLength(0);
+        expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(0);
+    });
+
+    test('with add filter', async () => {
+        render(
+            <FilterStatus
+                {...DEFAULT_PROPS}
+                actionValues={[filterAction1]}
+                lockReadOnlyForDelete
+                onAddFilterClick={jest.fn()}
+            />
+        );
+        expect(document.querySelectorAll('.fa-table')).toHaveLength(0);
+        expect(document.querySelectorAll('.fa-search')).toHaveLength(0);
+        expect(document.querySelectorAll('.fa-filter')).toHaveLength(2);
         expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(0);
     });
 });

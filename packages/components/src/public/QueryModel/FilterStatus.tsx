@@ -12,11 +12,10 @@ interface Props {
     onClick: (actionValue: ActionValue, event: any) => void;
     onRemove: (actionValueIndex: number, event: any) => void;
     onRemoveAll?: () => void;
-    showAdd?: boolean;
 }
 
 export const FilterStatus: FC<Props> = memo(props => {
-    const { actionValues, onClick, onRemove, onRemoveAll, lockReadOnlyForDelete, showAdd, onAddFilterClick } = props;
+    const { actionValues, onClick, onRemove, onRemoveAll, lockReadOnlyForDelete, onAddFilterClick } = props;
     const filterCount = actionValues?.filter(a => a.action.keyword === 'filter').length;
     const showRemoveAll = actionValues
         ? filterActionValuesByType(actionValues, 'filter', lockReadOnlyForDelete).length > 1
@@ -63,7 +62,7 @@ export const FilterStatus: FC<Props> = memo(props => {
                         );
                     })}
 
-            {showAdd && onAddFilterClick && (
+            {onAddFilterClick && (
                 <button
                     className={classNames('btn btn-default', { 'margin-left': filterCount > 0 })}
                     onClick={onAddFilterClick}

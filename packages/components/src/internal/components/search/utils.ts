@@ -412,6 +412,9 @@ export function getUpdatedChooseValuesFilter(
     if (isArrayFilter) {
         if ((newValue === ALL_VALUE_DISPLAY && !check) || newCheckedValues.length === 0)
             return Filter.create(fieldKey, [], oldFilter.getFilterType());
+        if (allValues && newCheckedValues.length >= allValues.length) {
+            return Filter.create(fieldKey, allValues.filter(v => v !== ALL_VALUE_DISPLAY), oldFilter.getFilterType());
+        }
         return Filter.create(fieldKey, newCheckedValues, oldFilter.getFilterType());
     }
 

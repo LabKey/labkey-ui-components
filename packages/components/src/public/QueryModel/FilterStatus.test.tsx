@@ -148,4 +148,17 @@ describe('FilterStatus', () => {
         expect(document.querySelectorAll('.fa-filter')).toHaveLength(2);
         expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(0);
     });
+
+    test('without actionValues, with add', async () => {
+        render(
+            <FilterStatus
+                {...DEFAULT_PROPS}
+                actionValues={undefined}
+                lockReadOnlyForDelete
+                onAddFilterClick={jest.fn()}
+            />
+        );
+        expect(document.querySelectorAll('.filter-status-value')).toHaveLength(0);
+        expect(document.querySelectorAll('.fa-filter')).toHaveLength(1);
+    });
 });

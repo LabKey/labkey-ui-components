@@ -1389,6 +1389,28 @@ export type TextChoiceInUseValues = {
     useCount: Record<string, { count: number; locked: boolean }>;
 };
 
+function processTextChoiceRow( value: any, isMultiField: boolean, isLocked: boolean, rowCount: number, useCount: Record<string, { count: number; locked: boolean }>, hasMultiValue: boolean ): boolean {
+    if (!isMultiField && !isValidTextChoiceValue(value)) return hasMultiValue;
+
+    const values: string[] = [];
+    if (isMultiField && Array.isArray(value)) {
+        values.push(...value);
+        hasMultiValue = hasMultiValue || value.length > 1;
+    } else {
+        values.push(value);
+    }
+
+    values.forEach(val => {
+        if (!useCount[val]) {
+            useCount[val] = { count: 0, locked: false };
+        }
+        useCount[val].count += rowCount;
+        useCount[val].locked = useCount[val].locked || isLocked;
+    });
+
+    return hasMultiValue;
+}
+
 export async function getTextChoiceInUseValues(
     field: DomainField,
     schemaName: string,
@@ -1413,61 +1435,23 @@ export async function getTextChoiceInUseValues(
 
         result.rows.forEach(row => {
             const value = caseInsensitive(row, fieldName)?.value;
-            if (!isMultiField && !isValidTextChoiceValue(value)) return;
-
-            const values: string[] = [];
-            if (isMultiField && Array.isArray(value)) {
-                values.push(...value);
-                hasMultiValue = hasMultiValue || value.length > 1;
-            } else {
-                values.push(value);
-            }
-
             const rowLocked = caseInsensitive(row, 'SampleState/StatusType').value === 'Locked';
-            values.forEach(val => {
-                if (!useCount[val]) {
-                    useCount[val] = { count: 0, locked: false };
-                }
-                useCount[val].count++;
-                useCount[val].locked = useCount[val].locked || rowLocked;
-            });
+            hasMultiValue = processTextChoiceRow(value, isMultiField, rowLocked, 1, useCount, hasMultiValue);
         });
-        return {
-            useCount,
-            hasMultiValue,
-        };
+    } else {
+        const response = await executeSql({
+            containerFilter,
+            schemaName,
+            sql: `SELECT "${fieldName}", ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE "${fieldName}" IS NOT NULL GROUP BY "${fieldName}"`,
+        });
+
+        response.rows.forEach(row => {
+            const value = caseInsensitive(row, fieldName)?.value;
+            const rowLocked = row.IsLocked.value === 1;
+            const rowCount = row.RowCount.value;
+            hasMultiValue = processTextChoiceRow(value, isMultiField, rowLocked, rowCount, useCount, hasMultiValue);
+        });
     }
-
-    const response = await executeSql({
-        containerFilter,
-        schemaName,
-        sql: `SELECT "${fieldName}", ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE "${fieldName}" IS NOT NULL GROUP BY "${fieldName}"`,
-    });
-
-    response.rows.forEach(row => {
-        const value = caseInsensitive(row, fieldName)?.value;
-
-        if (!isMultiField && !isValidTextChoiceValue(value)) return;
-
-        const values: string[] = [];
-        if (isMultiField && Array.isArray(value)) {
-            values.push(...value);
-            hasMultiValue = hasMultiValue || value.length > 1;
-        } else {
-            values.push(value);
-        }
-
-        const rowLocked = row.IsLocked.value === 1;
-        const rowCount = row.RowCount.value;
-
-        values.forEach(val => {
-            if (!useCount[val]) {
-                useCount[val] = { count: 0, locked: false };
-            }
-            useCount[val].count += rowCount;
-            useCount[val].locked = useCount[val].locked || rowLocked;
-        });
-    });
 
     return {
         useCount,

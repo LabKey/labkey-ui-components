@@ -1740,7 +1740,7 @@ export function isPropertyTypeAllowed(
     showFilePropertyType: boolean,
     showStudyPropertyTypes: boolean
 ): boolean {
-    if (type.hideFromDomainRow) return false;
+    if (type === MULTI_CHOICE_TYPE) return false;
 
     if (type === FILE_TYPE) return showFilePropertyType;
 

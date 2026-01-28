@@ -575,6 +575,7 @@ describe('isEmptyValue', () => {
 const distinctValues = ['[All]', '[blank]', 'ed', 'ned', 'ted', 'red', 'bed'];
 const distinctValuesNoBlank = ['[All]', 'ed', 'ned', 'ted', 'red', 'bed'];
 const distinctValuesExcludeAll = ['[blank]', 'ed', 'ned', 'ted', 'red', 'bed'];
+const distinctValuesExcludeBlankAll = ['ed', 'ned', 'ted', 'red', 'bed'];
 const fieldKey = 'thing';
 
 const checkedOne = Filter.create(fieldKey, 'ed');
@@ -901,6 +902,47 @@ describe('getUpdatedChooseValuesFilter', () => {
             'isnonblank'
         );
     });
+
+    test('check all, array', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, ALL_VALUE_DISPLAY, true, arrayContainsAll),
+            'arraycontainsall',
+            distinctValuesExcludeBlankAll
+        );
+    });
+
+    test('check some value, array', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, 'ed', true, arrayContainsAll),
+            'arraycontainsall',
+            ['red', 'ted', 'ned', 'ed']
+        );
+    });
+
+    test('check some value, array', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, 'ted', false, arrayContainsAll),
+            'arraycontainsall',
+            ['red', 'ned']
+        );
+    });
+
+    test('check all values one by one, array', () => {
+        const updated = getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, 'ed', true, arrayContainsAll);
+        const allChecked = getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, 'bed', true, updated);
+        validate(
+            allChecked,
+            'arraycontainsall',
+            distinctValuesExcludeBlankAll
+        );
+        const allCheckedThenCheckAll = getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, ALL_VALUE_DISPLAY, true, allChecked);
+        validate(
+            allCheckedThenCheckAll,
+            'arraycontainsall',
+            distinctValuesExcludeBlankAll
+        );
+    });
+
 });
 
 describe('isValidFilterField', () => {

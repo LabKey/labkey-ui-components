@@ -37,7 +37,6 @@ interface IPropDescType {
     altName?: string;
     conceptURI: string;
     display: string;
-    hideFromDomainRow?: boolean;
     longDisplay?: string;
     lookupQuery?: string;
     lookupSchema?: string;
@@ -58,7 +57,6 @@ export class PropDescType
         lookupSchema: undefined,
         lookupQuery: undefined,
         altName: undefined,
-        hideFromDomainRow: false,
     })
     implements IPropDescType
 {
@@ -72,7 +70,6 @@ export class PropDescType
     declare shortDisplay: string;
     declare lookupSchema?: string;
     declare lookupQuery?: string;
-    declare hideFromDomainRow?: boolean;
 
     static fromName(name: string): PropDescType {
         return PROP_DESC_TYPES.find(type => type.name === name);
@@ -384,7 +381,6 @@ export const MULTI_CHOICE_TYPE = new PropDescType({
     display: 'Text Choice',
     longDisplay: 'Text Choice (multiple select)',
     rangeURI: MULTI_CHOICE_RANGE_URI,
-    hideFromDomainRow: true,
 });
 
 export const SMILES_TYPE = new PropDescType({

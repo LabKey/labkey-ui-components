@@ -275,6 +275,49 @@ function applySavedSettings(id: string, model: QueryModel): QueryModel {
     return model;
 }
 
+// N.B. This is similar to useRequestHandler() but we cannot use a hook here, so we have to use class
+// variables instead. Additionally, we cannot make use of React.createRef() since that returns an immutable
+// reference unlike React.useRef() which is mutable.
+class RequestManager {
+    private _requests: Record<string, Record<string, undefined | XMLHttpRequest>> = {};
+
+    public cancelAllRequests = (): void => {
+        Object.values(this._requests).forEach(allReq => {
+            Object.values(allReq).forEach(req => {
+                req?.abort();
+            });
+        });
+        this._requests = {};
+    };
+
+    public getRequestHandler(id: string, requestType: string): RequestHandler {
+        return request => {
+            if (!this._requests.hasOwnProperty(id)) {
+                this._requests[id] = {};
+            }
+
+            // Abort and replace existing request of this type
+            this._requests[id][requestType]?.abort();
+            this._requests[id][requestType] = request;
+
+            // Remove the request once the request has completed
+            request.addEventListener(
+                'loadend',
+                () => {
+                    if (this._requests[id]?.[requestType] === request) {
+                        delete this._requests[id][requestType];
+
+                        if (Object.keys(this._requests[id]).length === 0) {
+                            delete this._requests[id];
+                        }
+                    }
+                },
+                { once: true }
+            );
+        };
+    }
+}
+
 /**
  * A wrapper for LabKey selectRows API. For in-depth documentation and examples see components/docs/QueryModel.md.
  * @param ComponentToWrap A component that implements generic Props and InjectedQueryModels.
@@ -310,40 +353,9 @@ export function withQueryModels<Props>(
     };
 
     class ComponentWithQueryModels extends PureComponent<WrappedProps, State> {
-        // N.B. This is very similar to useRequestHandler() but we cannot use a hook here, so we have to use class
-        // variables instead. Additionally, we cannot make use of React.createRef() since that returns an immutable
-        // reference unlike React.useRef() which is mutable.
-
-        // TODO: Not married to this structure, just first thoughts on coalescing requests by model.
-        private _requests: Record<string, Record<string, undefined | XMLHttpRequest>> = {};
-
-        private cancelAllRequests = (): void => {
-            Object.values(this._requests).forEach(allReq => {
-                Object.values(allReq).forEach(req => {
-                    req?.abort();
-                });
-            });
-            this._requests = {};
-        };
-
-        private getRequestHandler =
-            (id: string, requestType: string): RequestHandler =>
-            request => {
-                if (!this._requests.hasOwnProperty(id)) {
-                    this._requests[id] = {};
-                }
-
-                this._requests[id][requestType]?.abort();
-                this._requests[id][requestType] = request;
-            };
-
-        private resetRequestHandler = (id: string, requestType: string): void => {
-            if (this._requests[id] !== undefined) {
-                this._requests[id][requestType] = undefined;
-            }
-        };
-
         static defaultProps;
+
+        private requestManager = new RequestManager();
 
         constructor(props: WrappedProps) {
             super(props);
@@ -449,7 +461,7 @@ export function withQueryModels<Props>(
         }
 
         componentWillUnmount(): void {
-            this.cancelAllRequests();
+            this.requestManager.cancelAllRequests();
         }
 
         actions: Actions;
@@ -541,9 +553,8 @@ export function withQueryModels<Props>(
                 const requestType = 'loadSelections';
                 const selections = await loadSelections(
                     this.state.queryModels[id],
-                    this.getRequestHandler(id, requestType)
+                    this.requestManager.getRequestHandler(id, requestType)
                 );
-                this.resetRequestHandler(id, requestType);
 
                 this.setState(
                     produce<State>((draft: WritableDraft<State>) => {
@@ -780,8 +791,10 @@ export function withQueryModels<Props>(
 
             try {
                 const requestType = 'loadRows';
-                const result = await loadRows(this.state.queryModels[id], this.getRequestHandler(id, requestType));
-                this.resetRequestHandler(id, requestType);
+                const result = await loadRows(
+                    this.state.queryModels[id],
+                    this.requestManager.getRequestHandler(id, requestType)
+                );
                 const { messages, rows, orderedRows, rowCount } = result;
 
                 this.setState(
@@ -903,9 +916,8 @@ export function withQueryModels<Props>(
                     maxRows: 1,
                     offset: 0,
                     sort: undefined,
-                    requestHandler: this.getRequestHandler(id, requestType),
+                    requestHandler: this.requestManager.getRequestHandler(id, requestType),
                 });
-                this.resetRequestHandler(id, requestType);
 
                 this.setState(
                     produce<State>((draft: WritableDraft<State>) => {
@@ -997,9 +1009,6 @@ export function withQueryModels<Props>(
             reloadTotalCount = false,
             selectionsForReplace?: string[]
         ): void => {
-            // TODO: Consider how to incorporate stale request handling.
-            //   Feels like we should never be cancelling query info loading -- just to keep it simple. Already cached, etc.
-            //   Definitely want to cancel loading selections. Need to make sure caller is requeuing the load.
             if (loadQueryInfo) {
                 // Postpone loading any rows or selections if we're loading the QueryInfo.
                 this.loadQueryInfo(id, loadRows, loadSelections);

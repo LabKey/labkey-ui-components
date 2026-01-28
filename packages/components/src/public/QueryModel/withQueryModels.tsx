@@ -278,8 +278,9 @@ function applySavedSettings(id: string, model: QueryModel): QueryModel {
 // N.B. This is similar to useRequestHandler() but we cannot use a hook here, so we have to use class
 // variables instead. Additionally, we cannot make use of React.createRef() since that returns an immutable
 // reference unlike React.useRef() which is mutable.
-class RequestManager {
-    private _requests: Record<string, Record<string, undefined | XMLHttpRequest>> = {};
+// Exported for unit tests
+export class RequestManager {
+    _requests: Record<string, Record<string, undefined | XMLHttpRequest>> = {};
 
     public cancelAllRequests = (): void => {
         Object.values(this._requests).forEach(allReq => {
@@ -292,22 +293,28 @@ class RequestManager {
 
     public getRequestHandler(id: string, requestType: string): RequestHandler {
         return request => {
-            if (!this._requests.hasOwnProperty(id)) {
-                this._requests[id] = {};
+            const bucket = this._requests[id] || (this._requests[id] = {});
+
+            // Abort in-flight request
+            bucket[requestType]?.abort();
+
+            // If the bucket was detached during the abort() call,
+            // then re-attach it before assigning the new request.
+            if (this._requests[id] !== bucket) {
+                this._requests[id] = bucket;
             }
 
-            // Abort and replace existing request of this type
-            this._requests[id][requestType]?.abort();
-            this._requests[id][requestType] = request;
+            bucket[requestType] = request;
 
             // Remove the request once the request has completed
             request.addEventListener(
                 'loadend',
                 () => {
-                    if (this._requests[id]?.[requestType] === request) {
-                        delete this._requests[id][requestType];
+                    const bucket_ = this._requests[id];
+                    if (bucket_?.[requestType] === request) {
+                        delete bucket_[requestType];
 
-                        if (Object.keys(this._requests[id]).length === 0) {
+                        if (Object.keys(bucket_).length === 0) {
                             delete this._requests[id];
                         }
                     }

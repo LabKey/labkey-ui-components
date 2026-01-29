@@ -572,6 +572,7 @@ export function withQueryModels<Props>(
                     })
                 );
             } catch (error) {
+                if (error?.status === 0) return;
                 this.setSelectionsError(id, error, 'loading');
             }
         };
@@ -797,11 +798,15 @@ export function withQueryModels<Props>(
             );
 
             try {
-                const requestType = 'loadRows';
-                const result = await loadRows(
-                    this.state.queryModels[id],
-                    this.requestManager.getRequestHandler(id, requestType)
-                );
+                // If we have selectionsForReplace, then skip request cancellation optimization
+                let requestHandler: RequestHandler | undefined;
+                if (!selectionsForReplace) {
+                    // Key requests as loadRows|<loadSelections> so loadSelection is respected
+                    const requestType = ['loadRows', loadSelections].join('|');
+                    requestHandler = this.requestManager.getRequestHandler(id, requestType);
+                }
+
+                const result = await loadRows(this.state.queryModels[id], requestHandler);
                 const { messages, rows, orderedRows, rowCount } = result;
 
                 this.setState(

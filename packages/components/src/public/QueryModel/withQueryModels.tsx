@@ -557,10 +557,9 @@ export function withQueryModels<Props>(
             );
 
             try {
-                const requestType = 'loadSelections';
                 const selections = await loadSelections(
                     this.state.queryModels[id],
-                    this.requestManager.getRequestHandler(id, requestType)
+                    this.requestManager.getRequestHandler(id, 'loadSelections')
                 );
 
                 this.setState(
@@ -801,9 +800,7 @@ export function withQueryModels<Props>(
                 // If we have selectionsForReplace, then skip request cancellation optimization
                 let requestHandler: RequestHandler | undefined;
                 if (!selectionsForReplace) {
-                    // Key requests as loadRows|<loadSelections> so loadSelection is respected
-                    const requestType = ['loadRows', loadSelections].join('|');
-                    requestHandler = this.requestManager.getRequestHandler(id, requestType);
+                    requestHandler = this.requestManager.getRequestHandler(id, 'loadRows');
                 }
 
                 const result = await loadRows(this.state.queryModels[id], requestHandler);
@@ -917,7 +914,6 @@ export function withQueryModels<Props>(
                     queryInfo?.getPkCols()
                 );
 
-                const requestType = 'loadTotalCount';
                 const { rowCount } = await selectRows({
                     ...loadRowsConfig,
                     columns,
@@ -928,7 +924,7 @@ export function withQueryModels<Props>(
                     maxRows: 1,
                     offset: 0,
                     sort: undefined,
-                    requestHandler: this.requestManager.getRequestHandler(id, requestType),
+                    requestHandler: this.requestManager.getRequestHandler(id, 'loadTotalCount'),
                 });
 
                 this.setState(

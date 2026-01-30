@@ -16,7 +16,7 @@
 import { fromJS, List } from 'immutable';
 import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
 
-import { resolveKey, SchemaQuery } from '../public/SchemaQuery';
+import { SchemaQuery } from '../public/SchemaQuery';
 
 import { Actions } from '../public/QueryModel/withQueryModels';
 
@@ -63,34 +63,33 @@ export function selectAll(
     });
 }
 
-export function getGridIdsFromTransactionId(
+export async function getGridIdsFromTransactionId(
     transactionAuditId: number | string,
     dataType: string,
     containerPath?: string
 ): Promise<string[]> {
-    if (!transactionAuditId) {
-        return;
-    }
-    const failureMsg = 'There was a problem retrieving the ' + dataType + ' from the last action.';
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: ActionURL.buildURL('audit', 'getTransactionRowIds.api'),
-            params: { transactionAuditId, dataType, containerFilter: getContainerFilterForFolder(containerPath) },
-            success: Utils.getCallbackWrapper(response => {
-                if (response.success) {
-                    // The server returns numbers, so we coerce to string; If we don't it can lead to bugs (and has).
-                    resolve(response.rowIds.map((rowId: number) => rowId.toString()));
-                } else {
-                    console.error(failureMsg + ' (transactionAuditId = ' + transactionAuditId + ')', response);
-                    reject(failureMsg);
-                }
-            }),
-            failure: Utils.getCallbackWrapper(error => {
-                console.error(failureMsg + ' (transactionAuditId = ' + transactionAuditId + ')', error);
-                reject(failureMsg);
-            }),
-        });
+    if (!transactionAuditId) return;
+
+    const failureMsg = `There was a problem retrieving the ${dataType} from the last action.`;
+    const errorLogMsg = `${failureMsg} (transactionAuditId = ${transactionAuditId})`;
+
+    const response = await request<{ rowIds: number[]; success: boolean }>({
+        url: ActionURL.buildURL('audit', 'getTransactionRowIds.api'),
+        params: {
+            containerFilter: getContainerFilterForFolder(containerPath),
+            dataType,
+            transactionAuditId,
+        },
+        errorLogMsg,
     });
+
+    if (!response.success) {
+        console.error(errorLogMsg, response);
+        throw new Error(failureMsg);
+    }
+
+    // The server returns numbers, so we coerce to string; If we don't, it can lead to bugs (and has).
+    return response.rowIds.map(rowId => rowId.toString());
 }
 
 export async function selectGridIdsFromTransactionId(
@@ -404,7 +403,7 @@ export async function getSelectedDataDeprecated(
     viewName?: string,
     keyColumn = 'RowId'
 ): Promise<GridResponse> {
-    const { models, orderedModels } = await selectRowsDeprecated({
+    const { key, models, orderedModels } = await selectRowsDeprecated({
         schemaName,
         queryName,
         viewName,
@@ -415,11 +414,9 @@ export async function getSelectedDataDeprecated(
         offset: 0,
     });
 
-    const dataKey = resolveKey(schemaName, queryName);
-
     return {
-        data: fromJS(models[dataKey]),
-        dataIds: List(orderedModels[dataKey]),
+        data: fromJS(models[key]),
+        dataIds: orderedModels[key],
     };
 }
 
@@ -552,8 +549,7 @@ export async function fetchCharts(schemaQuery: SchemaQuery, containerPath?: stri
     const { queryName, schemaName } = schemaQuery;
     const errorLogMsg = `Unable to get report info for schema/query: ${schemaName}/${queryName}`;
 
-    // TODO: Improve typings
-    const response = await request<any>({
+    const response = await request<{ reports: Partial<DataViewInfo[]>; success: boolean }>({
         url: ActionURL.buildURL('reports', 'getReportInfos.api', containerPath, {
             schemaName,
             queryName,
@@ -562,6 +558,7 @@ export async function fetchCharts(schemaQuery: SchemaQuery, containerPath?: stri
     });
 
     if (!response.success) {
+        console.error(errorLogMsg, response);
         throw new Error(errorLogMsg);
     }
 

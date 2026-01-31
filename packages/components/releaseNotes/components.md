@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.14.0
+*Released*: 30 January 2026
+- Update `withQueryModels` to track and cancel requests for `loadRows`, `loadSelections` and `loadTotalCount`
+- Add `RequestHandler` handling for `selectRows` and `selectRowsDeprecated`
+- Skip error logging when request is aborted
+- Update a few endpoint wrappers to use `request()`
+
 ### version 7.13.1
 *Released*: 26 January 2026
 - Merge from release26.1-SNAPSHOT to develop

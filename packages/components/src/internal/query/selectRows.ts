@@ -5,12 +5,14 @@ import { QueryInfo } from '../../public/QueryInfo';
 import { URLResolver } from '../url/URLResolver';
 
 import { getContainerFilter, getQueryDetails, isSelectRowMetadataRequired } from './api';
+import { RequestHandler } from '../request';
 
 export interface SelectRowsOptions
     extends Omit<
         Query.SelectRowsOptions,
         'failure' | 'queryName' | 'requiredVersion' | 'schemaName' | 'scope' | 'success'
     > {
+    requestHandler?: RequestHandler;
     schemaQuery: SchemaQuery;
 }
 
@@ -37,6 +39,7 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
         includeMetadata,
         includeTotalCount = false, // default to false to improve performance
         method = 'POST',
+        requestHandler,
         schemaQuery,
         ...selectRowsOptions
     } = options;
@@ -46,7 +49,7 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
     const [queryInfo, response] = await Promise.all([
         getQueryDetails({ containerPath: options.containerPath, schemaQuery }),
         new Promise<Query.Response>((resolve, reject) => {
-            Query.selectRows({
+            const request_ = Query.selectRows({
                 ...selectRowsOptions,
                 columns,
                 containerFilter,
@@ -61,7 +64,9 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
                     resolve(response_);
                 },
                 failure: (data, request) => {
-                    console.error('There was a problem retrieving the data', data);
+                    if (request.status !== 0) {
+                        console.error('There was a problem retrieving the data', data);
+                    }
                     reject({
                         exceptionClass: data.exceptionClass,
                         message: data.exception,
@@ -70,6 +75,7 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
                     });
                 },
             });
+            requestHandler?.(request_);
         }),
     ]);
 

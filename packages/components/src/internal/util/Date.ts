@@ -797,8 +797,24 @@ export function isDateBetween(date: Date, start: Date, end: Date, dateOnlyCompar
 }
 
 const RELATIVE_DAYS_REGEX = /^[+-]\d+d$/;
-export function isRelativeDateFilterValue(val: string): boolean {
-    return typeof val === 'string' && RELATIVE_DAYS_REGEX.test(val);
+const RELATIVE_DAYS_ENDSWITH_D_REGEX = /^[+-]?\d*d$/;
+const RELATIVE_DAYS_STARTSWITH_SIGN_REGEX = /^[+-]\d*d?$/;
+const RELATIVE_DAYS_DAYS_ONLY_REGEX = /^[+-]?\d+d?$/;
+export function isRelativeDateFilterValue(val: string, relaxedMatch?: boolean): boolean {
+    if (typeof val === 'string' && RELATIVE_DAYS_REGEX.test(val)) {
+        return true;
+    }
+    else if (typeof val === 'string' && relaxedMatch) {
+        // GitHub Issue 779: Cannot Edit Some Sample Finder Searches
+        if (RELATIVE_DAYS_ENDSWITH_D_REGEX.test(val))
+            return true;
+        if (RELATIVE_DAYS_STARTSWITH_SIGN_REGEX.test(val))
+            return true;
+        if (RELATIVE_DAYS_DAYS_ONLY_REGEX.test(val))
+            return true;
+    }
+
+    return false;
 }
 
 export function getParsedRelativeDateStr(dateVal: string): { days: number; positive: boolean } {

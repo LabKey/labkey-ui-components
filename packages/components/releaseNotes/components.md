@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.X
+*Released*: X 2026
+- GitHub Issue 779: Cannot Edit Relative Dates in Sample Finder
+    - Allow intermediate editing state for relative date values in DatePickerInput
+
 ### version 7.14.0
 *Released*: 30 January 2026
 - Update `withQueryModels` to track and cancel requests for `loadRows`, `loadSelections` and `loadTotalCount`

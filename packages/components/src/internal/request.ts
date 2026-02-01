@@ -22,7 +22,7 @@ export function handleRequestFailure(reject: (error: any) => void, logMsg?: stri
         (error, response) => {
             // Appends the response's status code to the error object
             const errorWithStatus = { ...error, status: response?.status };
-            if (logMsg) {
+            if (logMsg && errorWithStatus.status !== 0) {
                 console.error(logMsg, errorWithStatus);
             }
             reject(errorWithStatus);

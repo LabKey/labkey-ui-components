@@ -19,6 +19,7 @@ import { incrementClientSideMetricCount } from '../../internal/actions';
 
 import { filterArraysEqual, getSelectRowCountColumnsStr, sortArraysEqual } from './utils';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
+import { RequestHandler } from '../../internal/request';
 import {
     getSettingsFromLocalStorage,
     GridMessage,
@@ -274,6 +275,56 @@ function applySavedSettings(id: string, model: QueryModel): QueryModel {
     return model;
 }
 
+// N.B. This is similar to useRequestHandler() but we cannot use a hook here, so we have to use class
+// variables instead. Additionally, we cannot make use of React.createRef() since that returns an immutable
+// reference unlike React.useRef() which is mutable.
+// Exported for unit tests
+export class RequestManager {
+    _requests: Record<string, Record<string, undefined | XMLHttpRequest>> = {};
+
+    public cancelAllRequests = (): void => {
+        Object.values(this._requests).forEach(allReq => {
+            Object.values(allReq).forEach(req => {
+                req?.abort();
+            });
+        });
+        this._requests = {};
+    };
+
+    public getRequestHandler(id: string, requestType: string): RequestHandler {
+        return request => {
+            const bucket = this._requests[id] || (this._requests[id] = {});
+
+            // Abort in-flight request
+            bucket[requestType]?.abort();
+
+            // If the bucket was detached during the abort() call,
+            // then re-attach it before assigning the new request.
+            if (this._requests[id] !== bucket) {
+                this._requests[id] = bucket;
+            }
+
+            bucket[requestType] = request;
+
+            // Remove the request once the request has completed
+            request.addEventListener(
+                'loadend',
+                () => {
+                    const bucket_ = this._requests[id];
+                    if (bucket_?.[requestType] === request) {
+                        delete bucket_[requestType];
+
+                        if (Object.keys(bucket_).length === 0) {
+                            delete this._requests[id];
+                        }
+                    }
+                },
+                { once: true }
+            );
+        };
+    }
+}
+
 /**
  * A wrapper for LabKey selectRows API. For in-depth documentation and examples see components/docs/QueryModel.md.
  * @param ComponentToWrap A component that implements generic Props and InjectedQueryModels.
@@ -310,6 +361,8 @@ export function withQueryModels<Props>(
 
     class ComponentWithQueryModels extends PureComponent<WrappedProps, State> {
         static defaultProps;
+
+        private requestManager = new RequestManager();
 
         constructor(props: WrappedProps) {
             super(props);
@@ -414,6 +467,10 @@ export function withQueryModels<Props>(
             }
         }
 
+        componentWillUnmount(): void {
+            this.requestManager.cancelAllRequests();
+        }
+
         actions: Actions;
 
         bindURL = (id: string): void => {
@@ -500,7 +557,10 @@ export function withQueryModels<Props>(
             );
 
             try {
-                const selections = await loadSelections(this.state.queryModels[id]);
+                const selections = await loadSelections(
+                    this.state.queryModels[id],
+                    this.requestManager.getRequestHandler(id, 'loadSelections')
+                );
 
                 this.setState(
                     produce<State>((draft: WritableDraft<State>) => {
@@ -511,6 +571,7 @@ export function withQueryModels<Props>(
                     })
                 );
             } catch (error) {
+                if (error?.status === 0) return;
                 this.setSelectionsError(id, error, 'loading');
             }
         };
@@ -736,7 +797,13 @@ export function withQueryModels<Props>(
             );
 
             try {
-                const result = await loadRows(this.state.queryModels[id]);
+                // If we have selectionsForReplace, then skip request cancellation optimization
+                let requestHandler: RequestHandler | undefined;
+                if (!selectionsForReplace) {
+                    requestHandler = this.requestManager.getRequestHandler(id, 'loadRows');
+                }
+
+                const result = await loadRows(this.state.queryModels[id], requestHandler);
                 const { messages, rows, orderedRows, rowCount } = result;
 
                 this.setState(
@@ -753,6 +820,7 @@ export function withQueryModels<Props>(
                     () => this.maybeLoad(id, false, false, loadSelections, false, selectionsForReplace)
                 );
             } catch (error) {
+                if (error?.status === 0) return;
                 let viewDoesNotExist = false;
                 this.setState(
                     produce<State>((draft: WritableDraft<State>) => {
@@ -845,6 +913,7 @@ export function withQueryModels<Props>(
                     loadRowsConfig.filterArray,
                     queryInfo?.getPkCols()
                 );
+
                 const { rowCount } = await selectRows({
                     ...loadRowsConfig,
                     columns,
@@ -855,6 +924,7 @@ export function withQueryModels<Props>(
                     maxRows: 1,
                     offset: 0,
                     sort: undefined,
+                    requestHandler: this.requestManager.getRequestHandler(id, 'loadTotalCount'),
                 });
 
                 this.setState(
@@ -866,6 +936,7 @@ export function withQueryModels<Props>(
                     })
                 );
             } catch (error) {
+                if (error?.status === 0) return;
                 this.setState(
                     produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];

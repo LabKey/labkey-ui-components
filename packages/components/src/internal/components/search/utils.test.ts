@@ -174,8 +174,23 @@ describe('getFilterValuesAsArray', () => {
         ]);
     });
 
+    test('array value, array filter type', () => {
+        expect(getFilterValuesAsArray(Filter.create('textField', ['a', 'b'], Filter.Types.ARRAY_CONTAINS_ALL))).toStrictEqual([
+            'a',
+            'b',
+        ]);
+    });
+
     test('string value', () => {
         expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;c', Filter.Types.IN))).toStrictEqual([
+            'a',
+            'b',
+            'c',
+        ]);
+    });
+
+    test('string value, array filter type', () => {
+        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;c', Filter.Types.ARRAY_CONTAINS_ALL))).toStrictEqual([
             'a',
             'b',
             'c',

@@ -375,6 +375,45 @@ export function isNegativeFilterType(filterType: Filter.IFilterType) {
     return NEGATIVE_FILTERS.indexOf(filterType.getURLSuffix()) > -1;
 }
 
+function getArrayFilterLabKeySql(
+    filter: Filter.IFilter,
+    tableAlias?: string
+): string {
+    const filterType = filter.getFilterType().getURLSuffix();
+    const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
+
+    if (filterType === Filter.Types.ARRAY_ISEMPTY.getURLSuffix())
+        return 'array_is_empty(' + columnNameSelect + ')';
+    if (filterType === Filter.Types.ARRAY_ISNOTEMPTY.getURLSuffix())
+        return 'NOT array_is_empty(' + columnNameSelect + ')';
+
+    const values = filter.getFilterType().parseValue(filter.getValue());
+
+    const sqlValues = [];
+    values.forEach(val => {
+        sqlValues.push(getLabKeySqlValue(val, 'string'));
+    });
+    const sqlValueStr = 'ARRAY[' + sqlValues.join(', ') + ']';
+
+    if (filterType === Filter.Types.ARRAY_CONTAINS_ANY.getURLSuffix()) {
+        return 'array_contains_any(' + columnNameSelect + ', ' + sqlValueStr + ')';
+    }
+    else if (filterType === Filter.Types.ARRAY_CONTAINS_NONE.getURLSuffix()) {
+        return 'array_contains_none(' + columnNameSelect + ', ' + sqlValueStr + ')';
+    }
+    else if (filterType === Filter.Types.ARRAY_CONTAINS_ALL.getURLSuffix()) {
+        return 'array_contains_all(' + columnNameSelect + ', ' + sqlValueStr + ')';
+    }
+    else if (filterType === Filter.Types.ARRAY_CONTAINS_EXACT.getURLSuffix()) {
+        return 'array_is_same(' + columnNameSelect + ', ' + sqlValueStr + ')';
+    }
+    else if (filterType === Filter.Types.ARRAY_CONTAINS_NOT_EXACT.getURLSuffix()) {
+        return 'NOT array_is_same(' + columnNameSelect + ', ' + sqlValueStr + ')';
+    }
+
+    return null;
+}
+
 /**
  * Note: this is an experimental API that may change unexpectedly in future releases.
  * From a filter and its column jsonType, return the LabKey sql operator clause
@@ -404,6 +443,10 @@ export function getFilterLabKeySql(
         filterType.getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()
     )
         return null;
+
+    if (jsonType === 'array') {
+        return getArrayFilterLabKeySql(filter, tableAlias);
+    }
 
     if (jsonType === 'date' && filterType.isDataValueRequired()) {
         let dateValue: string;

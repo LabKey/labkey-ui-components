@@ -13,6 +13,7 @@ import { isRReportsEnabled } from '../../internal/app/utils';
 import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../internal/constants';
 
 import { DataViewInfo, IDataViewInfo } from '../../internal/DataViewInfo';
+import { RequestHandler } from '../../internal/request';
 import { getQueryColumnRenderers } from '../../internal/global';
 import { getQueryDetails, selectRowsDeprecated } from '../../internal/query/api';
 import { DefaultRenderer } from '../../internal/renderers/DefaultRenderer';
@@ -51,7 +52,7 @@ export interface RowsResponse {
     orderedRows: string[];
     rowCount: number;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    rows: { [key: string]: any };
+    rows: Record<string, any>;
 }
 
 export interface QueryModelLoader {
@@ -77,13 +78,13 @@ export interface QueryModelLoader {
      * Loads the current page of rows for the specified model.
      * @param model: QueryModel
      */
-    loadRows: (model: QueryModel) => Promise<RowsResponse>;
+    loadRows: (model: QueryModel, requestHandler?: RequestHandler) => Promise<RowsResponse>;
 
     /**
      * Loads the selected RowIds (or PK values) for the specified model.
      * @param model: QueryModel
      */
-    loadSelections: (model: QueryModel) => Promise<Set<string>>;
+    loadSelections: (model: QueryModel, requestHandler?: RequestHandler) => Promise<Set<string>>;
 
     /**
      * Replaces the currently selected items with the given set of selections.
@@ -118,13 +119,14 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
         });
         return queryInfo.mutate({ columns: bindColumnRenderers(queryInfo.columns) });
     },
-    async loadRows(model) {
+    async loadRows(model, requestHandler) {
         const result = await selectRowsDeprecated({
             ...model.loadRowsConfig,
             schemaName: model.schemaName,
             queryName: model.queryName,
             includeTotalCount: false, // if requesting to includeTotalCount, it will be loaded separately via loadTotalCount
             includeStyle: true, // Issue 49100
+            requestHandler,
         });
         const { key, models, orderedModels, rowCount, messages } = result;
 
@@ -156,7 +158,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
             });
         }
     },
-    async loadSelections(model) {
+    async loadSelections(model, requestHandler) {
         const { containerFilter, selectionKey, schemaQuery, filters, queryParameters, selectionContainerPath } = model;
         const result = await getSelected(
             selectionKey,
@@ -165,7 +167,8 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
             filters,
             selectionContainerPath,
             queryParameters,
-            containerFilter
+            containerFilter,
+            requestHandler
         );
         return new Set(result?.selected ?? []);
     },

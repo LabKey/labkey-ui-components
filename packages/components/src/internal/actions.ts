@@ -16,7 +16,7 @@
 import { fromJS, List } from 'immutable';
 import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
 
-import { resolveKey, SchemaQuery } from '../public/SchemaQuery';
+import { SchemaQuery } from '../public/SchemaQuery';
 
 import { Actions } from '../public/QueryModel/withQueryModels';
 
@@ -38,9 +38,8 @@ import {
 } from './constants';
 import { DataViewInfo } from './DataViewInfo';
 
-import { handleRequestFailure } from './request';
+import { request, RequestHandler } from './request';
 import { resolveErrorMessage } from './util/messaging';
-import { buildURL } from './url/AppURL';
 
 import { ViewInfo } from './ViewInfo';
 import { createGridModelId } from './models';
@@ -56,52 +55,41 @@ export function selectAll(
     queryParameters?: Record<string, any>,
     containerFilter?: Query.ContainerFilter
 ): Promise<SelectResponse> {
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL('query', 'selectAll.api', undefined, {
-                container: containerPath,
-            }),
-            method: 'POST',
-            params: buildQueryParams(key, schemaQuery, filterArray, queryParameters, containerPath, containerFilter),
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response);
-            }),
-            failure: handleRequestFailure(
-                reject,
-                `Problem in selecting all items in the grid ${key} ${schemaQuery.schemaName} ${schemaQuery.queryName}`
-            ),
-        });
+    return request<SelectResponse>({
+        url: ActionURL.buildURL('query', 'selectAll.api', containerPath),
+        method: 'POST',
+        params: buildQueryParams(key, schemaQuery, filterArray, queryParameters, containerPath, containerFilter),
+        errorLogMsg: `Problem in selecting all items in the grid ${key} ${schemaQuery.schemaName} ${schemaQuery.queryName}`,
     });
 }
 
-export function getGridIdsFromTransactionId(
+export async function getGridIdsFromTransactionId(
     transactionAuditId: number | string,
     dataType: string,
     containerPath?: string
 ): Promise<string[]> {
-    if (!transactionAuditId) {
-        return;
-    }
-    const failureMsg = 'There was a problem retrieving the ' + dataType + ' from the last action.';
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: ActionURL.buildURL('audit', 'getTransactionRowIds.api'),
-            params: { transactionAuditId, dataType, containerFilter: getContainerFilterForFolder(containerPath) },
-            success: Utils.getCallbackWrapper(response => {
-                if (response.success) {
-                    // The server returns numbers, so we coerce to string; If we don't it can lead to bugs (and has).
-                    resolve(response.rowIds.map((rowId: number) => rowId.toString()));
-                } else {
-                    console.error(failureMsg + ' (transactionAuditId = ' + transactionAuditId + ')', response);
-                    reject(failureMsg);
-                }
-            }),
-            failure: Utils.getCallbackWrapper(error => {
-                console.error(failureMsg + ' (transactionAuditId = ' + transactionAuditId + ')', error);
-                reject(failureMsg);
-            }),
-        });
+    if (!transactionAuditId) return;
+
+    const failureMsg = `There was a problem retrieving the ${dataType} from the last action.`;
+    const errorLogMsg = `${failureMsg} (transactionAuditId = ${transactionAuditId})`;
+
+    const response = await request<{ rowIds: number[]; success: boolean }>({
+        url: ActionURL.buildURL('audit', 'getTransactionRowIds.api'),
+        params: {
+            containerFilter: getContainerFilterForFolder(containerPath),
+            dataType,
+            transactionAuditId,
+        },
+        errorLogMsg,
     });
+
+    if (!response.success) {
+        console.error(errorLogMsg, response);
+        throw new Error(failureMsg);
+    }
+
+    // The server returns numbers, so we coerce to string; If we don't, it can lead to bugs (and has).
+    return response.rowIds.map(rowId => rowId.toString());
 }
 
 export async function selectGridIdsFromTransactionId(
@@ -274,7 +262,8 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
         }
     });
 
-    let controller, action;
+    let action: string;
+    let controller: string;
     if (type === EXPORT_TYPES.CSV || type === EXPORT_TYPES.TSV || type === EXPORT_TYPES.LABEL_TEMPLATE) {
         controller = 'query';
         action = 'exportRowsTsv.post';
@@ -298,7 +287,7 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
 
     form.append('formDataEncoded', 'true');
     Ajax.request({
-        url: buildURL(controller, action, undefined, { container: containerPath, returnUrl: false }),
+        url: ActionURL.buildURL(controller, action, containerPath),
         method: 'POST',
         form,
         downloadFile: true,
@@ -380,29 +369,24 @@ export function getSelected(
     filterArray?: Filter.IFilter[],
     containerPath?: string,
     queryParameters?: Record<string, any>,
-    containerFilter?: Query.ContainerFilter
+    containerFilter?: Query.ContainerFilter,
+    requestHandler?: RequestHandler
 ): Promise<GetSelectedResponse> {
-    if (useSnapshotSelection) return getSnapshotSelections(key, containerPath);
+    if (useSnapshotSelection) return getSnapshotSelections(key, containerPath, requestHandler);
 
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL('query', 'getSelected.api', undefined, {
-                container: containerPath,
-            }),
-            method: 'POST',
-            jsonData: getFilteredQueryParams(
-                key,
-                schemaQuery,
-                filterArray,
-                queryParameters,
-                containerPath,
-                containerFilter
-            ),
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response);
-            }),
-            failure: handleRequestFailure(reject, 'Failed to get selected.'),
-        });
+    return request({
+        url: ActionURL.buildURL('query', 'getSelected.api', containerPath),
+        method: 'POST',
+        jsonData: getFilteredQueryParams(
+            key,
+            schemaQuery,
+            filterArray,
+            queryParameters,
+            containerPath,
+            containerFilter
+        ),
+        errorLogMsg: 'Failed to get selected.',
+        requestHandler,
     });
 }
 
@@ -419,7 +403,7 @@ export async function getSelectedDataDeprecated(
     viewName?: string,
     keyColumn = 'RowId'
 ): Promise<GridResponse> {
-    const { models, orderedModels } = await selectRowsDeprecated({
+    const { key, models, orderedModels } = await selectRowsDeprecated({
         schemaName,
         queryName,
         viewName,
@@ -430,11 +414,9 @@ export async function getSelectedDataDeprecated(
         offset: 0,
     });
 
-    const dataKey = resolveKey(schemaName, queryName);
-
     return {
-        data: fromJS(models[dataKey]),
-        dataIds: List(orderedModels[dataKey]),
+        data: fromJS(models[key]),
+        dataIds: orderedModels[key],
     };
 }
 
@@ -452,26 +434,18 @@ export type ClearSelectedOptions = {
 };
 
 export function clearSelected(options: ClearSelectedOptions): Promise<SelectResponse> {
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: ActionURL.buildURL('query', 'clearSelected.api', options.containerPath),
-            method: 'POST',
-            jsonData: getFilteredQueryParams(
-                options.selectionKey,
-                options.schemaQuery,
-                options.filters,
-                options.queryParameters,
-                options.containerPath,
-                options.containerFilter
-            ),
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response);
-            }),
-            failure: handleRequestFailure(
-                reject,
-                `Problem clearing the selection ${options.selectionKey} ${options.schemaQuery?.schemaName} ${options.schemaQuery?.queryName}`
-            ),
-        });
+    return request<SelectResponse>({
+        url: ActionURL.buildURL('query', 'clearSelected.api', options.containerPath),
+        method: 'POST',
+        jsonData: getFilteredQueryParams(
+            options.selectionKey,
+            options.schemaQuery,
+            options.filters,
+            options.queryParameters,
+            options.containerPath,
+            options.containerFilter
+        ),
+        errorLogMsg: `Problem clearing the selection ${options.selectionKey} ${options.schemaQuery?.schemaName} ${options.schemaQuery?.queryName}`,
     });
 }
 
@@ -490,7 +464,7 @@ export function clearSelected(options: ClearSelectedOptions): Promise<SelectResp
 export function setSelected(
     key: string,
     checked: boolean,
-    ids: string[] | string,
+    ids: string | string[],
     containerPath?: string,
     validateIds?: boolean,
     schemaName?: string,
@@ -498,47 +472,35 @@ export function setSelected(
     filters?: Filter.IFilter[],
     queryParameters?: Record<string, any>
 ): Promise<SelectResponse> {
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL('query', 'setSelected.api', undefined, {
-                container: containerPath,
-            }),
-            method: 'POST',
-            jsonData: {
-                id: ids,
-                key,
-                checked,
-                validateIds,
-                schemaName,
-                queryName,
-                filterList: filters,
-                queryParameters,
-            },
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response);
-            }),
-            failure: handleRequestFailure(reject, 'Failed to set selection.'),
-        });
+    return request<SelectResponse>({
+        url: ActionURL.buildURL('query', 'setSelected.api', containerPath),
+        method: 'POST',
+        jsonData: {
+            id: ids,
+            key,
+            checked,
+            validateIds,
+            schemaName,
+            queryName,
+            filterList: filters,
+            queryParameters,
+        },
+        errorLogMsg: 'Failed to set selection.',
     });
 }
 
 export type ReplaceSelectedOptions = {
     containerPath?: string;
-    id: string[] | string;
+    id: string | string[];
     selectionKey: string;
 };
 
 export function replaceSelected(options: ReplaceSelectedOptions): Promise<SelectResponse> {
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: ActionURL.buildURL('query', 'replaceSelected.api', options.containerPath),
-            method: 'POST',
-            jsonData: { key: options.selectionKey, id: options.id },
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response);
-            }),
-            failure: handleRequestFailure(reject, 'Failed to replace selection.'),
-        });
+    return request<SelectResponse>({
+        url: ActionURL.buildURL('query', 'replaceSelected.api', options.containerPath),
+        method: 'POST',
+        jsonData: { key: options.selectionKey, id: options.id },
+        errorLogMsg: 'Failed to replace selection.',
     });
 }
 
@@ -551,24 +513,14 @@ export function replaceSelected(options: ReplaceSelectedOptions): Promise<Select
  */
 export function setSnapshotSelections(
     key: string,
-    ids: string[] | string | number[],
+    ids: number[] | string | string[],
     containerPath?: string
 ): Promise<SelectResponse> {
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL('query', 'setSnapshotSelection.api', undefined, {
-                container: containerPath,
-            }),
-            method: 'POST',
-            jsonData: {
-                key,
-                id: ids,
-            },
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response);
-            }),
-            failure: handleRequestFailure(reject, 'Failed to set snapshot selection.'),
-        });
+    return request<SelectResponse>({
+        url: ActionURL.buildURL('query', 'setSnapshotSelection.api', containerPath),
+        method: 'POST',
+        jsonData: { key, id: ids },
+        errorLogMsg: 'Failed to set snapshot selection.',
     });
 }
 
@@ -577,55 +529,40 @@ export function setSnapshotSelections(
  * Get the snapshot selections for a grid
  * @param key the selection key for the grid
  * @param containerPath optional path to the container for this grid.  Default is the current container path
+ * @param requestHandler optional request handler to use for the request
  */
-export function getSnapshotSelections(key: string, containerPath?: string): Promise<GetSelectedResponse> {
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL('query', 'getSnapshotSelection.api', undefined, {
-                container: containerPath,
-            }),
-            method: 'POST',
-            jsonData: {
-                key,
-            },
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response);
-            }),
-            failure: handleRequestFailure(reject, 'Failed to get snapshot selection.'),
-        });
+export function getSnapshotSelections(
+    key: string,
+    containerPath?: string,
+    requestHandler?: RequestHandler
+): Promise<GetSelectedResponse> {
+    return request<GetSelectedResponse>({
+        url: ActionURL.buildURL('query', 'getSnapshotSelection.api', containerPath),
+        method: 'POST',
+        jsonData: { key },
+        errorLogMsg: 'Failed to get snapshot selection.',
+        requestHandler,
     });
 }
 
-export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): Promise<DataViewInfo[]> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: buildURL(
-                'reports',
-                'getReportInfos.api',
-                {
-                    schemaName: schemaQuery.schemaName,
-                    queryName: schemaQuery.queryName,
-                },
-                {
-                    container: containerPath,
-                }
-            ),
-            success: Utils.getCallbackWrapper((response: any) => {
-                if (response && response.success) {
-                    resolve(response.reports.map(report => new DataViewInfo(report)));
-                } else {
-                    reject({
-                        error:
-                            'Unable to get report info for schema/query: ' +
-                            schemaQuery.schemaName +
-                            '/' +
-                            schemaQuery.queryName,
-                    });
-                }
-            }),
-            failure: handleRequestFailure(reject),
-        });
+export async function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): Promise<DataViewInfo[]> {
+    const { queryName, schemaName } = schemaQuery;
+    const errorLogMsg = `Unable to get report info for schema/query: ${schemaName}/${queryName}`;
+
+    const response = await request<{ reports: Partial<DataViewInfo[]>; success: boolean }>({
+        url: ActionURL.buildURL('reports', 'getReportInfos.api', containerPath, {
+            schemaName,
+            queryName,
+        }),
+        errorLogMsg,
     });
+
+    if (!response.success) {
+        console.error(errorLogMsg, response);
+        throw new Error(errorLogMsg);
+    }
+
+    return response.reports.map(report => new DataViewInfo(report));
 }
 
 /**
@@ -644,7 +581,7 @@ export function incrementClientSideMetricCount(featureArea: string, metricName: 
     }
 
     Ajax.request({
-        url: buildURL('core', 'incrementClientSideMetricCount.api'),
+        url: ActionURL.buildURL('core', 'incrementClientSideMetricCount.api'),
         method: 'POST',
         jsonData: {
             featureArea,
@@ -829,9 +766,7 @@ export function renameGridView(
 ): Promise<void> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('query', 'renameQueryView.api', undefined, {
-                container: containerPath,
-            }),
+            url: ActionURL.buildURL('query', 'renameQueryView.api', containerPath),
             method: 'POST',
             jsonData: {
                 schemaName: schemaQuery.schemaName,

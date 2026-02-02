@@ -465,28 +465,28 @@ export interface ISelectRowsResult {
     rowCount: number;
 }
 
-export type SelectRowsDeprecatedOptions = Omit<
-    Query.SelectRowsOptions,
-    'failure' | 'method' | 'requiredVersion' | 'scope' | 'success'
->;
+export interface SelectRowsDeprecatedOptions
+    extends Omit<Query.SelectRowsOptions, 'failure' | 'method' | 'requiredVersion' | 'scope' | 'success'> {
+    requestHandler?: RequestHandler;
+}
 
 /**
  * @deprecated use selectRows() or executeSql() instead.
  * Fetches an API response and normalizes the result JSON according to schema.
  * This makes every API response have the same shape, regardless of how nested it was.
  */
-export async function selectRowsDeprecated(options: SelectRowsDeprecatedOptions): Promise<ISelectRowsResult> {
+export async function selectRowsDeprecated(options_: SelectRowsDeprecatedOptions): Promise<ISelectRowsResult> {
+    const { requestHandler, ...options } = options_;
     const schemaQuery = new SchemaQuery(options.schemaName, options.queryName, options.viewName);
 
     const columns = options.columns ? options.columns : '*';
     const [queryInfo, response] = await Promise.all([
         getQueryDetails(options),
         new Promise<Query.Response>((resolve, reject) => {
-            Query.selectRows({
+            const request_ = Query.selectRows({
                 ...options,
                 requiredVersion: 17.1,
                 method: 'POST',
-                // put on this another parameter!
                 columns,
                 containerFilter: options.containerFilter ?? getContainerFilter(options.containerPath),
                 includeMetadata: isSelectRowMetadataRequired(options.includeMetadata, columns),
@@ -495,7 +495,9 @@ export async function selectRowsDeprecated(options: SelectRowsDeprecatedOptions)
                     resolve(response_);
                 },
                 failure: (data, request) => {
-                    console.error('There was a problem retrieving the data', data);
+                    if (request.status !== 0) {
+                        console.error('There was a problem retrieving the data', data);
+                    }
                     reject({
                         exceptionClass: data.exceptionClass,
                         message: data.exception,
@@ -504,6 +506,7 @@ export async function selectRowsDeprecated(options: SelectRowsDeprecatedOptions)
                     });
                 },
             });
+            requestHandler?.(request_);
         }),
     ]);
 

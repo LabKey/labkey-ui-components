@@ -796,25 +796,21 @@ export function isDateBetween(date: Date, start: Date, end: Date, dateOnlyCompar
     return time >= start.getTime() && time <= end.getTime();
 }
 
-const RELATIVE_DAYS_REGEX = /^[+-]\d+d$/;
-const RELATIVE_DAYS_ENDSWITH_D_REGEX = /^[+-]?\d*d$/;
-const RELATIVE_DAYS_STARTSWITH_SIGN_REGEX = /^[+-]\d*d?$/;
-const RELATIVE_DAYS_DAYS_ONLY_REGEX = /^[+-]?\d+d?$/;
-export function isRelativeDateFilterValue(val: string, relaxedMatch?: boolean): boolean {
-    if (typeof val === 'string' && RELATIVE_DAYS_REGEX.test(val)) {
-        return true;
-    }
-    else if (typeof val === 'string' && relaxedMatch) {
-        // GitHub Issue 779: Cannot Edit Some Sample Finder Searches
-        if (RELATIVE_DAYS_ENDSWITH_D_REGEX.test(val))
-            return true;
-        if (RELATIVE_DAYS_STARTSWITH_SIGN_REGEX.test(val))
-            return true;
-        if (RELATIVE_DAYS_DAYS_ONLY_REGEX.test(val))
-            return true;
-    }
+// Matches strict format: +5d, -10d
+const STRICT_RELATIVE_DAYS = /^[+-]\d+d$/;
 
-    return false;
+// Matches partials: "+", "5", "+5", "5d", "+d", etc.
+const RELAXED_RELATIVE_DAYS = /^[+-]?\d*d?$/;
+
+/**
+ * Returns true if the given string is a valid relative date filter value. Ex: +5d, -1d
+ */
+export function isRelativeDateFilterValue(val: string, relaxedMatch?: boolean): boolean {
+    if (typeof val !== 'string' || val === '') return false;
+
+    if (relaxedMatch) return RELAXED_RELATIVE_DAYS.test(val);
+
+    return STRICT_RELATIVE_DAYS.test(val);
 }
 
 export function getParsedRelativeDateStr(dateVal: string): { days: number; positive: boolean } {

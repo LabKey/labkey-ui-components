@@ -15,7 +15,6 @@
  */
 import React, { FC, ReactNode, RefObject } from 'react';
 import DatePicker from 'react-datepicker';
-import classNames from 'classnames';
 
 import { FormsyInjectedProps, withFormsy } from '../formsy';
 import { FieldLabel } from '../FieldLabel';
@@ -74,11 +73,8 @@ type DatePickerInputImplProps = DatePickerInputProps & FormsyInjectedProps<strin
 interface DatePickerInputState extends DisableableInputState {
     invalid: boolean; // not a date/time value
     invalidStart: boolean; // is a date/time, but start before year 1000
-    // undefined = use props.value fallback if it's a relative date
-    // null = user selected from calendar, don't use props.value fallback
-    // string = user is typing, show this value
-    relativeInputValue: null | string | undefined;
-    selectedDate: Date;
+    relativeInputValue?: string;
+    selectedDate: any;
 }
 
 // export for jest testing
@@ -172,58 +168,43 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         const { onChange, formsy, inlineEdit, queryColumn } = this.props;
         const { relativeInputValue } = this.state;
 
-        let selectedDate = date;
-        let newRelativeInputValue: null | string | undefined = relativeInputValue;
+        let validSelect = date;
 
-        // If a date was selected from the calendar, always use it (clear any relative input)
-        if (date) {
-            // Use null to indicate "user selected from calendar, don't use props.value fallback"
-            newRelativeInputValue = null;
+        if (relativeInputValue) {
+            if (isRelativeDateFilterValue(relativeInputValue, false)) {
+                onChange?.(relativeInputValue);
+            }
+            else {
+                validSelect = undefined;
+                onChange?.(undefined);
+            }
+        } else {
             const formatted = getDateTimeDisplayValue(date, queryColumn);
             onChange?.(queryColumn.isTimeColumn ? formatted : date, formatted);
 
             if (formsy) {
                 this.props.setValue?.(this.getFormsyValue(date));
             }
-        } else if (relativeInputValue && isRelativeDateFilterValue(relativeInputValue, false)) {
-            // No date selected, but we have a valid relative date value - use it
-            onChange?.(relativeInputValue);
-        } else {
-            // No date and no valid relative value
-            selectedDate = undefined;
-            onChange?.(undefined);
         }
 
-        this.setState({
-            selectedDate,
-            invalid: false,
-            invalidStart: false,
-            relativeInputValue: newRelativeInputValue,
-        });
+        this.setState({ selectedDate: validSelect, invalid: false, invalidStart: false });
 
         // event is null when selecting time picker
         if (!event && inlineEdit) this.input.current.setFocus();
     };
 
     onChangeRaw = (event?: any): void => {
-        const { allowRelativeInput, queryColumn } = this.props;
+        const { queryColumn } = this.props;
         const value = event?.target?.value;
 
         if (queryColumn.isTimeColumn) {
             // Issue 50010: Time picker enters the wrong time if a time field has a format set
             this.onChange(parseTime(value), undefined);
-        } else if (allowRelativeInput) {
-            const isRelative = isRelativeDateFilterValue(value, true);
-
-            // Always track the raw input value in state so the user can freely edit relative date strings.
-            this.setState({ invalid: !!value && !isRelative, relativeInputValue: value }, () => {
-                // Only notify onChange when the value is a valid (or partially valid) relative date.
-                if (isRelative) {
-                    this.props.onChange?.(value);
-                }
-            });
+        } else if (isRelativeDateFilterValue(value, true)) {
+            this.setState({ relativeInputValue: value });
+            this.props.onChange?.(value);
         } else {
-            this.setState({ relativeInputValue: undefined, invalid: true });
+            this.setState({ relativeInputValue: undefined });
         }
     };
 
@@ -256,18 +237,6 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         return now;
     };
 
-    get value() {
-        const { allowRelativeInput, queryColumn, value } = this.props;
-        const { relativeInputValue } = this.state;
-
-        if (!allowRelativeInput || queryColumn.isTimeColumn || relativeInputValue === null) {
-            return undefined;
-        }
-
-        // Return the current input or fallback to the value if it is a valid relative string
-        return relativeInputValue ?? (isRelativeDateFilterValue(value) ? value : undefined);
-    }
-
     render(): ReactNode {
         const {
             addLabelAsterisk,
@@ -289,6 +258,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
             queryColumn,
             renderFieldLabel,
             showLabel,
+            value,
             wrapperClassName,
             onBlur,
             inlineEdit,
@@ -329,7 +299,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                 showTimeSelectOnly={!hideTime && isTimeOnly}
                 timeFormat={timeFormat}
                 timeIntervals={isTimeOnly ? 10 : 30}
-                value={this.value}
+                value={allowRelativeInput && !isTimeOnly && isRelativeDateFilterValue(value) ? value : undefined}
                 wrapperClassName={inputWrapperClassName}
             />
         );
@@ -346,8 +316,6 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         }
 
         if (!isFormInput) return picker;
-
-        const hasError = invalid || invalidStart;
 
         return (
             <div className={containerClassName}>
@@ -375,10 +343,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                         }}
                     />
                 )}
-                <div className={classNames(wrapperClassName, { 'has-error': hasError })}>
-                    {picker}
-                    {hasError && <span className="help-block">Invalid date value</span>}
-                </div>
+                <div className={wrapperClassName}>{picker}</div>
             </div>
         );
     }

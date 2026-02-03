@@ -208,6 +208,19 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         }
     };
 
+    handleCalendarClose = (): void => {
+        const { onCalendarClose, onChange } = this.props;
+        const { relativeInputValue } = this.state;
+        onCalendarClose?.();
+
+        if (relativeInputValue) {
+            if (isRelativeDateFilterValue(relativeInputValue, true) && !isRelativeDateFilterValue(relativeInputValue, false)) {
+                // clear out invalid relative date input on calendar close
+                onChange?.(undefined);
+            }
+        }
+    }
+
     onIconClick = (): void => {
         this.input.current?.setFocus();
     };
@@ -284,7 +297,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                 isClearable={isClearable}
                 name={name ? name : queryColumn.fieldKey}
                 onBlur={inlineEdit ? onBlur : undefined}
-                onCalendarClose={onCalendarClose}
+                onCalendarClose={this.handleCalendarClose}
                 onChange={this.onChange}
                 onChangeRaw={allowRelativeInput || isTimeOnly ? this.onChangeRaw : undefined}
                 onKeyDown={onKeyDown}

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/test",
-  "version": "1.10.1-package-updates-0226.1",
+  "version": "1.11.0",
   "description": "Configurations and utilities for JavaScript-based testing",
   "main": "dist/test.js",
   "module": "dist/test.js",

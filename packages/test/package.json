@@ -34,7 +34,7 @@
     "supertest": "7.2.2"
   },
   "devDependencies": {
-    "@labkey/api": "1.45.1-package-updates-0226.0",
+    "@labkey/api": "1.46.0",
     "@types/jest": "30.0.0",
     "@types/node": "24.10.9",
     "@types/supertest": "6.0.3",

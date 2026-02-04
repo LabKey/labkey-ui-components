@@ -1,6 +1,6 @@
 {
   "name": "@labkey/themes",
-  "version": "1.5.1-package-updates-0226.0",
+  "version": "1.6.0",
   "description": "Themes that come bundled with LabKey Server",
   "files": [
     "dist/"

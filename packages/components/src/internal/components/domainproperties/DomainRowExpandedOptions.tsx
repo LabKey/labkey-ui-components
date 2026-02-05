@@ -234,6 +234,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                 return (
                     <TextChoiceOptions
                         domainIndex={domainIndex}
+                        key={index + '-' + field.textChoiceValidator?.expression} // drag-drop to reorder column result in wrong options displayed
                         index={index}
                         field={field}
                         label="Text Choice Options"

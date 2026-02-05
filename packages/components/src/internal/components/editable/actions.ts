@@ -35,7 +35,7 @@ import {
 
 import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGridValue, parseCellKey } from './utils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { naturalSort } from '../../../public/sort';
+import { caseSensitiveNaturalSort } from '../../../public/sort';
 
 /**
  * Do not use this method directly, use initEditorModel instead.
@@ -1524,7 +1524,7 @@ async function insertPastedData(
                     cv = valueDescriptors;
                     msg = message;
                 } else if (col?.isMultiChoice && Utils.isString(val)) {
-                    const parsedValues = parseCsvString(val, ',', true).sort(naturalSort);
+                    const parsedValues = parseCsvString(val, ',', true).sort(caseSensitiveNaturalSort);
 
                     const unmatched: string[] = [];
                     const values = [];

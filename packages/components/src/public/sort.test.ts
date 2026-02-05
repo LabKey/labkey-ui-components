@@ -1,4 +1,4 @@
-import { naturalSort } from './sort';
+import {caseSensitiveNaturalSort, naturalSort} from './sort';
 
 describe('naturalSort', () => {
     test('alphabetic', () => {
@@ -28,5 +28,26 @@ describe('naturalSort', () => {
 
         // Don't particularly care how it sorts these ... just that it succeeds in processing them.
         expect(nonStringValues.sort(naturalSort).length).toEqual(nonStringValues.length);
+    });
+});
+
+describe('caseSensitiveNaturalSort', () => {
+    test('case sensitive equality and ordering', () => {
+        // exact same string and case => equal
+        expect(caseSensitiveNaturalSort('alpha', 'alpha')).toBe(0);
+
+        // same letters but different case => not equal (case-sensitive)
+        // 'l' (lowercase) has a higher char code than 'L' (uppercase), so 'alpha' should come after 'aLPha'
+        expect(caseSensitiveNaturalSort('alpha', 'aLPha')).toBeGreaterThan(0);
+
+        // 'A' is less than 'a' in ASCII ordering
+        expect(caseSensitiveNaturalSort('A', 'a')).toBeLessThan(0);
+        expect(caseSensitiveNaturalSort('a', 'A')).toBeGreaterThan(0);
+    });
+
+    test('numeric/alphanumeric behavior preserved', () => {
+        // numeric/alphanumeric comparison should still behave as natural sort
+        expect(caseSensitiveNaturalSort('a1.2', 'a1.3')).toBeLessThan(0);
+        expect(caseSensitiveNaturalSort('10', '1.0')).toBeGreaterThan(0);
     });
 });

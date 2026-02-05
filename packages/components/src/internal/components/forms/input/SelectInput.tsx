@@ -482,7 +482,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
 
         if (autoValue) {
             if (sortValues && Array.isArray(selectedOptions))
-                selectedOptions.sort(naturalSortByProperty(valueKey ?? 'value'));
+                selectedOptions.sort(naturalSortByProperty(valueKey ?? 'value', true));
 
             this.setState({ selectedOptions });
         }

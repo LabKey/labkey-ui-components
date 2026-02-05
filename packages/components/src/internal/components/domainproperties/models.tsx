@@ -1422,6 +1422,10 @@ export class DomainField
         return !field.isMultiChoiceField();
     }
 
+    static allowUrl(field: DomainField): boolean {
+        return !field.isMultiChoiceField();
+    }
+
     static hasRegExValidation(field: DomainField): boolean {
         return (
             field.dataType.isString() &&

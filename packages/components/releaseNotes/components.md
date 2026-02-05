@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.X.0
+*Released*: ? February 2026
+- Remove GridAliquotViewSelector
+- Remove SampleAliquotViewSelector
+- Remove isSampleAliquotSelectorEnabled
+
 ### version 7.16.2
 *Released*: 11 February 2026
 - GitHub Issue 779: Cannot Edit Relative Dates in Sample Finder

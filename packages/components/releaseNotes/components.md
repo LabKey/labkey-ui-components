@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - InferDomain API call and response to include distinctValues for specified column keys
   - EntityIdCreationModel.getSchemaQuery to include optional targetQueryName param
 
+### version 7.15.0
+*Released*: 4 February 2026
+- Package updates
+
 ### version 7.14.0
 *Released*: 30 January 2026
 - Update `withQueryModels` to track and cancel requests for `loadRows`, `loadSelections` and `loadTotalCount`

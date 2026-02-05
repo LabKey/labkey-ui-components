@@ -1,6 +1,10 @@
 # @labkey/themes
 UI themes for LabKey Server.
 
+### version 1.6.0
+*Released*: 4 February 2026
+- Package updates
+
 ### version 1.5.0
 *Released*: 5 November 2025
 - Package updates

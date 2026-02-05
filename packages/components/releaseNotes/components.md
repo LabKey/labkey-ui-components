@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Make multi-choice behaves as an internal variant of Text Choice rather than a separate visible type in data type dropdown
     - Modified updateDataType and text choice usage counting to correctly handle conversions between string, Text Choice, and Multi Choice fields, clearing validators/flags and tracking multi-value usage where appropriate.
 
+### version 7.15.0
+*Released*: 4 February 2026
+- Package updates
+
 ### version 7.14.0
 *Released*: 30 January 2026
 - Update `withQueryModels` to track and cancel requests for `loadRows`, `loadSelections` and `loadTotalCount`

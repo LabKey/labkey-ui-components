@@ -38,10 +38,7 @@ export class InferDomainResponse extends Record({
 
             if (rawModel.distinctValues) {
                 distinctValues = Map<string, List<string>>(
-                    Object.entries(rawModel.distinctValues).map(([key, value]) => [
-                        key,
-                        List<string>(value),
-                    ])
+                    Object.entries(rawModel.distinctValues).map(([key, value]) => [key, List<string>(value)])
                 );
             }
         }

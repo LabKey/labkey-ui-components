@@ -14,7 +14,10 @@ describe('InferDomainResponse.create', () => {
 
     test('converts plain JS data to immutable structures and preserves commentLineCount', () => {
         const raw = {
-            data: [{ id: 1, name: 'a' }, { id: 2, name: 'b' }],
+            data: [
+                { id: 1, name: 'a' },
+                { id: 2, name: 'b' },
+            ],
             commentLineCount: 3,
         };
         const res = InferDomainResponse.create(raw);
@@ -27,7 +30,10 @@ describe('InferDomainResponse.create', () => {
 
     test('maps fields and reservedFields to QueryColumn instances', () => {
         const raw = {
-            fields: [{ name: 'col1', type: 'string' }, { name: 'col2', type: 'int' }],
+            fields: [
+                { name: 'col1', type: 'string' },
+                { name: 'col2', type: 'int' },
+            ],
             reservedFields: [{ name: 'reserved', type: 'string' }],
         };
         const res = InferDomainResponse.create(raw);

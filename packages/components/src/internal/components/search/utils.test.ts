@@ -175,10 +175,9 @@ describe('getFilterValuesAsArray', () => {
     });
 
     test('array value, array filter type', () => {
-        expect(getFilterValuesAsArray(Filter.create('textField', ['a', 'b'], Filter.Types.ARRAY_CONTAINS_ALL))).toStrictEqual([
-            'a',
-            'b',
-        ]);
+        expect(
+            getFilterValuesAsArray(Filter.create('textField', ['a', 'b'], Filter.Types.ARRAY_CONTAINS_ALL))
+        ).toStrictEqual(['a', 'b']);
     });
 
     test('string value', () => {
@@ -190,11 +189,9 @@ describe('getFilterValuesAsArray', () => {
     });
 
     test('string value, array filter type', () => {
-        expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;c', Filter.Types.ARRAY_CONTAINS_ALL))).toStrictEqual([
-            'a',
-            'b',
-            'c',
-        ]);
+        expect(
+            getFilterValuesAsArray(Filter.create('textField', 'a;b;c', Filter.Types.ARRAY_CONTAINS_ALL))
+        ).toStrictEqual(['a', 'b', 'c']);
     });
 
     test('with blank value', () => {
@@ -945,19 +942,16 @@ describe('getUpdatedChooseValuesFilter', () => {
     test('check all values one by one, array', () => {
         const updated = getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, 'ed', true, arrayContainsAll);
         const allChecked = getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, 'bed', true, updated);
-        validate(
-            allChecked,
-            'arraycontainsall',
-            distinctValuesExcludeBlankAll
+        validate(allChecked, 'arraycontainsall', distinctValuesExcludeBlankAll);
+        const allCheckedThenCheckAll = getUpdatedChooseValuesFilter(
+            distinctValuesNoBlank,
+            fieldKey,
+            ALL_VALUE_DISPLAY,
+            true,
+            allChecked
         );
-        const allCheckedThenCheckAll = getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, ALL_VALUE_DISPLAY, true, allChecked);
-        validate(
-            allCheckedThenCheckAll,
-            'arraycontainsall',
-            distinctValuesExcludeBlankAll
-        );
+        validate(allCheckedThenCheckAll, 'arraycontainsall', distinctValuesExcludeBlankAll);
     });
-
 });
 
 describe('isValidFilterField', () => {

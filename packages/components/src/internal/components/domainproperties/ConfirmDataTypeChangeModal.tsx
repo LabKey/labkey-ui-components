@@ -32,7 +32,8 @@ export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
     const reversible =
         (PropDescType.isDate(originalRangeURI) && PropDescType.isDateTime(newDataType.rangeURI)) ||
         (PropDescType.isDateTime(originalRangeURI) && PropDescType.isDate(newDataType.rangeURI)) ||
-        newMultiChoice || oldMultiChoice;
+        newMultiChoice ||
+        oldMultiChoice;
 
     let dataLossWarning = null;
     if (newMultiChoice) {

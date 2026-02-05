@@ -1389,7 +1389,14 @@ export type TextChoiceInUseValues = {
     useCount: Record<string, { count: number; locked: boolean }>;
 };
 
-function processTextChoiceRow( value: any, isMultiField: boolean, isLocked: boolean, rowCount: number, useCount: Record<string, { count: number; locked: boolean }>, hasMultiValue: boolean ): boolean {
+function processTextChoiceRow(
+    value: any,
+    isMultiField: boolean,
+    isLocked: boolean,
+    rowCount: number,
+    useCount: Record<string, { count: number; locked: boolean }>,
+    hasMultiValue: boolean
+): boolean {
     if (!isMultiField && !isValidTextChoiceValue(value)) return hasMultiValue;
 
     const values: string[] = [];

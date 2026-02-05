@@ -272,7 +272,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             const typeConvertingTo = PropDescType.fromName(value);
             if (
                 shouldShowConfirmDataTypeChange(
-                    field.original.conceptURI?? field.original.rangeURI,
+                    field.original.conceptURI ?? field.original.rangeURI,
                     typeConvertingTo.conceptURI ?? typeConvertingTo.rangeURI
                 )
             ) {

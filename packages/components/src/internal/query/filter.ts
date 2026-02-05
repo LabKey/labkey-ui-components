@@ -375,15 +375,11 @@ export function isNegativeFilterType(filterType: Filter.IFilterType) {
     return NEGATIVE_FILTERS.indexOf(filterType.getURLSuffix()) > -1;
 }
 
-function getArrayFilterLabKeySql(
-    filter: Filter.IFilter,
-    tableAlias?: string
-): string {
+function getArrayFilterLabKeySql(filter: Filter.IFilter, tableAlias?: string): string {
     const filterType = filter.getFilterType().getURLSuffix();
     const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
 
-    if (filterType === Filter.Types.ARRAY_ISEMPTY.getURLSuffix())
-        return 'array_is_empty(' + columnNameSelect + ')';
+    if (filterType === Filter.Types.ARRAY_ISEMPTY.getURLSuffix()) return 'array_is_empty(' + columnNameSelect + ')';
     if (filterType === Filter.Types.ARRAY_ISNOTEMPTY.getURLSuffix())
         return 'NOT array_is_empty(' + columnNameSelect + ')';
 
@@ -397,17 +393,13 @@ function getArrayFilterLabKeySql(
 
     if (filterType === Filter.Types.ARRAY_CONTAINS_ANY.getURLSuffix()) {
         return 'array_contains_any(' + columnNameSelect + ', ' + sqlValueStr + ')';
-    }
-    else if (filterType === Filter.Types.ARRAY_CONTAINS_NONE.getURLSuffix()) {
+    } else if (filterType === Filter.Types.ARRAY_CONTAINS_NONE.getURLSuffix()) {
         return 'array_contains_none(' + columnNameSelect + ', ' + sqlValueStr + ')';
-    }
-    else if (filterType === Filter.Types.ARRAY_CONTAINS_ALL.getURLSuffix()) {
+    } else if (filterType === Filter.Types.ARRAY_CONTAINS_ALL.getURLSuffix()) {
         return 'array_contains_all(' + columnNameSelect + ', ' + sqlValueStr + ')';
-    }
-    else if (filterType === Filter.Types.ARRAY_CONTAINS_EXACT.getURLSuffix()) {
+    } else if (filterType === Filter.Types.ARRAY_CONTAINS_EXACT.getURLSuffix()) {
         return 'array_is_same(' + columnNameSelect + ', ' + sqlValueStr + ')';
-    }
-    else if (filterType === Filter.Types.ARRAY_CONTAINS_NOT_EXACT.getURLSuffix()) {
+    } else if (filterType === Filter.Types.ARRAY_CONTAINS_NOT_EXACT.getURLSuffix()) {
         return 'NOT array_is_same(' + columnNameSelect + ', ' + sqlValueStr + ')';
     }
 

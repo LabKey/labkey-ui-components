@@ -1,4 +1,4 @@
-import {caseSensitiveNaturalSort, naturalSort} from './sort';
+import { caseSensitiveNaturalSort, naturalSort } from './sort';
 
 describe('naturalSort', () => {
     test('alphabetic', () => {

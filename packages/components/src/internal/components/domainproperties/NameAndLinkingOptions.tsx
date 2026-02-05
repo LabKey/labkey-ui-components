@@ -155,7 +155,11 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                                 !field.isCalculatedField() && (
                                     <OntologyConceptAnnotation
                                         field={field}
-                                        id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT, domainIndex, index)}
+                                        id={createFormInputId(
+                                            DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT,
+                                            domainIndex,
+                                            index
+                                        )}
                                         onChange={this.onChange}
                                     />
                                 )}

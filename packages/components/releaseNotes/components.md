@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.16.0
+*Released*: 5 February 2026
+- File import warnings for cross type sample import case
+  - InferDomain API call and response to include distinctValues for specified column keys
+  - EntityIdCreationModel.getSchemaQuery to include optional targetQueryName param
+
 ### version 7.15.0
 *Released*: 4 February 2026
 - Package updates

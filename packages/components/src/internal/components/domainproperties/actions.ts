@@ -919,6 +919,7 @@ export function updateDataType(field: DomainField, value: any): DomainField {
                     uniqueConstraint: false,
                     nonUniqueConstraint: false,
                     conditionalFormats: List<ConditionalFormat>(),
+                    URL: undefined,
                 }) as DomainField;
             }
         } else if (field.isCalculatedField()) {

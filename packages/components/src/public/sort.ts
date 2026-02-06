@@ -34,6 +34,29 @@ function _naturalSort(aso: any, bso: any, caseSensitive?: boolean): number {
         if (a1 !== b1) {
             n = a1 - b1;
             if (!isNaN(n)) return n;
+            if (caseSensitive) {
+                // Compare character by character
+                const minLength = Math.min(a1.length, b1.length);
+                for (let charIndex = 0; charIndex < minLength; charIndex++) {
+                    const charCodeA = a1.charCodeAt(charIndex);
+                    const charCodeB = b1.charCodeAt(charIndex);
+                    if (charCodeA !== charCodeB) {
+                        const lowerCharA = String.fromCharCode(charCodeA).toLowerCase();
+                        const lowerCharB = String.fromCharCode(charCodeB).toLowerCase();
+                        // First compare lowercase versions to handle case-insensitive comparison
+                        if (lowerCharA !== lowerCharB) {
+                            return lowerCharA.charCodeAt(0) - lowerCharB.charCodeAt(0);
+                        }
+                        // If lowercase versions are equal, compare original char codes for case-sensitive ordering
+                        if (charCodeA !== charCodeB) {
+                            return charCodeA - charCodeB;
+                        }
+                    }
+                }
+                // If all characters so far are equal, the shorter string is "less than" the longer one
+                if (a1.length !== b1.length)
+                    return a1.length - b1.length;
+            }
             return a1 > b1 ? 1 : -1;
         }
     }

@@ -30,7 +30,6 @@ import {
     DOMAIN_FIELD_TYPE,
     DOUBLE_RANGE_URI,
     FILELINK_RANGE_URI,
-    FLAG_CONCEPT_URI,
     INT_RANGE_URI,
     MULTILINE_RANGE_URI,
     PARTICIPANTID_CONCEPT_URI,
@@ -191,36 +190,29 @@ describe('DomainForm', () => {
             propertyURI: 'test',
         });
         fields.push({
-            name: 'flag',
-            rangeURI: STRING_RANGE_URI,
-            conceptURI: FLAG_CONCEPT_URI,
-            propertyId: 7,
-            propertyURI: 'test',
-        });
-        fields.push({
             name: 'file link',
             rangeURI: FILELINK_RANGE_URI,
-            propertyId: 8,
+            propertyId: 7,
             propertyURI: 'test',
         });
         fields.push({
             name: 'participant id',
             rangeURI: STRING_RANGE_URI,
             conceptURI: PARTICIPANTID_CONCEPT_URI,
-            propertyId: 9,
+            propertyId: 8,
             propertyURI: 'test',
         });
         fields.push({
             name: 'attachment',
             rangeURI: ATTACHMENT_RANGE_URI,
-            propertyId: 10,
+            propertyId: 9,
             propertyURI: 'test',
         });
         fields.push({
             name: 'sample',
             rangeURI: STRING_RANGE_URI,
             conceptURI: SAMPLE_TYPE_CONCEPT_URI,
-            propertyId: 11,
+            propertyId: 10,
             propertyURI: 'test',
         });
 
@@ -247,10 +239,10 @@ describe('DomainForm', () => {
         expect(document.querySelectorAll('.domain-toolbar-delete-btn')).toHaveLength(1);
         expect(document.querySelectorAll('.domain-search-input')).toHaveLength(1);
         expect(document.querySelectorAll('.domain-toolbar-toggle-summary')).toHaveLength(1);
-        expect(document.querySelectorAll('.domain-field-row')).toHaveLength(12);
-        expect(document.querySelectorAll('.domain-field-delete-icon')).toHaveLength(11);
+        expect(document.querySelectorAll('.domain-field-row')).toHaveLength(11);
+        expect(document.querySelectorAll('.domain-field-delete-icon')).toHaveLength(10);
 
-        expect(document.querySelectorAll('.domain-field-details')).toHaveLength(11);
+        expect(document.querySelectorAll('.domain-field-details')).toHaveLength(10);
         expect(document.querySelectorAll('.domain-field-details')[0].textContent).toContain('');
     });
 
@@ -274,13 +266,6 @@ describe('DomainForm', () => {
             propertyId: 2,
             propertyURI: 'test',
         });
-        fields.push({
-            name: 'flag changed to attachment',
-            rangeURI: STRING_RANGE_URI,
-            conceptURI: FLAG_CONCEPT_URI,
-            propertyId: 3,
-            propertyURI: 'test',
-        });
 
         let domain = DomainDesign.create({
             name: 'update field types',
@@ -294,7 +279,6 @@ describe('DomainForm', () => {
         domain = updateDomainField(domain, { id: createFormInputId(DOMAIN_FIELD_NAME, 0, 0), value: 'newfieldname' });
         domain = updateDomainField(domain, { id: createFormInputId(DOMAIN_FIELD_TYPE, 0, 1), value: 'boolean' });
         domain = updateDomainField(domain, { id: createFormInputId(DOMAIN_FIELD_TYPE, 0, 2), value: 'ParticipantId' });
-        domain = updateDomainField(domain, { id: createFormInputId(DOMAIN_FIELD_TYPE, 0, 3), value: 'attachment' });
 
         await act(async () => {
             renderWithAppContext(<DomainForm domain={domain} onChange={jest.fn()} />);
@@ -304,9 +288,9 @@ describe('DomainForm', () => {
         expect(document.querySelectorAll('.domain-toolbar-delete-btn')).toHaveLength(1);
         expect(document.querySelectorAll('.domain-search-input')).toHaveLength(1);
         expect(document.querySelectorAll('.domain-toolbar-toggle-summary')).toHaveLength(1);
-        expect(document.querySelectorAll('.domain-field-row')).toHaveLength(5);
-        expect(document.querySelectorAll('.domain-field-delete-icon')).toHaveLength(4);
-        expect(document.querySelectorAll('.domain-field-details')).toHaveLength(4);
+        expect(document.querySelectorAll('.domain-field-row')).toHaveLength(4);
+        expect(document.querySelectorAll('.domain-field-delete-icon')).toHaveLength(3);
+        expect(document.querySelectorAll('.domain-field-details')).toHaveLength(3);
         expect(document.querySelectorAll('.domain-field-details')[0].textContent).toContain('Updated');
     });
 

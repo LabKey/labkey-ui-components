@@ -78,7 +78,6 @@ import {
     DATETIME_TYPE,
     DOUBLE_TYPE,
     FILE_TYPE,
-    FLAG_TYPE,
     INTEGER_TYPE,
     LOOKUP_TYPE,
     MULTI_CHOICE_TYPE,
@@ -1747,7 +1746,7 @@ export function isPropertyTypeAllowed(
     if (!appPropertiesOnly) return true;
 
     // We are excluding the field types below for the App for non-premium
-    return hasPremiumModule() || ![LOOKUP_TYPE, FLAG_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
+    return hasPremiumModule() || ![LOOKUP_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
 }
 
 // Determines if a storage type (rangeURI) is a match for a concept type (like User or Subject)

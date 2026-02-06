@@ -13,7 +13,6 @@ import {
     CALCULATED_TYPE,
     DATETIME_TYPE,
     DOUBLE_TYPE,
-    FLAG_TYPE,
     INTEGER_TYPE,
     MULTI_CHOICE_TYPE,
     MULTILINE_TYPE,
@@ -155,23 +154,6 @@ describe('DomainRowExpandedOptions', () => {
             expect(headers.length).toBe(2);
             expect(headers[0].textContent).toBe('Name and Linking Options');
             expect(headers[1].textContent).toBe('Conditional Formatting and Validation Options');
-        });
-    });
-
-    test('Flag data type', async () => {
-        const field = DomainField.create({
-            conceptURI: FLAG_TYPE.conceptURI,
-            rangeURI: FLAG_TYPE.rangeURI,
-        });
-
-        render(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
-
-        await waitFor(() => {
-            const headers = document.querySelectorAll('.domain-field-section-heading');
-            expect(headers.length).toBe(3);
-            expect(headers[0].textContent).toBe('Flag Options');
-            expect(headers[1].textContent).toBe('Name and Linking Options');
-            expect(headers[2].textContent).toBe('Conditional Formatting and Validation Options');
         });
     });
 

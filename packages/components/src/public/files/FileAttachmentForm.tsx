@@ -36,7 +36,7 @@ import { inferDomainFromFile } from '../InferDomainResponse';
 import { SchemaQuery } from '../SchemaQuery';
 
 import { TemplateDownloadButton } from './TemplateDownloadButton';
-import { FileSizeLimitProps, FileGridPreviewProps } from './models';
+import { FileGridPreviewProps, FileSizeLimitProps } from './models';
 
 export interface FileAttachmentFormProps {
     acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
@@ -266,7 +266,7 @@ export class FileAttachmentForm extends PureComponent<FileAttachmentFormProps, S
 
         if (this.shouldShowPreviewGrid()) {
             if (previewData || errorMessage) {
-                return <FilePreviewGrid {...previewGridProps} previewData={previewData} errorMsg={errorMessage} />;
+                return <FilePreviewGrid {...previewGridProps} errorMsg={errorMessage} previewData={previewData} />;
             } else if (previewStatus) {
                 return (
                     <div className="margin-top">
@@ -306,9 +306,13 @@ export class FileAttachmentForm extends PureComponent<FileAttachmentFormProps, S
             }
         }
 
-        this.updatePreviewStatus('Uploading file...');
-
-        inferDomainFromFile(file, previewGridProps.previewCount, previewGridProps.domainKindName)
+        this.updatePreviewStatus('Loading file preview...');
+        inferDomainFromFile(
+            file,
+            previewGridProps.previewCount,
+            previewGridProps.domainKindName,
+            previewGridProps.distinctValueColumns
+        )
             .then(response => {
                 this.updatePreviewStatus(null);
 
@@ -374,21 +378,21 @@ export class FileAttachmentForm extends PureComponent<FileAttachmentFormProps, S
                     <FormSection iconSpacer={false} label={label} showLabel={showLabel}>
                         <div className={classNames({ 'file-upload--one-row': compact })}>
                             <FileAttachmentContainer
-                                ref={this.fileAttachmentContainerRef}
-                                index={index}
                                 acceptedFormats={acceptedFormats}
                                 allowDirectories={allowDirectories}
-                                includeDirectoryFiles={includeDirectoryFiles}
+                                allowMultiple={allowMultiple}
+                                compact={compact}
                                 fileCountSuffix={fileCountSuffix}
                                 handleChange={this.handleFileChange}
                                 handleRemoval={this.handleFileRemoval}
+                                includeDirectoryFiles={includeDirectoryFiles}
+                                index={index}
                                 initialFileNames={initialFileNames}
                                 initialFiles={initialFiles}
-                                allowMultiple={allowMultiple}
+                                labelLong={labelLong}
+                                ref={this.fileAttachmentContainerRef}
                                 sizeLimits={sizeLimits}
                                 sizeLimitsHelpText={sizeLimitsHelpText}
-                                labelLong={labelLong}
-                                compact={compact}
                             />
                             {compact && showButtons && this.renderButtons()}
                         </div>

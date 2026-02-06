@@ -1,4 +1,4 @@
-import { fromJS, List, Record } from 'immutable';
+import { fromJS, List, Map, Record } from 'immutable';
 
 import { ActionURL, Ajax, Utils } from '@labkey/api';
 
@@ -9,16 +9,19 @@ export class InferDomainResponse extends Record({
     fields: List<QueryColumn>(),
     reservedFields: List<QueryColumn>(),
     commentLineCount: undefined,
+    distinctValues: Map<string, List<string>>(),
 }) {
     declare data: List<any>;
     declare fields: List<QueryColumn>;
     declare reservedFields: List<QueryColumn>;
     declare commentLineCount?: number;
+    declare distinctValues: Map<string, List<string>>;
 
     static create(rawModel): InferDomainResponse {
         let data = List<any>();
         let fields = List<QueryColumn>();
         let reservedFields = List<QueryColumn>();
+        let distinctValues = Map<string, List<string>>();
 
         if (rawModel) {
             if (rawModel.data) {
@@ -32,6 +35,12 @@ export class InferDomainResponse extends Record({
             if (rawModel.reservedFields) {
                 reservedFields = List(rawModel.reservedFields.map(field => new QueryColumn(field)));
             }
+
+            if (rawModel.distinctValues) {
+                distinctValues = Map<string, List<string>>(
+                    Object.entries(rawModel.distinctValues).map(([key, value]) => [key, List<string>(value)])
+                );
+            }
         }
 
         return new InferDomainResponse({
@@ -39,14 +48,21 @@ export class InferDomainResponse extends Record({
             fields,
             reservedFields,
             commentLineCount: rawModel.commentLineCount,
+            distinctValues,
         });
+    }
+
+    // get the distinct values for a specific column, return empty list if the column doesn't exist
+    getDistinctValuesForColumn(columnName: string): List<string> {
+        return this.distinctValues.get(columnName, List<string>());
     }
 }
 
 export function inferDomainFromFile(
     file: File | string, // file or webdav url path
     numLinesToInclude: number,
-    domainKindName?: string
+    domainKindName?: string,
+    distinctValueColumns?: string[]
 ): Promise<InferDomainResponse> {
     return new Promise((resolve, reject) => {
         const form = new FormData();
@@ -55,6 +71,10 @@ export function inferDomainFromFile(
         form.append('numLinesToInclude', numLinesToInclude ? (numLinesToInclude + 1).toString() : undefined);
         if (domainKindName) {
             form.append('domainKindName', domainKindName);
+        }
+        if (distinctValueColumns && distinctValueColumns.length > 0) {
+            // append each value separately so they are received as an array on the server
+            distinctValueColumns.forEach(col => form.append('distinctValueColumns', col));
         }
 
         Ajax.request({

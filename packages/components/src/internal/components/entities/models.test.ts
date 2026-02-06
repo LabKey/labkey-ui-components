@@ -200,6 +200,9 @@ describe('EntityIdCreationModel', () => {
         });
         expect(sq.getSchemaQuery().schemaName).toBe('samples');
         expect(sq.getSchemaQuery().queryName).toBe('a');
+
+        expect(sq.getSchemaQuery('altTarget').schemaName).toBe('samples');
+        expect(sq.getSchemaQuery('altTarget').queryName).toBe('altTarget');
     });
 });
 

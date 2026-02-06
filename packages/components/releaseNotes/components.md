@@ -8,6 +8,12 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Make multi-choice behaves as an internal variant of Text Choice rather than a separate visible type in data type dropdown
     - Modified updateDataType and text choice usage counting to correctly handle conversions between string, Text Choice, and Multi Choice fields, clearing validators/flags and tracking multi-value usage where appropriate.
 
+### version 7.16.0
+*Released*: 5 February 2026
+- File import warnings for cross type sample import case
+  - InferDomain API call and response to include distinctValues for specified column keys
+  - EntityIdCreationModel.getSchemaQuery to include optional targetQueryName param
+
 ### version 7.15.0
 *Released*: 4 February 2026
 - Package updates

@@ -465,7 +465,7 @@ exports[`<FilePreviewGrid/> previewData.warningMsg 1`] = `
     File preview:
   </strong>
   <div
-    class="margin-top alert alert-warning"
+    class="margin-top file-preview-grid__warning alert alert-warning"
     role="alert"
   >
     Duplicate fields
@@ -799,7 +799,7 @@ exports[`<FilePreviewGrid/> warning message 1`] = `
     File preview:
   </strong>
   <div
-    class="margin-top alert alert-warning"
+    class="margin-top file-preview-grid__warning alert alert-warning"
     role="alert"
   >
     Testing warning message
@@ -969,7 +969,7 @@ exports[`<FilePreviewGrid/> warning message and previewData.warningMsg 1`] = `
     File preview:
   </strong>
   <div
-    class="margin-top alert alert-warning"
+    class="margin-top file-preview-grid__warning alert alert-warning"
     role="alert"
   >
     Testing warning message

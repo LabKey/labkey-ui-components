@@ -599,19 +599,20 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
 
 export const shouldShowConfirmDataTypeChange = (originalRangeURI: string, newRangeURI: string): boolean => {
     if (newRangeURI && originalRangeURI !== newRangeURI) {
-        const wasString = STRING_CONVERT_URIS.indexOf(originalRangeURI) > -1;
-        const toString = STRING_CONVERT_URIS.indexOf(newRangeURI) > -1;
+        const newTextChoice = PropDescType.isTextChoice(newRangeURI);
+        const oldTextChoice = PropDescType.isTextChoice(originalRangeURI);
+        const wasString = STRING_CONVERT_URIS.indexOf(originalRangeURI) > -1 || oldTextChoice;
+        const toString = STRING_CONVERT_URIS.indexOf(newRangeURI) > -1 || newTextChoice;
         const toNumber = NUMBER_CONVERT_URIS.indexOf(newRangeURI) > -1;
         const toDate = DATETIME_CONVERT_URIS.indexOf(newRangeURI) > -1;
         const wasMultiChoice = PropDescType.isMultiChoice(originalRangeURI);
-        const newTextChoice = PropDescType.isTextChoice(newRangeURI);
         const toMultiChoice = PropDescType.isMultiChoice(newRangeURI);
         return (
             toNumber ||
-            (toString && !wasString && !wasMultiChoice) ||
+            wasMultiChoice ||
+            (toString && !wasString) ||
             toDate ||
-            toMultiChoice ||
-            (wasMultiChoice && newTextChoice)
+            toMultiChoice
         );
     }
     return false;

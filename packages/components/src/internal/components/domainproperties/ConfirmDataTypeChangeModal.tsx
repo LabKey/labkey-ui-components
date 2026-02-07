@@ -43,7 +43,7 @@ export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
                 field will be <span className="bold-text">removed</span>.{' '}
             </>
         );
-    } else if (oldMultiChoice && newTextChoice) {
+    } else if (oldMultiChoice) {
         dataLossWarning = <>Filters in saved views might not function as expected. </>;
     } else if (
         originalRangeURI === DATETIME_RANGE_URI &&

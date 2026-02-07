@@ -140,4 +140,18 @@ describe('ConfirmDataTypeChangeModal', () => {
             'This change will convert the values in the field from Text Choice (multiple select) to Text Choice (single select). Filters in saved views might not function as expected'
         );
     });
+
+    test('from mvtc to text', () => {
+        render(
+            <ConfirmDataTypeChangeModal
+                {...DEFAULT_PROPS}
+                newDataType={TEXT_TYPE}
+                original={multiChoiceType}
+            />
+        );
+        expect(document.body).toHaveTextContent(
+            'This change will convert the values in the field from Text Choice (multiple select) to string. Filters in saved views might not function as expected'
+        );
+    });
+
 });

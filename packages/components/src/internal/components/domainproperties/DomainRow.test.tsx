@@ -433,15 +433,27 @@ describe('shouldShowConfirmDataTypeChange', () => {
         expect(shouldShowConfirmDataTypeChange(INT_RANGE_URI, STRING_RANGE_URI)).toBe(true);
     });
 
-    test('should return false for converting multichoice to string', () => {
-        expect(shouldShowConfirmDataTypeChange(MULTI_CHOICE_RANGE_URI, STRING_RANGE_URI)).toBe(false);
+    test('should return true for converting multiChoice to string', () => {
+        expect(shouldShowConfirmDataTypeChange(MULTI_CHOICE_RANGE_URI, STRING_RANGE_URI)).toBe(true);
     });
 
-    test('should return true for converting multichoice to textChoice', () => {
+    test('should return true for converting multiChoice to textChoice', () => {
         expect(shouldShowConfirmDataTypeChange(MULTI_CHOICE_RANGE_URI, TEXT_CHOICE_CONCEPT_URI)).toBe(true);
     });
 
     test('should return true for converting textChoice to multiChoice', () => {
         expect(shouldShowConfirmDataTypeChange(TEXT_CHOICE_CONCEPT_URI, MULTI_CHOICE_RANGE_URI)).toBe(true);
+    });
+
+    test('should return false for converting textChoice to text', () => {
+        expect(shouldShowConfirmDataTypeChange(TEXT_CHOICE_CONCEPT_URI, STRING_RANGE_URI)).toBe(false);
+    });
+
+    test('should return false for converting text to textChoice', () => {
+        expect(shouldShowConfirmDataTypeChange(STRING_RANGE_URI, TEXT_CHOICE_CONCEPT_URI)).toBe(false);
+    });
+
+    test('should return true for converting text to multiChoice', () => {
+        expect(shouldShowConfirmDataTypeChange(STRING_RANGE_URI, MULTI_CHOICE_RANGE_URI)).toBe(true);
     });
 });

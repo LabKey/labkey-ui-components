@@ -13,6 +13,6 @@ export class QuerySort implements QuerySortJson {
 
     toRequestString(): string {
         const { dir, fieldKey } = this;
-        return dir === '-' ? '-' + fieldKey : fieldKey;
+        return (dir === '-' ? '-' : '+') + fieldKey;
     }
 }

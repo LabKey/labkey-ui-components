@@ -47,6 +47,7 @@ import { usePortalRef } from './hooks';
 import { MenuDivider, MenuItem } from './dropdowns';
 import { LabelOverlay } from './components/forms/LabelOverlay';
 import { DOMAIN_FIELD } from './components/forms/DomainFieldHelpTipContents';
+import { SORT_ASC, SORT_DESC } from '../public/QuerySort';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
@@ -108,11 +109,11 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
         return (
             <input
                 autoFocus
-                ref={titleInput}
                 defaultValue={title}
-                onKeyDown={onKeyDown}
-                onChange={onTitleChange}
                 onBlur={onEditFinish}
+                onChange={onTitleChange}
+                onKeyDown={onKeyDown}
+                ref={titleInput}
             />
         );
     }
@@ -318,8 +319,8 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
                     )}
                     <DisableableMenuItem
                         disabled={!(handleHideColumn && !!model)}
-                        onClick={hideColumn}
                         disabledMessage={APP_FIELD_CANNOT_BE_REMOVED_MESSAGE}
+                        onClick={hideColumn}
                     >
                         <span className="fa fa-eye-slash grid-panel__menu-icon" />
                         Hide Column
@@ -397,18 +398,19 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const colQuerySortDir =
         model?.sorts?.find(sort => sort.fieldKey === queryColumn.resolveFieldKey())?.dir ??
         view?.sorts?.find(sort => sort.fieldKey === queryColumn.resolveFieldKey())?.dir;
-    const isSortAsc = queryColumn.sorts === '+' || colQuerySortDir === '+' || colQuerySortDir === '';
-    const isSortDesc = queryColumn.sorts === '-' || colQuerySortDir === '-';
+    const sortDir = queryColumn.sorts || colQuerySortDir;
+    const isSortAsc = sortDir === SORT_ASC;
+    const isSortDesc = sortDir === SORT_DESC;
 
     return (
         <div className={GRID_HEADER_CELL_BODY} onClick={click}>
             <div className="grid-header-cell__title-wrapper">
                 <EditableColumnTitle
                     column={queryColumn}
-                    onChange={onColumnTitleUpdate}
                     editing={editingTitle}
-                    onCancel={cancelEditTitle}
                     hideToolTip={!!column.helpTipRenderer}
+                    onCancel={cancelEditTitle}
+                    onChange={onColumnTitleUpdate}
                 />
 
                 {!editingTitle && colFilters?.length > 0 && (
@@ -426,10 +428,10 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                 {!editingTitle && column.helpTipRenderer && (
                     <LabelHelpTip
                         placement="bottom"
-                        title={column.title}
                         popoverClassName={column.helpTipRenderer === DOMAIN_FIELD ? undefined : 'label-help-arrow-left'}
+                        title={column.title}
                     >
-                        <HelpTipRenderer type={column.helpTipRenderer} column={queryColumn} />
+                        <HelpTipRenderer column={queryColumn} type={column.helpTipRenderer} />
                     </LabelHelpTip>
                 )}
             </div>
@@ -445,8 +447,8 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                     isSortAsc={isSortAsc}
                     isSortDesc={isSortDesc}
                     model={model}
-                    open={open}
                     onEditTitleClicked={editTitle}
+                    open={open}
                     queryColumn={queryColumn}
                     setOpen={setOpen}
                 />
@@ -476,8 +478,8 @@ export const HeaderSelectionCell: FC<HeaderSelectionCellProps> = memo(props => {
 
     return (
         <input
-            className={className}
             checked={selectedState === GRID_CHECKBOX_OPTIONS.ALL}
+            className={className}
             disabled={disabled}
             onChange={handleSelection}
             ref={checkboxRef}

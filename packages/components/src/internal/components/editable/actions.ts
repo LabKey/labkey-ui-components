@@ -1629,7 +1629,6 @@ export function validateAndInsertPastedData(
     let selectedColIdx: number;
     let selectedRowIdx: number;
 
-    console.log(value);
     if (editorModel.isMultiSelect) {
         // Issue 51359 - When pasting during multiselect we want to paste from the first cell in the selection,
         // otherwise we'll paste from the initially selected cell, which will fill the wrong area. This is most obvious

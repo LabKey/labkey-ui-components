@@ -36,7 +36,7 @@ export class FilePreviewGrid extends React.Component<Props, any> {
                     <>
                         <strong>{header}</strong>
                         {(warningMsg || previewData?.warningMsg) && (
-                            <Alert bsStyle="warning" className="margin-top">
+                            <Alert bsStyle="warning" className="margin-top file-preview-grid__warning">
                                 {warningMsg}
                                 {previewData?.warningMsg}
                             </Alert>

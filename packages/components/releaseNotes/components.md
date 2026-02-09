@@ -6,6 +6,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 - GitHub Issue 779: Cannot Edit Relative Dates in Sample Finder
     - Allow intermediate editing state for relative date values in DatePickerInput
 
+### version 7.16.0
+*Released*: 5 February 2026
+- File import warnings for cross type sample import case
+  - InferDomain API call and response to include distinctValues for specified column keys
+  - EntityIdCreationModel.getSchemaQuery to include optional targetQueryName param
+
+### version 7.15.0
+*Released*: 4 February 2026
+- Package updates
+
 ### version 7.14.0
 *Released*: 30 January 2026
 - Update `withQueryModels` to track and cancel requests for `loadRows`, `loadSelections` and `loadTotalCount`

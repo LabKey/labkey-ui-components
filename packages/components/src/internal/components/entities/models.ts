@@ -360,8 +360,8 @@ export class EntityIdCreationModel extends Record({
         };
     }
 
-    getSchemaQuery(): SchemaQuery {
-        const entityTypeName = this.getTargetEntityTypeValue();
+    getSchemaQuery(targetQueryName?: string): SchemaQuery {
+        const entityTypeName = targetQueryName ?? this.getTargetEntityTypeValue();
         return entityTypeName ? new SchemaQuery(this.entityDataType.instanceSchemaName, entityTypeName) : undefined;
     }
 

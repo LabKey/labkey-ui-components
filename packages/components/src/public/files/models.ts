@@ -19,6 +19,7 @@ export interface FileSizeLimitProps {
 
 export interface FileGridPreviewProps {
     acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
+    distinctValueColumns?: string[];
     domainKindName?: string;
     errorStyle?: string;
     header?: string;

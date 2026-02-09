@@ -4,7 +4,7 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 var fs = require('fs');
-var propertiesReader = require('properties-reader');
+const { propertiesReader } = require('properties-reader');
 const netrc = require('./netrc');
 const util = require('util');
 
@@ -53,7 +53,7 @@ function getTestProperties() {
     // Apply TeamCity build properties, if present
     if (propFile) {
         if (fs.existsSync(propFile)) {
-            const properties = propertiesReader(propFile);
+            const properties = propertiesReader({ sourceFile: propFile });
 
             const serverPropName = 'labkey.server';
             const propServer = properties.get(serverPropName);

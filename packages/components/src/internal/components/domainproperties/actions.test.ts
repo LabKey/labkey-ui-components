@@ -354,7 +354,6 @@ describe('domain properties actions', () => {
         __setController('project');
         setModuleContext(TEST_LKS_STARTER_MODULE_CONTEXT);
         const domain = DomainDesign.create({
-            allowFlagProperties: true,
             allowFileLinkProperties: true,
             allowAttachmentProperties: true,
             allowTimepointProperties: true,
@@ -383,7 +382,6 @@ describe('domain properties actions', () => {
         __setController('project');
         setModuleContext(TEST_LKS_STARTER_MODULE_CONTEXT);
         const domain = DomainDesign.create({
-            allowFlagProperties: false,
             allowFileLinkProperties: false,
             allowAttachmentProperties: false,
             allowTimepointProperties: false,

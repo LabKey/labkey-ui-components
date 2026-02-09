@@ -145,7 +145,6 @@ interface IDomainDesign {
     allowAttachmentProperties: boolean;
     allowCalculatedFields: boolean;
     allowFileLinkProperties: boolean;
-    allowFlagProperties: boolean;
     allowMultiChoiceProperties: boolean;
     allowSampleSubjectProperties: boolean;
     allowTextChoiceProperties: boolean;
@@ -181,7 +180,6 @@ export class DomainDesign
         domainId: null,
         allowFileLinkProperties: false,
         allowAttachmentProperties: false,
-        allowFlagProperties: true,
         allowSampleSubjectProperties: true,
         allowTextChoiceProperties: true,
         allowMultiChoiceProperties: true,
@@ -213,7 +211,6 @@ export class DomainDesign
     declare domainId: number;
     declare allowFileLinkProperties: boolean;
     declare allowAttachmentProperties: boolean;
-    declare allowFlagProperties: boolean;
     declare allowSampleSubjectProperties: boolean;
     declare allowTextChoiceProperties: boolean;
     declare allowMultiChoiceProperties: boolean;

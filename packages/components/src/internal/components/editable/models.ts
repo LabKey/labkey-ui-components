@@ -796,6 +796,8 @@ export class EditorModel
                     // we can skip any readOnly columns or non-userEditable columns
                     if (col.readOnly || !col.userEditable) return row;
 
+                    const isMultiChoice = col.isMultiChoice;
+
                     // Convert empty cell to null
                     if (value === '') value = null;
 
@@ -849,6 +851,9 @@ export class EditorModel
                                 if (filtered.size > 0) {
                                     row[key] = value;
                                 }
+                            } else if (isMultiChoice) {
+                                if (originalValue?.findIndex(o => value.indexOf(o) === -1) !== -1)
+                                    row[key] = value;
                             } else if (
                                 originalValue?.findIndex(
                                     o => value.indexOf(o.value) === -1 && value.indexOf(o.displayValue) === -1

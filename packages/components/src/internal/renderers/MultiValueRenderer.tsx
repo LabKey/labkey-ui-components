@@ -37,6 +37,9 @@ export const MultiValueRenderer: FC<MultiValueRendererProps> = memo(({ data, col
         valueArray = data.get('value');
     }
 
+    if (!Iterable.isIterable(valueArray))
+        return null;
+
     let i = -1;
     return (
         <div>

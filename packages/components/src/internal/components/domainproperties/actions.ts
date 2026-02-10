@@ -108,6 +108,7 @@ import {
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
 import { executeSql } from '../../query/executeSql';
+import { getLegalIdentifier } from "../../query/filter";
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -1447,10 +1448,12 @@ export async function getTextChoiceInUseValues(
             hasMultiValue = processTextChoiceRow(value, isMultiField, rowLocked, 1, useCount, hasMultiValue);
         });
     } else {
+        const fieldNameSelect = getLegalIdentifier(fieldName);
+        const sql = `SELECT ${fieldNameSelect}, ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE ${fieldNameSelect} IS NOT NULL GROUP BY ${fieldNameSelect}`;
         const response = await executeSql({
             containerFilter,
             schemaName,
-            sql: `SELECT "${fieldName}", ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE "${fieldName}" IS NOT NULL GROUP BY "${fieldName}"`,
+            sql,
         });
 
         response.rows.forEach(row => {

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.16.1
+*Released*: 11 February 2026
+- Query: sort columns where name starts with '+'
+
 ### version 7.16.0
 *Released*: 5 February 2026
 - File import warnings for cross type sample import case

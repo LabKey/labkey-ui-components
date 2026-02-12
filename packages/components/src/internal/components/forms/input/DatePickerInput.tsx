@@ -166,11 +166,18 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
 
     onChange = (date: Date, event?: any): void => {
         const { onChange, formsy, inlineEdit, queryColumn } = this.props;
+        const { relativeInputValue } = this.state;
 
-        this.setState({ selectedDate: date, invalid: false, invalidStart: false });
+        let validSelect = date;
 
-        if (this.state.relativeInputValue) {
-            onChange?.(this.state.relativeInputValue);
+        if (relativeInputValue) {
+            if (isRelativeDateFilterValue(relativeInputValue, false)) {
+                onChange?.(relativeInputValue);
+            }
+            else {
+                validSelect = undefined;
+                onChange?.(undefined);
+            }
         } else {
             const formatted = getDateTimeDisplayValue(date, queryColumn);
             onChange?.(queryColumn.isTimeColumn ? formatted : date, formatted);
@@ -179,6 +186,8 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                 this.props.setValue?.(this.getFormsyValue(date));
             }
         }
+
+        this.setState({ selectedDate: validSelect, invalid: false, invalidStart: false });
 
         // event is null when selecting time picker
         if (!event && inlineEdit) this.input.current.setFocus();
@@ -191,13 +200,26 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         if (queryColumn.isTimeColumn) {
             // Issue 50010: Time picker enters the wrong time if a time field has a format set
             this.onChange(parseTime(value), undefined);
-        } else if (isRelativeDateFilterValue(value)) {
+        } else if (isRelativeDateFilterValue(value, true)) {
             this.setState({ relativeInputValue: value });
             this.props.onChange?.(value);
         } else {
             this.setState({ relativeInputValue: undefined });
         }
     };
+
+    handleCalendarClose = (): void => {
+        const { onCalendarClose, onChange } = this.props;
+        const { relativeInputValue } = this.state;
+        onCalendarClose?.();
+
+        if (relativeInputValue) {
+            if (isRelativeDateFilterValue(relativeInputValue, true) && !isRelativeDateFilterValue(relativeInputValue, false)) {
+                // clear out invalid relative date input on calendar close
+                onChange?.(undefined);
+            }
+        }
+    }
 
     onIconClick = (): void => {
         this.input.current?.setFocus();
@@ -275,7 +297,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                 isClearable={isClearable}
                 name={name ? name : queryColumn.fieldKey}
                 onBlur={inlineEdit ? onBlur : undefined}
-                onCalendarClose={onCalendarClose}
+                onCalendarClose={this.handleCalendarClose}
                 onChange={this.onChange}
                 onChangeRaw={allowRelativeInput || isTimeOnly ? this.onChangeRaw : undefined}
                 onKeyDown={onKeyDown}

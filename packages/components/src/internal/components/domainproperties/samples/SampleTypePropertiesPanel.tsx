@@ -163,6 +163,8 @@ interface OwnProps {
     includeDataClasses?: boolean;
     metricUnitProps?: MetricUnitProps;
     model: SampleTypeModel;
+    nameExpressionChatResponse?: string;
+    nameExpressionErrors?: string[];
     nameExpressionGenIdProps?: NameExpressionGenIdProps;
     namePreviews?: string[];
     namePreviewsLoading?: boolean;
@@ -372,6 +374,8 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
             appPropertiesOnly,
             showLinkToStudy,
             metricUnitProps,
+            nameExpressionChatResponse,
+            nameExpressionErrors,
             namePreviews,
             namePreviewsLoading,
             nameExpressionGenIdProps,
@@ -445,6 +449,8 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                 {appPropertiesOnly && <SectionHeading title="General Properties" />}
                 <EntityDetailsForm
                     data={model}
+                    nameExpressionChatResponse={nameExpressionChatResponse}
+                    nameExpressionErrors={nameExpressionErrors}
                     nameExpressionGenIdProps={nameExpressionGenIdProps}
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}

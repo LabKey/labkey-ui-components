@@ -53,6 +53,7 @@ import { UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
 import { biologicsIsPrimaryApp } from '../../../app/products';
+import { sendNamingPatternPrompt } from '../entities/EntityDetailsForm';
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
@@ -131,6 +132,8 @@ interface State {
     auditUserComment?: string;
     error: React.ReactNode;
     model: SampleTypeModel;
+    nameExpressionErrors: string[];
+    nameExpressionChatResponse: string;
     nameExpressionWarnings: string[];
     namePreviews: string[];
     namePreviewsLoading: boolean;
@@ -178,6 +181,8 @@ export class SampleTypeDesignerImpl extends React.PureComponent<SampleTypeDesign
             error: undefined,
             showUniqueIdConfirmation: false,
             uniqueIdsConfirmed: undefined,
+            nameExpressionChatResponse: undefined,
+            nameExpressionErrors: undefined,
             nameExpressionWarnings: undefined,
             namePreviewsLoading: false,
             namePreviews: undefined,
@@ -470,12 +475,20 @@ export class SampleTypeDesignerImpl extends React.PureComponent<SampleTypeDesign
                     details,
                     true
                 );
+                if (response.errors?.length > 0) {
+                    const domainDetails = this.getDomainDetails();
+                   const syntaxCheckResponse = await sendNamingPatternPrompt(
+                       'What is wrong with the syntax of the naming pattern for this sample type: ' + domainDetails.nameExpression
+                   );
+                   console.log("Syntax check response", syntaxCheckResponse);
+                }
                 if (response.errors?.length > 0 || response.warnings?.length > 0) {
                     const updatedModel = model.set('exception', response.errors?.join('\n')) as SampleTypeModel;
                     setSubmitting(false, () => {
                         this.setState(
                             () => ({
                                 model: updatedModel,
+                                nameExpressionErrors: response.errors,
                                 nameExpressionWarnings: response.warnings,
                                 namePreviews: response.previews,
                                 showUniqueIdConfirmation: false,
@@ -612,7 +625,19 @@ export class SampleTypeDesignerImpl extends React.PureComponent<SampleTypeDesign
                     this.getDomainDetails(),
                     true
                 );
-                this.setState({ namePreviews: response?.previews, namePreviewsLoading: false });
+                let chatHelp;
+                if (response.errors?.length > 0) {
+                    chatHelp = await sendNamingPatternPrompt(
+                        'What is wrong with the syntax of the naming pattern for this sample type: ' + this.getDomainDetails().nameExpression
+                    );
+                    console.log("Syntax check response", chatHelp);
+                }
+                this.setState({
+                    namePreviews: response?.previews,
+                    namePreviewsLoading: false,
+                    nameExpressionErrors: response?.errors,
+                    nameExpressionChatResponse: chatHelp,
+                });
             }
         } catch (error) {
             this.setState({ namePreviewsLoading: false });
@@ -657,6 +682,8 @@ export class SampleTypeDesignerImpl extends React.PureComponent<SampleTypeDesign
             model,
             parentOptions,
             showUniqueIdConfirmation,
+            nameExpressionErrors,
+            nameExpressionChatResponse,
             nameExpressionWarnings,
             namePreviews,
             namePreviewsLoading,
@@ -727,6 +754,8 @@ export class SampleTypeDesignerImpl extends React.PureComponent<SampleTypeDesign
                     nameExpressionInfoUrl={nameExpressionInfoUrl}
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
                     namePreviews={namePreviews}
+                    nameExpressionChatResponse={nameExpressionChatResponse}
+                    nameExpressionErrors={nameExpressionErrors}
                     namePreviewsLoading={namePreviewsLoading}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}

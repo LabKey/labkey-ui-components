@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { Map } from 'immutable';
 
 import classNames from 'classnames';
@@ -14,10 +14,16 @@ import { getEntityDescriptionValue, getEntityNameExpressionValue, getEntityNameV
 import { ENTITY_FORM_IDS } from './constants';
 
 import { InternalSpacesWarning } from '../../forms/InternalSpacesWarning';
+import { Key } from '../../../../public/useEnterEscape';
+import { buildURL } from '../../../url/AppURL';
+import { Ajax, Utils } from '@labkey/api';
+import { resolveErrorMessage } from '../../../util/messaging';
 
 export interface EntityDetailsProps {
     data?: Map<string, any>;
     formValues?: IEntityDetails;
+    nameExpressionErrors?: string[];
+    nameExpressionChatResponse?: string;
     nameExpressionGenIdProps?: NameExpressionGenIdProps;
     nameExpressionInfoUrl?: string;
     nameExpressionPlaceholder?: string;
@@ -31,10 +37,65 @@ export interface EntityDetailsProps {
     warning?: string;
 }
 
-export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps> {
+export function sendNamingPatternPrompt(prompt: string, domainType?: string, rowId?: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+        const url = buildURL('experiment', 'namingPatternChat.api');
+
+        Ajax.request({
+            url,
+            method: 'POST',
+            jsonData: {
+                prompt,
+                domainType,
+                rowId,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                console.log('agent response', response);
+                resolve(response?.suggestion ?? '');
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                console.error(error);
+                reject(resolveErrorMessage(error) ?? 'Failed to send prompt.');
+            }),
+        });
+    });
+}
+
+interface State {
+    chatResponse: string;
+    promptText: string;
+}
+
+export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, State> {
+    constructor(props: EntityDetailsProps) {
+        super(props);
+        this.state = {
+            chatResponse: undefined,
+            promptText: undefined,
+        };
+    }
+    onKeyDown = async (event: React.KeyboardEvent<HTMLElement>): Promise<void> => {
+        const isShift = event.shiftKey;
+        if (!isShift && event.key == Key.ENTER) {
+            console.log('Submitting request', this.state.promptText);
+            const response = await sendNamingPatternPrompt(
+                this.state.promptText,
+                this.props.nameExpressionGenIdProps.kindName,
+                this.props.nameExpressionGenIdProps.rowId
+            );
+            console.log('response is ', response);
+            this.setState({ chatResponse: response });
+        }
+    };
+
+    onPromptChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        this.setState({ promptText: event.target.value });
+    };
+
     render() {
         const {
             nameExpressionInfoUrl,
+            nameExpressionChatResponse,
             nameExpressionPlaceholder,
             noun,
             onFormChange,
@@ -47,7 +108,9 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps> {
             onNameFieldHover,
             namePreviewsLoading,
             nameExpressionGenIdProps,
+            nameExpressionErrors,
         } = this.props;
+        const { chatResponse } = this.state;
         const moreInfoLink = nameExpressionInfoUrl ? (
             <p>
                 <a target="_blank" href={nameExpressionInfoUrl} rel="noopener noreferrer">
@@ -116,6 +179,8 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps> {
                                         <p>Pattern used for generating unique IDs for this {noun.toLowerCase()}.</p>
                                         {showPreviewName && (
                                             <NameExpressionPreview
+                                                chatHelp={nameExpressionChatResponse}
+                                                errors={nameExpressionErrors}
                                                 previewName={previewName}
                                                 isPreviewLoading={namePreviewsLoading}
                                             />
@@ -138,6 +203,13 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps> {
                             onChange={onFormChange}
                             value={getEntityNameExpressionValue(formValues, data)}
                         />
+                        <textarea
+                            className="naming-pattern-chat-input form-control"
+                            onChange={this.onPromptChange}
+                            onKeyDown={this.onKeyDown}
+                            placeholder="What kind of naming pattern do you want today?"
+                        />
+                        <div>{chatResponse}</div>
                     </div>
                 </div>
             </form>

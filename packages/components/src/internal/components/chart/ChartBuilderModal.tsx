@@ -1,5 +1,5 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
+import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { VegaEmbed } from 'react-vega';
 import { PermissionTypes } from '@labkey/api';
 
 import { generateId } from '../../util/utils';
@@ -8,7 +8,7 @@ import { Modal } from '../../Modal';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { flattenValuesFromRow, QueryModel } from '../../../public/QueryModel/QueryModel';
 import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
 
 import { useServerContext } from '../base/ServerContext';
@@ -19,12 +19,46 @@ import { FormButtons } from '../../FormButtons';
 import { getContainerFilterForFolder } from '../../query/api';
 
 import { isAppHomeFolder } from '../../app/utils';
-import { deleteChart, saveChart, SaveReportConfig } from './actions';
+import { deleteChart, saveChart, SaveReportConfig, sendChartAgentPrompt } from './actions';
 import { BLUE_HEX_COLOR, HIDDEN_CHART_TYPES, MAX_POINT_DISPLAY, MAX_ROWS_PREVIEW } from './constants';
 
 import { BaseChartModel, ChartConfig, ChartQueryConfig, ChartTypeInfo, GenericChartModel } from './models';
 import { deepCopyChartConfig } from './utils';
-import { ChartSettingsPanel } from './ChartSettingsPanel';
+import { VegaLiteChart } from './VegaLiteChart';
+
+const SIMPLE_VEGA_LITE_BAR_SPEC = {
+    $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
+    description: 'A simple bar chart with embedded data.',
+    data: {
+        values: [
+            { a: 'A', b: 28 },
+            { a: 'B', b: 55 },
+            { a: 'C', b: 43 },
+            { a: 'D', b: 91 },
+            { a: 'E', b: 81 },
+            { a: 'F', b: 53 },
+            { a: 'G', b: 19 },
+            { a: 'H', b: 87 },
+            { a: 'I', b: 52 },
+        ],
+    },
+    mark: 'bar',
+    encoding: {
+        x: { field: 'a', type: 'nominal', axis: { labelAngle: 0 } },
+        y: { field: 'b', type: 'quantitative' },
+    },
+};
+
+const INIT_AGENT_PROMPT =
+    // 'This initial prompt is just to create the context. We will be asking you to build a Vega-Lite spec for a chart. ' +
+    // 'Please wait for the next prompt before responding. You can ignore any of the information that you know about LabKey chart types and its visualization ' +
+    // ' library since we are creating Vega-Lite charts here (which are unrelated to the LabKey charting types and charting wizard.' +
+    // '\n\nTo prepare, here is an example Vega-Lite spec for a simple bar chart:\n' +
+    // JSON.stringify(SIMPLE_VEGA_LITE_BAR_SPEC) +
+    // '\n\nAll of the specs that you create should be of this same version and format. Please be sure to include the spec object in a code tag so that I can find it and parse it from the response. ' +
+    // 'Any specifics about Vega-Lite chart specs should use the documentation from https://vega.github.io/vega-lite/docs/.' +
+    // '\n\nI will provide the data object before I render the chart on my end. So when you generate temp data for your spec, you can fake it using the fieldKeys and types in the QueryInfo object I will provide, but make sure to use the same fieldKey names and data types in your generated spec as the ones in the QueryInfo object. ' +
+    '\n\nThe chart will be created for a specific dataset with the following information (provided as a LabKey QueryInfo object):\n';
 
 export const getChartRenderMsg = (chartConfig: ChartConfig, rowCount: number, isPreview: boolean): string => {
     const msg = [];
@@ -346,6 +380,109 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
         />
     );
 
+    const containerFilter = useMemo(() => getContainerFilterForFolder(model.containerPath), [model.containerPath]);
+    const [dataRecords, setDataRecords] = useState<Record<string, any>[]>([]);
+    useEffect(() => {
+        // add model filters, parameters, and containerFilter plus maxRows to the queryConfig for the preview, but not to save with the chart
+        const queryConfig_ = {
+            ...getChartBuilderQueryConfig(model, chartConfig, undefined),
+            containerFilter,
+            filterArray: [...model.loadRowsFilters(true)],
+            parameters: model.queryParameters,
+            maxRows: MAX_ROWS_PREVIEW,
+        };
+
+        LABKEY_VIS.GenericChartHelper.queryChartData(
+            undefined,
+            queryConfig_,
+            chartConfig,
+            (measureStore, trendlineData) => {
+                const records = LABKEY_VIS.GenericChartHelper.getMeasureStoreRecords(measureStore);
+                const cols = Object.keys(measureStore.getColumnMap());
+                const records_ = records.map(r => {
+                    return flattenValuesFromRow(r, cols, undefined, true);
+                });
+                console.log('data records', records_);
+                setDataRecords(records_);
+            }
+        );
+    }, []);
+
+    const [vegaLiteSpec, setVegaLiteSpec] = useState<string>('');
+    const onVegaSpecChange = useCallback(
+        (event: ChangeEvent<HTMLTextAreaElement>) => {
+            setVegaLiteSpec(event.target.value);
+        },
+        [setVegaLiteSpec]
+    );
+
+    const [vegaLitePrompt, setVegaLitePrompt] = useState<string>(() => {
+        const trimmedQueryInfo = {
+            description: model.queryInfo.description,
+            schemaName: model.queryInfo.schemaName,
+            queryLabel: model.queryInfo.queryLabel,
+            title: model.queryInfo.title,
+            name: model.queryInfo.name,
+            columns: model.queryInfo['defaultView'].columns.map(c => ({
+                name: c.name,
+                fieldKey: c.fieldKey,
+                caption: c.caption,
+                type: c.type,
+                description: c.description,
+                jsonType: c.jsonType,
+            })),
+        };
+        console.log(model.queryInfo);
+        return INIT_AGENT_PROMPT + JSON.stringify(trimmedQueryInfo, null, 2);
+    });
+    const [hideTextAreas, setHideTextAreas] = useState<boolean>(true);
+    const [agentResponseLoading, setAgentResponseLoading] = useState<boolean>(false);
+    const [agentResponse, setAgentResponse] = useState<string>(undefined);
+    const onVegaPromptChange = useCallback(
+        (event: ChangeEvent<HTMLTextAreaElement>) => {
+            setVegaLitePrompt(event.target.value);
+        },
+        [setVegaLitePrompt]
+    );
+
+    const callAgent = useCallback(async () => {
+        setVegaLitePrompt('');
+        setAgentResponseLoading(true);
+        try {
+            const response = await sendChartAgentPrompt(vegaLitePrompt);
+            setAgentResponse(response);
+            setTimeout(() => {
+                applySpecWithData();
+            }, 500);
+        } catch (error) {
+            setAgentResponse(error);
+        } finally {
+            setAgentResponseLoading(false);
+        }
+    }, [vegaLitePrompt]);
+
+    const toggleAgentReponse = useCallback(() => {
+        setHideTextAreas(h => !h);
+    }, []);
+
+    const applySpecWithData = useCallback(() => {
+        // use document.querySelector to get the <code> block from the vegaSpecResponse div
+        const codeBlock = document.querySelector('.vegaSpecResponse code');
+        if (codeBlock) {
+            try {
+                const spec = JSON.parse(codeBlock.textContent);
+                // replace the data values in the spec with the data from the query
+                if (spec.data) {
+                    spec.data.values = dataRecords;
+                }
+                console.log(spec);
+                setVegaLiteSpec(JSON.stringify(spec, null, 2));
+            } catch (error) {
+                console.error('Error parsing Vega-Lite spec from response: ' + error);
+            }
+        }
+    }, [dataRecords]);
+
     return (
         <Modal
             className="chart-builder-modal"
@@ -353,26 +490,66 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
             onCancel={onCancel}
             title={savedChartModel ? 'Edit Chart' : 'Create Chart'}
         >
-            <ChartSettingsPanel
-                allowInherit={allowInherit}
-                canShare={canShare}
+            <div>
+                <textarea
+                    className="form-control"
+                    cols={50}
+                    name="vegaSpecPrompt"
+                    onChange={onVegaPromptChange}
+                    placeholder="Enter chart prompt here..."
+                    rows={8}
+                    value={vegaLitePrompt}
+                />
+                <button onClick={callAgent}>Send Prompt</button>
+                {/*<button onClick={applySpecWithData}>Apply Spec with Data</button>*/}
+                <button onClick={toggleAgentReponse}>Show/Hide Agent Response</button>
+                <div className="margin-bottom"/>
+                {agentResponseLoading && (
+                    <div className="vegaSpecResponse">
+                        <LoadingSpinner msg="Generating Vega-Lite Spec..." wrapperClassName="loading-spinner" />
+                    </div>
+                )}
+                {!agentResponseLoading && agentResponse && (
+                    <div className="vegaSpecResponse" dangerouslySetInnerHTML={{ __html: agentResponse }} style={{ display: hideTextAreas ? 'none' : 'block' }} />
+                )}
+                <textarea
+                    className="form-control margin-bottom"
+                    cols={50}
+                    name="vegaSpecInput"
+                    onChange={onVegaSpecChange}
+                    placeholder="Enter Vega-Lite JSON spec here"
+                    rows={15}
+                    value={vegaLiteSpec}
+                />
+            </div>
+            <VegaLiteChart
+                chart={undefined}
                 chartConfig={chartConfig}
-                chartModel={chartModel}
-                chartType={selectedType}
-                error={error}
-                isNew={savedChartModel !== undefined}
-                model={model}
-                setChartConfig={setChartConfig}
-                setChartModel={setChartModel}
+                measureStore={undefined}
+                spec={vegaLiteSpec}
+                trendlineData={undefined}
             />
-            <ChartPreview
-                chartConfig={chartConfig}
-                hasRequiredValues={hasRequiredValues}
-                model={model}
-                savedChartModel={savedChartModel}
-                selectedType={selectedType}
-                setReportConfig={setReportConfig}
-            />
+
+            {/*<ChartSettingsPanel*/}
+            {/*    allowInherit={allowInherit}*/}
+            {/*    canShare={canShare}*/}
+            {/*    chartConfig={chartConfig}*/}
+            {/*    chartModel={chartModel}*/}
+            {/*    chartType={selectedType}*/}
+            {/*    error={error}*/}
+            {/*    isNew={savedChartModel !== undefined}*/}
+            {/*    model={model}*/}
+            {/*    setChartConfig={setChartConfig}*/}
+            {/*    setChartModel={setChartModel}*/}
+            {/*/>*/}
+            {/*<ChartPreview*/}
+            {/*    chartConfig={chartConfig}*/}
+            {/*    hasRequiredValues={hasRequiredValues}*/}
+            {/*    model={model}*/}
+            {/*    savedChartModel={savedChartModel}*/}
+            {/*    selectedType={selectedType}*/}
+            {/*    setReportConfig={setReportConfig}*/}
+            {/*/>*/}
         </Modal>
     );
 });

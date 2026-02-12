@@ -28,6 +28,7 @@ import { ChartAPIWrapper, DEFAULT_API_WRAPPER } from './api';
 import { ChartConfig, ChartQueryConfig } from './models';
 import { getChartRenderMsg } from './ChartBuilderModal';
 import { CurveFitStatsGrid } from './CurveFitStatsGrid';
+import { VegaLiteChart } from './VegaLiteChart';
 
 interface ChartLoadingMaskProps {
     msg?: string;
@@ -153,7 +154,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, query
     useEffect(() => {
         const render = (): void => {
             if (queryConfig !== undefined && chartConfig !== undefined) {
-                ref.current.innerHTML = '';
+                // ref.current.innerHTML = '';
                 if (!measureStore) {
                     setLoadingData(true);
                     LABKEY_VIS.GenericChartHelper.queryChartData(
@@ -170,17 +171,17 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, query
                         }
                     );
                 } else {
-                    const plots = LABKEY_VIS.GenericChartHelper.generateChartSVG(
-                        divId,
-                        {
-                            ...chartConfig,
-                            // Issue 49754: need to wait until we have measureStore to calculated width
-                            ...computeDimensions(chartConfig, measureStore, ref.current.offsetWidth),
-                        },
-                        measureStore,
-                        trendlineData
-                    );
-                    if (plots) setPlot(plots[0]);
+                    // const plots = LABKEY_VIS.GenericChartHelper.generateChartSVG(
+                    //     divId,
+                    //     {
+                    //         ...chartConfig,
+                    //         // Issue 49754: need to wait until we have measureStore to calculated width
+                    //         ...computeDimensions(chartConfig, measureStore, ref.current.offsetWidth),
+                    //     },
+                    //     measureStore,
+                    //     trendlineData
+                    // );
+                    // if (plots) setPlot(plots[0]);
                 }
             }
         };
@@ -190,13 +191,24 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters, query
         return () => window.clearTimeout(renderId);
     }, [divId, chartConfig, queryConfig, measureStore, trendlineData]);
 
+    // console.log('chartConfig', chartConfig);
+    // console.log('measureStore', measureStore);
+    // console.log('trendlineData', trendlineData);
     return (
         <div className="svg-chart chart-body">
             {error !== undefined && <span className="text-danger">{error}</span>}
             {loadError !== undefined && <span className="text-danger">{loadError}</span>}
             {(isLoading(loadingState) || loadingData) && <ChartLoadingMask />}
             {renderMsg && <span className="gray-text pull-right">{renderMsg}</span>}
-            <div className="svg-chart__chart" id={divId} ref={ref} />
+            {/*<div className="svg-chart__chart" id={divId} ref={ref} />*/}
+            {!(isLoading(loadingState) || loadingData) && (
+                <VegaLiteChart
+                    chart={chart}
+                    chartConfig={chartConfig}
+                    measureStore={measureStore}
+                    trendlineData={trendlineData}
+                />
+            )}
             {trendlineData !== undefined && (
                 <CurveFitStatsGrid name={chart.name} plot={plot} trendLineData={trendlineData} />
             )}

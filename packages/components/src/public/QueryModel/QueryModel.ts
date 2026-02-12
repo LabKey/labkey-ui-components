@@ -20,13 +20,18 @@ import { SelectRowsOptions } from '../../internal/query/selectRows';
 export function flattenValuesFromRow(
     row: any,
     columns: string[],
-    colFieldKeyMap?: Record<string, string>
+    colFieldKeyMap?: Record<string, string>,
+    useDisplayValue = false
 ): Record<string, any> {
     const values = {};
     if (row && columns) {
         columns.forEach((col: string) => {
             if (row[col]) {
-                values[col] = row[col].value;
+                if (useDisplayValue) {
+                    values[col] = row[col].displayValue ?? row[col].value;
+                } else {
+                    values[col] = row[col].value;
+                }
             }
         });
     }

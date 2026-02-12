@@ -60,3 +60,25 @@ export function deleteChart(id: string, dataType = 'reports', containerPath?: st
         });
     });
 }
+
+// function to call the query-queryagent.api to send a prompt to the server and get back a response from the agent.
+export function sendChartAgentPrompt(prompt: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        // const url = buildURL('test', 'chatendpoint.api');
+        const url = buildURL('query', 'chartBuilderAgent.api');
+
+        Ajax.request({
+            url,
+            method: 'POST',
+            jsonData: { prompt },
+            success: Utils.getCallbackWrapper(response => {
+                console.log('agent response', response);
+                resolve(response?.response ?? '');
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                console.error(error);
+                reject(resolveErrorMessage(error) ?? 'Failed to send prompt to chart agent.');
+            }),
+        });
+    });
+}

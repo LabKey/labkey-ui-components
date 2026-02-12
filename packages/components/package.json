@@ -71,6 +71,10 @@
     "react-router-dom": "~6.30.1",
     "react-select": "~5.10.2",
     "react-treebeard": "~3.2.4",
+    "react-vega": "~8.0.0",
+    "vega": "~6.2.0",
+    "vega-lite": "~6.4.1",
+    "vega-embed": "~7.1.0",
     "vis-data": "~8.0.3",
     "vis-network": "~10.0.2"
   },

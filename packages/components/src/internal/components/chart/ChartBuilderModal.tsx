@@ -58,7 +58,10 @@ const INIT_AGENT_PROMPT =
     // '\n\nAll of the specs that you create should be of this same version and format. Please be sure to include the spec object in a code tag so that I can find it and parse it from the response. ' +
     // 'Any specifics about Vega-Lite chart specs should use the documentation from https://vega.github.io/vega-lite/docs/.' +
     // '\n\nI will provide the data object before I render the chart on my end. So when you generate temp data for your spec, you can fake it using the fieldKeys and types in the QueryInfo object I will provide, but make sure to use the same fieldKey names and data types in your generated spec as the ones in the QueryInfo object. ' +
-    '\n\nThe chart will be created for a specific dataset with the following information (provided as a LabKey QueryInfo object):\n';
+    'Please do not create any chart configs yet. I will prompt you when I am ready.\n' +
+    'When you respond please be sure to include the spec object in a code tag so that I can find it and parse it from the response. Only include that code block, nothing else in the successful response case.\n' +
+    'I will provide the data object before I render the chart on my end. So when you generate temp data for your spec, you can fake it using the fieldKeys and types in the QueryInfo object I will provide, but make sure to use the same fieldKey names and data types in your generated spec as the ones in the QueryInfo object.\n' +
+    'The chart will be created for a specific dataset with the following information (provided as a LabKey QueryInfo object):\n';
 
 export const getChartRenderMsg = (chartConfig: ChartConfig, rowCount: number, isPreview: boolean): string => {
     const msg = [];

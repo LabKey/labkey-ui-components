@@ -18,12 +18,13 @@ import { Key } from '../../../../public/useEnterEscape';
 import { buildURL } from '../../../url/AppURL';
 import { Ajax, Utils } from '@labkey/api';
 import { resolveErrorMessage } from '../../../util/messaging';
+import { LoadingSpinner } from '../../base/LoadingSpinner';
 
 export interface EntityDetailsProps {
     data?: Map<string, any>;
     formValues?: IEntityDetails;
-    nameExpressionErrors?: string[];
     nameExpressionChatResponse?: string;
+    nameExpressionErrors?: string[];
     nameExpressionGenIdProps?: NameExpressionGenIdProps;
     nameExpressionInfoUrl?: string;
     nameExpressionPlaceholder?: string;
@@ -63,6 +64,7 @@ export function sendNamingPatternPrompt(prompt: string, domainType?: string, row
 
 interface State {
     chatResponse: string;
+    loadingChatResponse: boolean;
     promptText: string;
 }
 
@@ -70,6 +72,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, S
     constructor(props: EntityDetailsProps) {
         super(props);
         this.state = {
+            loadingChatResponse: false,
             chatResponse: undefined,
             promptText: undefined,
         };
@@ -77,6 +80,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, S
     onKeyDown = async (event: React.KeyboardEvent<HTMLElement>): Promise<void> => {
         const isShift = event.shiftKey;
         if (!isShift && event.key == Key.ENTER) {
+            this.setState({ loadingChatResponse: true });
             console.log('Submitting request', this.state.promptText);
             const response = await sendNamingPatternPrompt(
                 this.state.promptText,
@@ -84,7 +88,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, S
                 this.props.nameExpressionGenIdProps.rowId
             );
             console.log('response is ', response);
-            this.setState({ chatResponse: response });
+            this.setState({ chatResponse: response, loadingChatResponse: false });
         }
     };
 
@@ -209,7 +213,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, S
                             onKeyDown={this.onKeyDown}
                             placeholder="What kind of naming pattern do you want today?"
                         />
-                        <div>{chatResponse}</div>
+                        <div>{this.state.loadingChatResponse ? <LoadingSpinner /> : chatResponse}</div>
                     </div>
                 </div>
             </form>

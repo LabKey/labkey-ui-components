@@ -56,6 +56,7 @@ import {
     UNITS_KIND,
 } from '../../../util/measurement';
 import { Alert } from '../../base/Alert';
+import { NamingPatternOptionsModal } from './NamingPatternOptionsModal';
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');
@@ -209,6 +210,7 @@ interface State {
     unitChangeWarning: string;
     validMetricUnitOptions: UnitKindType[];
     validUnitKinds: UnitKindType[];
+    showAliquotHelpModal: boolean;
 }
 
 type Props = BasePropertiesPanelProps & EntityProps & OwnProps;
@@ -247,6 +249,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
         validMetricUnitOptions: [],
         originalUnit: undefined,
         unitChangeWarning: undefined,
+        showAliquotHelpModal: false,
     };
 
     componentDidMount = async (): Promise<void> => {
@@ -350,6 +353,14 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
 
     onNameFieldHover = (): void => {
         this.props.onNameFieldHover?.();
+    };
+
+    onAliquotNameHelpClick = (): void => {
+        this.setState({ showAliquotHelpModal: true });
+    };
+
+    onCloseAliquotHelpModal = (): void => {
+        this.setState({showAliquotHelpModal: false});
     };
 
     containsDataClassOptions(): boolean {
@@ -513,6 +524,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                                 type="text"
                                 value={model.aliquotNameExpression}
                             />
+                            <button className="btn btn-success" onClick={this.onAliquotNameHelpClick}>Help Me</button>
                         </div>
                     </div>
                 )}
@@ -688,6 +700,9 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                             <UniqueIdBanner isFieldsPanel={false} model={model} onAddField={onAddUniqueIdField} />
                         </div>
                     </div>
+                )}
+                {this.state.showAliquotHelpModal && (
+                    <NamingPatternOptionsModal onClose={this.onCloseAliquotHelpModal} sampleType={model} />
                 )}
             </BasePropertiesPanel>
         );

@@ -28,7 +28,7 @@ export const NamingPatternOptionsModal: FC<Props> = props => {
 
     const onConfirm = useCallback(async () => {
         setLoading(true);
-        let prompt = 'Generate a naming pattern for aliquots in sample type ' + sampleType.name + ' that includes ';
+        let prompt = ' aliquots in samples.' + sampleType.name + ' that includes ';
         if (includeDate) {
             prompt += ' the created date ';
         }

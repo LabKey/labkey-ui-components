@@ -796,9 +796,21 @@ export function isDateBetween(date: Date, start: Date, end: Date, dateOnlyCompar
     return time >= start.getTime() && time <= end.getTime();
 }
 
-const RELATIVE_DAYS_REGEX = /^[+-]\d+d$/;
-export function isRelativeDateFilterValue(val: string): boolean {
-    return typeof val === 'string' && RELATIVE_DAYS_REGEX.test(val);
+// Matches strict format: +5d, -10d
+const STRICT_RELATIVE_DAYS = /^[+-]\d+d$/;
+
+// Matches partials: "+", "5", "+5", "5d", "+d", etc.
+const RELAXED_RELATIVE_DAYS = /^[+-]?\d*d?$/;
+
+/**
+ * Returns true if the given string is a valid relative date filter value. Ex: +5d, -1d
+ */
+export function isRelativeDateFilterValue(val: string, relaxedMatch?: boolean): boolean {
+    if (typeof val !== 'string' || val === '') return false;
+
+    if (relaxedMatch) return RELAXED_RELATIVE_DAYS.test(val);
+
+    return STRICT_RELATIVE_DAYS.test(val);
 }
 
 export function getParsedRelativeDateStr(dateVal: string): { days: number; positive: boolean } {

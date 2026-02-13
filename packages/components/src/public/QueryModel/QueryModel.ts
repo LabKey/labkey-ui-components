@@ -59,16 +59,8 @@ function offsetFromString(rowsPerPage: number, pageStr: string): number {
     return offset >= 0 ? offset : 0;
 }
 
-export function querySortFromString(sortStr: string): QuerySort {
-    if (sortStr.startsWith('-')) {
-        return new QuerySort({ dir: '-', fieldKey: sortStr.slice(1) });
-    } else {
-        return new QuerySort({ fieldKey: sortStr });
-    }
-}
-
 function querySortsFromString(sortsStr: string): QuerySort[] {
-    return sortsStr?.split(',').map(querySortFromString);
+    return sortsStr?.split(',').map(QuerySort.fromString);
 }
 
 function searchFiltersFromString(searchStr: string): Filter.IFilter[] {
@@ -1281,7 +1273,7 @@ export function getSettingsFromLocalStorage(id: string, containerPath: string): 
     const filterArray = savedSettings.filterArray?.map(f =>
         Filter.create(f.columnName, f.value, Filter.getFilterTypeForURLSuffix(f.type))
     );
-    const sorts = savedSettings.sorts?.map(s => querySortFromString(s));
+    const sorts = savedSettings.sorts?.map(QuerySort.fromString);
 
     return {
         filterArray: filterArray ?? [],

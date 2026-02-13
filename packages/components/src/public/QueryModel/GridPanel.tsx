@@ -11,7 +11,7 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Map, Set } from 'immutable';
-import { Filter, getServerContext, Query } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { EXPORT_TYPES, GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
 import { HeaderCellDropdown, HeaderSelectionCell, isFilterColumnNameMatch } from '../../internal/renderers';
@@ -25,7 +25,7 @@ import {
     saveSessionView,
 } from '../../internal/actions';
 
-import { hasServerContext, useServerContext } from '../../internal/components/base/ServerContext';
+import { useServerContext } from '../../internal/components/base/ServerContext';
 
 import { Pagination } from '../../internal/components/pagination/Pagination';
 
@@ -33,7 +33,7 @@ import { ViewInfo } from '../../internal/ViewInfo';
 
 import { QueryColumn } from '../QueryColumn';
 
-import { QuerySort } from '../QuerySort';
+import { QuerySort, SortDirection } from '../QuerySort';
 
 import { GridColumn } from '../../internal/components/base/models/GridColumn';
 
@@ -711,12 +711,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         this.setState({ showFilterModalFieldKey: undefined });
     };
 
-    sortColumn = (column: QueryColumn, direction?: string): void => {
+    sortColumn = (column: QueryColumn, direction?: SortDirection): void => {
         const fieldKey = column.resolveFieldKey(); // resolveFieldKey because of Issue 34627
 
         if (direction) {
-            const dir = direction === '+' ? '' : '-'; // Sort Action only uses '-' and ''
-            const sort = new QuerySort({ fieldKey, dir });
+            const sort = new QuerySort({ dir: direction, fieldKey });
             this.handleSortChange({ type: ChangeType.add }, sort);
         } else {
             const actionIndex = this.state.actionValues.findIndex(

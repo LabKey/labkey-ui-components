@@ -140,7 +140,7 @@ describe('QueryModel', () => {
         let model = new QueryModel({ schemaQuery: SCHEMA_QUERY, sorts });
         expect(() => model.sortString).toThrow('Cannot construct sort string, no QueryInfo available');
         model = model.mutate({ queryInfo: QUERY_INFO });
-        expect(model.sortString).toEqual('-RowId,Data');
+        expect(model.sortString).toEqual('-RowId,+Data');
     });
 
     test('Columns', () => {

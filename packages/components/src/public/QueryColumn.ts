@@ -19,6 +19,7 @@ import { SAMPLES_WITH_TYPES_FILTER } from '../internal/components/samples/consta
 import { SchemaQuery } from './SchemaQuery';
 import { IQueryColumn } from './IQueryColumn';
 import { PropDescType } from '../internal/components/domainproperties/PropDescType';
+import { SortDirection } from './QuerySort';
 
 export enum Operation {
     insert = 'insert',
@@ -189,7 +190,7 @@ export class QueryColumn implements IQueryColumn {
     declare detailRenderer: string;
     declare helpTipRenderer: string;
     declare inputRenderer: string;
-    declare sorts: '+' | '-';
+    declare sorts: SortDirection;
     declare removeFromViews: boolean; // strips this column from all ViewInfo definitions
     declare removeFromFormInput: boolean; // strips this column from QueryFormInputs
     declare units: string;

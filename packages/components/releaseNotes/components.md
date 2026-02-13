@@ -8,6 +8,15 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Make multi-choice behaves as an internal variant of Text Choice rather than a separate visible type in data type dropdown
     - Modified updateDataType and text choice usage counting to correctly handle conversions between string, Text Choice, and Multi Choice fields, clearing validators/flags and tracking multi-value usage where appropriate.
 
+### version 7.16.2
+*Released*: 11 February 2026
+- GitHub Issue 779: Cannot Edit Relative Dates in Sample Finder
+    - Allow intermediate editing state for relative date values in DatePickerInput
+
+### version 7.16.1
+*Released*: 11 February 2026
+- Query: sort columns where name starts with '+'
+
 ### version 7.16.0
 *Released*: 5 February 2026
 - File import warnings for cross type sample import case

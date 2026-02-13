@@ -1448,7 +1448,7 @@ export async function getTextChoiceInUseValues(
             hasMultiValue = processTextChoiceRow(value, isMultiField, rowLocked, 1, useCount, hasMultiValue);
         });
     } else {
-        const fieldNameSelect = getLegalIdentifier(fieldName);
+        const fieldNameSelect = getLegalIdentifier(fieldName, null, null, true/*domain.name is not encoded*/);
         const sql = `SELECT ${fieldNameSelect}, ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE ${fieldNameSelect} IS NOT NULL GROUP BY ${fieldNameSelect}`;
         const response = await executeSql({
             containerFilter,

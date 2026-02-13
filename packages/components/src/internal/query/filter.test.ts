@@ -596,4 +596,10 @@ describe('getLegalIdentifier', () => {
         expect(getLegalIdentifier('test/a/b/c', undefined, '.')).toBe('"test/a/b/c"');
         expect(getLegalIdentifier('test.a.b.c', undefined, '.')).toBe('"test"."a"."b"."c"');
     });
+
+    test('skipDecode=true handles raw fieldKeys without decoding', () => {
+        expect(getLegalIdentifier('$$Dolla', undefined, '/', true)).toBe('"$$Dolla"');
+        expect(getLegalIdentifier('$$Dolla/$Pound', undefined, '/', true)).toBe('"$$Dolla"."$Pound"');
+
+    });
 });

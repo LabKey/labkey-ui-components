@@ -4,6 +4,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Update `FilterStatus` to optionally include an "Add Filter" button
+- add `getIntegerSearchParam` utility in `internal/url/utils.ts`
+
+### version 7.17.0
+*Released*: 16 February 2026
+- Remove GridAliquotViewSelector
+- Remove SampleAliquotViewSelector
+- Remove isSampleAliquotSelectorEnabled
 
 ### version 7.16.2
 *Released*: 11 February 2026

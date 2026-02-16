@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 7.X.0
-*Released*: ? February 2026
+### version 7.17.0
+*Released*: 16 February 2026
 - Remove GridAliquotViewSelector
 - Remove SampleAliquotViewSelector
 - Remove isSampleAliquotSelectorEnabled

@@ -76,7 +76,6 @@ import {
 } from './internal/util/utils';
 import { AutoForm } from './internal/components/AutoForm';
 import { HelpIcon } from './internal/components/HelpIcon';
-import { getUserRoleDisplay } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
 import {
     deleteErrorMessage,
@@ -1415,7 +1414,6 @@ export {
     getTestAPIWrapper,
     getTimelineEntityUrl,
     getUniqueIdColumnMetadata,
-    getUserRoleDisplay,
     getUsersWithPermissions,
     getValueFromRow,
     getValuesSummary,

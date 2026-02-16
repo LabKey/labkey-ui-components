@@ -340,8 +340,6 @@ import {
 } from './internal/components/entities/models';
 import { EntityMoveModal } from './internal/components/entities/EntityMoveModal';
 import { EntityMoveConfirmationModal } from './internal/components/entities/EntityMoveConfirmationModal';
-import { SampleAliquotViewSelector } from './internal/components/entities/SampleAliquotViewSelector';
-import { GridAliquotViewSelector } from './internal/components/entities/GridAliquotViewSelector';
 import {
     FindDerivativesButton,
     FindDerivativesMenuItem,
@@ -733,7 +731,6 @@ import {
     isProjectContainer,
     isProtectedDataEnabled,
     isRegistryEnabled,
-    isSampleAliquotSelectorEnabled,
     isSampleStatusEnabled,
     isSharedContainer,
     isSourceTypeEnabled,
@@ -939,7 +936,6 @@ const App = {
     isPlatesEnabled,
     isBiologicsEnabled,
     isPremiumApplication,
-    isSampleAliquotSelectorEnabled,
     isProjectContainer,
     isProtectedDataEnabled,
     isDataChangeCommentRequirementFeatureEnabled,
@@ -1429,7 +1425,6 @@ export {
     GlobalStateContextProvider,
     Grid,
     GRID_CHECKBOX_OPTIONS,
-    GridAliquotViewSelector,
     getTextAlignClassName,
     GridColumn,
     GridPanel,
@@ -1645,7 +1640,6 @@ export {
     SAMPLE_TYPE_AUDIT_QUERY,
     SAMPLE_TYPE_CONCEPT_URI,
     SAMPLE_TYPE_DESIGNER_ROLE,
-    SampleAliquotViewSelector,
     SampleAmountEditModal,
     sampleDeleteDependencyText,
     SampleOperation,

@@ -19,7 +19,7 @@ import { applyURL, AppURL, buildURL, spliceURL } from './internal/url/AppURL';
 import { AppLink } from './internal/url/AppLink';
 import { useAppNavigate } from './internal/url/useAppNavigate';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
-import { encodeFormDataQuote } from './internal/url/utils';
+import { encodeFormDataQuote, getIntegerSearchParam } from './internal/url/utils';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
 import { getTextAlignClassName, GridColumn } from './internal/components/base/models/GridColumn';
@@ -711,6 +711,7 @@ import {
     hasPremiumModule,
     hasProductFolders,
     isAdvancedDomainPropertiesEnabled,
+    isAdvancedWorkflowEnabled,
     isAllProductFoldersFilteringEnabled,
     isApp,
     isAppHomeFolder,
@@ -738,7 +739,6 @@ import {
     isSharedContainer,
     isSourceTypeEnabled,
     isWorkflowEnabled,
-    isAdvancedWorkflowEnabled,
     setFolderDataExclusion,
     setProductFolders,
     useMenuSectionConfigs,
@@ -853,8 +853,8 @@ import { useModalState, useNotAuthorized, useNotFound, usePortalRef, useTimeout 
 import {
     TEST_BIO_LIMS_ENTERPRISE_MODULE_CONTEXT,
     TEST_BIO_LIMS_STARTER_MODULE_CONTEXT,
-    TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LK_LIMS_MODULE_CONTEXT,
+    TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
     TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT,
@@ -1374,6 +1374,7 @@ export {
     getMetricUnitOptions,
     getModuleCustomLabels,
     getNonStandardFormatWarning,
+    getIntegerSearchParam,
     getOmittedSampleTypeColumns,
     getOperationNotAllowedMessage,
     getOperationNotAllowedMessageFromCounts,

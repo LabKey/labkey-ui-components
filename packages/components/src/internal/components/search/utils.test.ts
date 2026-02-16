@@ -1603,7 +1603,7 @@ describe('decodeErrorMessage', () => {
 describe('escapeSearchQuery', () => {
     test('empty values', () => {
         expect(escapeSearchQuery(undefined)).toBeUndefined();
-        expect(null).toBeNull();
+        expect(escapeSearchQuery(null)).toBeNull();
         expect(escapeSearchQuery('')).toEqual('');
     });
     test('escapes special characters', () => {
@@ -1626,14 +1626,50 @@ describe('escapeSearchQuery', () => {
     test('handles quotes well', () => {
         expect(escapeSearchQuery('"Fresh" and "Flowers"', false)).toEqual('"Fresh" and "Flowers"');
         expect(escapeSearchQuery('Fl"ower', true)).toEqual('Fl\\"ower OR Fl\\"ower*');
+        expect(escapeSearchQuery('Fl"ower', false)).toEqual('Fl"ower');
         expect(escapeSearchQuery('D_"fee{-e>4_b4"', false)).toEqual('D_"fee\\{\\-e>4_b4"');
         expect(escapeSearchQuery('D_"fee{-e>4_b4"', true)).toEqual(
             'D_\\"fee\\{\\-e>4_b4\\" OR D_\\"fee\\{\\-e>4_b4\\"*'
         );
     });
     test('trims', () => {
+        expect(escapeSearchQuery('   ', true)).toEqual('');
+        expect(escapeSearchQuery('   ', false)).toEqual('');
         expect(escapeSearchQuery('   test  &&    sp"ace    ', true)).toEqual(
             'test  \\&&    sp\\"ace OR test  \\&&    sp\\"ace*'
         );
+    });
+    describe('retains start/end quoting', () => {
+        test('when escapeQuotes is true', () => {
+            const escapeQuotes = true;
+            expect(escapeSearchQuery('"', escapeQuotes)).toEqual('\\" OR \\"*');
+            expect(escapeSearchQuery('""', escapeQuotes)).toEqual('""');
+            expect(escapeSearchQuery('"test"', escapeQuotes)).toEqual('"test"');
+            expect(escapeSearchQuery('"te"st"', escapeQuotes)).toEqual('"te\\"st"');
+            expect(escapeSearchQuery('"test', escapeQuotes)).toEqual('\\"test OR \\"test*');
+            expect(escapeSearchQuery('test"', escapeQuotes)).toEqual('test\\" OR test\\"*');
+            expect(escapeSearchQuery('no quotes', escapeQuotes)).toEqual('no quotes OR no quotes*');
+            expect(escapeSearchQuery('"""', escapeQuotes)).toEqual('"\\""');
+            expect(escapeSearchQuery('"a"b"c"', escapeQuotes)).toEqual('"a\\"b\\"c"');
+            expect(escapeSearchQuery('a "b" c', escapeQuotes)).toEqual('a \\"b\\" c OR a \\"b\\" c*');
+            expect(escapeSearchQuery('"te+st"', escapeQuotes)).toEqual('"te\\+st"');
+            expect(escapeSearchQuery('"(a) [b]"', escapeQuotes)).toEqual('"\\(a\\) \\[b\\]"');
+            expect(escapeSearchQuery('"   "', escapeQuotes)).toEqual('"   "');
+        });
+        test('when escapeQuotes is false', () => {
+            const escapeQuotes = false;
+            expect(escapeSearchQuery('"', escapeQuotes)).toEqual('"');
+            expect(escapeSearchQuery('""', escapeQuotes)).toEqual('""');
+            expect(escapeSearchQuery('"test"', escapeQuotes)).toEqual('"test"');
+            expect(escapeSearchQuery('"te"st"', escapeQuotes)).toEqual('"te"st"');
+            expect(escapeSearchQuery('"test', escapeQuotes)).toEqual('"test');
+            expect(escapeSearchQuery('test"', escapeQuotes)).toEqual('test"');
+            expect(escapeSearchQuery('no quotes', escapeQuotes)).toEqual('no quotes OR no quotes*');
+            expect(escapeSearchQuery('"""', escapeQuotes)).toEqual('"""');
+            expect(escapeSearchQuery('a "b" c', escapeQuotes)).toEqual('a "b" c');
+            expect(escapeSearchQuery('"te+st"', escapeQuotes)).toEqual('"te\\+st"');
+            expect(escapeSearchQuery('"(a) [b]"', escapeQuotes)).toEqual('"\\(a\\) \\[b\\]"');
+            expect(escapeSearchQuery('"   "', escapeQuotes)).toEqual('"   "');
+        });
     });
 });

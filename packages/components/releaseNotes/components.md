@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.18.1
+*Released*: 17 February 2026
+- Allow users to use quotation marks for exact search within the apps
+
 ### version 7.18.0
 *Released*: 17 February 2026
 - Update `FilterStatus` to optionally include an "Add Filter" button

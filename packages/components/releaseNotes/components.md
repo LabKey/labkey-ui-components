@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.18.0
+*Released*: 17 February 2026
 - Update `FilterStatus` to optionally include an "Add Filter" button
 - add `getIntegerSearchParam` utility in `internal/url/utils.ts`
 

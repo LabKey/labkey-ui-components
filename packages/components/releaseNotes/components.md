@@ -8,6 +8,17 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Make multi-choice behaves as an internal variant of Text Choice rather than a separate visible type in data type dropdown
     - Modified updateDataType and text choice usage counting to correctly handle conversions between string, Text Choice, and Multi Choice fields, clearing validators/flags and tracking multi-value usage where appropriate.
 
+### version 7.18.0
+*Released*: 17 February 2026
+- Update `FilterStatus` to optionally include an "Add Filter" button
+- add `getIntegerSearchParam` utility in `internal/url/utils.ts`
+
+### version 7.17.0
+*Released*: 16 February 2026
+- Remove GridAliquotViewSelector
+- Remove SampleAliquotViewSelector
+- Remove isSampleAliquotSelectorEnabled
+
 ### version 7.16.2
 *Released*: 11 February 2026
 - GitHub Issue 779: Cannot Edit Relative Dates in Sample Finder

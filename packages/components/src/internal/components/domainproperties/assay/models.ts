@@ -167,12 +167,14 @@ export class AssayProtocolModel extends ImmutableRecord({
     get container(): string {
         const container = new Container(getServerContext().container);
         const domainContainerId = this.domainContainerId;
+        const domainContainerPath =
+            domainContainerId === container.id
+                ? container.path
+                : domainContainerId === container.parentId
+                  ? container.parentPath
+                  : domainContainerId;
 
-        return this.isNew()
-            ? getAppHomeFolderPath(container)
-            : domainContainerId === container.id
-              ? container.path
-              : domainContainerId;
+        return this.isNew() ? getAppHomeFolderPath(container) : domainContainerPath;
     }
 
     get domainContainerId(): string {

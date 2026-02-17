@@ -289,6 +289,44 @@ describe('AssayProtocolModel', () => {
         expect(existingModel.container).toBe('Test Container');
     });
 
+    test('by container id', () => {
+        let existingModel = AssayProtocolModel.create({
+            protocolId: 1,
+            name: 'Test Assay Protocol',
+            domains: [
+                {
+                    name: 'Sample Fields',
+                    container: 'e28ed3a3-4d74-103b-9678-6554da263543', // see jest.config.js
+                },
+            ],
+        });
+        expect(existingModel.container).toBe('/DefaultTestContainer');
+
+        existingModel = AssayProtocolModel.create({
+            protocolId: 1,
+            name: 'Test Assay Protocol',
+            domains: [
+                {
+                    name: 'Sample Fields',
+                    container: '01b94403-4179-1039-a799-ea54f212702c', // see jest.config.js
+                },
+            ],
+        });
+        expect(existingModel.container).toBe('/ParentTestContainer');
+
+        existingModel = AssayProtocolModel.create({
+            protocolId: 1,
+            name: 'Test Assay Protocol',
+            domains: [
+                {
+                    name: 'Sample Fields',
+                    container: '01b94403-bogus-ea54f212702c',
+                },
+            ],
+        });
+        expect(existingModel.container).toBe('01b94403-bogus-ea54f212702c');
+    });
+
     test('domainContainerId', () => {
         const newModel = AssayProtocolModel.create({
             name: 'Test Assay Protocol',

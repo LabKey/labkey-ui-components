@@ -7,7 +7,10 @@ module.exports = {
         LABKEY: {
             contextPath: '/labkey',
             container: {
+                id: 'e28ed3a3-4d74-103b-9678-6554da263543',
                 path: '/DefaultTestContainer',
+                parentId: '01b94403-4179-1039-a799-ea54f212702c',
+                parentPath: '/ParentTestContainer',
                 formats: {
                     dateFormat: "yyyy-MM-dd",
                     dateTimeFormat: "yyyy-MM-dd HH:mm",

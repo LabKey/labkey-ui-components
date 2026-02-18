@@ -5,6 +5,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - GitHub Issue 846: Remove display of user role in profile and settings pages
 
+### version 7.18.1
+*Released*: 17 February 2026
+- Allow users to use quotation marks for exact search within the apps
+
+### version 7.18.0
+*Released*: 17 February 2026
+- Update `FilterStatus` to optionally include an "Add Filter" button
+- add `getIntegerSearchParam` utility in `internal/url/utils.ts`
+
 ### version 7.17.0
 *Released*: 16 February 2026
 - Remove GridAliquotViewSelector

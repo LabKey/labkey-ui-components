@@ -852,8 +852,7 @@ export class EditorModel
                                     row[key] = value;
                                 }
                             } else if (isMultiChoice) {
-                                if (originalValue?.findIndex(o => value.indexOf(o) === -1) !== -1)
-                                    row[key] = value;
+                                if (originalValue?.findIndex(o => value.indexOf(o) === -1) !== -1) row[key] = value;
                             } else if (
                                 originalValue?.findIndex(
                                     o => value.indexOf(o.value) === -1 && value.indexOf(o.displayValue) === -1

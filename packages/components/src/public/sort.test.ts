@@ -47,7 +47,6 @@ describe('caseSensitiveNaturalSort', () => {
 
         expect(caseSensitiveNaturalSort('a', 'B')).toBeLessThan(0);
 
-
         expect(['Abnormal', 'cDNA', 'Plasma', 'agent'].sort(caseSensitiveNaturalSort)).toEqual([
             'Abnormal',
             'agent',
@@ -59,10 +58,7 @@ describe('caseSensitiveNaturalSort', () => {
 
         expect(caseSensitiveNaturalSort('a', 'Plasma')).toBeLessThan(0);
 
-        expect(['Abnormal', 'a'].sort(caseSensitiveNaturalSort)).toEqual([
-            'Abnormal',
-            'a',
-        ]);
+        expect(['Abnormal', 'a'].sort(caseSensitiveNaturalSort)).toEqual(['Abnormal', 'a']);
 
         expect(['Abnormal', 'cDNA', 'Plasma', 'a'].sort(caseSensitiveNaturalSort)).toEqual([
             'Abnormal',
@@ -77,7 +73,6 @@ describe('caseSensitiveNaturalSort', () => {
         expect(caseSensitiveNaturalSort('a1.2', 'a1.3')).toBeLessThan(0);
         expect(caseSensitiveNaturalSort('10', '1.0')).toBeGreaterThan(0);
     });
-
 
     test('alphabetic', () => {
         expect(caseSensitiveNaturalSort('', 'anything')).toBe(1);
@@ -103,6 +98,4 @@ describe('caseSensitiveNaturalSort', () => {
         expect(caseSensitiveNaturalSort('10', '1.0')).toBeGreaterThan(0);
         expect(caseSensitiveNaturalSort('1.2ABC', '1.2XY')).toBeLessThan(0);
     });
-
-
 });

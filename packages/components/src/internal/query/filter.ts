@@ -72,14 +72,22 @@ export function isEqual(first: List<Filter.IFilter>, second: List<Filter.IFilter
  * Make a legal LK SQL identifier from the column name by decoding parts, escaping quotes, and adding table alias if provided.
  * See usage in ui-premium entities/utils.tsx getLabKeySql()
  */
-export function getLegalIdentifier(fieldKey: string, tableAlias?: string, separator = '/', skipDecode?: boolean): string {
+export function getLegalIdentifier(
+    fieldKey: string,
+    tableAlias?: string,
+    separator = '/',
+    skipDecode?: boolean
+): string {
     const fieldParts = fieldKey.split(separator);
     const formattedParts = [];
     fieldParts.forEach(part => {
         if (part) {
             let decodedPart = part.replace(/"/g, '""');
-            if (!skipDecode) // For example, domain.name (unencoded) is passed in as fieldKey
+            if (!skipDecode) {
+                // For example, domain.name (unencoded) is passed in as fieldKey
                 decodedPart = QueryKey.decodePart(decodedPart);
+            }
+
             formattedParts.push('"' + decodedPart + '"');
         }
     });

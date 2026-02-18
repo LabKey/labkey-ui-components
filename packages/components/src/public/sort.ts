@@ -54,8 +54,7 @@ function _naturalSort(aso: any, bso: any, caseSensitive?: boolean): number {
                     }
                 }
                 // If all characters so far are equal, the shorter string is "less than" the longer one
-                if (a1.length !== b1.length)
-                    return a1.length - b1.length;
+                if (a1.length !== b1.length) return a1.length - b1.length;
             }
             return a1 > b1 ? 1 : -1;
         }

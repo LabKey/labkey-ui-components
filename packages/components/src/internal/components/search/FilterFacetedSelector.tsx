@@ -317,7 +317,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                 <div className="row">
                     <div className={`col-xs-${taggedValues?.length > 0 ? 6 : 12}`}>
                         {loading && <LoadingSpinner />}
-                        {(!loading && !hideOptions) && (
+                        {!loading && !hideOptions && (
                             <ul className="nav nav-stacked labkey-wizard-pills">
                                 {filteredFieldDistinctValues?.map((value, index) => {
                                     let displayValue = value;

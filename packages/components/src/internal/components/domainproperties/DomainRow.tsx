@@ -607,13 +607,7 @@ export const shouldShowConfirmDataTypeChange = (originalRangeURI: string, newRan
         const toDate = DATETIME_CONVERT_URIS.indexOf(newRangeURI) > -1;
         const wasMultiChoice = PropDescType.isMultiChoice(originalRangeURI);
         const toMultiChoice = PropDescType.isMultiChoice(newRangeURI);
-        return (
-            toNumber ||
-            wasMultiChoice ||
-            (toString && !wasString) ||
-            toDate ||
-            toMultiChoice
-        );
+        return toNumber || wasMultiChoice || (toString && !wasString) || toDate || toMultiChoice;
     }
     return false;
 };

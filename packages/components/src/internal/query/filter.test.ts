@@ -600,6 +600,5 @@ describe('getLegalIdentifier', () => {
     test('skipDecode=true handles raw fieldKeys without decoding', () => {
         expect(getLegalIdentifier('$$Dolla', undefined, '/', true)).toBe('"$$Dolla"');
         expect(getLegalIdentifier('$$Dolla/$Pound', undefined, '/', true)).toBe('"$$Dolla"."$Pound"');
-
     });
 });

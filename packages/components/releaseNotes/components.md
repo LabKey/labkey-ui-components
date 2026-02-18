@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 7.X
-*Released*: X January 2026
+### version 7.20.0
+*Released*: 18 February 2026
 - Multi value text choices: field type conversion
     - Updates the Text Choice options UI to add an “Allow multiple selections” toggle, multi-choice-specific edit restrictions, and improved confirmation messaging/tests for data-type changes involving text/multi-choice.
     - Make multi-choice behaves as an internal variant of Text Choice rather than a separate visible type in data type dropdown

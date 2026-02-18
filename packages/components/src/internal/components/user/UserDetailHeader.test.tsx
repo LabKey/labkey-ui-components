@@ -5,7 +5,7 @@ import { TEST_USER_ASSAY_DESIGNER, TEST_USER_READER } from '../../userFixtures';
 
 import { UserDetailHeader } from './UserDetailHeader';
 
-describe('<UserDetailHeader/>', () => {
+describe('UserDetailHeader', () => {
     test('default properties', () => {
         const component = <UserDetailHeader title="Title" user={TEST_USER_READER} />;
         const { container } = render(component);
@@ -17,7 +17,6 @@ describe('<UserDetailHeader/>', () => {
             <UserDetailHeader
                 container={{ title: 'Container Title' }}
                 dateFormat="YYYY-MM-DD"
-                description="My custom description"
                 renderButtons={
                     <button className="btn btn-default" type="button">
                         Test

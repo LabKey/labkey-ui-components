@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Make multi-choice behaves as an internal variant of Text Choice rather than a separate visible type in data type dropdown
     - Modified updateDataType and text choice usage counting to correctly handle conversions between string, Text Choice, and Multi Choice fields, clearing validators/flags and tracking multi-value usage where appropriate.
 
+### version 7.19.0
+*Released*: 18 February 2026
+- GitHub Issue 846: Remove display of user role in profile and settings pages
+
 ### version 7.18.1
 *Released*: 17 February 2026
 - Allow users to use quotation marks for exact search within the apps

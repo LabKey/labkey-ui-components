@@ -19,18 +19,6 @@
     scroll-margin: 97px;
 }
 
-.app-page {
-    padding-top: 20px;
-
-    // GitHub Issue #734: inline-comment footer can take up to 125px on small screens
-    @media (max-width: 774px) {
-        padding-bottom: 130px;
-    }
-    @media (min-width: 775px) {
-        padding-bottom: 80px;
-    }
-}
-
 .page-header {
   margin: 0 0 15px 0;
   padding: 0;

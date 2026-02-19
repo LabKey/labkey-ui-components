@@ -246,6 +246,13 @@
     }
 }
 
+.domain-field-expand-icon.disabled {
+    opacity: 0.5;
+    &:hover {
+        cursor: default;
+    }
+}
+
 .domain-field-delete-icon {
     color: $gray-no-highlight;
 

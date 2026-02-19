@@ -99,17 +99,19 @@ export class AppURL {
                 }
             }
 
-            const stringPart = parts[i].toString();
-            const newPart = encodeURIComponent(stringPart);
+            if (parts[i]) {
+                const stringPart = parts[i].toString();
+                const newPart = encodeURIComponent(stringPart);
 
-            if (i === 0) {
-                if (stringPart.indexOf('/') === 0) {
-                    basePath += newPart;
+                if (i === 0) {
+                    if (stringPart.indexOf('/') === 0) {
+                        basePath += newPart;
+                    } else {
+                        basePath += '/' + newPart;
+                    }
                 } else {
                     basePath += '/' + newPart;
                 }
-            } else {
-                basePath += '/' + newPart;
             }
         }
 

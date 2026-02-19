@@ -496,6 +496,8 @@ describe('PropDescType', () => {
         expect(isPropertyTypeAllowed(true, VISIT_DATE_TYPE, true, true)).toBeTruthy();
         expect(isPropertyTypeAllowed(true, VISIT_ID_TYPE, true, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(true, VISIT_ID_TYPE, true, true)).toBeTruthy();
+        expect(isPropertyTypeAllowed(true, MULTI_CHOICE_TYPE, true, true)).toBeFalsy();
+        expect(isPropertyTypeAllowed(false, MULTI_CHOICE_TYPE, true, true)).toBeFalsy();
         expect(isPropertyTypeAllowed(false, VISIT_ID_TYPE, true, true)).toBeTruthy();
         expect(isPropertyTypeAllowed(false, VISIT_ID_TYPE, true, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(false, FILE_TYPE, false, false)).toBeFalsy();

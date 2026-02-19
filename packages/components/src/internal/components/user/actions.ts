@@ -32,64 +32,6 @@ export function getUserProperties(userId: number): Promise<any> {
     });
 }
 
-export function getUserPermissionsDisplay(user: User): string[] {
-    const permissions = [];
-
-    if (user.isAdmin) {
-        permissions.push('Administrator');
-    } else {
-        if (hasAllPermissions(user, [PermissionTypes.DesignDataClass])) {
-            permissions.push('Data Class Designer');
-        }
-        if (hasAllPermissions(user, [PermissionTypes.DesignSampleSet])) {
-            permissions.push('Sample Set Designer');
-        }
-        if (hasAllPermissions(user, [PermissionTypes.DesignAssay])) {
-            permissions.push('Assay Designer');
-        }
-        permissions.push(user.canUpdate ? 'Editor' : user.canInsert ? 'Author' : 'Reader');
-    }
-
-    return permissions;
-}
-
-export function getUserRoleDisplay(user: User): string {
-    if (user.isAppAdmin()) {
-        return SITE_SECURITY_ROLES.get(PermissionRoles.ApplicationAdmin);
-    }
-
-    if (hasAllPermissions(user, [PermissionTypes.Admin])) {
-        return 'Administrator';
-    }
-
-    if (user.hasUpdatePermission()) {
-        return APPLICATION_SECURITY_ROLES.get(PermissionRoles.Editor);
-    }
-
-    if (hasAllPermissions(user, [PermissionTypes.EditStorageData])) {
-        return 'Storage Editor';
-    }
-
-    if (hasAllPermissions(user, [PermissionTypes.DesignStorage])) {
-        return 'Storage Designer';
-    }
-
-    if (hasAllPermissions(user, [PermissionTypes.Read])) {
-        if (
-            hasAnyPermissions(user, [
-                PermissionTypes.DesignAssay,
-                PermissionTypes.DesignDataClass,
-                PermissionTypes.DesignSampleSet,
-            ])
-        )
-            return 'Data Type Designer';
-
-        return APPLICATION_SECURITY_ROLES.get(PermissionRoles.Reader);
-    }
-
-    return 'Unknown Role';
-}
-
 export function getUserLastLogin(userProperties: Record<string, any>, dateFormat?: string): string {
     const lastLogin = caseInsensitive(userProperties, 'lastlogin');
     if (!lastLogin) return undefined;

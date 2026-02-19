@@ -82,6 +82,7 @@ export const DOMAIN_VALIDATOR_NAME = 'name';
 export const DOMAIN_VALIDATOR_REMOVE = 'removeValidator';
 export const DOMAIN_VALIDATOR_LOOKUP = 'lookupValidator';
 export const DOMAIN_VALIDATOR_TEXTCHOICE = 'textChoiceValidator';
+export const DOMAIN_FIELD_TEXTCHOICE_MULTI = 'textChoiceAllowMulti';
 
 export const DOMAIN_VALIDATOR_BOLD = 'bold';
 export const DOMAIN_VALIDATOR_ITALIC = 'italic';
@@ -231,7 +232,7 @@ export const DERIVATION_DATA_SCOPES = {
     ALL: 'All',
 };
 
-export const MAX_VALID_TEXT_CHOICES = 200;
+export const MAX_VALID_TEXT_CHOICES = 400;
 
 export const LOOKUP_VALIDATOR_VALUES = { type: 'Lookup', name: 'Lookup Validator' };
 

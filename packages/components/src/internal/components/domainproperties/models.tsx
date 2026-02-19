@@ -1418,6 +1418,10 @@ export class DomainField
         return !field.isMultiChoiceField();
     }
 
+    static allowUrl(field: DomainField): boolean {
+        return !field.isMultiChoiceField();
+    }
+
     static hasRegExValidation(field: DomainField): boolean {
         return (
             field.dataType.isString() &&
@@ -1736,6 +1740,8 @@ export function isPropertyTypeAllowed(
     showFilePropertyType: boolean,
     showStudyPropertyTypes: boolean
 ): boolean {
+    if (type === MULTI_CHOICE_TYPE) return false;
+
     if (type === FILE_TYPE) return showFilePropertyType;
 
     if (STUDY_PROPERTY_TYPES.includes(type)) return showStudyPropertyTypes;

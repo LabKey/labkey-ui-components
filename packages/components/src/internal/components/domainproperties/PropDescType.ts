@@ -33,8 +33,10 @@ import {
 export type JsonType = 'array' | 'boolean' | 'date' | 'float' | 'int' | 'string' | 'time';
 
 interface IPropDescType {
+    altName?: string;
     conceptURI: string;
     display: string;
+    longDisplay?: string;
     lookupQuery?: string;
     lookupSchema?: string;
     name: string;
@@ -46,18 +48,22 @@ export class PropDescType
     extends Record({
         conceptURI: undefined,
         display: undefined,
+        longDisplay: undefined,
         name: undefined,
         rangeURI: undefined,
         alternateRangeURI: undefined,
         shortDisplay: undefined,
         lookupSchema: undefined,
         lookupQuery: undefined,
+        altName: undefined,
     })
     implements IPropDescType
 {
     declare conceptURI: string;
     declare display: string;
+    declare longDisplay?: string;
     declare name: string;
+    declare altName?: string;
     declare rangeURI: string;
     declare alternateRangeURI: string;
     declare shortDisplay: string;
@@ -235,6 +241,10 @@ export class PropDescType
     isDateTime(): boolean {
         return PropDescType.isDateTime(this.rangeURI);
     }
+
+    get selectName(): string {
+        return this.altName ?? this.name;
+    }
 }
 
 export const TEXT_TYPE = new PropDescType({
@@ -353,13 +363,16 @@ export const UNIQUE_ID_TYPE = new PropDescType({
 export const TEXT_CHOICE_TYPE = new PropDescType({
     name: 'textChoice',
     display: 'Text Choice',
+    longDisplay: 'Text Choice (single select)',
     rangeURI: STRING_RANGE_URI,
     conceptURI: TEXT_CHOICE_CONCEPT_URI,
 });
 
 export const MULTI_CHOICE_TYPE = new PropDescType({
     name: 'multiChoice',
-    display: 'Multi Choice',
+    altName: 'textChoice',
+    display: 'Text Choice',
+    longDisplay: 'Text Choice (multiple select)',
     rangeURI: MULTI_CHOICE_RANGE_URI,
 });
 

@@ -49,6 +49,8 @@ interface Props {
     queryName?: string;
     schemaName?: string;
     showingModal: (boolean) => void;
+    handleDataTypeChange: (targetId: string, value: any) => void;
+    allowMultiChoiceField: boolean;
 }
 
 export class DomainRowExpandedOptions extends React.Component<Props> {
@@ -65,6 +67,8 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
             domainContainerPath,
             schemaName,
             queryName,
+            handleDataTypeChange,
+            allowMultiChoiceField
         } = this.props;
 
         // In most cases we will use the selected data type to determine which field options to show,
@@ -230,6 +234,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                 return (
                     <TextChoiceOptions
                         domainIndex={domainIndex}
+                        key={index + '-' + field?.propertyId} // drag-drop to reorder column result in wrong options displayed
                         index={index}
                         field={field}
                         label="Text Choice Options"
@@ -239,6 +244,8 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                         schemaName={schemaName}
                         lockedForDomain={domainFormDisplayOptions.textChoiceLockedForDomain}
                         lockedSqlFragment={domainFormDisplayOptions.textChoiceLockedSqlFragment}
+                        handleDataTypeChange={handleDataTypeChange}
+                        allowMultiChoice={allowMultiChoiceField}
                     />
                 );
             case 'fileLink':

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { FC, memo, ReactNode } from 'react';
-import { List, Map } from 'immutable';
+import { Iterable, List, Map } from 'immutable';
 import { QueryColumn } from '../../public/QueryColumn';
 import { FileColumnRenderer } from './FileColumnRenderer';
 
@@ -37,6 +37,8 @@ export const MultiValueRenderer: FC<MultiValueRendererProps> = memo(({ data, col
         valueArray = data.get('value');
     }
 
+    if (!Iterable.isIterable(valueArray)) return null;
+
     let i = -1;
     return (
         <div>
@@ -50,7 +52,8 @@ export const MultiValueRenderer: FC<MultiValueRendererProps> = memo(({ data, col
                             text = item.get('formattedValue');
                         } else {
                             const o = item.has('displayValue') ? item.get('displayValue') : item.get('value');
-                            text = o !== null && o !== undefined ? o.toString() : null;
+                            if (Iterable.isIterable(o)) text = o.join(', ');
+                            else text = o !== null && o !== undefined ? o.toString() : null;
                         }
 
                         url = item.get('url');

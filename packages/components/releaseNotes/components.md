@@ -1,6 +1,41 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.20.0
+*Released*: 18 February 2026
+- Multi value text choices: field type conversion
+    - Updates the Text Choice options UI to add an “Allow multiple selections” toggle, multi-choice-specific edit restrictions, and improved confirmation messaging/tests for data-type changes involving text/multi-choice.
+    - Make multi-choice behaves as an internal variant of Text Choice rather than a separate visible type in data type dropdown
+    - Modified updateDataType and text choice usage counting to correctly handle conversions between string, Text Choice, and Multi Choice fields, clearing validators/flags and tracking multi-value usage where appropriate.
+
+### version 7.19.0
+*Released*: 18 February 2026
+- GitHub Issue 846: Remove display of user role in profile and settings pages
+
+### version 7.18.1
+*Released*: 17 February 2026
+- Allow users to use quotation marks for exact search within the apps
+
+### version 7.18.0
+*Released*: 17 February 2026
+- Update `FilterStatus` to optionally include an "Add Filter" button
+- add `getIntegerSearchParam` utility in `internal/url/utils.ts`
+
+### version 7.17.0
+*Released*: 16 February 2026
+- Remove GridAliquotViewSelector
+- Remove SampleAliquotViewSelector
+- Remove isSampleAliquotSelectorEnabled
+
+### version 7.16.2
+*Released*: 11 February 2026
+- GitHub Issue 779: Cannot Edit Relative Dates in Sample Finder
+    - Allow intermediate editing state for relative date values in DatePickerInput
+
+### version 7.16.1
+*Released*: 11 February 2026
+- Query: sort columns where name starts with '+'
+
 ### version 7.16.0
 *Released*: 5 February 2026
 - File import warnings for cross type sample import case

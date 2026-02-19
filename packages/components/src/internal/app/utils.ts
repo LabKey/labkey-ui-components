@@ -27,7 +27,6 @@ import {
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
     EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED,
     EXPERIMENTAL_REQUESTS_MENU,
-    EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
     FOLDER_DATA_TYPE_EXCLUSIONS,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
@@ -417,10 +416,6 @@ export function isConditionalFormattingEnabled(moduleContext?: ModuleContext): b
 
 export function isFeatureEnabled(flag: ProductFeature, moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.core?.productFeatures?.indexOf(flag) >= 0;
-}
-
-export function isSampleAliquotSelectorEnabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.samplemanagement?.[EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR] === true;
 }
 
 export function hasModule(moduleName: string, moduleContext?: ModuleContext): boolean {

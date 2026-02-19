@@ -1047,6 +1047,61 @@ describe('Date Utilities', () => {
             expect(isRelativeDateFilterValue('-3d')).toBeTruthy();
             expect(isRelativeDateFilterValue('-0d')).toBeTruthy();
         });
+
+        test('relaxedMatch=true, bad input', () => {
+            expect(isRelativeDateFilterValue('', true)).toBeFalsy();
+            expect(isRelativeDateFilterValue('  ', true)).toBeFalsy();
+            expect(isRelativeDateFilterValue('-D', true)).toBeFalsy();
+            expect(isRelativeDateFilterValue('ad', true)).toBeFalsy();
+            expect(isRelativeDateFilterValue('a1', true)).toBeFalsy();
+            expect(isRelativeDateFilterValue('1dd', true)).toBeFalsy();
+        });
+
+        test('relaxedMatch=true allows incomplete values ending with d', () => {
+            expect(isRelativeDateFilterValue('3d', true)).toBeTruthy();
+            expect(isRelativeDateFilterValue('0d', true)).toBeTruthy();
+            expect(isRelativeDateFilterValue('300d', true)).toBeTruthy();
+            expect(isRelativeDateFilterValue('d', true)).toBeTruthy();
+        });
+
+        test('relaxedMatch=true allows values starting with sign', () => {
+            expect(isRelativeDateFilterValue('+3', true)).toBeTruthy();
+            expect(isRelativeDateFilterValue('-3', true)).toBeTruthy();
+            expect(isRelativeDateFilterValue('+0', true)).toBeTruthy();
+            expect(isRelativeDateFilterValue('-0', true)).toBeTruthy();
+            expect(isRelativeDateFilterValue('+300', true)).toBeTruthy();
+            expect(isRelativeDateFilterValue('-300', true)).toBeTruthy();
+            expect(isRelativeDateFilterValue('+d', true)).toBeTruthy();
+            expect(isRelativeDateFilterValue('-d', true)).toBeTruthy();
+        });
+
+        test('relaxedMatch=true allows numbers with optional d', () => {
+            expect(isRelativeDateFilterValue('3', true)).toBeTruthy();
+            expect(isRelativeDateFilterValue('0', true)).toBeTruthy();
+            expect(isRelativeDateFilterValue('300', true)).toBeTruthy();
+        });
+
+        test('relaxedMatch=true still accepts strict format', () => {
+            expect(isRelativeDateFilterValue('+3d', true)).toBeTruthy();
+            expect(isRelativeDateFilterValue('+300d', true)).toBeTruthy();
+            expect(isRelativeDateFilterValue('-3d', true)).toBeTruthy();
+            expect(isRelativeDateFilterValue('-0d', true)).toBeTruthy();
+        });
+
+        test('relaxedMatch=true still rejects invalid values', () => {
+            expect(isRelativeDateFilterValue('++3d', true)).toBeFalsy();
+            expect(isRelativeDateFilterValue('2022-04-19', true)).toBeFalsy();
+            expect(isRelativeDateFilterValue('abc', true)).toBeFalsy();
+            expect(isRelativeDateFilterValue('d3', true)).toBeFalsy();
+        });
+
+        test('relaxedMatch=false uses strict validation', () => {
+            expect(isRelativeDateFilterValue('3d', false)).toBeFalsy();
+            expect(isRelativeDateFilterValue('+3', false)).toBeFalsy();
+            expect(isRelativeDateFilterValue('3', false)).toBeFalsy();
+            expect(isRelativeDateFilterValue('+3d', false)).toBeTruthy();
+            expect(isRelativeDateFilterValue('-3d', false)).toBeTruthy();
+        });
     });
 
     describe('getParsedRelativeDateStr', () => {

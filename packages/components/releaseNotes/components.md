@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Export `Collapsible`
+
 ### version 7.20.0
 *Released*: 18 February 2026
 - Multi value text choices: field type conversion

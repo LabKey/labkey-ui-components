@@ -604,6 +604,7 @@ import {
 import { DesignerDetailTooltip } from './internal/components/domainproperties/DesignerDetailPanel';
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
 import { DataTypeFoldersPanel } from './internal/components/domainproperties/DataTypeFoldersPanel';
+import { Collapsible } from './internal/components/domainproperties/Collapsible';
 
 import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
 import {
@@ -1175,6 +1176,7 @@ export {
     ChoicesListItem,
     clearAssayDefinitionCache,
     clearSelected,
+    Collapsible,
     ColorIcon,
     ColorPickerInput,
     COLUMN_IN_FILTER_TYPE,

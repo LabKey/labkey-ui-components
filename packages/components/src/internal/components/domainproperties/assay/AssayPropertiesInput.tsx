@@ -33,6 +33,7 @@ import { AssayProtocolModel, ProtocolTransformScript } from './models';
 import { FORM_IDS, SCRIPTS_DIR } from './constants';
 import { getScriptEngineForExtension, getValidPublishTargets } from './actions';
 import { useFilterCriteriaContext } from './FilterCriteriaContext';
+import { fetchContainers } from '../../permissions/actions';
 
 interface AssayPropertiesInputProps extends DomainFieldLabelProps, PropsWithChildren {
     colSize?: number;
@@ -426,11 +427,30 @@ interface TransformScriptsInputProps {
 interface TransformScriptsInputState {
     addingScript: AddingScriptType;
     addingScriptPath: string;
+    assayContainerPath: string;
     error: string;
 }
 
 export class TransformScriptsInput extends React.PureComponent<TransformScriptsInputProps, TransformScriptsInputState> {
-    readonly state = { error: undefined, addingScript: undefined, addingScriptPath: '' };
+    readonly state = { error: undefined, addingScript: undefined, addingScriptPath: '', assayContainerPath: undefined };
+
+    async componentDidMount() {
+        const { model } = this.props;
+
+        try {
+            // GitHub Issue 830: resolve the domain containerId to the containerPath to use for webdav operations
+            const assayContainerId = model.container;
+            const assayContainer = await fetchContainers({
+                container: assayContainerId,
+                includeEffectivePermissions: false,
+                includeSubfolders: false,
+                includeStandardProperties: false,
+            });
+            this.setState({ assayContainerPath: assayContainer?.[0]?.path ?? assayContainerId });
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     toggleAddingScript = (): void => {
         this.setState(state => ({
@@ -464,13 +484,13 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
     onAddScriptPath = async (): Promise<void> => {
         if (this.state.addingScript !== AddingScriptType.path) return;
 
-        const { model } = this.props;
+        const { assayContainerPath } = this.state;
         this.setState({ error: undefined });
 
         try {
             const value = this.state.addingScriptPath?.trim() ?? '';
             if (value.length > 0) {
-                await getScriptEngineForExtension(getFileExtension(value), model.container);
+                await getScriptEngineForExtension(getFileExtension(value), assayContainerPath);
                 this.addScript(value);
             }
         } catch (e) {
@@ -481,15 +501,14 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
     onAddScriptFile = async (files: Map<string, File>): Promise<void> => {
         if (this.state.addingScript !== AddingScriptType.file) return;
 
-        const { model } = this.props;
+        const { assayContainerPath } = this.state;
         this.setState({ error: undefined });
 
         try {
-            await getScriptEngineForExtension(getFileExtension(files.first()?.name), model.container);
-
-            const url = getWebDavUrl(model.container, SCRIPTS_DIR, false, true);
+            await getScriptEngineForExtension(getFileExtension(files.first()?.name), assayContainerPath);
+            const url = getWebDavUrl(assayContainerPath, SCRIPTS_DIR, false, true);
             const fileName = await uploadWebDavFileToUrl(files.first(), url, false);
-            const scriptFiles = await getWebDavFiles(model.container, SCRIPTS_DIR, false, true);
+            const scriptFiles = await getWebDavFiles(assayContainerPath, SCRIPTS_DIR, false, true);
             const filePath = scriptFiles.get('files')?.get(fileName)?.dataFileUrl;
 
             // dataFileUrl comes back encoded and with a "file://" prefix
@@ -570,7 +589,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
 
     render(): ReactNode {
         const { model } = this.props;
-        const { error, addingScript, addingScriptPath } = this.state;
+        const { error, addingScript, addingScriptPath, assayContainerPath } = this.state;
         const protocolTransformScripts = model.protocolTransformScripts || List<ProtocolTransformScript>();
         const protocolTransformAttachments = protocolTransformScripts
             .map(config => ({
@@ -709,7 +728,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                         />
                         <div className="transform-script--manage-link">
                             <a
-                                href={getWebDavUrl(model.container, SCRIPTS_DIR, false, true)}
+                                href={getWebDavUrl(assayContainerPath, SCRIPTS_DIR, false, true)}
                                 target="_blank"
                                 className="labkey-text-link"
                                 rel="noopener noreferrer"

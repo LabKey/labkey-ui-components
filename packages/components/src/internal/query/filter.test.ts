@@ -534,6 +534,45 @@ describe('getFilterLabKeySql', () => {
     test('filter types not supported', () => {
         expect(getFilterLabKeySql(Filter.create('StringField', 'abc', Filter.Types.MEMBER_OF), 'string')).toBeNull();
     });
+
+    test('array filters', () => {
+        expect(
+            getFilterLabKeySql(Filter.create('ArrayField', 'value1;value2', Filter.Types.ARRAY_CONTAINS_ALL), 'array')
+        ).toEqual("array_contains_all(\"ArrayField\", ARRAY['value1', 'value2'])");
+        expect(
+            getFilterLabKeySql(
+                Filter.create('ArrayField', ['value1', 'value2'], Filter.Types.ARRAY_CONTAINS_ALL),
+                'array'
+            )
+        ).toEqual("array_contains_all(\"ArrayField\", ARRAY['value1', 'value2'])");
+        expect(
+            getFilterLabKeySql(
+                Filter.create('ArrayField', ["val'ue1", 'value2'], Filter.Types.ARRAY_CONTAINS_ANY),
+                'array'
+            )
+        ).toEqual("array_contains_any(\"ArrayField\", ARRAY['val''ue1', 'value2'])");
+        expect(
+            getFilterLabKeySql(Filter.create('ArrayField', 'value1', Filter.Types.ARRAY_CONTAINS_EXACT), 'array')
+        ).toEqual('array_is_same("ArrayField", ARRAY[\'value1\'])');
+        expect(
+            getFilterLabKeySql(
+                Filter.create('ArrayField', ["val'ue1", 'value2'], Filter.Types.ARRAY_CONTAINS_NOT_EXACT),
+                'array'
+            )
+        ).toEqual("NOT array_is_same(\"ArrayField\", ARRAY['val''ue1', 'value2'])");
+        expect(
+            getFilterLabKeySql(
+                Filter.create('ArrayField', ["val'ue1", 'value2'], Filter.Types.ARRAY_CONTAINS_NONE),
+                'array'
+            )
+        ).toEqual("array_contains_none(\"ArrayField\", ARRAY['val''ue1', 'value2'])");
+        expect(getFilterLabKeySql(Filter.create('ArrayField', null, Filter.Types.ARRAY_ISEMPTY), 'array')).toEqual(
+            'array_is_empty("ArrayField")'
+        );
+        expect(getFilterLabKeySql(Filter.create('ArrayField', '', Filter.Types.ARRAY_ISNOTEMPTY), 'array')).toEqual(
+            'NOT array_is_empty("ArrayField")'
+        );
+    });
 });
 
 describe('getLegalIdentifier', () => {
@@ -556,5 +595,10 @@ describe('getLegalIdentifier', () => {
         expect(getLegalIdentifier('test', undefined, '.')).toBe('"test"');
         expect(getLegalIdentifier('test/a/b/c', undefined, '.')).toBe('"test/a/b/c"');
         expect(getLegalIdentifier('test.a.b.c', undefined, '.')).toBe('"test"."a"."b"."c"');
+    });
+
+    test('skipDecode=true handles raw fieldKeys without decoding', () => {
+        expect(getLegalIdentifier('$$Dolla', undefined, '/', true)).toBe('"$$Dolla"');
+        expect(getLegalIdentifier('$$Dolla/$Pound', undefined, '/', true)).toBe('"$$Dolla"."$Pound"');
     });
 });

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`<UserDetailHeader/> default properties 1`] = `
+exports[`UserDetailHeader default properties 1`] = `
 <div>
   <div
     class="page-header"
@@ -24,11 +24,6 @@ exports[`<UserDetailHeader/> default properties 1`] = `
         >
           Title
         </h2>
-        <span
-          class="detail__header--desc"
-        >
-          Reader
-        </span>
       </div>
     </div>
     <div
@@ -41,7 +36,7 @@ exports[`<UserDetailHeader/> default properties 1`] = `
 </div>
 `;
 
-exports[`<UserDetailHeader/> optional properties 1`] = `
+exports[`UserDetailHeader optional properties 1`] = `
 <div>
   <div
     class="page-header"
@@ -65,11 +60,6 @@ exports[`<UserDetailHeader/> optional properties 1`] = `
         >
           Title (Custom)
         </h2>
-        <span
-          class="detail__header--desc"
-        >
-          My custom description
-        </span>
       </div>
     </div>
     <div

@@ -412,6 +412,13 @@ export function getUpdatedChooseValuesFilter(
     if (isArrayFilter) {
         if ((newValue === ALL_VALUE_DISPLAY && !check) || newCheckedValues.length === 0)
             return Filter.create(fieldKey, [], oldFilter.getFilterType());
+        if (allValues && newCheckedValues.length >= allValues.length) {
+            return Filter.create(
+                fieldKey,
+                allValues.filter(v => v !== ALL_VALUE_DISPLAY),
+                oldFilter.getFilterType()
+            );
+        }
         return Filter.create(fieldKey, newCheckedValues, oldFilter.getFilterType());
     }
 
@@ -699,28 +706,55 @@ export const decodeErrorMessage = (msg: string): string => {
     return decodedMsg;
 };
 
-// Double quotes (") can be used as part of the Lucene syntax to specify exact matches. For usages
-// that don't allow more than one word or any Lucene operators, use escapeQuotes=true, in order
-// to treat the quote character as a special character to be found during searching. Note that
-// the current implementation does not try to match quote pairs to determine which could be escaped and which not.
+// Matches: && || + - ! ( ) { } [ ] ^ ~ * ? : \
+const LUCENE_SPECIAL_CHARS = /&&|\|\||[+\-!(){}\[\]^~*?:\\]/g;
+// Matches: "
+const DOUBLE_QUOTE = /"/g;
+
+/**
+ * Sanitizes and prepares a search string for safe execution in a Lucene-based search engine.
+ * Automatically escapes special characters and appends a wildcard clause for prefix matching
+ * unless an exact phrase match is requested.
+ *
+ * See:
+ * - Issue 51645: Ending a notebook or template name with ':' throws an error when using application-wide search
+ * - Issue 52082: Global searching for Notebook names fails with special characters
+ * - GH Issue #700: Allow users to use quotation marks for exact search within the apps
+ *
+ * @param q - The raw search query string.
+ * @param escapeQuotes - Determines how quote characters (`"`) are handled. Defaults to `false`
+ * (preserves all quotes). If `true`, internal quotes are escaped as literal characters, but outer
+ * wrapping quotes (e.g., `"exact match"`) are retained to preserve exact phrase functionality.
+ * @returns The sanitized and formatted Lucene query string.
+ * * @example
+ * escapeSearchQuery('hello:world');      // => 'hello\:world OR hello\:world*'
+ * escapeSearchQuery('"exact match"');    // => '"exact match"'
+ * escapeSearchQuery('Fl"ower', true);    // => 'Fl\"ower OR Fl\"ower*'
+ */
 export function escapeSearchQuery(q: string, escapeQuotes = false): string {
-    if (q) {
-        const hasQuotes = q.indexOf('"') > -1;
+    if (!q) return q;
 
-        // Escape special lucene characters: + - && || ! ( ) { } [ ] ^ " ~ * ? : \
-        // https://lucene.apache.org/core/2_9_4/queryparsersyntax.html#Escaping%20Special%20Characters
-        q = q.trim().replace(/&&|\|\||[+\-!(){}\[\]^~*?:\\]/g, m => `\\${m}`);
+    const trimmed = q.trim();
+    if (!trimmed) return trimmed;
 
-        if (escapeQuotes) {
-            q = q.replace(/"/g, '\\"');
-        }
+    let query = trimmed;
+    const hasQuotes = query.includes('"');
+    const startsAndEndsWithQuotes = hasQuotes && query.length > 1 && query.startsWith('"') && query.endsWith('"');
 
-        // Append an additional wildcard search clause to include prefix matching
-        // Example: "M-" will result in a query of "M\- OR M\-*"
-        if (!hasQuotes || escapeQuotes) {
-            q = [q, `${q}*`].join(' OR ');
+    query = query.replace(LUCENE_SPECIAL_CHARS, '\\$&');
+
+    if (escapeQuotes) {
+        if (startsAndEndsWithQuotes) {
+            const innerQ = query.substring(1, query.length - 1);
+            query = `"${innerQ.replace(DOUBLE_QUOTE, '\\"')}"`;
+        } else {
+            query = query.replace(DOUBLE_QUOTE, '\\"');
         }
     }
 
-    return q;
+    if (!hasQuotes || (escapeQuotes && !startsAndEndsWithQuotes)) {
+        query = `${query} OR ${query}*`;
+    }
+
+    return query;
 }

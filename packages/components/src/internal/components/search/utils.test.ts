@@ -174,12 +174,24 @@ describe('getFilterValuesAsArray', () => {
         ]);
     });
 
+    test('array value, array filter type', () => {
+        expect(
+            getFilterValuesAsArray(Filter.create('textField', ['a', 'b'], Filter.Types.ARRAY_CONTAINS_ALL))
+        ).toStrictEqual(['a', 'b']);
+    });
+
     test('string value', () => {
         expect(getFilterValuesAsArray(Filter.create('textField', 'a;b;c', Filter.Types.IN))).toStrictEqual([
             'a',
             'b',
             'c',
         ]);
+    });
+
+    test('string value, array filter type', () => {
+        expect(
+            getFilterValuesAsArray(Filter.create('textField', 'a;b;c', Filter.Types.ARRAY_CONTAINS_ALL))
+        ).toStrictEqual(['a', 'b', 'c']);
     });
 
     test('with blank value', () => {
@@ -575,6 +587,7 @@ describe('isEmptyValue', () => {
 const distinctValues = ['[All]', '[blank]', 'ed', 'ned', 'ted', 'red', 'bed'];
 const distinctValuesNoBlank = ['[All]', 'ed', 'ned', 'ted', 'red', 'bed'];
 const distinctValuesExcludeAll = ['[blank]', 'ed', 'ned', 'ted', 'red', 'bed'];
+const distinctValuesExcludeBlankAll = ['ed', 'ned', 'ted', 'red', 'bed'];
 const fieldKey = 'thing';
 
 const checkedOne = Filter.create(fieldKey, 'ed');
@@ -900,6 +913,44 @@ describe('getUpdatedChooseValuesFilter', () => {
             getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, ALL_VALUE_DISPLAY, true, uncheckedOne),
             'isnonblank'
         );
+    });
+
+    test('check all, array', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, ALL_VALUE_DISPLAY, true, arrayContainsAll),
+            'arraycontainsall',
+            distinctValuesExcludeBlankAll
+        );
+    });
+
+    test('check some value, array', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, 'ed', true, arrayContainsAll),
+            'arraycontainsall',
+            ['red', 'ted', 'ned', 'ed']
+        );
+    });
+
+    test('check some value, array', () => {
+        validate(
+            getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, 'ted', false, arrayContainsAll),
+            'arraycontainsall',
+            ['red', 'ned']
+        );
+    });
+
+    test('check all values one by one, array', () => {
+        const updated = getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, 'ed', true, arrayContainsAll);
+        const allChecked = getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, 'bed', true, updated);
+        validate(allChecked, 'arraycontainsall', distinctValuesExcludeBlankAll);
+        const allCheckedThenCheckAll = getUpdatedChooseValuesFilter(
+            distinctValuesNoBlank,
+            fieldKey,
+            ALL_VALUE_DISPLAY,
+            true,
+            allChecked
+        );
+        validate(allCheckedThenCheckAll, 'arraycontainsall', distinctValuesExcludeBlankAll);
     });
 });
 
@@ -1603,7 +1654,7 @@ describe('decodeErrorMessage', () => {
 describe('escapeSearchQuery', () => {
     test('empty values', () => {
         expect(escapeSearchQuery(undefined)).toBeUndefined();
-        expect(null).toBeNull();
+        expect(escapeSearchQuery(null)).toBeNull();
         expect(escapeSearchQuery('')).toEqual('');
     });
     test('escapes special characters', () => {
@@ -1626,14 +1677,50 @@ describe('escapeSearchQuery', () => {
     test('handles quotes well', () => {
         expect(escapeSearchQuery('"Fresh" and "Flowers"', false)).toEqual('"Fresh" and "Flowers"');
         expect(escapeSearchQuery('Fl"ower', true)).toEqual('Fl\\"ower OR Fl\\"ower*');
+        expect(escapeSearchQuery('Fl"ower', false)).toEqual('Fl"ower');
         expect(escapeSearchQuery('D_"fee{-e>4_b4"', false)).toEqual('D_"fee\\{\\-e>4_b4"');
         expect(escapeSearchQuery('D_"fee{-e>4_b4"', true)).toEqual(
             'D_\\"fee\\{\\-e>4_b4\\" OR D_\\"fee\\{\\-e>4_b4\\"*'
         );
     });
     test('trims', () => {
+        expect(escapeSearchQuery('   ', true)).toEqual('');
+        expect(escapeSearchQuery('   ', false)).toEqual('');
         expect(escapeSearchQuery('   test  &&    sp"ace    ', true)).toEqual(
             'test  \\&&    sp\\"ace OR test  \\&&    sp\\"ace*'
         );
+    });
+    describe('retains start/end quoting', () => {
+        test('when escapeQuotes is true', () => {
+            const escapeQuotes = true;
+            expect(escapeSearchQuery('"', escapeQuotes)).toEqual('\\" OR \\"*');
+            expect(escapeSearchQuery('""', escapeQuotes)).toEqual('""');
+            expect(escapeSearchQuery('"test"', escapeQuotes)).toEqual('"test"');
+            expect(escapeSearchQuery('"te"st"', escapeQuotes)).toEqual('"te\\"st"');
+            expect(escapeSearchQuery('"test', escapeQuotes)).toEqual('\\"test OR \\"test*');
+            expect(escapeSearchQuery('test"', escapeQuotes)).toEqual('test\\" OR test\\"*');
+            expect(escapeSearchQuery('no quotes', escapeQuotes)).toEqual('no quotes OR no quotes*');
+            expect(escapeSearchQuery('"""', escapeQuotes)).toEqual('"\\""');
+            expect(escapeSearchQuery('"a"b"c"', escapeQuotes)).toEqual('"a\\"b\\"c"');
+            expect(escapeSearchQuery('a "b" c', escapeQuotes)).toEqual('a \\"b\\" c OR a \\"b\\" c*');
+            expect(escapeSearchQuery('"te+st"', escapeQuotes)).toEqual('"te\\+st"');
+            expect(escapeSearchQuery('"(a) [b]"', escapeQuotes)).toEqual('"\\(a\\) \\[b\\]"');
+            expect(escapeSearchQuery('"   "', escapeQuotes)).toEqual('"   "');
+        });
+        test('when escapeQuotes is false', () => {
+            const escapeQuotes = false;
+            expect(escapeSearchQuery('"', escapeQuotes)).toEqual('"');
+            expect(escapeSearchQuery('""', escapeQuotes)).toEqual('""');
+            expect(escapeSearchQuery('"test"', escapeQuotes)).toEqual('"test"');
+            expect(escapeSearchQuery('"te"st"', escapeQuotes)).toEqual('"te"st"');
+            expect(escapeSearchQuery('"test', escapeQuotes)).toEqual('"test');
+            expect(escapeSearchQuery('test"', escapeQuotes)).toEqual('test"');
+            expect(escapeSearchQuery('no quotes', escapeQuotes)).toEqual('no quotes OR no quotes*');
+            expect(escapeSearchQuery('"""', escapeQuotes)).toEqual('"""');
+            expect(escapeSearchQuery('a "b" c', escapeQuotes)).toEqual('a "b" c');
+            expect(escapeSearchQuery('"te+st"', escapeQuotes)).toEqual('"te\\+st"');
+            expect(escapeSearchQuery('"(a) [b]"', escapeQuotes)).toEqual('"\\(a\\) \\[b\\]"');
+            expect(escapeSearchQuery('"   "', escapeQuotes)).toEqual('"   "');
+        });
     });
 });

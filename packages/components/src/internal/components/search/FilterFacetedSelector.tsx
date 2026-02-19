@@ -254,7 +254,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                 const newActiveFilterType = filterOptions.find(option => option.value === filterUrlSuffix);
                 if (newActiveFilterType) {
                     const filterType = resolveFilterType(newActiveFilterType?.value, field);
-                    let updatedFilterValues = fieldFilters[0]?.getValue();
+                    let updatedFilterValues = fieldFilters?.[0]?.getValue();
                     const shouldClearUpdatedFilterValues =
                         updatedFilterValues && multiChoices && !filterType.isMultiValued();
                     if (shouldClearUpdatedFilterValues) updatedFilterValues = null;
@@ -266,6 +266,10 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         },
         [onFieldFilterUpdate, filterOptions, field, fieldFilters, fieldKey, multiChoices]
     );
+
+    const hideOptions = useMemo(() => {
+        return !!multiChoices && fieldFilters?.[0] && !fieldFilters?.[0]?.getFilterType().isDataValueRequired();
+    }, [fieldFilters, multiChoices]);
 
     if (!fieldDistinctValues || allShown === undefined) return <LoadingSpinner />;
 
@@ -313,7 +317,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                 <div className="row">
                     <div className={`col-xs-${taggedValues?.length > 0 ? 6 : 12}`}>
                         {loading && <LoadingSpinner />}
-                        {!loading && (
+                        {!loading && !hideOptions && (
                             <ul className="nav nav-stacked labkey-wizard-pills">
                                 {filteredFieldDistinctValues?.map((value, index) => {
                                     let displayValue = value;

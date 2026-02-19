@@ -11,25 +11,41 @@ import {
     MULTILINE_RANGE_URI,
     TIME_RANGE_URI,
 } from './constants';
+import { IDomainField } from './models';
 
 interface Props {
-    originalRangeURI: string;
     newDataType: PropDescType;
-    onConfirm: () => void;
     onCancel: () => void;
+    onConfirm: () => void;
+    original: Partial<IDomainField>;
 }
 
 export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
-    const { originalRangeURI, newDataType, onConfirm, onCancel } = props;
-    const origTypeLabel = getDataTypeConfirmDisplayText(originalRangeURI);
-    const newTypeLabel = getDataTypeConfirmDisplayText(newDataType.rangeURI);
+    const { original, newDataType, onConfirm, onCancel } = props;
+    const originalRangeURI = original.rangeURI || '';
+    const origTypeLabel = getDataTypeConfirmDisplayText(original.dataType);
+    const newTypeLabel = getDataTypeConfirmDisplayText(newDataType);
+    const newMultiChoice = PropDescType.isMultiChoice(newDataType.rangeURI);
+    const oldMultiChoice = PropDescType.isMultiChoice(original.dataType.rangeURI);
+    const newTextChoice = PropDescType.isTextChoice(newDataType.conceptURI);
 
     const reversible =
         (PropDescType.isDate(originalRangeURI) && PropDescType.isDateTime(newDataType.rangeURI)) ||
-        (PropDescType.isDateTime(originalRangeURI) && PropDescType.isDate(newDataType.rangeURI));
+        (PropDescType.isDateTime(originalRangeURI) && PropDescType.isDate(newDataType.rangeURI)) ||
+        newMultiChoice ||
+        oldMultiChoice;
 
     let dataLossWarning = null;
-    if (
+    if (newMultiChoice) {
+        dataLossWarning = (
+            <>
+                Filters in saved views might not function as expected and any conditional formatting configured for this
+                field will be <span className="bold-text">removed</span>.{' '}
+            </>
+        );
+    } else if (oldMultiChoice) {
+        dataLossWarning = <>Filters in saved views might not function as expected. </>;
+    } else if (
         originalRangeURI === DATETIME_RANGE_URI &&
         (newDataType.rangeURI === DATE_RANGE_URI || newDataType.rangeURI === TIME_RANGE_URI)
     ) {
@@ -43,11 +59,11 @@ export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
 
     return (
         <Modal
-            title="Confirm Data Type Change"
-            onConfirm={onConfirm}
-            onCancel={onCancel}
             confirmClass="btn-danger"
             confirmText="Yes, Change Data Type"
+            onCancel={onCancel}
+            onConfirm={onConfirm}
+            title="Confirm Data Type Change"
         >
             <div>
                 This change will convert the values in the field from{' '}
@@ -67,7 +83,12 @@ export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
 ConfirmDataTypeChangeModal.displayName = 'ConfirmDataTypeChangeModal';
 
 // exported for jest testing
-export const getDataTypeConfirmDisplayText = (rangeURI: string): string => {
+
+export const getDataTypeConfirmDisplayText = (dataType: PropDescType): string => {
+    if (dataType?.longDisplay) {
+        return dataType.longDisplay;
+    }
+    const rangeURI = dataType?.rangeURI || '';
     if (rangeURI === INT_RANGE_URI) return 'integer';
     if (rangeURI === MULTILINE_RANGE_URI) return 'string';
     if (rangeURI === FILELINK_RANGE_URI) return 'file';

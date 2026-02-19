@@ -32,13 +32,13 @@ describe('TextChoiceAddValuesModal', () => {
     test('default props', () => {
         render(<TextChoiceAddValuesModal {...DEFAULT_PROPS} />);
         validate();
-        validateCounterText('200 values', '0 new values');
+        validateCounterText('400 values', '0 new values');
     });
 
     test('initialValueCount', () => {
         render(<TextChoiceAddValuesModal {...DEFAULT_PROPS} initialValueCount={70} />);
         validate();
-        validateCounterText('130 values', '0 new values');
+        validateCounterText('330 values', '0 new values');
     });
 
     test('fieldName', () => {
@@ -50,19 +50,19 @@ describe('TextChoiceAddValuesModal', () => {
         render(<TextChoiceAddValuesModal {...DEFAULT_PROPS} />);
         validate();
         expect(document.querySelector('.btn-success').hasAttribute('disabled')).toBeTruthy();
-        validateCounterText('200 values', '0 new values');
+        validateCounterText('400 values', '0 new values');
 
         await userEvent.type(document.querySelector('textarea'), 'a');
         validate();
         expect(document.querySelector('.btn-success').hasAttribute('disabled')).toBeFalsy();
-        validateCounterText('200 values', '1 new value');
+        validateCounterText('400 values', '1 new value');
 
         // empty rows and duplicates (after trim) should be removed
         await userEvent.clear(document.querySelector('textarea'));
         await userEvent.type(document.querySelector('textarea'), 'a\n\na\na \n a\nb');
         validate();
         expect(document.querySelector('.btn-success').hasAttribute('disabled')).toBeFalsy();
-        validateCounterText('200 values', '2 new values');
+        validateCounterText('400 values', '2 new values');
     });
 
     test('success button disabled after max reached', async () => {

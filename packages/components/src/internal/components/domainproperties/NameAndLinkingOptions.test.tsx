@@ -11,6 +11,7 @@ import {
     DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT,
     DOMAIN_FIELD_URL,
     DOMAIN_FIELD_URL_TARGET,
+    MULTI_CHOICE_RANGE_URI,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
     STRING_RANGE_URI,
 } from './constants';
@@ -70,6 +71,14 @@ const DEFAULT_PROPS = {
     appPropertiesOnly: false,
     serverModuleNames: undefined,
 };
+
+const MULTI_CHOICE_FIELD = DomainField.create({
+    name: 'mvtcField',
+    rangeURI: MULTI_CHOICE_RANGE_URI,
+    propertyId: 5,
+    description: 'array',
+    label: 'multi value',
+});
 
 describe('NameAndLinkingOptions', () => {
     test('Name and Linking options', () => {
@@ -179,5 +188,14 @@ describe('NameAndLinkingOptions', () => {
         expect(
             document.querySelector('#' + createFormInputId(DOMAIN_FIELD_URL_TARGET, 1, 1)).hasAttribute('disabled')
         ).toEqual(true);
+    });
+
+    test('multi value text choice field', () => {
+        render(<NameAndLinkingOptions {...DEFAULT_PROPS} field={MULTI_CHOICE_FIELD} />);
+        expect(document.querySelectorAll('#' + createFormInputId(DOMAIN_FIELD_LABEL, 1, 1))).toHaveLength(1);
+        expect(document.querySelectorAll('#' + createFormInputId(DOMAIN_FIELD_DESCRIPTION, 1, 1))).toHaveLength(1);
+        expect(document.querySelectorAll('#' + createFormInputId(DOMAIN_FIELD_IMPORTALIASES, 1, 1))).toHaveLength(1);
+        expect(document.querySelectorAll('#' + createFormInputId(DOMAIN_FIELD_URL, 1, 1))).toHaveLength(0);
+        expect(document.querySelectorAll('#' + createFormInputId(DOMAIN_FIELD_URL_TARGET, 1, 1))).toHaveLength(0);
     });
 });

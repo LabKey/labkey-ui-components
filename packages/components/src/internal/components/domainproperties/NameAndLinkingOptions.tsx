@@ -92,6 +92,8 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
     render(): ReactNode {
         const { index, field, domainIndex, appPropertiesOnly, domainFormDisplayOptions } = this.props;
 
+        const allowUrl = DomainField.allowConditionalFormats(field);
+
         return (
             <div>
                 <div className="row">
@@ -145,43 +147,49 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                                 </>
                             )}
                     </div>
-                    <div className="col-xs-4">
-                        {!appPropertiesOnly &&
-                            hasModule(ONTOLOGY_MODULE_NAME) &&
-                            !field.isUniqueIdField() &&
-                            !field.isCalculatedField() && (
-                                <OntologyConceptAnnotation
-                                    field={field}
-                                    id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT, domainIndex, index)}
-                                    onChange={this.onChange}
-                                />
-                            )}
-                        <div className="domain-field-label">
-                            <DomainFieldLabel helpTipBody={this.getURLHelpText()} label="URL" />
-                        </div>
-                        <input
-                            className="form-control"
-                            disabled={isFieldFullyLocked(field.lockType)}
-                            id={createFormInputId(DOMAIN_FIELD_URL, domainIndex, index)}
-                            name={createFormInputName(DOMAIN_FIELD_URL)}
-                            onChange={this.handleURLChange}
-                            type="text"
-                            value={field.URL || ''}
-                        />
-                        {/*GitHub Issue 503: Field editor URL option to set target window (i.e. _blank)*/}
-                        <div className="domain-text-options-col">
+                    {allowUrl && (
+                        <div className="col-xs-4">
+                            {!appPropertiesOnly &&
+                                hasModule(ONTOLOGY_MODULE_NAME) &&
+                                !field.isUniqueIdField() &&
+                                !field.isCalculatedField() && (
+                                    <OntologyConceptAnnotation
+                                        field={field}
+                                        id={createFormInputId(
+                                            DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT,
+                                            domainIndex,
+                                            index
+                                        )}
+                                        onChange={this.onChange}
+                                    />
+                                )}
+                            <div className="domain-field-label">
+                                <DomainFieldLabel helpTipBody={this.getURLHelpText()} label="URL" />
+                            </div>
                             <input
-                                checked={field.isTargetBlank}
-                                className="form-control domain-text-option-istargetblank"
-                                disabled={isFieldFullyLocked(field.lockType) || isEmptyString(field.URL)}
-                                id={createFormInputId(DOMAIN_FIELD_URL_TARGET, domainIndex, index)}
-                                name={createFormInputName(DOMAIN_FIELD_URL_TARGET)}
-                                onChange={this.handleURLTargetChange}
-                                type="checkbox"
+                                className="form-control"
+                                disabled={isFieldFullyLocked(field.lockType)}
+                                id={createFormInputId(DOMAIN_FIELD_URL, domainIndex, index)}
+                                name={createFormInputName(DOMAIN_FIELD_URL)}
+                                onChange={this.handleURLChange}
+                                type="text"
+                                value={field.URL || ''}
                             />
-                            <span>Open links in a new tab</span>
+                            {/*GitHub Issue 503: Field editor URL option to set target window (i.e. _blank)*/}
+                            <div className="domain-text-options-col">
+                                <input
+                                    checked={field.isTargetBlank}
+                                    className="form-control domain-text-option-istargetblank"
+                                    disabled={isFieldFullyLocked(field.lockType) || isEmptyString(field.URL)}
+                                    id={createFormInputId(DOMAIN_FIELD_URL_TARGET, domainIndex, index)}
+                                    name={createFormInputName(DOMAIN_FIELD_URL_TARGET)}
+                                    onChange={this.handleURLTargetChange}
+                                    type="checkbox"
+                                />
+                                <span>Open links in a new tab</span>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
         );

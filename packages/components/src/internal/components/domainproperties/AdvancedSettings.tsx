@@ -280,6 +280,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         // GitHub Issue #298: we don't yet support default values in the App
         if (isApp()) return false;
 
+        if (field.isMultiChoiceField()) return false;
+
         // some domains just don't support default values
         if (!showDefaultValueSettings) return false;
 

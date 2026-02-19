@@ -6,6 +6,21 @@ Components, models, actions, and utility functions for LabKey applications and p
 - GitHub Issue 830: Assay design add transform script webdav path doesn't resolve from subfolder
   - AssayProtocolModel.container to compare domain id to the container.parentId to get parentPath when applicable
 
+### version 7.20.0
+*Released*: 18 February 2026
+- Multi value text choices: field type conversion
+    - Updates the Text Choice options UI to add an “Allow multiple selections” toggle, multi-choice-specific edit restrictions, and improved confirmation messaging/tests for data-type changes involving text/multi-choice.
+    - Make multi-choice behaves as an internal variant of Text Choice rather than a separate visible type in data type dropdown
+    - Modified updateDataType and text choice usage counting to correctly handle conversions between string, Text Choice, and Multi Choice fields, clearing validators/flags and tracking multi-value usage where appropriate.
+
+### version 7.19.0
+*Released*: 18 February 2026
+- GitHub Issue 846: Remove display of user role in profile and settings pages
+
+### version 7.18.1
+*Released*: 17 February 2026
+- Allow users to use quotation marks for exact search within the apps
+
 ### version 7.18.0
 *Released*: 17 February 2026
 - Update `FilterStatus` to optionally include an "Add Filter" button

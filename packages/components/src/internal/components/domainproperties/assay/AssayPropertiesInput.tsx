@@ -432,23 +432,32 @@ interface TransformScriptsInputState {
 }
 
 export class TransformScriptsInput extends React.PureComponent<TransformScriptsInputProps, TransformScriptsInputState> {
-    readonly state = { error: undefined, addingScript: undefined, addingScriptPath: '', assayContainerPath: undefined };
+    readonly state = {
+        error: undefined,
+        addingScript: undefined,
+        addingScriptPath: '',
+        assayContainerPath: this.props.model.container,
+    };
 
     async componentDidMount() {
         const { model } = this.props;
 
+        // GitHub Issue 830: resolve the domain containerId to the containerPath to use for webdav operations
+        let assayContainerPath = model.container;
         try {
-            // GitHub Issue 830: resolve the domain containerId to the containerPath to use for webdav operations
-            const assayContainerId = model.container;
             const assayContainer = await fetchContainers({
-                container: assayContainerId,
+                container: assayContainerPath,
                 includeEffectivePermissions: false,
                 includeSubfolders: false,
                 includeStandardProperties: false,
             });
-            this.setState({ assayContainerPath: assayContainer?.[0]?.path ?? assayContainerId });
+            if (assayContainer?.length === 1) {
+                assayContainerPath = assayContainer[0].path;
+            }
         } catch (error) {
             console.error(error);
+        } finally {
+            this.setState({ assayContainerPath });
         }
     }
 

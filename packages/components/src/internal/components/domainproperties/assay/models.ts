@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Record as ImmutableRecord } from 'immutable';
+import { Record as ImmutableRecord, List } from 'immutable';
 
 import { getServerContext, Utils } from '@labkey/api';
 

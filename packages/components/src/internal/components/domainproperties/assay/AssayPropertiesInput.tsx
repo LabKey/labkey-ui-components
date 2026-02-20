@@ -76,32 +76,32 @@ interface InputProps {
 }
 
 export const NameInput: FC<InputProps> = memo(props => (
-    <AssayPropertiesInput label="Name" required={true} hideAdvancedProperties={props.hideAdvancedProperties}>
+    <AssayPropertiesInput hideAdvancedProperties={props.hideAdvancedProperties} label="Name" required={true}>
         <input
             className="form-control"
-            id={FORM_IDS.ASSAY_NAME}
-            type="text"
-            placeholder="Enter a name for this assay"
-            value={props.model.name || ''}
-            onChange={props.onChange}
             disabled={!props.model.isNew() && !props.canRename}
+            id={FORM_IDS.ASSAY_NAME}
+            onChange={props.onChange}
+            placeholder="Enter a name for this assay"
+            type="text"
+            value={props.model.name || ''}
         />
-        <InternalSpacesWarning value={props.model.name} fieldName="name" />
+        <InternalSpacesWarning fieldName="name" value={props.model.name} />
     </AssayPropertiesInput>
 ));
 NameInput.displayName = 'NameInput';
 
 export const DescriptionInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput
-        label="Description"
-        hideAdvancedProperties={props.hideAdvancedProperties}
         helpTipBody={<p>A short description for this assay design.</p>}
+        hideAdvancedProperties={props.hideAdvancedProperties}
+        label="Description"
     >
         <textarea
             className="form-control"
             id={FORM_IDS.ASSAY_DESCRIPTION}
-            value={props.model.description || ''}
             onChange={props.onChange}
+            value={props.model.description || ''}
         />
     </AssayPropertiesInput>
 ));
@@ -109,31 +109,31 @@ DescriptionInput.displayName = 'DescriptionInput';
 
 export const QCStatesInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput
-        label="QC States"
         helpTipBody={
             <p>
                 If enabled, QC states can be configured and assigned on a per run basis to control the visibility of
                 imported run data. Users not in the QC Analyst role will not be able to view non-public data.
             </p>
         }
+        label="QC States"
     >
-        <input type="checkbox" id={FORM_IDS.QC_ENABLED} checked={props.model.qcEnabled} onChange={props.onChange} />
+        <input checked={props.model.qcEnabled} id={FORM_IDS.QC_ENABLED} onChange={props.onChange} type="checkbox" />
     </AssayPropertiesInput>
 ));
 QCStatesInput.displayName = 'QCStatesInput';
 
 export const PlateTemplatesInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput
-        label="Plate Template"
-        required={true}
         colSize={6}
-        hideAdvancedProperties={props.hideAdvancedProperties}
         helpTipBody={
             <p>
                 Specify the plate template definition used to map spots or wells on the plate to data fields in this
                 assay design. <HelpLink topic={ASSAY_EDIT_PLATE_TEMPLATE_TOPIC}>More info</HelpLink>
             </p>
         }
+        hideAdvancedProperties={props.hideAdvancedProperties}
+        label="Plate Template"
+        required={true}
     >
         <select
             className="form-control"
@@ -157,10 +157,10 @@ PlateTemplatesInput.displayName = 'PlateTemplatesInput';
 
 export const DetectionMethodsInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput
-        label="Detection Method"
-        required
         colSize={6}
         hideAdvancedProperties={props.hideAdvancedProperties}
+        label="Detection Method"
+        required
     >
         <select
             className="form-control"
@@ -181,10 +181,7 @@ DetectionMethodsInput.displayName = 'DetectionMethodsInput';
 
 export const MetadataInputFormatsInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput
-        label="Metadata Input Format"
-        required={true}
         colSize={6}
-        hideAdvancedProperties={props.hideAdvancedProperties}
         helpTipBody={
             <>
                 <p>
@@ -200,6 +197,9 @@ export const MetadataInputFormatsInput: FC<InputProps> = memo(props => (
                 </p>
             </>
         }
+        hideAdvancedProperties={props.hideAdvancedProperties}
+        label="Metadata Input Format"
+        required={true}
     >
         <select
             className="form-control"
@@ -219,33 +219,33 @@ MetadataInputFormatsInput.displayName = 'MetadataInputFormatsInput';
 
 export const AssayStatusInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput
-        label="Active"
-        hideAdvancedProperties={props.hideAdvancedProperties}
         helpTipBody={
             <p>If disabled, this assay design will be considered archived, and will be hidden in certain views.</p>
         }
+        hideAdvancedProperties={props.hideAdvancedProperties}
+        label="Active"
     >
-        <input type="checkbox" id={FORM_IDS.STATUS} checked={props.model.isActive()} onChange={props.onChange} />
+        <input checked={props.model.isActive()} id={FORM_IDS.STATUS} onChange={props.onChange} type="checkbox" />
     </AssayPropertiesInput>
 ));
 AssayStatusInput.displayName = 'AssayStatusInput';
 
 export const EditableRunsInput: FC<InputProps> = memo((props: InputProps) => (
     <AssayPropertiesInput
-        label="Editable Runs"
-        hideAdvancedProperties={props.hideAdvancedProperties}
         helpTipBody={
             <p>
                 If enabled, users with sufficient permissions can edit values at the run level after the initial import
                 is complete. These changes will be audited.
             </p>
         }
+        hideAdvancedProperties={props.hideAdvancedProperties}
+        label="Editable Runs"
     >
         <input
-            type="checkbox"
-            id={FORM_IDS.EDITABLE_RUNS}
             checked={props.model.editableRuns}
+            id={FORM_IDS.EDITABLE_RUNS}
             onChange={props.onChange}
+            type="checkbox"
         />
     </AssayPropertiesInput>
 ));
@@ -253,8 +253,6 @@ EditableRunsInput.displayName = 'EditableRunsInput';
 
 export const EditableResultsInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput
-        label="Editable Results"
-        hideAdvancedProperties={props.hideAdvancedProperties}
         helpTipBody={
             <>
                 <p>
@@ -269,12 +267,14 @@ export const EditableResultsInput: FC<InputProps> = memo(props => (
                 </p>
             </>
         }
+        hideAdvancedProperties={props.hideAdvancedProperties}
+        label="Editable Results"
     >
         <input
-            type="checkbox"
-            id={FORM_IDS.EDITABLE_RESULTS}
             checked={props.model.editableResults}
+            id={FORM_IDS.EDITABLE_RESULTS}
             onChange={props.onChange}
+            type="checkbox"
         />
     </AssayPropertiesInput>
 ));
@@ -282,19 +282,19 @@ EditableResultsInput.displayName = 'EditableResultsInput';
 
 export const BackgroundUploadInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput
-        label="Import in Background"
         helpTipBody={
             <p>
                 If enabled, assay imports will be processed as jobs in the data pipeline. If there are any errors during
                 the import, they can be viewed from the log file for that job.
             </p>
         }
+        label="Import in Background"
     >
         <input
-            type="checkbox"
-            id={FORM_IDS.BACKGROUND_UPLOAD}
             checked={props.model.backgroundUpload}
+            id={FORM_IDS.BACKGROUND_UPLOAD}
             onChange={props.onChange}
+            type="checkbox"
         />
     </AssayPropertiesInput>
 ));
@@ -329,7 +329,6 @@ export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkD
 
         return (
             <AssayPropertiesInput
-                label="Auto-Link Data to Study"
                 helpTipBody={
                     <>
                         <p>
@@ -342,11 +341,12 @@ export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkD
                         </p>
                     </>
                 }
+                label="Auto-Link Data to Study"
             >
                 <AutoLinkToStudyDropdown
+                    autoLinkTarget={FORM_IDS.AUTO_LINK_TARGET}
                     containers={containers}
                     onChange={onChange}
-                    autoLinkTarget={FORM_IDS.AUTO_LINK_TARGET}
                     value={model.autoCopyTargetContainerId}
                 />
             </AssayPropertiesInput>
@@ -356,7 +356,6 @@ export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkD
 
 export const AutoLinkCategoryInput: FC<InputProps> = memo(({ model, onChange }) => (
     <AssayPropertiesInput
-        label="Linked Dataset Category"
         helpTipBody={
             <>
                 <p>
@@ -369,13 +368,14 @@ export const AutoLinkCategoryInput: FC<InputProps> = memo(({ model, onChange }) 
                 </p>
             </>
         }
+        label="Linked Dataset Category"
     >
         <input
             className="form-control"
             id={FORM_IDS.AUTO_LINK_CATEGORY}
+            onChange={onChange}
             type="text"
             value={model.autoLinkCategory}
-            onChange={onChange}
         />
     </AssayPropertiesInput>
 ));
@@ -387,7 +387,6 @@ interface ModuleProvidedScriptsInputProps {
 
 export const ModuleProvidedScriptsInput: FC<ModuleProvidedScriptsInputProps> = props => (
     <AssayPropertiesInput
-        label="Module-Provided Scripts"
         helpTipBody={
             <>
                 <p>
@@ -402,10 +401,11 @@ export const ModuleProvidedScriptsInput: FC<ModuleProvidedScriptsInputProps> = p
                 </p>
             </>
         }
+        label="Module-Provided Scripts"
     >
         {props.model.moduleTransformScripts
             .map((script, i) => (
-                <div key={i} className="module-transform-script" style={{ overflowWrap: 'break-word' }}>
+                <div className="module-transform-script" key={i} style={{ overflowWrap: 'break-word' }}>
                     {script}
                 </div>
             ))
@@ -551,7 +551,6 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
         return (
             <div className="col col-xs-3 col-lg-4">
                 <DomainFieldLabel
-                    label="Transform Scripts"
                     helpTipBody={
                         <>
                             <p>Upload a transform script file or enter the full path to an existing file.</p>
@@ -572,6 +571,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                             </p>
                         </>
                     }
+                    label="Transform Scripts"
                 />
             </div>
         );
@@ -613,38 +613,38 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
             <>
                 {protocolTransformAttachments.map((attachment, i) => {
                     return (
-                        <div key={i} className="row margin-top">
+                        <div className="row margin-top" key={i}>
                             {i === 0 ? this.renderLabel() : <div className="col col-xs-3 col-lg-4" />}
                             <div className="col col-xs-9 col-lg-8">
                                 <div className="transform-script-configuration">
                                     <AttachmentCard
-                                        outerCls="transform-script-card"
-                                        allowRemove
                                         allowDownload={false}
+                                        allowRemove
                                         attachment={attachment}
                                         copyNoun="path"
                                         noun="path"
-                                        onRemove={this.onRemoveScript}
                                         onCopyLink={this.onCopyScriptPath}
+                                        onRemove={this.onRemoveScript}
+                                        outerCls="transform-script-card"
                                     />
                                     <div className="margin-bottom small-margin-top">
                                         <span className="margin-right-more">
                                             <input
-                                                type="checkbox"
-                                                id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + i}
                                                 checked={attachment.runOnImport}
+                                                id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + i}
                                                 onChange={this.onCheckRunOnImport}
+                                                type="checkbox"
                                             />
                                             Run on Import
                                         </span>
 
                                         <span>
                                             <input
-                                                type="checkbox"
-                                                id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + i}
                                                 checked={attachment.runOnEdit}
-                                                onChange={this.onCheckRunOnEdit}
                                                 disabled={!model.editableResults}
+                                                id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + i}
+                                                onChange={this.onCheckRunOnEdit}
+                                                type="checkbox"
                                             />
                                             Run on Edit
                                         </span>
@@ -663,12 +663,12 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                         )}
                         <div className="col col-xs-8 col-lg-8">
                             <input
-                                className="transform-script-add--radio"
                                 checked={addingScript === AddingScriptType.file}
-                                type="radio"
+                                className="transform-script-add--radio"
                                 name="transformScriptAddType"
-                                value="file"
                                 onChange={this.onChangeAddingScriptType}
+                                type="radio"
+                                value="file"
                             />
                             <div
                                 className="transform-script-add--label"
@@ -678,12 +678,12 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                 Upload file
                             </div>
                             <input
-                                className="transform-script-add--radio"
                                 checked={addingScript === AddingScriptType.path}
-                                type="radio"
+                                className="transform-script-add--radio"
                                 name="transformScriptAddType"
-                                value="path"
                                 onChange={this.onChangeAddingScriptType}
+                                type="radio"
+                                value="path"
                             />
                             <div
                                 className="transform-script-add--label"
@@ -701,19 +701,19 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                     allowDirectories={false}
                                     allowMultiple={false}
                                     compact
-                                    showLabel={false}
                                     onFileChange={this.onAddScriptFile}
+                                    showLabel={false}
                                 />
                             )}
                             {addingScript === AddingScriptType.path && (
                                 <div className="transform-script-add--path">
                                     <input
-                                        type="text"
                                         className="form-control"
-                                        value={addingScriptPath}
                                         onChange={this.onScriptPathChange}
+                                        type="text"
+                                        value={addingScriptPath}
                                     />
-                                    <button type="button" className="btn btn-primary" onClick={this.onAddScriptPath}>
+                                    <button className="btn btn-primary" onClick={this.onAddScriptPath} type="button">
                                         Apply
                                     </button>
                                 </div>
@@ -730,17 +730,17 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                     )}
                     <div className="col col-xs-9 col-lg-8">
                         <AddEntityButton
-                            entity="Script"
                             containerClass="transform-script--add-button"
-                            onClick={this.toggleAddingScript}
                             disabled={addingScript !== undefined}
+                            entity="Script"
+                            onClick={this.toggleAddingScript}
                         />
                         <div className="transform-script--manage-link">
                             <a
-                                href={getWebDavUrl(assayContainerPath, SCRIPTS_DIR, false, true)}
-                                target="_blank"
                                 className="labkey-text-link"
+                                href={getWebDavUrl(assayContainerPath, SCRIPTS_DIR, false, true)}
                                 rel="noopener noreferrer"
+                                target="_blank"
                             >
                                 Manage script files
                             </a>
@@ -754,7 +754,6 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
 
 export const SaveScriptDataInput: FC<InputProps> = memo(({ model, onChange }) => (
     <AssayPropertiesInput
-        label="Save Script Data for Debugging"
         helpTipBody={
             <>
                 <p>
@@ -776,17 +775,18 @@ export const SaveScriptDataInput: FC<InputProps> = memo(({ model, onChange }) =>
                 )}
             </>
         }
+        label="Save Script Data for Debugging"
     >
-        <input type="checkbox" id={FORM_IDS.SAVE_SCRIPT_FILES} checked={model.saveScriptFiles} onChange={onChange} />
+        <input checked={model.saveScriptFiles} id={FORM_IDS.SAVE_SCRIPT_FILES} onChange={onChange} type="checkbox" />
         {!model.isNew() && (
             <div className="transform-script--download-link">
                 <a
+                    className="labkey-text-link"
                     href={buildURL('assay', 'downloadSampleQCData', {
                         rowId: model.protocolId,
                     })}
-                    target="_blank"
-                    className="labkey-text-link"
                     rel="noopener noreferrer"
+                    target="_blank"
                 >
                     Download template files
                 </a>
@@ -798,15 +798,15 @@ SaveScriptDataInput.displayName = 'SaveScriptDataInput';
 
 export const PlateMetadataInput: FC<InputProps> = memo(({ model, onChange }) => (
     <AssayPropertiesInput
-        label="Plate Metadata"
         helpTipBody={
             <p>
                 If enabled, plate template metadata can be added on a per run basis to combine tabular data that has
                 well location information with plate based data.
             </p>
         }
+        label="Plate Metadata"
     >
-        <input type="checkbox" id={FORM_IDS.PLATE_METADATA} checked={model.plateMetadata} onChange={onChange} />
+        <input checked={model.plateMetadata} id={FORM_IDS.PLATE_METADATA} onChange={onChange} type="checkbox" />
     </AssayPropertiesInput>
 ));
 PlateMetadataInput.displayName = 'PlateMetadataInput';

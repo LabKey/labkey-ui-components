@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD February 2026
+### version 7.20.1
+*Released*: 20 February 2026
 - GitHub Issue 830: Assay design add transform script webdav path doesn't resolve from subfolder
   - AssayProtocolModel.container to compare domain id to the container.parentId to get parentPath when applicable
   - TransformScriptsInput to resolve the domain containerId to the containerPath to use for webdav operations

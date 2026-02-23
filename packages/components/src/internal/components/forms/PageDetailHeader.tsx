@@ -28,6 +28,9 @@ interface PageDetailHeaderProps extends PropsWithChildren {
     title: ReactNode;
 }
 
+/**
+ * @deprecated use AppPageHeader in ui-premium instead
+ */
 export class PageDetailHeader extends PureComponent<PageDetailHeaderProps> {
     static defaultProps = {
         leftColumns: 6,

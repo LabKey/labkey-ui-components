@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-- Export `Collapsible`
+-
 
 ### version 7.20.1
 *Released*: 20 February 2026

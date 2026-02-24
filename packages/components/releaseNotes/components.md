@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.20.2
+*Released*: 24 February 2026
+- Bump @labkey/api dependency
+
 ### version 7.20.1
 *Released*: 20 February 2026
 - GitHub Issue 830: Assay design add transform script webdav path doesn't resolve from subfolder

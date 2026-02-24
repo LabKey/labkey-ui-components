@@ -13,6 +13,14 @@ import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../.
 import { SAMPLE_STATE_COLOR_COLUMN_NAME, SAMPLE_STATE_TYPE_COLUMN_NAME } from '../../samples/constants';
 
 const ADDITIONAL_DETAIL_FIELDS = ['properties'];
+const IDENTIFIED_COLUMN_NAME = 'identified';
+// Must specify '*' columns be requested to resolve "properties" columns
+const LINEAGE_DETAIL_REQUIRED_COLS = [
+    '*',
+    SAMPLE_STATE_COLOR_COLUMN_NAME,
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
+    IDENTIFIED_COLUMN_NAME,
+];
 
 export interface LineageDetailProps {
     item: Experiment.LineageItemBase;
@@ -54,8 +62,7 @@ export const LineageDetail: FC<LineageDetailProps> = memo(({ item }) => {
                 containerPath: item.containerPath,
                 // Issue 45028: Display details view columns in lineage
                 schemaQuery: new SchemaQuery(item.schemaName, item.queryName, ViewInfo.DETAIL_NAME),
-                // Must specify '*' columns be requested to resolve "properties" columns
-                requiredColumns: ['*', SAMPLE_STATE_COLOR_COLUMN_NAME, SAMPLE_STATE_TYPE_COLUMN_NAME],
+                requiredColumns: LINEAGE_DETAIL_REQUIRED_COLS,
             },
         };
     }, [item]);

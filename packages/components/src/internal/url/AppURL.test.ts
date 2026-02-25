@@ -9,10 +9,6 @@ describe('AppURL', () => {
         LABKEY = {
             ...LABKEY,
             devMode: true,
-            experimental: {
-                ...LABKEY.experimental,
-                containerRelativeURL: true,
-            },
             moduleContext: {
                 ...LABKEY.moduleContext,
                 // Force isSampleManagerEnabled to be true

@@ -37,9 +37,7 @@ const EMPTY_MODEL = AssayProtocolModel.create({
 
 describe('AssayPropertiesPanel', () => {
     test('default properties', async () => {
-        renderWithAppContext(
-            <AssayPropertiesPanel {...BASE_PROPS} model={EMPTY_MODEL} onChange={jest.fn()}/>
-        );
+        renderWithAppContext(<AssayPropertiesPanel {...BASE_PROPS} model={EMPTY_MODEL} onChange={jest.fn()} />);
 
         await waitFor(() => {
             expect(document.querySelector('#assay-design-name')).toBeInTheDocument();
@@ -58,9 +56,9 @@ describe('AssayPropertiesPanel', () => {
         renderWithAppContext(
             <AssayPropertiesPanel
                 {...BASE_PROPS}
-                model={EMPTY_MODEL}
-                hideAdvancedProperties
                 helpTopic="customHelpTopic"
+                hideAdvancedProperties
+                model={EMPTY_MODEL}
                 onChange={jest.fn()}
             />
         );
@@ -88,9 +86,9 @@ describe('AssayPropertiesPanel', () => {
         renderWithAppContext(
             <AssayPropertiesPanel
                 {...BASE_PROPS}
-                model={EMPTY_MODEL}
                 helpTopic={null}
                 hideAdvancedProperties
+                model={EMPTY_MODEL}
                 onChange={jest.fn()}
             />
         );
@@ -139,10 +137,9 @@ describe('AssayPropertiesPanel', () => {
     });
 
     test('visible properties based on empty AssayProtocolModel', async () => {
-        renderWithAppContext(
-            <AssayPropertiesPanel {...BASE_PROPS} model={EMPTY_MODEL} onChange={jest.fn()} />,
-            { serverContext: SERVER_CONTEXT }
-        );
+        renderWithAppContext(<AssayPropertiesPanel {...BASE_PROPS} model={EMPTY_MODEL} onChange={jest.fn()} />, {
+            serverContext: SERVER_CONTEXT,
+        });
 
         await waitFor(() => {
             const sectionLabel = document.querySelectorAll('.domain-field-section-heading');
@@ -168,10 +165,9 @@ describe('AssayPropertiesPanel', () => {
             moduleTransformScripts: ['validation.pl'],
         });
 
-        renderWithAppContext(
-            <AssayPropertiesPanel {...BASE_PROPS} model={model} onChange={jest.fn()} />,
-            { serverContext: SERVER_CONTEXT }
-        );
+        renderWithAppContext(<AssayPropertiesPanel {...BASE_PROPS} model={model} onChange={jest.fn()} />, {
+            serverContext: SERVER_CONTEXT,
+        });
 
         await waitFor(() => {
             expect(document.querySelectorAll('input#assay-design-qcEnabled')).toHaveLength(1);
@@ -208,12 +204,7 @@ describe('AssayPropertiesPanel', () => {
         });
 
         renderWithAppContext(
-            <AssayPropertiesPanel
-                {...BASE_PROPS}
-                model={model}
-                onChange={jest.fn()}
-                hideAdvancedProperties
-            />,
+            <AssayPropertiesPanel {...BASE_PROPS} hideAdvancedProperties model={model} onChange={jest.fn()} />,
             { serverContext: SERVER_CONTEXT }
         );
 
@@ -244,7 +235,7 @@ describe('AssayPropertiesPanel', () => {
         });
 
         renderWithAppContext(
-            <AssayPropertiesPanel {...BASE_PROPS} model={model} onChange={jest.fn()} appPropertiesOnly />,
+            <AssayPropertiesPanel {...BASE_PROPS} appPropertiesOnly model={model} onChange={jest.fn()} />,
             { serverContext: SERVER_CONTEXT }
         );
 
@@ -284,10 +275,10 @@ describe('AssayPropertiesPanel', () => {
         renderWithAppContext(
             <AssayPropertiesPanel
                 {...BASE_PROPS}
+                appPropertiesOnly
+                hideAdvancedProperties
                 model={model}
                 onChange={jest.fn()}
-                hideAdvancedProperties
-                appPropertiesOnly
             />,
             { serverContext: SERVER_CONTEXT }
         );

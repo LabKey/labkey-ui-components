@@ -346,7 +346,7 @@ describe('DomainForm', () => {
         });
 
         await act(async () => {
-            renderWithAppContext(<DomainForm domain={domain} collapsible={false} initCollapsed onChange={jest.fn()} />);
+            renderWithAppContext(<DomainForm collapsible={false} domain={domain} initCollapsed onChange={jest.fn()} />);
         });
 
         expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(1);
@@ -376,8 +376,8 @@ describe('DomainForm', () => {
         await act(async () => {
             renderWithAppContext(
                 <DomainForm
-                    domain={domain}
                     collapsible={false}
+                    domain={domain}
                     initCollapsed
                     onChange={jest.fn()}
                     panelStatus="COMPLETE"
@@ -480,7 +480,7 @@ describe('DomainForm', () => {
         });
 
         await act(async () => {
-            renderWithAppContext(<DomainForm domain={domain} onChange={jest.fn()} collapsible controlledCollapse />);
+            renderWithAppContext(<DomainForm collapsible controlledCollapse domain={domain} onChange={jest.fn()} />);
         });
 
         expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(1);
@@ -558,10 +558,10 @@ describe('DomainForm', () => {
             renderWithAppContext(
                 <DomainForm
                     domain={domain}
-                    onChange={jest.fn()}
                     domainFormDisplayOptions={{
                         hideRequired: true,
                     }}
+                    onChange={jest.fn()}
                 />
             );
         });
@@ -577,11 +577,11 @@ describe('DomainForm', () => {
             renderWithAppContext(
                 <DomainForm
                     domain={domain}
-                    onChange={jest.fn()}
                     domainFormDisplayOptions={{
                         hideAddFieldsButton: true,
                         hideInferFromFile: true,
                     }}
+                    onChange={jest.fn()}
                 />
             );
         });
@@ -625,10 +625,10 @@ describe('DomainForm', () => {
             renderWithAppContext(
                 <DomainForm
                     domain={domain}
-                    onChange={jest.fn()}
                     domainFormDisplayOptions={{
                         hideRequired: true,
                     }}
+                    onChange={jest.fn()}
                 />
             );
         });
@@ -663,11 +663,11 @@ describe('DomainForm', () => {
             renderWithAppContext(
                 <DomainForm
                     domain={domain}
-                    onChange={jest.fn()}
                     domainFormDisplayOptions={{
                         hideRequired: true,
                         hideImportExport: true,
                     }}
+                    onChange={jest.fn()}
                 />
             );
         });

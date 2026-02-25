@@ -6,6 +6,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Remove styles for `.app-page`
     - Component was moved to ui-premium a while ago
 - Add `ta-right`, `ta-left` util styles
+- Add UnidentifiedPill
+- Add EMPTY_SEQUENCE_WARNING constant
 
 ### version 7.21.0
 *Released*: 26 February 2026

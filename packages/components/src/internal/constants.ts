@@ -260,3 +260,6 @@ export const VIEW_NOT_FOUND_EXCEPTION_CLASS = 'org.labkey.api.view.NotFoundExcep
 export const APP_FIELD_CANNOT_BE_REMOVED_MESSAGE = 'This application field cannot be removed.';
 
 export const CELL_SELECTION_HANDLE_CLASSNAME = 'cell-selection-handle';
+
+export const EMPTY_SEQUENCE_WARNING =
+    "Without a sequence, Protein sequence translations can't be done automatically, and the system can't prevent duplicates.";

@@ -32,7 +32,6 @@ import {
     DATETIME_TYPE,
     DOUBLE_TYPE,
     FILE_TYPE,
-    FLAG_TYPE,
     INTEGER_TYPE,
     LOOKUP_TYPE,
     MULTI_CHOICE_TYPE,
@@ -280,7 +279,6 @@ describe('PropDescType', () => {
         expect(PropDescType.isInteger(INTEGER_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isInteger(DOUBLE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isInteger(DATETIME_TYPE.rangeURI)).toBeFalsy();
-        expect(PropDescType.isInteger(FLAG_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isInteger(FILE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isInteger(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isInteger(USERS_TYPE.rangeURI)).toBeTruthy();
@@ -299,7 +297,6 @@ describe('PropDescType', () => {
         expect(PropDescType.isString(INTEGER_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isString(DOUBLE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isString(DATETIME_TYPE.rangeURI)).toBeFalsy();
-        expect(PropDescType.isString(FLAG_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isString(FILE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isString(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isString(USERS_TYPE.rangeURI)).toBeFalsy();
@@ -318,7 +315,6 @@ describe('PropDescType', () => {
         expect(PropDescType.isNumeric(INTEGER_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isNumeric(DOUBLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isNumeric(DATETIME_TYPE.rangeURI)).toBeFalsy();
-        expect(PropDescType.isNumeric(FLAG_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isNumeric(FILE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isNumeric(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isNumeric(USERS_TYPE.rangeURI)).toBeTruthy();
@@ -337,7 +333,6 @@ describe('PropDescType', () => {
         expect(PropDescType.isMeasure(INTEGER_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMeasure(DOUBLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMeasure(DATETIME_TYPE.rangeURI)).toBeTruthy();
-        expect(PropDescType.isMeasure(FLAG_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMeasure(FILE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isMeasure(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isMeasure(USERS_TYPE.rangeURI)).toBeTruthy();
@@ -356,7 +351,6 @@ describe('PropDescType', () => {
         expect(PropDescType.isDimension(INTEGER_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isDimension(DOUBLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isDimension(DATETIME_TYPE.rangeURI)).toBeFalsy();
-        expect(PropDescType.isDimension(FLAG_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isDimension(FILE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isDimension(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isDimension(USERS_TYPE.rangeURI)).toBeTruthy();
@@ -375,7 +369,6 @@ describe('PropDescType', () => {
         expect(PropDescType.isMvEnableable(INTEGER_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMvEnableable(DOUBLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMvEnableable(DATETIME_TYPE.rangeURI)).toBeTruthy();
-        expect(PropDescType.isMvEnableable(FLAG_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMvEnableable(FILE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isMvEnableable(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isMvEnableable(USERS_TYPE.rangeURI)).toBeTruthy();
@@ -490,7 +483,6 @@ describe('PropDescType', () => {
         expect(isPropertyTypeAllowed(true, INTEGER_TYPE, true, false)).toBeTruthy();
         expect(isPropertyTypeAllowed(true, DOUBLE_TYPE, true, false)).toBeTruthy();
         expect(isPropertyTypeAllowed(true, DATETIME_TYPE, true, false)).toBeTruthy();
-        expect(isPropertyTypeAllowed(true, FLAG_TYPE, true, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(true, FILE_TYPE, false, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(true, FILE_TYPE, true, false)).toBeTruthy();
         expect(isPropertyTypeAllowed(true, ATTACHMENT_TYPE, true, false)).toBeTruthy();
@@ -509,7 +501,6 @@ describe('PropDescType', () => {
         expect(isPropertyTypeAllowed(false, VISIT_ID_TYPE, true, true)).toBeTruthy();
         expect(isPropertyTypeAllowed(false, VISIT_ID_TYPE, true, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(false, FILE_TYPE, false, false)).toBeFalsy();
-        expect(isPropertyTypeAllowed(false, FLAG_TYPE, true, false)).toBeTruthy();
         expect(isPropertyTypeAllowed(true, CALCULATED_TYPE, true, false)).toBeTruthy();
         expect(isPropertyTypeAllowed(false, CALCULATED_TYPE, true, false)).toBeTruthy();
     });
@@ -523,8 +514,6 @@ describe('PropDescType', () => {
         expect(isPropertyTypeAllowed(true, INTEGER_TYPE, true, false)).toBeTruthy();
         expect(isPropertyTypeAllowed(true, DOUBLE_TYPE, true, false)).toBeTruthy();
         expect(isPropertyTypeAllowed(true, DATETIME_TYPE, true, false)).toBeTruthy();
-        expect(isPropertyTypeAllowed(true, FLAG_TYPE, true, false)).toBeTruthy();
-        expect(isPropertyTypeAllowed(false, FLAG_TYPE, true, false)).toBeTruthy();
         expect(isPropertyTypeAllowed(true, FILE_TYPE, false, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(false, FILE_TYPE, false, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(true, FILE_TYPE, true, false)).toBeTruthy();

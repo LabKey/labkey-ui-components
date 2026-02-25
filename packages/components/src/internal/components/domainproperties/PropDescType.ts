@@ -13,7 +13,6 @@ import {
     DECIMAL_RANGE_URI,
     DOUBLE_RANGE_URI,
     FILELINK_RANGE_URI,
-    FLAG_CONCEPT_URI,
     FLOAT_RANGE_URI,
     INT_RANGE_URI,
     LONG_RANGE_URI,
@@ -285,12 +284,6 @@ export const DATETIME_TYPE = new PropDescType({
     rangeURI: DATETIME_RANGE_URI,
     alternateRangeURI: 'xsd:dateTime',
 });
-export const FLAG_TYPE = new PropDescType({
-    name: 'flag',
-    display: 'Flag',
-    rangeURI: STRING_RANGE_URI,
-    conceptURI: FLAG_CONCEPT_URI,
-});
 export const FILE_TYPE = new PropDescType({ name: 'fileLink', display: 'File', rangeURI: FILELINK_RANGE_URI });
 export const ATTACHMENT_TYPE = new PropDescType({
     name: 'attachment',
@@ -405,7 +398,6 @@ export const PROP_DESC_TYPES = List([
     DATE_TYPE,
     TIME_TYPE,
     DATETIME_TYPE,
-    FLAG_TYPE,
     FILE_TYPE,
     ATTACHMENT_TYPE,
     USERS_TYPE,

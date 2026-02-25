@@ -1,10 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 7.X
-*Released*: X February 2026
+### version 7.20.3
+*Released*: 24 February 2026
 - GitHub Issue 465: Add auditing capabilities for grid views
 - GitHub Issue 840: Increase text choice options from 200 to 500
+
+### version 7.20.2
+*Released*: 24 February 2026
+- Bump @labkey/api dependency
 
 ### version 7.20.1
 *Released*: 20 February 2026

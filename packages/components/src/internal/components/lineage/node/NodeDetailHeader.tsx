@@ -3,6 +3,11 @@ import React, { FC, memo, PropsWithChildren, ReactNode } from 'react';
 import { LineageNode } from '../models';
 import { LineageDataLink } from '../LineageDataLink';
 import { SVGIcon, Theme } from '../../base/SVGIcon';
+import { QueryModel } from '../../../../public/QueryModel/QueryModel';
+import { caseInsensitive } from '../../../util/utils';
+import { SCHEMAS } from '../../../schemas';
+import { SchemaQuery } from '../../../../public/SchemaQuery';
+import { UnidentifiedPill } from '../../../UnidentifiedPill';
 
 export interface DetailHeaderProps extends PropsWithChildren {
     header: ReactNode;
@@ -25,11 +30,12 @@ export const DetailHeader: FC<DetailHeaderProps> = memo(({ children, header, ico
 DetailHeader.displayName = 'DetailHeader';
 
 export interface NodeDetailHeaderProps {
+    model: QueryModel;
     node: LineageNode;
     seed?: string;
 }
 
-export const NodeDetailHeader: FC<NodeDetailHeaderProps> = memo(({ node, seed }) => {
+export const NodeDetailHeader: FC<NodeDetailHeaderProps> = memo(({ model, node, seed }) => {
     const { links, meta, name } = node;
     const lineageUrl = links.lineage;
     const isSeed = seed === node.lsid;
@@ -37,6 +43,19 @@ export const NodeDetailHeader: FC<NodeDetailHeaderProps> = memo(({ node, seed })
     const aliases = meta?.aliases;
     const description = meta?.description;
     const displayType = meta?.displayType;
+    let identified: boolean;
+
+    if (model && !model.isLoading && !model.hasLoadErrors) {
+        // Drop the viewName from the schemaQuery so we can properly compare
+        const sq = new SchemaQuery(model.schemaQuery.schemaName, model.schemaQuery.queryName);
+        const isNucSeq = sq.isEqual(SCHEMAS.DATA_CLASSES.NUC_SEQUENCE);
+        const isProtSeq = sq.isEqual(SCHEMAS.DATA_CLASSES.PROTEIN_SEQUENCE);
+        const isMolSpecSeq = sq.isEqual(SCHEMAS.DATA_CLASSES.MOLECULAR_SPECIES_SEQ);
+
+        if (isNucSeq || isProtSeq || isMolSpecSeq) {
+            identified = caseInsensitive(model.getRow(), 'identified')?.value;
+        }
+    }
 
     const header = (
         <>
@@ -53,6 +72,8 @@ export const NodeDetailHeader: FC<NodeDetailHeaderProps> = memo(({ node, seed })
             {displayType && <div>{displayType}</div>}
             {aliases && <div>{aliases.join(', ')}</div>}
             {description && <div title={description}>{description}</div>}
+            {/* Triple eq is important here; we only want false, not falsey values */}
+            {identified === false && <UnidentifiedPill />}
         </DetailHeader>
     );
 });

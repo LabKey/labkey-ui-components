@@ -25,6 +25,22 @@ import { hasModule } from '../../../app/utils';
 import { LineageDetail } from './LineageDetail';
 import { DetailHeader, NodeDetailHeader } from './NodeDetailHeader';
 import { DetailsListLineageIO, DetailsListNodes, DetailsListSteps } from './DetailsList';
+import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../../public/QueryModel/withQueryModels';
+import { Filter } from '@labkey/api';
+import { SchemaQuery } from '../../../../public/SchemaQuery';
+import { ViewInfo } from '../../../ViewInfo';
+import { SAMPLE_STATE_COLOR_COLUMN_NAME, SAMPLE_STATE_TYPE_COLUMN_NAME } from '../../samples/constants';
+import { QueryModel } from '../../../../public/QueryModel/QueryModel';
+
+const IDENTIFIED_COLUMN_NAME = 'identified';
+
+// Must specify '*' columns be requested to resolve "properties" columns
+const LINEAGE_DETAIL_REQUIRED_COLS = [
+    '*',
+    SAMPLE_STATE_COLOR_COLUMN_NAME,
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
+    IDENTIFIED_COLUMN_NAME,
+];
 
 interface LineageNodeDetailProps {
     highlightNode?: string;
@@ -33,27 +49,28 @@ interface LineageNodeDetailProps {
     seed: string;
 }
 
-export const LineageNodeDetail: FC<LineageNodeDetailProps> = memo(props => {
-    const { seed, node, highlightNode, lineageOptions } = props;
-    const { isRun, restricted } = node;
+const LineageNodeDetailImpl: FC<InjectedQueryModels & LineageNodeDetailProps> = memo(props => {
+    const { seed, node, highlightNode, lineageOptions, queryModels } = props;
+    const { containerPath, isRun, lsid, restricted } = node;
+    const model = queryModels.model;
     const [stepIdx, setStepIdx] = useState<number>(undefined);
     const [tabKey, setTabKey] = useState<string>('details');
     const onBack = useCallback(() => setStepIdx(undefined), []);
 
     if (isRun && stepIdx !== undefined) {
-        return <RunStepNodeDetail node={node} onBack={onBack} stepIdx={stepIdx} />;
+        return <RunStepNodeDetail model={model} node={node} onBack={onBack} stepIdx={stepIdx} />;
     }
 
     const nodeDetails = (
         <>
-            <LineageDetail item={node} />
+            <LineageDetail item={node} model={model} />
             {!restricted && (
                 <LineageSummary
                     {...lineageOptions}
-                    containerPath={node.containerPath}
+                    containerPath={containerPath}
                     highlightNode={highlightNode}
-                    key={node.lsid}
-                    lsid={node.lsid}
+                    key={lsid}
+                    lsid={lsid}
                     prefetchSeed={false}
                 />
             )}
@@ -62,7 +79,7 @@ export const LineageNodeDetail: FC<LineageNodeDetailProps> = memo(props => {
 
     return (
         <div className="lineage-node-detail">
-            <NodeDetailHeader node={node} seed={seed} />
+            <NodeDetailHeader model={model} node={node} seed={seed} />
             {isRun && !restricted ? (
                 <Tabs activeKey={tabKey} onSelect={setTabKey}>
                     <Tab eventKey="details" title="Details">
@@ -77,6 +94,37 @@ export const LineageNodeDetail: FC<LineageNodeDetailProps> = memo(props => {
                 nodeDetails
             )}
         </div>
+    );
+});
+LineageNodeDetailImpl.displayName = 'LineageNodeDetailImpl';
+
+const LineageNodeDetailWithModels = withQueryModels(LineageNodeDetailImpl);
+
+export const LineageNodeDetail: FC<LineageNodeDetailProps> = memo(props => {
+    const { highlightNode, lineageOptions, node, seed } = props;
+    const queryConfigs = useMemo<QueryConfigMap>(() => {
+        if (node.restricted) return {};
+
+        return {
+            model: {
+                baseFilters: node.pkFilters.map(pkFilter => Filter.create(pkFilter.fieldKey, pkFilter.value)),
+                containerPath: node.containerPath,
+                // Issue 45028: Display details view columns in lineage
+                schemaQuery: new SchemaQuery(node.schemaName, node.queryName, ViewInfo.DETAIL_NAME),
+                requiredColumns: LINEAGE_DETAIL_REQUIRED_COLS,
+            },
+        };
+    }, [node]);
+
+    return (
+        <LineageNodeDetailWithModels
+            autoLoad
+            highlightNode={highlightNode}
+            lineageOptions={lineageOptions}
+            node={node}
+            queryConfigs={queryConfigs}
+            seed={seed}
+        />
     );
 });
 LineageNodeDetail.displayName = 'LineageNodeDetail';
@@ -128,13 +176,14 @@ export const ClusterNodeDetail: FC<ClusterNodeDetailProps> = memo(props => {
 ClusterNodeDetail.displayName = 'ClusterNodeDetail';
 
 interface RunStepNodeDetailProps {
+    model: QueryModel;
     node: LineageNode;
     onBack: () => void;
     stepIdx: number;
 }
 
 const RunStepNodeDetail: FC<RunStepNodeDetailProps> = memo(props => {
-    const { node, onBack, stepIdx } = props;
+    const { model, node, onBack, stepIdx } = props;
     const [tabKey, setTabKey] = useState<string>('details');
     const step = node.steps.get(stepIdx);
     const stepName = step.protocol?.name || step.name;
@@ -155,7 +204,7 @@ const RunStepNodeDetail: FC<RunStepNodeDetailProps> = memo(props => {
             </DetailHeader>
             <Tabs activeKey={tabKey} onSelect={changeTab}>
                 <Tab eventKey="details" title="Step Details">
-                    <LineageDetail item={step} />
+                    <LineageDetail item={step} model={model} />
                     <DetailsListLineageIO item={step} />
                 </Tab>
                 {hasProvenanceModule && (

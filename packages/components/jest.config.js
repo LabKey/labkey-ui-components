@@ -17,9 +17,6 @@ module.exports = {
                     timeFormat: "HH:mm"
                 }
             },
-            experimental: {
-                containerRelativeURL: true,
-            },
             project: {
                 rootId: 'ROOTID'
             },

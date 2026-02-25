@@ -5,6 +5,24 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 -
 
+### version 7.20.5
+*Released*: 25 February 2026
+- GitHub Issue #418: Remove flag field type & migrate to text
+
+### version 7.20.4
+*Released*: 25 February 2026
+- GitHub Issue #734: App narrow screen display can cut off error message for field editor pages
+  - inline-comment footer can take up to 125px on small screens so increase bottom padding for .app-page
+
+### version 7.20.3
+*Released*: 24 February 2026
+- GitHub Issue 465: Add auditing capabilities for grid views
+- GitHub Issue 840: Increase text choice options from 200 to 500
+
+### version 7.20.2
+*Released*: 24 February 2026
+- Bump @labkey/api dependency
+
 ### version 7.20.1
 *Released*: 20 February 2026
 - GitHub Issue 830: Assay design add transform script webdav path doesn't resolve from subfolder

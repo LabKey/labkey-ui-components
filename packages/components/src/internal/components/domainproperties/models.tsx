@@ -78,7 +78,6 @@ import {
     DATETIME_TYPE,
     DOUBLE_TYPE,
     FILE_TYPE,
-    FLAG_TYPE,
     INTEGER_TYPE,
     LOOKUP_TYPE,
     MULTI_CHOICE_TYPE,
@@ -146,7 +145,6 @@ interface IDomainDesign {
     allowAttachmentProperties: boolean;
     allowCalculatedFields: boolean;
     allowFileLinkProperties: boolean;
-    allowFlagProperties: boolean;
     allowMultiChoiceProperties: boolean;
     allowSampleSubjectProperties: boolean;
     allowTextChoiceProperties: boolean;
@@ -182,7 +180,6 @@ export class DomainDesign
         domainId: null,
         allowFileLinkProperties: false,
         allowAttachmentProperties: false,
-        allowFlagProperties: true,
         allowSampleSubjectProperties: true,
         allowTextChoiceProperties: true,
         allowMultiChoiceProperties: true,
@@ -214,7 +211,6 @@ export class DomainDesign
     declare domainId: number;
     declare allowFileLinkProperties: boolean;
     declare allowAttachmentProperties: boolean;
-    declare allowFlagProperties: boolean;
     declare allowSampleSubjectProperties: boolean;
     declare allowTextChoiceProperties: boolean;
     declare allowMultiChoiceProperties: boolean;
@@ -1753,7 +1749,7 @@ export function isPropertyTypeAllowed(
     if (!appPropertiesOnly) return true;
 
     // We are excluding the field types below for the App for non-premium
-    return hasPremiumModule() || ![LOOKUP_TYPE, FLAG_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
+    return hasPremiumModule() || ![LOOKUP_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
 }
 
 // Determines if a storage type (rangeURI) is a match for a concept type (like User or Subject)

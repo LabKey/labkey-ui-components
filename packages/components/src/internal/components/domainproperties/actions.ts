@@ -70,7 +70,6 @@ import {
     ATTACHMENT_TYPE,
     CALCULATED_TYPE,
     FILE_TYPE,
-    FLAG_TYPE,
     MULTI_CHOICE_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
     PARTICIPANT_TYPE,
@@ -339,10 +338,6 @@ export async function getAvailableTypesForOntology(
 }
 
 function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologies: OntologyModel[]): boolean {
-    if (type === FLAG_TYPE && !domain.allowFlagProperties) {
-        return false;
-    }
-
     if (type === FILE_TYPE && !domain.allowFileLinkProperties) {
         return false;
     }

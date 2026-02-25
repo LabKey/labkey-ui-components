@@ -59,7 +59,6 @@ import {
     DATETIME_TYPE,
     DOUBLE_TYPE,
     FILE_TYPE,
-    FLAG_TYPE,
     INTEGER_TYPE,
     MULTI_CHOICE_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
@@ -79,7 +78,6 @@ import {
     DOMAIN_FIELD_PREFIX,
     FIELD_NAME_CHAR_WARNING_INFO,
     FIELD_NAME_CHAR_WARNING_MSG,
-    FLAG_CONCEPT_URI,
     INT_RANGE_URI,
     MAX_TEXT_LENGTH,
     SEVERITY_LEVEL_ERROR,
@@ -119,15 +117,6 @@ describe('domain properties actions', () => {
         expect(field1.dataType.rangeURI).toBe(INT_RANGE_URI);
 
         const field2 = DomainField.create({
-            name: 'field2name',
-            rangeURI: STRING_RANGE_URI,
-            conceptURI: FLAG_CONCEPT_URI,
-            propertyId: 0,
-            propertyURI: 'test',
-        });
-        expect(field2.dataType.name).toBe('flag');
-
-        const field3 = DomainField.create({
             name: 'field3name',
             rangeURI: INT_RANGE_URI,
             lookupSchema: 'core',
@@ -135,7 +124,7 @@ describe('domain properties actions', () => {
             propertyId: 0,
             propertyURI: 'test',
         });
-        expect(field3.dataType.name).toBe('users');
+        expect(field2.dataType.name).toBe('users');
     });
 
     test('server side error on the banner', () => {
@@ -365,7 +354,6 @@ describe('domain properties actions', () => {
         __setController('project');
         setModuleContext(TEST_LKS_STARTER_MODULE_CONTEXT);
         const domain = DomainDesign.create({
-            allowFlagProperties: true,
             allowFileLinkProperties: true,
             allowAttachmentProperties: true,
             allowTimepointProperties: true,
@@ -375,7 +363,6 @@ describe('domain properties actions', () => {
             allowMultiChoiceProperties: true,
         });
         const available = getAvailableTypes(domain);
-        expect(available.contains(FLAG_TYPE)).toBeTruthy();
         expect(available.contains(FILE_TYPE)).toBeTruthy();
         expect(available.contains(ATTACHMENT_TYPE)).toBeTruthy();
         expect(available.contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
@@ -395,7 +382,6 @@ describe('domain properties actions', () => {
         __setController('project');
         setModuleContext(TEST_LKS_STARTER_MODULE_CONTEXT);
         const domain = DomainDesign.create({
-            allowFlagProperties: false,
             allowFileLinkProperties: false,
             allowAttachmentProperties: false,
             allowTimepointProperties: false,
@@ -405,7 +391,6 @@ describe('domain properties actions', () => {
             allowMultiChoiceProperties: false,
         });
         const available = getAvailableTypes(domain);
-        expect(available.contains(FLAG_TYPE)).toBeFalsy();
         expect(available.contains(FILE_TYPE)).toBeFalsy();
         expect(available.contains(ATTACHMENT_TYPE)).toBeFalsy();
         expect(available.contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
@@ -456,7 +441,6 @@ describe('domain properties actions', () => {
         });
         const domain = DomainDesign.create({});
         const types = await getAvailableTypesForOntology(api, domain);
-        expect(types.contains(FLAG_TYPE)).toBeTruthy();
         expect(types.contains(FILE_TYPE)).toBeFalsy();
         expect(types.contains(ATTACHMENT_TYPE)).toBeFalsy();
         expect(types.contains(ONTOLOGY_LOOKUP_TYPE)).toBeTruthy();

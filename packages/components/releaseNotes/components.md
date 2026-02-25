@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.20.5
+*Released*: 25 February 2026
+- GitHub Issue #418: Remove flag field type & migrate to text
+
 ### version 7.20.4
 *Released*: 25 February 2026
 - GitHub Issue #734: App narrow screen display can cut off error message for field editor pages

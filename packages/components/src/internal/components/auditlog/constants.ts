@@ -39,6 +39,10 @@ export const INVENTORY_AUDIT_QUERY: AuditQuery = {
     value: 'InventoryAuditEvent',
 };
 export const LIST_AUDIT_QUERY: AuditQuery = { hasTransactionId: true, label: 'List Events', value: 'ListAuditEvent' };
+export const GRID_VIEW_AUDIT_EVENT: AuditQuery = {
+    label: 'Grid View Events',
+    value: 'GridViewAuditEvent',
+};
 export const GROUP_AUDIT_QUERY: AuditQuery = {
     containerFilter: Query.ContainerFilter.allFolders,
     label: 'Roles and Assignment Events',
@@ -129,6 +133,7 @@ export const COMMON_AUDIT_QUERIES: AuditQuery[] = [
     DOMAIN_AUDIT_QUERY,
     DOMAIN_PROPERTY_AUDIT_QUERY,
     FILE_SYSTEM_AUDIT_QUERY,
+    GRID_VIEW_AUDIT_EVENT,
     GROUP_AUDIT_QUERY,
     INVENTORY_AUDIT_QUERY,
     LIST_AUDIT_QUERY,

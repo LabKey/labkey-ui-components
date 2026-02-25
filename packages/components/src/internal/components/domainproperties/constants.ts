@@ -232,7 +232,7 @@ export const DERIVATION_DATA_SCOPES = {
     ALL: 'All',
 };
 
-export const MAX_VALID_TEXT_CHOICES = 400;
+export const MAX_VALID_TEXT_CHOICES = 500;
 
 export const LOOKUP_VALIDATOR_VALUES = { type: 'Lookup', name: 'Lookup Validator' };
 

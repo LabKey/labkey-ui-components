@@ -104,7 +104,7 @@ export class LineageNodeMetadata extends ImmutableRecord({
 
         let aliases;
         if (selectRowsMetadata.has('Alias')) {
-            aliases = selectRowsMetadata.get('Alias').map(alias => alias.get('displayValue'));
+            aliases = selectRowsMetadata.get('Alias').map(alias => alias.get('value'));
         }
 
         return new LineageNodeMetadata({

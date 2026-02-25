@@ -431,6 +431,9 @@ export class QueryColumn implements IQueryColumn {
     }
 
     allowFaceting(): boolean {
+        if (this.inputType === 'file')
+            return false;
+
         switch (this.facetingBehaviorType) {
             case 'ALWAYS_OFF':
                 return false;

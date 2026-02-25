@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD February 2026
+### version 7.20.4
+*Released*: 25 February 2026
 - GitHub Issue #734: App narrow screen display can cut off error message for field editor pages
   - inline-comment footer can take up to 125px on small screens so increase bottom padding for .app-page
 

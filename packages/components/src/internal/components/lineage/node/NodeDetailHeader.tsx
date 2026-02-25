@@ -4,9 +4,7 @@ import { LineageNode } from '../models';
 import { LineageDataLink } from '../LineageDataLink';
 import { SVGIcon, Theme } from '../../base/SVGIcon';
 import { QueryModel } from '../../../../public/QueryModel/QueryModel';
-import { caseInsensitive } from '../../../util/utils';
-import { SCHEMAS } from '../../../schemas';
-import { SchemaQuery } from '../../../../public/SchemaQuery';
+import { caseInsensitive, hasSequenceCol } from '../../../util/utils';
 import { UnidentifiedPill } from '../../../UnidentifiedPill';
 
 export interface DetailHeaderProps extends PropsWithChildren {
@@ -45,16 +43,8 @@ export const NodeDetailHeader: FC<NodeDetailHeaderProps> = memo(({ model, node, 
     const displayType = meta?.displayType;
     let identified: boolean;
 
-    if (model && !model.isLoading && !model.hasLoadErrors) {
-        // Drop the viewName from the schemaQuery so we can properly compare
-        const sq = new SchemaQuery(model.schemaQuery.schemaName, model.schemaQuery.queryName);
-        const isNucSeq = sq.isEqual(SCHEMAS.DATA_CLASSES.NUC_SEQUENCE);
-        const isProtSeq = sq.isEqual(SCHEMAS.DATA_CLASSES.PROTEIN_SEQUENCE);
-        const isMolSpecSeq = sq.isEqual(SCHEMAS.DATA_CLASSES.MOLECULAR_SPECIES_SEQ);
-
-        if (isNucSeq || isProtSeq || isMolSpecSeq) {
-            identified = caseInsensitive(model.getRow(), 'identified')?.value;
-        }
+    if (model && !model.isLoading && !model.hasLoadErrors && hasSequenceCol(model.schemaQuery)) {
+        identified = caseInsensitive(model.getRow(), 'identified')?.value;
     }
 
     const header = (

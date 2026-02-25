@@ -20,6 +20,8 @@ import { ChangeEvent, CSSProperties } from 'react';
 import { hasParameter, toggleParameter } from '../url/ActionURL';
 import { QueryInfo } from '../../public/QueryInfo';
 import { STORED_AMOUNT_FIELDS } from '../components/samples/constants';
+import { SchemaQuery } from '../../public/SchemaQuery';
+import { SCHEMAS } from '../schemas';
 
 // Case-insensitive Object reference. Returns undefined if either object or prop does not resolve.
 // If both casings exist (e.g. 'x' and 'X' are props) then either value may be returned.
@@ -900,3 +902,12 @@ export const setIsTestEnv = (isTestEnv: boolean): void => {
 };
 
 export const isTestEnv = (): boolean => IS_NODE_TEST_ENV || IS_TEST_ENV;
+
+export function hasSequenceCol(schemaQuery: SchemaQuery): boolean {
+    // Drop the viewName from the schemaQuery so we can properly compare
+    const sqNoView = new SchemaQuery(schemaQuery.schemaName, schemaQuery.queryName);
+    const isNucSeq = sqNoView.isEqual(SCHEMAS.DATA_CLASSES.NUC_SEQUENCE);
+    const isProtSeq = sqNoView.isEqual(SCHEMAS.DATA_CLASSES.PROTEIN_SEQUENCE);
+    const isMolecule = sqNoView.isEqual(SCHEMAS.DATA_CLASSES.MOLECULE);
+    return isNucSeq || isProtSeq || isMolecule;
+}

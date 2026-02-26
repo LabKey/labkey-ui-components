@@ -106,7 +106,7 @@ major:
 
 # Bumps the minor version
 minor:
-    @npm version major --no-git-tag-version
+    @npm version minor --no-git-tag-version
 
 # Bumps the patch version
 patch:

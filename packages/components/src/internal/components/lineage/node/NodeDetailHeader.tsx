@@ -4,7 +4,7 @@ import { LineageNode } from '../models';
 import { LineageDataLink } from '../LineageDataLink';
 import { SVGIcon, Theme } from '../../base/SVGIcon';
 import { QueryModel } from '../../../../public/QueryModel/QueryModel';
-import { caseInsensitive, hasSequenceCol } from '../../../util/utils';
+import { caseInsensitive, hasIdentifiedCol } from '../../../util/utils';
 import { UnidentifiedPill } from '../../../UnidentifiedPill';
 import { IDENTIFIED_COLUMN_NAME } from '../constants';
 
@@ -42,7 +42,7 @@ export const NodeDetailHeader: FC<NodeDetailHeaderProps> = memo(({ model, node, 
     const displayType = meta?.displayType;
     let identified: boolean;
 
-    if (model && !model.isLoading && !model.hasLoadErrors && hasSequenceCol(model.schemaQuery)) {
+    if (model && !model.isLoading && !model.hasLoadErrors && hasIdentifiedCol(model.schemaQuery)) {
         identified = caseInsensitive(model.getRow(), IDENTIFIED_COLUMN_NAME)?.value;
     }
 

@@ -1,5 +1,5 @@
-import React, { FC, memo, useMemo } from 'react';
-import { Experiment, Filter } from '@labkey/api';
+import React, { FC, memo } from 'react';
+import { Experiment } from '@labkey/api';
 import { List, Map } from 'immutable';
 
 import { Renderer, resolveDetailRenderer } from '../../forms/detail/DetailDisplay';

@@ -8,34 +8,31 @@ default:
 
 currentBranch := `git branch --show-current`
 branchAsTag := replace(currentBranch, '_', '-')
-packageName := '@labkey/build'
+packageName := '@labkey/test'
 
 # We trim the trailing / from our environment variables so we can treat them consistently with our other paths
 # We quote the paths from our environment variables so these variables will work even if the paths contains spaces
 labkey := quote(trim_end_match(env('LABKEY_HOME'), '/'))
 components := quote(trim_end_match(env('LABKEY_UI_COMPONENTS_HOME'), '/'))
-premium := quote(trim_end_match(env('LABKEY_UI_PREMIUM_HOME'), '/'))
 distPath := 'node_modules' / packageName / 'webpack'
 sourceDist := components / 'packages/build/webpack/'
 modules := labkey / 'server/modules'
-premiumModules := modules / 'premiumModules'
 platform := modules / 'platform'
-core := platform / 'core'
 experiment := platform / 'experiment'
-assay := platform / 'assay'
-pipeline := platform / 'pipeline'
 lims := modules / 'limsModules'
 biologics := lims / 'biologics'
 sampleManagement := lims / 'sampleManagement'
 inventory := lims / 'inventory'
 labbook := lims / 'labbook'
-puppeteer := lims / 'puppeteer'
+premium := modules / 'premiumModules'
+moduleEditor := premium / 'moduleEditor'
 
-# Note: these are not all of the locations that we use @labkey/build, however they are the most common places that we
+# Note: these are not all of the locations that we use @labkey/test, however they are the most common places that we
 # want to keep up to date.
-platformModules := core + ' ' + experiment + ' ' + assay + ' ' + pipeline
-appModules := premium + ' ' + biologics + ' ' + inventory + ' ' + sampleManagement
-modulesToBump := appModules + ' ' + labbook + ' ' + ' ' + puppeteer + ' ' + platformModules
+appModules := biologics + ' ' + inventory + ' ' + sampleManagement + ' ' + labbook
+platformModules := experiment
+premiumModules := moduleEditor
+modulesToBump := appModules + ' ' + platformModules + ' ' + premiumModules
 
 # Note: this is just a common subset of locations where we would want to copy a locally built package, in order to test
 # before we publish a version. You may want to add more locations (e.g. core, assay)
@@ -78,7 +75,7 @@ listModules:
 
 currentVersionImport := quote("require('./package.json').version")
 
-# Bumps the @labkey/build package to the current version in every module listed in the modules variable
+# Bumps the @labkey/test package to the current version in every module listed in the modules variable
 _bump modules:
     #!/usr/bin/env zsh
     set -euo pipefail
@@ -91,10 +88,10 @@ _bump modules:
         popd
     done
 
-# Bumps the @labkey/build package to the current version in every module listed in the 'modulesToBump' variable
+# Bumps the @labkey/test package to the current version in every module listed in the 'modulesToBump' variable
 bump: (_bump modulesToBump)
 
-# Bumps the @labkey/build package to the current version in every module listed in the 'appModules' variable
+# Bumps the @labkey/test package to the current version in every module listed in the 'appModules' variable
 bumpApps: (_bump appModules)
 
 # Bumps the version to a prerelease version based on the current branch name, publishes the version, and bumps it in every module listed in 'modulesToBump'

@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 8.9.0
+*Released*: 26 February 2026
+- Package updates
+
 ### version 8.8.0
 *Released*: 4 February 2026
 - Package updates

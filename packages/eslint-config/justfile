@@ -8,7 +8,7 @@ default:
 
 currentBranch := `git branch --show-current`
 branchAsTag := replace(currentBranch, '_', '-')
-packageName := '@labkey/build'
+packageName := '@labkey/eslint-config'
 
 # We trim the trailing / from our environment variables so we can treat them consistently with our other paths
 # We quote the paths from our environment variables so these variables will work even if the paths contains spaces
@@ -31,7 +31,7 @@ inventory := lims / 'inventory'
 labbook := lims / 'labbook'
 puppeteer := lims / 'puppeteer'
 
-# Note: these are not all of the locations that we use @labkey/build, however they are the most common places that we
+# Note: these are not all of the locations that we use @labkey/eslint-config, however they are the most common places that we
 # want to keep up to date.
 platformModules := core + ' ' + experiment + ' ' + assay + ' ' + pipeline
 appModules := premium + ' ' + biologics + ' ' + inventory + ' ' + sampleManagement
@@ -78,7 +78,7 @@ listModules:
 
 currentVersionImport := quote("require('./package.json').version")
 
-# Bumps the @labkey/build package to the current version in every module listed in the modules variable
+# Bumps the @labkey/eslint-config package to the current version in every module listed in the modules variable
 _bump modules:
     #!/usr/bin/env zsh
     set -euo pipefail
@@ -91,10 +91,10 @@ _bump modules:
         popd
     done
 
-# Bumps the @labkey/build package to the current version in every module listed in the 'modulesToBump' variable
+# Bumps the @labkey/eslint-config package to the current version in every module listed in the 'modulesToBump' variable
 bump: (_bump modulesToBump)
 
-# Bumps the @labkey/build package to the current version in every module listed in the 'appModules' variable
+# Bumps the @labkey/eslint-config package to the current version in every module listed in the 'appModules' variable
 bumpApps: (_bump appModules)
 
 # Bumps the version to a prerelease version based on the current branch name, publishes the version, and bumps it in every module listed in 'modulesToBump'

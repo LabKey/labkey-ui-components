@@ -34,10 +34,10 @@
     "supertest": "7.2.2"
   },
   "devDependencies": {
-    "@labkey/api": "1.47.1-fb-package-updates-0226-deux.0",
+    "@labkey/api": "1.48.0",
     "@types/jest": "30.0.0",
     "@types/node": "24.10.9",
-    "@types/supertest": "6.0.3",
+    "@types/supertest": "7.2.0",
     "copy-webpack-plugin": "13.0.1",
     "cross-env": "10.1.0",
     "jest": "30.2.0",
@@ -48,7 +48,7 @@
     "ts-jest": "29.4.6",
     "ts-loader": "9.5.4",
     "typescript": "5.9.3",
-    "webpack": "5.105.2",
+    "webpack": "5.105.3",
     "webpack-cli": "6.0.1"
   },
   "peerDependencies": {

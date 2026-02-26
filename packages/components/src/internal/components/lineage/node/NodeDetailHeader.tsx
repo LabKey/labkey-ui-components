@@ -6,6 +6,7 @@ import { SVGIcon, Theme } from '../../base/SVGIcon';
 import { QueryModel } from '../../../../public/QueryModel/QueryModel';
 import { caseInsensitive, hasSequenceCol } from '../../../util/utils';
 import { UnidentifiedPill } from '../../../UnidentifiedPill';
+import { IDENTIFIED_COLUMN_NAME } from '../constants';
 
 export interface DetailHeaderProps extends PropsWithChildren {
     header: ReactNode;
@@ -38,13 +39,11 @@ export const NodeDetailHeader: FC<NodeDetailHeaderProps> = memo(({ model, node, 
     const lineageUrl = links.lineage;
     const isSeed = seed === node.lsid;
 
-    const aliases = meta?.aliases;
-    const description = meta?.description;
     const displayType = meta?.displayType;
     let identified: boolean;
 
     if (model && !model.isLoading && !model.hasLoadErrors && hasSequenceCol(model.schemaQuery)) {
-        identified = caseInsensitive(model.getRow(), 'identified')?.value;
+        identified = caseInsensitive(model.getRow(), IDENTIFIED_COLUMN_NAME)?.value;
     }
 
     const header = (
@@ -59,11 +58,9 @@ export const NodeDetailHeader: FC<NodeDetailHeaderProps> = memo(({ model, node, 
 
     return (
         <DetailHeader header={header} iconSrc={node.iconProps.iconURL}>
-            {displayType && <div>{displayType}</div>}
-            {aliases && <div>{aliases.join(', ')}</div>}
-            {description && <div title={description}>{description}</div>}
             {/* Triple eq is important here; we only want false, not falsey values */}
             {identified === false && <UnidentifiedPill />}
+            {displayType && <div>{displayType}</div>}
         </DetailHeader>
     );
 });

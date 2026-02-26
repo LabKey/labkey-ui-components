@@ -16,6 +16,7 @@ import {
     LineageOptions,
     LineageURLResolvers,
 } from './types';
+import { SAMPLE_STATE_COLOR_COLUMN_NAME, SAMPLE_STATE_TYPE_COLUMN_NAME } from '../samples/constants';
 
 // Default depth to fetch with the lineage API
 export const DEFAULT_LINEAGE_DISTANCE = 5;
@@ -159,3 +160,13 @@ export const LINEAGE_GRID_COLUMNS = List([
         title: 'Alias',
     }),
 ]);
+
+export const IDENTIFIED_COLUMN_NAME = 'identified';
+
+// Must specify '*' columns be requested to resolve "properties" columns
+export const LINEAGE_DETAIL_REQUIRED_COLS = [
+    '*',
+    SAMPLE_STATE_COLOR_COLUMN_NAME,
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
+    IDENTIFIED_COLUMN_NAME,
+];

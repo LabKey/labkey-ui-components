@@ -29,18 +29,9 @@ import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../.
 import { Filter } from '@labkey/api';
 import { SchemaQuery } from '../../../../public/SchemaQuery';
 import { ViewInfo } from '../../../ViewInfo';
-import { SAMPLE_STATE_COLOR_COLUMN_NAME, SAMPLE_STATE_TYPE_COLUMN_NAME } from '../../samples/constants';
 import { QueryModel } from '../../../../public/QueryModel/QueryModel';
 
-const IDENTIFIED_COLUMN_NAME = 'identified';
-
-// Must specify '*' columns be requested to resolve "properties" columns
-const LINEAGE_DETAIL_REQUIRED_COLS = [
-    '*',
-    SAMPLE_STATE_COLOR_COLUMN_NAME,
-    SAMPLE_STATE_TYPE_COLUMN_NAME,
-    IDENTIFIED_COLUMN_NAME,
-];
+import { LINEAGE_DETAIL_REQUIRED_COLS } from '../constants';
 
 interface LineageNodeDetailProps {
     highlightNode?: string;

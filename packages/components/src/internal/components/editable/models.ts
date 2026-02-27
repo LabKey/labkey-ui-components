@@ -352,10 +352,7 @@ export class EditorModel
                         .toArray();
                     row = row.set(col.name, valueArray);
                 } else if (col.lookup.displayColumn === col.lookup.keyColumn) {
-                    row = row.set(
-                        col.name,
-                        values.size === 1 ? values.first()?.display : undefined
-                    );
+                    row = row.set(col.name, values.size === 1 ? values.first()?.display : undefined);
                 } else {
                     let val;
                     if (values.size === 1) val = values.first()?.raw;

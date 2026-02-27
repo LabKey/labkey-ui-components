@@ -443,7 +443,11 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
         isInit: true,
         queryInfo,
         selectedItems: selectedItems
-            ? fromJS(quoteValueColumnWithDelimiters(selectedItems, valueColumn, delimiter, multiple).models[selectedItems.key])
+            ? fromJS(
+                  quoteValueColumnWithDelimiters(selectedItems, valueColumn, delimiter, multiple).models[
+                      selectedItems.key
+                  ]
+              )
             : Map<string, any>(),
         valueColumn,
     };

@@ -627,7 +627,7 @@ export function quoteValueColumnWithDelimiters(
     selectRowsResult: ISelectRowsResult,
     valueColumn: string,
     delimiter: string,
-    multiple : boolean = true
+    multiple = true
 ): ISelectRowsResult {
     const rowMap = selectRowsResult.models[selectRowsResult.key];
 

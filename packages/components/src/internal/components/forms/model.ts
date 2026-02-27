@@ -225,7 +225,8 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
         filterVal,
         model.valueColumn,
         model.delimiter,
-        addExactFilter ? displayColumn : undefined
+        addExactFilter ? displayColumn : undefined,
+        model.multiple
     );
 }
 
@@ -442,7 +443,7 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
         isInit: true,
         queryInfo,
         selectedItems: selectedItems
-            ? fromJS(quoteValueColumnWithDelimiters(selectedItems, valueColumn, delimiter).models[selectedItems.key])
+            ? fromJS(quoteValueColumnWithDelimiters(selectedItems, valueColumn, delimiter, multiple).models[selectedItems.key])
             : Map<string, any>(),
         valueColumn,
     };

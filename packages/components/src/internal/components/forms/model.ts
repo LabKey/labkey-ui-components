@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, Record as ImmutableRecord, List, Map, OrderedMap } from 'immutable';
-import { Filter, Query } from '@labkey/api';
+import { Filter, Query, QueryKey } from '@labkey/api';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
@@ -151,7 +151,8 @@ function getSelectedOptions(model: QuerySelectModel, value: any): Map<string, an
         return Map<string, any>();
     }
 
-    const keyPath = [model.valueColumn, 'value'];
+    // model.valueColumn is fieldKey, not column name
+    const keyPath = [QueryKey.decodePart(model.valueColumn), 'value'];
     const sources = model.allResults.merge(model.selectedItems);
 
     // multi-value case

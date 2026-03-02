@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 -
 
+### version 7.21.0
+*Released*: 26 February 2026
+- Package updates
+
 ### version 7.20.5
 *Released*: 25 February 2026
 - GitHub Issue #418: Remove flag field type & migrate to text

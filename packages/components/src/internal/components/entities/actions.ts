@@ -620,7 +620,6 @@ export async function getFolderConfigurableEntityTypeOptions(
  * @param targetQueryName the name of the listing schema query that represents the initial target for creation.
  * @param allowParents are parents of this entity type allowed or not
  * @param isItemSamples use the selectionKey from inventory.items table to query sample parents
- * @param combineParentTypes
  */
 export function getEntityTypeData(
     model: EntityIdCreationModel,

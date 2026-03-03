@@ -262,4 +262,4 @@ export const APP_FIELD_CANNOT_BE_REMOVED_MESSAGE = 'This application field canno
 export const CELL_SELECTION_HANDLE_CLASSNAME = 'cell-selection-handle';
 
 export const EMPTY_SEQUENCE_WARNING =
-    "Without a sequence, Protein sequence translations cannot be done automatically, and the system can't prevent duplicates.";
+    'Without a sequence, Protein sequence translations cannot be done automatically, and the system cannot prevent duplicates.';

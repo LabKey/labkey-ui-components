@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.21.TBD
+*Released*: TBD
+- GitHub Issue #790: Update areUnitsCompatible to account for different "Count" unit labels
+
 ### version 7.21.0
 *Released*: 26 February 2026
 - Package updates

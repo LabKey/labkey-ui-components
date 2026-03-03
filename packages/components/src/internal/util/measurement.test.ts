@@ -234,4 +234,13 @@ describe('areUnitsCompatible', () => {
         expect(areUnitsCompatible('mL', 'bogus')).toBeFalsy();
         expect(areUnitsCompatible('kg', 'bogus')).toBeFalsy();
     });
+
+    test('comparison of Count units with different labels but same kind', () => {
+        expect(areUnitsCompatible('count', 'count')).toBeTruthy();
+        expect(areUnitsCompatible('blocks', 'blocks')).toBeTruthy();
+        expect(areUnitsCompatible('boxes', 'cells')).toBeFalsy();
+        expect(areUnitsCompatible('kits', 'packs')).toBeFalsy();
+        expect(areUnitsCompatible('pieces', 'unit')).toBeFalsy();
+        expect(areUnitsCompatible('unit', 'unit')).toBeTruthy();
+    });
 });

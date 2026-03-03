@@ -222,7 +222,13 @@ export function areUnitsCompatible(unitAStr: string, unitBStr: string): boolean 
     if (!unitA || !unitB) {
         return false;
     }
-    return unitA.kind === unitB.kind;
+
+    // GitHub Issue #790: for "Count" kind, the specific label must also match
+    const matchingKinds = unitA.kind === unitB.kind;
+    if (matchingKinds && unitA.kind === UNITS_KIND.COUNT) {
+        return unitA.label === unitB.label;
+    }
+    return matchingKinds;
 }
 
 export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolean): { label: string; value: string }[] {

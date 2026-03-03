@@ -248,8 +248,7 @@ export class LineageIO implements LineageItemWithMetadata {
 }
 
 interface LineageNodeConfig
-    extends LineageItemWithIOMetadata,
-        Omit<Experiment.LineageNodeBase, 'children' | 'parents' | 'steps'> {
+    extends LineageItemWithIOMetadata, Omit<Experiment.LineageNodeBase, 'children' | 'parents' | 'steps'> {
     children: ILineageLink[] | LineageLink[] | List<LineageLink>;
     // computed properties
     distance: number;

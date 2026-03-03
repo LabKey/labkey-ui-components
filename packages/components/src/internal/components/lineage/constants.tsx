@@ -10,9 +10,9 @@ import { GridColumn } from '../base/models/GridColumn';
 
 import { Tag } from './Tag';
 import {
-    LineageGroupingOptions,
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
+    LineageGroupingOptions,
     LineageOptions,
     LineageURLResolvers,
 } from './types';

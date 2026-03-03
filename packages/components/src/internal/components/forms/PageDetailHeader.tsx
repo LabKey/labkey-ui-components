@@ -47,13 +47,13 @@ export class PageDetailHeader extends PureComponent<PageDetailHeaderProps> {
                     {hasIcon && (
                         <div className="detail__header--image-container">
                             {iconUrl ? (
-                                <img src={iconUrl} className="detail__header-icon" />
+                                <img className="detail__header-icon" src={iconUrl} />
                             ) : (
                                 <SVGIcon
+                                    alt={iconAltText ? iconAltText : ''}
+                                    className="detail__header-icon"
                                     iconDir={iconDir}
                                     iconSrc={iconSrc ? iconSrc : ''}
-                                    className="detail__header-icon"
-                                    alt={iconAltText ? iconAltText : ''}
                                 />
                             )}
                         </div>

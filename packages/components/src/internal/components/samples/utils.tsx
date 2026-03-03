@@ -276,11 +276,13 @@ export function isAllSamplesSchema(schemaQuery: SchemaQuery): boolean {
         return true;
 
     if (lcSchemaName === SCHEMAS.SAMPLE_MANAGEMENT.SCHEMA) {
-        return (
-            lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.queryName.toLowerCase() ||
-            lcQueryName === SCHEMAS.WORKFLOW.JOB_INPUT_SAMPLES.queryName.toLowerCase()
-        );
+        return lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.queryName.toLowerCase();
     }
+    if (
+        lcSchemaName === SCHEMAS.WORKFLOW.SCHEMA &&
+        lcQueryName === SCHEMAS.WORKFLOW.JOB_INPUT_SAMPLES.queryName.toLowerCase()
+    )
+        return true;
 
     return false;
 }

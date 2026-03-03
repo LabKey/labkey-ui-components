@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
--
+- Update `isAllSamplesSchema` to account for move of `JobInputSamples` to `workflow` schema
 
 ### version 7.21.0
 *Released*: 26 February 2026

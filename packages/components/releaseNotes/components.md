@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 7.?.?
-*Released*: ????
+### version 7.22.0
+*Released*: 4 March 2026
 - Remove styles for `.app-page`
     - Component was moved to ui-premium a while ago
 - Add `ta-right`, `ta-left` util styles

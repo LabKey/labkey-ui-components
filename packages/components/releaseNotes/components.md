@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.X
+*Released*: X March 2026
+- GitHub Issue 897: Study dataset should not allow multivalue text choice as a third key
+
 ### version 7.21.0
 *Released*: 26 February 2026
 - Package updates

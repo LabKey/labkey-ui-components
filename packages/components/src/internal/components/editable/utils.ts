@@ -1,4 +1,4 @@
-import { Filter, Utils } from '@labkey/api';
+import { Filter, QueryKey, Utils } from '@labkey/api';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 
@@ -221,7 +221,8 @@ export function getLookupFilters(
     }
 
     if (lookupKeyValues) {
-        filters.push(Filter.create(lookup.keyColumn, lookupKeyValues, Filter.Types.IN));
+        // lookup.keyColumn is column name, needs to encode to handle cases when the column name contains special characters.
+        filters.push(Filter.create(QueryKey.encodePart(lookup.keyColumn), lookupKeyValues, Filter.Types.IN));
     }
 
     const operation = forUpdate ? Operation.update : Operation.insert;

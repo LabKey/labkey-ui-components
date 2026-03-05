@@ -4,7 +4,9 @@
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
-    "dist/"
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "dist/**/*.scss"
   ],
   "main": "dist/components.js",
   "module": "dist/components.js",

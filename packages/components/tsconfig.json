@@ -1,6 +1,10 @@
 {
   "extends": "./node_modules/@labkey/build/webpack/tsconfig.json",
   "compilerOptions": {
+    // declarationMap is required for IntelliJ to resolve source file references
+    "declarationMap": true,
+    "rootDir": "src",
+    "outDir": "dist",
     "typeRoots": ["node_modules/@types", "src/typings"]
   },
   "include": ["src/**/*"],

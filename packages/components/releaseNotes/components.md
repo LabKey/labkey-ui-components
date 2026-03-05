@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Update `isAllSamplesSchema` to account for move of `JobInputSamples` to `workflow` schema
+- Add placement prop for `DisableableButton`
 
 ### version 7.22.0
 *Released*: 4 March 2026

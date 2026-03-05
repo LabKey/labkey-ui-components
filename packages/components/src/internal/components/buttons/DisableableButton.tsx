@@ -1,4 +1,4 @@
-import React, { memo, FC, useMemo, PropsWithChildren } from 'react';
+import React, { FC, memo, PropsWithChildren, useMemo } from 'react';
 
 import { createPortal } from 'react-dom';
 
@@ -10,11 +10,12 @@ interface Props extends PropsWithChildren {
     className?: string;
     disabledMsg?: string;
     onClick?: () => void;
+    placement?: 'top' | 'bottom' | 'left' | 'right';
     title?: string;
 }
 
 export const DisableableButton: FC<Props> = memo(props => {
-    const { bsStyle = 'default', children, className = '', disabledMsg, onClick, title } = props;
+    const { bsStyle = 'default', children, className = '', disabledMsg, onClick, placement="bottom", title } = props;
     const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLButtonElement>(
         'disabled-button-overlay',
         disabledMsg !== undefined,
@@ -22,11 +23,11 @@ export const DisableableButton: FC<Props> = memo(props => {
     );
     const popover = useMemo(
         () => (
-            <Popover id="disabled-button-popover" title={title} placement="bottom" targetRef={targetRef}>
+            <Popover id="disabled-button-popover" title={title} placement={placement} targetRef={targetRef}>
                 {disabledMsg}
             </Popover>
         ),
-        [disabledMsg, targetRef, title]
+        [disabledMsg, placement, targetRef, title]
     );
 
     // Note: we use onPointerEnter/Leave so events propagate when the button is disabled
@@ -37,8 +38,8 @@ export const DisableableButton: FC<Props> = memo(props => {
             onClick={onClick}
             onPointerEnter={onMouseEnter}
             onPointerLeave={onMouseLeave}
-            type="button"
             ref={targetRef}
+            type="button"
         >
             {children}
             {show && createPortal(popover, portalEl)}

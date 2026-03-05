@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    // Specifying declarationMap as true allows for IntelliJ to correctly resolve the source file instead of linking
+    // to the .d.ts file.
+    "declarationMap": true,
     "esModuleInterop": true,
     "jsx": "react",
     "moduleResolution": "node",

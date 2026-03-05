@@ -5,6 +5,10 @@
     "declarationMap": true,
     "rootDir": "src",
     "outDir": "dist",
+    "paths": {
+      // Point to the dist/lib folder where the .d.ts files are output
+      "@labkey/api": ["../../../labkey-api-js/dist/index"],
+    },
     "typeRoots": ["node_modules/@types", "src/typings"]
   },
   "include": ["src/**/*"],

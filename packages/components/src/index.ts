@@ -59,6 +59,7 @@ import {
     getValueFromRow,
     getValuesSummary,
     handleFileInputChange,
+    hasIdentifiedCol,
     isImage,
     isInteger,
     isIntegerInRange,
@@ -247,6 +248,7 @@ import {
     AssayUploadTabs,
     DataViewInfoTypes,
     EDIT_METHOD,
+    EMPTY_SEQUENCE_WARNING,
     EXPORT_TYPES,
     GRID_CHECKBOX_OPTIONS,
     IMPORT_DATA_FORM_TYPES,
@@ -893,6 +895,7 @@ import { ArchivedFolderTag } from './internal/components/folder/ArchivedFolderTa
 import { FilterCriteriaRenderer } from './internal/FilterCriteriaRenderer';
 import { getQueryTestAPIWrapper } from './internal/query/APIWrapper';
 import { useLoadableState } from './internal/useLoadableState';
+import { UnidentifiedPill } from './internal/UnidentifiedPill';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1263,6 +1266,7 @@ export {
     EditInlineField,
     EditorMode,
     EditorModel,
+    EMPTY_SEQUENCE_WARNING,
     encodeFormDataQuote,
     encodePart,
     ensureAllFieldsInAllRows,
@@ -1358,6 +1362,7 @@ export {
     getHelpLink,
     getInactiveUsers,
     getInitialParentChoices,
+    getIntegerSearchParam,
     getJsonDateFormatString,
     getJsonDateTimeFormatString,
     getJsonFormatString,
@@ -1369,7 +1374,6 @@ export {
     getMetricUnitOptions,
     getModuleCustomLabels,
     getNonStandardFormatWarning,
-    getIntegerSearchParam,
     getOmittedSampleTypeColumns,
     getOperationNotAllowedMessage,
     getOperationNotAllowedMessageFromCounts,
@@ -1413,6 +1417,7 @@ export {
     getSelectedRows,
     getSourceDomainDefaultSystemFields,
     getTestAPIWrapper,
+    getTextAlignClassName,
     getTimelineEntityUrl,
     getUniqueIdColumnMetadata,
     getUsersWithPermissions,
@@ -1424,7 +1429,6 @@ export {
     GlobalStateContextProvider,
     Grid,
     GRID_CHECKBOX_OPTIONS,
-    getTextAlignClassName,
     GridColumn,
     GridPanel,
     GridPanelWithModel,
@@ -1436,6 +1440,7 @@ export {
     handleTabKeyOnTextArea,
     hasAllPermissions,
     hasAnyPermissions,
+    hasIdentifiedCol,
     hasParameter,
     hasPermissions,
     Help,
@@ -1713,6 +1718,7 @@ export {
     Tooltip,
     TransactionAuditIdRenderer,
     uncapitalizeFirstChar,
+    UnidentifiedPill,
     UNIQUE_ID_FIND_FIELD,
     UnitModel,
     updateCellKeySampleIdMap,

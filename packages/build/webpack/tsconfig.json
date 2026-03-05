@@ -1,22 +1,19 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    // Specifying declarationMap as true allows for IntelliJ to correctly resolve the source file instead of linking
-    // to the .d.ts file.
-    "declarationMap": true,
     "esModuleInterop": true,
     "jsx": "react",
     "moduleResolution": "node",
     "noEmit": true,
     "resolveJsonModule": true,
-    // sourceMap needs to be true in order for our tests have accurate stack traces, it does not noticeably impact
+    // sourceMap needs to be true in order for our tests to have accurate stack traces, it does not noticeably impact
     // compile times
     "sourceMap": true,
     "target": "ES2023",
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
-    // Paradoxically, we HAVE to include the jest types. If we do not explicitly include them our builds will pass if we
-    // try to use Node libraries (e.g., Array.at). If we include the jest types our builds will correctly compile against
-    // the lib targets above.
+    // Paradoxically, we HAVE to include the jest types. If we do not explicitly include them, our builds pass if
+    // we try to use Node libraries (e.g., Array.at). If we include the jest types, our builds will correctly compile
+    // against the lib targets above.
     "types": ["jest"]
   }
 }

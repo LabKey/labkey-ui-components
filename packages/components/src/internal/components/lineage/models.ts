@@ -104,7 +104,7 @@ export class LineageNodeMetadata extends ImmutableRecord({
 
         let aliases;
         if (selectRowsMetadata.has('Alias')) {
-            aliases = selectRowsMetadata.get('Alias').map(alias => alias.get('displayValue'));
+            aliases = selectRowsMetadata.get('Alias').map(alias => alias.get('value'));
         }
 
         return new LineageNodeMetadata({
@@ -248,8 +248,7 @@ export class LineageIO implements LineageItemWithMetadata {
 }
 
 interface LineageNodeConfig
-    extends LineageItemWithIOMetadata,
-        Omit<Experiment.LineageNodeBase, 'children' | 'parents' | 'steps'> {
+    extends LineageItemWithIOMetadata, Omit<Experiment.LineageNodeBase, 'children' | 'parents' | 'steps'> {
     children: ILineageLink[] | LineageLink[] | List<LineageLink>;
     // computed properties
     distance: number;

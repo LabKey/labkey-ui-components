@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useOverlayPositioning } from './useOverlayPositioning';
 import { TooltipProps } from './Tooltip';
 
-interface PopoverProps extends TooltipProps, PropsWithChildren {
+interface PopoverProps extends PropsWithChildren, TooltipProps {
     className?: string;
     isFlexPlacement?: boolean;
     title?: string;
@@ -30,7 +30,7 @@ export const Popover: FC<PopoverProps> = props => {
     });
 
     return (
-        <div id={id} className={className_} style={style} ref={overlayRef}>
+        <div className={className_} id={id} ref={overlayRef} style={style}>
             <div className="arrow" />
             {title && <h3 className="popover-title">{title}</h3>}
             <div className="popover-content">{children}</div>

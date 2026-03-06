@@ -246,14 +246,6 @@
     }
 }
 
-.domain-field-expand-icon.disabled {
-    opacity: 0.5;
-    &:hover {
-        color: $gray-no-highlight;
-        cursor: default;
-    }
-}
-
 .domain-field-delete-icon {
     color: $gray-no-highlight;
 

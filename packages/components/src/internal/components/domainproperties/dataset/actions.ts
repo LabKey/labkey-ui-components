@@ -79,7 +79,7 @@ export function getAdditionalKeyFields(domain: DomainDesign, timepointType: stri
     }
 
     domain.fields
-        .filter(field => !field.isCalculatedField())
+        .filter(field => !field.isCalculatedField() && !field.isMultiChoiceField())
         .map(field => {
             additionalKeyFields = additionalKeyFields.push({ value: field.name, label: field.name });
         });

@@ -3,7 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 7.21.TBD
 *Released*: TBD
-- GitHub Issue #790: Update areUnitsCompatible to account for different "Count" unit labels
+- GitHub Issue #790: Sample check-in and discard should not allow amount/unit input for differing units
+  - Update areUnitsCompatible to account for different "Count" unit labels
+  - getMetricUnitOptions() to allow optional filterFn parameter for the "Count" unit case
 
 ### version 7.21.1
 *Released*: 4 March 2026

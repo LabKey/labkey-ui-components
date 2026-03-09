@@ -231,7 +231,11 @@ export function areUnitsCompatible(unitAStr: string, unitBStr: string): boolean 
     return matchingKinds;
 }
 
-export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolean): { label: string; value: string }[] {
+export function getMetricUnitOptions(
+    metricUnit?: string,
+    showLongLabel?: boolean,
+    filterFn?: (option: { label: string; value: string }) => boolean
+): { label: string; value: string }[] {
     const unit = getMeasurementUnit(metricUnit);
 
     const options = [];
@@ -254,6 +258,12 @@ export function getMetricUnitOptions(metricUnit?: string, showLongLabel?: boolea
             }
         }
     }
+
+    // apply additional filter if provided
+    if (filterFn) {
+        return options.filter(filterFn);
+    }
+
     return options;
 }
 

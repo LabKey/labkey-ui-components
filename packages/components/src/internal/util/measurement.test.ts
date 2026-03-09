@@ -139,6 +139,49 @@ describe('MetricUnit utils', () => {
         expect(getMetricUnitOptions('bad').length).toBe(18);
     });
 
+    test('getMetricUnitOptions with filterFn', () => {
+        let options = getMetricUnitOptions('kg', false);
+        expect(options).toEqual([
+            { label: 'g', value: 'g' },
+            { label: 'mg', value: 'mg' },
+            { label: 'kg', value: 'kg' },
+            { label: 'ug', value: 'ug' },
+            { label: 'ng', value: 'ng' },
+        ]);
+
+        let filterFn = option => option.value !== 'mg';
+        options = getMetricUnitOptions('kg', false, filterFn);
+        expect(options).toEqual([
+            { label: 'g', value: 'g' },
+            { label: 'kg', value: 'kg' },
+            { label: 'ug', value: 'ug' },
+            { label: 'ng', value: 'ng' },
+        ]);
+
+        filterFn = option => option.value === 'mg';
+        options = getMetricUnitOptions('kg', false, filterFn);
+        expect(options).toEqual([{ label: 'mg', value: 'mg' }]);
+
+        filterFn = option => option.value === 'mg';
+        options = getMetricUnitOptions('mg', false, filterFn);
+        expect(options).toEqual([{ label: 'mg', value: 'mg' }]);
+
+        // incompatible units
+        filterFn = option => option.value === 'mg';
+        options = getMetricUnitOptions('mL', false, filterFn);
+        expect(options).toEqual([]);
+
+        // no unit
+        filterFn = option => option.value === 'mg';
+        options = getMetricUnitOptions(undefined, false, filterFn);
+        expect(options).toEqual([{ label: 'mg', value: 'mg' }]);
+
+        // bogus unit will be treated as no unit
+        filterFn = option => option.value === 'mg';
+        options = getMetricUnitOptions('bogus', false, filterFn);
+        expect(options).toEqual([{ label: 'mg', value: 'mg' }]);
+    });
+
     test('getAltUnitKeys', () => {
         const expectedUlOptions = ['mL', 'uL', 'L'];
         expect(getAltUnitKeys('uL')).toEqual(expectedUlOptions);

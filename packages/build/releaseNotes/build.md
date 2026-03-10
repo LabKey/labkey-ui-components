@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 9.0.0
+*Released*: 9 March 2026
+- Update TypeScript compiler `lib` and `target` options to `"ES2023"'
+
 ### version 8.9.0
 *Released*: 26 February 2026
 - Package updates

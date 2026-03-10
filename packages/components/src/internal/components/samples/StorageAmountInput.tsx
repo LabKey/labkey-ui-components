@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 
 import { Alert } from '../base/Alert';
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
@@ -8,7 +8,6 @@ import {
     getMetricUnitOptions,
     isMeasurementUnitIgnoreCase,
     UnitModel,
-    UNITS_KIND,
 } from '../../util/measurement';
 import { getInvalidSampleAmountMessage } from '../../util/utils';
 
@@ -17,6 +16,7 @@ interface Props {
     className?: string;
     inputName?: string;
     label: string;
+    metricUnitsFilterFn?: (option: { label: string; value: string }) => boolean;
     model: UnitModel;
     preferredUnit: string;
     tipText?: string;
@@ -24,10 +24,18 @@ interface Props {
 }
 
 export const StorageAmountInput: FC<Props> = memo(props => {
-    const { className, model, preferredUnit, inputName, label, tipText, amountChangedHandler, unitsChangedHandler } =
-        props;
+    const {
+        className,
+        model,
+        preferredUnit,
+        inputName,
+        label,
+        tipText,
+        amountChangedHandler,
+        unitsChangedHandler,
+        metricUnitsFilterFn,
+    } = props;
     const [amountInput, setAmountInput] = useState<string>(model?.value?.toString() || '');
-    const _preferredUnit = useMemo(() => new UnitModel(undefined, preferredUnit), [preferredUnit]);
 
     const unitText = model?.unit?.label || model.unitStr;
     let preferredUnitMessage;
@@ -51,13 +59,7 @@ export const StorageAmountInput: FC<Props> = memo(props => {
     } else {
         // IFF preferred units nor provided or are a supported type, then show possible conversions
 
-        // GitHub Issue #790: for Count units, only show the preferred unit as an option in the UI
-        const optionFilter =
-            _preferredUnit.unit?.kind === UNITS_KIND.COUNT
-                ? (option: { label: string; value: string }) => option.value === preferredUnit
-                : undefined;
-        const options = getMetricUnitOptions(preferredUnit, false, optionFilter);
-
+        const options = getMetricUnitOptions(preferredUnit, false, metricUnitsFilterFn);
         unitDisplay = (
             <SelectInput
                 containerClass="checkin-unit-select-container"

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.23.0
+*Released*: 10 March 2026
+- Update `tsconfig.json` to specify `delcarationMap`
+- Add missing `declare` statements that are now required with `ES2023`
+
 ### version 7.22.1
 *Released*: 6 March 2026
 - GitHub Issue 897: Study dataset should not allow multivalue text choice as a third key

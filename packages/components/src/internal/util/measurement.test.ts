@@ -281,9 +281,16 @@ describe('areUnitsCompatible', () => {
     test('comparison of Count units with different labels but same kind', () => {
         expect(areUnitsCompatible('count', 'count')).toBeTruthy();
         expect(areUnitsCompatible('blocks', 'blocks')).toBeTruthy();
-        expect(areUnitsCompatible('boxes', 'cells')).toBeFalsy();
-        expect(areUnitsCompatible('kits', 'packs')).toBeFalsy();
-        expect(areUnitsCompatible('pieces', 'unit')).toBeFalsy();
+        expect(areUnitsCompatible('boxes', 'cells')).toBeTruthy();
+        expect(areUnitsCompatible('kits', 'packs')).toBeTruthy();
+        expect(areUnitsCompatible('pieces', 'unit')).toBeTruthy();
         expect(areUnitsCompatible('unit', 'unit')).toBeTruthy();
+
+        expect(areUnitsCompatible('count', 'count', true)).toBeTruthy();
+        expect(areUnitsCompatible('blocks', 'blocks', true)).toBeTruthy();
+        expect(areUnitsCompatible('boxes', 'cells', true)).toBeFalsy();
+        expect(areUnitsCompatible('kits', 'packs', true)).toBeFalsy();
+        expect(areUnitsCompatible('pieces', 'unit', true)).toBeFalsy();
+        expect(areUnitsCompatible('unit', 'unit', true)).toBeTruthy();
     });
 });

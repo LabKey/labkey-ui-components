@@ -204,7 +204,7 @@ export function getMeasurementUnit(unitStr: string): MeasurementUnit | null {
     return null;
 }
 
-export function areUnitsCompatible(unitAStr: string, unitBStr: string): boolean {
+export function areUnitsCompatible(unitAStr: string, unitBStr: string, compareCountUnitLabels = false): boolean {
     if (unitAStr == unitBStr) {
         return true;
     }
@@ -225,9 +225,10 @@ export function areUnitsCompatible(unitAStr: string, unitBStr: string): boolean 
 
     // GitHub Issue #790: for "Count" kind, the specific label must also match
     const matchingKinds = unitA.kind === unitB.kind;
-    if (matchingKinds && unitA.kind === UNITS_KIND.COUNT) {
+    if (compareCountUnitLabels && matchingKinds && unitA.kind === UNITS_KIND.COUNT) {
         return unitA.label === unitB.label;
     }
+
     return matchingKinds;
 }
 

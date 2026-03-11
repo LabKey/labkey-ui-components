@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 7.21.TBD
-*Released*: TBD March 2026
+### version 7.21.2
+*Released*: 11 March 2026
 - GitHub Issue 710: Include columns set as Identifying Fields within the 'Search for Samples' grid when adding samples to a storage location
   - update saveGridView() to take hidden prop (default false)
   - saveSettingsToLocalStorage() fix for checking model.useSavedSettings === SavedSettings.none

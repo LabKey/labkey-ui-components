@@ -626,7 +626,8 @@ export function handleSelectRowsResponse(response: Query.Response, queryInfo: Qu
 export function quoteValueColumnWithDelimiters(
     selectRowsResult: ISelectRowsResult,
     valueColumn: string,
-    delimiter: string
+    delimiter: string,
+    multiple = true
 ): ISelectRowsResult {
     const rowMap = selectRowsResult.models[selectRowsResult.key];
 
@@ -634,7 +635,7 @@ export function quoteValueColumnWithDelimiters(
         const cell = row[valueColumn];
         if (Utils.isString(cell?.value)) {
             cell.displayValue = cell.displayValue ?? cell.value;
-            cell.value = quoteValueWithDelimiters(cell.value, delimiter);
+            cell.value = multiple ? quoteValueWithDelimiters(cell.value, delimiter) : cell.value;
         }
     });
 
@@ -646,7 +647,8 @@ export function searchRows(
     token: any,
     valueColumn: string,
     delimiter: string,
-    exactColumn?: string
+    exactColumn?: string,
+    multiple?: boolean
 ): Promise<ISelectRowsResult> {
     return new Promise((resolve, reject) => {
         let exactFilters, qFilters;
@@ -713,7 +715,7 @@ export function searchRows(
                     finalResults = queryResults;
                 }
 
-                resolve(quoteValueColumnWithDelimiters(finalResults, valueColumn, delimiter));
+                resolve(quoteValueColumnWithDelimiters(finalResults, valueColumn, delimiter, multiple));
             })
             .catch(reason => {
                 reject(reason);

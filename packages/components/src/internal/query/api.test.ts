@@ -138,23 +138,26 @@ describe('api', () => {
     });
 
     describe('quoteValueColumnWithDelimiters', () => {
-        const results: ISelectRowsResult = {
-            key: 'test',
-            models: {
-                test: {
-                    1: { Name: { value: 'one', url: 'http://one/test', randomProperty: 123 } },
-                    2: { Name: { value: 'with, comma', url: 'http://with, comma/test' } },
-                    4: { Name: { value: 'with "quotes", and comma' } },
-                    3: { NoName: { value: 'nonesuch', url: 'http://with, comma/test' } },
-                    5: { Name: { value: ', comma first', displayValue: ',', url: 'http://with, comma/test' } },
+        function getResults(): ISelectRowsResult {
+            return {
+                key: 'test',
+                models: {
+                    test: {
+                        1: { Name: { value: 'one', url: 'http://one/test', randomProperty: 123 } },
+                        2: { Name: { value: 'with, comma', url: 'http://with, comma/test' } },
+                        4: { Name: { value: 'with "quotes", and comma' } },
+                        3: { NoName: { value: 'nonesuch', url: 'http://with, comma/test' } },
+                        5: { Name: { value: ', comma first', displayValue: ',', url: 'http://with, comma/test' } },
+                    },
                 },
-            },
-            orderedModels: List([1, 2, 3, 4, 5]),
-            queries: {},
-            rowCount: 5,
-        };
-        test('encode', () => {
-            expect(quoteValueColumnWithDelimiters(results, 'Name', ',')).toStrictEqual({
+                orderedModels: List([1, 2, 3, 4, 5]),
+                queries: {},
+                rowCount: 5,
+            };
+        }
+
+        test('encode (multiple=true by default)', () => {
+            expect(quoteValueColumnWithDelimiters(getResults(), 'Name', ',')).toStrictEqual({
                 key: 'test',
                 models: {
                     test: {
@@ -174,6 +177,24 @@ describe('api', () => {
                         },
                         3: { NoName: { value: 'nonesuch', url: 'http://with, comma/test' } },
                         5: { Name: { value: '", comma first"', displayValue: ',', url: 'http://with, comma/test' } },
+                    },
+                },
+                orderedModels: List([1, 2, 3, 4, 5]),
+                queries: {},
+                rowCount: 5,
+            });
+        });
+
+        test('no encode when multiple=false', () => {
+            expect(quoteValueColumnWithDelimiters(getResults(), 'Name', ',', false)).toStrictEqual({
+                key: 'test',
+                models: {
+                    test: {
+                        1: { Name: { value: 'one', url: 'http://one/test', displayValue: 'one', randomProperty: 123 } },
+                        2: { Name: { value: 'with, comma', url: 'http://with, comma/test', displayValue: 'with, comma' } },
+                        4: { Name: { value: 'with "quotes", and comma', displayValue: 'with "quotes", and comma' } },
+                        3: { NoName: { value: 'nonesuch', url: 'http://with, comma/test' } },
+                        5: { Name: { value: ', comma first', displayValue: ',', url: 'http://with, comma/test' } },
                     },
                 },
                 orderedModels: List([1, 2, 3, 4, 5]),

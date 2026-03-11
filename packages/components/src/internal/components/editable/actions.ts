@@ -489,9 +489,10 @@ async function convertRowToEditorModelData(
     const valueDescriptors: ValueDescriptor[] = [];
 
     if (data && col?.isPublicLookup()) {
+        const multiple = col.isJunctionLookup() || col.isExpInput();
         // value had better be the rowId here, but it may be several in a comma-separated list.
         // If it's the display value, which happens to be a number, much confusion will arise.
-        const values = data.toString().split(',');
+        const values = multiple ? data.toString().split(',') : [data.toString()];
 
         for (const val of values) {
             const messageAndValue = await getLookupDisplayValue(col, parseIntIfNumber(val), containerPath);

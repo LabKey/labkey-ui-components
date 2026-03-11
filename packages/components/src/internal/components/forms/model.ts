@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, Record as ImmutableRecord, List, Map, OrderedMap } from 'immutable';
-import { Filter, Query } from '@labkey/api';
+import { Filter, Query, QueryKey } from '@labkey/api';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
@@ -151,7 +151,8 @@ function getSelectedOptions(model: QuerySelectModel, value: any): Map<string, an
         return Map<string, any>();
     }
 
-    const keyPath = [model.valueColumn, 'value'];
+    // model.valueColumn is fieldKey, not column name
+    const keyPath = [QueryKey.decodePart(model.valueColumn), 'value'];
     const sources = model.allResults.merge(model.selectedItems);
 
     // multi-value case
@@ -225,7 +226,8 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
         filterVal,
         model.valueColumn,
         model.delimiter,
-        addExactFilter ? displayColumn : undefined
+        addExactFilter ? displayColumn : undefined,
+        model.multiple
     );
 }
 
@@ -442,7 +444,11 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
         isInit: true,
         queryInfo,
         selectedItems: selectedItems
-            ? fromJS(quoteValueColumnWithDelimiters(selectedItems, valueColumn, delimiter).models[selectedItems.key])
+            ? fromJS(
+                  quoteValueColumnWithDelimiters(selectedItems, valueColumn, delimiter, multiple).models[
+                      selectedItems.key
+                  ]
+              )
             : Map<string, any>(),
         valueColumn,
     };

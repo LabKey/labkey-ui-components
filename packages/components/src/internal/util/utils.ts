@@ -905,9 +905,8 @@ export const isTestEnv = (): boolean => IS_NODE_TEST_ENV || IS_TEST_ENV;
 
 export function hasIdentifiedCol(schemaQuery: SchemaQuery): boolean {
     // Drop the viewName from the schemaQuery so we can properly compare
-    const sqNoView = new SchemaQuery(schemaQuery.schemaName, schemaQuery.queryName);
-    const isNucSeq = sqNoView.isEqual(SCHEMAS.DATA_CLASSES.NUC_SEQUENCE);
-    const isProtSeq = sqNoView.isEqual(SCHEMAS.DATA_CLASSES.PROTEIN_SEQUENCE);
-    const isMolecule = sqNoView.isEqual(SCHEMAS.DATA_CLASSES.MOLECULE);
+    const isNucSeq = schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.NUC_SEQUENCE, false);
+    const isProtSeq = schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.PROTEIN_SEQUENCE, false);
+    const isMolecule = schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.MOLECULE, false);
     return isNucSeq || isProtSeq || isMolecule;
 }

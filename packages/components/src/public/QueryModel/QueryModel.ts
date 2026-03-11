@@ -1288,7 +1288,7 @@ const UNIQUE_ERROR =
 
 export function saveSettingsToLocalStorage(model: QueryModel): void {
     // Don't serialize anything to localStorage if we're not supposed to use saved settings
-    if (!model.useSavedSettings) {
+    if (!model.useSavedSettings || model.useSavedSettings === SavedSettings.none) {
         return;
     }
 

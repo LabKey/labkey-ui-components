@@ -10,12 +10,12 @@ interface Props extends PropsWithChildren {
     className?: string;
     disabledMsg?: string;
     onClick?: () => void;
-    placement?: 'top' | 'bottom' | 'left' | 'right';
+    placement?: 'bottom' | 'left' | 'right' | 'top';
     title?: string;
 }
 
 export const DisableableButton: FC<Props> = memo(props => {
-    const { bsStyle = 'default', children, className = '', disabledMsg, onClick, placement="bottom", title } = props;
+    const { bsStyle = 'default', children, className = '', disabledMsg, onClick, placement = 'bottom', title } = props;
     const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLButtonElement>(
         'disabled-button-overlay',
         disabledMsg !== undefined,
@@ -23,7 +23,7 @@ export const DisableableButton: FC<Props> = memo(props => {
     );
     const popover = useMemo(
         () => (
-            <Popover id="disabled-button-popover" title={title} placement={placement} targetRef={targetRef}>
+            <Popover id="disabled-button-popover" placement={placement} targetRef={targetRef} title={title}>
                 {disabledMsg}
             </Popover>
         ),

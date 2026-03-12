@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Update `isAllSamplesSchema` to account for move of `JobInputSamples` to `workflow` schema
 - Add placement prop for `DisableableButton`
 
+### version 7.23.1
+*Released*: 11 March 2026
+- Merge from release26.3-SNAPSHOT to develop
+    - includes changes from 7.21.1 #1946
+
 ### version 7.23.0
 *Released*: 10 March 2026
 - Update `tsconfig.json` to specify `delcarationMap`
@@ -22,6 +27,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add `ta-right`, `ta-left` util styles
 - Add UnidentifiedPill
 - Add EMPTY_SEQUENCE_WARNING constant
+
+### version 7.21.1
+*Released*: 4 March 2026
+- GitHub Issue 829: Sample type with lookup to list with text primary key where the value contains a comma doesn't map to lookup
+  - Only do `quoteValueWithDelimiters` on values if the lookup column support multiple values
 
 ### version 7.21.0
 *Released*: 26 February 2026

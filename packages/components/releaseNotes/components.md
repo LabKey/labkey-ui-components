@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Update `isAllSamplesSchema` to account for move of `JobInputSamples` to `workflow` schema
 - Add placement prop for `DisableableButton`
 - add `fitlerArrayToString` method in QueryModel utils
+- add `pronoun` utility method for the it/they or it/them text choices
 
 ### version 7.23.1
 *Released*: 11 March 2026

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 7.21.TBD
-*Released*: TBD
+### version 7.21.3
+*Released*: 12 March 2026
 - GitHub Issue #790: Sample check-in and discard should not allow amount/unit input for differing units
   - Update areUnitsCompatible to account for different "Count" unit labels
   - getMetricUnitOptions() to allow optional filterFn parameter for the "Count" unit case

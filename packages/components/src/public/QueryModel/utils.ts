@@ -40,6 +40,13 @@ export function filterArraysEqual(a: Filter.IFilter[], b: Filter.IFilter[]): boo
     return aStr === bStr;
 }
 
+export function filterArrayToString(filterArray: Filter.IFilter[]): string {
+    if (!filterArray) {
+        return '';
+    }
+    return filterArray.map(filterToString).sort().join(';');
+}
+
 export function sortsEqual(a: QuerySort, b: QuerySort): boolean {
     return a.toRequestString() === b.toRequestString();
 }

@@ -661,6 +661,20 @@ export function parseCsvString(value: string, delimiter: string, removeQuotes?: 
     while (start < value.length) {
         let end;
         const ch = value[start];
+        // Tolerate a single space before a properly quoted value
+        if (ch === ' ' && start + 1 < value.length && value[start + 1] === '"') {
+            let testEnd = start + 1;
+            while (true) {
+                testEnd = value.indexOf('"', testEnd + 1);
+                if (testEnd === -1) break;
+                if (testEnd === value.length - 1 || value[testEnd + 1] !== '"') break;
+                testEnd++;
+            }
+            if (testEnd !== -1 && (testEnd === value.length - 1 || value.startsWith(delimiter, testEnd + 1))) {
+                start++;
+                continue;
+            }
+        }
         if (ch === delimiter) {
             // empty string case
             end = start;

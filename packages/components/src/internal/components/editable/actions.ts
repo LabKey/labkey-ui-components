@@ -1302,7 +1302,8 @@ export function dragFillEvent(
         forUpdate,
         targetContainerPath,
         false,
-        selectionToFill
+        selectionToFill,
+        true
     );
 }
 
@@ -1460,7 +1461,8 @@ async function insertPastedData(
     lockRowCount: boolean,
     forUpdate: boolean,
     targetContainerPath: string,
-    selectCells: boolean
+    selectCells: boolean,
+    fromDragFill?: boolean
 ): Promise<Partial<EditorModel>> {
     const pastedData = paste.payload.data;
     let cellMessages = editorModel.cellMessages;
@@ -1495,6 +1497,7 @@ async function insertPastedData(
         let pkValue = getPkValue(row, editorModel.queryInfo);
         if (!pkValue) pkValue = editorModel.getPkValue(rowIdx);
 
+        const isSingleColPaste = row.size === 1 && paste.payload.numCols === 1;
         for (let cn = 0; cn < row.size; cn++) {
             const val = row.get(cn);
             const colIdx = colMin + cn;
@@ -1525,39 +1528,78 @@ async function insertPastedData(
                     cv = valueDescriptors;
                     msg = message;
                 } else if (col?.isMultiChoice && Utils.isString(val)) {
-                    const parsedValues = parseCsvString(val, ',', true).sort(caseSensitiveNaturalSort);
-
                     const unmatched: string[] = [];
                     const values = [];
 
-                    parsedValues.forEach(v => {
-                        const vt = v.trim();
-                        if (!vt) return;
+                    let isSingleMatch = false;
+                    if (isSingleColPaste) {
+                        // GitHub Issue 916
+                        // if pasting into a single column, priotize matching the entire pasted value to a single valid value
+                        const rawVal = val.trim();
+                        const vd = col.validValues?.find(d => d === rawVal);
+                        if (vd) {
+                            values.push({ display: rawVal, raw: rawVal });
+                            isSingleMatch = true;
+                        }
+                    }
 
-                        const vd = col.validValues?.find(d => d === vt);
-                        values.push({ display: vt, raw: vt });
+                    if (!isSingleMatch) {
+                        const parsedValues = parseCsvString(val, ',', true).sort(caseSensitiveNaturalSort);
+                        const foundValues : string[] = [];
 
-                        if (vd) return;
+                        // GitHub Issue 942: Add error for duplicate values
+                        const dupValues : string[] = [];
+                        parsedValues.forEach(v => {
+                            const vt = v.trim();
+                            if (!vt) return;
 
-                        unmatched.push(vt);
-                    });
+                            const vd = col.validValues?.find(d => d === vt);
+                            values.push({ display: vt, raw: vt });
 
-                    if (unmatched.length) {
-                        const valueStr = unmatched
-                            .slice(0, 4)
-                            .map(u => '"' + u + '"')
-                            .join(', ');
-                        msg = { message: lookupValidationErrorMessage(valueStr, true) };
+                            if (foundValues.indexOf(vt) > -1 && dupValues.indexOf(vt) === -1) {
+                                dupValues.push(vt);
+                            } else {
+                                foundValues.push(vt);
+                            }
+
+                            if (vd) return;
+
+                            unmatched.push(vt);
+                        });
+
+                        if (unmatched.length) {
+                            const valueStr = unmatched
+                                .slice(0, 4)
+                                .map(u => '"' + u + '"')
+                                .join(', ');
+                            msg = { message: lookupValidationErrorMessage(valueStr, true) };
+                        }
+                        else if (dupValues.length) {
+                            const valueStr = dupValues
+                                .slice(0, 4)
+                                .map(u => '"' + u + '"')
+                                .join(', ');
+                            msg = { message: `Duplicate values not allowed: ${valueStr}.` };
+                            }
                     }
                     cv = List(values);
                 } else {
-                    const { message, value } = getValidatedEditableGridValue(val, col);
+                    let valToValidate = val;
+                    if (fromDragFill && Utils.isString(val)) {
+                        // GitHub Issue 916: Copying/pasting in the grid doesn't always act as expected
+                        // drag fill always quoteValueWithDelimiters, needs to remove the extra quotes before validating
+                        const parsedValues = parseCsvString(val, ',', true);
+                        if (parsedValues.length === 1)
+                            valToValidate = parsedValues[0].trim();
+                    }
+
+                    const { message, value } = getValidatedEditableGridValue(valToValidate, col);
                     let display = value;
 
                     // Issue 52326: Copy/paste of date values across cells changes date formats
                     // Set display value to the pasted value, not the validated value, because for dates we use the JSON
                     // format provided by LKS, which can include microseconds, and users probably didn't paste those.
-                    if (col?.jsonType === 'date') display = val;
+                    if (col?.jsonType === 'date') display = valToValidate;
 
                     cv = List([{ display, raw: value }]);
                     msg = message;
@@ -1625,7 +1667,8 @@ export function validateAndInsertPastedData(
     forUpdate: boolean,
     targetContainerPath: string,
     selectCells: boolean,
-    selectionToFill?: string[][]
+    selectionToFill?: string[][],
+    fromDragFill?: boolean
 ): Promise<Partial<EditorModel>> {
     let selectedColIdx: number;
     let selectedRowIdx: number;
@@ -1663,7 +1706,8 @@ export function validateAndInsertPastedData(
             lockRowCount,
             forUpdate,
             targetContainerPath,
-            selectCells
+            selectCells,
+            fromDragFill
         );
     } else {
         const fieldKey = editorModel.getFieldKeyByIndex(selectedColIdx);

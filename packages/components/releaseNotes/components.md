@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.X
+*Released*: X March 2026
+- GitHub Issue 916: Copying/pasting in the grid doesn't always act as expected
+- GitHub Issue 942: Add error for duplicate values for MVTC fields
+
 ### version 7.23.1
 *Released*: 11 March 2026
 - Merge from release26.3-SNAPSHOT to develop

@@ -1236,13 +1236,9 @@ describe('insertPastedData', () => {
         // Space: no CSV quoting to strip
         expect(cellValues.get(genCellKey(fkOne, 3))).toEqual(List([{ display: 'hello world', raw: 'hello world' }]));
         // Quoted comma: fromDragFill strips CSV quoting, comma preserved in value
-        expect(cellValues.get(genCellKey(fkOne, 4))).toEqual(
-            List([{ display: 'hello, world', raw: 'hello, world' }])
-        );
+        expect(cellValues.get(genCellKey(fkOne, 4))).toEqual(List([{ display: 'hello, world', raw: 'hello, world' }]));
         // Escaped double quotes: fromDragFill strips CSV quoting and unescapes ""
-        expect(cellValues.get(genCellKey(fkOne, 5))).toEqual(
-            List([{ display: 'say "hello"', raw: 'say "hello"' }])
-        );
+        expect(cellValues.get(genCellKey(fkOne, 5))).toEqual(List([{ display: 'say "hello"', raw: 'say "hello"' }]));
     });
 
     test('pasting exactly A,B into mvtc matches single valid value', async () => {
@@ -1295,7 +1291,9 @@ describe('insertPastedData', () => {
         const changes = await validateAndInsertPastedData(em, '"A, B"', undefined, true, true, undefined, true);
         // Quoted '"A,B"' is CSV-parsed to 'A,B' which is a valid value
         expect(changes.cellValues.get(genCellKey(mvtc, 0))).toEqual(List([{ display: 'A, B', raw: 'A, B' }]));
-        expect(changes.cellMessages.get(genCellKey(mvtc, 0))).toEqual({ message: 'Could not find "A, B". Please make sure values that contain commas are properly quoted.' });
+        expect(changes.cellMessages.get(genCellKey(mvtc, 0))).toEqual({
+            message: 'Could not find "A, B". Please make sure values that contain commas are properly quoted.',
+        });
     });
 
     test('pasting mvtc values combined with other valid values', async () => {

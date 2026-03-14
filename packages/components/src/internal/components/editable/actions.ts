@@ -1545,10 +1545,10 @@ async function insertPastedData(
 
                     if (!isSingleMatch) {
                         const parsedValues = parseCsvString(val, ',', true).sort(caseSensitiveNaturalSort);
-                        const foundValues : string[] = [];
+                        const foundValues: string[] = [];
 
                         // GitHub Issue 942: Add error for duplicate values
-                        const dupValues : string[] = [];
+                        const dupValues: string[] = [];
                         parsedValues.forEach(v => {
                             const vt = v.trim();
                             if (!vt) return;
@@ -1573,14 +1573,13 @@ async function insertPastedData(
                                 .map(u => '"' + u + '"')
                                 .join(', ');
                             msg = { message: lookupValidationErrorMessage(valueStr, true) };
-                        }
-                        else if (dupValues.length) {
+                        } else if (dupValues.length) {
                             const valueStr = dupValues
                                 .slice(0, 4)
                                 .map(u => '"' + u + '"')
                                 .join(', ');
                             msg = { message: `Duplicate values not allowed: ${valueStr}.` };
-                            }
+                        }
                     }
                     cv = List(values);
                 } else {
@@ -1589,8 +1588,7 @@ async function insertPastedData(
                         // GitHub Issue 916: Copying/pasting in the grid doesn't always act as expected
                         // drag fill always quoteValueWithDelimiters, needs to remove the extra quotes before validating
                         const parsedValues = parseCsvString(val, ',', true);
-                        if (parsedValues.length === 1)
-                            valToValidate = parsedValues[0].trim();
+                        if (parsedValues.length === 1) valToValidate = parsedValues[0].trim();
                     }
 
                     const { message, value } = getValidatedEditableGridValue(valToValidate, col);

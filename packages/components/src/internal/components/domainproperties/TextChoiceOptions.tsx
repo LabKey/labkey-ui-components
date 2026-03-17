@@ -27,6 +27,8 @@ import { getTextChoiceInUseValues, TextChoiceInUseValues } from './actions';
 import { createFormInputId } from './utils';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { MULTI_CHOICE_TYPE, TEXT_CHOICE_TYPE } from './PropDescType';
+import { Popover } from '../../Popover';
+import { OverlayTrigger } from '../../OverlayTrigger';
 
 const MIN_VALUES_FOR_SEARCH_COUNT = 2;
 const HELP_TIP_BODY = <p>The set of values to be used as drop-down options to restrict data entry into this field.</p>;
@@ -100,6 +102,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
     const [showAddValuesModal, setShowAddValuesModal] = useState<boolean>();
     const [search, setSearch] = useState<string>('');
     const fieldTypeId = createFormInputId(DOMAIN_FIELD_TYPE, domainIndex, index);
+    const mvPopOverId = useMemo(() => createFormInputId('mv-in-use-popover', domainIndex, index), [domainIndex, index]);
     const isMultiChoiceField = field.dataType.name === MULTI_CHOICE_TYPE.name;
 
     // keep a map from the updated values for the in-use field values to their original values
@@ -280,25 +283,26 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                             title={`Add Values (max ${maxValueCount})`}
                         />
                         {allowMultiChoice && (
-                            <>
-                                <input
-                                    checked={field.dataType.name === 'multiChoice'}
-                                    className="domain-text-choice-multi"
-                                    disabled={isFieldFullyLocked(field.lockType) || hasMultiValueInUse}
-                                    id={createFormInputId(DOMAIN_FIELD_TEXTCHOICE_MULTI, domainIndex, index)}
-                                    onChange={onAllowMultiChange}
-                                    type="checkbox"
-                                />
-                                <span
-                                    title={
-                                        hasMultiValueInUse
-                                            ? 'Multiple values are currently used by at least one data row.'
-                                            : ''
-                                    }
-                                >
-                                    Allow multiple selections
-                                </span>
-                            </>
+                            <OverlayTrigger
+                                noShow={!hasMultiValueInUse}
+                                overlay={
+                                    <Popover id={mvPopOverId} placement="top">
+                                        Multiple values are currently used by at least one data row.
+                                    </Popover>
+                                }
+                            >
+                                <label id={mvPopOverId}>
+                                    <input
+                                        checked={field.dataType.name === 'multiChoice'}
+                                        className="domain-text-choice-multi"
+                                        disabled={isFieldFullyLocked(field.lockType) || hasMultiValueInUse}
+                                        id={createFormInputId(DOMAIN_FIELD_TEXTCHOICE_MULTI, domainIndex, index)}
+                                        onChange={onAllowMultiChange}
+                                        type="checkbox"
+                                    />
+                                    <span>Allow multiple selections</span>
+                                </label>
+                            </OverlayTrigger>
                         )}
                     </div>
                     <div className="col-xs-6 col-lg-4">

@@ -1529,12 +1529,12 @@ async function insertPastedData(
                     msg = message;
                 } else if (col?.isMultiChoice && Utils.isString(val)) {
                     const unmatched: string[] = [];
-                    const values = [];
+                    const values: ValueDescriptor[] = [];
 
                     let isSingleMatch = false;
                     if (isSingleColPaste) {
                         // GitHub Issue 916
-                        // if pasting into a single column, priotize matching the entire pasted value to a single valid value
+                        // if pasting into a single column, prioritize matching the entire pasted value to a single valid value
                         const rawVal = val.trim();
                         const vd = col.validValues?.find(d => d === rawVal);
                         if (vd) {
@@ -1545,23 +1545,23 @@ async function insertPastedData(
 
                     if (!isSingleMatch) {
                         const parsedValues = parseCsvString(val, ',', true).sort(caseSensitiveNaturalSort);
-                        const foundValues: string[] = [];
+                        const foundValues = new Set<string>();
 
                         // GitHub Issue 942: Add error for duplicate values
-                        const dupValues: string[] = [];
+                        const dupValues = new Set<string>();
                         parsedValues.forEach(v => {
                             const vt = v.trim();
                             if (!vt) return;
 
-                            const vd = col.validValues?.find(d => d === vt);
                             values.push({ display: vt, raw: vt });
 
-                            if (foundValues.indexOf(vt) > -1 && dupValues.indexOf(vt) === -1) {
-                                dupValues.push(vt);
+                            if (foundValues.has(vt)) {
+                                dupValues.add(vt);
                             } else {
-                                foundValues.push(vt);
+                                foundValues.add(vt);
                             }
 
+                            const vd = col.validValues?.find(d => d === vt);
                             if (vd) return;
 
                             unmatched.push(vt);
@@ -1573,8 +1573,8 @@ async function insertPastedData(
                                 .map(u => '"' + u + '"')
                                 .join(', ');
                             msg = { message: lookupValidationErrorMessage(valueStr, true) };
-                        } else if (dupValues.length) {
-                            const valueStr = dupValues
+                        } else if (dupValues.size > 0) {
+                            const valueStr = Array.from(dupValues)
                                 .slice(0, 4)
                                 .map(u => '"' + u + '"')
                                 .join(', ');

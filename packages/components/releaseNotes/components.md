@@ -23,6 +23,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add UnidentifiedPill
 - Add EMPTY_SEQUENCE_WARNING constant
 
+### version 7.21.3
+*Released*: 12 March 2026
+- GitHub Issue #790: Sample check-in and discard should not allow amount/unit input for differing units
+  - Update areUnitsCompatible to account for different "Count" unit labels
+  - getMetricUnitOptions() to allow optional filterFn parameter for the "Count" unit case
+
+### version 7.21.2
+*Released*: 11 March 2026
+- GitHub Issue 710: Include columns set as Identifying Fields within the 'Search for Samples' grid when adding samples to a storage location
+  - update saveGridView() to take hidden prop (default false)
+  - saveSettingsToLocalStorage() fix for checking model.useSavedSettings === SavedSettings.none
+
 ### version 7.21.1
 *Released*: 4 March 2026
 - GitHub Issue 829: Sample type with lookup to list with text primary key where the value contains a comma doesn't map to lookup

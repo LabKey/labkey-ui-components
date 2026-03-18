@@ -16,6 +16,7 @@ interface Props {
     className?: string;
     inputName?: string;
     label: string;
+    metricUnitsFilterFn?: (option: { label: string; value: string }) => boolean;
     model: UnitModel;
     preferredUnit: string;
     tipText?: string;
@@ -23,9 +24,17 @@ interface Props {
 }
 
 export const StorageAmountInput: FC<Props> = memo(props => {
-    const { className, model, preferredUnit, inputName, label, tipText, amountChangedHandler, unitsChangedHandler } =
-        props;
-
+    const {
+        className,
+        model,
+        preferredUnit,
+        inputName,
+        label,
+        tipText,
+        amountChangedHandler,
+        unitsChangedHandler,
+        metricUnitsFilterFn,
+    } = props;
     const [amountInput, setAmountInput] = useState<string>(model?.value?.toString() || '');
 
     const unitText = model?.unit?.label || model.unitStr;
@@ -49,6 +58,8 @@ export const StorageAmountInput: FC<Props> = memo(props => {
         );
     } else {
         // IFF preferred units nor provided or are a supported type, then show possible conversions
+
+        const options = getMetricUnitOptions(preferredUnit, false, metricUnitsFilterFn);
         unitDisplay = (
             <SelectInput
                 containerClass="checkin-unit-select-container"
@@ -57,7 +68,7 @@ export const StorageAmountInput: FC<Props> = memo(props => {
                 onChange={(name, formValue, option: SelectInputOption) => {
                     unitsChangedHandler(formValue === undefined && option ? option.id : formValue);
                 }}
-                options={getMetricUnitOptions(preferredUnit)}
+                options={options}
                 value={model.unit?.label}
             />
         );

@@ -662,6 +662,7 @@ export function parseCsvString(value: string, delimiter: string, removeQuotes?: 
         let end;
         const ch = value[start];
         // Tolerate a single space before a properly quoted value
+        // TODO: tolerate space after quote, also multiple spaces: expect(parseCsvString('1, "2,3" ,    4', ',', true)).toStrictEqual(['1', '2,3', ' 4']);
         if (ch === ' ' && start + 1 < value.length && value[start + 1] === '"') {
             let testEnd = start + 1;
             while (true) {

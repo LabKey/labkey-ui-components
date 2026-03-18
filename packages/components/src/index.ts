@@ -865,6 +865,7 @@ import {
     getMetricUnitOptions,
     MEASUREMENT_UNITS,
     UnitModel,
+    UNITS_KIND,
 } from './internal/util/measurement';
 import { DELIMITER, DETAIL_TABLE_CLASSES } from './internal/components/forms/constants';
 import {
@@ -1536,6 +1537,7 @@ export {
     MAX_EDITABLE_GRID_ROWS,
     MAX_SELECTION_ACTION_ROWS,
     MEASUREMENT_UNITS,
+    UNITS_KIND,
     MemberType,
     MenuDivider,
     MenuHeader,

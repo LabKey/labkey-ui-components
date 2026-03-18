@@ -125,7 +125,8 @@ export interface QueryAPIWrapper {
         replace: boolean,
         session: boolean,
         inherit: boolean,
-        shared: boolean
+        shared: boolean,
+        hidden?: boolean
     ) => Promise<void>;
     saveRows: (options: SaveRowsOptions) => Promise<Query.SaveRowsResponse>;
     saveRowsByContainer: (options: SaveRowsOptions, containerField?: string) => Promise<Query.SaveRowsResponse>;

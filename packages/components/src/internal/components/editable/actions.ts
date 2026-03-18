@@ -1544,7 +1544,7 @@ async function insertPastedData(
                     }
 
                     if (!isSingleMatch) {
-                        const parsedValues = parseCsvString(val, ',', true).sort(caseSensitiveNaturalSort);
+                        const parsedValues = parseCsvString(val, ',', true, true /*GitHub Issue 917*/).sort(caseSensitiveNaturalSort);
                         const foundValues = new Set<string>();
 
                         // GitHub Issue 942: Add error for duplicate values

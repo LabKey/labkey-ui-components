@@ -6,7 +6,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 - GitHub Issue 916: Copying/pasting in the grid doesn't always act as expected
 - GitHub Issue 942: Add error for duplicate values for MVTC fields
 - GitHub Issue 961: Clicking the "Allow multiple selections" label doesn't toggle the checkbox
-- GitHub Issue 932: No help text for disabled Multi-Value checkbox in designer.
+- GitHub Issue 932: No help text for disabled Multi-Value checkbox in designer
+- GitHub Issue 917: Copying/pasting in the grid doesn't reorder selection
 
 ### version 7.23.1
 *Released*: 11 March 2026

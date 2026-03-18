@@ -1263,8 +1263,8 @@ describe('insertPastedData', () => {
         // 'A, B' does not match any validValue, so parsed as CSV → ' B' and 'A' (sorted with leading space)
         expect(changes.cellValues.get(genCellKey(mvtc, 0))).toEqual(
             List([
-                { display: 'B', raw: 'B' },
                 { display: 'A', raw: 'A' },
+                { display: 'B', raw: 'B' }
             ])
         );
         expect(changes.cellMessages.get(genCellKey(mvtc, 0))).toBeUndefined();
@@ -1342,7 +1342,7 @@ describe('insertPastedData', () => {
         });
         const changes = await validateAndInsertPastedData(
             em,
-            'A,B,bad\n"A,B",bad',
+            'A, B, bad\n"A,B",bad',
             undefined,
             true,
             true,

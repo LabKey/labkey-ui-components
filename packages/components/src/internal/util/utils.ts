@@ -649,7 +649,7 @@ export const handleFileInputChange = (
     };
 };
 
-export function parseCsvString(value: string, delimiter: string, removeQuotes?: boolean): string[] {
+export function parseCsvString(value: string, delimiter: string, removeQuotes?: boolean, trimSpace?: boolean): string[] {
     if (delimiter === '"') throw 'Unsupported delimiter: ' + delimiter;
 
     if (!delimiter) return undefined;
@@ -721,6 +721,11 @@ export function parseCsvString(value: string, delimiter: string, removeQuotes?: 
             parsedValues.push(value.substring(start, end));
         }
         start = end + delimiter.length;
+    }
+    if (trimSpace) {
+        for (let i = 0; i < parsedValues.length; i++) {
+            parsedValues[i] = parsedValues[i].trim();
+        }
     }
     return parsedValues;
 }

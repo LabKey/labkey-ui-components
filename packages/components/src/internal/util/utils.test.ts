@@ -1508,6 +1508,37 @@ describe('parseCsvString', () => {
         expect(parseCsvString('1,"2,3"', ',', true)).toStrictEqual(['1', '2,3']);
         expect(parseCsvString('1, "2,3"', ',', true)).toStrictEqual(['1', '2,3']);
     });
+
+    test('trim space', () => {
+        // trimSpace should remove leading/trailing whitespace from each parsed field
+        expect(parseCsvString('a, b,c', ',', false, true)).toStrictEqual(['a', 'b', 'c']);
+        // with quoted values and removeQuotes=true, inner spaces around the quoted content should be trimmed as well
+        expect(parseCsvString('a, "b", c', ',', true, true)).toStrictEqual(['a', 'b', 'c']);
+
+        // trimSpace without removeQuotes — whitespace outside quotes is trimmed but quotes are preserved
+        expect(parseCsvString(' a , b , c ', ',', false, true)).toStrictEqual(['a', 'b', 'c']);
+        expect(parseCsvString('a, "b" ,c', ',', false, true)).toStrictEqual(['a', '"b"', 'c']);
+
+        // trimSpace with tabs and mixed whitespace
+        expect(parseCsvString(' a ,\tb , c\t', ',', false, true)).toStrictEqual(['a', 'b', 'c']);
+
+        // trimSpace with empty fields — empty strings remain empty after trim
+        expect(parseCsvString(' , , ', ',', false, true)).toStrictEqual(['', '', '']);
+        expect(parseCsvString(',  ,', ',', false, true)).toStrictEqual(['', '']);
+
+        // trimSpace with single value
+        expect(parseCsvString('  hello  ', ',', false, true)).toStrictEqual(['hello']);
+
+        // trimSpace with tab delimiter
+        expect(parseCsvString(' a \t b \t c ', '\t', false, true)).toStrictEqual(['a', 'b', 'c']);
+
+        // trimSpace with semicolon delimiter
+        expect(parseCsvString(' x ; y ; z ', ';', false, true)).toStrictEqual(['x', 'y', 'z']);
+
+        // trimSpace=false should NOT trim (verify trimSpace is actually doing the work)
+        expect(parseCsvString(' a , b , c ', ',', false, false)).toStrictEqual([' a ', ' b ', ' c ']);
+        expect(parseCsvString(' a , b , c ', ',')).toStrictEqual([' a ', ' b ', ' c ']);
+    });
 });
 
 describe('quoteValueWithDelimiters', () => {

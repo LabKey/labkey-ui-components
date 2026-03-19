@@ -15,7 +15,7 @@ import { getSelected, getSelectedDataDeprecated } from '../../actions';
 
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
+import { getFilterForSampleOperation, isSamplesSchema, isWorkflowInputSamplesSchema } from '../samples/utils';
 import { getQueryDetails, getRequestAuditDetail, importData, InsertOptions, selectDistinctRows } from '../../query/api';
 import { caseInsensitive, generateId } from '../../util/utils';
 import { request } from '../../request';
@@ -326,6 +326,7 @@ function resolveSampleParentTypes(
  * @param creationType
  * @param isItemSamples
  * @param targetQueryName
+ * @param jobId
  */
 async function initParents(
     initialParents: string[],
@@ -334,7 +335,8 @@ async function initParents(
     isSnapshotSelection: boolean,
     creationType?: EntityCreationType,
     isItemSamples?: boolean,
-    targetQueryName?: string
+    targetQueryName?: string,
+    jobId?: string,
 ): Promise<List<EntityParentType>> {
     const isAliquotParent = creationType === EntityCreationType.Aliquots;
 
@@ -354,6 +356,9 @@ async function initParents(
             Filter.create('RowId', selectionResponse.selected, Filter.Types.IN),
             Filter.create('Container', insertPermissionContainers, Filter.Types.IN),
         ];
+        if (isWorkflowInputSamplesSchema(schemaQuery) && jobId) {
+            filterArray.push(Filter.create('JobId', jobId, Filter.Types.EQUAL));
+        }
         const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
         if (opFilter) {
             filterArray.push(opFilter);
@@ -489,7 +494,8 @@ export async function getChosenParentData(
             isSnapshotSelection,
             creationType,
             isItemSamples,
-            targetQueryName
+            targetQueryName,
+            model.jobId
         );
 
         // if we have an initial parent, we want to start with a row in the grid (entityCount = 1) otherwise we start with none

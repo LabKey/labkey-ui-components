@@ -260,6 +260,15 @@ export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
     return isAllSamplesSchema(schemaQuery);
 }
 
+export function isWorkflowInputSamplesSchema(schemaQuery: SchemaQuery): boolean {
+    const lcSchemaName = schemaQuery?.schemaName?.toLowerCase();
+    const lcQueryName = schemaQuery?.queryName?.toLowerCase();
+    return (
+        lcSchemaName === SCHEMAS.WORKFLOW.SCHEMA &&
+        lcQueryName === SCHEMAS.WORKFLOW.JOB_INPUT_SAMPLES.queryName.toLowerCase()
+    );
+}
+
 export function isAllSamplesSchema(schemaQuery: SchemaQuery): boolean {
     const lcSchemaName = schemaQuery?.schemaName?.toLowerCase();
     const lcQueryName = schemaQuery?.queryName?.toLowerCase();
@@ -278,14 +287,9 @@ export function isAllSamplesSchema(schemaQuery: SchemaQuery): boolean {
     if (lcSchemaName === SCHEMAS.SAMPLE_MANAGEMENT.SCHEMA) {
         return lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.queryName.toLowerCase();
     }
-    if (
-        lcSchemaName === SCHEMAS.WORKFLOW.SCHEMA &&
-        lcQueryName === SCHEMAS.WORKFLOW.JOB_INPUT_SAMPLES.queryName.toLowerCase()
-    )
-        return true;
-
-    return false;
+    return isWorkflowInputSamplesSchema(schemaQuery);
 }
+
 
 export function getSampleDomainDefaultSystemFields(moduleContext?: ModuleContext): SystemField[] {
     return isFreezerManagementEnabled(moduleContext)

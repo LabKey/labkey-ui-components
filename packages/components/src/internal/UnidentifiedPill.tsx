@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { generateId } from './util/utils';
 import { useOverlayTriggerState } from './OverlayTrigger';
 import { Popover } from './Popover';
-import { EMPTY_PS_SEQUENCE_WARNING, EMPTY_NS_SEQUENCE_WARNING } from './constants';
+import { EMPTY_NS_SEQUENCE_WARNING, EMPTY_PS_SEQUENCE_WARNING } from './constants';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { SCHEMAS } from './schemas';
 
@@ -11,7 +11,6 @@ interface Props {
     schemaQuery: SchemaQuery;
 }
 
-// TODO: take schemaQuery property and use that to determine the appropriate popover content
 export const UnidentifiedPill: FC<Props> = ({ schemaQuery }) => {
     const id = useMemo(() => generateId('unidentified-sequence-overlay-trigger'), []);
     // Note: we use useOverlayTriggerState instead of OverlayTrigger because the wrapping div from OverlayTrigger
@@ -27,7 +26,7 @@ export const UnidentifiedPill: FC<Props> = ({ schemaQuery }) => {
                 <div className="unidentified-sequence-popover">{message}</div>
             </Popover>
         ),
-        [targetRef]
+        [message, targetRef]
     );
 
     return (

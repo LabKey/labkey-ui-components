@@ -47,10 +47,12 @@ import {
     isQuotedWithDelimiters,
     isSameWithStringCompare,
     isSetEqual,
+    joinMultiValueForExport,
     makeCommaSeparatedString,
     parseCsvString,
     parseScientificInt,
     quoteValueWithDelimiters,
+    splitMultiValueForImport,
     styleStringToObj,
     toLowerSafe,
     uncapitalizeFirstChar,
@@ -1581,6 +1583,129 @@ describe('quoteValueWithDelimiters', () => {
         expect(
             isQuotedWithDelimiters(quoteValueWithDelimiters(initialStringWithNewLineAndComma, ','), ',')
         ).toBeTruthy();
+    });
+});
+
+describe('splitMultiValueForImport', () => {
+    test('null and undefined', () => {
+        expect(splitMultiValueForImport(null)).toBeNull();
+        expect(splitMultiValueForImport(undefined)).toBeUndefined();
+    });
+
+    test('empty string', () => {
+        expect(splitMultiValueForImport('')).toStrictEqual(['']);
+    });
+
+    test('simple values', () => {
+        expect(splitMultiValueForImport('A')).toStrictEqual(['A']);
+        expect(splitMultiValueForImport('A, B, C')).toStrictEqual(['A', 'B', 'C']);
+        expect(splitMultiValueForImport('A,B,C')).toStrictEqual(['A', 'B', 'C']);
+    });
+
+    test('whitespace handling', () => {
+        expect(splitMultiValueForImport('  A  ,  B  ')).toStrictEqual(['A', 'B']);
+        expect(splitMultiValueForImport(' A , B , C ')).toStrictEqual(['A', 'B', 'C']);
+    });
+
+    test('empty value preservation', () => {
+        expect(splitMultiValueForImport(',')).toStrictEqual(['', '']);
+        expect(splitMultiValueForImport('A,')).toStrictEqual(['A', '']);
+        expect(splitMultiValueForImport(',B')).toStrictEqual(['', 'B']);
+        expect(splitMultiValueForImport('A,,C')).toStrictEqual(['A', '', 'C']);
+    });
+
+    test('quoted values with commas', () => {
+        expect(splitMultiValueForImport('"A,B"')).toStrictEqual(['A,B']);
+        expect(splitMultiValueForImport('"A,B", C')).toStrictEqual(['A,B', 'C']);
+        expect(splitMultiValueForImport('A, "B,C", D')).toStrictEqual(['A', 'B,C', 'D']);
+    });
+
+    test('escaped quotes', () => {
+        expect(splitMultiValueForImport('"""A"""')).toStrictEqual(['"A"']);
+        expect(splitMultiValueForImport('"""A"",B"')).toStrictEqual(['"A",B']);
+        expect(splitMultiValueForImport('"""A,B,C"""')).toStrictEqual(['"A,B,C"']);
+    });
+
+    test('quoted empty string', () => {
+        expect(splitMultiValueForImport('""')).toStrictEqual(['']);
+        expect(splitMultiValueForImport('"", A')).toStrictEqual(['', 'A']);
+    });
+
+    test('quoted value with leading/trailing whitespace', () => {
+        expect(splitMultiValueForImport('" A "')).toStrictEqual([' A ']);
+    });
+
+    test('error: unterminated quote', () => {
+        expect(() => splitMultiValueForImport('"abc')).toThrow('Unterminated quoted string');
+    });
+
+    test('error: junk after closing quote', () => {
+        expect(() => splitMultiValueForImport('"abc"def')).toThrow('Badly formatted list of strings');
+    });
+});
+
+describe('joinMultiValueForExport', () => {
+    test('simple values', () => {
+        expect(joinMultiValueForExport(['A', 'B', 'C'])).toBe('A, B, C');
+    });
+
+    test('null and undefined become empty quoted string', () => {
+        expect(joinMultiValueForExport([null])).toBe('""');
+        expect(joinMultiValueForExport([undefined])).toBe('""');
+        expect(joinMultiValueForExport(['A', null, 'B'])).toBe('A, "", B');
+    });
+
+    test('empty string is quoted', () => {
+        expect(joinMultiValueForExport([''])).toBe('""');
+        expect(joinMultiValueForExport(['A', '', 'B'])).toBe('A, "", B');
+    });
+
+    test('values with commas are quoted', () => {
+        expect(joinMultiValueForExport(['A,B'])).toBe('"A,B"');
+        expect(joinMultiValueForExport(['A,B', 'C'])).toBe('"A,B", C');
+    });
+
+    test('values with quotes are escaped and quoted', () => {
+        expect(joinMultiValueForExport(['"A"'])).toBe('"""A"""');
+        expect(joinMultiValueForExport(['A"B'])).toBe('"A""B"');
+    });
+
+    test('values with leading/trailing whitespace are quoted', () => {
+        expect(joinMultiValueForExport([' A'])).toBe('" A"');
+        expect(joinMultiValueForExport(['A '])).toBe('"A "');
+        expect(joinMultiValueForExport([' A '])).toBe('" A "');
+    });
+});
+
+describe('splitMultiValueForImport / joinMultiValueForExport round-trip', () => {
+    test.each([
+        [['A', 'B', 'C']],
+        [['A,B,C']],
+        [['"A",B']],
+        [['"A,B,C"']],
+        [['"A",B', 'B']],
+        [['A', '"A"', 'B']],
+        [['A', 'A,B,C', '"A,B,C"']],
+        [['"A"', '"A",B', '"A,B,C"']],
+    ])('split(join(%j)) === original', values => {
+        const exported = joinMultiValueForExport(values);
+        const imported = splitMultiValueForImport(exported);
+        expect(imported).toStrictEqual(values);
+    });
+
+    test.each([
+        ['A, B, C'],
+        ['"A,B,C"'],
+        ['"""A"",B"'],
+        ['"""A,B,C"""'],
+        ['"""A"",B", B'],
+        ['A, """A""", B'],
+        ['A, "A,B,C", """A,B,C"""'],
+        ['"""A""", """A"",B", """A,B,C"""'],
+    ])('join(split(%j)) === original', str => {
+        const imported = splitMultiValueForImport(str);
+        const exported = joinMultiValueForExport(imported);
+        expect(exported).toBe(str);
     });
 });
 

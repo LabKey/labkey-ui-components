@@ -28,7 +28,7 @@ import {
     selectRowsDeprecated,
 } from '../../query/api';
 import { similaritySortFactory } from '../../util/similaritySortFactory';
-import { caseInsensitive, parseCsvString } from '../../util/utils';
+import { caseInsensitive, splitMultiValueForImport } from '../../util/utils';
 
 import { naturalSort } from '../../../public/sort';
 
@@ -157,7 +157,7 @@ function getSelectedOptions(model: QuerySelectModel, value: any): Map<string, an
 
     // multi-value case
     if (model.multiple === true) {
-        const values = parseCsvString(value.toString(), model.delimiter);
+        const values = splitMultiValueForImport(value.toString(), model.delimiter);
         return sources
             .filter(result => {
                 const resultValue = result.getIn(keyPath);
@@ -356,7 +356,7 @@ export function buildValueFilter(
             filter = Filter.create(valueColumn, value, Filter.Types.IN);
             expectedValueCount = new Set(value).size;
         } else if (typeof value === 'string') {
-            const parsed = parseCsvString(value, delimiter, true);
+            const parsed = splitMultiValueForImport(value, delimiter);
             filter = Filter.create(valueColumn, parsed, Filter.Types.IN);
             expectedValueCount = new Set(parsed).size;
         }

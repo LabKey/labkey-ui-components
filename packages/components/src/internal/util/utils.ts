@@ -714,6 +714,8 @@ export function parseCsvString(value: string, delimiter: string, removeQuotes?: 
 const TSV_ESCAPE_CHARS = ['\r', '\n', '\\', '"'];
 function hasTsvEscapeChar(value: any, delimiter: string): boolean {
     const allEscapedChars = [...TSV_ESCAPE_CHARS, delimiter];
+    // if start or end with whitespace, we need to quote to preserve that whitespace when importing back from CSV
+    if (value[0].trim() === '' || value[value.length - 1].trim() === '') return true;
     return !!allEscapedChars.find(char => value.indexOf(char) > -1);
 }
 
@@ -746,6 +748,94 @@ export function isQuotedWithDelimiters(value: any, delimiter: string): boolean {
     if (!hasTsvEscapeChar(strVal, delimiter)) return false;
 
     return strVal.startsWith('"') && strVal.endsWith('"');
+}
+
+// Port of Java PageFlowUtil.joinValuesToStringForExport — Google Sheets-compatible CSV formatting
+// for multi-value (multi-select) column values. Joins with ", " separator.
+export function joinMultiValueForExport(values: string[]): string {
+    return values
+        .map(value => {
+            if (value == null) return '""';
+            return quoteValueWithDelimiters(value, ',');
+        })
+        .join(', ');
+}
+
+// Port of Java PageFlowUtil.splitStringToValuesForImport — Google Sheets-compatible CSV parsing
+// for multi-value (multi-select) column values. Fixed comma delimiter, double-quote quoting.
+export function splitMultiValueForImport(str: string, delimiter: string = ','): string[] {
+    if (str === null) return null;
+    if (str === undefined) return undefined;
+
+    const enum STATE {
+        BEFORETOKEN,
+        INTOKEN,
+        INQUOTEDTOKEN,
+        AFTERTOKEN,
+    }
+
+    const result: string[] = [];
+    let currentToken = '';
+    let state: STATE = STATE.BEFORETOKEN;
+    let pos = -1;
+
+    const peek = (): string => (pos < str.length - 1 ? str[pos + 1] : '\0');
+    const next = (): string => {
+        if (pos >= str.length - 1) return '\0';
+        pos++;
+        return str[pos];
+    };
+
+    let c: string;
+    do {
+        c = next();
+        switch (state) {
+            case STATE.BEFORETOKEN:
+                if (c !== '\0' && c.trim() === '') continue; // skip leading whitespace
+                if (c === '"') {
+                    state = STATE.INQUOTEDTOKEN;
+                } else if (c === delimiter || c === '\0') {
+                    result.push(currentToken);
+                } else {
+                    currentToken += c;
+                    state = STATE.INTOKEN;
+                }
+                break;
+            case STATE.AFTERTOKEN:
+                if (c !== '\0' && c.trim() === '') continue; // skip whitespace
+                if (c === delimiter || c === '\0') {
+                    state = STATE.BEFORETOKEN;
+                } else {
+                    throw new Error('Badly formatted list of strings');
+                }
+                break;
+            case STATE.INTOKEN:
+                if (c === delimiter || c === '\0') {
+                    result.push(currentToken.trimEnd());
+                    currentToken = '';
+                    state = STATE.BEFORETOKEN;
+                } else {
+                    currentToken += c;
+                }
+                break;
+            case STATE.INQUOTEDTOKEN:
+                if (c === '\0') {
+                    throw new Error('Unterminated quoted string');
+                } else if (c !== '"') {
+                    currentToken += c;
+                } else if (peek() === '"') {
+                    next(); // consume escaped quote
+                    currentToken += '"';
+                } else {
+                    result.push(currentToken);
+                    currentToken = '';
+                    state = STATE.AFTERTOKEN;
+                }
+                break;
+        }
+    } while (c !== '\0');
+
+    return result;
 }
 
 export function arrayEquals(a: string[], b: string[], ignoreOrder = true, caseInsensitive?: boolean): boolean {

@@ -11,9 +11,10 @@ import {
     caseInsensitive,
     isFloat,
     isInteger,
-    parseCsvString,
+    joinMultiValueForExport,
     parseScientificInt,
     quoteValueWithDelimiters,
+    splitMultiValueForImport,
 } from '../../util/utils';
 import { ViewInfo } from '../../ViewInfo';
 
@@ -1108,7 +1109,7 @@ export function parsePastedLookup(
 
     // Parse pasted strings to split properly around quoted values.
     // Remove the quotes for storing the actual values in the grid.
-    const parsedValues = parseCsvString(value, ',', true);
+    const parsedValues = splitMultiValueForImport(value);
 
     // Issue 53055: Do not attempt to resolve multiple values for a single-value column
     if (!column.isJunctionLookup() && parsedValues.length > 1) {
@@ -1215,7 +1216,7 @@ export function generateColumnFillValues(
         if (isReadonlyCell || isReadonlyRow) return '';
 
         const initialValue = initialSelectionValues[i % initialSelectionValues.length];
-        let value = initialValue.map(v => quoteValueWithDelimiters(v.display, ',')).join(',');
+        let value = joinMultiValueForExport(initialValue.map(v => v.display).toArray());
         if (incrementType === IncrementType.NUMBER) {
             const amount = increment * (i + 1);
             let raw: number | string;
@@ -1460,7 +1461,8 @@ async function insertPastedData(
     lockRowCount: boolean,
     forUpdate: boolean,
     targetContainerPath: string,
-    selectCells: boolean
+    selectCells: boolean,
+    fromDragFill?: boolean
 ): Promise<Partial<EditorModel>> {
     const pastedData = paste.payload.data;
     let cellMessages = editorModel.cellMessages;
@@ -1525,18 +1527,27 @@ async function insertPastedData(
                     cv = valueDescriptors;
                     msg = message;
                 } else if (col?.isMultiChoice && Utils.isString(val)) {
-                    const parsedValues = parseCsvString(val, ',', true).sort(caseSensitiveNaturalSort);
-
                     const unmatched: string[] = [];
-                    const values = [];
+                    const values: ValueDescriptor[] = [];
 
+                    const parsedValues = splitMultiValueForImport(val).sort(caseSensitiveNaturalSort);
+                    const foundValues = new Set<string>();
+
+                    // GitHub Issue 942: Add error for duplicate values
+                    const dupValues = new Set<string>();
                     parsedValues.forEach(v => {
                         const vt = v.trim();
                         if (!vt) return;
 
-                        const vd = col.validValues?.find(d => d === vt);
                         values.push({ display: vt, raw: vt });
 
+                        if (foundValues.has(vt)) {
+                            dupValues.add(vt);
+                        } else {
+                            foundValues.add(vt);
+                        }
+
+                        const vd = col.validValues?.find(d => d === vt);
                         if (vd) return;
 
                         unmatched.push(vt);
@@ -1548,10 +1559,24 @@ async function insertPastedData(
                             .map(u => '"' + u + '"')
                             .join(', ');
                         msg = { message: lookupValidationErrorMessage(valueStr, true) };
+                    } else if (dupValues.size > 0) {
+                        const valueStr = Array.from(dupValues)
+                            .slice(0, 4)
+                            .map(u => '"' + u + '"')
+                            .join(', ');
+                        msg = { message: `Duplicate values not allowed: ${valueStr}.` };
                     }
                     cv = List(values);
                 } else {
-                    const { message, value } = getValidatedEditableGridValue(val, col);
+                    let valToValidate = val;
+                    if (fromDragFill && Utils.isString(val)) {
+                        // GitHub Issue 916: Copying/pasting in the grid doesn't always act as expected
+                        // drag fill always quoteValueWithDelimiters, needs to remove the extra quotes before validating
+                        const parsedValues = splitMultiValueForImport(val);
+                        if (parsedValues.length === 1) valToValidate = parsedValues[0].trim();
+                    }
+
+                    const { message, value } = getValidatedEditableGridValue(valToValidate, col);
                     let display = value;
 
                     // Issue 52326: Copy/paste of date values across cells changes date formats
@@ -1609,7 +1634,7 @@ function getPasteValuesByColumn(paste: PasteModel): List<List<string>> {
         row.forEach((value, index) => {
             // if values contain commas, users will need to paste the values enclosed in quotes
             // but we don't want to retain these quotes for purposes of selecting values in the grid
-            parseCsvString(value, ',', true).forEach(v => {
+            splitMultiValueForImport(value).forEach(v => {
                 if (v.trim().length > 0) valuesByColumn.get(index).push(v.trim());
             });
         });
@@ -1625,7 +1650,8 @@ export function validateAndInsertPastedData(
     forUpdate: boolean,
     targetContainerPath: string,
     selectCells: boolean,
-    selectionToFill?: string[][]
+    selectionToFill?: string[][],
+    fromDragFill?: boolean
 ): Promise<Partial<EditorModel>> {
     let selectedColIdx: number;
     let selectedRowIdx: number;
@@ -1663,7 +1689,8 @@ export function validateAndInsertPastedData(
             lockRowCount,
             forUpdate,
             targetContainerPath,
-            selectCells
+            selectCells,
+            fromDragFill
         );
     } else {
         const fieldKey = editorModel.getFieldKeyByIndex(selectedColIdx);
@@ -1700,18 +1727,17 @@ export function pasteEvent(
 }
 
 function getCellCopyValue(valueDescriptors: List<ValueDescriptor>): string {
-    let value = '';
-
     if (valueDescriptors && valueDescriptors.size > 0) {
-        let sep = '';
-        value = valueDescriptors.reduce((agg, vd) => {
-            agg += sep + (vd.display !== undefined ? vd.display.toString().trim() : '');
-            sep = ', ';
-            return agg;
-        }, value);
+        const values = [];
+        valueDescriptors.forEach((vd) => {
+            values.push(vd.display !== undefined ? vd.display.toString().trim() : '');
+        });
+
+        if (values.length > 0)
+            return joinMultiValueForExport(values);
     }
 
-    return value;
+    return '';
 }
 
 function getCopyValue(model: EditorModel, hideReadOnlyRows: boolean, readonlyRows: string[]): string {

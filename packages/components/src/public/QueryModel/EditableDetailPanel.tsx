@@ -217,7 +217,6 @@ const EditingFormImpl: FC<EditingFormProps & InjectedQueryModels> = props => {
 
 const EditingFormWithModels = withQueryModels<EditingFormProps>(EditingFormImpl);
 
-// Lazy wrapper: only mounted when editing, builds the edit-mode queryConfig and key
 const EditingForm: FC<EditingFormProps> = props => {
     const { model } = props;
     const queryConfig = useMemo(
@@ -231,7 +230,6 @@ const EditingForm: FC<EditingFormProps> = props => {
     const queryConfigs = useMemo(() => ({ model: queryConfig }), [queryConfig]);
     const { keyValue, schemaQuery } = queryConfig;
     const { schemaName, queryName } = schemaQuery;
-    // Key ensures we re-mount when the queryConfig identity changes
     const key = `${schemaName}.${queryName}.${keyValue}`;
 
     return <EditingFormWithModels {...props} autoLoad key={key} queryConfigs={queryConfigs} />;

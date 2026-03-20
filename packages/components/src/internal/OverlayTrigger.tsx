@@ -126,10 +126,10 @@ interface Props extends PropsWithChildren {
     className?: string;
     delay?: number;
     id?: string;
+    noShow?: boolean;
     overlay: ReactElement<OverlayComponent>; // See note in doc string below
     style?: CSSProperties;
     triggerType?: TriggerType;
-    noShow?: boolean;
 }
 
 /**
@@ -169,8 +169,7 @@ export const OverlayTrigger: FC<Props> = ({
     const className_ = classNames('overlay-trigger', className);
     const clonedContent = cloneElement(overlay, { targetRef });
 
-    if (noShow)
-        return children;
+    if (noShow) return children;
 
     return (
         <div

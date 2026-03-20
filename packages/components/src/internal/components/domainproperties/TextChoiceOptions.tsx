@@ -291,7 +291,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                     </Popover>
                                 }
                             >
-                                <label id={mvPopOverId} className="label-weight-normal">
+                                <label className="label-weight-normal" id={mvPopOverId}>
                                     <input
                                         checked={field.dataType.name === 'multiChoice'}
                                         className="domain-text-choice-multi"

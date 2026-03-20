@@ -1588,6 +1588,7 @@ describe('arrayEquals', () => {
     test('ignore order, case sensitive', () => {
         expect(arrayEquals(undefined, undefined)).toBeTruthy();
         expect(arrayEquals(undefined, null)).toBeTruthy();
+        expect(arrayEquals(null, undefined)).toBeTruthy();
         expect(arrayEquals([], [])).toBeTruthy();
         expect(arrayEquals(null, [])).toBeFalsy();
         expect(arrayEquals(['a'], null)).toBeFalsy();
@@ -1620,6 +1621,32 @@ describe('arrayEquals', () => {
         expect(arrayEquals(['a', 'b'], ['b', 'a'], false)).toBeFalsy();
         expect(arrayEquals(['a', 'b'], ['A', 'b'], false)).toBeFalsy();
         expect(arrayEquals(['a', 'b'], ['B', 'A'], false)).toBeFalsy();
+    });
+
+    test('does not mutate original arrays', () => {
+        const arrA = ['b', 'a'];
+        const arrB = ['a', 'b'];
+        arrayEquals(arrA, arrB, true);
+        expect(arrA[0]).toBe('b');
+        expect(arrB[0]).toBe('a');
+    });
+
+    test('handles delimiter collision (Accuracy Check)', () => {
+        const arrA = ['a;b', 'c'];
+        const arrB = ['a', 'b;c'];
+        expect(arrayEquals(arrA, arrB)).toBeFalsy();
+    });
+
+    test('handles numeric-string collisions', () => {
+        const arrA = ['1', '23'];
+        const arrB = ['12', '3'];
+        expect(arrayEquals(arrA, arrB)).toBeFalsy();
+    });
+
+    test('handles duplicate elements correctly with ignoreOrder', () => {
+        const arrA = ['a', 'a', 'b'];
+        const arrB = ['a', 'b', 'b'];
+        expect(arrayEquals(arrA, arrB, true)).toBeFalsy();
     });
 });
 

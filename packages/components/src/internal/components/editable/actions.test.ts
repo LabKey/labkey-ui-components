@@ -1143,20 +1143,9 @@ describe('insertPastedData', () => {
             selectedColIdx: 0,
             selectedRowIdx: 2,
         });
-        const changes = await validateAndInsertPastedData(
-            em,
-            '"line1\nline2"',
-            undefined,
-            true,
-            true,
-            undefined,
-            true
-        );
+        const changes = await validateAndInsertPastedData(em, '"line1\nline2"', undefined, true, true, undefined, true);
         const cellValues = changes.cellValues;
-        expect(cellValues.get(genCellKey(fkOne, 2))).toEqual(
-            List([
-                { display: 'line1\nline2', raw: 'line1\nline2' }
-            ]));
+        expect(cellValues.get(genCellKey(fkOne, 2))).toEqual(List([{ display: 'line1\nline2', raw: 'line1\nline2' }]));
 
         const cellMessages = changes.cellMessages;
         expect(cellMessages.get(genCellKey(fkOne, 2))).toBeUndefined();
@@ -1311,7 +1300,7 @@ describe('insertPastedData', () => {
         expect(changes.cellValues.get(genCellKey(mvtc, 0))).toEqual(
             List([
                 { display: 'A', raw: 'A' },
-                { display: 'B', raw: 'B' }
+                { display: 'B', raw: 'B' },
             ])
         );
         expect(changes.cellMessages.get(genCellKey(mvtc, 0))).toBeUndefined();

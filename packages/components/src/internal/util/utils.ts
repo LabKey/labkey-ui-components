@@ -764,13 +764,11 @@ export function isSimpleQuotedMultiLine(value: any): boolean {
         return false;
     }
 
-    if (!NEWLINE_CHARS.find(char => value.indexOf(char) > -1))
-        return false;
+    if (!NEWLINE_CHARS.find(char => value.indexOf(char) > -1)) return false;
 
     const strVal = value + '';
     if (strVal.length <= 2) return false; // need at least 2 characters to be quoted with something in between
-    if (!strVal.startsWith('"') || !strVal.endsWith('"'))
-        return false
+    if (!strVal.startsWith('"') || !strVal.endsWith('"')) return false;
 
     const innerValue = strVal.substring(1, strVal.length - 1);
     return innerValue.indexOf('"') === -1;
@@ -780,13 +778,19 @@ export function joinMultiValueForExport(values: string[]): string {
     return Papa.unparse([values], { delimiter: ',' });
 }
 
-const processParsedResults = (results, removeEmpty: boolean = true, trimSpace?: boolean): string[] => {
-    return results.data[0]?.map(value => (trimSpace && Utils.isString(value) ? value.trim() : value))
-        .filter(value_ => removeEmpty ? value_ !== '' : true)
-}
+const processParsedResults = (results, removeEmpty = true, trimSpace?: boolean): string[] => {
+    return results.data[0]
+        ?.map(value => (trimSpace && Utils.isString(value) ? value.trim() : value))
+        .filter(value_ => (removeEmpty ? value_ !== '' : true));
+};
 // Port of Java PageFlowUtil.splitStringToValuesForImport — Google Sheets-compatible CSV parsing
 // for multi-value (multi-select) column values. Fixed comma delimiter, double-quote quoting.
-export function splitMultiValueForImport(str: string, delimiter: string = ',', removeEmpty: boolean = true, trimSpace?: boolean): string[] {
+export function splitMultiValueForImport(
+    str: string,
+    delimiter = ',',
+    removeEmpty = true,
+    trimSpace?: boolean
+): string[] {
     if (str === null) return null;
     if (str === undefined) return undefined;
     if (!str) {

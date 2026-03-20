@@ -1437,14 +1437,13 @@ function parsePaste(value: string): ParsePastePayload {
         }
 
         rows.forEach(row => {
-            const columns : List<string> = List(row)
+            const columns: List<string> = List(row);
             if (numCols < columns.size) {
                 numCols = columns.size;
             }
             data = data.push(columns);
         });
-    }
-    else {
+    } else {
         // fall back to line by line processing without parsing, to preserver quotes
         value.split('\n').forEach(rv => {
             const columns = List(rv.split('\t'));
@@ -1454,7 +1453,6 @@ function parsePaste(value: string): ParsePastePayload {
             data = data.push(columns);
         });
     }
-
 
     // Normalize the number columns in each row in case a user pasted rows with different numbers of columns in them
     data = data
@@ -1752,12 +1750,11 @@ export function pasteEvent(
 function getCellCopyValue(valueDescriptors: List<ValueDescriptor>): string {
     if (valueDescriptors && valueDescriptors.size > 0) {
         const values = [];
-        valueDescriptors.forEach((vd) => {
+        valueDescriptors.forEach(vd => {
             values.push(vd.display !== undefined ? vd.display.toString().trim() : '');
         });
 
-        if (values.length > 0)
-            return joinMultiValueForExport(values);
+        if (values.length > 0) return joinMultiValueForExport(values);
     }
 
     return '';

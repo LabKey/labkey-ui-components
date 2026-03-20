@@ -23,7 +23,6 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import {
     getQueryDetails,
     ISelectRowsResult,
-    quoteValueColumnWithDelimiters,
     searchRows,
     selectRowsDeprecated,
 } from '../../query/api';
@@ -445,13 +444,7 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
         groupByColumn,
         isInit: true,
         queryInfo,
-        selectedItems: selectedItems
-            ? fromJS(
-                  quoteValueColumnWithDelimiters(selectedItems, valueColumn, delimiter, multiple).models[
-                      selectedItems.key
-                  ]
-              )
-            : Map<string, any>(),
+        selectedItems: selectedItems ? fromJS(selectedItems.models[selectedItems.key]) : Map<string, any>(),
         valueColumn,
     };
 }

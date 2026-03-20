@@ -774,8 +774,8 @@ export function isSimpleQuotedMultiLine(value: any): boolean {
     return innerValue.indexOf('"') === -1;
 }
 
-export function joinMultiValueForExport(values: string[]): string {
-    return Papa.unparse([values], { delimiter: ',' });
+export function joinMultiValueForExport(values: string[], delimiter = ','): string {
+    return Papa.unparse([values], { delimiter });
 }
 
 const processParsedResults = (results, removeEmpty = true, trimSpace?: boolean): string[] => {

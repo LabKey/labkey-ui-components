@@ -622,6 +622,7 @@ export function handleSelectRowsResponse(response: Query.Response, queryInfo: Qu
     };
 }
 
+// deprecated
 // exported for jest testing
 export function quoteValueColumnWithDelimiters(
     selectRowsResult: ISelectRowsResult,
@@ -635,7 +636,6 @@ export function quoteValueColumnWithDelimiters(
         const cell = row[valueColumn];
         if (Utils.isString(cell?.value)) {
             cell.displayValue = cell.displayValue ?? cell.value;
-            cell.value = multiple ? quoteValueWithDelimiters(cell.value, delimiter) : cell.value;
         }
     });
 
@@ -715,7 +715,7 @@ export function searchRows(
                     finalResults = queryResults;
                 }
 
-                resolve(quoteValueColumnWithDelimiters(finalResults, valueColumn, delimiter, multiple));
+                resolve(finalResults);
             })
             .catch(reason => {
                 reject(reason);

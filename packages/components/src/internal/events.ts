@@ -47,7 +47,6 @@ export const isSelectAll = (event: KeyboardEvent<any>): boolean => isMetaKeyEven
 
 export function setCopyValue(event: any, value: string): boolean {
     if (isEvent(event)) {
-        console.log(value);
         (event.clipboardData || window['clipboardData']).setData('text/plain', value);
         return true;
     }

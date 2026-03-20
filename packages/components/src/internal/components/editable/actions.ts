@@ -1,6 +1,7 @@
 import { Filter, getServerContext, QueryKey, Utils } from '@labkey/api';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { addDays, subDays } from 'date-fns';
+import Papa from 'papaparse';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn, QueryLookup } from '../../../public/QueryColumn';
@@ -11,6 +12,7 @@ import {
     caseInsensitive,
     isFloat,
     isInteger,
+    isSimpleQuotedMultiLine,
     joinMultiValueForExport,
     parseScientificInt,
     quoteValueWithDelimiters,
@@ -1303,7 +1305,8 @@ export function dragFillEvent(
         forUpdate,
         targetContainerPath,
         false,
-        selectionToFill
+        selectionToFill,
+        true
     );
 }
 
@@ -1418,20 +1421,40 @@ function parsePaste(value: string): ParsePastePayload {
     let numCols = 0;
     let data = List<List<string>>();
 
-    if (value === undefined || value === null || typeof value !== 'string') {
+    if (value === undefined || value == null || typeof value !== 'string') {
         return { data, numCols, numRows: 0 };
     }
 
     // remove trailing newline from pasted data to avoid creating an empty row of cells
     if (value.endsWith('\n')) value = value.substring(0, value.length - 1);
 
-    value.split('\n').forEach(rv => {
-        const columns = List(rv.split('\t'));
-        if (numCols < columns.size) {
-            numCols = columns.size;
+    if (value.indexOf('"') === -1 || isSimpleQuotedMultiLine(value)) {
+        // parse tsv ONLY if the copied string doesn't contain "
+        // quoteChar will be stripped during TSV parsing, resulting in incorrect parsed data
+        const rows = Papa.parse(value, { delimiter: '\t' }).data;
+        if (!rows || rows.length === 0) {
+            return { data, numCols, numRows: 0 };
         }
-        data = data.push(columns);
-    });
+
+        rows.forEach(row => {
+            const columns : List<string> = List(row)
+            if (numCols < columns.size) {
+                numCols = columns.size;
+            }
+            data = data.push(columns);
+        });
+    }
+    else {
+        // fall back to line by line processing without parsing, to preserver quotes
+        value.split('\n').forEach(rv => {
+            const columns = List(rv.split('\t'));
+            if (numCols < columns.size) {
+                numCols = columns.size;
+            }
+            data = data.push(columns);
+        });
+    }
+
 
     // Normalize the number columns in each row in case a user pasted rows with different numbers of columns in them
     data = data
@@ -1530,7 +1553,7 @@ async function insertPastedData(
                     const unmatched: string[] = [];
                     const values: ValueDescriptor[] = [];
 
-                    const parsedValues = splitMultiValueForImport(val).sort(caseSensitiveNaturalSort);
+                    const parsedValues = splitMultiValueForImport(val, ',', true, true).sort(caseSensitiveNaturalSort);
                     const foundValues = new Set<string>();
 
                     // GitHub Issue 942: Add error for duplicate values

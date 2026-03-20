@@ -1137,6 +1137,31 @@ describe('insertPastedData', () => {
         );
     });
 
+    test('pasting multi-line value', async () => {
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(fkOne, 0)],
+            selectedColIdx: 0,
+            selectedRowIdx: 2,
+        });
+        const changes = await validateAndInsertPastedData(
+            em,
+            '"line1\nline2"',
+            undefined,
+            true,
+            true,
+            undefined,
+            true
+        );
+        const cellValues = changes.cellValues;
+        expect(cellValues.get(genCellKey(fkOne, 2))).toEqual(
+            List([
+                { display: 'line1\nline2', raw: 'line1\nline2' }
+            ]));
+
+        const cellMessages = changes.cellMessages;
+        expect(cellMessages.get(genCellKey(fkOne, 2))).toBeUndefined();
+    });
+
     test('pasting multi values', async () => {
         const em = baseEditorModel.applyChanges({
             selectionCells: [genCellKey(mvtc, 0)],
@@ -1248,21 +1273,30 @@ describe('insertPastedData', () => {
             selectedColIdx: 3,
             selectedRowIdx: 0,
         });
-        const changes = await validateAndInsertPastedData(em, 'A,B', undefined, true, true, undefined, true);
-        // 'A,B' exactly matches a validValue, treated as a single value (not split on comma)
+        const changes = await validateAndInsertPastedData(em, '"A,B"', undefined, true, true, undefined, true);
         expect(changes.cellValues.get(genCellKey(mvtc, 0))).toEqual(List([{ display: 'A,B', raw: 'A,B' }]));
         expect(changes.cellMessages.get(genCellKey(mvtc, 0))).toBeUndefined();
     });
 
-    test('pasting exactly A,B,C without quote into mvtc matches single valid value', async () => {
+    test('pasting exactly A,B,C into mvtc matches single valid value', async () => {
         const em = baseEditorModel.applyChanges({
             selectionCells: [genCellKey(mvtc, 0)],
             selectedColIdx: 3,
             selectedRowIdx: 0,
         });
-        const changes = await validateAndInsertPastedData(em, 'A,B,C', undefined, true, true, undefined, true);
-        // 'A,B' exactly matches a validValue, treated as a single value (not split on comma)
+        const changes = await validateAndInsertPastedData(em, '"A,B,C"', undefined, true, true, undefined, true);
         expect(changes.cellValues.get(genCellKey(mvtc, 0))).toEqual(List([{ display: 'A,B,C', raw: 'A,B,C' }]));
+        expect(changes.cellMessages.get(genCellKey(mvtc, 0))).toBeUndefined();
+    });
+
+    test('pasting escaped "A,B,C" into mvtc matches single valid value', async () => {
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(mvtc, 0)],
+            selectedColIdx: 3,
+            selectedRowIdx: 0,
+        });
+        const changes = await validateAndInsertPastedData(em, '"""A,B,C"""', undefined, true, true, undefined, true);
+        expect(changes.cellValues.get(genCellKey(mvtc, 0))).toEqual(List([{ display: '"A,B,C"', raw: '"A,B,C"' }]));
         expect(changes.cellMessages.get(genCellKey(mvtc, 0))).toBeUndefined();
     });
 
@@ -1317,7 +1351,7 @@ describe('insertPastedData', () => {
         });
         const changes = await validateAndInsertPastedData(
             em,
-            'A,B\n"A,B",cc\nA,B,cc',
+            '"A,B"\n"A,B",cc\nA,B,cc',
             undefined,
             true,
             true,

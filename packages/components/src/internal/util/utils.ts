@@ -16,6 +16,7 @@
 import { Set as ImmutableSet, Iterable, List, Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 import { ChangeEvent, CSSProperties } from 'react';
+import Papa from 'papaparse';
 
 import { hasParameter, toggleParameter } from '../url/ActionURL';
 import { QueryInfo } from '../../public/QueryInfo';
@@ -649,6 +650,7 @@ export const handleFileInputChange = (
     };
 };
 
+// deprecated, use splitMultiValueForImport instead which uses PapaParse and is more robust for handling edge cases with quoted values, delimiters in values, etc.
 export function parseCsvString(value: string, delimiter: string, removeQuotes?: boolean): string[] {
     if (delimiter === '"') throw 'Unsupported delimiter: ' + delimiter;
 
@@ -750,92 +752,47 @@ export function isQuotedWithDelimiters(value: any, delimiter: string): boolean {
     return strVal.startsWith('"') && strVal.endsWith('"');
 }
 
-// Port of Java PageFlowUtil.joinValuesToStringForExport — Google Sheets-compatible CSV formatting
-// for multi-value (multi-select) column values. Joins with ", " separator.
-export function joinMultiValueForExport(values: string[]): string {
-    return values
-        .map(value => {
-            if (value == null) return '""';
-            return quoteValueWithDelimiters(value, ',');
-        })
-        .join(', ');
-}
-
-// Port of Java PageFlowUtil.splitStringToValuesForImport — Google Sheets-compatible CSV parsing
-// for multi-value (multi-select) column values. Fixed comma delimiter, double-quote quoting.
-export function splitMultiValueForImport(str: string, delimiter: string = ','): string[] {
-    if (str === null) return null;
-    if (str === undefined) return undefined;
-
-    const enum STATE {
-        BEFORETOKEN,
-        INTOKEN,
-        INQUOTEDTOKEN,
-        AFTERTOKEN,
+/**
+ * Returns true if the value is a string that contains a newline character and is quoted with double quotes,
+ * and does not contain any other double quotes.
+ * This is used to determine whether we can safely parse a multi-line string as TSV (for paste) without losing its escaped characters.
+ * @param value
+ */
+const NEWLINE_CHARS = ['\r', '\n'];
+export function isSimpleQuotedMultiLine(value: any): boolean {
+    if (!value || !Utils.isString(value)) {
+        return false;
     }
 
-    const result: string[] = [];
-    let currentToken = '';
-    let state: STATE = STATE.BEFORETOKEN;
-    let pos = -1;
+    if (!NEWLINE_CHARS.find(char => value.indexOf(char) > -1))
+        return false;
 
-    const peek = (): string => (pos < str.length - 1 ? str[pos + 1] : '\0');
-    const next = (): string => {
-        if (pos >= str.length - 1) return '\0';
-        pos++;
-        return str[pos];
-    };
+    const strVal = value + '';
+    if (strVal.length <= 2) return false; // need at least 2 characters to be quoted with something in between
+    if (!strVal.startsWith('"') || !strVal.endsWith('"'))
+        return false
 
-    let c: string;
-    do {
-        c = next();
-        switch (state) {
-            case STATE.BEFORETOKEN:
-                if (c !== '\0' && c.trim() === '') continue; // skip leading whitespace
-                if (c === '"') {
-                    state = STATE.INQUOTEDTOKEN;
-                } else if (c === delimiter || c === '\0') {
-                    result.push(currentToken);
-                } else {
-                    currentToken += c;
-                    state = STATE.INTOKEN;
-                }
-                break;
-            case STATE.AFTERTOKEN:
-                if (c !== '\0' && c.trim() === '') continue; // skip whitespace
-                if (c === delimiter || c === '\0') {
-                    state = STATE.BEFORETOKEN;
-                } else {
-                    throw new Error('Badly formatted list of strings');
-                }
-                break;
-            case STATE.INTOKEN:
-                if (c === delimiter || c === '\0') {
-                    result.push(currentToken.trimEnd());
-                    currentToken = '';
-                    state = STATE.BEFORETOKEN;
-                } else {
-                    currentToken += c;
-                }
-                break;
-            case STATE.INQUOTEDTOKEN:
-                if (c === '\0') {
-                    throw new Error('Unterminated quoted string');
-                } else if (c !== '"') {
-                    currentToken += c;
-                } else if (peek() === '"') {
-                    next(); // consume escaped quote
-                    currentToken += '"';
-                } else {
-                    result.push(currentToken);
-                    currentToken = '';
-                    state = STATE.AFTERTOKEN;
-                }
-                break;
-        }
-    } while (c !== '\0');
+    const innerValue = strVal.substring(1, strVal.length - 1);
+    return innerValue.indexOf('"') === -1;
+}
 
-    return result;
+export function joinMultiValueForExport(values: string[]): string {
+    return Papa.unparse([values], { delimiter: ',' });
+}
+
+const processParsedResults = (results, removeEmpty: boolean = true, trimSpace?: boolean): string[] => {
+    return results.data[0]?.map(value => (trimSpace && Utils.isString(value) ? value.trim() : value))
+        .filter(value_ => removeEmpty ? value_ !== '' : true)
+}
+// Port of Java PageFlowUtil.splitStringToValuesForImport — Google Sheets-compatible CSV parsing
+// for multi-value (multi-select) column values. Fixed comma delimiter, double-quote quoting.
+export function splitMultiValueForImport(str: string, delimiter: string = ',', removeEmpty: boolean = true, trimSpace?: boolean): string[] {
+    if (str === null) return null;
+    if (str === undefined) return undefined;
+    if (!str) {
+        return [];
+    }
+    return processParsedResults(Papa.parse(str, { delimiter }), removeEmpty, trimSpace);
 }
 
 export function arrayEquals(a: string[], b: string[], ignoreOrder = true, caseInsensitive?: boolean): boolean {

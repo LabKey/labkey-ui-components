@@ -649,7 +649,7 @@ export const handleFileInputChange = (
     };
 };
 
-export function parseCsvString(value: string, delimiter: string, removeQuotes?: boolean, trimSpace?: boolean): string[] {
+export function parseCsvString(value: string, delimiter: string, removeQuotes?: boolean): string[] {
     if (delimiter === '"') throw 'Unsupported delimiter: ' + delimiter;
 
     if (!delimiter) return undefined;
@@ -661,21 +661,6 @@ export function parseCsvString(value: string, delimiter: string, removeQuotes?: 
     while (start < value.length) {
         let end;
         const ch = value[start];
-        // Tolerate a single space before a properly quoted value
-        // TODO: tolerate space after quote, also multiple spaces: expect(parseCsvString('1, "2,3" ,    4', ',', true)).toStrictEqual(['1', '2,3', ' 4']);
-        if (ch === ' ' && start + 1 < value.length && value[start + 1] === '"') {
-            let testEnd = start + 1;
-            while (true) {
-                testEnd = value.indexOf('"', testEnd + 1);
-                if (testEnd === -1) break;
-                if (testEnd === value.length - 1 || value[testEnd + 1] !== '"') break;
-                testEnd++;
-            }
-            if (testEnd !== -1 && (testEnd === value.length - 1 || value.startsWith(delimiter, testEnd + 1))) {
-                start++;
-                continue;
-            }
-        }
         if (ch === delimiter) {
             // empty string case
             end = start;
@@ -722,11 +707,6 @@ export function parseCsvString(value: string, delimiter: string, removeQuotes?: 
             parsedValues.push(value.substring(start, end));
         }
         start = end + delimiter.length;
-    }
-    if (trimSpace) {
-        for (let i = 0; i < parsedValues.length; i++) {
-            parsedValues[i] = parsedValues[i].trim();
-        }
     }
     return parsedValues;
 }

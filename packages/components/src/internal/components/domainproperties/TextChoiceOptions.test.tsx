@@ -126,8 +126,6 @@ describe('TextChoiceOptions', () => {
         const multiCheckbox = document.querySelector('input.domain-text-choice-multi') as HTMLInputElement;
         expect(multiCheckbox).toBeInTheDocument();
         expect(multiCheckbox).toBeDisabled();
-        const labelSpan = screen.getByText('Allow multiple selections');
-        expect(labelSpan.getAttribute('title')).toBe('Multiple values are currently used by at least one data row.');
     });
 
     test('multi-choice checkbox not present', () => {

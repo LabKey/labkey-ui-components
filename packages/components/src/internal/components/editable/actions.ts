@@ -1530,13 +1530,22 @@ async function insertPastedData(
                     const unmatched: string[] = [];
                     const values = [];
 
+                    const foundValues = new Set<string>();
+                    // GitHub Issue 942: Add error for duplicate values
+                    const dupValues = new Set<string>();
                     parsedValues.forEach(v => {
                         const vt = v.trim();
                         if (!vt) return;
 
-                        const vd = col.validValues?.find(d => d === vt);
                         values.push({ display: vt, raw: vt });
 
+                        if (foundValues.has(vt)) {
+                            dupValues.add(vt);
+                        } else {
+                            foundValues.add(vt);
+                        }
+
+                        const vd = col.validValues?.find(d => d === vt);
                         if (vd) return;
 
                         unmatched.push(vt);
@@ -1548,6 +1557,12 @@ async function insertPastedData(
                             .map(u => '"' + u + '"')
                             .join(', ');
                         msg = { message: lookupValidationErrorMessage(valueStr, true) };
+                    } else if (dupValues.size > 0) {
+                        const valueStr = Array.from(dupValues)
+                            .slice(0, 4)
+                            .map(u => '"' + u + '"')
+                            .join(', ');
+                        msg = { message: `Duplicate values not allowed: ${valueStr}.` };
                     }
                     cv = List(values);
                 } else {

@@ -126,6 +126,7 @@ interface Props extends PropsWithChildren {
     className?: string;
     delay?: number;
     id?: string;
+    noShow?: boolean;
     overlay: ReactElement<OverlayComponent>; // See note in doc string below
     style?: CSSProperties;
     triggerType?: TriggerType;
@@ -155,6 +156,7 @@ export const OverlayTrigger: FC<Props> = ({
     overlay,
     triggerType = 'hover',
     style,
+    noShow,
 }) => {
     const id_ = useMemo(() => id ?? generateId(), [id]);
     const { onMouseEnter, onMouseLeave, onClick, portalEl, show, targetRef } = useOverlayTriggerState(
@@ -166,6 +168,8 @@ export const OverlayTrigger: FC<Props> = ({
     const clonedChild = cloneElement(Children.only(children) as ReactElement, { ref: targetRef });
     const className_ = classNames('overlay-trigger', className);
     const clonedContent = cloneElement(overlay, { targetRef });
+
+    if (noShow) return children;
 
     return (
         <div

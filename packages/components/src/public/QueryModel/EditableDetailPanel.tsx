@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useCallback, useState } from 'react';
+import React, { FC, ReactNode, useCallback, useMemo, useState } from 'react';
 import { fromJS } from 'immutable';
 import { Query } from '@labkey/api';
 
@@ -20,7 +20,8 @@ import { useAppContext } from '../../internal/AppContext';
 
 import { QueryModel } from './QueryModel';
 
-import { DetailPanel, DetailPanelWithModel } from './DetailPanel';
+import { DetailPanel } from './DetailPanel';
+import { InjectedQueryModels, withQueryModels } from './withQueryModels';
 import { EDIT_METHOD } from '../../internal/constants';
 import { useRouteLeave } from '../../internal/util/RouteLeave';
 
@@ -47,38 +48,42 @@ export interface EditableDetailPanelProps {
     title?: string;
 }
 
-export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
+interface EditingFormProps extends Omit<EditableDetailPanelProps, 'detailHeader' | 'queryColumns'> {
+    onCancel: () => void;
+}
+
+const EditingFormImpl: FC<EditingFormProps & InjectedQueryModels> = props => {
     const {
+        asSubPanel,
+        canUpdate,
+        containerFilter,
         containerPath,
-        model,
+        detailEditRenderer,
+        detailRenderer,
+        disabled,
+        editColumns,
+        internalSpacesWarningFieldKeys,
+        onAdditionalFormDataChange,
         onBeforeUpdate,
+        onCancel,
         onCommentChange,
         onEditToggle,
         onUpdate,
-        appEditable,
-        containerFilter,
-        disabled,
-        detailEditRenderer,
-        detailHeader,
-        detailRenderer,
-        internalSpacesWarningFieldKeys,
-        asSubPanel,
-        canUpdate,
-        editColumns,
-        queryColumns,
+        queryModels,
         submitText = 'Save',
         title,
-        onAdditionalFormDataChange,
     } = props;
 
+    const editModel = queryModels.model;
     const { api } = useAppContext();
     const [_, setIsDirty] = useRouteLeave();
     const [canSubmit, setCanSubmit] = useState<boolean>(false);
-    const [editing, setEditing] = useState<boolean>(false);
     const [error, setError] = useState<string>(undefined);
     const [warning, setWarning] = useState<string>(undefined);
     const [comment, setComment] = useState<string>();
     const { requiresUserComment } = useDataChangeCommentsRequired();
+    const hasValidUserComment = comment?.trim()?.length > 0;
+
     const _onCommentChange = useCallback(
         _comment => {
             setComment(_comment);
@@ -86,17 +91,6 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
         },
         [onCommentChange]
     );
-
-    const hasValidUserComment = comment?.trim()?.length > 0;
-
-    const toggleEditing = useCallback((): void => {
-        const updated = !editing;
-        setEditing(updated);
-        setIsDirty(false);
-        setWarning(undefined);
-        setError(undefined);
-        onEditToggle?.(updated);
-    }, [editing, onEditToggle, setIsDirty]);
 
     const disableSubmitButton = useCallback((): void => {
         setCanSubmit(false);
@@ -120,9 +114,9 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
 
     const handleSubmit = useCallback(
         async (values: Record<string, any>): Promise<void> => {
-            const { queryInfo } = model;
-            const row = model.getRow();
-            const updatedValues = extractChanges(queryInfo, fromJS(model.getRow()), values);
+            const { queryInfo } = editModel;
+            const row = editModel.getRow();
+            const updatedValues = extractChanges(queryInfo, fromJS(editModel.getRow()), values);
 
             if (Object.keys(updatedValues).length === 0) {
                 setCanSubmit(false);
@@ -155,7 +149,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
                 });
 
                 setIsDirty(false);
-                setEditing(false);
+                onCancel();
                 onUpdate?.();
                 onEditToggle?.(false);
             } catch (e) {
@@ -163,41 +157,24 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
                 setWarning(undefined);
             }
         },
-        [model, onBeforeUpdate, api.query, containerPath, comment, onUpdate, onEditToggle, setIsDirty]
+        [api.query, comment, containerPath, editModel, onBeforeUpdate, onCancel, onEditToggle, onUpdate, setIsDirty]
     );
 
-    const isEditable = !model.isLoading && model.hasRows && (model.queryInfo?.isAppEditable() || appEditable);
+    return (
+        <Formsy
+            onChange={handleFormChange}
+            onInvalid={disableSubmitButton}
+            onValid={enableSubmitButton}
+            onValidSubmit={handleSubmit}
+        >
+            <div className="panel panel-info">
+                <DetailPanelHeader editing isEditable={canUpdate} onClick={onCancel} title={title} warning={warning} />
 
-    const panel = (
-        <div className={`panel ${editing ? 'panel-info' : 'panel-default'}`}>
-            <DetailPanelHeader
-                editing={editing}
-                isEditable={isEditable && canUpdate}
-                onClick={toggleEditing}
-                title={title}
-                warning={warning}
-            />
+                <div className="panel-body">
+                    <div className="detail__editing">
+                        {error && <Alert>{error}</Alert>}
 
-            <div className="panel-body">
-                <div className="detail__editing">
-                    {error && <Alert>{error}</Alert>}
-
-                    {!editing && (detailHeader ?? null)}
-
-                    {!editing && (
                         <DetailPanel
-                            containerFilter={containerFilter}
-                            containerPath={containerPath}
-                            detailRenderer={detailRenderer}
-                            editingMode={false}
-                            model={model}
-                            queryColumns={queryColumns}
-                        />
-                    )}
-
-                    {/* When editing load a model that includes the update columns and editing mode rendering */}
-                    {editing && (
-                        <DetailPanelWithModel
                             containerFilter={containerFilter}
                             containerPath={containerPath}
                             detailEditRenderer={detailEditRenderer}
@@ -206,57 +183,120 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
                             editingMode
                             fileInputRenderer={fileInputRenderer}
                             internalSpacesWarningFieldKeys={internalSpacesWarningFieldKeys}
+                            model={editModel}
                             onAdditionalFormDataChange={onAdditionalFormDataChange}
-                            queryConfig={{
-                                ...model.queryConfig,
-                                // Issue 46478: Include update columns in request columns to ensure values are available
-                                requiredColumns: model.requiredColumns.concat(
-                                    model.updateColumns.map(col => col.fieldKey)
-                                ),
-                            }}
                         />
-                    )}
+                    </div>
+                </div>
+            </div>
+
+            <FormButtons>
+                <button className="btn btn-default" onClick={onCancel} type="button">
+                    Cancel
+                </button>
+                <CommentTextArea
+                    actionName="Update"
+                    containerClassName="inline-comment"
+                    inline
+                    onChange={_onCommentChange}
+                    requiresUserComment={requiresUserComment}
+                />
+                <button
+                    className="btn btn-success"
+                    disabled={!canSubmit || (requiresUserComment && !hasValidUserComment) || disabled}
+                    type="submit"
+                >
+                    {submitText}
+                </button>
+            </FormButtons>
+
+            {asSubPanel && <div className="panel-divider-padding" />}
+        </Formsy>
+    );
+};
+
+const EditingFormWithModels = withQueryModels<EditingFormProps>(EditingFormImpl);
+
+// Lazy wrapper: only mounted when editing, builds the edit-mode queryConfig and key
+const EditingForm: FC<EditingFormProps> = props => {
+    const { model } = props;
+    const queryConfig = useMemo(
+        () => ({
+            ...model.queryConfig,
+            // Issue 46478: Include update columns in request columns to ensure values are available
+            requiredColumns: model.requiredColumns.concat(model.updateColumns.map(col => col.fieldKey)),
+        }),
+        [model]
+    );
+    const queryConfigs = useMemo(() => ({ model: queryConfig }), [queryConfig]);
+    const { keyValue, schemaQuery } = queryConfig;
+    const { schemaName, queryName } = schemaQuery;
+    // Key ensures we re-mount when the queryConfig identity changes
+    const key = `${schemaName}.${queryName}.${keyValue}`;
+
+    return <EditingFormWithModels {...props} autoLoad key={key} queryConfigs={queryConfigs} />;
+};
+
+export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
+    const {
+        appEditable,
+        canUpdate,
+        containerFilter,
+        containerPath,
+        detailHeader,
+        detailRenderer,
+        model,
+        onEditToggle,
+        queryColumns,
+        title,
+    } = props;
+
+    const [_, setIsDirty] = useRouteLeave();
+    const [editing, setEditing] = useState<boolean>(false);
+
+    const toggleEditing = useCallback((): void => {
+        setEditing(true);
+        setIsDirty(false);
+        onEditToggle?.(true);
+    }, [onEditToggle, setIsDirty]);
+
+    const handleCancel = useCallback((): void => {
+        setEditing(false);
+        setIsDirty(false);
+        onEditToggle?.(false);
+    }, [onEditToggle, setIsDirty]);
+
+    const isEditable = !model.isLoading && model.hasRows && (model.queryInfo?.isAppEditable() || appEditable);
+
+    if (editing) {
+        return <EditingForm {...props} onCancel={handleCancel} />;
+    }
+
+    return (
+        <div className="panel panel-default">
+            <DetailPanelHeader
+                editing={false}
+                isEditable={isEditable && canUpdate}
+                onClick={toggleEditing}
+                title={title}
+            />
+
+            <div className="panel-body">
+                <div className="detail__editing">
+                    {detailHeader ?? null}
+
+                    <DetailPanel
+                        containerFilter={containerFilter}
+                        containerPath={containerPath}
+                        detailRenderer={detailRenderer}
+                        editingMode={false}
+                        model={model}
+                        queryColumns={queryColumns}
+                    />
                 </div>
             </div>
         </div>
     );
-
-    if (editing) {
-        return (
-            <Formsy
-                onChange={handleFormChange}
-                onInvalid={disableSubmitButton}
-                onValid={enableSubmitButton}
-                onValidSubmit={handleSubmit}
-            >
-                {panel}
-
-                <FormButtons>
-                    <button className="btn btn-default" onClick={toggleEditing} type="button">
-                        Cancel
-                    </button>
-                    <CommentTextArea
-                        actionName="Update"
-                        containerClassName="inline-comment"
-                        inline
-                        onChange={_onCommentChange}
-                        requiresUserComment={requiresUserComment}
-                    />
-                    <button
-                        className="btn btn-success"
-                        disabled={!canSubmit || (requiresUserComment && !hasValidUserComment) || disabled}
-                        type="submit"
-                    >
-                        {submitText}
-                    </button>
-                </FormButtons>
-
-                {asSubPanel && <div className="panel-divider-padding" />}
-            </Formsy>
-        );
-    }
-
-    return panel;
 };
 
 EditableDetailPanel.displayName = 'EditableDetailPanel';

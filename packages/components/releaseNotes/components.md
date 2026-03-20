@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.23.3
+*Released*: 19 March 2026
+- GitHub Issue 942: Add error for duplicate values for MVTC fields
+- GitHub Issue 961: Clicking the "Allow multiple selections" label doesn't toggle the checkbox
+- GitHub Issue 932: No help text for disabled Multi-Value checkbox in designer
+
 ### version 7.23.2
 *Released*: 18 March 2026
 - Merge from release26.3-SNAPSHOT to develop

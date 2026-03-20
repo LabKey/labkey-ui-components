@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.23.3-fb-parseComma.1",
+  "version": "7.23.3",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -75,8 +75,7 @@
     "react-select": "~5.10.2",
     "react-treebeard": "~3.2.4",
     "vis-data": "~8.0.3",
-    "vis-network": "~10.0.2",
-    "papaparse": "5.5.3"
+    "vis-network": "~10.0.2"
   },
   "devDependencies": {
     "@labkey/build": "9.0.0",

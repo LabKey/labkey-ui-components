@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.23.4
+*Released*: 22 March 2026
+- Set query and registry audit events to `hasTransactionId=true`
+
 ### version 7.23.3
 *Released*: 19 March 2026
 - GitHub Issue 942: Add error for duplicate values for MVTC fields

@@ -20,6 +20,7 @@ export const DOMAIN_PROPERTY_AUDIT_QUERY: AuditQuery = {
 };
 export const QUERY_UPDATE_AUDIT_QUERY: AuditQuery = {
     hasDetail: true,
+    hasTransactionId: true,
     label: 'Query Update Events',
     value: 'QueryUpdateAuditEvent',
 };
@@ -97,7 +98,11 @@ export const SOURCE_AUDIT_QUERY: AuditQuery = {
 
 export const NOTEBOOK_AUDIT_QUERY: AuditQuery = { label: 'Notebook Events', value: 'LabBookEvent' };
 export const NOTEBOOK_REVIEW_AUDIT_QUERY: AuditQuery = { label: 'Notebook Review Events', value: 'NotebookEvent' };
-export const REGISTRY_AUDIT_QUERY: AuditQuery = { label: 'Registry Events', value: 'RegistryEvent' };
+export const REGISTRY_AUDIT_QUERY: AuditQuery = {
+    hasTransactionId: true,
+    label: 'Registry Events',
+    value: 'RegistryEvent',
+};
 export const REPORT_AUDIT_QUERY: AuditQuery = { label: 'Report Events', value: 'ReportEvent' };
 
 export const FILE_SYSTEM_AUDIT_QUERY: AuditQuery = {

@@ -44,7 +44,7 @@ describe('EntityMoveConfirmationModal', () => {
         expect(document.body.textContent).toContain('This is an error message.');
     });
 
-    test('no insert perm to any conatiners', async () => {
+    test('no insert perm to any containers', async () => {
         await act(async () => {
             renderWithAppContext(<EntityMoveConfirmationModal {...getDefaultProps()} />, {
                 serverContext: DEFAULT_SERVER_CONTEXT,

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.23.5
+*Released*: 18 March 2026
+- Bump @labkye/api dependency
+
 ### version 7.23.4
 *Released*: 22 March 2026
 - Set query and registry audit events to `hasTransactionId=true`

@@ -1641,6 +1641,9 @@ describe('arrayEquals', () => {
 
     test('handles duplicate elements correctly with ignoreOrder', () => {
         expect(arrayEquals(['a', 'a', 'b'], ['a', 'b', 'b'], true)).toBeFalsy();
+        expect(arrayEquals(['a', 'a', 'b'], ['a', 'b', 'b'], false)).toBeFalsy();
+        expect(arrayEquals(['a', 'a', 'b'], ['a', 'b', 'a'], true)).toBeTruthy();
+        expect(arrayEquals(['a', 'a', 'b'], ['a', 'b', 'a'], false)).toBeFalsy();
     });
 });
 

@@ -39,6 +39,9 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
         <Modal canConfirm={canConfirm} confirmText="Apply" onCancel={onCancel} onConfirm={onConfirm} title={title}>
             <p>Enter each value on a new line. {valueNoun} can be added.</p>
             <textarea
+                aria-label="Text choice values"
+                aria-describedby={tooLongValue ? 'text-choice-length-error' : undefined}
+                aria-invalid={!!tooLongValue}
                 className="form-control textarea-fullwidth"
                 cols={50}
                 onChange={onChange}
@@ -54,7 +57,7 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
                 {parsedValues.length === 1 ? '1 new value provided.' : `${parsedValues.length} new values provided.`}
             </div>
             {tooLongValue && (
-                <div className="domain-text-choices-error">
+                <div className="domain-text-choices-error" id="text-choice-length-error" role="alert">
                     Value exceeds maximum of {MAX_TEXT_CHOICE_VALUE_LENGTH} characters: &quot;
                     {tooLongValue.substring(0, 50)}...&quot;
                 </div>

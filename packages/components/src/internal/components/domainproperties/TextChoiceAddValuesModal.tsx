@@ -22,10 +22,7 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
         return valueStr?.trim().length > 0 ? getValidValuesFromArray(valueStr.split('\n').map(v => v.trim())) : [];
     }, [valueStr]);
     const maxValuesToAdd = useMemo(() => maxValueCount - initialValueCount, [initialValueCount]);
-    const tooLongValue = useMemo(
-        () => parsedValues.find(v => v.length > MAX_TEXT_CHOICE_VALUE_LENGTH),
-        [parsedValues]
-    );
+    const tooLongValue = useMemo(() => parsedValues.find(v => v.length > MAX_TEXT_CHOICE_VALUE_LENGTH), [parsedValues]);
     const hasFieldName = useMemo(() => fieldName?.length > 0, [fieldName]);
     const onChange = useCallback(evt => {
         setValueStr(evt.target.value);
@@ -42,11 +39,11 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
         <Modal canConfirm={canConfirm} confirmText="Apply" onCancel={onCancel} onConfirm={onConfirm} title={title}>
             <p>Enter each value on a new line. {valueNoun} can be added.</p>
             <textarea
-                rows={8}
-                cols={50}
                 className="form-control textarea-fullwidth"
-                placeholder="Enter new values..."
+                cols={50}
                 onChange={onChange}
+                placeholder="Enter new values..."
+                rows={8}
                 value={valueStr}
             />
             <div

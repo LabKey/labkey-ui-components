@@ -1,6 +1,20 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.24.0
+*Released*: 24 March 2026
+- SchemaQuery.isEqual: add optional includeViewName argument, defaults to true
+- UnidentifiedPill: add schemaQuery prop
+- EMPTY_SEQUENCE_WARNING renamed to EMPTY_NS_SEQUENCE_WARNING
+
+### version 7.23.5
+*Released*: 18 March 2026
+- Bump @labkye/api dependency
+
+### version 7.23.4
+*Released*: 22 March 2026
+- Set query and registry audit events to `hasTransactionId=true`
+
 ### version 7.23.3
 *Released*: 19 March 2026
 - GitHub Issue 942: Add error for duplicate values for MVTC fields

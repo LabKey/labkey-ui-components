@@ -7,6 +7,7 @@ import { Popover } from '../../Popover';
 interface Props {
     className?: string;
     disabledMsg?: string;
+    maxLength?: number;
     name: string;
     onChange: (evt: any) => void;
     placeholder?: string;

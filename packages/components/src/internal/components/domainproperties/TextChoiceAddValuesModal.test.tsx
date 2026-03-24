@@ -84,7 +84,24 @@ describe('TextChoiceAddValuesModal', () => {
         const longValue = 'a'.repeat(201);
         await userEvent.type(document.querySelector('textarea'), longValue);
         expect(document.querySelector('.btn-success').hasAttribute('disabled')).toBeTruthy();
-        const errorEls = document.querySelectorAll('.domain-text-choices-error');
+        let errorEls = document.querySelectorAll('.domain-text-choices-error');
+        expect(errorEls).toHaveLength(1);
+        expect(errorEls[0].textContent).toContain('Value exceeds maximum of 200 characters');
+
+        // clear the long value, error should be gone
+        await userEvent.clear(document.querySelector('textarea'));
+        expect(document.querySelectorAll('.domain-text-choices-error')).toHaveLength(0);
+
+        // enter a valid short value, no error
+        await userEvent.type(document.querySelector('textarea'), 'short value');
+        expect(document.querySelector('.btn-success').hasAttribute('disabled')).toBeFalsy();
+        expect(document.querySelectorAll('.domain-text-choices-error')).toHaveLength(0);
+
+        // multiline input where second line exceeds max length
+        await userEvent.clear(document.querySelector('textarea'));
+        await userEvent.type(document.querySelector('textarea'), 'valid\n' + 'b'.repeat(201));
+        expect(document.querySelector('.btn-success').hasAttribute('disabled')).toBeTruthy();
+        errorEls = document.querySelectorAll('.domain-text-choices-error');
         expect(errorEls).toHaveLength(1);
         expect(errorEls[0].textContent).toContain('Value exceeds maximum of 200 characters');
     });

@@ -4,7 +4,7 @@ import { Utils } from '@labkey/api';
 
 import { Modal } from '../../Modal';
 
-import { MAX_VALID_TEXT_CHOICES } from './constants';
+import { MAX_TEXT_CHOICE_VALUE_LENGTH, MAX_VALID_TEXT_CHOICES } from './constants';
 import { getValidValuesFromArray } from './models';
 
 interface Props {
@@ -22,16 +22,20 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
         return valueStr?.trim().length > 0 ? getValidValuesFromArray(valueStr.split('\n').map(v => v.trim())) : [];
     }, [valueStr]);
     const maxValuesToAdd = useMemo(() => maxValueCount - initialValueCount, [initialValueCount]);
+    const tooLongValue = useMemo(
+        () => parsedValues.find(v => v.length > MAX_TEXT_CHOICE_VALUE_LENGTH),
+        [parsedValues]
+    );
     const hasFieldName = useMemo(() => fieldName?.length > 0, [fieldName]);
     const onChange = useCallback(evt => {
         setValueStr(evt.target.value);
     }, []);
     const onConfirm = useCallback(() => {
-        if (parsedValues.length <= maxValuesToAdd) {
+        if (parsedValues.length <= maxValuesToAdd && !tooLongValue) {
             onApply(parsedValues);
         }
-    }, [parsedValues, maxValuesToAdd, onApply]);
-    const canConfirm = parsedValues.length > 0 && parsedValues.length <= maxValuesToAdd;
+    }, [parsedValues, maxValuesToAdd, tooLongValue, onApply]);
+    const canConfirm = parsedValues.length > 0 && parsedValues.length <= maxValuesToAdd && !tooLongValue;
     const title = `Add Text Choice Values${hasFieldName ? ' for ' + fieldName : ''}`;
     const valueNoun = Utils.pluralize(maxValuesToAdd, 'value', 'values');
     return (
@@ -52,6 +56,12 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
             >
                 {parsedValues.length === 1 ? '1 new value provided.' : `${parsedValues.length} new values provided.`}
             </div>
+            {tooLongValue && (
+                <div className="domain-text-choices-error">
+                    Value exceeds maximum of {MAX_TEXT_CHOICE_VALUE_LENGTH} characters: &quot;
+                    {tooLongValue.substring(0, 50)}...&quot;
+                </div>
+            )}
         </Modal>
     );
 });

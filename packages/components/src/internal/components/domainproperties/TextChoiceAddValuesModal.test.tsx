@@ -79,6 +79,16 @@ describe('TextChoiceAddValuesModal', () => {
         validateCounterText('2 values', '3 new values');
     });
 
+    test('value exceeding max length disables apply and shows error', async () => {
+        render(<TextChoiceAddValuesModal {...DEFAULT_PROPS} />);
+        const longValue = 'a'.repeat(201);
+        await userEvent.type(document.querySelector('textarea'), longValue);
+        expect(document.querySelector('.btn-success').hasAttribute('disabled')).toBeTruthy();
+        const errorEls = document.querySelectorAll('.domain-text-choices-error');
+        expect(errorEls).toHaveLength(1);
+        expect(errorEls[0].textContent).toContain('Value exceeds maximum of 200 characters');
+    });
+
     test('initial already equal to max', async () => {
         render(<TextChoiceAddValuesModal {...DEFAULT_PROPS} initialValueCount={2} maxValueCount={2} />);
         expect(document.querySelector('.btn-success').hasAttribute('disabled')).toBeTruthy();

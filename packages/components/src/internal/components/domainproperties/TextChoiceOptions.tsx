@@ -16,7 +16,6 @@ import {
     DOMAIN_FIELD_TEXTCHOICE_MULTI,
     DOMAIN_FIELD_TYPE,
     DOMAIN_VALIDATOR_TEXTCHOICE,
-    MAX_TEXT_CHOICE_VALUE_LENGTH,
     MAX_VALID_TEXT_CHOICES,
 } from './constants';
 import { DEFAULT_TEXT_CHOICE_VALIDATOR, DomainField, ITypeDependentProps, PropertyValidator } from './models';
@@ -326,7 +325,6 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                     <DisableableInput
                                         className="form-control full-width"
                                         disabledMsg={currentLocked ? LOCKED_TIP : undefined}
-                                        maxLength={MAX_TEXT_CHOICE_VALUE_LENGTH}
                                         name="value"
                                         onChange={onValueChange}
                                         placeholder="Enter a text choice value"

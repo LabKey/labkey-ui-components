@@ -84,9 +84,9 @@ export class SchemaQuery {
         this.viewName = viewName;
     }
 
-    isEqual(sq: SchemaQuery): boolean {
+    isEqual(sq: SchemaQuery, includeViewName = true): boolean {
         if (!sq) return false;
-        return this.toString().toLowerCase() === sq.toString().toLowerCase();
+        return this.toString(includeViewName).toLowerCase() === sq.toString(includeViewName).toLowerCase();
     }
 
     hasSchema(schemaName: string): boolean {

@@ -59,7 +59,7 @@ export const NodeDetailHeader: FC<NodeDetailHeaderProps> = memo(({ model, node, 
     return (
         <DetailHeader header={header} iconSrc={node.iconProps.iconURL}>
             {/* Triple eq is important here; we only want false, not falsey values */}
-            {identified === false && <UnidentifiedPill />}
+            {identified === false && <UnidentifiedPill schemaQuery={model.schemaQuery} />}
             {displayType && <div>{displayType}</div>}
         </DetailHeader>
     );

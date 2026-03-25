@@ -78,7 +78,7 @@
     "vis-network": "~10.0.2"
   },
   "devDependencies": {
-    "@labkey/build": "9.0.1-fb-build-deps.0",
+    "@labkey/build": "9.0.1-fb-build-deps.2",
     "@labkey/eslint-config": "1.1.4-fb-build-deps.0",
     "@types/history": "4.7.11",
     "@types/jest": "30.0.0",

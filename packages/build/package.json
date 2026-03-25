@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "9.0.1-fb-build-deps.0",
+  "version": "9.0.1-fb-build-deps.2",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"
@@ -37,8 +37,8 @@
     "style-loader": "~4.0.0",
     "typescript": "~5.9.3",
     "webpack": "~5.105.4",
-    "webpack-bundle-analyzer": "~5.2.0",
-    "webpack-cli": "~6.0.1",
+    "webpack-bundle-analyzer": "~5.3.0",
+    "webpack-cli": "~7.0.2",
     "webpack-dev-server": "~5.2.3"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.24.1-fb-mvtcOptions.3",
+  "version": "7.24.2-fb-mvtcOptions.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

@@ -758,7 +758,7 @@ export function isQuotedWithDelimiters(value: any, delimiter: string): boolean {
  * This is used to determine whether we can safely parse a multi-line string as TSV (for paste) without losing its escaped characters.
  * @param value
  */
-const NEWLINE_CHARS = ['\r', '\n'];
+export const NEWLINE_CHARS = ['\r', '\n'];
 export function isSimpleQuotedMultiLine(value: any): boolean {
     if (!value || !Utils.isString(value)) {
         return false;

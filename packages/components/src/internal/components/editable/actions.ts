@@ -14,6 +14,7 @@ import {
     isInteger,
     isSimpleQuotedMultiLine,
     joinMultiValueForExport,
+    NEWLINE_CHARS,
     parseScientificInt,
     quoteValueWithDelimiters,
     splitMultiValueForImport,
@@ -1593,8 +1594,12 @@ async function insertPastedData(
                     if (fromDragFill && Utils.isString(val)) {
                         // GitHub Issue 916: Copying/pasting in the grid doesn't always act as expected
                         // drag fill always quoteValueWithDelimiters, needs to remove the extra quotes before validating
-                        const parsedValues = splitMultiValueForImport(val);
-                        if (parsedValues.length === 1) valToValidate = parsedValues[0].trim();
+                        const isMultiLinePasting = NEWLINE_CHARS.find(char => valToValidate.indexOf(char) > -1);
+                        // multiline pasting has already been parsed
+                        if (!isMultiLinePasting) {
+                            const parsedValues = splitMultiValueForImport(val);
+                            if (parsedValues.length === 1) valToValidate = parsedValues[0].trim();
+                        }
                     }
 
                     const { message, value } = getValidatedEditableGridValue(valToValidate, col);

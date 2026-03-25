@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.24.1
+*Released*: 25 March 2026
+- Factor `EditingForm` out of `EditableDetailPanel` and load model with update columns
+- Update `extractChanges()` to account for `column.jsonType === 'array'`
+- Refactor `arrayEquals` to fix edge cases of array mutation and delimiter collisions
+
 ### version 7.24.0
 *Released*: 24 March 2026
 - SchemaQuery.isEqual: add optional includeViewName argument, defaults to true

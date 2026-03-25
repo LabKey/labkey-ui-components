@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.24.2
+*Released*: 25 March 2026
+- GitHub Issue 955: limit text choice option length to 200 characters
+
 ### version 7.24.1
 *Released*: 25 March 2026
 - Factor `EditingForm` out of `EditableDetailPanel` and load model with update columns

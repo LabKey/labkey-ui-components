@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 7.X
-*Released*: X March 2026
+### version 7.24.2
+*Released*: 25 March 2026
 - GitHub Issue 955: limit text choice option length to 200 characters
 
 ### version 7.24.1

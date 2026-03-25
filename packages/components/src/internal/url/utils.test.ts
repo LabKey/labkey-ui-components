@@ -8,20 +8,22 @@ describe('encodeFormDataQuote', () => {
     });
 
     test('no relevant special character', () => {
-        expect(encodeFormDataQuote('a')).toBe('a')
+        expect(encodeFormDataQuote('a')).toBe('a');
         expect(encodeFormDataQuote('$')).toBe('$');
-        expect(encodeFormDataQuote('%')).toBe('%');
-        expect(encodeFormDataQuote('%2522')).toBe('%2522');
+        expect(encodeFormDataQuote('9')).toBe('9');
+        expect(encodeFormDataQuote('[a]')).toBe('[a]');
     });
 
     test('encoded', () => {
-        expect(encodeFormDataQuote('"')).toBe('%22')
-        expect(encodeFormDataQuote('""')).toBe('%22%22');
-        expect(encodeFormDataQuote('"22')).toBe('%2222');
-        expect(encodeFormDataQuote('"a"')).toBe('%22a%22');
-        expect(encodeFormDataQuote('a%22')).toBe('a%2522');
-        expect(encodeFormDataQuote('"a%22')).toBe('%22a%2522');
-        expect(encodeFormDataQuote('"a%222')).toBe('%22a%25222');
+        expect(encodeFormDataQuote('"')).toBe('%_%22');
+        expect(encodeFormDataQuote('%')).toBe('%_%25');
+        expect(encodeFormDataQuote('%_beep')).toBe('%_%25_beep');
+        expect(encodeFormDataQuote('""')).toBe('%_%22%22');
+        expect(encodeFormDataQuote('"22')).toBe('%_%2222');
+        expect(encodeFormDataQuote('"a"')).toBe('%_%22a%22');
+        expect(encodeFormDataQuote('a%22')).toBe('%_a%2522');
+        expect(encodeFormDataQuote('"a%22')).toBe('%_%22a%2522');
+        expect(encodeFormDataQuote('"a%222')).toBe('%_%22a%25222');
     });
 });
 

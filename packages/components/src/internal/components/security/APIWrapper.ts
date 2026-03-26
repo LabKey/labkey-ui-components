@@ -267,7 +267,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
 
     getGroupMemberships = async (): Promise<GroupMembership[]> => {
         const result = await selectRows({
-            columns: ['GroupId', 'GroupId/Name', 'UserId', 'UserId/DisplayName', 'UserId/Email'],
+            columns: ['GroupId', 'GroupId/Name', 'UserId', 'UserId/DisplayName', 'UserId/Email', 'UserId/Active'],
             schemaQuery: new SchemaQuery('core', 'Members'),
         });
 
@@ -278,6 +278,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
                 userDisplayName: caseInsensitive(row, 'UserId/DisplayName').value,
                 userId: caseInsensitive(row, 'UserId').value,
                 userEmail: caseInsensitive(row, 'UserId/Email').value,
+                userActive: caseInsensitive(row, 'UserId/Active').value
             });
             return memberships;
         }, []);

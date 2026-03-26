@@ -2,6 +2,7 @@ export interface Member {
     id: number;
     name: string;
     type: string;
+    userActive?: boolean;
 }
 
 interface Group {
@@ -14,6 +15,7 @@ export type GroupMembership = {
     groupId: number;
     groupName: string;
     userDisplayName: string;
+    userActive: boolean;
     userEmail: string;
     userId: number;
 };

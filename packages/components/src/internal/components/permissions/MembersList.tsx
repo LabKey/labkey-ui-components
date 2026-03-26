@@ -8,7 +8,10 @@ interface Props {
 }
 
 export const MembersList: FC<Props> = memo(({ members }) => {
-    if (members.length === 0) return null;
+    // GitHub Issue #811: don't show inactive users in the members list
+    const activeMembers = members.filter((member) => member.userActive !== false);
+
+    if (activeMembers.length === 0) return null;
     return (
         <>
             <hr className="principal-hr" />
@@ -16,7 +19,7 @@ export const MembersList: FC<Props> = memo(({ members }) => {
                 <div className="col-xs-4 principal-detail-label">Members</div>
                 <div className="col-xs-8 principal-detail-value">
                     <ul className="principal-detail-ul">
-                        {members.map(member => (
+                        {activeMembers.map(member => (
                             <li key={member.id} className="principal-detail-li">
                                 {member.type === 'u' ? (
                                     <UserLink userId={member.id} userDisplayValue={member.name} />

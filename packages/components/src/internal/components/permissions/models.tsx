@@ -7,7 +7,7 @@ import { Record, List, Map } from 'immutable';
 import React from 'react';
 
 import { naturalSort } from '../../../public/sort';
-import { Groups, MemberType } from '../administration/models';
+import { Groups, Member, MemberType } from '../administration/models';
 
 export class Principal extends Record({
     userId: undefined,
@@ -149,6 +149,15 @@ export class SecurityAssignment extends Record({
         }
 
         return assignment.displayName || assignment.userId.toString();
+    }
+
+    static getDisplayNameForMember(member: Member): string {
+        // inactive users will return userActive false
+        if (member.userActive === false) {
+            return 'Inactive User: ' + member.name;
+        }
+
+        return member.name;
     }
 }
 

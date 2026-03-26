@@ -4,7 +4,7 @@ import { Utils } from '@labkey/api';
 
 import { Modal } from '../../Modal';
 
-import { MAX_VALID_TEXT_CHOICES } from './constants';
+import { MAX_TEXT_CHOICE_VALUE_LENGTH, MAX_VALID_TEXT_CHOICES } from './constants';
 import { getValidValuesFromArray } from './models';
 
 interface Props {
@@ -22,27 +22,31 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
         return valueStr?.trim().length > 0 ? getValidValuesFromArray(valueStr.split('\n').map(v => v.trim())) : [];
     }, [valueStr]);
     const maxValuesToAdd = useMemo(() => maxValueCount - initialValueCount, [initialValueCount]);
+    const tooLongValue = useMemo(() => parsedValues.find(v => v.length > MAX_TEXT_CHOICE_VALUE_LENGTH), [parsedValues]);
     const hasFieldName = useMemo(() => fieldName?.length > 0, [fieldName]);
     const onChange = useCallback(evt => {
         setValueStr(evt.target.value);
     }, []);
     const onConfirm = useCallback(() => {
-        if (parsedValues.length <= maxValuesToAdd) {
+        if (parsedValues.length <= maxValuesToAdd && !tooLongValue) {
             onApply(parsedValues);
         }
-    }, [parsedValues, maxValuesToAdd, onApply]);
-    const canConfirm = parsedValues.length > 0 && parsedValues.length <= maxValuesToAdd;
+    }, [parsedValues, maxValuesToAdd, tooLongValue, onApply]);
+    const canConfirm = parsedValues.length > 0 && parsedValues.length <= maxValuesToAdd && !tooLongValue;
     const title = `Add Text Choice Values${hasFieldName ? ' for ' + fieldName : ''}`;
     const valueNoun = Utils.pluralize(maxValuesToAdd, 'value', 'values');
     return (
         <Modal canConfirm={canConfirm} confirmText="Apply" onCancel={onCancel} onConfirm={onConfirm} title={title}>
             <p>Enter each value on a new line. {valueNoun} can be added.</p>
             <textarea
-                rows={8}
-                cols={50}
+                aria-label="Text choice values"
+                aria-describedby={tooLongValue ? 'text-choice-length-error' : undefined}
+                aria-invalid={!!tooLongValue}
                 className="form-control textarea-fullwidth"
-                placeholder="Enter new values..."
+                cols={50}
                 onChange={onChange}
+                placeholder="Enter new values..."
+                rows={8}
                 value={valueStr}
             />
             <div
@@ -52,6 +56,12 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
             >
                 {parsedValues.length === 1 ? '1 new value provided.' : `${parsedValues.length} new values provided.`}
             </div>
+            {tooLongValue && (
+                <div className="domain-text-choices-error" id="text-choice-length-error" role="alert">
+                    Value exceeds maximum of {MAX_TEXT_CHOICE_VALUE_LENGTH} characters: &quot;
+                    {tooLongValue.substring(0, 50)}...&quot;
+                </div>
+            )}
         </Modal>
     );
 });

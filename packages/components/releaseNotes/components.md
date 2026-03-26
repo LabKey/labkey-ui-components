@@ -1,12 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.25.0
+*Released*: 25 March 2026
 - Update `isAllSamplesSchema` to account for move of `JobInputSamples` to `workflow` schema
 - Add placement prop for `DisableableButton`
 - add `fitlerArrayToString` method in QueryModel utils
 - add `pronoun` utility method for the it/they or it/them text choices
+
+### version 7.24.2
+*Released*: 25 March 2026
+- GitHub Issue 955: limit text choice option length to 200 characters
 
 ### version 7.24.1
 *Released*: 25 March 2026

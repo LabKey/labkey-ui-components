@@ -2,6 +2,7 @@ import { List, Map } from 'immutable';
 import { Utils } from '@labkey/api';
 
 import { QueryInfo } from '../../../../public/QueryInfo';
+import { isSetEqual } from '../../../util/utils';
 
 function arrayListIsEqual(valueArr: Array<string | number>, nestedModelList: List<Map<string, any>>): boolean {
     let matched = 0;
@@ -91,6 +92,14 @@ export function extractChanges(
                 }
                 if (existingValue === newValue) {
                     return false;
+                }
+            } else if (column?.jsonType === 'array') {
+                if (Array.isArray(newValue)) {
+                    const existingArray = List.isList(existingValue) ? existingValue.toJS() : existingValue;
+
+                    if (Array.isArray(existingArray) && isSetEqual(newValue, existingArray)) {
+                        return false;
+                    }
                 }
             }
 

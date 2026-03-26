@@ -799,16 +799,27 @@ export function splitMultiValueForImport(
     return processParsedResults(Papa.parse(str, { delimiter }), removeEmpty, trimSpace);
 }
 
-export function arrayEquals(a: string[], b: string[], ignoreOrder = true, caseInsensitive?: boolean): boolean {
+export function arrayEquals(
+    a: null | string[] | undefined,
+    b: null | string[] | undefined,
+    ignoreOrder = true,
+    caseInsensitive = false
+): boolean {
     if (a === b) return true;
     if (a == null && b == null) return true;
     if (a == null || b == null) return false;
     if (a.length !== b.length) return false;
 
-    const aStr = ignoreOrder ? a.sort().join(';') : a.join(';');
-    const bStr = ignoreOrder ? b.sort().join(';') : b.join(';');
+    const normalize = (s: string) => (caseInsensitive ? s.toLowerCase() : s);
 
-    return caseInsensitive ? aStr.toLowerCase() === bStr.toLowerCase() : aStr === bStr;
+    if (ignoreOrder) {
+        // Use a copy to avoid mutating the original arrays
+        const aSorted = [...a].map(normalize).sort();
+        const bSorted = [...b].map(normalize).sort();
+        return aSorted.every((val, index) => val === bSorted[index]);
+    }
+
+    return a.every((val, index) => normalize(val) === normalize(b[index]));
 }
 
 export function getValueFromRow(row: Record<string, any>, col: string): number | string {

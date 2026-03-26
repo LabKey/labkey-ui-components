@@ -1771,6 +1771,7 @@ describe('arrayEquals', () => {
     test('ignore order, case sensitive', () => {
         expect(arrayEquals(undefined, undefined)).toBeTruthy();
         expect(arrayEquals(undefined, null)).toBeTruthy();
+        expect(arrayEquals(null, undefined)).toBeTruthy();
         expect(arrayEquals([], [])).toBeTruthy();
         expect(arrayEquals(null, [])).toBeFalsy();
         expect(arrayEquals(['a'], null)).toBeFalsy();
@@ -1804,38 +1805,61 @@ describe('arrayEquals', () => {
         expect(arrayEquals(['a', 'b'], ['A', 'b'], false)).toBeFalsy();
         expect(arrayEquals(['a', 'b'], ['B', 'A'], false)).toBeFalsy();
     });
+
+    test('does not mutate original arrays', () => {
+        const arrA = ['b', 'a'];
+        const arrB = ['a', 'b'];
+        arrayEquals(arrA, arrB, true);
+        expect(arrA[0]).toBe('b');
+        expect(arrB[0]).toBe('a');
+    });
+
+    test('handles delimiter collision', () => {
+        expect(arrayEquals(['a;b', 'c'], ['a', 'b;c'])).toBeFalsy();
+    });
+
+    test('handles numeric-string collisions', () => {
+        expect(arrayEquals(['1', '23'], ['12', '3'])).toBeFalsy();
+    });
+
+    test('handles duplicate elements correctly with ignoreOrder', () => {
+        expect(arrayEquals(['a', 'a', 'b'], ['a', 'b', 'b'], true)).toBeFalsy();
+        expect(arrayEquals(['a', 'a', 'b'], ['a', 'b', 'b'], false)).toBeFalsy();
+        expect(arrayEquals(['a', 'a', 'b'], ['a', 'b', 'a'], true)).toBeTruthy();
+        expect(arrayEquals(['a', 'a', 'b'], ['a', 'b', 'a'], false)).toBeFalsy();
+    });
 });
 
 describe('getValueFromRow', () => {
     test('no row', () => {
-        expect(getValueFromRow(undefined, 'Name')).toEqual(undefined);
-        expect(getValueFromRow({}, 'Name')).toEqual(undefined);
+        expect(getValueFromRow(undefined, 'Name')).toBeUndefined();
+        expect(getValueFromRow({}, 'Name')).toBeUndefined();
     });
 
     test('returns value', () => {
         const row = { Name: 'test' };
         expect(getValueFromRow(row, 'Name')).toEqual('test');
         expect(getValueFromRow(row, 'name')).toEqual('test');
-        expect(getValueFromRow(row, 'bogus')).toEqual(undefined);
+        expect(getValueFromRow(row, 'bogus')).toBeUndefined();
     });
 
     test('returns value from object', () => {
         const row = { Name: { value: 'test' } };
         expect(getValueFromRow(row, 'Name')).toEqual('test');
         expect(getValueFromRow(row, 'name')).toEqual('test');
-        expect(getValueFromRow(row, 'bogus')).toEqual(undefined);
+        expect(getValueFromRow(row, 'bogus')).toBeUndefined();
     });
 
     test('returns value from array', () => {
         const flatRow = { Name: ['test1', 'test2'] };
-        expect(getValueFromRow(flatRow, 'Name')).toEqual(undefined);
-        expect(getValueFromRow(flatRow, 'name')).toEqual(undefined);
-        expect(getValueFromRow(flatRow, 'bogus')).toEqual(undefined);
+        expect(getValueFromRow(flatRow, 'Name')).toBeUndefined();
+        expect(getValueFromRow(flatRow, 'name')).toBeUndefined();
+        expect(getValueFromRow(flatRow, 'bogus')).toBeUndefined();
 
         const nestedRow = { Name: [{ value: 'test1' }, { value: 'test2' }] };
         expect(getValueFromRow(nestedRow, 'Name')).toEqual('test1');
         expect(getValueFromRow(nestedRow, 'name')).toEqual('test1');
-        expect(getValueFromRow(nestedRow, 'bogus')).toEqual(undefined);
+        expect(getValueFromRow(nestedRow, 'bogus')).toBeUndefined();
     });
 });
 

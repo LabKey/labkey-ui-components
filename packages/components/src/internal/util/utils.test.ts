@@ -50,7 +50,6 @@ import {
     isSimpleQuotedMultiLine,
     joinMultiValueForExport,
     makeCommaSeparatedString,
-    parseCsvString,
     parseScientificInt,
     quoteValueWithDelimiters,
     splitMultiValueForImport,
@@ -1454,58 +1453,6 @@ describe('findMissingValues', () => {
     test('gaps everywhere', () => {
         expect(findMissingValues([2, 4, 6], ['a', 'b', 'c', 'd', 'e', 'f'])).toStrictEqual(['a', 'c', 'e']);
         expect(findMissingValues([3], ['a', 'b', 'c', 'd', 'e', 'f'])).toStrictEqual(['a', 'b', 'd', 'e', 'f']);
-    });
-});
-
-describe('parseCsvString', () => {
-    test('no value', () => {
-        expect(parseCsvString(null, ',')).toBeUndefined();
-        expect(parseCsvString(undefined, ';')).toBeUndefined();
-        expect(parseCsvString('', undefined)).toBeUndefined();
-        expect(parseCsvString(null, undefined)).toBeUndefined();
-    });
-
-    test('no quotes', () => {
-        expect(parseCsvString('', '\t')).toStrictEqual([]);
-        expect(parseCsvString('abcd', ' ')).toStrictEqual(['abcd']);
-        expect(parseCsvString('a,b,c', ',')).toStrictEqual(['a', 'b', 'c']);
-        expect(parseCsvString(',b,c,', ',')).toStrictEqual(['', 'b', 'c']);
-        expect(parseCsvString('a,,c', ',')).toStrictEqual(['a', '', 'c']);
-        expect(parseCsvString('a\tb\tc', '\t')).toStrictEqual(['a', 'b', 'c']);
-    });
-
-    test('quote as delimiter', () => {
-        expect(() => parseCsvString('a"b"c"', '"')).toThrow('Unsupported delimiter: "');
-    });
-
-    test('quoted values', () => {
-        expect(parseCsvString('a,"b","c,d"', ',')).toStrictEqual(['a', '"b"', '"c,d"']);
-        expect(parseCsvString(',"b","c,d"', ',')).toStrictEqual(['', '"b"', '"c,d"']);
-        expect(parseCsvString('a,"b","c', ',')).toStrictEqual(['a', '"b"', '"c']);
-        expect(parseCsvString('a,"b",c"', ',')).toStrictEqual(['a', '"b"', 'c"']);
-        expect(parseCsvString('"b"', ',')).toStrictEqual(['"b"']);
-    });
-
-    test('double quotes', () => {
-        expect(parseCsvString('a,"b""b2","c,d"', ',')).toStrictEqual(['a', '"b""b2"', '"c,d"']);
-        expect(parseCsvString('"b""b2""b3"""', ',')).toStrictEqual(['"b""b2""b3"""']);
-    });
-
-    test('remove quotes', () => {
-        expect(parseCsvString('a,"b","c,d"', ',', true)).toStrictEqual(['a', 'b', 'c,d']);
-        expect(parseCsvString(',"b","c,d"', ',', true)).toStrictEqual(['', 'b', 'c,d']);
-        expect(parseCsvString('a,"b","c', ',', true)).toStrictEqual(['a', 'b', '"c']);
-        expect(parseCsvString('a,"b",c"', ',', true)).toStrictEqual(['a', 'b', 'c"']);
-        expect(parseCsvString('"b"', ',', true)).toStrictEqual(['b']);
-        expect(parseCsvString('a,"b""b2","c,d"', ',', true)).toStrictEqual(['a', 'b"b2', 'c,d']);
-        expect(parseCsvString('"b""b2""b3"""', ',', true)).toStrictEqual(['b"b2"b3"']);
-        expect(parseCsvString('"a,123', ',', true)).toStrictEqual(['"a', '123']);
-        expect(parseCsvString('"a,"123', ',', true)).toStrictEqual(['"a', '"123']);
-        expect(parseCsvString('"a,"123', ', ', true)).toStrictEqual(['"a,"123']);
-        expect(parseCsvString('"a, "123', ',', true)).toStrictEqual(['"a', ' "123']);
-        expect(parseCsvString('"sam"', ',', true)).toStrictEqual(['sam']);
-        expect(parseCsvString('"a""b"', ',', true)).toStrictEqual(['a"b']);
-        expect(parseCsvString('"a"b"', ',', true)).toStrictEqual(['"a"b"']);
     });
 });
 

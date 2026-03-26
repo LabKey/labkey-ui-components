@@ -1422,7 +1422,7 @@ function parsePaste(value: string): ParsePastePayload {
     let numCols = 0;
     let data = List<List<string>>();
 
-    if (value === undefined || value == null || typeof value !== 'string') {
+    if (value == null || typeof value !== 'string') {
         return { data, numCols, numRows: 0 };
     }
 
@@ -1445,7 +1445,7 @@ function parsePaste(value: string): ParsePastePayload {
             data = data.push(columns);
         });
     } else {
-        // fall back to line by line processing without parsing, to preserver quotes
+        // fall back to line by line processing without parsing, to preserve quotes
         value.split('\n').forEach(rv => {
             const columns = List(rv.split('\t'));
             if (numCols < columns.size) {

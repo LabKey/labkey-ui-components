@@ -622,33 +622,12 @@ export function handleSelectRowsResponse(response: Query.Response, queryInfo: Qu
     };
 }
 
-// deprecated
-// exported for jest testing
-export function quoteValueColumnWithDelimiters(
-    selectRowsResult: ISelectRowsResult,
-    valueColumn: string,
-    delimiter: string,
-    multiple = true
-): ISelectRowsResult {
-    const rowMap = selectRowsResult.models[selectRowsResult.key];
-
-    Object.values(rowMap).forEach(row => {
-        const cell = row[valueColumn];
-        if (Utils.isString(cell?.value)) {
-            cell.displayValue = cell.displayValue ?? cell.value;
-        }
-    });
-
-    return selectRowsResult;
-}
-
 export function searchRows(
     selectRowsConfig,
     token: any,
     valueColumn: string,
     delimiter: string,
     exactColumn?: string,
-    multiple?: boolean
 ): Promise<ISelectRowsResult> {
     return new Promise((resolve, reject) => {
         let exactFilters, qFilters;

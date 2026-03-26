@@ -227,8 +227,7 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
         filterVal,
         model.valueColumn,
         model.delimiter,
-        addExactFilter ? displayColumn : undefined,
-        model.multiple
+        addExactFilter ? displayColumn : undefined
     );
 }
 

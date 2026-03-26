@@ -650,71 +650,10 @@ export const handleFileInputChange = (
     };
 };
 
-// deprecated, use splitMultiValueForImport instead which uses PapaParse and is more robust for handling edge cases with quoted values, delimiters in values, etc.
-export function parseCsvString(value: string, delimiter: string, removeQuotes?: boolean): string[] {
-    if (delimiter === '"') throw 'Unsupported delimiter: ' + delimiter;
-
-    if (!delimiter) return undefined;
-
-    if (value == null) return undefined;
-
-    let start = 0;
-    const parsedValues = [];
-    while (start < value.length) {
-        let end;
-        const ch = value[start];
-        if (ch === delimiter) {
-            // empty string case
-            end = start;
-            parsedValues.push('');
-        } else if (ch === '"') {
-            // starting a quoted value
-            end = start;
-            while (true) {
-                // find the end of the quoted value
-                end = value.indexOf('"', end + 1);
-                if (end === -1) break;
-                if (end === value.length - 1 || value[end + 1] !== '"') {
-                    // end quote at end of string or without double quote
-                    break;
-                }
-                end++; // skip double ""
-            }
-            // if no ending quote, don't remove quotes;
-            if (end === -1 || end !== value.length - 1) {
-                let isCurrentDelimiterOrQuote = true;
-                if (end > -1) {
-                    const nextChar = value[end + 1];
-                    // Issue 51056: "a, "b should be parsed to ["a, "b], not [a, ]
-                    isCurrentDelimiterOrQuote = nextChar === '"' || nextChar === delimiter;
-                }
-
-                if (end === -1 || !isCurrentDelimiterOrQuote) {
-                    end = value.indexOf(delimiter, start);
-                    if (end === -1) end = value.length;
-                    parsedValues.push(value.substring(start, end));
-                    start = end + delimiter.length;
-                    continue;
-                }
-            }
-            let parsedValue = removeQuotes ? value.substring(start + 1, end) : value.substring(start, end + 1); // start is at the quote
-            if (removeQuotes && parsedValue.indexOf('""') !== -1) {
-                parsedValue = parsedValue.replace(/""/g, '"');
-            }
-            parsedValues.push(parsedValue);
-            end++; // get past the last "
-        } else {
-            end = value.indexOf(delimiter, start);
-            if (end === -1) end = value.length;
-            parsedValues.push(value.substring(start, end));
-        }
-        start = end + delimiter.length;
-    }
-    return parsedValues;
-}
-
 const TSV_ESCAPE_CHARS = ['\r', '\n', '\\', '"'];
 function hasTsvEscapeChar(value: any, delimiter: string): boolean {
+    if (value.length === 0) return false;
+
     const allEscapedChars = [...TSV_ESCAPE_CHARS, delimiter];
     // if start or end with whitespace, we need to quote to preserve that whitespace when importing back from CSV
     if (value[0].trim() === '' || value[value.length - 1].trim() === '') return true;
@@ -790,7 +729,7 @@ export function splitMultiValueForImport(
     delimiter = ',',
     removeEmpty = true,
     trimSpace?: boolean
-): string[] {
+): string[] | null | undefined {
     if (str === null) return null;
     if (str === undefined) return undefined;
     if (!str) {

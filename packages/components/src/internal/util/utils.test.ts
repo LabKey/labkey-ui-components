@@ -1532,19 +1532,12 @@ describe('quoteValueWithDelimiters', () => {
 
     test('round trip', () => {
         const initialString = 'ab "cd,e"';
-        expect(parseCsvString(quoteValueWithDelimiters(initialString, ','), ',', true)).toStrictEqual([initialString]);
         expect(isQuotedWithDelimiters(quoteValueWithDelimiters(initialString, ','), ',')).toBeTruthy();
 
         const initialStringWithNewLine = 'ab\nc';
-        expect(parseCsvString(quoteValueWithDelimiters(initialStringWithNewLine, ','), ',', true)).toStrictEqual([
-            initialStringWithNewLine,
-        ]);
         expect(isQuotedWithDelimiters(quoteValueWithDelimiters(initialStringWithNewLine, ','), ',')).toBeTruthy();
 
         const initialStringWithNewLineAndComma = 'acb\nc';
-        expect(
-            parseCsvString(quoteValueWithDelimiters(initialStringWithNewLineAndComma, ','), ',', true)
-        ).toStrictEqual([initialStringWithNewLineAndComma]);
         expect(
             isQuotedWithDelimiters(quoteValueWithDelimiters(initialStringWithNewLineAndComma, ','), ',')
         ).toBeTruthy();

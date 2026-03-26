@@ -6,7 +6,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { Container } from '../base/models/Container';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
-import { capitalizeFirstChar, makeCommaSeparatedString } from '../../util/utils';
+import { capitalizeFirstChar, makeCommaSeparatedString, pronoun } from '../../util/utils';
 import { HelpLink, MOVE_SAMPLES_TOPIC } from '../../util/helpLinks';
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { AppURL } from '../../url/AppURL';
@@ -241,12 +241,12 @@ export const getMoveConfirmationProperties = (
         text = `${text} ${noun} will be moved.`;
     } else {
         const cannotMoveNoun = numCannotMove === 1 ? nounSingular : nounPlural;
-        const pronoun = numCannotMove === 1 ? 'it' : 'they';
+        const _pronoun = pronoun(numCannotMove, 'they');
         const verb = numCannotMove === 1 ? 'has' : 'have';
         const parts = [];
         if (numNotPermitted > 0) parts.push('you lack the proper permissions');
-        if (numNotAllowed > 0) parts.push(`${pronoun} ${verb} a status or related data that prevents moving`);
-        if (numMissing > 0) parts.push(`${pronoun} may have been deleted`);
+        if (numNotAllowed > 0) parts.push(`${_pronoun} ${verb} a status or related data that prevents moving`);
+        if (numMissing > 0) parts.push(`${_pronoun} may have been deleted`);
         const error = makeCommaSeparatedString(parts, ', or ', '.');
 
         if (numCanMove === 0) {

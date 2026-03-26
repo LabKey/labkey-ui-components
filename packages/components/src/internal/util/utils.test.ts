@@ -50,6 +50,7 @@ import {
     makeCommaSeparatedString,
     parseCsvString,
     parseScientificInt,
+    pronoun,
     quoteValueWithDelimiters,
     styleStringToObj,
     toLowerSafe,
@@ -58,24 +59,22 @@ import {
     withTransformedKeys,
 } from './utils';
 
-const emptyList = List<string>();
-
 describe('toLowerSafe', () => {
     test('strings', () => {
-        expect(toLowerSafe(List<string>(['TEST ', ' Test', 'TeSt', 'test']))).toEqual(
-            List<string>(['test ', ' test', 'test', 'test'])
+        expect(toLowerSafe(['TEST ', ' Test', 'TeSt', 'test'])).toEqual(
+            ['test ', ' test', 'test', 'test']
         );
     });
 
     test('numbers', () => {
-        expect(toLowerSafe(List<string>([1, 2, 3]))).toEqual(emptyList);
-        expect(toLowerSafe(List<string>([1.0]))).toEqual(emptyList);
-        expect(toLowerSafe(List<string>([1.0, 2]))).toEqual(emptyList);
+        expect(toLowerSafe([1, 2, 3])).toEqual([]);
+        expect(toLowerSafe([1.0])).toEqual([]);
+        expect(toLowerSafe([1.0, 2])).toEqual([]);
     });
 
     test('strings and numbers', () => {
-        expect(toLowerSafe(List<string>([1, 2, 'TEST ', ' Test', 3.0, 4.4, 'TeSt', 'test']))).toEqual(
-            List<string>(['test ', ' test', 'test', 'test'])
+        expect(toLowerSafe([1, 2, 'TEST ', ' Test', 3.0, 4.4, 'TeSt', 'test'])).toEqual(
+           ['test ', ' test', 'test', 'test']
         );
     });
 });
@@ -93,6 +92,18 @@ describe('camelCaseToTitleCase', () => {
         for (const [key, value] of Object.entries(testStrings)) {
             expect(camelCaseToTitleCase(key)).toEqual(value);
         }
+    });
+});
+
+describe('pronoun', () => {
+    test('singular', () => {
+        expect(pronoun(1)).toBe('it');
+        expect(pronoun(1, 'some')).toBe('it');
+    });
+    test('plural', () => {
+        expect(pronoun(2)).toBe('them');
+        expect(pronoun(2, 'some')).toBe('some');
+        expect(pronoun(undefined)).toBe('them');
     });
 });
 

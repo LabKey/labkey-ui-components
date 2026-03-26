@@ -69,6 +69,7 @@ import {
     joinMultiValueForExport,
     makeCommaSeparatedString,
     parseScientificInt,
+    pronoun,
     quoteValueWithDelimiters,
     setIsTestEnv,
     splitMultiValueForImport,
@@ -542,6 +543,7 @@ import {
     createOrderedSnapshotSelectionKey,
     createSnapshotSelectionKey,
     createSnapshotSelectionKeyStr,
+    filterArrayToString,
     runDetailsColumnsForQueryModel,
 } from './public/QueryModel/utils';
 import { CONFIRM_MESSAGE, useRouteLeave } from './internal/util/RouteLeave';
@@ -1301,6 +1303,7 @@ export {
     FileInput,
     FileTree,
     FilterAction,
+    filterArrayToString,
     FilterCriteriaRenderer,
     FilterStatus,
     FIND_BY_IDS_QUERY_PARAM,
@@ -1594,6 +1597,7 @@ export {
     ProductMenuModel,
     ProductNavigationMenu,
     Progress,
+    pronoun,
     pushParameters,
     QUERY_UPDATE_AUDIT_QUERY,
     QueryColumn,

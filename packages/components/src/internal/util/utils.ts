@@ -91,7 +91,7 @@ export function withTransformedKeys(obj: Record<string, any>, keyTransformFn: (v
 }
 
 /**
- * Returns a copy of List<string> and ensures that in copy all values are lower case strings.
+ * Returns a copy of string[] and ensures that in copy all values are lower case strings.
  * @param a
  */
 export function toLowerSafe(a: string[]): string[] {
@@ -106,6 +106,10 @@ export function camelCaseToTitleCase(text: string): string {
     const camelEdges = /([A-Z](?=[A-Z][a-z])|[^A-Z](?=[A-Z])|[a-zA-Z](?=[^a-zA-Z]))/g;
     const saferText = text.replace(camelEdges, '$1 ');
     return saferText.charAt(0).toUpperCase() + saferText.slice(1);
+}
+
+export function pronoun(count, plural = 'them'): string {
+    return count === 1 ? 'it' : plural;
 }
 
 export function not(predicate: (...args: any[]) => boolean): (...args: any[]) => boolean {

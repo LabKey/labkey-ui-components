@@ -193,6 +193,7 @@ export class EntityIdCreationModel extends Record({
     initialEntityType: undefined,
     isError: false,
     isInit: false,
+    jobId: undefined,
     originalParents: Array<string>(),
     parentOptions: Map<string, List<IParentOption>>(),
     entityParents: Map<string, List<EntityParentType>>(),
@@ -211,6 +212,7 @@ export class EntityIdCreationModel extends Record({
     declare initialEntityType: any;
     declare isError: boolean;
     declare isInit: boolean;
+    declare jobId: string;
     declare originalParents: string[]; // taken from the query string
     declare parentOptions: Map<string, List<IParentOption>>; // map from query name to the options for the different types of parents allowed
     declare entityParents: Map<string, List<EntityParentType>>; // map from query name to the parents already selected for that query

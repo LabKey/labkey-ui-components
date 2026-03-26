@@ -15,6 +15,7 @@ import {
     getCommonDataValues,
     getUpdatedData,
     makeCommaSeparatedString,
+    pronoun,
 } from '../../util/utils';
 
 import { ComponentsAPIWrapper } from '../../APIWrapper';
@@ -66,8 +67,7 @@ export const SelectionWarning: FC<SelectionWarningProps> = props => {
     }
 
     if (missingCount > 0) {
-        const pronoun = missingCount > 1 ? 'they' : 'it';
-        messages.push(`Cannot edit ${missingCount} of the selected ${nounPlural}, ${pronoun} may have been deleted.`);
+        messages.push(`Cannot edit ${missingCount} of the selected ${nounPlural}, ${pronoun(missingCount, 'they')} may have been deleted.`);
     }
 
     if (messages.length === 0) return null;
@@ -102,12 +102,11 @@ export function errorMessage(
     if (missingCount + notPermittedCount !== selectedCount) return undefined;
 
     const noun = selectedCount > 1 ? nounPlural : nounSingular;
-    const pronoun = selectedCount > 1 ? 'they' : 'it';
     const parts = [];
 
     if (notPermittedCount > 0) parts.push(`you do not have the required permissions`);
 
-    if (missingCount > 0) parts.push(`${pronoun} may have been deleted`);
+    if (missingCount > 0) parts.push(`${pronoun(selectedCount, 'they')} may have been deleted`);
 
     return `Cannot edit selected ${noun}, ${makeCommaSeparatedString(parts, ', or ', '.')}`;
 }

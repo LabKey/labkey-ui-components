@@ -278,7 +278,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
                 userDisplayName: caseInsensitive(row, 'UserId/DisplayName').value,
                 userId: caseInsensitive(row, 'UserId').value,
                 userEmail: caseInsensitive(row, 'UserId/Email').value,
-                userActive: caseInsensitive(row, 'UserId/Active').value
+                userActive: caseInsensitive(row, 'UserId/Active').value,
             });
             return memberships;
         }, []);

@@ -15,7 +15,7 @@ export type GroupMembership = {
     groupId: number;
     groupName: string;
     userDisplayName: string;
-    userActive: boolean;
+    userActive?: boolean;
     userEmail: string;
     userId: number;
 };

@@ -1,11 +1,9 @@
 import { OrderedMap } from 'immutable';
-import { Ajax, PermissionRoles, PermissionTypes, Utils } from '@labkey/api';
+import { Ajax, Utils } from '@labkey/api';
 
 import { buildURL } from '../../url/AppURL';
-import { hasAllPermissions, hasAnyPermissions, User } from '../base/models/User';
+import { User } from '../base/models/User';
 import { caseInsensitive } from '../../util/utils';
-
-import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../administration/constants';
 
 import { formatDate, parseDate } from '../../util/Date';
 
@@ -58,7 +56,7 @@ export function getUserDetailsRowData(user: User, data: OrderedMap<string, any>,
         }
 
         if (value !== undefined) {
-            formData.append(key, value);
+            formData.append(Utils.encodeFormName(key), value);
         }
     });
 

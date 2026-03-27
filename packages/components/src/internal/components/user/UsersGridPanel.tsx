@@ -122,7 +122,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
 
     initQueryModel = (usersView: string): void => {
         const { actions, container, user } = this.props;
-        // GitHub Issue 847: is user has manageUsersPermission allow them to select / view all site users
+        // GitHub Issue 847: if user has manageUsersPermission allow them to select / view all site users
         const schemaQuery = usersView === 'site' && user.hasManageUsersPermission() ? SCHEMAS.CORE_TABLES.SITE_USERS : SCHEMAS.CORE_TABLES.USERS;
         const baseFilters = usersView === 'all' || usersView === 'site' ? [] : [Filter.create('active', usersView === 'active')];
 
@@ -144,7 +144,11 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
     };
 
     getUsersView(paramVal: string): string {
-        return paramVal === 'inactive' || paramVal === 'all' || paramVal === 'site' ? paramVal : 'active'; // default to view active application users
+        // only allow 'site' view for user.hasManageUsersPermission()
+        if (paramVal === 'site' && this.props.user.hasManageUsersPermission()) {
+            return paramVal;
+        }
+        return paramVal === 'inactive' || paramVal === 'all' ? paramVal : 'active'; // default to view active application users
     }
 
     getUsersModelId(): string {
@@ -332,7 +336,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
             title = 'Site Users';
         }
         else if (usersView !== 'all') {
-            title = capitalizeFirstChar(usersView) + ' Application Users'
+            title = capitalizeFirstChar(usersView) + ' Application Users';
         }
 
         return (

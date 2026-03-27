@@ -76,7 +76,7 @@ interface State {
     selectedUserId: number;
     // valid options are 'create', 'deactivate', 'reactivate', 'delete', undefined
     showDialog: string;
-    // valid options are 'active', 'inactive', 'all'
+    // valid options are 'active', 'inactive', 'all', 'site'
     usersView: string;
 }
 
@@ -121,14 +121,16 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
     }
 
     initQueryModel = (usersView: string): void => {
-        const { actions, container } = this.props;
-        const baseFilters = usersView === 'all' ? [] : [Filter.create('active', usersView === 'active')];
+        const { actions, container, user } = this.props;
+        // GitHub Issue 847: is user has manageUsersPermission allow them to select / view all site users
+        const schemaQuery = usersView === 'site' && user.hasManageUsersPermission() ? SCHEMAS.CORE_TABLES.SITE_USERS : SCHEMAS.CORE_TABLES.USERS;
+        const baseFilters = usersView === 'all' || usersView === 'site' ? [] : [Filter.create('active', usersView === 'active')];
 
         actions.addModel(
             {
                 id: this.getUsersModelId(),
                 containerPath: container.path,
-                schemaQuery: SCHEMAS.CORE_TABLES.USERS,
+                schemaQuery,
                 baseFilters,
                 omittedColumns: OMITTED_COLUMNS,
                 bindURL: true,
@@ -142,7 +144,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
     };
 
     getUsersView(paramVal: string): string {
-        return paramVal === 'inactive' || paramVal === 'all' ? paramVal : 'active'; // default to view active users
+        return paramVal === 'inactive' || paramVal === 'all' || paramVal === 'site' ? paramVal : 'active'; // default to view active application users
     }
 
     getUsersModelId(): string {
@@ -271,7 +273,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                         Create
                     </DisableableButton>
                 )}
-                <ManageDropdownButton showIcon={false}>
+                <ManageDropdownButton showIcon={false} pullRight={false}>
                     {user.hasManageUsersPermission() && usersView === 'active' && (
                         <SelectionMenuItem
                             text="Deactivate Users"
@@ -300,14 +302,17 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                             nounPlural="users"
                         />
                     )}
-                    {usersView !== 'active' && (
-                        <MenuItem onClick={() => this.toggleViewActive('active')}>View Active Users</MenuItem>
-                    )}
                     {usersView !== 'all' && (
-                        <MenuItem onClick={() => this.toggleViewActive('all')}>View All Users</MenuItem>
+                        <MenuItem onClick={() => this.toggleViewActive('all')}>View All Application Users</MenuItem>
+                    )}
+                    {user.hasManageUsersPermission() && usersView !== 'site' && (
+                        <MenuItem onClick={() => this.toggleViewActive('site')}>View All Site Users</MenuItem>
+                    )}
+                    {usersView !== 'active' && (
+                        <MenuItem onClick={() => this.toggleViewActive('active')}>View Active Application Users</MenuItem>
                     )}
                     {usersView !== 'inactive' && (
-                        <MenuItem onClick={() => this.toggleViewActive('inactive')}>View Inactive Users</MenuItem>
+                        <MenuItem onClick={() => this.toggleViewActive('inactive')}>View Inactive Application Users</MenuItem>
                     )}
                 </ManageDropdownButton>
             </div>
@@ -322,6 +327,14 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
         // don't pass container from this.props as we want to check serverContext.container
         const isAppHome = isAppHomeFolder();
 
+        let title = 'Application Users';
+        if (user.hasManageUsersPermission() && usersView === 'site') {
+            title = 'Site Users';
+        }
+        else if (usersView !== 'all') {
+            title = capitalizeFirstChar(usersView) + ' Application Users'
+        }
+
         return (
             <>
                 <div className="row">
@@ -332,7 +345,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                                 actions={actions}
                                 model={model}
                                 loadOnMount={false}
-                                title={'Application ' + capitalizeFirstChar(usersView) + ' Users'}
+                                title={title}
                                 ButtonsComponent={() => this.renderButtons()}
                                 highlightLastSelectedRow
                                 showChartMenu={false}

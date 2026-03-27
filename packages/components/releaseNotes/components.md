@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- GitHub Issue 847: App User Management page to allow users with manageUsersPermission to select / view all site users
+
 ### version 7.25.0
 *Released*: 25 March 2026
 - Update `isAllSamplesSchema` to account for move of `JobInputSamples` to `workflow` schema

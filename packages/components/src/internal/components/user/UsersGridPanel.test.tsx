@@ -53,6 +53,14 @@ describe('<UsersGridPanel/>', () => {
                 0,
                 'user-management-users-inactive'
             ),
+            'user-management-users-site': makeTestQueryModel(
+                SCHEMAS.CORE_TABLES.SITE_USERS,
+                new QueryInfo({}),
+                {},
+                [],
+                0,
+                'user-management-users-site'
+            ),
         },
         searchParams: new URLSearchParams(),
         setSearchParams: jest.fn(),
@@ -64,7 +72,7 @@ describe('<UsersGridPanel/>', () => {
         renderWithAppContext(component);
         expect(document.querySelectorAll('.grid-panel')).toHaveLength(1);
         expect(document.querySelectorAll('.user-details-panel')).toHaveLength(1);
-        expect(document.querySelectorAll('.view-header')[0].textContent).toBe('Application Active Users');
+        expect(document.querySelectorAll('.view-header')[0].textContent).toBe('Active Application Users');
         const buttons = document.querySelectorAll('.grid-panel__button-bar-left button');
         expect(buttons).toHaveLength(4);
         expect(buttons[0].textContent).toBe('Create');
@@ -72,11 +80,12 @@ describe('<UsersGridPanel/>', () => {
         expect(document.querySelectorAll('.dropdown-toggle')[0].textContent.trim()).toEqual('Manage');
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
-        expect(menuItems).toHaveLength(10);
+        expect(menuItems).toHaveLength(11);
         expect(menuItems[0].textContent).toBe('Deactivate Users');
         expect(menuItems[1].textContent).toBe('Delete Users');
-        expect(menuItems[2].textContent).toBe('View All Users');
-        expect(menuItems[3].textContent).toBe('View Inactive Users');
+        expect(menuItems[2].textContent).toBe('View All Application Users');
+        expect(menuItems[3].textContent).toBe('View All Site Users');
+        expect(menuItems[4].textContent).toBe('View Inactive Application Users');
     });
 
     test('without delete or deactivate', () => {
@@ -85,7 +94,7 @@ describe('<UsersGridPanel/>', () => {
         renderWithAppContext(component);
         expect(document.querySelectorAll('.grid-panel')).toHaveLength(1);
         expect(document.querySelectorAll('.user-details-panel')).toHaveLength(1);
-        expect(document.querySelectorAll('.view-header')[0].textContent).toBe('Application Active Users');
+        expect(document.querySelectorAll('.view-header')[0].textContent).toBe('Active Application Users');
         const buttons = document.querySelectorAll('.grid-panel__button-bar-left button');
         expect(buttons).toHaveLength(4);
         expect(buttons[0].textContent).toBe('Create');
@@ -94,8 +103,8 @@ describe('<UsersGridPanel/>', () => {
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
         expect(menuItems).toHaveLength(8);
-        expect(menuItems[0].textContent).toBe('View All Users');
-        expect(menuItems[1].textContent).toBe('View Inactive Users');
+        expect(menuItems[0].textContent).toBe('View All Application Users');
+        expect(menuItems[1].textContent).toBe('View Inactive Application Users');
     });
 
     test('without create, delete, or deactivate', () => {
@@ -104,7 +113,7 @@ describe('<UsersGridPanel/>', () => {
         renderWithAppContext(component);
         expect(document.querySelectorAll('.grid-panel')).toHaveLength(1);
         expect(document.querySelectorAll('.user-details-panel')).toHaveLength(1);
-        expect(document.querySelectorAll('.view-header')[0].textContent).toBe('Application Active Users');
+        expect(document.querySelectorAll('.view-header')[0].textContent).toBe('Active Application Users');
         const buttons = document.querySelectorAll('.grid-panel__button-bar-left button');
         expect(buttons).toHaveLength(3);
         expect(buttons[0].textContent).toBe('Manage');
@@ -112,8 +121,8 @@ describe('<UsersGridPanel/>', () => {
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
         expect(menuItems).toHaveLength(8);
-        expect(menuItems[0].textContent).toBe('View All Users');
-        expect(menuItems[1].textContent).toBe('View Inactive Users');
+        expect(menuItems[0].textContent).toBe('View All Application Users');
+        expect(menuItems[1].textContent).toBe('View Inactive Application Users');
     });
 
     test('inactive users view', () => {
@@ -124,7 +133,7 @@ describe('<UsersGridPanel/>', () => {
         renderWithAppContext(component);
         expect(document.querySelectorAll('.grid-panel')).toHaveLength(1);
         expect(document.querySelectorAll('.user-details-panel')).toHaveLength(1);
-        expect(document.querySelectorAll('.view-header')[0].textContent).toBe('Application Inactive Users');
+        expect(document.querySelectorAll('.view-header')[0].textContent).toBe('Inactive Application Users');
         const buttons = document.querySelectorAll('.grid-panel__button-bar-left button');
         expect(buttons).toHaveLength(4);
         expect(buttons[0].textContent).toBe('Create');
@@ -132,11 +141,12 @@ describe('<UsersGridPanel/>', () => {
         expect(document.querySelectorAll('.dropdown-toggle')[0].textContent.trim()).toEqual('Manage');
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
-        expect(menuItems).toHaveLength(10);
+        expect(menuItems).toHaveLength(11);
         expect(menuItems[0].textContent).toBe('Delete Users');
         expect(menuItems[1].textContent).toBe('Reactivate Users');
-        expect(menuItems[2].textContent).toBe('View Active Users');
-        expect(menuItems[3].textContent).toBe('View All Users');
+        expect(menuItems[2].textContent).toBe('View All Application Users');
+        expect(menuItems[3].textContent).toBe('View All Site Users');
+        expect(menuItems[4].textContent).toBe('View Active Application Users');
     });
 
     test('all users view', () => {
@@ -147,7 +157,7 @@ describe('<UsersGridPanel/>', () => {
         renderWithAppContext(component);
         expect(document.querySelectorAll('.grid-panel')).toHaveLength(1);
         expect(document.querySelectorAll('.user-details-panel')).toHaveLength(1);
-        expect(document.querySelectorAll('.view-header')[0].textContent).toBe('Application All Users');
+        expect(document.querySelectorAll('.view-header')[0].textContent).toBe('Application Users');
         const buttons = document.querySelectorAll('.grid-panel__button-bar-left button');
         expect(buttons).toHaveLength(4);
         expect(buttons[0].textContent).toBe('Create');
@@ -155,10 +165,34 @@ describe('<UsersGridPanel/>', () => {
         expect(document.querySelectorAll('.dropdown-toggle')[0].textContent.trim()).toEqual('Manage');
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
-        expect(menuItems).toHaveLength(9);
+        expect(menuItems).toHaveLength(10);
         expect(menuItems[0].textContent).toBe('Delete Users');
-        expect(menuItems[1].textContent).toBe('View Active Users');
-        expect(menuItems[2].textContent).toBe('View Inactive Users');
+        expect(menuItems[1].textContent).toBe('View All Site Users');
+        expect(menuItems[2].textContent).toBe('View Active Application Users');
+        expect(menuItems[3].textContent).toBe('View Inactive Application Users');
+    });
+
+    test('site users view', () => {
+        const component = (
+            <UsersGridPanelImpl {...DEFAULT_PROPS} searchParams={new URLSearchParams({ usersView: 'site' })} />
+        );
+
+        renderWithAppContext(component);
+        expect(document.querySelectorAll('.grid-panel')).toHaveLength(1);
+        expect(document.querySelectorAll('.user-details-panel')).toHaveLength(1);
+        expect(document.querySelectorAll('.view-header')[0].textContent).toBe('Site Users');
+        const buttons = document.querySelectorAll('.grid-panel__button-bar-left button');
+        expect(buttons).toHaveLength(4);
+        expect(buttons[0].textContent).toBe('Create');
+        expect(buttons[1].textContent).toBe('Manage');
+        expect(document.querySelectorAll('.dropdown-toggle')[0].textContent.trim()).toEqual('Manage');
+
+        const menuItems = document.querySelectorAll('.lk-menu-item');
+        expect(menuItems).toHaveLength(10);
+        expect(menuItems[0].textContent).toBe('Delete Users');
+        expect(menuItems[1].textContent).toBe('View All Application Users');
+        expect(menuItems[2].textContent).toBe('View Active Application Users');
+        expect(menuItems[3].textContent).toBe('View Inactive Application Users');
     });
 
     test('active user limit reached', () => {
@@ -176,11 +210,12 @@ describe('<UsersGridPanel/>', () => {
         expect(buttons[0].hasAttribute('disabled')).toBe(true);
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
-        expect(menuItems).toHaveLength(10);
+        expect(menuItems).toHaveLength(11);
         expect(menuItems[0].textContent).toBe('Delete Users');
         expect(menuItems[1].textContent).toBe('Reactivate Users');
-        expect(menuItems[2].textContent).toBe('View Active Users');
-        expect(menuItems[3].textContent).toBe('View All Users');
+        expect(menuItems[2].textContent).toBe('View All Application Users');
+        expect(menuItems[3].textContent).toBe('View All Site Users');
+        expect(menuItems[4].textContent).toBe('View Active Application Users');
     });
 
     test('active user limit not reached', () => {
@@ -198,11 +233,12 @@ describe('<UsersGridPanel/>', () => {
         expect(buttons[0].hasAttribute('disabled')).toBe(false);
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
-        expect(menuItems).toHaveLength(10);
+        expect(menuItems).toHaveLength(11);
         expect(menuItems[0].textContent).toBe('Delete Users');
         expect(menuItems[1].textContent).toBe('Reactivate Users');
-        expect(menuItems[2].textContent).toBe('View Active Users');
-        expect(menuItems[3].textContent).toBe('View All Users');
+        expect(menuItems[2].textContent).toBe('View All Application Users');
+        expect(menuItems[3].textContent).toBe('View All Site Users');
+        expect(menuItems[4].textContent).toBe('View Active Application Users');
     });
 
     test('active user limit disabled', () => {

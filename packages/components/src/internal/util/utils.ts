@@ -695,13 +695,18 @@ export function isQuotedWithDelimiters(value: any, delimiter: string): boolean {
     return strVal.startsWith('"') && strVal.endsWith('"');
 }
 
+export const NEWLINE_CHARS = ['\r', '\n'];
+
 /**
- * Returns true if the value is a string that contains a newline character and is quoted with double quotes,
- * and does not contain any other double quotes.
- * This is used to determine whether we can safely parse a multi-line string as TSV (for paste) without losing its escaped characters.
+ * Returns true if the value is a double-quoted string containing newline characters where no
+ * individual line has more than one internal double quote. This identifies multi-line values
+ * (e.g. multi-row TSV paste like `"col1\tcol2\nval1\tval2"`) that can be safely parsed by
+ * PapaParse without stripping intentional quote characters.
+ *
+ * Returns false when any line contains two or more quotes (indicating CSV-escaped quotes like `""`)
+ * since PapaParse would interpret those as escape sequences.
  * @param value
  */
-export const NEWLINE_CHARS = ['\r', '\n'];
 export function isSimpleQuotedMultiLine(value: any): boolean {
     if (!value || !Utils.isString(value)) {
         return false;
@@ -714,7 +719,8 @@ export function isSimpleQuotedMultiLine(value: any): boolean {
     if (!strVal.startsWith('"') || !strVal.endsWith('"')) return false;
 
     const innerValue = strVal.substring(1, strVal.length - 1);
-    return innerValue.indexOf('"') === -1;
+    const lines = innerValue.split(/\r\n|\r|\n/);
+    return lines.every(line => (line.match(/"/g) || []).length <= 1);
 }
 
 export function joinMultiValueForExport(values: string[], delimiter = ','): string {

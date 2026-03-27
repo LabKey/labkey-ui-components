@@ -1569,9 +1569,10 @@ describe('isSimpleQuotedMultiLine', () => {
         expect(isSimpleQuotedMultiLine('"\r')).toBe(false);
     });
 
-    test('returns false for quoted strings with internal quotes', () => {
+    test('returns false for quoted strings with multiple quotes on the same line', () => {
         expect(isSimpleQuotedMultiLine('"a""b\nc"')).toBe(false);
         expect(isSimpleQuotedMultiLine('"a\n""b"')).toBe(false);
+        expect(isSimpleQuotedMultiLine('"a\nb""c\nd"')).toBe(false);
     });
 
     test('returns true for simple quoted strings with newlines', () => {
@@ -1580,6 +1581,24 @@ describe('isSimpleQuotedMultiLine', () => {
         expect(isSimpleQuotedMultiLine('"a\r\nb"')).toBe(true);
         expect(isSimpleQuotedMultiLine('"a\nb\nc"')).toBe(true);
         expect(isSimpleQuotedMultiLine('"\n"')).toBe(true);
+    });
+
+    test('returns true for multi-column quoted multi-line TSV', () => {
+        // e.g. "col1\tcol2\nval1\tval2" — each line has at most one quote (none here)
+        expect(isSimpleQuotedMultiLine('"col1\tcol2\nval1\tval2"')).toBe(true);
+        expect(isSimpleQuotedMultiLine('"a\nb\r\nc"')).toBe(true);
+    });
+
+    test('returns true when a line has exactly one quote', () => {
+        // one quote per line is allowed (e.g. a literal quote character in the data)
+        expect(isSimpleQuotedMultiLine('"a"\nb"')).toBe(true);
+        expect(isSimpleQuotedMultiLine('"a\n"b"')).toBe(true);
+    });
+
+    test('returns false when a line has more than one quote', () => {
+        expect(isSimpleQuotedMultiLine('"a""\nb"')).toBe(false);
+        expect(isSimpleQuotedMultiLine('"a\n""b"')).toBe(false);
+        expect(isSimpleQuotedMultiLine('"ok\na""b""c\nd"')).toBe(false);
     });
 });
 

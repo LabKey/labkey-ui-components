@@ -625,8 +625,6 @@ export function handleSelectRowsResponse(response: Query.Response, queryInfo: Qu
 export function searchRows(
     selectRowsConfig,
     token: any,
-    valueColumn: string,
-    delimiter: string,
     exactColumn?: string,
 ): Promise<ISelectRowsResult> {
     return new Promise((resolve, reject) => {

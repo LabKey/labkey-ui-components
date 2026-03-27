@@ -1454,7 +1454,8 @@ function parsePaste(value: string): ParsePastePayload {
             data = data.push(columns);
         });
     } else {
-        // fall back to line by line processing without parsing, to preserve quotes
+        // fall back to line by line processing without parsing, to preserve quotes for each cell, so multi-value fields (MVFK, MVTC) can be parsed correctly.
+        // Otherwise, PapaParse will strip quotes, making it impossible to distinguish between a comma that is part of the value vs a comma that is a delimiter for multi-value fields.
         value.split('\n').forEach(rv => {
             const columns = List(rv.split('\t'));
             if (numCols < columns.size) {
@@ -1601,11 +1602,12 @@ async function insertPastedData(
                 } else {
                     let valToValidate = val;
                     if (Utils.isString(val)) {
-                        // GitHub Issue 916: Copying/pasting in the grid doesn't always act as expected
-                        // drag fill always quoteValueWithDelimiters, needs to remove the extra quotes before validating
                         const isMultiLinePasting = NEWLINE_CHARS.find(char => valToValidate.indexOf(char) > -1);
-                        // multiline pasting has already been parsed
+                        // The only case that newline charaxcters would be preserved here is if parsePaste used Papa.parse to parse the tsv,
+                        // in which case extra qutoes are already removed by Papa.parse, so no need for extra parsing.
                         if (!isMultiLinePasting) {
+                            // GitHub Issue 916: Copying/pasting in the grid doesn't always act as expected
+                            // generateColumnFillValues/getCopyValue uses joinMultiValueForExport to prepare copied value, needs to remove the extra quotes before validating
                             const parsedValues = splitMultiValueForImport(val, parseDelimter);
                             if (parsedValues.length === 1) valToValidate = parsedValues[0].trim();
                         }
@@ -1761,10 +1763,7 @@ export function pasteEvent(
 
 function getCellCopyValue(valueDescriptors: List<ValueDescriptor>, delimter: string): string {
     if (valueDescriptors && valueDescriptors.size > 0) {
-        const values = [];
-        valueDescriptors.forEach(vd => {
-            values.push(vd.display !== undefined ? vd.display.toString().trim() : '');
-        });
+        const values = valueDescriptors.map(vd => (vd.display !== undefined ? vd.display.toString().trim() : '')).toArray();
 
         if (values.length > 0) return joinMultiValueForExport(values, delimter);
     }

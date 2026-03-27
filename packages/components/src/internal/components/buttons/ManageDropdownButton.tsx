@@ -21,9 +21,10 @@ interface Props extends PropsWithChildren {
     children: ReactNode;
     disabled?: boolean;
     showIcon?: boolean;
+    pullRight?: boolean;
 }
 
-export const ManageDropdownButton: FC<Props> = ({ children, disabled, showIcon = true }) => {
+export const ManageDropdownButton: FC<Props> = ({ children, disabled, showIcon = true, pullRight = true }) => {
     const buttonLabel: ReactNode = useMemo(
         () => (
             <span>
@@ -40,7 +41,7 @@ export const ManageDropdownButton: FC<Props> = ({ children, disabled, showIcon =
             buttonClassName="manage-dropdown"
             title={buttonLabel}
             noCaret
-            pullRight
+            pullRight={pullRight}
             disabled={disabled}
         >
             {children}

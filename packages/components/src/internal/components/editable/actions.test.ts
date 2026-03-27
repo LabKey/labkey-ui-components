@@ -1150,7 +1150,7 @@ describe('insertPastedData', () => {
         );
     });
 
-    test('pasting multi-line value', async () => {
+    test('pasting multi-line value into a single cell', async () => {
         const em = baseEditorModel.applyChanges({
             selectionCells: [genCellKey(fkOne, 0)],
             selectedColIdx: 0,
@@ -1162,6 +1162,24 @@ describe('insertPastedData', () => {
 
         const cellMessages = changes.cellMessages;
         expect(cellMessages.get(genCellKey(fkOne, 2))).toBeUndefined();
+    });
+
+    test('pasting multi-line values into multiple cells', async () => {
+        const value = '"ab\n' +
+            'cd"\n' +
+            '"another\n' +
+            'line"';
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(fkOne, 0), genCellKey(fkOne, 1)],
+            selectedColIdx: 0,
+            selectedRowIdx: 0,
+        });
+        const changes = await validateAndInsertPastedData(em, value, undefined, true, true, undefined, true);
+        const cellValues = changes.cellValues;
+        expect(cellValues.get(genCellKey(fkOne, 0))).toEqual(List([{ display: 'ab\ncd', raw: 'ab\ncd' }]));
+        expect(cellValues.get(genCellKey(fkOne, 1))).toEqual(
+            List([{ display: 'another\nline', raw: 'another\nline' }])
+        );
     });
 
     test('pasting multi values', async () => {
@@ -1229,37 +1247,6 @@ describe('insertPastedData', () => {
         // Escaped double quotes: CSV escaping is processed
         expect(cellValues.get(genCellKey(fkOne, 2))).toEqual(
             List([{ display: 'say "hello"', raw: 'say "hello"' }])
-        );
-    });
-
-    test('pasting multi-line value into a single cell', async () => {
-        const value = '"ab\ncd"';
-        const em = baseEditorModel.applyChanges({
-            selectionCells: [genCellKey(fkOne, 0)],
-            selectedColIdx: 0,
-            selectedRowIdx: 0,
-        });
-        const changes = await validateAndInsertPastedData(em, value, undefined, true, true, undefined, true);
-        const cellValues = changes.cellValues;
-        expect(cellValues.get(genCellKey(fkOne, 0))).toEqual(List([{ display: 'ab\ncd', raw: 'ab\ncd' }]));
-        expect(changes.cellMessages.get(genCellKey(fkOne, 0))).toBeUndefined();
-    });
-
-    test('pasting multi-line values into multiple cells', async () => {
-        const value = '"ab\n' +
-            'cd"\n' +
-            '"another\n' +
-            'line"';
-        const em = baseEditorModel.applyChanges({
-            selectionCells: [genCellKey(fkOne, 0), genCellKey(fkOne, 1)],
-            selectedColIdx: 0,
-            selectedRowIdx: 0,
-        });
-        const changes = await validateAndInsertPastedData(em, value, undefined, true, true, undefined, true);
-        const cellValues = changes.cellValues;
-        expect(cellValues.get(genCellKey(fkOne, 0))).toEqual(List([{ display: 'ab\ncd', raw: 'ab\ncd' }]));
-        expect(cellValues.get(genCellKey(fkOne, 1))).toEqual(
-            List([{ display: 'another\nline', raw: 'another\nline' }])
         );
     });
 

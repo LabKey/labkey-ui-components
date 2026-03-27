@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.24.2
+*Released*: 25 March 2026
+- GitHub Issue 916: Editable grid copy/paste issue with special characters
+    - replaces the custom parseCsvString function with the PapaParse library based  splitMultiValueForImport/joinMultiValueForExport util for CSV/TSV parsing
+    - add some basic multi-line paste support
+    - remove quoteValueColumnWithDelimiters as it's no longer needed
+
 ### version 7.25.0
 *Released*: 25 March 2026
 - Update `isAllSamplesSchema` to account for move of `JobInputSamples` to `workflow` schema

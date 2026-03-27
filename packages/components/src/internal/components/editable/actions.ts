@@ -1087,11 +1087,11 @@ export function generateFillCellKeys(
 }
 
 /**
- * For columns that support multile values, the value should be escaped using ',' as delimter.
+ * For columns that support multiple values, the value should be escaped using ',' as delimiter.
  * For columns that's single value, escape might be needed if the value contains newline characters, double quotes, or tab characters
  * @param column
  */
-function getColCopyPasteDelimter(column: QueryColumn) {
+function getColCopyPasteDelimiter(column: QueryColumn) {
     return  column?.isJunctionLookup() || column?.isMultiChoice ? ',' : '\t';
 }
 
@@ -1121,7 +1121,7 @@ export function parsePastedLookup(
 
     // Parse pasted strings to split properly around quoted values.
     // Remove the quotes for storing the actual values in the grid.
-    const parsedValues = splitMultiValueForImport(value, getColCopyPasteDelimter(column));
+    const parsedValues = splitMultiValueForImport(value, getColCopyPasteDelimiter(column));
 
     // Issue 53055: Do not attempt to resolve multiple values for a single-value column
     if (!column.isJunctionLookup() && parsedValues.length > 1) {
@@ -1229,7 +1229,7 @@ export function generateColumnFillValues(
         if (isReadonlyCell || isReadonlyRow) return '';
 
         const initialValue = initialSelectionValues[i % initialSelectionValues.length];
-        let value = joinMultiValueForExport(initialValue.map(v => v.display).toArray(), getColCopyPasteDelimter(column));
+        let value = joinMultiValueForExport(initialValue.map(v => v.display).toArray(), getColCopyPasteDelimiter(column));
         if (incrementType === IncrementType.NUMBER) {
             const amount = increment * (i + 1);
             let raw: number | string;
@@ -1439,8 +1439,10 @@ function parsePaste(value: string): ParsePastePayload {
     if (value.endsWith('\n')) value = value.substring(0, value.length - 1);
 
     if (value.indexOf('"') === -1 || isSimpleQuotedMultiLine(value)) {
-        // parse tsv ONLY if the copied string doesn't contain "
-        // quoteChar will be stripped during TSV parsing, resulting in incorrect parsed data
+        // Use PapaParse for TSV parsing when the value contains no quotes (safe — no quoting ambiguity)
+        // or is a simple quoted multi-line value (e.g., a single multi-line cell copied from the grid).
+        // Otherwise, fall back to manual line/tab splitting to preserve quote characters for
+        // per-cell multi-value parsing (MVFK/MVTC columns).
         const rows = Papa.parse(value, { delimiter: '\t' }).data;
         if (!rows || rows.length === 0) {
             return { data, numCols, numRows: 0 };
@@ -1541,7 +1543,7 @@ async function insertPastedData(
                 let cv: List<ValueDescriptor>;
                 let msg: CellMessage;
 
-                const parseDelimter = getColCopyPasteDelimter(col);
+                const parseDelimter = getColCopyPasteDelimiter(col);
                 if (col?.isPublicLookup()) {
                     // If the column is a lookup and forUpdate is true, then we need to query for the rowIds so we can set the correct raw values,
                     // otherwise insert will fail. This is most common for cross-folder sample selection (Issue 50363)
@@ -1793,7 +1795,7 @@ function getCopyValue(model: EditorModel, hideReadOnlyRows: boolean, readonlyRow
             if (selectionCells.find(key => key === cellKey)) {
                 inSelection = true;
                 const column = model.getColumnFromMap(fieldKey);
-                copyValue += cellSep + getCellCopyValue(model.cellValues.get(cellKey), getColCopyPasteDelimter(column));
+                copyValue += cellSep + getCellCopyValue(model.cellValues.get(cellKey), getColCopyPasteDelimiter(column));
                 cellSep = '\t';
             }
         });

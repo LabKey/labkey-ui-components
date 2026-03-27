@@ -1086,6 +1086,15 @@ export function generateFillCellKeys(
     return fillCellKeys;
 }
 
+/**
+ * For columns that support multile values, the value should be escaped using ',' as delimter.
+ * For columns that's single value, escape might be needed if the value contains newline characters, double quotes, or tab characters
+ * @param column
+ */
+function getColCopyPasteDelimter(column: QueryColumn) {
+    return  column?.isJunctionLookup() || column?.isMultiChoice ? ',' : '\t';
+}
+
 export function parsePastedLookup(
     column: QueryColumn,
     descriptors: ValueDescriptor[],
@@ -1112,7 +1121,7 @@ export function parsePastedLookup(
 
     // Parse pasted strings to split properly around quoted values.
     // Remove the quotes for storing the actual values in the grid.
-    const parsedValues = splitMultiValueForImport(value);
+    const parsedValues = splitMultiValueForImport(value, getColCopyPasteDelimter(column));
 
     // Issue 53055: Do not attempt to resolve multiple values for a single-value column
     if (!column.isJunctionLookup() && parsedValues.length > 1) {
@@ -1214,12 +1223,13 @@ export function generateColumnFillValues(
 
     return selectionToFill.map((cellKey, i) => {
         const { fieldKey, rowIdx } = parseCellKey(cellKey);
+        const column = editorModel.getColumnFromMap(fieldKey);
         const { isReadonlyCell, isReadonlyRow } = editorModel.getCellReadStatus(fieldKey, rowIdx, readonlyRows);
         // Only need to generate blank values for read only cells, paste will ignore them
         if (isReadonlyCell || isReadonlyRow) return '';
 
         const initialValue = initialSelectionValues[i % initialSelectionValues.length];
-        let value = joinMultiValueForExport(initialValue.map(v => v.display).toArray());
+        let value = joinMultiValueForExport(initialValue.map(v => v.display).toArray(), getColCopyPasteDelimter(column));
         if (incrementType === IncrementType.NUMBER) {
             const amount = increment * (i + 1);
             let raw: number | string;
@@ -1306,8 +1316,7 @@ export function dragFillEvent(
         forUpdate,
         targetContainerPath,
         false,
-        selectionToFill,
-        true
+        selectionToFill
     );
 }
 
@@ -1483,8 +1492,7 @@ async function insertPastedData(
     lockRowCount: boolean,
     forUpdate: boolean,
     targetContainerPath: string,
-    selectCells: boolean,
-    fromDragFill?: boolean
+    selectCells: boolean
 ): Promise<Partial<EditorModel>> {
     const pastedData = paste.payload.data;
     let cellMessages = editorModel.cellMessages;
@@ -1532,6 +1540,7 @@ async function insertPastedData(
                 let cv: List<ValueDescriptor>;
                 let msg: CellMessage;
 
+                const parseDelimter = getColCopyPasteDelimter(col);
                 if (col?.isPublicLookup()) {
                     // If the column is a lookup and forUpdate is true, then we need to query for the rowIds so we can set the correct raw values,
                     // otherwise insert will fail. This is most common for cross-folder sample selection (Issue 50363)
@@ -1552,7 +1561,7 @@ async function insertPastedData(
                     const unmatched: string[] = [];
                     const values: ValueDescriptor[] = [];
 
-                    const parsedValues = splitMultiValueForImport(val, ',', true, true).sort(caseSensitiveNaturalSort);
+                    const parsedValues = splitMultiValueForImport(val, parseDelimter, true, true).sort(caseSensitiveNaturalSort);
                     const foundValues = new Set<string>();
 
                     // GitHub Issue 942: Add error for duplicate values
@@ -1591,13 +1600,13 @@ async function insertPastedData(
                     cv = List(values);
                 } else {
                     let valToValidate = val;
-                    if (fromDragFill && Utils.isString(val)) {
+                    if (Utils.isString(val)) {
                         // GitHub Issue 916: Copying/pasting in the grid doesn't always act as expected
                         // drag fill always quoteValueWithDelimiters, needs to remove the extra quotes before validating
                         const isMultiLinePasting = NEWLINE_CHARS.find(char => valToValidate.indexOf(char) > -1);
                         // multiline pasting has already been parsed
                         if (!isMultiLinePasting) {
-                            const parsedValues = splitMultiValueForImport(val);
+                            const parsedValues = splitMultiValueForImport(val, parseDelimter);
                             if (parsedValues.length === 1) valToValidate = parsedValues[0].trim();
                         }
                     }
@@ -1676,8 +1685,7 @@ export function validateAndInsertPastedData(
     forUpdate: boolean,
     targetContainerPath: string,
     selectCells: boolean,
-    selectionToFill?: string[][],
-    fromDragFill?: boolean
+    selectionToFill?: string[][]
 ): Promise<Partial<EditorModel>> {
     let selectedColIdx: number;
     let selectedRowIdx: number;
@@ -1715,8 +1723,7 @@ export function validateAndInsertPastedData(
             lockRowCount,
             forUpdate,
             targetContainerPath,
-            selectCells,
-            fromDragFill
+            selectCells
         );
     } else {
         const fieldKey = editorModel.getFieldKeyByIndex(selectedColIdx);
@@ -1752,14 +1759,14 @@ export function pasteEvent(
     return undefined;
 }
 
-function getCellCopyValue(valueDescriptors: List<ValueDescriptor>): string {
+function getCellCopyValue(valueDescriptors: List<ValueDescriptor>, delimter: string): string {
     if (valueDescriptors && valueDescriptors.size > 0) {
         const values = [];
         valueDescriptors.forEach(vd => {
             values.push(vd.display !== undefined ? vd.display.toString().trim() : '');
         });
 
-        if (values.length > 0) return joinMultiValueForExport(values);
+        if (values.length > 0) return joinMultiValueForExport(values, delimter);
     }
 
     return '';
@@ -1786,7 +1793,8 @@ function getCopyValue(model: EditorModel, hideReadOnlyRows: boolean, readonlyRow
 
             if (selectionCells.find(key => key === cellKey)) {
                 inSelection = true;
-                copyValue += cellSep + getCellCopyValue(model.cellValues.get(cellKey));
+                const column = model.getColumnFromMap(fieldKey);
+                copyValue += cellSep + getCellCopyValue(model.cellValues.get(cellKey), getColCopyPasteDelimter(column));
                 cellSep = '\t';
             }
         });

@@ -354,7 +354,6 @@ describe('generateColumnFillValues', () => {
             return result;
         }, {});
     }
-    const queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);
     const lookupFk = 'lookup';
     const intFk = 'int';
     const floatFk = 'float';
@@ -363,6 +362,17 @@ describe('generateColumnFillValues', () => {
     const strFk = 'str';
     const quoteFk = 'quote';
     const mvFk = 'mv';
+    const columns = {
+        [lookupFk]: new QueryColumn({ fieldKey: lookupFk, name: lookupFk, lookup: { isPublic: true } as QueryLookup }),
+        [intFk]: new QueryColumn({ fieldKey: intFk, name: intFk, jsonType: 'int' }),
+        [floatFk]: new QueryColumn({ fieldKey: floatFk, name: floatFk, jsonType: 'float' }),
+        [strFk]: new QueryColumn({ fieldKey: strFk, name: strFk }),
+        [dateFk]: new QueryColumn({ fieldKey: dateFk, name: dateFk, jsonType: 'date' }),
+        [datetimeFk]: new QueryColumn({ fieldKey: datetimeFk, name: datetimeFk, jsonType: 'date' }),
+        [quoteFk]: new QueryColumn({ fieldKey: quoteFk, name: quoteFk }),
+        [mvFk]: new QueryColumn({ fieldKey: mvFk, name: mvFk, lookup: { multiValued: 'junction' } as QueryLookup }),
+    };
+    const queryInfo = QueryInfo.fromJsonForTests({ pkCols: [lookupFk], columns });
     const editorModel = new EditorModel({}).merge({
         queryInfo,
         cellMessages: Map<string, CellMessage>({
@@ -430,7 +440,10 @@ describe('generateColumnFillValues', () => {
             ...makeCellValues(quoteFk, [['S,1'], ['S,2'], ['']]),
             ...makeCellValues(mvFk, [['S,1', 'S,2'], ['S2', 'S3'], [''], ['']]),
         }),
-        orderedColumns: List([lookupFk, intFk, floatFk, strFk, dateFk, datetimeFk]),
+        columnMap: Object.keys(columns).reduce((result, key) => {
+            return result.set(key, queryInfo.getColumn(key));
+        }, Map<string, QueryColumn>()),
+        orderedColumns: List([lookupFk, intFk, floatFk, strFk, dateFk, datetimeFk, quoteFk, mvFk]),
         rowCount: 10,
     }) as EditorModel;
 
@@ -574,8 +587,8 @@ describe('generateColumnFillValues', () => {
             genCellKey(strFk, 2),
             genCellKey(strFk, 3),
         ]);
-        // Copied values with commas should be quoted
-        expect(cellValues).toEqual(['"S,1"', '"S,1"', '"S,1"']);
+        // Copied values with commas on a non-multi-value column don't need quoting (tab delimiter)
+        expect(cellValues).toEqual(['S,1', 'S,1', 'S,1']);
     });
 
     // Issue 52412
@@ -1191,7 +1204,7 @@ describe('insertPastedData', () => {
         expect(cellMessages.get(genCellKey(mvtc, 2))).toEqual({ message: 'Could not find "bad"' });
     });
 
-    test('pasting string values with special characters, fromDragFill false', async () => {
+    test('pasting string values with special characters', async () => {
         const em = baseEditorModel.applyChanges({
             selectionCells: [genCellKey(fkOne, 0), genCellKey(fkOne, 1), genCellKey(fkOne, 2)],
             selectedColIdx: 0,
@@ -1209,51 +1222,45 @@ describe('insertPastedData', () => {
         const cellValues = changes.cellValues;
         // Space is preserved as-is
         expect(cellValues.get(genCellKey(fkOne, 0))).toEqual(List([{ display: 'hello world', raw: 'hello world' }]));
-        // Quoted comma: without fromDragFill, CSV quoting is NOT stripped
+        // Quoted comma: CSV quoting is stripped, comma preserved
         expect(cellValues.get(genCellKey(fkOne, 1))).toEqual(
-            List([{ display: '"hello, world"', raw: '"hello, world"' }])
+            List([{ display: 'hello, world', raw: 'hello, world' }])
         );
-        // Escaped double quotes: without fromDragFill, CSV escaping is NOT processed
+        // Escaped double quotes: CSV escaping is processed
         expect(cellValues.get(genCellKey(fkOne, 2))).toEqual(
-            List([{ display: '"say ""hello"""', raw: '"say ""hello"""' }])
+            List([{ display: 'say "hello"', raw: 'say "hello"' }])
         );
     });
 
-    test('drag fill string values with special characters, fromDragFill true', async () => {
+    test('pasting multi-line value into a single cell', async () => {
+        const value = '"ab\ncd"';
         const em = baseEditorModel.applyChanges({
-            selectionCells: [
-                genCellKey(fkOne, 0),
-                genCellKey(fkOne, 1),
-                genCellKey(fkOne, 2),
-                genCellKey(fkOne, 3),
-                genCellKey(fkOne, 4),
-                genCellKey(fkOne, 5),
-            ],
+            selectionCells: [genCellKey(fkOne, 0)],
             selectedColIdx: 0,
-            selectedRowIdx: 5,
+            selectedRowIdx: 0,
         });
-        const changes = await validateAndInsertPastedData(
-            em,
-            'hello world\n"hello, world"\n"say ""hello"""',
-            undefined,
-            true,
-            true,
-            undefined,
-            false,
-            [[genCellKey(fkOne, 3), genCellKey(fkOne, 4), genCellKey(fkOne, 5)]],
-            true
-        );
+        const changes = await validateAndInsertPastedData(em, value, undefined, true, true, undefined, true);
         const cellValues = changes.cellValues;
-        // Original values unchanged
-        expect(cellValues.get(genCellKey(fkOne, 0))).toEqual(List([{ display: 'qwer', raw: 'qwer' }]));
-        expect(cellValues.get(genCellKey(fkOne, 1))).toEqual(List([{ display: 'asdf', raw: 'asdf' }]));
-        expect(cellValues.get(genCellKey(fkOne, 2))).toEqual(List([{ display: 'zxcv', raw: 'zxcv' }]));
-        // Space: no CSV quoting to strip
-        expect(cellValues.get(genCellKey(fkOne, 3))).toEqual(List([{ display: 'hello world', raw: 'hello world' }]));
-        // Quoted comma: fromDragFill strips CSV quoting, comma preserved in value
-        expect(cellValues.get(genCellKey(fkOne, 4))).toEqual(List([{ display: 'hello, world', raw: 'hello, world' }]));
-        // Escaped double quotes: fromDragFill strips CSV quoting and unescapes ""
-        expect(cellValues.get(genCellKey(fkOne, 5))).toEqual(List([{ display: 'say "hello"', raw: 'say "hello"' }]));
+        expect(cellValues.get(genCellKey(fkOne, 0))).toEqual(List([{ display: 'ab\ncd', raw: 'ab\ncd' }]));
+        expect(changes.cellMessages.get(genCellKey(fkOne, 0))).toBeUndefined();
+    });
+
+    test('pasting multi-line values into multiple cells', async () => {
+        const value = '"ab\n' +
+            'cd"\n' +
+            '"another\n' +
+            'line"';
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(fkOne, 0), genCellKey(fkOne, 1)],
+            selectedColIdx: 0,
+            selectedRowIdx: 0,
+        });
+        const changes = await validateAndInsertPastedData(em, value, undefined, true, true, undefined, true);
+        const cellValues = changes.cellValues;
+        expect(cellValues.get(genCellKey(fkOne, 0))).toEqual(List([{ display: 'ab\ncd', raw: 'ab\ncd' }]));
+        expect(cellValues.get(genCellKey(fkOne, 1))).toEqual(
+            List([{ display: 'another\nline', raw: 'another\nline' }])
+        );
     });
 
     test('pasting exactly A,B into mvtc matches single valid value', async () => {

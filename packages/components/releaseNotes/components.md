@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.26.0
+*Released*: 30 March 2026
+- Update dependencies
+
 ### version 7.25.0
 *Released*: 25 March 2026
 - Update `isAllSamplesSchema` to account for move of `JobInputSamples` to `workflow` schema

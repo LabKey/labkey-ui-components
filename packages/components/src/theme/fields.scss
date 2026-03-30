@@ -170,6 +170,11 @@
     color: #777777
 }
 
+// GitHub Issue 985: Improve readability of identifying fields
+.select-input__option--is-selected .identifying_field_label {
+    color: #FFFFFF;
+}
+
 .folder-field_archived-tag {
     display: inline;
 

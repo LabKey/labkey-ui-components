@@ -29,14 +29,12 @@ lims := modules / 'limsModules'
 biologics := lims / 'biologics'
 sampleManagement := lims / 'sampleManagement'
 inventory := lims / 'inventory'
-labbook := lims / 'labbook'
-puppeteer := lims / 'puppeteer'
 
 # Note: these are not all of the locations that we use @labkey/eslint-config, however they are the most common places that we
 # want to keep up to date.
 platformModules := core + ' ' + experiment + ' ' + assay + ' ' + pipeline
 appModules := componentsPkg + ' ' + premium + ' ' + biologics + ' ' + inventory + ' ' + sampleManagement
-modulesToBump := appModules + ' ' + labbook + ' ' + ' ' + puppeteer + ' ' + platformModules
+modulesToBump := appModules + ' ' + platformModules
 
 # Note: this is just a common subset of locations where we would want to copy a locally built package, in order to test
 # before we publish a version. You may want to add more locations (e.g. core, assay)

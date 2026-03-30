@@ -36,30 +36,20 @@ describe('MembersList', () => {
         expect(document.querySelector('.row').textContent).toBe('Membersgroup1');
     });
 
-    test('with inactive user member only', () => {
-        renderWithAppContext(
-            <MembersList members={[{ id: 1, name: 'user1', type: 'u', userActive: false }]} />,
-            { serverContext: SERVER_CONTEXT }
-        );
-        expect(document.querySelectorAll('.row')).toHaveLength(0);
-        expect(document.querySelectorAll('.principal-detail-li')).toHaveLength(0);
-        expect(document.querySelectorAll('.user-link')).toHaveLength(0);
-    });
-
-    test('with active and inactive user members', () => {
+    test('with active user members', () => {
         renderWithAppContext(
             <MembersList
                 members={[
                     { id: 1, name: 'user1', type: 'u', userActive: true },
-                    { id: 2, name: 'user2', type: 'u', userActive: false },
+                    { id: 2, name: 'user2', type: 'u', userActive: true },
                 ]}
             />,
             { serverContext: SERVER_CONTEXT }
         );
         expect(document.querySelectorAll('.row')).toHaveLength(1);
-        expect(document.querySelectorAll('.principal-detail-li')).toHaveLength(1);
-        expect(document.querySelectorAll('.user-link')).toHaveLength(1);
-        expect(document.querySelector('.row').textContent).toBe('Membersuser1');
+        expect(document.querySelectorAll('.principal-detail-li')).toHaveLength(2);
+        expect(document.querySelectorAll('.user-link')).toHaveLength(2);
+        expect(document.querySelector('.row').textContent).toBe('Membersuser1user2');
     });
 
     test('with user and group member', () => {

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.26.1
+*Released*: 30 March 2026
+- Replace `encodeFormDataQuote` with `Utils.encodeFormName`
+
 ### version 7.26.0
 *Released*: 30 March 2026
 - Update dependencies

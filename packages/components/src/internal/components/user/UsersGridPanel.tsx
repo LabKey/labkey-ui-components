@@ -45,10 +45,6 @@ const OMITTED_COLUMNS = [
     'mobile',
     'pager',
     'groups',
-    'firstName',
-    'lastName',
-    'description',
-    'expirationDate',
 ];
 
 export enum UsersView {

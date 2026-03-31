@@ -8,6 +8,16 @@ Components, models, actions, and utility functions for LabKey applications and p
     - add some basic multi-line paste support
     - remove quoteValueColumnWithDelimiters as it's no longer needed
 
+### version 7.26.3
+*Released*: 31 March 2026
+- GitHub Issue 811: App permissions page shows deactivated users in group members list
+  - Don't show inactive users in members list for group details on permissions page
+  - include "Inactive User: " prefix in member button on group management page to match what we do for permissions page
+
+### version 7.26.2
+*Released*: 31 March 2026
+- GitHub Issue 919: App grid column header menu renders behind modal when grid shown in modal (more related to GitHub Issue 710)
+
 ### version 7.26.1
 *Released*: 30 March 2026
 - Replace `encodeFormDataQuote` with `Utils.encodeFormName`

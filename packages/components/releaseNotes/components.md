@@ -5,6 +5,24 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - GitHub Issue 847: App User Management page to allow users with manageUsersPermission to select / view all site users
 
+### version 7.26.3
+*Released*: 31 March 2026
+- GitHub Issue 811: App permissions page shows deactivated users in group members list
+  - Don't show inactive users in members list for group details on permissions page
+  - include "Inactive User: " prefix in member button on group management page to match what we do for permissions page
+
+### version 7.26.2
+*Released*: 31 March 2026
+- GitHub Issue 919: App grid column header menu renders behind modal when grid shown in modal (more related to GitHub Issue 710)
+
+### version 7.26.1
+*Released*: 30 March 2026
+- Replace `encodeFormDataQuote` with `Utils.encodeFormName`
+
+### version 7.26.0
+*Released*: 30 March 2026
+- Update dependencies
+
 ### version 7.25.0
 *Released*: 25 March 2026
 - Update `isAllSamplesSchema` to account for move of `JobInputSamples` to `workflow` schema

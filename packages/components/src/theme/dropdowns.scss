@@ -4,6 +4,10 @@
     z-index: 990; // render under our main navigation, but above most everything else
 }
 
+.grid-header-cell__dropdown-menu {
+    z-index: 1060; // render above any modals (GitHub Issue 710)
+}
+
 .lk-dropdown .caret {
     margin-left: 4px;
 }

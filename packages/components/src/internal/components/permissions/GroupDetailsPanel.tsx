@@ -47,12 +47,16 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
         })();
     }, [api, principal]);
 
-    const { groupsCount, usersCount } = useMemo(() => {
-        const usersCount_ = members.filter(member => member.type === MemberType.user).length;
+    const { groupsCount, usersCount, activeMembers } = useMemo(() => {
+        // GitHub Issue #811: don't show inactive users in the members list
+        const activeMembers = members.filter(member => member.userActive !== false);
+
+        const usersCount_ = activeMembers.filter(member => member.type === MemberType.user).length;
 
         return {
-            groupsCount: (members.length - usersCount_).toLocaleString(),
+            groupsCount: (activeMembers.length - usersCount_).toLocaleString(),
             usersCount: usersCount_.toLocaleString(),
+            activeMembers,
         };
     }, [members]);
 
@@ -76,10 +80,10 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
                         <EffectiveRolesList
                             {...props}
                             currentUser={user}
-                            userId={principal.userId}
                             showLinks={showPermissionListLinks}
+                            userId={principal.userId}
                         />
-                        <MembersList members={members} />
+                        <MembersList members={activeMembers} />
                     </>
                 ) : (
                     <div>No group selected.</div>

@@ -79,6 +79,7 @@ export default defineConfig([
             'react/display-name': 'warn',
             'react/no-unescaped-entities': 'off',
             'react/prop-types': 'off',
+            'react-hooks/set-state-in-effect': 'off',
         },
     },
 ]);

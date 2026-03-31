@@ -19,7 +19,7 @@ import { applyURL, AppURL, buildURL, spliceURL } from './internal/url/AppURL';
 import { AppLink } from './internal/url/AppLink';
 import { useAppNavigate } from './internal/url/useAppNavigate';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
-import { encodeFormDataQuote, getIntegerSearchParam } from './internal/url/utils';
+import { getIntegerSearchParam } from './internal/url/utils';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
 import { getTextAlignClassName, GridColumn } from './internal/components/base/models/GridColumn';
@@ -1271,7 +1271,6 @@ export {
     EditorMode,
     EditorModel,
     EMPTY_NS_SEQUENCE_WARNING,
-    encodeFormDataQuote,
     encodePart,
     ensureAllFieldsInAllRows,
     EntityCreationType,

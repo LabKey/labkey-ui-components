@@ -14,8 +14,8 @@ interface Group {
 export type GroupMembership = {
     groupId: number;
     groupName: string;
-    userDisplayName: string;
     userActive?: boolean;
+    userDisplayName: string;
     userEmail: string;
     userId: number;
 };

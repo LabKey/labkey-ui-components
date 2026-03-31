@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, fromJS } from 'immutable';
+import { fromJS, List } from 'immutable';
 import { PermissionRoles } from '@labkey/api';
 
 import policyJSON from '../../../test/data/security-getPolicy.json';

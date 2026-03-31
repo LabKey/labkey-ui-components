@@ -15,10 +15,9 @@ describe('MembersList', () => {
     });
 
     test('with user member', () => {
-        renderWithAppContext(
-            <MembersList members={[{ id: 1, name: 'user1', type: 'u' }]} />,
-            { serverContext: SERVER_CONTEXT }
-        );
+        renderWithAppContext(<MembersList members={[{ id: 1, name: 'user1', type: 'u' }]} />, {
+            serverContext: SERVER_CONTEXT,
+        });
         expect(document.querySelectorAll('.row')).toHaveLength(1);
         expect(document.querySelectorAll('.principal-detail-li')).toHaveLength(1);
         expect(document.querySelectorAll('.user-link')).toHaveLength(1);
@@ -26,10 +25,9 @@ describe('MembersList', () => {
     });
 
     test('with group member', () => {
-        renderWithAppContext(
-            <MembersList members={[{ id: 2, name: 'group1', type: 'g' }]} />,
-            { serverContext: SERVER_CONTEXT }
-        );
+        renderWithAppContext(<MembersList members={[{ id: 2, name: 'group1', type: 'g' }]} />, {
+            serverContext: SERVER_CONTEXT,
+        });
         expect(document.querySelectorAll('.row')).toHaveLength(1);
         expect(document.querySelectorAll('.principal-detail-li')).toHaveLength(1);
         expect(document.querySelectorAll('.user-link')).toHaveLength(0);
@@ -67,6 +65,4 @@ describe('MembersList', () => {
         expect(document.querySelectorAll('.user-link')).toHaveLength(1);
         expect(document.querySelector('.row').textContent).toBe('Membersuser1group1');
     });
-
-
 });

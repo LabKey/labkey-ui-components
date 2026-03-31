@@ -41,7 +41,7 @@ const getDefaultAppContext = () => ({
 describe('GroupDetailsPanel', () => {
     test('no principal', () => {
         renderWithAppContext(
-            <GroupDetailsPanel policy={POLICY} rolesByUniqueName={ROLES_BY_NAME} members={[]} isSiteGroup={false} />,
+            <GroupDetailsPanel isSiteGroup={false} members={[]} policy={POLICY} rolesByUniqueName={ROLES_BY_NAME} />,
             {
                 appContext: getDefaultAppContext(),
                 serverContext: { user: TEST_USER_APP_ADMIN },
@@ -57,15 +57,15 @@ describe('GroupDetailsPanel', () => {
     test('with principal and members', async () => {
         renderWithAppContext(
             <GroupDetailsPanel
-                principal={GROUP}
-                policy={POLICY}
-                rolesByUniqueName={ROLES_BY_NAME}
+                isSiteGroup={false}
                 members={[
                     { id: 1, name: 'user1', type: MemberType.user },
                     { id: 2, name: 'user2', type: MemberType.user },
                     { id: 3, name: 'group1', type: MemberType.group },
                 ]}
-                isSiteGroup={false}
+                policy={POLICY}
+                principal={GROUP}
+                rolesByUniqueName={ROLES_BY_NAME}
             />,
             {
                 appContext: getDefaultAppContext(),
@@ -101,15 +101,15 @@ describe('GroupDetailsPanel', () => {
     test('with inactive member filtered out', async () => {
         renderWithAppContext(
             <GroupDetailsPanel
-                principal={GROUP}
-                policy={POLICY}
-                rolesByUniqueName={ROLES_BY_NAME}
+                isSiteGroup={false}
                 members={[
                     { id: 1, name: 'user1', type: MemberType.user, userActive: false },
                     { id: 2, name: 'user2', type: MemberType.user, userActive: true },
                     { id: 3, name: 'group1', type: MemberType.group, userActive: undefined },
                 ]}
-                isSiteGroup={false}
+                policy={POLICY}
+                principal={GROUP}
+                rolesByUniqueName={ROLES_BY_NAME}
             />,
             {
                 appContext: getDefaultAppContext(),
@@ -144,14 +144,14 @@ describe('GroupDetailsPanel', () => {
     test('with only inactive users', async () => {
         renderWithAppContext(
             <GroupDetailsPanel
-                principal={GROUP}
-                policy={POLICY}
-                rolesByUniqueName={ROLES_BY_NAME}
+                isSiteGroup={false}
                 members={[
                     { id: 1, name: 'user1', type: MemberType.user, userActive: false },
                     { id: 2, name: 'user2', type: MemberType.user, userActive: false },
                 ]}
-                isSiteGroup={false}
+                policy={POLICY}
+                principal={GROUP}
+                rolesByUniqueName={ROLES_BY_NAME}
             />,
             {
                 appContext: getDefaultAppContext(),
@@ -182,14 +182,14 @@ describe('GroupDetailsPanel', () => {
     test('as site group', async () => {
         renderWithAppContext(
             <GroupDetailsPanel
-                principal={GROUP}
-                policy={POLICY}
-                rolesByUniqueName={ROLES_BY_NAME}
+                isSiteGroup
                 members={[
                     { id: 1, name: 'user1', type: MemberType.user },
                     { id: 3, name: 'group1', type: MemberType.group },
                 ]}
-                isSiteGroup
+                policy={POLICY}
+                principal={GROUP}
+                rolesByUniqueName={ROLES_BY_NAME}
             />,
             {
                 appContext: getDefaultAppContext(),
@@ -226,15 +226,15 @@ describe('GroupDetailsPanel', () => {
     test("as site group, don't display counts", async () => {
         renderWithAppContext(
             <GroupDetailsPanel
-                principal={GROUP}
-                policy={POLICY}
-                rolesByUniqueName={ROLES_BY_NAME}
+                displayCounts={false}
+                isSiteGroup
                 members={[
                     { id: 1, name: 'user1', type: MemberType.user },
                     { id: 3, name: 'group1', type: MemberType.group },
                 ]}
-                isSiteGroup
-                displayCounts={false}
+                policy={POLICY}
+                principal={GROUP}
+                rolesByUniqueName={ROLES_BY_NAME}
             />,
             {
                 appContext: getDefaultAppContext(),

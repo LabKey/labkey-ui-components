@@ -49,7 +49,7 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
 
     const { groupsCount, usersCount, activeMembers } = useMemo(() => {
         // GitHub Issue #811: don't show inactive users in the members list
-        const activeMembers = members.filter((member) => member.userActive !== false);
+        const activeMembers = members.filter(member => member.userActive !== false);
 
         const usersCount_ = activeMembers.filter(member => member.type === MemberType.user).length;
 
@@ -80,8 +80,8 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
                         <EffectiveRolesList
                             {...props}
                             currentUser={user}
-                            userId={principal.userId}
                             showLinks={showPermissionListLinks}
+                            userId={principal.userId}
                         />
                         <MembersList members={activeMembers} />
                     </>

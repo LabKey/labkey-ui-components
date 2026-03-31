@@ -33,6 +33,7 @@ describe('Administration actions', () => {
                 userDisplayName: 'rosalinep',
                 userEmail: 'rosalinep@labkey.com',
                 userId: 1005,
+                userActive: true,
             },
             {
                 groupId: 1035,
@@ -40,6 +41,15 @@ describe('Administration actions', () => {
                 userDisplayName: 'rosalinep',
                 userEmail: 'rosalinep@labkey.com',
                 userId: 1005,
+                userActive: true,
+            },
+            {
+                groupId: 1035,
+                groupName: 'NewSiteGroup',
+                userDisplayName: 'inactiveUser',
+                userEmail: 'inactive@labkey.com',
+                userId: 1006,
+                userActive: false,
             },
             {
                 groupId: 1064,
@@ -47,6 +57,7 @@ describe('Administration actions', () => {
                 userDisplayName: 'rosalinep',
                 userEmail: 'rosalinep@labkey.com',
                 userId: 1005,
+                userActive: true,
             },
             {
                 groupId: 1064,
@@ -69,9 +80,16 @@ describe('Administration actions', () => {
                 groupName: 'NewSiteGroup',
                 members: [
                     {
+                        id: 1006,
+                        name: 'inactive@labkey.com (inactiveUser)',
+                        type: MemberType.user,
+                        userActive: false,
+                    },
+                    {
                         id: 1005,
                         name: 'rosalinep@labkey.com (rosalinep)',
                         type: MemberType.user,
+                        userActive: true,
                     },
                 ],
                 type: MemberType.siteGroup,
@@ -83,11 +101,13 @@ describe('Administration actions', () => {
                         id: 1066,
                         name: 'group2',
                         type: MemberType.group,
+                        userActive: undefined,
                     },
                     {
                         id: 1005,
                         name: 'rosalinep@labkey.com (rosalinep)',
                         type: MemberType.user,
+                        userActive: true,
                     },
                 ],
                 type: MemberType.group,

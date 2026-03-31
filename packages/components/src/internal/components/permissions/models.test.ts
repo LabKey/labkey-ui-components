@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, fromJS } from 'immutable';
+import { fromJS, List } from 'immutable';
 import { PermissionRoles } from '@labkey/api';
 
 import policyJSON from '../../../test/data/security-getPolicy.json';
@@ -29,6 +29,7 @@ import {
 } from '../../../test/data/constants';
 
 import { getRolesByUniqueName, processGetRolesResponse } from './actions';
+import { Member } from '../administration/models';
 import { Principal, SecurityAssignment, SecurityPolicy, SecurityRole } from './models';
 
 const GROUP = Principal.createFromSelectRow(
@@ -145,6 +146,23 @@ describe('SecurityAssignment model', () => {
 
         const userInactive = new SecurityAssignment({ userId: 1, type: undefined, displayName: 'DisplayName' });
         expect(SecurityAssignment.getDisplayName(userInactive)).toBe('Inactive User: 1');
+    });
+
+    test('getDisplayNameForMember', () => {
+        const activeMember: Member = { id: 1, name: 'activeUser', type: 'u', userActive: true };
+        expect(SecurityAssignment.getDisplayNameForMember(activeMember)).toBe('activeUser');
+
+        const memberWithoutActiveFlag: Member = { id: 2, name: 'unknownUser', type: 'u' };
+        expect(SecurityAssignment.getDisplayNameForMember(memberWithoutActiveFlag)).toBe('unknownUser');
+
+        const inactiveMember: Member = { id: 3, name: 'inactiveUser', type: 'u', userActive: false };
+        expect(SecurityAssignment.getDisplayNameForMember(inactiveMember)).toBe('Inactive User: inactiveUser');
+
+        const groupMember: Member = { id: 4, name: 'someGroup', type: 'g', userActive: true };
+        expect(SecurityAssignment.getDisplayNameForMember(groupMember)).toBe('someGroup');
+
+        const groupMemberWithoutActiveFlag: Member = { id: 5, name: 'someGroup2', type: 'g' };
+        expect(SecurityAssignment.getDisplayNameForMember(groupMemberWithoutActiveFlag)).toBe('someGroup2');
     });
 });
 

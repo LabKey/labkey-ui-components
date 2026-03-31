@@ -17,6 +17,7 @@ components := quote(trim_end_match(env('LABKEY_UI_COMPONENTS_HOME'), '/'))
 premium := quote(trim_end_match(env('LABKEY_UI_PREMIUM_HOME'), '/'))
 distPath := 'node_modules' / packageName / 'webpack'
 sourceDist := components / 'packages/build/webpack/'
+componentsPkg := components / 'packages/components/'
 modules := labkey / 'server/modules'
 premiumModules := modules / 'premiumModules'
 platform := modules / 'platform'
@@ -34,7 +35,7 @@ puppeteer := lims / 'puppeteer'
 # Note: these are not all of the locations that we use @labkey/build, however they are the most common places that we
 # want to keep up to date.
 platformModules := core + ' ' + experiment + ' ' + assay + ' ' + pipeline
-appModules := premium + ' ' + biologics + ' ' + inventory + ' ' + sampleManagement
+appModules := componentsPkg + ' ' + premium + ' ' + biologics + ' ' + inventory + ' ' + sampleManagement
 modulesToBump := appModules + ' ' + labbook + ' ' + ' ' + puppeteer + ' ' + platformModules
 
 # Note: this is just a common subset of locations where we would want to copy a locally built package, in order to test

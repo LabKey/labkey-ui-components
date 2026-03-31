@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.25.0-fb-inactiveMembers811.1",
+  "version": "7.26.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -53,7 +53,7 @@
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {
     "@hello-pangea/dnd": "18.0.1",
-    "@labkey/api": "1.49.1",
+    "@labkey/api": "1.50.0",
     "@testing-library/dom": "~10.4.1",
     "@testing-library/jest-dom": "~6.9.1",
     "@testing-library/react": "~16.3.2",
@@ -64,7 +64,7 @@
     "date-fns-tz": "~3.2.0",
     "font-awesome": "~4.7.0",
     "immer": "~10.1.3",
-    "immutable": "~3.8.2",
+    "immutable": "~3.8.3",
     "normalizr": "~3.6.2",
     "numeral": "~2.0.6",
     "react": "~18.3.1",
@@ -78,8 +78,8 @@
     "vis-network": "~10.0.2"
   },
   "devDependencies": {
-    "@labkey/build": "9.0.0",
-    "@labkey/eslint-config": "1.1.3",
+    "@labkey/build": "9.1.0",
+    "@labkey/eslint-config": "1.2.0",
     "@types/history": "4.7.11",
     "@types/jest": "30.0.0",
     "@types/node": "24.10.9",
@@ -90,9 +90,9 @@
     "bootstrap-sass": "3.4.3",
     "cross-env": "10.1.0",
     "execa": "9.6.1",
-    "jest": "30.2.0",
-    "jest-cli": "30.2.0",
-    "jest-environment-jsdom": "30.2.0",
+    "jest": "30.3.0",
+    "jest-cli": "30.3.0",
+    "jest-environment-jsdom": "30.3.0",
     "jest-teamcity-reporter": "0.9.0",
     "ts-jest": "29.4.6",
     "webpack-merge": "6.0.1"

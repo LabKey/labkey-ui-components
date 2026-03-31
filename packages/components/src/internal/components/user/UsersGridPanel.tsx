@@ -28,7 +28,7 @@ import { capitalizeFirstChar } from '../../util/utils';
 
 import { ChangeType, InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
-import { MenuItem } from '../../dropdowns';
+import { MenuDivider, MenuItem } from '../../dropdowns';
 
 import { Container } from '../base/models/Container';
 
@@ -306,6 +306,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                             nounPlural="users"
                         />
                     )}
+                    {user.hasManageUsersPermission() && <MenuDivider />}
                     {usersView !== 'all' && (
                         <MenuItem onClick={() => this.toggleViewActive('all')}>View All Application Users</MenuItem>
                     )}

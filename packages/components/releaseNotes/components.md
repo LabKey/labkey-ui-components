@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - GitHub Issue 847: App User Management page to allow users with manageUsersPermission to select / view all site users
 
+### version 7.26.4
+*Released*: 31 March 2026
+- Update `@labkey/api` dependency
+
 ### version 7.26.3
 *Released*: 31 March 2026
 - GitHub Issue 811: App permissions page shows deactivated users in group members list

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- GitHub Issue #974: ...
+
 ### version 7.21.3
 *Released*: 12 March 2026
 - GitHub Issue #790: Sample check-in and discard should not allow amount/unit input for differing units

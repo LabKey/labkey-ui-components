@@ -43,10 +43,10 @@ interface AssayDomainFormProps
     extends Omit<InjectedBaseDomainDesignerProps, 'onFinish' | 'setSubmitting' | 'submitting'> {
     api: DomainPropertiesAPIWrapper;
     appDomainHeaders: Map<string, HeaderRenderer>;
+    appPropertiesOnly?: boolean;
     domain: DomainDesign;
     domainFormDisplayOptions: IDomainFormDisplayOptions;
     headerPrefix: string;
-    hideAdvancedProperties?: boolean;
     index: number;
     onDomainChange: (
         index: number,
@@ -67,7 +67,7 @@ const AssayDomainForm: FC<AssayDomainFormProps> = memo(props => {
         domainFormDisplayOptions,
         firstState,
         headerPrefix,
-        hideAdvancedProperties,
+        appPropertiesOnly,
         index,
         onDomainChange,
         onTogglePanel,
@@ -125,7 +125,7 @@ const AssayDomainForm: FC<AssayDomainFormProps> = memo(props => {
         <DomainForm
             api={api}
             appDomainHeaderRenderer={appDomainHeaderRenderer}
-            appPropertiesOnly={hideAdvancedProperties}
+            appPropertiesOnly={appPropertiesOnly}
             controlledCollapse
             domain={domain}
             domainFormDisplayOptions={displayOptions}
@@ -450,6 +450,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                             <AssayDomainForm
                                 api={api}
                                 appDomainHeaders={appDomainHeaders}
+                                appPropertiesOnly={appPropertiesOnly}
                                 currentPanelIndex={currentPanelIndex}
                                 domain={domain}
                                 domainFormDisplayOptions={domainFormDisplayOptions}

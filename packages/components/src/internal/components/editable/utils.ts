@@ -30,6 +30,7 @@ interface ValidatedValue {
 export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn): ValidatedValue => {
     // col ?? {} so it's safe to destructure
     const { caption, isDateOnlyColumn, jsonType, required, scale, validValues } = col ?? {};
+    const isMultiChoice = col.isMultiChoice;
     const isDateTimeType = jsonType === 'date';
     const isDateType = isDateTimeType && isDateOnlyColumn;
     let message;
@@ -50,6 +51,21 @@ export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn):
             message = `Invalid ${noun}, use format ${dateFormat}`;
         }
         value = dateStrVal ?? origValue;
+    } else if (isMultiChoice && Array.isArray(origValue)) {
+        if (origValue.length > 10) {
+            // GitHub Issue 970
+            message = 'Too many values. Maximum allowed is 10.';
+        }
+        else if (validValues) {
+            origValue.forEach(val => {
+                const trimmed = val.display?.toString().trim();
+                if (validValues.indexOf(trimmed) === -1) {
+                    message = `'${trimmed}' is not a valid choice`;
+                    return false;
+                }
+            })
+        }
+
     } else if (value != null && value !== '' && !col?.isPublicLookup()) {
         if (validValues) {
             const trimmed = origValue?.toString().trim();

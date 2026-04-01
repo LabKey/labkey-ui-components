@@ -108,7 +108,10 @@ const OptionRenderer: FC<OptionRendererProps> = props => {
                     if (item !== undefined) {
                         let text = resolveDetailFieldLabel(item.get(column.name));
                         if (!Utils.isString(text)) {
-                            text = text != null ? text.toString() : '';
+                            if (text == null)
+                                text = '';
+                            else if (Array.isArray(text))
+                                text = text.join(', ');
                         }
 
                         return (

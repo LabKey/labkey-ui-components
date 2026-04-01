@@ -504,6 +504,11 @@ async function convertRowToEditorModelData(
         }
     } else if (col.isMultiChoice && Array.isArray(data)) {
         const values = data.filter(item => !!item).map(item => ({ raw: item, display: item }));
+        if (values.length > 10) {
+            message = {
+                message: 'Too many values. Maximum allowed is 10.',
+            }
+        }
         valueDescriptors.push(...values);
     } else {
         let display = data;
@@ -531,8 +536,7 @@ async function prepareInsertRowDataFromBulkForm(
         const col = insertColumns[colIdx];
         const { message, valueDescriptors } = await convertRowToEditorModelData(data, col, containerPath);
         values = values.push(valueDescriptors);
-
-        if (message) messages = messages.push(message);
+        messages = messages.push(message);
     }
 
     return {
@@ -1563,6 +1567,10 @@ async function insertPastedData(
                             .map(u => '"' + u + '"')
                             .join(', ');
                         msg = { message: `Duplicate values not allowed: ${valueStr}.` };
+                    }
+                    if (values.length > 10) {
+                        // GitHub Issue 970
+                        msg = { message: 'Too many values. Maximum allowed is 10.' };
                     }
                     cv = List(values);
                 } else {

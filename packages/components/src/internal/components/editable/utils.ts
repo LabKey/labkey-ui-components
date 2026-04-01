@@ -30,7 +30,7 @@ interface ValidatedValue {
 export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn): ValidatedValue => {
     // col ?? {} so it's safe to destructure
     const { caption, isDateOnlyColumn, jsonType, required, scale, validValues } = col ?? {};
-    const isMultiChoice = col.isMultiChoice;
+    const isMultiChoice = col?.isMultiChoice;
     const isDateTimeType = jsonType === 'date';
     const isDateType = isDateTimeType && isDateOnlyColumn;
     let message;
@@ -57,8 +57,14 @@ export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn):
             message = 'Too many values. Maximum allowed is 10.';
         }
         else if (validValues) {
+            const seen = new Set();
             origValue.forEach(val => {
                 const trimmed = val.display?.toString().trim();
+                if (seen.has(trimmed)) {
+                    message = `Duplicate values not allowed: ${trimmed}.`
+                    return false;
+                }
+                seen.add(trimmed);
                 if (validValues.indexOf(trimmed) === -1) {
                     message = `'${trimmed}' is not a valid choice`;
                     return false;

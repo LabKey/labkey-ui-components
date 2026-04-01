@@ -2248,6 +2248,7 @@ export interface IDomainFormDisplayOptions {
     isDragDisabled?: boolean;
     phiLevelDisabled?: boolean;
     retainReservedFields?: boolean;
+    showAdvancedSettingsForApp?: boolean;
     showFilterCriteria?: boolean;
     showScannableOption?: boolean;
     textChoiceLockedForDomain?: boolean;

@@ -108,6 +108,7 @@ const AssayDomainForm: FC<AssayDomainFormProps> = memo(props => {
         return {
             ...domainFormDisplayOptions,
             domainKindDisplayName: 'assay design',
+            showAdvancedSettingsForApp: true, // GitHub Issue #974: show Advanced Settings button for domain rows even when appPropertiesOnly=true
             hideFilePropertyType,
             hideInferFromFile,
             showFilterCriteria: isResultsDomain && protocolModel.plateMetadata,

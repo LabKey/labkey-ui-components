@@ -34,6 +34,7 @@ import { genCellKey } from './utils';
 import sampleSetQueryInfoJSON from '../../../test/data/sampleSetAllFieldTypes-getQueryDetails.json';
 import { MockEditableGridLoader } from './utils.test';
 import { MULTI_CHOICE_TYPE } from '../domainproperties/PropDescType';
+import { joinMultiValueForExport } from '../../util/utils';
 
 describe('column mutation actions', () => {
     const queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);
@@ -353,7 +354,6 @@ describe('generateColumnFillValues', () => {
             return result;
         }, {});
     }
-    const queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);
     const lookupFk = 'lookup';
     const intFk = 'int';
     const floatFk = 'float';
@@ -362,6 +362,17 @@ describe('generateColumnFillValues', () => {
     const strFk = 'str';
     const quoteFk = 'quote';
     const mvFk = 'mv';
+    const columns = {
+        [lookupFk]: new QueryColumn({ fieldKey: lookupFk, name: lookupFk, lookup: { isPublic: true } as QueryLookup }),
+        [intFk]: new QueryColumn({ fieldKey: intFk, name: intFk, jsonType: 'int' }),
+        [floatFk]: new QueryColumn({ fieldKey: floatFk, name: floatFk, jsonType: 'float' }),
+        [strFk]: new QueryColumn({ fieldKey: strFk, name: strFk }),
+        [dateFk]: new QueryColumn({ fieldKey: dateFk, name: dateFk, jsonType: 'date' }),
+        [datetimeFk]: new QueryColumn({ fieldKey: datetimeFk, name: datetimeFk, jsonType: 'date' }),
+        [quoteFk]: new QueryColumn({ fieldKey: quoteFk, name: quoteFk }),
+        [mvFk]: new QueryColumn({ fieldKey: mvFk, name: mvFk, lookup: { multiValued: 'junction' } as QueryLookup }),
+    };
+    const queryInfo = QueryInfo.fromJsonForTests({ pkCols: [lookupFk], columns });
     const editorModel = new EditorModel({}).merge({
         queryInfo,
         cellMessages: Map<string, CellMessage>({
@@ -429,7 +440,10 @@ describe('generateColumnFillValues', () => {
             ...makeCellValues(quoteFk, [['S,1'], ['S,2'], ['']]),
             ...makeCellValues(mvFk, [['S,1', 'S,2'], ['S2', 'S3'], [''], ['']]),
         }),
-        orderedColumns: List([lookupFk, intFk, floatFk, strFk, dateFk, datetimeFk]),
+        columnMap: Object.keys(columns).reduce((result, key) => {
+            return result.set(key, queryInfo.getColumn(key));
+        }, Map<string, QueryColumn>()),
+        orderedColumns: List([lookupFk, intFk, floatFk, strFk, dateFk, datetimeFk, quoteFk, mvFk]),
         rowCount: 10,
     }) as EditorModel;
 
@@ -573,8 +587,8 @@ describe('generateColumnFillValues', () => {
             genCellKey(strFk, 2),
             genCellKey(strFk, 3),
         ]);
-        // Copied values with commas should be quoted
-        expect(cellValues).toEqual(['"S,1"', '"S,1"', '"S,1"']);
+        // Copied values with commas on a non-multi-value column don't need quoting (tab delimiter)
+        expect(cellValues).toEqual(['S,1', 'S,1', 'S,1']);
     });
 
     // Issue 52412
@@ -859,7 +873,7 @@ describe('insertPastedData', () => {
                 fieldKey: mvtc,
                 jsonType: 'ARRAY',
                 rangeURI: MULTI_CHOICE_TYPE.rangeURI,
-                validValues: ['a', 'ab', 'cc', 'cD', 'A,B', 'de'],
+                validValues: ['a', 'ab', 'cc', 'cD', 'A,B', 'de', 'A', 'B', 'C', 'A,B,C', '"A"', '"A",B', '"A,B,C"'],
             }),
         },
     });
@@ -1136,6 +1150,35 @@ describe('insertPastedData', () => {
         );
     });
 
+    test('pasting multi-line value into a single cell', async () => {
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(fkOne, 0)],
+            selectedColIdx: 0,
+            selectedRowIdx: 2,
+        });
+        const changes = await validateAndInsertPastedData(em, '"line1\nline2"', undefined, true, true, undefined, true);
+        const cellValues = changes.cellValues;
+        expect(cellValues.get(genCellKey(fkOne, 2))).toEqual(List([{ display: 'line1\nline2', raw: 'line1\nline2' }]));
+
+        const cellMessages = changes.cellMessages;
+        expect(cellMessages.get(genCellKey(fkOne, 2))).toBeUndefined();
+    });
+
+    test('pasting multi-line values into multiple cells', async () => {
+        const value = '"ab\n' + 'cd"\n' + '"another\n' + 'line"';
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(fkOne, 0), genCellKey(fkOne, 1)],
+            selectedColIdx: 0,
+            selectedRowIdx: 0,
+        });
+        const changes = await validateAndInsertPastedData(em, value, undefined, true, true, undefined, true);
+        const cellValues = changes.cellValues;
+        expect(cellValues.get(genCellKey(fkOne, 0))).toEqual(List([{ display: 'ab\ncd', raw: 'ab\ncd' }]));
+        expect(cellValues.get(genCellKey(fkOne, 1))).toEqual(
+            List([{ display: 'another\nline', raw: 'another\nline' }])
+        );
+    });
+
     test('pasting multi values', async () => {
         const em = baseEditorModel.applyChanges({
             selectionCells: [genCellKey(mvtc, 0)],
@@ -1174,6 +1217,203 @@ describe('insertPastedData', () => {
         expect(cellMessages.get(genCellKey(mvtc, 0))).toBeUndefined();
         expect(cellMessages.get(genCellKey(mvtc, 1))).toBeUndefined();
         expect(cellMessages.get(genCellKey(mvtc, 2))).toEqual({ message: 'Could not find "bad"' });
+    });
+
+    test('pasting string values with special characters', async () => {
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(fkOne, 0), genCellKey(fkOne, 1), genCellKey(fkOne, 2)],
+            selectedColIdx: 0,
+            selectedRowIdx: 2,
+        });
+        const changes = await validateAndInsertPastedData(
+            em,
+            'hello world\n"hello, world"\n"say ""hello"""',
+            undefined,
+            true,
+            true,
+            undefined,
+            true
+        );
+        const cellValues = changes.cellValues;
+        // Space is preserved as-is
+        expect(cellValues.get(genCellKey(fkOne, 0))).toEqual(List([{ display: 'hello world', raw: 'hello world' }]));
+        // Quoted comma: CSV quoting is stripped, comma preserved
+        expect(cellValues.get(genCellKey(fkOne, 1))).toEqual(List([{ display: 'hello, world', raw: 'hello, world' }]));
+        // Escaped double quotes: CSV escaping is processed
+        expect(cellValues.get(genCellKey(fkOne, 2))).toEqual(List([{ display: 'say "hello"', raw: 'say "hello"' }]));
+    });
+
+    test('pasting exactly A,B into mvtc matches single valid value', async () => {
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(mvtc, 0)],
+            selectedColIdx: 3,
+            selectedRowIdx: 0,
+        });
+        const changes = await validateAndInsertPastedData(em, '"A,B"', undefined, true, true, undefined, true);
+        expect(changes.cellValues.get(genCellKey(mvtc, 0))).toEqual(List([{ display: 'A,B', raw: 'A,B' }]));
+        expect(changes.cellMessages.get(genCellKey(mvtc, 0))).toBeUndefined();
+    });
+
+    test('pasting exactly A,B,C into mvtc matches single valid value', async () => {
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(mvtc, 0)],
+            selectedColIdx: 3,
+            selectedRowIdx: 0,
+        });
+        const changes = await validateAndInsertPastedData(em, '"A,B,C"', undefined, true, true, undefined, true);
+        expect(changes.cellValues.get(genCellKey(mvtc, 0))).toEqual(List([{ display: 'A,B,C', raw: 'A,B,C' }]));
+        expect(changes.cellMessages.get(genCellKey(mvtc, 0))).toBeUndefined();
+    });
+
+    test('pasting escaped "A,B,C" into mvtc matches single valid value', async () => {
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(mvtc, 0)],
+            selectedColIdx: 3,
+            selectedRowIdx: 0,
+        });
+        const changes = await validateAndInsertPastedData(em, '"""A,B,C"""', undefined, true, true, undefined, true);
+        expect(changes.cellValues.get(genCellKey(mvtc, 0))).toEqual(List([{ display: '"A,B,C"', raw: '"A,B,C"' }]));
+        expect(changes.cellMessages.get(genCellKey(mvtc, 0))).toBeUndefined();
+    });
+
+    test('pasting A, B with space into mvtc parses as two values', async () => {
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(mvtc, 0)],
+            selectedColIdx: 3,
+            selectedRowIdx: 0,
+        });
+        const changes = await validateAndInsertPastedData(em, 'A, B', undefined, true, true, undefined, true);
+        // 'A, B' does not match any validValue, so parsed as CSV → ' B' and 'A' (sorted with leading space)
+        expect(changes.cellValues.get(genCellKey(mvtc, 0))).toEqual(
+            List([
+                { display: 'A', raw: 'A' },
+                { display: 'B', raw: 'B' },
+            ])
+        );
+        expect(changes.cellMessages.get(genCellKey(mvtc, 0))).toBeUndefined();
+    });
+
+    test('pasting quoted "A,B" into mvtc treats as single value', async () => {
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(mvtc, 0)],
+            selectedColIdx: 3,
+            selectedRowIdx: 0,
+        });
+        const changes = await validateAndInsertPastedData(em, '"A,B"', undefined, true, true, undefined, true);
+        // Quoted '"A,B"' is CSV-parsed to 'A,B' which is a valid value
+        expect(changes.cellValues.get(genCellKey(mvtc, 0))).toEqual(List([{ display: 'A,B', raw: 'A,B' }]));
+        expect(changes.cellMessages.get(genCellKey(mvtc, 0))).toBeUndefined();
+    });
+
+    test('pasting quoted "A, B" into mvtc, invalid', async () => {
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(mvtc, 0)],
+            selectedColIdx: 3,
+            selectedRowIdx: 0,
+        });
+        const changes = await validateAndInsertPastedData(em, '"A, B"', undefined, true, true, undefined, true);
+        // Quoted '"A,B"' is CSV-parsed to 'A,B' which is a valid value
+        expect(changes.cellValues.get(genCellKey(mvtc, 0))).toEqual(List([{ display: 'A, B', raw: 'A, B' }]));
+        expect(changes.cellMessages.get(genCellKey(mvtc, 0))).toEqual({
+            message: 'Could not find "A, B". Please make sure values that contain commas are properly quoted.',
+        });
+    });
+
+    test('pasting mvtc values combined with other valid values', async () => {
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(mvtc, 0), genCellKey(mvtc, 1), genCellKey(mvtc, 2)],
+            selectedColIdx: 3,
+            selectedRowIdx: 2,
+        });
+        const changes = await validateAndInsertPastedData(
+            em,
+            '"A,B"\n"A,B",cc\nA,B,cc',
+            undefined,
+            true,
+            true,
+            undefined,
+            true
+        );
+        const cellValues = changes.cellValues;
+        // Row 0: 'A,B' exactly matches single validValue
+        expect(cellValues.get(genCellKey(mvtc, 0))).toEqual(List([{ display: 'A,B', raw: 'A,B' }]));
+        expect(changes.cellMessages.get(genCellKey(mvtc, 0))).toBeUndefined();
+        // Row 1: '"A,B",cc' → CSV parsed to ['A,B', 'cc'], both valid
+        expect(cellValues.get(genCellKey(mvtc, 1))).toEqual(
+            List([
+                { display: 'A,B', raw: 'A,B' },
+                { display: 'cc', raw: 'cc' },
+            ])
+        );
+        expect(changes.cellMessages.get(genCellKey(mvtc, 1))).toBeUndefined();
+        // Row 2: 'A,B,cc' without quotes → CSV parsed to ['A', 'B', 'cc'], all valid
+        expect(cellValues.get(genCellKey(mvtc, 2))).toEqual(
+            List([
+                { display: 'A', raw: 'A' },
+                { display: 'B', raw: 'B' },
+                { display: 'cc', raw: 'cc' },
+            ])
+        );
+        expect(changes.cellMessages.get(genCellKey(mvtc, 2))).toBeUndefined();
+    });
+
+    test('pasting mvtc values combined with invalid values', async () => {
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(mvtc, 0), genCellKey(mvtc, 1)],
+            selectedColIdx: 3,
+            selectedRowIdx: 1,
+        });
+        const changes = await validateAndInsertPastedData(
+            em,
+            'A, B, bad\n"A,B",bad',
+            undefined,
+            true,
+            true,
+            undefined,
+            true
+        );
+        const cellValues = changes.cellValues;
+        const cellMessages = changes.cellMessages;
+        // Row 0: 'A,B,bad' → CSV parsed to ['A', 'B', 'bad'], 'bad' invalid
+        expect(cellValues.get(genCellKey(mvtc, 0))).toEqual(
+            List([
+                { display: 'A', raw: 'A' },
+                { display: 'B', raw: 'B' },
+                { display: 'bad', raw: 'bad' },
+            ])
+        );
+        expect(cellMessages.get(genCellKey(mvtc, 0))).toEqual({ message: 'Could not find "bad"' });
+        // Row 1: '"A,B",bad' → CSV parsed to ['A,B', 'bad'], 'bad' invalid
+        expect(cellValues.get(genCellKey(mvtc, 1))).toEqual(
+            List([
+                { display: 'A,B', raw: 'A,B' },
+                { display: 'bad', raw: 'bad' },
+            ])
+        );
+        expect(cellMessages.get(genCellKey(mvtc, 1))).toEqual({ message: 'Could not find "bad"' });
+    });
+
+    test.each([
+        { values: ['A', 'B', 'C'], desc: 'simple values' },
+        { values: ['"A",B'], desc: 'single value with quotes and comma' },
+        { values: ['"A,B,C"'], desc: 'single value with quotes wrapping commas' },
+        { values: ['"A",B', 'B'], desc: 'tricky + simple' },
+        { values: ['A', '"A"', 'B'], desc: 'quotes among simple' },
+        { values: ['A', 'A,B,C', '"A,B,C"'], desc: 'plain + comma + quote-containing' },
+        { values: ['"A"', '"A",B', '"A,B,C"'], desc: 'all contain quotes' },
+    ])('pasting multi values round-trip: $desc', async ({ values }) => {
+        const exported = joinMultiValueForExport(values);
+        const em = baseEditorModel.applyChanges({
+            selectionCells: [genCellKey(mvtc, 0)],
+            selectedColIdx: 3,
+            selectedRowIdx: 0,
+        });
+        const changes = await validateAndInsertPastedData(em, exported, undefined, true, true, undefined, true);
+        const cellValues = changes.cellValues.get(genCellKey(mvtc, 0));
+        const sortedExpected = [...values].sort();
+        const actualValues = cellValues.toArray().map(v => v.raw);
+        expect(actualValues).toStrictEqual(sortedExpected);
+        expect(changes.cellMessages.get(genCellKey(mvtc, 0))).toBeUndefined();
     });
 });
 

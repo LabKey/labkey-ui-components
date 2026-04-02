@@ -31,7 +31,7 @@ import {
     MIXED_VALUE_DISPLAY,
 } from '../constants';
 import { QueryColumn } from '../../../../public/QueryColumn';
-import { generateId } from '../../../util/utils';
+import { generateId, joinMultiValueForExport } from '../../../util/utils';
 import { naturalSortByProperty } from '../../../../public/sort';
 
 const WARN_COLOR = '#8A6D3B';
@@ -498,7 +498,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
 
                     if (!skipJoinValues) {
                         // consider removing altogether?
-                        formValue = formValue.join(delimiter);
+                        formValue = joinMultiValueForExport(formValue, delimiter);
                     }
                 } else {
                     formValue = selectedOptions;

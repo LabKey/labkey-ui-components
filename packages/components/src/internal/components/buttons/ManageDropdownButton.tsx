@@ -20,8 +20,8 @@ import { DropdownButton } from '../../dropdowns';
 interface Props extends PropsWithChildren {
     children: ReactNode;
     disabled?: boolean;
-    showIcon?: boolean;
     pullRight?: boolean;
+    showIcon?: boolean;
 }
 
 export const ManageDropdownButton: FC<Props> = ({ children, disabled, showIcon = true, pullRight = true }) => {
@@ -37,12 +37,12 @@ export const ManageDropdownButton: FC<Props> = ({ children, disabled, showIcon =
 
     return (
         <DropdownButton
-            className="manage-dropdown-menu"
             buttonClassName="manage-dropdown"
-            title={buttonLabel}
+            className="manage-dropdown-menu"
+            disabled={disabled}
             noCaret
             pullRight={pullRight}
-            disabled={disabled}
+            title={buttonLabel}
         >
             {children}
         </DropdownButton>

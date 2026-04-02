@@ -199,8 +199,8 @@ describe('<UsersGridPanel/>', () => {
         const component = (
             <UsersGridPanelImpl
                 {...DEFAULT_PROPS}
-                userLimitSettings={{ userLimit: true, remainingUsers: 0 }}
                 searchParams={new URLSearchParams({ usersView: 'inactive' })}
+                userLimitSettings={{ userLimit: true, remainingUsers: 0 }}
             />
         );
         renderWithAppContext(component);
@@ -222,8 +222,8 @@ describe('<UsersGridPanel/>', () => {
         const component = (
             <UsersGridPanelImpl
                 {...DEFAULT_PROPS}
-                userLimitSettings={{ userLimit: true, remainingUsers: 2 }}
                 searchParams={new URLSearchParams({ usersView: 'inactive' })}
+                userLimitSettings={{ userLimit: true, remainingUsers: 2 }}
             />
         );
         renderWithAppContext(component);

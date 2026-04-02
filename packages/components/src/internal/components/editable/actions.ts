@@ -505,6 +505,7 @@ async function convertRowToEditorModelData(
     } else if (col.isMultiChoice && Array.isArray(data)) {
         const values = data.filter(item => !!item).map(item => ({ raw: item, display: item }));
         if (values.length > 10) {
+            // GitHub Issue 970
             message = {
                 message: 'Too many values. Maximum allowed is 10.',
             }

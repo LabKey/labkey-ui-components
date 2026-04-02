@@ -1,6 +1,6 @@
 import { Map } from 'immutable';
 
-import { extractEntityTypeOptionFromRow, getChosenParentData, getIdentifyingFieldDisplayValue, sampleGenCellKey } from './actions';
+import { extractEntityTypeOptionFromRow, getChosenParentData, getFieldDisplayValue, sampleGenCellKey } from './actions';
 import { EntityDataType, EntityIdCreationModel } from './models';
 import { DataClassDataType, SampleTypeDataType } from './constants';
 
@@ -87,32 +87,32 @@ describe('sampleGenCellKey', () => {
     });
 });
 
-describe('getIdentifyingFieldDisplayValue', () => {
+describe('getFieldDisplayValue', () => {
     test('returns formattedValue when available', () => {
-        expect(getIdentifyingFieldDisplayValue({ formattedValue: 'formatted', displayValue: 'display', value: 'raw' })).toBe('formatted');
+        expect(getFieldDisplayValue({ formattedValue: 'formatted', displayValue: 'display', value: 'raw' })).toBe('formatted');
     });
 
     test('falls back to displayValue when formattedValue is undefined', () => {
-        expect(getIdentifyingFieldDisplayValue({ displayValue: 'display', value: 'raw' })).toBe('display');
+        expect(getFieldDisplayValue({ displayValue: 'display', value: 'raw' })).toBe('display');
     });
 
     test('falls back to value when formattedValue and displayValue are undefined', () => {
-        expect(getIdentifyingFieldDisplayValue({ value: 'raw' })).toBe('raw');
+        expect(getFieldDisplayValue({ value: 'raw' })).toBe('raw');
     });
 
     test('joins array values with comma and space', () => {
-        expect(getIdentifyingFieldDisplayValue({ value: ['a', 'b', 'c'] })).toBe('a, b, c');
+        expect(getFieldDisplayValue({ value: ['a', 'b', 'c'] })).toBe('a, b, c');
     });
 
     test('joins array formattedValue with comma and space', () => {
-        expect(getIdentifyingFieldDisplayValue({ formattedValue: ['x', 'y'] })).toBe('x, y');
+        expect(getFieldDisplayValue({ formattedValue: ['x', 'y'] })).toBe('x, y');
     });
 
     test('returns single string value as-is', () => {
-        expect(getIdentifyingFieldDisplayValue({ value: 'single' })).toBe('single');
+        expect(getFieldDisplayValue({ value: 'single' })).toBe('single');
     });
 
     test('handles single-element array', () => {
-        expect(getIdentifyingFieldDisplayValue({ value: ['only'] })).toBe('only');
+        expect(getFieldDisplayValue({ value: ['only'] })).toBe('only');
     });
 });

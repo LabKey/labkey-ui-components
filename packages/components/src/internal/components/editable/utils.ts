@@ -66,9 +66,11 @@ export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn):
                 if (seen.has(trimmed)) {
                     message = `Duplicate values not allowed: ${trimmed}.`
                 }
-                seen.add(trimmed);
-                if (validValues.indexOf(trimmed) === -1) {
-                    message = `'${trimmed}' is not a valid choice`;
+                else {
+                    seen.add(trimmed);
+                    if (validValues.indexOf(trimmed) === -1) {
+                        message = `'${trimmed}' is not a valid choice`;
+                    }
                 }
             })
         }

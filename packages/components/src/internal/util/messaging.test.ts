@@ -331,6 +331,15 @@ describe('resolveErrorMessage', () => {
             'Unable to create a unique constraint for field cloningsite because duplicate values already exists in the data.'
         );
     });
+
+    test('invalid SampleState value', () => {
+        const error = {
+            exception: "Value 'Testing' not found for field SampleState in the current context."
+        }
+        expect(resolveErrorMessage(error)).toBe(
+            "Value 'Testing' not found for field Status in the current context."
+        );
+    })
 });
 
 describe('getPermissionRestrictionMessage', () => {

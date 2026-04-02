@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - add some basic multi-line paste support
     - remove quoteValueColumnWithDelimiters as it's no longer needed
 
+### version 7.27.0
+*Released*: 1 April 2026
+- GitHub Issue 985: Update styling of `SelectInput` for identifying fields
+
 ### version 7.26.4
 *Released*: 31 March 2026
 - Update `@labkey/api` dependency

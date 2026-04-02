@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.26.5
+*Released*: 2 April 2026
+- GitHub Issue 847: App User Management page to allow users with manageUsersPermission to select / view all site users
+
 ### version 7.26.4
 *Released*: 31 March 2026
 - Update `@labkey/api` dependency

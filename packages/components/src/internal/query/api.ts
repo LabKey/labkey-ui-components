@@ -93,8 +93,10 @@ export function invalidateQueryDetailsCache(
     }
 }
 
-interface GetQueryDetailsBasic
-    extends Omit<Query.GetQueryDetailsOptions, 'method' | 'queryName' | 'schemaName' | 'viewName'> {
+interface GetQueryDetailsBasic extends Omit<
+    Query.GetQueryDetailsOptions,
+    'method' | 'queryName' | 'schemaName' | 'viewName'
+> {
     lookup?: QueryLookup;
 }
 
@@ -465,8 +467,10 @@ export interface ISelectRowsResult {
     rowCount: number;
 }
 
-export interface SelectRowsDeprecatedOptions
-    extends Omit<Query.SelectRowsOptions, 'failure' | 'method' | 'requiredVersion' | 'scope' | 'success'> {
+export interface SelectRowsDeprecatedOptions extends Omit<
+    Query.SelectRowsOptions,
+    'failure' | 'method' | 'requiredVersion' | 'scope' | 'success'
+> {
     requestHandler?: RequestHandler;
 }
 
@@ -622,11 +626,7 @@ export function handleSelectRowsResponse(response: Query.Response, queryInfo: Qu
     };
 }
 
-export function searchRows(
-    selectRowsConfig,
-    token: any,
-    exactColumn?: string,
-): Promise<ISelectRowsResult> {
+export function searchRows(selectRowsConfig, token: any, exactColumn?: string): Promise<ISelectRowsResult> {
     return new Promise((resolve, reject) => {
         let exactFilters, qFilters;
         const baseFilters = selectRowsConfig.filterArray ? selectRowsConfig.filterArray : [];
@@ -731,7 +731,8 @@ export interface QueryRequestOptionsBase {
     editMethod?: EDIT_METHOD;
 }
 export interface InsertRowsOptions
-    extends Omit<Query.QueryRequestOptions, 'apiVersion' | 'queryName' | 'rows' | 'schemaName'>,
+    extends
+        Omit<Query.QueryRequestOptions, 'apiVersion' | 'queryName' | 'rows' | 'schemaName'>,
         QueryRequestOptionsBase {
     fillEmptyFields?: boolean;
     rows: List<any>; // TODO: convert to Array<Record<string, any>>
@@ -863,8 +864,7 @@ function ensureNullForUndefined(row: Map<string, any>): Map<string, any> {
 }
 
 export interface UpdateRowsOptions
-    extends Omit<Query.QueryRequestOptions, 'auditDetails' | 'queryName' | 'schemaName'>,
-        QueryRequestOptionsBase {
+    extends Omit<Query.QueryRequestOptions, 'auditDetails' | 'queryName' | 'schemaName'>, QueryRequestOptionsBase {
     schemaQuery: SchemaQuery;
 }
 
@@ -947,8 +947,7 @@ export function updateRowsByContainer(
 }
 
 export interface DeleteRowsOptions
-    extends Omit<Query.QueryRequestOptions, 'auditDetails' | 'queryName' | 'schemaName'>,
-        QueryRequestOptionsBase {
+    extends Omit<Query.QueryRequestOptions, 'auditDetails' | 'queryName' | 'schemaName'>, QueryRequestOptionsBase {
     schemaQuery: SchemaQuery;
 }
 
@@ -982,8 +981,7 @@ export function deleteRows(options: DeleteRowsOptions): Promise<QueryCommandResp
 }
 
 export interface SaveRowsOptions
-    extends Omit<Query.SaveRowsOptions, 'auditDetails' | 'failure' | 'success'>,
-        QueryRequestOptionsBase {}
+    extends Omit<Query.SaveRowsOptions, 'auditDetails' | 'failure' | 'success'>, QueryRequestOptionsBase {}
 
 export function saveRows(options: SaveRowsOptions): Promise<Query.SaveRowsResponse> {
     return new Promise((resolve, reject) => {

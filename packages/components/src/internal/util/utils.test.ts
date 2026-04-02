@@ -63,9 +63,7 @@ import {
 
 describe('toLowerSafe', () => {
     test('strings', () => {
-        expect(toLowerSafe(['TEST ', ' Test', 'TeSt', 'test'])).toEqual(
-            ['test ', ' test', 'test', 'test']
-        );
+        expect(toLowerSafe(['TEST ', ' Test', 'TeSt', 'test'])).toEqual(['test ', ' test', 'test', 'test']);
     });
 
     test('numbers', () => {
@@ -75,9 +73,12 @@ describe('toLowerSafe', () => {
     });
 
     test('strings and numbers', () => {
-        expect(toLowerSafe([1, 2, 'TEST ', ' Test', 3.0, 4.4, 'TeSt', 'test'])).toEqual(
-           ['test ', ' test', 'test', 'test']
-        );
+        expect(toLowerSafe([1, 2, 'TEST ', ' Test', 3.0, 4.4, 'TeSt', 'test'])).toEqual([
+            'test ',
+            ' test',
+            'test',
+            'test',
+        ]);
     });
 });
 

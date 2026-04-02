@@ -20,12 +20,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import {
-    getQueryDetails,
-    ISelectRowsResult,
-    searchRows,
-    selectRowsDeprecated,
-} from '../../query/api';
+import { getQueryDetails, ISelectRowsResult, searchRows, selectRowsDeprecated } from '../../query/api';
 import { similaritySortFactory } from '../../util/similaritySortFactory';
 import { caseInsensitive, splitMultiValueForImport } from '../../util/utils';
 

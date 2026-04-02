@@ -1165,10 +1165,7 @@ describe('insertPastedData', () => {
     });
 
     test('pasting multi-line values into multiple cells', async () => {
-        const value = '"ab\n' +
-            'cd"\n' +
-            '"another\n' +
-            'line"';
+        const value = '"ab\n' + 'cd"\n' + '"another\n' + 'line"';
         const em = baseEditorModel.applyChanges({
             selectionCells: [genCellKey(fkOne, 0), genCellKey(fkOne, 1)],
             selectedColIdx: 0,
@@ -1241,13 +1238,9 @@ describe('insertPastedData', () => {
         // Space is preserved as-is
         expect(cellValues.get(genCellKey(fkOne, 0))).toEqual(List([{ display: 'hello world', raw: 'hello world' }]));
         // Quoted comma: CSV quoting is stripped, comma preserved
-        expect(cellValues.get(genCellKey(fkOne, 1))).toEqual(
-            List([{ display: 'hello, world', raw: 'hello, world' }])
-        );
+        expect(cellValues.get(genCellKey(fkOne, 1))).toEqual(List([{ display: 'hello, world', raw: 'hello, world' }]));
         // Escaped double quotes: CSV escaping is processed
-        expect(cellValues.get(genCellKey(fkOne, 2))).toEqual(
-            List([{ display: 'say "hello"', raw: 'say "hello"' }])
-        );
+        expect(cellValues.get(genCellKey(fkOne, 2))).toEqual(List([{ display: 'say "hello"', raw: 'say "hello"' }]));
     });
 
     test('pasting exactly A,B into mvtc matches single valid value', async () => {

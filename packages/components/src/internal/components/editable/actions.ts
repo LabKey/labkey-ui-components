@@ -1092,7 +1092,7 @@ export function generateFillCellKeys(
  * @param column
  */
 function getColCopyPasteDelimiter(column: QueryColumn) {
-    return  column?.isJunctionLookup() || column?.isMultiChoice ? ',' : '\t';
+    return column?.isJunctionLookup() || column?.isMultiChoice ? ',' : '\t';
 }
 
 export function parsePastedLookup(
@@ -1229,7 +1229,10 @@ export function generateColumnFillValues(
         if (isReadonlyCell || isReadonlyRow) return '';
 
         const initialValue = initialSelectionValues[i % initialSelectionValues.length];
-        let value = joinMultiValueForExport(initialValue.map(v => v.display).toArray(), getColCopyPasteDelimiter(column));
+        let value = joinMultiValueForExport(
+            initialValue.map(v => v.display).toArray(),
+            getColCopyPasteDelimiter(column)
+        );
         if (incrementType === IncrementType.NUMBER) {
             const amount = increment * (i + 1);
             let raw: number | string;
@@ -1564,7 +1567,9 @@ async function insertPastedData(
                     const unmatched: string[] = [];
                     const values: ValueDescriptor[] = [];
 
-                    const parsedValues = splitMultiValueForImport(val, parseDelimter, true, true).sort(caseSensitiveNaturalSort);
+                    const parsedValues = splitMultiValueForImport(val, parseDelimter, true, true).sort(
+                        caseSensitiveNaturalSort
+                    );
                     const foundValues = new Set<string>();
 
                     // GitHub Issue 942: Add error for duplicate values
@@ -1765,7 +1770,9 @@ export function pasteEvent(
 
 function getCellCopyValue(valueDescriptors: List<ValueDescriptor>, delimter: string): string {
     if (valueDescriptors && valueDescriptors.size > 0) {
-        const values = valueDescriptors.map(vd => (vd.display !== undefined ? vd.display.toString().trim() : '')).toArray();
+        const values = valueDescriptors
+            .map(vd => (vd.display !== undefined ? vd.display.toString().trim() : ''))
+            .toArray();
 
         if (values.length > 0) return joinMultiValueForExport(values, delimter);
     }
@@ -1795,7 +1802,8 @@ function getCopyValue(model: EditorModel, hideReadOnlyRows: boolean, readonlyRow
             if (selectionCells.find(key => key === cellKey)) {
                 inSelection = true;
                 const column = model.getColumnFromMap(fieldKey);
-                copyValue += cellSep + getCellCopyValue(model.cellValues.get(cellKey), getColCopyPasteDelimiter(column));
+                copyValue +=
+                    cellSep + getCellCopyValue(model.cellValues.get(cellKey), getColCopyPasteDelimiter(column));
                 cellSep = '\t';
             }
         });

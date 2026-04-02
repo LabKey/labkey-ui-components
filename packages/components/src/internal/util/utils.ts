@@ -739,7 +739,7 @@ export function splitMultiValueForImport(
     delimiter = ',',
     removeEmpty = true,
     trimSpace?: boolean
-): string[] | null | undefined {
+): null | string[] | undefined {
     if (str === null) return null;
     if (str === undefined) return undefined;
     if (!str) {

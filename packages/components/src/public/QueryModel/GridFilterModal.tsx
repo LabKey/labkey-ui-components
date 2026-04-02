@@ -84,8 +84,9 @@ export const GridFilterModal: FC<Props> = memo(props => {
 
                         const filterType = newFilter.getFilterType();
                         if (filterType.getURLSuffix().toLowerCase().startsWith('array') && filterType.isMultiValued()) {
+                            const filterValue = newFilter.getValue();
                             // GitHub Issue 987: Multi value filter dialog lets you edit and save without any selected values
-                            if (!newFilter.getValue() || (Array.isArray(newFilter.getValue()) && newFilter.getValue().length === 0)) {
+                            if (!filterValue || (Array.isArray(filterValue) && filterValue.length === 0)) {
                                 return false;
                             }
                         }

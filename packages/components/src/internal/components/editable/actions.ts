@@ -1555,6 +1555,11 @@ async function insertPastedData(
                         unmatched.push(vt);
                     });
 
+                    if (values.length > 10) {
+                        // GitHub Issue 970
+                        msg = { message: 'Too many values. Maximum allowed is 10.' };
+                    }
+
                     if (unmatched.length) {
                         const valueStr = unmatched
                             .slice(0, 4)
@@ -1567,10 +1572,6 @@ async function insertPastedData(
                             .map(u => '"' + u + '"')
                             .join(', ');
                         msg = { message: `Duplicate values not allowed: ${valueStr}.` };
-                    }
-                    if (values.length > 10) {
-                        // GitHub Issue 970
-                        msg = { message: 'Too many values. Maximum allowed is 10.' };
                     }
                     cv = List(values);
                 } else {

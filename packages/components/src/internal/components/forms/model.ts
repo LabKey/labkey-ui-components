@@ -20,15 +20,9 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import {
-    getQueryDetails,
-    ISelectRowsResult,
-    quoteValueColumnWithDelimiters,
-    searchRows,
-    selectRowsDeprecated,
-} from '../../query/api';
+import { getQueryDetails, ISelectRowsResult, searchRows, selectRowsDeprecated } from '../../query/api';
 import { similaritySortFactory } from '../../util/similaritySortFactory';
-import { caseInsensitive, parseCsvString } from '../../util/utils';
+import { caseInsensitive, splitMultiValueForImport } from '../../util/utils';
 
 import { naturalSort } from '../../../public/sort';
 
@@ -129,8 +123,10 @@ export function formatSavedResults(
 
     const { key, orderedModels } = result;
     const models = fromJS(result.models[key]);
-    const orderedResults = orderedModels[key]
-        .reduce((ordered, k) => ordered.set(k, models.get(k)), OrderedMap<string, any>());
+    const orderedResults = orderedModels[key].reduce(
+        (ordered, k) => ordered.set(k, models.get(k)),
+        OrderedMap<string, any>()
+    );
 
     return formatResults(model, orderedResults, token);
 }
@@ -157,7 +153,7 @@ function getSelectedOptions(model: QuerySelectModel, value: any): Map<string, an
 
     // multi-value case
     if (model.multiple === true) {
-        const values = parseCsvString(value.toString(), model.delimiter);
+        const values = splitMultiValueForImport(value.toString(), model.delimiter);
         return sources
             .filter(result => {
                 const resultValue = result.getIn(keyPath);
@@ -224,10 +220,7 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
             parameters: model.queryParams,
         },
         filterVal,
-        model.valueColumn,
-        model.delimiter,
-        addExactFilter ? displayColumn : undefined,
-        model.multiple
+        addExactFilter ? displayColumn : undefined
     );
 }
 
@@ -356,7 +349,7 @@ export function buildValueFilter(
             filter = Filter.create(valueColumn, value, Filter.Types.IN);
             expectedValueCount = new Set(value).size;
         } else if (typeof value === 'string') {
-            const parsed = parseCsvString(value, delimiter, true);
+            const parsed = splitMultiValueForImport(value, delimiter);
             filter = Filter.create(valueColumn, parsed, Filter.Types.IN);
             expectedValueCount = new Set(parsed).size;
         }
@@ -443,13 +436,7 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
         groupByColumn,
         isInit: true,
         queryInfo,
-        selectedItems: selectedItems
-            ? fromJS(
-                  quoteValueColumnWithDelimiters(selectedItems, valueColumn, delimiter, multiple).models[
-                      selectedItems.key
-                  ]
-              )
-            : Map<string, any>(),
+        selectedItems: selectedItems ? fromJS(selectedItems.models[selectedItems.key]) : Map<string, any>(),
         valueColumn,
     };
 }

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.28.1
+*Released*: 3 April 2026
+- GitHub Issue 613: Use "Status" instead of "SampleState" in error messaging.
+
 ### version 7.28.0
 *Released*: 2 April 2026
 - GitHub Issue 916: Editable grid copy/paste issue with special characters

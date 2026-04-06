@@ -39,8 +39,10 @@ import { FilterCriteriaContext } from './FilterCriteriaContext';
 const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;
 
-interface AssayDomainFormProps
-    extends Omit<InjectedBaseDomainDesignerProps, 'onFinish' | 'setSubmitting' | 'submitting'> {
+interface AssayDomainFormProps extends Omit<
+    InjectedBaseDomainDesignerProps,
+    'onFinish' | 'setSubmitting' | 'submitting'
+> {
     api: DomainPropertiesAPIWrapper;
     appDomainHeaders: Map<string, HeaderRenderer>;
     appPropertiesOnly?: boolean;

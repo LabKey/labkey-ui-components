@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.21.4
+*Released*: 6 April 2026
 - GitHub Issue #974: Lookup Data Type shown in Assay Designer for app, even when premium module is not present
   - AssayDesignerPanels to pass appPropertiesOnly to AssayDomainForm
   - add new domainFormDisplayOptions.showAdvancedSettingsForApp for assay designer case

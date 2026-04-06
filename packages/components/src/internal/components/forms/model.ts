@@ -129,8 +129,10 @@ export function formatSavedResults(
 
     const { key, orderedModels } = result;
     const models = fromJS(result.models[key]);
-    const orderedResults = orderedModels[key]
-        .reduce((ordered, k) => ordered.set(k, models.get(k)), OrderedMap<string, any>());
+    const orderedResults = orderedModels[key].reduce(
+        (ordered, k) => ordered.set(k, models.get(k)),
+        OrderedMap<string, any>()
+    );
 
     return formatResults(model, orderedResults, token);
 }

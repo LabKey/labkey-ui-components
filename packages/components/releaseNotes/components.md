@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - GitHub Issue 970: Warn about more than 10 items for multi choice fields in editable grid.
 - GitHub Issue 987: Multi value filter dialog lets you edit and save without any selected values
 
+### version 7.28.1
+*Released*: 3 April 2026
+- GitHub Issue 613: Use "Status" instead of "SampleState" in error messaging.
+
 ### version 7.28.0
 *Released*: 2 April 2026
 - GitHub Issue 916: Editable grid copy/paste issue with special characters

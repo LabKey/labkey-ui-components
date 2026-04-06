@@ -197,11 +197,15 @@ describe('MetricUnit utils', () => {
             'boxes',
             'cells',
             'kits',
+            'organisms',
             'packs',
             'pieces',
             'slides',
+            'syringes',
             'tests',
+            'tubes',
             'unit',
+            'vials',
         ]);
 
         // include all options when no unitTypeStr or an invalid unitTypeStr is provided

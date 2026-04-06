@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- GitHub Issue 868: Add more nouns for count units
+
 ### version 7.28.1
 *Released*: 3 April 2026
 - GitHub Issue 613: Use "Status" instead of "SampleState" in error messaging.

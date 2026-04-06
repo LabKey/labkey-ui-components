@@ -134,9 +134,9 @@ describe('MetricUnit utils', () => {
             ])
         );
 
-        expect(getMetricUnitOptions(null).length).toBe(18);
-        expect(getMetricUnitOptions('').length).toBe(18);
-        expect(getMetricUnitOptions('bad').length).toBe(18);
+        expect(getMetricUnitOptions(null).length).toBe(22);
+        expect(getMetricUnitOptions('').length).toBe(22);
+        expect(getMetricUnitOptions('bad').length).toBe(22);
     });
 
     test('getMetricUnitOptions with filterFn', () => {
@@ -209,9 +209,9 @@ describe('MetricUnit utils', () => {
         ]);
 
         // include all options when no unitTypeStr or an invalid unitTypeStr is provided
-        expect(getAltUnitKeys(null).length).toBe(18);
-        expect(getAltUnitKeys('').length).toBe(18);
-        expect(getAltUnitKeys('bad').length).toBe(18);
+        expect(getAltUnitKeys(null).length).toBe(22);
+        expect(getAltUnitKeys('').length).toBe(22);
+        expect(getAltUnitKeys('bad').length).toBe(22);
     });
 
     test('getMeasurementUnit', () => {

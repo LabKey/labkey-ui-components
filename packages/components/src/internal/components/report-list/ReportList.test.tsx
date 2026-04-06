@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 import React from 'react';
-import { mount } from 'enzyme';
+import { fireEvent, render } from '@testing-library/react';
 
 import exampleData from '../../../test/data/example_browse_data_tree_api.json';
 
 import { AppURL } from '../../url/AppURL';
 import { flattenBrowseDataTreeResponse } from '../../query/reports';
-import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { ReportItemModal, ReportList, ReportListItem } from './ReportList';
 
@@ -49,37 +48,31 @@ describe('<ReportList />', () => {
     });
 
     test('Render with no data', () => {
-        const component = <ReportList loading={false} reports={[]} onReportClicked={noop} />;
-        const wrapper = mount(component);
-        expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
-        expect(wrapper.find(messageSelector).text()).toContain('No reports');
-        wrapper.unmount();
+        const { container } = render(<ReportList loading={false} reports={[]} onReportClicked={noop} />);
+        expect(container.querySelectorAll('.fa-spinner')).toHaveLength(0);
+        expect(container.querySelector(messageSelector).textContent).toContain('No reports');
     });
 
     test('Render loading', () => {
-        const component = <ReportList loading={true} reports={[]} onReportClicked={noop} />;
-        const wrapper = mount(component);
-        expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
-        wrapper.unmount();
+        const { container } = render(<ReportList loading={true} reports={[]} onReportClicked={noop} />);
+        expect(container.querySelectorAll('.fa-spinner')).toHaveLength(1);
     });
 
     test('Render with data', () => {
         const reports = flattenBrowseDataTreeResponse(exampleData, urlMapper);
-        const component = <ReportList loading={false} reports={reports} onReportClicked={noop} />;
-        const wrapper = mount(component);
-        expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
-        expect(wrapper.find(ReportListItem)).toHaveLength(reports.length);
-        wrapper.unmount();
+        const { container } = render(<ReportList loading={false} reports={reports} onReportClicked={noop} />);
+        expect(container.querySelectorAll('.fa-spinner')).toHaveLength(0);
+        expect(container.querySelectorAll('.report-list-item')).toHaveLength(reports.length);
     });
 
     test('onReportClicked should execute on click', () => {
         const reports = flattenBrowseDataTreeResponse(exampleData, urlMapper).slice(0, 1);
         const onReportClicked = jest.fn();
-        const component = <ReportList loading={false} reports={reports} onReportClicked={onReportClicked} />;
-        const wrapper = mount(component);
-        wrapper.find(ReportListItem).simulate('click');
+        const { container } = render(
+            <ReportList loading={false} reports={reports} onReportClicked={onReportClicked} />
+        );
+        fireEvent.click(container.querySelector('.report-list-item'));
         expect(onReportClicked).toHaveBeenCalledTimes(1);
-        wrapper.unmount();
     });
 });
 
@@ -87,38 +80,32 @@ describe('<ReportListItem />', () => {
     test('ReportListItem renders', () => {
         const report = flattenBrowseDataTreeResponse(exampleData, urlMapper)[1];
         const onClick = jest.fn();
-        const component = <ReportListItem report={report} onClick={onClick} />;
-        const wrapper = mount(component);
-        expect(wrapper.find(createdBySelector)).toHaveLength(1);
-        expect(wrapper.text()).toContain(report.createdBy);
-        expect(wrapper.text()).toContain(report.name);
-        // Enzyme prefixes relative URLs with http://localhost
+        const { container } = render(<ReportListItem report={report} onClick={onClick} />);
+        expect(container.querySelectorAll(createdBySelector)).toHaveLength(1);
+        expect(container.textContent).toContain(report.createdBy);
+        expect(container.textContent).toContain(report.name);
+        // jsdom prefixes relative URLs with http://localhost
         const expectedHref = `http://localhost/#${report.appUrl.toString()}`;
-        expect(wrapper.find('a').getDOMNode()).toHaveProperty('href', expectedHref);
-        wrapper.unmount();
+        expect(container.querySelector('a')).toHaveProperty('href', expectedHref);
     });
 
     test('ReportListItem does not render non-existent createdBy', () => {
         const reports = flattenBrowseDataTreeResponse(exampleData, urlMapper);
         const report = reports[1];
         report.createdBy = undefined;
-        const component = <ReportListItem report={report} onClick={noop} />;
-        const wrapper = mount(component);
-        expect(wrapper.find(createdBySelector)).toHaveLength(0);
-        wrapper.unmount();
+        const { container } = render(<ReportListItem report={report} onClick={noop} />);
+        expect(container.querySelectorAll(createdBySelector)).toHaveLength(0);
     });
 
     test('ReportListItem calls onClick when clicked', () => {
         const report = flattenBrowseDataTreeResponse(exampleData, urlMapper)[0];
         const onClick = jest.fn();
-        const component = <ReportListItem report={report} onClick={onClick} />;
-        const wrapper = mount(component);
-        wrapper.simulate('click');
+        const { container } = render(<ReportListItem report={report} onClick={onClick} />);
+        fireEvent.click(container.querySelector('.report-list-item'));
         expect(onClick).toHaveBeenCalledTimes(1);
         // Test that we pass the report to onClick. If this test fails that means we'll need to fix any callbacks that
         // expect a report to be passed to the callback.
         expect(onClick.mock.calls[0][0]).toBe(report);
-        wrapper.unmount();
     });
 });
 
@@ -129,17 +116,17 @@ describe('<ReportItemModal />', () => {
         const onClose = jest.fn();
 
         // Act
-        const wrapper = mount(<ReportItemModal report={report} onClose={onClose} />);
+        render(<ReportItemModal report={report} onClose={onClose} />);
 
         // Assert
-        // Verify modal displays properly
-        expect(wrapper.find('.report-item-modal .modal-title').text()).toEqual(report.name);
+        // Verify modal displays properly (Modal uses a portal, so use document.querySelector)
+        expect(document.querySelector('.modal-title').textContent).toEqual(report.name);
 
         // Verify report items are listed
-        const reportItems = wrapper.find('.report-item-modal .report-item__metadata-item span');
+        const reportItems = document.querySelectorAll('.report-item__metadata-item span');
         expect(reportItems.length).toEqual(3);
-        expect(reportItems.at(0).text()).toEqual(report.createdBy);
-        expect(reportItems.at(1).text()).toEqual(report.type);
-        expect(reportItems.at(2).text()).toEqual(report.description);
+        expect(reportItems[0].textContent).toEqual(report.createdBy);
+        expect(reportItems[1].textContent).toEqual(report.type);
+        expect(reportItems[2].textContent).toEqual(report.description);
     });
 });

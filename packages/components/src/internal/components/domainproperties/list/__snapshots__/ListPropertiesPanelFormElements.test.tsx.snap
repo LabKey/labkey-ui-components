@@ -1,0 +1,269 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`AllowableActions existing list, existing properties 1`] = `
+<DocumentFragment>
+  <div
+    class="col-xs-12 col-md-3"
+  >
+    <div
+      class="domain-field-section-heading"
+    >
+      Allow these Actions
+    </div>
+    <div
+      class="list__properties__allowable-actions"
+    >
+      <div
+        class="list__properties__checkbox-row"
+      >
+        <div
+          class="form-group"
+        >
+          <label>
+            <input
+              checked=""
+              type="checkbox"
+            />
+            Delete
+          </label>
+        </div>
+      </div>
+      <div
+        class="list__properties__checkbox-row"
+      >
+        <div
+          class="form-group"
+        >
+          <label>
+            <input
+              checked=""
+              type="checkbox"
+            />
+            Upload
+          </label>
+        </div>
+      </div>
+      <div
+        class="list__properties__checkbox-row"
+      >
+        <div
+          class="form-group"
+        >
+          <label>
+            <input
+              checked=""
+              type="checkbox"
+            />
+            Export & Print
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`AllowableActions new list, default properties 1`] = `
+<DocumentFragment>
+  <div
+    class="col-xs-12 col-md-3"
+  >
+    <div
+      class="domain-field-section-heading"
+    >
+      Allow these Actions
+    </div>
+    <div
+      class="list__properties__allowable-actions"
+    >
+      <div
+        class="list__properties__checkbox-row"
+      >
+        <div
+          class="form-group"
+        >
+          <label>
+            <input
+              checked=""
+              type="checkbox"
+            />
+            Delete
+          </label>
+        </div>
+      </div>
+      <div
+        class="list__properties__checkbox-row"
+      >
+        <div
+          class="form-group"
+        >
+          <label>
+            <input
+              checked=""
+              type="checkbox"
+            />
+            Upload
+          </label>
+        </div>
+      </div>
+      <div
+        class="list__properties__checkbox-row"
+      >
+        <div
+          class="form-group"
+        >
+          <label>
+            <input
+              checked=""
+              type="checkbox"
+            />
+            Export & Print
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`BasicPropertiesFields existing list, existing properties 1`] = `
+<DocumentFragment>
+  <div
+    class="col-xs-12 col-md-7"
+  >
+    <div
+      class="domain-field-section-heading"
+    >
+      Basic Properties
+    </div>
+    <div
+      class="row margin-top"
+    >
+      <div
+        class="col-xs-3 col-lg-2"
+      >
+        <span
+          class="domain-no-wrap"
+        >
+          Name
+          <div
+            class="overlay-trigger"
+          >
+            <span
+              class="label-help-target"
+            >
+              <span
+                class="label-help-icon fa fa-question-circle"
+              />
+            </span>
+          </div>
+           *
+        </span>
+      </div>
+      <div
+        class="col-xs-9 col-lg-8"
+      >
+        <input
+          class="form-control"
+          id="name"
+          placeholder="Enter a name for this list"
+          type="text"
+          value="NIMHDemographics"
+        />
+      </div>
+    </div>
+    <div
+      class="row margin-top"
+    >
+      <div
+        class="col-xs-3 col-lg-2"
+      >
+        <span
+          class="domain-no-wrap"
+        >
+          Description
+        </span>
+      </div>
+      <div
+        class="col-xs-9 col-lg-8"
+      >
+        <textarea
+          class="form-control"
+          id="description"
+        />
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`BasicPropertiesFields new list, default properties 1`] = `
+<DocumentFragment>
+  <div
+    class="col-xs-12 col-md-7"
+  >
+    <div
+      class="domain-field-section-heading"
+    >
+      Basic Properties
+    </div>
+    <div
+      class="row margin-top"
+    >
+      <div
+        class="col-xs-3 col-lg-2"
+      >
+        <span
+          class="domain-no-wrap"
+        >
+          Name
+          <div
+            class="overlay-trigger"
+          >
+            <span
+              class="label-help-target"
+            >
+              <span
+                class="label-help-icon fa fa-question-circle"
+              />
+            </span>
+          </div>
+           *
+        </span>
+      </div>
+      <div
+        class="col-xs-9 col-lg-8"
+      >
+        <input
+          class="form-control"
+          id="name"
+          placeholder="Enter a name for this list"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="row margin-top"
+    >
+      <div
+        class="col-xs-3 col-lg-2"
+      >
+        <span
+          class="domain-no-wrap"
+        >
+          Description
+        </span>
+      </div>
+      <div
+        class="col-xs-9 col-lg-8"
+      >
+        <textarea
+          class="form-control"
+          id="description"
+        />
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

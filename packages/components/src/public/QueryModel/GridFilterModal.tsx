@@ -55,7 +55,18 @@ export const GridFilterModal: FC<Props> = memo(props => {
         if (!filters) return null;
 
         return filters.filter(fieldFilter => {
-            const urlSuffix = fieldFilter?.filter?.getFilterType()?.getURLSuffix();
+            const filterType = fieldFilter?.filter?.getFilterType();
+            const urlSuffix = filterType?.getURLSuffix();
+            if (urlSuffix.toLowerCase().startsWith('array')) {
+                if (filterType.isMultiValued()) {
+                    const filterValue = fieldFilter.filter.getValue();
+                    // GitHub Issue 987: Multi value filter dialog lets you edit and save without any selected values
+                    if (!filterValue || (Array.isArray(filterValue) && filterValue.length === 0)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
             return urlSuffix !== NOT_ANY_FILTER_TYPE.getURLSuffix() && urlSuffix !== '';
         });
     }, [filters]);
@@ -78,21 +89,7 @@ export const GridFilterModal: FC<Props> = memo(props => {
 
             if (newFilters) {
                 newFilters
-                    ?.filter(newFilter => {
-                        if (newFilter === null)
-                            return false;
-
-                        const filterType = newFilter.getFilterType();
-                        if (filterType.getURLSuffix().toLowerCase().startsWith('array') && filterType.isMultiValued()) {
-                            const filterValue = newFilter.getValue();
-                            // GitHub Issue 987: Multi value filter dialog lets you edit and save without any selected values
-                            if (!filterValue || (Array.isArray(filterValue) && filterValue.length === 0)) {
-                                return false;
-                            }
-                        }
-                        return true;
-
-                    })
+                    ?.filter(newFilter => newFilter !== null)
                     .forEach(newFilter => {
                         updatedFilters.push({
                             fieldKey: activeFieldKey,

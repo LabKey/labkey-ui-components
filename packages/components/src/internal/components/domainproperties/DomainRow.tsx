@@ -395,7 +395,10 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         const draggableId = createFormInputId('domaindrag', domainIndex, index);
         // Use undefined instead of false to allow for css to handle the highlight color for hover
         const highlighted = dragging ? true : isDragDisabled ? false : undefined;
-        const showAdvancedSettingsButton = expanded && !isFieldFullyLocked(field.lockType) && !appPropertiesOnly;
+        const showAdvancedSettingsButton =
+            expanded &&
+            !isFieldFullyLocked(field.lockType) &&
+            (!appPropertiesOnly || domainFormDisplayOptions?.showAdvancedSettingsForApp); // GitHub Issue #974
 
         return (
             <Draggable

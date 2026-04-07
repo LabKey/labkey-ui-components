@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.26.6
+*Released*: 7 April 2026
+- Merge from release26.3-SNAPSHOT to release26.4-SNAPSHOT
+    - includes changes from 7.21.4 #1971
+
 ### version 7.26.5
 *Released*: 2 April 2026
 - GitHub Issue 847: App User Management page to allow users with manageUsersPermission to select / view all site users
@@ -91,6 +96,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add `ta-right`, `ta-left` util styles
 - Add UnidentifiedPill
 - Add EMPTY_SEQUENCE_WARNING constant
+
+### version 7.21.4
+*Released*: 6 April 2026
+- GitHub Issue #974: Lookup Data Type shown in Assay Designer for app, even when premium module is not present
+  - AssayDesignerPanels to pass appPropertiesOnly to AssayDomainForm
+  - add new domainFormDisplayOptions.showAdvancedSettingsForApp for assay designer case
 
 ### version 7.21.3
 *Released*: 12 March 2026

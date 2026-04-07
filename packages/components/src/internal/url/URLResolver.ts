@@ -479,7 +479,7 @@ export const FREEZER_ITEM_SAMPLE_MAPPER = new ActionMapper('query', 'executeQuer
             }
         }
     }
-    return false;
+    return undefined;
 });
 
 // This mapper overrides the URL provided for the core.ProjectManagement query.

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.29.0
+*Released*: 7 April 2026
 - GitHub Issue 868: Add more nouns for count units
 
 ### version 7.28.1

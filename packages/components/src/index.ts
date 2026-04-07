@@ -1539,7 +1539,6 @@ export {
     MAX_EDITABLE_GRID_ROWS,
     MAX_SELECTION_ACTION_ROWS,
     MEASUREMENT_UNITS,
-    UNITS_KIND,
     MemberType,
     MenuDivider,
     MenuHeader,

@@ -308,6 +308,7 @@ import {
 import { QueryFormInputs } from './internal/components/forms/QueryFormInputs';
 import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
 import { SelectInput } from './internal/components/forms/input/SelectInput';
+import { dividedOptionsRenderer, filterDividedOptions } from './internal/components/forms/input/DividedOptionsRenderer';
 import { DatePickerInput } from './internal/components/forms/input/DatePickerInput';
 import { FileInput } from './internal/components/forms/input/FileInput';
 import { TextInput } from './internal/components/forms/input/TextInput';
@@ -1248,6 +1249,7 @@ export {
     DisableableMenuItem,
     DiscardConsumedSamplesPanel,
     Discussions,
+    dividedOptionsRenderer,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
     DOMAIN_RANGE_VALIDATOR,
@@ -1304,6 +1306,7 @@ export {
     FilterAction,
     filterArrayToString,
     FilterCriteriaRenderer,
+    filterDividedOptions,
     FilterStatus,
     FIND_BY_IDS_QUERY_PARAM,
     FindByIdsModal,

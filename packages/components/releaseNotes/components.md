@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Add optional `jobActionId` parameter to `updateSampleStorageData`
+- Add `dividedOptionsRenderer` and `filterDividedOptions` for rendering selectInputs with dividers between groups of options
 
 ### version 7.28.2
 *Released*: 7 April 2026

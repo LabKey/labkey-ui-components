@@ -11,6 +11,7 @@ import { FormsyInput } from './FormsyReactComponents';
 import { Operation } from '../../../../public/QueryColumn';
 import { STORED_AMOUNT_FIELDS } from '../../samples/constants';
 import { Alert } from '../../base/Alert';
+import { LOOKUP_DEFAULT_SIZE } from '../../../constants';
 
 export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
     const {
@@ -102,6 +103,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     id={id}
                     inputClass={''}
                     name={unitCol.fieldKey}
+                    maxRows={LOOKUP_DEFAULT_SIZE}
                     onQSChange={onSelectChange}
                     placeholder="Select or type to search..."
                     queryFilters={queryFilter}

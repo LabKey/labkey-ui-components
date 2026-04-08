@@ -1,9 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.29.1
+*Released*: 7 April 2026
+- GitHub Issue 868: Add more nouns for count units
+
 ### version 7.28.2
 *Released*: 7 April 2026
-- Update `FEEZER_ITEM_SAMPLE_MAPPER` to return undefined if not matched, for consistency with other mappers
+- Update `FREEZER_ITEM_SAMPLE_MAPPER` to return undefined if not matched, for consistency with other mappers
 
 ### version 7.X
 *Released*: X April 2026

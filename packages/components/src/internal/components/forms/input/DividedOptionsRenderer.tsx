@@ -27,15 +27,21 @@ export function filterDividedOptions(allOptions, selectedOptions): any[] {
         .filter(option => selectedOptions.indexOf(option.value) == -1);
     const options = [];
     // remove dividers that are no longer dividing anything
-    let lastDivider = -1;
+    let hasPreviousSection = false;
+    let pendingDivider;
     notSelected.forEach((option, index) => {
-        if (!option.isDivider)
-            options.push(option);
-        else {
-            if (index-1 !== lastDivider && index !== notSelected.length-1) {
-                options.push(option);
+        if (!option.isDivider) {
+            if (pendingDivider) {
+                options.push(pendingDivider);
+                pendingDivider = undefined;
             }
-            lastDivider = index
+            options.push(option);
+            hasPreviousSection = true;
+        } else {
+            if (hasPreviousSection) {
+                pendingDivider = option;
+                hasPreviousSection = false;
+            }
         }
     });
     return options;

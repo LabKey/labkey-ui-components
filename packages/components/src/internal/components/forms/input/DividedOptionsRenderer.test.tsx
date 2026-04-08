@@ -19,7 +19,11 @@ describe('filterDividedOptions', () => {
            ]);
    });
    test('remove last divider', () => {
-       expect(filterDividedOptions([{label: 'option1', value: 'o1'}, {label: undefined, isDivider: true}, {label: 'option2', value: 'o2'}], ['o2']))
+       expect(filterDividedOptions([{label: 'option1', value: 'o1'}, {isDivider: true}, {label: 'option2', value: 'o2'}], ['o2']))
+           .toStrictEqual([
+               {label: 'option1', value: 'o1'}
+           ]);
+       expect(filterDividedOptions([{label: 'option1', value: 'o1'}, {isDivider: true}, {label: 'option2', value: 'o2'}, {isDivider: true}, {label: 'option3', value: 'o3'}], ['o2', 'o3']))
            .toStrictEqual([
                {label: 'option1', value: 'o1'}
            ]);
@@ -54,7 +58,7 @@ describe('filterDividedOptions', () => {
                {label: 'option3', value: 'o3'}
            ]);
    });
-    test('remove multiple divider', () => {
+    test('remove multiple dividers', () => {
         expect(filterDividedOptions([
                 {label: 'option1', value: 'o1'},
                 {label: 'd1', isDivider: true},

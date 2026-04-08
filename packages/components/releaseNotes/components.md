@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.29.2
+*Released*: 8 April 2026
+- Merge from release26.4-SNAPSHOT to develop
+    - includes changes from 7.26.5 #1970
+    - includes changes from 7.26.6 #1976
+
 ### version 7.29.1
 *Released*: 7 April 2026
 - GitHub Issue 868: Add more nouns for count units

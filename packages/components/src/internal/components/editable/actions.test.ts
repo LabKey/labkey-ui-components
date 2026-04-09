@@ -836,6 +836,48 @@ describe('parsePastedLookup', () => {
             ]),
         });
     });
+
+    test('duplicate values', () => {
+        // single duplicate
+        expect(parsePastedLookup(multiValueLookup, stringLookupValues, 'A,A')).toStrictEqual({
+            message: { message: 'Duplicate values not allowed: "A".' },
+            valueDescriptors: List([
+                { display: 'A', raw: 'a' },
+                { display: 'A', raw: 'a' },
+            ]),
+        });
+
+        // multiple duplicates
+        expect(parsePastedLookup(multiValueLookup, stringLookupValues, 'A,b,A,b')).toStrictEqual({
+            message: { message: 'Duplicate values not allowed: "A", "b".' },
+            valueDescriptors: List([
+                { display: 'A', raw: 'a' },
+                { display: 'b', raw: 'B' },
+                { display: 'A', raw: 'a' },
+                { display: 'b', raw: 'B' },
+            ]),
+        });
+
+        // duplicate with other valid values
+        expect(parsePastedLookup(multiValueLookup, stringLookupValues, 'A,C,A')).toStrictEqual({
+            message: { message: 'Duplicate values not allowed: "A".' },
+            valueDescriptors: List([
+                { display: 'A', raw: 'a' },
+                { display: 'C', raw: 'C' },
+                { display: 'A', raw: 'a' },
+            ]),
+        });
+
+        // unmatched takes precedence over duplicates
+        expect(parsePastedLookup(multiValueLookup, stringLookupValues, 'A,A,notfound')).toStrictEqual({
+            message: { message: 'Could not find "notfound"' },
+            valueDescriptors: List([
+                { display: 'A', raw: 'a' },
+                { display: 'A', raw: 'a' },
+                { display: 'notfound', raw: 'notfound' },
+            ]),
+        });
+    });
 });
 
 describe('insertPastedData', () => {

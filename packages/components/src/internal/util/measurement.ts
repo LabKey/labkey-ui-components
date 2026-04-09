@@ -181,7 +181,7 @@ export const MEASUREMENT_UNITS: Record<string, MeasurementUnit> = {
         kind: UNITS_KIND.COUNT,
         ratio: 1,
         displayPrecision: 2,
-        altLabels: ['blocks', 'bottles', 'boxes', 'cells', 'kits', 'packs', 'pieces', 'slides', 'tests', 'unit'],
+        altLabels: ['blocks', 'bottles', 'boxes', 'cells', 'kits', 'organisms', 'packs', 'pieces', 'slides', 'syringes', 'tests', 'tubes', 'unit', 'vials'],
     },
 };
 

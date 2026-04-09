@@ -564,6 +564,12 @@ describe('PropDescType', () => {
         expect(acceptablePropertyType(DATETIME_TYPE, TIME_RANGE_URI)).toBeFalsy();
         expect(acceptablePropertyType(DATE_TYPE, TIME_RANGE_URI)).toBeFalsy();
         expect(acceptablePropertyType(TIME_TYPE, DATE_RANGE_URI)).toBeFalsy();
+
+        // GitHub Issue 951: multiline text cannot convert to text choice
+        expect(acceptablePropertyType(TEXT_CHOICE_TYPE, MULTILINE_RANGE_URI)).toBeFalsy();
+        // but multiline text can still convert to other string types
+        expect(acceptablePropertyType(TEXT_TYPE, MULTILINE_RANGE_URI)).toBeTruthy();
+        expect(acceptablePropertyType(MULTILINE_TYPE, MULTILINE_RANGE_URI)).toBeTruthy();
     });
 });
 

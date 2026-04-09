@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.29.4
+*Released*: 9 April 2026
+- GitHub Issue 954: Add error for duplicate values for parent inputs
+
 ### version 7.29.3
 *Released*: 8 April 2026
 - GitHub Issue 928: Spaces not shown between text choices in identifying fields in editable grid

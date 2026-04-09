@@ -2,7 +2,7 @@ import React, { FC, memo } from 'react';
 
 interface DividedOptionsRendererProps {
     isDivider: boolean;
-    label: string;
+    label?: string;
 }
 
 // export for jest testing
@@ -22,14 +22,14 @@ export function filterDividedOptions(allOptions, selectedOptions): any[] {
     if (!allOptions)
         return [];
 
-    const notSelected = allOptions
+    const notSelected = selectedOptions ? allOptions
         // remove options already selected
-        .filter(option => selectedOptions.indexOf(option.value) == -1);
+        .filter(option => selectedOptions.indexOf(option.value) === -1) : allOptions;
     const options = [];
     // remove dividers that are no longer dividing anything
     let hasPreviousSection = false;
     let pendingDivider;
-    notSelected.forEach((option, index) => {
+    notSelected.forEach((option) => {
         if (!option.isDivider) {
             if (pendingDivider) {
                 options.push(pendingDivider);

@@ -57,6 +57,7 @@ import {
     LOOKUP_VALIDATOR_VALUES,
     MAX_TEXT_LENGTH,
     MULTI_CHOICE_RANGE_URI,
+    MULTILINE_RANGE_URI,
     NUMBER_CONVERT_URIS,
     PHILEVEL_NOT_PHI,
     SAMPLE_TYPE_CONCEPT_URI,
@@ -1778,7 +1779,8 @@ export function acceptablePropertyType(newType: PropDescType, originalRangeURI: 
 
     // Original field is a uniqueId, text, or multi-line text, can convert to a string type
     if (newType.isString() && PropDescType.isString(originalRangeURI)) {
-        return true;
+        // GitHub Issue 951: Multi-line values converted to text choices lose multi-line editability
+        return !(MULTILINE_RANGE_URI === originalRangeURI && newType.isTextChoice());
     }
 
     // Original field is a datetime, can convert to a date or time
@@ -2248,6 +2250,7 @@ export interface IDomainFormDisplayOptions {
     isDragDisabled?: boolean;
     phiLevelDisabled?: boolean;
     retainReservedFields?: boolean;
+    showAdvancedSettingsForApp?: boolean;
     showFilterCriteria?: boolean;
     showScannableOption?: boolean;
     textChoiceLockedForDomain?: boolean;

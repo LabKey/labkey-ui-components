@@ -83,6 +83,25 @@ describe('FilterAction::actionValueFromFilter', () => {
         expect(value.displayValue).toBe('TimeCol = 01:02:00');
     });
 
+    test('multi-value IN filter with separator in value uses JSON encoding', () => {
+        // Value 'a}b;c' contains both '}' and ';' (the IN separator), triggering {json:...} encoding
+        const filter = Filter.create('col', ['a}b;c', 'normal'], Filter.Types.IN);
+        const value: ActionValue = action.actionValueFromFilter(filter);
+        expect(value.displayValue).toBe('col Equals One Of a}b;c, normal');
+    });
+
+    test('multi-value IN filter round-trips through URL parameter encoding', () => {
+        // Simulate what happens when a filter is encoded to URL and parsed back
+        const original = ['a}b;c', 'x;y}z'];
+        const filter = Filter.create('col', original, Filter.Types.IN);
+        // getURLParameterValue produces {json:["a}b;c","x;y}z"]}
+        const encoded = filter.getFilterType().getURLParameterValue(filter.getValue());
+        // Re-create from the encoded URL value, as if parsed from URL
+        const roundTripped = Filter.create('col', encoded, Filter.Types.IN);
+        const value: ActionValue = action.actionValueFromFilter(roundTripped);
+        expect(value.displayValue).toBe('col Equals One Of a}b;c, x;y}z');
+    });
+
     test('decodePart label vs column name', () => {
         const col = new QueryColumn({ shortCaption: '$Bool Field./,$&' });
         const filter = Filter.create('$DBoolField$P$S$C$D$A', true, Filter.Types.EQUAL);

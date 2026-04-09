@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Add css for .lk-popover-behind-modal to adjust z-index
+- EditInlineField prop for pullRight for pencil icon
 
 ### version 7.29.3
 *Released*: 8 April 2026

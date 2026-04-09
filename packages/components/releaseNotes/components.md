@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 7.X
-*Released*: X 2026
+### version 7.29.3
+*Released*: 8 April 2026
 - GitHub Issue 928: Spaces not shown between text choices in identifying fields in editable grid
 - GitHub Issue 951: Multi-line values converted to text choices lose multi-line editability
 - GitHub Issue 970: Warn about more than 10 items for multi choice fields in editable grid.

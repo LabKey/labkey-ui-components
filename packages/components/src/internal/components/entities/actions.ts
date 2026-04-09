@@ -1363,6 +1363,15 @@ export function getSingleSampleTypeQueryInfo(sampleIds: number[] | string[]): Pr
             });
     });
 }
+
+// GitHub Issue 928: Spaces not shown between text choices in identifying fields in editable grid
+export function getFieldDisplayValue(fieldData: any): string {
+    const val = fieldData.formattedValue ?? fieldData.displayValue ?? fieldData.value;
+    if (Array.isArray(val))
+        return val.join(', ');
+    return val;
+}
+
 export function getSampleIdentifyingFieldGridData(
     sampleIds: number[] | string[],
     sampleQueryInfo?: QueryInfo,
@@ -1396,7 +1405,7 @@ export function getSampleIdentifyingFieldGridData(
                     // Issue 52038: the Row has data keyed by name so make sure we do the same here (see QueryColumn index() comments)
                     const colData = caseInsensitive(row, c.name);
                     if (colData?.value != null) {
-                        d[c.index] = colData?.formattedValue ?? colData?.displayValue ?? colData?.value;
+                        d[c.index] = getFieldDisplayValue(colData);
                     }
                 });
                 samplesData[rowId] = d;

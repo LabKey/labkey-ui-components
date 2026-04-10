@@ -6,7 +6,7 @@ import rolesJSON from '../../../test/data/security-getRoles.json';
 import userPropsInfo from '../../../test/data/user-getUserProps.json';
 import { JEST_SITE_ADMIN_USER_ID } from '../../../test/data/constants';
 
-import { SecurityPolicy } from '../permissions/models';
+import { Principal, SecurityPolicy } from '../permissions/models';
 
 import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 
@@ -145,6 +145,35 @@ describe('<UserDetailsPanel/>', () => {
                 api={{
                     ...API,
                     getUserPropertiesForOther: jest.fn().mockResolvedValue({}),
+                }}
+            />
+        );
+        let container;
+        await act(async () => {
+            container = renderWithAppContext(component, {
+                appContext: APP_CONTEXT,
+                serverContext: SERVER_CONTEXT,
+            }).container;
+        });
+        expect(container).toMatchSnapshot();
+    });
+
+    test('with principal that isGroup', async () => {
+        const GROUP_ID = 1006;
+        const groupPrincipal = Principal.create({ userId: GROUP_ID, type: 'g', displayName: 'Test Group' });
+        const component = (
+            <UserDetailsPanel
+                currentUser={TEST_USER_APP_ADMIN}
+                userId={GROUP_ID}
+                policy={POLICY}
+                rolesByUniqueName={ROLES_BY_NAME}
+                api={{
+                    ...API,
+                    getPrincipalById: jest.fn().mockResolvedValue(groupPrincipal),
+                    getUserPropertiesForOther: jest.fn().mockResolvedValue({
+                        UserId: GROUP_ID,
+                        DisplayName: 'Test Group',
+                    }),
                 }}
             />
         );

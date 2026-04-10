@@ -538,3 +538,37 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
   </div>
 </div>
 `;
+
+exports[`<UserDetailsPanel/> with principal that isGroup 1`] = `
+<div>
+  <div
+    class="panel panel-default user-details-panel"
+  >
+    <div
+      class="panel-heading"
+    >
+      <span>
+        Test Group
+      </span>
+    </div>
+    <div
+      class="panel-body"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col-xs-4 principal-detail-label"
+        >
+          ID
+        </div>
+        <div
+          class="col-xs-8 principal-detail-value"
+        >
+          1006
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

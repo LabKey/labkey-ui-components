@@ -315,8 +315,9 @@ export const EditInlineField: FC<Props> = memo(props => {
                         onKeyDown={toggleKeyDown}
                         tabIndex={1}
                     >
+                        {allowEdit && pullRight && <i className="fa fa-pencil pull-right" />}
                         {!isUser && displayValue}
-                        {allowEdit && <i className={classNames('fa fa-pencil', { 'pull-right': pullRight })} />}
+                        {allowEdit && !pullRight && <i className="fa fa-pencil" />}
                     </span>
                 </>
             )}

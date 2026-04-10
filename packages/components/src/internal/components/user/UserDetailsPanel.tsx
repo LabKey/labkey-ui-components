@@ -12,7 +12,7 @@ import { Modal } from '../../Modal';
 import { caseInsensitive } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { formatDate, getDateFNSDateTimeFormat, parseDate } from '../../util/Date';
-import { SecurityPolicy, SecurityRole } from '../permissions/models';
+import { Principal, SecurityPolicy, SecurityRole } from '../permissions/models';
 import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
 
 import { GroupsList } from '../permissions/GroupsList';
@@ -86,6 +86,7 @@ interface Props {
 interface State {
     loading: boolean;
     policy?: SecurityPolicy;
+    principal?: Principal;
     rolesByUniqueName?: Map<string, SecurityRole>;
     showDialog: string;
     userProperties: Record<string, any>;
@@ -148,15 +149,17 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         this.setState({ loading: true });
 
         try {
+            const principal = await api.getPrincipalById(userId);
+
             if (isSelf) {
                 const response = await api.getUserProperties(userId);
-                this.setState({ userProperties: response.props });
+                this.setState({ userProperties: response.props, principal });
             } else {
                 const response = await api.getUserPropertiesForOther(userId);
                 if (!Utils.isEmptyObj(response)) {
-                    this.setState({ userProperties: response });
+                    this.setState({ userProperties: response, principal });
                 } else {
-                    this.setState({ userProperties: { UserId: userId, DisplayName: displayName } });
+                    this.setState({ userProperties: { UserId: userId, DisplayName: displayName }, principal });
                 }
             }
         } catch (e) {
@@ -251,7 +254,8 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
             rootPolicy,
             userId,
         } = this.props;
-        const { loading, userProperties } = this.state;
+        const { loading, userProperties, principal } = this.state;
+        const isGroup = principal?.isGroup() ?? false;
 
         if (loading) {
             return <LoadingSpinner />;
@@ -268,17 +272,26 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
 
             return (
                 <>
-                    {!!name && <UserDetailRow label="Name" value={name} />}
-                    <UserProp label="Email" prop="email" userProperties={userProperties} />
-                    {description && <UserProp label="Description" prop="description" userProperties={userProperties} />}
+                    {!isGroup && (
+                        <>
+                            {!!name && <UserDetailRow label="Name" value={name} />}
+                            <UserProp label="Email" prop="email" userProperties={userProperties} />
+                            {description && <UserProp label="Description" prop="description" userProperties={userProperties} />}
 
-                    <hr className="principal-hr" />
-                    <UserProp isDate label="Last Login" prop="lastLogin" userProperties={userProperties} />
-                    <UserProp isDate label="Created" prop="created" userProperties={userProperties} />
+                            <hr className="principal-hr" />
+                            <UserProp isDate label="Last Login" prop="lastLogin" userProperties={userProperties} />
+                            <UserProp isDate label="Created" prop="created" userProperties={userProperties} />
 
-                    <hr className="principal-hr" />
-                    <UserProp label="User ID" prop="userId" userProperties={userProperties} />
-                    {!!hasPassword && <UserDetailRow label="Has Password" value={hasPassword.toString()} />}
+                            <hr className="principal-hr" />
+                            <UserProp label="User ID" prop="userId" userProperties={userProperties} />
+                            {!!hasPassword && <UserDetailRow label="Has Password" value={hasPassword.toString()} />}
+                        </>
+                    )}
+                    {isGroup && (
+                        <>
+                            <UserProp label="ID" prop="userId" userProperties={userProperties} />
+                        </>
+                    )}
 
                     <EffectiveRolesList
                         currentUser={currentUser}
@@ -322,13 +335,14 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
 
     render() {
         const { userId, allowDelete, allowResetPassword, toggleDetailsModal, onUsersStateChangeComplete } = this.props;
-        const { showDialog, userProperties } = this.state;
+        const { showDialog, userProperties, principal } = this.state;
         const { user, project } = getServerContext();
         const isSelf = userId === user.id;
+        const isGroup = principal?.isGroup() ?? false;
 
         if (toggleDetailsModal) {
             let footer: ReactNode;
-            if (user.isAdmin) {
+            if (user.isAdmin && !isGroup) {
                 // We do not currently support user management in sub folders, so we create the management URL for the project
                 // container.
                 const manageUrl = AppURL.create(ADMIN_KEY, 'users')
@@ -344,9 +358,10 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
 
             return (
                 <Modal
-                    onCancel={toggleDetailsModal}
+                    cancelText={isGroup ? 'Close' : 'Cancel'}
                     className="user-detail-modal"
                     footer={footer}
+                    onCancel={toggleDetailsModal}
                     title={this.renderHeader()}
                 >
                     {this.renderBody()}

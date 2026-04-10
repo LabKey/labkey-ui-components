@@ -15,6 +15,8 @@ import { APPLICATION_ROLES_DESCRIPTIONS, APPLICATION_ROLES_LABELS } from '../adm
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { executeSql } from '../../query/executeSql';
+import { selectRows } from '../../query/selectRows';
+import { SCHEMAS } from '../../schemas';
 
 export function processGetRolesResponse(rawRoles: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
@@ -45,6 +47,20 @@ export async function getPrincipals(): Promise<List<Principal>> {
     });
 
     return result.rows.reduce<List<Principal>>((p, row) => p.push(Principal.createFromSelectRow(fromJS(row))), List());
+}
+
+export async function getPrincipalById(principalId: number): Promise<Principal> {
+    const results = await selectRows({
+        columns: ['UserId', 'Name', 'Type'],
+        schemaQuery: SCHEMAS.CORE_TABLES.PRINCIPALS,
+        filterArray: [Filter.create('UserId', principalId)],
+    });
+
+    if (results.rows.length === 1) {
+        const row = results.rows[0];
+        return Principal.createFromSelectRow(fromJS(row));
+    }
+    return undefined;
 }
 
 export function getInactiveUsers(): Promise<List<Principal>> {

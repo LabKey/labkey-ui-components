@@ -3,8 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-- Add css for .lk-popover-behind-modal to adjust z-index
-- EditInlineField prop for pullRight for pencil icon
+- Workflow UI updates
+  - Add css for .lk-popover-behind-modal to adjust z-index
+  - EditInlineField prop for pullRight for pencil icon
+  - UserDetailsPanel support for userId that is a group id
 
 ### version 7.29.4
 *Released*: 9 April 2026

@@ -1,6 +1,7 @@
 import { OrderedMap } from 'immutable';
 import { Ajax, Utils } from '@labkey/api';
 
+import { request } from '../../request';
 import { buildURL } from '../../url/AppURL';
 import { User } from '../base/models/User';
 import { caseInsensitive } from '../../util/utils';
@@ -8,6 +9,7 @@ import { caseInsensitive } from '../../util/utils';
 import { formatDate, parseDate } from '../../util/Date';
 
 import { ChangePasswordModel } from './models';
+import { hasModule } from '../../app/utils';
 
 export function getUserProperties(userId: number): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -155,4 +157,37 @@ export function resetPassword(userId: number): Promise<ResetPasswordResponse> {
             }),
         });
     });
+}
+
+export async function hasTotpSettings(userId: number): Promise<boolean> {
+    if (!hasModule('mfa')) {
+        return false;
+    }
+
+    const response = await request<{ hasTotpSettings: boolean }>({
+        url: buildURL('totp', 'hasTotpSettings.api', { userId }),
+    });
+    return response.hasTotpSettings;
+}
+
+export type ResetTotpResponse = {
+    email?: string;
+    resetTotpSettings: boolean;
+    userId: number;
+};
+
+export async function resetTotpSettings(userId: number): Promise<ResetTotpResponse> {
+    const response = await request<{ success: boolean }>({
+        url: buildURL('totp', 'resetTotpSettingsApi.api'),
+        method: 'POST',
+        params: {userId},
+    });
+
+    if (!response.success) {
+        const errorLogMsg = `Unable to reset TOTP settings for user: ${userId}`;
+        console.error(errorLogMsg, response);
+        throw new Error(errorLogMsg);
+    }
+
+    return {userId, resetTotpSettings: true};
 }

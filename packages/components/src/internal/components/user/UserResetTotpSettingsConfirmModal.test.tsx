@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
+
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 import {
     UserResetTotpSettingsConfirmModal,
@@ -21,7 +22,7 @@ describe('UserResetTotpSettingsConfirmModal', () => {
     };
 
     test('renders confirmation dialog', () => {
-        render(<UserResetTotpSettingsConfirmModal {...DEFAULT_PROPS} />);
+        renderWithAppContext(<UserResetTotpSettingsConfirmModal {...DEFAULT_PROPS} />);
 
         expect(document.querySelector('.modal-title').innerHTML).toEqual('Reset TOTP Settings?');
         expect(document.querySelector('.modal-body').innerHTML).toContain(
@@ -34,7 +35,7 @@ describe('UserResetTotpSettingsConfirmModal', () => {
     });
 
     test('calls resetTotpSettingsApi on confirm', async () => {
-        render(<UserResetTotpSettingsConfirmModal {...DEFAULT_PROPS} />);
+        renderWithAppContext(<UserResetTotpSettingsConfirmModal {...DEFAULT_PROPS} />);
 
         await userEvent.click(document.querySelector('.btn-success'));
 
@@ -45,11 +46,11 @@ describe('UserResetTotpSettingsConfirmModal', () => {
     test('with error', async () => {
         const errorMsg = 'Test Error';
         const resetTotpSettingsApi = jest.fn().mockRejectedValue(errorMsg);
-        render(<UserResetTotpSettingsConfirmModal {...DEFAULT_PROPS} resetTotpSettingsApi={resetTotpSettingsApi} />);
+        renderWithAppContext(<UserResetTotpSettingsConfirmModal {...DEFAULT_PROPS} resetTotpSettingsApi={resetTotpSettingsApi} />);
 
         await userEvent.click(document.querySelector('.btn-success'));
 
         expect(resetTotpSettingsApi).toHaveBeenCalledWith(DEFAULT_PROPS.userId);
-        expect(screen.getByText(errorMsg)).toBeInTheDocument();
+        expect(DEFAULT_PROPS.onCancel).toHaveBeenCalled();
     });
 });

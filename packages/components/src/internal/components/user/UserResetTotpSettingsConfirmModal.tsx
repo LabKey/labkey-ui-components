@@ -2,9 +2,9 @@ import React, { FC, memo, useCallback, useState } from 'react';
 
 import { resolveErrorMessage } from '../../util/messaging';
 import { Modal } from '../../Modal';
-import { Alert } from '../base/Alert';
 
 import { ResetTotpResponse, resetTotpSettings } from './actions';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 export interface UserResetTotpSettingsConfirmModalProps {
     email: string;
@@ -17,8 +17,8 @@ export interface UserResetTotpSettingsConfirmModalProps {
 
 export const UserResetTotpSettingsConfirmModal: FC<UserResetTotpSettingsConfirmModalProps> = memo(props => {
     const { email, displayName, userId, onCancel, onComplete, resetTotpSettingsApi = resetTotpSettings } = props;
-    const [error, setError] = useState<string>();
     const [submitting, setSubmitting] = useState<boolean>(false);
+    const { createNotification } = useNotificationsContext();
 
     const onConfirm = useCallback(async () => {
         setSubmitting(true);
@@ -27,7 +27,12 @@ export const UserResetTotpSettingsConfirmModal: FC<UserResetTotpSettingsConfirmM
             const resp = await resetTotpSettingsApi(userId);
             onComplete({email, ...resp});
         } catch (e) {
-            setError(resolveErrorMessage(e, 'user', 'users', 'update') ?? 'Failed to reset TOTP settings');
+            const error = resolveErrorMessage(e, 'user', 'users', 'update') ?? 'Failed to reset TOTP settings';
+            onCancel();
+            createNotification(
+                { alertClass: 'danger', message: error },
+                true
+            );
         } finally {
             setSubmitting(false);
         }
@@ -42,7 +47,6 @@ export const UserResetTotpSettingsConfirmModal: FC<UserResetTotpSettingsConfirmM
             isConfirming={submitting}
         >
             <p>Are you sure you want to reset the TOTP settings for <b>{displayName}</b>?</p>
-            {error && <Alert>{error}</Alert>}
         </Modal>
     );
 });

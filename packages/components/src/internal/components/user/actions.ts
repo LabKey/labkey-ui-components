@@ -148,7 +148,13 @@ export function resetPassword(userId: number): Promise<ResetPasswordResponse> {
             url: buildURL('security', 'adminResetPassword.api'),
             method: 'POST',
             params: { userId },
-            success: Utils.getCallbackWrapper(() => {
+            success: ((resp) => {
+                // workaround to detect failed reset since AdminResetPasswordAction uses special getFailView response
+                if (resp?.responseText?.indexOf('Password Reset Failed') > -1) {
+                    reject('Failed to reset password.');
+                    return;
+                }
+
                 resolve({ userId, resetPassword: true });
             }),
             failure: Utils.getCallbackWrapper(error => {

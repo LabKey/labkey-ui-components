@@ -5,6 +5,7 @@ import { Modal } from '../../Modal';
 import { Alert } from '../base/Alert';
 
 import { resetPassword, ResetPasswordResponse } from './actions';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 export interface UserResetPasswordConfirmModalProps {
     email: string;
@@ -17,7 +18,7 @@ export interface UserResetPasswordConfirmModalProps {
 
 export const UserResetPasswordConfirmModal: FC<UserResetPasswordConfirmModalProps> = memo(props => {
     const { email, userId, hasLogin, onCancel, onComplete, resetPasswordApi = resetPassword } = props;
-    const [error, setError] = useState<string>();
+    const { createNotification } = useNotificationsContext();
     const [submitting, setSubmitting] = useState<boolean>(false);
 
     const onConfirm = useCallback(async () => {
@@ -27,7 +28,12 @@ export const UserResetPasswordConfirmModal: FC<UserResetPasswordConfirmModalProp
             const response = await resetPasswordApi(userId);
             onComplete({ email, ...response });
         } catch (e) {
-            setError(resolveErrorMessage(e, 'user', 'users', 'update') ?? 'Failed to reset password');
+            const error = resolveErrorMessage(e, 'user', 'users', 'reset') ?? 'Failed to reset Password.';
+            onCancel();
+            createNotification(
+                { alertClass: 'danger', message: error },
+                true
+            );
         } finally {
             setSubmitting(false);
         }
@@ -53,7 +59,6 @@ export const UserResetPasswordConfirmModal: FC<UserResetPasswordConfirmModalProp
                 </p>
             )}
             <p>Do you want to proceed?</p>
-            {error && <Alert>{error}</Alert>}
         </Modal>
     );
 });

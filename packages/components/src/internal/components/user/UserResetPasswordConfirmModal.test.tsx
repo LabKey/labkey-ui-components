@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 import React from 'react';
-import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
+
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 import { UserResetPasswordConfirmModal, UserResetPasswordConfirmModalProps } from './UserResetPasswordConfirmModal';
 
@@ -32,7 +33,7 @@ describe('UserResetPasswordConfirmModal', () => {
     };
 
     test('with login', () => {
-        render(<UserResetPasswordConfirmModal {...DEFAULT_PROPS} />);
+        renderWithAppContext(<UserResetPasswordConfirmModal {...DEFAULT_PROPS} />);
 
         expect(document.querySelector('.modal-title').innerHTML).toEqual('Reset Password?');
         expect(document.querySelector('.modal-body').innerHTML).toContain(
@@ -44,7 +45,7 @@ describe('UserResetPasswordConfirmModal', () => {
     });
 
     test('without login', () => {
-        render(<UserResetPasswordConfirmModal {...DEFAULT_PROPS} hasLogin={false} />);
+        renderWithAppContext(<UserResetPasswordConfirmModal {...DEFAULT_PROPS} hasLogin={false} />);
 
         expect(document.querySelector('.modal-body').innerHTML).toContain('You are about to send');
         expect(document.querySelectorAll('.btn')).toHaveLength(2);
@@ -55,13 +56,13 @@ describe('UserResetPasswordConfirmModal', () => {
     test('with error', async () => {
         const errorMsg = 'Test Error';
         const resetPasswordApi = jest.fn().mockRejectedValue(errorMsg);
-        render(
+        renderWithAppContext(
             <UserResetPasswordConfirmModal {...DEFAULT_PROPS} hasLogin={false} resetPasswordApi={resetPasswordApi} />
         );
 
         await userEvent.click(document.querySelector('.btn-success'));
 
         expect(resetPasswordApi).toHaveBeenCalledWith(DEFAULT_PROPS.userId);
-        expect(screen.getByText(errorMsg)).toBeInTheDocument();
+        expect(DEFAULT_PROPS.onCancel).toHaveBeenCalled();
     });
 });

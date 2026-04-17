@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.30.0
+*Released*: 17 April 2026
+- GitHub Issue 848: Add the ability to reset TOTP settings in the apps
+
 ### version 7.29.4
 *Released*: 9 April 2026
 - GitHub Issue 954: Add error for duplicate values for parent inputs

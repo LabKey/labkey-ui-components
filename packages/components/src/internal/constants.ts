@@ -266,4 +266,4 @@ export const EMPTY_NS_SEQUENCE_WARNING =
 export const EMPTY_PS_SEQUENCE_WARNING =
     'No sequence added. The structure format and physical properties of molecules using this sequence cannot be calculated.';
 export const EMPTY_COMPOUND_WARNING =
-    'Without SMILES Molecule component translation cannot be done automatically, and the system cannot prevent duplicates.';
+    'Without SMILES, Molecule component translation cannot be done automatically, and the system cannot prevent duplicates.';

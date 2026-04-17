@@ -508,6 +508,12 @@ async function convertRowToEditorModelData(
         }
     } else if (col.isMultiChoice && Array.isArray(data)) {
         const values = data.filter(item => !!item).map(item => ({ raw: item, display: item }));
+        if (values.length > 10) {
+            // GitHub Issue 970
+            message = {
+                message: 'Too many values. Maximum allowed is 10.',
+            }
+        }
         valueDescriptors.push(...values);
     } else {
         let display = data;
@@ -535,8 +541,7 @@ async function prepareInsertRowDataFromBulkForm(
         const col = insertColumns[colIdx];
         const { message, valueDescriptors } = await convertRowToEditorModelData(data, col, containerPath);
         values = values.push(valueDescriptors);
-
-        if (message) messages = messages.push(message);
+        messages = messages.push(message);
     }
 
     return {
@@ -1118,6 +1123,7 @@ export function parsePastedLookup(
     let message: CellMessage;
     let values: ValueDescriptor[];
     const unmatched: string[] = [];
+    const dupValues = new Set<string>();
 
     // Parse pasted strings to split properly around quoted values.
     // Remove the quotes for storing the actual values in the grid.
@@ -1129,10 +1135,15 @@ export function parsePastedLookup(
         unmatched.push(vt);
         values = [{ display: vt, raw: vt }];
     } else {
+        const foundValues = new Set<string>();
         values = parsedValues.flatMap(v => {
             const vt = v.trim();
             if (!vt) return [];
 
+            if (foundValues.has(vt)) {
+                dupValues.add(vt);
+            }
+            foundValues.add(vt);
             const vl = vt.toLowerCase();
             const vd = descriptors.find(d => d.display && d.display.toString().toLowerCase() === vl);
             if (vd) return [vd];
@@ -1148,6 +1159,12 @@ export function parsePastedLookup(
             .map(u => '"' + u + '"')
             .join(', ');
         message = { message: lookupValidationErrorMessage(valueStr, true) };
+    } else if (dupValues.size > 0) {
+        const valueStr = Array.from(dupValues)
+            .slice(0, 4)
+            .map(u => '"' + u + '"')
+            .join(', ');
+        message = { message: `Duplicate values not allowed: ${valueStr}.` };
     }
 
     return { message, valueDescriptors: List(values) };
@@ -1591,6 +1608,11 @@ async function insertPastedData(
 
                         unmatched.push(vt);
                     });
+
+                    if (values.length > 10) {
+                        // GitHub Issue 970
+                        msg = { message: 'Too many values. Maximum allowed is 10.' };
+                    }
 
                     if (unmatched.length) {
                         const valueStr = unmatched

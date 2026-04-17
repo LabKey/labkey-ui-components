@@ -1,6 +1,35 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.30.0
+*Released*: 17 April 2026
+- GitHub Issue 848: Add the ability to reset TOTP settings in the apps
+
+### version 7.29.4
+*Released*: 9 April 2026
+- GitHub Issue 954: Add error for duplicate values for parent inputs
+
+### version 7.29.3
+*Released*: 8 April 2026
+- GitHub Issue 928: Spaces not shown between text choices in identifying fields in editable grid
+- GitHub Issue 951: Multi-line values converted to text choices lose multi-line editability
+- GitHub Issue 970: Warn about more than 10 items for multi choice fields in editable grid.
+- GitHub Issue 987: Multi value filter dialog lets you edit and save without any selected values
+
+### version 7.29.2
+*Released*: 8 April 2026
+- Merge from release26.4-SNAPSHOT to develop
+    - includes changes from 7.26.5 #1970
+    - includes changes from 7.26.6 #1976
+
+### version 7.29.1
+*Released*: 7 April 2026
+- GitHub Issue 868: Add more nouns for count units
+
+### version 7.28.2
+*Released*: 7 April 2026
+- Update `FREEZER_ITEM_SAMPLE_MAPPER` to return undefined if not matched, for consistency with other mappers
+
 ### version 7.28.1
 *Released*: 3 April 2026
 - GitHub Issue 613: Use "Status" instead of "SampleState" in error messaging.
@@ -15,6 +44,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 7.27.0
 *Released*: 1 April 2026
 - GitHub Issue 985: Update styling of `SelectInput` for identifying fields
+
+### version 7.26.6
+*Released*: 7 April 2026
+- Merge from release26.3-SNAPSHOT to release26.4-SNAPSHOT
+    - includes changes from 7.21.4 #1971
+
+### version 7.26.5
+*Released*: 2 April 2026
+- GitHub Issue 847: App User Management page to allow users with manageUsersPermission to select / view all site users
 
 ### version 7.26.4
 *Released*: 31 March 2026
@@ -102,6 +140,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add `ta-right`, `ta-left` util styles
 - Add UnidentifiedPill
 - Add EMPTY_SEQUENCE_WARNING constant
+
+### version 7.21.4
+*Released*: 6 April 2026
+- GitHub Issue #974: Lookup Data Type shown in Assay Designer for app, even when premium module is not present
+  - AssayDesignerPanels to pass appPropertiesOnly to AssayDomainForm
+  - add new domainFormDisplayOptions.showAdvancedSettingsForApp for assay designer case
 
 ### version 7.21.3
 *Released*: 12 March 2026

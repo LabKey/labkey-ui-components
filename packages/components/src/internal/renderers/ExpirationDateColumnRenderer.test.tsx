@@ -9,6 +9,16 @@ const DEFAULT_PROPS = {
 };
 
 describe('ExpirationDateColumnRenderer', () => {
+    const TestWrapper = props => (
+        <table>
+            <tbody>
+                <tr>
+                    <ExpirationDateColumnRenderer {...props} />
+                </tr>
+            </tbody>
+        </table>
+    );
+
     function validate(container: HTMLElement, hasExpired = true, displayValue?: string, hasTd = true): void {
         expect(container.querySelectorAll('td')).toHaveLength(hasTd ? 1 : 0);
         if (hasTd) {
@@ -22,17 +32,17 @@ describe('ExpirationDateColumnRenderer', () => {
     }
 
     test('no data', () => {
-        const { container } = render(<ExpirationDateColumnRenderer data={null} />);
+        const { container } = render(<TestWrapper data={null} />);
         validate(container, false);
     });
 
     test('default', () => {
-        const { container } = render(<ExpirationDateColumnRenderer {...DEFAULT_PROPS} />);
+        const { container } = render(<TestWrapper {...DEFAULT_PROPS} />);
         validate(container, true, '2022-02-12');
     });
 
     test('not tablecell', () => {
-        const { container } = render(<ExpirationDateColumnRenderer {...DEFAULT_PROPS} tableCell={false} />);
+        const { container } = render(<TestWrapper {...DEFAULT_PROPS} tableCell={false} />);
         validate(container, true, '2022-02-12', false);
     });
 
@@ -42,7 +52,7 @@ describe('ExpirationDateColumnRenderer', () => {
             formattedValue: '2022-02-12',
             displayValue: '2022-02-12 11:58',
         });
-        const { container } = render(<ExpirationDateColumnRenderer data={data} />);
+        const { container } = render(<TestWrapper data={data} />);
         validate(container, true, '2022-02-12');
     });
 
@@ -52,43 +62,43 @@ describe('ExpirationDateColumnRenderer', () => {
             formattedValue: '2022-02-12',
             displayValue: '2022-02-12 11:58',
         };
-        const { container } = render(<ExpirationDateColumnRenderer data={data} />);
+        const { container } = render(<TestWrapper data={data} />);
         validate(container, true, '2022-02-12');
     });
 
     test('no formattedValue and no displayValue', () => {
         const data = fromJS({ value: '2022-02-12 11:58:54.385' });
-        const { container } = render(<ExpirationDateColumnRenderer data={data} />);
+        const { container } = render(<TestWrapper data={data} />);
         validate(container, true, '2022-02-12 11:58:54.385');
     });
 
     test('no formattedValue and no displayValue - not immutable map', () => {
         const data = { value: '2022-02-12 11:58:54.385' };
-        const { container } = render(<ExpirationDateColumnRenderer data={data} />);
+        const { container } = render(<TestWrapper data={data} />);
         validate(container, true, '2022-02-12 11:58:54.385');
     });
 
     test('no formattedValue but with displayValue', () => {
         const data = fromJS({ value: '2022-02-12 11:58:54.385', displayValue: '2022-02-12 11:58' });
-        const { container } = render(<ExpirationDateColumnRenderer data={data} />);
+        const { container } = render(<TestWrapper data={data} />);
         validate(container, true, '2022-02-12 11:58');
     });
 
     test('future date', () => {
         const data = fromJS({ value: '2222-02-12 11:58:54.385', formattedValue: '2222-02-12' });
-        const { container } = render(<ExpirationDateColumnRenderer data={data} />);
+        const { container } = render(<TestWrapper data={data} />);
         validate(container, false, '2222-02-12', true);
     });
 
     test('future date - not immutable map', () => {
         const data = { value: '2222-02-12 11:58:54.385', formattedValue: '2222-02-12' };
-        const { container } = render(<ExpirationDateColumnRenderer data={data} />);
+        const { container } = render(<TestWrapper data={data} />);
         validate(container, false, '2222-02-12', true);
     });
 
     test('future display date, but no value', () => {
         const data = fromJS({ displayValue: '2222-02-12 11:58:54.385', formattedValue: '2222-02-12' });
-        const { container } = render(<ExpirationDateColumnRenderer data={data} />);
+        const { container } = render(<TestWrapper data={data} />);
         validate(container, false, '2222-02-12', true);
     });
 });

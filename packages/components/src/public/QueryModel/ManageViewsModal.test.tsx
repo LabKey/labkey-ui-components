@@ -1,5 +1,6 @@
 import React from 'react';
-import { act } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import { waitFor } from '@testing-library/dom';
 
 import { ViewInfo } from '../../internal/ViewInfo';
 
@@ -8,7 +9,6 @@ import { TEST_USER_PROJECT_ADMIN, TEST_USER_READER } from '../../internal/userFi
 
 import { getTestAPIWrapper } from '../../internal/APIWrapper';
 import { getQueryTestAPIWrapper } from '../../internal/query/APIWrapper';
-import { render } from '@testing-library/react';
 
 import { ManageViewsModal, ViewLabel } from './ManageViewsModal';
 
@@ -170,8 +170,9 @@ describe('ManageViewsModal', () => {
         );
 
         expect(document.querySelector('.fa-spinner')).not.toBeNull();
-        await act(async () => {});
-        expect(document.querySelector('.fa-spinner')).toBeNull();
+        await waitFor(() => {
+            expect(document.querySelector('.fa-spinner')).toBeNull();
+        });
 
         const rows = document.querySelectorAll('.row.small-margin-bottom');
         expect(rows).toHaveLength(0);
@@ -187,8 +188,9 @@ describe('ManageViewsModal', () => {
         );
 
         expect(document.querySelector('.fa-spinner')).not.toBeNull();
-        await act(async () => {});
-        expect(document.querySelector('.fa-spinner')).toBeNull();
+        await waitFor(() => {
+            expect(document.querySelector('.fa-spinner')).toBeNull();
+        });
 
         expect(document.querySelector('.modal-title').textContent).toBe('Manage Saved Views');
 
@@ -233,7 +235,9 @@ describe('ManageViewsModal', () => {
                 serverContext: { user: TEST_USER_PROJECT_ADMIN },
             }
         );
-        await act(async () => {});
+        await waitFor(() => {
+            expect(document.querySelectorAll('.row.small-margin-bottom')).toHaveLength(4);
+        });
 
         const rows = document.querySelectorAll('.row.small-margin-bottom');
         expect(rows).toHaveLength(4);
@@ -256,8 +260,9 @@ describe('ManageViewsModal', () => {
         );
 
         expect(document.querySelector('.fa-spinner')).not.toBeNull();
-        await act(async () => {});
-        expect(document.querySelector('.fa-spinner')).toBeNull();
+        await waitFor(() => {
+            expect(document.querySelector('.fa-spinner')).toBeNull();
+        });
 
         expect(document.querySelector('.modal-title').textContent).toBe('Manage Saved Views');
 

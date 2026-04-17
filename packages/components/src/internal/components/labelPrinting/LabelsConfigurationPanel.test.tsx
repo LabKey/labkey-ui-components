@@ -1,5 +1,5 @@
 import React from 'react';
-import { act } from '@testing-library/react';
+import { waitFor } from '@testing-library/dom';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 
@@ -28,7 +28,9 @@ describe('LabelsConfigurationPanel', () => {
         renderWithAppContext(<LabelsConfigurationPanel {...DEFAULT_PROPS} />, {
             serverContext: { container: new Container({ path: '/Test' }) },
         });
-        await act(async () => {}); // flush ensureLabelTemplatesList effect
+        await waitFor(() => {
+            expect(document.querySelectorAll('.choices-list__empty-message')).toHaveLength(1);
+        });
 
         // LabelTemplatesList rendered (with no templates → shows empty message)
         expect(document.querySelectorAll('.choices-list__empty-message')).toHaveLength(1);
@@ -155,7 +157,9 @@ describe('LabelTemplateDetails', () => {
                 defaultLabel={1}
             />
         );
-        await act(async () => {}); // flush isDefault effect
+        await waitFor(() => {
+            expect(document.querySelectorAll('[name="isDefault"]')).toHaveLength(1);
+        });
 
         // Show form with default selector and default selected
         expect(document.querySelectorAll('.choices-detail__empty-message')).toHaveLength(0);
@@ -175,7 +179,9 @@ describe('LabelTemplateDetails', () => {
                 defaultLabel={1}
             />
         );
-        await act(async () => {}); // flush isDefault effect
+        await waitFor(() => {
+            expect(document.querySelectorAll('[name="isDefault"]')).toHaveLength(1);
+        });
 
         // Show form with default selector and default not selected
         expect(document.querySelectorAll('.choices-detail__empty-message')).toHaveLength(0);

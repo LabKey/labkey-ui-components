@@ -1,5 +1,5 @@
 import React from 'react';
-import { act } from '@testing-library/react';
+import { waitFor } from '@testing-library/dom';
 
 import { TEST_PROJECT_CONTAINER, TEST_PROJECT_CONTAINER_ADMIN } from '../../containerFixtures';
 
@@ -53,7 +53,9 @@ describe('GroupsList', () => {
             }
         );
 
-        await act(async () => {});
+        await waitFor(() => {
+            expect(container.querySelectorAll('.principal-detail-ul')).toHaveLength(1);
+        });
 
         expect(container.querySelectorAll('.principal-detail-ul')).toHaveLength(1);
         expect(container.querySelectorAll('.principal-detail-li')).toHaveLength(1);
@@ -74,7 +76,9 @@ describe('GroupsList', () => {
             }
         );
 
-        await act(async () => {});
+        await waitFor(() => {
+            expect(container.querySelectorAll('.principal-detail-li')).toHaveLength(2);
+        });
 
         expect(container.querySelectorAll('.principal-detail-ul')).toHaveLength(1);
         expect(container.querySelectorAll('.principal-detail-li')).toHaveLength(2);
@@ -100,14 +104,17 @@ describe('GroupsList', () => {
             }
         );
 
-        await act(async () => {});
+        await waitFor(() => {
+            expect(container.querySelectorAll('.principal-detail-li')).toHaveLength(3);
+        });
 
         expect(container.querySelectorAll('.principal-detail-ul')).toHaveLength(1);
         expect(container.querySelectorAll('.principal-detail-li')).toHaveLength(3);
         const anchors = container.querySelectorAll('a');
-        expect(anchors).toHaveLength(2);
+        expect(anchors).toHaveLength(3);
         expect(anchors[0].getAttribute('href')).toBe('/admin/groups?expand=1');
         expect(anchors[1].getAttribute('href')).toBe('/admin/groups?expand=2');
+        expect(anchors[2].getAttribute('href')).toBe('/admin/groups?expand=3');
         expect(container.querySelector('.principal-detail-ul').textContent).toBe('Group AGroup BGroup Site');
     });
 
@@ -131,7 +138,9 @@ describe('GroupsList', () => {
             }
         );
 
-        await act(async () => {});
+        await waitFor(() => {
+            expect(container.querySelectorAll('.principal-detail-li')).toHaveLength(3);
+        });
 
         expect(container.querySelectorAll('.principal-detail-ul')).toHaveLength(1);
         expect(container.querySelectorAll('.principal-detail-li')).toHaveLength(3);
@@ -155,7 +164,9 @@ describe('GroupsList', () => {
             }
         );
 
-        await act(async () => {});
+        await waitFor(() => {
+            expect(container.querySelectorAll('.principal-detail-li')).toHaveLength(3);
+        });
 
         expect(container.querySelectorAll('.principal-detail-ul')).toHaveLength(1);
         expect(container.querySelectorAll('.principal-detail-li')).toHaveLength(3);

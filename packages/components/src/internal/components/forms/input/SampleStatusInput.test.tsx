@@ -84,9 +84,10 @@ describe('SampleStatusInput', () => {
 
     async function selectValue(value: string): Promise<void> {
         const select = document.querySelector<HTMLSelectElement>('[data-testid="query-select"]');
-        select.value = value;
-        select.dispatchEvent(new Event('change', { bubbles: true }));
-        await act(async () => {});
+        await act(async () => {
+            select.value = value;
+            select.dispatchEvent(new Event('change', { bubbles: true }));
+        });
     }
 
     test('initial value is blank', async () => {

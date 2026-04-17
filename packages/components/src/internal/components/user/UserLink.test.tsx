@@ -1,5 +1,5 @@
 import React from 'react';
-import { act } from '@testing-library/react';
+import { waitFor } from '@testing-library/dom';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
@@ -20,7 +20,9 @@ describe('UserLink', () => {
             <UserLink userDisplayValue="Test display" />,
             { serverContext: { user: TEST_USER_APP_ADMIN } }
         );
-        await act(async () => {});
+        await waitFor(() => {
+            expect(container.querySelectorAll('span')).toHaveLength(1);
+        });
         expect(container.querySelectorAll('a')).toHaveLength(0);
         expect(container.querySelectorAll('span')).toHaveLength(1);
         expect(container.querySelectorAll('.gray-text')).toHaveLength(0);
@@ -40,7 +42,9 @@ describe('UserLink', () => {
             <UserLink userId={1} userDisplayValue="Test display" />,
             { serverContext: { user: TEST_USER_APP_ADMIN } }
         );
-        await act(async () => {});
+        await waitFor(() => {
+            expect(container.querySelectorAll('a')).toHaveLength(1);
+        });
         expect(container.querySelectorAll('a')).toHaveLength(1);
         expect(container.querySelectorAll('.clickable')).toHaveLength(1);
         expect(container.querySelectorAll('span')).toHaveLength(0);
@@ -53,7 +57,9 @@ describe('UserLink', () => {
             <UserLink userId={1} userDisplayValue="Test display" />,
             { serverContext: { user: TEST_USER_READER } }
         );
-        await act(async () => {});
+        await waitFor(() => {
+            expect(container.querySelectorAll('span')).toHaveLength(1);
+        });
         expect(container.querySelectorAll('a')).toHaveLength(0);
         expect(container.querySelectorAll('.clickable')).toHaveLength(0);
         expect(container.querySelectorAll('span')).toHaveLength(1);
@@ -66,7 +72,9 @@ describe('UserLink', () => {
             <UserLink userId={TEST_USER_READER.id} userDisplayValue="Test display" />,
             { serverContext: { user: TEST_USER_READER } }
         );
-        await act(async () => {});
+        await waitFor(() => {
+            expect(container.querySelectorAll('a')).toHaveLength(1);
+        });
         expect(container.querySelectorAll('a')).toHaveLength(1);
         expect(container.querySelectorAll('.clickable')).toHaveLength(1);
         expect(container.querySelectorAll('span')).toHaveLength(0);
@@ -86,7 +94,9 @@ describe('UserLinkList', () => {
             />,
             { serverContext: { user: TEST_USER_APP_ADMIN } }
         );
-        await act(async () => {});
+        await waitFor(() => {
+            expect(container.querySelectorAll('.user-link')).toHaveLength(2);
+        });
         expect(container.querySelectorAll('.user-link')).toHaveLength(2);
         expect(container.textContent).toBe('a, b');
     });
@@ -102,7 +112,9 @@ describe('UserLinkList', () => {
             />,
             { serverContext: { user: TEST_USER_APP_ADMIN } }
         );
-        await act(async () => {});
+        await waitFor(() => {
+            expect(container.querySelectorAll('.user-link')).toHaveLength(2);
+        });
         expect(container.querySelectorAll('.user-link')).toHaveLength(2);
         expect(container.textContent).toBe('a, b, c');
     });

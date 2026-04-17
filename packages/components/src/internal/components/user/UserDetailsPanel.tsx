@@ -183,7 +183,7 @@ export const UserDetailsPanel: FC<Props> = props => {
     const toggleDeactivateDialog = useCallback(() => toggleDialog('deactivate'), [toggleDialog]);
 
     const handleUsersStateChangeComplete = useCallback(
-        (response: any, isDelete: boolean = false): void => {
+        (response: any, isDelete = false): void => {
             toggleDialog(undefined); // close dialog
             if (!isDelete) {
                 loadUserDetails(); // reload to pickup new user state
@@ -215,15 +215,20 @@ export const UserDetailsPanel: FC<Props> = props => {
                     </button>
                 )}
                 {showResetTotp && isActive && (
-                    <button className="btn btn-default" style={{ marginLeft: '10px' }} onClick={toggleResetTotpDialog} type="button">
+                    <button
+                        className="btn btn-default"
+                        onClick={toggleResetTotpDialog}
+                        style={{ marginLeft: '10px' }}
+                        type="button"
+                    >
                         Reset TOTP Settings
                     </button>
                 )}
                 {allowDelete && (
                     <button
                         className="pull-right btn btn-default"
-                        style={{ marginLeft: '10px' }}
                         onClick={toggleDeleteDialog}
+                        style={{ marginLeft: '10px' }}
                         type="button"
                     >
                         Delete
@@ -231,8 +236,8 @@ export const UserDetailsPanel: FC<Props> = props => {
                 )}
                 <button
                     className="pull-right btn btn-default"
-                    style={{ marginLeft: '10px' }}
                     onClick={isActive ? toggleDeactivateDialog : toggleActivateDialog}
+                    style={{ marginLeft: '10px' }}
                     type="button"
                 >
                     {isActive ? 'Deactivate' : 'Reactivate'}
@@ -328,7 +333,7 @@ export const UserDetailsPanel: FC<Props> = props => {
         }
 
         return (
-            <Modal onCancel={toggleDetailsModal} className="user-detail-modal" footer={footer} title={renderHeader()}>
+            <Modal className="user-detail-modal" footer={footer} onCancel={toggleDetailsModal} title={renderHeader()}>
                 {renderBody()}
             </Modal>
         );
@@ -343,34 +348,34 @@ export const UserDetailsPanel: FC<Props> = props => {
                 {allowResetPassword && showDialog === 'reset' && (
                     <UserResetPasswordConfirmModal
                         email={caseInsensitive(userProperties, 'email')}
-                        userId={caseInsensitive(userProperties, 'userId')}
                         hasLogin={Utils.isString(caseInsensitive(userProperties, 'lastLogin'))}
-                        onComplete={handleUsersStateChangeComplete}
                         onCancel={closeDialog}
+                        onComplete={handleUsersStateChangeComplete}
+                        userId={caseInsensitive(userProperties, 'userId')}
                     />
                 )}
                 {showDialog === 'resetTotp' && (
                     <UserResetTotpSettingsConfirmModal
-                        email={caseInsensitive(userProperties, 'email')}
                         displayName={caseInsensitive(userProperties, 'displayName')}
-                        userId={caseInsensitive(userProperties, 'userId')}
-                        onComplete={handleUsersStateChangeComplete}
+                        email={caseInsensitive(userProperties, 'email')}
                         onCancel={closeDialog}
+                        onComplete={handleUsersStateChangeComplete}
+                        userId={caseInsensitive(userProperties, 'userId')}
                     />
                 )}
                 {(showDialog === 'reactivate' || showDialog === 'deactivate') && (
                     <UserActivateChangeConfirmModal
-                        userIds={[userId]}
-                        reactivate={showDialog === 'reactivate'}
-                        onComplete={handleUsersStateChangeComplete}
                         onCancel={closeDialog}
+                        onComplete={handleUsersStateChangeComplete}
+                        reactivate={showDialog === 'reactivate'}
+                        userIds={[userId]}
                     />
                 )}
                 {allowDelete && showDialog === 'delete' && (
                     <UserDeleteConfirmModal
-                        userIds={[userId]}
-                        onComplete={onUserDeleteComplete}
                         onCancel={closeDialog}
+                        onComplete={onUserDeleteComplete}
+                        userIds={[userId]}
                     />
                 )}
             </div>

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.29.5-fb-totpReset.3",
+  "version": "7.30.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

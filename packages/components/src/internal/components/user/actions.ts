@@ -148,7 +148,7 @@ export function resetPassword(userId: number): Promise<ResetPasswordResponse> {
             url: buildURL('security', 'adminResetPassword.api'),
             method: 'POST',
             params: { userId },
-            success: ((resp) => {
+            success: resp => {
                 // workaround to detect failed reset since AdminResetPasswordAction uses special getFailView response
                 if (resp?.responseText?.indexOf('Password Reset Failed') > -1) {
                     reject('Failed to reset password.');
@@ -156,7 +156,7 @@ export function resetPassword(userId: number): Promise<ResetPasswordResponse> {
                 }
 
                 resolve({ userId, resetPassword: true });
-            }),
+            },
             failure: Utils.getCallbackWrapper(error => {
                 console.error('Failed to reset password.', error);
                 reject(error);
@@ -186,7 +186,7 @@ export async function resetTotpSettings(userId: number): Promise<ResetTotpRespon
     const response = await request<{ success: boolean }>({
         url: buildURL('totp', 'resetTotpSettingsApi.api'),
         method: 'POST',
-        params: {userId},
+        params: { userId },
     });
 
     if (!response.success) {
@@ -195,5 +195,5 @@ export async function resetTotpSettings(userId: number): Promise<ResetTotpRespon
         throw new Error(errorLogMsg);
     }
 
-    return {userId, resetTotpSettings: true};
+    return { userId, resetTotpSettings: true };
 }

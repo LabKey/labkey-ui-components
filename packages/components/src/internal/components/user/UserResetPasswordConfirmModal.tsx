@@ -30,10 +30,7 @@ export const UserResetPasswordConfirmModal: FC<UserResetPasswordConfirmModalProp
         } catch (e) {
             const error = resolveErrorMessage(e, 'user', 'users', 'reset') ?? 'Failed to reset Password.';
             onCancel();
-            createNotification(
-                { alertClass: 'danger', message: error },
-                true
-            );
+            createNotification({ alertClass: 'danger', message: error }, true);
         } finally {
             setSubmitting(false);
         }
@@ -41,11 +38,11 @@ export const UserResetPasswordConfirmModal: FC<UserResetPasswordConfirmModalProp
 
     return (
         <Modal
-            title="Reset Password?"
-            onConfirm={onConfirm}
-            onCancel={onCancel}
             confirmText="Yes, Reset Password"
             isConfirming={submitting}
+            onCancel={onCancel}
+            onConfirm={onConfirm}
+            title="Reset Password?"
         >
             {hasLogin ? (
                 <p>

@@ -46,7 +46,9 @@ describe('UserResetTotpSettingsConfirmModal', () => {
     test('with error', async () => {
         const errorMsg = 'Test Error';
         const resetTotpSettingsApi = jest.fn().mockRejectedValue(errorMsg);
-        renderWithAppContext(<UserResetTotpSettingsConfirmModal {...DEFAULT_PROPS} resetTotpSettingsApi={resetTotpSettingsApi} />);
+        renderWithAppContext(
+            <UserResetTotpSettingsConfirmModal {...DEFAULT_PROPS} resetTotpSettingsApi={resetTotpSettingsApi} />
+        );
 
         await userEvent.click(document.querySelector('.btn-success'));
 

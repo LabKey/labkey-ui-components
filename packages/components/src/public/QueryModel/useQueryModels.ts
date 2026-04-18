@@ -14,7 +14,7 @@ import {
     QueryModel,
     saveSettingsToLocalStorage,
 } from './QueryModel';
-import { applySavedSettings, bindURL, initModels, paramsEqual, RequestManager } from './utils';
+import { applySavedSettings, bindURL, initModels, paramsEqual, RequestManager, sortArraysEqual } from './utils';
 import { SchemaQuery } from '../SchemaQuery';
 import { QuerySort } from '../QuerySort';
 import { isLoading, LoadingState } from '../LoadingState';
@@ -112,17 +112,18 @@ class QueryModelManager {
     updateModel = (id: string, updater: ModelUpdater): void => {
         this.setState((currentState: InjectedQueryModels) => {
             const model = currentState.queryModels[id];
+
             if (!model) return currentState;
+
+            const newModel = produce(model, updater);
+
+            if (newModel === model) return currentState;
+
             return {
                 ...currentState,
-                queryModels: {
-                    ...currentState.queryModels,
-                    [id]: produce(model, updater),
-                },
+                queryModels: { ...currentState.queryModels, [id]: newModel },
             };
         });
-
-        if (this.state.queryModels[id].bindURL) this.bindURL(id);
     };
 
     maybeLoad = (
@@ -158,6 +159,10 @@ class QueryModelManager {
         bindURL(setSearchParams, model.urlPrefix, model.urlQueryParams);
     };
 
+    syncURL = (id: string): void => {
+        if (this.state.queryModels[id]?.bindURL) this.bindURL(id);
+    };
+
     updateModelFromURL = (id: string) => {
         const { searchParams } = this;
 
@@ -188,7 +193,7 @@ class QueryModelManager {
 
         if (loadModel) {
             this.maybeLoad(id, false, true, loadSelections);
-            saveSettingsToLocalStorage(this.state.queryModels[id]);
+            this.saveSettings(id);
         }
     };
 
@@ -209,13 +214,12 @@ class QueryModelManager {
         if (duration) setTimeout(() => this.removeMessage(id, message), duration);
     };
 
-    addModel = (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean): void => {
+    addModel = (queryConfig: QueryConfig, load = true, loadSelections = false): void => {
         const { searchParams } = this;
-        let id;
+        let queryModel = new QueryModel(queryConfig);
+        const id = queryModel.id;
 
         this.setState(currentState => {
-            let queryModel = new QueryModel(queryConfig);
-            id = queryModel.id;
             const hasQueryParamSettings = locationHasQueryParamSettings(queryModel.urlPrefix, searchParams);
 
             if (queryModel.bindURL && hasQueryParamSettings) {
@@ -234,10 +238,14 @@ class QueryModelManager {
         });
 
         this.maybeLoad(id, load, load, loadSelections);
+        this.syncURL(id);
     };
 
     clearSelectedReports = (id: string): void => {
-        // TODO: implement
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            model.selectedReportIds = [];
+        });
+        this.syncURL(id);
     };
 
     clearSelections = (id: string): void => {
@@ -253,11 +261,28 @@ class QueryModelManager {
     };
 
     loadFirstPage = (id: string): void => {
-        // TODO: implement
+        let shouldLoad = false;
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            if (!model.isFirstPage) {
+                shouldLoad = true;
+                model.offset = 0;
+            }
+        });
+
+        this.maybeLoad(id, false, shouldLoad);
+        this.syncURL(id);
     };
 
     loadLastPage = (id: string): void => {
-        // TODO: implement
+        let shouldLoad = false;
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            if (!model.isLastPage) {
+                shouldLoad = true;
+                model.offset = model.lastPageOffset;
+            }
+        });
+        this.maybeLoad(id, false, shouldLoad);
+        this.syncURL(id);
     };
 
     loadModel = (id: string, loadSelections?: boolean, reloadTotalCount?: boolean): void => {
@@ -265,11 +290,27 @@ class QueryModelManager {
     };
 
     loadNextPage = (id: string): void => {
-        // TODO: implement
+        let shouldLoad = false;
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            if (!model.isLastPage) {
+                shouldLoad = true;
+                model.offset = model.offset + model.maxRows;
+            }
+        });
+        this.maybeLoad(id, false, shouldLoad);
+        this.syncURL(id);
     };
 
     loadPreviousPage = (id: string): void => {
-        // TODO: implement
+        let shouldLoad = false;
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            if (!model.isFirstPage) {
+                shouldLoad = true;
+                model.offset = model.offset - model.maxRows;
+            }
+        });
+        this.maybeLoad(id, false, shouldLoad);
+        this.syncURL(id);
     };
 
     loadQueryInfo = (id: string, loadRows: boolean, loadSelections: boolean): void => {
@@ -308,6 +349,10 @@ class QueryModelManager {
         // TODO: implement
     };
 
+    saveSettings = (id: string): void => {
+        saveSettingsToLocalStorage(this.state.queryModels[id]);
+    };
+
     selectAllRows = (id: string): void => {
         // TODO: implement
     };
@@ -330,11 +375,29 @@ class QueryModelManager {
     };
 
     setMaxRows = (id: string, maxRows: number): void => {
-        // TODO: implement
+        let shouldLoad = false;
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            if (model.maxRows !== maxRows) {
+                model.maxRows = maxRows;
+                model.offset = 0;
+                shouldLoad = true;
+            }
+        });
+        this.maybeLoad(id, false, shouldLoad);
+        this.saveSettings(id);
+        this.syncURL(id);
     };
 
-    setOffset = (id: string, offset: number, reloadModel?: boolean): void => {
-        // TODO: implement
+    setOffset = (id: string, offset: number, reloadModel = true): void => {
+        let shouldLoad = false;
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            if (model.offset !== offset) {
+                model.offset = offset;
+                shouldLoad = true;
+            }
+        });
+        this.maybeLoad(id, false, reloadModel && shouldLoad);
+        this.syncURL(id);
     };
 
     setSchemaQuery = (id: string, schemaQuery: SchemaQuery, loadSelections?: boolean): void => {
@@ -346,7 +409,16 @@ class QueryModelManager {
     };
 
     setSorts = (id: string, sorts: QuerySort[]): void => {
-        // TODO: implement
+        let shouldLoad = false;
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            if (!sortArraysEqual(model.sorts, sorts)) {
+                shouldLoad = true;
+                model.sorts = sorts;
+            }
+        });
+        this.maybeLoad(id, false, shouldLoad);
+        this.saveSettings(id);
+        this.syncURL(id);
     };
 
     setView = (id: string, viewName: string, loadSelections?: boolean): void => {

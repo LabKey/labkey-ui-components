@@ -584,28 +584,76 @@ class QueryModelManager {
         });
     };
 
-    replaceSelections = (id: string, selections: string[]): void => {
-        // TODO: implement
+    replaceSelections = async (id: string, selections: string[]): Promise<void> => {
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            model.selectionsLoadingState = LoadingState.LOADING;
+        });
+
+        try {
+            await this.modelLoader.replaceSelections(this.state.queryModels[id], selections);
+            this.updateModel(id, (model: Draft<QueryModel>) => {
+                model.selections = new Set(selections);
+                model.selectionsError = undefined;
+                model.selectionPivot = undefined;
+                model.selectionsLoadingState = LoadingState.LOADED;
+            });
+        } catch (error) {
+            if (error?.status === 0) return;
+            this.setSelectionsError(id, error, 'replace');
+        }
     };
 
+    /**
+     * Reset the totalCount state for all models so that the next time loadModel or loadAllModels() is called,
+     * it will also call the loadTotalCount().
+     */
     resetTotalCountState = (): void => {
-        // TODO: implement
+        this.setState(state => {
+            const queryModels = {};
+            Object.keys(state.queryModels).forEach(id => {
+                const model = state.queryModels[id];
+                queryModels[id] = produce(model, resetTotalCountState);
+            });
+            return { ...state, queryModels };
+        });
     };
 
     saveSettings = (id: string): void => {
         saveSettingsToLocalStorage(this.state.queryModels[id]);
     };
 
-    selectAllRows = (id: string): void => {
-        // TODO: implement
+    selectAllRows = async (id: string): Promise<void> => {
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            model.selectionsLoadingState = LoadingState.LOADING;
+        });
+
+        try {
+            const selections = await this.modelLoader.selectAllRows(this.state.queryModels[id]);
+            this.updateModel(id, (model: Draft<QueryModel>) => {
+                model.selections = selections;
+                model.selectionsError = undefined;
+                model.selectionPivot = undefined;
+                model.selectionsLoadingState = LoadingState.LOADED;
+            });
+        } catch (error) {
+            if (error?.status === 0) return;
+            this.setSelectionsError(id, error, 'setting');
+        }
     };
 
     selectPage = (id: string, checked: boolean): void => {
-        // TODO: implement
+        this.setSelections(id, checked, this.state.queryModels[id].orderedRows);
     };
 
     selectReport = (id: string, reportId: string, selected: boolean): void => {
-        // TODO: implement
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            if (selected && !model.selectedReportIds.includes(reportId)) {
+                model.selectedReportIds.push(reportId);
+            } else if (!selected) {
+                model.selectedReportIds = model.selectedReportIds.filter(id => id !== reportId);
+            }
+        });
+        this.syncURL(id);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

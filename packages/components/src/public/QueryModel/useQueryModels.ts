@@ -45,7 +45,7 @@ type ModelUpdater = (model: Draft<QueryModel>) => void;
 type VoidFn = () => void;
 type StateUpdater = (state: InjectedQueryModels) => InjectedQueryModels;
 
-class QueryModelManager {
+export class QueryModelManager {
     actions: Actions;
     state: InjectedQueryModels;
 

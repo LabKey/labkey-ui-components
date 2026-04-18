@@ -12,8 +12,7 @@ import { Modal } from '../../Modal';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
+import { QueryModel, RequiresModelAndActions } from '../../../public/QueryModel/QueryModel';
 
 import { useServerContext } from '../base/ServerContext';
 import { hasPermissions } from '../base/models/User';

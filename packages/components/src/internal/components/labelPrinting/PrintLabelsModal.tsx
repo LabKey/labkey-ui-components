@@ -12,8 +12,8 @@ import { QuerySelect } from '../forms/QuerySelect';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { InjectedQueryModels, QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { FormButtons } from '../../FormButtons';
 

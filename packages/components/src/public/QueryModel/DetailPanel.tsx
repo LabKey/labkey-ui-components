@@ -11,8 +11,8 @@ import { QueryColumn } from '../QueryColumn';
 import { Alert } from '../../internal/components/base/Alert';
 import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
 
-import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
-import { QueryConfig } from './QueryModel';
+import { InjectedQueryModels, QueryConfig, RequiresModelAndActions } from './QueryModel';
+import { withQueryModels } from './withQueryModels';
 
 interface DetailPanelProps extends DetailDisplaySharedProps {
     editColumns?: QueryColumn[];

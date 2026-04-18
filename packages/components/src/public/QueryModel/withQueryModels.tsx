@@ -6,7 +6,7 @@ import React, { ComponentType, FC, PureComponent, ReactNode } from 'react';
 import { Filter } from '@labkey/api';
 // eslint cannot find Draft for some reason, but Intellij can.
 
-import { Draft, produce, WritableDraft } from 'immer';
+import { produce, WritableDraft } from 'immer';
 import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
 
 import { getQueryParams } from '../../internal/util/URL';
@@ -14,22 +14,40 @@ import { getQueryParams } from '../../internal/util/URL';
 import { SchemaQuery } from '../SchemaQuery';
 import { QuerySort } from '../QuerySort';
 import { isLoading, LoadingState } from '../LoadingState';
-import { naturalSort } from '../sort';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 
 import { selectRows } from '../../internal/query/selectRows';
 
 import { incrementClientSideMetricCount } from '../../internal/actions';
 
-import { filterArraysEqual, getSelectRowCountColumnsStr, sortArraysEqual } from './utils';
+import {
+    applySavedSettings,
+    columnsHaveFilter,
+    filterArraysEqual,
+    getSelectRowCountColumnsStr,
+    initModels,
+    paramsEqual,
+    RequestManager,
+    resetModelState,
+    resetQueryInfoState,
+    resetRowsState,
+    resetSelectionState,
+    resetTotalCountState,
+    sortArraysEqual,
+} from './utils';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
 import { RequestHandler } from '../../internal/request';
 import {
-    getSettingsFromLocalStorage,
+    Actions,
+    ChangeType,
     GridMessage,
+    InjectedQueryModels,
     locationHasQueryParamSettings,
+    ModelChange,
     QueryConfig,
+    QueryConfigMap,
     QueryModel,
+    QueryModelMap,
     removeSettingsFromLocalStorage,
     SavedSettings,
     saveSettingsToLocalStorage,
@@ -62,99 +80,6 @@ export function withSearchParams<T>(Component: WithSearchParamsComponent<T>): Co
     return Wrapped;
 }
 
-function columnHasFilter(fieldKey: string, filters: Filter.IFilter[]): boolean {
-    fieldKey = fieldKey.toLowerCase();
-    return filters.some(filter => filter.getColumnName().toLowerCase() === fieldKey);
-}
-
-function columnsHaveFilter(columnFieldKeys: string[], filters: Filter.IFilter[]): boolean {
-    return columnFieldKeys.some(fieldKey => columnHasFilter(fieldKey, filters));
-}
-
-export enum ChangeType {
-    add = 'add',
-    delete = 'delete',
-    update = 'update',
-}
-
-interface BaseModelChange {
-    changeType: ChangeType;
-}
-
-export interface AddChange extends BaseModelChange {
-    changeType: ChangeType.add;
-}
-
-/**
- * selectionsForReplace: an optional set of row keys to select after the model is reset.
- */
-export interface DeleteOptions {
-    selectionsForReplace?: string[];
-}
-
-export interface DeleteChange extends BaseModelChange {
-    changeType: ChangeType.delete;
-    options?: DeleteOptions;
-}
-
-/**
- * columnsChanged: an optional list of fieldKeys used to check against the filters. If any of the columns have filters
- * on the QueryModel we will reset the model, if not we will only reload the model.
- */
-export interface UpdateOptions {
-    columnsChanged?: string[];
-}
-
-export interface UpdateChange extends BaseModelChange {
-    changeType: ChangeType.update;
-    options?: UpdateOptions;
-}
-
-export type ModelChange = AddChange | DeleteChange | UpdateChange;
-
-export interface Actions {
-    addMessage: (id: string, message: GridMessage, duration?: number) => void;
-    addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
-    clearSelectedReports: (id: string) => void;
-    clearSelections: (id: string) => void;
-    loadAllModels: (loadSelections?: boolean, reloadTotalCount?: boolean) => void;
-    loadCharts: (id: string) => void;
-    loadFirstPage: (id: string) => void;
-    loadLastPage: (id: string) => void;
-    loadModel: (id: string, loadSelections?: boolean, reloadTotalCount?: boolean) => void;
-    loadNextPage: (id: string) => void;
-    loadPreviousPage: (id: string) => void;
-    loadRows: (id: string) => void;
-    onModelChange: (id: string, modelChange: ModelChange) => void;
-    replaceSelections: (id: string, selections: string[]) => void;
-    resetTotalCountState: () => void;
-    selectAllRows: (id: string) => void;
-    selectPage: (id: string, checked: boolean) => void;
-    selectReport: (id: string, reportId: string, selected: boolean) => void;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    selectRow: (id: string, checked: boolean, row: Record<string, any>, useSelectionPivot?: boolean) => void;
-    setFilters: (id: string, filters: Filter.IFilter[], loadSelections?: boolean) => void;
-    setMaxRows: (id: string, maxRows: number) => void;
-    setOffset: (id: string, offset: number, reloadModel?: boolean) => void;
-    setSchemaQuery: (id: string, schemaQuery: SchemaQuery, loadSelections?: boolean) => void;
-    setSelections: (id: string, checked: boolean, selections: string[]) => void;
-    setSorts: (id: string, sorts: QuerySort[]) => void;
-    setView: (id: string, viewName: string, loadSelections?: boolean) => void;
-}
-
-export interface RequiresModelAndActions {
-    actions: Actions;
-    model: QueryModel;
-}
-
-export interface InjectedQueryModels {
-    actions: Actions;
-    queryModels: Record<string, QueryModel>;
-}
-
-export type QueryConfigMap = Record<string, QueryConfig>;
-export type QueryModelMap = Record<string, QueryModel>;
-
 export interface MakeQueryModels {
     autoLoad?: boolean;
     modelLoader?: QueryModelLoader;
@@ -163,170 +88,6 @@ export interface MakeQueryModels {
 
 interface State {
     queryModels: QueryModelMap;
-}
-
-/**
- * Resets queryInfo state to initialized state. Use this when you need to load/reload QueryInfo.
- * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
- * @param model The model to reset queryInfo state on.
- */
-const resetQueryInfoState = (model: Draft<QueryModel>): void => {
-    model.queryInfo = undefined;
-    model.queryInfoError = undefined;
-    model.queryInfoLoadingState = LoadingState.INITIALIZED;
-};
-
-/**
- * Resets totalCount state to initialized state. Use this when you need to load/reload QueryInfo.
- * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
- * @param model The model to reset queryInfo state on.
- */
-const resetTotalCountState = (model: Draft<QueryModel>): void => {
-    model.rowCount = undefined;
-    model.totalCountError = undefined;
-    model.totalCountLoadingState = LoadingState.INITIALIZED;
-};
-
-/**
- * Resets rows state to initialized state. Use this when you need to load/reload selections.
- * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
- * @param model The model to reset selection state on.
- */
-const resetRowsState = (model: Draft<QueryModel>): void => {
-    model.messages = undefined;
-    model.offset = 0;
-    model.orderedRows = undefined;
-    model.viewError = undefined;
-    model.rowsError = undefined;
-    model.rows = undefined;
-    model.rowCount = undefined;
-    model.rowsLoadingState = LoadingState.INITIALIZED;
-};
-
-/**
- * Resets selection state to initialized state. Use this when you need to load/reload selections.
- * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
- * @param model The model to reset selection state on.
- */
-const resetSelectionState = (model: Draft<QueryModel>): void => {
-    model.selections = undefined;
-    model.selectionsError = undefined;
-    model.selectionsLoadingState = LoadingState.INITIALIZED;
-    model.selectionPivot = undefined;
-};
-
-/**
- * Resets the model to the first page, resets the selection state, and resets the total count state.
- * @param model The model to reset
- */
-const resetModelState = (model: Draft<QueryModel>): void => {
-    resetRowsState(model);
-    resetSelectionState(model);
-    resetTotalCountState(model);
-};
-
-/**
- * Compares two query params objects, returns true if they are equal, false otherwise.
- * @param oldParams
- * @param newParams
- */
-const paramsEqual = (oldParams, newParams): boolean => {
-    const keys = Object.keys(oldParams);
-    const oldKeyStr = keys.sort(naturalSort).join(';');
-    const newKeyStr = Object.keys(newParams).sort(naturalSort).join(';');
-
-    if (oldKeyStr === newKeyStr) {
-        // If the keys are the same we need to do a deep comparison
-        for (const key of Object.keys(oldParams)) {
-            if (oldParams[key] !== newParams[key]) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    // If the keys have changed we can assume the params are different.
-    return false;
-};
-
-function applySavedSettings(id: string, model: QueryModel): QueryModel {
-    const settings = getSettingsFromLocalStorage(id, model.containerPath);
-    if (settings !== undefined) {
-        const { filterArray, maxRows, sorts, viewName } = settings;
-        const mutations: Partial<Draft<QueryModel>> = { maxRows, sorts };
-
-        if (model.useSavedSettings === SavedSettings.all) {
-            mutations.filterArray = filterArray;
-
-            if (viewName !== undefined) {
-                mutations.schemaQuery = new SchemaQuery(model.schemaName, model.queryName, viewName);
-            }
-        }
-
-        const modelWithSavedSettings = model.mutate(mutations as Partial<QueryModel>);
-
-        if (model.useSavedSettings === SavedSettings.noFilters) {
-            // If we're retrieving saved settings, but ignoring filters, we need to resave the settings without the
-            // filters or app behavior will be confusing. For example: you create a sample, and are navigated to a grid
-            // with no filters, then you edit a sample on that grid. When you navigate back, after editing, the filter
-            // that was removed after creation is now back.
-            saveSettingsToLocalStorage(modelWithSavedSettings);
-        }
-
-        return modelWithSavedSettings;
-    }
-    return model;
-}
-
-// N.B. This is similar to useRequestHandler() but we cannot use a hook here, so we have to use class
-// variables instead. Additionally, we cannot make use of React.createRef() since that returns an immutable
-// reference unlike React.useRef() which is mutable.
-// Exported for unit tests
-export class RequestManager {
-    _requests: Record<string, Record<string, undefined | XMLHttpRequest>> = {};
-
-    public cancelAllRequests = (): void => {
-        Object.values(this._requests).forEach(allReq => {
-            Object.values(allReq).forEach(req => {
-                req?.abort();
-            });
-        });
-        this._requests = {};
-    };
-
-    public getRequestHandler(id: string, requestType: string): RequestHandler {
-        return request => {
-            const bucket = this._requests[id] || (this._requests[id] = {});
-
-            // Abort in-flight request
-            bucket[requestType]?.abort();
-
-            // If the bucket was detached during the abort() call,
-            // then re-attach it before assigning the new request.
-            if (this._requests[id] !== bucket) {
-                this._requests[id] = bucket;
-            }
-
-            bucket[requestType] = request;
-
-            // Remove the request once the request has completed
-            request.addEventListener(
-                'loadend',
-                () => {
-                    const bucket_ = this._requests[id];
-                    if (bucket_?.[requestType] === request) {
-                        delete bucket_[requestType];
-
-                        if (Object.keys(bucket_).length === 0) {
-                            delete this._requests[id];
-                        }
-                    }
-                },
-                { once: true }
-            );
-        };
-    }
 }
 
 /**
@@ -339,30 +100,6 @@ export function withQueryModels<Props>(
 ): ComponentType<MakeQueryModels & Props> {
     type WrappedProps = MakeQueryModels & Props & SearchParamsProps;
 
-    const initModels = (props: WrappedProps): QueryModelMap => {
-        const { searchParams, queryConfigs } = props;
-        return Object.keys(queryConfigs).reduce((models, id) => {
-            // We expect the key value for each QueryConfig to be the id. If a user were to mistakenly set the id
-            // to something different on the QueryConfig then actions would break
-            // e.g. actions.loadNextPage(model.id) would not work.
-            let model = new QueryModel({ id, ...queryConfigs[id] });
-            const hasQueryParamSettings = locationHasQueryParamSettings(model.urlPrefix, searchParams);
-
-            if (model.bindURL && hasQueryParamSettings) {
-                model = model.mutate(model.attributesForURLQueryParams(searchParams, true));
-            } else if (model.useSavedSettings !== SavedSettings.none) {
-                if (!model.containerPath) {
-                    console.error('A model.containerPath is required when useSavedSettings is true: ' + model.id);
-                } else {
-                    model = applySavedSettings(model.id, model);
-                }
-            }
-
-            models[id] = model;
-            return models;
-        }, {});
-    };
-
     class ComponentWithQueryModels extends PureComponent<WrappedProps, State> {
         static defaultProps;
 
@@ -371,7 +108,9 @@ export function withQueryModels<Props>(
         constructor(props: WrappedProps) {
             super(props);
 
-            this.state = produce<State>({} as State, () => ({ queryModels: initModels(props) }));
+            this.state = produce<State>({} as State, () => ({
+                queryModels: initModels(props.queryConfigs, props.searchParams),
+            }));
 
             this.actions = {
                 addModel: this.addModel,

@@ -10,7 +10,7 @@ import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
 
 import { getSelected } from '../../actions';
 
-import { QueryModel, SavedSettings } from '../../../public/QueryModel/QueryModel';
+import { ChangeType, InjectedQueryModels, QueryModel, SavedSettings } from '../../../public/QueryModel/QueryModel';
 import { removeParameters } from '../../util/URL';
 
 import { UserLimitSettings } from '../permissions/actions';
@@ -26,7 +26,7 @@ import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { capitalizeFirstChar } from '../../util/utils';
 
-import { ChangeType, InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 import { MenuDivider, MenuItem } from '../../dropdowns';
 

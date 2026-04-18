@@ -64,7 +64,14 @@ import { ViewAction } from './grid/actions/View';
 import { getSearchValueAction } from './grid/utils';
 import { Change, ChangeType } from './grid/model';
 
-import { createQueryModelId, QueryConfig, QueryModel } from './QueryModel';
+import {
+    Actions,
+    createQueryModelId,
+    InjectedQueryModels,
+    QueryConfig,
+    QueryModel,
+    RequiresModelAndActions,
+} from './QueryModel';
 import { ViewMenu } from './ViewMenu';
 import { ExportMenu } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
@@ -77,8 +84,8 @@ import { FilterStatus } from './FilterStatus';
 import { SaveViewModal } from './SaveViewModal';
 import { CustomizeGridViewModal } from './CustomizeGridViewModal';
 import { ManageViewsModal } from './ManageViewsModal';
-import { Actions, InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
-import { ChartList, ChartPanel } from './ChartPanel';
+import { withQueryModels } from './withQueryModels';
+import { ChartList } from './ChartPanel';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     advancedExportOptions?: Record<string, any>;

@@ -239,6 +239,8 @@ export interface QueryConfig {
     useSavedSettings?: SavedSettings;
 }
 
+export type QueryConfigMap = Record<string, QueryConfig>;
+
 export const DEFAULT_OFFSET = 0;
 export const DEFAULT_MAX_ROWS = 20;
 
@@ -1326,6 +1328,89 @@ export function saveSettingsToLocalStorage(model: QueryModel): void {
     localStorage.setItem(localStorageKey(model.id, model.containerPath), JSON.stringify(settings));
 }
 
+export type QueryModelMap = Record<string, QueryModel>;
+
 export function removeSettingsFromLocalStorage(model: QueryModel): void {
     localStorage.removeItem(localStorageKey(model.id, model.containerPath));
+}
+
+export interface Actions {
+    addMessage: (id: string, message: GridMessage, duration?: number) => void;
+    addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
+    clearSelectedReports: (id: string) => void;
+    clearSelections: (id: string) => void;
+    loadAllModels: (loadSelections?: boolean, reloadTotalCount?: boolean) => void;
+    loadCharts: (id: string) => void;
+    loadFirstPage: (id: string) => void;
+    loadLastPage: (id: string) => void;
+    loadModel: (id: string, loadSelections?: boolean, reloadTotalCount?: boolean) => void;
+    loadNextPage: (id: string) => void;
+    loadPreviousPage: (id: string) => void;
+    loadRows: (id: string) => void;
+    onModelChange: (id: string, modelChange: ModelChange) => void;
+    replaceSelections: (id: string, selections: string[]) => void;
+    resetTotalCountState: () => void;
+    selectAllRows: (id: string) => void;
+    selectPage: (id: string, checked: boolean) => void;
+    selectReport: (id: string, reportId: string, selected: boolean) => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    selectRow: (id: string, checked: boolean, row: Record<string, any>, useSelectionPivot?: boolean) => void;
+    setFilters: (id: string, filters: Filter.IFilter[], loadSelections?: boolean) => void;
+    setMaxRows: (id: string, maxRows: number) => void;
+    setOffset: (id: string, offset: number, reloadModel?: boolean) => void;
+    setSchemaQuery: (id: string, schemaQuery: SchemaQuery, loadSelections?: boolean) => void;
+    setSelections: (id: string, checked: boolean, selections: string[]) => void;
+    setSorts: (id: string, sorts: QuerySort[]) => void;
+    setView: (id: string, viewName: string, loadSelections?: boolean) => void;
+}
+
+export enum ChangeType {
+    add = 'add',
+    delete = 'delete',
+    update = 'update',
+}
+
+interface BaseModelChange {
+    changeType: ChangeType;
+}
+
+export interface AddChange extends BaseModelChange {
+    changeType: ChangeType.add;
+}
+
+/**
+ * selectionsForReplace: an optional set of row keys to select after the model is reset.
+ */
+export interface DeleteOptions {
+    selectionsForReplace?: string[];
+}
+
+export interface DeleteChange extends BaseModelChange {
+    changeType: ChangeType.delete;
+    options?: DeleteOptions;
+}
+
+/**
+ * columnsChanged: an optional list of fieldKeys used to check against the filters. If any of the columns have filters
+ * on the QueryModel we will reset the model, if not we will only reload the model.
+ */
+export interface UpdateOptions {
+    columnsChanged?: string[];
+}
+
+export interface UpdateChange extends BaseModelChange {
+    changeType: ChangeType.update;
+    options?: UpdateOptions;
+}
+
+export type ModelChange = AddChange | DeleteChange | UpdateChange;
+
+export interface RequiresModelAndActions {
+    actions: Actions;
+    model: QueryModel;
+}
+
+export interface InjectedQueryModels {
+    actions: Actions;
+    queryModels: Record<string, QueryModel>;
 }

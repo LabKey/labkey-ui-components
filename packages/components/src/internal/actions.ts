@@ -7,7 +7,7 @@ import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey
 
 import { SchemaQuery } from '../public/SchemaQuery';
 
-import { Actions } from '../public/QueryModel/withQueryModels';
+import { Actions } from '../public/QueryModel/QueryModel';
 
 import { GridResponse } from './components/editable/models';
 

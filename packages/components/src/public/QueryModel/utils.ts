@@ -18,12 +18,24 @@ import { QuerySort } from '../QuerySort';
 import { QueryColumn } from '../QueryColumn';
 import { EXPORT_TYPES } from '../../internal/constants';
 
-import { SELECTION_SNAPSHOT_SEP } from '../SchemaQuery';
+import { SchemaQuery, SELECTION_SNAPSHOT_SEP } from '../SchemaQuery';
 import { getSelectedRows } from '../../internal/query/selectRows';
 import { caseInsensitive } from '../../internal/util/utils';
 
 import { ActionValue } from './grid/actions/Action';
-import { QueryModel } from './QueryModel';
+import {
+    getSettingsFromLocalStorage, InjectedQueryModels,
+    locationHasQueryParamSettings,
+    QueryModel,
+    QueryModelMap,
+    SavedSettings, saveSettingsToLocalStorage
+} from './QueryModel';
+import { Draft, produce } from 'immer';
+import { RequestHandler } from '../../internal/request';
+import { ComponentType, PureComponent } from 'react';
+import { SearchParamsProps } from './withQueryModels';
+import { LoadingState } from '../LoadingState';
+import { naturalSort } from '../sort';
 
 export function filterToString(filter: Filter.IFilter): string {
     return `${filter.getColumnName()}-${filter.getFilterType().getURLSuffix()}-${filter.getValue()}`;
@@ -206,4 +218,200 @@ export async function createOrderedSnapshotSelectionKey(model: QueryModel): Prom
     });
     const orderedRows = rows.map(row => caseInsensitive(row, pkFieldKey).value.toString());
     return _createSnapshotSelectionKey(model, orderedRows);
+}
+
+// N.B. This is similar to useRequestHandler() but we cannot use hooks in withQueryModels or QueryModelManager, so we
+// have to use class variables instead. Additionally, we cannot make use of React.createRef() since that returns an
+// immutable reference unlike React.useRef() which is mutable.
+// Exported for unit tests
+export class RequestManager {
+    _requests: Record<string, Record<string, undefined | XMLHttpRequest>> = {};
+
+    public cancelAllRequests = (): void => {
+        Object.values(this._requests).forEach(allReq => {
+            Object.values(allReq).forEach(req => {
+                req?.abort();
+            });
+        });
+        this._requests = {};
+    };
+
+    public getRequestHandler(id: string, requestType: string): RequestHandler {
+        return request => {
+            const bucket = this._requests[id] || (this._requests[id] = {});
+
+            // Abort in-flight request
+            bucket[requestType]?.abort();
+
+            // If the bucket was detached during the abort() call,
+            // then re-attach it before assigning the new request.
+            if (this._requests[id] !== bucket) {
+                this._requests[id] = bucket;
+            }
+
+            bucket[requestType] = request;
+
+            // Remove the request once the request has completed
+            request.addEventListener(
+                'loadend',
+                () => {
+                    const bucket_ = this._requests[id];
+                    if (bucket_?.[requestType] === request) {
+                        delete bucket_[requestType];
+
+                        if (Object.keys(bucket_).length === 0) {
+                            delete this._requests[id];
+                        }
+                    }
+                },
+                { once: true }
+            );
+        };
+    }
+}
+
+export function applySavedSettings(id: string, model: QueryModel): QueryModel {
+    const settings = getSettingsFromLocalStorage(id, model.containerPath);
+    if (settings !== undefined) {
+        const { filterArray, maxRows, sorts, viewName } = settings;
+        const mutations: Partial<Draft<QueryModel>> = { maxRows, sorts };
+
+        if (model.useSavedSettings === SavedSettings.all) {
+            mutations.filterArray = filterArray;
+
+            if (viewName !== undefined) {
+                mutations.schemaQuery = new SchemaQuery(model.schemaName, model.queryName, viewName);
+            }
+        }
+
+        const modelWithSavedSettings = model.mutate(mutations as Partial<QueryModel>);
+
+        if (model.useSavedSettings === SavedSettings.noFilters) {
+            // If we're retrieving saved settings, but ignoring filters, we need to resave the settings without the
+            // filters or app behavior will be confusing. For example: you create a sample, and are navigated to a grid
+            // with no filters, then you edit a sample on that grid. When you navigate back, after editing, the filter
+            // that was removed after creation is now back.
+            saveSettingsToLocalStorage(modelWithSavedSettings);
+        }
+
+        return modelWithSavedSettings;
+    }
+    return model;
+}
+
+export function initModels(queryConfigs, searchParams): QueryModelMap {
+    return Object.keys(queryConfigs).reduce((models, id) => {
+        // We expect the key value for each QueryConfig to be the id. If a user were to mistakenly set the id
+        // to something different on the QueryConfig then actions would break
+        // e.g. actions.loadNextPage(model.id) would not work.
+        let model = new QueryModel({ id, ...queryConfigs[id] });
+        const hasQueryParamSettings = locationHasQueryParamSettings(model.urlPrefix, searchParams);
+
+        if (model.bindURL && hasQueryParamSettings) {
+            model = model.mutate(model.attributesForURLQueryParams(searchParams, true));
+        } else if (model.useSavedSettings !== SavedSettings.none) {
+            if (!model.containerPath) {
+                console.error('A model.containerPath is required when useSavedSettings is true: ' + model.id);
+            } else {
+                model = applySavedSettings(model.id, model);
+            }
+        }
+
+        models[id] = model;
+        return models;
+    }, {});
+}
+
+function columnHasFilter(fieldKey: string, filters: Filter.IFilter[]): boolean {
+    fieldKey = fieldKey.toLowerCase();
+    return filters.some(filter => filter.getColumnName().toLowerCase() === fieldKey);
+}
+
+export function columnsHaveFilter(columnFieldKeys: string[], filters: Filter.IFilter[]): boolean {
+    return columnFieldKeys.some(fieldKey => columnHasFilter(fieldKey, filters));
+}
+
+/**
+ * Resets queryInfo state to initialized state. Use this when you need to load/reload QueryInfo.
+ * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
+ * @param model The model to reset queryInfo state on.
+ */
+export function resetQueryInfoState(model: Draft<QueryModel>): void {
+    model.queryInfo = undefined;
+    model.queryInfoError = undefined;
+    model.queryInfoLoadingState = LoadingState.INITIALIZED;
+}
+
+/**
+ * Resets totalCount state to initialized state. Use this when you need to load/reload QueryInfo.
+ * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
+ * @param model The model to reset queryInfo state on.
+ */
+export function resetTotalCountState(model: Draft<QueryModel>): void {
+    model.rowCount = undefined;
+    model.totalCountError = undefined;
+    model.totalCountLoadingState = LoadingState.INITIALIZED;
+}
+
+/**
+ * Resets rows state to initialized state. Use this when you need to load/reload selections.
+ * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
+ * @param model The model to reset selection state on.
+ */
+export function resetRowsState(model: Draft<QueryModel>): void {
+    model.messages = undefined;
+    model.offset = 0;
+    model.orderedRows = undefined;
+    model.viewError = undefined;
+    model.rowsError = undefined;
+    model.rows = undefined;
+    model.rowCount = undefined;
+    model.rowsLoadingState = LoadingState.INITIALIZED;
+}
+
+/**
+ * Resets selection state to initialized state. Use this when you need to load/reload selections.
+ * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
+ * @param model The model to reset selection state on.
+ */
+export function resetSelectionState(model: Draft<QueryModel>): void {
+    model.selections = undefined;
+    model.selectionsError = undefined;
+    model.selectionsLoadingState = LoadingState.INITIALIZED;
+    model.selectionPivot = undefined;
+}
+
+/**
+ * Resets the model to the first page, resets the selection state, and resets the total count state.
+ * @param model The model to reset
+ */
+export function resetModelState(model: Draft<QueryModel>): void {
+    resetRowsState(model);
+    resetSelectionState(model);
+    resetTotalCountState(model);
+}
+
+/**
+ * Compares two query params objects, returns true if they are equal, false otherwise.
+ * @param oldParams
+ * @param newParams
+ */
+export function paramsEqual(oldParams, newParams): boolean {
+    const keys = Object.keys(oldParams);
+    const oldKeyStr = keys.sort(naturalSort).join(';');
+    const newKeyStr = Object.keys(newParams).sort(naturalSort).join(';');
+
+    if (oldKeyStr === newKeyStr) {
+        // If the keys are the same we need to do a deep comparison
+        for (const key of Object.keys(oldParams)) {
+            if (oldParams[key] !== newParams[key]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // If the keys have changed we can assume the params are different.
+    return false;
 }

@@ -7,8 +7,7 @@ import { QueryInfo } from '../QueryInfo';
 
 import { LoadingState } from '../LoadingState';
 
-import { QueryModel } from './QueryModel';
-import { Actions } from './withQueryModels';
+import { Actions, QueryModel } from './QueryModel';
 
 /**
  * @ignore

@@ -24,8 +24,8 @@ import {
     InjectedQueryModels,
     QueryConfigMap,
     RequiresModelAndActions,
-    withQueryModels,
-} from '../../../public/QueryModel/withQueryModels';
+} from '../../../public/QueryModel/QueryModel';
+import { withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { SCHEMAS } from '../../schemas';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { Modal } from '../../Modal';

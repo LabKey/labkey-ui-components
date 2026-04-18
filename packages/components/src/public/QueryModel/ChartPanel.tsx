@@ -17,7 +17,7 @@ import { useServerContext } from '../../internal/components/base/ServerContext';
 
 import { DropdownButton, MenuHeader, MenuItem } from '../../internal/dropdowns';
 
-import { RequiresModelAndActions } from './withQueryModels';
+import { RequiresModelAndActions } from './QueryModel';
 
 interface Props extends RequiresModelAndActions {
     api?: ChartAPIWrapper;

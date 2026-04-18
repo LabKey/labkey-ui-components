@@ -5,7 +5,7 @@
 import React, { FC, memo, useCallback, useMemo } from 'react';
 
 import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
-import { RequiresModelAndActions } from './withQueryModels';
+import { RequiresModelAndActions } from './QueryModel';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 
 export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, model }) => {

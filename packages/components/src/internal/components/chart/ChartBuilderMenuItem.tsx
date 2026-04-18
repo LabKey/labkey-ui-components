@@ -4,7 +4,7 @@
  */
 import React, { FC, memo, useCallback, useState } from 'react';
 
-import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
+import { RequiresModelAndActions } from '../../../public/QueryModel/QueryModel';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 

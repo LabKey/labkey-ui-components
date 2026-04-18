@@ -17,7 +17,7 @@ import { isChartBuilderEnabled } from '../../internal/app/utils';
 import { ChartBuilderMenuItem } from '../../internal/components/chart/ChartBuilderMenuItem';
 import { hasPermissions } from '../../internal/components/base/models/User';
 
-import { RequiresModelAndActions } from './withQueryModels';
+import { RequiresModelAndActions } from './QueryModel';
 import { DisableableMenuItem } from '../../internal/components/samples/DisableableMenuItem';
 
 const MAX_CHARTS = 5;

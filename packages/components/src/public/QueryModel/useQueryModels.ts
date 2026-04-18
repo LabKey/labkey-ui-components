@@ -12,12 +12,15 @@ import {
     QueryConfig,
     QueryConfigMap,
     QueryModel,
+    removeSettingsFromLocalStorage,
     saveSettingsToLocalStorage,
 } from './QueryModel';
 import { applySavedSettings, bindURL, initModels, paramsEqual, RequestManager, sortArraysEqual } from './utils';
 import { SchemaQuery } from '../SchemaQuery';
 import { QuerySort } from '../QuerySort';
 import { isLoading, LoadingState } from '../LoadingState';
+import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
+import { resolveErrorMessage } from '../../internal/util/messaging';
 
 const NOOP = () => {};
 const DEFAULT_SEARCH_PARAMS = new URLSearchParams();
@@ -31,12 +34,18 @@ class QueryModelManager {
     actions: Actions;
     state: InjectedQueryModels;
 
+    private modelLoader: QueryModelLoader;
     private onStateChange: VoidFn;
     private requestManager: RequestManager;
     private searchParams: URLSearchParams;
     private setSearchParams: SetURLSearchParams;
 
-    constructor(queryConfigs: QueryConfigMap, searchParams: URLSearchParams, setSearchParams: SetURLSearchParams) {
+    constructor(
+        queryConfigs: QueryConfigMap,
+        searchParams: URLSearchParams,
+        setSearchParams: SetURLSearchParams,
+        modelLoader?: QueryModelLoader
+    ) {
         this.requestManager = new RequestManager();
         this.searchParams = searchParams;
         this.setSearchParams = setSearchParams;
@@ -72,6 +81,7 @@ class QueryModelManager {
             queryModels: initModels(queryConfigs, searchParams),
             actions: this.actions,
         };
+        this.modelLoader = modelLoader ?? DefaultQueryModelLoader;
     }
 
     updateRouter = (searchParams: URLSearchParams, setSearchParams: SetURLSearchParams) => {
@@ -252,12 +262,37 @@ class QueryModelManager {
         // TODO: implement
     };
 
-    loadAllModels = (loadSelections?: boolean, reloadTotalCount?: boolean): void => {
-        // TODO: implement
+    loadAllModels = (loadSelections = false, reloadTotalCount = true): void => {
+        Object.keys(this.state.queryModels).forEach(id => this.loadModel(id, loadSelections, reloadTotalCount));
     };
 
-    loadCharts = (id: string): void => {
-        // TODO: implement
+    loadCharts = async (id: string): Promise<void> => {
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            model.chartsLoadingState = LoadingState.LOADING;
+        });
+
+        try {
+            const charts = await this.modelLoader.loadCharts(this.state.queryModels[id]);
+            this.updateModel(id, (model: Draft<QueryModel>) => {
+                model.charts = charts;
+                model.chartsLoadingState = LoadingState.LOADED;
+                model.chartsError = undefined;
+            });
+        } catch (error) {
+            this.updateModel(id, (model: Draft<QueryModel>) => {
+                let chartsError = resolveErrorMessage(error);
+
+                if (chartsError === undefined) {
+                    const schemaQuery = model.schemaQuery.toString();
+                    chartsError = `Error while loading selections for SchemaQuery: ${schemaQuery}`;
+                }
+
+                console.error(`Error loading charts for model ${id}`, chartsError);
+                removeSettingsFromLocalStorage(this.state.queryModels[id]);
+                model.chartsLoadingState = LoadingState.LOADED;
+                model.chartsError = chartsError;
+            });
+        }
     };
 
     loadFirstPage = (id: string): void => {
@@ -285,8 +320,8 @@ class QueryModelManager {
         this.syncURL(id);
     };
 
-    loadModel = (id: string, loadSelections?: boolean, reloadTotalCount?: boolean): void => {
-        // TODO: implement
+    loadModel = (id: string, loadSelections = false, reloadTotalCount = false): void => {
+        this.loadQueryInfo(id, true, loadSelections, reloadTotalCount);
     };
 
     loadNextPage = (id: string): void => {
@@ -313,8 +348,45 @@ class QueryModelManager {
         this.syncURL(id);
     };
 
-    loadQueryInfo = (id: string, loadRows: boolean, loadSelections: boolean): void => {
-        // TODO: implement
+    loadQueryInfo = async (
+        id: string,
+        loadRows = false,
+        loadSelections = false,
+        reloadTotalCount = false
+    ): Promise<void> => {
+        if (!this.state.queryModels[id]) return;
+
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            model.queryInfoLoadingState = LoadingState.LOADING;
+        });
+
+        try {
+            const queryInfo = await this.modelLoader.loadQueryInfo(this.state.queryModels[id]);
+            this.updateModel(id, (model: Draft<QueryModel>) => {
+                model.queryInfo = queryInfo;
+                model.queryInfoLoadingState = LoadingState.LOADED;
+                model.queryInfoError = undefined;
+                model.viewError = undefined;
+            });
+            this.maybeLoad(id, false, loadRows, loadSelections, reloadTotalCount);
+        } catch (error) {
+            this.updateModel(id, (model: Draft<QueryModel>) => {
+                let queryInfoError = resolveErrorMessage(error);
+
+                if (queryInfoError === undefined) {
+                    queryInfoError = `Error while loading QueryInfo for SchemaQuery: ${model.schemaQuery.toString()}`;
+                }
+
+                console.error(`Error loading QueryInfo for model ${id}:`, queryInfoError);
+                removeSettingsFromLocalStorage(this.state.queryModels[id]);
+                model.queryInfoLoadingState = LoadingState.LOADED;
+                model.queryInfoError = queryInfoError;
+            });
+        }
+    };
+
+    loadAllQueryInfos = (): void => {
+        Object.keys(this.state.queryModels).forEach(id => this.loadQueryInfo(id, false, false));
     };
 
     loadRows = (id: string, loadSelections = false, selectionsForReplace?: string[]): void => {
@@ -400,7 +472,7 @@ class QueryModelManager {
         this.syncURL(id);
     };
 
-    setSchemaQuery = (id: string, schemaQuery: SchemaQuery, loadSelections?: boolean): void => {
+    setSchemaQuery = (id: string, schemaQuery: SchemaQuery, loadSelections = false): void => {
         // TODO: implement
     };
 
@@ -421,7 +493,7 @@ class QueryModelManager {
         this.syncURL(id);
     };
 
-    setView = (id: string, viewName: string, loadSelections?: boolean): void => {
+    setView = (id: string, viewName: string, loadSelections = false): void => {
         // TODO: implement
     };
 }
@@ -442,22 +514,34 @@ function useOptionalSearchParams(): OptionalSearchParams {
     return [searchParams, setSearchParams];
 }
 
-export function useQueryModels(queryConfigs: QueryConfigMap) {
+interface UseQueryModelsOptions {
+    autoLoad?: boolean;
+    modelLoader?: QueryModelLoader;
+}
+
+export function useQueryModels(queryConfigs: QueryConfigMap, options: UseQueryModelsOptions = {}): InjectedQueryModels {
+    const { autoLoad = false, modelLoader } = options;
     const [searchParams, setSearchParams] = useOptionalSearchParams();
     const manager = useRef<QueryModelManager>(null);
 
     /* eslint-disable react-hooks/refs */
     if (!manager.current) {
-        manager.current = new QueryModelManager(queryConfigs, searchParams, setSearchParams);
+        manager.current = new QueryModelManager(queryConfigs, searchParams, setSearchParams, modelLoader);
     }
 
     const state = useSyncExternalStore(manager.current.subscribe, manager.current.getSnapshot);
 
     useEffect(() => {
+        // Note: It's not ideal because it will try to load selections for models that aren't active or aren't used in
+        // grids (e.g., details models). We should add a loadSelections attribute to QueryModel so we can opt in to
+        // loading selections for our grid models only. See Issue 48758 for additional context.
+        if (autoLoad) manager.current.loadAllModels(true);
+        else manager.current.loadAllQueryInfos();
+
         return () => {
             manager.current.destroy();
         };
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps -- only run on mount
 
     useEffect(() => {
         manager.current.updateRouter(searchParams, setSearchParams);

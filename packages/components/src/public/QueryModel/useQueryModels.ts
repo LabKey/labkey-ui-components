@@ -15,12 +15,23 @@ import {
     removeSettingsFromLocalStorage,
     saveSettingsToLocalStorage,
 } from './QueryModel';
-import { applySavedSettings, bindURL, initModels, paramsEqual, RequestManager, sortArraysEqual } from './utils';
+import {
+    applySavedSettings,
+    bindURL,
+    initModels,
+    paramsEqual,
+    RequestManager,
+    resetRowsState,
+    resetSelectionState,
+    resetTotalCountState,
+    sortArraysEqual,
+} from './utils';
 import { SchemaQuery } from '../SchemaQuery';
 import { QuerySort } from '../QuerySort';
 import { isLoading, LoadingState } from '../LoadingState';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
 import { resolveErrorMessage } from '../../internal/util/messaging';
+import { incrementClientSideMetricCount } from '../../internal/actions';
 
 const NOOP = () => {};
 const DEFAULT_SEARCH_PARAMS = new URLSearchParams();
@@ -389,16 +400,176 @@ class QueryModelManager {
         Object.keys(this.state.queryModels).forEach(id => this.loadQueryInfo(id, false, false));
     };
 
-    loadRows = (id: string, loadSelections = false, selectionsForReplace?: string[]): void => {
-        // TODO: implement
+    loadRows = async (id: string, loadSelections = false, selectionsForReplace?: string[]): Promise<void> => {
+        // Issue 53192
+        if (!this.state.queryModels[id].isQueryInfoLoaded) return;
+
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            model.rowsLoadingState = LoadingState.LOADING;
+            model.selectionsError = undefined;
+        });
+
+        try {
+            // If we have selectionsForReplace, then skip request cancellation optimization
+            const requestHandler = selectionsForReplace
+                ? undefined
+                : this.requestManager.getRequestHandler(id, 'loadRows');
+            const { messages, rows, orderedRows, rowCount } = await this.modelLoader.loadRows(
+                this.state.queryModels[id],
+                requestHandler
+            );
+            this.updateModel(id, (model: Draft<QueryModel>) => {
+                model.messages = messages;
+                model.rows = rows;
+                model.orderedRows = orderedRows;
+                // only update the rowCount on the model if we aren't loading the totalCount
+                model.rowCount = !model.includeTotalCount ? rowCount : model.rowCount;
+                model.rowsLoadingState = LoadingState.LOADED;
+                model.rowsError = undefined;
+                model.selectionPivot = undefined;
+            });
+            this.maybeLoad(id, false, false, loadSelections, false, selectionsForReplace);
+        } catch (error) {
+            if (error?.status === 0) return;
+
+            let shouldAttemptLoadAgain = false;
+            this.updateModel(id, (model: Draft<QueryModel>) => {
+                const calcFieldNames = model.queryInfo
+                    .getAllColumns()
+                    .filter(c => c.isCalculatedField)
+                    .map(c => c.fieldKey); // Issue 53325
+                let rowsError = resolveErrorMessage(error, 'data', undefined, 'load');
+
+                if (rowsError === undefined) {
+                    rowsError = `Error while loading rows for SchemaQuery: ${model.schemaQuery.toString()}`;
+                }
+
+                console.error(`Error loading rows for model ${id}: `, rowsError);
+                removeSettingsFromLocalStorage(this.state.queryModels[id]);
+
+                if (
+                    rowsError?.indexOf('The requested view') === 0 &&
+                    rowsError?.indexOf(' does not exist for this user.') > 0
+                ) {
+                    // Issue 49378: if the view doesn't exist, use the default view
+                    shouldAttemptLoadAgain = true;
+                    model.schemaQuery = new SchemaQuery(model.schemaName, model.queryName);
+                    resetRowsState(model);
+                    resetTotalCountState(model);
+                    resetSelectionState(model);
+                    model.viewError = rowsError + ' Returning to the default view.';
+                    incrementClientSideMetricCount('QueryModel', 'ViewDoesNotExist');
+                } else if (!model.viewError && calcFieldNames.length > 0) {
+                    // Issue 51204: if we have a calculated field, they are likely causing the problem so retry without them
+                    shouldAttemptLoadAgain = true;
+                    model.omittedColumns = model.omittedColumns.concat(calcFieldNames);
+                    resetRowsState(model);
+                    resetTotalCountState(model);
+                    resetSelectionState(model);
+                    model.viewError =
+                        rowsError +
+                        (rowsError.endsWith('.') ? '' : '.') +
+                        ' All calculated fields have been omitted from the view.';
+                    incrementClientSideMetricCount('QueryModel', 'CalculatedFieldError');
+                } else {
+                    model.rowsLoadingState = LoadingState.LOADED;
+                    model.rowsError = rowsError;
+                    model.selectionPivot = undefined;
+                }
+            });
+
+            if (shouldAttemptLoadAgain) {
+                this.maybeLoad(id, false, true, true, true);
+                this.syncURL(id);
+                this.saveSettings(id);
+            }
+        }
     };
 
-    loadSelections = (id: string): void => {
-        // TODO: implement
+    setSelectionsError = (id: string, error: any, action: string): void => {
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            let selectionsError = resolveErrorMessage(error);
+
+            if (selectionsError === undefined) {
+                const schemaQuery = model.schemaQuery.toString();
+                selectionsError = `Error while ${action} selections for SchemaQuery: ${schemaQuery}`;
+            }
+
+            console.error(`Error setting selections for model ${id}:`, selectionsError);
+            model.selectionsError = selectionsError;
+            model.selectionsLoadingState = LoadingState.LOADED;
+            removeSettingsFromLocalStorage(this.state.queryModels[id]);
+        });
     };
 
-    loadTotalCount = (id: string, reloadTotalCount: boolean): void => {
-        // TODO: implement
+    loadSelections = async (id: string): Promise<void> => {
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            model.selectionsLoadingState = LoadingState.LOADING;
+        });
+
+        try {
+            const selections = await this.modelLoader.loadSelections(
+                this.state.queryModels[id],
+                this.requestManager.getRequestHandler(id, 'loadSelections')
+            );
+
+            this.updateModel(id, (model: Draft<QueryModel>) => {
+                model.selections = selections;
+                model.selectionsLoadingState = LoadingState.LOADED;
+                model.selectionsError = undefined;
+            });
+        } catch (error) {
+            if (error?.status === 0) return;
+            this.setSelectionsError(id, error, 'loading');
+        }
+    };
+
+    loadTotalCount = async (id: string, reloadTotalCount = false): Promise<void> => {
+        // Issue 53192
+        if (!this.state.queryModels[id].isQueryInfoLoaded) return;
+
+        // if we've already loaded the totalCount, no need to load it again
+        if (!reloadTotalCount && this.state.queryModels[id].totalCountLoadingState === LoadingState.LOADED) {
+            return;
+        }
+
+        // if usage didn't request loading the totalCount, skip it
+        if (!this.state.queryModels[id].includeTotalCount) {
+            this.updateModel(id, (model: Draft<QueryModel>) => {
+                model.totalCountLoadingState = LoadingState.LOADED;
+            });
+            return;
+        }
+
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            model.totalCountLoadingState = LoadingState.LOADING;
+        });
+
+        try {
+            const rowCount = await this.modelLoader.loadTotalCount(
+                this.state.queryModels[id],
+                this.requestManager.getRequestHandler(id, 'loadTotalCount')
+            );
+            this.updateModel(id, (model: Draft<QueryModel>) => {
+                model.rowCount = rowCount;
+                model.totalCountLoadingState = LoadingState.LOADED;
+                model.totalCountError = undefined;
+            });
+        } catch (error) {
+            if (error?.status === 0) return;
+            this.updateModel(id, (model: Draft<QueryModel>) => {
+                let rowsError = resolveErrorMessage(error);
+
+                if (rowsError === undefined) {
+                    rowsError = `Error while loading total count for SchemaQuery: ${model.schemaQuery.toString()}`;
+                }
+
+                console.error(`Error loading rows for model ${id}: `, rowsError);
+                removeSettingsFromLocalStorage(this.state.queryModels[id]);
+                model.totalCountLoadingState = LoadingState.LOADED;
+                model.totalCountError = rowsError;
+            });
+        }
     };
 
     onModelChange = (id: string, modelChange: ModelChange): void => {

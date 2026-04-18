@@ -36,6 +36,8 @@ import { ComponentType, PureComponent } from 'react';
 import { SearchParamsProps } from './withQueryModels';
 import { LoadingState } from '../LoadingState';
 import { naturalSort } from '../sort';
+import { SetURLSearchParams } from 'react-router-dom';
+import { getQueryParams } from '../../internal/util/URL';
 
 export function filterToString(filter: Filter.IFilter): string {
     return `${filter.getColumnName()}-${filter.getFilterType().getURLSuffix()}-${filter.getValue()}`;
@@ -414,4 +416,26 @@ export function paramsEqual(oldParams, newParams): boolean {
 
     // If the keys have changed we can assume the params are different.
     return false;
+}
+
+export function bindURL(setSearchParams: SetURLSearchParams, prefix: string, params: Record<string, string>) {
+    setSearchParams(
+        currentParams => {
+            const queryParams = getQueryParams(currentParams);
+            return Object.keys(queryParams).reduce(
+                (result, key) => {
+                    // Only copy params that aren't related to the current model, we initialize the result with the
+                    // updated params below.
+                    if (!key.startsWith(prefix + '.')) {
+                        result[key] = queryParams[key];
+                    }
+                    return result;
+                },
+                // QueryModel.urlQueryParams returns Record<string, string>, but getQueryParams and setSearchParams
+                // use Record<string, string | string[]>
+                params as Record<string, string | string[]>
+            );
+        },
+        { replace: true }
+    );
 }

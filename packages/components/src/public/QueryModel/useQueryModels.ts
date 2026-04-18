@@ -5,6 +5,7 @@ import { Filter } from '@labkey/api';
 
 import {
     Actions,
+    ChangeType,
     GridMessage,
     InjectedQueryModels,
     locationHasQueryParamSettings,
@@ -18,9 +19,12 @@ import {
 import {
     applySavedSettings,
     bindURL,
+    columnsHaveFilter,
+    filterArraysEqual,
     initModels,
     paramsEqual,
     RequestManager,
+    resetModelState,
     resetRowsState,
     resetSelectionState,
     resetTotalCountState,
@@ -269,8 +273,30 @@ class QueryModelManager {
         this.syncURL(id);
     };
 
-    clearSelections = (id: string): void => {
-        // TODO: implement
+    clearSelections = async (id: string): Promise<void> => {
+        const loading = this.state.queryModels[id].selectionsLoadingState === LoadingState.LOADING;
+
+        if (!loading) {
+            this.updateModel(id, (model: Draft<QueryModel>) => {
+                model.selectionsLoadingState = LoadingState.LOADING;
+            });
+        }
+
+        try {
+            await this.modelLoader.clearSelections(this.state.queryModels[id]);
+
+            this.updateModel(id, (model: Draft<QueryModel>) => {
+                model.selections = new Set();
+                model.selectionPivot = undefined;
+                model.selectionsError = undefined;
+
+                if (!loading) {
+                    model.selectionsLoadingState = LoadingState.LOADED;
+                }
+            });
+        } catch (error) {
+            this.setSelectionsError(id, error, 'clearing');
+        }
     };
 
     loadAllModels = (loadSelections = false, reloadTotalCount = true): void => {
@@ -573,7 +599,36 @@ class QueryModelManager {
     };
 
     onModelChange = (id: string, modelChange: ModelChange): void => {
-        // TODO: implement
+        let shouldLoadTotalCount = false;
+        let selectionsForReplace: string[];
+
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            if (modelChange.changeType === ChangeType.add) {
+                shouldLoadTotalCount = true;
+            } else if (modelChange.changeType === ChangeType.delete) {
+                selectionsForReplace = modelChange.options?.selectionsForReplace ?? [];
+                shouldLoadTotalCount = true;
+                resetModelState(model);
+            } else if (modelChange.changeType === ChangeType.update) {
+                const columnsChanged = modelChange.options?.columnsChanged;
+                const hasChangeOnFilteredColumn =
+                    columnsChanged !== undefined && columnsHaveFilter(columnsChanged, model.filters);
+                const unknownChangeWithFilters = columnsChanged === undefined && model.filters.length > 0;
+
+                // If we don't know what columns were changed, and we have filters, or there is a change on a
+                // column with filters, then we need to reset the model, otherwise the grid could be put in a
+                // bad state. See Issue 51897.
+                if (hasChangeOnFilteredColumn || unknownChangeWithFilters) {
+                    shouldLoadTotalCount = true;
+                    resetModelState(model);
+                }
+            }
+        });
+
+        // Loading & replacing selections are mutually exclusive, if we aren't replacing anything then load
+        const loadSelections = selectionsForReplace === undefined;
+        this.maybeLoad(id, false, true, loadSelections, shouldLoadTotalCount, selectionsForReplace);
+        this.syncURL(id);
     };
 
     removeMessage = (id: string, message: GridMessage) => {
@@ -598,7 +653,6 @@ class QueryModelManager {
                 model.selectionsLoadingState = LoadingState.LOADED;
             });
         } catch (error) {
-            if (error?.status === 0) return;
             this.setSelectionsError(id, error, 'replace');
         }
     };
@@ -636,7 +690,6 @@ class QueryModelManager {
                 model.selectionsLoadingState = LoadingState.LOADED;
             });
         } catch (error) {
-            if (error?.status === 0) return;
             this.setSelectionsError(id, error, 'setting');
         }
     };
@@ -658,11 +711,64 @@ class QueryModelManager {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     selectRow = (id: string, checked: boolean, row: Record<string, any>, useSelectionPivot?: boolean): void => {
-        // TODO: implement
+        const model = this.state.queryModels[id];
+        const pkCols = model.queryInfo.getPkCols();
+
+        if (pkCols.length === 1) {
+            const pkValue = row[pkCols[0].name]?.value?.toString();
+
+            if (!pkValue) {
+                console.warn(`Unable to resolve PK value for model ${id} row`, row);
+                return;
+            }
+
+            if (useSelectionPivot && model.selectionPivot) {
+                const pivotIdx = model.orderedRows.findIndex(key => key === model.selectionPivot.selection);
+                const selectedIdx = model.orderedRows.findIndex(key => key === pkValue);
+
+                // If we cannot make sense of the indices, then just treat this as a normal selection
+                if (pivotIdx === -1 || selectedIdx === -1 || pivotIdx === selectedIdx) {
+                    this.setSelections(id, checked, [pkValue]);
+                    return;
+                }
+
+                // Select all rows relative to/from the pivot row
+                let selections: string[];
+                if (pivotIdx < selectedIdx) {
+                    selections = model.orderedRows.slice(pivotIdx + 1, selectedIdx + 1);
+                } else {
+                    selections = model.orderedRows.slice(selectedIdx, pivotIdx);
+                }
+
+                this.setSelections(id, model.selectionPivot.checked, selections);
+            } else {
+                this.setSelections(id, checked, [pkValue]);
+            }
+        } else {
+            const msg = `Cannot set row selection for model ${id}. The model has multiple PK Columns.`;
+            console.warn(msg, pkCols);
+        }
     };
 
-    setFilters = (id: string, filters: Filter.IFilter[], loadSelections?: boolean): void => {
-        // TODO: implement
+    setFilters = (id: string, filters: Filter.IFilter[], loadSelections = false): void => {
+        let shouldLoad = false;
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            if (!filterArraysEqual(model.filterArray, filters)) {
+                shouldLoad = true;
+                model.filterArray = filters;
+                // Changing filters affects row count, so we need to reset the offset, or pagination can get into an
+                // impossible state (e.g., page 3 on a grid with one row of data).
+                model.offset = 0;
+                model.totalCountLoadingState = LoadingState.INITIALIZED;
+                if (shouldLoad && loadSelections) {
+                    model.selectionsLoadingState = LoadingState.INITIALIZED;
+                }
+            }
+        });
+        // When filters change, we need to reload selections and counts.
+        this.maybeLoad(id, false, shouldLoad, shouldLoad && loadSelections, true);
+        this.saveSettings(id);
+        this.syncURL(id);
     };
 
     setMaxRows = (id: string, maxRows: number): void => {
@@ -692,11 +798,47 @@ class QueryModelManager {
     };
 
     setSchemaQuery = (id: string, schemaQuery: SchemaQuery, loadSelections = false): void => {
-        // TODO: implement
+        // Note: we don't use the setSchemaQuery method anywhere, we should remove it from Actions
+        throw new Error('setSchemaQuery is not implemented');
     };
 
-    setSelections = (id: string, checked: boolean, selections: string[]): void => {
-        // TODO: implement
+    setSelections = async (id: string, checked: boolean, selections: string[]): Promise<void> => {
+        const loading = this.state.queryModels[id].selectionsLoadingState === LoadingState.LOADING;
+
+        if (!loading) {
+            this.updateModel(id, (model: Draft<QueryModel>) => {
+                model.selectionsLoadingState = LoadingState.LOADING;
+            });
+        }
+
+        try {
+            await this.modelLoader.setSelections(this.state.queryModels[id], checked, selections);
+            this.updateModel(id, (model: Draft<QueryModel>) => {
+                // If there are selections made, then ensure the model.selections is initialized
+                if (!model.selections && selections.length > 0) {
+                    model.selections = new Set();
+                }
+
+                selections.forEach(selection => {
+                    if (checked) {
+                        model.selections.add(selection);
+                    } else {
+                        model.selections.delete(selection);
+                    }
+                });
+
+                // Set the selection pivot row iff a single row is selected
+                if (selections.length === 1) {
+                    model.selectionPivot = { checked, selection: selections[0] };
+                }
+
+                model.selectionsError = undefined;
+
+                if (!loading) model.selectionsLoadingState = LoadingState.LOADED;
+            });
+        } catch (error) {
+            this.setSelectionsError(id, error, 'setting');
+        }
     };
 
     setSorts = (id: string, sorts: QuerySort[]): void => {
@@ -713,7 +855,21 @@ class QueryModelManager {
     };
 
     setView = (id: string, viewName: string, loadSelections = false): void => {
-        // TODO: implement
+        let shouldLoad = false;
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            if (model.viewName !== viewName) {
+                shouldLoad = true;
+                model.schemaQuery = new SchemaQuery(model.schemaName, model.queryName, viewName);
+                // We need to reset all data for the model because changing the view will change things such as
+                // columns and rowCount. If we don't do this, we'll render a grid with empty rows/columns.
+                resetRowsState(model);
+                resetTotalCountState(model);
+                resetSelectionState(model);
+            }
+        });
+        this.maybeLoad(id, false, shouldLoad, shouldLoad && loadSelections);
+        this.saveSettings(id);
+        this.syncURL(id);
     };
 }
 

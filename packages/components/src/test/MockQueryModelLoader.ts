@@ -6,6 +6,7 @@ import { QueryModelLoader, RowsResponse } from '../public/QueryModel/QueryModelL
 import { QueryInfo } from '../public/QueryInfo';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { SelectResponse } from '../internal/actions';
+import { RequestHandler } from '../internal/request';
 
 export class MockQueryModelLoader implements QueryModelLoader {
     queryInfo: QueryInfo;
@@ -54,6 +55,10 @@ export class MockQueryModelLoader implements QueryModelLoader {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     loadSelections = (model: QueryModel): Promise<never> => {
         return Promise.reject('Not implemented!');
+    };
+
+    loadTotalCount = async (model: QueryModel, requestHandler: RequestHandler) => {
+        return this.rowsResponse.orderedRows.length;
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

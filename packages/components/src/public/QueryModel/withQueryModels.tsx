@@ -14,8 +14,6 @@ import { QuerySort } from '../QuerySort';
 import { isLoading, LoadingState } from '../LoadingState';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 
-import { selectRows } from '../../internal/query/selectRows';
-
 import { incrementClientSideMetricCount } from '../../internal/actions';
 
 import {
@@ -23,7 +21,6 @@ import {
     bindURL,
     columnsHaveFilter,
     filterArraysEqual,
-    getSelectRowCountColumnsStr,
     initModels,
     paramsEqual,
     RequestManager,
@@ -628,26 +625,10 @@ export function withQueryModels<Props>(
             );
 
             try {
-                const loadRowsConfig = this.state.queryModels[id].loadRowsConfig;
-                const queryInfo = this.state.queryModels[id].queryInfo;
-                const columns = getSelectRowCountColumnsStr(
-                    loadRowsConfig.columns,
-                    loadRowsConfig.filterArray,
-                    queryInfo?.getPkCols()
+                const rowCount = await this.props.modelLoader.loadTotalCount(
+                    this.state.queryModels[id],
+                    this.requestManager.getRequestHandler(id, 'loadTotalCount')
                 );
-
-                const { rowCount } = await selectRows({
-                    ...loadRowsConfig,
-                    columns,
-                    includeDetailsColumn: false,
-                    // includeMetadata: false, // TODO don't require metadata in selectRows response processing
-                    includeTotalCount: true,
-                    includeUpdateColumn: false,
-                    maxRows: 1,
-                    offset: 0,
-                    sort: undefined,
-                    requestHandler: this.requestManager.getRequestHandler(id, 'loadTotalCount'),
-                });
 
                 this.setState(
                     produce<State>((draft: WritableDraft<State>) => {

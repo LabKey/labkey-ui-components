@@ -61,6 +61,7 @@ export class QueryModelManager {
         setSearchParams: SetURLSearchParams,
         modelLoader?: QueryModelLoader
     ) {
+        this.onStateChange = NOOP;
         this.requestManager = new RequestManager();
         this.searchParams = searchParams;
         this.setSearchParams = setSearchParams;
@@ -197,7 +198,7 @@ export class QueryModelManager {
         let loadSelections = false;
 
         this.updateModel(id, (model: Draft<QueryModel>) => {
-            const modelParamsFromURL = {};
+            const modelParamsFromURL: Record<string, string> = {};
             for (const [key, value] of searchParams.entries()) {
                 if (key.startsWith(model.urlPrefix + '.')) {
                     modelParamsFromURL[key] = value;

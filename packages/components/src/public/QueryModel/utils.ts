@@ -24,16 +24,15 @@ import { caseInsensitive } from '../../internal/util/utils';
 
 import { ActionValue } from './grid/actions/Action';
 import {
-    getSettingsFromLocalStorage, InjectedQueryModels,
+    getSettingsFromLocalStorage,
     locationHasQueryParamSettings,
     QueryModel,
     QueryModelMap,
-    SavedSettings, saveSettingsToLocalStorage
+    SavedSettings,
+    saveSettingsToLocalStorage,
 } from './QueryModel';
-import { Draft, produce } from 'immer';
+import { Draft } from 'immer';
 import { RequestHandler } from '../../internal/request';
-import { ComponentType, PureComponent } from 'react';
-import { SearchParamsProps } from './withQueryModels';
 import { LoadingState } from '../LoadingState';
 import { naturalSort } from '../sort';
 import { SetURLSearchParams } from 'react-router-dom';

@@ -7,16 +7,21 @@ import {
     Actions,
     GridMessage,
     InjectedQueryModels,
+    locationHasQueryParamSettings,
     ModelChange,
     QueryConfig,
     QueryConfigMap,
     QueryModel,
+    saveSettingsToLocalStorage,
 } from './QueryModel';
-import { initModels, RequestManager } from './utils';
+import { applySavedSettings, bindURL, initModels, paramsEqual, RequestManager } from './utils';
 import { SchemaQuery } from '../SchemaQuery';
 import { QuerySort } from '../QuerySort';
+import { isLoading, LoadingState } from '../LoadingState';
 
 const NOOP = () => {};
+const DEFAULT_SEARCH_PARAMS = new URLSearchParams();
+const DEFAULT_SET_SEARCH_PARAMS = () => {};
 
 type ModelUpdater = (model: Draft<QueryModel>) => void;
 type VoidFn = () => void;
@@ -74,7 +79,7 @@ class QueryModelManager {
 
         if (searchParams !== this.searchParams) {
             this.searchParams = searchParams;
-            this.bindURL();
+            this.updateModelsFromURL();
         }
     };
 
@@ -104,22 +109,93 @@ class QueryModelManager {
         }
     };
 
-    updateModel = (modelId: string, updater: ModelUpdater) => {
+    updateModel = (id: string, updater: ModelUpdater): void => {
         this.setState((currentState: InjectedQueryModels) => {
-            const model = currentState.queryModels[modelId];
+            const model = currentState.queryModels[id];
             if (!model) return currentState;
             return {
                 ...currentState,
                 queryModels: {
                     ...currentState.queryModels,
-                    [modelId]: produce(model, updater),
+                    [id]: produce(model, updater),
                 },
             };
         });
+
+        if (this.state.queryModels[id].bindURL) this.bindURL(id);
     };
 
-    bindURL = (): void => {
-        // TODO: implement
+    maybeLoad = (
+        id: string,
+        loadQueryInfo = false,
+        loadRows = false,
+        loadSelections = false,
+        reloadTotalCount = false,
+        selectionsForReplace?: string[]
+    ): void => {
+        if (loadQueryInfo) {
+            // Postpone loading any rows or selections if we're loading the QueryInfo.
+            this.loadQueryInfo(id, loadRows, loadSelections);
+        } else {
+            if (loadRows) {
+                this.loadRows(id, loadSelections, selectionsForReplace);
+                this.loadTotalCount(id, reloadTotalCount);
+            } else if (loadSelections) {
+                this.loadSelections(id);
+            } else if (selectionsForReplace !== undefined) {
+                this.replaceSelections(id, selectionsForReplace);
+            }
+        }
+    };
+
+    bindURL = (id: string): void => {
+        const { setSearchParams } = this;
+
+        // We're rendering a component outside a react-router context, so we can't bind to the URL
+        if (setSearchParams === DEFAULT_SET_SEARCH_PARAMS) return;
+
+        const model = this.state.queryModels[id];
+        bindURL(setSearchParams, model.urlPrefix, model.urlQueryParams);
+    };
+
+    updateModelFromURL = (id: string) => {
+        const { searchParams } = this;
+
+        if (searchParams === DEFAULT_SEARCH_PARAMS) return;
+
+        let loadModel = false;
+        let loadSelections = false;
+
+        this.updateModel(id, (model: Draft<QueryModel>) => {
+            const modelParamsFromURL = {};
+            for (const [key, value] of searchParams.entries()) {
+                if (key.startsWith(model.urlPrefix + '.')) {
+                    modelParamsFromURL[key] = value;
+                }
+            }
+
+            if (!isLoading(model.queryInfoLoadingState) && !paramsEqual(modelParamsFromURL, model.urlQueryParams)) {
+                Object.assign(model, model.attributesForURLQueryParams(searchParams));
+                loadModel = true;
+                // If we have selections or previously attempted to load them, we'll want to reload them when the model
+                // is updated from the URL because it can affect selections.
+                loadSelections = !!model.selections || !!model.selectionsError;
+
+                // since URL param changes could change the filterArray, need to reload the totalCount (issue 47660)
+                model.totalCountLoadingState = LoadingState.INITIALIZED;
+            }
+        });
+
+        if (loadModel) {
+            this.maybeLoad(id, false, true, loadSelections);
+            saveSettingsToLocalStorage(this.state.queryModels[id]);
+        }
+    };
+
+    updateModelsFromURL = () => {
+        Object.values(this.state.queryModels)
+            .filter(model => model.bindURL)
+            .forEach(model => this.updateModelFromURL(model.id));
     };
 
     addMessage = (id: string, message: GridMessage, duration?: number): void => {
@@ -134,7 +210,30 @@ class QueryModelManager {
     };
 
     addModel = (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean): void => {
-        // TODO: implement
+        const { searchParams } = this;
+        let id;
+
+        this.setState(currentState => {
+            let queryModel = new QueryModel(queryConfig);
+            id = queryModel.id;
+            const hasQueryParamSettings = locationHasQueryParamSettings(queryModel.urlPrefix, searchParams);
+
+            if (queryModel.bindURL && hasQueryParamSettings) {
+                queryModel = queryModel.mutate(queryModel.attributesForURLQueryParams(searchParams));
+            } else if (queryModel.useSavedSettings && queryModel.containerPath) {
+                queryModel = applySavedSettings(id, queryModel);
+            }
+
+            return {
+                ...currentState,
+                queryModels: {
+                    ...currentState.queryModels,
+                    [id]: queryModel,
+                },
+            };
+        });
+
+        this.maybeLoad(id, load, load, loadSelections);
     };
 
     clearSelectedReports = (id: string): void => {
@@ -173,7 +272,19 @@ class QueryModelManager {
         // TODO: implement
     };
 
-    loadRows = (id: string): void => {
+    loadQueryInfo = (id: string, loadRows: boolean, loadSelections: boolean): void => {
+        // TODO: implement
+    };
+
+    loadRows = (id: string, loadSelections = false, selectionsForReplace?: string[]): void => {
+        // TODO: implement
+    };
+
+    loadSelections = (id: string): void => {
+        // TODO: implement
+    };
+
+    loadTotalCount = (id: string, reloadTotalCount: boolean): void => {
         // TODO: implement
     };
 
@@ -243,8 +354,6 @@ class QueryModelManager {
     };
 }
 
-const DEFAULT_SEARCH_PARAMS = new URLSearchParams();
-const DEFAULT_SET_SEARCH_PARAMS = () => {};
 type OptionalSearchParams = [URLSearchParams, SetURLSearchParams];
 
 function useOptionalSearchParams(): OptionalSearchParams {

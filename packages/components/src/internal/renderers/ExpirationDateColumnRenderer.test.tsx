@@ -9,15 +9,20 @@ const DEFAULT_PROPS = {
 };
 
 describe('ExpirationDateColumnRenderer', () => {
-    const TestWrapper = props => (
-        <table>
-            <tbody>
-                <tr>
-                    <ExpirationDateColumnRenderer {...props} />
-                </tr>
-            </tbody>
-        </table>
-    );
+    const TestWrapper = props => {
+        if (props.tableCell === false) {
+            return <ExpirationDateColumnRenderer {...props} />;
+        }
+        return (
+            <table>
+                <tbody>
+                    <tr>
+                        <ExpirationDateColumnRenderer {...props} />
+                    </tr>
+                </tbody>
+            </table>
+        );
+    };
 
     function validate(container: HTMLElement, hasExpired = true, displayValue?: string, hasTd = true): void {
         expect(container.querySelectorAll('td')).toHaveLength(hasTd ? 1 : 0);

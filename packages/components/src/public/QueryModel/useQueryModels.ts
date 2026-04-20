@@ -343,7 +343,10 @@ export class QueryModelManager {
         });
 
         this.maybeLoad(id, false, shouldLoad);
-        this.syncURL(id);
+
+        if (shouldLoad) {
+            this.syncURL(id);
+        }
     };
 
     loadLastPage = (id: string): void => {
@@ -355,7 +358,10 @@ export class QueryModelManager {
             }
         });
         this.maybeLoad(id, false, shouldLoad);
-        this.syncURL(id);
+
+        if (shouldLoad) {
+            this.syncURL(id);
+        }
     };
 
     loadModel = (id: string, loadSelections = false, reloadTotalCount = false): void => {
@@ -371,7 +377,10 @@ export class QueryModelManager {
             }
         });
         this.maybeLoad(id, false, shouldLoad);
-        this.syncURL(id);
+
+        if (shouldLoad) {
+            this.syncURL(id);
+        }
     };
 
     loadPreviousPage = (id: string): void => {
@@ -383,7 +392,10 @@ export class QueryModelManager {
             }
         });
         this.maybeLoad(id, false, shouldLoad);
-        this.syncURL(id);
+
+        if (shouldLoad) {
+            this.syncURL(id);
+        }
     };
 
     loadQueryInfo = async (
@@ -626,7 +638,7 @@ export class QueryModelManager {
             }
         });
 
-        // Loading & replacing selections are mutually exclusive, if we aren't replacing anything then load
+        // Loading & replacing selections are mutually exclusive, if we aren't replacing anything, then load
         const loadSelections = selectionsForReplace === undefined;
         this.maybeLoad(id, false, true, loadSelections, shouldLoadTotalCount, selectionsForReplace);
         this.syncURL(id);
@@ -768,8 +780,11 @@ export class QueryModelManager {
         });
         // When filters change, we need to reload selections and counts.
         this.maybeLoad(id, false, shouldLoad, shouldLoad && loadSelections, true);
-        this.saveSettings(id);
-        this.syncURL(id);
+
+        if (shouldLoad) {
+            this.saveSettings(id);
+            this.syncURL(id);
+        }
     };
 
     setMaxRows = (id: string, maxRows: number): void => {
@@ -782,8 +797,11 @@ export class QueryModelManager {
             }
         });
         this.maybeLoad(id, false, shouldLoad);
-        this.saveSettings(id);
-        this.syncURL(id);
+
+        if (shouldLoad) {
+            this.saveSettings(id);
+            this.syncURL(id);
+        }
     };
 
     setOffset = (id: string, offset: number, reloadModel = true): void => {
@@ -795,7 +813,10 @@ export class QueryModelManager {
             }
         });
         this.maybeLoad(id, false, reloadModel && shouldLoad);
-        this.syncURL(id);
+
+        if (shouldLoad) {
+            this.syncURL(id);
+        }
     };
 
     setSchemaQuery = (id: string, schemaQuery: SchemaQuery, loadSelections = false): void => {
@@ -851,8 +872,11 @@ export class QueryModelManager {
             }
         });
         this.maybeLoad(id, false, shouldLoad);
-        this.saveSettings(id);
-        this.syncURL(id);
+
+        if (shouldLoad) {
+            this.saveSettings(id);
+            this.syncURL(id);
+        }
     };
 
     setView = (id: string, viewName: string, loadSelections = false): void => {
@@ -869,8 +893,11 @@ export class QueryModelManager {
             }
         });
         this.maybeLoad(id, false, shouldLoad, shouldLoad && loadSelections);
-        this.saveSettings(id);
-        this.syncURL(id);
+
+        if (shouldLoad) {
+            this.saveSettings(id);
+            this.syncURL(id);
+        }
     };
 }
 

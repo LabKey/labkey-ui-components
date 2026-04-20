@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.31.0
+*Released*: 20 April 2026
+- Add optional `jobActionId` parameter to `updateSampleStorageData`
+- Add `dividedOptionsRenderer` and `filterDividedOptions` for rendering selectInputs with dividers between groups of options
+
 ### version 7.30.0
 *Released*: 17 April 2026
 - GitHub Issue 848: Add the ability to reset TOTP settings in the apps

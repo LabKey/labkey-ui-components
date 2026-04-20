@@ -19,18 +19,13 @@ import { AppContext, useAppContext } from '../../AppContext';
 import { setCopyValue } from '../../events';
 import { isApp, isFeatureEnabled } from '../../app/utils';
 import { ProductFeature } from '../../app/constants';
-import {
-    ChangeType,
-    InjectedQueryModels,
-    QueryConfigMap,
-    RequiresModelAndActions,
-} from '../../../public/QueryModel/QueryModel';
-import { withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { ChangeType, QueryConfigMap, RequiresModelAndActions } from '../../../public/QueryModel/QueryModel';
 import { SCHEMAS } from '../../schemas';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { Modal } from '../../Modal';
 import { getHelpLink, HelpLink } from '../../util/helpLinks';
 import { biologicsIsPrimaryApp } from '../../app/products';
+import { useQueryModels } from '../../../public/QueryModel/useQueryModels';
 
 const API_KEYS_QUERY_HREF = ActionURL.buildURL('query', 'executeQuery.view', '/', {
     schemaName: 'core',
@@ -68,15 +63,15 @@ const APIKeysButtonsComponent: FC<ButtonsComponentProps> = props => {
     const noun = model.selections?.size > 1 ? 'Keys' : 'Key';
     return (
         <div className="btn-group">
-            <button type="button" className="btn btn-default" disabled={!model.hasSelections} onClick={onDeleteClicked}>
+            <button className="btn btn-default" disabled={!model.hasSelections} onClick={onDeleteClicked} type="button">
                 <span className="fa fa-trash" /> Delete
             </button>
             {showConfirmDelete && (
                 <Modal
                     confirmClass="btn-danger"
+                    confirmText="Yes, Delete"
                     onCancel={closeDeleteModal}
                     onConfirm={onConfirmDelete}
-                    confirmText="Yes, Delete"
                     title={`Delete ${model.selections?.size} API ${noun}`}
                 >
                     <strong>Deletion cannot be undone.</strong> Do you want to proceed?
@@ -90,7 +85,7 @@ APIKeysButtonsComponent.displayName = 'APIKeysButtonsComponent';
 interface KeyGeneratorProps {
     afterCreate?: () => void;
     noun: string;
-    type: 'session' | 'apikey';
+    type: 'apikey' | 'session';
 }
 
 interface ModalProps extends KeyGeneratorProps {
@@ -139,23 +134,23 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
 
     return (
         <Modal
-            title={noun}
             cancelText={keyValue ? 'Done' : undefined}
-            onCancel={onClose}
             canConfirm={!keyValue}
             confirmText={type === 'apikey' ? 'Generate ' + noun : undefined}
+            onCancel={onClose}
             onConfirm={!keyValue && type === 'apikey' ? onGenerateKey : undefined}
+            title={noun}
         >
             {type === 'apikey' && !keyValue && (
                 <div>
                     <label htmlFor="keyDescription">Description</label>
                     <input
+                        autoFocus
                         className="form-control api-key__input"
                         id="keyDescription"
-                        type="text"
                         onChange={changeDescription}
-                        autoFocus
                         placeholder="Enter description of key usage (optional)"
+                        type="text"
                     />
                 </div>
             )}
@@ -173,10 +168,10 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
                         />
                         <button
                             className="btn btn-default api-key__button"
-                            title="Copy to clipboard"
+                            disabled={!keyValue}
                             name={'copy_' + type + '_token'}
                             onClick={onCopyKey}
-                            disabled={!keyValue}
+                            title="Copy to clipboard"
                             type="button"
                         >
                             <i className="fa fa-clipboard"></i>
@@ -217,14 +212,14 @@ export const KeyGenerator: FC<KeyGeneratorProps> = props => {
             <div className="top-padding form-group">
                 <button
                     className="btn btn-success api-key__button"
-                    onClick={openModal}
                     disabled={showModal}
+                    onClick={openModal}
                     type="button"
                 >
                     Generate {noun}
                 </button>
             </div>
-            {showModal && <KeyGeneratorModal afterCreate={afterCreate} noun={noun} type={type} onClose={closeModal} />}
+            {showModal && <KeyGeneratorModal afterCreate={afterCreate} noun={noun} onClose={closeModal} type={type} />}
         </div>
     );
 };
@@ -240,7 +235,7 @@ const SessionKeysSection: FC = memo(() => (
             times out your session. Since they expire quickly, session keys are most appropriate for deployments with
             regulatory compliance requirements.
         </p>
-        <KeyGenerator type="session" noun="Session Key" />
+        <KeyGenerator noun="Session Key" type="session" />
     </div>
 ));
 SessionKeysSection.displayName = 'SessionKeysSection';
@@ -249,8 +244,22 @@ interface APIKeysGridProps {
     includeSessionKeys?: boolean;
 }
 
-const APIKeysPanelGrid: FC<APIKeysGridProps & InjectedQueryModels> = props => {
-    const { actions, includeSessionKeys, queryModels } = props;
+const APIKeysGrid: FC<APIKeysGridProps> = props => {
+    const { includeSessionKeys } = props;
+    const { homeContainer } = useServerContext();
+    const configs: QueryConfigMap = useMemo(
+        () => ({
+            model: {
+                id: 'model',
+                title: 'Current API Keys',
+                schemaQuery: SCHEMAS.CORE_TABLES.USER_API_KEYS,
+                includeTotalCount: true,
+                containerPath: homeContainer,
+            },
+        }),
+        [homeContainer]
+    );
+    const { actions, queryModels } = useQueryModels(configs, { autoLoad: true });
     const { model } = queryModels;
     const { moduleContext } = useServerContext();
     const [error, setError] = useState<string>();
@@ -275,48 +284,34 @@ const APIKeysPanelGrid: FC<APIKeysGridProps & InjectedQueryModels> = props => {
         <div className="api-keys-panel__grid">
             <GridPanel
                 actions={actions}
-                model={model}
-                asPanel={false}
-                showSearchInput={false}
-                showFiltersButton={false}
-                showExport={false}
-                showChartMenu={false}
-                showViewMenu={false}
                 allowViewCustomization={false}
-                buttonsComponentProps={buttonsProps}
+                asPanel={false}
                 ButtonsComponent={APIKeysButtonsComponent}
+                buttonsComponentProps={buttonsProps}
                 emptyText="You currently do not have any API keys."
+                model={model}
+                showChartMenu={false}
+                showExport={false}
+                showFiltersButton={false}
+                showSearchInput={false}
+                showViewMenu={false}
             />
             <Alert>{error}</Alert>
 
-            {apiEnabled && <KeyGenerator type="apikey" afterCreate={onApiKeyCreate} noun="API Key" />}
+            {apiEnabled && <KeyGenerator afterCreate={onApiKeyCreate} noun="API Key" type="apikey" />}
 
             {sessionEnabled && includeSessionKeys && <SessionKeysSection />}
         </div>
     );
 };
-APIKeysPanelGrid.displayName = 'APIKeysPanelGrid';
-
-const APIKeysPanelWithQueryModels = withQueryModels(APIKeysPanelGrid);
+APIKeysGrid.displayName = 'APIKeysGrid';
 
 export const APIKeysPanel: FC<APIKeysGridProps> = props => {
     const { includeSessionKeys } = props;
-    const { homeContainer, impersonatingUser, moduleContext, user } = useServerContext();
+    const { impersonatingUser, moduleContext, user } = useServerContext();
     const isImpersonating = !!impersonatingUser;
     const apiEnabled = isApiKeyGenerationEnabled(moduleContext);
     const sessionEnabled = isSessionKeyGenerationEnabled(moduleContext);
-    const configs: QueryConfigMap = useMemo(
-        () => ({
-            model: {
-                id: 'model',
-                title: 'Current API Keys',
-                schemaQuery: SCHEMAS.CORE_TABLES.USER_API_KEYS,
-                includeTotalCount: true,
-                containerPath: homeContainer,
-            },
-        }),
-        [homeContainer]
-    );
 
     // We are meant to not show this panel for LKSM Starter, but show it in LKS and LKSM Prof+
     if (isApp() && !isFeatureEnabled(ProductFeature.ApiKeys, moduleContext)) return null;
@@ -378,7 +373,7 @@ export const APIKeysPanel: FC<APIKeysGridProps> = props => {
                     {disabledMessage}
                 </Alert>
 
-                {!impersonatingUser && <APIKeysPanelWithQueryModels autoLoad queryConfigs={configs} {...props} />}
+                {!impersonatingUser && <APIKeysGrid includeSessionKeys={includeSessionKeys} />}
             </div>
         </div>
     );

@@ -62,6 +62,8 @@ export const mountWithServerContext = (
  *      expect(wrapper.find('.item').length).toEqual(4);
  * @param wrapper: enzyme ReactWrapper or ShallowWrapper
  * @param ms: the amount of time (in ms) to sleep
+ *
+ * @deprecated use RTL waitFor to wait for specific state
  */
 export const waitForLifecycle = (wrapper: any, ms?: number): Promise<void> => {
     // Wrap in react-dom/utils act so we don't get errors in our test logs

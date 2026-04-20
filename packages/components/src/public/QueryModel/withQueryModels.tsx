@@ -48,6 +48,7 @@ import {
     SavedSettings,
     saveSettingsToLocalStorage,
 } from './QueryModel';
+import { useQueryModels } from './useQueryModels';
 
 export interface SearchParamsProps {
     searchParams: URLSearchParams;
@@ -91,7 +92,7 @@ interface State {
  * @param ComponentToWrap A component that implements generic Props and InjectedQueryModels.
  * @returns A react ComponentType that implements generic Props and MakeQueryModels.
  */
-export function withQueryModels<Props>(
+export function withQueryModelsOld<Props>(
     ComponentToWrap: ComponentType<InjectedQueryModels & Props>
 ): ComponentType<MakeQueryModels & Props> {
     type WrappedProps = MakeQueryModels & Props & SearchParamsProps;
@@ -1081,4 +1082,19 @@ export function withQueryModels<Props>(
     };
 
     return withSearchParams(ComponentWithQueryModels) as ComponentType<MakeQueryModels & Props>;
+}
+
+// FIXME: Do not merge with this change unless we feel real confident, and are for sure not introducing any backwards
+//  compat issues.
+export function withQueryModels<Props>(
+    ComponentToWrap: ComponentType<InjectedQueryModels & Props>
+): ComponentType<MakeQueryModels & Props> {
+    type WrappedProps = MakeQueryModels & Props & SearchParamsProps;
+    const ComponentWithQueryModels: FC<WrappedProps> = props => {
+        const { autoLoad, queryConfigs, modelLoader, ...rest } = props;
+        const { actions, queryModels } = useQueryModels(queryConfigs, { autoLoad, modelLoader });
+        return <ComponentToWrap actions={actions} queryModels={queryModels} {...(rest as Props)} />;
+    };
+
+    return ComponentWithQueryModels;
 }

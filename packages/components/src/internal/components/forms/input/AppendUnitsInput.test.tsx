@@ -1,11 +1,10 @@
 import React from 'react';
-import { mount } from 'enzyme';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
-import { Formsy } from '../formsy';
+import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
-import { FormsyInput } from './FormsyReactComponents';
+import { Formsy } from '../formsy';
 
 import { AppendUnitsInput } from './AppendUnitsInput';
 
@@ -18,18 +17,16 @@ describe('AppendUnitsInput', () => {
 
     test('without formsy', () => {
         // Without Formsy it should not crash the page
-        const wrapper = mount(<AppendUnitsInput col={column} data={undefined} value={undefined} />);
-        expect(wrapper.exists(FormsyInput)).toBeFalsy();
-        wrapper.unmount();
+        renderWithAppContext(<AppendUnitsInput col={column} data={undefined} value={undefined} />);
+        expect(document.querySelector('#appendUnitsColumn')).toBeNull();
     });
 
     test('with formsy', () => {
-        const wrapper = mount(
+        renderWithAppContext(
             <Formsy>
                 <AppendUnitsInput col={column} data={undefined} formsy value={undefined} />
             </Formsy>
         );
-        expect(wrapper.exists(FormsyInput)).toBeTruthy();
-        wrapper.unmount();
+        expect(document.querySelector('#appendUnitsColumn')).toBeInTheDocument();
     });
 });

@@ -1,8 +1,7 @@
-import React from 'react';
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { Filter } from '@labkey/api';
 
-import { makeQueryInfo, makeTestData, sleep } from '../../internal/test/testHelpers';
+import { makeQueryInfo, makeTestData } from '../../internal/test/testHelpers';
 import { MockQueryModelLoader } from '../../test/MockQueryModelLoader';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
@@ -14,12 +13,12 @@ import { QueryInfo } from '../QueryInfo';
 import { LoadingState } from '../LoadingState';
 import { QuerySort } from '../QuerySort';
 
-import { QueryModel, ChangeType } from './QueryModel';
+import { ChangeType, QueryModel } from './QueryModel';
 import { RowsResponse } from './QueryModelLoader';
 import { QueryModelManager, useQueryModels } from './useQueryModels';
 
 // @ts-expect-error Need to use require() for mocking
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+
 const rrd = require('react-router-dom');
 
 const MIXTURES_SCHEMA_QUERY = new SchemaQuery('exp.data', 'mixtures');
@@ -44,32 +43,24 @@ class TestQueryModelLoader extends MockQueryModelLoader {
     selections = new Set<string>();
     charts: any[] = [];
 
-    loadSelections = jest.fn(async () => {
-        await sleep();
-        return new Set(this.selections);
-    });
+    loadSelections = jest.fn(async () => new Set(this.selections));
 
     replaceSelections = jest.fn(async (_model: QueryModel, selections: string[]) => {
-        await sleep();
         this.selections = new Set(selections);
         return { count: this.selections.size };
     });
 
     selectAllRows = jest.fn(async (model: QueryModel) => {
-        await sleep();
         const all = new Set(model.orderedRows ?? []);
         this.selections = all;
         return new Set(all);
     });
 
-    loadCharts = jest.fn(async () => {
-        await sleep();
-        return this.charts.slice();
-    });
+    loadCharts = jest.fn(async () => this.charts.slice());
 }
 
 const makeManager = (
-    configs: Record<string, { schemaQuery: SchemaQuery } & Record<string, any>>,
+    configs: Record<string, Record<string, any> & { schemaQuery: SchemaQuery }>,
     loader: MockQueryModelLoader = new TestQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA),
     searchParams: URLSearchParams = new URLSearchParams(),
     setSearchParams: jest.Mock = jest.fn()
@@ -114,11 +105,9 @@ describe('QueryModelManager', () => {
             const { manager } = makeManager({ model: { schemaQuery: MIXTURES_SCHEMA_QUERY } });
             manager.loadModel('model');
             expect(manager.state.queryModels.model.queryInfoLoadingState).toBe(LoadingState.LOADING);
-            await sleep();
-            await sleep();
+            await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
             const model = manager.state.queryModels.model;
             expect(model.queryInfoLoadingState).toBe(LoadingState.LOADED);
-            expect(model.rowsLoadingState).toBe(LoadingState.LOADED);
             expect(model.queryInfo).toBeDefined();
             expect(model.rows).toBeDefined();
             expect(model.orderedRows.length).toBeGreaterThan(0);
@@ -135,16 +124,19 @@ describe('QueryModelManager', () => {
             const { manager, loader } = makeManager({ model: { schemaQuery: MIXTURES_SCHEMA_QUERY } });
             loader.queryInfoException = { exception: 'QI boom' };
             manager.loadModel('model');
-            await sleep();
+            await waitFor(() =>
+                expect(manager.state.queryModels.model.queryInfoLoadingState).toBe(LoadingState.LOADED)
+            );
             const model = manager.state.queryModels.model;
-            expect(model.queryInfoLoadingState).toBe(LoadingState.LOADED);
             expect(model.queryInfoError).toBe('QI boom');
         });
 
         test('surfaces rows error', async () => {
             const { manager, loader } = makeManager({ model: { schemaQuery: MIXTURES_SCHEMA_QUERY } });
             manager.loadModel('model');
-            await sleep();
+            await waitFor(() =>
+                expect(manager.state.queryModels.model.queryInfoLoadingState).toBe(LoadingState.LOADED)
+            );
             loader.rowsException = { exception: 'rows boom' };
             await manager.loadRows('model');
             const model = manager.state.queryModels.model;
@@ -153,8 +145,7 @@ describe('QueryModelManager', () => {
         });
 
         test('view-does-not-exist recovery falls back to default view (Issue 49378)', async () => {
-            const viewError =
-                'The requested view \'bogus\' does not exist for this user.';
+            const viewError = "The requested view 'bogus' does not exist for this user.";
             const setSearchParams = jest.fn();
             const { manager, loader } = makeManager(
                 {
@@ -168,7 +159,9 @@ describe('QueryModelManager', () => {
                 setSearchParams
             );
             manager.loadModel('model');
-            await sleep();
+            await waitFor(() =>
+                expect(manager.state.queryModels.model.queryInfoLoadingState).toBe(LoadingState.LOADED)
+            );
             loader.rowsException = { exception: viewError };
             await manager.loadRows('model');
             // First failure — schemaQuery should reset to default view and trigger retry.
@@ -177,17 +170,16 @@ describe('QueryModelManager', () => {
             expect(model.viewError).toContain('Returning to the default view.');
             // The retry is scheduled via maybeLoad — clear the exception so it succeeds.
             loader.rowsException = undefined;
-            await sleep();
-            await sleep();
-            model = manager.state.queryModels.model;
-            expect(model.rowsLoadingState).toBe(LoadingState.LOADED);
+            await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
             expect(setSearchParams).toHaveBeenCalled();
         });
 
         test('cancelled request (status 0) is swallowed', async () => {
             const { manager, loader } = makeManager({ model: { schemaQuery: MIXTURES_SCHEMA_QUERY } });
             manager.loadModel('model');
-            await sleep();
+            await waitFor(() =>
+                expect(manager.state.queryModels.model.queryInfoLoadingState).toBe(LoadingState.LOADED)
+            );
             loader.rowsException = { status: 0 };
             await manager.loadRows('model');
             // Error should NOT surface, state stays LOADING because the short-circuit returned.
@@ -200,9 +192,9 @@ describe('QueryModelManager', () => {
         test('short-circuits to LOADED when includeTotalCount is false', async () => {
             const { manager } = makeManager({ model: { schemaQuery: MIXTURES_SCHEMA_QUERY } });
             manager.loadModel('model');
-            await sleep();
-            await sleep();
-            expect(manager.state.queryModels.model.totalCountLoadingState).toBe(LoadingState.LOADED);
+            await waitFor(() =>
+                expect(manager.state.queryModels.model.totalCountLoadingState).toBe(LoadingState.LOADED)
+            );
         });
 
         test('loads count when includeTotalCount is true', async () => {
@@ -210,10 +202,10 @@ describe('QueryModelManager', () => {
                 model: { schemaQuery: MIXTURES_SCHEMA_QUERY, includeTotalCount: true },
             });
             manager.loadModel('model');
-            await sleep();
-            await sleep();
+            await waitFor(() =>
+                expect(manager.state.queryModels.model.totalCountLoadingState).toBe(LoadingState.LOADED)
+            );
             const model = manager.state.queryModels.model;
-            expect(model.totalCountLoadingState).toBe(LoadingState.LOADED);
             expect(model.rowCount).toBe(MIXTURES_DATA.orderedRows.length);
         });
 
@@ -222,8 +214,9 @@ describe('QueryModelManager', () => {
                 model: { schemaQuery: MIXTURES_SCHEMA_QUERY, includeTotalCount: true },
             });
             manager.loadModel('model');
-            await sleep();
-            await sleep();
+            await waitFor(() =>
+                expect(manager.state.queryModels.model.totalCountLoadingState).toBe(LoadingState.LOADED)
+            );
             const spy = jest.spyOn(loader, 'loadTotalCount');
             await manager.loadTotalCount('model', false);
             expect(spy).not.toHaveBeenCalled();
@@ -236,8 +229,9 @@ describe('QueryModelManager', () => {
         const setup = async () => {
             const result = makeManager({ model: { schemaQuery: MIXTURES_SCHEMA_QUERY } });
             result.manager.loadModel('model');
-            await sleep();
-            await sleep();
+            await waitFor(() =>
+                expect(result.manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED)
+            );
             return result;
         };
 
@@ -259,8 +253,7 @@ describe('QueryModelManager', () => {
             expect(manager.state.queryModels.model.offset).toBe(maxRows);
             expect(manager.state.queryModels.model.currentPage).toBe(2);
             expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADING);
-            await sleep();
-            expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED);
+            await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
         });
 
         test('loadLastPage sets offset and loadNextPage past the last page is a no-op', async () => {
@@ -268,7 +261,7 @@ describe('QueryModelManager', () => {
             manager.loadLastPage('model');
             const lastOffset = manager.state.queryModels.model.lastPageOffset;
             expect(manager.state.queryModels.model.offset).toBe(lastOffset);
-            await sleep();
+            await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
             const before = manager.state;
             manager.loadNextPage('model');
             expect(manager.state.queryModels.model.offset).toBe(lastOffset);
@@ -278,7 +271,7 @@ describe('QueryModelManager', () => {
         test('setMaxRows resets offset to 0', async () => {
             const { manager } = await setup();
             manager.loadLastPage('model');
-            await sleep();
+            await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
             manager.setMaxRows('model', 40);
             const model = manager.state.queryModels.model;
             expect(model.maxRows).toBe(40);
@@ -301,8 +294,9 @@ describe('QueryModelManager', () => {
                 model: { schemaQuery: MIXTURES_SCHEMA_QUERY, includeTotalCount: true },
             });
             result.manager.loadModel('model');
-            await sleep();
-            await sleep();
+            await waitFor(() =>
+                expect(result.manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED)
+            );
             return result;
         };
 
@@ -310,8 +304,8 @@ describe('QueryModelManager', () => {
             const { manager } = await setup();
             // Move off page 1 so we can verify offset reset.
             manager.loadNextPage('model');
-            await sleep();
             expect(manager.state.queryModels.model.offset).toBeGreaterThan(0);
+            await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
 
             const filter = Filter.create('Name', 'DMXP', Filter.Types.EQUAL);
             manager.setFilters('model', [filter]);
@@ -321,16 +315,14 @@ describe('QueryModelManager', () => {
             // rows reload kicks off synchronously; totalCount reload follows because includeTotalCount is true.
             expect(model.rowsLoadingState).toBe(LoadingState.LOADING);
             expect(model.totalCountLoadingState).toBe(LoadingState.LOADING);
-            await sleep();
-            expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED);
+            await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
         });
 
         test('setFilters no-op when filters are equal', async () => {
             const { manager } = await setup();
             const f = Filter.create('Name', 'X');
             manager.setFilters('model', [f]);
-            await sleep();
-            await sleep();
+            await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
             const before = manager.state;
             manager.setFilters('model', [f]);
             expect(manager.state).toBe(before);
@@ -341,7 +333,7 @@ describe('QueryModelManager', () => {
             manager.setSorts('model', [new QuerySort({ fieldKey: 'Name' })]);
             expect(manager.state.queryModels.model.sorts).toHaveLength(1);
             expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADING);
-            await sleep();
+            await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
 
             const before = manager.state;
             manager.setSorts('model', [new QuerySort({ fieldKey: 'Name' })]);
@@ -358,8 +350,7 @@ describe('QueryModelManager', () => {
             expect(model.orderedRows).toBeUndefined();
             expect(model.rowCount).toBeUndefined();
             expect(model.rowsLoadingState).toBe(LoadingState.LOADING);
-            await sleep();
-            expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED);
+            await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
         });
 
         test('setSchemaQuery throws (intentionally unimplemented)', () => {
@@ -373,8 +364,7 @@ describe('QueryModelManager', () => {
             const loader = new TestQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA);
             const { manager } = makeManager({ model: { schemaQuery: MIXTURES_SCHEMA_QUERY } }, loader);
             manager.loadModel('model');
-            await sleep();
-            await sleep();
+            await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
             return { manager, loader };
         };
 
@@ -401,8 +391,7 @@ describe('QueryModelManager', () => {
             const firstKey = manager.state.queryModels.model.orderedRows[0];
             const firstRow = manager.state.queryModels.model.getRow(firstKey);
             manager.selectRow('model', true, firstRow);
-            await sleep();
-            expect(manager.state.queryModels.model.selections.has(firstKey)).toBe(true);
+            await waitFor(() => expect(manager.state.queryModels.model.selections.has(firstKey)).toBe(true));
             expect(manager.state.queryModels.model.selectionPivot).toEqual({
                 checked: true,
                 selection: firstKey,
@@ -414,20 +403,19 @@ describe('QueryModelManager', () => {
             const ordered = manager.state.queryModels.model.orderedRows;
             const pivotKey = ordered[0];
             manager.selectRow('model', true, manager.state.queryModels.model.getRow(pivotKey));
-            await sleep();
+            await waitFor(() => expect(manager.state.queryModels.model.selections.size).toBe(1));
             // Shift-click a row 5 indices away
             manager.selectRow('model', true, manager.state.queryModels.model.getRow(ordered[5]), true);
-            await sleep();
-            const selections = manager.state.queryModels.model.selections;
-            expect(selections.size).toBe(6); // pivot + 5 rows
+            await waitFor(() => expect(manager.state.queryModels.model.selections.size).toBe(6));
         });
 
         test('selectPage selects all ordered rows on the page', async () => {
             const { manager } = await setup();
             manager.selectPage('model', true);
-            await sleep();
-            const model = manager.state.queryModels.model;
-            expect(model.selections.size).toBe(model.orderedRows.length);
+            await waitFor(() => {
+                const model = manager.state.queryModels.model;
+                expect(model.selections.size).toBe(model.orderedRows.length);
+            });
         });
 
         test('clearSelections empties the selection set', async () => {
@@ -459,8 +447,7 @@ describe('QueryModelManager', () => {
             loader.selections = new Set(['row-1', 'row-2']);
             const { manager } = makeManager({ model: { schemaQuery: MIXTURES_SCHEMA_QUERY } }, loader);
             manager.loadModel('model');
-            await sleep();
-            await sleep();
+            await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
             await manager.loadSelections('model');
             expect(manager.state.queryModels.model.selections).toEqual(new Set(['row-1', 'row-2']));
             expect(manager.state.queryModels.model.selectionsLoadingState).toBe(LoadingState.LOADED);
@@ -471,8 +458,7 @@ describe('QueryModelManager', () => {
             loader.loadSelections = jest.fn(() => Promise.reject(new Error('nope')));
             const { manager } = makeManager({ model: { schemaQuery: MIXTURES_SCHEMA_QUERY } }, loader);
             manager.loadModel('model');
-            await sleep();
-            await sleep();
+            await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
             await manager.loadSelections('model');
             const model = manager.state.queryModels.model;
             expect(model.selectionsError).toBeDefined();
@@ -527,8 +513,9 @@ describe('QueryModelManager', () => {
                 loader
             );
             result.manager.loadModel('model');
-            await sleep();
-            await sleep();
+            await waitFor(() =>
+                expect(result.manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED)
+            );
             return { ...result, loader };
         };
 
@@ -551,16 +538,13 @@ describe('QueryModelManager', () => {
             const model = manager.state.queryModels.model;
             expect(model.rows).toBeUndefined();
             expect(model.selectionsLoadingState).toBe(LoadingState.INITIALIZED);
-            await sleep();
-            await sleep();
-            expect(manager.state.queryModels.model.selections).toEqual(new Set(['keep-me']));
+            await waitFor(() => expect(manager.state.queryModels.model.selections).toEqual(new Set(['keep-me'])));
         });
 
         test('update with filtered column resets the model', async () => {
             const { manager } = await setup();
             manager.setFilters('model', [Filter.create('Name', 'X')]);
-            await sleep();
-            await sleep();
+            await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
             manager.onModelChange('model', {
                 changeType: ChangeType.update,
                 options: { columnsChanged: ['Name'] },
@@ -571,8 +555,7 @@ describe('QueryModelManager', () => {
         test('update without filter intersection leaves rows in place but reloads', async () => {
             const { manager } = await setup();
             manager.setFilters('model', [Filter.create('Name', 'X')]);
-            await sleep();
-            await sleep();
+            await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
             const rowsBefore = manager.state.queryModels.model.rows;
             manager.onModelChange('model', {
                 changeType: ChangeType.update,
@@ -587,19 +570,16 @@ describe('QueryModelManager', () => {
             const { manager } = makeManager({});
             manager.addModel({ id: 'new', schemaQuery: MIXTURES_SCHEMA_QUERY }, false);
             expect(manager.state.queryModels.new.queryInfoLoadingState).toBe(LoadingState.INITIALIZED);
-            await sleep();
-            await sleep();
-            expect(manager.state.queryModels.new.queryInfoLoadingState).toBe(LoadingState.INITIALIZED);
         });
 
         test('addModel with load kicks off loadModel', async () => {
             const { manager } = makeManager({});
             manager.addModel({ id: 'new', schemaQuery: MIXTURES_SCHEMA_QUERY }, true);
             expect(manager.state.queryModels.new.queryInfoLoadingState).toBe(LoadingState.LOADING);
-            await sleep();
-            await sleep();
-            expect(manager.state.queryModels.new.queryInfoLoadingState).toBe(LoadingState.LOADED);
-            expect(manager.state.queryModels.new.rowsLoadingState).toBe(LoadingState.LOADED);
+            await waitFor(() => {
+                expect(manager.state.queryModels.new.queryInfoLoadingState).toBe(LoadingState.LOADED);
+                expect(manager.state.queryModels.new.rowsLoadingState).toBe(LoadingState.LOADED);
+            });
         });
 
         test('resetTotalCountState resets every model', async () => {
@@ -609,10 +589,10 @@ describe('QueryModelManager', () => {
             });
             manager.loadModel('a');
             manager.loadModel('b');
-            await sleep();
-            await sleep();
-            expect(manager.state.queryModels.a.totalCountLoadingState).toBe(LoadingState.LOADED);
-            expect(manager.state.queryModels.b.totalCountLoadingState).toBe(LoadingState.LOADED);
+            await waitFor(() => {
+                expect(manager.state.queryModels.a.totalCountLoadingState).toBe(LoadingState.LOADED);
+                expect(manager.state.queryModels.b.totalCountLoadingState).toBe(LoadingState.LOADED);
+            });
 
             manager.resetTotalCountState();
             expect(manager.state.queryModels.a.totalCountLoadingState).toBe(LoadingState.INITIALIZED);
@@ -654,8 +634,7 @@ describe('QueryModelManager', () => {
                 setSearchParams
             );
             manager.loadModel('model');
-            await sleep();
-            await sleep();
+            await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
             manager.updateRouter(new URLSearchParams({ 'query.p': '2' }), setSearchParams);
             expect(manager.state.queryModels.model.offset).toBe(20);
         });
@@ -684,10 +663,7 @@ describe('useQueryModels', () => {
         );
         // By the time renderHook returns, the mount effect has run.
         expect(result.current.queryModels.model.queryInfoLoadingState).toBe(LoadingState.LOADING);
-        await act(async () => {
-            await sleep();
-        });
-        expect(result.current.queryModels.model.queryInfoLoadingState).toBe(LoadingState.LOADED);
+        await waitFor(() => expect(result.current.queryModels.model.queryInfoLoadingState).toBe(LoadingState.LOADED));
     });
 
     test('autoLoad triggers loadAllModels (queryInfo + rows)', async () => {
@@ -695,13 +671,10 @@ describe('useQueryModels', () => {
         const { result } = renderHook(() =>
             useQueryModels({ model: { schemaQuery: MIXTURES_SCHEMA_QUERY } }, { autoLoad: true, modelLoader: loader })
         );
-        await act(async () => {
-            await sleep();
-            await sleep();
+        await waitFor(() => {
+            expect(result.current.queryModels.model.queryInfoLoadingState).toBe(LoadingState.LOADED);
+            expect(result.current.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED);
         });
-        const model = result.current.queryModels.model;
-        expect(model.queryInfoLoadingState).toBe(LoadingState.LOADED);
-        expect(model.rowsLoadingState).toBe(LoadingState.LOADED);
         // When autoLoad is true, loadAllModels(!!loader.loadSelections) passes true, so selections load too.
         expect(loader.loadSelections).toHaveBeenCalled();
     });
@@ -711,28 +684,26 @@ describe('useQueryModels', () => {
         const { result } = renderHook(() =>
             useQueryModels({ model: { schemaQuery: MIXTURES_SCHEMA_QUERY } }, { autoLoad: true, modelLoader: loader })
         );
-        await act(async () => {
-            await sleep();
-            await sleep();
+        await waitFor(() => {
+            expect(result.current.queryModels.model.queryInfoLoadingState).toBe(LoadingState.LOADED);
+            expect(result.current.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED);
         });
 
-        await act(async () => {
+        act(() => {
             result.current.actions.loadNextPage(result.current.queryModels.model.id);
-            await sleep();
         });
-        expect(result.current.queryModels.model.currentPage).toBe(2);
-        expect(result.current.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED);
+        await waitFor(() => {
+            expect(result.current.queryModels.model.currentPage).toBe(2);
+            expect(result.current.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED);
+        });
     });
 
     test('unmount destroys manager and cancels requests', async () => {
         const loader = new TestQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA);
-        const { unmount } = renderHook(() =>
+        const { result, unmount } = renderHook(() =>
             useQueryModels({ model: { schemaQuery: MIXTURES_SCHEMA_QUERY } }, { modelLoader: loader })
         );
-        await act(async () => {
-            await sleep();
-            await sleep();
-        });
+        await waitFor(() => expect(result.current.queryModels.model.queryInfoLoadingState).toBe(LoadingState.LOADED));
         // Unmount should not throw even when an action resolves afterward.
         expect(() => unmount()).not.toThrow();
     });
@@ -746,10 +717,7 @@ describe('useQueryModels', () => {
                 { autoLoad: true, modelLoader: loader }
             )
         );
-        await act(async () => {
-            await sleep();
-            await sleep();
-        });
+        await waitFor(() => expect(result.current.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
         expect(result.current.queryModels.model.offset).toBe(20);
         expect(result.current.queryModels.model.currentPage).toBe(2);
     });
@@ -764,14 +732,14 @@ describe('useQueryModels', () => {
                 { autoLoad: true, modelLoader: loader }
             )
         );
-        await act(async () => {
-            await sleep();
-            await sleep();
+        await waitFor(() => {
+            expect(result.current.queryModels.model.queryInfoLoadingState).toBe(LoadingState.LOADED);
+            expect(result.current.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED);
         });
-        await act(async () => {
+        act(() => {
             result.current.actions.loadLastPage(result.current.queryModels.model.id);
-            await sleep();
         });
+        await waitFor(() => expect(result.current.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
         // bindURL → setSearchParams invoked; verify the updater resolves to "query.p=34"
         const updater = setSearchParams.mock.lastCall[0];
         const nextParams = updater(new URLSearchParams({ other: 'still here' }));

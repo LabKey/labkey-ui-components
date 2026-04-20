@@ -465,3 +465,7 @@ textarea.form-control {
 .has-warning .select-input__control:hover {
     border-color: $brand-warning;
 }
+
+.select-options-divider {
+    margin: 0 2px 0 2px;
+}

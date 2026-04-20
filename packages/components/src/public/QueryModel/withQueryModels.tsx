@@ -131,7 +131,6 @@ export function withQueryModels<Props>(
                 setFilters: this.setFilters,
                 setOffset: this.setOffset,
                 setMaxRows: this.setMaxRows,
-                setSchemaQuery: this.setSchemaQuery,
                 setSelections: this.setSelections,
                 setSorts: this.setSorts,
                 setView: this.setView,
@@ -942,27 +941,6 @@ export function withQueryModels<Props>(
                         resetTotalCountState(model);
                     });
                 })
-            );
-        };
-
-        setSchemaQuery = (id: string, schemaQuery: SchemaQuery, loadSelections = false): void => {
-            let shouldLoad = false;
-            this.setState(
-                produce<State>((draft: WritableDraft<State>) => {
-                    const model = draft.queryModels[id];
-
-                    if (!model.schemaQuery.isEqual(schemaQuery)) {
-                        shouldLoad = true;
-                        // We assume that we'll need a new QueryInfo if we're changing the SchemaQuery, so we reset the
-                        // QueryInfo and all rows related data.
-                        model.schemaQuery = schemaQuery;
-                        resetQueryInfoState(model);
-                        resetRowsState(model);
-                        resetTotalCountState(model);
-                        resetSelectionState(model);
-                    }
-                }),
-                () => this.maybeLoad(id, shouldLoad, shouldLoad, shouldLoad && loadSelections)
             );
         };
 

@@ -352,11 +352,6 @@ describe('QueryModelManager', () => {
             expect(model.rowsLoadingState).toBe(LoadingState.LOADING);
             await waitFor(() => expect(manager.state.queryModels.model.rowsLoadingState).toBe(LoadingState.LOADED));
         });
-
-        test('setSchemaQuery throws (intentionally unimplemented)', () => {
-            const { manager } = makeManager({ model: { schemaQuery: MIXTURES_SCHEMA_QUERY } });
-            expect(() => manager.setSchemaQuery('model', AMINO_ACIDS_SCHEMA_QUERY)).toThrow(/not implemented/);
-        });
     });
 
     describe('selections', () => {

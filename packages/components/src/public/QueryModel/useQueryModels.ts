@@ -88,7 +88,6 @@ export class QueryModelManager {
             setFilters: this.setFilters,
             setMaxRows: this.setMaxRows,
             setOffset: this.setOffset,
-            setSchemaQuery: this.setSchemaQuery,
             setSelections: this.setSelections,
             setSorts: this.setSorts,
             setView: this.setView,
@@ -817,11 +816,6 @@ export class QueryModelManager {
         if (shouldLoad) {
             this.syncURL(id);
         }
-    };
-
-    setSchemaQuery = (id: string, schemaQuery: SchemaQuery, loadSelections = false): void => {
-        // Note: we don't use the setSchemaQuery method anywhere, we should remove it from Actions
-        throw new Error('setSchemaQuery is not implemented');
     };
 
     setSelections = async (id: string, checked: boolean, selections: string[]): Promise<void> => {

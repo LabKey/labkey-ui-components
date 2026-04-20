@@ -82,7 +82,6 @@ export const makeTestActions = (mockFn = (): any => () => {}, overrides: Partial
         setFilters: mockFn(),
         setMaxRows: mockFn(),
         setOffset: mockFn(),
-        setSchemaQuery: mockFn(),
         setSorts: mockFn(),
         setView: mockFn(),
         setSelections: mockFn(),

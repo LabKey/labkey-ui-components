@@ -1358,7 +1358,6 @@ export interface Actions {
     setFilters: (id: string, filters: Filter.IFilter[], loadSelections?: boolean) => void;
     setMaxRows: (id: string, maxRows: number) => void;
     setOffset: (id: string, offset: number, reloadModel?: boolean) => void;
-    setSchemaQuery: (id: string, schemaQuery: SchemaQuery, loadSelections?: boolean) => void;
     setSelections: (id: string, checked: boolean, selections: string[]) => void;
     setSorts: (id: string, sorts: QuerySort[]) => void;
     setView: (id: string, viewName: string, loadSelections?: boolean) => void;

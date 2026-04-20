@@ -13,6 +13,7 @@ import { getFolderTestAPIWrapper } from '../../container/FolderAPIWrapper';
 import { TEST_FOLDER_CONTAINER } from '../../../containerFixtures';
 
 import { SampleStatusInput } from './SampleStatusInput';
+import { waitFor } from '@testing-library/dom';
 
 jest.mock('../QuerySelect', () => ({
     QuerySelect: jest.fn(({ onQSChange, name }) => (
@@ -94,7 +95,9 @@ describe('SampleStatusInput', () => {
         renderWithAppContext(<SampleStatusInput {...DEFAULT_PROPS} formsy={false} />, {
             serverContext: { user: TEST_USER_STORAGE_EDITOR },
         });
-        await act(async () => {}); // flush getSampleStatuses effect
+        await waitFor(() => {
+            expect(document.querySelectorAll('option').length).toBe(3);
+        });
         expect(document.querySelectorAll('.discard-consumed-title')).toHaveLength(0);
     });
 
@@ -102,7 +105,9 @@ describe('SampleStatusInput', () => {
         renderWithAppContext(<SampleStatusInput {...DEFAULT_PROPS} formsy={false} value={INIT_CONSUMED} />, {
             serverContext: { user: TEST_USER_STORAGE_EDITOR },
         });
-        await act(async () => {}); // flush getSampleStatuses effect
+        await waitFor(() => {
+            expect(document.querySelectorAll('option').length).toBe(3);
+        });
         expect(document.querySelectorAll('.discard-consumed-title')).toHaveLength(0);
     });
 
@@ -111,7 +116,9 @@ describe('SampleStatusInput', () => {
             <SampleStatusInput {...DEFAULT_PROPS} formsy={false} allowDisable />,
             { appContext: COMMENTS_NOT_REQUIRED, serverContext: { container: TEST_FOLDER_CONTAINER, user: TEST_USER_EDITOR } }
         );
-        await act(async () => {}); // flush getSampleStatuses effect
+        await waitFor(() => {
+            expect(document.querySelectorAll('option').length).toBe(3);
+        });
         await selectValue('200');
         expect(document.querySelectorAll('.discard-consumed-title')).toHaveLength(0);
     });
@@ -121,7 +128,9 @@ describe('SampleStatusInput', () => {
             <SampleStatusInput {...DEFAULT_PROPS} formsy={false} allowDisable />,
             { appContext: COMMENTS_NOT_REQUIRED, serverContext: { container: TEST_FOLDER_CONTAINER, user: TEST_USER_STORAGE_EDITOR } }
         );
-        await act(async () => {}); // flush getSampleStatuses effect
+        await waitFor(() => {
+            expect(document.querySelectorAll('option').length).toBe(3);
+        });
         await selectValue('200');
         expect(document.querySelectorAll('.discard-consumed-title')).toHaveLength(1);
         expect(document.querySelectorAll('.sample-bulk-update-discard-panel')).toHaveLength(1);
@@ -132,7 +141,9 @@ describe('SampleStatusInput', () => {
             <SampleStatusInput {...DEFAULT_PROPS} formsy={false} />,
             { appContext: COMMENTS_NOT_REQUIRED, serverContext: { container: TEST_FOLDER_CONTAINER, user: TEST_USER_STORAGE_EDITOR } }
         );
-        await act(async () => {}); // flush getSampleStatuses effect
+        await waitFor(() => {
+            expect(document.querySelectorAll('option').length).toBe(3);
+        });
         await selectValue('200');
         expect(document.querySelectorAll('.discard-consumed-title')).toHaveLength(1);
         expect(document.querySelectorAll('.sample-bulk-update-discard-panel')).toHaveLength(0);
@@ -143,7 +154,9 @@ describe('SampleStatusInput', () => {
             <SampleStatusInput {...DEFAULT_PROPS} formsy={false} />,
             { serverContext: { user: TEST_USER_STORAGE_EDITOR } }
         );
-        await act(async () => {}); // flush getSampleStatuses effect
+        await waitFor(() => {
+            expect(document.querySelectorAll('option').length).toBe(3);
+        });
         await selectValue('100');
         expect(document.querySelectorAll('.discard-consumed-title')).toHaveLength(0);
         expect(document.querySelectorAll('.sample-bulk-update-discard-panel')).toHaveLength(0);

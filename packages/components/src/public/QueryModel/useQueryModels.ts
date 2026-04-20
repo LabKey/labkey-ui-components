@@ -922,6 +922,13 @@ interface UseQueryModelsOptions {
     modelLoader?: QueryModelLoader;
 }
 
+/**
+ * A hook that creates a managed set of QueryModels for a given QueryConfigMap returning InjectedQueryModels.
+ * Functionally equivalent to withQueryModels but often more convenient because it doesn't require wrapping your
+ * component. Note: changes to queryConfigs are not handled, useQueryModels only ever uses the original queryConfigs
+ * object passed to it, as properly diffing the queryConfigs object is effectively impossible when considering user
+ * changes to the models.
+ */
 export function useQueryModels(queryConfigs: QueryConfigMap, options: UseQueryModelsOptions = {}): InjectedQueryModels {
     const { autoLoad = false, modelLoader } = options;
     const [searchParams, setSearchParams] = useOptionalSearchParams();

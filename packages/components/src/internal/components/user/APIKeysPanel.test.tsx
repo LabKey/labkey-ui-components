@@ -1,4 +1,4 @@
-import React, { act } from 'react';
+import React from 'react';
 
 import { waitFor } from '@testing-library/dom';
 

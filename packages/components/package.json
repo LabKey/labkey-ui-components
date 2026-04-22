@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.29.4",
+  "version": "7.31.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -79,7 +79,7 @@
     "vis-network": "~10.0.2"
   },
   "devDependencies": {
-    "@labkey/build": "9.1.0",
+    "@labkey/build": "9.1.1",
     "@labkey/eslint-config": "1.2.0",
     "@types/history": "4.7.11",
     "@types/jest": "30.0.0",

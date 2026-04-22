@@ -186,4 +186,84 @@ describe('<UserDetailsPanel/>', () => {
         });
         expect(container).toMatchSnapshot();
     });
+
+    test('with principal that isGroup in modal uses Close button and hides Manage footer', async () => {
+        const GROUP_ID = 1006;
+        const groupPrincipal = Principal.create({ userId: GROUP_ID, type: 'g', displayName: 'Test Group' });
+        await act(async () => {
+            renderWithAppContext(
+                <UserDetailsPanel
+                    api={{
+                        ...API,
+                        getPrincipalById: jest.fn().mockResolvedValue(groupPrincipal),
+                        getUserPropertiesForOther: jest.fn().mockResolvedValue({
+                            UserId: GROUP_ID,
+                            DisplayName: 'Test Group',
+                        }),
+                    }}
+                    currentUser={TEST_USER_APP_ADMIN}
+                    policy={POLICY}
+                    rolesByUniqueName={ROLES_BY_NAME}
+                    toggleDetailsModal={jest.fn()}
+                    userId={GROUP_ID}
+                />,
+                { appContext: APP_CONTEXT, serverContext: SERVER_CONTEXT }
+            );
+        });
+        const modalFooter = document.body.querySelector('.modal-footer');
+        expect(modalFooter.querySelector('button')).toHaveTextContent('Close');
+        expect(modalFooter.textContent).not.toContain('Cancel');
+        expect(modalFooter.textContent).not.toContain('Manage');
+        expect(document.body.querySelector('.modal-body').textContent).toContain('ID');
+        expect(document.body.querySelector('.modal-body').textContent).not.toContain('Email');
+    });
+
+    test('with principal in modal shows Cancel button and user fields', async () => {
+        await act(async () => {
+            renderWithAppContext(
+                <UserDetailsPanel
+                    api={API}
+                    currentUser={TEST_USER_APP_ADMIN}
+                    policy={POLICY}
+                    rolesByUniqueName={ROLES_BY_NAME}
+                    toggleDetailsModal={jest.fn()}
+                    userId={1005}
+                />,
+                { appContext: APP_CONTEXT, serverContext: SERVER_CONTEXT }
+            );
+        });
+        const modalFooter = document.body.querySelector('.modal-footer');
+        expect(modalFooter.querySelector('button')).toHaveTextContent('Cancel');
+        expect(modalFooter.textContent).not.toContain('Close');
+        expect(document.body.querySelector('.modal-body').textContent).toContain('Email');
+        expect(document.body.querySelector('.modal-body').textContent).toContain('ID');
+    });
+
+    test('with principal that isGroup and onUsersStateChangeComplete suppresses action buttons', async () => {
+        const GROUP_ID = 1006;
+        const groupPrincipal = Principal.create({ userId: GROUP_ID, type: 'g', displayName: 'Test Group' });
+        let container;
+        await act(async () => {
+            container = renderWithAppContext(
+                <UserDetailsPanel
+                    api={{
+                        ...API,
+                        getPrincipalById: jest.fn().mockResolvedValue(groupPrincipal),
+                        getUserPropertiesForOther: jest.fn().mockResolvedValue({
+                            UserId: GROUP_ID,
+                            DisplayName: 'Test Group',
+                        }),
+                    }}
+                    currentUser={TEST_USER_APP_ADMIN}
+                    onUsersStateChangeComplete={jest.fn()}
+                    policy={POLICY}
+                    rolesByUniqueName={ROLES_BY_NAME}
+                    userId={GROUP_ID}
+                />,
+                { appContext: APP_CONTEXT, serverContext: SERVER_CONTEXT }
+            ).container;
+        });
+        // Action buttons (Delete, Reactivate) must not appear for groups
+        expect(container.querySelectorAll('button')).toHaveLength(0);
+    });
 });

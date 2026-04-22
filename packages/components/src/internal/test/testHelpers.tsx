@@ -112,6 +112,8 @@ export function registerDefaultURLMappers(): void {
  * Use this to sleep in the tests. If you make your test methods async you can use "await sleep();" to put your thread
  * to sleep temporarily which will allow async actions in your component to continue.
  * @param ms the amount of time (in ms) to sleep
+ *
+ * @deprecated use RTL waitFor to wait for specific state
  */
 export const sleep = (ms = 0): Promise<void> => {
     return new Promise(resolve => {

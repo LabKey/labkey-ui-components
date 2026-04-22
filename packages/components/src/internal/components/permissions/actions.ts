@@ -49,7 +49,7 @@ export async function getPrincipals(): Promise<List<Principal>> {
     return result.rows.reduce<List<Principal>>((p, row) => p.push(Principal.createFromSelectRow(fromJS(row))), List());
 }
 
-export async function getPrincipalById(principalId: number): Promise<Principal> {
+export async function getPrincipalById(principalId: number): Promise<Principal | undefined> {
     const results = await selectRows({
         columns: ['UserId', 'Name', 'Type'],
         schemaQuery: SCHEMAS.CORE_TABLES.PRINCIPALS,

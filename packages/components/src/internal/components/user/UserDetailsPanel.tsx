@@ -130,6 +130,7 @@ export const UserDetailsPanel: FC<Props> = props => {
     const loadUserDetails = useCallback(async () => {
         if (!userId) {
             setUserProperties(undefined);
+            setPrincipal(undefined);
             setShowResetTotp(false);
             return;
         }
@@ -359,7 +360,7 @@ export const UserDetailsPanel: FC<Props> = props => {
             <div className="panel-heading">{renderHeader()}</div>
             <div className="panel-body">
                 {renderBody()}
-                {!isSelfCtx && onUsersStateChangeComplete && renderButtons()}
+                {!isSelfCtx && !isGroup && onUsersStateChangeComplete && renderButtons()}
                 {allowResetPassword && showDialog === 'reset' && (
                     <UserResetPasswordConfirmModal
                         email={caseInsensitive(userProperties, 'email')}

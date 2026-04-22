@@ -77,7 +77,7 @@ export interface SecurityAPIWrapper {
     getDeletionSummaries: (containerPath?: string) => Promise<Summary[]>;
     getGroupMemberships: () => Promise<GroupMembership[]>;
     getInheritedContainers: (container: Container) => Promise<string[]>;
-    getPrincipalById: (principalId: number) => Promise<Principal>;
+    getPrincipalById: (principalId: number) => Promise<Principal | undefined>;
     getUserLimitSettings: (containerPath?: string) => Promise<UserLimitSettings>;
     getUserPermissions: (options: GetUserPermissionsOptions) => Promise<string[]>;
     getUserProperties: (userId: number) => Promise<any>;

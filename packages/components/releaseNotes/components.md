@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- GitHub Issue #1012: Update resolveDuplicatesAsName() regex to handle nested parentheses in key/value
+
 ### version 7.21.4
 *Released*: 6 April 2026
 - GitHub Issue #974: Lookup Data Type shown in Assay Designer for app, even when premium module is not present

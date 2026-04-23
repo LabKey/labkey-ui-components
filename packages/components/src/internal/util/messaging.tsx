@@ -42,7 +42,8 @@ function trimExceptionPrefix(exceptionMessage: string, message: string): string 
     return message.substring(startIndex + exceptionMessage.length).trim();
 }
 
-function resolveDuplicatesAsName(
+// export for jest testing
+export function resolveDuplicatesAsName(
     errorMsg: string,
     noun: string,
     nounPlural?: string,
@@ -51,7 +52,7 @@ function resolveDuplicatesAsName(
     // N.B. Issues 48050 and 48209: only for Postgres since the error message from SQL server doesn't provide a
     // reasonable way to parse a multi-field key in the face of names that may contain commas and spaces. Seems
     // better to show a generic message instead of an incorrectly parsed name.
-    const keyMatch = errorMsg.match(/Key \(([^)]+)\)=\(([^)]+)\) already exists./);
+    const keyMatch = errorMsg.match(/Key \((.*?)\)=\((.*?)\) already exists\./);
     let name;
     if (keyMatch) {
         const numParts = keyMatch[1].split(', ').length;
@@ -72,8 +73,8 @@ function resolveDuplicatesAsName(
     if (name) {
         retMsg += ` Duplicate name '${name}' found.`;
     } else {
-        retMsg += ` Check the existing ${nounPlural || noun} for possible duplicates and make sure any referenced ${
-            nounPlural || noun
+        retMsg += ` Check the existing ${nounPlural || noun || 'data'} for possible duplicates and make sure any referenced ${
+            nounPlural || noun || 'data'
         } are still valid.`;
     }
     return retMsg;

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.31.1
+*Released*: 23 April 2026
 - GitHub Issue 911: Fix overflow for field filtering modal
 
 ### version 7.31.0

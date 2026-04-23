@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Accessibility improvements: add labels or aria-labels to input elements
+
 ### version 7.31.1
 *Released*: 23 April 2026
 - GitHub Issue 911: Fix overflow for field filtering modal

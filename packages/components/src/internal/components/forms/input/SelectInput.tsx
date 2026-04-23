@@ -746,15 +746,15 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             };
 
             if (this.isCreatable()) {
-                return <AsyncCreatableSelect {...asyncProps} />;
+                return <AsyncCreatableSelect aria-label={'Select ' + name} {...asyncProps} />;
             }
 
-            return <AsyncSelect {...asyncProps} />;
+            return <AsyncSelect aria-label={'Select ' + name} {...asyncProps} />;
         } else if (this.isCreatable()) {
-            return <CreatableSelect {...selectProps} />;
+            return <CreatableSelect aria-label={'Select ' + name} {...selectProps} />;
         }
 
-        return <ReactSelect {...selectProps} />;
+        return <ReactSelect aria-label={'Select ' + name} {...selectProps} />;
     };
 
     render() {

@@ -478,6 +478,7 @@ export const HeaderSelectionCell: FC<HeaderSelectionCellProps> = memo(props => {
 
     return (
         <input
+            aria-label="Select all rows on page"
             checked={selectedState === GRID_CHECKBOX_OPTIONS.ALL}
             className={className}
             disabled={disabled}

@@ -4,6 +4,7 @@ import DatePicker, { DatePickerProps } from 'react-datepicker';
 import { getDateFNSDateFormat, parseDateFNSTimeFormat } from '../util/Date';
 
 import { Container } from './base/models/Container';
+import { stringToHtmlId } from '../util/utils';
 
 export interface DateInputProps {
     container?: Container;
@@ -33,9 +34,12 @@ export const DateInput: FC<DateInputProps & DatePickerProps> = memo(props => {
         [onSelect]
     );
 
+    const id = stringToHtmlId(pickerProps.name) ?? 'date-input';
+
     return (
         <span className="input-group date-input">
             <DatePicker
+                ariaLabelledBy={id}
                 autoComplete="off"
                 className="form-control"
                 wrapperClassName="form-control"
@@ -46,6 +50,9 @@ export const DateInput: FC<DateInputProps & DatePickerProps> = memo(props => {
                 ref={input}
                 onSelect={onSelect_}
             />
+            <span className="sr-only" id={id}>
+                {pickerProps.placeholderText}
+            </span>
             <span className="input-group-addon" onClick={onIconClick}>
                 <i className="fa fa-calendar" />
             </span>

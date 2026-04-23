@@ -270,11 +270,12 @@ export const ChartColorInputs: FC<ChartColorInputsProps> = memo(({ chartConfig, 
             {showColorPaletteScale && (
                 <div className="form-group row">
                     <div className="col-xs-12">
-                        <label>Color Palette</label>
+                        <label htmlFor="color-palette">Color Palette</label>
                         <SelectInput
                             clearable={false}
                             containerClass="row"
                             inputClass="col-xs-12"
+                            inputId="color-palette"
                             name={COLOR_OPTIONS.COLOR_PALETTE_SCALE}
                             onChange={onColorPaletteChange}
                             options={COLOR_PALETTE_OPTIONS}
@@ -418,11 +419,13 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
         <>
             <div className="form-group row">
                 <div className="col-xs-12">
-                    <label>Line Color and Style</label>
+                    <label htmlFor="line-color-and-style">Line Color and Style</label>
                     <SelectInput
                         containerClass="row"
                         inputClass="col-xs-12"
+                        inputId="line-color-and-style"
                         menuPlacement="top"
+                        name="lineColorAndStyle"
                         onChange={onSeriesSelectChange}
                         optionRenderer={seriesValueRenderer}
                         options={distinctSeriesOptions}
@@ -447,12 +450,16 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                     </div>
                     {!chartConfig.geomOptions?.hideDataPoints && (
                         <div className="chart-color-input">
-                            <label className="label-weight-normal">Shape</label>
+                            <label className="label-weight-normal" htmlFor="shape">
+                                Shape
+                            </label>
                             <SelectInput
                                 clearable={false}
                                 containerClass="inline-block"
                                 inputClass=""
+                                inputId="shape"
                                 menuPlacement="top"
+                                name="shape"
                                 onChange={onSeriesShapeChange}
                                 optionRenderer={shapeOptionRenderer}
                                 options={SHAPE_OPTIONS}
@@ -466,12 +473,14 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                         </div>
                     )}
                     <div className="chart-color-input">
-                        <label className="label-weight-normal">Line Type</label>
+                        <label className="label-weight-normal" htmlFor="line-type">Line Type</label>
                         <SelectInput
                             clearable={false}
                             containerClass="inline-block"
+                            id="line-type"
                             inputClass=""
                             menuPlacement="top"
+                            name="lineType"
                             onChange={onSeriesLineTypeChange}
                             optionRenderer={lineTypeOptionRenderer}
                             options={LINE_TYPE_OPTIONS}

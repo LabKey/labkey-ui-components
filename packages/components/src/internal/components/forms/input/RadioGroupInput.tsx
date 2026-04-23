@@ -38,6 +38,7 @@ const RadioGroupOption: FC<RadioGroupOptionImplProps> = memo(props => {
     return (
         <div className="radio-input-wrapper">
             <input
+                aria-label={option.value ?? 'null'}
                 checked={isSelected && !option.disabled}
                 className="radioinput-input"
                 disabled={option.disabled}

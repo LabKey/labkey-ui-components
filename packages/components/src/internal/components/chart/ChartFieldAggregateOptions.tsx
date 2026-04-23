@@ -84,13 +84,14 @@ export const ChartFieldAggregateOptions: FC<OwnProps> = memo(props => {
     return (
         <>
             <div>
-                <label>
+                <label htmlFor="aggregate-method">
                     Aggregate Method <LabelOverlay placement="right">{BAR_CHART_AGGREGATE_METHOD_TIP}</LabelOverlay>
                 </label>
                 <SelectInput
                     clearable={false}
                     inputClass="col-xs-12"
-                    name="aggregate-method"
+                    inputId="aggregate-method"
+                    name="aggregateMethod"
                     onChange={onAggregateChange}
                     options={aggregateOptions}
                     placeholder="Select aggregate method"

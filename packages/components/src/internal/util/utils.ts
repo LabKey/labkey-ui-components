@@ -152,6 +152,16 @@ export function generateId(prefix?: string): string {
     return (prefix ? prefix : DOM_PREFIX) + DOM_COUNT++;
 }
 
+// Convert an arbitrary string to a value safe for use as an HTML element id.
+// Replaces sequences of non-alphanumeric characters with a single hyphen and
+// strips leading/trailing hyphens.
+export function stringToHtmlId(value: string): string {
+    if (!value) {
+        return value;
+    }
+    return value.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
 // http://davidwalsh.name/javascript-debounce-function
 export function debounce(func, wait, immediate?: boolean): () => void {
     let timeout: number;

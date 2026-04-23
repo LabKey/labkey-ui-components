@@ -55,6 +55,7 @@ export const SearchBox: FC<Props> = memo(props => {
                 <i className="fa fa-search navbar__search-icon" />
                 <span className={'navbar__input-group ' + (showFindByIds ? 'input-group' : '')}>
                     <input
+                        aria-label="Search in project"
                         className="form-control navbar__search-input"
                         onChange={onChange}
                         placeholder={placeholder ?? 'Enter Search Terms'}

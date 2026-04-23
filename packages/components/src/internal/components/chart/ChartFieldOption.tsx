@@ -98,7 +98,7 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
 
     return (
         <div>
-            <label>
+            <label htmlFor={field.name}>
                 {field.label}
                 {field.required && ' *'}
             </label>
@@ -106,6 +106,7 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
                 <SelectInput
                     containerClass=""
                     inputClass={showAdditionalOptions ? 'col-xs-11' : 'col-xs-12'}
+                    inputId={field.name}
                     labelKey="caption"
                     name={field.name}
                     onChange={onSelectChange}

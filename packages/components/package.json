@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.31.2-miscFixes265-seh.1",
+  "version": "7.31.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

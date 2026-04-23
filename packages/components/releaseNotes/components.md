@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.21.5
+*Released*: 23 April 2026
 - GitHub Issue #1012: Update resolveDuplicatesAsName() regex to handle nested parentheses in key/value
 
 ### version 7.21.4

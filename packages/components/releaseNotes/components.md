@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 7.x.x
-*Released*: ? April 2026
+### version 7.32.0
+*Released*: 23 April 2026
 - Add EMPTY_COMPOUND_WARNING
 - Add COMPOUND to SCHEMAS.DATA_CLASSES
 - hasIdentifiedCol: check for Compound schema

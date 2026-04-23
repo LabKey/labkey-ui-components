@@ -218,7 +218,7 @@ describe('<UserDetailsPanel/>', () => {
         expect(document.body.querySelector('.modal-body').textContent).not.toContain('Email');
     });
 
-    test('with principal in modal shows Cancel button and user fields', async () => {
+    test('with user in modal shows Cancel button and user fields', async () => {
         await act(async () => {
             renderWithAppContext(
                 <UserDetailsPanel

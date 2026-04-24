@@ -189,7 +189,7 @@ const ThreadEditorToolbar: FC<ThreadEditorToolbarProps> = memo(({ inputRef, setB
     return (
         <div className="thread-editor-toolbar editor-toolbar">
             <div className="editor-toolbar__section insert-menu">
-                <DropdownMenu title={view}>
+                <DropdownMenu label="Editor View" title={view}>
                     <MenuItem onClick={setEditMode}>{EditorView.edit}</MenuItem>
                     <MenuItem onClick={setPreviewMode}>{EditorView.preview}</MenuItem>
                 </DropdownMenu>

@@ -70,32 +70,31 @@ export class VisGraphControls extends PureComponent<GraphControlsProps> {
                 </div>
                 <div className="lineage-visgraph-control-zoom">
                     <div className="btn-group">
-                        <button className="btn btn-default" onClick={this.zoomOut} type="button">
+                        <a className="btn btn-default" onClick={this.zoomOut}>
                             <i className="fa fa-search-minus" />
-                        </button>
-                        <button className="btn btn-default" onClick={this.zoomIn} type="button">
+                        </a>
+                        <a className="btn btn-default" onClick={this.zoomIn}>
                             <i className="fa fa-search-plus" />
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div className="lineage-visgraph-control-pan">
-                    <button
+                    <a
                         className="lineage-visgraph-control-pan-up btn btn-default"
                         onClick={this.panUp}
-                        type="button"
                     >
                         <i className="fa fa-arrow-up" />
-                    </button>
+                    </a>
                     <div className="btn-group">
-                        <button className="btn btn-default" onClick={this.panLeft} type="button">
+                        <a className="btn btn-default" onClick={this.panLeft}>
                             <i className="fa fa-arrow-left" />
-                        </button>
-                        <button className="btn btn-default" onClick={this.panDown} type="button">
+                        </a>
+                        <a className="btn btn-default" onClick={this.panDown}>
                             <i className="fa fa-arrow-down" />
-                        </button>
-                        <button className="btn btn-default" onClick={this.panRight} type="button">
+                        </a>
+                        <a className="btn btn-default" onClick={this.panRight}>
                             <i className="fa fa-arrow-right" />
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>

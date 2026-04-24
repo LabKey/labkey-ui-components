@@ -110,6 +110,7 @@ export const DropdownMenu: FC<DropdownMenuProps> = props => {
                 <a {...elemProps} href="#">
                     {title}
                     <span className="caret" />
+                    <span className="sr-only">{label}</span>
                 </a>
             )}
             {!asAnchor && <span {...elemProps}>{title}</span>}

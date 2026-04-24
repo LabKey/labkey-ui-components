@@ -18,6 +18,7 @@ interface Props {
 export const PaginationButton: FC<Props> = ({ className, disabled, iconClass, onClick, tooltip }) => {
     const clsName = classNames(className, 'pagination-button btn btn-default', {
         'disabled-button-with-tooltip': disabled,
+        disabled: disabled,
     });
     const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLButtonElement>(
         'pagination-button-overlay',
@@ -39,18 +40,18 @@ export const PaginationButton: FC<Props> = ({ className, disabled, iconClass, on
     );
 
     return (
-        <button
-            disabled={disabled}
-            className={clsName}
-            onClick={onClick_}
-            onPointerEnter={onMouseEnter}
-            onPointerLeave={onMouseLeave}
-            ref={targetRef}
-            type="button"
-        >
-            <i className={`fa ${iconClass}`} />
-            {show && createPortal(tooltip_, portalEl)}
-        </button>
+        <span ref={targetRef}>
+            <a
+                className={clsName}
+                onClick={onClick_}
+                onPointerEnter={onMouseEnter}
+                onPointerLeave={onMouseLeave}
+                type="button"
+            >
+                <i className={`fa ${iconClass}`} />
+                {show && createPortal(tooltip_, portalEl)}
+            </a>
+        </span>
     );
 };
 PaginationButton.displayName = 'PaginationButton';

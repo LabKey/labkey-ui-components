@@ -13,16 +13,16 @@ export const FiltersButton: FC<Props> = memo(props => {
     if (iconOnly) {
         return (
             <Tip caption="Filters">
-                <button className="grid-panel__button btn btn-default" onClick={onFilter} type="button">
+                <a className="grid-panel__button btn btn-default" onClick={onFilter}>
                     <i className="fa fa-filter" />
-                </button>
+                </a>
             </Tip>
         );
     }
 
     return (
-        <button className="grid-panel__button btn btn-default" onClick={onFilter} type="button">
+        <a className="grid-panel__button btn btn-default" onClick={onFilter}>
             <i className="fa fa-filter" /> Filters
-        </button>
+        </a>
     );
 });

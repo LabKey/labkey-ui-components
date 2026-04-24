@@ -54,8 +54,9 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
                         })}
                     >
                         {row.href && (
-                            <a href={row.href} className="horizontal-bar--link">
+                            <a className="horizontal-bar--link" href={row.href}>
                                 &nbsp;
+                                <span className="sr-only">{row.title}</span>
                             </a>
                         )}
                     </div>

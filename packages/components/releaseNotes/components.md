@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.33.0
+*Released*: 23 April 2026
 - Workflow UI updates
   - Add css for .lk-popover-behind-modal to adjust z-index
   - EditInlineField prop for pullRight for pencil icon

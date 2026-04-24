@@ -3,9 +3,21 @@ import { createPortal } from 'react-dom';
 import { generateId } from './util/utils';
 import { useOverlayTriggerState } from './OverlayTrigger';
 import { Popover } from './Popover';
-import { EMPTY_NS_SEQUENCE_WARNING, EMPTY_PS_SEQUENCE_WARNING } from './constants';
+import { EMPTY_COMPOUND_WARNING, EMPTY_NS_SEQUENCE_WARNING, EMPTY_PS_SEQUENCE_WARNING } from './constants';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { SCHEMAS } from './schemas';
+
+function getPopoverMessage(schemaQuery: SchemaQuery): string | undefined {
+    if (schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.PROTEIN_SEQUENCE, false)) {
+        return EMPTY_PS_SEQUENCE_WARNING;
+    } else if (schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.NUC_SEQUENCE, false)) {
+        return EMPTY_NS_SEQUENCE_WARNING;
+    } else if (schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.COMPOUND, false)) {
+        return EMPTY_COMPOUND_WARNING;
+    }
+
+    return undefined;
+}
 
 interface Props {
     schemaQuery: SchemaQuery;
@@ -16,9 +28,7 @@ export const UnidentifiedPill: FC<Props> = ({ schemaQuery }) => {
     // Note: we use useOverlayTriggerState instead of OverlayTrigger because the wrapping div from OverlayTrigger
     // causes layout problems.
     const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState(id, true, false);
-    const message = schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.PROTEIN_SEQUENCE, false)
-        ? EMPTY_PS_SEQUENCE_WARNING
-        : EMPTY_NS_SEQUENCE_WARNING;
+    const message = getPopoverMessage(schemaQuery);
 
     const popover = useMemo(
         () => (
@@ -37,8 +47,8 @@ export const UnidentifiedPill: FC<Props> = ({ schemaQuery }) => {
             ref={targetRef}
         >
             Unidentified
-            <span className="label-help-icon fa fa-question-circle" />
-            {show && createPortal(popover, portalEl)}
+            {message && <span className="label-help-icon fa fa-question-circle" />}
+            {show && message && createPortal(popover, portalEl)}
         </div>
     );
 };

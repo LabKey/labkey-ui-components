@@ -8,6 +8,13 @@ Components, models, actions, and utility functions for LabKey applications and p
   - EditInlineField prop for pullRight for pencil icon
   - UserDetailsPanel support for userId that is a group id
 
+### version 7.32.0
+*Released*: 23 April 2026
+- Add EMPTY_COMPOUND_WARNING
+- Add COMPOUND to SCHEMAS.DATA_CLASSES
+- hasIdentifiedCol: check for Compound schema
+- UnidentifiedPill: handle schemas that don't have defined messages, add support for Compound schema
+
 ### version 7.31.1
 *Released*: 23 April 2026
 - GitHub Issue 911: Fix overflow for field filtering modal

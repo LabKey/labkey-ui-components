@@ -67,6 +67,7 @@ export const DATA_CLASSES = {
     SCHEMA: DATA_CLASS_SCHEMA,
     CELL_LINE: new SchemaQuery(DATA_CLASS_SCHEMA, 'CellLine'),
     CONSTRUCT: new SchemaQuery(DATA_CLASS_SCHEMA, 'Construct'),
+    COMPOUND: new SchemaQuery(DATA_CLASS_SCHEMA, 'Compound'),
     EXPRESSION_SYSTEM: new SchemaQuery(DATA_CLASS_SCHEMA, 'ExpressionSystem'),
     MOLECULE: new SchemaQuery(DATA_CLASS_SCHEMA, 'Molecule'),
     MOLECULE_SET: new SchemaQuery(DATA_CLASS_SCHEMA, 'MoleculeSet'),

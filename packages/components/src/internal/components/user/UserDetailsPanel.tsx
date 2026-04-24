@@ -272,7 +272,9 @@ export const UserDetailsPanel: FC<Props> = props => {
                         <>
                             {!!name && <UserDetailRow label="Name" value={name} />}
                             <UserProp label="Email" prop="email" userProperties={userProperties} />
-                            {description && <UserProp label="Description" prop="description" userProperties={userProperties} />}
+                            {description && (
+                                <UserProp label="Description" prop="description" userProperties={userProperties} />
+                            )}
 
                             <hr className="principal-hr" />
                             <UserProp isDate label="Last Login" prop="lastLogin" userProperties={userProperties} />
@@ -349,7 +351,13 @@ export const UserDetailsPanel: FC<Props> = props => {
         }
 
         return (
-            <Modal cancelText={isGroup ? 'Close' : 'Cancel'} className="user-detail-modal" footer={footer} onCancel={toggleDetailsModal} title={renderHeader()}>
+            <Modal
+                cancelText={isGroup ? 'Close' : 'Cancel'}
+                className="user-detail-modal"
+                footer={footer}
+                onCancel={toggleDetailsModal}
+                title={renderHeader()}
+            >
                 {renderBody()}
             </Modal>
         );

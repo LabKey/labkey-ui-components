@@ -165,8 +165,6 @@ describe('EditInlineField', () => {
         renderWithAppContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
-                type="date"
-                value="2022-08-11 18:00:00"
                 column={
                     new QueryColumn({
                         format: 'MM/dd/YYYY HH:mm:ss',
@@ -174,6 +172,8 @@ describe('EditInlineField', () => {
                         rangeURI: DATETIME_RANGE_URI,
                     })
                 }
+                type="date"
+                value="2022-08-11 18:00:00"
             />,
             { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
         );
@@ -188,8 +188,6 @@ describe('EditInlineField', () => {
         renderWithAppContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
-                type="date"
-                value="2022-08-11 18:00:00.123"
                 column={
                     new QueryColumn({
                         format: 'MM/dd/YYYY HH:mm:ss',
@@ -197,6 +195,8 @@ describe('EditInlineField', () => {
                         rangeURI: DATETIME_RANGE_URI,
                     })
                 }
+                type="date"
+                value="2022-08-11 18:00:00.123"
             />,
             { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
         );
@@ -213,7 +213,6 @@ describe('EditInlineField', () => {
         renderWithAppContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
-                value="18:00:00.1234"
                 column={
                     new QueryColumn({
                         format: 'hh:mm a',
@@ -222,6 +221,7 @@ describe('EditInlineField', () => {
                         rangeURI: TIME_RANGE_URI,
                     })
                 }
+                value="18:00:00.1234"
             />,
             { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
         );

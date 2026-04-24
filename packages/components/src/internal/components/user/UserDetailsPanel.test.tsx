@@ -43,18 +43,18 @@ const SERVER_CONTEXT = {
     user: TEST_USER_APP_ADMIN,
     moduleContext: {
         samplemanagement: {},
-    }
+    },
 };
 
 describe('<UserDetailsPanel/>', () => {
     test('no principal', async () => {
         const component = (
             <UserDetailsPanel
+                api={API}
                 currentUser={TEST_USER_APP_ADMIN}
-                userId={undefined}
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
-                api={API}
+                userId={undefined}
             />
         );
         let container;
@@ -70,13 +70,13 @@ describe('<UserDetailsPanel/>', () => {
     test('with principal no buttons because of self', async () => {
         const component = (
             <UserDetailsPanel
+                api={API}
                 currentUser={TEST_USER_APP_ADMIN}
-                userId={JEST_SITE_ADMIN_USER_ID} // see components/package.json "jest" config for the setting of self's userId
+                isSelf={true}
+                onUsersStateChangeComplete={jest.fn()}
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
-                onUsersStateChangeComplete={jest.fn()}
-                isSelf={true}
-                api={API}
+                userId={JEST_SITE_ADMIN_USER_ID} // see components/package.json "jest" config for the setting of self's userId
             />
         );
         let container;
@@ -92,12 +92,12 @@ describe('<UserDetailsPanel/>', () => {
     test('with principal and buttons', async () => {
         const component = (
             <UserDetailsPanel
+                api={API}
                 currentUser={TEST_USER_APP_ADMIN}
-                userId={1005} // self is JEST_SITE_ADMIN_USER_ID which will prevent buttons from rendering
+                onUsersStateChangeComplete={jest.fn()}
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
-                onUsersStateChangeComplete={jest.fn()}
-                api={API}
+                userId={1005} // self is JEST_SITE_ADMIN_USER_ID which will prevent buttons from rendering
             />
         );
         let container;
@@ -113,14 +113,14 @@ describe('<UserDetailsPanel/>', () => {
     test('with principal and buttons not allowDelete or allowResetPassword', async () => {
         const component = (
             <UserDetailsPanel
-                currentUser={TEST_USER_APP_ADMIN}
-                userId={1005} // self is JEST_SITE_ADMIN_USER_ID which will prevent buttons from rendering
-                policy={POLICY}
-                rolesByUniqueName={ROLES_BY_NAME}
                 allowDelete={false}
                 allowResetPassword={false}
-                onUsersStateChangeComplete={jest.fn()}
                 api={API}
+                currentUser={TEST_USER_APP_ADMIN}
+                onUsersStateChangeComplete={jest.fn()}
+                policy={POLICY}
+                rolesByUniqueName={ROLES_BY_NAME}
+                userId={1005} // self is JEST_SITE_ADMIN_USER_ID which will prevent buttons from rendering
             />
         );
         let container;
@@ -136,16 +136,16 @@ describe('<UserDetailsPanel/>', () => {
     test('unknown user props', async () => {
         const component = (
             <UserDetailsPanel
-                currentUser={TEST_USER_APP_ADMIN}
-                userId={1234}
-                displayName="TestDisplayName"
-                policy={POLICY}
-                rolesByUniqueName={ROLES_BY_NAME}
-                onUsersStateChangeComplete={jest.fn()}
                 api={{
                     ...API,
                     getUserPropertiesForOther: jest.fn().mockResolvedValue({}),
                 }}
+                currentUser={TEST_USER_APP_ADMIN}
+                displayName="TestDisplayName"
+                onUsersStateChangeComplete={jest.fn()}
+                policy={POLICY}
+                rolesByUniqueName={ROLES_BY_NAME}
+                userId={1234}
             />
         );
         let container;
@@ -163,10 +163,6 @@ describe('<UserDetailsPanel/>', () => {
         const groupPrincipal = Principal.create({ userId: GROUP_ID, type: 'g', displayName: 'Test Group' });
         const component = (
             <UserDetailsPanel
-                currentUser={TEST_USER_APP_ADMIN}
-                userId={GROUP_ID}
-                policy={POLICY}
-                rolesByUniqueName={ROLES_BY_NAME}
                 api={{
                     ...API,
                     getPrincipalById: jest.fn().mockResolvedValue(groupPrincipal),
@@ -175,6 +171,10 @@ describe('<UserDetailsPanel/>', () => {
                         DisplayName: 'Test Group',
                     }),
                 }}
+                currentUser={TEST_USER_APP_ADMIN}
+                policy={POLICY}
+                rolesByUniqueName={ROLES_BY_NAME}
+                userId={GROUP_ID}
             />
         );
         let container;

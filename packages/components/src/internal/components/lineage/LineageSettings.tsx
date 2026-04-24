@@ -144,7 +144,7 @@ export const LineageSettings: FC<Props> = memo(props => {
                     value={options.grouping?.generations ?? DEFAULT_GROUPING_OPTIONS.generations}
                 />
 
-                <label>
+                <label htmlFor="child-generations">
                     Child Generations
                     <LabelHelpTip placement="top" title="Child Generations">
                         <div className="lineage-settings__tip-body">
@@ -157,8 +157,9 @@ export const LineageSettings: FC<Props> = memo(props => {
                     </LabelHelpTip>
                 </label>
                 <input
-                    defaultValue={options.grouping?.childDepth ?? DEFAULT_GROUPING_OPTIONS.childDepth}
                     className="form-control"
+                    defaultValue={options.grouping?.childDepth ?? DEFAULT_GROUPING_OPTIONS.childDepth}
+                    id="child-generations"
                     max={DEFAULT_GROUPING_OPTIONS.childDepth * 2}
                     min={0}
                     name="childDepth"
@@ -166,7 +167,7 @@ export const LineageSettings: FC<Props> = memo(props => {
                     type="number"
                 />
 
-                <label>
+                <label htmlFor="parent-generations">
                     Parent Generations
                     <LabelHelpTip placement="top" title="Parent Generations">
                         <div className="lineage-settings__tip-body">
@@ -179,8 +180,9 @@ export const LineageSettings: FC<Props> = memo(props => {
                     </LabelHelpTip>
                 </label>
                 <input
-                    defaultValue={options.grouping?.parentDepth ?? DEFAULT_GROUPING_OPTIONS.parentDepth}
                     className="form-control"
+                    defaultValue={options.grouping?.parentDepth ?? DEFAULT_GROUPING_OPTIONS.parentDepth}
+                    id="parent-generations"
                     max={DEFAULT_GROUPING_OPTIONS.parentDepth * 2}
                     min={0}
                     name="parentDepth"
@@ -188,7 +190,7 @@ export const LineageSettings: FC<Props> = memo(props => {
                     type="number"
                 />
 
-                <label>
+                <label htmlFor="combine-threshold">
                     Combine Generation Threshold
                     <LabelHelpTip placement="top" title="Combine Generation Threshold">
                         <div className="lineage-settings__tip-body">
@@ -202,8 +204,9 @@ export const LineageSettings: FC<Props> = memo(props => {
                     </LabelHelpTip>
                 </label>
                 <input
-                    defaultValue={options.grouping?.combineSize ?? DEFAULT_GROUPING_OPTIONS.combineSize}
                     className="form-control"
+                    defaultValue={options.grouping?.combineSize ?? DEFAULT_GROUPING_OPTIONS.combineSize}
+                    id="combine-threshold"
                     min={GROUPING_COMBINED_SIZE_MIN}
                     name="combineSize"
                     onChange={onGroupingChange}
@@ -224,7 +227,13 @@ export const LineageSettings: FC<Props> = memo(props => {
 
                 {options.originalFilters.map(filter => (
                     <div key={filter.field}>
-                        <input defaultChecked onChange={onFilterChange} name={filter.field}  aria-label={filter.field} type="checkbox" />
+                        <input
+                            aria-label={filter.field}
+                            defaultChecked
+                            name={filter.field}
+                            onChange={onFilterChange}
+                            type="checkbox"
+                        />
                         <span className="lineage-settings__filter-label">
                             {filter.field} = {filter.value.join(' OR ')}
                         </span>

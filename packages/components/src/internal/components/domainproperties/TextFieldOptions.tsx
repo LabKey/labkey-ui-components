@@ -77,6 +77,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
         const { radio } = this.state;
         const textOptionsFormControl = (
             <input
+                aria-label="Maximum Text Length"
                 type="number"
                 id={createFormInputId(DOMAIN_FIELD_SCALE, domainIndex, index)}
                 name={createFormInputName(DOMAIN_FIELD_SCALE)}
@@ -104,6 +105,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                 <div className="row">
                     <div className="col-xs-12 domain-text-options-col">
                         <input
+                            aria-labelledby="unlimited-length-label"
                             type="radio"
                             className="form-control domain-text-options-radio1 domain-field-float-left"
                             value={DOMAIN_FIELD_MAX_LENGTH}
@@ -112,12 +114,13 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                             id={createFormInputId(DOMAIN_FIELD_MAX_LENGTH, domainIndex, index)}
                             disabled={isFieldFullyLocked(lockType)}
                         />
-                        <div>Unlimited</div>
+                        <div id="unlimited-length-label">Unlimited</div>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-xs-12">
                         <input
+                            aria-labelledby="custom-length-label"
                             type="radio"
                             className="form-control domain-text-options-radio2 domain-field-float-left"
                             value={DOMAIN_FIELD_CUSTOM_LENGTH}
@@ -125,7 +128,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                             onChange={this.handleChange}
                             id={createFormInputId(DOMAIN_FIELD_CUSTOM_LENGTH, domainIndex, index)}
                         />
-                        <span className="domain-text-options-length domain-field-float-left">
+                        <span className="domain-text-options-length domain-field-float-left" id="custom-length-label">
                             No longer than {textOptionsFormControl} characters
                         </span>
                     </div>

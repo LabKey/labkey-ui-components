@@ -126,11 +126,12 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
                         {this.renderRowTextbox('Error Message', DOMAIN_VALIDATOR_ERRORMESSAGE, validator.errorMessage)}
 
                         <div className="row">
-                            <div className="col-xs-4">
+                            <div className="col-xs-4" id="name-label">
                                 <div>Name *</div>
                             </div>
                             <div className="col-xs-8">
                                 <input
+                                    aria-labelledby="name-label"
                                     className="form-control"
                                     type="text"
                                     id={createFormInputId(DOMAIN_VALIDATOR_NAME, domainIndex, validatorIndex)}

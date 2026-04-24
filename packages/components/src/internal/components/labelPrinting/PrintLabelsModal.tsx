@@ -223,9 +223,10 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                 <>
                     <div className="bottom-padding">{message}</div>
                     <div>
-                        <label>Number of copies</label>
+                        <label htmlFor="num-copies">Number of copies</label>
                         <input
                             className="form-control label-printing--copies"
+                            id="num-copies"
                             min={1}
                             name="numCopies"
                             onChange={this.onCopyCountChange}
@@ -234,7 +235,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                         />
                         {showSelection && (
                             <div className="top-padding">
-                                <label>Selected samples to print</label>
+                                <label htmlFor="label-samples">Selected samples to print</label>
                                 <QuerySelect
                                     formsy={false}
                                     fireQSChangeOnInit={true}
@@ -254,7 +255,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                             </div>
                         )}
                         <div className="top-padding">
-                            <label>Label template</label>
+                            <label htmlFor="label-template">Label template</label>
                             <QuerySelect
                                 formsy={false}
                                 fireQSChangeOnInit

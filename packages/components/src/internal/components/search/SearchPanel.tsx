@@ -106,6 +106,7 @@ export const SearchPanelImpl: FC<SearchPanelImplProps> = memo(props => {
                             <i className="fa fa-search search-icon" />
                         </span>
                         <input
+                            aria-label="Search"
                             className="form-control search-input"
                             onChange={onSearchChange}
                             placeholder="Search"

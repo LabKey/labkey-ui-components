@@ -49,7 +49,7 @@ const SettingsInput: FC<SettingsInputProps> = memo(({ children, description, lab
         <div className="form-group">
             <div>
                 {children}
-                <div>
+                <div id="settings-label">
                     {label}{' '}
                     <LabelHelpTip title={label}>
                         <p>{description}</p>
@@ -58,6 +58,7 @@ const SettingsInput: FC<SettingsInputProps> = memo(({ children, description, lab
             </div>
             <div>
                 <input
+                    aria-labelledby="settings-label"
                     className="form-control"
                     id={name}
                     name={name}

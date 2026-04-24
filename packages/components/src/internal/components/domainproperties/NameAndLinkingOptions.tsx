@@ -103,8 +103,9 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                 </div>
                 <div className="row">
                     <div className="col-xs-5">
-                        <div className="domain-field-label">Description</div>
+                        <div className="domain-field-label" id="description-label">Description</div>
                         <textarea
+                            aria-labelledby="description-label"
                             className="form-control"
                             disabled={isFieldFullyLocked(field.lockType)}
                             id={createFormInputId(DOMAIN_FIELD_DESCRIPTION, domainIndex, index)}
@@ -115,8 +116,11 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                         />
                     </div>
                     <div className="col-xs-3">
-                        <div className="domain-field-label">Label</div>
+                        <div className="domain-field-label" id="label-label">
+                            Label
+                        </div>
                         <input
+                            aria-labelledby="label-label"
                             className="form-control"
                             disabled={isFieldFullyLocked(field.lockType)}
                             id={createFormInputId(DOMAIN_FIELD_LABEL, domainIndex, index)}
@@ -132,10 +136,12 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                                     <div className="domain-field-label">
                                         <DomainFieldLabel
                                             helpTipBody={this.getImportAliasHelpText()}
+                                            id="import-aliases-label"
                                             label="Import Aliases"
                                         />
                                     </div>
                                     <input
+                                        aria-labelledby="import-aliases-label"
                                         className="form-control"
                                         disabled={isFieldFullyLocked(field.lockType)}
                                         id={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, domainIndex, index)}
@@ -164,9 +170,10 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                                     />
                                 )}
                             <div className="domain-field-label">
-                                <DomainFieldLabel helpTipBody={this.getURLHelpText()} label="URL" />
+                                <DomainFieldLabel helpTipBody={this.getURLHelpText()} id="url-label" label="URL" />
                             </div>
                             <input
+                                aria-labelledby="url-label"
                                 className="form-control"
                                 disabled={isFieldFullyLocked(field.lockType)}
                                 id={createFormInputId(DOMAIN_FIELD_URL, domainIndex, index)}
@@ -178,6 +185,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                             {/*GitHub Issue 503: Field editor URL option to set target window (i.e. _blank)*/}
                             <div className="domain-text-options-col">
                                 <input
+                                    aria-labelledby="new-window-label"
                                     checked={field.isTargetBlank}
                                     className="form-control domain-text-option-istargetblank"
                                     disabled={isFieldFullyLocked(field.lockType) || isEmptyString(field.URL)}
@@ -186,7 +194,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                                     onChange={this.handleURLTargetChange}
                                     type="checkbox"
                                 />
-                                <span>Open links in a new tab</span>
+                                <span id="new-window-label">Open links in a new tab</span>
                             </div>
                         </div>
                     )}

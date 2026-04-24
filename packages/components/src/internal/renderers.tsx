@@ -108,6 +108,7 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
     if (editing) {
         return (
             <input
+                aria-label="Column label"
                 autoFocus
                 defaultValue={title}
                 onBlur={onEditFinish}

@@ -121,6 +121,7 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
     return (
         <div className="concept-search-container">
             <input
+                aria-label={'Search ' + ontology.abbreviation}
                 type="text"
                 className={className}
                 name={inputName}

@@ -23,7 +23,7 @@ import { insertColumnFilter, Operation, QueryColumn } from '../../../public/Quer
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { caseInsensitive } from '../../util/utils';
+import { caseInsensitive, stringToHtmlId } from '../../util/utils';
 
 import { getContainerFilterForLookups } from '../../query/api';
 
@@ -157,7 +157,14 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
 
         if (includeLabelField) {
             const fieldName = getQueryFormLabelFieldName(col.name);
-            return <FormsyInput name={fieldName} type="hidden" value={this.state.labels[fieldName]} />;
+            return (
+                <FormsyInput
+                    id={stringToHtmlId(col.name)}
+                    name={fieldName}
+                    type="hidden"
+                    value={this.state.labels[fieldName]}
+                />
+            );
         }
 
         return null;

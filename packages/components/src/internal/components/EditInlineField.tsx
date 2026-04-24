@@ -257,6 +257,7 @@ export const EditInlineField: FC<Props> = memo(props => {
             {state.editing && isTextArea && (
                 <span className="input-group">
                     <textarea
+                        aria-label={label ?? name}
                         autoFocus
                         className="form-control"
                         cols={100}
@@ -281,6 +282,7 @@ export const EditInlineField: FC<Props> = memo(props => {
             {state.editing && !column && isText && (
                 <span className="input-group input-sizer">
                     <input
+                        aria-label={label ?? name}
                         autoFocus
                         className="form-control"
                         defaultValue={_value}

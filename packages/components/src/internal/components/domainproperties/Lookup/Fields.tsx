@@ -18,6 +18,7 @@ interface ILookupProps {
 }
 
 interface IFolderSelectProps {
+    ariaLabelledBy?: string;
     disabled?: boolean;
     id: string;
     onChange: (any) => any;
@@ -73,11 +74,11 @@ class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectI
     }
 
     render() {
-        const { context } = this.props;
+        const { context, ariaLabelledBy } = this.props;
         const { containers } = this.state;
 
         return (
-            <select {...this.props} className="form-control">
+            <select {...this.props} aria-labelledby={ariaLabelledBy} className="form-control">
                 {context.activeContainer && (
                     <option key="_current" value="">
                         Current {context.activeContainer.type.toLowerCase() === 'project' ? 'Project' : 'Folder'}
@@ -96,6 +97,7 @@ class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectI
 }
 
 interface ITargetTableSelectProps {
+    ariaLabelledBy?: string;
     containerPath: string;
     disabled?: boolean;
     id: string;
@@ -232,7 +234,7 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
     }
 
     render() {
-        const { id, onChange, value, name, disabled, lookupIsValid, shouldDisableNonExists } = this.props;
+        const { ariaLabelledBy, id, onChange, value, name, disabled, lookupIsValid, shouldDisableNonExists } = this.props;
         const { loading, queries, initialQueryName, initialQueryInvalid } = this.state;
 
         const isEmpty = queries?.length === 0;
@@ -247,12 +249,13 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
 
         return (
             <select
+                aria-labelledby={ariaLabelledBy}
                 className="form-control"
                 disabled={loading || disabledField}
-                value={value}
                 id={id}
                 name={name}
                 onChange={onChange}
+                value={value}
             >
                 {value && disabledField && (
                     <option key="_disabled" value={value}>
@@ -297,6 +300,7 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
 }
 
 interface ISchemaSelectProps {
+    ariaLabelledBy?: string;
     containerPath: string;
     disabled?: boolean;
     id: string;
@@ -323,6 +327,7 @@ export class SchemaSelect extends React.PureComponent<ISchemaSelectProps, any> {
 export type SchemaSelectProps = ISchemaSelectProps & ILookupProps;
 
 export interface ISchemaSelectImplState {
+    ariaLabelledBy?: string;
     containerPath?: string;
     loading?: boolean;
     prevPath?: string;
@@ -401,7 +406,7 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
     }
 
     render() {
-        const { id, onChange, value, name, disabled } = this.props;
+        const { ariaLabelledBy, id, onChange, value, name, disabled } = this.props;
         const { schemas, loading } = this.state;
 
         const isEmpty = schemas?.length === 0;
@@ -410,6 +415,7 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
 
         return (
             <select
+                aria-labelledby={ariaLabelledBy}
                 className="form-control"
                 disabled={disabled}
                 value={value}

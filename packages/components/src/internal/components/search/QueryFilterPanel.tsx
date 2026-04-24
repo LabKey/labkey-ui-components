@@ -282,13 +282,14 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                             altQueryName !== SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query && (
                                 <div className="form-check list-group-item">
                                     <input
+                                        aria-labelledby="all-data-label"
                                         checked={hasAllValuesInQuery}
                                         className="form-check-input filter-faceted__checkbox"
                                         name="field-value-allvalues-check"
                                         onChange={event => onAllValuesInQueryChange(event.target.checked)}
                                         type="checkbox"
                                     />
-                                    <div className="filter-modal__fields-col-any-msg">
+                                    <div className="filter-modal__fields-col-any-msg" id="all-data-label">
                                         {allInQueryFilterLabel ?? 'All data'}
                                     </div>
                                 </div>
@@ -296,13 +297,14 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                         {entityDataType?.supportHasNoValueInQuery && (
                             <div className="form-check list-group-item">
                                 <input
+                                    aria-labelledby="without-data-label"
                                     checked={hasNotInQueryFilter}
                                     className="form-check-input filter-faceted__checkbox"
                                     name="field-value-nodata-check"
                                     onChange={event => onHasNoValueInQueryChange(event.target.checked)}
                                     type="checkbox"
                                 />
-                                <div className="filter-modal__fields-col-nodata-msg">
+                                <div className="filter-modal__fields-col-nodata-msg" id="without-data-label">
                                     {hasNotInQueryFilterLabel ?? 'Without data from this type'}
                                 </div>
                             </div>

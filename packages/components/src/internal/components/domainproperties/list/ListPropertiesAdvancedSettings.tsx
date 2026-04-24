@@ -72,9 +72,10 @@ interface TitleIndexFieldProps {
 
 const TitleIndexField: FC<TitleIndexFieldProps> = memo(({ name, titleTemplate, onInputChange }) => (
     <div>
-        <DomainFieldLabel label="Document title" helpTipBody={DOCUMENT_TITLE_TIP} />
+        <DomainFieldLabel id="document-title-label" label="Document title" helpTipBody={DOCUMENT_TITLE_TIP} />
         <span>
             <input
+                aria-describedby="document-title-label"
                 className="form-control list__advanced-settings-modal__text-field"
                 id={name}
                 type="text"
@@ -144,6 +145,7 @@ export const IndexField: FC<IndexFieldProps> = memo(props => {
 
             {bodySetting === 2 && (
                 <input
+                    aria-label="Custom index template"
                     id={id}
                     type="text"
                     value={bodyTemplate}

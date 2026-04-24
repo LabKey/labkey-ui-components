@@ -132,6 +132,7 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
                 </div>
                 <div className="col-xs-3">
                     <input
+                        aria-label="Preview text"
                         className="form-control"
                         defaultValue="Preview Text"
                         id={'domain-validator-preview-' + validatorIndex}

@@ -43,6 +43,7 @@ export class BooleanFieldOptions extends PureComponent<BooleanFieldProps> {
                     <div className="col-xs-12">
                         <div className="domain-field-label">
                             <DomainFieldLabel
+                                id="boolean-format-label"
                                 label="Format for Boolean Values"
                                 helpTipBody={this.getFormatHelpText()}
                             />
@@ -52,6 +53,7 @@ export class BooleanFieldOptions extends PureComponent<BooleanFieldProps> {
                 <div className="row">
                     <div className="col-xs-3">
                         <input
+                            aria-labelledby="boolean-format-label"
                             className="form-control"
                             type="text"
                             value={format || ''}

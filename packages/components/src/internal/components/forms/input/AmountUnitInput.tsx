@@ -6,7 +6,7 @@ import { QuerySelect } from '../QuerySelect';
 import { getContainerFilterForLookups } from '../../../query/api';
 import { FieldLabel } from '../FieldLabel';
 import { InputRendererProps } from './types';
-import { caseInsensitive, generateId, getInvalidSampleAmountMessage } from '../../../util/utils';
+import { caseInsensitive, generateId, getInvalidSampleAmountMessage, stringToHtmlId } from '../../../util/utils';
 import { FormsyInput } from './FormsyReactComponents';
 import { Operation } from '../../../../public/QueryColumn';
 import { STORED_AMOUNT_FIELDS } from '../../samples/constants';
@@ -58,6 +58,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
         return null;
     }
 
+    // TODO this still results in an empty form label
     return (
         <>
             <div className="form-group row">
@@ -66,7 +67,6 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     id={id}
                     isDisabled={disabled}
                     labelOverlayProps={{
-                        inputId: amountCol.name,
                         description: 'The amount and units of this sample currently on hand.',
                         label: 'Amount and Units',
                         isFormsy: false,
@@ -78,6 +78,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     }}
                 />
                 <TextInput
+                    aria-label="Amount"
                     disableInput={disabled}
                     elementWrapperClassName=""
                     hasMixedValue={hasMixedAmountValue}
@@ -113,7 +114,12 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     valueColumn={unitCol.lookup.keyColumn}
                 />
                 {allowFieldDisable && (
-                    <FormsyInput name={unitCol.name + '::enabled'} type="hidden" value={disabled ? 'false' : 'true'} />
+                    <FormsyInput
+                        id={stringToHtmlId(unitCol.name)}
+                        name={unitCol.name + '::enabled'}
+                        type="hidden"
+                        value={disabled ? 'false' : 'true'}
+                    />
                 )}
             </div>
             <Alert>{amountError}</Alert>

@@ -64,22 +64,24 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                     <div
                       class="col-xs-3 col-lg-4"
                     >
-                      Comment Sort 
-                      <span
-                        class="domain-no-wrap"
-                      >
-                        Direction
-                        <div
-                          class="overlay-trigger"
+                      <span>
+                        Comment Sort 
+                        <span
+                          class="domain-no-wrap"
                         >
-                          <span
-                            class="label-help-target"
+                          Direction
+                          <div
+                            class="overlay-trigger"
                           >
                             <span
-                              class="label-help-icon fa fa-question-circle"
-                            />
-                          </span>
-                        </div>
+                              class="label-help-target"
+                            >
+                              <span
+                                class="label-help-icon fa fa-question-circle"
+                              />
+                            </span>
+                          </div>
+                        </span>
                       </span>
                     </div>
                     <div
@@ -182,28 +184,33 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                     <div
                       class="col-xs-3 col-lg-4"
                     >
-                      Singular Item 
                       <span
-                        class="domain-no-wrap"
+                        id="singular-item-name-label"
                       >
-                        Name
-                        <div
-                          class="overlay-trigger"
+                        Singular Item 
+                        <span
+                          class="domain-no-wrap"
                         >
-                          <span
-                            class="label-help-target"
+                          Name
+                          <div
+                            class="overlay-trigger"
                           >
                             <span
-                              class="label-help-icon fa fa-question-circle"
-                            />
-                          </span>
-                        </div>
+                              class="label-help-target"
+                            >
+                              <span
+                                class="label-help-icon fa fa-question-circle"
+                              />
+                            </span>
+                          </div>
+                        </span>
                       </span>
                     </div>
                     <div
                       class="col-xs-9 col-lg-8"
                     >
                       <input
+                        aria-labelledby="singular-item-name-label"
                         class="form-control"
                         id="singularItemName"
                         type="text"
@@ -217,28 +224,33 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                     <div
                       class="col-xs-3 col-lg-4"
                     >
-                      Plural Items 
                       <span
-                        class="domain-no-wrap"
+                        id="plural-items-name-label"
                       >
-                        Name
-                        <div
-                          class="overlay-trigger"
+                        Plural Items 
+                        <span
+                          class="domain-no-wrap"
                         >
-                          <span
-                            class="label-help-target"
+                          Name
+                          <div
+                            class="overlay-trigger"
                           >
                             <span
-                              class="label-help-icon fa fa-question-circle"
-                            />
-                          </span>
-                        </div>
+                              class="label-help-target"
+                            >
+                              <span
+                                class="label-help-icon fa fa-question-circle"
+                              />
+                            </span>
+                          </div>
+                        </span>
                       </span>
                     </div>
                     <div
                       class="col-xs-9 col-lg-8"
                     >
                       <input
+                        aria-labelledby="plural-items-name-label"
                         class="form-control"
                         id="pluralItemName"
                         type="text"
@@ -263,22 +275,24 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                 <div
                   class="col-xs-3 col-lg-4"
                 >
-                  Populate 'Assigned To' Field 
-                  <span
-                    class="domain-no-wrap"
-                  >
-                    from
-                    <div
-                      class="overlay-trigger"
+                  <span>
+                    Populate 'Assigned To' Field 
+                    <span
+                      class="domain-no-wrap"
                     >
-                      <span
-                        class="label-help-target"
+                      from
+                      <div
+                        class="overlay-trigger"
                       >
                         <span
-                          class="label-help-icon fa fa-question-circle"
-                        />
-                      </span>
-                    </div>
+                          class="label-help-target"
+                        >
+                          <span
+                            class="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                    </span>
                   </span>
                 </div>
                 <div
@@ -302,22 +316,24 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                 <div
                   class="col-xs-3 col-lg-4"
                 >
-                  Default User 
-                  <span
-                    class="domain-no-wrap"
-                  >
-                    Assignment
-                    <div
-                      class="overlay-trigger"
+                  <span>
+                    Default User 
+                    <span
+                      class="domain-no-wrap"
                     >
-                      <span
-                        class="label-help-target"
+                      Assignment
+                      <div
+                        class="overlay-trigger"
                       >
                         <span
-                          class="label-help-icon fa fa-question-circle"
-                        />
-                      </span>
-                    </div>
+                          class="label-help-target"
+                        >
+                          <span
+                            class="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                    </span>
                   </span>
                 </div>
                 <div
@@ -341,22 +357,24 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                 <div
                   class="col-xs-3 col-lg-4"
                 >
-                  Default Related Issue 
-                  <span
-                    class="domain-no-wrap"
-                  >
-                    Folder
-                    <div
-                      class="overlay-trigger"
+                  <span>
+                    Default Related Issue 
+                    <span
+                      class="domain-no-wrap"
                     >
-                      <span
-                        class="label-help-target"
+                      Folder
+                      <div
+                        class="overlay-trigger"
                       >
                         <span
-                          class="label-help-icon fa fa-question-circle"
-                        />
-                      </span>
-                    </div>
+                          class="label-help-target"
+                        >
+                          <span
+                            class="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                    </span>
                   </span>
                 </div>
                 <div
@@ -470,22 +488,24 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                   <div
                     class="col-xs-3 col-lg-4"
                   >
-                    Comment Sort 
-                    <span
-                      class="domain-no-wrap"
-                    >
-                      Direction
-                      <div
-                        class="overlay-trigger"
+                    <span>
+                      Comment Sort 
+                      <span
+                        class="domain-no-wrap"
                       >
-                        <span
-                          class="label-help-target"
+                        Direction
+                        <div
+                          class="overlay-trigger"
                         >
                           <span
-                            class="label-help-icon fa fa-question-circle"
-                          />
-                        </span>
-                      </div>
+                            class="label-help-target"
+                          >
+                            <span
+                              class="label-help-icon fa fa-question-circle"
+                            />
+                          </span>
+                        </div>
+                      </span>
                     </span>
                   </div>
                   <div
@@ -588,28 +608,33 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                   <div
                     class="col-xs-3 col-lg-4"
                   >
-                    Singular Item 
                     <span
-                      class="domain-no-wrap"
+                      id="singular-item-name-label"
                     >
-                      Name
-                      <div
-                        class="overlay-trigger"
+                      Singular Item 
+                      <span
+                        class="domain-no-wrap"
                       >
-                        <span
-                          class="label-help-target"
+                        Name
+                        <div
+                          class="overlay-trigger"
                         >
                           <span
-                            class="label-help-icon fa fa-question-circle"
-                          />
-                        </span>
-                      </div>
+                            class="label-help-target"
+                          >
+                            <span
+                              class="label-help-icon fa fa-question-circle"
+                            />
+                          </span>
+                        </div>
+                      </span>
                     </span>
                   </div>
                   <div
                     class="col-xs-9 col-lg-8"
                   >
                     <input
+                      aria-labelledby="singular-item-name-label"
                       class="form-control"
                       id="singularItemName"
                       type="text"
@@ -623,28 +648,33 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                   <div
                     class="col-xs-3 col-lg-4"
                   >
-                    Plural Items 
                     <span
-                      class="domain-no-wrap"
+                      id="plural-items-name-label"
                     >
-                      Name
-                      <div
-                        class="overlay-trigger"
+                      Plural Items 
+                      <span
+                        class="domain-no-wrap"
                       >
-                        <span
-                          class="label-help-target"
+                        Name
+                        <div
+                          class="overlay-trigger"
                         >
                           <span
-                            class="label-help-icon fa fa-question-circle"
-                          />
-                        </span>
-                      </div>
+                            class="label-help-target"
+                          >
+                            <span
+                              class="label-help-icon fa fa-question-circle"
+                            />
+                          </span>
+                        </div>
+                      </span>
                     </span>
                   </div>
                   <div
                     class="col-xs-9 col-lg-8"
                   >
                     <input
+                      aria-labelledby="plural-items-name-label"
                       class="form-control"
                       id="pluralItemName"
                       type="text"
@@ -669,22 +699,24 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
               <div
                 class="col-xs-3 col-lg-4"
               >
-                Populate 'Assigned To' Field 
-                <span
-                  class="domain-no-wrap"
-                >
-                  from
-                  <div
-                    class="overlay-trigger"
+                <span>
+                  Populate 'Assigned To' Field 
+                  <span
+                    class="domain-no-wrap"
                   >
-                    <span
-                      class="label-help-target"
+                    from
+                    <div
+                      class="overlay-trigger"
                     >
                       <span
-                        class="label-help-icon fa fa-question-circle"
-                      />
-                    </span>
-                  </div>
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </span>
                 </span>
               </div>
               <div
@@ -708,22 +740,24 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
               <div
                 class="col-xs-3 col-lg-4"
               >
-                Default User 
-                <span
-                  class="domain-no-wrap"
-                >
-                  Assignment
-                  <div
-                    class="overlay-trigger"
+                <span>
+                  Default User 
+                  <span
+                    class="domain-no-wrap"
                   >
-                    <span
-                      class="label-help-target"
+                    Assignment
+                    <div
+                      class="overlay-trigger"
                     >
                       <span
-                        class="label-help-icon fa fa-question-circle"
-                      />
-                    </span>
-                  </div>
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </span>
                 </span>
               </div>
               <div
@@ -747,22 +781,24 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
               <div
                 class="col-xs-3 col-lg-4"
               >
-                Default Related Issue 
-                <span
-                  class="domain-no-wrap"
-                >
-                  Folder
-                  <div
-                    class="overlay-trigger"
+                <span>
+                  Default Related Issue 
+                  <span
+                    class="domain-no-wrap"
                   >
-                    <span
-                      class="label-help-target"
+                    Folder
+                    <div
+                      class="overlay-trigger"
                     >
                       <span
-                        class="label-help-icon fa fa-question-circle"
-                      />
-                    </span>
-                  </div>
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </span>
                 </span>
               </div>
               <div

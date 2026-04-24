@@ -57,17 +57,20 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
               <div
                 class="col-xs-2"
               >
-                <span
-                  class="domain-no-wrap"
-                >
-                  Name
-                   *
+                <span>
+                  <span
+                    class="domain-no-wrap"
+                  >
+                    Name
+                     *
+                  </span>
                 </span>
               </div>
               <div
                 class="col-xs-10"
               >
                 <input
+                  aria-label="Name"
                   class="form-control"
                   id="entity-name"
                   placeholder="Enter a name for this sample type"
@@ -90,27 +93,30 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
               <div
                 class="col-xs-2"
               >
-                <span
-                  class="domain-no-wrap"
-                >
-                  Description
-                  <div
-                    class="overlay-trigger"
+                <span>
+                  <span
+                    class="domain-no-wrap"
                   >
-                    <span
-                      class="label-help-target"
+                    Description
+                    <div
+                      class="overlay-trigger"
                     >
                       <span
-                        class="label-help-icon fa fa-question-circle"
-                      />
-                    </span>
-                  </div>
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </span>
                 </span>
               </div>
               <div
                 class="col-xs-10"
               >
                 <textarea
+                  aria-label="Description"
                   class="form-control"
                   id="entity-description"
                 />
@@ -125,22 +131,24 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
                 <div
                   class="name-expression-label-div"
                 >
-                  Naming 
-                  <span
-                    class="domain-no-wrap"
-                  >
-                    Pattern
-                    <div
-                      class="overlay-trigger"
+                  <span>
+                    Naming 
+                    <span
+                      class="domain-no-wrap"
                     >
-                      <span
-                        class="label-help-target"
+                      Pattern
+                      <div
+                        class="overlay-trigger"
                       >
                         <span
-                          class="label-help-icon fa fa-question-circle"
-                        />
-                      </span>
-                    </div>
+                          class="label-help-target"
+                        >
+                          <span
+                            class="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                    </span>
                   </span>
                 </div>
               </div>
@@ -148,6 +156,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
                 class="col-xs-10"
               >
                 <input
+                  aria-label="Naming Pattern"
                   class="form-control naming-pattern-border-warning"
                   id="entity-nameExpression"
                   placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
@@ -201,22 +210,24 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
             <div
               class="col-xs-2"
             >
-              Label 
-              <span
-                class="domain-no-wrap"
-              >
-                Color
-                <div
-                  class="overlay-trigger"
+              <span>
+                Label 
+                <span
+                  class="domain-no-wrap"
                 >
-                  <span
-                    class="label-help-target"
+                  Color
+                  <div
+                    class="overlay-trigger"
                   >
                     <span
-                      class="label-help-icon fa fa-question-circle"
-                    />
-                  </span>
-                </div>
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                </span>
               </span>
             </div>
             <div
@@ -327,17 +338,20 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
             <div
               class="col-xs-2"
             >
-              <span
-                class="domain-no-wrap"
-              >
-                Name
-                 *
+              <span>
+                <span
+                  class="domain-no-wrap"
+                >
+                  Name
+                   *
+                </span>
               </span>
             </div>
             <div
               class="col-xs-10"
             >
               <input
+                aria-label="Name"
                 class="form-control"
                 id="entity-name"
                 placeholder="Enter a name for this sample type"
@@ -360,27 +374,30 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
             <div
               class="col-xs-2"
             >
-              <span
-                class="domain-no-wrap"
-              >
-                Description
-                <div
-                  class="overlay-trigger"
+              <span>
+                <span
+                  class="domain-no-wrap"
                 >
-                  <span
-                    class="label-help-target"
+                  Description
+                  <div
+                    class="overlay-trigger"
                   >
                     <span
-                      class="label-help-icon fa fa-question-circle"
-                    />
-                  </span>
-                </div>
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                </span>
               </span>
             </div>
             <div
               class="col-xs-10"
             >
               <textarea
+                aria-label="Description"
                 class="form-control"
                 id="entity-description"
               />
@@ -395,22 +412,24 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
               <div
                 class="name-expression-label-div"
               >
-                Naming 
-                <span
-                  class="domain-no-wrap"
-                >
-                  Pattern
-                  <div
-                    class="overlay-trigger"
+                <span>
+                  Naming 
+                  <span
+                    class="domain-no-wrap"
                   >
-                    <span
-                      class="label-help-target"
+                    Pattern
+                    <div
+                      class="overlay-trigger"
                     >
                       <span
-                        class="label-help-icon fa fa-question-circle"
-                      />
-                    </span>
-                  </div>
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </span>
                 </span>
               </div>
             </div>
@@ -418,6 +437,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
               class="col-xs-10"
             >
               <input
+                aria-label="Naming Pattern"
                 class="form-control naming-pattern-border-warning"
                 id="entity-nameExpression"
                 placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
@@ -471,22 +491,24 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
           <div
             class="col-xs-2"
           >
-            Label 
-            <span
-              class="domain-no-wrap"
-            >
-              Color
-              <div
-                class="overlay-trigger"
+            <span>
+              Label 
+              <span
+                class="domain-no-wrap"
               >
-                <span
-                  class="label-help-target"
+                Color
+                <div
+                  class="overlay-trigger"
                 >
                   <span
-                    class="label-help-icon fa fa-question-circle"
-                  />
-                </span>
-              </div>
+                    class="label-help-target"
+                  >
+                    <span
+                      class="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+                </div>
+              </span>
             </span>
           </div>
           <div
@@ -634,17 +656,20 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
               <div
                 class="col-xs-2"
               >
-                <span
-                  class="domain-no-wrap"
-                >
-                  Name
-                   *
+                <span>
+                  <span
+                    class="domain-no-wrap"
+                  >
+                    Name
+                     *
+                  </span>
                 </span>
               </div>
               <div
                 class="col-xs-10"
               >
                 <input
+                  aria-label="Name"
                   class="form-control"
                   id="entity-name"
                   placeholder="Enter a name for this sample type"
@@ -667,27 +692,30 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
               <div
                 class="col-xs-2"
               >
-                <span
-                  class="domain-no-wrap"
-                >
-                  Description
-                  <div
-                    class="overlay-trigger"
+                <span>
+                  <span
+                    class="domain-no-wrap"
                   >
-                    <span
-                      class="label-help-target"
+                    Description
+                    <div
+                      class="overlay-trigger"
                     >
                       <span
-                        class="label-help-icon fa fa-question-circle"
-                      />
-                    </span>
-                  </div>
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </span>
                 </span>
               </div>
               <div
                 class="col-xs-10"
               >
                 <textarea
+                  aria-label="Description"
                   class="form-control"
                   id="entity-description"
                 />
@@ -702,22 +730,24 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
                 <div
                   class="name-expression-label-div"
                 >
-                  Naming 
-                  <span
-                    class="domain-no-wrap"
-                  >
-                    Pattern
-                    <div
-                      class="overlay-trigger"
+                  <span>
+                    Naming 
+                    <span
+                      class="domain-no-wrap"
                     >
-                      <span
-                        class="label-help-target"
+                      Pattern
+                      <div
+                        class="overlay-trigger"
                       >
                         <span
-                          class="label-help-icon fa fa-question-circle"
-                        />
-                      </span>
-                    </div>
+                          class="label-help-target"
+                        >
+                          <span
+                            class="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                    </span>
                   </span>
                 </div>
               </div>
@@ -725,6 +755,7 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
                 class="col-xs-10"
               >
                 <input
+                  aria-label="Naming Pattern"
                   class="form-control naming-pattern-border-warning"
                   id="entity-nameExpression"
                   placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
@@ -839,17 +870,20 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
             <div
               class="col-xs-2"
             >
-              <span
-                class="domain-no-wrap"
-              >
-                Name
-                 *
+              <span>
+                <span
+                  class="domain-no-wrap"
+                >
+                  Name
+                   *
+                </span>
               </span>
             </div>
             <div
               class="col-xs-10"
             >
               <input
+                aria-label="Name"
                 class="form-control"
                 id="entity-name"
                 placeholder="Enter a name for this sample type"
@@ -872,27 +906,30 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
             <div
               class="col-xs-2"
             >
-              <span
-                class="domain-no-wrap"
-              >
-                Description
-                <div
-                  class="overlay-trigger"
+              <span>
+                <span
+                  class="domain-no-wrap"
                 >
-                  <span
-                    class="label-help-target"
+                  Description
+                  <div
+                    class="overlay-trigger"
                   >
                     <span
-                      class="label-help-icon fa fa-question-circle"
-                    />
-                  </span>
-                </div>
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                </span>
               </span>
             </div>
             <div
               class="col-xs-10"
             >
               <textarea
+                aria-label="Description"
                 class="form-control"
                 id="entity-description"
               />
@@ -907,22 +944,24 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
               <div
                 class="name-expression-label-div"
               >
-                Naming 
-                <span
-                  class="domain-no-wrap"
-                >
-                  Pattern
-                  <div
-                    class="overlay-trigger"
+                <span>
+                  Naming 
+                  <span
+                    class="domain-no-wrap"
                   >
-                    <span
-                      class="label-help-target"
+                    Pattern
+                    <div
+                      class="overlay-trigger"
                     >
                       <span
-                        class="label-help-icon fa fa-question-circle"
-                      />
-                    </span>
-                  </div>
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </span>
                 </span>
               </div>
             </div>
@@ -930,6 +969,7 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
               class="col-xs-10"
             >
               <input
+                aria-label="Naming Pattern"
                 class="form-control naming-pattern-border-warning"
                 id="entity-nameExpression"
                 placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
@@ -1091,17 +1131,20 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
               <div
                 class="col-xs-2"
               >
-                <span
-                  class="domain-no-wrap"
-                >
-                  Name
-                   *
+                <span>
+                  <span
+                    class="domain-no-wrap"
+                  >
+                    Name
+                     *
+                  </span>
                 </span>
               </div>
               <div
                 class="col-xs-10"
               >
                 <input
+                  aria-label="Name"
                   class="form-control"
                   id="entity-name"
                   placeholder="Enter a name for this sample type"
@@ -1124,27 +1167,30 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
               <div
                 class="col-xs-2"
               >
-                <span
-                  class="domain-no-wrap"
-                >
-                  Description
-                  <div
-                    class="overlay-trigger"
+                <span>
+                  <span
+                    class="domain-no-wrap"
                   >
-                    <span
-                      class="label-help-target"
+                    Description
+                    <div
+                      class="overlay-trigger"
                     >
                       <span
-                        class="label-help-icon fa fa-question-circle"
-                      />
-                    </span>
-                  </div>
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </span>
                 </span>
               </div>
               <div
                 class="col-xs-10"
               >
                 <textarea
+                  aria-label="Description"
                   class="form-control"
                   id="entity-description"
                 />
@@ -1159,22 +1205,24 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
                 <div
                   class="name-expression-label-div"
                 >
-                  Naming 
-                  <span
-                    class="domain-no-wrap"
-                  >
-                    Pattern
-                    <div
-                      class="overlay-trigger"
+                  <span>
+                    Naming 
+                    <span
+                      class="domain-no-wrap"
                     >
-                      <span
-                        class="label-help-target"
+                      Pattern
+                      <div
+                        class="overlay-trigger"
                       >
                         <span
-                          class="label-help-icon fa fa-question-circle"
-                        />
-                      </span>
-                    </div>
+                          class="label-help-target"
+                        >
+                          <span
+                            class="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                    </span>
                   </span>
                 </div>
               </div>
@@ -1182,6 +1230,7 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
                 class="col-xs-10"
               >
                 <input
+                  aria-label="Naming Pattern"
                   class="form-control naming-pattern-border-warning"
                   id="entity-nameExpression"
                   placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
@@ -1324,17 +1373,20 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
             <div
               class="col-xs-2"
             >
-              <span
-                class="domain-no-wrap"
-              >
-                Name
-                 *
+              <span>
+                <span
+                  class="domain-no-wrap"
+                >
+                  Name
+                   *
+                </span>
               </span>
             </div>
             <div
               class="col-xs-10"
             >
               <input
+                aria-label="Name"
                 class="form-control"
                 id="entity-name"
                 placeholder="Enter a name for this sample type"
@@ -1357,27 +1409,30 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
             <div
               class="col-xs-2"
             >
-              <span
-                class="domain-no-wrap"
-              >
-                Description
-                <div
-                  class="overlay-trigger"
+              <span>
+                <span
+                  class="domain-no-wrap"
                 >
-                  <span
-                    class="label-help-target"
+                  Description
+                  <div
+                    class="overlay-trigger"
                   >
                     <span
-                      class="label-help-icon fa fa-question-circle"
-                    />
-                  </span>
-                </div>
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                </span>
               </span>
             </div>
             <div
               class="col-xs-10"
             >
               <textarea
+                aria-label="Description"
                 class="form-control"
                 id="entity-description"
               />
@@ -1392,22 +1447,24 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
               <div
                 class="name-expression-label-div"
               >
-                Naming 
-                <span
-                  class="domain-no-wrap"
-                >
-                  Pattern
-                  <div
-                    class="overlay-trigger"
+                <span>
+                  Naming 
+                  <span
+                    class="domain-no-wrap"
                   >
-                    <span
-                      class="label-help-target"
+                    Pattern
+                    <div
+                      class="overlay-trigger"
                     >
                       <span
-                        class="label-help-icon fa fa-question-circle"
-                      />
-                    </span>
-                  </div>
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </span>
                 </span>
               </div>
             </div>
@@ -1415,6 +1472,7 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
               class="col-xs-10"
             >
               <input
+                aria-label="Naming Pattern"
                 class="form-control naming-pattern-border-warning"
                 id="entity-nameExpression"
                 placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"

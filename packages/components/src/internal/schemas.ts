@@ -55,6 +55,7 @@ const CORE_SCHEMA = 'core';
 export const CORE_TABLES = {
     SCHEMA: CORE_SCHEMA,
     DATA_STATES: new SchemaQuery(CORE_SCHEMA, 'DataStates'),
+    PRINCIPALS: new SchemaQuery(CORE_SCHEMA, 'Principals'),
     SITE_USERS: new SchemaQuery(CORE_SCHEMA, 'SiteUsers'),
     USERS: new SchemaQuery(CORE_SCHEMA, 'Users'),
     USER_API_KEYS: new SchemaQuery(CORE_SCHEMA, 'UserApiKeys'),

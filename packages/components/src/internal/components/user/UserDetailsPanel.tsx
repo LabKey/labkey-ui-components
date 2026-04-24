@@ -12,7 +12,7 @@ import { Modal } from '../../Modal';
 import { caseInsensitive } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { formatDate, getDateFNSDateTimeFormat, parseDate } from '../../util/Date';
-import { SecurityPolicy, SecurityRole } from '../permissions/models';
+import { Principal, SecurityPolicy, SecurityRole } from '../permissions/models';
 import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
 
 import { GroupsList } from '../permissions/GroupsList';
@@ -106,6 +106,7 @@ export const UserDetailsPanel: FC<Props> = props => {
 
     const [loading, setLoading] = useState<boolean>(false);
     const [policyState, setPolicyState] = useState<SecurityPolicy | undefined>(undefined);
+    const [principal, setPrincipal] = useState<Principal | undefined>(undefined);
     const [rolesByUniqueNameState, setRolesByUniqueNameState] = useState<Map<string, SecurityRole> | undefined>(
         undefined
     );
@@ -129,6 +130,7 @@ export const UserDetailsPanel: FC<Props> = props => {
     const loadUserDetails = useCallback(async () => {
         if (!userId) {
             setUserProperties(undefined);
+            setPrincipal(undefined);
             setShowResetTotp(false);
             return;
         }
@@ -136,6 +138,9 @@ export const UserDetailsPanel: FC<Props> = props => {
         setLoading(true);
 
         try {
+            const principal = await api.getPrincipalById(userId);
+            setPrincipal(principal);
+
             if (isSelf) {
                 const response = await api.getUserProperties(userId);
                 setUserProperties(response.props);
@@ -252,6 +257,7 @@ export const UserDetailsPanel: FC<Props> = props => {
         }
 
         if (userProperties) {
+            const isGroup = principal?.isGroup() ?? false;
             const description = caseInsensitive(userProperties, 'description');
             let name = caseInsensitive(userProperties, 'firstName') ?? '';
             if (name) {
@@ -262,17 +268,28 @@ export const UserDetailsPanel: FC<Props> = props => {
 
             return (
                 <>
-                    {!!name && <UserDetailRow label="Name" value={name} />}
-                    <UserProp label="Email" prop="email" userProperties={userProperties} />
-                    {description && <UserProp label="Description" prop="description" userProperties={userProperties} />}
+                    {!isGroup && (
+                        <>
+                            {!!name && <UserDetailRow label="Name" value={name} />}
+                            <UserProp label="Email" prop="email" userProperties={userProperties} />
+                            {description && (
+                                <UserProp label="Description" prop="description" userProperties={userProperties} />
+                            )}
 
-                    <hr className="principal-hr" />
-                    <UserProp isDate label="Last Login" prop="lastLogin" userProperties={userProperties} />
-                    <UserProp isDate label="Created" prop="created" userProperties={userProperties} />
+                            <hr className="principal-hr" />
+                            <UserProp isDate label="Last Login" prop="lastLogin" userProperties={userProperties} />
+                            <UserProp isDate label="Created" prop="created" userProperties={userProperties} />
 
-                    <hr className="principal-hr" />
-                    <UserProp label="User ID" prop="userId" userProperties={userProperties} />
-                    {!!hasPassword && <UserDetailRow label="Has Password" value={hasPassword.toString()} />}
+                            <hr className="principal-hr" />
+                            <UserProp label="User ID" prop="userId" userProperties={userProperties} />
+                            {!!hasPassword && <UserDetailRow label="Has Password" value={hasPassword.toString()} />}
+                        </>
+                    )}
+                    {isGroup && (
+                        <>
+                            <UserProp label="ID" prop="userId" userProperties={userProperties} />
+                        </>
+                    )}
 
                     <EffectiveRolesList
                         currentUser={currentUser}
@@ -315,10 +332,11 @@ export const UserDetailsPanel: FC<Props> = props => {
 
     const { user, project } = getServerContext();
     const isSelfCtx = userId === user.id;
+    const isGroup = principal?.isGroup() ?? false;
 
     if (toggleDetailsModal) {
         let footer: ReactNode;
-        if (user.isAdmin) {
+        if (user.isAdmin && !isGroup) {
             // We do not currently support user management in sub folders, so we create the management URL for the project
             // container.
             const manageUrl = AppURL.create(ADMIN_KEY, 'users')
@@ -333,7 +351,13 @@ export const UserDetailsPanel: FC<Props> = props => {
         }
 
         return (
-            <Modal className="user-detail-modal" footer={footer} onCancel={toggleDetailsModal} title={renderHeader()}>
+            <Modal
+                cancelText={isGroup ? 'Close' : 'Cancel'}
+                className="user-detail-modal"
+                footer={footer}
+                onCancel={toggleDetailsModal}
+                title={renderHeader()}
+            >
                 {renderBody()}
             </Modal>
         );
@@ -344,7 +368,7 @@ export const UserDetailsPanel: FC<Props> = props => {
             <div className="panel-heading">{renderHeader()}</div>
             <div className="panel-body">
                 {renderBody()}
-                {!isSelfCtx && onUsersStateChangeComplete && renderButtons()}
+                {!isSelfCtx && !isGroup && onUsersStateChangeComplete && renderButtons()}
                 {allowResetPassword && showDialog === 'reset' && (
                     <UserResetPasswordConfirmModal
                         email={caseInsensitive(userProperties, 'email')}

@@ -103,6 +103,18 @@ describe('Principal model', () => {
         expect(sortedPrincipals.get(1)).toBe(USER1);
         expect(sortedPrincipals.get(2)).toBe(GROUP);
     });
+
+    test('isGroup', () => {
+        expect(GROUP.isGroup()).toBeTruthy();
+        expect(USER1.isGroup()).toBeFalsy();
+        expect(USER2.isGroup()).toBeFalsy();
+    });
+
+    test('isUser', () => {
+        expect(GROUP.isUser()).toBeFalsy();
+        expect(USER1.isUser()).toBeTruthy();
+        expect(USER2.isUser()).toBeTruthy();
+    });
 });
 
 describe('SecurityRole model', () => {

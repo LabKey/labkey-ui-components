@@ -5,6 +5,7 @@ import { Container } from '../base/models/Container';
 import {
     fetchContainers,
     fetchContainerSecurityPolicy,
+    getPrincipalById,
     getUserLimitSettings,
     processGetRolesResponse,
     UserLimitSettings,
@@ -76,6 +77,7 @@ export interface SecurityAPIWrapper {
     getDeletionSummaries: (containerPath?: string) => Promise<Summary[]>;
     getGroupMemberships: () => Promise<GroupMembership[]>;
     getInheritedContainers: (container: Container) => Promise<string[]>;
+    getPrincipalById: (principalId: number) => Promise<Principal | undefined>;
     getUserLimitSettings: (containerPath?: string) => Promise<UserLimitSettings>;
     getUserPermissions: (options: GetUserPermissionsOptions) => Promise<string[]>;
     getUserProperties: (userId: number) => Promise<any>;
@@ -284,6 +286,8 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         }, []);
     };
 
+    getPrincipalById = getPrincipalById;
+
     getUserLimitSettings = getUserLimitSettings;
 
     getUserPermissions = (options: GetUserPermissionsOptions): Promise<string[]> => {
@@ -437,6 +441,7 @@ export function getSecurityTestAPIWrapper(
         getAuditLogDate: mockFn(),
         getDeletionSummaries: mockFn(),
         getGroupMemberships: mockFn(),
+        getPrincipalById: mockFn(),
         getUserLimitSettings: mockFn(),
         getUserPermissions: mockFn(),
         getUserProperties: mockFn(),

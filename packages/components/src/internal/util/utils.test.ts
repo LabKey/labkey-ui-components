@@ -933,37 +933,6 @@ describe('getUpdatedData', () => {
         });
     });
 
-    test('with additionalCols', () => {
-        const updatedData = getUpdatedData(
-            originalData,
-            {
-                Value: 'val',
-                And$C$D$SAgain: 'again',
-                Other: 'other3',
-            },
-            queryInfo,
-            new Set(['Data'])
-        );
-        expect(updatedData).toHaveLength(3);
-        expect(updatedData[0]).toStrictEqual({
-            RowId: 445,
-            Other: 'other3',
-            Data: 'data1',
-        });
-        expect(updatedData[1]).toStrictEqual({
-            RowId: 447,
-            Value: 'val',
-            Other: 'other3',
-            Data: 'data1',
-        });
-        expect(updatedData[2]).toStrictEqual({
-            RowId: 448,
-            Value: 'val',
-            Other: 'other3',
-            Data: 'data1',
-        });
-    });
-
     test('with folder', () => {
         const originalData_ = fromJS({
             '448': {

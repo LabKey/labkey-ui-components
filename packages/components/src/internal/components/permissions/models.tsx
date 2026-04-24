@@ -64,6 +64,14 @@ export class Principal extends Record({
                 .toList()
         );
     }
+
+    isGroup(): boolean {
+        return this.type === 'g';
+    }
+
+    isUser(): boolean {
+        return this.type === 'u';
+    }
 }
 
 export class SecurityRole extends Record({

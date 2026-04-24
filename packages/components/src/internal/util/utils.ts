@@ -929,5 +929,6 @@ export function hasIdentifiedCol(schemaQuery: SchemaQuery): boolean {
     const isNucSeq = schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.NUC_SEQUENCE, false);
     const isProtSeq = schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.PROTEIN_SEQUENCE, false);
     const isMolecule = schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.MOLECULE, false);
-    return isNucSeq || isProtSeq || isMolecule;
+    const isCompound = schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.COMPOUND, false);
+    return isNucSeq || isProtSeq || isMolecule || isCompound;
 }

@@ -5,6 +5,20 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Accessibility improvements: add labels or aria-labels to input elements
 
+### version 7.33.0
+*Released*: 24 April 2026
+- Workflow UI updates
+  - Add css for .lk-popover-behind-modal to adjust z-index
+  - EditInlineField prop for pullRight for pencil icon
+  - UserDetailsPanel support for userId that is a group id
+
+### version 7.32.0
+*Released*: 23 April 2026
+- Add EMPTY_COMPOUND_WARNING
+- Add COMPOUND to SCHEMAS.DATA_CLASSES
+- hasIdentifiedCol: check for Compound schema
+- UnidentifiedPill: handle schemas that don't have defined messages, add support for Compound schema
+
 ### version 7.31.1
 *Released*: 23 April 2026
 - GitHub Issue 911: Fix overflow for field filtering modal

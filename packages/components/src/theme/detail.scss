@@ -196,7 +196,8 @@
 }
 
 .detail__header--name {
-  margin: 0;
+    margin: 0;
+    overflow-wrap: break-word;
 }
 
 .detail__header--data-class {

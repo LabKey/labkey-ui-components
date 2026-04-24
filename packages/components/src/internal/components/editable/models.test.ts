@@ -952,18 +952,6 @@ describe('EditorModel', () => {
                 expect(updatedRows[0][expInputCol.fieldKey.toLowerCase()]).toBeUndefined();
             });
         });
-        test('altUpdateKeys', () => {
-            const queryInfo = basicEditorModel.queryInfo.mutate({ altUpdateKeys: new Set([colTwoFk]) });
-            const cellKey = genCellKey(colOneFk, 0);
-            const value = List([{ display: 'Changed', raw: 'changed' } as ValueDescriptor]);
-            const model = modifyEm({
-                cellValues: basicEditorModel.cellValues.set(cellKey, value),
-                queryInfo,
-            });
-            const updatedRows = model.getUpdatedData();
-            // altUpdateKeys are always appended to row values even if not changed
-            expect(updatedRows[0]).toHaveProperty(colTwoFk);
-        });
         test('field added', () => {
             const addedColumn = new QueryColumn({
                 name: 'added',
@@ -1489,25 +1477,14 @@ describe('EditorModel', () => {
                 }),
             };
             const queryInfo = new QueryInfo(config);
-            const queryInfoWithAltKey = new QueryInfo({
-                ...config,
-                altUpdateKeys: new Set<string>(['lsid']),
-            });
             const cellValues = fromJS({
                 [genCellKey('RowId', 0)]: List([{ raw: 1 } as ValueDescriptor]),
-                [genCellKey('lsid', 0)]: List([{ raw: 'abc' } as ValueDescriptor]),
             });
-            let model = new EditorModel({
+            const model = new EditorModel({
                 queryInfo,
                 cellValues,
             });
             expect(model.getPkValues(0)).toStrictEqual({ RowId: 1 });
-
-            model = new EditorModel({
-                queryInfo: queryInfoWithAltKey,
-                cellValues,
-            });
-            expect(model.getPkValues(0)).toStrictEqual({ RowId: 1, lsid: 'abc' });
         });
     });
 });

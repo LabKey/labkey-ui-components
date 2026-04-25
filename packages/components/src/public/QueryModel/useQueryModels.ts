@@ -92,6 +92,7 @@ export class QueryModelManager {
             setSorts: this.setSorts,
             setView: this.setView,
         };
+        console.log('queryConfigs!', queryConfigs);
         this.state = {
             queryModels: initModels(queryConfigs, searchParams),
             actions: this.actions,
@@ -923,7 +924,10 @@ interface UseQueryModelsOptions {
  * object passed to it, as properly diffing the queryConfigs object is effectively impossible when considering user
  * changes to the models.
  */
-export function useQueryModels(queryConfigs: QueryConfigMap, options: UseQueryModelsOptions = {}): InjectedQueryModels {
+export function useQueryModels(
+    queryConfigs: QueryConfigMap = {},
+    options: UseQueryModelsOptions = {}
+): InjectedQueryModels {
     const { autoLoad = false, modelLoader } = options;
     const [searchParams, setSearchParams] = useOptionalSearchParams();
     const manager = useRef<QueryModelManager>(null);

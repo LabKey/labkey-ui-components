@@ -217,7 +217,7 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
         if (file || typeof data === 'string') {
             body = (
                 <div
-                    className={classNames('attached-file__inline-container', { 'file-upload__is-hover': isHover })}
+                    className={classNames('attached-file__inline-container text__wrap', { 'file-upload__is-hover': isHover })}
                     onDragEnter={this.onDrag}
                     onDragLeave={this.onDragLeave}
                     onDragOver={this.onDrag}

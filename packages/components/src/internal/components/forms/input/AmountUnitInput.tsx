@@ -67,7 +67,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     isDisabled={disabled}
                     label={
                         <div className="bold-text control-label col-sm-2 col-xs-11 text-left text__truncate-and-wrap">
-                            Amount and Units Y
+                            Amount and Units
                         </div>
                     }
                     labelOverlayProps={{

@@ -365,7 +365,7 @@ export function resetRowsState(model: Draft<QueryModel>): void {
  * @param model The model to reset selection state on.
  */
 export function resetSelectionState(model: Draft<QueryModel>): void {
-    model.selections = undefined;
+    model.selections = new Set(); // TODO: See note in QueryModel constructor, we may not want to merge this change
     model.selectionsError = undefined;
     model.selectionsLoadingState = LoadingState.INITIALIZED;
     model.selectionPivot = undefined;

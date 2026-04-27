@@ -527,7 +527,16 @@ export class QueryModel {
         this.rowsLoadingState = LoadingState.INITIALIZED;
         this.selectedReportIds = [];
         this.selectionPivot = undefined;
-        this.selections = undefined;
+
+        // TODO: this is potentially a backwards incompatible change, made because there seems to be a race condition in
+        //  useQueryModels that causes a lot of components to be given a model with undefined selections and we did not
+        //  appropriately guard against that possibility in many, many places, causing hundreds of tests to fail due to
+        //  errors in the JS console.
+        //  I believe this change is safe to make, because a lot of usage assumed it was always defined, and just
+        //  checked the size attr. If it solves the issue that useQueryModels is having, without introducing other
+        //  problems, then we should keep this change, but also update the rest of QueryModel, useQueryModels, and
+        //  withQueryModels to stop assuming selections will ever be undefined (getSelectedIds, various actions, etc)
+        this.selections = new Set();
         this.selectionsError = undefined;
         this.selectionsLoadingState = LoadingState.INITIALIZED;
         this.title = queryConfig.title;
@@ -1040,7 +1049,7 @@ export class QueryModel {
      * Get the row selection state (ALL, SOME, or NONE) for the QueryModel.
      */
     get selectedState(): GRID_CHECKBOX_OPTIONS {
-        const { hasData, isLoading, maxRows, orderedRows, selections, rowCount } = this;
+        const { hasData, isLoading, orderedRows, selections, rowCount } = this;
 
         if (!isLoading && hasData && selections) {
             const selectedOnPage = orderedRows.filter(rowId => selections.has(rowId)).length;

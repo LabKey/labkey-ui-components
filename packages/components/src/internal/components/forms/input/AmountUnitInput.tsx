@@ -58,7 +58,6 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
         return null;
     }
 
-    // TODO this still results in an empty form label
     return (
         <>
             <div className="form-group row">
@@ -66,6 +65,11 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     fieldName={amountCol.name}
                     id={id}
                     isDisabled={disabled}
+                    label={
+                        <div className="bold-text control-label col-sm-2 col-xs-11 text-left text__truncate-and-wrap">
+                            Amount and Units Y
+                        </div>
+                    }
                     labelOverlayProps={{
                         description: 'The amount and units of this sample currently on hand.',
                         label: 'Amount and Units',
@@ -76,6 +80,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     toggleProps={{
                         onClick: onToggleChange,
                     }}
+                    withLabelOverlay={false}
                 />
                 <TextInput
                     aria-label="Amount"

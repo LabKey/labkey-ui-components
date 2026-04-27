@@ -33,6 +33,7 @@ interface Props {
     name: string;
     onChange?: (name: string, newValue: any) => void;
     placeholder?: string;
+    pullRight?: boolean;
     startDate?: Date;
     tooltip?: string; // only shown when component has a label and is allowEdit
     type: string;
@@ -52,6 +53,7 @@ export const EditInlineField: FC<Props> = memo(props => {
         name,
         onChange,
         placeholder,
+        pullRight,
         startDate,
         tooltip,
         type,
@@ -313,8 +315,9 @@ export const EditInlineField: FC<Props> = memo(props => {
                         onKeyDown={toggleKeyDown}
                         tabIndex={1}
                     >
+                        {allowEdit && pullRight && <i className="fa fa-pencil pull-right" />}
                         {!isUser && displayValue}
-                        {allowEdit && <i className="fa fa-pencil" />}
+                        {allowEdit && !pullRight && <i className="fa fa-pencil" />}
                     </span>
                 </>
             )}

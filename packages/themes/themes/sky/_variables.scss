@@ -1,8 +1,8 @@
 //== Colors
 //
 $white: #FFFFFF;
-$lk-brand-color: #2980b9;
-$lk-secondary-brand-color: #236fa0;
+$lk-brand-color: #2679AD;
+$lk-secondary-brand-color: #116596;
 $lk-theme-dark-accent: $lk-brand-color;
 $lk-theme-light-accent: $lk-secondary-brand-color;
 
@@ -17,6 +17,16 @@ $lk-page-header-font-hover-color: $white;
 //
 $lk-page-nav-bg-color: $lk-secondary-brand-color;
 $lk-nav-dropdown-color: $lk-brand-color;
+
+//== Navigation Tabs
+//
+$lk-page-nav-secondary-tab-bg-color: #73B6E0;
+$lk-page-nav-secondary-tab-text-color: #0B4161;
+$lk-page-nav-primary-tab-text-color: #0B4161;
+
+//== Tabs (Bootstrap tabs)
+//
+$lk-nav-tab-secondary-text-color: #0B4161;
 //== Pill
 //
 $lk-nav-pills-active-link-hover-bg: $lk-theme-dark-accent;

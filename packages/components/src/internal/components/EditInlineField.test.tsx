@@ -34,7 +34,7 @@ describe('EditInlineField', () => {
         },
     };
 
-    function validate(editing = false, allowEdit = true, type?: Record<string, number>): void {
+    function validate(editing = false, allowEdit = true, type?: Record<string, number>, pullRight?: boolean): void {
         expect(document.querySelectorAll('.edit-inline-field__label')).toHaveLength(!editing ? 1 : 0);
         expect(document.querySelectorAll('.edit-inline-field__toggle')).toHaveLength(!editing && allowEdit ? 1 : 0);
         expect(document.querySelectorAll('.fa-pencil')).toHaveLength(!editing && allowEdit ? 1 : 0);
@@ -47,6 +47,8 @@ describe('EditInlineField', () => {
         expect(document.querySelectorAll('input')).toHaveLength(type?.text ?? type?.date ?? 0);
 
         expect(document.querySelectorAll('.user-link')).toHaveLength(type?.user ?? 0);
+
+        expect(document.querySelectorAll('.pull-right')).toHaveLength(pullRight ? 1 : 0);
     }
 
     test('default props', async () => {
@@ -163,8 +165,6 @@ describe('EditInlineField', () => {
         renderWithAppContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
-                type="date"
-                value="2022-08-11 18:00:00"
                 column={
                     new QueryColumn({
                         format: 'MM/dd/YYYY HH:mm:ss',
@@ -172,6 +172,8 @@ describe('EditInlineField', () => {
                         rangeURI: DATETIME_RANGE_URI,
                     })
                 }
+                type="date"
+                value="2022-08-11 18:00:00"
             />,
             { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
         );
@@ -186,8 +188,6 @@ describe('EditInlineField', () => {
         renderWithAppContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
-                type="date"
-                value="2022-08-11 18:00:00.123"
                 column={
                     new QueryColumn({
                         format: 'MM/dd/YYYY HH:mm:ss',
@@ -195,6 +195,8 @@ describe('EditInlineField', () => {
                         rangeURI: DATETIME_RANGE_URI,
                     })
                 }
+                type="date"
+                value="2022-08-11 18:00:00.123"
             />,
             { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
         );
@@ -211,7 +213,6 @@ describe('EditInlineField', () => {
         renderWithAppContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
-                value="18:00:00.1234"
                 column={
                     new QueryColumn({
                         format: 'hh:mm a',
@@ -220,6 +221,7 @@ describe('EditInlineField', () => {
                         rangeURI: TIME_RANGE_URI,
                     })
                 }
+                value="18:00:00.1234"
             />,
             { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
         );
@@ -279,5 +281,17 @@ describe('EditInlineField', () => {
         validate(true, true, { text: 1 });
         expect(document.querySelectorAll('input[name="t$De$Sst"]')).toHaveLength(1);
         expect(document.querySelectorAll('input[name="t.e/st"]')).toHaveLength(0);
+    });
+
+    test('pullRight', async () => {
+        renderWithAppContext(<EditInlineField {...DEFAULT_PROPS} pullRight />, {
+            serverContext: SERVER_CONTEXT,
+            appContext: APP_CONTEXT,
+        });
+        validate(false, true, undefined, true);
+        expect(document.querySelector('.edit-inline-field__placeholder')).toHaveTextContent('');
+        expect(document.querySelectorAll('.fa-pencil')).toHaveLength(1);
+        await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
+        validate(true, true, { text: 1 }, false);
     });
 });

@@ -333,17 +333,6 @@ export function columnsHaveFilter(columnFieldKeys: string[], filters: Filter.IFi
 }
 
 /**
- * Resets queryInfo state to initialized state. Use this when you need to load/reload QueryInfo.
- * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
- * @param model The model to reset queryInfo state on.
- */
-export function resetQueryInfoState(model: Draft<QueryModel>): void {
-    model.queryInfo = undefined;
-    model.queryInfoError = undefined;
-    model.queryInfoLoadingState = LoadingState.INITIALIZED;
-}
-
-/**
  * Resets totalCount state to initialized state. Use this when you need to load/reload QueryInfo.
  * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
  * @param model The model to reset queryInfo state on.

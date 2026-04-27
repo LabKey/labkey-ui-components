@@ -25,7 +25,6 @@ import {
     paramsEqual,
     RequestManager,
     resetModelState,
-    resetQueryInfoState,
     resetRowsState,
     resetSelectionState,
     resetTotalCountState,

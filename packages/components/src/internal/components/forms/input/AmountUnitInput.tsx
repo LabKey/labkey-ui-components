@@ -12,6 +12,7 @@ import { Operation } from '../../../../public/QueryColumn';
 import { STORED_AMOUNT_FIELDS } from '../../samples/constants';
 import { Alert } from '../../base/Alert';
 import { LOOKUP_DEFAULT_SIZE } from '../../../constants';
+import { INPUT_LABEL_CLASS_NAME, INPUT_LABEL_CLASS_NAME_WITH_TOGGLE } from '../constants';
 
 export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
     const {
@@ -58,6 +59,8 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
         return null;
     }
 
+    const inputLabelClass = allowFieldDisable ? INPUT_LABEL_CLASS_NAME_WITH_TOGGLE : INPUT_LABEL_CLASS_NAME;
+
     return (
         <>
             <div className="form-group row">
@@ -66,7 +69,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     id={id}
                     isDisabled={disabled}
                     label={
-                        <div className="bold-text control-label col-sm-2 col-xs-11 text-left text__truncate-and-wrap">
+                        <div className={inputLabelClass + ' bold-text text__truncate-and-wrap'}>
                             Amount and Units
                         </div>
                     }

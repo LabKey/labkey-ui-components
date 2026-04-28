@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Accessibility improvements: add labels or aria-labels to input elements
 
+### version 7.33.1
+*Released*: 28 April 2026
+- Merge from release26.3-SNAPSHOT to develop
+    - includes changes from 7.21.5 #1987
+
 ### version 7.33.0
 *Released*: 24 April 2026
 - Workflow UI updates
@@ -167,6 +172,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add `ta-right`, `ta-left` util styles
 - Add UnidentifiedPill
 - Add EMPTY_SEQUENCE_WARNING constant
+
+### version 7.21.5
+*Released*: 23 April 2026
+- GitHub Issue #1012: Update resolveDuplicatesAsName() regex to handle nested parentheses in key/value
 
 ### version 7.21.4
 *Released*: 6 April 2026

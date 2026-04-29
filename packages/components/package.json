@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.33.1-inputLabels.3",
+  "version": "7.33.3-inputLabels.3",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

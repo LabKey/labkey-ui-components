@@ -638,7 +638,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                             <input
                                                 aria-label="Run on Import"
                                                 checked={attachment.runOnImport}
-                                                id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + i}
+                                                id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + '-onImport' + i}
                                                 onChange={this.onCheckRunOnImport}
                                                 type="checkbox"
                                             />
@@ -650,7 +650,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                                 aria-label="Run on Edit"
                                                 checked={attachment.runOnEdit}
                                                 disabled={!model.editableResults}
-                                                id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + i}
+                                                id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + '-onEdit' + i}
                                                 onChange={this.onCheckRunOnEdit}
                                                 type="checkbox"
                                             />

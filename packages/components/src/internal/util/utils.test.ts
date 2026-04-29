@@ -2082,10 +2082,10 @@ describe('isBlankValue', () => {
 
 describe('stringToHtmlId', () => {
     test('empty string', () => {
-        expect(stringToHtmlId('')).toBe('');
+        expect(stringToHtmlId('')).toBeUndefined();
     });
     test('undefined', () => {
-        expect(stringToHtmlId(undefined)).toBe(undefined);
+        expect(stringToHtmlId(undefined)).toBeUndefined();
     });
     test('replaces spaces with hyphens', () => {
         expect(stringToHtmlId('hello world')).toBe('hello-world');

@@ -153,13 +153,15 @@ export function generateId(prefix?: string): string {
 }
 
 // Convert an arbitrary string to a value safe for use as an HTML element id.
-// Replaces sequences of non-alphanumeric characters with a single hyphen and
-// strips leading/trailing hyphens.
-export function stringToHtmlId(value: string): string | undefined {
-    if (!value) {
-        return value;
-    }
-    return value.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+// Splits on non-alphanumeric characters, drops empty segments (which handles
+// leading/trailing separators and consecutive separators), then rejoins with hyphens.
+export function stringToHtmlId(value: string | undefined): string | undefined {
+    if (value === undefined) return undefined;
+    const id = value
+        .split(/[^a-zA-Z0-9]/)
+        .filter(s => s.length > 0)
+        .join('-');
+    return id || undefined;
 }
 
 // http://davidwalsh.name/javascript-debounce-function

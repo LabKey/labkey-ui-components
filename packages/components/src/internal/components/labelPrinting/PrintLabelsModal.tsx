@@ -243,7 +243,8 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                                     loadOnFocus
                                     maxRows={LOOKUP_DEFAULT_SIZE}
                                     multiple={true}
-                                    name="label-samples"
+                                    inputId="label-samples"
+                                    name="labelSamples"
                                     onQSChange={this.changeSampleSelection}
                                     placeholder="Select or type to search..."
                                     required={false}
@@ -259,10 +260,11 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                             <QuerySelect
                                 formsy={false}
                                 fireQSChangeOnInit
+                                inputId="label-template"
                                 showLabel={false}
                                 loadOnFocus
                                 maxRows={LOOKUP_DEFAULT_SIZE}
-                                name="label-template"
+                                name="labelTemplate"
                                 onQSChange={this.changeTemplateSelection}
                                 placeholder="Select or type to search..."
                                 required

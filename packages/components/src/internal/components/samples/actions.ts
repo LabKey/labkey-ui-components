@@ -559,7 +559,8 @@ export function updateSampleStorageData(
     containerPath?: string,
     userComment?: string,
     isDiscard = false,
-    editMethod?: EDIT_METHOD
+    editMethod?: EDIT_METHOD,
+    jobActionId?: number
 ): Promise<any> {
     if (sampleStorageData.length === 0) {
         return Promise.resolve();
@@ -569,6 +570,7 @@ export function updateSampleStorageData(
         return Ajax.request({
             url: ActionURL.buildURL('inventory', 'updateSampleStorageData.api', containerPath),
             jsonData: {
+                jobActionId,
                 sampleRows: sampleStorageData,
                 [STORED_AMOUNT_FIELDS.AUDIT_COMMENT]: userComment,
                 ...getRequestAuditDetail(editMethod),

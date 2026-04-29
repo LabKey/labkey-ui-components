@@ -134,9 +134,52 @@ describe('MetricUnit utils', () => {
             ])
         );
 
-        expect(getMetricUnitOptions(null).length).toBe(18);
-        expect(getMetricUnitOptions('').length).toBe(18);
-        expect(getMetricUnitOptions('bad').length).toBe(18);
+        expect(getMetricUnitOptions(null).length).toBe(22);
+        expect(getMetricUnitOptions('').length).toBe(22);
+        expect(getMetricUnitOptions('bad').length).toBe(22);
+    });
+
+    test('getMetricUnitOptions with filterFn', () => {
+        let options = getMetricUnitOptions('kg', false);
+        expect(options).toEqual([
+            { label: 'g', value: 'g' },
+            { label: 'mg', value: 'mg' },
+            { label: 'kg', value: 'kg' },
+            { label: 'ug', value: 'ug' },
+            { label: 'ng', value: 'ng' },
+        ]);
+
+        let filterFn = option => option.value !== 'mg';
+        options = getMetricUnitOptions('kg', false, filterFn);
+        expect(options).toEqual([
+            { label: 'g', value: 'g' },
+            { label: 'kg', value: 'kg' },
+            { label: 'ug', value: 'ug' },
+            { label: 'ng', value: 'ng' },
+        ]);
+
+        filterFn = option => option.value === 'mg';
+        options = getMetricUnitOptions('kg', false, filterFn);
+        expect(options).toEqual([{ label: 'mg', value: 'mg' }]);
+
+        filterFn = option => option.value === 'mg';
+        options = getMetricUnitOptions('mg', false, filterFn);
+        expect(options).toEqual([{ label: 'mg', value: 'mg' }]);
+
+        // incompatible units
+        filterFn = option => option.value === 'mg';
+        options = getMetricUnitOptions('mL', false, filterFn);
+        expect(options).toEqual([]);
+
+        // no unit
+        filterFn = option => option.value === 'mg';
+        options = getMetricUnitOptions(undefined, false, filterFn);
+        expect(options).toEqual([{ label: 'mg', value: 'mg' }]);
+
+        // bogus unit will be treated as no unit
+        filterFn = option => option.value === 'mg';
+        options = getMetricUnitOptions('bogus', false, filterFn);
+        expect(options).toEqual([{ label: 'mg', value: 'mg' }]);
     });
 
     test('getAltUnitKeys', () => {
@@ -154,17 +197,21 @@ describe('MetricUnit utils', () => {
             'boxes',
             'cells',
             'kits',
+            'organisms',
             'packs',
             'pieces',
             'slides',
+            'syringes',
             'tests',
+            'tubes',
             'unit',
+            'vials',
         ]);
 
         // include all options when no unitTypeStr or an invalid unitTypeStr is provided
-        expect(getAltUnitKeys(null).length).toBe(18);
-        expect(getAltUnitKeys('').length).toBe(18);
-        expect(getAltUnitKeys('bad').length).toBe(18);
+        expect(getAltUnitKeys(null).length).toBe(22);
+        expect(getAltUnitKeys('').length).toBe(22);
+        expect(getAltUnitKeys('bad').length).toBe(22);
     });
 
     test('getMeasurementUnit', () => {
@@ -233,5 +280,21 @@ describe('areUnitsCompatible', () => {
         expect(areUnitsCompatible('bogus', 'kg')).toBeFalsy();
         expect(areUnitsCompatible('mL', 'bogus')).toBeFalsy();
         expect(areUnitsCompatible('kg', 'bogus')).toBeFalsy();
+    });
+
+    test('comparison of Count units with different labels but same kind', () => {
+        expect(areUnitsCompatible('count', 'count')).toBeTruthy();
+        expect(areUnitsCompatible('blocks', 'blocks')).toBeTruthy();
+        expect(areUnitsCompatible('boxes', 'cells')).toBeTruthy();
+        expect(areUnitsCompatible('kits', 'packs')).toBeTruthy();
+        expect(areUnitsCompatible('pieces', 'unit')).toBeTruthy();
+        expect(areUnitsCompatible('unit', 'unit')).toBeTruthy();
+
+        expect(areUnitsCompatible('count', 'count', true)).toBeTruthy();
+        expect(areUnitsCompatible('blocks', 'blocks', true)).toBeTruthy();
+        expect(areUnitsCompatible('boxes', 'cells', true)).toBeFalsy();
+        expect(areUnitsCompatible('kits', 'packs', true)).toBeFalsy();
+        expect(areUnitsCompatible('pieces', 'unit', true)).toBeFalsy();
+        expect(areUnitsCompatible('unit', 'unit', true)).toBeTruthy();
     });
 });

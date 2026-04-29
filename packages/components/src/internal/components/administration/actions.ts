@@ -21,7 +21,7 @@ import { GroupMembership, Groups, Member, MemberType } from './models';
 // Where the members array is sorted by type, and then by name. The types stand for 'group,' 'site group,' and 'user'
 export const getGroupMembership = (groups: FetchedGroup[], groupMemberships: GroupMembership[]): Groups => {
     const groupsWithMembers = groupMemberships.reduce<Groups>((memberships, groupMembership) => {
-        const { groupId, groupName, userDisplayName, userId, userEmail } = groupMembership;
+        const { groupId, groupName, userDisplayName, userId, userEmail, userActive } = groupMembership;
         if (groupId === -1) {
             return memberships;
         }
@@ -41,6 +41,7 @@ export const getGroupMembership = (groups: FetchedGroup[], groupMemberships: Gro
             name: memberIsGroup ? foundGroup.name : `${userEmail} (${userDisplayName})`,
             id: userId,
             type: memberIsGroup ? MemberType.group : MemberType.user,
+            userActive: memberIsGroup ? undefined : userActive,
         };
 
         if (groupId in memberships) {

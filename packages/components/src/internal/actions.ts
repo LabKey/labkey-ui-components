@@ -45,7 +45,6 @@ import { ViewInfo } from './ViewInfo';
 import { createGridModelId } from './models';
 import { SAMPLES_KEY } from './app/constants';
 import { SCHEMAS } from './schemas';
-import { encodeFormDataQuote } from './url/utils';
 
 export function selectAll(
     key: string,
@@ -255,10 +254,10 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
         const value = exportParams[key];
 
         // Issue 52925: App export to csv/tsv ignores filter with column containing double quote
-        if (value instanceof Array) {
-            value.forEach(arrayValue => form.append(encodeFormDataQuote(key), arrayValue));
+        if (Array.isArray(value)) {
+            value.forEach(arrayValue => form.append(Utils.encodeFormName(key), arrayValue));
         } else {
-            form.append(encodeFormDataQuote(key), value);
+            form.append(Utils.encodeFormName(key), value);
         }
     });
 
@@ -285,7 +284,6 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
         throw new Error('Unknown export type: ' + type);
     }
 
-    form.append('formDataEncoded', 'true');
     Ajax.request({
         url: ActionURL.buildURL(controller, action, containerPath),
         method: 'POST',
@@ -613,14 +611,15 @@ export function saveGridView(
     replace: boolean,
     session: boolean,
     inherit: boolean,
-    shared: boolean
+    shared: boolean,
+    hidden = false
 ): Promise<void> {
     return new Promise((resolve, reject) => {
         Query.saveQueryViews({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             containerPath,
-            views: [{ ...ViewInfo.serialize(viewInfo), replace, session, inherit, shared, hidden: false }],
+            views: [{ ...ViewInfo.serialize(viewInfo), replace, session, inherit, shared, hidden }],
             success: () => {
                 invalidateQueryDetailsCache(schemaQuery, containerPath);
                 resolve();

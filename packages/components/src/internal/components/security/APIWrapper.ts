@@ -5,6 +5,7 @@ import { Container } from '../base/models/Container';
 import {
     fetchContainers,
     fetchContainerSecurityPolicy,
+    getPrincipalById,
     getUserLimitSettings,
     processGetRolesResponse,
     UserLimitSettings,
@@ -76,6 +77,7 @@ export interface SecurityAPIWrapper {
     getDeletionSummaries: (containerPath?: string) => Promise<Summary[]>;
     getGroupMemberships: () => Promise<GroupMembership[]>;
     getInheritedContainers: (container: Container) => Promise<string[]>;
+    getPrincipalById: (principalId: number) => Promise<Principal | undefined>;
     getUserLimitSettings: (containerPath?: string) => Promise<UserLimitSettings>;
     getUserPermissions: (options: GetUserPermissionsOptions) => Promise<string[]>;
     getUserProperties: (userId: number) => Promise<any>;
@@ -267,7 +269,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
 
     getGroupMemberships = async (): Promise<GroupMembership[]> => {
         const result = await selectRows({
-            columns: ['GroupId', 'GroupId/Name', 'UserId', 'UserId/DisplayName', 'UserId/Email'],
+            columns: ['GroupId', 'GroupId/Name', 'UserId', 'UserId/DisplayName', 'UserId/Email', 'UserId/Active'],
             schemaQuery: new SchemaQuery('core', 'Members'),
         });
 
@@ -278,10 +280,13 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
                 userDisplayName: caseInsensitive(row, 'UserId/DisplayName').value,
                 userId: caseInsensitive(row, 'UserId').value,
                 userEmail: caseInsensitive(row, 'UserId/Email').value,
+                userActive: caseInsensitive(row, 'UserId/Active').value,
             });
             return memberships;
         }, []);
     };
+
+    getPrincipalById = getPrincipalById;
 
     getUserLimitSettings = getUserLimitSettings;
 
@@ -436,6 +441,7 @@ export function getSecurityTestAPIWrapper(
         getAuditLogDate: mockFn(),
         getDeletionSummaries: mockFn(),
         getGroupMemberships: mockFn(),
+        getPrincipalById: mockFn(),
         getUserLimitSettings: mockFn(),
         getUserPermissions: mockFn(),
         getUserProperties: mockFn(),

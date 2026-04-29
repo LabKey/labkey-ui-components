@@ -57,6 +57,7 @@ import {
     LOOKUP_VALIDATOR_VALUES,
     MAX_TEXT_LENGTH,
     MULTI_CHOICE_RANGE_URI,
+    MULTILINE_RANGE_URI,
     NUMBER_CONVERT_URIS,
     PHILEVEL_NOT_PHI,
     SAMPLE_TYPE_CONCEPT_URI,
@@ -78,7 +79,6 @@ import {
     DATETIME_TYPE,
     DOUBLE_TYPE,
     FILE_TYPE,
-    FLAG_TYPE,
     INTEGER_TYPE,
     LOOKUP_TYPE,
     MULTI_CHOICE_TYPE,
@@ -146,7 +146,6 @@ interface IDomainDesign {
     allowAttachmentProperties: boolean;
     allowCalculatedFields: boolean;
     allowFileLinkProperties: boolean;
-    allowFlagProperties: boolean;
     allowMultiChoiceProperties: boolean;
     allowSampleSubjectProperties: boolean;
     allowTextChoiceProperties: boolean;
@@ -182,7 +181,6 @@ export class DomainDesign
         domainId: null,
         allowFileLinkProperties: false,
         allowAttachmentProperties: false,
-        allowFlagProperties: true,
         allowSampleSubjectProperties: true,
         allowTextChoiceProperties: true,
         allowMultiChoiceProperties: true,
@@ -214,7 +212,6 @@ export class DomainDesign
     declare domainId: number;
     declare allowFileLinkProperties: boolean;
     declare allowAttachmentProperties: boolean;
-    declare allowFlagProperties: boolean;
     declare allowSampleSubjectProperties: boolean;
     declare allowTextChoiceProperties: boolean;
     declare allowMultiChoiceProperties: boolean;
@@ -1422,6 +1419,10 @@ export class DomainField
         return !field.isMultiChoiceField();
     }
 
+    static allowUrl(field: DomainField): boolean {
+        return !field.isMultiChoiceField();
+    }
+
     static hasRegExValidation(field: DomainField): boolean {
         return (
             field.dataType.isString() &&
@@ -1740,6 +1741,8 @@ export function isPropertyTypeAllowed(
     showFilePropertyType: boolean,
     showStudyPropertyTypes: boolean
 ): boolean {
+    if (type === MULTI_CHOICE_TYPE) return false;
+
     if (type === FILE_TYPE) return showFilePropertyType;
 
     if (STUDY_PROPERTY_TYPES.includes(type)) return showStudyPropertyTypes;
@@ -1747,7 +1750,7 @@ export function isPropertyTypeAllowed(
     if (!appPropertiesOnly) return true;
 
     // We are excluding the field types below for the App for non-premium
-    return hasPremiumModule() || ![LOOKUP_TYPE, FLAG_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
+    return hasPremiumModule() || ![LOOKUP_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
 }
 
 // Determines if a storage type (rangeURI) is a match for a concept type (like User or Subject)
@@ -1776,7 +1779,8 @@ export function acceptablePropertyType(newType: PropDescType, originalRangeURI: 
 
     // Original field is a uniqueId, text, or multi-line text, can convert to a string type
     if (newType.isString() && PropDescType.isString(originalRangeURI)) {
-        return true;
+        // GitHub Issue 951: Multi-line values converted to text choices lose multi-line editability
+        return !(MULTILINE_RANGE_URI === originalRangeURI && newType.isTextChoice());
     }
 
     // Original field is a datetime, can convert to a date or time
@@ -2246,6 +2250,7 @@ export interface IDomainFormDisplayOptions {
     isDragDisabled?: boolean;
     phiLevelDisabled?: boolean;
     retainReservedFields?: boolean;
+    showAdvancedSettingsForApp?: boolean;
     showFilterCriteria?: boolean;
     showScannableOption?: boolean;
     textChoiceLockedForDomain?: boolean;

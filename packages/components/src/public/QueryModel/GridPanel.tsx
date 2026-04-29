@@ -492,12 +492,15 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 const searchAction = this.gridActions.search.actionValueFromFilter(filter);
                 searchActionValues.push(searchAction);
             } else {
-                const column = model.getColumnByFieldKey(filter.getColumnName());
+                const filterColName = filter.getColumnName();
+                const column = model.getColumnByFieldKey(filterColName);
                 if (column) {
                     actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, column));
-                } else if (filter.getColumnName().indexOf('/') > -1) {
-                    const lookupCol = model.getColumnByFieldKey(filter.getColumnName().split('/')[0]);
+                } else if (filterColName.indexOf('/') > -1 && filterColName.split('/').length === 2) {
+                    const lookupCol = model.getColumnByFieldKey(filterColName.split('/')[0]);
                     if (lookupCol) actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, lookupCol));
+                } else {
+                    actionValues.push(this.gridActions.filter.actionValueFromFilter(filter));
                 }
             }
         });

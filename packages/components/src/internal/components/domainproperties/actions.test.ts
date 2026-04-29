@@ -59,7 +59,6 @@ import {
     DATETIME_TYPE,
     DOUBLE_TYPE,
     FILE_TYPE,
-    FLAG_TYPE,
     INTEGER_TYPE,
     MULTI_CHOICE_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
@@ -79,7 +78,6 @@ import {
     DOMAIN_FIELD_PREFIX,
     FIELD_NAME_CHAR_WARNING_INFO,
     FIELD_NAME_CHAR_WARNING_MSG,
-    FLAG_CONCEPT_URI,
     INT_RANGE_URI,
     MAX_TEXT_LENGTH,
     SEVERITY_LEVEL_ERROR,
@@ -119,15 +117,6 @@ describe('domain properties actions', () => {
         expect(field1.dataType.rangeURI).toBe(INT_RANGE_URI);
 
         const field2 = DomainField.create({
-            name: 'field2name',
-            rangeURI: STRING_RANGE_URI,
-            conceptURI: FLAG_CONCEPT_URI,
-            propertyId: 0,
-            propertyURI: 'test',
-        });
-        expect(field2.dataType.name).toBe('flag');
-
-        const field3 = DomainField.create({
             name: 'field3name',
             rangeURI: INT_RANGE_URI,
             lookupSchema: 'core',
@@ -135,7 +124,7 @@ describe('domain properties actions', () => {
             propertyId: 0,
             propertyURI: 'test',
         });
-        expect(field3.dataType.name).toBe('users');
+        expect(field2.dataType.name).toBe('users');
     });
 
     test('server side error on the banner', () => {
@@ -365,7 +354,6 @@ describe('domain properties actions', () => {
         __setController('project');
         setModuleContext(TEST_LKS_STARTER_MODULE_CONTEXT);
         const domain = DomainDesign.create({
-            allowFlagProperties: true,
             allowFileLinkProperties: true,
             allowAttachmentProperties: true,
             allowTimepointProperties: true,
@@ -375,7 +363,6 @@ describe('domain properties actions', () => {
             allowMultiChoiceProperties: true,
         });
         const available = getAvailableTypes(domain);
-        expect(available.contains(FLAG_TYPE)).toBeTruthy();
         expect(available.contains(FILE_TYPE)).toBeTruthy();
         expect(available.contains(ATTACHMENT_TYPE)).toBeTruthy();
         expect(available.contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
@@ -395,7 +382,6 @@ describe('domain properties actions', () => {
         __setController('project');
         setModuleContext(TEST_LKS_STARTER_MODULE_CONTEXT);
         const domain = DomainDesign.create({
-            allowFlagProperties: false,
             allowFileLinkProperties: false,
             allowAttachmentProperties: false,
             allowTimepointProperties: false,
@@ -405,7 +391,6 @@ describe('domain properties actions', () => {
             allowMultiChoiceProperties: false,
         });
         const available = getAvailableTypes(domain);
-        expect(available.contains(FLAG_TYPE)).toBeFalsy();
         expect(available.contains(FILE_TYPE)).toBeFalsy();
         expect(available.contains(ATTACHMENT_TYPE)).toBeFalsy();
         expect(available.contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
@@ -456,7 +441,6 @@ describe('domain properties actions', () => {
         });
         const domain = DomainDesign.create({});
         const types = await getAvailableTypesForOntology(api, domain);
-        expect(types.contains(FLAG_TYPE)).toBeTruthy();
         expect(types.contains(FILE_TYPE)).toBeFalsy();
         expect(types.contains(ATTACHMENT_TYPE)).toBeFalsy();
         expect(types.contains(ONTOLOGY_LOOKUP_TYPE)).toBeTruthy();
@@ -794,6 +778,99 @@ describe('domain properties actions', () => {
         expect(field.rangeValidators.size).toBe(0);
         expect(field.regexValidators.size).toBe(0);
         expect(field.textChoiceValidator).toBe(DEFAULT_TEXT_CHOICE_VALIDATOR);
+    });
+
+    test('updateDataType clear properties when changing to MultiChoice field - from TextChoice', () => {
+        let field = DomainField.create({
+            propertyId: 1,
+            propertyValidators: [
+                { type: 'Range', name: 'Range Validator', expression: '' },
+                { type: 'RegEx', name: 'RegEx Validator', expression: '' },
+                { type: 'Lookup', name: 'Lookup Validator', expression: '' },
+            ],
+            measure: true,
+            dimension: true,
+            mvEnabled: true,
+            recommendedVariable: true,
+            uniqueConstraint: true,
+            nonUniqueConstraint: true,
+        });
+
+        // Change to Text Choice to ensure textChoiceValidator exists
+        field = updateDataType(field, 'textChoice');
+        expect(field.dataType).toBe(TEXT_CHOICE_TYPE);
+        expect(field.textChoiceValidator).toBe(DEFAULT_TEXT_CHOICE_VALIDATOR);
+        expect(field.measure).toBe(true);
+        expect(field.dimension).toBe(true);
+        expect(field.mvEnabled).toBe(true);
+        expect(field.recommendedVariable).toBe(true);
+        expect(field.uniqueConstraint).toBe(true);
+        expect(field.nonUniqueConstraint).toBe(true);
+
+        // Change to MultiChoice
+        field = updateDataType(field, 'multiChoice');
+        expect(field.dataType).toBe(MULTI_CHOICE_TYPE);
+        // validators and expressions cleared for multiChoice
+        expect(field.lookupValidator).toBeUndefined();
+        expect(field.rangeValidators?.size).toBe(0);
+        expect(field.regexValidators?.size).toBe(0);
+        expect(field.valueExpression).toBeUndefined();
+        // flags cleared for multiChoice
+        expect(field.measure).toBe(false);
+        expect(field.dimension).toBe(false);
+        expect(field.mvEnabled).toBe(false);
+        expect(field.recommendedVariable).toBe(false);
+        expect(field.uniqueConstraint).toBe(false);
+        expect(field.nonUniqueConstraint).toBe(false);
+        // textChoiceValidator should still be present for text/multi choice types
+        expect(field.textChoiceValidator).toBeDefined();
+    });
+
+    function convertToMultiChoiceFromDataType(isNewField: boolean) {
+        let field = DomainField.create({
+            propertyId: isNewField ? 0 : 1,
+            propertyValidators: [
+                { type: 'Range', name: 'Range Validator', expression: '' },
+                { type: 'RegEx', name: 'RegEx Validator', expression: '' },
+                { type: 'Lookup', name: 'Lookup Validator', expression: '' },
+            ],
+            scale: 10,
+            measure: true,
+            dimension: true,
+            mvEnabled: true,
+            recommendedVariable: true,
+            uniqueConstraint: true,
+            nonUniqueConstraint: true,
+            rangeURI: STRING_RANGE_URI,
+        });
+        expect(field.dataType).toBe(TEXT_TYPE);
+        expect(field.scale).toBe(10);
+        expect(field.lookupValidator).toBeDefined();
+        expect(field.rangeValidators.size).toBe(1);
+        expect(field.regexValidators.size).toBe(1);
+
+        field = updateDataType(field, 'multiChoice');
+        expect(field.dataType).toBe(MULTI_CHOICE_TYPE);
+        // default textChoiceValidator added when transitioning from non-textChoice
+        expect(field.textChoiceValidator).toBe(DEFAULT_TEXT_CHOICE_VALIDATOR);
+        // validators cleared
+        expect(field.lookupValidator).toBeUndefined();
+        expect(field.rangeValidators.size).toBe(0);
+        expect(field.regexValidators.size).toBe(0);
+        // scale set to MAX for choice types
+        expect(field.scale).toBe(MAX_TEXT_LENGTH);
+        // flags cleared for multiChoice
+        expect(field.measure).toBe(false);
+        expect(field.dimension).toBe(false);
+        expect(field.mvEnabled).toBe(false);
+        expect(field.recommendedVariable).toBe(false);
+        expect(field.uniqueConstraint).toBe(false);
+        expect(field.nonUniqueConstraint).toBe(false);
+        expect(field.valueExpression).toBeUndefined();
+    }
+    test('updateDataType clear properties when changing to MultiChoice field - from String', () => {
+        convertToMultiChoiceFromDataType(true);
+        convertToMultiChoiceFromDataType(false);
     });
 
     test('updateDataType isLookup', () => {

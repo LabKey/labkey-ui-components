@@ -104,7 +104,7 @@ export class LineageNodeMetadata extends ImmutableRecord({
 
         let aliases;
         if (selectRowsMetadata.has('Alias')) {
-            aliases = selectRowsMetadata.get('Alias').map(alias => alias.get('displayValue'));
+            aliases = selectRowsMetadata.get('Alias').map(alias => alias.get('value'));
         }
 
         return new LineageNodeMetadata({
@@ -248,8 +248,7 @@ export class LineageIO implements LineageItemWithMetadata {
 }
 
 interface LineageNodeConfig
-    extends LineageItemWithIOMetadata,
-        Omit<Experiment.LineageNodeBase, 'children' | 'parents' | 'steps'> {
+    extends LineageItemWithIOMetadata, Omit<Experiment.LineageNodeBase, 'children' | 'parents' | 'steps'> {
     children: ILineageLink[] | LineageLink[] | List<LineageLink>;
     // computed properties
     distance: number;
@@ -336,11 +335,11 @@ export class LineageNode
     declare url: string;
 
     // computed properties
-    distance: number;
-    iconProps: LineageIconMetadata;
-    links: LineageLinkMetadata;
-    listURL: string;
-    meta: LineageNodeMetadata;
+    declare distance: number;
+    declare iconProps: LineageIconMetadata;
+    declare links: LineageLinkMetadata;
+    declare listURL: string;
+    declare meta: LineageNodeMetadata;
 
     static create(lsid: string, values?: Partial<LineageNodeConfig>): LineageNode {
         let config;
@@ -351,7 +350,7 @@ export class LineageNode
             config = {
                 ...values,
                 ...LineageIO.applyConfig(values),
-                ...{
+                ...({
                     children: LineageLink.createList(values.children),
                     lsid,
                     name: values.restricted
@@ -359,7 +358,7 @@ export class LineageNode
                         : values.name,
                     parents: LineageLink.createList(values.parents),
                     steps: List(values.steps?.map(stepProps => new LineageRunStep(stepProps))),
-                },
+                } as Partial<LineageNodeConfig>),
             };
         }
 

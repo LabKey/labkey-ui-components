@@ -16,10 +16,13 @@
 import { Set as ImmutableSet, Iterable, List, Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 import { ChangeEvent, CSSProperties } from 'react';
+import Papa from 'papaparse';
 
 import { hasParameter, toggleParameter } from '../url/ActionURL';
 import { QueryInfo } from '../../public/QueryInfo';
 import { STORED_AMOUNT_FIELDS } from '../components/samples/constants';
+import { SchemaQuery } from '../../public/SchemaQuery';
+import { SCHEMAS } from '../schemas';
 
 // Case-insensitive Object reference. Returns undefined if either object or prop does not resolve.
 // If both casings exist (e.g. 'x' and 'X' are props) then either value may be returned.
@@ -88,7 +91,7 @@ export function withTransformedKeys(obj: Record<string, any>, keyTransformFn: (v
 }
 
 /**
- * Returns a copy of List<string> and ensures that in copy all values are lower case strings.
+ * Returns a copy of string[] and ensures that in copy all values are lower case strings.
  * @param a
  */
 export function toLowerSafe(a: string[]): string[] {
@@ -103,6 +106,10 @@ export function camelCaseToTitleCase(text: string): string {
     const camelEdges = /([A-Z](?=[A-Z][a-z])|[^A-Z](?=[A-Z])|[a-zA-Z](?=[^a-zA-Z]))/g;
     const saferText = text.replace(camelEdges, '$1 ');
     return saferText.charAt(0).toUpperCase() + saferText.slice(1);
+}
+
+export function pronoun(count, plural = 'them'): string {
+    return count === 1 ? 'it' : plural;
 }
 
 export function not(predicate: (...args: any[]) => boolean): (...args: any[]) => boolean {
@@ -647,71 +654,13 @@ export const handleFileInputChange = (
     };
 };
 
-export function parseCsvString(value: string, delimiter: string, removeQuotes?: boolean): string[] {
-    if (delimiter === '"') throw 'Unsupported delimiter: ' + delimiter;
-
-    if (!delimiter) return undefined;
-
-    if (value == null) return undefined;
-
-    let start = 0;
-    const parsedValues = [];
-    while (start < value.length) {
-        let end;
-        const ch = value[start];
-        if (ch === delimiter) {
-            // empty string case
-            end = start;
-            parsedValues.push('');
-        } else if (ch === '"') {
-            // starting a quoted value
-            end = start;
-            while (true) {
-                // find the end of the quoted value
-                end = value.indexOf('"', end + 1);
-                if (end === -1) break;
-                if (end === value.length - 1 || value[end + 1] !== '"') {
-                    // end quote at end of string or without double quote
-                    break;
-                }
-                end++; // skip double ""
-            }
-            // if no ending quote, don't remove quotes;
-            if (end === -1 || end !== value.length - 1) {
-                let isCurrentDelimiterOrQuote = true;
-                if (end > -1) {
-                    const nextChar = value[end + 1];
-                    // Issue 51056: "a, "b should be parsed to ["a, "b], not [a, ]
-                    isCurrentDelimiterOrQuote = nextChar === '"' || nextChar === delimiter;
-                }
-
-                if (end === -1 || !isCurrentDelimiterOrQuote) {
-                    end = value.indexOf(delimiter, start);
-                    if (end === -1) end = value.length;
-                    parsedValues.push(value.substring(start, end));
-                    start = end + delimiter.length;
-                    continue;
-                }
-            }
-            let parsedValue = removeQuotes ? value.substring(start + 1, end) : value.substring(start, end + 1); // start is at the quote
-            if (removeQuotes && parsedValue.indexOf('""') !== -1) {
-                parsedValue = parsedValue.replace(/""/g, '"');
-            }
-            parsedValues.push(parsedValue);
-            end++; // get past the last "
-        } else {
-            end = value.indexOf(delimiter, start);
-            if (end === -1) end = value.length;
-            parsedValues.push(value.substring(start, end));
-        }
-        start = end + delimiter.length;
-    }
-    return parsedValues;
-}
-
 const TSV_ESCAPE_CHARS = ['\r', '\n', '\\', '"'];
 function hasTsvEscapeChar(value: any, delimiter: string): boolean {
+    if (value.length === 0) return false;
+
     const allEscapedChars = [...TSV_ESCAPE_CHARS, delimiter];
+    // if start or end with whitespace, we need to quote to preserve that whitespace when importing back from CSV
+    if (value[0].trim() === '' || value[value.length - 1].trim() === '') return true;
     return !!allEscapedChars.find(char => value.indexOf(char) > -1);
 }
 
@@ -746,16 +695,80 @@ export function isQuotedWithDelimiters(value: any, delimiter: string): boolean {
     return strVal.startsWith('"') && strVal.endsWith('"');
 }
 
-export function arrayEquals(a: string[], b: string[], ignoreOrder = true, caseInsensitive?: boolean): boolean {
+export const NEWLINE_CHARS = ['\r', '\n'];
+
+/**
+ * Returns true if the value is a double-quoted string containing newline characters where no
+ * individual line has more than one internal double quote. This identifies multi-line values
+ * (e.g. multi-row TSV paste like `"col1\tcol2\nval1\tval2"`) that can be safely parsed by
+ * PapaParse without stripping intentional quote characters.
+ *
+ * Returns false when any line contains two or more quotes (indicating CSV-escaped quotes like `""`)
+ * since PapaParse would interpret those as escape sequences.
+ * @param value
+ */
+export function isSimpleQuotedMultiLine(value: any): boolean {
+    if (!value || !Utils.isString(value)) {
+        return false;
+    }
+
+    if (!NEWLINE_CHARS.find(char => value.indexOf(char) > -1)) return false;
+
+    const strVal = value + '';
+    if (strVal.length <= 2) return false; // need at least 2 characters to be quoted with something in between
+    if (!strVal.startsWith('"') || !strVal.endsWith('"')) return false;
+
+    const innerValue = strVal.substring(1, strVal.length - 1);
+    const lines = innerValue.split(/\r\n|\r|\n/);
+    return lines.every(line => (line.match(/"/g) || []).length <= 1);
+}
+
+export function joinMultiValueForExport(values: string[], delimiter = ','): string {
+    return Papa.unparse([values], { delimiter });
+}
+
+const processParsedResults = (results, removeEmpty = true, trimSpace?: boolean): string[] => {
+    return results.data[0]
+        ?.map(value => (trimSpace && Utils.isString(value) ? value.trim() : value))
+        .filter(value_ => (removeEmpty ? value_ !== '' : true));
+};
+// Port of Java PageFlowUtil.splitStringToValuesForImport — Google Sheets-compatible CSV parsing
+// for multi-value (multi-select) column values. Fixed comma delimiter, double-quote quoting.
+export function splitMultiValueForImport(
+    str: string,
+    delimiter = ',',
+    removeEmpty = true,
+    trimSpace?: boolean
+): null | string[] | undefined {
+    if (str === null) return null;
+    if (str === undefined) return undefined;
+    if (!str) {
+        return [];
+    }
+    return processParsedResults(Papa.parse(str, { delimiter }), removeEmpty, trimSpace);
+}
+
+export function arrayEquals(
+    a: null | string[] | undefined,
+    b: null | string[] | undefined,
+    ignoreOrder = true,
+    caseInsensitive = false
+): boolean {
     if (a === b) return true;
     if (a == null && b == null) return true;
     if (a == null || b == null) return false;
     if (a.length !== b.length) return false;
 
-    const aStr = ignoreOrder ? a.sort().join(';') : a.join(';');
-    const bStr = ignoreOrder ? b.sort().join(';') : b.join(';');
+    const normalize = (s: string) => (caseInsensitive ? s.toLowerCase() : s);
 
-    return caseInsensitive ? aStr.toLowerCase() === bStr.toLowerCase() : aStr === bStr;
+    if (ignoreOrder) {
+        // Use a copy to avoid mutating the original arrays
+        const aSorted = [...a].map(normalize).sort();
+        const bSorted = [...b].map(normalize).sort();
+        return aSorted.every((val, index) => val === bSorted[index]);
+    }
+
+    return a.every((val, index) => normalize(val) === normalize(b[index]));
 }
 
 export function getValueFromRow(row: Record<string, any>, col: string): number | string {
@@ -900,3 +913,12 @@ export const setIsTestEnv = (isTestEnv: boolean): void => {
 };
 
 export const isTestEnv = (): boolean => IS_NODE_TEST_ENV || IS_TEST_ENV;
+
+export function hasIdentifiedCol(schemaQuery: SchemaQuery): boolean {
+    // Drop the viewName from the schemaQuery so we can properly compare
+    const isNucSeq = schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.NUC_SEQUENCE, false);
+    const isProtSeq = schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.PROTEIN_SEQUENCE, false);
+    const isMolecule = schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.MOLECULE, false);
+    const isCompound = schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.COMPOUND, false);
+    return isNucSeq || isProtSeq || isMolecule || isCompound;
+}

@@ -111,7 +111,6 @@ export const SERVER_NOTIFICATION_MAX_ROWS = 8;
 export const EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS = 'queryProductAllFolderLookups';
 export const EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED = 'queryProductProjectDataListingScoped';
 export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu';
-export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot-selector';
 
 export const FOLDER_DATA_TYPE_EXCLUSIONS = 'dataTypeExclusions';
 export const ARCHIVED_FOLDERS = 'archivedContainers';
@@ -199,6 +198,6 @@ export const FREEZER_MANAGER_APP_PROPERTIES: AppProperties = {
 export const APPLICATION_PROPERTIES = {
     [FREEZER_MANAGER_PRODUCT_ID]: FREEZER_MANAGER_APP_PROPERTIES,
     [SAMPLE_MANAGER_PRODUCT_ID]: SAMPLE_MANAGER_APP_PROPERTIES,
-    [LIMS_PRODUCT_ID] : LIMS_APP_PROPERTIES,
+    [LIMS_PRODUCT_ID]: LIMS_APP_PROPERTIES,
     [BIOLOGICS_PRODUCT_ID]: BIOLOGICS_APP_PROPERTIES
-}
+};

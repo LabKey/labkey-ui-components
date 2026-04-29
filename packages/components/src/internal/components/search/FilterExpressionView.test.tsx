@@ -1,4 +1,4 @@
-import React, { act } from 'react';
+import React from 'react';
 
 import { Filter } from '@labkey/api';
 

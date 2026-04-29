@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Record as ImmutableRecord } from 'immutable';
+import { Record as ImmutableRecord, List } from 'immutable';
 
 import { getServerContext, Utils } from '@labkey/api';
 
@@ -167,12 +167,14 @@ export class AssayProtocolModel extends ImmutableRecord({
     get container(): string {
         const container = new Container(getServerContext().container);
         const domainContainerId = this.domainContainerId;
+        const domainContainerPath =
+            domainContainerId === container.id
+                ? container.path
+                : domainContainerId === container.parentId
+                  ? container.parentPath
+                  : domainContainerId;
 
-        return this.isNew()
-            ? getAppHomeFolderPath(container)
-            : domainContainerId === container.id
-              ? container.path
-              : domainContainerId;
+        return this.isNew() ? getAppHomeFolderPath(container) : domainContainerPath;
     }
 
     get domainContainerId(): string {

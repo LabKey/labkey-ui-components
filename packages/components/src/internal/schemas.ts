@@ -55,6 +55,8 @@ const CORE_SCHEMA = 'core';
 export const CORE_TABLES = {
     SCHEMA: CORE_SCHEMA,
     DATA_STATES: new SchemaQuery(CORE_SCHEMA, 'DataStates'),
+    PRINCIPALS: new SchemaQuery(CORE_SCHEMA, 'Principals'),
+    SITE_USERS: new SchemaQuery(CORE_SCHEMA, 'SiteUsers'),
     USERS: new SchemaQuery(CORE_SCHEMA, 'Users'),
     USER_API_KEYS: new SchemaQuery(CORE_SCHEMA, 'UserApiKeys'),
 };
@@ -65,6 +67,7 @@ export const DATA_CLASSES = {
     SCHEMA: DATA_CLASS_SCHEMA,
     CELL_LINE: new SchemaQuery(DATA_CLASS_SCHEMA, 'CellLine'),
     CONSTRUCT: new SchemaQuery(DATA_CLASS_SCHEMA, 'Construct'),
+    COMPOUND: new SchemaQuery(DATA_CLASS_SCHEMA, 'Compound'),
     EXPRESSION_SYSTEM: new SchemaQuery(DATA_CLASS_SCHEMA, 'ExpressionSystem'),
     MOLECULE: new SchemaQuery(DATA_CLASS_SCHEMA, 'Molecule'),
     MOLECULE_SET: new SchemaQuery(DATA_CLASS_SCHEMA, 'MoleculeSet'),

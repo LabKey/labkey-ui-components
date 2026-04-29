@@ -128,7 +128,7 @@
         }
 
         &.field-modal__values {
-            overflow: visible;
+            overflow: hidden; // GH Issue 911
             padding: 8px 16px;
         }
     }

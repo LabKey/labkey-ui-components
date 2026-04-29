@@ -1,7 +1,7 @@
 import { List } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER } from '../containerFixtures';
+import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../containerFixtures';
 
 import {
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
@@ -15,9 +15,7 @@ import {
     getContainerFilterForFolder,
     getContainerFilterForLookups,
     includesLookupColumns,
-    ISelectRowsResult,
     isSelectRowMetadataRequired,
-    quoteValueColumnWithDelimiters,
     Renderers,
     splitRowsByContainer,
 } from './api';
@@ -134,52 +132,6 @@ describe('api', () => {
             expect(getContainerFilterForLookups(moduleContext({ allFolderLookups: true }))).toEqual(
                 Query.ContainerFilter.allInProjectPlusShared
             );
-        });
-    });
-
-    describe('quoteValueColumnWithDelimiters', () => {
-        const results: ISelectRowsResult = {
-            key: 'test',
-            models: {
-                test: {
-                    1: { Name: { value: 'one', url: 'http://one/test', randomProperty: 123 } },
-                    2: { Name: { value: 'with, comma', url: 'http://with, comma/test' } },
-                    4: { Name: { value: 'with "quotes", and comma' } },
-                    3: { NoName: { value: 'nonesuch', url: 'http://with, comma/test' } },
-                    5: { Name: { value: ', comma first', displayValue: ',', url: 'http://with, comma/test' } },
-                },
-            },
-            orderedModels: List([1, 2, 3, 4, 5]),
-            queries: {},
-            rowCount: 5,
-        };
-        test('encode', () => {
-            expect(quoteValueColumnWithDelimiters(results, 'Name', ',')).toStrictEqual({
-                key: 'test',
-                models: {
-                    test: {
-                        1: { Name: { value: 'one', url: 'http://one/test', displayValue: 'one', randomProperty: 123 } },
-                        2: {
-                            Name: {
-                                value: '"with, comma"',
-                                url: 'http://with, comma/test',
-                                displayValue: 'with, comma',
-                            },
-                        },
-                        4: {
-                            Name: {
-                                value: '"with ""quotes"", and comma"',
-                                displayValue: 'with "quotes", and comma',
-                            },
-                        },
-                        3: { NoName: { value: 'nonesuch', url: 'http://with, comma/test' } },
-                        5: { Name: { value: '", comma first"', displayValue: ',', url: 'http://with, comma/test' } },
-                    },
-                },
-                orderedModels: List([1, 2, 3, 4, 5]),
-                queries: {},
-                rowCount: 5,
-            });
         });
     });
 

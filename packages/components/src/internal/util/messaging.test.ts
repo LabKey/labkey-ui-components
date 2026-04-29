@@ -2,6 +2,7 @@ import {
     getPermissionRestrictionMessage,
     lookupValidationErrorMessage,
     makePresentParticiple,
+    resolveDuplicatesAsName,
     resolveErrorMessage,
 } from './messaging';
 
@@ -331,6 +332,15 @@ describe('resolveErrorMessage', () => {
             'Unable to create a unique constraint for field cloningsite because duplicate values already exists in the data.'
         );
     });
+
+    test('invalid SampleState value', () => {
+        const error = {
+            exception: "Value 'Testing' not found for field SampleState in the current context."
+        }
+        expect(resolveErrorMessage(error)).toBe(
+            "Value 'Testing' not found for field Status in the current context."
+        );
+    })
 });
 
 describe('getPermissionRestrictionMessage', () => {
@@ -397,5 +407,148 @@ describe('lookupValidationErrorMessage', () => {
         expect(lookupValidationErrorMessage('beep,', false, 'vw')).toEqual(
             'vw is no longer a valid value. Data may have been moved or deleted.'
         );
+    });
+});
+
+describe('resolveDuplicatesAsName', () => {
+    describe('no key match', () => {
+        const noMatchMsg = 'Violation of UNIQUE KEY constraint "AK_Material"';
+
+        test('requires literal period after "already exists"', () => {
+            // The escaped \. means a trailing non-period character no longer matches
+            expect(resolveDuplicatesAsName('Key (name)=(foo) already existsX', 'samples')).toBe(
+                'There was a problem creating your samples. Check the existing samples for possible duplicates and make sure any referenced samples are still valid.'
+            );
+        });
+
+        test('defaults noun to data and verb to creating', () => {
+            expect(resolveDuplicatesAsName(noMatchMsg, undefined)).toBe(
+                'There was a problem creating your data. Check the existing data for possible duplicates and make sure any referenced data are still valid.'
+            );
+        });
+
+        test('uses noun when no nounPlural', () => {
+            expect(resolveDuplicatesAsName(noMatchMsg, 'samples')).toBe(
+                'There was a problem creating your samples. Check the existing samples for possible duplicates and make sure any referenced samples are still valid.'
+            );
+        });
+
+        test('uses nounPlural over noun', () => {
+            expect(resolveDuplicatesAsName(noMatchMsg, 'sample', 'samples')).toBe(
+                'There was a problem creating your samples. Check the existing samples for possible duplicates and make sure any referenced samples are still valid.'
+            );
+        });
+
+        test('uses verbPresParticiple when provided', () => {
+            expect(resolveDuplicatesAsName(noMatchMsg, 'samples', undefined, 'updating')).toBe(
+                'There was a problem updating your samples. Check the existing samples for possible duplicates and make sure any referenced samples are still valid.'
+            );
+        });
+
+        test('uses nounPlural and verbPresParticiple together', () => {
+            expect(resolveDuplicatesAsName(noMatchMsg, 'sample', 'samples', 'updating')).toBe(
+                'There was a problem updating your samples. Check the existing samples for possible duplicates and make sure any referenced samples are still valid.'
+            );
+        });
+    });
+
+    describe('value containing closing paren', () => {
+        test('.*? backtracks to include ) in value to complete the match', () => {
+            // .*? is non-greedy but will backtrack through ) if needed to satisfy the full pattern
+            expect(resolveDuplicatesAsName('Key (classid, name)=(46, foo)bar) already exists.', 'sources')).toBe(
+                "There was a problem creating your sources. Duplicate name 'foo)bar' found."
+            );
+        });
+    });
+
+    describe('key containing nested paren', () => {
+        test('.*? backtracks to capture full key field list including )', () => {
+            expect(
+                resolveDuplicatesAsName('Detail: Key (lower(name::text))=(box_large) already exists.', 'samples')
+            ).toBe("There was a problem creating your samples. Duplicate name 'box_large' found.");
+        });
+    });
+
+    describe('single-field key', () => {
+        test('extracts name', () => {
+            expect(resolveDuplicatesAsName('Key (name)=(PtoC2-0) already exists.', 'samples')).toBe(
+                "There was a problem creating your samples. Duplicate name 'PtoC2-0' found."
+            );
+        });
+
+        test('name with commas', () => {
+            expect(resolveDuplicatesAsName('Key (name)=(WC-1,2,204) already exists.', 'samples')).toBe(
+                "There was a problem creating your samples. Duplicate name 'WC-1,2,204' found."
+            );
+        });
+    });
+
+    describe('two-field key', () => {
+        test('extracts last field as name', () => {
+            expect(resolveDuplicatesAsName('Key (classid, name)=(46, L-40) already exists.', 'sources')).toBe(
+                "There was a problem creating your sources. Duplicate name 'L-40' found."
+            );
+        });
+
+        test('name with commas', () => {
+            expect(resolveDuplicatesAsName('Key (classid, name)=(46, L-40,1) already exists.', 'sources')).toBe(
+                "There was a problem creating your sources. Duplicate name 'L-40,1' found."
+            );
+        });
+
+        test('name with commas and spaces', () => {
+            expect(resolveDuplicatesAsName('Key (classid, name)=(46, L-40, 1) already exists.', 'sources')).toBe(
+                "There was a problem creating your sources. Duplicate name 'L-40, 1' found."
+            );
+        });
+    });
+
+    describe('three-field key', () => {
+        test('extracts last field as name', () => {
+            expect(
+                resolveDuplicatesAsName(
+                    'Key (container, cpastype, name)=(uuid, lsid, B1-247) already exists.',
+                    'samples'
+                )
+            ).toBe("There was a problem creating your samples. Duplicate name 'B1-247' found.");
+        });
+
+        test('name with commas only', () => {
+            expect(
+                resolveDuplicatesAsName(
+                    'Key (container, cpastype, name)=(uuid, lsid, WC-1,2,204) already exists.',
+                    'samples'
+                )
+            ).toBe("There was a problem creating your samples. Duplicate name 'WC-1,2,204' found.");
+        });
+
+        test('name with commas and spaces', () => {
+            expect(
+                resolveDuplicatesAsName(
+                    'Key (container, cpastype, name)=(uuid, lsid, WC-1, 2,204) already exists.',
+                    'samples'
+                )
+            ).toBe("There was a problem creating your samples. Duplicate name 'WC-1, 2,204' found.");
+        });
+    });
+
+    describe('optional params with key match', () => {
+        test('uses nounPlural over noun', () => {
+            expect(resolveDuplicatesAsName('Key (name)=(foo) already exists.', 'sample', 'samples')).toBe(
+                "There was a problem creating your samples. Duplicate name 'foo' found."
+            );
+        });
+
+        test('uses verbPresParticiple', () => {
+            expect(resolveDuplicatesAsName('Key (name)=(foo) already exists.', 'samples', undefined, 'updating')).toBe(
+                "There was a problem updating your samples. Duplicate name 'foo' found."
+            );
+        });
+
+        test('uses nounPlural and verbPresParticiple together', () => {
+            expect(resolveDuplicatesAsName('Key (name)=(foo) already exists.', 'sample', 'samples', 'updating')).toBe(
+                "There was a problem updating your samples. Duplicate name 'foo' found."
+            );
+        });
     });
 });

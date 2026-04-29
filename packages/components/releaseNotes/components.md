@@ -1,6 +1,259 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.33.2
+*Released*: 29 April 2026
+- GitHub Issue #598: Wrap text for long file names in various app locations
+
+### version 7.33.1
+*Released*: 28 April 2026
+- Merge from release26.3-SNAPSHOT to develop
+    - includes changes from 7.21.5 #1987
+
+### version 7.33.0
+*Released*: 24 April 2026
+- Workflow UI updates
+  - Add css for .lk-popover-behind-modal to adjust z-index
+  - EditInlineField prop for pullRight for pencil icon
+  - UserDetailsPanel support for userId that is a group id
+
+### version 7.32.0
+*Released*: 23 April 2026
+- Add EMPTY_COMPOUND_WARNING
+- Add COMPOUND to SCHEMAS.DATA_CLASSES
+- hasIdentifiedCol: check for Compound schema
+- UnidentifiedPill: handle schemas that don't have defined messages, add support for Compound schema
+
+### version 7.31.1
+*Released*: 23 April 2026
+- GitHub Issue 911: Fix overflow for field filtering modal
+
+### version 7.31.0
+*Released*: 20 April 2026
+- Add optional `jobActionId` parameter to `updateSampleStorageData`
+- Add `dividedOptionsRenderer` and `filterDividedOptions` for rendering selectInputs with dividers between groups of options
+
+### version 7.30.0
+*Released*: 17 April 2026
+- GitHub Issue 848: Add the ability to reset TOTP settings in the apps
+
+### version 7.29.4
+*Released*: 9 April 2026
+- GitHub Issue 954: Add error for duplicate values for parent inputs
+
+### version 7.29.3
+*Released*: 8 April 2026
+- GitHub Issue 928: Spaces not shown between text choices in identifying fields in editable grid
+- GitHub Issue 951: Multi-line values converted to text choices lose multi-line editability
+- GitHub Issue 970: Warn about more than 10 items for multi choice fields in editable grid.
+- GitHub Issue 987: Multi value filter dialog lets you edit and save without any selected values
+
+### version 7.29.2
+*Released*: 8 April 2026
+- Merge from release26.4-SNAPSHOT to develop
+    - includes changes from 7.26.5 #1970
+    - includes changes from 7.26.6 #1976
+
+### version 7.29.1
+*Released*: 7 April 2026
+- GitHub Issue 868: Add more nouns for count units
+
+### version 7.28.2
+*Released*: 7 April 2026
+- Update `FREEZER_ITEM_SAMPLE_MAPPER` to return undefined if not matched, for consistency with other mappers
+
+### version 7.28.1
+*Released*: 3 April 2026
+- GitHub Issue 613: Use "Status" instead of "SampleState" in error messaging.
+
+### version 7.28.0
+*Released*: 2 April 2026
+- GitHub Issue 916: Editable grid copy/paste issue with special characters
+    - replaces the custom parseCsvString function with the PapaParse library based  splitMultiValueForImport/joinMultiValueForExport util for CSV/TSV parsing
+    - add some basic multi-line paste support
+    - remove quoteValueColumnWithDelimiters as it's no longer needed
+
+### version 7.27.0
+*Released*: 1 April 2026
+- GitHub Issue 985: Update styling of `SelectInput` for identifying fields
+
+### version 7.26.6
+*Released*: 7 April 2026
+- Merge from release26.3-SNAPSHOT to release26.4-SNAPSHOT
+    - includes changes from 7.21.4 #1971
+
+### version 7.26.5
+*Released*: 2 April 2026
+- GitHub Issue 847: App User Management page to allow users with manageUsersPermission to select / view all site users
+
+### version 7.26.4
+*Released*: 31 March 2026
+- Update `@labkey/api` dependency
+
+### version 7.26.3
+*Released*: 31 March 2026
+- GitHub Issue 811: App permissions page shows deactivated users in group members list
+  - Don't show inactive users in members list for group details on permissions page
+  - include "Inactive User: " prefix in member button on group management page to match what we do for permissions page
+
+### version 7.26.2
+*Released*: 31 March 2026
+- GitHub Issue 919: App grid column header menu renders behind modal when grid shown in modal (more related to GitHub Issue 710)
+
+### version 7.26.1
+*Released*: 30 March 2026
+- Replace `encodeFormDataQuote` with `Utils.encodeFormName`
+
+### version 7.26.0
+*Released*: 30 March 2026
+- Update dependencies
+
+### version 7.25.0
+*Released*: 25 March 2026
+- Update `isAllSamplesSchema` to account for move of `JobInputSamples` to `workflow` schema
+- Add placement prop for `DisableableButton`
+- add `fitlerArrayToString` method in QueryModel utils
+- add `pronoun` utility method for the it/they or it/them text choices
+
+### version 7.24.2
+*Released*: 25 March 2026
+- GitHub Issue 955: limit text choice option length to 200 characters
+
+### version 7.24.1
+*Released*: 25 March 2026
+- Factor `EditingForm` out of `EditableDetailPanel` and load model with update columns
+- Update `extractChanges()` to account for `column.jsonType === 'array'`
+- Refactor `arrayEquals` to fix edge cases of array mutation and delimiter collisions
+
+### version 7.24.0
+*Released*: 24 March 2026
+- SchemaQuery.isEqual: add optional includeViewName argument, defaults to true
+- UnidentifiedPill: add schemaQuery prop
+- EMPTY_SEQUENCE_WARNING renamed to EMPTY_NS_SEQUENCE_WARNING
+
+### version 7.23.5
+*Released*: 18 March 2026
+- Bump @labkye/api dependency
+
+### version 7.23.4
+*Released*: 22 March 2026
+- Set query and registry audit events to `hasTransactionId=true`
+
+### version 7.23.3
+*Released*: 19 March 2026
+- GitHub Issue 942: Add error for duplicate values for MVTC fields
+- GitHub Issue 961: Clicking the "Allow multiple selections" label doesn't toggle the checkbox
+- GitHub Issue 932: No help text for disabled Multi-Value checkbox in designer
+
+### version 7.23.2
+*Released*: 18 March 2026
+- Merge from release26.3-SNAPSHOT to develop
+    - includes changes from 7.21.2 #1949
+    - includes changes from 7.21.3 #1947
+
+### version 7.23.1
+*Released*: 11 March 2026
+- Merge from release26.3-SNAPSHOT to develop
+    - includes changes from 7.21.1 #1946
+
+### version 7.23.0
+*Released*: 10 March 2026
+- Update `tsconfig.json` to specify `delcarationMap`
+- Add missing `declare` statements that are now required with `ES2023`
+
+### version 7.22.1
+*Released*: 6 March 2026
+- GitHub Issue 897: Study dataset should not allow multivalue text choice as a third key
+
+### version 7.22.0
+*Released*: 4 March 2026
+- Remove styles for `.app-page`
+    - Component was moved to ui-premium a while ago
+- Add `ta-right`, `ta-left` util styles
+- Add UnidentifiedPill
+- Add EMPTY_SEQUENCE_WARNING constant
+
+### version 7.21.5
+*Released*: 23 April 2026
+- GitHub Issue #1012: Update resolveDuplicatesAsName() regex to handle nested parentheses in key/value
+
+### version 7.21.4
+*Released*: 6 April 2026
+- GitHub Issue #974: Lookup Data Type shown in Assay Designer for app, even when premium module is not present
+  - AssayDesignerPanels to pass appPropertiesOnly to AssayDomainForm
+  - add new domainFormDisplayOptions.showAdvancedSettingsForApp for assay designer case
+
+### version 7.21.3
+*Released*: 12 March 2026
+- GitHub Issue #790: Sample check-in and discard should not allow amount/unit input for differing units
+  - Update areUnitsCompatible to account for different "Count" unit labels
+  - getMetricUnitOptions() to allow optional filterFn parameter for the "Count" unit case
+
+### version 7.21.2
+*Released*: 11 March 2026
+- GitHub Issue 710: Include columns set as Identifying Fields within the 'Search for Samples' grid when adding samples to a storage location
+  - update saveGridView() to take hidden prop (default false)
+  - saveSettingsToLocalStorage() fix for checking model.useSavedSettings === SavedSettings.none
+
+### version 7.21.1
+*Released*: 4 March 2026
+- GitHub Issue 829: Sample type with lookup to list with text primary key where the value contains a comma doesn't map to lookup
+  - Only do `quoteValueWithDelimiters` on values if the lookup column support multiple values
+
+### version 7.21.0
+*Released*: 26 February 2026
+- Package updates
+
+### version 7.20.5
+*Released*: 25 February 2026
+- GitHub Issue #418: Remove flag field type & migrate to text
+
+### version 7.20.4
+*Released*: 25 February 2026
+- GitHub Issue #734: App narrow screen display can cut off error message for field editor pages
+  - inline-comment footer can take up to 125px on small screens so increase bottom padding for .app-page
+
+### version 7.20.3
+*Released*: 24 February 2026
+- GitHub Issue 465: Add auditing capabilities for grid views
+- GitHub Issue 840: Increase text choice options from 200 to 500
+
+### version 7.20.2
+*Released*: 24 February 2026
+- Bump @labkey/api dependency
+
+### version 7.20.1
+*Released*: 20 February 2026
+- GitHub Issue 830: Assay design add transform script webdav path doesn't resolve from subfolder
+  - AssayProtocolModel.container to compare domain id to the container.parentId to get parentPath when applicable
+  - TransformScriptsInput to resolve the domain containerId to the containerPath to use for webdav operations
+
+### version 7.20.0
+*Released*: 18 February 2026
+- Multi value text choices: field type conversion
+    - Updates the Text Choice options UI to add an “Allow multiple selections” toggle, multi-choice-specific edit restrictions, and improved confirmation messaging/tests for data-type changes involving text/multi-choice.
+    - Make multi-choice behaves as an internal variant of Text Choice rather than a separate visible type in data type dropdown
+    - Modified updateDataType and text choice usage counting to correctly handle conversions between string, Text Choice, and Multi Choice fields, clearing validators/flags and tracking multi-value usage where appropriate.
+
+### version 7.19.0
+*Released*: 18 February 2026
+- GitHub Issue 846: Remove display of user role in profile and settings pages
+
+### version 7.18.1
+*Released*: 17 February 2026
+- Allow users to use quotation marks for exact search within the apps
+
+### version 7.18.0
+*Released*: 17 February 2026
+- Update `FilterStatus` to optionally include an "Add Filter" button
+- add `getIntegerSearchParam` utility in `internal/url/utils.ts`
+
+### version 7.17.0
+*Released*: 16 February 2026
+- Remove GridAliquotViewSelector
+- Remove SampleAliquotViewSelector
+- Remove isSampleAliquotSelectorEnabled
+
 ### version 7.16.2
 *Released*: 11 February 2026
 - GitHub Issue 779: Cannot Edit Relative Dates in Sample Finder

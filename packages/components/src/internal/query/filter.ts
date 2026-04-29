@@ -72,13 +72,22 @@ export function isEqual(first: List<Filter.IFilter>, second: List<Filter.IFilter
  * Make a legal LK SQL identifier from the column name by decoding parts, escaping quotes, and adding table alias if provided.
  * See usage in ui-premium entities/utils.tsx getLabKeySql()
  */
-export function getLegalIdentifier(columnName: string, tableAlias?: string, separator = '/'): string {
-    const columnNameParts = columnName.split(separator);
+export function getLegalIdentifier(
+    fieldKey: string,
+    tableAlias?: string,
+    separator = '/',
+    skipDecode?: boolean
+): string {
+    const fieldParts = fieldKey.split(separator);
     const formattedParts = [];
-    columnNameParts.forEach(part => {
+    fieldParts.forEach(part => {
         if (part) {
             let decodedPart = part.replace(/"/g, '""');
-            decodedPart = QueryKey.decodePart(decodedPart);
+            if (!skipDecode) {
+                // For example, domain.name (unencoded) is passed in as fieldKey
+                decodedPart = QueryKey.decodePart(decodedPart);
+            }
+
             formattedParts.push('"' + decodedPart + '"');
         }
     });
@@ -91,7 +100,7 @@ export function getLegalIdentifier(columnName: string, tableAlias?: string, sepa
 function getLabKeySqlValue(value: any, jsonType: JsonType, suppressQuote?: boolean): any {
     if (jsonType === 'string' || jsonType === 'date' || jsonType === 'time') {
         const quote = suppressQuote ? '' : "'";
-        return quote + value.toString().replace(/'/g, "''") + quote;
+        return quote + (value == null ? '' : value.toString().replace(/'/g, "''")) + quote;
     }
 
     if (jsonType === 'boolean')
@@ -375,6 +384,37 @@ export function isNegativeFilterType(filterType: Filter.IFilterType) {
     return NEGATIVE_FILTERS.indexOf(filterType.getURLSuffix()) > -1;
 }
 
+function getArrayFilterLabKeySql(filter: Filter.IFilter, tableAlias?: string): string {
+    const filterType = filter.getFilterType().getURLSuffix();
+    const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
+
+    if (filterType === Filter.Types.ARRAY_ISEMPTY.getURLSuffix()) return 'array_is_empty(' + columnNameSelect + ')';
+    if (filterType === Filter.Types.ARRAY_ISNOTEMPTY.getURLSuffix())
+        return 'NOT array_is_empty(' + columnNameSelect + ')';
+
+    const values = filter.getFilterType().parseValue(filter.getValue());
+
+    const sqlValues = [];
+    values.forEach(val => {
+        sqlValues.push(getLabKeySqlValue(val, 'string'));
+    });
+    const sqlValueStr = 'ARRAY[' + sqlValues.join(', ') + ']';
+
+    if (filterType === Filter.Types.ARRAY_CONTAINS_ANY.getURLSuffix()) {
+        return 'array_contains_any(' + columnNameSelect + ', ' + sqlValueStr + ')';
+    } else if (filterType === Filter.Types.ARRAY_CONTAINS_NONE.getURLSuffix()) {
+        return 'array_contains_none(' + columnNameSelect + ', ' + sqlValueStr + ')';
+    } else if (filterType === Filter.Types.ARRAY_CONTAINS_ALL.getURLSuffix()) {
+        return 'array_contains_all(' + columnNameSelect + ', ' + sqlValueStr + ')';
+    } else if (filterType === Filter.Types.ARRAY_CONTAINS_EXACT.getURLSuffix()) {
+        return 'array_is_same(' + columnNameSelect + ', ' + sqlValueStr + ')';
+    } else if (filterType === Filter.Types.ARRAY_CONTAINS_NOT_EXACT.getURLSuffix()) {
+        return 'NOT array_is_same(' + columnNameSelect + ', ' + sqlValueStr + ')';
+    }
+
+    return null;
+}
+
 /**
  * Note: this is an experimental API that may change unexpectedly in future releases.
  * From a filter and its column jsonType, return the LabKey sql operator clause
@@ -404,6 +444,10 @@ export function getFilterLabKeySql(
         filterType.getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()
     )
         return null;
+
+    if (jsonType === 'array') {
+        return getArrayFilterLabKeySql(filter, tableAlias);
+    }
 
     if (jsonType === 'date' && filterType.isDataValueRequired()) {
         let dateValue: string;

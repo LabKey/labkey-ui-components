@@ -1,6 +1,6 @@
 import { Map } from 'immutable';
 
-import { extractEntityTypeOptionFromRow, getChosenParentData, sampleGenCellKey } from './actions';
+import { extractEntityTypeOptionFromRow, getChosenParentData, getFieldDisplayValue, sampleGenCellKey } from './actions';
 import { EntityDataType, EntityIdCreationModel } from './models';
 import { DataClassDataType, SampleTypeDataType } from './constants';
 
@@ -84,5 +84,35 @@ describe('sampleGenCellKey', () => {
         expect(sampleGenCellKey(null, 'RunDate', 1)).toBe('rundate&&1');
         expect(sampleGenCellKey(undefined, 'Ancestors/Sources/Study', 0)).toBe('ancestors/sources/study&&0');
         expect(sampleGenCellKey(null, 'Ancestors/Sources/Study', 1)).toBe('ancestors/sources/study&&1');
+    });
+});
+
+describe('getFieldDisplayValue', () => {
+    test('returns formattedValue when available', () => {
+        expect(getFieldDisplayValue({ formattedValue: 'formatted', displayValue: 'display', value: 'raw' })).toBe('formatted');
+    });
+
+    test('falls back to displayValue when formattedValue is undefined', () => {
+        expect(getFieldDisplayValue({ displayValue: 'display', value: 'raw' })).toBe('display');
+    });
+
+    test('falls back to value when formattedValue and displayValue are undefined', () => {
+        expect(getFieldDisplayValue({ value: 'raw' })).toBe('raw');
+    });
+
+    test('joins array values with comma and space', () => {
+        expect(getFieldDisplayValue({ value: ['a', 'b', 'c'] })).toBe('a, b, c');
+    });
+
+    test('joins array formattedValue with comma and space', () => {
+        expect(getFieldDisplayValue({ formattedValue: ['x', 'y'] })).toBe('x, y');
+    });
+
+    test('returns single string value as-is', () => {
+        expect(getFieldDisplayValue({ value: 'single' })).toBe('single');
+    });
+
+    test('handles single-element array', () => {
+        expect(getFieldDisplayValue({ value: ['only'] })).toBe('only');
     });
 });

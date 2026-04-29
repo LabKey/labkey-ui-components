@@ -70,7 +70,6 @@ import {
     ATTACHMENT_TYPE,
     CALCULATED_TYPE,
     FILE_TYPE,
-    FLAG_TYPE,
     MULTI_CHOICE_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
     PARTICIPANT_TYPE,
@@ -86,6 +85,7 @@ import {
     VISIT_LABEL_TYPE,
 } from './PropDescType';
 import {
+    ConditionalFormat,
     decodeLookup,
     DEFAULT_TEXT_CHOICE_VALIDATOR,
     DomainDesign,
@@ -107,6 +107,7 @@ import {
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
 import { executeSql } from '../../query/executeSql';
+import { getLegalIdentifier } from '../../query/filter';
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -337,10 +338,6 @@ export async function getAvailableTypesForOntology(
 }
 
 function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologies: OntologyModel[]): boolean {
-    if (type === FLAG_TYPE && !domain.allowFlagProperties) {
-        return false;
-    }
-
     if (type === FILE_TYPE && !domain.allowFileLinkProperties) {
         return false;
     }
@@ -891,17 +888,36 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             field = field.merge(DomainField.resolveLookupConfig(field, dataType)) as DomainField;
         }
 
-        if ((field.isTextChoiceField() || field.isMultiChoiceField()) && !wasTextChoice) {
+        if (field.isTextChoiceField() || field.isMultiChoiceField()) {
             // when changing a field to a Text Choice, add the default textChoiceValidator and
             // remove/reset all other propertyValidators and other text option settings
-            field = field.merge({
-                textChoiceValidator: DEFAULT_TEXT_CHOICE_VALIDATOR,
-                lookupValidator: undefined,
-                rangeValidators: [],
-                regexValidators: [],
-                scale: MAX_TEXT_LENGTH,
-                valueExpression: undefined,
-            }) as DomainField;
+            if (!wasTextChoice) {
+                field = field.merge({
+                    textChoiceValidator: DEFAULT_TEXT_CHOICE_VALIDATOR,
+                    lookupValidator: undefined,
+                    rangeValidators: [],
+                    regexValidators: [],
+                    scale: MAX_TEXT_LENGTH,
+                    valueExpression: undefined,
+                }) as DomainField;
+            }
+
+            if (field.isMultiChoiceField()) {
+                field = field.merge({
+                    lookupValidator: undefined,
+                    rangeValidators: [],
+                    regexValidators: [],
+                    valueExpression: undefined,
+                    dimension: false,
+                    measure: false,
+                    mvEnabled: false,
+                    recommendedVariable: false,
+                    uniqueConstraint: false,
+                    nonUniqueConstraint: false,
+                    conditionalFormats: List<ConditionalFormat>(),
+                    URL: undefined,
+                }) as DomainField;
+            }
         } else if (field.isCalculatedField()) {
             field = field.merge({
                 importAliases: undefined,
@@ -1365,17 +1381,52 @@ export function getDomainNamePreviews(
     });
 }
 
-type TextChoiceInUseValues = Record<string, { count: number; locked: boolean }>;
+export type TextChoiceInUseValues = {
+    hasMultiValue: boolean;
+    useCount: Record<string, { count: number; locked: boolean }>;
+};
+
+function processTextChoiceRow(
+    value: any,
+    isMultiField: boolean,
+    isLocked: boolean,
+    rowCount: number,
+    useCount: Record<string, { count: number; locked: boolean }>,
+    hasMultiValue: boolean
+): boolean {
+    if (!isMultiField && !isValidTextChoiceValue(value)) return hasMultiValue;
+
+    const values: string[] = [];
+    if (isMultiField && Array.isArray(value)) {
+        values.push(...value);
+        hasMultiValue = hasMultiValue || value.length > 1;
+    } else {
+        values.push(value);
+    }
+
+    values.forEach(val => {
+        if (!useCount[val]) {
+            useCount[val] = { count: 0, locked: false };
+        }
+        useCount[val].count += rowCount;
+        useCount[val].locked = useCount[val].locked || isLocked;
+    });
+
+    return hasMultiValue;
+}
 
 export async function getTextChoiceInUseValues(
     field: DomainField,
     schemaName: string,
     queryName: string,
-    lockedSqlFragment: string
+    lockedSqlFragment: string,
+    isMultiField: boolean
 ): Promise<TextChoiceInUseValues> {
     const containerFilter = Query.ContainerFilter.allInProjectPlusShared; // to account for a shared domain at project or /Shared
     const fieldName = field.original?.name ?? field.name;
 
+    const useCount: Record<string, { count: number; locked: boolean }> = {};
+    let hasMultiValue = false;
     // If the field is set as PHI, we need the query to include the RowId for logging, so we have to do the aggregate client side
     if (field.isPHI()) {
         const result = await selectRows({
@@ -1386,37 +1437,32 @@ export async function getTextChoiceInUseValues(
             schemaQuery: new SchemaQuery(schemaName, queryName),
         });
 
-        const values: TextChoiceInUseValues = {};
         result.rows.forEach(row => {
-            const value = row[fieldName]?.value;
-            if (isValidTextChoiceValue(value)) {
-                if (!values[value]) {
-                    values[value] = { count: 0, locked: false };
-                }
-                values[value].count++;
-                values[value].locked =
-                    values[value].locked || caseInsensitive(row, 'SampleState/StatusType').value === 'Locked';
-            }
+            const value = caseInsensitive(row, fieldName)?.value;
+            const rowLocked = caseInsensitive(row, 'SampleState/StatusType').value === 'Locked';
+            hasMultiValue = processTextChoiceRow(value, isMultiField, rowLocked, 1, useCount, hasMultiValue);
         });
-        return values;
+    } else {
+        const fieldNameSelect = getLegalIdentifier(fieldName, null, null, true /*domain.name is not encoded*/);
+        const sql = `SELECT ${fieldNameSelect}, ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE ${fieldNameSelect} IS NOT NULL GROUP BY ${fieldNameSelect}`;
+        const response = await executeSql({
+            containerFilter,
+            schemaName,
+            sql,
+        });
+
+        response.rows.forEach(row => {
+            const value = caseInsensitive(row, fieldName)?.value;
+            const rowLocked = row.IsLocked.value === 1;
+            const rowCount = row.RowCount.value;
+            hasMultiValue = processTextChoiceRow(value, isMultiField, rowLocked, rowCount, useCount, hasMultiValue);
+        });
     }
 
-    const response = await executeSql({
-        containerFilter,
-        schemaName,
-        sql: `SELECT "${fieldName}", ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE "${fieldName}" IS NOT NULL GROUP BY "${fieldName}"`,
-    });
-
-    return response.rows
-        .filter(row => isValidTextChoiceValue(row[fieldName].value))
-        .reduce<TextChoiceInUseValues>((prev, row) => {
-            const value = row[fieldName].value;
-            prev[value] = {
-                count: row.RowCount.value,
-                locked: row.IsLocked.value === 1,
-            };
-            return prev;
-        }, {});
+    return {
+        useCount,
+        hasMultiValue,
+    };
 }
 
 export function getGenId(rowId: number, kindName: 'DataClass' | 'SampleSet', containerPath?: string): Promise<number> {

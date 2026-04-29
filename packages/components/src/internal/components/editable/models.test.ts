@@ -1170,12 +1170,18 @@ describe('EditorModel', () => {
                         raw: 123,
                     },
                 ]),
+                [genCellKey(sampleColFk, 2)]: List<ValueDescriptor>([
+                    {
+                        display: 'Sample,321',
+                        raw: 321,
+                    },
+                ]),
             });
             const editorModel = modifyEm({
                 cellValues: basicEditorModel.cellValues.merge(cellValues),
                 columnMap: basicEditorModel.columnMap.set(sampleColFk, sampleColumn),
                 orderedColumns: basicEditorModel.orderedColumns.push(sampleColFk),
-                rowCount: 2,
+                rowCount: 3,
             });
             expect(editorModel.getRowValue(1, false).get('SampleID')).toBe(123);
             expect(editorModel.getRowValue(1, false).get('SampleID/Name')).toBe(undefined);
@@ -1183,6 +1189,51 @@ describe('EditorModel', () => {
             expect(editorModel.getRowValue(1, false, () => false).get('SampleID/Name')).toBe(undefined);
             expect(editorModel.getRowValue(1, false, () => true).get('SampleID')).toBe(123);
             expect(editorModel.getRowValue(1, false, () => true).get('SampleID/Name')).toBe('Sample-123');
+            expect(editorModel.getRowValue(2, false, () => true).get('SampleID/Name')).toBe('Sample,321');
+        });
+        test('include string list lookup display value', () => {
+            const lookColumn = new QueryColumn({
+                caption: 'List Look',
+                fieldKey: 'ListLook',
+                fieldKeyArray: ['ListLook'],
+                jsonType: 'string',
+                name: 'ListLook',
+                shownInInsertView: true,
+                shownInUpdateView: true,
+                required: true,
+                userEditable: true,
+                lookup: {
+                    schemaName: 'lists',
+                    queryName: 'Location',
+                    displayColumn: 'Path',
+                    keyColumn: 'Path',
+                },
+            });
+            const colFk = lookColumn.fieldKey.toLowerCase();
+            const cellValues = fromJS({
+                [genCellKey(colFk, 0)]: List<ValueDescriptor>([{ display: undefined, raw: undefined }]),
+                [genCellKey(colFk, 1)]: List<ValueDescriptor>([
+                    {
+                        display: 'Building 123',
+                        raw: 'Building 123',
+                    },
+                ]),
+                [genCellKey(colFk, 2)]: List<ValueDescriptor>([
+                    {
+                        display: 'Building, 321',
+                        raw: 'Building, 321',
+                    },
+                ]),
+            });
+            const editorModel = modifyEm({
+                cellValues: basicEditorModel.cellValues.merge(cellValues),
+                columnMap: basicEditorModel.columnMap.set(colFk, lookColumn),
+                orderedColumns: basicEditorModel.orderedColumns.push(colFk),
+                rowCount: 3,
+            });
+            expect(editorModel.getRowValue(0).get('ListLook')).toBe(undefined);
+            expect(editorModel.getRowValue(1).get('ListLook')).toBe('Building 123');
+            expect(editorModel.getRowValue(2).get('ListLook')).toBe('Building, 321');
         });
     });
 

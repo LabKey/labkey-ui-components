@@ -239,7 +239,7 @@ describe('AdvancedSettings', () => {
         });
 
         let id = createFormInputId(DOMAIN_FIELD_DEFAULT_VALUE_TYPE, _domainIndex, _index);
-        expect(document.querySelectorAll('#' + id)).toHaveLength(1);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(0);
         id = createFormInputId(DOMAIN_FIELD_HIDDEN, _domainIndex, _index);
         expect(document.querySelectorAll('#' + id)).toHaveLength(1);
         id = createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, _domainIndex, _index);

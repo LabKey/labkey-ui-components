@@ -86,6 +86,7 @@ const SASS_PLUGINS = [
         options: {
             implementation: require('sass'),
             sassOptions: {
+                silenceDeprecations: ['import'],
                 quietDeps: !isProductionBuild
             },
             // "sourceMap" must be set to true when resolve-url-loader is used downstream

@@ -53,9 +53,11 @@ import {
     getMeasurementUnit,
     getMetricUnitOptions,
     getMetricUnitOptionsFromKind,
+    MEASUREMENT_UNITS,
     UNITS_KIND,
 } from '../../../util/measurement';
 import { Alert } from '../../base/Alert';
+import { makeCommaSeparatedString } from '../../../util/utils';
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');
@@ -94,7 +96,7 @@ export const UnitKinds: Record<UNITS_KIND, UnitKindType> = {
         value: UNITS_KIND.COUNT,
         label: 'Other',
         hideSubSelect: true,
-        msg: "Amounts can be entered as bottles, blocks, boxes, cells, kits, packs, pieces, slides, tests, or unit and won't be converted.",
+        msg: "Amounts can be entered as " +  makeCommaSeparatedString(MEASUREMENT_UNITS.unit.altLabels, ', or ') + " and won't be converted",
     },
 };
 

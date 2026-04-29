@@ -1,4 +1,4 @@
-import { Filter, Utils } from '@labkey/api';
+import { Filter, QueryKey, Utils } from '@labkey/api';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 
@@ -30,6 +30,7 @@ interface ValidatedValue {
 export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn): ValidatedValue => {
     // col ?? {} so it's safe to destructure
     const { caption, isDateOnlyColumn, jsonType, required, scale, validValues } = col ?? {};
+    const isMultiChoice = col?.isMultiChoice;
     const isDateTimeType = jsonType === 'date';
     const isDateType = isDateTimeType && isDateOnlyColumn;
     let message;
@@ -50,6 +51,30 @@ export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn):
             message = `Invalid ${noun}, use format ${dateFormat}`;
         }
         value = dateStrVal ?? origValue;
+    } else if (isMultiChoice && Array.isArray(origValue)) {
+        if (origValue.length > 10) {
+            // GitHub Issue 970
+            message = 'Too many values. Maximum allowed is 10.';
+        }
+        else if (validValues) {
+            const seen = new Set();
+            origValue.forEach(val => {
+                if (message)
+                    return;
+
+                const trimmed = val.display?.toString().trim();
+                if (seen.has(trimmed)) {
+                    message = `Duplicate values not allowed: ${trimmed}.`
+                }
+                else {
+                    seen.add(trimmed);
+                    if (validValues.indexOf(trimmed) === -1) {
+                        message = `'${trimmed}' is not a valid choice`;
+                    }
+                }
+            })
+        }
+
     } else if (value != null && value !== '' && !col?.isPublicLookup()) {
         if (validValues) {
             const trimmed = origValue?.toString().trim();
@@ -221,7 +246,8 @@ export function getLookupFilters(
     }
 
     if (lookupKeyValues) {
-        filters.push(Filter.create(lookup.keyColumn, lookupKeyValues, Filter.Types.IN));
+        // lookup.keyColumn is column name, needs to encode to handle cases when the column name contains special characters.
+        filters.push(Filter.create(QueryKey.encodePart(lookup.keyColumn), lookupKeyValues, Filter.Types.IN));
     }
 
     const operation = forUpdate ? Operation.update : Operation.insert;

@@ -3,7 +3,7 @@ import { List, Map } from 'immutable';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { QueryColumn, QueryLookup } from '../../../public/QueryColumn';
 
-import { DATE_RANGE_URI, NON_NEGATIVE_NUMBER_CONCEPT_URI } from '../domainproperties/constants';
+import { DATE_RANGE_URI, MULTI_CHOICE_RANGE_URI, NON_NEGATIVE_NUMBER_CONCEPT_URI } from '../domainproperties/constants';
 
 import sampleSetQueryInfoJSON from '../../../test/data/sampleSetAllFieldTypes-getQueryDetails.json';
 
@@ -387,6 +387,77 @@ describe('getValidatedEditableGridValue', () => {
                 },
                 value: value.trim(),
             });
+        });
+    });
+
+    test('multi-choice column with valid values', () => {
+        const multiChoiceCol = new QueryColumn({
+            jsonType: 'string',
+            rangeURI: MULTI_CHOICE_RANGE_URI,
+            validValues: ['alpha', 'beta', 'gamma'],
+        });
+
+        const validArray = [{ display: 'alpha' }, { display: 'beta' }];
+        expect(getValidatedEditableGridValue(validArray, multiChoiceCol)).toStrictEqual({
+            message: undefined,
+            value: validArray,
+        });
+    });
+
+    test('multi-choice column with invalid choice', () => {
+        const multiChoiceCol = new QueryColumn({
+            jsonType: 'string',
+            rangeURI: MULTI_CHOICE_RANGE_URI,
+            validValues: ['alpha', 'beta', 'gamma'],
+        });
+
+        const invalidArray = [{ display: 'alpha' }, { display: 'invalid' }];
+        expect(getValidatedEditableGridValue(invalidArray, multiChoiceCol)).toStrictEqual({
+            message: { message: "'invalid' is not a valid choice" },
+            value: invalidArray,
+        });
+    });
+
+    test('multi-choice column with duplicate choice', () => {
+        const multiChoiceCol = new QueryColumn({
+            jsonType: 'string',
+            rangeURI: MULTI_CHOICE_RANGE_URI,
+            validValues: ['alpha', 'beta', 'gamma'],
+        });
+
+        const invalidArray = [{ display: 'alpha' }, { display: 'alpha' }];
+        expect(getValidatedEditableGridValue(invalidArray, multiChoiceCol)).toStrictEqual({
+            message: { message: "Duplicate values not allowed: alpha." },
+            value: invalidArray,
+        });
+    });
+
+    test('multi-choice column exceeding 10 items', () => {
+        const multiChoiceCol = new QueryColumn({
+            jsonType: 'string',
+            rangeURI: MULTI_CHOICE_RANGE_URI,
+            validValues: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'],
+        });
+
+        const tooMany = Array.from({ length: 11 }, (_, i) => ({ display: String.fromCharCode(97 + i) }));
+        expect(getValidatedEditableGridValue(tooMany, multiChoiceCol)).toStrictEqual({
+            message: { message: 'Too many values. Maximum allowed is 10.' },
+            value: tooMany,
+        });
+    });
+
+    test('multi-choice column with exactly 10 items is valid', () => {
+        const values = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+        const multiChoiceCol = new QueryColumn({
+            jsonType: 'string',
+            rangeURI: MULTI_CHOICE_RANGE_URI,
+            validValues: values,
+        });
+
+        const tenItems = values.map(v => ({ display: v }));
+        expect(getValidatedEditableGridValue(tenItems, multiChoiceCol)).toStrictEqual({
+            message: undefined,
+            value: tenItems,
         });
     });
 

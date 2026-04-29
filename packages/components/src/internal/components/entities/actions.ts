@@ -15,7 +15,7 @@ import { getSelected, getSelectedDataDeprecated } from '../../actions';
 
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
+import { getFilterForSampleOperation, isSamplesSchema, isWorkflowInputSamplesSchema } from '../samples/utils';
 import { getQueryDetails, getRequestAuditDetail, importData, InsertOptions, selectDistinctRows } from '../../query/api';
 import { caseInsensitive, generateId } from '../../util/utils';
 import { request } from '../../request';
@@ -326,6 +326,7 @@ function resolveSampleParentTypes(
  * @param creationType
  * @param isItemSamples
  * @param targetQueryName
+ * @param jobId
  */
 async function initParents(
     initialParents: string[],
@@ -334,7 +335,8 @@ async function initParents(
     isSnapshotSelection: boolean,
     creationType?: EntityCreationType,
     isItemSamples?: boolean,
-    targetQueryName?: string
+    targetQueryName?: string,
+    jobId?: string,
 ): Promise<List<EntityParentType>> {
     const isAliquotParent = creationType === EntityCreationType.Aliquots;
 
@@ -354,6 +356,9 @@ async function initParents(
             Filter.create('RowId', selectionResponse.selected, Filter.Types.IN),
             Filter.create('Container', insertPermissionContainers, Filter.Types.IN),
         ];
+        if (isWorkflowInputSamplesSchema(schemaQuery) && jobId) {
+            filterArray.push(Filter.create('JobId', jobId, Filter.Types.EQUAL));
+        }
         const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
         if (opFilter) {
             filterArray.push(opFilter);
@@ -489,7 +494,8 @@ export async function getChosenParentData(
             isSnapshotSelection,
             creationType,
             isItemSamples,
-            targetQueryName
+            targetQueryName,
+            model.jobId
         );
 
         // if we have an initial parent, we want to start with a row in the grid (entityCount = 1) otherwise we start with none
@@ -620,7 +626,6 @@ export async function getFolderConfigurableEntityTypeOptions(
  * @param targetQueryName the name of the listing schema query that represents the initial target for creation.
  * @param allowParents are parents of this entity type allowed or not
  * @param isItemSamples use the selectionKey from inventory.items table to query sample parents
- * @param combineParentTypes
  */
 export function getEntityTypeData(
     model: EntityIdCreationModel,
@@ -1358,6 +1363,15 @@ export function getSingleSampleTypeQueryInfo(sampleIds: number[] | string[]): Pr
             });
     });
 }
+
+// GitHub Issue 928: Spaces not shown between text choices in identifying fields in editable grid
+export function getFieldDisplayValue(fieldData: any): string {
+    const val = fieldData.formattedValue ?? fieldData.displayValue ?? fieldData.value;
+    if (Array.isArray(val))
+        return val.join(', ');
+    return val;
+}
+
 export function getSampleIdentifyingFieldGridData(
     sampleIds: number[] | string[],
     sampleQueryInfo?: QueryInfo,
@@ -1391,7 +1405,7 @@ export function getSampleIdentifyingFieldGridData(
                     // Issue 52038: the Row has data keyed by name so make sure we do the same here (see QueryColumn index() comments)
                     const colData = caseInsensitive(row, c.name);
                     if (colData?.value != null) {
-                        d[c.index] = colData?.formattedValue ?? colData?.displayValue ?? colData?.value;
+                        d[c.index] = getFieldDisplayValue(colData);
                     }
                 });
                 samplesData[rowId] = d;

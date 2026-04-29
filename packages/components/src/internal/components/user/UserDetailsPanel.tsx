@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import { Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 
@@ -12,7 +12,7 @@ import { Modal } from '../../Modal';
 import { caseInsensitive } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { formatDate, getDateFNSDateTimeFormat, parseDate } from '../../util/Date';
-import { SecurityPolicy, SecurityRole } from '../permissions/models';
+import { Principal, SecurityPolicy, SecurityRole } from '../permissions/models';
 import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
 
 import { GroupsList } from '../permissions/GroupsList';
@@ -25,7 +25,9 @@ import { getRolesByUniqueName } from '../permissions/actions';
 
 import { AppLink } from '../../url/AppLink';
 
+import { hasTotpSettings } from './actions';
 import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
+import { UserResetTotpSettingsConfirmModal } from './UserResetTotpSettingsConfirmModal';
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 import { ADMIN_KEY } from '../../app/constants';
@@ -83,130 +85,128 @@ interface Props {
     userId: number;
 }
 
-interface State {
-    loading: boolean;
-    policy?: SecurityPolicy;
-    rolesByUniqueName?: Map<string, SecurityRole>;
-    showDialog: string;
-    userProperties: Record<string, any>;
-}
+export const UserDetailsPanel: FC<Props> = props => {
+    const {
+        allowDelete = true,
+        allowResetPassword = true,
+        api = getDefaultAPIWrapper().security,
+        container,
+        currentUser,
+        displayName,
+        isSelf,
+        onUsersStateChangeComplete,
+        policy,
+        rolesByUniqueName,
+        rootPolicy,
+        showGroupListLinks = true,
+        showPermissionListLinks = true,
+        toggleDetailsModal,
+        userId,
+    } = props;
 
-export class UserDetailsPanel extends React.PureComponent<Props, State> {
-    static defaultProps = {
-        allowDelete: true,
-        allowResetPassword: true,
-        api: getDefaultAPIWrapper().security,
-        showGroupListLinks: true,
-        showPermissionListLinks: true,
-    };
+    const [loading, setLoading] = useState<boolean>(false);
+    const [policyState, setPolicyState] = useState<SecurityPolicy | undefined>(undefined);
+    const [principal, setPrincipal] = useState<Principal | undefined>(undefined);
+    const [rolesByUniqueNameState, setRolesByUniqueNameState] = useState<Map<string, SecurityRole> | undefined>(
+        undefined
+    );
+    const [showDialog, setShowDialog] = useState<string | undefined>(undefined);
+    const [showResetTotp, setShowResetTotp] = useState<boolean>(false);
+    const [userProperties, setUserProperties] = useState<Record<string, any> | undefined>(undefined);
 
-    constructor(props: Props) {
-        super(props);
-
-        this.state = {
-            loading: false,
-            policy: undefined,
-            rolesByUniqueName: undefined,
-            showDialog: undefined,
-            userProperties: undefined,
-        };
-    }
-
-    componentDidMount(): void {
-        this.loadUserDetails();
-        this.loadPolicyAndRoles();
-    }
-
-    componentDidUpdate(prevProps: Readonly<Props>): void {
-        if (this.props.userId !== prevProps.userId) {
-            this.loadUserDetails();
-        }
-    }
-
-    loadPolicyAndRoles = async (): Promise<void> => {
-        const { policy, rolesByUniqueName, container, currentUser, api } = this.props;
-
+    const loadPolicyAndRoles = useCallback(async () => {
         if (currentUser.isAdmin && !policy && !rolesByUniqueName && container) {
             try {
                 const policy_ = await api.fetchPolicy(container.id);
                 const roles = await api.fetchRoles();
-                this.setState({ policy: policy_, rolesByUniqueName: getRolesByUniqueName(roles) });
+                setPolicyState(policy_);
+                setRolesByUniqueNameState(getRolesByUniqueName(roles));
             } catch (e) {
                 console.error(e);
             }
         }
-    };
+    }, [api, container, currentUser.isAdmin, policy, rolesByUniqueName]);
 
-    loadUserDetails = async (): Promise<void> => {
-        const { userId, isSelf, api, displayName } = this.props;
-
+    const loadUserDetails = useCallback(async () => {
         if (!userId) {
-            this.setState({ userProperties: undefined });
+            setUserProperties(undefined);
+            setPrincipal(undefined);
+            setShowResetTotp(false);
             return;
         }
 
-        this.setState({ loading: true });
+        setLoading(true);
 
         try {
+            const principal = await api.getPrincipalById(userId);
+            setPrincipal(principal);
+
             if (isSelf) {
                 const response = await api.getUserProperties(userId);
-                this.setState({ userProperties: response.props });
+                setUserProperties(response.props);
             } else {
                 const response = await api.getUserPropertiesForOther(userId);
                 if (!Utils.isEmptyObj(response)) {
-                    this.setState({ userProperties: response });
+                    setUserProperties(response);
                 } else {
-                    this.setState({ userProperties: { UserId: userId, DisplayName: displayName } });
+                    setUserProperties({ UserId: userId, DisplayName: displayName });
                 }
             }
         } catch (e) {
-            this.setState({ userProperties: undefined });
+            setUserProperties(undefined);
         }
 
-        this.setState({ loading: false });
-    };
-
-    toggleDialog = (name: string): void => {
-        this.setState({ showDialog: name });
-    };
-
-    closeDialog = (): void => {
-        this.toggleDialog(undefined);
-    };
-
-    toggleResetDialog = (): void => {
-        this.toggleDialog('reset');
-    };
-
-    toggleDeleteDialog = (): void => {
-        this.toggleDialog('delete');
-    };
-
-    toggleActivateDialog = (): void => {
-        this.toggleDialog('reactivate');
-    };
-
-    toggleDeactivateDialog = (): void => {
-        this.toggleDialog('deactivate');
-    };
-
-    onUsersStateChangeComplete = (response: any, isDelete: boolean = false): void => {
-        this.toggleDialog(undefined); // close dialog
-        if (!isDelete) {
-            this.loadUserDetails(); // reload to pickup new user state
+        if (currentUser.isRootAdmin) {
+            try {
+                setShowResetTotp(await hasTotpSettings(userId));
+            } catch (e) {
+                setShowResetTotp(false);
+            }
         }
 
-        this.props.onUsersStateChangeComplete?.(response, isDelete);
-    };
+        setLoading(false);
+    }, [api, currentUser.isRootAdmin, displayName, isSelf, userId]);
 
-    onUserDeleteComplete = (response: any) => {
-        this.onUsersStateChangeComplete(response, true);
-    };
+    useEffect(() => {
+        loadUserDetails();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userId]);
 
-    renderButtons() {
-        const { allowDelete, allowResetPassword } = this.props;
-        const { userProperties } = this.state;
+    useEffect(() => {
+        loadPolicyAndRoles();
+    }, [loadPolicyAndRoles]);
 
+    const toggleDialog = useCallback((name?: string) => {
+        setShowDialog(name);
+    }, []);
+
+    const closeDialog = useCallback(() => toggleDialog(undefined), [toggleDialog]);
+    const toggleResetDialog = useCallback(() => toggleDialog('reset'), [toggleDialog]);
+    const toggleResetTotpDialog = useCallback(() => toggleDialog('resetTotp'), [toggleDialog]);
+    const toggleDeleteDialog = useCallback(() => toggleDialog('delete'), [toggleDialog]);
+    const toggleActivateDialog = useCallback(() => toggleDialog('reactivate'), [toggleDialog]);
+    const toggleDeactivateDialog = useCallback(() => toggleDialog('deactivate'), [toggleDialog]);
+
+    const handleUsersStateChangeComplete = useCallback(
+        (response: any, isDelete = false): void => {
+            toggleDialog(undefined); // close dialog
+            if (!isDelete) {
+                loadUserDetails(); // reload to pickup new user state
+            }
+
+            onUsersStateChangeComplete?.(response, isDelete);
+        },
+        [loadUserDetails, onUsersStateChangeComplete, toggleDialog]
+    );
+
+    const onUserDeleteComplete = useCallback(
+        (response: any) => {
+            handleUsersStateChangeComplete(response, true);
+        },
+        [handleUsersStateChangeComplete]
+    );
+
+    const renderButtons = (): React.ReactNode => {
         if (!userProperties) return null;
 
         const isActive = caseInsensitive(userProperties, 'active');
@@ -215,15 +215,25 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
             <>
                 <hr className="principal-hr" />
                 {allowResetPassword && isActive && (
-                    <button className="btn btn-default" onClick={this.toggleResetDialog} type="button">
+                    <button className="btn btn-default" onClick={toggleResetDialog} type="button">
                         Reset Password
+                    </button>
+                )}
+                {showResetTotp && isActive && (
+                    <button
+                        className="btn btn-default"
+                        onClick={toggleResetTotpDialog}
+                        style={{ marginLeft: '10px' }}
+                        type="button"
+                    >
+                        Reset TOTP Settings
                     </button>
                 )}
                 {allowDelete && (
                     <button
                         className="pull-right btn btn-default"
+                        onClick={toggleDeleteDialog}
                         style={{ marginLeft: '10px' }}
-                        onClick={this.toggleDeleteDialog}
                         type="button"
                     >
                         Delete
@@ -231,33 +241,23 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                 )}
                 <button
                     className="pull-right btn btn-default"
+                    onClick={isActive ? toggleDeactivateDialog : toggleActivateDialog}
                     style={{ marginLeft: '10px' }}
-                    onClick={isActive ? this.toggleDeactivateDialog : this.toggleActivateDialog}
                     type="button"
                 >
                     {isActive ? 'Deactivate' : 'Reactivate'}
                 </button>
             </>
         );
-    }
+    };
 
-    renderBody() {
-        const {
-            showGroupListLinks,
-            showPermissionListLinks,
-            currentUser,
-            policy,
-            rolesByUniqueName,
-            rootPolicy,
-            userId,
-        } = this.props;
-        const { loading, userProperties } = this.state;
-
+    const renderBody = (): React.ReactNode => {
         if (loading) {
             return <LoadingSpinner />;
         }
 
         if (userProperties) {
+            const isGroup = principal?.isGroup() ?? false;
             const description = caseInsensitive(userProperties, 'description');
             let name = caseInsensitive(userProperties, 'firstName') ?? '';
             if (name) {
@@ -268,22 +268,33 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
 
             return (
                 <>
-                    {!!name && <UserDetailRow label="Name" value={name} />}
-                    <UserProp label="Email" prop="email" userProperties={userProperties} />
-                    {description && <UserProp label="Description" prop="description" userProperties={userProperties} />}
+                    {!isGroup && (
+                        <>
+                            {!!name && <UserDetailRow label="Name" value={name} />}
+                            <UserProp label="Email" prop="email" userProperties={userProperties} />
+                            {description && (
+                                <UserProp label="Description" prop="description" userProperties={userProperties} />
+                            )}
 
-                    <hr className="principal-hr" />
-                    <UserProp isDate label="Last Login" prop="lastLogin" userProperties={userProperties} />
-                    <UserProp isDate label="Created" prop="created" userProperties={userProperties} />
+                            <hr className="principal-hr" />
+                            <UserProp isDate label="Last Login" prop="lastLogin" userProperties={userProperties} />
+                            <UserProp isDate label="Created" prop="created" userProperties={userProperties} />
 
-                    <hr className="principal-hr" />
-                    <UserProp label="User ID" prop="userId" userProperties={userProperties} />
-                    {!!hasPassword && <UserDetailRow label="Has Password" value={hasPassword.toString()} />}
+                            <hr className="principal-hr" />
+                            <UserProp label="User ID" prop="userId" userProperties={userProperties} />
+                            {!!hasPassword && <UserDetailRow label="Has Password" value={hasPassword.toString()} />}
+                        </>
+                    )}
+                    {isGroup && (
+                        <>
+                            <UserProp label="ID" prop="userId" userProperties={userProperties} />
+                        </>
+                    )}
 
                     <EffectiveRolesList
                         currentUser={currentUser}
-                        policy={policy ?? this.state.policy}
-                        rolesByUniqueName={rolesByUniqueName ?? this.state.rolesByUniqueName}
+                        policy={policy ?? policyState}
+                        rolesByUniqueName={rolesByUniqueName ?? rolesByUniqueNameState}
                         rootPolicy={rootPolicy}
                         showLinks={showPermissionListLinks}
                         userId={userId}
@@ -294,18 +305,17 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         }
 
         return <div>No user selected.</div>;
-    }
+    };
 
-    renderHeader() {
-        const { loading, userProperties } = this.state;
+    const renderHeader = (): React.ReactNode => {
         if (loading || !userProperties) return 'User Details';
 
-        const displayName = caseInsensitive(userProperties, 'displayName');
+        const displayName_ = caseInsensitive(userProperties, 'displayName');
         const active = caseInsensitive(userProperties, 'active');
 
         return (
             <>
-                <span>{displayName}</span>
+                <span>{displayName_}</span>
                 {active !== undefined && (
                     <span
                         className={classNames('margin-left status-pill', {
@@ -318,74 +328,83 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                 )}
             </>
         );
-    }
+    };
 
-    render() {
-        const { userId, allowDelete, allowResetPassword, toggleDetailsModal, onUsersStateChangeComplete } = this.props;
-        const { showDialog, userProperties } = this.state;
-        const { user, project } = getServerContext();
-        const isSelf = userId === user.id;
+    const { user, project } = getServerContext();
+    const isSelfCtx = userId === user.id;
+    const isGroup = principal?.isGroup() ?? false;
 
-        if (toggleDetailsModal) {
-            let footer: ReactNode;
-            if (user.isAdmin) {
-                // We do not currently support user management in sub folders, so we create the management URL for the project
-                // container.
-                const manageUrl = AppURL.create(ADMIN_KEY, 'users')
-                    .addParams({ usersView: 'all', 'all.UserId~eq': userId })
-                    .setContainerPath(project.path);
+    if (toggleDetailsModal) {
+        let footer: ReactNode;
+        if (user.isAdmin && !isGroup) {
+            // We do not currently support user management in sub folders, so we create the management URL for the project
+            // container.
+            const manageUrl = AppURL.create(ADMIN_KEY, 'users')
+                .addParams({ usersView: 'all', 'all.UserId~eq': userId })
+                .setContainerPath(project.path);
 
-                footer = (
-                    <AppLink className="pull-right btn btn-default" to={manageUrl}>
-                        Manage
-                    </AppLink>
-                );
-            }
-
-            return (
-                <Modal
-                    onCancel={toggleDetailsModal}
-                    className="user-detail-modal"
-                    footer={footer}
-                    title={this.renderHeader()}
-                >
-                    {this.renderBody()}
-                </Modal>
+            footer = (
+                <AppLink className="pull-right btn btn-default" to={manageUrl}>
+                    Manage
+                </AppLink>
             );
         }
 
         return (
-            <div className="panel panel-default user-details-panel">
-                <div className="panel-heading">{this.renderHeader()}</div>
-                <div className="panel-body">
-                    {this.renderBody()}
-                    {!isSelf && onUsersStateChangeComplete && this.renderButtons()}
-                    {allowResetPassword && showDialog === 'reset' && (
-                        <UserResetPasswordConfirmModal
-                            email={caseInsensitive(userProperties, 'email')}
-                            userId={caseInsensitive(userProperties, 'userId')}
-                            hasLogin={Utils.isString(caseInsensitive(userProperties, 'lastLogin'))}
-                            onComplete={this.onUsersStateChangeComplete}
-                            onCancel={this.closeDialog}
-                        />
-                    )}
-                    {(showDialog === 'reactivate' || showDialog === 'deactivate') && (
-                        <UserActivateChangeConfirmModal
-                            userIds={[userId]}
-                            reactivate={showDialog === 'reactivate'}
-                            onComplete={this.onUsersStateChangeComplete}
-                            onCancel={this.closeDialog}
-                        />
-                    )}
-                    {allowDelete && showDialog === 'delete' && (
-                        <UserDeleteConfirmModal
-                            userIds={[userId]}
-                            onComplete={this.onUserDeleteComplete}
-                            onCancel={this.closeDialog}
-                        />
-                    )}
-                </div>
-            </div>
+            <Modal
+                cancelText={isGroup ? 'Close' : 'Cancel'}
+                className="user-detail-modal"
+                footer={footer}
+                onCancel={toggleDetailsModal}
+                title={renderHeader()}
+            >
+                {renderBody()}
+            </Modal>
         );
     }
-}
+
+    return (
+        <div className="panel panel-default user-details-panel">
+            <div className="panel-heading">{renderHeader()}</div>
+            <div className="panel-body">
+                {renderBody()}
+                {!isSelfCtx && !isGroup && onUsersStateChangeComplete && renderButtons()}
+                {allowResetPassword && showDialog === 'reset' && (
+                    <UserResetPasswordConfirmModal
+                        email={caseInsensitive(userProperties, 'email')}
+                        hasLogin={Utils.isString(caseInsensitive(userProperties, 'lastLogin'))}
+                        onCancel={closeDialog}
+                        onComplete={handleUsersStateChangeComplete}
+                        userId={caseInsensitive(userProperties, 'userId')}
+                    />
+                )}
+                {showDialog === 'resetTotp' && (
+                    <UserResetTotpSettingsConfirmModal
+                        displayName={caseInsensitive(userProperties, 'displayName')}
+                        email={caseInsensitive(userProperties, 'email')}
+                        onCancel={closeDialog}
+                        onComplete={handleUsersStateChangeComplete}
+                        userId={caseInsensitive(userProperties, 'userId')}
+                    />
+                )}
+                {(showDialog === 'reactivate' || showDialog === 'deactivate') && (
+                    <UserActivateChangeConfirmModal
+                        onCancel={closeDialog}
+                        onComplete={handleUsersStateChangeComplete}
+                        reactivate={showDialog === 'reactivate'}
+                        userIds={[userId]}
+                    />
+                )}
+                {allowDelete && showDialog === 'delete' && (
+                    <UserDeleteConfirmModal
+                        onCancel={closeDialog}
+                        onComplete={onUserDeleteComplete}
+                        userIds={[userId]}
+                    />
+                )}
+            </div>
+        </div>
+    );
+};
+
+UserDetailsPanel.displayName = 'UserDetailsPanel';

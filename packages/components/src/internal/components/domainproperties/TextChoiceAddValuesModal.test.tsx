@@ -32,13 +32,13 @@ describe('TextChoiceAddValuesModal', () => {
     test('default props', () => {
         render(<TextChoiceAddValuesModal {...DEFAULT_PROPS} />);
         validate();
-        validateCounterText('200 values', '0 new values');
+        validateCounterText('500 values', '0 new values');
     });
 
     test('initialValueCount', () => {
         render(<TextChoiceAddValuesModal {...DEFAULT_PROPS} initialValueCount={70} />);
         validate();
-        validateCounterText('130 values', '0 new values');
+        validateCounterText('430 values', '0 new values');
     });
 
     test('fieldName', () => {
@@ -50,19 +50,19 @@ describe('TextChoiceAddValuesModal', () => {
         render(<TextChoiceAddValuesModal {...DEFAULT_PROPS} />);
         validate();
         expect(document.querySelector('.btn-success').hasAttribute('disabled')).toBeTruthy();
-        validateCounterText('200 values', '0 new values');
+        validateCounterText('500 values', '0 new values');
 
         await userEvent.type(document.querySelector('textarea'), 'a');
         validate();
         expect(document.querySelector('.btn-success').hasAttribute('disabled')).toBeFalsy();
-        validateCounterText('200 values', '1 new value');
+        validateCounterText('500 values', '1 new value');
 
         // empty rows and duplicates (after trim) should be removed
         await userEvent.clear(document.querySelector('textarea'));
         await userEvent.type(document.querySelector('textarea'), 'a\n\na\na \n a\nb');
         validate();
         expect(document.querySelector('.btn-success').hasAttribute('disabled')).toBeFalsy();
-        validateCounterText('200 values', '2 new values');
+        validateCounterText('500 values', '2 new values');
     });
 
     test('success button disabled after max reached', async () => {
@@ -77,6 +77,33 @@ describe('TextChoiceAddValuesModal', () => {
         await userEvent.type(document.querySelector('textarea'), '\nc');
         expect(document.querySelector('.btn-success').hasAttribute('disabled')).toBeTruthy();
         validateCounterText('2 values', '3 new values');
+    });
+
+    test('value exceeding max length disables apply and shows error', async () => {
+        render(<TextChoiceAddValuesModal {...DEFAULT_PROPS} />);
+        const longValue = 'a'.repeat(201);
+        await userEvent.type(document.querySelector('textarea'), longValue);
+        expect(document.querySelector('.btn-success').hasAttribute('disabled')).toBeTruthy();
+        let errorEls = document.querySelectorAll('.domain-text-choices-error');
+        expect(errorEls).toHaveLength(1);
+        expect(errorEls[0].textContent).toContain('Value exceeds maximum of 200 characters');
+
+        // clear the long value, error should be gone
+        await userEvent.clear(document.querySelector('textarea'));
+        expect(document.querySelectorAll('.domain-text-choices-error')).toHaveLength(0);
+
+        // enter a valid short value, no error
+        await userEvent.type(document.querySelector('textarea'), 'short value');
+        expect(document.querySelector('.btn-success').hasAttribute('disabled')).toBeFalsy();
+        expect(document.querySelectorAll('.domain-text-choices-error')).toHaveLength(0);
+
+        // multiline input where second line exceeds max length
+        await userEvent.clear(document.querySelector('textarea'));
+        await userEvent.type(document.querySelector('textarea'), 'valid\n' + 'b'.repeat(201));
+        expect(document.querySelector('.btn-success').hasAttribute('disabled')).toBeTruthy();
+        errorEls = document.querySelectorAll('.domain-text-choices-error');
+        expect(errorEls).toHaveLength(1);
+        expect(errorEls[0].textContent).toContain('Value exceeds maximum of 200 characters');
     });
 
     test('initial already equal to max', async () => {

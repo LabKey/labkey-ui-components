@@ -4,12 +4,11 @@ import { Container } from '../base/models/Container';
 import { User } from '../base/models/User';
 import { PageDetailHeader } from '../forms/PageDetailHeader';
 
-import { getUserLastLogin, getUserPermissionsDisplay } from './actions';
+import { getUserLastLogin } from './actions';
 
 interface Props {
     container?: Partial<Container>;
     dateFormat?: string;
-    description?: string;
     renderButtons?: ReactNode;
     showFolderTitle?: boolean;
     title: string;
@@ -18,23 +17,11 @@ interface Props {
 }
 
 export const UserDetailHeader: FC<Props> = props => {
-    const {
-        container,
-        dateFormat,
-        description,
-        renderButtons,
-        showFolderTitle = true,
-        title,
-        user,
-        userProperties,
-    } = props;
+    const { container, dateFormat, renderButtons, showFolderTitle = true, title, user, userProperties } = props;
     const lastLogin = useMemo(() => getUserLastLogin(userProperties, dateFormat), [dateFormat, userProperties]);
-    const userDescription = useMemo(() => {
-        return description || getUserPermissionsDisplay(user).join(', ');
-    }, [description, user]);
 
     return (
-        <PageDetailHeader iconUrl={user.avatar} title={title} description={userDescription} leftColumns={9}>
+        <PageDetailHeader iconUrl={user.avatar} leftColumns={9} title={title}>
             {showFolderTitle && !!container?.title && (
                 <div className="detail__header--desc">
                     <i className="fa fa-folder-open" />

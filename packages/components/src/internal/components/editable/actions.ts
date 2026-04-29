@@ -1,6 +1,7 @@
 import { Filter, getServerContext, QueryKey, Utils } from '@labkey/api';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { addDays, subDays } from 'date-fns';
+import Papa from 'papaparse';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn, QueryLookup } from '../../../public/QueryColumn';
@@ -11,9 +12,12 @@ import {
     caseInsensitive,
     isFloat,
     isInteger,
-    parseCsvString,
+    isSimpleQuotedMultiLine,
+    joinMultiValueForExport,
+    NEWLINE_CHARS,
     parseScientificInt,
     quoteValueWithDelimiters,
+    splitMultiValueForImport,
 } from '../../util/utils';
 import { ViewInfo } from '../../ViewInfo';
 
@@ -35,7 +39,7 @@ import {
 
 import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGridValue, parseCellKey } from './utils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { naturalSort } from '../../../public/sort';
+import { caseSensitiveNaturalSort } from '../../../public/sort';
 
 /**
  * Do not use this method directly, use initEditorModel instead.
@@ -489,9 +493,10 @@ async function convertRowToEditorModelData(
     const valueDescriptors: ValueDescriptor[] = [];
 
     if (data && col?.isPublicLookup()) {
+        const multiple = col.isJunctionLookup() || col.isExpInput();
         // value had better be the rowId here, but it may be several in a comma-separated list.
         // If it's the display value, which happens to be a number, much confusion will arise.
-        const values = data.toString().split(',');
+        const values = multiple ? data.toString().split(',') : [data.toString()];
 
         for (const val of values) {
             const messageAndValue = await getLookupDisplayValue(col, parseIntIfNumber(val), containerPath);
@@ -503,6 +508,12 @@ async function convertRowToEditorModelData(
         }
     } else if (col.isMultiChoice && Array.isArray(data)) {
         const values = data.filter(item => !!item).map(item => ({ raw: item, display: item }));
+        if (values.length > 10) {
+            // GitHub Issue 970
+            message = {
+                message: 'Too many values. Maximum allowed is 10.',
+            }
+        }
         valueDescriptors.push(...values);
     } else {
         let display = data;
@@ -530,8 +541,7 @@ async function prepareInsertRowDataFromBulkForm(
         const col = insertColumns[colIdx];
         const { message, valueDescriptors } = await convertRowToEditorModelData(data, col, containerPath);
         values = values.push(valueDescriptors);
-
-        if (message) messages = messages.push(message);
+        messages = messages.push(message);
     }
 
     return {
@@ -1081,6 +1091,15 @@ export function generateFillCellKeys(
     return fillCellKeys;
 }
 
+/**
+ * For columns that support multiple values, the value should be escaped using ',' as delimiter.
+ * For columns that's single value, escape might be needed if the value contains newline characters, double quotes, or tab characters
+ * @param column
+ */
+function getColCopyPasteDelimiter(column: QueryColumn) {
+    return column?.isJunctionLookup() || column?.isMultiChoice ? ',' : '\t';
+}
+
 export function parsePastedLookup(
     column: QueryColumn,
     descriptors: ValueDescriptor[],
@@ -1104,10 +1123,11 @@ export function parsePastedLookup(
     let message: CellMessage;
     let values: ValueDescriptor[];
     const unmatched: string[] = [];
+    const dupValues = new Set<string>();
 
     // Parse pasted strings to split properly around quoted values.
     // Remove the quotes for storing the actual values in the grid.
-    const parsedValues = parseCsvString(value, ',', true);
+    const parsedValues = splitMultiValueForImport(value, getColCopyPasteDelimiter(column));
 
     // Issue 53055: Do not attempt to resolve multiple values for a single-value column
     if (!column.isJunctionLookup() && parsedValues.length > 1) {
@@ -1115,10 +1135,15 @@ export function parsePastedLookup(
         unmatched.push(vt);
         values = [{ display: vt, raw: vt }];
     } else {
+        const foundValues = new Set<string>();
         values = parsedValues.flatMap(v => {
             const vt = v.trim();
             if (!vt) return [];
 
+            if (foundValues.has(vt)) {
+                dupValues.add(vt);
+            }
+            foundValues.add(vt);
             const vl = vt.toLowerCase();
             const vd = descriptors.find(d => d.display && d.display.toString().toLowerCase() === vl);
             if (vd) return [vd];
@@ -1134,6 +1159,12 @@ export function parsePastedLookup(
             .map(u => '"' + u + '"')
             .join(', ');
         message = { message: lookupValidationErrorMessage(valueStr, true) };
+    } else if (dupValues.size > 0) {
+        const valueStr = Array.from(dupValues)
+            .slice(0, 4)
+            .map(u => '"' + u + '"')
+            .join(', ');
+        message = { message: `Duplicate values not allowed: ${valueStr}.` };
     }
 
     return { message, valueDescriptors: List(values) };
@@ -1209,12 +1240,16 @@ export function generateColumnFillValues(
 
     return selectionToFill.map((cellKey, i) => {
         const { fieldKey, rowIdx } = parseCellKey(cellKey);
+        const column = editorModel.getColumnFromMap(fieldKey);
         const { isReadonlyCell, isReadonlyRow } = editorModel.getCellReadStatus(fieldKey, rowIdx, readonlyRows);
         // Only need to generate blank values for read only cells, paste will ignore them
         if (isReadonlyCell || isReadonlyRow) return '';
 
         const initialValue = initialSelectionValues[i % initialSelectionValues.length];
-        let value = initialValue.map(v => quoteValueWithDelimiters(v.display, ',')).join(',');
+        let value = joinMultiValueForExport(
+            initialValue.map(v => v.display).toArray(),
+            getColCopyPasteDelimiter(column)
+        );
         if (incrementType === IncrementType.NUMBER) {
             const amount = increment * (i + 1);
             let raw: number | string;
@@ -1416,20 +1451,41 @@ function parsePaste(value: string): ParsePastePayload {
     let numCols = 0;
     let data = List<List<string>>();
 
-    if (value === undefined || value === null || typeof value !== 'string') {
+    if (value == null || typeof value !== 'string') {
         return { data, numCols, numRows: 0 };
     }
 
     // remove trailing newline from pasted data to avoid creating an empty row of cells
     if (value.endsWith('\n')) value = value.substring(0, value.length - 1);
 
-    value.split('\n').forEach(rv => {
-        const columns = List(rv.split('\t'));
-        if (numCols < columns.size) {
-            numCols = columns.size;
+    if (value.indexOf('"') === -1 || isSimpleQuotedMultiLine(value)) {
+        // Use PapaParse for TSV parsing when the value contains no quotes (safe — no quoting ambiguity)
+        // or is a simple quoted multi-line value (e.g., a single multi-line cell copied from the grid).
+        // Otherwise, fall back to manual line/tab splitting to preserve quote characters for
+        // per-cell multi-value parsing (MVFK/MVTC columns).
+        const rows = Papa.parse(value, { delimiter: '\t' }).data;
+        if (!rows || rows.length === 0) {
+            return { data, numCols, numRows: 0 };
         }
-        data = data.push(columns);
-    });
+
+        rows.forEach(row => {
+            const columns: List<string> = List(row);
+            if (numCols < columns.size) {
+                numCols = columns.size;
+            }
+            data = data.push(columns);
+        });
+    } else {
+        // fall back to line by line processing without parsing, to preserve quotes for each cell, so multi-value fields (MVFK, MVTC) can be parsed correctly.
+        // Otherwise, PapaParse will strip quotes, making it impossible to distinguish between a comma that is part of the value vs a comma that is a delimiter for multi-value fields.
+        value.split('\n').forEach(rv => {
+            const columns = List(rv.split('\t'));
+            if (numCols < columns.size) {
+                numCols = columns.size;
+            }
+            data = data.push(columns);
+        });
+    }
 
     // Normalize the number columns in each row in case a user pasted rows with different numbers of columns in them
     data = data
@@ -1507,6 +1563,7 @@ async function insertPastedData(
                 let cv: List<ValueDescriptor>;
                 let msg: CellMessage;
 
+                const parseDelimter = getColCopyPasteDelimiter(col);
                 if (col?.isPublicLookup()) {
                     // If the column is a lookup and forUpdate is true, then we need to query for the rowIds so we can set the correct raw values,
                     // otherwise insert will fail. This is most common for cross-folder sample selection (Issue 50363)
@@ -1524,22 +1581,38 @@ async function insertPastedData(
                     cv = valueDescriptors;
                     msg = message;
                 } else if (col?.isMultiChoice && Utils.isString(val)) {
-                    const parsedValues = parseCsvString(val, ',', true).sort(naturalSort);
-
                     const unmatched: string[] = [];
-                    const values = [];
+                    const values: ValueDescriptor[] = [];
 
+                    const parsedValues = splitMultiValueForImport(val, parseDelimter, true, true).sort(
+                        caseSensitiveNaturalSort
+                    );
+                    const foundValues = new Set<string>();
+
+                    // GitHub Issue 942: Add error for duplicate values
+                    const dupValues = new Set<string>();
                     parsedValues.forEach(v => {
                         const vt = v.trim();
                         if (!vt) return;
 
-                        const vd = col.validValues?.find(d => d === vt);
                         values.push({ display: vt, raw: vt });
 
+                        if (foundValues.has(vt)) {
+                            dupValues.add(vt);
+                        } else {
+                            foundValues.add(vt);
+                        }
+
+                        const vd = col.validValues?.find(d => d === vt);
                         if (vd) return;
 
                         unmatched.push(vt);
                     });
+
+                    if (values.length > 10) {
+                        // GitHub Issue 970
+                        msg = { message: 'Too many values. Maximum allowed is 10.' };
+                    }
 
                     if (unmatched.length) {
                         const valueStr = unmatched
@@ -1547,10 +1620,29 @@ async function insertPastedData(
                             .map(u => '"' + u + '"')
                             .join(', ');
                         msg = { message: lookupValidationErrorMessage(valueStr, true) };
+                    } else if (dupValues.size > 0) {
+                        const valueStr = Array.from(dupValues)
+                            .slice(0, 4)
+                            .map(u => '"' + u + '"')
+                            .join(', ');
+                        msg = { message: `Duplicate values not allowed: ${valueStr}.` };
                     }
                     cv = List(values);
                 } else {
-                    const { message, value } = getValidatedEditableGridValue(val, col);
+                    let valToValidate = val;
+                    if (Utils.isString(val)) {
+                        const isMultiLinePasting = NEWLINE_CHARS.find(char => valToValidate.indexOf(char) > -1);
+                        // The only case that newline charaxcters would be preserved here is if parsePaste used Papa.parse to parse the tsv,
+                        // in which case extra qutoes are already removed by Papa.parse, so no need for extra parsing.
+                        if (!isMultiLinePasting) {
+                            // GitHub Issue 916: Copying/pasting in the grid doesn't always act as expected
+                            // generateColumnFillValues/getCopyValue uses joinMultiValueForExport to prepare copied value, needs to remove the extra quotes before validating
+                            const parsedValues = splitMultiValueForImport(val, parseDelimter);
+                            if (parsedValues.length === 1) valToValidate = parsedValues[0].trim();
+                        }
+                    }
+
+                    const { message, value } = getValidatedEditableGridValue(valToValidate, col);
                     let display = value;
 
                     // Issue 52326: Copy/paste of date values across cells changes date formats
@@ -1608,7 +1700,7 @@ function getPasteValuesByColumn(paste: PasteModel): List<List<string>> {
         row.forEach((value, index) => {
             // if values contain commas, users will need to paste the values enclosed in quotes
             // but we don't want to retain these quotes for purposes of selecting values in the grid
-            parseCsvString(value, ',', true).forEach(v => {
+            splitMultiValueForImport(value).forEach(v => {
                 if (v.trim().length > 0) valuesByColumn.get(index).push(v.trim());
             });
         });
@@ -1629,7 +1721,6 @@ export function validateAndInsertPastedData(
     let selectedColIdx: number;
     let selectedRowIdx: number;
 
-    console.log(value);
     if (editorModel.isMultiSelect) {
         // Issue 51359 - When pasting during multiselect we want to paste from the first cell in the selection,
         // otherwise we'll paste from the initially selected cell, which will fill the wrong area. This is most obvious
@@ -1699,19 +1790,16 @@ export function pasteEvent(
     return undefined;
 }
 
-function getCellCopyValue(valueDescriptors: List<ValueDescriptor>): string {
-    let value = '';
-
+function getCellCopyValue(valueDescriptors: List<ValueDescriptor>, delimter: string): string {
     if (valueDescriptors && valueDescriptors.size > 0) {
-        let sep = '';
-        value = valueDescriptors.reduce((agg, vd) => {
-            agg += sep + (vd.display !== undefined ? vd.display.toString().trim() : '');
-            sep = ', ';
-            return agg;
-        }, value);
+        const values = valueDescriptors
+            .map(vd => (vd.display !== undefined ? vd.display.toString().trim() : ''))
+            .toArray();
+
+        if (values.length > 0) return joinMultiValueForExport(values, delimter);
     }
 
-    return value;
+    return '';
 }
 
 function getCopyValue(model: EditorModel, hideReadOnlyRows: boolean, readonlyRows: string[]): string {
@@ -1735,7 +1823,9 @@ function getCopyValue(model: EditorModel, hideReadOnlyRows: boolean, readonlyRow
 
             if (selectionCells.find(key => key === cellKey)) {
                 inSelection = true;
-                copyValue += cellSep + getCellCopyValue(model.cellValues.get(cellKey));
+                const column = model.getColumnFromMap(fieldKey);
+                copyValue +=
+                    cellSep + getCellCopyValue(model.cellValues.get(cellKey), getColCopyPasteDelimiter(column));
                 cellSep = '\t';
             }
         });

@@ -74,6 +74,7 @@ import { ConfirmDataTypeChangeModal } from './ConfirmDataTypeChangeModal';
 import { Collapsible } from './Collapsible';
 
 export interface DomainRowProps {
+    allowMultiChoiceField: boolean;
     allowUniqueConstraintProperties: boolean;
     appPropertiesOnly?: boolean;
     availableTypes: List<PropDescType>;
@@ -263,26 +264,34 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         this.props.onChange(nameAndErrorList, index, false);
     };
 
-    onDataTypeChange = (evt: any): void => {
-        const { field } = this.props;
-        const { value } = evt.target;
+    handleDataTypeChange = (targetId: string, value: any): void => {
+        const { field, index } = this.props;
 
         // warn for a saved field changing from any non-string -> string OR int/long -> double/float/decimal
         if (field.isSaved()) {
             const typeConvertingTo = PropDescType.fromName(value);
-            if (shouldShowConfirmDataTypeChange(field.original.rangeURI, typeConvertingTo.rangeURI)) {
+            if (
+                shouldShowConfirmDataTypeChange(
+                    field.original.conceptURI ?? field.original.rangeURI,
+                    typeConvertingTo.conceptURI ?? typeConvertingTo.rangeURI
+                )
+            ) {
                 this.onShowConfirmTypeChange(value);
                 return;
             }
         }
 
-        this.onFieldChange(
-            evt,
+        const expand =
             PropDescType.isLookup(value) ||
-                PropDescType.isTextChoice(value) ||
-                PropDescType.isUser(value) ||
-                PropDescType.isCalculation(value)
-        );
+            PropDescType.isTextChoice(value) ||
+            PropDescType.isUser(value) ||
+            PropDescType.isCalculation(value);
+
+        this.onSingleFieldChange(targetId, value, index, expand);
+    };
+
+    onDataTypeChange = (evt: any): void => {
+        this.handleDataTypeChange(evt.target.id, evt.target.value);
     };
 
     onShowConfirmTypeChange = (dataTypeChangeToConfirm: string): void => {
@@ -376,6 +385,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             defaultValueOptions,
             appPropertiesOnly,
             domainFormDisplayOptions,
+            allowMultiChoiceField,
             getDomainFields,
             domainContainerPath,
             schemaName,
@@ -385,7 +395,10 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         const draggableId = createFormInputId('domaindrag', domainIndex, index);
         // Use undefined instead of false to allow for css to handle the highlight color for hover
         const highlighted = dragging ? true : isDragDisabled ? false : undefined;
-        const showAdvancedSettingsButton = expanded && !isFieldFullyLocked(field.lockType) && !appPropertiesOnly;
+        const showAdvancedSettingsButton =
+            expanded &&
+            !isFieldFullyLocked(field.lockType) &&
+            (!appPropertiesOnly || domainFormDisplayOptions?.showAdvancedSettingsForApp); // GitHub Issue #974
 
         return (
             <Draggable
@@ -475,10 +488,10 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                                 id={createFormInputId(DOMAIN_FIELD_TYPE, domainIndex, index)}
                                                 name={createFormInputName(DOMAIN_FIELD_TYPE)}
                                                 onChange={this.onDataTypeChange}
-                                                value={field.dataType.name}
+                                                value={field.dataType.selectName}
                                             >
                                                 {isPrimaryKeyFieldLocked(field.lockType) ? (
-                                                    <option value={field.dataType.name}>
+                                                    <option value={field.dataType.selectName}>
                                                         {field.dataType.display}
                                                     </option>
                                                 ) : (
@@ -491,7 +504,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                                     )
                                                         .sort(naturalSortByProperty('display'))
                                                         .map(type => (
-                                                            <option key={type.name} value={type.name}>
+                                                            <option key={type.selectName} value={type.selectName}>
                                                                 {type.display}
                                                             </option>
                                                         ))
@@ -555,12 +568,14 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                         <Collapsible expanded={expanded}>
                             <div>
                                 <DomainRowExpandedOptions
+                                    allowMultiChoiceField={allowMultiChoiceField}
                                     appPropertiesOnly={appPropertiesOnly}
                                     domainContainerPath={domainContainerPath}
                                     domainFormDisplayOptions={domainFormDisplayOptions}
                                     domainIndex={domainIndex}
                                     field={field}
                                     getDomainFields={getDomainFields}
+                                    handleDataTypeChange={this.handleDataTypeChange}
                                     index={index}
                                     onChange={this.onSingleFieldChange}
                                     onMultiChange={this.onMultiFieldChange}
@@ -575,7 +590,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                 newDataType={PropDescType.fromName(dataTypeChangeToConfirm)}
                                 onCancel={this.onHideConfirmTypeChange}
                                 onConfirm={this.onConfirmTypeChange}
-                                originalRangeURI={field.original.rangeURI}
+                                original={field.original}
                             />
                         )}
                     </div>
@@ -585,13 +600,17 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
     }
 }
 
-const shouldShowConfirmDataTypeChange = (originalRangeURI: string, newRangeURI: string): boolean => {
+export const shouldShowConfirmDataTypeChange = (originalRangeURI: string, newRangeURI: string): boolean => {
     if (newRangeURI && originalRangeURI !== newRangeURI) {
-        const wasString = STRING_CONVERT_URIS.indexOf(originalRangeURI) > -1;
-        const toString = STRING_CONVERT_URIS.indexOf(newRangeURI) > -1;
+        const newTextChoice = PropDescType.isTextChoice(newRangeURI);
+        const oldTextChoice = PropDescType.isTextChoice(originalRangeURI);
+        const wasString = STRING_CONVERT_URIS.indexOf(originalRangeURI) > -1 || oldTextChoice;
+        const toString = STRING_CONVERT_URIS.indexOf(newRangeURI) > -1 || newTextChoice;
         const toNumber = NUMBER_CONVERT_URIS.indexOf(newRangeURI) > -1;
         const toDate = DATETIME_CONVERT_URIS.indexOf(newRangeURI) > -1;
-        return toNumber || (toString && !wasString) || toDate;
+        const wasMultiChoice = PropDescType.isMultiChoice(originalRangeURI);
+        const toMultiChoice = PropDescType.isMultiChoice(newRangeURI);
+        return toNumber || wasMultiChoice || (toString && !wasString) || toDate || toMultiChoice;
     }
     return false;
 };

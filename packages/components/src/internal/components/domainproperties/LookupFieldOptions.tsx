@@ -103,11 +103,11 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                         />
                     </div>
                     <div className="col-xs-2">
-                        <div className="domain-field-label" id={'target-schema-label-' + index}>
+                        <div className="domain-field-label" id={'target-schema-label-' + domainIndex + '-' + index}>
                             Target Schema
                         </div>
                         <SchemaSelect
-                            ariaLabelledBy={'target-schema-label-' + index}
+                            ariaLabelledBy={'target-schema-label-' + domainIndex + '-' + index}
                             containerPath={lookupContainer}
                             id={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, domainIndex, index)}
                             key={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, domainIndex, index)}
@@ -117,9 +117,9 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                         />
                     </div>
                     <div className="col-xs-2">
-                        <div className="domain-field-label" id={'target-table-label-' + index}>Target Table</div>
+                        <div className="domain-field-label" id={'target-table-label-' + domainIndex + '-' + index}>Target Table</div>
                         <TargetTableSelect
-                            ariaLabelledBy={'target-table-label-' + index}
+                            ariaLabelledBy={'target-table-label-' + domainIndex + '-' + index}
                             containerPath={lookupContainer}
                             id={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index)}
                             key={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index)}

@@ -90,11 +90,11 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                 </div>
                 <div className="row">
                     <div className="col-xs-2">
-                        <div className="domain-field-label" id={'target-folder-' + index}>
+                        <div className="domain-field-label" id={'target-folder-' + domainIndex + '-' + index}>
                             Target Folder
                         </div>
                         <FolderSelect
-                            ariaLabelledBy={'target-folder-' + index}
+                            ariaLabelledBy={'target-folder-' + domainIndex + '-' + index}
                             id={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, domainIndex, index)}
                             key={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, domainIndex, index)}
                             disabled={disabled}

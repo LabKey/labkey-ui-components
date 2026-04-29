@@ -155,7 +155,7 @@ export function generateId(prefix?: string): string {
 // Convert an arbitrary string to a value safe for use as an HTML element id.
 // Replaces sequences of non-alphanumeric characters with a single hyphen and
 // strips leading/trailing hyphens.
-export function stringToHtmlId(value: string): string {
+export function stringToHtmlId(value: string): string | undefined {
     if (!value) {
         return value;
     }

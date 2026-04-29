@@ -327,7 +327,6 @@ export class SchemaSelect extends React.PureComponent<ISchemaSelectProps, any> {
 export type SchemaSelectProps = ISchemaSelectProps & ILookupProps;
 
 export interface ISchemaSelectImplState {
-    ariaLabelledBy?: string;
     containerPath?: string;
     loading?: boolean;
     prevPath?: string;

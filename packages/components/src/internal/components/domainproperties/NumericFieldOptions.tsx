@@ -52,17 +52,23 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps> 
                 <div className="row">
                     <div className="col-xs-3">
                         <div className="domain-field-label">
-                            <DomainFieldLabel helpTipBody={this.getFormatHelpText()} id="number-format-label" label="Format for Numbers"/>
+                            <DomainFieldLabel
+                                helpTipBody={this.getFormatHelpText()}
+                                id={'number-format-label-' + domainIndex + '-' + index}
+                                label="Format for Numbers"
+                            />
                         </div>
                     </div>
                     <div className="col-xs-2">
-                        <div className="domain-field-label" id="default-scale-label">Default Scale Type</div>
+                        <div className="domain-field-label" id={'default-scale-label-' + domainIndex + '-' + index}>
+                            Default Scale Type
+                        </div>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-xs-3">
                         <input
-                            aria-labelledby="number-format-label"
+                            aria-labelledby={'number-format-label-' + domainIndex + '-' + index}
                             className="form-control"
                             type="text"
                             value={format || ''}
@@ -74,7 +80,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps> 
                     </div>
                     <div className="col-xs-2">
                         <select
-                            aria-labelledby="default-scale-label"
+                            aria-labelledby={'default-scale-label-' + domainIndex + '-' + index}
                             className="form-control"
                             id={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, domainIndex, index)}
                             disabled={isFieldFullyLocked(lockType)}

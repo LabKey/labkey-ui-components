@@ -105,7 +105,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                 <div className="row">
                     <div className="col-xs-12 domain-text-options-col">
                         <input
-                            aria-labelledby="unlimited-length-label"
+                            aria-labelledby={'unlimited-length-label-' + domainIndex + '-' + index}
                             type="radio"
                             className="form-control domain-text-options-radio1 domain-field-float-left"
                             value={DOMAIN_FIELD_MAX_LENGTH}
@@ -114,13 +114,13 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                             id={createFormInputId(DOMAIN_FIELD_MAX_LENGTH, domainIndex, index)}
                             disabled={isFieldFullyLocked(lockType)}
                         />
-                        <div id="unlimited-length-label">Unlimited</div>
+                        <div id={'unlimited-length-label-' + domainIndex + '-' + index}>Unlimited</div>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-xs-12">
                         <input
-                            aria-labelledby="custom-length-label"
+                            aria-labelledby={'custom-length-label-' + domainIndex + '-' + index}
                             type="radio"
                             className="form-control domain-text-options-radio2 domain-field-float-left"
                             value={DOMAIN_FIELD_CUSTOM_LENGTH}
@@ -128,7 +128,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                             onChange={this.handleChange}
                             id={createFormInputId(DOMAIN_FIELD_CUSTOM_LENGTH, domainIndex, index)}
                         />
-                        <span className="domain-text-options-length domain-field-float-left" id="custom-length-label">
+                        <span className="domain-text-options-length domain-field-float-left" id={'custom-length-label-' + domainIndex + '-' + index}>
                             No longer than {textOptionsFormControl} characters
                         </span>
                     </div>

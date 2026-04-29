@@ -194,10 +194,10 @@ export const DateTimeFieldOptions: FC<DateTimeFieldProps> = memo(props => {
                 </div>
             </div>
             <div className="row">
-                <div className="col-xs-3" id="use-default-label">Use Default</div>
+                <div className="col-xs-3" id={'use-default-label-' + domainIndex + '-' + index}>Use Default</div>
                 <div className="col-xs-9">
                     <input
-                        aria-labelledby="use-default-label"
+                        aria-labelledby={'use-default-label-' + domainIndex + '-' + index}
                         checked={setting.inherited}
                         onChange={onToggleInherited}
                         disabled={isFieldFullyLocked(lockType)}

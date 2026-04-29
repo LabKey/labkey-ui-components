@@ -11,6 +11,7 @@ import { ChartConfig, ChartConfigSetter, ChartFieldInfo, ChartLabels, ChartTypeI
 import { getBarChartAxisLabel, getSelectOptions, hasTrendline } from './utils';
 
 import { ChartFieldAdditionalOptions } from './ChartFieldAdditionalOptions';
+import { stringToHtmlId } from '../../util/utils';
 
 const DEFAULT_SCALE_VALUES = { type: 'automatic', trans: 'linear' };
 
@@ -96,9 +97,10 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
         [selectedType, setChartConfig]
     );
 
+    const id = stringToHtmlId(field.name);
     return (
         <div>
-            <label htmlFor={field.name}>
+            <label htmlFor={id}>
                 {field.label}
                 {field.required && ' *'}
             </label>
@@ -106,7 +108,7 @@ export const ChartFieldOption: FC<OwnProps> = memo(props => {
                 <SelectInput
                     containerClass=""
                     inputClass={showAdditionalOptions ? 'col-xs-11' : 'col-xs-12'}
-                    inputId={field.name}
+                    inputId={id}
                     labelKey="caption"
                     name={field.name}
                     onChange={onSelectChange}

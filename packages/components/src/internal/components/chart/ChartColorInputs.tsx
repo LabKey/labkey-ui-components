@@ -10,6 +10,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { ColorIcon } from '../base/ColorIcon';
 import { LABKEY_VIS } from '../../constants';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
+import { stringToHtmlId } from '../../util/utils';
 
 enum COLOR_OPTIONS {
     BOX_FILL_COLOR = 'boxFillColor',
@@ -415,7 +416,7 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
         return null;
     }
 
-    const suffix = chartConfig.measures.series?.name ?? 'unknown';
+    const suffix = stringToHtmlId(chartConfig.measures.series?.name) ?? 'unknown';
     return (
         <>
             <div className="form-group row">

@@ -24,12 +24,12 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       >
         <div
           class="domain-field-label"
-          id="description-label"
+          id="description-label-1-1"
         >
           Description
         </div>
         <textarea
-          aria-labelledby="description-label"
+          aria-labelledby="description-label-1-1"
           class="form-control"
           id="domainpropertiesrow-description-1-1"
           name="domainpropertiesrow-description"
@@ -43,12 +43,12 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       >
         <div
           class="domain-field-label"
-          id="label-label"
+          id="label-label-1-1"
         >
           Label
         </div>
         <input
-          aria-labelledby="label-label"
+          aria-labelledby="label-label-1-1"
           class="form-control"
           id="domainpropertiesrow-label-1-1"
           name="domainpropertiesrow-label"
@@ -59,7 +59,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
           class="domain-field-label"
         >
           <span
-            id="import-aliases-label"
+            id="import-aliases-label-1-1"
           >
             Import 
             <span
@@ -81,7 +81,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
           </span>
         </div>
         <input
-          aria-labelledby="import-aliases-label"
+          aria-labelledby="import-aliases-label-1-1"
           class="form-control"
           id="domainpropertiesrow-importAliases-1-1"
           name="domainpropertiesrow-importAliases"
@@ -96,7 +96,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
           class="domain-field-label"
         >
           <span
-            id="url-label"
+            id="url-label-1-1"
           >
             <span
               class="domain-no-wrap"
@@ -117,7 +117,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
           </span>
         </div>
         <input
-          aria-labelledby="url-label"
+          aria-labelledby="url-label-1-1"
           class="form-control"
           id="domainpropertiesrow-URL-1-1"
           name="domainpropertiesrow-URL"
@@ -128,7 +128,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
           class="domain-text-options-col"
         >
           <input
-            aria-labelledby="new-window-label"
+            aria-labelledby="new-window-label-1-1"
             checked=""
             class="form-control domain-text-option-istargetblank"
             id="domainpropertiesrow-isTargetBlank-1-1"
@@ -136,7 +136,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             type="checkbox"
           />
           <span
-            id="new-window-label"
+            id="new-window-label-1-1"
           >
             Open links in a new tab
           </span>

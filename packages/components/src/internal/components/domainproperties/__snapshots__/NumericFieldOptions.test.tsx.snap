@@ -26,7 +26,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
           class="domain-field-label"
         >
           <span
-            id="number-format-label"
+            id="number-format-label-1-1"
           >
             Format for 
             <span
@@ -53,7 +53,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
       >
         <div
           class="domain-field-label"
-          id="default-scale-label"
+          id="default-scale-label-1-1"
         >
           Default Scale Type
         </div>
@@ -66,7 +66,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
         class="col-xs-3"
       >
         <input
-          aria-labelledby="number-format-label"
+          aria-labelledby="number-format-label-1-1"
           class="form-control"
           id="domainpropertiesrow-format-1-1"
           name="domainpropertiesrow-format"
@@ -78,7 +78,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
         class="col-xs-2"
       >
         <select
-          aria-labelledby="default-scale-label"
+          aria-labelledby="default-scale-label-1-1"
           class="form-control"
           id="domainpropertiesrow-defaultScale-1-1"
           name="domainpropertiesrow-defaultScale"

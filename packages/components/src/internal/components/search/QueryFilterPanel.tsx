@@ -24,6 +24,7 @@ import { FilterExpressionView } from './FilterExpressionView';
 import { EntityFieldFilter } from './models';
 import { isChooseValuesFilter } from './utils';
 import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE } from './constants';
+import { stringToHtmlId } from '../../util/utils';
 
 enum FieldFilterTabs {
     ChooseValues = 'ChooseValues',
@@ -282,14 +283,17 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                             altQueryName !== SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query && (
                                 <div className="form-check list-group-item">
                                     <input
-                                        aria-labelledby="all-data-label"
+                                        aria-labelledby={stringToHtmlId('all-data-label-' + queryName)}
                                         checked={hasAllValuesInQuery}
                                         className="form-check-input filter-faceted__checkbox"
                                         name="field-value-allvalues-check"
                                         onChange={event => onAllValuesInQueryChange(event.target.checked)}
                                         type="checkbox"
                                     />
-                                    <div className="filter-modal__fields-col-any-msg" id="all-data-label">
+                                    <div
+                                        className="filter-modal__fields-col-any-msg"
+                                        id={stringToHtmlId('all-data-label-' + queryName)}
+                                    >
                                         {allInQueryFilterLabel ?? 'All data'}
                                     </div>
                                 </div>
@@ -297,14 +301,17 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                         {entityDataType?.supportHasNoValueInQuery && (
                             <div className="form-check list-group-item">
                                 <input
-                                    aria-labelledby="without-data-label"
+                                    aria-labelledby={'without-data-label-' + queryName}
                                     checked={hasNotInQueryFilter}
                                     className="form-check-input filter-faceted__checkbox"
                                     name="field-value-nodata-check"
                                     onChange={event => onHasNoValueInQueryChange(event.target.checked)}
                                     type="checkbox"
                                 />
-                                <div className="filter-modal__fields-col-nodata-msg" id="without-data-label">
+                                <div
+                                    className="filter-modal__fields-col-nodata-msg"
+                                    id={'without-data-label-' + queryName}
+                                >
                                     {hasNotInQueryFilterLabel ?? 'Without data from this type'}
                                 </div>
                             </div>

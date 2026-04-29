@@ -86,7 +86,7 @@ export const SystemFields: FC<Props> = memo(({ fields, disabledSystemFields, onS
                 return (
                     // eslint-disable-next-line react/jsx-no-bind
                     <input
-                        aria-label="Disableable"
+                        aria-label="Enabled"
                         className="grid-panel__row-checkbox"
                         type="checkbox"
                         disabled={!row.get('Disableable')}

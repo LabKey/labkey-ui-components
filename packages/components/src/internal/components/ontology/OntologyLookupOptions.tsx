@@ -155,7 +155,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                 </div>
                 <div className="row">
                     <div className="col-xs-5">
-                        <div className="domain-field-label" id="ontology-label">
+                        <div className="domain-field-label" id={'ontology-label-' + domainIndex + '-' + index}>
                             Choose an Ontology
                             <LabelHelpTip title="Choose an Ontology">
                                 <>
@@ -171,7 +171,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                         </div>
                     </div>
                     <div className="col-xs-3">
-                        <div className="domain-field-label" id="import-field-label">
+                        <div className="domain-field-label" id={'import-field-label-' + domainIndex + '-' + index}>
                             Choose an Import Field
                             <LabelHelpTip title="Choose an Import Field">
                                 <p>
@@ -182,7 +182,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                         </div>
                     </div>
                     <div className="col-xs-3">
-                        <div className="domain-field-label" id="label-field-label">
+                        <div className="domain-field-label" id={'label-field-label-' + domainIndex + '-' + index}>
                             Choose a Label Field
                             <LabelHelpTip title="Choose a Label Field">
                                 <p>Choose which text field to store the preferred name of the concept.</p>
@@ -194,7 +194,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                 <div className="row">
                     <div className="col-xs-5">
                         <select
-                            aria-labelledby="ontology-label"
+                            aria-labelledby={'ontology-label-' + domainIndex + '-' + index}
                             className="form-control"
                             id={sourceId}
                             key={sourceId}
@@ -236,7 +236,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                     </div>
                     <div className="col-xs-3">
                         <OntologyTextDomainFieldSelect
-                            ariaLabelledBy="import-field-label"
+                            ariaLabelledBy={'import-field-label-' + domainIndex + '-' + index}
                             field={field}
                             domainFields={domainFields}
                             lockType={lockType}
@@ -248,7 +248,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                     </div>
                     <div className="col-xs-3">
                         <OntologyTextDomainFieldSelect
-                            ariaLabelledBy="label-field-label"
+                            ariaLabelledBy={'label-field-label-' + domainIndex + '-' + index}
                             field={field}
                             domainFields={domainFields}
                             lockType={lockType}

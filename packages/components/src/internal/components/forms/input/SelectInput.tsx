@@ -681,7 +681,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
 
         const isDisabled = disabled || this.state.isDisabled || this.props.disableInput;
         const placeholderText = hasMixedValue && isDisabled ? MIXED_VALUE_DISPLAY : placeholder;
-
+        const ariaLabel = inputId ? undefined : name ? 'Select ' + name : undefined;
         const selectProps: any = {
             autoFocus,
             backspaceRemovesValue,
@@ -746,15 +746,15 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             };
 
             if (this.isCreatable()) {
-                return <AsyncCreatableSelect aria-label={name ? 'Select ' + name : undefined} {...asyncProps} />;
+                return <AsyncCreatableSelect aria-label={ariaLabel} {...asyncProps} />;
             }
 
-            return <AsyncSelect aria-label={name ? 'Select ' + name : undefined} {...asyncProps} />;
+            return <AsyncSelect aria-label={ariaLabel} {...asyncProps} />;
         } else if (this.isCreatable()) {
-            return <CreatableSelect aria-label={name ? 'Select ' + name : undefined} {...selectProps} />;
+            return <CreatableSelect aria-label={ariaLabel} {...selectProps} />;
         }
 
-        return <ReactSelect aria-label={name ? 'Select ' + name : undefined} {...selectProps} />;
+        return <ReactSelect aria-label={ariaLabel} {...selectProps} />;
     };
 
     render() {

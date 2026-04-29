@@ -29,7 +29,6 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
             <div className="form-group">
                 <label className="form-check">
                     <input
-                        aria-labelledby="discard-consumed-label"
                         className="form-check-input"
                         type="checkbox"
                         id={DISCARD_CONSUMED_CHECKBOX_FIELD}
@@ -37,7 +36,7 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
                         onChange={toggleShouldDiscard}
                         checked={shouldDiscard}
                     />
-                    <span className="discard-consumed-title" id="discard-consumed-label"> {discardTitle}</span>
+                    <span className="discard-consumed-title"> {discardTitle}</span>
                 </label>
             </div>
             {onCommentChange && (

@@ -477,8 +477,8 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                         <SelectInput
                             clearable={false}
                             containerClass="inline-block"
-                            id="line-type"
                             inputClass=""
+                            inputId="line-type"
                             menuPlacement="top"
                             name="lineType"
                             onChange={onSeriesLineTypeChange}

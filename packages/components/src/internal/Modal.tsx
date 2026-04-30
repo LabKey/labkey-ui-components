@@ -60,7 +60,7 @@ export const ModalHeader: FC<ModalHeaderProps> = ({ title, onCancel }) => {
                     <span className="sr-only">Close</span>
                 </button>
             )}
-            {title && <h4 className="modal-title">{title}</h4>}
+            {title && <h4 className="modal-title text__wrap">{title}</h4>}
         </div>
     );
 };

@@ -24,6 +24,19 @@ import { AppURL } from './url/AppURL';
 export type BSStyle = 'success' | 'danger' | 'default' | 'primary' | 'info';
 const DROPDOWN_MENU_CLASS = 'dropdown-menu';
 
+interface IconWithSrTextProps {
+    iconClass: string;
+    srText: string;
+}
+export const IconWithSrText: FC<IconWithSrTextProps> = ({ iconClass, srText }) => {
+    return (
+        <>
+            <span className={iconClass} />
+            {srText && <span className="sr-only">{srText}</span>}
+        </>
+    );
+};
+
 /**
  * There are a few narrow cases where clicking on something in a dropdown menu will trigger a click event on the actual
  * <ul> element. This handler cancels the event if the user triggers such an event.
@@ -109,8 +122,7 @@ export const DropdownMenu: FC<DropdownMenuProps> = props => {
             {asAnchor && (
                 <a {...elemProps} href="#">
                     {title}
-                    <span className="caret" />
-                    <span className="sr-only">{label}</span>
+                    <IconWithSrText iconClass="caret" srText={label} />
                 </a>
             )}
             {!asAnchor && <span {...elemProps}>{title}</span>}

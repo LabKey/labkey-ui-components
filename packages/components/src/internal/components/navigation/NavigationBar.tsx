@@ -41,6 +41,7 @@ import { UserMenuGroup, UserMenuProps } from './UserMenuGroup';
 import { MenuSectionConfig } from './model';
 import { SEARCH_PLACEHOLDER } from './constants';
 import { useFolderMenuContext, useSubNavTabsContext } from './hooks';
+import { IconWithSrText } from '../../dropdowns';
 
 interface NavigationBarProps {
     brand?: ReactNode;
@@ -136,7 +137,12 @@ export const NavigationBar: FC<Props> = memo(props => {
                                         {onFindByIds ? (
                                             <FindAndSearchDropdown
                                                 className="navbar__xs-find-dropdown"
-                                                title={<i className="fa fa-search navbar__xs-search-icon" />}
+                                                title={
+                                                    <IconWithSrText
+                                                        iconClass="fa fa-search navbar__xs-search-icon"
+                                                        srText="Search and Find"
+                                                    />
+                                                }
                                                 findNounPlural="samples"
                                                 onSearch={onSearchIconClick}
                                                 onFindByIds={onFindByIds}

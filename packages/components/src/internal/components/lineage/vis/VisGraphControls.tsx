@@ -90,11 +90,11 @@ export class VisGraphControls extends PureComponent<GraphControlsProps> {
                         <button className="btn btn-default" onClick={this.panLeft} type="button">
                             <Icon iconClass="fa fa-arrow-left" srText="Pan left" />
                         </button>
-                        <button className="btn btn-default" onClick={this.panDown}>
-                            <Icon iconClass="fa fa-arrow-down" srText="Pan down"/>
+                        <button className="btn btn-default" onClick={this.panDown} type="button">
+                            <Icon iconClass="fa fa-arrow-down" srText="Pan down" />
                         </button>
-                        <button className="btn btn-default" onClick={this.panRight}>
-                            <Icon iconClass="fa fa-arrow-right" srText="Pan right"/>
+                        <button className="btn btn-default" onClick={this.panRight} type="button">
+                            <Icon iconClass="fa fa-arrow-right" srText="Pan right" />
                         </button>
                     </div>
                 </div>

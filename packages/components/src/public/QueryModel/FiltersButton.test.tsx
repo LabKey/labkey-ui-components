@@ -11,7 +11,7 @@ describe('FiltersButton', () => {
         render(<FiltersButton onFilter={ON_FILTER} />);
         const button = document.querySelectorAll('.grid-panel__button');
         expect(button).toHaveLength(1);
-        expect(button[0].textContent).toBe('Filters Filters'); // one for SR, one for visible text
+        expect(button[0].textContent).toBe(' Filters');
         expect(document.querySelectorAll('.fa-filter')).toHaveLength(1);
         expect(ON_FILTER).toHaveBeenCalledTimes(0);
         await userEvent.click(button[0]);

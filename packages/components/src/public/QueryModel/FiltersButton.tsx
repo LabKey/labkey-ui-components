@@ -22,8 +22,8 @@ export const FiltersButton: FC<Props> = memo(props => {
     }
 
     return (
-        <button className="grid-panel__button btn btn-default" onClick={onFilter}>
-            <Icon iconClass="fa fa-filter" srText="Filters" /> Filters
+        <button className="grid-panel__button btn btn-default" onClick={onFilter} type="button">
+            <span aria-hidden="true" className="fa fa-filter" /> Filters
         </button>
     );
 });

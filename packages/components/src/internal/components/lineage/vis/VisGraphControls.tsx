@@ -1,7 +1,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Network } from 'vis-network';
 
-import { DropdownButton, MenuItem } from '../../../dropdowns';
+import { DropdownButton, IconWithSrText, MenuItem } from '../../../dropdowns';
 
 const PAN_INCREMENT = 20;
 const ZOOM_INCREMENT = 0.05;
@@ -70,31 +70,32 @@ export class VisGraphControls extends PureComponent<GraphControlsProps> {
                 </div>
                 <div className="lineage-visgraph-control-zoom">
                     <div className="btn-group">
-                        <a className="btn btn-default" onClick={this.zoomOut}>
-                            <i className="fa fa-search-minus" />
-                        </a>
-                        <a className="btn btn-default" onClick={this.zoomIn}>
-                            <i className="fa fa-search-plus" />
-                        </a>
+                        <button className="btn btn-default" onClick={this.zoomOut} type="button">
+                            <IconWithSrText iconClass="fa fa-search-minus" srText="Zoom out" />
+                        </button>
+                        <button className="btn btn-default" onClick={this.zoomIn} type="button">
+                            <IconWithSrText iconClass="fa fa-search-plus" srText="Zoom in" />
+                        </button>
                     </div>
                 </div>
                 <div className="lineage-visgraph-control-pan">
-                    <a
+                    <button
                         className="lineage-visgraph-control-pan-up btn btn-default"
                         onClick={this.panUp}
+                        type="button"
                     >
-                        <i className="fa fa-arrow-up" />
-                    </a>
+                        <IconWithSrText iconClass="fa fa-arrow-up" srText="Pan up" />
+                    </button>
                     <div className="btn-group">
-                        <a className="btn btn-default" onClick={this.panLeft}>
-                            <i className="fa fa-arrow-left" />
-                        </a>
-                        <a className="btn btn-default" onClick={this.panDown}>
-                            <i className="fa fa-arrow-down" />
-                        </a>
-                        <a className="btn btn-default" onClick={this.panRight}>
-                            <i className="fa fa-arrow-right" />
-                        </a>
+                        <button className="btn btn-default" onClick={this.panLeft} type="button">
+                            <IconWithSrText iconClass="fa fa-arrow-left" srText="Pan left" />
+                        </button>
+                        <button className="btn btn-default" onClick={this.panDown}>
+                            <IconWithSrText iconClass="fa fa-arrow-down" srText="Pan down"/>
+                        </button>
+                        <button className="btn btn-default" onClick={this.panRight}>
+                            <IconWithSrText iconClass="fa fa-arrow-right" srText="Pan right"/>
+                        </button>
                     </div>
                 </div>
             </div>

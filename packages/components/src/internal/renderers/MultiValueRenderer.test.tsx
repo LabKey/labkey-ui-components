@@ -35,7 +35,7 @@ describe('MultiValueRenderer', () => {
     test('data list, value, file column', () => {
         const data = fromJS([{ value: 'a.txt', url: 'a.txt' }]);
         render(<MultiValueRenderer col={new QueryColumn({ inputType: 'file' })} data={data} />);
-        expect(document.body.textContent).toBe('a.txtDownload');
+        expect(document.body.textContent).toBe('a.txtManage AttachmentDownload');
         expect(document.querySelectorAll('.attachment-card')).toHaveLength(1);
     });
 

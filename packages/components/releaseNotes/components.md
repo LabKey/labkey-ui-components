@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Fix accessibility issues for empty links and buttons
 - Add `IconWithSrText` component for use on buttons and links that are only icons
+- Add some alt text to a few images
 
 ### version 7.33.2
 *Released*: 29 April 2026

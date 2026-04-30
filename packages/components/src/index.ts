@@ -889,7 +889,8 @@ import { getSamplesTestAPIWrapper } from './internal/components/samples/APIWrapp
 import { OverlayTrigger, useOverlayTriggerState } from './internal/OverlayTrigger';
 import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
-import { DropdownButton, DropdownMenu, Icon, MenuDivider, MenuHeader, MenuItem, SplitButton } from './internal/dropdowns';
+import { DropdownButton, DropdownMenu, MenuDivider, MenuHeader, MenuItem, SplitButton } from './internal/dropdowns';
+import { Icon } from './internal/Icon';
 import { DropdownSection } from './internal/DropdownSection';
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './internal/components/administration/utils';
 import { LineageGridModel, LineageResult } from './internal/components/lineage/models';

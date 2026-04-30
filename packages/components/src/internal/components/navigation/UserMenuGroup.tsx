@@ -31,11 +31,12 @@ import { getHelpLink } from '../../util/helpLinks';
 
 import { HELP_LINK_METRIC, RELEASE_NOTES_METRIC } from '../productnavigation/constants';
 
-import { DropdownMenu, DropdownButton, MenuDivider, MenuHeader, MenuItem, Icon } from '../../dropdowns';
+import { DropdownButton, DropdownMenu, MenuDivider, MenuHeader, MenuItem } from '../../dropdowns';
 
 import { signIn as defaultSignIn, signOut as defaultSignOut } from './actions';
 import { MenuSectionModel } from './model';
 import { biologicsIsPrimaryApp } from '../../app/products';
+import { Icon } from '../../Icon';
 
 export interface UserMenuProps {
     appProperties?: AppProperties;

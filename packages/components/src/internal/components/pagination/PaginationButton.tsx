@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom';
 import { blurActiveElement } from '../../util/utils';
 import { useOverlayTriggerState } from '../../OverlayTrigger';
 import { Tooltip } from '../../Tooltip';
-import { Icon } from '../../dropdowns';
+import { Icon } from '../../Icon';
 
 interface Props {
     className?: string;
@@ -19,7 +19,6 @@ interface Props {
 export const PaginationButton: FC<Props> = ({ className, disabled, iconClass, onClick, tooltip }) => {
     const clsName = classNames(className, 'pagination-button btn btn-default', {
         'disabled-button-with-tooltip': disabled,
-        disabled: disabled,
     });
     const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLButtonElement>(
         'pagination-button-overlay',

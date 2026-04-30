@@ -24,20 +24,6 @@ import { AppURL } from './url/AppURL';
 export type BSStyle = 'success' | 'danger' | 'default' | 'primary' | 'info';
 const DROPDOWN_MENU_CLASS = 'dropdown-menu';
 
-interface IconProps {
-    iconClass: string;
-    srText: string | undefined; // text for screen readers
-}
-export const Icon: FC<IconProps> = ({ iconClass, srText }) => {
-    return (
-        <>
-            <span aria-hidden="true" className={iconClass} />
-            {srText && <span className="sr-only">{srText}</span>}
-        </>
-    );
-};
-Icon.displayName = 'Icon';
-
 /**
  * There are a few narrow cases where clicking on something in a dropdown menu will trigger a click event on the actual
  * <ul> element. This handler cancels the event if the user triggers such an event.

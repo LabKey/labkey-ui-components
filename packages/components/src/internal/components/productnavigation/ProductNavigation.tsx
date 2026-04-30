@@ -3,7 +3,7 @@ import React, { FC, memo, useCallback } from 'react';
 import { useNavMenuState } from '../../useNavMenuState';
 
 import { ProductNavigationMenu } from './ProductNavigationMenu';
-import { Icon } from '../../dropdowns';
+import { Icon } from '../../Icon';
 
 export const ProductNavigation: FC = memo(() => {
     const { show, setShow, menuRef, toggleRef } = useNavMenuState();

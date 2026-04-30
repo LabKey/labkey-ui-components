@@ -9,7 +9,7 @@ import { useNavMenuState } from '../../useNavMenuState';
 import { markAllNotificationsAsRead, markNotificationsAsRead } from './actions';
 import { ServerNotificationsConfig } from './model';
 import { ServerActivityList } from './ServerActivityList';
-import { Icon } from '../../dropdowns';
+import { Icon } from '../../Icon';
 
 export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
     const { onRead, serverActivity } = props;

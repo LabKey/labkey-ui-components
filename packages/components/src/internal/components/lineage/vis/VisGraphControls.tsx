@@ -1,7 +1,8 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Network } from 'vis-network';
 
-import { DropdownButton, Icon, MenuItem } from '../../../dropdowns';
+import { DropdownButton, MenuItem } from '../../../dropdowns';
+import { Icon } from '../../../Icon';
 
 const PAN_INCREMENT = 20;
 const ZOOM_INCREMENT = 0.05;

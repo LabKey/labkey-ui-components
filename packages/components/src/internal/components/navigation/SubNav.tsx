@@ -26,7 +26,7 @@ import { NavItem, ParentNavItem } from './NavItem';
 import { isAdminRoute } from './ProductMenu';
 import { ITab } from './types';
 import { useSubNavTabsContext } from './hooks';
-import { Icon } from '../../dropdowns';
+import { Icon } from '../../Icon';
 
 interface Props {
     noun?: ITab;

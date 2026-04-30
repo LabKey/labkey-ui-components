@@ -41,7 +41,7 @@ import { UserMenuGroup, UserMenuProps } from './UserMenuGroup';
 import { MenuSectionConfig } from './model';
 import { SEARCH_PLACEHOLDER } from './constants';
 import { useFolderMenuContext, useSubNavTabsContext } from './hooks';
-import { Icon } from '../../dropdowns';
+import { Icon } from '../../Icon';
 
 interface NavigationBarProps {
     brand?: ReactNode;

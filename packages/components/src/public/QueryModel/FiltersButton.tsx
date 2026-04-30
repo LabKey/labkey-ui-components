@@ -1,7 +1,7 @@
 import React, { FC, memo } from 'react';
 
 import { Tip } from '../../internal/components/base/Tip';
-import { Icon } from '../../internal/dropdowns';
+import { Icon } from '../../internal/Icon';
 
 interface Props {
     iconOnly?: boolean;

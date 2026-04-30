@@ -26,12 +26,12 @@ const DROPDOWN_MENU_CLASS = 'dropdown-menu';
 
 interface IconProps {
     iconClass: string;
-    srText: string; // text for screen readers
+    srText: string | undefined; // text for screen readers
 }
 export const Icon: FC<IconProps> = ({ iconClass, srText }) => {
     return (
         <>
-            <span className={iconClass} />
+            <span aria-hidden="true" className={iconClass} />
             {srText && <span className="sr-only">{srText}</span>}
         </>
     );
@@ -121,9 +121,9 @@ export const DropdownMenu: FC<DropdownMenuProps> = props => {
     return (
         <div className={className}>
             {asAnchor && (
-                <a {...elemProps} href="#">
+                <a aria-label={label} {...elemProps} href="#">
                     {title}
-                    <Icon iconClass="caret" srText={label} />
+                    <span className="caret" />
                 </a>
             )}
             {!asAnchor && <span {...elemProps}>{title}</span>}

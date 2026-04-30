@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom';
 import { blurActiveElement } from '../../util/utils';
 import { useOverlayTriggerState } from '../../OverlayTrigger';
 import { Tooltip } from '../../Tooltip';
-import { IconWithSrText } from '../../dropdowns';
+import { Icon } from '../../dropdowns';
 
 interface Props {
     className?: string;
@@ -50,7 +50,7 @@ export const PaginationButton: FC<Props> = ({ className, disabled, iconClass, on
             ref={targetRef}
             type="button"
         >
-            <IconWithSrText iconClass={`fa ${iconClass}`} srText={tooltip} />
+            <Icon iconClass={`fa ${iconClass}`} srText={tooltip} />
             {show && createPortal(tooltip_, portalEl)}
         </button>
     );

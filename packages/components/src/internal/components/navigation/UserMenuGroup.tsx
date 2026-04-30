@@ -31,7 +31,7 @@ import { getHelpLink } from '../../util/helpLinks';
 
 import { HELP_LINK_METRIC, RELEASE_NOTES_METRIC } from '../productnavigation/constants';
 
-import { DropdownMenu, DropdownButton, MenuDivider, MenuHeader, MenuItem, IconWithSrText } from '../../dropdowns';
+import { DropdownMenu, DropdownButton, MenuDivider, MenuHeader, MenuItem, Icon } from '../../dropdowns';
 
 import { signIn as defaultSignIn, signOut as defaultSignOut } from './actions';
 import { MenuSectionModel } from './model';
@@ -147,7 +147,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                     <DropdownButton
                         className="admin-dropdown"
                         buttonClassName="navbar-menu-button"
-                        title={<IconWithSrText iconClass="fa fa-cog navbar-header-icon" srText="Admin"/>}
+                        title={<Icon iconClass="fa fa-cog navbar-header-icon" srText="Admin"/>}
                         noCaret
                         pullRight
                     >
@@ -173,7 +173,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                         className="help-dropdown"
                         noCaret
                         pullRight
-                        title={<IconWithSrText iconClass="fa fa-question-circle navbar-header-icon" srText="Help" />}
+                        title={<Icon iconClass="fa fa-question-circle navbar-header-icon" srText="Help" />}
                     >
                         <div className="navbar-icon-connector" />
                         {helpHref && (

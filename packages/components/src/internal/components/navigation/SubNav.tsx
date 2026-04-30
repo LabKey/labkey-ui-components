@@ -26,7 +26,7 @@ import { NavItem, ParentNavItem } from './NavItem';
 import { isAdminRoute } from './ProductMenu';
 import { ITab } from './types';
 import { useSubNavTabsContext } from './hooks';
-import { IconWithSrText } from '../../dropdowns';
+import { Icon } from '../../dropdowns';
 
 interface Props {
     noun?: ITab;
@@ -109,10 +109,10 @@ const SubNavImpl: FC<Props> = ({ noun, tabs }) => {
                 {isScrollable && (
                     <div className="btn-group scroll-btn-group">
                         <button className="btn btn-default" onClick={scrollLeft} type="button">
-                            <IconWithSrText iconClass="fa fa-chevron-left" srText="Scroll left" />
+                            <Icon iconClass="fa fa-chevron-left" srText="Scroll left" />
                         </button>
                         <button className="btn btn-default" onClick={scrollRight} type="button">
-                            <IconWithSrText iconClass="fa fa-chevron-right" srText="Scroll right" />
+                            <Icon iconClass="fa fa-chevron-right" srText="Scroll right" />
                         </button>
                     </div>
                 )}

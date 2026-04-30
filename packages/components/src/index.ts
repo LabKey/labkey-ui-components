@@ -889,7 +889,7 @@ import { getSamplesTestAPIWrapper } from './internal/components/samples/APIWrapp
 import { OverlayTrigger, useOverlayTriggerState } from './internal/OverlayTrigger';
 import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
-import { DropdownButton, DropdownMenu, IconWithSrText, MenuDivider, MenuHeader, MenuItem, SplitButton } from './internal/dropdowns';
+import { DropdownButton, DropdownMenu, Icon, MenuDivider, MenuHeader, MenuItem, SplitButton } from './internal/dropdowns';
 import { DropdownSection } from './internal/DropdownSection';
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './internal/components/administration/utils';
 import { LineageGridModel, LineageResult } from './internal/components/lineage/models';
@@ -1462,7 +1462,7 @@ export {
     HOME_TITLE,
     Hooks,
     HorizontalBarSection,
-    IconWithSrText,
+    Icon,
     imageURL,
     IMPORT_DATA_FORM_TYPES,
     ImportAliasRenderer,

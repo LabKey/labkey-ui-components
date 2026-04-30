@@ -24,11 +24,11 @@ import { AppURL } from './url/AppURL';
 export type BSStyle = 'success' | 'danger' | 'default' | 'primary' | 'info';
 const DROPDOWN_MENU_CLASS = 'dropdown-menu';
 
-interface IconWithSrTextProps {
+interface IconProps {
     iconClass: string;
-    srText: string;
+    srText: string; // text for screen readers
 }
-export const IconWithSrText: FC<IconWithSrTextProps> = ({ iconClass, srText }) => {
+export const Icon: FC<IconProps> = ({ iconClass, srText }) => {
     return (
         <>
             <span className={iconClass} />
@@ -36,7 +36,7 @@ export const IconWithSrText: FC<IconWithSrTextProps> = ({ iconClass, srText }) =
         </>
     );
 };
-IconWithSrText.displayName = 'IconWithSrText';
+Icon.displayName = 'Icon';
 
 /**
  * There are a few narrow cases where clicking on something in a dropdown menu will trigger a click event on the actual
@@ -123,7 +123,7 @@ export const DropdownMenu: FC<DropdownMenuProps> = props => {
             {asAnchor && (
                 <a {...elemProps} href="#">
                     {title}
-                    <IconWithSrText iconClass="caret" srText={label} />
+                    <Icon iconClass="caret" srText={label} />
                 </a>
             )}
             {!asAnchor && <span {...elemProps}>{title}</span>}

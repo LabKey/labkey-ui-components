@@ -62,11 +62,11 @@ $editor-padding-horizontal: 15px;
 }
 .clickable-text {
     cursor: pointer;
-    color: #2980B9;
+    color: $link-color;
 
     &:hover {
         text-decoration: underline;
-        color: color.adjust(#2980B9, $lightness: -15%);
+        color: color.adjust($link-color, $lightness: -15%);
     }
 }
 .discussions-container__title {

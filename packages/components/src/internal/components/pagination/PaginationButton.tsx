@@ -43,6 +43,7 @@ export const PaginationButton: FC<Props> = ({ className, disabled, iconClass, on
     return (
         <button
             className={clsName}
+            disabled={disabled}
             onClick={onClick_}
             onPointerEnter={onMouseEnter}
             onPointerLeave={onMouseLeave}
@@ -52,7 +53,6 @@ export const PaginationButton: FC<Props> = ({ className, disabled, iconClass, on
             <IconWithSrText iconClass={`fa ${iconClass}`} srText={tooltip} />
             {show && createPortal(tooltip_, portalEl)}
         </button>
-
     );
 };
 PaginationButton.displayName = 'PaginationButton';

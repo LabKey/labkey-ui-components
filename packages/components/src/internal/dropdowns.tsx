@@ -36,6 +36,7 @@ export const IconWithSrText: FC<IconWithSrTextProps> = ({ iconClass, srText }) =
         </>
     );
 };
+IconWithSrText.displayName = 'IconWithSrText';
 
 /**
  * There are a few narrow cases where clicking on something in a dropdown menu will trigger a click event on the actual

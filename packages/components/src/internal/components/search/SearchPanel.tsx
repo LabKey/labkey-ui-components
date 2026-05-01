@@ -116,7 +116,7 @@ export const SearchPanelImpl: FC<SearchPanelImplProps> = memo(props => {
                     </span>
                 </form>
                 <button
-                    className="margin-left success submit-button btn btn-default"
+                    className="margin-left success submit-button btn btn-success"
                     onClick={onSearchClick}
                     type="submit"
                 >

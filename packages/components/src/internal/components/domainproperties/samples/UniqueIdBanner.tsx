@@ -37,7 +37,7 @@ export const UniqueIdBanner: FC<Props> = memo(({ model, isFieldsPanel, onAddFiel
             return (
                 <Alert bsStyle="info" className="uniqueid-alert">
                     {ADD_NEW_UNIQUE_ID_MSG}
-                    <button className="pull-right alert-button btn btn-info" onClick={onClick} type="button">
+                    <button className="pull-right alert-button btn btn-primary" onClick={onClick} type="button">
                         Yes, Add Unique ID Field
                     </button>
                 </Alert>

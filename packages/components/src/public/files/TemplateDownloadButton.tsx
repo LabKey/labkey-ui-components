@@ -123,7 +123,6 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
 
     return (
         <DropdownButton
-            bsStyle="info"
             buttonClassName={buttonClassName}
             buttonTitle={TITLE}
             className={className}

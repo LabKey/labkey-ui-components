@@ -126,7 +126,7 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
             <Alert bsStyle="info" className="genid-alert">
                 Current genId: {currentGenId}
                 <button
-                    className="pull-right alert-button edit-genid-btn btn btn-info"
+                    className="pull-right alert-button edit-genid-btn btn btn-primary"
                     onClick={onEditClick}
                     type="button"
                 >
@@ -134,7 +134,7 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                 </button>
                 {canReset && currentGenId > 1 && (
                     <button
-                        className="pull-right alert-button reset-genid-btn btn btn-info"
+                        className="pull-right alert-button reset-genid-btn btn btn-primary"
                         onClick={onResetClick}
                         type="button"
                     >

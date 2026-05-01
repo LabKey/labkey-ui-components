@@ -71,9 +71,9 @@ $blue-bkgrd-selected:   rgba(41, 128, 185, 0.1);
   border-top-left-radius: $radius;
 }
 
-$grid-action-item-color:                #0088cc; // pale blue
-$grid-action-item-bg:                   #f1f9fc;
-$grid-action-item-border-color:         #c9e6f2;
+$grid-action-item-color:                $alert-info-text;
+$grid-action-item-bg:                   $alert-info-bg;
+$grid-action-item-border-color:         $alert-info-border;
 $grid-action-item-hover-bg:             color.adjust($grid-action-item-bg, $lightness: 5%);
 $grid-action-item-disabled-color:       #333;
 $grid-action-item-disabled-bg:          #fcfcfc;

@@ -174,6 +174,7 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                     <div className="row margin-top">
                         <div className="col-xs-5">
                             <input
+                                aria-label="GenId value"
                                 className="form-control update-genId-input "
                                 min={minNewGenId}
                                 step={1}

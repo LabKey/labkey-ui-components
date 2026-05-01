@@ -971,6 +971,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 cell: (selected: boolean, row: Map<string, any>): ReactNode => {
                     return (
                         <input
+                            aria-label="Select a row"
                             checked={selected === true}
                             className="grid-panel__row-checkbox"
                             disabled={isLoading || isLoadingSelections}

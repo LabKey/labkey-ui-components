@@ -156,10 +156,11 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
             <div className={wrapperClasses}>
                 <span className="input-group input-group-align">
                     <input
+                        aria-label="Number of rows to add"
                         className="form-control"
+                        disabled={disable}
                         max={disable ? undefined : maxToAdd}
                         min={disable ? undefined : minCount}
-                        disabled={disable}
                         name="addCount"
                         onBlur={this.onBlur}
                         onChange={this.onChange}

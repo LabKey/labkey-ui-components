@@ -168,6 +168,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                 <SelectInput
                     helpTipRenderer="NONE"
                     label="Move to"
+                    name="destinationFolder"
                     onChange={onContainerChange}
                     options={containerOptions}
                     required

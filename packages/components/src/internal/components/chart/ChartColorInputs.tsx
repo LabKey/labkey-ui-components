@@ -10,6 +10,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { ColorIcon } from '../base/ColorIcon';
 import { LABKEY_VIS } from '../../constants';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
+import { stringToHtmlId } from '../../util/utils';
 
 enum COLOR_OPTIONS {
     BOX_FILL_COLOR = 'boxFillColor',
@@ -270,11 +271,12 @@ export const ChartColorInputs: FC<ChartColorInputsProps> = memo(({ chartConfig, 
             {showColorPaletteScale && (
                 <div className="form-group row">
                     <div className="col-xs-12">
-                        <label>Color Palette</label>
+                        <label htmlFor="color-palette">Color Palette</label>
                         <SelectInput
                             clearable={false}
                             containerClass="row"
                             inputClass="col-xs-12"
+                            inputId="color-palette"
                             name={COLOR_OPTIONS.COLOR_PALETTE_SCALE}
                             onChange={onColorPaletteChange}
                             options={COLOR_PALETTE_OPTIONS}
@@ -414,15 +416,18 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
         return null;
     }
 
+    const suffix = stringToHtmlId(chartConfig.measures.series?.name) ?? 'unknown';
     return (
         <>
             <div className="form-group row">
                 <div className="col-xs-12">
-                    <label>Line Color and Style</label>
+                    <label htmlFor={'line-color-and-style-' + suffix}>Line Color and Style</label>
                     <SelectInput
                         containerClass="row"
                         inputClass="col-xs-12"
+                        inputId={'line-color-and-style-' + suffix}
                         menuPlacement="top"
+                        name={'lineColorAndStyle-' + suffix}
                         onChange={onSeriesSelectChange}
                         optionRenderer={seriesValueRenderer}
                         options={distinctSeriesOptions}
@@ -447,12 +452,16 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                     </div>
                     {!chartConfig.geomOptions?.hideDataPoints && (
                         <div className="chart-color-input">
-                            <label className="label-weight-normal">Shape</label>
+                            <label className="label-weight-normal" htmlFor={'shape-' + suffix}>
+                                Shape
+                            </label>
                             <SelectInput
                                 clearable={false}
                                 containerClass="inline-block"
                                 inputClass=""
+                                inputId={'shape-' + suffix}
                                 menuPlacement="top"
+                                name="shape"
                                 onChange={onSeriesShapeChange}
                                 optionRenderer={shapeOptionRenderer}
                                 options={SHAPE_OPTIONS}
@@ -466,12 +475,14 @@ const SeriesLineStyleInput: FC<SeriesLineStyleInputProps> = memo(({ chartConfig,
                         </div>
                     )}
                     <div className="chart-color-input">
-                        <label className="label-weight-normal">Line Type</label>
+                        <label className="label-weight-normal" htmlFor={'line-type-' + suffix}>Line Type</label>
                         <SelectInput
                             clearable={false}
                             containerClass="inline-block"
                             inputClass=""
+                            inputId={'line-type-' + suffix}
                             menuPlacement="top"
+                            name="lineType"
                             onChange={onSeriesLineTypeChange}
                             optionRenderer={lineTypeOptionRenderer}
                             options={LINE_TYPE_OPTIONS}

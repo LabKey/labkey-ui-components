@@ -319,6 +319,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                     <div className="col-xs-8">
                         <div>
                             <select
+                                aria-labelledby="domain-filter-type-label-1"
                                 className="form-control"
                                 id={createFormInputId(DOMAIN_FIRST_FILTER_TYPE, domainIndex, validatorIndex)}
                                 name={createFormInputName(DOMAIN_FIRST_FILTER_TYPE)}
@@ -350,6 +351,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                     <div className="col-xs-8">
                         <div>
                             <input
+                                aria-labelledby="domain-filter-value-label-1"
                                 className="form-control"
                                 type={this.getFormControlType()}
                                 id={createFormInputId(DOMAIN_FIRST_FILTER_VALUE, domainIndex, validatorIndex)}
@@ -372,6 +374,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                     <div className="col-xs-8">
                         <div>
                             <select
+                                aria-labelledby="domain-filter-type-label-2"
                                 className="form-control"
                                 id={createFormInputId(DOMAIN_SECOND_FILTER_TYPE, domainIndex, validatorIndex)}
                                 name={createFormInputName(DOMAIN_SECOND_FILTER_TYPE)}
@@ -396,6 +399,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                     <div className="col-xs-8">
                         <div>
                             <input
+                                aria-labelledby="domain-filter-value-label-2"
                                 className="form-control"
                                 type={this.getFormControlType()}
                                 id={createFormInputId(DOMAIN_SECOND_FILTER_VALUE, domainIndex, validatorIndex)}

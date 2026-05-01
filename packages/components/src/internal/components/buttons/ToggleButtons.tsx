@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import { FormsyInput } from '../forms/input/FormsyReactComponents';
 import { LabelHelpTip } from '../base/LabelHelpTip';
+import { stringToHtmlId } from '../../util/utils';
 
 interface Props {
     active: string;
@@ -51,7 +52,12 @@ export const ToggleButtons: FC<Props> = memo(props => {
     return (
         <>
             {inputFieldName && (
-                <FormsyInput name={inputFieldName} type="hidden" value={active === first ? 'true' : 'false'} />
+                <FormsyInput
+                    id={stringToHtmlId(inputFieldName)}
+                    name={inputFieldName}
+                    type="hidden"
+                    value={active === first ? 'true' : 'false'}
+                />
             )}
             <div
                 className={classNames('toggle', 'btn-group', {
@@ -106,7 +112,12 @@ export const ToggleIcon: FC<Props> = memo(props => {
     return (
         <>
             {inputFieldName && (
-                <FormsyInput name={inputFieldName} type="hidden" value={active === first ? 'true' : 'false'} />
+                <FormsyInput
+                    id={stringToHtmlId(inputFieldName)}
+                    name={inputFieldName}
+                    type="hidden"
+                    value={active === first ? 'true' : 'false'}
+                />
             )}
             <div
                 className={classNames('toggle', 'toggle-group-icon', 'btn-group', {

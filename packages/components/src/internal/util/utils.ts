@@ -152,6 +152,18 @@ export function generateId(prefix?: string): string {
     return (prefix ? prefix : DOM_PREFIX) + DOM_COUNT++;
 }
 
+// Convert an arbitrary string to a value safe for use as an HTML element id.
+// Splits on non-alphanumeric characters, drops empty segments (which handles
+// leading/trailing separators and consecutive separators), then rejoins with hyphens.
+export function stringToHtmlId(value: string | undefined): string | undefined {
+    if (value === undefined) return undefined;
+    const id = value
+        .split(/[^a-zA-Z0-9]/)
+        .filter(s => s.length > 0)
+        .join('-');
+    return id || undefined;
+}
+
 // http://davidwalsh.name/javascript-debounce-function
 export function debounce(func, wait, immediate?: boolean): () => void {
     let timeout: number;

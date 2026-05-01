@@ -112,7 +112,11 @@ export const DropdownMenu: FC<DropdownMenuProps> = props => {
                     <span className="caret" />
                 </a>
             )}
-            {!asAnchor && <span {...elemProps}>{title}</span>}
+            {!asAnchor && (
+                <span aria-label={label} {...elemProps}>
+                    {title}
+                </span>
+            )}
 
             <ul className={menuClassName} onClick={handleMenuClick}>
                 {children}

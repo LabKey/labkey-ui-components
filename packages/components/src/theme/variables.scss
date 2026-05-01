@@ -30,6 +30,7 @@ $text-color-gray:   #9d9d9d;
 $text-color-light:   #6B6B6B;
 
 $text-color:            $gray-dark !default;
+$link-color: #0F72C2;
 $link-hover-color:      color.adjust($link-color, $lightness: 15%) !default;
 
 $font-family-sans-serif:  "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !default;

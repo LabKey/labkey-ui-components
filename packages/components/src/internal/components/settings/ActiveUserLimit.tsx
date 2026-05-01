@@ -53,7 +53,7 @@ export const ActiveUserLimit: FC<Props> = memo(props => {
 
     return (
         <div className="active-user-limit-panel panel panel-default">
-            <div className="panel-heading">Active Users</div>
+            <h2 className="panel-heading">Active Users</h2>
             <div className="panel-body">
                 <Alert>{error}</Alert>
                 {settings && (

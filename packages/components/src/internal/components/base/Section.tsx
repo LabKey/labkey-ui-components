@@ -44,10 +44,15 @@ export const Section: FC<SectionProps> = props => {
                 {showHeader && (
                     <div className={`panel-heading panel-content-flex panel-content-${titleSize}`}>
                         <div className={`panel-content-title-container ${titleContainerClassName ?? ''}`}>
-                            {title && (
-                                <div className={`panel-content-title-${titleSize} ${titleClassName ?? ''}`}>
+                            {title && titleSize === 'large' && (
+                                <h1 className={`panel-content-title-${titleSize} ${titleClassName ?? ''}`}>
                                     {title}
-                                </div>
+                                </h1>
+                            )}
+                            {title && titleSize !== 'large' && (
+                                <h2 className={`panel-content-title-${titleSize} ${titleClassName ?? ''}`}>
+                                    {title}
+                                </h2>
                             )}
                             {caption && <div className="panel-content-caption">{caption}</div>}
                         </div>

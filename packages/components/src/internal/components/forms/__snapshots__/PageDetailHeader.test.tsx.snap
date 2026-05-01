@@ -22,11 +22,11 @@ exports[`<PageDetailHeader/> default props 1`] = `
       <div
         class="detail__header-icon--body-container"
       >
-        <h2
+        <h1
           class="no-margin-top detail__header--name"
         >
           Title
-        </h2>
+        </h1>
       </div>
     </div>
     <div
@@ -58,16 +58,16 @@ exports[`<PageDetailHeader/> with additional props 1`] = `
       <div
         class="detail__header-icon--body-container"
       >
-        <h2
+        <h1
           class="no-margin-top detail__header--name"
         >
           Title
-        </h2>
-        <h4
-          class="test-loc-detail-subtitle"
+        </h1>
+        <div
+          class="detail-subtitle"
         >
           Subtitle
-        </h4>
+        </div>
         <span
           class="detail__header--desc"
         >
@@ -100,11 +100,11 @@ exports[`<PageDetailHeader/> without icon 1`] = `
       <div
         class=""
       >
-        <h2
+        <h1
           class="no-margin-top detail__header--name"
         >
           Title
-        </h2>
+        </h1>
       </div>
     </div>
     <div

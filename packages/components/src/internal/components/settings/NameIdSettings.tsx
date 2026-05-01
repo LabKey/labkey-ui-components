@@ -280,7 +280,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
 
     return (
         <div className="name-id-settings-panel panel panel-default">
-            <div className="panel-heading">{TITLE}</div>
+            <h2 className="panel-heading">{TITLE}</h2>
             <div className="panel-body">
                 {error !== undefined && <Alert className="name-id-setting__error">{error}</Alert>}
                 {prefixIneligibleSampleTypeNames.length > 0 && (

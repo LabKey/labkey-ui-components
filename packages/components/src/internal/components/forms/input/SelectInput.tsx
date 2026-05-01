@@ -83,7 +83,7 @@ const _customStyles = {
             style[':hover'] = { backgroundColor: WARN_COLOR, color: WARN_BG_COLOR };
         } else {
             style.color = '#0B73B7';
-            style[':hover'] = { backgroundColor: '#2980B9', color: '#FFF' };
+            style[':hover'] = { backgroundColor: '#2679AD', color: '#FFF' };
         }
 
         return { ...styles, ...style };

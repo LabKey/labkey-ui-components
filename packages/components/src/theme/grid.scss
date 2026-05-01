@@ -416,14 +416,14 @@ $table-cell-padding: 4px 2px;
     }
 
     .cell-placeholder {
-      color: $gray-light;
+      color: $text-color-light;
     }
 
     .cell-read-only {
       background-color: $light-gray;
 
       &.cell-placeholder {
-        color: $gray-light
+        color: $text-color-light;
       }
     }
 
@@ -431,7 +431,7 @@ $table-cell-padding: 4px 2px;
           background-color: $light-gray;
 
        &.cell-placeholder {
-          color: $gray-light
+          color: $text-color-light;
        }
     }
 

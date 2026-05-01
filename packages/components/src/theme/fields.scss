@@ -12,7 +12,7 @@
 }
 
 .field-icon {
-  color: $gray-light;
+  color: $text-color-light;
   padding: 5px 5px 0 20px;
   display: inline-block;
 
@@ -71,14 +71,14 @@
 }
 
 .edit-inline-field__label {
-    color: #777777;
+    color: $text-color-light;
     cursor: auto;
     font-size: 14px;
     padding-right: 5px;
 }
 
 .edit-inline-field__placeholder {
-    color: #777777;
+    color: $text-color-light;
 }
 
 .edit-inline-field__toggle {
@@ -131,7 +131,7 @@
         color: $brand-primary;
     }
     i.fa-toggle-off {
-        color: $gray-light;
+        color: $text-color-light;
     }
 }
 .toggle-group-icon.disabled i {
@@ -167,7 +167,7 @@
 }
 
 .identifying_field_label {
-    color: #777777
+    color: $text-color-light;
 }
 
 // GitHub Issue 985: Improve readability of identifying fields

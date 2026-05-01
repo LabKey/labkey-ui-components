@@ -31,7 +31,7 @@ const Card: FC<CardProps> = props => {
         <a className="cards__card" href={href} onClick={onClickHandler}>
             <div className={'cards__block-center' + (disabled ? ' cards__block-disabled' : '')}>
                 <div className="cards__block-center-content">
-                    {iconUrl && <img alt={caption ? caption + ' icon' : 'icon ' + index} src={iconUrl} />}
+                    {iconUrl && <img alt={caption ? caption + ' icon' : title + ' icon'} src={iconUrl} />}
                     {iconSrc && <SVGIcon iconSrc={iconSrc} />}
                 </div>
             </div>

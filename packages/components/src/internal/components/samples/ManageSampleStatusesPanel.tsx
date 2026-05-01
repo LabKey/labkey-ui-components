@@ -220,10 +220,11 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     {error && <Alert>{error}</Alert>}
                     <div className="form-group">
                         <div className="col-sm-4">
-                            <DomainFieldLabel label="Label" required />
+                            <DomainFieldLabel id="status-label-label" label="Label" required />
                         </div>
                         <div className="col-sm-8">
                             <input
+                                aria-labelledby="status-label-label"
                                 className="form-control"
                                 disabled={saving || !updatedState.isLocal}
                                 name="label"

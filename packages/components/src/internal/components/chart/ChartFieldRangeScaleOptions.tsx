@@ -102,6 +102,7 @@ export const ChartFieldRangeScaleOptions: FC<Props> = memo(props => {
             {scale.type === 'manual' && (
                 <div className="chart-builder-scale-range-inputs">
                     <input
+                        aria-label="Scale minimum"
                         className="chart-builder-field-footer-input"
                         name="scaleMin"
                         onBlur={onScaleRangeBlur}
@@ -112,6 +113,7 @@ export const ChartFieldRangeScaleOptions: FC<Props> = memo(props => {
                     />
                     <span className="chart-builder-field-footer-input">-</span>
                     <input
+                        aria-label="Scale maximum"
                         className="chart-builder-field-footer-input"
                         name="scaleMax"
                         onBlur={onScaleRangeBlur}

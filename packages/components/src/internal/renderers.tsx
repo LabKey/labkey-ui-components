@@ -108,6 +108,7 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
     if (editing) {
         return (
             <input
+                aria-label="Column label"
                 autoFocus
                 defaultValue={title}
                 onBlur={onEditFinish}
@@ -478,6 +479,7 @@ export const HeaderSelectionCell: FC<HeaderSelectionCellProps> = memo(props => {
 
     return (
         <input
+            aria-label="Select all rows on page"
             checked={selectedState === GRID_CHECKBOX_OPTIONS.ALL}
             className={className}
             disabled={disabled}

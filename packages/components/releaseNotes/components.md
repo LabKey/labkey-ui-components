@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.33.3
+*Released*: 1 May 2026
+- Accessibility improvements: add labels or aria-labels to input elements
+
 ### version 7.33.2
 *Released*: 29 April 2026
 - GitHub Issue #598: Wrap text for long file names in various app locations

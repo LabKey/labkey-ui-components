@@ -52,6 +52,7 @@ export const SearchBox: FC<Props> = memo(props => {
                         <i className="fa fa-search" />
                     </span>
                     <input
+                        aria-label="Search in grid"
                         className="form-control grid-panel__search-input"
                         onChange={onChange}
                         placeholder="Search..."

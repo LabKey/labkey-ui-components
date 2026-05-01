@@ -149,11 +149,12 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-xs-4">
+                            <div className="col-xs-4" id="name-label">
                                 <div>Name *</div>
                             </div>
                             <div className="col-xs-8">
                                 <input
+                                    aria-labelledby="name-label"
                                     className="form-control"
                                     type="text"
                                     id={createFormInputId(DOMAIN_VALIDATOR_NAME, domainIndex, validatorIndex)}

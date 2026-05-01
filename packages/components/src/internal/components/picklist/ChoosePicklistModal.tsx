@@ -332,6 +332,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalDisplayProps & Ch
                     <div className="row">
                         <div className="col-md-6">
                             <input
+                                aria-label="Search for a picklist"
                                 autoFocus
                                 className="form-control"
                                 onChange={onSearchChange}

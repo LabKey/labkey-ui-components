@@ -6,12 +6,13 @@ import { QuerySelect } from '../QuerySelect';
 import { getContainerFilterForLookups } from '../../../query/api';
 import { FieldLabel } from '../FieldLabel';
 import { InputRendererProps } from './types';
-import { caseInsensitive, generateId, getInvalidSampleAmountMessage } from '../../../util/utils';
+import { caseInsensitive, generateId, getInvalidSampleAmountMessage, stringToHtmlId } from '../../../util/utils';
 import { FormsyInput } from './FormsyReactComponents';
 import { Operation } from '../../../../public/QueryColumn';
 import { STORED_AMOUNT_FIELDS } from '../../samples/constants';
 import { Alert } from '../../base/Alert';
 import { LOOKUP_DEFAULT_SIZE } from '../../../constants';
+import { INPUT_LABEL_CLASS_NAME, INPUT_LABEL_CLASS_NAME_WITH_TOGGLE } from '../constants';
 
 export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
     const {
@@ -58,6 +59,8 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
         return null;
     }
 
+    const inputLabelClass = allowFieldDisable ? INPUT_LABEL_CLASS_NAME_WITH_TOGGLE : INPUT_LABEL_CLASS_NAME;
+
     return (
         <>
             <div className="form-group row">
@@ -65,8 +68,12 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     fieldName={amountCol.name}
                     id={id}
                     isDisabled={disabled}
+                    label={
+                        <div className={inputLabelClass + ' bold-text text__truncate-and-wrap'}>
+                            Amount and Units
+                        </div>
+                    }
                     labelOverlayProps={{
-                        inputId: amountCol.name,
                         description: 'The amount and units of this sample currently on hand.',
                         label: 'Amount and Units',
                         isFormsy: false,
@@ -76,8 +83,10 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     toggleProps={{
                         onClick: onToggleChange,
                     }}
+                    withLabelOverlay={false}
                 />
                 <TextInput
+                    aria-label="Amount"
                     disableInput={disabled}
                     elementWrapperClassName=""
                     hasMixedValue={hasMixedAmountValue}
@@ -113,7 +122,12 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     valueColumn={unitCol.lookup.keyColumn}
                 />
                 {allowFieldDisable && (
-                    <FormsyInput name={unitCol.name + '::enabled'} type="hidden" value={disabled ? 'false' : 'true'} />
+                    <FormsyInput
+                        id={stringToHtmlId(unitCol.name)}
+                        name={unitCol.name + '::enabled'}
+                        type="hidden"
+                        value={disabled ? 'false' : 'true'}
+                    />
                 )}
             </div>
             <Alert>{amountError}</Alert>

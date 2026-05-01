@@ -101,6 +101,7 @@ export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInp
 
                 <div className="col-xs-7">
                     <input
+                        aria-label={label}
                         className="form-control"
                         id={name}
                         type="text"

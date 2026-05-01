@@ -66,6 +66,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps> {
                     </div>
                     <div className="col-xs-10">
                         <input
+                            aria-label="Name"
                             className="form-control"
                             id={ENTITY_FORM_IDS.NAME}
                             type="text"
@@ -91,6 +92,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps> {
                     </div>
                     <div className="col-xs-10">
                         <textarea
+                            aria-label="Description"
                             className="form-control"
                             id={ENTITY_FORM_IDS.DESCRIPTION}
                             onChange={onFormChange}
@@ -128,14 +130,15 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps> {
                     </div>
                     <div className="col-xs-10">
                         <input
+                            aria-label="Naming Pattern"
                             className={classNames('form-control', {
                                 'naming-pattern-border-warning':
                                     warning !== undefined && !warning.startsWith('Aliquot'),
                             })}
                             id={ENTITY_FORM_IDS.NAME_EXPRESSION}
-                            type="text"
-                            placeholder={nameExpressionPlaceholder}
                             onChange={onFormChange}
+                            placeholder={nameExpressionPlaceholder}
+                            type="text"
                             value={getEntityNameExpressionValue(formValues, data)}
                         />
                     </div>

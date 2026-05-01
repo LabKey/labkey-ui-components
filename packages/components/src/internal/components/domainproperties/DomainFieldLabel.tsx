@@ -6,12 +6,13 @@ import { getSplitSentence } from './actions';
 
 export interface DomainFieldLabelProps {
     helpTipBody?: ReactNode;
+    id?: string;
     label: string;
     required?: boolean;
 }
 
 export const DomainFieldLabel: FC<DomainFieldLabelProps> = memo(props => (
-    <>
+    <span id={props.id}>
         {getSplitSentence(props.label, false)}
         <span className="domain-no-wrap">
             {getSplitSentence(props.label, true)}
@@ -22,7 +23,7 @@ export const DomainFieldLabel: FC<DomainFieldLabelProps> = memo(props => (
             )}
             {props.required ? ' *' : ''}
         </span>
-    </>
+    </span>
 ));
 
 DomainFieldLabel.displayName = 'DomainFieldLabel';

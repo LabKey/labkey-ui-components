@@ -21,6 +21,10 @@
         color: $white;
         font-weight: bold;
     }
+    .list-group-item.active .fa-pencil,
+    .list-group-item.active .fa-times {
+        color: $white;
+    }
 
     .list-group-item .field-caption {
         flex: 1;
@@ -32,7 +36,7 @@
     }
 
     .list-group-item .field-expand-icon {
-        color: $light-gray;
+        color: $text-color-light;
         height: 16px;
         width: 16px;
         margin-right: 5px;

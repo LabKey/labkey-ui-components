@@ -401,7 +401,7 @@ $table-cell-padding: 4px 2px;
     .cell-menu-selector {
         position: absolute;
         bottom: -8px;
-        color: $light-gray;
+        color: $text-color-light;
         min-height: 30px;
         font-size: 12px;
         right: 7px;
@@ -411,7 +411,7 @@ $table-cell-padding: 4px 2px;
         }
 
         &:hover {
-            color: $gray;
+            color: $gray-dark;
         }
     }
 

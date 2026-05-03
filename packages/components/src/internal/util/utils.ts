@@ -346,19 +346,16 @@ export function isSameWithStringCompare(value1: any, value2: any): boolean {
  * @param originalData a map from an id field to a Map from fieldKeys to an object with a 'value' field
  * @param updatedValues an object mapping fieldKeys to values that are being updated
  * @param queryInfo the queryInfo to get column information from
- * @param additionalCols additional array of fieldKeys to include
  */
 export function getUpdatedData(
     originalData: Map<string, any>, // the rows in the original data have column names as keys
     updatedValues: Record<string, any>, // the keys here are column fieldKeys
-    queryInfo: QueryInfo,
-    additionalCols?: Set<string>
+    queryInfo: QueryInfo
 ): any[] {
     const updateValuesMap = Map<any, any>(updatedValues);
     const pkColsLc = new Set<string>();
     const pkColsInUse = new Set<string>();
     queryInfo.pkCols.forEach(key => pkColsLc.add(key.toLowerCase()));
-    additionalCols?.forEach(col => pkColsLc.add(col.toLowerCase()));
 
     // if the originalData has the container/folder values, keep those as well (i.e., treat it as a primary key)
     const folderKey = originalData

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 7.X
-*Released*: X April 2026
+### version 7.33.4
+*Released*: 3 May 2026
 - Consolidate Dataclass data update methods - use DIB for update only
   - Remove `altUpdateKeys` from `QueryInfo`
 

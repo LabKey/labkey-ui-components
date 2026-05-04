@@ -92,7 +92,6 @@ export class QueryModelManager {
             setSorts: this.setSorts,
             setView: this.setView,
         };
-        console.log('queryConfigs!', queryConfigs);
         this.state = {
             queryModels: initModels(queryConfigs, searchParams),
             actions: this.actions,
@@ -366,6 +365,7 @@ export class QueryModelManager {
 
     loadModel = (id: string, loadSelections = false, reloadTotalCount = false): void => {
         this.loadQueryInfo(id, true, loadSelections, reloadTotalCount);
+        this.syncURL(id);
     };
 
     loadNextPage = (id: string): void => {

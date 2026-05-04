@@ -831,6 +831,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 title: '&nbsp;',
                 cell: (selected: boolean, row) => (
                     <input
+                        aria-label="Select all rows on page"
                         checked={this.state.selected.contains(row.get(GRID_EDIT_INDEX))}
                         className="grid-panel__checkbox"
                         onChange={this.select.bind(this, row)}

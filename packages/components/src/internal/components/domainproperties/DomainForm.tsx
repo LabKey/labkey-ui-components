@@ -182,6 +182,7 @@ const DomainFormToolbar: FC<DomainFormToolbarProps> = memo(props => {
                         </span>
                     )}
                     <input
+                        aria-label={'Search domain ' + domainIndex}
                         className="form-control domain-search-input"
                         id={'domain-search-name-' + domainIndex}
                         onChange={onSearchChange}
@@ -1230,7 +1231,9 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
                                 id="domain-select-all-checkbox"
                                 name="domain-select-all-checkbox"
                                 onChange={this.toggleSelectAll}
-                            />
+                            >
+                                <span className="sr-only">Select all fields</span>
+                            </CheckboxLK>
                         </div>
                         <div>
                             <div className="col-xs-3">

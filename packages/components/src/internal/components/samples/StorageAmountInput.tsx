@@ -49,6 +49,7 @@ export const StorageAmountInput: FC<Props> = memo(props => {
     else if (unitText && !getMeasurementUnit(unitText)) {
         unitDisplay = (
             <input
+                aria-label="Units"
                 className="form-control checkin-unit-input"
                 onChange={(evt: any) => unitsChangedHandler(evt.target.value)}
                 placeholder="Enter volume units..."

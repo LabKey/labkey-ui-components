@@ -62,6 +62,7 @@ export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
     if (editing) {
         return (
             <input
+                aria-label="Field label"
                 autoFocus
                 className="form-control"
                 defaultValue={title}
@@ -551,8 +552,13 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
                         </div>
                         {allowShowAll && (
                             <div className="field-modal__footer" key="toggleAll">
-                                <input checked={showAllColumns} onChange={onToggleShowAll} type="checkbox" />
-                                &nbsp;Show all system and user-defined fields
+                                <input
+                                    aria-labelledby="show-all-label"
+                                    checked={showAllColumns}
+                                    onChange={onToggleShowAll}
+                                    type="checkbox"
+                                />
+                                &nbsp;<span id="show-all-label">Show all system and user-defined fields</span>
                             </div>
                         )}
                     </div>

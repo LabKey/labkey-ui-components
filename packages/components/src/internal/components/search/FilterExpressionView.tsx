@@ -292,6 +292,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
                 return (
                     <textarea
+                        aria-label={'Filter ' + filterIndex + ' value ' + (isSecondInput ? '2' : '1')}
                         className="form-control filter-expression__textarea"
                         defaultValue={value}
                         name={'field-value-text' + suffix}
@@ -306,6 +307,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             if (!isMultiValueInput && (jsonType === 'int' || jsonType === 'float')) {
                 return (
                     <input
+                        aria-label={'Filter ' + filterIndex + ' value ' + (isSecondInput ? '2' : '1')}
                         className="form-control filter-expression__input"
                         disabled={disabled}
                         name={'field-value-text' + suffix}
@@ -322,6 +324,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
             const textInput = (
                 <input
+                    aria-label={'Filter ' + filterIndex + ' value ' + (isSecondInput ? '2' : '1')}
                     className="form-control filter-expression__input"
                     disabled={disabled}
                     name={'field-value-text' + suffix}
@@ -443,3 +446,4 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         </div>
     );
 });
+FilterExpressionView.displayName = 'FilterExpressionView';

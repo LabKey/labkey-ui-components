@@ -107,6 +107,7 @@ export const DataTypeSelectorItem: FC<DataTypeSelectorItemProps> = memo(props =>
         <li key={entityId} className="folder-faceted-data-type">
             <div className="form-check">
                 <input
+                    aria-label={dataType.label}
                     className="form-check-input filter-faceted__checkbox"
                     type="checkbox"
                     name={'field-value-' + index}

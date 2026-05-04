@@ -1,9 +1,10 @@
-import React, { FC, memo, useCallback, useMemo, useRef } from 'react';
+import React, { FC, memo, useCallback, useMemo, useRef, useState } from 'react';
 import DatePicker, { DatePickerProps } from 'react-datepicker';
 
 import { getDateFNSDateFormat, parseDateFNSTimeFormat } from '../util/Date';
 
 import { Container } from './base/models/Container';
+import { generateId } from '../util/utils';
 
 export interface DateInputProps {
     container?: Container;
@@ -11,6 +12,8 @@ export interface DateInputProps {
 
 export const DateInput: FC<DateInputProps & DatePickerProps> = memo(props => {
     const { container, dateFormat, onSelect, timeFormat, ...pickerProps } = props;
+    const [id] = useState(() => generateId('date-input-'))
+
     const input = useRef<DatePicker>(undefined);
     const formats = useMemo(() => {
         const dateFormat_ = dateFormat ?? getDateFNSDateFormat(container);
@@ -36,6 +39,7 @@ export const DateInput: FC<DateInputProps & DatePickerProps> = memo(props => {
     return (
         <span className="input-group date-input">
             <DatePicker
+                ariaLabelledBy={id}
                 autoComplete="off"
                 className="form-control"
                 wrapperClassName="form-control"
@@ -46,6 +50,9 @@ export const DateInput: FC<DateInputProps & DatePickerProps> = memo(props => {
                 ref={input}
                 onSelect={onSelect_}
             />
+            <span className="sr-only" id={id}>
+                {pickerProps.placeholderText}
+            </span>
             <span className="input-group-addon" onClick={onIconClick}>
                 <i className="fa fa-calendar" />
             </span>

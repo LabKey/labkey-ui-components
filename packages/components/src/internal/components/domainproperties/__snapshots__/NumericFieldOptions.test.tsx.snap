@@ -25,22 +25,26 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
         <div
           class="domain-field-label"
         >
-          Format for 
           <span
-            class="domain-no-wrap"
+            id="number-format-label-1-1"
           >
-            Numbers
-            <div
-              class="overlay-trigger"
+            Format for 
+            <span
+              class="domain-no-wrap"
             >
-              <span
-                class="label-help-target"
+              Numbers
+              <div
+                class="overlay-trigger"
               >
                 <span
-                  class="label-help-icon fa fa-question-circle"
-                />
-              </span>
-            </div>
+                  class="label-help-target"
+                >
+                  <span
+                    class="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
+            </span>
           </span>
         </div>
       </div>
@@ -49,6 +53,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
       >
         <div
           class="domain-field-label"
+          id="default-scale-label-1-1"
         >
           Default Scale Type
         </div>
@@ -61,6 +66,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
         class="col-xs-3"
       >
         <input
+          aria-labelledby="number-format-label-1-1"
           class="form-control"
           id="domainpropertiesrow-format-1-1"
           name="domainpropertiesrow-format"
@@ -72,6 +78,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
         class="col-xs-2"
       >
         <select
+          aria-labelledby="default-scale-label-1-1"
           class="form-control"
           id="domainpropertiesrow-defaultScale-1-1"
           name="domainpropertiesrow-defaultScale"

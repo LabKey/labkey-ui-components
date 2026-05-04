@@ -94,6 +94,7 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
     return (
         <>
             <input
+                aria-label="Grid view name"
                 autoFocus={autoFocus}
                 name="gridViewName"
                 defaultValue={defaultValue}
@@ -226,13 +227,16 @@ export const SaveViewModal: FC<Props> = memo(props => {
                     {!isDefaultView && canEditShared && (
                         <div className="form-check">
                             <input
+                                aria-labelledby="shared-to-users-label"
                                 className="form-check-input"
                                 type="checkbox"
                                 name="setShared"
                                 onChange={toggleShared}
                                 checked={isShared}
                             />
-                            <span className="margin-left">Make this grid view available to all users</span>
+                            <span className="margin-left" id="shared-to-users-label">
+                                Make this grid view available to all users
+                            </span>
                         </div>
                     )}
                     {isProductFoldersEnabled(moduleContext) &&
@@ -240,13 +244,16 @@ export const SaveViewModal: FC<Props> = memo(props => {
                         canEditShared && (
                             <div className="form-check">
                                 <input
+                                    aria-labelledby="shared-to-folders-label"
                                     className="form-check-input"
                                     type="checkbox"
                                     name="setInherit"
                                     onChange={toggleInherit}
                                     checked={canInherit}
                                 />
-                                <span className="margin-left">Make this grid view available in all Folders</span>
+                                <span className="margin-left" id="shared-to-folders-label">
+                                    Make this grid view available in all Folders
+                                </span>
                             </div>
                         )}
                     <div className="top-padding">

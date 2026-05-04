@@ -242,10 +242,11 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                     {error && <Alert>{error}</Alert>}
                     <div className="form-group">
                         <div className="col-sm-4">
-                            <DomainFieldLabel label="Name" required />
+                            <DomainFieldLabel id="name-label" label="Name" required />
                         </div>
                         <div className="col-sm-8">
                             <input
+                                aria-labelledby="name-label"
                                 className="form-control"
                                 name="name"
                                 onChange={onFormChange}
@@ -272,7 +273,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                     </div>
                     <div className="form-group">
                         <div className="col-sm-4">
-                            <DomainFieldLabel label="File Path" required />
+                            <DomainFieldLabel id="file-path-label" label="File Path" required />
                             <LabelHelpTip title="BarTender Label Template">
                                 <p>
                                     Provide the label template to use with BarTender. The path should be relative to the
@@ -282,6 +283,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                         </div>
                         <div className="col-sm-8">
                             <input
+                                aria-labelledby="file-path-label"
                                 className="form-control"
                                 name="path"
                                 onChange={onFormChange}
@@ -295,9 +297,10 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                     {isDefaultable && (
                         <div className="form-group">
                             <div className="col-sm-4">
-                                <DomainFieldLabel label="Default Template" />
+                                <DomainFieldLabel id="default-template-label" label="Default Template" />
                             </div>
                             <input
+                                aria-labelledby="default-template-label"
                                 style={{ margin: '0 15px' }}
                                 name="isDefault"
                                 checked={isDefault}

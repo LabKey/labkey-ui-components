@@ -457,7 +457,9 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                     id={createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, index)}
                                     name={createFormInputName(DOMAIN_FIELD_SELECTED)}
                                     onChange={this.onFieldChange}
-                                />
+                                >
+                                    <span className="sr-only">Select field</span>
+                                </DomainDesignerCheckbox>
                                 <FieldExpansionToggle
                                     cls="domain-field-expand-icon"
                                     collapsedTitle="Show additional field properties"
@@ -472,6 +474,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                     <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)} ref={this.ref}>
                                         <div className="col-xs-6">
                                             <input
+                                                aria-label="Field name"
                                                 className="form-control"
                                                 disabled={this.disableNameInput(field)}
                                                 id={createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index)}
@@ -483,6 +486,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                         </div>
                                         <div className="col-xs-4">
                                             <select
+                                                aria-label="Field type"
                                                 className="form-control"
                                                 disabled={this.disableTypeInput(field)}
                                                 id={createFormInputId(DOMAIN_FIELD_TYPE, domainIndex, index)}
@@ -530,7 +534,9 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                                             )}
                                                             name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
                                                             onChange={this.onFieldChange}
-                                                        />
+                                                        >
+                                                            <span className="sr-only">Required</span>
+                                                        </DomainDesignerCheckbox>
                                                     )}
                                             </div>
                                         </div>

@@ -245,7 +245,6 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
 
         const queryLabel = rawQueryInfo.title || _queryName;
         const disabledSystemFields = new Set<string>(rawQueryInfo.disabledSystemFields ?? []);
-        const altUpdateKeys = new Set<string>(rawQueryInfo.altUpdateKeys ?? []);
         const defaultQueryMeta = {
             queryLabel,
             plural: queryLabel,
@@ -254,7 +253,6 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
         };
 
         queryInfo = Object.assign({}, rawQueryInfo, schemaMeta, defaultQueryMeta, queryMeta, {
-            altUpdateKeys,
             disabledSystemFields,
             // derived fields
             columns,

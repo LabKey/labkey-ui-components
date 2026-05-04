@@ -41,6 +41,7 @@ export const ScannableOption: FC<ScannableProps> = memo(props => {
             <div className="row">
                 <div className="col-xs-12 domain-text-options-col">
                     <input
+                        aria-labelledby={'barcode-field-label-' + domainIndex + '-' + index}
                         type="checkbox"
                         id={createFormInputId(DOMAIN_FIELD_SCANNABLE_OPTION, domainIndex, index)}
                         name={createFormInputName(DOMAIN_FIELD_SCANNABLE_OPTION)}
@@ -49,7 +50,7 @@ export const ScannableOption: FC<ScannableProps> = memo(props => {
                         disabled={isFieldFullyLocked(lockType)}
                         checked={scannable}
                     />
-                    <span>Search this field when scanning samples</span>
+                    <span id={'barcode-field-label-' + domainIndex + '-' + index}>Search this field when scanning samples</span>
                 </div>
             </div>
         </>

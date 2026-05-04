@@ -193,6 +193,9 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                         onDrop={this.handleDrop}
                                         title={hideTooltip ? undefined : description}
                                     >
+                                        {column.index === '__selection__' && (
+                                            <span className="sr-only">Selection checkboxes</span>
+                                        )}
                                         {headerCell && headerCell(column, i, columns.size)}
                                         {!headerCell && (
                                             <div className={GRID_HEADER_CELL_BODY}>

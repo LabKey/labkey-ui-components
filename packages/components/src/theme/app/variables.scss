@@ -50,6 +50,8 @@ $breadcrumb-bg:                 transparent;
 $breadcrumb-color:              #999 !default;
 //** Textual separator for between breadcrumb elements
 $breadcrumb-separator:          ">" !default;
+//** Margin bottom for breadcrumbs
+$breadcrumb-margin-bottom: 0;
 
 // Domain properties variables
 $gray-border:           #CCC;
@@ -62,5 +64,8 @@ $alert-info-border: #C9E6F2;
 $alert-danger-bg: #FDE6E6;
 $alert-danger-text: #BF3939;
 $alert-danger-border: #FBD1D0;
+
+// Button
+$btn-disabled-opacity: .4;
 
 @import "bootstrap-sass/assets/stylesheets/bootstrap/_variables";

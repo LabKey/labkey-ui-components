@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Update heading tags in various page elements for better accessibility
 
+### version 7.33.4
+*Released*: 3 May 2026
+- Consolidate Dataclass data update methods - use DIB for update only
+  - Remove `altUpdateKeys` from `QueryInfo`
+
 ### version 7.33.3
 *Released*: 1 May 2026
 - Accessibility improvements: add labels or aria-labels to input elements

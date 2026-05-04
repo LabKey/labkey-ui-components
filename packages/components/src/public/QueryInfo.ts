@@ -18,7 +18,6 @@ export enum QueryInfoStatus {
 }
 
 const QUERY_INFO_DEFAULTS = {
-    altUpdateKeys: undefined,
     disabledSystemFields: undefined,
     // canEdit: false,
     // canEditSharedViews: false,
@@ -73,7 +72,6 @@ export interface ImportTemplate {
 // Commented out attributes are not used in app, but are returned by the server
 export class QueryInfo {
     declare appEditableTable: boolean; // use isAppEditable()
-    declare altUpdateKeys: Set<string>;
     declare disabledSystemFields: Set<string>;
     // declare canEdit: boolean;
     // declare canEditSharedViews: boolean;
@@ -153,7 +151,6 @@ export class QueryInfo {
         });
 
         const disabledSystemFields = new Set<string>(queryInfoJson.disabledSystemFields ?? []);
-        const altUpdateKeys = new Set<string>(queryInfoJson.altUpdateKeys ?? []);
         const views = new ExtendedMap<string, ViewInfo>();
         if (includeViews) {
             queryInfoJson.views.forEach(view => {
@@ -164,7 +161,6 @@ export class QueryInfo {
 
         return new QueryInfo(
             Object.assign({}, queryInfoJson, {
-                altUpdateKeys,
                 disabledSystemFields,
                 columns,
                 schemaQuery,

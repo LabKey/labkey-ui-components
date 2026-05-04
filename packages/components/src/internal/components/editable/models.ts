@@ -202,7 +202,6 @@ export class EditorModel
         const data = {};
         const pkCols = new Set<string>();
         this.queryInfo.getPkCols().forEach(col => pkCols.add(col.fieldKey));
-        this.queryInfo.altUpdateKeys?.forEach(key => pkCols.add(key));
         pkCols.forEach(pkCol => {
             const pkVal = this.getValue(pkCol, rowIndex).get(0).raw;
 
@@ -764,10 +763,6 @@ export class EditorModel
         const updatedRows: UpdatedRow[] = [];
         editorRows.forEach((editedRow, idx) => {
             const id = editedRow.get(pkFieldKey);
-            const altIds = {};
-            queryInfo.altUpdateKeys?.forEach(altIdField => {
-                altIds[altIdField] = altIdField ? editedRow.get(altIdField) : undefined;
-            });
             const originalRow = originalData.get(id.toString());
             if (originalRow) {
                 // Issue 52038: key here is almost always the column name (not the fieldKey) and should remain so since that is
@@ -875,7 +870,6 @@ export class EditorModel
                     // Always append folder if it's in the original data so cross folder updates work
                     const folder = caseInsensitive(originalRow?.toJS(), FOLDER_COL)?.[0]?.value;
                     if (folder !== undefined) row[FOLDER_COL] = folder;
-                    Object.assign(row, altIds);
                     updatedRows.push(row);
                 }
             } else {

@@ -123,19 +123,11 @@ export const initEditorModel = async (
     }
 
     if (forUpdate) {
-        // If we're updating then we need to ensure that the pkCols and altUpdateKeys are in the columnMap
+        // If we're updating then we need to ensure that the pkCols are in the columnMap
         queryInfo.getPkCols().forEach(pkCol => {
             if (!columnMap[pkCol.fieldKey.toLowerCase()]) {
                 columnMap[pkCol.fieldKey.toLowerCase()] = pkCol;
                 columns.push(pkCol);
-            }
-        });
-
-        queryInfo.altUpdateKeys?.forEach(fieldKey => {
-            const col = queryInfo.getColumn(fieldKey);
-            if (col && !columnMap[fieldKey.toLowerCase()]) {
-                columnMap[fieldKey.toLowerCase()] = col;
-                columns.push(col);
             }
         });
 

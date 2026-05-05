@@ -62,11 +62,11 @@ $editor-padding-horizontal: 15px;
 }
 .clickable-text {
     cursor: pointer;
-    color: #2980B9;
+    color: $link-color;
 
     &:hover {
         text-decoration: underline;
-        color: color.adjust(#2980B9, $lightness: -15%);
+        color: color.adjust($link-color, $lightness: -15%);
     }
 }
 .discussions-container__title {
@@ -85,7 +85,7 @@ $editor-padding-horizontal: 15px;
     margin-bottom: 15px;
 }
 .thread-block-header__date {
-    color: #777;
+    color: $text-color-light;
 }
 .thread-block-header__menu {
     color: #555555;
@@ -122,10 +122,10 @@ $editor-padding-horizontal: 15px;
     margin: 10px 0;
 }
 .thread-block__toggle-reply-msg {
-    color: #777;
+    color: $text-color-light;
 
     .fa-check-circle {
-        color: #5CB85C;
+        color: $brand-success;
     }
 }
 .thread-editor-preview {

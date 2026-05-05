@@ -134,7 +134,7 @@
         .container-expandable-grey {
             width: 160px;
             &:hover {
-                color: $gray-light;
+                color: $text-color-light;
             }
 
             &:hover, &.container-expandable__active {
@@ -142,10 +142,10 @@
             }
 
             .container-expandable-child__chevron {
-                color: $gray-light;
+                color: $text-color-light;
 
                 &:hover {
-                    color: $gray-light;
+                    color: $text-color-light;
                     cursor: pointer;
                 }
             }

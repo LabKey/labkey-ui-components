@@ -91,14 +91,14 @@ export const SearchPanelImpl: FC<SearchPanelImplProps> = memo(props => {
     const hasPages = totalHits > pageSize;
 
     const helpLink = (
-        <HelpLink topic={SEARCH_HELP_TOPIC} className="search-form__help-link">
+        <HelpLink className="search-form__help-link" topic={SEARCH_HELP_TOPIC}>
             <i className="fa fa-question-circle search-form__help-icon" />
             Help with search
         </HelpLink>
     );
 
     return (
-        <Section panelClassName="test-loc-search-panel" title={title} context={helpLink}>
+        <Section context={helpLink} panelClassName="test-loc-search-panel" title={title}>
             <div className="search-form panel-body">
                 <form onSubmit={onSubmit}>
                     <span className="input-group">
@@ -117,7 +117,7 @@ export const SearchPanelImpl: FC<SearchPanelImplProps> = memo(props => {
                     </span>
                 </form>
                 <button
-                    className="margin-left success submit-button btn btn-default"
+                    className="margin-left success submit-button btn btn-success"
                     onClick={onSearchClick}
                     type="submit"
                 >
@@ -126,16 +126,16 @@ export const SearchPanelImpl: FC<SearchPanelImplProps> = memo(props => {
                 {hasPages && (
                     <div className="page-buttons">
                         <PaginationButtons
-                            total={totalHits}
                             currentPage={currentPage}
+                            nextPage={pageForward}
                             perPage={pageSize}
                             previousPage={pageBack}
-                            nextPage={pageForward}
+                            total={totalHits}
                         />
                     </div>
                 )}
             </div>
-            {searchTerm && <SearchResultsPanel model={model} emptyResultDisplay={emptyTextMessage} offset={offset} />}
+            {searchTerm && <SearchResultsPanel emptyResultDisplay={emptyTextMessage} model={model} offset={offset} />}
         </Section>
     );
 });
@@ -228,6 +228,6 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
         [search, searchTerm, pageSize, offset]
     );
 
-    return <SearchPanelImpl {...props} search={search} model={model} onPageChange={onPage} offset={offset} />;
+    return <SearchPanelImpl {...props} model={model} offset={offset} onPageChange={onPage} search={search} />;
 });
 SearchPanel.displayName = 'SearchPanel';

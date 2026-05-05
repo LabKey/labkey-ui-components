@@ -70,12 +70,12 @@ export const ConceptPathDisplayImpl: FC<ConceptPathDisplayImplProps> = memo(prop
                 {!parentPaths && <LoadingSpinner />}
                 {parentPaths?.map((parent, idx) => {
                     return (
-                        <>
+                        <React.Fragment key={parent.path ?? idx}>
                             <span className="concept-path-label">{parent.label}</span>
                             {idx !== parentPaths.length - 1 && (
                                 <i className="fa fa-chevron-right concept-path-spacer" />
                             )}
-                        </>
+                        </React.Fragment>
                     );
                 })}
             </div>

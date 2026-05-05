@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.34.0
+*Released*: 5 May 2026
 - Accessibility improvements for app pages: Colors
 
 ### version 7.33.4

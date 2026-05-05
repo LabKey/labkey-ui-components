@@ -32,7 +32,7 @@ $circle-size: 12 * $scale;
   margin-bottom: $scale * 2;
 
   .cards__card-content {
-    color: $gray-light;
+    color: $text-color-light;
     margin: ($scale * 2) ($scale * 3);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -239,7 +239,7 @@ $circle-size: 12 * $scale;
 .filter-card__empty-content {
     padding-top: 63px;
     text-align: center;
-    color: $gray-light;
+    color: $text-color-light;
     font-weight: 300;
     font-size: 37px;
 }
@@ -288,7 +288,7 @@ $circle-size: 12 * $scale;
 
 .filter-hint {
     padding-top: 10px;
-    color: $gray-light;
+    color: $text-color-light;
     font-weight: 400;
     font-size: 22px;
     text-align: center;

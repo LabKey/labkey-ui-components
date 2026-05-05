@@ -585,7 +585,8 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
 
     toggleRunOnCheckboxes = (e: React.ChangeEvent<HTMLInputElement>, field: string): void => {
         const { model } = this.props;
-        const index = parseInt(e.target.id.split(FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS).pop(), 10);
+        const fieldId = FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + '-' + field;
+        const index = parseInt(e.target.id.split(fieldId).pop(), 10);
         const curr = model.protocolTransformScripts.get(index);
 
         this.props.onChange(
@@ -638,7 +639,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                             <input
                                                 aria-label="Run on Import"
                                                 checked={attachment.runOnImport}
-                                                id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + '-onImport' + i}
+                                                id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + '-runOnImport' + i}
                                                 onChange={this.onCheckRunOnImport}
                                                 type="checkbox"
                                             />
@@ -650,7 +651,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                                 aria-label="Run on Edit"
                                                 checked={attachment.runOnEdit}
                                                 disabled={!model.editableResults}
-                                                id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + '-onEdit' + i}
+                                                id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + '-runOnEdit' + i}
                                                 onChange={this.onCheckRunOnEdit}
                                                 type="checkbox"
                                             />

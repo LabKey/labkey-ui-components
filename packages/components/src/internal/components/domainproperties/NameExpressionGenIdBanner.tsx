@@ -12,7 +12,7 @@ export interface NameExpressionGenIdProps {
     containerPath?: string;
     dataTypeLSID?: string;
     dataTypeName: string; // sampletype or dataclass name
-    kindName: 'SampleSet' | 'DataClass';
+    kindName: 'DataClass' | 'SampleSet';
     rowId: number;
 }
 
@@ -144,8 +144,8 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
             </Alert>
             {showResetDialog && (
                 <Modal
-                    confirmText="Reset"
                     confirmClass="btn-danger"
+                    confirmText="Reset"
                     onCancel={onResetCancel}
                     onConfirm={onResetConfirm}
                     title={`Are you sure you want to reset genId for ${dataTypeName}?`}
@@ -159,8 +159,8 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
             )}
             {showEditDialog && (
                 <Modal
-                    confirmText="Update"
                     confirmClass="btn-danger"
+                    confirmText="Update"
                     onCancel={onEditCancel}
                     onConfirm={onEditConfirm}
                     title={`Are you sure you want to update genId for ${dataTypeName}?`}
@@ -177,12 +177,12 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                                 aria-label="GenId value"
                                 className="form-control update-genId-input "
                                 min={minNewGenId}
-                                step={1}
                                 name="newgenidval"
                                 onChange={(event: any) => setNewGenId(event?.target?.value)}
+                                placeholder="Enter new genId..."
+                                step={1}
                                 type="number"
                                 value={newGenId ?? minNewGenId}
-                                placeholder="Enter new genId..."
                             />
                         </div>
                         <div className="col-xs-7" />

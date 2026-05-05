@@ -119,7 +119,13 @@ export const QCStatesInput: FC<InputProps> = memo(props => (
         }
         label="QC States"
     >
-        <input aria-label="QC States" checked={props.model.qcEnabled} id={FORM_IDS.QC_ENABLED} onChange={props.onChange} type="checkbox" />
+        <input
+            aria-label="QC States"
+            checked={props.model.qcEnabled}
+            id={FORM_IDS.QC_ENABLED}
+            onChange={props.onChange}
+            type="checkbox"
+        />
     </AssayPropertiesInput>
 ));
 QCStatesInput.displayName = 'QCStatesInput';
@@ -227,7 +233,13 @@ export const AssayStatusInput: FC<InputProps> = memo(props => (
         hideAdvancedProperties={props.hideAdvancedProperties}
         label="Active"
     >
-        <input aria-label="Active" checked={props.model.isActive()} id={FORM_IDS.STATUS} onChange={props.onChange} type="checkbox" />
+        <input
+            aria-label="Active"
+            checked={props.model.isActive()}
+            id={FORM_IDS.STATUS}
+            onChange={props.onChange}
+            type="checkbox"
+        />
     </AssayPropertiesInput>
 ));
 AssayStatusInput.displayName = 'AssayStatusInput';

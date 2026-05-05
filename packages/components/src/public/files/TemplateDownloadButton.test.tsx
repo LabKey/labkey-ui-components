@@ -123,9 +123,9 @@ describe('TemplateDownloadButton', () => {
     test('editor, with custom properties', () => {
         const { container } = renderWithAppContext(
             <TemplateDownloadButton
+                className="custom-styling"
                 onDownloadDefault={jest.fn()}
                 text="Test Text"
-                className="custom-styling"
                 user={TEST_USER_EDITOR}
             />
         );

@@ -7,8 +7,8 @@ import { UNIQUE_ID_TYPE } from '../PropDescType';
 import { SampleTypeModel } from './models';
 
 interface Props {
-    model: SampleTypeModel;
     isFieldsPanel: boolean;
+    model: SampleTypeModel;
     onAddField: (fieldConfig: Partial<IDomainField>) => void;
 }
 

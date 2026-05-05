@@ -141,7 +141,7 @@ const TemplateDownloadButtonImpl: FC<Props> = memo(props => {
             {customTemplates.map(template => {
                 if (template.url.endsWith('(unavailable)')) {
                     return (
-                        <DisableableMenuItem key={template.label} disabled disabledMessage="File not found">
+                        <DisableableMenuItem disabled disabledMessage="File not found" key={template.label}>
                             {template.label}
                         </DisableableMenuItem>
                     );
@@ -166,7 +166,7 @@ export const TemplateDownloadButton: FC<Props> = memo(props => {
     if (!onDownloadDefault && !defaultTemplateUrl?.length) return null;
 
     return (
-        <RequiresPermission perms={[PermissionTypes.Insert, PermissionTypes.Update]} permissionCheck="any" user={user}>
+        <RequiresPermission permissionCheck="any" perms={[PermissionTypes.Insert, PermissionTypes.Update]} user={user}>
             <TemplateDownloadButtonImpl {...props} />
         </RequiresPermission>
     );

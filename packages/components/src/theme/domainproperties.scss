@@ -315,9 +315,19 @@
   color: white;
 }
 
+.domain-panel-title {
+    display: inline;
+    font-weight: 700;
+    font-size: 16px;
+    margin: 0;
+}
+
 .domain-field-section-heading {
   color: $gray-dark;
   font-weight: bold;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
 }
 
 .domain-field-padding-top {

@@ -49,9 +49,9 @@
     &.info,
     &.in-progress,
     &.needs-changes {
-        color: #0088CC;
-        background-color: #F1F9FC;
-        border-color: #C9E6F2;
+        color: $alert-info-text;
+        background-color: $alert-info-bg;
+        border-color: $alert-info-border;
     }
     &.template {
         background-color: #E8DAFF;

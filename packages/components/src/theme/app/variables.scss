@@ -7,7 +7,12 @@
 // --------------------------------------------------
 
 //== Colors
-$brand-primary:         #2980b9;
+$brand-primary: #2679AD;
+$brand-secondary: #116596;
+$brand-danger:    #D43F3A;
+$brand-warning:   #f0ad4e;
+$brand-success: #5AA54A;
+$link-color: #0F72C2;
 $cyan: #33e0ff;
 
 //== Scaffolding
@@ -45,9 +50,22 @@ $breadcrumb-bg:                 transparent;
 $breadcrumb-color:              #999 !default;
 //** Textual separator for between breadcrumb elements
 $breadcrumb-separator:          ">" !default;
+//** Margin bottom for breadcrumbs
+$breadcrumb-margin-bottom: 0;
 
 // Domain properties variables
 $gray-border:           #CCC;
 $gray-shadow:           #F3F3F4;
+
+// Alert
+$alert-info-bg: #F1F9FC;
+$alert-info-text: #0B73B7;
+$alert-info-border: #C9E6F2;
+$alert-danger-bg: #FDE6E6;
+$alert-danger-text: #BF3939;
+$alert-danger-border: #FBD1D0;
+
+// Button
+$btn-disabled-opacity: .4;
 
 @import "bootstrap-sass/assets/stylesheets/bootstrap/_variables";

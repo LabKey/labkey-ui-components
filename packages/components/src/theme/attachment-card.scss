@@ -73,7 +73,7 @@
     }
 
     .dropdown-toggle {
-        color: $gray-light;
+        color: $text-color-light;
         display: block;
         height: 100%;
         padding-left: 50%;
@@ -93,11 +93,11 @@
     white-space: nowrap;
 }
 .attachment-card__size {
-    color: $gray-light;
+    color: $text-color-light;
     font-size: 14px;
 }
 .attachment-card__description {
-    color: $gray-light;
+    color: $text-color-light;
     font-size: 12px;
     overflow-wrap: anywhere;
 }

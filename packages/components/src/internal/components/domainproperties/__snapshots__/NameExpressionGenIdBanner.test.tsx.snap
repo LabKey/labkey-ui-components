@@ -9,7 +9,7 @@ exports[`NameExpressionGenIdBanner with existing data 1`] = `
     Current genId: 
     124
     <button
-      class="pull-right alert-button edit-genid-btn btn btn-info"
+      class="pull-right alert-button edit-genid-btn btn btn-primary"
       type="button"
     >
       Edit genId
@@ -27,7 +27,7 @@ exports[`NameExpressionGenIdBanner without existing data, genId = 1 (0) 1`] = `
     Current genId: 
     1
     <button
-      class="pull-right alert-button edit-genid-btn btn btn-info"
+      class="pull-right alert-button edit-genid-btn btn btn-primary"
       type="button"
     >
       Edit genId
@@ -45,13 +45,13 @@ exports[`NameExpressionGenIdBanner without existing data, genId > 1 1`] = `
     Current genId: 
     124
     <button
-      class="pull-right alert-button edit-genid-btn btn btn-info"
+      class="pull-right alert-button edit-genid-btn btn btn-primary"
       type="button"
     >
       Edit genId
     </button>
     <button
-      class="pull-right alert-button reset-genid-btn btn btn-info"
+      class="pull-right alert-button reset-genid-btn btn btn-primary"
       type="button"
     >
       Reset genId

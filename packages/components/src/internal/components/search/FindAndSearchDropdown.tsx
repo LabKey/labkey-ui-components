@@ -62,7 +62,11 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
 
     return (
         <>
-            <DropdownButton title={title} buttonClassName={'navbar__find-and-search-button ' + (className ?? '')}>
+            <DropdownButton
+                aria-label="Find and Search Menu"
+                buttonClassName={'navbar__find-and-search-button ' + (className ?? '')}
+                title={title}
+            >
                 {!!onFindByIds && (
                     <>
                         <MenuItem onClick={findByBarcodeClicked}>

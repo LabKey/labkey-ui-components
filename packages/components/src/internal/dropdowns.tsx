@@ -177,10 +177,11 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
     );
 
     return (
-        <div className={className} ref={ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <div className={className} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref} >
             <button
-                aria-haspopup="true"
                 aria-expanded={open}
+                aria-haspopup="true"
+                aria-label={props['aria-label']}
                 className={buttonClassName}
                 disabled={disabled}
                 id={id}
@@ -194,7 +195,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
                 {!noCaret && <span aria-hidden="true" className={caretClassName} />}
             </button>
             {showMenu && (
-                <ul className={menuClassName} aria-labelledby={id} onClick={handleMenuClick} role="menu">
+                <ul aria-labelledby={id} className={menuClassName} onClick={handleMenuClick} role="menu">
                     {children}
                 </ul>
             )}

@@ -9,7 +9,7 @@ exports[`FileAttachmentOptions Attachment data type download 1`] = `
       <div
         class="col-xs-12"
       >
-        <div
+        <h3
           class="domain-field-section-heading"
         >
           Attachment Behavior
@@ -24,7 +24,7 @@ exports[`FileAttachmentOptions Attachment data type download 1`] = `
               />
             </span>
           </div>
-        </div>
+        </h3>
       </div>
     </div>
     <div
@@ -64,7 +64,7 @@ exports[`FileAttachmentOptions File data type inline 1`] = `
       <div
         class="col-xs-12"
       >
-        <div
+        <h3
           class="domain-field-section-heading"
         >
           File Behavior
@@ -79,7 +79,7 @@ exports[`FileAttachmentOptions File data type inline 1`] = `
               />
             </span>
           </div>
-        </div>
+        </h3>
       </div>
     </div>
     <div

@@ -12,11 +12,11 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
           class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="issues-properties-hdr"
         >
-          <span
+          <h2
             class="domain-panel-title"
           >
             Issues List For Jest - Issues List Properties
-          </span>
+          </h2>
         </div>
         <div
           class="panel-body"
@@ -53,11 +53,11 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                 class="domain-field-padding-bottom"
               >
                 <div>
-                  <div
+                  <h3
                     class="domain-field-section-heading"
                   >
                     Basic Properties
-                  </div>
+                  </h3>
                   <div
                     class="row margin-top"
                   >
@@ -264,11 +264,11 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
             <div
               class="col-xs-12 col-md-6"
             >
-              <div
+              <h3
                 class="domain-field-section-heading"
               >
                 Assignment Options
-              </div>
+              </h3>
               <div
                 class="row margin-top"
               >
@@ -436,11 +436,11 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
         class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="issues-properties-hdr"
       >
-        <span
+        <h2
           class="domain-panel-title"
         >
           Issues List For Jest - Issues List Properties
-        </span>
+        </h2>
       </div>
       <div
         class="panel-body"
@@ -477,11 +477,11 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
               class="domain-field-padding-bottom"
             >
               <div>
-                <div
+                <h3
                   class="domain-field-section-heading"
                 >
                   Basic Properties
-                </div>
+                </h3>
                 <div
                   class="row margin-top"
                 >
@@ -688,11 +688,11 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
           <div
             class="col-xs-12 col-md-6"
           >
-            <div
+            <h3
               class="domain-field-section-heading"
             >
               Assignment Options
-            </div>
+            </h3>
             <div
               class="row margin-top"
             >

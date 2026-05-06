@@ -12,11 +12,11 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
           class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="sample-type-properties-hdr"
         >
-          <span
+          <h2
             class="domain-panel-title"
           >
             Sample Type Properties
-          </span>
+          </h2>
         </div>
         <div
           class="panel-body"
@@ -45,11 +45,11 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
               </div>
             </div>
           </div>
-          <div
+          <h3
             class="domain-field-section-heading"
           >
             General Properties
-          </div>
+          </h3>
           <form>
             <div
               class="row margin-bottom margin-top"
@@ -166,11 +166,11 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
               </div>
             </div>
           </form>
-          <div
+          <h3
             class="domain-field-section-heading top-padding bottom-padding"
           >
             Lineage Settings
-          </div>
+          </h3>
           <div
             class="row"
           >
@@ -199,11 +199,11 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
               </span>
             </div>
           </div>
-          <div
+          <h3
             class="domain-field-section-heading top-padding"
           >
             Storage Settings
-          </div>
+          </h3>
           <div
             class="row margin-top"
           >
@@ -293,11 +293,11 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
         class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="sample-type-properties-hdr"
       >
-        <span
+        <h2
           class="domain-panel-title"
         >
           Sample Type Properties
-        </span>
+        </h2>
       </div>
       <div
         class="panel-body"
@@ -326,11 +326,11 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
             </div>
           </div>
         </div>
-        <div
+        <h3
           class="domain-field-section-heading"
         >
           General Properties
-        </div>
+        </h3>
         <form>
           <div
             class="row margin-bottom margin-top"
@@ -447,11 +447,11 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
             </div>
           </div>
         </form>
-        <div
+        <h3
           class="domain-field-section-heading top-padding bottom-padding"
         >
           Lineage Settings
-        </div>
+        </h3>
         <div
           class="row"
         >
@@ -480,11 +480,11 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
             </span>
           </div>
         </div>
-        <div
+        <h3
           class="domain-field-section-heading top-padding"
         >
           Storage Settings
-        </div>
+        </h3>
         <div
           class="row margin-top"
         >
@@ -616,11 +616,11 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
           class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="sample-type-properties-hdr"
         >
-          <span
+          <h2
             class="domain-panel-title"
           >
             Sample Type Properties
-          </span>
+          </h2>
         </div>
         <div
           class="panel-body"
@@ -765,11 +765,11 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
               </div>
             </div>
           </form>
-          <div
+          <h3
             class="domain-field-section-heading top-padding bottom-padding"
           >
             Lineage Settings
-          </div>
+          </h3>
           <div
             class="row"
           >
@@ -830,11 +830,11 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
         class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="sample-type-properties-hdr"
       >
-        <span
+        <h2
           class="domain-panel-title"
         >
           Sample Type Properties
-        </span>
+        </h2>
       </div>
       <div
         class="panel-body"
@@ -979,11 +979,11 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
             </div>
           </div>
         </form>
-        <div
+        <h3
           class="domain-field-section-heading top-padding bottom-padding"
         >
           Lineage Settings
-        </div>
+        </h3>
         <div
           class="row"
         >
@@ -1091,11 +1091,11 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
           class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="sample-type-properties-hdr"
         >
-          <span
+          <h2
             class="domain-panel-title"
           >
             Sample Type Properties
-          </span>
+          </h2>
         </div>
         <div
           class="panel-body"
@@ -1240,11 +1240,11 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
               </div>
             </div>
           </form>
-          <div
+          <h3
             class="domain-field-section-heading top-padding bottom-padding"
           >
             Lineage Settings
-          </div>
+          </h3>
           <div
             class="row"
           >
@@ -1333,11 +1333,11 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
         class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="sample-type-properties-hdr"
       >
-        <span
+        <h2
           class="domain-panel-title"
         >
           Sample Type Properties
-        </span>
+        </h2>
       </div>
       <div
         class="panel-body"
@@ -1482,11 +1482,11 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
             </div>
           </div>
         </form>
-        <div
+        <h3
           class="domain-field-section-heading top-padding bottom-padding"
         >
           Lineage Settings
-        </div>
+        </h3>
         <div
           class="row"
         >

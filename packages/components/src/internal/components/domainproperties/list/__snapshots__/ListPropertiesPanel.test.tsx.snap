@@ -19,11 +19,11 @@ exports[`ListPropertiesPanel existing list 1`] = `
               class="fa fa-check-circle"
             />
           </span>
-          <span
+          <h2
             class="domain-panel-title"
           >
             NIMHDemographics - List Properties
-          </span>
+          </h2>
         </div>
         <div
           class="panel-body"
@@ -56,11 +56,11 @@ exports[`ListPropertiesPanel existing list 1`] = `
             <div
               class="col-xs-12 col-md-7"
             >
-              <div
+              <h3
                 class="domain-field-section-heading"
               >
                 Basic Properties
-              </div>
+              </h3>
               <div
                 class="row margin-top"
               >
@@ -129,11 +129,11 @@ exports[`ListPropertiesPanel existing list 1`] = `
             <div
               class="col-xs-12 col-md-3"
             >
-              <div
+              <h3
                 class="domain-field-section-heading"
               >
                 Allow these Actions
-              </div>
+              </h3>
               <div
                 class="list__properties__allowable-actions"
               >
@@ -215,11 +215,11 @@ exports[`ListPropertiesPanel existing list 1`] = `
             class="fa fa-check-circle"
           />
         </span>
-        <span
+        <h2
           class="domain-panel-title"
         >
           NIMHDemographics - List Properties
-        </span>
+        </h2>
       </div>
       <div
         class="panel-body"
@@ -252,11 +252,11 @@ exports[`ListPropertiesPanel existing list 1`] = `
           <div
             class="col-xs-12 col-md-7"
           >
-            <div
+            <h3
               class="domain-field-section-heading"
             >
               Basic Properties
-            </div>
+            </h3>
             <div
               class="row margin-top"
             >
@@ -325,11 +325,11 @@ exports[`ListPropertiesPanel existing list 1`] = `
           <div
             class="col-xs-12 col-md-3"
           >
-            <div
+            <h3
               class="domain-field-section-heading"
             >
               Allow these Actions
-            </div>
+            </h3>
             <div
               class="list__properties__allowable-actions"
             >
@@ -471,11 +471,11 @@ exports[`ListPropertiesPanel list with error 1`] = `
               </span>
             </span>
           </div>
-          <span
+          <h2
             class="domain-panel-title"
           >
             NIMHDemographics - List Properties
-          </span>
+          </h2>
         </div>
         <div
           class="panel-body"
@@ -508,11 +508,11 @@ exports[`ListPropertiesPanel list with error 1`] = `
             <div
               class="col-xs-12 col-md-7"
             >
-              <div
+              <h3
                 class="domain-field-section-heading"
               >
                 Basic Properties
-              </div>
+              </h3>
               <div
                 class="row margin-top"
               >
@@ -581,11 +581,11 @@ exports[`ListPropertiesPanel list with error 1`] = `
             <div
               class="col-xs-12 col-md-3"
             >
-              <div
+              <h3
                 class="domain-field-section-heading"
               >
                 Allow these Actions
-              </div>
+              </h3>
               <div
                 class="list__properties__allowable-actions"
               >
@@ -680,11 +680,11 @@ exports[`ListPropertiesPanel list with error 1`] = `
             </span>
           </span>
         </div>
-        <span
+        <h2
           class="domain-panel-title"
         >
           NIMHDemographics - List Properties
-        </span>
+        </h2>
       </div>
       <div
         class="panel-body"
@@ -717,11 +717,11 @@ exports[`ListPropertiesPanel list with error 1`] = `
           <div
             class="col-xs-12 col-md-7"
           >
-            <div
+            <h3
               class="domain-field-section-heading"
             >
               Basic Properties
-            </div>
+            </h3>
             <div
               class="row margin-top"
             >
@@ -790,11 +790,11 @@ exports[`ListPropertiesPanel list with error 1`] = `
           <div
             class="col-xs-12 col-md-3"
           >
-            <div
+            <h3
               class="domain-field-section-heading"
             >
               Allow these Actions
-            </div>
+            </h3>
             <div
               class="list__properties__allowable-actions"
             >
@@ -921,11 +921,11 @@ exports[`ListPropertiesPanel new list 1`] = `
           class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="list-properties-hdr"
         >
-          <span
+          <h2
             class="domain-panel-title"
           >
             List Properties
-          </span>
+          </h2>
         </div>
         <div
           class="panel-body"
@@ -958,11 +958,11 @@ exports[`ListPropertiesPanel new list 1`] = `
             <div
               class="col-xs-12 col-md-7"
             >
-              <div
+              <h3
                 class="domain-field-section-heading"
               >
                 Basic Properties
-              </div>
+              </h3>
               <div
                 class="row margin-top"
               >
@@ -1031,11 +1031,11 @@ exports[`ListPropertiesPanel new list 1`] = `
             <div
               class="col-xs-12 col-md-3"
             >
-              <div
+              <h3
                 class="domain-field-section-heading"
               >
                 Allow these Actions
-              </div>
+              </h3>
               <div
                 class="list__properties__allowable-actions"
               >
@@ -1110,11 +1110,11 @@ exports[`ListPropertiesPanel new list 1`] = `
         class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="list-properties-hdr"
       >
-        <span
+        <h2
           class="domain-panel-title"
         >
           List Properties
-        </span>
+        </h2>
       </div>
       <div
         class="panel-body"
@@ -1147,11 +1147,11 @@ exports[`ListPropertiesPanel new list 1`] = `
           <div
             class="col-xs-12 col-md-7"
           >
-            <div
+            <h3
               class="domain-field-section-heading"
             >
               Basic Properties
-            </div>
+            </h3>
             <div
               class="row margin-top"
             >
@@ -1220,11 +1220,11 @@ exports[`ListPropertiesPanel new list 1`] = `
           <div
             class="col-xs-12 col-md-3"
           >
-            <div
+            <h3
               class="domain-field-section-heading"
             >
               Allow these Actions
-            </div>
+            </h3>
             <div
               class="list__properties__allowable-actions"
             >

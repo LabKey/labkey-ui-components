@@ -12,6 +12,7 @@ import { QueryModel } from './QueryModel';
 import { getQueryModelExportParams } from './utils';
 import { Actions } from './withQueryModels';
 import { SelectionMenuItem } from '../../internal/components/menus/SelectionMenuItem';
+import { Icon } from '../../internal/Icon';
 
 interface ExportMenuProps {
     actions: Actions;
@@ -140,7 +141,7 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
         hasData && (
             <div className="export-menu">
                 <Tip caption="Export">
-                    <DropdownButton noCaret pullRight title={<span className="fa fa-download" />}>
+                    <DropdownButton noCaret pullRight title={<Icon iconClass="fa fa-download" srText={"Export"}/>}>
                         <MenuHeader text={exportHeader} />
 
                         {exportOptions.map(option => (

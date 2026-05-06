@@ -20,6 +20,7 @@ import { generateId } from './util/utils';
 import { cancelEvent } from './events';
 import { AppLink } from './url/AppLink';
 import { AppURL } from './url/AppURL';
+import { Icon } from './Icon';
 
 export type BSStyle = 'success' | 'danger' | 'default' | 'primary' | 'info';
 const DROPDOWN_MENU_CLASS = 'dropdown-menu';
@@ -190,7 +191,12 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
                 type="button"
             >
                 {title}
-                {!noCaret && <span className={caretClassName} />}
+                {!noCaret && (
+                    <Icon
+                        iconClass={caretClassName}
+                        srText={buttonTitle ? 'Open ' + buttonTitle + ' menu' : 'Open menu'}
+                    />
+                )}
             </button>
             {showMenu && (
                 <ul className={menuClassName} aria-labelledby={id} onClick={handleMenuClick} role="menu">
@@ -351,7 +357,15 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
 
     return (
         <li className={className} role="presentation" ref={ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-            <AppLink onClick={onClick_} rel={rel} role="menuitem" target={target} title={title} to={href}>
+            <AppLink
+                aria-label={props['aria-label']}
+                onClick={onClick_}
+                rel={rel}
+                role="menuitem"
+                target={target}
+                title={title}
+                to={href}
+            >
                 {children}
             </AppLink>
         </li>

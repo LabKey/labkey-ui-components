@@ -61,7 +61,7 @@ export const DropdownSection: FC<MenuSectionProps> = ({ items, showDivider = fal
             )}
 
             {expanded && items.length > SHOW_FILTER_CUTOFF && (
-                <MenuItem>
+                <MenuItem aria-label="Filter selection options">
                     <input
                         aria-label="Filter selection options"
                         onChange={onFilterChange}

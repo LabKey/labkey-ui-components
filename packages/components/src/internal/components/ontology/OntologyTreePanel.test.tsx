@@ -10,10 +10,19 @@ jest.mock('./actions', () => ({
     fetchParentPaths: jest.fn().mockResolvedValue([]),
 }));
 
-jest.mock('../files/FileTree', () => ({
-    DEFAULT_ROOT_PREFIX: '|root',
-    FileTree: () => <div className="mock-file-tree" />,
-}));
+jest.mock('../files/FileTree', () => {
+    // Declaring as a class since functional components do not receive refs (which FileTree does)
+    class mockFileTree extends React.PureComponent {
+        render() {
+            return <div className="mock-file-tree" />;
+        }
+    }
+
+    return {
+        DEFAULT_ROOT_PREFIX: '|root',
+        FileTree: mockFileTree,
+    };
+});
 
 const DEFAULT_PROPS = {
     root: new PathModel({ label: 'test label' }),

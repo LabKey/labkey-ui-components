@@ -112,7 +112,7 @@ describe('ConceptOverviewTooltip', () => {
     });
 
     test('error', () => {
-        const { container } = render(<ConceptOverviewTooltip error="test error" concept={TEST_CONCEPT} />);
+        const { container } = render(<ConceptOverviewTooltip concept={TEST_CONCEPT} error="test error" />);
         expect(container.querySelector('[role="alert"]').textContent).toBe('test error');
         expect(container.querySelector('.overlay-trigger')).toBeNull();
     });

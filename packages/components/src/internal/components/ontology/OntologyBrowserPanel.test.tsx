@@ -69,9 +69,7 @@ describe('OntologyBrowserPanelImpl', () => {
     });
 
     test('ontology', () => {
-        const { container } = render(
-            <OntologyBrowserPanelImpl {...DEFAULT_IMPL_PROPS} ontology={TEST_ONTOLOGY} />
-        );
+        const { container } = render(<OntologyBrowserPanelImpl {...DEFAULT_IMPL_PROPS} ontology={TEST_ONTOLOGY} />);
         expect(container.querySelector('.ontology-browser-container')).not.toBeNull();
         expect(container.querySelector('.left-panel')).not.toBeNull();
         expect(container.querySelector('.right-panel')).not.toBeNull();
@@ -82,11 +80,7 @@ describe('OntologyBrowserPanelImpl', () => {
 
     test('selectedConcept', () => {
         const { container } = render(
-            <OntologyBrowserPanelImpl
-                {...DEFAULT_IMPL_PROPS}
-                ontology={TEST_ONTOLOGY}
-                selectedConcept={TEST_CONCEPT}
-            />
+            <OntologyBrowserPanelImpl {...DEFAULT_IMPL_PROPS} ontology={TEST_ONTOLOGY} selectedConcept={TEST_CONCEPT} />
         );
         expect(container.querySelector('.ontology-browser-container')).not.toBeNull();
         expect(container.querySelector('.left-panel')).not.toBeNull();
@@ -95,7 +89,7 @@ describe('OntologyBrowserPanelImpl', () => {
 
     test('asPanel', () => {
         const { container } = render(
-            <OntologyBrowserPanelImpl {...DEFAULT_IMPL_PROPS} ontology={TEST_ONTOLOGY} asPanel={true} />
+            <OntologyBrowserPanelImpl {...DEFAULT_IMPL_PROPS} asPanel={true} ontology={TEST_ONTOLOGY} />
         );
         expect(container.querySelector('.ontology-browser-container')).not.toBeNull();
         expect(container.querySelector('.panel-body')).not.toBeNull();

@@ -97,7 +97,7 @@ describe('OntologyLookupOptions', () => {
         const field = DomainField.create({});
         const domainFields = List.of(field);
         const { container } = render(
-            <OntologyLookupOptions {...getDefaultProps()} field={field} domainFields={domainFields} />
+            <OntologyLookupOptions {...getDefaultProps()} domainFields={domainFields} field={field} />
         );
         await validateSelects(container, false, 1, 1, [null], [null]);
         expect(container.querySelector('.domain-field-section-heading')).not.toBeNull();
@@ -107,7 +107,7 @@ describe('OntologyLookupOptions', () => {
     test('with additional fields and ontology field props', async () => {
         const domainFields = List.of(field1, field2, field3, field4, field5, field6);
         const { container } = render(
-            <OntologyLookupOptions {...getDefaultProps()} field={field1} domainFields={domainFields} />
+            <OntologyLookupOptions {...getDefaultProps()} domainFields={domainFields} field={field1} />
         );
         await validateSelects(container, false, 3, 3, [null, 'field2', 'field4'], [null, 'field3', 'field4']);
     });
@@ -117,8 +117,8 @@ describe('OntologyLookupOptions', () => {
         const { container } = render(
             <OntologyLookupOptions
                 {...getDefaultProps()}
-                field={field1}
                 domainFields={domainFields}
+                field={field1}
                 lockType={DOMAIN_FIELD_FULLY_LOCKED}
             />
         );

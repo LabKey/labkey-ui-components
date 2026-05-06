@@ -50,12 +50,12 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
 
         return (
             <Modal
-                title={'Delete ' + Utils.pluralBasic(userCount, 'User') + '?'}
-                onConfirm={this.onConfirm}
-                onCancel={onCancel}
                 confirmClass="btn-danger"
                 confirmText="Yes, Permanently Delete"
                 isConfirming={submitting}
+                onCancel={onCancel}
+                onConfirm={this.onConfirm}
+                title={'Delete ' + Utils.pluralBasic(userCount, 'User') + '?'}
             >
                 <p>
                     Generally, <b>deactivation of a user is recommended</b>. Deactivated users may not login, but their

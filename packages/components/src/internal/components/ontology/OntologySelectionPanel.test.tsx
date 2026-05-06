@@ -41,24 +41,20 @@ describe('OntologySelectionPanel', () => {
     });
 
     test('with ontologies', () => {
-        const { container } = render(
-            <OntologySelectionPanelImpl {...DEFAULT_PROPS} ontologies={[new PathModel()]} />
-        );
+        const { container } = render(<OntologySelectionPanelImpl {...DEFAULT_PROPS} ontologies={[new PathModel()]} />);
         expect(container.querySelector('.fa-spinner')).toBeNull();
         expect(container.querySelector('.alert-warning')).toBeNull();
     });
 
     test('asPanel', () => {
-        const { container } = render(
-            <OntologySelectionPanelImpl {...DEFAULT_PROPS} ontologies={[]} asPanel={true} />
-        );
+        const { container } = render(<OntologySelectionPanelImpl {...DEFAULT_PROPS} asPanel={true} ontologies={[]} />);
         expect(container.querySelector('.ontology-browser-container')).not.toBeNull();
         expect(container.querySelector('.panel-body')).not.toBeNull();
     });
 
     test('error', () => {
         const { container } = render(
-            <OntologySelectionPanelImpl {...DEFAULT_PROPS} ontologies={[]} error="test error" />
+            <OntologySelectionPanelImpl {...DEFAULT_PROPS} error="test error" ontologies={[]} />
         );
         expect(container.querySelector('[role="alert"]')).not.toBeNull();
         expect(container.querySelector('[role="alert"]').textContent).toBe('test error');

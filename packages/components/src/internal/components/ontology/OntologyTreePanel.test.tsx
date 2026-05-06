@@ -52,7 +52,7 @@ describe('FilterIcon', () => {
     test('node selected', () => {
         const testnode = { data: { code: 'test' } };
         const testFilters = new Map<string, PathModel>().set('test', new PathModel());
-        const { container } = render(<FilterIcon node={testnode} filters={testFilters} />);
+        const { container } = render(<FilterIcon filters={testFilters} node={testnode} />);
         const icon = container.querySelector('i');
         expect(icon.className).toBe('fa fa-filter selected');
         expect(icon.title).toBe('Remove filter');
@@ -61,7 +61,7 @@ describe('FilterIcon', () => {
     test('node not selected', () => {
         const testnode = { data: { code: 'test' } };
         const testFilters = new Map<string, PathModel>().set('nope', new PathModel());
-        const { container } = render(<FilterIcon node={testnode} filters={testFilters} />);
+        const { container } = render(<FilterIcon filters={testFilters} node={testnode} />);
         const icon = container.querySelector('i');
         expect(icon.className).toBe('fa fa-filter');
         expect(icon.title).toBe('Add filter');

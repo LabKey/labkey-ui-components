@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 
@@ -10,10 +9,10 @@ import { PathModel } from './models';
 import { fetchParentPaths } from './actions';
 
 export interface ConceptPathDisplayProps {
-    title?: string;
-    path: PathModel;
     isSelected?: boolean;
     onClick?: (path: PathModel, isAlternatePath?: boolean) => void;
+    path: PathModel;
+    title?: string;
 }
 
 export const ConceptPathDisplay: FC<ConceptPathDisplayProps> = memo(props => {

@@ -1,5 +1,11 @@
 @use "sass:color";
 
+$brand-primary: #2679AD;
+$brand-secondary: #116596;
+$brand-danger:    #D43F3A;
+$brand-warning:   #f0ad4e;
+$brand-success: #5AA54A;
+
 $light-gray: #d3d3d3;
 $white: #fff;
 
@@ -11,15 +17,9 @@ $gray-light:             color.adjust($gray-base, $lightness: 46.7%) !default; /
 $gray-lighten:           color.adjust($gray-base, $lightness: 60%)   !default; // #999
 $gray-lighter:           color.adjust($gray-base, $lightness: 93.5%) !default; // #eee
 
-//TODO: how to set or get these from the app instead or make sure the app can override them?
-$brand-danger:    #d9534f;
-$brand-warning:   #f0ad4e;
-$brand-primary:   #2980b9;
-$brand-secondary: #236fa0;
-$brand-success:   #5cb85c;
 $border-color:    #cccccc;
 $navbar-border-color: #cbccce;
-$badge-color:   #FA6400;
+$badge-color:   #D43F3A;
 
 $blue-highlight:       #2980B9;
 $gray-no-highlight:    $gray-lighten;
@@ -27,11 +27,21 @@ $blue-icon-background: #CCE5FF;
 
 $blue-dark:   #1e4f6f;
 $text-color-gray:   #9d9d9d;
+$text-color-light:   #6B6B6B;
 
 $text-color:            $gray-dark !default;
-$link-hover-color:      color.adjust($brand-primary, $lightness: 15%) !default;
+$link-color: #0F72C2;
+$link-hover-color:      color.adjust($link-color, $lightness: 15%) !default;
 
 $font-family-sans-serif:  "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+
+// Alert variables
+$alert-info-bg: #F1F9FC;
+$alert-info-text: #0B73B7;
+$alert-info-border: #C9E6F2;
+$alert-danger-bg: #FDE6E6;
+$alert-danger-text: #BF3939;
+$alert-danger-border: #FBD1D0;
 
 // Domain properties variables
 $gray-border:           #cccccc;
@@ -70,9 +80,9 @@ $blue-bkgrd-selected:   rgba(41, 128, 185, 0.1);
   border-top-left-radius: $radius;
 }
 
-$grid-action-item-color:                #0088cc; // pale blue
-$grid-action-item-bg:                   #f1f9fc;
-$grid-action-item-border-color:         #c9e6f2;
+$grid-action-item-color:                $alert-info-text;
+$grid-action-item-bg:                   $alert-info-bg;
+$grid-action-item-border-color:         $alert-info-border;
 $grid-action-item-hover-bg:             color.adjust($grid-action-item-bg, $lightness: 5%);
 $grid-action-item-disabled-color:       #333;
 $grid-action-item-disabled-bg:          #fcfcfc;

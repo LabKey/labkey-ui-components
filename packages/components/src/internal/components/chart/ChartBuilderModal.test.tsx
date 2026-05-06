@@ -346,7 +346,7 @@ describe('ChartBuilderModal', () => {
         expect(document.querySelectorAll('input')).toHaveLength(21);
         expect(document.querySelector('input[value=automatic]').hasAttribute('checked')).toBe(true);
         expect(document.querySelector('input[value=manual]').hasAttribute('checked')).toBe(false);
-        expect(document.querySelector('input[name=aggregate-method]').getAttribute('value')).toBe('SUM');
+        expect(document.querySelector('input[name=aggregateMethod]').getAttribute('value')).toBe('SUM');
         expect(document.querySelectorAll('input[name=error-bar-method]')).toHaveLength(3);
         expect(document.querySelector('input[value=SD]').hasAttribute('checked')).toBe(false);
         expect(document.querySelector('input[value=SEM]').hasAttribute('checked')).toBe(false);
@@ -388,7 +388,7 @@ describe('ChartBuilderModal', () => {
         expect(document.querySelectorAll('input')).toHaveLength(21);
         expect(document.querySelector('input[value=automatic]').hasAttribute('checked')).toBe(true);
         expect(document.querySelector('input[value=manual]').hasAttribute('checked')).toBe(false);
-        expect(document.querySelector('input[name=aggregate-method]').getAttribute('value')).toBe('MEAN');
+        expect(document.querySelector('input[name=aggregateMethod]').getAttribute('value')).toBe('MEAN');
         expect(document.querySelectorAll('input[name=error-bar-method]')).toHaveLength(3);
         expect(document.querySelector('input[value=SD]').hasAttribute('checked')).toBe(false);
         expect(document.querySelector('input[value=SEM]').hasAttribute('checked')).toBe(true);
@@ -424,7 +424,7 @@ describe('ChartBuilderModal', () => {
         expect(document.querySelectorAll('input')).toHaveLength(19);
         expect(document.querySelector('input[name=x]').getAttribute('value')).toBe('field1');
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
-        expect(document.querySelectorAll('input[name=aggregate-method]')).toHaveLength(0);
+        expect(document.querySelectorAll('input[name=aggregateMethod]')).toHaveLength(0);
         expect(document.querySelector('input[name=trendlineType]').getAttribute('value')).toBe('option1');
         expect(document.querySelectorAll('input[name=trendlineAsymptoteMin]')).toHaveLength(0);
         expect(document.querySelectorAll('input[name=trendlineAsymptoteMax]')).toHaveLength(0);
@@ -462,7 +462,7 @@ describe('ChartBuilderModal', () => {
         expect(document.querySelectorAll('input')).toHaveLength(19);
         expect(document.querySelector('input[name=x]').getAttribute('value')).toBe('field1');
         expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
-        expect(document.querySelectorAll('input[name=aggregate-method]')).toHaveLength(0);
+        expect(document.querySelectorAll('input[name=aggregateMethod]')).toHaveLength(0);
         expect(document.querySelectorAll('input[name=trendlineType]')).toHaveLength(1);
         expect(document.querySelectorAll('.field-option-icon')).toHaveLength(2); // gear icon for x and y axis
 

@@ -164,10 +164,11 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
                     <div className="api-key__description">{description}</div>
                     <div className="top-padding form-group">
                         <input
-                            disabled
-                            type="text"
+                            aria-label={type + ' value'}
                             className="form-control api-key__input"
+                            disabled
                             name={type + '_token'}
+                            type="text"
                             value={keyValue}
                         />
                         <button

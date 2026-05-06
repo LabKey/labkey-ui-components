@@ -55,7 +55,7 @@ const _customStyles = {
         } else if (state.data?.notFound) {
             backgroundColor = WARN_BG_COLOR;
         } else {
-            backgroundColor = '#F2F9FC';
+            backgroundColor = '#F1F9FC';
         }
 
         return { ...styles, backgroundColor };
@@ -67,7 +67,7 @@ const _customStyles = {
         } else if (state.data?.notFound) {
             color = WARN_COLOR;
         } else {
-            color = '#08C';
+            color = '#0B73B7';
         }
 
         return { ...styles, color };
@@ -82,8 +82,8 @@ const _customStyles = {
             style.color = WARN_COLOR;
             style[':hover'] = { backgroundColor: WARN_COLOR, color: WARN_BG_COLOR };
         } else {
-            style.color = '#08C';
-            style[':hover'] = { backgroundColor: '#2980B9', color: '#FFF' };
+            style.color = '#0B73B7';
+            style[':hover'] = { backgroundColor: '#2679AD', color: '#FFF' };
         }
 
         return { ...styles, ...style };
@@ -103,7 +103,7 @@ const _customTheme = theme => ({
         danger: '#D9534F',
         primary: '#2980B9',
         primary75: '#009BF9',
-        primary50: '#F2F9FC',
+        primary50: '#F1F9FC',
         primary25: 'rgba(41, 128, 185, 0.1)',
     },
 });
@@ -681,7 +681,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
 
         const isDisabled = disabled || this.state.isDisabled || this.props.disableInput;
         const placeholderText = hasMixedValue && isDisabled ? MIXED_VALUE_DISPLAY : placeholder;
-
+        const ariaLabel = inputId ? undefined : name ? 'Select ' + name : undefined;
         const selectProps: any = {
             autoFocus,
             backspaceRemovesValue,
@@ -746,15 +746,15 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             };
 
             if (this.isCreatable()) {
-                return <AsyncCreatableSelect {...asyncProps} />;
+                return <AsyncCreatableSelect aria-label={ariaLabel} {...asyncProps} />;
             }
 
-            return <AsyncSelect {...asyncProps} />;
+            return <AsyncSelect aria-label={ariaLabel} {...asyncProps} />;
         } else if (this.isCreatable()) {
-            return <CreatableSelect {...selectProps} />;
+            return <CreatableSelect aria-label={ariaLabel} {...selectProps} />;
         }
 
-        return <ReactSelect {...selectProps} />;
+        return <ReactSelect aria-label={ariaLabel} {...selectProps} />;
     };
 
     render() {

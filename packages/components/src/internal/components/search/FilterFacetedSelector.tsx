@@ -294,6 +294,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                 {(fieldDistinctValues?.length > showSearchLength || searchStr) && (
                     <div>
                         <input
+                            aria-label="Search for options"
                             className="form-control filter-faceted__typeahead-input"
                             disabled={disabled}
                             id="filter-faceted__typeahead-input"
@@ -327,6 +328,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                         <li className="filter-faceted__li" key={index}>
                                             <div className="form-check">
                                                 <input
+                                                    aria-label={'Select ' + displayValue}
                                                     checked={checkedValues.indexOf(value) > -1}
                                                     className="form-check-input filter-faceted__checkbox"
                                                     disabled={disabled}

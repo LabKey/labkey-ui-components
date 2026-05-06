@@ -89,10 +89,11 @@ const NumberInput: FC<NumberInputProps> = memo(({ disabled, label, name, onBlur,
 
     return (
         <div>
-            <label>{label}</label>
+            <label htmlFor={name}>{label}</label>
             <input
                 className="form-control is-invalid"
                 disabled={disabled}
+                id={name}
                 name={name}
                 onBlur={onBlur}
                 onChange={onInputChange}
@@ -233,12 +234,13 @@ const ChartTypeDropdown: FC<ChartTypeDropdownProps> = memo(({ onChange, selected
 
     return (
         <div className="chart-settings__chart-type">
-            <label>Chart Type</label>
+            <label htmlFor="chart-type">Chart Type</label>
             <div className="form-group row">
                 <SelectInput
                     clearable={false}
                     containerClass=""
                     inputClass="col-xs-12"
+                    inputId="chart-type"
                     labelKey="title"
                     name="chartType"
                     onChange={onChange_}
@@ -370,9 +372,10 @@ export const ChartSettingsPanel: FC<Props> = memo(props => {
             {error && <Alert>{error}</Alert>}
             <h4>Settings</h4>
             <div>
-                <label>Name *</label>
+                <label htmlFor="chartName">Name *</label>
                 <input
                     className="form-control"
+                    id="chartName"
                     name="name"
                     onChange={onNameChange}
                     placeholder="Enter a name"

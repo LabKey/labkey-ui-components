@@ -143,27 +143,32 @@ exports[`BasicPropertiesFields existing list, existing properties 1`] = `
         class="col-xs-3 col-lg-2"
       >
         <span
-          class="domain-no-wrap"
+          id="name-label"
         >
-          Name
-          <div
-            class="overlay-trigger"
+          <span
+            class="domain-no-wrap"
           >
-            <span
-              class="label-help-target"
+            Name
+            <div
+              class="overlay-trigger"
             >
               <span
-                class="label-help-icon fa fa-question-circle"
-              />
-            </span>
-          </div>
-           *
+                class="label-help-target"
+              >
+                <span
+                  class="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
+             *
+          </span>
         </span>
       </div>
       <div
         class="col-xs-9 col-lg-8"
       >
         <input
+          aria-labelledby="name-label"
           class="form-control"
           id="name"
           placeholder="Enter a name for this list"
@@ -178,10 +183,12 @@ exports[`BasicPropertiesFields existing list, existing properties 1`] = `
       <div
         class="col-xs-3 col-lg-2"
       >
-        <span
-          class="domain-no-wrap"
-        >
-          Description
+        <span>
+          <span
+            class="domain-no-wrap"
+          >
+            Description
+          </span>
         </span>
       </div>
       <div
@@ -214,27 +221,32 @@ exports[`BasicPropertiesFields new list, default properties 1`] = `
         class="col-xs-3 col-lg-2"
       >
         <span
-          class="domain-no-wrap"
+          id="name-label"
         >
-          Name
-          <div
-            class="overlay-trigger"
+          <span
+            class="domain-no-wrap"
           >
-            <span
-              class="label-help-target"
+            Name
+            <div
+              class="overlay-trigger"
             >
               <span
-                class="label-help-icon fa fa-question-circle"
-              />
-            </span>
-          </div>
-           *
+                class="label-help-target"
+              >
+                <span
+                  class="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
+             *
+          </span>
         </span>
       </div>
       <div
         class="col-xs-9 col-lg-8"
       >
         <input
+          aria-labelledby="name-label"
           class="form-control"
           id="name"
           placeholder="Enter a name for this list"
@@ -249,10 +261,12 @@ exports[`BasicPropertiesFields new list, default properties 1`] = `
       <div
         class="col-xs-3 col-lg-2"
       >
-        <span
-          class="domain-no-wrap"
-        >
-          Description
+        <span>
+          <span
+            class="domain-no-wrap"
+          >
+            Description
+          </span>
         </span>
       </div>
       <div

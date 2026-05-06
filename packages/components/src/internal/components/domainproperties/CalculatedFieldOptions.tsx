@@ -163,8 +163,14 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
         >
             <div className="row">
                 <div className="col-xs-12 col-md-6">
-                    <SectionHeading cls="bottom-padding" helpTipBody={HELP_TIP_BODY} title="Expression" />
+                    <SectionHeading
+                        cls="bottom-padding"
+                        helpTipBody={HELP_TIP_BODY}
+                        id={'expression-label-' + domainIndex + '-' + index}
+                        title="Expression"
+                    />
                     <textarea
+                        aria-labelledby={'expression-label-' + domainIndex + '-' + index}
                         className="form-control"
                         disabled={
                             isFieldPartiallyLocked(field.lockType) ||

@@ -24,10 +24,12 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       >
         <div
           class="domain-field-label"
+          id="description-label-1-1"
         >
           Description
         </div>
         <textarea
+          aria-labelledby="description-label-1-1"
           class="form-control"
           id="domainpropertiesrow-description-1-1"
           name="domainpropertiesrow-description"
@@ -41,10 +43,12 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       >
         <div
           class="domain-field-label"
+          id="label-label-1-1"
         >
           Label
         </div>
         <input
+          aria-labelledby="label-label-1-1"
           class="form-control"
           id="domainpropertiesrow-label-1-1"
           name="domainpropertiesrow-label"
@@ -54,25 +58,30 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
         <div
           class="domain-field-label"
         >
-          Import 
           <span
-            class="domain-no-wrap"
+            id="import-aliases-label-1-1"
           >
-            Aliases
-            <div
-              class="overlay-trigger"
+            Import 
+            <span
+              class="domain-no-wrap"
             >
-              <span
-                class="label-help-target"
+              Aliases
+              <div
+                class="overlay-trigger"
               >
                 <span
-                  class="label-help-icon fa fa-question-circle"
-                />
-              </span>
-            </div>
+                  class="label-help-target"
+                >
+                  <span
+                    class="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
+            </span>
           </span>
         </div>
         <input
+          aria-labelledby="import-aliases-label-1-1"
           class="form-control"
           id="domainpropertiesrow-importAliases-1-1"
           name="domainpropertiesrow-importAliases"
@@ -87,23 +96,28 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
           class="domain-field-label"
         >
           <span
-            class="domain-no-wrap"
+            id="url-label-1-1"
           >
-            URL
-            <div
-              class="overlay-trigger"
+            <span
+              class="domain-no-wrap"
             >
-              <span
-                class="label-help-target"
+              URL
+              <div
+                class="overlay-trigger"
               >
                 <span
-                  class="label-help-icon fa fa-question-circle"
-                />
-              </span>
-            </div>
+                  class="label-help-target"
+                >
+                  <span
+                    class="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
+            </span>
           </span>
         </div>
         <input
+          aria-labelledby="url-label-1-1"
           class="form-control"
           id="domainpropertiesrow-URL-1-1"
           name="domainpropertiesrow-URL"
@@ -114,13 +128,16 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
           class="domain-text-options-col"
         >
           <input
+            aria-labelledby="new-window-label-1-1"
             checked=""
             class="form-control domain-text-option-istargetblank"
             id="domainpropertiesrow-isTargetBlank-1-1"
             name="domainpropertiesrow-isTargetBlank"
             type="checkbox"
           />
-          <span>
+          <span
+            id="new-window-label-1-1"
+          >
             Open links in a new tab
           </span>
         </div>

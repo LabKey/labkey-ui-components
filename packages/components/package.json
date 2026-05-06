@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.33.3-emptyLinksAndButtons.8",
+  "version": "7.34.1-emptyLinksAndButtons.8",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

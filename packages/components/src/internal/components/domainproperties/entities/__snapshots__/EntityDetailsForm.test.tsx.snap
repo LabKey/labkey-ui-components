@@ -9,17 +9,20 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
       <div
         class="col-xs-2"
       >
-        <span
-          class="domain-no-wrap"
-        >
-          Name
-           *
+        <span>
+          <span
+            class="domain-no-wrap"
+          >
+            Name
+             *
+          </span>
         </span>
       </div>
       <div
         class="col-xs-10"
       >
         <input
+          aria-label="Name"
           class="form-control"
           id="entity-name"
           placeholder="Enter a name for this entity"
@@ -42,27 +45,30 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
       <div
         class="col-xs-2"
       >
-        <span
-          class="domain-no-wrap"
-        >
-          Description
-          <div
-            class="overlay-trigger"
+        <span>
+          <span
+            class="domain-no-wrap"
           >
-            <span
-              class="label-help-target"
+            Description
+            <div
+              class="overlay-trigger"
             >
               <span
-                class="label-help-icon fa fa-question-circle"
-              />
-            </span>
-          </div>
+                class="label-help-target"
+              >
+                <span
+                  class="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
+          </span>
         </span>
       </div>
       <div
         class="col-xs-10"
       >
         <textarea
+          aria-label="Description"
           class="form-control"
           id="entity-description"
         />
@@ -77,22 +83,24 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
         <div
           class="name-expression-label-div"
         >
-          Naming 
-          <span
-            class="domain-no-wrap"
-          >
-            Pattern
-            <div
-              class="overlay-trigger"
+          <span>
+            Naming 
+            <span
+              class="domain-no-wrap"
             >
-              <span
-                class="label-help-target"
+              Pattern
+              <div
+                class="overlay-trigger"
               >
                 <span
-                  class="label-help-icon fa fa-question-circle"
-                />
-              </span>
-            </div>
+                  class="label-help-target"
+                >
+                  <span
+                    class="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
+            </span>
           </span>
         </div>
       </div>
@@ -100,6 +108,7 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
         class="col-xs-10"
       >
         <input
+          aria-label="Naming Pattern"
           class="form-control"
           id="entity-nameExpression"
           type="text"
@@ -120,17 +129,20 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
       <div
         class="col-xs-2"
       >
-        <span
-          class="domain-no-wrap"
-        >
-          Name
-           *
+        <span>
+          <span
+            class="domain-no-wrap"
+          >
+            Name
+             *
+          </span>
         </span>
       </div>
       <div
         class="col-xs-10"
       >
         <input
+          aria-label="Name"
           class="form-control"
           id="entity-name"
           placeholder="Enter a name for this entity"
@@ -153,27 +165,30 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
       <div
         class="col-xs-2"
       >
-        <span
-          class="domain-no-wrap"
-        >
-          Description
-          <div
-            class="overlay-trigger"
+        <span>
+          <span
+            class="domain-no-wrap"
           >
-            <span
-              class="label-help-target"
+            Description
+            <div
+              class="overlay-trigger"
             >
               <span
-                class="label-help-icon fa fa-question-circle"
-              />
-            </span>
-          </div>
+                class="label-help-target"
+              >
+                <span
+                  class="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
+          </span>
         </span>
       </div>
       <div
         class="col-xs-10"
       >
         <textarea
+          aria-label="Description"
           class="form-control"
           id="entity-description"
         >
@@ -190,22 +205,24 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
         <div
           class="name-expression-label-div"
         >
-          Naming 
-          <span
-            class="domain-no-wrap"
-          >
-            Pattern
-            <div
-              class="overlay-trigger"
+          <span>
+            Naming 
+            <span
+              class="domain-no-wrap"
             >
-              <span
-                class="label-help-target"
+              Pattern
+              <div
+                class="overlay-trigger"
               >
                 <span
-                  class="label-help-icon fa fa-question-circle"
-                />
-              </span>
-            </div>
+                  class="label-help-target"
+                >
+                  <span
+                    class="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
+            </span>
           </span>
         </div>
       </div>
@@ -213,6 +230,7 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
         class="col-xs-10"
       >
         <input
+          aria-label="Naming Pattern"
           class="form-control"
           id="entity-nameExpression"
           type="text"
@@ -233,17 +251,20 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
       <div
         class="col-xs-2"
       >
-        <span
-          class="domain-no-wrap"
-        >
-          Name
-           *
+        <span>
+          <span
+            class="domain-no-wrap"
+          >
+            Name
+             *
+          </span>
         </span>
       </div>
       <div
         class="col-xs-10"
       >
         <input
+          aria-label="Name"
           class="form-control"
           id="entity-name"
           placeholder="Enter a name for this entity"
@@ -266,27 +287,30 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
       <div
         class="col-xs-2"
       >
-        <span
-          class="domain-no-wrap"
-        >
-          Description
-          <div
-            class="overlay-trigger"
+        <span>
+          <span
+            class="domain-no-wrap"
           >
-            <span
-              class="label-help-target"
+            Description
+            <div
+              class="overlay-trigger"
             >
               <span
-                class="label-help-icon fa fa-question-circle"
-              />
-            </span>
-          </div>
+                class="label-help-target"
+              >
+                <span
+                  class="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
+          </span>
         </span>
       </div>
       <div
         class="col-xs-10"
       >
         <textarea
+          aria-label="Description"
           class="form-control"
           id="entity-description"
         />
@@ -301,22 +325,24 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
         <div
           class="name-expression-label-div"
         >
-          Naming 
-          <span
-            class="domain-no-wrap"
-          >
-            Pattern
-            <div
-              class="overlay-trigger"
+          <span>
+            Naming 
+            <span
+              class="domain-no-wrap"
             >
-              <span
-                class="label-help-target"
+              Pattern
+              <div
+                class="overlay-trigger"
               >
                 <span
-                  class="label-help-icon fa fa-question-circle"
-                />
-              </span>
-            </div>
+                  class="label-help-target"
+                >
+                  <span
+                    class="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
+            </span>
           </span>
         </div>
       </div>
@@ -324,6 +350,7 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
         class="col-xs-10"
       >
         <input
+          aria-label="Naming Pattern"
           class="form-control"
           id="entity-nameExpression"
           placeholder="Enter a name expression"
@@ -345,17 +372,20 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
       <div
         class="col-xs-2"
       >
-        <span
-          class="domain-no-wrap"
-        >
-          Name
-           *
+        <span>
+          <span
+            class="domain-no-wrap"
+          >
+            Name
+             *
+          </span>
         </span>
       </div>
       <div
         class="col-xs-10"
       >
         <input
+          aria-label="Name"
           class="form-control"
           id="entity-name"
           placeholder="Enter a name for this entity"
@@ -378,27 +408,30 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
       <div
         class="col-xs-2"
       >
-        <span
-          class="domain-no-wrap"
-        >
-          Description
-          <div
-            class="overlay-trigger"
+        <span>
+          <span
+            class="domain-no-wrap"
           >
-            <span
-              class="label-help-target"
+            Description
+            <div
+              class="overlay-trigger"
             >
               <span
-                class="label-help-icon fa fa-question-circle"
-              />
-            </span>
-          </div>
+                class="label-help-target"
+              >
+                <span
+                  class="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
+          </span>
         </span>
       </div>
       <div
         class="col-xs-10"
       >
         <textarea
+          aria-label="Description"
           class="form-control"
           id="entity-description"
         >
@@ -415,22 +448,24 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
         <div
           class="name-expression-label-div"
         >
-          Naming 
-          <span
-            class="domain-no-wrap"
-          >
-            Pattern
-            <div
-              class="overlay-trigger"
+          <span>
+            Naming 
+            <span
+              class="domain-no-wrap"
             >
-              <span
-                class="label-help-target"
+              Pattern
+              <div
+                class="overlay-trigger"
               >
                 <span
-                  class="label-help-icon fa fa-question-circle"
-                />
-              </span>
-            </div>
+                  class="label-help-target"
+                >
+                  <span
+                    class="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
+            </span>
           </span>
         </div>
       </div>
@@ -438,6 +473,7 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
         class="col-xs-10"
       >
         <input
+          aria-label="Naming Pattern"
           class="form-control"
           id="entity-nameExpression"
           type="text"
@@ -458,17 +494,20 @@ exports[`<EntityDetailsForm/> with previewName 1`] = `
       <div
         class="col-xs-2"
       >
-        <span
-          class="domain-no-wrap"
-        >
-          Name
-           *
+        <span>
+          <span
+            class="domain-no-wrap"
+          >
+            Name
+             *
+          </span>
         </span>
       </div>
       <div
         class="col-xs-10"
       >
         <input
+          aria-label="Name"
           class="form-control"
           id="entity-name"
           placeholder="Enter a name for this entity"
@@ -491,27 +530,30 @@ exports[`<EntityDetailsForm/> with previewName 1`] = `
       <div
         class="col-xs-2"
       >
-        <span
-          class="domain-no-wrap"
-        >
-          Description
-          <div
-            class="overlay-trigger"
+        <span>
+          <span
+            class="domain-no-wrap"
           >
-            <span
-              class="label-help-target"
+            Description
+            <div
+              class="overlay-trigger"
             >
               <span
-                class="label-help-icon fa fa-question-circle"
-              />
-            </span>
-          </div>
+                class="label-help-target"
+              >
+                <span
+                  class="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
+          </span>
         </span>
       </div>
       <div
         class="col-xs-10"
       >
         <textarea
+          aria-label="Description"
           class="form-control"
           id="entity-description"
         >
@@ -528,22 +570,24 @@ exports[`<EntityDetailsForm/> with previewName 1`] = `
         <div
           class="name-expression-label-div"
         >
-          Naming 
-          <span
-            class="domain-no-wrap"
-          >
-            Pattern
-            <div
-              class="overlay-trigger"
+          <span>
+            Naming 
+            <span
+              class="domain-no-wrap"
             >
-              <span
-                class="label-help-target"
+              Pattern
+              <div
+                class="overlay-trigger"
               >
                 <span
-                  class="label-help-icon fa fa-question-circle"
-                />
-              </span>
-            </div>
+                  class="label-help-target"
+                >
+                  <span
+                    class="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
+            </span>
           </span>
         </div>
       </div>
@@ -551,6 +595,7 @@ exports[`<EntityDetailsForm/> with previewName 1`] = `
         class="col-xs-10"
       >
         <input
+          aria-label="Naming Pattern"
           class="form-control"
           id="entity-nameExpression"
           type="text"

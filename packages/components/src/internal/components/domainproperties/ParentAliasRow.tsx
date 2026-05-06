@@ -119,6 +119,7 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
                             })}
                         >
                             <input
+                                aria-label="Lineage import alias"
                                 className="form-control"
                                 ref={this.nameInput}
                                 name="alias"
@@ -132,6 +133,7 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
                         <div className="col-xs-4 domain-field-alias--input">
                             {!hideRequiredCheck && (
                                 <input
+                                    aria-label="Lineage required"
                                     checked={required}
                                     disabled={false}
                                     name="required"

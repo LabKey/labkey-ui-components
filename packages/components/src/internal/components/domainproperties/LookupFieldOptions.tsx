@@ -90,8 +90,11 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                 </div>
                 <div className="row">
                     <div className="col-xs-2">
-                        <div className="domain-field-label">Target Folder</div>
+                        <div className="domain-field-label" id={'target-folder-' + domainIndex + '-' + index}>
+                            Target Folder
+                        </div>
                         <FolderSelect
+                            ariaLabelledBy={'target-folder-' + domainIndex + '-' + index}
                             id={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, domainIndex, index)}
                             key={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, domainIndex, index)}
                             disabled={disabled}
@@ -100,8 +103,11 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                         />
                     </div>
                     <div className="col-xs-2">
-                        <div className="domain-field-label">Target Schema</div>
+                        <div className="domain-field-label" id={'target-schema-label-' + domainIndex + '-' + index}>
+                            Target Schema
+                        </div>
                         <SchemaSelect
+                            ariaLabelledBy={'target-schema-label-' + domainIndex + '-' + index}
                             containerPath={lookupContainer}
                             id={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, domainIndex, index)}
                             key={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, domainIndex, index)}
@@ -111,8 +117,9 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                         />
                     </div>
                     <div className="col-xs-2">
-                        <div className="domain-field-label">Target Table</div>
+                        <div className="domain-field-label" id={'target-table-label-' + domainIndex + '-' + index}>Target Table</div>
                         <TargetTableSelect
+                            ariaLabelledBy={'target-table-label-' + domainIndex + '-' + index}
                             containerPath={lookupContainer}
                             id={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index)}
                             key={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index)}

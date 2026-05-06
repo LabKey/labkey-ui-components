@@ -7,6 +7,19 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add `Icon` component for use on buttons and links that are only icons
 - Add some alt text to a few images
 
+### version 7.34.0
+*Released*: 5 May 2026
+- Accessibility improvements for app pages: Colors
+
+### version 7.33.4
+*Released*: 3 May 2026
+- Consolidate Dataclass data update methods - use DIB for update only
+  - Remove `altUpdateKeys` from `QueryInfo`
+
+### version 7.33.3
+*Released*: 1 May 2026
+- Accessibility improvements: add labels or aria-labels to input elements
+
 ### version 7.33.2
 *Released*: 29 April 2026
 - GitHub Issue #598: Wrap text for long file names in various app locations

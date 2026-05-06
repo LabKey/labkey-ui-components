@@ -480,6 +480,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
             {view === EditorView.edit && (
                 <div className={classNames('form-group', { 'has-error': hasError })}>
                     <textarea
+                        aria-label="Comment"
                         autoFocus
                         className="thread-editor__input form-control"
                         name="body"
@@ -516,6 +517,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
 
             <label className="thread-editor__attachment-input btn btn-default">
                 <span className="fa fa-paperclip" />
+                <span className="sr-only">Attach files</span>
                 <input multiple onChange={onFileInputChange} type="file" />
             </label>
 

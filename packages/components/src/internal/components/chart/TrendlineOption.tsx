@@ -128,7 +128,7 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
 
     return (
         <div className="trendline-option">
-            <label>
+            <label htmlFor="trendline-type">
                 Trendline{' '}
                 <LabelOverlay placement="right">
                     {trendlineOptions
@@ -148,6 +148,7 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
                     clearable={false}
                     containerClass=""
                     inputClass={showFieldOptions ? 'col-xs-11' : 'col-xs-12'}
+                    inputId="trendline-type"
                     name="trendlineType"
                     onChange={onTrendlineFieldChange}
                     options={trendlineOptions}
@@ -268,6 +269,7 @@ const TrendlineOptionPopover: FC<TrendlineOptionPopoverProps> = props => {
                         <div className="chart-builder-asymptote-inputs">
                             {selectedTrendlineType?.showMin && (
                                 <input
+                                    aria-label="Min"
                                     className="chart-builder-field-footer-input"
                                     name="trendlineAsymptoteMin"
                                     onBlur={applyTrendlineAsymptote}
@@ -280,6 +282,7 @@ const TrendlineOptionPopover: FC<TrendlineOptionPopoverProps> = props => {
                             {selectedTrendlineType?.showMin && selectedTrendlineType?.showMax && <span> -</span>}
                             {selectedTrendlineType?.showMax && (
                                 <input
+                                    aria-label="Max"
                                     className="chart-builder-field-footer-input"
                                     name="trendlineAsymptoteMax"
                                     onBlur={applyTrendlineAsymptote}
@@ -295,7 +298,7 @@ const TrendlineOptionPopover: FC<TrendlineOptionPopoverProps> = props => {
                 </>
             )}
             <div className="margin-top">
-                <label>
+                <label htmlFor="trendline-parameters">
                     Provided Parameters{' '}
                     <LabelOverlay placement="right">
                         Select the field in the data which has the already computed / saved curve fit parameters object
@@ -305,6 +308,7 @@ const TrendlineOptionPopover: FC<TrendlineOptionPopoverProps> = props => {
                 </label>
                 <SelectInput
                     inputClass="col-xs-12"
+                    inputId="trendline-parameters"
                     labelKey="caption"
                     name="trendlineParameters"
                     onChange={onParameterFieldChange}

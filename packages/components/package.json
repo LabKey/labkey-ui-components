@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.34.0",
+  "version": "7.34.1-fb-packagesMay5v2.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -79,7 +79,7 @@
     "vis-network": "~10.0.2"
   },
   "devDependencies": {
-    "@labkey/build": "9.1.1",
+    "@labkey/build": "9.1.2-fb-packagesMay5v2.0",
     "@labkey/eslint-config": "1.2.0",
     "@types/history": "4.7.11",
     "@types/jest": "30.0.0",

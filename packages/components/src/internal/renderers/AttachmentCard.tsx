@@ -134,8 +134,9 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
                 {isLoaded && showMenu && (
                     <DropdownMenu
                         className="attachment-card__menu"
-                        title={<i className="fa fa-ellipsis-v" />}
+                        label="Manage Attachment"
                         pullRight
+                        title={<i className="fa fa-ellipsis-v" />}
                     >
                         {onCopyLink && !unavailable && <MenuItem onClick={_onCopyLink}>Copy {copyNoun}</MenuItem>}
                         {allowDownload && !unavailable && <MenuItem onClick={_onDownload}>Download</MenuItem>}

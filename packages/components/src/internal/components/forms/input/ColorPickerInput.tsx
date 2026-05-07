@@ -112,6 +112,7 @@ export const ColorPickerInput: FC<Props> = memo(props => {
     return (
         <div className="color-picker" data-name={name}>
             <button
+                aria-label="Label color picker"
                 className="color-picker__button btn btn-default"
                 disabled={disabled}
                 onClick={togglePicker}

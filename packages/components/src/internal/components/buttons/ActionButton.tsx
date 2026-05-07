@@ -42,9 +42,9 @@ export class ActionButton extends React.PureComponent<ActionButtonProps> {
         return (
             <div className={containerClass} title={title}>
                 <div className={buttonClass}>
-                    <span className={buttonClasses} onClick={disabled ? undefined : onClick}>
+                    <button className={buttonClasses} onClick={disabled ? undefined : onClick}>
                         {children}
-                    </span>
+                    </button>
                     {helperBody && <LabelHelpTip title={helperTitle}>{helperBody}</LabelHelpTip>}
                 </div>
             </div>

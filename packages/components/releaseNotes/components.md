@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Accessibility improvements for app pages: Keyboard Interactions
+  - Make ActionButton a button so it can be tabbed to
 
 ### version 7.35.1
 *Released*: 7 May 2026

@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Accessibility improvements for app pages: Keyboard Interactions
+
+### version 7.35.1
+*Released*: 7 May 2026
+- Update @labkey/build
+
 ### version 7.35.0
 *Released*: 7 May 2026
 - Fix accessibility issues for empty links and buttons

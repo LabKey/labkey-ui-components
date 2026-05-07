@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.35.0
+*Released*: 7 May 2026
 - Fix accessibility issues for empty links and buttons
 - Add `Icon` component for use on buttons and links that are only icons
 - Add some alt text to a few images

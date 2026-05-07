@@ -32,10 +32,10 @@
             cursor: pointer;
 
             &.labkey-page-nav-disabled {
-                color: $gray-light;
+                color: $text-color-light;
                 cursor: default;
                 &:hover, &:hover .product-subtitle, &:hover .nav-icon {
-                    color: $gray-light;
+                    color: $text-color-light;
                 }
             }
 
@@ -63,7 +63,7 @@
 
             .nav-icon {
                 float: right;
-                color: $gray-light;
+                color: $text-color-light;
                 font-size: 18px;
                 padding: 8px 15px 0 10px;
             }
@@ -96,7 +96,7 @@
             .nav-icon {
                 display: inline-block;
                 float: right;
-                color: $gray-light;
+                color: $text-color-light;
                 padding-left: 5px;
 
                 .fa {
@@ -130,7 +130,7 @@
             padding: 7px 0;
 
             .empty {
-                color: $gray-light;
+                color: $text-color-light;
                 padding: 8px 10px 8px 15px;
             }
 

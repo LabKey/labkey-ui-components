@@ -279,7 +279,7 @@ textarea.form-control {
     padding-left: 4px;
 }
 .color-picker__placeholder {
-    color: #808080; // match select input placeholder text color
+    color: $text-color-light;
 }
 
 .color-icon__circle-small {

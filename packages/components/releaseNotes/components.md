@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Update heading tags in various page elements for better accessibility
 - Add sr-only text for Selection checkbox table header
+- Update a few more colors for better contrast
 
 ### version 7.34.0
 *Released*: 5 May 2026

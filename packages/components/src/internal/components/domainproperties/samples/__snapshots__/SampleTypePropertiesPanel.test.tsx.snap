@@ -238,6 +238,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
                 data-name="labelColor"
               >
                 <button
+                  aria-label="Label color picker"
                   class="color-picker__button btn btn-default"
                   type="button"
                 >
@@ -519,6 +520,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
               data-name="labelColor"
             >
               <button
+                aria-label="Label color picker"
                 class="color-picker__button btn btn-default"
                 type="button"
               >

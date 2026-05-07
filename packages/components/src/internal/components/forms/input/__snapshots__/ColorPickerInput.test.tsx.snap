@@ -6,6 +6,7 @@ exports[`ColorPickerInput allowRemove 1`] = `
     class="color-picker"
   >
     <button
+      aria-label="Label color picker"
       class="color-picker__button btn btn-default"
       type="button"
     >
@@ -41,6 +42,7 @@ exports[`ColorPickerInput default props 1`] = `
     class="color-picker"
   >
     <button
+      aria-label="Label color picker"
       class="color-picker__button btn btn-default"
       type="button"
     >
@@ -65,6 +67,7 @@ exports[`ColorPickerInput disabled 1`] = `
     class="color-picker"
   >
     <button
+      aria-label="Label color picker"
       class="color-picker__button btn btn-default"
       disabled=""
       type="button"
@@ -90,6 +93,7 @@ exports[`ColorPickerInput showPicker 1`] = `
     class="color-picker"
   >
     <button
+      aria-label="Label color picker"
       class="color-picker__button btn btn-default"
       type="button"
     >
@@ -871,6 +875,7 @@ exports[`ColorPickerInput with button text 1`] = `
     class="color-picker"
   >
     <button
+      aria-label="Label color picker"
       class="color-picker__button btn btn-default"
       type="button"
     >
@@ -896,6 +901,7 @@ exports[`ColorPickerInput without value 1`] = `
     class="color-picker"
   >
     <button
+      aria-label="Label color picker"
       class="color-picker__button btn btn-default"
       type="button"
     >

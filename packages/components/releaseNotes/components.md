@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.X
+*Released*: X May 2026
+- Molecule and PS bulk import by file
+  - TODO
+
 ### version 7.34.0
 *Released*: 5 May 2026
 - Accessibility improvements for app pages: Colors

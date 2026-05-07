@@ -68,6 +68,7 @@ import {
     isSetEqual,
     joinMultiValueForExport,
     makeCommaSeparatedString,
+    makeDataCountMsg,
     parseScientificInt,
     pronoun,
     quoteValueWithDelimiters,
@@ -194,6 +195,7 @@ import {
 } from './internal/components/editable/actions';
 import {
     clearSelected,
+    getDataClassesFromTransactionIds,
     getGridIdsFromTransactionId,
     getSampleTypesFromTransactionIds,
     getSelected,
@@ -1420,6 +1422,7 @@ export {
     getSamplesTestAPIWrapper,
     getSampleTypeDetails,
     getSampleTypesFromTransactionIds,
+    getDataClassesFromTransactionIds,
     getSchemaQuery,
     getSearchFilterObj,
     getSearchFilterObjs,
@@ -1541,6 +1544,7 @@ export {
     LOOK_AND_FEEL_METRIC,
     LookupSelectInput,
     makeCommaSeparatedString,
+    makeDataCountMsg,
     makeQueryInfo,
     makeTestActions,
     makeTestISelectRowsResult,

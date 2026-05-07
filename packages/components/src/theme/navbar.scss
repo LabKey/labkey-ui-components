@@ -178,6 +178,19 @@
       border-radius: 4px 0 0 4px;
       padding-left: 8px;
 
+      .menu-folder-item {
+          background: none;
+          border: none;
+          color: $link-color;
+          padding: 0;
+          text-align: left;
+          width: 100%;
+
+          &:hover {
+              color: $link-hover-color;
+          }
+      }
+
       li:hover {
           background-color: $gray-lighter;
           border-radius: 4px 0 0 4px;
@@ -191,7 +204,7 @@
               background-color: $white;
           }
 
-          a {
+          a, .menu-folder-item {
               color: $text-color;
 
               &:focus, &:hover {

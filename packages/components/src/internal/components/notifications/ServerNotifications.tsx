@@ -9,6 +9,7 @@ import { useNavMenuState } from '../../useNavMenuState';
 import { markAllNotificationsAsRead, markNotificationsAsRead } from './actions';
 import { ServerNotificationsConfig } from './model';
 import { ServerActivityList } from './ServerActivityList';
+import { Icon } from '../../Icon';
 
 export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
     const { onRead, serverActivity } = props;
@@ -78,7 +79,7 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
                 role="button"
                 type="button"
             >
-                <span className={iconClassName} />
+                <Icon iconClass={iconClassName} srText="Notifications" />
                 {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
             </button>
 

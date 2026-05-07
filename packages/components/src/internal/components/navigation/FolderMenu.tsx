@@ -7,6 +7,7 @@ import { Tip } from '../base/Tip';
 import { ExpandableContainer } from '../ExpandableContainer';
 import { AppLink } from '../../url/AppLink';
 import { ADMIN_KEY } from '../../app/constants';
+import { Icon } from '../../Icon';
 
 export interface FolderMenuItem {
     archived: boolean;
@@ -65,13 +66,13 @@ export const FolderMenuItems: FC<FolderMenuProps> = memo(props => {
                                 >
                                     <AppLink to={dashboardURL} className="dashboard-link">
                                         <Tip caption="Dashboard">
-                                            <i className="fa fa-home dashboard-icon" />
+                                            <Icon iconClass="fa fa-home dashboard-icon" srText="Dashboard" />
                                         </Tip>
                                     </AppLink>
                                     {user.isAdmin && (
                                         <AppLink to={adminURL}>
                                             <Tip caption="Administration">
-                                                <i className="fa fa-gear" />
+                                                <Icon iconClass="fa fa-gear" srText="Administration" />
                                             </Tip>
                                         </AppLink>
                                     )}

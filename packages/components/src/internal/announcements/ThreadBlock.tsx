@@ -93,6 +93,7 @@ const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
                 {(onDelete || onEdit) && (
                     <DropdownMenu
                         className="thread-block-header__menu"
+                        label={"Manage thread block"}
                         title={<i className="fa fa-ellipsis-v" />}
                         pullRight
                     >

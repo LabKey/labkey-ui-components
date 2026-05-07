@@ -20,6 +20,7 @@ import { generateId } from './util/utils';
 import { cancelEvent } from './events';
 import { AppLink } from './url/AppLink';
 import { AppURL } from './url/AppURL';
+import { Icon } from './Icon';
 
 export type BSStyle = 'success' | 'danger' | 'default' | 'primary' | 'info';
 const DROPDOWN_MENU_CLASS = 'dropdown-menu';
@@ -107,12 +108,16 @@ export const DropdownMenu: FC<DropdownMenuProps> = props => {
     return (
         <div className={className}>
             {asAnchor && (
-                <a {...elemProps} href="#">
+                <a aria-label={label} {...elemProps} href="#">
                     {title}
                     <span className="caret" />
                 </a>
             )}
-            {!asAnchor && <span {...elemProps}>{title}</span>}
+            {!asAnchor && (
+                <span aria-label={label} {...elemProps}>
+                    {title}
+                </span>
+            )}
 
             <ul className={menuClassName} onClick={handleMenuClick}>
                 {children}
@@ -172,10 +177,11 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
     );
 
     return (
-        <div className={className} ref={ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <div className={className} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref} >
             <button
-                aria-haspopup="true"
                 aria-expanded={open}
+                aria-haspopup="true"
+                aria-label={props['aria-label']}
                 className={buttonClassName}
                 disabled={disabled}
                 id={id}
@@ -186,10 +192,10 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
                 type="button"
             >
                 {title}
-                {!noCaret && <span className={caretClassName} />}
+                {!noCaret && <span aria-hidden="true" className={caretClassName} />}
             </button>
             {showMenu && (
-                <ul className={menuClassName} aria-labelledby={id} onClick={handleMenuClick} role="menu">
+                <ul aria-labelledby={id} className={menuClassName} onClick={handleMenuClick} role="menu">
                     {children}
                 </ul>
             )}
@@ -347,7 +353,15 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
 
     return (
         <li className={className} role="presentation" ref={ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-            <AppLink onClick={onClick_} rel={rel} role="menuitem" target={target} title={title} to={href}>
+            <AppLink
+                aria-label={props['aria-label']}
+                onClick={onClick_}
+                rel={rel}
+                role="menuitem"
+                target={target}
+                title={title}
+                to={href}
+            >
                 {children}
             </AppLink>
         </li>

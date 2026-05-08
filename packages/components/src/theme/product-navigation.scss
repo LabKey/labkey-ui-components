@@ -213,5 +213,8 @@
                 cursor: default;
             }
         }
+        a:focus {
+            outline: none;
+        }
     }
 }

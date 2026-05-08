@@ -231,35 +231,40 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                                 }
                                             >
                                                 {view.isSaved ? (
-                                                    <span onClick={revertDefaultView} className="clickable-text">
+                                                    <button onClick={revertDefaultView} className="clickable-text">
                                                         Revert
-                                                    </span>
+                                                    </button>
                                                 ) : (
                                                     <span className="gray-text">Revert</span>
                                                 )}
                                             </OverlayTrigger>
                                         )}
                                         {!isDefault && !isRenaming && (
-                                            <span
+                                            <button
                                                 onClick={setDefaultView}
                                                 id={'setDefault-' + ind}
                                                 className="clickable-text"
                                             >
                                                 Make default
-                                            </span>
+                                            </button>
                                         )}
                                     </RequiresPermission>
                                     {canEdit && (
                                         <span className="pull-right">
-                                            <span
-                                                className="edit-inline-field__toggle small-right-padding"
+                                            <button
+                                                className="clickable-text edit-inline-field__toggle small-right-padding"
+                                                id={'select-' + ind}
                                                 onClick={onSelectView}
                                             >
-                                                <i id={'select-' + ind} className="fa fa-pencil" />
-                                            </span>
-                                            <span className="edit-inline-field__toggle" onClick={onDeleteView}>
-                                                <i id={'delete-' + ind} className="fa fa-trash-o" />
-                                            </span>
+                                                <i className="fa fa-pencil" />
+                                            </button>
+                                            <button
+                                                className="clickable-text edit-inline-field__toggle"
+                                                id={'delete-' + ind}
+                                                onClick={onDeleteView}
+                                            >
+                                                <i className="fa fa-trash-o" />
+                                            </button>
                                         </span>
                                     )}
                                 </div>
@@ -299,3 +304,4 @@ export const ManageViewsModal: FC<Props> = memo(props => {
         </Modal>
     );
 });
+ManageViewsModal.displayName = 'ManageViewsModal';

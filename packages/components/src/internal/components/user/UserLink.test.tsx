@@ -43,13 +43,12 @@ describe('UserLink', () => {
             { serverContext: { user: TEST_USER_APP_ADMIN } }
         );
         await waitFor(() => {
-            expect(container.querySelectorAll('a')).toHaveLength(1);
+            expect(container.querySelectorAll('button')).toHaveLength(1);
         });
-        expect(container.querySelectorAll('a')).toHaveLength(1);
-        expect(container.querySelectorAll('.clickable')).toHaveLength(1);
+        expect(container.querySelectorAll('.clickable-text')).toHaveLength(1);
         expect(container.querySelectorAll('span')).toHaveLength(0);
         expect(container.querySelectorAll('.gray-text')).toHaveLength(0);
-        expect(container.querySelector('a').textContent).toBe('Test display');
+        expect(container.querySelector('button').textContent).toBe('Test display');
     });
 
     test('user cannot ReadUserDetails, not self', async () => {
@@ -61,7 +60,7 @@ describe('UserLink', () => {
             expect(container.querySelectorAll('span')).toHaveLength(1);
         });
         expect(container.querySelectorAll('a')).toHaveLength(0);
-        expect(container.querySelectorAll('.clickable')).toHaveLength(0);
+        expect(container.querySelectorAll('.clickable-text')).toHaveLength(0);
         expect(container.querySelectorAll('span')).toHaveLength(1);
         expect(container.querySelectorAll('.gray-text')).toHaveLength(0);
         expect(container.querySelector('span').textContent).toBe('Test display');
@@ -73,13 +72,12 @@ describe('UserLink', () => {
             { serverContext: { user: TEST_USER_READER } }
         );
         await waitFor(() => {
-            expect(container.querySelectorAll('a')).toHaveLength(1);
+            expect(container.querySelectorAll('button')).toHaveLength(1);
         });
-        expect(container.querySelectorAll('a')).toHaveLength(1);
-        expect(container.querySelectorAll('.clickable')).toHaveLength(1);
+        expect(container.querySelectorAll('.clickable-text')).toHaveLength(1);
         expect(container.querySelectorAll('span')).toHaveLength(0);
         expect(container.querySelectorAll('.gray-text')).toHaveLength(0);
-        expect(container.querySelector('a').textContent).toBe('Test display');
+        expect(container.querySelector('button').textContent).toBe('Test display');
     });
 });
 

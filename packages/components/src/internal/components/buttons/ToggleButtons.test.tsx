@@ -103,7 +103,7 @@ describe('ToggleIcon', () => {
         expect(document.getElementsByClassName('toggle-off').length).toBe(1);
         expect(document.getElementsByClassName('fa-toggle-off').length).toBe(1);
 
-        await userEvent.click(document.getElementsByTagName('i')[0]);
+        await userEvent.click(document.getElementsByTagName('button')[0]);
         expect(onClickFn).toHaveBeenCalledTimes(1);
         expect(onClickFn).toHaveBeenCalledWith('on');
     });
@@ -141,7 +141,7 @@ describe('ToggleIcon', () => {
 
         expect(document.getElementsByClassName('overlay-trigger').length).toBe(1);
 
-        await userEvent.click(document.getElementsByTagName('i')[0]);
+        await userEvent.click(document.getElementsByTagName('button')[0]);
         expect(onClickFn).toHaveBeenCalledTimes(1);
         expect(onClickFn).toHaveBeenCalledWith('on');
     });

@@ -206,7 +206,7 @@ describe('ManageViewsModal', () => {
         expect(rows[1].querySelector('.col-xs-8').textContent.trim()).toBe('View 1');
         expect(rows[1].querySelectorAll('.fa-pencil')).toHaveLength(1);
         expect(rows[1].querySelectorAll('.fa-trash-o')).toHaveLength(1);
-        expect(rows[1].querySelectorAll('.clickable-text')).toHaveLength(1);
+        expect(rows[1].querySelectorAll('.clickable-text')).toHaveLength(3);
         expect(rows[1].querySelector('.clickable-text').textContent).toBe('Make default');
 
         expect(rows[2].querySelector('.col-xs-8').textContent.trim()).toBe('View 2 (edited)');
@@ -219,7 +219,7 @@ describe('ManageViewsModal', () => {
         expect(rows[3].querySelectorAll('.fa-pencil')).toHaveLength(1);
         expect(rows[3].querySelectorAll('.fa-trash-o')).toHaveLength(1);
         expect(rows[0].querySelectorAll('.gray-text')).toHaveLength(0);
-        expect(rows[3].querySelectorAll('.clickable-text')).toHaveLength(1);
+        expect(rows[3].querySelectorAll('.clickable-text')).toHaveLength(3);
         expect(rows[3].querySelector('.clickable-text').textContent).toBe('Make default');
 
         expect(document.querySelector('button.btn-default').textContent).toEqual('Done');
@@ -277,7 +277,7 @@ describe('ManageViewsModal', () => {
         expect(rows[1].querySelector('.col-xs-8').textContent.trim()).toBe('View 1');
         expect(rows[1].querySelectorAll('.fa-pencil')).toHaveLength(1);
         expect(rows[1].querySelectorAll('.fa-trash-o')).toHaveLength(1);
-        expect(rows[1].querySelectorAll('.clickable-text')).toHaveLength(0);
+        expect(rows[1].querySelectorAll('.clickable-text')).toHaveLength(2);
 
         expect(rows[2].querySelector('.col-xs-8').textContent.trim()).toBe('View 2 (edited)');
         expect(rows[2].querySelectorAll('.fa-pencil')).toHaveLength(0);

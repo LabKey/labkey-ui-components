@@ -49,11 +49,11 @@ exports[`<TimelineView /> Disable selection 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -110,11 +110,11 @@ exports[`<TimelineView /> Disable selection 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -171,11 +171,11 @@ exports[`<TimelineView /> Disable selection 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 xyang
-              </a>
+              </button>
             </div>
              
           </div>
@@ -232,11 +232,11 @@ exports[`<TimelineView /> Disable selection 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -293,11 +293,11 @@ exports[`<TimelineView /> Disable selection 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Test Lab User
-              </a>
+              </button>
             </div>
              
           </div>
@@ -354,11 +354,11 @@ exports[`<TimelineView /> Disable selection 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Test Lab User
-              </a>
+              </button>
             </div>
              
           </div>
@@ -415,11 +415,11 @@ exports[`<TimelineView /> Disable selection 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -552,11 +552,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -613,11 +613,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -674,11 +674,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 xyang
-              </a>
+              </button>
             </div>
              
           </div>
@@ -735,11 +735,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -796,11 +796,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Test Lab User
-              </a>
+              </button>
             </div>
              
           </div>
@@ -857,11 +857,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Test Lab User
-              </a>
+              </button>
             </div>
              
           </div>
@@ -918,11 +918,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1055,11 +1055,11 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1122,11 +1122,11 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1183,11 +1183,11 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 xyang
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1244,11 +1244,11 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1305,11 +1305,11 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Test Lab User
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1372,11 +1372,11 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Test Lab User
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1433,11 +1433,11 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1570,11 +1570,11 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1631,11 +1631,11 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1698,11 +1698,11 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 xyang
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1759,11 +1759,11 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1820,11 +1820,11 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Test Lab User
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1881,11 +1881,11 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Test Lab User
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1942,11 +1942,11 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>

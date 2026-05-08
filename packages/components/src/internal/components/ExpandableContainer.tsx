@@ -101,9 +101,9 @@ export const ExpandableContainer: FC<Props> = memo(props => {
                         'text-muted': !isExpandable,
                     })}
                 >
-                    <i
+                    <button
                         onClick={hasOnClick || isExpandable ? handleClick : undefined}
-                        className={classNames('fa', {
+                        className={classNames('clickable-text', 'fa', {
                             'fa-chevron-down': visible,
                             'fa-chevron-right': !visible,
                         })}

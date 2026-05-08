@@ -25,7 +25,7 @@ type KeyHandler = (evt: KeyboardEvent) => void;
  * @param onEnter: function to call when the enter key is pressed.
  * @param onEscape: function to call when the escape key is pressed.
  */
-export const useEnterEscape = (onEnter?: () => void, onEscape?: () => void): any => {
+export const useEnterEscape = (onEnter?: (evt?: any) => void, onEscape?: (evt?: any) => void): any => {
     return useCallback(
         (evt: KeyboardEvent) => {
             if (evt.shiftKey || evt.metaKey) return;
@@ -34,12 +34,12 @@ export const useEnterEscape = (onEnter?: () => void, onEscape?: () => void): any
                 case Key.ENTER:
                     evt.stopPropagation();
                     evt.preventDefault();
-                    onEnter?.();
+                    onEnter?.(evt);
                     break;
                 case Key.ESCAPE:
                     evt.stopPropagation();
                     evt.preventDefault();
-                    onEscape?.();
+                    onEscape?.(evt);
                     break;
                 default:
                     break;

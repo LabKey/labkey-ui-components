@@ -161,7 +161,7 @@ const DisplayCell: FC<DisplayCellProps> = memo(props => {
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             ref={targetRef}
-            tabIndex={-1}
+            tabIndex={0}
         >
             {body}
             {show && createPortal(popover, portalEl)}

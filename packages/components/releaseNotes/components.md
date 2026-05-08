@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Modals to have focus on open, allow tab only within modal elements, and ESCAPE to close
   - Use buttons with clickable-text styling instead of spans and divs with onClick properties
   - Update `useEnterEscape` to allow optional event argument to callbacks
+  - EditableGrid Cell to allow tab focus with tabIndex 0
 
 ### version 7.35.1
 *Released*: 7 May 2026

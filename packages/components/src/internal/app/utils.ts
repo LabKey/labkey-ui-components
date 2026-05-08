@@ -390,6 +390,10 @@ export function isAdvancedWorkflowEnabled(moduleContext?: ModuleContext): boolea
     );
 }
 
+export function isAIAssistanceEnabled(): boolean {
+    return getServerContext()['mcpReady'] === true;
+}
+
 export function isDataChangeCommentRequirementFeatureEnabled(moduleContext?: ModuleContext): boolean {
     return isFeatureEnabled(ProductFeature.DataChangeCommentRequirement, moduleContext);
 }

@@ -14,6 +14,10 @@ import { SectionHeading } from './SectionHeading';
 import { isFieldFullyLocked, isFieldPartiallyLocked } from './propertiesUtil';
 import { CALCULATED_TYPE, MULTI_CHOICE_TYPE, PropDescType } from './PropDescType';
 import { parseCalculatedColumn } from './actions';
+import { SVGIcon } from '../base/SVGIcon';
+import { isAIAssistanceEnabled } from '../../app/utils';
+import { useModalState } from '../../hooks';
+import { ExpressionAssistantModal } from './ExpressionAssistantModal';
 
 // export for jest testing
 export const typeToDisplay = (type: string): string => {
@@ -90,10 +94,19 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
     const [loading, setLoading] = useState<boolean>(!field.isNew());
     const [error, setError] = useState<string>(undefined);
     const [parsedType, setParsedType] = useState<string>(undefined);
+    const { close, open, show } = useModalState();
+    const assistanceEnabled = isAIAssistanceEnabled();
     const isNew = useMemo(() => field.isNew(), [field]);
+    const { headingId, inputId } = useMemo(
+        () => ({
+            headingId: `expression-label-${domainIndex}-${index}`,
+            inputId: createFormInputId(DOMAIN_FIELD_VALUE_EXPRESSION, domainIndex, index),
+        }),
+        [domainIndex, index]
+    );
 
-    const handleChange = useCallback(
-        (evt: any): void => {
+    const handleChange = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>(
+        evt => {
             onChange(evt.target.id, evt.target.value);
             setError(undefined);
             setParsedType(undefined);
@@ -136,24 +149,18 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
         [domainIndex, field.name, getDomainFields, index, onChange]
     );
 
-    const handleBlur = useCallback(
-        (evt: any): void => {
-            const value = evt.target.value;
-            validateExpression(value, true);
+    const handleBlur = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>(
+        evt => {
+            validateExpression(evt.target.value, true);
         },
         [validateExpression]
     );
 
-    useEffect(
-        () => {
-            if (!isNew) {
-                validateExpression(field.valueExpression, false);
-            }
-        },
-        [
-            /* on mount only */
-        ]
-    );
+    useEffect(() => {
+        if (!isNew) {
+            validateExpression(field.valueExpression, false);
+        }
+    }, []); //eslint-disable-line react-hooks/exhaustive-deps -- on mount only
 
     return (
         <div
@@ -162,22 +169,24 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
             })}
         >
             <div className="row">
-                <div className="col-xs-12 col-md-6">
+                <div className="col-xs-12">
                     <SectionHeading
                         cls="bottom-padding"
                         helpTipBody={HELP_TIP_BODY}
-                        id={'expression-label-' + domainIndex + '-' + index}
+                        id={headingId}
                         title="Expression"
                     />
+                </div>
+                <div className="col-xs-12 col-md-7">
                     <textarea
-                        aria-labelledby={'expression-label-' + domainIndex + '-' + index}
+                        aria-labelledby={headingId}
                         className="form-control"
                         disabled={
                             isFieldPartiallyLocked(field.lockType) ||
                             isFieldFullyLocked(field.lockType) ||
                             field.lockExistingField
                         }
-                        id={createFormInputId(DOMAIN_FIELD_VALUE_EXPRESSION, domainIndex, index)}
+                        id={inputId}
                         name={createFormInputName(DOMAIN_FIELD_VALUE_EXPRESSION)}
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -197,33 +206,54 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                         )}
                     </div>
                 </div>
-                <div className="col-xs-12 col-md-6 domain-field-calc-examples">
-                    <b>Examples</b>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>Addition:</td>
-                                <td className="code">numericField1 + numericField2</td>
-                            </tr>
-                            <tr>
-                                <td>Subtraction:</td>
-                                <td className="code">numericField1 - numericField2</td>
-                            </tr>
-                            <tr>
-                                <td>Multiplication:</td>
-                                <td className="code">numericField1 * numericField2</td>
-                            </tr>
-                            <tr>
-                                <td>Division:</td>
-                                <td className="code">numericField1 / nonZeroField1</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <HelpLink topic={FIELD_EDITOR_CALC_COLS_TOPIC}>Click for more examples</HelpLink>
-                </div>
+                {assistanceEnabled && (
+                    <div className="col-xs-12 col-md-5">
+                        <div className="margin-bottom">
+                            The AI Assistant can help you create or validate an expression. You can describe the
+                            calculation you want, or get help with an existing expression.
+                        </div>
+                        <div className="margin-bottom">
+                            <button className="btn btn-default" onClick={open} type="button">
+                                <SVGIcon
+                                    height="16px"
+                                    iconSrc="ai_stars_icon"
+                                    style={{ marginRight: '4px', marginTop: '-4px' }}
+                                    width="16px"
+                                />
+                                AI Assistant
+                            </button>
+                        </div>
+                        <HelpLink topic={FIELD_EDITOR_CALC_COLS_TOPIC}>See calculation examples</HelpLink>
+                    </div>
+                )}
+                {!assistanceEnabled && (
+                    <div className="col-xs-12 col-md-5 domain-field-calc-examples">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>Addition:</td>
+                                    <td className="code">numericField1 + numericField2</td>
+                                </tr>
+                                <tr>
+                                    <td>Subtraction:</td>
+                                    <td className="code">numericField1 - numericField2</td>
+                                </tr>
+                                <tr>
+                                    <td>Multiplication:</td>
+                                    <td className="code">numericField1 * numericField2</td>
+                                </tr>
+                                <tr>
+                                    <td>Division:</td>
+                                    <td className="code">numericField1 / nonZeroField1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <HelpLink topic={FIELD_EDITOR_CALC_COLS_TOPIC}>Click for more examples</HelpLink>
+                    </div>
+                )}
             </div>
+            {show && <ExpressionAssistantModal field={field} onCancel={close} />}
         </div>
     );
 });
-
 CalculatedFieldOptions.displayName = 'CalculatedFieldOptions';

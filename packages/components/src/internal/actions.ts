@@ -784,3 +784,9 @@ export function renameGridView(
         });
     });
 }
+
+export function expressionAssist(prompt: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        console.log('Expression assisting...');
+    });
+}

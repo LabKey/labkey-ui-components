@@ -40,9 +40,9 @@ describe('BarTenderSettingsForm', () => {
         expect(document.querySelectorAll('.label-printing--help-link')).toHaveLength(1);
     }
 
-    function validateButtons(canTest?: boolean, canSave?: boolean): void {
+    function validateButtons(canTest?: boolean, canSave?: boolean, canAdd = true): void {
         const buttons = document.querySelectorAll('button');
-        expect(buttons).toHaveLength(1);
+        expect(buttons).toHaveLength(canTest || canSave || canAdd ? 2 : 1);
         const button = buttons.item(0);
         if (canTest) {
             expect(button).toHaveTextContent('Test Connection');
@@ -55,6 +55,9 @@ describe('BarTenderSettingsForm', () => {
             } else {
                 expect(button).toBeDisabled();
             }
+        }
+        if (canAdd) {
+            expect(buttons.item(1).textContent).toBe(' Add New Label Template');
         }
     }
 
@@ -85,7 +88,7 @@ describe('BarTenderSettingsForm', () => {
         expect(document.querySelectorAll('.label-templates-container')).toHaveLength(0);
         expect(document.querySelector('input').getAttribute('type')).toBe('url');
         validate(true);
-        validateButtons(false, false);
+        validateButtons(false, false, false);
     });
 
     test('default props, subfolder without folders', async () => {

@@ -19,11 +19,11 @@ import { userEvent } from '@testing-library/user-event';
 
 import { ActionButton } from './ActionButton';
 
-describe('<ActionButton />', () => {
+describe('ActionButton', () => {
     test('Default properties', async () => {
         const onClick = jest.fn();
         render(<ActionButton onClick={onClick} />);
-        await userEvent.click(document.querySelector('span'));
+        await userEvent.click(document.querySelector('button'));
         expect(onClick).toHaveBeenCalledTimes(1);
     });
 
@@ -41,10 +41,10 @@ describe('<ActionButton />', () => {
         );
 
         // Customized attributes should all be valid click targets
-        await userEvent.click(document.querySelector('span'));
-        await userEvent.click(document.querySelector('.test-button-class span'));
-        await userEvent.click(document.querySelector('.test-container-class span'));
-        await userEvent.click(document.querySelector('[title="test-title"] span'));
+        await userEvent.click(document.querySelector('button'));
+        await userEvent.click(document.querySelector('.test-button-class button'));
+        await userEvent.click(document.querySelector('.test-container-class button'));
+        await userEvent.click(document.querySelector('[title="test-title"] button'));
         expect(onClick).toHaveBeenCalledTimes(4);
     });
 
@@ -71,7 +71,7 @@ describe('<ActionButton />', () => {
     test('Disabled', async () => {
         const onClick = jest.fn();
         render(<ActionButton disabled={true} onClick={onClick} />);
-        await userEvent.click(document.querySelector('span'));
+        await userEvent.click(document.querySelector('button'));
         expect(onClick).toHaveBeenCalledTimes(0);
     });
 });

@@ -5,6 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Accessibility improvements for app pages: Keyboard Interactions
   - Make ActionButton a button so it can be tabbed to
+  - Allow tab to app main menu folder items
+  - Modals to have focus on open, allow tab only within modal elements, and ESCAPE to close
 
 ### version 7.35.1
 *Released*: 7 May 2026

@@ -26,6 +26,7 @@ import { GridPanel, GridPanelProps } from './GridPanel';
 import { InjectedQueryModels } from './withQueryModels';
 import { QueryModel } from './QueryModel';
 import { getQueryModelExportParams } from './utils';
+import { useEnterEscape } from '../useEnterEscape';
 
 interface GridTabProps {
     isActive: boolean;
@@ -43,6 +44,7 @@ const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, 
         'pull-right': pullRight,
     });
     const onClick = useCallback(() => onSelect(id), [id, onSelect]);
+    const onKeyDown = useEnterEscape(onClick);
 
     const rowCountDisplay = useMemo(() => {
         if (rowCount === undefined && !model.isActivelyLoadingTotalCount) return tabRowCount?.toLocaleString();
@@ -51,7 +53,7 @@ const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, 
 
     return (
         <li className={className}>
-            <a onClick={onClick}>
+            <a onClick={onClick} onKeyDown={onKeyDown} tabIndex={0}>
                 {title || queryInfo?.queryLabel || queryInfo?.name}
                 {showRowCount && rowCountDisplay !== undefined && <span> ({rowCountDisplay})</span>}
             </a>

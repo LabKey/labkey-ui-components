@@ -1564,6 +1564,8 @@ export class DomainField
     }
 }
 
+export type GetDomainFields = () => { domainFields: List<DomainField>; systemFields: SystemField[] };
+
 export function isValidTextChoiceValue(v: string): boolean {
     return v !== null && v !== undefined && v.trim() !== '';
 }

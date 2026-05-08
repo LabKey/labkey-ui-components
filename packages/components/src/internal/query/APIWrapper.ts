@@ -18,7 +18,9 @@ import {
     clearSelected,
     ClearSelectedOptions,
     deleteView,
-    expressionAssist,
+    expressionAssistant,
+    ExpressionAssistOptions,
+    ExpressionAssistResponse,
     getGridViews,
     GetSelectedResponse,
     getSnapshotSelections,
@@ -77,7 +79,7 @@ export interface QueryAPIWrapper {
     deleteRowsByContainer: (options: DeleteRowsOptions, containerField: string) => Promise<QueryCommandResponse>;
     deleteView: (schemaQuery: SchemaQuery, containerPath: string, viewName?: string, revert?: boolean) => Promise<void>;
     executeSql: <T extends ExecuteSqlOptions>(options: T) => Promise<ExecuteSqlResponse<T>>;
-    expressionAssist: (prompt: string) => Promise<void>;
+    expressionAssistant: (options: ExpressionAssistOptions) => Promise<ExpressionAssistResponse>;
     getDataTypeFolderDataCount: (
         entityDataType: EntityDataType,
         dataTypeRowId: number,
@@ -178,7 +180,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     deleteRowsByContainer = deleteRowsByContainer;
     deleteView = deleteView;
     executeSql = executeSql;
-    expressionAssist = expressionAssist;
+    expressionAssistant = expressionAssistant;
     getDataTypeFolderDataCount = getDataTypeFolderDataCount;
     getEntityTypeOptions = getEntityTypeOptionsWithExclusions;
     getGridViews = getGridViews;
@@ -220,7 +222,7 @@ export function getQueryTestAPIWrapper(
         deleteRowsByContainer: mockFn(),
         deleteView: mockFn(),
         executeSql: mockFn(),
-        expressionAssist: mockFn(),
+        expressionAssistant: mockFn(),
         getDataTypeFolderDataCount: mockFn(),
         getEntityTypeOptions: mockFn(),
         getGridViews: mockFn(),

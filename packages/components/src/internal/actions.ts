@@ -785,8 +785,31 @@ export function renameGridView(
     });
 }
 
-export function expressionAssist(prompt: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-        console.log('Expression assisting...');
+export interface ExpressionAssistOptions {
+    containerPath?: string;
+    prompt: string;
+    requestHandler?: RequestHandler;
+}
+
+export interface ExpressionAssistResponse {
+    error?: string;
+    html?: string;
+    sql?: string;
+    success: boolean;
+    text?: string;
+}
+
+export function expressionAssistant(options: ExpressionAssistOptions): Promise<ExpressionAssistResponse> {
+    const { containerPath, prompt, requestHandler } = options;
+    return request<ExpressionAssistResponse>({
+        // TODO: Replace with new endpoint, this returns a shape we like but not the results we want :-)
+        url: ActionURL.buildURL('query', 'queryAgent.api', containerPath),
+        method: 'POST',
+        jsonData: {
+            schemaName: 'exp.data',
+            prompt,
+        },
+        errorLogMsg: 'Failed to assist with expression',
+        requestHandler,
     });
 }

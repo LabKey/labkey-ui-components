@@ -9,7 +9,7 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { createFormInputId, createFormInputName } from './utils';
 import { DOMAIN_FIELD_CLIENT_SIDE_ERROR, DOMAIN_FIELD_VALUE_EXPRESSION, SEVERITY_LEVEL_WARN } from './constants';
-import { DomainField, DomainFieldError, SystemField } from './models';
+import { DomainField, DomainFieldError, GetDomainFields, SystemField } from './models';
 import { SectionHeading } from './SectionHeading';
 import { isFieldFullyLocked, isFieldPartiallyLocked } from './propertiesUtil';
 import { CALCULATED_TYPE, MULTI_CHOICE_TYPE, PropDescType } from './PropDescType';
@@ -84,7 +84,7 @@ const HELP_TIP_BODY = (
 interface Props {
     domainIndex: number;
     field: DomainField;
-    getDomainFields: () => { domainFields: List<DomainField>; systemFields: SystemField[] };
+    getDomainFields: GetDomainFields;
     index: number;
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean, skipDirtyCheck?: boolean) => void;
 }
@@ -154,6 +154,17 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
             validateExpression(evt.target.value, true);
         },
         [validateExpression]
+    );
+
+    const handleApply = useCallback(
+        (analysis: string) => {
+            onChange(inputId, analysis);
+            setError(undefined);
+            setParsedType(undefined);
+            validateExpression(analysis, true);
+            close();
+        },
+        [close, inputId, onChange, validateExpression]
     );
 
     useEffect(() => {
@@ -252,7 +263,14 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                     </div>
                 )}
             </div>
-            {show && <ExpressionAssistantModal field={field} onCancel={close} />}
+            {show && (
+                <ExpressionAssistantModal
+                    field={field}
+                    getDomainFields={getDomainFields}
+                    onCancel={close}
+                    onComplete={handleApply}
+                />
+            )}
         </div>
     );
 });

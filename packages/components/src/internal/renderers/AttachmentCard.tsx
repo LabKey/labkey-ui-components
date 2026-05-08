@@ -6,6 +6,7 @@ import { formatBytes, getIconFontCls, isImage } from '../util/utils';
 import { isLoading, LoadingState } from '../../public/LoadingState';
 import { LoadingSpinner } from '../components/base/LoadingSpinner';
 import { DropdownMenu, MenuItem } from '../dropdowns';
+import { useEnterEscape } from '../../public/useEnterEscape';
 
 const now = (): number => new Date().valueOf();
 
@@ -76,6 +77,14 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
         }
     }, [allowRemove, attachment, onRemove]);
 
+    const _onBodyAction = useCallback(() => {
+        if (!attachment || attachment.unavailable || isLoading(attachment.loadingState)) return;
+        if (isImage(attachment.name)) _showModal();
+        else _onDownload();
+    }, [attachment, _showModal, _onDownload]);
+
+    const onBodyKeyDown = useEnterEscape(_onBodyAction);
+
     const showMenu = useMemo(() => {
         return ((onCopyLink || allowDownload) && !attachment?.unavailable) || allowRemove;
     }, [onCopyLink, allowDownload, attachment, allowRemove]);
@@ -106,7 +115,9 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
             >
                 <div
                     className="attachment-card__body"
-                    onClick={isLoaded && !unavailable ? (_isImage ? _showModal : _onDownload) : undefined}
+                    onClick={_onBodyAction}
+                    onKeyDown={onBodyKeyDown}
+                    tabIndex={0}
                 >
                     <div className="attachment-card__icon">
                         {_isImage && !isLoaded && <LoadingSpinner msg="" />}

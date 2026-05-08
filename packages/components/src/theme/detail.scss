@@ -151,11 +151,10 @@
   float: right;
 }
 
-.detail__edit-button {
-  cursor: pointer;
-
+.detail__edit-button .fa {
+  color: $text-color-light;
   &:hover {
-    color: #adabab;
+    color: $gray-dark;
   }
 }
 

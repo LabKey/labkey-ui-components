@@ -83,6 +83,9 @@
         &:focus, &:hover {
             color: $gray-dark;
         }
+        &:focus-visible {
+            outline: 1px auto -webkit-focus-ring-color;
+        }
     }
 }
 .attachment-card__name {

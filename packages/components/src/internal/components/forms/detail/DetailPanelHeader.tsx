@@ -49,9 +49,9 @@ export const DetailPanelHeader: FC<DetailPanelHeaderProps> = memo(props => {
             <span className="detail__edit--heading">
                 {isEditable && (
                     <>
-                        <div className="detail__edit-button" onClick={onClick}>
+                        <button className="clickable-text detail__edit-button" onClick={onClick}>
                             <i className="fa fa-pencil-square-o" />
-                        </div>
+                        </button>
                         <div className="clearfix" />
                     </>
                 )}

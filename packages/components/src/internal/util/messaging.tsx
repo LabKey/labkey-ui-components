@@ -12,7 +12,11 @@ export function getActionErrorMessage(problemStatement: string, noun: string, sh
             &nbsp;Your session may have expired or the {noun} may no longer be valid.
             {showRefresh && (
                 <>
-                    &nbsp;Try <a onClick={() => window.location.reload()}>refreshing the page</a>.
+                    &nbsp;Try{' '}
+                    <button className="clickable-text" onClick={() => window.location.reload()}>
+                        refreshing the page
+                    </button>
+                    .
                 </>
             )}
         </span>

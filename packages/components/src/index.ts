@@ -893,6 +893,7 @@ import { OverlayTrigger, useOverlayTriggerState } from './internal/OverlayTrigge
 import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
 import { DropdownButton, DropdownMenu, MenuDivider, MenuHeader, MenuItem, SplitButton } from './internal/dropdowns';
+import { Icon } from './internal/Icon';
 import { DropdownSection } from './internal/DropdownSection';
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './internal/components/administration/utils';
 import { LineageGridModel, LineageResult } from './internal/components/lineage/models';
@@ -1467,6 +1468,7 @@ export {
     HOME_TITLE,
     Hooks,
     HorizontalBarSection,
+    Icon,
     imageURL,
     IMPORT_DATA_FORM_TYPES,
     ImportAliasRenderer,

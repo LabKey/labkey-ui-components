@@ -178,7 +178,11 @@ export class UserProfile extends PureComponent<Props, State> {
                                 <p className="user-section-header">Avatar</p>
                             </div>
                             <div className="col-sm-2 col-xs-12">
-                                <img src={avatarSrc} className="detail__header-icon" />
+                                <img
+                                    alt={user.displayName + ' avatar'}
+                                    className="detail__header-icon"
+                                    src={avatarSrc}
+                                />
                             </div>
                             <div className="col-sm-7 col-xs-12">
                                 <FileInput

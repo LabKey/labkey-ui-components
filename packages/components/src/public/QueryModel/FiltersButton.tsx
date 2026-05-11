@@ -1,10 +1,11 @@
 import React, { FC, memo } from 'react';
 
 import { Tip } from '../../internal/components/base/Tip';
+import { Icon } from '../../internal/Icon';
 
 interface Props {
-    onFilter: () => void;
     iconOnly?: boolean;
+    onFilter: () => void;
 }
 
 export const FiltersButton: FC<Props> = memo(props => {
@@ -14,7 +15,7 @@ export const FiltersButton: FC<Props> = memo(props => {
         return (
             <Tip caption="Filters">
                 <button className="grid-panel__button btn btn-default" onClick={onFilter} type="button">
-                    <i className="fa fa-filter" />
+                    <Icon iconClass="fa fa-filter" srText="Filters" />
                 </button>
             </Tip>
         );
@@ -22,7 +23,8 @@ export const FiltersButton: FC<Props> = memo(props => {
 
     return (
         <button className="grid-panel__button btn btn-default" onClick={onFilter} type="button">
-            <i className="fa fa-filter" /> Filters
+            <span aria-hidden="true" className="fa fa-filter" /> Filters
         </button>
     );
 });
+FiltersButton.displayName = 'FiltersButton';

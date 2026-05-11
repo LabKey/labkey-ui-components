@@ -71,7 +71,7 @@ td.labkey-tab-inactive {
   border:solid 1px $lk-tabstrip-border-color;
   text-decoration: none;
   color: #444444;
-  background-color: #f4f4f4;
+  background-color: $lk-inactive-tab-bg-color;
 }
 
 .labkey-tab-content,

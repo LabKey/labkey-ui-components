@@ -3,6 +3,7 @@ import React, { FC, memo, useCallback } from 'react';
 import { useNavMenuState } from '../../useNavMenuState';
 
 import { ProductNavigationMenu } from './ProductNavigationMenu';
+import { Icon } from '../../Icon';
 
 export const ProductNavigation: FC = memo(() => {
     const { show, setShow, menuRef, toggleRef } = useNavMenuState();
@@ -19,7 +20,7 @@ export const ProductNavigation: FC = memo(() => {
                 role="button"
                 type="button"
             >
-                <span className="fa fa-th-large navbar-header-icon" />
+                <Icon iconClass="fa fa-th-large navbar-header-icon" srText="Product Navigation" />
             </button>
 
             {show && <ProductNavigationMenu onCloseMenu={onCloseMenu} menuRef={menuRef} />}

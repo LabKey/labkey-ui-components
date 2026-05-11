@@ -5,6 +5,11 @@ import { ChatModal } from '../mcp/ChatModal';
 import { ChatMessage, ChatRole } from '../mcp/models';
 import { DomainField, GetDomainFields } from './models';
 import { useRequestHandler } from '../../util/RequestHandler';
+import { incrementClientSideMetricCount } from '../../actions';
+
+export const EXPR_ASST_METRIC_FEATURE_AREA = 'expressionAssistant';
+const GENERATE_INTRO =
+    "Explain the calculation you would like and I'll help you write the expression. You can also ask questions about what fields can be used and what calculations can be done.";
 
 interface Props {
     field: DomainField;
@@ -12,9 +17,6 @@ interface Props {
     onCancel: () => void;
     onComplete?: (analysis: string) => void;
 }
-
-const GENERATE_INTRO =
-    "Explain the calculation you would like and I'll help you write the expression. You can also ask questions about what fields can be used and what calculations can be done.";
 
 function useExpressionAssistance(domainFields: DomainField[], existingExpression?: string) {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -74,6 +76,7 @@ function useExpressionAssistance(domainFields: DomainField[], existingExpression
                         text: response.text,
                     },
                 ]);
+                incrementClientSideMetricCount(EXPR_ASST_METRIC_FEATURE_AREA, 'submitPrompt');
             } catch (e) {
                 aborted = !e.status;
                 if (!aborted) {

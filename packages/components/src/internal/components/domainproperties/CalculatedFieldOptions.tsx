@@ -17,7 +17,8 @@ import { parseCalculatedColumn } from './actions';
 import { SVGIcon } from '../base/SVGIcon';
 import { isAIAssistanceEnabled } from '../../app/utils';
 import { useModalState } from '../../hooks';
-import { ExpressionAssistantModal } from './ExpressionAssistantModal';
+import { EXPR_ASST_METRIC_FEATURE_AREA, ExpressionAssistantModal } from './ExpressionAssistantModal';
+import { incrementClientSideMetricCount } from '../../actions';
 
 // export for jest testing
 export const typeToDisplay = (type: string): string => {
@@ -156,16 +157,27 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
         [validateExpression]
     );
 
-    const handleApply = useCallback(
+    const handleApplyExpression = useCallback(
         (analysis: string) => {
             onChange(inputId, analysis);
             setError(undefined);
             setParsedType(undefined);
             validateExpression(analysis, true);
             close();
+            incrementClientSideMetricCount(EXPR_ASST_METRIC_FEATURE_AREA, 'applyExpression');
         },
         [close, inputId, onChange, validateExpression]
     );
+
+    const onOpenAssistant = useCallback(() => {
+        open();
+        incrementClientSideMetricCount(EXPR_ASST_METRIC_FEATURE_AREA, 'clickButton');
+    }, [open]);
+
+    const onValidateAssistant = useCallback(() => {
+        open();
+        incrementClientSideMetricCount(EXPR_ASST_METRIC_FEATURE_AREA, 'clickValidate');
+    }, [open]);
 
     useEffect(() => {
         if (!isNew) {
@@ -205,7 +217,16 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                         value={field.valueExpression || ''}
                     />
                     <div className="domain-field-calc-footer">
-                        {error && <div className="error">{error}</div>}
+                        {error && (
+                            <div>
+                                <span className="error">{error}</span>
+                                {assistanceEnabled && (
+                                    <span className="clickable-text validate-link-ai" onClick={onValidateAssistant}>
+                                        Get help from AI
+                                    </span>
+                                )}
+                            </div>
+                        )}
                         {!error && parsedType && (
                             <div className="validated">
                                 Validated. Calculated data type is "{typeToDisplay(parsedType)}".
@@ -224,7 +245,7 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                             calculation you want, or get help with an existing expression.
                         </div>
                         <div className="margin-bottom">
-                            <button className="btn btn-default" onClick={open} type="button">
+                            <button className="btn btn-default" onClick={onOpenAssistant} type="button">
                                 <SVGIcon
                                     height="16px"
                                     iconSrc="ai_stars_icon"
@@ -268,7 +289,7 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                     field={field}
                     getDomainFields={getDomainFields}
                     onCancel={close}
-                    onComplete={handleApply}
+                    onComplete={handleApplyExpression}
                 />
             )}
         </div>

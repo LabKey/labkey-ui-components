@@ -51,6 +51,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Vader
               </button>
@@ -112,6 +113,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Vader
               </button>
@@ -173,6 +175,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 xyang
               </button>
@@ -234,6 +237,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Vader
               </button>
@@ -295,6 +299,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Test Lab User
               </button>
@@ -356,6 +361,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Test Lab User
               </button>
@@ -417,6 +423,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Vader
               </button>
@@ -554,6 +561,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Vader
               </button>
@@ -615,6 +623,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Vader
               </button>
@@ -676,6 +685,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 xyang
               </button>
@@ -737,6 +747,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Vader
               </button>
@@ -798,6 +809,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Test Lab User
               </button>
@@ -859,6 +871,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Test Lab User
               </button>
@@ -920,6 +933,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Vader
               </button>
@@ -1057,6 +1071,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Vader
               </button>
@@ -1124,6 +1139,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Vader
               </button>
@@ -1185,6 +1201,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 xyang
               </button>
@@ -1246,6 +1263,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Vader
               </button>
@@ -1307,6 +1325,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Test Lab User
               </button>
@@ -1374,6 +1393,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Test Lab User
               </button>
@@ -1435,6 +1455,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Vader
               </button>
@@ -1572,6 +1593,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Vader
               </button>
@@ -1633,6 +1655,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Vader
               </button>
@@ -1700,6 +1723,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 xyang
               </button>
@@ -1761,6 +1785,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Vader
               </button>
@@ -1822,6 +1847,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Test Lab User
               </button>
@@ -1883,6 +1909,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Test Lab User
               </button>
@@ -1944,6 +1971,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             >
               <button
                 class="clickable-text user-link"
+                type="button"
               >
                 Vader
               </button>

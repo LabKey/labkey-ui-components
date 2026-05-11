@@ -65,11 +65,11 @@ export function selectAll(
 }
 
 type DataTypeRowIdsFromTransactionIds = {
-    rowIds: string[];
-    dataTypeIds: Record<number, number>; // todo rename to count
+    dataTypeRowCounts: Record<number, number>; // todo rename to count
+    typeNameRowCounts?: Record<string, number>;
     dataTypes?: string[];
-    dataTypeNameIds?: Record<string, number>;
-}
+    rowIds: string[];
+};
 
 export async function getGridIdsFromTransactionId(
     transactionAuditId: number | string,
@@ -100,8 +100,8 @@ export async function getGridIdsFromTransactionId(
     const rowIds = response.rowIds.map(rowId => rowId.toString());
     return {
         rowIds,
-        dataTypeIds: response['dataTypeIds']
-    }
+        dataTypeRowCounts: response['dataTypeRowCounts'],
+    };
 }
 
 export async function selectGridIdsFromTransactionId(
@@ -119,7 +119,6 @@ export async function selectGridIdsFromTransactionId(
     return selected;
 }
 
-
 async function getDataTypesFromTransactionId(
     transactionAuditId: number | string,
     auditDataType: string,
@@ -129,14 +128,14 @@ async function getDataTypesFromTransactionId(
 ): Promise<DataTypeRowIdsFromTransactionIds> {
     if (!transactionAuditId) return undefined;
 
-    const { rowIds, dataTypeIds } = await getGridIdsFromTransactionId(transactionAuditId, auditDataType);
+    const { rowIds, dataTypeRowCounts } = await getGridIdsFromTransactionId(transactionAuditId, auditDataType);
     const distinct = await selectDistinctRows({
         schemaName,
         queryName,
         column: typeColumn,
         filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
     });
-    return { rowIds, dataTypeIds, dataTypes: distinct.values };
+    return { rowIds, dataTypeRowCounts, dataTypes: distinct.values };
 }
 
 export function getSampleTypesFromTransactionIds(
@@ -162,33 +161,31 @@ export async function getDataClassesFromTransactionIds(
         'DataClass/Name'
     );
 
-    if (!results)
-        return undefined;
+    if (!results) return undefined;
 
-    const { dataTypeIds, dataTypes } = results;
+    const { dataTypeRowCounts, dataTypes } = results;
     const dataTypeLcMap = Object.fromEntries((dataTypes ?? []).map(dt => [dt.toLowerCase(), dt]));
 
-    const dataTypeNameIds = {};
-    if (dataTypeIds) {
+    const typeNameRowCounts = {};
+    if (dataTypeRowCounts) {
         const dataClasses = await selectRows({
             schemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
             columns: ['Name', 'RowId'],
-            filterArray: [Filter.create('rowId', Object.keys(dataTypeIds), Filter.Types.IN)],
+            filterArray: [Filter.create('rowId', Object.keys(dataTypeRowCounts), Filter.Types.IN)],
             containerFilter: Query.containerFilter.currentPlusProjectAndShared,
-        })
-
+        });
 
         dataClasses.rows.forEach(row => {
             const dataClassLc = caseInsensitive(row, 'Name')?.value?.toLowerCase();
             const rowId = caseInsensitive(row, 'RowId').value;
-            dataTypeNameIds[dataTypeLcMap[dataClassLc]] = dataTypeIds[rowId];
+            typeNameRowCounts[dataTypeLcMap[dataClassLc]] = dataTypeRowCounts[rowId];
         });
     }
 
     return {
         ...results,
-        dataTypeNameIds
-    }
+        typeNameRowCounts,
+    };
 }
 
 export interface ExportOptions {

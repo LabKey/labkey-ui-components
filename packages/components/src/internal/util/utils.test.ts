@@ -50,13 +50,13 @@ import {
     isSimpleQuotedMultiLine,
     joinMultiValueForExport,
     makeCommaSeparatedString,
+    makeDataCountMsg,
     parseScientificInt,
     pronoun,
     quoteValueWithDelimiters,
     splitMultiValueForImport,
     stringToHtmlId,
     styleStringToObj,
-    makeDataCountMsg,
     toLowerSafe,
     uncapitalizeFirstChar,
     unorderedEqual,
@@ -2109,6 +2109,8 @@ describe('makeDataCountMsg', () => {
     });
 
     test('three types', () => {
-        expect(makeDataCountMsg({ Molecule: 1, ProtSequence: 4, Compound: 2 })).toBe('1 Molecule, 4 ProtSequences and 2 Compounds');
+        expect(makeDataCountMsg({ Molecule: 1, ProtSequence: 4, Compound: 2 })).toBe(
+            '1 Molecule, 4 ProtSequences and 2 Compounds'
+        );
     });
 });

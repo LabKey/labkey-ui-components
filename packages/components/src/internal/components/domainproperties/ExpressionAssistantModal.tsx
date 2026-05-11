@@ -52,10 +52,26 @@ function useExpressionAssistance(domainFields: DomainField[], existingExpression
         ].join('\n');
     }, [existingExpression, fieldsBlock]);
 
-    const onInterrupt = useCallback(() => {
-        abortRequest();
-        setIsPending(false);
-    }, [abortRequest]);
+    const onInterrupt = useCallback(
+        (isUser?: boolean) => {
+            abortRequest();
+            setIsPending(false);
+
+            // If the user interrupted then request, then display a message confirming that it is no longer thinking
+            if (isUser === true) {
+                setMessages(prev => [
+                    ...prev,
+                    {
+                        id: generateId('chat-'),
+                        role: ChatRole.assistant,
+                        timestamp: Date.now(),
+                        text: 'Stopped.',
+                    },
+                ]);
+            }
+        },
+        [abortRequest]
+    );
 
     const runRequest = useCallback(
         async (fullPrompt: string) => {

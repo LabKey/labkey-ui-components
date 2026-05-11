@@ -44,7 +44,7 @@ interface Props {
     messages: ChatMessage[];
     onCancel: () => void;
     onComplete?: (analysis: string) => void;
-    onInterrupt: () => void;
+    onInterrupt: (isUser?: boolean) => void;
     sendPrompt: (prompt: string) => Promise<void>;
     title: ReactNode;
 }
@@ -70,13 +70,17 @@ export const ChatModal: FC<Props> = memo(props => {
     }, [messages, isPending]);
 
     const handleCancel = useCallback(() => {
-        onInterrupt();
+        onInterrupt(false);
         onCancel();
     }, [onCancel, onInterrupt]);
 
     const handleChange = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>(evt => {
         setPrompt(evt.target.value);
     }, []);
+
+    const handleInterrupt = useCallback(() => {
+        onInterrupt(true);
+    }, [onInterrupt]);
 
     const handleSend = useCallback(() => {
         const trimmed = prompt.trim();
@@ -142,7 +146,7 @@ export const ChatModal: FC<Props> = memo(props => {
                         </div>
                     </div>
                     {isPending && (
-                        <button className="btn btn-default prompt-button" onClick={onInterrupt} type="button">
+                        <button className="btn btn-default prompt-button" onClick={handleInterrupt} type="button">
                             <i className="fa fa-stop" />
                         </button>
                     )}

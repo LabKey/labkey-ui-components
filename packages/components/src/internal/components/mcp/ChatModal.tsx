@@ -69,6 +69,11 @@ export const ChatModal: FC<Props> = memo(props => {
         if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
     }, [messages, isPending]);
 
+    const handleCancel = useCallback(() => {
+        onInterrupt();
+        onCancel();
+    }, [onCancel, onInterrupt]);
+
     const handleChange = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>(evt => {
         setPrompt(evt.target.value);
     }, []);
@@ -103,7 +108,7 @@ export const ChatModal: FC<Props> = memo(props => {
         <BaseModal className="chat-modal">
             <div className="modal-header">
                 <h4 className="modal-title text__wrap">{title}</h4>
-                <button className="btn btn-sm btn-default" onClick={onCancel} type="button">
+                <button className="btn btn-sm btn-default" onClick={handleCancel} type="button">
                     End Chat
                 </button>
             </div>

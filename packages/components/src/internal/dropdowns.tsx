@@ -20,7 +20,7 @@ import { generateId } from './util/utils';
 import { cancelEvent } from './events';
 import { AppLink } from './url/AppLink';
 import { AppURL } from './url/AppURL';
-import { Icon } from './Icon';
+import { useEnterEscape } from '../public/useEnterEscape';
 
 export type BSStyle = 'success' | 'danger' | 'default' | 'primary' | 'info';
 const DROPDOWN_MENU_CLASS = 'dropdown-menu';
@@ -94,14 +94,18 @@ export const DropdownMenu: FC<DropdownMenuProps> = props => {
     const className = classNames('lk-dropdown', 'dropdown', props.className, { open });
     const menuClassName = classNames(DROPDOWN_MENU_CLASS, { 'dropdown-menu-right': pullRight });
 
+    const onKeyDown = useEnterEscape(onClick);
+
     const elemProps = {
         'aria-haspopup': true,
         'aria-expanded': open,
         className: 'dropdown-toggle',
         id,
         onClick,
+        onKeyDown,
         ref: toggleRef,
         role: 'button',
+        tabIndex: 0,
         title: label,
     };
 
@@ -310,6 +314,7 @@ export interface MenuItemProps {
     disabled?: boolean;
     href?: string | AppURL;
     onClick?: () => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLAnchorElement>) => void;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
     rel?: string;
@@ -327,6 +332,7 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
         disabled,
         href = '#',
         onClick,
+        onKeyDown,
         onMouseEnter,
         onMouseLeave,
         rel,
@@ -356,6 +362,7 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
             <AppLink
                 aria-label={props['aria-label']}
                 onClick={onClick_}
+                onKeyDown={onKeyDown}
                 rel={rel}
                 role="menuitem"
                 target={target}

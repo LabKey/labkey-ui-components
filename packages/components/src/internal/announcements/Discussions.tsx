@@ -9,6 +9,7 @@ import { AnnouncementsAPIWrapper, getDefaultAnnouncementsAPIWrapper } from './AP
 import { AnnouncementModel } from './model';
 import { Thread } from './Thread';
 import { ThreadEditor } from './ThreadEditor';
+import { useEnterEscape } from '../../public/useEnterEscape';
 
 interface Props {
     api?: AnnouncementsAPIWrapper;
@@ -67,6 +68,7 @@ export const Discussions: FC<Props> = memo(props => {
     const onShow = useCallback(() => {
         setShowEditor(true);
     }, []);
+    const onShowKeyDown = useEnterEscape(onShow);
 
     const updatePendingThread = useCallback(
         (threadId: number, hasPendingChange: boolean) => {
@@ -117,7 +119,7 @@ export const Discussions: FC<Props> = memo(props => {
             ))}
 
             {allowCreateThread && !showEditor && (
-                <span className="clickable-text" onClick={onShow}>
+                <span className="clickable-text" onClick={onShow} onKeyDown={onShowKeyDown} tabIndex={0}>
                     <i className="fa fa-comments" />
                     Start a thread
                 </span>

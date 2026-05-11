@@ -4,6 +4,7 @@ import { Alert } from '../components/base/Alert';
 import { Modal } from '../Modal';
 
 import { Attachment, getAttachmentURL } from './model';
+import { useEnterEscape } from '../../public/useEnterEscape';
 
 interface ThreadAttachmentProps {
     attachment: Attachment;
@@ -13,6 +14,7 @@ interface ThreadAttachmentProps {
 
 const ThreadAttachment: FC<ThreadAttachmentProps> = memo(({ attachment, containerPath, onRemove }) => {
     const _onRemove = useCallback(() => onRemove(attachment.name), [attachment, onRemove]);
+    const onRemoveKeyDown = useEnterEscape(_onRemove);
     // Only generate a URL if the file has been uploaded.
     const url = attachment.created !== undefined ? getAttachmentURL(attachment, containerPath) : undefined;
 
@@ -22,6 +24,8 @@ const ThreadAttachment: FC<ThreadAttachmentProps> = memo(({ attachment, containe
                 <span
                     className="fa fa-times-circle thread-attachment-icon thread-attachment-icon--remove"
                     onClick={_onRemove}
+                    onKeyDown={onRemoveKeyDown}
+                    tabIndex={0}
                 />
             )}
 

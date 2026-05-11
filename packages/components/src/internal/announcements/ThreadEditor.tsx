@@ -16,7 +16,7 @@ import { handleFileInputChange } from '../util/utils';
 import { isLoading, LoadingState } from '../../public/LoadingState';
 import { resolveErrorMessage } from '../util/messaging';
 import { LoadingSpinner } from '../components/base/LoadingSpinner';
-import { Key } from '../../public/useEnterEscape';
+import { Key, useEnterEscape } from '../../public/useEnterEscape';
 
 import { DropdownMenu, MenuItem } from '../dropdowns';
 
@@ -439,6 +439,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         onCancel?.();
         handlePendingChange();
     }, [thread?.rowId, onCancel, handlePendingChange]);
+    const onCancelKeyDown = useEnterEscape(handleCancel);
 
     const onSubmit = useCallback(() => {
         if (submitting) return;
@@ -518,10 +519,15 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
             <label className="thread-editor__attachment-input btn btn-default">
                 <span className="fa fa-paperclip" />
                 <span className="sr-only">Attach files</span>
-                <input multiple onChange={onFileInputChange} type="file" />
+                <input multiple onChange={onFileInputChange} tabIndex={0} type="file" />
             </label>
 
-            <span className="clickable-text thread-editor__cancel-btn" onClick={handleCancel}>
+            <span
+                  className="clickable-text thread-editor__cancel-btn"
+                onClick={handleCancel}
+                onKeyDown={onCancelKeyDown}
+                tabIndex={0}
+            >
                 Cancel
             </span>
 

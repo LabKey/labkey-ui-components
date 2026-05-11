@@ -17,6 +17,7 @@ import { fromNow, parseDate } from '../util/Date';
 import { AnnouncementModel } from './model';
 import { ThreadEditor, ThreadEditorProps } from './ThreadEditor';
 import { ThreadAttachments } from './ThreadAttachments';
+import { useEnterEscape } from '../../public/useEnterEscape';
 
 interface DeleteThreadBSModalProps {
     cancel: () => void;
@@ -184,6 +185,7 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
     const onReply = useCallback(() => {
         setReplying(true);
     }, []);
+    const onReplyKeyDown = useEnterEscape(onReply);
 
     const onReplied = useCallback((thread: AnnouncementModel) => {
         clearTimeout(recentTimeout);
@@ -219,7 +221,7 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
                         <ThreadAttachments attachments={thread.attachments ?? []} containerPath={containerPath} />
 
                         {allowReply && (
-                            <span className="clickable-text thread-block__reply" onClick={onReply}>
+                            <span className="clickable-text thread-block__reply" onClick={onReply} onKeyDown={onReplyKeyDown} tabIndex={0}>
                                 Reply
                             </span>
                         )}

@@ -64,18 +64,21 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
     }, [setShowModal]);
 
     const _onCopyLink = useCallback((): void => onCopyLink(attachment), [attachment, onCopyLink]);
+    const onCopyKeyDown = useEnterEscape(_onCopyLink);
 
     const _onDownload = useCallback((): void => {
         if (allowDownload) {
             onDownload?.(attachment);
         }
     }, [allowDownload, attachment, onDownload]);
+    const onDownloadKeyDown = useEnterEscape(_onDownload);
 
     const _onRemove = useCallback(() => {
         if (allowRemove) {
             onRemove?.(attachment);
         }
     }, [allowRemove, attachment, onRemove]);
+    const onRemoveKeyDown = useEnterEscape(_onRemove);
 
     const _onBodyAction = useCallback(() => {
         if (!attachment || attachment.unavailable || isLoading(attachment.loadingState)) return;
@@ -99,7 +102,7 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
     const recentlyCreated = attachment.created ? attachment.created > now() - 30000 : false;
     const _isImage = isImage(attachment.name);
     const modalTitle = (
-        <a onClick={_onDownload} className="clickable" title={'Download ' + noun}>
+        <a className="clickable" onClick={_onDownload} title={'Download ' + noun}>
             {title ?? name}
         </a>
     );
@@ -113,16 +116,11 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
                 })}
                 title={name + (unavailable ? ' (unavailable)' : '')}
             >
-                <div
-                    className="attachment-card__body"
-                    onClick={_onBodyAction}
-                    onKeyDown={onBodyKeyDown}
-                    tabIndex={0}
-                >
+                <div className="attachment-card__body" onClick={_onBodyAction} onKeyDown={onBodyKeyDown} tabIndex={0}>
                     <div className="attachment-card__icon">
                         {_isImage && !isLoaded && <LoadingSpinner msg="" />}
                         {_isImage && isLoaded && !unavailable && (
-                            <img className={`attachment-card__icon_img ${imageCls}`} src={imageURL} alt={name} />
+                            <img alt={name} className={`attachment-card__icon_img ${imageCls}`} src={imageURL} />
                         )}
                         {(!_isImage || unavailable) && <i className={`attachment-card__icon_tile ${_iconFontCls}`} />}
                     </div>
@@ -149,18 +147,31 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
                         pullRight
                         title={<i className="fa fa-ellipsis-v" />}
                     >
-                        {onCopyLink && !unavailable && <MenuItem onClick={_onCopyLink}>Copy {copyNoun}</MenuItem>}
-                        {allowDownload && !unavailable && <MenuItem onClick={_onDownload}>Download</MenuItem>}
-                        {allowRemove && <MenuItem onClick={_onRemove}>Remove {noun}</MenuItem>}
+                        {onCopyLink && !unavailable && (
+                            <MenuItem onClick={_onCopyLink} onKeyDown={onCopyKeyDown}>
+                                Copy {copyNoun}
+                            </MenuItem>
+                        )}
+                        {allowDownload && !unavailable && (
+                            <MenuItem onClick={_onDownload} onKeyDown={onDownloadKeyDown}>
+                                Download
+                            </MenuItem>
+                        )}
+                        {allowRemove && (
+                            <MenuItem onClick={_onRemove} onKeyDown={onRemoveKeyDown}>
+                                Remove {noun}
+                            </MenuItem>
+                        )}
                     </DropdownMenu>
                 )}
             </div>
 
             {showModal && (
                 <Modal bsSize="lg" cancelText="Dismiss" onCancel={_hideModal} title={modalTitle}>
-                    <img src={imageURL} alt={`${name} image`} title={name} className="attachment-card__img_modal" />
+                    <img alt={`${name} image`} className="attachment-card__img_modal" src={imageURL} title={name} />
                 </Modal>
             )}
         </>
     );
 });
+AttachmentCard.displayName = 'AttachmentCard';

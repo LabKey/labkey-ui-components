@@ -13,12 +13,12 @@ import { DomainField, DomainFieldError, GetDomainFields, SystemField } from './m
 import { SectionHeading } from './SectionHeading';
 import { isFieldFullyLocked, isFieldPartiallyLocked } from './propertiesUtil';
 import { CALCULATED_TYPE, MULTI_CHOICE_TYPE, PropDescType } from './PropDescType';
-import { parseCalculatedColumn } from './actions';
 import { SVGIcon } from '../base/SVGIcon';
 import { isAIAssistanceEnabled } from '../../app/utils';
 import { useModalState } from '../../hooks';
 import { EXPR_ASST_METRIC_FEATURE_AREA, ExpressionAssistantModal } from './ExpressionAssistantModal';
 import { incrementClientSideMetricCount } from '../../actions';
+import { useAppContext } from '../../AppContext';
 
 // export for jest testing
 export const typeToDisplay = (type: string): string => {
@@ -37,10 +37,7 @@ export const typeToDisplay = (type: string): string => {
 };
 
 // export for jest testing
-export const getColumnTypeMap = (
-    domainFields: List<DomainField>,
-    systemFields: SystemField[]
-): Record<string, string> => {
+export const getColumnTypeMap = (domainFields: DomainField[], systemFields: SystemField[]): Record<string, string> => {
     const colTypeMap = {};
     // Issue 51169: add some default system fields
     colTypeMap['Created'] = 'DATETIME';
@@ -59,13 +56,9 @@ export const getColumnTypeMap = (
     return colTypeMap;
 };
 
-export const getPHIColumnNames = (domainFields: List<DomainField>): string[] => {
+export const getPHIColumnNames = (domainFields: DomainField[]): string[] => {
     if (!domainFields) return [];
-
-    return domainFields
-        .filter(df => df.isPHI())
-        .map(df => df.name)
-        .toArray();
+    return domainFields.filter(df => df.isPHI()).map(df => df.name);
 };
 
 const HELP_TIP_BODY = (
@@ -105,6 +98,7 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
         }),
         [domainIndex, index]
     );
+    const { api } = useAppContext();
 
     const handleChange = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>(
         evt => {
@@ -116,15 +110,17 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
     );
 
     const validateExpression = useCallback(
-        async (value: string, isExpressionChange = true): Promise<void> => {
+        async (expression: string, isExpressionChange = true): Promise<void> => {
             setLoading(true);
             setError(undefined);
             setParsedType(undefined);
             const { domainFields, systemFields } = getDomainFields();
-            const colTypeMap = getColumnTypeMap(domainFields, systemFields);
-            const phiColumns = getPHIColumnNames(domainFields);
             try {
-                const response = await parseCalculatedColumn(value, colTypeMap, phiColumns);
+                const response = await api.domain.parseCalculatedColumn(
+                    expression,
+                    domainFields.toArray(),
+                    systemFields
+                );
                 setError(response.error);
                 setParsedType(response.type);
 
@@ -147,7 +143,7 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                 setLoading(false);
             }
         },
-        [domainIndex, field.name, getDomainFields, index, onChange]
+        [api, domainIndex, field.name, getDomainFields, index, onChange]
     );
 
     const handleBlur = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>(
@@ -176,7 +172,7 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
 
     const onValidateAssistant = useCallback(() => {
         open();
-        incrementClientSideMetricCount(EXPR_ASST_METRIC_FEATURE_AREA, 'clickValidate');
+        incrementClientSideMetricCount(EXPR_ASST_METRIC_FEATURE_AREA, 'clickHelpWithValidate');
     }, [open]);
 
     useEffect(() => {
@@ -286,7 +282,9 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
             </div>
             {show && (
                 <ExpressionAssistantModal
-                    field={field}
+                    // Only inform the modal of the error if there is an invalid expression
+                    fieldError={field.valueExpression ? error : undefined}
+                    fieldExpression={field.valueExpression}
                     getDomainFields={getDomainFields}
                     onCancel={close}
                     onComplete={handleApplyExpression}

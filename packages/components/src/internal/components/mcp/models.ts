@@ -4,6 +4,7 @@ export enum ChatRole {
 }
 
 export interface ChatMessage {
+    allowApplySql?: boolean;
     error?: string;
     html?: string;
     id: string;
@@ -12,4 +13,3 @@ export interface ChatMessage {
     text?: string;
     timestamp: number;
 }
-

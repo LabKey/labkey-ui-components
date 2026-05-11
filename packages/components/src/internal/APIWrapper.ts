@@ -17,6 +17,7 @@ import {
 } from './components/security/APIWrapper';
 import {
     DomainPropertiesAPIWrapper,
+    DomainPropertiesServerAPIWrapper,
     getDomainPropertiesTestAPIWrapper,
 } from './components/domainproperties/APIWrapper';
 import { getQueryTestAPIWrapper, QueryAPIWrapper, QueryServerAPIWrapper } from './query/APIWrapper';
@@ -55,7 +56,7 @@ export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
     if (!DEFAULT_WRAPPER) {
         DEFAULT_WRAPPER = {
             assay: new AssayServerAPIWrapper(),
-            domain: new DomainPropertiesAPIWrapper(),
+            domain: new DomainPropertiesServerAPIWrapper(),
             entity: new EntityServerAPIWrapper(),
             folder: new ServerFolderAPIWrapper(),
             query: new QueryServerAPIWrapper(),

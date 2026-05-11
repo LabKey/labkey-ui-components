@@ -27,8 +27,14 @@ const ChatBubble: FC<ChatBubbleProps> = memo(({ message, onComplete }) => {
         <div className="chat-item assistant-response">
             {message.text && <div className="assistant-text">{message.text}</div>}
             {message.html && <div className="assistant-text" dangerouslySetInnerHTML={{ __html: message.html }} />}
-            {message.sql && <div className="assistant-expression">{message.sql}</div>}
-            {message.sql && onComplete && (
+            {message.sql && (
+                <div className="assistant-expression">
+                    <pre>
+                        <code className="language-sql">{message.sql}</code>
+                    </pre>
+                </div>
+            )}
+            {message.sql && message.allowApplySql !== false && onComplete && (
                 <a className="apply-expression" onClick={handleApply} role="button" tabIndex={0}>
                     <i className="fa fa-check" /> Apply Expression
                 </a>
@@ -39,7 +45,6 @@ const ChatBubble: FC<ChatBubbleProps> = memo(({ message, onComplete }) => {
 ChatBubble.displayName = 'ChatBubble';
 
 interface Props {
-    intro?: ReactNode;
     isPending: boolean;
     messages: ChatMessage[];
     onCancel: () => void;
@@ -50,7 +55,7 @@ interface Props {
 }
 
 export const ChatModal: FC<Props> = memo(props => {
-    const { intro, isPending, messages, onCancel, onComplete, onInterrupt, sendPrompt, title } = props;
+    const { isPending, messages, onCancel, onComplete, onInterrupt, sendPrompt, title } = props;
     const [prompt, setPrompt] = useState('');
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const historyRef = useRef<HTMLDivElement>(null);
@@ -58,9 +63,7 @@ export const ChatModal: FC<Props> = memo(props => {
 
     // Autofocus the prompt on mount
     useEffect(() => {
-        timer.set(() => {
-            textAreaRef.current?.focus();
-        });
+        timer.set(() => textAreaRef.current?.focus());
         return timer.clear;
     }, [timer]);
 
@@ -86,7 +89,6 @@ export const ChatModal: FC<Props> = memo(props => {
         const trimmed = prompt.trim();
         if (!trimmed || isPending) return;
         setPrompt('');
-        // sendPrompt manages its own errors; ignore the returned promise
         sendPrompt(trimmed);
     }, [prompt, isPending, sendPrompt]);
 
@@ -118,7 +120,6 @@ export const ChatModal: FC<Props> = memo(props => {
             </div>
             <div className="modal-body">
                 <div className="chat-history" ref={historyRef}>
-                    {intro && <div className="chat-item assistant-response chat-intro">{intro}</div>}
                     {messages.map(message => (
                         <ChatBubble key={message.id} message={message} onComplete={onComplete} />
                     ))}

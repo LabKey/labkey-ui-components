@@ -1,6 +1,4 @@
-import React, { act } from 'react';
-
-import { List } from 'immutable';
+import React from 'react';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
@@ -16,63 +14,57 @@ import {
 
 describe('CalculatedFieldOptions', () => {
     test('default properties', async () => {
-        await act(async () => {
-            renderWithAppContext(
-                <CalculatedFieldOptions
-                    domainIndex={0}
-                    field={DomainField.create({ rangeURI: STRING_RANGE_URI })}
-                    getDomainFields={jest.fn()}
-                    index={0}
-                    onChange={jest.fn()}
-                />
-            );
-        });
+        renderWithAppContext(
+            <CalculatedFieldOptions
+                domainIndex={0}
+                field={DomainField.create({ rangeURI: STRING_RANGE_URI })}
+                getDomainFields={jest.fn()}
+                index={0}
+                onChange={jest.fn()}
+            />
+        );
 
-        expect(document.querySelector('.domain-field-section-heading').textContent).toBe('Expression');
+        expect(document.querySelector('.domain-field-section-heading')).toHaveTextContent('Expression');
         expect(document.querySelectorAll('.margin-bottom')).toHaveLength(0);
         expect(document.querySelectorAll('.form-control')).toHaveLength(1);
         expect(document.querySelectorAll('.domain-field-calc-footer')).toHaveLength(1);
-        expect(document.querySelector('textarea').textContent).toBe('');
+        expect(document.querySelector('textarea')).toHaveTextContent('');
         expect(document.querySelector('textarea').getAttribute('disabled')).toBe(null);
     });
 
     test('with existing expression', async () => {
-        await act(async () => {
-            renderWithAppContext(
-                <CalculatedFieldOptions
-                    domainIndex={0}
-                    field={DomainField.create({ valueExpression: '1=0', rangeURI: INT_RANGE_URI })}
-                    getDomainFields={jest.fn()}
-                    index={0}
-                    onChange={jest.fn()}
-                />
-            );
-        });
+        renderWithAppContext(
+            <CalculatedFieldOptions
+                domainIndex={0}
+                field={DomainField.create({ valueExpression: '1=0', rangeURI: INT_RANGE_URI })}
+                getDomainFields={jest.fn()}
+                index={0}
+                onChange={jest.fn()}
+            />
+        );
 
-        expect(document.querySelector('.domain-field-section-heading').textContent).toBe('Expression');
+        expect(document.querySelector('.domain-field-section-heading')).toHaveTextContent('Expression');
         expect(document.querySelectorAll('.margin-bottom')).toHaveLength(1);
         expect(document.querySelectorAll('.form-control')).toHaveLength(1);
         expect(document.querySelectorAll('.domain-field-calc-footer')).toHaveLength(1);
-        expect(document.querySelector('textarea').textContent).toBe('1=0');
+        expect(document.querySelector('textarea')).toHaveTextContent('1=0');
         expect(document.querySelector('textarea').getAttribute('disabled')).toBe(null);
     });
 
     test('disabled from lockType', async () => {
-        await act(async () => {
-            renderWithAppContext(
-                <CalculatedFieldOptions
-                    domainIndex={0}
-                    field={DomainField.create({ valueExpression: '1=0', lockType: DOMAIN_FIELD_PARTIALLY_LOCKED })}
-                    getDomainFields={jest.fn()}
-                    index={0}
-                    onChange={jest.fn()}
-                />
-            );
-        });
+        renderWithAppContext(
+            <CalculatedFieldOptions
+                domainIndex={0}
+                field={DomainField.create({ valueExpression: '1=0', lockType: DOMAIN_FIELD_PARTIALLY_LOCKED })}
+                getDomainFields={jest.fn()}
+                index={0}
+                onChange={jest.fn()}
+            />
+        );
 
-        expect(document.querySelector('.domain-field-section-heading').textContent).toBe('Expression');
+        expect(document.querySelector('.domain-field-section-heading')).toHaveTextContent('Expression');
         expect(document.querySelectorAll('.form-control')).toHaveLength(1);
-        expect(document.querySelector('textarea').textContent).toBe('1=0');
+        expect(document.querySelector('textarea')).toHaveTextContent('1=0');
         expect(document.querySelector('textarea').getAttribute('disabled')).toBe('');
     });
 
@@ -93,11 +85,11 @@ describe('CalculatedFieldOptions', () => {
 
     test('getPHIColumnNames', () => {
         expect(getPHIColumnNames(undefined)).toEqual([]);
-        expect(getPHIColumnNames(List.of())).toEqual([]);
-        expect(getPHIColumnNames(List.of(DomainField.create({ name: 'a' })))).toEqual([]);
-        expect(getPHIColumnNames(List.of(DomainField.create({ name: 'a', PHI: undefined })))).toEqual([]);
-        expect(getPHIColumnNames(List.of(DomainField.create({ name: 'a', PHI: PHILEVEL_NOT_PHI })))).toEqual([]);
-        expect(getPHIColumnNames(List.of(DomainField.create({ name: 'a', PHI: PHILEVEL_LIMITED_PHI })))).toEqual(['a']);
+        expect(getPHIColumnNames([])).toEqual([]);
+        expect(getPHIColumnNames([DomainField.create({ name: 'a' })])).toEqual([]);
+        expect(getPHIColumnNames([DomainField.create({ name: 'a', PHI: undefined })])).toEqual([]);
+        expect(getPHIColumnNames([DomainField.create({ name: 'a', PHI: PHILEVEL_NOT_PHI })])).toEqual([]);
+        expect(getPHIColumnNames([DomainField.create({ name: 'a', PHI: PHILEVEL_LIMITED_PHI })])).toEqual(['a']);
     });
 
     test('getColumnTypeMap', () => {
@@ -108,11 +100,12 @@ describe('CalculatedFieldOptions', () => {
             ModifiedBy: 'INTEGER',
         };
         expect(getColumnTypeMap(undefined, undefined)).toEqual({ ...defaultTypeMap });
-        expect(getColumnTypeMap(List.of(), [])).toEqual({ ...defaultTypeMap });
+        expect(getColumnTypeMap([], [])).toEqual({ ...defaultTypeMap });
         expect(
-            getColumnTypeMap(List.of({ name: 'b', dataType: { name: 'text' } } as DomainField), [
-                { Name: 'a', DataType: 'integer' } as SystemField,
-            ])
+            getColumnTypeMap(
+                [{ name: 'b', dataType: { name: 'text' } } as DomainField],
+                [{ Name: 'a', DataType: 'integer' } as SystemField]
+            )
         ).toEqual({
             ...defaultTypeMap,
             a: 'INTEGER',
@@ -120,12 +113,12 @@ describe('CalculatedFieldOptions', () => {
         });
         expect(
             getColumnTypeMap(
-                List.of(
+                [
                     { name: 'b', dataType: { name: 'text' } } as DomainField,
                     { name: 'c', dataType: { name: 'calculation' } } as DomainField,
                     { name: 'c', dataType: { name: 'multiChoice' } } as DomainField,
-                    { name: 'd', dataType: { name: 'INT' } } as DomainField
-                ),
+                    { name: 'd', dataType: { name: 'INT' } } as DomainField,
+                ],
                 [{ Name: 'a', DataType: 'integer' } as SystemField]
             )
         ).toEqual({

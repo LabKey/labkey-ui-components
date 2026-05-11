@@ -19,7 +19,7 @@ import { List } from 'immutable';
 
 import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
 
-import { DomainField, IDomainFormDisplayOptions, IFieldChange, SystemField } from './models';
+import { DomainField, GetDomainFields, IDomainFormDisplayOptions, IFieldChange } from './models';
 import { NameAndLinkingOptions } from './NameAndLinkingOptions';
 import { TextFieldOptions } from './TextFieldOptions';
 import { BooleanFieldOptions } from './BooleanFieldOptions';
@@ -42,7 +42,7 @@ interface Props {
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     domainIndex: number;
     field: DomainField;
-    getDomainFields?: () => { domainFields: List<DomainField>; systemFields: SystemField[] };
+    getDomainFields?: GetDomainFields;
     index: number;
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean, skipDirtyCheck?: boolean) => void;
     onMultiChange: (changes: List<IFieldChange>) => void;

@@ -1564,6 +1564,8 @@ export class DomainField
     }
 }
 
+// TODO: Refactor List<DomainField> to DomainField[].
+//  Additionally, get rid of getDomainFields() in general and replace with domainField and systemField props.
 export type GetDomainFields = () => { domainFields: List<DomainField>; systemFields: SystemField[] };
 
 export function isValidTextChoiceValue(v: string): boolean {

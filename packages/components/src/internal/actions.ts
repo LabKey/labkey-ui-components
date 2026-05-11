@@ -784,31 +784,3 @@ export function renameGridView(
         });
     });
 }
-
-export interface ExpressionAssistOptions {
-    containerPath?: string;
-    prompt: string;
-    requestHandler?: RequestHandler;
-}
-
-export interface ExpressionAssistResponse {
-    error?: string;
-    html?: string;
-    sql?: string;
-    success: boolean;
-    text?: string;
-}
-
-export function expressionAssistant(options: ExpressionAssistOptions): Promise<ExpressionAssistResponse> {
-    const { containerPath, prompt, requestHandler } = options;
-    return request<ExpressionAssistResponse>({
-        url: ActionURL.buildURL('query', 'expressionAssistantAgent.api', containerPath),
-        method: 'POST',
-        jsonData: {
-            schemaName: 'exp.data',
-            prompt,
-        },
-        errorLogMsg: 'Failed to assist with expression',
-        requestHandler,
-    });
-}

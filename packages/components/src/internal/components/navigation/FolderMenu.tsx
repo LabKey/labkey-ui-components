@@ -54,7 +54,7 @@ export const FolderMenuItems: FC<FolderMenuProps> = memo(props => {
                                         'col-xs-10': !user.isAdmin,
                                     })}
                                 >
-                                    <button className="menu-folder-item" onClick={() => onClick(item)}>
+                                    <button className="menu-folder-item" onClick={() => onClick(item)} type="button">
                                         {item.label}
                                     </button>
                                 </div>

@@ -107,6 +107,7 @@ export const ExpandableContainer: FC<Props> = memo(props => {
                             'fa-chevron-down': visible,
                             'fa-chevron-right': !visible,
                         })}
+                        type="button"
                     />
                 </div>
                 <div className="container-expandable-heading">

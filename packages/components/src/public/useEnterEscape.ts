@@ -25,10 +25,10 @@ type KeyHandler = (evt: KeyboardEvent) => void;
  * @param onEnter: function to call when the enter key is pressed.
  * @param onEscape: function to call when the escape key is pressed.
  */
-export const useEnterEscape = (onEnter?: (evt?: any) => void, onEscape?: (evt?: any) => void): any => {
+export const useEnterEscape = (onEnter?: (evt?: any) => void, onEscape?: (evt?: any) => void, allowMultiSelect?: boolean): any => {
     return useCallback(
         (evt: KeyboardEvent) => {
-            if (evt.shiftKey || evt.metaKey) return;
+            if (!allowMultiSelect && (evt.shiftKey || evt.metaKey)) return;
 
             switch (evt.key) {
                 case Key.ENTER:
@@ -45,6 +45,6 @@ export const useEnterEscape = (onEnter?: (evt?: any) => void, onEscape?: (evt?: 
                     break;
             }
         },
-        [onEnter, onEscape]
+        [allowMultiSelect, onEnter, onEscape]
     );
 };

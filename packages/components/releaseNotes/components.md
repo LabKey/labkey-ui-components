@@ -8,7 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Allow tab to app main menu folder items
   - Modals to have focus on open, allow tab only within modal elements, and ESCAPE to close
   - Use buttons with clickable-text styling instead of spans and divs with onClick properties
-  - Update `useEnterEscape` to allow optional event argument to callbacks
+  - Update `useEnterEscape` to allow optional event argument to callbacks and to allow for multi-select behavior
   - EditableGrid Cell to allow tab focus with tabIndex 0
   - Update styling for file inputs on `AttachmentCard` so input field is not hidden
   - Add `tabIndex` and `onKeyDown` callback for thread components

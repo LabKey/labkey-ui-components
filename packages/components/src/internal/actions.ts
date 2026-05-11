@@ -802,8 +802,7 @@ export interface ExpressionAssistResponse {
 export function expressionAssistant(options: ExpressionAssistOptions): Promise<ExpressionAssistResponse> {
     const { containerPath, prompt, requestHandler } = options;
     return request<ExpressionAssistResponse>({
-        // TODO: Replace with new endpoint, this returns a shape we like but not the results we want :-)
-        url: ActionURL.buildURL('query', 'queryAgent.api', containerPath),
+        url: ActionURL.buildURL('query', 'expressionAssistantAgent.api', containerPath),
         method: 'POST',
         jsonData: {
             schemaName: 'exp.data',

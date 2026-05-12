@@ -1,9 +1,11 @@
-import React, { FC, memo, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { BaseModal } from '../../Modal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ChatMessage, ChatRole } from './models';
 import { cancelEvent } from '../../events';
 import { useTimeout } from '../../hooks';
+
+const fieldSizingSupported = CSS.supports('field-sizing', 'content');
 
 interface ChatBubbleProps {
     message: ChatMessage;
@@ -66,6 +68,22 @@ export const ChatModal: FC<Props> = memo(props => {
         timer.set(() => textAreaRef.current?.focus());
         return timer.clear;
     }, [timer]);
+
+    // Firefox does not support the CSS property "field-sizing" which allows for the height of the textarea
+    // to increase up to "max-height" based on the textarea content. Here we use a layout effect to mimic this
+    // behavior in JavaScript.
+    useLayoutEffect(() => {
+        if (fieldSizingSupported || !textAreaRef.current) return;
+
+        const el = textAreaRef.current;
+        el.style.height = 'inherit';
+
+        // Calculate height
+        const computed = getComputedStyle(el);
+        const nextHeight = el.scrollHeight + parseInt(computed.borderTopWidth) + parseInt(computed.borderBottomWidth);
+
+        el.style.height = `${nextHeight}px`;
+    }, [prompt]);
 
     useEffect(() => {
         const el = historyRef.current;
@@ -142,6 +160,7 @@ export const ChatModal: FC<Props> = memo(props => {
                                 onKeyDown={handleKeyDown}
                                 placeholder="Enter a prompt"
                                 ref={textAreaRef}
+                                rows={1}
                                 value={prompt}
                             />
                         </div>

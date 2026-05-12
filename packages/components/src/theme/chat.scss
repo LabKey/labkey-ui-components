@@ -10,7 +10,7 @@
         height: 100%;
         display: flex;
         flex-direction: column;
-        background-color: #FFFFFF;
+        background-color: $white;
         border: 1px solid #DDDDDD;
         border-radius: 8px;
         overflow: hidden;
@@ -57,6 +57,7 @@
         border: 1px solid rgba(201, 230, 242, 0.8);
         border-radius: 8px 8px 0 8px;
         color: #0088CC;
+        white-space: pre-wrap;
     }
 
     .assistant-response {
@@ -117,13 +118,12 @@
         field-sizing: content;
         line-height: 1.2;
         min-height: 1.2lh;
-        max-height: 9lh;
+        max-height: 12lh;
 
         padding: 10px;
         box-sizing: border-box;
         resize: none;
         border: 1px solid #CCCCCC;
-        border-radius: 3px;
         margin: 0;
         white-space: pre-wrap;
         word-wrap: break-word;

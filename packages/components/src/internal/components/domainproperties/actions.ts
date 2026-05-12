@@ -1529,12 +1529,14 @@ export function scrollDomainErrorIntoView(): void {
 export interface ExpressionAssistOptions {
     columnMap: Record<string, string>;
     containerPath?: string;
+    conversationId?: string;
     phiColumns: string[];
     prompt: string;
     requestHandler?: RequestHandler;
 }
 
 export interface ExpressionAssistResponse {
+    conversationId: string;
     error?: string;
     html?: string;
     sql?: string;
@@ -1543,11 +1545,11 @@ export interface ExpressionAssistResponse {
 }
 
 export function expressionAssistant(options: ExpressionAssistOptions): Promise<ExpressionAssistResponse> {
-    const { containerPath, columnMap, phiColumns, prompt, requestHandler } = options;
+    const { columnMap, containerPath, conversationId, phiColumns, prompt, requestHandler } = options;
     return request<ExpressionAssistResponse>({
         url: ActionURL.buildURL('query', 'expressionAssistantAgent.api', containerPath),
         method: 'POST',
-        jsonData: { columnMap, phiColumns, prompt },
+        jsonData: { columnMap, conversationId, phiColumns, prompt },
         errorLogMsg: 'Failed to assist with expression',
         requestHandler,
     });

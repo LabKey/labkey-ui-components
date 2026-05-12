@@ -37,6 +37,7 @@ function useExpressionAssistance(
     fieldExpression?: string,
     fieldError?: string
 ) {
+    const [conversationId, setConversationId] = useState<string>();
     const [messages, setMessages] = useState<ChatMessage[]>(() => {
         let sql: string;
         let text: string;
@@ -104,12 +105,18 @@ function useExpressionAssistance(
             let aborted = false;
             try {
                 const response = await api.domain.expressionAssistant({
+                    conversationId,
                     columnMap,
                     phiColumns,
                     prompt,
                     requestHandler,
                 });
                 resetRequestHandler();
+
+                if (response.conversationId !== conversationId) {
+                    setConversationId(response.conversationId);
+                }
+
                 pushMessage({
                     error: response.success ? response.error : (response.error ?? 'Request failed.'),
                     html: response.html,
@@ -129,7 +136,7 @@ function useExpressionAssistance(
                 }
             }
         },
-        [api, columnMap, phiColumns, pushMessage, requestHandler, resetRequestHandler]
+        [api, columnMap, conversationId, phiColumns, pushMessage, requestHandler, resetRequestHandler]
     );
 
     const sendPrompt = useCallback(

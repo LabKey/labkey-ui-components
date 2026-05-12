@@ -931,13 +931,3 @@ export function hasIdentifiedCol(schemaQuery: SchemaQuery): boolean {
     const isCompound = schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.COMPOUND, false);
     return isNucSeq || isProtSeq || isMolecule || isCompound;
 }
-
-export function makeDataCountMsg(dataCounts: Record<string, number>): string {
-    const parts = [];
-    for (const [noun, count] of Object.entries(dataCounts)) {
-        if (!count) continue;
-        parts.push(`${count} ${count > 1 ? noun + 's' : noun}`);
-    }
-
-    return makeCommaSeparatedString(parts);
-}

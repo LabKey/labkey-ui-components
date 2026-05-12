@@ -50,7 +50,6 @@ import {
     isSimpleQuotedMultiLine,
     joinMultiValueForExport,
     makeCommaSeparatedString,
-    makeDataCountMsg,
     parseScientificInt,
     pronoun,
     quoteValueWithDelimiters,
@@ -2083,34 +2082,3 @@ describe('stringToHtmlId', () => {
     });
 });
 
-describe('makeDataCountMsg', () => {
-    test('empty object', () => {
-        expect(makeDataCountMsg({})).toBe('');
-    });
-
-    test('all zero or null counts are ignored', () => {
-        expect(makeDataCountMsg({ Molecule: 0, ProtSequence: null })).toBe('');
-    });
-
-    test('single type, count of 1 — no pluralization', () => {
-        expect(makeDataCountMsg({ Molecule: 1 })).toBe('1 Molecule');
-    });
-
-    test('single type, count > 1 — pluralized with s', () => {
-        expect(makeDataCountMsg({ Molecule: 3 })).toBe('3 Molecules');
-    });
-
-    test('multiple types', () => {
-        expect(makeDataCountMsg({ Molecule: 2, Compound: 1 })).toBe('2 Molecules and 1 Compound');
-    });
-
-    test('multiple types, some zero', () => {
-        expect(makeDataCountMsg({ Molecule: 2, ProtSequence: 0, Compound: 1 })).toBe('2 Molecules and 1 Compound');
-    });
-
-    test('three types', () => {
-        expect(makeDataCountMsg({ Molecule: 1, ProtSequence: 4, Compound: 2 })).toBe(
-            '1 Molecule, 4 ProtSequences and 2 Compounds'
-        );
-    });
-});

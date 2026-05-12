@@ -21,6 +21,7 @@ exports[`<ExpandableContainer/> custom props 1`] = `
       >
         <button
           class="clickable-text fa fa-chevron-down"
+          type="button"
         />
       </div>
       <div
@@ -64,6 +65,7 @@ exports[`<ExpandableContainer/> default props 1`] = `
       >
         <button
           class="clickable-text fa fa-chevron-right"
+          type="button"
         />
       </div>
       <div

@@ -145,10 +145,10 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
                     ))}
                     <div className="field-expand-icon">
                         {column.isLookup() && !isExpanded && (
-                            <button className="clickable-text fa fa-chevron-right" onClick={_onExpandColumn} />
+                            <button className="clickable-text fa fa-chevron-right" onClick={_onExpandColumn} type="button" />
                         )}
                         {column.isLookup() && isExpanded && (
-                            <button className="clickable-text fa fa-chevron-down" onClick={_onCollapseColumn} />
+                            <button className="clickable-text fa fa-chevron-down" onClick={_onCollapseColumn} type="button" />
                         )}
                     </div>
                 </>
@@ -167,6 +167,7 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
                     onMouseLeave={onMouseLeave}
                     ref={targetRef}
                     title={disabled ? undefined : 'Add this field to the view.'}
+                    type="button"
                 >
                     <i className="fa fa-plus" />
                     {show && createPortal(popover, portalEl)}
@@ -319,6 +320,7 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
                                     className="clickable-text edit-inline-field__toggle"
                                     onClick={_onEditTitle}
                                     title="Edit the field's label for this view."
+                                    type="button"
                                 >
                                     <i className="fa fa-pencil" id={'select-' + index} />
                                 </button>
@@ -328,6 +330,7 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
                                     className="clickable-text view-field__action"
                                     onClick={_onRemoveColumn}
                                     title="Remove this field from the view."
+                                    type="button"
                                 >
                                     <i className="fa fa-times" />
                                 </button>

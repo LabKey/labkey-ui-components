@@ -231,7 +231,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                                 }
                                             >
                                                 {view.isSaved ? (
-                                                    <button onClick={revertDefaultView} className="clickable-text">
+                                                    <button onClick={revertDefaultView} className="clickable-text" type="button">
                                                         Revert
                                                     </button>
                                                 ) : (
@@ -244,6 +244,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                                 onClick={setDefaultView}
                                                 id={'setDefault-' + ind}
                                                 className="clickable-text"
+                                                type="button"
                                             >
                                                 Make default
                                             </button>
@@ -255,6 +256,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                                 className="clickable-text edit-inline-field__toggle small-right-padding"
                                                 id={'select-' + ind}
                                                 onClick={onSelectView}
+                                                type="button"
                                             >
                                                 <i className="fa fa-pencil" />
                                             </button>
@@ -262,6 +264,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                                 className="clickable-text edit-inline-field__toggle"
                                                 id={'delete-' + ind}
                                                 onClick={onDeleteView}
+                                                type="button"
                                             >
                                                 <i className="fa fa-trash-o" />
                                             </button>

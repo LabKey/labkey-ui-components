@@ -177,6 +177,23 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                     'grid-header-drag-over': dragTarget === index,
                                 });
                                 const description = getColumnHoverText(raw);
+                                let headerCellContent;
+                                let emptyHeader = false;
+                                if (headerCell) {
+                                    headerCellContent = headerCell(column, i, columns.size);
+                                    emptyHeader = !headerCellContent;
+                                } else {
+                                    headerCellContent = (
+                                        <div className={GRID_HEADER_CELL_BODY}>
+                                            {title}
+                                            {column.helpTipRenderer && (
+                                                <LabelHelpTip popoverClassName="label-help-arrow-top" title={title}>
+                                                    <HelpTipRenderer type={column.helpTipRenderer} />
+                                                </LabelHelpTip>
+                                            )}
+                                        </div>
+                                    );
+                                }
 
                                 return (
                                     <th
@@ -191,26 +208,17 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                         onDragOver={this.handleDragOver}
                                         onDragStart={this.handleDragStart}
                                         onDrop={this.handleDrop}
+                                        role={emptyHeader ? 'presentation' : undefined}
                                         title={hideTooltip ? undefined : description}
                                     >
                                         {column.index === '__selection__' && (
                                             <span className="sr-only">Selection checkboxes</span>
                                         )}
-                                        {headerCell && headerCell(column, i, columns.size)}
-                                        {!headerCell && (
-                                            <div className={GRID_HEADER_CELL_BODY}>
-                                                {title}
-                                                {column.helpTipRenderer && (
-                                                    <LabelHelpTip popoverClassName="label-help-arrow-top" title={title}>
-                                                        <HelpTipRenderer type={column.helpTipRenderer} />
-                                                    </LabelHelpTip>
-                                                )}
-                                            </div>
-                                        )}
+                                        {headerCellContent}
                                     </th>
                                 );
                             }
-                            return <th key={index} />;
+                            return <th key={index} role="presentation" />;
                         }, this)
                         .toArray()}
                 </tr>

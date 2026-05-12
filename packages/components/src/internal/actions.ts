@@ -76,7 +76,7 @@ export async function getGridIdsFromTransactionId(
     dataType: string,
     containerPath?: string
 ): Promise<DataTypeRowIdsFromTransactionIds> {
-    if (!transactionAuditId) return;
+    if (!transactionAuditId) return { rowIds: [], dataTypeRowCounts: {} };
 
     const failureMsg = `There was a problem retrieving the ${dataType} from the last action.`;
     const errorLogMsg = `${failureMsg} (transactionAuditId = ${transactionAuditId})`;
@@ -126,7 +126,7 @@ async function getDataTypesFromTransactionId(
     queryName: string,
     typeColumn: string
 ): Promise<DataTypeRowIdsFromTransactionIds> {
-    if (!transactionAuditId) return undefined;
+    if (!transactionAuditId) return { rowIds: [], dataTypeRowCounts: {}, dataTypes: [] };
 
     const { rowIds, dataTypeRowCounts } = await getGridIdsFromTransactionId(transactionAuditId, auditDataType);
     const distinct = await selectDistinctRows({
@@ -161,13 +161,13 @@ export async function getDataClassesFromTransactionIds(
         'DataClass/Name'
     );
 
-    if (!results) return undefined;
+    if (!results.rowIds.length) return { ...results, typeNameRowCounts: {} };
 
     const { dataTypeRowCounts, dataTypes } = results;
     const dataTypeLcMap = Object.fromEntries((dataTypes ?? []).map(dt => [dt.toLowerCase(), dt]));
 
     const typeNameRowCounts = {};
-    if (dataTypeRowCounts) {
+    if (Object.keys(dataTypeRowCounts).length > 0) {
         const dataClasses = await selectRows({
             schemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
             columns: ['Name', 'RowId'],

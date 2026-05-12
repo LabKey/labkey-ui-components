@@ -48,3 +48,18 @@ export const useEnterEscape = (onEnter?: (evt?: any) => void, onEscape?: (evt?: 
         [allowMultiSelect, onEnter, onEscape]
     );
 };
+
+// For use with PureComponents that can't use the above hook
+export const onEnterKeyDown = (onClick: () => any): ((evt: any) => void) => {
+    return (evt: KeyboardEvent) => {
+        if (evt.shiftKey || evt.metaKey) return;
+
+        switch (evt.key) {
+            case Key.ENTER:
+                evt.stopPropagation();
+                evt.preventDefault();
+                onClick();
+                break;
+        }
+    };
+};

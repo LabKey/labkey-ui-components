@@ -16,6 +16,8 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import classNames from 'classnames';
 
+import { useEnterEscape } from '../../useEnterEscape';
+
 import { ActionValue } from './actions/Action';
 
 interface ValueProps {
@@ -65,6 +67,7 @@ export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyFor
 
     const onMouseEnter = useCallback((): void => setIsActive(true), []);
     const onMouseLeave = useCallback((): void => setIsActive(false), []);
+    const onKeyDown = useEnterEscape(onValueClick);
 
     const showRemoveIcon = isActive && isRemovable !== false && action.keyword !== 'view';
 
@@ -84,8 +87,10 @@ export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyFor
         <div
             className={className}
             onClick={onValueClick}
+            onKeyDown={onKeyDown}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
+            tabIndex={0}
             title={isReadOnly}
         >
             {(!lockReadOnlyForDelete || !isReadOnly) && <i className={iconClassNames} onClick={onIconClick} />}

@@ -9,6 +9,7 @@ import { UserLink } from '../user/UserLink';
 
 import { TimelineEventModel, TimelineGroupedEventInfo } from './models';
 import { getEventDataValueDisplay } from './utils';
+import { onEnterKeyDown } from '../../../public/useEnterEscape';
 
 interface Props {
     events: TimelineEventModel[];
@@ -57,17 +58,21 @@ export class TimelineView extends React.Component<Props, any> {
                 } else if (info.firstEvent && event.getRowKey() === info.firstEvent.getRowKey()) isFirstEvent = true;
             });
         }
+        const onClick = () => {
+            if (event.rowId) this.selectEvent(event);
+        };
+        const onKeyDown = onEnterKeyDown(onClick);
 
         return (
             <tr
-                key={event.getRowKey()}
-                onClick={() => {
-                    if (event.rowId) this.selectEvent(event);
-                }}
                 className={classNames({
                     'timeline-event-row': event.rowId !== 0,
                     'timeline-row-selected': eventSelected,
                 })}
+                key={event.getRowKey()}
+                onClick={onClick}
+                onKeyDown={onKeyDown}
+                tabIndex={event.rowId ? 0 : -1}
             >
                 {this.renderTimestampCol(event.timestamp)}
                 {this.renderIconCol(

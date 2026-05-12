@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode } from 'react';
+import React, { FC, memo, PropsWithChildren, ReactNode } from 'react';
 import classNames from 'classnames';
 
 import { isApp } from '../../app/utils';
@@ -6,6 +6,7 @@ import { isApp } from '../../app/utils';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { DomainPanelStatus } from './models';
+import { useEnterEscape } from '../../../public/useEnterEscape';
 
 interface Props extends PropsWithChildren {
     collapsed: boolean;
@@ -22,105 +23,98 @@ interface Props extends PropsWithChildren {
     togglePanel: () => void;
 }
 
-export class CollapsiblePanelHeader extends React.PureComponent<Props> {
-    getHeaderIconHelpMsg = (): string => {
-        const { isValid, panelStatus, iconHelpMsg, todoIconHelpMsg } = this.props;
+export const CollapsiblePanelHeader: FC<Props> = memo(props => {
+    const {
+        children,
+        collapsed,
+        collapsible,
+        controlledCollapse,
+        headerDetails,
+        iconHelpMsg,
+        id,
+        isValid,
+        panelStatus,
+        title,
+        titlePrefix,
+        todoIconHelpMsg,
+        togglePanel,
+    } = props;
+    const isApp_ = isApp();
+    const onKeyDown = useEnterEscape(togglePanel);
 
+    let iconHelpMsgStr: string;
+    if (panelStatus && panelStatus !== 'NONE') {
         if (!isValid) {
-            return iconHelpMsg;
+            iconHelpMsgStr = iconHelpMsg;
+        } else if (panelStatus === 'TODO') {
+            iconHelpMsgStr =
+                todoIconHelpMsg || 'This section does not contain any user-defined fields. You may want to review.';
         }
-
-        if (panelStatus === 'TODO') {
-            return todoIconHelpMsg || 'This section does not contain any user-defined fields. You may want to review.';
-        }
-
-        return undefined;
-    };
-
-    getHeaderIconComponent = (): ReactNode => {
-        const { collapsed, isValid, panelStatus } = this.props;
-        const validComplete = isValid && panelStatus === 'COMPLETE';
-        const wrapperClassName = classNames('domain-panel-status-icon', {
-            'domain-panel-status-icon-green': collapsed && validComplete,
-            'domain-panel-status-icon-blue': collapsed && !validComplete,
-        });
-        const iconClassName = !isValid || panelStatus === 'TODO' ? 'fa fa-exclamation-circle' : 'fa fa-check-circle';
-
-        return (
-            <span className={wrapperClassName}>
-                <span className={iconClassName} />
-            </span>
-        );
-    };
-
-    getTitlePrefix = (): string => {
-        let prefix = this.props.titlePrefix;
-
-        // ellipsis after certain length
-        if (prefix && prefix.length > 70) {
-            prefix = prefix.substr(0, 70) + '...';
-        }
-
-        return prefix ? prefix + ' - ' : '';
-    };
-
-    render() {
-        const {
-            children,
-            collapsed,
-            collapsible,
-            controlledCollapse,
-            headerDetails,
-            id,
-            panelStatus,
-            title,
-            togglePanel,
-        } = this.props;
-        const isApp_ = isApp();
-        const iconHelpMsg = panelStatus && panelStatus !== 'NONE' ? this.getHeaderIconHelpMsg() : undefined;
-        const collapsedIconClass = classNames('fa', 'fa-lg', {
-            'fa-chevron-right': collapsed,
-            'fa-chevron-down': !collapsed,
-            'domain-form-expand-btn': collapsed,
-            'domain-form-collapse-btn': !collapsed,
-        });
-        const panelHeaderClass = classNames('domain-panel-header', {
-            'panel-heading': isApp_,
-            'domain-heading-collapsible': collapsible || controlledCollapse,
-            'domain-panel-header-expanded': !collapsed,
-            'domain-panel-header-collapsed': collapsed,
-            'labkey-page-nav': !collapsed && !isApp_,
-            'domain-panel-header-no-theme': !collapsed && isApp_,
-        });
-
-        return (
-            <div id={id} onClick={togglePanel} className={panelHeaderClass}>
-                {/* Header help icon*/}
-                {iconHelpMsg && (
-                    <LabelHelpTip iconComponent={this.getHeaderIconComponent()} title={title}>
-                        {iconHelpMsg}
-                    </LabelHelpTip>
-                )}
-                {panelStatus && panelStatus !== 'NONE' && !iconHelpMsg && this.getHeaderIconComponent()}
-
-                {/* Header name*/}
-                <span className="domain-panel-title">{this.getTitlePrefix() + title}</span>
-
-                {/* Expand/Collapse Icon*/}
-                {(controlledCollapse || collapsible) && (
-                    <span className="pull-right">
-                        <span className={collapsedIconClass} />
-                    </span>
-                )}
-
-                {/* Help tip*/}
-                {children && <LabelHelpTip title={title}>{children}</LabelHelpTip>}
-
-                {/* Header details, shown on the right side*/}
-                {controlledCollapse && headerDetails && (
-                    <span className="domain-panel-header-fields-defined">{headerDetails}</span>
-                )}
-            </div>
-        );
     }
-}
+
+    const validComplete = isValid && panelStatus === 'COMPLETE';
+    const headerIconComponent: ReactNode = (
+        <span
+            className={classNames('domain-panel-status-icon', {
+                'domain-panel-status-icon-green': collapsed && validComplete,
+                'domain-panel-status-icon-blue': collapsed && !validComplete,
+            })}
+        >
+            <span className={!isValid || panelStatus === 'TODO' ? 'fa fa-exclamation-circle' : 'fa fa-check-circle'} />
+        </span>
+    );
+
+    let prefix = titlePrefix;
+    if (prefix && prefix.length > 70) {
+        prefix = prefix.substring(0, 70) + '...';
+    }
+    const titlePrefixStr = prefix ? prefix + ' - ' : '';
+
+    const collapsedIconClass = classNames('fa', 'fa-lg', {
+        'fa-chevron-right': collapsed,
+        'fa-chevron-down': !collapsed,
+        'domain-form-expand-btn': collapsed,
+        'domain-form-collapse-btn': !collapsed,
+    });
+    const panelHeaderClass = classNames('domain-panel-header', {
+        'panel-heading': isApp_,
+        'domain-heading-collapsible': collapsible || controlledCollapse,
+        'domain-panel-header-expanded': !collapsed,
+        'domain-panel-header-collapsed': collapsed,
+        'labkey-page-nav': !collapsed && !isApp_,
+        'domain-panel-header-no-theme': !collapsed && isApp_,
+    });
+
+    return (
+        <div
+            className={panelHeaderClass}
+            id={id}
+            onClick={togglePanel}
+            onKeyDown={onKeyDown}
+            role="button"
+            tabIndex={0}
+        >
+            {iconHelpMsgStr && (
+                <LabelHelpTip iconComponent={headerIconComponent} title={title}>
+                    {iconHelpMsgStr}
+                </LabelHelpTip>
+            )}
+            {panelStatus && panelStatus !== 'NONE' && !iconHelpMsgStr && headerIconComponent}
+
+            <span className="domain-panel-title">{titlePrefixStr + title}</span>
+
+            {(controlledCollapse || collapsible) && (
+                <span className="pull-right">
+                    <span className={collapsedIconClass} />
+                </span>
+            )}
+
+            {children && <LabelHelpTip title={title}>{children}</LabelHelpTip>}
+
+            {controlledCollapse && headerDetails && (
+                <span className="domain-panel-header-fields-defined">{headerDetails}</span>
+            )}
+        </div>
+    );
+});
+CollapsiblePanelHeader.displayName = 'CollapsiblePanelHeader';

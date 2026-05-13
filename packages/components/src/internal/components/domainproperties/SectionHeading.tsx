@@ -10,10 +10,10 @@ interface Props {
 }
 
 export const SectionHeading: FC<Props> = memo(props => (
-    <div className={'domain-field-section-heading' + (props.cls ? ' ' + props.cls : '')} id={props.id}>
+    <h3 className={'domain-field-section-heading' + (props.cls ? ' ' + props.cls : '')} id={props.id}>
         {props.title}
         {props.helpTipBody && <LabelHelpTip title={props.title}>{props.helpTipBody}</LabelHelpTip>}
-    </div>
+    </h3>
 ));
 
 SectionHeading.displayName = 'SectionHeading';

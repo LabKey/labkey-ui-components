@@ -204,7 +204,7 @@ export class AuditDetails extends Component<Props> {
 
         return (
             <div className="panel panel-default">
-                <div className="panel-heading">{title}</div>
+                <h2 className="panel-heading">{title}</h2>
                 <div className="panel-body">
                     {children}
                     {!rowId && <div>{emptyMsg}</div>}

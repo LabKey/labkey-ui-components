@@ -32,7 +32,7 @@ export const DetailsList: FC<DetailsListProps> = memo(props => {
     return (
         <details data-testid="details-list" open={open}>
             <summary className="lineage-name">
-                <h6 className="no-margin-bottom">
+                <div className="no-margin-bottom heading6">
                     {title}
                     {showCount && <span className="spacer-left">({React.Children.count(children)})</span>}
                     {headerLinks &&
@@ -44,7 +44,7 @@ export const DetailsList: FC<DetailsListProps> = memo(props => {
                                     </span>
                                 )
                         )}
-                </h6>
+                </div>
             </summary>
             <ul className="lineage-details-list">
                 {React.Children.map(children, (child, i) => {

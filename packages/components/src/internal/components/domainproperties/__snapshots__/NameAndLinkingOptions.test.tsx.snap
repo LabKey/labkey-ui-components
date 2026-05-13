@@ -9,11 +9,11 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       <div
         class="col-xs-12"
       >
-        <div
+        <h3
           class="domain-field-section-heading domain-field-section-hdr"
         >
           Name and Linking Options
-        </div>
+        </h3>
       </div>
     </div>
     <div

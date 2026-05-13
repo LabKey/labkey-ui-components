@@ -5,11 +5,11 @@ exports[`<UserDetailsPanel/> no principal 1`] = `
   <div
     class="panel panel-default user-details-panel"
   >
-    <div
+    <h2
       class="panel-heading"
     >
       User Details
-    </div>
+    </h2>
     <div
       class="panel-body"
     >
@@ -26,13 +26,13 @@ exports[`<UserDetailsPanel/> unknown user props 1`] = `
   <div
     class="panel panel-default user-details-panel"
   >
-    <div
+    <h2
       class="panel-heading"
     >
       <span>
         TestDisplayName
       </span>
-    </div>
+    </h2>
     <div
       class="panel-body"
     >
@@ -125,13 +125,13 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
   <div
     class="panel panel-default user-details-panel"
   >
-    <div
+    <h2
       class="panel-heading"
     >
       <span>
         cnathe
       </span>
-    </div>
+    </h2>
     <div
       class="panel-body"
     >
@@ -224,13 +224,13 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
   <div
     class="panel panel-default user-details-panel"
   >
-    <div
+    <h2
       class="panel-heading"
     >
       <span>
         cnathe
       </span>
-    </div>
+    </h2>
     <div
       class="panel-body"
     >
@@ -316,7 +316,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
   <div
     class="panel panel-default user-details-panel"
   >
-    <div
+    <h2
       class="panel-heading"
     >
       <span>
@@ -327,7 +327,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
       >
         Active
       </span>
-    </div>
+    </h2>
     <div
       class="panel-body"
     >
@@ -544,13 +544,13 @@ exports[`<UserDetailsPanel/> with principal that isGroup 1`] = `
   <div
     class="panel panel-default user-details-panel"
   >
-    <div
+    <h2
       class="panel-heading"
     >
       <span>
         Test Group
       </span>
-    </div>
+    </h2>
     <div
       class="panel-body"
     >

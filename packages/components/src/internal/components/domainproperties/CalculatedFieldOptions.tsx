@@ -259,6 +259,9 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                         <table>
                             <tbody>
                                 <tr>
+                                    <td>Examples:</td>
+                                </tr>
+                                <tr>
                                     <td>Addition:</td>
                                     <td className="code">numericField1 + numericField2</td>
                                 </tr>

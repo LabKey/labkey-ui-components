@@ -391,7 +391,7 @@ export function isAdvancedWorkflowEnabled(moduleContext?: ModuleContext): boolea
 }
 
 export function isAIAssistanceEnabled(): boolean {
-    return getServerContext()['mcpReady'] === true;
+    return getServerContext().mcpReady === true;
 }
 
 export function isDataChangeCommentRequirementFeatureEnabled(moduleContext?: ModuleContext): boolean {

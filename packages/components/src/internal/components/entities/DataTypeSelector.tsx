@@ -360,7 +360,7 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
                 {toggleSelectAll && !disabled && dataTypes?.length > 0 && (
                     <div className="row">
                         <div className="col-xs-12 bottom-padding">
-                            <button className="clickable-text" onClick={onSelectAll}>
+                            <button className="clickable-text" onClick={onSelectAll} type="button">
                                 {allSelected ? 'Deselect All' : 'Select All'}
                             </button>
                         </div>

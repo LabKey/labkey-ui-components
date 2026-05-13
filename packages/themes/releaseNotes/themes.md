@@ -1,6 +1,26 @@
 # @labkey/themes
 UI themes for LabKey Server.
 
+### version 1.9.3
+*Released*: 11 May 2026
+- Remove GWT styles
+
+### version 1.9.2
+*Released*: 7 May 2026
+- Background color changes to secondary tabs in all themes
+
+### version 1.9.1
+*Released*: 5 May 2026
+- Package updates
+
+### version 1.9.0
+*Released*: 26 April 2026
+- Fix accessibility issues suggested by WAVE
+
+### version 1.8.0
+*Released*: 30 March 2026
+- Package updates
+
 ### version 1.7.0
 *Released*: 26 February 2026
 - Package updates

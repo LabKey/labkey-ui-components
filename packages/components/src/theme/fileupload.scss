@@ -61,13 +61,6 @@
     margin-right: 5px;
 }
 
-.attached-file__remove-icon {
-    cursor: pointer;
-    font-size: 20px;
-    margin-right: 8px;
-    color: $brand-danger;
-}
-
 .file-upload__is-hover {
   outline: 2px dashed $brand-success !important;
 }
@@ -129,7 +122,7 @@
 }
 
 .attached-file__remove-icon {
-  color: $brand-danger;
+  color: $brand-danger !important;
   display: inline-block;
   margin-right: 10px;
   font-size: 20px;

@@ -1,53 +1,54 @@
 @use "sass:color";
 
-$brand-primary: #2679AD;
+$brand-primary:   #2679AD;
 $brand-secondary: #116596;
 $brand-danger:    #D43F3A;
-$brand-warning:   #f0ad4e;
-$brand-success: #238722;
+$brand-warning:   #F0AF4E;
+$brand-success:   #238722;
 
-$light-gray: #d3d3d3;
-$white: #fff;
+$light-gray: #D3D3D3;
+$white:      #FFF;
+$purple:     #A63AAF;
+$orange:     #DA803D;
 
-$gray-base:              #000 !default;
-$gray-darker:            color.adjust($gray-base, $lightness: 13.5%) !default; // #222
-$gray-dark:              color.adjust($gray-base, $lightness: 20%)   !default; // #333
-$gray:                   color.adjust($gray-base, $lightness: 33.5%) !default; // #555
-$gray-light:             color.adjust($gray-base, $lightness: 46.7%) !default; // #777
-$gray-lighten:           color.adjust($gray-base, $lightness: 60%)   !default; // #999
-$gray-lighter:           color.adjust($gray-base, $lightness: 93.5%) !default; // #eee
+$gray-base:    #000 !default;
+$gray-darker:  color.adjust($gray-base, $lightness: 13.5%) !default; // #222
+$gray-dark:    color.adjust($gray-base, $lightness: 20%)   !default; // #333
+$gray:         color.adjust($gray-base, $lightness: 33.5%) !default; // #555
+$gray-light:   color.adjust($gray-base, $lightness: 46.7%) !default; // #777
+$gray-lighten: color.adjust($gray-base, $lightness: 60%)   !default; // #999
+$gray-lighter: color.adjust($gray-base, $lightness: 93.5%) !default; // #eee
 
-$border-color:    #cccccc;
-$navbar-border-color: #cbccce;
-$badge-color:   #D43F3A;
+$border-color:        #CCCCCC;
+$navbar-border-color: #CBCCCE;
+$badge-color:         #D43F3A;
 
 $blue-highlight:       #2980B9;
 $gray-no-highlight:    $gray-lighten;
 $blue-icon-background: #CCE5FF;
 
-$blue-dark:   #1e4f6f;
-$text-color-gray:   #9d9d9d;
-$text-color-light:   #6B6B6B;
-$text-muted: #767676;
+$blue-dark:        #1e4f6f;
+$text-color-gray:  #9d9d9d;
+$text-color-light: #6B6B6B;
+$text-muted:       #767676;
 
-$text-color:            $gray-dark !default;
-$link-color: #0F72C2;
-$link-hover-color:      color.adjust($link-color, $lightness: 15%) !default;
+$text-color:       $gray-dark !default;
+$link-color:       #0F72C2;
+$link-hover-color: color.adjust($link-color, $lightness: 15%) !default;
 
 $font-family-sans-serif:  "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 
 // Alert variables
-$alert-info-bg: #F1F9FC;
-$alert-info-text: #0B73B7;
-$alert-info-border: #C9E6F2;
-$alert-danger-bg: #FDE6E6;
-$alert-danger-text: #BF3939;
+$alert-info-bg:       #F1F9FC;
+$alert-info-text:     #0B73B7;
+$alert-info-border:   #C9E6F2;
+$alert-danger-bg:     #FDE6E6;
+$alert-danger-text:   #BF3939;
 $alert-danger-border: #FBD1D0;
 
-// Domain properties variables
-$gray-border:           #cccccc;
-$gray-border-light:     #dddddd;
-$gray-shadow:           #F3F3F4;
+$gray-border:       #CCCCCC;
+$gray-border-light: #DDDDDD;
+$gray-shadow:       #F3F3F4;
 
 $red-border:            rgba(220, 53, 69, 1);
 $red-shadow:            rgba(220, 53, 69, 0.5);
@@ -59,7 +60,6 @@ $blue-border:           rgba(41, 128, 185, 0.5);
 $blue-border-solid:     rgba(41, 128, 185, 1);
 $blue-bkgrd-selected:   rgba(41, 128, 185, 0.1);
 
-// Grid ActionValues variables
 @mixin border-top-radius($radius)
 {
   border-top-right-radius: $radius;
@@ -81,16 +81,13 @@ $blue-bkgrd-selected:   rgba(41, 128, 185, 0.1);
   border-top-left-radius: $radius;
 }
 
-$grid-action-item-color:                $alert-info-text;
-$grid-action-item-bg:                   $alert-info-bg;
-$grid-action-item-border-color:         $alert-info-border;
-$grid-action-item-hover-bg:             color.adjust($grid-action-item-bg, $lightness: 5%);
-$grid-action-item-disabled-color:       #333;
-$grid-action-item-disabled-bg:          #fcfcfc;
+$grid-action-item-color:                 $alert-info-text;
+$grid-action-item-bg:                    $alert-info-bg;
+$grid-action-item-border-color:          $alert-info-border;
+$grid-action-item-hover-bg:              color.adjust($grid-action-item-bg, $lightness: 5%);
+$grid-action-item-disabled-color:        #333;
+$grid-action-item-disabled-bg:           #FCFCFC;
 $grid-action-item-disabled-border-color: color.adjust($grid-action-item-disabled-bg, $lightness: 10%);
-
-
-// Navigation variables
 
 //-- Z-index master list
 $zindex-navbar: 1000 !default;
@@ -104,6 +101,4 @@ $panel-content-text: $text-color !default;
 $panel-content-border: $gray-border-light !default;
 $panel-content-heading-bg: $white !default;
 
-$purple:                #A63AAF;
-
-$orange:                #DA803D;
+$pre-bg: red;

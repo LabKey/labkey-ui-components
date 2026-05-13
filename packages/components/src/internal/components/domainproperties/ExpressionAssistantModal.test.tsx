@@ -14,6 +14,8 @@ import {
     EXPR_ASST_METRIC_FEATURE_AREA,
     ExpressionAssistantModal,
     ExpressionAssistantModalProps,
+    fence,
+    lines,
 } from './ExpressionAssistantModal';
 
 // Capture the props ChatModal is rendered with so we can drive ExpressionAssistantModal's logic
@@ -371,5 +373,46 @@ describe('ExpressionAssistantModal', () => {
         // Assert - onCancel is wired straight through to ChatModal, so closing the modal invokes the caller's handler
         expect(chatModalProps.onCancel).toBe(onCancel);
         expect(chatModalProps.title).toBe('Expression AI Assistant');
+    });
+
+    describe('fence', () => {
+        test('wraps the term in a triple-backtick block with no language tag by default', () => {
+            // Closing fence sits flush with the term — the helper does not append a trailing newline before it.
+            expect(fence('SELECT 1')).toBe('```\nSELECT 1```');
+        });
+
+        test('includes the language tag immediately after the opening fence', () => {
+            expect(fence('{"a":1}', 'json')).toBe('```json\n{"a":1}```');
+        });
+
+        test('preserves embedded newlines in the fenced content', () => {
+            expect(fence('line1\nline2', 'sql')).toBe('```sql\nline1\nline2```');
+        });
+
+        test('handles an empty term', () => {
+            expect(fence('', 'json')).toBe('```json\n```');
+        });
+    });
+
+    describe('lines', () => {
+        test('joins arguments with newlines', () => {
+            expect(lines('a', 'b', 'c')).toBe('a\nb\nc');
+        });
+
+        test('returns an empty string when called with no arguments', () => {
+            expect(lines()).toBe('');
+        });
+
+        test('returns the single argument unchanged', () => {
+            expect(lines('only')).toBe('only');
+        });
+
+        test('preserves empty-string arguments as blank lines', () => {
+            expect(lines('a', '', 'b')).toBe('a\n\nb');
+        });
+
+        test('composes with fence to build a labeled block', () => {
+            expect(lines('header:', fence('{"k":1}', 'json'))).toBe('header:\n```json\n{"k":1}```');
+        });
     });
 });

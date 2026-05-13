@@ -8,3 +8,8 @@ enablePatches();
 
 // JSDom does not provide an implementation for scrollIntoView(). See https://github.com/jsdom/jsdom/issues/1695
 Element.prototype.scrollIntoView = jest.fn();
+
+// JSDom does not provide an implementation for CSS.supports().
+Object.defineProperty(window, 'CSS', {
+    value: { supports: jest.fn().mockReturnValue(true) },
+});

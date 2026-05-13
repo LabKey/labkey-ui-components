@@ -101,7 +101,8 @@ import {
     isValidTextChoiceValue,
     LOOKUP_VALIDATOR,
     NameExpressionsValidationResults,
-    QueryInfoLite, SystemField,
+    QueryInfoLite,
+    SystemField,
     updateSampleField,
 } from './models';
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
@@ -1536,10 +1537,9 @@ export interface ExpressionAssistOptions {
 }
 
 export interface ExpressionAssistSegment {
-    // 'html' for prose; 'expression' for validated, applyable SQL; 'sql' for illustrative SQL.
-    type: 'html' | 'expression' | 'sql' | string;
     html?: string;
     sql?: string;
+    type: 'expression' | 'html' | 'sql' | string;
 }
 
 export interface ExpressionAssistResponse {

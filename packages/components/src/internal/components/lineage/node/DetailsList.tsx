@@ -55,10 +55,10 @@ export const DetailsList: FC<DetailsListProps> = memo(props => {
                             <Fragment key="__skip">
                                 <li>
                                     <SVGIcon className="lineage-sm-icon" />
-                                    <a className="lineage-link spacer-left" onClick={onToggle}>
+                                    <button className="lineage-link clickable-text spacer-left" onClick={onToggle} type="button">
                                         Show {React.Children.count(children) - collapsedCount}{' '}
                                         {expanded ? 'less' : 'more'}...
-                                    </a>
+                                    </button>
                                 </li>
                                 {showChild ? <li key={i}>{child}</li> : null}
                             </Fragment>
@@ -131,14 +131,15 @@ const DetailsListLineageItem: FC<DetailsListLineageItemProps> = memo(({ highligh
                 {context => {
                     if (context.isNodeInGraph(item)) {
                         return (
-                            <a
-                                className="lineage-link spacer-horizontal"
+                            <button
+                                className="lineage-link clickable-text spacer-horizontal"
                                 onClick={e => context.onNodeClick(item)}
                                 onMouseOver={e => context.onNodeMouseOver(item)}
                                 onMouseOut={e => context.onNodeMouseOut(item)}
+                                type="button"
                             >
                                 {item.name}
-                            </a>
+                            </button>
                         );
                     }
 

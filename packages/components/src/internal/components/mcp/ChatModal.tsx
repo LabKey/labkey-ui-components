@@ -158,6 +158,7 @@ export const ChatModal: FC<ChatModalProps> = memo(props => {
                             <textarea
                                 aria-label={`${title} Prompt`}
                                 className="form-control prompt-input"
+                                maxLength={4000}
                                 name="chat-prompt"
                                 onChange={handleChange}
                                 onKeyDown={handleKeyDown}

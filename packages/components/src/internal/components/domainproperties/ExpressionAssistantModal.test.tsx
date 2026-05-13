@@ -14,8 +14,6 @@ import {
     EXPR_ASST_METRIC_FEATURE_AREA,
     ExpressionAssistantModal,
     ExpressionAssistantModalProps,
-    fence,
-    lines,
 } from './ExpressionAssistantModal';
 
 // Capture the props ChatModal is rendered with so we can drive ExpressionAssistantModal's logic
@@ -126,8 +124,8 @@ describe('ExpressionAssistantModal', () => {
                 makeApiContext(expressionAssistant)
             );
 
-            // Assert - intro is VALIDATE text, and expressionAssistant was auto-invoked with a prompt that includes the
-            // error, the expression, and the fields block (i.e., evaluatePrompt); the assistant response is appended.
+            // Assert - intro is VALIDATE text, and expressionAssistant was auto-invoked with an empty prompt plus the
+            // structured context fields. Server-side composePrompt synthesizes the "evaluate this expression" turn.
             await waitFor(() => {
                 const m = chatModalProps.messages as ChatMessage[];
                 expect(m[m.length - 1].text).toBe('Looks like a syntax error.');
@@ -136,14 +134,16 @@ describe('ExpressionAssistantModal', () => {
             expect(messages[0].text).toBe('Let me take a look at this expression and see how I can help.');
             expect(expressionAssistant).toHaveBeenCalledTimes(1);
             const callArg = expressionAssistant.mock.calls[0][0];
-            expect(callArg.prompt).toContain('boom');
-            expect(callArg.prompt).toContain('SELECT bad');
-            expect(callArg.prompt).toContain('available columns');
+            expect(callArg.prompt).toBe('');
+            expect(callArg.fieldError).toBe('boom');
+            expect(callArg.fieldExpression).toBe('SELECT bad');
+            expect(callArg.domainFields).toBeDefined();
+            expect(callArg.conversationId).toBeUndefined();
         });
     });
 
     describe('sendPrompt', () => {
-        test('first user prompt is wrapped with the fields preamble; subsequent prompts are sent verbatim', async () => {
+        test('first user prompt sends the bare text plus first-turn context; follow-up turns drop the context', async () => {
             // Arrange
             const expressionAssistant = jest
                 .fn()
@@ -155,24 +155,24 @@ describe('ExpressionAssistantModal', () => {
             act(() => {
                 chatModalProps.sendPrompt('compute sum of A');
             });
-            // Assert - first call is prefixed with the field preamble and the user message is appended unmodified
+            // Assert - prompt is the user's text verbatim; domainFields rides alongside; conversationId is absent
             await waitFor(() => {
                 const m = chatModalProps.messages as ChatMessage[];
                 expect(m[m.length - 1].text).toBe('first reply');
             });
             const firstCall = expressionAssistant.mock.calls[0][0];
-            expect(firstCall.prompt).toContain('available columns');
-            expect(firstCall.prompt).toContain('compute sum of A');
+            expect(firstCall.prompt).toBe('compute sum of A');
+            expect(firstCall.domainFields).toBeDefined();
             expect(firstCall.conversationId).toBeUndefined();
             const messagesAfterFirst = chatModalProps.messages as ChatMessage[];
             expect(messagesAfterFirst.find(m => m.role === ChatRole.user)?.text).toBe('compute sum of A');
             expect(incrementMetric).toHaveBeenCalledWith(EXPR_ASST_METRIC_FEATURE_AREA, 'submitPrompt');
 
-            // Act - second prompt reuses the conversationId and is NOT re-prefixed
+            // Act - second prompt with a conversationId set from the first response
             act(() => {
                 chatModalProps.sendPrompt('and also B');
             });
-            // Assert - second call passes the bare prompt and the previously returned conversationId
+            // Assert - bare prompt, no first-turn context fields, and the previously returned conversationId
             await waitFor(() => {
                 const m = chatModalProps.messages as ChatMessage[];
                 expect(m[m.length - 1].text).toBe('second reply');
@@ -180,6 +180,9 @@ describe('ExpressionAssistantModal', () => {
             const secondCall = expressionAssistant.mock.calls[1][0];
             expect(secondCall.prompt).toBe('and also B');
             expect(secondCall.conversationId).toBe('c1');
+            expect(secondCall.domainFields).toBeUndefined();
+            expect(secondCall.fieldExpression).toBeUndefined();
+            expect(secondCall.fieldError).toBeUndefined();
         });
 
         test('passes columnMap and PHI columns derived from the provided domain fields', async () => {
@@ -375,44 +378,4 @@ describe('ExpressionAssistantModal', () => {
         expect(chatModalProps.title).toBe('Expression AI Assistant');
     });
 
-    describe('fence', () => {
-        test('wraps the term in a triple-backtick block with no language tag by default', () => {
-            // Closing fence sits flush with the term — the helper does not append a trailing newline before it.
-            expect(fence('SELECT 1')).toBe('```\nSELECT 1```');
-        });
-
-        test('includes the language tag immediately after the opening fence', () => {
-            expect(fence('{"a":1}', 'json')).toBe('```json\n{"a":1}```');
-        });
-
-        test('preserves embedded newlines in the fenced content', () => {
-            expect(fence('line1\nline2', 'sql')).toBe('```sql\nline1\nline2```');
-        });
-
-        test('handles an empty term', () => {
-            expect(fence('', 'json')).toBe('```json\n```');
-        });
-    });
-
-    describe('lines', () => {
-        test('joins arguments with newlines', () => {
-            expect(lines('a', 'b', 'c')).toBe('a\nb\nc');
-        });
-
-        test('returns an empty string when called with no arguments', () => {
-            expect(lines()).toBe('');
-        });
-
-        test('returns the single argument unchanged', () => {
-            expect(lines('only')).toBe('only');
-        });
-
-        test('preserves empty-string arguments as blank lines', () => {
-            expect(lines('a', '', 'b')).toBe('a\n\nb');
-        });
-
-        test('composes with fence to build a labeled block', () => {
-            expect(lines('header:', fence('{"k":1}', 'json'))).toBe('header:\n```json\n{"k":1}```');
-        });
-    });
 });

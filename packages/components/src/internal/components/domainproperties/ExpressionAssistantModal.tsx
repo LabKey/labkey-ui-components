@@ -7,6 +7,7 @@ import { DomainField, GetDomainFields, SystemField } from './models';
 import { useRequestHandler } from '../../util/RequestHandler';
 import { incrementClientSideMetricCount } from '../../actions';
 import { getColumnTypeMap, getPHIColumnNames } from './CalculatedFieldOptions';
+import { ExpressionAssistOptions } from './actions';
 
 export const EXPR_ASST_METRIC_FEATURE_AREA = 'expressionAssistant';
 const CHANGE_INTRO =
@@ -21,14 +22,6 @@ function createChatMessage(message: Partial<ChatMessage>): ChatMessage {
         id: generateId('chat-'),
         timestamp: Date.now(),
     } as ChatMessage;
-}
-
-export function fence(term: string, tag = ''): string {
-    return '```' + tag + '\n' + term + '```';
-}
-
-export function lines(...lines: string[]): string {
-    return lines.join('\n');
 }
 
 interface SqlSnippetProps {
@@ -83,7 +76,6 @@ function useExpressionAssistance(
         return [createChatMessage({ role: ChatRole.assistant, segments, text })];
     });
     const [isPending, setIsPending] = useState(false);
-    const firstChatRef = useRef(true);
     const autoEvalRef = useRef(false);
     const { api } = useAppContext();
     const { abortRequest, requestHandler, resetRequestHandler } = useRequestHandler();
@@ -92,30 +84,14 @@ function useExpressionAssistance(
         setMessages(prev => [...prev, createChatMessage(message)]);
     }, []);
 
-    const { columnMap, fieldsPrompt, phiColumns } = useMemo(
+    const { columnMap, combinedFields, phiColumns } = useMemo(
         () => ({
             columnMap: getColumnTypeMap(domainFields, systemFields),
-            fieldsPrompt: lines(
-                'The following enumerates the available columns and their types:',
-                fence(JSON.stringify(domainFields), 'json')
-            ),
+            combinedFields: [...(domainFields ?? []), ...(systemFields ?? [])],
             phiColumns: getPHIColumnNames(domainFields),
         }),
         [domainFields, systemFields]
     );
-
-    // This prompt is used when the user has an erroneous expression, and we want the agent to help in triaging
-    const fieldErrorPrompt = useMemo(() => {
-        if (!fieldError) return undefined;
-        return lines(
-            fieldsPrompt,
-            'The user already has the following calculated column expression:',
-            fence(fieldExpression),
-            'This expression contains an error:',
-            fence(fieldError),
-            'Evaluate this expression and see if you can determine how to fix this error. If you can, point them out and propose corrections.'
-        );
-    }, [fieldError, fieldExpression, fieldsPrompt]);
 
     const onInterrupt = useCallback(
         (isUser?: boolean) => {
@@ -135,13 +111,21 @@ function useExpressionAssistance(
             setIsPending(true);
             let aborted = false;
             try {
-                const response = await api.domain.expressionAssistant({
+                const options: ExpressionAssistOptions = {
                     conversationId,
                     columnMap,
                     phiColumns,
                     prompt,
                     requestHandler,
-                });
+                };
+
+                if (conversationId === undefined) {
+                    options.domainFields = combinedFields;
+                    options.fieldError = fieldError;
+                    options.fieldExpression = fieldExpression;
+                }
+
+                const response = await api.domain.expressionAssistant(options);
                 resetRequestHandler();
 
                 if (response.conversationId !== conversationId) {
@@ -154,6 +138,7 @@ function useExpressionAssistance(
                     segments: response.segments,
                     text: response.text,
                 });
+
                 incrementClientSideMetricCount(EXPR_ASST_METRIC_FEATURE_AREA, 'submitPrompt');
             } catch (e) {
                 aborted = !e.status;
@@ -166,32 +151,33 @@ function useExpressionAssistance(
                 }
             }
         },
-        [api, columnMap, conversationId, phiColumns, pushMessage, requestHandler, resetRequestHandler]
+        [
+            api,
+            columnMap,
+            combinedFields,
+            conversationId,
+            fieldError,
+            fieldExpression,
+            phiColumns,
+            pushMessage,
+            requestHandler,
+            resetRequestHandler,
+        ]
     );
 
     const sendPrompt = useCallback(
         async (prompt: string) => {
             pushMessage({ role: ChatRole.user, text: prompt });
-            let fullPrompt = prompt;
-            if (firstChatRef.current) {
-                fullPrompt = lines(
-                    fieldsPrompt,
-                    'Generate a calculated column expression that matches the following description:',
-                    prompt
-                );
-            }
-            firstChatRef.current = false;
-            await runRequest(fullPrompt);
+            await runRequest(prompt);
         },
-        [fieldsPrompt, pushMessage, runRequest]
+        [pushMessage, runRequest]
     );
 
     useEffect(() => {
-        if (!fieldErrorPrompt || autoEvalRef.current) return;
+        if (!fieldError || autoEvalRef.current) return;
         autoEvalRef.current = true;
-        firstChatRef.current = false;
-        runRequest(fieldErrorPrompt);
-    }, [fieldErrorPrompt, runRequest]);
+        runRequest('');
+    }, [fieldError, runRequest]);
 
     return { isPending, messages, onInterrupt, sendPrompt };
 }

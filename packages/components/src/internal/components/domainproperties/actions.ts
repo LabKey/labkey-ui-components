@@ -1531,6 +1531,9 @@ export interface ExpressionAssistOptions {
     columnMap: Record<string, string>;
     containerPath?: string;
     conversationId?: string;
+    domainFields?: (DomainField | SystemField)[];
+    fieldError?: string;
+    fieldExpression?: string;
     phiColumns: string[];
     prompt: string;
     requestHandler?: RequestHandler;
@@ -1551,11 +1554,11 @@ export interface ExpressionAssistResponse {
 }
 
 export function expressionAssistant(options: ExpressionAssistOptions): Promise<ExpressionAssistResponse> {
-    const { columnMap, containerPath, conversationId, phiColumns, prompt, requestHandler } = options;
+    const { containerPath, requestHandler, ...jsonData } = options;
     return request<ExpressionAssistResponse>({
         url: ActionURL.buildURL('query', 'expressionAssistantAgent.api', containerPath),
         method: 'POST',
-        jsonData: { columnMap, conversationId, phiColumns, prompt },
+        jsonData,
         errorLogMsg: 'Failed to assist with expression',
         requestHandler,
     });

@@ -55,9 +55,9 @@ type Props = {
 
 export const DomainFieldsDisplay: FC<Props> = ({ domain, title }) => (
     <div className="panel panel-default">
-        <div className="panel-heading">
+        <h2 className="panel-heading">
             <div className="panel-title">{title || domain.name}</div>
-        </div>
+        </h2>
         <div className="panel-body">
             <p>{domain.description}</p>
             <Grid columns={DOMAIN_FIELD_COLS} data={domain.fields} />

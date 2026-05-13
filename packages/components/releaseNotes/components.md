@@ -13,6 +13,12 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Update styling for file inputs on `AttachmentCard` so input field is not hidden
   - Add `tabIndex` and `onKeyDown` callback for thread components
 
+### version 7.36.0
+*Released*: 13 May 2026
+- Update heading tags in various page elements for better accessibility
+- Add sr-only text for Selection checkbox table header
+- Update a few more colors for better contrast
+
 ### version 7.35.2
 *Released*: 12 May 2026
 - Package updates

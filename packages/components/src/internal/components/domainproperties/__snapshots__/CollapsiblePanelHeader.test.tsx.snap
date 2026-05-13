@@ -15,11 +15,11 @@ exports[`<CollapsiblePanelHeader/> custom properties 1`] = `
         class="fa fa-check-circle"
       />
     </span>
-    <span
+    <h2
       class="domain-panel-title"
     >
       Test Prefix - Test Title
-    </span>
+    </h2>
     <span
       class="pull-right"
     >
@@ -44,11 +44,11 @@ exports[`<CollapsiblePanelHeader/> default properties 1`] = `
     role="button"
     tabindex="0"
   >
-    <span
+    <h2
       class="domain-panel-title"
     >
       Test Title
-    </span>
+    </h2>
     <span
       class="pull-right"
     >
@@ -75,11 +75,11 @@ exports[`<CollapsiblePanelHeader/> invalid, iconHelpMsg, and expanded 1`] = `
         class="fa fa-check-circle"
       />
     </span>
-    <span
+    <h2
       class="domain-panel-title"
     >
       Test Title
-    </span>
+    </h2>
     <span
       class="pull-right"
     >
@@ -99,11 +99,11 @@ exports[`<CollapsiblePanelHeader/> not collapsible 1`] = `
     role="button"
     tabindex="0"
   >
-    <span
+    <h2
       class="domain-panel-title"
     >
       Test Title
-    </span>
+    </h2>
   </div>
 </div>
 `;
@@ -123,11 +123,11 @@ exports[`<CollapsiblePanelHeader/> not controlledCollapse 1`] = `
         class="fa fa-check-circle"
       />
     </span>
-    <span
+    <h2
       class="domain-panel-title"
     >
       Test Title
-    </span>
+    </h2>
   </div>
 </div>
 `;
@@ -155,11 +155,11 @@ exports[`<CollapsiblePanelHeader/> panelStatus TODO and help tip 1`] = `
         </span>
       </span>
     </div>
-    <span
+    <h2
       class="domain-panel-title"
     >
       Test Title
-    </span>
+    </h2>
     <span
       class="pull-right"
     >

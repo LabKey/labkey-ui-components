@@ -101,7 +101,7 @@ export const CollapsiblePanelHeader: FC<Props> = memo(props => {
             )}
             {panelStatus && panelStatus !== 'NONE' && !iconHelpMsgStr && headerIconComponent}
 
-            <span className="domain-panel-title">{titlePrefixStr + title}</span>
+            <h2 className="domain-panel-title">{titlePrefixStr + title}</h2>
 
             {(controlledCollapse || collapsible) && (
                 <span className="pull-right">

@@ -52,6 +52,15 @@
   }
 }
 
+.app-page-header__subtitle,
+.detail-subtitle {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.1;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .detail-component__active {
   background: $brand-primary;
   color: $white;
@@ -188,13 +197,14 @@
 }
 
 .detail__header--desc {
-  color: grey;
+  color: $text-color-light;
   font-style: $font-size-small;
   margin-bottom: 3px;
   white-space: pre-wrap;
 }
 
 .detail__header--name {
+    font-size: 30px;
     margin: 0;
     overflow-wrap: break-word;
 }

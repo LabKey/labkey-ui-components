@@ -5,11 +5,11 @@ exports[`AllowableActions existing list, existing properties 1`] = `
   <div
     class="col-xs-12 col-md-3"
   >
-    <div
+    <h3
       class="domain-field-section-heading"
     >
       Allow these Actions
-    </div>
+    </h3>
     <div
       class="list__properties__allowable-actions"
     >
@@ -68,11 +68,11 @@ exports[`AllowableActions new list, default properties 1`] = `
   <div
     class="col-xs-12 col-md-3"
   >
-    <div
+    <h3
       class="domain-field-section-heading"
     >
       Allow these Actions
-    </div>
+    </h3>
     <div
       class="list__properties__allowable-actions"
     >
@@ -131,11 +131,11 @@ exports[`BasicPropertiesFields existing list, existing properties 1`] = `
   <div
     class="col-xs-12 col-md-7"
   >
-    <div
+    <h3
       class="domain-field-section-heading"
     >
       Basic Properties
-    </div>
+    </h3>
     <div
       class="row margin-top"
     >
@@ -209,11 +209,11 @@ exports[`BasicPropertiesFields new list, default properties 1`] = `
   <div
     class="col-xs-12 col-md-7"
   >
-    <div
+    <h3
       class="domain-field-section-heading"
     >
       Basic Properties
-    </div>
+    </h3>
     <div
       class="row margin-top"
     >

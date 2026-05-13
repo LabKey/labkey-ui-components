@@ -19,20 +19,40 @@ import { Notifications } from '../notifications/Notifications';
 
 interface PageHeaderProps extends PropsWithChildren {
     iconCls?: string;
+    primaryHeader?: boolean;
     showNotifications?: boolean;
     title?: string;
 }
 
-export const PageHeader: FC<PageHeaderProps> = ({ children, iconCls, showNotifications = true, title }) => (
-    <div className="page-header">
-        {children}
+export const PageHeader: FC<PageHeaderProps> = ({
+    children,
+    iconCls,
+    primaryHeader,
+    showNotifications = true,
+    title,
+}) => {
+    const showTitle = !!iconCls || !!title;
 
-        <h2 className="no-margin-top">
-            {iconCls ? <span className={'page-header-icon ' + iconCls}>&nbsp;</span> : null}
-            {title}
-        </h2>
+    return (
+        <div className="page-header">
+            {children}
 
-        {showNotifications && <Notifications />}
-    </div>
-);
+            {showTitle && primaryHeader && (
+                <h1 className="no-margin-top">
+                    {iconCls ? <span className={'page-header-icon ' + iconCls}>&nbsp;</span> : null}
+                    {title}
+                </h1>
+            )}
+            {showTitle && !primaryHeader && (
+                <h2 className="no-margin-top">
+                    {iconCls ? <span className={'page-header-icon ' + iconCls}>&nbsp;</span> : null}
+                    {title}
+                </h2>
+            )}
+
+            {showNotifications && <Notifications />}
+        </div>
+    );
+};
+
 PageHeader.displayName = 'PageHeader';

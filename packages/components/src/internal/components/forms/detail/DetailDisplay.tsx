@@ -257,7 +257,7 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
     if (asPanel) {
         return (
             <div className="panel panel-default">
-                <div className="panel-heading">Details</div>
+                <h2 className="panel-heading">Details</h2>
                 <div className="panel-body">{body}</div>
             </div>
         );

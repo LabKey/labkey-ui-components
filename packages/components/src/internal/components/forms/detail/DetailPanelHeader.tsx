@@ -29,7 +29,7 @@ export const DetailPanelHeader: FC<DetailPanelHeaderProps> = memo(props => {
 
     if (editing) {
         return (
-            <div className="panel-heading">
+            <h2 className="panel-heading">
                 {verb} {title}
                 <span className="detail__edit--heading">
                     {warning !== undefined && (
@@ -39,12 +39,12 @@ export const DetailPanelHeader: FC<DetailPanelHeaderProps> = memo(props => {
                         </span>
                     )}
                 </span>
-            </div>
+            </h2>
         );
     }
 
     return (
-        <div className="panel-heading">
+        <h2 className="panel-heading">
             {title}
             <span className="detail__edit--heading">
                 {isEditable && (
@@ -56,7 +56,7 @@ export const DetailPanelHeader: FC<DetailPanelHeaderProps> = memo(props => {
                     </>
                 )}
             </span>
-        </div>
+        </h2>
     );
 });
 DetailPanelHeader.displayName = 'DetailPanelHeader';

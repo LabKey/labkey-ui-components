@@ -92,7 +92,7 @@ const _customStyles = {
         if (props.isDisabled) {
             return { ...styles, color: '#8E8E8E' };
         }
-        return styles;
+        return { ...styles, color: '#767676' };
     },
 };
 

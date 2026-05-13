@@ -499,7 +499,7 @@
 
     li {
       a {
-        color: $blue-highlight !important;
+        color: $link-color !important;
         font-size: 14px;
         padding: 8px 10px 8px 0;
         white-space: nowrap;
@@ -523,7 +523,7 @@
   .navbar-nav {
       li {
           a {
-              color: $blue-highlight;
+              color: $link-color;
           }
       }
   }

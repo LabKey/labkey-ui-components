@@ -13,10 +13,10 @@ import {
     capitalizeFirstChar,
     caseInsensitive,
     getCommonDataValues,
-    getUpdatedData,
     makeCommaSeparatedString,
     pronoun,
 } from '../../util/utils';
+import { getUpdatedData } from './utils';
 
 import { ComponentsAPIWrapper } from '../../APIWrapper';
 

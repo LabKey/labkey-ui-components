@@ -54,7 +54,6 @@ import {
     FILE_CONVERT_URIS,
     INT_RANGE_URI,
     LONG_RANGE_URI,
-    LOOKUP_VALIDATOR_VALUES,
     MAX_TEXT_LENGTH,
     MULTI_CHOICE_RANGE_URI,
     MULTILINE_RANGE_URI,
@@ -872,7 +871,7 @@ export const DEFAULT_TEXT_CHOICE_VALIDATOR = new PropertyValidator({
     properties: { validValues: [] },
 });
 
-export const LOOKUP_VALIDATOR = new PropertyValidator(LOOKUP_VALIDATOR_VALUES);
+export const LOOKUP_VALIDATOR = new PropertyValidator({ type: 'Lookup', name: 'Lookup Validator' });
 
 interface ILookupConfig {
     lookupContainer?: string;

@@ -1,22 +1,39 @@
 import React, { FC, memo, ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { BaseModal } from '../../Modal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { ChatMessage, ChatRole } from './models';
+import { ChatMessage, ChatRole, ChatSegment } from './models';
 import { cancelEvent } from '../../events';
 import { useTimeout } from '../../hooks';
 
 const fieldSizingSupported = CSS.supports('field-sizing', 'content');
 
-interface ChatBubbleProps {
-    message: ChatMessage;
-    onComplete?: (analysis: string) => void;
+export type RenderSegment = (segment: ChatSegment, index: number) => ReactNode | undefined;
+
+/**
+ * Default rendering for built-in segment types. Returns undefined for unknown types so callers can take over via `renderSegment`.
+ * @param segment
+ * @param index
+ */
+function renderDefaultSegment(segment: ChatSegment, index: number): ReactNode | undefined {
+    if (segment.type === 'html' && segment.html) {
+        return <div className="assistant-text" dangerouslySetInnerHTML={{ __html: segment.html }} key={index} />;
+    }
+    if (segment.type === 'text' && segment.text) {
+        return (
+            <div className="assistant-text" key={index}>
+                {segment.text}
+            </div>
+        );
+    }
+    return undefined;
 }
 
-const ChatBubble: FC<ChatBubbleProps> = memo(({ message, onComplete }) => {
-    const handleApply = useCallback((): void => {
-        if (message.sql) onComplete?.(message.sql);
-    }, [message.sql, onComplete]);
+interface ChatBubbleProps {
+    message: ChatMessage;
+    renderSegment?: RenderSegment;
+}
 
+const ChatItem: FC<ChatBubbleProps> = memo(({ message, renderSegment }) => {
     if (message.role === ChatRole.user) {
         return <div className="chat-item user-prompt">{message.text}</div>;
     }
@@ -28,36 +45,28 @@ const ChatBubble: FC<ChatBubbleProps> = memo(({ message, onComplete }) => {
     return (
         <div className="chat-item assistant-response">
             {message.text && <div className="assistant-text">{message.text}</div>}
-            {message.html && <div className="assistant-text" dangerouslySetInnerHTML={{ __html: message.html }} />}
-            {message.sql && (
-                <div className="assistant-expression">
-                    <pre>
-                        <code className="language-sql">{message.sql}</code>
-                    </pre>
-                </div>
-            )}
-            {message.sql && message.allowApplySql !== false && onComplete && (
-                <a className="apply-expression" onClick={handleApply} role="button" tabIndex={0}>
-                    <i className="fa fa-check" /> Apply Expression
-                </a>
-            )}
+            {message.segments?.map((segment, index) => {
+                const custom = renderSegment?.(segment, index);
+                if (custom !== undefined) return <React.Fragment key={index}>{custom}</React.Fragment>;
+                return <React.Fragment key={index}>{renderDefaultSegment(segment, index)}</React.Fragment>;
+            })}
         </div>
     );
 });
-ChatBubble.displayName = 'ChatBubble';
+ChatItem.displayName = 'ChatItem';
 
 interface Props {
     isPending: boolean;
     messages: ChatMessage[];
     onCancel: () => void;
-    onComplete?: (analysis: string) => void;
     onInterrupt: (isUser?: boolean) => void;
+    renderSegment?: RenderSegment;
     sendPrompt: (prompt: string) => Promise<void>;
     title: ReactNode;
 }
 
 export const ChatModal: FC<Props> = memo(props => {
-    const { isPending, messages, onCancel, onComplete, onInterrupt, sendPrompt, title } = props;
+    const { isPending, messages, onCancel, onInterrupt, renderSegment, sendPrompt, title } = props;
     const [prompt, setPrompt] = useState('');
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const historyRef = useRef<HTMLDivElement>(null);
@@ -139,7 +148,7 @@ export const ChatModal: FC<Props> = memo(props => {
             <div className="modal-body">
                 <div className="chat-history" ref={historyRef}>
                     {messages.map(message => (
-                        <ChatBubble key={message.id} message={message} onComplete={onComplete} />
+                        <ChatItem key={message.id} message={message} renderSegment={renderSegment} />
                     ))}
                     {isPending && (
                         <div className="chat-item assistant-response pending">

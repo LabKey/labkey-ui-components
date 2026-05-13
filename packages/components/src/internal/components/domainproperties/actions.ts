@@ -1535,11 +1535,17 @@ export interface ExpressionAssistOptions {
     requestHandler?: RequestHandler;
 }
 
+export interface ExpressionAssistSegment {
+    // 'html' for prose; 'expression' for validated, applyable SQL; 'sql' for illustrative SQL.
+    type: 'html' | 'expression' | 'sql' | string;
+    html?: string;
+    sql?: string;
+}
+
 export interface ExpressionAssistResponse {
     conversationId: string;
     error?: string;
-    html?: string;
-    sql?: string;
+    segments?: ExpressionAssistSegment[];
     success: boolean;
     text?: string;
 }

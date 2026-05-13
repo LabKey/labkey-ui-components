@@ -1,8 +1,8 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useAppContext } from '../../AppContext';
 import { generateId } from '../../util/utils';
-import { ChatModal } from '../mcp/ChatModal';
-import { ChatMessage, ChatRole } from '../mcp/models';
+import { ChatModal, RenderSegment } from '../mcp/ChatModal';
+import { ChatMessage, ChatRole, ChatSegment } from '../mcp/models';
 import { DomainField, GetDomainFields, SystemField } from './models';
 import { useRequestHandler } from '../../util/RequestHandler';
 import { incrementClientSideMetricCount } from '../../actions';
@@ -23,6 +23,29 @@ function createChatMessage(message: Partial<ChatMessage>): ChatMessage {
     } as ChatMessage;
 }
 
+interface SqlSnippetProps {
+    onApply?: (sql: string) => void;
+    readOnly?: boolean;
+    sql: string;
+}
+
+const SqlExpression: FC<SqlSnippetProps> = memo(({ onApply, readOnly, sql }) => {
+    const handleApply = useCallback(() => onApply?.(sql), [onApply, sql]);
+    return (
+        <div className="assistant-expression">
+            <pre>
+                <code className="language-sql">{sql}</code>
+            </pre>
+            {!readOnly && onApply && (
+                <a className="apply-expression" onClick={handleApply} role="button" tabIndex={0}>
+                    <i className="fa fa-check" /> Apply Expression
+                </a>
+            )}
+        </div>
+    );
+});
+SqlExpression.displayName = 'SqlExpression';
+
 interface Props {
     fieldError?: string;
     fieldExpression?: string;
@@ -39,17 +62,17 @@ function useExpressionAssistance(
 ) {
     const [conversationId, setConversationId] = useState<string>();
     const [messages, setMessages] = useState<ChatMessage[]>(() => {
-        let sql: string;
         let text: string;
+        let segments: ChatSegment[] | undefined;
         if (fieldError) {
             text = VALIDATE_INTRO;
         } else if (fieldExpression) {
             text = CHANGE_INTRO;
-            sql = fieldExpression;
+            segments = [{ type: 'sql', sql: fieldExpression }];
         } else {
             text = NEW_INTRO;
         }
-        return [createChatMessage({ allowApplySql: false, sql, text })];
+        return [createChatMessage({ role: ChatRole.assistant, segments, text })];
     });
     const [isPending, setIsPending] = useState(false);
     const firstChatRef = useRef(true);
@@ -70,6 +93,7 @@ function useExpressionAssistance(
         [domainFields, systemFields]
     );
 
+    // This prompt is used when the user has an erroneous expression, and we want the agent to help in triaging
     const evaluatePrompt = useMemo(() => {
         if (!fieldError) return undefined;
         return [
@@ -119,9 +143,8 @@ function useExpressionAssistance(
 
                 pushMessage({
                     error: response.success ? response.error : (response.error ?? 'Request failed.'),
-                    html: response.html,
                     role: ChatRole.assistant,
-                    sql: response.sql,
+                    segments: response.segments,
                     text: response.text,
                 });
                 incrementClientSideMetricCount(EXPR_ASST_METRIC_FEATURE_AREA, 'submitPrompt');
@@ -175,13 +198,26 @@ export const ExpressionAssistantModal: FC<Props> = memo(props => {
         fieldError
     );
 
+    const renderSegment = useCallback<RenderSegment>(
+        (segment, index) => {
+            if (segment.type === 'expression' && segment.sql) {
+                return <SqlExpression key={index} onApply={onComplete} sql={segment.sql} />;
+            }
+            if (segment.type === 'sql' && segment.sql) {
+                return <SqlExpression key={index} readOnly sql={segment.sql} />;
+            }
+            return undefined;
+        },
+        [onComplete]
+    );
+
     return (
         <ChatModal
             isPending={isPending}
             messages={messages}
             onCancel={onCancel}
-            onComplete={onComplete}
             onInterrupt={onInterrupt}
+            renderSegment={renderSegment}
             sendPrompt={sendPrompt}
             title="Expression AI Assistant"
         />

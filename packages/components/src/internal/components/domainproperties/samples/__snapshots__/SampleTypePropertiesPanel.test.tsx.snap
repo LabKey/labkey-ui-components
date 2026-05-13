@@ -11,6 +11,8 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
         <div
           class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="sample-type-properties-hdr"
+          role="button"
+          tabindex="0"
         >
           <span
             class="domain-panel-title"
@@ -294,6 +296,8 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
       <div
         class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="sample-type-properties-hdr"
+        role="button"
+        tabindex="0"
       >
         <span
           class="domain-panel-title"
@@ -619,6 +623,8 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
         <div
           class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="sample-type-properties-hdr"
+          role="button"
+          tabindex="0"
         >
           <span
             class="domain-panel-title"
@@ -834,6 +840,8 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
       <div
         class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="sample-type-properties-hdr"
+        role="button"
+        tabindex="0"
       >
         <span
           class="domain-panel-title"
@@ -1096,6 +1104,8 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
         <div
           class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="sample-type-properties-hdr"
+          role="button"
+          tabindex="0"
         >
           <span
             class="domain-panel-title"
@@ -1340,6 +1350,8 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
       <div
         class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="sample-type-properties-hdr"
+        role="button"
+        tabindex="0"
       >
         <span
           class="domain-panel-title"

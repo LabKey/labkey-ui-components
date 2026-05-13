@@ -11,6 +11,8 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
         <div
           class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="issues-properties-hdr"
+          role="button"
+          tabindex="0"
         >
           <span
             class="domain-panel-title"
@@ -435,6 +437,8 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
       <div
         class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="issues-properties-hdr"
+        role="button"
+        tabindex="0"
       >
         <span
           class="domain-panel-title"

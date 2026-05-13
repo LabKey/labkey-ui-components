@@ -37,16 +37,16 @@ const SqlExpression: FC<SqlSnippetProps> = memo(({ onApply, readOnly, sql }) => 
                 <code className="language-sql">{sql}</code>
             </pre>
             {!readOnly && onApply && (
-                <a className="apply-expression" onClick={handleApply} role="button" tabIndex={0}>
+                <span className="clickable-text" onClick={handleApply} role="button">
                     <i className="fa fa-check" /> Apply Expression
-                </a>
+                </span>
             )}
         </div>
     );
 });
 SqlExpression.displayName = 'SqlExpression';
 
-interface Props {
+export interface ExpressionAssistantModalProps {
     fieldError?: string;
     fieldExpression?: string;
     getDomainFields: GetDomainFields;
@@ -185,7 +185,7 @@ function useExpressionAssistance(
     return { isPending, messages, onInterrupt, sendPrompt };
 }
 
-export const ExpressionAssistantModal: FC<Props> = memo(props => {
+export const ExpressionAssistantModal: FC<ExpressionAssistantModalProps> = memo(props => {
     const { fieldError, fieldExpression, getDomainFields, onCancel, onComplete } = props;
     const { domainFields, systemFields } = useMemo(() => {
         const { domainFields, systemFields } = getDomainFields();

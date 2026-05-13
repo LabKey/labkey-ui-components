@@ -9,12 +9,7 @@ const fieldSizingSupported = CSS.supports('field-sizing', 'content');
 
 export type RenderSegment = (segment: ChatSegment, index: number) => ReactNode | undefined;
 
-/**
- * Default rendering for built-in segment types. Returns undefined for unknown types so callers can take over via `renderSegment`.
- * @param segment
- * @param index
- */
-function renderDefaultSegment(segment: ChatSegment, index: number): ReactNode | undefined {
+function renderSegmentDefault(segment: ChatSegment, index: number): ReactNode | undefined {
     if (segment.type === 'html' && segment.html) {
         return <div className="assistant-text" dangerouslySetInnerHTML={{ __html: segment.html }} key={index} />;
     }
@@ -47,15 +42,14 @@ const ChatItem: FC<ChatBubbleProps> = memo(({ message, renderSegment }) => {
             {message.text && <div className="assistant-text">{message.text}</div>}
             {message.segments?.map((segment, index) => {
                 const custom = renderSegment?.(segment, index);
-                if (custom !== undefined) return <React.Fragment key={index}>{custom}</React.Fragment>;
-                return <React.Fragment key={index}>{renderDefaultSegment(segment, index)}</React.Fragment>;
+                return <React.Fragment key={index}>{custom ?? renderSegmentDefault(segment, index)}</React.Fragment>;
             })}
         </div>
     );
 });
 ChatItem.displayName = 'ChatItem';
 
-interface Props {
+export interface ChatModalProps {
     isPending: boolean;
     messages: ChatMessage[];
     onCancel: () => void;
@@ -65,7 +59,7 @@ interface Props {
     title: ReactNode;
 }
 
-export const ChatModal: FC<Props> = memo(props => {
+export const ChatModal: FC<ChatModalProps> = memo(props => {
     const { isPending, messages, onCancel, onInterrupt, renderSegment, sendPrompt, title } = props;
     const [prompt, setPrompt] = useState('');
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -162,9 +156,9 @@ export const ChatModal: FC<Props> = memo(props => {
                     <div className="form-group">
                         <div className="col-xs-12">
                             <textarea
-                                aria-label="Expression Assistant Prompt"
+                                aria-label={`${title} Prompt`}
                                 className="form-control prompt-input"
-                                name="expression-assistant-prompt"
+                                name="chat-prompt"
                                 onChange={handleChange}
                                 onKeyDown={handleKeyDown}
                                 placeholder="Enter a prompt"

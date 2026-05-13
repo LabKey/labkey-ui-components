@@ -17,16 +17,12 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    .modal-header {
-        flex-shrink: 0;
+    .modal-header .modal-title {
+        display: inline;
+    }
 
-        .modal-title {
-            display: inline;
-        }
-
-        .btn {
-            float: right;
-        }
+    .modal-header .btn {
+        float: right;
     }
 
     .modal-body {
@@ -71,20 +67,6 @@
 
     .assistant-text {
         margin-bottom: 8px;
-    }
-
-    .apply-expression {
-        color: #2980B9;
-        cursor: pointer;
-        display: inline-block;
-
-        &:hover {
-            text-decoration: underline;
-        }
-
-        .fa-check {
-            margin-right: 6px;
-        }
     }
 
     .error-response {

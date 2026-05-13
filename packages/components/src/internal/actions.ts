@@ -111,7 +111,7 @@ export async function selectGridIdsFromTransactionId(
     dataType: string,
     actions: Actions
 ): Promise<DataTypeRowIdsFromTransactionIds> {
-    if (!transactionAuditId) return undefined;
+    if (!transactionAuditId) return { rowIds: [], dataTypeRowCounts: {} };
 
     const modelId = createGridModelId(gridIdPrefix, schemaQuery);
     const selected = await getGridIdsFromTransactionId(transactionAuditId, dataType);

@@ -2081,4 +2081,3 @@ describe('stringToHtmlId', () => {
         expect(stringToHtmlId('my-id')).toBe('my-id');
     });
 });
-

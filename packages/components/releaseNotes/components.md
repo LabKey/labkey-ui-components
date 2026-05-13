@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.36.0
+*Released*: 13 May 2026
 - Update heading tags in various page elements for better accessibility
 - Add sr-only text for Selection checkbox table header
 - Update a few more colors for better contrast

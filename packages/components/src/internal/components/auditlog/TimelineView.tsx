@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import classNames from 'classnames';
 
 import { SVGIcon } from '../base/SVGIcon';
@@ -9,7 +9,29 @@ import { UserLink } from '../user/UserLink';
 
 import { TimelineEventModel, TimelineGroupedEventInfo } from './models';
 import { getEventDataValueDisplay } from './utils';
-import { onEnterKeyDown } from '../../../public/useEnterEscape';
+import { useEnterEscape } from '../../../public/useEnterEscape';
+
+interface TimelineTimestampProps {
+    event: TimelineEventModel;
+    onSelect: (event: TimelineEventModel) => void;
+}
+
+const TimelineTimestamp: FC<TimelineTimestampProps> = ({ event, onSelect }) => {
+    const onClick = () => {
+        if (event.rowId) onSelect(event);
+    };
+    const onKeyDown = useEnterEscape(onClick);
+    return (
+        <td
+            className="display-light timeline-timestamp-col"
+            key="tl-timestamp-col"
+            onKeyDown={onKeyDown}
+            tabIndex={event.rowId ? 0 : -1}
+        >
+            {getEventDataValueDisplay(event.timestamp)}
+        </td>
+    );
+};
 
 interface Props {
     events: TimelineEventModel[];
@@ -61,7 +83,6 @@ export class TimelineView extends React.Component<Props, any> {
         const onClick = () => {
             if (event.rowId) this.selectEvent(event);
         };
-        const onKeyDown = onEnterKeyDown(onClick);
 
         return (
             <tr
@@ -71,10 +92,8 @@ export class TimelineView extends React.Component<Props, any> {
                 })}
                 key={event.getRowKey()}
                 onClick={onClick}
-                onKeyDown={onKeyDown}
-                tabIndex={event.rowId ? 0 : -1}
             >
-                {this.renderTimestampCol(event.timestamp)}
+                <TimelineTimestamp event={event} onSelect={this.selectEvent} />
                 {this.renderIconCol(
                     event.getIcon(),
                     eventSelected,
@@ -85,14 +104,6 @@ export class TimelineView extends React.Component<Props, any> {
                 )}
                 {this.renderDetailCol(event)}
             </tr>
-        );
-    }
-
-    renderTimestampCol(timestamp) {
-        return (
-            <td key="tl-timestamp-col" className="display-light timeline-timestamp-col">
-                {getEventDataValueDisplay(timestamp)}
-            </td>
         );
     }
 

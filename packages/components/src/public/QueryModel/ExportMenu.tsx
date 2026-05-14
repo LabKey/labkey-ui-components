@@ -141,7 +141,7 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
         hasData && (
             <div className="export-menu">
                 <Tip caption="Export">
-                    <DropdownButton noCaret pullRight title={<Icon iconClass="fa fa-download" srText={"Export"}/>}>
+                    <DropdownButton noCaret pullRight title={<Icon iconClass="fa fa-download" srText="Export" />}>
                         <MenuHeader text={exportHeader} />
 
                         {exportOptions.map(option => (

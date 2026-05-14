@@ -1,11 +1,9 @@
-import React, { FC, memo, ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { BaseModal } from '../../Modal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ChatMessage, ChatRole, ChatSegment } from './models';
 import { cancelEvent } from '../../events';
 import { useTimeout } from '../../hooks';
-
-const fieldSizingSupported = CSS.supports('field-sizing', 'content');
 
 export type RenderSegment = (segment: ChatSegment, index: number) => ReactNode | undefined;
 
@@ -72,6 +70,8 @@ export const ChatModal: FC<ChatModalProps> = memo(props => {
         return timer.clear;
     }, [timer]);
 
+    const fieldSizingSupported = useMemo(() => CSS.supports('field-sizing', 'content'), []);
+
     // Firefox does not support the CSS property "field-sizing" which allows for the height of the textarea
     // to increase up to "max-height" based on the textarea content. Here we use a layout effect to mimic this
     // behavior in JavaScript.
@@ -86,7 +86,7 @@ export const ChatModal: FC<ChatModalProps> = memo(props => {
         const nextHeight = el.scrollHeight + parseInt(computed.borderTopWidth) + parseInt(computed.borderBottomWidth);
 
         el.style.height = `${nextHeight}px`;
-    }, [prompt]);
+    }, [fieldSizingSupported, prompt]);
 
     useEffect(() => {
         const el = historyRef.current;

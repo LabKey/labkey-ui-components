@@ -187,9 +187,9 @@ const RunStepNodeDetail: FC<RunStepNodeDetailProps> = memo(props => {
     return (
         <div className="run-step-node-detail">
             <DetailHeader header={`Run Step: ${stepName}`} iconSrc="default">
-                <a className="lineage-link" onClick={onBack}>
+                <button className="lineage-link clickable-text" onClick={onBack}>
                     <span>Back to Run Details</span>
-                </a>
+                </button>
                 <span className="spacer-left">&gt;</span>
                 <span className="spacer-left">{stepName}</span>
             </DetailHeader>

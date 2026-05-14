@@ -10,11 +10,7 @@
         height: 100%;
         display: flex;
         flex-direction: column;
-        background-color: $white;
-        border: 1px solid #DDDDDD;
-        border-radius: 8px;
         overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .modal-header .modal-title {
@@ -49,37 +45,36 @@
         align-self: flex-end;
         max-width: 80%;
         padding: 8px 12px;
-        background-color: #F1F9FC;
-        border: 1px solid rgba(201, 230, 242, 0.8);
+        background-color: $alert-info-bg;
+        border: 1px solid $alert-info-border;
         border-radius: 8px 8px 0 8px;
-        color: #0088CC;
+        color: $alert-info-text;
         white-space: pre-wrap;
     }
 
     .assistant-response {
         align-self: stretch;
-        color: #333333;
+        color: $text-color;
     }
 
     .assistant-response.pending {
-        color: #777777;
+        color: $gray-light;
     }
 
     .assistant-text,
-    .assistant-expression .clickable-text {
+    .assistant-expression {
         margin-bottom: 8px;
     }
 
     .error-response {
-        color: #C62828;
+        color: $brand-danger;
     }
 
     .modal-footer {
         flex-shrink: 0;
-        background-color: #F3F3F4;
+        background-color: $body-bg;
         line-height: 20px;
         padding: 15px;
-        border-top: 1px solid #EEEEEE;
     }
 
     .form-inline {
@@ -106,7 +101,6 @@
         padding: 10px;
         box-sizing: border-box;
         resize: none;
-        border: 1px solid #CCCCCC;
         margin: 0;
         white-space: pre-wrap;
         word-wrap: break-word;
@@ -119,14 +113,13 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: #333333;
-        border-color: #CCCCCC;
+        color: $text-color;
     }
 
     .chat-modal__caution {
         width: 100%;
         text-align: center;
-        color: #777777;
+        color: $gray-light;
         font-size: 11px;
         margin-top: 12px;
     }

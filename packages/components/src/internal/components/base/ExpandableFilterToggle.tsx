@@ -19,7 +19,7 @@ export class ExpandableFilterToggle extends PureComponent<Props> {
 
         return (
             <>
-                <button onClick={toggleFilterPanel} className={'clickable-text ' + panelCls}>
+                <button className={'clickable-text ' + panelCls} onClick={toggleFilterPanel} type="button">
                     {filterExpanded ? 'Hide filters ' : 'Show filters '}
                     <i
                         className={classNames('fa', {
@@ -29,7 +29,7 @@ export class ExpandableFilterToggle extends PureComponent<Props> {
                     />
                 </button>
                 {hasFilter && (
-                    <button className="clickable-text margin-left" onClick={resetFilter}>
+                    <button className="clickable-text margin-left" onClick={resetFilter} type="button">
                         Clear All
                     </button>
                 )}

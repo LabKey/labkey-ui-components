@@ -551,6 +551,10 @@
 
         &.active > a {
           border-bottom: 3px solid $brand-secondary;
+
+          &:focus:not(:focus-visible) {
+              outline: none;
+          }
         }
       }
     }

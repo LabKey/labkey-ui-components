@@ -91,8 +91,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
 
     const getActionView = useCallback(
         event => {
-            const target = event.target.tagName === 'I' ? event.target.parentElement : event.target;
-            const targetId = target.id;
+            const targetId = event.currentTarget.id;
             const viewInd = parseInt(targetId.split('-')[1]);
             return views[viewInd];
         },

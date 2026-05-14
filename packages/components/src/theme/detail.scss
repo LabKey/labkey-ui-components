@@ -102,8 +102,8 @@
   line-height: 80px;
   padding-left: 1.5%;
   background: white;
-  color: black;
-  border-right: 1px solid lightgray;
+  color: black !important; // override button.clickable-text
+  border-right: 1px solid lightgray !important; // override button.clickable-text
 }
 
 .component-detail--child--inactive {

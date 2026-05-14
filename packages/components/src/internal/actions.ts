@@ -65,7 +65,7 @@ export function selectAll(
 }
 
 type DataTypeRowIdsFromTransactionIds = {
-    dataTypeRowCounts: Record<number, number>; // todo rename to count
+    dataTypeRowCounts: Record<number, number>;
     typeNameRowCounts?: Record<string, number>;
     dataTypes?: string[];
     rowIds: string[];

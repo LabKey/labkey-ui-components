@@ -26,12 +26,18 @@
         .panel-content-title,
         .panel-content-title-medium {
             display: inline-block;
+            font-weight: normal;
             font-size: 18px;
+            margin-block-start: 0;
+            margin-block-end: 0;
         }
 
         .panel-content-title-large {
             display: inline-block;
+            font-weight: normal;
             font-size: 28px;
+            margin-block-start: 0;
+            margin-block-end: 0;
         }
 
         .panel-content-caption {
@@ -43,6 +49,10 @@
 .panel-default:not(.domain-form-panel) .panel-heading,
 .panel-info .panel-heading {
     font-size: 18px;
+    font-weight: normal;
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 1.4;
 }
 .panel-default:not(.domain-form-panel) .panel-heading {
     background-color: $white;
@@ -50,6 +60,13 @@
     margin: 15px 15px 0 15px;
     padding: 0;
 }
+.section-heading {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    margin-top: 3px;
+}
+
 
 // revert panel heading font-size for those within a tabbed-grid-panel
 .tabbed-grid-panel .panel-heading {
@@ -78,4 +95,17 @@
 
 .vertical-scroll-panel {
     overflow: auto;
+}
+
+.heading4 {
+    font-size: 16px;
+    font-weight: 700;
+}
+.heading5 {
+    font-size: 14px;
+    font-weight: 700;
+}
+.heading6 {
+    font-size: 12px;
+    font-weight: 500;
 }

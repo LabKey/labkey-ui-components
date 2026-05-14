@@ -54,11 +54,12 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
                 <div className="col-xs-6">
                     {selected && options?.length > 0 && (
                         <>
-                            <div className="margin-bottom">
+                            <div className="margin-bottom" id="specialty-assay-type-select-label">
                                 <b>Use Instrument-Specific Data Format</b>
                             </div>
                             <div className="margin-bottom">
                                 <select
+                                    aria-labelledby="specialty-assay-type-select-label"
                                     id="specialty-assay-type-select"
                                     value={selected.name}
                                     onChange={onSelectChange}

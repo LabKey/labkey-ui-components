@@ -365,7 +365,7 @@ export const UserDetailsPanel: FC<Props> = props => {
 
     return (
         <div className="panel panel-default user-details-panel">
-            <div className="panel-heading">{renderHeader()}</div>
+            <h2 className="panel-heading">{renderHeader()}</h2>
             <div className="panel-body">
                 {renderBody()}
                 {!isSelfCtx && !isGroup && onUsersStateChangeComplete && renderButtons()}

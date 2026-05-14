@@ -104,7 +104,7 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props> {
                 {panelStatus && panelStatus !== 'NONE' && !iconHelpMsg && this.getHeaderIconComponent()}
 
                 {/* Header name*/}
-                <span className="domain-panel-title">{this.getTitlePrefix() + title}</span>
+                <h2 className="domain-panel-title">{this.getTitlePrefix() + title}</h2>
 
                 {/* Expand/Collapse Icon*/}
                 {(controlledCollapse || collapsible) && (

@@ -469,7 +469,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
 
     return (
         <div className="panel panel-default">
-            <div className="panel-heading">{TITLE}</div>
+            <h2 className="panel-heading">{TITLE}</h2>
             <div className="panel-body">
                 {error && <Alert>{error}</Alert>}
                 {!states && <LoadingSpinner />}

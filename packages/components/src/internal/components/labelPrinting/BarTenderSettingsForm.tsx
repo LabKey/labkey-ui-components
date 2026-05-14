@@ -184,7 +184,7 @@ export const BarTenderSettingsForm: FC<BarTenderSettingsFormProps> = memo(props 
 
     return (
         <div className="panel panel-default" title={title}>
-            <div className="panel-heading">{title}</div>
+            <h2 className="panel-heading">{title}</h2>
             <div className="panel-body">
                 {error && <Alert>{error}</Alert>}
                 {loading && <LoadingSpinner />}

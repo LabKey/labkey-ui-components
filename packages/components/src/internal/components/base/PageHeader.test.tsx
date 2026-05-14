@@ -7,7 +7,7 @@ import { PageHeader } from './PageHeader';
 describe('<PageHeader />', () => {
     test('render without properties', () => {
         render(<PageHeader showNotifications={false} />);
-        expect(document.querySelector('h2').textContent).toEqual('');
+        expect(document.querySelector('h2')).not.toBeInTheDocument();
     });
 
     test('render with icon', () => {
@@ -26,6 +26,13 @@ describe('<PageHeader />', () => {
         render(<PageHeader showNotifications={false} title="Page title" iconCls="fa fa-star" />);
         expect(document.querySelectorAll('span.fa-star').length).toEqual(1);
         expect(document.querySelector('h2').textContent).toEqual(' Page title');
+    });
+
+
+    test('render with icon and title as primary', () => {
+        render(<PageHeader primaryHeader showNotifications={false} title="Page title" iconCls="fa fa-star" />);
+        expect(document.querySelectorAll('span.fa-star').length).toEqual(1);
+        expect(document.querySelector('h1').textContent).toEqual(' Page title');
     });
 
     test('render with children', () => {

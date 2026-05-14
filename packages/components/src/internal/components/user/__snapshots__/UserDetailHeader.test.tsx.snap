@@ -20,11 +20,11 @@ exports[`UserDetailHeader default properties 1`] = `
       <div
         class="detail__header-icon--body-container"
       >
-        <h2
+        <h1
           class="no-margin-top detail__header--name"
         >
           Title
-        </h2>
+        </h1>
       </div>
     </div>
     <div
@@ -57,11 +57,11 @@ exports[`UserDetailHeader optional properties 1`] = `
       <div
         class="detail__header-icon--body-container"
       >
-        <h2
+        <h1
           class="no-margin-top detail__header--name"
         >
           Title (Custom)
-        </h2>
+        </h1>
       </div>
     </div>
     <div

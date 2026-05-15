@@ -377,5 +377,4 @@ describe('ExpressionAssistantModal', () => {
         expect(chatModalProps.onCancel).toBe(onCancel);
         expect(chatModalProps.title).toBe('Expression AI Assistant');
     });
-
 });

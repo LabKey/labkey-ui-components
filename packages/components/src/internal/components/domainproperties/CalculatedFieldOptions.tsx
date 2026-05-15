@@ -14,11 +14,11 @@ import { SectionHeading } from './SectionHeading';
 import { isFieldFullyLocked, isFieldPartiallyLocked } from './propertiesUtil';
 import { CALCULATED_TYPE, MULTI_CHOICE_TYPE, PropDescType } from './PropDescType';
 import { SVGIcon } from '../base/SVGIcon';
-import { isAIAssistanceEnabled } from '../../app/utils';
 import { useModalState } from '../../hooks';
 import { EXPR_ASST_METRIC_FEATURE_AREA, ExpressionAssistantModal } from './ExpressionAssistantModal';
 import { incrementClientSideMetricCount } from '../../actions';
 import { useAppContext } from '../../AppContext';
+import { useServerContext } from '../base/ServerContext';
 
 // export for jest testing
 export const typeToDisplay = (type: string): string => {
@@ -37,13 +37,17 @@ export const typeToDisplay = (type: string): string => {
 };
 
 // export for jest testing
-export const getColumnTypeMap = (domainFields: DomainField[], systemFields: SystemField[]): Record<string, string> => {
-    const colTypeMap = {};
+export const getColumnTypeMap = (
+    domainFields?: DomainField[],
+    systemFields?: SystemField[]
+): Record<string, string> => {
     // Issue 51169: add some default system fields
-    colTypeMap['Created'] = 'DATETIME';
-    colTypeMap['CreatedBy'] = 'INTEGER';
-    colTypeMap['Modified'] = 'DATETIME';
-    colTypeMap['ModifiedBy'] = 'INTEGER';
+    const colTypeMap = {
+        Created: 'DATETIME',
+        CreatedBy: 'INTEGER',
+        Modified: 'DATETIME',
+        ModifiedBy: 'INTEGER',
+    };
 
     systemFields?.forEach(df => {
         colTypeMap[df.Name] = df.DataType.toUpperCase();
@@ -75,7 +79,7 @@ const HELP_TIP_BODY = (
     </div>
 );
 
-interface Props {
+export interface CalculatedFieldOptionsProps {
     domainIndex: number;
     field: DomainField;
     getDomainFields: GetDomainFields;
@@ -83,13 +87,12 @@ interface Props {
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean, skipDirtyCheck?: boolean) => void;
 }
 
-export const CalculatedFieldOptions: FC<Props> = memo(props => {
+export const CalculatedFieldOptions: FC<CalculatedFieldOptionsProps> = memo(props => {
     const { index, field, domainIndex, onChange, getDomainFields } = props;
     const [loading, setLoading] = useState<boolean>(!field.isNew());
     const [error, setError] = useState<string>(undefined);
     const [parsedType, setParsedType] = useState<string>(undefined);
     const { close, open, show } = useModalState();
-    const assistanceEnabled = isAIAssistanceEnabled();
     const isNew = useMemo(() => field.isNew(), [field]);
     const { headingId, inputId } = useMemo(
         () => ({
@@ -99,6 +102,7 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
         [domainIndex, index]
     );
     const { api } = useAppContext();
+    const assistanceEnabled = useServerContext().mcpReady === true;
 
     const handleChange = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>(
         evt => {
@@ -217,9 +221,13 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                             <div>
                                 <span className="error">{error}</span>
                                 {assistanceEnabled && (
-                                    <span className="clickable-text validate-link-ai" onClick={onValidateAssistant}>
+                                    <button
+                                        className="clickable-text validate-link-ai"
+                                        onClick={onValidateAssistant}
+                                        type="button"
+                                    >
                                         Get help from AI
-                                    </span>
+                                    </button>
                                 )}
                             </div>
                         )}

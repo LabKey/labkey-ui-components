@@ -1534,7 +1534,7 @@ export interface ExpressionAssistOptions {
     domainFields?: (DomainField | SystemField)[];
     fieldError?: string;
     fieldExpression?: string;
-    phiColumns: string[];
+    phiColumns?: string[];
     prompt: string;
     requestHandler?: RequestHandler;
 }

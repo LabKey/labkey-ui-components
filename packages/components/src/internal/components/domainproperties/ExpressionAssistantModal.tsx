@@ -38,9 +38,9 @@ const SqlExpression: FC<SqlSnippetProps> = memo(({ onApply, readOnly, sql }) => 
                 <code className="language-sql">{sql}</code>
             </pre>
             {!readOnly && onApply && (
-                <span className="clickable-text" onClick={handleApply} role="button">
+                <button className="clickable-text" onClick={handleApply} type="button">
                     <i className="fa fa-check" /> Apply Expression
-                </span>
+                </button>
             )}
         </div>
     );

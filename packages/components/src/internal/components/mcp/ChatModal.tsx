@@ -1,5 +1,5 @@
 import React, { FC, memo, ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { BaseModal } from '../../Modal';
+import { Modal, ModalHeader } from '../../Modal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ChatMessage, ChatRole, ChatSegment } from './models';
 import { cancelEvent } from '../../events';
@@ -131,60 +131,61 @@ export const ChatModal: FC<ChatModalProps> = memo(props => {
         [handleSend]
     );
 
-    return (
-        <BaseModal className="chat-modal">
-            <div className="modal-header">
-                <h4 className="modal-title text__wrap">{title}</h4>
-                <button className="btn btn-sm btn-default" onClick={handleCancel} type="button">
-                    End Chat
-                </button>
-            </div>
-            <div className="modal-body">
-                <div className="chat-history" ref={historyRef}>
-                    {messages.map(message => (
-                        <ChatItem key={message.id} message={message} renderSegment={renderSegment} />
-                    ))}
-                    {isPending && (
-                        <div className="chat-item assistant-response pending">
-                            <LoadingSpinner msg="Thinking..." />
-                        </div>
-                    )}
-                </div>
-            </div>
-            <div className="modal-footer">
-                <form className="form-inline" onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <div className="col-xs-12">
-                            <textarea
-                                aria-label={`${title} Prompt`}
-                                className="form-control prompt-input"
-                                maxLength={4000}
-                                name="chat-prompt"
-                                onChange={handleChange}
-                                onKeyDown={handleKeyDown}
-                                placeholder="Enter a prompt"
-                                ref={textAreaRef}
-                                rows={1}
-                                value={prompt}
-                            />
-                        </div>
+    const header = (
+        <ModalHeader title={title}>
+            <button className="btn btn-sm btn-default" onClick={handleCancel} type="button">
+                End Chat
+            </button>
+        </ModalHeader>
+    );
+
+    const footer = (
+        <>
+            <form className="form-inline" onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <div className="col-xs-12">
+                        <textarea
+                            aria-label={`${title} Prompt`}
+                            className="form-control prompt-input"
+                            maxLength={4000}
+                            name="chat-prompt"
+                            onChange={handleChange}
+                            onKeyDown={handleKeyDown}
+                            placeholder="Enter a prompt"
+                            ref={textAreaRef}
+                            rows={1}
+                            value={prompt}
+                        />
                     </div>
-                    {isPending && (
-                        <button className="btn btn-default prompt-button" onClick={handleInterrupt} type="button">
-                            <i className="fa fa-stop" />
-                        </button>
-                    )}
-                    {!isPending && (
-                        <button className="btn btn-default prompt-button" disabled={!prompt.trim()} type="submit">
-                            <i className="fa fa-arrow-up" />
-                        </button>
-                    )}
-                </form>
-                <div className="chat-modal__caution">
-                    Your data and chats are private. AI can make mistakes. Double check any suggestions.
                 </div>
+                {isPending && (
+                    <button className="btn btn-default prompt-button" onClick={handleInterrupt} type="button">
+                        <i className="fa fa-stop" />
+                    </button>
+                )}
+                {!isPending && (
+                    <button className="btn btn-default prompt-button" disabled={!prompt.trim()} type="submit">
+                        <i className="fa fa-arrow-up" />
+                    </button>
+                )}
+            </form>
+            <div className="chat-modal__caution">AI can make mistakes. Double check any suggestions.</div>
+        </>
+    );
+
+    return (
+        <Modal className="chat-modal" footer={footer} header={header} title={title}>
+            <div className="chat-history" ref={historyRef}>
+                {messages.map(message => (
+                    <ChatItem key={message.id} message={message} renderSegment={renderSegment} />
+                ))}
+                {isPending && (
+                    <div className="chat-item assistant-response pending">
+                        <LoadingSpinner msg="Thinking..." />
+                    </div>
+                )}
             </div>
-        </BaseModal>
+        </Modal>
     );
 });
 ChatModal.displayName = 'ChatModal';

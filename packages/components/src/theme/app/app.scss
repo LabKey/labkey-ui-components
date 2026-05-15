@@ -23,8 +23,16 @@
   margin: 0 0 15px 0;
   padding: 0;
   border: 0;
+
+    & > h1 {
+        font-size: 30px;
+    }
 }
 
 .menu-section-icon {
   color: color.adjust($brand-primary, $lightness: 10%);
+}
+
+.text-muted {
+    color: $text-muted;
 }

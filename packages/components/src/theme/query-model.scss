@@ -63,11 +63,15 @@
     margin-right: 8px;
 }
 .grid-panel__menu-toggle {
-    color: $light-gray;
+    color: $text-color-light;
     font-size: 12px;
 
     span {
         vertical-align: middle;
+    }
+
+    &:hover {
+        color: $gray-dark;
     }
 }
 

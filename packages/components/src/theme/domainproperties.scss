@@ -294,7 +294,7 @@
   margin: 25px 0px 20px 0px;
   padding: 15px 20px;
   border-radius: unset;
-  color: #777777;
+  color: $text-color-light;
 }
 
 .domain-row-expanded {
@@ -315,9 +315,19 @@
   color: white;
 }
 
+.domain-panel-title {
+    display: inline;
+    font-weight: 700;
+    font-size: 16px;
+    margin: 0;
+}
+
 .domain-field-section-heading {
   color: $gray-dark;
   font-weight: bold;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
 }
 
 .domain-field-padding-top {
@@ -679,11 +689,11 @@
 }
 
 .domain-panel-header-no-theme {
-  background-color: $blue-border-solid !important;
+  background-color: $brand-primary !important;
 }
 
 .domain-panel-no-theme {
-  border-color: $blue-border-solid !important;
+  border-color: $brand-primary !important;
 }
 
 .domain-panel-header-collapsed {
@@ -695,7 +705,7 @@
 }
 
 .domain-panel-status-icon-green {
-  color: green;
+  color: $brand-success;
 }
 
 .domain-panel-status-icon-blue {

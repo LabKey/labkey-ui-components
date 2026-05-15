@@ -149,6 +149,7 @@ export class SingularItemNameInput extends PureComponent<IssuesListDefBasicPrope
             <div className="row margin-top">
                 <div className="col-xs-3 col-lg-4">
                     <DomainFieldLabel
+                        id="singular-item-name-label"
                         label="Singular Item Name"
                         helpTipBody={ISSUES_LIST_DEF_SINGULAR_PLURAL_TIP}
                         required={false}
@@ -157,6 +158,7 @@ export class SingularItemNameInput extends PureComponent<IssuesListDefBasicPrope
 
                 <div className="col-xs-9 col-lg-8">
                     <input
+                        aria-labelledby="singular-item-name-label"
                         className="form-control"
                         id="singularItemName"
                         type="text"
@@ -177,6 +179,7 @@ export class PluralItemNameInput extends PureComponent<IssuesListDefBasicPropert
             <div className="row margin-top">
                 <div className="col-xs-3 col-lg-4">
                     <DomainFieldLabel
+                        id="plural-items-name-label"
                         label="Plural Items Name"
                         helpTipBody={ISSUES_LIST_DEF_SINGULAR_PLURAL_TIP}
                         required={false}
@@ -185,6 +188,7 @@ export class PluralItemNameInput extends PureComponent<IssuesListDefBasicPropert
 
                 <div className="col-xs-9 col-lg-8">
                     <input
+                        aria-labelledby="plural-items-name-label"
                         className="form-control"
                         id="pluralItemName"
                         type="text"
@@ -361,10 +365,15 @@ export class RestrictedIssueInput extends PureComponent<RestrictedOptionsProps> 
         return (
             <div className="row margin-top">
                 <div className="col-xs-3 col-lg-4">
-                    <DomainFieldLabel label="Restrict Issue List" helpTipBody={ISSUES_LIST_RESTRICTED_TRACKER_TIP} />
+                    <DomainFieldLabel
+                        id="restrict-issue-list-label"
+                        label="Restrict Issue List"
+                        helpTipBody={ISSUES_LIST_RESTRICTED_TRACKER_TIP}
+                    />
                 </div>
                 <div className="col-xs-9 col-lg-8">
                     <input
+                        aria-labelledby="restrict-issue-list-label"
                         type="checkbox"
                         name="restrictedIssueList"
                         checked={model.restrictedIssueList}

@@ -76,7 +76,7 @@ describe('TemplateDownloadButton', () => {
             expect(document.querySelectorAll('span.fa-download')).toHaveLength(1);
         });
 
-        const button = document.querySelector('button.btn-info');
+        const button = document.querySelector('button.btn');
         expect(button).toHaveTextContent('Template');
         await userEvent.click(button);
 
@@ -105,7 +105,7 @@ describe('TemplateDownloadButton', () => {
             expect(document.querySelectorAll('span.fa-download')).toHaveLength(1);
         });
 
-        const button = document.querySelector('button.btn-info');
+        const button = document.querySelector('button.btn');
         expect(button).toHaveTextContent('Template');
         await userEvent.click(button);
 
@@ -123,9 +123,9 @@ describe('TemplateDownloadButton', () => {
     test('editor, with custom properties', () => {
         const { container } = renderWithAppContext(
             <TemplateDownloadButton
+                className="custom-styling"
                 onDownloadDefault={jest.fn()}
                 text="Test Text"
-                className="custom-styling"
                 user={TEST_USER_EDITOR}
             />
         );

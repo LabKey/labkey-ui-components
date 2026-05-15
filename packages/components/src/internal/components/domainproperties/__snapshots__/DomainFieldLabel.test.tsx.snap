@@ -2,68 +2,76 @@
 
 exports[`<DomainFieldLabel/> label and helpTip 1`] = `
 <div>
-  Field 
-  <span
-    class="domain-no-wrap"
-  >
-    Label
-    <div
-      class="overlay-trigger"
+  <span>
+    Field 
+    <span
+      class="domain-no-wrap"
     >
-      <span
-        class="label-help-target"
+      Label
+      <div
+        class="overlay-trigger"
       >
         <span
-          class="label-help-icon fa fa-question-circle"
-        />
-      </span>
-    </div>
+          class="label-help-target"
+        >
+          <span
+            class="label-help-icon fa fa-question-circle"
+          />
+        </span>
+      </div>
+    </span>
   </span>
 </div>
 `;
 
 exports[`<DomainFieldLabel/> label and required 1`] = `
 <div>
-  Field 
-  <span
-    class="domain-no-wrap"
-  >
-    Label
-     *
+  <span>
+    Field 
+    <span
+      class="domain-no-wrap"
+    >
+      Label
+       *
+    </span>
   </span>
 </div>
 `;
 
 exports[`<DomainFieldLabel/> label only 1`] = `
 <div>
-  Field 
-  <span
-    class="domain-no-wrap"
-  >
-    Label
+  <span>
+    Field 
+    <span
+      class="domain-no-wrap"
+    >
+      Label
+    </span>
   </span>
 </div>
 `;
 
 exports[`<DomainFieldLabel/> label, required, and helpTip 1`] = `
 <div>
-  Field 
-  <span
-    class="domain-no-wrap"
-  >
-    Label
-    <div
-      class="overlay-trigger"
+  <span>
+    Field 
+    <span
+      class="domain-no-wrap"
     >
-      <span
-        class="label-help-target"
+      Label
+      <div
+        class="overlay-trigger"
       >
         <span
-          class="label-help-icon fa fa-question-circle"
-        />
-      </span>
-    </div>
-     *
+          class="label-help-target"
+        >
+          <span
+            class="label-help-icon fa fa-question-circle"
+          />
+        </span>
+      </div>
+       *
+    </span>
   </span>
 </div>
 `;

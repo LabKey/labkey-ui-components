@@ -12,6 +12,7 @@ exports[`UserDetailHeader default properties 1`] = `
         class="detail__header--image-container"
       >
         <img
+          alt="ReaderDisplayName avatar"
           class="detail__header-icon"
           src="/labkey/_images/defaultavatar.png"
         />
@@ -19,11 +20,11 @@ exports[`UserDetailHeader default properties 1`] = `
       <div
         class="detail__header-icon--body-container"
       >
-        <h2
+        <h1
           class="no-margin-top detail__header--name"
         >
           Title
-        </h2>
+        </h1>
       </div>
     </div>
     <div
@@ -48,6 +49,7 @@ exports[`UserDetailHeader optional properties 1`] = `
         class="detail__header--image-container"
       >
         <img
+          alt="AssayDesignerDisplayName avatar"
           class="detail__header-icon"
           src="/labkey/_images/defaultavatar.png"
         />
@@ -55,11 +57,11 @@ exports[`UserDetailHeader optional properties 1`] = `
       <div
         class="detail__header-icon--body-container"
       >
-        <h2
+        <h1
           class="no-margin-top detail__header--name"
         >
           Title (Custom)
-        </h2>
+        </h1>
       </div>
     </div>
     <div

@@ -14,6 +14,7 @@ export const NameInput: FC<BasicPropertiesInputsProps> = memo(({ model, onInputC
     <div className="row margin-top">
         <div className="col-xs-3 col-lg-2">
             <DomainFieldLabel
+                id="name-label"
                 label="Name"
                 required={true}
                 helpTipBody="The name for this list. Note that this can be changed after list creation."
@@ -22,6 +23,7 @@ export const NameInput: FC<BasicPropertiesInputsProps> = memo(({ model, onInputC
 
         <div className="col-xs-9 col-lg-8">
             <input
+                aria-labelledby="name-label"
                 className="form-control"
                 id="name"
                 type="text"

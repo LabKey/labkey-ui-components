@@ -12,6 +12,7 @@ import { ToggleIcon } from '../buttons/ToggleButtons';
 
 import { getFieldEnabledFieldName } from './utils';
 import { LabelOverlay, LabelOverlayProps } from './LabelOverlay';
+import { INPUT_LABEL_CLASS_NAME_WITH_TOGGLE } from './constants';
 
 interface ToggleProps {
     onClick: () => void;
@@ -71,7 +72,7 @@ export class FieldLabel extends Component<FieldLabelProps> {
         let toggleContainerClassName,
             toggleWrapperClassName = 'control-label-toggle-input';
         if (showToggle && labelOverlayProps && !labelOverlayProps.isFormsy && !labelOverlayProps.labelClass) {
-            labelOverlayProps.labelClass = 'control-label col-sm-2 col-xs-11 text-left';
+            labelOverlayProps.labelClass = INPUT_LABEL_CLASS_NAME_WITH_TOGGLE;
             toggleContainerClassName = 'col-xs-1';
             toggleWrapperClassName += ' control-label-toggle-input-size-fixed';
         }

@@ -19,7 +19,22 @@
     line-height: 33px;
 }
 
+.lk-modal .close, .modal .close {
+    color: $text-color-light;
+    opacity: 1;
+
+    &:hover {
+        color: $gray-dark;
+        opacity: 1;
+    }
+}
+
 .title-help-link {
     font-weight: normal;
     font-size: 14px;
+}
+
+.modal-title {
+    font-size: 18px;
+    font-weight: 700;
 }

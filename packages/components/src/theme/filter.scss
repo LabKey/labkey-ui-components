@@ -21,6 +21,9 @@
         color: $white;
         font-weight: bold;
     }
+    .list-group-item.active .fa {
+        color: $white;
+    }
 
     .list-group-item .field-caption {
         flex: 1;
@@ -32,7 +35,7 @@
     }
 
     .list-group-item .field-expand-icon {
-        color: $light-gray;
+        color: $text-color-light;
         height: 16px;
         width: 16px;
         margin-right: 5px;
@@ -53,6 +56,7 @@
         width: 15px;
         line-height: 15px;
         background-color: $badge-color;
+        border: 1px solid $white;
         display: inline-block;
         margin-top: 4px;
     }
@@ -62,6 +66,7 @@
         width: 10px;
         border-radius: 50%;
         background-color: $badge-color;
+        border: 1px solid $white;
         display: inline-block;
         margin-top: 6px;
     }
@@ -79,7 +84,7 @@
         }
         .disabled-action-text {
             font-size: 14px;
-            color: $light-gray;
+            color: $text-muted;
         }
     }
 
@@ -145,7 +150,7 @@
 }
 
 .field-modal__empty-msg {
-    color: $gray-light;
+    color: $text-color-light;
     font-size: 16px;
 }
 

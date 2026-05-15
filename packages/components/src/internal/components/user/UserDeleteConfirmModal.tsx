@@ -50,12 +50,12 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
 
         return (
             <Modal
-                title={'Delete ' + Utils.pluralBasic(userCount, 'User') + '?'}
-                onConfirm={this.onConfirm}
-                onCancel={onCancel}
                 confirmClass="btn-danger"
                 confirmText="Yes, Permanently Delete"
                 isConfirming={submitting}
+                onCancel={onCancel}
+                onConfirm={this.onConfirm}
+                title={'Delete ' + Utils.pluralBasic(userCount, 'User') + '?'}
             >
                 <p>
                     Generally, <b>deactivation of a user is recommended</b>. Deactivated users may not login, but their
@@ -63,12 +63,12 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
                 </p>
                 <p>
                     Deletion of a user is <b>permanent and cannot be undone</b>. Deleted users:
-                    <ul>
-                        <li>will no longer be displayed with actions taken or data uploaded by them</li>
-                        <li>will be removed from groups and permissions settings</li>
-                        <li>cannot be reactivated</li>
-                    </ul>
                 </p>
+                <ul>
+                    <li>will no longer be displayed with actions taken or data uploaded by them</li>
+                    <li>will be removed from groups and permissions settings</li>
+                    <li>cannot be reactivated</li>
+                </ul>
                 <p>{Utils.pluralBasic(userCount, 'user')} will be deleted. Do you want to proceed?</p>
                 {error && <Alert>{error}</Alert>}
             </Modal>

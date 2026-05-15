@@ -492,12 +492,14 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                                             </p>
                                         </>
                                     }
+                                    id="aliquot-name-expression-label"
                                     label="Aliquot Naming Pattern"
                                 />
                             </div>
                         </div>
                         <div className="col-xs-10">
                             <input
+                                aria-labelledby="aliquot-name-expression-label"
                                 className={classNames('form-control', {
                                     'naming-pattern-border-warning': warning?.startsWith('Aliquot'),
                                 })}
@@ -561,6 +563,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                         <div className="row margin-top">
                             <div className="col-xs-2">
                                 <DomainFieldLabel
+                                    id="linked-dataset-category-label"
                                     helpTipBody={<LinkedDatasetCategoryHelpTip />}
                                     label="Linked Dataset Category"
                                 />
@@ -568,6 +571,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
 
                             <div className="col-xs-5">
                                 <input
+                                    aria-labelledby="linked-dataset-category-label"
                                     className="form-control"
                                     id={ENTITY_FORM_IDS.AUTO_LINK_CATEGORY}
                                     onChange={this.onFormChange}

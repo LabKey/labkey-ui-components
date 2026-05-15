@@ -21,7 +21,12 @@ export const UserDetailHeader: FC<Props> = props => {
     const lastLogin = useMemo(() => getUserLastLogin(userProperties, dateFormat), [dateFormat, userProperties]);
 
     return (
-        <PageDetailHeader iconUrl={user.avatar} leftColumns={9} title={title}>
+        <PageDetailHeader
+            iconAltText={user.displayName + ' avatar'}
+            iconUrl={user.avatar}
+            leftColumns={9}
+            title={title}
+        >
             {showFolderTitle && !!container?.title && (
                 <div className="detail__header--desc">
                     <i className="fa fa-folder-open" />

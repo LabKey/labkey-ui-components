@@ -63,6 +63,9 @@
   button {
     pointer-events: none;
   }
+  a {
+      pointer-events: none;
+  }
 
 
    // fix styling of buttons in ButtonGroups and ButtonToolbars which got broken by inserting another div
@@ -279,7 +282,7 @@ textarea.form-control {
     padding-left: 4px;
 }
 .color-picker__placeholder {
-    color: #808080; // match select input placeholder text color
+    color: $text-color-light;
 }
 
 .color-icon__circle-small {

@@ -62,7 +62,7 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
 
     return (
         <div className="panel panel-default group-details-panel">
-            <div className="panel-heading">{principal?.displayName ?? 'Group Details'}</div>
+            <h2 className="panel-heading">{principal?.displayName ?? 'Group Details'}</h2>
             <div className="panel-body">
                 {principal ? (
                     <>

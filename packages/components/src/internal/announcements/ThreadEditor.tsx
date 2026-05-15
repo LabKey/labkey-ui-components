@@ -189,7 +189,7 @@ const ThreadEditorToolbar: FC<ThreadEditorToolbarProps> = memo(({ inputRef, setB
     return (
         <div className="thread-editor-toolbar editor-toolbar">
             <div className="editor-toolbar__section insert-menu">
-                <DropdownMenu title={view}>
+                <DropdownMenu label="Editor View" title={view}>
                     <MenuItem onClick={setEditMode}>{EditorView.edit}</MenuItem>
                     <MenuItem onClick={setPreviewMode}>{EditorView.preview}</MenuItem>
                 </DropdownMenu>
@@ -480,6 +480,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
             {view === EditorView.edit && (
                 <div className={classNames('form-group', { 'has-error': hasError })}>
                     <textarea
+                        aria-label="Comment"
                         autoFocus
                         className="thread-editor__input form-control"
                         name="body"
@@ -516,6 +517,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
 
             <label className="thread-editor__attachment-input btn btn-default">
                 <span className="fa fa-paperclip" />
+                <span className="sr-only">Attach files</span>
                 <input multiple onChange={onFileInputChange} type="file" />
             </label>
 

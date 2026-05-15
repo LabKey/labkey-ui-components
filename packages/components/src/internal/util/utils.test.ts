@@ -54,6 +54,7 @@ import {
     pronoun,
     quoteValueWithDelimiters,
     splitMultiValueForImport,
+    stringToHtmlId,
     styleStringToObj,
     toLowerSafe,
     uncapitalizeFirstChar,
@@ -930,37 +931,6 @@ describe('getUpdatedData', () => {
         expect(updatedData[0]).toStrictEqual({
             RowId: 448,
             Alias: [],
-        });
-    });
-
-    test('with additionalCols', () => {
-        const updatedData = getUpdatedData(
-            originalData,
-            {
-                Value: 'val',
-                And$C$D$SAgain: 'again',
-                Other: 'other3',
-            },
-            queryInfo,
-            new Set(['Data'])
-        );
-        expect(updatedData).toHaveLength(3);
-        expect(updatedData[0]).toStrictEqual({
-            RowId: 445,
-            Other: 'other3',
-            Data: 'data1',
-        });
-        expect(updatedData[1]).toStrictEqual({
-            RowId: 447,
-            Value: 'val',
-            Other: 'other3',
-            Data: 'data1',
-        });
-        expect(updatedData[2]).toStrictEqual({
-            RowId: 448,
-            Value: 'val',
-            Other: 'other3',
-            Data: 'data1',
         });
     });
 
@@ -2076,5 +2046,38 @@ describe('isBlankValue', () => {
         expect(isBlankValue(true)).toBe(false);
         expect(isBlankValue(false)).toBe(false);
         expect(isBlankValue(new Date())).toBe(false);
+    });
+});
+
+describe('stringToHtmlId', () => {
+    test('empty string', () => {
+        expect(stringToHtmlId('')).toBeUndefined();
+    });
+    test('undefined', () => {
+        expect(stringToHtmlId(undefined)).toBeUndefined();
+    });
+    test('replaces spaces with hyphens', () => {
+        expect(stringToHtmlId('hello world')).toBe('hello-world');
+    });
+
+    test('collapses consecutive non-alphanumeric characters into one hyphen', () => {
+        expect(stringToHtmlId('hello   world')).toBe('hello-world');
+        expect(stringToHtmlId('foo!@#bar')).toBe('foo-bar');
+    });
+
+    test('strips leading and trailing hyphens', () => {
+        expect(stringToHtmlId('  hello  ')).toBe('hello');
+        expect(stringToHtmlId('!hello!')).toBe('hello');
+    });
+
+    test('preserves alphanumeric characters', () => {
+        expect(stringToHtmlId('MyField123')).toBe('MyField123');
+    });
+
+    test('handles mixed case and numbers', () => {
+        expect(stringToHtmlId('Sample Type 1')).toBe('Sample-Type-1');
+    });
+    test('preserved valid id', () => {
+        expect(stringToHtmlId('my-id')).toBe('my-id');
     });
 });

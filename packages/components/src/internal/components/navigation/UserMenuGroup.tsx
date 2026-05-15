@@ -31,11 +31,12 @@ import { getHelpLink } from '../../util/helpLinks';
 
 import { HELP_LINK_METRIC, RELEASE_NOTES_METRIC } from '../productnavigation/constants';
 
-import { DropdownMenu, DropdownButton, MenuDivider, MenuHeader, MenuItem } from '../../dropdowns';
+import { DropdownButton, DropdownMenu, MenuDivider, MenuHeader, MenuItem } from '../../dropdowns';
 
 import { signIn as defaultSignIn, signOut as defaultSignOut } from './actions';
 import { MenuSectionModel } from './model';
 import { biologicsIsPrimaryApp } from '../../app/products';
+import { Icon } from '../../Icon';
 
 export interface UserMenuProps {
     appProperties?: AppProperties;
@@ -130,7 +131,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
     return (
         <>
             <div className="navbar-item pull-right">
-                <DropdownMenu className="user-dropdown" title={userToggle} pullRight>
+                <DropdownMenu className="user-dropdown" label="User menu" pullRight title={userToggle} >
                     <div className="navbar-connector" />
                     {userMenuItems}
                     {extraUserItems}
@@ -147,7 +148,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                     <DropdownButton
                         className="admin-dropdown"
                         buttonClassName="navbar-menu-button"
-                        title={<i className="fa fa-cog navbar-header-icon" />}
+                        title={<Icon iconClass="fa fa-cog navbar-header-icon" srText="Admin"/>}
                         noCaret
                         pullRight
                     >
@@ -169,11 +170,11 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
             {(!!helpHref || !!releaseNoteHref) && (
                 <div className="navbar-item pull-right navbar-item__dropdown">
                     <DropdownButton
-                        className="help-dropdown"
                         buttonClassName="navbar-menu-button"
-                        title={<i className="fa fa-question-circle navbar-header-icon" />}
+                        className="help-dropdown"
                         noCaret
                         pullRight
+                        title={<Icon iconClass="fa fa-question-circle navbar-header-icon" srText="Help" />}
                     >
                         <div className="navbar-icon-connector" />
                         {helpHref && (

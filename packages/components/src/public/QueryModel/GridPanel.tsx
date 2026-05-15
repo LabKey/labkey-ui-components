@@ -340,7 +340,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     }
 
     return (
-        <div className="panel-heading view-header">
+        <h2 className="panel-heading view-header">
             {isEdited && allowViewCustomization && <span className="alert-info view-edit-alert">Edited</span>}
             {isUpdated && allowViewCustomization && <span className="alert-success view-edit-alert">Updated</span>}
             {displayTitle ?? 'Default View'}
@@ -366,7 +366,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
                 </SplitButton>
             )}
             {errorMsg && <span className="view-edit-error">{errorMsg}</span>}
-        </div>
+        </h2>
     );
 });
 
@@ -971,6 +971,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 cell: (selected: boolean, row: Map<string, any>): ReactNode => {
                     return (
                         <input
+                            aria-label="Select a row"
                             checked={selected === true}
                             className="grid-panel__row-checkbox"
                             disabled={isLoading || isLoadingSelections}

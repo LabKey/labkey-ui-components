@@ -89,9 +89,9 @@ export class QueryInfoQuantity extends PureComponent<Props, State> {
                         id="numItems"
                         label={text}
                         labelClassName="control-label text-left"
-                        name="numItems"
                         max={maxCount}
                         min={1}
+                        name="numItems"
                         onChange={this.onCountChange}
                         required
                         step="1"

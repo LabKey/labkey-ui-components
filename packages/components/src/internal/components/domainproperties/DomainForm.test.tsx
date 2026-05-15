@@ -567,7 +567,7 @@ describe('DomainForm', () => {
         });
 
         const rows = document.getElementsByClassName('domain-row-container');
-        expect(rows[0].textContent).toBe('Name *Data Type *Details'); // no Required
+        expect(rows[0].textContent).toBe('Select all fieldsName *Data Type *Details'); // no Required
     });
 
     test('domain form with hide add fields button', async () => {

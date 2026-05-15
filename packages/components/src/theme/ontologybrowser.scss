@@ -102,7 +102,7 @@
             display: flex;
 
             .col {
-                color: $gray-light;
+                color: $text-color-light;
                 padding: 10px;
                 border-right: 1px solid $gray-border;
                 display: flex;
@@ -121,7 +121,7 @@
         }
 
         .result-footer {
-            color: $gray-light;
+            color: $text-color-light;
             font-size: 12px;
             padding: 10px;
         }
@@ -138,7 +138,7 @@
 
     .none-selected {
         font-size: 20px;
-        color: $gray-light;
+        color: $text-color-light;
     }
 
     .title, .description-title, .description-text, .synonyms-title, .synonyms-text {
@@ -205,7 +205,7 @@
 
     .none-selected, .no-path-info {
         font-size: 20px;
-        color: $gray-light;
+        color: $text-color-light;
     }
 }
 

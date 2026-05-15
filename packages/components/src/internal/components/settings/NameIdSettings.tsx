@@ -280,7 +280,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
 
     return (
         <div className="name-id-settings-panel panel panel-default">
-            <div className="panel-heading">{TITLE}</div>
+            <h2 className="panel-heading">{TITLE}</h2>
             <div className="panel-body">
                 {error !== undefined && <Alert className="name-id-setting__error">{error}</Alert>}
                 {prefixIneligibleSampleTypeNames.length > 0 && (
@@ -334,10 +334,14 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                         {!loadingNamingOptions && (
                             <>
                                 <div className="name-id-setting__prefix">
-                                    <div className="name-id-setting__prefix-label"> Prefix: </div>
+                                    <div className="name-id-setting__prefix-label" id="name-id-settings-label">
+                                        {' '}
+                                        Prefix:{' '}
+                                    </div>
 
                                     <div className="name-id-setting__prefix-field">
                                         <input
+                                            aria-labelledby="name-id-settings-label"
                                             className="form-control"
                                             name="prefix"
                                             onChange={prefixOnChange}
@@ -398,11 +402,12 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                         {!loadingCounters && (
                             <div>
                                 <div className="row margin-top">
-                                    <div className="col-sm-2">
+                                    <div className="col-sm-2" id="sampleCount-label">
                                         <div className="sample-counter__prefix-label">sampleCount</div>
                                     </div>
                                     <div className="col-sm-2">
                                         <input
+                                            aria-labelledby="sampleCount-label"
                                             className="form-control update-samplecount-input"
                                             min={sampleCount}
                                             name="newSampleCount"
@@ -440,10 +445,13 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                 </div>
                                 <div className="row margin-top">
                                     <div className="col-sm-2">
-                                        <div className="sample-counter__prefix-label">rootSampleCount</div>
+                                        <div className="sample-counter__prefix-label" id="rootSampleCount-label">
+                                            rootSampleCount
+                                        </div>
                                     </div>
                                     <div className="col-sm-2">
                                         <input
+                                            aria-labelledby="rootSampleCount-label"
                                             className="form-control update-samplecount-input"
                                             min={rootSampleCount}
                                             name="newRootSampleCount"

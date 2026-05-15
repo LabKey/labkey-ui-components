@@ -47,7 +47,11 @@ export class PageDetailHeader extends PureComponent<PageDetailHeaderProps> {
                     {hasIcon && (
                         <div className="detail__header--image-container">
                             {iconUrl ? (
-                                <img className="detail__header-icon" src={iconUrl} />
+                                <img
+                                    alt={iconAltText ? iconAltText : ''}
+                                    className="detail__header-icon"
+                                    src={iconUrl}
+                                />
                             ) : (
                                 <SVGIcon
                                     alt={iconAltText ? iconAltText : ''}
@@ -59,8 +63,8 @@ export class PageDetailHeader extends PureComponent<PageDetailHeaderProps> {
                         </div>
                     )}
                     <div className={hasIcon ? 'detail__header-icon--body-container' : ''}>
-                        <h2 className="no-margin-top detail__header--name">{title}</h2>
-                        {subTitle && <h4 className="test-loc-detail-subtitle">{subTitle}</h4>}
+                        <h1 className="no-margin-top detail__header--name">{title}</h1>
+                        {subTitle && <div className="detail-subtitle">{subTitle}</div>}
                         {description && <span className="detail__header--desc">{description}</span>}
                     </div>
                 </div>

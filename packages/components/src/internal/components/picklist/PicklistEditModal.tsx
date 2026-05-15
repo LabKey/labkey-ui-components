@@ -165,10 +165,13 @@ export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
             {showForm && (
                 <form>
                     <div className="form-group">
-                        <label className="control-label">Name *</label>
+                        <label className="control-label" htmlFor="picklist-name">
+                            Name *
+                        </label>
 
                         <input
                             className="form-control"
+                            id="picklist-name"
                             onChange={onNameChange}
                             placeholder="Give this list a name"
                             type="text"
@@ -176,10 +179,11 @@ export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
                         />
                     </div>
                     <div className="form-group">
-                        <label className="control-label">Description</label>
+                        <label className="control-label" htmlFor="picklist-description">Description</label>
 
                         <textarea
                             className="form-control"
+                            id="picklist-description"
                             onChange={onDescriptionChange}
                             placeholder="Add a description"
                             value={description}

@@ -50,7 +50,7 @@ describe('ServerNotifications', () => {
         fireEvent.click(screen.getByRole('button'));
 
         expect(container.querySelector('.server-notifications-listing-container')).toBeInTheDocument();
-        expect(screen.getByText('Notifications')).toBeInTheDocument();
+        expect(screen.getAllByText('Notifications')).toHaveLength(2);
         expect(container.querySelector('.badge')).not.toBeInTheDocument();
     });
 

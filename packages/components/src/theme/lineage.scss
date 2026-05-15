@@ -47,6 +47,8 @@
 
 .lineage-name-data {
     display: inline;
+    font-size: 18px;
+    font-weight: 500;
 }
 
 .lineage-data-link {
@@ -55,7 +57,7 @@
 
 .lineage-data-link--text {
     line-height: 1;
-    color: $gray-light;
+    color: $text-color-light;
     font-size: 75%;
     font-weight: 400;
     cursor: pointer;

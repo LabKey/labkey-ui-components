@@ -2,20 +2,20 @@
 
 exports[`<SectionHeading/> title and cls 1`] = `
 <div>
-  <div
+  <h3
     class="domain-field-section-heading section-heading-cls"
   >
     Section Heading Title
-  </div>
+  </h3>
 </div>
 `;
 
 exports[`<SectionHeading/> title only 1`] = `
 <div>
-  <div
+  <h3
     class="domain-field-section-heading"
   >
     Section Heading Title
-  </div>
+  </h3>
 </div>
 `;

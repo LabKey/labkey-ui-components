@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.33.2",
+  "version": "7.36.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -53,7 +53,7 @@
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {
     "@hello-pangea/dnd": "18.0.1",
-    "@labkey/api": "1.51.1",
+    "@labkey/api": "1.51.2",
     "@testing-library/dom": "~10.4.1",
     "@testing-library/jest-dom": "~6.9.1",
     "@testing-library/react": "~16.3.2",
@@ -83,7 +83,7 @@
     "vis-network": "~10.0.2"
   },
   "devDependencies": {
-    "@labkey/build": "9.1.1",
+    "@labkey/build": "9.1.3",
     "@labkey/eslint-config": "1.2.0",
     "@types/history": "4.7.11",
     "@types/jest": "30.0.0",
@@ -95,11 +95,11 @@
     "bootstrap-sass": "3.4.3",
     "cross-env": "10.1.0",
     "execa": "9.6.1",
-    "jest": "30.3.0",
-    "jest-cli": "30.3.0",
-    "jest-environment-jsdom": "30.3.0",
+    "jest": "30.4.2",
+    "jest-cli": "30.4.2",
+    "jest-environment-jsdom": "30.4.1",
     "jest-teamcity-reporter": "0.9.0",
-    "ts-jest": "29.4.6",
+    "ts-jest": "29.4.9",
     "webpack-merge": "6.0.1"
   }
 }

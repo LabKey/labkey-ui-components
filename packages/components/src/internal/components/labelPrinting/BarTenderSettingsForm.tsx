@@ -22,6 +22,7 @@ import { BarTenderConfiguration } from './models';
 import { BAR_TENDER_TOPIC, BARTENDER_CONFIGURATION_TITLE } from './constants';
 import { LabelsConfigurationPanel } from './LabelsConfigurationPanel';
 import { useAppContext } from '../../AppContext';
+import { stringToHtmlId } from '../../util/utils';
 
 const SUCCESSFUL_NOTIFICATION_MESSAGE = 'Successfully connected to BarTender web service.';
 const FAILED_NOTIFICATION_MESSAGE = 'Failed to connect to BarTender web service.';
@@ -45,11 +46,12 @@ const SettingsInput: FC<SettingsInputProps> = memo(({ children, description, lab
         [name, onChange]
     );
 
+    const id = stringToHtmlId('settings-label-' + name);
     return (
         <div className="form-group">
             <div>
                 {children}
-                <div>
+                <div id={id}>
                     {label}{' '}
                     <LabelHelpTip title={label}>
                         <p>{description}</p>
@@ -58,6 +60,7 @@ const SettingsInput: FC<SettingsInputProps> = memo(({ children, description, lab
             </div>
             <div>
                 <input
+                    aria-labelledby={id}
                     className="form-control"
                     id={name}
                     name={name}
@@ -181,7 +184,7 @@ export const BarTenderSettingsForm: FC<BarTenderSettingsFormProps> = memo(props 
 
     return (
         <div className="panel panel-default" title={title}>
-            <div className="panel-heading">{title}</div>
+            <h2 className="panel-heading">{title}</h2>
             <div className="panel-body">
                 {error && <Alert>{error}</Alert>}
                 {loading && <LoadingSpinner />}

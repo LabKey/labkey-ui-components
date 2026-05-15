@@ -1,6 +1,39 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.36.0
+*Released*: 13 May 2026
+- Update heading tags in various page elements for better accessibility
+- Add sr-only text for Selection checkbox table header
+- Update a few more colors for better contrast
+
+### version 7.35.2
+*Released*: 12 May 2026
+- Package updates
+
+### version 7.35.1
+*Released*: 12 May 2026
+- Package updates
+
+### version 7.35.0
+*Released*: 7 May 2026
+- Fix accessibility issues for empty links and buttons
+- Add `Icon` component for use on buttons and links that are only icons
+- Add some alt text to a few images
+
+### version 7.34.0
+*Released*: 5 May 2026
+- Accessibility improvements for app pages: Colors
+
+### version 7.33.4
+*Released*: 3 May 2026
+- Consolidate Dataclass data update methods - use DIB for update only
+  - Remove `altUpdateKeys` from `QueryInfo`
+
+### version 7.33.3
+*Released*: 1 May 2026
+- Accessibility improvements: add labels or aria-labels to input elements
+
 ### version 7.33.2
 *Released*: 29 April 2026
 - GitHub Issue #598: Wrap text for long file names in various app locations

@@ -78,6 +78,7 @@ interface InputProps {
 export const NameInput: FC<InputProps> = memo(props => (
     <AssayPropertiesInput hideAdvancedProperties={props.hideAdvancedProperties} label="Name" required={true}>
         <input
+            aria-label="Name"
             className="form-control"
             disabled={!props.model.isNew() && !props.canRename}
             id={FORM_IDS.ASSAY_NAME}
@@ -98,6 +99,7 @@ export const DescriptionInput: FC<InputProps> = memo(props => (
         label="Description"
     >
         <textarea
+            aria-label="Description"
             className="form-control"
             id={FORM_IDS.ASSAY_DESCRIPTION}
             onChange={props.onChange}
@@ -117,7 +119,13 @@ export const QCStatesInput: FC<InputProps> = memo(props => (
         }
         label="QC States"
     >
-        <input checked={props.model.qcEnabled} id={FORM_IDS.QC_ENABLED} onChange={props.onChange} type="checkbox" />
+        <input
+            aria-label="QC States"
+            checked={props.model.qcEnabled}
+            id={FORM_IDS.QC_ENABLED}
+            onChange={props.onChange}
+            type="checkbox"
+        />
     </AssayPropertiesInput>
 ));
 QCStatesInput.displayName = 'QCStatesInput';
@@ -225,7 +233,13 @@ export const AssayStatusInput: FC<InputProps> = memo(props => (
         hideAdvancedProperties={props.hideAdvancedProperties}
         label="Active"
     >
-        <input checked={props.model.isActive()} id={FORM_IDS.STATUS} onChange={props.onChange} type="checkbox" />
+        <input
+            aria-label="Active"
+            checked={props.model.isActive()}
+            id={FORM_IDS.STATUS}
+            onChange={props.onChange}
+            type="checkbox"
+        />
     </AssayPropertiesInput>
 ));
 AssayStatusInput.displayName = 'AssayStatusInput';
@@ -242,6 +256,7 @@ export const EditableRunsInput: FC<InputProps> = memo((props: InputProps) => (
         label="Editable Runs"
     >
         <input
+            aria-label="Editable Runs"
             checked={props.model.editableRuns}
             id={FORM_IDS.EDITABLE_RUNS}
             onChange={props.onChange}
@@ -271,6 +286,7 @@ export const EditableResultsInput: FC<InputProps> = memo(props => (
         label="Editable Results"
     >
         <input
+            aria-label="Editable Results"
             checked={props.model.editableResults}
             id={FORM_IDS.EDITABLE_RESULTS}
             onChange={props.onChange}
@@ -291,6 +307,7 @@ export const BackgroundUploadInput: FC<InputProps> = memo(props => (
         label="Import in Background"
     >
         <input
+            aria-label="Import in Background"
             checked={props.model.backgroundUpload}
             id={FORM_IDS.BACKGROUND_UPLOAD}
             onChange={props.onChange}
@@ -371,6 +388,7 @@ export const AutoLinkCategoryInput: FC<InputProps> = memo(({ model, onChange }) 
         label="Linked Dataset Category"
     >
         <input
+            aria-label="Linked Dataset Category"
             className="form-control"
             id={FORM_IDS.AUTO_LINK_CATEGORY}
             onChange={onChange}
@@ -579,7 +597,8 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
 
     toggleRunOnCheckboxes = (e: React.ChangeEvent<HTMLInputElement>, field: string): void => {
         const { model } = this.props;
-        const index = parseInt(e.target.id.split(FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS).pop(), 10);
+        const fieldId = FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + '-' + field;
+        const index = parseInt(e.target.id.split(fieldId).pop(), 10);
         const curr = model.protocolTransformScripts.get(index);
 
         this.props.onChange(
@@ -630,8 +649,9 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                     <div className="margin-bottom small-margin-top">
                                         <span className="margin-right-more">
                                             <input
+                                                aria-label="Run on Import"
                                                 checked={attachment.runOnImport}
-                                                id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + i}
+                                                id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + '-runOnImport' + i}
                                                 onChange={this.onCheckRunOnImport}
                                                 type="checkbox"
                                             />
@@ -640,9 +660,10 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
 
                                         <span>
                                             <input
+                                                aria-label="Run on Edit"
                                                 checked={attachment.runOnEdit}
                                                 disabled={!model.editableResults}
-                                                id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + i}
+                                                id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + '-runOnEdit' + i}
                                                 onChange={this.onCheckRunOnEdit}
                                                 type="checkbox"
                                             />
@@ -663,6 +684,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                         )}
                         <div className="col col-xs-8 col-lg-8">
                             <input
+                                aria-labelledby="transform-script-file-label"
                                 checked={addingScript === AddingScriptType.file}
                                 className="transform-script-add--radio"
                                 name="transformScriptAddType"
@@ -673,11 +695,13 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                             <div
                                 className="transform-script-add--label"
                                 data-value="file"
+                                id="transform-script-file-label"
                                 onClick={this.onChangeAddingScriptType}
                             >
                                 Upload file
                             </div>
                             <input
+                                aria-labelledby="transform-script-path-label"
                                 checked={addingScript === AddingScriptType.path}
                                 className="transform-script-add--radio"
                                 name="transformScriptAddType"
@@ -688,6 +712,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                             <div
                                 className="transform-script-add--label"
                                 data-value="path"
+                                id="transform-script-path-label"
                                 onClick={this.onChangeAddingScriptType}
                             >
                                 Enter file path
@@ -708,6 +733,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                             {addingScript === AddingScriptType.path && (
                                 <div className="transform-script-add--path">
                                     <input
+                                        aria-label="Script path"
                                         className="form-control"
                                         onChange={this.onScriptPathChange}
                                         type="text"
@@ -777,7 +803,13 @@ export const SaveScriptDataInput: FC<InputProps> = memo(({ model, onChange }) =>
         }
         label="Save Script Data for Debugging"
     >
-        <input checked={model.saveScriptFiles} id={FORM_IDS.SAVE_SCRIPT_FILES} onChange={onChange} type="checkbox" />
+        <input
+            aria-label="Save Script Data for Debugging"
+            checked={model.saveScriptFiles}
+            id={FORM_IDS.SAVE_SCRIPT_FILES}
+            onChange={onChange}
+            type="checkbox"
+        />
         {!model.isNew() && (
             <div className="transform-script--download-link">
                 <a
@@ -806,7 +838,13 @@ export const PlateMetadataInput: FC<InputProps> = memo(({ model, onChange }) => 
         }
         label="Plate Metadata"
     >
-        <input checked={model.plateMetadata} id={FORM_IDS.PLATE_METADATA} onChange={onChange} type="checkbox" />
+        <input
+            aria-label="Plate Metadata"
+            checked={model.plateMetadata}
+            id={FORM_IDS.PLATE_METADATA}
+            onChange={onChange}
+            type="checkbox"
+        />
     </AssayPropertiesInput>
 ));
 PlateMetadataInput.displayName = 'PlateMetadataInput';

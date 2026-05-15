@@ -5,13 +5,13 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
   <div
     class="panel panel-default"
   >
-    <div
+    <h2
       class="panel-heading"
     >
       <div
         class="panel-title"
       />
-    </div>
+    </h2>
     <div
       class="panel-body"
     >
@@ -118,7 +118,7 @@ exports[`DomainFieldsDisplay with title 1`] = `
   <div
     class="panel panel-default"
   >
-    <div
+    <h2
       class="panel-heading"
     >
       <div
@@ -126,7 +126,7 @@ exports[`DomainFieldsDisplay with title 1`] = `
       >
         test domain title
       </div>
-    </div>
+    </h2>
     <div
       class="panel-body"
     >
@@ -233,7 +233,7 @@ exports[`DomainFieldsDisplay without title 1`] = `
   <div
     class="panel panel-default"
   >
-    <div
+    <h2
       class="panel-heading"
     >
       <div
@@ -241,7 +241,7 @@ exports[`DomainFieldsDisplay without title 1`] = `
       >
         test domain name
       </div>
-    </div>
+    </h2>
     <div
       class="panel-body"
     >

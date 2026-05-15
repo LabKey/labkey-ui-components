@@ -20,7 +20,7 @@ export const DetailHeader: FC<DetailHeaderProps> = memo(({ children, header, ico
         </i>
         <div className="text__truncate">
             <div className="lineage-name">
-                <h4 className="no-margin-top lineage-name-data">{header}</h4>
+                <div className="no-margin-top lineage-name-data">{header}</div>
             </div>
             <div className="small">{children}</div>
         </div>

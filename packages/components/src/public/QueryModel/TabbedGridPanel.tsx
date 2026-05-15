@@ -288,7 +288,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         <>
             {hasTabs && (
                 <div className={classNames('tabbed-grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
-                    {asPanel && panelTitle && <div className="panel-heading">{panelTitle}</div>}
+                    {asPanel && panelTitle && <h2 className="panel-heading">{panelTitle}</h2>}
                     <div className={classNames('tabbed-grid-panel__body', { 'panel-body': asPanel })}>
                         <ul className="nav nav-tabs">
                             {tabOrder.map(modelId => {

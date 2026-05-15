@@ -27,7 +27,41 @@ import { FilterProps } from '../../../../internal/components/entities/models';
 describe('FilterAction::actionValueFromFilter', () => {
     const action = new FilterAction();
 
-    // TODO add tests for various value options
+    test('no-value filter (ISBLANK)', () => {
+        const filter = Filter.create('col', null, Filter.Types.ISBLANK);
+        const value: ActionValue = action.actionValueFromFilter(filter);
+        expect(value.displayValue).toBe('col Is Blank');
+        expect(value.value).toBe('"col" Is Blank null');
+    });
+
+    test('multi-value IN filter with 3 or fewer values shows comma-joined list', () => {
+        const filter1 = Filter.create('col', ['a'], Filter.Types.IN);
+        expect(action.actionValueFromFilter(filter1).displayValue).toBe('col Equals One Of a');
+
+        const filter3 = Filter.create('col', ['a', 'b', 'c'], Filter.Types.IN);
+        expect(action.actionValueFromFilter(filter3).displayValue).toBe('col Equals One Of a, b, c');
+    });
+
+    test('multi-value IN filter with more than 3 values shows count', () => {
+        const filter = Filter.create('col', ['a', 'b', 'c', 'd'], Filter.Types.IN);
+        const value: ActionValue = action.actionValueFromFilter(filter);
+        expect(value.displayValue).toBe('col Equals One Of (4 values)');
+    });
+
+    test('custom getFilterDisplayValue callback overrides display', () => {
+        const actionWithCb = new FilterAction((_colName, rawValue) => `DISPLAY(${rawValue})`);
+        const filter = Filter.create('myCol', 'rawVal', Filter.Types.EQUAL);
+        const value: ActionValue = actionWithCb.actionValueFromFilter(filter);
+        expect(value.displayValue).toBe('myCol = DISPLAY(rawVal)');
+        expect(value.value).toBe('"myCol" = DISPLAY(rawVal)');
+    });
+
+    test('isReadOnly is propagated to ActionValue', () => {
+        const filter = Filter.create('col', 'val', Filter.Types.EQUAL);
+        const value: ActionValue = action.actionValueFromFilter(filter, undefined, 'readonly');
+        expect(value.isReadOnly).toBe('readonly');
+    });
+
     test('no label, unencoded column', () => {
         const filter = Filter.create('colName', '10', Filter.Types.EQUAL);
         const value: ActionValue = action.actionValueFromFilter(filter);

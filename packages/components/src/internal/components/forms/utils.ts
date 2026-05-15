@@ -153,7 +153,7 @@ interface FieldValue {
 type FieldArray = FieldValue[];
 type FieldMap = Map<string, any>;
 type FieldList = List<FieldMap>;
-type Field = FieldList | FieldArray | FieldMap | FieldValue;
+type Field = FieldArray | FieldList | FieldMap | FieldValue;
 
 const isFieldList = (value: any): value is FieldList => List.isList(value);
 

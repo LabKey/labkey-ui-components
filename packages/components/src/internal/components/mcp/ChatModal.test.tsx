@@ -98,7 +98,11 @@ describe('ChatModal', () => {
         test('custom renderSegment overrides default rendering when defined', () => {
             // Arrange
             const renderSegment: RenderSegment = (segment, index) =>
-                segment.type === 'text' ? <span key={index} data-testid="custom">CUSTOM:{segment.text}</span> : undefined;
+                segment.type === 'text' ? (
+                    <span data-testid="custom" key={index}>
+                        CUSTOM:{segment.text}
+                    </span>
+                ) : undefined;
             const messages = [
                 makeMessage({
                     id: 'a1',

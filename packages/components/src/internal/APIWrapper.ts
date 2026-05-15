@@ -1,14 +1,14 @@
 import { AssayAPIWrapper, AssayServerAPIWrapper, getAssayTestAPIWrapper } from './components/assay/APIWrapper';
-import { SamplesAPIWrapper, SamplesServerAPIWrapper, getSamplesTestAPIWrapper } from './components/samples/APIWrapper';
+import { getSamplesTestAPIWrapper, SamplesAPIWrapper, SamplesServerAPIWrapper } from './components/samples/APIWrapper';
 import {
+    getPicklistTestAPIWrapper,
     PicklistAPIWrapper,
     PicklistServerAPIWrapper,
-    getPicklistTestAPIWrapper,
 } from './components/picklist/APIWrapper';
 import {
+    getLabelPrintingTestAPIWrapper,
     LabelPrintingAPIWrapper,
     LabelPrintingServerAPIWrapper,
-    getLabelPrintingTestAPIWrapper,
 } from './components/labelPrinting/APIWrapper';
 import {
     getSecurityTestAPIWrapper,

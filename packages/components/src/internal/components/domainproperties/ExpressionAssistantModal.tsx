@@ -8,6 +8,7 @@ import { useRequestHandler } from '../../util/RequestHandler';
 import { incrementClientSideMetricCount } from '../../actions';
 import { getColumnTypeMap, getPHIColumnNames } from './CalculatedFieldOptions';
 import { ExpressionAssistOptions } from './actions';
+import { resolveErrorMessage } from '../../util/messaging';
 
 export const EXPR_ASST_METRIC_FEATURE_AREA = 'expressionAssistant';
 const CHANGE_INTRO =
@@ -143,7 +144,10 @@ function useExpressionAssistance(
             } catch (e) {
                 aborted = !e.status;
                 if (!aborted) {
-                    pushMessage({ error: 'Request failed. Please try again.', role: ChatRole.assistant });
+                    pushMessage({
+                        error: resolveErrorMessage(e) ?? 'Request failed. Please try again.',
+                        role: ChatRole.assistant,
+                    });
                 }
             } finally {
                 if (!aborted) {

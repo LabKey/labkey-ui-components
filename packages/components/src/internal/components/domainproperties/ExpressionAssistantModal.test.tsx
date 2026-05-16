@@ -231,7 +231,10 @@ describe('ExpressionAssistantModal', () => {
 
         test('thrown non-abort error appends a generic failure message', async () => {
             // Arrange - error with truthy status simulates a non-abort failure
-            const expressionAssistant = jest.fn().mockRejectedValue(Object.assign(new Error('nope'), { status: 500 }));
+            const expectedErrorMsg = 'Something went awry!';
+            const expressionAssistant = jest
+                .fn()
+                .mockRejectedValue(Object.assign(new Error(expectedErrorMsg), { status: 500 }));
             renderWithAppContext(<ExpressionAssistantModal {...defaultProps()} />, makeApiContext(expressionAssistant));
 
             // Act
@@ -242,7 +245,7 @@ describe('ExpressionAssistantModal', () => {
             // Assert - appended assistant message uses the generic failure text and not the raw exception
             await waitFor(() => {
                 const m = chatModalProps.messages as ChatMessage[];
-                expect(m[m.length - 1].error).toBe('Request failed. Please try again.');
+                expect(m[m.length - 1].error).toBe(expectedErrorMsg);
             });
             expect(chatModalProps.isPending).toBe(false);
             expect(incrementMetric).not.toHaveBeenCalled();

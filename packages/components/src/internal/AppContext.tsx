@@ -22,7 +22,6 @@ import {
     NotebookNotificationSettings,
     WorkflowNotificationSettings,
 } from './app/models';
-import { DomainDetails } from './components/domainproperties/models';
 import { EntityDataType } from './components/entities/models';
 import { DetailRenderer } from './components/forms/detail/DetailDisplay';
 import { SchemaQuery } from '../public/SchemaQuery';
@@ -80,7 +79,7 @@ export interface AppContext {
 export type ExtendableAppContext<T> = AppContext & T;
 
 // The "any" used here should be fine, it gets re-typed in useAppContext, so as long as you're using that and providing
-// a type (e.g. useAppContext<MyAppContextType>()) you'll be fine.
+// a type (e.g., useAppContext<MyAppContextType>()) you'll be fine.
 const Context = createContext<ExtendableAppContext<any>>(undefined);
 
 export interface AppContextProviderProps<T> {

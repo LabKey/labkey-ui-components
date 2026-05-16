@@ -5,39 +5,51 @@ import { OntologyModel } from '../ontology/models';
 import { Container } from '../base/models/Container';
 
 import {
-    getDomainNamePreviews,
-    validateDomainNameExpressions,
-    getGenId,
-    setGenId,
+    expressionAssistant,
+    ExpressionAssistOptions,
+    ExpressionAssistResponse,
     fetchDomainDetails,
     FetchDomainDetailsOptions,
-    getMaxPhiLevel,
     fetchOntologies,
+    getDomainNamePreviews,
+    getGenId,
+    getMaxPhiLevel,
+    getRequiredParentTypes,
+    parseCalculatedColumn,
+    ParseCalculatedColumnResponse,
     saveDomain,
     SaveDomainOptions,
-    getRequiredParentTypes,
+    setGenId,
+    validateDomainNameExpressions,
 } from './actions';
 import { getValidPublishTargets } from './assay/actions';
 import { PHILEVEL_FULL_PHI } from './constants';
 import { getDataClassDetails } from './dataclasses/actions';
-import { DomainDesign, DomainDetails, NameExpressionsValidationResults } from './models';
+import { DomainDesign, DomainDetails, DomainField, NameExpressionsValidationResults, SystemField } from './models';
 
 export interface DomainPropertiesAPIWrapper {
+    expressionAssistant: (options: ExpressionAssistOptions) => Promise<ExpressionAssistResponse>;
     fetchDomainDetails: (options: FetchDomainDetailsOptions) => Promise<DomainDetails>;
     fetchOntologies: (containerPath?: string) => Promise<OntologyModel[]>;
     getDataClassDetails: (query?: SchemaQuery, domainId?: number, containerPath?: string) => Promise<DomainDetails>;
     getDomainNamePreviews: (schemaQuery?: SchemaQuery, domainId?: number, containerPath?: string) => Promise<string[]>;
-    getGenId: (rowId: number, kindName: 'SampleSet' | 'DataClass', containerPath?: string) => Promise<number>;
+    getGenId: (rowId: number, kindName: 'DataClass' | 'SampleSet', containerPath?: string) => Promise<number>;
     getMaxPhiLevel: (containerPath?: string) => Promise<string>;
     getRequiredParentTypes: (
         query: SchemaQuery,
         containerPath?: string
     ) => Promise<{ dataClasses: string[]; sampleTypes: string[] }>;
     getValidPublishTargets: (containerPath?: string) => Promise<Container[]>;
+    parseCalculatedColumn: (
+        expression: string,
+        domainFields: DomainField[],
+        systemFields: SystemField[],
+        containerPath?: string
+    ) => Promise<ParseCalculatedColumnResponse>;
     saveDomain: (options: SaveDomainOptions) => Promise<DomainDesign>;
     setGenId: (
         rowId: number,
-        kindName: 'SampleSet' | 'DataClass',
+        kindName: 'DataClass' | 'SampleSet',
         genId: number,
         containerPath?: string
     ) => Promise<any>;
@@ -49,7 +61,8 @@ export interface DomainPropertiesAPIWrapper {
     ) => Promise<NameExpressionsValidationResults>;
 }
 
-export class DomainPropertiesAPIWrapper implements DomainPropertiesAPIWrapper {
+export class DomainPropertiesServerAPIWrapper implements DomainPropertiesAPIWrapper {
+    expressionAssistant = expressionAssistant;
     fetchDomainDetails = fetchDomainDetails;
     fetchOntologies = fetchOntologies;
     getDataClassDetails = getDataClassDetails;
@@ -58,6 +71,7 @@ export class DomainPropertiesAPIWrapper implements DomainPropertiesAPIWrapper {
     getMaxPhiLevel = getMaxPhiLevel;
     getRequiredParentTypes = getRequiredParentTypes;
     getValidPublishTargets = getValidPublishTargets;
+    parseCalculatedColumn = parseCalculatedColumn;
     saveDomain = saveDomain;
     setGenId = setGenId;
     validateDomainNameExpressions = validateDomainNameExpressions;
@@ -71,6 +85,7 @@ export function getDomainPropertiesTestAPIWrapper(
     overrides: Partial<DomainPropertiesAPIWrapper> = {}
 ): DomainPropertiesAPIWrapper {
     return {
+        expressionAssistant: mockFn(),
         fetchDomainDetails: mockFn(),
         fetchOntologies: mockFn(),
         getDataClassDetails: mockFn(),
@@ -82,6 +97,7 @@ export function getDomainPropertiesTestAPIWrapper(
         getMaxPhiLevel: () => Promise.resolve(PHILEVEL_FULL_PHI),
         getRequiredParentTypes: mockFn(),
         getValidPublishTargets: mockFn(),
+        parseCalculatedColumn: mockFn(),
         saveDomain: mockFn(),
         setGenId: mockFn(),
         validateDomainNameExpressions: mockFn(),

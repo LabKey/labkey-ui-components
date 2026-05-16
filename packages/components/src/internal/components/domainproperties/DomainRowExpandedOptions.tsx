@@ -19,7 +19,7 @@ import { List } from 'immutable';
 
 import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
 
-import { DomainField, IDomainFormDisplayOptions, IFieldChange, SystemField } from './models';
+import { DomainField, GetDomainFields, IDomainFormDisplayOptions, IFieldChange } from './models';
 import { NameAndLinkingOptions } from './NameAndLinkingOptions';
 import { TextFieldOptions } from './TextFieldOptions';
 import { BooleanFieldOptions } from './BooleanFieldOptions';
@@ -37,20 +37,20 @@ import { CALCULATED_TYPE } from './PropDescType';
 import { FieldFilterCriteria } from './FieldFilterCriteria';
 
 interface Props {
+    allowMultiChoiceField: boolean;
     appPropertiesOnly?: boolean;
     domainContainerPath?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     domainIndex: number;
     field: DomainField;
-    getDomainFields?: () => { domainFields: List<DomainField>; systemFields: SystemField[] };
+    getDomainFields?: GetDomainFields;
+    handleDataTypeChange: (targetId: string, value: any) => void;
     index: number;
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean, skipDirtyCheck?: boolean) => void;
     onMultiChange: (changes: List<IFieldChange>) => void;
     queryName?: string;
     schemaName?: string;
     showingModal: (boolean) => void;
-    handleDataTypeChange: (targetId: string, value: any) => void;
-    allowMultiChoiceField: boolean;
 }
 
 export class DomainRowExpandedOptions extends React.Component<Props> {
@@ -68,7 +68,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
             schemaName,
             queryName,
             handleDataTypeChange,
-            allowMultiChoiceField
+            allowMultiChoiceField,
         } = this.props;
 
         // In most cases we will use the selected data type to determine which field options to show,
@@ -79,6 +79,155 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
         }
 
         switch (dataTypeName) {
+            case 'attachment':
+            case 'fileLink':
+                // Remove when this is supported in apps. Issue 46476
+                if (appPropertiesOnly) return null;
+
+                return (
+                    <FileAttachmentOptions
+                        displayOption={field.format}
+                        domainIndex={domainIndex}
+                        index={index}
+                        label={dataTypeName === 'fileLink' ? 'File' : 'Attachment'}
+                        lockType={field.lockType}
+                        onChange={onChange}
+                    />
+                );
+            case 'boolean':
+                return (
+                    <BooleanFieldOptions
+                        domainIndex={domainIndex}
+                        format={field.format}
+                        index={index}
+                        label="Boolean Field Options"
+                        lockType={field.lockType}
+                        onChange={onChange}
+                    />
+                );
+            case 'date':
+            case 'dateTime':
+            case 'time':
+                return (
+                    <DateTimeFieldOptions
+                        domainIndex={domainIndex}
+                        format={field.format}
+                        index={index}
+                        label="Date and Time Options"
+                        lockType={field.lockType}
+                        onChange={onChange}
+                        type={dataTypeName}
+                    />
+                );
+            case 'decimal':
+            case 'double':
+                return (
+                    <NumericFieldOptions
+                        defaultScale={field.defaultScale}
+                        domainIndex={domainIndex}
+                        format={field.format}
+                        index={index}
+                        label="Decimal Options"
+                        lockType={field.lockType}
+                        onChange={onChange}
+                        // Issue #44567: Hide scannable option due to matching issues with floating point representation.
+                        showScannableOption={false}
+                    />
+                );
+            case 'int':
+                return (
+                    <NumericFieldOptions
+                        appPropertiesOnly={appPropertiesOnly}
+                        defaultScale={field.defaultScale}
+                        domainIndex={domainIndex}
+                        format={field.format}
+                        index={index}
+                        label="Integer Options"
+                        lockType={field.lockType}
+                        onChange={onChange}
+                        scannable={field.scannable}
+                        showScannableOption={
+                            domainFormDisplayOptions?.showScannableOption && !field.isCalculatedField()
+                        }
+                    />
+                );
+            case 'lookup':
+                return (
+                    <LookupFieldOptions
+                        domainIndex={domainIndex}
+                        field={field}
+                        index={index}
+                        label="Lookup Definition Options"
+                        lockType={field.lockType}
+                        lookupContainer={field.lookupContainer ?? domainContainerPath}
+                        onChange={onChange}
+                        onMultiChange={onMultiChange}
+                    />
+                );
+            case 'multiChoice':
+            case 'textChoice':
+                // don't show Text Choice options for query metadata editor
+                if (domainFormDisplayOptions?.hideValidators) return null;
+
+                return (
+                    <TextChoiceOptions
+                        allowMultiChoice={allowMultiChoiceField}
+                        domainIndex={domainIndex}
+                        field={field}
+                        handleDataTypeChange={handleDataTypeChange}
+                        index={index}
+                        key={index + '-' + field?.propertyId} // drag-drop to reorder column result in wrong options displayed
+                        label="Text Choice Options"
+                        lockedForDomain={domainFormDisplayOptions.textChoiceLockedForDomain}
+                        lockedSqlFragment={domainFormDisplayOptions.textChoiceLockedSqlFragment}
+                        lockType={field.lockType}
+                        onChange={onChange}
+                        queryName={queryName}
+                        schemaName={schemaName}
+                    />
+                );
+            case 'multiLine':
+                return (
+                    <TextFieldOptions
+                        domainIndex={domainIndex}
+                        index={index}
+                        label="Multi-line Text Field Options"
+                        lockType={field.lockType}
+                        onChange={onChange}
+                        scale={field.scale}
+                    />
+                );
+            case 'ontologyLookup':
+                const domainFields = getDomainFields ? getDomainFields().domainFields : List<DomainField>();
+
+                return (
+                    <OntologyLookupOptions
+                        domainContainerPath={domainContainerPath}
+                        domainFields={domainFields}
+                        domainIndex={domainIndex}
+                        field={field}
+                        index={index}
+                        label="Ontology Lookup Options"
+                        lockType={field.lockType}
+                        onChange={onChange}
+                        onMultiChange={onMultiChange}
+                    />
+                );
+            case 'sample':
+                return (
+                    <SampleFieldOptions
+                        container={field.lookupContainer}
+                        domainIndex={domainIndex}
+                        field={field}
+                        index={index}
+                        label="Sample Options"
+                        lockType={field.lockType}
+                        onChange={onChange}
+                        onMultiChange={onMultiChange}
+                        original={field.original}
+                        value={field.lookupQueryValue}
+                    />
+                );
             case 'string':
                 if (domainFormDisplayOptions && !domainFormDisplayOptions.hideTextOptions) {
                     // Issue 39877: Max text length options should not be visible for text key field of list
@@ -89,14 +238,14 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
 
                     return (
                         <TextFieldOptions
-                            index={index}
-                            domainIndex={domainIndex}
-                            label="Text Options"
-                            scale={field.scale}
-                            onChange={onChange}
-                            lockType={field.lockType}
-                            scannable={field.scannable}
                             appPropertiesOnly={appPropertiesOnly}
+                            domainIndex={domainIndex}
+                            index={index}
+                            label="Text Options"
+                            lockType={field.lockType}
+                            onChange={onChange}
+                            scale={field.scale}
+                            scannable={field.scannable}
                             showScannableOption={domainFormDisplayOptions?.showScannableOption}
                         />
                     );
@@ -106,161 +255,12 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
             case 'flag':
                 return (
                     <TextFieldOptions
-                        index={index}
                         domainIndex={domainIndex}
+                        index={index}
                         label="Flag Options"
+                        lockType={field.lockType}
+                        onChange={onChange}
                         scale={field.scale}
-                        onChange={onChange}
-                        lockType={field.lockType}
-                    />
-                );
-            case 'multiLine':
-                return (
-                    <TextFieldOptions
-                        index={index}
-                        domainIndex={domainIndex}
-                        label="Multi-line Text Field Options"
-                        scale={field.scale}
-                        onChange={onChange}
-                        lockType={field.lockType}
-                    />
-                );
-            case 'boolean':
-                return (
-                    <BooleanFieldOptions
-                        index={index}
-                        domainIndex={domainIndex}
-                        label="Boolean Field Options"
-                        format={field.format}
-                        onChange={onChange}
-                        lockType={field.lockType}
-                    />
-                );
-            case 'dateTime':
-            case 'date':
-            case 'time':
-                return (
-                    <DateTimeFieldOptions
-                        index={index}
-                        domainIndex={domainIndex}
-                        label="Date and Time Options"
-                        format={field.format}
-                        onChange={onChange}
-                        lockType={field.lockType}
-                        type={dataTypeName}
-                    />
-                );
-            case 'int':
-                return (
-                    <NumericFieldOptions
-                        index={index}
-                        domainIndex={domainIndex}
-                        label="Integer Options"
-                        format={field.format}
-                        defaultScale={field.defaultScale}
-                        onChange={onChange}
-                        lockType={field.lockType}
-                        scannable={field.scannable}
-                        appPropertiesOnly={appPropertiesOnly}
-                        showScannableOption={
-                            domainFormDisplayOptions?.showScannableOption && !field.isCalculatedField()
-                        }
-                    />
-                );
-            case 'double':
-            case 'decimal':
-                return (
-                    <NumericFieldOptions
-                        index={index}
-                        domainIndex={domainIndex}
-                        label="Decimal Options"
-                        format={field.format}
-                        defaultScale={field.defaultScale}
-                        onChange={onChange}
-                        lockType={field.lockType}
-                        // Issue #44567: Hide scannable option due to matching issues with floating point representation.
-                        showScannableOption={false}
-                    />
-                );
-            case 'lookup':
-                return (
-                    <LookupFieldOptions
-                        index={index}
-                        domainIndex={domainIndex}
-                        field={field}
-                        label="Lookup Definition Options"
-                        lookupContainer={field.lookupContainer ?? domainContainerPath}
-                        onChange={onChange}
-                        onMultiChange={onMultiChange}
-                        lockType={field.lockType}
-                    />
-                );
-            case 'sample':
-                return (
-                    <SampleFieldOptions
-                        index={index}
-                        field={field}
-                        domainIndex={domainIndex}
-                        label="Sample Options"
-                        value={field.lookupQueryValue}
-                        original={field.original}
-                        container={field.lookupContainer}
-                        onChange={onChange}
-                        onMultiChange={onMultiChange}
-                        lockType={field.lockType}
-                    />
-                );
-            case 'ontologyLookup':
-                const domainFields = getDomainFields ? getDomainFields().domainFields : List<DomainField>();
-
-                return (
-                    <OntologyLookupOptions
-                        domainContainerPath={domainContainerPath}
-                        index={index}
-                        domainIndex={domainIndex}
-                        label="Ontology Lookup Options"
-                        domainFields={domainFields}
-                        field={field}
-                        onChange={onChange}
-                        onMultiChange={onMultiChange}
-                        lockType={field.lockType}
-                    />
-                );
-            case 'textChoice':
-            case 'multiChoice':
-                // don't show Text Choice options for query metadata editor
-                if (domainFormDisplayOptions?.hideValidators) return null;
-
-                return (
-                    <TextChoiceOptions
-                        domainIndex={domainIndex}
-                        key={index + '-' + field?.propertyId} // drag-drop to reorder column result in wrong options displayed
-                        index={index}
-                        field={field}
-                        label="Text Choice Options"
-                        lockType={field.lockType}
-                        onChange={onChange}
-                        queryName={queryName}
-                        schemaName={schemaName}
-                        lockedForDomain={domainFormDisplayOptions.textChoiceLockedForDomain}
-                        lockedSqlFragment={domainFormDisplayOptions.textChoiceLockedSqlFragment}
-                        handleDataTypeChange={handleDataTypeChange}
-                        allowMultiChoice={allowMultiChoiceField}
-                    />
-                );
-            case 'fileLink':
-            case 'attachment':
-                // Remove when this is supported in apps. Issue 46476
-                if (appPropertiesOnly) return null;
-
-                return (
-                    <FileAttachmentOptions
-                        index={index}
-                        domainIndex={domainIndex}
-                        label={dataTypeName === 'fileLink' ? 'File' : 'Attachment'}
-                        displayOption={field.format}
-                        onChange={onChange}
-                        lockType={field.lockType}
                     />
                 );
         }
@@ -289,16 +289,16 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                     {domainFormDisplayOptions?.derivationDataScopeConfig?.show && !field.isCalculatedField() && (
                         <div className="col-xs-12">
                             <DerivationDataScopeFieldOptions
-                                index={index}
-                                domainIndex={domainIndex}
                                 config={domainFormDisplayOptions?.derivationDataScopeConfig}
-                                value={field.derivationDataScope}
-                                label={domainFormDisplayOptions?.derivationDataScopeConfig?.sectionTitle}
-                                onChange={onChange}
-                                lockType={field.lockType}
+                                domainIndex={domainIndex}
+                                fieldDataType={field.dataType}
+                                index={index}
                                 isExistingField={!field.isNew()}
                                 isRequiredField={field.required}
-                                fieldDataType={field.dataType}
+                                label={domainFormDisplayOptions?.derivationDataScopeConfig?.sectionTitle}
+                                lockType={field.lockType}
+                                onChange={onChange}
+                                value={field.derivationDataScope}
                             />
                         </div>
                     )}
@@ -316,24 +316,24 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                     <div className="col-xs-12">{this.typeDependentOptions()}</div>
                     <div className="col-xs-12">
                         <NameAndLinkingOptions
-                            index={index}
-                            domainIndex={domainIndex}
-                            field={field}
-                            onChange={onChange}
-                            onMultiChange={onMultiChange}
                             appPropertiesOnly={appPropertiesOnly}
                             domainFormDisplayOptions={domainFormDisplayOptions}
+                            domainIndex={domainIndex}
+                            field={field}
+                            index={index}
+                            onChange={onChange}
+                            onMultiChange={onMultiChange}
                         />
                     </div>
                     {!isFieldFullyLocked(field.lockType) && (
                         <div className="col-xs-12">
                             <ConditionalFormattingAndValidation
-                                index={index}
+                                domainFormDisplayOptions={domainFormDisplayOptions}
                                 domainIndex={domainIndex}
                                 field={field}
+                                index={index}
                                 onChange={onChange}
                                 showingModal={showingModal}
-                                domainFormDisplayOptions={domainFormDisplayOptions}
                             />
                         </div>
                     )}

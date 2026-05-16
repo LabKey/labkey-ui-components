@@ -47,11 +47,11 @@ export const BaseModal: FC<BaseModalProps> = ({ bsSize, children, className }) =
 };
 BaseModal.displayName = 'BaseModal';
 
-interface ModalHeaderProps {
+interface ModalHeaderProps extends PropsWithChildren {
     onCancel?: () => void;
     title: ReactNode;
 }
-export const ModalHeader: FC<ModalHeaderProps> = ({ title, onCancel }) => {
+export const ModalHeader: FC<ModalHeaderProps> = ({ children, onCancel, title }) => {
     return (
         <div className="modal-header">
             {onCancel !== undefined && (
@@ -61,16 +61,30 @@ export const ModalHeader: FC<ModalHeaderProps> = ({ title, onCancel }) => {
                 </button>
             )}
             {title && <h2 className="modal-title text__wrap">{title}</h2>}
+            {children}
         </div>
     );
 };
 ModalHeader.displayName = 'ModalHeader';
 
 export interface ModalProps extends BaseModalProps, ModalButtonsProps {
-    // Note: you probably shouldn't use footer, instead use the other props to render the appropriate footer
+    /**
+     * Custom footer component. When this is supplied, the default footer interactions will not be rendered.
+     * Note: You probably should not use footer, instead use the other props to render the appropriate footer.
+     */
     footer?: ReactNode;
-    // This is partial content of the default footer rendered by the Modal. It is ignored if a "footer" is supplied.
+    /**
+     * Partial content of the default footer rendered by the Modal. It is ignored if a "footer" is supplied.
+     */
     footerContent?: ReactNode;
+    /**
+     * Custom header component. When this is supplied, the default header interactions will not be rendered.
+     * Note: You probably should not use header, instead use the other props to render the appropriate header.
+     */
+    header?: ReactNode;
+    /**
+     * Title passed to the default header (see ModalHeader). If a custom header is supplied, then this is ignored.
+     */
     title?: ReactNode;
 }
 
@@ -87,6 +101,7 @@ export const Modal: FC<ModalProps> = memo(props => {
         confirmingText,
         footer,
         footerContent,
+        header,
         isConfirming,
         onCancel,
         onCommentChange,
@@ -94,10 +109,11 @@ export const Modal: FC<ModalProps> = memo(props => {
         requiresUserComment,
         title,
     } = props;
-    const showHeader = onCancel || title;
+    const showHeader = !!(onCancel || title);
     return (
         <BaseModal bsSize={bsSize} className={className}>
-            {showHeader && <ModalHeader onCancel={onCancel} title={title} />}
+            {showHeader && !header && <ModalHeader onCancel={onCancel} title={title} />}
+            {header}
 
             <div className="modal-body">{children}</div>
 
@@ -107,12 +123,12 @@ export const Modal: FC<ModalProps> = memo(props => {
                     cancelText={cancelText}
                     canConfirm={canConfirm}
                     confirmClass={confirmClass}
-                    confirmText={confirmText}
                     confirmingText={confirmingText}
+                    confirmText={confirmText}
                     isConfirming={isConfirming}
-                    onConfirm={onConfirm}
-                    onCommentChange={onCommentChange}
                     onCancel={onCancel}
+                    onCommentChange={onCommentChange}
+                    onConfirm={onConfirm}
                     requiresUserComment={requiresUserComment}
                 >
                     {footerContent}

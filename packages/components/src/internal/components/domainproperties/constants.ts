@@ -235,8 +235,6 @@ export const DERIVATION_DATA_SCOPES = {
 export const MAX_VALID_TEXT_CHOICES = 500;
 export const MAX_TEXT_CHOICE_VALUE_LENGTH = 200; // GitHub Issue 955: limit option length to 200
 
-export const LOOKUP_VALIDATOR_VALUES = { type: 'Lookup', name: 'Lookup Validator' };
-
 export const DOMAIN_ERROR_ID = 'domain-error';
 
 export const CALCULATED_COLUMN_SQL_TAG = '/* CALCULATED-EXPRESSION-COLUMN-QUERY */';

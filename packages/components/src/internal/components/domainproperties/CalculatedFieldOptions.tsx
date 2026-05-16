@@ -9,11 +9,16 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { createFormInputId, createFormInputName } from './utils';
 import { DOMAIN_FIELD_CLIENT_SIDE_ERROR, DOMAIN_FIELD_VALUE_EXPRESSION, SEVERITY_LEVEL_WARN } from './constants';
-import { DomainField, DomainFieldError, SystemField } from './models';
+import { DomainField, DomainFieldError, GetDomainFields, SystemField } from './models';
 import { SectionHeading } from './SectionHeading';
 import { isFieldFullyLocked, isFieldPartiallyLocked } from './propertiesUtil';
 import { CALCULATED_TYPE, MULTI_CHOICE_TYPE, PropDescType } from './PropDescType';
-import { parseCalculatedColumn } from './actions';
+import { SVGIcon } from '../base/SVGIcon';
+import { useModalState } from '../../hooks';
+import { EXPR_ASST_METRIC_FEATURE_AREA, ExpressionAssistantModal } from './ExpressionAssistantModal';
+import { incrementClientSideMetricCount } from '../../actions';
+import { useAppContext } from '../../AppContext';
+import { useServerContext } from '../base/ServerContext';
 
 // export for jest testing
 export const typeToDisplay = (type: string): string => {
@@ -33,15 +38,16 @@ export const typeToDisplay = (type: string): string => {
 
 // export for jest testing
 export const getColumnTypeMap = (
-    domainFields: List<DomainField>,
-    systemFields: SystemField[]
+    domainFields?: DomainField[],
+    systemFields?: SystemField[]
 ): Record<string, string> => {
-    const colTypeMap = {};
     // Issue 51169: add some default system fields
-    colTypeMap['Created'] = 'DATETIME';
-    colTypeMap['CreatedBy'] = 'INTEGER';
-    colTypeMap['Modified'] = 'DATETIME';
-    colTypeMap['ModifiedBy'] = 'INTEGER';
+    const colTypeMap = {
+        Created: 'DATETIME',
+        CreatedBy: 'INTEGER',
+        Modified: 'DATETIME',
+        ModifiedBy: 'INTEGER',
+    };
 
     systemFields?.forEach(df => {
         colTypeMap[df.Name] = df.DataType.toUpperCase();
@@ -54,13 +60,9 @@ export const getColumnTypeMap = (
     return colTypeMap;
 };
 
-export const getPHIColumnNames = (domainFields: List<DomainField>): string[] => {
+export const getPHIColumnNames = (domainFields: DomainField[]): string[] => {
     if (!domainFields) return [];
-
-    return domainFields
-        .filter(df => df.isPHI())
-        .map(df => df.name)
-        .toArray();
+    return domainFields.filter(df => df.isPHI()).map(df => df.name);
 };
 
 const HELP_TIP_BODY = (
@@ -77,23 +79,33 @@ const HELP_TIP_BODY = (
     </div>
 );
 
-interface Props {
+export interface CalculatedFieldOptionsProps {
     domainIndex: number;
     field: DomainField;
-    getDomainFields: () => { domainFields: List<DomainField>; systemFields: SystemField[] };
+    getDomainFields: GetDomainFields;
     index: number;
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean, skipDirtyCheck?: boolean) => void;
 }
 
-export const CalculatedFieldOptions: FC<Props> = memo(props => {
+export const CalculatedFieldOptions: FC<CalculatedFieldOptionsProps> = memo(props => {
     const { index, field, domainIndex, onChange, getDomainFields } = props;
     const [loading, setLoading] = useState<boolean>(!field.isNew());
     const [error, setError] = useState<string>(undefined);
     const [parsedType, setParsedType] = useState<string>(undefined);
+    const { close, open, show } = useModalState();
     const isNew = useMemo(() => field.isNew(), [field]);
+    const { headingId, inputId } = useMemo(
+        () => ({
+            headingId: `expression-label-${domainIndex}-${index}`,
+            inputId: createFormInputId(DOMAIN_FIELD_VALUE_EXPRESSION, domainIndex, index),
+        }),
+        [domainIndex, index]
+    );
+    const { api } = useAppContext();
+    const assistanceEnabled = useServerContext().mcpReady === true;
 
-    const handleChange = useCallback(
-        (evt: any): void => {
+    const handleChange = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>(
+        evt => {
             onChange(evt.target.id, evt.target.value);
             setError(undefined);
             setParsedType(undefined);
@@ -102,15 +114,17 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
     );
 
     const validateExpression = useCallback(
-        async (value: string, isExpressionChange = true): Promise<void> => {
+        async (expression: string, isExpressionChange = true): Promise<void> => {
             setLoading(true);
             setError(undefined);
             setParsedType(undefined);
             const { domainFields, systemFields } = getDomainFields();
-            const colTypeMap = getColumnTypeMap(domainFields, systemFields);
-            const phiColumns = getPHIColumnNames(domainFields);
             try {
-                const response = await parseCalculatedColumn(value, colTypeMap, phiColumns);
+                const response = await api.domain.parseCalculatedColumn(
+                    expression,
+                    domainFields.toArray(),
+                    systemFields
+                );
                 setError(response.error);
                 setParsedType(response.type);
 
@@ -133,27 +147,43 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                 setLoading(false);
             }
         },
-        [domainIndex, field.name, getDomainFields, index, onChange]
+        [api, domainIndex, field.name, getDomainFields, index, onChange]
     );
 
-    const handleBlur = useCallback(
-        (evt: any): void => {
-            const value = evt.target.value;
-            validateExpression(value, true);
+    const handleBlur = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>(
+        evt => {
+            validateExpression(evt.target.value, true);
         },
         [validateExpression]
     );
 
-    useEffect(
-        () => {
-            if (!isNew) {
-                validateExpression(field.valueExpression, false);
-            }
+    const handleApplyExpression = useCallback(
+        (analysis: string) => {
+            onChange(inputId, analysis);
+            setError(undefined);
+            setParsedType(undefined);
+            validateExpression(analysis, true);
+            close();
+            incrementClientSideMetricCount(EXPR_ASST_METRIC_FEATURE_AREA, 'applyExpression');
         },
-        [
-            /* on mount only */
-        ]
+        [close, inputId, onChange, validateExpression]
     );
+
+    const onOpenAssistant = useCallback(() => {
+        open();
+        incrementClientSideMetricCount(EXPR_ASST_METRIC_FEATURE_AREA, 'clickButton');
+    }, [open]);
+
+    const onValidateAssistant = useCallback(() => {
+        open();
+        incrementClientSideMetricCount(EXPR_ASST_METRIC_FEATURE_AREA, 'clickHelpWithValidate');
+    }, [open]);
+
+    useEffect(() => {
+        if (!isNew) {
+            validateExpression(field.valueExpression, false);
+        }
+    }, []); //eslint-disable-line react-hooks/exhaustive-deps -- on mount only
 
     return (
         <div
@@ -162,22 +192,24 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
             })}
         >
             <div className="row">
-                <div className="col-xs-12 col-md-6">
+                <div className="col-xs-12">
                     <SectionHeading
                         cls="bottom-padding"
                         helpTipBody={HELP_TIP_BODY}
-                        id={'expression-label-' + domainIndex + '-' + index}
+                        id={headingId}
                         title="Expression"
                     />
+                </div>
+                <div className="col-xs-12 col-md-7">
                     <textarea
-                        aria-labelledby={'expression-label-' + domainIndex + '-' + index}
+                        aria-labelledby={headingId}
                         className="form-control"
                         disabled={
                             isFieldPartiallyLocked(field.lockType) ||
                             isFieldFullyLocked(field.lockType) ||
                             field.lockExistingField
                         }
-                        id={createFormInputId(DOMAIN_FIELD_VALUE_EXPRESSION, domainIndex, index)}
+                        id={inputId}
                         name={createFormInputName(DOMAIN_FIELD_VALUE_EXPRESSION)}
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -185,7 +217,20 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                         value={field.valueExpression || ''}
                     />
                     <div className="domain-field-calc-footer">
-                        {error && <div className="error">{error}</div>}
+                        {error && (
+                            <div>
+                                <span className="error">{error}</span>
+                                {assistanceEnabled && (
+                                    <button
+                                        className="clickable-text validate-link-ai"
+                                        onClick={onValidateAssistant}
+                                        type="button"
+                                    >
+                                        Get help from AI
+                                    </button>
+                                )}
+                            </div>
+                        )}
                         {!error && parsedType && (
                             <div className="validated">
                                 Validated. Calculated data type is "{typeToDisplay(parsedType)}".
@@ -197,33 +242,66 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                         )}
                     </div>
                 </div>
-                <div className="col-xs-12 col-md-6 domain-field-calc-examples">
-                    <b>Examples</b>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>Addition:</td>
-                                <td className="code">numericField1 + numericField2</td>
-                            </tr>
-                            <tr>
-                                <td>Subtraction:</td>
-                                <td className="code">numericField1 - numericField2</td>
-                            </tr>
-                            <tr>
-                                <td>Multiplication:</td>
-                                <td className="code">numericField1 * numericField2</td>
-                            </tr>
-                            <tr>
-                                <td>Division:</td>
-                                <td className="code">numericField1 / nonZeroField1</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <HelpLink topic={FIELD_EDITOR_CALC_COLS_TOPIC}>Click for more examples</HelpLink>
-                </div>
+                {assistanceEnabled && (
+                    <div className="col-xs-12 col-md-5">
+                        <div className="margin-bottom">
+                            The AI Assistant can help you create or validate an expression. You can describe the
+                            calculation you want, or get help with an existing expression.
+                        </div>
+                        <div className="margin-bottom">
+                            <button className="btn btn-default" onClick={onOpenAssistant} type="button">
+                                <SVGIcon
+                                    height="16px"
+                                    iconSrc="ai_stars_icon"
+                                    style={{ marginRight: '4px', marginTop: '-4px' }}
+                                    width="16px"
+                                />
+                                AI Assistant
+                            </button>
+                        </div>
+                        <HelpLink topic={FIELD_EDITOR_CALC_COLS_TOPIC}>See calculation examples</HelpLink>
+                    </div>
+                )}
+                {!assistanceEnabled && (
+                    <div className="col-xs-12 col-md-5 domain-field-calc-examples">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>Examples:</td>
+                                </tr>
+                                <tr>
+                                    <td>Addition:</td>
+                                    <td className="code">numericField1 + numericField2</td>
+                                </tr>
+                                <tr>
+                                    <td>Subtraction:</td>
+                                    <td className="code">numericField1 - numericField2</td>
+                                </tr>
+                                <tr>
+                                    <td>Multiplication:</td>
+                                    <td className="code">numericField1 * numericField2</td>
+                                </tr>
+                                <tr>
+                                    <td>Division:</td>
+                                    <td className="code">numericField1 / nonZeroField1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <HelpLink topic={FIELD_EDITOR_CALC_COLS_TOPIC}>Click for more examples</HelpLink>
+                    </div>
+                )}
             </div>
+            {show && (
+                <ExpressionAssistantModal
+                    // Only inform the modal of the error if there is an invalid expression
+                    fieldError={field.valueExpression ? error : undefined}
+                    fieldExpression={field.valueExpression}
+                    getDomainFields={getDomainFields}
+                    onCancel={close}
+                    onComplete={handleApplyExpression}
+                />
+            )}
         </div>
     );
 });
-
 CalculatedFieldOptions.displayName = 'CalculatedFieldOptions';

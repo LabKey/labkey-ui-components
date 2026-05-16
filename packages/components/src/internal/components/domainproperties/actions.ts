@@ -15,7 +15,7 @@
  */
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
-import { Ajax, Domain, Experiment, Filter, Query, Security, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Domain, Experiment, Filter, Query, Security, Utils } from '@labkey/api';
 
 import { processSchemas } from '../../query/utils';
 
@@ -34,7 +34,7 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SCHEMAS } from '../../schemas';
 
 import { caseInsensitive } from '../../util/utils';
-import { handleRequestFailure } from '../../request';
+import { handleRequestFailure, request, RequestHandler } from '../../request';
 
 import { getExcludedDataTypeNames } from '../entities/actions';
 
@@ -102,12 +102,14 @@ import {
     LOOKUP_VALIDATOR,
     NameExpressionsValidationResults,
     QueryInfoLite,
+    SystemField,
     updateSampleField,
 } from './models';
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
 import { executeSql } from '../../query/executeSql';
 import { getLegalIdentifier } from '../../query/filter';
+import { getColumnTypeMap, getPHIColumnNames } from './CalculatedFieldOptions';
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -442,12 +444,20 @@ export function getCastStatement(key: string, type: string): string {
     }
 }
 
+export type ParseCalculatedColumnResponse = {
+    error: string;
+    type: string;
+};
+
 export async function parseCalculatedColumn(
     expression: string,
-    columnMap: Record<string, string>,
-    phiColumns: string[],
+    domainFields: DomainField[],
+    systemFields: SystemField[],
     containerPath?: string
-): Promise<{ error: string; type: string }> {
+): Promise<ParseCalculatedColumnResponse> {
+    const columnMap = getColumnTypeMap(domainFields, systemFields);
+    const phiColumns = getPHIColumnNames(domainFields);
+
     if (!expression || expression?.trim()?.length === 0) {
         return { error: 'Error: an expression value is required.', type: undefined };
     }
@@ -502,10 +512,10 @@ export function _parseCalculatedColumn(
     columnMap: Record<string, string>,
     phiColumns: string[],
     containerPath?: string
-): Promise<{ error: string; type: string }> {
+): Promise<ParseCalculatedColumnResponse> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('query', 'parseCalculatedColumn.api', undefined, { container: containerPath }),
+            url: ActionURL.buildURL('query', 'parseCalculatedColumn.api', containerPath),
             jsonData: {
                 expression,
                 columnMap,
@@ -1515,4 +1525,41 @@ export function setGenId(
 
 export function scrollDomainErrorIntoView(): void {
     document.querySelector('#' + DOMAIN_ERROR_ID)?.scrollIntoView();
+}
+
+export interface ExpressionAssistOptions {
+    columnMap: Record<string, string>;
+    containerPath?: string;
+    conversationId?: string;
+    domainFields?: (DomainField | SystemField)[];
+    fieldError?: string;
+    fieldExpression?: string;
+    phiColumns?: string[];
+    prompt: string;
+    requestHandler?: RequestHandler;
+}
+
+export interface ExpressionAssistSegment {
+    html?: string;
+    sql?: string;
+    type: 'expression' | 'html' | 'sql' | string;
+}
+
+export interface ExpressionAssistResponse {
+    conversationId: string;
+    error?: string;
+    segments?: ExpressionAssistSegment[];
+    success: boolean;
+    text?: string;
+}
+
+export function expressionAssistant(options: ExpressionAssistOptions): Promise<ExpressionAssistResponse> {
+    const { containerPath, requestHandler, ...jsonData } = options;
+    return request<ExpressionAssistResponse>({
+        url: ActionURL.buildURL('query', 'expressionAssistantAgent.api', containerPath),
+        method: 'POST',
+        jsonData,
+        errorLogMsg: 'Failed to assist with expression',
+        requestHandler,
+    });
 }

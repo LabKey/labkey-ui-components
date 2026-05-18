@@ -43,10 +43,6 @@ import { resolveErrorMessage } from './util/messaging';
 
 import { ViewInfo } from './ViewInfo';
 import { createGridModelId } from './models';
-import { SAMPLES_KEY, SOURCES_KEY } from './app/constants';
-import { SCHEMAS } from './schemas';
-import { selectRows } from './query/selectRows';
-import { caseInsensitive } from './util/utils';
 
 export function selectAll(
     key: string,
@@ -64,11 +60,17 @@ export function selectAll(
     });
 }
 
-type DataTypeRowIdsFromTransactionIds = {
+export type DataTypeRowIdsFromTransactionIds = {
     dataTypeRowCounts: Record<number, number>;
     typeNameRowCounts?: Record<string, number>;
     dataTypes?: string[];
     rowIds: string[];
+};
+
+type GetTransactionRowIdsResponse = {
+    dataTypeRowCounts: Record<number, number>;
+    rowIds: number[];
+    success: boolean;
 };
 
 export async function getGridIdsFromTransactionId(
@@ -81,7 +83,7 @@ export async function getGridIdsFromTransactionId(
     const failureMsg = `There was a problem retrieving the ${dataType} from the last action.`;
     const errorLogMsg = `${failureMsg} (transactionAuditId = ${transactionAuditId})`;
 
-    const response = await request<{ rowIds: number[]; success: boolean }>({
+    const response = await request<GetTransactionRowIdsResponse>({
         url: ActionURL.buildURL('audit', 'getTransactionRowIds.api'),
         params: {
             containerFilter: getContainerFilterForFolder(containerPath),
@@ -100,7 +102,7 @@ export async function getGridIdsFromTransactionId(
     const rowIds = response.rowIds.map(rowId => rowId.toString());
     return {
         rowIds,
-        dataTypeRowCounts: response['dataTypeRowCounts'],
+        dataTypeRowCounts: response.dataTypeRowCounts,
     };
 }
 
@@ -119,74 +121,6 @@ export async function selectGridIdsFromTransactionId(
     return selected;
 }
 
-async function getDataTypesFromTransactionId(
-    transactionAuditId: number | string,
-    auditDataType: string,
-    schemaName: string,
-    queryName: string,
-    typeColumn: string
-): Promise<DataTypeRowIdsFromTransactionIds> {
-    if (!transactionAuditId) return { rowIds: [], dataTypeRowCounts: {}, dataTypes: [] };
-
-    const { rowIds, dataTypeRowCounts } = await getGridIdsFromTransactionId(transactionAuditId, auditDataType);
-    const distinct = await selectDistinctRows({
-        schemaName,
-        queryName,
-        column: typeColumn,
-        filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
-    });
-    return { rowIds, dataTypeRowCounts, dataTypes: distinct.values };
-}
-
-export function getSampleTypesFromTransactionIds(
-    transactionAuditId: number | string
-): Promise<DataTypeRowIdsFromTransactionIds> {
-    return getDataTypesFromTransactionId(
-        transactionAuditId,
-        SAMPLES_KEY,
-        SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
-        SCHEMAS.EXP_TABLES.MATERIALS.queryName,
-        'SampleSet/Name'
-    );
-}
-
-export async function getDataClassesFromTransactionIds(
-    transactionAuditId: number | string
-): Promise<DataTypeRowIdsFromTransactionIds> {
-    const results = await getDataTypesFromTransactionId(
-        transactionAuditId,
-        SOURCES_KEY,
-        SCHEMAS.EXP_TABLES.DATA.schemaName,
-        SCHEMAS.EXP_TABLES.DATA.queryName,
-        'DataClass/Name'
-    );
-
-    if (!results.rowIds.length) return { ...results, typeNameRowCounts: {} };
-
-    const { dataTypeRowCounts, dataTypes } = results;
-    const dataTypeLcMap = Object.fromEntries((dataTypes ?? []).map(dt => [dt.toLowerCase(), dt]));
-
-    const typeNameRowCounts = {};
-    if (Object.keys(dataTypeRowCounts).length > 0) {
-        const dataClasses = await selectRows({
-            schemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
-            columns: ['Name', 'RowId'],
-            filterArray: [Filter.create('rowId', Object.keys(dataTypeRowCounts), Filter.Types.IN)],
-            containerFilter: Query.containerFilter.currentPlusProjectAndShared,
-        });
-
-        dataClasses.rows.forEach(row => {
-            const dataClassLc = caseInsensitive(row, 'Name')?.value?.toLowerCase();
-            const rowId = caseInsensitive(row, 'RowId').value;
-            typeNameRowCounts[dataTypeLcMap[dataClassLc]] = dataTypeRowCounts[rowId];
-        });
-    }
-
-    return {
-        ...results,
-        typeNameRowCounts,
-    };
-}
 
 export interface ExportOptions {
     columns?: string;

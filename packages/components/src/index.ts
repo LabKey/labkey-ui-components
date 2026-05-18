@@ -194,9 +194,7 @@ import {
 } from './internal/components/editable/actions';
 import {
     clearSelected,
-    getDataClassesFromTransactionIds,
     getGridIdsFromTransactionId,
-    getSampleTypesFromTransactionIds,
     getSelected,
     getSelectedDataDeprecated,
     incrementClientSideMetricCount,
@@ -497,10 +495,12 @@ import {
     getEntityTypeOptions,
     getExcludedDataTypeNames,
     getFieldDisplayValue,
+    getDataClassesFromTransactionIds,
     getOrderedSelectedMappedKeysFromQueryModel,
     getParentTypeDataForLineage,
     getSampleIdentifyingFieldGridData,
     getSampleOperationConfirmationData,
+    getSampleTypesFromTransactionIds,
     updateCellValuesForSampleIds,
 } from './internal/components/entities/actions';
 import {

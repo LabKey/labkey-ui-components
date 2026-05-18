@@ -56,8 +56,8 @@ export const SystemFields: FC<Props> = memo(({ fields, disabledSystemFields, onS
     const [collapsed, setCollapsed] = useState<boolean>(false);
 
     const onToggle = useCallback(() => {
-        setCollapsed(!collapsed);
-    }, [collapsed]);
+        setCollapsed(c => !c);
+    }, []);
     const onKeyDown = useEnterEscape(onToggle);
 
     const gridData: SystemField[] = useMemo(() => {
@@ -75,7 +75,7 @@ export const SystemFields: FC<Props> = memo(({ fields, disabledSystemFields, onS
         return data;
     }, [fields, disabledSystemFields]);
 
-    const systemFieldColumns: List<any> = useMemo(() => {
+    const systemFieldColumns: List<GridColumn> = useMemo(() => {
         const enabledColumn = new GridColumn({
             index: 'Enabled',
             title: 'Enabled',

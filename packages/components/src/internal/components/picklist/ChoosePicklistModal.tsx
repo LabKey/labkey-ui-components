@@ -292,7 +292,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalDisplayProps & Ch
         const createNewListMessage = (
             <>
                 Do you want to{' '}
-                <button className="clickable-text" onClick={goToCreateNewList}>
+                <button className="clickable-text" onClick={goToCreateNewList} type="button">
                     create a new one
                 </button>
                 ?

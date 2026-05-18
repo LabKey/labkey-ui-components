@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC, memo, useCallback, useMemo, useState } from 'react';
+import React, { CSSProperties, FC, memo, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 
 import { Modal } from '../Modal';
@@ -7,6 +7,7 @@ import { isLoading, LoadingState } from '../../public/LoadingState';
 import { LoadingSpinner } from '../components/base/LoadingSpinner';
 import { DropdownMenu, MenuItem } from '../dropdowns';
 import { useEnterEscape } from '../../public/useEnterEscape';
+import { useModalState } from '../hooks';
 
 const now = (): number => new Date().valueOf();
 
@@ -53,15 +54,7 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
         titleStyle,
     } = props;
     const titleClass = titleStyle?.backgroundColor ? 'attachment-card__name status-pill' : 'attachment-card__name ';
-    const [showModal, setShowModal] = useState<boolean>();
-
-    const _showModal = useCallback(() => {
-        setShowModal(true);
-    }, [setShowModal]);
-
-    const _hideModal = useCallback(() => {
-        setShowModal(false);
-    }, [setShowModal]);
+    const { close, open, show } = useModalState();
 
     const _onCopyLink = useCallback((): void => onCopyLink(attachment), [attachment, onCopyLink]);
     const onCopyKeyDown = useEnterEscape(_onCopyLink);
@@ -82,9 +75,9 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
 
     const _onBodyAction = useCallback(() => {
         if (!attachment || attachment.unavailable || isLoading(attachment.loadingState)) return;
-        if (isImage(attachment.name)) _showModal();
+        if (isImage(attachment.name)) open();
         else _onDownload();
-    }, [attachment, _showModal, _onDownload]);
+    }, [attachment, open, _onDownload]);
 
     const onBodyKeyDown = useEnterEscape(_onBodyAction);
 
@@ -166,8 +159,8 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
                 )}
             </div>
 
-            {showModal && (
-                <Modal bsSize="lg" cancelText="Dismiss" onCancel={_hideModal} title={modalTitle}>
+            {show && (
+                <Modal bsSize="lg" cancelText="Dismiss" onCancel={close} title={modalTitle}>
                     <img alt={`${name} image`} className="attachment-card__img_modal" src={imageURL} title={name} />
                 </Modal>
             )}

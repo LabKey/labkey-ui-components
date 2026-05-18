@@ -13,7 +13,7 @@ export function getActionErrorMessage(problemStatement: string, noun: string, sh
             {showRefresh && (
                 <>
                     &nbsp;Try{' '}
-                    <button className="clickable-text" onClick={() => window.location.reload()}>
+                    <button className="clickable-text" onClick={() => window.location.reload()} type="button">
                         refreshing the page
                     </button>
                     .

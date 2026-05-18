@@ -180,20 +180,16 @@ const RunStepNodeDetail: FC<RunStepNodeDetailProps> = memo(props => {
     const stepName = step.protocol?.name || step.name;
     const hasProvenanceModule = useMemo(() => hasModule('provenance'), []);
 
-    const changeTab = useCallback((newTabKey: string) => {
-        setTabKey(newTabKey);
-    }, []);
-
     return (
         <div className="run-step-node-detail">
             <DetailHeader header={`Run Step: ${stepName}`} iconSrc="default">
-                <button className="lineage-link clickable-text" onClick={onBack}>
+                <button className="lineage-link clickable-text" onClick={onBack} type="button">
                     <span>Back to Run Details</span>
                 </button>
                 <span className="spacer-left">&gt;</span>
                 <span className="spacer-left">{stepName}</span>
             </DetailHeader>
-            <Tabs activeKey={tabKey} onSelect={changeTab}>
+            <Tabs activeKey={tabKey} onSelect={setTabKey}>
                 <Tab eventKey="details" title="Step Details">
                     <LineageDetail item={step} model={model} />
                     <DetailsListLineageIO item={step} />

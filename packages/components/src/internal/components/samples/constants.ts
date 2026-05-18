@@ -1,11 +1,9 @@
+import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { IDomainField, LOOKUP_VALIDATOR } from '../domainproperties/models';
-
 import { SAMPLE_TYPE } from '../domainproperties/PropDescType';
-
 import { FindField, SampleStateType } from './models';
-import { List } from 'immutable';
 
 export enum ALIQUOT_FILTER_MODE {
     aliquots = 'aliquots',

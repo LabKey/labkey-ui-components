@@ -13,6 +13,14 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Update styling for file inputs on `AttachmentCard` so input field is not hidden
   - Add `tabIndex` and `onKeyDown` callback for thread components
 
+### version 7.37.0
+*Released*: 15 May 2026
+- Calculated Column Assistant
+- Add `ChatModal` component for prompt/conversation interaction
+- Add `ExpressionAssistantModal` for specific implementation of expression assistant modal
+- Add `query-expressionAssistantAgent.api` endpoint to `APIWrapper`
+- Move `query-parseCalculatedColumn.api` endpoint wrapper to `APIWrapper`
+
 ### version 7.36.0
 *Released*: 13 May 2026
 - Update heading tags in various page elements for better accessibility

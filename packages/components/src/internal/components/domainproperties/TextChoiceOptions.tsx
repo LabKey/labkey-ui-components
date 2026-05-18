@@ -247,6 +247,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                         <div className="list-group domain-text-choices-list">
                             {validValues.length > MIN_VALUES_FOR_SEARCH_COUNT && (
                                 <input
+                                    aria-label="Search for a value"
                                     autoFocus
                                     className="form-control domain-text-choices-search"
                                     onChange={onSearchChange}
@@ -319,10 +320,11 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                         {selectedIndex !== undefined && (!currentInUse || !isMultiChoiceField) && (
                             <>
                                 <div className="domain-field-label">
-                                    <DomainFieldLabel label="Value" />
+                                    <DomainFieldLabel id="text-choice-value-label" label="Value" />
                                 </div>
                                 <div className="domain-field-padding-bottom">
                                     <DisableableInput
+                                        aria-labelledby="text-choice-value-label"
                                         className="form-control full-width"
                                         disabledMsg={currentLocked ? LOCKED_TIP : undefined}
                                         name="value"

@@ -962,11 +962,11 @@ describe('domain properties actions', () => {
     });
 
     test('parseCalculatedColumn', async () => {
-        let response = await parseCalculatedColumn(undefined, {}, []);
+        let response = await parseCalculatedColumn(undefined, [], []);
         expect(response.error).toBe('Error: an expression value is required.');
         expect(response.type).toBeUndefined();
 
-        response = await parseCalculatedColumn('    ', {}, []);
+        response = await parseCalculatedColumn('    ', [], []);
         expect(response.error).toBe('Error: an expression value is required.');
         expect(response.type).toBeUndefined();
     });

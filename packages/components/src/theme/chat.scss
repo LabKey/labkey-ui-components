@@ -1,0 +1,126 @@
+.lk-modal .chat-modal {
+    height: 100dvh;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 0;
+    box-sizing: border-box;
+
+    .modal-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .modal-header .modal-title {
+        display: inline;
+    }
+
+    .modal-header .btn {
+        float: right;
+    }
+
+    .modal-body {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-history {
+        flex-grow: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .chat-item {
+        word-wrap: break-word;
+    }
+
+    .user-prompt {
+        align-self: flex-end;
+        max-width: 80%;
+        padding: 8px 12px;
+        background-color: $alert-info-bg;
+        border: 1px solid $alert-info-border;
+        border-radius: 8px 8px 0 8px;
+        color: $alert-info-text;
+        white-space: pre-wrap;
+    }
+
+    .assistant-response {
+        align-self: stretch;
+        color: $text-color;
+    }
+
+    .assistant-response.pending {
+        color: $gray-light;
+    }
+
+    .assistant-text,
+    .assistant-expression {
+        margin-bottom: 8px;
+    }
+
+    .error-response {
+        color: $brand-danger;
+    }
+
+    .modal-footer {
+        flex-shrink: 0;
+        background-color: $body-bg;
+        line-height: 20px;
+        padding: 15px;
+    }
+
+    .form-inline {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+        width: 100%;
+
+        .form-group,
+        .col-xs-12 {
+            display: contents;
+        }
+    }
+
+    .prompt-input {
+        flex-grow: 1;
+        width: 0;
+
+        field-sizing: content;
+        line-height: 1.2;
+        min-height: 1.2lh;
+        max-height: 12lh;
+
+        padding: 10px;
+        box-sizing: border-box;
+        resize: none;
+        margin: 0;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    .prompt-button {
+        height: 38px;
+        flex-shrink: 0;
+        margin: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: $text-color;
+    }
+
+    .chat-modal__caution {
+        width: 100%;
+        text-align: center;
+        color: $gray-light;
+        font-size: 11px;
+        margin-top: 12px;
+    }
+}

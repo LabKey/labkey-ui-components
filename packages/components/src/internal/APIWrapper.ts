@@ -1,14 +1,14 @@
 import { AssayAPIWrapper, AssayServerAPIWrapper, getAssayTestAPIWrapper } from './components/assay/APIWrapper';
-import { SamplesAPIWrapper, SamplesServerAPIWrapper, getSamplesTestAPIWrapper } from './components/samples/APIWrapper';
+import { getSamplesTestAPIWrapper, SamplesAPIWrapper, SamplesServerAPIWrapper } from './components/samples/APIWrapper';
 import {
+    getPicklistTestAPIWrapper,
     PicklistAPIWrapper,
     PicklistServerAPIWrapper,
-    getPicklistTestAPIWrapper,
 } from './components/picklist/APIWrapper';
 import {
+    getLabelPrintingTestAPIWrapper,
     LabelPrintingAPIWrapper,
     LabelPrintingServerAPIWrapper,
-    getLabelPrintingTestAPIWrapper,
 } from './components/labelPrinting/APIWrapper';
 import {
     getSecurityTestAPIWrapper,
@@ -17,6 +17,7 @@ import {
 } from './components/security/APIWrapper';
 import {
     DomainPropertiesAPIWrapper,
+    DomainPropertiesServerAPIWrapper,
     getDomainPropertiesTestAPIWrapper,
 } from './components/domainproperties/APIWrapper';
 import { getQueryTestAPIWrapper, QueryAPIWrapper, QueryServerAPIWrapper } from './query/APIWrapper';
@@ -55,7 +56,7 @@ export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
     if (!DEFAULT_WRAPPER) {
         DEFAULT_WRAPPER = {
             assay: new AssayServerAPIWrapper(),
-            domain: new DomainPropertiesAPIWrapper(),
+            domain: new DomainPropertiesServerAPIWrapper(),
             entity: new EntityServerAPIWrapper(),
             folder: new ServerFolderAPIWrapper(),
             query: new QueryServerAPIWrapper(),

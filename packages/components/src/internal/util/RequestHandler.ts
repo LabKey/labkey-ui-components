@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { RequestHandler } from '../request';
 
 export interface UseRequestHandler {
+    abortRequest: () => void;
     requestHandler: RequestHandler;
     resetRequestHandler: () => void;
 }
@@ -59,6 +60,11 @@ export interface UseRequestHandler {
 export function useRequestHandler(abortOnDismount = false): UseRequestHandler {
     const requestRef = useRef<XMLHttpRequest>(undefined);
 
+    const abortRequest = useCallback(() => {
+        requestRef.current?.abort();
+        requestRef.current = undefined;
+    }, []);
+
     // This requestHandler aborts prior search requests in the event that another request is made
     const requestHandler = useCallback<RequestHandler>(request => {
         requestRef.current?.abort();
@@ -71,15 +77,9 @@ export function useRequestHandler(abortOnDismount = false): UseRequestHandler {
 
     useEffect(() => {
         if (!abortOnDismount) return;
-
-        // eslint-disable-next-line consistent-return
-        return () => {
-            requestRef.current?.abort();
-            requestRef.current = undefined;
-        };
-
+        return abortRequest;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return { requestHandler, resetRequestHandler };
+    return { abortRequest, requestHandler, resetRequestHandler };
 }

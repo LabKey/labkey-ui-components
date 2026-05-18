@@ -35,7 +35,7 @@ export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyFor
     const { action, value, displayValue, isReadOnly, isRemovable } = actionValue;
 
     const onIconClick = useCallback(
-        (event): void => {
+        (event: React.MouseEvent): void => {
             event.stopPropagation();
             event.preventDefault();
             if (onRemove && isRemovable !== false) {
@@ -46,10 +46,11 @@ export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyFor
     );
 
     const onValueClick = useCallback(
-        (event): void => {
+        (event: React.MouseEvent<HTMLDivElement>): void => {
             // Issue 50449: Expand icon click area to remove filter value
-            const filterBoundBoxClick = event.target.className?.indexOf('filter-status-value') > -1;
-            const boxLeftEdge = event.target.getBoundingClientRect().left;
+            const target = event.target as HTMLElement;
+            const filterBoundBoxClick = target.className?.indexOf('filter-status-value') > -1;
+            const boxLeftEdge = target.getBoundingClientRect().left;
             const isIconClick = event.clientX - boxLeftEdge < 30;
             if (filterBoundBoxClick && isIconClick) {
                 onIconClick(event);
@@ -65,9 +66,15 @@ export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyFor
         [actionValue, isReadOnly, onClick, onIconClick]
     );
 
+    const onValueEnter = useCallback((): void => {
+        if (onClick && isReadOnly === undefined) {
+            onClick(actionValue, undefined);
+        }
+    }, [actionValue, isReadOnly, onClick]);
+
     const onMouseEnter = useCallback((): void => setIsActive(true), []);
     const onMouseLeave = useCallback((): void => setIsActive(false), []);
-    const onKeyDown = useEnterEscape(onValueClick);
+    const onKeyDown = useEnterEscape(onValueEnter);
 
     const showRemoveIcon = isActive && isRemovable !== false && action.keyword !== 'view';
 

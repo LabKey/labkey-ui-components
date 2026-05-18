@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import classNames from 'classnames';
 import { useEnterEscape } from '../../../public/useEnterEscape';
 
@@ -9,7 +9,7 @@ interface Props {
     expandedTitle: string;
     highlighted?: boolean;
     id: string;
-    onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+    onClick: () => void;
 }
 
 export const FieldExpansionToggle: FC<Props> = props => {
@@ -19,13 +19,16 @@ export const FieldExpansionToggle: FC<Props> = props => {
         'fa-chevron-down': expanded,
         'fa-chevron-right': !expanded,
     });
-    const onKeyDown = useEnterEscape(onClick);
+    const onClickHandler = useCallback(() => {
+        onClick();
+    }, [onClick]);
+    const onKeyDown = useEnterEscape(onClickHandler);
 
     return (
         <div
             className={'field-icon ' + (cls ? cls : '')}
             id={id}
-            onClick={onClick}
+            onClick={onClickHandler}
             onKeyDown={onKeyDown}
             tabIndex={0}
             title={expanded ? expandedTitle : collapsedTitle}

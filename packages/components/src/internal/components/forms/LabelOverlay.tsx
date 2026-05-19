@@ -113,7 +113,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
             // classes applied as well as not needing to handle 'required' display
             // TODO: remove space for required-symbol after *
             return (
-                <span>
+                <span id={column?.labelId}>
                     {label}&nbsp;
                     {overlay}
                     {required || addLabelAsterisk ? <span className="required-symbol">* </span> : null}

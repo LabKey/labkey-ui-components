@@ -252,10 +252,11 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     </div>
                     <div className="form-group">
                         <div className="col-sm-4">
-                            <DomainFieldLabel label="Description" />
+                            <DomainFieldLabel id="description-label" label="Description" />
                         </div>
                         <div className="col-sm-8">
                             <textarea
+                                aria-labelledby="description-label"
                                 className="form-control"
                                 disabled={saving || !updatedState.isLocal}
                                 name="description"

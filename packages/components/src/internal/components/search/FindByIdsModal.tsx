@@ -127,6 +127,7 @@ export const FindByIdsModal: FC<Props> = memo(props => {
                 onFieldChange={onFieldTypeChange}
             />
             <textarea
+                aria-label="Ids"
                 className="form-control textarea-fullwidth"
                 cols={50}
                 onChange={onIdTextChange}

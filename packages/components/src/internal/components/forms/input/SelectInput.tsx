@@ -551,7 +551,6 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
                         id={this.getId()}
                         isDisabled={isDisabled}
                         labelOverlayProps={{
-                            inputId: name,
                             description: description_,
                             label,
                             addLabelAsterisk,

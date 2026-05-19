@@ -147,6 +147,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputImplProps, Checkbo
                     ) : (
                         <input
                             aria-label={label}
+                            aria-labelledby={label ? undefined : queryColumn.labelId}
                             checked={checked}
                             disabled={isDisabled}
                             id={queryColumn.fieldKey}

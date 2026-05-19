@@ -50,18 +50,11 @@ const SIMPLE_VEGA_LITE_BAR_SPEC = {
 };
 
 const INIT_AGENT_PROMPT =
-    // 'This initial prompt is just to create the context. We will be asking you to build a Vega-Lite spec for a chart. ' +
-    // 'Please wait for the next prompt before responding. You can ignore any of the information that you know about LabKey chart types and its visualization ' +
-    // ' library since we are creating Vega-Lite charts here (which are unrelated to the LabKey charting types and charting wizard.' +
-    // '\n\nTo prepare, here is an example Vega-Lite spec for a simple bar chart:\n' +
-    // JSON.stringify(SIMPLE_VEGA_LITE_BAR_SPEC) +
-    // '\n\nAll of the specs that you create should be of this same version and format. Please be sure to include the spec object in a code tag so that I can find it and parse it from the response. ' +
-    // 'Any specifics about Vega-Lite chart specs should use the documentation from https://vega.github.io/vega-lite/docs/.' +
-    // '\n\nI will provide the data object before I render the chart on my end. So when you generate temp data for your spec, you can fake it using the fieldKeys and types in the QueryInfo object I will provide, but make sure to use the same fieldKey names and data types in your generated spec as the ones in the QueryInfo object. ' +
     'Please do not create any chart configs yet. I will prompt you when I am ready.\n' +
-    'When you respond please be sure to include the spec object in a code tag so that I can find it and parse it from the response. Only include that code block, nothing else in the successful response case.\n' +
+    'When you respond please be sure to include the spec object in a code tag (with class = "language-json") so that I can find it and parse it from the response. Only include that code block, nothing else in the successful response case.\n' +
     'I will provide the data object before I render the chart on my end. So when you generate temp data for your spec, you can fake it using the fieldKeys and types in the QueryInfo object I will provide, but make sure to use the same fieldKey names and data types in your generated spec as the ones in the QueryInfo object.\n' +
-    'The chart will be created for a specific dataset with the following information (provided as a LabKey QueryInfo object):\n';
+    'The chart will be created for a specific dataset with the information (provided as a LabKey QueryInfo object) provided below. Please do not query for other containers, schemas or tables in the LabKey database. \n' +
+    'This request should only create charts based on the columns available in THIS dataset: ';
 
 export const getChartRenderMsg = (chartConfig: ChartConfig, rowCount: number, isPreview: boolean): string => {
     const msg = [];
@@ -435,8 +428,8 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
                 jsonType: c.jsonType,
             })),
         };
-        console.log(model.queryInfo);
-        return INIT_AGENT_PROMPT + JSON.stringify(trimmedQueryInfo, null, 2);
+        // console.log(model.queryInfo);
+        return INIT_AGENT_PROMPT + model.queryInfo.name;//JSON.stringify(trimmedQueryInfo, null, 2);
     });
     const [hideTextAreas, setHideTextAreas] = useState<boolean>(true);
     const [agentResponseLoading, setAgentResponseLoading] = useState<boolean>(false);
@@ -452,7 +445,8 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
         setVegaLitePrompt('');
         setAgentResponseLoading(true);
         try {
-            const response = await sendChartAgentPrompt(vegaLitePrompt);
+            const prompt_ = "REMEMBER: only for the " + model.queryInfo.name + " dataset. " + vegaLitePrompt;
+            const response = await sendChartAgentPrompt(prompt_);
             setAgentResponse(response);
             setTimeout(() => {
                 applySpecWithData();
@@ -470,7 +464,7 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
 
     const applySpecWithData = useCallback(() => {
         // use document.querySelector to get the <code> block from the vegaSpecResponse div
-        const codeBlock = document.querySelector('.vegaSpecResponse code');
+        const codeBlock = document.querySelector('.vegaSpecResponse code.language-json');
         if (codeBlock) {
             try {
                 const spec = JSON.parse(codeBlock.textContent);

@@ -1,6 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Misc. accessibility improvements
+  - Auto-link to study input field labels
+  - Remove tabIndex value from `DomainRow`
+  - Add labels for text choice input fields
+  - Use button instead of i for expandable container chevrons
+  - Update LabelOverlay and DetailEditor with ids for labeling elements
+  - Add `labelId` getter method in `QueryColumn`
+
 ### version 7.37.0
 *Released*: 15 May 2026
 - Calculated Column Assistant

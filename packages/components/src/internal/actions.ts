@@ -43,8 +43,6 @@ import { resolveErrorMessage } from './util/messaging';
 
 import { ViewInfo } from './ViewInfo';
 import { createGridModelId } from './models';
-import { SAMPLES_KEY } from './app/constants';
-import { SCHEMAS } from './schemas';
 
 export function selectAll(
     key: string,
@@ -62,17 +60,30 @@ export function selectAll(
     });
 }
 
+export type DataTypeRowIdsFromTransactionIds = {
+    dataTypeRowCounts: Record<number, number>;
+    dataTypes?: string[];
+    rowIds: string[];
+    typeNameRowCounts?: Record<string, number>;
+};
+
+type GetTransactionRowIdsResponse = {
+    dataTypeRowCounts: Record<number, number>;
+    rowIds: number[];
+    success: boolean;
+};
+
 export async function getGridIdsFromTransactionId(
     transactionAuditId: number | string,
     dataType: string,
     containerPath?: string
-): Promise<string[]> {
-    if (!transactionAuditId) return;
+): Promise<DataTypeRowIdsFromTransactionIds> {
+    if (!transactionAuditId) return { rowIds: [], dataTypeRowCounts: {} };
 
     const failureMsg = `There was a problem retrieving the ${dataType} from the last action.`;
     const errorLogMsg = `${failureMsg} (transactionAuditId = ${transactionAuditId})`;
 
-    const response = await request<{ rowIds: number[]; success: boolean }>({
+    const response = await request<GetTransactionRowIdsResponse>({
         url: ActionURL.buildURL('audit', 'getTransactionRowIds.api'),
         params: {
             containerFilter: getContainerFilterForFolder(containerPath),
@@ -88,7 +99,11 @@ export async function getGridIdsFromTransactionId(
     }
 
     // The server returns numbers, so we coerce to string; If we don't, it can lead to bugs (and has).
-    return response.rowIds.map(rowId => rowId.toString());
+    const rowIds = response.rowIds.map(rowId => rowId.toString());
+    return {
+        rowIds,
+        dataTypeRowCounts: response.dataTypeRowCounts,
+    };
 }
 
 export async function selectGridIdsFromTransactionId(
@@ -97,33 +112,13 @@ export async function selectGridIdsFromTransactionId(
     transactionAuditId: number | string,
     dataType: string,
     actions: Actions
-): Promise<string[]> {
-    if (!transactionAuditId) return undefined;
+): Promise<DataTypeRowIdsFromTransactionIds> {
+    if (!transactionAuditId) return { rowIds: [], dataTypeRowCounts: {} };
 
     const modelId = createGridModelId(gridIdPrefix, schemaQuery);
     const selected = await getGridIdsFromTransactionId(transactionAuditId, dataType);
-    actions.replaceSelections(modelId, selected);
+    actions.replaceSelections(modelId, selected.rowIds);
     return selected;
-}
-
-type SampleTypesFromTransactionIds = { rowIds: string[]; sampleTypes: string[] };
-
-export async function getSampleTypesFromTransactionIds(
-    transactionAuditId: number | string
-): Promise<SampleTypesFromTransactionIds> {
-    if (!transactionAuditId) return undefined;
-
-    const rowIds = await getGridIdsFromTransactionId(transactionAuditId, SAMPLES_KEY);
-    const sampleTypes = await selectDistinctRows({
-        schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
-        queryName: SCHEMAS.EXP_TABLES.MATERIALS.queryName,
-        column: 'SampleSet/Name',
-        filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
-    });
-    return {
-        rowIds,
-        sampleTypes: sampleTypes.values,
-    };
 }
 
 export interface ExportOptions {

@@ -195,7 +195,6 @@ import {
 import {
     clearSelected,
     getGridIdsFromTransactionId,
-    getSampleTypesFromTransactionIds,
     getSelected,
     getSelectedDataDeprecated,
     incrementClientSideMetricCount,
@@ -492,6 +491,7 @@ import {
 } from './internal/components/permissions/actions';
 import {
     getContainersForPermission,
+    getDataClassesFromTransactionIds,
     getDataDeleteConfirmationData,
     getEntityTypeOptions,
     getExcludedDataTypeNames,
@@ -500,6 +500,7 @@ import {
     getParentTypeDataForLineage,
     getSampleIdentifyingFieldGridData,
     getSampleOperationConfirmationData,
+    getSampleTypesFromTransactionIds,
     updateCellValuesForSampleIds,
 } from './internal/components/entities/actions';
 import {
@@ -1338,7 +1339,6 @@ export {
     genCellKey,
     GENERAL_ASSAY_PROVIDER_NAME,
     generateId,
-    stringToHtmlId,
     generateNameWithTimestamp,
     getActionErrorMessage,
     getActionValuesForFilterProps,
@@ -1352,6 +1352,7 @@ export {
     getContainerFilterForLookups,
     getContainersForPermission,
     getDataClassDetails,
+    getDataClassesFromTransactionIds,
     getDataDeleteConfirmationData,
     getDateFNSDateFormat,
     getDateTimeInputOptions,
@@ -1717,6 +1718,7 @@ export {
     StorageAmountInput,
     StorageStatusRenderer,
     STORED_AMOUNT_FIELDS,
+    stringToHtmlId,
     SVGIcon,
     Tab,
     TabbedGridPanel,

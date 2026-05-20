@@ -11,7 +11,12 @@ import {
 } from '@labkey/api';
 import { List, Map, OrderedMap } from 'immutable';
 
-import { getSelected, getSelectedDataDeprecated } from '../../actions';
+import {
+    DataTypeRowIdsFromTransactionIds,
+    getGridIdsFromTransactionId,
+    getSelected,
+    getSelectedDataDeprecated,
+} from '../../actions';
 
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -34,7 +39,7 @@ import { getAppHomeFolderPath, getFolderDataExclusion, hasModule } from '../../a
 
 import { resolveErrorMessage } from '../../util/messaging';
 
-import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
+import { SAMPLE_MANAGER_APP_PROPERTIES, SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
@@ -336,7 +341,7 @@ async function initParents(
     creationType?: EntityCreationType,
     isItemSamples?: boolean,
     targetQueryName?: string,
-    jobId?: string,
+    jobId?: string
 ): Promise<List<EntityParentType>> {
     const isAliquotParent = creationType === EntityCreationType.Aliquots;
 
@@ -1367,8 +1372,7 @@ export function getSingleSampleTypeQueryInfo(sampleIds: number[] | string[]): Pr
 // GitHub Issue 928: Spaces not shown between text choices in identifying fields in editable grid
 export function getFieldDisplayValue(fieldData: any): string {
     const val = fieldData.formattedValue ?? fieldData.displayValue ?? fieldData.value;
-    if (Array.isArray(val))
-        return val.join(', ');
+    if (Array.isArray(val)) return val.join(', ');
     return val;
 }
 
@@ -1539,4 +1543,67 @@ export function updateCellValuesForSampleIds(
             resolve({ editorModelChanges, cellKeyChanges });
         }
     });
+}
+
+async function getDataTypesFromTransactionId(
+    transactionAuditId: number | string,
+    auditDataType: string,
+    schemaQuery: SchemaQuery,
+    typeColumn: string
+): Promise<DataTypeRowIdsFromTransactionIds> {
+    if (!transactionAuditId) return { rowIds: [], dataTypeRowCounts: {}, dataTypes: [] };
+
+    const { rowIds, dataTypeRowCounts } = await getGridIdsFromTransactionId(transactionAuditId, auditDataType);
+    const distinct = await selectDistinctRows({
+        schemaName: schemaQuery.schemaName,
+        queryName: schemaQuery.queryName,
+        column: typeColumn,
+        filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
+    });
+    return { rowIds, dataTypeRowCounts, dataTypes: distinct.values };
+}
+
+export function getSampleTypesFromTransactionIds(
+    transactionAuditId: number | string
+): Promise<DataTypeRowIdsFromTransactionIds> {
+    return getDataTypesFromTransactionId(
+        transactionAuditId,
+        SAMPLES_KEY,
+        SCHEMAS.EXP_TABLES.MATERIALS,
+        'SampleSet/Name'
+    );
+}
+
+export async function getDataClassesFromTransactionIds(
+    transactionAuditId: number | string
+): Promise<DataTypeRowIdsFromTransactionIds> {
+    const results = await getDataTypesFromTransactionId(
+        transactionAuditId,
+        SOURCES_KEY,
+        SCHEMAS.EXP_TABLES.DATA,
+        'DataClass/Name'
+    );
+
+    if (!results.rowIds.length) return { ...results, typeNameRowCounts: {} };
+
+    const { dataTypeRowCounts, dataTypes } = results;
+    const dataTypeLcMap = Object.fromEntries((dataTypes ?? []).map(dt => [dt.toLowerCase(), dt]));
+
+    const typeNameRowCounts: Record<string, number> = {};
+    if (Object.keys(dataTypeRowCounts).length > 0) {
+        const dataClasses = await selectRows({
+            schemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
+            columns: ['Name', 'RowId'],
+            filterArray: [Filter.create('rowId', Object.keys(dataTypeRowCounts), Filter.Types.IN)],
+            containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+        });
+
+        dataClasses.rows.forEach(row => {
+            const dataClassLc = caseInsensitive(row, 'Name')?.value?.toLowerCase();
+            const rowId = caseInsensitive(row, 'RowId').value;
+            typeNameRowCounts[dataTypeLcMap[dataClassLc]] = dataTypeRowCounts[rowId];
+        });
+    }
+
+    return { ...results, typeNameRowCounts };
 }

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 7.X
-*Released*: X May 2026
+### version 7.37.1
+*Released*: 20 May 2026
 - Molecule and PS bulk import by file
     - `getGridIdsFromTransactionId` return type changed from `string[]` to `DataTypeRowIdsFromTransactionIds` (includes `rowIds`, `dataTypeRowCounts`)
     - `selectGridIdsFromTransactionId` updated to match new return type

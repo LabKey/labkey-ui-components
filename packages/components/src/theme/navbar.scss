@@ -313,7 +313,9 @@
     }
 
     .menu-section-header:hover .menu-folder-icons,
-    .menu-section-item:hover .menu-folder-icons {
+    .menu-section-header.active .menu-folder-icons,
+    .menu-section-item:hover .menu-folder-icons,
+    .menu-section-item.active .menu-folder-icons {
         display: inline-block;
     }
   }

@@ -356,6 +356,11 @@ export class Cell extends React.PureComponent<CellProps, undefined> {
                     cancelEvent(event);
                     selectCell(colIdx, rowIdx, undefined, true);
                 }
+                // allow escape key as a way to "get out of" the editable grid for keyboard navigation
+                if (selected && !isRecording && !focused) {
+                    cancelEvent(event);
+                    cellActions.clearSelection();
+                }
                 break;
             case KEYS.D:
                 if (!focused && isFillDown(event)) {

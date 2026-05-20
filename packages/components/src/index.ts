@@ -491,11 +491,11 @@ import {
 } from './internal/components/permissions/actions';
 import {
     getContainersForPermission,
+    getDataClassesFromTransactionIds,
     getDataDeleteConfirmationData,
     getEntityTypeOptions,
     getExcludedDataTypeNames,
     getFieldDisplayValue,
-    getDataClassesFromTransactionIds,
     getOrderedSelectedMappedKeysFromQueryModel,
     getParentTypeDataForLineage,
     getSampleIdentifyingFieldGridData,

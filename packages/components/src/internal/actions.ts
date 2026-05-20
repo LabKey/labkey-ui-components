@@ -62,9 +62,9 @@ export function selectAll(
 
 export type DataTypeRowIdsFromTransactionIds = {
     dataTypeRowCounts: Record<number, number>;
-    typeNameRowCounts?: Record<string, number>;
     dataTypes?: string[];
     rowIds: string[];
+    typeNameRowCounts?: Record<string, number>;
 };
 
 type GetTransactionRowIdsResponse = {
@@ -120,7 +120,6 @@ export async function selectGridIdsFromTransactionId(
     actions.replaceSelections(modelId, selected.rowIds);
     return selected;
 }
-
 
 export interface ExportOptions {
     columns?: string;

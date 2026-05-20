@@ -11,7 +11,12 @@ import {
 } from '@labkey/api';
 import { List, Map, OrderedMap } from 'immutable';
 
-import { getSelected, getSelectedDataDeprecated } from '../../actions';
+import {
+    DataTypeRowIdsFromTransactionIds,
+    getGridIdsFromTransactionId,
+    getSelected,
+    getSelectedDataDeprecated,
+} from '../../actions';
 
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -35,7 +40,6 @@ import { getAppHomeFolderPath, getFolderDataExclusion, hasModule } from '../../a
 import { resolveErrorMessage } from '../../util/messaging';
 
 import { SAMPLE_MANAGER_APP_PROPERTIES, SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
-import { DataTypeRowIdsFromTransactionIds, getGridIdsFromTransactionId } from '../../actions';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
@@ -337,7 +341,7 @@ async function initParents(
     creationType?: EntityCreationType,
     isItemSamples?: boolean,
     targetQueryName?: string,
-    jobId?: string,
+    jobId?: string
 ): Promise<List<EntityParentType>> {
     const isAliquotParent = creationType === EntityCreationType.Aliquots;
 
@@ -1368,8 +1372,7 @@ export function getSingleSampleTypeQueryInfo(sampleIds: number[] | string[]): Pr
 // GitHub Issue 928: Spaces not shown between text choices in identifying fields in editable grid
 export function getFieldDisplayValue(fieldData: any): string {
     const val = fieldData.formattedValue ?? fieldData.displayValue ?? fieldData.value;
-    if (Array.isArray(val))
-        return val.join(', ');
+    if (Array.isArray(val)) return val.join(', ');
     return val;
 }
 

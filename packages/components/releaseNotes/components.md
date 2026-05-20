@@ -4,7 +4,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 7.X
 *Released*: X May 2026
 - Molecule and PS bulk import by file
-  - TODO
+    - `getGridIdsFromTransactionId` return type changed from `string[]` to `DataTypeRowIdsFromTransactionIds` (includes `rowIds`, `dataTypeRowCounts`)
+    - `selectGridIdsFromTransactionId` updated to match new return type
+    - `getSampleTypesFromTransactionIds` refactored to delegate to shared `getDataTypesFromTransactionId` helper; return type uses generic `dataTypes` field instead of `sampleTypes`
+    - New `getDataClassesFromTransactionIds` function — resolves DataClass names and builds per-type row counts from transaction audit IDs
 
 ### version 7.37.0
 *Released*: 15 May 2026

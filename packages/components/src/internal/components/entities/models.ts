@@ -478,8 +478,8 @@ export interface EntityDataType {
     allowSingleParentTypeFilter?: boolean;
     ancestorColumnName?: string;
     appUrlPrefixParts?: string[];
-    crossFolderImportForbidden?: boolean;
     containerFilter?: Query.ContainerFilter;
+    crossFolderImportForbidden?: boolean;
     deleteHelpLinkTopic: string;
     dependencyText: Function | string;
     descriptionPlural: string;

@@ -10,6 +10,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Use button instead of i for expandable container chevrons
   - Update LabelOverlay and DetailEditor with ids for labeling elements
   - Add `labelId` getter method in `QueryColumn`
+  - Add `data-fieldkey` to some labels to help with locators
 
 ### version 7.37.0
 *Released*: 15 May 2026

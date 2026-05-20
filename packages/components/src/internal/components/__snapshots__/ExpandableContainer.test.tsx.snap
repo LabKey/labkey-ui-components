@@ -19,8 +19,10 @@ exports[`<ExpandableContainer/> custom props 1`] = `
       <div
         class="pull-right container-expandable-child__chevron text-muted"
       >
-        <i
-          class="fa fa-chevron-down"
+        <button
+          class="clickable-text fa fa-chevron-down"
+          title="Collapse"
+          type="button"
         />
       </div>
       <div
@@ -62,8 +64,10 @@ exports[`<ExpandableContainer/> default props 1`] = `
       <div
         class="pull-right container-expandable-child__chevron"
       >
-        <i
-          class="fa fa-chevron-right"
+        <button
+          class="clickable-text fa fa-chevron-right"
+          title="Expand"
+          type="button"
         />
       </div>
       <div

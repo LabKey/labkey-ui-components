@@ -125,10 +125,9 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
             return (
                 <span
                     className={(labelClass ? labelClass + ' ' : '') + 'text__truncate-and-wrap'}
-                    data-fieldKey={dataKey ?? column?.fieldKey}
                     id={column?.labelId}
                 >
-                    <span>{label}</span>&nbsp;
+                    <span data-fieldKey={dataKey ?? column?.fieldKey}>{label}</span>&nbsp;
                     {overlay}
                     {required || addLabelAsterisk ? <span className="required-symbol">* </span> : null}
                 </span>
@@ -137,10 +136,9 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
         return (
             <label
                 className={(labelClass ? labelClass + ' ' : '') + 'text__truncate-and-wrap'}
-                data-fieldKey={dataKey ?? column?.fieldKey}
                 htmlFor={inputId}
             >
-                <span>{label}</span>&nbsp;
+                <span data-fieldKey={dataKey ?? column?.fieldKey}>{label}</span>&nbsp;
                 {overlay}
                 {required || addLabelAsterisk ? <span className="required-symbol">* </span> : null}
             </label>

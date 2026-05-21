@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.38.0
+*Released*: 21 May 2026
 - Accessibility improvements for app pages: Keyboard Interactions
   - Make ActionButton a button so it can be tabbed to
   - Allow tab to app main menu folder items

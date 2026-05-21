@@ -35,8 +35,8 @@ describe('ActionButton', () => {
                 buttonClass="test-button-class"
                 containerClass="test-container-class"
                 disabled={false}
-                title="test-title"
                 onClick={onClick}
+                title="test-title"
             />
         );
 
@@ -52,7 +52,7 @@ describe('ActionButton', () => {
         const onClick = jest.fn();
 
         render(
-            <ActionButton onClick={onClick} helperTitle="test-helperTitle" helperBody={<p> Test Body Contents </p>} />
+            <ActionButton helperBody={<p> Test Body Contents </p>} helperTitle="test-helperTitle" onClick={onClick} />
         );
 
         // content not visible

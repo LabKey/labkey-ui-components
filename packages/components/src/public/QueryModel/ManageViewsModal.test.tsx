@@ -161,13 +161,10 @@ describe('ViewLabel', () => {
 
 describe('ManageViewsModal', () => {
     test('no views', async () => {
-        renderWithAppContext(
-            <ManageViewsModal onDone={jest.fn()} currentView={null} schemaQuery={null} />,
-            {
-                appContext: { api: getQueryAPI([]) },
-                serverContext: { user: TEST_USER_READER },
-            }
-        );
+        renderWithAppContext(<ManageViewsModal currentView={null} onDone={jest.fn()} schemaQuery={null} />, {
+            appContext: { api: getQueryAPI([]) },
+            serverContext: { user: TEST_USER_READER },
+        });
 
         expect(document.querySelector('.fa-spinner')).not.toBeNull();
         await waitFor(() => {
@@ -179,13 +176,10 @@ describe('ManageViewsModal', () => {
     });
 
     test('multiple saved views: default, named, shared and session view', async () => {
-        renderWithAppContext(
-            <ManageViewsModal onDone={jest.fn()} currentView={null} schemaQuery={null} />,
-            {
-                appContext: { api: getQueryAPI([SHARED_DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]) },
-                serverContext: { user: TEST_USER_PROJECT_ADMIN },
-            }
-        );
+        renderWithAppContext(<ManageViewsModal currentView={null} onDone={jest.fn()} schemaQuery={null} />, {
+            appContext: { api: getQueryAPI([SHARED_DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]) },
+            serverContext: { user: TEST_USER_PROJECT_ADMIN },
+        });
 
         expect(document.querySelector('.fa-spinner')).not.toBeNull();
         await waitFor(() => {
@@ -226,15 +220,12 @@ describe('ManageViewsModal', () => {
     });
 
     test('system default view', async () => {
-        renderWithAppContext(
-            <ManageViewsModal onDone={jest.fn()} currentView={null} schemaQuery={null} />,
-            {
-                appContext: {
-                    api: getQueryAPI([SYSTEM_DEFAULT_VIEW, SYSTEM_DETAIL_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]),
-                },
-                serverContext: { user: TEST_USER_PROJECT_ADMIN },
-            }
-        );
+        renderWithAppContext(<ManageViewsModal currentView={null} onDone={jest.fn()} schemaQuery={null} />, {
+            appContext: {
+                api: getQueryAPI([SYSTEM_DEFAULT_VIEW, SYSTEM_DETAIL_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]),
+            },
+            serverContext: { user: TEST_USER_PROJECT_ADMIN },
+        });
         await waitFor(() => {
             expect(document.querySelectorAll('.row.small-margin-bottom')).toHaveLength(4);
         });
@@ -251,13 +242,10 @@ describe('ManageViewsModal', () => {
     });
 
     test('multiple saved views: no admin permission', async () => {
-        renderWithAppContext(
-            <ManageViewsModal onDone={jest.fn()} currentView={null} schemaQuery={null} />,
-            {
-                appContext: { api: getQueryAPI([MY_DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]) },
-                serverContext: { user: TEST_USER_READER },
-            }
-        );
+        renderWithAppContext(<ManageViewsModal currentView={null} onDone={jest.fn()} schemaQuery={null} />, {
+            appContext: { api: getQueryAPI([MY_DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]) },
+            serverContext: { user: TEST_USER_READER },
+        });
 
         expect(document.querySelector('.fa-spinner')).not.toBeNull();
         await waitFor(() => {

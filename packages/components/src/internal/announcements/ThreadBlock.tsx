@@ -26,8 +26,8 @@ interface DeleteThreadBSModalProps {
 
 const DeleteThreadModal: FC<DeleteThreadBSModalProps> = ({ cancel, onDelete }) => (
     <Modal
-        confirmText="Yes, Delete Thread"
         confirmClass="btn-danger"
+        confirmText="Yes, Delete Thread"
         onCancel={cancel}
         onConfirm={onDelete}
         title="Delete this comment thread?"
@@ -40,8 +40,8 @@ DeleteThreadModal.displayName = 'DeleteThreadModal';
 
 const DeleteReplyModal: FC<DeleteThreadBSModalProps> = ({ cancel, onDelete }) => (
     <Modal
-        confirmText="Yes, Delete Reply"
         confirmClass="btn-danger"
+        confirmText="Yes, Delete Reply"
         onCancel={cancel}
         onConfirm={onDelete}
         title="Delete this reply?"
@@ -84,7 +84,7 @@ const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
     return (
         <div className="thread-block-header">
             <span className="thread-block-header__user">
-                <UserLink userId={author.id} userDisplayValue={author.displayName} />
+                <UserLink userDisplayValue={author.displayName} userId={author.id} />
             </span>
             <div className="pull-right">
                 <span className="thread-block-header__date">
@@ -94,9 +94,9 @@ const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
                 {(onDelete || onEdit) && (
                     <DropdownMenu
                         className="thread-block-header__menu"
-                        label={"Manage thread block"}
-                        title={<i className="fa fa-ellipsis-v" />}
+                        label={'Manage thread block'}
                         pullRight
+                        title={<i className="fa fa-ellipsis-v" />}
                     >
                         {onEdit !== undefined && (
                             <MenuItem className="thread-block-header__menu-edit" onClick={onEdit}>
@@ -208,12 +208,12 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
                 {!editing && (
                     <div className="thread-block-body">
                         <ThreadBlockHeader
+                            author={thread.author}
                             created={thread.created}
+                            isThread={!thread.parent}
                             modified={thread.modified}
                             onDelete={allowDelete ? onDeleteThread : undefined}
                             onEdit={allowUpdate ? onEdit : undefined}
-                            author={thread.author}
-                            isThread={!thread.parent}
                         />
                         {error !== undefined && <Alert>{error}</Alert>}
                         <div className="thread-block-body__content" dangerouslySetInnerHTML={threadBody} />
@@ -221,7 +221,12 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
                         <ThreadAttachments attachments={thread.attachments ?? []} containerPath={containerPath} />
 
                         {allowReply && (
-                            <span className="clickable-text thread-block__reply" onClick={onReply} onKeyDown={onReplyKeyDown} tabIndex={0}>
+                            <span
+                                className="clickable-text thread-block__reply"
+                                onClick={onReply}
+                                onKeyDown={onReplyKeyDown}
+                                tabIndex={0}
+                            >
                                 Reply
                             </span>
                         )}
@@ -247,8 +252,8 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
                         onCancel={onCancel}
                         onCreate={onReplied}
                         parent={thread.parent ?? thread.entityId}
-                        thread={undefined}
                         setPendingChange={setPendingChange}
+                        thread={undefined}
                     />
                 </div>
             )}

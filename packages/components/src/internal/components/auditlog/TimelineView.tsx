@@ -119,9 +119,9 @@ export class TimelineView extends React.Component<Props, any> {
 
         const icon = (
             <SVGIcon
-                iconSrc={isSelected ? iconSrc + '_orange' : iconSrc}
-                className="timeline-event-icon"
                 alt={iconSrc ? iconSrc : ''}
+                className="timeline-event-icon"
+                iconSrc={isSelected ? iconSrc + '_orange' : iconSrc}
             />
         );
 
@@ -163,7 +163,7 @@ export class TimelineView extends React.Component<Props, any> {
             line = longVLine;
         }
         return (
-            <td key="tl-icon-col" className="icon-col">
+            <td className="icon-col" key="tl-icon-col">
                 <div>
                     <div className="timeline-line">{line}</div>
                     {icon}
@@ -176,10 +176,7 @@ export class TimelineView extends React.Component<Props, any> {
         if (!comment) return null;
 
         return (
-            <LabelHelpTip
-                iconComponent={<i className="timeline-comments-icon fa fa-comments" />}
-                placement="bottom"
-            >
+            <LabelHelpTip iconComponent={<i className="timeline-comments-icon fa fa-comments" />} placement="bottom">
                 <div className="ws-pre-wrap">{comment}</div>
             </LabelHelpTip>
         );
@@ -210,7 +207,7 @@ export class TimelineView extends React.Component<Props, any> {
         const { summary, user, entity, entitySeparator } = event;
         const comment = event.getComment();
         return (
-            <td key="tl-detail-col" className="detail-col">
+            <td className="detail-col" key="tl-detail-col">
                 <div>
                     {getEventDataValueDisplay(summary)}
                     {entity != null && <span>{entitySeparator ? entitySeparator : ' - '}</span>}
@@ -219,9 +216,9 @@ export class TimelineView extends React.Component<Props, any> {
                 <div>
                     <div className="field-text-nowrap">
                         <UserLink
-                            userId={user?.get('value')}
-                            userDisplayValue={user?.get('displayValue')}
                             unknown={!user}
+                            userDisplayValue={user?.get('displayValue')}
+                            userId={user?.get('value')}
                         />
                     </div>{' '}
                     {this.renderComment(comment)}

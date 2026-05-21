@@ -68,7 +68,9 @@ const ExportMenuItem: FC<ExportMenuItemProps> = ({ model, onExport, option, supp
                 <MenuHeader text={exportAndPrintHeader} />
                 {option.type === EXPORT_TYPES.LABEL && (
                     <SelectionMenuItem
+                        maxSelection={MAX_SELECTION_ACTION_ROWS}
                         nounPlural="samples"
+                        onClick={onClick}
                         queryModel={model}
                         text={
                             <>
@@ -76,8 +78,6 @@ const ExportMenuItem: FC<ExportMenuItemProps> = ({ model, onExport, option, supp
                                 {option.label}
                             </>
                         }
-                        maxSelection={MAX_SELECTION_ACTION_ROWS}
-                        onClick={onClick}
                     />
                 )}
                 {option.type !== EXPORT_TYPES.LABEL && (
@@ -147,10 +147,10 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
                         {exportOptions.map(option => (
                             <ExportMenuItem
                                 key={option.label}
+                                model={model}
                                 onExport={exportCallback}
                                 option={option}
                                 supportedTypes={supportedTypes}
-                                model={model}
                             />
                         ))}
                     </DropdownButton>
@@ -181,11 +181,11 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
         return (
             <ExportMenuImpl
                 {...rest}
-                model={model}
-                id={id}
+                exportHandler={this.export}
                 hasData={hasData}
                 hasSelections={hasSelections}
-                exportHandler={this.export}
+                id={id}
+                model={model}
             />
         );
     }

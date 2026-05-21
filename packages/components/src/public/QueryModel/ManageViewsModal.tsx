@@ -211,10 +211,10 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                     {selectedView && selectedView?.name === view.name ? (
                                         <ViewNameInput
                                             autoFocus
-                                            view={selectedView}
+                                            defaultValue={selectedView?.name}
                                             onBlur={renameView}
                                             placeholder={selectedView?.name}
-                                            defaultValue={selectedView?.name}
+                                            view={selectedView}
                                         />
                                     ) : (
                                         <ViewLabel view={view} />
@@ -231,7 +231,11 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                                 }
                                             >
                                                 {view.isSaved ? (
-                                                    <button onClick={revertDefaultView} className="clickable-text" type="button">
+                                                    <button
+                                                        className="clickable-text"
+                                                        onClick={revertDefaultView}
+                                                        type="button"
+                                                    >
                                                         Revert
                                                     </button>
                                                 ) : (
@@ -241,9 +245,9 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                         )}
                                         {!isDefault && !isRenaming && (
                                             <button
-                                                onClick={setDefaultView}
-                                                id={'setDefault-' + ind}
                                                 className="clickable-text"
+                                                id={'setDefault-' + ind}
+                                                onClick={setDefaultView}
                                                 type="button"
                                             >
                                                 Make default

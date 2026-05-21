@@ -23,7 +23,7 @@ import { AppLink } from './url/AppLink';
 import { AppURL } from './url/AppURL';
 import { useEnterEscape } from '../public/useEnterEscape';
 
-export type BSStyle = 'success' | 'danger' | 'default' | 'primary' | 'info';
+export type BSStyle = 'danger' | 'default' | 'info' | 'primary' | 'success';
 const DROPDOWN_MENU_CLASS = 'dropdown-menu';
 
 /**
@@ -257,13 +257,13 @@ export const SplitButton: FC<SplitButtonProps> = memo(props => {
 
     if (href !== undefined) {
         button = (
-            <a href={href} className={buttonClassName}>
+            <a className={buttonClassName} href={href}>
                 {title}
             </a>
         );
     } else {
         button = (
-            <button className={buttonClassName} onClick={onClick} disabled={disabled || buttonDisabled} type="button">
+            <button className={buttonClassName} disabled={disabled || buttonDisabled} onClick={onClick} type="button">
                 {title}
             </button>
         );
@@ -273,8 +273,8 @@ export const SplitButton: FC<SplitButtonProps> = memo(props => {
         <div className={wrapperClassName}>
             {button}
             <button
-                aria-haspopup="true"
                 aria-expanded={open}
+                aria-haspopup="true"
                 className={toggleClassName}
                 disabled={disabled || menuDisabled}
                 id={id}
@@ -285,7 +285,7 @@ export const SplitButton: FC<SplitButtonProps> = memo(props => {
             >
                 <span className="caret no-margin" />
             </button>
-            <ul className={menuClassName} aria-labelledby={id} onClick={handleMenuClick} role="menu">
+            <ul aria-labelledby={id} className={menuClassName} onClick={handleMenuClick} role="menu">
                 {children}
             </ul>
         </div>
@@ -302,7 +302,7 @@ interface MenuHeaderProps {
  * See docs in docs/dropdowns.md
  */
 export const MenuHeader: FC<MenuHeaderProps> = ({ className, text }) => (
-    <li className={classNames('lk-dropdown-header', 'dropdown-header', className)} role="heading" onClick={cancelEvent}>
+    <li className={classNames('lk-dropdown-header', 'dropdown-header', className)} onClick={cancelEvent} role="heading">
         {text}
     </li>
 );
@@ -311,14 +311,14 @@ MenuHeader.displayName = 'MenuHeader';
 /**
  * See docs in docs/dropdowns.md
  */
-export const MenuDivider = (): ReactElement => <li className="divider" role="separator" onClick={cancelEvent} />;
+export const MenuDivider = (): ReactElement => <li className="divider" onClick={cancelEvent} role="separator" />;
 
 export interface MenuItemProps {
     active?: boolean;
     children: ReactNode;
     className?: string;
     disabled?: boolean;
-    href?: string | AppURL;
+    href?: AppURL | string;
     onClick?: () => void;
     onKeyDown?: (e: React.KeyboardEvent<HTMLAnchorElement>) => void;
     onMouseEnter?: () => void;
@@ -364,7 +364,7 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
     );
 
     return (
-        <li className={className} role="presentation" ref={ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <li className={className} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref} role="presentation">
             <AppLink
                 aria-label={props['aria-label']}
                 onClick={onClick_}

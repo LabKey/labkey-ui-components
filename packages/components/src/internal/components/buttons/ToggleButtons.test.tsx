@@ -29,7 +29,7 @@ describe('ToggleButtons', () => {
 
     test('alternate button labels and set second to active', () => {
         const onClickFn = jest.fn();
-        render(<ToggleButtons first="Yes" second="No" active="No" onClick={onClickFn} />);
+        render(<ToggleButtons active="No" first="Yes" onClick={onClickFn} second="No" />);
 
         expect(document.getElementsByClassName('toggle-on').length).toBe(0);
         expect(document.getElementsByClassName('toggle-off').length).toBe(1);
@@ -137,7 +137,7 @@ describe('ToggleIcon', () => {
 
     test('tooltip', async () => {
         const onClickFn = jest.fn();
-        render(<ToggleIcon active="off" toolTip="test tooltip" onClick={onClickFn} />);
+        render(<ToggleIcon active="off" onClick={onClickFn} toolTip="test tooltip" />);
 
         expect(document.getElementsByClassName('overlay-trigger').length).toBe(1);
 

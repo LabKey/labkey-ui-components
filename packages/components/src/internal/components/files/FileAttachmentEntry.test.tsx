@@ -6,7 +6,7 @@ import { FileAttachmentEntry } from './FileAttachmentEntry';
 
 describe('<FileAttachmentEntry>', () => {
     test('with onDelete', () => {
-        const { container } = render(<FileAttachmentEntry onDelete={jest.fn()} name="Test files" />);
+        const { container } = render(<FileAttachmentEntry name="Test files" onDelete={jest.fn()} />);
         expect(document.querySelectorAll('.fa-times-circle')).toHaveLength(1);
         expect(container.textContent).toBe('Test files');
     });

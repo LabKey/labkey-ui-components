@@ -103,8 +103,8 @@ export const Discussions: FC<Props> = memo(props => {
                 <Thread
                     api={api}
                     containerPath={containerPath}
-                    discussionSrcIdentifier={discussionSrcIdentifier}
                     discussionSrcEntityType={discussionSrcEntityType}
+                    discussionSrcIdentifier={discussionSrcIdentifier}
                     key={thread.rowId}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
@@ -112,9 +112,9 @@ export const Discussions: FC<Props> = memo(props => {
                     onDelete={loadDiscussions}
                     onUpdate={loadDiscussions}
                     readOnly={readOnly}
+                    setPendingChange={updatePendingThread}
                     thread={thread}
                     user={user}
-                    setPendingChange={updatePendingThread}
                 />
             ))}
 
@@ -129,8 +129,8 @@ export const Discussions: FC<Props> = memo(props => {
                 <ThreadEditor
                     api={api}
                     containerPath={containerPath}
-                    discussionSrcIdentifier={discussionSrcIdentifier}
                     discussionSrcEntityType={discussionSrcEntityType}
+                    discussionSrcIdentifier={discussionSrcIdentifier}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
                     onCancel={onCancel}

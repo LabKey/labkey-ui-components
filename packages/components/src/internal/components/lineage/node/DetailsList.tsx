@@ -3,10 +3,10 @@ import React, { FC, Fragment, memo, PropsWithChildren, ReactNode, useCallback, u
 import { naturalSortByProperty } from '../../../../public/sort';
 import {
     getLineageNodeTitle,
-    LineageNodeCollection,
-    LineageItemWithMetadata,
     LineageIOWithMetadata,
+    LineageItemWithMetadata,
     LineageNode,
+    LineageNodeCollection,
 } from '../models';
 import { DEFAULT_ICON_URL } from '../utils';
 import { NodeInteractionConsumer } from '../actions';
@@ -55,7 +55,11 @@ export const DetailsList: FC<DetailsListProps> = memo(props => {
                             <Fragment key="__skip">
                                 <li>
                                     <SVGIcon className="lineage-sm-icon" />
-                                    <button className="lineage-link clickable-text spacer-left" onClick={onToggle} type="button">
+                                    <button
+                                        className="lineage-link clickable-text spacer-left"
+                                        onClick={onToggle}
+                                        type="button"
+                                    >
                                         Show {React.Children.count(children) - collapsedCount}{' '}
                                         {expanded ? 'less' : 'more'}...
                                     </button>
@@ -86,25 +90,27 @@ export const DetailsListSteps: FC<DetailsListStepProps> = memo(({ node, onSelect
 
     return (
         <DetailsList title="Run steps">
-            {node.steps.map((step, i) => (
-                <div className="lineage-name" key={`${node.lsid}.step.${i}`}>
-                    <SVGIcon
-                        className="lineage-sm-icon"
-                        data-testid="lineage-step-icon"
-                        iconSrc={step.iconProps?.iconURL ?? DEFAULT_ICON_URL}
-                    />
-                    <span className="lineage-sm-name spacer-right" data-testid="lineage-step-name">
-                        {step.protocol?.name || step.name}
-                    </span>
-                    <LineageDataLink
-                        onClick={() => {
-                            onSelect(i);
-                        }}
-                    >
-                        Details
-                    </LineageDataLink>
-                </div>
-            )).toArray()}
+            {node.steps
+                .map((step, i) => (
+                    <div className="lineage-name" key={`${node.lsid}.step.${i}`}>
+                        <SVGIcon
+                            className="lineage-sm-icon"
+                            data-testid="lineage-step-icon"
+                            iconSrc={step.iconProps?.iconURL ?? DEFAULT_ICON_URL}
+                        />
+                        <span className="lineage-sm-name spacer-right" data-testid="lineage-step-name">
+                            {step.protocol?.name || step.name}
+                        </span>
+                        <LineageDataLink
+                            onClick={() => {
+                                onSelect(i);
+                            }}
+                        >
+                            Details
+                        </LineageDataLink>
+                    </div>
+                ))
+                .toArray()}
         </DetailsList>
     );
 });
@@ -134,8 +140,8 @@ const DetailsListLineageItem: FC<DetailsListLineageItemProps> = memo(({ highligh
                             <button
                                 className="lineage-link clickable-text spacer-horizontal"
                                 onClick={e => context.onNodeClick(item)}
-                                onMouseOver={e => context.onNodeMouseOver(item)}
                                 onMouseOut={e => context.onNodeMouseOut(item)}
+                                onMouseOver={e => context.onNodeMouseOver(item)}
                                 type="button"
                             >
                                 {item.name}
@@ -209,7 +215,7 @@ interface DetailsListNodesProps {
 export const DetailsListNodes: FC<DetailsListNodesProps> = memo(({ highlightNode, nodes, title }) => (
     <DetailsListLineageItems
         headerLinks={[
-            <LineageDataLink key="grid" href={nodes.listURL}>
+            <LineageDataLink href={nodes.listURL} key="grid">
                 View in grid
             </LineageDataLink>,
         ]}

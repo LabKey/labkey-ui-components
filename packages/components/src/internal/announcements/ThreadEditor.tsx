@@ -23,7 +23,7 @@ import { DropdownMenu, MenuItem } from '../dropdowns';
 import { AnnouncementsAPIWrapper } from './APIWrapper';
 
 import { RemoveAttachmentModal, ThreadAttachments } from './ThreadAttachments';
-import { Attachment, AnnouncementModel } from './model';
+import { AnnouncementModel, Attachment } from './model';
 
 // Check if a line starts with any spaces, a number, followed by a period and a space.
 const orderedBulletRe = /^\s*\d+. /;
@@ -502,16 +502,16 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
 
             <ThreadAttachments
                 attachments={attachments}
+                containerPath={containerPath}
                 error={attachmentError}
                 onRemove={openRemoveModal}
-                containerPath={containerPath}
             />
 
             <button
-                type="button"
                 className="btn btn-default thread-editor__create-btn"
                 disabled={submitDisabled}
                 onClick={onSubmit}
+                type="button"
             >
                 {isCreate ? `Add ${nounSingular}` : 'Save Changes'}
             </button>
@@ -523,7 +523,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
             </label>
 
             <span
-                  className="clickable-text thread-editor__cancel-btn"
+                className="clickable-text thread-editor__cancel-btn"
                 onClick={handleCancel}
                 onKeyDown={onCancelKeyDown}
                 tabIndex={0}

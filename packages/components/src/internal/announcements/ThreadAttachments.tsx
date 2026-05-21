@@ -34,7 +34,7 @@ const ThreadAttachment: FC<ThreadAttachmentProps> = memo(({ attachment, containe
             {url === undefined && <span>{attachment.name}</span>}
 
             {url !== undefined && (
-                <a href={url} target="_blank" rel="noopener noreferrer">
+                <a href={url} rel="noopener noreferrer" target="_blank">
                     {attachment.name}
                 </a>
             )}
@@ -58,10 +58,10 @@ export const ThreadAttachments: FC<ThreadAttachmentsProps> = memo(({ attachments
             <div className="thread-editor-attachments__list">
                 {attachments.map(attachment => (
                     <ThreadAttachment
-                        key={attachment.name}
                         attachment={attachment}
-                        onRemove={onRemove}
                         containerPath={containerPath}
+                        key={attachment.name}
+                        onRemove={onRemove}
                     />
                 ))}
             </div>

@@ -145,10 +145,18 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
                     ))}
                     <div className="field-expand-icon">
                         {column.isLookup() && !isExpanded && (
-                            <button className="clickable-text fa fa-chevron-right" onClick={_onExpandColumn} type="button" />
+                            <button
+                                className="clickable-text fa fa-chevron-right"
+                                onClick={_onExpandColumn}
+                                type="button"
+                            />
                         )}
                         {column.isLookup() && isExpanded && (
-                            <button className="clickable-text fa fa-chevron-down" onClick={_onCollapseColumn} type="button" />
+                            <button
+                                className="clickable-text fa fa-chevron-down"
+                                onClick={_onCollapseColumn}
+                                type="button"
+                            />
                         )}
                     </div>
                 </>

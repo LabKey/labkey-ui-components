@@ -123,8 +123,8 @@ export const FormTabs: FC<FormTabsProps> = ({ onTabChange, tabs }) => {
                             furthestStep === undefined
                                 ? true
                                 : hasDependentSteps
-                                ? step > currentStep
-                                : furthestStep < step;
+                                  ? step > currentStep
+                                  : furthestStep < step;
 
                         return (
                             <FormTabItem
@@ -168,8 +168,8 @@ export const withFormSteps = (Component: any, defaultState?: WithFormStepsState)
                 currentStep: props.initialStep
                     ? props.initialStep
                     : defaultState && defaultState.currentStep !== undefined
-                    ? defaultState.currentStep
-                    : 1,
+                      ? defaultState.currentStep
+                      : 1,
                 furthestStep: defaultState && defaultState.furthestStep !== undefined ? defaultState.furthestStep : 1,
                 hasDependentSteps:
                     defaultState && defaultState.hasDependentSteps !== undefined

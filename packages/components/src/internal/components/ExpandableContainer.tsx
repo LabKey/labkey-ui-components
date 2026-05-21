@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, useCallback, PropsWithChildren, useState, useEffect, useMemo } from 'react';
+import React, { FC, memo, PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
 
 import classNames from 'classnames';
 
@@ -75,9 +75,6 @@ export const ExpandableContainer: FC<Props> = memo(props => {
     return (
         <div className={classNames(rowCls, 'container-expandable', { disabled: !isExpandable })}>
             <div
-                onClick={hasOnClick || isExpandable ? handleClick : undefined}
-                onMouseEnter={isExpandable ? handleMouseEnter : undefined}
-                onMouseLeave={isExpandable ? handleMouseLeave : undefined}
                 className={classNames(
                     containerCls,
                     containerDivCls,
@@ -85,28 +82,32 @@ export const ExpandableContainer: FC<Props> = memo(props => {
                     { 'container-expandable__active': isHover || visible },
                     { 'container-expandable__inactive': !isHover && !visible }
                 )}
+                onClick={hasOnClick || isExpandable ? handleClick : undefined}
+                onMouseEnter={isExpandable ? handleMouseEnter : undefined}
+                onMouseLeave={isExpandable ? handleMouseLeave : undefined}
             >
                 {!noIcon && (
                     <i className="container-expandable-child__img">
                         {iconFaCls ? (
-                            <i style={{ padding: '5px' }} className={'fa fa-' + iconFaCls} />
+                            <i className={'fa fa-' + iconFaCls} style={{ padding: '5px' }} />
                         ) : (
-                            <SVGIcon iconSrc={iconSrc} isActive={isHover} height="50px" width="50px" />
+                            <SVGIcon height="50px" iconSrc={iconSrc} isActive={isHover} width="50px" />
                         )}
                     </i>
                 )}
                 <div
-                    onClick={hasOnClick || isExpandable ? handleClick : undefined}
                     className={classNames('pull-right', 'container-expandable-child__chevron', {
                         'text-muted': !isExpandable,
                     })}
+                    onClick={hasOnClick || isExpandable ? handleClick : undefined}
                 >
-                    <i
-                        onClick={hasOnClick || isExpandable ? handleClick : undefined}
-                        className={classNames('fa', {
+                    <button
+                        className={classNames('clickable-text', 'fa', {
                             'fa-chevron-down': visible,
                             'fa-chevron-right': !visible,
                         })}
+                        onClick={hasOnClick || isExpandable ? handleClick : undefined}
+                        type="button"
                     />
                 </div>
                 <div className="container-expandable-heading">

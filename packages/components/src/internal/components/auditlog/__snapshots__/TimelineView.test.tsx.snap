@@ -11,6 +11,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-04 21:57
         </td>
@@ -49,11 +50,12 @@ exports[`<TimelineView /> Disable selection 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -64,6 +66,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-04 22:57
         </td>
@@ -110,11 +113,12 @@ exports[`<TimelineView /> Disable selection 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -125,6 +129,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-05 22:58
         </td>
@@ -171,11 +176,12 @@ exports[`<TimelineView /> Disable selection 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 xyang
-              </a>
+              </button>
             </div>
              
           </div>
@@ -186,6 +192,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-08 22:57
         </td>
@@ -232,11 +239,12 @@ exports[`<TimelineView /> Disable selection 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -247,6 +255,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-09 18:57
         </td>
@@ -293,11 +302,12 @@ exports[`<TimelineView /> Disable selection 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Test Lab User
-              </a>
+              </button>
             </div>
              
           </div>
@@ -308,6 +318,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-09 19:57
         </td>
@@ -354,11 +365,12 @@ exports[`<TimelineView /> Disable selection 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Test Lab User
-              </a>
+              </button>
             </div>
              
           </div>
@@ -369,6 +381,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-09 20:57
         </td>
@@ -415,11 +428,12 @@ exports[`<TimelineView /> Disable selection 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -430,6 +444,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-05-04 23:00
         </td>
@@ -514,6 +529,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-04 21:57
         </td>
@@ -552,11 +568,12 @@ exports[`<TimelineView /> Hide user link 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -567,6 +584,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-04 22:57
         </td>
@@ -613,11 +631,12 @@ exports[`<TimelineView /> Hide user link 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -628,6 +647,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-05 22:58
         </td>
@@ -674,11 +694,12 @@ exports[`<TimelineView /> Hide user link 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 xyang
-              </a>
+              </button>
             </div>
              
           </div>
@@ -689,6 +710,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-08 22:57
         </td>
@@ -735,11 +757,12 @@ exports[`<TimelineView /> Hide user link 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -750,6 +773,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-09 18:57
         </td>
@@ -796,11 +820,12 @@ exports[`<TimelineView /> Hide user link 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Test Lab User
-              </a>
+              </button>
             </div>
              
           </div>
@@ -811,6 +836,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-09 19:57
         </td>
@@ -857,11 +883,12 @@ exports[`<TimelineView /> Hide user link 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Test Lab User
-              </a>
+              </button>
             </div>
              
           </div>
@@ -872,6 +899,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-09 20:57
         </td>
@@ -918,11 +946,12 @@ exports[`<TimelineView /> Hide user link 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -933,6 +962,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-05-04 23:00
         </td>
@@ -1017,6 +1047,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-04 21:57
         </td>
@@ -1055,11 +1086,12 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1070,6 +1102,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-04 22:57
         </td>
@@ -1122,11 +1155,12 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1137,6 +1171,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-05 22:58
         </td>
@@ -1183,11 +1218,12 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 xyang
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1198,6 +1234,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-08 22:57
         </td>
@@ -1244,11 +1281,12 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1259,6 +1297,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-09 18:57
         </td>
@@ -1305,11 +1344,12 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Test Lab User
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1320,6 +1360,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-09 19:57
         </td>
@@ -1372,11 +1413,12 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Test Lab User
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1387,6 +1429,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-09 20:57
         </td>
@@ -1433,11 +1476,12 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1448,6 +1492,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-05-04 23:00
         </td>
@@ -1532,6 +1577,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-04 21:57
         </td>
@@ -1570,11 +1616,12 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1585,6 +1632,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-04 22:57
         </td>
@@ -1631,11 +1679,12 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1646,6 +1695,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-05 22:58
         </td>
@@ -1698,11 +1748,12 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 xyang
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1713,6 +1764,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-08 22:57
         </td>
@@ -1759,11 +1811,12 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1774,6 +1827,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-09 18:57
         </td>
@@ -1820,11 +1874,12 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Test Lab User
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1835,6 +1890,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-09 19:57
         </td>
@@ -1881,11 +1937,12 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Test Lab User
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1896,6 +1953,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-04-09 20:57
         </td>
@@ -1942,11 +2000,12 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
             <div
               class="field-text-nowrap"
             >
-              <a
-                class="clickable user-link"
+              <button
+                class="clickable-text user-link"
+                type="button"
               >
                 Vader
-              </a>
+              </button>
             </div>
              
           </div>
@@ -1957,6 +2016,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
       >
         <td
           class="display-light timeline-timestamp-col"
+          tabindex="0"
         >
           2020-05-04 23:00
         </td>

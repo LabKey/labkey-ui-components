@@ -73,9 +73,9 @@ export const FilterStatus: FC<Props> = memo(props => {
                 </button>
             )}
             {onRemoveAll && showRemoveAll && (
-                <a className="remove-all-filters" onClick={onRemoveAll}>
+                <button className="remove-all-filters clickable-text" onClick={onRemoveAll} type="button">
                     Remove all
-                </a>
+                </button>
             )}
         </div>
     );

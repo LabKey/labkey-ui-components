@@ -104,16 +104,16 @@ export const DataTypeSelectorItem: FC<DataTypeSelectorItemProps> = memo(props =>
     }, [entityId, onChange]);
 
     return (
-        <li key={entityId} className="folder-faceted-data-type">
+        <li className="folder-faceted-data-type" key={entityId}>
             <div className="form-check">
                 <input
                     aria-label={dataType.label}
+                    checked={uncheckedEntities?.indexOf(entityId) < 0}
                     className="form-check-input filter-faceted__checkbox"
-                    type="checkbox"
+                    disabled={disabled}
                     name={'field-value-' + index}
                     onChange={handleChange}
-                    checked={uncheckedEntities?.indexOf(entityId) < 0}
-                    disabled={disabled}
+                    type="checkbox"
                 />
                 <div className="margin-left-more folder-datatype-faceted__value" onClick={handleClick}>
                     {dataType.labelColor && (
@@ -155,14 +155,14 @@ export const DataTypeSelectorList: FC<DataTypeSelectorListProps> = memo(props =>
                         <ul className="nav nav-stacked labkey-wizard-pills">
                             {subList?.map((type, index) => (
                                 <DataTypeSelectorItem
-                                    index={index}
                                     dataType={type}
                                     disabled={disabled}
                                     getUncheckedEntityWarning={getUncheckedEntityWarning}
+                                    index={index}
                                     key={type.rowId ?? type.lsid}
-                                    uncheckedEntities={uncheckedEntities}
                                     onChange={onChange}
                                     showUncheckedWarning={showUncheckedWarning}
+                                    uncheckedEntities={uncheckedEntities}
                                 />
                             ))}
                         </ul>
@@ -233,8 +233,8 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
         if (loading || !dataTypes || dataTypes?.length === 0) return;
 
         const activeDataTypes_: DataTypeEntity[] = [],
-            inactiveDataTypes_: DataTypeEntity[] = [],
-            inactiveDataTypeLsids = [];
+            inactiveDataTypeLsids = [],
+            inactiveDataTypes_: DataTypeEntity[] = [];
         if (isNewEntity) {
             dataTypes?.forEach(dataType => {
                 if (dataType.inactive) {
@@ -360,9 +360,9 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
                 {toggleSelectAll && !disabled && dataTypes?.length > 0 && (
                     <div className="row">
                         <div className="col-xs-12 bottom-padding">
-                            <div className="clickable-text" onClick={onSelectAll}>
+                            <button className="clickable-text" onClick={onSelectAll} type="button">
                                 {allSelected ? 'Deselect All' : 'Select All'}
-                            </div>
+                            </button>
                         </div>
                     </div>
                 )}
@@ -374,9 +374,9 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
                             dataTypes={activeDataTypes}
                             disabled={disabled}
                             getUncheckedEntityWarning={_getUncheckedEntityWarning}
-                            uncheckedEntities={uncheckedEntities}
                             onChange={onChange}
                             showUncheckedWarning={showUncheckedWarning}
+                            uncheckedEntities={uncheckedEntities}
                         />
                     )}
                     {!loading && activeDataTypes?.length === 0 && (
@@ -386,8 +386,8 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
                 {inactiveDataTypes?.length > 0 && (
                     <div className="container-listing-left container-data-type-selector">
                         <ExpandableContainer
-                            isExpandable={true}
                             clause={inactiveSectionHeader}
+                            isExpandable={true}
                             links={null}
                             noIcon={true}
                             useGreyTheme={true}
@@ -397,9 +397,9 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
                                 dataTypes={inactiveDataTypes}
                                 disabled={disabled}
                                 getUncheckedEntityWarning={_getUncheckedEntityWarning}
-                                uncheckedEntities={uncheckedEntities}
                                 onChange={onChange}
                                 showUncheckedWarning={showUncheckedWarning}
+                                uncheckedEntities={uncheckedEntities}
                             />
                         </ExpandableContainer>
                     </div>

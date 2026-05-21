@@ -9,6 +9,7 @@ import { AnnouncementsAPIWrapper, getDefaultAnnouncementsAPIWrapper } from './AP
 import { AnnouncementModel } from './model';
 import { Thread } from './Thread';
 import { ThreadEditor } from './ThreadEditor';
+import { useEnterEscape } from '../../public/useEnterEscape';
 
 interface Props {
     api?: AnnouncementsAPIWrapper;
@@ -67,6 +68,7 @@ export const Discussions: FC<Props> = memo(props => {
     const onShow = useCallback(() => {
         setShowEditor(true);
     }, []);
+    const onShowKeyDown = useEnterEscape(onShow);
 
     const updatePendingThread = useCallback(
         (threadId: number, hasPendingChange: boolean) => {
@@ -101,8 +103,8 @@ export const Discussions: FC<Props> = memo(props => {
                 <Thread
                     api={api}
                     containerPath={containerPath}
-                    discussionSrcIdentifier={discussionSrcIdentifier}
                     discussionSrcEntityType={discussionSrcEntityType}
+                    discussionSrcIdentifier={discussionSrcIdentifier}
                     key={thread.rowId}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
@@ -110,14 +112,14 @@ export const Discussions: FC<Props> = memo(props => {
                     onDelete={loadDiscussions}
                     onUpdate={loadDiscussions}
                     readOnly={readOnly}
+                    setPendingChange={updatePendingThread}
                     thread={thread}
                     user={user}
-                    setPendingChange={updatePendingThread}
                 />
             ))}
 
             {allowCreateThread && !showEditor && (
-                <span className="clickable-text" onClick={onShow}>
+                <span className="clickable-text" onClick={onShow} onKeyDown={onShowKeyDown} tabIndex={0}>
                     <i className="fa fa-comments" />
                     Start a thread
                 </span>
@@ -127,8 +129,8 @@ export const Discussions: FC<Props> = memo(props => {
                 <ThreadEditor
                     api={api}
                     containerPath={containerPath}
-                    discussionSrcIdentifier={discussionSrcIdentifier}
                     discussionSrcEntityType={discussionSrcEntityType}
+                    discussionSrcIdentifier={discussionSrcIdentifier}
                     nounPlural={nounPlural}
                     nounSingular={nounSingular}
                     onCancel={onCancel}

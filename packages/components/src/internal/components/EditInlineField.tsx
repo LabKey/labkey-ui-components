@@ -315,7 +315,7 @@ export const EditInlineField: FC<Props> = memo(props => {
                         className={classNames({ 'edit-inline-field__toggle': allowEdit, 'ws-pre-wrap': isTextArea })}
                         onClick={toggleEdit}
                         onKeyDown={toggleKeyDown}
-                        tabIndex={1}
+                        tabIndex={0}
                     >
                         {allowEdit && pullRight && <i className="fa fa-pencil pull-right" />}
                         {!isUser && displayValue}

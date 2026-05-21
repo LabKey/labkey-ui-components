@@ -4,10 +4,11 @@ import React, {
     memo,
     MouseEvent,
     MouseEventHandler,
-    MutableRefObject,
     PropsWithChildren,
     ReactElement,
     ReactNode,
+    RefCallback,
+    SyntheticEvent,
     useCallback,
     useEffect,
     useMemo,
@@ -20,9 +21,9 @@ import { generateId } from './util/utils';
 import { cancelEvent } from './events';
 import { AppLink } from './url/AppLink';
 import { AppURL } from './url/AppURL';
-import { Icon } from './Icon';
+import { useEnterEscape } from '../public/useEnterEscape';
 
-export type BSStyle = 'success' | 'danger' | 'default' | 'primary' | 'info';
+export type BSStyle = 'danger' | 'default' | 'info' | 'primary' | 'success';
 const DROPDOWN_MENU_CLASS = 'dropdown-menu';
 
 /**
@@ -37,34 +38,40 @@ function handleMenuClick(event: MouseEvent<HTMLUListElement>): void {
     }
 }
 
-interface ToggleState<T> {
-    onClick: (event: MouseEvent<T>) => void;
+interface ToggleState<T extends HTMLElement> {
+    onClick: (event: SyntheticEvent<T>) => void;
     open: boolean;
     setOpen: (show: boolean) => void;
-    toggleRef: MutableRefObject<T>;
+    toggleRef: RefCallback<T>;
 }
 
-function useToggleState<T extends HTMLElement>(): ToggleState<T> {
-    const toggleRef = useRef<T>(undefined);
+function useToggleState<T extends HTMLElement = HTMLElement>(): ToggleState<T> {
+    const nodeRef = useRef<HTMLElement | null>(null);
     const [open, setOpen] = useState<boolean>(false);
-    const onClick = useCallback(event => {
+
+    const toggleRef = useCallback<RefCallback<T>>(node => {
+        nodeRef.current = node;
+    }, []);
+
+    const onClick = useCallback((event: SyntheticEvent<T>) => {
         event.preventDefault(); // Needed so DropdownMenu doesn't navigate to home page on click
         setOpen(o => !o);
     }, []);
 
     // onDocumentClick closes the menu if the user clicks on a MenuItem or outside the menu
-    const onDocumentClick = useCallback(event => {
+    const onDocumentClick = useCallback((event: Event) => {
         // Don't take action if we're clicking the toggle, as that handles open/close on its own
-        const isToggle = event.target === toggleRef.current;
-        const insideToggle = toggleRef.current?.contains(event.target);
-        if (isToggle || insideToggle) return;
+        const node = nodeRef.current;
+        if (!node) return;
+        const target = event.target as Node;
+        if (target === node || node.contains(target)) return;
         setOpen(false);
     }, []);
 
     useEffect(() => {
         // We only want to listen for clicks on the document if the menu is open
         if (open) {
-            // Note: capture: true is very important here. It's needed so that we always handle the event
+            // Note: capture: true is very important here. It's necessary so that we always handle the event
             document.addEventListener('click', onDocumentClick);
         }
 
@@ -90,9 +97,10 @@ interface DropdownMenuProps extends PropsWithChildren {
 export const DropdownMenu: FC<DropdownMenuProps> = props => {
     const { children, label, pullRight, title, asAnchor = true } = props;
     const id = useMemo(() => generateId('dropdown-anchor-'), []);
-    const { onClick, open, toggleRef } = useToggleState<HTMLAnchorElement>();
+    const { onClick, open, toggleRef } = useToggleState();
     const className = classNames('lk-dropdown', 'dropdown', props.className, { open });
     const menuClassName = classNames(DROPDOWN_MENU_CLASS, { 'dropdown-menu-right': pullRight });
+    const onKeyDown = useEnterEscape(onClick);
 
     const elemProps = {
         'aria-haspopup': true,
@@ -100,8 +108,10 @@ export const DropdownMenu: FC<DropdownMenuProps> = props => {
         className: 'dropdown-toggle',
         id,
         onClick,
+        onKeyDown,
         ref: toggleRef,
         role: 'button',
+        tabIndex: 0,
         title: label,
     };
 
@@ -177,7 +187,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
     );
 
     return (
-        <div className={className} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref} >
+        <div className={className} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref}>
             <button
                 aria-expanded={open}
                 aria-haspopup="true"
@@ -247,13 +257,13 @@ export const SplitButton: FC<SplitButtonProps> = memo(props => {
 
     if (href !== undefined) {
         button = (
-            <a href={href} className={buttonClassName}>
+            <a className={buttonClassName} href={href}>
                 {title}
             </a>
         );
     } else {
         button = (
-            <button className={buttonClassName} onClick={onClick} disabled={disabled || buttonDisabled} type="button">
+            <button className={buttonClassName} disabled={disabled || buttonDisabled} onClick={onClick} type="button">
                 {title}
             </button>
         );
@@ -263,8 +273,8 @@ export const SplitButton: FC<SplitButtonProps> = memo(props => {
         <div className={wrapperClassName}>
             {button}
             <button
-                aria-haspopup="true"
                 aria-expanded={open}
+                aria-haspopup="true"
                 className={toggleClassName}
                 disabled={disabled || menuDisabled}
                 id={id}
@@ -275,7 +285,7 @@ export const SplitButton: FC<SplitButtonProps> = memo(props => {
             >
                 <span className="caret no-margin" />
             </button>
-            <ul className={menuClassName} aria-labelledby={id} onClick={handleMenuClick} role="menu">
+            <ul aria-labelledby={id} className={menuClassName} onClick={handleMenuClick} role="menu">
                 {children}
             </ul>
         </div>
@@ -292,7 +302,7 @@ interface MenuHeaderProps {
  * See docs in docs/dropdowns.md
  */
 export const MenuHeader: FC<MenuHeaderProps> = ({ className, text }) => (
-    <li className={classNames('lk-dropdown-header', 'dropdown-header', className)} role="heading" onClick={cancelEvent}>
+    <li className={classNames('lk-dropdown-header', 'dropdown-header', className)} onClick={cancelEvent} role="heading">
         {text}
     </li>
 );
@@ -301,15 +311,16 @@ MenuHeader.displayName = 'MenuHeader';
 /**
  * See docs in docs/dropdowns.md
  */
-export const MenuDivider = (): ReactElement => <li className="divider" role="separator" onClick={cancelEvent} />;
+export const MenuDivider = (): ReactElement => <li className="divider" onClick={cancelEvent} role="separator" />;
 
 export interface MenuItemProps {
     active?: boolean;
     children: ReactNode;
     className?: string;
     disabled?: boolean;
-    href?: string | AppURL;
+    href?: AppURL | string;
     onClick?: () => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLAnchorElement>) => void;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
     rel?: string;
@@ -327,6 +338,7 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
         disabled,
         href = '#',
         onClick,
+        onKeyDown,
         onMouseEnter,
         onMouseLeave,
         rel,
@@ -352,10 +364,11 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
     );
 
     return (
-        <li className={className} role="presentation" ref={ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <li className={className} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref} role="presentation">
             <AppLink
                 aria-label={props['aria-label']}
                 onClick={onClick_}
+                onKeyDown={onKeyDown}
                 rel={rel}
                 role="menuitem"
                 target={target}

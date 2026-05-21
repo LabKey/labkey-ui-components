@@ -123,7 +123,7 @@ describe('ColumnSelectionModal', () => {
             } else {
                 expect(removeIcon).toBeTruthy();
                 const iconParent = removeIcon.parentElement;
-                expect(iconParent.className).toContain('view-field__action clickable');
+                expect(iconParent.className).toContain('clickable-text view-field__action');
                 expect(iconParent.onclick).toBeDefined();
             }
         }

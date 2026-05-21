@@ -52,11 +52,18 @@ $editor-padding-horizontal: 15px;
     .insert-menu__attachment_input {
         cursor: pointer;
         font-weight: normal;
+        position: relative;
         margin: 0;
         width: 100%;
 
         input[type=file] {
-            display: none;
+            cursor: pointer;
+            height: 100%;
+            left: 0;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            width: 100%;
         }
     }
 }
@@ -148,9 +155,21 @@ $editor-padding-horizontal: 15px;
 .thread-editor__attachment-input {
     cursor: pointer;
     margin-left: 15px;
+    position: relative;
 
     input[type=file] {
-        display: none;
+        cursor: pointer;
+        height: 100%;
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+
+    &:has(input[type=file]:focus-visible) {
+        outline: 5px auto -webkit-focus-ring-color;
+        outline-offset: 2px;
     }
 }
 .thread-editor-attachments {

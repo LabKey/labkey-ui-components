@@ -79,6 +79,7 @@ import {
     DOMAIN_FIELD_PARTIALLY_LOCKED,
     DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
     INT_RANGE_URI,
+    MAX_TEXT_LENGTH,
     MULTILINE_RANGE_URI,
     PHILEVEL_FULL_PHI,
     PHILEVEL_LIMITED_PHI,
@@ -89,6 +90,8 @@ import {
     STRING_RANGE_URI,
     TEXT_CHOICE_CONCEPT_URI,
     TIME_RANGE_URI,
+    UNLIMITED_TEXT_LENGTH,
+    USER_RANGE_URI,
 } from './constants';
 
 beforeAll(() => {
@@ -1258,7 +1261,155 @@ describe('DomainField', () => {
         expect(fields.get(2).nonUniqueConstraint).toBe(true); // field c
     });
 
-    // TODO add other test cases for DomainField.serialize code
+    test('serialize, lookup fields nullified for non-lookup types', () => {
+        // lookupQuery is intentionally omitted so resolveDataType detects TEXT_TYPE via rangeURI
+        const textField = DomainField.create({
+            name: 'foo',
+            rangeURI: TEXT_TYPE.rangeURI,
+            lookupContainer: 'myContainer',
+            lookupSchema: 'mySchema',
+        });
+        const serialized = DomainField.serialize(textField);
+        expect(serialized.lookupContainer).toBeNull();
+        expect(serialized.lookupQuery).toBeNull();
+        expect(serialized.lookupSchema).toBeNull();
+    });
+
+    test('serialize, lookup fields preserved for lookup type', () => {
+        // rangeURI is required for resolveDataType to detect the explicit dataType on a new field
+        const field = DomainField.create({
+            name: 'foo',
+            rangeURI: INT_RANGE_URI,
+            dataType: LOOKUP_TYPE,
+            lookupContainer: 'myContainer',
+            lookupQuery: 'myQuery',
+            lookupSchema: 'mySchema',
+        });
+        const serialized = DomainField.serialize(field);
+        expect(serialized.lookupContainer).toBe('myContainer');
+        expect(serialized.lookupQuery).toBe('myQuery');
+        expect(serialized.lookupSchema).toBe('mySchema');
+    });
+
+    test('serialize, lookup fields preserved for sample type', () => {
+        // rangeURI is required for resolveDataType to detect SAMPLE_TYPE via conceptURI on a new field
+        const field = DomainField.create({
+            name: 'foo',
+            rangeURI: SAMPLE_TYPE.rangeURI,
+            conceptURI: SAMPLE_TYPE_CONCEPT_URI,
+            lookupContainer: 'myContainer',
+            lookupQuery: 'myQuery',
+            lookupSchema: 'mySchema',
+        });
+        const serialized = DomainField.serialize(field);
+        expect(serialized.lookupContainer).toBe('myContainer');
+        expect(serialized.lookupQuery).toBe('myQuery');
+        expect(serialized.lookupSchema).toBe('mySchema');
+    });
+
+    test('serialize, undefined lookupContainer becomes null for lookup type', () => {
+        // rangeURI is required for resolveDataType to detect the explicit dataType on a new field
+        const field = DomainField.create({ name: 'foo', rangeURI: INT_RANGE_URI, dataType: LOOKUP_TYPE });
+        const serialized = DomainField.serialize(field);
+        expect(serialized.lookupContainer).toBeNull();
+    });
+
+    test('serialize, isTargetBlank converts to urltarget', () => {
+        const blankField = DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI, isTargetBlank: true });
+        const blankSerialized = DomainField.serialize(blankField);
+        expect(blankSerialized.urltarget).toBe('_blank');
+        expect(blankSerialized.isTargetBlank).toBeUndefined();
+
+        const nonBlankField = DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI, isTargetBlank: false });
+        const nonBlankSerialized = DomainField.serialize(nonBlankField);
+        expect(nonBlankSerialized.urltarget).toBeNull();
+        expect(nonBlankSerialized.isTargetBlank).toBeUndefined();
+    });
+
+    test('serialize, URL and PHI case sensitivity fix', () => {
+        const field = DomainField.create({
+            name: 'foo',
+            rangeURI: TEXT_TYPE.rangeURI,
+            URL: 'https://example.com',
+            PHI: PHILEVEL_LIMITED_PHI,
+        });
+        const serialized = DomainField.serialize(field);
+        expect(serialized.url).toBe('https://example.com');
+        expect(serialized.URL).toBeUndefined();
+        expect(serialized.phi).toBe(PHILEVEL_LIMITED_PHI);
+        expect(serialized.PHI).toBeUndefined();
+    });
+
+    test('serialize, fixCaseSensitivity=false skips URL and PHI rename', () => {
+        const field = DomainField.create({
+            name: 'foo',
+            rangeURI: TEXT_TYPE.rangeURI,
+            URL: 'https://example.com',
+            PHI: PHILEVEL_LIMITED_PHI,
+        });
+        const serialized = DomainField.serialize(field, false);
+        expect(serialized.URL).toBe('https://example.com');
+        expect(serialized.url).toBeUndefined();
+        expect(serialized.PHI).toBe(PHILEVEL_LIMITED_PHI);
+        expect(serialized.phi).toBeUndefined();
+    });
+
+    test('serialize, USER_RANGE_URI rewritten to INT_RANGE_URI', () => {
+        const field = DomainField.create({ name: 'foo', rangeURI: USER_RANGE_URI });
+        const serialized = DomainField.serialize(field);
+        expect(serialized.rangeURI).toBe(INT_RANGE_URI);
+    });
+
+    test('serialize, scale > MAX_TEXT_LENGTH becomes UNLIMITED_TEXT_LENGTH', () => {
+        const overMax = DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI, scale: MAX_TEXT_LENGTH + 1 });
+        expect(DomainField.serialize(overMax).scale).toBe(UNLIMITED_TEXT_LENGTH);
+
+        const atMax = DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI, scale: MAX_TEXT_LENGTH });
+        expect(DomainField.serialize(atMax).scale).toBe(MAX_TEXT_LENGTH);
+    });
+
+    test('serialize, non-serializable fields are removed', () => {
+        const field = DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI });
+        const serialized = DomainField.serialize(field);
+        expect(serialized.dataType).toBeUndefined();
+        expect(serialized.lookupQueryValue).toBeUndefined();
+        expect(serialized.lookupType).toBeUndefined();
+        expect(serialized.original).toBeUndefined();
+        expect(serialized.updatedField).toBeUndefined();
+        expect(serialized.visible).toBeUndefined();
+        expect(serialized.rangeValidators).toBeUndefined();
+        expect(serialized.regexValidators).toBeUndefined();
+        expect(serialized.textChoiceValidator).toBeUndefined();
+        expect(serialized.lookupValidator).toBeUndefined();
+        expect(serialized.disablePhiLevel).toBeUndefined();
+        expect(serialized.lockExistingField).toBeUndefined();
+        expect(serialized.selected).toBeUndefined();
+        expect(serialized.lookupIsValid).toBeUndefined();
+        expect(serialized.uniqueConstraint).toBeUndefined();
+        expect(serialized.nonUniqueConstraint).toBeUndefined();
+    });
+
+    test('serialize, validators collected into propertyValidators', () => {
+        const rangeValidatorData = { type: 'Range', name: 'Range Validator 1', rowId: 1 };
+        const regexValidatorData = { type: 'RegEx', name: 'RegEx Validator 1', rowId: 2 };
+        const lookupValidatorData = { type: 'Lookup', name: 'Lookup Validator', rowId: 3 };
+        const textChoiceValidatorData = {
+            type: 'TextChoice',
+            name: 'Text Choice Validator',
+            rowId: 4,
+            properties: { validValues: [] },
+        };
+        const field = DomainField.create({
+            name: 'foo',
+            rangeURI: TEXT_TYPE.rangeURI,
+            propertyValidators: [rangeValidatorData, regexValidatorData, lookupValidatorData, textChoiceValidatorData],
+        });
+        const serialized = DomainField.serialize(field);
+        expect(serialized.propertyValidators).toHaveLength(4);
+        expect(serialized.propertyValidators.map(v => v.type)).toEqual(
+            expect.arrayContaining(['Range', 'RegEx', 'Lookup', 'TextChoice'])
+        );
+    });
 });
 
 describe('DomainIndex', () => {

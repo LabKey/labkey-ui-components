@@ -65,7 +65,7 @@ describe('TextChoiceOptions', () => {
             }
 
             expect(document.querySelectorAll('.choices-list__locked').length).toBe(inUse);
-            const addBtn = document.querySelector('span.container--action-button');
+            const addBtn = document.querySelector('.container--action-button');
             expect(addBtn.textContent).toBe(' Add Values');
 
             if (validValuesCount > 0 && !hasSelection) {
@@ -91,7 +91,7 @@ describe('TextChoiceOptions', () => {
     test('default props', () => {
         render(<TextChoiceOptionsImpl {...DEFAULT_PROPS} />);
         validate();
-        const addBtn = document.querySelector('span.container--action-button');
+        const addBtn = document.querySelector('.container--action-button');
         expect(addBtn.textContent).toBe(' Add Values');
         expect(addBtn.getAttribute('class').indexOf('disabled')).toBe(-1);
 
@@ -304,7 +304,7 @@ describe('TextChoiceOptions', () => {
     test('AddEntityButton disabled if max reached', () => {
         render(<TextChoiceOptionsImpl {...DEFAULT_PROPS} maxValueCount={2} validValues={['a', 'b']} />);
         validate(false, 2);
-        const addBtn = document.querySelector('span.container--action-button');
+        const addBtn = document.querySelector('.container--action-button');
         expect(addBtn.textContent).toBe(' Add Values');
         expect(addBtn.getAttribute('class')).toContain(' disabled');
     });

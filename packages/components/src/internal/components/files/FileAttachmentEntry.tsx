@@ -9,10 +9,10 @@ interface Props {
 export const FileAttachmentEntry: FC<Props> = memo(props => {
     const { downloadUrl, onDelete, name } = props;
     const onClick = useCallback(() => onDelete(name), [onDelete, name]);
-    const deleteIconClassName = 'fa fa-times-circle attached-file__remove-icon';
+    const deleteIconClassName = 'fa fa-times-circle clickable-text attached-file__remove-icon';
     return (
         <div className="attached-file__container">
-            {onDelete && <span className={deleteIconClassName} onClick={onClick} title="Remove file" />}
+            {onDelete && <button className={deleteIconClassName} onClick={onClick} title="Remove file" type="button" />}
             <span className="fa fa-file-text attached-file__icon" />
             {downloadUrl && (
                 <strong>

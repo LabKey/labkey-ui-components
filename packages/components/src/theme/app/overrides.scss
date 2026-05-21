@@ -28,9 +28,12 @@ body {
   margin: 20px 0;
 }
 
-// Remove :focus browser outline for nav-tabs
-.nav-tabs li a:focus {
+// Remove :focus browser outline for nav-tabs when active
+.nav-tabs li.active a:focus {
   outline: none;
+}
+.nav-tabs li.active a:focus-visible {
+    outline: 5px auto -webkit-focus-ring-color;
 }
 
 // resolve issue 32093

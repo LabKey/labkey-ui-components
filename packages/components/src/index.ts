@@ -850,7 +850,7 @@ import {
     WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
 } from './internal/app/constants';
-import { Key, useEnterEscape } from './public/useEnterEscape';
+import { Key, onEnterKeyDown, useEnterEscape } from './public/useEnterEscape';
 import { DateInput } from './internal/components/DateInput';
 import { EditInlineField } from './internal/components/EditInlineField';
 import { FileAttachmentArea } from './internal/components/files/FileAttachmentArea';
@@ -1575,6 +1575,7 @@ export {
     NOT_IN_EXP_DESCENDANTS_OF_FILTER_TYPE,
     Notifications,
     NotificationsContextProvider,
+    onEnterKeyDown,
     OntologyBrowserFilterPanel,
     OntologyBrowserPage,
     OntologyConceptOverviewPanel,

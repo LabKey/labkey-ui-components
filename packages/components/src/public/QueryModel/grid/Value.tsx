@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 import classNames from 'classnames';
+
+import { useEnterEscape } from '../../useEnterEscape';
 
 import { ActionValue } from './actions/Action';
 
@@ -26,89 +28,82 @@ interface ValueProps {
     onRemove?: (actionValueIndex: number, event: any) => void;
 }
 
-interface ValueState {
-    isActive?: boolean;
-    isDisabled?: boolean;
-}
-
 export const valueClassName = 'filter-status-value';
 
-export class Value extends React.Component<ValueProps, ValueState> {
-    constructor(props: ValueProps) {
-        super(props);
+export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyForDelete, onClick, onRemove }) => {
+    const [isActive, setIsActive] = useState(false);
+    const { action, value, displayValue, isReadOnly, isRemovable } = actionValue;
 
-        this.state = {
-            isActive: false,
-            isDisabled: false,
-        };
-    }
+    const onIconClick = useCallback(
+        (event: React.MouseEvent): void => {
+            event.stopPropagation();
+            event.preventDefault();
+            if (onRemove && isRemovable !== false) {
+                onRemove(index, event);
+            }
+        },
+        [index, isRemovable, onRemove]
+    );
 
-    onClick = (event): void => {
-        // Issue 50449: Expand icon click area to remove filter value
-        const filterBoundBoxClick = event.target.className?.indexOf('filter-status-value') > -1;
-        const boxLeftEdge = event.target.getBoundingClientRect().left;
-        const isIconClick = event.clientX - boxLeftEdge < 30;
-        if (filterBoundBoxClick && isIconClick) {
-            this.onIconClick(event);
-            return;
+    const onValueClick = useCallback(
+        (event: React.MouseEvent<HTMLDivElement>): void => {
+            // Issue 50449: Expand icon click area to remove filter value
+            const target = event.target as HTMLElement;
+            const filterBoundBoxClick = target.className?.indexOf('filter-status-value') > -1;
+            const boxLeftEdge = target.getBoundingClientRect().left;
+            const isIconClick = event.clientX - boxLeftEdge < 30;
+            if (filterBoundBoxClick && isIconClick) {
+                onIconClick(event);
+                return;
+            }
+
+            event.stopPropagation();
+            event.preventDefault();
+            if (onClick && isReadOnly === undefined) {
+                onClick(actionValue, event);
+            }
+        },
+        [actionValue, isReadOnly, onClick, onIconClick]
+    );
+
+    const onValueEnter = useCallback((): void => {
+        if (onClick && isReadOnly === undefined) {
+            onClick(actionValue, undefined);
         }
+    }, [actionValue, isReadOnly, onClick]);
 
-        event.stopPropagation();
-        event.preventDefault();
-        if (this.props.onClick && this.props.actionValue.isReadOnly === undefined) {
-            this.props.onClick(this.props.actionValue, event);
-        }
-    };
+    const onMouseEnter = useCallback((): void => setIsActive(true), []);
+    const onMouseLeave = useCallback((): void => setIsActive(false), []);
+    const onKeyDown = useEnterEscape(onValueEnter);
 
-    onIconClick = (event): void => {
-        event.stopPropagation();
-        event.preventDefault();
-        if (this.props.onRemove && this.props.actionValue.isRemovable !== false) {
-            this.props.onRemove(this.props.index, event);
-        }
-    };
+    const showRemoveIcon = isActive && isRemovable !== false && action.keyword !== 'view';
 
-    onMouseEnter = (): void => {
-        this.setState({
-            isActive: true,
-        });
-    };
+    const className = classNames(valueClassName, {
+        'is-active': isActive,
+        'is-disabled': lockReadOnlyForDelete && isReadOnly,
+        'is-readonly': isReadOnly !== undefined,
+    });
 
-    onMouseLeave = (): void => {
-        this.setState({
-            isActive: false,
-        });
-    };
+    const iconClassNames = classNames(
+        'symbol',
+        'fa',
+        showRemoveIcon ? 'fa-close' : action.iconCls ? 'fa-' + action.iconCls : ''
+    );
 
-    render(): ReactNode {
-        const { actionValue, lockReadOnlyForDelete } = this.props;
-        const { action, value, displayValue, isReadOnly, isRemovable } = actionValue;
-        const showRemoveIcon = this.state.isActive && isRemovable !== false && actionValue.action.keyword !== 'view';
-
-        const className = classNames(valueClassName, {
-            'is-active': this.state.isActive,
-            'is-disabled': this.state.isDisabled || (lockReadOnlyForDelete && isReadOnly),
-            'is-readonly': isReadOnly !== undefined,
-        });
-
-        const iconClassNames = classNames(
-            'symbol',
-            'fa',
-            showRemoveIcon ? 'fa-close' : action.iconCls ? 'fa-' + action.iconCls : ''
-        );
-
-        return (
-            <div
-                className={className}
-                onClick={this.onClick}
-                onMouseEnter={this.onMouseEnter}
-                onMouseLeave={this.onMouseLeave}
-                title={isReadOnly}
-            >
-                {(!lockReadOnlyForDelete || !isReadOnly) && <i className={iconClassNames} onClick={this.onIconClick} />}
-                {isReadOnly ? <i className="read-lock fa fa-lock" /> : null}
-                <span>{displayValue ?? value}</span>
-            </div>
-        );
-    }
-}
+    return (
+        <div
+            className={className}
+            onClick={onValueClick}
+            onKeyDown={onKeyDown}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            tabIndex={0}
+            title={isReadOnly}
+        >
+            {(!lockReadOnlyForDelete || !isReadOnly) && <i className={iconClassNames} onClick={onIconClick} />}
+            {isReadOnly ? <i className="read-lock fa fa-lock" /> : null}
+            <span>{displayValue ?? value}</span>
+        </div>
+    );
+});
+Value.displayName = 'Value';

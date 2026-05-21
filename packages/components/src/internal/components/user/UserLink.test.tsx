@@ -8,7 +8,9 @@ import { UserLink, UserLinkList } from './UserLink';
 
 describe('UserLink', () => {
     test('unknown', () => {
-        const { container } = renderWithAppContext(<UserLink unknown />, { serverContext: { user: TEST_USER_APP_ADMIN } });
+        const { container } = renderWithAppContext(<UserLink unknown />, {
+            serverContext: { user: TEST_USER_APP_ADMIN },
+        });
         expect(container.querySelectorAll('a')).toHaveLength(0);
         expect(container.querySelectorAll('span')).toHaveLength(1);
         expect(container.querySelectorAll('.gray-text')).toHaveLength(1);
@@ -16,10 +18,9 @@ describe('UserLink', () => {
     });
 
     test('displayValue without userId', async () => {
-        const { container } = renderWithAppContext(
-            <UserLink userDisplayValue="Test display" />,
-            { serverContext: { user: TEST_USER_APP_ADMIN } }
-        );
+        const { container } = renderWithAppContext(<UserLink userDisplayValue="Test display" />, {
+            serverContext: { user: TEST_USER_APP_ADMIN },
+        });
         await waitFor(() => {
             expect(container.querySelectorAll('span')).toHaveLength(1);
         });
@@ -30,7 +31,9 @@ describe('UserLink', () => {
     });
 
     test('userId without displayValue', () => {
-        const { container } = renderWithAppContext(<UserLink userId={1} />, { serverContext: { user: TEST_USER_APP_ADMIN } });
+        const { container } = renderWithAppContext(<UserLink userId={1} />, {
+            serverContext: { user: TEST_USER_APP_ADMIN },
+        });
         expect(container.querySelectorAll('a')).toHaveLength(0);
         expect(container.querySelectorAll('span')).toHaveLength(1);
         expect(container.querySelectorAll('.gray-text')).toHaveLength(1);
@@ -38,30 +41,27 @@ describe('UserLink', () => {
     });
 
     test('userId with displayValue', async () => {
-        const { container } = renderWithAppContext(
-            <UserLink userId={1} userDisplayValue="Test display" />,
-            { serverContext: { user: TEST_USER_APP_ADMIN } }
-        );
-        await waitFor(() => {
-            expect(container.querySelectorAll('a')).toHaveLength(1);
+        const { container } = renderWithAppContext(<UserLink userDisplayValue="Test display" userId={1} />, {
+            serverContext: { user: TEST_USER_APP_ADMIN },
         });
-        expect(container.querySelectorAll('a')).toHaveLength(1);
-        expect(container.querySelectorAll('.clickable')).toHaveLength(1);
+        await waitFor(() => {
+            expect(container.querySelectorAll('button')).toHaveLength(1);
+        });
+        expect(container.querySelectorAll('.clickable-text')).toHaveLength(1);
         expect(container.querySelectorAll('span')).toHaveLength(0);
         expect(container.querySelectorAll('.gray-text')).toHaveLength(0);
-        expect(container.querySelector('a').textContent).toBe('Test display');
+        expect(container.querySelector('button').textContent).toBe('Test display');
     });
 
     test('user cannot ReadUserDetails, not self', async () => {
-        const { container } = renderWithAppContext(
-            <UserLink userId={1} userDisplayValue="Test display" />,
-            { serverContext: { user: TEST_USER_READER } }
-        );
+        const { container } = renderWithAppContext(<UserLink userDisplayValue="Test display" userId={1} />, {
+            serverContext: { user: TEST_USER_READER },
+        });
         await waitFor(() => {
             expect(container.querySelectorAll('span')).toHaveLength(1);
         });
         expect(container.querySelectorAll('a')).toHaveLength(0);
-        expect(container.querySelectorAll('.clickable')).toHaveLength(0);
+        expect(container.querySelectorAll('.clickable-text')).toHaveLength(0);
         expect(container.querySelectorAll('span')).toHaveLength(1);
         expect(container.querySelectorAll('.gray-text')).toHaveLength(0);
         expect(container.querySelector('span').textContent).toBe('Test display');
@@ -69,17 +69,16 @@ describe('UserLink', () => {
 
     test('user cannot ReadUserDetails, self', async () => {
         const { container } = renderWithAppContext(
-            <UserLink userId={TEST_USER_READER.id} userDisplayValue="Test display" />,
+            <UserLink userDisplayValue="Test display" userId={TEST_USER_READER.id} />,
             { serverContext: { user: TEST_USER_READER } }
         );
         await waitFor(() => {
-            expect(container.querySelectorAll('a')).toHaveLength(1);
+            expect(container.querySelectorAll('button')).toHaveLength(1);
         });
-        expect(container.querySelectorAll('a')).toHaveLength(1);
-        expect(container.querySelectorAll('.clickable')).toHaveLength(1);
+        expect(container.querySelectorAll('.clickable-text')).toHaveLength(1);
         expect(container.querySelectorAll('span')).toHaveLength(0);
         expect(container.querySelectorAll('.gray-text')).toHaveLength(0);
-        expect(container.querySelector('a').textContent).toBe('Test display');
+        expect(container.querySelector('button').textContent).toBe('Test display');
     });
 });
 

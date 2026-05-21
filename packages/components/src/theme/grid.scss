@@ -274,7 +274,7 @@ $table-cell-padding: 4px 2px;
             background-color: $table-cell-selection-bg-color;
         }
 
-        &.cell-selected {
+        &.cell-selected, &:focus {
             border: $table-cell-selected-border;
             cursor: default;
             outline: none;

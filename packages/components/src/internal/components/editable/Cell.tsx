@@ -161,7 +161,7 @@ const DisplayCell: FC<DisplayCellProps> = memo(props => {
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             ref={targetRef}
-            tabIndex={-1}
+            tabIndex={0}
         >
             {body}
             {show && createPortal(popover, portalEl)}
@@ -355,6 +355,11 @@ export class Cell extends React.PureComponent<CellProps, undefined> {
                 if (focused && !isRecording) {
                     cancelEvent(event);
                     selectCell(colIdx, rowIdx, undefined, true);
+                }
+                // allow escape key as a way to "get out of" the editable grid for keyboard navigation
+                if (selected && !isRecording && !focused) {
+                    cancelEvent(event);
+                    cellActions.clearSelection();
                 }
                 break;
             case KEYS.D:

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import classNames from 'classnames';
 
 import { SVGIcon } from '../base/SVGIcon';
@@ -9,6 +9,29 @@ import { UserLink } from '../user/UserLink';
 
 import { TimelineEventModel, TimelineGroupedEventInfo } from './models';
 import { getEventDataValueDisplay } from './utils';
+import { useEnterEscape } from '../../../public/useEnterEscape';
+
+interface TimelineTimestampProps {
+    event: TimelineEventModel;
+    onSelect: (event: TimelineEventModel) => void;
+}
+
+const TimelineTimestamp: FC<TimelineTimestampProps> = ({ event, onSelect }) => {
+    const onClick = () => {
+        if (event.rowId) onSelect(event);
+    };
+    const onKeyDown = useEnterEscape(onClick);
+    return (
+        <td
+            className="display-light timeline-timestamp-col"
+            key="tl-timestamp-col"
+            onKeyDown={onKeyDown}
+            tabIndex={event.rowId ? 0 : -1}
+        >
+            {getEventDataValueDisplay(event.timestamp)}
+        </td>
+    );
+};
 
 interface Props {
     events: TimelineEventModel[];
@@ -57,19 +80,20 @@ export class TimelineView extends React.Component<Props, any> {
                 } else if (info.firstEvent && event.getRowKey() === info.firstEvent.getRowKey()) isFirstEvent = true;
             });
         }
+        const onClick = () => {
+            if (event.rowId) this.selectEvent(event);
+        };
 
         return (
             <tr
-                key={event.getRowKey()}
-                onClick={() => {
-                    if (event.rowId) this.selectEvent(event);
-                }}
                 className={classNames({
                     'timeline-event-row': event.rowId !== 0,
                     'timeline-row-selected': eventSelected,
                 })}
+                key={event.getRowKey()}
+                onClick={onClick}
             >
-                {this.renderTimestampCol(event.timestamp)}
+                <TimelineTimestamp event={event} onSelect={this.selectEvent} />
                 {this.renderIconCol(
                     event.getIcon(),
                     eventSelected,
@@ -80,14 +104,6 @@ export class TimelineView extends React.Component<Props, any> {
                 )}
                 {this.renderDetailCol(event)}
             </tr>
-        );
-    }
-
-    renderTimestampCol(timestamp) {
-        return (
-            <td key="tl-timestamp-col" className="display-light timeline-timestamp-col">
-                {getEventDataValueDisplay(timestamp)}
-            </td>
         );
     }
 
@@ -103,9 +119,9 @@ export class TimelineView extends React.Component<Props, any> {
 
         const icon = (
             <SVGIcon
-                iconSrc={isSelected ? iconSrc + '_orange' : iconSrc}
-                className="timeline-event-icon"
                 alt={iconSrc ? iconSrc : ''}
+                className="timeline-event-icon"
+                iconSrc={isSelected ? iconSrc + '_orange' : iconSrc}
             />
         );
 
@@ -147,7 +163,7 @@ export class TimelineView extends React.Component<Props, any> {
             line = longVLine;
         }
         return (
-            <td key="tl-icon-col" className="icon-col">
+            <td className="icon-col" key="tl-icon-col">
                 <div>
                     <div className="timeline-line">{line}</div>
                     {icon}
@@ -160,10 +176,7 @@ export class TimelineView extends React.Component<Props, any> {
         if (!comment) return null;
 
         return (
-            <LabelHelpTip
-                iconComponent={<i className="timeline-comments-icon fa fa-comments" />}
-                placement="bottom"
-            >
+            <LabelHelpTip iconComponent={<i className="timeline-comments-icon fa fa-comments" />} placement="bottom">
                 <div className="ws-pre-wrap">{comment}</div>
             </LabelHelpTip>
         );
@@ -194,7 +207,7 @@ export class TimelineView extends React.Component<Props, any> {
         const { summary, user, entity, entitySeparator } = event;
         const comment = event.getComment();
         return (
-            <td key="tl-detail-col" className="detail-col">
+            <td className="detail-col" key="tl-detail-col">
                 <div>
                     {getEventDataValueDisplay(summary)}
                     {entity != null && <span>{entitySeparator ? entitySeparator : ' - '}</span>}
@@ -203,9 +216,9 @@ export class TimelineView extends React.Component<Props, any> {
                 <div>
                     <div className="field-text-nowrap">
                         <UserLink
-                            userId={user?.get('value')}
-                            userDisplayValue={user?.get('displayValue')}
                             unknown={!user}
+                            userDisplayValue={user?.get('displayValue')}
+                            userId={user?.get('value')}
                         />
                     </div>{' '}
                     {this.renderComment(comment)}

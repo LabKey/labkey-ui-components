@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { FC, useCallback } from 'react';
 import classNames from 'classnames';
+import { useEnterEscape } from '../../../public/useEnterEscape';
 
 interface Props {
     cls?: string;
@@ -8,27 +9,32 @@ interface Props {
     expandedTitle: string;
     highlighted?: boolean;
     id: string;
-    onClick: (event) => void;
+    onClick: () => void;
 }
 
-export class FieldExpansionToggle extends React.Component<Props, any> {
-    render() {
-        const { expanded, expandedTitle, collapsedTitle, cls, highlighted, id, onClick } = this.props;
-        const className = classNames('fa fa-lg', {
-            'field-highlighted': highlighted && !expanded,
-            'fa-chevron-down': expanded,
-            'fa-chevron-right': !expanded,
-        });
+export const FieldExpansionToggle: FC<Props> = props => {
+    const { expanded, expandedTitle, collapsedTitle, cls, highlighted, id, onClick } = props;
+    const className = classNames('fa fa-lg', {
+        'field-highlighted': highlighted && !expanded,
+        'fa-chevron-down': expanded,
+        'fa-chevron-right': !expanded,
+    });
+    const onClickHandler = useCallback(() => {
+        onClick();
+    }, [onClick]);
+    const onKeyDown = useEnterEscape(onClickHandler);
 
-        return (
-            <div
-                title={expanded ? expandedTitle : collapsedTitle}
-                className={'field-icon ' + (cls ? cls : '')}
-                id={id}
-                onClick={onClick}
-            >
-                <span className={className} />
-            </div>
-        );
-    }
-}
+    return (
+        <div
+            className={'field-icon ' + (cls ? cls : '')}
+            id={id}
+            onClick={onClickHandler}
+            onKeyDown={onKeyDown}
+            tabIndex={0}
+            title={expanded ? expandedTitle : collapsedTitle}
+        >
+            <span className={className} />
+        </div>
+    );
+};
+FieldExpansionToggle.displayName = 'FieldExpansionToggle';

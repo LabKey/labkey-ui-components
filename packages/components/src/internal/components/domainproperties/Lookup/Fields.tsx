@@ -74,11 +74,11 @@ class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectI
     }
 
     render() {
-        const { context, ariaLabelledBy } = this.props;
+        const { ariaLabelledBy, context, ...rest } = this.props;
         const { containers } = this.state;
 
         return (
-            <select {...this.props} aria-labelledby={ariaLabelledBy} className="form-control">
+            <select {...rest} aria-labelledby={ariaLabelledBy} className="form-control">
                 {context.activeContainer && (
                     <option key="_current" value="">
                         Current {context.activeContainer.type.toLowerCase() === 'project' ? 'Project' : 'Folder'}

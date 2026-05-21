@@ -54,9 +54,9 @@ export const FolderMenuItems: FC<FolderMenuProps> = memo(props => {
                                         'col-xs-10': !user.isAdmin,
                                     })}
                                 >
-                                    <a className="menu-folder-item" onClick={() => onClick(item)}>
+                                    <button className="menu-folder-item" onClick={() => onClick(item)} type="button">
                                         {item.label}
-                                    </a>
+                                    </button>
                                 </div>
                                 <div
                                     className={classNames('col menu-folder-icons', {
@@ -64,7 +64,7 @@ export const FolderMenuItems: FC<FolderMenuProps> = memo(props => {
                                         'col-xs-2': !user.isAdmin,
                                     })}
                                 >
-                                    <AppLink to={dashboardURL} className="dashboard-link">
+                                    <AppLink className="dashboard-link" to={dashboardURL}>
                                         <Tip caption="Dashboard">
                                             <Icon iconClass="fa fa-home dashboard-icon" srText="Dashboard" />
                                         </Tip>
@@ -121,12 +121,12 @@ export const FolderMenu: FC<FolderMenuProps> = memo(props => {
                 {archivedItems?.length > 0 && (
                     <div className="archived-product-menu">
                         <ExpandableContainer
-                            isExpandable
                             clause={archiveSectionHeader}
+                            isExpandable
                             links={null}
                             noIcon
-                            useGreyTheme
                             rowCls=""
+                            useGreyTheme
                         >
                             <FolderMenuItems
                                 activeContainerId={activeContainerId}

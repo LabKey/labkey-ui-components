@@ -12,6 +12,18 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Add `labelId` getter method in `QueryColumn`
   - Add `data-fieldkey` to some labels to help with locators
 
+### version 7.38.0
+*Released*: 21 May 2026
+- Accessibility improvements for app pages: Keyboard Interactions
+  - Make ActionButton a button so it can be tabbed to
+  - Allow tab to app main menu folder items
+  - Modals to have focus on open, allow tab only within modal elements, and ESCAPE to close
+  - Use buttons with clickable-text styling instead of spans and divs with onClick properties
+  - Update `useEnterEscape` to allow optional event argument to callbacks and to allow for multi-select behavior
+  - EditableGrid Cell to allow tab focus with tabIndex 0
+  - Update styling for file inputs on `AttachmentCard` so input field is not hidden
+  - Add `tabIndex` and `onKeyDown` callback for thread components
+
 ### version 7.37.1
 *Released*: 20 May 2026
 - Molecule and PS bulk import by file
@@ -39,7 +51,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Package updates
 
 ### version 7.35.1
-*Released*: 12 May 2026
+*Released*: 7 May 2026
 - Package updates
 
 ### version 7.35.0

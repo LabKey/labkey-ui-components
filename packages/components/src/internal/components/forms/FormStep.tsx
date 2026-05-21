@@ -2,8 +2,10 @@
  * Copyright (c) 2017-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PropsWithChildren, ReactNode } from 'react';
+import React, { FC, PropsWithChildren, ReactNode, useCallback, useContext } from 'react';
 import classNames from 'classnames';
+
+import { useEnterEscape } from '../../../public/useEnterEscape';
 
 interface IFormStepContext {
     currentStep?: number;
@@ -70,65 +72,79 @@ export class FormStep extends React.Component<FormStepProps, any> {
     }
 }
 
+interface FormTabItemProps {
+    active: boolean;
+    disabled: boolean;
+    onTabChange?: (stepIndex?: number) => any;
+    selectStep: (requestedStep?: number) => boolean;
+    step: number;
+    title: string;
+}
+
+const FormTabItem: FC<FormTabItemProps> = ({ active, disabled, onTabChange, selectStep, step, title }) => {
+    const onSelectStep = useCallback(() => {
+        if (selectStep(step) !== false && onTabChange) {
+            onTabChange(step);
+        }
+    }, [onTabChange, selectStep, step]);
+
+    const onKeyDown = useEnterEscape(disabled ? undefined : onSelectStep);
+
+    return (
+        <li
+            className={classNames('list-group-item form-step-tab', { active, disabled })}
+            onClick={disabled ? undefined : onSelectStep}
+            onKeyDown={onKeyDown}
+            tabIndex={disabled ? undefined : 0}
+        >
+            {title}
+        </li>
+    );
+};
+FormTabItem.displayName = 'FormTabItem';
+
 interface FormTabsProps {
     onTabChange?: (stepIndex?: number) => any;
     tabs: string[];
 }
 
-export class FormTabs extends React.Component<FormTabsProps, any> {
-    render() {
-        const { onTabChange, tabs } = this.props;
+export const FormTabs: FC<FormTabsProps> = ({ onTabChange, tabs }) => {
+    const context = useContext(FormStepContext);
+    if (!context) return null;
+    const { currentStep, furthestStep, hasDependentSteps, selectStep } = context;
 
-        return (
-            <FormStepContextConsumer>
-                {(context: IFormStepContext) => {
-                    if (!context) return null;
-                    const { currentStep, furthestStep, hasDependentSteps, selectStep } = context;
+    return (
+        <div className="row">
+            <div className="col-sm-12">
+                <ul className="list-group clearfix" style={{ listStyle: 'none' }}>
+                    {tabs.map((title, i) => {
+                        const step = i + 1;
+                        const disabled =
+                            furthestStep === undefined
+                                ? true
+                                : hasDependentSteps
+                                  ? step > currentStep
+                                  : furthestStep < step;
 
-                    return (
-                        <div className="row">
-                            <div className="col-sm-12">
-                                <ul className="list-group clearfix" style={{ listStyle: 'none' }}>
-                                    {tabs.map((title, i) => {
-                                        const step = i + 1;
-                                        const disabled =
-                                            furthestStep === undefined
-                                                ? true
-                                                : hasDependentSteps
-                                                ? step > currentStep
-                                                : furthestStep < step;
-
-                                        return (
-                                            <li
-                                                className={classNames('list-group-item form-step-tab', {
-                                                    active: currentStep === step,
-                                                    disabled,
-                                                })}
-                                                key={step}
-                                                onClick={
-                                                    disabled
-                                                        ? undefined
-                                                        : () => {
-                                                              if (selectStep(step) !== false && onTabChange) {
-                                                                  onTabChange(step);
-                                                              }
-                                                          }
-                                                }
-                                            >
-                                                {title}
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
-                                <div className="clearfix" />
-                            </div>
-                        </div>
-                    );
-                }}
-            </FormStepContextConsumer>
-        );
-    }
-}
+                        return (
+                            <FormTabItem
+                                active={currentStep === step}
+                                disabled={disabled}
+                                key={step}
+                                onTabChange={onTabChange}
+                                selectStep={selectStep}
+                                step={step}
+                                title={title}
+                            />
+                        );
+                    })}
+                </ul>
+                <div className="clearfix" />
+            </div>
+        </div>
+    );
+};
+FormTabs.displayName = 'FormTabs';
 
 export interface WithFormStepsState {
     currentStep?: number;
@@ -152,8 +168,8 @@ export const withFormSteps = (Component: any, defaultState?: WithFormStepsState)
                 currentStep: props.initialStep
                     ? props.initialStep
                     : defaultState && defaultState.currentStep !== undefined
-                    ? defaultState.currentStep
-                    : 1,
+                      ? defaultState.currentStep
+                      : 1,
                 furthestStep: defaultState && defaultState.furthestStep !== undefined ? defaultState.furthestStep : 1,
                 hasDependentSteps:
                     defaultState && defaultState.hasDependentSteps !== undefined

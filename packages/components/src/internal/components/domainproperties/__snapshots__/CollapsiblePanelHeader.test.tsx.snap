@@ -5,6 +5,8 @@ exports[`<CollapsiblePanelHeader/> custom properties 1`] = `
   <div
     class="domain-panel-header panel-heading domain-heading-collapsible domain-panel-header-collapsed"
     id="test-id"
+    role="button"
+    tabindex="0"
   >
     <span
       class="domain-panel-status-icon domain-panel-status-icon-green"
@@ -39,6 +41,8 @@ exports[`<CollapsiblePanelHeader/> default properties 1`] = `
   <div
     class="domain-panel-header panel-heading domain-heading-collapsible domain-panel-header-collapsed"
     id="test-id"
+    role="button"
+    tabindex="0"
   >
     <h2
       class="domain-panel-title"
@@ -61,6 +65,8 @@ exports[`<CollapsiblePanelHeader/> invalid, iconHelpMsg, and expanded 1`] = `
   <div
     class="domain-panel-header panel-heading domain-heading-collapsible domain-panel-header-expanded domain-panel-header-no-theme"
     id="test-id"
+    role="button"
+    tabindex="0"
   >
     <span
       class="domain-panel-status-icon"
@@ -90,6 +96,8 @@ exports[`<CollapsiblePanelHeader/> not collapsible 1`] = `
   <div
     class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
     id="test-id"
+    role="button"
+    tabindex="0"
   >
     <h2
       class="domain-panel-title"
@@ -105,6 +113,8 @@ exports[`<CollapsiblePanelHeader/> not controlledCollapse 1`] = `
   <div
     class="domain-panel-header panel-heading domain-panel-header-collapsed"
     id="test-id"
+    role="button"
+    tabindex="0"
   >
     <span
       class="domain-panel-status-icon domain-panel-status-icon-green"
@@ -127,6 +137,8 @@ exports[`<CollapsiblePanelHeader/> panelStatus TODO and help tip 1`] = `
   <div
     class="domain-panel-header panel-heading domain-heading-collapsible domain-panel-header-collapsed"
     id="test-id"
+    role="button"
+    tabindex="0"
   >
     <div
       class="overlay-trigger"

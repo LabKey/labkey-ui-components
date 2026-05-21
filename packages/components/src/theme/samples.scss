@@ -59,6 +59,10 @@
 
 .entity-insert--remove-parent {
     padding-top: 7px;
+
+    button {
+        color: $text-color-light;
+    }
 }
 
 .container--removal-icon:hover {

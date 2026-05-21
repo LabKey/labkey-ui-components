@@ -11,6 +11,8 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
         <div
           class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="sample-type-properties-hdr"
+          role="button"
+          tabindex="0"
         >
           <h2
             class="domain-panel-title"
@@ -185,15 +187,16 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
                   class="form-group"
                 >
                   <div>
-                    <span
+                    <button
                       class="container--action-button btn btn-default disabled"
+                      type="button"
                     >
                       <i
                         class="fa fa-plus-circle container--addition-icon"
                       />
                        Add 
                       a undefined
-                    </span>
+                    </button>
                   </div>
                 </div>
               </span>
@@ -293,6 +296,8 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
       <div
         class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="sample-type-properties-hdr"
+        role="button"
+        tabindex="0"
       >
         <h2
           class="domain-panel-title"
@@ -467,15 +472,16 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
                 class="form-group"
               >
                 <div>
-                  <span
+                  <button
                     class="container--action-button btn btn-default disabled"
+                    type="button"
                   >
                     <i
                       class="fa fa-plus-circle container--addition-icon"
                     />
                      Add 
                     a undefined
-                  </span>
+                  </button>
                 </div>
               </div>
             </span>
@@ -617,6 +623,8 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
         <div
           class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="sample-type-properties-hdr"
+          role="button"
+          tabindex="0"
         >
           <h2
             class="domain-panel-title"
@@ -786,15 +794,16 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
                   class="form-group"
                 >
                   <div>
-                    <span
+                    <button
                       class="container--action-button btn btn-default disabled"
+                      type="button"
                     >
                       <i
                         class="fa fa-plus-circle container--addition-icon"
                       />
                        Add 
                       a undefined
-                    </span>
+                    </button>
                   </div>
                 </div>
               </span>
@@ -831,6 +840,8 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
       <div
         class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="sample-type-properties-hdr"
+        role="button"
+        tabindex="0"
       >
         <h2
           class="domain-panel-title"
@@ -1000,15 +1011,16 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
                 class="form-group"
               >
                 <div>
-                  <span
+                  <button
                     class="container--action-button btn btn-default disabled"
+                    type="button"
                   >
                     <i
                       class="fa fa-plus-circle container--addition-icon"
                     />
                      Add 
                     a undefined
-                  </span>
+                  </button>
                 </div>
               </div>
             </span>
@@ -1092,6 +1104,8 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
         <div
           class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
           id="sample-type-properties-hdr"
+          role="button"
+          tabindex="0"
         >
           <h2
             class="domain-panel-title"
@@ -1261,15 +1275,16 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
                   class="form-group"
                 >
                   <div>
-                    <span
+                    <button
                       class="container--action-button btn btn-default disabled"
+                      type="button"
                     >
                       <i
                         class="fa fa-plus-circle container--addition-icon"
                       />
                        Add 
                       a undefined
-                    </span>
+                    </button>
                   </div>
                 </div>
               </span>
@@ -1289,15 +1304,16 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
                   class="form-group"
                 >
                   <div>
-                    <span
+                    <button
                       class="container--action-button btn btn-default disabled"
+                      type="button"
                     >
                       <i
                         class="fa fa-plus-circle container--addition-icon"
                       />
                        Add 
                       a undefined
-                    </span>
+                    </button>
                   </div>
                 </div>
               </span>
@@ -1334,6 +1350,8 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
       <div
         class="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
         id="sample-type-properties-hdr"
+        role="button"
+        tabindex="0"
       >
         <h2
           class="domain-panel-title"
@@ -1503,15 +1521,16 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
                 class="form-group"
               >
                 <div>
-                  <span
+                  <button
                     class="container--action-button btn btn-default disabled"
+                    type="button"
                   >
                     <i
                       class="fa fa-plus-circle container--addition-icon"
                     />
                      Add 
                     a undefined
-                  </span>
+                  </button>
                 </div>
               </div>
             </span>
@@ -1531,15 +1550,16 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
                 class="form-group"
               >
                 <div>
-                  <span
+                  <button
                     class="container--action-button btn btn-default disabled"
+                    type="button"
                   >
                     <i
                       class="fa fa-plus-circle container--addition-icon"
                     />
                      Add 
                     a undefined
-                  </span>
+                  </button>
                 </div>
               </div>
             </span>

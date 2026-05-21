@@ -269,7 +269,12 @@ $circle-size: 12 * $scale;
     }
 
     & .action-icon {
-        padding-right: 10px;
+        padding-right: 4px;
+        color: $white;
+
+        &:hover {
+            color: $white;
+        }
     }
 }
 

@@ -12,7 +12,11 @@ export function getActionErrorMessage(problemStatement: string, noun: string, sh
             &nbsp;Your session may have expired or the {noun} may no longer be valid.
             {showRefresh && (
                 <>
-                    &nbsp;Try <a onClick={() => window.location.reload()}>refreshing the page</a>.
+                    &nbsp;Try{' '}
+                    <button className="clickable-text" onClick={() => window.location.reload()} type="button">
+                        refreshing the page
+                    </button>
+                    .
                 </>
             )}
         </span>
@@ -212,7 +216,8 @@ export function resolveErrorMessage(
             return noun + ' cannot be blank.';
         } else if (noun === 'job' && errorMsg.indexOf('when it contains rows with blank values') > -1) {
             return errorMsg.replace('it contains rows with blank values', 'there are already jobs using this template');
-        } else if (errorMsg.indexOf('found for field SampleState')) { // GH Issue 613
+        } else if (errorMsg.indexOf('found for field SampleState')) {
+            // GH Issue 613
             return errorMsg.replace('SampleState', 'Status');
         }
     }

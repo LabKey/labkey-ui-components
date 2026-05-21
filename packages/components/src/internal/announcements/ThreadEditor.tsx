@@ -16,14 +16,14 @@ import { handleFileInputChange } from '../util/utils';
 import { isLoading, LoadingState } from '../../public/LoadingState';
 import { resolveErrorMessage } from '../util/messaging';
 import { LoadingSpinner } from '../components/base/LoadingSpinner';
-import { Key } from '../../public/useEnterEscape';
+import { Key, useEnterEscape } from '../../public/useEnterEscape';
 
 import { DropdownMenu, MenuItem } from '../dropdowns';
 
 import { AnnouncementsAPIWrapper } from './APIWrapper';
 
 import { RemoveAttachmentModal, ThreadAttachments } from './ThreadAttachments';
-import { Attachment, AnnouncementModel } from './model';
+import { AnnouncementModel, Attachment } from './model';
 
 // Check if a line starts with any spaces, a number, followed by a period and a space.
 const orderedBulletRe = /^\s*\d+. /;
@@ -439,6 +439,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         onCancel?.();
         handlePendingChange();
     }, [thread?.rowId, onCancel, handlePendingChange]);
+    const onCancelKeyDown = useEnterEscape(handleCancel);
 
     const onSubmit = useCallback(() => {
         if (submitting) return;
@@ -501,16 +502,16 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
 
             <ThreadAttachments
                 attachments={attachments}
+                containerPath={containerPath}
                 error={attachmentError}
                 onRemove={openRemoveModal}
-                containerPath={containerPath}
             />
 
             <button
-                type="button"
                 className="btn btn-default thread-editor__create-btn"
                 disabled={submitDisabled}
                 onClick={onSubmit}
+                type="button"
             >
                 {isCreate ? `Add ${nounSingular}` : 'Save Changes'}
             </button>
@@ -518,10 +519,15 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
             <label className="thread-editor__attachment-input btn btn-default">
                 <span className="fa fa-paperclip" />
                 <span className="sr-only">Attach files</span>
-                <input multiple onChange={onFileInputChange} type="file" />
+                <input multiple onChange={onFileInputChange} tabIndex={0} type="file" />
             </label>
 
-            <span className="clickable-text thread-editor__cancel-btn" onClick={handleCancel}>
+            <span
+                className="clickable-text thread-editor__cancel-btn"
+                onClick={handleCancel}
+                onKeyDown={onCancelKeyDown}
+                tabIndex={0}
+            >
                 Cancel
             </span>
 

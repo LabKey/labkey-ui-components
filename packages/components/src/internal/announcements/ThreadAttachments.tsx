@@ -4,6 +4,7 @@ import { Alert } from '../components/base/Alert';
 import { Modal } from '../Modal';
 
 import { Attachment, getAttachmentURL } from './model';
+import { useEnterEscape } from '../../public/useEnterEscape';
 
 interface ThreadAttachmentProps {
     attachment: Attachment;
@@ -13,6 +14,7 @@ interface ThreadAttachmentProps {
 
 const ThreadAttachment: FC<ThreadAttachmentProps> = memo(({ attachment, containerPath, onRemove }) => {
     const _onRemove = useCallback(() => onRemove(attachment.name), [attachment, onRemove]);
+    const onRemoveKeyDown = useEnterEscape(_onRemove);
     // Only generate a URL if the file has been uploaded.
     const url = attachment.created !== undefined ? getAttachmentURL(attachment, containerPath) : undefined;
 
@@ -22,6 +24,8 @@ const ThreadAttachment: FC<ThreadAttachmentProps> = memo(({ attachment, containe
                 <span
                     className="fa fa-times-circle thread-attachment-icon thread-attachment-icon--remove"
                     onClick={_onRemove}
+                    onKeyDown={onRemoveKeyDown}
+                    tabIndex={0}
                 />
             )}
 
@@ -30,7 +34,7 @@ const ThreadAttachment: FC<ThreadAttachmentProps> = memo(({ attachment, containe
             {url === undefined && <span>{attachment.name}</span>}
 
             {url !== undefined && (
-                <a href={url} target="_blank" rel="noopener noreferrer">
+                <a href={url} rel="noopener noreferrer" target="_blank">
                     {attachment.name}
                 </a>
             )}
@@ -54,10 +58,10 @@ export const ThreadAttachments: FC<ThreadAttachmentsProps> = memo(({ attachments
             <div className="thread-editor-attachments__list">
                 {attachments.map(attachment => (
                     <ThreadAttachment
-                        key={attachment.name}
                         attachment={attachment}
-                        onRemove={onRemove}
                         containerPath={containerPath}
+                        key={attachment.name}
+                        onRemove={onRemove}
                     />
                 ))}
             </div>

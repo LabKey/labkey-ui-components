@@ -1,4 +1,4 @@
-import { useCallback, KeyboardEvent } from 'react';
+import { KeyboardEventHandler, useCallback } from 'react';
 
 /**
  * Enumeration of values for the KeyboardEvent.key
@@ -17,34 +17,52 @@ export enum Key {
     TAB = 'Tab',
 }
 
-type KeyHandler = (evt: KeyboardEvent) => void;
-
 /**
- * React hook useful for when you want to intercept enter and escape keys (e.g. for a text input where enter is save
- * and escape is cancel). Pass the result of this hook to the onKeyDown prop of an <input /> element.
- * @param onEnter: function to call when the enter key is pressed.
- * @param onEscape: function to call when the escape key is pressed.
+ * React hook for when you want to intercept Enter and Escape keys (e.g., for a text input where Enter is to save
+ * and Escape is to cancel). Pass the result of this hook to the onKeyDown prop of an <input /> element.
+ * @param onEnter function to call when the Enter key is pressed.
+ * @param onEscape function to call when the Escape key is pressed.
+ * @param allowMultiSelect When false, if the shift-key or meta-key are pressed skip processing key event. Default is false.
  */
-export const useEnterEscape = (onEnter?: () => void, onEscape?: () => void): any => {
-    return useCallback(
-        (evt: KeyboardEvent) => {
-            if (evt.shiftKey || evt.metaKey) return;
+export function useEnterEscape<E = Element>(
+    onEnter?: KeyboardEventHandler<E>,
+    onEscape?: KeyboardEventHandler<E>,
+    allowMultiSelect?: boolean
+) {
+    return useCallback<KeyboardEventHandler<E>>(
+        evt => {
+            if (!allowMultiSelect && (evt.shiftKey || evt.metaKey)) return;
 
             switch (evt.key) {
                 case Key.ENTER:
                     evt.stopPropagation();
                     evt.preventDefault();
-                    onEnter?.();
+                    onEnter?.(evt);
                     break;
                 case Key.ESCAPE:
                     evt.stopPropagation();
                     evt.preventDefault();
-                    onEscape?.();
+                    onEscape?.(evt);
                     break;
                 default:
                     break;
             }
         },
-        [onEnter, onEscape]
+        [allowMultiSelect, onEnter, onEscape]
     );
-};
+}
+
+// For use with PureComponents that can't use the above hook
+export function onEnterKeyDown<E = Element>(onEnter: KeyboardEventHandler<E>): KeyboardEventHandler<E> {
+    return evt => {
+        if (evt.shiftKey || evt.metaKey) return;
+
+        switch (evt.key) {
+            case Key.ENTER:
+                evt.stopPropagation();
+                evt.preventDefault();
+                onEnter?.(evt);
+                break;
+        }
+    };
+}

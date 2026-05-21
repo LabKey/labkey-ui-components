@@ -67,10 +67,10 @@ export const ToggleButtons: FC<Props> = memo(props => {
                 })}
                 id={id}
             >
-                <button type="button" className={firstCls} onClick={firstBtnClick} disabled={disabled}>
+                <button className={firstCls} disabled={disabled} onClick={firstBtnClick} type="button">
                     {first}
                 </button>
-                <button type="button" className={secondCls} onClick={secondBtnClick} disabled={disabled}>
+                <button className={secondCls} disabled={disabled} onClick={secondBtnClick} type="button">
                     {second}
                 </button>
             </div>
@@ -104,8 +104,12 @@ export const ToggleIcon: FC<Props> = memo(props => {
 
     const body = (
         <>
-            {firstActive && <i className="fa fa-toggle-on" onClick={secondBtnClick} />}
-            {secondActive && <i className="fa fa-toggle-off" onClick={firstBtnClick} />}
+            {firstActive && (
+                <button className="clickable-text fa fa-toggle-on" onClick={secondBtnClick} type="button" />
+            )}
+            {secondActive && (
+                <button className="clickable-text fa fa-toggle-off" onClick={firstBtnClick} type="button" />
+            )}
         </>
     );
 

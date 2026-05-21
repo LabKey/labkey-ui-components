@@ -1,14 +1,19 @@
-import React, { FC, memo, PropsWithChildren, ReactNode, useEffect } from 'react';
+import React, { FC, memo, PropsWithChildren, ReactNode, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 import classNames from 'classnames';
 
 import { usePortalRef } from './hooks';
 import { ModalButtons, ModalButtonsProps } from './ModalButtons';
+import { Key } from '../public/useEnterEscape';
+
+const FOCUSABLE_SELECTORS =
+    'a, button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 interface BaseModalProps extends PropsWithChildren {
     bsSize?: 'lg' | 'sm';
     className?: string;
+    onCancel?: () => void;
 }
 
 /**
@@ -16,8 +21,9 @@ interface BaseModalProps extends PropsWithChildren {
  * component, instead you should probably be using Modal, which has a bunch of props to make it easier to render a
  * typical modal with save/close buttons and the appropriate logic for those buttons.
  */
-export const BaseModal: FC<BaseModalProps> = ({ bsSize, children, className }) => {
+export const BaseModal: FC<BaseModalProps> = ({ bsSize, children, className, onCancel }) => {
     const portalRef = usePortalRef('modal');
+    const modalRef = useRef<HTMLDivElement>(null);
     const className_ = classNames('modal-dialog', className, {
         'modal-sm': bsSize === 'sm',
         'modal-lg': bsSize === 'lg',
@@ -31,13 +37,46 @@ export const BaseModal: FC<BaseModalProps> = ({ bsSize, children, className }) =
         };
     }, []);
 
+    useEffect(() => {
+        // Focus the modal on open so keyboard navigation starts within it rather than behind it
+        modalRef.current?.focus();
+    }, []);
+
+    useEffect(() => {
+        // Trap focus within the modal so Tab/Shift+Tab cycle only through modal elements,
+        // and close the modal on Escape
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === Key.ESCAPE) {
+                onCancel?.();
+            } else if (e.key === Key.TAB) {
+                const focusable = Array.from(
+                    modalRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS) ?? []
+                );
+                if (!focusable.length) return;
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        };
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [onCancel]);
+
     const modal = (
         <div className="modal-wrapper">
             <div className="fade in modal-backdrop" />
 
             <div className="lk-modal modal">
                 <div className={className_}>
-                    <div className="modal-content">{children}</div>
+                    <div className="modal-content" ref={modalRef} tabIndex={-1}>
+                        {children}
+                    </div>
                 </div>
             </div>
         </div>
@@ -111,7 +150,7 @@ export const Modal: FC<ModalProps> = memo(props => {
     } = props;
     const showHeader = !!(onCancel || title);
     return (
-        <BaseModal bsSize={bsSize} className={className}>
+        <BaseModal bsSize={bsSize} className={className} onCancel={onCancel}>
             {showHeader && !header && <ModalHeader onCancel={onCancel} title={title} />}
             {header}
 

@@ -458,7 +458,7 @@ describe('DomainForm', () => {
         expect(document.getElementsByClassName('domain-form-manual-btn')).toHaveLength(1);
         expect(document.getElementsByClassName('domain-field-row')).toHaveLength(0);
         await act(async () => {
-            await userEvent.click(document.querySelector('.domain-form-manual-btn>span'));
+            await userEvent.click(document.querySelector('.domain-form-manual-btn>button'));
         });
         expect(document.getElementsByClassName('translator--toggle__wizard')).toHaveLength(0);
         expect(document.getElementsByClassName('domain-form-manual-btn')).toHaveLength(0);

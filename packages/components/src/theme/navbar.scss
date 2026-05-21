@@ -131,14 +131,23 @@
     border: none;
     background-color: transparent;
     box-shadow: none;
+    border-radius: 2px;
 
-    &:focus,
+    &:focus {
+        background-color: transparent !important;
+    }
+    &:focus-visible {
+        outline: 1px solid $white;
+        outline-offset: 2px;
+    }
+
     &:active,
     &:hover,
     &:hover:active {
         box-shadow: none;
         border: none;
         background-color: transparent;
+        outline: none;
     }
 }
 
@@ -169,6 +178,19 @@
       border-radius: 4px 0 0 4px;
       padding-left: 8px;
 
+      .menu-folder-item {
+          background: none;
+          border: none;
+          color: $link-color;
+          padding: 0;
+          text-align: left;
+          width: 100%;
+
+          &:hover {
+              color: $link-hover-color;
+          }
+      }
+
       li:hover {
           background-color: $gray-lighter;
           border-radius: 4px 0 0 4px;
@@ -182,7 +204,7 @@
               background-color: $white;
           }
 
-          a {
+          a, .menu-folder-item {
               color: $text-color;
 
               &:focus, &:hover {
@@ -291,7 +313,9 @@
     }
 
     .menu-section-header:hover .menu-folder-icons,
-    .menu-section-item:hover .menu-folder-icons {
+    .menu-section-header.active .menu-folder-icons,
+    .menu-section-item:hover .menu-folder-icons,
+    .menu-section-item.active .menu-folder-icons {
         display: inline-block;
     }
   }
@@ -529,6 +553,10 @@
 
         &.active > a {
           border-bottom: 3px solid $brand-secondary;
+
+          &:focus:not(:focus-visible) {
+              outline: none;
+          }
         }
       }
     }
@@ -573,6 +601,11 @@
 
     & .caret {
         color: $white;
+    }
+
+    a:focus-visible {
+        outline: 1px solid $white;
+        outline-offset: 2px;
     }
 }
 

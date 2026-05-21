@@ -264,11 +264,11 @@ describe('SampleStatusDetail', () => {
         expect(selectInput).toHaveTextContent(STATE.stateType);
         expect(selectInput.getAttribute('class')).not.toContain('select-input__single-value--is-disabled');
         const buttons = document.querySelectorAll('button');
-        expect(buttons).toHaveLength(3);
-        expect(buttons.item(1).textContent).toContain('Delete');
-        expect(buttons.item(1).getAttribute('disabled')).toBeFalsy();
-        expect(buttons.item(2)).toHaveTextContent('Save');
-        expect(buttons.item(2).getAttribute('disabled')).not.toBeNull(); // save initially disabled
+        expect(buttons).toHaveLength(4);
+        expect(buttons.item(2).textContent).toContain('Delete');
+        expect(buttons.item(2).getAttribute('disabled')).toBeFalsy();
+        expect(buttons.item(3)).toHaveTextContent('Save');
+        expect(buttons.item(3).getAttribute('disabled')).not.toBeNull(); // save initially disabled
     });
 
     test('in use disabled', async () => {
@@ -295,11 +295,11 @@ describe('SampleStatusDetail', () => {
         const selectInput = document.querySelector('.select-input__single-value');
         expect(selectInput.getAttribute('class')).toContain('select-input__single-value--is-disabled');
         const buttons = document.querySelectorAll('button');
-        expect(buttons).toHaveLength(3);
-        expect(buttons.item(1).textContent).toContain('Delete');
-        expect(buttons.item(1).getAttribute('disabled')).not.toBeNull(); // delete disabled
-        expect(buttons.item(2)).toHaveTextContent('Save');
-        expect(buttons.item(2).getAttribute('disabled')).not.toBeNull(); // save initially disabled
+        expect(buttons).toHaveLength(4);
+        expect(buttons.item(2).textContent).toContain('Delete');
+        expect(buttons.item(2).getAttribute('disabled')).not.toBeNull(); // delete disabled
+        expect(buttons.item(3)).toHaveTextContent('Save');
+        expect(buttons.item(3).getAttribute('disabled')).not.toBeNull(); // save initially disabled
     });
 
     test('not local, disabled', async () => {

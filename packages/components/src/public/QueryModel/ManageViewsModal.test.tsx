@@ -161,13 +161,10 @@ describe('ViewLabel', () => {
 
 describe('ManageViewsModal', () => {
     test('no views', async () => {
-        renderWithAppContext(
-            <ManageViewsModal onDone={jest.fn()} currentView={null} schemaQuery={null} />,
-            {
-                appContext: { api: getQueryAPI([]) },
-                serverContext: { user: TEST_USER_READER },
-            }
-        );
+        renderWithAppContext(<ManageViewsModal currentView={null} onDone={jest.fn()} schemaQuery={null} />, {
+            appContext: { api: getQueryAPI([]) },
+            serverContext: { user: TEST_USER_READER },
+        });
 
         expect(document.querySelector('.fa-spinner')).not.toBeNull();
         await waitFor(() => {
@@ -179,13 +176,10 @@ describe('ManageViewsModal', () => {
     });
 
     test('multiple saved views: default, named, shared and session view', async () => {
-        renderWithAppContext(
-            <ManageViewsModal onDone={jest.fn()} currentView={null} schemaQuery={null} />,
-            {
-                appContext: { api: getQueryAPI([SHARED_DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]) },
-                serverContext: { user: TEST_USER_PROJECT_ADMIN },
-            }
-        );
+        renderWithAppContext(<ManageViewsModal currentView={null} onDone={jest.fn()} schemaQuery={null} />, {
+            appContext: { api: getQueryAPI([SHARED_DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]) },
+            serverContext: { user: TEST_USER_PROJECT_ADMIN },
+        });
 
         expect(document.querySelector('.fa-spinner')).not.toBeNull();
         await waitFor(() => {
@@ -206,7 +200,7 @@ describe('ManageViewsModal', () => {
         expect(rows[1].querySelector('.col-xs-8').textContent.trim()).toBe('View 1');
         expect(rows[1].querySelectorAll('.fa-pencil')).toHaveLength(1);
         expect(rows[1].querySelectorAll('.fa-trash-o')).toHaveLength(1);
-        expect(rows[1].querySelectorAll('.clickable-text')).toHaveLength(1);
+        expect(rows[1].querySelectorAll('.clickable-text')).toHaveLength(3);
         expect(rows[1].querySelector('.clickable-text').textContent).toBe('Make default');
 
         expect(rows[2].querySelector('.col-xs-8').textContent.trim()).toBe('View 2 (edited)');
@@ -219,22 +213,19 @@ describe('ManageViewsModal', () => {
         expect(rows[3].querySelectorAll('.fa-pencil')).toHaveLength(1);
         expect(rows[3].querySelectorAll('.fa-trash-o')).toHaveLength(1);
         expect(rows[0].querySelectorAll('.gray-text')).toHaveLength(0);
-        expect(rows[3].querySelectorAll('.clickable-text')).toHaveLength(1);
+        expect(rows[3].querySelectorAll('.clickable-text')).toHaveLength(3);
         expect(rows[3].querySelector('.clickable-text').textContent).toBe('Make default');
 
         expect(document.querySelector('button.btn-default').textContent).toEqual('Done');
     });
 
     test('system default view', async () => {
-        renderWithAppContext(
-            <ManageViewsModal onDone={jest.fn()} currentView={null} schemaQuery={null} />,
-            {
-                appContext: {
-                    api: getQueryAPI([SYSTEM_DEFAULT_VIEW, SYSTEM_DETAIL_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]),
-                },
-                serverContext: { user: TEST_USER_PROJECT_ADMIN },
-            }
-        );
+        renderWithAppContext(<ManageViewsModal currentView={null} onDone={jest.fn()} schemaQuery={null} />, {
+            appContext: {
+                api: getQueryAPI([SYSTEM_DEFAULT_VIEW, SYSTEM_DETAIL_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]),
+            },
+            serverContext: { user: TEST_USER_PROJECT_ADMIN },
+        });
         await waitFor(() => {
             expect(document.querySelectorAll('.row.small-margin-bottom')).toHaveLength(4);
         });
@@ -251,13 +242,10 @@ describe('ManageViewsModal', () => {
     });
 
     test('multiple saved views: no admin permission', async () => {
-        renderWithAppContext(
-            <ManageViewsModal onDone={jest.fn()} currentView={null} schemaQuery={null} />,
-            {
-                appContext: { api: getQueryAPI([MY_DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]) },
-                serverContext: { user: TEST_USER_READER },
-            }
-        );
+        renderWithAppContext(<ManageViewsModal currentView={null} onDone={jest.fn()} schemaQuery={null} />, {
+            appContext: { api: getQueryAPI([MY_DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]) },
+            serverContext: { user: TEST_USER_READER },
+        });
 
         expect(document.querySelector('.fa-spinner')).not.toBeNull();
         await waitFor(() => {
@@ -277,7 +265,7 @@ describe('ManageViewsModal', () => {
         expect(rows[1].querySelector('.col-xs-8').textContent.trim()).toBe('View 1');
         expect(rows[1].querySelectorAll('.fa-pencil')).toHaveLength(1);
         expect(rows[1].querySelectorAll('.fa-trash-o')).toHaveLength(1);
-        expect(rows[1].querySelectorAll('.clickable-text')).toHaveLength(0);
+        expect(rows[1].querySelectorAll('.clickable-text')).toHaveLength(2);
 
         expect(rows[2].querySelector('.col-xs-8').textContent.trim()).toBe('View 2 (edited)');
         expect(rows[2].querySelectorAll('.fa-pencil')).toHaveLength(0);

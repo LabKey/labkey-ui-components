@@ -101,7 +101,7 @@ export interface ColumnChoiceProps {
 // exported for jest tests
 export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
     const { column, disabledMsg, isExpanded, isInView, onAddColumn, onExpandColumn, onCollapseColumn } = props;
-    const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLDivElement>(
+    const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLButtonElement>(
         'disabled-button-overlay',
         disabledMsg !== undefined,
         false
@@ -145,10 +145,18 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
                     ))}
                     <div className="field-expand-icon">
                         {column.isLookup() && !isExpanded && (
-                            <i className="fa fa-chevron-right" onClick={_onExpandColumn} />
+                            <button
+                                className="clickable-text fa fa-chevron-right"
+                                onClick={_onExpandColumn}
+                                type="button"
+                            />
                         )}
                         {column.isLookup() && isExpanded && (
-                            <i className="fa fa-chevron-down" onClick={_onCollapseColumn} />
+                            <button
+                                className="clickable-text fa fa-chevron-down"
+                                onClick={_onCollapseColumn}
+                                type="button"
+                            />
                         )}
                     </div>
                 </>
@@ -160,17 +168,18 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
                 </div>
             )}
             {!isInView && column.selectable && (
-                <div
-                    className={'pull-right view-field__action ' + (disabledMsg ? ' disabled ' : '')}
+                <button
+                    className={'clickable-text pull-right view-field__action ' + (disabledMsg ? ' disabled ' : '')}
                     onClick={disabled ? undefined : _onAddColumn}
                     onMouseEnter={onMouseEnter}
                     onMouseLeave={onMouseLeave}
                     ref={targetRef}
                     title={disabled ? undefined : 'Add this field to the view.'}
+                    type="button"
                 >
                     <i className="fa fa-plus" />
                     {show && createPortal(popover, portalEl)}
-                </div>
+                </button>
             )}
         </div>
     );
@@ -315,22 +324,24 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
                     {!editing && (
                         <span className="pull-right">
                             {allowEditLabel && (
-                                <span
-                                    className="edit-inline-field__toggle"
+                                <button
+                                    className="clickable-text edit-inline-field__toggle"
                                     onClick={_onEditTitle}
                                     title="Edit the field's label for this view."
+                                    type="button"
                                 >
                                     <i className="fa fa-pencil" id={'select-' + index} />
-                                </span>
+                                </button>
                             )}
                             {!disableDelete && (
-                                <span
-                                    className="view-field__action clickable"
+                                <button
+                                    className="clickable-text view-field__action"
                                     onClick={_onRemoveColumn}
                                     title="Remove this field from the view."
+                                    type="button"
                                 >
                                     <i className="fa fa-times" />
-                                </span>
+                                </button>
                             )}
                             {disableDelete && <span className="margin-left-more"></span>}
                         </span>

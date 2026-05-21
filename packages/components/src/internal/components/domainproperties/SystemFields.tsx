@@ -9,6 +9,7 @@ import { GridColumn } from '../base/models/GridColumn';
 
 import { SystemField } from './models';
 import { Collapsible } from './Collapsible';
+import { useEnterEscape } from '../../../public/useEnterEscape';
 
 interface Props {
     disabledSystemFields?: string[];
@@ -55,8 +56,9 @@ export const SystemFields: FC<Props> = memo(({ fields, disabledSystemFields, onS
     const [collapsed, setCollapsed] = useState<boolean>(false);
 
     const onToggle = useCallback(() => {
-        setCollapsed(!collapsed);
-    }, [collapsed]);
+        setCollapsed(c => !c);
+    }, []);
+    const onKeyDown = useEnterEscape(onToggle);
 
     const gridData: SystemField[] = useMemo(() => {
         const data: SystemField[] = [];
@@ -73,7 +75,7 @@ export const SystemFields: FC<Props> = memo(({ fields, disabledSystemFields, onS
         return data;
     }, [fields, disabledSystemFields]);
 
-    const systemFieldColumns: List<any> = useMemo(() => {
+    const systemFieldColumns: List<GridColumn> = useMemo(() => {
         const enabledColumn = new GridColumn({
             index: 'Enabled',
             title: 'Enabled',
@@ -102,7 +104,7 @@ export const SystemFields: FC<Props> = memo(({ fields, disabledSystemFields, onS
     return (
         <>
             <div className="domain-system-fields">
-                <div className="domain-system-fields-header">
+                <div className="domain-system-fields-header" onKeyDown={onKeyDown} tabIndex={0}>
                     <div className="domain-system-fields-header__text" onClick={onToggle}>
                         Default System Fields
                     </div>

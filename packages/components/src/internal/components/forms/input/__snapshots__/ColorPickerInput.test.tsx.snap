@@ -21,13 +21,14 @@ exports[`ColorPickerInput allowRemove 1`] = `
     <div
       class="color-picker__remove"
     >
-      <span
-        class="container--action-button"
+      <button
+        class="clickable-text container--action-button"
+        type="button"
       >
         <i
           class="fa fa-times container--removal-icon"
         />
-      </span>
+      </button>
     </div>
     <div
       class="color-picker__picker"

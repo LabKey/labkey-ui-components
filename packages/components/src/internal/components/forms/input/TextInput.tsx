@@ -143,7 +143,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         return (
             <>
                 <FormsyInput
-                    aria-labelledby={!showLabel ? queryColumn.labelId : undefined}
+                    aria-label={showLabel ? undefined : queryColumn.caption}
                     id={queryColumn.fieldKey}
                     name={queryColumn.fieldKey}
                     placeholder={

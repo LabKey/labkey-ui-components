@@ -320,11 +320,11 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                         {selectedIndex !== undefined && (!currentInUse || !isMultiChoiceField) && (
                             <>
                                 <div className="domain-field-label">
-                                    <DomainFieldLabel id="text-choice-value-label" label="Value" />
+                                    <DomainFieldLabel id={'text-choice-value-label-' + selectedIndex} label="Value" />
                                 </div>
                                 <div className="domain-field-padding-bottom">
                                     <DisableableInput
-                                        aria-labelledby="text-choice-value-label"
+                                        aria-labelledby={'text-choice-value-label-' + selectedIndex}
                                         className="form-control full-width"
                                         disabledMsg={currentLocked ? LOCKED_TIP : undefined}
                                         name="value"

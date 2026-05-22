@@ -113,7 +113,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
             // when being used as a label for a formsy component directly this will use just a span without the
             // classes applied as well as not needing to handle 'required' display
             return (
-                <span data-fieldKey={dataKey ?? column?.fieldKey} id={column?.labelId}>
+                <span data-fieldkey={dataKey ?? column?.fieldKey} id={column?.labelId}>
                     {label}&nbsp;
                     {overlay}
                     {required || addLabelAsterisk ? <span className="required-symbol">* </span> : null}
@@ -123,8 +123,12 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
 
         if (!inputId) {
             return (
-                <span className={(labelClass ? labelClass + ' ' : '') + 'text__truncate-and-wrap'} id={column?.labelId}>
-                    <span data-fieldKey={dataKey ?? column?.fieldKey}>{label}</span>&nbsp;
+                <span
+                    className={(labelClass ? labelClass + ' ' : '') + 'text__truncate-and-wrap'}
+                    data-fieldkey={dataKey ?? column?.fieldKey}
+                    id={column?.labelId}
+                >
+                    <span data-fieldkey={dataKey ?? column?.fieldKey}>{label}</span>&nbsp;
                     {overlay}
                     {required || addLabelAsterisk ? <span className="required-symbol">* </span> : null}
                 </span>
@@ -136,7 +140,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
                 htmlFor={inputId}
                 id={column?.labelId}
             >
-                <span data-fieldKey={inputId}>{label}</span>&nbsp;
+                <span data-fieldkey={inputId}>{label}</span>&nbsp;
                 {overlay}
                 {required || addLabelAsterisk ? <span className="required-symbol">* </span> : null}
             </label>

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import React, { FC, memo } from 'react';
+import { Icon } from '../../../Icon';
 
 interface DetailPanelHeaderProps {
     editing?: boolean;
@@ -50,7 +51,7 @@ export const DetailPanelHeader: FC<DetailPanelHeaderProps> = memo(props => {
                 {isEditable && (
                     <>
                         <button className="clickable-text detail__edit-button" onClick={onClick} type="button">
-                            <i className="fa fa-pencil-square-o" />
+                            <Icon iconClass="fa fa-pencil-square-o" srText="Edit Details" />
                         </button>
                         <div className="clearfix" />
                     </>

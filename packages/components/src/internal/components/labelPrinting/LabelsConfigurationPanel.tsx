@@ -259,11 +259,11 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                     </div>
                     <div className="form-group">
                         <div className="col-sm-4">
-                            <DomainFieldLabel label="Description" id="description-label"/>
+                            <DomainFieldLabel id="label-description-label" label="Description" />
                         </div>
                         <div className="col-sm-8">
                             <textarea
-                                aria-labelledby="description-label"
+                                aria-labelledby="label-description-label"
                                 className="form-control"
                                 name="description"
                                 onChange={onFormChange}

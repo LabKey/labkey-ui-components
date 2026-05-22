@@ -81,9 +81,9 @@ describe('SelectInput', () => {
 
     function validateFieldLabel(component: any, labelText?: string): void {
         if (labelText !== undefined) {
-            expect(document.querySelector('label').textContent).toBe(labelText);
+            expect(document.querySelector('.control-label').textContent).toBe(labelText);
         } else {
-            expect(document.querySelectorAll('label')).toHaveLength(0);
+            expect(document.querySelectorAll('.control-label')).toHaveLength(0);
         }
     }
 

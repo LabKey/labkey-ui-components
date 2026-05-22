@@ -105,12 +105,22 @@ export const ToggleIcon: FC<Props> = memo(props => {
     const body = (
         <>
             {firstActive && (
-                <button className="clickable-text fa fa-toggle-on" onClick={secondBtnClick} type="button">
+                <button
+                    aria-pressed="true"
+                    className="clickable-text fa fa-toggle-on"
+                    onClick={secondBtnClick}
+                    type="button"
+                >
                     <span className="sr-only">Toggle On {inputFieldName}</span>
                 </button>
             )}
             {secondActive && (
-                <button className="clickable-text fa fa-toggle-off" onClick={firstBtnClick} type="button">
+                <button
+                    aria-pressed="true"
+                    className="clickable-text fa fa-toggle-off"
+                    onClick={firstBtnClick}
+                    type="button"
+                >
                     <span className="sr-only">Toggle Off {inputFieldName}</span>
                 </button>
             )}

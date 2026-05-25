@@ -63,10 +63,6 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
             return renderFieldLabel(queryColumn);
         }
 
-        if (!showLabel) {
-            return null;
-        }
-
         return (
             <FieldLabel
                 column={queryColumn}

@@ -90,10 +90,6 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
             return renderFieldLabel(queryColumn);
         }
 
-        if (!showLabel) {
-            return null;
-        }
-
         return (
             <FieldLabel
                 column={queryColumn}

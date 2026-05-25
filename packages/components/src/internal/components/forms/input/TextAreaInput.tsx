@@ -63,6 +63,11 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
             return renderFieldLabel(queryColumn);
         }
 
+        // FIXME: This is here (at least for now) because of the use of the hide-label class below
+        // in place of sending showLabel=false???
+        if (showLabel === false) {
+            return null;
+        }
         return (
             <FieldLabel
                 column={queryColumn}

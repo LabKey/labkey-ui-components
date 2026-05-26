@@ -75,7 +75,8 @@ export function resolveDuplicatesAsName(
     }
     let retMsg = `There was a problem ${verbPresParticiple || 'creating'} your ${nounPlural || noun || 'data'}.`;
     if (name) {
-        retMsg += ` Duplicate name '${name}' found.`;
+        const identifierType = errorMsg.toLowerCase().indexOf('uq_box_barcode') > -1 ? 'barcode' : 'name';
+        retMsg += ` Duplicate ${identifierType} '${name}' found.`;
     } else {
         retMsg += ` Check the existing ${nounPlural || noun || 'data'} for possible duplicates and make sure any referenced ${
             nounPlural || noun || 'data'

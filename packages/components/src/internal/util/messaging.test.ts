@@ -551,4 +551,35 @@ describe('resolveDuplicatesAsName', () => {
             );
         });
     });
+
+    describe('barcode constraint', () => {
+        const barcodeError =
+            'ERROR: duplicate key value violates unique constraint "uq_box_barcode"\n' +
+            '  Detail: Key (barcode)=(BC-123) already exists.';
+
+        test('uses "barcode" identifier when constraint is uq_box_barcode', () => {
+            expect(resolveDuplicatesAsName(barcodeError, 'boxes')).toBe(
+                "There was a problem creating your boxes. Duplicate barcode 'BC-123' found."
+            );
+        });
+
+        test('uq_box_barcode check is case-insensitive', () => {
+            const upperCaseError = barcodeError.replace('uq_box_barcode', 'UQ_BOX_BARCODE');
+            expect(resolveDuplicatesAsName(upperCaseError, 'boxes')).toBe(
+                "There was a problem creating your boxes. Duplicate barcode 'BC-123' found."
+            );
+        });
+
+        test('uses "name" identifier when constraint is not uq_box_barcode', () => {
+            expect(resolveDuplicatesAsName('Key (name)=(BC-123) already exists.', 'boxes')).toBe(
+                "There was a problem creating your boxes. Duplicate name 'BC-123' found."
+            );
+        });
+
+        test('respects optional params', () => {
+            expect(resolveDuplicatesAsName(barcodeError, 'box', 'boxes', 'importing')).toBe(
+                "There was a problem importing your boxes. Duplicate barcode 'BC-123' found."
+            );
+        });
+    });
 });

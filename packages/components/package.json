@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.38.1-fb-terminalStorageUseBarcode.0",
+  "version": "7.38.1-fb-terminalStorageUseBarcode.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

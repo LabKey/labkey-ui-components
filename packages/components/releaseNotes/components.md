@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Update `getDefaultVisibleColumns` to remove columns that metadata eliminates from views
+
 ### version 7.38.0
 *Released*: 21 May 2026
 - Accessibility improvements for app pages: Keyboard Interactions

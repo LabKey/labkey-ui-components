@@ -1,6 +1,6 @@
 {
   "name": "@labkey/eslint-config",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "shareable eslint config for typescript",
   "main": "eslint.config.mjs",
   "files": [
@@ -21,7 +21,7 @@
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "7.0.1",
     "globals": "17.4.0",
-    "prettier": "3.8.1",
+    "prettier": "3.8.3",
     "typescript-eslint": "8.57.2"
   }
 }

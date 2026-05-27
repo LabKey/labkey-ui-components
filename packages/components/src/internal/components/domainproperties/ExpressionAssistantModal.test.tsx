@@ -46,7 +46,13 @@ function makeField(name: string, rangeURI = 'http://www.w3.org/2001/XMLSchema#st
     return DomainField.create({ name, rangeURI, PHI: phi });
 }
 
-const DEFAULT_FIELDS = [makeField('A'), makeField('B', 'http://www.w3.org/2001/XMLSchema#int')];
+function makeCalculatedField(valueExpression?: string, name = 'CALC_FIELD'): DomainField {
+    return DomainField.create({ name, rangeURI: 'http://www.w3.org/2001/XMLSchema#calculated', valueExpression });
+}
+
+const CALC_FIELD = makeCalculatedField('SELECT 1');
+
+const DEFAULT_FIELDS = [makeField('A'), makeField('B', 'http://www.w3.org/2001/XMLSchema#int'), CALC_FIELD];
 function getDomainFields(fields = DEFAULT_FIELDS) {
     return () => ({
         domainFields: List<DomainField>(fields),
@@ -56,6 +62,7 @@ function getDomainFields(fields = DEFAULT_FIELDS) {
 
 function defaultProps(overrides?: Partial<ExpressionAssistantModalProps>): ExpressionAssistantModalProps {
     return {
+        field: CALC_FIELD,
         getDomainFields: getDomainFields(),
         onCancel: jest.fn(),
         ...overrides,
@@ -86,7 +93,10 @@ describe('ExpressionAssistantModal', () => {
             const expressionAssistant = jest.fn();
 
             // Act
-            renderWithAppContext(<ExpressionAssistantModal {...defaultProps()} />, makeApiContext(expressionAssistant));
+            renderWithAppContext(
+                <ExpressionAssistantModal {...defaultProps()} field={makeCalculatedField(undefined)} />,
+                makeApiContext(expressionAssistant)
+            );
 
             // Assert - one assistant intro message with the NEW prompt text and no SQL segment
             const messages = chatModalProps.messages as ChatMessage[];
@@ -99,10 +109,7 @@ describe('ExpressionAssistantModal', () => {
 
         test('shows the CHANGE intro with a SQL segment when fieldExpression is provided', () => {
             // Arrange / Act
-            renderWithAppContext(
-                <ExpressionAssistantModal {...defaultProps()} fieldExpression="SELECT 1" />,
-                makeApiContext()
-            );
+            renderWithAppContext(<ExpressionAssistantModal {...defaultProps()} />, makeApiContext());
 
             // Assert - intro begins with the CHANGE prompt and includes a sql segment containing the existing expression
             const intro = (chatModalProps.messages as ChatMessage[])[0];
@@ -120,7 +127,11 @@ describe('ExpressionAssistantModal', () => {
 
             // Act
             renderWithAppContext(
-                <ExpressionAssistantModal {...defaultProps()} fieldError="boom" fieldExpression="SELECT bad" />,
+                <ExpressionAssistantModal
+                    {...defaultProps()}
+                    field={makeCalculatedField('SELECT bad')}
+                    fieldError="boom"
+                />,
                 makeApiContext(expressionAssistant)
             );
 
@@ -188,12 +199,17 @@ describe('ExpressionAssistantModal', () => {
         test('passes columnMap and PHI columns derived from the provided domain fields', async () => {
             // Arrange
             const fields = [
+                CALC_FIELD,
                 makeField('plain', 'http://www.w3.org/2001/XMLSchema#string'),
                 makeField('secret', 'http://www.w3.org/2001/XMLSchema#string', 'Restricted'),
             ];
             const expressionAssistant = jest.fn().mockResolvedValue({ conversationId: 'c', success: true, text: 'ok' });
             renderWithAppContext(
-                <ExpressionAssistantModal getDomainFields={getDomainFields(fields)} onCancel={jest.fn()} />,
+                <ExpressionAssistantModal
+                    field={CALC_FIELD}
+                    getDomainFields={getDomainFields(fields)}
+                    onCancel={jest.fn()}
+                />,
                 makeApiContext(expressionAssistant)
             );
 

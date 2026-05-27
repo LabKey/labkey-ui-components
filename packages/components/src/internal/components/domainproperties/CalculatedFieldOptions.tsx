@@ -292,9 +292,9 @@ export const CalculatedFieldOptions: FC<CalculatedFieldOptionsProps> = memo(prop
             </div>
             {show && (
                 <ExpressionAssistantModal
+                    field={field}
                     // Only inform the modal of the error if there is an invalid expression
                     fieldError={field.valueExpression ? error : undefined}
-                    fieldExpression={field.valueExpression}
                     getDomainFields={getDomainFields}
                     onApplyExpression={handleApplyExpression}
                     onCancel={close}

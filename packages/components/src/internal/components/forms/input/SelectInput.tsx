@@ -538,10 +538,10 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
 
                 if (renderFieldLabel) {
                     return (
-                        <label className={labelClass} htmlFor={name}>
+                        <span className={labelClass} data-fieldkey={name}>
                             {renderFieldLabel(undefined, label, description_)}
                             {required && <span className="required-symbol"> *</span>}
-                        </label>
+                        </span>
                     );
                 }
 
@@ -551,7 +551,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
                         id={this.getId()}
                         isDisabled={isDisabled}
                         labelOverlayProps={{
-                            inputId: name,
+                            dataKey: name,
                             description: description_,
                             label,
                             addLabelAsterisk,

@@ -20,6 +20,7 @@ import { SchemaQuery } from './SchemaQuery';
 import { IQueryColumn } from './IQueryColumn';
 import { PropDescType } from '../internal/components/domainproperties/PropDescType';
 import { SortDirection } from './QuerySort';
+import { stringToHtmlId } from '../internal/util/utils';
 
 export enum Operation {
     insert = 'insert',
@@ -414,6 +415,10 @@ export class QueryColumn implements IQueryColumn {
         }
 
         return fieldKey;
+    }
+
+    get labelId(): string {
+        return stringToHtmlId(this.fieldKey) + '-label';
     }
 
     get lookupKey(): string {

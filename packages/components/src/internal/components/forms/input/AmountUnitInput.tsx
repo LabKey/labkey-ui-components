@@ -69,9 +69,12 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     id={id}
                     isDisabled={disabled}
                     label={
-                        <div className={inputLabelClass + ' bold-text text__truncate-and-wrap'}>
+                        <span
+                            className={inputLabelClass + ' bold-text text__truncate-and-wrap'}
+                            data-fieldkey={amountCol.name}
+                        >
                             Amount and Units
-                        </div>
+                        </span>
                     }
                     labelOverlayProps={{
                         description: 'The amount and units of this sample currently on hand.',

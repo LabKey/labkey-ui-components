@@ -90,6 +90,12 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
             return renderFieldLabel(queryColumn);
         }
 
+        // This is here (at least for now) because of the use of the hide-label class below
+        // in place of sending showLabel=false???
+        if (showLabel === false) {
+            return null;
+        }
+
         return (
             <FieldLabel
                 column={queryColumn}
@@ -139,6 +145,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         return (
             <>
                 <FormsyInput
+                    aria-label={showLabel ? undefined : queryColumn.caption}
                     id={queryColumn.fieldKey}
                     name={queryColumn.fieldKey}
                     placeholder={

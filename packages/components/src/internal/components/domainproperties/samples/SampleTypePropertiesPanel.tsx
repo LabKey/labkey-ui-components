@@ -547,12 +547,14 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                         <div className="row margin-top">
                             <div className="col-xs-2">
                                 <DomainFieldLabel
+                                    id="linked-study-label"
                                     helpTipBody={<AutoLinkDataToStudyHelpTip />}
                                     label="Auto-Link Data to Study"
                                 />
                             </div>
                             <div className="col-xs-5">
                                 <AutoLinkToStudyDropdown
+                                    ariaLabelledBy="linked-study-label"
                                     autoLinkTarget={ENTITY_FORM_IDS.AUTO_LINK_TARGET}
                                     containers={containers}
                                     onChange={this.onFormChange}

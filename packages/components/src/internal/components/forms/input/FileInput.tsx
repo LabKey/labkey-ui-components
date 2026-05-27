@@ -280,7 +280,7 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
 
         const labelOverlayProps = {
             addLabelAsterisk,
-            inputId,
+            dataKey: inputId,
             // While this component supports binding Formsy it does not use a Formsy component
             // to render the associated label. As such, the label overlay is always configured as isFormsy={false}.
             isFormsy: false,

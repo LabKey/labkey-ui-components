@@ -163,10 +163,9 @@ export const CalculatedFieldOptions: FC<CalculatedFieldOptionsProps> = memo(prop
             setError(undefined);
             setParsedType(undefined);
             validateExpression(analysis, true);
-            close();
             incrementClientSideMetricCount(EXPR_ASST_METRIC_FEATURE_AREA, 'applyExpression');
         },
-        [close, inputId, onChange, validateExpression]
+        [inputId, onChange, validateExpression]
     );
 
     const onOpenAssistant = useCallback(() => {
@@ -297,8 +296,8 @@ export const CalculatedFieldOptions: FC<CalculatedFieldOptionsProps> = memo(prop
                     fieldError={field.valueExpression ? error : undefined}
                     fieldExpression={field.valueExpression}
                     getDomainFields={getDomainFields}
+                    onApplyExpression={handleApplyExpression}
                     onCancel={close}
-                    onComplete={handleApplyExpression}
                 />
             )}
         </div>

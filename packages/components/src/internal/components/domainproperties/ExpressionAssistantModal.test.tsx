@@ -308,11 +308,11 @@ describe('ExpressionAssistantModal', () => {
     });
 
     describe('renderSegment / SqlExpression', () => {
-        test('expression segments render an Apply Expression action that calls onComplete with the SQL', () => {
+        test('expression segments render an Apply Expression action that calls onApplyExpression with the SQL', () => {
             // Arrange
-            const onComplete = jest.fn();
+            const onApplyExpression = jest.fn();
             renderWithAppContext(
-                <ExpressionAssistantModal {...defaultProps()} onComplete={onComplete} />,
+                <ExpressionAssistantModal {...defaultProps()} onApplyExpression={onApplyExpression} />,
                 makeApiContext()
             );
             // Render the segment ourselves into a container so we can interact with it
@@ -322,17 +322,17 @@ describe('ExpressionAssistantModal', () => {
             const { unmount } = render(<div>{node}</div>);
             fireEvent.click(screen.getByRole('button', { name: /apply expression/i }));
 
-            // Assert - the SQL is shown and clicking Apply forwards the expression to onComplete
+            // Assert - the SQL is shown, and clicking Apply forwards the expression to onApplyExpression
             expect(screen.getByText('SELECT 1')).toBeInTheDocument();
-            expect(onComplete).toHaveBeenCalledTimes(1);
-            expect(onComplete).toHaveBeenCalledWith('SELECT 1');
+            expect(onApplyExpression).toHaveBeenCalledTimes(1);
+            expect(onApplyExpression).toHaveBeenCalledWith('SELECT 1');
             unmount();
         });
 
         test('sql segments render read-only without an Apply action', () => {
             // Arrange
             renderWithAppContext(
-                <ExpressionAssistantModal {...defaultProps()} onComplete={jest.fn()} />,
+                <ExpressionAssistantModal {...defaultProps()} onApplyExpression={jest.fn()} />,
                 makeApiContext()
             );
             const node = chatModalProps.renderSegment({ type: 'sql', sql: 'SELECT 2' }, 0);
@@ -345,15 +345,15 @@ describe('ExpressionAssistantModal', () => {
             expect(screen.queryByRole('button', { name: /apply expression/i })).not.toBeInTheDocument();
         });
 
-        test('expression segment without onComplete still renders read-only', () => {
-            // Arrange - omit onComplete
+        test('expression segment without onApplyExpression still renders read-only', () => {
+            // Arrange - omit onApplyExpression
             renderWithAppContext(<ExpressionAssistantModal {...defaultProps()} />, makeApiContext());
             const node = chatModalProps.renderSegment({ type: 'expression', sql: 'SELECT 3' }, 0);
 
             // Act
             render(<div>{node}</div>);
 
-            // Assert - SQL still renders, but there is no Apply action when no onComplete is supplied
+            // Assert - SQL still renders, but there is no Apply action when no onApplyExpression is supplied
             expect(screen.getByText('SELECT 3')).toBeInTheDocument();
             expect(screen.queryByRole('button', { name: /apply expression/i })).not.toBeInTheDocument();
         });

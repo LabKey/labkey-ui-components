@@ -1,4 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import classNames from 'classnames';
 import { useAppContext } from '../../AppContext';
 import { generateId } from '../../util/utils';
 import { ChatModal, RenderSegment } from '../mcp/ChatModal';
@@ -26,21 +27,34 @@ function createChatMessage(message: Partial<ChatMessage>): ChatMessage {
 }
 
 interface SqlSnippetProps {
-    onApply?: (sql: string) => void;
+    onApplyExpression?: (sql: string) => void;
     readOnly?: boolean;
     sql: string;
 }
 
-const SqlExpression: FC<SqlSnippetProps> = memo(({ onApply, readOnly, sql }) => {
-    const handleApply = useCallback(() => onApply?.(sql), [onApply, sql]);
+const SqlExpression: FC<SqlSnippetProps> = memo(({ onApplyExpression, readOnly, sql }) => {
+    const [animating, setAnimating] = useState<boolean>(false);
+    const handleApply = useCallback(() => {
+        setAnimating(true);
+        onApplyExpression(sql);
+    }, [onApplyExpression, sql]);
+
+    const onAnimationEnd = useCallback(() => {
+        setAnimating(false);
+    }, []);
+
     return (
         <div className="assistant-expression">
             <pre>
                 <code className="language-sql">{sql}</code>
             </pre>
-            {!readOnly && onApply && (
+            {!readOnly && onApplyExpression && (
                 <button className="clickable-text" onClick={handleApply} type="button">
-                    <i className="fa fa-check" /> Apply Expression
+                    <i
+                        className={classNames('fa fa-check', { 'bounce-effect': animating })}
+                        onAnimationEnd={onAnimationEnd}
+                    />{' '}
+                    Apply Expression
                 </button>
             )}
         </div>
@@ -52,8 +66,8 @@ export interface ExpressionAssistantModalProps {
     fieldError?: string;
     fieldExpression?: string;
     getDomainFields: GetDomainFields;
+    onApplyExpression?: (analysis: string) => void;
     onCancel: () => void;
-    onComplete?: (analysis: string) => void;
 }
 
 function useExpressionAssistance(
@@ -187,7 +201,7 @@ function useExpressionAssistance(
 }
 
 export const ExpressionAssistantModal: FC<ExpressionAssistantModalProps> = memo(props => {
-    const { fieldError, fieldExpression, getDomainFields, onCancel, onComplete } = props;
+    const { fieldError, fieldExpression, getDomainFields, onApplyExpression, onCancel } = props;
     const { domainFields, systemFields } = useMemo(() => {
         const { domainFields, systemFields } = getDomainFields();
         return { domainFields: domainFields.toArray(), systemFields };
@@ -202,14 +216,14 @@ export const ExpressionAssistantModal: FC<ExpressionAssistantModalProps> = memo(
     const renderSegment = useCallback<RenderSegment>(
         (segment, index) => {
             if (segment.type === 'expression' && segment.sql) {
-                return <SqlExpression key={index} onApply={onComplete} sql={segment.sql} />;
+                return <SqlExpression key={index} onApplyExpression={onApplyExpression} sql={segment.sql} />;
             }
             if (segment.type === 'sql' && segment.sql) {
                 return <SqlExpression key={index} readOnly sql={segment.sql} />;
             }
             return undefined;
         },
-        [onComplete]
+        [onApplyExpression]
     );
 
     return (

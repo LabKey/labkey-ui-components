@@ -124,3 +124,21 @@
         margin-top: 12px;
     }
 }
+
+@keyframes customBounce {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.4);
+        color: $brand-success;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.bounce-effect {
+    display: inline-block;
+    animation: customBounce 0.6s ease-in-out;
+}

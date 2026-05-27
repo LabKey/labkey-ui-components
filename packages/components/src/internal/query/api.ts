@@ -182,7 +182,10 @@ export function getDefaultVisibleColumns(options: GetQueryDetailsOptions): Promi
                 const rawColumnMap = response.columns;
                 Object.keys(rawColumnMap).forEach(fieldKey => {
                     const rawColumn = rawColumnMap[fieldKey];
-                    columns.push(applyColumnMetadata(schemaQuery, rawColumn));
+                    const updatedColumn = applyColumnMetadata(schemaQuery, rawColumn);
+                    if (!updatedColumn.removeFromViews) {
+                        columns.push(updatedColumn);
+                    }
                 });
                 resolve(columns);
             }),

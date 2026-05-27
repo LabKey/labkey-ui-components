@@ -185,6 +185,7 @@ $circle-size: 12 * $scale;
             vertical-align: top;
             padding: 10px 0;
             text-transform: uppercase;
+            word-break: break-word;
         }
 
         .filter-display__field-boolean {
@@ -245,7 +246,8 @@ $circle-size: 12 * $scale;
 }
 
 .filter-card__header {
-    height: 59px;
+    min-height: 59px;
+    overflow: hidden;
     color: white;
     padding: 10px 0 10px 20px;
 
@@ -256,6 +258,7 @@ $circle-size: 12 * $scale;
     & .primary-text {
         font-size: 20px;
         line-height: 23px;
+        word-break: break-word;
     }
 
     & .secondary-text {

@@ -288,6 +288,9 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                 : (placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`);
         const picker = (
             <DatePicker
+                ariaLabelledBy={
+                    !showLabel && !renderFieldLabel ? queryColumn.labelId : undefined
+                }
                 autoComplete="off"
                 autoFocus={autoFocus}
                 className={inputClassName}

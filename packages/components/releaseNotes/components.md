@@ -1,6 +1,25 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Misc. accessibility improvements
+  - Auto-link to study input field labels
+  - Remove tabIndex value from `DomainRow`
+  - Add labels for text choice input fields
+  - Use button instead of i for expandable container chevrons
+  - Update LabelOverlay and DetailEditor with ids for labeling elements
+  - Add `labelId` getter method in `QueryColumn`
+  - Add `data-fieldkey` to some labels to help with locators
+
+### version 7.38.2
+*Released*: 27 May 2026
+- Update `getDefaultVisibleColumns` to remove columns that metadata eliminates from views
+
+### version 7.38.1
+*Released*: 26 May 2026
+- GitHub Issue 1021: Sample Finder: Long names truncated in Search cards
+
 ### version 7.38.0
 *Released*: 21 May 2026
 - Accessibility improvements for app pages: Keyboard Interactions

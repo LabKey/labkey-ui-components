@@ -358,9 +358,11 @@ export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkD
                         </p>
                     </>
                 }
+                id="auto-link-data-input"
                 label="Auto-Link Data to Study"
             >
                 <AutoLinkToStudyDropdown
+                    ariaLabelledBy="auto-link-data-input"
                     autoLinkTarget={FORM_IDS.AUTO_LINK_TARGET}
                     containers={containers}
                     onChange={onChange}

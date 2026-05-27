@@ -412,7 +412,6 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                         className={this.getRowCssClasses(expanded, dragging, selected, fieldError)}
                         {...provided.draggableProps}
                         ref={provided.innerRef}
-                        tabIndex={index}
                     >
                         <div
                             className="row domain-row-container"

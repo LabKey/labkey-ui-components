@@ -23,6 +23,7 @@ import { INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME, MIXED_VALUE_DISPLAY }
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 import { FormsyTextArea, FormsyTextAreaProps } from './FormsyReactComponents';
+import { stringToHtmlId } from '../../../util/utils';
 
 interface TextAreaInputProps extends DisableableInputProps, Omit<FormsyTextAreaProps, 'onChange'> {
     addLabelAsterisk?: boolean;
@@ -62,6 +63,11 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
             return renderFieldLabel(queryColumn);
         }
 
+        // This is here (at least for now) because of the use of the hide-label class below
+        // in place of sending showLabel=false???
+        if (showLabel === false) {
+            return null;
+        }
         return (
             <FieldLabel
                 column={queryColumn}
@@ -96,7 +102,8 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
 
         return (
             <FormsyTextArea
-                id={queryColumn.fieldKey}
+                aria-label={showLabel ? undefined : queryColumn.caption}
+                id={stringToHtmlId(queryColumn.fieldKey)}
                 name={queryColumn.fieldKey}
                 placeholder={
                     hasMixedValue && this.state.isDisabled

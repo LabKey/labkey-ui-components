@@ -1,8 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.40.0
+*Released*: 28 May 2026
+- Calculated Column Assistant
+  - Keep the modal open after clicking apply expression
+  - Send the current field to server to distinguish from a field set
+  - Display column type for validated expressions
+  - Refill prompt when request interrupted
+
+### version 7.39.0
+*Released*: 27 May 2026
 - Misc. accessibility improvements
   - Auto-link to study input field labels
   - Remove tabIndex value from `DomainRow`

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/test",
-  "version": "1.13.2-fb-dropCrossFolder.1",
+  "version": "1.14.0-fb-dropCrossFolder.1",
   "description": "Configurations and utilities for JavaScript-based testing",
   "main": "dist/test.js",
   "module": "dist/test.js",

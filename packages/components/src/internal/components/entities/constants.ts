@@ -141,7 +141,7 @@ export const SampleTypeDataType: EntityDataType = {
     supportsCrossTypeImport: true,
     folderConfigurableDataType: 'SampleType',
     labelColorCol: 'labelcolor',
-    extraFinderFields: ['storagepositionnumber'],
+    extraFinderFields: ['storagepositionnumber', 'storageterminallocation'],
 };
 
 export const SampleParentDataType = {

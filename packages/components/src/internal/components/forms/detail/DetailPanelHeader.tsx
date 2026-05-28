@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import React, { FC, memo } from 'react';
+import { Icon } from '../../../Icon';
 
 interface DetailPanelHeaderProps {
     editing?: boolean;
@@ -30,7 +31,9 @@ export const DetailPanelHeader: FC<DetailPanelHeaderProps> = memo(props => {
     if (editing) {
         return (
             <h2 className="panel-heading">
-                {verb} {title}
+                <span>
+                    {verb} {title}
+                </span>
                 <span className="detail__edit--heading">
                     {warning !== undefined && (
                         <span>
@@ -45,12 +48,12 @@ export const DetailPanelHeader: FC<DetailPanelHeaderProps> = memo(props => {
 
     return (
         <h2 className="panel-heading">
-            {title}
+            <span>{title}</span>
             <span className="detail__edit--heading">
                 {isEditable && (
                     <>
                         <button className="clickable-text detail__edit-button" onClick={onClick} type="button">
-                            <i className="fa fa-pencil-square-o" />
+                            <Icon iconClass="fa fa-pencil-square-o" srText={'Edit ' + title} />
                         </button>
                         <div className="clearfix" />
                     </>

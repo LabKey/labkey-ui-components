@@ -77,8 +77,7 @@ describe('AmountUnitInput', () => {
         expect(document.querySelectorAll('.form-group.row')).toHaveLength(1);
         expect(document.querySelectorAll('.control-label')).toHaveLength(1);
         expect(document.querySelectorAll('.control-label')[0].textContent).toBe('Amount and Units');
-        expect(document.querySelectorAll('label')).toHaveLength(1);
-        expect(document.querySelectorAll('label')[0].textContent).toBe('');
+        expect(document.querySelectorAll('label')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-toggle-on')).toHaveLength(1);
         expect(document.querySelectorAll('.fa-toggle-off')).toHaveLength(0);
         const inputs = document.querySelectorAll('input');
@@ -105,8 +104,7 @@ describe('AmountUnitInput', () => {
         expect(document.querySelectorAll('.form-group.row')).toHaveLength(1);
         expect(document.querySelectorAll('.control-label')).toHaveLength(1);
         expect(document.querySelectorAll('.control-label')[0].textContent).toBe('Amount and Units');
-        expect(document.querySelectorAll('label')).toHaveLength(1);
-        expect(document.querySelectorAll('label')[0].textContent).toBe('');
+        expect(document.querySelectorAll('label')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-toggle-on')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-toggle-off')).toHaveLength(1);
         const inputs = document.querySelectorAll('input');
@@ -133,8 +131,7 @@ describe('AmountUnitInput', () => {
         expect(document.querySelectorAll('.form-group.row')).toHaveLength(1);
         expect(document.querySelectorAll('.control-label')).toHaveLength(1);
         expect(document.querySelectorAll('.control-label')[0].textContent).toBe('Amount and Units');
-        expect(document.querySelectorAll('label')).toHaveLength(1);
-        expect(document.querySelectorAll('label')[0].textContent).toBe('');
+        expect(document.querySelectorAll('label')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-toggle-on')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-toggle-off')).toHaveLength(1);
         const inputs = document.querySelectorAll('input');
@@ -161,8 +158,7 @@ describe('AmountUnitInput', () => {
         expect(document.querySelectorAll('.form-group.row')).toHaveLength(1);
         expect(document.querySelectorAll('.control-label')).toHaveLength(1);
         expect(document.querySelectorAll('.control-label')[0].textContent).toBe('Amount and Units');
-        expect(document.querySelectorAll('label')).toHaveLength(1);
-        expect(document.querySelectorAll('label')[0].textContent).toBe('');
+        expect(document.querySelectorAll('label')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-toggle-on')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-toggle-off')).toHaveLength(0);
         const inputs = document.querySelectorAll('input');

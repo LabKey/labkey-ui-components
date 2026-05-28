@@ -313,6 +313,9 @@ textarea.form-control {
     label {
         font-weight: normal;
     }
+    span.control-label {
+        font-weight: normal;
+    }
 }
 
 .required-symbol {
@@ -392,6 +395,10 @@ textarea.form-control {
     .control-label, .toggle-group-icon {
         padding-top: 0;
     }
+}
+
+.control-label {
+    font-weight: 700;
 }
 
 .framed-input__container {

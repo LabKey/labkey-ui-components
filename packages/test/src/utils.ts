@@ -13,10 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * Utility method to asynchronously sleep for a specified number of milliseconds.
- * @param ms number of milliseconds to sleep.
- */
 
 // Seeded PRNG (mulberry32). Reads TEST_SEED at module load time;
 // falls back to Date.now() if not set.
@@ -57,6 +53,10 @@ const WHITE_SPACE = ' \t\n\u00A0';
 const FIELD_NAME_CHARSET = ALPHA + NUMERIC + QUERY_KEY_CHARSET + SPECIAL + ' '/*only space is allowed, no other whitespace chars*/;
 const STRING_CHARSET = ALPHA + NUMERIC + QUERY_KEY_CHARSET + SPECIAL + WHITE_SPACE;
 
+/**
+ * Utility method to asynchronously sleep for a specified number of milliseconds.
+ * @param ms number of milliseconds to sleep.
+ */
 export const sleep = (ms = 0): Promise<void> => {
     return new Promise(resolve => {
         setTimeout(() => {

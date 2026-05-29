@@ -1532,6 +1532,7 @@ export interface ExpressionAssistOptions {
     containerPath?: string;
     conversationId?: string;
     domainFields?: (DomainField | SystemField)[];
+    field?: DomainField;
     fieldError?: string;
     fieldExpression?: string;
     phiColumns?: string[];
@@ -1554,11 +1555,22 @@ export interface ExpressionAssistResponse {
 }
 
 export function expressionAssistant(options: ExpressionAssistOptions): Promise<ExpressionAssistResponse> {
-    const { containerPath, requestHandler, ...jsonData } = options;
+    const { containerPath, domainFields, field, requestHandler, ...jsonData } = options;
+
+    const serializedField = field ? DomainField.serialize(field) : undefined;
+    if (serializedField) {
+        // Do not pass the value expression for the current field as that is supplied separately
+        delete serializedField.valueExpression;
+    }
+
     return request<ExpressionAssistResponse>({
         url: ActionURL.buildURL('query', 'expressionAssistantAgent.api', containerPath),
         method: 'POST',
-        jsonData,
+        jsonData: {
+            ...jsonData,
+            domainFields: domainFields?.map(f => (f instanceof DomainField ? DomainField.serialize(f) : f)),
+            field: serializedField,
+        },
         errorLogMsg: 'Failed to assist with expression',
         requestHandler,
     });

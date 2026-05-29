@@ -9,6 +9,7 @@ export enum ChatRole {
 // (e.g., an applicable SQL expression).
 export interface ChatSegment {
     html?: string;
+    jdbcType?: string;
     sql?: string;
     text?: string;
     type: string;

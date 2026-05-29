@@ -221,6 +221,51 @@ describe('ChatModal', () => {
         });
     });
 
+    describe('interrupt behavior', () => {
+        test('stop refills the prompt with the last sent value when the input is empty', () => {
+            // Arrange
+            const sendPrompt = jest.fn().mockResolvedValue(undefined);
+            const onInterrupt = jest.fn();
+            const { rerender } = render(<ChatModal {...getDefaultProps({ sendPrompt, onInterrupt })} />);
+            const textarea = getTextarea();
+
+            // Act - send a prompt, then simulate pending state, then click stop
+            fireEvent.change(textarea, { target: { value: 'first prompt' } });
+            fireEvent.keyDown(textarea, { key: 'Enter' });
+            expect(sendPrompt).toHaveBeenCalledWith('first prompt');
+            expect(getTextarea()).toHaveValue('');
+
+            rerender(<ChatModal {...getDefaultProps({ isPending: true, sendPrompt, onInterrupt })} />);
+            fireEvent.click(document.querySelector('.prompt-button') as HTMLButtonElement);
+
+            // Assert - interrupt fired and the empty input is repopulated with the last sent value
+            expect(onInterrupt).toHaveBeenCalledWith(true);
+            rerender(<ChatModal {...getDefaultProps({ isPending: false, sendPrompt, onInterrupt })} />);
+            expect(getTextarea()).toHaveValue('first prompt');
+        });
+
+        test('stop preserves the current input when the user has typed something else', () => {
+            // Arrange
+            const sendPrompt = jest.fn().mockResolvedValue(undefined);
+            const onInterrupt = jest.fn();
+            const { rerender } = render(<ChatModal {...getDefaultProps({ sendPrompt, onInterrupt })} />);
+            const textarea = getTextarea();
+
+            // Act - send a prompt, transition to pending, then type a new prompt before clicking stop
+            fireEvent.change(textarea, { target: { value: 'first prompt' } });
+            fireEvent.keyDown(textarea, { key: 'Enter' });
+
+            rerender(<ChatModal {...getDefaultProps({ isPending: true, sendPrompt, onInterrupt })} />);
+            fireEvent.change(getTextarea(), { target: { value: 'new draft' } });
+            fireEvent.click(document.querySelector('.prompt-button') as HTMLButtonElement);
+
+            // Assert - interrupt fired and the user's in-progress text is not overwritten
+            expect(onInterrupt).toHaveBeenCalledWith(true);
+            rerender(<ChatModal {...getDefaultProps({ isPending: false, sendPrompt, onInterrupt })} />);
+            expect(getTextarea()).toHaveValue('new draft');
+        });
+    });
+
     describe('cancel behavior', () => {
         test('End Chat calls onInterrupt(false) then onCancel', () => {
             // Arrange

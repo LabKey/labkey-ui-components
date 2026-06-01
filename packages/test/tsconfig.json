@@ -1,21 +1,17 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "esModuleInterop": true,
     "jsx": "react",
-    "moduleResolution": "node",
+    "lib": ["ES2023", "DOM"],
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "sourceMap": true,
-    "target": "ES2021",
-    "lib": ["ES2021", "DOM", "DOM.Iterable"],
-    "types": ["jest", "node"]
+    "strict": false,
+    "target": "ES2023",
+    "types": ["jest", "node"],
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
 }

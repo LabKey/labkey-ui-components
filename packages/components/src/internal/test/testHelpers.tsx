@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 import React, { FC, PropsWithChildren, useMemo } from 'react';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { Query } from '@labkey/api';

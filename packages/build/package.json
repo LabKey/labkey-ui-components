@@ -10,7 +10,7 @@
     "url": "git+https://github.com/LabKey/labkey-ui-components.git"
   },
   "author": "LabKey",
-  "license": "Apache-2.0",
+  "license": "SEE LICENSE IN LICENSE.txt",
   "dependencies": {
     "@babel/core": "~7.29.0",
     "@babel/plugin-transform-class-properties": "~7.28.6",

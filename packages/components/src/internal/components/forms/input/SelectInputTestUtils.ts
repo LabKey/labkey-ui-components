@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 export const SELECT_INPUT_CSS_PREFIX = 'select-input';
 export const SELECT_INPUT_CONTROL_SELECTOR = `div.${SELECT_INPUT_CSS_PREFIX}__control`;
 export const SELECT_INPUT_DISABLED_SELECTOR = `div.${SELECT_INPUT_CSS_PREFIX}--is-disabled`;

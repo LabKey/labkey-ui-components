@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 // TODO: technically speaking we can delete this file because the exports are only used by .spec.tsx files, which are
 //  no longer run as part of our Jest tests.
 import { ReactElement } from 'react';

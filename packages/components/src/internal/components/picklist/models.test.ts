@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 import { TEST_USER_EDITOR, TEST_USER_FOLDER_ADMIN, TEST_USER_READER } from '../../userFixtures';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 

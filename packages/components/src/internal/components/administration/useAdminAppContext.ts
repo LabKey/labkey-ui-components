@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 // If your App extends AppContext to add attributes other than Admin use this e.g.:
 // type MyAppContext = ExtendableAppContext<WithMyAppContext & WithAdminAppContext>;
 import { AdminAppContext, ExtendableAppContext, useAppContext } from '../../AppContext';

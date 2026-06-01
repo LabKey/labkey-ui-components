@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 // Note: This whole file was created so we could avoid circular dependencies with AppURL please do not add any code
 // that imports AppURL to this file, either directly (by adding an import to AppURL in this file) or indirectly (by
 // adding imports which import AppURL).

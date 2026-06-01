@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 import React, { ReactElement, FC, memo, useState, useEffect, useCallback, useRef, Fragment, useMemo } from 'react';
 
 import { hasPermissions, User } from '../base/models/User';

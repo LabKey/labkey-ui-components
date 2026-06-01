@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 export const HIDDEN_CHART_TYPES = ['time_chart'];
 export const MAX_ROWS_PREVIEW = 10000;
 export const MAX_POINT_DISPLAY = 10000;

@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2017-2019 LabKey Corporation
- *
- * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+ * Copyright (c) 2020-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import '../scss/lib/ext3/_ext3.scss';

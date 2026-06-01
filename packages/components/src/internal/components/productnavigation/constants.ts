@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 import { ActionURL } from '@labkey/api';
 
 import { BIOLOGICS_APP_PROPERTIES, LIMS_APP_PROPERTIES, SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';

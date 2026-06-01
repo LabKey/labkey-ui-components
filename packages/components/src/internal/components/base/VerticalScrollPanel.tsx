@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 import React, { FC, useState, useEffect, memo, useCallback, PropsWithChildren } from 'react';
 
 // We have padding at the bottom of our pages that we need to account for or we'll end up with double scrollbars on the

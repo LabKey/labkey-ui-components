@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 import React, { FC, memo } from 'react';
 import { MAX_SELECTIONS_MESSAGE, MAX_SELECTIONS_PER_ADD } from './constants';
 import { DisableableMenuItem } from '../samples/DisableableMenuItem';

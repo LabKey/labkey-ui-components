@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2020-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 // Consider having this implement Query.QueryColumn from @labkey/api
 // commented out attributes are not used in app
 import { Filter, Query, QueryKey } from '@labkey/api';

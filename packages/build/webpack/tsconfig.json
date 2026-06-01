@@ -3,14 +3,15 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "jsx": "react",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noEmit": true,
     "resolveJsonModule": true,
     // sourceMap needs to be true in order for our tests to have accurate stack traces, it does not noticeably impact
     // compile times
     "sourceMap": true,
     "target": "ES2023",
-    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "lib": ["ES2023", "DOM"],
+    "strict": false,
     // Paradoxically, we HAVE to include the jest types. If we do not explicitly include them, our builds pass if
     // we try to use Node libraries (e.g., Array.at). If we include the jest types, our builds will correctly compile
     // against the lib targets above.

@@ -11,6 +11,8 @@ import {
 } from './integrationUtils';
 import {
     sleep,
+    random,
+    testSeed,
     shuffleArray,
     selectRandomN,
     generateDomainName,
@@ -72,6 +74,8 @@ export {
     IntegrationTestServer,
     RequestOptions,
     sleep,
+    random,
+    testSeed,
     successfulResponse,
     TestUser,
     ExperimentCRUDUtils,

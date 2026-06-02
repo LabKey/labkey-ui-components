@@ -138,3 +138,11 @@ process.env.INTEGRATION_SERVER = `${protocol}://${server}:${port}`;
 process.env.INTEGRATION_CONTEXT_PATH = contextPath;
 process.env.INTEGRATION_AUTH_USER = user;
 process.env.INTEGRATION_AUTH_PASS = pass;
+
+// Seed configuration for reproducible random test data.
+// Each Jest worker inherits TEST_SEED from the environment; if absent, generate
+// from Date.now() and write back so utils.ts (loaded after setupFiles) sees it.
+if (!process.env.TEST_SEED) {
+    process.env.TEST_SEED = String(Date.now() >>> 0);
+}
+console.log(`[LabKey Test] Random seed: ${process.env.TEST_SEED}  (rerun with: TEST_SEED=${process.env.TEST_SEED})`);

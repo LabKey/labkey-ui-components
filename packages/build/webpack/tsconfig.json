@@ -5,6 +5,8 @@
     "jsx": "react",
     "moduleResolution": "bundler",
     "noEmit": true,
+    // Allow for imports of ".scss" files
+    "noUncheckedSideEffectImports": false,
     "resolveJsonModule": true,
     // sourceMap needs to be true in order for our tests to have accurate stack traces, it does not noticeably impact
     // compile times

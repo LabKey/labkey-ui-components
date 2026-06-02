@@ -1,6 +1,6 @@
 {
   "name": "@labkey/themes",
-  "version": "1.9.3",
+  "version": "1.9.4-fb-package-updates-060126.0",
   "description": "Themes that come bundled with LabKey Server",
   "files": [
     "dist/"

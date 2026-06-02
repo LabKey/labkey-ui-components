@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2024-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 
@@ -163,10 +167,9 @@ export const CalculatedFieldOptions: FC<CalculatedFieldOptionsProps> = memo(prop
             setError(undefined);
             setParsedType(undefined);
             validateExpression(analysis, true);
-            close();
             incrementClientSideMetricCount(EXPR_ASST_METRIC_FEATURE_AREA, 'applyExpression');
         },
-        [close, inputId, onChange, validateExpression]
+        [inputId, onChange, validateExpression]
     );
 
     const onOpenAssistant = useCallback(() => {
@@ -293,12 +296,12 @@ export const CalculatedFieldOptions: FC<CalculatedFieldOptionsProps> = memo(prop
             </div>
             {show && (
                 <ExpressionAssistantModal
+                    field={field}
                     // Only inform the modal of the error if there is an invalid expression
                     fieldError={field.valueExpression ? error : undefined}
-                    fieldExpression={field.valueExpression}
                     getDomainFields={getDomainFields}
+                    onApplyExpression={handleApplyExpression}
                     onCancel={close}
-                    onComplete={handleApplyExpression}
                 />
             )}
         </div>

@@ -1,7 +1,6 @@
 /*
- * Copyright (c) 2020 LabKey Corporation
- *
- * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+ * Copyright (c) 2020-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 var fs = require('fs');
 const { propertiesReader } = require('properties-reader');
@@ -139,3 +138,11 @@ process.env.INTEGRATION_SERVER = `${protocol}://${server}:${port}`;
 process.env.INTEGRATION_CONTEXT_PATH = contextPath;
 process.env.INTEGRATION_AUTH_USER = user;
 process.env.INTEGRATION_AUTH_PASS = pass;
+
+// Seed configuration for reproducible random test data.
+// Each Jest worker inherits TEST_SEED from the environment; if absent, generate
+// from Date.now() and write back so utils.ts (loaded after setupFiles) sees it.
+if (!process.env.TEST_SEED) {
+    process.env.TEST_SEED = String(Date.now() >>> 0);
+}
+console.log(`[LabKey Test] Random seed: ${process.env.TEST_SEED}  (rerun with: TEST_SEED=${process.env.TEST_SEED})`);

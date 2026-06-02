@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2024-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 import { AuditBehaviorTypes } from '@labkey/api';
 import { IntegrationTestServer, RequestOptions, successfulResponse } from './integrationUtils';
 import { sleep } from './utils';
@@ -107,7 +111,7 @@ export async function importData(server, importText: string, queryName: string, 
     let errorResp = null;
     const response = await server.request('experiment', isSamples ? 'importSamples' : 'importData', (agent, url) => {
             return agent
-                .post(url + '?auditBehavior=DETAILED&crossFolderImport=true')
+                .post(url + '?auditBehavior=DETAILED')
                 .type('form')
                 .send({
                     schemaName: isSamples ? 'samples' : 'exp.data',
@@ -210,7 +214,7 @@ export async function importCrossTypeData(
             isSamples ? 'importSamples' : 'importData',
             (agent, url) => {
                 return agent
-                    .post(url + '?auditBehavior=DETAILED&crossFolderImport=true&crossTypeImport=true')
+                    .post(url + '?auditBehavior=DETAILED&crossTypeImport=true')
                     .type('form')
                     .send({
                         schemaName: undefined,

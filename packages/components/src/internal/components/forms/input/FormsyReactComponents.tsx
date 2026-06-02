@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 // The components declared in this file are intended to be functional equivalents for components
 // in the "formsy-react-components" package. That package is no longer maintained as of this writing (11/23)
 // and we needed to drop it as a dependency with our move to React 18.

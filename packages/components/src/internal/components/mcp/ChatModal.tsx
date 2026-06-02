@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 import React, { FC, memo, ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Modal, ModalHeader } from '../../Modal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -60,6 +64,7 @@ export interface ChatModalProps {
 export const ChatModal: FC<ChatModalProps> = memo(props => {
     const { isPending, messages, onCancel, onInterrupt, renderSegment, sendPrompt, title } = props;
     const [prompt, setPrompt] = useState('');
+    const lastSentPromptRef = useRef('');
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const historyRef = useRef<HTMLDivElement>(null);
     const timer = useTimeout();
@@ -104,11 +109,22 @@ export const ChatModal: FC<ChatModalProps> = memo(props => {
 
     const handleInterrupt = useCallback(() => {
         onInterrupt(true);
-    }, [onInterrupt]);
+        setPrompt(current => (current === '' ? lastSentPromptRef.current : current));
+
+        // Place the cursor back where it was in the prompt
+        timer.set(() => {
+            const el = textAreaRef.current;
+            if (!el) return;
+            el.focus();
+            const end = el.value.length;
+            el.setSelectionRange(end, end);
+        });
+    }, [onInterrupt, timer]);
 
     const handleSend = useCallback(() => {
         const trimmed = prompt.trim();
         if (!trimmed || isPending) return;
+        lastSentPromptRef.current = trimmed;
         setPrompt('');
         sendPrompt(trimmed);
     }, [prompt, isPending, sendPrompt]);

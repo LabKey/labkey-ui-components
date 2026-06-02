@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2020-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 export const ISSUES_LIST_DEF_SINGULAR_PLURAL_TIP =
     'The Singular item name and Plural item name fields control the display ' +
     'name for an "issue" across the Issues module. For example, you might instead refer to issues as "Bugs", "Tickets", or "Opportunities" depending on the context.';

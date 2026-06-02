@@ -1,4 +1,9 @@
+/*
+ * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import classNames from 'classnames';
 import { useAppContext } from '../../AppContext';
 import { generateId } from '../../util/utils';
 import { ChatModal, RenderSegment } from '../mcp/ChatModal';
@@ -6,7 +11,7 @@ import { ChatMessage, ChatRole, ChatSegment } from '../mcp/models';
 import { DomainField, GetDomainFields, SystemField } from './models';
 import { useRequestHandler } from '../../util/RequestHandler';
 import { incrementClientSideMetricCount } from '../../actions';
-import { getColumnTypeMap, getPHIColumnNames } from './CalculatedFieldOptions';
+import { getColumnTypeMap, getPHIColumnNames, typeToDisplay } from './CalculatedFieldOptions';
 import { ExpressionAssistOptions } from './actions';
 import { resolveErrorMessage } from '../../util/messaging';
 
@@ -26,22 +31,43 @@ function createChatMessage(message: Partial<ChatMessage>): ChatMessage {
 }
 
 interface SqlSnippetProps {
-    onApply?: (sql: string) => void;
+    jdbcType?: string;
+    onApplyExpression?: (sql: string) => void;
     readOnly?: boolean;
     sql: string;
 }
 
-const SqlExpression: FC<SqlSnippetProps> = memo(({ onApply, readOnly, sql }) => {
-    const handleApply = useCallback(() => onApply?.(sql), [onApply, sql]);
+const SqlExpression: FC<SqlSnippetProps> = memo(({ onApplyExpression, jdbcType, readOnly, sql }) => {
+    const [animating, setAnimating] = useState<boolean>(false);
+    const handleApply = useCallback(() => {
+        setAnimating(true);
+        onApplyExpression(sql);
+    }, [onApplyExpression, sql]);
+
+    const onAnimationEnd = useCallback(() => {
+        setAnimating(false);
+    }, []);
+
     return (
         <div className="assistant-expression">
             <pre>
                 <code className="language-sql">{sql}</code>
             </pre>
-            {!readOnly && onApply && (
-                <button className="clickable-text" onClick={handleApply} type="button">
-                    <i className="fa fa-check" /> Apply Expression
-                </button>
+            {!readOnly && onApplyExpression && (
+                <>
+                    <button className="clickable-text" onClick={handleApply} type="button">
+                        <i
+                            className={classNames('fa fa-check', { 'bounce-effect': animating })}
+                            onAnimationEnd={onAnimationEnd}
+                        />{' '}
+                        Apply Expression
+                    </button>
+                    {jdbcType && (
+                        <span className="assistant-expression__type">
+                            The calculated data type is {typeToDisplay(jdbcType).toLowerCase()}
+                        </span>
+                    )}
+                </>
             )}
         </div>
     );
@@ -49,17 +75,17 @@ const SqlExpression: FC<SqlSnippetProps> = memo(({ onApply, readOnly, sql }) => 
 SqlExpression.displayName = 'SqlExpression';
 
 export interface ExpressionAssistantModalProps {
+    field: DomainField;
     fieldError?: string;
-    fieldExpression?: string;
     getDomainFields: GetDomainFields;
+    onApplyExpression?: (analysis: string) => void;
     onCancel: () => void;
-    onComplete?: (analysis: string) => void;
 }
 
 function useExpressionAssistance(
     domainFields: DomainField[],
     systemFields: SystemField[],
-    fieldExpression?: string,
+    field: DomainField,
     fieldError?: string
 ) {
     const [conversationId, setConversationId] = useState<string>();
@@ -68,9 +94,9 @@ function useExpressionAssistance(
         let segments: ChatSegment[] | undefined;
         if (fieldError) {
             text = VALIDATE_INTRO;
-        } else if (fieldExpression) {
+        } else if (field.valueExpression) {
             text = CHANGE_INTRO;
-            segments = [{ type: 'sql', sql: fieldExpression }];
+            segments = [{ type: 'sql', sql: field.valueExpression }];
         } else {
             text = NEW_INTRO;
         }
@@ -122,8 +148,9 @@ function useExpressionAssistance(
 
                 if (conversationId === undefined) {
                     options.domainFields = combinedFields;
+                    options.field = field;
                     options.fieldError = fieldError;
-                    options.fieldExpression = fieldExpression;
+                    options.fieldExpression = field.valueExpression;
                 }
 
                 const response = await api.domain.expressionAssistant(options);
@@ -160,8 +187,8 @@ function useExpressionAssistance(
             columnMap,
             combinedFields,
             conversationId,
+            field,
             fieldError,
-            fieldExpression,
             phiColumns,
             pushMessage,
             requestHandler,
@@ -187,7 +214,7 @@ function useExpressionAssistance(
 }
 
 export const ExpressionAssistantModal: FC<ExpressionAssistantModalProps> = memo(props => {
-    const { fieldError, fieldExpression, getDomainFields, onCancel, onComplete } = props;
+    const { field, fieldError, getDomainFields, onApplyExpression, onCancel } = props;
     const { domainFields, systemFields } = useMemo(() => {
         const { domainFields, systemFields } = getDomainFields();
         return { domainFields: domainFields.toArray(), systemFields };
@@ -195,21 +222,28 @@ export const ExpressionAssistantModal: FC<ExpressionAssistantModalProps> = memo(
     const { isPending, messages, onInterrupt, sendPrompt } = useExpressionAssistance(
         domainFields,
         systemFields,
-        fieldExpression,
+        field,
         fieldError
     );
 
     const renderSegment = useCallback<RenderSegment>(
         (segment, index) => {
             if (segment.type === 'expression' && segment.sql) {
-                return <SqlExpression key={index} onApply={onComplete} sql={segment.sql} />;
+                return (
+                    <SqlExpression
+                        jdbcType={segment.jdbcType}
+                        key={index}
+                        onApplyExpression={onApplyExpression}
+                        sql={segment.sql}
+                    />
+                );
             }
             if (segment.type === 'sql' && segment.sql) {
                 return <SqlExpression key={index} readOnly sql={segment.sql} />;
             }
             return undefined;
         },
-        [onComplete]
+        [onApplyExpression]
     );
 
     return (

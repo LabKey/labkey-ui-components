@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 // add typings for nodes, see https://github.com/storybookjs/react-treebeard/issues/186#issuecomment-502162650
 declare module 'react-treebeard' {
     import React from 'react';

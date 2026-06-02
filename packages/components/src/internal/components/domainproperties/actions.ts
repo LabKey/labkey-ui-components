@@ -1,17 +1,6 @@
 /*
- * Copyright (c) 2019 LabKey Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
@@ -1532,6 +1521,7 @@ export interface ExpressionAssistOptions {
     containerPath?: string;
     conversationId?: string;
     domainFields?: (DomainField | SystemField)[];
+    field?: DomainField;
     fieldError?: string;
     fieldExpression?: string;
     phiColumns?: string[];
@@ -1554,11 +1544,22 @@ export interface ExpressionAssistResponse {
 }
 
 export function expressionAssistant(options: ExpressionAssistOptions): Promise<ExpressionAssistResponse> {
-    const { containerPath, requestHandler, ...jsonData } = options;
+    const { containerPath, domainFields, field, requestHandler, ...jsonData } = options;
+
+    const serializedField = field ? DomainField.serialize(field) : undefined;
+    if (serializedField) {
+        // Do not pass the value expression for the current field as that is supplied separately
+        delete serializedField.valueExpression;
+    }
+
     return request<ExpressionAssistResponse>({
         url: ActionURL.buildURL('query', 'expressionAssistantAgent.api', containerPath),
         method: 'POST',
-        jsonData,
+        jsonData: {
+            ...jsonData,
+            domainFields: domainFields?.map(f => (f instanceof DomainField ? DomainField.serialize(f) : f)),
+            field: serializedField,
+        },
         errorLogMsg: 'Failed to assist with expression',
         requestHandler,
     });

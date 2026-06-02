@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- More misc. accessibility improvements
+  - Fix empty buttons for `ExpandableContainer` and `RemoveEntityButton`
+  - Fix color contrast for `.name-id-setting__prefix-example`, `.container-nav` and `.lk-version-nav`
+  - Fix color contrast for `.sr-only` to avoid false positives from WAVE
+
 ### version 7.40.0
 *Released*: 28 May 2026
 - Calculated Column Assistant

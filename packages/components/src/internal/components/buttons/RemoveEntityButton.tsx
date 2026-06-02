@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
+import { Icon } from '../../Icon';
 
 interface RemoveEntityButtonProps {
     entity?: string;
@@ -33,7 +34,7 @@ export class RemoveEntityButton extends React.Component<RemoveEntityButtonProps,
         return (
             <div className={labelClass}>
                 <button className="clickable-text container--action-button" onClick={onClick} type="button">
-                    <i className="fa fa-times container--removal-icon" />
+                    <Icon iconClass="fa fa-times container--removal-icon" srText="Remove" />
                     {entity ? ' Remove ' + entity + ' ' + (index || '') : ''}
                 </button>
             </div>

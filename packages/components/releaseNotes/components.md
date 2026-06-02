@@ -3,7 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-- add `StorageUnitBarcode` as an allowed field for import
+- App support for terminal storage barcodes
+  - add `StorageUnitBarcode` as an allowed field for import
+  - Updated resolveDuplicatesAsName() to check for the "barcode" identifier
 
 ### version 7.41.0
 *Released*: 1 June 2026

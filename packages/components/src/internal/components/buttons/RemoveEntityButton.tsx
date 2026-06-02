@@ -30,12 +30,12 @@ export class RemoveEntityButton extends React.Component<RemoveEntityButtonProps,
 
     render() {
         const { entity, index, labelClass, onClick } = this.props;
-
+        const buttonText = entity ? ' Remove ' + entity + ' ' + (index || '') : '';
         return (
             <div className={labelClass}>
-                <button className="clickable-text container--action-button" onClick={onClick} type="button">
-                    <Icon iconClass="fa fa-times container--removal-icon" srText="Remove" />
-                    {entity ? ' Remove ' + entity + ' ' + (index || '') : ''}
+                <button aria-label={buttonText} className="clickable-text container--action-button" onClick={onClick} type="button">
+                    <span className="fa fa-times container--removal-icon" aria-hidden="true" />
+                    {buttonText}
                 </button>
             </div>
         );

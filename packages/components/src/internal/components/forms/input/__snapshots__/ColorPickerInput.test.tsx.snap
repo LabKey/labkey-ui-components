@@ -25,9 +25,17 @@ exports[`ColorPickerInput allowRemove 1`] = `
         class="clickable-text container--action-button"
         type="button"
       >
-        <i
-          class="fa fa-times container--removal-icon"
-        />
+        <span>
+          <span
+            aria-hidden="true"
+            class="fa fa-times container--removal-icon"
+          />
+          <span
+            class="sr-only"
+          >
+            Remove
+          </span>
+        </span>
       </button>
     </div>
     <div

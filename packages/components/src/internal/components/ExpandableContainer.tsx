@@ -108,7 +108,9 @@ export const ExpandableContainer: FC<Props> = memo(props => {
                         })}
                         onClick={hasOnClick || isExpandable ? handleClick : undefined}
                         type="button"
-                    />
+                    >
+                        <span className="sr-only">{visible ? 'Collapse' : 'Expand'}</span>
+                    </button>
                 </div>
                 <div className="container-expandable-heading">
                     {clause}

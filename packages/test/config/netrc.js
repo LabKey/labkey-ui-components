@@ -1,4 +1,5 @@
 // https://github.com/camshaft/netrc/blob/2c12249c7812c33a08a278eb1d5a565595f23d70/index.js
+// Copyright Cameron Bytheway, MIT license
 /**
  * Module dependencies
  */

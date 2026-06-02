@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2020-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 export const DATASET_NAME_TIP =
     'The dataset name is used when identifying a dataset during data upload. This name must be unique.';
 

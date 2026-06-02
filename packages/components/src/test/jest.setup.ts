@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2018-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 import '@testing-library/jest-dom'; // add custom jest matchers from jest-dom
 import 'blob-polyfill';
 import { enableMapSet, enablePatches } from 'immer';

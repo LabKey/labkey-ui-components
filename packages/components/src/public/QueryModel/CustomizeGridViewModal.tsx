@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
+ * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
 import React, { FC, memo, ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { saveAsSessionView } from '../../internal/actions';

@@ -126,7 +126,7 @@ export class AppURL {
         if (url === undefined) return undefined;
         if (!url.startsWith('#')) return undefined;
         let path = url.replace('#', '');
-        let params = undefined;
+        let params: Record<string, QueryParamValue> = undefined;
 
         if (path.indexOf('?') > -1) {
             params = getQueryParams(path.substring(path.indexOf('?')));

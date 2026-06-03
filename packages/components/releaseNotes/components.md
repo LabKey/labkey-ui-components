@@ -1,9 +1,21 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.41.1
+*Released*: 3 June 2026
+- Merge from release26.6-SNAPSHOT to develop
+    - includes changes from 7.40.1 #2011
+
 ### version 7.41.0
 *Released*: 1 June 2026
 - GitHub Issue 903: Remove Cross-Container Sample and Data Class Import Feature
+
+### version 7.40.1
+*Released*: 2 June 2026
+- More misc. accessibility improvements
+  - Fix empty buttons for `ExpandableContainer` and `RemoveEntityButton`
+  - Fix color contrast for `.name-id-setting__prefix-example`, `.container-nav` and `.lk-version-nav`
+  - Fix color contrast for `.sr-only` to avoid false positives from WAVE
 
 ### version 7.40.0
 *Released*: 28 May 2026

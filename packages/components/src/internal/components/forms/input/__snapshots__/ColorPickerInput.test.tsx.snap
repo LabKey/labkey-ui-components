@@ -22,10 +22,12 @@ exports[`ColorPickerInput allowRemove 1`] = `
       class="color-picker__remove"
     >
       <button
+        aria-label="Remove"
         class="clickable-text container--action-button"
         type="button"
       >
-        <i
+        <span
+          aria-hidden="true"
           class="fa fa-times container--removal-icon"
         />
       </button>

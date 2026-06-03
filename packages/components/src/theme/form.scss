@@ -146,6 +146,10 @@
           border-bottom: 3px solid white
       }
   }
+  &.list-group-item.disabled {
+      background-color: $gray-shadow;
+      color: $text-color-light;
+  }
 }
 
 

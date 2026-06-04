@@ -197,3 +197,9 @@
 .pointer {
     cursor: pointer;
 }
+
+/** This is used to get around WAVE false-positives that flag the sr-only text as low contrast **/
+.sr-only {
+    color: black;
+    background: white;
+}

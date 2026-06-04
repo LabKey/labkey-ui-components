@@ -22,7 +22,13 @@ exports[`<ExpandableContainer/> custom props 1`] = `
         <button
           class="clickable-text fa fa-chevron-down"
           type="button"
-        />
+        >
+          <span
+            class="sr-only"
+          >
+            Collapse
+          </span>
+        </button>
       </div>
       <div
         class="container-expandable-heading"
@@ -66,7 +72,13 @@ exports[`<ExpandableContainer/> default props 1`] = `
         <button
           class="clickable-text fa fa-chevron-right"
           type="button"
-        />
+        >
+          <span
+            class="sr-only"
+          >
+            Expand
+          </span>
+        </button>
       </div>
       <div
         class="container-expandable-heading"

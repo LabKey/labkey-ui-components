@@ -127,10 +127,11 @@ export class AppURL {
         if (!url.startsWith('#')) return undefined;
         let path = url.replace('#', '');
         let params: Record<string, QueryParamValue> = undefined;
+        const q = path.indexOf('?');
 
-        if (path.indexOf('?') > -1) {
-            params = getQueryParams(path.substring(path.indexOf('?')));
-            path = path.substring(0, path.indexOf('?'));
+        if (q > -1) {
+            params = getQueryParams(path.substring(q));
+            path = path.substring(0, q);
         }
 
         let appUrl = new AppURL({ _basePath: path, _containerPath: containerPath, _productId: productId });

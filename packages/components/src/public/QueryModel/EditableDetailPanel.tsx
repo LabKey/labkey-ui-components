@@ -22,10 +22,10 @@ import { CommentTextArea } from '../../internal/components/forms/input/CommentTe
 
 import { useAppContext } from '../../internal/AppContext';
 
-import { QueryModel } from './QueryModel';
+import { InjectedQueryModels, QueryModel } from './QueryModel';
 
 import { DetailPanel } from './DetailPanel';
-import { InjectedQueryModels, withQueryModels } from './withQueryModels';
+import { withQueryModels } from './withQueryModels';
 import { EDIT_METHOD } from '../../internal/constants';
 import { useRouteLeave } from '../../internal/util/RouteLeave';
 

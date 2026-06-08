@@ -12,9 +12,8 @@ import { Tip } from '../../internal/components/base/Tip';
 
 import { DropdownButton, MenuDivider, MenuHeader, MenuItem } from '../../internal/dropdowns';
 
-import { QueryModel } from './QueryModel';
+import { Actions, QueryModel } from './QueryModel';
 import { getQueryModelExportParams } from './utils';
-import { Actions } from './withQueryModels';
 import { SelectionMenuItem } from '../../internal/components/menus/SelectionMenuItem';
 import { Icon } from '../../internal/Icon';
 

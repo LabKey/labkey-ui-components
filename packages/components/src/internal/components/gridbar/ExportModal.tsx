@@ -6,7 +6,7 @@ import React, { FC, memo, useCallback, useState } from 'react';
 
 import { Modal } from '../../Modal';
 
-import { QueryModelMap } from '../../../public/QueryModel/withQueryModels';
+import { QueryModelMap } from '../../../public/QueryModel/QueryModel';
 import { CheckboxLK } from '../../Checkbox';
 
 interface ExportModalProperties {

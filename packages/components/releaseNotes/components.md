@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 8.0.0
+*Released* ?? April 2026
+- Add useQueryModels hook: functionally equivalent to withQueryModels
+- Deprecate withQueryModels
+- Actions: remove `setSchemaQuery`
+  - Backwards incompatible, but likely safe since there are no known usages
+- APIKeysPanel: Use useQueryModels
+
 ### version 7.41.1
 *Released*: 3 June 2026
 - Merge from release26.6-SNAPSHOT to develop

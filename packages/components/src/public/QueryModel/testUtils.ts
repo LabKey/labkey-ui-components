@@ -7,8 +7,7 @@ import { QueryInfo } from '../QueryInfo';
 
 import { LoadingState } from '../LoadingState';
 
-import { QueryModel } from './QueryModel';
-import { Actions } from './withQueryModels';
+import { Actions, QueryModel } from './QueryModel';
 
 /**
  * @ignore
@@ -83,7 +82,6 @@ export const makeTestActions = (mockFn = (): any => () => {}, overrides: Partial
         setFilters: mockFn(),
         setMaxRows: mockFn(),
         setOffset: mockFn(),
-        setSchemaQuery: mockFn(),
         setSorts: mockFn(),
         setView: mockFn(),
         setSelections: mockFn(),

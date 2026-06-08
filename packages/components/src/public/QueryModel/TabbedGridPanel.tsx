@@ -12,8 +12,7 @@ import { exportTabsXlsx } from '../../internal/actions';
 import { useNotificationsContext } from '../../internal/components/notifications/NotificationsContext';
 
 import { GridPanel, GridPanelProps } from './GridPanel';
-import { InjectedQueryModels } from './withQueryModels';
-import { QueryModel } from './QueryModel';
+import { QueryModel, InjectedQueryModels } from './QueryModel';
 import { getQueryModelExportParams } from './utils';
 import { useEnterEscape } from '../useEnterEscape';
 

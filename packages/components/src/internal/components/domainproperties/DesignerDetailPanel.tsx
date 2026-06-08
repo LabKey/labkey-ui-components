@@ -8,7 +8,7 @@ import { useAppContext } from '../../AppContext';
 
 import { DetailDisplaySharedProps } from '../forms/detail/DetailDisplay';
 
-import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
+import { RequiresModelAndActions } from '../../../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { DetailPanel } from '../../../public/QueryModel/DetailPanel';
 import { QueryColumn } from '../../../public/QueryColumn';

@@ -614,9 +614,9 @@ import {
     wrapDraggable,
 } from './internal/test/testHelpers';
 import { renderWithAppContext } from './internal/test/reactTestLibraryHelpers';
-import { flattenValuesFromRow, QueryModel, SavedSettings } from './public/QueryModel/QueryModel';
+import { ChangeType, flattenValuesFromRow, QueryModel, SavedSettings } from './public/QueryModel/QueryModel';
 import { getExpandQueryInfo, includedColumnsForCustomizationFilter } from './public/QueryModel/CustomizeGridViewModal';
-import { ChangeType, withQueryModels } from './public/QueryModel/withQueryModels';
+import { withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
 import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
 import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
@@ -1798,6 +1798,11 @@ export {
     wrapDraggable,
 };
 
+//  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
+//  the typescript compiler option "isolatedModules", which do not export types from modules, so types must be exported
+//  separately.
+//  https://github.com/babel/babel-loader/issues/603
+
 export type { ComponentsAPIWrapper } from './internal/APIWrapper';
 export type { AppReducerState, ProductMenuState, ServerNotificationState } from './internal/app/reducers';
 export type {
@@ -1926,18 +1931,14 @@ export type { ImportTemplate } from './public/QueryInfo';
 export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetailPanel';
 export type { Action, ActionValue } from './public/QueryModel/grid/actions/Action';
 export type { QueryConfig } from './public/QueryModel/QueryModel';
-export type { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
-export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
-
-//  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
-//  the typescript compiler option "isolatedModules", which do not export types from modules, so types must be exported
-//  separately.
-//  https://github.com/babel/babel-loader/issues/603
 export type {
     Actions,
     InjectedQueryModels,
-    MakeQueryModels,
     QueryConfigMap,
     QueryModelMap,
     RequiresModelAndActions,
-} from './public/QueryModel/withQueryModels';
+} from './public/QueryModel/QueryModel';
+export type { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
+
+export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
+export type { MakeQueryModels } from './public/QueryModel/withQueryModels';

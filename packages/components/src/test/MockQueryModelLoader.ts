@@ -6,6 +6,7 @@ import { QueryModelLoader, RowsResponse } from '../public/QueryModel/QueryModelL
 import { QueryInfo } from '../public/QueryInfo';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { SelectResponse } from '../internal/actions';
+import { RequestHandler } from '../internal/request';
 
 export class MockQueryModelLoader implements QueryModelLoader {
     queryInfo: QueryInfo;
@@ -51,12 +52,16 @@ export class MockQueryModelLoader implements QueryModelLoader {
         });
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    loadSelections = (model: QueryModel): Promise<never> => {
+    // Promise<any> so we can override the value without type errors (see useQueryModels.test.ts)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+    loadSelections = (model: QueryModel): Promise<any> => {
         return Promise.reject('Not implemented!');
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    loadTotalCount = async (model: QueryModel, requestHandler: RequestHandler) => {
+        return this.rowsResponse.orderedRows.length;
+    };
+
     setSelections = (model: QueryModel, checked: boolean, selections: string[]): Promise<SelectResponse> => {
         return new Promise(resolve => {
             setTimeout(() => {
@@ -65,13 +70,15 @@ export class MockQueryModelLoader implements QueryModelLoader {
         });
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    replaceSelections = (model: QueryModel, selections): Promise<never> => {
+    // Promise<any> so we can override the value without type errors (see useQueryModels.test.ts)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+    replaceSelections = (model: QueryModel, selections): Promise<any> => {
         return Promise.reject('Not implemented!');
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    selectAllRows = (model: QueryModel): Promise<never> => {
+    // Promise<any> so we can override the value without type errors (see useQueryModels.test.ts)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+    selectAllRows = (model: QueryModel): Promise<any> => {
         return Promise.reject('Not implemented!');
     };
 
@@ -84,8 +91,9 @@ export class MockQueryModelLoader implements QueryModelLoader {
         });
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    loadCharts = (model: QueryModel): Promise<never> => {
+    // Promise<any> so we can override the value without type errors (see useQueryModels.test.ts)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+    loadCharts = (model: QueryModel): Promise<any> => {
         return Promise.reject('Not Implemented!');
     };
 }

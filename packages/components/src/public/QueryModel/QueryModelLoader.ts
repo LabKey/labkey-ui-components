@@ -28,6 +28,8 @@ import { QueryInfo } from '../QueryInfo';
 import { naturalSortByProperty } from '../sort';
 
 import { GridMessage, QueryModel } from './QueryModel';
+import { getSelectRowCountColumnsStr } from './utils';
+import { selectRows } from '../../internal/query/selectRows';
 
 export function bindColumnRenderers(columns: ExtendedMap<string, QueryColumn>): ExtendedMap<string, QueryColumn> {
     if (columns) {
@@ -89,6 +91,8 @@ export interface QueryModelLoader {
      * @param model: QueryModel
      */
     loadSelections: (model: QueryModel, requestHandler?: RequestHandler) => Promise<Set<string>>;
+
+    loadTotalCount: (model: QueryModel, requestHandler?: RequestHandler) => Promise<number>;
 
     /**
      * Replaces the currently selected items with the given set of selections.
@@ -175,6 +179,30 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
             requestHandler
         );
         return new Set(result?.selected ?? []);
+    },
+    async loadTotalCount(model: QueryModel, requestHandler: RequestHandler): Promise<number> {
+        const loadRowsConfig = model.loadRowsConfig;
+        const queryInfo = model.queryInfo;
+        const columns = getSelectRowCountColumnsStr(
+            loadRowsConfig.columns,
+            loadRowsConfig.filterArray,
+            queryInfo?.getPkCols()
+        );
+
+        const { rowCount } = await selectRows({
+            ...loadRowsConfig,
+            columns,
+            includeDetailsColumn: false,
+            // includeMetadata: false, // TODO don't require metadata in selectRows response processing
+            includeTotalCount: true,
+            includeUpdateColumn: false,
+            maxRows: 1,
+            offset: 0,
+            sort: undefined,
+            requestHandler,
+        });
+
+        return rowCount;
     },
     setSelections(model, checked, selections) {
         const { selectionKey, selectionContainerPath } = model;

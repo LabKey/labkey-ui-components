@@ -11,7 +11,8 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { caseInsensitive } from '../../util/utils';
 import { SCHEMAS } from '../../schemas';
 
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { InjectedQueryModels } from '../../../public/QueryModel/QueryModel';
 
 import { SampleStatusTag } from './SampleStatusTag';
 import { getSampleStatus, getSampleStatusContainerFilter } from './utils';

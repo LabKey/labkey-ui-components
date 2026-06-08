@@ -25,11 +25,11 @@ import { hasModule } from '../../../app/utils';
 import { LineageDetail } from './LineageDetail';
 import { DetailHeader, NodeDetailHeader } from './NodeDetailHeader';
 import { DetailsListLineageIO, DetailsListNodes, DetailsListSteps } from './DetailsList';
-import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../../public/QueryModel/withQueryModels';
+import { withQueryModels } from '../../../../public/QueryModel/withQueryModels';
 import { Filter } from '@labkey/api';
 import { SchemaQuery } from '../../../../public/SchemaQuery';
 import { ViewInfo } from '../../../ViewInfo';
-import { QueryModel } from '../../../../public/QueryModel/QueryModel';
+import { InjectedQueryModels, QueryConfigMap, QueryModel } from '../../../../public/QueryModel/QueryModel';
 
 import { LINEAGE_DETAIL_REQUIRED_COLS } from '../constants';
 

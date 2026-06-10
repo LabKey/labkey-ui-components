@@ -111,6 +111,85 @@ describe('AppURL', () => {
         expect(url.isAppPath()).not.toBeTruthy();
     });
 
+    test('fromMenuUrl undefined / invalid', () => {
+        expect(AppURL.fromMenuUrl(undefined, 'samplemanager', '/DefaultTestContainer')).toBeUndefined();
+        expect(AppURL.fromMenuUrl('/samples/blood', 'samplemanager', '/DefaultTestContainer')).toBeUndefined();
+        expect(AppURL.fromMenuUrl('samples/blood', 'samplemanager', '/DefaultTestContainer')).toBeUndefined();
+        expect(AppURL.fromMenuUrl('', 'samplemanager', '/DefaultTestContainer')).toBeUndefined();
+    });
+
+    test('fromMenuUrl basic path', () => {
+        const url = AppURL.fromMenuUrl('#/samples/blood', 'samplemanager', '/DefaultTestContainer');
+        expect(url).toBeDefined();
+        expect(url.getProductId()).toEqual('samplemanager');
+        expect(url.getContainerPath()).toEqual('/DefaultTestContainer');
+        // productId and containerPath match the current context, so it should be an app path
+        expect(url.isAppPath()).toBeTruthy();
+        expect(url.toString()).toEqual('/samples/blood');
+        expect(url.toHref()).toEqual('#/samples/blood');
+    });
+
+    test('fromMenuUrl with single query param', () => {
+        const url = AppURL.fromMenuUrl('#/samples/blood?RowId=4', 'samplemanager', '/DefaultTestContainer');
+        expect(url).toBeDefined();
+        expect(url.toString()).toEqual('/samples/blood?RowId=4');
+        expect(url.toHref()).toEqual('#/samples/blood?RowId=4');
+    });
+
+    test('fromMenuUrl with multiple query params', () => {
+        const url = AppURL.fromMenuUrl(
+            '#/samples/blood?foo=bar&baz=qux',
+            'samplemanager',
+            '/DefaultTestContainer'
+        );
+        expect(url).toBeDefined();
+        const actual = url.toString();
+        expect(actual.startsWith('/samples/blood?')).toBeTruthy();
+        expect(actual).toContain('foo=bar');
+        expect(actual).toContain('baz=qux');
+    });
+
+    test('fromMenuUrl with repeated query param key', () => {
+        const url = AppURL.fromMenuUrl(
+            '#/samples?tag=a&tag=b',
+            'samplemanager',
+            '/DefaultTestContainer'
+        );
+        expect(url).toBeDefined();
+        // Repeated keys should be preserved as an array of values
+        expect(url.toString()).toEqual('/samples?tag=a&tag=b');
+    });
+
+    test('fromMenuUrl with different productId', () => {
+        // productId differs from current controller, so the URL is rendered as a full URL
+        const url = AppURL.fromMenuUrl('#/dashboard', 'biologics', '/DefaultTestContainer');
+        expect(url).toBeDefined();
+        expect(url.getProductId()).toEqual('biologics');
+        expect(url.isAppPath()).not.toBeTruthy();
+        expect(url.toString()).toEqual('/labkey/DefaultTestContainer/biologics-app.view#/dashboard');
+    });
+
+    test('fromMenuUrl with different containerPath', () => {
+        // containerPath differs from the current container, so the URL is rendered as a full URL
+        const url = AppURL.fromMenuUrl(
+            '#/samples/blood',
+            'samplemanager',
+            '/DefaultTestContainer/ChildFolder'
+        );
+        expect(url).toBeDefined();
+        expect(url.getContainerPath()).toEqual('/DefaultTestContainer/ChildFolder');
+        expect(url.isAppPath()).not.toBeTruthy();
+        expect(url.toString()).toEqual(
+            '/labkey/DefaultTestContainer/ChildFolder/samplemanager-app.view#/samples/blood'
+        );
+    });
+
+    test('fromMenuUrl with hash-only url', () => {
+        const url = AppURL.fromMenuUrl('#', 'samplemanager', '/DefaultTestContainer');
+        expect(url).toBeDefined();
+        expect(url.toString()).toEqual('');
+    });
+
     test('containerPath', () => {
         let url = AppURL.create('some', 'fun', 'path');
 

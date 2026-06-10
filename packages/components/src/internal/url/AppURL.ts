@@ -5,6 +5,7 @@
 import { ActionURL, Filter, getServerContext } from '@labkey/api';
 
 import { getPrimaryAppProductId } from '../app/products';
+import { getQueryParams } from '../util/URL';
 
 export function applyURL(prop: string, options?: BuildURLOptions): string {
     if (options) {
@@ -114,9 +115,21 @@ export class AppURL {
         if (url === undefined) return undefined;
         if (!url.startsWith('#')) return undefined;
         let path = url.replace('#', '');
-        if (path.indexOf('?') > -1) path = path.substring(0, path.indexOf('?'));
+        let params: Record<string, QueryParamValue> = undefined;
+        const q = path.indexOf('?');
 
-        return new AppURL({ _basePath: path, _containerPath: containerPath, _productId: productId });
+        if (q > -1) {
+            params = getQueryParams(path.substring(q));
+            path = path.substring(0, q);
+        }
+
+        let appUrl = new AppURL({ _basePath: path, _containerPath: containerPath, _productId: productId });
+
+        if (params) {
+            appUrl = appUrl.addParams(params);
+        }
+
+        return appUrl;
     }
 
     addFilters(...filters: Filter.IFilter[]): AppURL {

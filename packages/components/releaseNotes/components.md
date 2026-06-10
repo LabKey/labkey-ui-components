@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   - add `StorageUnitBarcode` as an allowed field for import
   - Updated resolveDuplicatesAsName() to check for the "barcode" identifier
 
+### version 7.41.2
+*Released*: 10 June 2026
+- Merge from release26.6-SNAPSHOT to develop
+    - includes changes from 7.40.2 #2014
+
 ### version 7.41.1
 *Released*: 3 June 2026
 - Merge from release26.6-SNAPSHOT to develop
@@ -15,6 +20,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 7.41.0
 *Released*: 1 June 2026
 - GitHub Issue 903: Remove Cross-Container Sample and Data Class Import Feature
+
+### version 7.40.2
+*Released*: 8 June 2026
+-AppURL.fromMenuUrl: keep query params on URL
 
 ### version 7.40.1
 *Released*: 2 June 2026

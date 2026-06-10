@@ -10,6 +10,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 1 June 2026
 - GitHub Issue 903: Remove Cross-Container Sample and Data Class Import Feature
 
+### version 7.40.2
+*Released*: 8 June 2026
+-AppURL.fromMenuUrl: keep query params on URL
+
 ### version 7.40.1
 *Released*: 2 June 2026
 - More misc. accessibility improvements

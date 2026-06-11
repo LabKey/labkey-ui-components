@@ -1,11 +1,39 @@
 # LabKey Module React Page Development
 
-This directory contains the shared [webpack] configurations to develop and build
+This directory contains the shared [Rspack] configurations to develop and build
 [React] pages within a LabKey module. These files include configurations for
 building both production and development mode LabKey React Pages in a standard way.
 
+> **Note:** This package previously used [webpack]. It now uses [Rspack], which is webpack-config-compatible but
+> significantly faster and ships a dev-server error overlay that shows the offending file name, line/column, and a
+> code frame for both compilation and TypeScript errors. The directory is still named `webpack/` so that the
+> `--config node_modules/@labkey/build/webpack/*.config.js` paths in consuming modules did not have to change.
+
+## Migrating a consuming module from webpack to Rspack
+
+`@labkey/build` provides the build CLI transitively, so when this package switched its dependencies from `webpack`
+to `@rspack/*`, the `webpack` binary is no longer installed in consuming modules — the `rspack` binary is. **Every
+consuming module must update the build scripts in its `package.json`** to invoke `rspack` instead of `webpack`:
+
+| Old (webpack) | New (Rspack) |
+|---|---|
+| `webpack --config node_modules/@labkey/build/webpack/dev.config.js` | `rspack build --config node_modules/@labkey/build/webpack/dev.config.js` |
+| `webpack --config node_modules/@labkey/build/webpack/prod.config.js` | `rspack build --config node_modules/@labkey/build/webpack/prod.config.js` |
+| `webpack --config package.config.js` (library packages) | `rspack build --config package.config.js` |
+| `webpack serve --config node_modules/@labkey/build/webpack/watch.config.js` | `rspack serve --config node_modules/@labkey/build/webpack/watch.config.js` |
+
+Notes:
+- Bare `webpack` means "build", but bare `rspack` does not — use `rspack build` (the `build` subcommand is required).
+- `webpack serve` becomes `rspack serve` (also aliased as `rspack dev`).
+- The `--config`, `--color`, `--progress`, and `--profile` flags and the `NODE_ENV` / `PROD_SOURCE_MAP` environment
+  variables are unchanged.
+- `webpack-merge` usages should be replaced with `rspack-merge`, it is a drop-in replacement so you should only need to
+  change the import path. and remove webpack-merge from your `package.json` devDependencies.
+- If a module declares `webpack`, `webpack-cli`, or `webpack-dev-server` directly in its own `devDependencies` (most
+  do not — they rely on `@labkey/build` to provide them transitively), remove those entries.
+
 Note that if build customizations are needed for a given module, the module can opt out of these shared
-configurations by setting up its own webpack config files and pointing the build scripts in the
+configurations by setting up its own Rspack config files and pointing the build scripts in the
 module's `package.json` file at them.
 
 ### How to use the shared webpack config files
@@ -15,7 +43,7 @@ module's `package.json` file at them.
     `node_modules/@labkey/build/webpack`. See examples from the [experiment] module.
     1. use one of the three configuration files based on your script target: `prod.config.js`, `dev.config.js`,
         `package.config.js`, or `watch.config.js`
-    1. make sure to pass the following environment variables as part of your webpack command:
+    1. make sure to pass the following environment variables as part of your rspack command:
         1. `NODE_ENV` - development or production
         2. `PROD_SOURCE_MAP` - optional source map setting for the production webpack config to use,
            defaults to `nosources-source-map`
@@ -137,6 +165,7 @@ build before publishing a new `@labkey/build` version, you can do one of the fol
     `node_modules/@labkey/build/webpack` directory
 
 [React]: https://reactjs.org
+[Rspack]: https://rspack.rs/
 [webpack]: https://webpack.js.org/
 [LabKey Gradle build]: https://www.labkey.org/Documentation/wiki-page.view?name=gradleBuild
 [assay]: https://github.com/LabKey/platform/tree/develop/assay

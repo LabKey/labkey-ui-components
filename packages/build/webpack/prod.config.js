@@ -4,7 +4,7 @@
  */
 const entryPoints = require('../../../../src/client/entryPoints');
 const constants = require('./constants');
-const TerserPlugin = require('terser-webpack-plugin');
+const { rspack } = require('@rspack/core');
 
 module.exports = {
     context: constants.context,
@@ -30,11 +30,14 @@ module.exports = {
     optimization: {
         minimize: true,
         minimizer: [
-            // Use the defacto Webpack Terser plugin which comes distributed with webpack.
-            // See https://webpack.js.org/plugins/terser-webpack-plugin
-            new TerserPlugin({
-                terserOptions: {
-                    // For other "compress" options see https://github.com/terser/terser#compress-options
+            // Use Rspack's built-in SWC-based JS minimizer (replaces terser-webpack-plugin). SWC's compress options
+            // mirror Terser's, so the existing workaround carries over verbatim. Specifying only the JS minimizer
+            // here (rather than relying on Rspack's defaults, which also include a CSS minimizer) matches the prior
+            // webpack behavior, where only JS was minified.
+            // See https://rspack.rs/plugins/rspack/swc-js-minimizer-rspack-plugin
+            new rspack.SwcJsMinimizerRspackPlugin({
+                minimizerOptions: {
+                    // For other "compress" options see https://swc.rs/docs/configuration/minification
                     compress: {
                         // Disable "Collapse single-use non-constant variables, side effects permitting."
                         // There are some cases where this optimization fails to recognize a side effect

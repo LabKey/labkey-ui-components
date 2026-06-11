@@ -339,12 +339,10 @@ describe('resolveErrorMessage', () => {
 
     test('invalid SampleState value', () => {
         const error = {
-            exception: "Value 'Testing' not found for field SampleState in the current context."
-        }
-        expect(resolveErrorMessage(error)).toBe(
-            "Value 'Testing' not found for field Status in the current context."
-        );
-    })
+            exception: "Value 'Testing' not found for field SampleState in the current context.",
+        };
+        expect(resolveErrorMessage(error)).toBe("Value 'Testing' not found for field Status in the current context.");
+    });
 });
 
 describe('getPermissionRestrictionMessage', () => {
@@ -552,6 +550,37 @@ describe('resolveDuplicatesAsName', () => {
         test('uses nounPlural and verbPresParticiple together', () => {
             expect(resolveDuplicatesAsName('Key (name)=(foo) already exists.', 'sample', 'samples', 'updating')).toBe(
                 "There was a problem updating your samples. Duplicate name 'foo' found."
+            );
+        });
+    });
+
+    describe('barcode constraint', () => {
+        const barcodeError =
+            'ERROR: duplicate key value violates unique constraint "uq_box_barcode"\n' +
+            '  Detail: Key (barcode)=(BC-123) already exists.';
+
+        test('uses "barcode" identifier when constraint is uq_box_barcode', () => {
+            expect(resolveDuplicatesAsName(barcodeError, 'boxes')).toBe(
+                "There was a problem creating your boxes. Duplicate barcode 'BC-123' found."
+            );
+        });
+
+        test('uq_box_barcode check is case-insensitive', () => {
+            const upperCaseError = barcodeError.replace('uq_box_barcode', 'UQ_BOX_BARCODE');
+            expect(resolveDuplicatesAsName(upperCaseError, 'boxes')).toBe(
+                "There was a problem creating your boxes. Duplicate barcode 'BC-123' found."
+            );
+        });
+
+        test('uses "name" identifier when constraint is not uq_box_barcode', () => {
+            expect(resolveDuplicatesAsName('Key (name)=(BC-123) already exists.', 'boxes')).toBe(
+                "There was a problem creating your boxes. Duplicate name 'BC-123' found."
+            );
+        });
+
+        test('respects optional params', () => {
+            expect(resolveDuplicatesAsName(barcodeError, 'box', 'boxes', 'importing')).toBe(
+                "There was a problem importing your boxes. Duplicate barcode 'BC-123' found."
             );
         });
     });

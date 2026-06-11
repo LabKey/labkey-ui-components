@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.42.0
+*Released*: 11 June 2026
 - App support for terminal storage barcodes
   - add `StorageUnitBarcode` as an allowed field for import
   - Updated resolveDuplicatesAsName() to check for the "barcode" identifier

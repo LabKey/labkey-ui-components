@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "jsx": "react",
     "module": "preserve",
+    "moduleResolution": "bundler",
     "noEmit": true,
     // Allow for imports of ".scss" files
     "noUncheckedSideEffectImports": false,

@@ -13,7 +13,11 @@
   "module": "dist/components.js",
   "types": "dist/index.d.ts",
   "exports": {
-    ".": "./dist/components.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/components.js",
+      "default": "./dist/components.js"
+    }
   },
   "typesVersions": {
     "*": {

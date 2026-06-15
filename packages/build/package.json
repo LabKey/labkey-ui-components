@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "9.1.5-fb-package-updates-060126.3",
+  "version": "9.1.5-fb-package-updates-060126.4",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"

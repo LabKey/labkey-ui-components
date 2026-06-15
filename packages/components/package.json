@@ -80,7 +80,7 @@
     "@types/jest": "30.0.0",
     "@types/node": "24.10.9",
     "@types/numeral": "2.0.5",
-    "@types/react": "18.3.30",
+    "@types/react": "18.3.31",
     "@types/react-dom": "18.3.7",
     "blob-polyfill": "9.0.20240710",
     "bootstrap-sass": "3.4.3",

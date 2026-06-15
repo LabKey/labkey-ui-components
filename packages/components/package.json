@@ -10,20 +10,11 @@
     "dist/**/*.scss"
   ],
   "main": "dist/components.js",
-  "module": "dist/components.js",
-  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/components.js",
       "default": "./dist/components.js"
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "dist/index.d.ts"
-      ]
     }
   },
   "scripts": {

@@ -48,7 +48,7 @@
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {
     "@hello-pangea/dnd": "18.0.1",
-    "@labkey/api": "1.51.4-fb-package-updates-060126.1",
+    "@labkey/api": "1.51.4",
     "@testing-library/dom": "~10.4.1",
     "@testing-library/jest-dom": "~6.9.1",
     "@testing-library/react": "~16.3.2",
@@ -74,8 +74,8 @@
     "vis-network": "~10.1.0"
   },
   "devDependencies": {
-    "@labkey/build": "9.1.5-fb-package-updates-060126.6",
-    "@labkey/eslint-config": "1.2.2-fb-package-updates-060126.1",
+    "@labkey/build": "9.1.5",
+    "@labkey/eslint-config": "1.2.2",
     "@types/history": "4.7.11",
     "@types/jest": "30.0.0",
     "@types/node": "24.10.9",
@@ -91,10 +91,10 @@
     "jest-environment-jsdom": "30.4.1",
     "jest-teamcity-reporter": "0.9.0",
     "ts-jest": "29.4.11",
-    "uuid": "~14.0.0",
+    "uuid": "14.0.0",
     "webpack-merge": "6.0.1"
   },
   "overrides": {
-    "uuid": "~14.0.0"
+    "uuid": "14.0.0"
   }
 }

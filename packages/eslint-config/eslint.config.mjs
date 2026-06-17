@@ -26,6 +26,15 @@ export default defineConfig([
     typeScriptESLint.configs.stylistic,
     pluginReact.configs.flat.recommended,
     pluginReactHooks.configs.flat['recommended-latest'],
+    {
+        settings: {
+            react: {
+                // Avoids "Warning: React version not specified in eslint-plugin-react settings"
+                // Note, specifying "detect" results in linting errors. Specifying version explicitly.
+                version: '18.3',
+            },
+        },
+    },
     perfectionist.configs['recommended-natural'],
     prettierRecommended,
     {

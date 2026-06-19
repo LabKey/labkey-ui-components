@@ -220,3 +220,13 @@
     margin-left: 0;
     padding-left: 0;
 }
+
+.lineage-filter__dot {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: $badge-color;
+    border: 1px solid $white;
+    display: inline-block;
+    margin-top: 6px;
+}

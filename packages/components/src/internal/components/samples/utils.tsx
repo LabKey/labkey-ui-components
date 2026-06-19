@@ -90,15 +90,19 @@ export function getSampleStatusColor(color: string, stateType: SampleStateType |
 
 export function getSampleStatus(row: any): SampleStatus {
     let label;
+    let rowId;
     // Issue 45269. If the state columns are present, don't look at a column named 'Label'
     let field = caseInsensitive(row, SAMPLE_STATE_COLUMN_NAME);
     if (field) {
+        rowId = field.value;
         label = field.displayValue;
     } else {
         field = caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_COLUMN_NAME);
         if (field) {
+            rowId = field.value;
             label = field.displayValue;
         } else {
+            rowId = caseInsensitive(row, 'RowId')?.value;
             label = caseInsensitive(row, 'Label')?.value;
         }
     }
@@ -128,6 +132,7 @@ export function getSampleStatus(row: any): SampleStatus {
     }
     return {
         label,
+        rowId,
         statusType: getSampleStatusType(row),
         color,
         description,

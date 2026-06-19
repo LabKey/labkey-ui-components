@@ -86,6 +86,7 @@ export interface SampleStatus {
     color: string;
     description?: string;
     label: string;
+    rowId: number;
     statusType: SampleStateType;
 }
 
@@ -136,6 +137,7 @@ export class SampleState {
             description: this.description,
             label: this.label,
             color: this.color,
+            rowId: this.rowId ?? undefined,
             statusType: SampleStateType[this.stateType],
         };
     }

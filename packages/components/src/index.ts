@@ -422,7 +422,7 @@ import {
     TestLineageAPIWrapper,
 } from './internal/components/lineage/actions';
 import { withLineage } from './internal/components/lineage/withLineage';
-import { DEFAULT_LINEAGE_DISTANCE } from './internal/components/lineage/constants';
+import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_GRAPH_FILTER_METRIC} from './internal/components/lineage/constants';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
@@ -1513,6 +1513,7 @@ export {
     LabelHelpTip,
     LabelOverlay,
     LINEAGE_DIRECTIONS,
+    LINEAGE_GRAPH_FILTER_METRIC,
     LINEAGE_GROUPING_GENERATIONS,
     LineageDepthLimitMessage,
     LineageFilter,
@@ -1891,6 +1892,7 @@ export type {
     SampleStatus,
     StorageActionStatusCounts,
 } from './internal/components/samples/models';
+export type { SampleState } from './internal/components/samples/models';
 export type { SearchHit, SearchOptions } from './internal/components/search/actions';
 export type { EntityFieldFilter } from './internal/components/search/models';
 export type { SecurityAPIWrapper } from './internal/components/security/APIWrapper';

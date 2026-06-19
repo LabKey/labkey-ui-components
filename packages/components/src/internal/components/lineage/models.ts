@@ -291,6 +291,7 @@ export class LineageNode
         steps: undefined,
         type: undefined,
         materialLineageType: undefined,
+        sampleStatus: undefined,
         url: undefined,
 
         // computed properties
@@ -332,6 +333,7 @@ export class LineageNode
     declare steps: List<LineageRunStep>;
     declare type: string;
     declare materialLineageType: string;
+    declare sampleStatus: number;
     declare url: string;
 
     // computed properties
@@ -400,11 +402,11 @@ export class LineageResult extends ImmutableRecord({
         });
     }
 
-    filterIn(field: string, value: string | string[] | undefined): LineageResult {
+    filterIn(field: string, value: string | string[] | number[] | number | undefined): LineageResult {
         return LineageResult._filter(this, field, value, true);
     }
 
-    filterOut(field: string, value: string | string[] | undefined): LineageResult {
+    filterOut(field: string, value: string | string[] | number[] | number | undefined): LineageResult {
         return LineageResult._filter(this, field, value, false);
     }
 
@@ -418,7 +420,7 @@ export class LineageResult extends ImmutableRecord({
     private static _filter(
         result: LineageResult,
         field: string,
-        value: string | string[] | undefined,
+        value: number | number[] | string | string[] | undefined,
         filterIn: boolean
     ): LineageResult {
         if (field === undefined) throw new Error('field must not be undefined');
@@ -457,15 +459,15 @@ export class LineageResult extends ImmutableRecord({
 
     /**
      * When 'filterIn' is true, returns true if the node[field] is equal to the value or any of the array item values.
-     * When value is undefined, it is treated as a wildcard -- any value is allowed as long as the
+     * When value is undefined, it is treated as a wildcard -- any value is allowed as long as the field exists
      *
      * When 'filterIn' is false, returns true if the node[field] is not equal to the value or any of the array item values.
-     * When value is undefined, the node must not have contain a value for the field.
+     * When value is undefined, the node must not contain a value for the field.
      */
     private static _matches(
         node: LineageNode,
         field: string,
-        value: string | string[] | undefined,
+        value: number | number[] | string | string[] | undefined,
         filterIn: boolean
     ): boolean {
         if (filterIn) {
@@ -473,6 +475,7 @@ export class LineageResult extends ImmutableRecord({
                 // true if the field exists on node
                 return node.has(field);
             } else if (Array.isArray(value)) {
+                // @ts-expect-error number or string possible
                 return value.indexOf(node[field]) > -1;
             } else {
                 return node[field] === value;
@@ -482,6 +485,7 @@ export class LineageResult extends ImmutableRecord({
                 // true if the field does not exist on node
                 return !node.has(field);
             } else if (Array.isArray(value)) {
+                // @ts-expect-error number or string possible
                 return value.indexOf(node[field]) === -1;
             } else {
                 return node[field] !== value;

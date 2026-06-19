@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 7.X
 *Released*: X 2026
-- Package updates
+- Styling update for user comment on large storage modal
 
 ### version 7.42.1
 *Released*: 17 June 2026

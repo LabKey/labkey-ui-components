@@ -527,6 +527,7 @@ import {
     EntityCreationType,
     INDEPENDENT_SAMPLE_CREATION,
     POOLED_SAMPLE_CREATION,
+    SampleState,
     SampleStateType,
 } from './internal/components/samples/models';
 import { DEFAULT_ALIQUOT_NAMING_PATTERN, SampleTypeModel } from './internal/components/domainproperties/samples/models';
@@ -1658,6 +1659,7 @@ export {
     SampleParentDataType,
     SamplePropertyDataType,
     SamplesEditButtonSections,
+    SampleState,
     SampleStateType,
     SampleStatusLegend,
     SampleStatusRenderer,
@@ -1892,7 +1894,6 @@ export type {
     SampleStatus,
     StorageActionStatusCounts,
 } from './internal/components/samples/models';
-export type { SampleState } from './internal/components/samples/models';
 export type { SearchHit, SearchOptions } from './internal/components/search/actions';
 export type { EntityFieldFilter } from './internal/components/search/models';
 export type { SecurityAPIWrapper } from './internal/components/security/APIWrapper';

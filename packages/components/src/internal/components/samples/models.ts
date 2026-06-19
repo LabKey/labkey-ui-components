@@ -86,7 +86,7 @@ export interface SampleStatus {
     color: string;
     description?: string;
     label: string;
-    rowId: number;
+    rowId?: number;
     statusType: SampleStateType;
 }
 

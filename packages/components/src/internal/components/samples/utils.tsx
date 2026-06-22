@@ -88,7 +88,7 @@ export function getSampleStatusColor(color: string, stateType: SampleStateType |
     }
 }
 
-export function getSampleStatus(row: any): SampleStatus {
+export function getSampleStatusFromSampleRow(row: any): SampleStatus {
     let label;
     let rowId;
     // Issue 45269. If the state columns are present, don't look at a column named 'Label'
@@ -101,9 +101,6 @@ export function getSampleStatus(row: any): SampleStatus {
         if (field) {
             rowId = field.value;
             label = field.displayValue;
-        } else {
-            rowId = caseInsensitive(row, 'RowId')?.value;
-            label = caseInsensitive(row, 'Label')?.value;
         }
     }
     let color;
@@ -114,8 +111,6 @@ export function getSampleStatus(row: any): SampleStatus {
         col = caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_COLOR_COLUMN_NAME);
         if (col) {
             color = col.value;
-        } else {
-            color = caseInsensitive(row, 'Color')?.value;
         }
     }
     let description;
@@ -126,8 +121,6 @@ export function getSampleStatus(row: any): SampleStatus {
         col = caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_DESCRIPTION_COLUMN_NAME);
         if (col) {
             description = col.value;
-        } else {
-            description = caseInsensitive(row, 'Description')?.value;
         }
     }
     return {
@@ -136,6 +129,16 @@ export function getSampleStatus(row: any): SampleStatus {
         statusType: getSampleStatusType(row),
         color,
         description,
+    };
+}
+
+export function getSampleStatus(row: any): SampleStatus {
+    return {
+        label: caseInsensitive(row, 'Label')?.value,
+        rowId: caseInsensitive(row, 'RowId')?.value,
+        statusType: getSampleStatusType(row),
+        color: caseInsensitive(row, 'Color')?.value,
+        description: caseInsensitive(row, 'Description')?.value,
     };
 }
 

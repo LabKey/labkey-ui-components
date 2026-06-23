@@ -1137,7 +1137,8 @@ function applyCombineSize(
         { aliquotEdges: [] as LineageLink[], nonAliquotEdges: [] as LineageLink[] }
     );
 
-    if (aliquotEdges.length > 1) {
+    // GH Issue #1256
+    if (aliquotEdges.length > 0) {
         combinedLineageNodes.push(
             combineNodes(lsid, aliquotEdges, nodes, options, dir, visEdges, visNodes, nodesInCombinedNode, depth)
         );

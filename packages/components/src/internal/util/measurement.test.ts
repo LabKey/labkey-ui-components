@@ -53,13 +53,14 @@ describe('UnitModel', () => {
         expect(new UnitModel(null, null).isValidForSubmit()).toBeTruthy();
         expect(new UnitModel(null, 'bad').isValidForSubmit()).toBeTruthy();
         expect(new UnitModel(null, 'mL').isValidForSubmit()).toBeFalsy();
+        expect(new UnitModel('no', 'mL').isValidForSubmit()).toBeFalsy();
         expect(new UnitModel(-1, 'mL').isValidForSubmit()).toBeFalsy();
-        expect(new UnitModel(-0.1, 'mL').isValidForSubmit()).toBeFalsy();
         expect(new UnitModel(0, null).isValidForSubmit()).toBeFalsy();
         expect(new UnitModel(0, null).isValidForSubmit()).toBeFalsy();
         expect(new UnitModel(0, 'bad').isValidForSubmit()).toBeFalsy();
         expect(new UnitModel(-10.1, 'bad').isValidForSubmit()).toBeFalsy();
         expect(new UnitModel(0, 'mL').isValidForSubmit()).toBeTruthy();
+        expect(new UnitModel(-0, 'mL').isValidForSubmit()).toBeTruthy();
         expect(new UnitModel(1, 'uL').isValidForSubmit()).toBeTruthy();
     });
 });

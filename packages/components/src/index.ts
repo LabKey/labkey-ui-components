@@ -7,7 +7,7 @@ import { enableMapSet, enablePatches } from 'immer';
 import { applyURL, AppURL, buildURL, spliceURL } from './internal/url/AppURL';
 import { AppLink } from './internal/url/AppLink';
 import { useAppNavigate } from './internal/url/useAppNavigate';
-import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
+import { hasParameter, imageURL, redirect, toggleParameter } from './internal/url/ActionURL';
 import { getIntegerSearchParam } from './internal/url/utils';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
@@ -1613,6 +1613,7 @@ export {
     QuerySort,
     quoteValueWithDelimiters,
     RANGE_URIS,
+    redirect,
     registerDefaultURLMappers,
     registerFilterType,
     registerInputRenderer,

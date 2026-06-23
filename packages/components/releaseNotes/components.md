@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.42.2
+*Released*: 22 June 2026
+- Styling update for user comment on large storage modal
+
 ### version 7.42.1
 *Released*: 17 June 2026
 - Package updates

@@ -464,6 +464,15 @@ textarea.form-control {
     min-width: 175px;
 }
 
+.modal-footer .inline-comment.inline-comment-large textarea {
+    @media (max-width: 924px) {
+        min-width: 300px;
+    }
+    @media (min-width: 925px) {
+        min-width: 450px;
+    }
+}
+
 .modal-footer .inline-comment .inline-comment-label {
     margin-bottom: 0;
 }

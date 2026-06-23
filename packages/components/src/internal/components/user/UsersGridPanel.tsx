@@ -24,7 +24,6 @@ import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
 import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { capitalizeFirstChar } from '../../util/utils';
 
 import { ChangeType, InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
@@ -195,7 +194,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
         this.props.actions.loadModel(this.getUsersModelId(), true, true);
     }
 
-    onUsersStateChangeComplete = (response: any, isDelete: boolean = false): void => {
+    onUsersStateChangeComplete = (response: any): void => {
         this.closeDialog();
         this.updateSelectedUserId(undefined); // clear selected user details
         this.props.onUsersStateChangeComplete(response);
@@ -205,7 +204,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
     };
 
     onUserDelete = (response: any): void => {
-        this.onUsersStateChangeComplete(response, true);
+        this.onUsersStateChangeComplete(response);
     };
 
     onRowSelectionChange = (model: QueryModel, row: any, checked: boolean): void => {

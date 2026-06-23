@@ -5,6 +5,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useMemo } from 'react';
 
+import { redirect } from './ActionURL';
 import { AppURL } from './AppURL';
 import { parseAppPath } from './AppLink';
 
@@ -16,9 +17,9 @@ export type NavigateFn = (url: string | AppURL, replace?: boolean) => void;
  *  - If url is an AppURL it navigates via React Router's navigate method
  *  - If url is a string prefixed with # it will assume the URL is an app path, and use RR's navigate method
  *  - If url is a string pointing to an app path for the current app it will navigate via RR's navigate method
- *  - In all other cases it will use window.location.href to navigate to the given URL
- * string it navigates via window.location.href = url. If you have an AppURL you should always pass it, instead of
- * AppURL.toString() or AppURL.toHref().
+ *  - In all other cases it navigates to the given URL via the redirect() helper, which routes through the
+ * core/safeRedirect action to guard against open-redirect vulnerabilities. If you have an AppURL you should always
+ * pass it, instead of AppURL.toString() or AppURL.toHref().
  */
 interface AppNavigateState {
     goBack: () => void;
@@ -42,7 +43,7 @@ export function useAppNavigate(): AppNavigateState {
                 return;
             }
 
-            window.location.href = url.toString();
+            redirect(url.toString());
         },
         [rrNavigate]
     );

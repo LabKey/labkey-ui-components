@@ -86,7 +86,7 @@ export class UnitModel {
     }
 
     isValidForSubmit(): boolean {
-        const hasBoth = this.value != undefined && this.unit != null;
+        const hasBoth = this.value != undefined && this.value >= 0 && this.unit != null;
         const hasNeither = this.value == undefined && this.unit == null;
         return hasBoth || hasNeither;
     }

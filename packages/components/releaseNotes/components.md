@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- GH Issue #1164: Don't allow negative delta value during checkin
+
 ### version 7.42.2
 *Released*: 22 June 2026
 - Styling update for user comment on large storage modal

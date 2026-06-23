@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- GH Issue 1191: Don't remove product switch menu from narrow browsers
+- GH Issue 254: Use primary product id to get user menu items instead of current product id.
+
 ### version 7.42.2
 *Released*: 22 June 2026
 - Styling update for user comment on large storage modal

@@ -86,7 +86,5 @@ export function toggleParameter(parameterName: string, value: any): void {
 
 // GitHub Issue #1023: Use the safeRedirect action to verify returnURL goes to local URLs only
 export function redirect(url: string): void {
-    if (url) {
-        window.location.href = ActionURL.buildURL('core', 'safeRedirect', undefined, { returnUrl: url });
-    }
+    window.location.href = ActionURL.buildURL('core', 'safeRedirect', undefined, { returnUrl: url });
 }

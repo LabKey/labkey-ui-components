@@ -190,13 +190,9 @@ export const UserDetailsPanel: FC<Props> = props => {
     const handleUsersStateChangeComplete = useCallback(
         (response: any, isDelete = false): void => {
             toggleDialog(undefined); // close dialog
-            if (!isDelete) {
-                loadUserDetails(); // reload to pickup new user state
-            }
-
             onUsersStateChangeComplete?.(response, isDelete);
         },
-        [loadUserDetails, onUsersStateChangeComplete, toggleDialog]
+        [onUsersStateChangeComplete, toggleDialog]
     );
 
     const onUserDeleteComplete = useCallback(

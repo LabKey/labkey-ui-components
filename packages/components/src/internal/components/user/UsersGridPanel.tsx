@@ -48,9 +48,8 @@ const OMITTED_COLUMNS = [
 ];
 
 export enum UsersView {
-    ACTIVE = 'active',
-    INACTIVE = 'inactive',
     ALL = 'all',
+    INACTIVE = 'inactive',
     SITE = 'site',
 }
 
@@ -125,8 +124,12 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
     initQueryModel = (usersView: UsersView): void => {
         const { actions, container, user } = this.props;
         // GitHub Issue 847: if user has manageUsersPermission allow them to select / view all site users
-        const schemaQuery = usersView === UsersView.SITE && user.hasManageUsersPermission() ? SCHEMAS.CORE_TABLES.SITE_USERS : SCHEMAS.CORE_TABLES.USERS;
-        const baseFilters = usersView === UsersView.ALL || usersView === UsersView.SITE ? [] : [Filter.create('active', usersView === UsersView.ACTIVE)];
+        // GitHub Issue 1234: use site users view for the inactive users grid view
+        const schemaQuery =
+            (usersView === UsersView.SITE || usersView === UsersView.INACTIVE) && user.hasManageUsersPermission()
+                ? SCHEMAS.CORE_TABLES.SITE_USERS
+                : SCHEMAS.CORE_TABLES.USERS;
+        const baseFilters = usersView === UsersView.INACTIVE ? [Filter.create('active', false)] : [];
 
         actions.addModel(
             {
@@ -147,12 +150,14 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
 
     getUsersView(paramVal: string): UsersView {
         // only allow 'site' view for user.hasManageUsersPermission()
-        if (paramVal === UsersView.SITE && this.props.user.hasManageUsersPermission()) {
-            return UsersView.SITE;
+        if (this.props.user.hasManageUsersPermission()) {
+            if (paramVal === UsersView.SITE) {
+                return UsersView.SITE;
+            } else if (paramVal === UsersView.INACTIVE) {
+                return UsersView.INACTIVE;
+            }
         }
-        if (paramVal === UsersView.INACTIVE) return UsersView.INACTIVE;
-        if (paramVal === UsersView.ALL) return UsersView.ALL;
-        return UsersView.ACTIVE; // default to view active application users
+        return UsersView.ALL; // default to view application users
     }
 
     getUsersModelId(): string {
@@ -192,10 +197,10 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
 
     onUsersStateChangeComplete = (response: any, isDelete: boolean = false): void => {
         this.closeDialog();
-        if (isDelete) this.updateSelectedUserId(undefined); // clear selected user details
+        this.updateSelectedUserId(undefined); // clear selected user details
         this.props.onUsersStateChangeComplete(response);
         this.props.actions.onModelChange(this.getUsersModelId(), {
-            changeType: isDelete ? ChangeType.delete : ChangeType.update,
+            changeType: ChangeType.delete, // treat all as delete since row count changes with activate/inactivate actions
         });
     };
 
@@ -281,49 +286,46 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                         Create
                     </DisableableButton>
                 )}
-                <ManageDropdownButton showIcon={false} pullRight={false}>
-                    {user.hasManageUsersPermission() && usersView === UsersView.ACTIVE && (
-                        <SelectionMenuItem
-                            text="Deactivate Users"
-                            onClick={() => this.toggleDialog('deactivate', true)}
-                            queryModel={model}
-                            nounPlural="users"
-                        />
-                    )}
-                    {user.hasManageUsersPermission() && (
+                {user.hasManageUsersPermission() && (
+                    <ManageDropdownButton showIcon={false} pullRight={false}>
+                        {usersView === UsersView.ALL && (
+                            <SelectionMenuItem
+                                text="Deactivate Users"
+                                onClick={() => this.toggleDialog('deactivate', true)}
+                                queryModel={model}
+                                nounPlural="users"
+                            />
+                        )}
                         <SelectionMenuItem
                             text="Delete Users"
                             onClick={() => this.toggleDialog('delete', true)}
                             queryModel={model}
                             nounPlural="users"
                         />
-                    )}
-                    {user.hasManageUsersPermission() && usersView === UsersView.INACTIVE && (
-                        <SelectionMenuItem
-                            text="Reactivate Users"
-                            maxSelection={this.getUserLimitRemainingUsers()}
-                            maxSelectionDisabledMsg={
-                                this.getUserLimitRemainingUsers() === 0 ? 'User limit has been reached' : undefined
-                            }
-                            onClick={() => this.toggleDialog('reactivate', true)}
-                            queryModel={model}
-                            nounPlural="users"
-                        />
-                    )}
-                    {user.hasManageUsersPermission() && <MenuDivider />}
-                    {usersView !== UsersView.ALL && (
-                        <MenuItem onClick={() => this.toggleViewActive(UsersView.ALL)}>View All Application Users</MenuItem>
-                    )}
-                    {user.hasManageUsersPermission() && usersView !== UsersView.SITE && (
-                        <MenuItem onClick={() => this.toggleViewActive(UsersView.SITE)}>View All Site Users</MenuItem>
-                    )}
-                    {usersView !== UsersView.ACTIVE && (
-                        <MenuItem onClick={() => this.toggleViewActive(UsersView.ACTIVE)}>View Active Application Users</MenuItem>
-                    )}
-                    {usersView !== UsersView.INACTIVE && (
-                        <MenuItem onClick={() => this.toggleViewActive(UsersView.INACTIVE)}>View Inactive Application Users</MenuItem>
-                    )}
-                </ManageDropdownButton>
+                        {usersView === UsersView.INACTIVE && (
+                            <SelectionMenuItem
+                                text="Reactivate Users"
+                                maxSelection={this.getUserLimitRemainingUsers()}
+                                maxSelectionDisabledMsg={
+                                    this.getUserLimitRemainingUsers() === 0 ? 'User limit has been reached' : undefined
+                                }
+                                onClick={() => this.toggleDialog('reactivate', true)}
+                                queryModel={model}
+                                nounPlural="users"
+                            />
+                        )}
+                        <MenuDivider />
+                        {usersView !== UsersView.ALL && (
+                            <MenuItem onClick={() => this.toggleViewActive(UsersView.ALL)}>View All Application Users</MenuItem>
+                        )}
+                        {usersView !== UsersView.SITE && (
+                            <MenuItem onClick={() => this.toggleViewActive(UsersView.SITE)}>View All Site Users</MenuItem>
+                        )}
+                        {usersView !== UsersView.INACTIVE && (
+                            <MenuItem onClick={() => this.toggleViewActive(UsersView.INACTIVE)}>View Inactive Site Users</MenuItem>
+                        )}
+                    </ManageDropdownButton>
+                )}
             </div>
         );
     };
@@ -339,9 +341,8 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
         let title = 'Application Users';
         if (user.hasManageUsersPermission() && usersView === UsersView.SITE) {
             title = 'Site Users';
-        }
-        else if (usersView !== UsersView.ALL) {
-            title = capitalizeFirstChar(usersView) + ' Application Users';
+        } else if (user.hasManageUsersPermission() && usersView === UsersView.INACTIVE) {
+            title = 'Inactive Site Users';
         }
 
         return (

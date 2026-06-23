@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- GitHub Issue 1234: User management page update to use SiteUsers for inactive users grid
+
 ### version 7.42.2
 *Released*: 22 June 2026
 - Styling update for user comment on large storage modal

@@ -1137,11 +1137,13 @@ function applyCombineSize(
         { aliquotEdges: [] as LineageLink[], nonAliquotEdges: [] as LineageLink[] }
     );
 
-    // GH Issue #1256
-    if (aliquotEdges.length > 0) {
+
+    if (aliquotEdges.length > 1) {
         combinedLineageNodes.push(
             combineNodes(lsid, aliquotEdges, nodes, options, dir, visEdges, visNodes, nodesInCombinedNode, depth)
         );
+    } else { // GH Issue #1256
+        addEdges(lsid, null, visEdges, List(aliquotEdges), nodesInCombinedNode, dir);
     }
 
     if (nonAliquotEdges.length >= options.grouping.combineSize) {

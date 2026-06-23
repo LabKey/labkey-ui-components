@@ -14,7 +14,7 @@ export const ProductNavigation: FC = memo(() => {
     const onCloseMenu = useCallback(() => setShow(false), []);
     const toggleMenu = useCallback(() => setShow(s => !s), []);
     return (
-        <div className="navbar-item pull-right product-navigation-menu hidden-xs navbar-menu">
+        <div className="navbar-item pull-right product-navigation-menu navbar-menu">
             <button
                 aria-haspopup="true"
                 aria-expanded={show}

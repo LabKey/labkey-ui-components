@@ -67,6 +67,11 @@
     margin-top: 3px;
 }
 
+// Override the default margin for h* elements within a panel heading
+.panel-heading:is(h1, h2, h3, h4, h5, h6) {
+    margin: 0;
+}
+
 
 // revert panel heading font-size for those within a tabbed-grid-panel
 .tabbed-grid-panel .panel-heading {

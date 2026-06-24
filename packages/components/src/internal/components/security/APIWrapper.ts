@@ -56,6 +56,16 @@ export interface RemoveGroupMembersResponse {
     removed: number[];
 }
 
+export interface AuthenticationConfiguration {
+    description: string;
+    reauthUrl: string;
+}
+
+interface AuthenticationConfigurationResponse {
+    data: AuthenticationConfiguration;
+    success: boolean;
+}
+
 export interface SecurityAPIWrapper {
     addGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<AddGroupMembersResponse>;
     createApiKey: (type?: string, description?: string) => Promise<string>;
@@ -78,6 +88,7 @@ export interface SecurityAPIWrapper {
     ) => Promise<SecurityPolicy>;
     fetchRoles: () => Promise<List<SecurityRole>>;
     getAuditLogDate: (filterCol: string, filterVal: number | string) => Promise<string>;
+    getAuthenticationConfiguration: () => Promise<AuthenticationConfiguration>;
     getDeletionSummaries: (containerPath?: string) => Promise<Summary[]>;
     getGroupMemberships: () => Promise<GroupMembership[]>;
     getInheritedContainers: (container: Container) => Promise<string[]>;
@@ -262,6 +273,14 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         return dateRow.formattedValue ?? dateRow.value;
     };
 
+    getAuthenticationConfiguration = async (): Promise<AuthenticationConfiguration> => {
+        const { data } = await request<AuthenticationConfigurationResponse>({
+            url: ActionURL.buildURL('login', 'getAuthenticationConfiguration.api'),
+        });
+
+        return data;
+    };
+
     getDeletionSummaries = async (containerPath?: string): Promise<Summary[]> => {
         const { moduleSummary } = await request<{ moduleSummary: Summary[] }>({
             url: ActionURL.buildURL('core', 'getModuleSummary.api', containerPath),
@@ -443,6 +462,7 @@ export function getSecurityTestAPIWrapper(
         fetchPolicy: mockFn(),
         fetchRoles: mockFn(),
         getAuditLogDate: mockFn(),
+        getAuthenticationConfiguration: mockFn(),
         getDeletionSummaries: mockFn(),
         getGroupMemberships: mockFn(),
         getPrincipalById: mockFn(),

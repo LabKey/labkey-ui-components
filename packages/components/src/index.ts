@@ -1894,7 +1894,7 @@ export type {
 } from './internal/components/samples/models';
 export type { SearchHit, SearchOptions } from './internal/components/search/actions';
 export type { EntityFieldFilter } from './internal/components/search/models';
-export type { SecurityAPIWrapper } from './internal/components/security/APIWrapper';
+export type { AuthenticationConfiguration, SecurityAPIWrapper } from './internal/components/security/APIWrapper';
 export type { IDataViewInfo } from './internal/DataViewInfo';
 export type { BSStyle } from './internal/dropdowns';
 export type { MenuSectionItem } from './internal/DropdownSection';

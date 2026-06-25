@@ -18,7 +18,7 @@ export interface NavigationAPIWrapper {
         containerId: string,
         containerPath?: string
     ) => Promise<ProductMenuModel>;
-    loadUserMenu: (currentProductId: string, containerPath?: string) => Promise<MenuSectionModel>;
+    loadUserMenu: (productId: string, containerPath?: string) => Promise<MenuSectionModel>;
 }
 
 export class ServerNavigationAPIWrapper implements NavigationAPIWrapper {
@@ -45,9 +45,9 @@ export class ServerNavigationAPIWrapper implements NavigationAPIWrapper {
         }
     };
 
-    loadUserMenu = async (currentProductId: string, containerPath?: string): Promise<MenuSectionModel> => {
+    loadUserMenu = async (productId: string, containerPath?: string): Promise<MenuSectionModel> => {
         try {
-            return await getUserMenuSection(currentProductId, containerPath);
+            return await getUserMenuSection(productId, containerPath);
         } catch (e) {
             return undefined;
         }

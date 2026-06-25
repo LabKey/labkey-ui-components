@@ -2,9 +2,9 @@
  * Copyright (c) 2020-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { applyLineageOptions, generateNodesAndEdges, LineageIO, LineageNode, LineageResult } from './models';
+import { applyLineageOptions, generateNodesAndEdges, Lineage, LineageIO, LineageNode, LineageResult } from './models';
 import { DEFAULT_LINEAGE_OPTIONS } from './constants';
-import { LineageFilter } from './types';
+import { LineageFilter, LineageOptions } from './types';
 
 describe('lineage model', () => {
     describe('applyLineageOptions', () => {
@@ -33,6 +33,7 @@ describe('lineage model', () => {
     describe('LineageIO.applyConfig', () => {
         const lineageObj = {
             container: 'container',
+            containerPath: '/container',
             created: '2022-01-20',
             createdBy: 'me',
             modified: '2022-01-21',
@@ -235,13 +236,13 @@ describe('lineage model', () => {
             const parentLsid = 'parent-lsid';
 
             const childNode = LineageNode.create(childLsid, {
-                parents: [{ lsid: parentLsid, name: '&4[0' }],
-                name: '&4[0_1001'
+                parents: [{ lsid: parentLsid }],
+                name: '&4[0_1001',
             });
 
             const parentNode = LineageNode.create(parentLsid, {
-                children: [{ lsid: childLsid, name: '&4[0_1001' }],
-                name: '&4[0'
+                children: [{ lsid: childLsid }],
+                name: '&4[0',
             });
 
             const result = LineageResult.create({
@@ -261,6 +262,88 @@ describe('lineage model', () => {
             expect(nodes[parentNode.lsid].label).toEqual('＆4[0');
             expect(nodes[childNode.lsid].level).toEqual(0);
             expect(nodes[childNode.lsid].label).toEqual('＆4[0_1001');
+        });
+
+        it('GH Issue #1256: Lineage graph can become disconnected with single aliquot and multiple derivatives', () => {
+            // Parent sample with 2 derived samples and 1 aliquot including derivation runs
+            const result = LineageResult.create({
+                nodes: {
+                    'aliquot-lsid': {
+                        cpasType: 'sample-type-lsid',
+                        materialLineageType: 'Aliquot',
+                        type: 'Sample',
+                        lsid: 'aliquot-lsid',
+                        name: 'Aliquot-1',
+                        expType: 'Material',
+                        parents: [{ lsid: 'aliquot-run-lsid' }],
+                    },
+                    'aliquot-run-lsid': {
+                        cpasType: 'urn:lsid:labkey.org:Protocol:SampleAliquotProtocol',
+                        type: 'Run',
+                        lsid: 'aliquot-run-lsid',
+                        children: [{ lsid: 'aliquot-lsid' }],
+                        name: 'Create aliquot from Parent-1',
+                        expType: 'ExperimentRun',
+                        parents: [{ lsid: 'parent-lsid' }],
+                    },
+                    'derived-one-lsid': {
+                        cpasType: 'sample-type-lsid',
+                        materialLineageType: 'Derivative',
+                        type: 'Sample',
+                        lsid: 'derived-one-lsid',
+                        name: 'Derived-1',
+                        expType: 'Material',
+                        parents: [{ lsid: 'derivation-run-lsid' }],
+                    },
+                    'derived-two-lsid': {
+                        cpasType: 'sample-type-lsid',
+                        materialLineageType: 'Derivative',
+                        type: 'Sample',
+                        lsid: 'derived-two-lsid',
+                        name: 'Derived-2',
+                        expType: 'Material',
+                        parents: [{ lsid: 'derivation-run-lsid' }],
+                    },
+                    'derivation-run-lsid': {
+                        cpasType: 'urn:lsid:labkey.org:Protocol:SampleDerivationProtocol',
+                        type: 'Run',
+                        lsid: 'derivation-run-lsid',
+                        children: [{ lsid: 'derived-two-lsid' }, { lsid: 'derived-one-lsid' }],
+                        name: 'Derive 2 samples from Parent-1',
+                        expType: 'ExperimentRun',
+                        parents: [{ lsid: 'parent-lsid' }],
+                    },
+                    'parent-lsid': {
+                        cpasType: 'sample-type-lsid',
+                        materialLineageType: 'RootMaterial',
+                        type: 'Sample',
+                        lsid: 'parent-lsid',
+                        children: [{ lsid: 'aliquot-run-lsid' }, { lsid: 'derivation-run-lsid' }],
+                        name: 'Parent-1',
+                        expType: 'Material',
+                    },
+                },
+                seed: 'parent-lsid',
+            });
+
+            const options: LineageOptions = {
+                filters: [new LineageFilter('type', ['Sample'])],
+            };
+
+            const lineage = new Lineage({ result });
+            const nodesAndEdges = generateNodesAndEdges(lineage.filterResult(options), options);
+
+            // Runs have been filtered out
+            const expectedNodes = new Set(['aliquot-lsid', 'derived-one-lsid', 'derived-two-lsid', 'parent-lsid']);
+            expect(new Set(Object.keys(nodesAndEdges.nodes))).toEqual(expectedNodes);
+
+            // Previously, this would have only two edges where the edge between the parent and aliquot was missing
+            const expectedEdges = new Set([
+                'parent-lsid||aliquot-lsid',
+                'parent-lsid||derived-one-lsid',
+                'parent-lsid||derived-two-lsid',
+            ]);
+            expect(new Set(Object.keys(nodesAndEdges.edges))).toEqual(expectedEdges);
         });
     });
 });

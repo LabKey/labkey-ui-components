@@ -42,9 +42,9 @@ export interface LineageGroupingOptions {
 
 export class LineageFilter {
     field: string;
-    value: string[];
+    value: number[] | string[];
 
-    constructor(field: string, value: string[]) {
+    constructor(field: string, value: number[] | string[]) {
         this.field = field;
         this.value = value;
     }

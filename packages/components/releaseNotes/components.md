@@ -6,6 +6,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 - GH Issue 1191: Don't remove product switch menu from narrow browsers
 - GH Issue 254: Use primary product id to get user menu items instead of current product id.
 
+### version 7.44.0
+*Released*: 25 June 2026
+- Support for filtering the sample lineage graph by sample status
+   - Add metric constant
+   - Add `sampleStatus` field to `LineageNode`
+   - Add `rowId` field to `SampleStatus` model
+
 ### version 7.43.0
 *Released*: 23 June 2026
 - panel.scss: disable margin on h1, h2, etc elements within panel-heading components

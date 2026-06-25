@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 7.44.0
+*Released*: 25 June 2026
 - Support for filtering the sample lineage graph by sample status
    - Add metric constant
    - Add `sampleStatus` field to `LineageNode`

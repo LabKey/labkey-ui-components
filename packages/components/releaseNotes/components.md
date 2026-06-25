@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.45.1
+*Released*: 25 June 2026
+- GH Issue #1164: Don't allow negative delta value during checkin
+
 ### version 7.45.0
 *Released*: 25 June 2026
 - GitHub Issue 1234: User management page update to use SiteUsers for inactive users grid

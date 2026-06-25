@@ -75,7 +75,7 @@ interface Props {
     currentUser: User;
     displayName?: string;
     isSelf?: boolean;
-    onUsersStateChangeComplete?: (response: any, resetSelection: boolean) => void;
+    onUsersStateChangeComplete?: (response: any) => void;
     policy?: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
     rootPolicy?: SecurityPolicy;
@@ -188,20 +188,16 @@ export const UserDetailsPanel: FC<Props> = props => {
     const toggleDeactivateDialog = useCallback(() => toggleDialog('deactivate'), [toggleDialog]);
 
     const handleUsersStateChangeComplete = useCallback(
-        (response: any, isDelete = false): void => {
+        (response: any): void => {
             toggleDialog(undefined); // close dialog
-            if (!isDelete) {
-                loadUserDetails(); // reload to pickup new user state
-            }
-
-            onUsersStateChangeComplete?.(response, isDelete);
+            onUsersStateChangeComplete?.(response);
         },
-        [loadUserDetails, onUsersStateChangeComplete, toggleDialog]
+        [onUsersStateChangeComplete, toggleDialog]
     );
 
     const onUserDeleteComplete = useCallback(
         (response: any) => {
-            handleUsersStateChangeComplete(response, true);
+            handleUsersStateChangeComplete(response);
         },
         [handleUsersStateChangeComplete]
     );

@@ -395,6 +395,7 @@ import {
     getSampleStatus,
     getSampleStatusColor,
     getSampleStatusContainerFilter,
+    getSampleStatusFromSampleRow,
     getSampleStatusType,
     isAllSamplesSchema,
     isSampleOperationPermitted,
@@ -422,7 +423,7 @@ import {
     TestLineageAPIWrapper,
 } from './internal/components/lineage/actions';
 import { withLineage } from './internal/components/lineage/withLineage';
-import { DEFAULT_LINEAGE_DISTANCE } from './internal/components/lineage/constants';
+import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_GRAPH_FILTER_METRIC} from './internal/components/lineage/constants';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
@@ -527,6 +528,7 @@ import {
     EntityCreationType,
     INDEPENDENT_SAMPLE_CREATION,
     POOLED_SAMPLE_CREATION,
+    SampleState,
     SampleStateType,
 } from './internal/components/samples/models';
 import { DEFAULT_ALIQUOT_NAMING_PATTERN, SampleTypeModel } from './internal/components/domainproperties/samples/models';
@@ -1407,6 +1409,7 @@ export {
     getSampleStatus,
     getSampleStatusColor,
     getSampleStatusContainerFilter,
+    getSampleStatusFromSampleRow,
     getSampleStatusType,
     getSamplesTestAPIWrapper,
     getSampleTypeDetails,
@@ -1513,6 +1516,7 @@ export {
     LabelHelpTip,
     LabelOverlay,
     LINEAGE_DIRECTIONS,
+    LINEAGE_GRAPH_FILTER_METRIC,
     LINEAGE_GROUPING_GENERATIONS,
     LineageDepthLimitMessage,
     LineageFilter,
@@ -1658,6 +1662,7 @@ export {
     SampleParentDataType,
     SamplePropertyDataType,
     SamplesEditButtonSections,
+    SampleState,
     SampleStateType,
     SampleStatusLegend,
     SampleStatusRenderer,

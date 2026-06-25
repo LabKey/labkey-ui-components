@@ -65,6 +65,7 @@ describe('NavigationBar', () => {
         maxRows: 1,
         markAllNotificationsRead,
         serverActivity: new ServerNotificationModel(),
+        onRead: jest.fn(),
     };
 
     test('default props', async () => {

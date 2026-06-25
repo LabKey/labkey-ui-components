@@ -23,7 +23,7 @@ const POLICY = SecurityPolicy.create(policyJSON);
 const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
-describe('<UsersGridPanel/>', () => {
+describe('UsersGridPanel', () => {
     const DEFAULT_PROPS = {
         container: TEST_PROJECT_CONTAINER_ADMIN,
         user: TEST_USER_APP_ADMIN,
@@ -73,6 +73,8 @@ describe('<UsersGridPanel/>', () => {
         expect(buttons).toHaveLength(4);
         expect(buttons[0].textContent).toBe('Create');
         expect(buttons[1].textContent).toBe('Manage');
+        expect(buttons[2].textContent).toBe(' Filters');
+        expect(buttons[3].textContent).toBe('Filters');
         expect(document.querySelectorAll('.dropdown-toggle')[0].textContent.trim()).toEqual('Manage');
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
@@ -93,8 +95,13 @@ describe('<UsersGridPanel/>', () => {
         const buttons = document.querySelectorAll('.grid-panel__button-bar-left button');
         expect(buttons).toHaveLength(3);
         expect(buttons[0].textContent).toBe('Create');
+        expect(buttons[1].textContent).toBe(' Filters');
+        expect(buttons[2].textContent).toBe('Filters');
         // no Manage dropdown without manage users permission
-        expect(document.querySelectorAll('.dropdown-toggle')[0].textContent.trim()).not.toEqual('Manage');
+        const dropdowns = document.querySelectorAll('.dropdown-toggle');
+        expect(dropdowns).toHaveLength(2);
+        expect(dropdowns[0].textContent).toBe('Export');
+        expect(dropdowns[1].textContent).toBe(' Views');
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
         expect(menuItems).toHaveLength(6);
@@ -109,8 +116,8 @@ describe('<UsersGridPanel/>', () => {
         expect(document.querySelectorAll('.view-header')[0].textContent).toBe('Application Users');
         const buttons = document.querySelectorAll('.grid-panel__button-bar-left button');
         expect(buttons).toHaveLength(2);
-        expect(buttons[0].textContent).not.toBe('Create');
-        expect(buttons[0].textContent).not.toBe('Manage');
+        expect(buttons[0].textContent).toBe(' Filters');
+        expect(buttons[1].textContent).toBe('Filters');
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
         expect(menuItems).toHaveLength(6);

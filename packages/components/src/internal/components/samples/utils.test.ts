@@ -28,6 +28,7 @@ import {
     getOperationNotPermittedMessage,
     getSampleStatus,
     getSampleStatusColor,
+    getSampleStatusFromSampleRow,
     getSampleStatusLockedMessage,
     getSampleStatusType,
     isSampleOperationPermitted,
@@ -330,23 +331,59 @@ describe('isSamplesSchema', () => {
     });
 });
 
-describe('getSampleStatus', () => {
-    test('getSampleStatusType', () => {
+describe('getSampleStatusType', () => {
+    test('no data', () => {
+        expect(getSampleStatusType(undefined)).toBeUndefined();
         expect(getSampleStatusType({})).toBeUndefined();
+    });
+
+    test('sample row', () => {
         expect(getSampleStatusType({ 'SampleState/StatusType': { value: undefined } })).toBeUndefined();
         expect(getSampleStatusType({ 'SampleState/StatusType': { value: 'Available' } })).toBe('Available');
+    });
+
+    test('sample lookup', () => {
         expect(getSampleStatusType({ 'SampleID/SampleState/StatusType': { value: undefined } })).toBeUndefined();
         expect(getSampleStatusType({ 'SampleID/SampleState/StatusType': { value: 'Consumed' } })).toBe('Consumed');
+    });
+
+    test('status row', () => {
         expect(getSampleStatusType({ StatusType: { value: undefined } })).toBeUndefined();
         expect(getSampleStatusType({ StatusType: { value: 'Locked' } })).toBe('Locked');
     });
+});
 
+describe('getSampleStatusFromSampleRow', () => {
+    test('label', () => {
+        expect(getSampleStatusFromSampleRow({}).label).toBeUndefined();
+        expect(getSampleStatusFromSampleRow({ SampleState: { displayValue: undefined } }).label).toBeUndefined();
+        expect(getSampleStatusFromSampleRow({ SampleState: { displayValue: 'Label1' } }).label).toBe('Label1');
+        expect(
+            getSampleStatusFromSampleRow({ 'SampleID/SampleState': { displayValue: undefined } }).label
+        ).toBeUndefined();
+        expect(getSampleStatusFromSampleRow({ 'SampleID/SampleState': { displayValue: 'Label2' } }).label).toBe(
+            'Label2'
+        );
+    });
+
+    test('description', () => {
+        expect(getSampleStatusFromSampleRow({}).description).toBeUndefined();
+        expect(
+            getSampleStatusFromSampleRow({ 'SampleState/Description': { value: undefined } }).description
+        ).toBeUndefined();
+        expect(getSampleStatusFromSampleRow({ 'SampleState/Description': { value: 'Desc1' } }).description).toBe('Desc1');
+        expect(
+            getSampleStatusFromSampleRow({ 'SampleID/SampleState/Description': { value: undefined } }).description
+        ).toBeUndefined();
+        expect(
+            getSampleStatusFromSampleRow({ 'SampleID/SampleState/Description': { value: 'Desc2' } }).description
+        ).toBe('Desc2');
+    });
+});
+
+describe('getSampleStatus', () => {
     test('label', () => {
         expect(getSampleStatus({}).label).toBeUndefined();
-        expect(getSampleStatus({ SampleState: { displayValue: undefined } }).label).toBeUndefined();
-        expect(getSampleStatus({ SampleState: { displayValue: 'Label1' } }).label).toBe('Label1');
-        expect(getSampleStatus({ 'SampleID/SampleState': { displayValue: undefined } }).label).toBeUndefined();
-        expect(getSampleStatus({ 'SampleID/SampleState': { displayValue: 'Label2' } }).label).toBe('Label2');
         expect(getSampleStatus({ Label: { displayValue: undefined } }).label).toBeUndefined();
         expect(getSampleStatus({ Label: { displayValue: 'Label3' } }).label).toBeUndefined();
         expect(getSampleStatus({ Label: { value: 'Label3' } }).label).toBe('Label3');
@@ -354,12 +391,6 @@ describe('getSampleStatus', () => {
 
     test('description', () => {
         expect(getSampleStatus({}).description).toBeUndefined();
-        expect(getSampleStatus({ 'SampleState/Description': { value: undefined } }).description).toBeUndefined();
-        expect(getSampleStatus({ 'SampleState/Description': { value: 'Desc1' } }).description).toBe('Desc1');
-        expect(
-            getSampleStatus({ 'SampleID/SampleState/Description': { value: undefined } }).description
-        ).toBeUndefined();
-        expect(getSampleStatus({ 'SampleID/SampleState/Description': { value: 'Desc2' } }).description).toBe('Desc2');
         expect(getSampleStatus({ Description: { value: undefined } }).description).toBeUndefined();
         expect(getSampleStatus({ Description: { value: 'Desc3' } }).description).toBe('Desc3');
     });

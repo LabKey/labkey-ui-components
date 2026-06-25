@@ -104,6 +104,7 @@ export const TEST_LKS_STARTER_MODULE_CONTEXT = {
     },
     core: {
         productFeatures: [ProductFeature.ApiKeys, ProductFeature.Assay],
+        primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID,
     },
 };
 

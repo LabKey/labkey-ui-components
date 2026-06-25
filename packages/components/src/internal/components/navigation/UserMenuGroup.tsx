@@ -193,17 +193,16 @@ export const UserMenuGroup: FC<UserMenuProps> = props => {
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext } = useServerContext();
     const { appProperties = getPrimaryAppProperties(moduleContext) } = props;
-    const productId = getCurrentAppProperties()?.productId ?? appProperties.productId;
 
     const [model, setModel] = useState<MenuSectionModel>();
 
     useEffect(() => {
         (async () => {
             // no try/catch as the loadUserMenu will catch errors and return undefined
-            const sectionModel = await api.navigation.loadUserMenu(productId, container.path);
+            const sectionModel = await api.navigation.loadUserMenu(appProperties.productId, container.path);
             setModel(sectionModel);
         })();
-    }, [api.navigation, appProperties, container.path, moduleContext, productId]);
+    }, [api.navigation, appProperties, container.path, moduleContext]);
 
     return <UserMenuGroupImpl {...props} model={model} />;
 };

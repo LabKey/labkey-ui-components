@@ -38,13 +38,7 @@ import { UserDetailsPanel } from './UserDetailsPanel';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 
-const OMITTED_COLUMNS = [
-    'phone',
-    'im',
-    'mobile',
-    'pager',
-    'groups',
-];
+const OMITTED_COLUMNS = ['phone', 'im', 'mobile', 'pager', 'groups'];
 
 export enum UsersView {
     ALL = 'all',
@@ -71,7 +65,7 @@ interface OwnProps {
     userLimitSettings?: Partial<UserLimitSettings>;
 }
 
-type Props = OwnProps & InjectedQueryModels;
+type Props = InjectedQueryModels & OwnProps;
 
 interface State {
     selectedUserId: number;
@@ -277,51 +271,57 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                 {user.hasAddUsersPermission() && (
                     <DisableableButton
                         bsStyle="success"
-                        onClick={() => this.toggleDialog('create')}
                         disabledMsg={
                             this.getUserLimitRemainingUsers() === 0 ? 'User limit has been reached' : undefined
                         }
+                        onClick={() => this.toggleDialog('create')}
                     >
                         Create
                     </DisableableButton>
                 )}
                 {user.hasManageUsersPermission() && (
-                    <ManageDropdownButton showIcon={false} pullRight={false}>
+                    <ManageDropdownButton pullRight={false} showIcon={false}>
                         {usersView === UsersView.ALL && (
                             <SelectionMenuItem
-                                text="Deactivate Users"
+                                nounPlural="users"
                                 onClick={() => this.toggleDialog('deactivate', true)}
                                 queryModel={model}
-                                nounPlural="users"
+                                text="Deactivate Users"
                             />
                         )}
                         <SelectionMenuItem
-                            text="Delete Users"
+                            nounPlural="users"
                             onClick={() => this.toggleDialog('delete', true)}
                             queryModel={model}
-                            nounPlural="users"
+                            text="Delete Users"
                         />
                         {usersView === UsersView.INACTIVE && (
                             <SelectionMenuItem
-                                text="Reactivate Users"
                                 maxSelection={this.getUserLimitRemainingUsers()}
                                 maxSelectionDisabledMsg={
                                     this.getUserLimitRemainingUsers() === 0 ? 'User limit has been reached' : undefined
                                 }
+                                nounPlural="users"
                                 onClick={() => this.toggleDialog('reactivate', true)}
                                 queryModel={model}
-                                nounPlural="users"
+                                text="Reactivate Users"
                             />
                         )}
                         <MenuDivider />
                         {usersView !== UsersView.ALL && (
-                            <MenuItem onClick={() => this.toggleViewActive(UsersView.ALL)}>View All Application Users</MenuItem>
+                            <MenuItem onClick={() => this.toggleViewActive(UsersView.ALL)}>
+                                View All Application Users
+                            </MenuItem>
                         )}
                         {usersView !== UsersView.SITE && (
-                            <MenuItem onClick={() => this.toggleViewActive(UsersView.SITE)}>View All Site Users</MenuItem>
+                            <MenuItem onClick={() => this.toggleViewActive(UsersView.SITE)}>
+                                View All Site Users
+                            </MenuItem>
                         )}
                         {usersView !== UsersView.INACTIVE && (
-                            <MenuItem onClick={() => this.toggleViewActive(UsersView.INACTIVE)}>View Inactive Site Users</MenuItem>
+                            <MenuItem onClick={() => this.toggleViewActive(UsersView.INACTIVE)}>
+                                View Inactive Site Users
+                            </MenuItem>
                         )}
                     </ManageDropdownButton>
                 )}
@@ -352,12 +352,12 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                         {model && (
                             <GridPanel
                                 actions={actions}
-                                model={model}
-                                loadOnMount={false}
-                                title={title}
                                 ButtonsComponent={() => this.renderButtons()}
                                 highlightLastSelectedRow
+                                loadOnMount={false}
+                                model={model}
                                 showChartMenu={false}
+                                title={title}
                             />
                         )}
                     </div>
@@ -366,9 +366,9 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                             <UserDetailsPanel
                                 {...this.props}
                                 currentUser={user}
-                                userId={selectedUserId}
                                 onUsersStateChangeComplete={this.onUsersStateChangeComplete}
                                 showPermissionListLinks={isAppHome}
+                                userId={selectedUserId}
                             />
                         </div>
                     )}
@@ -376,25 +376,25 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                 {user.hasAddUsersPermission() && showDialog === 'create' && (
                     <CreateUsersModal
                         container={container}
-                        userLimitSettings={userLimitSettings}
-                        roleOptions={newUserRoleOptions}
-                        onComplete={this.onCreateComplete}
                         onCancel={this.closeDialog}
+                        onComplete={this.onCreateComplete}
+                        roleOptions={newUserRoleOptions}
+                        userLimitSettings={userLimitSettings}
                     />
                 )}
                 {user.hasManageUsersPermission() && (showDialog === 'reactivate' || showDialog === 'deactivate') && (
                     <UserActivateChangeConfirmModal
-                        userIds={model.intSelections}
-                        reactivate={showDialog === 'reactivate'}
-                        onComplete={this.onUsersStateChangeComplete}
                         onCancel={this.closeDialog}
+                        onComplete={this.onUsersStateChangeComplete}
+                        reactivate={showDialog === 'reactivate'}
+                        userIds={model.intSelections}
                     />
                 )}
                 {user.hasManageUsersPermission() && showDialog === 'delete' && (
                     <UserDeleteConfirmModal
-                        userIds={model.intSelections}
-                        onComplete={this.onUserDelete}
                         onCancel={this.closeDialog}
+                        onComplete={this.onUserDelete}
+                        userIds={model.intSelections}
                     />
                 )}
             </>

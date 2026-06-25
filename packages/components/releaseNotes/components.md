@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.45.0
+*Released*: 25 June 2026
+- GitHub Issue 1234: User management page update to use SiteUsers for inactive users grid
+
 ### version 7.44.1
 *Released*: 25 June 2026
 - GH Issue 1191: Don't remove product switch menu from narrow browsers

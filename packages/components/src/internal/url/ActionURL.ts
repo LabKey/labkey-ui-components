@@ -5,6 +5,8 @@
 import { OrderedMap } from 'immutable';
 import { ActionURL, Utils } from '@labkey/api';
 
+import { AppURL } from './AppURL';
+
 // This is similar to LABKEY.Filter.getSortFromUrl, however, it does not assume the urlPrefix.
 export function getSortFromUrl(queryString: string, urlPrefix?: string): string {
     const params = ActionURL.getParameters(queryString);
@@ -84,7 +86,34 @@ export function toggleParameter(parameterName: string, value: any): void {
     setParameter(parameterName, hasParameter(parameterName) ? undefined : value);
 }
 
-// GitHub Issue #1023: Use the safeRedirect action to verify returnURL goes to local URLs only
-export function redirect(url: string): void {
-    window.location.href = ActionURL.buildURL('core', 'safeRedirect', undefined, { returnUrl: url });
+// GitHub Issue #1023: Navigate the browser to the given URL, guarding against open-redirect vulnerabilities.
+//  - AppURL: always constructed by us to point at one of our apps, so it is inherently local and we navigate directly.
+//  - A string that resolves to the current origin (relative URLs, buildURL() results, same-host absolute URLs):
+//    inherently local, so we navigate directly.
+//  - Any other string (a different origin, or an unparseable/opaque value such as a javascript: URL): treated as a
+//    potential open-redirect target and routed through core/safeRedirect for authoritative server-side validation
+//    (URLHelper.isAllowableHost, which also honors the admin external-redirect allowlist and the home-page fallback).
+// Note: For those rare cases where we do need to go to a trusted external URL, set window.location.href directly instead of using redirect().
+export function redirect(url: AppURL | string): void {
+    window.location.href = getRedirectUrl(url);
+}
+
+export function getRedirectUrl(url: AppURL | string): string {
+    if (url instanceof AppURL) {
+        return url.toHref();
+    }
+
+    if (isSameOrigin(url)) {
+        return url;
+    }
+
+    return ActionURL.buildURL('core', 'safeRedirect', undefined, { returnUrl: url });
+}
+
+function isSameOrigin(url: string): boolean {
+    try {
+        return new URL(url, window.location.href).origin === window.location.origin;
+    } catch {
+        return false;
+    }
 }

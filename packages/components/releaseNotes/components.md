@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-- GitHub Issue #1023: Add redirect() helper that uses core-safeRedirect
+- GitHub Issue #1023: Add redirect() helper that uses core-safeRedirect when necessary to check url before redirecting
 
 ### version 7.45.0
 *Released*: 25 June 2026

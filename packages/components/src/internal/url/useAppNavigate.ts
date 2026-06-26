@@ -43,7 +43,7 @@ export function useAppNavigate(): AppNavigateState {
                 return;
             }
 
-            redirect(url.toString());
+            redirect(url);
         },
         [rrNavigate]
     );

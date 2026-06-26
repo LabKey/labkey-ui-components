@@ -7,6 +7,7 @@ import React, { FC, memo, useCallback, useMemo } from 'react';
 import { ActionURL, Filter } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
+import { redirect } from '../../url/ActionURL';
 import { FIND_SAMPLES_BY_FILTER_KEY } from '../../app/constants';
 import { DisableableMenuItem } from '../samples/DisableableMenuItem';
 import { formatDateTime } from '../../util/Date';
@@ -228,9 +229,7 @@ export const FindDerivativesMenuItem: FC<Props> = memo(props => {
         sessionStorage.setItem(getSampleFinderLocalStorageKey(), searchFiltersToJson(filterProps, 0, currentTimestamp));
         api.query.incrementClientSideMetricCount(metricFeatureArea, 'sampleFinderFindDerivatives');
 
-        window.location.href = AppURL.create('search', FIND_SAMPLES_BY_FILTER_KEY)
-            .addParam('view', sessionViewName)
-            .toHref();
+        redirect(AppURL.create('search', FIND_SAMPLES_BY_FILTER_KEY).addParam('view', sessionViewName));
     }, [api.query, baseFilter, baseModel, entityDataType, metricFeatureArea, model, viewAndUserFilters]);
 
     if (!model.queryInfo) return null;

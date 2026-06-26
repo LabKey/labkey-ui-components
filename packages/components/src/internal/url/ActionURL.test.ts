@@ -2,9 +2,9 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { ActionURL, __setController } from '@labkey/api';
+import { ActionURL } from '@labkey/api';
 
-import { getRedirectUrl } from './ActionURL';
+import { getRedirectUrl, isSameOrigin } from './ActionURL';
 import { AppURL, buildURL } from './AppURL';
 
 // window.location.origin is "http://localhost" in the jsdom test environment.
@@ -12,10 +12,6 @@ const safeRedirectUrl = (returnUrl: string): string =>
     ActionURL.buildURL('core', 'safeRedirect', undefined, { returnUrl });
 
 describe('getRedirectUrl', () => {
-    beforeEach(() => {
-        __setController('samplemanager');
-    });
-
     describe('AppURL', () => {
         test('navigates directly to an in-app AppURL via toHref()', () => {
             const url = AppURL.create('registry', 'molecule');
@@ -72,5 +68,39 @@ describe('getRedirectUrl', () => {
             const url = 'http://[::::::]:not-a-port';
             expect(getRedirectUrl(url)).toEqual(safeRedirectUrl(url));
         });
+    });
+});
+
+describe('isSameOrigin', () => {
+    // jsdom sets window.location.origin to 'http://localhost'
+
+    test('returns true for a URL on the same origin', () => {
+        expect(isSameOrigin('http://localhost/some/path')).toBe(true);
+    });
+
+    test('returns true for a root-relative URL (same origin by construction)', () => {
+        expect(isSameOrigin('/labkey/plate/plateList.view')).toBe(true);
+    });
+
+    test('returns false for a different hostname', () => {
+        expect(isSameOrigin('http://evil.com/path')).toBe(false);
+    });
+
+    test('returns false for a different scheme', () => {
+        expect(isSameOrigin('https://localhost/path')).toBe(false);
+    });
+
+    test('returns false for a different port', () => {
+        expect(isSameOrigin('http://localhost:8080/path')).toBe(false);
+    });
+
+    test('returns false for a javascript: URL (XSS guard)', () => {
+        expect(isSameOrigin('javascript:alert(1)')).toBe(false);
+    });
+
+    test('returns false for an absolute URL with an invalid host (throws during construction)', () => {
+        // 'http://a b' has a space in the hostname which is invalid; the URL constructor throws,
+        // and the catch block returns false.
+        expect(isSameOrigin('http://a b/path')).toBe(false);
     });
 });

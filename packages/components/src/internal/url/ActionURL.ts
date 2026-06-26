@@ -110,7 +110,7 @@ export function getRedirectUrl(url: AppURL | string): string {
     return ActionURL.buildURL('core', 'safeRedirect', undefined, { returnUrl: url });
 }
 
-function isSameOrigin(url: string): boolean {
+export function isSameOrigin(url: string): boolean {
     try {
         return new URL(url, window.location.href).origin === window.location.origin;
     } catch {

@@ -31,10 +31,15 @@ import {
     getSampleStatusFromSampleRow,
     getSampleStatusLockedMessage,
     getSampleStatusType,
+    isAllSamplesSchema,
+    isFindBySampleSchema,
     isSampleOperationPermitted,
     isSamplesSchema,
+    isWorkflowInputSamplesSchema,
 } from './utils';
 import { SampleState, SampleStateType } from './models';
+import { TEST_LK_LIMS_MODULE_CONTEXT } from '../../productFixtures';
+import { ViewInfo } from '../../ViewInfo';
 
 const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
 const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
@@ -69,13 +74,13 @@ describe('isSampleOperationPermitted', () => {
     });
 
     test('enabled, no status provided', () => {
-        const moduleContext = { api: { moduleNames: ['samplemanagement'] } };
+        const moduleContext = TEST_LK_LIMS_MODULE_CONTEXT;
         expect(isSampleOperationPermitted(undefined, SampleOperation.EditMetadata, moduleContext)).toBeTruthy();
         expect(isSampleOperationPermitted(null, SampleOperation.EditLineage, moduleContext)).toBeTruthy();
     });
 
     test('enabled, with status type provided', () => {
-        const moduleContext = { api: { moduleNames: ['samplemanagement'] } };
+        const moduleContext = TEST_LK_LIMS_MODULE_CONTEXT;
         expect(
             isSampleOperationPermitted(SampleStateType.Locked, SampleOperation.EditMetadata, moduleContext)
         ).toBeFalsy();
@@ -96,16 +101,16 @@ describe('isSampleOperationPermitted', () => {
 
 describe('getFilterForSampleOperation', () => {
     test('status not enabled', () => {
-        expect(getFilterForSampleOperation(SampleOperation.EditMetadata, true, {})).toBeNull();
+        expect(getFilterForSampleOperation(SampleOperation.EditMetadata, true, {})).toBeUndefined();
     });
 
     test('enabled, all allowed', () => {
-        const moduleContext = { api: { moduleNames: ['samplemanagement'] } };
-        expect(getFilterForSampleOperation(SampleOperation.AddToPicklist, true, moduleContext)).toBeNull();
+        const moduleContext = TEST_LK_LIMS_MODULE_CONTEXT;
+        expect(getFilterForSampleOperation(SampleOperation.AddToPicklist, true, moduleContext)).toBeUndefined();
     });
 
     test('enabled, some status does not allow', () => {
-        const moduleContext = { api: { moduleNames: ['samplemanagement'] } };
+        const moduleContext = TEST_LK_LIMS_MODULE_CONTEXT;
         expect(getFilterForSampleOperation(SampleOperation.EditLineage, true, moduleContext)).toStrictEqual(
             Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, [SampleStateType.Locked], Filter.Types.NOT_IN)
         );
@@ -308,6 +313,52 @@ describe('getOperationNotPermittedMessage', () => {
     });
 });
 
+describe('isAllSamplesSchema', () => {
+    test('invalid values', () => {
+        expect(isAllSamplesSchema(undefined)).toBeFalsy();
+        expect(isAllSamplesSchema(null)).toBeFalsy();
+        expect(isAllSamplesSchema(SCHEMAS.EXP_TABLES.DATA)).toBeFalsy();
+    });
+    test('exp.materials query', () => {
+        const sq = SCHEMAS.EXP_TABLES.MATERIALS;
+        const details = new SchemaQuery(sq.schemaName, sq.queryName, ViewInfo.DETAIL_NAME);
+        const otherView = new SchemaQuery(sq.schemaName.toUpperCase(), sq.queryName.toUpperCase(), 'otherView');
+        expect(isAllSamplesSchema(sq)).toBeTruthy();
+        expect(isAllSamplesSchema(details)).toBeTruthy();
+        expect(isAllSamplesSchema(otherView)).toBeTruthy();
+    });
+    test('other supported schemas', () => {
+        expect(isAllSamplesSchema(SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES)).toBeTruthy();
+        expect(isAllSamplesSchema(SCHEMAS.SAMPLE_MANAGEMENT.SAMPLE_STATUS_COUNTS)).toBeFalsy();
+        expect(new SchemaQuery(SCHEMAS.EXP_TABLES.SCHEMA, 'exp_temp_123')).toBeTruthy();
+        expect(isAllSamplesSchema(SCHEMAS.WORKFLOW.JOB_INPUT_SAMPLES)).toBeTruthy();
+    });
+});
+
+describe('isFindBySampleSchema', () => {
+    const expSQ = (queryName: string, viewName?: string): SchemaQuery =>
+        new SchemaQuery(SCHEMAS.EXP_TABLES.SCHEMA, queryName, viewName);
+
+    test('invalid values', () => {
+        expect(isFindBySampleSchema(undefined)).toBeFalsy();
+        expect(isFindBySampleSchema(null)).toBeFalsy();
+    });
+    test('other experiment queries', () => {
+        expect(isWorkflowInputSamplesSchema(SCHEMAS.EXP_TABLES.DATA)).toBeFalsy();
+        expect(isWorkflowInputSamplesSchema(SCHEMAS.EXP_TABLES.MATERIALS)).toBeFalsy();
+    });
+    test('expected query prefix', () => {
+        const prefix = 'exp_temp_';
+        expect(isFindBySampleSchema(expSQ(prefix))).toBeTruthy();
+        expect(isFindBySampleSchema(expSQ(prefix.toUpperCase()))).toBeTruthy();
+        expect(isFindBySampleSchema(expSQ(`${prefix}Hello`))).toBeTruthy();
+        expect(isFindBySampleSchema(expSQ(`${prefix}${prefix}`))).toBeTruthy();
+        expect(isFindBySampleSchema(expSQ(`${prefix}${prefix}`))).toBeTruthy();
+        expect(isFindBySampleSchema(expSQ(`${prefix}`, ViewInfo.DETAIL_NAME))).toBeTruthy();
+        expect(isFindBySampleSchema(expSQ(`_${prefix}`))).toBeFalsy();
+    });
+});
+
 describe('isSamplesSchema', () => {
     test('not sample schema', () => {
         expect(isSamplesSchema(SCHEMAS.EXP_TABLES.DATA)).toBeFalsy();
@@ -328,6 +379,25 @@ describe('isSamplesSchema', () => {
         expect(isSamplesSchema(SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES)).toBeTruthy();
         expect(isSamplesSchema(new SchemaQuery('sampleManagement', 'SourceSamples'))).toBeTruthy();
         expect(isSamplesSchema(new SchemaQuery('sampleManagement', 'Jobs'))).toBeFalsy();
+    });
+});
+
+describe('isWorkflowInputSamplesSchema', () => {
+    test('invalid values', () => {
+        expect(isWorkflowInputSamplesSchema(undefined)).toBeFalsy();
+        expect(isWorkflowInputSamplesSchema(null)).toBeFalsy();
+    });
+    test('other workflow queries', () => {
+        expect(isWorkflowInputSamplesSchema(SCHEMAS.WORKFLOW.JOB)).toBeFalsy();
+        expect(isWorkflowInputSamplesSchema(SCHEMAS.WORKFLOW.JOB_PRIORITY)).toBeFalsy();
+    });
+    test('job input samples', () => {
+        const sq = SCHEMAS.WORKFLOW.JOB_INPUT_SAMPLES;
+        const details = new SchemaQuery(sq.schemaName, sq.queryName, ViewInfo.DETAIL_NAME);
+        const otherView = new SchemaQuery(sq.schemaName.toUpperCase(), sq.queryName.toUpperCase(), 'otherView');
+        expect(isWorkflowInputSamplesSchema(sq)).toBeTruthy();
+        expect(isWorkflowInputSamplesSchema(details)).toBeTruthy();
+        expect(isWorkflowInputSamplesSchema(otherView)).toBeTruthy();
     });
 });
 
@@ -356,14 +426,19 @@ describe('getSampleStatusType', () => {
 describe('getSampleStatusFromSampleRow', () => {
     test('label', () => {
         expect(getSampleStatusFromSampleRow({}).label).toBeUndefined();
-        expect(getSampleStatusFromSampleRow({ SampleState: { displayValue: undefined } }).label).toBeUndefined();
-        expect(getSampleStatusFromSampleRow({ SampleState: { displayValue: 'Label1' } }).label).toBe('Label1');
         expect(
-            getSampleStatusFromSampleRow({ 'SampleID/SampleState': { displayValue: undefined } }).label
+            getSampleStatusFromSampleRow({ SampleState: { displayValue: undefined, value: undefined } }).label
         ).toBeUndefined();
-        expect(getSampleStatusFromSampleRow({ 'SampleID/SampleState': { displayValue: 'Label2' } }).label).toBe(
-            'Label2'
+        expect(getSampleStatusFromSampleRow({ SampleState: { displayValue: 'Label1', value: undefined } }).label).toBe(
+            'Label1'
         );
+        expect(
+            getSampleStatusFromSampleRow({ 'SampleID/SampleState': { displayValue: undefined, value: undefined } })
+                .label
+        ).toBeUndefined();
+        expect(
+            getSampleStatusFromSampleRow({ 'SampleID/SampleState': { displayValue: 'Label2', value: undefined } }).label
+        ).toBe('Label2');
     });
 
     test('description', () => {
@@ -371,7 +446,9 @@ describe('getSampleStatusFromSampleRow', () => {
         expect(
             getSampleStatusFromSampleRow({ 'SampleState/Description': { value: undefined } }).description
         ).toBeUndefined();
-        expect(getSampleStatusFromSampleRow({ 'SampleState/Description': { value: 'Desc1' } }).description).toBe('Desc1');
+        expect(getSampleStatusFromSampleRow({ 'SampleState/Description': { value: 'Desc1' } }).description).toBe(
+            'Desc1'
+        );
         expect(
             getSampleStatusFromSampleRow({ 'SampleID/SampleState/Description': { value: undefined } }).description
         ).toBeUndefined();
@@ -384,8 +461,8 @@ describe('getSampleStatusFromSampleRow', () => {
 describe('getSampleStatus', () => {
     test('label', () => {
         expect(getSampleStatus({}).label).toBeUndefined();
-        expect(getSampleStatus({ Label: { displayValue: undefined } }).label).toBeUndefined();
-        expect(getSampleStatus({ Label: { displayValue: 'Label3' } }).label).toBeUndefined();
+        expect(getSampleStatus({ Label: { displayValue: undefined, value: undefined } }).label).toBeUndefined();
+        expect(getSampleStatus({ Label: { displayValue: 'Label3', value: undefined } }).label).toBeUndefined();
         expect(getSampleStatus({ Label: { value: 'Label3' } }).label).toBe('Label3');
     });
 

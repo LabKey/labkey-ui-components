@@ -94,16 +94,12 @@ export class SchemaQuery {
     }
 
     hasSchema(schemaName: string): boolean {
-        if (schemaName) {
-            return this.schemaName?.toLowerCase() === schemaName.toLowerCase();
-        }
-
-        return false;
+        if (!schemaName) return false;
+        return this.schemaName?.toLowerCase() === schemaName.toLowerCase();
     }
 
     hasSchemaQuery(sq: SchemaQuery): boolean {
-        if (!sq) return false;
-        return this.toString(false).toLowerCase() === sq.toString(false).toLowerCase();
+        return this.isEqual(sq, false);
     }
 
     getKey(includeViewName = true): string {
@@ -126,6 +122,14 @@ export class SchemaQuery {
 
     static createAppSelectionKey(targetSQ: SchemaQuery, keys: any[]): string {
         return [APP_SELECTION_PREFIX, targetSQ.getKey(), keys.join(';')].join('|');
+    }
+
+    queryStartsWith(prefix: string): boolean {
+        return !!this.queryName?.toLowerCase().startsWith(prefix?.toLowerCase());
+    }
+
+    schemaStartsWith(prefix: string): boolean {
+        return !!this.schemaName?.toLowerCase().startsWith(prefix?.toLowerCase());
     }
 
     toString(includeViewName = true): string {

@@ -33,6 +33,12 @@ describe('getRedirectUrl', () => {
             ['relative path with hash', '/labkey/MyContainer/app.view#/samples/123'],
             ['absolute same-origin URL', 'http://localhost/labkey/MyContainer/some-action.view'],
             ['root-relative path', '/home/project-begin.view'],
+            ['cross-container relative path', '/labkey/OtherProject/SubFolder/some-action.view?rowId=4'],
+            ['cross-container nested path', '/labkey/OtherProject/Sub/Deep/Folder/project-begin.view'],
+            [
+                'cross-container absolute same-origin URL',
+                'http://localhost/labkey/OtherProject/SubFolder/app.view#/samples/123',
+            ],
         ])('%s', (_label, url) => {
             expect(getRedirectUrl(url)).toEqual(url);
         });

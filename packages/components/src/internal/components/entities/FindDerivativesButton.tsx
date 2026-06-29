@@ -7,7 +7,7 @@ import React, { FC, memo, useCallback, useMemo } from 'react';
 import { ActionURL, Filter } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
-import { redirect } from '../../url/ActionURL';
+import { useAppNavigate } from '../../url/useAppNavigate';
 import { FIND_SAMPLES_BY_FILTER_KEY } from '../../app/constants';
 import { DisableableMenuItem } from '../samples/DisableableMenuItem';
 import { formatDateTime } from '../../util/Date';
@@ -191,6 +191,7 @@ interface Props {
 export const FindDerivativesMenuItem: FC<Props> = memo(props => {
     const { baseEntityDataType, baseModel, baseFilter, model, entityDataType, metricFeatureArea, titleCol } = props;
     const { api } = useAppContext();
+    const { navigate } = useAppNavigate();
 
     const viewAndUserFilters = useMemo(
         () => (!model.queryInfo ? [] : [].concat(model.viewFilters).concat(model.filterArray)),
@@ -229,8 +230,19 @@ export const FindDerivativesMenuItem: FC<Props> = memo(props => {
         sessionStorage.setItem(getSampleFinderLocalStorageKey(), searchFiltersToJson(filterProps, 0, currentTimestamp));
         api.query.incrementClientSideMetricCount(metricFeatureArea, 'sampleFinderFindDerivatives');
 
-        redirect(AppURL.create('search', FIND_SAMPLES_BY_FILTER_KEY).addParam('view', sessionViewName));
-    }, [api.query, baseFilter, baseModel, entityDataType, metricFeatureArea, model, viewAndUserFilters]);
+        navigate(AppURL.create('search', FIND_SAMPLES_BY_FILTER_KEY).addParam('view', sessionViewName));
+    }, [
+        api.query,
+        baseEntityDataType,
+        baseFilter,
+        baseModel,
+        entityDataType,
+        metricFeatureArea,
+        model,
+        navigate,
+        titleCol,
+        viewAndUserFilters,
+    ]);
 
     if (!model.queryInfo) return null;
 

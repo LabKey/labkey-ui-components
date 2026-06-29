@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.45.2
+*Released*: 29 June 2026
+- GitHub Issue #1023: Add redirect() helper that uses core-safeRedirect when necessary to check url before redirecting
+
 ### version 7.45.1
 *Released*: 25 June 2026
 - GH Issue #1164: Don't allow negative delta value during checkin

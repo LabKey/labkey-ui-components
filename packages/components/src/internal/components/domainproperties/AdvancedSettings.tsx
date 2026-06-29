@@ -47,6 +47,7 @@ import {
 } from './constants';
 
 import { DomainFieldLabel } from './DomainFieldLabel';
+import { redirect } from '../../url/ActionURL';
 
 interface AdvancedSettingsProps {
     allowUniqueConstraintProperties: boolean;
@@ -231,7 +232,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 params['providerName'] = ActionURL.getParameter('providerName');
             }
 
-            window.location.href = ActionURL.buildURL(controller, action, undefined, params);
+            redirect(ActionURL.buildURL(controller, action, undefined, params));
         }
     };
 

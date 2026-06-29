@@ -423,7 +423,7 @@ import {
     TestLineageAPIWrapper,
 } from './internal/components/lineage/actions';
 import { withLineage } from './internal/components/lineage/withLineage';
-import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_GRAPH_FILTER_METRIC} from './internal/components/lineage/constants';
+import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_GRAPH_FILTER_METRIC } from './internal/components/lineage/constants';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,

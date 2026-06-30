@@ -106,7 +106,7 @@ export interface EntityAPIWrapper {
     handleEntityFileImport: (
         importAction: string,
         queryInfo: QueryInfo,
-        file: File,
+        file: File | File[],
         insertOption: InsertOptions,
         useAsync: boolean,
         importParameters?: Record<string, any>,

@@ -4,6 +4,7 @@
  */
 import React from 'react';
 
+import { List } from 'immutable';
 import { waitFor } from '@testing-library/dom';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
@@ -80,6 +81,7 @@ describe('KeyGeneratorModal', () => {
                     api: {
                         security: {
                             createApiKey: apiKeyFn,
+                            fetchRoles: jest.fn().mockResolvedValue(List()),
                         },
                     },
                 },

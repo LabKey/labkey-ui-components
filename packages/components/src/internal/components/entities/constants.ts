@@ -12,7 +12,7 @@ import { DELETE_ASSAY_RUNS_TOPIC, DELETE_SAMPLES_TOPIC } from '../../util/helpLi
 
 import { SAMPLE_TYPE_KEY, SAMPLES_KEY } from '../../app/constants';
 
-import { SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR } from '../samples/constants';
+import { SAMPLE_DATA_EXPORT_CONFIG, SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR } from '../samples/constants';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
@@ -146,6 +146,7 @@ export const SampleTypeDataType: EntityDataType = {
     folderConfigurableDataType: 'SampleType',
     labelColorCol: 'labelcolor',
     extraFinderFields: ['storagepositionnumber', 'storageterminallocation'],
+    exportConfig: SAMPLE_DATA_EXPORT_CONFIG,
 };
 
 export const SampleParentDataType = {
@@ -153,6 +154,11 @@ export const SampleParentDataType = {
     nounPlural: 'Parents',
     nounSingular: 'Parent',
     containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+};
+
+export const SOURCE_EXPORT_CONFIG = {
+    'exportAlias.name': 'SourceID',
+    'exportAlias.folder': 'Folder',
 };
 
 export const DataClassDataType: EntityDataType = {
@@ -182,6 +188,7 @@ export const DataClassDataType: EntityDataType = {
     typeIcon: 'source_type',
     sampleFinderCardType: 'dataclassparent',
     folderConfigurableDataType: 'DataClass',
+    exportConfig: SOURCE_EXPORT_CONFIG,
 };
 
 export const ParentEntityLineageColumns = List.of('Inputs/Materials/First', 'Inputs/Data/First');
@@ -210,5 +217,5 @@ export const DATA_CLASS_IMPORT_PREFIX = 'dataInputs/';
 
 export enum JobOperation {
     Delete,
-    Move
+    Move,
 }

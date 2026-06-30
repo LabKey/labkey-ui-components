@@ -3,6 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { List } from 'immutable';
 
 import { ActionURL } from '@labkey/api';
 
@@ -31,6 +32,7 @@ import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { Modal } from '../../Modal';
 import { getHelpLink, HelpLink } from '../../util/helpLinks';
 import { biologicsIsPrimaryApp } from '../../app/products';
+import { SecurityRole } from '../permissions/models';
 
 const API_KEYS_QUERY_HREF = ActionURL.buildURL('query', 'executeQuery.view', '/', {
     schemaName: 'core',
@@ -101,19 +103,21 @@ interface ModalProps extends KeyGeneratorProps {
 export const KeyGeneratorModal: FC<ModalProps> = props => {
     const { type, afterCreate, noun, onClose } = props;
     const [description, setDescription] = useState<string>();
+    const [role, setRole] = useState<string>();
+    const [roles, setRoles] = useState<List<SecurityRole>>(List());
     const { api } = useAppContext<AppContext>();
     const [error, setError] = useState<boolean>(false);
     const [keyValue, setKeyValue] = useState<string>(undefined);
 
     const onGenerateKey = useCallback(async () => {
         try {
-            const key = await api.security.createApiKey(type, description);
+            const key = await api.security.createApiKey(type, description, role);
             setKeyValue(key);
             afterCreate?.();
         } catch (e) {
             setError(true);
         }
-    }, [api.security, type, afterCreate, description]);
+    }, [api.security, type, afterCreate, description, role]);
 
     useEffect(() => {
         (async () => {
@@ -122,6 +126,12 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
             }
         })();
     }, [type, onGenerateKey]);
+
+    useEffect(() => {
+        if (type === 'apikey') {
+            api.security.fetchRoles().then(setRoles).catch(() => {});
+        }
+    }, [api.security, type]);
 
     const onCopyKey = useCallback(() => {
         const handleCopy = (event: ClipboardEvent): void => {
@@ -135,6 +145,10 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
 
     const changeDescription = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setDescription(event.target.value);
+    }, []);
+
+    const changeRole = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
+        setRole(event.target.value || undefined);
     }, []);
 
     return (
@@ -157,6 +171,24 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
                         autoFocus
                         placeholder="Enter description of key usage (optional)"
                     />
+                    {roles.size > 0 && (
+                        <div className="top-padding">
+                            <label htmlFor="keyRole">Role</label>
+                            <select
+                                className="form-control"
+                                id="keyRole"
+                                onChange={changeRole}
+                                value={role ?? ''}
+                            >
+                                <option value="">Select a role (optional)</option>
+                                {roles.toArray().map(r => (
+                                    <option key={r.uniqueName} value={r.uniqueName}>
+                                        {r.displayName}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
                 </div>
             )}
             {!!keyValue && (

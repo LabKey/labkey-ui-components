@@ -68,7 +68,7 @@ interface AuthenticationConfigurationResponse {
 
 export interface SecurityAPIWrapper {
     addGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<AddGroupMembersResponse>;
-    createApiKey: (type?: string, description?: string) => Promise<string>;
+    createApiKey: (type?: string, description?: string, role?: string) => Promise<string>;
     createGroup: (groupName: string, projectPath: string) => Promise<Security.CreateGroupResponse>;
     deleteApiKeys: (selections: Set<string>) => Promise<QueryCommandResponse>;
     deleteContainer: (options: DeleteContainerOptions) => Promise<Record<string, unknown>>;
@@ -133,11 +133,11 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    createApiKey = async (type = 'apikey', description?: string): Promise<string> => {
+    createApiKey = async (type = 'apikey', description?: string, role?: string): Promise<string> => {
         const response = await request<{ apikey: string }>({
             url: ActionURL.buildURL('security', 'createApiKey.api'),
             method: 'POST',
-            jsonData: { type, description },
+            jsonData: { type, description, role },
             errorLogMsg: 'Problem generating the apiKey for this user.',
         });
 

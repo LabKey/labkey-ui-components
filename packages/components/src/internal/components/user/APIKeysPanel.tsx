@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { List } from 'immutable';
 
 import { ActionURL } from '@labkey/api';
 
@@ -32,7 +31,7 @@ import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { Modal } from '../../Modal';
 import { getHelpLink, HelpLink } from '../../util/helpLinks';
 import { biologicsIsPrimaryApp } from '../../app/products';
-import { SecurityRole } from '../permissions/models';
+import { ApiKeyRole } from '../security/APIWrapper';
 
 const API_KEYS_QUERY_HREF = ActionURL.buildURL('query', 'executeQuery.view', '/', {
     schemaName: 'core',
@@ -104,7 +103,7 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
     const { type, afterCreate, noun, onClose } = props;
     const [description, setDescription] = useState<string>();
     const [role, setRole] = useState<string>();
-    const [roles, setRoles] = useState<List<SecurityRole>>(List());
+    const [roles, setRoles] = useState<ApiKeyRole[]>([]);
     const { api } = useAppContext<AppContext>();
     const [error, setError] = useState<boolean>(false);
     const [keyValue, setKeyValue] = useState<string>(undefined);
@@ -129,7 +128,7 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
 
     useEffect(() => {
         if (type === 'apikey') {
-            api.security.fetchRoles().then(setRoles).catch(() => {});
+            api.security.getApiKeyRoles().then(setRoles).catch(() => {});
         }
     }, [api.security, type]);
 
@@ -171,17 +170,17 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
                         autoFocus
                         placeholder="Enter description of key usage (optional)"
                     />
-                    {roles.size > 0 && (
+                    {roles.length > 0 && (
                         <div className="top-padding">
-                            <label htmlFor="keyRole">Role</label>
+                            <label htmlFor="keyRole">Restrict Permissions</label>
                             <select
                                 className="form-control"
                                 id="keyRole"
                                 onChange={changeRole}
                                 value={role ?? ''}
                             >
-                                <option value="">Select a role (optional)</option>
-                                {roles.toArray().map(r => (
+                                <option value="">No Restrictions</option>
+                                {roles.map(r => (
                                     <option key={r.uniqueName} value={r.uniqueName}>
                                         {r.displayName}
                                     </option>

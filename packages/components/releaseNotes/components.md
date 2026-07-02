@@ -5,6 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: ?
 - Export DetailDisplay
 - ExpandableContainer: Fix style issues
+- Remove .component-detail and .detail-components styles
+  - These have been moved to Biologics where they are used exclusively
 
 ### version 7.45.4
 *Released*: 7 July 2026

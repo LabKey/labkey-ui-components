@@ -1,6 +1,6 @@
 
 .container-expandable {
-  border: 1px solid lightgray;
+  border-top: 1px solid lightgray;
 
   &:before, &:after {
     content: " ";
@@ -31,7 +31,10 @@
       background: $brand-primary;
       color: $white;
 
-      h4, a {
+      a,
+      h4,
+      .clickable-text,
+      .text-muted {
           color: $white;
       }
   }

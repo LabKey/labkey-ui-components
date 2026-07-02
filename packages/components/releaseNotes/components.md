@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.45.5
+*Released*: ?
+- Export DetailDisplay
+- ExpandableContainer: Fix style issues
+
 ### version 7.45.4
 *Released*: 7 July 2026
 - GitHub Issue #1846: Add role-restriction option to API key dialog

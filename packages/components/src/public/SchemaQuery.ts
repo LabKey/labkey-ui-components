@@ -98,10 +98,6 @@ export class SchemaQuery {
         return this.schemaName?.toLowerCase() === schemaName.toLowerCase();
     }
 
-    hasSchemaQuery(sq: SchemaQuery): boolean {
-        return this.isEqual(sq, false);
-    }
-
     getKey(includeViewName = true): string {
         return resolveKey(this.schemaName, this.queryName, includeViewName ? this.viewName : undefined);
     }

@@ -271,16 +271,16 @@ export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
 }
 
 export function isWorkflowInputSamplesSchema(schemaQuery: SchemaQuery): boolean {
-    return SCHEMAS.WORKFLOW.JOB_INPUT_SAMPLES.hasSchemaQuery(schemaQuery);
+    return SCHEMAS.WORKFLOW.JOB_INPUT_SAMPLES.isEqual(schemaQuery, false);
 }
 
 export function isAllSamplesSchema(schemaQuery: SchemaQuery): boolean {
     if (!schemaQuery) return false;
-    if (SCHEMAS.EXP_TABLES.MATERIALS.hasSchemaQuery(schemaQuery)) return true;
+    if (SCHEMAS.EXP_TABLES.MATERIALS.isEqual(schemaQuery, false)) return true;
     if (isFindBySampleSchema(schemaQuery)) return true;
 
     if (schemaQuery.hasSchema(SCHEMAS.SAMPLE_MANAGEMENT.SCHEMA)) {
-        return SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.hasSchemaQuery(schemaQuery);
+        return SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.isEqual(schemaQuery, false);
     }
 
     return isWorkflowInputSamplesSchema(schemaQuery);

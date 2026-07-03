@@ -113,10 +113,10 @@ export const TrendlineOption: FC<TrendlineOptionProps> = memo(props => {
     );
 
     const trendlineOptions = useMemo(() => {
-        return TRENDLINE_OPTIONS.filter(option => {
-            return !option.schemaPrefix || schemaQuery.schemaName.startsWith(option.schemaPrefix);
-        });
-    }, [TRENDLINE_OPTIONS, schemaQuery.schemaName]);
+        return TRENDLINE_OPTIONS.filter(
+            option => !option.schemaPrefix || schemaQuery.schemaStartsWith(option.schemaPrefix)
+        );
+    }, [TRENDLINE_OPTIONS, schemaQuery]);
 
     const onAsymptoteTypeChange = useCallback(
         (selected: string) => {

@@ -77,6 +77,11 @@ export interface IParsedSelectionKey {
     schemaQuery: SchemaQuery;
 }
 
+function equalsIgnoreCase(a?: string, b?: string): boolean {
+    // Treat undefined/null/'' as equivalent
+    return (a ?? '').toLowerCase() === (b ?? '').toLowerCase();
+}
+
 export class SchemaQuery {
     schemaName: string;
     queryName: string;
@@ -90,12 +95,16 @@ export class SchemaQuery {
 
     isEqual(sq: SchemaQuery, includeViewName = true): boolean {
         if (!sq) return false;
-        return this.toString(includeViewName).toLowerCase() === sq.toString(includeViewName).toLowerCase();
+
+        return (
+            equalsIgnoreCase(this.schemaName, sq.schemaName) &&
+            equalsIgnoreCase(this.queryName, sq.queryName) &&
+            (!includeViewName || equalsIgnoreCase(this.viewName, sq.viewName))
+        );
     }
 
     hasSchema(schemaName: string): boolean {
-        if (!schemaName) return false;
-        return this.schemaName?.toLowerCase() === schemaName.toLowerCase();
+        return !!schemaName && equalsIgnoreCase(this.schemaName, schemaName);
     }
 
     getKey(includeViewName = true): string {
@@ -121,11 +130,13 @@ export class SchemaQuery {
     }
 
     queryStartsWith(prefix: string): boolean {
-        return !!this.queryName?.toLowerCase().startsWith(prefix?.toLowerCase());
+        if (!prefix) return false;
+        return !!this.queryName?.toLowerCase().startsWith(prefix.toLowerCase());
     }
 
     schemaStartsWith(prefix: string): boolean {
-        return !!this.schemaName?.toLowerCase().startsWith(prefix?.toLowerCase());
+        if (!prefix) return false;
+        return !!this.schemaName?.toLowerCase().startsWith(prefix.toLowerCase());
     }
 
     toString(includeViewName = true): string {

@@ -127,9 +127,14 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
     }, [type, onGenerateKey]);
 
     useEffect(() => {
-        if (type === 'apikey') {
-            api.security.getApiKeyRoles().then(setRoles).catch(() => {});
-        }
+        if (type !== 'apikey') return;
+        (async () => {
+            try {
+                setRoles(await api.security.getApiKeyRoles());
+            } catch (e) {
+                console.error(e);
+            }
+        })();
     }, [api.security, type]);
 
     const onCopyKey = useCallback(() => {

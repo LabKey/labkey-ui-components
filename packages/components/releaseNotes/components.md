@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages
 
 ### version 7.45.3
-*Released*: 3 July 2026
+*Released*: 4 July 2026
 - GitHub Issue #1134: Support plating from find by samples
 
 ### version 7.45.2

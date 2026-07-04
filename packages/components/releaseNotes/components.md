@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 7.45.3
+*Released*: 4 July 2026
+- GitHub Issue #1134: Support plating from find by samples
+
 ### version 7.45.2
 *Released*: 29 June 2026
 - GitHub Issue #1023: Add redirect() helper that uses core-safeRedirect when necessary to check url before redirecting

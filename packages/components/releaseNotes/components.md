@@ -1,9 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 7.45.3
+### version 7.45.4
 *Released*: TBD
-- Add role restriction option to API key dialog
+- GitHub Issue #1846: Add role-restriction option to API key dialog
+
+### version 7.45.3
+*Released*: 4 July 2026
+- GitHub Issue #1134: Support plating from find by samples
 
 ### version 7.45.2
 *Released*: 29 June 2026

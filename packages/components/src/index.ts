@@ -309,7 +309,7 @@ import { ColorIcon } from './internal/components/base/ColorIcon';
 import { QuerySelect } from './internal/components/forms/QuerySelect';
 import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
 import { DetailPanelHeader } from './internal/components/forms/detail/DetailPanelHeader';
-import { resolveDetailRenderer } from './internal/components/forms/detail/DetailDisplay';
+import { DetailDisplay, resolveDetailRenderer } from './internal/components/forms/detail/DetailDisplay';
 import { useDataChangeCommentsRequired } from './internal/components/forms/input/useDataChangeCommentsRequired';
 import {
     InputRenderContext,
@@ -1238,6 +1238,7 @@ export {
     DERIVATION_DATA_SCOPES,
     DERIVATIVE_CREATION,
     DesignerDetailTooltip,
+    DetailDisplay,
     DetailPanel,
     DetailPanelHeader,
     DetailPanelWithModel,

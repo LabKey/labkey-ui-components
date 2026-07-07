@@ -19,7 +19,7 @@ export interface DetailHeaderProps extends PropsWithChildren {
 
 export const DetailHeader: FC<DetailHeaderProps> = memo(({ children, header, iconSrc }) => (
     <div className="lineage-detail-header margin-bottom">
-        <i className="component-detail--child--img">
+        <i className="pull-left">
             <SVGIcon height="50px" iconSrc={iconSrc} theme={Theme.ORANGE} width="50px" />
         </i>
         <div className="text__truncate">

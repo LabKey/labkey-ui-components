@@ -1,4 +1,3 @@
-
 .detail-component--table__fixed {
   table-layout: fixed;
   border: unset;
@@ -35,23 +34,6 @@
   right: 0;
 }
 
-.detail-component__expanded-container {
-  width: 100%;
-  height: 100%;
-  padding: 0 10px 10px;
-}
-
-.detail-component {
-  padding: 15px 20px 15px 5px;
-  max-width: 100%;
-  position: relative;
-
-  h4 {
-    display: inline;
-    color: $brand-primary;
-  }
-}
-
 .app-page-header__subtitle,
 .detail-subtitle {
     font-weight: 500;
@@ -61,75 +43,12 @@
     margin-bottom: 10px;
 }
 
-.detail-component__active {
-  background: $brand-primary;
-  color: $white;
-  position: relative;
-
-  a, h4 {
-    color: $white;
-  }
-}
-
-.detail-component__inactive {
-  background: $white;
-  color: inherit;
-}
-
-.detail-component__w-child {
-  padding-left: 5%;
-}
-
-.detail-component__w-out-child {
-  padding-left: 5px;
-}
-
 .ws-pre-wrap {
   white-space: pre-wrap;
 }
 
 .ws-no-wrap {
   white-space: nowrap;
-}
-
-.component-detail--child {
-  position: absolute;
-  width: 5%;
-  font-size: 20px;
-  cursor: pointer;
-  left: 0;
-  top: 0;
-  line-height: 80px;
-  padding-left: 1.5%;
-  background: white;
-  color: black !important; // override button.clickable-text
-  border-right: 1px solid lightgray !important; // override button.clickable-text
-}
-
-.component-detail--child--inactive {
-  border-bottom: 1px solid $brand-primary;
-}
-
-.component-detail--child--img {
-  float: left;
-}
-
-.component-detail--child--title {
-  max-width: calc(100% - 100px);
-  margin-left: 5px;
-  float: left;
-}
-
-.component-detail--child--chevron--container {
-  margin-top: 17px;
-
-  & i {
-    width: 14px;
-  }
-}
-
-.component-rmat-details {
-  margin-bottom: 3px;
 }
 
 // Editing styles

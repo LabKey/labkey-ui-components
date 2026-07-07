@@ -214,7 +214,7 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
                     // key safety
                     const newRow = row.reduce((newRow, value, key) => {
                         return newRow.set(key.toLowerCase(), value);
-                    }, OrderedMap<string, any>());
+                    }, OrderedMap<string, unknown>());
 
                     return (
                         <table className={classNames(DETAIL_TABLE_CLASSES, tableCls)} key={i}>

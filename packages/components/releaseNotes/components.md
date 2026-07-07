@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages
 
 ### version 7.45.5
-*Released*: ?
+*Released*: 7 July 2026
 - Export DetailDisplay
 - ExpandableContainer: Fix style issues
 - Remove .component-detail and .detail-components styles

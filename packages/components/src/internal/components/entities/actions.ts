@@ -738,13 +738,12 @@ export function handleEntityFileImport(
                 if (response.success) {
                     resolve(response);
                 } else {
-                    reject({ msg: response.errors?._form ?? response.exception, fileErrors: response.fileErrors });
+                    reject({ msg: response.errors?._form ?? response.exception });
                 }
             })
             .catch(error => {
                 console.error(error);
-                // Propagate per-file errors from the bulk sequence import so the UI can render them.
-                reject({ msg: error.exception, fileErrors: error.fileErrors });
+                reject({ msg: error.exception });
             });
     });
 }

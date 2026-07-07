@@ -31,6 +31,7 @@ import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { Modal } from '../../Modal';
 import { getHelpLink, HelpLink } from '../../util/helpLinks';
 import { biologicsIsPrimaryApp } from '../../app/products';
+import { ApiKeyRole } from '../security/APIWrapper';
 
 const API_KEYS_QUERY_HREF = ActionURL.buildURL('query', 'executeQuery.view', '/', {
     schemaName: 'core',
@@ -101,19 +102,21 @@ interface ModalProps extends KeyGeneratorProps {
 export const KeyGeneratorModal: FC<ModalProps> = props => {
     const { type, afterCreate, noun, onClose } = props;
     const [description, setDescription] = useState<string>();
+    const [role, setRole] = useState<string>();
+    const [roles, setRoles] = useState<ApiKeyRole[]>([]);
     const { api } = useAppContext<AppContext>();
     const [error, setError] = useState<boolean>(false);
     const [keyValue, setKeyValue] = useState<string>(undefined);
 
     const onGenerateKey = useCallback(async () => {
         try {
-            const key = await api.security.createApiKey(type, description);
+            const key = await api.security.createApiKey(type, description, role);
             setKeyValue(key);
             afterCreate?.();
         } catch (e) {
             setError(true);
         }
-    }, [api.security, type, afterCreate, description]);
+    }, [api.security, type, afterCreate, description, role]);
 
     useEffect(() => {
         (async () => {
@@ -122,6 +125,17 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
             }
         })();
     }, [type, onGenerateKey]);
+
+    useEffect(() => {
+        if (type !== 'apikey') return;
+        (async () => {
+            try {
+                setRoles(await api.security.getApiKeyRoles());
+            } catch (e) {
+                console.error(e);
+            }
+        })();
+    }, [api.security, type]);
 
     const onCopyKey = useCallback(() => {
         const handleCopy = (event: ClipboardEvent): void => {
@@ -135,6 +149,10 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
 
     const changeDescription = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setDescription(event.target.value);
+    }, []);
+
+    const changeRole = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
+        setRole(event.target.value || undefined);
     }, []);
 
     return (
@@ -157,6 +175,24 @@ export const KeyGeneratorModal: FC<ModalProps> = props => {
                         autoFocus
                         placeholder="Enter description of key usage (optional)"
                     />
+                    {roles.length > 0 && (
+                        <div className="top-padding">
+                            <label htmlFor="keyRole">Restrict Permissions</label>
+                            <select
+                                className="form-control"
+                                id="keyRole"
+                                onChange={changeRole}
+                                value={role ?? ''}
+                            >
+                                <option value="">No Restrictions</option>
+                                {roles.map(r => (
+                                    <option key={r.uniqueName} value={r.uniqueName}>
+                                        {r.displayName}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
                 </div>
             )}
             {!!keyValue && (
@@ -342,11 +378,12 @@ export const APIKeysPanel: FC<APIKeysGridProps> = props => {
             <div className="panel-heading">API Keys</div>
             <div className="panel-body">
                 <p>
-                    API keys are used to authorize client code using one of the{' '}
+                    API keys are used to authorize desktop AI agents using LabKey's MCP and client code using one of the{' '}
                     <a href={CLIENT_APIS_HREF}>LabKey Client APIs</a>. API keys are appropriate for authenticating ad
                     hoc interactions within statistical tools (e.g., R, RStudio, SAS) or programming languages (e.g.,
                     Java, Python), as well as authenticating API use from automated scripts. A valid API key provides
-                    complete access to your data and actions, so it should be kept secret.
+                    access to your data and actions, so it should be kept secret. We recommend restricting API keys to a
+                    specific security role at creation time, imposing appropriate limits on AI agents and scripts.
                 </p>
 
                 {apiEnabled && (

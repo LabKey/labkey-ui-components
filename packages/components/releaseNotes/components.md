@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages
 
 ### version 7.45.4
-*Released*: TBD
+*Released*: 7 July 2026
 - GitHub Issue #1846: Add role-restriction option to API key dialog
 
 ### version 7.45.3

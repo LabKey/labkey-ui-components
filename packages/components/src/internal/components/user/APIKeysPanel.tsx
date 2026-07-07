@@ -378,11 +378,12 @@ export const APIKeysPanel: FC<APIKeysGridProps> = props => {
             <div className="panel-heading">API Keys</div>
             <div className="panel-body">
                 <p>
-                    API keys are used to authorize client code using one of the{' '}
+                    API keys are used to authorize desktop AI agents using LabKey's MCP and client code using one of the{' '}
                     <a href={CLIENT_APIS_HREF}>LabKey Client APIs</a>. API keys are appropriate for authenticating ad
                     hoc interactions within statistical tools (e.g., R, RStudio, SAS) or programming languages (e.g.,
                     Java, Python), as well as authenticating API use from automated scripts. A valid API key provides
-                    complete access to your data and actions, so it should be kept secret.
+                    access to your data and actions, so it should be kept secret. We recommend restricting API keys to a
+                    specific security role at creation time, imposing appropriate limits on AI agents and scripts.
                 </p>
 
                 {apiEnabled && (

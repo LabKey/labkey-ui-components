@@ -7,7 +7,12 @@ import { createPortal } from 'react-dom';
 import { generateId } from './util/utils';
 import { useOverlayTriggerState } from './OverlayTrigger';
 import { Popover } from './Popover';
-import { EMPTY_COMPOUND_WARNING, EMPTY_NS_SEQUENCE_WARNING, EMPTY_PS_SEQUENCE_WARNING } from './constants';
+import {
+    EMPTY_COMPOUND_WARNING,
+    EMPTY_NS_SEQUENCE_WARNING,
+    EMPTY_PS_SEQUENCE_WARNING,
+    UNIDENTIFIED_MOLECULE_WARNING,
+} from './constants';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { SCHEMAS } from './schemas';
 
@@ -18,6 +23,8 @@ function getPopoverMessage(schemaQuery: SchemaQuery): string | undefined {
         return EMPTY_NS_SEQUENCE_WARNING;
     } else if (schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.COMPOUND, false)) {
         return EMPTY_COMPOUND_WARNING;
+    } else if (schemaQuery.isEqual(SCHEMAS.DATA_CLASSES.MOLECULE, false)) {
+        return UNIDENTIFIED_MOLECULE_WARNING;
     }
 
     return undefined;

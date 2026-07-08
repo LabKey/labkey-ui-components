@@ -56,6 +56,11 @@ export interface RemoveGroupMembersResponse {
     removed: number[];
 }
 
+export interface ApiKeyRole {
+    displayName: string;
+    uniqueName: string;
+}
+
 export interface AuthenticationConfiguration {
     description: string;
     reauthUrl: string;
@@ -68,7 +73,8 @@ interface AuthenticationConfigurationResponse {
 
 export interface SecurityAPIWrapper {
     addGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<AddGroupMembersResponse>;
-    createApiKey: (type?: string, description?: string) => Promise<string>;
+    createApiKey: (type?: string, description?: string, role?: string) => Promise<string>;
+    getApiKeyRoles: () => Promise<ApiKeyRole[]>;
     createGroup: (groupName: string, projectPath: string) => Promise<Security.CreateGroupResponse>;
     deleteApiKeys: (selections: Set<string>) => Promise<QueryCommandResponse>;
     deleteContainer: (options: DeleteContainerOptions) => Promise<Record<string, unknown>>;
@@ -133,15 +139,22 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    createApiKey = async (type = 'apikey', description?: string): Promise<string> => {
+    createApiKey = async (type = 'apikey', description?: string, role?: string): Promise<string> => {
         const response = await request<{ apikey: string }>({
             url: ActionURL.buildURL('security', 'createApiKey.api'),
             method: 'POST',
-            jsonData: { type, description },
+            jsonData: { type, description, role },
             errorLogMsg: 'Problem generating the apiKey for this user.',
         });
 
         return response.apikey;
+    };
+
+    getApiKeyRoles = (): Promise<ApiKeyRole[]> => {
+        return request<ApiKeyRole[]>({
+            url: ActionURL.buildURL('security', 'getApiKeyRoles.api'),
+            errorLogMsg: 'Failed to load API key roles.',
+        });
     };
 
     deleteApiKeys(selections: Set<string>): Promise<QueryCommandResponse> {
@@ -453,6 +466,7 @@ export function getSecurityTestAPIWrapper(
     return {
         addGroupMembers: mockFn(),
         createApiKey: mockFn(),
+        getApiKeyRoles: mockFn(),
         deleteApiKeys: mockFn(),
         createGroup: mockFn(),
         deleteContainer: mockFn(),

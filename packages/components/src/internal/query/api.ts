@@ -18,7 +18,7 @@ import {
     isProjectContainer,
 } from '../app/utils';
 
-import { caseInsensitive, quoteValueWithDelimiters } from '../util/utils';
+import { caseInsensitive } from '../util/utils';
 import { QueryInfo, QueryInfoStatus } from '../../public/QueryInfo';
 import { QueryColumn, QueryLookup } from '../../public/QueryColumn';
 import { ViewInfo, ViewInfoJson } from '../ViewInfo';

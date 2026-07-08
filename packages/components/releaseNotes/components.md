@@ -7,6 +7,21 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Move export config into `EntityDataType`
   - Add `JobInputSources` query to workflow schema
 
+### version 7.45.5
+*Released*: 7 July 2026
+- Export DetailDisplay
+- ExpandableContainer: Fix style issues
+- Remove .component-detail and .detail-components styles
+  - These have been moved to Biologics where they are used exclusively
+
+### version 7.45.4
+*Released*: 7 July 2026
+- GitHub Issue #1846: Add role-restriction option to API key dialog
+
+### version 7.45.3
+*Released*: 4 July 2026
+- GitHub Issue #1134: Support plating from find by samples
+
 ### version 7.45.2
 *Released*: 29 June 2026
 - GitHub Issue #1023: Add redirect() helper that uses core-safeRedirect when necessary to check url before redirecting

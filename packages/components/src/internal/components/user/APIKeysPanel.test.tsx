@@ -80,6 +80,7 @@ describe('KeyGeneratorModal', () => {
                     api: {
                         security: {
                             createApiKey: apiKeyFn,
+                            getApiKeyRoles: jest.fn().mockResolvedValue([]),
                         },
                     },
                 },

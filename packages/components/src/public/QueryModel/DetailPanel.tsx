@@ -46,10 +46,12 @@ export const DetailPanel: FC<DetailPanelProps & RequiresModel> = memo(props => {
 
     return <DetailDisplay {...detailDisplayProps} data={fromJS(model.gridData)} displayColumns={displayColumns} />;
 });
+DetailPanel.displayName = 'DetailPanel';
 
 const DetailPanelWithModelBodyImpl: FC<DetailPanelProps & InjectedQueryModels> = memo(({ queryModels, ...rest }) => {
     return <DetailPanel {...rest} model={queryModels.model} />;
 });
+DetailPanelWithModelBodyImpl.displayName = 'DetailPanelWithModelBodyImpl';
 
 const DetailPanelWithModelBody = withQueryModels<DetailPanelProps>(DetailPanelWithModelBodyImpl);
 
@@ -63,7 +65,8 @@ export const DetailPanelWithModel: FC<DetailPanelWithModelProps> = memo(props =>
     const { keyValue, schemaQuery } = queryConfig;
     const { schemaName, queryName } = schemaQuery;
     // Key is used here to ensure we re-mount the DetailPanel when the queryConfig changes
-    const key = useMemo(() => `${schemaName}.${queryName}.${keyValue}`, [schemaQuery, keyValue]);
+    const key = useMemo(() => `${schemaName}.${queryName}.${keyValue}`, [schemaName, queryName, keyValue]);
 
     return <DetailPanelWithModelBody {...detailPanelProps} autoLoad key={key} queryConfigs={queryConfigs} />;
 });
+DetailPanelWithModel.displayName = 'DetailPanelWithModel';

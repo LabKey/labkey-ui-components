@@ -33,7 +33,7 @@ export const TEST_LK_LIMS_MODULE_CONTEXT = {
             ProductFeature.AdvancedWorkflow,
         ],
         primaryApplicationId: LIMS_PRODUCT_ID,
-    }
+    },
 };
 
 export const TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT = {
@@ -57,7 +57,7 @@ export const TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT = {
             ProductFeature.CustomImportTemplates,
         ],
         primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID,
-    }
+    },
 };
 
 export const TEST_LKSM_STARTER_MODULE_CONTEXT = {
@@ -109,6 +109,9 @@ export const TEST_LKS_STARTER_MODULE_CONTEXT = {
 };
 
 export const TEST_BIO_LIMS_STARTER_MODULE_CONTEXT = {
+    api: {
+        moduleNames: ['assay', 'biologics', 'inventory', 'premium', 'samplemanagement'],
+    },
     biologics: {
         productId: BIOLOGICS_APP_PROPERTIES.productId,
     },
@@ -137,6 +140,9 @@ export const TEST_BIO_LIMS_STARTER_MODULE_CONTEXT = {
 };
 
 export const TEST_BIO_LIMS_ENTERPRISE_MODULE_CONTEXT = {
+    api: {
+        moduleNames: ['assay', 'biologics', 'inventory', 'premium', 'samplemanagement'],
+    },
     biologics: {
         productId: BIOLOGICS_APP_PROPERTIES.productId,
     },

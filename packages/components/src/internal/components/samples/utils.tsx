@@ -35,6 +35,7 @@ import {
 } from './constants';
 
 import { SampleState, SampleStateType, SampleStatus } from './models';
+import { Row } from '../../query/selectRows';
 
 export function getOmittedSampleTypeColumns(user: User, moduleContext?: ModuleContext): string[] {
     let cols: string[] = [];
@@ -63,7 +64,7 @@ export function isSampleOperationPermitted(
     return permittedOps[sampleStatusType].has(operation);
 }
 
-export function getSampleStatusType(row: any): SampleStateType {
+export function getSampleStatusType(row: Row): SampleStateType {
     return (
         caseInsensitive(row, SAMPLE_STATE_TYPE_COLUMN_NAME)?.value ||
         caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_TYPE_COLUMN_NAME)?.value ||
@@ -88,9 +89,9 @@ export function getSampleStatusColor(color: string, stateType: SampleStateType |
     }
 }
 
-export function getSampleStatusFromSampleRow(row: any): SampleStatus {
-    let label;
-    let rowId;
+export function getSampleStatusFromSampleRow(row: Row): SampleStatus {
+    let label: string;
+    let rowId: number;
     // Issue 45269. If the state columns are present, don't look at a column named 'Label'
     let field = caseInsensitive(row, SAMPLE_STATE_COLUMN_NAME);
     if (field) {
@@ -103,7 +104,7 @@ export function getSampleStatusFromSampleRow(row: any): SampleStatus {
             label = field.displayValue;
         }
     }
-    let color;
+    let color: string;
     let col = caseInsensitive(row, SAMPLE_STATE_COLOR_COLUMN_NAME);
     if (col) {
         color = col.value;
@@ -113,7 +114,7 @@ export function getSampleStatusFromSampleRow(row: any): SampleStatus {
             color = col.value;
         }
     }
-    let description;
+    let description: string;
     col = caseInsensitive(row, SAMPLE_STATE_DESCRIPTION_COLUMN_NAME);
     if (col) {
         description = col.value;
@@ -132,7 +133,7 @@ export function getSampleStatusFromSampleRow(row: any): SampleStatus {
     };
 }
 
-export function getSampleStatus(row: any): SampleStatus {
+export function getSampleStatus(row: Row): SampleStatus {
     return {
         label: caseInsensitive(row, 'Label')?.value,
         rowId: caseInsensitive(row, 'RowId')?.value,
@@ -146,20 +147,16 @@ export function getFilterForSampleOperation(
     operation: SampleOperation,
     allowed = true,
     moduleContext?: ModuleContext
-): Filter.IFilter {
-    if (!isSampleStatusEnabled(moduleContext)) {
-        return null;
-    }
+): Filter.IFilter | undefined {
+    if (!isSampleStatusEnabled(moduleContext)) return undefined;
 
-    const typesNotAllowed = [];
+    const typesNotAllowed: string[] = [];
     for (const stateType in SampleStateType) {
         if (!permittedOps[stateType].has(operation)) {
             typesNotAllowed.push(stateType);
         }
     }
-    if (typesNotAllowed.length === 0) {
-        return null;
-    }
+    if (typesNotAllowed.length === 0) return undefined;
 
     const filterType = allowed ? Filter.Types.NOT_IN : Filter.Types.IN;
     return Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, typesNotAllowed, filterType);
@@ -170,7 +167,7 @@ function getOperationMessageAndRecommendation(operation: SampleOperation, numSam
         return operationRestrictionMessage[operation].all;
     } else {
         const messageInfo = operationRestrictionMessage[operation];
-        let message;
+        let message: string;
         if (numSamples === 1) {
             message = operationRestrictionMessage[operation].singular;
         } else {
@@ -265,43 +262,29 @@ export enum SamplesEditButtonSections {
     MOVE_TO_FOLDER = 'movetofolder',
 }
 
-export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
-    const lcSchemaName = schemaQuery?.schemaName?.toLowerCase();
-    if (lcSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) return true;
+export function isFindBySampleSchema(schemaQuery: SchemaQuery): boolean {
+    return schemaQuery?.hasSchema(SCHEMAS.EXP_TABLES.SCHEMA) && schemaQuery.queryStartsWith('exp_temp_');
+}
 
-    return isAllSamplesSchema(schemaQuery);
+export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
+    return schemaQuery?.hasSchema(SCHEMAS.SAMPLE_SETS.SCHEMA) || isAllSamplesSchema(schemaQuery);
 }
 
 export function isWorkflowInputSamplesSchema(schemaQuery: SchemaQuery): boolean {
-    const lcSchemaName = schemaQuery?.schemaName?.toLowerCase();
-    const lcQueryName = schemaQuery?.queryName?.toLowerCase();
-    return (
-        lcSchemaName === SCHEMAS.WORKFLOW.SCHEMA &&
-        lcQueryName === SCHEMAS.WORKFLOW.JOB_INPUT_SAMPLES.queryName.toLowerCase()
-    );
+    return SCHEMAS.WORKFLOW.JOB_INPUT_SAMPLES.isEqual(schemaQuery, false);
 }
 
 export function isAllSamplesSchema(schemaQuery: SchemaQuery): boolean {
-    const lcSchemaName = schemaQuery?.schemaName?.toLowerCase();
-    const lcQueryName = schemaQuery?.queryName?.toLowerCase();
-    if (
-        lcSchemaName === SCHEMAS.EXP_TABLES.SCHEMA &&
-        lcQueryName === SCHEMAS.EXP_TABLES.MATERIALS.queryName.toLowerCase()
-    )
-        return true;
+    if (!schemaQuery) return false;
+    if (SCHEMAS.EXP_TABLES.MATERIALS.isEqual(schemaQuery, false)) return true;
+    if (isFindBySampleSchema(schemaQuery)) return true;
 
-    if (
-        lcSchemaName === SCHEMAS.EXP_TABLES.SCHEMA &&
-        lcQueryName.startsWith('exp_temp_') // Find Sample by ID/Barcode
-    )
-        return true;
-
-    if (lcSchemaName === SCHEMAS.SAMPLE_MANAGEMENT.SCHEMA) {
-        return lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.queryName.toLowerCase();
+    if (schemaQuery.hasSchema(SCHEMAS.SAMPLE_MANAGEMENT.SCHEMA)) {
+        return SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.isEqual(schemaQuery, false);
     }
+
     return isWorkflowInputSamplesSchema(schemaQuery);
 }
-
 
 export function getSampleDomainDefaultSystemFields(moduleContext?: ModuleContext): SystemField[] {
     return isFreezerManagementEnabled(moduleContext)
@@ -309,8 +292,8 @@ export function getSampleDomainDefaultSystemFields(moduleContext?: ModuleContext
         : SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS;
 }
 
-export function getSampleStatusLockedMessage(state: SampleState, saving: boolean): string {
-    const msgs = [];
+export function getSampleStatusLockedMessage(state: SampleState, saving: boolean): string | undefined {
+    const msgs: string[] = [];
     if (state?.inUse || saving) msgs.push('cannot change status type or be deleted because it is in use');
     if (state && !state.isLocal)
         msgs.push('can be changed only in the ' + state.containerPath.substring(1) + ' folder');
@@ -333,7 +316,7 @@ export function getSampleStatusContainerFilter(
         return Query.ContainerFilter.currentAndSubfoldersPlusShared;
     }
 
-    // When requesting data from a sub-folder context the ContainerFilter filters
+    // When requesting data from a subfolder context, the ContainerFilter filters
     // "up" the folder hierarchy for data.
     return Query.ContainerFilter.currentPlusProjectAndShared;
 }

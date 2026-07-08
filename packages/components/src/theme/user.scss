@@ -32,3 +32,9 @@ div:has(> .user-detail-modal) > .modal-backdrop {
 .api-key__input {
     display: inline-block;
 }
+
+// 90% to leave room for the copy-to-clipboard button when displaying the newly generated API key
+.api-key__display {
+    width: 90%;
+    display: inline-block;
+}

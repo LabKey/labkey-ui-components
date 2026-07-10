@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.46.1-fb-genBank.0",
+  "version": "7.46.1-fb-genBank.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

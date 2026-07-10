@@ -6,9 +6,12 @@ import { ActionURL, Ajax, Filter, Query, Utils } from '@labkey/api';
 
 import { buildURL } from '../../url/AppURL';
 import { resolveErrorMessage } from '../../util/messaging';
-import { getContainerFilter, selectRowsDeprecated } from '../../query/api';
+import { getContainerFilter } from '../../query/api';
+import { selectRows } from '../../query/selectRows';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { ServerActivity, ServerActivityData } from './model';
+import { caseInsensitive } from '../../util/utils';
 
 /**
  * Used to notify the server that the trial banner has been dismissed
@@ -63,27 +66,27 @@ export function getServerNotifications(typeLabels?: string[], maxRows?: number):
 export function getRunningPipelineJobStatuses(filters?: Filter.IFilter[]): Promise<ServerActivity> {
     const statusFilter = Filter.create('Status', ['RUNNING', 'WAITING', 'SPLITWAITING'], Filter.Types.IN);
     return new Promise((resolve, reject) => {
-        selectRowsDeprecated({
-            schemaName: 'pipeline',
-            queryName: 'job',
+        selectRows({
+            schemaQuery: new SchemaQuery('pipeline', 'job'),
             filterArray: [statusFilter].concat(filters ?? []),
             sort: 'Created',
             includeTotalCount: true,
+            includeMetadata: true,
         })
             .then(response => {
-                const model = response.models[response.key];
-                const activities = [];
-                Object.values(model).forEach(row => {
-                    activities.push(
+                const activities = response.rows.map(
+                    row =>
                         new ServerActivityData({
+                            ActionLinkUrl: '#',
+                            ActionLinkText: 'View Import',
+                            RowId: caseInsensitive(row, 'rowId').value,
                             inProgress: true,
-                            Content: row['Description']['value'],
+                            Content: caseInsensitive(row, 'Description').value,
                             ContentType: 'text/plain',
-                            Created: row['Created']['formattedValue'],
-                            CreatedBy: row['CreatedBy']['displayValue'],
+                            Created: caseInsensitive(row, 'Created').formattedValue,
+                            CreatedBy: caseInsensitive(row, 'CreatedBy').displayValue,
                         })
-                    );
-                });
+                );
                 resolve({
                     data: activities,
                     totalRows: response.rowCount,

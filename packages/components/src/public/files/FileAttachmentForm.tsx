@@ -97,10 +97,6 @@ export class FileAttachmentForm extends PureComponent<FileAttachmentFormProps, S
 
         this.fileAttachmentContainerRef = React.createRef();
 
-        if (props.allowMultiple && props.previewGridProps) {
-            console.warn('Showing the file preview grid is only supported for single file upload.');
-        }
-
         this.state = {
             attachedFiles: Map<string, File>(),
             errorMessage: undefined,
@@ -147,7 +143,7 @@ export class FileAttachmentForm extends PureComponent<FileAttachmentFormProps, S
                 const { onFileChange, sizeLimits, fileSpecificCallback, allowMultiple } = this.props;
                 const { attachedFiles } = this.state;
 
-                if (!allowMultiple) {
+                if (attachedFiles?.size === 1) {
                     // currently only supporting 1 file for processing contents
                     const firstFile = attachedFiles.valueSeq().first();
                     const sizeCheck = fileSizeLimitCompare(firstFile, sizeLimits);
@@ -241,7 +237,7 @@ export class FileAttachmentForm extends PureComponent<FileAttachmentFormProps, S
     }
 
     isShowPreviewGrid = (): boolean => {
-        return !this.props.allowMultiple && !!this.props.previewGridProps;
+        return !!this.props.previewGridProps;
     };
 
     shouldShowPreviewGrid = (): boolean => {

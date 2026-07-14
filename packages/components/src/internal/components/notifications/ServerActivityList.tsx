@@ -77,7 +77,6 @@ const NotificationContent: FC<NotificationContentProps> = memo(({ data }) => {
             details = content.substring(brIndex + 4, content.length);
         }
 
-        console.log(details);
         const detailsDisplay = hasError ? resolveErrorMessage(details) : details;
         body = (
             <>

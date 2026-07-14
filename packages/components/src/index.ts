@@ -882,6 +882,7 @@ import {
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './internal/components/picklist/constants';
 import { getDefaultAPIWrapper, getTestAPIWrapper } from './internal/APIWrapper';
 import { FormButtons } from './internal/FormButtons';
+import { registerModalRenderer } from './internal/ModalRenderFactory';
 import { ModalButtons } from './internal/ModalButtons';
 import { getSecurityTestAPIWrapper } from './internal/components/security/APIWrapper';
 import { getFolderTestAPIWrapper } from './internal/components/container/FolderAPIWrapper';
@@ -1634,6 +1635,7 @@ export {
     registerDefaultURLMappers,
     registerFilterType,
     registerInputRenderer,
+    registerModalRenderer,
     ReleaseNote,
     removeColumn,
     removeColumns,
@@ -1922,6 +1924,7 @@ export type { BSStyle } from './internal/dropdowns';
 export type { MenuSectionItem } from './internal/DropdownSection';
 export type { UseTimeout } from './internal/hooks';
 export type { ModalProps } from './internal/Modal';
+export type { ModalRendererProps } from './internal/ModalRenderFactory';
 export type { TriggerType } from './internal/OverlayTrigger';
 export type { ISelectRowsResult } from './internal/query/api';
 export type {

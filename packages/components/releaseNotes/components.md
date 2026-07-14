@@ -1,11 +1,6 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 7.X
-*Released*: X July 2026
-- Multi genbank/fasta files import
-  - update IImportData `file` property type to `File | File[]`
-
 ### version 7.45.5
 *Released*: 7 July 2026
 - Export DetailDisplay

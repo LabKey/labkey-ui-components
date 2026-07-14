@@ -711,7 +711,7 @@ export async function deleteEntityType(
 export function handleEntityFileImport(
     importAction: string,
     queryInfo: QueryInfo,
-    file: File,
+    file: File | File[],
     insertOption: InsertOptions,
     useAsync: boolean,
     importParameters?: Record<string, any>,
@@ -738,7 +738,7 @@ export function handleEntityFileImport(
                 if (response.success) {
                     resolve(response);
                 } else {
-                    reject({ msg: response.errors._form });
+                    reject({ msg: response.errors?._form ?? response.exception });
                 }
             })
             .catch(error => {

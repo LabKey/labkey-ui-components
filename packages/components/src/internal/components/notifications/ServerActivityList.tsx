@@ -25,6 +25,10 @@ const defaultActionLinkText = 'View details';
 
 function resolveActionLinkUrl(url: string, rowId: number): string | AppURL {
     if (!url) return undefined;
+
+    if (url === '#' && !!rowId)
+        return "#/pipeline/" + rowId;
+
     const resolvedUrl = PIPELINE_MAPPER.resolve(url, Map({ rowId, url }), undefined, undefined, undefined);
 
     if (resolvedUrl instanceof AppURL) return resolvedUrl;
@@ -123,7 +127,10 @@ const ActivityItem: FC<ActivityItemProps> = memo(({ data, onRead, onViewClick })
     });
 
     const actionLinkText = capitalizeFirstChar(data.ActionLinkText ? data.ActionLinkText : defaultActionLinkText);
-    const onClick = useCallback(() => onRead(rowId), [onRead, rowId]);
+    const onClick = useCallback(() => {
+        if (!data.inProgress)
+            onRead(rowId)
+    }, [onRead, rowId, data]);
 
     return (
         <li className={className} onClick={onClick}>

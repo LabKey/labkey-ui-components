@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { Component, CSSProperties, FC, FocusEvent, KeyboardEvent, ReactNode } from 'react';
+import React, { Component, ComponentType, CSSProperties, FC, FocusEvent, KeyboardEvent, ReactNode } from 'react';
 import ReactSelect, { components } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import AsyncCreatableSelect from 'react-select/async-creatable';
@@ -231,6 +231,7 @@ export interface SelectInputProps {
     labelClass?: string;
     labelKey?: string;
     loadOptions?: (input: string) => Promise<SelectInputOption[]>;
+    menuFooter?: ReactNode;
     menuPlacement?: string;
     menuPosition?: string;
     multiple?: boolean;
@@ -570,14 +571,14 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
     getOptionValue = (option: SelectInputOption): any => option[this.props.valueKey];
 
     Input = inputProps => {
-        // React-select in an async configuration has a bug where when a defaultInputValue prop is supplied it
+        // React-select in an async configuration has a bug where when a defaultInputValue prop is supplied, it
         // does not fire an onChange event on the underlying input which results in loadOptions() never being called
         // with the supplied value. Here we simulate an onChange() event ourselves to induce the expected loading logic.
         // See https://github.com/JedWatson/react-select/issues/3047
         if (!this._defaultValueLoaded) {
             this._defaultValueLoaded = true;
             if (this.props.defaultInputValue && this.isAsync()) {
-                // To avoid performing updates during the render cycle utilize a setTimeout() to defer execution.
+                // To avoid performing updates during the render cycle, utilize a setTimeout() to defer execution.
                 // Normally, this could be done in componentDidMount(), however, we need access to the inputProps.
                 setTimeout(() => {
                     const inputEl = document.getElementById(inputProps.id);
@@ -595,8 +596,17 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
 
         // Marking input as "required" is not natively supported by react-select post-v1. Here we can mark
         // the underlying input as required, however, this is not the value input but rather the user visible
-        // input so we manually check if a value is set.
+        // input, so we manually check if a value is set.
         return <components.Input {...inputProps} required={!!this.props.required && !inputProps.selectProps?.value} />;
+    };
+
+    MenuList = menuListProps => {
+        return (
+            <>
+                <components.MenuList {...menuListProps}>{menuListProps.children}</components.MenuList>
+                {this.props.menuFooter}
+            </>
+        );
     };
 
     Option = optionProps => <CustomOption {...optionProps}>{this.props.optionRenderer(optionProps)}</CustomOption>;
@@ -623,6 +633,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             isLoading,
             isValidNewOption,
             labelKey,
+            menuFooter,
             menuPlacement,
             menuPosition,
             multiple,
@@ -654,6 +665,8 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
 
         if (!showDropdownMenu) {
             components.Menu = nullComponent;
+        } else if (menuFooter) {
+            components.MenuList = this.MenuList;
         }
 
         if (optionRenderer) {

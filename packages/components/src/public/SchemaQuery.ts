@@ -18,7 +18,7 @@ function stripSelectionSnapshotId(value: string): string {
     return value;
 }
 
-// 36009: Case-insensitive variant of QueryKey.decodePart
+// Issue 36009: Case-insensitive variant of QueryKey.decodePart
 export function decodePart(s: string): string {
     if (!s) return s;
 
@@ -32,7 +32,7 @@ export function decodePart(s: string): string {
         .replace(/\$D/gi, '$');
 }
 
-// 36009: Case-insensitive variant of QueryKey.encodePart
+// Issue 36009: Case-insensitive variant of QueryKey.encodePart
 export function encodePart(s: string): string {
     if (!s) return s;
 
@@ -46,7 +46,9 @@ export function encodePart(s: string): string {
         .replace(/\./gi, '$P');
 }
 
-export function resolveKey(schema: string, query: string, viewName?: string): string {
+export type SchemaQueryKey = string & { __schemaQueryKey: never };
+
+export function resolveKey(schema: string, query: string, viewName?: string): SchemaQueryKey {
     /*
        It's questionable if we really need to encodePart schema here and the suspicion is that this would result in
        double encoding. Since schema is not recognisable by api when not encoded, it would be reasonable to assume the
@@ -55,23 +57,19 @@ export function resolveKey(schema: string, query: string, viewName?: string): st
     */
     const parts = [encodePart(schema), encodePart(query)];
     if (viewName) parts.push(encodePart(viewName));
-    return parts.join('/').toLowerCase();
+    return parts.join('/').toLowerCase() as SchemaQueryKey;
 }
 
-export function resolveKeyFromJson(json: { queryName: string; schemaName: string[]; viewName?: string }): string {
+export function resolveKeyFromJson(json: {
+    queryName: string;
+    schemaName: string[];
+    viewName?: string;
+}): SchemaQueryKey {
     // if schema parts contain '.', replace with $P, to distinguish from '.' used to separate schema parts
     // similarly, encode '/' in schema parts, to distinguish from '/' used to separate schema and query parts
     // schemaName ['assay', 'general', 'a.b/c'] will be will processed to 'assay.general.a$pb$sc'
     // resolveKey will then further encode schema to assay$pgeneral$pa$dpb$sc
-    return resolveKey(
-        json.schemaName
-            .map(schemaPart => {
-                return encodePart(schemaPart);
-            })
-            .join('.'),
-        json.queryName,
-        json.viewName
-    );
+    return resolveKey(json.schemaName.map(encodePart).join('.'), json.queryName, json.viewName);
 }
 
 export interface IParsedSelectionKey {
@@ -118,15 +116,19 @@ export class SchemaQuery {
         return !!schemaName && equalsIgnoreCase(this.schemaName, schemaName);
     }
 
-    getKey(includeViewName = true): string {
+    getKey(includeViewName = true): SchemaQueryKey {
         return resolveKey(this.schemaName, this.queryName, includeViewName ? this.viewName : undefined);
+    }
+
+    static fromKey(encodedKey: SchemaQueryKey): SchemaQuery {
+        return getSchemaQuery(encodedKey);
     }
 
     static parseSelectionKey(selectionKey: string): IParsedSelectionKey {
         selectionKey = stripSelectionSnapshotId(selectionKey);
         const parts = selectionKey.split('|');
         // first part will be app page model key, which we skip
-        const schemaQueryKey = parts[1];
+        const schemaQueryKey = parts[1] as SchemaQueryKey;
         // there may be a view name between the schemaQueryKey and the provided entity keys
         const keys = parts.length > 2 ? parts[parts.length - 1] : undefined;
 

@@ -2,6 +2,7 @@
 // Credit: Christian Alfoni and the Formsy Authors
 // Repository: https://github.com/formsy/formsy-react/tree/0226fab133a25
 import React, { act, FC, PropsWithChildren, memo, useCallback, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { createEvent, fireEvent, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
@@ -623,6 +624,32 @@ describe('Formsy', () => {
             fireEvent.submit(form);
 
             expect(isCalled).toHaveBeenCalled();
+        });
+
+        it('should ignore submit events bubbled from a nested form rendered in a portal', () => {
+            const onOuterSubmit = jest.fn();
+            const onInnerSubmit = jest.fn();
+
+            function TestForm() {
+                return (
+                    <Formsy onValidSubmit={onOuterSubmit} data-testid="outer-form">
+                        <TestInput name="foo" validations="isEmail" value="foo@bar.com" />
+                        {createPortal(
+                            <Formsy onValidSubmit={onInnerSubmit} data-testid="inner-form">
+                                <TestInput name="bar" value="baz" />
+                            </Formsy>,
+                            document.body
+                        )}
+                    </Formsy>
+                );
+            }
+
+            const screen = render(<TestForm />);
+
+            fireEvent.submit(screen.getByTestId('inner-form'));
+
+            expect(onInnerSubmit).toHaveBeenCalled();
+            expect(onOuterSubmit).not.toHaveBeenCalled();
         });
     });
 

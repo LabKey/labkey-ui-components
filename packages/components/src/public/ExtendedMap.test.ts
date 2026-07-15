@@ -3,7 +3,7 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { OrderedMap } from 'immutable';
-import { ExtendedMap } from './ExtendedMap';
+import { ExtendedMap, KeyType } from './ExtendedMap';
 
 const KEYS_ONE = ['one', 'two', 'three'];
 const KEYS_TWO = ['four', 'five', 'six'];
@@ -28,14 +28,14 @@ ORDERED_TWO.set('five', 5);
 ORDERED_TWO.set('six', 6);
 
 describe('ExtendedMap', () => {
-    function expectOrder(map: ExtendedMap<any, any>, keys: any[], values: any[]) {
+    function expectOrder<K extends KeyType, V>(map: ExtendedMap<K, V>, keys: K[], values: V[]) {
         expect(Array.from(map.keys())).toStrictEqual(keys);
         expect(Array.from(map.values())).toStrictEqual(values);
         expect(map.keyArray).toStrictEqual(keys);
         expect(map.valueArray).toStrictEqual(values);
     }
 
-    function expectValues(map, keys: any[], values: any[]) {
+    function expectValues<K extends KeyType, V>(map: ExtendedMap<K, V>, keys: K[], values: V[]) {
         let idx = 0;
         for (const key of keys) {
             expect(map.get(key)).toEqual(values[idx]);
@@ -44,7 +44,7 @@ describe('ExtendedMap', () => {
     }
 
     test('Constructor - empty args', () => {
-        const em = new ExtendedMap<string, number>();
+        const em = new ExtendedMap<string, number | string>();
         expectOrder(em, [], []);
         em.set('one', 1);
         em.set('two', 2);

@@ -14,12 +14,12 @@ import { Row } from '../../query/selectRows';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { isTestEnv } from '../../util/utils';
+import { caseInsensitive, isTestEnv } from '../../util/utils';
 
-import { useTimeout } from '../../hooks';
+import { useModalState, useTimeout } from '../../hooks';
 
 import { SelectInput, SelectInputChange, SelectInputOption, SelectInputProps } from './input/SelectInput';
-import { resolveDetailFieldLabel } from './utils';
+import { resolveDetailFieldLabel, resolveDetailFieldValue } from './utils';
 import {
     fetchSearchResults,
     formatResults,
@@ -31,6 +31,8 @@ import {
     setSelection,
 } from './model';
 import { DELIMITER } from './constants';
+import { AddEntitiesMenuFooter, AddEntitiesModal, useIsAddEntitiesEnabled } from './AddEntitiesModal';
+import { AddEntitiesComplete } from '../../ModalRenderFactory';
 
 function getValue(model: QuerySelectModel, multiple: boolean): any {
     const { rawSelectedValue } = model;
@@ -97,10 +99,8 @@ const OptionRenderer: FC<OptionRendererProps> = props => {
                     if (item !== undefined) {
                         let text = resolveDetailFieldLabel(item.get(column.name));
                         if (!Utils.isString(text)) {
-                            if (text == null)
-                                text = '';
-                            else if (Array.isArray(text))
-                                text = text.join(', ');
+                            if (text == null) text = '';
+                            else if (Array.isArray(text)) text = text.join(', ');
                         }
 
                         return (
@@ -148,8 +148,8 @@ type InheritedSelectInputProps = Omit<
     | 'allowCreate'
     | 'autoValue'
     | 'cacheOptions'
-    | 'defaultOptions' // utilized by QuerySelect to support "preLoad" and "loadOnFocus" behaviors.
-    | 'isLoading' // utilized by QuerySelect to support "loadOnFocus" behavior.
+    | 'defaultOptions' // used by QuerySelect to support "preLoad" and "loadOnFocus" behaviors.
+    | 'isLoading' // used by QuerySelect to support "loadOnFocus" behavior.
     | 'labelKey'
     | 'loadOptions'
     | 'onChange' // overridden by QuerySelect. See onQSChange().
@@ -160,6 +160,7 @@ type InheritedSelectInputProps = Omit<
 >;
 
 export interface QuerySelectOwnProps extends InheritedSelectInputProps {
+    allowAddEntities?: boolean;
     autoInit?: boolean;
     containerFilter?: Query.ContainerFilter;
     /** The path to the LK container that the queries should be scoped to. */
@@ -171,7 +172,7 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     groupByColumn?: string;
     loadOnFocus?: boolean;
     maxRows?: number;
-    /** When enabled "not found" (i.e. unresolved) values will be processed as selectable items. */
+    /** When enabled "not found" (i.e., unresolved) values will be processed as selectable items. */
     notFoundValuesEnabled?: boolean;
     onInitValue?: (value: any, selectedValues: List<any>) => void;
     onQSChange?: QuerySelectChange;
@@ -195,7 +196,9 @@ type Search = {
 
 export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     const {
+        /* eslint-disable @typescript-eslint/no-unused-vars */
         OptionComponent,
+        allowAddEntities = true,
         // Prevent initialization in test environments in lieu of mocking APIWrapper in all test locations
         autoInit = !isTestEnv(),
         containerFilter,
@@ -258,7 +261,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     );
     // This persists all searches done prior to the select being fully initialized. Once initialized,
     // these searches are cleared out and resolved. The reason we need to retain these is the underlying
-    // SelectInput retains these search results, however, we need be fully initialized to complete a search.
+    // SelectInput retains these search results; however, we need to be fully initialized to complete a search.
     const [searches, setSearches] = useState<Search[]>([]);
     const debounceTO = useTimeout();
     const shouldLoadOnFocus = loadOnFocus && !loadOnFocusLock;
@@ -280,6 +283,8 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
 
         return { notFoundValues: notFoundValues_, selectedOptions: options };
     }, [model]);
+    const { close: closeModal, open: openModal, show: showModal } = useModalState();
+    const isAddEntitiesEnabled = useIsAddEntitiesEnabled(schemaQuery) && allowAddEntities;
 
     useEffect(() => {
         if (!autoInit) return;
@@ -345,7 +350,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
             });
     }, []);
 
-    // Any searches (i.e. calls to loadOptions()) made prior to the select being fully
+    // Any searches (i.e., calls to loadOptions()) made prior to the select being fully
     // initialized are resolved here after the model has been initialized.
     useEffect(() => {
         if (model.isInit && searches.length > 0) {
@@ -356,7 +361,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
 
     const loadOptions = useCallback(
         (input: string): Promise<SelectInputOption[]> => {
-            // If loadOptions occurs prior to call to "onFocus" then there is no need to "loadOnFocus".
+            // If loadOptions occurs prior to call to "onFocus", then there is no need to "loadOnFocus".
             if (shouldLoadOnFocus) {
                 setLoadOnFocusLock(true);
             }
@@ -387,8 +392,25 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         [model, onQSChange]
     );
 
+    const onAddEntitiesComplete = useCallback<AddEntitiesComplete>(
+        async resultsMap => {
+            closeModal();
+
+            // TODO: This is not fully correct. Need to load the result into the model first, then select it.
+            const { displayColumn, valueColumn } = model;
+
+            const result = resultsMap.get(schemaQuery.getKey());
+            const label = resolveDetailFieldLabel(caseInsensitive(result.rows[0], displayColumn)) as string;
+            const value = resolveDetailFieldValue(caseInsensitive(result.rows[0], valueColumn));
+            const option: SelectInputOption = { label, value };
+
+            onChange(name, option.value, option, undefined);
+        },
+        [closeModal, model, name, onChange, schemaQuery]
+    );
+
     const onFocus = useCallback(async () => {
-        // NK: To support loading the select upon focus (a.k.a. "loadOnFocus") we have to explicitly utilize
+        // NK: To support loading the select upon focus (a.k.a. "loadOnFocus"), we have to explicitly use
         // the "defaultOptions" and "isLoading" properties of ReactSelect. These properties, in tandem with
         // "loadOptions", allow for an asynchronous ReactSelect to defer requesting the initial options until
         // desired. This follows the pattern outlined here:
@@ -416,7 +438,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         [OptionComponent, model]
     );
 
-    // Issue 52773: If a value is specified, but we are unable to resolve the value then display a warning to the user.
+    // Issue 52773: If a value is specified, but we are unable to resolve the value, then display a warning to the user.
     const warning = useMemo(() => {
         if (notFoundValues.size === 0) return undefined;
         const warningValue = notFoundValues.size === 1 ? Array.from(notFoundValues)[0] : 'multiple values';
@@ -452,28 +474,40 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     }
 
     return (
-        <SelectInput
-            disabled={showLoading && !model.isInit}
-            filterOption={noopFilterOptions}
-            label={label !== undefined ? label : model.queryInfo?.title}
-            {...selectInputProps}
-            allowCreate={false}
-            autoValue={false} // QuerySelect directly controls value of SelectInput via "selectedOptions"
-            cacheOptions
-            defaultOptions={defaultOptions}
-            delimiter={delimiter}
-            isLoading={isLoading}
-            loadOptions={loadOptions}
-            onChange={onChange}
-            onFocus={onFocus}
-            optionRenderer={optionRenderer}
-            options={undefined} // prevent override
-            // Issue 52773: Allow for submission of required fields whose value is not found
-            required={notFoundValues.size > 0 ? false : required}
-            selectedOptions={displaySelectedOptions ? selectedOptions : undefined}
-            value={getValue(model, multiple)} // needed to initialize the Formsy "value" properly
-            warning={warning}
-        />
+        <>
+            <SelectInput
+                disabled={showLoading && !model.isInit}
+                filterOption={noopFilterOptions}
+                label={label !== undefined ? label : model.queryInfo?.title}
+                {...selectInputProps}
+                allowCreate={false}
+                autoValue={false} // QuerySelect directly controls value of SelectInput via "selectedOptions"
+                cacheOptions
+                defaultOptions={defaultOptions}
+                delimiter={delimiter}
+                isLoading={isLoading}
+                loadOptions={loadOptions}
+                menuFooter={isAddEntitiesEnabled && <AddEntitiesMenuFooter openModal={openModal} />}
+                onChange={onChange}
+                onFocus={onFocus}
+                optionRenderer={optionRenderer}
+                options={undefined} // prevent override
+                // Issue 52773: Allow for submission of required fields whose value is not found
+                required={notFoundValues.size > 0 ? false : required}
+                selectedOptions={displaySelectedOptions ? selectedOptions : undefined}
+                value={getValue(model, multiple)} // needed to initialize the Formsy "value" properly
+                warning={warning}
+            />
+            {showModal && (
+                <AddEntitiesModal
+                    containerFilter={containerFilter}
+                    containerPath={containerPath}
+                    onCancel={closeModal}
+                    onComplete={onAddEntitiesComplete}
+                    schemaQuery={schemaQuery}
+                />
+            )}
+        </>
     );
 });
 QuerySelect.displayName = 'QuerySelect';

@@ -1924,7 +1924,7 @@ export type { BSStyle } from './internal/dropdowns';
 export type { MenuSectionItem } from './internal/DropdownSection';
 export type { UseTimeout } from './internal/hooks';
 export type { ModalProps } from './internal/Modal';
-export type { ModalRendererProps } from './internal/ModalRenderFactory';
+export type { AddEntitiesComplete, ModalRendererProps } from './internal/ModalRenderFactory';
 export type { TriggerType } from './internal/OverlayTrigger';
 export type { ISelectRowsResult } from './internal/query/api';
 export type {
@@ -1967,3 +1967,4 @@ export type {
     QueryModelMap,
     RequiresModelAndActions,
 } from './public/QueryModel/withQueryModels';
+export type { SchemaQueryKey } from './public/SchemaQuery';

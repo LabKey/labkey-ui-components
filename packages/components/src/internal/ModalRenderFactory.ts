@@ -3,9 +3,18 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { ComponentType } from 'react';
-import { SchemaQuery } from '../public/SchemaQuery';
+import { Query } from '@labkey/api';
+import { SchemaQuery, SchemaQueryKey } from '../public/SchemaQuery';
+import { ExtendedMap } from '../public/ExtendedMap';
+import { SelectRowsResponse } from './query/selectRows';
+
+export type AddEntitiesComplete = (results: ExtendedMap<SchemaQueryKey, SelectRowsResponse>) => void;
 
 export interface ModalRendererProps {
+    containerFilter: Query.ContainerFilter;
+    containerPath: string;
+    onCancel: () => void;
+    onComplete: AddEntitiesComplete;
     schemaQuery: SchemaQuery;
 }
 
@@ -24,7 +33,7 @@ function getKey(identifier: ModalRendererIdentifier, modalRenderContext: ModalRe
 }
 
 function identifierToString(identifier: ModalRendererIdentifier): string {
-    return identifier instanceof SchemaQuery ? identifier.toString() : identifier;
+    return identifier instanceof SchemaQuery ? identifier.toString(false) : identifier;
 }
 
 export function registerModalRenderer(
@@ -35,6 +44,9 @@ export function registerModalRenderer(
     modalRenderers[getKey(identifier, modalRenderContext)] = renderer;
 }
 
-export function resolveModalRenderer(identifier: ModalRendererIdentifier): ModalRendererComponent {
-    return modalRenderers[identifierToString(identifier)];
+export function resolveModalRenderer(
+    identifier: SchemaQuery,
+    modalRenderContext = ModalRenderContext.AddEntities
+): ModalRendererComponent {
+    return modalRenderers[getKey(identifier, modalRenderContext)];
 }

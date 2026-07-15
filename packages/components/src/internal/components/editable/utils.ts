@@ -313,6 +313,7 @@ export const gridCellSelectInputProps: Partial<SelectInputProps> = {
 
 export const gridCellQuerySelectProps: Partial<QuerySelectOwnProps> = {
     ...gridCellSelectInputProps,
+    allowAddEntities: false,
     notFoundValuesEnabled: false,
     showLoading: false,
 };

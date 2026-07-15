@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "10.0.1-fb-rspack-build.1",
+  "version": "10.0.1-fb-rspack-build.5",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"
@@ -12,9 +12,9 @@
   "author": "LabKey",
   "license": "SEE LICENSE IN LICENSE.txt",
   "dependencies": {
-    "@rspack/cli": "~2.0.8",
-    "@rspack/core": "~2.0.8",
-    "@rspack/dev-server": "~2.0.3",
+    "@rspack/cli": "~2.1.4",
+    "@rspack/core": "~2.1.4",
+    "@rspack/dev-server": "~2.1.0",
     "@rspack/plugin-react-refresh": "~2.0.2",
     "ajv": "~8.20.0",
     "bootstrap-sass": "~3.4.3",
@@ -29,7 +29,7 @@
     "sass-loader": "~17.0.0",
     "source-map-loader": "~5.0.0",
     "style-loader": "~4.0.0",
-    "ts-checker-rspack-plugin": "~1.4.0",
+    "ts-checker-rspack-plugin": "~1.5.2",
     "typescript": "~6.0.3",
     "uuid": "~14.0.0",
     "webpack-bundle-analyzer": "~5.3.0"

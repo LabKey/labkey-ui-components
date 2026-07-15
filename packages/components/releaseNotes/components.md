@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Move export config into `EntityDataType`
   - Add `JobInputSources` query to workflow schema
 
+### version 7.45.6
+*Released*: 8 July 2026
+- Adjust width of API key display control so its copy-to-clipboard button doesn't wrap to the next line
+
 ### version 7.45.5
 *Released*: 7 July 2026
 - Export DetailDisplay

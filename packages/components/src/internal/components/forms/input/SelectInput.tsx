@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { Component, ComponentType, CSSProperties, FC, FocusEvent, KeyboardEvent, ReactNode } from 'react';
+import React, { Component, CSSProperties, FC, FocusEvent, KeyboardEvent, ReactNode } from 'react';
 import ReactSelect, { components } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import AsyncCreatableSelect from 'react-select/async-creatable';
@@ -161,7 +161,7 @@ function initOptionFromPrimitive(value: number | string, props: SelectInputProps
 }
 
 // Used to initialize the selected options in `state` when `autoValue` is enabled.
-// This will accept a primitive value (e.g. 5) and resolve it to an option (e.g. { label: 'Awesome', value: 5 })
+// This will accept a primitive value (e.g., 5) and resolve it to an option (e.g., { label: 'Awesome', value: 5 })
 // if the option is available. Supports mapping single or multiple values.
 export function initOptions(props: SelectInputProps): SelectInputOption | SelectInputOption[] {
     const { value, options } = props;
@@ -200,6 +200,13 @@ export interface SelectInputProps {
     autoFocus?: boolean;
     autoValue?: boolean;
     backspaceRemovesValue?: boolean;
+    /**
+     * When the value of this prop changes, the underlying asynchronous React Select is remounted, clearing
+     * its cached options and reloading the default options. Use this to invalidate previously loaded options
+     * when the option set is known to have changed (e.g., a new option was created). Only applies to
+     * asynchronous configurations (i.e., when "loadOptions" is provided).
+     */
+    cacheKey?: number | string;
     cacheOptions?: boolean;
     clearable?: boolean;
     clearCacheOnChange?: boolean;
@@ -267,10 +274,10 @@ export interface SelectInputProps {
     warning?: ReactNode;
 }
 
-type SelectInputImplProps = FormsyInjectedProps<any> & SelectInputProps;
+export type SelectInputImplProps = FormsyInjectedProps<any> & SelectInputProps;
 
 interface State {
-    // This state property is used in conjunction with the prop "clearCacheOnChange" which when true
+    // This state property is used in conjunction with the prop "clearCacheOnChange", which when true,
     // is intended to clear the underlying asynchronous React Select's cache.
     // See https://github.com/JedWatson/react-select/issues/1879
     asyncKey: number;
@@ -300,7 +307,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
         labelClass: INPUT_LABEL_CLASS_NAME,
         menuPlacement: 'auto',
         // Default to 'fixed' because 'absolute' causes issues in several scenarios (Modals, EditableGrid) but it's too
-        // difficult to manually set it to fixed in all of these situations (e.g. we don't always know we're in a modal)
+        // difficult to manually set it to fixed in all of these situations (e.g., we don't always know we're in a modal)
         menuPosition: 'fixed',
         openMenuOnFocus: false,
         saveOnBlur: false,
@@ -346,6 +353,10 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             // to reinitialize "selectedOptions" from the latest props. The async case is handled in this.loadOptions().
             const selectedOptions = initOptions(this.props);
             this.setState({ originalOptions: selectedOptions, selectedOptions });
+        }
+
+        if (this.isAsync() && prevProps.cacheKey !== this.props.cacheKey) {
+            this.setState(state => ({ asyncKey: state.asyncKey + 1 }));
         }
 
         this.CHANGE_LOCK = false;

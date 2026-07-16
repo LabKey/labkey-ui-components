@@ -43,14 +43,16 @@ export const AddEntitiesModal: FC<ModalRendererProps> = props => {
     }
 
     return (
-        // eslint-disable-next-line react-hooks/static-components
-        <ModalRenderer
-            containerFilter={containerFilter}
-            containerPath={containerPath}
-            onCancel={onCancel}
-            onComplete={onComplete}
-            schemaQuery={schemaQuery}
-        />
+        <AddEntitiesModalContext.Provider value={false}>
+            {/* eslint-disable-next-line react-hooks/static-components */}
+            <ModalRenderer
+                containerFilter={containerFilter}
+                containerPath={containerPath}
+                onCancel={onCancel}
+                onComplete={onComplete}
+                schemaQuery={schemaQuery}
+            />
+        </AddEntitiesModalContext.Provider>
     );
 };
 AddEntitiesModal.displayName = 'AddEntitiesModal';

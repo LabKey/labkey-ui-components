@@ -14,7 +14,7 @@ import { Row } from '../../query/selectRows';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { caseInsensitive, isTestEnv } from '../../util/utils';
+import { caseInsensitive, isTestEnv, joinMultiValueForExport } from '../../util/utils';
 
 import { useModalState, useTimeout } from '../../hooks';
 
@@ -22,13 +22,17 @@ import { SelectInput, SelectInputChange, SelectInputOption, SelectInputProps } f
 import { resolveDetailFieldLabel, resolveDetailFieldValue } from './utils';
 import {
     fetchSearchResults,
+    fetchSelectedValues,
     formatResults,
     formatSavedResults,
     initSelect,
+    parseRawValue,
     parseSelectedQuery,
     QuerySelectModel,
     saveSearchResults,
     setSelection,
+    setSelectionWithResults,
+    valuesAreLoaded,
 } from './model';
 import { DELIMITER } from './constants';
 import { AddEntitiesMenuFooter, AddEntitiesModal, useIsAddEntitiesEnabled } from './AddEntitiesModal';
@@ -147,6 +151,7 @@ type InheritedSelectInputProps = Omit<
     SelectInputProps,
     | 'allowCreate'
     | 'autoValue'
+    | 'cacheKey' // used by QuerySelect to invalidate cached options when new entities are added.
     | 'cacheOptions'
     | 'defaultOptions' // used by QuerySelect to support "preLoad" and "loadOnFocus" behaviors.
     | 'isLoading' // used by QuerySelect to support "loadOnFocus" behavior.
@@ -247,6 +252,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         // See note in onFocus() regarding support for "loadOnFocus"
         preLoad !== false ? true : loadOnFocus ? [] : true
     );
+    const [cacheKey, setCacheKey] = useState<number>(0);
     const [error, setError] = useState<string>();
     const [loadOnFocusLock, setLoadOnFocusLock] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(undefined);
@@ -395,18 +401,54 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     const onAddEntitiesComplete = useCallback<AddEntitiesComplete>(
         async resultsMap => {
             closeModal();
-
-            // TODO: This is not fully correct. Need to load the result into the model first, then select it.
-            const { displayColumn, valueColumn } = model;
-
             const result = resultsMap.get(schemaQuery.getKey());
-            const label = resolveDetailFieldLabel(caseInsensitive(result.rows[0], displayColumn)) as string;
-            const value = resolveDetailFieldValue(caseInsensitive(result.rows[0], valueColumn));
-            const option: SelectInputOption = { label, value };
+            if (!model.isInit || !result?.rows?.length) return;
 
-            onChange(name, option.value, option, undefined);
+            // For multiple, append the added values to the current selection and join them in the same manner
+            // as SelectInput resolves its form value upon interactive selection.
+            let nextValue: string | string[];
+            {
+                const addedValues = result.rows.map(row =>
+                    resolveDetailFieldValue(caseInsensitive(row, model.valueColumn))
+                );
+
+                if (model.multiple) {
+                    nextValue = joinMultiValueForExport(
+                        parseRawValue(model.rawSelectedValue, true, model.delimiter).concat(addedValues),
+                        model.delimiter
+                    );
+                } else {
+                    nextValue = addedValues[0];
+                }
+            }
+
+            try {
+                let model_: QuerySelectModel;
+
+                if (valuesAreLoaded(model, nextValue)) {
+                    model_ = setSelection(model, nextValue);
+                } else {
+                    // Load the added value(s) into the model, applying the model's configured columns and
+                    // filters, and then select them.
+                    setIsLoading(true);
+                    const results = await fetchSelectedValues(model, nextValue);
+                    model_ = setSelectionWithResults(model, results, nextValue, notFoundValuesEnabled);
+                }
+
+                setModel(model_);
+
+                // The underlying SelectInput's cached options do not include the newly added entities.
+                setCacheKey(k => k + 1);
+                setDefaultOptions(true);
+
+                onQSChange?.(name, model_.rawSelectedValue, model_.selectedOptions, props, model_.selectedItems);
+            } catch (e) {
+                setError(resolveErrorMessage(e) ?? 'Failed to load the newly added value.');
+            } finally {
+                setIsLoading(undefined);
+            }
         },
-        [closeModal, model, name, onChange, schemaQuery]
+        [closeModal, model, name, notFoundValuesEnabled, onQSChange, props, schemaQuery]
     );
 
     const onFocus = useCallback(async () => {
@@ -482,6 +524,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
                 {...selectInputProps}
                 allowCreate={false}
                 autoValue={false} // QuerySelect directly controls value of SelectInput via "selectedOptions"
+                cacheKey={cacheKey}
                 cacheOptions
                 defaultOptions={defaultOptions}
                 delimiter={delimiter}

@@ -125,6 +125,8 @@ export interface ModalProps extends BaseModalProps, ModalButtonsProps {
      * Note: You probably should not use header, instead use the other props to render the appropriate header.
      */
     header?: ReactNode;
+    /** Disable rendering the footer. Defaults to true. */
+    showFooter?: boolean;
     /**
      * Title passed to the default header (see ModalHeader). If a custom header is supplied, then this is ignored.
      */
@@ -150,6 +152,7 @@ export const Modal: FC<ModalProps> = memo(props => {
         onCommentChange,
         onConfirm,
         requiresUserComment,
+        showFooter = true,
         title,
     } = props;
     const showHeader = !!(onCancel || title);
@@ -160,7 +163,7 @@ export const Modal: FC<ModalProps> = memo(props => {
 
             <div className="modal-body">{children}</div>
 
-            {!footer && (
+            {showFooter && !footer && (
                 <ModalButtons
                     actionName={actionName}
                     cancelText={cancelText}
@@ -178,7 +181,7 @@ export const Modal: FC<ModalProps> = memo(props => {
                 </ModalButtons>
             )}
 
-            {footer && <div className="modal-footer">{footer}</div>}
+            {showFooter && footer && <div className="modal-footer">{footer}</div>}
         </BaseModal>
     );
 });

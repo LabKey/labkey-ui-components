@@ -21,7 +21,7 @@ export interface ModalRendererProps {
 export type ModalRendererIdentifier = SchemaQuery | string;
 export type ModalRendererComponent = ComponentType<ModalRendererProps>;
 
-const modalRenderers: Record<string, ModalRendererComponent> = {};
+const modalRenderers: Record<string, ModalRendererComponent | null> = {};
 
 export enum ModalRenderContext {
     AddEntities = 'AddEntities',
@@ -36,9 +36,14 @@ function identifierToString(identifier: ModalRendererIdentifier): string {
     return identifier instanceof SchemaQuery ? identifier.toString(false) : identifier;
 }
 
+/**
+ * Register a modal renderer for a specific SchemaQuery, or for an entire schema by passing the schema name as a
+ * string (e.g. "exp.data"). Registering `null` for a specific identifier explicitly opts it out, taking precedence
+ * over any schema-wide registration.
+ */
 export function registerModalRenderer(
     identifier: ModalRendererIdentifier,
-    renderer: ModalRendererComponent,
+    renderer: ModalRendererComponent | null,
     modalRenderContext = ModalRenderContext.AddEntities
 ): void {
     modalRenderers[getKey(identifier, modalRenderContext)] = renderer;
@@ -48,5 +53,12 @@ export function resolveModalRenderer(
     identifier: SchemaQuery,
     modalRenderContext = ModalRenderContext.AddEntities
 ): ModalRendererComponent {
-    return modalRenderers[getKey(identifier, modalRenderContext)];
+    const exactKey = getKey(identifier, modalRenderContext);
+    if (exactKey in modalRenderers) {
+        return modalRenderers[exactKey] ?? undefined;
+    }
+    if (identifier.schemaName) {
+        return modalRenderers[getKey(identifier.schemaName, modalRenderContext)] ?? undefined;
+    }
+    return undefined;
 }

@@ -22,13 +22,16 @@ export function useIsAddEntitiesEnabled(schemaQuery: SchemaQuery): boolean {
 }
 
 interface AddEntitiesMenuFooterProps {
-    openModal: () => void;
+    onClick: () => void;
 }
 
-export const AddEntitiesMenuFooter: FC<AddEntitiesMenuFooterProps> = ({ openModal }) => {
-    return <div onClick={openModal}>Add New</div>;
-};
-AddEntitiesMenuFooter.displayName = 'AddEntitiesMenuFooter';
+export const AddEntitiesFooter: FC<AddEntitiesMenuFooterProps> = ({ onClick }) => (
+    <div className="add-entities-footer" onClick={onClick}>
+        <span className="fa fa-plus-circle" />
+        Add New
+    </div>
+);
+AddEntitiesFooter.displayName = 'AddEntitiesFooter';
 
 export const AddEntitiesModal: FC<ModalRendererProps> = props => {
     const { containerFilter, containerPath, onCancel, onComplete, schemaQuery } = props;

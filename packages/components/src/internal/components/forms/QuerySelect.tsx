@@ -35,7 +35,7 @@ import {
     valuesAreLoaded,
 } from './model';
 import { DELIMITER } from './constants';
-import { AddEntitiesMenuFooter, AddEntitiesModal, useIsAddEntitiesEnabled } from './AddEntitiesModal';
+import { AddEntitiesFooter, AddEntitiesModal, useIsAddEntitiesEnabled } from './AddEntitiesModal';
 import { AddEntitiesComplete } from '../../ModalRenderFactory';
 
 function getValue(model: QuerySelectModel, multiple: boolean): any {
@@ -530,7 +530,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
                 delimiter={delimiter}
                 isLoading={isLoading}
                 loadOptions={loadOptions}
-                menuFooter={isAddEntitiesEnabled && <AddEntitiesMenuFooter openModal={openModal} />}
+                menuFooter={isAddEntitiesEnabled && <AddEntitiesFooter onClick={openModal} />}
                 onChange={onChange}
                 onFocus={onFocus}
                 optionRenderer={optionRenderer}

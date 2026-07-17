@@ -179,7 +179,7 @@ button.view-field__action .fa {
 
 // GitHub Issue 985: Improve readability of identifying fields
 .select-input__option--is-selected .identifying_field_label {
-    color: #FFFFFF;
+    color: $white;
 }
 
 .folder-field_archived-tag {
@@ -188,5 +188,24 @@ button.view-field__action .fa {
     &.alert {
         margin: 0 3px 0 10px;
         padding: 2px 3px;
+    }
+}
+
+.add-entities-footer {
+    background-color: $gray-shadow;
+    border-top: 1px solid $gray-border;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $gray-border-light;
+    }
+
+    > .fa {
+        color: $brand-success;
+        padding-right: 4px;
     }
 }

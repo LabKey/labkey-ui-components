@@ -1924,6 +1924,7 @@ export type { BSStyle } from './internal/dropdowns';
 export type { MenuSectionItem } from './internal/DropdownSection';
 export type { UseTimeout } from './internal/hooks';
 export type { ModalProps } from './internal/Modal';
+export type { ModalFooterSlotElement } from './internal/ModalFooterSlot';
 export type { AddEntitiesComplete, ModalRendererProps } from './internal/ModalRenderFactory';
 export type { TriggerType } from './internal/OverlayTrigger';
 export type { ISelectRowsResult } from './internal/query/api';

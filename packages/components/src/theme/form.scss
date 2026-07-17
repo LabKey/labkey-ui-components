@@ -382,6 +382,12 @@ textarea.form-control {
     text-align: left;
 }
 
+.modal-footer--slot:empty {
+    display: none;
+    padding: 0;
+    border-top: none;
+}
+
 .query-info-form .toggle-group-icon {
     padding-top: 7px;
 }

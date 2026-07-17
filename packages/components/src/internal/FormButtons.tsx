@@ -4,17 +4,30 @@
  */
 import classNames from 'classnames';
 import React, { Children, FC, memo, PropsWithChildren } from 'react';
+import { createPortal } from 'react-dom';
+
+import { useModalFooterSlot } from './ModalFooterSlot';
+import { useFormStepActive } from './components/forms/FormStep';
 
 interface Props extends PropsWithChildren {
     sticky?: boolean;
 }
 
 export const FormButtons: FC<Props> = memo(({ children, sticky = true }) => {
-    const className = classNames('form-buttons', { 'form-buttons--sticky': sticky });
+    // When rendered inside a Modal with "footerSlot" enabled, the buttons portal into the modal footer instead
+    // of rendering inline.
+    const slot = useModalFooterSlot();
+    const stepActive = useFormStepActive() ?? true;
+    const inSlotMode = slot !== undefined;
+    const className = classNames('form-buttons', { 'form-buttons--sticky': sticky && !inSlotMode });
     let cancel;
     let secondary;
     let tertiary;
     let submit;
+
+    if (inSlotMode && (!stepActive || slot === null)) {
+        return null;
+    }
 
     // Note: we have to filter children via forEach because doing something like {canSubmit && <button>Submit</button>}
     // counts as a child, even when canSubmit is false, which results in a null child.
@@ -47,7 +60,7 @@ export const FormButtons: FC<Props> = memo(({ children, sticky = true }) => {
         return null;
     }
 
-    return (
+    const content = (
         <div className={className}>
             <div className="form-buttons__left">{cancel}</div>
             <div className="form-buttons__right">
@@ -57,5 +70,7 @@ export const FormButtons: FC<Props> = memo(({ children, sticky = true }) => {
             </div>
         </div>
     );
+
+    return inSlotMode ? createPortal(content, slot) : content;
 });
 FormButtons.displayName = 'FormButtons';

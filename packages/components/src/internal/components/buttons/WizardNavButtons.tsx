@@ -2,19 +2,20 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, PropsWithChildren } from 'react';
+import React, { FC, memo, PropsWithChildren, ReactNode } from 'react';
 
 import { FormButtons } from '../../FormButtons';
 
 interface Props extends PropsWithChildren {
     canCancel?: boolean;
+    cancel: () => void;
+    cancelText?: string;
     canFinish?: boolean;
     canNextStep?: boolean;
     canPreviousStep?: boolean;
-    cancel: () => void;
-    cancelText?: string;
     finish?: boolean;
     finishText?: string;
+    formId?: string;
     isFinished?: boolean;
     isFinishedText?: string;
     isFinishing?: boolean;
@@ -35,6 +36,7 @@ export const WizardNavButtons: FC<Props> = memo(props => {
         children,
         finish = false,
         finishText = 'Finish',
+        formId,
         isFinished,
         isFinishedText = 'Finished',
         isFinishing,
@@ -44,18 +46,24 @@ export const WizardNavButtons: FC<Props> = memo(props => {
         singularNoun,
     } = props;
 
-    let submitButton;
+    let submitButton: ReactNode;
 
     if (finish) {
         submitButton = (
-            <button className="btn btn-success" disabled={isFinishing || !canFinish} onClick={nextStep} type="submit">
+            <button
+                className="btn btn-success"
+                disabled={isFinishing || !canFinish}
+                form={formId}
+                onClick={nextStep}
+                type="submit"
+            >
                 {isFinished ? isFinishedText : isFinishing ? isFinishingText : finishText}
                 {singularNoun ? ' ' + singularNoun : null}
             </button>
         );
     } else {
         submitButton = (
-            <button className="btn btn-default" type="submit" onClick={nextStep} disabled={!canNextStep}>
+            <button className="btn btn-default" disabled={!canNextStep} form={formId} onClick={nextStep} type="submit">
                 Next
             </button>
         );
@@ -67,7 +75,7 @@ export const WizardNavButtons: FC<Props> = memo(props => {
                 {cancelText}
             </button>
             {previousStep !== undefined && (
-                <button className="btn btn-default" onClick={previousStep} disabled={!canPreviousStep} type="button">
+                <button className="btn btn-default" disabled={!canPreviousStep} onClick={previousStep} type="button">
                     Back
                 </button>
             )}

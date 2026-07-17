@@ -9,7 +9,7 @@ import { userEvent } from '@testing-library/user-event';
 
 import { WizardNavButtons } from './WizardNavButtons';
 
-describe('<WizardNavButtons/>', () => {
+describe('WizardNavButtons', () => {
     test('default props', () => {
         render(<WizardNavButtons cancel={jest.fn()} />);
         expect(document.querySelectorAll('button').length === 2);
@@ -45,6 +45,27 @@ describe('<WizardNavButtons/>', () => {
         expect(document.querySelectorAll('button').length).toEqual(3);
         expect(document.querySelectorAll('button')[0].textContent).toEqual('Cancel');
         expect(document.querySelectorAll('button')[1].textContent).toEqual('My Additional Button');
+    });
+
+    test('formId applies the form attribute to the next button', () => {
+        render(<WizardNavButtons cancel={jest.fn()} formId="my-form" />);
+        const buttons = document.querySelectorAll('button');
+        expect(buttons[1].textContent).toEqual('Next');
+        expect(buttons[1].getAttribute('form')).toEqual('my-form');
+        expect(buttons[0].hasAttribute('form')).toBe(false);
+    });
+
+    test('formId applies the form attribute to the finish button', () => {
+        render(<WizardNavButtons cancel={jest.fn()} finish formId="my-form" nextStep={jest.fn()} />);
+        const buttons = document.querySelectorAll('button');
+        expect(buttons[1].textContent).toEqual('Finish');
+        expect(buttons[1].getAttribute('form')).toEqual('my-form');
+    });
+
+    test('no form attribute when formId is omitted', () => {
+        render(<WizardNavButtons cancel={jest.fn()} />);
+        const buttons = document.querySelectorAll('button');
+        expect(buttons[1].hasAttribute('form')).toBe(false);
     });
 
     test('onClick handlers', async () => {

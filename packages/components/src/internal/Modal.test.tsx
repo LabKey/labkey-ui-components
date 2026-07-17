@@ -2,11 +2,12 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { FC } from 'react';
 import { render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
 import { BaseModal, Modal, ModalHeader } from './Modal';
+import { useModalFooterSlot } from './ModalFooterSlot';
 
 describe('Modal components', () => {
     describe('BaseModal', () => {
@@ -189,6 +190,84 @@ describe('Modal components', () => {
             const dialog = document.querySelector('.modal-dialog');
             expect(dialog.classList.contains('modal-lg')).toBe(true);
             expect(dialog.classList.contains('my-modal')).toBe(true);
+        });
+    });
+
+    describe('Modal footerSlot', () => {
+        interface SlotProbeProps {
+            className?: string;
+        }
+        const SlotProbe: FC<SlotProbeProps> = ({ className = 'slot-probe' }) => {
+            const slot = useModalFooterSlot();
+            return (
+                <div
+                    className={className}
+                    data-slot={slot === undefined ? 'undefined' : slot === null ? 'null' : 'element'}
+                />
+            );
+        };
+        SlotProbe.displayName = 'SlotProbe';
+
+        test('renders an empty footer slot and no default footer buttons', () => {
+            render(
+                <Modal footerSlot onCancel={jest.fn()} onConfirm={jest.fn()}>
+                    body
+                </Modal>
+            );
+            const slot = document.querySelector('.modal-footer.modal-footer--slot');
+            expect(slot).not.toBeNull();
+            expect(slot.childNodes).toHaveLength(0);
+            expect(document.querySelector('.modal-buttons')).toBeNull();
+        });
+
+        test('explicit footer takes precedence over footerSlot', () => {
+            render(
+                <Modal footer={<span className="custom-footer">f</span>} footerSlot onCancel={jest.fn()}>
+                    body
+                </Modal>
+            );
+            expect(document.querySelector('.modal-footer--slot')).toBeNull();
+            expect(document.querySelector('.modal-footer .custom-footer').textContent).toEqual('f');
+        });
+
+        test('no footerSlot renders no slot element', () => {
+            render(
+                <Modal onCancel={jest.fn()} onConfirm={jest.fn()}>
+                    body
+                </Modal>
+            );
+            expect(document.querySelector('.modal-footer--slot')).toBeNull();
+        });
+
+        test('provides the slot element to descendants', () => {
+            render(
+                <Modal footerSlot onCancel={jest.fn()}>
+                    <SlotProbe />
+                </Modal>
+            );
+            expect(document.querySelector('.slot-probe').getAttribute('data-slot')).toEqual('element');
+        });
+
+        test('provides undefined when footerSlot is not enabled', () => {
+            render(
+                <Modal onCancel={jest.fn()}>
+                    <SlotProbe />
+                </Modal>
+            );
+            expect(document.querySelector('.slot-probe').getAttribute('data-slot')).toEqual('undefined');
+        });
+
+        test('nested Modal resets the slot context for its own children', () => {
+            render(
+                <Modal footerSlot onCancel={jest.fn()}>
+                    <SlotProbe className="outer-probe" />
+                    <Modal onCancel={jest.fn()}>
+                        <SlotProbe className="inner-probe" />
+                    </Modal>
+                </Modal>
+            );
+            expect(document.querySelector('.outer-probe').getAttribute('data-slot')).toEqual('element');
+            expect(document.querySelector('.inner-probe').getAttribute('data-slot')).toEqual('undefined');
         });
     });
 });

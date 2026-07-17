@@ -89,45 +89,45 @@ const OptionRenderer: FC<OptionRendererProps> = props => {
     const { OptionComponent, label, model, value } = props;
     const { allResults, queryInfo } = model;
 
-    if (queryInfo && allResults.size) {
-        const columns = queryInfo.getLookupViewColumns(model.displayColumn);
-        const item = allResults.find(result => value === result.getIn([model.valueColumn, 'value']));
+    if (!queryInfo || !allResults.size) {
+        return null;
+    }
 
-        if (OptionComponent) {
-            return <OptionComponent label={label} queryInfo={queryInfo} row={item?.toJS() as Row} value={value} />;
-        }
+    const item = allResults.find(result => value === result.getIn([model.valueColumn, 'value']));
 
+    if (OptionComponent) {
+        return <OptionComponent label={label} queryInfo={queryInfo} row={item?.toJS() as Row} value={value} />;
+    }
+
+    if (!item) {
         return (
-            <>
-                {columns.map((column, i) => {
-                    if (item !== undefined) {
-                        let text = resolveDetailFieldLabel(item.get(column.name));
-                        if (!Utils.isString(text)) {
-                            if (text == null) text = '';
-                            else if (Array.isArray(text)) text = text.join(', ');
-                        }
-
-                        return (
-                            <div key={i}>
-                                {columns.length > 1 && (
-                                    <span className="identifying_field_label">{column.caption ?? column.name}: </span>
-                                )}
-                                <span>{text}</span>
-                            </div>
-                        );
-                    }
-
-                    return (
-                        <div key={i}>
-                            <span>{label}</span>
-                        </div>
-                    );
-                })}
-            </>
+            <div>
+                <span>{label}</span>
+            </div>
         );
     }
 
-    return null;
+    const columns = queryInfo.getLookupViewColumns(model.displayColumn);
+
+    return (
+        <>
+            {columns.map(column => {
+                let text = resolveDetailFieldLabel(item.get(column.name));
+                if (!Utils.isString(text)) {
+                    text = Array.isArray(text) ? text.join(', ') : (text ?? '');
+                }
+
+                return (
+                    <div key={column.name}>
+                        {columns.length > 1 && (
+                            <span className="identifying_field_label">{column.caption ?? column.name}: </span>
+                        )}
+                        <span>{text}</span>
+                    </div>
+                );
+            })}
+        </>
+    );
 };
 OptionRenderer.displayName = 'OptionRenderer';
 

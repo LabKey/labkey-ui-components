@@ -40,8 +40,13 @@ import { Row, selectRows } from '../../query/selectRows';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { ALL_AMOUNT_AND_UNITS_COLUMNS_LC, SAMPLE_STORAGE_COLUMNS_LC, STORED_AMOUNT_FIELDS } from './constants';
-import { FindField, GroupedSampleFields, SampleState, SampleStateType } from './models';
+import {
+    ALL_AMOUNT_AND_UNITS_COLUMNS_LC,
+    NON_ARCHIVED_COLOR_FILTER,
+    SAMPLE_STORAGE_COLUMNS_LC,
+    STORED_AMOUNT_FIELDS,
+} from './constants';
+import { FindField, GroupedSampleFields, SampleColorModel, SampleState, SampleStateType } from './models';
 import { executeSql, ExecuteSqlResponseWithSession } from '../../query/executeSql';
 import { EDIT_METHOD } from '../../constants';
 
@@ -178,6 +183,23 @@ export async function getSampleStorageId(sampleRowId: number): Promise<number> {
     }
 
     return caseInsensitive(result.rows[0], 'RowId').value;
+}
+
+export function getSampleColors(includeArchive = false, containerPath?: string): Promise<SampleColorModel[]> {
+    return selectRows({
+        columns: 'RowId,Label,Color,Archived',
+        containerPath,
+        filterArray: includeArchive ? undefined : [NON_ARCHIVED_COLOR_FILTER],
+        schemaQuery: SCHEMAS.EXP_TABLES.DATA_COLORS,
+        sort: 'Label',
+    }).then(response =>
+        response.rows.map(row => ({
+            rowId: caseInsensitive(row, 'RowId').value,
+            label: caseInsensitive(row, 'Label').value,
+            color: caseInsensitive(row, 'Color').value,
+            archived: !!caseInsensitive(row, 'Archived').value,
+        }))
+    );
 }
 
 // Used for samples and dataclasses

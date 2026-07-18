@@ -4,6 +4,13 @@
  */
 import { immerable, produce } from 'immer';
 
+export interface SampleColorModel {
+    archived: boolean;
+    color: string;
+    label: string;
+    rowId?: number;
+}
+
 export enum EntityCreationType {
     Aliquots = 'Aliquot',
     Derivatives = 'Derive',

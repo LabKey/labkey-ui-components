@@ -22,6 +22,7 @@ import {
     getLookupRowIdsFromSelection,
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
+    getSampleColors,
     getSampleCounter,
     getSampleStatuses,
     getSampleStorageId,
@@ -32,7 +33,7 @@ import {
     SampleAssayResultViewConfig,
     saveSampleCounter,
 } from './actions';
-import { GroupedSampleFields, SampleState } from './models';
+import { GroupedSampleFields, SampleColorModel, SampleState } from './models';
 import { SampleOperation } from './constants';
 import { ExecuteSqlResponseWithSession } from '../../query/executeSql';
 import { Row } from '../../query/selectRows';
@@ -57,6 +58,8 @@ export interface SamplesAPIWrapper {
     getSampleAliquotRows: (sampleId: number | string) => Promise<Row[]>;
 
     getSampleAssayResultViewConfigs: () => Promise<SampleAssayResultViewConfig[]>;
+
+    getSampleColors: (includeArchive?: boolean, containerPath?: string) => Promise<SampleColorModel[]>;
 
     getSampleCounter: (seqType: 'rootSampleCount' | 'sampleCount', containerPath?: string) => Promise<number>;
 
@@ -108,6 +111,7 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSampleAliquotRows = getSampleAliquotRows;
     getSampleAssayResultViewConfigs = getSampleAssayResultViewConfigs;
     getSelectionLineageData = getSelectionLineageData;
+    getSampleColors = getSampleColors;
     getSampleStatuses = getSampleStatuses;
     getDefaultDiscardStatus = getDefaultDiscardStatus;
     getSampleOperationConfirmationData = getSampleOperationConfirmationData;
@@ -134,6 +138,7 @@ export function getSamplesTestAPIWrapper(
         getSampleAliquotRows: mockFn(),
         getSampleAssayResultViewConfigs: mockFn(),
         getSelectionLineageData: mockFn(),
+        getSampleColors: mockFn(),
         getSampleStatuses: mockFn(),
         getDefaultDiscardStatus: mockFn(),
         getSampleOperationConfirmationData: mockFn(),

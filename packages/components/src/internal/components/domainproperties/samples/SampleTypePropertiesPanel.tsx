@@ -45,6 +45,7 @@ import { IParentAlias, IParentOption } from '../../entities/models';
 import { Container } from '../../base/models/Container';
 import { IDomainField } from '../models';
 import { ColorPickerInput } from '../../forms/input/ColorPickerInput';
+import { SampleColorsSetting } from '../../samples/SampleColorsSetting';
 import { SelectInput, SelectInputOption } from '../../forms/input/SelectInput';
 
 import { dataClassOptionFilterFn, DomainParentAliases } from '../DomainParentAliases';
@@ -318,6 +319,10 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
 
     onFieldChange = (key: string, value: any): void => {
         this.updateValidStatus(this.props.model.set(key, value) as SampleTypeModel);
+    };
+
+    onSampleColorsChange = (disabledRowIds: number[]): void => {
+        this.onFieldChange('disabledSampleColorRowIds', disabledRowIds);
     };
 
     onMetricUnitKindChange = (key: string, value: any): void => {
@@ -597,8 +602,8 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                         <div className="row margin-top">
                             <div className="col-xs-2">
                                 <DomainFieldLabel
-                                    helpTipBody="The label color will be used to distinguish this sample type in various views in the application."
-                                    label="Label Color"
+                                    helpTipBody="The color that will be used to distinguish this sample type in various views in the application."
+                                    label="Sample Type Color"
                                 />
                             </div>
                             <div className="col-xs-10">
@@ -610,6 +615,10 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                                 />
                             </div>
                         </div>
+                        <SampleColorsSetting
+                            disabledRowIds={model.disabledSampleColorRowIds ?? []}
+                            onChange={this.onSampleColorsChange}
+                        />
                         {includeMetricUnitProperty && (
                             <>
                                 <div className="row margin-top">

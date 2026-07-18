@@ -270,6 +270,7 @@ import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { ANCESTOR_LOOKUP_CONCEPT_URI, AncestorRenderer } from './internal/renderers/AncestorRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
 import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
+import { SampleColorRenderer } from './internal/renderers/SampleColorRenderer';
 import { TransactionAuditIdRenderer } from './internal/renderers/TransactionAuditIdRenderer';
 import { ExpirationDateColumnRenderer } from './internal/renderers/ExpirationDateColumnRenderer';
 import { FolderColumnRenderer } from './internal/renderers/FolderColumnRenderer';
@@ -639,6 +640,7 @@ import {
 import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
+import { ManageSampleColorsPanel } from './internal/components/samples/ManageSampleColorsPanel';
 import { SampleStatusLegend } from './internal/components/samples/SampleStatusLegend';
 import {
     ALIQUOT_FILTER_MODE,
@@ -690,6 +692,7 @@ import {
     isBiologicsEnabled,
     isFreezerManagementEnabled,
     isPremiumApplication,
+    isSampleManagerEnabled,
     limsIsPrimaryApp,
 } from './internal/app/products';
 import {
@@ -945,6 +948,7 @@ const App = {
     isDataChangeCommentRequirementFeatureEnabled,
     isSharedContainer,
     freezerManagerIsCurrentApp,
+    isSampleManagerEnabled,
     isSampleStatusEnabled,
     isProductFoldersEnabled,
     isAllProductFoldersFilteringEnabled,
@@ -1546,6 +1550,7 @@ export {
     makeTestQueryModel,
     ManageDropdownButton,
     ManageSampleStatusesPanel,
+    ManageSampleColorsPanel,
     MAX_EDITABLE_GRID_ROWS,
     MAX_SELECTION_ACTION_ROWS,
     MEASUREMENT_UNITS,
@@ -1669,6 +1674,7 @@ export {
     SampleStateType,
     SampleStatusLegend,
     SampleStatusRenderer,
+    SampleColorRenderer,
     SampleStatusTag,
     SampleTypeDataType,
     SampleTypeDesigner,

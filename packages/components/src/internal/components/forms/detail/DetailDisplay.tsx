@@ -26,6 +26,7 @@ import { resolveDetailFieldValue } from '../utils';
 import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
 
 import { SampleStatusRenderer } from '../../../renderers/SampleStatusRenderer';
+import { SampleColorRenderer } from '../../../renderers/SampleColorRenderer';
 import { TextChoiceInput } from '../input/TextChoiceInput';
 
 import { DatePickerInput } from '../input/DatePickerInput';
@@ -484,6 +485,9 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
                 break;
             case 'nolinkrenderer':
                 renderer = d => <NoLinkRenderer data={d} />;
+                break;
+            case 'samplecolorrenderer':
+                renderer = (d, r) => <SampleColorRenderer data={d} row={r} />;
                 break;
             case 'samplestatusrenderer':
                 renderer = (d, r) => <SampleStatusRenderer row={r} />;

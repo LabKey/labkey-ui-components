@@ -13,7 +13,7 @@ import { getSelectedDataDeprecated } from '../../actions';
 import { caseInsensitive } from '../../util/utils';
 import { request } from '../../request';
 
-import { ParentEntityLineageColumns, SampleTypeDataType } from '../entities/constants';
+import { ParentEntityLineageColumns } from '../entities/constants';
 
 import { DERIVATION_DATA_SCOPES, STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
@@ -202,17 +202,23 @@ export function getSampleColors(includeArchive = false, containerPath?: string):
     );
 }
 
-// Returns the sample type RowIds that currently exclude the given color (rows in exp.DataTypeColorExclusion).
+// Returns the sample type RowIds that currently exclude the given color, via the GetColorDataTypeExclusion action.
 export function getColorSampleTypeExclusions(colorRowId: number, containerPath?: string): Promise<number[]> {
-    return selectRows({
-        columns: 'RowId,DataTypeRowId',
-        containerPath,
-        filterArray: [
-            Filter.create('ColorRowId', colorRowId),
-            Filter.create('DataType', SampleTypeDataType.folderConfigurableDataType),
-        ],
-        schemaQuery: SCHEMAS.EXP_TABLES.DATA_TYPE_COLOR_EXCLUSION,
-    }).then(response => response.rows.map(row => caseInsensitive(row, 'DataTypeRowId').value));
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL(
+                SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
+                'getColorDataTypeExclusion.api',
+                containerPath,
+                { colorRowId }
+            ),
+            success: Utils.getCallbackWrapper(response => resolve(response?.excludedSampleTypes ?? [])),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(response);
+            }),
+        });
+    });
 }
 
 // Single write path for a sample color: creates (no rowId) or updates the color (label/color/archived) and, in the

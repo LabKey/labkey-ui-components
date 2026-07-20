@@ -7,9 +7,7 @@ import { Map } from 'immutable';
 
 import { ColorIcon } from '../components/base/ColorIcon';
 import { caseInsensitive } from '../util/utils';
-
-export const SAMPLE_COLOR_COLUMN_NAME = 'SampleColor';
-export const SAMPLE_COLOR_COLOR_COLUMN_NAME = 'SampleColor/Color';
+import { SAMPLE_COLOR_COLOR_COLUMN_NAME } from '../components/samples/constants';
 
 interface Props {
     data?: Map<any, any>;

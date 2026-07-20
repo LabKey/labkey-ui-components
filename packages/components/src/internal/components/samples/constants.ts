@@ -55,6 +55,12 @@ export const SAMPLE_STATUS_REQUIRED_COLUMNS = [
     SAMPLE_STATE_COLOR_COLUMN_NAME,
 ];
 
+export const SAMPLE_COLOR_COLUMN_NAME = 'SampleColor';
+export const SAMPLE_COLOR_COLOR_COLUMN_NAME = 'SampleColor/Color';
+
+// TODO, color fields not wired up yet
+export const SAMPLE_COLOR_REQUIRED_COLUMNS = [SAMPLE_COLOR_COLUMN_NAME, SAMPLE_COLOR_COLOR_COLUMN_NAME];
+
 export enum SampleOperation {
     EditMetadata,
     EditLineage,

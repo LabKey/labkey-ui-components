@@ -24,7 +24,7 @@ import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 import { ParentIdData } from './actions';
 
 export function sourceDeleteDependencyText(): string {
-    let deleteMsg = 'it has derived sample or source dependencies';
+    let deleteMsg = 'derived sample or source dependencies';
     if (isELNEnabled()) {
         deleteMsg += ' or references in one or more ' + (isWorkflowEnabled() ? 'jobs or' : '') + ' active notebooks';
     } else if (isWorkflowEnabled()) {

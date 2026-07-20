@@ -31,7 +31,8 @@ import {
     getInitialParentChoices,
     getSampleIdCellKey,
     parseEntityParentKey,
-    sampleDeleteDependencyText, sourceDeleteDependencyText,
+    sampleDeleteDependencyText,
+    sourceDeleteDependencyText,
     updateCellKeySampleIdMap,
 } from './utils';
 import { DataClassDataType, SampleTypeDataType } from './constants';
@@ -291,14 +292,14 @@ describe('sourceDeleteDependencyText', () => {
     test('cannot delete, professional', () => {
         LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
         expect(sourceDeleteDependencyText()).toBe(
-            'it has derived sample or source dependencies or references in one or more jobs or active notebooks'
+            'derived sample or source dependencies or references in one or more jobs or active notebooks'
         );
     });
 
     test('cannot delete, no workflow', () => {
         LABKEY.moduleContext = { ...TEST_LKS_STARTER_MODULE_CONTEXT };
         expect(sourceDeleteDependencyText()).toBe(
-            'it has derived sample or source dependencies'
+            'derived sample or source dependencies'
         );
     });
 });

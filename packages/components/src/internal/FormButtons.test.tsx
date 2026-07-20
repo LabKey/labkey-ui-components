@@ -26,7 +26,7 @@ describe('FormButtons', () => {
         const { container } = render(renderButtons());
         const buttons = container.querySelector('.form-buttons');
         expect(buttons).not.toBeNull();
-        expect(buttons.classList.contains('form-buttons--sticky')).toBe(true);
+        expect(buttons).toHaveClass('form-buttons--sticky');
         expect(buttons.querySelector('.form-buttons__left .test-cancel')).not.toBeNull();
         expect(buttons.querySelector('.form-buttons__right .test-submit')).not.toBeNull();
     });
@@ -39,7 +39,7 @@ describe('FormButtons', () => {
         );
         const buttons = container.querySelector('.form-buttons');
         expect(buttons).not.toBeNull();
-        expect(buttons.classList.contains('form-buttons--sticky')).toBe(false);
+        expect(buttons).not.toHaveClass('form-buttons--sticky');
     });
 
     test('portals into the footer slot element and is never sticky there', () => {
@@ -53,7 +53,7 @@ describe('FormButtons', () => {
         expect(container.querySelector('.form-buttons')).toBeNull();
         const buttons = target.querySelector('.form-buttons');
         expect(buttons).not.toBeNull();
-        expect(buttons.classList.contains('form-buttons--sticky')).toBe(false);
+        expect(buttons).not.toHaveClass('form-buttons--sticky');
         expect(buttons.querySelector('.test-submit')).not.toBeNull();
 
         target.remove();

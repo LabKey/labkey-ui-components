@@ -123,12 +123,11 @@ export interface ModalProps extends BaseModalProps, ModalButtonsProps {
     footerContent?: ReactNode;
     /**
      * When true, the Modal renders an empty footer element and provides it to descendants via
-     * ModalFooterSlotContext; any FormButtons rendered in the modal body will portal into it (gated on the
-     * active FormStep when inside one). Use this when the modal body hosts a form or wizard whose steps render
-     * their own buttons (e.g. via WizardNavButtons) that belong in the modal footer. Note this applies to every
-     * FormButtons in the body, so don't combine it with body content that renders unrelated inline FormButtons.
-     * An explicit "footer" takes precedence over the slot; "footerContent" and the default footer buttons are
-     * not rendered when the slot is enabled.
+     * ModalFooterSlotContext. Use this when the modal body hosts a form or wizard whose steps render their own
+     * buttons that belong in the modal footer. Note this applies to every FormButtons in the body, so do not
+     * combine it with body content that renders unrelated inline FormButtons. An explicit "footer" takes precedence
+     * over the slot; "footerContent" and the default footer buttons are not rendered when the slot is enabled.
+     * Defaults to false.
      */
     footerSlot?: boolean;
     /**

@@ -37,8 +37,8 @@ function identifierToString(identifier: ModalRendererIdentifier): string {
 }
 
 /**
- * Register a modal renderer for a specific SchemaQuery, or for an entire schema by passing the schema name as a
- * string (e.g. "exp.data"). Registering `null` for a specific identifier explicitly opts it out, taking precedence
+ * Register a modal renderer for a specific SchemaQuery or for an entire schema by passing the schema name as a
+ * string (e.g., "exp.data"). Registering `null` for a specific identifier explicitly opts it out, taking precedence
  * over any schema-wide registration.
  */
 export function registerModalRenderer(

@@ -19,7 +19,7 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE } from '../search/constants';
 
 import { EntityDataType } from './models';
-import { sampleDeleteDependencyText } from './utils';
+import { sampleDeleteDependencyText, sourceDeleteDependencyText } from './utils';
 
 const DATA_OPERATION_CONFIRMATION_ACTION = 'getDataOperationConfirmationData.api';
 const SAMPLE_OPERATION_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
@@ -177,7 +177,7 @@ export const DataClassDataType: EntityDataType = {
     descriptionSingular: 'parent type',
     descriptionPlural: 'parent types',
     uniqueFieldKey: 'Name',
-    dependencyText: 'derived data or sample dependencies',
+    dependencyText: sourceDeleteDependencyText,
     deleteHelpLinkTopic: 'dataClass#prevent',
     inputColumnName: 'Inputs/Data/First',
     ancestorColumnName: 'Ancestors/OtherData',

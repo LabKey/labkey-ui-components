@@ -31,7 +31,7 @@ import {
     getInitialParentChoices,
     getSampleIdCellKey,
     parseEntityParentKey,
-    sampleDeleteDependencyText,
+    sampleDeleteDependencyText, sourceDeleteDependencyText,
     updateCellKeySampleIdMap,
 } from './utils';
 import { DataClassDataType, SampleTypeDataType } from './constants';
@@ -272,6 +272,34 @@ describe('sampleDeleteDependencyText', () => {
     test('cannot delete no workflow or assay', () => {
         LABKEY.moduleContext = { ...TEST_LKSM_STARTER_MODULE_CONTEXT };
         expect(sampleDeleteDependencyText()).toBe('derived sample dependencies or status that prevents deletion');
+    });
+});
+
+describe('sourceDeleteDependencyText', () => {
+    let moduleContext;
+
+    // We need to store and reset the module context before and after these tests so we don't impact other tests in this
+    // file.
+    beforeEach(() => {
+        moduleContext = LABKEY.moduleContext;
+    });
+
+    afterEach(() => {
+        LABKEY.moduleContext = moduleContext;
+    });
+
+    test('cannot delete, professional', () => {
+        LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
+        expect(sourceDeleteDependencyText()).toBe(
+            'it has derived sample or source dependencies or references in one or more jobs or active notebooks'
+        );
+    });
+
+    test('cannot delete, no workflow', () => {
+        LABKEY.moduleContext = { ...TEST_LKS_STARTER_MODULE_CONTEXT };
+        expect(sourceDeleteDependencyText()).toBe(
+            'it has derived sample or source dependencies'
+        );
     });
 });
 

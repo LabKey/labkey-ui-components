@@ -13,7 +13,7 @@ import { getSelectedDataDeprecated } from '../../actions';
 import { caseInsensitive } from '../../util/utils';
 import { request } from '../../request';
 
-import { ParentEntityLineageColumns } from '../entities/constants';
+import { ParentEntityLineageColumns, SampleTypeDataType } from '../entities/constants';
 
 import { DERIVATION_DATA_SCOPES, STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
@@ -200,6 +200,50 @@ export function getSampleColors(includeArchive = false, containerPath?: string):
             archived: !!caseInsensitive(row, 'Archived').value,
         }))
     );
+}
+
+// Returns the sample type RowIds that currently exclude the given color (rows in exp.DataTypeColorExclusion).
+export function getColorSampleTypeExclusions(colorRowId: number, containerPath?: string): Promise<number[]> {
+    return selectRows({
+        columns: 'RowId,DataTypeRowId',
+        containerPath,
+        filterArray: [
+            Filter.create('ColorRowId', colorRowId),
+            Filter.create('DataType', SampleTypeDataType.folderConfigurableDataType),
+        ],
+        schemaQuery: SCHEMAS.EXP_TABLES.DATA_TYPE_COLOR_EXCLUSION,
+    }).then(response => response.rows.map(row => caseInsensitive(row, 'DataTypeRowId').value));
+}
+
+// Single write path for a sample color: creates (no rowId) or updates the color (label/color/archived) and, in the
+// same server transaction, applies the sample-type exclusion delta (only the changed types, so the request scales with
+// the edit, not the total number of sample types). The server (UpdateColorSettingsAction) audits each affected type
+// and returns the color's rowId.
+export function updateColorSettings(
+    color: SampleColorModel,
+    newlyDisabledTypeIds: number[],
+    newlyEnabledTypeIds: number[],
+    containerPath?: string
+): Promise<number> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'updateColorSettings.api', containerPath),
+            method: 'POST',
+            jsonData: {
+                rowId: color.rowId,
+                label: color.label,
+                color: color.color,
+                archived: color.archived,
+                newlyDisabledTypes: newlyDisabledTypeIds,
+                newlyEnabledTypes: newlyEnabledTypeIds,
+            },
+            success: Utils.getCallbackWrapper(response => resolve(response?.rowId)),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(response);
+            }),
+        });
+    });
 }
 
 // Used for samples and dataclasses

@@ -3,7 +3,6 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { List } from 'immutable';
 import classNames from 'classnames';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -21,6 +20,9 @@ import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 import { useAppContext } from '../../AppContext';
 import { Container } from '../base/models/Container';
 
+import { DataTypeSelector } from '../entities/DataTypeSelector';
+import { SampleTypeDataType } from '../entities/constants';
+
 import { SampleColorModel } from './models';
 
 const TITLE = 'Manage Sample Colors';
@@ -29,6 +31,8 @@ const MAX_DATA_COLORS = 200;
 const AT_LIMIT_HELP =
     'The maximum of ' + MAX_DATA_COLORS + ' sample colors (active and archived) has been reached. Delete a color before adding a new one.';
 const ARCHIVED_HELP = "Archived colors can't be applied to future samples, but may still be applied to existing samples.";
+const APPLIES_TO_HELP =
+    'Choose which sample types this color can be applied to. All sample types are enabled by default; unchecking one excludes this color from that sample type.';
 
 function newColor(): SampleColorModel {
     return { archived: false, color: undefined, label: undefined };
@@ -50,6 +54,11 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
     const [saving, setSaving] = useState<boolean>(false);
     const [error, setError] = useState<string>();
     const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
+    const [excludedTypes, setExcludedTypes] = useState<Set<number>>(new Set());
+    // The exclusions as loaded, so Save can send only the delta (newly disabled / newly enabled) rather than the full set.
+    const [initialExcludedTypes, setInitialExcludedTypes] = useState<Set<number>>(new Set());
+    const [exclusionsLoaded, setExclusionsLoaded] = useState<boolean>(false);
+    const [typesError, setTypesError] = useState<string>();
     const { api } = useAppContext();
 
     useEffect(() => {
@@ -60,6 +69,49 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
         setError(undefined);
         if (isNew) onChange();
     }, [color, isNew, onChange]);
+
+    // Load this color's current sample-type exclusions (DataTypeSelector loads the sample-type list itself). A new
+    // color has none yet, so it starts with everything enabled and can be created with exclusions.
+    useEffect(() => {
+        setTypesError(undefined);
+        if (isNew) {
+            setExcludedTypes(new Set());
+            setInitialExcludedTypes(new Set());
+            setExclusionsLoaded(true);
+            return;
+        }
+        setExclusionsLoaded(false);
+        if (!color?.rowId) {
+            setExcludedTypes(new Set());
+            setInitialExcludedTypes(new Set());
+            return;
+        }
+        let cancelled = false;
+        (async () => {
+            try {
+                const excluded = await api.samples.getColorSampleTypeExclusions(color.rowId, container?.path);
+                if (cancelled) return;
+                setExcludedTypes(new Set(excluded));
+                setInitialExcludedTypes(new Set(excluded));
+                setExclusionsLoaded(true);
+            } catch (e) {
+                if (!cancelled) setTypesError('Unable to load sample type exclusions.');
+            }
+        })();
+        return () => {
+            cancelled = true;
+        };
+    }, [api, color?.rowId, container?.path, isNew]);
+
+    // DataTypeSelector reports the full set of unchecked (excluded) sample-type rowIds on every change / select-all.
+    const onExcludedTypesChange = useCallback(
+        (_dataType: string, unchecked: number[]): void => {
+            setExcludedTypes(new Set(unchecked));
+            setDirty(true);
+            onChange();
+        },
+        [onChange]
+    );
 
     const onLabelChange = useCallback(
         (evt): void => {
@@ -79,21 +131,20 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
         [onChange]
     );
 
-    const saveRows = useCallback(
-        (rows: SampleColorModel[], isInsert: boolean, successLabel?: string, isDelete = false) => {
+    const saveColor = useCallback(
+        (toSave: SampleColorModel, exclusionDelta?: { newlyDisabled: number[]; newlyEnabled: number[] }) => {
             setError(undefined);
             setSaving(true);
-            const schemaQuery = SCHEMAS.EXP_TABLES.DATA_COLORS;
-            const opts = { schemaQuery, containerPath: container?.path };
-            let promise: Promise<any>;
-            if (isDelete) promise = api.query.deleteRows({ ...opts, rows });
-            else if (isInsert) promise = api.query.insertRows({ ...opts, rows: List(rows) });
-            else promise = api.query.updateRows({ ...opts, rows });
-
-            promise
-                .then(() => onActionComplete(successLabel, isDelete))
+            api.samples
+                .updateColorSettings(
+                    toSave,
+                    exclusionDelta?.newlyDisabled ?? [],
+                    exclusionDelta?.newlyEnabled ?? [],
+                    container?.path
+                )
+                .then(() => onActionComplete(toSave.label))
                 .catch(reason => {
-                    setError(resolveErrorMessage(reason?.error ?? reason, 'color', 'colors', isDelete ? 'delete' : 'save'));
+                    setError(resolveErrorMessage(reason?.error ?? reason, 'color', 'colors', 'save'));
                     setSaving(false);
                 });
         },
@@ -102,19 +153,33 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
 
     const onSave = useCallback(() => {
         const toSave = { ...updated, label: updated.label?.trim() };
-        saveRows([toSave], !toSave.rowId, toSave.label);
-    }, [updated, saveRows]);
+        const exclusionDelta = {
+            newlyDisabled: Array.from(excludedTypes).filter(id => !initialExcludedTypes.has(id)),
+            newlyEnabled: Array.from(initialExcludedTypes).filter(id => !excludedTypes.has(id)),
+        };
+        saveColor(toSave, exclusionDelta);
+    }, [updated, excludedTypes, initialExcludedTypes, saveColor]);
 
     const onToggleArchive = useCallback(() => {
-        const toSave = { ...updated, archived: !updated.archived };
-        saveRows([toSave], false, toSave.label);
-    }, [updated, saveRows]);
+        saveColor({ ...updated, archived: !updated.archived });
+    }, [updated, saveColor]);
 
     const onToggleDeleteConfirm = useCallback(() => setShowDeleteConfirm(s => !s), []);
     const onDeleteConfirm = useCallback(() => {
-        if (updated.rowId) saveRows([updated], false, undefined, true);
-        else setShowDeleteConfirm(false);
-    }, [updated, saveRows]);
+        if (!updated.rowId) {
+            setShowDeleteConfirm(false);
+            return;
+        }
+        setError(undefined);
+        setSaving(true);
+        api.query
+            .deleteRows({ schemaQuery: SCHEMAS.EXP_TABLES.DATA_COLORS, containerPath: container?.path, rows: [updated] })
+            .then(() => onActionComplete(undefined, true))
+            .catch(reason => {
+                setError(resolveErrorMessage(reason?.error ?? reason, 'color', 'colors', 'delete'));
+                setSaving(false);
+            });
+    }, [api, container?.path, onActionComplete, updated]);
 
     if (!updated && color !== null) {
         return <p className="choices-detail__empty-message">Select a sample color to view details.</p>;
@@ -158,12 +223,30 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
                         />
                     </div>
                 </div>
+                <div className="form-group">
+                    <div className="col-sm-4">
+                        <DomainFieldLabel helpTipBody={APPLIES_TO_HELP} label="Sample Types" />
+                    </div>
+                    <div className="col-sm-8">
+                        {typesError && <Alert>{typesError}</Alert>}
+                        {!exclusionsLoaded && !typesError && <LoadingSpinner />}
+                        {exclusionsLoaded && (
+                            <DataTypeSelector
+                                columns={2}
+                                container={container}
+                                disabled={saving || updated.archived}
+                                entityDataType={SampleTypeDataType}
+                                noHeader
+                                showUncheckedWarning={false}
+                                uncheckedEntitiesDB={Array.from(initialExcludedTypes)}
+                                updateUncheckedTypes={onExcludedTypesChange}
+                            />
+                        )}
+                    </div>
+                </div>
                 <div>
                     {!isNew && (
                         <>
-                            <button className="btn btn-default" disabled={saving} onClick={onToggleArchive} type="button">
-                                {updated.archived ? 'Restore' : 'Archive'}
-                            </button>
                             <button
                                 className="btn btn-default button-left-margin"
                                 disabled={saving}
@@ -172,6 +255,9 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
                             >
                                 <span className="fa fa-trash" />
                                 <span>&nbsp;Delete</span>
+                            </button>
+                            <button className="btn btn-default" disabled={saving} onClick={onToggleArchive} type="button">
+                                {updated.archived ? 'Restore' : 'Archive'}
                             </button>
                         </>
                     )}

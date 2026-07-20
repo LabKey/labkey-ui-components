@@ -20,6 +20,7 @@ import {
     getDistinctAssaysPerSample,
     getGroupedSampleDomainFields,
     getLookupRowIdsFromSelection,
+    getColorSampleTypeExclusions,
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
     getSampleColors,
@@ -32,6 +33,7 @@ import {
     hasExistingSamples,
     SampleAssayResultViewConfig,
     saveSampleCounter,
+    updateColorSettings,
 } from './actions';
 import { GroupedSampleFields, SampleColorModel, SampleState } from './models';
 import { SampleOperation } from './constants';
@@ -60,6 +62,15 @@ export interface SamplesAPIWrapper {
     getSampleAssayResultViewConfigs: () => Promise<SampleAssayResultViewConfig[]>;
 
     getSampleColors: (includeArchive?: boolean, containerPath?: string) => Promise<SampleColorModel[]>;
+
+    getColorSampleTypeExclusions: (colorRowId: number, containerPath?: string) => Promise<number[]>;
+
+    updateColorSettings: (
+        color: SampleColorModel,
+        newlyDisabledTypeIds: number[],
+        newlyEnabledTypeIds: number[],
+        containerPath?: string
+    ) => Promise<number>;
 
     getSampleCounter: (seqType: 'rootSampleCount' | 'sampleCount', containerPath?: string) => Promise<number>;
 
@@ -112,6 +123,8 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSampleAssayResultViewConfigs = getSampleAssayResultViewConfigs;
     getSelectionLineageData = getSelectionLineageData;
     getSampleColors = getSampleColors;
+    getColorSampleTypeExclusions = getColorSampleTypeExclusions;
+    updateColorSettings = updateColorSettings;
     getSampleStatuses = getSampleStatuses;
     getDefaultDiscardStatus = getDefaultDiscardStatus;
     getSampleOperationConfirmationData = getSampleOperationConfirmationData;
@@ -139,6 +152,8 @@ export function getSamplesTestAPIWrapper(
         getSampleAssayResultViewConfigs: mockFn(),
         getSelectionLineageData: mockFn(),
         getSampleColors: mockFn(),
+        getColorSampleTypeExclusions: mockFn(),
+        updateColorSettings: mockFn(),
         getSampleStatuses: mockFn(),
         getDefaultDiscardStatus: mockFn(),
         getSampleOperationConfirmationData: mockFn(),

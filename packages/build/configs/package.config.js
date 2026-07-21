@@ -3,9 +3,9 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { rspack } = require('@rspack/core');
 const constants = require('./constants');
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const { TsCheckerRspackPlugin } = require('ts-checker-rspack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const tsCheckerConfig = {
@@ -23,8 +23,8 @@ const tsCheckerConfig = {
 };
 
 const plugins = [
-    new ForkTsCheckerWebpackPlugin(tsCheckerConfig),
-    new CopyWebpackPlugin({
+    new TsCheckerRspackPlugin(tsCheckerConfig),
+    new rspack.CopyRspackPlugin({
         patterns: [
             {
                 // copy theme scss files into the dist dir to be used by LabKey module apps

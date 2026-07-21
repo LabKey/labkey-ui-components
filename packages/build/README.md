@@ -9,10 +9,10 @@ To install using npm
 npm install @labkey/build
 ```
 
-## Webpack
+## Build configs
 
-The `webpack` directory has configs that can be used to build LabKey client-side React pages.
-See the [README](./webpack/README.md) in that directory for further information.
+The `configs/` directory has [Rspack](https://rspack.rs) configs that can be used to build LabKey client-side React
+pages. See the [README](configs/README.md) in that directory for further information.
 
 ## Release Notes
 Release notes for this package are available [here](./releaseNotes/build.md).

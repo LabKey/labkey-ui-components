@@ -1,7 +1,7 @@
 # @labkey/build
 
 ### version 10.0.0
-*Released*: not yet released
+*Released*: 21 July 2026
 - Migrate the build tooling from webpack to [Rspack](https://rspack.rs). Rspack is webpack-config-compatible but much
   faster, and its dev-server error overlay shows the file name, line/column, and a code frame for both compilation and
   TypeScript errors (the old webpack-dev-server overlay did not).
@@ -9,7 +9,8 @@
   consuming module must update its `package.json` build scripts to invoke `rspack` instead of `webpack`
   - `webpack` → `rspack build`
   - `webpack serve` → `rspack serve`
-  - See the migration table in `webpack/README.md`.
+  - See the migration table in `configs/README.md`.
+- `webpack` folder renamed to `configs`
 - Replaced `babel-loader` and the hand-ordered Babel plugins with Rspack's `builtin:swc-loader`. SWC's
   `useDefineForClassFields: false` plus its native elision of `declare` class fields reproduces the Immutable `Record`
   behavior that previously required `@babel/plugin-transform-typescript`'s `allowDeclareFields`.

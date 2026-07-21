@@ -166,6 +166,7 @@ const TS_CHECKER_CONFIG = {
 
 const TS_CHECKER_DEV_CONFIG = {
     ...TS_CHECKER_CONFIG,
+    async: false,
     typescript: {
         ...TS_CHECKER_CONFIG.typescript,
         configOverwrite: {

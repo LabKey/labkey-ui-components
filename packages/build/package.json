@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "10.0.1-fb-rspack-build.14",
+  "version": "10.0.0",
   "description": "LabKey client-side build assets",
   "files": [
     "configs/"

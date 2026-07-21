@@ -20,7 +20,7 @@ const isProductionBuild = process.env.NODE_ENV === 'production';
 let labkeyUIComponentsPath = path.resolve('./node_modules/@labkey/components');
 let labkeyUIPremiumPath = path.resolve('./node_modules/@labkey/premium');
 let labkeyUIEhrPath = path.resolve('./node_modules/@labkey/ehr');
-const labkeyBuildTSConfigPath = path.resolve('./node_modules/@labkey/build/webpack/tsconfig.json');
+const labkeyBuildTSConfigPath = path.resolve('./node_modules/@labkey/build/configs/tsconfig.json');
 const customTSConfigPath = path.resolve('./tsconfig.json');
 const tsconfigPath = fs.existsSync(customTSConfigPath) ? customTSConfigPath : labkeyBuildTSConfigPath;
 
@@ -332,7 +332,7 @@ module.exports = {
                         dependencies: app.dependencies,
                         viewTemplate: app.template,
                         filename: '../../web/gen/' + app.name + '.lib.xml',
-                        template: 'node_modules/@labkey/build/webpack/lib.template.xml',
+                        template: 'node_modules/@labkey/build/configs/lib.template.xml',
                         minify: minifyTemplateOptions
                     }),
                 ]);
@@ -350,13 +350,13 @@ module.exports = {
                         requiresNoPermission: app.requiresNoPermission,
                         viewTemplate: app.template,
                         filename: '../../views/gen/' + app.name + '.view.xml',
-                        template: 'node_modules/@labkey/build/webpack/app.view.template.xml',
+                        template: 'node_modules/@labkey/build/configs/app.view.template.xml',
                         minify: minifyTemplateOptions
                     }),
                     new HtmlWebpackPlugin({
                         inject: false,
                         filename: '../../views/gen/' + app.name + '.html',
-                        template: 'node_modules/@labkey/build/webpack/app.template.html',
+                        template: 'node_modules/@labkey/build/configs/app.template.html',
                         minify: minifyTemplateOptions
                     }),
                     new HtmlWebpackPlugin({
@@ -372,7 +372,7 @@ module.exports = {
                         requiresNoPermission: app.requiresNoPermission,
                         viewTemplate: app.template,
                         filename: '../../views/gen/' + app.name + 'Dev.view.xml',
-                        template: 'node_modules/@labkey/build/webpack/app.view.template.xml',
+                        template: 'node_modules/@labkey/build/configs/app.view.template.xml',
                         minify: minifyTemplateOptions
                     }),
                     new HtmlWebpackPlugin({
@@ -382,7 +382,7 @@ module.exports = {
                         name: app.name,
                         nonce: '<%=scriptNonce%>',
                         filename: '../../views/gen/' + app.name + 'Dev.html',
-                        template: 'node_modules/@labkey/build/webpack/app.template.html',
+                        template: 'node_modules/@labkey/build/configs/app.template.html',
                         minify: minifyTemplateOptions
                     })
                 ]);

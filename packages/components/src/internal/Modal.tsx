@@ -95,6 +95,7 @@ interface ModalHeaderProps extends PropsWithChildren {
     onCancel?: () => void;
     title: ReactNode;
 }
+
 export const ModalHeader: FC<ModalHeaderProps> = ({ children, onCancel, title }) => {
     return (
         <div className="modal-header">
@@ -154,7 +155,7 @@ export const Modal: FC<ModalProps> = memo(props => {
         confirmingText,
         footer,
         footerContent,
-        footerSlot,
+        footerSlot = false,
         header,
         isConfirming,
         onCancel,
@@ -163,21 +164,19 @@ export const Modal: FC<ModalProps> = memo(props => {
         requiresUserComment,
         title,
     } = props;
-    const showHeader = !!(onCancel || title);
+    // State (not useRef) so consumers re-render and portal in once the slot element mounts; a ref mutation wouldn't.
     const [footerEl, setFooterEl] = useState<HTMLDivElement>(null);
     const footerRef = useCallback((el: HTMLDivElement) => setFooterEl(el), []);
     const slotEnabled = footerSlot && !footer;
+    const showHeader = !!(onCancel || title);
+
     return (
         <BaseModal bsSize={bsSize} className={className} onCancel={onCancel}>
-            {/* Always provide a value (undefined when the slot is disabled) so a nested Modal resets the
-                context and its own footer buttons never portal into an enclosing Modal's slot. */}
-            <ModalFooterSlotContext.Provider value={slotEnabled ? (footerEl ?? null) : undefined}>
+            <ModalFooterSlotContext.Provider value={slotEnabled ? footerEl : undefined}>
                 {showHeader && !header && <ModalHeader onCancel={onCancel} title={title} />}
                 {header}
 
                 <div className="modal-body">{children}</div>
-
-                {slotEnabled && <div className="modal-footer modal-footer--slot" ref={footerRef} />}
 
                 {!slotEnabled && !footer && (
                     <ModalButtons
@@ -197,6 +196,7 @@ export const Modal: FC<ModalProps> = memo(props => {
                     </ModalButtons>
                 )}
 
+                {slotEnabled && <div className="modal-footer modal-footer--slot" ref={footerRef} />}
                 {!slotEnabled && footer && <div className="modal-footer">{footer}</div>}
             </ModalFooterSlotContext.Provider>
         </BaseModal>

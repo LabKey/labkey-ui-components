@@ -12,10 +12,14 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
 
+import { Row } from '../../query/selectRows';
+
 import {
+    appendMultiValues,
     buildValueFilter,
     fetchSelectedValues,
     findNotFoundValues,
+    getAddedSelectionValue,
     parseRawValue,
     parseSelectedQuery,
     queryColumnNames,
@@ -255,6 +259,40 @@ describe('form actions', () => {
         });
     });
 
+    describe('appendMultiValues', () => {
+        test('empty existing selection', () => {
+            expect(appendMultiValues(undefined, [1, 2], ',')).toEqual('1,2');
+            expect(appendMultiValues(null, [5], ',')).toEqual('5');
+            expect(appendMultiValues('', [5], ',')).toEqual('5');
+        });
+
+        test('appends new values', () => {
+            expect(appendMultiValues('1,2', [3], ',')).toEqual('1,2,3');
+            expect(appendMultiValues([1, 2], [3, 4], ',')).toEqual('1,2,3,4');
+        });
+
+        test('skips values already selected (string/number equality)', () => {
+            // 2 is already selected (as the string "2"), so it is not appended again
+            expect(appendMultiValues('1,2', [2], ',')).toEqual('1,2');
+            expect(appendMultiValues('1,2', [2, 3], ',')).toEqual('1,2,3');
+            expect(appendMultiValues([1, 2], [2, 3], ',')).toEqual('1,2,3');
+        });
+
+        test('de-dupes repeats within addedValues', () => {
+            expect(appendMultiValues('1', [4, 4], ',')).toEqual('1,4');
+        });
+
+        test('empty additions returns the existing selection', () => {
+            expect(appendMultiValues('1,2', [], ',')).toEqual('1,2');
+            expect(appendMultiValues('1,2', undefined, ',')).toEqual('1,2');
+        });
+
+        test('respects the delimiter', () => {
+            expect(appendMultiValues('a;b', ['c'], ';')).toEqual('a;b;c');
+            expect(appendMultiValues('a;b', ['b', 'c'], ';')).toEqual('a;b;c');
+        });
+    });
+
     const loadedResults = fromJS({
         '1': { RowId: { value: 1 }, Name: { value: 'Alpha' } },
         '2': { RowId: { value: 2 }, Name: { value: 'Beta' } },
@@ -312,6 +350,28 @@ describe('form actions', () => {
             });
             expect(valuesAreLoaded(model, 9)).toBe(true);
             expect(valuesAreLoaded(model, 1)).toBe(false);
+        });
+    });
+
+    describe('getAddedSelectionValue', () => {
+        const makeResponse = (values: (number | string)[]): Row[] => values.map(value => ({ RowId: { value } }));
+
+        test('single-select returns the first added value', () => {
+            expect(getAddedSelectionValue(singleModel, makeResponse([7, 8]))).toEqual(7);
+        });
+
+        test('multi-select appends added values to the current selection', () => {
+            const model = multiModel.merge({ rawSelectedValue: '1,2' }) as QuerySelectModel;
+            expect(getAddedSelectionValue(model, makeResponse([3, 4]))).toEqual('1,2,3,4');
+        });
+
+        test('multi-select skips added values already selected', () => {
+            const model = multiModel.merge({ rawSelectedValue: '1,2' }) as QuerySelectModel;
+            expect(getAddedSelectionValue(model, makeResponse([2, 3]))).toEqual('1,2,3');
+        });
+
+        test('multi-select with no current selection joins the added values', () => {
+            expect(getAddedSelectionValue(multiModel, makeResponse([3, 4]))).toEqual('3,4');
         });
     });
 

@@ -14,19 +14,19 @@ import { Row } from '../../query/selectRows';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { caseInsensitive, isTestEnv, joinMultiValueForExport } from '../../util/utils';
+import { isTestEnv } from '../../util/utils';
 
 import { useModalState, useTimeout } from '../../hooks';
 
 import { SelectInput, SelectInputChange, SelectInputOption, SelectInputProps } from './input/SelectInput';
-import { resolveDetailFieldLabel, resolveDetailFieldValue } from './utils';
+import { resolveDetailFieldLabel } from './utils';
 import {
     fetchSearchResults,
     fetchSelectedValues,
     formatResults,
     formatSavedResults,
+    getAddedSelectionValue,
     initSelect,
-    parseRawValue,
     parseSelectedQuery,
     QuerySelectModel,
     saveSearchResults,
@@ -404,23 +404,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
             const result = resultsMap.get(schemaQuery.getKey());
             if (!model.isInit || !result?.rows?.length) return;
 
-            // For multiple, append the added values to the current selection and join them in the same manner
-            // as SelectInput resolves its form value upon interactive selection.
-            let nextValue: string | string[];
-            {
-                const addedValues = result.rows.map(row =>
-                    resolveDetailFieldValue(caseInsensitive(row, model.valueColumn))
-                );
-
-                if (model.multiple) {
-                    nextValue = joinMultiValueForExport(
-                        parseRawValue(model.rawSelectedValue, true, model.delimiter).concat(addedValues),
-                        model.delimiter
-                    );
-                } else {
-                    nextValue = addedValues[0];
-                }
-            }
+            const nextValue = getAddedSelectionValue(model, result.rows);
 
             try {
                 let model_: QuerySelectModel;

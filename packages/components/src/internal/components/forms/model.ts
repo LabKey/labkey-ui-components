@@ -11,7 +11,7 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { getQueryDetails, ISelectRowsResult, searchRows, selectRowsDeprecated } from '../../query/api';
 import { similaritySortFactory } from '../../util/similaritySortFactory';
-import { caseInsensitive, splitMultiValueForImport } from '../../util/utils';
+import { caseInsensitive, joinMultiValueForExport, splitMultiValueForImport } from '../../util/utils';
 
 import { naturalSort } from '../../../public/sort';
 
@@ -130,16 +130,43 @@ export function saveSearchResults(model: QuerySelectModel, result: ISelectRowsRe
     }) as QuerySelectModel;
 }
 
-/**
- * Normalizes a raw selection value into an array of values. Handles arrays, Immutable Lists,
- * delimited strings (when "multiple" is enabled), and scalar values.
- */
+/** Normalizes a raw selection value into an array of values. */
 export function parseRawValue(value: any, multiple: boolean, delimiter: string): any[] {
     if (!validValue(value)) return [];
     if (Array.isArray(value)) return value;
     if (List.isList(value)) return (value as List<any>).toArray();
     if (multiple && typeof value === 'string') return splitMultiValueForImport(value, delimiter);
     return [value];
+}
+
+/**
+ * Appends added value(s) to a raw multi-value selection, skipping values already present and de-duping repeats.
+ * Returns the joined delimited value.
+ */
+export function appendMultiValues(rawSelectedValue: any, addedValues: any[], delimiter: string): string {
+    const existing = parseRawValue(rawSelectedValue, true, delimiter);
+    const seen = new Set(existing.map(v => v?.toString()));
+    const additions = (addedValues ?? []).filter(v => {
+        const key = v?.toString();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+    return joinMultiValueForExport(existing.concat(additions), delimiter);
+}
+
+/**
+ * Resolves the selection value to apply after entities are added: for multi-select, the added rows' values
+ * appended to the current selection; for single-select, the first added row's value.
+ */
+export function getAddedSelectionValue(model: QuerySelectModel, rows: Row[]): string | string[] {
+    const addedValues = rows.map(row => resolveDetailFieldValue(caseInsensitive(row, model.valueColumn)));
+
+    if (model.multiple) {
+        return appendMultiValues(model.rawSelectedValue, addedValues, model.delimiter);
+    }
+
+    return addedValues[0];
 }
 
 function getSelectedOptions(model: QuerySelectModel, value: any): Map<string, any> {

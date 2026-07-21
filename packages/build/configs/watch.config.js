@@ -2,8 +2,8 @@
  * Copyright (c) 2020-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const { TsCheckerRspackPlugin } = require('ts-checker-rspack-plugin');
+const { ReactRefreshRspackPlugin } = require('@rspack/plugin-react-refresh');
 const constants = require('./constants');
 const path = require('path');
 // relative to the <lk_module>/node_modules/@labkey/build/webpack dir
@@ -68,8 +68,10 @@ module.exports = {
         emitOnErrors: false,
     },
     plugins: [
-        new ReactRefreshWebpackPlugin(),
-        // This Plugin type checks our TS code, @babel/preset-typescript does not type check, it only transforms
-        new ForkTsCheckerWebpackPlugin(constants.TS_CHECKER_DEV_CONFIG)
+        // Rspack's React Fast Refresh integration. The matching builtin:swc-loader transform (react.refresh: true)
+        // is enabled in constants.SWC_DEV_CONFIG (used by loaders.TYPESCRIPT_WATCH above).
+        new ReactRefreshRspackPlugin(),
+        // This Plugin type checks our TS code; builtin:swc-loader does not type check, it only transforms.
+        new TsCheckerRspackPlugin(constants.TS_CHECKER_DEV_CONFIG)
     ],
 };

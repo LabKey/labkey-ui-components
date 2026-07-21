@@ -883,6 +883,7 @@ import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './internal/
 import { getDefaultAPIWrapper, getTestAPIWrapper } from './internal/APIWrapper';
 import { FormButtons } from './internal/FormButtons';
 import { registerModalRenderer } from './internal/ModalRenderFactory';
+import { useIsInModal } from './internal/components/forms/AddEntitiesModal';
 import { ModalButtons } from './internal/ModalButtons';
 import { getSecurityTestAPIWrapper } from './internal/components/security/APIWrapper';
 import { getFolderTestAPIWrapper } from './internal/components/container/FolderAPIWrapper';
@@ -1777,6 +1778,7 @@ export {
     useDataChangeCommentsRequired,
     useEnterEscape,
     useFolderMenuContext,
+    useIsInModal,
     useLabelPrintingContext,
     useLoadableState,
     useModalState,

@@ -7,18 +7,28 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { Modal } from '../../Modal';
 import { ModalRendererProps, resolveModalRenderer } from '../../ModalRenderFactory';
 
-const AddEntitiesModalContext = createContext<boolean>(true);
+export type AddEntitiesModalContext = {
+    addEntitiesEnabled: boolean;
+    inModal: boolean;
+};
+
+const AddEntitiesModalContext = createContext<AddEntitiesModalContext>({ addEntitiesEnabled: true, inModal: false });
 
 export function useIsAddEntitiesEnabled(schemaQuery: SchemaQuery): boolean {
-    const addEntitiesEnabled = useContext(AddEntitiesModalContext);
+    const ctx = useContext(AddEntitiesModalContext);
     return useMemo(
         // If the context it not available/rendered, then default to true
         () =>
             schemaQuery !== undefined &&
-            (addEntitiesEnabled ?? true) &&
+            (ctx?.addEntitiesEnabled ?? true) &&
             resolveModalRenderer(schemaQuery) !== undefined,
-        [addEntitiesEnabled, schemaQuery]
+        [ctx, schemaQuery]
     );
+}
+
+export function useIsInModal(): boolean {
+    const ctx = useContext(AddEntitiesModalContext);
+    return !!ctx?.inModal;
 }
 
 interface AddEntitiesMenuFooterProps {
@@ -36,6 +46,7 @@ AddEntitiesFooter.displayName = 'AddEntitiesFooter';
 export const AddEntitiesModal: FC<ModalRendererProps> = props => {
     const { containerFilter, containerPath, onCancel, onComplete, schemaQuery } = props;
     const ModalRenderer = useMemo(() => resolveModalRenderer(schemaQuery), [schemaQuery]);
+    const value = useMemo<AddEntitiesModalContext>(() => ({ addEntitiesEnabled: false, inModal: true }), []);
 
     if (!ModalRenderer) {
         return (
@@ -46,7 +57,7 @@ export const AddEntitiesModal: FC<ModalRendererProps> = props => {
     }
 
     return (
-        <AddEntitiesModalContext.Provider value={false}>
+        <AddEntitiesModalContext.Provider value={value}>
             {/* eslint-disable-next-line react-hooks/static-components */}
             <ModalRenderer
                 containerFilter={containerFilter}

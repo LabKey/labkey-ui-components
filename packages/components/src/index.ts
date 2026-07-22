@@ -326,7 +326,7 @@ import {
     updateRowFieldValue,
     useUsersWithPermissions,
 } from './internal/components/forms/actions';
-import { FormStep, FormTabs, withFormSteps } from './internal/components/forms/FormStep';
+import { FormStep, FormTabs, useFormStepActive, withFormSteps } from './internal/components/forms/FormStep';
 import {
     EntityIdCreationModel,
     EntityParentType,
@@ -1780,6 +1780,7 @@ export {
     useDataChangeCommentsRequired,
     useEnterEscape,
     useFolderMenuContext,
+    useFormStepActive,
     useIsInModal,
     useModalFooter,
     useLabelPrintingContext,

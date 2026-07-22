@@ -18,6 +18,12 @@ const FormStepContext = React.createContext<IFormStepContext>(undefined);
 const FormStepContextProvider = FormStepContext.Provider;
 const FormStepContextConsumer = FormStepContext.Consumer;
 
+export const FormStepActiveContext = React.createContext<boolean>(true);
+
+export function useFormStepActive(): boolean {
+    return useContext(FormStepActiveContext);
+}
+
 interface ActiveStepProps extends PropsWithChildren {
     active?: boolean;
 }
@@ -60,7 +66,9 @@ export class FormStep extends React.Component<FormStepProps, any> {
                     if (furthestStep >= stepIndex) {
                         return (
                             <div className={classNames('form-step', { active })}>
-                                {trackActive ? <ActiveStep active={active}>{children}</ActiveStep> : children}
+                                <FormStepActiveContext.Provider value={active}>
+                                    {trackActive ? <ActiveStep active={active}>{children}</ActiveStep> : children}
+                                </FormStepActiveContext.Provider>
                             </div>
                         );
                     }

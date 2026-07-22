@@ -7,6 +7,7 @@ import { createPortal } from 'react-dom';
 
 import { FormButtons } from '../../FormButtons';
 import { useModalFooter } from '../../ModalFooterContext';
+import { useFormStepActive } from '../forms/FormStep';
 
 interface Props extends PropsWithChildren {
     canCancel?: boolean;
@@ -48,6 +49,7 @@ export const WizardNavButtons: FC<Props> = memo(props => {
         singularNoun,
     } = props;
     const footerEl = useModalFooter();
+    const stepActive = useFormStepActive();
 
     const formButtons = (
         <FormButtons sticky={!footerEl}>
@@ -88,7 +90,10 @@ export const WizardNavButtons: FC<Props> = memo(props => {
 
     // When rendered inside a modal that provides a footer element (see ModalFooterContext), portal the buttons into
     // the actual footer so the footer stays a true sibling of the modal body rather than nested within it.
+    // If used in combination with FormStep, only render the buttons for the active step. If not in a FormStep, then
+    // stepActive will be true.
     if (footerEl) {
+        if (!stepActive) return null;
         return createPortal(formButtons, footerEl);
     }
 

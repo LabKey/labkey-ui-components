@@ -8,6 +8,7 @@ import { render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
 import { useModalFooter } from '../../ModalFooterContext';
+import { useFormStepActive } from '../forms/FormStep';
 
 import { WizardNavButtons } from './WizardNavButtons';
 
@@ -16,11 +17,18 @@ jest.mock('../../ModalFooterContext', () => ({
     useModalFooter: jest.fn(),
 }));
 
+jest.mock('../forms/FormStep', () => ({
+    ...jest.requireActual('../forms/FormStep'),
+    useFormStepActive: jest.fn(),
+}));
+
 const mockUseModalFooter = useModalFooter as jest.MockedFunction<typeof useModalFooter>;
+const mockUseFormStepActive = useFormStepActive as jest.MockedFunction<typeof useFormStepActive>;
 
 describe('WizardNavButtons', () => {
     beforeEach(() => {
         mockUseModalFooter.mockReturnValue(null);
+        mockUseFormStepActive.mockReturnValue(true);
     });
     test('default props', () => {
         render(<WizardNavButtons cancel={jest.fn()} />);
@@ -120,6 +128,23 @@ describe('WizardNavButtons', () => {
         expect(buttons).toHaveLength(2);
         expect(buttons[0]).toHaveTextContent('Cancel');
         expect(buttons[1]).toHaveTextContent('Next');
+
+        document.body.removeChild(footer);
+    });
+
+    test('does not portal into the footer when its form step is inactive', () => {
+        // A wizard mounts every visited step at once, so an inactive step must contribute nothing to the shared
+        // modal footer.
+        const footer = document.createElement('div');
+        footer.className = 'modal-footer modal-buttons';
+        document.body.appendChild(footer);
+        mockUseModalFooter.mockReturnValue(footer);
+        mockUseFormStepActive.mockReturnValue(false);
+
+        render(<WizardNavButtons cancel={jest.fn()} />);
+
+        expect(footer.querySelectorAll('button')).toHaveLength(0);
+        expect(document.querySelectorAll('button')).toHaveLength(0);
 
         document.body.removeChild(footer);
     });

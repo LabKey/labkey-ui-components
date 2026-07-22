@@ -53,6 +53,7 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
     const [dirty, setDirty] = useState<boolean>(false);
     const [saving, setSaving] = useState<boolean>(false);
     const [error, setError] = useState<string>();
+    const [deleteError, setDeleteError] = useState<string>();
     const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
     const [excludedTypes, setExcludedTypes] = useState<Set<number>>(new Set());
     // The exclusions as loaded, so Save can send only the delta (newly disabled / newly enabled) rather than the full set.
@@ -164,19 +165,18 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
         saveColor({ ...updated, archived: !updated.archived });
     }, [updated, saveColor]);
 
-    const onToggleDeleteConfirm = useCallback(() => setShowDeleteConfirm(s => !s), []);
+    const onToggleDeleteConfirm = useCallback(() => {
+        setDeleteError(undefined);
+        setShowDeleteConfirm(s => !s);
+    }, []);
     const onDeleteConfirm = useCallback(() => {
-        if (!updated.rowId) {
-            setShowDeleteConfirm(false);
-            return;
-        }
-        setError(undefined);
+        setDeleteError(undefined);
         setSaving(true);
         api.query
             .deleteRows({ schemaQuery: SCHEMAS.EXP_TABLES.DATA_COLORS, containerPath: container?.path, rows: [updated] })
             .then(() => onActionComplete(undefined, true))
             .catch(reason => {
-                setError(resolveErrorMessage(reason?.error ?? reason, 'color', 'colors', 'delete'));
+                setDeleteError(resolveErrorMessage(reason?.error ?? reason, 'color', 'colors', 'delete'));
                 setSaving(false);
             });
     }, [api, container?.path, onActionComplete, updated]);
@@ -279,6 +279,7 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
                     onConfirm={onDeleteConfirm}
                     title="Permanently Delete Color?"
                 >
+                    {deleteError && <Alert>{deleteError}</Alert>}
                     <span>
                         The <b>{updated.label}</b> color will be permanently deleted.
                         <p className="top-padding">

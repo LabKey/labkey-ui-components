@@ -204,6 +204,10 @@ export function isSampleStatusEnabled(moduleContext?: ModuleContext): boolean {
     return hasSampleManagementModule(moduleContext);
 }
 
+export function isSampleColorsEnabled(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.experiment?.SampleColors === true;
+}
+
 export function isQueryMetadataEditor(): boolean {
     const action = ActionURL.getAction()?.toLowerCase() || '';
     return action === 'metadataquery' || action.startsWith('querymetadataeditor');

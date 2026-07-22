@@ -32,6 +32,7 @@ import { ENTITY_FORM_IDS } from '../entities/constants';
 import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
 import { isSampleManagerEnabled } from '../../../app/products';
+import { isSampleColorsEnabled } from '../../../app/utils';
 import { getCurrentProductName, isCommunityDistribution } from '../../../app/utils';
 
 import { PREFIX_SUBSTITUTION_EXPRESSION, PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
@@ -615,10 +616,12 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                                 />
                             </div>
                         </div>
-                        <SampleColorsSetting
-                            sampleTypeRowId={model.rowId}
-                            onChange={this.onSampleColorsChange}
-                        />
+                        {isSampleColorsEnabled() && (
+                            <SampleColorsSetting
+                                onChange={this.onSampleColorsChange}
+                                sampleTypeRowId={model.rowId}
+                            />
+                        )}
                         {includeMetricUnitProperty && (
                             <>
                                 <div className="row margin-top">

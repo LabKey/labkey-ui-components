@@ -51,7 +51,7 @@ describe('getAuditQueries', () => {
     test('LKSM professional', () => {
         const auditQueries = getAuditQueries(TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT);
         expect(auditQueries.length).toBe(18);
-        expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(16);
+        expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(15);
         expect(auditQueries.findIndex(entry => entry === ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === WORKFLOW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === SOURCE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
@@ -79,7 +79,7 @@ describe('getAuditQueries', () => {
         };
         const auditQueries = getAuditQueries(moduleContext);
         expect(auditQueries.length).toBe(19);
-        expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(17);
+        expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(16);
         expect(auditQueries.findIndex(entry => entry === ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === ASSAY_RESULT_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === WORKFLOW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);

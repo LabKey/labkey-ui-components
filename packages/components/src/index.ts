@@ -522,6 +522,7 @@ import {
     parseEntityParentKey,
     SAMPLE_ID_FIELD_KEY,
     sampleDeleteDependencyText,
+    sourceDeleteDependencyText,
     updateCellKeySampleIdMap,
 } from './internal/components/entities/utils';
 import {
@@ -1720,6 +1721,7 @@ export {
     showPremiumFeatures,
     sleep,
     SOURCE_AUDIT_QUERY,
+    sourceDeleteDependencyText,
     SourceTypeImportAliasRenderer,
     spliceURL,
     SplitButton,

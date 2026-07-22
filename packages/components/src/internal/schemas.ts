@@ -124,6 +124,7 @@ export const WORKFLOW = {
     JOB_TEMPLATE: new SchemaQuery(WORKFLOW_SCHEMA, 'JobTemplate'),
     JOB_PRIORITY: new SchemaQuery(WORKFLOW_SCHEMA, 'WorkflowJobPriority'),
     JOB_INPUT_SAMPLES: new SchemaQuery(WORKFLOW_SCHEMA, 'JobInputSamples'),
+    JOB_INPUT_SOURCES: new SchemaQuery(WORKFLOW_SCHEMA, 'JobInputSources'),
 };
 
 // STUDY

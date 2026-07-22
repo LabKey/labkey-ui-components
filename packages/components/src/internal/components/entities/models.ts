@@ -474,6 +474,7 @@ export interface EntityDataType {
     descriptionSingular: string;
     editTypeAppUrlPrefix?: string;
     exprColumnsWithSubSelect?: string[];
+    exportConfig?: Record<string, string>;
     extraFinderFields?: string[];
     filterArray?: Filter.IFilter[];
     filterCardHeaderClass?: string;

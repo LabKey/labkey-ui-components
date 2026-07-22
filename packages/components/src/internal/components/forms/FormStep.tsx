@@ -18,15 +18,6 @@ const FormStepContext = React.createContext<IFormStepContext>(undefined);
 const FormStepContextProvider = FormStepContext.Provider;
 const FormStepContextConsumer = FormStepContext.Consumer;
 
-const FormStepActiveContext = React.createContext<boolean>(undefined);
-
-/**
- * Returns whether the nearest enclosing FormStep is the active step or undefined when not rendered inside a FormStep.
- */
-export function useFormStepActive(): boolean {
-    return useContext(FormStepActiveContext);
-}
-
 interface ActiveStepProps extends PropsWithChildren {
     active?: boolean;
 }
@@ -68,11 +59,9 @@ export class FormStep extends React.Component<FormStepProps, any> {
 
                     if (furthestStep >= stepIndex) {
                         return (
-                            <FormStepActiveContext.Provider value={active}>
-                                <div className={classNames('form-step', { active })}>
-                                    {trackActive ? <ActiveStep active={active}>{children}</ActiveStep> : children}
-                                </div>
-                            </FormStepActiveContext.Provider>
+                            <div className={classNames('form-step', { active })}>
+                                {trackActive ? <ActiveStep active={active}>{children}</ActiveStep> : children}
+                            </div>
                         );
                     }
 

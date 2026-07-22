@@ -2,9 +2,10 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, PropsWithChildren, ReactNode } from 'react';
+import React, { FC, memo, PropsWithChildren } from 'react';
 
 import { FormButtons } from '../../FormButtons';
+import { useIsInModal } from '../forms/AddEntitiesModal';
 
 interface Props extends PropsWithChildren {
     canCancel?: boolean;
@@ -45,32 +46,10 @@ export const WizardNavButtons: FC<Props> = memo(props => {
         previousStep,
         singularNoun,
     } = props;
+    const inModal = useIsInModal();
 
-    let submitButton: ReactNode;
-
-    if (finish) {
-        submitButton = (
-            <button
-                className="btn btn-success"
-                disabled={isFinishing || !canFinish}
-                form={formId}
-                onClick={nextStep}
-                type="submit"
-            >
-                {isFinished ? isFinishedText : isFinishing ? isFinishingText : finishText}
-                {singularNoun ? ' ' + singularNoun : null}
-            </button>
-        );
-    } else {
-        submitButton = (
-            <button className="btn btn-default" disabled={!canNextStep} form={formId} onClick={nextStep} type="submit">
-                Next
-            </button>
-        );
-    }
-
-    return (
-        <FormButtons>
+    const formButtons = (
+        <FormButtons sticky={!inModal}>
             <button className="btn btn-default" disabled={!canCancel} onClick={cancel} type="button">
                 {cancelText}
             </button>
@@ -80,8 +59,39 @@ export const WizardNavButtons: FC<Props> = memo(props => {
                 </button>
             )}
             {children}
-            {submitButton}
+            {finish && (
+                <button
+                    className="btn btn-success"
+                    disabled={isFinishing || !canFinish}
+                    form={formId}
+                    onClick={nextStep}
+                    type="submit"
+                >
+                    {isFinished ? isFinishedText : isFinishing ? isFinishingText : finishText}
+                    {singularNoun ? ' ' + singularNoun : null}
+                </button>
+            )}
+            {!finish && (
+                <button
+                    className="btn btn-default"
+                    disabled={!canNextStep}
+                    form={formId}
+                    onClick={nextStep}
+                    type="submit"
+                >
+                    Next
+                </button>
+            )}
         </FormButtons>
     );
+
+    if (inModal) {
+        // This is not ideal as this can result in a "modal-footer" inside a "modal-body", however, it is much
+        // less complicated than rendering to a React.createPortal(). Apply the "modal-footer-in-body" class to
+        // adjust the layout to align with the body.
+        return <div className="modal-footer modal-buttons modal-footer-in-body">{formButtons}</div>;
+    }
+
+    return formButtons;
 });
 WizardNavButtons.displayName = 'WizardNavButtons';

@@ -2,14 +2,13 @@
  * Copyright (c) 2024-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, PropsWithChildren, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, memo, PropsWithChildren, ReactNode, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 import classNames from 'classnames';
 
 import { usePortalRef } from './hooks';
 import { ModalButtons, ModalButtonsProps } from './ModalButtons';
-import { ModalFooterSlotContext } from './ModalFooterSlot';
 import { Key } from '../public/useEnterEscape';
 
 const FOCUSABLE_SELECTORS =
@@ -123,19 +122,14 @@ export interface ModalProps extends BaseModalProps, ModalButtonsProps {
      */
     footerContent?: ReactNode;
     /**
-     * When true, the Modal renders an empty footer element and provides it to descendants via
-     * ModalFooterSlotContext. Use this when the modal body hosts a form or wizard whose steps render their own
-     * buttons that belong in the modal footer. Note this applies to every FormButtons in the body, so do not
-     * combine it with body content that renders unrelated inline FormButtons. An explicit "footer" takes precedence
-     * over the slot; "footerContent" and the default footer buttons are not rendered when the slot is enabled.
-     * Defaults to false.
-     */
-    footerSlot?: boolean;
-    /**
      * Custom header component. When this is supplied, the default header interactions will not be rendered.
      * Note: You probably should not use header, instead use the other props to render the appropriate header.
      */
     header?: ReactNode;
+    /**
+     * Declare whether to render a footer. Overrides both "footer" and "footerContent". Defaults to true.
+     */
+    showFooter?: boolean;
     /**
      * Title passed to the default header (see ModalHeader). If a custom header is supplied, then this is ignored.
      */
@@ -155,50 +149,43 @@ export const Modal: FC<ModalProps> = memo(props => {
         confirmingText,
         footer,
         footerContent,
-        footerSlot = false,
         header,
         isConfirming,
         onCancel,
         onCommentChange,
         onConfirm,
         requiresUserComment,
+        showFooter = true,
         title,
     } = props;
-    // State (not useRef) so consumers re-render and portal in once the slot element mounts; a ref mutation wouldn't.
-    const [footerEl, setFooterEl] = useState<HTMLDivElement>(null);
-    const footerRef = useCallback((el: HTMLDivElement) => setFooterEl(el), []);
-    const slotEnabled = footerSlot && !footer;
     const showHeader = !!(onCancel || title);
 
     return (
         <BaseModal bsSize={bsSize} className={className} onCancel={onCancel}>
-            <ModalFooterSlotContext.Provider value={slotEnabled ? footerEl : undefined}>
-                {showHeader && !header && <ModalHeader onCancel={onCancel} title={title} />}
-                {header}
+            {showHeader && !header && <ModalHeader onCancel={onCancel} title={title} />}
+            {header}
 
-                <div className="modal-body">{children}</div>
+            <div className="modal-body">{children}</div>
 
-                {!slotEnabled && !footer && (
-                    <ModalButtons
-                        actionName={actionName}
-                        cancelText={cancelText}
-                        canConfirm={canConfirm}
-                        confirmClass={confirmClass}
-                        confirmingText={confirmingText}
-                        confirmText={confirmText}
-                        isConfirming={isConfirming}
-                        onCancel={onCancel}
-                        onCommentChange={onCommentChange}
-                        onConfirm={onConfirm}
-                        requiresUserComment={requiresUserComment}
-                    >
-                        {footerContent}
-                    </ModalButtons>
-                )}
+            {showFooter && !footer && (
+                <ModalButtons
+                    actionName={actionName}
+                    cancelText={cancelText}
+                    canConfirm={canConfirm}
+                    confirmClass={confirmClass}
+                    confirmingText={confirmingText}
+                    confirmText={confirmText}
+                    isConfirming={isConfirming}
+                    onCancel={onCancel}
+                    onCommentChange={onCommentChange}
+                    onConfirm={onConfirm}
+                    requiresUserComment={requiresUserComment}
+                >
+                    {footerContent}
+                </ModalButtons>
+            )}
 
-                {slotEnabled && <div className="modal-footer modal-footer--slot" ref={footerRef} />}
-                {!slotEnabled && footer && <div className="modal-footer">{footer}</div>}
-            </ModalFooterSlotContext.Provider>
+            {showFooter && footer && <div className="modal-footer">{footer}</div>}
         </BaseModal>
     );
 });

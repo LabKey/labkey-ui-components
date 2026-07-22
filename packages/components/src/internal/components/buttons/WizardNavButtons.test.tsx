@@ -7,31 +7,43 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
+import { useIsInModal } from '../forms/AddEntitiesModal';
+
 import { WizardNavButtons } from './WizardNavButtons';
 
+jest.mock('../forms/AddEntitiesModal', () => ({
+    ...jest.requireActual('../forms/AddEntitiesModal'),
+    useIsInModal: jest.fn(),
+}));
+
+const mockUseIsInModal = useIsInModal as jest.MockedFunction<typeof useIsInModal>;
+
 describe('WizardNavButtons', () => {
+    beforeEach(() => {
+        mockUseIsInModal.mockReturnValue(false);
+    });
     test('default props', () => {
         render(<WizardNavButtons cancel={jest.fn()} />);
-        expect(document.querySelectorAll('button').length === 2);
-        expect(document.querySelectorAll('button')[0].textContent).toEqual('Cancel');
-        expect(document.querySelectorAll('button')[1].textContent).toEqual('Next');
-        expect(document.querySelectorAll('button')[1].hasAttribute('disabled')).toEqual(false);
+        expect(document.querySelectorAll('button')).toHaveLength(2);
+        expect(document.querySelectorAll('button')[0]).toHaveTextContent('Cancel');
+        expect(document.querySelectorAll('button')[1]).toHaveTextContent('Next');
+        expect(document.querySelectorAll('button')[1]).not.toBeDisabled();
     });
 
     test('finish props', () => {
         render(
             <WizardNavButtons
                 cancel={jest.fn()}
-                finishText="Custom Finish"
-                finish
-                nextStep={jest.fn()}
                 canFinish={false}
+                finish
+                finishText="Custom Finish"
+                nextStep={jest.fn()}
             />
         );
-        expect(document.querySelectorAll('button').length).toEqual(2);
-        expect(document.querySelectorAll('button')[0].textContent).toEqual('Cancel');
-        expect(document.querySelectorAll('button')[1].textContent).toEqual('Custom Finish');
-        expect(document.querySelectorAll('button')[1].hasAttribute('disabled')).toEqual(true);
+        expect(document.querySelectorAll('button')).toHaveLength(2);
+        expect(document.querySelectorAll('button')[0]).toHaveTextContent('Cancel');
+        expect(document.querySelectorAll('button')[1]).toHaveTextContent('Custom Finish');
+        expect(document.querySelectorAll('button')[1]).toBeDisabled();
     });
 
     test('with children', () => {
@@ -42,37 +54,37 @@ describe('WizardNavButtons', () => {
                 </button>
             </WizardNavButtons>
         );
-        expect(document.querySelectorAll('button').length).toEqual(3);
-        expect(document.querySelectorAll('button')[0].textContent).toEqual('Cancel');
-        expect(document.querySelectorAll('button')[1].textContent).toEqual('My Additional Button');
+        expect(document.querySelectorAll('button')).toHaveLength(3);
+        expect(document.querySelectorAll('button')[0]).toHaveTextContent('Cancel');
+        expect(document.querySelectorAll('button')[1]).toHaveTextContent('My Additional Button');
     });
 
     test('formId applies the form attribute to the next button', () => {
         render(<WizardNavButtons cancel={jest.fn()} formId="my-form" />);
         const buttons = document.querySelectorAll('button');
-        expect(buttons[1].textContent).toEqual('Next');
-        expect(buttons[1].getAttribute('form')).toEqual('my-form');
-        expect(buttons[0].hasAttribute('form')).toBe(false);
+        expect(buttons[1]).toHaveTextContent('Next');
+        expect(buttons[1]).toHaveAttribute('form', 'my-form');
+        expect(buttons[0]).not.toHaveAttribute('form');
     });
 
     test('formId applies the form attribute to the finish button', () => {
         render(<WizardNavButtons cancel={jest.fn()} finish formId="my-form" nextStep={jest.fn()} />);
         const buttons = document.querySelectorAll('button');
-        expect(buttons[1].textContent).toEqual('Finish');
-        expect(buttons[1].getAttribute('form')).toEqual('my-form');
+        expect(buttons[1]).toHaveTextContent('Finish');
+        expect(buttons[1]).toHaveAttribute('form', 'my-form');
     });
 
     test('no form attribute when formId is omitted', () => {
         render(<WizardNavButtons cancel={jest.fn()} />);
         const buttons = document.querySelectorAll('button');
-        expect(buttons[1].hasAttribute('form')).toBe(false);
+        expect(buttons[1]).not.toHaveAttribute('form');
     });
 
     test('onClick handlers', async () => {
         const cancelFn = jest.fn();
         const prevFn = jest.fn();
         const nextFn = jest.fn();
-        render(<WizardNavButtons cancel={cancelFn} previousStep={prevFn} nextStep={nextFn} />);
+        render(<WizardNavButtons cancel={cancelFn} nextStep={nextFn} previousStep={prevFn} />);
         expect(cancelFn).toHaveBeenCalledTimes(0);
         expect(prevFn).toHaveBeenCalledTimes(0);
         expect(nextFn).toHaveBeenCalledTimes(0);
@@ -91,5 +103,27 @@ describe('WizardNavButtons', () => {
         expect(cancelFn).toHaveBeenCalledTimes(1);
         expect(prevFn).toHaveBeenCalledTimes(1);
         expect(nextFn).toHaveBeenCalledTimes(1);
+    });
+
+    test('respects useIsInModal', () => {
+        // When not in a modal, the buttons render in sticky mode without the modal footer wrapper.
+        const { rerender } = render(<WizardNavButtons cancel={jest.fn()} />);
+        expect(document.querySelector('.modal-footer')).toBeNull();
+        expect(document.querySelector('.form-buttons--sticky')).not.toBeNull();
+
+        // When in a modal, the buttons are wrapped in a modal footer element and are no longer sticky.
+        mockUseIsInModal.mockReturnValue(true);
+        rerender(<WizardNavButtons cancel={jest.fn()} />);
+        const footer = document.querySelector('.modal-footer');
+        expect(footer).not.toBeNull();
+        expect(footer).toHaveClass('modal-buttons', 'modal-footer-in-body');
+        expect(document.querySelector('.form-buttons--sticky')).toBeNull();
+        expect(footer.querySelector('.form-buttons')).not.toBeNull();
+
+        // The nav buttons are still rendered inside the modal footer.
+        const buttons = footer.querySelectorAll('button');
+        expect(buttons).toHaveLength(2);
+        expect(buttons[0]).toHaveTextContent('Cancel');
+        expect(buttons[1]).toHaveTextContent('Next');
     });
 });

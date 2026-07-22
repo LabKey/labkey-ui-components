@@ -6,7 +6,6 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import { FormButtons } from './FormButtons';
-import { ModalFooterSlotContext } from './ModalFooterSlot';
 
 describe('FormButtons', () => {
     function renderButtons(): React.ReactElement {
@@ -40,30 +39,5 @@ describe('FormButtons', () => {
         const buttons = container.querySelector('.form-buttons');
         expect(buttons).not.toBeNull();
         expect(buttons).not.toHaveClass('form-buttons--sticky');
-    });
-
-    test('portals into the footer slot element and is never sticky there', () => {
-        const target = document.createElement('div');
-        document.body.appendChild(target);
-
-        const { container } = render(
-            <ModalFooterSlotContext.Provider value={target}>{renderButtons()}</ModalFooterSlotContext.Provider>
-        );
-
-        expect(container.querySelector('.form-buttons')).toBeNull();
-        const buttons = target.querySelector('.form-buttons');
-        expect(buttons).not.toBeNull();
-        expect(buttons).not.toHaveClass('form-buttons--sticky');
-        expect(buttons.querySelector('.test-submit')).not.toBeNull();
-
-        target.remove();
-    });
-
-    test('renders nothing while the slot element has not mounted (null)', () => {
-        const { container } = render(
-            <ModalFooterSlotContext.Provider value={null}>{renderButtons()}</ModalFooterSlotContext.Provider>
-        );
-        expect(container.querySelector('.form-buttons')).toBeNull();
-        expect(document.querySelector('.form-buttons')).toBeNull();
     });
 });

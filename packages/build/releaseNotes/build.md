@@ -1,5 +1,28 @@
 # @labkey/build
 
+### version 10.0.0
+*Released*: 21 July 2026
+- Migrate the build tooling from webpack to [Rspack](https://rspack.rs). Rspack is webpack-config-compatible but much
+  faster, and its dev-server error overlay shows the file name, line/column, and a code frame for both compilation and
+  TypeScript errors (the old webpack-dev-server overlay did not).
+- **Breaking change for consuming modules:** the `webpack` binary is no longer provided; the `rspack` binary is. Every
+  consuming module must update its `package.json` build scripts to invoke `rspack` instead of `webpack`
+  - `webpack` → `rspack build`
+  - `webpack serve` → `rspack serve`
+  - See the migration table in `configs/README.md`.
+- `webpack` folder renamed to `configs`
+- Replaced `babel-loader` and the hand-ordered Babel plugins with Rspack's `builtin:swc-loader`. SWC's
+  `useDefineForClassFields: false` plus its native elision of `declare` class fields reproduces the Immutable `Record`
+  behavior that previously required `@babel/plugin-transform-typescript`'s `allowDeclareFields`.
+- Replaced `fork-ts-checker-webpack-plugin` with `ts-checker-rspack-plugin`
+- Replaced `mini-css-extract-plugin` with `rspack.CssExtractRspackPlugin`
+- Replaced `copy-webpack-plugin` with `rspack.CopyRspackPlugin`
+- Replaced `terser-webpack-plugin` with `rspack.SwcJsMinimizerRspackPlugin` (preserving the
+  `compress.collapse_vars: false` workaround)
+- Replaced `@pmmmwh/react-refresh-webpack-plugin` with `@rspack/plugin-react-refresh`
+- Kept the community `html-webpack-plugin` (Rspack-compatible) to continue generating the custom `.view.xml` /
+`.lib.xml` / `.html` outputs and their LabKey-specific template parameters.
+
 ### version 9.0.0
 *Released*: 9 March 2026
 - Update TypeScript compiler `lib` and `target` options to `"ES2023"'

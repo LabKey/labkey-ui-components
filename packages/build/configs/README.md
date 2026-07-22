@@ -1,23 +1,51 @@
 # LabKey Module React Page Development
 
-This directory contains the shared [webpack] configurations to develop and build
+This directory contains the shared [Rspack] configurations to develop and build
 [React] pages within a LabKey module. These files include configurations for
 building both production and development mode LabKey React Pages in a standard way.
 
+> **Note:** This package previously used [webpack]. It now uses [Rspack], which is webpack-config-compatible but
+> significantly faster and ships a dev-server error overlay that shows the offending file name, line/column, and a
+> code frame for both compilation and TypeScript errors. The directory where build configurations are stored is now
+> named `configs/`.
+
+## Migrating a consuming module from webpack to Rspack
+
+`@labkey/build` provides the build CLI transitively, so when this package switched its dependencies from `webpack`
+to `@rspack/*`, the `webpack` binary is no longer installed in consuming modules — the `rspack` binary is. **Every
+consuming module must update the build scripts in its `package.json`** to invoke `rspack` instead of `webpack`:
+
+| Old (webpack) | New (Rspack) |
+|---|---|
+| `webpack --config node_modules/@labkey/build/webpack/dev.config.js` | `rspack build --config node_modules/@labkey/build/configs/dev.config.js` |
+| `webpack --config node_modules/@labkey/build/webpack/prod.config.js` | `rspack build --config node_modules/@labkey/build/configs/prod.config.js` |
+| `webpack --config package.config.js` (library packages) | `rspack build --config package.config.js` |
+| `webpack serve --config node_modules/@labkey/build/webpack/watch.config.js` | `rspack serve --config node_modules/@labkey/build/configs/watch.config.js` |
+
+Notes:
+- Bare `webpack` means "build", but bare `rspack` does not — use `rspack build` (the `build` subcommand is required).
+- `webpack serve` becomes `rspack serve` (also aliased as `rspack dev`).
+- The `--config`, `--color`, `--progress`, and `--profile` flags and the `NODE_ENV` / `PROD_SOURCE_MAP` environment
+  variables are unchanged.
+- `webpack-merge` usages should be replaced with `rspack-merge`, it is a drop-in replacement so you should only need to
+  change the import path. and remove webpack-merge from your `package.json` devDependencies.
+- If a module declares `webpack`, `webpack-cli`, or `webpack-dev-server` directly in its own `devDependencies` (most
+  do not — they rely on `@labkey/build` to provide them transitively), remove those entries.
+
 Note that if build customizations are needed for a given module, the module can opt out of these shared
-configurations by setting up its own webpack config files and pointing the build scripts in the
+configurations by setting up its own Rspack config files and pointing the build scripts in the
 module's `package.json` file at them.
 
-### How to use the shared webpack config files
+### How to use the shared build configuration files
 
 1. Add the `@labkey/build` package to your module's `package.json` devDependencies.
 1. Add/update the `scripts` in your `package.json` to reference the relevant config file in
-    `node_modules/@labkey/build/webpack`. See examples from the [experiment] module.
+    `node_modules/@labkey/build/configs`. See examples from the [experiment] module.
     1. use one of the three configuration files based on your script target: `prod.config.js`, `dev.config.js`,
         `package.config.js`, or `watch.config.js`
-    1. make sure to pass the following environment variables as part of your webpack command:
+    1. make sure to pass the following environment variables as part of your rspack command:
         1. `NODE_ENV` - development or production
-        2. `PROD_SOURCE_MAP` - optional source map setting for the production webpack config to use,
+        2. `PROD_SOURCE_MAP` - optional source map setting for the production build config to use,
            defaults to `nosources-source-map`
 
 ### How it works
@@ -98,12 +126,12 @@ To add a new `entryPoint` for a LabKey React page:
 
 To allow updates made to TypeScript, JavaScript, CSS, and SCSS files to take effect on your LabKey
 React page without having to manually build the changes each time, you can develop with Hot Module
-Reloading (HMR) enabled via a webpack development server. You can run the HMR server from the
+Reloading (HMR) enabled via a rspack development server. You can run the HMR server from the
 `trunk/server/modules/<module>` directory via the `npm start` command. Once started, you
 will need to access your page via an alternate action name to view the changes. The server action
 is `module-entryPointDev.view` instead of the normal `module-entryPoint.view`.
 
-Note that by default modules that use this shared configurations package for the webpack development
+Note that by default modules that use this shared configurations package for the rspack development
 server are set to use the same port number for the HMR environment. This means that you can have
 only one module's HMR mode enabled at a time. If you try to run `npm start` for a second module, you
 will get an error message saying that the `address is already in use`.
@@ -127,16 +155,18 @@ To enable HMR with @labkey package linking:
 npm run start-link
 ```
 
-### Making changes to these webpack configuration files
+### Making changes to these build configuration files
 
-If you need to make changes to these webpack configuration files and want to test them in your module client-side
+If you need to make changes to these build configuration files and want to test them in your module client-side
 build before publishing a new `@labkey/build` version, you can do one of the following:
 
-1. Make direct edits in your module's `node_modules/@labkey/build/webpack` directory
-2. Make changes in this directory and then copy the `/webpack` directory contents to your module's
-    `node_modules/@labkey/build/webpack` directory
+1. Make direct edits in your module's `node_modules/@labkey/build/configs` directory
+2. Make changes in this directory and then copy the `/configs` directory contents to your module's
+    `node_modules/@labkey/build/configs` directory
+   - See the `just copy` command
 
 [React]: https://reactjs.org
+[Rspack]: https://rspack.rs/
 [webpack]: https://webpack.js.org/
 [LabKey Gradle build]: https://www.labkey.org/Documentation/wiki-page.view?name=gradleBuild
 [assay]: https://github.com/LabKey/platform/tree/develop/assay

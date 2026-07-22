@@ -48,7 +48,7 @@ module React code changes.
 
 For example, to test changes in `@labkey/components` within the `my_app` module, you could do:
 * `npm run start-link` in the `my_app` module dir to use
-[hot module reload mode](../../build/webpack/README.md#developing-with-hot-module-reloading-hmr) in your module
+[hot module reload mode](../../build/configs/README.md#developing-with-hot-module-reloading-hmr) in your module
 with webpack aliases enabled for package linking
 * edit files within the `package/components` dir
 * see changes reflected in your `appDev` LabKey page/view

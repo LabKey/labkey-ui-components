@@ -1,5 +1,5 @@
 {
-  "extends": "./node_modules/@labkey/build/webpack/tsconfig.json",
+  "extends": "./node_modules/@labkey/build/configs/tsconfig.json",
   "compilerOptions": {
     // declarationMap is required for IntelliJ to resolve source file references
     "declarationMap": true,

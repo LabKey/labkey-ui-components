@@ -2,7 +2,7 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, ReactNode } from 'react';
+import React, { FC, memo, ReactNode, useMemo } from 'react';
 import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
@@ -12,16 +12,24 @@ import { LOOKUP_DEFAULT_SIZE } from '../../../constants';
 import { NON_ARCHIVED_COLOR_FILTER } from '../../samples/constants';
 
 import { InputRendererProps } from './types';
-
-const COLOR_QUERY_FILTERS = List<Filter.IFilter>([NON_ARCHIVED_COLOR_FILTER]);
+import { caseInsensitive } from '../../../util/utils';
 
 interface SampleColorInputProps extends Omit<QuerySelectOwnProps, 'schemaQuery' | 'valueColumn'> {
     col: QueryColumn;
+    queryFilters?: List<Filter.IFilter>;
     renderLabelField?: (col: QueryColumn) => ReactNode;
 }
 
 export const SampleColorInput: FC<SampleColorInputProps> = memo(props => {
-    const { col, renderLabelField, ...querySelectProps } = props;
+    const { col, renderLabelField, queryFilters, ...querySelectProps } = props;
+
+     const filters = useMemo(() => {
+        let result = List<Filter.IFilter>([NON_ARCHIVED_COLOR_FILTER]);
+        if (queryFilters && !queryFilters.isEmpty()) {
+            result = result.concat(queryFilters).toList();
+        }
+        return result;
+    }, [queryFilters]);
 
     return (
         <>
@@ -39,7 +47,7 @@ export const SampleColorInput: FC<SampleColorInputProps> = memo(props => {
                 required={col.required}
                 showLoading={false}
                 {...querySelectProps}
-                queryFilters={COLOR_QUERY_FILTERS}
+                queryFilters={filters}
                 schemaQuery={col.lookup.schemaQuery}
                 valueColumn={col.lookup.keyColumn}
             />
@@ -63,6 +71,7 @@ export const SampleColorInputRenderer: FC<InputRendererProps> = memo(props => {
         showAsteriskSymbol,
         value,
         fieldWithMixedValues,
+        queryFilters,
     } = props;
 
     const hasMixedValue = fieldWithMixedValues?.includes(col.name.toLowerCase());
@@ -79,6 +88,7 @@ export const SampleColorInputRenderer: FC<InputRendererProps> = memo(props => {
             initiallyDisabled={initiallyDisabled}
             onQSChange={onSelectChange}
             onToggleDisable={onToggleDisable}
+            queryFilters={caseInsensitive(queryFilters, col.name)}
             renderLabelField={renderLabelField}
             value={value}
         />

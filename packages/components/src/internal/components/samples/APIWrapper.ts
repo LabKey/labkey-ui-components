@@ -21,6 +21,7 @@ import {
     getGroupedSampleDomainFields,
     getLookupRowIdsFromSelection,
     getColorSampleTypeExclusions,
+    getSampleTypeColorExclusions,
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
     getSampleColors,
@@ -28,6 +29,8 @@ import {
     getSampleStatuses,
     getSampleStorageId,
     getSampleTypeDetails,
+    getSampleTypeLabelColor,
+    getSampleTypeRowId,
     getSelectionLineageData,
     getTimelineEvents,
     hasExistingSamples,
@@ -65,6 +68,12 @@ export interface SamplesAPIWrapper {
 
     getColorSampleTypeExclusions: (colorRowId: number, containerPath?: string) => Promise<number[]>;
 
+    getSampleTypeColorExclusions: (
+        sampleTypeRowId?: number,
+        sampleTypeName?: string,
+        containerPath?: string
+    ) => Promise<number[]>;
+
     updateColorSettings: (
         color: SampleColorModel,
         newlyDisabledTypeIds: number[],
@@ -91,6 +100,10 @@ export interface SamplesAPIWrapper {
         containerPath?: string,
         includeNamePreview?: boolean
     ) => Promise<DomainDetails>;
+
+    getSampleTypeLabelColor: (name: string) => Promise<string>;
+
+    getSampleTypeRowId: (name: string) => Promise<number>;
 
     getSelectionLineageData: (
         selection: Set<string>,
@@ -124,11 +137,14 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSelectionLineageData = getSelectionLineageData;
     getSampleColors = getSampleColors;
     getColorSampleTypeExclusions = getColorSampleTypeExclusions;
+    getSampleTypeColorExclusions = getSampleTypeColorExclusions;
     updateColorSettings = updateColorSettings;
     getSampleStatuses = getSampleStatuses;
     getDefaultDiscardStatus = getDefaultDiscardStatus;
     getSampleOperationConfirmationData = getSampleOperationConfirmationData;
     getSampleStorageId = getSampleStorageId;
+    getSampleTypeLabelColor = getSampleTypeLabelColor;
+    getSampleTypeRowId = getSampleTypeRowId;
     getLookupRowIdsFromSelection = getLookupRowIdsFromSelection;
     getTimelineEvents = getTimelineEvents;
     getSampleTypeDetails = getSampleTypeDetails;
@@ -153,11 +169,14 @@ export function getSamplesTestAPIWrapper(
         getSelectionLineageData: mockFn(),
         getSampleColors: mockFn(),
         getColorSampleTypeExclusions: mockFn(),
+        getSampleTypeColorExclusions: mockFn(),
         updateColorSettings: mockFn(),
         getSampleStatuses: mockFn(),
         getDefaultDiscardStatus: mockFn(),
         getSampleOperationConfirmationData: mockFn(),
         getSampleStorageId: mockFn(),
+        getSampleTypeLabelColor: mockFn(),
+        getSampleTypeRowId: mockFn(),
         getLookupRowIdsFromSelection: mockFn(),
         getTimelineEvents: mockFn(),
         getSampleTypeDetails: mockFn(),

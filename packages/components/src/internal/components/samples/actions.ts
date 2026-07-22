@@ -185,6 +185,43 @@ export async function getSampleStorageId(sampleRowId: number): Promise<number> {
     return caseInsensitive(result.rows[0], 'RowId').value;
 }
 
+function getSampleTypeRow(name: string, fieldKey: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
+            columns: 'Name,' + fieldKey,
+        })
+            .then(response => {
+                const { rows } = response;
+                let rowFound;
+                rows.forEach(row => {
+                    if (name.toLowerCase() === caseInsensitive(row, 'Name').value.toLowerCase()) {
+                        rowFound = row;
+                        return;
+                    }
+                });
+
+                if (!rowFound) {
+                    reject(`Sample Type with name '${name}' not found.`);
+                    return;
+                }
+                resolve(caseInsensitive(rowFound, fieldKey).value);
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            });
+    });
+}
+
+export function getSampleTypeRowId(name: string): Promise<number> {
+    return getSampleTypeRow(name, 'RowId');
+}
+
+export function getSampleTypeLabelColor(name: string): Promise<string> {
+    return getSampleTypeRow(name, 'LabelColor');
+}
+
 export function getSampleColors(includeArchive = false, containerPath?: string): Promise<SampleColorModel[]> {
     return selectRows({
         columns: 'RowId,Label,Color,Archived',
@@ -202,7 +239,6 @@ export function getSampleColors(includeArchive = false, containerPath?: string):
     );
 }
 
-// Returns the sample type RowIds that currently exclude the given color, via the GetColorDataTypeExclusion action.
 export function getColorSampleTypeExclusions(colorRowId: number, containerPath?: string): Promise<number[]> {
     return new Promise((resolve, reject) => {
         Ajax.request({
@@ -210,9 +246,32 @@ export function getColorSampleTypeExclusions(colorRowId: number, containerPath?:
                 SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
                 'getColorDataTypeExclusion.api',
                 containerPath,
-                { colorRowId }
+                { rowId: colorRowId }
             ),
             success: Utils.getCallbackWrapper(response => resolve(response?.excludedSampleTypes ?? [])),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(response);
+            }),
+        });
+    });
+}
+
+export async function getSampleTypeColorExclusions(
+    sampleTypeRowId?: number,
+    sampleTypeName?: string,
+    containerPath?: string
+): Promise<number[]> {
+    const rowId = sampleTypeRowId ?? (await getSampleTypeRowId(sampleTypeName));
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL(
+                SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
+                'getSampleTypeColorExclusion.api',
+                containerPath,
+                { rowId }
+            ),
+            success: Utils.getCallbackWrapper(response => resolve(response?.excludedColors ?? [])),
             failure: Utils.getCallbackWrapper(response => {
                 console.error(response);
                 reject(response);

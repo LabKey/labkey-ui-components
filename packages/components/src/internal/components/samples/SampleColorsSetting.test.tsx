@@ -23,6 +23,7 @@ const makeColor = (rowId: number): SampleColorModel => ({
 
 const renderSetting = (
     colors: SampleColorModel[],
+    excluded: number[] = [],
     props: Partial<React.ComponentProps<typeof SampleColorsSetting>> = {},
     user = TEST_USER_APP_ADMIN
 ) => {
@@ -30,11 +31,12 @@ const renderSetting = (
         api: getTestAPIWrapper(jest.fn, {
             samples: getSamplesTestAPIWrapper(jest.fn, {
                 getSampleColors: jest.fn().mockResolvedValue(colors),
+                getSampleTypeColorExclusions: jest.fn().mockResolvedValue(excluded),
             }),
         }),
     };
     return renderWithAppContext(
-        <SampleColorsSetting disabledRowIds={[]} onChange={jest.fn()} {...props} />,
+        <SampleColorsSetting sampleTypeRowId={1} onChange={jest.fn()} {...props} />,
         { appContext, serverContext: { user } }
     );
 };
@@ -47,13 +49,13 @@ describe('SampleColorsSetting', () => {
     });
 
     test('empty state shows the "Add Colors" link only for an app admin', async () => {
-        renderSetting([], {}, TEST_USER_APP_ADMIN);
+        renderSetting([], [], {}, TEST_USER_APP_ADMIN);
         await waitFor(() => expect(screen.getByText('No colors are set up yet.')).toBeInTheDocument());
         expect(screen.getByRole('link', { name: 'Add Colors' })).toBeInTheDocument();
     });
 
     test('empty state hides the "Add Colors" link for a non-app-admin', async () => {
-        renderSetting([], {}, TEST_USER_EDITOR);
+        renderSetting([], [], {}, TEST_USER_EDITOR);
         await waitFor(() => expect(screen.getByText('No colors are set up yet.')).toBeInTheDocument());
         expect(screen.queryByRole('link', { name: 'Add Colors' })).not.toBeInTheDocument();
     });
@@ -65,10 +67,8 @@ describe('SampleColorsSetting', () => {
         expect(container.querySelectorAll('.sample-colors-setting__dot-more')).toHaveLength(0);
     });
 
-    test('disabledRowIds are excluded from the enabled count and dots', async () => {
-        const { container } = renderSetting([makeColor(1), makeColor(2), makeColor(3)], {
-            disabledRowIds: [2, 3],
-        });
+    test('saved exclusions are excluded from the enabled count and dots', async () => {
+        const { container } = renderSetting([makeColor(1), makeColor(2), makeColor(3)], [2, 3]);
         await waitFor(() => expect(screen.getByText('1 colors enabled.')).toBeInTheDocument());
         expect(container.querySelectorAll('.sample-colors-setting__dot')).toHaveLength(1);
     });
@@ -86,7 +86,7 @@ describe('SampleColorsSetting', () => {
 
     test('editing colors and applying reports the new disabled set via onChange', async () => {
         const onChange = jest.fn();
-        renderSetting([makeColor(1), makeColor(2)], { onChange });
+        renderSetting([makeColor(1), makeColor(2)], [], { onChange });
         await waitFor(() => expect(screen.getByText('2 colors enabled.')).toBeInTheDocument());
 
         await userEvent.click(screen.getByRole('button', { name: 'Edit' }));
@@ -105,10 +105,11 @@ describe('SampleColorsSetting', () => {
             api: getTestAPIWrapper(jest.fn, {
                 samples: getSamplesTestAPIWrapper(jest.fn, {
                     getSampleColors: jest.fn().mockRejectedValue(new Error('boom')),
+                    getSampleTypeColorExclusions: jest.fn().mockResolvedValue([]),
                 }),
             }),
         };
-        renderWithAppContext(<SampleColorsSetting disabledRowIds={[]} onChange={jest.fn()} />, {
+        renderWithAppContext(<SampleColorsSetting sampleTypeRowId={1} onChange={jest.fn()} />, {
             appContext,
             serverContext: { user: TEST_USER_APP_ADMIN },
         });

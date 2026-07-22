@@ -616,7 +616,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                             </div>
                         </div>
                         <SampleColorsSetting
-                            disabledRowIds={model.disabledSampleColorRowIds ?? []}
+                            sampleTypeRowId={model.rowId}
                             onChange={this.onSampleColorsChange}
                         />
                         {includeMetricUnitProperty && (

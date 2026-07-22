@@ -576,6 +576,11 @@ export class Cell extends React.PureComponent<CellProps, undefined> {
                     showLabel={false}
                     value={values?.get(0)?.raw}
                     values={values}
+                    queryFilters={
+                        columnMetadata?.lookupValueFilters
+                            ? { [col.name]: List(columnMetadata.lookupValueFilters) }
+                            : undefined
+                    }
                 />
             );
         }

@@ -21,14 +21,15 @@ const MAX_DOTS = 20;
 const HELP_TIP = 'Set up colors that can be applied to individual samples, overriding the sample type color.';
 
 interface Props {
-    disabledRowIds: number[];
+    sampleTypeRowId?: number;
     onChange: (disabledRowIds: number[]) => void;
 }
 
-export const SampleColorsSetting: FC<Props> = memo(({ disabledRowIds, onChange }) => {
+export const SampleColorsSetting: FC<Props> = memo(({ sampleTypeRowId, onChange }) => {
     const { api } = useAppContext();
     const { user } = useServerContext();
     const [colors, setColors] = useState<SampleColorModel[]>();
+    const [disabledSet, setDisabledSet] = useState<Set<number>>(new Set());
     const [error, setError] = useState<string>();
     const [showModal, setShowModal] = useState<boolean>(false);
     const [draftDisabled, setDraftDisabled] = useState<Set<number>>(new Set());
@@ -36,21 +37,25 @@ export const SampleColorsSetting: FC<Props> = memo(({ disabledRowIds, onChange }
     useEffect(() => {
         (async () => {
             try {
-                setColors(await api.samples.getSampleColors());
+                const [allColors, excluded] = await Promise.all([
+                    api.samples.getSampleColors(),
+                    sampleTypeRowId ? api.samples.getSampleTypeColorExclusions(sampleTypeRowId) : Promise.resolve([]),
+                ]);
+                setColors(allColors);
+                setDisabledSet(new Set(excluded));
             } catch (e) {
                 setColors([]);
                 setError('Unable to load sample colors.');
             }
         })();
-    }, [api]);
+    }, [api, sampleTypeRowId]);
 
-    const disabledSet = useMemo(() => new Set(disabledRowIds ?? []), [disabledRowIds]);
     const enabledColors = useMemo(() => (colors ?? []).filter(c => !disabledSet.has(c.rowId)), [colors, disabledSet]);
 
     const openModal = useCallback(() => {
-        setDraftDisabled(new Set(disabledRowIds ?? []));
+        setDraftDisabled(new Set(disabledSet));
         setShowModal(true);
-    }, [disabledRowIds]);
+    }, [disabledSet]);
 
     const closeModal = useCallback(() => setShowModal(false), []);
 
@@ -64,6 +69,7 @@ export const SampleColorsSetting: FC<Props> = memo(({ disabledRowIds, onChange }
     }, []);
 
     const onConfirm = useCallback(() => {
+        setDisabledSet(new Set(draftDisabled));
         onChange(Array.from(draftDisabled));
         setShowModal(false);
     }, [draftDisabled, onChange]);

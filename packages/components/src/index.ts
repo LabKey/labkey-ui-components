@@ -900,6 +900,7 @@ import { LineageGridModel, LineageResult } from './internal/components/lineage/m
 import { ActiveUserLimit, ActiveUserLimitMessage } from './internal/components/settings/ActiveUserLimit';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
 import { BaseModal, Modal, ModalHeader } from './internal/Modal';
+import { ModalFooterContext, useModalFooter } from './internal/ModalFooterContext';
 import { Tab, Tabs } from './internal/Tabs';
 import { CheckboxLK } from './internal/Checkbox';
 import { ArchivedFolderTag } from './internal/components/folder/ArchivedFolderTag';
@@ -1570,6 +1571,7 @@ export {
     MessageLevel,
     Modal,
     ModalButtons,
+    ModalFooterContext,
     ModalHeader,
     MultiValueRenderer,
     NameIdSettings,
@@ -1779,6 +1781,7 @@ export {
     useEnterEscape,
     useFolderMenuContext,
     useIsInModal,
+    useModalFooter,
     useLabelPrintingContext,
     useLoadableState,
     useModalState,

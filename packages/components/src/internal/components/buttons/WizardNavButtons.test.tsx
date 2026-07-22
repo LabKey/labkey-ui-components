@@ -7,20 +7,20 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
-import { useIsInModal } from '../forms/AddEntitiesModal';
+import { useModalFooter } from '../../ModalFooterContext';
 
 import { WizardNavButtons } from './WizardNavButtons';
 
-jest.mock('../forms/AddEntitiesModal', () => ({
-    ...jest.requireActual('../forms/AddEntitiesModal'),
-    useIsInModal: jest.fn(),
+jest.mock('../../ModalFooterContext', () => ({
+    ...jest.requireActual('../../ModalFooterContext'),
+    useModalFooter: jest.fn(),
 }));
 
-const mockUseIsInModal = useIsInModal as jest.MockedFunction<typeof useIsInModal>;
+const mockUseModalFooter = useModalFooter as jest.MockedFunction<typeof useModalFooter>;
 
 describe('WizardNavButtons', () => {
     beforeEach(() => {
-        mockUseIsInModal.mockReturnValue(false);
+        mockUseModalFooter.mockReturnValue(null);
     });
     test('default props', () => {
         render(<WizardNavButtons cancel={jest.fn()} />);
@@ -105,25 +105,22 @@ describe('WizardNavButtons', () => {
         expect(nextFn).toHaveBeenCalledTimes(1);
     });
 
-    test('respects useIsInModal', () => {
-        // When not in a modal, the buttons render in sticky mode without the modal footer wrapper.
-        const { rerender } = render(<WizardNavButtons cancel={jest.fn()} />);
-        expect(document.querySelector('.modal-footer')).toBeNull();
-        expect(document.querySelector('.form-buttons--sticky')).not.toBeNull();
+    test('portals into the modal footer when one is provided', () => {
+        const footer = document.createElement('div');
+        footer.className = 'modal-footer modal-buttons';
+        document.body.appendChild(footer);
+        mockUseModalFooter.mockReturnValue(footer);
 
-        // When in a modal, the buttons are wrapped in a modal footer element and are no longer sticky.
-        mockUseIsInModal.mockReturnValue(true);
-        rerender(<WizardNavButtons cancel={jest.fn()} />);
-        const footer = document.querySelector('.modal-footer');
-        expect(footer).not.toBeNull();
-        expect(footer).toHaveClass('modal-buttons', 'modal-footer-in-body');
+        render(<WizardNavButtons cancel={jest.fn()} />);
+
         expect(document.querySelector('.form-buttons--sticky')).toBeNull();
         expect(footer.querySelector('.form-buttons')).not.toBeNull();
 
-        // The nav buttons are still rendered inside the modal footer.
         const buttons = footer.querySelectorAll('button');
         expect(buttons).toHaveLength(2);
         expect(buttons[0]).toHaveTextContent('Cancel');
         expect(buttons[1]).toHaveTextContent('Next');
+
+        document.body.removeChild(footer);
     });
 });

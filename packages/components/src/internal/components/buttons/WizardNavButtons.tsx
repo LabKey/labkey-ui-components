@@ -3,9 +3,10 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, PropsWithChildren } from 'react';
+import { createPortal } from 'react-dom';
 
 import { FormButtons } from '../../FormButtons';
-import { useIsInModal } from '../forms/AddEntitiesModal';
+import { useModalFooter } from '../../ModalFooterContext';
 
 interface Props extends PropsWithChildren {
     canCancel?: boolean;
@@ -46,10 +47,10 @@ export const WizardNavButtons: FC<Props> = memo(props => {
         previousStep,
         singularNoun,
     } = props;
-    const inModal = useIsInModal();
+    const footerEl = useModalFooter();
 
     const formButtons = (
-        <FormButtons sticky={!inModal}>
+        <FormButtons sticky={!footerEl}>
             <button className="btn btn-default" disabled={!canCancel} onClick={cancel} type="button">
                 {cancelText}
             </button>
@@ -85,11 +86,10 @@ export const WizardNavButtons: FC<Props> = memo(props => {
         </FormButtons>
     );
 
-    if (inModal) {
-        // This is not ideal as this can result in a "modal-footer" inside a "modal-body", however, it is much
-        // less complicated than rendering to a React.createPortal(). Apply the "modal-footer-in-body" class to
-        // adjust the layout to align with the body.
-        return <div className="modal-footer modal-buttons modal-footer-in-body">{formButtons}</div>;
+    // When rendered inside a modal that provides a footer element (see ModalFooterContext), portal the buttons into
+    // the actual footer so the footer stays a true sibling of the modal body rather than nested within it.
+    if (footerEl) {
+        return createPortal(formButtons, footerEl);
     }
 
     return formButtons;

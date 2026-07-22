@@ -527,7 +527,10 @@ export class Cell extends React.PureComponent<CellProps, undefined> {
                 .filter(vd => vd && vd.display !== undefined)
                 .reduce((v, vd, i) => v + (i > 0 ? ', ' : '') + vd.display, '');
 
-            const showMenu = (showLookup || !!col.inputRenderer) && (NON_NEGATIVE_NUMBER_CONCEPT_URI !== col?.conceptURI /*storedamount has inputRenderer but shouldn't show menu*/);
+            const showMenu =
+                (showLookup || !!col.inputRenderer) &&
+                NON_NEGATIVE_NUMBER_CONCEPT_URI !==
+                    col?.conceptURI; /*storedamount has inputRenderer but shouldn't show menu*/
 
             return (
                 <>
@@ -566,6 +569,11 @@ export class Cell extends React.PureComponent<CellProps, undefined> {
                     data={row}
                     formsy={false}
                     onSelectChange={this.onSelectChange}
+                    queryFilters={
+                        columnMetadata?.lookupValueFilters
+                            ? { [col.name]: List(columnMetadata.lookupValueFilters) }
+                            : undefined
+                    }
                     selectInputProps={{
                         ...gridCellSelectInputProps,
                         defaultInputValue: this.recordedKeys,
@@ -576,11 +584,6 @@ export class Cell extends React.PureComponent<CellProps, undefined> {
                     showLabel={false}
                     value={values?.get(0)?.raw}
                     values={values}
-                    queryFilters={
-                        columnMetadata?.lookupValueFilters
-                            ? { [col.name]: List(columnMetadata.lookupValueFilters) }
-                            : undefined
-                    }
                 />
             );
         }

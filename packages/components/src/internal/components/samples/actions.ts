@@ -292,7 +292,11 @@ export function updateColorSettings(
 ): Promise<number> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'updateColorSettings.api', containerPath),
+            url: ActionURL.buildURL(
+                SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
+                'updateColorSettings.api',
+                containerPath
+            ),
             method: 'POST',
             jsonData: {
                 rowId: color.rowId,

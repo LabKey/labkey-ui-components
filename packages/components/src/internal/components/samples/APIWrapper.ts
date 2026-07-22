@@ -16,18 +16,18 @@ import { DomainDetails } from '../domainproperties/models';
 
 import {
     createSessionAssayRunSummaryQuery,
+    getColorSampleTypeExclusions,
     getDefaultDiscardStatus,
     getDistinctAssaysPerSample,
     getGroupedSampleDomainFields,
     getLookupRowIdsFromSelection,
-    getColorSampleTypeExclusions,
-    getSampleTypeColorExclusions,
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
     getSampleColors,
     getSampleCounter,
     getSampleStatuses,
     getSampleStorageId,
+    getSampleTypeColorExclusions,
     getSampleTypeDetails,
     getSampleTypeLabelColor,
     getSampleTypeRowId,
@@ -45,6 +45,8 @@ import { Row } from '../../query/selectRows';
 
 export interface SamplesAPIWrapper {
     createSessionAssayRunSummaryQuery: (sampleIds: number[]) => Promise<ExecuteSqlResponseWithSession>;
+
+    getColorSampleTypeExclusions: (colorRowId: number, containerPath?: string) => Promise<number[]>;
 
     getDefaultDiscardStatus: (containerPath?: string) => Promise<number>;
 
@@ -66,21 +68,6 @@ export interface SamplesAPIWrapper {
 
     getSampleColors: (includeArchive?: boolean, containerPath?: string) => Promise<SampleColorModel[]>;
 
-    getColorSampleTypeExclusions: (colorRowId: number, containerPath?: string) => Promise<number[]>;
-
-    getSampleTypeColorExclusions: (
-        sampleTypeRowId?: number,
-        sampleTypeName?: string,
-        containerPath?: string
-    ) => Promise<number[]>;
-
-    updateColorSettings: (
-        color: SampleColorModel,
-        newlyDisabledTypeIds: number[],
-        newlyEnabledTypeIds: number[],
-        containerPath?: string
-    ) => Promise<number>;
-
     getSampleCounter: (seqType: 'rootSampleCount' | 'sampleCount', containerPath?: string) => Promise<number>;
 
     getSampleOperationConfirmationData: (
@@ -93,6 +80,12 @@ export interface SamplesAPIWrapper {
     getSampleStatuses: (includeInUse?: boolean, containerPath?: string) => Promise<SampleState[]>;
 
     getSampleStorageId: (sampleRowId: number) => Promise<number>;
+
+    getSampleTypeColorExclusions: (
+        sampleTypeRowId?: number,
+        sampleTypeName?: string,
+        containerPath?: string
+    ) => Promise<number[]>;
 
     getSampleTypeDetails: (
         query?: SchemaQuery,
@@ -125,6 +118,13 @@ export interface SamplesAPIWrapper {
     saveSampleCounter: (
         newCount: number,
         seqType: 'rootSampleCount' | 'sampleCount',
+        containerPath?: string
+    ) => Promise<number>;
+
+    updateColorSettings: (
+        color: SampleColorModel,
+        newlyDisabledTypeIds: number[],
+        newlyEnabledTypeIds: number[],
         containerPath?: string
     ) => Promise<number>;
 }

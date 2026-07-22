@@ -21,8 +21,8 @@ const MAX_DOTS = 20;
 const HELP_TIP = 'Set up colors that can be applied to individual samples, overriding the sample type color.';
 
 interface Props {
-    sampleTypeRowId?: number;
     onChange: (disabledRowIds: number[]) => void;
+    sampleTypeRowId?: number;
 }
 
 export const SampleColorsSetting: FC<Props> = memo(({ sampleTypeRowId, onChange }) => {

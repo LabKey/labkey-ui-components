@@ -29,8 +29,11 @@ const TITLE = 'Manage Sample Colors';
 const NEW_COLOR_INDEX = -1;
 const MAX_DATA_COLORS = 200;
 const AT_LIMIT_HELP =
-    'The maximum of ' + MAX_DATA_COLORS + ' sample colors (active and archived) has been reached. Delete a color before adding a new one.';
-const ARCHIVED_HELP = "Archived colors can't be applied to future samples, but may still be applied to existing samples.";
+    'The maximum of ' +
+    MAX_DATA_COLORS +
+    ' sample colors (active and archived) has been reached. Delete a color before adding a new one.';
+const ARCHIVED_HELP =
+    "Archived colors can't be applied to future samples, but may still be applied to existing samples.";
 const APPLIES_TO_HELP =
     'Choose which sample types this color can be applied to. All sample types are enabled by default; unchecking one excludes this color from that sample type.';
 
@@ -173,7 +176,11 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
         setDeleteError(undefined);
         setSaving(true);
         api.query
-            .deleteRows({ schemaQuery: SCHEMAS.EXP_TABLES.DATA_COLORS, containerPath: container?.path, rows: [updated] })
+            .deleteRows({
+                schemaQuery: SCHEMAS.EXP_TABLES.DATA_COLORS,
+                containerPath: container?.path,
+                rows: [updated],
+            })
             .then(() => onActionComplete(undefined, true))
             .catch(reason => {
                 setDeleteError(resolveErrorMessage(reason?.error ?? reason, 'color', 'colors', 'delete'));
@@ -256,17 +263,17 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
                                 <span className="fa fa-trash" />
                                 <span>&nbsp;Delete</span>
                             </button>
-                            <button className="btn btn-default" disabled={saving} onClick={onToggleArchive} type="button">
+                            <button
+                                className="btn btn-default"
+                                disabled={saving}
+                                onClick={onToggleArchive}
+                                type="button"
+                            >
                                 {updated.archived ? 'Restore' : 'Archive'}
                             </button>
                         </>
                     )}
-                    <button
-                        className="pull-right btn btn-success"
-                        disabled={!canSave}
-                        onClick={onSave}
-                        type="button"
-                    >
+                    <button className="pull-right btn btn-success" disabled={!canSave} onClick={onSave} type="button">
                         {saving ? 'Saving...' : 'Save'}
                     </button>
                 </div>
@@ -295,8 +302,8 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
 SampleColorDetail.displayName = 'SampleColorDetail';
 
 interface SampleColorsListProps {
-    archivedColors: SampleColorModel[];
     activeColors: SampleColorModel[];
+    archivedColors: SampleColorModel[];
     onSelect: (rowId: number) => void;
     selectedRowId: number;
 }
@@ -323,7 +330,9 @@ export const SampleColorsList: FC<SampleColorsListProps> = memo(props => {
     return (
         <>
             <div className="list-group">
-                <p className="choices-list__empty-message">Set up colors that can be applied to individual samples, overriding the sample type color.</p>
+                <p className="choices-list__empty-message">
+                    Set up colors that can be applied to individual samples, overriding the sample type color.
+                </p>
                 {activeColors.map(renderItem)}
             </div>
             {archivedColors.length > 0 && (

@@ -35,10 +35,10 @@ const renderSetting = (
             }),
         }),
     };
-    return renderWithAppContext(
-        <SampleColorsSetting sampleTypeRowId={1} onChange={jest.fn()} {...props} />,
-        { appContext, serverContext: { user } }
-    );
+    return renderWithAppContext(<SampleColorsSetting onChange={jest.fn()} sampleTypeRowId={1} {...props} />, {
+        appContext,
+        serverContext: { user },
+    });
 };
 
 describe('SampleColorsSetting', () => {
@@ -109,7 +109,7 @@ describe('SampleColorsSetting', () => {
                 }),
             }),
         };
-        renderWithAppContext(<SampleColorsSetting sampleTypeRowId={1} onChange={jest.fn()} />, {
+        renderWithAppContext(<SampleColorsSetting onChange={jest.fn()} sampleTypeRowId={1} />, {
             appContext,
             serverContext: { user: TEST_USER_APP_ADMIN },
         });

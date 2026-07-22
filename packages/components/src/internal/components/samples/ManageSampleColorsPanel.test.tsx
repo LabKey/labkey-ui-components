@@ -121,10 +121,16 @@ describe('ManageSampleColorsPanel', () => {
         expect(await screen.findByText('Error: Unable to load sample colors.')).toBeInTheDocument();
     });
 
-    const withTypes = (...types: any[]) => ({ getFolderConfigurableEntityTypeOptions: jest.fn().mockResolvedValue(types) });
+    const withTypes = (...types: any[]) => ({
+        getFolderConfigurableEntityTypeOptions: jest.fn().mockResolvedValue(types),
+    });
 
     test('selecting a color loads its sample types with all enabled (checked) by default', async () => {
-        renderPanel([makeColor(1, 'Red', '#ff0000')], { getColorSampleTypeExclusions: jest.fn().mockResolvedValue([]) }, withTypes(TYPE_A, TYPE_B));
+        renderPanel(
+            [makeColor(1, 'Red', '#ff0000')],
+            { getColorSampleTypeExclusions: jest.fn().mockResolvedValue([]) },
+            withTypes(TYPE_A, TYPE_B)
+        );
         await userEvent.click(await screen.findByRole('button', { name: 'Red' }));
 
         expect(await screen.findByRole('checkbox', { name: 'Sample Type A' })).toBeChecked();
@@ -132,7 +138,11 @@ describe('ManageSampleColorsPanel', () => {
     });
 
     test('an existing exclusion shows that sample type unchecked', async () => {
-        renderPanel([makeColor(1, 'Red', '#ff0000')], { getColorSampleTypeExclusions: jest.fn().mockResolvedValue([TYPE_B.rowId]) }, withTypes(TYPE_A, TYPE_B));
+        renderPanel(
+            [makeColor(1, 'Red', '#ff0000')],
+            { getColorSampleTypeExclusions: jest.fn().mockResolvedValue([TYPE_B.rowId]) },
+            withTypes(TYPE_A, TYPE_B)
+        );
         await userEvent.click(await screen.findByRole('button', { name: 'Red' }));
 
         expect(await screen.findByRole('checkbox', { name: 'Sample Type A' })).toBeChecked();
@@ -140,7 +150,11 @@ describe('ManageSampleColorsPanel', () => {
     });
 
     test('unchecking a sample type and saving folds the exclusion into the color save', async () => {
-        const { samples } = renderPanel([makeColor(1, 'Red', '#ff0000')], { getColorSampleTypeExclusions: jest.fn().mockResolvedValue([]) }, withTypes(TYPE_A, TYPE_B));
+        const { samples } = renderPanel(
+            [makeColor(1, 'Red', '#ff0000')],
+            { getColorSampleTypeExclusions: jest.fn().mockResolvedValue([]) },
+            withTypes(TYPE_A, TYPE_B)
+        );
         await userEvent.click(await screen.findByRole('button', { name: 'Red' }));
 
         await userEvent.click(await screen.findByRole('checkbox', { name: 'Sample Type A' }));
@@ -148,11 +162,20 @@ describe('ManageSampleColorsPanel', () => {
 
         await waitFor(() => expect(samples.updateColorSettings).toHaveBeenCalledTimes(1));
         // TYPE_A was enabled and is now unchecked -> newly disabled; nothing newly enabled.
-        expect(samples.updateColorSettings).toHaveBeenCalledWith(expect.objectContaining({ rowId: 1 }), [TYPE_A.rowId], [], undefined);
+        expect(samples.updateColorSettings).toHaveBeenCalledWith(
+            expect.objectContaining({ rowId: 1 }),
+            [TYPE_A.rowId],
+            [],
+            undefined
+        );
     });
 
     test('re-enabling a previously excluded sample type sends it as newly enabled on save', async () => {
-        const { samples } = renderPanel([makeColor(1, 'Red', '#ff0000')], { getColorSampleTypeExclusions: jest.fn().mockResolvedValue([TYPE_B.rowId]) }, withTypes(TYPE_A, TYPE_B));
+        const { samples } = renderPanel(
+            [makeColor(1, 'Red', '#ff0000')],
+            { getColorSampleTypeExclusions: jest.fn().mockResolvedValue([TYPE_B.rowId]) },
+            withTypes(TYPE_A, TYPE_B)
+        );
         await userEvent.click(await screen.findByRole('button', { name: 'Red' }));
 
         // TYPE_B starts excluded (unchecked); checking it re-enables it.
@@ -160,29 +183,52 @@ describe('ManageSampleColorsPanel', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Save' }));
 
         await waitFor(() => expect(samples.updateColorSettings).toHaveBeenCalledTimes(1));
-        expect(samples.updateColorSettings).toHaveBeenCalledWith(expect.objectContaining({ rowId: 1 }), [], [TYPE_B.rowId], undefined);
+        expect(samples.updateColorSettings).toHaveBeenCalledWith(
+            expect.objectContaining({ rowId: 1 }),
+            [],
+            [TYPE_B.rowId],
+            undefined
+        );
     });
 
     test('"Deselect All" excludes every sample type on save', async () => {
-        const { samples } = renderPanel([makeColor(1, 'Red', '#ff0000')], { getColorSampleTypeExclusions: jest.fn().mockResolvedValue([]) }, withTypes(TYPE_A, TYPE_B));
+        const { samples } = renderPanel(
+            [makeColor(1, 'Red', '#ff0000')],
+            { getColorSampleTypeExclusions: jest.fn().mockResolvedValue([]) },
+            withTypes(TYPE_A, TYPE_B)
+        );
         await userEvent.click(await screen.findByRole('button', { name: 'Red' }));
 
         await userEvent.click(await screen.findByRole('button', { name: 'Deselect All' }));
         await userEvent.click(screen.getByRole('button', { name: 'Save' }));
 
         await waitFor(() => expect(samples.updateColorSettings).toHaveBeenCalledTimes(1));
-        expect(samples.updateColorSettings).toHaveBeenCalledWith(expect.objectContaining({ rowId: 1 }), [TYPE_A.rowId, TYPE_B.rowId], [], undefined);
+        expect(samples.updateColorSettings).toHaveBeenCalledWith(
+            expect.objectContaining({ rowId: 1 }),
+            [TYPE_A.rowId, TYPE_B.rowId],
+            [],
+            undefined
+        );
     });
 
     test('"Select All" re-enables every excluded sample type on save', async () => {
-        const { samples } = renderPanel([makeColor(1, 'Red', '#ff0000')], { getColorSampleTypeExclusions: jest.fn().mockResolvedValue([TYPE_A.rowId, TYPE_B.rowId]) }, withTypes(TYPE_A, TYPE_B));
+        const { samples } = renderPanel(
+            [makeColor(1, 'Red', '#ff0000')],
+            { getColorSampleTypeExclusions: jest.fn().mockResolvedValue([TYPE_A.rowId, TYPE_B.rowId]) },
+            withTypes(TYPE_A, TYPE_B)
+        );
         await userEvent.click(await screen.findByRole('button', { name: 'Red' }));
 
         await userEvent.click(await screen.findByRole('button', { name: 'Select All' }));
         await userEvent.click(screen.getByRole('button', { name: 'Save' }));
 
         await waitFor(() => expect(samples.updateColorSettings).toHaveBeenCalledTimes(1));
-        expect(samples.updateColorSettings).toHaveBeenCalledWith(expect.objectContaining({ rowId: 1 }), [], [TYPE_A.rowId, TYPE_B.rowId], undefined);
+        expect(samples.updateColorSettings).toHaveBeenCalledWith(
+            expect.objectContaining({ rowId: 1 }),
+            [],
+            [TYPE_A.rowId, TYPE_B.rowId],
+            undefined
+        );
     });
 
     test('a new color shows the sample-type section with everything enabled', async () => {
@@ -195,7 +241,11 @@ describe('ManageSampleColorsPanel', () => {
     });
 
     test('sample-type checkboxes are read-only (and no Select All) for an archived color', async () => {
-        renderPanel([makeColor(1, 'Gray', '#888888', true)], { getColorSampleTypeExclusions: jest.fn().mockResolvedValue([]) }, withTypes(TYPE_A, TYPE_B));
+        renderPanel(
+            [makeColor(1, 'Gray', '#888888', true)],
+            { getColorSampleTypeExclusions: jest.fn().mockResolvedValue([]) },
+            withTypes(TYPE_A, TYPE_B)
+        );
         // archived colors live behind the collapsible Archived Colors section
         await userEvent.click(await screen.findByRole('button', { name: /Archived Colors/ }));
         await userEvent.click(screen.getByRole('button', { name: 'Gray' }));

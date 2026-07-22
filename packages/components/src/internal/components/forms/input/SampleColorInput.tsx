@@ -23,7 +23,7 @@ interface SampleColorInputProps extends Omit<QuerySelectOwnProps, 'schemaQuery' 
 export const SampleColorInput: FC<SampleColorInputProps> = memo(props => {
     const { col, renderLabelField, queryFilters, ...querySelectProps } = props;
 
-     const filters = useMemo(() => {
+    const filters = useMemo(() => {
         let result = List<Filter.IFilter>([NON_ARCHIVED_COLOR_FILTER]);
         if (queryFilters && !queryFilters.isEmpty()) {
             result = result.concat(queryFilters).toList();

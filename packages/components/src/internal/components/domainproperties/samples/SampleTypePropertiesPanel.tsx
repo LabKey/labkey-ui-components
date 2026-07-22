@@ -32,8 +32,7 @@ import { ENTITY_FORM_IDS } from '../entities/constants';
 import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
 import { isSampleManagerEnabled } from '../../../app/products';
-import { isSampleColorsEnabled } from '../../../app/utils';
-import { getCurrentProductName, isCommunityDistribution } from '../../../app/utils';
+import { getCurrentProductName, isCommunityDistribution, isSampleColorsEnabled } from '../../../app/utils';
 
 import { PREFIX_SUBSTITUTION_EXPRESSION, PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
 
@@ -102,7 +101,10 @@ export const UnitKinds: Record<UNITS_KIND, UnitKindType> = {
         value: UNITS_KIND.COUNT,
         label: 'Other',
         hideSubSelect: true,
-        msg: "Amounts can be entered as " +  makeCommaSeparatedString(MEASUREMENT_UNITS.unit.altLabels, ', or ') + " and won't be converted",
+        msg:
+            'Amounts can be entered as ' +
+            makeCommaSeparatedString(MEASUREMENT_UNITS.unit.altLabels, ', or ') +
+            " and won't be converted",
     },
 };
 
@@ -557,8 +559,8 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                         <div className="row margin-top">
                             <div className="col-xs-2">
                                 <DomainFieldLabel
-                                    id="linked-study-label"
                                     helpTipBody={<AutoLinkDataToStudyHelpTip />}
+                                    id="linked-study-label"
                                     label="Auto-Link Data to Study"
                                 />
                             </div>
@@ -575,8 +577,8 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                         <div className="row margin-top">
                             <div className="col-xs-2">
                                 <DomainFieldLabel
-                                    id="linked-dataset-category-label"
                                     helpTipBody={<LinkedDatasetCategoryHelpTip />}
+                                    id="linked-dataset-category-label"
                                     label="Linked Dataset Category"
                                 />
                             </div>
@@ -617,10 +619,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                             </div>
                         </div>
                         {isSampleColorsEnabled() && (
-                            <SampleColorsSetting
-                                onChange={this.onSampleColorsChange}
-                                sampleTypeRowId={model.rowId}
-                            />
+                            <SampleColorsSetting onChange={this.onSampleColorsChange} sampleTypeRowId={model.rowId} />
                         )}
                         {includeMetricUnitProperty && (
                             <>

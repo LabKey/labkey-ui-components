@@ -26,7 +26,7 @@ export const SampleColorRenderer: FC<Props> = memo(({ data, row }) => {
             caseInsensitive(rowJS, 'SampleID/' + SAMPLE_COLOR_COLOR_COLUMN_NAME)?.value;
     }
 
-    return <ColorIcon useSmall value={color} label={label} />;
+    return <ColorIcon label={label} useSmall value={color} />;
 });
 
 SampleColorRenderer.displayName = 'SampleColorRenderer';

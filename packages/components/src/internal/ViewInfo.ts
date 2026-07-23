@@ -166,7 +166,7 @@ export class ViewInfo {
 
     get isSystemView(): boolean {
         const lcName = this.name?.toLowerCase();
-        return lcName.startsWith('~~') && lcName.endsWith('~~');
+        return lcName?.startsWith('~~') && lcName?.endsWith('~~');
     }
 
     get modifiers(): string[] {

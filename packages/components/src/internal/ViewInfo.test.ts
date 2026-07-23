@@ -71,12 +71,15 @@ describe('ViewInfo', () => {
     test('isSystemView', () => {
         expect(ViewInfo.fromJson({}).isSystemView).toBeTruthy();
         expect(ViewInfo.fromJson({ name: '' }).isSystemView).toBeTruthy();
+        // undefined is turned into the default view
+        expect(ViewInfo.fromJson({ name: undefined }).isSystemView).toBeTruthy();
         expect(ViewInfo.fromJson({ name: 'testing' }).isSystemView).toBeFalsy();
         expect(ViewInfo.fromJson({ name: ViewInfo.BIO_DETAIL_NAME }).isSystemView).toBeFalsy();
         expect(ViewInfo.fromJson({ name: ViewInfo.DEFAULT_NAME }).isSystemView).toBeTruthy();
         expect(ViewInfo.fromJson({ name: ViewInfo.DETAIL_NAME }).isSystemView).toBeTruthy();
         expect(ViewInfo.fromJson({ name: ViewInfo.UPDATE_NAME }).isSystemView).toBeTruthy();
         expect(ViewInfo.fromJson({ name: '~~SOME THING~~' }).isSystemView).toBeTruthy();
+        expect(ViewInfo.fromJson({ name: null }).isSystemView).toBeFalsy();
     });
 
     test('modifiers', () => {

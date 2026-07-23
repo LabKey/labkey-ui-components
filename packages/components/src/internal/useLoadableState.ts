@@ -8,6 +8,12 @@ import { LoadingState } from '../public/LoadingState';
 
 import { resolveErrorMessage } from './util/messaging';
 
+interface ResolveErrorArgs {
+    nounPlural: string;
+    nounSingular: string;
+    verb: string;
+}
+
 export interface LoadableState<T> {
     error: string;
     load: () => Promise<void>;
@@ -20,7 +26,7 @@ export interface LoadableState<T> {
 
 export type Loader<T> = () => Promise<T>;
 
-export function useLoadableState<T>(loader: Loader<T>): LoadableState<T> {
+export function useLoadableState<T>(loader: Loader<T>, resolveErrorArgs?: ResolveErrorArgs): LoadableState<T> {
     const [error, setError] = useState<string>(undefined);
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [value, setValue] = useState<T>(undefined);
@@ -35,14 +41,15 @@ export function useLoadableState<T>(loader: Loader<T>): LoadableState<T> {
             // Note: it's important to log the error here, because if consumers don't use the error object returned here
             // then you may not know an error happened, so this way we at least have some trace of an issue.
             console.error(e);
-            setError(resolveErrorMessage(e));
+            const { nounPlural, nounSingular, verb } = resolveErrorArgs ?? {};
+            setError(resolveErrorMessage(e, nounSingular, nounPlural, verb));
             // We set value to undefined here because it's possible we loaded something correctly once before, but the
             // loader changed and load got triggered again.
             setValue(undefined);
         } finally {
             setLoadingState(LoadingState.LOADED);
         }
-    }, [loader]);
+    }, [loader, resolveErrorArgs]);
     const state = useMemo(
         () => ({
             error,

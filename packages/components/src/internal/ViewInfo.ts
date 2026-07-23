@@ -3,10 +3,9 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { Filter } from '@labkey/api';
-import { IQueryColumn } from '../public/IQueryColumn';
 
+import { IQueryColumn } from '../public/IQueryColumn';
 import { QuerySort, QuerySortJson } from '../public/QuerySort';
-import { QueryInfo } from '../public/QueryInfo';
 
 function getFiltersFromView(filters: ViewInfoFilter[]): Filter.IFilter[] {
     if (filters) {
@@ -179,35 +178,6 @@ export class ViewInfo {
             if (this.shared) modifiers.push('shared');
         }
         return modifiers;
-    }
-
-    addSystemViewColumns(queryInfo: QueryInfo) {
-        if (this.isDefault && !this.session) {
-            const columns = [...this.columns];
-            const columnFieldKeys = columns.map(col => col.fieldKey.toLowerCase());
-            const disabledSysFields = Array.from(queryInfo.disabledSystemFields ?? []).map(field =>
-                field.toLowerCase()
-            );
-
-            queryInfo.columns.forEach(queryCol => {
-                const fieldKey = queryCol.fieldKey?.toLowerCase();
-                if (
-                    fieldKey &&
-                    queryCol.addToSystemView &&
-                    columnFieldKeys.indexOf(fieldKey) === -1 &&
-                    disabledSysFields.indexOf(fieldKey) === -1
-                ) {
-                    columns.push({
-                        fieldKey: queryCol.fieldKey,
-                        key: queryCol.fieldKey,
-                        name: queryCol.name,
-                        title: queryCol.caption || queryCol.name,
-                    });
-                }
-            });
-            return this.mutate({ columns });
-        }
-        return this;
     }
 
     mutate(updates: Partial<ViewInfo>) {

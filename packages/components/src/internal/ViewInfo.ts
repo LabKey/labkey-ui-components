@@ -167,11 +167,7 @@ export class ViewInfo {
 
     get isSystemView(): boolean {
         const lcName = this.name?.toLowerCase();
-        return (
-            lcName === ViewInfo.DEFAULT_NAME.toLowerCase() ||
-            lcName === ViewInfo.DETAIL_NAME.toLowerCase() ||
-            lcName === ViewInfo.UPDATE_NAME.toLowerCase()
-        );
+        return lcName.startsWith('~~') && lcName.endsWith('~~');
     }
 
     get modifiers(): string[] {

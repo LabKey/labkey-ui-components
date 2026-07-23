@@ -76,6 +76,7 @@ describe('ViewInfo', () => {
         expect(ViewInfo.fromJson({ name: ViewInfo.DEFAULT_NAME }).isSystemView).toBeTruthy();
         expect(ViewInfo.fromJson({ name: ViewInfo.DETAIL_NAME }).isSystemView).toBeTruthy();
         expect(ViewInfo.fromJson({ name: ViewInfo.UPDATE_NAME }).isSystemView).toBeTruthy();
+        expect(ViewInfo.fromJson({ name: '~~SOME THING~~' }).isSystemView).toBeTruthy();
     });
 
     test('modifiers', () => {

@@ -92,6 +92,3 @@ either by command line or in a configuration file:
 
 To use a configuration file set the environmental variable `TEAMCITY_BUILD_PROPERTIES_FILE` to the path of your
 configuration file.
-
-## Release Notes
-Release notes for this package are available [here](./releaseNotes/test.md).

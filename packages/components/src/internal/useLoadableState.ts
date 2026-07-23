@@ -27,6 +27,7 @@ export interface LoadableState<T> {
 export type Loader<T> = () => Promise<T>;
 
 export function useLoadableState<T>(loader: Loader<T>, resolveErrorArgs?: ResolveErrorArgs): LoadableState<T> {
+    const { nounPlural, nounSingular, verb } = resolveErrorArgs ?? {};
     const [error, setError] = useState<string>(undefined);
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [value, setValue] = useState<T>(undefined);
@@ -41,7 +42,6 @@ export function useLoadableState<T>(loader: Loader<T>, resolveErrorArgs?: Resolv
             // Note: it's important to log the error here, because if consumers don't use the error object returned here
             // then you may not know an error happened, so this way we at least have some trace of an issue.
             console.error(e);
-            const { nounPlural, nounSingular, verb } = resolveErrorArgs ?? {};
             setError(resolveErrorMessage(e, nounSingular, nounPlural, verb));
             // We set value to undefined here because it's possible we loaded something correctly once before, but the
             // loader changed and load got triggered again.
@@ -49,7 +49,7 @@ export function useLoadableState<T>(loader: Loader<T>, resolveErrorArgs?: Resolv
         } finally {
             setLoadingState(LoadingState.LOADED);
         }
-    }, [loader, resolveErrorArgs]);
+    }, [loader, nounPlural, nounSingular, verb]);
     const state = useMemo(
         () => ({
             error,

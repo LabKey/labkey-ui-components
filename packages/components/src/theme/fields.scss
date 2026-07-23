@@ -204,6 +204,11 @@ button.view-field__action .fa {
         background-color: $gray-border-light;
     }
 
+    &.is-focused {
+        // react-select (theme primary25) -- See SelectInput.tsx
+        background-color: rgba(41, 128, 185, 0.1);
+    }
+
     > .fa {
         color: $brand-success;
         padding-right: 4px;

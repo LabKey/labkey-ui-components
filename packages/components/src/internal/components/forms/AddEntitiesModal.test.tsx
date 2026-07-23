@@ -72,6 +72,14 @@ describe('AddEntitiesModal', () => {
             await userEvent.click(footer);
             expect(onClick).toHaveBeenCalledTimes(1);
         });
+
+        test('reflects keyboard focus via the "focused" prop', () => {
+            const { rerender } = render(<AddEntitiesFooter onClick={jest.fn()} />);
+            expect(document.querySelector('.add-entities-footer')).not.toHaveClass('is-focused');
+
+            rerender(<AddEntitiesFooter focused onClick={jest.fn()} />);
+            expect(document.querySelector('.add-entities-footer')).toHaveClass('is-focused');
+        });
     });
 
     describe('component', () => {

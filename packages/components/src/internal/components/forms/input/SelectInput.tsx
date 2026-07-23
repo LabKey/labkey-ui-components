@@ -3,7 +3,7 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { Component, CSSProperties, FC, FocusEvent, KeyboardEvent, ReactNode } from 'react';
-import ReactSelect, { components } from 'react-select';
+import ReactSelect, { components, MenuListProps, SelectInstance } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import AsyncCreatableSelect from 'react-select/async-creatable';
 import CreatableSelect from 'react-select/creatable';
@@ -138,6 +138,9 @@ export type SelectInputChange = (
     props: Partial<SelectInputProps>
 ) => void;
 
+export type SelectInputOnFocus = (event: FocusEvent<HTMLElement>, select: SelectInstance) => void;
+export type SelectInputOnKeyDown = (event: KeyboardEvent<HTMLElement>, select: SelectInstance) => void;
+
 // Copied from @types/react-select/src/Select.d.ts
 export type FilterOption = ((option: SelectInputOption, rawInput: string) => boolean) | null;
 
@@ -247,8 +250,8 @@ export interface SelectInputProps {
     onBlur?: (event: FocusEvent<HTMLElement>) => void;
     // TODO: this is getting confused with formsy on change, need to separate
     onChange?: SelectInputChange;
-    onFocus?: (event: FocusEvent<HTMLElement>, selectRef) => void;
-    onKeyDown?: (event: KeyboardEvent<HTMLElement>) => void;
+    onFocus?: SelectInputOnFocus;
+    onKeyDown?: SelectInputOnKeyDown;
     onToggleDisable?: (disabled: boolean) => void;
     openMenuOnClick?: boolean;
     openMenuOnFocus?: boolean;
@@ -323,7 +326,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
     private _isMounted: boolean;
     private _defaultValueLoaded = false;
     private CHANGE_LOCK = false;
-    private reactSelect: React.RefObject<any>;
+    private reactSelect: React.RefObject<SelectInstance>;
 
     constructor(props: SelectInputImplProps) {
         super(props);
@@ -423,8 +426,12 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
         }
     };
 
-    handleFocus = (event): void => {
+    handleFocus = (event: FocusEvent<HTMLElement>): void => {
         this.props.onFocus?.(event, this.reactSelect.current);
+    };
+
+    handleKeyDown = (event: KeyboardEvent<HTMLElement>): void => {
+        this.props.onKeyDown?.(event, this.reactSelect.current);
     };
 
     isAsync = (): boolean => {
@@ -611,7 +618,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
         return <components.Input {...inputProps} required={!!this.props.required && !inputProps.selectProps?.value} />;
     };
 
-    MenuList = menuListProps => {
+    MenuList = (menuListProps: MenuListProps) => {
         return (
             <>
                 <components.MenuList {...menuListProps}>{menuListProps.children}</components.MenuList>
@@ -649,7 +656,6 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             menuPosition,
             multiple,
             name,
-            onKeyDown,
             openMenuOnClick,
             openMenuOnFocus,
             optionRenderer,
@@ -726,7 +732,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             onBlur: this.handleBlur,
             onChange: this.handleChange,
             onFocus: this.handleFocus,
-            onKeyDown,
+            onKeyDown: this.handleKeyDown,
             openMenuOnClick,
             openMenuOnFocus,
             options,

@@ -18,7 +18,14 @@ import { isTestEnv } from '../../util/utils';
 
 import { useModalState, useTimeout } from '../../hooks';
 
-import { SelectInput, SelectInputChange, SelectInputOption, SelectInputProps } from './input/SelectInput';
+import {
+    SelectInput,
+    SelectInputChange,
+    SelectInputOnFocus,
+    SelectInputOnKeyDown,
+    SelectInputOption,
+    SelectInputProps,
+} from './input/SelectInput';
 import { resolveDetailFieldLabel } from './utils';
 import {
     fetchSearchResults,
@@ -37,6 +44,7 @@ import {
 import { DELIMITER } from './constants';
 import { AddEntitiesFooter, AddEntitiesModal, useIsAddEntitiesEnabled } from './AddEntitiesModal';
 import { AddEntitiesComplete } from '../../ModalRenderFactory';
+import { Key } from '../../../public/useEnterEscape';
 
 function getValue(model: QuerySelectModel, multiple: boolean): any {
     const { rawSelectedValue } = model;
@@ -242,6 +250,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         menuPosition,
         multiple,
         name,
+        onKeyDown,
         onToggleDisable,
         openMenuOnFocus,
         required,
@@ -254,6 +263,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     );
     const [cacheKey, setCacheKey] = useState<number>(0);
     const [error, setError] = useState<string>();
+    const [footerFocused, setFooterFocused] = useState(false);
     const [loadOnFocusLock, setLoadOnFocusLock] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(undefined);
     const [model, setModel] = useState<QuerySelectModel>(
@@ -435,7 +445,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         [closeModal, model, name, notFoundValuesEnabled, onQSChange, props, schemaQuery]
     );
 
-    const onFocus = useCallback(async () => {
+    const onFocus = useCallback<SelectInputOnFocus>(async () => {
         // NK: To support loading the select upon focus (a.k.a. "loadOnFocus"), we have to explicitly use
         // the "defaultOptions" and "isLoading" properties of ReactSelect. These properties, in tandem with
         // "loadOptions", allow for an asynchronous ReactSelect to defer requesting the initial options until
@@ -456,6 +466,61 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
             // ignore -- error already logged/configured in loadOptions()
         }
     }, [loadOptions, shouldLoadOnFocus]);
+
+    // Support keyboard interaction with footer
+    const handleKeyDown = useCallback<SelectInputOnKeyDown>(
+        (event, select) => {
+            onKeyDown?.(event, select);
+            if (event.defaultPrevented || !isAddEntitiesEnabled || !select.props.menuIsOpen) return;
+            const { key } = event;
+
+            if (footerFocused) {
+                switch (key) {
+                    case Key.ARROW_DOWN:
+                        // Wrap back around to the first option.
+                        event.preventDefault();
+                        setFooterFocused(false);
+                        select.focusOption('first');
+                        break;
+                    case Key.ARROW_UP:
+                        // Move back up to the last option.
+                        event.preventDefault();
+                        setFooterFocused(false);
+                        select.focusOption('last');
+                        break;
+                    case Key.ENTER:
+                        event.preventDefault();
+                        setFooterFocused(false);
+                        openModal();
+                        break;
+                    default:
+                        // Drop footer focus and let react-select handle the key.
+                        setFooterFocused(false);
+                        break;
+                }
+                return;
+            }
+
+            // Enter the footer by wrapping around the option list: arrowing down from the last option or up from
+            // the first option (or either direction when the list has no options).
+            if (key === Key.ARROW_DOWN || key === Key.ARROW_UP) {
+                const options = select.getFocusableOptions();
+                const { focusedOption } = select.state;
+
+                const shouldFocusFooter =
+                    options.length === 0 ||
+                    (key === Key.ARROW_DOWN && focusedOption === options.at(-1)) ||
+                    (key === Key.ARROW_UP && focusedOption === options[0]);
+
+                if (shouldFocusFooter) {
+                    event.preventDefault();
+                    setFooterFocused(true);
+                    select.setState({ focusedOption: null });
+                }
+            }
+        },
+        [footerFocused, isAddEntitiesEnabled, onKeyDown, openModal]
+    );
 
     const optionRenderer = useCallback(
         option => (
@@ -514,9 +579,10 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
                 delimiter={delimiter}
                 isLoading={isLoading}
                 loadOptions={loadOptions}
-                menuFooter={isAddEntitiesEnabled && <AddEntitiesFooter onClick={openModal} />}
+                menuFooter={isAddEntitiesEnabled && <AddEntitiesFooter focused={footerFocused} onClick={openModal} />}
                 onChange={onChange}
                 onFocus={onFocus}
+                onKeyDown={handleKeyDown}
                 optionRenderer={optionRenderer}
                 options={undefined} // prevent override
                 // Issue 52773: Allow for submission of required fields whose value is not found

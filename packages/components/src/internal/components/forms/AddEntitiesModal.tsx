@@ -3,6 +3,8 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { createContext, FC, useContext, useMemo } from 'react';
+import classNames from 'classnames';
+
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { Modal } from '../../Modal';
 import { ModalRendererProps, resolveModalRenderer } from '../../ModalRenderFactory';
@@ -32,11 +34,17 @@ export function useIsInModal(): boolean {
 }
 
 interface AddEntitiesMenuFooterProps {
+    focused?: boolean;
     onClick: () => void;
 }
 
-export const AddEntitiesFooter: FC<AddEntitiesMenuFooterProps> = ({ onClick }) => (
-    <div className="add-entities-footer" onClick={onClick}>
+export const AddEntitiesFooter: FC<AddEntitiesMenuFooterProps> = ({ focused, onClick }) => (
+    <div
+        className={classNames('add-entities-footer', { 'is-focused': focused })}
+        onClick={onClick}
+        role="button"
+        tabIndex={0}
+    >
         <span className="fa fa-plus-circle" />
         Add New
     </div>

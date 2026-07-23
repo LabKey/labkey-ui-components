@@ -52,7 +52,7 @@ export function registerModalRenderer(
 export function resolveModalRenderer(
     identifier: SchemaQuery,
     modalRenderContext = ModalRenderContext.AddEntities
-): ModalRendererComponent {
+): ModalRendererComponent | undefined {
     const exactKey = getKey(identifier, modalRenderContext);
     if (exactKey in modalRenderers) {
         return modalRenderers[exactKey] ?? undefined;

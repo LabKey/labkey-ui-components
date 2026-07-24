@@ -12,6 +12,7 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Modal } from '../../Modal';
 import { ChoicesListItem } from '../base/ChoicesListItem';
 import { AddEntityButton } from '../buttons/AddEntityButton';
+import { DisableableButton } from '../buttons/DisableableButton';
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 import { ColorPickerInput } from '../forms/input/ColorPickerInput';
 import { SCHEMAS } from '../../schemas';
@@ -28,6 +29,7 @@ import { SampleColorModel } from './models';
 const TITLE = 'Manage Sample Colors';
 const NEW_COLOR_INDEX = -1;
 const MAX_DATA_COLORS = 200;
+const MAX_LABEL_LENGTH = 64; // matches exp.DataColors.Label VARCHAR(64) and the server-side validation
 const AT_LIMIT_HELP =
     'The maximum of ' +
     MAX_DATA_COLORS +
@@ -78,18 +80,13 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
     // color has none yet, so it starts with everything enabled and can be created with exclusions.
     useEffect(() => {
         setTypesError(undefined);
-        if (isNew) {
+        if (isNew || !color?.rowId) {
             setExcludedTypes(new Set());
             setInitialExcludedTypes(new Set());
             setExclusionsLoaded(true);
             return;
         }
         setExclusionsLoaded(false);
-        if (!color?.rowId) {
-            setExcludedTypes(new Set());
-            setInitialExcludedTypes(new Set());
-            return;
-        }
         let cancelled = false;
         (async () => {
             try {
@@ -194,6 +191,11 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
     if (!updated) return null;
 
     const canSave = dirty && !saving && !!updated.color && !!updated.label?.trim();
+    const deleteDisabledMsg = saving
+        ? 'Please wait for the current operation to finish.'
+        : updated.inUse
+          ? 'This color is in use by one or more samples and cannot be deleted.'
+          : undefined;
 
     return (
         <>
@@ -208,6 +210,7 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
                             aria-labelledby="color-label-label"
                             className="form-control"
                             disabled={saving}
+                            maxLength={MAX_LABEL_LENGTH}
                             name="label"
                             onChange={onLabelChange}
                             placeholder="Enter color label"
@@ -254,17 +257,12 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
                 <div>
                     {!isNew && (
                         <>
-                            <button
-                                className="btn btn-default button-left-margin"
-                                disabled={saving}
-                                onClick={onToggleDeleteConfirm}
-                                type="button"
-                            >
+                            <DisableableButton disabledMsg={deleteDisabledMsg} onClick={onToggleDeleteConfirm}>
                                 <span className="fa fa-trash" />
                                 <span>&nbsp;Delete</span>
-                            </button>
+                            </DisableableButton>
                             <button
-                                className="btn btn-default"
+                                className="btn btn-default button-left-margin"
                                 disabled={saving}
                                 onClick={onToggleArchive}
                                 type="button"
@@ -304,13 +302,14 @@ SampleColorDetail.displayName = 'SampleColorDetail';
 interface SampleColorsListProps {
     activeColors: SampleColorModel[];
     archivedColors: SampleColorModel[];
+    disabled?: boolean;
     onSelect: (rowId: number) => void;
     selectedRowId: number;
 }
 
 // exported for jest testing
 export const SampleColorsList: FC<SampleColorsListProps> = memo(props => {
-    const { activeColors, archivedColors, onSelect, selectedRowId } = props;
+    const { activeColors, archivedColors, disabled, onSelect, selectedRowId } = props;
     const [showArchived, setShowArchived] = useState<boolean>(false);
     const toggleArchived = useCallback(() => setShowArchived(s => !s), []);
 
@@ -318,13 +317,14 @@ export const SampleColorsList: FC<SampleColorsListProps> = memo(props => {
         (c: SampleColorModel) => (
             <ChoicesListItem
                 active={c.rowId === selectedRowId}
+                disabled={disabled && c.rowId !== selectedRowId}
                 index={c.rowId}
                 key={c.rowId}
                 label={<ColorIcon label={c.label} value={c.color} />}
                 onSelect={onSelect}
             />
         ),
-        [onSelect, selectedRowId]
+        [disabled, onSelect, selectedRowId]
     );
 
     return (
@@ -371,6 +371,7 @@ export const ManageSampleColorsPanel: FC<ManageSampleColorsPanelProps> = memo(pr
     const [colors, setColors] = useState<SampleColorModel[]>();
     const [error, setError] = useState<string>();
     const [selectedRowId, setSelectedRowId] = useState<number>();
+    const [dirty, setDirty] = useState<boolean>(false);
     const { api } = useAppContext();
     const isNew = selectedRowId === NEW_COLOR_INDEX;
 
@@ -378,7 +379,7 @@ export const ManageSampleColorsPanel: FC<ManageSampleColorsPanelProps> = memo(pr
         (selectLabel?: string) => {
             setError(undefined);
             api.samples
-                .getSampleColors(true, homeContainer?.path)
+                .getSampleColors(true, true, homeContainer?.path)
                 .then(loaded => {
                     setColors(loaded);
                     if (selectLabel) setSelectedRowId(loaded.find(c => c.label === selectLabel)?.rowId);
@@ -397,13 +398,17 @@ export const ManageSampleColorsPanel: FC<ManageSampleColorsPanelProps> = memo(pr
 
     const onSelect = useCallback((rowId: number) => setSelectedRowId(rowId), []);
     const onAdd = useCallback(() => setSelectedRowId(NEW_COLOR_INDEX), []);
-    const onChange = useCallback(() => setIsDirty(true), [setIsDirty]);
+    const onChange = useCallback(() => {
+        setIsDirty(true);
+        setDirty(true);
+    }, [setIsDirty]);
 
     const onActionComplete = useCallback(
         (newColorLabel?: string, isDelete = false) => {
             loadColors(newColorLabel);
             if (isDelete) setSelectedRowId(undefined);
             setIsDirty(false);
+            setDirty(false);
         },
         [loadColors, setIsDirty]
     );
@@ -429,11 +434,12 @@ export const ManageSampleColorsPanel: FC<ManageSampleColorsPanelProps> = memo(pr
                             <SampleColorsList
                                 activeColors={activeColors}
                                 archivedColors={archivedColors}
+                                disabled={dirty}
                                 onSelect={onSelect}
                                 selectedRowId={selectedRowId}
                             />
                             <AddEntityButton
-                                disabled={isNew || atLimit}
+                                disabled={isNew || atLimit || dirty}
                                 entity="Color"
                                 helperBody={atLimit ? AT_LIMIT_HELP : undefined}
                                 onClick={onAdd}

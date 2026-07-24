@@ -116,6 +116,43 @@ describe('ManageSampleColorsPanel', () => {
         expect(options.rows[0]).toMatchObject({ rowId: 1 });
     });
 
+    test('blocks navigating to other colors when there are unsaved edits', async () => {
+        renderPanel([makeColor(1, 'Red', '#ff0000'), makeColor(2, 'Blue', '#0000ff')]);
+        await userEvent.click(await screen.findByRole('button', { name: 'Red' }));
+
+        // both list items are clickable before any edit
+        expect(screen.getByRole('button', { name: 'Blue' })).toBeEnabled();
+
+        // editing the label marks the panel dirty
+        await userEvent.type(screen.getByPlaceholderText('Enter color label'), 'X');
+
+        // the other color becomes unclickable; the color being edited stays selectable
+        expect(screen.getByRole('button', { name: 'Blue' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: 'Red' })).toBeEnabled();
+        // and the "New Color" button is disabled too (AddEntityButton uses a disabled class rather than the attribute)
+        expect(screen.getByRole('button', { name: /Color/ })).toHaveClass('disabled');
+    });
+
+    test('limits the label input to the max length (64)', async () => {
+        renderPanel([makeColor(1, 'Red', '#ff0000')]);
+        await userEvent.click(await screen.findByRole('button', { name: 'Red' }));
+
+        expect(screen.getByPlaceholderText('Enter color label')).toHaveAttribute('maxlength', '64');
+    });
+
+    test('disables Delete for a color that is in use', async () => {
+        const { query } = renderPanel([{ ...makeColor(1, 'Red', '#ff0000'), inUse: true }]);
+        await userEvent.click(await screen.findByRole('button', { name: 'Red' }));
+
+        const deleteButton = screen.getByRole('button', { name: 'Delete' });
+        expect(deleteButton).toBeDisabled();
+
+        // clicking a disabled button is a no-op: no confirmation modal is shown and deleteRows is never called
+        await userEvent.click(deleteButton);
+        expect(screen.queryByRole('button', { name: 'Yes, Delete' })).not.toBeInTheDocument();
+        expect(query.deleteRows).not.toHaveBeenCalled();
+    });
+
     test('shows an error when the colors query fails', async () => {
         renderPanel([], { getSampleColors: jest.fn().mockRejectedValue(new Error('boom')) });
         expect(await screen.findByText('Error: Unable to load sample colors.')).toBeInTheDocument();

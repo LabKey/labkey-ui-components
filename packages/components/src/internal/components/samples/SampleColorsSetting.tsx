@@ -2,7 +2,7 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Modal } from '../../Modal';
 import { Alert } from '../base/Alert';
@@ -20,6 +20,57 @@ import { SampleColorModel } from './models';
 const MAX_DOTS = 20;
 const HELP_TIP = 'Set up colors that can be applied to individual samples, overriding the sample type color.';
 
+interface SampleColorsSelectorModalProps {
+    colors: SampleColorModel[];
+    initialDisabled: Set<number>;
+    onCancel: () => void;
+    onConfirm: (disabledRowIds: number[]) => void;
+}
+
+// exported for jest testing
+export const SampleColorsSelectorModal: FC<SampleColorsSelectorModalProps> = memo(
+    ({ colors, initialDisabled, onCancel, onConfirm }) => {
+        const [draftDisabled, setDraftDisabled] = useState<Set<number>>(() => new Set(initialDisabled));
+
+        const onToggle = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
+            const rowId = parseInt(evt.currentTarget.value, 10);
+            setDraftDisabled(prev => {
+                const next = new Set(prev);
+                if (next.has(rowId)) next.delete(rowId);
+                else next.add(rowId);
+                return next;
+            });
+        }, []);
+
+        const onApply = useCallback(() => {
+            onConfirm(Array.from(draftDisabled));
+        }, [draftDisabled, onConfirm]);
+
+        return (
+            <Modal confirmText="Apply" onCancel={onCancel} onConfirm={onApply} title="Edit Sample Colors">
+                {colors.length === 0 && <p>No colors are set up yet.</p>}
+                <div className="row">
+                    {colors.map(c => (
+                        <div className="col-sm-4" key={c.rowId}>
+                            <label className="checkbox-inline">
+                                <input
+                                    checked={!draftDisabled.has(c.rowId)}
+                                    onChange={onToggle}
+                                    type="checkbox"
+                                    value={c.rowId}
+                                />
+                                <ColorIcon label={c.label} useSmall value={c.color} />
+                            </label>
+                        </div>
+                    ))}
+                </div>
+            </Modal>
+        );
+    }
+);
+
+SampleColorsSelectorModal.displayName = 'SampleColorsSelectorModal';
+
 interface Props {
     onChange: (disabledRowIds: number[]) => void;
     sampleTypeRowId?: number;
@@ -32,15 +83,12 @@ export const SampleColorsSetting: FC<Props> = memo(({ sampleTypeRowId, onChange 
     const [disabledSet, setDisabledSet] = useState<Set<number>>(new Set());
     const [error, setError] = useState<string>();
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [draftDisabled, setDraftDisabled] = useState<Set<number>>(new Set());
 
     useEffect(() => {
         (async () => {
             try {
-                const [allColors, excluded] = await Promise.all([
-                    api.samples.getSampleColors(),
-                    sampleTypeRowId ? api.samples.getSampleTypeColorExclusions(sampleTypeRowId) : Promise.resolve([]),
-                ]);
+                const allColors = await api.samples.getSampleColors();
+                const excluded = sampleTypeRowId ? await api.samples.getSampleTypeColorExclusions(sampleTypeRowId) : [];
                 setColors(allColors);
                 setDisabledSet(new Set(excluded));
             } catch (e) {
@@ -52,27 +100,18 @@ export const SampleColorsSetting: FC<Props> = memo(({ sampleTypeRowId, onChange 
 
     const enabledColors = useMemo(() => (colors ?? []).filter(c => !disabledSet.has(c.rowId)), [colors, disabledSet]);
 
-    const openModal = useCallback(() => {
-        setDraftDisabled(new Set(disabledSet));
-        setShowModal(true);
-    }, [disabledSet]);
+    const openModal = useCallback(() => setShowModal(true), []);
 
     const closeModal = useCallback(() => setShowModal(false), []);
 
-    const toggleColor = useCallback((rowId: number) => {
-        setDraftDisabled(prev => {
-            const next = new Set(prev);
-            if (next.has(rowId)) next.delete(rowId);
-            else next.add(rowId);
-            return next;
-        });
-    }, []);
-
-    const onConfirm = useCallback(() => {
-        setDisabledSet(new Set(draftDisabled));
-        onChange(Array.from(draftDisabled));
-        setShowModal(false);
-    }, [draftDisabled, onChange]);
+    const onConfirm = useCallback(
+        (disabledRowIds: number[]) => {
+            setDisabledSet(new Set(disabledRowIds));
+            onChange(disabledRowIds);
+            setShowModal(false);
+        },
+        [onChange]
+    );
 
     return (
         <div className="row margin-top">
@@ -85,7 +124,7 @@ export const SampleColorsSetting: FC<Props> = memo(({ sampleTypeRowId, onChange 
                 {colors && colors.length === 0 && (
                     <span className="gray-text">
                         No colors are set up yet.
-                        {user?.isAppAdmin() && (
+                        {user.isAdmin && (
                             <>
                                 {' '}
                                 <AppLink to={AppURL.create(ADMIN_KEY, 'settings')}>Add Colors</AppLink>
@@ -114,23 +153,12 @@ export const SampleColorsSetting: FC<Props> = memo(({ sampleTypeRowId, onChange 
                 )}
             </div>
             {showModal && (
-                <Modal confirmText="Apply" onCancel={closeModal} onConfirm={onConfirm} title="Edit Sample Colors">
-                    {colors?.length === 0 && <p>No colors are set up yet.</p>}
-                    <div className="row">
-                        {(colors ?? []).map(c => (
-                            <div className="col-sm-4" key={c.rowId}>
-                                <label className="checkbox-inline">
-                                    <input
-                                        checked={!draftDisabled.has(c.rowId)}
-                                        onChange={() => toggleColor(c.rowId)}
-                                        type="checkbox"
-                                    />
-                                    <ColorIcon label={c.label} useSmall value={c.color} />
-                                </label>
-                            </div>
-                        ))}
-                    </div>
-                </Modal>
+                <SampleColorsSelectorModal
+                    colors={colors ?? []}
+                    initialDisabled={disabledSet}
+                    onCancel={closeModal}
+                    onConfirm={onConfirm}
+                />
             )}
         </div>
     );

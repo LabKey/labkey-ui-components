@@ -43,6 +43,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import {
     ALL_AMOUNT_AND_UNITS_COLUMNS_LC,
     NON_ARCHIVED_COLOR_FILTER,
+    SAMPLE_COLOR_COLUMN_NAME,
     SAMPLE_STORAGE_COLUMNS_LC,
     STORED_AMOUNT_FIELDS,
 } from './constants';
@@ -222,21 +223,41 @@ export function getSampleTypeLabelColor(name: string): Promise<string> {
     return getSampleTypeRow(name, 'LabelColor');
 }
 
-export function getSampleColors(includeArchive = false, containerPath?: string): Promise<SampleColorModel[]> {
-    return selectRows({
+export async function getSampleColors(
+    includeArchive = false,
+    checkInUse = false,
+    containerPath?: string
+): Promise<SampleColorModel[]> {
+    const response = await selectRows({
         columns: 'RowId,Label,Color,Archived',
         containerPath,
         filterArray: includeArchive ? undefined : [NON_ARCHIVED_COLOR_FILTER],
         schemaQuery: SCHEMAS.EXP_TABLES.DATA_COLORS,
         sort: 'Label',
-    }).then(response =>
-        response.rows.map(row => ({
-            rowId: caseInsensitive(row, 'RowId').value,
-            label: caseInsensitive(row, 'Label').value,
-            color: caseInsensitive(row, 'Color').value,
-            archived: !!caseInsensitive(row, 'Archived').value,
-        }))
+    });
+
+    const colors: SampleColorModel[] = response.rows.map(row => ({
+        rowId: caseInsensitive(row, 'RowId').value,
+        label: caseInsensitive(row, 'Label').value,
+        color: caseInsensitive(row, 'Color').value,
+        archived: !!caseInsensitive(row, 'Archived').value,
+    }));
+
+    if (!checkInUse || colors.length === 0) {
+        return colors;
+    }
+
+    const inUseResponse = await selectDistinctRows({
+        column: SAMPLE_COLOR_COLUMN_NAME,
+        containerPath,
+        schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
+        queryName: SCHEMAS.EXP_TABLES.MATERIALS.queryName,
+    });
+    const inUseRowIds = new Set<number>(
+        (inUseResponse.values ?? []).filter(value => value !== null && value !== undefined).map(value => Number(value))
     );
+
+    return colors.map(color => ({ ...color, inUse: inUseRowIds.has(color.rowId) }));
 }
 
 export function getColorSampleTypeExclusions(colorRowId: number, containerPath?: string): Promise<number[]> {
@@ -262,6 +283,9 @@ export async function getSampleTypeColorExclusions(
     sampleTypeName?: string,
     containerPath?: string
 ): Promise<number[]> {
+    if (!sampleTypeRowId && !sampleTypeName) {
+        throw new Error('Either sampleTypeRowId or sampleTypeName is required.');
+    }
     const rowId = sampleTypeRowId ?? (await getSampleTypeRowId(sampleTypeName));
     return new Promise((resolve, reject) => {
         Ajax.request({

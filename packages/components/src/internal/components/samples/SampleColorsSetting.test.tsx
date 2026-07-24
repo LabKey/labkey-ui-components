@@ -12,7 +12,7 @@ import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR } from '../../userFixtures';
 
 import { getSamplesTestAPIWrapper } from './APIWrapper';
 import { SampleColorModel } from './models';
-import { SampleColorsSetting } from './SampleColorsSetting';
+import { SampleColorsSelectorModal, SampleColorsSetting } from './SampleColorsSetting';
 
 const makeColor = (rowId: number): SampleColorModel => ({
     rowId,
@@ -114,5 +114,77 @@ describe('SampleColorsSetting', () => {
             serverContext: { user: TEST_USER_APP_ADMIN },
         });
         await waitFor(() => expect(screen.getByText('Unable to load sample colors.')).toBeInTheDocument());
+    });
+});
+
+describe('SampleColorsSelectorModal', () => {
+    // rowIds 1, 2, 3 in order
+    const colors = [makeColor(1), makeColor(2), makeColor(3)];
+
+    const renderModal = (props: Partial<React.ComponentProps<typeof SampleColorsSelectorModal>> = {}) =>
+        renderWithAppContext(
+            <SampleColorsSelectorModal
+                colors={colors}
+                initialDisabled={new Set()}
+                onCancel={jest.fn()}
+                onConfirm={jest.fn()}
+                {...props}
+            />
+        );
+
+    test('renders a checkbox per color, all checked when nothing is disabled', () => {
+        renderModal();
+        const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
+        expect(checkboxes).toHaveLength(3);
+        expect(checkboxes.every(cb => cb.checked)).toBe(true);
+    });
+
+    test('reflects the initial disabled set as unchecked', () => {
+        renderModal({ initialDisabled: new Set([2]) });
+        const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
+        expect(checkboxes[0].checked).toBe(true); // rowId 1
+        expect(checkboxes[1].checked).toBe(false); // rowId 2 (disabled)
+        expect(checkboxes[2].checked).toBe(true); // rowId 3
+    });
+
+    test('unchecking a color and applying reports it as disabled', async () => {
+        const onConfirm = jest.fn();
+        renderModal({ onConfirm });
+        await userEvent.click(screen.getAllByRole('checkbox')[0]); // disable rowId 1
+        await userEvent.click(screen.getByRole('button', { name: 'Apply' }));
+        expect(onConfirm).toHaveBeenCalledWith([1]);
+    });
+
+    test('re-checking a previously disabled color removes it from the disabled set', async () => {
+        const onConfirm = jest.fn();
+        renderModal({ initialDisabled: new Set([2]), onConfirm });
+        await userEvent.click(screen.getAllByRole('checkbox')[1]); // re-enable rowId 2
+        await userEvent.click(screen.getByRole('button', { name: 'Apply' }));
+        expect(onConfirm).toHaveBeenCalledWith([]);
+    });
+
+    test('toggling a color off then on nets no change', async () => {
+        const onConfirm = jest.fn();
+        renderModal({ onConfirm });
+        const first = screen.getAllByRole('checkbox')[0];
+        await userEvent.click(first);
+        await userEvent.click(first);
+        await userEvent.click(screen.getByRole('button', { name: 'Apply' }));
+        expect(onConfirm).toHaveBeenCalledWith([]);
+    });
+
+    test('Cancel invokes onCancel and does not confirm', async () => {
+        const onCancel = jest.fn();
+        const onConfirm = jest.fn();
+        renderModal({ onCancel, onConfirm });
+        await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+        expect(onCancel).toHaveBeenCalled();
+        expect(onConfirm).not.toHaveBeenCalled();
+    });
+
+    test('shows an empty message and no checkboxes when there are no colors', () => {
+        renderModal({ colors: [] });
+        expect(screen.getByText('No colors are set up yet.')).toBeInTheDocument();
+        expect(screen.queryAllByRole('checkbox')).toHaveLength(0);
     });
 });

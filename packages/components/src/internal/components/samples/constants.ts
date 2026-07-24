@@ -217,6 +217,7 @@ export const SAMPLE_IMPORT_EXTRA_ALLOWED_COLUMNS = [
     'EnteredStorage',
     'ExpirationDate',
     'StorageUnitBarcode',
+    'SampleColor',
 ];
 
 export const SAMPLE_DATA_EXPORT_CONFIG = {

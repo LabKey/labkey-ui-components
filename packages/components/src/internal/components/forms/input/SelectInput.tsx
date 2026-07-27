@@ -2,7 +2,17 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { Component, CSSProperties, FC, FocusEvent, KeyboardEvent, ReactNode } from 'react';
+import React, {
+    Component,
+    CSSProperties,
+    FC,
+    FocusEvent,
+    KeyboardEvent,
+    ReactNode,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from 'react';
 import ReactSelect, { components, MenuListProps, SelectInstance } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import AsyncCreatableSelect from 'react-select/async-creatable';
@@ -121,6 +131,45 @@ const CustomOption = props => {
         </div>
     );
 };
+
+interface MenuListWithFooterProps extends MenuListProps {
+    footer: ReactNode;
+}
+
+// ReactSelect's <MenuPlacer/> computes a "maxHeight" for the menu by measuring the rendered menu element (which
+// includes our footer); however, it only applies that value to the scrollable menu list. Anything rendered alongside
+// the list, such as our footer, is additive which causes the menu to extend past the space that was budgeted for it
+// (e.g., off the bottom of the viewport). Here we measure the footer and subtract its height from the "maxHeight"
+// given to the list so the menu, as a whole, honors the computed budget.
+const MenuListWithFooter: FC<MenuListWithFooterProps> = ({ footer, ...menuListProps }) => {
+    const footerRef = useRef<HTMLDivElement>(null);
+    const [footerHeight, setFooterHeight] = useState<number>(0);
+
+    useLayoutEffect(() => {
+        const el = footerRef.current;
+        if (!el) return undefined;
+
+        const measure = (): void => setFooterHeight(el.getBoundingClientRect().height);
+        measure();
+
+        const observer = new ResizeObserver(measure);
+        observer.observe(el);
+
+        return () => observer.disconnect();
+    }, []);
+
+    return (
+        <>
+            <components.MenuList {...menuListProps} maxHeight={Math.max(menuListProps.maxHeight - footerHeight, 0)}>
+                {menuListProps.children}
+            </components.MenuList>
+            <div className="select-input__menu-footer" ref={footerRef}>
+                {footer}
+            </div>
+        </>
+    );
+};
+MenuListWithFooter.displayName = 'MenuListWithFooter';
 
 // Molded from @types/react-select/src/filter.d.ts
 export interface SelectInputOption extends Record<string, any> {
@@ -619,12 +668,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
     };
 
     MenuList = (menuListProps: MenuListProps) => {
-        return (
-            <>
-                <components.MenuList {...menuListProps}>{menuListProps.children}</components.MenuList>
-                {this.props.menuFooter}
-            </>
-        );
+        return <MenuListWithFooter {...menuListProps} footer={this.props.menuFooter} />;
     };
 
     Option = optionProps => <CustomOption {...optionProps}>{this.props.optionRenderer(optionProps)}</CustomOption>;

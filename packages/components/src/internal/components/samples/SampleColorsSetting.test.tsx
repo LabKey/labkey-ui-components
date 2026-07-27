@@ -69,7 +69,7 @@ describe('SampleColorsSetting', () => {
 
     test('saved exclusions are excluded from the enabled count and dots', async () => {
         const { container } = renderSetting([makeColor(1), makeColor(2), makeColor(3)], [2, 3]);
-        await waitFor(() => expect(screen.getByText('1 colors enabled.')).toBeInTheDocument());
+        await waitFor(() => expect(screen.getByText('1 color enabled.')).toBeInTheDocument());
         expect(container.querySelectorAll('.sample-colors-setting__dot')).toHaveLength(1);
     });
 

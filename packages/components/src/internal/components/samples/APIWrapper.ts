@@ -66,7 +66,11 @@ export interface SamplesAPIWrapper {
 
     getSampleAssayResultViewConfigs: () => Promise<SampleAssayResultViewConfig[]>;
 
-    getSampleColors: (includeArchive?: boolean, checkInUse?: boolean, containerPath?: string) => Promise<SampleColorModel[]>;
+    getSampleColors: (
+        includeArchive?: boolean,
+        checkInUse?: boolean,
+        containerPath?: string
+    ) => Promise<SampleColorModel[]>;
 
     getSampleCounter: (seqType: 'rootSampleCount' | 'sampleCount', containerPath?: string) => Promise<number>;
 

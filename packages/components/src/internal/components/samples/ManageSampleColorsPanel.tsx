@@ -411,6 +411,7 @@ export const ManageSampleColorsPanel: FC<ManageSampleColorsPanelProps> = memo(pr
             setIsDirty(false);
             setDirty(false);
             invalidateFullQueryDetailsCache();
+        },
         [loadColors, setIsDirty]
     );
 

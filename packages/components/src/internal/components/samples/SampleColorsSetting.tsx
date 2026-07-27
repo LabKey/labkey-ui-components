@@ -145,7 +145,9 @@ export const SampleColorsSetting: FC<Props> = memo(({ sampleTypeRowId, onChange 
                                 );
                             })}
                         </span>
-                        <span className="spacer-left">{enabledColors.length} color{enabledColors.length > 1 ? 's' : ''} enabled.</span>
+                        <span className="spacer-left">
+                            {enabledColors.length} color{enabledColors.length > 1 ? 's' : ''} enabled.
+                        </span>
                         <button className="btn btn-link" onClick={openModal} type="button">
                             Edit
                         </button>

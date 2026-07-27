@@ -25,6 +25,7 @@ import { DataTypeSelector } from '../entities/DataTypeSelector';
 import { SampleTypeDataType } from '../entities/constants';
 
 import { SampleColorModel } from './models';
+import { invalidateFullQueryDetailsCache } from '../../query/api';
 
 const TITLE = 'Manage Sample Colors';
 const NEW_COLOR_INDEX = -1;
@@ -409,7 +410,7 @@ export const ManageSampleColorsPanel: FC<ManageSampleColorsPanelProps> = memo(pr
             if (isDelete) setSelectedRowId(undefined);
             setIsDirty(false);
             setDirty(false);
-        },
+            invalidateFullQueryDetailsCache();
         [loadColors, setIsDirty]
     );
 

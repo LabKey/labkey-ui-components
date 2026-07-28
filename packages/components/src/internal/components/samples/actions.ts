@@ -40,8 +40,14 @@ import { Row, selectRows } from '../../query/selectRows';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { ALL_AMOUNT_AND_UNITS_COLUMNS_LC, SAMPLE_STORAGE_COLUMNS_LC, STORED_AMOUNT_FIELDS } from './constants';
-import { FindField, GroupedSampleFields, SampleState, SampleStateType } from './models';
+import {
+    ALL_AMOUNT_AND_UNITS_COLUMNS_LC,
+    NON_ARCHIVED_COLOR_FILTER,
+    SAMPLE_COLOR_COLUMN_NAME,
+    SAMPLE_STORAGE_COLUMNS_LC,
+    STORED_AMOUNT_FIELDS,
+} from './constants';
+import { FindField, GroupedSampleFields, SampleColorModel, SampleState, SampleStateType } from './models';
 import { executeSql, ExecuteSqlResponseWithSession } from '../../query/executeSql';
 import { EDIT_METHOD } from '../../constants';
 
@@ -178,6 +184,159 @@ export async function getSampleStorageId(sampleRowId: number): Promise<number> {
     }
 
     return caseInsensitive(result.rows[0], 'RowId').value;
+}
+
+function getSampleTypeRow(name: string, fieldKey: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
+            columns: 'Name,' + fieldKey,
+        })
+            .then(response => {
+                const { rows } = response;
+                let rowFound;
+                rows.forEach(row => {
+                    if (name.toLowerCase() === caseInsensitive(row, 'Name').value.toLowerCase()) {
+                        rowFound = row;
+                        return;
+                    }
+                });
+
+                if (!rowFound) {
+                    reject(`Sample Type with name '${name}' not found.`);
+                    return;
+                }
+                resolve(caseInsensitive(rowFound, fieldKey).value);
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            });
+    });
+}
+
+export function getSampleTypeRowId(name: string): Promise<number> {
+    return getSampleTypeRow(name, 'RowId');
+}
+
+export function getSampleTypeLabelColor(name: string): Promise<string> {
+    return getSampleTypeRow(name, 'LabelColor');
+}
+
+export async function getSampleColors(
+    includeArchive = false,
+    checkInUse = false,
+    containerPath?: string
+): Promise<SampleColorModel[]> {
+    const response = await selectRows({
+        columns: 'RowId,Label,Color,Archived',
+        containerPath,
+        filterArray: includeArchive ? undefined : [NON_ARCHIVED_COLOR_FILTER],
+        schemaQuery: SCHEMAS.EXP_TABLES.DATA_COLORS,
+        sort: 'Label',
+    });
+
+    const colors: SampleColorModel[] = response.rows.map(row => ({
+        rowId: caseInsensitive(row, 'RowId').value,
+        label: caseInsensitive(row, 'Label').value,
+        color: caseInsensitive(row, 'Color').value,
+        archived: !!caseInsensitive(row, 'Archived').value,
+    }));
+
+    if (!checkInUse || colors.length === 0) {
+        return colors;
+    }
+
+    const inUseResponse = await selectDistinctRows({
+        column: SAMPLE_COLOR_COLUMN_NAME,
+        containerPath,
+        schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
+        queryName: SCHEMAS.EXP_TABLES.MATERIALS.queryName,
+    });
+    const inUseRowIds = new Set<number>(
+        (inUseResponse.values ?? []).filter(value => value !== null && value !== undefined).map(value => Number(value))
+    );
+
+    return colors.map(color => ({ ...color, inUse: inUseRowIds.has(color.rowId) }));
+}
+
+export function getColorSampleTypeExclusions(colorRowId: number, containerPath?: string): Promise<number[]> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL(
+                SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
+                'getColorDataTypeExclusion.api',
+                containerPath,
+                { rowId: colorRowId }
+            ),
+            success: Utils.getCallbackWrapper(response => resolve(response?.excludedSampleTypes ?? [])),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(response);
+            }),
+        });
+    });
+}
+
+export async function getSampleTypeColorExclusions(
+    sampleTypeRowId?: number,
+    sampleTypeName?: string,
+    containerPath?: string
+): Promise<number[]> {
+    if (!sampleTypeRowId && !sampleTypeName) {
+        throw new Error('Either sampleTypeRowId or sampleTypeName is required.');
+    }
+    const rowId = sampleTypeRowId ?? (await getSampleTypeRowId(sampleTypeName));
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL(
+                SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
+                'getSampleTypeColorExclusion.api',
+                containerPath,
+                { rowId }
+            ),
+            success: Utils.getCallbackWrapper(response => resolve(response?.excludedColors ?? [])),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(response);
+            }),
+        });
+    });
+}
+
+// Single write path for a sample color: creates (no rowId) or updates the color (label/color/archived) and, in the
+// same server transaction, applies the sample-type exclusion delta (only the changed types, so the request scales with
+// the edit, not the total number of sample types). The server (UpdateColorSettingsAction) audits each affected type
+// and returns the color's rowId.
+export function updateColorSettings(
+    color: SampleColorModel,
+    newlyDisabledTypeIds: number[],
+    newlyEnabledTypeIds: number[],
+    containerPath?: string
+): Promise<number> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL(
+                SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
+                'updateColorSettings.api',
+                containerPath
+            ),
+            method: 'POST',
+            jsonData: {
+                rowId: color.rowId,
+                label: color.label,
+                color: color.color,
+                archived: color.archived,
+                newlyDisabledTypes: newlyDisabledTypeIds,
+                newlyEnabledTypes: newlyEnabledTypeIds,
+            },
+            success: Utils.getCallbackWrapper(response => resolve(response?.rowId)),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(response);
+            }),
+        });
+    });
 }
 
 // Used for samples and dataclasses

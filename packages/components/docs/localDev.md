@@ -9,12 +9,6 @@ some guides to best practices for doing front-end development:
 * [QueryModel API](./QueryModel.md)
 * [Jest Testing Recommendations](./jest.md)
 
-Generally, when doing development, you should:
-
-* Place source code in a `src` subdirectory (note the distinction between the `internal` code and `public` code.
-* Place typing files in a `src/typings` subdirectory.
-* Add documentation a-plenty and update the package [release notes](../releaseNotes/components.md) as you add/fix/update the package.
-
 ### Local Development
 
 When making modifications to the existing package, you should:
@@ -23,8 +17,6 @@ next [SemVer](https://semver.org/) version that will include your changes, `fb-m
 feature branch with underscores replaced by hyphens and the `.0` is just a starting point for the prerelease versioning. This `.0`
 version will be incremented with each alpha package version you want to publish and test in your LabKey module. See
 [below](#version-numbering) for more on version numbering.
-* Update the `releaseNotes/labkey/components.md` file to document what is changing in this version. Note that the final release
-version number and date will be set just before you merge your feature branch.
 * See the [publishing](#publishing) section for how to publish a package.
 
 #### Testing
@@ -123,7 +115,7 @@ npm run lint-fix "./src/components/**/*"
 ```
 
 ### Package Bundle Size
-Periodically we should review the @labkey/components package bundle size to make sure that there
+Periodically, we should review the @labkey/components package bundle size to make sure that there
 aren't any inadvertent dependencies or files getting included in the bundle. To do this, we have
 used the `webpack-bundle-analyzer` npm package. See [docs](https://github.com/webpack-contrib/webpack-bundle-analyzer) for more details.
 
@@ -188,7 +180,6 @@ prerelease command to `npm version prerelease` and it will bump the alpha versio
 way as before.
 1. Once your feature branch is complete and ready to merge, you do one more package version update to what will be the
 "release" version (i.e. `0.2.0` in this scenario).
-1. First update the release notes for the package for the version you're about to publish. Commit these changes.
 1. Now you can set the package version by once again running the `npm version` command, however,
 this time the first argument will be one of `patch`, `minor`, or `major` depending on the change you've made.
 See [npm version](https://docs.npmjs.com/cli/v8/commands/npm-version?v=true) command documentation for more details.
@@ -201,24 +192,23 @@ alpha versions of that package for this feature branch.
 ### labkey-ui-components
 
 1. Do one final merge of the `develop` branch into your feature branch for `labkey-ui-components`.
-2. Run one final lint of your changes, `npm run lint-branch-fix`, and review the changes applied.
-3. Update the `releaseNotes/labkey/components.md` file with what will be your release version number and release date.
-4. Run the commands to build and test: `npm run build`, `npm test`.
-5. Push your final set of commits from `labkey-ui-components` to GitHub so that TeamCity can do a final run of the jest tests.
-6. Message the Frontend dev room chat about starting the pull request merge. This is to make sure two people aren't
-   merging at the same time which might result in conflicting package version numbers.
-7. Check on the [TeamCity](https://teamcity.labkey.org) build status and jest test status (also shown in the PR).
-8. Run the command to publish: `npm publish`.
-9. Merge the pull requests for `labkey-ui-components`.
-10. Message the Frontend dev room chat that the merge is complete.
+1. Run one final lint of your changes, `npm run lint-branch-fix`, and review the changes applied.
+1. Run the commands to build and test: `npm run build`, `npm test`.
+1. Push your final set of commits from `labkey-ui-components` to GitHub so that TeamCity can do a final run of the jest tests.
+1. Message the Frontend dev room chat about starting the pull request merge. This is to make sure two people aren't
+   merging at the same time, which might result in conflicting package version numbers.
+1. Check on the [TeamCity](https://teamcity.labkey.org) build status and jest test status (also shown in the PR).
+1. Run the command to publish: `npm publish`.
+1. Merge the pull requests for `labkey-ui-components`.
+1. Message the Frontend dev room chat that the merge is complete.
 
 ### LabKey modules
 
 1. Update any LabKey module `package.json` files where you are using / applying these changes with this final release version
 number (then do the regular `npm install --legacy-peer-deps` for that module, build, etc. and push those
-`package.json` and `package-lock.json` file changes to github as well).
-2. Merge the PRs for your LabKey module changes.
-3. Remove any of the alpha package versions from [Artifactory](https://labkey.jfrog.io/artifactory/webapp/#/home)
+`package.json` and `package-lock.json` file changes to GitHub as well).
+1. Merge the PRs for your LabKey module changes.
+1. Remove any of the alpha package versions from [Artifactory](https://labkey.jfrog.io/ui)
 that you had published during development for this feature branch.
    - To do this all at once and for all packages, use the `prugeNpmAlphaVersions` gradle task as follows:
    ```commandline
@@ -233,7 +223,7 @@ that you had published during development for this feature branch.
     - Alternatively, you can do this manually and one at a time:
        1. Navigate to the `@labkey/components` [tree node](https://labkey.jfrog.io/artifactory/webapp/#/artifacts/browse/tree/General/libs-client-local/@labkey/components/-/@labkey)
     of the `libs-client-local` artifact.
-       1. Right click on the name of the alpha package version in the tree on the left and choose `delete` (or use the
+       1. Right-click on the name of the alpha package version in the tree on the left and choose `delete` (or use the
     `Actions > Delete` in the upper right), note that you must be logged in to see this option.
 
 ## Making hotfix patches to a release branch
@@ -247,11 +237,11 @@ LabKey server. There are a few extra steps in this process, described below:
  That is, if the module uses `0.41.2`, but we have already produced `0.41.3` and `0.41.4`, you need to use `0.41.4` as the
  branch starting point since you'll presumably be making another bug fix release and can't use the versions already published.
 1. Once you know that package version number, track down the commit hash for it in
- the [github commit list](https://github.com/LabKey/labkey-ui-components/commits/develop) off of the develop branch.
+ the [GitHub commit list](https://github.com/LabKey/labkey-ui-components/commits/develop) off of the develop branch.
 1. Create the release branch using that commit hash, `git checkout -b release20.3-SNAPSHOT <commit hash>`, and
- push that release branch to github.
+ push that release branch to GitHub.
 1. Create a new hotfix branch off of that new release branch, `git checkout -b 20.3_fb_myFeatureBranchWithFixes`.
-1. Use the regular process to develop and test your changes and push those changes up to github.
+1. Use the regular process to develop and test your changes and push those changes up to GitHub.
 1. Create the pull request from your new hotfix feature branch and set the target of the pull request to the release branch.
 1. After all code review and triage is complete and you are ready to merge, do the regular merge steps for
  `labkey-ui-components` (see the steps in the section above). Note that the new release version you will use for your changes
@@ -268,5 +258,5 @@ LabKey server. There are a few extra steps in this process, described below:
     1. Create a new branch and merge in the hotfix changes:
         1. `git checkout -b fb_mergeFrom203`
         1. `git merge release20.3-SNAPSHOT`
-    1. Treat this new branch as a regular feature branch off of develop (i.e. publish an alpha package to test in platform/etc.,
+    1. Treat this new branch as a regular feature branch off of develop (i.e., publish an alpha package to test in platform/etc.,
         review TeamCity results, get code review, merge as usual using the steps in the section above).

@@ -271,6 +271,7 @@ import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { ANCESTOR_LOOKUP_CONCEPT_URI, AncestorRenderer } from './internal/renderers/AncestorRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
 import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
+import { SampleColorRenderer } from './internal/renderers/SampleColorRenderer';
 import { TransactionAuditIdRenderer } from './internal/renderers/TransactionAuditIdRenderer';
 import { ExpirationDateColumnRenderer } from './internal/renderers/ExpirationDateColumnRenderer';
 import { FolderColumnRenderer } from './internal/renderers/FolderColumnRenderer';
@@ -641,6 +642,7 @@ import {
 import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
+import { ManageSampleColorsPanel } from './internal/components/samples/ManageSampleColorsPanel';
 import { SampleStatusLegend } from './internal/components/samples/SampleStatusLegend';
 import {
     ALIQUOT_FILTER_MODE,
@@ -648,6 +650,8 @@ import {
     DEFAULT_SAMPLE_FIELD_CONFIG,
     FIND_BY_IDS_QUERY_PARAM,
     IS_ALIQUOT_COL,
+    SAMPLE_COLOR_COLUMN_NAME,
+    SAMPLE_COLOR_REQUIRED_COLUMNS,
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_IMPORT_EXTRA_ALLOWED_COLUMNS,
@@ -692,6 +696,7 @@ import {
     isBiologicsEnabled,
     isFreezerManagementEnabled,
     isPremiumApplication,
+    isSampleManagerEnabled,
     limsIsPrimaryApp,
 } from './internal/app/products';
 import {
@@ -735,6 +740,7 @@ import {
     isProjectContainer,
     isProtectedDataEnabled,
     isRegistryEnabled,
+    isSampleColorsEnabled,
     isSampleStatusEnabled,
     isSharedContainer,
     isSourceTypeEnabled,
@@ -947,6 +953,8 @@ const App = {
     isDataChangeCommentRequirementFeatureEnabled,
     isSharedContainer,
     freezerManagerIsCurrentApp,
+    isSampleManagerEnabled,
+    isSampleColorsEnabled,
     isSampleStatusEnabled,
     isProductFoldersEnabled,
     isAllProductFoldersFilteringEnabled,
@@ -1547,6 +1555,7 @@ export {
     makeTestISelectRowsResult,
     makeTestQueryModel,
     ManageDropdownButton,
+    ManageSampleColorsPanel,
     ManageSampleStatusesPanel,
     MAX_EDITABLE_GRID_ROWS,
     MAX_SELECTION_ACTION_ROWS,
@@ -1647,6 +1656,8 @@ export {
     ResponsiveMenuButton,
     ResponsiveMenuButtonGroup,
     runDetailsColumnsForQueryModel,
+    SAMPLE_COLOR_COLUMN_NAME,
+    SAMPLE_COLOR_REQUIRED_COLUMNS,
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_FINDER_SESSION_PREFIX,
     SAMPLE_ID_FIELD_KEY,
@@ -1663,6 +1674,7 @@ export {
     SAMPLE_TYPE_CONCEPT_URI,
     SAMPLE_TYPE_DESIGNER_ROLE,
     SampleAmountEditModal,
+    SampleColorRenderer,
     sampleDeleteDependencyText,
     SampleOperation,
     SampleParentDataType,

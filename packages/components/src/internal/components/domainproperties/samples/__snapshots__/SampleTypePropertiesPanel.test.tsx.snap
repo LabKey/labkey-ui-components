@@ -214,7 +214,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
               class="col-xs-2"
             >
               <span>
-                Label 
+                Sample Type 
                 <span
                   class="domain-no-wrap"
                 >
@@ -499,7 +499,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
             class="col-xs-2"
           >
             <span>
-              Label 
+              Sample Type 
               <span
                 class="domain-no-wrap"
               >

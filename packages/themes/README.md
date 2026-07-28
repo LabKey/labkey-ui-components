@@ -42,6 +42,3 @@ copy:
 .PHONY: bc
 bc: build copy
 ```
-
-## Release Notes
-Release notes for this package are available [here](./releaseNotes/themes.md).

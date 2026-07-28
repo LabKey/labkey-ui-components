@@ -37,6 +37,7 @@ export const EXP_TABLES = {
     SAMPLE_SETS: new SchemaQuery(EXP_SCHEMA, 'SampleSets'),
     SAMPLE_SETS_DETAILS: new SchemaQuery(EXP_SCHEMA, 'SampleSets', ViewInfo.DETAIL_NAME),
     SAMPLE_STATUS: new SchemaQuery(EXP_SCHEMA, 'SampleStatus'),
+    DATA_COLORS: new SchemaQuery(EXP_SCHEMA, 'DataColors'),
 };
 
 // CORE

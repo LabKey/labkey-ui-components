@@ -7,12 +7,10 @@ import { Filter, Query } from '@labkey/api';
 import { List } from 'immutable';
 
 import { QueryColumn } from '../../../public/QueryColumn';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { LOOKUP_DEFAULT_SIZE } from '../../constants';
 
 import { getContainerFilterForLookups } from '../../query/api';
-import { ViewInfo } from '../../ViewInfo';
 import { SelectInputChange } from '../forms/input/SelectInput';
 import { TextChoiceInput } from '../forms/input/TextChoiceInput';
 import { QuerySelect } from '../forms/QuerySelect';
@@ -80,11 +78,6 @@ const QueryLookupCell: FC<QueryLookupCellProps> = memo(props => {
         );
     }, [col, filteredLookupKeys, filteredLookupValues, forUpdate, lookupValueFilters]);
 
-    const schemaQuery = useMemo(
-        () => new SchemaQuery(lookup.schemaQuery.schemaName, lookup.schemaQuery.queryName, ViewInfo.DETAIL_NAME),
-        [lookup]
-    );
-
     let selectValue = isMultiple ? rawValues : rawValues[0];
 
     // Issue 49502: Some column types have special handling of raw data, i.e. Alias
@@ -109,7 +102,7 @@ const QueryLookupCell: FC<QueryLookupCellProps> = memo(props => {
             onQSChange={onSelectChange}
             preLoad
             queryFilters={queryFilters}
-            schemaQuery={schemaQuery}
+            schemaQuery={lookup.schemaQuery.detailView}
             value={selectValue}
         />
     );

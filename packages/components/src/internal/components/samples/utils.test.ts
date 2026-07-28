@@ -321,7 +321,7 @@ describe('isAllSamplesSchema', () => {
     });
     test('exp.materials query', () => {
         const sq = SCHEMAS.EXP_TABLES.MATERIALS;
-        const details = new SchemaQuery(sq.schemaName, sq.queryName, ViewInfo.DETAIL_NAME);
+        const details = new SchemaQuery(sq.schemaName, sq.queryName).detailView;
         const otherView = new SchemaQuery(sq.schemaName.toUpperCase(), sq.queryName.toUpperCase(), 'otherView');
         expect(isAllSamplesSchema(sq)).toBeTruthy();
         expect(isAllSamplesSchema(details)).toBeTruthy();
@@ -393,7 +393,7 @@ describe('isWorkflowInputSamplesSchema', () => {
     });
     test('job input samples', () => {
         const sq = SCHEMAS.WORKFLOW.JOB_INPUT_SAMPLES;
-        const details = new SchemaQuery(sq.schemaName, sq.queryName, ViewInfo.DETAIL_NAME);
+        const details = new SchemaQuery(sq.schemaName, sq.queryName).detailView;
         const otherView = new SchemaQuery(sq.schemaName.toUpperCase(), sq.queryName.toUpperCase(), 'otherView');
         expect(isWorkflowInputSamplesSchema(sq)).toBeTruthy();
         expect(isWorkflowInputSamplesSchema(details)).toBeTruthy();

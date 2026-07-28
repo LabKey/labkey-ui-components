@@ -817,8 +817,7 @@ async function getParentRowIdAndDataType(
 ): Promise<Record<string, ParentIdData>> {
     const response = await selectRows({
         containerPath,
-        schemaQuery: parentDataType.listingSchemaQuery,
-        viewName: ViewInfo.DETAIL_NAME, // use this to avoid filters on the default view
+        schemaQuery: parentDataType.listingSchemaQuery.detailView, // use this to avoid filters on the default view
         columns: 'LSID, RowId, DataClass, SampleSet', // only one of DataClass or SampleSet will exist
         filterArray: [Filter.create('LSID', parentIDs, Filter.Types.IN)],
     });

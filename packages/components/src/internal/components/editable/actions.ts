@@ -254,10 +254,12 @@ export function resolveValueDescriptors(
     }
 
     let display = value?.displayValue ?? raw;
-    if (col.isTimeOrDateTimeColumn) {
-        display = getDateTimeDisplayValueFromStr(raw, col);
-    } else if (!col.isLookup() && col.isDecimalJsonType) {
-        display = raw; // Issue 53934: don't use displayValue for numeric columns
+    if (!col.readOnly) {
+        if (col.isTimeOrDateTimeColumn) {
+            display = getDateTimeDisplayValueFromStr(raw, col);
+        } else if (!col.isLookup() && col.isDecimalJsonType) {
+            display = raw; // Issue 53934: don't use displayValue for numeric columns
+        }
     }
 
     return [

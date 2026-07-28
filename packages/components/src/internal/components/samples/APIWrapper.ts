@@ -16,29 +16,37 @@ import { DomainDetails } from '../domainproperties/models';
 
 import {
     createSessionAssayRunSummaryQuery,
+    getColorSampleTypeExclusions,
     getDefaultDiscardStatus,
     getDistinctAssaysPerSample,
     getGroupedSampleDomainFields,
     getLookupRowIdsFromSelection,
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
+    getSampleColors,
     getSampleCounter,
     getSampleStatuses,
     getSampleStorageId,
+    getSampleTypeColorExclusions,
     getSampleTypeDetails,
+    getSampleTypeLabelColor,
+    getSampleTypeRowId,
     getSelectionLineageData,
     getTimelineEvents,
     hasExistingSamples,
     SampleAssayResultViewConfig,
     saveSampleCounter,
+    updateColorSettings,
 } from './actions';
-import { GroupedSampleFields, SampleState } from './models';
+import { GroupedSampleFields, SampleColorModel, SampleState } from './models';
 import { SampleOperation } from './constants';
 import { ExecuteSqlResponseWithSession } from '../../query/executeSql';
 import { Row } from '../../query/selectRows';
 
 export interface SamplesAPIWrapper {
     createSessionAssayRunSummaryQuery: (sampleIds: number[]) => Promise<ExecuteSqlResponseWithSession>;
+
+    getColorSampleTypeExclusions: (colorRowId: number, containerPath?: string) => Promise<number[]>;
 
     getDefaultDiscardStatus: (containerPath?: string) => Promise<number>;
 
@@ -58,6 +66,12 @@ export interface SamplesAPIWrapper {
 
     getSampleAssayResultViewConfigs: () => Promise<SampleAssayResultViewConfig[]>;
 
+    getSampleColors: (
+        includeArchive?: boolean,
+        checkInUse?: boolean,
+        containerPath?: string
+    ) => Promise<SampleColorModel[]>;
+
     getSampleCounter: (seqType: 'rootSampleCount' | 'sampleCount', containerPath?: string) => Promise<number>;
 
     getSampleOperationConfirmationData: (
@@ -71,12 +85,22 @@ export interface SamplesAPIWrapper {
 
     getSampleStorageId: (sampleRowId: number) => Promise<number>;
 
+    getSampleTypeColorExclusions: (
+        sampleTypeRowId?: number,
+        sampleTypeName?: string,
+        containerPath?: string
+    ) => Promise<number[]>;
+
     getSampleTypeDetails: (
         query?: SchemaQuery,
         domainId?: number,
         containerPath?: string,
         includeNamePreview?: boolean
     ) => Promise<DomainDetails>;
+
+    getSampleTypeLabelColor: (name: string) => Promise<string>;
+
+    getSampleTypeRowId: (name: string) => Promise<number>;
 
     getSelectionLineageData: (
         selection: Set<string>,
@@ -100,6 +124,13 @@ export interface SamplesAPIWrapper {
         seqType: 'rootSampleCount' | 'sampleCount',
         containerPath?: string
     ) => Promise<number>;
+
+    updateColorSettings: (
+        color: SampleColorModel,
+        newlyDisabledTypeIds: number[],
+        newlyEnabledTypeIds: number[],
+        containerPath?: string
+    ) => Promise<number>;
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
@@ -108,10 +139,16 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSampleAliquotRows = getSampleAliquotRows;
     getSampleAssayResultViewConfigs = getSampleAssayResultViewConfigs;
     getSelectionLineageData = getSelectionLineageData;
+    getSampleColors = getSampleColors;
+    getColorSampleTypeExclusions = getColorSampleTypeExclusions;
+    getSampleTypeColorExclusions = getSampleTypeColorExclusions;
+    updateColorSettings = updateColorSettings;
     getSampleStatuses = getSampleStatuses;
     getDefaultDiscardStatus = getDefaultDiscardStatus;
     getSampleOperationConfirmationData = getSampleOperationConfirmationData;
     getSampleStorageId = getSampleStorageId;
+    getSampleTypeLabelColor = getSampleTypeLabelColor;
+    getSampleTypeRowId = getSampleTypeRowId;
     getLookupRowIdsFromSelection = getLookupRowIdsFromSelection;
     getTimelineEvents = getTimelineEvents;
     getSampleTypeDetails = getSampleTypeDetails;
@@ -134,10 +171,16 @@ export function getSamplesTestAPIWrapper(
         getSampleAliquotRows: mockFn(),
         getSampleAssayResultViewConfigs: mockFn(),
         getSelectionLineageData: mockFn(),
+        getSampleColors: mockFn(),
+        getColorSampleTypeExclusions: mockFn(),
+        getSampleTypeColorExclusions: mockFn(),
+        updateColorSettings: mockFn(),
         getSampleStatuses: mockFn(),
         getDefaultDiscardStatus: mockFn(),
         getSampleOperationConfirmationData: mockFn(),
         getSampleStorageId: mockFn(),
+        getSampleTypeLabelColor: mockFn(),
+        getSampleTypeRowId: mockFn(),
         getLookupRowIdsFromSelection: mockFn(),
         getTimelineEvents: mockFn(),
         getSampleTypeDetails: mockFn(),

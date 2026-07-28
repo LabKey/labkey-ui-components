@@ -579,6 +579,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<SampleTypeDesign
             autoLinkCategory,
             excludedContainerIds,
             excludedDashboardContainerIds,
+            disabledSampleColorRowIds,
         } = model;
 
         return {
@@ -592,6 +593,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<SampleTypeDesign
             importAliases: this.getImportAliasesAsMap(model),
             excludedContainerIds,
             excludedDashboardContainerIds,
+            disabledSampleColorRowIds,
         };
     };
 

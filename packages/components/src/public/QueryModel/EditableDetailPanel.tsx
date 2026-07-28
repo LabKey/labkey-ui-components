@@ -3,8 +3,8 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, ReactNode, useCallback, useMemo, useState } from 'react';
-import { fromJS } from 'immutable';
-import { Query } from '@labkey/api';
+import { fromJS, List } from 'immutable';
+import { Filter, Query } from '@labkey/api';
 
 import { Formsy } from '../../internal/components/forms/formsy';
 import { DetailPanelHeader } from '../../internal/components/forms/detail/DetailPanelHeader';
@@ -48,6 +48,7 @@ export interface EditableDetailPanelProps {
     onEditToggle?: (editing: boolean) => void;
     onUpdate: () => void;
     queryColumns?: QueryColumn[];
+    queryFilters?: Record<string, List<Filter.IFilter>>;
     submitText?: string;
     title?: string;
 }
@@ -73,6 +74,7 @@ const EditingFormImpl: FC<EditingFormProps & InjectedQueryModels> = props => {
         onCommentChange,
         onEditToggle,
         onUpdate,
+        queryFilters,
         queryModels,
         submitText = 'Save',
         title,
@@ -189,6 +191,7 @@ const EditingFormImpl: FC<EditingFormProps & InjectedQueryModels> = props => {
                             internalSpacesWarningFieldKeys={internalSpacesWarningFieldKeys}
                             model={editModel}
                             onAdditionalFormDataChange={onAdditionalFormDataChange}
+                            queryFilters={queryFilters}
                         />
                     </div>
                 </div>

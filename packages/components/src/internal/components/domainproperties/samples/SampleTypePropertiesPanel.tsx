@@ -32,7 +32,7 @@ import { ENTITY_FORM_IDS } from '../entities/constants';
 import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
 import { isSampleManagerEnabled } from '../../../app/products';
-import { getCurrentProductName, isCommunityDistribution } from '../../../app/utils';
+import { getCurrentProductName, isCommunityDistribution, isSampleColorsEnabled } from '../../../app/utils';
 
 import { PREFIX_SUBSTITUTION_EXPRESSION, PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
 
@@ -45,6 +45,7 @@ import { IParentAlias, IParentOption } from '../../entities/models';
 import { Container } from '../../base/models/Container';
 import { IDomainField } from '../models';
 import { ColorPickerInput } from '../../forms/input/ColorPickerInput';
+import { SampleColorsSetting } from '../../samples/SampleColorsSetting';
 import { SelectInput, SelectInputOption } from '../../forms/input/SelectInput';
 
 import { dataClassOptionFilterFn, DomainParentAliases } from '../DomainParentAliases';
@@ -100,7 +101,10 @@ export const UnitKinds: Record<UNITS_KIND, UnitKindType> = {
         value: UNITS_KIND.COUNT,
         label: 'Other',
         hideSubSelect: true,
-        msg: "Amounts can be entered as " +  makeCommaSeparatedString(MEASUREMENT_UNITS.unit.altLabels, ', or ') + " and won't be converted",
+        msg:
+            'Amounts can be entered as ' +
+            makeCommaSeparatedString(MEASUREMENT_UNITS.unit.altLabels, ', or ') +
+            " and won't be converted",
     },
 };
 
@@ -318,6 +322,10 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
 
     onFieldChange = (key: string, value: any): void => {
         this.updateValidStatus(this.props.model.set(key, value) as SampleTypeModel);
+    };
+
+    onSampleColorsChange = (disabledRowIds: number[]): void => {
+        this.onFieldChange('disabledSampleColorRowIds', disabledRowIds);
     };
 
     onMetricUnitKindChange = (key: string, value: any): void => {
@@ -551,8 +559,8 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                         <div className="row margin-top">
                             <div className="col-xs-2">
                                 <DomainFieldLabel
-                                    id="linked-study-label"
                                     helpTipBody={<AutoLinkDataToStudyHelpTip />}
+                                    id="linked-study-label"
                                     label="Auto-Link Data to Study"
                                 />
                             </div>
@@ -569,8 +577,8 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                         <div className="row margin-top">
                             <div className="col-xs-2">
                                 <DomainFieldLabel
-                                    id="linked-dataset-category-label"
                                     helpTipBody={<LinkedDatasetCategoryHelpTip />}
+                                    id="linked-dataset-category-label"
                                     label="Linked Dataset Category"
                                 />
                             </div>
@@ -597,8 +605,8 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                         <div className="row margin-top">
                             <div className="col-xs-2">
                                 <DomainFieldLabel
-                                    helpTipBody="The label color will be used to distinguish this sample type in various views in the application."
-                                    label="Label Color"
+                                    helpTipBody="The color that will be used to distinguish this sample type in various views in the application."
+                                    label="Sample Type Color"
                                 />
                             </div>
                             <div className="col-xs-10">
@@ -610,6 +618,9 @@ class SampleTypePropertiesPanelImpl extends PureComponent<InjectedDomainProperti
                                 />
                             </div>
                         </div>
+                        {isSampleColorsEnabled() && (
+                            <SampleColorsSetting onChange={this.onSampleColorsChange} sampleTypeRowId={model.rowId} />
+                        )}
                         {includeMetricUnitProperty && (
                             <>
                                 <div className="row margin-top">

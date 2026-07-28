@@ -27,6 +27,7 @@ export class SampleTypeModel extends Record({
     autoLinkCategory: undefined,
     excludedContainerIds: undefined,
     excludedDashboardContainerIds: undefined,
+    disabledSampleColorRowIds: undefined,
     exception: undefined,
 }) {
     declare rowId: number;
@@ -45,6 +46,7 @@ export class SampleTypeModel extends Record({
     declare autoLinkCategory: string;
     declare excludedContainerIds?: string[];
     declare excludedDashboardContainerIds?: string[];
+    declare disabledSampleColorRowIds?: number[];
     declare exception: string;
 
     static create(raw?: DomainDetails, name?: string): SampleTypeModel {

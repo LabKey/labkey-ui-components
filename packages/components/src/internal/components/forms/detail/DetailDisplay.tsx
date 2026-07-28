@@ -5,7 +5,7 @@
 import React, { FC, memo, ReactNode, useMemo } from 'react';
 import { List, OrderedMap } from 'immutable';
 import numeral from 'numeral';
-import { Query } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import classNames from 'classnames';
 
@@ -26,6 +26,7 @@ import { resolveDetailFieldValue } from '../utils';
 import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
 
 import { SampleStatusRenderer } from '../../../renderers/SampleStatusRenderer';
+import { SampleColorRenderer } from '../../../renderers/SampleColorRenderer';
 import { TextChoiceInput } from '../input/TextChoiceInput';
 
 import { DatePickerInput } from '../input/DatePickerInput';
@@ -56,6 +57,8 @@ export interface RenderOptions {
     containerPath?: string;
     hideLabel?: boolean;
     includeSpacesWarning?: boolean;
+    /** Per-column lookup filters (keyed by column name) applied to query-based input renderers. */
+    queryFilters?: Record<string, List<Filter.IFilter>>;
 }
 
 export interface EditRendererOptions extends RenderOptions {
@@ -175,6 +178,7 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
         fileInputRenderer,
         fieldHelpTexts,
         onAdditionalFormDataChange,
+        queryFilters,
         tableCls,
         internalSpacesWarningFieldKeys,
     } = props;
@@ -195,7 +199,7 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
     if (data.size === 0) {
         body = <div>No data available.</div>;
     } else {
-        const options = { containerFilter, containerPath } as RenderOptions;
+        const options = { containerFilter, containerPath, queryFilters } as RenderOptions;
         if (editingMode) options.hideLabel = true;
 
         const fields = processFields(
@@ -314,6 +318,7 @@ export function resolveDetailEditRenderer(
                     key={col.name}
                     onAdditionalFormDataChange={onAdditionalFormDataChange}
                     onSelectChange={options?.onSelectChange}
+                    queryFilters={options?.queryFilters}
                     selectInputProps={{ inputClass: DETAIL_INPUT_WRAPPER_CLASS_NAME, showLabel }}
                     showLabel={showLabel}
                     value={value}
@@ -484,6 +489,9 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
                 break;
             case 'nolinkrenderer':
                 renderer = d => <NoLinkRenderer data={d} />;
+                break;
+            case 'samplecolorrenderer':
+                renderer = (d, r) => <SampleColorRenderer data={d} row={r} />;
                 break;
             case 'samplestatusrenderer':
                 renderer = (d, r) => <SampleStatusRenderer row={r} />;

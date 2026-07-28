@@ -55,6 +55,12 @@ export const SAMPLE_STATUS_REQUIRED_COLUMNS = [
     SAMPLE_STATE_COLOR_COLUMN_NAME,
 ];
 
+export const SAMPLE_COLOR_COLUMN_NAME = 'ExpMaterialColor';
+export const SAMPLE_COLOR_COLOR_COLUMN_NAME = 'ExpMaterialColor/Color';
+
+// TODO, color fields not wired up yet
+export const SAMPLE_COLOR_REQUIRED_COLUMNS = [SAMPLE_COLOR_COLUMN_NAME, SAMPLE_COLOR_COLOR_COLUMN_NAME];
+
 export enum SampleOperation {
     EditMetadata,
     EditLineage,
@@ -211,6 +217,7 @@ export const SAMPLE_IMPORT_EXTRA_ALLOWED_COLUMNS = [
     'EnteredStorage',
     'ExpirationDate',
     'StorageUnitBarcode',
+    'SampleColor',
 ];
 
 export const SAMPLE_DATA_EXPORT_CONFIG = {
@@ -224,6 +231,8 @@ export const SAMPLE_DATA_EXPORT_CONFIG = {
 
 // Issue 46037: Some plate-based assays (e.g., NAB) create samples with a bogus 'Material' sample type, which should get excluded everywhere in the application
 export const SAMPLES_WITH_TYPES_FILTER = Filter.create('SampleSet', 'Material', Filter.Types.NEQ);
+
+export const NON_ARCHIVED_COLOR_FILTER = Filter.create('Archived', true, Filter.Types.NEQ_OR_NULL);
 
 export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
     {

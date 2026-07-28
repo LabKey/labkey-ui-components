@@ -37,8 +37,6 @@ import { SCHEMAS } from '../../schemas';
 
 import { Row, selectRows, SelectRowsResponse } from '../../query/selectRows';
 
-import { ViewInfo } from '../../ViewInfo';
-
 import { getAppHomeFolderPath, getFolderDataExclusion, hasModule } from '../../app/utils';
 
 import { resolveErrorMessage } from '../../util/messaging';
@@ -259,7 +257,7 @@ export async function getOperationConfirmationDataForModel(
     return getOperationConfirmationData(dataType, model.getSelectedIds(), undefined, undefined, extraParams);
 }
 
-async function getSelectedParents(
+export async function getSelectedParents(
     schemaQuery: SchemaQuery,
     filterArray: Filter.IFilter[],
     isAliquotParent?: boolean,
@@ -273,7 +271,8 @@ async function getSelectedParents(
         columns.push('DataClass');
     }
 
-    const response = await selectRows({ columns, filterArray, schemaQuery });
+    // GitHub Issue 1357: Resolve selected parents from details view to avoid filters applied to default view
+    const response = await selectRows({ columns, filterArray, schemaQuery: schemaQuery.detailView });
 
     if (isSampleParent) {
         return resolveSampleParentTypes(response, isAliquotParent, orderedRowIds);

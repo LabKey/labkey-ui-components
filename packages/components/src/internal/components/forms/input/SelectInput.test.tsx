@@ -106,9 +106,7 @@ describe('SelectInput', () => {
         });
 
         test('renderFieldLabel, required', () => {
-            const component = render(
-                <SelectInputImpl {...defaultProps()} label={defaultLabel} required showLabel />
-            );
+            const component = render(<SelectInputImpl {...defaultProps()} label={defaultLabel} required showLabel />);
             validateFieldLabel(component, defaultLabel + ' * ');
         });
 

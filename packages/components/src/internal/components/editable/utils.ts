@@ -59,26 +59,22 @@ export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn):
         if (origValue.length > 10) {
             // GitHub Issue 970
             message = 'Too many values. Maximum allowed is 10.';
-        }
-        else if (validValues) {
+        } else if (validValues) {
             const seen = new Set();
             origValue.forEach(val => {
-                if (message)
-                    return;
+                if (message) return;
 
                 const trimmed = val.display?.toString().trim();
                 if (seen.has(trimmed)) {
-                    message = `Duplicate values not allowed: ${trimmed}.`
-                }
-                else {
+                    message = `Duplicate values not allowed: ${trimmed}.`;
+                } else {
                     seen.add(trimmed);
                     if (validValues.indexOf(trimmed) === -1) {
                         message = `'${trimmed}' is not a valid choice`;
                     }
                 }
-            })
+            });
         }
-
     } else if (value != null && value !== '' && !col?.isPublicLookup()) {
         if (validValues) {
             const trimmed = origValue?.toString().trim();

@@ -157,9 +157,9 @@ describe('ExtendedMap', () => {
 
     test('find', () => {
         const em = new ExtendedMap({
-            'one': { name: 'one', value: 1 },
-            'two': { name: 'two', value: 2 },
-            'three': { name: 'three', value: 3 },
+            one: { name: 'one', value: 1 },
+            two: { name: 'two', value: 2 },
+            three: { name: 'three', value: 3 },
         });
 
         expect(em.find(obj => obj.name === 'two')).toStrictEqual({ name: 'two', value: 2 });

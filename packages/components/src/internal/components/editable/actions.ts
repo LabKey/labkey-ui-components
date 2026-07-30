@@ -507,7 +507,7 @@ async function convertRowToEditorModelData(
             // GitHub Issue 970
             message = {
                 message: 'Too many values. Maximum allowed is 10.',
-            }
+            };
         }
         valueDescriptors.push(...values);
     } else {

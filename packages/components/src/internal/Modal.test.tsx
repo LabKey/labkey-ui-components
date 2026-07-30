@@ -23,38 +23,37 @@ describe('Modal components', () => {
 
             const dialog = document.querySelector('.modal-dialog');
             expect(dialog).not.toBeNull();
-            expect(dialog.classList.contains('modal-sm')).toBe(false);
-            expect(dialog.classList.contains('modal-lg')).toBe(false);
+            expect(dialog).not.toHaveClass('modal-sm', 'modal-lg');
 
-            expect(document.querySelector('.modal-content .inner-content').textContent).toEqual('hello');
+            expect(document.querySelector('.modal-content .inner-content')).toHaveTextContent('hello');
         });
 
         test('applies bsSize="sm" class', () => {
             render(<BaseModal bsSize="sm">child</BaseModal>);
             const dialog = document.querySelector('.modal-dialog');
-            expect(dialog.classList.contains('modal-sm')).toBe(true);
-            expect(dialog.classList.contains('modal-lg')).toBe(false);
+            expect(dialog).toHaveClass('modal-sm');
+            expect(dialog).not.toHaveClass('modal-lg');
         });
 
         test('applies bsSize="lg" class', () => {
             render(<BaseModal bsSize="lg">child</BaseModal>);
             const dialog = document.querySelector('.modal-dialog');
-            expect(dialog.classList.contains('modal-lg')).toBe(true);
-            expect(dialog.classList.contains('modal-sm')).toBe(false);
+            expect(dialog).toHaveClass('modal-lg');
+            expect(dialog).not.toHaveClass('modal-sm');
         });
 
         test('applies custom className', () => {
             render(<BaseModal className="custom-class">child</BaseModal>);
             const dialog = document.querySelector('.modal-dialog');
-            expect(dialog.classList.contains('custom-class')).toBe(true);
+            expect(dialog).toHaveClass('custom-class');
         });
 
         test('toggles "no-scroll" on document.body while mounted', () => {
             expect(document.body.classList.contains('no-scroll')).toBe(false);
             const { unmount } = render(<BaseModal>child</BaseModal>);
-            expect(document.body.classList.contains('no-scroll')).toBe(true);
+            expect(document.body).toHaveClass('no-scroll');
             unmount();
-            expect(document.body.classList.contains('no-scroll')).toBe(false);
+            expect(document.body).not.toHaveClass('no-scroll');
         });
     });
 
@@ -63,7 +62,7 @@ describe('Modal components', () => {
             render(<ModalHeader title="My Title" />);
             const header = document.querySelector('.modal-header');
             expect(header).not.toBeNull();
-            expect(header.querySelector('.modal-title').textContent).toEqual('My Title');
+            expect(header.querySelector('.modal-title')).toHaveTextContent('My Title');
             expect(header.querySelector('button.close')).toBeNull();
         });
 
@@ -72,7 +71,7 @@ describe('Modal components', () => {
             render(<ModalHeader onCancel={onCancel} title="t" />);
             const closeBtn = document.querySelector('button.close');
             expect(closeBtn).not.toBeNull();
-            expect(closeBtn.querySelector('.sr-only').textContent).toEqual('Close');
+            expect(closeBtn.querySelector('.sr-only')).toHaveTextContent('Close');
             await userEvent.click(closeBtn);
             expect(onCancel).toHaveBeenCalledTimes(1);
         });
@@ -91,7 +90,7 @@ describe('Modal components', () => {
                 </ModalHeader>
             );
             const header = document.querySelector('.modal-header');
-            expect(header.querySelector('.extra-child').textContent).toEqual('extra');
+            expect(header.querySelector('.extra-child')).toHaveTextContent('extra');
         });
     });
 
@@ -104,14 +103,14 @@ describe('Modal components', () => {
             );
             const body = document.querySelector('.modal-body');
             expect(body).not.toBeNull();
-            expect(body.querySelector('.body-child').textContent).toEqual('body content');
+            expect(body.querySelector('.body-child')).toHaveTextContent('body content');
         });
 
         test('renders default ModalHeader when title or onCancel is provided and no custom header', () => {
             render(<Modal onCancel={jest.fn()} title="Hello" />);
             const header = document.querySelector('.modal-header');
             expect(header).not.toBeNull();
-            expect(header.querySelector('.modal-title').textContent).toEqual('Hello');
+            expect(header.querySelector('.modal-title')).toHaveTextContent('Hello');
             expect(header.querySelector('button.close')).not.toBeNull();
         });
 
@@ -128,7 +127,7 @@ describe('Modal components', () => {
             );
             // Default ModalHeader should not render when a custom header is supplied
             expect(document.querySelector('.modal-header')).toBeNull();
-            expect(document.querySelector('.custom-header').textContent).toEqual('custom');
+            expect(document.querySelector('.custom-header')).toHaveTextContent('custom');
         });
 
         test('renders custom footer when provided and skips ModalButtons', () => {
@@ -139,7 +138,7 @@ describe('Modal components', () => {
             );
             const footer = document.querySelector('.modal-footer');
             expect(footer).not.toBeNull();
-            expect(footer.querySelector('.custom-footer').textContent).toEqual('f');
+            expect(footer.querySelector('.custom-footer')).toHaveTextContent('f');
             // ModalButtons applies the 'modal-buttons' class — should not be present
             expect(document.querySelector('.modal-buttons')).toBeNull();
         });
@@ -177,7 +176,7 @@ describe('Modal components', () => {
             );
             const buttons = document.querySelector('.modal-footer.modal-buttons');
             expect(buttons).not.toBeNull();
-            expect(buttons.querySelector('.fc').textContent).toEqual('fc');
+            expect(buttons.querySelector('.fc')).toHaveTextContent('fc');
         });
 
         test('passes bsSize and className down to BaseModal', () => {
@@ -187,8 +186,7 @@ describe('Modal components', () => {
                 </Modal>
             );
             const dialog = document.querySelector('.modal-dialog');
-            expect(dialog.classList.contains('modal-lg')).toBe(true);
-            expect(dialog.classList.contains('my-modal')).toBe(true);
+            expect(dialog).toHaveClass('modal-lg', 'my-modal');
         });
     });
 });

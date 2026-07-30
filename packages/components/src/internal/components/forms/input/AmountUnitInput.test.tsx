@@ -4,67 +4,49 @@
  */
 import React from 'react';
 import { render } from '@testing-library/react';
-import { AmountUnitInput } from './AmountUnitInput';
 import { ExtendedMap } from '../../../../public/ExtendedMap';
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { Formsy } from '../formsy/index';
+import { AmountUnitInput } from './AmountUnitInput';
+import { InputRendererProps } from './types';
 
 describe('AmountUnitInput', () => {
-    const amountCol = { name: 'StoredAmount', caption: 'amount', fieldKey: 'amountKey' };
-    const unitCol = {
+    const amountCol = new QueryColumn({ name: 'StoredAmount', caption: 'amount', fieldKey: 'amountKey' });
+    const unitCol = new QueryColumn({
         name: 'Units',
         caption: 'unit',
         fieldKey: 'unitKey',
         lookup: {
             hasQueryFilters: jest.fn(),
-            displayColumn: new QueryColumn({ caption: 'test' }),
+            displayColumn: 'test',
         },
-    };
-    const data = { StoredAmount: 12.5, Units: 'mg' };
-    const allColumns = new ExtendedMap<string, QueryColumn>({
-        [amountCol.fieldKey]: amountCol,
-        [unitCol.fieldKey]: unitCol,
     });
 
-    const CAN_DISABLE: any = {
-        allowFieldDisable: true,
-        onSelectChange: jest.fn(),
-        onToggleDisable: jest.fn(),
-        initiallyDisabled: false,
-        containerFilter: undefined,
-        containerPath: undefined,
-        allColumns,
-        data,
-        queryFilters: {},
-    };
-
-    const DISABLED: any = {
-        ...CAN_DISABLE,
-        initiallyDisabled: true,
-    };
-
-    const NOT_DISABLABLE: any = {
-        ...CAN_DISABLE,
-        allowFieldDisable: false,
-    };
+    function defaultProps(): InputRendererProps {
+        return {
+            allColumns: new ExtendedMap<string, QueryColumn>({
+                [amountCol.fieldKey]: amountCol,
+                [unitCol.fieldKey]: unitCol,
+            }),
+            allowFieldDisable: true,
+            col: undefined,
+            containerFilter: undefined,
+            containerPath: undefined,
+            data: { StoredAmount: 12.5, Units: 'mg' },
+            initiallyDisabled: false,
+            onSelectChange: jest.fn(),
+            onToggleDisable: jest.fn(),
+            queryFilters: {},
+            value: undefined,
+        };
+    }
 
     test('returns null when required columns are missing', () => {
         // Missing unit column
-
         const someColumns = new ExtendedMap<string, QueryColumn>({ [amountCol.fieldKey]: amountCol });
         const { container } = render(
             <Formsy className="inner-test">
-                <AmountUnitInput
-                    allColumns={someColumns}
-                    allowFieldDisable={false}
-                    containerFilter={undefined}
-                    containerPath={undefined}
-                    data={{}}
-                    initiallyDisabled={false}
-                    onSelectChange={jest.fn()}
-                    onToggleDisable={jest.fn()}
-                    queryFilters={{}}
-                />
+                <AmountUnitInput {...defaultProps()} allColumns={someColumns} allowFieldDisable={false} data={{}} />
             </Formsy>
         );
 
@@ -75,102 +57,106 @@ describe('AmountUnitInput', () => {
     test('with amount and unit column, can disable', () => {
         render(
             <Formsy>
-                <AmountUnitInput {...CAN_DISABLE} />
+                <AmountUnitInput {...defaultProps()} />
             </Formsy>
         );
         expect(document.querySelectorAll('.form-group.row')).toHaveLength(1);
         expect(document.querySelectorAll('.control-label')).toHaveLength(1);
-        expect(document.querySelectorAll('.control-label')[0].textContent).toBe('Amount and Units');
+        expect(document.querySelectorAll('.control-label')[0]).toHaveTextContent('Amount and Units');
         expect(document.querySelectorAll('label')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-toggle-on')).toHaveLength(1);
         expect(document.querySelectorAll('.fa-toggle-off')).toHaveLength(0);
         const inputs = document.querySelectorAll('input');
         expect(inputs).toHaveLength(4);
-        expect(inputs[0].getAttribute('value')).toBe('true');
-        expect(inputs[0].getAttribute('type')).toBe('hidden');
-        expect(inputs[0].getAttribute('name')).toBe('StoredAmount::enabled');
-        expect(inputs[1].getAttribute('value')).toBe('12.5');
-        expect(inputs[1].getAttribute('name')).toBe('amountKey');
-        expect(inputs[2].getAttribute('role')).toBe('combobox');
-        expect(inputs[3].getAttribute('name')).toBe('Units::enabled');
-        expect(inputs[3].getAttribute('value')).toBe('true');
-        expect(inputs[3].getAttribute('type')).toBe('hidden');
-        expect(inputs[1].getAttribute('placeholder')).toBe('Enter amount');
-        expect(document.querySelector('.select-input__placeholder').textContent).toBe('Select or type to search...');
+        expect(inputs[0]).toHaveAttribute('value', 'true');
+        expect(inputs[0]).toHaveAttribute('type', 'hidden');
+        expect(inputs[0]).toHaveAttribute('name', 'StoredAmount::enabled');
+        expect(inputs[1]).toHaveAttribute('value', '12.5');
+        expect(inputs[1]).toHaveAttribute('name', 'amountKey');
+        expect(inputs[1]).toHaveAttribute('placeholder', 'Enter amount');
+        expect(inputs[2]).toHaveAttribute('role', 'combobox');
+        expect(inputs[3]).toHaveAttribute('name', 'Units::enabled');
+        expect(inputs[3]).toHaveAttribute('value', 'true');
+        expect(inputs[3]).toHaveAttribute('type', 'hidden');
+        expect(document.querySelector('.select-input__placeholder')).toHaveTextContent('Select or type to search...');
     });
 
     test('with amount and unit column, can disable and disabled', () => {
         render(
             <Formsy>
-                <AmountUnitInput {...DISABLED} />
+                <AmountUnitInput {...defaultProps()} initiallyDisabled />
             </Formsy>
         );
         expect(document.querySelectorAll('.form-group.row')).toHaveLength(1);
         expect(document.querySelectorAll('.control-label')).toHaveLength(1);
-        expect(document.querySelectorAll('.control-label')[0].textContent).toBe('Amount and Units');
+        expect(document.querySelectorAll('.control-label')[0]).toHaveTextContent('Amount and Units');
         expect(document.querySelectorAll('label')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-toggle-on')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-toggle-off')).toHaveLength(1);
         const inputs = document.querySelectorAll('input');
         expect(inputs).toHaveLength(4);
-        expect(inputs[0].getAttribute('value')).toBe('false');
-        expect(inputs[0].getAttribute('type')).toBe('hidden');
-        expect(inputs[0].getAttribute('name')).toBe('StoredAmount::enabled');
-        expect(inputs[1].getAttribute('value')).toBe('12.5');
-        expect(inputs[1].getAttribute('name')).toBe('amountKey');
-        expect(inputs[1].getAttribute('placeholder')).toBe('Enter amount');
-        expect(inputs[2].getAttribute('role')).toBe('combobox');
-        expect(inputs[3].getAttribute('name')).toBe('Units::enabled');
-        expect(inputs[3].getAttribute('value')).toBe('false');
-        expect(inputs[3].getAttribute('type')).toBe('hidden');
-        expect(document.querySelector('.select-input__placeholder').textContent).toBe('Select or type to search...');
+        expect(inputs[0]).toHaveAttribute('value', 'false');
+        expect(inputs[0]).toHaveAttribute('type', 'hidden');
+        expect(inputs[0]).toHaveAttribute('name', 'StoredAmount::enabled');
+        expect(inputs[1]).toHaveAttribute('value', '12.5');
+        expect(inputs[1]).toHaveAttribute('name', 'amountKey');
+        expect(inputs[1]).toHaveAttribute('placeholder', 'Enter amount');
+        expect(inputs[2]).toHaveAttribute('role', 'combobox');
+        expect(inputs[3]).toHaveAttribute('name', 'Units::enabled');
+        expect(inputs[3]).toHaveAttribute('value', 'false');
+        expect(inputs[3]).toHaveAttribute('type', 'hidden');
+        expect(document.querySelector('.select-input__placeholder')).toHaveTextContent('Select or type to search...');
     });
 
     test('with amount and unit column, can disable and disabled, has mixed value', () => {
         render(
             <Formsy>
-                <AmountUnitInput {...DISABLED} fieldWithMixedValues={['storedamount', 'units']} />
+                <AmountUnitInput
+                    {...defaultProps()}
+                    fieldWithMixedValues={['storedamount', 'units']}
+                    initiallyDisabled
+                />
             </Formsy>
         );
         expect(document.querySelectorAll('.form-group.row')).toHaveLength(1);
         expect(document.querySelectorAll('.control-label')).toHaveLength(1);
-        expect(document.querySelectorAll('.control-label')[0].textContent).toBe('Amount and Units');
+        expect(document.querySelectorAll('.control-label')[0]).toHaveTextContent('Amount and Units');
         expect(document.querySelectorAll('label')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-toggle-on')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-toggle-off')).toHaveLength(1);
         const inputs = document.querySelectorAll('input');
         expect(inputs).toHaveLength(4);
-        expect(inputs[0].getAttribute('value')).toBe('false');
-        expect(inputs[0].getAttribute('type')).toBe('hidden');
-        expect(inputs[0].getAttribute('name')).toBe('StoredAmount::enabled');
-        expect(inputs[1].getAttribute('value')).toBe('12.5');
-        expect(inputs[1].getAttribute('name')).toBe('amountKey');
-        expect(inputs[1].getAttribute('placeholder')).toBe('[Mixed]');
-        expect(inputs[2].getAttribute('role')).toBe('combobox');
-        expect(inputs[3].getAttribute('name')).toBe('Units::enabled');
-        expect(inputs[3].getAttribute('value')).toBe('false');
-        expect(inputs[3].getAttribute('type')).toBe('hidden');
-        expect(document.querySelector('.select-input__placeholder').textContent).toBe('[Mixed]');
+        expect(inputs[0]).toHaveAttribute('value', 'false');
+        expect(inputs[0]).toHaveAttribute('type', 'hidden');
+        expect(inputs[0]).toHaveAttribute('name', 'StoredAmount::enabled');
+        expect(inputs[1]).toHaveAttribute('value', '12.5');
+        expect(inputs[1]).toHaveAttribute('name', 'amountKey');
+        expect(inputs[1]).toHaveAttribute('placeholder', '[Mixed]');
+        expect(inputs[2]).toHaveAttribute('role', 'combobox');
+        expect(inputs[3]).toHaveAttribute('name', 'Units::enabled');
+        expect(inputs[3]).toHaveAttribute('value', 'false');
+        expect(inputs[3]).toHaveAttribute('type', 'hidden');
+        expect(document.querySelector('.select-input__placeholder')).toHaveTextContent('[Mixed]');
     });
 
     test('with amount and unit column, cannot disable', () => {
         render(
             <Formsy>
-                <AmountUnitInput {...NOT_DISABLABLE} />
+                <AmountUnitInput {...defaultProps()} allowFieldDisable={false} />
             </Formsy>
         );
         expect(document.querySelectorAll('.form-group.row')).toHaveLength(1);
         expect(document.querySelectorAll('.control-label')).toHaveLength(1);
-        expect(document.querySelectorAll('.control-label')[0].textContent).toBe('Amount and Units');
+        expect(document.querySelectorAll('.control-label')[0]).toHaveTextContent('Amount and Units');
         expect(document.querySelectorAll('label')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-toggle-on')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-toggle-off')).toHaveLength(0);
         const inputs = document.querySelectorAll('input');
         expect(inputs).toHaveLength(2);
-        expect(inputs[0].getAttribute('value')).toBe('12.5');
-        expect(inputs[0].getAttribute('name')).toBe('amountKey');
-        expect(inputs[1].getAttribute('role')).toBe('combobox');
-        expect(inputs[0].getAttribute('placeholder')).toBe('Enter amount');
-        expect(document.querySelector('.select-input__placeholder').textContent).toBe('Select or type to search...');
+        expect(inputs[0]).toHaveAttribute('value', '12.5');
+        expect(inputs[0]).toHaveAttribute('name', 'amountKey');
+        expect(inputs[0]).toHaveAttribute('placeholder', 'Enter amount');
+        expect(inputs[1]).toHaveAttribute('role', 'combobox');
+        expect(document.querySelector('.select-input__placeholder')).toHaveTextContent('Select or type to search...');
     });
 });

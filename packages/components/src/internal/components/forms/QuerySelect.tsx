@@ -16,21 +16,35 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { isTestEnv } from '../../util/utils';
 
-import { useTimeout } from '../../hooks';
+import { useModalState, useTimeout } from '../../hooks';
 
-import { SelectInput, SelectInputChange, SelectInputOption, SelectInputProps } from './input/SelectInput';
+import {
+    SelectInput,
+    SelectInputChange,
+    SelectInputOnFocus,
+    SelectInputOnKeyDown,
+    SelectInputOption,
+    SelectInputProps,
+} from './input/SelectInput';
 import { resolveDetailFieldLabel } from './utils';
 import {
     fetchSearchResults,
+    fetchSelectedValues,
     formatResults,
     formatSavedResults,
+    getAddedSelectionValue,
     initSelect,
     parseSelectedQuery,
     QuerySelectModel,
     saveSearchResults,
     setSelection,
+    setSelectionWithResults,
+    valuesAreLoaded,
 } from './model';
 import { DELIMITER } from './constants';
+import { AddEntitiesFooter, AddEntitiesModal, useIsAddEntitiesEnabled } from './AddEntitiesModal';
+import { AddEntitiesComplete } from '../../ModalRenderFactory';
+import { Key } from '../../../public/useEnterEscape';
 
 function getValue(model: QuerySelectModel, multiple: boolean): any {
     const { rawSelectedValue } = model;
@@ -83,47 +97,45 @@ const OptionRenderer: FC<OptionRendererProps> = props => {
     const { OptionComponent, label, model, value } = props;
     const { allResults, queryInfo } = model;
 
-    if (queryInfo && allResults.size) {
-        const columns = queryInfo.getLookupViewColumns(model.displayColumn);
-        const item = allResults.find(result => value === result.getIn([model.valueColumn, 'value']));
+    if (!queryInfo || !allResults.size) {
+        return null;
+    }
 
-        if (OptionComponent) {
-            return <OptionComponent label={label} queryInfo={queryInfo} row={item?.toJS() as Row} value={value} />;
-        }
+    const item = allResults.find(result => value === result.getIn([model.valueColumn, 'value']));
 
+    if (OptionComponent) {
+        return <OptionComponent label={label} queryInfo={queryInfo} row={item?.toJS() as Row} value={value} />;
+    }
+
+    if (!item) {
         return (
-            <>
-                {columns.map((column, i) => {
-                    if (item !== undefined) {
-                        let text = resolveDetailFieldLabel(item.get(column.name));
-                        if (!Utils.isString(text)) {
-                            if (text == null)
-                                text = '';
-                            else if (Array.isArray(text))
-                                text = text.join(', ');
-                        }
-
-                        return (
-                            <div key={i}>
-                                {columns.length > 1 && (
-                                    <span className="identifying_field_label">{column.caption ?? column.name}: </span>
-                                )}
-                                <span>{text}</span>
-                            </div>
-                        );
-                    }
-
-                    return (
-                        <div key={i}>
-                            <span>{label}</span>
-                        </div>
-                    );
-                })}
-            </>
+            <div>
+                <span>{label}</span>
+            </div>
         );
     }
 
-    return null;
+    const columns = queryInfo.getLookupViewColumns(model.displayColumn);
+
+    return (
+        <>
+            {columns.map(column => {
+                let text = resolveDetailFieldLabel(item.get(column.name));
+                if (!Utils.isString(text)) {
+                    text = Array.isArray(text) ? text.join(', ') : (text ?? '');
+                }
+
+                return (
+                    <div key={column.name}>
+                        {columns.length > 1 && (
+                            <span className="identifying_field_label">{column.caption ?? column.name}: </span>
+                        )}
+                        <span>{text}</span>
+                    </div>
+                );
+            })}
+        </>
+    );
 };
 OptionRenderer.displayName = 'OptionRenderer';
 
@@ -147,9 +159,10 @@ type InheritedSelectInputProps = Omit<
     SelectInputProps,
     | 'allowCreate'
     | 'autoValue'
+    | 'cacheKey' // used by QuerySelect to invalidate cached options when new entities are added.
     | 'cacheOptions'
-    | 'defaultOptions' // utilized by QuerySelect to support "preLoad" and "loadOnFocus" behaviors.
-    | 'isLoading' // utilized by QuerySelect to support "loadOnFocus" behavior.
+    | 'defaultOptions' // used by QuerySelect to support "preLoad" and "loadOnFocus" behaviors.
+    | 'isLoading' // used by QuerySelect to support "loadOnFocus" behavior.
     | 'labelKey'
     | 'loadOptions'
     | 'onChange' // overridden by QuerySelect. See onQSChange().
@@ -160,6 +173,7 @@ type InheritedSelectInputProps = Omit<
 >;
 
 export interface QuerySelectOwnProps extends InheritedSelectInputProps {
+    allowAddEntities?: boolean;
     autoInit?: boolean;
     containerFilter?: Query.ContainerFilter;
     /** The path to the LK container that the queries should be scoped to. */
@@ -171,7 +185,7 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     groupByColumn?: string;
     loadOnFocus?: boolean;
     maxRows?: number;
-    /** When enabled "not found" (i.e. unresolved) values will be processed as selectable items. */
+    /** When enabled "not found" (i.e., unresolved) values will be processed as selectable items. */
     notFoundValuesEnabled?: boolean;
     onInitValue?: (value: any, selectedValues: List<any>) => void;
     onQSChange?: QuerySelectChange;
@@ -195,7 +209,9 @@ type Search = {
 
 export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     const {
+        /* eslint-disable @typescript-eslint/no-unused-vars */
         OptionComponent,
+        allowAddEntities = true,
         // Prevent initialization in test environments in lieu of mocking APIWrapper in all test locations
         autoInit = !isTestEnv(),
         containerFilter,
@@ -234,6 +250,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         menuPosition,
         multiple,
         name,
+        onKeyDown,
         onToggleDisable,
         openMenuOnFocus,
         required,
@@ -244,7 +261,9 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         // See note in onFocus() regarding support for "loadOnFocus"
         preLoad !== false ? true : loadOnFocus ? [] : true
     );
+    const [cacheKey, setCacheKey] = useState<number>(0);
     const [error, setError] = useState<string>();
+    const [footerFocused, setFooterFocused] = useState(false);
     const [loadOnFocusLock, setLoadOnFocusLock] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(undefined);
     const [model, setModel] = useState<QuerySelectModel>(
@@ -258,7 +277,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     );
     // This persists all searches done prior to the select being fully initialized. Once initialized,
     // these searches are cleared out and resolved. The reason we need to retain these is the underlying
-    // SelectInput retains these search results, however, we need be fully initialized to complete a search.
+    // SelectInput retains these search results; however, we need to be fully initialized to complete a search.
     const [searches, setSearches] = useState<Search[]>([]);
     const debounceTO = useTimeout();
     const shouldLoadOnFocus = loadOnFocus && !loadOnFocusLock;
@@ -280,6 +299,8 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
 
         return { notFoundValues: notFoundValues_, selectedOptions: options };
     }, [model]);
+    const { close: closeModal, open: openModal, show: showModal } = useModalState();
+    const isAddEntitiesEnabled = useIsAddEntitiesEnabled(schemaQuery) && allowAddEntities;
 
     useEffect(() => {
         if (!autoInit) return;
@@ -345,7 +366,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
             });
     }, []);
 
-    // Any searches (i.e. calls to loadOptions()) made prior to the select being fully
+    // Any searches (i.e., calls to loadOptions()) made prior to the select being fully
     // initialized are resolved here after the model has been initialized.
     useEffect(() => {
         if (model.isInit && searches.length > 0) {
@@ -356,7 +377,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
 
     const loadOptions = useCallback(
         (input: string): Promise<SelectInputOption[]> => {
-            // If loadOptions occurs prior to call to "onFocus" then there is no need to "loadOnFocus".
+            // If loadOptions occurs prior to call to "onFocus", then there is no need to "loadOnFocus".
             if (shouldLoadOnFocus) {
                 setLoadOnFocusLock(true);
             }
@@ -387,8 +408,45 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         [model, onQSChange]
     );
 
-    const onFocus = useCallback(async () => {
-        // NK: To support loading the select upon focus (a.k.a. "loadOnFocus") we have to explicitly utilize
+    const onAddEntitiesComplete = useCallback<AddEntitiesComplete>(
+        async resultsMap => {
+            closeModal();
+            const result = resultsMap.get(schemaQuery.getKey());
+            if (!model.isInit || !result?.rows?.length) return;
+
+            const nextValue = getAddedSelectionValue(model, result.rows);
+
+            try {
+                let model_: QuerySelectModel;
+
+                if (valuesAreLoaded(model, nextValue)) {
+                    model_ = setSelection(model, nextValue);
+                } else {
+                    // Load the added value(s) into the model, applying the model's configured columns and
+                    // filters, and then select them.
+                    setIsLoading(true);
+                    const results = await fetchSelectedValues(model, nextValue);
+                    model_ = setSelectionWithResults(model, results, nextValue, notFoundValuesEnabled);
+                }
+
+                setModel(model_);
+
+                // The underlying SelectInput's cached options do not include the newly added entities.
+                setCacheKey(k => k + 1);
+                setDefaultOptions(true);
+
+                onQSChange?.(name, model_.rawSelectedValue, model_.selectedOptions, props, model_.selectedItems);
+            } catch (e) {
+                setError(resolveErrorMessage(e) ?? 'Failed to load the newly added value.');
+            } finally {
+                setIsLoading(undefined);
+            }
+        },
+        [closeModal, model, name, notFoundValuesEnabled, onQSChange, props, schemaQuery]
+    );
+
+    const onFocus = useCallback<SelectInputOnFocus>(async () => {
+        // NK: To support loading the select upon focus (a.k.a. "loadOnFocus"), we have to explicitly use
         // the "defaultOptions" and "isLoading" properties of ReactSelect. These properties, in tandem with
         // "loadOptions", allow for an asynchronous ReactSelect to defer requesting the initial options until
         // desired. This follows the pattern outlined here:
@@ -409,6 +467,61 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         }
     }, [loadOptions, shouldLoadOnFocus]);
 
+    // Support keyboard interaction with footer
+    const handleKeyDown = useCallback<SelectInputOnKeyDown>(
+        (event, select) => {
+            onKeyDown?.(event, select);
+            if (event.defaultPrevented || !isAddEntitiesEnabled || !select.props.menuIsOpen) return;
+            const { key } = event;
+
+            if (footerFocused) {
+                switch (key) {
+                    case Key.ARROW_DOWN:
+                        // Wrap back around to the first option.
+                        event.preventDefault();
+                        setFooterFocused(false);
+                        select.focusOption('first');
+                        break;
+                    case Key.ARROW_UP:
+                        // Move back up to the last option.
+                        event.preventDefault();
+                        setFooterFocused(false);
+                        select.focusOption('last');
+                        break;
+                    case Key.ENTER:
+                        event.preventDefault();
+                        setFooterFocused(false);
+                        openModal();
+                        break;
+                    default:
+                        // Drop footer focus and let react-select handle the key.
+                        setFooterFocused(false);
+                        break;
+                }
+                return;
+            }
+
+            // Enter the footer by wrapping around the option list: arrowing down from the last option or up from
+            // the first option (or either direction when the list has no options).
+            if (key === Key.ARROW_DOWN || key === Key.ARROW_UP) {
+                const options = select.getFocusableOptions();
+                const { focusedOption } = select.state;
+
+                const shouldFocusFooter =
+                    options.length === 0 ||
+                    (key === Key.ARROW_DOWN && focusedOption === options.at(-1)) ||
+                    (key === Key.ARROW_UP && focusedOption === options[0]);
+
+                if (shouldFocusFooter) {
+                    event.preventDefault();
+                    setFooterFocused(true);
+                    select.setState({ focusedOption: null });
+                }
+            }
+        },
+        [footerFocused, isAddEntitiesEnabled, onKeyDown, openModal]
+    );
+
     const optionRenderer = useCallback(
         option => (
             <OptionRenderer label={option.label} model={model} OptionComponent={OptionComponent} value={option.value} />
@@ -416,7 +529,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         [OptionComponent, model]
     );
 
-    // Issue 52773: If a value is specified, but we are unable to resolve the value then display a warning to the user.
+    // Issue 52773: If a value is specified, but we are unable to resolve the value, then display a warning to the user.
     const warning = useMemo(() => {
         if (notFoundValues.size === 0) return undefined;
         const warningValue = notFoundValues.size === 1 ? Array.from(notFoundValues)[0] : 'multiple values';
@@ -452,28 +565,42 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     }
 
     return (
-        <SelectInput
-            disabled={showLoading && !model.isInit}
-            filterOption={noopFilterOptions}
-            label={label !== undefined ? label : model.queryInfo?.title}
-            {...selectInputProps}
-            allowCreate={false}
-            autoValue={false} // QuerySelect directly controls value of SelectInput via "selectedOptions"
-            cacheOptions
-            defaultOptions={defaultOptions}
-            delimiter={delimiter}
-            isLoading={isLoading}
-            loadOptions={loadOptions}
-            onChange={onChange}
-            onFocus={onFocus}
-            optionRenderer={optionRenderer}
-            options={undefined} // prevent override
-            // Issue 52773: Allow for submission of required fields whose value is not found
-            required={notFoundValues.size > 0 ? false : required}
-            selectedOptions={displaySelectedOptions ? selectedOptions : undefined}
-            value={getValue(model, multiple)} // needed to initialize the Formsy "value" properly
-            warning={warning}
-        />
+        <>
+            <SelectInput
+                disabled={showLoading && !model.isInit}
+                filterOption={noopFilterOptions}
+                label={label !== undefined ? label : model.queryInfo?.title}
+                {...selectInputProps}
+                allowCreate={false}
+                autoValue={false} // QuerySelect directly controls value of SelectInput via "selectedOptions"
+                cacheKey={cacheKey}
+                cacheOptions
+                defaultOptions={defaultOptions}
+                delimiter={delimiter}
+                isLoading={isLoading}
+                loadOptions={loadOptions}
+                menuFooter={isAddEntitiesEnabled && <AddEntitiesFooter focused={footerFocused} onClick={openModal} />}
+                onChange={onChange}
+                onFocus={onFocus}
+                onKeyDown={handleKeyDown}
+                optionRenderer={optionRenderer}
+                options={undefined} // prevent override
+                // Issue 52773: Allow for submission of required fields whose value is not found
+                required={notFoundValues.size > 0 ? false : required}
+                selectedOptions={displaySelectedOptions ? selectedOptions : undefined}
+                value={getValue(model, multiple)} // needed to initialize the Formsy "value" properly
+                warning={warning}
+            />
+            {showModal && (
+                <AddEntitiesModal
+                    containerFilter={containerFilter}
+                    containerPath={containerPath}
+                    onCancel={closeModal}
+                    onComplete={onAddEntitiesComplete}
+                    schemaQuery={schemaQuery}
+                />
+            )}
+        </>
     );
 });
 QuerySelect.displayName = 'QuerySelect';

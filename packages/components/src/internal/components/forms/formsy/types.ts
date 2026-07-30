@@ -63,7 +63,7 @@ export interface InjectedProps<V> {
     isValid: boolean;
     isValidValue: (value: V) => boolean;
     ref?: React.Ref<any>;
-    resetValue: () => void;
+    resetValue: (...args: [] | [V]) => void;
     setValidations: (validations: Validations<V>, required: RequiredValidation<V>) => void;
     setValue: (value: V, validate?: boolean) => void;
     showError: boolean;

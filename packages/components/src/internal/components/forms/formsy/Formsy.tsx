@@ -197,12 +197,15 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
         onReset?.();
     };
 
-    // Reset each key in the model to the original / initial / specified value
+    /**
+     * Reset each key in the model to the original / initial / specified value. A specified value becomes that
+     * input's new pristine baseline, so a form reset with explicit values is not immediately reported as changed.
+     */
     resetModel: IResetModel = (data): void => {
         this.inputs.forEach(component => {
             const { name } = component.props;
             if (data && data.hasOwnProperty(name)) {
-                component.setValue(data[name]);
+                component.resetValue(data[name]);
             } else {
                 component.resetValue();
             }

@@ -954,6 +954,49 @@ describe('Formsy', () => {
             expect(input.value).toEqual('');
         });
 
+        it('rebases the pristine baseline when reset with explicit values', () => {
+            const formRef = React.createRef<Formsy>();
+            const screen = render(
+                <Formsy ref={formRef}>
+                    <TestInput name="one" testId="test-input" value="foo" />
+                </Formsy>
+            );
+            const input = screen.getByTestId('test-input') as HTMLInputElement;
+
+            fireEvent.change(input, { target: { value: 'bar' } });
+            expect(formRef.current.isChanged()).toEqual(true);
+
+            act(() => {
+                formRef.current.reset({ one: 'baz' });
+            });
+
+            // The supplied value becomes the new baseline, so the form is no longer dirty against it.
+            expect(input.value).toEqual('baz');
+            expect(input.dataset.isPristine).toEqual('true');
+            expect(formRef.current.isChanged()).toEqual(false);
+        });
+
+        it('restores the mount value and stays pristine when reset without values', () => {
+            const formRef = React.createRef<Formsy>();
+            const screen = render(
+                <Formsy ref={formRef}>
+                    <TestInput name="one" testId="test-input" value="foo" />
+                </Formsy>
+            );
+            const input = screen.getByTestId('test-input') as HTMLInputElement;
+
+            fireEvent.change(input, { target: { value: 'bar' } });
+            expect(formRef.current.isChanged()).toEqual(true);
+
+            act(() => {
+                formRef.current.reset();
+            });
+
+            expect(input.value).toEqual('foo');
+            expect(input.dataset.isPristine).toEqual('true');
+            expect(formRef.current.isChanged()).toEqual(false);
+        });
+
         it('should be able to reset the form using a button', () => {
             function TestForm() {
                 return (
@@ -1042,6 +1085,29 @@ describe('Formsy', () => {
             // into the "value" prop must not mask the change.
             expect(hasOnChanged).toHaveBeenCalledWith({ one: 'bar' }, true);
             expect(hasOnChanged).not.toHaveBeenCalledWith({ one: 'bar' }, false);
+
+            // The echoed prop must not re-apply a value the input already holds, which would fire onChange twice.
+            expect(hasOnChanged).toHaveBeenCalledTimes(1);
+        });
+
+        it('returns true when the value prop is changed by the parent', () => {
+            const hasOnChanged = jest.fn();
+
+            function TestForm() {
+                const [value, setValue] = useState('foo');
+                return (
+                    <Formsy onChange={hasOnChanged}>
+                        <TestInput name="one" testId="test-input" value={value} />
+                        <button data-testid="change-btn" onClick={() => setValue('bar')} type="button" />
+                    </Formsy>
+                );
+            }
+
+            const screen = render(<TestForm />);
+            fireEvent.click(screen.getByTestId('change-btn'));
+
+            // The baseline stays at the mount value, so an externally driven change still counts as a change.
+            expect(hasOnChanged).toHaveBeenCalledWith({ one: 'bar' }, true);
         });
 
         it('returns false when a controlled input is restored to its initial value', () => {

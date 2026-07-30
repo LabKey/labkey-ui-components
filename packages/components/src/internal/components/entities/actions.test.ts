@@ -119,4 +119,10 @@ describe('getFieldDisplayValue', () => {
     test('handles single-element array', () => {
         expect(getFieldDisplayValue({ value: ['only'] })).toBe('only');
     });
+
+    test('returns empty string when fieldData is missing', () => {
+        expect(getFieldDisplayValue(undefined)).toBe('');
+        expect(getFieldDisplayValue(null)).toBe('');
+        expect(getFieldDisplayValue('')).toBe('');
+    });
 });

@@ -28,7 +28,6 @@ import { DetailsListLineageIO, DetailsListNodes, DetailsListSteps } from './Deta
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../../public/QueryModel/withQueryModels';
 import { Filter } from '@labkey/api';
 import { SchemaQuery } from '../../../../public/SchemaQuery';
-import { ViewInfo } from '../../../ViewInfo';
 import { QueryModel } from '../../../../public/QueryModel/QueryModel';
 
 import { LINEAGE_DETAIL_REQUIRED_COLS } from '../constants';
@@ -101,7 +100,7 @@ export const LineageNodeDetail: FC<LineageNodeDetailProps> = memo(props => {
                 baseFilters: node.pkFilters.map(pkFilter => Filter.create(pkFilter.fieldKey, pkFilter.value)),
                 containerPath: node.containerPath,
                 // Issue 45028: Display details view columns in lineage
-                schemaQuery: new SchemaQuery(node.schemaName, node.queryName, ViewInfo.DETAIL_NAME),
+                schemaQuery: new SchemaQuery(node.schemaName, node.queryName).detailView,
                 requiredColumns: LINEAGE_DETAIL_REQUIRED_COLS,
             },
         };

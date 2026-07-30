@@ -2,6 +2,8 @@
  * Copyright (c) 2020-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+import { ViewInfo } from '../internal/ViewInfo';
+
 const APP_SELECTION_PREFIX = 'appkey';
 export const SELECTION_SNAPSHOT_SEP = '__snapshot__'; // Defined in this module to prevent circular imports
 
@@ -83,14 +85,23 @@ function equalsIgnoreCase(a?: string, b?: string): boolean {
 }
 
 export class SchemaQuery {
-    schemaName: string;
-    queryName: string;
-    viewName: string;
+    readonly schemaName: string;
+    readonly queryName: string;
+    readonly viewName?: string;
+    #detailView?: SchemaQuery;
 
     constructor(schemaName: string, queryName: string, viewName?: string) {
         this.schemaName = schemaName;
         this.queryName = queryName;
         this.viewName = viewName;
+    }
+
+    get detailView(): SchemaQuery {
+        if (equalsIgnoreCase(this.viewName, ViewInfo.DETAIL_NAME)) return this;
+        if (!this.#detailView) {
+            this.#detailView = new SchemaQuery(this.schemaName, this.queryName, ViewInfo.DETAIL_NAME);
+        }
+        return this.#detailView;
     }
 
     isEqual(sq: SchemaQuery, includeViewName = true): boolean {

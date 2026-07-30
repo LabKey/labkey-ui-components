@@ -2,6 +2,8 @@
  * Copyright (c) 2020-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+import { ViewInfo } from '../internal/ViewInfo';
+
 import { getSchemaQuery, resolveKey, resolveKeyFromJson, SchemaQuery } from './SchemaQuery';
 
 describe('SchemaQuery', () => {
@@ -199,6 +201,82 @@ describe('SchemaQuery', () => {
 
         test('does not inspect view name', () => {
             expect(new SchemaQuery('s', 'q', 'viewX').schemaStartsWith('view')).toEqual(false);
+        });
+    });
+
+    describe('detailView', () => {
+        test('adds the detail view name, preserving schema and query case', () => {
+            const detailView = new SchemaQuery('Schema.SubSchema', 'Query').detailView;
+            expect(detailView.schemaName).toEqual('Schema.SubSchema');
+            expect(detailView.queryName).toEqual('Query');
+            expect(detailView.viewName).toEqual(ViewInfo.DETAIL_NAME);
+        });
+
+        test('does not mutate the source schema query', () => {
+            const sq = new SchemaQuery('s', 'q');
+            expect(sq.detailView).not.toBe(sq);
+            expect(sq.viewName).toBeUndefined();
+        });
+
+        test('replaces an existing view name', () => {
+            const sq = new SchemaQuery('s', 'q', 'someOtherView');
+            expect(sq.detailView).not.toBe(sq);
+            expect(sq.detailView.viewName).toEqual(ViewInfo.DETAIL_NAME);
+            expect(sq.viewName).toEqual('someOtherView');
+        });
+
+        test('returns itself when it is already the detail view', () => {
+            const sq = new SchemaQuery('s', 'q', ViewInfo.DETAIL_NAME);
+            expect(sq.detailView).toBe(sq);
+        });
+
+        test('is idempotent', () => {
+            const detailView = new SchemaQuery('s', 'q').detailView;
+            expect(detailView.detailView).toBe(detailView);
+        });
+
+        test('memoizes the derived instance', () => {
+            const sq = new SchemaQuery('s', 'q');
+            expect(sq.detailView).toBe(sq.detailView);
+        });
+
+        test('memoization does not affect structural equality of the source', () => {
+            const sq = new SchemaQuery('s', 'q');
+            expect(sq.detailView.viewName).toEqual(ViewInfo.DETAIL_NAME);
+            expect(sq).toEqual(new SchemaQuery('s', 'q'));
+        });
+
+        test('view name comparison is case-insensitive', () => {
+            const lowerViewName = ViewInfo.DETAIL_NAME.toLowerCase();
+            const sq = new SchemaQuery('s', 'q', lowerViewName);
+            expect(sq.detailView).toBe(sq);
+            expect(sq.detailView.viewName).toEqual(lowerViewName);
+        });
+
+        test('undefined schema and query names', () => {
+            const detailView = new SchemaQuery(undefined, undefined).detailView;
+            expect(detailView.schemaName).toBeUndefined();
+            expect(detailView.queryName).toBeUndefined();
+            expect(detailView.viewName).toEqual(ViewInfo.DETAIL_NAME);
+        });
+
+        test('equivalent to explicitly constructing the detail view', () => {
+            const explicit = new SchemaQuery('schema.subschema', 'query', ViewInfo.DETAIL_NAME);
+            expect(SQ.detailView.isEqual(explicit)).toEqual(true);
+            expect(SQ.detailView.isEqual(SQ)).toEqual(false);
+            expect(SQ.detailView.isEqual(SQ, false)).toEqual(true);
+        });
+
+        test('getKey encodes the detail view name', () => {
+            const detailView = new SchemaQuery('s', 'q').detailView;
+            expect(detailView.getKey()).toEqual('s/q/$t$tdetails$t$t');
+            expect(detailView.getKey(false)).toEqual('s/q');
+        });
+
+        test('toString includes the detail view name', () => {
+            const detailView = new SchemaQuery('s', 'q').detailView;
+            expect(detailView.toString()).toEqual('s|q|~~DETAILS~~');
+            expect(detailView.toString(false)).toEqual('s|q');
         });
     });
 

@@ -23,7 +23,6 @@ import {
     quoteValueWithDelimiters,
     splitMultiValueForImport,
 } from '../../util/utils';
-import { ViewInfo } from '../../ViewInfo';
 
 import { getContainerFilterForLookups } from '../../query/api';
 
@@ -306,8 +305,8 @@ const findLookupValues = async (options: FindLookupValuesOptions): Promise<Value
         ),
         includeTotalCount: false,
         maxRows: -1,
-        schemaQuery: lookup.schemaQuery,
-        viewName: ViewInfo.DETAIL_NAME, // Use the detail view so values that may be filtered out of the default view show up.
+        // Use the detail view so values that may be filtered out of the default view show up.
+        schemaQuery: lookup.schemaQuery.detailView,
     });
 
     return results.rows.reduce<ValueDescriptor[]>((desc, row) => {
@@ -508,7 +507,7 @@ async function convertRowToEditorModelData(
             // GitHub Issue 970
             message = {
                 message: 'Too many values. Maximum allowed is 10.',
-            }
+            };
         }
         valueDescriptors.push(...values);
     } else {

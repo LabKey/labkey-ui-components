@@ -8,13 +8,13 @@ import { debounce } from '../../../util/utils';
 import { FormsyContext } from './FormsyContext';
 import {
     FormsyContextInterface,
+    FormsyInjectedProps,
     IModel,
     InputComponent,
     IResetModel,
     IUpdateInputsWithError,
     IUpdateInputsWithValue,
     OnSubmitCallback,
-    FormsyInjectedProps,
     RunValidationResponse,
     Values,
 } from './types';
@@ -66,7 +66,7 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
         validationErrors: {},
     };
 
-    inputs: Array<InstanceType<any & FormsyInjectedProps<any>>>;
+    inputs: InstanceType<any & FormsyInjectedProps<any>>[];
     emptyArray: any[];
     private _mounted = true;
     prevInputNames: any[] | null = null;
@@ -116,7 +116,6 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
         // Keep the disabled value in state/context the same as from props
         if (disabled !== prevProps.disabled) {
             if (!this._mounted) return;
-            // eslint-disable-next-line
             this.setState(state => ({
                 contextValue: { ...state.contextValue, isFormDisabled: disabled },
             }));
@@ -274,7 +273,11 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
 
         this.setState({ isValid });
 
-        isValid ? onValid() : onInvalid();
+        if (isValid) {
+            onValid();
+        } else {
+            onInvalid();
+        }
     };
 
     setInputValidationErrors = (errors): void => {
@@ -296,6 +299,10 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
 
     // Update model, submit to url prop and send the model
     submit = (event?: React.SyntheticEvent<HTMLFormElement>): void => {
+        // Ignore submit events bubbled from a nested form (e.g., a form rendered in a Modal, which propagates events
+        // through the React tree via its portal); this form's own submissions always have target === currentTarget.
+        if (event && event.target !== event.currentTarget) return;
+
         const { onSubmit, onValidSubmit, onInvalidSubmit, preventDefaultSubmit } = this.props;
         const { isValid } = this.state;
 
@@ -304,7 +311,7 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
         }
 
         // Trigger form as not pristine.
-        // If any inputs have not been touched yet this will make them dirty
+        // If any inputs have not been touched yet, this will make them dirty,
         // so validation becomes visible (if based on isPristine)
         this.setFormPristine(false);
         const model = this.getModel();
@@ -323,8 +330,8 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
         }
     };
 
-    // Go through errors from server and grab the components
-    // stored in the inputs map. Change their state to invalid
+    // Go through errors from the server and grab the components
+    // stored in the input map. Change their state to invalid
     // and set the serverError message
     updateInputsWithError: IUpdateInputsWithError = (errors, invalidate): void => {
         if (!this._mounted) return;
@@ -359,7 +366,7 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
         });
     };
 
-    // Use the binded values and the actual input value to
+    // Use the bound values and the actual input value to
     // validate the input and set its state. Then check the
     // state of the form itself
     validate = (component: InputComponent<any>): void => {

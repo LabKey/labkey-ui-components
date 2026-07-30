@@ -326,7 +326,7 @@ import {
     updateRowFieldValue,
     useUsersWithPermissions,
 } from './internal/components/forms/actions';
-import { FormStep, FormTabs, withFormSteps } from './internal/components/forms/FormStep';
+import { FormStep, FormTabs, useFormStepActive, withFormSteps } from './internal/components/forms/FormStep';
 import {
     EntityIdCreationModel,
     EntityParentType,
@@ -882,6 +882,8 @@ import {
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './internal/components/picklist/constants';
 import { getDefaultAPIWrapper, getTestAPIWrapper } from './internal/APIWrapper';
 import { FormButtons } from './internal/FormButtons';
+import { registerModalRenderer } from './internal/ModalRenderFactory';
+import { useIsInModal } from './internal/components/forms/AddEntitiesModal';
 import { ModalButtons } from './internal/ModalButtons';
 import { getSecurityTestAPIWrapper } from './internal/components/security/APIWrapper';
 import { getFolderTestAPIWrapper } from './internal/components/container/FolderAPIWrapper';
@@ -898,6 +900,7 @@ import { LineageGridModel, LineageResult } from './internal/components/lineage/m
 import { ActiveUserLimit, ActiveUserLimitMessage } from './internal/components/settings/ActiveUserLimit';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
 import { BaseModal, Modal, ModalHeader } from './internal/Modal';
+import { ModalFooterContext, useModalFooter } from './internal/ModalFooterContext';
 import { Tab, Tabs } from './internal/Tabs';
 import { CheckboxLK } from './internal/Checkbox';
 import { ArchivedFolderTag } from './internal/components/folder/ArchivedFolderTag';
@@ -1568,6 +1571,7 @@ export {
     MessageLevel,
     Modal,
     ModalButtons,
+    ModalFooterContext,
     ModalHeader,
     MultiValueRenderer,
     NameIdSettings,
@@ -1634,6 +1638,7 @@ export {
     registerDefaultURLMappers,
     registerFilterType,
     registerInputRenderer,
+    registerModalRenderer,
     ReleaseNote,
     removeColumn,
     removeColumns,
@@ -1775,8 +1780,11 @@ export {
     useDataChangeCommentsRequired,
     useEnterEscape,
     useFolderMenuContext,
+    useFormStepActive,
+    useIsInModal,
     useLabelPrintingContext,
     useLoadableState,
+    useModalFooter,
     useModalState,
     useNotAuthorized,
     useNotFound,
@@ -1922,6 +1930,7 @@ export type { BSStyle } from './internal/dropdowns';
 export type { MenuSectionItem } from './internal/DropdownSection';
 export type { UseTimeout } from './internal/hooks';
 export type { ModalProps } from './internal/Modal';
+export type { AddEntitiesComplete, ModalRendererProps } from './internal/ModalRenderFactory';
 export type { TriggerType } from './internal/OverlayTrigger';
 export type { ISelectRowsResult } from './internal/query/api';
 export type {
@@ -1964,3 +1973,4 @@ export type {
     QueryModelMap,
     RequiresModelAndActions,
 } from './public/QueryModel/withQueryModels';
+export type { SchemaQueryKey } from './public/SchemaQuery';

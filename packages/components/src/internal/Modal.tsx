@@ -94,6 +94,7 @@ interface ModalHeaderProps extends PropsWithChildren {
     onCancel?: () => void;
     title: ReactNode;
 }
+
 export const ModalHeader: FC<ModalHeaderProps> = ({ children, onCancel, title }) => {
     return (
         <div className="modal-header">
@@ -126,6 +127,10 @@ export interface ModalProps extends BaseModalProps, ModalButtonsProps {
      */
     header?: ReactNode;
     /**
+     * Declare whether to render a footer. Overrides both "footer" and "footerContent". Defaults to true.
+     */
+    showFooter?: boolean;
+    /**
      * Title passed to the default header (see ModalHeader). If a custom header is supplied, then this is ignored.
      */
     title?: ReactNode;
@@ -150,9 +155,11 @@ export const Modal: FC<ModalProps> = memo(props => {
         onCommentChange,
         onConfirm,
         requiresUserComment,
+        showFooter = true,
         title,
     } = props;
     const showHeader = !!(onCancel || title);
+
     return (
         <BaseModal bsSize={bsSize} className={className} onCancel={onCancel}>
             {showHeader && !header && <ModalHeader onCancel={onCancel} title={title} />}
@@ -160,7 +167,7 @@ export const Modal: FC<ModalProps> = memo(props => {
 
             <div className="modal-body">{children}</div>
 
-            {!footer && (
+            {showFooter && !footer && (
                 <ModalButtons
                     actionName={actionName}
                     cancelText={cancelText}
@@ -178,7 +185,7 @@ export const Modal: FC<ModalProps> = memo(props => {
                 </ModalButtons>
             )}
 
-            {footer && <div className="modal-footer">{footer}</div>}
+            {showFooter && footer && <div className="modal-footer">{footer}</div>}
         </BaseModal>
     );
 });

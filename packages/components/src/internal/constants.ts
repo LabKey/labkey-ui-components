@@ -44,6 +44,7 @@ export enum EDIT_METHOD {
     DETAIL_EDIT = 'DetailEdit',
     DETAIL_EDIT_LINEAGE = 'DetailEditLineage',
     FORM_INSERT = 'FormInsert',
+    FORM_INSERT_MODAL = 'FormInsertModal',
     GRID_EDIT = 'GridEdit',
     GRID_INSERT = 'GridInsert',
     STORAGE_VIEW_ACTION = 'StorageViewAction',

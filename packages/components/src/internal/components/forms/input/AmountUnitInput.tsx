@@ -52,7 +52,7 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
             onToggleDisable?.(newDisabled);
             return newDisabled;
         });
-    }, [setDisabled]);
+    }, [onToggleDisable]);
 
     const onAmountChange = useCallback((name: string, value: any) => {
         const errorMsg = getInvalidSampleAmountMessage(value);
@@ -99,14 +99,14 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     hasMixedValue={hasMixedAmountValue}
                     onChange={onAmountChange}
                     queryColumn={amountCol}
-                    rowClassName={'col-sm-5 col-xs-6'}
+                    rowClassName="col-sm-5 col-xs-6"
                     showLabel={false}
                     type="number"
                     validations="sampleAmount"
                     value={amountValue ? String(amountValue) : amountValue}
                 />
                 <QuerySelect
-                    containerClass={'col-sm-4 col-xs-6'}
+                    containerClass="col-sm-4 col-xs-6"
                     containerFilter={
                         unitCol.lookup.containerFilter ?? containerFilter ?? getContainerFilterForLookups()
                     }
@@ -118,8 +118,8 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                     hasMixedValue={hasMixedUnitValue}
                     id={id}
                     inputClass={''}
-                    name={unitCol.fieldKey}
                     maxRows={LOOKUP_DEFAULT_SIZE}
+                    name={unitCol.fieldKey}
                     onQSChange={onSelectChange}
                     placeholder="Select or type to search..."
                     queryFilters={queryFilter}
@@ -141,5 +141,4 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
         </>
     );
 });
-
 AmountUnitInput.displayName = 'AmountUnitInput';

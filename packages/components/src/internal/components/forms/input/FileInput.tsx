@@ -21,6 +21,7 @@ import { fileMatchesAcceptedFormat } from '../../files/actions';
 import { getTransferItemDirectoryEntry } from '../../files/FileAttachmentContainer';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import { generateId } from '../../../util/utils';
 
 type FileInputData = Map<string, any> | string | undefined;
 
@@ -70,6 +71,7 @@ interface State extends DisableableInputState {
 
 class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
     fileInput: RefObject<HTMLInputElement>;
+    inputId: string;
 
     static defaultProps = {
         ...DisableableInput.defaultProps,
@@ -84,6 +86,8 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
         super(props);
         this.toggleDisabled = this.toggleDisabled.bind(this);
 
+        // Issue 53394: Distinct input ID so it does not collide with other elements on the page
+        this.inputId = generateId('fileUpload-');
         this.fileInput = React.createRef<HTMLInputElement>();
         const { data, formValue } = initializeValue(props.initialValue);
 
@@ -101,8 +105,6 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
     }
 
     getInputName(): string {
-        // FIXME if there's more than one of these on the page with the same inputName
-        // files will go to the wrong place when uploaded unless the names are unique
         return this.props.name ?? this.props.queryColumn.fieldKey;
     }
 
@@ -199,14 +201,14 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
         } = this.props;
         const { data, error, file, isDisabled, isHover } = this.state;
 
-        const name = this.getInputName();
-        const inputId = `${name}-fileUpload`; // Issue 53394: needs to be a distinct input id so it doesn't collide with other elements on the page for this fieldKey
-        let body;
+        let body: ReactNode;
 
         if (file || typeof data === 'string') {
             body = (
                 <div
-                    className={classNames('attached-file__inline-container text__wrap', { 'file-upload__is-hover': isHover })}
+                    className={classNames('attached-file__inline-container text__wrap', {
+                        'file-upload__is-hover': isHover,
+                    })}
                     onDragEnter={this.onDrag}
                     onDragLeave={this.onDragLeave}
                     onDragOver={this.onDrag}
@@ -232,21 +234,21 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
                     <input
                         className="file-upload__input" // This class makes the file input hidden
                         disabled={isDisabled}
-                        id={inputId}
+                        id={this.inputId}
                         multiple={false}
-                        name={name}
+                        name={this.getInputName()}
                         onChange={this.onChange}
                         ref={this.fileInput}
                         type="file"
                     />
 
-                    {/* We render a label here so click and drag events propagate to the input above */}
+                    {/* We render a label here, so click and drag events propagate to the input above */}
                     <label
                         className={classNames('file-upload--compact-label', {
                             'file-upload--is-disabled': isDisabled,
                             'file-upload__is-hover': isHover && !isDisabled,
                         })}
-                        htmlFor={inputId}
+                        htmlFor={this.inputId}
                         onDragEnter={this.onDrag}
                         onDragLeave={this.onDragLeave}
                         onDragOver={this.onDrag}
@@ -269,8 +271,8 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
 
         const labelOverlayProps = {
             addLabelAsterisk,
-            dataKey: inputId,
-            // While this component supports binding Formsy it does not use a Formsy component
+            dataKey: this.getInputName(),
+            // While this component supports binding Formsy, it does not use a Formsy component
             // to render the associated label. As such, the label overlay is always configured as isFormsy={false}.
             isFormsy: false,
             labelClass: labelClassName,

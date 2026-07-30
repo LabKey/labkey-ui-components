@@ -3,10 +3,33 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { Map } from 'immutable';
+import { Filter } from '@labkey/api';
 
-import { extractEntityTypeOptionFromRow, getChosenParentData, getFieldDisplayValue, sampleGenCellKey } from './actions';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { Row, selectRows, SelectRowsOptions, SelectRowsResponse } from '../../query/selectRows';
+
+import {
+    extractEntityTypeOptionFromRow,
+    getChosenParentData,
+    getFieldDisplayValue,
+    getSelectedParents,
+    sampleGenCellKey,
+} from './actions';
 import { EntityDataType, EntityIdCreationModel } from './models';
 import { DataClassDataType, SampleTypeDataType } from './constants';
+
+jest.mock('../../query/selectRows', () => ({
+    ...jest.requireActual('../../query/selectRows'),
+    selectRows: jest.fn().mockResolvedValue({ rows: [] }),
+}));
+
+const mockSelectRows = selectRows as jest.MockedFunction<typeof selectRows>;
+
+const getSelectRowsOptions = (): SelectRowsOptions => mockSelectRows.mock.calls[0][0];
+
+const mockSelectRowsResponse = (rows: Row[]): void => {
+    mockSelectRows.mockResolvedValue({ rows } as SelectRowsResponse);
+};
 
 describe('extractEntityTypeOptionFromRow', () => {
     const NAME = 'Test Name';
@@ -33,8 +56,8 @@ describe('getChosenParentData', () => {
 
     test('allowParents = false', async () => {
         const result = await getChosenParentData(new EntityIdCreationModel(), PARENT_ENTITY_DATA_TYPES, false);
-        expect(result.originalParents).toBe(undefined);
-        expect(result.selectionKey).toBe(undefined);
+        expect(result.originalParents).toBeUndefined();
+        expect(result.selectionKey).toBeUndefined();
         expect(result.entityParents.size).toBe(2);
         expect(result.entityParents.get(SampleTypeDataType.typeListingSchemaQuery.queryName).size).toBe(0);
         expect(result.entityParents.get(DataClassDataType.typeListingSchemaQuery.queryName).size).toBe(0);
@@ -50,8 +73,8 @@ describe('getChosenParentData', () => {
             PARENT_ENTITY_DATA_TYPES,
             true
         );
-        expect(result.originalParents).toBe(undefined);
-        expect(result.selectionKey).toBe(undefined);
+        expect(result.originalParents).toBeUndefined();
+        expect(result.selectionKey).toBeUndefined();
         expect(result.entityParents.size).toBe(2);
         expect(result.entityParents.get(SampleTypeDataType.typeListingSchemaQuery.queryName).size).toBe(1);
         expect(result.entityParents.get(DataClassDataType.typeListingSchemaQuery.queryName).size).toBe(0);
@@ -67,8 +90,8 @@ describe('getChosenParentData', () => {
             PARENT_ENTITY_DATA_TYPES,
             true
         );
-        expect(result.originalParents).toBe(undefined);
-        expect(result.selectionKey).toBe(undefined);
+        expect(result.originalParents).toBeUndefined();
+        expect(result.selectionKey).toBeUndefined();
         expect(result.entityParents.size).toBe(2);
         expect(result.entityParents.get(SampleTypeDataType.typeListingSchemaQuery.queryName).size).toBe(0);
         expect(result.entityParents.get(DataClassDataType.typeListingSchemaQuery.queryName).size).toBe(0);
@@ -93,7 +116,9 @@ describe('sampleGenCellKey', () => {
 
 describe('getFieldDisplayValue', () => {
     test('returns formattedValue when available', () => {
-        expect(getFieldDisplayValue({ formattedValue: 'formatted', displayValue: 'display', value: 'raw' })).toBe('formatted');
+        expect(getFieldDisplayValue({ formattedValue: 'formatted', displayValue: 'display', value: 'raw' })).toBe(
+            'formatted'
+        );
     });
 
     test('falls back to displayValue when formattedValue is undefined', () => {
@@ -118,5 +143,38 @@ describe('getFieldDisplayValue', () => {
 
     test('handles single-element array', () => {
         expect(getFieldDisplayValue({ value: ['only'] })).toBe('only');
+    });
+});
+
+describe('getSelectedParents', () => {
+    const SAMPLE_SQ = new SchemaQuery('samples', 'Blood');
+    const DATA_CLASS_SQ = new SchemaQuery('exp.data', 'Ingredients');
+    const FILTERS = [Filter.create('RowId', [1, 2], Filter.Types.IN)];
+
+    beforeEach(() => {
+        mockSelectRows.mockClear();
+        mockSelectRowsResponse([]);
+    });
+
+    // GitHub Issue 1357: the selected parents must be resolved from the detail view so that filters applied to the
+    // default view (or to whichever view the selection came from) don't drop selected parents from the response.
+    test('queries the detail view for a sample parent', async () => {
+        await getSelectedParents(SAMPLE_SQ, FILTERS);
+
+        expect(mockSelectRows).toHaveBeenCalledTimes(1);
+        const { columns, filterArray, schemaQuery } = getSelectRowsOptions();
+        expect(SAMPLE_SQ.detailView.isEqual(schemaQuery)).toBe(true);
+        expect(columns).toEqual(['LSID', 'Name', 'RowId', 'SampleSet']);
+        expect(filterArray).toBe(FILTERS);
+    });
+
+    test('queries the detail view for a data class parent', async () => {
+        await getSelectedParents(DATA_CLASS_SQ, FILTERS);
+
+        expect(mockSelectRows).toHaveBeenCalledTimes(1);
+        const { columns, filterArray, schemaQuery } = getSelectRowsOptions();
+        expect(DATA_CLASS_SQ.detailView.isEqual(schemaQuery)).toBe(true);
+        expect(columns).toEqual(['LSID', 'Name', 'RowId', 'DataClass']);
+        expect(filterArray).toBe(FILTERS);
     });
 });

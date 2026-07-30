@@ -42,8 +42,6 @@ import { SCHEMAS } from '../../schemas';
 
 import { Row, selectRows, SelectRowsResponse } from '../../query/selectRows';
 
-import { ViewInfo } from '../../ViewInfo';
-
 import { getAppHomeFolderPath, getFolderDataExclusion, hasModule } from '../../app/utils';
 
 import { resolveErrorMessage } from '../../util/messaging';
@@ -264,7 +262,7 @@ export async function getOperationConfirmationDataForModel(
     return getOperationConfirmationData(dataType, model.getSelectedIds(), undefined, undefined, extraParams);
 }
 
-async function getSelectedParents(
+export async function getSelectedParents(
     schemaQuery: SchemaQuery,
     filterArray: Filter.IFilter[],
     isAliquotParent?: boolean,
@@ -278,7 +276,8 @@ async function getSelectedParents(
         columns.push('DataClass');
     }
 
-    const response = await selectRows({ columns, filterArray, schemaQuery });
+    // GitHub Issue 1357: Resolve selected parents from details view to avoid filters applied to default view
+    const response = await selectRows({ columns, filterArray, schemaQuery: schemaQuery.detailView });
 
     return resolveEntityParentTypes(
         response,
@@ -800,8 +799,7 @@ async function getParentRowIdAndDataType(
 ): Promise<Record<string, ParentIdData>> {
     const response = await selectRows({
         containerPath,
-        schemaQuery: parentDataType.listingSchemaQuery,
-        viewName: ViewInfo.DETAIL_NAME, // use this to avoid filters on the default view
+        schemaQuery: parentDataType.listingSchemaQuery.detailView, // use this to avoid filters on the default view
         columns: 'LSID, RowId, DataClass, SampleSet', // only one of DataClass or SampleSet will exist
         filterArray: [Filter.create('LSID', parentIDs, Filter.Types.IN)],
     });

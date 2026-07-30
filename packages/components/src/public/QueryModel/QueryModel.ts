@@ -494,7 +494,7 @@ export class QueryModel {
         // Note: this default may not be appropriate outside of Biologics/SM
         if (keyValue !== undefined && schemaQuery.viewName === undefined) {
             const { schemaName, queryName } = schemaQuery;
-            this.schemaQuery = new SchemaQuery(schemaName, queryName, ViewInfo.DETAIL_NAME);
+            this.schemaQuery = new SchemaQuery(schemaName, queryName).detailView;
             this.bindURL = false;
         } else {
             this.schemaQuery = schemaQuery;

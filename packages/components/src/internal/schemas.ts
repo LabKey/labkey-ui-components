@@ -6,8 +6,6 @@ import { List } from 'immutable';
 
 import { SchemaQuery } from '../public/SchemaQuery';
 
-import { ViewInfo } from './ViewInfo';
-
 // Created By / Modified By
 export const CBMB = List<string>(['Created', 'CreatedBy', 'Modified', 'ModifiedBy']);
 
@@ -15,7 +13,6 @@ export const CBMB = List<string>(['Created', 'CreatedBy', 'Modified', 'ModifiedB
 const ASSAY_SCHEMA = 'assay';
 export const ASSAY_TABLES = {
     ASSAY_LIST: new SchemaQuery(ASSAY_SCHEMA, 'AssayList'),
-    ASSAY_DETAILS_SQ: new SchemaQuery(ASSAY_SCHEMA, 'AssayList', ViewInfo.DETAIL_NAME),
     ASSAY_RUN_COUNTS: new SchemaQuery(ASSAY_SCHEMA, 'AssayRunCounts'),
     ASSAY_RUNS: new SchemaQuery(ASSAY_SCHEMA, 'AssayRuns'),
     ASSAY_RUNS_PER_SAMPLE: new SchemaQuery(ASSAY_SCHEMA, 'AssayRunsPerSample'),
@@ -35,7 +32,6 @@ export const EXP_TABLES = {
     RUN_GROUPS: new SchemaQuery(EXP_SCHEMA, 'RunGroups'),
     SCHEMA: EXP_SCHEMA,
     SAMPLE_SETS: new SchemaQuery(EXP_SCHEMA, 'SampleSets'),
-    SAMPLE_SETS_DETAILS: new SchemaQuery(EXP_SCHEMA, 'SampleSets', ViewInfo.DETAIL_NAME),
     SAMPLE_STATUS: new SchemaQuery(EXP_SCHEMA, 'SampleStatus'),
     DATA_COLORS: new SchemaQuery(EXP_SCHEMA, 'DataColors'),
 };

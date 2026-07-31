@@ -30,6 +30,7 @@ import {
     FOLDER_DATA_TYPE_EXCLUSIONS,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
+    HAS_ACTIVE_PROJECT_COLORS,
     HOME_KEY,
     LABKEY_SERVER_PRODUCT_NAME,
     LIMS_APP_PROPERTIES,
@@ -206,6 +207,22 @@ export function isSampleStatusEnabled(moduleContext?: ModuleContext): boolean {
 
 export function isSampleColorsEnabled(moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.experiment?.SampleColors === true;
+}
+
+/** True if the current container's project has at least one active (non-archived) sample color. */
+export function hasActiveProjectColors(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.samplemanagement?.[HAS_ACTIVE_PROJECT_COLORS] === true;
+}
+
+export function setActiveProjectColors(moduleContext: ModuleContext, hasActiveProjectColors: boolean): ModuleContext {
+    // side-effect set global moduleContext
+    if (LABKEY?.moduleContext?.samplemanagement) {
+        LABKEY.moduleContext.samplemanagement.hasActiveProjectColors = hasActiveProjectColors;
+    }
+
+    return Object.assign(moduleContext ?? {}, {
+        samplemanagement: Object.assign(moduleContext?.samplemanagement ?? {}, { hasActiveProjectColors }),
+    });
 }
 
 export function isQueryMetadataEditor(): boolean {

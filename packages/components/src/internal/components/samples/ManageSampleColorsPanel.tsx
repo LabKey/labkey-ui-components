@@ -19,6 +19,8 @@ import { SCHEMAS } from '../../schemas';
 import { resolveErrorMessage } from '../../util/messaging';
 import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 import { useAppContext } from '../../AppContext';
+import { useServerContext } from '../base/ServerContext';
+import { setActiveProjectColors } from '../../app/utils';
 import { Container } from '../base/models/Container';
 
 import { DataTypeSelector } from '../entities/DataTypeSelector';
@@ -374,6 +376,7 @@ export const ManageSampleColorsPanel: FC<ManageSampleColorsPanelProps> = memo(pr
     const [selectedRowId, setSelectedRowId] = useState<number>();
     const [dirty, setDirty] = useState<boolean>(false);
     const { api } = useAppContext();
+    const { moduleContext } = useServerContext();
     const isNew = selectedRowId === NEW_COLOR_INDEX;
 
     const loadColors = useCallback(
@@ -383,6 +386,11 @@ export const ManageSampleColorsPanel: FC<ManageSampleColorsPanelProps> = memo(pr
                 .getSampleColors(true, true, homeContainer?.path)
                 .then(loaded => {
                     setColors(loaded);
+                    // keep the moduleContext flag in sync so consumers don't have to reload the page after a save
+                    setActiveProjectColors(
+                        moduleContext,
+                        loaded.some(c => !c.archived)
+                    );
                     if (selectLabel) setSelectedRowId(loaded.find(c => c.label === selectLabel)?.rowId);
                 })
                 .catch(() => {
@@ -390,7 +398,7 @@ export const ManageSampleColorsPanel: FC<ManageSampleColorsPanelProps> = memo(pr
                     setError('Error: Unable to load sample colors.');
                 });
         },
-        [api, homeContainer?.path]
+        [api, homeContainer?.path, moduleContext]
     );
 
     useEffect(() => {

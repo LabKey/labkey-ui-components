@@ -18,6 +18,7 @@ import {
     DEFAULT_AVAILABLE_STATUS_COLOR,
     DEFAULT_CONSUMED_STATUS_COLOR,
     DEFAULT_LOCKED_STATUS_COLOR,
+    SAMPLE_COLOR_REQUIRED_COLUMNS,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleOperation,
 } from './constants';
@@ -47,15 +48,23 @@ const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
 test('getOmittedSampleTypeColumn', () => {
     let moduleContext = {};
     expect(isFreezerManagementEnabled(moduleContext)).toBeFalsy();
-    expect(getOmittedSampleTypeColumns(TEST_USER_READER, moduleContext)).toStrictEqual(INVENTORY_COLS);
-    expect(getOmittedSampleTypeColumns(TEST_USER_GUEST, moduleContext)).toStrictEqual(
-        [CHECKED_OUT_BY_FIELD].concat(INVENTORY_COLS)
-    );
+    expect(getOmittedSampleTypeColumns(TEST_USER_READER, moduleContext)).toStrictEqual([
+        ...INVENTORY_COLS,
+        ...SAMPLE_COLOR_REQUIRED_COLUMNS,
+    ]);
+    expect(getOmittedSampleTypeColumns(TEST_USER_GUEST, moduleContext)).toStrictEqual([
+        CHECKED_OUT_BY_FIELD,
+        ...INVENTORY_COLS,
+        ...SAMPLE_COLOR_REQUIRED_COLUMNS,
+    ]);
 
     moduleContext = { inventory: {} };
     expect(isFreezerManagementEnabled(moduleContext)).toBeTruthy();
-    expect(getOmittedSampleTypeColumns(TEST_USER_READER, moduleContext)).toStrictEqual([]);
-    expect(getOmittedSampleTypeColumns(TEST_USER_GUEST, moduleContext)).toStrictEqual([CHECKED_OUT_BY_FIELD]);
+    expect(getOmittedSampleTypeColumns(TEST_USER_READER, moduleContext)).toStrictEqual(SAMPLE_COLOR_REQUIRED_COLUMNS);
+    expect(getOmittedSampleTypeColumns(TEST_USER_GUEST, moduleContext)).toStrictEqual([
+        CHECKED_OUT_BY_FIELD,
+        ...SAMPLE_COLOR_REQUIRED_COLUMNS,
+    ]);
 });
 
 describe('isSampleOperationPermitted', () => {

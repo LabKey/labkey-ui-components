@@ -34,25 +34,27 @@ import { generateId } from '../../../util/utils';
 import { LabelOverlayProps } from '../LabelOverlay';
 
 type FileInputData = Map<string, any> | string | undefined;
+type FileInputValue = File | null | string | undefined;
 
-export function initializeValue(initialValue: any): { data: FileInputData; formValue: string | undefined } {
+export function initializeValue(initialValue: any): { data: FileInputData; value: string | undefined } {
     let data: Map<string, any> | string | undefined;
-    let formValue: string;
+    let value: string;
+
     if (Map.isMap(initialValue)) {
         data = initialValue;
-        formValue = initialValue.get('value');
+        value = initialValue.get('value');
     } else if (typeof initialValue === 'string') {
         const trimmedValue = initialValue.trim();
         if (trimmedValue !== '') {
             data = trimmedValue;
-            formValue = trimmedValue;
+            value = trimmedValue;
         }
     }
 
-    return { data, formValue };
+    return { data, value };
 }
 
-export interface FileInputProps extends DisableableInputProps {
+export interface FileInputProps extends DisableableInputProps<FileInputValue> {
     acceptedFormats?: string;
     addLabelAsterisk?: boolean;
     changeDebounceInterval?: number;
@@ -71,18 +73,23 @@ export interface FileInputProps extends DisableableInputProps {
     toggleDisabledTooltip?: string;
 }
 
-type FileInputImplProps = FileInputProps & FormsyInjectedProps<any>;
+interface FileInputImplOwnProps {
+    initialData: FileInputData;
+}
+
+type FileInputImplProps = FileInputImplOwnProps & FileInputProps & FormsyInjectedProps<FileInputValue>;
 
 const FileInputImpl: FC<FileInputImplProps> = props => {
     const {
         acceptedFormats,
         addLabelAsterisk,
         allowDisable = false,
+        initialData,
         elementWrapperClassName = INPUT_WRAPPER_CLASS_NAME,
         emptyFileNotAllowed,
+        errorMessage,
         formsy,
         hasMixedValue,
-        initialValue,
         labelClassName,
         maxFileSize,
         name,
@@ -94,17 +101,19 @@ const FileInputImpl: FC<FileInputImplProps> = props => {
         showLabel = true,
         toggleDisabledTooltip,
     } = props;
-    const { isDisabled, toggleDisabled } = useDisableableInput<File | null | undefined>(props);
-    const [data, setData] = useState<FileInputData>(() => initializeValue(initialValue).data);
+    // The initialValue prop is only respected on mount.
+    const [data, setData] = useState<FileInputData>(initialData);
     const [error, setError] = useState<string>('');
     const [file, setFile] = useState<File>(null);
     const [isHover, setIsHover] = useState<boolean>(false);
     const fileInput = useRef<HTMLInputElement>(null);
+    const { isDisabled, toggleDisabled } = useDisableableInput<FileInputValue>(props);
 
     // Issue 53394: Distinct input ID so it does not collide with other elements on the page
     const inputId = useMemo(() => generateId('fileUpload-'), []);
     const inputName = name ?? queryColumn.fieldKey;
     const hasCustomFieldLabel = !!renderFieldLabel;
+    const hasError = formsy && !!errorMessage;
 
     const setFormValue = useCallback(
         (file_: File): void => {
@@ -201,7 +210,7 @@ const FileInputImpl: FC<FileInputImplProps> = props => {
             labelClass: allowDisable ? undefined : labelClassName,
             required,
         };
-    }, [addLabelAsterisk, allowDisable, hasCustomFieldLabel, inputName, inputId, labelClassName, required]);
+    }, [addLabelAsterisk, allowDisable, hasCustomFieldLabel, inputName, labelClassName, required]);
 
     const toggleProps = useMemo<Partial<ToggleProps>>(() => {
         if (hasCustomFieldLabel) return undefined;
@@ -280,7 +289,7 @@ const FileInputImpl: FC<FileInputImplProps> = props => {
     }
 
     return (
-        <div className="form-group row">
+        <div className={classNames('form-group row', { 'has-error': hasError })}>
             {hasCustomFieldLabel && (
                 <span className={labelClassName} data-fieldkey={inputName}>
                     {renderFieldLabel(queryColumn)}
@@ -290,7 +299,6 @@ const FileInputImpl: FC<FileInputImplProps> = props => {
             {!hasCustomFieldLabel && (
                 <FieldLabel
                     column={queryColumn}
-                    fieldName={inputName}
                     isDisabled={isDisabled}
                     labelOverlayProps={labelOverlayProps}
                     showLabel={showLabel}
@@ -298,7 +306,10 @@ const FileInputImpl: FC<FileInputImplProps> = props => {
                     toggleProps={toggleProps}
                 />
             )}
-            <div className={elementWrapperClassName}>{body}</div>
+            <div className={elementWrapperClassName}>
+                {body}
+                {hasError && <span className="help-block">{errorMessage}</span>}
+            </div>
         </div>
     );
 };
@@ -307,21 +318,19 @@ FileInputImpl.displayName = 'FileInputImpl';
 /**
  * A wrapper around FileInputImpl that binds formsy-react so the element can be validated, submitted, etc.
  */
-const FileInputFormsy = withFormsy<FileInputProps, any>(FileInputImpl);
+const FileInputFormsy = withFormsy<FileInputImplProps, FileInputValue>(FileInputImpl);
 
 export const FileInput: FC<FileInputProps> = props => {
     const { formsy = false, initialValue, queryColumn, required = queryColumn?.required ?? false } = props;
-
-    const value = useMemo(() => {
-        if (!formsy) return undefined;
-        return initializeValue(initialValue).formValue;
-    }, [formsy, initialValue]);
+    const [{ data, value }] = useState(() => initializeValue(initialValue));
 
     if (formsy) {
         // GitHub Issue 1388: Pass required and value props to formsy for initialization
-        return <FileInputFormsy name={undefined} {...props} formsy required={required} value={value} />;
+        return (
+            <FileInputFormsy name={undefined} {...props} formsy initialData={data} required={required} value={value} />
+        );
     }
 
-    return <FileInputImpl {...(props as FileInputImplProps)} formsy={false} required={required} />;
+    return <FileInputImpl {...(props as FileInputImplProps)} formsy={false} initialData={data} required={required} />;
 };
 FileInput.displayName = 'FileInput';

@@ -56,7 +56,8 @@ function clickToggle(): Promise<void> {
     return userEvent.click(document.querySelector('.toggle-group-icon button'));
 }
 
-// FieldLabel sizes the label/toggle columns for a disableable input by mutating the labelOverlayProps it is given
+// FieldLabel sizes the label/toggle columns for a disableable input, deriving the classes from the
+// labelOverlayProps it is given without modifying them
 function expectToggleLayout(container: HTMLElement): void {
     expect(container.querySelector('.control-label')).toHaveClass(INPUT_LABEL_CLASS_NAME_WITH_TOGGLE);
     expect(container.querySelector('.control-label-toggle-input')).toHaveClass('control-label-toggle-input-size-fixed');
@@ -82,22 +83,22 @@ function expectDisabled(container: HTMLElement): void {
 
 describe('FileInput', () => {
     test('initializeValue', () => {
-        expect(initializeValue(undefined)).toEqual({ data: undefined, formValue: undefined });
-        expect(initializeValue(null)).toEqual({ data: undefined, formValue: undefined });
-        expect(initializeValue('')).toEqual({ data: undefined, formValue: undefined });
-        expect(initializeValue('   ')).toEqual({ data: undefined, formValue: undefined });
+        expect(initializeValue(undefined)).toEqual({ data: undefined, value: undefined });
+        expect(initializeValue(null)).toEqual({ data: undefined, value: undefined });
+        expect(initializeValue('')).toEqual({ data: undefined, value: undefined });
+        expect(initializeValue('   ')).toEqual({ data: undefined, value: undefined });
         expect(initializeValue('  some/file/path1 ')).toEqual({
             data: 'some/file/path1',
-            formValue: 'some/file/path1',
+            value: 'some/file/path1',
         });
-        expect(initializeValue(Map())).toEqual({ data: Map(), formValue: undefined });
+        expect(initializeValue(Map())).toEqual({ data: Map(), value: undefined });
         expect(initializeValue(Map({ path: 'some/file/path' }))).toEqual({
             data: Map({ path: 'some/file/path' }),
-            formValue: undefined,
+            value: undefined,
         });
         expect(initializeValue(Map({ value: 'some/file/path' }))).toEqual({
             data: Map({ value: 'some/file/path' }),
-            formValue: 'some/file/path',
+            value: 'some/file/path',
         });
     });
 
@@ -149,6 +150,65 @@ describe('FileInput', () => {
             await userEvent.click(container.querySelector('.attached-file__remove-icon'));
 
             expect(onInvalid).toHaveBeenCalled();
+        });
+
+        // Formsy does not produce a message for a bare "required" violation, so an empty required field is
+        // communicated by the asterisk and by the form being invalid, not by an error on the input itself.
+        test('does not display an error for an empty required field', async () => {
+            const { container } = renderInForm({ initialValue: 'some/file/path.txt' });
+
+            expect(container.querySelector('.has-error')).not.toBeInTheDocument();
+
+            await userEvent.click(container.querySelector('.attached-file__remove-icon'));
+
+            expect(container.querySelector('.has-error')).not.toBeInTheDocument();
+            expect(container.querySelector('.help-block')).not.toBeInTheDocument();
+        });
+    });
+
+    describe('validation errors', () => {
+        const VALIDATION_ERROR = 'Unable to attach this file.';
+
+        function renderWithFormErrors(validationErrors?: Record<string, string>): RenderResult {
+            return render(
+                <Formsy validationErrors={validationErrors}>
+                    <FileInput formsy name={FILE_COLUMN.fieldKey} queryColumn={FILE_COLUMN} />
+                </Formsy>
+            );
+        }
+
+        test('displays an error supplied by the form', () => {
+            const { container, rerender } = renderWithFormErrors();
+
+            expect(container.querySelector('.has-error')).not.toBeInTheDocument();
+
+            // Errors are pushed down by Formsy after the initial render, e.g., in response to a failed submission
+            rerender(
+                <Formsy validationErrors={{ [FILE_COLUMN.fieldKey]: VALIDATION_ERROR }}>
+                    <FileInput formsy name={FILE_COLUMN.fieldKey} queryColumn={FILE_COLUMN} />
+                </Formsy>
+            );
+
+            expect(container.querySelector('.has-error')).toBeInTheDocument();
+            expect(container.querySelector('.help-block')).toHaveTextContent(VALIDATION_ERROR);
+        });
+
+        test('does not display an error belonging to a different field', () => {
+            const { container, rerender } = renderWithFormErrors();
+
+            rerender(
+                <Formsy validationErrors={{ someOtherField: VALIDATION_ERROR }}>
+                    <FileInput formsy name={FILE_COLUMN.fieldKey} queryColumn={FILE_COLUMN} />
+                </Formsy>
+            );
+
+            expect(container.querySelector('.has-error')).not.toBeInTheDocument();
+        });
+
+        test('does not display an error when not bound to formsy', () => {
+            const { container } = render(<FileInput name={FILE_COLUMN.fieldKey} queryColumn={FILE_COLUMN} />);
+
+            expect(container.querySelector('.has-error')).not.toBeInTheDocument();
         });
     });
 
@@ -224,7 +284,10 @@ describe('FileInput', () => {
             await selectFile();
             await clickToggle();
 
-            // Disabling the field reverts local edits for editable inputs, but a selected file is retained
+            // Unlike other disableable inputs, which revert to the value from props when toggled off, FileInput
+            // retains the selected file. This intentionally preserves the behavior it had before it adopted
+            // useDisableableInput(): it never recorded the selection via setInputValue()/getInputValue(). The retained
+            // value is still excluded when submitting by getUpdatedFields().
             expect(container.querySelector('.attached-file__inline-container')).toHaveTextContent('attachment.txt');
             expect(onFormChange).toHaveBeenLastCalledWith(
                 expect.objectContaining({ [FILE_COLUMN.fieldKey]: expect.any(File) }),

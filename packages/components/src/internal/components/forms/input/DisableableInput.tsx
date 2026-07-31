@@ -4,12 +4,12 @@
  */
 import React, { useCallback, useState } from 'react';
 
-export interface DisableableInputProps {
+export interface DisableableInputProps<V = any> {
     allowDisable?: boolean;
     hasMixedValue?: boolean;
     initiallyDisabled?: boolean;
     onToggleDisable?: (disabled: boolean) => void;
-    value?: any;
+    value?: V;
 }
 
 export interface DisableableInputState {
@@ -99,7 +99,7 @@ export interface UseDisableableInput<V> {
  * };
  * ```
  */
-export function useDisableableInput<V>(props: DisableableInputProps): UseDisableableInput<V> {
+export function useDisableableInput<V>(props: DisableableInputProps<V>): UseDisableableInput<V> {
     const { allowDisable = false, initiallyDisabled = false, onToggleDisable, value } = props;
     const [isDisabled, setIsDisabled] = useState<boolean>(initiallyDisabled);
     const [inputValue, setInputValue] = useState<V>(value);

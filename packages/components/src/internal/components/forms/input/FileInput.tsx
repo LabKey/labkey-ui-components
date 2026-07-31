@@ -312,15 +312,13 @@ const FileInputFormsy = withFormsy<FileInputProps, any>(FileInputImpl);
 export const FileInput: FC<FileInputProps> = props => {
     const { formsy = false, initialValue, queryColumn, required = queryColumn?.required ?? false } = props;
 
-    // GitHub Issue 1387: The Formsy value for a file field is either the path of the currently attached file or the
-    // File itself (once one has been selected). Seed the wrapper with the initial path so the field participates in
-    // validation from the outset without being marked as dirty.
     const value = useMemo(() => {
         if (!formsy) return undefined;
         return initializeValue(initialValue).formValue;
     }, [formsy, initialValue]);
 
     if (formsy) {
+        // GitHub Issue 1388: Pass required and value props to formsy for initialization
         return <FileInputFormsy name={undefined} {...props} formsy required={required} value={value} />;
     }
 

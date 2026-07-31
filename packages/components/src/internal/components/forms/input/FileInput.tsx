@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, ReactNode, RefObject } from 'react';
+import React, { FC, ReactNode, RefObject, useMemo } from 'react';
 import classNames from 'classnames';
 import { Map } from 'immutable';
 
@@ -57,6 +57,7 @@ export interface FileInputProps extends DisableableInputProps {
     onChange?: (fileMap: Record<string, File>) => void;
     queryColumn?: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
+    required?: boolean;
     showLabel?: boolean;
     toggleDisabledTooltip?: string;
 }
@@ -100,7 +101,7 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
             isHover: false,
         };
 
-        if (formValue) {
+        if (!props.formsy && formValue) {
             props.setValue?.(formValue);
         }
     }
@@ -193,14 +194,16 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
             addLabelAsterisk,
             allowDisable,
             elementWrapperClassName,
+            hasMixedValue,
             labelClassName,
             queryColumn,
             renderFieldLabel,
+            required,
             showLabel,
             toggleDisabledTooltip,
-            hasMixedValue,
         } = this.props;
         const { data, error, file, isDisabled, isHover } = this.state;
+        const name = this.getInputName();
 
         let body: ReactNode;
 
@@ -237,7 +240,7 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
                         disabled={isDisabled}
                         id={this.inputId}
                         multiple={false}
-                        name={this.getInputName()}
+                        name={name}
                         onChange={this.onChange}
                         ref={this.fileInput}
                         type="file"
@@ -272,13 +275,13 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
 
         const labelOverlayProps: LabelOverlayProps = {
             addLabelAsterisk,
-            dataKey: this.getInputName(),
+            dataKey: name,
             inputId: this.inputId,
             // While this component supports binding Formsy, it does not use a Formsy component
             // to render the associated label. As such, the label overlay is always configured as isFormsy={false}.
             isFormsy: false,
-            labelClass: labelClassName,
-            required: queryColumn?.required,
+            labelClass: allowDisable ? undefined : labelClassName,
+            required,
         };
 
         const hasCustomFieldLabel = !!renderFieldLabel;
@@ -286,14 +289,15 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
         return (
             <div className="form-group row">
                 {hasCustomFieldLabel && (
-                    <label className={labelClassName} htmlFor={queryColumn?.fieldKey}>
+                    <span className={labelClassName} data-fieldkey={name}>
                         {renderFieldLabel(queryColumn)}
-                        {queryColumn?.required && <span className="required-symbol"> *</span>}
-                    </label>
+                        {required && <span className="required-symbol"> *</span>}
+                    </span>
                 )}
                 {!hasCustomFieldLabel && (
                     <FieldLabel
                         column={queryColumn}
+                        fieldName={name}
                         isDisabled={isDisabled}
                         labelOverlayProps={labelOverlayProps}
                         showLabel={showLabel}
@@ -317,10 +321,20 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
 const FileInputFormsy = withFormsy<FileInputProps, any>(FileInputImpl);
 
 export const FileInput: FC<FileInputProps> = props => {
-    const { formsy = false } = props;
+    const { formsy = false, initialValue, queryColumn, required = queryColumn?.required ?? false } = props;
+
+    // GitHub Issue 1387: The Formsy value for a file field is either the path of the currently attached file or the
+    // File itself (once one has been selected). Seed the wrapper with the initial path so the field participates in
+    // validation from the outset without being marked as dirty.
+    const value = useMemo(() => {
+        if (!formsy) return undefined;
+        return initializeValue(initialValue).formValue;
+    }, [formsy, initialValue]);
+
     if (formsy) {
-        return <FileInputFormsy name={undefined} {...props} formsy />;
+        return <FileInputFormsy name={undefined} {...props} formsy required={required} value={value} />;
     }
-    return <FileInputImpl {...(props as FileInputImplProps)} formsy={false} />;
+
+    return <FileInputImpl {...(props as FileInputImplProps)} formsy={false} required={required} />;
 };
 FileInput.displayName = 'FileInput';

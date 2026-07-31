@@ -9,6 +9,7 @@ import { Map } from 'immutable';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { Formsy } from '../formsy';
+import { INPUT_LABEL_CLASS_NAME_WITH_TOGGLE, MIXED_VALUE_DISPLAY } from '../constants';
 
 import { FileInput, FileInputProps, initializeValue } from './FileInput';
 
@@ -46,6 +47,37 @@ function selectFile(): Promise<void> {
         document.querySelector('input[type="file"]'),
         new File(['file contents'], 'attachment.txt', { type: 'text/plain' })
     );
+}
+
+const ENABLED_FIELD_SELECTOR = `input[name="${FILE_COLUMN.fieldKey}::enabled"]`;
+const FILE_INPUT_SELECTOR = 'input[type="file"]';
+
+function clickToggle(): Promise<void> {
+    return userEvent.click(document.querySelector('.toggle-group-icon button'));
+}
+
+// FieldLabel sizes the label/toggle columns for a disableable input by mutating the labelOverlayProps it is given
+function expectToggleLayout(container: HTMLElement): void {
+    expect(container.querySelector('.control-label')).toHaveClass(INPUT_LABEL_CLASS_NAME_WITH_TOGGLE);
+    expect(container.querySelector('.control-label-toggle-input')).toHaveClass('control-label-toggle-input-size-fixed');
+}
+
+function expectEnabled(container: HTMLElement): void {
+    expectToggleLayout(container);
+    expect(container.querySelector('.fa-toggle-on')).toBeInTheDocument();
+    expect(container.querySelector('.fa-toggle-off')).not.toBeInTheDocument();
+    expect(container.querySelector(ENABLED_FIELD_SELECTOR)).toHaveAttribute('value', 'true');
+    expect(container.querySelector(FILE_INPUT_SELECTOR)).toBeEnabled();
+    expect(container.querySelector('.file-upload--compact-label')).not.toHaveClass('file-upload--is-disabled');
+}
+
+function expectDisabled(container: HTMLElement): void {
+    expectToggleLayout(container);
+    expect(container.querySelector('.fa-toggle-off')).toBeInTheDocument();
+    expect(container.querySelector('.fa-toggle-on')).not.toBeInTheDocument();
+    expect(container.querySelector(ENABLED_FIELD_SELECTOR)).toHaveAttribute('value', 'false');
+    expect(container.querySelector(FILE_INPUT_SELECTOR)).toBeDisabled();
+    expect(container.querySelector('.file-upload--compact-label')).toHaveClass('file-upload--is-disabled');
 }
 
 describe('FileInput', () => {
@@ -117,6 +149,103 @@ describe('FileInput', () => {
             await userEvent.click(container.querySelector('.attached-file__remove-icon'));
 
             expect(onInvalid).toHaveBeenCalled();
+        });
+    });
+
+    describe('disabled state', () => {
+        const DISABLEABLE_PROPS: Partial<FileInputProps> = { allowDisable: true, queryColumn: FILE_COLUMN };
+
+        test('does not render a toggle when allowDisable is not specified', () => {
+            const { container } = renderInForm({ queryColumn: FILE_COLUMN });
+
+            expect(container.querySelector('.toggle-group-icon')).not.toBeInTheDocument();
+            expect(container.querySelector(ENABLED_FIELD_SELECTOR)).not.toBeInTheDocument();
+            expect(container.querySelector(FILE_INPUT_SELECTOR)).toBeEnabled();
+        });
+
+        test('renders an enabled field when allowDisable', () => {
+            const { container } = renderInForm(DISABLEABLE_PROPS);
+            expectEnabled(container);
+        });
+
+        test('renders a disabled field when initiallyDisabled', () => {
+            const { container } = renderInForm({ ...DISABLEABLE_PROPS, initiallyDisabled: true });
+            expectDisabled(container);
+        });
+
+        test('toggling notifies onToggleDisable with the new disabled state', async () => {
+            const onToggleDisable = jest.fn();
+            const { container } = renderInForm({ ...DISABLEABLE_PROPS, onToggleDisable });
+
+            await clickToggle();
+
+            expect(onToggleDisable).toHaveBeenLastCalledWith(true);
+            expectDisabled(container);
+
+            await clickToggle();
+
+            expect(onToggleDisable).toHaveBeenLastCalledWith(false);
+            expectEnabled(container);
+            expect(onToggleDisable).toHaveBeenCalledTimes(2);
+        });
+
+        test('does not allow toggling when toggleDisabledTooltip is supplied', async () => {
+            const onToggleDisable = jest.fn();
+            const { container } = renderInForm({
+                ...DISABLEABLE_PROPS,
+                onToggleDisable,
+                toggleDisabledTooltip: 'Cannot be updated',
+            });
+
+            expect(container.querySelector('.toggle-group-icon')).toHaveClass('disabled');
+            expect(container.querySelector('.label-help-target')).toBeInTheDocument();
+
+            await clickToggle();
+
+            expect(onToggleDisable).not.toHaveBeenCalled();
+            expectEnabled(container);
+        });
+
+        test('displays mixed values only while disabled', async () => {
+            const { container } = renderInForm({ ...DISABLEABLE_PROPS, hasMixedValue: true, initiallyDisabled: true });
+
+            expect(container.querySelector('.field__un-editable')).toHaveTextContent(MIXED_VALUE_DISPLAY);
+            expect(container.querySelector('.fa-cloud-upload')).not.toBeInTheDocument();
+
+            await clickToggle();
+
+            expect(container.querySelector('.field__un-editable')).not.toBeInTheDocument();
+            expect(container.querySelector('.fa-cloud-upload')).toBeInTheDocument();
+        });
+
+        test('retains a selected file when the field is subsequently disabled', async () => {
+            const { container, onChange: onFormChange } = renderInForm(DISABLEABLE_PROPS);
+
+            await selectFile();
+            await clickToggle();
+
+            // Disabling the field reverts local edits for editable inputs, but a selected file is retained
+            expect(container.querySelector('.attached-file__inline-container')).toHaveTextContent('attachment.txt');
+            expect(onFormChange).toHaveBeenLastCalledWith(
+                expect.objectContaining({ [FILE_COLUMN.fieldKey]: expect.any(File) }),
+                expect.anything()
+            );
+        });
+
+        test('does not allow removing an existing attachment while disabled', async () => {
+            const { container } = renderInForm({
+                ...DISABLEABLE_PROPS,
+                initialValue: Map({ value: 'some/file/path.txt' }),
+                initiallyDisabled: true,
+            });
+
+            await userEvent.click(container.querySelector('.attachment-card__menu button'));
+            expect(document.querySelector('.dropdown-menu')).not.toHaveTextContent('Remove');
+
+            await clickToggle();
+            await userEvent.click(container.querySelector('.attachment-card__menu button'));
+
+            expect(document.querySelector('.dropdown-menu')).toHaveTextContent('Remove');
         });
     });
 });

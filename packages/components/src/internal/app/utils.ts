@@ -205,10 +205,6 @@ export function isSampleStatusEnabled(moduleContext?: ModuleContext): boolean {
     return hasSampleManagementModule(moduleContext);
 }
 
-export function isSampleColorsEnabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.experiment?.SampleColors === true;
-}
-
 /** True if the current container's project has at least one active (non-archived) sample color. */
 export function hasActiveProjectColors(moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.samplemanagement?.[HAS_ACTIVE_PROJECT_COLORS] === true;

@@ -376,6 +376,7 @@ function isAliquotEditableField(colName: string): boolean {
         colName === 'name' ||
         colName === 'description' ||
         colName === 'materialexpdate' ||
+        colName === 'expmaterialcolor' ||
         (isSampleStatusEnabled() && colName === 'samplestate')
     );
 }

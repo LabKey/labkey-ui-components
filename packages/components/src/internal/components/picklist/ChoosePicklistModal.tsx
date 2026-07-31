@@ -190,10 +190,8 @@ export const AddedToPicklistNotification: FC<AddedToPicklistNotificationProps> =
     return (
         <>
             {numAddedNotification} to picklist{' '}
-            <b>
-                <AppLink to={AppURL.create(PICKLIST_KEY, picklist.listId)}>{picklist.name}</AppLink>
-            </b>
-            .{numNotAddedNotification}
+            <AppLink to={AppURL.create(PICKLIST_KEY, picklist.listId)}>{picklist.name}</AppLink>.
+            {numNotAddedNotification}
         </>
     );
 };

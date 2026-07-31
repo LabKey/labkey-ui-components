@@ -22,6 +22,7 @@ import { getTransferItemDirectoryEntry } from '../../files/FileAttachmentContain
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 import { generateId } from '../../../util/utils';
+import { LabelOverlayProps } from '../LabelOverlay';
 
 type FileInputData = Map<string, any> | string | undefined;
 
@@ -269,20 +270,28 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
             );
         }
 
-        const labelOverlayProps = {
+        const labelOverlayProps: LabelOverlayProps = {
             addLabelAsterisk,
             dataKey: this.getInputName(),
+            inputId: this.inputId,
             // While this component supports binding Formsy, it does not use a Formsy component
             // to render the associated label. As such, the label overlay is always configured as isFormsy={false}.
             isFormsy: false,
             labelClass: labelClassName,
+            required: queryColumn?.required,
         };
+
+        const hasCustomFieldLabel = !!renderFieldLabel;
 
         return (
             <div className="form-group row">
-                {renderFieldLabel ? (
-                    renderFieldLabel(queryColumn)
-                ) : (
+                {hasCustomFieldLabel && (
+                    <label className={labelClassName} htmlFor={queryColumn?.fieldKey}>
+                        {renderFieldLabel(queryColumn)}
+                        {queryColumn?.required && <span className="required-symbol"> *</span>}
+                    </label>
+                )}
+                {!hasCustomFieldLabel && (
                     <FieldLabel
                         column={queryColumn}
                         isDisabled={isDisabled}
@@ -314,5 +323,4 @@ export const FileInput: FC<FileInputProps> = props => {
     }
     return <FileInputImpl {...(props as FileInputImplProps)} formsy={false} />;
 };
-
 FileInput.displayName = 'FileInput';

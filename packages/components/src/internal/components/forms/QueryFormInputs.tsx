@@ -200,7 +200,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (!shouldDisableField) {
                         this._fieldEnabledCount++;
                     }
-                    let showAsteriskSymbol = false;
+                    let showAsteriskSymbol = undefined;
                     if (!checkRequiredFields && required) {
                         col = col.mutate({ required: false });
                         showAsteriskSymbol = showLabelAsterisk;

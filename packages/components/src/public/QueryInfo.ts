@@ -14,6 +14,7 @@ import { insertColumnFilter, QueryColumn } from './QueryColumn';
 import { SchemaQuery } from './SchemaQuery';
 import { QuerySort } from './QuerySort';
 import { naturalSortByProperty } from './sort';
+import { SAMPLE_COLOR_COLUMN_NAME } from '../internal/components/samples/constants';
 
 export enum QueryInfoStatus {
     ok,
@@ -515,5 +516,9 @@ export class QueryInfo {
         return this.importTemplates.filter(
             template => template.url.toLowerCase().indexOf('exportexceltemplate') === -1
         );
+    }
+
+    showSampleColorCol(): boolean {
+        return this.getColumn(SAMPLE_COLOR_COLUMN_NAME)?.shownInDetailsView === true;
     }
 }

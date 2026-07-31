@@ -73,20 +73,19 @@ const subscribe = (isDirty: MutableRefObject<boolean>): (() => void) => {
  * recently mounted consumer is used.
  */
 export const useRouteLeave = (confirmMessage = CONFIRM_MESSAGE): GetSetIsDirty => {
-    // Inherit the current dirty state so a consumer mounted over a dirty consumer starts out dirty as well. The
-    // initial value is only applied on the first render, subsequent isAnyDirty() calls here are discarded by useRef.
-    const isDirty = useRef<boolean>(isAnyDirty());
+    const isDirty = useRef<boolean>(false);
     const setIsDirty = useCallback<SetIsDirty>(dirty => {
         isDirty.current = dirty;
     }, []);
     const getIsDirty = useCallback<GetIsDirty>(() => isDirty.current, []);
 
-    // Register this consumer's dirty bit and attach the beforeunload listener (shared by all consumers) if this is
-    // the first one. BeforeUnload is needed so we can prevent the user from going to URLs outside our App.
-    useEffect(() => subscribe(isDirty), []);
+    // BeforeUnload is needed so we can prevent the user from going to URLs outside our App.
+    useEffect(() => {
+        isDirty.current = isDirty.current || isAnyDirty();
+        return subscribe(isDirty);
+    }, []);
 
-    // usePrompt prevents users from going to URLs within our App. Note that React Router only honors a single blocker,
-    // the most recently registered one, so every consumer must block on the aggregate dirty state rather than its own.
+    // usePrompt prevents users from going to URLs within our App.
     usePrompt({ message: confirmMessage, when: isAnyDirty });
 
     return [getIsDirty, setIsDirty];

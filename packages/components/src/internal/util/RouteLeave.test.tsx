@@ -10,7 +10,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { act, render } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
-import { CONFIRM_MESSAGE, InjectedRouteLeaveProps, useRouteLeave } from './RouteLeave';
+import { CONFIRM_MESSAGE, InjectedRouteLeaveProps, SetIsDirty, useRouteLeave } from './RouteLeave';
 
 const OTHER_ROUTE = '/other';
 const MODAL_MESSAGE = 'Modal confirm message';
@@ -112,9 +112,56 @@ const renderHarness = () => {
     };
 };
 
+const FirstPage: FC<ConsumerProps> = props => <Consumer {...props} />;
+const SecondPage: FC<ConsumerProps> = props => <Consumer {...props} />;
+
+const renderPages = () => {
+    // Handles are populated as each page mounts.
+    const first = {} as InjectedRouteLeaveProps;
+    const second = {} as InjectedRouteLeaveProps;
+
+    const router = createMemoryRouter(
+        [
+            { element: <FirstPage onMount={routeLeave => Object.assign(first, routeLeave)} />, path: '/' },
+            { element: <SecondPage onMount={routeLeave => Object.assign(second, routeLeave)} />, path: OTHER_ROUTE },
+        ],
+        { initialEntries: ['/'] }
+    );
+    render(<RouterProvider router={router} />);
+
+    return {
+        first,
+        router,
+        second,
+        setDirty: (handle: InjectedRouteLeaveProps, dirty: boolean) => act(() => handle.setIsDirty(dirty)),
+    };
+};
+
+/**
+ * Marks its parent's consumer dirty from its own mount effect. React runs child effects before parent effects, so this
+ * fires before the parent consumer has had a chance to inherit.
+ */
+const DirtyOnMount: FC<{ setIsDirty: SetIsDirty }> = ({ setIsDirty }) => {
+    useEffect(() => {
+        setIsDirty(true);
+    }, [setIsDirty]);
+
+    return null;
+};
+
+const PageWithEagerChild: FC<ConsumerProps> = ({ onMount }) => {
+    const [getIsDirty, setIsDirty] = useRouteLeave();
+
+    useEffect(() => {
+        onMount({ getIsDirty, setIsDirty });
+    }, [getIsDirty, onMount, setIsDirty]);
+
+    return <DirtyOnMount setIsDirty={setIsDirty} />;
+};
+
 // Attempt an in-app navigation, flushing the timeout usePrompt uses when the user confirms leaving.
-const navigateAway = async (router: ReturnType<typeof createMemoryRouter>): Promise<void> => {
-    await act(() => router.navigate(OTHER_ROUTE));
+const navigateAway = async (router: ReturnType<typeof createMemoryRouter>, route = OTHER_ROUTE): Promise<void> => {
+    await act(() => router.navigate(route));
     await act(() => new Promise(resolve => setTimeout(resolve, 0)));
 };
 
@@ -241,6 +288,46 @@ describe('useRouteLeave', () => {
             setDirty(modal, false);
 
             expect(modal.getIsDirty()).toBe(false);
+            expect(page.getIsDirty()).toBe(true);
+        });
+
+        test('does not inherit from the consumer it replaces on a route change', async () => {
+            // "Leave anyway" -- the outgoing page stays dirty right up until it unmounts.
+            confirmSpy.mockReturnValue(true);
+            const { first, router, second, setDirty } = renderPages();
+            setDirty(first, true);
+
+            await navigateAway(router);
+
+            expect(confirmSpy).toHaveBeenCalledWith(CONFIRM_MESSAGE);
+            expect(router.state.location.pathname).toEqual(OTHER_ROUTE);
+
+            // The replacing page was never edited. Inheritance is resolved once the outgoing consumer has already
+            // unsubscribed, so a consumer on its way out must not hand its dirty bit to the one taking its place.
+            expect(second.getIsDirty()).toBe(false);
+
+            // Leaving the replacing page must not prompt.
+            confirmSpy.mockClear();
+            await navigateAway(router, '/');
+
+            expect(confirmSpy).not.toHaveBeenCalled();
+            expect(router.state.location.pathname).toEqual('/');
+        });
+
+        test('keeps a dirty bit set by a descendant before the consumer inherits', () => {
+            const page = {} as InjectedRouteLeaveProps;
+            const router = createMemoryRouter(
+                [
+                    {
+                        element: <PageWithEagerChild onMount={routeLeave => Object.assign(page, routeLeave)} />,
+                        path: '/',
+                    },
+                ],
+                { initialEntries: ['/'] }
+            );
+            render(<RouterProvider router={router} />);
+
+            // Inheriting must never clear a bit, only set one: the descendant's setIsDirty(true) ran first.
             expect(page.getIsDirty()).toBe(true);
         });
 

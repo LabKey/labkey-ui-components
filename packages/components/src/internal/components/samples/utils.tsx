@@ -7,7 +7,12 @@ import { Filter, Query, Utils } from '@labkey/api';
 import { User } from '../base/models/User';
 
 import { isFreezerManagementEnabled } from '../../app/products';
-import { isProductFoldersEnabled, isProjectContainer, isSampleStatusEnabled } from '../../app/utils';
+import {
+    hasActiveProjectColors,
+    isProductFoldersEnabled,
+    isProjectContainer,
+    isSampleStatusEnabled,
+} from '../../app/utils';
 
 import { OperationConfirmationData } from '../entities/models';
 
@@ -25,6 +30,7 @@ import {
     DEFAULT_LOCKED_STATUS_COLOR,
     operationRestrictionMessage,
     permittedOps,
+    SAMPLE_COLOR_REQUIRED_COLUMNS,
     SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS,
     SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS,
     SAMPLE_STATE_COLOR_COLUMN_NAME,
@@ -45,6 +51,9 @@ export function getOmittedSampleTypeColumns(user: User, moduleContext?: ModuleCo
     }
     if (!isFreezerManagementEnabled(moduleContext)) {
         cols = cols.concat(SCHEMAS.INVENTORY.INVENTORY_COLS);
+    }
+    if (!hasActiveProjectColors(moduleContext)) {
+        cols = cols.concat(SAMPLE_COLOR_REQUIRED_COLUMNS);
     }
 
     return cols;

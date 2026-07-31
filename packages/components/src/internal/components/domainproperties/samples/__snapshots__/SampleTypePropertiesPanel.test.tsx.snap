@@ -260,6 +260,47 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
               </div>
             </div>
           </div>
+          <div
+            class="row margin-top"
+          >
+            <div
+              class="col-xs-2"
+            >
+              <span>
+                Sample 
+                <span
+                  class="domain-no-wrap"
+                >
+                  Colors
+                  <div
+                    class="overlay-trigger"
+                  >
+                    <span
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                </span>
+              </span>
+            </div>
+            <div
+              class="col-xs-10"
+            >
+              <span
+                class=""
+              >
+                <i
+                  aria-hidden="true"
+                  class="fa fa-spinner fa-pulse"
+                />
+                 
+                Loading...
+              </span>
+            </div>
+          </div>
         </div>
       </div>
       <div
@@ -285,6 +326,11 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
     </div>
     <div
       id="overlay-trigger-portal-label-help-tip4"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip5"
     >
       <div />
     </div>
@@ -543,6 +589,47 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
                 class="color-picker__picker"
               />
             </div>
+          </div>
+        </div>
+        <div
+          class="row margin-top"
+        >
+          <div
+            class="col-xs-2"
+          >
+            <span>
+              Sample 
+              <span
+                class="domain-no-wrap"
+              >
+                Colors
+                <div
+                  class="overlay-trigger"
+                >
+                  <span
+                    class="label-help-target"
+                  >
+                    <span
+                      class="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+                </div>
+              </span>
+            </span>
+          </div>
+          <div
+            class="col-xs-10"
+          >
+            <span
+              class=""
+            >
+              <i
+                aria-hidden="true"
+                class="fa fa-spinner fa-pulse"
+              />
+               
+              Loading...
+            </span>
           </div>
         </div>
       </div>
@@ -1333,12 +1420,12 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
       </div>
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip9"
+      id="overlay-trigger-portal-label-help-tip10"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip10"
+      id="overlay-trigger-portal-label-help-tip11"
     >
       <div />
     </div>

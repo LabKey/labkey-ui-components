@@ -74,8 +74,8 @@
     "vis-network": "~10.1.0"
   },
   "devDependencies": {
-    "@labkey/build": "10.0.1-fb-update-nodejs.2",
-    "@labkey/eslint-config": "1.2.3-fb-update-nodejs.0",
+    "@labkey/build": "10.0.1-fb-update-nodejs.3",
+    "@labkey/eslint-config": "1.2.3-fb-update-nodejs.1",
     "@types/history": "4.7.11",
     "@types/jest": "30.0.0",
     "@types/node": "26.1.2",
@@ -85,7 +85,7 @@
     "blob-polyfill": "9.0.20240710",
     "bootstrap-sass": "3.4.3",
     "cross-env": "10.1.0",
-    "execa": "10.0.0",
+    "execa": "10.0.1",
     "jest": "30.4.2",
     "jest-cli": "30.4.2",
     "jest-environment-jsdom": "30.4.1",

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/test",
-  "version": "1.14.2-fb-update-nodejs.1",
+  "version": "1.14.2-fb-update-nodejs.2",
   "description": "Configurations and utilities for JavaScript-based testing",
   "main": "dist/test.js",
   "exports": {

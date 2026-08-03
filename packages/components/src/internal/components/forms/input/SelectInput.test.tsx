@@ -3,18 +3,29 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 
-
-import { initOptions, SelectInputImpl, SelectInputProps } from './SelectInput';
+import { initOptions, SelectInputImpl, SelectInputImplProps } from './SelectInput';
 
 describe('SelectInput', () => {
-    function getDefaultProps(): Partial<SelectInputProps> {
+    function defaultProps(): SelectInputImplProps {
         return {
+            errorMessage: undefined,
+            errorMessages: undefined,
             formsy: true,
-            getErrorMessage: jest.fn(),
-            getValue: jest.fn(),
+            hasValue: true,
+            isFormDisabled: false,
+            isFormSubmitted: false,
+            isPristine: true,
+            isRequired: false,
+            isValid: true,
+            isValidValue: jest.fn(),
+            name: 'select-input-field',
+            resetValue: jest.fn(),
             setValue: jest.fn(),
+            setValidations: jest.fn(),
+            showError: false,
+            showRequired: false,
         };
     }
 
@@ -22,11 +33,9 @@ describe('SelectInput', () => {
         const containerCls = 'container-class-test';
         const inputCls = 'input-class-test';
 
-        render(
-            <SelectInputImpl {...getDefaultProps()} containerClass={containerCls} inputClass={inputCls} />
-        );
-        expect(document.querySelectorAll('.' + containerCls).length).toBe(1);
-        expect(document.querySelectorAll('.' + inputCls).length).toBe(1);
+        render(<SelectInputImpl {...defaultProps()} containerClass={containerCls} inputClass={inputCls} />);
+        expect(document.querySelectorAll('.' + containerCls)).toHaveLength(1);
+        expect(document.querySelectorAll('.' + inputCls)).toHaveLength(1);
     });
 
     // TODO convert those 2 tests?
@@ -81,26 +90,60 @@ describe('SelectInput', () => {
         const customLabel = 'Jest Custom Label Test';
 
         test('renderFieldLabel', () => {
-            const component = render(<SelectInputImpl {...getDefaultProps()} label={defaultLabel} showLabel />);
+            const component = render(<SelectInputImpl {...defaultProps()} label={defaultLabel} showLabel />);
             validateFieldLabel(component, defaultLabel + ' ');
         });
         test('renderFieldLabel, customLabel', () => {
-            const component = render(<SelectInputImpl {...getDefaultProps()} label={defaultLabel} showLabel renderFieldLabel={() => <div>{customLabel}</div>} />);
+            const component = render(
+                <SelectInputImpl
+                    {...defaultProps()}
+                    label={defaultLabel}
+                    renderFieldLabel={() => <div>{customLabel}</div>}
+                    showLabel
+                />
+            );
             validateFieldLabel(component, customLabel);
         });
 
         test('renderFieldLabel, required', () => {
-            const component = render(<SelectInputImpl {...getDefaultProps()} label={defaultLabel} showLabel required />);
+            const component = render(<SelectInputImpl {...defaultProps()} label={defaultLabel} required showLabel />);
             validateFieldLabel(component, defaultLabel + ' * ');
         });
 
         test('renderFieldLabel, showLabel=false', () => {
-            const component = render(<SelectInputImpl {...getDefaultProps()} label={defaultLabel} showLabel={false} required />);
+            const component = render(
+                <SelectInputImpl {...defaultProps()} label={defaultLabel} required showLabel={false} />
+            );
             validateFieldLabel(component);
         });
-
     });
 
+    describe('cacheKey', () => {
+        test('reloads async options when changed', async () => {
+            const loadOptions = jest.fn().mockResolvedValue([]);
+            const props = defaultProps();
+
+            const { rerender } = render(<SelectInputImpl {...props} cacheKey={0} loadOptions={loadOptions} />);
+            await waitFor(() => expect(loadOptions).toHaveBeenCalledTimes(1));
+
+            // Re-rendering with an unchanged cacheKey should not reload options
+            rerender(<SelectInputImpl {...props} cacheKey={0} loadOptions={loadOptions} />);
+            expect(loadOptions).toHaveBeenCalledTimes(1);
+
+            // Changing the cacheKey remounts the underlying async select, reloading the default options
+            rerender(<SelectInputImpl {...props} cacheKey={1} loadOptions={loadOptions} />);
+            await waitFor(() => expect(loadOptions).toHaveBeenCalledTimes(2));
+        });
+
+        test('ignored for non-async configurations', () => {
+            const props = defaultProps();
+
+            const { rerender } = render(<SelectInputImpl {...props} cacheKey={0} options={[]} />);
+            rerender(<SelectInputImpl {...props} cacheKey={1} options={[]} />);
+
+            expect(document.querySelectorAll('.select-input')).toHaveLength(1);
+        });
+    });
 
     describe('initOptions', () => {
         test('empty values', () => {

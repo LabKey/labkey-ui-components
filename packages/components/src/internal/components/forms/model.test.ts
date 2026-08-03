@@ -2,14 +2,37 @@
  * Copyright (c) 2022-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { fromJS } from 'immutable';
+import { fromJS, List } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn } from '../../../public/QueryColumn';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { buildValueFilter, findNotFoundValues, parseSelectedQuery, QuerySelectModel, queryColumnNames } from './model';
+import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
+
+import { Row } from '../../query/selectRows';
+
+import {
+    appendMultiValues,
+    buildValueFilter,
+    fetchSelectedValues,
+    findNotFoundValues,
+    getAddedSelectionValue,
+    parseRawValue,
+    parseSelectedQuery,
+    queryColumnNames,
+    QuerySelectModel,
+    setSelection,
+    setSelectionWithResults,
+    valuesAreLoaded,
+} from './model';
+
+jest.mock('../../query/api', () => ({
+    ...jest.requireActual('../../query/api'),
+    selectRowsDeprecated: jest.fn(),
+}));
 
 describe('form actions', () => {
     const setSelectionModel = new QuerySelectModel({
@@ -207,6 +230,258 @@ describe('form actions', () => {
         test('handles mixed string/number types across filters and item values', () => {
             const mixedTypes = { one: { id: { value: '1' } }, two: { id: { value: 2 } } };
             expect(findNotFoundValues(mixedTypes, filter([1, 2, 3]), 'id')).toEqual(['3']);
+        });
+    });
+
+    describe('parseRawValue', () => {
+        test('empty values', () => {
+            expect(parseRawValue(undefined, false, ',')).toEqual([]);
+            expect(parseRawValue(null, true, ',')).toEqual([]);
+            expect(parseRawValue('', true, ',')).toEqual([]);
+        });
+
+        test('scalar values', () => {
+            expect(parseRawValue(5, false, ',')).toEqual([5]);
+            expect(parseRawValue('word', false, ',')).toEqual(['word']);
+            expect(parseRawValue(false, false, ',')).toEqual([false]);
+        });
+
+        test('array and List values', () => {
+            expect(parseRawValue([1, 2], true, ',')).toEqual([1, 2]);
+            expect(parseRawValue(List([1, 2]), true, ',')).toEqual([1, 2]);
+        });
+
+        test('delimited string values', () => {
+            expect(parseRawValue('a,b', true, ',')).toEqual(['a', 'b']);
+            expect(parseRawValue('a;b', true, ';')).toEqual(['a', 'b']);
+            // when not multiple, strings are not split
+            expect(parseRawValue('a,b', false, ',')).toEqual(['a,b']);
+        });
+    });
+
+    describe('appendMultiValues', () => {
+        test('empty existing selection', () => {
+            expect(appendMultiValues(undefined, [1, 2], ',')).toEqual('1,2');
+            expect(appendMultiValues(null, [5], ',')).toEqual('5');
+            expect(appendMultiValues('', [5], ',')).toEqual('5');
+        });
+
+        test('appends new values', () => {
+            expect(appendMultiValues('1,2', [3], ',')).toEqual('1,2,3');
+            expect(appendMultiValues([1, 2], [3, 4], ',')).toEqual('1,2,3,4');
+        });
+
+        test('skips values already selected (string/number equality)', () => {
+            // 2 is already selected (as the string "2"), so it is not appended again
+            expect(appendMultiValues('1,2', [2], ',')).toEqual('1,2');
+            expect(appendMultiValues('1,2', [2, 3], ',')).toEqual('1,2,3');
+            expect(appendMultiValues([1, 2], [2, 3], ',')).toEqual('1,2,3');
+        });
+
+        test('de-dupes repeats within addedValues', () => {
+            expect(appendMultiValues('1', [4, 4], ',')).toEqual('1,4');
+        });
+
+        test('empty additions returns the existing selection', () => {
+            expect(appendMultiValues('1,2', [], ',')).toEqual('1,2');
+            expect(appendMultiValues('1,2', undefined, ',')).toEqual('1,2');
+        });
+
+        test('respects the delimiter', () => {
+            expect(appendMultiValues('a;b', ['c'], ';')).toEqual('a;b;c');
+            expect(appendMultiValues('a;b', ['b', 'c'], ';')).toEqual('a;b;c');
+        });
+    });
+
+    const loadedResults = fromJS({
+        '1': { RowId: { value: 1 }, Name: { value: 'Alpha' } },
+        '2': { RowId: { value: 2 }, Name: { value: 'Beta' } },
+    });
+
+    const singleModel = new QuerySelectModel({
+        allResults: loadedResults,
+        delimiter: ',',
+        displayColumn: 'Name',
+        isInit: true,
+        valueColumn: 'RowId',
+    });
+
+    const multiModel = singleModel.merge({ multiple: true }) as QuerySelectModel;
+
+    const KEY = new SchemaQuery('test', 'query').getKey();
+
+    function makeResult(rows: Record<string, any>): ISelectRowsResult {
+        return {
+            key: KEY,
+            models: { [KEY]: rows },
+            orderedModels: List(Object.keys(rows)),
+            queries: {},
+            rowCount: Object.keys(rows).length,
+        };
+    }
+
+    describe('valuesAreLoaded', () => {
+        test('empty value', () => {
+            expect(valuesAreLoaded(singleModel, undefined)).toBe(true);
+            expect(valuesAreLoaded(singleModel, null)).toBe(true);
+            expect(valuesAreLoaded(singleModel, '')).toBe(true);
+        });
+
+        test('single value', () => {
+            expect(valuesAreLoaded(singleModel, 1)).toBe(true);
+            expect(valuesAreLoaded(singleModel, '1')).toBe(true);
+            expect(valuesAreLoaded(singleModel, 3)).toBe(false);
+        });
+
+        test('multiple values', () => {
+            expect(valuesAreLoaded(multiModel, [1, 2])).toBe(true);
+            expect(valuesAreLoaded(multiModel, '1,2')).toBe(true);
+            expect(valuesAreLoaded(multiModel, [1, 3])).toBe(false);
+            expect(valuesAreLoaded(multiModel, '1,3')).toBe(false);
+        });
+
+        test('resolves against selectedItems', () => {
+            const model = new QuerySelectModel({
+                delimiter: ',',
+                displayColumn: 'Name',
+                isInit: true,
+                selectedItems: fromJS({ '9': { RowId: { value: 9 }, Name: { value: 'Iota' } } }),
+                valueColumn: 'RowId',
+            });
+            expect(valuesAreLoaded(model, 9)).toBe(true);
+            expect(valuesAreLoaded(model, 1)).toBe(false);
+        });
+    });
+
+    describe('getAddedSelectionValue', () => {
+        const makeResponse = (values: (number | string)[]): Row[] => values.map(value => ({ RowId: { value } }));
+
+        test('single-select returns the first added value', () => {
+            expect(getAddedSelectionValue(singleModel, makeResponse([7, 8]))).toEqual(7);
+        });
+
+        test('multi-select appends added values to the current selection', () => {
+            const model = multiModel.merge({ rawSelectedValue: '1,2' }) as QuerySelectModel;
+            expect(getAddedSelectionValue(model, makeResponse([3, 4]))).toEqual('1,2,3,4');
+        });
+
+        test('multi-select skips added values already selected', () => {
+            const model = multiModel.merge({ rawSelectedValue: '1,2' }) as QuerySelectModel;
+            expect(getAddedSelectionValue(model, makeResponse([2, 3]))).toEqual('1,2,3');
+        });
+
+        test('multi-select with no current selection joins the added values', () => {
+            expect(getAddedSelectionValue(multiModel, makeResponse([3, 4]))).toEqual('3,4');
+        });
+    });
+
+    describe('setSelection', () => {
+        test('resolves single value across types', () => {
+            const model = setSelection(singleModel, '2');
+            expect(model.rawSelectedValue).toBe('2');
+            expect(model.selectedItems.size).toBe(1);
+            expect(model.selectedItems.getIn(['2', 'RowId', 'value'])).toBe(2);
+            expect(model.selectedQuery).toBe('Beta');
+        });
+
+        test('clears selection', () => {
+            const model = setSelection(setSelection(singleModel, 1), undefined);
+            expect(model.selectedItems.size).toBe(0);
+            expect(model.selectedQuery).toBe('');
+        });
+    });
+
+    describe('setSelectionWithResults', () => {
+        const gammaRow = { RowId: { value: 3 }, Name: { value: 'Gamma' } };
+
+        test('single value not previously loaded', () => {
+            const model = setSelectionWithResults(singleModel, makeResult({ '3': gammaRow }), 3, true);
+
+            expect(model.rawSelectedValue).toBe(3);
+            expect(model.allResults.size).toBe(3);
+            expect(model.selectedItems.size).toBe(1);
+            expect(model.selectedItems.getIn(['3', 'Name', 'value'])).toBe('Gamma');
+            expect(model.selectedQuery).toBe('Gamma');
+        });
+
+        test('multiple values appended to loaded values', () => {
+            const model = setSelectionWithResults(multiModel, makeResult({ '3': gammaRow }), '1,3', true);
+
+            expect(model.rawSelectedValue).toBe('1,3');
+            expect(model.allResults.size).toBe(3);
+            expect(model.selectedItems.size).toBe(2);
+            expect(model.selectedQuery).toBe('Alpha,Gamma');
+            // The previously loaded row resolves locally and is not marked as "not found"
+            expect(model.selectedItems.getIn(['1', 'RowId', 'notFound'])).toBeUndefined();
+        });
+
+        test('unresolved value marked as not found', () => {
+            const model = setSelectionWithResults(singleModel, makeResult({}), 99, true);
+
+            expect(model.rawSelectedValue).toBe(99);
+            expect(model.selectedItems.size).toBe(1);
+            expect(model.selectedItems.getIn(['99', 'RowId', 'notFound'])).toBe(true);
+            expect(model.selectedItems.getIn(['99', 'RowId', 'displayValue'])).toBe('<99>');
+        });
+
+        test('unresolved value skipped when notFoundValuesEnabled is false', () => {
+            const model = setSelectionWithResults(singleModel, makeResult({}), 99, false);
+
+            expect(model.rawSelectedValue).toBe(99);
+            expect(model.selectedItems.size).toBe(0);
+        });
+
+        test('partially resolved multiple values', () => {
+            const model = setSelectionWithResults(multiModel, makeResult({ '3': gammaRow }), '3,99', true);
+
+            expect(model.selectedItems.size).toBe(2);
+            expect(model.selectedItems.getIn(['3', 'Name', 'value'])).toBe('Gamma');
+            expect(model.selectedItems.getIn(['99', 'RowId', 'notFound'])).toBe(true);
+        });
+    });
+
+    describe('fetchSelectedValues', () => {
+        const selectRowsDeprecatedMock = selectRowsDeprecated as jest.Mock;
+
+        const fetchModel = singleModel.merge({
+            containerPath: '/Fetch/Test',
+            queryInfo: new QueryInfo({ pkCols: ['RowId'] }),
+            schemaQuery: new SchemaQuery('exp', 'samples'),
+        }) as QuerySelectModel;
+
+        beforeEach(() => {
+            selectRowsDeprecatedMock.mockReset();
+            selectRowsDeprecatedMock.mockResolvedValue(makeResult({}));
+        });
+
+        test('single value', async () => {
+            await fetchSelectedValues(fetchModel, 3);
+
+            expect(selectRowsDeprecatedMock).toHaveBeenCalledTimes(1);
+            const options = selectRowsDeprecatedMock.mock.calls[0][0];
+            expect(options.schemaName).toBe('exp');
+            expect(options.queryName).toBe('samples');
+            expect(options.containerPath).toBe('/Fetch/Test');
+            expect(options.columns).toEqual(expect.arrayContaining(['RowId', 'Name']));
+            expect(options.filterArray).toHaveLength(1);
+            expect(options.filterArray[0].getColumnName()).toBe('RowId');
+            expect(options.filterArray[0].getValue()).toBe(3);
+        });
+
+        test('multiple values with queryFilters', async () => {
+            const model = fetchModel.merge({
+                multiple: true,
+                queryFilters: List([Filter.create('Status', 'Active')]),
+            }) as QuerySelectModel;
+
+            await fetchSelectedValues(model, [1, 3]);
+
+            const options = selectRowsDeprecatedMock.mock.calls[0][0];
+            expect(options.filterArray).toHaveLength(2);
+            expect(options.filterArray[0].getColumnName()).toBe('Status');
+            expect(options.filterArray[1].getColumnName()).toBe('RowId');
+            expect(options.filterArray[1].getValue()).toEqual([1, 3]);
+            expect(options.filterArray[1].getFilterType().getURLSuffix()).toBe(Filter.Types.IN.getURLSuffix());
         });
     });
 });

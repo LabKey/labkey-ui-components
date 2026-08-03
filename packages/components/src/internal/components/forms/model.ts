@@ -11,7 +11,7 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { getQueryDetails, ISelectRowsResult, searchRows, selectRowsDeprecated } from '../../query/api';
 import { similaritySortFactory } from '../../util/similaritySortFactory';
-import { caseInsensitive, splitMultiValueForImport } from '../../util/utils';
+import { caseInsensitive, joinMultiValueForExport, splitMultiValueForImport } from '../../util/utils';
 
 import { naturalSort } from '../../../public/sort';
 
@@ -94,7 +94,7 @@ function formatGroupedResults(model: QuerySelectModel, results: Map<string, any>
 }
 
 /**
- * Given a model this method returns "options" that are consumable by a ReactSelect.
+ * Given a model, this method returns "options" that are consumable by a ReactSelect.
  * @param model for which results are formatted
  * @param result select rows result
  * @param token an optional search token that will be used to sort the results
@@ -130,6 +130,45 @@ export function saveSearchResults(model: QuerySelectModel, result: ISelectRowsRe
     }) as QuerySelectModel;
 }
 
+/** Normalizes a raw selection value into an array of values. */
+export function parseRawValue(value: any, multiple: boolean, delimiter: string): any[] {
+    if (!validValue(value)) return [];
+    if (Array.isArray(value)) return value;
+    if (List.isList(value)) return (value as List<any>).toArray();
+    if (multiple && typeof value === 'string') return splitMultiValueForImport(value, delimiter);
+    return [value];
+}
+
+/**
+ * Appends added value(s) to a raw multi-value selection, skipping values already present and de-duping repeats.
+ * Returns the joined delimited value.
+ */
+export function appendMultiValues(rawSelectedValue: any, addedValues: any[], delimiter: string): string {
+    const existing = parseRawValue(rawSelectedValue, true, delimiter);
+    const seen = new Set(existing.map(v => v?.toString()));
+    const additions = (addedValues ?? []).filter(v => {
+        const key = v?.toString();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+    return joinMultiValueForExport(existing.concat(additions), delimiter);
+}
+
+/**
+ * Resolves the selection value to apply after entities are added: for multi-select, the added rows' values
+ * appended to the current selection; for single-select, the first added row's value.
+ */
+export function getAddedSelectionValue(model: QuerySelectModel, rows: Row[]): string | string[] {
+    const addedValues = rows.map(row => resolveDetailFieldValue(caseInsensitive(row, model.valueColumn)));
+
+    if (model.multiple) {
+        return appendMultiValues(model.rawSelectedValue, addedValues, model.delimiter);
+    }
+
+    return addedValues[0];
+}
+
 function getSelectedOptions(model: QuerySelectModel, value: any): Map<string, any> {
     // if no "value", just return currently selectedItems
     if (value === undefined || value === null || value === '') {
@@ -142,7 +181,7 @@ function getSelectedOptions(model: QuerySelectModel, value: any): Map<string, an
 
     // multi-value case
     if (model.multiple === true) {
-        const values = splitMultiValueForImport(value.toString(), model.delimiter);
+        const values = parseRawValue(value, true, model.delimiter).map(v => v.toString());
         return sources
             .filter(result => {
                 const resultValue = result.getIn(keyPath);
@@ -152,7 +191,7 @@ function getSelectedOptions(model: QuerySelectModel, value: any): Map<string, an
     }
 
     // single-value case
-    return sources.filter(source => source.getIn(keyPath) === value).toMap();
+    return sources.filter(source => source.getIn(keyPath)?.toString() === value.toString()).toMap();
 }
 
 // "selectedQuery" should match against displayColumn as that is what the user is typing against
@@ -374,29 +413,130 @@ function validValue(value: any): boolean {
     return value !== undefined && value !== null && value !== '';
 }
 
-function initSelectedItems(
-    props: QuerySelectOwnProps,
-    queryInfo: QueryInfo,
-    valueColumn: string,
-    displayColumn: string,
-    groupByColumn: string,
-    filter: Filter.IFilter
-): Promise<ISelectRowsResult> {
-    const filters = props.queryFilters ? props.queryFilters.toArray() : [];
+interface SelectValueRowsOptions {
+    columns: string[];
+    containerFilter?: Query.ContainerFilter;
+    containerPath?: string;
+    queryFilters?: List<Filter.IFilter>;
+    queryParams?: Record<string, any>;
+    schemaQuery: SchemaQuery;
+}
+
+function selectValueRows(options: SelectValueRowsOptions, filter: Filter.IFilter): Promise<ISelectRowsResult> {
+    const filters = options.queryFilters ? options.queryFilters.toArray() : [];
     filters.push(filter);
 
-    const { queryName, schemaName, viewName } = props.schemaQuery;
+    const { queryName, schemaName, viewName } = options.schemaQuery;
 
     return selectRowsDeprecated({
-        columns: queryColumnNames(queryInfo, displayColumn, valueColumn, props.requiredColumns, groupByColumn),
-        containerFilter: props.containerFilter,
-        containerPath: props.containerPath,
+        columns: options.columns,
+        containerFilter: options.containerFilter,
+        containerPath: options.containerPath,
         filterArray: filters,
-        parameters: props.queryParams,
+        parameters: options.queryParams,
         queryName,
         schemaName,
         viewName,
     });
+}
+
+/**
+ * Fetches the row(s) matching the given selection value(s) using the model's configured columns and filters.
+ * Useful for resolving a value that is not present in the model's locally loaded results.
+ * @see setSelectionWithResults
+ */
+export function fetchSelectedValues(model: QuerySelectModel, value: any): Promise<ISelectRowsResult> {
+    const { filter } = buildValueFilter(value, model.valueColumn, model.multiple, model.delimiter);
+
+    return selectValueRows(
+        {
+            columns: model.queryColumnNames,
+            containerFilter: model.containerFilter,
+            containerPath: model.containerPath,
+            queryFilters: model.queryFilters,
+            queryParams: model.queryParams,
+            schemaQuery: model.schemaQuery,
+        },
+        filter
+    );
+}
+
+function notFoundRow(valueColumn: string, value: string): Record<string, any> {
+    return { [valueColumn]: { displayValue: `<${value}>`, notFound: true, value } };
+}
+
+/** Mutates "selectedRows" adding placeholder rows for any expected values that failed to resolve. */
+function applyNotFoundValues(
+    selectedRows: Record<string, any>,
+    filter: Filter.IFilter,
+    valueColumn: string,
+    expectedValueCount: number
+): void {
+    if (!selectedRows || Object.keys(selectedRows).length === expectedValueCount) return;
+
+    findNotFoundValues(selectedRows, filter, valueColumn).forEach(v => {
+        if (!selectedRows.hasOwnProperty(v)) {
+            selectedRows[v] = notFoundRow(valueColumn, v);
+        }
+    });
+}
+
+/**
+ * Merges the rows from the given result into the model's results and then applies the selection of the
+ * given value. This leaves the model in a consistent state when selecting value(s) whose backing rows
+ * were not previously loaded into the model's local results.
+ * @see fetchSelectedValues
+ */
+export function setSelectionWithResults(
+    model: QuerySelectModel,
+    result: ISelectRowsResult,
+    value: any,
+    notFoundValuesEnabled?: boolean
+): QuerySelectModel {
+    let allResults = model.allResults.merge(fromJS(result.models[result.key]));
+    let updated = setSelection(model.merge({ allResults }) as QuerySelectModel, value);
+
+    if (notFoundValuesEnabled) {
+        const { expectedValueCount, filter } = buildValueFilter(
+            value,
+            model.valueColumn,
+            model.multiple,
+            model.delimiter
+        );
+
+        // Values that fail to resolve against the combined (fetched + previously loaded) results
+        // are marked with "not found" placeholder rows.
+        if (updated.selectedItems.size !== expectedValueCount) {
+            const placeholders: Record<string, any> = {};
+            findNotFoundValues(updated.selectedItems.toJS(), filter, model.valueColumn).forEach(v => {
+                placeholders[v] = notFoundRow(model.valueColumn, v);
+            });
+
+            if (Object.keys(placeholders).length > 0) {
+                allResults = allResults.merge(fromJS(placeholders));
+                updated = setSelection(model.merge({ allResults }) as QuerySelectModel, value);
+            }
+        }
+    }
+
+    return updated;
+}
+
+/** Returns true if all the requested value(s) can be resolved from results already loaded into the model. */
+export function valuesAreLoaded(model: QuerySelectModel, value: any): boolean {
+    const values = parseRawValue(value, model.multiple, model.delimiter).filter(validValue);
+    if (values.length === 0) return true;
+
+    // model.valueColumn is fieldKey, not column name
+    const keyPath = [QueryKey.decodePart(model.valueColumn), 'value'];
+    const loaded = model.allResults
+        .merge(model.selectedItems)
+        .map(row => row.getIn(keyPath))
+        .filter(validValue)
+        .map(v => v.toString())
+        .toSet();
+
+    return values.every(v => loaded.has(v.toString()));
 }
 
 export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<QuerySelectModelProps>> {
@@ -407,16 +547,20 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<Partial<Qu
 
     if (validValue(value)) {
         const { expectedValueCount, filter } = buildValueFilter(value, valueColumn, multiple, delimiter);
-        selectedItems = await initSelectedItems(props, queryInfo, valueColumn, displayColumn, groupByColumn, filter);
-        const selectedRows = selectedItems.models[selectedItems.key];
+        selectedItems = await selectValueRows(
+            {
+                columns: queryColumnNames(queryInfo, displayColumn, valueColumn, props.requiredColumns, groupByColumn),
+                containerFilter: props.containerFilter,
+                containerPath: props.containerPath,
+                queryFilters: props.queryFilters,
+                queryParams: props.queryParams,
+                schemaQuery: props.schemaQuery,
+            },
+            filter
+        );
 
-        if (notFoundValuesEnabled && selectedRows && Object.keys(selectedRows).length !== expectedValueCount) {
-            const notFoundValues = findNotFoundValues(selectedRows, filter, valueColumn);
-            notFoundValues.forEach(v => {
-                if (!selectedRows.hasOwnProperty(v)) {
-                    selectedRows[v] = { [valueColumn]: { displayValue: `<${v}>`, notFound: true, value: v } };
-                }
-            });
+        if (notFoundValuesEnabled) {
+            applyNotFoundValues(selectedItems.models[selectedItems.key], filter, valueColumn, expectedValueCount);
         }
     }
 

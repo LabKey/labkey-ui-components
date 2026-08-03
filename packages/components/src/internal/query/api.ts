@@ -10,7 +10,7 @@ import { ActionURL, Ajax, AuditBehaviorTypes, Filter, Query, QueryDOM, Utils } f
 import { ExtendedMap } from '../../public/ExtendedMap';
 
 import { getQueryMetadata } from '../global';
-import { resolveKeyFromJson, SchemaQuery } from '../../public/SchemaQuery';
+import { resolveKeyFromJson, SchemaQuery, SchemaQueryKey } from '../../public/SchemaQuery';
 import {
     isAllProductFoldersFilteringEnabled,
     isProductFoldersDataListingScopedToFolder,
@@ -449,7 +449,7 @@ export function isSelectRowMetadataRequired(includeMetadata?: boolean, columns?:
 }
 
 export interface ISelectRowsResult {
-    key: string;
+    key: SchemaQueryKey;
     messages?: List<Map<string, string>>;
     models: any;
     orderedModels: List<any>;

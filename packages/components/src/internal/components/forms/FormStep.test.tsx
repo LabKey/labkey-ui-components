@@ -8,8 +8,8 @@ import { render } from '@testing-library/react';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './FormStep';
 
 interface OwnProps {
-    step?: number;
     initialStep?: number;
+    step?: number;
 }
 type Props = OwnProps & WithFormStepsProps;
 
@@ -41,7 +41,7 @@ const FormStepTest = withFormSteps(FormStepTestImpl, {
     hasDependentSteps: true,
 });
 
-describe('<FormStep/>', () => {
+describe('FormStep', () => {
     test('default props', () => {
         const { container } = render(<FormStepTest />);
         const tabs = container.querySelectorAll('.form-step-tab');

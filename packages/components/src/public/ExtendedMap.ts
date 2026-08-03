@@ -2,20 +2,20 @@
  * Copyright (c) 2023-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-type KeyType = string | number | symbol;
-type MapType<K extends KeyType, V> = Record<K, V> | Map<K, V>;
+export type KeyType = number | string | symbol;
+type MapType<K extends KeyType, V> = Map<K, V> | Record<K, V>;
 type Mapper<K extends KeyType, V, T> = (value: V, key: K, original: ExtendedMap<K, V>) => T;
 type ArrayMapper<V, T> = (value: V, index: number, array: V[]) => T;
 type FilterFn<K extends KeyType, V> = (value: V, key: K, original: ExtendedMap<K, V>) => boolean;
 type Reducer<K extends KeyType, V, T> = (result: T, value: V, key: K, original: ExtendedMap<K, V>) => T;
 
 /**
- * ExtendedMap is an extended version of the built in Map class. It has an improved constructor (that takes Records,
+ * ExtendedMap is an extended version of the built-in Map class. It has an improved constructor (that takes Records,
  * Map, or ExtendedMap objects), as well as several convenience methods for mapping, reducing, and filtering the map or
- * values. This class is an Ordered Map, because it extends the Map class which is ordered.
+ * values. This class is an ordered map because it extends the Map class which is ordered.
  */
-export class ExtendedMap<K extends KeyType, V> extends Map {
-    constructor(...data: Array<Record<KeyType, V> | Map<KeyType, V>>) {
+export class ExtendedMap<K extends KeyType, V> extends Map<K, V> {
+    constructor(...data: (Map<KeyType, V> | Record<KeyType, V>)[]) {
         super();
 
         for (const dataObject of data) {
@@ -23,12 +23,12 @@ export class ExtendedMap<K extends KeyType, V> extends Map {
 
             if (dataObject instanceof Map) {
                 for (const [key, value] of dataObject) {
-                    this.set(key, value);
+                    this.set(key as K, value);
                 }
             } else {
                 // Assume Record type
                 for (const key of Object.keys(dataObject)) {
-                    this.set(key, dataObject[key]);
+                    this.set(key as K, dataObject[key]);
                 }
             }
         }
@@ -36,7 +36,7 @@ export class ExtendedMap<K extends KeyType, V> extends Map {
 
     /**
      * Use this when you want to map or reduce over the values of the Map, or otherwise need an array. If you just need
-     * to iterate through the values you should be able to use the values() method.
+     * to iterate through the values, you should be able to use the values() method.
      */
     get valueArray(): V[] {
         return Array.from(this.values());
@@ -44,7 +44,7 @@ export class ExtendedMap<K extends KeyType, V> extends Map {
 
     /**
      * Use this when you want to map or reduce over the keys of the Map, or otherwise need an array. If you just need
-     * to iterate through the keys you should be able to use the keys() method.
+     * to iterate through the keys, you should be able to use the keys() method.
      */
     get keyArray(): KeyType[] {
         return Array.from(this.keys());
@@ -67,7 +67,7 @@ export class ExtendedMap<K extends KeyType, V> extends Map {
 
     /**
      * Iterates over the ExtendedMap, calling the provided Reducer function for each key/value. Allows you to completely
-     * transform the ExtendedMap object into something else (e.g. a string, a filtered version of the map).
+     * transform the ExtendedMap object into something else (e.g., a string, a filtered version of the map).
      * @param reducer
      * @param initialReduction
      */
@@ -82,8 +82,8 @@ export class ExtendedMap<K extends KeyType, V> extends Map {
     }
 
     /**
-     * Creates a new ExtendedMap based on the filter function a passed in. Iterates through all of the values of the map
-     * and calls the filter function with the key, value, and whole map. If the filter function returns true we include
+     * Creates a new ExtendedMap based on the filter function a passed in. Iterates through all the values of the map
+     * and calls the filter function with the key, value, and whole map. If the filter function returns true, we include
      * the key/value pair in the new map.
      * @param filterFn
      */
@@ -113,18 +113,18 @@ export class ExtendedMap<K extends KeyType, V> extends Map {
      * Creates a new ExtendedMap based on this map and the map passed in as an argument.
      * @param otherMap
      */
-    merge(otherMap: MapType<K, V> | ExtendedMap<K, V>): ExtendedMap<K, V> {
+    merge(otherMap: ExtendedMap<K, V> | MapType<K, V>): ExtendedMap<K, V> {
         return new ExtendedMap<K, V>(this, otherMap);
     }
 
     /**
-     * Inserts the contents of a map at the designated index. If the given index is out of range of the existing map we
-     * return a copy of the current map. If the given index is equal to the current size of the map we append the
+     * Inserts the contents of a map at the designated index. If the given index is out of range of the existing map, we
+     * return a copy of the current map. If the given index is equal to the current size of the map, we append the
      * incoming otherMap.
-     * @param index: the index where to insert the otherMap
-     * @param otherMap: the otherMap to insert
+     * @param index the index where to insert the otherMap
+     * @param otherMap the otherMap to insert
      */
-    mergeAt(index: number, otherMap: MapType<K, V> | ExtendedMap<K, V>): ExtendedMap<K, V> {
+    mergeAt(index: number, otherMap: ExtendedMap<K, V> | MapType<K, V>): ExtendedMap<K, V> {
         // Invalid, return a copy of this map
         if (index < 0 || index > this.size) return new ExtendedMap<K, V>(this);
 

@@ -2,8 +2,18 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { Component, CSSProperties, FC, FocusEvent, KeyboardEvent, ReactNode } from 'react';
-import ReactSelect, { components } from 'react-select';
+import React, {
+    Component,
+    CSSProperties,
+    FC,
+    FocusEvent,
+    KeyboardEvent,
+    ReactNode,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from 'react';
+import ReactSelect, { components, MenuListProps, SelectInstance } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import AsyncCreatableSelect from 'react-select/async-creatable';
 import CreatableSelect from 'react-select/creatable';
@@ -122,6 +132,45 @@ const CustomOption = props => {
     );
 };
 
+interface MenuListWithFooterProps extends MenuListProps {
+    footer: ReactNode;
+}
+
+// ReactSelect's <MenuPlacer/> computes a "maxHeight" for the menu by measuring the rendered menu element (which
+// includes our footer); however, it only applies that value to the scrollable menu list. Anything rendered alongside
+// the list, such as our footer, is additive which causes the menu to extend past the space that was budgeted for it
+// (e.g., off the bottom of the viewport). Here we measure the footer and subtract its height from the "maxHeight"
+// given to the list so the menu, as a whole, honors the computed budget.
+const MenuListWithFooter: FC<MenuListWithFooterProps> = ({ footer, ...menuListProps }) => {
+    const footerRef = useRef<HTMLDivElement>(null);
+    const [footerHeight, setFooterHeight] = useState<number>(0);
+
+    useLayoutEffect(() => {
+        const el = footerRef.current;
+        if (!el) return undefined;
+
+        const measure = (): void => setFooterHeight(el.getBoundingClientRect().height);
+        measure();
+
+        const observer = new ResizeObserver(measure);
+        observer.observe(el);
+
+        return () => observer.disconnect();
+    }, []);
+
+    return (
+        <>
+            <components.MenuList {...menuListProps} maxHeight={Math.max(menuListProps.maxHeight - footerHeight, 0)}>
+                {menuListProps.children}
+            </components.MenuList>
+            <div className="select-input__menu-footer" ref={footerRef}>
+                {footer}
+            </div>
+        </>
+    );
+};
+MenuListWithFooter.displayName = 'MenuListWithFooter';
+
 // Molded from @types/react-select/src/filter.d.ts
 export interface SelectInputOption extends Record<string, any> {
     data?: any;
@@ -137,6 +186,9 @@ export type SelectInputChange = (
     selectedOptions: SelectInputOption | SelectInputOption[],
     props: Partial<SelectInputProps>
 ) => void;
+
+export type SelectInputOnFocus = (event: FocusEvent<HTMLElement>, select: SelectInstance) => void;
+export type SelectInputOnKeyDown = (event: KeyboardEvent<HTMLElement>, select: SelectInstance) => void;
 
 // Copied from @types/react-select/src/Select.d.ts
 export type FilterOption = ((option: SelectInputOption, rawInput: string) => boolean) | null;
@@ -161,7 +213,7 @@ function initOptionFromPrimitive(value: number | string, props: SelectInputProps
 }
 
 // Used to initialize the selected options in `state` when `autoValue` is enabled.
-// This will accept a primitive value (e.g. 5) and resolve it to an option (e.g. { label: 'Awesome', value: 5 })
+// This will accept a primitive value (e.g., 5) and resolve it to an option (e.g., { label: 'Awesome', value: 5 })
 // if the option is available. Supports mapping single or multiple values.
 export function initOptions(props: SelectInputProps): SelectInputOption | SelectInputOption[] {
     const { value, options } = props;
@@ -200,6 +252,13 @@ export interface SelectInputProps {
     autoFocus?: boolean;
     autoValue?: boolean;
     backspaceRemovesValue?: boolean;
+    /**
+     * When the value of this prop changes, the underlying asynchronous React Select is remounted, clearing
+     * its cached options and reloading the default options. Use this to invalidate previously loaded options
+     * when the option set is known to have changed (e.g., a new option was created). Only applies to
+     * asynchronous configurations (i.e., when "loadOptions" is provided).
+     */
+    cacheKey?: number | string;
     cacheOptions?: boolean;
     clearable?: boolean;
     clearCacheOnChange?: boolean;
@@ -231,6 +290,7 @@ export interface SelectInputProps {
     labelClass?: string;
     labelKey?: string;
     loadOptions?: (input: string) => Promise<SelectInputOption[]>;
+    menuFooter?: ReactNode;
     menuPlacement?: string;
     menuPosition?: string;
     multiple?: boolean;
@@ -239,8 +299,8 @@ export interface SelectInputProps {
     onBlur?: (event: FocusEvent<HTMLElement>) => void;
     // TODO: this is getting confused with formsy on change, need to separate
     onChange?: SelectInputChange;
-    onFocus?: (event: FocusEvent<HTMLElement>, selectRef) => void;
-    onKeyDown?: (event: KeyboardEvent<HTMLElement>) => void;
+    onFocus?: SelectInputOnFocus;
+    onKeyDown?: SelectInputOnKeyDown;
     onToggleDisable?: (disabled: boolean) => void;
     openMenuOnClick?: boolean;
     openMenuOnFocus?: boolean;
@@ -266,10 +326,10 @@ export interface SelectInputProps {
     warning?: ReactNode;
 }
 
-type SelectInputImplProps = FormsyInjectedProps<any> & SelectInputProps;
+export type SelectInputImplProps = FormsyInjectedProps<any> & SelectInputProps;
 
 interface State {
-    // This state property is used in conjunction with the prop "clearCacheOnChange" which when true
+    // This state property is used in conjunction with the prop "clearCacheOnChange", which when true,
     // is intended to clear the underlying asynchronous React Select's cache.
     // See https://github.com/JedWatson/react-select/issues/1879
     asyncKey: number;
@@ -299,7 +359,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
         labelClass: INPUT_LABEL_CLASS_NAME,
         menuPlacement: 'auto',
         // Default to 'fixed' because 'absolute' causes issues in several scenarios (Modals, EditableGrid) but it's too
-        // difficult to manually set it to fixed in all of these situations (e.g. we don't always know we're in a modal)
+        // difficult to manually set it to fixed in all of these situations (e.g., we don't always know we're in a modal)
         menuPosition: 'fixed',
         openMenuOnFocus: false,
         saveOnBlur: false,
@@ -315,7 +375,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
     private _isMounted: boolean;
     private _defaultValueLoaded = false;
     private CHANGE_LOCK = false;
-    private reactSelect: React.RefObject<any>;
+    private reactSelect: React.RefObject<SelectInstance>;
 
     constructor(props: SelectInputImplProps) {
         super(props);
@@ -345,6 +405,10 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             // to reinitialize "selectedOptions" from the latest props. The async case is handled in this.loadOptions().
             const selectedOptions = initOptions(this.props);
             this.setState({ originalOptions: selectedOptions, selectedOptions });
+        }
+
+        if (this.isAsync() && prevProps.cacheKey !== this.props.cacheKey) {
+            this.setState(state => ({ asyncKey: state.asyncKey + 1 }));
         }
 
         this.CHANGE_LOCK = false;
@@ -411,8 +475,12 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
         }
     };
 
-    handleFocus = (event): void => {
+    handleFocus = (event: FocusEvent<HTMLElement>): void => {
         this.props.onFocus?.(event, this.reactSelect.current);
+    };
+
+    handleKeyDown = (event: KeyboardEvent<HTMLElement>): void => {
+        this.props.onKeyDown?.(event, this.reactSelect.current);
     };
 
     isAsync = (): boolean => {
@@ -570,14 +638,14 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
     getOptionValue = (option: SelectInputOption): any => option[this.props.valueKey];
 
     Input = inputProps => {
-        // React-select in an async configuration has a bug where when a defaultInputValue prop is supplied it
+        // React-select in an async configuration has a bug where when a defaultInputValue prop is supplied, it
         // does not fire an onChange event on the underlying input which results in loadOptions() never being called
         // with the supplied value. Here we simulate an onChange() event ourselves to induce the expected loading logic.
         // See https://github.com/JedWatson/react-select/issues/3047
         if (!this._defaultValueLoaded) {
             this._defaultValueLoaded = true;
             if (this.props.defaultInputValue && this.isAsync()) {
-                // To avoid performing updates during the render cycle utilize a setTimeout() to defer execution.
+                // To avoid performing updates during the render cycle, utilize a setTimeout() to defer execution.
                 // Normally, this could be done in componentDidMount(), however, we need access to the inputProps.
                 setTimeout(() => {
                     const inputEl = document.getElementById(inputProps.id);
@@ -595,8 +663,12 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
 
         // Marking input as "required" is not natively supported by react-select post-v1. Here we can mark
         // the underlying input as required, however, this is not the value input but rather the user visible
-        // input so we manually check if a value is set.
+        // input, so we manually check if a value is set.
         return <components.Input {...inputProps} required={!!this.props.required && !inputProps.selectProps?.value} />;
+    };
+
+    MenuList = (menuListProps: MenuListProps) => {
+        return <MenuListWithFooter {...menuListProps} footer={this.props.menuFooter} />;
     };
 
     Option = optionProps => <CustomOption {...optionProps}>{this.props.optionRenderer(optionProps)}</CustomOption>;
@@ -623,11 +695,11 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             isLoading,
             isValidNewOption,
             labelKey,
+            menuFooter,
             menuPlacement,
             menuPosition,
             multiple,
             name,
-            onKeyDown,
             openMenuOnClick,
             openMenuOnFocus,
             optionRenderer,
@@ -654,6 +726,8 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
 
         if (!showDropdownMenu) {
             components.Menu = nullComponent;
+        } else if (menuFooter) {
+            components.MenuList = this.MenuList;
         }
 
         if (optionRenderer) {
@@ -702,7 +776,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             onBlur: this.handleBlur,
             onChange: this.handleChange,
             onFocus: this.handleFocus,
-            onKeyDown,
+            onKeyDown: this.handleKeyDown,
             openMenuOnClick,
             openMenuOnFocus,
             options,

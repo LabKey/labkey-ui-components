@@ -155,28 +155,53 @@ describe('SampleColorRenderer', () => {
         });
     });
 
-    describe('cls', () => {
-        test('applies the default class', () => {
-            // Arrange
-            const row = fromJS({ [SAMPLE_COLOR_COLOR_COLUMN_NAME]: { value: RED } });
+    describe('cls and useSmall', () => {
+        const ROW = fromJS({ [SAMPLE_COLOR_COLOR_COLUMN_NAME]: { value: RED } });
 
+        test('applies the full size circle and the default class', () => {
             // Act
-            render(<SampleColorRenderer data={Map({ value: 'Red' })} row={row} />);
+            render(<SampleColorRenderer data={Map({ value: 'Red' })} row={ROW} />);
 
-            // Assert - the icon carries the base circle class plus the default sample-color class
-            expect(getIcon()).toHaveClass('color-icon__circle', 'sample-color');
+            // Assert - with neither cls nor useSmall the icon gets the full size circle
+            expect(getIcon()).toHaveClass('color-icon__circle', 'sample-color-top');
+            expect(getIcon()).not.toHaveClass('color-icon__circle-small');
         });
 
-        test('applies a cls override alongside the base class', () => {
-            // Arrange
-            const row = fromJS({ [SAMPLE_COLOR_COLOR_COLUMN_NAME]: { value: RED } });
-
+        test('a cls override replaces the default class', () => {
             // Act
-            render(<SampleColorRenderer cls="sample-color-header" data={Map({ value: 'Red' })} row={row} />);
+            render(<SampleColorRenderer cls="sample-color-header" data={Map({ value: 'Red' })} row={ROW} />);
 
-            // Assert - the override replaces the default class but keeps the base circle class
+            // Assert - the override takes the place of the default class and the full size circle is kept
             expect(getIcon()).toHaveClass('color-icon__circle', 'sample-color-header');
-            expect(getIcon()).not.toHaveClass('sample-color');
+            expect(getIcon()).not.toHaveClass('sample-color-top');
+        });
+
+        test('useSmall applies the small circle and drops the default class', () => {
+            // Act
+            render(<SampleColorRenderer data={Map({ value: 'Red' })} row={ROW} useSmall />);
+
+            // Assert - the small circle replaces the full size one, and no default class is applied
+            expect(getIcon()).toHaveClass('color-icon__circle-small');
+            expect(getIcon()).not.toHaveClass('color-icon__circle');
+            expect(getIcon()).not.toHaveClass('sample-color-top');
+        });
+
+        test('useSmall keeps an explicit cls override', () => {
+            // Act
+            render(<SampleColorRenderer cls="sample-color-header" data={Map({ value: 'Red' })} row={ROW} useSmall />);
+
+            // Assert - cls and useSmall combine
+            expect(getIcon()).toHaveClass('color-icon__circle-small', 'sample-color-header');
+            expect(getIcon()).not.toHaveClass('color-icon__circle');
+        });
+
+        test('useSmall still resolves the color and the label', () => {
+            // Act
+            render(<SampleColorRenderer data={Map({ displayValue: 'Red' })} row={ROW} useSmall />);
+
+            // Assert - sizing does not affect color resolution or the label
+            expect(getIcon()).toHaveStyle({ backgroundColor: RED });
+            expect(document.body.textContent).toBe('Red');
         });
     });
 });

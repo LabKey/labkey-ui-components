@@ -15,9 +15,10 @@ interface Props {
     data?: Map<any, any>;
     row?: Map<any, any>;
     showLabel?: boolean;
+    useSmall?: boolean;
 }
 
-export const SampleColorRenderer: FC<Props> = memo(({ data, row, showLabel = true, cls = 'sample-color' }) => {
+export const SampleColorRenderer: FC<Props> = memo(({ data, row, showLabel = true, cls, useSmall = false }) => {
     const label = data?.get('displayValue') ?? data?.get('value');
     if (label === undefined || label === null || label === '') return null;
 
@@ -29,8 +30,15 @@ export const SampleColorRenderer: FC<Props> = memo(({ data, row, showLabel = tru
             caseInsensitive(rowJS, 'SampleID/' + SAMPLE_COLOR_COLOR_COLUMN_NAME)?.value;
     }
     const labelDisplay = showLabel ? label : undefined;
+    const clsDisplay = useSmall || cls ? cls : 'sample-color-top';
 
-    return <ColorIcon cls={classNames('color-icon__circle', cls)} label={labelDisplay} value={color} />;
+    return (
+        <ColorIcon
+            cls={classNames(clsDisplay, { 'color-icon__circle-small': useSmall, 'color-icon__circle': !useSmall })}
+            label={labelDisplay}
+            value={color}
+        />
+    );
 });
 
 SampleColorRenderer.displayName = 'SampleColorRenderer';

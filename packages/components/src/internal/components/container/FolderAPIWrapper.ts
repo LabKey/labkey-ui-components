@@ -5,7 +5,7 @@
 import { ActionURL, Ajax, Utils } from '@labkey/api';
 
 import { Container } from '../base/models/Container';
-import { handleRequestFailure } from '../../request';
+import { handleRequestFailure, request } from '../../request';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { FolderConfigurableDataType } from '../entities/models';
 import { getFolderDataTypeExclusions } from '../entities/actions';
@@ -126,22 +126,16 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
     };
 
     getAuditSettings = (containerPath?: string): Promise<AuditSettingsResponse> => {
-        return new Promise((resolve, reject) => {
-            Ajax.request({
-                url: ActionURL.buildURL('audit', 'getAuditSettings', containerPath),
-                method: 'POST',
-                success: Utils.getCallbackWrapper(response => {
-                    resolve(response);
-                }),
-                failure: handleRequestFailure(reject, 'Failed to retrieve audit settings.'),
-            });
+        return request<AuditSettingsResponse>({
+            url: ActionURL.buildURL('audit', 'getAuditSettings.api', containerPath),
+            errorLogMsg: 'Failed to retrieve audit settings.',
         });
     };
 
     setAuditCommentsRequired = (requireUserComments: boolean, containerPath?: string): Promise<void> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
-                url: ActionURL.buildURL('audit', 'saveAuditSettings', containerPath),
+                url: ActionURL.buildURL('audit', 'saveAuditSettings.api', containerPath),
                 method: 'POST',
                 jsonData: { requireUserComments },
                 success: Utils.getCallbackWrapper(() => {
@@ -197,7 +191,6 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getDataTypeExclusion.api'),
-                method: 'GET',
                 params: {
                     dataType,
                     dataTypeRowId,

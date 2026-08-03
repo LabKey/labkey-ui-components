@@ -281,7 +281,7 @@ export async function getSelectedParents(
 
     return resolveEntityParentTypes(
         response,
-        false,
+        isAliquotParent,
         orderedRowIds,
         isSampleParent ? SCHEMAS.SAMPLE_SETS.SCHEMA : SCHEMAS.DATA_CLASSES.SCHEMA
     );
@@ -300,7 +300,7 @@ function resolveEntityParentTypes(
     response.rows.forEach(row => {
         const displayValue = caseInsensitive(row, 'Name')?.value;
         const entityType =
-            entitySchema == SCHEMAS.SAMPLE_SETS.SCHEMA
+            entitySchema === SCHEMAS.SAMPLE_SETS.SCHEMA
                 ? caseInsensitive(row, 'SampleSet')?.displayValue
                 : caseInsensitive(row, 'DataClass')?.displayValue;
         const value = caseInsensitive(row, 'RowId')?.value;

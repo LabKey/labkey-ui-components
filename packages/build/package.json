@@ -14,7 +14,7 @@
   "dependencies": {
     "@rspack/cli": "~2.1.5",
     "@rspack/core": "~2.1.5",
-    "@rspack/dev-server": "~2.1.0",
+    "@rspack/dev-server": "~2.2.0",
     "@rspack/plugin-react-refresh": "~2.0.2",
     "bootstrap-sass": "~3.4.3",
     "cross-env": "~10.1.0",

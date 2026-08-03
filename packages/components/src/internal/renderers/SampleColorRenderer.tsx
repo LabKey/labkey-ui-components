@@ -8,13 +8,16 @@ import { Map } from 'immutable';
 import { ColorIcon } from '../components/base/ColorIcon';
 import { caseInsensitive } from '../util/utils';
 import { SAMPLE_COLOR_COLOR_COLUMN_NAME } from '../components/samples/constants';
+import classNames from 'classnames';
 
 interface Props {
+    cls?: string;
     data?: Map<any, any>;
     row?: Map<any, any>;
+    showLabel?: boolean;
 }
 
-export const SampleColorRenderer: FC<Props> = memo(({ data, row }) => {
+export const SampleColorRenderer: FC<Props> = memo(({ data, row, showLabel = true, cls = 'sample-color' }) => {
     const label = data?.get('displayValue') ?? data?.get('value');
     if (label === undefined || label === null || label === '') return null;
 
@@ -25,8 +28,9 @@ export const SampleColorRenderer: FC<Props> = memo(({ data, row }) => {
             caseInsensitive(rowJS, SAMPLE_COLOR_COLOR_COLUMN_NAME)?.value ??
             caseInsensitive(rowJS, 'SampleID/' + SAMPLE_COLOR_COLOR_COLUMN_NAME)?.value;
     }
+    const labelDisplay = showLabel ? label : undefined;
 
-    return <ColorIcon cls="sample-color color-icon__circle" label={label} value={color} />;
+    return <ColorIcon cls={classNames('color-icon__circle', cls)} label={labelDisplay} value={color} />;
 });
 
 SampleColorRenderer.displayName = 'SampleColorRenderer';

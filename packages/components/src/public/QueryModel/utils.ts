@@ -24,6 +24,8 @@ import { caseInsensitive } from '../../internal/util/utils';
 
 import { ActionValue } from './grid/actions/Action';
 import { QueryModel } from './QueryModel';
+import { QueryInfo } from '../QueryInfo';
+import { ViewInfo } from '../../internal/ViewInfo';
 
 export function filterToString(filter: Filter.IFilter): string {
     return `${filter.getColumnName()}-${filter.getFilterType().getURLSuffix()}-${filter.getValue()}`;
@@ -206,4 +208,33 @@ export async function createOrderedSnapshotSelectionKey(model: QueryModel): Prom
     });
     const orderedRows = rows.map(row => caseInsensitive(row, pkFieldKey).value.toString());
     return _createSnapshotSelectionKey(model, orderedRows);
+}
+
+export function addSystemViewColumns(view: ViewInfo, queryInfo: QueryInfo) {
+    if (view.isDefault && !view.session) {
+        const columns = [...view.columns];
+        const columnFieldKeys = columns.map(col => col.fieldKey.toLowerCase());
+        const disabledSysFields = Array.from(queryInfo.disabledSystemFields ?? []).map(field =>
+            field.toLowerCase()
+        );
+
+        queryInfo.columns.forEach(queryCol => {
+            const fieldKey = queryCol.fieldKey?.toLowerCase();
+            if (
+                fieldKey &&
+                queryCol.addToSystemView &&
+                columnFieldKeys.indexOf(fieldKey) === -1 &&
+                disabledSysFields.indexOf(fieldKey) === -1
+            ) {
+                columns.push({
+                    fieldKey: queryCol.fieldKey,
+                    key: queryCol.fieldKey,
+                    name: queryCol.name,
+                    title: queryCol.caption || queryCol.name,
+                });
+            }
+        });
+        return view.mutate({ columns });
+    }
+    return view;
 }

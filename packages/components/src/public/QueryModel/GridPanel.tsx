@@ -70,7 +70,7 @@ import { ExportMenu } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
 import { SearchBox } from './SearchBox';
-import { actionValuesToString, filterArraysEqual, filtersEqual, sortsEqual } from './utils';
+import { actionValuesToString, addSystemViewColumns, filterArraysEqual, filtersEqual, sortsEqual } from './utils';
 import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
 import { FilterStatus } from './FilterStatus';
@@ -852,7 +852,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         return new Promise((resolve, reject) => {
             const view = queryInfo?.getView(viewName, true);
-            let updatedViewInfo = view.addSystemViewColumns(queryInfo);
+            let updatedViewInfo = addSystemViewColumns(view, queryInfo);
             updatedViewInfo = updatedViewInfo.mutate({
                 // update/set sorts and filters to combine view and user-defined items
                 filters: model.filterArray.concat(view.filters),

@@ -7,8 +7,8 @@ import { FormsyContext } from './FormsyContext';
 import {
     ComponentWithStaticAttributes,
     FormsyContextInterface,
-    InjectedProps,
     FormsyInjectedProps,
+    InjectedProps,
     RequiredValidation,
     ValidationError,
     Validations,
@@ -55,9 +55,9 @@ function isChanged(a: object, b: object): boolean {
 }
 
 export function withFormsy<T, V>(
-    WrappedComponent: React.ComponentType<T & FormsyInjectedProps<V>>
+    WrappedComponent: React.ComponentType<FormsyInjectedProps<V> & T>
 ): React.ComponentType<Omit<T & WrapperProps<V>, keyof InjectedProps<V>>> {
-    type WrappedProps = T & WrapperProps<V> & FormsyContextInterface;
+    type WrappedProps = FormsyContextInterface & T & WrapperProps<V>;
 
     class WithFormsyWrapper
         extends React.Component<WrappedProps, WrapperState<V>>
@@ -111,9 +111,11 @@ export function withFormsy<T, V>(
         componentDidUpdate = (prevProps: WrappedProps): void => {
             const { required, value, validations, validate } = this.props;
 
-            // If the value passed has changed, set it. If value is not passed it will
-            // internally update, and this will never run
-            if (!isSame(value, prevProps.value)) {
+            // If the value passed has changed, set it. If a value is not passed, it will internally update, and this
+            // will never run. Skip when the input already holds the value: a parent that owns the value and echoes it
+            // back would otherwise run a redundant validation pass and fire a duplicate onChange for a value that is
+            // already applied.
+            if (!isSame(value, prevProps.value) && !isSame(value, this.state.value)) {
                 this.setValue(value);
             }
 
@@ -129,7 +131,7 @@ export function withFormsy<T, V>(
             this.props.detachFromForm(this);
         };
 
-        getErrorMessage = (): ValidationError | null => {
+        getErrorMessage = (): null | ValidationError => {
             const messages = this.getErrorMessages();
             return messages.length ? messages[0] : null;
         };
@@ -157,10 +159,20 @@ export function withFormsy<T, V>(
 
         isValidValue = (value: V) => this.props.isValidValue(this, value);
 
-        resetValue = (): void => {
+        /**
+         * Restores the input to a pristine state. A supplied value becomes the new pristine baseline, which is how
+         * Formsy.resetModel() rebases the form (e.g., after a successful save) so it no longer reports as changed.
+         * Called with no arguments, the existing baseline is restored. A rest parameter is used rather than an
+         * optional one so that an explicit {undefined} baseline is distinguishable from "no baseline supplied".
+         * @param args
+         */
+        resetValue = (...args: [] | [V]): void => {
             if (!this._mounted) return;
             this.setState(
-                state => ({ isPristine: true, value: state.pristineValue }),
+                state => {
+                    const pristineValue = args.length ? args[0] : state.pristineValue;
+                    return { isPristine: true, pristineValue, value: pristineValue };
+                },
                 () => {
                     this.props.validate(this);
                 }

@@ -77,6 +77,43 @@ class TestComponent extends React.Component<TestComponentProps> {
 
 const TestInputHoc = withFormsy<TestComponentProps, any>(TestComponent);
 
+// Mirrors the <QuerySelect/> + <SelectInput/> arrangement: on change the input calls setValue() and notifies its
+// parent, and the parent owns the value and feeds it back down through the "value" prop in the same React batch.
+type ControlledInputProps = FormsyInjectedProps<string> & {
+    onValueChange: (value: string) => void;
+    testId?: string;
+};
+
+const ControlledInput = withFormsy<ControlledInputProps, string>(props => {
+    const { onValueChange, setValue, testId, value } = props;
+
+    const onChange = useCallback(
+        evt => {
+            setValue(evt.target.value);
+            onValueChange(evt.target.value);
+        },
+        [onValueChange, setValue]
+    );
+
+    return <input data-testid={testId} onChange={onChange} value={value ?? ''} />;
+});
+
+interface ControlledFormProps {
+    initialValue?: string;
+    onChange: (model: any, isChanged: boolean) => void;
+}
+
+const ControlledForm: FC<ControlledFormProps> = props => {
+    const { initialValue, onChange } = props;
+    const [value, setValue] = useState<string>(initialValue);
+
+    return (
+        <Formsy onChange={onChange}>
+            <ControlledInput name="one" onValueChange={setValue} testId="test-input" value={value} />
+        </Formsy>
+    );
+};
+
 describe('Formsy', () => {
     describe('Setting up a form', () => {
         it('should expose the users DOM node through an innerRef prop', () => {
@@ -917,6 +954,49 @@ describe('Formsy', () => {
             expect(input.value).toEqual('');
         });
 
+        it('rebases the pristine baseline when reset with explicit values', () => {
+            const formRef = React.createRef<Formsy>();
+            const screen = render(
+                <Formsy ref={formRef}>
+                    <TestInput name="one" testId="test-input" value="foo" />
+                </Formsy>
+            );
+            const input = screen.getByTestId('test-input') as HTMLInputElement;
+
+            fireEvent.change(input, { target: { value: 'bar' } });
+            expect(formRef.current.isChanged()).toEqual(true);
+
+            act(() => {
+                formRef.current.reset({ one: 'baz' });
+            });
+
+            // The supplied value becomes the new baseline, so the form is no longer dirty against it.
+            expect(input.value).toEqual('baz');
+            expect(input.dataset.isPristine).toEqual('true');
+            expect(formRef.current.isChanged()).toEqual(false);
+        });
+
+        it('restores the mount value and stays pristine when reset without values', () => {
+            const formRef = React.createRef<Formsy>();
+            const screen = render(
+                <Formsy ref={formRef}>
+                    <TestInput name="one" testId="test-input" value="foo" />
+                </Formsy>
+            );
+            const input = screen.getByTestId('test-input') as HTMLInputElement;
+
+            fireEvent.change(input, { target: { value: 'bar' } });
+            expect(formRef.current.isChanged()).toEqual(true);
+
+            act(() => {
+                formRef.current.reset();
+            });
+
+            expect(input.value).toEqual('foo');
+            expect(input.dataset.isPristine).toEqual('true');
+            expect(formRef.current.isChanged()).toEqual(false);
+        });
+
         it('should be able to reset the form using a button', () => {
             function TestForm() {
                 return (
@@ -982,6 +1062,59 @@ describe('Formsy', () => {
                 </Formsy>
             );
             const input = screen.getByTestId('test-input');
+            fireEvent.change(input, {
+                target: { value: 'bar' },
+            });
+            expect(hasOnChanged).toHaveBeenCalledWith({ one: 'bar' }, true);
+
+            fireEvent.change(input, {
+                target: { value: 'foo' },
+            });
+            expect(hasOnChanged).toHaveBeenCalledWith({ one: 'foo' }, false);
+        });
+
+        it('returns true when a controlled input echoes the value back through props', () => {
+            const hasOnChanged = jest.fn();
+            const screen = render(<ControlledForm initialValue="foo" onChange={hasOnChanged} />);
+
+            fireEvent.change(screen.getByTestId('test-input'), {
+                target: { value: 'bar' },
+            });
+
+            // The pristine baseline is captured when the input mounts, so a parent that writes the new value back
+            // into the "value" prop must not mask the change.
+            expect(hasOnChanged).toHaveBeenCalledWith({ one: 'bar' }, true);
+            expect(hasOnChanged).not.toHaveBeenCalledWith({ one: 'bar' }, false);
+
+            // The echoed prop must not re-apply a value the input already holds, which would fire onChange twice.
+            expect(hasOnChanged).toHaveBeenCalledTimes(1);
+        });
+
+        it('returns true when the value prop is changed by the parent', () => {
+            const hasOnChanged = jest.fn();
+
+            function TestForm() {
+                const [value, setValue] = useState('foo');
+                return (
+                    <Formsy onChange={hasOnChanged}>
+                        <TestInput name="one" testId="test-input" value={value} />
+                        <button data-testid="change-btn" onClick={() => setValue('bar')} type="button" />
+                    </Formsy>
+                );
+            }
+
+            const screen = render(<TestForm />);
+            fireEvent.click(screen.getByTestId('change-btn'));
+
+            // The baseline stays at the mount value, so an externally driven change still counts as a change.
+            expect(hasOnChanged).toHaveBeenCalledWith({ one: 'bar' }, true);
+        });
+
+        it('returns false when a controlled input is restored to its initial value', () => {
+            const hasOnChanged = jest.fn();
+            const screen = render(<ControlledForm initialValue="foo" onChange={hasOnChanged} />);
+            const input = screen.getByTestId('test-input');
+
             fireEvent.change(input, {
                 target: { value: 'bar' },
             });

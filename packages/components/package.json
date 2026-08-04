@@ -48,7 +48,7 @@
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {
     "@hello-pangea/dnd": "18.0.1",
-    "@labkey/api": "1.52.3-fb-update-nodejs.0",
+    "@labkey/api": "1.52.3",
     "@testing-library/dom": "~10.4.1",
     "@testing-library/jest-dom": "~7.0.0",
     "@testing-library/react": "~16.3.2",
@@ -74,8 +74,8 @@
     "vis-network": "~10.1.0"
   },
   "devDependencies": {
-    "@labkey/build": "10.0.1-fb-update-nodejs.3",
-    "@labkey/eslint-config": "1.2.3-fb-update-nodejs.1",
+    "@labkey/build": "10.1.0",
+    "@labkey/eslint-config": "1.2.3",
     "@types/history": "4.7.11",
     "@types/jest": "30.0.0",
     "@types/node": "26.1.2",

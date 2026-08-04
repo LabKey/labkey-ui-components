@@ -3,26 +3,22 @@
 // Repository: https://github.com/formsy/formsy-react/tree/0226fab133a25
 import React, { ComponentClass } from 'react';
 
-export interface Values {
-    [key: string]: any;
-}
+export type Values = Record<string, any>;
 
 export type IModel = any;
 export type IResetModel = (model?: IModel) => void;
-export type IUpdateInputsWithValue<V> = (values: { [key: string]: V }, validate?: boolean) => void;
-export type IUpdateInputsWithError = (errors: { [key: string]: ValidationError }, invalidate?: boolean) => void;
+export type IUpdateInputsWithValue<V> = (values: Record<string, V>, validate?: boolean) => void;
+export type IUpdateInputsWithError = (errors: Record<string, ValidationError>, invalidate?: boolean) => void;
 
-export type ValidationError = string | React.ReactNode;
+export type ValidationError = React.ReactNode | string;
 
 export type ValidationFunction<V> = (values: Values, value: V, extra?: any) => boolean | ValidationError;
 
-export type Validation<V> = string | boolean | ValidationFunction<V>;
+export type Validation<V> = boolean | string | ValidationFunction<V>;
 
-export type Validations<V> = ValidationsStructure<V> | string | object;
+export type Validations<V> = object | string | ValidationsStructure<V>;
 
-export interface ValidationsStructure<V> {
-    [key: string]: Validation<V>;
-}
+export type ValidationsStructure<V> = Record<string, Validation<V>>;
 
 export type RequiredValidation<V> = boolean | Validations<V>;
 
@@ -35,7 +31,7 @@ export interface WrapperProps<V> {
     name: string;
     required?: RequiredValidation<V>;
     validationError?: ValidationError;
-    validationErrors?: { [key: string]: ValidationError };
+    validationErrors?: Record<string, ValidationError>;
     validations?: Validations<V>;
     value?: V;
 }
@@ -81,7 +77,7 @@ export interface WrapperInstanceMethods<V> {
     setValue: (value: V, validate?: boolean) => void;
 }
 
-export type FormsyInjectedProps<V> = WrapperProps<V> & InjectedProps<V>;
+export type FormsyInjectedProps<V> = InjectedProps<V> & WrapperProps<V>;
 
 export interface InputComponent<V> extends React.Component<WrapperProps<V>, WrapperState<V>> {
     requiredValidations?: Validations<V>;

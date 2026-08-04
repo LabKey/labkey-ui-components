@@ -155,12 +155,11 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
 
     getModel = (): IModel => this.mapModel(this.getCurrentValues());
 
-    getPristineValues = () => {
-        return this.inputs.reduce((values, component) => {
-            const {
-                props: { name, value },
-            } = component;
-            values[name] = protectAgainstParamReassignment(value);
+    // Read the baseline captured by withFormsy when the input was constructed rather than the current "value" prop.
+    // Inputs whose parent feeds the changed value back down through "value" would otherwise always compare as unchanged.
+    getPristineValues = (): Values => {
+        return this.inputs.reduce<Values>((values, component) => {
+            values[component.props.name] = protectAgainstParamReassignment(component.state.pristineValue);
             return values;
         }, {});
     };
@@ -198,12 +197,15 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
         onReset?.();
     };
 
-    // Reset each key in the model to the original / initial / specified value
+    /**
+     * Reset each key in the model to the original / initial / specified value. A specified value becomes that
+     * input's new pristine baseline, so a form reset with explicit values is not immediately reported as changed.
+     */
     resetModel: IResetModel = (data): void => {
         this.inputs.forEach(component => {
             const { name } = component.props;
             if (data && data.hasOwnProperty(name)) {
-                component.setValue(data[name]);
+                component.resetValue(data[name]);
             } else {
                 component.resetValue();
             }

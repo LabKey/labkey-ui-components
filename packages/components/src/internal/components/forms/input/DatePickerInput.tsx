@@ -29,6 +29,7 @@ import {
 } from '../constants';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import { RequiredSymbol } from './RequiredSymbol';
 
 export interface DatePickerInputProps extends DisableableInputProps {
     addLabelAsterisk?: boolean;
@@ -327,7 +328,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                 {renderFieldLabel ? (
                     <label className={labelClassName} htmlFor={queryColumn.fieldKey}>
                         {renderFieldLabel(queryColumn)}
-                        {queryColumn?.required && <span className="required-symbol"> *</span>}
+                        <RequiredSymbol required={queryColumn.required || addLabelAsterisk} />
                     </label>
                 ) : (
                     <FieldLabel

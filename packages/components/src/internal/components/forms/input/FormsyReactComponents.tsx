@@ -26,6 +26,7 @@ import { FormsyInjectedProps, withFormsy } from '../formsy';
 import { INPUT_WRAPPER_CLASS_NAME } from '../constants';
 
 import { Help } from './Help';
+import { RequiredSymbol } from './RequiredSymbol';
 
 type LayoutType = 'elementOnly' | 'horizontal' | 'vertical';
 
@@ -92,17 +93,6 @@ const ErrorMessages: FC<ErrorMessageProps> = memo(props => {
     );
 });
 ErrorMessages.displayName = 'ErrorMessages';
-
-interface RequiredSymbolProps {
-    required: boolean;
-    symbol?: ReactNode;
-}
-
-const RequiredSymbol: FC<RequiredSymbolProps> = memo(({ required, symbol = ' *' }) => {
-    if (required === false) return null;
-    return <span className="required-symbol">{symbol}</span>;
-});
-RequiredSymbol.displayName = 'RequiredSymbol';
 
 interface LabelProps extends PropsWithChildren {
     fakeLabel?: boolean;

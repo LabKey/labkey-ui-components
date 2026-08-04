@@ -14,6 +14,7 @@ import { Placement } from '../../useOverlayPositioning';
 import { HelpTipRenderer } from './HelpTipRenderer';
 import { INPUT_LABEL_CLASS_NAME } from './constants';
 import { DOMAIN_FIELD, DomainFieldHelpTipContents } from './DomainFieldHelpTipContents';
+import { RequiredSymbol } from './input/RequiredSymbol';
 
 export interface LabelOverlayProps extends PropsWithChildren {
     addLabelAsterisk?: boolean;
@@ -46,7 +47,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
         this._popoverId = generateId();
     }
 
-    overlayBody = (): any => {
+    overlayBody = (): ReactNode => {
         const { column, required, description, type, children, helpTipRenderer } = this.props;
 
         if (column?.helpTipRenderer || helpTipRenderer) {
@@ -97,15 +98,16 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
         const label = this.props.label ? this.props.label : column ? column.caption : null;
 
         const overlay = this.getOverlay();
+        const isSymbolRequired = required || addLabelAsterisk;
 
         if (isFormsy) {
-            // when being used as a label for a formsy component directly this will use just a span without the
+            // When being used as a label for a formsy component directly, this will use just a span without the
             // classes applied as well as not needing to handle 'required' display
             return (
                 <span data-fieldkey={dataKey ?? column?.fieldKey} id={column?.labelId}>
                     {label}&nbsp;
                     {overlay}
-                    {required || addLabelAsterisk ? <span className="required-symbol">* </span> : null}
+                    <RequiredSymbol required={isSymbolRequired} />
                 </span>
             );
         }
@@ -115,10 +117,11 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
                 <span className={(labelClass ? labelClass + ' ' : '') + 'text__truncate-and-wrap'} id={column?.labelId}>
                     <span data-fieldkey={dataKey ?? column?.fieldKey}>{label}</span>&nbsp;
                     {overlay}
-                    {required || addLabelAsterisk ? <span className="required-symbol">* </span> : null}
+                    <RequiredSymbol required={isSymbolRequired} />
                 </span>
             );
         }
+
         return (
             <label
                 className={(labelClass ? labelClass + ' ' : '') + 'text__truncate-and-wrap'}
@@ -127,7 +130,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
             >
                 <span data-fieldkey={inputId}>{label}</span>&nbsp;
                 {overlay}
-                {required || addLabelAsterisk ? <span className="required-symbol">* </span> : null}
+                <RequiredSymbol required={isSymbolRequired} />
             </label>
         );
     }

@@ -200,10 +200,12 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (!shouldDisableField) {
                         this._fieldEnabledCount++;
                     }
-                    let showAsteriskSymbol = undefined;
+
+                    // Default to undefined so that this factory does not override downstream defaults
+                    let addLabelAsterisk: boolean = undefined;
                     if (!checkRequiredFields && required) {
                         col = col.mutate({ required: false });
-                        showAsteriskSymbol = showLabelAsterisk;
+                        addLabelAsterisk = showLabelAsterisk;
                     }
 
                     let value = caseInsensitive(fieldValues, col.name);
@@ -238,7 +240,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 onToggleDisable={this.onToggleDisable}
                                 queryFilters={queryFilters}
                                 renderLabelField={this.renderLabelField}
-                                showAsteriskSymbol={showAsteriskSymbol}
+                                showAsteriskSymbol={addLabelAsterisk}
                                 showLabel
                                 value={value}
                             />
@@ -267,7 +269,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 <React.Fragment key={fieldKey}>
                                     {this.renderLabelField(col)}
                                     <QuerySelect
-                                        addLabelAsterisk={showAsteriskSymbol}
+                                        addLabelAsterisk={addLabelAsterisk}
                                         allowDisable={allowFieldDisable}
                                         containerFilter={
                                             col.lookup.containerFilter ??
@@ -308,7 +310,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (col.validValues) {
                         return (
                             <TextChoiceInput
-                                addLabelAsterisk={showAsteriskSymbol}
+                                addLabelAsterisk={addLabelAsterisk}
                                 allowDisable={allowFieldDisable}
                                 description={col.description}
                                 formsy
@@ -328,7 +330,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (col.inputType === 'textarea') {
                         return (
                             <TextAreaInput
-                                addLabelAsterisk={showAsteriskSymbol}
+                                addLabelAsterisk={addLabelAsterisk}
                                 allowDisable={allowFieldDisable}
                                 hasMixedValue={hasMixedValue}
                                 initiallyDisabled={shouldDisableField}
@@ -342,7 +344,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     } else if (col.inputType === 'file' && renderFileInputs) {
                         return (
                             <FileInput
-                                addLabelAsterisk={showAsteriskSymbol}
+                                addLabelAsterisk={addLabelAsterisk}
                                 allowDisable={allowFieldDisable}
                                 formsy
                                 hasMixedValue={hasMixedValue}
@@ -361,7 +363,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         case 'boolean':
                             return (
                                 <CheckboxInput
-                                    addLabelAsterisk={showAsteriskSymbol}
+                                    addLabelAsterisk={addLabelAsterisk}
                                     allowDisable={allowFieldDisable}
                                     hasMixedValue={hasMixedValue}
                                     initiallyDisabled={shouldDisableField}
@@ -376,7 +378,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         case 'time':
                             return (
                                 <DatePickerInput
-                                    addLabelAsterisk={showAsteriskSymbol}
+                                    addLabelAsterisk={addLabelAsterisk}
                                     allowDisable={allowFieldDisable}
                                     hasMixedValue={hasMixedValue}
                                     initiallyDisabled={shouldDisableField}
@@ -391,7 +393,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             return (
                                 <React.Fragment key={fieldKey}>
                                     <TextInput
-                                        addLabelAsterisk={showAsteriskSymbol}
+                                        addLabelAsterisk={addLabelAsterisk}
                                         allowDisable={allowFieldDisable}
                                         hasMixedValue={hasMixedValue}
                                         initiallyDisabled={shouldDisableField}

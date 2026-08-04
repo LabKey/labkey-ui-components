@@ -63,6 +63,7 @@ import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { CellMessage, EditableColumnMetadata, EditorModel, EditorModelProps, ValueDescriptor } from './models';
 import { computeRangeChange, genCellKey, getValidatedEditableGridValue, parseCellKey } from './utils';
 import { RemoveColumnMenuItem } from './RemoveColumnMenuItem';
+import { RequiredSymbol } from '../forms/input/RequiredSymbol';
 
 function anyCell(values: List<ValueDescriptor>): boolean {
     return true;
@@ -880,7 +881,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 {!showLabelOverlay && (
                     <>
                         {label}
-                        {req && <span className="required-symbol"> *</span>}
+                        <RequiredSymbol required={req} />
                     </>
                 )}
                 {showOverlayFromMetadata && (

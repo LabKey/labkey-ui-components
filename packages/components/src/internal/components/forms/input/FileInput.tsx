@@ -32,6 +32,7 @@ import { getTransferItemDirectoryEntry } from '../../files/FileAttachmentContain
 import { DisableableInputProps, useDisableableInput } from './DisableableInput';
 import { generateId } from '../../../util/utils';
 import { LabelOverlayProps } from '../LabelOverlay';
+import { RequiredSymbol } from './RequiredSymbol';
 
 type FileInputData = Map<string, any> | string | undefined;
 type FileInputValue = File | null | string | undefined;
@@ -292,7 +293,7 @@ const FileInputImpl: FC<FileInputImplProps> = props => {
             {hasCustomFieldLabel && (
                 <span className={labelClassName} data-fieldkey={inputName}>
                     {renderFieldLabel(queryColumn)}
-                    {required && <span className="required-symbol"> *</span>}
+                    <RequiredSymbol required={required} />
                 </span>
             )}
             {!hasCustomFieldLabel && (

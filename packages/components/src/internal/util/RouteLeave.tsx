@@ -44,6 +44,7 @@ const beforeUnload = (event: BeforeUnloadEvent): void => {
 };
 
 const subscribe = (isDirty: MutableRefObject<boolean>): (() => void) => {
+    // BeforeUnload is needed so we can prevent the user from going to URLs outside our App.
     if (subscribers.size === 0) {
         window.addEventListener('beforeunload', beforeUnload);
     }
@@ -79,7 +80,6 @@ export const useRouteLeave = (confirmMessage = CONFIRM_MESSAGE): GetSetIsDirty =
     }, []);
     const getIsDirty = useCallback<GetIsDirty>(() => isDirty.current, []);
 
-    // BeforeUnload is needed so we can prevent the user from going to URLs outside our App.
     useEffect(() => {
         isDirty.current = isDirty.current || isAnyDirty();
         return subscribe(isDirty);

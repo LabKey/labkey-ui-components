@@ -32,6 +32,7 @@ import {
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { generateId, joinMultiValueForExport } from '../../../util/utils';
 import { naturalSortByProperty } from '../../../../public/sort';
+import { RequiredSymbol } from './RequiredSymbol';
 
 const WARN_COLOR = '#8A6D3B';
 const WARN_BG_COLOR = '#FCF8E3';
@@ -597,7 +598,7 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
                     return (
                         <span className={labelClass} data-fieldkey={name}>
                             {renderFieldLabel(undefined, label, description_)}
-                            {required && <span className="required-symbol"> *</span>}
+                            <RequiredSymbol required={required || addLabelAsterisk} />
                         </span>
                     );
                 }

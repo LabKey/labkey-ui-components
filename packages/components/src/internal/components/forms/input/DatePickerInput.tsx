@@ -29,6 +29,7 @@ import {
 } from '../constants';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import { RequiredSymbol } from './RequiredSymbol';
 
 export interface DatePickerInputProps extends DisableableInputProps {
     addLabelAsterisk?: boolean;
@@ -162,8 +163,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         if (relativeInputValue) {
             if (isRelativeDateFilterValue(relativeInputValue, false)) {
                 onChange?.(relativeInputValue);
-            }
-            else {
+            } else {
                 validSelect = undefined;
                 onChange?.(undefined);
             }
@@ -203,12 +203,15 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         onCalendarClose?.();
 
         if (relativeInputValue) {
-            if (isRelativeDateFilterValue(relativeInputValue, true) && !isRelativeDateFilterValue(relativeInputValue, false)) {
+            if (
+                isRelativeDateFilterValue(relativeInputValue, true) &&
+                !isRelativeDateFilterValue(relativeInputValue, false)
+            ) {
                 // clear out invalid relative date input on calendar close
                 onChange?.(undefined);
             }
         }
-    }
+    };
 
     onIconClick = (): void => {
         this.input.current?.setFocus();
@@ -277,9 +280,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                 : (placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`);
         const picker = (
             <DatePicker
-                ariaLabelledBy={
-                    !showLabel && !renderFieldLabel ? queryColumn.labelId : undefined
-                }
+                ariaLabelledBy={!showLabel && !renderFieldLabel ? queryColumn.labelId : undefined}
                 autoComplete="off"
                 autoFocus={autoFocus}
                 className={inputClassName}
@@ -327,7 +328,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
                 {renderFieldLabel ? (
                     <label className={labelClassName} htmlFor={queryColumn.fieldKey}>
                         {renderFieldLabel(queryColumn)}
-                        {queryColumn?.required && <span className="required-symbol"> *</span>}
+                        <RequiredSymbol required={queryColumn.required || addLabelAsterisk} />
                     </label>
                 ) : (
                     <FieldLabel

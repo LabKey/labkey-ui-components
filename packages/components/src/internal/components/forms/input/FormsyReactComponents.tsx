@@ -26,6 +26,7 @@ import { FormsyInjectedProps, withFormsy } from '../formsy';
 import { INPUT_WRAPPER_CLASS_NAME } from '../constants';
 
 import { Help } from './Help';
+import { RequiredSymbol } from './RequiredSymbol';
 
 type LayoutType = 'elementOnly' | 'horizontal' | 'vertical';
 
@@ -83,7 +84,6 @@ const ErrorMessages: FC<ErrorMessageProps> = memo(props => {
     return (
         <div>
             {messages.map((message, key) => (
-                // eslint-disable-next-line react/no-array-index-key
                 <span className="help-block validation-message" key={key}>
                     {message}
                 </span>
@@ -92,17 +92,6 @@ const ErrorMessages: FC<ErrorMessageProps> = memo(props => {
     );
 });
 ErrorMessages.displayName = 'ErrorMessages';
-
-interface RequiredSymbolProps {
-    required: boolean;
-    symbol?: ReactNode;
-}
-
-const RequiredSymbol: FC<RequiredSymbolProps> = memo(({ required, symbol = ' *' }) => {
-    if (required === false) return null;
-    return <span className="required-symbol">{symbol}</span>;
-});
-RequiredSymbol.displayName = 'RequiredSymbol';
 
 interface LabelProps extends PropsWithChildren {
     fakeLabel?: boolean;
@@ -368,7 +357,7 @@ FormsyCheckbox.displayName = 'FormsyCheckbox';
 
 export type FormsyInputProps = BaseComponentProps & InputGroupProps & InputHTMLProps;
 
-const InputImpl: FC<FormsyInputProps & FormsyInjectedProps<string>> = props => {
+const InputImpl: FC<FormsyInjectedProps<string> & FormsyInputProps> = props => {
     // Extract InputGroupProps
     const { addonAfter, addonBefore, buttonAfter, buttonBefore, ...rest } = props;
     const { baseProps, formsyProps, htmlProps } = useControlProps<InputHTMLProps, string>(rest);
@@ -465,7 +454,7 @@ type SelectHTMLProps = Omit<SelectHTMLAttributes<HTMLSelectElement>, 'onBlur' | 
 
 export type FormsySelectProps = SelectBaseProps & SelectHTMLProps;
 
-const SelectImpl: FC<FormsySelectProps & FormsyInjectedProps<any>> = props => {
+const SelectImpl: FC<FormsyInjectedProps<any> & FormsySelectProps> = props => {
     const { multiple = false, options, ...rest } = props;
     const { baseProps, formsyProps, htmlProps } = useControlProps<SelectHTMLProps, any>(rest);
     const { componentRef, markAsInvalid, onChange } = baseProps;
@@ -517,7 +506,7 @@ type TextAreaHTMLProps = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onBl
 
 export type FormsyTextAreaProps = BaseComponentProps & TextAreaHTMLProps;
 
-const TextAreaImpl: FC<FormsyTextAreaProps & FormsyInjectedProps<string>> = props => {
+const TextAreaImpl: FC<FormsyInjectedProps<string> & FormsyTextAreaProps> = props => {
     const { baseProps, formsyProps, htmlProps } = useControlProps<TextAreaHTMLProps, string>(props);
     const { componentRef, markAsInvalid, onChange } = baseProps;
     const { isFormDisabled, setValue, value = '' } = formsyProps;

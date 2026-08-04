@@ -9,6 +9,8 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { Formsy } from './formsy';
 import { FieldLabel } from './FieldLabel';
+import { LabelOverlayProps } from './LabelOverlay';
+import { INPUT_LABEL_CLASS_NAME_WITH_TOGGLE } from './constants';
 
 const queryColumn = new QueryColumn({
     name: 'testColumn',
@@ -21,20 +23,20 @@ describe('FieldLabel', () => {
     });
 
     test("don't show label", () => {
-        render(<FieldLabel showLabel={false} label="Label" />);
-        expect(document.body.textContent).toBe('');
+        render(<FieldLabel label="Label" showLabel={false} />);
+        expect(document.body).toHaveTextContent('');
     });
 
     test('without overlay, with label', () => {
         const label = <span className="label-span">This is the label</span>;
-        render(<FieldLabel withLabelOverlay={false} label={label} />);
-        expect(document.querySelector('span.label-span').textContent).toBe('This is the label');
+        render(<FieldLabel label={label} withLabelOverlay={false} />);
+        expect(document.querySelector('span.label-span')).toHaveTextContent('This is the label');
         expect(document.querySelectorAll('.overlay-trigger')).toHaveLength(0);
     });
 
     test('without overlay, with column', () => {
-        render(<FieldLabel withLabelOverlay={false} column={queryColumn} />);
-        expect(document.body.textContent).toBe(queryColumn.caption);
+        render(<FieldLabel column={queryColumn} withLabelOverlay={false} />);
+        expect(document.body).toHaveTextContent(queryColumn.caption);
         expect(document.querySelectorAll('.span.label-span')).toHaveLength(0);
         expect(document.querySelectorAll('.overlay-trigger')).toHaveLength(0);
     });
@@ -57,11 +59,23 @@ describe('FieldLabel', () => {
     test('showToggle', () => {
         render(
             <Formsy>
-                <FieldLabel id="test" column={queryColumn} showToggle />
+                <FieldLabel column={queryColumn} id="test" showToggle />
             </Formsy>
         );
         expect(document.querySelectorAll('.toggle')).toHaveLength(1);
         expect(document.querySelectorAll('.overlay-trigger')).toHaveLength(1);
+    });
+
+    test('showToggle requires a column or an id and fieldName', () => {
+        const consoleError = jest.spyOn(console, 'error').mockImplementation(() => undefined);
+
+        expect(() => render(<FieldLabel showToggle />)).toThrow(
+            'FieldLabel: when showing the toggle, either a column or an id and fieldName must be provided.'
+        );
+        expect(() => render(<FieldLabel fieldName="test" showToggle />)).toThrow();
+        expect(() => render(<FieldLabel id="test" showToggle />)).toThrow();
+
+        consoleError.mockRestore();
     });
 
     test('showToggle, with labelOverlayProps, not formsy', () => {
@@ -72,12 +86,59 @@ describe('FieldLabel', () => {
         };
         render(
             <Formsy>
-                <FieldLabel id="test" column={queryColumn} showToggle labelOverlayProps={props} />
+                <FieldLabel column={queryColumn} id="test" labelOverlayProps={props} showToggle />
             </Formsy>
         );
         expect(document.querySelectorAll('.toggle')).toHaveLength(1);
         expect(document.querySelectorAll('.control-label-toggle-input')).toHaveLength(1);
         expect(document.querySelectorAll('.overlay-trigger')).toHaveLength(1);
+    });
+
+    test('showToggle, with labelOverlayProps, not formsy, sizes the label and toggle columns', () => {
+        const props: LabelOverlayProps = { isFormsy: false, label: 'This is the label' };
+        const { rerender } = render(
+            <Formsy>
+                <FieldLabel column={queryColumn} id="test" labelOverlayProps={props} showToggle />
+            </Formsy>
+        );
+
+        const expectToggleColumns = (): void => {
+            expect(document.querySelector('.control-label')).toHaveClass(INPUT_LABEL_CLASS_NAME_WITH_TOGGLE);
+            expect(document.querySelector('.control-label-toggle-input')).toHaveClass(
+                'control-label-toggle-input-size-fixed'
+            );
+            expect(document.querySelector('.control-label-toggle-input').parentElement).toHaveClass('col-xs-1');
+        };
+
+        expectToggleColumns();
+
+        // The labelOverlayProps supplied by the caller are not modified, so the columns are sized
+        // consistently no matter how many times the same props object is rendered.
+        expect(props.labelClass).toBeUndefined();
+
+        rerender(
+            <Formsy>
+                <FieldLabel column={queryColumn} id="test" labelOverlayProps={props} showToggle />
+            </Formsy>
+        );
+
+        expectToggleColumns();
+    });
+
+    test('showToggle, with labelOverlayProps, not formsy, respects a supplied labelClass', () => {
+        const props: LabelOverlayProps = { isFormsy: false, label: 'This is the label', labelClass: 'custom-label' };
+        render(
+            <Formsy>
+                <FieldLabel column={queryColumn} id="test" labelOverlayProps={props} showToggle />
+            </Formsy>
+        );
+
+        expect(document.querySelector('.custom-label')).toBeInTheDocument();
+        expect(document.querySelector('.custom-label')).not.toHaveClass(INPUT_LABEL_CLASS_NAME_WITH_TOGGLE);
+        expect(document.querySelector('.control-label-toggle-input')).not.toHaveClass(
+            'control-label-toggle-input-size-fixed'
+        );
+        expect(document.querySelector('.control-label-toggle-input').parentElement).not.toHaveClass('col-xs-1');
     });
 
     test('showToggle, with labelOverlayProps, formsy', () => {
@@ -88,7 +149,7 @@ describe('FieldLabel', () => {
         };
         render(
             <Formsy>
-                <FieldLabel id="test" column={queryColumn} showToggle labelOverlayProps={props} />
+                <FieldLabel column={queryColumn} id="test" labelOverlayProps={props} showToggle />
             </Formsy>
         );
         expect(document.querySelectorAll('.toggle')).toHaveLength(1);
@@ -105,10 +166,10 @@ describe('FieldLabel', () => {
         render(
             <Formsy>
                 <FieldLabel
-                    id="test"
                     column={queryColumn}
-                    showToggle
+                    id="test"
                     labelOverlayProps={props}
+                    showToggle
                     toggleClassName="toggle-wrapper"
                 />
             </Formsy>
@@ -127,10 +188,10 @@ describe('FieldLabel', () => {
         render(
             <Formsy>
                 <FieldLabel
-                    id="test"
                     column={queryColumn}
-                    showToggle
+                    id="test"
                     labelOverlayProps={props}
+                    showToggle
                     toggleClassName="toggle-wrapper"
                 />
             </Formsy>
@@ -143,7 +204,7 @@ describe('FieldLabel', () => {
     test('showToggle, toggleProps disabled', () => {
         render(
             <Formsy>
-                <FieldLabel id="test" column={queryColumn} showToggle toggleProps={{ toolTip: 'This is a tooltip' }} />
+                <FieldLabel column={queryColumn} id="test" showToggle toggleProps={{ toolTip: 'This is a tooltip' }} />
             </Formsy>
         );
         expect(document.querySelectorAll('.toggle')).toHaveLength(1);
@@ -154,7 +215,7 @@ describe('FieldLabel', () => {
     test('showToggle, toggleProps not disabled', () => {
         render(
             <Formsy>
-                <FieldLabel id="test" column={queryColumn} showToggle toggleProps={{ onClick: jest.fn() }} />
+                <FieldLabel column={queryColumn} id="test" showToggle toggleProps={{ onClick: jest.fn() }} />
             </Formsy>
         );
         expect(document.querySelectorAll('.toggle')).toHaveLength(1);

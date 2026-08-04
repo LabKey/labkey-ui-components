@@ -63,6 +63,7 @@ import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { CellMessage, EditableColumnMetadata, EditorModel, EditorModelProps, ValueDescriptor } from './models';
 import { computeRangeChange, genCellKey, getValidatedEditableGridValue, parseCellKey } from './utils';
 import { RemoveColumnMenuItem } from './RemoveColumnMenuItem';
+import { RequiredSymbol } from '../forms/input/RequiredSymbol';
 
 function anyCell(values: List<ValueDescriptor>): boolean {
     return true;
@@ -694,7 +695,10 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             changesMade = true;
             const col = columnMap.get(parseCellKey(cellKey).fieldKey);
             const isMultiChoiceCol = col?.isMultiChoice;
-            const { message } = getValidatedEditableGridValue(isMultiChoiceCol ? newValues : newValues[0].display, column ?? col);
+            const { message } = getValidatedEditableGridValue(
+                isMultiChoiceCol ? newValues : newValues[0].display,
+                column ?? col
+            );
             changes.cellMessages = cellMessages.set(cellKey, message);
         } else if (mod === MODIFICATION_TYPES.REMOVE) {
             let values: List<ValueDescriptor> = editorModel.getIn(keyPath);
@@ -880,7 +884,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 {!showLabelOverlay && (
                     <>
                         {label}
-                        {req && <span className="required-symbol"> *</span>}
+                        <RequiredSymbol required={req} />
                     </>
                 )}
                 {showOverlayFromMetadata && (
@@ -1023,6 +1027,22 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         let selectionType: SELECTION_TYPES = isShift ? SELECTION_TYPES.AREA_CHANGE : undefined;
 
         switch (event.key) {
+            case Key.ARROW_DOWN: {
+                const predicate = isMeta ? not(isCellEmpty) : anyCell;
+                const found = editorModel.findNextCell(
+                    colIdx,
+                    rowIdx,
+                    predicate,
+                    moveDown,
+                    hideReadonlyRows,
+                    readonlyRows
+                );
+                if (found) {
+                    nextCol = found.colIdx;
+                    nextRow = found.rowIdx;
+                }
+                break;
+            }
             case Key.ARROW_LEFT: {
                 if (isMeta) {
                     const found = editorModel.findNextCell(
@@ -1043,22 +1063,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 } else {
                     nextCol = colIdx - 1;
                     nextRow = rowIdx;
-                }
-                break;
-            }
-            case Key.ARROW_UP: {
-                const predicate = isMeta ? not(isCellEmpty) : anyCell;
-                const found = editorModel.findNextCell(
-                    colIdx,
-                    rowIdx,
-                    predicate,
-                    moveUp,
-                    hideReadonlyRows,
-                    readonlyRows
-                );
-                if (found) {
-                    nextCol = found.colIdx;
-                    nextRow = found.rowIdx;
                 }
                 break;
             }
@@ -1085,13 +1089,13 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 }
                 break;
             }
-            case Key.ARROW_DOWN: {
+            case Key.ARROW_UP: {
                 const predicate = isMeta ? not(isCellEmpty) : anyCell;
                 const found = editorModel.findNextCell(
                     colIdx,
                     rowIdx,
                     predicate,
-                    moveDown,
+                    moveUp,
                     hideReadonlyRows,
                     readonlyRows
                 );
@@ -1101,15 +1105,15 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 }
                 break;
             }
-            case Key.HOME: {
-                nextCol = 0;
+            case Key.END: {
+                nextCol = editorModel.orderedColumns.size - 1;
                 nextRow = rowIdx;
                 // Issue 51421
                 if (isShift) selectionType = SELECTION_TYPES.AREA;
                 break;
             }
-            case Key.END: {
-                nextCol = editorModel.orderedColumns.size - 1;
+            case Key.HOME: {
+                nextCol = 0;
                 nextRow = rowIdx;
                 // Issue 51421
                 if (isShift) selectionType = SELECTION_TYPES.AREA;

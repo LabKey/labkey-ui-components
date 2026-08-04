@@ -182,8 +182,7 @@ export const IndeterminateCheckbox: FC<IndeterminateCheckboxProps> = props => {
     const ref = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        if (ref?.current)
-            ref.current.indeterminate = true;
+        if (ref?.current) ref.current.indeterminate = true;
     }, [ref?.current]);
 
     return <input id={queryColumn.fieldKey} ref={ref} type="checkbox" {...rest} />;

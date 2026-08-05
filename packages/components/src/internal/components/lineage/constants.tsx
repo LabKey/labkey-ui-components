@@ -16,7 +16,11 @@ import {
     LineageOptions,
     LineageURLResolvers,
 } from './types';
-import { SAMPLE_STATE_COLOR_COLUMN_NAME, SAMPLE_STATE_TYPE_COLUMN_NAME } from '../samples/constants';
+import {
+    SAMPLE_COLOR_COLOR_COLUMN_NAME,
+    SAMPLE_STATE_COLOR_COLUMN_NAME,
+    SAMPLE_STATE_TYPE_COLUMN_NAME
+} from '../samples/constants';
 export const LINEAGE_GRAPH_FILTER_METRIC = "LineageGraphFilter";
 // Default depth to fetch with the lineage API
 export const DEFAULT_LINEAGE_DISTANCE = 5;
@@ -168,5 +172,6 @@ export const LINEAGE_DETAIL_REQUIRED_COLS = [
     '*',
     SAMPLE_STATE_COLOR_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SAMPLE_COLOR_COLOR_COLUMN_NAME,
     IDENTIFIED_COLUMN_NAME,
 ];

@@ -10,7 +10,7 @@ interface RequiredSymbolProps {
 }
 
 export const RequiredSymbol: FC<RequiredSymbolProps> = memo(({ required, symbol = ' *' }) => {
-    if (required === false) return null;
+    if (!required) return null;
     return <span className="required-symbol">{symbol}</span>;
 });
 RequiredSymbol.displayName = 'RequiredSymbol';

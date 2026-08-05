@@ -1812,4 +1812,40 @@ describe('resolveValueDescriptors', () => {
             resolveValueDescriptors(floatLookupCol, {}, {}, 'cellKey', { value: 1, displayValue: 'Sample 1' })
         ).toStrictEqual([{ display: 'Sample 1', raw: 1 }]);
     });
+
+    // Issue 1288: read-only columns (e.g. ancestor identifying fields) should keep the server's displayValue
+    // rather than re-deriving the display from the raw value.
+    test('readOnly columns use displayValue and skip reformatting', () => {
+        // Decimal: editable columns ignore displayValue in favor of the raw value (Issue 53934), but a
+        // read-only column should surface the server-formatted displayValue.
+        const floatCol = new QueryColumn({ fieldKey: 'col1', name: 'col1', jsonType: 'float' });
+        const readOnlyFloatCol = new QueryColumn({ fieldKey: 'col1', name: 'col1', jsonType: 'float', readOnly: true });
+        expect(
+            resolveValueDescriptors(floatCol, {}, {}, 'cellKey', { value: 1.005, displayValue: 1.01 })
+        ).toStrictEqual([{ display: 1.005, raw: 1.005 }]);
+        expect(
+            resolveValueDescriptors(readOnlyFloatCol, {}, {}, 'cellKey', { value: 1.005, displayValue: 1.01 })
+        ).toStrictEqual([{ display: 1.01, raw: 1.005 }]);
+
+        // DateTime: a read-only column returns the server displayValue verbatim instead of running the raw
+        // value through the date formatter (which, for this column's format, would produce '2023-Feb-14 06:30').
+        const readOnlyDateTimeCol = new QueryColumn({
+            fieldKey: 'col1',
+            name: 'col1',
+            rangeURI: DATETIME_RANGE_URI,
+            format: 'yyyy-MMM-dd HH:mm',
+            readOnly: true,
+        });
+        expect(
+            resolveValueDescriptors(readOnlyDateTimeCol, {}, {}, 'cellKey', {
+                value: '2023-02-14 06:30:00.000',
+                displayValue: '2023-02-14 06:30',
+            })
+        ).toStrictEqual([{ display: '2023-02-14 06:30', raw: '2023-02-14 06:30:00.000' }]);
+
+        // Read-only datetime with no displayValue falls back to the raw value (not reformatted).
+        expect(
+            resolveValueDescriptors(readOnlyDateTimeCol, {}, {}, 'cellKey', { value: '2023-02-14 06:30:00.000' })
+        ).toStrictEqual([{ display: '2023-02-14 06:30:00.000', raw: '2023-02-14 06:30:00.000' }]);
+    });
 });

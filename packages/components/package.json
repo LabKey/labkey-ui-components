@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.53.1-fb-sampleColor2.0",
+  "version": "7.53.1-fb-sampleColor2.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

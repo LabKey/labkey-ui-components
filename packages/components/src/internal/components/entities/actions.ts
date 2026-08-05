@@ -1356,6 +1356,7 @@ export function getSingleSampleTypeQueryInfo(sampleIds: number[] | string[]): Pr
 
 // GitHub Issue 928: Spaces not shown between text choices in identifying fields in editable grid
 export function getFieldDisplayValue(fieldData: any): string {
+    if (!fieldData) return '';
     const val = fieldData.formattedValue ?? fieldData.displayValue ?? fieldData.value;
     if (Array.isArray(val)) return val.join(', ');
     return val;

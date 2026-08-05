@@ -77,9 +77,9 @@ describe('SelectInput', () => {
     //     expect(component.state().selectedOptions[0].value).toEqual('two');
     // });
 
-    function validateFieldLabel(component: any, labelText?: string): void {
+    function validateFieldLabel(labelText?: string): void {
         if (labelText !== undefined) {
-            expect(document.querySelector('.control-label').textContent).toBe(labelText);
+            expect(document.querySelector('.control-label')).toHaveTextContent(labelText);
         } else {
             expect(document.querySelectorAll('.control-label')).toHaveLength(0);
         }
@@ -90,11 +90,11 @@ describe('SelectInput', () => {
         const customLabel = 'Jest Custom Label Test';
 
         test('renderFieldLabel', () => {
-            const component = render(<SelectInputImpl {...defaultProps()} label={defaultLabel} showLabel />);
-            validateFieldLabel(component, defaultLabel + ' ');
+            render(<SelectInputImpl {...defaultProps()} label={defaultLabel} showLabel />);
+            validateFieldLabel(defaultLabel);
         });
         test('renderFieldLabel, customLabel', () => {
-            const component = render(
+            render(
                 <SelectInputImpl
                     {...defaultProps()}
                     label={defaultLabel}
@@ -102,19 +102,17 @@ describe('SelectInput', () => {
                     showLabel
                 />
             );
-            validateFieldLabel(component, customLabel);
+            validateFieldLabel(customLabel);
         });
 
         test('renderFieldLabel, required', () => {
-            const component = render(<SelectInputImpl {...defaultProps()} label={defaultLabel} required showLabel />);
-            validateFieldLabel(component, defaultLabel + ' * ');
+            render(<SelectInputImpl {...defaultProps()} label={defaultLabel} required showLabel />);
+            validateFieldLabel(defaultLabel + ' *');
         });
 
         test('renderFieldLabel, showLabel=false', () => {
-            const component = render(
-                <SelectInputImpl {...defaultProps()} label={defaultLabel} required showLabel={false} />
-            );
-            validateFieldLabel(component);
+            render(<SelectInputImpl {...defaultProps()} label={defaultLabel} required showLabel={false} />);
+            validateFieldLabel();
         });
     });
 

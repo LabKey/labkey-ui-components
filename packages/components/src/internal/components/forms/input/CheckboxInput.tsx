@@ -17,6 +17,7 @@ import {
 } from '../constants';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import { RequiredSymbol } from './RequiredSymbol';
 
 interface CheckboxInputProps extends DisableableInputProps {
     addLabelAsterisk?: boolean;
@@ -99,14 +100,14 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputImplProps, Checkbo
         // React.Nodes as labels.  Using a label that is anything but a string when using Checkbox
         // produces a "Converting circular structure to JSON" error.
         // TODO: This label generation is inconsistent and does not align with other input elements.
-        // This should not be responsible for rendering the "required-symbol" and should allow for component prop
+        // This should not be responsible for rendering the RequiredSymbol and should allow for component prop
         // to define label wrapper classes.
         return (
             <div className={`${containerClassName} checkbox-input-form-row`}>
                 {renderFieldLabel ? (
                     <label className={labelClassName} htmlFor={queryColumn.fieldKey}>
                         {renderFieldLabel(queryColumn)}
-                        {queryColumn?.required && <span className="required-symbol"> *</span>}
+                        <RequiredSymbol required={queryColumn.required || addLabelAsterisk} />
                     </label>
                 ) : (
                     <FieldLabel
@@ -181,8 +182,7 @@ export const IndeterminateCheckbox: FC<IndeterminateCheckboxProps> = props => {
     const ref = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        if (ref?.current)
-            ref.current.indeterminate = true;
+        if (ref?.current) ref.current.indeterminate = true;
     }, [ref?.current]);
 
     return <input id={queryColumn.fieldKey} ref={ref} type="checkbox" {...rest} />;

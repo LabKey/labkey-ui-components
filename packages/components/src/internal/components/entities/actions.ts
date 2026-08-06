@@ -1578,7 +1578,8 @@ export function getSampleTypesFromTransactionIds(
 }
 
 export async function getDataClassesFromTransactionIds(
-    transactionAuditId: number | string
+    transactionAuditId: number | string,
+    includeDataRows?: boolean,
 ): Promise<DataTypeRowIdsFromTransactionIds> {
     const results = await getDataTypesFromTransactionId(
         transactionAuditId,
@@ -1589,7 +1590,7 @@ export async function getDataClassesFromTransactionIds(
 
     if (!results.rowIds.length) return { ...results, typeNameRowCounts: {} };
 
-    const { dataTypeRowCounts, dataTypes } = results;
+    const { dataTypeRowCounts, dataTypes, rowIds } = results;
     const dataTypeLcMap = Object.fromEntries((dataTypes ?? []).map(dt => [dt.toLowerCase(), dt]));
 
     const typeNameRowCounts: Record<string, number> = {};
@@ -1608,5 +1609,24 @@ export async function getDataClassesFromTransactionIds(
         });
     }
 
-    return { ...results, typeNameRowCounts };
+    if (!includeDataRows)
+        return { ...results, typeNameRowCounts };
+
+    const typeNameRows: Record<string, any[]> = {};
+    const dataRows = await selectRows({
+        schemaQuery: SCHEMAS.EXP_TABLES.DATA,
+        columns: ['DataClass/Name', 'RowId'],
+        filterArray: [Filter.create('rowId', rowIds, Filter.Types.IN)],
+        containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+    });
+
+    dataRows.rows.forEach(row => {
+        const dataClass = caseInsensitive(row, 'DataClass/Name')?.value;
+        const rowId = caseInsensitive(row, 'RowId').value;
+        if (!typeNameRows[dataClass])
+            typeNameRows[dataClass] = [];
+        typeNameRows[dataClass].push({ rowId });
+    });
+
+    return { ...results, typeNameRowCounts, typeNameRows };
 }

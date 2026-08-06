@@ -54,6 +54,7 @@ export type DataTypeRowIdsFromTransactionIds = {
     dataTypes?: string[];
     rowIds: string[];
     typeNameRowCounts?: Record<string, number>;
+    typeNameRows?: Record<string, any[]>;
 };
 
 type GetTransactionRowIdsResponse = {

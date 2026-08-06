@@ -873,8 +873,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const metadata = editorModel.getColumnMetadata(metadataKey);
         const showOverlayFromMetadata = !!metadata?.toolTip;
         const showLabelOverlay = !showOverlayFromMetadata && qColumn?.hasHelpTipData;
+        const renderRemove = !!metadata?.onRemoveColumn;
         const className = classNames(GRID_HEADER_CELL_BODY, {
-            'grid-header-cell__body--with-remove-column': metadata?.onRemoveColumn !== undefined,
+            'grid-header-cell__body--with-remove-column': renderRemove,
         });
 
         return (
@@ -893,7 +894,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 {showLabelOverlay && (
                     <LabelOverlay column={qColumn} label={metadata?.caption} placement="bottom" required={req} />
                 )}
-                {metadata?.onRemoveColumn && (
+                {renderRemove && (
                     <DropdownMenu
                         asAnchor={false}
                         className="grid-panel__menu-toggle editable-grid-column-header__dropdown"

@@ -72,7 +72,8 @@
 }
 
 // Note: this is necessary because the editable grid column headers use a normal dropdown menu, not the custom one
-// defined in HeaderCellDropdownMenu. Without absolute positioning the dropdown renders inside the header cell.
+// defined in HeaderCellDropdownMenu. Without absolute positioning the dropdown renders inside the header cell, hidden
+// in overflow space, instead of above it.
 .dropdown.editable-grid-column-header__dropdown {
     position: absolute;
     bottom: 6px;

@@ -299,6 +299,7 @@ import {
 import { QueryFormInputs } from './internal/components/forms/QueryFormInputs';
 import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
 import { SelectInput } from './internal/components/forms/input/SelectInput';
+import { RequiredSymbol } from './internal/components/forms/input/RequiredSymbol';
 import { dividedOptionsRenderer, filterDividedOptions } from './internal/components/forms/input/DividedOptionsRenderer';
 import { DatePickerInput } from './internal/components/forms/input/DatePickerInput';
 import { FileInput } from './internal/components/forms/input/FileInput';
@@ -1652,6 +1653,7 @@ export {
     ReportItemModal,
     ReportList,
     request,
+    RequiredSymbol,
     RequiresPermission,
     resolveDetailFieldValue,
     resolveDetailRenderer,

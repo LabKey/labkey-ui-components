@@ -2,18 +2,11 @@
  * Copyright (c) 2024-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { fromJS, List } from 'immutable';
 import React from 'react';
 import { render } from '@testing-library/react';
+import { fromJS, List } from 'immutable';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
-
-import { MultiValueRenderer } from '../../../renderers/MultiValueRenderer';
-import { AliasRenderer } from '../../../renderers/AliasRenderer';
-import { AppendUnits } from '../../../renderers/AppendUnits';
-import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
-import { LabelColorRenderer } from '../../../renderers/LabelColorRenderer';
-import { FileColumnRenderer } from '../../../renderers/FileColumnRenderer';
 
 import { defaultTitleRenderer, DetailDisplay, Renderer, resolveDetailRenderer } from './DetailDisplay';
 
@@ -135,7 +128,7 @@ describe('DetailDisplay', () => {
 
         render(
             <DetailDisplay
-                asPanel={true}
+                asPanel
                 data={data}
                 displayColumns={cols}
                 editingMode={false}
@@ -159,7 +152,7 @@ describe('defaultTitleRenderer', () => {
         });
         render(<div>{defaultTitleRenderer(col)}</div>);
         expect(document.querySelector('span').innerHTML).toEqual(
-            'test&nbsp;<div class="overlay-trigger"><i class="fa fa-question-circle"></i></div><span class="required-symbol">* </span>'
+            'test&nbsp;<div class="overlay-trigger"><i class="fa fa-question-circle"></i></div><span class="required-symbol"> *</span>'
         );
     });
 

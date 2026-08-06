@@ -66,12 +66,16 @@
     overflow-y: auto;
 }
 
+// GH Issue 1270
+.grid-header-cell__body--with-remove-column {
+    padding-right: 16px;
+}
+
 // Note: this is necessary because the editable grid column headers use a normal dropdown menu, not the custom one
-// defined in HeaderCellDropdownMenu. This forces the dropdown icon for editable grid dropdowns to the bottom right of
-// the th element.
+// defined in HeaderCellDropdownMenu. Without absolute positioning the dropdown renders inside the header cell.
 .dropdown.editable-grid-column-header__dropdown {
     position: absolute;
-    bottom: 4px;
+    bottom: 6px;
     right: 4px;
 }
 

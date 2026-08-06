@@ -873,10 +873,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const metadata = editorModel.getColumnMetadata(metadataKey);
         const showOverlayFromMetadata = !!metadata?.toolTip;
         const showLabelOverlay = !showOverlayFromMetadata && qColumn?.hasHelpTipData;
+        const className = classNames(GRID_HEADER_CELL_BODY, {
+            'grid-header-cell__body--with-remove-column': metadata?.onRemoveColumn !== undefined,
+        });
 
-        // TODO should be able to just use LabelOverlay here since it can handle an alternate tooltip renderer
         return (
-            <div className={GRID_HEADER_CELL_BODY}>
+            <div className={className}>
                 {!showLabelOverlay && (
                     <>
                         {label}

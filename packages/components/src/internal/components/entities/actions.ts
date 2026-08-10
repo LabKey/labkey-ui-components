@@ -1614,7 +1614,7 @@ export async function getDataClassesFromTransactionIds(
 
     const typeNameRows: Record<string, any[]> = {};
     const dataRows = await selectRows({
-        schemaQuery: SCHEMAS.EXP_TABLES.DATA,
+        schemaQuery: SCHEMAS.EXP_TABLES.DATA.detailView,
         columns: ['DataClass/Name', 'RowId'],
         filterArray: [Filter.create('rowId', rowIds, Filter.Types.IN)],
         containerFilter: Query.containerFilter.currentPlusProjectAndShared,
@@ -1622,10 +1622,12 @@ export async function getDataClassesFromTransactionIds(
 
     dataRows.rows.forEach(row => {
         const dataClass = caseInsensitive(row, 'DataClass/Name')?.value;
-        const rowId = caseInsensitive(row, 'RowId').value;
-        if (!typeNameRows[dataClass])
-            typeNameRows[dataClass] = [];
-        typeNameRows[dataClass].push({ rowId });
+        if (dataClass) {
+            const rowId = caseInsensitive(row, 'RowId').value;
+            if (!typeNameRows[dataClass])
+                typeNameRows[dataClass] = [];
+            typeNameRows[dataClass].push({ rowId });
+        }
     });
 
     return { ...results, typeNameRowCounts, typeNameRows };

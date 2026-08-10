@@ -4,11 +4,11 @@
  */
 // This package mocks react-router-dom (see __mocks__/react-router-dom.ts), which stubs out unstable_usePrompt. These
 // tests exercise navigation blocking against a real router, so the mock is not used here.
-jest.unmock('react-router-dom');
+jest.unmock('react-router');
 
 import React, { FC, useEffect, useState } from 'react';
 import { act, render } from '@testing-library/react';
-import { createMemoryRouter, RouterProvider } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider } from 'react-router';
 
 import { CONFIRM_MESSAGE, InjectedRouteLeaveProps, SetIsDirty, useRouteLeave } from './RouteLeave';
 

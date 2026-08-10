@@ -3,7 +3,7 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, PropsWithChildren, useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 import { AppURL } from '../../url/AppURL';
 import { AppLink } from '../../url/AppLink';

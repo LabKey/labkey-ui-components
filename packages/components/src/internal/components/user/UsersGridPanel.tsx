@@ -6,7 +6,7 @@ import React, { FC, memo, PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 
 import { Filter } from '@labkey/api';
-import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
+import { SetURLSearchParams, useSearchParams } from 'react-router';
 
 import { getSelected } from '../../actions';
 

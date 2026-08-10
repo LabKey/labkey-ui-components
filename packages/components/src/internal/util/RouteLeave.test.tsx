@@ -2,7 +2,7 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-// This package mocks react-router-dom (see __mocks__/react-router-dom.ts), which stubs out unstable_usePrompt. These
+// This package mocks react-router (see __mocks__/react-router.ts), which stubs out unstable_usePrompt. These
 // tests exercise navigation blocking against a real router, so the mock is not used here.
 jest.unmock('react-router');
 

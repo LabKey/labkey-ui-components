@@ -19,18 +19,23 @@ export interface HorizontalBarData {
     href?: string;
     name?: string;
     percent: number;
+    sectionLabel?: string; // groups consecutive bars under a shared heading in the summary legend
     title: string;
     totalCount: number;
+    unlabeled?: boolean; // name adds nothing beyond sectionLabel, so a section holding only this bar collapses to one row
 }
 
 export interface HorizontalBarLegendData {
     backgroundColor: string;
+    barIndex?: number; // index of the HorizontalBarData this entry came from; undefined for section headers
     borderColor?: string;
     circleColor: string;
     data?: Map<any, any>;
     expired?: boolean;
+    isSectionHeader?: boolean;
     legendLabel: string;
     locked?: boolean;
+    separatorAbove?: boolean; // draws a rule above this row to fence off the section that ends before it
 }
 
 export function createHorizontalBarLegendData(data: HorizontalBarData[]): HorizontalBarLegendData[] {
@@ -60,24 +65,59 @@ export function createHorizontalBarCountLegendData(
     emptyTextSingular: string,
     emptyTextPlural: string
 ): HorizontalBarLegendData[] {
-    return data
-        .filter(row => row.count > 0)
-        .reduce<HorizontalBarLegendData[]>((legendData, row) => {
-            const countDisplay = row.count.toLocaleString();
-            let legendLabel = row.name;
-            if (!row.filled) {
-                legendLabel = row.count > 1 ? emptyTextPlural : emptyTextSingular;
-            }
+    const bars = data.map((row, barIndex) => ({ row, barIndex })).filter(({ row }) => row.count > 0);
+    const legendData: HorizontalBarLegendData[] = [];
 
+    const toEntry = (row: HorizontalBarData, barIndex: number, legendLabel: string): HorizontalBarLegendData => {
+        const countDisplay = row.count.toLocaleString();
+        return {
+            circleColor: row.backgroundColor ?? 'fff',
+            backgroundColor: 'none',
+            legendLabel: row.filled ? legendLabel : row.count > 1 ? emptyTextPlural : emptyTextSingular,
+            barIndex,
+            data: row.href ? Map.of('value', countDisplay, 'url', row.href) : Map.of('value', countDisplay),
+        };
+    };
+
+    let previousWasSectioned = false;
+
+    for (let i = 0; i < bars.length; i++) {
+        const { row, barIndex } = bars[i];
+        const { sectionLabel } = row;
+
+        let end = i;
+        if (sectionLabel) {
+            while (end + 1 < bars.length && bars[end + 1].row.sectionLabel === sectionLabel) end++;
+        }
+
+        // a lone bar keeps its header unless it is unlabeled, where the header and row would read identically
+        const collapses = end === i && row.unlabeled;
+
+        if (sectionLabel && !collapses) {
+            const section = bars.slice(i, end + 1);
+            const total = section.reduce((sum, bar) => sum + bar.row.count, 0);
             legendData.push({
-                circleColor: row.backgroundColor ?? 'fff',
+                circleColor: 'none',
                 backgroundColor: 'none',
-                legendLabel,
-                data: row.href ? Map.of('value', countDisplay, 'url', row.href) : Map.of('value', countDisplay),
+                legendLabel: sectionLabel,
+                isSectionHeader: true,
+                separatorAbove: legendData.length > 0,
+                data: Map.of('value', total.toLocaleString()),
             });
+            section.forEach(bar => legendData.push(toEntry(bar.row, bar.barIndex, bar.row.name)));
+            previousWasSectioned = true;
+        } else {
+            const entry = toEntry(row, barIndex, sectionLabel ?? row.name);
+            // close off the preceding section so its rows don't read as part of this one
+            if (previousWasSectioned) entry.separatorAbove = true;
+            legendData.push(entry);
+            previousWasSectioned = false;
+        }
 
-            return legendData;
-        }, []);
+        i = end;
+    }
+
+    return legendData;
 }
 
 export const getFieldDataType = (fieldData: Record<string, any>): string => {

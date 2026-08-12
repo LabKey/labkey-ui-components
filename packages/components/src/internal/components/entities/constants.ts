@@ -89,7 +89,7 @@ export const SamplePropertyDataType: EntityDataType = {
     instanceSchemaName: undefined,
     getInstanceSchemaQuery: (queryName: string) => {
         if (queryName === SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query) return SCHEMAS.EXP_TABLES.MATERIALS;
-        return new SchemaQuery('samples', queryName);
+        return new SchemaQuery(SCHEMAS.SAMPLE_SETS.SCHEMA, queryName);
     },
     getInstanceDataType: (schemaQuery: SchemaQuery, altQueryName?: string) => {
         return altQueryName ?? schemaQuery.queryName;

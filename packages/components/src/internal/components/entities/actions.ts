@@ -24,7 +24,12 @@ import {
 
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { getFilterForSampleOperation, isSamplesSchema, isWorkflowInputSamplesSchema } from '../samples/utils';
+import {
+    getFilterForSampleOperation,
+    isSamplesSchema,
+    isWorkflowInputSamplesSchema,
+    isWorkflowInputSourcesSchema
+} from '../samples/utils';
 import { getQueryDetails, getRequestAuditDetail, importData, InsertOptions, selectDistinctRows } from '../../query/api';
 import { caseInsensitive, generateId } from '../../util/utils';
 import { request } from '../../request';
@@ -274,17 +279,19 @@ export async function getSelectedParents(
     // GitHub Issue 1357: Resolve selected parents from details view to avoid filters applied to default view
     const response = await selectRows({ columns, filterArray, schemaQuery: schemaQuery.detailView });
 
-    if (isSampleParent) {
-        return resolveSampleParentTypes(response, isAliquotParent, orderedRowIds);
-    }
-
-    return resolveEntityParentTypeFromIds(schemaQuery, response, isAliquotParent, orderedRowIds);
+    return resolveEntityParentTypes(
+        response,
+        isAliquotParent,
+        orderedRowIds,
+        isSampleParent ? SCHEMAS.SAMPLE_SETS.SCHEMA : SCHEMAS.DATA_CLASSES.SCHEMA
+    );
 }
 
-function resolveSampleParentTypes(
+function resolveEntityParentTypes(
     response: SelectRowsResponse,
     isAliquotParent?: boolean,
-    orderedRowIds?: string[]
+    orderedRowIds?: string[],
+    entitySchema = SCHEMAS.SAMPLE_SETS.SCHEMA
 ): List<EntityParentType> {
     const groups: Record<string, any[]> = {};
     const results = [];
@@ -292,24 +299,27 @@ function resolveSampleParentTypes(
     // The transformation done here makes the entities compatible with the editable grid
     response.rows.forEach(row => {
         const displayValue = caseInsensitive(row, 'Name')?.value;
-        const sampleType = caseInsensitive(row, 'SampleSet')?.displayValue;
+        const entityType =
+            entitySchema === SCHEMAS.SAMPLE_SETS.SCHEMA
+                ? caseInsensitive(row, 'SampleSet')?.displayValue
+                : caseInsensitive(row, 'DataClass')?.displayValue;
         const value = caseInsensitive(row, 'RowId')?.value;
 
-        if (!groups.hasOwnProperty(sampleType)) {
-            groups[sampleType] = [];
+        if (!groups.hasOwnProperty(entityType)) {
+            groups[entityType] = [];
         }
 
-        groups[sampleType].push({ displayValue, value });
+        groups[entityType].push({ displayValue, value });
     });
 
     let index = 1;
-    for (const [sampleType, data] of Object.entries(groups)) {
+    for (const [entityType, data] of Object.entries(groups)) {
         results.push(
             EntityParentType.create({
                 index,
-                schema: 'samples',
-                query: sampleType,
-                label: sampleType,
+                schema: entitySchema,
+                query: entityType,
+                label: entityType,
                 value: orderedRowIds
                     ? List<DisplayObject>(data.sort(_getEntitySort(orderedRowIds)))
                     : List<DisplayObject>(data),
@@ -364,12 +374,14 @@ async function initParents(
             Filter.create('RowId', selectionResponse.selected, Filter.Types.IN),
             Filter.create('Container', insertPermissionContainers, Filter.Types.IN),
         ];
-        if (isWorkflowInputSamplesSchema(schemaQuery) && jobId) {
+        if (jobId && (isWorkflowInputSamplesSchema(schemaQuery) || isWorkflowInputSourcesSchema(schemaQuery))) {
             filterArray.push(Filter.create('JobId', jobId, Filter.Types.EQUAL));
         }
-        const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
-        if (opFilter) {
-            filterArray.push(opFilter);
+        if (isSamplesSchema(schemaQuery)) {
+            const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
+            if (opFilter) {
+                filterArray.push(opFilter);
+            }
         }
 
         // Issue 48751 -- Always pass the selectionResponse.selected as the orderedRowIds because we use
@@ -422,35 +434,6 @@ function _getEntitySort(orderedIds: string[]) {
     return (a, b) => {
         return orderedIds.indexOf(a.value + '') - orderedIds.indexOf(b.value + '');
     };
-}
-
-function resolveEntityParentTypeFromIds(
-    schemaQuery: SchemaQuery,
-    response: SelectRowsResponse,
-    isAliquotParent?: boolean,
-    orderedRowIds?: string[]
-): List<EntityParentType> {
-    // The transformation done here makes the entities compatible with the editable grid
-    let data: DisplayObject[] = response.rows
-        .map(row => extractEntityTypeOptionFromRow(row))
-        .map(({ label, rowId }) => ({ displayValue: label, value: rowId }));
-    if (orderedRowIds?.length > 1) data = data.sort(_getEntitySort(orderedRowIds));
-
-    // Issue 50389: use the data class display name if available
-    const dataClass =
-        response.rows.length > 0 ? caseInsensitive(response.rows[0], 'DataClass')?.displayValue : undefined;
-
-    return List<EntityParentType>([
-        EntityParentType.create({
-            index: 1,
-            schema: schemaQuery.schemaName,
-            query: dataClass ?? schemaQuery.queryName,
-            label: dataClass,
-            value: List(data),
-            isAliquotParent,
-            required: isAliquotParent,
-        }),
-    ]);
 }
 
 // export for jest

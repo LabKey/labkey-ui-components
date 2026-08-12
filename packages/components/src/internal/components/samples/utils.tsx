@@ -30,6 +30,7 @@ import {
     DEFAULT_LOCKED_STATUS_COLOR,
     operationRestrictionMessage,
     permittedOps,
+    SAMPLE_COLOR_COLUMN_NAME,
     SAMPLE_COLOR_REQUIRED_COLUMNS,
     SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS,
     SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS,
@@ -296,9 +297,15 @@ export function isAllSamplesSchema(schemaQuery: SchemaQuery): boolean {
 }
 
 export function getSampleDomainDefaultSystemFields(moduleContext?: ModuleContext): SystemField[] {
-    return isFreezerManagementEnabled(moduleContext)
+    const fields = isFreezerManagementEnabled(moduleContext)
         ? SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS.concat(SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS)
         : SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS;
+
+    if (!hasActiveProjectColors(moduleContext)) {
+        return fields.filter(field => field.Name !== SAMPLE_COLOR_COLUMN_NAME);
+    }
+
+    return fields;
 }
 
 export function getSampleStatusLockedMessage(state: SampleState, saving: boolean): string | undefined {

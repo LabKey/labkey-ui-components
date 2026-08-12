@@ -259,6 +259,14 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         Disableable: true,
     },
     {
+        Name: 'ExpMaterialColor',
+        Label: 'Sample Color',
+        DataType: 'Integer',
+        Required: false,
+        Description: 'Colors that can be applied to individual samples, overriding the sample type color',
+        Disableable: false,
+    },
+    {
         Name: 'MaterialExpDate',
         Label: 'Expiration Date',
         DataType: 'DateTime',

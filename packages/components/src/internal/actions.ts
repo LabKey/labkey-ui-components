@@ -54,6 +54,7 @@ export type DataTypeRowIdsFromTransactionIds = {
     dataTypes?: string[];
     rowIds: string[];
     typeNameRowCounts?: Record<string, number>;
+    typeNameRows?: Record<string, any[]>;
 };
 
 type GetTransactionRowIdsResponse = {
@@ -73,9 +74,8 @@ export async function getGridIdsFromTransactionId(
     const errorLogMsg = `${failureMsg} (transactionAuditId = ${transactionAuditId})`;
 
     const response = await request<GetTransactionRowIdsResponse>({
-        url: ActionURL.buildURL('audit', 'getTransactionRowIds.api'),
+        url: ActionURL.buildURL('audit', 'getTransactionRowIds.api', containerPath),
         params: {
-            containerFilter: getContainerFilterForFolder(containerPath),
             dataType,
             transactionAuditId,
         },

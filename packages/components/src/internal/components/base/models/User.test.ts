@@ -182,16 +182,16 @@ describe('User permissions', () => {
         expect(TEST_USER_APP_ADMIN.hasAddUsersPermission()).toBeTruthy();
     });
 
-    test('hasSampleWorkflowDeletePermission', () => {
-        expect(TEST_USER_GUEST.hasSampleWorkflowDeletePermission()).toBeFalsy();
-        expect(TEST_USER_READER.hasSampleWorkflowDeletePermission()).toBeFalsy();
-        expect(TEST_USER_AUTHOR.hasSampleWorkflowDeletePermission()).toBeFalsy();
-        expect(TEST_USER_EDITOR.hasSampleWorkflowDeletePermission()).toBeTruthy();
-        expect(TEST_USER_EDITOR_WITHOUT_DELETE.hasSampleWorkflowDeletePermission()).toBeFalsy();
-        expect(TEST_USER_WORKFLOW_EDITOR.hasSampleWorkflowDeletePermission()).toBeTruthy();
-        expect(TEST_USER_ASSAY_DESIGNER.hasSampleWorkflowDeletePermission()).toBeFalsy();
-        expect(TEST_USER_FOLDER_ADMIN.hasSampleWorkflowDeletePermission()).toBeTruthy();
-        expect(TEST_USER_PROJECT_ADMIN.hasSampleWorkflowDeletePermission()).toBeTruthy();
-        expect(TEST_USER_APP_ADMIN.hasSampleWorkflowDeletePermission()).toBeTruthy();
+    test('hasWorkflowDeletePermission', () => {
+        expect(TEST_USER_GUEST.hasWorkflowDeletePermission()).toBeFalsy();
+        expect(TEST_USER_READER.hasWorkflowDeletePermission()).toBeFalsy();
+        expect(TEST_USER_AUTHOR.hasWorkflowDeletePermission()).toBeFalsy();
+        expect(TEST_USER_EDITOR.hasWorkflowDeletePermission()).toBeTruthy();
+        expect(TEST_USER_EDITOR_WITHOUT_DELETE.hasWorkflowDeletePermission()).toBeFalsy();
+        expect(TEST_USER_WORKFLOW_EDITOR.hasWorkflowDeletePermission()).toBeTruthy();
+        expect(TEST_USER_ASSAY_DESIGNER.hasWorkflowDeletePermission()).toBeFalsy();
+        expect(TEST_USER_FOLDER_ADMIN.hasWorkflowDeletePermission()).toBeTruthy();
+        expect(TEST_USER_PROJECT_ADMIN.hasWorkflowDeletePermission()).toBeTruthy();
+        expect(TEST_USER_APP_ADMIN.hasWorkflowDeletePermission()).toBeTruthy();
     });
 });

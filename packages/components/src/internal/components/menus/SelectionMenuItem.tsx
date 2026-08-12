@@ -11,6 +11,7 @@ import { MenuItem } from '../../dropdowns';
 import { useOverlayTriggerState } from '../../OverlayTrigger';
 import { Popover } from '../../Popover';
 import { AppURL } from '../../url/AppURL';
+import { Placement } from '../../useOverlayPositioning';
 
 interface Props {
     href?: string | AppURL;
@@ -18,16 +19,22 @@ interface Props {
     maxSelectionDisabledMsg?: string;
     nounPlural: string; // always used, doesn't need default value
     onClick?: () => void;
+    popoverPlacement?: Placement;
     queryModel: QueryModel;
     text: React.ReactNode;
 }
 
 interface DisabledSelectionMenuItemProps {
     message: string;
+    popoverPlacement?: Placement;
     text: React.ReactNode;
 }
 
-export const DisabledSelectionMenuItem: FC<DisabledSelectionMenuItemProps> = ({ message, text }) => {
+export const DisabledSelectionMenuItem: FC<DisabledSelectionMenuItemProps> = ({
+    message,
+    text,
+    popoverPlacement = 'right',
+}) => {
     const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLLIElement>(
         'disabled-selection-menu-item',
         true,
@@ -35,11 +42,11 @@ export const DisabledSelectionMenuItem: FC<DisabledSelectionMenuItemProps> = ({ 
     );
     const overlay = useMemo(
         () => (
-            <Popover placement="right" id="disabled-selection-menu-item-popover" targetRef={targetRef}>
+            <Popover id="disabled-selection-menu-item-popover" placement={popoverPlacement} targetRef={targetRef}>
                 {message}
             </Popover>
         ),
-        [message, targetRef]
+        [message, popoverPlacement, targetRef]
     );
     return (
         <MenuItem disabled onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={targetRef}>
@@ -51,7 +58,7 @@ export const DisabledSelectionMenuItem: FC<DisabledSelectionMenuItemProps> = ({ 
 DisabledSelectionMenuItem.displayName = 'DisabledSelectionMenuItem';
 
 export const SelectionMenuItem: FC<Props> = props => {
-    const { href, maxSelection, maxSelectionDisabledMsg, nounPlural, onClick, queryModel, text } = props;
+    const { href, maxSelection, maxSelectionDisabledMsg, nounPlural, onClick, popoverPlacement, queryModel, text } = props;
     const selectionSize = queryModel?.selections?.size;
     const { tooFewSelected, tooManySelected } = useMemo(
         () => ({
@@ -66,7 +73,7 @@ export const SelectionMenuItem: FC<Props> = props => {
         const message = tooFewSelected
             ? `Select one or more ${nounPlural}.`
             : maxSelectionDisabledMsg || `At most ${maxSelection?.toLocaleString()} ${nounPlural} can be selected.`;
-        return <DisabledSelectionMenuItem message={message} text={text} />;
+        return <DisabledSelectionMenuItem message={message} popoverPlacement={popoverPlacement} text={text} />;
     }
 
     return (

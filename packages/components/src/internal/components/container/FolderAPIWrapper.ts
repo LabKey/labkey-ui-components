@@ -54,7 +54,7 @@ export interface FolderAPIWrapper {
         excludeArchived?: boolean
     ) => Promise<Container[]>;
     getDataTypeExcludedContainers: (dataType: FolderConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
-    getFolderDataTypeExclusions: (excludedContainer?: string, reload?: boolean) => Promise<{ [key: string]: number[] }>;
+    getFolderDataTypeExclusions: (excludedContainer?: string, reload?: boolean) => Promise<Record<string, number[]>>;
     getMultipleDataTypeExcludedContainers: (
         dataType: FolderConfigurableDataType,
         dataTypeRowIds: number[]
@@ -87,7 +87,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
         });
     };
 
-    archiveFolder = (archive: boolean = true, containerPath?: string): Promise<Container> => {
+    archiveFolder = (archive = true, containerPath?: string): Promise<Container> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: ActionURL.buildURL(
@@ -223,7 +223,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
         }
 
         return new Promise((resolve, reject) => {
-            const promises: Array<Promise<Record<string, string[]>>> = [];
+            const promises: Promise<Record<string, string[]>>[] = [];
 
             dataTypeRowIds.forEach(id => {
                 promises.push(this.getDataTypeExcludedContainersAsRecord(dataType, id));

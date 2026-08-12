@@ -57,6 +57,7 @@ export class QueryLookup {
     // declare schema: string; -- NOT ALLOWING -- USE schemaName
     declare schemaName: string;
     declare schemaQuery: SchemaQuery;
+    declare traversable: boolean; // only sent when false: the columns this lookup produces carry no lookup of their own
     // declare table: string; -- NOT ALLOWING -- USE queryName
     declare viewName: string;
 
@@ -312,6 +313,16 @@ export class QueryColumn implements IQueryColumn {
 
     isLookup(): boolean {
         return this.lookup !== undefined;
+    }
+
+    // A field key may cross one multi-valued lookup; a second one has no single-valued representation and won't resolve
+    isMultiValuedLookup(): boolean {
+        return this.isLookup() && this.lookup.multiValued !== undefined;
+    }
+
+    // False when the server resolves this lookup's values outside of SQL (lineage), so nothing resolves past its columns
+    isTraversableLookup(): boolean {
+        return this.isLookup() && this.lookup.traversable !== false;
     }
 
     // Issue 39911: a public lookup indicates that it is available in the user schema (i.e. can be seen in the schema browser)

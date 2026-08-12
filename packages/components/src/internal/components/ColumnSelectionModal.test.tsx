@@ -44,6 +44,46 @@ describe('ColumnSelectionModal', () => {
         selectable: true,
     });
 
+    const QUERY_COL_MULTI_VALUED_LOOKUP = new QueryColumn({
+        caption: 'Test Multi Valued Column',
+        fieldKey: 'multiValued',
+        fieldKeyArray: ['multiValued'],
+        fieldKeyPath: 'parent1/multiValued',
+        lookup: new QueryLookup({ junctionLookup: 'lsid', multiValued: 'junction' }),
+        name: 'multiValued',
+        selectable: true,
+    });
+
+    const QUERY_COL_LOOKUP_CHILD = new QueryColumn({
+        caption: 'Test Child Column',
+        fieldKey: 'child',
+        fieldKeyArray: ['child'],
+        fieldKeyPath: 'parent1/multiValued/child',
+        lookup: new QueryLookup({}),
+        name: 'child',
+        selectable: true,
+    });
+
+    const QUERY_COL_NON_TRAVERSABLE_LOOKUP = new QueryColumn({
+        caption: 'Test Lineage Column',
+        fieldKey: 'nonTraversable',
+        fieldKeyArray: ['nonTraversable'],
+        fieldKeyPath: 'Inputs/Data/nonTraversable',
+        lookup: new QueryLookup({ junctionLookup: 'lsid', multiValued: 'junction', traversable: false }),
+        name: 'nonTraversable',
+        selectable: true,
+    });
+
+    const QUERY_COL_MULTI_VALUED_CHILD = new QueryColumn({
+        caption: 'Test Multi Valued Child Column',
+        fieldKey: 'multiValuedChild',
+        fieldKeyArray: ['multiValuedChild'],
+        fieldKeyPath: 'parent1/multiValued/multiValuedChild',
+        lookup: new QueryLookup({ junctionLookup: 'lsid', multiValued: 'junction' }),
+        name: 'multiValuedChild',
+        selectable: true,
+    });
+
     describe('ColumnChoice', () => {
         function defaultProps(): ColumnChoiceProps {
             return {
@@ -92,6 +132,16 @@ describe('ColumnSelectionModal', () => {
             expect(document.querySelectorAll('.field-expand-icon')).toHaveLength(3);
             expect(document.querySelectorAll('.fa-chevron-right')).toHaveLength(0);
             expect(document.querySelectorAll('.fa-chevron-down')).toHaveLength(1);
+        });
+
+        test('lookup, not expandable', () => {
+            render(<ColumnChoice {...defaultProps()} column={QUERY_COL_LOOKUP} expandable={false} isInView={false} />);
+            expect(document.querySelector('.field-caption')).toHaveTextContent('Test Column');
+            expect(document.querySelectorAll('.fa-plus')).toHaveLength(1);
+            // indentation is retained even though the toggle is gone
+            expect(document.querySelectorAll('.field-expand-icon')).toHaveLength(3);
+            expect(document.querySelectorAll('.fa-chevron-right')).toHaveLength(0);
+            expect(document.querySelectorAll('.fa-chevron-down')).toHaveLength(0);
         });
 
         test('disabled', () => {
@@ -388,6 +438,104 @@ describe('ColumnSelectionModal', () => {
             );
             validate(true, true, true);
             expect(document.querySelectorAll('.list-group-item')).toHaveLength(2);
+        });
+
+        test('single-valued children of a multi-valued lookup are expandable', () => {
+            const queryInfo = new QueryInfo({
+                columns: new ExtendedMap({ [QUERY_COL_LOOKUP_CHILD.fieldKey]: QUERY_COL_LOOKUP_CHILD }),
+            });
+            render(
+                <ColumnChoiceGroup
+                    {...defaultProps()}
+                    column={QUERY_COL_MULTI_VALUED_LOOKUP}
+                    expandedColumns={{ [QUERY_COL_MULTI_VALUED_LOOKUP.index]: queryInfo }}
+                />
+            );
+
+            const columnChoices = document.querySelectorAll('.list-group-item');
+            expect(columnChoices).toHaveLength(2);
+            expect(columnChoices[0].querySelector('.fa-chevron-down')).toBeTruthy();
+            expect(columnChoices[1].querySelector('.fa-plus')).toBeTruthy();
+            // The lookup joins inside the aggregate, so the server can resolve it
+            expect(columnChoices[1].querySelector('.fa-chevron-right')).toBeTruthy();
+        });
+
+        test('multi-valued children of a multi-valued lookup are not expandable', () => {
+            const queryInfo = new QueryInfo({
+                columns: new ExtendedMap({
+                    [QUERY_COL_MULTI_VALUED_CHILD.fieldKey]: QUERY_COL_MULTI_VALUED_CHILD,
+                }),
+            });
+            render(
+                <ColumnChoiceGroup
+                    {...defaultProps()}
+                    column={QUERY_COL_MULTI_VALUED_LOOKUP}
+                    expandedColumns={{ [QUERY_COL_MULTI_VALUED_LOOKUP.index]: queryInfo }}
+                />
+            );
+
+            const columnChoices = document.querySelectorAll('.list-group-item');
+            expect(columnChoices).toHaveLength(2);
+            expect(columnChoices[1].querySelector('.fa-plus')).toBeTruthy();
+            // A second to-many hop has no single-valued representation
+            expect(columnChoices[1].querySelector('.fa-chevron-right')).toBeFalsy();
+        });
+
+        test('children of a non-traversable lookup are not expandable', () => {
+            // Lineage: Inputs/Data/ProtSequence hands back columns with cleared FKs, so chainFormatId cannot be chased
+            const queryInfo = new QueryInfo({
+                columns: new ExtendedMap({ [QUERY_COL_LOOKUP_CHILD.fieldKey]: QUERY_COL_LOOKUP_CHILD }),
+            });
+            render(
+                <ColumnChoiceGroup
+                    {...defaultProps()}
+                    column={QUERY_COL_NON_TRAVERSABLE_LOOKUP}
+                    expandedColumns={{ [QUERY_COL_NON_TRAVERSABLE_LOOKUP.index]: queryInfo }}
+                />
+            );
+
+            const columnChoices = document.querySelectorAll('.list-group-item');
+            expect(columnChoices).toHaveLength(2);
+            expect(columnChoices[1].querySelector('.fa-plus')).toBeTruthy();
+            expect(columnChoices[1].querySelector('.fa-chevron-right')).toBeFalsy();
+        });
+
+        test('a multi-valued lookup reached without crossing one stays expandable', () => {
+            const queryInfo = new QueryInfo({
+                columns: new ExtendedMap({
+                    [QUERY_COL_MULTI_VALUED_CHILD.fieldKey]: QUERY_COL_MULTI_VALUED_CHILD,
+                }),
+            });
+            render(
+                <ColumnChoiceGroup
+                    {...defaultProps()}
+                    column={QUERY_COL_LOOKUP}
+                    expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
+                />
+            );
+
+            const columnChoices = document.querySelectorAll('.list-group-item');
+            expect(columnChoices).toHaveLength(2);
+            // This is the first to-many hop, which the server does support
+            expect(columnChoices[1].querySelector('.fa-chevron-right')).toBeTruthy();
+        });
+
+        test('children of a single-valued lookup remain expandable', () => {
+            const queryInfo = new QueryInfo({
+                columns: new ExtendedMap({ [QUERY_COL_LOOKUP_CHILD.fieldKey]: QUERY_COL_LOOKUP_CHILD }),
+            });
+            render(
+                <ColumnChoiceGroup
+                    {...defaultProps()}
+                    column={QUERY_COL_LOOKUP}
+                    expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
+                />
+            );
+
+            const columnChoices = document.querySelectorAll('.list-group-item');
+            expect(columnChoices).toHaveLength(2);
+            expect(columnChoices[1].querySelector('.fa-plus')).toBeTruthy();
+            expect(columnChoices[1].querySelector('.fa-chevron-right')).toBeTruthy();
         });
 
         // Issue 53983

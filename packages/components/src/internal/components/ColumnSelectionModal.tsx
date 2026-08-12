@@ -95,6 +95,8 @@ FieldLabelDisplay.displayName = 'FieldLabelDisplay';
 export interface ColumnChoiceProps {
     column: QueryColumn;
     disabledMsg?: ReactNode;
+    /** Set false to render the column as a leaf, keeping its indentation but omitting the expand/collapse toggle. */
+    expandable?: boolean;
     isExpanded?: boolean;
     isInView?: boolean;
     onAddColumn: QueryColumnHandler;
@@ -104,7 +106,16 @@ export interface ColumnChoiceProps {
 
 // exported for jest tests
 export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
-    const { column, disabledMsg, isExpanded, isInView, onAddColumn, onExpandColumn, onCollapseColumn } = props;
+    const {
+        column,
+        disabledMsg,
+        expandable = true,
+        isExpanded,
+        isInView,
+        onAddColumn,
+        onExpandColumn,
+        onCollapseColumn,
+    } = props;
     const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLButtonElement>(
         'disabled-button-overlay',
         disabledMsg !== undefined,
@@ -148,14 +159,14 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
                         <div className="field-expand-icon" key={`${column.index}|${index}`} />
                     ))}
                     <div className="field-expand-icon">
-                        {column.isLookup() && !isExpanded && (
+                        {expandable && column.isLookup() && !isExpanded && (
                             <button
                                 className="clickable-text fa fa-chevron-right"
                                 onClick={_onExpandColumn}
                                 type="button"
                             />
                         )}
-                        {column.isLookup() && isExpanded && (
+                        {expandable && column.isLookup() && isExpanded && (
                             <button
                                 className="clickable-text fa fa-chevron-down"
                                 onClick={_onCollapseColumn}
@@ -196,15 +207,19 @@ export interface ColumnChoiceGroupProps extends ColumnChoiceProps {
     disabledMsg?: ReactNode;
     expandedColumnFilter?: ExpandedColumnFilter;
     expandedColumns?: Record<string, QueryInfo>;
+    /** True when a multi-valued lookup was already crossed to reach this column. */
+    hasMultiValuedAncestor?: boolean;
     showAllColumns: boolean;
 }
 
 export const ColumnChoiceGroup: FC<ColumnChoiceGroupProps> = memo(props => {
     const {
+        expandable = true,
         expandedColumnFilter,
         expandedColumns,
         column,
         disabledMsg,
+        hasMultiValuedAncestor = false,
         onAddColumn,
         onExpandColumn,
         onCollapseColumn,
@@ -212,6 +227,12 @@ export const ColumnChoiceGroup: FC<ColumnChoiceGroupProps> = memo(props => {
         showAllColumns,
     } = props;
     const isLookupExpanded = !!expandedColumns?.[column.index];
+    // The server aggregates a multi-valued lookup into one value per parent row, and can only do that for a single
+    // to-many hop -- a second one would need a value per pair of junction rows. Single-valued lookups after the hop
+    // join inside that same aggregate, so they resolve fine.
+    const crossedMultiValued = hasMultiValuedAncestor || column.isMultiValuedLookup();
+    // Lineage hands back columns with no lookup of their own, so its children are leaves whatever their arity
+    const childrenTraversable = column.isTraversableLookup();
 
     const isColumnInView = useCallback(
         (col: QueryColumn) => columnsInView.findIndex(c => c.index === col.index) !== -1,
@@ -223,6 +244,7 @@ export const ColumnChoiceGroup: FC<ColumnChoiceGroupProps> = memo(props => {
             <ColumnChoice
                 column={column}
                 disabledMsg={disabledMsg}
+                expandable={expandable}
                 isExpanded={isLookupExpanded}
                 isInView={isColumnInView(column)}
                 key={column.index}
@@ -239,8 +261,10 @@ export const ColumnChoiceGroup: FC<ColumnChoiceGroupProps> = memo(props => {
                             column={fkCol}
                             columnsInView={columnsInView}
                             disabledMsg={disabledMsg}
+                            expandable={childrenTraversable && !(crossedMultiValued && fkCol.isMultiValuedLookup())}
                             expandedColumnFilter={expandedColumnFilter}
                             expandedColumns={expandedColumns}
+                            hasMultiValuedAncestor={crossedMultiValued}
                             isExpanded={!!expandedColumns[fkCol.index]}
                             isInView={isColumnInView(fkCol)}
                             key={fkCol.index}

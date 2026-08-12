@@ -2,21 +2,27 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, PropsWithChildren, ReactNode, useCallback, useContext } from 'react';
+import React, { ComponentType, FC, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 import classNames from 'classnames';
 
 import { useEnterEscape } from '../../../public/useEnterEscape';
 
-interface IFormStepContext {
+export interface WithFormStepsState {
     currentStep?: number;
     furthestStep?: number;
     hasDependentSteps?: boolean;
-    selectStep?: (requestedStep?: number) => boolean;
+}
+
+interface IFormStepContext extends Required<WithFormStepsState> {
+    selectStep: (requestedStep?: number) => boolean;
 }
 
 const FormStepContext = React.createContext<IFormStepContext>(undefined);
 const FormStepContextProvider = FormStepContext.Provider;
-const FormStepContextConsumer = FormStepContext.Consumer;
+
+function useFormStepContext(): IFormStepContext | undefined {
+    return useContext(FormStepContext);
+}
 
 export const FormStepActiveContext = React.createContext<boolean>(true);
 
@@ -47,38 +53,26 @@ interface FormStepProps extends PropsWithChildren {
     trackActive?: boolean;
 }
 
-export class FormStep extends React.Component<FormStepProps, any> {
-    static defaultProps = {
-        trackActive: true,
-    };
+export const FormStep: FC<FormStepProps> = props => {
+    const { children, stepIndex, trackActive = true } = props;
+    const context = useFormStepContext();
 
-    render() {
-        const { children, stepIndex, trackActive } = this.props;
+    if (!context) return null;
 
-        return (
-            <FormStepContextConsumer>
-                {(context: IFormStepContext) => {
-                    if (!context) return null;
+    const { currentStep, furthestStep } = context;
+    const active = stepIndex === currentStep;
 
-                    const { currentStep, furthestStep } = context;
-                    const active = stepIndex === currentStep;
+    if (furthestStep < stepIndex) return null;
 
-                    if (furthestStep >= stepIndex) {
-                        return (
-                            <div className={classNames('form-step', { active })}>
-                                <FormStepActiveContext.Provider value={active}>
-                                    {trackActive ? <ActiveStep active={active}>{children}</ActiveStep> : children}
-                                </FormStepActiveContext.Provider>
-                            </div>
-                        );
-                    }
-
-                    return null;
-                }}
-            </FormStepContextConsumer>
-        );
-    }
-}
+    return (
+        <div className={classNames('form-step', { active })}>
+            <FormStepActiveContext.Provider value={active}>
+                {trackActive ? <ActiveStep active={active}>{children}</ActiveStep> : children}
+            </FormStepActiveContext.Provider>
+        </div>
+    );
+};
+FormStep.displayName = 'FormStep';
 
 interface FormTabItemProps {
     active: boolean;
@@ -112,13 +106,15 @@ const FormTabItem: FC<FormTabItemProps> = ({ active, disabled, onTabChange, sele
 FormTabItem.displayName = 'FormTabItem';
 
 interface FormTabsProps {
-    onTabChange?: (stepIndex?: number) => any;
+    onTabChange?: (stepIndex?: number) => void;
     tabs: string[];
 }
 
 export const FormTabs: FC<FormTabsProps> = ({ onTabChange, tabs }) => {
-    const context = useContext(FormStepContext);
+    const context = useFormStepContext();
+
     if (!context) return null;
+
     const { currentStep, furthestStep, hasDependentSteps, selectStep } = context;
 
     return (
@@ -127,12 +123,7 @@ export const FormTabs: FC<FormTabsProps> = ({ onTabChange, tabs }) => {
                 <ul className="list-group clearfix" style={{ listStyle: 'none' }}>
                     {tabs.map((title, i) => {
                         const step = i + 1;
-                        const disabled =
-                            furthestStep === undefined
-                                ? true
-                                : hasDependentSteps
-                                  ? step > currentStep
-                                  : furthestStep < step;
+                        const disabled = hasDependentSteps ? step > currentStep : furthestStep < step;
 
                         return (
                             <FormTabItem
@@ -154,81 +145,72 @@ export const FormTabs: FC<FormTabsProps> = ({ onTabChange, tabs }) => {
 };
 FormTabs.displayName = 'FormTabs';
 
-export interface WithFormStepsState {
-    currentStep?: number;
-    furthestStep?: number;
-    hasDependentSteps?: boolean;
-    selectStep?: (requestedStep?: number) => boolean;
+export interface WithFormStepsProps extends Required<WithFormStepsState> {
+    nextStep: () => void;
+    previousStep: () => void;
+    selectStep: (requestedStep?: number) => boolean;
 }
 
-export interface WithFormStepsProps extends WithFormStepsState {
+export interface WithFormStepsOwnProps {
     initialStep?: number;
-    nextStep: () => any;
-    previousStep: () => any;
 }
 
-// FIXME: this wrapper obliterates all type information for wrapped components, making it unsafe
-export const withFormSteps = (Component: any, defaultState?: WithFormStepsState) =>
-    class WithFormSteps extends React.Component<any, any> {
-        constructor(props) {
-            super(props);
-            this.state = {
-                currentStep: props.initialStep
-                    ? props.initialStep
-                    : defaultState && defaultState.currentStep !== undefined
-                      ? defaultState.currentStep
-                      : 1,
-                furthestStep: defaultState && defaultState.furthestStep !== undefined ? defaultState.furthestStep : 1,
-                hasDependentSteps:
-                    defaultState && defaultState.hasDependentSteps !== undefined
-                        ? defaultState.hasDependentSteps
-                        : true,
-                selectStep: this.selectStep,
-            };
-        }
+export const withFormSteps = <P extends WithFormStepsProps>(
+    WrappedComponent: ComponentType<P>,
+    defaultState?: WithFormStepsState
+) => {
+    type HOCProps = Omit<P, keyof WithFormStepsProps> & WithFormStepsOwnProps;
 
-        nextStep = (): void => {
-            const { currentStep, furthestStep } = this.state;
+    const WithFormSteps: FC<HOCProps> = props => {
+        const [state, setState] = useState<Required<WithFormStepsState>>(() => ({
+            currentStep: props.initialStep ?? defaultState?.currentStep ?? 1,
+            furthestStep: defaultState?.furthestStep ?? 1,
+            hasDependentSteps: defaultState?.hasDependentSteps ?? true,
+        }));
 
-            this.setState({
-                currentStep: currentStep + 1,
-                furthestStep: currentStep + 1 >= furthestStep ? currentStep + 1 : furthestStep,
-            });
-        };
+        const nextStep = useCallback((): void => {
+            setState(prev => ({
+                ...prev,
+                currentStep: prev.currentStep + 1,
+                furthestStep: prev.currentStep + 1 >= prev.furthestStep ? prev.currentStep + 1 : prev.furthestStep,
+            }));
+        }, []);
 
-        previousStep = (): void => {
-            const { currentStep } = this.state;
+        const previousStep = useCallback((): void => {
+            setState(prev => ({ ...prev, currentStep: prev.currentStep - 1 }));
+        }, []);
 
-            this.setState({
-                currentStep: currentStep - 1,
-            });
-        };
+        const selectStep = useCallback(
+            (requestedStep?: number): boolean => {
+                if (requestedStep !== undefined && state.currentStep !== requestedStep) {
+                    setState(prev => ({
+                        ...prev,
+                        currentStep: requestedStep,
+                        furthestStep: requestedStep + 1 >= prev.furthestStep ? requestedStep + 1 : prev.furthestStep,
+                    }));
+                    return true;
+                }
+                return false;
+            },
+            [state.currentStep]
+        );
 
-        selectStep = (requestedStep?: number): boolean => {
-            const { currentStep, furthestStep } = this.state;
+        const context = useMemo<IFormStepContext>(() => ({ ...state, selectStep }), [selectStep, state]);
 
-            if (furthestStep >= requestedStep && currentStep !== requestedStep) {
-                this.setState({
-                    currentStep: requestedStep,
-                });
-
-                return true;
-            }
-
-            return false;
-        };
-
-        render(): ReactNode {
-            return (
-                <FormStepContextProvider value={this.state}>
-                    <Component
-                        {...this.props}
-                        {...this.state}
-                        nextStep={this.nextStep}
-                        previousStep={this.previousStep}
-                        selectStep={this.selectStep}
-                    />
-                </FormStepContextProvider>
-            );
-        }
+        return (
+            <FormStepContextProvider value={context}>
+                <WrappedComponent
+                    {...(props as unknown as P)}
+                    {...state}
+                    nextStep={nextStep}
+                    previousStep={previousStep}
+                    selectStep={selectStep}
+                />
+            </FormStepContextProvider>
+        );
     };
+
+    WithFormSteps.displayName = `withFormSteps(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+
+    return WithFormSteps;
+};

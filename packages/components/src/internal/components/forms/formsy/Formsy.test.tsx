@@ -485,15 +485,15 @@ describe('Formsy', () => {
             const screen = render(<AsyncMessageForm />);
             const input = screen.getByTestId('test-input');
 
-            expect(input.getAttribute('data-error-messages')).toEqual('');
+            expect(input).toHaveAttribute('data-error-messages', '');
 
             // The rule starts failing, so the message resolved at that moment is displayed.
             fireEvent.click(screen.getByTestId('register-btn'));
-            expect(input.getAttribute('data-error-messages')).toEqual('Already registered.');
+            expect(input).toHaveAttribute('data-error-messages', 'Already registered.');
 
             // Only the message changes here. It should surface without waiting for another validation pass.
             fireEvent.click(screen.getByTestId('associate-btn'));
-            expect(input.getAttribute('data-error-messages')).toEqual('Already registered. Associate?');
+            expect(input).toHaveAttribute('data-error-messages', 'Already registered. Associate?');
         });
     });
 
@@ -555,6 +555,40 @@ describe('Formsy', () => {
             fireEvent.click(showInputBtn);
 
             expect(hasChanged).toHaveBeenCalledTimes(1);
+        });
+
+        it('should not trigger onChange when only the validations prop changes', () => {
+            addFormsyRule<string>('isNotConflicted', (_values, _value, isConflicted: boolean) => !isConflicted);
+            const hasChanged = jest.fn();
+
+            const TestForm: FC = () => {
+                const [isConflicted, setIsConflicted] = useState(true);
+                const validations = useMemo(() => ({ isNotConflicted: isConflicted }), [isConflicted]);
+                const resolveConflict = useCallback(() => setIsConflicted(false), []);
+
+                return (
+                    <>
+                        <Formsy onChange={hasChanged}>
+                            <TestInput name="one" testId="test-input" validations={validations} value="foo" />
+                        </Formsy>
+                        <button data-testid="resolve-btn" onClick={resolveConflict} type="button" />
+                    </>
+                );
+            };
+
+            const screen = render(<TestForm />);
+            const input = screen.getByTestId('test-input');
+
+            fireEvent.change(input, { target: { value: 'bar' } });
+            expect(hasChanged).toHaveBeenCalledTimes(1);
+            expect(input).toHaveAttribute('data-is-valid', 'false');
+
+            fireEvent.click(screen.getByTestId('resolve-btn'));
+            expect(hasChanged).toHaveBeenCalledTimes(1);
+            expect(input).toHaveAttribute('data-is-valid', 'true');
+
+            fireEvent.change(input, { target: { value: 'baz' } });
+            expect(hasChanged).toHaveBeenCalledTimes(2);
         });
     });
 

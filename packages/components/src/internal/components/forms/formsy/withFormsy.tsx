@@ -123,7 +123,8 @@ export function withFormsy<T, V>(
             // If validations or required is changed, run a new validation
             if (!isSame(validations, prevProps.validations) || !isSame(required, prevProps.required)) {
                 this.setValidations(validations, required);
-                validate(this);
+                // The rules changed, not the value: revalidate without emitting a change event
+                validate(this, false);
                 return;
             }
 

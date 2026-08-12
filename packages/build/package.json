@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "10.1.0",
+  "version": "10.1.1-fb-upgrade-react-router.0",
   "description": "LabKey client-side build assets",
   "files": [
     "configs/"

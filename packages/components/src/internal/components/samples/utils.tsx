@@ -9,6 +9,7 @@ import { User } from '../base/models/User';
 import { isFreezerManagementEnabled } from '../../app/products';
 import {
     hasActiveProjectColors,
+    hasProductFolders,
     isProductFoldersEnabled,
     isProjectContainer,
     isSampleStatusEnabled,
@@ -55,6 +56,9 @@ export function getOmittedSampleTypeColumns(user: User, moduleContext?: ModuleCo
     }
     if (!hasActiveProjectColors(moduleContext)) {
         cols = cols.concat(SAMPLE_COLOR_REQUIRED_COLUMNS);
+    }
+    if (!hasProductFolders(moduleContext)) {
+        cols = cols.concat('Folder');
     }
 
     return cols;

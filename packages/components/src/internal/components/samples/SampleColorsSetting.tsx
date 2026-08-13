@@ -46,9 +46,25 @@ export const SampleColorsSelectorModal: FC<SampleColorsSelectorModalProps> = mem
             onConfirm(Array.from(draftDisabled));
         }, [draftDisabled, onConfirm]);
 
+        const allSelected = useMemo(() => draftDisabled.size === 0, [draftDisabled]);
+
+        const onSelectAll = useCallback(() => {
+            setDraftDisabled(allSelected ? new Set(colors.map(c => c.rowId)) : new Set());
+        }, [allSelected, colors]);
+
         return (
             <Modal confirmText="Apply" onCancel={onCancel} onConfirm={onApply} title="Edit Sample Colors">
+                <p>Select the colors that can be applied to individual samples, overriding the sample type color.</p>
                 {colors.length === 0 && <p>No colors are set up yet.</p>}
+                {colors.length > 0 && (
+                    <div className="row">
+                        <div className="col-xs-12 bottom-padding">
+                            <button className="clickable-text" onClick={onSelectAll} type="button">
+                                {allSelected ? 'Deselect All' : 'Select All'}
+                            </button>
+                        </div>
+                    </div>
+                )}
                 <div className="row">
                     {colors.map(c => (
                         <div className="col-sm-4" key={c.rowId}>

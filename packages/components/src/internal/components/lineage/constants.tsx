@@ -19,7 +19,7 @@ import {
 import {
     SAMPLE_COLOR_COLOR_COLUMN_NAME,
     SAMPLE_STATE_COLOR_COLUMN_NAME,
-    SAMPLE_STATE_TYPE_COLUMN_NAME
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
 } from '../samples/constants';
 export const LINEAGE_GRAPH_FILTER_METRIC = "LineageGraphFilter";
 // Default depth to fetch with the lineage API

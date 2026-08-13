@@ -113,7 +113,7 @@ export class User implements IUserProps {
         return hasAllPermissions(this, [PermissionTypes.AddUser], false);
     }
 
-    hasSampleWorkflowDeletePermission(): boolean {
+    hasWorkflowDeletePermission(): boolean {
         return hasAllPermissions(this, [PermissionTypes.SampleWorkflowDelete]);
     }
 }

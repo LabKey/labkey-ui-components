@@ -279,7 +279,6 @@ function applySavedSettings(id: string, model: QueryModel): QueryModel {
     return model;
 }
 
-
 export interface RequestTracker {
     /**
      * Pass to a request so that it is registered with the RequestManager, canceling any in-flight request of the same
@@ -316,9 +315,9 @@ export class RequestManager {
     /**
      * Tracks a single request of the given type for the given QueryModel. Pass the tracker's "handler" to the request,
      * then use "wasCancelled" to determine whether a failed request was canceled by this manager.
-     * GH Issue 1364: Note that cancellation cannot be inferred from what is currently registered here, since
-     * @labkey/api rejects from the XHR's 'readystatechange' handler, which runs before the 'loadend' listener below
-     * has removed the failed request.
+     * GH Issue 1364: Note that cancellation cannot be inferred from what is currently registered here,
+     * since @labkey/api rejects from the XHR's 'readystatechange' handler, which runs before the 'loadend' listener
+     * below has removed the failed request.
      * @param id The id of the QueryModel the request is made for
      * @param requestType The type of request (e.g. 'loadRows')
      */
@@ -335,7 +334,7 @@ export class RequestManager {
         };
     };
 
-    public getRequestHandler(id: string, requestType: string): RequestHandler {
+    private getRequestHandler(id: string, requestType: string): RequestHandler {
         return request => {
             const bucket = this._requests[id] || (this._requests[id] = {});
 

@@ -70,6 +70,50 @@ describe('RequestManager', () => {
         expect(manager._requests[ID][REQUEST_TYPE]).toBe(req2);
     });
 
+    it('should report a tracked request as canceled when a new one of the same type starts', () => {
+        const tracked1 = manager.trackRequest(ID, REQUEST_TYPE);
+        const req1 = mockXHR();
+        tracked1.handler(req1);
+
+        expect(tracked1.wasCancelled()).toBe(false);
+
+        const tracked2 = manager.trackRequest(ID, REQUEST_TYPE);
+        tracked2.handler(mockXHR());
+
+        expect(req1.abort).toHaveBeenCalledTimes(1);
+        expect(tracked1.wasCancelled()).toBe(true);
+        // Only the aborted request was canceled, the one that replaced it was not
+        expect(tracked2.wasCancelled()).toBe(false);
+    });
+
+    it('should not report a failing request as canceled while it is still registered', () => {
+        // GitHub Issue 1364: @labkey/api rejects from the XHR 'readystatechange' handler, which runs before the
+        // 'loadend' cleanup, so a request that fails at the transport level is still registered when its failure is
+        // handled. Cancellation cannot be inferred from what is registered.
+        const tracked = manager.trackRequest(ID, REQUEST_TYPE);
+        const req = mockXHR();
+        tracked.handler(req);
+
+        expect(manager._requests[ID][REQUEST_TYPE]).toBe(req);
+        expect(tracked.wasCancelled()).toBe(false);
+    });
+
+    it('should not report a request that was never sent as canceled', () => {
+        const tracked = manager.trackRequest(ID, REQUEST_TYPE);
+        expect(tracked.wasCancelled()).toBe(false);
+    });
+
+    it('should report tracked requests as canceled after cancelAllRequests', () => {
+        const tracked = manager.trackRequest(ID, REQUEST_TYPE);
+        const req = mockXHR();
+        tracked.handler(req);
+
+        manager.cancelAllRequests();
+
+        expect(req.abort).toHaveBeenCalledTimes(1);
+        expect(tracked.wasCancelled()).toBe(true);
+    });
+
     it('should handle requests object mutation during abort', () => {
         const manager = new RequestManager();
         const handler = manager.getRequestHandler(ID, REQUEST_TYPE);

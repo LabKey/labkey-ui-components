@@ -55,19 +55,25 @@ test('getOmittedSampleTypeColumn', () => {
     expect(getOmittedSampleTypeColumns(TEST_USER_READER, moduleContext)).toStrictEqual([
         ...INVENTORY_COLS,
         ...SAMPLE_COLOR_REQUIRED_COLUMNS,
+        'Folder',
     ]);
     expect(getOmittedSampleTypeColumns(TEST_USER_GUEST, moduleContext)).toStrictEqual([
         CHECKED_OUT_BY_FIELD,
         ...INVENTORY_COLS,
         ...SAMPLE_COLOR_REQUIRED_COLUMNS,
+        'Folder',
     ]);
 
     moduleContext = { inventory: {} };
     expect(isFreezerManagementEnabled(moduleContext)).toBeTruthy();
-    expect(getOmittedSampleTypeColumns(TEST_USER_READER, moduleContext)).toStrictEqual(SAMPLE_COLOR_REQUIRED_COLUMNS);
+    expect(getOmittedSampleTypeColumns(TEST_USER_READER, moduleContext)).toStrictEqual([
+        ...SAMPLE_COLOR_REQUIRED_COLUMNS,
+        'Folder',
+    ]);
     expect(getOmittedSampleTypeColumns(TEST_USER_GUEST, moduleContext)).toStrictEqual([
         CHECKED_OUT_BY_FIELD,
         ...SAMPLE_COLOR_REQUIRED_COLUMNS,
+        'Folder',
     ]);
 });
 

@@ -186,7 +186,7 @@ export const withFormSteps = <P extends WithFormStepsProps>(
                     setState(prev => ({
                         ...prev,
                         currentStep: requestedStep,
-                        furthestStep: requestedStep + 1 >= prev.furthestStep ? requestedStep + 1 : prev.furthestStep,
+                        furthestStep: requestedStep >= prev.furthestStep ? requestedStep : prev.furthestStep,
                     }));
                     return true;
                 }

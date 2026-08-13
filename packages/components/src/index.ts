@@ -80,6 +80,7 @@ import {
 } from './internal/util/messaging';
 import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
 import { InternalSpacesWarning } from './internal/components/forms/InternalSpacesWarning';
+import { RadioGroupInput } from './internal/components/forms/input/RadioGroupInput';
 import { AddEntityButton, AddEntityElement } from './internal/components/buttons/AddEntityButton';
 import { RemoveEntityButton } from './internal/components/buttons/RemoveEntityButton';
 import { Alert } from './internal/components/base/Alert';
@@ -1635,6 +1636,7 @@ export {
     QuerySelect,
     QuerySort,
     quoteValueWithDelimiters,
+    RadioGroupInput,
     RANGE_URIS,
     redirect,
     registerDefaultURLMappers,

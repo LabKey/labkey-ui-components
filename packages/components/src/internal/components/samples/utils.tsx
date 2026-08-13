@@ -276,12 +276,20 @@ export function isFindBySampleSchema(schemaQuery: SchemaQuery): boolean {
     return schemaQuery?.hasSchema(SCHEMAS.EXP_TABLES.SCHEMA) && schemaQuery.queryStartsWith('exp_temp_');
 }
 
-export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
-    return schemaQuery?.hasSchema(SCHEMAS.SAMPLE_SETS.SCHEMA) || isAllSamplesSchema(schemaQuery);
-}
-
 export function isWorkflowInputSamplesSchema(schemaQuery: SchemaQuery): boolean {
     return SCHEMAS.WORKFLOW.JOB_INPUT_SAMPLES.isEqual(schemaQuery, false);
+}
+
+export function isWorkflowInputSourcesSchema(schemaQuery: SchemaQuery): boolean {
+    return SCHEMAS.WORKFLOW.JOB_INPUT_SOURCES.isEqual(schemaQuery, false);
+}
+
+export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
+    return (
+        schemaQuery?.hasSchema(SCHEMAS.SAMPLE_SETS.SCHEMA) ||
+        isAllSamplesSchema(schemaQuery) ||
+        isWorkflowInputSamplesSchema(schemaQuery)
+    );
 }
 
 export function isAllSamplesSchema(schemaQuery: SchemaQuery): boolean {

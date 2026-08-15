@@ -137,6 +137,13 @@ export const PLATE_SET_AUDIT_QUERY: AuditQuery = {
     value: 'PlateSetEvent',
 };
 
+// Events live in the root container, so the grid needs to look outside the current folder to find them
+export const SYSTEM_UPGRADE_AUDIT_QUERY: AuditQuery = {
+    containerFilter: Query.ContainerFilter.allFolders,
+    label: 'System Upgrade Events',
+    value: 'SystemUpgradeAuditEvent',
+};
+
 export const COMMON_AUDIT_QUERIES: AuditQuery[] = [
     ATTACHMENT_AUDIT_QUERY,
     DOMAIN_AUDIT_QUERY,
@@ -149,6 +156,7 @@ export const COMMON_AUDIT_QUERIES: AuditQuery[] = [
     QUERY_UPDATE_AUDIT_QUERY,
     SAMPLE_TYPE_AUDIT_QUERY,
     SAMPLE_TIMELINE_AUDIT_QUERY,
+    SYSTEM_UPGRADE_AUDIT_QUERY,
     USER_AUDIT_QUERY,
 ];
 

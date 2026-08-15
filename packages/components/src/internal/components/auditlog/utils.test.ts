@@ -24,23 +24,25 @@ import {
     NOTEBOOK_REVIEW_AUDIT_QUERY,
     REGISTRY_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
+    SYSTEM_UPGRADE_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
 } from './constants';
 
 describe('getAuditQueries', () => {
     test('LKS starter', () => {
         const auditQueries = getAuditQueries(TEST_LKS_STARTER_MODULE_CONTEXT);
-        expect(auditQueries.length).toBe(15);
+        expect(auditQueries.length).toBe(16);
         expect(auditQueries.findIndex(entry => entry === ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === ASSAY_RESULT_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(13);
+        expect(auditQueries.findIndex(entry => entry === SYSTEM_UPGRADE_AUDIT_QUERY)).toBe(14);
         expect(auditQueries.findIndex(entry => entry === WORKFLOW_AUDIT_QUERY)).toBe(-1);
         expect(auditQueries.findIndex(entry => entry === SOURCE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
     });
 
     test('LKSM starter', () => {
         const auditQueries = getAuditQueries(TEST_LKSM_STARTER_MODULE_CONTEXT);
-        expect(auditQueries.length).toBe(13);
+        expect(auditQueries.length).toBe(14);
         expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(11);
         expect(auditQueries.findIndex(entry => entry === ASSAY_AUDIT_QUERY)).toBe(-1);
         expect(auditQueries.findIndex(entry => entry === ASSAY_RESULT_AUDIT_QUERY)).toBe(-1);
@@ -50,7 +52,7 @@ describe('getAuditQueries', () => {
 
     test('LKSM professional', () => {
         const auditQueries = getAuditQueries(TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT);
-        expect(auditQueries.length).toBe(18);
+        expect(auditQueries.length).toBe(19);
         expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(15);
         expect(auditQueries.findIndex(entry => entry === ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === WORKFLOW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
@@ -78,7 +80,7 @@ describe('getAuditQueries', () => {
             },
         };
         const auditQueries = getAuditQueries(moduleContext);
-        expect(auditQueries.length).toBe(19);
+        expect(auditQueries.length).toBe(20);
         expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(16);
         expect(auditQueries.findIndex(entry => entry === ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === ASSAY_RESULT_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);

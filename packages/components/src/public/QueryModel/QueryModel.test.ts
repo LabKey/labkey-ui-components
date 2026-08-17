@@ -399,59 +399,6 @@ describe('flattenValuesFromRow', () => {
             test4: 101,
         });
     });
-
-    test('with displayValueKeys', () => {
-        const data = {
-            test1: { value: 123, displayValue: 'TEST123' },
-            test2: { value: 456, displayValue: 'TEST456' },
-            test3: { value: 789 },
-            test4: { value: null, displayValue: null },
-        };
-        const columns = Object.keys(data);
-
-        expect(flattenValuesFromRow(data, columns, undefined, [])).toEqual({
-            test1: 123,
-            test2: 456,
-            test3: 789,
-            test4: null,
-        });
-
-        expect(flattenValuesFromRow(data, columns, undefined, ['test1', 'test4'])).toEqual({
-            test1: 'TEST123',
-            test2: 456,
-            test3: 789,
-            test4: null,
-        });
-
-        // key without a displayValue in the row falls back to value
-        expect(flattenValuesFromRow(data, columns, undefined, ['test3']).test3).toBe(789);
-        expect(
-            flattenValuesFromRow({ test5: { value: 0, displayValue: null } }, ['test5'], undefined, ['test5'])
-        ).toEqual({ test5: 0 });
-
-        // key not present in columns is ignored
-        expect(flattenValuesFromRow(data, columns, undefined, ['test0'])).toEqual({
-            test1: 123,
-            test2: 456,
-            test3: 789,
-            test4: null,
-        });
-    });
-
-    test('with displayValueKeys and colFieldKeyMap', () => {
-        const data = {
-            'test/1': { value: 123, displayValue: 'TEST123' },
-            test$2: { value: 456, displayValue: 'TEST456' },
-        };
-
-        // displayValueKeys match on the column key, not the mapped fieldKey
-        expect(
-            flattenValuesFromRow(data, Object.keys(data), { 'test/1': 'test$S1', test$2: 'test$D2' }, ['test/1'])
-        ).toEqual({
-            test$S1: 'TEST123',
-            test$D2: 456,
-        });
-    });
 });
 
 describe('locationHasQueryParamSettings', () => {

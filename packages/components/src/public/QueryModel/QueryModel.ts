@@ -24,18 +24,13 @@ import { SelectRowsOptions } from '../../internal/query/selectRows';
 export function flattenValuesFromRow(
     row: any,
     columns: string[],
-    colFieldKeyMap?: Record<string, string>,
-    displayValueKeys?: string[]
+    colFieldKeyMap?: Record<string, string>
 ): Record<string, any> {
     const values = {};
     if (row && columns) {
         columns.forEach((col: string) => {
             if (row[col]) {
-                if (displayValueKeys?.includes(col)) {
-                    values[col] = row[col].displayValue ?? row[col].value;
-                } else {
-                    values[col] = row[col].value;
-                }
+                values[col] = row[col].value;
             }
         });
     }

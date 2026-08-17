@@ -371,9 +371,9 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
     // Use the bound values and the actual input value to
     // validate the input and set its state. Then check the
     // state of the form itself
-    validate = (component: InputComponent<any>): void => {
+    validate = (component: InputComponent<any>, notifyChange = true): void => {
         if (!this._mounted) return;
-        this.triggerChange();
+        if (notifyChange) this.triggerChange();
 
         // Run through the validations, split them up and call
         // the validator IF there is a value or it is required

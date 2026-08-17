@@ -19,7 +19,7 @@ const VALUES = [null, ...TYPES.isDate, ...TYPES.isFunction, ...TYPES.isObject, .
 describe('utils', () => {
     // For each function in types
     Object.keys(TYPES).forEach(isFn => {
-        // Create a test for that functiojn
+        // Create a test for that function
         it(isFn, () => {
             // For each value in values
             VALUES.forEach(value => {
@@ -99,6 +99,36 @@ describe('utils', () => {
             errors: ['Error'],
             failed: ['rule'],
             success: [],
+        });
+    });
+
+    describe('isShallowSame', () => {
+        it('compares message maps by key set and value identity', () => {
+            const message = 'This sequence has already been registered.';
+
+            expect(utils.isShallowSame({ isUnique: message }, { isUnique: message })).toBe(true);
+            expect(utils.isShallowSame({ isUnique: message }, { isUnique: 'Something else' })).toBe(false);
+            expect(utils.isShallowSame({ isUnique: message }, { isUnique: message, isRequired: message })).toBe(false);
+            expect(utils.isShallowSame({ isUnique: message }, { isValid: message })).toBe(false);
+        });
+
+        it('treats structurally equal but distinct values as changed, unlike isSame()', () => {
+            // Stands in for a ReactNode message. Elements are rebuilt on every render, so identity is the only
+            // signal that can be trusted -- isSame() would walk into React internals and report a false match.
+            const messages = { isUnique: { type: 'span', props: { children: 'Already registered.' } } };
+            const rebuilt = { isUnique: { type: 'span', props: { children: 'Already registered.' } } };
+
+            expect(utils.isSame(messages, rebuilt)).toBe(true);
+            expect(utils.isShallowSame(messages, rebuilt)).toBe(false);
+        });
+
+        it('compares resolved message arrays element-wise by identity', () => {
+            const message = { type: 'span', props: { children: 'Already registered.' } };
+
+            expect(utils.isShallowSame([message], [message])).toBe(true);
+            expect(utils.isShallowSame([message], [{ ...message }])).toBe(false);
+            expect(utils.isShallowSame(['Required'], ['Required'])).toBe(true);
+            expect(utils.isShallowSame([], ['Required'])).toBe(false);
         });
     });
 });

@@ -96,7 +96,7 @@ export interface FormsyContextInterface {
     isFormDisabled: boolean;
     isValidValue: (component: InputComponent<any>, value: any) => boolean;
     runValidation: (component: InputComponent<any>, value?: any) => RunValidationResponse;
-    validate: (component: InputComponent<any>) => void;
+    validate: (component: InputComponent<any>, notifyChange?: boolean) => void;
 }
 
 export type OnSubmitCallback = (

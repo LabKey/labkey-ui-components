@@ -17,7 +17,7 @@ import {
     WrapperState,
 } from './types';
 
-import { isSame, isString } from './utils';
+import { isSame, isShallowSame, isString } from './utils';
 import { isDefaultRequiredValue } from './formsyRules';
 
 function convertValidationsToObject<V>(validations: false | Validations<V>): Validations<V> {
@@ -109,7 +109,8 @@ export function withFormsy<T, V>(
         };
 
         componentDidUpdate = (prevProps: WrappedProps): void => {
-            const { required, value, validations, validate } = this.props;
+            const { required, runValidation, value, validate, validationError, validationErrors, validations } =
+                this.props;
 
             // If the value passed has changed, set it. If a value is not passed, it will internally update, and this
             // will never run. Skip when the input already holds the value: a parent that owns the value and echoes it
@@ -122,7 +123,24 @@ export function withFormsy<T, V>(
             // If validations or required is changed, run a new validation
             if (!isSame(validations, prevProps.validations) || !isSame(required, prevProps.required)) {
                 this.setValidations(validations, required);
-                validate(this);
+                // The rules changed, not the value: revalidate without emitting a change event
+                validate(this, false);
+                return;
+            }
+
+            // Validation messages are resolved when validation runs and are then held in state, so a change to the
+            // messages alone -- a message whose content depends on data that loads asynchronously, for example --
+            // would not reach the user until some later interaction happened to trigger the next validation pass.
+            // Re-resolve the messages against the current props here. The rules and the value are unchanged, so this
+            // cannot change the validity of this input and the form does not need to revalidate.
+            if (
+                !isShallowSame(validationError, prevProps.validationError) ||
+                !isShallowSame(validationErrors, prevProps.validationErrors)
+            ) {
+                const validationState = runValidation(this);
+                if (!isShallowSame(validationState.validationError, this.state.validationError)) {
+                    this.setState(validationState);
+                }
             }
         };
 

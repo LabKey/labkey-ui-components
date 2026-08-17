@@ -66,9 +66,11 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
     const [excludedTypes, setExcludedTypes] = useState<Set<number>>(new Set());
     // The exclusions as loaded, so Save can send only the delta (newly disabled / newly enabled) rather than the full set.
     const [initialExcludedTypes, setInitialExcludedTypes] = useState<Set<number>>(new Set());
-    const [exclusionsLoaded, setExclusionsLoaded] = useState<boolean>(false);
+    const [exclusionsRowId, setExclusionsRowId] = useState<number>();
     const [typesError, setTypesError] = useState<string>();
     const { api } = useAppContext();
+    const selectionRowId = isNew ? NEW_COLOR_INDEX : color?.rowId;
+    const exclusionsLoaded = exclusionsRowId === selectionRowId;
 
     useEffect(() => {
         setUpdated(isNew ? newColor() : color);
@@ -80,16 +82,17 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
     }, [color, isNew, onChange]);
 
     // Load this color's current sample-type exclusions (DataTypeSelector loads the sample-type list itself). A new
-    // color has none yet, so it starts with everything enabled and can be created with exclusions.
+    // color has none yet, so it starts with everything enabled and can be created with exclusions. Keyed on the color
+    // object rather than its rowId, so a reload after save/archive re-reads what the server actually stored.
     useEffect(() => {
         setTypesError(undefined);
         if (isNew || !color?.rowId) {
             setExcludedTypes(new Set());
             setInitialExcludedTypes(new Set());
-            setExclusionsLoaded(true);
+            setExclusionsRowId(isNew ? NEW_COLOR_INDEX : color?.rowId);
             return;
         }
-        setExclusionsLoaded(false);
+        setExclusionsRowId(undefined);
         let cancelled = false;
         (async () => {
             try {
@@ -97,7 +100,7 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
                 if (cancelled) return;
                 setExcludedTypes(new Set(excluded));
                 setInitialExcludedTypes(new Set(excluded));
-                setExclusionsLoaded(true);
+                setExclusionsRowId(color.rowId);
             } catch (e) {
                 if (!cancelled) setTypesError('Unable to load sample type exclusions.');
             }
@@ -105,7 +108,7 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
         return () => {
             cancelled = true;
         };
-    }, [api, color?.rowId, container?.path, isNew]);
+    }, [api, color, container?.path, isNew]);
 
     // DataTypeSelector reports the full set of unchecked (excluded) sample-type rowIds on every change / select-all.
     const onExcludedTypesChange = useCallback(
@@ -136,16 +139,11 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
     );
 
     const saveColor = useCallback(
-        (toSave: SampleColorModel, exclusionDelta?: { newlyDisabled: number[]; newlyEnabled: number[] }) => {
+        (toSave: SampleColorModel, delta: { newlyDisabled: number[]; newlyEnabled: number[] }) => {
             setError(undefined);
             setSaving(true);
             api.samples
-                .updateColorSettings(
-                    toSave,
-                    exclusionDelta?.newlyDisabled ?? [],
-                    exclusionDelta?.newlyEnabled ?? [],
-                    container?.path
-                )
+                .updateColorSettings(toSave, delta.newlyDisabled, delta.newlyEnabled, container?.path)
                 .then(() => onActionComplete(toSave.label))
                 .catch(reason => {
                     setError(resolveErrorMessage(reason?.error ?? reason, 'color', 'colors', 'save'));
@@ -155,18 +153,22 @@ export const SampleColorDetail: FC<SampleColorDetailProps> = memo(props => {
         [api, container?.path, onActionComplete]
     );
 
-    const onSave = useCallback(() => {
-        const toSave = { ...updated, label: updated.label?.trim() };
-        const exclusionDelta = {
+    const exclusionDelta = useMemo(
+        () => ({
             newlyDisabled: Array.from(excludedTypes).filter(id => !initialExcludedTypes.has(id)),
             newlyEnabled: Array.from(initialExcludedTypes).filter(id => !excludedTypes.has(id)),
-        };
-        saveColor(toSave, exclusionDelta);
-    }, [updated, excludedTypes, initialExcludedTypes, saveColor]);
+        }),
+        [excludedTypes, initialExcludedTypes]
+    );
 
+    const onSave = useCallback(() => {
+        saveColor({ ...updated, label: updated.label?.trim() }, exclusionDelta);
+    }, [updated, exclusionDelta, saveColor]);
+
+    // Archive/Restore carries any pending sample-type edits too, so they aren't discarded by using this button to save.
     const onToggleArchive = useCallback(() => {
-        saveColor({ ...updated, archived: !updated.archived });
-    }, [updated, saveColor]);
+        saveColor({ ...updated, archived: !updated.archived }, exclusionDelta);
+    }, [updated, exclusionDelta, saveColor]);
 
     const onToggleDeleteConfirm = useCallback(() => {
         setDeleteError(undefined);

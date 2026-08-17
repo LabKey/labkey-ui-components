@@ -36,7 +36,8 @@ const renderPanel = (
         ...queryOverrides,
     });
     const samples = getSamplesTestAPIWrapper(jest.fn, {
-        getSampleColors: jest.fn().mockResolvedValue(colors),
+        // fresh row objects per call, like the real action, so a reload re-renders the detail panel
+        getSampleColors: jest.fn().mockImplementation(() => Promise.resolve(colors.map(c => ({ ...c })))),
         getColorSampleTypeExclusions: jest.fn().mockResolvedValue([]),
         updateColorSettings: jest.fn().mockResolvedValue(1),
         ...samplesOverrides,
@@ -275,6 +276,73 @@ describe('ManageSampleColorsPanel', () => {
         // The section is available while creating a color, so it can be created with exclusions.
         expect(await screen.findByRole('checkbox', { name: 'Sample Type A' })).toBeChecked();
         expect(screen.getByRole('checkbox', { name: 'Sample Type B' })).toBeChecked();
+    });
+
+    test('adding a color after viewing one with exclusions starts with everything enabled', async () => {
+        renderPanel(
+            [makeColor(1, 'Red', '#ff0000')],
+            { getColorSampleTypeExclusions: jest.fn().mockResolvedValue([TYPE_B.rowId]) },
+            withTypes(TYPE_A, TYPE_B)
+        );
+        await userEvent.click(await screen.findByRole('button', { name: 'Red' }));
+        expect(await screen.findByRole('checkbox', { name: 'Sample Type B' })).not.toBeChecked();
+
+        await userEvent.click(screen.getByRole('button', { name: /Add Color/i }));
+
+        expect(await screen.findByRole('checkbox', { name: 'Sample Type A' })).toBeChecked();
+        expect(screen.getByRole('checkbox', { name: 'Sample Type B' })).toBeChecked();
+    });
+
+    test('archiving carries pending sample-type edits instead of discarding them', async () => {
+        const { samples } = renderPanel(
+            [makeColor(1, 'Red', '#ff0000')],
+            { getColorSampleTypeExclusions: jest.fn().mockResolvedValue([]) },
+            withTypes(TYPE_A, TYPE_B)
+        );
+        await userEvent.click(await screen.findByRole('button', { name: 'Red' }));
+
+        await userEvent.click(await screen.findByRole('checkbox', { name: 'Sample Type A' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Archive' }));
+
+        await waitFor(() => expect(samples.updateColorSettings).toHaveBeenCalledTimes(1));
+        expect(samples.updateColorSettings).toHaveBeenCalledWith(
+            expect.objectContaining({ rowId: 1, archived: true }),
+            [TYPE_A.rowId],
+            [],
+            undefined
+        );
+    });
+
+    test('re-reads exclusions after a save so the next delta is relative to what was stored', async () => {
+        const getExclusions = jest
+            .fn()
+            .mockResolvedValueOnce([]) // initial load: nothing excluded
+            .mockResolvedValue([TYPE_A.rowId]); // reload after the save: TYPE_A is now excluded
+        const { samples } = renderPanel(
+            [makeColor(1, 'Red', '#ff0000')],
+            { getColorSampleTypeExclusions: getExclusions },
+            withTypes(TYPE_A, TYPE_B)
+        );
+        await userEvent.click(await screen.findByRole('button', { name: 'Red' }));
+
+        await userEvent.click(await screen.findByRole('checkbox', { name: 'Sample Type A' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Save' }));
+
+        await waitFor(() => expect(samples.updateColorSettings).toHaveBeenCalledTimes(1));
+        await waitFor(() => expect(getExclusions).toHaveBeenCalledTimes(2));
+        expect(await screen.findByRole('checkbox', { name: 'Sample Type A' })).not.toBeChecked();
+
+        await userEvent.click(screen.getByRole('checkbox', { name: 'Sample Type B' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Save' }));
+
+        // TYPE_A was already stored as excluded, so only TYPE_B is newly disabled.
+        await waitFor(() => expect(samples.updateColorSettings).toHaveBeenCalledTimes(2));
+        expect(samples.updateColorSettings).toHaveBeenLastCalledWith(
+            expect.objectContaining({ rowId: 1 }),
+            [TYPE_B.rowId],
+            [],
+            undefined
+        );
     });
 
     test('sample-type checkboxes are read-only (and no Select All) for an archived color', async () => {

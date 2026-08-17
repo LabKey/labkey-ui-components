@@ -16,7 +16,7 @@ const TARGET_BLANK = '_blank';
 const URL_REL = 'noopener noreferrer';
 
 /**
- * If the given href points to our current container & product, return the react-router path, in all other cases
+ * If the given href points to our current container and product, return the react-router path, in all other cases
  * return undefined.
  * @param href
  */
@@ -40,13 +40,14 @@ export function parseAppPath(href: string): string | undefined {
 /** This is a subset of AnchorHTMLAttributes<HTMLAnchorElement> that are passed through to the anchor tag. */
 type InheritedHTMLAnchorProps = Omit<
     DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>,
-    'href' // overridden by AppLink which uses "to" instead
+    'href' // overridden by AppLink, which uses "to" instead
 >;
 
 /** These props are specific to <AppLink>. */
 interface Props extends InheritedHTMLAnchorProps {
+    /** Opens the link in a new tab, protected from the opener. Applies only to whichever of "target"/"rel" is not supplied. */
     targetBlank?: boolean;
-    to: string | AppURL | undefined;
+    to: AppURL | string | undefined;
 }
 
 /**
@@ -54,7 +55,9 @@ interface Props extends InheritedHTMLAnchorProps {
  * handles all the corner cases around moving within our apps, between our apps, to other parts of LKS, and externally.
  */
 export const AppLink: FC<Props> = memo(props => {
-    const { children, rel, target, targetBlank, to, ...anchorProps } = props;
+    const { children, rel: relProp, target: targetProp, targetBlank, to, ...anchorProps } = props;
+    const rel = relProp ?? (targetBlank ? URL_REL : undefined);
+    const target = targetProp ?? (targetBlank ? TARGET_BLANK : undefined);
 
     const appPath = useMemo<string | undefined>(() => {
         if (to instanceof AppURL && to.isAppPath()) {
@@ -70,19 +73,14 @@ export const AppLink: FC<Props> = memo(props => {
     // anchor tags in our tests.
     if (appPath && !isTestEnv()) {
         return (
-            <Link {...anchorProps} to={appPath}>
+            <Link {...anchorProps} rel={rel} target={target} to={appPath}>
                 {children}
             </Link>
         );
     }
 
     return (
-        <a
-            {...anchorProps}
-            href={to?.toString()}
-            rel={targetBlank ? URL_REL : rel}
-            target={targetBlank ? TARGET_BLANK : target}
-        >
+        <a {...anchorProps} href={to?.toString()} rel={rel} target={target}>
             {children}
         </a>
     );

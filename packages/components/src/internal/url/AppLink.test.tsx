@@ -2,9 +2,11 @@
  * Copyright (c) 2025-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+import React from 'react';
+import { render, screen } from '@testing-library/react';
 import { __setAction, __setContainerPath, __setController } from '@labkey/api';
 
-import { parseAppPath } from './AppLink';
+import { AppLink, parseAppPath } from './AppLink';
 
 const TEST_PROJECT = '/My Project';
 const TEST_CHILD = '/My Child';
@@ -136,5 +138,72 @@ describe('parseAppPath', () => {
         expect(parseAppPath('#/samples/new?creationType=Independent&target=MyTestSamples&quantity=1')).toEqual(
             '/samples/new?creationType=Independent&target=MyTestSamples&quantity=1'
         );
+    });
+});
+
+const EXTERNAL_URL = 'https://www.example.com/';
+const LINK_TEXT = 'Run 533';
+
+describe('AppLink', () => {
+    test('targetBlank', () => {
+        render(
+            <AppLink targetBlank to={EXTERNAL_URL}>
+                {LINK_TEXT}
+            </AppLink>
+        );
+
+        // Assert - targetBlank opens a new tab and defaults rel to protect it from the opener
+        const link = screen.getByRole('link', { name: LINK_TEXT });
+        expect(link).toHaveAttribute('href', EXTERNAL_URL);
+        expect(link).toHaveAttribute('target', '_blank');
+        expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    });
+
+    test('rel and target props', () => {
+        render(
+            <AppLink rel="nofollow" target="_parent" to={EXTERNAL_URL}>
+                {LINK_TEXT}
+            </AppLink>
+        );
+
+        // Assert - without targetBlank the rel/target props are used as-is
+        const link = screen.getByRole('link', { name: LINK_TEXT });
+        expect(link).toHaveAttribute('target', '_parent');
+        expect(link).toHaveAttribute('rel', 'nofollow');
+    });
+
+    test('targetBlank does not supersede rel and target props', () => {
+        render(
+            <AppLink rel="nofollow" target="_parent" targetBlank to={EXTERNAL_URL}>
+                {LINK_TEXT}
+            </AppLink>
+        );
+
+        // Assert - both props supersede the targetBlank defaults
+        const link = screen.getByRole('link', { name: LINK_TEXT });
+        expect(link).toHaveAttribute('target', '_parent');
+        expect(link).toHaveAttribute('rel', 'nofollow');
+    });
+
+    test('targetBlank with only a target prop', () => {
+        render(
+            <AppLink target="_parent" targetBlank to={EXTERNAL_URL}>
+                {LINK_TEXT}
+            </AppLink>
+        );
+
+        // Assert - the target prop supersedes its targetBlank default, but the rel default still applies
+        const link = screen.getByRole('link', { name: LINK_TEXT });
+        expect(link).toHaveAttribute('target', '_parent');
+        expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    });
+
+    test('no targetBlank, rel, or target', () => {
+        render(<AppLink to={EXTERNAL_URL}>{LINK_TEXT}</AppLink>);
+
+        // Assert - neither attribute is rendered when nothing asks for them
+        const link = screen.getByRole('link', { name: LINK_TEXT });
+        expect(link).not.toHaveAttribute('target');
+        expect(link).not.toHaveAttribute('rel');
     });
 });

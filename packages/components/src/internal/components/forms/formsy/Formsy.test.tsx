@@ -1,7 +1,7 @@
 // This file was originally derived from the "formsy-react" package, specifically, v2.3.2.
 // Credit: Christian Alfoni and the Formsy Authors
 // Repository: https://github.com/formsy/formsy-react/tree/0226fab133a25
-import React, { act, FC, memo, PropsWithChildren, useCallback, useRef, useState } from 'react';
+import React, { act, FC, memo, PropsWithChildren, useCallback, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { createEvent, fireEvent, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
@@ -448,6 +448,55 @@ describe('Formsy', () => {
         });
     });
 
+    describe('validation messages', () => {
+        // Mirrors an input whose error message is enriched by data that only starts loading once the validation
+        // failure is known, so the message changes while the rules and the value stay put.
+        const AsyncMessageForm: FC = () => {
+            const [isRegistered, setIsRegistered] = useState(false);
+            const [canAssociate, setCanAssociate] = useState(false);
+            const validations = useMemo(() => ({ isNotRegistered: isRegistered }), [isRegistered]);
+            const validationErrors = useMemo(
+                () => ({ isNotRegistered: canAssociate ? 'Already registered. Associate?' : 'Already registered.' }),
+                [canAssociate]
+            );
+            const onRegister = useCallback(() => setIsRegistered(true), []);
+            const onAssociate = useCallback(() => setCanAssociate(true), []);
+
+            return (
+                <>
+                    <Formsy>
+                        <TestInput
+                            name="one"
+                            testId="test-input"
+                            validationErrors={validationErrors}
+                            validations={validations}
+                            value="foo"
+                        />
+                    </Formsy>
+                    <button data-testid="register-btn" onClick={onRegister} type="button" />
+                    <button data-testid="associate-btn" onClick={onAssociate} type="button" />
+                </>
+            );
+        };
+
+        it('should re-resolve messages when the validationErrors prop changes', () => {
+            addFormsyRule<string>('isNotRegistered', (_values, _value, isRegistered: boolean) => !isRegistered);
+
+            const screen = render(<AsyncMessageForm />);
+            const input = screen.getByTestId('test-input');
+
+            expect(input).toHaveAttribute('data-error-messages', '');
+
+            // The rule starts failing, so the message resolved at that moment is displayed.
+            fireEvent.click(screen.getByTestId('register-btn'));
+            expect(input).toHaveAttribute('data-error-messages', 'Already registered.');
+
+            // Only the message changes here. It should surface without waiting for another validation pass.
+            fireEvent.click(screen.getByTestId('associate-btn'));
+            expect(input).toHaveAttribute('data-error-messages', 'Already registered. Associate?');
+        });
+    });
+
     describe('onChange', () => {
         it('should not trigger onChange when form is mounted', () => {
             const hasChanged = jest.fn();
@@ -506,6 +555,40 @@ describe('Formsy', () => {
             fireEvent.click(showInputBtn);
 
             expect(hasChanged).toHaveBeenCalledTimes(1);
+        });
+
+        it('should not trigger onChange when only the validations prop changes', () => {
+            addFormsyRule<string>('isNotConflicted', (_values, _value, isConflicted: boolean) => !isConflicted);
+            const hasChanged = jest.fn();
+
+            const TestForm: FC = () => {
+                const [isConflicted, setIsConflicted] = useState(true);
+                const validations = useMemo(() => ({ isNotConflicted: isConflicted }), [isConflicted]);
+                const resolveConflict = useCallback(() => setIsConflicted(false), []);
+
+                return (
+                    <>
+                        <Formsy onChange={hasChanged}>
+                            <TestInput name="one" testId="test-input" validations={validations} value="foo" />
+                        </Formsy>
+                        <button data-testid="resolve-btn" onClick={resolveConflict} type="button" />
+                    </>
+                );
+            };
+
+            const screen = render(<TestForm />);
+            const input = screen.getByTestId('test-input');
+
+            fireEvent.change(input, { target: { value: 'bar' } });
+            expect(hasChanged).toHaveBeenCalledTimes(1);
+            expect(input).toHaveAttribute('data-is-valid', 'false');
+
+            fireEvent.click(screen.getByTestId('resolve-btn'));
+            expect(hasChanged).toHaveBeenCalledTimes(1);
+            expect(input).toHaveAttribute('data-is-valid', 'true');
+
+            fireEvent.change(input, { target: { value: 'baz' } });
+            expect(hasChanged).toHaveBeenCalledTimes(2);
         });
     });
 

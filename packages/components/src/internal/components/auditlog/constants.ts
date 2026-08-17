@@ -17,7 +17,11 @@ export type AuditQuery = {
 export const AUDIT_EVENT_TYPE_PARAM = 'eventType';
 
 export const ATTACHMENT_AUDIT_QUERY: AuditQuery = { label: 'Attachment Events', value: 'AttachmentAuditEvent' };
-export const DOMAIN_AUDIT_QUERY: AuditQuery = { label: 'Domain Events', value: 'DomainAuditEvent' };
+export const DOMAIN_AUDIT_QUERY: AuditQuery = {
+    hasTransactionId: true,
+    label: 'Domain Events',
+    value: 'DomainAuditEvent',
+};
 export const DOMAIN_PROPERTY_AUDIT_QUERY: AuditQuery = {
     label: 'Domain Property Events',
     value: 'DomainPropertyAuditEvent',

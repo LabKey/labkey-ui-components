@@ -383,7 +383,7 @@ export const ManageSampleColorsPanel: FC<ManageSampleColorsPanelProps> = memo(pr
         (selectLabel?: string) => {
             setError(undefined);
             api.samples
-                .getSampleColors(true, true, homeContainer?.path)
+                .getSampleColors(true, true, homeContainer?.path, false /* exclude /Shared colors from management panel */)
                 .then(loaded => {
                     setColors(loaded);
                     // keep the moduleContext flag in sync so consumers don't have to reload the page after a save

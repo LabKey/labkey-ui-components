@@ -91,4 +91,36 @@ describe('HorizontalBarSection', () => {
         expect(parts[2].getAttribute('class')).toContain('horizontal-bar--open');
         expect(parts[2].parentElement.getAttribute('style')).toBe('width: 50%;');
     });
+
+    // section headers offset the legend rows from the bars, so the hovered bar must be matched by barIndex
+    test('summary tooltip highlights the hovered bar across section headers', async () => {
+        const sectioned: HorizontalBarData[] = [
+            { title: 'red', name: 'Red', sectionLabel: 'Blood', count: 12, totalCount: 40, percent: 30, filled: true },
+            { title: 'blue', name: 'Blue', sectionLabel: 'Blood', count: 8, totalCount: 40, percent: 20, filled: true },
+            {
+                title: 'plasma',
+                name: 'No Color',
+                sectionLabel: 'Plasma',
+                count: 20,
+                totalCount: 40,
+                percent: 50,
+                filled: true,
+                unlabeled: true,
+            },
+        ];
+        render(<HorizontalBarSection data={sectioned} showSummaryTooltip />);
+
+        // legend is: [Blood header, Red, Blue, Plasma] -- hovering the 2nd bar must bold the 3rd legend row
+        await userEvent.hover(document.querySelectorAll('.horizontal-bar-part')[1]);
+        await waitFor(() => {
+            expect(document.querySelector('.popover-content')).toBeInTheDocument();
+        });
+
+        const labels = document.querySelectorAll('.popover-content .cell-legend-label');
+        expect(labels).toHaveLength(3);
+        expect(document.querySelectorAll('.popover-content .cell-legend-section')).toHaveLength(1);
+        expect(labels[1]).toHaveTextContent('Blue');
+        expect(labels[1].getAttribute('class')).toContain('bold-text');
+        expect(document.querySelectorAll('.popover-content .bold-text')).toHaveLength(1);
+    });
 });

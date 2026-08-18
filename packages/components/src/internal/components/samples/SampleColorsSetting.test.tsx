@@ -187,4 +187,36 @@ describe('SampleColorsSelectorModal', () => {
         expect(screen.getByText('No colors are set up yet.')).toBeInTheDocument();
         expect(screen.queryAllByRole('checkbox')).toHaveLength(0);
     });
+
+    test('"Deselect All" disables every color, then the toggle flips to "Select All"', async () => {
+        const onConfirm = jest.fn();
+        renderModal({ onConfirm });
+        await userEvent.click(screen.getByRole('button', { name: 'Deselect All' }));
+
+        const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
+        expect(checkboxes.some(cb => cb.checked)).toBe(false);
+        expect(screen.getByRole('button', { name: 'Select All' })).toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Apply' }));
+        expect(onConfirm).toHaveBeenCalledWith([1, 2, 3]);
+    });
+
+    test('"Select All" enables every color from a partially disabled state', async () => {
+        const onConfirm = jest.fn();
+        renderModal({ initialDisabled: new Set([2]), onConfirm });
+        // Any disabled color means the toggle offers Select All.
+        await userEvent.click(screen.getByRole('button', { name: 'Select All' }));
+
+        const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
+        expect(checkboxes.every(cb => cb.checked)).toBe(true);
+
+        await userEvent.click(screen.getByRole('button', { name: 'Apply' }));
+        expect(onConfirm).toHaveBeenCalledWith([]);
+    });
+
+    test('the toggle is hidden when there are no colors', () => {
+        renderModal({ colors: [] });
+        expect(screen.queryByRole('button', { name: 'Deselect All' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'Select All' })).not.toBeInTheDocument();
+    });
 });

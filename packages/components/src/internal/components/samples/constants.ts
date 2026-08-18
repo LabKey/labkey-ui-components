@@ -57,8 +57,6 @@ export const SAMPLE_STATUS_REQUIRED_COLUMNS = [
 
 export const SAMPLE_COLOR_COLUMN_NAME = 'ExpMaterialColor';
 export const SAMPLE_COLOR_COLOR_COLUMN_NAME = 'ExpMaterialColor/Color';
-
-// TODO, color fields not wired up yet
 export const SAMPLE_COLOR_REQUIRED_COLUMNS = [SAMPLE_COLOR_COLUMN_NAME, SAMPLE_COLOR_COLOR_COLUMN_NAME];
 
 export enum SampleOperation {
@@ -259,6 +257,14 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         Required: false,
         Description: 'Contains a Description for this sample',
         Disableable: true,
+    },
+    {
+        Name: 'ExpMaterialColor',
+        Label: 'Sample Color',
+        DataType: 'Integer',
+        Required: false,
+        Description: 'Colors that can be applied to individual samples, overriding the sample type color',
+        Disableable: false,
     },
     {
         Name: 'MaterialExpDate',

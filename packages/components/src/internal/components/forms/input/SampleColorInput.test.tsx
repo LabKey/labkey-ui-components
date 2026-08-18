@@ -63,4 +63,36 @@ describe('SampleColorInput', () => {
         expect(renderLabelField).toHaveBeenCalledWith(COL);
         expect(screen.getByTestId('label-field')).toBeInTheDocument();
     });
+
+    describe('option renderer', () => {
+        function renderOption(row: any): void {
+            render(<SampleColorInput col={COL} />);
+            const { OptionComponent } = lastQuerySelectProps();
+            render(<OptionComponent label="Red" queryInfo={undefined} row={row} value={1} />);
+        }
+
+        test('renders the option label with its color swatch', () => {
+            renderOption({ RowId: { value: 1 }, Label: { value: 'Red' }, Color: { value: '#FF0000' } });
+
+            const icon = document.querySelector('.sample-color-select-option i');
+            expect(icon).toHaveClass('color-icon__circle-small');
+            expect(icon).toHaveStyle({ backgroundColor: '#FF0000' });
+            expect(document.querySelector('.sample-color-select-option').textContent).toBe('Red');
+        });
+
+        test('resolves the color regardless of row key casing', () => {
+            renderOption({ color: { value: '#FF0000' } });
+
+            expect(document.querySelector('.sample-color-select-option i')).toHaveStyle({
+                backgroundColor: '#FF0000',
+            });
+        });
+
+        test('renders the label without a swatch when the row has no color', () => {
+            renderOption({ Label: { value: 'Red' } });
+
+            expect(document.querySelector('.sample-color-select-option i')).toBeNull();
+            expect(document.querySelector('.sample-color-select-option').textContent).toBe('Red');
+        });
+    });
 });

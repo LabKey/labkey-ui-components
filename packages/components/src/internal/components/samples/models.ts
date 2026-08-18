@@ -7,6 +7,7 @@ import { immerable, produce } from 'immer';
 export interface SampleColorModel {
     archived: boolean;
     color: string;
+    containerPath?: string;
     inUse?: boolean;
     label: string;
     rowId?: number;

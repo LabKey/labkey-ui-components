@@ -198,7 +198,7 @@ describe('ChoosePicklistModal', () => {
         test('no samples added', () => {
             render(<AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={0} numSelected={4} />);
             expect(document.body.textContent).toBe(
-                `No samples added to picklist "${PUBLIC_EDITOR_PICKLIST.name}". 4 samples were already in the list.`
+                `No samples added to picklist ${PUBLIC_EDITOR_PICKLIST.name}. 4 samples were already in the list.`
             );
             expect(document.querySelector('a').textContent).toBe(PUBLIC_EDITOR_PICKLIST.name);
         });
@@ -206,28 +206,28 @@ describe('ChoosePicklistModal', () => {
         test('all samples added', () => {
             render(<AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={4} numSelected={4} />);
             expect(document.body.textContent).toBe(
-                `Successfully added 4 samples to picklist "${PUBLIC_EDITOR_PICKLIST.name}".`
+                `Successfully added 4 samples to picklist ${PUBLIC_EDITOR_PICKLIST.name}.`
             );
         });
 
         test('some samples added', () => {
             render(<AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={2} numSelected={4} />);
             expect(document.body.textContent).toBe(
-                `Successfully added 2 samples to picklist "${PUBLIC_EDITOR_PICKLIST.name}". 2 samples were already in the list.`
+                `Successfully added 2 samples to picklist ${PUBLIC_EDITOR_PICKLIST.name}. 2 samples were already in the list.`
             );
         });
 
         test('one sample added', () => {
             render(<AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={1} numSelected={4} />);
             expect(document.body.textContent).toBe(
-                `Successfully added 1 sample to picklist "${PUBLIC_EDITOR_PICKLIST.name}". 3 samples were already in the list.`
+                `Successfully added 1 sample to picklist ${PUBLIC_EDITOR_PICKLIST.name}. 3 samples were already in the list.`
             );
         });
 
         test('one sample not added', () => {
             render(<AddedToPicklistNotification picklist={PUBLIC_EDITOR_PICKLIST} numAdded={3} numSelected={4} />);
             expect(document.body.textContent).toBe(
-                `Successfully added 3 samples to picklist "${PUBLIC_EDITOR_PICKLIST.name}". 1 sample was already in the list.`
+                `Successfully added 3 samples to picklist ${PUBLIC_EDITOR_PICKLIST.name}. 1 sample was already in the list.`
             );
         });
     });

@@ -14,7 +14,7 @@ import { SystemFields } from './SystemFields';
 
 describe('SystemFields', () => {
     function verifyEnableCheckbox(enableCheckboxes: any, isExpDateDisabled: boolean) {
-        expect(enableCheckboxes.length).toEqual(7 * 2);
+        expect(enableCheckboxes.length).toEqual(8 * 2);
         const nameCheckbox = enableCheckboxes[0];
         expect(nameCheckbox.hasAttribute('checked')).toBeTruthy();
         expect(nameCheckbox.hasAttribute('disabled')).toBeTruthy();
@@ -24,7 +24,10 @@ describe('SystemFields', () => {
         const descCheckbox = enableCheckboxes[4];
         expect(descCheckbox.hasAttribute('checked')).toBeTruthy();
         expect(descCheckbox.hasAttribute('disabled')).toBeFalsy();
-        const expCheckbox = enableCheckboxes[6];
+        const sampleColorCheckbox = enableCheckboxes[6];
+        expect(sampleColorCheckbox.hasAttribute('checked')).toBeTruthy();
+        expect(sampleColorCheckbox.hasAttribute('disabled')).toBeTruthy();
+        const expCheckbox = enableCheckboxes[8];
         expect(expCheckbox.hasAttribute('checked')).toEqual(!isExpDateDisabled);
         expect(expCheckbox.hasAttribute('disabled')).toBeFalsy();
     }

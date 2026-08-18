@@ -46,8 +46,9 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
         }
 
         horizontalBars = data
-            .filter(row => row.percent > 0)
-            .map((row, index) => {
+            .map((row, barIndex) => ({ row, barIndex }))
+            .filter(({ row }) => row.percent > 0)
+            .map(({ row, barIndex }) => {
                 const style: CSSProperties = { width: row.percent + '%', background: row.backgroundColor };
                 const section = (
                     <div
@@ -68,7 +69,11 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
                 const overlay = (
                     <Popover id="grid-cell-popover" placement="top" isFlexPlacement>
                         {showSummaryTooltip && summaryLegendData?.length > 0 ? (
-                            <ItemsLegend legendData={summaryLegendData} activeIndex={index} />
+                            // section headers shift legend rows out of step with the bars, so match on barIndex
+                            <ItemsLegend
+                                legendData={summaryLegendData}
+                                activeIndex={summaryLegendData.findIndex(legend => legend.barIndex === barIndex)}
+                            />
                         ) : (
                             row.title
                         )}
@@ -76,7 +81,7 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
                 );
 
                 return (
-                    <OverlayTrigger key={index} id={index.toString()} overlay={overlay} style={style}>
+                    <OverlayTrigger id={barIndex.toString()} key={barIndex} overlay={overlay} style={style}>
                         {section}
                     </OverlayTrigger>
                 );

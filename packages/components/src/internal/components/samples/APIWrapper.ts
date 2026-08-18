@@ -69,7 +69,8 @@ export interface SamplesAPIWrapper {
     getSampleColors: (
         includeArchive?: boolean,
         checkInUse?: boolean,
-        containerPath?: string
+        containerPath?: string,
+        includeSharedColors?: boolean,
     ) => Promise<SampleColorModel[]>;
 
     getSampleCounter: (seqType: 'rootSampleCount' | 'sampleCount', containerPath?: string) => Promise<number>;

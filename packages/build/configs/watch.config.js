@@ -43,6 +43,7 @@ for (let i = 0; i < entryPoints.apps.length; i++) {
 
 module.exports = {
     context: constants.context,
+    ignoreWarnings: constants.ignoreWarnings,
     mode: 'development',
     devServer: devServer,
     entry: entries,

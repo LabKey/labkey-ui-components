@@ -7,12 +7,23 @@ import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
-import { QuerySelect, QuerySelectOwnProps } from '../QuerySelect';
+import { QuerySelect, QuerySelectOptionProps, QuerySelectOwnProps } from '../QuerySelect';
 import { LOOKUP_DEFAULT_SIZE } from '../../../constants';
 import { NON_ARCHIVED_COLOR_FILTER } from '../../samples/constants';
 
 import { InputRendererProps } from './types';
 import { caseInsensitive } from '../../../util/utils';
+import { ColorIcon } from '../../base/ColorIcon';
+
+const SampleColorSelectOption: FC<QuerySelectOptionProps> = memo(({ row, label }) => {
+    const colorVal = caseInsensitive(row, 'Color')?.value;
+    return (
+        <div className="sample-color-select-option">
+            <ColorIcon label={label} useSmall value={colorVal} />
+        </div>
+    );
+});
+SampleColorSelectOption.displayName = 'SampleColorSelectOption';
 
 interface SampleColorInputProps extends Omit<QuerySelectOwnProps, 'schemaQuery' | 'valueColumn'> {
     col: QueryColumn;
@@ -47,6 +58,7 @@ export const SampleColorInput: FC<SampleColorInputProps> = memo(props => {
                 required={col.required}
                 showLoading={false}
                 {...querySelectProps}
+                OptionComponent={SampleColorSelectOption}
                 queryFilters={filters}
                 schemaQuery={col.lookup.schemaQuery}
                 valueColumn={col.lookup.keyColumn}
@@ -54,7 +66,6 @@ export const SampleColorInput: FC<SampleColorInputProps> = memo(props => {
         </>
     );
 });
-
 SampleColorInput.displayName = 'SampleColorInput';
 
 export const SampleColorInputRenderer: FC<InputRendererProps> = memo(props => {

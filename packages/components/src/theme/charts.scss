@@ -110,6 +110,20 @@
         display: inline-block;
         overflow: hidden;
     }
+
+    .cell-legend-section-label {
+        display: inline-block;
+        padding-top: 6px;
+        overflow: hidden;
+    }
+}
+
+.box-viewer-legend table {
+    border-collapse: collapse;
+}
+
+.cell-legend-row--separator > td {
+    border-top: 1px solid #ddd;
 }
 .chart-body {
     position: relative;

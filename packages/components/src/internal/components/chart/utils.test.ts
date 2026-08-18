@@ -220,6 +220,7 @@ describe('createHorizontalBarLegendData', () => {
                     '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 1'
                 ),
                 legendLabel: 'Sample Type 1',
+                barIndex: 0,
             },
             {
                 circleColor: 'blue',
@@ -231,6 +232,7 @@ describe('createHorizontalBarLegendData', () => {
                     '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 1'
                 ),
                 legendLabel: 'Sample Type 1',
+                barIndex: 1,
             },
             {
                 circleColor: 'red',
@@ -242,6 +244,7 @@ describe('createHorizontalBarLegendData', () => {
                     '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 2'
                 ),
                 legendLabel: 'Sample Type 2',
+                barIndex: 2,
             },
             {
                 circleColor: 'red',
@@ -253,6 +256,7 @@ describe('createHorizontalBarLegendData', () => {
                     '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 3'
                 ),
                 legendLabel: 'Sample Type 3',
+                barIndex: 3,
             },
         ]);
     });
@@ -296,14 +300,169 @@ describe('createHorizontalBarLegendData', () => {
                     '#/freezers/test/storageView?query.SampleType/Name~eq=Sample Type 1'
                 ),
                 legendLabel: 'Sample Type 1',
+                barIndex: 0,
             },
             {
                 circleColor: 'fff',
                 backgroundColor: 'none',
                 data: Map.of('value', '6,000'),
                 legendLabel: 'spaces',
+                barIndex: 1,
             },
         ]);
+    });
+
+    describe('sectionLabel', () => {
+        const bar = (
+            name: string,
+            sectionLabel: string,
+            count: number,
+            backgroundColor: string,
+            unlabeled?: boolean
+        ) => ({
+            title: `${count} '${sectionLabel}' samples (${name})`,
+            name,
+            sectionLabel,
+            count,
+            totalCount: 100,
+            percent: count,
+            backgroundColor,
+            filled: true,
+            unlabeled,
+        });
+
+        test('section with multiple bars gets a header', () => {
+            const legend = createHorizontalBarCountLegendData(
+                [bar('Red', 'Blood', 12, '#ff0000'), bar('Blue', 'Blood', 8, '#0000ff')],
+                'space',
+                'spaces'
+            );
+
+            expect(legend).toHaveLength(3);
+            expect(legend[0]).toStrictEqual({
+                circleColor: 'none',
+                backgroundColor: 'none',
+                legendLabel: 'Blood',
+                isSectionHeader: true,
+                separatorAbove: false, // nothing above the first row to separate it from
+                data: Map.of('value', '20'), // the section total
+            });
+            // the section label is not repeated in each row
+            expect(legend[1].legendLabel).toBe('Red');
+            expect(legend[1].barIndex).toBe(0);
+            expect(legend[2].legendLabel).toBe('Blue');
+            expect(legend[2].barIndex).toBe(1);
+        });
+
+        test('section with a single unlabeled bar renders as a plain row labeled by the section', () => {
+            const legend = createHorizontalBarCountLegendData(
+                [bar('No Color', 'Blood', 12, '#ff0000', true)],
+                'space',
+                'spaces'
+            );
+
+            expect(legend).toHaveLength(1);
+            expect(legend[0].isSectionHeader).toBeUndefined();
+            expect(legend[0].legendLabel).toBe('Blood');
+            expect(legend[0].circleColor).toBe('#ff0000');
+            expect(legend[0].barIndex).toBe(0);
+        });
+
+        test('section with a single labeled bar keeps its header', () => {
+            const legend = createHorizontalBarCountLegendData([bar('Red', 'Blood', 12, '#ff0000')], 'space', 'spaces');
+
+            expect(legend).toHaveLength(2);
+            expect(legend[0]).toStrictEqual({
+                circleColor: 'none',
+                backgroundColor: 'none',
+                legendLabel: 'Blood',
+                isSectionHeader: true,
+                separatorAbove: false,
+                data: Map.of('value', '12'),
+            });
+            expect(legend[1].legendLabel).toBe('Red');
+            expect(legend[1].circleColor).toBe('#ff0000');
+            expect(legend[1].barIndex).toBe(0);
+        });
+
+        test('mixes sections, single-bar sections and unsectioned rows', () => {
+            const legend = createHorizontalBarCountLegendData(
+                [
+                    bar('Red', 'Blood', 12, '#ff0000'),
+                    bar('Blue', 'Blood', 8, '#0000ff'),
+                    bar('No Color', 'Plasma', 22, 'green', true),
+                    { title: '4 spaces available', count: 4, totalCount: 100, percent: 4, filled: false },
+                ],
+                'space',
+                'spaces'
+            );
+
+            expect(legend.map(l => l.legendLabel)).toStrictEqual(['Blood', 'Red', 'Blue', 'Plasma', 'spaces']);
+            expect(legend.map(l => l.barIndex)).toStrictEqual([undefined, 0, 1, 2, 3]);
+            // a rule closes off the Blood section; nothing separates the two unsectioned rows that follow
+            expect(legend.map(l => !!l.separatorAbove)).toStrictEqual([false, false, false, true, false]);
+        });
+
+        test('separators fence each section off from its neighbors', () => {
+            const legend = createHorizontalBarCountLegendData(
+                [
+                    { title: 'a', name: 'Other', count: 3, totalCount: 100, percent: 3, filled: true },
+                    bar('Red', 'Blood', 12, '#ff0000'),
+                    bar('Blue', 'Blood', 8, '#0000ff'),
+                    bar('Red', 'Plasma', 5, '#ff0000'),
+                    bar('Green', 'Plasma', 4, 'green'),
+                ],
+                'space',
+                'spaces'
+            );
+
+            expect(legend.map(l => l.legendLabel)).toStrictEqual([
+                'Other',
+                'Blood',
+                'Red',
+                'Blue',
+                'Plasma',
+                'Red',
+                'Green',
+            ]);
+            // only the two section headers carry a rule -- the leading unsectioned row does not
+            expect(legend.map(l => !!l.separatorAbove)).toStrictEqual([
+                false,
+                true,
+                false,
+                false,
+                true,
+                false,
+                false,
+            ]);
+        });
+
+        test('same section label split by another section is not merged', () => {
+            const legend = createHorizontalBarCountLegendData(
+                [
+                    bar('No Color', 'Blood', 12, '#ff0000', true),
+                    bar('No Color', 'Plasma', 8, '#ff0000', true),
+                    bar('No Color', 'Blood', 5, 'b', true),
+                ],
+                'space',
+                'spaces'
+            );
+
+            expect(legend.map(l => l.legendLabel)).toStrictEqual(['Blood', 'Plasma', 'Blood']);
+            expect(legend.every(l => !l.isSectionHeader)).toBe(true);
+        });
+
+        test('runs of the same section label are not merged across an intervening section', () => {
+            const legend = createHorizontalBarCountLegendData(
+                [bar('Red', 'Blood', 12, '#ff0000'), bar('Red', 'Plasma', 8, '#ff0000'), bar('Blue', 'Blood', 5, 'b')],
+                'space',
+                'spaces'
+            );
+
+            expect(legend.map(l => l.legendLabel)).toStrictEqual(['Blood', 'Red', 'Plasma', 'Red', 'Blood', 'Blue']);
+            expect(legend.map(l => !!l.isSectionHeader)).toStrictEqual([true, false, true, false, true, false]);
+            expect(legend.map(l => l.barIndex)).toStrictEqual([undefined, 0, undefined, 1, undefined, 2]);
+        });
     });
 });
 

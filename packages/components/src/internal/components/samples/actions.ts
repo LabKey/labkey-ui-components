@@ -226,10 +226,12 @@ export function getSampleTypeLabelColor(name: string): Promise<string> {
 export async function getSampleColors(
     includeArchive = false,
     checkInUse = false,
-    containerPath?: string
+    containerPath?: string,
+    includeSharedColors = true,
 ): Promise<SampleColorModel[]> {
     const response = await selectRows({
-        columns: 'RowId,Label,Color,Archived',
+        columns: 'RowId,Label,Color,Archived,Container/Path',
+        containerFilter: includeSharedColors ? undefined : Query.ContainerFilter.current,
         containerPath,
         filterArray: includeArchive ? undefined : [NON_ARCHIVED_COLOR_FILTER],
         schemaQuery: SCHEMAS.EXP_TABLES.DATA_COLORS,
@@ -241,6 +243,7 @@ export async function getSampleColors(
         label: caseInsensitive(row, 'Label').value,
         color: caseInsensitive(row, 'Color').value,
         archived: !!caseInsensitive(row, 'Archived').value,
+        containerPath: caseInsensitive(row, 'Container/Path')?.value,
     }));
 
     if (!checkInUse || colors.length === 0) {
@@ -376,6 +379,7 @@ function isAliquotEditableField(colName: string): boolean {
         colName === 'name' ||
         colName === 'description' ||
         colName === 'materialexpdate' ||
+        colName === 'expmaterialcolor' ||
         (isSampleStatusEnabled() && colName === 'samplestate')
     );
 }

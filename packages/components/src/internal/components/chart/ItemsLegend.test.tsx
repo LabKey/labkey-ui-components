@@ -192,4 +192,50 @@ describe('ItemsLegend', () => {
         expect(legends[1].querySelectorAll('.bold-text')).toHaveLength(1);
         expect(legends[2].querySelectorAll('a')).toHaveLength(0);
     });
+
+    test('section headers', () => {
+        render(
+            <ItemsLegend
+                activeIndex={2}
+                legendData={[
+                    {
+                        circleColor: 'none',
+                        backgroundColor: 'none',
+                        legendLabel: 'Blood',
+                        isSectionHeader: true,
+                        data: Map.of('value', 20),
+                    },
+                    { circleColor: '#ff0000', backgroundColor: 'none', legendLabel: 'Red', data: Map.of('value', 12) },
+                    { circleColor: '#0000ff', backgroundColor: 'none', legendLabel: 'Blue', data: Map.of('value', 8) },
+                    {
+                        circleColor: 'green',
+                        backgroundColor: 'none',
+                        legendLabel: 'Plasma',
+                        separatorAbove: true,
+                        data: Map.of('value', 22),
+                    },
+                ]}
+            />
+        );
+
+        const rows = document.querySelectorAll('tr');
+        expect(rows).toHaveLength(4);
+
+        // the header carries the section total but no color swatch, and is not bolded
+        expect(document.getElementsByClassName('cell-legend-section')).toHaveLength(1);
+        expect(rows[0]).toHaveTextContent('Blood');
+        expect(rows[0]).toHaveTextContent('20');
+        expect(rows[0].querySelectorAll('.cell-legend-icon')).toHaveLength(0);
+        expect(rows[0].querySelectorAll('.cell-legend-section-label')).toHaveLength(2);
+        expect(rows[0].getAttribute('class')).not.toContain('cell-legend-row--separator');
+
+        expect(rows[1].querySelectorAll('.cell-legend-circle')).toHaveLength(1);
+        expect(rows[1].querySelectorAll('.bold-text')).toHaveLength(0);
+        expect(rows[2].querySelectorAll('.bold-text')).toHaveLength(1); // activeIndex
+        expect(rows[3]).toHaveTextContent('Plasma');
+
+        // the rule closing off the Blood section sits on the row that follows it
+        expect(document.getElementsByClassName('cell-legend-row--separator')).toHaveLength(1);
+        expect(rows[3].getAttribute('class')).toContain('cell-legend-row--separator');
+    });
 });

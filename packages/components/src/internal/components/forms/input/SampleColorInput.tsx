@@ -16,6 +16,7 @@ import { caseInsensitive } from '../../../util/utils';
 import { ColorIcon } from '../../base/ColorIcon';
 
 const SampleColorSelectOption: FC<QuerySelectOptionProps> = memo(({ row, label }) => {
+    // color is available here because QuerySelect includes identifying fields (see exp.DataColor ~~identifyingfields~~.qview.xml file)
     const colorVal = caseInsensitive(row, 'Color')?.value;
     return (
         <div className="sample-color-select-option">

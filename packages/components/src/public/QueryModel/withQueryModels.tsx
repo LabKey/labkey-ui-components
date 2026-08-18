@@ -279,28 +279,71 @@ function applySavedSettings(id: string, model: QueryModel): QueryModel {
     return model;
 }
 
+export interface RequestTracker {
+    /**
+     * Pass to a request so that it is registered with the RequestManager, canceling any in-flight request of the same
+     * type for the same QueryModel.
+     */
+    handler: RequestHandler;
+
+    /**
+     * Returns true if the request registered via this tracker's handler was canceled by the RequestManager.
+     */
+    wasCancelled: () => boolean;
+}
+
 // N.B. This is similar to useRequestHandler() but we cannot use a hook here, so we have to use class
 // variables instead. Additionally, we cannot make use of React.createRef() since that returns an immutable
 // reference unlike React.useRef() which is mutable.
 // Exported for unit tests
 export class RequestManager {
     _requests: Record<string, Record<string, undefined | XMLHttpRequest>> = {};
+    _cancelledRequests = new WeakSet<XMLHttpRequest>();
 
     public cancelAllRequests = (): void => {
         Object.values(this._requests).forEach(allReq => {
             Object.values(allReq).forEach(req => {
-                req?.abort();
+                if (req) {
+                    this._cancelledRequests.add(req);
+                    req.abort();
+                }
             });
         });
         this._requests = {};
     };
 
-    public getRequestHandler(id: string, requestType: string): RequestHandler {
+    /**
+     * Tracks a single request of the given type for the given QueryModel. Pass the tracker's "handler" to the request,
+     * then use "wasCancelled" to determine whether a failed request was canceled by this manager.
+     * GH Issue 1364: Note that cancellation cannot be inferred from what is currently registered here,
+     * since @labkey/api rejects from the XHR's 'readystatechange' handler, which runs before the 'loadend' listener
+     * below has removed the failed request.
+     * @param id The id of the QueryModel the request is made for
+     * @param requestType The type of request (e.g. 'loadRows')
+     */
+    public trackRequest = (id: string, requestType: string): RequestTracker => {
+        const register = this.getRequestHandler(id, requestType);
+        let tracked: XMLHttpRequest;
+
+        return {
+            handler: request => {
+                tracked = request;
+                register(request);
+            },
+            wasCancelled: () => !!tracked && this._cancelledRequests.has(tracked),
+        };
+    };
+
+    private getRequestHandler(id: string, requestType: string): RequestHandler {
         return request => {
             const bucket = this._requests[id] || (this._requests[id] = {});
 
             // Abort in-flight request
-            bucket[requestType]?.abort();
+            const inFlight = bucket[requestType];
+            if (inFlight) {
+                this._cancelledRequests.add(inFlight);
+                inFlight.abort();
+            }
 
             // If the bucket was detached during the abort() call,
             // then re-attach it before assigning the new request.
@@ -553,6 +596,7 @@ export function withQueryModels<Props>(
 
         loadSelections = async (id: string): Promise<void> => {
             const { loadSelections } = this.props.modelLoader;
+            const request = this.requestManager.trackRequest(id, 'loadSelections');
 
             this.setState(
                 produce<State>((draft: WritableDraft<State>) => {
@@ -561,10 +605,7 @@ export function withQueryModels<Props>(
             );
 
             try {
-                const selections = await loadSelections(
-                    this.state.queryModels[id],
-                    this.requestManager.getRequestHandler(id, 'loadSelections')
-                );
+                const selections = await loadSelections(this.state.queryModels[id], request.handler);
 
                 this.setState(
                     produce<State>((draft: WritableDraft<State>) => {
@@ -575,7 +616,9 @@ export function withQueryModels<Props>(
                     })
                 );
             } catch (error) {
-                if (error?.status === 0) return;
+                // GitHub Issue 1364: only ignore the failure if we canceled the request ourselves, otherwise the
+                // model is left loading selections forever.
+                if (error?.status === 0 && request.wasCancelled()) return;
                 this.setSelectionsError(id, error, 'loading');
             }
         };
@@ -792,6 +835,9 @@ export function withQueryModels<Props>(
                 return;
             }
 
+            // If we have selectionsForReplace, then skip request cancellation optimization
+            const request = selectionsForReplace ? undefined : this.requestManager.trackRequest(id, 'loadRows');
+
             this.setState(
                 produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
@@ -801,13 +847,7 @@ export function withQueryModels<Props>(
             );
 
             try {
-                // If we have selectionsForReplace, then skip request cancellation optimization
-                let requestHandler: RequestHandler | undefined;
-                if (!selectionsForReplace) {
-                    requestHandler = this.requestManager.getRequestHandler(id, 'loadRows');
-                }
-
-                const result = await loadRows(this.state.queryModels[id], requestHandler);
+                const result = await loadRows(this.state.queryModels[id], request?.handler);
                 const { messages, rows, orderedRows, rowCount } = result;
 
                 this.setState(
@@ -824,7 +864,9 @@ export function withQueryModels<Props>(
                     () => this.maybeLoad(id, false, false, loadSelections, false, selectionsForReplace)
                 );
             } catch (error) {
-                if (error?.status === 0) return;
+                // GitHub Issue 1364: only ignore the failure if we canceled the request ourselves, otherwise the
+                // model is left loading rows forever.
+                if (error?.status === 0 && request?.wasCancelled()) return;
                 let viewDoesNotExist = false;
                 this.setState(
                     produce<State>((draft: WritableDraft<State>) => {
@@ -903,6 +945,8 @@ export function withQueryModels<Props>(
                 return;
             }
 
+            const request = this.requestManager.trackRequest(id, 'loadTotalCount');
+
             this.setState(
                 produce<State>((draft: WritableDraft<State>) => {
                     draft.queryModels[id].totalCountLoadingState = LoadingState.LOADING;
@@ -928,7 +972,7 @@ export function withQueryModels<Props>(
                     maxRows: 1,
                     offset: 0,
                     sort: undefined,
-                    requestHandler: this.requestManager.getRequestHandler(id, 'loadTotalCount'),
+                    requestHandler: request.handler,
                 });
 
                 this.setState(
@@ -940,7 +984,9 @@ export function withQueryModels<Props>(
                     })
                 );
             } catch (error) {
-                if (error?.status === 0) return;
+                // GitHub Issue 1364: only ignore the failure if we canceled the request ourselves, otherwise the
+                // model is left loading the total count forever.
+                if (error?.status === 0 && request.wasCancelled()) return;
                 this.setState(
                     produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];

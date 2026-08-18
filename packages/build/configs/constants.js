@@ -206,7 +206,14 @@ const labkeyPackagesDev = process.env.LINK
     }
     : {};
 
+// There is a bug in react-router 7.x that causes a warning about import.meta.hot being undefined, which does not affect
+//  us but does cause a warning to be emitted and triggers the error overlay in our hot reload builds.
+const ignoreWarnings = [
+    { module: /react-router/, message: /import\.meta/ },
+];
+
 module.exports = {
+    ignoreWarnings,
     lkModule,
     labkeyUIComponentsPath,
     labkeyUIPremiumPath,

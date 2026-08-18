@@ -40,6 +40,7 @@ if (process.env.ANALYZE) {
 
 module.exports = {
     entry: './src/index.ts',
+    ignoreWarnings: constants.ignoreWarnings,
     devtool: 'source-map',
     target: 'web',
     mode: 'production',

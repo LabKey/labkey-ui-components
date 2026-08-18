@@ -74,7 +74,7 @@
     "vis-network": "~10.1.0"
   },
   "devDependencies": {
-    "@labkey/build": "10.1.1-fb-upgrade-react-router.0",
+    "@labkey/build": "10.1.1-fb-upgrade-react-router.1",
     "@labkey/eslint-config": "1.2.3",
     "@types/history": "4.7.11",
     "@types/jest": "30.0.0",

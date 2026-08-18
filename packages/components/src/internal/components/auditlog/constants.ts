@@ -140,7 +140,7 @@ export const PLATE_SET_AUDIT_QUERY: AuditQuery = {
 // Events live in the root container, so the grid needs to look outside the current folder to find them
 export const SYSTEM_UPGRADE_AUDIT_QUERY: AuditQuery = {
     containerFilter: Query.ContainerFilter.allFolders,
-    label: 'System Upgrade Events',
+    label: 'System Upgrade events',
     value: 'SystemUpgradeAuditEvent',
 };
 

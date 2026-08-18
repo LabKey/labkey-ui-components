@@ -491,7 +491,7 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
                 renderer = d => <NoLinkRenderer data={d} />;
                 break;
             case 'samplecolorrenderer':
-                renderer = (d, r) => <SampleColorRenderer data={d} row={r} />;
+                renderer = (d, r) => <SampleColorRenderer data={d} row={r} useSmall />;
                 break;
             case 'samplestatusrenderer':
                 renderer = (d, r) => <SampleStatusRenderer row={r} />;

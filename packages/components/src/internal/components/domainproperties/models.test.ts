@@ -1399,6 +1399,47 @@ describe('DomainField', () => {
             expect.arrayContaining(['Range', 'RegEx', 'Lookup', 'TextChoice'])
         );
     });
+
+    test('getImportAliases', () => {
+        const aliasesFor = (importAliases: string): string[] =>
+            DomainField.create({ name: 'foo', importAliases }).getImportAliases();
+
+        expect(DomainField.create({ name: 'foo' }).getImportAliases()).toEqual([]);
+        expect(aliasesFor(undefined)).toEqual([]);
+        expect(aliasesFor(null)).toEqual([]);
+        expect(aliasesFor('')).toEqual([]);
+        expect(aliasesFor('   ')).toEqual([]);
+        expect(aliasesFor(',;')).toEqual([]);
+        expect(aliasesFor('""')).toEqual([]);
+
+        expect(aliasesFor('one')).toEqual(['one']);
+        expect(aliasesFor('  one  ')).toEqual(['one']);
+        expect(aliasesFor('one,two')).toEqual(['one', 'two']);
+        expect(aliasesFor('one, two,   three')).toEqual(['one', 'two', 'three']);
+        expect(aliasesFor('one,,two,')).toEqual(['one', 'two']);
+
+        // aliases may also be delimited by whitespace or semicolons
+        expect(aliasesFor('one two')).toEqual(['one', 'two']);
+        expect(aliasesFor('one;two')).toEqual(['one', 'two']);
+        expect(aliasesFor('one\ttwo\nthree')).toEqual(['one', 'two', 'three']);
+
+        // double quotes preserve whitespace within an alias
+        expect(aliasesFor('"one two"')).toEqual(['one two']);
+        expect(aliasesFor('"one two", three')).toEqual(['one two', 'three']);
+        expect(aliasesFor('zero,"one two" three,"four  five"')).toEqual(['zero', 'one two', 'three', 'four  five']);
+        // whitespace within the quotes is not trimmed, matching convertToSet()
+        expect(aliasesFor('" one "')).toEqual([' one ']);
+        expect(aliasesFor('" "')).toEqual([]);
+        // a quoted alias may contain the delimiters
+        expect(aliasesFor('"one,two";three')).toEqual(['one,two', 'three']);
+
+        // casing is preserved and duplicates are removed
+        expect(aliasesFor('One,ONE,one')).toEqual(['One', 'ONE', 'one']);
+        expect(aliasesFor('One,two,One')).toEqual(['One', 'two']);
+
+        // an unmatched quote does not swallow the remaining aliases
+        expect(aliasesFor('one,"two,three')).toEqual(['one', 'two', 'three']);
+    });
 });
 
 describe('DomainIndex', () => {

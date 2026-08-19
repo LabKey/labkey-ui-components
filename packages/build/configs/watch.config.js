@@ -6,7 +6,7 @@ const { TsCheckerRspackPlugin } = require('ts-checker-rspack-plugin');
 const { ReactRefreshRspackPlugin } = require('@rspack/plugin-react-refresh');
 const constants = require('./constants');
 const path = require('path');
-// relative to the <lk_module>/node_modules/@labkey/build/webpack dir
+// relative to the <lk_module>/node_modules/@labkey/build/configs dir
 const entryPoints = require('../../../../src/client/entryPoints');
 
 const devServer = {

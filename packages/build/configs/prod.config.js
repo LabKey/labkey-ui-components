@@ -8,6 +8,7 @@ const { rspack } = require('@rspack/core');
 
 module.exports = {
     context: constants.context,
+    ignoreWarnings: constants.ignoreWarnings,
     mode: 'production',
     devtool: process.env.PROD_SOURCE_MAP || 'nosources-source-map',
     entry: constants.processEntries(entryPoints),

@@ -4,7 +4,7 @@
  */
 import React, { ComponentType, createContext, FC, PureComponent, ReactNode } from 'react';
 import { produce } from 'immer';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import { isAssayEnabled } from '../../app/utils';
 

@@ -6,7 +6,7 @@ import React, { FC, memo, MouseEvent, MutableRefObject, useCallback, useEffect, 
 import { List, Map } from 'immutable';
 import { Location } from 'history';
 import { ActionURL } from '@labkey/api';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 import { blurActiveElement } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';

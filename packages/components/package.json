@@ -53,13 +53,12 @@
     "@testing-library/jest-dom": "~7.0.1",
     "@testing-library/react": "~16.3.2",
     "@testing-library/user-event": "~14.6.1",
-    "bootstrap": "~3.4.1",
     "classnames": "~2.5.1",
     "date-fns": "~3.6.0",
     "date-fns-tz": "~3.2.0",
     "font-awesome": "~4.7.0",
     "immer": "~11.1.15",
-    "immutable": "~3.8.3",
+    "immutable": "~3.8.4",
     "normalizr": "~3.6.2",
     "numeral": "~2.0.6",
     "papaparse": "5.5.4",
@@ -74,7 +73,7 @@
     "vis-network": "~10.1.0"
   },
   "devDependencies": {
-    "@labkey/build": "10.1.1",
+    "@labkey/build": "10.1.2-develop.0",
     "@labkey/eslint-config": "1.2.3",
     "@types/history": "4.7.11",
     "@types/jest": "30.0.0",

@@ -66,6 +66,7 @@ type GetTransactionRowIdsResponse = {
 export async function getGridIdsFromTransactionId(
     transactionAuditId: number | string,
     dataType: string,
+    insertOnly  = false,
     containerPath?: string
 ): Promise<DataTypeRowIdsFromTransactionIds> {
     if (!transactionAuditId) return { rowIds: [], dataTypeRowCounts: {} };
@@ -78,6 +79,7 @@ export async function getGridIdsFromTransactionId(
         params: {
             dataType,
             transactionAuditId,
+            insertOnly,
         },
         errorLogMsg,
     });

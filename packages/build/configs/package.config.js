@@ -103,7 +103,7 @@ module.exports = {
         'react-dom/test-utils',
         'react-redux',
         'react-router',
-        'react-router-dom',
+        'react-router/dom',
         'react-select',
         'react-select/async',
         'react-select/async-creatable',

@@ -29,7 +29,7 @@ import { RowsResponse } from './QueryModelLoader';
 
 // @ts-expect-error Need to use require() for mocking
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const rrd = require('react-router-dom');
+const rrd = require('react-router');
 
 /**
  * Note: All of the tests in this file look a tad weird. We create a component that resets local variables on render

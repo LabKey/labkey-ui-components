@@ -8,6 +8,8 @@ import sampleSetQueryInfo from '../test/data/sampleSet-getQueryDetails.json';
 
 import { ViewInfo } from '../internal/ViewInfo';
 
+import { SAMPLE_COLOR_COLUMN_NAME } from '../internal/components/samples/constants';
+
 import { ExtendedMap } from './ExtendedMap';
 
 import { QueryInfo } from './QueryInfo';
@@ -551,6 +553,44 @@ describe('QueryInfo', () => {
         test('case-insensitive', () => {
             const col = queryInfo.getColumnFromName('NAME');
             expect(col.name).toBe('Name');
+        });
+    });
+
+    describe('showSampleColorCol', () => {
+        const makeQueryInfo = (sampleColorCol?: Record<string, unknown>): QueryInfo =>
+            QueryInfo.fromJsonForTests({
+                columns: [{ fieldKey: 'name', name: 'name' }, ...(sampleColorCol ? [sampleColorCol] : [])],
+                name: 'query',
+                schemaName: 'schema',
+            });
+
+        test('without sample color column', () => {
+            expect(makeQueryInfo().showSampleColorCol()).toBe(false);
+        });
+
+        test('sample color column shown in details view', () => {
+            expect(
+                makeQueryInfo({ fieldKey: SAMPLE_COLOR_COLUMN_NAME, shownInDetailsView: true }).showSampleColorCol()
+            ).toBe(true);
+        });
+
+        test('sample color column not shown in details view', () => {
+            expect(
+                makeQueryInfo({ fieldKey: SAMPLE_COLOR_COLUMN_NAME, shownInDetailsView: false }).showSampleColorCol()
+            ).toBe(false);
+        });
+
+        test('sample color column without shownInDetailsView', () => {
+            expect(makeQueryInfo({ fieldKey: SAMPLE_COLOR_COLUMN_NAME }).showSampleColorCol()).toBe(false);
+        });
+
+        test('sample color column field key is case-insensitive', () => {
+            expect(
+                makeQueryInfo({
+                    fieldKey: SAMPLE_COLOR_COLUMN_NAME.toUpperCase(),
+                    shownInDetailsView: true,
+                }).showSampleColorCol()
+            ).toBe(true);
         });
     });
 });

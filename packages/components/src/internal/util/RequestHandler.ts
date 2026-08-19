@@ -34,7 +34,7 @@ export interface UseRequestHandler {
  *             resetRequestHandler();
  *             setSearchResult(result);
  *         } catch (e) {
- *             // Request may have been aborted/cancelled
+ *             // Request may have been aborted/canceled. TODO update to distinguish canceled and error states
  *             aborted = e.status === 0;
  *             if (!aborted) {
  *                 setError('Search failed!');

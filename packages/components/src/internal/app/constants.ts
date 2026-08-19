@@ -114,6 +114,7 @@ export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu'
 
 export const FOLDER_DATA_TYPE_EXCLUSIONS = 'dataTypeExclusions';
 export const ARCHIVED_FOLDERS = 'archivedContainers';
+export const HAS_ACTIVE_PROJECT_COLORS = 'hasActiveProjectColors';
 
 export const BASE_APP_HELP_LINK = 'https://www.labkey.org/SampleManagerHelp/wiki-page.view?name=';
 

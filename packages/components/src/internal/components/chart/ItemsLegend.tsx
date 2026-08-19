@@ -25,6 +25,27 @@ export const ItemsLegend: FC<Props> = memo(props => {
             <table>
                 <tbody>
                     {legendData.map((legend, index) => {
+                        const rowClassName = classNames('cell-legend-row', {
+                            'cell-legend-row--separator': legend.separatorAbove,
+                        });
+
+                        if (legend.isSectionHeader) {
+                            return (
+                                <tr key={`cell-legend-${index}`} className={classNames(rowClassName, 'cell-legend-section')}>
+                                    <td colSpan={2}>
+                                        <span className="cell-legend-section-label">{legend.legendLabel}</span>
+                                    </td>
+                                    {legend.data && (
+                                        <td className="text-align-right">
+                                            <span className="cell-legend-data cell-legend-section-label">
+                                                <DefaultRenderer data={legend.data} />
+                                            </span>
+                                        </td>
+                                    )}
+                                </tr>
+                            );
+                        }
+
                         let icon;
                         if (legend.circleColor && legend.circleColor !== 'none') {
                             icon = (
@@ -55,7 +76,7 @@ export const ItemsLegend: FC<Props> = memo(props => {
                         });
 
                         return (
-                            <tr key={`cell-legend-${index}`} className="cell-legend-row">
+                            <tr className={rowClassName} key={`cell-legend-${index}`}>
                                 <td>
                                     <span className={iconClassName} style={style}>
                                         {icon}

@@ -230,6 +230,22 @@ describe('resolveDetailRenderer', () => {
         validate(renderer, { foldercolumnrenderer: 1 });
     });
 
+    test('samplecolorrenderer renders a small swatch', () => {
+        // Arrange
+        const renderer = resolveDetailRenderer(new QueryColumn({ detailRenderer: 'SampleColorRenderer' }));
+        const row = fromJS({ 'ExpMaterialColor/Color': { value: '#FF0000' } });
+
+        // Act
+        render(<>{renderer(fromJS({ displayValue: 'Red' }), row)}</>);
+
+        // Assert - detail panels use the small swatch, with the label alongside it
+        const icon = document.querySelector('i');
+        expect(icon).toHaveClass('color-icon__circle-small');
+        expect(icon).not.toHaveClass('color-icon__circle');
+        expect(icon).toHaveStyle({ backgroundColor: '#FF0000' });
+        expect(document.body.textContent).toBe('Red');
+    });
+
     test('bogus renderer', () => {
         expect(resolveDetailRenderer(new QueryColumn({ detailRenderer: 'BogusRenderer' }))).toBeUndefined();
     });

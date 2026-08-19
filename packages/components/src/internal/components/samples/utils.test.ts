@@ -7,6 +7,8 @@ import { Filter } from '@labkey/api';
 import { isFreezerManagementEnabled } from '../../app/products';
 import { isSampleStatusEnabled } from '../../app/utils';
 
+import { ModuleContext } from '../base/ServerContext';
+
 import { TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
 
 import { SCHEMAS } from '../../schemas';
@@ -18,6 +20,8 @@ import {
     DEFAULT_AVAILABLE_STATUS_COLOR,
     DEFAULT_CONSUMED_STATUS_COLOR,
     DEFAULT_LOCKED_STATUS_COLOR,
+    SAMPLE_COLOR_COLUMN_NAME,
+    SAMPLE_COLOR_REQUIRED_COLUMNS,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleOperation,
 } from './constants';
@@ -26,6 +30,7 @@ import {
     getOmittedSampleTypeColumns,
     getOperationNotAllowedMessage,
     getOperationNotPermittedMessage,
+    getSampleDomainDefaultSystemFields,
     getSampleStatus,
     getSampleStatusColor,
     getSampleStatusFromSampleRow,
@@ -47,15 +52,29 @@ const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
 test('getOmittedSampleTypeColumn', () => {
     let moduleContext = {};
     expect(isFreezerManagementEnabled(moduleContext)).toBeFalsy();
-    expect(getOmittedSampleTypeColumns(TEST_USER_READER, moduleContext)).toStrictEqual(INVENTORY_COLS);
-    expect(getOmittedSampleTypeColumns(TEST_USER_GUEST, moduleContext)).toStrictEqual(
-        [CHECKED_OUT_BY_FIELD].concat(INVENTORY_COLS)
-    );
+    expect(getOmittedSampleTypeColumns(TEST_USER_READER, moduleContext)).toStrictEqual([
+        ...INVENTORY_COLS,
+        ...SAMPLE_COLOR_REQUIRED_COLUMNS,
+        'Folder',
+    ]);
+    expect(getOmittedSampleTypeColumns(TEST_USER_GUEST, moduleContext)).toStrictEqual([
+        CHECKED_OUT_BY_FIELD,
+        ...INVENTORY_COLS,
+        ...SAMPLE_COLOR_REQUIRED_COLUMNS,
+        'Folder',
+    ]);
 
     moduleContext = { inventory: {} };
     expect(isFreezerManagementEnabled(moduleContext)).toBeTruthy();
-    expect(getOmittedSampleTypeColumns(TEST_USER_READER, moduleContext)).toStrictEqual([]);
-    expect(getOmittedSampleTypeColumns(TEST_USER_GUEST, moduleContext)).toStrictEqual([CHECKED_OUT_BY_FIELD]);
+    expect(getOmittedSampleTypeColumns(TEST_USER_READER, moduleContext)).toStrictEqual([
+        ...SAMPLE_COLOR_REQUIRED_COLUMNS,
+        'Folder',
+    ]);
+    expect(getOmittedSampleTypeColumns(TEST_USER_GUEST, moduleContext)).toStrictEqual([
+        CHECKED_OUT_BY_FIELD,
+        ...SAMPLE_COLOR_REQUIRED_COLUMNS,
+        'Folder',
+    ]);
 });
 
 describe('isSampleOperationPermitted', () => {
@@ -613,5 +632,27 @@ describe('getSampleStatusColor', () => {
         expect(getSampleStatusColor(undefined, SampleStateType.Consumed)).toBe(DEFAULT_CONSUMED_STATUS_COLOR);
         expect(getSampleStatusColor(null, 'Locked')).toBe(DEFAULT_LOCKED_STATUS_COLOR);
         expect(getSampleStatusColor('', SampleStateType.Locked)).toBe(DEFAULT_LOCKED_STATUS_COLOR);
+    });
+});
+
+describe('getSampleDomainDefaultSystemFields', () => {
+    const names = (moduleContext: ModuleContext): string[] =>
+        getSampleDomainDefaultSystemFields(moduleContext).map(field => field.Name);
+
+    test('without active project colors', () => {
+        expect(names({})).not.toContain(SAMPLE_COLOR_COLUMN_NAME);
+        expect(names({ samplemanagement: { hasActiveProjectColors: false } })).not.toContain(SAMPLE_COLOR_COLUMN_NAME);
+        expect(names({ inventory: {} })).not.toContain(SAMPLE_COLOR_COLUMN_NAME);
+    });
+
+    test('with active project colors', () => {
+        const moduleContext = { samplemanagement: { hasActiveProjectColors: true } };
+        expect(names(moduleContext)).toContain(SAMPLE_COLOR_COLUMN_NAME);
+        expect(names({ ...moduleContext, inventory: {} })).toContain(SAMPLE_COLOR_COLUMN_NAME);
+    });
+
+    test('inventory fields follow freezer management', () => {
+        expect(names({})).not.toContain('StorageLocation');
+        expect(names({ inventory: {} })).toContain('StorageLocation');
     });
 });

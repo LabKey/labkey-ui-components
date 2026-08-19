@@ -47,6 +47,7 @@ import {
     getProjectPath,
     getSamplesSectionConfig,
     getStorageSectionConfig,
+    hasActiveProjectColors,
     hasPremiumModule,
     isAppHomeFolder,
     isAssayEnabled,
@@ -810,6 +811,18 @@ describe('utils', () => {
         LABKEY.moduleContext = { query: { ken: 'griffey' } };
         setProductFolders({ query: { hasProductFolders: true } }, false);
         expect(LABKEY.moduleContext.query).toEqual({ hasProductFolders: false, ken: 'griffey' });
+    });
+
+    test('hasActiveProjectColors', () => {
+        expect(hasActiveProjectColors({})).toBe(false);
+        expect(hasActiveProjectColors({ samplemanagement: {} })).toBe(false);
+        expect(hasActiveProjectColors({ samplemanagement: { hasActiveProjectColors: false } })).toBe(false);
+        expect(hasActiveProjectColors({ samplemanagement: { hasActiveProjectColors: true } })).toBe(true);
+
+        const moduleContext = LABKEY.moduleContext;
+        LABKEY.moduleContext = { samplemanagement: { hasActiveProjectColors: true } };
+        expect(hasActiveProjectColors()).toBe(true); // falls back to the global moduleContext
+        LABKEY.moduleContext = moduleContext;
     });
 
     test('hasPremiumModule', () => {

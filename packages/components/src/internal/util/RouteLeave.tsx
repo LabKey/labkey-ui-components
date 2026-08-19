@@ -3,7 +3,7 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { MutableRefObject, useCallback, useEffect, useRef } from 'react';
-import { unstable_usePrompt as usePrompt } from 'react-router-dom';
+import { unstable_usePrompt as usePrompt } from 'react-router';
 
 export const CONFIRM_MESSAGE = 'You have unsaved changes that will be lost. Are you sure you want to continue?';
 

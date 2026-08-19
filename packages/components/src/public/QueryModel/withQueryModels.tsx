@@ -7,7 +7,7 @@ import { Filter } from '@labkey/api';
 // eslint cannot find Draft for some reason, but Intellij can.
 
 import { Draft, produce, WritableDraft } from 'immer';
-import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
+import { SetURLSearchParams, useSearchParams } from 'react-router';
 
 import { getQueryParams } from '../../internal/util/URL';
 

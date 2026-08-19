@@ -2,7 +2,7 @@
  * Copyright (c) 2023-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-const rrd = jest.createMockFromModule('react-router-dom') as any;
+const rrd = jest.createMockFromModule('react-router') as any;
 export default rrd;
 
 export const Link = rrd.Link;

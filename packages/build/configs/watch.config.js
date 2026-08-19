@@ -43,6 +43,7 @@ for (let i = 0; i < entryPoints.apps.length; i++) {
 
 module.exports = {
     context: constants.context,
+    ignoreWarnings: constants.ignoreWarnings,
     mode: 'development',
     devServer: devServer,
     entry: entries,
@@ -56,7 +57,8 @@ module.exports = {
             ...constants.aliases.LABKEY_PACKAGES_DEV,
             // This assures there is only one copy of react used while doing start-link
             react: path.resolve('./node_modules/react'),
-            'react-router-dom': path.resolve('./node_modules/react-router-dom'),
+            'react-dom': path.resolve('./node_modules/react-dom'),
+            'react-router$': path.resolve('./node_modules/react-router'),
         },
         extensions: constants.extensions.TYPESCRIPT.concat('.scss')
     },

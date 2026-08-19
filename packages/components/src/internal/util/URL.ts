@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { SetURLSearchParams } from 'react-router-dom';
+import { SetURLSearchParams } from 'react-router';
 
 export type QueryParams = Record<string, string | string[]>;
 

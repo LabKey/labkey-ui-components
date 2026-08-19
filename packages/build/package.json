@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "10.1.0",
+  "version": "10.1.1",
   "description": "LabKey client-side build assets",
   "files": [
     "configs/"
@@ -12,8 +12,8 @@
   "author": "LabKey",
   "license": "SEE LICENSE IN LICENSE.txt",
   "dependencies": {
-    "@rspack/cli": "~2.1.8",
-    "@rspack/core": "~2.1.8",
+    "@rspack/cli": "~2.1.9",
+    "@rspack/core": "~2.1.9",
     "@rspack/dev-server": "~2.2.0",
     "@rspack/plugin-react-refresh": "~2.0.2",
     "bootstrap-sass": "~3.4.3",

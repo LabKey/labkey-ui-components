@@ -5,7 +5,7 @@
 import classNames from 'classnames';
 import React, { FC, memo, ReactNode, useCallback, useMemo } from 'react';
 import { List, Map } from 'immutable';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';

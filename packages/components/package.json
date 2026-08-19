@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.58.0",
+  "version": "7.58.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -73,7 +73,7 @@
     "vis-network": "~10.1.0"
   },
   "devDependencies": {
-    "@labkey/build": "10.1.2-fb-remove-bootstrap.0",
+    "@labkey/build": "10.1.2",
     "@labkey/eslint-config": "1.2.3",
     "@types/history": "4.7.11",
     "@types/jest": "30.0.0",

@@ -7,7 +7,10 @@ default:
     @just --list
 
 currentBranch := `git branch --show-current`
-branchAsTag := replace(currentBranch, '_', '-')
+# The release prefix (e.g. 26.8_) must be stripped: its '.' becomes a prerelease separator, so `npm version prerelease`
+# can't match the preid against the existing identifiers and keeps regenerating '.0' instead of bumping.
+branchAsPreId := replace(replace_regex(currentBranch, '^\d{2}\.\d{1,2}_', ''), '_', '-')
+branchAsTag := replace(replace(currentBranch, '.', '-'), '_', '-')
 packageName := '@labkey/components'
 
 # We trim the trailing / from our environment variables so we can treat them consistently with our other paths
@@ -33,8 +36,8 @@ puppeteer := lims / 'puppeteer'
 # Note: these are not all of the locations that we use @labkey/components, however they are the most common places that
 # we want to keep up to date.
 platformModules := core + ' ' + experiment + ' ' + assay + ' ' + pipeline
-appModules := premium + ' ' + biologics + ' ' + inventory + ' ' + sampleManagement
-modulesToBump := appModules + ' ' + labbook + ' ' + ' ' + puppeteer + ' ' + platformModules
+appModules := premium + ' ' + biologics + ' ' + inventory + ' ' + sampleManagement + ' ' + labbook
+modulesToBump := appModules + ' ' + puppeteer + ' ' + platformModules
 
 # Note: this is just a common subset of locations where we would want to copy a locally built package, in order to test
 # before we publish a version. You may want to add more locations (e.g. core, assay)
@@ -58,8 +61,8 @@ bc: build copy
 
 # Bumps version to a prerelease version based on the current branch name
 preVersion:
-    @echo {{ GREEN }}Bumping prerelease version with preid='{{CYAN}}'{{ branchAsTag }}{{ NORMAL }}
-    npm version prerelease --preid {{ branchAsTag }} --no-git-tag-version
+    @echo {{ GREEN }}Bumping prerelease version with preid='{{CYAN}}'{{ branchAsPreId }}{{ NORMAL }}
+    @npm version prerelease --preid {{ branchAsPreId }} --no-git-tag-version
 
 # Publishes the current version with the current branch name as a tag
 publishPreVersion:

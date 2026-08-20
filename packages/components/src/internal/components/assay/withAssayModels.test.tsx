@@ -210,7 +210,7 @@ describe('withAssayModelsFromLocation', () => {
     test('sets "assayName" from location', async () => {
         const expectedAssayName = 'SomeAssay';
         // @ts-ignore
-        const rrd = require('react-router-dom');
+        const rrd = require('react-router');
         rrd.__setParams({ protocol: expectedAssayName });
         // Arrange
         const expectedAssayDefinition = AssayDefinitionModel.create({ id: 123, name: expectedAssayName });

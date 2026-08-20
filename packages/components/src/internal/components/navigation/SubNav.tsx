@@ -5,7 +5,7 @@
 import React, { FC, useRef, useState, useCallback, useEffect, memo, useMemo } from 'react';
 
 import { getServerContext } from '@labkey/api';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 import { useServerContext } from '../base/ServerContext';
 

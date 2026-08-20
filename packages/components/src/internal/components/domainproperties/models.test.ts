@@ -1429,6 +1429,7 @@ describe('DomainField', () => {
         expect(aliasesFor('zero,"one two" three,"four  five"')).toEqual(['zero', 'one two', 'three', 'four  five']);
         // whitespace within the quotes is not trimmed, matching convertToSet()
         expect(aliasesFor('" one "')).toEqual([' one ']);
+        // unlike convertToSet(), a blank alias is dropped; convertToString() trims, so one never reaches the client
         expect(aliasesFor('" "')).toEqual([]);
         // a quoted alias may contain the delimiters
         expect(aliasesFor('"one,two";three')).toEqual(['one,two', 'three']);

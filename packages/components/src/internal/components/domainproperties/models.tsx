@@ -1552,7 +1552,7 @@ export class DomainField
     }
 
     // Uses the server's delimiters (comma, semicolon, whitespace); an alias containing whitespace is wrapped in double
-    // quotes. See ColumnRenderPropertiesImpl.convertToSet().
+    // quotes. See ColumnRenderPropertiesImpl.convertToSet(), which differs in keeping blank aliases.
     getImportAliases(): string[] {
         const tokens = this.importAliases?.match(/[^,; \t\n\f"]+|"[^"]*"/g) ?? [];
         const aliases = tokens.map(token =>

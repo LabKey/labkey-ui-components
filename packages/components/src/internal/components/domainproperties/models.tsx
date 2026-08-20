@@ -1550,6 +1550,16 @@ export class DomainField
 
         return details;
     }
+
+    // Uses the server's delimiters (comma, semicolon, whitespace); an alias containing whitespace is wrapped in double
+    // quotes. See ColumnRenderPropertiesImpl.convertToSet(), which differs in keeping blank aliases.
+    getImportAliases(): string[] {
+        const tokens = this.importAliases?.match(/[^,; \t\n\f"]+|"[^"]*"/g) ?? [];
+        const aliases = tokens.map(token =>
+            token.startsWith('"') && token.endsWith('"') ? token.slice(1, -1) : token
+        );
+        return [...new Set(aliases.filter(alias => alias.trim().length > 0))];
+    }
 }
 
 // TODO: Refactor List<DomainField> to DomainField[].

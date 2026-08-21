@@ -56,8 +56,9 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
         setIsChildOnlyValidOption(!isExistingField || value === DERIVATION_DATA_SCOPES.CHILD_ONLY);
         setIsParentOnlyValidOption(!isExistingField || !value || value === DERIVATION_DATA_SCOPES.PARENT_ONLY);
         if (isExistingField && config.dataTypeFilter && fieldDataType && !config.dataTypeFilter(fieldDataType))
-            setIsExistingNonScopedField(true); // scenario: modify from Unique Id column to other colum types
-    }, [domainIndex, index, isExistingField]); // don't use config or value in dependency, only evaluate once per index
+            setIsExistingNonScopedField(true); // scenario: modify from Unique Id column to other column types
+        // don't use config or value in dependency, only evaluate once per index
+    }, [domainIndex, index, isExistingField]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const inputId = useMemo(() => {
         return createFormInputId(DOMAIN_FIELD_DERIVATION_DATA_SCOPE, domainIndex, index);
@@ -119,7 +120,7 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
                             value={DERIVATION_DATA_SCOPES.ALL}
                             checked={value === DERIVATION_DATA_SCOPES.ALL || (!value && isExistingNonScopedField)}
                             onChange={onRadioChange}
-                            disabled={isFullyLocked}
+                            disabled={isFullyLocked || (isRequiredField && value !== DERIVATION_DATA_SCOPES.ALL)}
                         >
                             {config.labelAll}
                         </DomainDesignerRadio>

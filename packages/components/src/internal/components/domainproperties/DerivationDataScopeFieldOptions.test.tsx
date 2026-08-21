@@ -140,6 +140,79 @@ describe('DerivationDataScopeFieldOptions', () => {
         expect(document.querySelectorAll('.alert')).toHaveLength(0);
     });
 
+    test('Required field, new field', () => {
+        const props = {
+            index: 1,
+            domainIndex: 1,
+            label: null,
+            onChange: jest.fn(),
+            lockType: DOMAIN_FIELD_NOT_LOCKED,
+            isExistingField: false,
+            isRequiredField: true,
+        };
+
+        render(<DerivationDataScopeFieldOptions {...props} />);
+
+        const radios = document.querySelectorAll('.radio');
+        expect(radios).toHaveLength(3);
+        expect(radios[0].querySelector('input').hasAttribute('checked')).toBeTruthy();
+        expect(radios[0].querySelector('input').hasAttribute('disabled')).toBeFalsy();
+        expect(radios[1].querySelector('input').hasAttribute('checked')).toBeFalsy();
+        expect(radios[1].querySelector('input').hasAttribute('disabled')).toBeTruthy();
+        expect(radios[2].querySelector('input').hasAttribute('checked')).toBeFalsy();
+        expect(radios[2].querySelector('input').hasAttribute('disabled')).toBeTruthy();
+    });
+
+    test('Required field, existing field, value = ParentOnly', () => {
+        const props = {
+            index: 1,
+            domainIndex: 1,
+            label: null,
+            onChange: jest.fn(),
+            lockType: DOMAIN_FIELD_NOT_LOCKED,
+            isExistingField: true,
+            isRequiredField: true,
+            value: DERIVATION_DATA_SCOPES.PARENT_ONLY,
+        };
+
+        render(<DerivationDataScopeFieldOptions {...props} />);
+
+        const radios = document.querySelectorAll('.radio');
+        expect(radios).toHaveLength(3);
+        expect(radios[0].querySelector('input').hasAttribute('checked')).toBeTruthy();
+        expect(radios[0].querySelector('input').hasAttribute('disabled')).toBeFalsy();
+        expect(radios[1].querySelector('input').hasAttribute('checked')).toBeFalsy();
+        expect(radios[1].querySelector('input').hasAttribute('disabled')).toBeTruthy();
+        // a required field cannot be switched to All, since aliquots would not have a value for it
+        expect(radios[2].querySelector('input').hasAttribute('checked')).toBeFalsy();
+        expect(radios[2].querySelector('input').hasAttribute('disabled')).toBeTruthy();
+    });
+
+    test('Required field, existing field, value = All', () => {
+        const props = {
+            index: 1,
+            domainIndex: 1,
+            label: null,
+            onChange: jest.fn(),
+            lockType: DOMAIN_FIELD_NOT_LOCKED,
+            isExistingField: true,
+            isRequiredField: true,
+            value: DERIVATION_DATA_SCOPES.ALL,
+        };
+
+        render(<DerivationDataScopeFieldOptions {...props} />);
+
+        const radios = document.querySelectorAll('.radio');
+        expect(radios).toHaveLength(3);
+        expect(radios[0].querySelector('input').hasAttribute('checked')).toBeFalsy();
+        expect(radios[0].querySelector('input').hasAttribute('disabled')).toBeTruthy();
+        expect(radios[1].querySelector('input').hasAttribute('checked')).toBeFalsy();
+        expect(radios[1].querySelector('input').hasAttribute('disabled')).toBeTruthy();
+        // the already selected All option stays enabled so it doesn't render as an invalid selection
+        expect(radios[2].querySelector('input').hasAttribute('checked')).toBeTruthy();
+        expect(radios[2].querySelector('input').hasAttribute('disabled')).toBeFalsy();
+    });
+
     test('With config, show = true', () => {
         const label = 'Sample/Aliquot Options';
         const warning =

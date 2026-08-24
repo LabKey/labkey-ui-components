@@ -45,6 +45,36 @@ describe('SaveViewModal', () => {
         inherit: true,
     });
 
+    const SESSION_VIEW_SHADOWING_INHERITED = ViewInfo.fromJson({
+        default: true,
+        inherit: false,
+        session: true,
+        shadowed: { default: true, inherit: true },
+    });
+
+    const SESSION_VIEW_SHADOWING_LOCAL = ViewInfo.fromJson({
+        default: true,
+        inherit: false,
+        session: true,
+        shadowed: { default: true, inherit: false },
+    });
+
+    const SESSION_VIEW_SHADOWING_SHARED = ViewInfo.fromJson({
+        label: 'View 1',
+        name: 'View1',
+        session: true,
+        shared: false,
+        shadowed: { name: 'View1', shared: true },
+    });
+
+    const SESSION_VIEW_SHADOWING_PRIVATE = ViewInfo.fromJson({
+        label: 'View 1',
+        name: 'View1',
+        session: true,
+        shared: false,
+        shadowed: { name: 'View1', shared: false },
+    });
+
     const moduleContext = {
         query: {
             isProductFoldersEnabled: true,
@@ -162,6 +192,104 @@ describe('SaveViewModal', () => {
         expect(document.querySelectorAll('input[name="setDefaultView"]')).toHaveLength(0);
         expect(document.querySelectorAll('input[name="setInherit"]')).toHaveLength(0);
         expect(document.querySelectorAll('input[name="setShared"]')).toHaveLength(0);
+    });
+
+    test('session view uses the shadowed view inherit flag', () => {
+        renderWithAppContext(<SaveViewModal {...DEFAULT_PROPS} currentView={SESSION_VIEW_SHADOWING_INHERITED} />, {
+            serverContext: {
+                user: TEST_USER_APP_ADMIN,
+                container: {
+                    path: '/home',
+                    type: 'project',
+                },
+                moduleContext,
+            },
+        });
+
+        expect(document.querySelector('input[name="setInherit"]').hasAttribute('checked')).toBe(true);
+    });
+
+    test('session view shadowing a view that is not inherited', () => {
+        renderWithAppContext(<SaveViewModal {...DEFAULT_PROPS} currentView={SESSION_VIEW_SHADOWING_LOCAL} />, {
+            serverContext: {
+                user: TEST_USER_APP_ADMIN,
+                container: {
+                    path: '/home',
+                    type: 'project',
+                },
+                moduleContext,
+            },
+        });
+
+        expect(document.querySelector('input[name="setInherit"]').hasAttribute('checked')).toBe(false);
+    });
+
+    // GitHub Issue #899
+    test('subfolder save does not inherit', async () => {
+        const onConfirmSave = jest.fn();
+        renderWithAppContext(
+            <SaveViewModal {...DEFAULT_PROPS} currentView={DEFAULT_VIEW} onConfirmSave={onConfirmSave} />,
+            {
+                serverContext: {
+                    user: TEST_USER_APP_ADMIN,
+                    container: {
+                        path: '/home/folderA',
+                        type: 'folder',
+                    },
+                    moduleContext,
+                },
+            }
+        );
+
+        expect(document.querySelectorAll('input[name="setInherit"]')).toHaveLength(0);
+
+        await userEvent.click(document.querySelector('.btn-success'));
+
+        // canInherit must be false: the inherited view lives in the home folder, so saving it would target that folder
+        expect(onConfirmSave).toHaveBeenCalledWith('', false, false, true);
+    });
+
+    test('session view uses the shadowed view shared flag', async () => {
+        const onConfirmSave = jest.fn();
+        renderWithAppContext(
+            <SaveViewModal
+                {...DEFAULT_PROPS}
+                currentView={SESSION_VIEW_SHADOWING_SHARED}
+                onConfirmSave={onConfirmSave}
+            />,
+            {
+                serverContext: {
+                    user: TEST_USER_PROJECT_ADMIN,
+                    container: {
+                        path: '/home',
+                        type: 'project',
+                    },
+                    moduleContext,
+                },
+            }
+        );
+
+        expect(document.querySelector('input[name="setShared"]').hasAttribute('checked')).toBe(true);
+
+        await userEvent.click(document.querySelector('.btn-success'));
+
+        // re-saving a shared view must not silently demote it to a private view shadowing the shared one
+        expect(onConfirmSave).toHaveBeenCalledWith('View1', false, true, true);
+    });
+
+    test('session view shadowing a private view', () => {
+        renderWithAppContext(<SaveViewModal {...DEFAULT_PROPS} currentView={SESSION_VIEW_SHADOWING_PRIVATE} />, {
+            serverContext: {
+                user: TEST_USER_PROJECT_ADMIN,
+                container: {
+                    path: '/home',
+                    type: 'project',
+                },
+                moduleContext,
+            },
+        });
+
+        expect(document.querySelector('input[name="setShared"]').hasAttribute('checked')).toBe(false);
     });
 });
 

@@ -51,22 +51,48 @@ const ChatItem: FC<ChatBubbleProps> = memo(({ message, renderSegment }) => {
 });
 ChatItem.displayName = 'ChatItem';
 
-export interface ChatModalProps {
+export interface ChatHistoryProps {
     isPending: boolean;
     messages: ChatMessage[];
-    onCancel: () => void;
-    onInterrupt: (isUser?: boolean) => void;
     renderSegment?: RenderSegment;
+}
+
+export const ChatHistory: FC<ChatHistoryProps> = memo(props => {
+    const { messages, isPending, renderSegment } = props;
+    const historyRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const el = historyRef.current;
+        if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+    }, [messages, isPending]);
+
+    return (
+        <div className="chat-history" ref={historyRef}>
+            {messages.map(message => (
+                <ChatItem key={message.id} message={message} renderSegment={renderSegment} />
+            ))}
+            {isPending && (
+                <div className="chat-item assistant-response pending">
+                    <LoadingSpinner msg="Thinking..." />
+                </div>
+            )}
+        </div>
+    );
+});
+ChatHistory.displayName = 'ChatHistory';
+
+export interface ChatPromptProps {
+    isPending: boolean;
+    onInterrupt: (isUser?: boolean) => void;
     sendPrompt: (prompt: string) => Promise<void>;
     title: ReactNode;
 }
 
-export const ChatModal: FC<ChatModalProps> = memo(props => {
-    const { isPending, messages, onCancel, onInterrupt, renderSegment, sendPrompt, title } = props;
-    const [prompt, setPrompt] = useState('');
-    const lastSentPromptRef = useRef('');
+export const ChatPrompt: FC<ChatPromptProps> = memo(props => {
+    const { isPending, sendPrompt, title, onInterrupt } = props;
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
-    const historyRef = useRef<HTMLDivElement>(null);
+    const lastSentPromptRef = useRef('');
+    const [prompt, setPrompt] = useState('');
     const timer = useTimeout();
 
     // Autofocus the prompt on mount
@@ -93,19 +119,21 @@ export const ChatModal: FC<ChatModalProps> = memo(props => {
         el.style.height = `${nextHeight}px`;
     }, [fieldSizingSupported, prompt]);
 
-    useEffect(() => {
-        const el = historyRef.current;
-        if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
-    }, [messages, isPending]);
+    const handleSend = useCallback(() => {
+        const trimmed = prompt.trim();
+        if (!trimmed || isPending) return;
+        lastSentPromptRef.current = trimmed;
+        setPrompt('');
+        sendPrompt(trimmed);
+    }, [prompt, isPending, sendPrompt]);
 
-    const handleCancel = useCallback(() => {
-        onInterrupt(false);
-        onCancel();
-    }, [onCancel, onInterrupt]);
-
-    const handleChange = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>(evt => {
-        setPrompt(evt.target.value);
-    }, []);
+    const handleSubmit = useCallback<React.FormEventHandler<HTMLFormElement>>(
+        evt => {
+            cancelEvent(evt);
+            handleSend();
+        },
+        [handleSend]
+    );
 
     const handleInterrupt = useCallback(() => {
         onInterrupt(true);
@@ -121,13 +149,9 @@ export const ChatModal: FC<ChatModalProps> = memo(props => {
         });
     }, [onInterrupt, timer]);
 
-    const handleSend = useCallback(() => {
-        const trimmed = prompt.trim();
-        if (!trimmed || isPending) return;
-        lastSentPromptRef.current = trimmed;
-        setPrompt('');
-        sendPrompt(trimmed);
-    }, [prompt, isPending, sendPrompt]);
+    const handleChange = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>(evt => {
+        setPrompt(evt.target.value);
+    }, []);
 
     const handleKeyDown = useCallback<React.KeyboardEventHandler<HTMLTextAreaElement>>(
         evt => {
@@ -139,23 +163,7 @@ export const ChatModal: FC<ChatModalProps> = memo(props => {
         [handleSend]
     );
 
-    const handleSubmit = useCallback<React.FormEventHandler<HTMLFormElement>>(
-        evt => {
-            cancelEvent(evt);
-            handleSend();
-        },
-        [handleSend]
-    );
-
-    const header = (
-        <ModalHeader title={title}>
-            <button className="btn btn-sm btn-default" onClick={handleCancel} type="button">
-                End Chat
-            </button>
-        </ModalHeader>
-    );
-
-    const footer = (
+    return (
         <>
             <form className="form-inline" onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -188,20 +196,65 @@ export const ChatModal: FC<ChatModalProps> = memo(props => {
             <div className="chat-modal__caution">AI can make mistakes. Double check any suggestions.</div>
         </>
     );
+});
+ChatPrompt.displayName = 'ChatPrompt';
+
+export interface ChatSessionProps {
+    isPending: boolean;
+    messages: ChatMessage[];
+    onCancel: () => void;
+    onInterrupt: (isUser?: boolean) => void;
+    renderSegment?: RenderSegment;
+    sendPrompt: (prompt: string) => Promise<void>;
+    title: ReactNode;
+}
+
+export const ChatModal: FC<ChatSessionProps> = memo(props => {
+    const { isPending, messages, onCancel, onInterrupt, renderSegment, sendPrompt, title } = props;
+
+    const handleCancel = useCallback(() => {
+        onInterrupt(false);
+        onCancel();
+    }, [onCancel, onInterrupt]);
+
+    const header = (
+        <ModalHeader title={title}>
+            <button className="btn btn-sm btn-default" onClick={handleCancel} type="button">
+                End Chat
+            </button>
+        </ModalHeader>
+    );
+
+    const footer = <ChatPrompt isPending={isPending} onInterrupt={onInterrupt} sendPrompt={sendPrompt} title={title} />;
 
     return (
         <Modal className="chat-modal" footer={footer} header={header} title={title}>
-            <div className="chat-history" ref={historyRef}>
-                {messages.map(message => (
-                    <ChatItem key={message.id} message={message} renderSegment={renderSegment} />
-                ))}
-                {isPending && (
-                    <div className="chat-item assistant-response pending">
-                        <LoadingSpinner msg="Thinking..." />
-                    </div>
-                )}
-            </div>
+            <ChatHistory isPending={isPending} messages={messages} renderSegment={renderSegment} />
         </Modal>
     );
 });
 ChatModal.displayName = 'ChatModal';
+
+export const ChatSidebar: FC<ChatSessionProps> = memo(props => {
+    const { isPending, messages, onCancel, onInterrupt, title, renderSegment, sendPrompt } = props;
+
+    const handleCancel = useCallback(() => {
+        onInterrupt(false);
+        onCancel();
+    }, [onCancel, onInterrupt]);
+
+    return (
+        <div className="chat-sidebar">
+            <div className="chat-sidebar__header">
+                {title}
+                <button className="btn btn-sm btn-default" onClick={handleCancel} type="button">
+                    End Chat
+                </button>
+            </div>
+            <ChatHistory isPending={isPending} messages={messages} renderSegment={renderSegment} />
+            <ChatPrompt isPending={isPending} onInterrupt={onInterrupt} sendPrompt={sendPrompt} title={title} />
+        </div>
+    );
+});
+
+ChatSidebar.displayName = 'ChatSidebar';

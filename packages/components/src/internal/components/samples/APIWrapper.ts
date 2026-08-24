@@ -52,9 +52,8 @@ export interface SamplesAPIWrapper {
     getGroupedSampleDomainFields: (sampleType: string) => Promise<GroupedSampleFields>;
 
     getLookupRowIdsFromSelection: (
-        schemaName: string,
-        queryName: string,
-        selected: any[],
+        schemaQuery: SchemaQuery,
+        selection: number[] | Set<number | string> | string[],
         fieldKey: string,
         keyColumn?: string
     ) => Promise<number[]>;

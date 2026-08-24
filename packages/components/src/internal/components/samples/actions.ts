@@ -32,7 +32,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { resolveErrorMessage } from '../../util/messaging';
 import { TimelineEventModel } from '../auditlog/models';
 
-import { Row, selectRows } from '../../query/selectRows';
+import { getSelectedRows, Row, selectRows } from '../../query/selectRows';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
@@ -547,44 +547,35 @@ export async function getDefaultDiscardStatus(containerPath?: string): Promise<n
 
 /**
  * Gets the Set of Ids from selected rowIds based on supplied fieldKey which should be a Lookup
- * @param schemaName of selected rows
- * @param queryName of selected rows
- * @param selected rowIds to pull sampleIds for
+ * @param schemaQuery of selected rows
+ * @param selections rowIds to pull sampleIds for
  * @param fieldKey field key for the Lookup
  * @param keyColumn the pkCol
  */
 export async function getLookupRowIdsFromSelection(
-    schemaName: string,
-    queryName: string,
-    selected: any[],
+    schemaQuery: SchemaQuery,
+    selections: number[] | Set<number | string> | string[],
     fieldKey: string,
     keyColumn = 'RowId'
 ): Promise<number[]> {
-    const sampleIds = new Set<number>();
+    console.log('getLookupRowIdsFromSelection');
+    if (!fieldKey || !selections) return [];
 
-    if (fieldKey) {
-        const rowIdFieldKey = `${fieldKey}/RowId`; // Pull the rowId of the lookup
-        const columns = [keyColumn, rowIdFieldKey].join(',');
-        const { data, dataIds } = await getSelectedDataDeprecated(
-            schemaName,
-            queryName,
-            selected,
-            columns,
-            undefined,
-            undefined,
-            undefined,
-            keyColumn
-        ); // Include the RowId column to prevent warnings
-        if (data) {
-            const rows = data.toJS();
-            dataIds.forEach(rowId => {
-                const val = rows[rowId]?.[rowIdFieldKey]?.value;
-                if (val) {
-                    sampleIds.add(val);
-                }
-            });
+    const rowIdFieldKey = `${fieldKey}/RowId`; // Pull the rowId of the lookup
+    const result = await getSelectedRows({
+        columns: [keyColumn, rowIdFieldKey],
+        keyColumn,
+        schemaQuery,
+        selections: new Set(selections),
+    });
+
+    const sampleIds = new Set<number>();
+    result.rows.forEach(row => {
+        const val = caseInsensitive(row, rowIdFieldKey)?.value;
+        if (val) {
+            sampleIds.add(val);
         }
-    }
+    });
 
     return Array.from(sampleIds);
 }

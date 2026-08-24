@@ -134,11 +134,17 @@ export const SaveViewModal: FC<Props> = memo(props => {
     const [isDefaultView, setIsDefaultView] = useState<boolean>(
         () => user.hasAdminPermission() && currentView?.isDefault
     );
-    const [canInherit, setCanInherit] = useState<boolean>(currentView?.inherit);
-    const [isShared, setIsShared] = useState<boolean>(currentView?.shared);
     const [errorMessage, setErrorMessage] = useState<string>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>();
     const canEditShared = userCanEditSharedViews(user);
+    const showInheritOption =
+        isProductFoldersEnabled(moduleContext) && isAppHomeFolder(container, moduleContext) && canEditShared;
+    // GitHub Issue #899: a session view is never shared or inheritable, so read both flags off the view it shadows.
+    const [isShared, setIsShared] = useState<boolean>(() => !!(currentView?.shadowed?.shared ?? currentView?.shared));
+    // GitHub Issue #899: Outside the home folder inherit isn't offered, and sending it would target the folder the view is inherited from.
+    const [canInherit, setCanInherit] = useState<boolean>(
+        () => showInheritOption && !!(currentView?.shadowed?.inherit ?? currentView?.inherit)
+    );
 
     const saveView = useCallback(async () => {
         if (!viewName && !isDefaultView) return;
@@ -243,23 +249,21 @@ export const SaveViewModal: FC<Props> = memo(props => {
                             </span>
                         </div>
                     )}
-                    {isProductFoldersEnabled(moduleContext) &&
-                        isAppHomeFolder(container, moduleContext) &&
-                        canEditShared && (
-                            <div className="form-check">
-                                <input
-                                    aria-labelledby="shared-to-folders-label"
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    name="setInherit"
-                                    onChange={toggleInherit}
-                                    checked={canInherit}
-                                />
-                                <span className="margin-left" id="shared-to-folders-label">
-                                    Make this grid view available in all Folders
-                                </span>
-                            </div>
-                        )}
+                    {showInheritOption && (
+                        <div className="form-check">
+                            <input
+                                aria-labelledby="shared-to-folders-label"
+                                className="form-check-input"
+                                type="checkbox"
+                                name="setInherit"
+                                onChange={toggleInherit}
+                                checked={canInherit}
+                            />
+                            <span className="margin-left" id="shared-to-folders-label">
+                                Make this grid view available in all Folders
+                            </span>
+                        </div>
+                    )}
                     <div className="top-padding">
                         Learn more about <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
                     </div>

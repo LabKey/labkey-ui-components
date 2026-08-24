@@ -372,7 +372,6 @@ import {
 } from './internal/components/administration/constants';
 import {
     deleteSampleSet,
-    fetchSamples,
     getGroupedSampleDisplayColumns,
     getGroupedSampleDomainFields,
     getLookupRowIdsFromSelection,
@@ -1310,7 +1309,6 @@ export {
     fetchGroupMembership,
     fetchIssuesListDefDesign,
     fetchListDesign,
-    fetchSamples,
     FieldExpansionToggle,
     FileAttachmentArea,
     FileAttachmentEntry,

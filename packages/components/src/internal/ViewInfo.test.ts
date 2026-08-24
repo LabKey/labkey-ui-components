@@ -46,6 +46,11 @@ describe('ViewInfo', () => {
         });
         expect(ViewInfo.serialize(view).fields).toBeUndefined();
         expect(ViewInfo.serialize(view).columns).toStrictEqual([{ name: 'col1', key: 'col1', fieldKey: 'col1' }]);
+
+        // GitHub Issue #899: saveQueryViews reads containerPath as an explicit save target
+        view = ViewInfo.fromJson({ name: 'test', containerPath: '/home', shadowed: { name: 'test' } });
+        expect(ViewInfo.serialize(view).containerPath).toBeUndefined();
+        expect(ViewInfo.serialize(view).shadowed).toBeUndefined();
     });
 
     test('isVisible', () => {

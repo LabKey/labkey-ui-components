@@ -8,8 +8,6 @@ import { ActionURL, Ajax, Domain, Experiment, Filter, Query, Utils } from '@labk
 import { IEntityTypeDetails } from '../entities/models';
 import { deleteEntityType } from '../entities/actions';
 
-import { getSelectedDataDeprecated } from '../../actions';
-
 import { caseInsensitive } from '../../util/utils';
 import { request } from '../../request';
 
@@ -558,7 +556,6 @@ export async function getLookupRowIdsFromSelection(
     fieldKey: string,
     keyColumn = 'RowId'
 ): Promise<number[]> {
-    console.log('getLookupRowIdsFromSelection');
     if (!fieldKey || !selections) return [];
 
     const rowIdFieldKey = `${fieldKey}/RowId`; // Pull the rowId of the lookup

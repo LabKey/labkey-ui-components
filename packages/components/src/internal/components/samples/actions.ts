@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Map, OrderedMap } from 'immutable';
+import { Map } from 'immutable';
 import { ActionURL, Ajax, Domain, Experiment, Filter, Query, Utils } from '@labkey/api';
 
 import { IEntityTypeDetails } from '../entities/models';
@@ -25,7 +25,6 @@ import {
     getRequestAuditDetail,
     invalidateFullQueryDetailsCache,
     selectDistinctRows,
-    selectRowsDeprecated,
 } from '../../query/api';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { DomainDetails } from '../domainproperties/models';
@@ -84,52 +83,6 @@ export function getSampleTypeDetails(
 
 export function deleteSampleSet(rowId: number, containerPath?: string, auditUserComment?: string): Promise<void> {
     return deleteEntityType('deleteSampleTypes', rowId, containerPath, auditUserComment);
-}
-
-/**
- * Fetches an OrderedMap of Sample Type rows specified by a schemaQuery and collection of filters. This data
- * is mapped via the sampleColumn to make it compatible with editable grid data.
- * @param schemaQuery SchemaQuery which sources the request for rows
- * @param sampleColumn A QueryColumn used to map fieldKey, displayColumn, and keyColumn data
- * @param filterArray A collection of filters used when requesting rows
- * @param displayValueKey Column name containing grid display value of Sample Type
- * @param valueKey Column name containing grid value of Sample Type
- * @param containerPath The container path where the query will be made.
- */
-export async function fetchSamples(
-    schemaQuery: SchemaQuery,
-    sampleColumn: QueryColumn,
-    filterArray: Filter.IFilter[],
-    displayValueKey: string,
-    valueKey: string,
-    containerPath?: string
-): Promise<OrderedMap<any, any>> {
-    const response = await selectRowsDeprecated({
-        schemaName: schemaQuery.schemaName,
-        queryName: schemaQuery.queryName,
-        viewName: schemaQuery.viewName,
-        columns: ['RowId', displayValueKey, valueKey],
-        filterArray,
-        containerPath,
-    });
-
-    const { key, models, orderedModels } = response;
-    const rows = models[key];
-    const data = OrderedMap<any, any>().asMutable();
-
-    orderedModels[key].forEach(id => {
-        data.setIn(
-            [id, sampleColumn.index],
-            List([
-                {
-                    displayValue: caseInsensitive(rows[id], displayValueKey)?.value,
-                    value: caseInsensitive(rows[id], valueKey)?.value,
-                },
-            ])
-        );
-    });
-
-    return data.asImmutable();
 }
 
 export async function getGroupedSampleDomainFields(sampleType: string): Promise<GroupedSampleFields> {

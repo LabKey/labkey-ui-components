@@ -869,7 +869,7 @@ export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
 };
 
 export const getOriginalParentsFromLineage = async (
-    lineage: Record<string, any>,
+    lineageRows: Row[],
     parentDataTypes: EntityDataType[],
     additionalParentTypes?: SchemaQuery[],
     containerPath?: string
@@ -883,16 +883,18 @@ export const getOriginalParentsFromLineage = async (
         parentDataTypes.filter(
             dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
         )[0],
-        Object.values(lineage),
+        lineageRows,
         containerPath
     );
     const sampleTypeData = await getParentTypeDataForLineage(
         parentDataTypes.filter(
             dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName
         )[0],
-        Object.values(lineage),
+        lineageRows,
         containerPath
     );
+
+    const lineageRowIds: number[] = lineageRows.map(row => row.RowId.value);
 
     // iterate through both Data Classes and Sample Types for finding sample parents
     parentDataTypes.forEach(dataType => {
@@ -909,11 +911,11 @@ export const getOriginalParentsFromLineage = async (
             dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
                 ? dataClassTypeData.parentIdData
                 : sampleTypeData.parentIdData;
-        Object.keys(lineage).forEach(sampleId => {
-            if (!originalParents[sampleId]) originalParents[sampleId] = List<EntityChoice>();
+        lineageRowIds.forEach((rowId, index) => {
+            if (!originalParents[rowId]) originalParents[rowId] = List<EntityChoice>();
 
-            originalParents[sampleId] = originalParents[sampleId].concat(
-                getInitialParentChoices(allDataTypeOptions, dataType, lineage[sampleId], parentIdData, false)
+            originalParents[rowId] = originalParents[rowId].concat(
+                getInitialParentChoices(allDataTypeOptions, dataType, lineageRows[index], parentIdData, false)
             );
         });
 

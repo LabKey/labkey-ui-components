@@ -2,8 +2,6 @@
  * Copyright (c) 2020-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List } from 'immutable';
-
 import { Query, QueryKey } from '@labkey/api';
 
 import { SCHEMAS } from '../../schemas';
@@ -190,20 +188,6 @@ export const DataClassDataType: EntityDataType = {
     folderConfigurableDataType: 'DataClass',
     exportConfig: SOURCE_EXPORT_CONFIG,
 };
-
-export const ParentEntityLineageColumns = List.of('Inputs/Materials/First', 'Inputs/Data/First');
-
-export const ParentEntityRequiredColumns = SCHEMAS.CBMB.concat(
-    'LSID',
-    'Name',
-    'Folder',
-    'RowId',
-    'Description',
-    'AliquotedFromLSID/Name',
-    'RootMaterialRowId',
-    'RootMaterialRowId/Name',
-    'RootMaterialRowId/Description'
-).concat(ParentEntityLineageColumns);
 
 export enum DataOperation {
     Edit,

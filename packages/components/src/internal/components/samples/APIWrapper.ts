@@ -2,8 +2,6 @@
  * Copyright (c) 2021-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { ISelectRowsResult } from '../../query/api';
-
 import { getSampleOperationConfirmationData } from '../entities/actions';
 
 import { OperationConfirmationData } from '../entities/models';
@@ -31,7 +29,6 @@ import {
     getSampleTypeDetails,
     getSampleTypeLabelColor,
     getSampleTypeRowId,
-    getSelectionLineageData,
     getTimelineEvents,
     hasExistingSamples,
     SampleAssayResultViewConfig,
@@ -103,15 +100,6 @@ export interface SamplesAPIWrapper {
 
     getSampleTypeRowId: (name: string) => Promise<number>;
 
-    getSelectionLineageData: (
-        selection: Set<string>,
-        schema: string,
-        query: string,
-        viewName: string,
-        columns: string[] | undefined,
-        sort: string | undefined
-    ) => Promise<ISelectRowsResult>;
-
     getTimelineEvents: (
         sampleId: number,
         timezone?: string,
@@ -139,7 +127,6 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getGroupedSampleDomainFields = getGroupedSampleDomainFields;
     getSampleAliquotRows = getSampleAliquotRows;
     getSampleAssayResultViewConfigs = getSampleAssayResultViewConfigs;
-    getSelectionLineageData = getSelectionLineageData;
     getSampleColors = getSampleColors;
     getColorSampleTypeExclusions = getColorSampleTypeExclusions;
     getSampleTypeColorExclusions = getSampleTypeColorExclusions;
@@ -171,7 +158,6 @@ export function getSamplesTestAPIWrapper(
         getGroupedSampleDomainFields: mockFn(),
         getSampleAliquotRows: mockFn(),
         getSampleAssayResultViewConfigs: mockFn(),
-        getSelectionLineageData: mockFn(),
         getSampleColors: mockFn(),
         getColorSampleTypeExclusions: mockFn(),
         getSampleTypeColorExclusions: mockFn(),

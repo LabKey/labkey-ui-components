@@ -13,8 +13,6 @@ import { getSelectedDataDeprecated } from '../../actions';
 import { caseInsensitive } from '../../util/utils';
 import { request } from '../../request';
 
-import { ParentEntityLineageColumns } from '../entities/constants';
-
 import { DERIVATION_DATA_SCOPES, STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
 import { isProductFoldersEnabled, isProjectContainer, isSampleStatusEnabled } from '../../app/utils';
@@ -26,7 +24,6 @@ import {
     getQueryDetails,
     getRequestAuditDetail,
     invalidateFullQueryDetailsCache,
-    ISelectRowsResult,
     selectDistinctRows,
     selectRowsDeprecated,
 } from '../../query/api';
@@ -339,31 +336,6 @@ export function updateColorSettings(
                 reject(response);
             }),
         });
-    });
-}
-
-// Used for samples and dataclasses
-export function getSelectionLineageData(
-    selections: Set<string>,
-    schema: string,
-    query: string,
-    viewName: string,
-    extraColumns: string[] = [],
-    sort: string | undefined
-): Promise<ISelectRowsResult> {
-    if (selections?.size === 0) return Promise.reject('No data is selected.');
-    const rowIds = Array.from(selections).map(s => parseInt(s, 10));
-
-    return selectRowsDeprecated({
-        columns: List.of('RowId', 'Name', 'LSID', 'Folder')
-            .concat(ParentEntityLineageColumns)
-            .toArray()
-            .concat(extraColumns),
-        filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
-        queryName: query,
-        schemaName: schema,
-        sort,
-        viewName,
     });
 }
 

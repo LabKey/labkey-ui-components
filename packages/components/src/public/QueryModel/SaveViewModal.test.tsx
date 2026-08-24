@@ -291,6 +291,86 @@ describe('SaveViewModal', () => {
 
         expect(document.querySelector('input[name="setShared"]').hasAttribute('checked')).toBe(false);
     });
+
+    // GitHub Issue #899: the core scenario — a subfolder session view over a view inherited from the home folder
+    test('subfolder session view shadowing an inherited view does not inherit', async () => {
+        const onConfirmSave = jest.fn();
+        renderWithAppContext(
+            <SaveViewModal
+                {...DEFAULT_PROPS}
+                currentView={SESSION_VIEW_SHADOWING_INHERITED}
+                onConfirmSave={onConfirmSave}
+            />,
+            {
+                serverContext: {
+                    user: TEST_USER_APP_ADMIN,
+                    container: {
+                        path: '/home/folderA',
+                        type: 'folder',
+                    },
+                    moduleContext,
+                },
+            }
+        );
+
+        expect(document.querySelectorAll('input[name="setInherit"]')).toHaveLength(0);
+
+        await userEvent.click(document.querySelector('.btn-success'));
+
+        // shadowed.inherit is true, but sending it would rewrite the home folder's view instead of shadowing it here
+        expect(onConfirmSave).toHaveBeenCalledWith('', false, false, true);
+    });
+
+    // GitHub Issue #899
+    test('session view shadowing a shared view without edit-shared permission', async () => {
+        const onConfirmSave = jest.fn();
+        renderWithAppContext(
+            <SaveViewModal
+                {...DEFAULT_PROPS}
+                currentView={SESSION_VIEW_SHADOWING_SHARED}
+                onConfirmSave={onConfirmSave}
+            />,
+            {
+                serverContext: {
+                    user: TEST_USER_READER,
+                    container: {
+                        path: '/home',
+                        type: 'project',
+                    },
+                    moduleContext,
+                },
+            }
+        );
+
+        expect(document.querySelectorAll('input[name="setShared"]')).toHaveLength(0);
+
+        await userEvent.click(document.querySelector('.btn-success'));
+
+        // the shadowed view's shared flag is unusable here: the save action rejects shared/inherit outright
+        expect(onConfirmSave).toHaveBeenCalledWith('View1', false, true, false);
+    });
+
+    // GitHub Issue #899
+    test('inherit flag preserved when product folders are disabled', async () => {
+        const onConfirmSave = jest.fn();
+        renderWithAppContext(<SaveViewModal {...DEFAULT_PROPS} currentView={VIEW_2} onConfirmSave={onConfirmSave} />, {
+            serverContext: {
+                user: TEST_USER_PROJECT_ADMIN,
+                container: {
+                    path: '/home',
+                    type: 'project',
+                },
+                moduleContext: { query: { isProductFoldersEnabled: false } },
+            },
+        });
+
+        // the checkbox is product-folders-only, but the view's own folder is the save target so inherit still applies
+        expect(document.querySelectorAll('input[name="setInherit"]')).toHaveLength(0);
+
+        await userEvent.click(document.querySelector('.btn-success'));
+
+        expect(onConfirmSave).toHaveBeenCalledWith('View2', true, true, false);
+    });
 });
 
 describe('ViewNameInput', () => {

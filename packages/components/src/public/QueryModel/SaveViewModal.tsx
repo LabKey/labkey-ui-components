@@ -13,7 +13,7 @@ import { Alert } from '../../internal/components/base/Alert';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 import { CUSTOM_VIEW, HelpLink } from '../../internal/util/helpLinks';
 import { RequiresPermission } from '../../internal/components/base/Permissions';
-import { isAppHomeFolder, isProductFoldersEnabled, userCanEditSharedViews } from '../../internal/app/utils';
+import { canInheritGridView, isProductFoldersEnabled, userCanEditSharedViews } from '../../internal/app/utils';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 import { ViewInfo } from '../../internal/ViewInfo';
 
@@ -137,13 +137,14 @@ export const SaveViewModal: FC<Props> = memo(props => {
     const [errorMessage, setErrorMessage] = useState<string>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>();
     const canEditShared = userCanEditSharedViews(user);
-    const showInheritOption =
-        isProductFoldersEnabled(moduleContext) && isAppHomeFolder(container, moduleContext) && canEditShared;
+    const canInheritView = canInheritGridView(user, container, moduleContext);
+    const showInheritOption = isProductFoldersEnabled(moduleContext) && canInheritView;
     // GitHub Issue #899: a session view is never shared or inheritable, so read both flags off the view it shadows.
-    const [isShared, setIsShared] = useState<boolean>(() => !!(currentView?.shadowed?.shared ?? currentView?.shared));
-    // GitHub Issue #899: Outside the home folder inherit isn't offered, and sending it would target the folder the view is inherited from.
+    const [isShared, setIsShared] = useState<boolean>(
+        () => canEditShared && !!(currentView?.shadowed?.shared ?? currentView?.shared)
+    );
     const [canInherit, setCanInherit] = useState<boolean>(
-        () => showInheritOption && !!(currentView?.shadowed?.inherit ?? currentView?.inherit)
+        () => canInheritView && !!(currentView?.shadowed?.inherit ?? currentView?.inherit)
     );
 
     const saveView = useCallback(async () => {

@@ -29,6 +29,16 @@
         flex-direction: column;
     }
 
+    .modal-footer {
+        flex-shrink: 0;
+        background-color: $body-bg;
+        line-height: 20px;
+        padding: 15px;
+    }
+}
+
+.lk-modal .chat-modal,
+.chat-sidebar__body {
     .chat-history {
         flex-grow: 1;
         overflow-y: auto;
@@ -72,52 +82,6 @@
 
     .error-response {
         color: $brand-danger;
-    }
-
-    .modal-footer {
-        flex-shrink: 0;
-        background-color: $body-bg;
-        line-height: 20px;
-        padding: 15px;
-    }
-
-    .form-inline {
-        display: flex;
-        align-items: flex-end;
-        gap: 10px;
-        width: 100%;
-
-        .form-group,
-        .col-xs-12 {
-            display: contents;
-        }
-    }
-
-    .prompt-input {
-        flex-grow: 1;
-        width: 0;
-
-        field-sizing: content;
-        line-height: 1.2;
-        min-height: 1.2lh;
-        max-height: 12lh;
-
-        padding: 10px;
-        box-sizing: border-box;
-        resize: none;
-        margin: 0;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-    }
-
-    .prompt-button {
-        height: 38px;
-        flex-shrink: 0;
-        margin: 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: $text-color;
     }
 }
 
@@ -171,14 +135,6 @@
         font-size: 11px;
         margin-top: 12px;
     }
-}
-
-.chat-history {
-    flex-grow: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
 }
 
 .chat-sidebar {

@@ -246,13 +246,19 @@ export const ChatSidebar: FC<ChatSessionProps> = memo(props => {
     return (
         <div className="chat-sidebar">
             <div className="chat-sidebar__header">
-                {title}
-                <button className="btn btn-sm btn-default" onClick={handleCancel} type="button">
-                    End Chat
-                </button>
+                <div className="chat-sidebar__title">
+                    {title}
+                    <button className="btn btn-sm btn-default" onClick={handleCancel} type="button">
+                        End Chat
+                    </button>
+                </div>
             </div>
-            <ChatHistory isPending={isPending} messages={messages} renderSegment={renderSegment} />
-            <ChatPrompt isPending={isPending} onInterrupt={onInterrupt} sendPrompt={sendPrompt} title={title} />
+            <div className="chat-sidebar__body">
+                <ChatHistory isPending={isPending} messages={messages} renderSegment={renderSegment} />
+            </div>
+            <div className="chat-sidebar__footer">
+                <ChatPrompt isPending={isPending} onInterrupt={onInterrupt} sendPrompt={sendPrompt} title={title} />
+            </div>
         </div>
     );
 });

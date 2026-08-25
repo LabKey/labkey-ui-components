@@ -414,7 +414,7 @@ export function isDataChangeCommentRequirementFeatureEnabled(moduleContext?: Mod
 export function isDocumentationAssistantEnabled(moduleContext?: ModuleContext): boolean {
     return (
         hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName, moduleContext) &&
-        resolveModuleContext(moduleContext)?.sampleManagement?.documentationAssistantEnabled
+        resolveModuleContext(moduleContext)?.samplemanagement?.documentationAssistantEnabled
     );
 }
 

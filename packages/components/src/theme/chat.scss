@@ -119,13 +119,85 @@
         justify-content: center;
         color: $text-color;
     }
+}
 
-    .chat-modal__caution {
-        width: 100%;
-        text-align: center;
-        color: $gray-light;
-        font-size: 11px;
-        margin-top: 12px;
+.chat-modal__caution {
+    width: 100%;
+    text-align: center;
+    color: $gray-light;
+    font-size: 11px;
+    margin-top: 12px;
+}
+
+.chat-history {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.chat-sidebar {
+    background-color: white;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    display: flex;
+    flex-direction: column;
+
+    // Bound the height so there is slack for the body to absorb. .app-body sets
+    // margin-top: 56px (97px with sub-nav), and nothing above it is a scroll
+    // container, so stick below the navbar and fill the rest of the viewport.
+    position: sticky;
+    top: 56px;
+    height: calc(100dvh - 56px);
+    flex-shrink: 0;
+
+    .app-body.with-sub-nav & {
+        top: 97px;
+        height: calc(100dvh - 97px);
+    }
+}
+
+.chat-sidebar__header {
+    flex-shrink: 0;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    border-bottom: 1px solid #DDDDDD; // $lk-panel-default-border;
+    .btn {
+        float: right;
+    }
+}
+
+.chat-sidebar__title {
+    font-weight: bold;
+    padding-bottom: 8px;
+}
+
+.chat-sidebar__header-button {
+    float: right;
+}
+
+.chat-sidebar__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;          // fills the space between header and footer
+    min-height: 0;           // lets .chat-history scroll instead of stretching the sidebar
+    overflow: hidden;
+}
+
+.chat-sidebar__footer {
+    flex-shrink: 0;
+    background: $gray-lighter;
+    margin-top: auto;        // pins to the bottom even if the body is short
+    color: $gray-light;
+    line-height: 20px;
+    padding: 15px;
+
+    .form-inline {
+        display: flex;
     }
 }
 

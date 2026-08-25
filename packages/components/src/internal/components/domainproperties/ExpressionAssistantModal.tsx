@@ -5,7 +5,6 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useAppContext } from '../../AppContext';
-import { generateId } from '../../util/utils';
 import { ChatModal, RenderSegment } from '../mcp/ChatModal';
 import { ChatMessage, ChatRole, ChatSegment } from '../mcp/models';
 import { DomainField, GetDomainFields, SystemField } from './models';
@@ -14,6 +13,7 @@ import { incrementClientSideMetricCount } from '../../actions';
 import { getColumnTypeMap, getPHIColumnNames, typeToDisplay } from './CalculatedFieldOptions';
 import { ExpressionAssistOptions } from './actions';
 import { resolveErrorMessage } from '../../util/messaging';
+import { createChatMessage } from '../mcp/utils';
 
 export const EXPR_ASST_METRIC_FEATURE_AREA = 'expressionAssistant';
 const CHANGE_INTRO =
@@ -21,14 +21,6 @@ const CHANGE_INTRO =
 const NEW_INTRO =
     "Explain the calculation you would like and I'll help you write the expression. You can also ask questions about what fields can be used and what calculations can be done.";
 const VALIDATE_INTRO = 'Let me take a look at this expression and see how I can help.';
-
-function createChatMessage(message: Partial<ChatMessage>): ChatMessage {
-    return {
-        ...message,
-        id: generateId('chat-'),
-        timestamp: Date.now(),
-    } as ChatMessage;
-}
 
 interface SqlSnippetProps {
     jdbcType?: string;

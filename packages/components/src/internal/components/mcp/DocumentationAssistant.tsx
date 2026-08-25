@@ -33,16 +33,14 @@ export const AssistantButton: FC<ButtonProps> = memo(props => {
 
 AssistantButton.displayName = 'AssistantButton';
 
-const NEW_INTRO = "How can I help?";
+const NEW_INTRO = "<div>How can I help?</div><div>I can answer questions about how to use LabKey.</div>";
 
 function useDocumentationAssistance() {
     const [conversationId, setConversationId] = useState<string>();
     const [messages, setMessages] = useState<ChatMessage[]>(() => {
-        const text = NEW_INTRO;
-        return [createChatMessage({ role: ChatRole.assistant, text })];
+        return [createChatMessage({ role: ChatRole.assistant, segments: [{ html: NEW_INTRO, type: 'html' }] })];
     });
     const [isPending, setIsPending] = useState(false);
-    const autoEvalRef = useRef(false);
     const { api } = useAppContext();
     const { abortRequest, requestHandler, resetRequestHandler } = useRequestHandler();
 
@@ -104,13 +102,7 @@ function useDocumentationAssistance() {
                 }
             }
         },
-        [
-            api,
-            conversationId,
-            pushMessage,
-            requestHandler,
-            resetRequestHandler,
-        ]
+        [conversationId, pushMessage, resetRequestHandler]
     );
 
     const sendPrompt = useCallback(
@@ -120,12 +112,6 @@ function useDocumentationAssistance() {
         },
         [pushMessage, runRequest]
     );
-
-    useEffect(() => {
-        if (autoEvalRef.current) return;
-        autoEvalRef.current = true;
-        runRequest('');
-    }, [runRequest]);
 
     return { isPending, messages, onInterrupt, sendPrompt };
 }

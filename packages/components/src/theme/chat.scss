@@ -144,6 +144,8 @@
 
     display: flex;
     flex-direction: column;
+    width: 400px;
+    flex-shrink: 0;
 
     // Bound the height so there is slack for the body to absorb. .app-body sets
     // margin-top: 56px (97px with sub-nav), and nothing above it is a scroll

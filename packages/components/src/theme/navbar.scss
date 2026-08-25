@@ -761,3 +761,35 @@
 .no-scroll {
     overflow: hidden;
 }
+
+.navbar-item {
+    &:has(> .navbar-assistant) {
+        float: right;
+        margin-right: 0;
+    }
+
+    .navbar-assistant {
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 6px;
+
+        &:active,
+        &:focus,
+        &:hover,
+        &:active:focus,
+        &:active:hover {
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+            outline: none;
+        }
+
+        // Keep a visible indicator for keyboard users only.
+        &:focus-visible {
+            outline: 1px solid $white;
+            outline-offset: 2px;
+        }
+    }
+}
+

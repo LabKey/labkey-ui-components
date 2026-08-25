@@ -18,7 +18,7 @@ import { SearchBox } from '../search/SearchBox';
 
 import { FindAndSearchDropdown } from '../search/FindAndSearchDropdown';
 
-import { getPrimaryAppProperties } from '../../app/utils';
+import { getPrimaryAppProperties, isDocumentationAssistantEnabled } from '../../app/utils';
 
 import { User } from '../base/models/User';
 
@@ -31,11 +31,13 @@ import { MenuSectionConfig } from './model';
 import { SEARCH_PLACEHOLDER } from './constants';
 import { useFolderMenuContext, useSubNavTabsContext } from './hooks';
 import { Icon } from '../../Icon';
+import { AssistantButton } from '../mcp/DocumentationAssistant';
 
 interface NavigationBarProps {
     brand?: ReactNode;
     menuSectionConfigs?: List<Map<string, MenuSectionConfig>>;
     notificationsConfig?: ServerNotificationsConfig;
+    onChatStart?: () => void;
     onFindByIds?: (sessionkey: string) => void;
     onSearch?: (form: any) => void;
     searchPlaceholder?: string;
@@ -53,6 +55,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         extraUserItems,
         menuSectionConfigs,
         notificationsConfig,
+        onChatStart,
         onSearch,
         onFindByIds,
         onSignIn,
@@ -63,7 +66,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         signOutUrl,
         user,
     } = props;
-    const { moduleContext } = useServerContext();
+    const { moduleContext, mcpReady } = useServerContext();
     const folderMenuContext = useFolderMenuContext();
     const location = useLocation();
     const isAdminPage = useMemo(() => isAdminRoute(location.pathname), [location.pathname]);
@@ -76,6 +79,7 @@ export const NavigationBar: FC<Props> = memo(props => {
     const showProductNav = shouldShowProductNavigation(user, moduleContext);
     const { noun, tabs } = useSubNavTabsContext();
     const hasSubNav = noun !== undefined || tabs.length > 0;
+    const assistantEnabled = mcpReady === true && isDocumentationAssistantEnabled(moduleContext);
 
     return (
         <div className={classNames('app-navigation', { 'with-sub-nav': hasSubNav })}>
@@ -144,6 +148,15 @@ export const NavigationBar: FC<Props> = memo(props => {
                                         )}
                                     </div>
                                 </div>
+                            )}
+                            {assistantEnabled && (
+                                <span className="navbar-item">
+                                    <AssistantButton
+                                        iconSrc="ai_stars_icon_white"
+                                        label={'Documentation Assistant'}
+                                        onClick={onChatStart}
+                                    />
+                                </span>
                             )}
                         </div>
                     </div>

@@ -17,12 +17,12 @@ import { DomainField, DomainFieldError, GetDomainFields, SystemField } from './m
 import { SectionHeading } from './SectionHeading';
 import { isFieldFullyLocked, isFieldPartiallyLocked } from './propertiesUtil';
 import { CALCULATED_TYPE, MULTI_CHOICE_TYPE, PropDescType } from './PropDescType';
-import { SVGIcon } from '../base/SVGIcon';
 import { useModalState } from '../../hooks';
 import { EXPR_ASST_METRIC_FEATURE_AREA, ExpressionAssistantModal } from './ExpressionAssistantModal';
 import { incrementClientSideMetricCount } from '../../actions';
 import { useAppContext } from '../../AppContext';
 import { useServerContext } from '../base/ServerContext';
+import { AssistantButton } from '../mcp/DocumentationAssistant';
 
 // export for jest testing
 export const typeToDisplay = (type: string): string => {
@@ -252,15 +252,7 @@ export const CalculatedFieldOptions: FC<CalculatedFieldOptionsProps> = memo(prop
                             calculation you want, or get help with an existing expression.
                         </div>
                         <div className="margin-bottom">
-                            <button className="btn btn-default" onClick={onOpenAssistant} type="button">
-                                <SVGIcon
-                                    height="16px"
-                                    iconSrc="ai_stars_icon"
-                                    style={{ marginRight: '4px', marginTop: '-4px' }}
-                                    width="16px"
-                                />
-                                AI Assistant
-                            </button>
+                            <AssistantButton label="AI Assistant" onClick={onOpenAssistant} showLabel />
                         </div>
                         <HelpLink topic={FIELD_EDITOR_CALC_COLS_TOPIC}>See calculation examples</HelpLink>
                     </div>

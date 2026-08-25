@@ -731,6 +731,50 @@ describe('GridTitle', () => {
         validate(container, 'Default View', true, true, false, true);
     });
 
+    // GitHub Issue #899
+    const renderSaveCurrentView = (onSaveView: jest.Mock, path: string, type: string) => {
+        const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
+        const sessionQueryInfo = QUERY_INFO.mutate({
+            views: QUERY_INFO.views.merge({
+                noextracolumn: QUERY_INFO.views.get('noextracolumn').mutate({ inherit: true, session: true }),
+            }),
+        });
+        return renderWithAppContext(
+            <GridTitle
+                {...GRID_TITLE_PROPS}
+                allowViewCustomization
+                model={makeTestQueryModel(viewSchemaQuery, sessionQueryInfo)}
+                onSaveView={onSaveView}
+            />,
+            {
+                serverContext: {
+                    user: TEST_USER_PROJECT_ADMIN,
+                    container: { path, type },
+                    moduleContext: { query: { isProductFoldersEnabled: true } },
+                },
+            }
+        );
+    };
+
+    test('save current view from a subfolder does not inherit', async () => {
+        const onSaveView = jest.fn();
+        const { container } = renderSaveCurrentView(onSaveView, '/project/a', 'folder');
+
+        await userEvent.click(container.querySelector('.split-button-dropdown__button'));
+
+        // the inherited view lives in the home folder, so a subfolder save must shadow it rather than target it
+        expect(onSaveView).toHaveBeenCalledWith(true, false);
+    });
+
+    test('save current view from the home folder keeps inherit', async () => {
+        const onSaveView = jest.fn();
+        const { container } = renderSaveCurrentView(onSaveView, '/project', 'project');
+
+        await userEvent.click(container.querySelector('.split-button-dropdown__button'));
+
+        expect(onSaveView).toHaveBeenCalledWith(true, true);
+    });
+
     test('hidden view, not edited, no title', () => {
         const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
         const sessionQueryInfo = QUERY_INFO.mutate({

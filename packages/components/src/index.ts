@@ -740,6 +740,7 @@ import {
     isConditionalFormattingEnabled,
     isCustomImportTemplatesEnabled,
     isDataChangeCommentRequirementFeatureEnabled,
+    isDocumentationAssistantEnabled,
     isELNEnabled,
     isExperimentAliasEnabled,
     isLKSSupportEnabled,
@@ -919,6 +920,8 @@ import { FilterCriteriaRenderer } from './internal/FilterCriteriaRenderer';
 import { getQueryTestAPIWrapper } from './internal/query/APIWrapper';
 import { useLoadableState } from './internal/useLoadableState';
 import { UnidentifiedPill } from './internal/UnidentifiedPill';
+import { chatInProgress, startChat, stopChat } from './internal/components/mcp/utils';
+import { AssistantSidebar } from './internal/components/mcp/DocumentationAssistant';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -953,6 +956,7 @@ const App = {
     isSourceTypeEnabled,
     isCustomImportTemplatesEnabled,
     isConditionalFormattingEnabled,
+    isDocumentationAssistantEnabled,
     isMediaEnabled,
     isWorkflowEnabled,
     isAdvancedWorkflowEnabled,
@@ -1174,6 +1178,7 @@ export {
     AssayStateModel,
     AssayUploadResultModel,
     AssayUploadTabs,
+    AssistantSidebar,
     AttachmentCard,
     AUDIT_EVENT_TYPE_PARAM,
     AuditDetails,
@@ -1201,6 +1206,7 @@ export {
     changeColumn,
     ChangePasswordModal,
     ChangeType,
+    chatInProgress,
     CheckboxLK,
     ChoicesListItem,
     clearAssayDefinitionCache,
@@ -1750,10 +1756,12 @@ export {
     SplitButton,
     splitDateTimeFormat,
     splitMultiValueForImport,
+    startChat,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
     StorageAmountInput,
     StorageStatusRenderer,
     STORED_AMOUNT_FIELDS,
+    stopChat,
     stringToHtmlId,
     SVGIcon,
     Tab,

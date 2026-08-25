@@ -11,7 +11,6 @@ import { Container } from '../base/models/Container';
 import {
     expressionAssistant,
     ExpressionAssistOptions,
-    ExpressionAssistResponse,
     fetchDomainDetails,
     FetchDomainDetailsOptions,
     fetchOntologies,
@@ -30,9 +29,10 @@ import { getValidPublishTargets } from './assay/actions';
 import { PHILEVEL_FULL_PHI } from './constants';
 import { getDataClassDetails } from './dataclasses/actions';
 import { DomainDesign, DomainDetails, DomainField, NameExpressionsValidationResults, SystemField } from './models';
+import { AssistanceResponse } from '../mcp/actions';
 
 export interface DomainPropertiesAPIWrapper {
-    expressionAssistant: (options: ExpressionAssistOptions) => Promise<ExpressionAssistResponse>;
+    expressionAssistant: (options: ExpressionAssistOptions) => Promise<AssistanceResponse>;
     fetchDomainDetails: (options: FetchDomainDetailsOptions) => Promise<DomainDetails>;
     fetchOntologies: (containerPath?: string) => Promise<OntologyModel[]>;
     getDataClassDetails: (query?: SchemaQuery, domainId?: number, containerPath?: string) => Promise<DomainDetails>;

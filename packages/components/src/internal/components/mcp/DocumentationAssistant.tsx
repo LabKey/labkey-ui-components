@@ -11,6 +11,7 @@ import { useAppContext } from '../../AppContext';
 import { useRequestHandler } from '../../util/RequestHandler';
 import { incrementClientSideMetricCount } from '../../actions';
 import { resolveErrorMessage } from '../../util/messaging';
+import { documentationAssistant } from './actions';
 
 export const DOCS_ASST_METRIC_FEATURE_AREA = 'documentationAssistant';
 interface ButtonProps {
@@ -63,17 +64,17 @@ function useDocumentationAssistance() {
 
     const runRequest = useCallback(
         async (prompt: string) => {
-            console.log("prompt", prompt);
             setIsPending(true);
             let aborted = false;
             try {
-                const response = {
-                    conversationId: 'id1',
-                    success: true,
-                    error: undefined,
-                    segments: undefined,
-                    text: 'In answer to your prompt: ' + prompt,
-                };
+                const response = await documentationAssistant({ prompt })
+                // const response = {
+                //     conversationId: 'id1',
+                //     success: true,
+                //     error: undefined,
+                //     segments: undefined,
+                //     text: 'In answer to your prompt: ' + prompt,
+                // };
                 resetRequestHandler();
 
                 if (response.conversationId !== conversationId) {

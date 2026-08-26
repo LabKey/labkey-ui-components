@@ -87,7 +87,7 @@ $grid-action-item-bg:                    $alert-info-bg;
 $grid-action-item-border-color:          $alert-info-border;
 $grid-action-item-hover-bg:              color.adjust($grid-action-item-bg, $lightness: 5%);
 $grid-action-item-disabled-color:        $text-muted;
-$grid-action-item-disabled-bg:           $input-bg-disabled;
+$grid-action-item-disabled-bg:           $gray-lighter;
 $grid-action-item-disabled-border-color: $border-color;
 $grid-action-item-disabled-hover-bg:     color.adjust($grid-action-item-disabled-bg, $lightness: 5%);
 

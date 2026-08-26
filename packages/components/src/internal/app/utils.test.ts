@@ -40,6 +40,7 @@ import {
 import {
     addAssaysSectionConfig,
     addSourcesSectionConfig,
+    canInheritGridView,
     freezerManagerIsCurrentApp,
     getCurrentAppProperties,
     getMenuSectionConfigs,
@@ -998,6 +999,30 @@ describe('utils', () => {
         ).toBeFalsy();
     });
 
+    // GitHub Issue #899
+    test('canInheritGridView', () => {
+        const HOME = new Container({ type: 'project', path: 'project' });
+        const SUBFOLDER = new Container({ type: 'folder', path: 'project/a' });
+        const FOLDERS_ON = { query: { isProductFoldersEnabled: true } };
+        const FOLDERS_OFF = { query: { isProductFoldersEnabled: false } };
+
+        expect(canInheritGridView(TEST_USER_EDITOR, HOME, FOLDERS_ON)).toBeTruthy();
+        expect(canInheritGridView(TEST_USER_APP_ADMIN, HOME, FOLDERS_ON)).toBeTruthy();
+        expect(canInheritGridView(TEST_USER_FOLDER_ADMIN, HOME, FOLDERS_ON)).toBeTruthy();
+
+        // an inherited view lives in the home folder, so a subfolder save must shadow it rather than target it
+        expect(canInheritGridView(TEST_USER_APP_ADMIN, SUBFOLDER, FOLDERS_ON)).toBeFalsy();
+
+        // without product folders every container is the app home folder
+        expect(canInheritGridView(TEST_USER_APP_ADMIN, SUBFOLDER, FOLDERS_OFF)).toBeTruthy();
+        expect(canInheritGridView(TEST_USER_APP_ADMIN, HOME, FOLDERS_OFF)).toBeTruthy();
+
+        // the save actions reject inherit outright without EditSharedView
+        expect(canInheritGridView(TEST_USER_READER, HOME, FOLDERS_ON)).toBeFalsy();
+        expect(canInheritGridView(TEST_USER_AUTHOR, HOME, FOLDERS_ON)).toBeFalsy();
+        expect(canInheritGridView(TEST_USER_GUEST, HOME, FOLDERS_ON)).toBeFalsy();
+        expect(canInheritGridView(TEST_USER_READER, SUBFOLDER, FOLDERS_OFF)).toBeFalsy();
+    });
 
     test('getPrimaryAppProperties', () => {
         __setController('project');

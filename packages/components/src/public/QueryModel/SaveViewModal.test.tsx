@@ -375,7 +375,7 @@ describe('SaveViewModal', () => {
 
 describe('ViewNameInput', () => {
     test('default view', () => {
-        render(<ViewNameInput view={ViewInfo.fromJson({ default: true, name: 'default' })} onBlur={jest.fn()} />);
+        render(<ViewNameInput onBlur={jest.fn()} view={ViewInfo.fromJson({ default: true, name: 'default' })} />);
         const input = document.querySelector('input');
         expect(input.getAttribute('value')).toBe('');
         const warning = document.querySelectorAll('.text-danger');
@@ -385,8 +385,8 @@ describe('ViewNameInput', () => {
     test('hidden view', () => {
         render(
             <ViewNameInput
-                view={ViewInfo.fromJson({ default: false, name: 'Sample Finder', hidden: true })}
                 onBlur={jest.fn()}
+                view={ViewInfo.fromJson({ default: false, name: 'Sample Finder', hidden: true })}
             />
         );
         const input = document.querySelector('input');
@@ -396,7 +396,7 @@ describe('ViewNameInput', () => {
     });
 
     test('valid named view', async () => {
-        render(<ViewNameInput view={ViewInfo.fromJson({ default: false, name: 'Save Me' })} onBlur={jest.fn()} />);
+        render(<ViewNameInput onBlur={jest.fn()} view={ViewInfo.fromJson({ default: false, name: 'Save Me' })} />);
         const input = document.querySelector('input');
         expect(input.getAttribute('value')).toBe('Save Me');
         let warning = document.querySelectorAll('.text-danger');
@@ -409,9 +409,9 @@ describe('ViewNameInput', () => {
     test('invalid named view', async () => {
         render(
             <ViewNameInput
-                view={ViewInfo.fromJson({ default: false, name: 'Save Me' })}
-                onBlur={jest.fn()}
                 maxLength={10}
+                onBlur={jest.fn()}
+                view={ViewInfo.fromJson({ default: false, name: 'Save Me' })}
             />
         );
         let warning = document.querySelectorAll('.text-danger');

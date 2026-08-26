@@ -336,10 +336,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     }, [model, onRevertView, actions, allowSelections]);
 
     const _onSaveCurrentView = useCallback((): void => {
-        onSaveView(
-            userCanEditSharedViews(user as User),
-            canInheritGridView(user as User, container, moduleContext)
-        );
+        onSaveView(userCanEditSharedViews(user as User), canInheritGridView(user as User, container, moduleContext));
     }, [container, moduleContext, onSaveView, user]);
 
     if (!displayTitle && (!allowViewCustomization || (!isEdited && !isUpdated))) {

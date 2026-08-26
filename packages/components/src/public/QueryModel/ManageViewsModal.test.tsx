@@ -261,17 +261,14 @@ describe('ManageViewsModal', () => {
     // GitHub Issue #899
     test('make default from a subfolder does not inherit', async () => {
         const api = getQueryAPI([INHERITED_VIEW]);
-        renderWithAppContext(
-            <ManageViewsModal currentView={INHERITED_VIEW} onDone={jest.fn()} schemaQuery={null} />,
-            {
-                appContext: { api },
-                serverContext: {
-                    user: TEST_USER_PROJECT_ADMIN,
-                    container: { path: '/project/a', type: 'folder' },
-                    moduleContext: FOLDERS_ON,
-                },
-            }
-        );
+        renderWithAppContext(<ManageViewsModal currentView={INHERITED_VIEW} onDone={jest.fn()} schemaQuery={null} />, {
+            appContext: { api },
+            serverContext: {
+                user: TEST_USER_PROJECT_ADMIN,
+                container: { path: '/project/a', type: 'folder' },
+                moduleContext: FOLDERS_ON,
+            },
+        });
         await waitFor(() => {
             expect(document.querySelector('#setDefault-0')).not.toBeNull();
         });
@@ -295,17 +292,14 @@ describe('ManageViewsModal', () => {
     // GitHub Issue #899
     test('make default from the home folder keeps inherit', async () => {
         const api = getQueryAPI([INHERITED_VIEW]);
-        renderWithAppContext(
-            <ManageViewsModal currentView={INHERITED_VIEW} onDone={jest.fn()} schemaQuery={null} />,
-            {
-                appContext: { api },
-                serverContext: {
-                    user: TEST_USER_PROJECT_ADMIN,
-                    container: { path: '/project', type: 'project' },
-                    moduleContext: FOLDERS_ON,
-                },
-            }
-        );
+        renderWithAppContext(<ManageViewsModal currentView={INHERITED_VIEW} onDone={jest.fn()} schemaQuery={null} />, {
+            appContext: { api },
+            serverContext: {
+                user: TEST_USER_PROJECT_ADMIN,
+                container: { path: '/project', type: 'project' },
+                moduleContext: FOLDERS_ON,
+            },
+        });
         await waitFor(() => {
             expect(document.querySelector('#setDefault-0')).not.toBeNull();
         });

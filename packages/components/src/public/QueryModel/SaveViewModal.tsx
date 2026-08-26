@@ -100,16 +100,16 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
             <input
                 aria-label="Grid view name"
                 autoFocus={autoFocus}
-                name="gridViewName"
-                defaultValue={defaultValue}
-                placeholder={placeholder ?? 'Grid View Name'}
                 className={'form-control' + (nameError ? ' grid-view-name-error' : '')}
-                value={viewName}
+                defaultValue={defaultValue}
+                disabled={isDefaultView}
+                name="gridViewName"
+                onBlur={_onBlur}
                 onChange={onViewNameChange}
                 onFocus={clearError}
-                onBlur={_onBlur}
-                disabled={isDefaultView}
+                placeholder={placeholder ?? 'Grid View Name'}
                 type="text"
+                value={viewName}
             />
             {nameError && <span className="text-danger">{nameError}</span>}
         </>
@@ -198,12 +198,12 @@ export const SaveViewModal: FC<Props> = memo(props => {
                         <div className="content-form">
                             <label className="clickable">
                                 <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    name="setSaveType"
-                                    id="defaultView"
-                                    onChange={toggleDefaultView}
                                     checked={isDefaultView}
+                                    className="form-check-input"
+                                    id="defaultView"
+                                    name="setSaveType"
+                                    onChange={toggleDefaultView}
+                                    type="radio"
                                 />
                                 <span className="margin-left">Save as default view for all users</span>
                             </label>
@@ -212,8 +212,8 @@ export const SaveViewModal: FC<Props> = memo(props => {
                             <label className="clickable">
                                 <input
                                     checked={!isDefaultView}
-                                    name="setSaveType"
                                     id="customView"
+                                    name="setSaveType"
                                     onChange={toggleDefaultView}
                                     type="radio"
                                 />
@@ -228,10 +228,10 @@ export const SaveViewModal: FC<Props> = memo(props => {
                             })}
                         >
                             <ViewNameInput
-                                onChange={onViewNameChange}
-                                onBlur={onViewNameChange}
-                                view={currentView}
                                 isDefaultView={isDefaultView}
+                                onBlur={onViewNameChange}
+                                onChange={onViewNameChange}
+                                view={currentView}
                             />
                         </div>
                     )}
@@ -239,11 +239,11 @@ export const SaveViewModal: FC<Props> = memo(props => {
                         <div className="form-check">
                             <input
                                 aria-labelledby="shared-to-users-label"
+                                checked={isShared}
                                 className="form-check-input"
-                                type="checkbox"
                                 name="setShared"
                                 onChange={toggleShared}
-                                checked={isShared}
+                                type="checkbox"
                             />
                             <span className="margin-left" id="shared-to-users-label">
                                 Make this grid view available to all users
@@ -254,11 +254,11 @@ export const SaveViewModal: FC<Props> = memo(props => {
                         <div className="form-check">
                             <input
                                 aria-labelledby="shared-to-folders-label"
+                                checked={canInherit}
                                 className="form-check-input"
-                                type="checkbox"
                                 name="setInherit"
                                 onChange={toggleInherit}
-                                checked={canInherit}
+                                type="checkbox"
                             />
                             <span className="margin-left" id="shared-to-folders-label">
                                 Make this grid view available in all Folders

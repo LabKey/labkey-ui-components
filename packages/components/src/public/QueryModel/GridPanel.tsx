@@ -78,7 +78,10 @@ import { SaveViewModal } from './SaveViewModal';
 import { CustomizeGridViewModal } from './CustomizeGridViewModal';
 import { ManageViewsModal } from './ManageViewsModal';
 import { Actions, InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
-import { ChartList, ChartPanel } from './ChartPanel';
+import { ChartList } from './ChartPanel';
+
+const READONLY_FILTER_TIP =
+    "Filter can't be edited because it's saved with the view. Remove it and add it again to make changes.";
 
 export interface GridPanelProps<ButtonsComponentProps> {
     advancedExportOptions?: Record<string, any>;
@@ -459,7 +462,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         view: ViewAction;
     };
 
-    createGridActionValues = (): { actionValues: ActionValue[]; searchActionValues: ActionValue[] } => {
+    createGridActionValues = (
+        includeReadOnlyMessage = true
+    ): { actionValues: ActionValue[]; searchActionValues: ActionValue[] } => {
         const { model } = this.props;
         const { filterArray, sorts } = model;
         const view = model.currentView;
@@ -477,14 +482,15 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         // handle the view's saved filters (which will be shown as read only)
         if (view && view.filters.length) {
             view.filters.forEach((filter): void => {
+                const readOnlyMessage = includeReadOnlyMessage ? READONLY_FILTER_TIP : undefined;
                 const column = model.getColumnByFieldKey(filter.getColumnName());
                 if (column) {
                     actionValues.push(
-                        this.gridActions.filter.actionValueFromFilter(filter, column, 'Locked (saved with view)')
+                        this.gridActions.filter.actionValueFromFilter(filter, column, readOnlyMessage)
                     );
                 } else if (filter.getColumnName() === '*') {
                     actionValues.push(
-                        this.gridActions.search.actionValueFromFilter(filter, 'Locked (saved with view)')
+                        this.gridActions.search.actionValueFromFilter(filter, readOnlyMessage)
                     );
                 }
             });
@@ -512,6 +518,20 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         return {
             actionValues,
             searchActionValues,
+        };
+    };
+
+    // GitHub Issue #696: what onSaveView will persist, so the save modal can show it. No read-only message because
+    // nothing here is separable from the view once saved.
+    getSaveViewActionValues = (): { filterActionValues: ActionValue[]; sortActionValues: ActionValue[] } => {
+        const { actionValues, searchActionValues } = this.createGridActionValues(false);
+        const staticValues = actionValues
+            .concat(searchActionValues)
+            .map(actionValue => ({ ...actionValue, isRemovable: false }));
+
+        return {
+            filterActionValues: staticValues.filter(av => av.action.keyword !== 'sort'),
+            sortActionValues: staticValues.filter(av => av.action.keyword === 'sort'),
         };
     };
 
@@ -1220,6 +1240,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         gridLabel={queryInfo?.schemaQuery?.queryName}
                         onCancel={this.closeSaveViewModal}
                         onConfirmSave={this.onSaveView}
+                        {...this.getSaveViewActionValues()}
                     />
                 )}
                 {showCustomizeViewModal && (

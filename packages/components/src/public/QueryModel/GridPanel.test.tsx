@@ -393,6 +393,48 @@ describe('GridPanel', () => {
         expect(filterTags[2].classList).toContain('is-readonly');
     });
 
+    test('SaveViewModal lists the filters and sorts that will be saved', async () => {
+        const view = ViewInfo.fromJson({
+            name: ViewInfo.DEFAULT_NAME.toLowerCase(),
+            filter: [{ fieldKey: 'Name', value: 'DMXP', op: 'eq' }],
+            sort: [{ fieldKey: 'Name', dir: '+' }],
+            savable: true,
+            session: true,
+        });
+        const queryInfo = new QueryInfo({
+            columns: QUERY_INFO.columns,
+            views: new ExtendedMap({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+        });
+        const model = makeTestQueryModel(SCHEMA_QUERY, queryInfo, {}, [], 0).mutate({
+            filterArray: [Filter.create('expirationTime', '2')],
+            sorts: [new QuerySort({ fieldKey: 'expirationTime', dir: '-' })],
+        });
+        renderWithAppContext(<GridPanel actions={actions} model={model} />, {
+            serverContext: { user: TEST_USER_EDITOR },
+        });
+
+        await userEvent.click(document.querySelector('.view-header .btn-success'));
+
+        const sections = document.querySelectorAll('.save-view-modal__action-values');
+        expect(sections).toHaveLength(2);
+
+        // the view's saved filters and the user's ad hoc ones, both without the grid bar's read-only treatment
+        const filterTags = sections[0].querySelectorAll(FILTER_STATUS_VALUE);
+        expect(filterTags).toHaveLength(2);
+        expect(filterTags[0]).toHaveTextContent('Name = DMXP');
+        expect(filterTags[1]).toHaveTextContent('Expiration Time = 2');
+        expect(document.querySelectorAll('.save-view-modal .is-readonly')).toHaveLength(0);
+
+        const sortTags = sections[1].querySelectorAll(FILTER_STATUS_VALUE);
+        expect(sortTags).toHaveLength(2);
+        expect(sortTags[0]).toHaveTextContent('Expiration Time');
+        expect(sortTags[0].querySelectorAll('.fa-sort-amount-desc')).toHaveLength(1);
+        expect(sortTags[0].parentElement.getAttribute('title')).toBe('Sorted descending');
+        expect(sortTags[1]).toHaveTextContent('Name');
+        expect(sortTags[1].querySelectorAll('.fa-sort-amount-asc')).toHaveLength(1);
+        expect(sortTags[1].parentElement.getAttribute('title')).toBe('Sorted ascending');
+    });
+
     const getCheckbox = (index: number): HTMLInputElement => {
         // index 0 is header, 1+ is data row
         const grid = document.querySelector(GRID_SELECTOR);

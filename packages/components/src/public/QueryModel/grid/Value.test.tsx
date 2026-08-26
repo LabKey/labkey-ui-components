@@ -6,7 +6,7 @@ import React from 'react';
 import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 
 import { userEvent } from '@testing-library/user-event';
 
@@ -152,6 +152,24 @@ describe('Value', () => {
         expect(document.querySelectorAll('.fa-filter')).toHaveLength(1);
         await userEvent.hover(document.querySelector('.filter-status-value'));
         validate(false, true, true);
+    });
+
+    test('isReadOnly shows tooltip on hover', async () => {
+        render(<Value {...DEFAULT_PROPS} actionValue={readOnlyAction} />);
+        expect(document.querySelectorAll('.lk-popover')).toHaveLength(0);
+
+        await userEvent.hover(document.querySelector('.filter-status-value'));
+        await waitFor(() => expect(document.querySelector('.lk-popover').textContent).toBe('Filter is read only'));
+
+        await userEvent.unhover(document.querySelector('.filter-status-value'));
+        await waitFor(() => expect(document.querySelectorAll('.lk-popover')).toHaveLength(0));
+    });
+
+    test('no tooltip on hover when not isReadOnly', async () => {
+        render(<Value {...DEFAULT_PROPS} actionValue={filterAction} />);
+        await userEvent.hover(document.querySelector('.filter-status-value'));
+        await waitFor(() => expect(document.querySelectorAll('.is-active')).toHaveLength(1));
+        expect(document.querySelectorAll('.lk-popover')).toHaveLength(0);
     });
 
     test('do not showRemoveIcon for view action', async () => {

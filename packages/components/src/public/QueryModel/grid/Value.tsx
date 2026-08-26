@@ -5,9 +5,10 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import classNames from 'classnames';
 
-import { useEnterEscape } from '../../useEnterEscape';
-
 import { ActionValue } from './actions/Action';
+import { useEnterEscape } from '../../useEnterEscape';
+import { OverlayTrigger } from '../../../internal/OverlayTrigger';
+import { Popover } from '../../../internal/Popover';
 
 interface ValueProps {
     actionValue: ActionValue;
@@ -79,7 +80,7 @@ export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyFor
         showRemoveIcon ? 'fa-close' : action.iconCls ? 'fa-' + action.iconCls : ''
     );
 
-    return (
+    const content = (
         <div
             className={className}
             onClick={onValueClick}
@@ -87,12 +88,27 @@ export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyFor
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             tabIndex={0}
-            title={isReadOnly}
         >
             {(!lockReadOnlyForDelete || !isReadOnly) && <i className={iconClassNames} onClick={onIconClick} />}
             {isReadOnly ? <i className="read-lock fa fa-lock" /> : null}
             <span>{displayValue ?? value}</span>
         </div>
     );
+
+    if (!!isReadOnly) {
+        return (
+            <OverlayTrigger
+                overlay={
+                    <Popover id="disabled-button-popover" placement="top">
+                        {isReadOnly}
+                    </Popover>
+                }
+            >
+                {content}
+            </OverlayTrigger>
+        );
+    }
+
+    return content;
 });
 Value.displayName = 'Value';

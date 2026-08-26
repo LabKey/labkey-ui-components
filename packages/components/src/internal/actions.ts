@@ -607,7 +607,7 @@ export function saveGridView(
             containerPath,
             views: [{ ...ViewInfo.serialize(viewInfo), replace, session, inherit, shared, hidden }],
             success: () => {
-                invalidateQueryDetailsCache(schemaQuery, containerPath);
+                invalidateQueryDetailsCache(schemaQuery);
                 resolve();
             },
             failure: response => {
@@ -640,7 +640,7 @@ export function saveSessionView(
             hidden: false,
             replace,
             success: () => {
-                invalidateQueryDetailsCache(schemaQuery, containerPath);
+                invalidateQueryDetailsCache(schemaQuery);
                 resolve();
             },
             failure: response => {
@@ -720,12 +720,12 @@ export function deleteView(
             containerPath,
             revert,
             success: () => {
-                invalidateQueryDetailsCache(schemaQuery, containerPath);
+                invalidateQueryDetailsCache(schemaQuery);
                 resolve();
             },
             failure: response => {
                 if (response.exceptionClass === VIEW_NOT_FOUND_EXCEPTION_CLASS) {
-                    invalidateQueryDetailsCache(schemaQuery, containerPath);
+                    invalidateQueryDetailsCache(schemaQuery);
                     resolve(); // view has already been deleted
                 } else {
                     console.error(response);
@@ -760,7 +760,7 @@ export function renameGridView(
                 newName,
             },
             success: Utils.getCallbackWrapper(response => {
-                invalidateQueryDetailsCache(schemaQuery, containerPath);
+                invalidateQueryDetailsCache(schemaQuery);
                 resolve();
             }),
             failure: Utils.getCallbackWrapper(error => {

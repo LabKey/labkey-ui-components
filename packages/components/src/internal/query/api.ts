@@ -64,22 +64,13 @@ function getQueryDetailsCacheKey(
 
 export function invalidateQueryDetailsCache(
     schemaQuery: SchemaQuery,
-    containerPath?: string,
-    fk?: string,
-    fields?: string | string[],
-    exactKeyMatch = false
 ): void {
-    if (exactKeyMatch) {
-        const key = getQueryDetailsCacheKey(schemaQuery, containerPath, fk, fields);
-        delete queryDetailsCache[key];
-    } else {
-        const prefix = getQueryDetailsCacheKey(schemaQuery);
-        Object.keys(queryDetailsCache).forEach(cacheKey => {
-            if (cacheKey.startsWith(prefix)) {
-                delete queryDetailsCache[cacheKey];
-            }
-        });
-    }
+    const prefix = getQueryDetailsCacheKey(schemaQuery);
+    Object.keys(queryDetailsCache).forEach(cacheKey => {
+        if (cacheKey.toLowerCase().startsWith(prefix.toLowerCase())) {
+            delete queryDetailsCache[cacheKey];
+        }
+    });
 }
 
 interface GetQueryDetailsBasic extends Omit<
@@ -127,7 +118,7 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
                     // where it is unable to resolve the tableInfo. This is deemed a 'success'
                     // by the request standards but here we reject as an outright failure
                     if (queryDetails.exception) {
-                        invalidateQueryDetailsCache(schemaQuery, containerPath, fk, fields);
+                        invalidateQueryDetailsCache(schemaQuery);
                         reject({
                             schemaQuery,
                             message: queryDetails.exception,
@@ -141,7 +132,7 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
                 },
                 failure: (error, request) => {
                     console.error(error);
-                    invalidateQueryDetailsCache(schemaQuery, containerPath, fk, fields);
+                    invalidateQueryDetailsCache(schemaQuery);
                     reject({
                         message: error.exception,
                         exceptionClass: error.exceptionClass,

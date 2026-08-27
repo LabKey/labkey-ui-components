@@ -435,6 +435,36 @@ describe('GridPanel', () => {
         expect(sortTags[1].parentElement.getAttribute('title')).toBe('Sorted ascending');
     });
 
+    // GitHub Issue #696: onSaveView persists filters and sorts whether or not the grid can resolve a column for them,
+    // so the dialog has to list them even though the filter status bar leaves them out.
+    test('SaveViewModal lists filters and sorts whose column no longer resolves', async () => {
+        const view = ViewInfo.fromJson({
+            name: ViewInfo.DEFAULT_NAME.toLowerCase(),
+            filter: [{ fieldKey: 'DeletedField', value: 'x', op: 'eq' }],
+            sort: [{ fieldKey: 'DeletedField', dir: '+' }],
+            savable: true,
+            session: true,
+        });
+        const queryInfo = new QueryInfo({
+            columns: QUERY_INFO.columns,
+            views: new ExtendedMap({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+        });
+        const model = makeTestQueryModel(SCHEMA_QUERY, queryInfo, {}, [], 0);
+        renderWithAppContext(<GridPanel actions={actions} model={model} />, {
+            serverContext: { user: TEST_USER_EDITOR },
+        });
+
+        expect(document.querySelectorAll(`${FILTER_STATUS_SELECTOR} ${FILTER_STATUS_VALUE}`)).toHaveLength(0);
+
+        await userEvent.click(document.querySelector('.view-header .btn-success'));
+
+        const sections = document.querySelectorAll('.save-view-modal__action-values');
+        expect(sections[0].querySelectorAll(FILTER_STATUS_VALUE)).toHaveLength(1);
+        expect(sections[0].querySelector(FILTER_STATUS_VALUE)).toHaveTextContent('DeletedField = x');
+        expect(sections[1].querySelectorAll(FILTER_STATUS_VALUE)).toHaveLength(1);
+        expect(sections[1].querySelector(FILTER_STATUS_VALUE)).toHaveTextContent('DeletedField');
+    });
+
     const getCheckbox = (index: number): HTMLInputElement => {
         // index 0 is header, 1+ is data row
         const grid = document.querySelector(GRID_SELECTOR);

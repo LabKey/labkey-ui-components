@@ -144,6 +144,7 @@
         color: $grid-action-item-disabled-color;
 
         i.symbol {
+            cursor: pointer;
             color: $grid-action-item-disabled-color;
             border-color: $grid-action-item-disabled-color;
         }

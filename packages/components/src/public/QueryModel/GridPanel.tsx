@@ -463,7 +463,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     };
 
     createGridActionValues = (
-        includeReadOnlyMessage = true
+        includeReadOnlyMessage = true,
+        includeUnresolvedColumns = false
     ): { actionValues: ActionValue[]; searchActionValues: ActionValue[] } => {
         const { model } = this.props;
         const { filterArray, sorts } = model;
@@ -474,7 +475,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const _sorts = view ? sorts.concat(view.sorts) : sorts;
         _sorts.forEach((sort): void => {
             const column = model.getColumnByFieldKey(sort.fieldKey);
-            if (column) {
+            if (column || includeUnresolvedColumns) {
                 actionValues.push(this.gridActions.sort.actionValueFromSort(sort, column?.shortCaption));
             }
         });
@@ -492,6 +493,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     actionValues.push(
                         this.gridActions.search.actionValueFromFilter(filter, readOnlyMessage)
                     );
+                } else if (includeUnresolvedColumns) {
+                    actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, undefined, readOnlyMessage));
                 }
             });
         }
@@ -508,7 +511,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, column));
                 } else if (filterColName.indexOf('/') > -1 && filterColName.split('/').length === 2) {
                     const lookupCol = model.getColumnByFieldKey(filterColName.split('/')[0]);
-                    if (lookupCol) actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, lookupCol));
+                    if (lookupCol) {
+                        actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, lookupCol));
+                    } else if (includeUnresolvedColumns) {
+                        actionValues.push(this.gridActions.filter.actionValueFromFilter(filter));
+                    }
                 } else {
                     actionValues.push(this.gridActions.filter.actionValueFromFilter(filter));
                 }
@@ -521,10 +528,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         };
     };
 
-    // GitHub Issue #696: what onSaveView will persist, so the save modal can show it. No read-only message because
-    // nothing here is separable from the view once saved.
+    // GitHub Issue #696: what onSaveView will persist, so the save modal can show it. No read-only message. Unresolved columns are included.
     getSaveViewActionValues = (): { filterActionValues: ActionValue[]; sortActionValues: ActionValue[] } => {
-        const { actionValues, searchActionValues } = this.createGridActionValues(false);
+        const { actionValues, searchActionValues } = this.createGridActionValues(false, true);
         const staticValues = actionValues
             .concat(searchActionValues)
             .map(actionValue => ({ ...actionValue, isRemovable: false }));

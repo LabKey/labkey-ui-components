@@ -24,9 +24,11 @@ import { GRID_CHECKBOX_OPTIONS } from '../../internal/constants';
 import { QueryModel } from './QueryModel';
 import { GridPanel, GridTitle } from './GridPanel';
 import { makeTestActions, makeTestQueryModel } from './testUtils';
-import { RequiresModelAndActions } from './withQueryModels';
+import { Actions, RequiresModelAndActions } from './withQueryModels';
 import { RowsResponse } from './QueryModelLoader';
 import { renderWithAppContext } from '../../internal/test/reactTestLibraryHelpers';
+import { Container } from '../../internal/components/base/models/Container';
+import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../internal/containerFixtures';
 
 const SCHEMA_QUERY = new SchemaQuery('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;
@@ -41,7 +43,6 @@ class TestButtons extends PureComponent<RequiresModelAndActions> {
 beforeAll(() => {
     QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
     DATA = makeTestData(mixturesQuery);
-    LABKEY.user = TEST_USER_READER;
 });
 
 const CHART_MENU_SELECTOR = '.chart-menu';
@@ -58,7 +59,7 @@ const CLEAR_ALL_SELECTOR = '.selection-status__clear-all';
 const ERROR_SELECTOR = '.grid-panel__grid .alert-danger';
 
 describe('GridPanel', () => {
-    let actions;
+    let actions: Actions;
 
     beforeEach(() => {
         actions = makeTestActions(jest.fn);
@@ -362,7 +363,7 @@ describe('GridPanel', () => {
 
     test('FilterStatus from saved view', () => {
         // This test ensures that the filter status includes sorts/filters from the saved view
-        const nameSort = { fieldKey: 'Name', dir: '+' };
+        const nameSort = { fieldKey: 'Name', dir: '+' } as QuerySort;
         const nameFilter = { fieldKey: 'Name', value: 'DMXP', op: 'eq' };
         const expirFilter = { fieldKey: 'expirationTime', value: '1', op: 'eq' };
         const view = ViewInfo.fromJson({
@@ -429,10 +430,10 @@ describe('GridPanel', () => {
         expect(sortTags).toHaveLength(2);
         expect(sortTags[0]).toHaveTextContent('Expiration Time');
         expect(sortTags[0].querySelectorAll('.fa-sort-amount-desc')).toHaveLength(1);
-        expect(sortTags[0].parentElement.getAttribute('title')).toBe('Sorted descending');
+        expect(sortTags[0].parentElement).toHaveAttribute('title', 'Sorted descending');
         expect(sortTags[1]).toHaveTextContent('Name');
         expect(sortTags[1].querySelectorAll('.fa-sort-amount-asc')).toHaveLength(1);
-        expect(sortTags[1].parentElement.getAttribute('title')).toBe('Sorted ascending');
+        expect(sortTags[1].parentElement).toHaveAttribute('title', 'Sorted ascending');
     });
 
     // GitHub Issue #696: onSaveView persists filters and sorts whether or not the grid can resolve a column for them,
@@ -804,7 +805,7 @@ describe('GridTitle', () => {
     });
 
     // GitHub Issue #899
-    const renderSaveCurrentView = (onSaveView: jest.Mock, path: string, type: string) => {
+    const renderSaveCurrentView = (onSaveView: jest.Mock, container: Container) => {
         const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
         const sessionQueryInfo = QUERY_INFO.mutate({
             views: QUERY_INFO.views.merge({
@@ -821,7 +822,7 @@ describe('GridTitle', () => {
             {
                 serverContext: {
                     user: TEST_USER_PROJECT_ADMIN,
-                    container: { path, type },
+                    container,
                     moduleContext: { query: { isProductFoldersEnabled: true } },
                 },
             }
@@ -830,7 +831,7 @@ describe('GridTitle', () => {
 
     test('save current view from a subfolder does not inherit', async () => {
         const onSaveView = jest.fn();
-        const { container } = renderSaveCurrentView(onSaveView, '/project/a', 'folder');
+        const { container } = renderSaveCurrentView(onSaveView, TEST_FOLDER_CONTAINER);
 
         await userEvent.click(container.querySelector('.split-button-dropdown__button'));
 
@@ -840,7 +841,7 @@ describe('GridTitle', () => {
 
     test('save current view from the home folder keeps inherit', async () => {
         const onSaveView = jest.fn();
-        const { container } = renderSaveCurrentView(onSaveView, '/project', 'project');
+        const { container } = renderSaveCurrentView(onSaveView, TEST_PROJECT_CONTAINER);
 
         await userEvent.click(container.querySelector('.split-button-dropdown__button'));
 

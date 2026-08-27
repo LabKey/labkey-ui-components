@@ -3,54 +3,35 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { render, waitFor } from '@testing-library/react';
 
 import { userEvent } from '@testing-library/user-event';
 
-import { QueryInfo } from '../../QueryInfo';
-
 import { Value } from './Value';
 import { FilterAction } from './actions/Filter';
 import { ViewAction } from './actions/View';
 
 const filterAction = {
-    action: new FilterAction(
-        'query',
-        () => List(),
-        () => new QueryInfo({})
-    ),
+    action: new FilterAction(),
     value: 'test',
-    valueObject: Filter.create('A', 'test', Filter.Types.EQUAL),
+    valueObject: Filter.create('A', 'test'),
 };
 const readOnlyAction = {
-    action: new FilterAction(
-        'query',
-        () => List(),
-        () => new QueryInfo({})
-    ),
+    action: new FilterAction(),
     value: 'test',
-    valueObject: Filter.create('A', 'test', Filter.Types.EQUAL),
+    valueObject: Filter.create('A', 'test'),
     isReadOnly: 'Filter is read only',
 };
 const nonRemovableAction = {
-    action: new FilterAction(
-        'query',
-        () => List(),
-        () => new QueryInfo({})
-    ),
+    action: new FilterAction(),
     value: 'test',
-    valueObject: Filter.create('A', 'test', Filter.Types.EQUAL),
+    valueObject: Filter.create('A', 'test'),
     isRemovable: false,
 };
 const viewAction = {
-    action: new ViewAction(
-        'query',
-        () => List(),
-        () => new QueryInfo({})
-    ),
+    action: new ViewAction(),
     value: 'view',
 };
 

@@ -183,6 +183,12 @@ export function isAppHomeFolder(container?: Partial<Container>, moduleContext?: 
     return isTopFolder || (isSubFolder && !isProductFoldersEnabled(moduleContext));
 }
 
+// GitHub Issue #899: outside the app home folder an inherited view lives in the parent containerPath, so saving it
+// with inherit would target that parent instead of shadowing it locally.
+export function canInheritGridView(user: User, container?: Partial<Container>, moduleContext?: ModuleContext): boolean {
+    return userCanEditSharedViews(user) && isAppHomeFolder(container, moduleContext);
+}
+
 export function getAppHomeFolderPath(container?: Partial<Container>, moduleContext?: ModuleContext): string {
     const currentContainer: Partial<Container> = container ?? getServerContext().container;
     return isAppHomeFolder(currentContainer, moduleContext) ? currentContainer.path : currentContainer.parentPath;

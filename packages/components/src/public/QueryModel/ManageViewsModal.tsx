@@ -15,7 +15,7 @@ import { resolveErrorMessage } from '../../internal/util/messaging';
 
 import { RequiresPermission } from '../../internal/components/base/Permissions';
 
-import { userCanEditSharedViews } from '../../internal/app/utils';
+import { canInheritGridView, userCanEditSharedViews } from '../../internal/app/utils';
 import { Modal } from '../../internal/Modal';
 
 import { OverlayTrigger } from '../../internal/OverlayTrigger';
@@ -57,8 +57,9 @@ export const ManageViewsModal: FC<Props> = memo(props => {
     const [deleting, setDeleting] = useState<ViewInfo>();
 
     const { api } = useAppContext();
-    const { user } = useServerContext();
+    const { container, moduleContext, user } = useServerContext();
     const userCanEditShared = userCanEditSharedViews(user);
+    const canInheritView = canInheritGridView(user, container, moduleContext);
 
     useEffect(() => {
         (async () => {
@@ -121,31 +122,17 @@ export const ManageViewsModal: FC<Props> = memo(props => {
             const view = getActionView(event);
             handleAction(async () => {
                 const finalViewInfo = view.mutate({ name: '' });
+                // GitHub Issue #899: from a subfolder this must shadow the inherited view, not promote the parent's.
+                const inherit = view.inherit && canInheritView;
                 if (view.session) {
-                    await api.query.saveSessionView(
-                        schemaQuery,
-                        containerPath,
-                        view.name,
-                        '',
-                        view.inherit,
-                        true,
-                        true
-                    );
+                    await api.query.saveSessionView(schemaQuery, containerPath, view.name, '', inherit, true, true);
                 } else {
-                    await api.query.saveGridView(
-                        schemaQuery,
-                        containerPath,
-                        finalViewInfo,
-                        true,
-                        false,
-                        view.inherit,
-                        true
-                    );
+                    await api.query.saveGridView(schemaQuery, containerPath, finalViewInfo, true, false, inherit, true);
                 }
                 if (currentView.name === view.name) setReselectViewName('');
             });
         },
-        [api, getActionView, handleAction, currentView, schemaQuery, containerPath]
+        [api, getActionView, handleAction, currentView, schemaQuery, containerPath, canInheritView]
     );
 
     const deleteSavedView = useCallback(() => {

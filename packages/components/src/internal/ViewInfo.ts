@@ -42,6 +42,7 @@ export interface ViewInfoJson {
     // aggregates: any[];
     // analyticsProviders: any[];
     columns?: ViewInfoColumn[];
+    containerPath?: string;
     default?: boolean;
     // deletable: boolean;
     // editable: boolean;
@@ -55,6 +56,7 @@ export interface ViewInfoJson {
     savable?: boolean;
     saved?: boolean;
     session?: boolean;
+    shadowed?: ViewInfoJson;
     shared?: boolean;
     sort?: QuerySortJson[];
 }
@@ -71,6 +73,7 @@ const VIEW_INFO_DEFAULTS = {
     savable: false,
     saved: false,
     session: false,
+    shadowed: undefined,
     shared: false,
     sorts: [],
 };
@@ -92,6 +95,7 @@ export class ViewInfo {
     declare savable: boolean;
     declare saved: boolean;
     declare session: boolean;
+    declare shadowed?: ViewInfoJson; // The saved view a session view is overlaying; only present when session is true
     declare shared: boolean;
     declare sorts: QuerySort[];
 
@@ -132,6 +136,8 @@ export class ViewInfo {
         const json = rest as unknown as ViewInfoJson;
 
         delete json.fields; // Issue 53324: not needed for serialization and takes up space
+        delete json.shadowed; // read-only server-supplied detail, and takes up space
+        delete json.containerPath; // GitHub Issue #899: saveQueryViews treats containerPath as an explicit save target
         json.columns = [...columns];
         json.default = isDefault;
 

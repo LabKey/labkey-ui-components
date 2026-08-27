@@ -5,6 +5,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { waitFor } from '@testing-library/dom';
+import { userEvent } from '@testing-library/user-event';
 
 import { ViewInfo } from '../../internal/ViewInfo';
 
@@ -64,6 +65,18 @@ const SHARED_VIEW = ViewInfo.fromJson({
     name: 'View3',
     shared: true,
 });
+
+// as the server reports it from a subfolder: inheritable and owned by the home folder
+const INHERITED_VIEW = ViewInfo.fromJson({
+    containerPath: '/project',
+    default: false,
+    inherit: true,
+    label: 'View 4',
+    name: 'View4',
+    shared: true,
+});
+
+const FOLDERS_ON = { query: { isProductFoldersEnabled: true } };
 
 describe('ViewLabel', () => {
     test('default view', () => {
@@ -243,6 +256,67 @@ describe('ManageViewsModal', () => {
         expect(rows[0].querySelectorAll('.clickable-text')).toHaveLength(0);
         expect(rows[0].querySelectorAll('.gray-text')).toHaveLength(1);
         expect(rows[0].querySelector('.gray-text').textContent).toBe('Revert');
+    });
+
+    // GitHub Issue #899
+    test('make default from a subfolder does not inherit', async () => {
+        const api = getQueryAPI([INHERITED_VIEW]);
+        renderWithAppContext(<ManageViewsModal currentView={INHERITED_VIEW} onDone={jest.fn()} schemaQuery={null} />, {
+            appContext: { api },
+            serverContext: {
+                user: TEST_USER_PROJECT_ADMIN,
+                container: { path: '/project/a', type: 'folder' },
+                moduleContext: FOLDERS_ON,
+            },
+        });
+        await waitFor(() => {
+            expect(document.querySelector('#setDefault-0')).not.toBeNull();
+        });
+
+        await userEvent.click(document.querySelector('#setDefault-0'));
+
+        // inherit must be false: the view lives in the home folder, so inheriting would promote it there instead
+        await waitFor(() => {
+            expect(api.query.saveGridView).toHaveBeenCalledWith(
+                null,
+                undefined,
+                expect.anything(),
+                true,
+                false,
+                false,
+                true
+            );
+        });
+    });
+
+    // GitHub Issue #899
+    test('make default from the home folder keeps inherit', async () => {
+        const api = getQueryAPI([INHERITED_VIEW]);
+        renderWithAppContext(<ManageViewsModal currentView={INHERITED_VIEW} onDone={jest.fn()} schemaQuery={null} />, {
+            appContext: { api },
+            serverContext: {
+                user: TEST_USER_PROJECT_ADMIN,
+                container: { path: '/project', type: 'project' },
+                moduleContext: FOLDERS_ON,
+            },
+        });
+        await waitFor(() => {
+            expect(document.querySelector('#setDefault-0')).not.toBeNull();
+        });
+
+        await userEvent.click(document.querySelector('#setDefault-0'));
+
+        await waitFor(() => {
+            expect(api.query.saveGridView).toHaveBeenCalledWith(
+                null,
+                undefined,
+                expect.anything(),
+                true,
+                false,
+                true,
+                true
+            );
+        });
     });
 
     test('multiple saved views: no admin permission', async () => {

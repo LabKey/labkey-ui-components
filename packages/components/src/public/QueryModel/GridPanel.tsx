@@ -47,7 +47,7 @@ import { Grid } from '../../internal/components/base/Grid';
 
 import { Alert } from '../../internal/components/base/Alert';
 
-import { userCanEditSharedViews } from '../../internal/app/utils';
+import { canInheritGridView, userCanEditSharedViews } from '../../internal/app/utils';
 
 import { User } from '../../internal/components/base/models/User';
 
@@ -286,7 +286,7 @@ interface GridTitleProps {
     model: QueryModel;
     onRevertView?: () => void;
     onSaveNewView?: () => void;
-    onSaveView?: (canSaveShared) => void;
+    onSaveView?: (canSaveShared: boolean, canInherit: boolean) => void;
     title?: string;
     view?: ViewInfo;
 }
@@ -306,7 +306,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     } = props;
     const { viewName } = model;
     const [errorMsg, setErrorMsg] = useState<string>();
-    const { user } = useServerContext();
+    const { container, moduleContext, user } = useServerContext();
 
     const currentView = view ?? model.currentView;
     let displayTitle = title;
@@ -336,8 +336,8 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     }, [model, onRevertView, actions, allowSelections]);
 
     const _onSaveCurrentView = useCallback((): void => {
-        onSaveView(userCanEditSharedViews(user as User));
-    }, [onSaveView, user]);
+        onSaveView(userCanEditSharedViews(user as User), canInheritGridView(user as User, container, moduleContext));
+    }, [container, moduleContext, onSaveView, user]);
 
     if (!displayTitle && (!allowViewCustomization || (!isEdited && !isUpdated))) {
         return null;
@@ -801,7 +801,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         });
     };
 
-    onSaveCurrentView = async (canSaveShared: boolean): Promise<void> => {
+    onSaveCurrentView = async (canSaveShared: boolean, canInherit: boolean): Promise<void> => {
         const { model } = this.props;
         const { queryInfo, viewName } = model;
         const view = queryInfo?.getView(viewName, true);
@@ -809,7 +809,12 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         let currentView = view;
         try {
             if (view.session) currentView = await getGridView(queryInfo.schemaQuery, viewName, true);
-            await this.onSaveView(viewName, currentView?.inherit, true, currentView.shared && canSaveShared);
+            await this.onSaveView(
+                viewName,
+                currentView?.inherit && canInherit,
+                true,
+                currentView.shared && canSaveShared
+            );
         } catch (errorMsg) {
             this.setState({ errorMsg });
         }

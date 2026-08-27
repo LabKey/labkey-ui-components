@@ -13,7 +13,7 @@ import { Alert } from '../../internal/components/base/Alert';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 import { CUSTOM_VIEW, HelpLink } from '../../internal/util/helpLinks';
 import { RequiresPermission } from '../../internal/components/base/Permissions';
-import { isAppHomeFolder, isProductFoldersEnabled, userCanEditSharedViews } from '../../internal/app/utils';
+import { canInheritGridView, isProductFoldersEnabled, userCanEditSharedViews } from '../../internal/app/utils';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 import { ViewInfo } from '../../internal/ViewInfo';
 
@@ -100,16 +100,16 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
             <input
                 aria-label="Grid view name"
                 autoFocus={autoFocus}
-                name="gridViewName"
-                defaultValue={defaultValue}
-                placeholder={placeholder ?? 'Grid View Name'}
                 className={'form-control' + (nameError ? ' grid-view-name-error' : '')}
-                value={viewName}
+                defaultValue={defaultValue}
+                disabled={isDefaultView}
+                name="gridViewName"
+                onBlur={_onBlur}
                 onChange={onViewNameChange}
                 onFocus={clearError}
-                onBlur={_onBlur}
-                disabled={isDefaultView}
+                placeholder={placeholder ?? 'Grid View Name'}
                 type="text"
+                value={viewName}
             />
             {nameError && <span className="text-danger">{nameError}</span>}
         </>
@@ -134,11 +134,18 @@ export const SaveViewModal: FC<Props> = memo(props => {
     const [isDefaultView, setIsDefaultView] = useState<boolean>(
         () => user.hasAdminPermission() && currentView?.isDefault
     );
-    const [canInherit, setCanInherit] = useState<boolean>(currentView?.inherit);
-    const [isShared, setIsShared] = useState<boolean>(currentView?.shared);
     const [errorMessage, setErrorMessage] = useState<string>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>();
     const canEditShared = userCanEditSharedViews(user);
+    const canInheritView = canInheritGridView(user, container, moduleContext);
+    const showInheritOption = isProductFoldersEnabled(moduleContext) && canInheritView;
+    // GitHub Issue #899: a session view is never shared or inheritable, so read both flags off the view it shadows.
+    const [isShared, setIsShared] = useState<boolean>(
+        () => canEditShared && !!(currentView?.shadowed?.shared ?? currentView?.shared)
+    );
+    const [canInherit, setCanInherit] = useState<boolean>(
+        () => canInheritView && !!(currentView?.shadowed?.inherit ?? currentView?.inherit)
+    );
 
     const saveView = useCallback(async () => {
         if (!viewName && !isDefaultView) return;
@@ -191,12 +198,12 @@ export const SaveViewModal: FC<Props> = memo(props => {
                         <div className="content-form">
                             <label className="clickable">
                                 <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    name="setSaveType"
-                                    id="defaultView"
-                                    onChange={toggleDefaultView}
                                     checked={isDefaultView}
+                                    className="form-check-input"
+                                    id="defaultView"
+                                    name="setSaveType"
+                                    onChange={toggleDefaultView}
+                                    type="radio"
                                 />
                                 <span className="margin-left">Save as default view for all users</span>
                             </label>
@@ -205,8 +212,8 @@ export const SaveViewModal: FC<Props> = memo(props => {
                             <label className="clickable">
                                 <input
                                     checked={!isDefaultView}
-                                    name="setSaveType"
                                     id="customView"
+                                    name="setSaveType"
                                     onChange={toggleDefaultView}
                                     type="radio"
                                 />
@@ -221,10 +228,10 @@ export const SaveViewModal: FC<Props> = memo(props => {
                             })}
                         >
                             <ViewNameInput
-                                onChange={onViewNameChange}
-                                onBlur={onViewNameChange}
-                                view={currentView}
                                 isDefaultView={isDefaultView}
+                                onBlur={onViewNameChange}
+                                onChange={onViewNameChange}
+                                view={currentView}
                             />
                         </div>
                     )}
@@ -232,34 +239,32 @@ export const SaveViewModal: FC<Props> = memo(props => {
                         <div className="form-check">
                             <input
                                 aria-labelledby="shared-to-users-label"
+                                checked={isShared}
                                 className="form-check-input"
-                                type="checkbox"
                                 name="setShared"
                                 onChange={toggleShared}
-                                checked={isShared}
+                                type="checkbox"
                             />
                             <span className="margin-left" id="shared-to-users-label">
                                 Make this grid view available to all users
                             </span>
                         </div>
                     )}
-                    {isProductFoldersEnabled(moduleContext) &&
-                        isAppHomeFolder(container, moduleContext) &&
-                        canEditShared && (
-                            <div className="form-check">
-                                <input
-                                    aria-labelledby="shared-to-folders-label"
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    name="setInherit"
-                                    onChange={toggleInherit}
-                                    checked={canInherit}
-                                />
-                                <span className="margin-left" id="shared-to-folders-label">
-                                    Make this grid view available in all Folders
-                                </span>
-                            </div>
-                        )}
+                    {showInheritOption && (
+                        <div className="form-check">
+                            <input
+                                aria-labelledby="shared-to-folders-label"
+                                checked={canInherit}
+                                className="form-check-input"
+                                name="setInherit"
+                                onChange={toggleInherit}
+                                type="checkbox"
+                            />
+                            <span className="margin-left" id="shared-to-folders-label">
+                                Make this grid view available in all Folders
+                            </span>
+                        </div>
+                    )}
                     <div className="top-padding">
                         Learn more about <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
                     </div>

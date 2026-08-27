@@ -81,7 +81,7 @@ import { Actions, InjectedQueryModels, RequiresModelAndActions, withQueryModels 
 import { ChartList } from './ChartPanel';
 
 const READONLY_FILTER_TIP =
-    "Filter can't be edited because it's saved with the view. Remove it and add it again to make changes.";
+    'Filter cannot be edited as it is saved with the view. Remove it and add it again to make changes.';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     advancedExportOptions?: Record<string, any>;

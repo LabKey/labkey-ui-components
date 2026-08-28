@@ -135,19 +135,18 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
 
         const { messages, metaData, queryInfo, rowCount } = result;
         const { metadataAltKey, metadataKey } = resolveRowKey(metaData, queryInfo);
-        const hasKey = metadataKey || metadataAltKey;
         const orderedRows: string[] = [];
         const rows: Record<string, Row> = {};
 
         result.rows.forEach((row, index) => {
-            if (hasKey) {
+            if (metadataKey || metadataAltKey) {
                 const val = row[metadataKey] ?? row[metadataAltKey];
                 if (val !== undefined) {
                     const value = val.value.toString();
                     orderedRows.push(value);
                     rows[value] = row;
                 } else {
-                    console.error('Missing entry', metadataKey, row, result.schemaQuery.toString(true));
+                    console.error('Missing entry', result.schemaQuery.toString(true), metadataKey, metadataAltKey, row);
                 }
             } else {
                 orderedRows.push(index.toString());

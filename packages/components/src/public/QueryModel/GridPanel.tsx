@@ -486,15 +486,13 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 const readOnlyMessage = includeReadOnlyMessage ? READONLY_FILTER_TIP : undefined;
                 const column = model.getColumnByFieldKey(filter.getColumnName());
                 if (column) {
-                    actionValues.push(
-                        this.gridActions.filter.actionValueFromFilter(filter, column, readOnlyMessage)
-                    );
+                    actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, column, readOnlyMessage));
                 } else if (filter.getColumnName() === '*') {
-                    actionValues.push(
-                        this.gridActions.search.actionValueFromFilter(filter, readOnlyMessage)
-                    );
+                    actionValues.push(this.gridActions.search.actionValueFromFilter(filter, readOnlyMessage));
                 } else if (includeUnresolvedColumns) {
-                    actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, undefined, readOnlyMessage));
+                    actionValues.push(
+                        this.gridActions.filter.actionValueFromFilter(filter, undefined, readOnlyMessage)
+                    );
                 }
             });
         }

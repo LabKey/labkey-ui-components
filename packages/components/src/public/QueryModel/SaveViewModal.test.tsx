@@ -10,6 +10,8 @@ import { userEvent } from '@testing-library/user-event';
 
 import { ViewInfo } from '../../internal/ViewInfo';
 
+import { QuerySort } from '../QuerySort';
+
 import {
     TEST_USER_APP_ADMIN,
     TEST_USER_EDITOR,
@@ -18,6 +20,9 @@ import {
 } from '../../internal/userFixtures';
 
 import { renderWithAppContext } from '../../internal/test/reactTestLibraryHelpers';
+
+import { FilterAction } from './grid/actions/Filter';
+import { SortAction } from './grid/actions/Sort';
 
 import { SaveViewModal, ViewNameInput } from './SaveViewModal';
 
@@ -95,7 +100,7 @@ describe('SaveViewModal', () => {
 
         expect(document.querySelector('.modal-title').textContent).toBe('Save Grid View');
         expect(document.querySelector('.modal-body').textContent).toContain(
-            'Columns, sort order, and filters will be saved. Once saved, this view will be available for all Blood Samples grids throughout the application.'
+            'Once saved, this view will be available for all Blood Samples grids throughout the application.'
         );
         expect(document.querySelectorAll('input[name="gridViewName"]')).toHaveLength(0);
         expect(document.querySelector('input[id="defaultView"]').hasAttribute('checked')).toBeTruthy();
@@ -118,7 +123,7 @@ describe('SaveViewModal', () => {
 
         expect(document.querySelector('.modal-title').textContent).toBe('Save Grid View');
         expect(document.querySelector('.modal-body').textContent).toContain(
-            'Columns, sort order, and filters will be saved. Once saved, this view will be available for all Blood Samples grids throughout the application.'
+            'Once saved, this view will be available for all Blood Samples grids throughout the application.'
         );
         expect(document.querySelector('input[name="gridViewName"]').getAttribute('value')).toBe('View1');
         expect(document.querySelector('input[id="defaultView"]').hasAttribute('checked')).toBeFalsy();
@@ -141,7 +146,7 @@ describe('SaveViewModal', () => {
 
         expect(document.querySelector('.modal-title').textContent).toBe('Save Grid View');
         expect(document.querySelector('.modal-body').textContent).toContain(
-            'Columns, sort order, and filters will be saved. Once saved, this view will be available for all Blood Samples grids throughout the application.'
+            'Once saved, this view will be available for all Blood Samples grids throughout the application.'
         );
         expect(document.querySelector('input[name="gridViewName"]').getAttribute('value')).toBe('View1');
         expect(document.querySelector('input[id="defaultView"]').hasAttribute('checked')).toBeFalsy();
@@ -164,7 +169,7 @@ describe('SaveViewModal', () => {
 
         expect(document.querySelector('.modal-title').textContent).toBe('Save Grid View');
         expect(document.querySelector('.modal-body').textContent).toContain(
-            'Columns, sort order, and filters will be saved. Once saved, this view will be available for all Blood Samples grids throughout the application.'
+            'Once saved, this view will be available for all Blood Samples grids throughout the application.'
         );
         expect(document.querySelector('input[name="gridViewName"]').getAttribute('value')).toBe('View2');
         expect(document.querySelectorAll('input[name="setDefaultView"]').length).toEqual(0);
@@ -186,12 +191,84 @@ describe('SaveViewModal', () => {
 
         expect(document.querySelector('.modal-title').textContent).toBe('Save Grid View');
         expect(document.querySelector('.modal-body').textContent).toContain(
-            'Columns, sort order, and filters will be saved. Once saved, this view will be available for all Blood Samples grids throughout the application.'
+            'Once saved, this view will be available for all Blood Samples grids throughout the application.'
         );
         expect(document.querySelector('input[name="gridViewName"]').getAttribute('value')).toBe('View2');
         expect(document.querySelectorAll('input[name="setDefaultView"]')).toHaveLength(0);
         expect(document.querySelectorAll('input[name="setInherit"]')).toHaveLength(0);
         expect(document.querySelectorAll('input[name="setShared"]')).toHaveLength(0);
+    });
+
+    test('no filters or sorts', () => {
+        renderWithAppContext(<SaveViewModal {...DEFAULT_PROPS} currentView={VIEW_1} />, {
+            serverContext: { user: TEST_USER_EDITOR, moduleContext },
+        });
+
+        const sections = document.querySelectorAll('.save-view-modal__action-values');
+        expect(sections).toHaveLength(2);
+        expect(sections[0].textContent).toBe('Filters included in viewNo filters applied');
+        expect(sections[1].textContent).toBe('Sort order for this viewNo sort applied');
+        expect(document.querySelectorAll('.filter-status-value')).toHaveLength(0);
+    });
+
+    test('filters and sorts to be saved', () => {
+        renderWithAppContext(
+            <SaveViewModal
+                {...DEFAULT_PROPS}
+                currentView={VIEW_1}
+                filterActionValues={[
+                    {
+                        action: new FilterAction('query'),
+                        displayValue: 'Status = Available',
+                        isRemovable: false,
+                        value: 'Status = Available',
+                    },
+                ]}
+                sortActionValues={[
+                    {
+                        action: new SortAction(),
+                        displayValue: 'Sample ID',
+                        isRemovable: false,
+                        value: 'SampleID ASC',
+                        valueObject: new QuerySort({ fieldKey: 'SampleID' }),
+                    },
+                ]}
+            />,
+            { serverContext: { user: TEST_USER_EDITOR, moduleContext } }
+        );
+
+        const values = document.querySelectorAll('.filter-status-value');
+        expect(values).toHaveLength(2);
+        expect(values[0].textContent).toBe('Status = Available');
+        expect(values[1].textContent).toBe('Sample ID');
+        expect(values[1].querySelectorAll('.fa-sort-amount-asc')).toHaveLength(1);
+        expect(values[1].parentElement.getAttribute('title')).toBe('Sorted ascending');
+        // display only: no remove affordance on hover
+        expect(document.querySelectorAll('.fa-close')).toHaveLength(0);
+    });
+
+    test('descending sort', () => {
+        renderWithAppContext(
+            <SaveViewModal
+                {...DEFAULT_PROPS}
+                currentView={VIEW_1}
+                sortActionValues={[
+                    {
+                        action: new SortAction(),
+                        displayValue: 'Sample ID',
+                        isRemovable: false,
+                        value: 'SampleID DESC',
+                        valueObject: new QuerySort({ fieldKey: 'SampleID', dir: '-' }),
+                    },
+                ]}
+            />,
+            { serverContext: { user: TEST_USER_EDITOR, moduleContext } }
+        );
+
+        const sortTag = document.querySelector('.filter-status-value');
+        expect(sortTag.textContent).toBe('Sample ID');
+        expect(sortTag.querySelectorAll('.fa-sort-amount-desc')).toHaveLength(1);
+        expect(sortTag.parentElement.getAttribute('title')).toBe('Sorted descending');
     });
 
     test('session view uses the shadowed view inherit flag', () => {

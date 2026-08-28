@@ -24,9 +24,11 @@ import { GRID_CHECKBOX_OPTIONS } from '../../internal/constants';
 import { QueryModel } from './QueryModel';
 import { GridPanel, GridTitle } from './GridPanel';
 import { makeTestActions, makeTestQueryModel } from './testUtils';
-import { RequiresModelAndActions } from './withQueryModels';
+import { Actions, RequiresModelAndActions } from './withQueryModels';
 import { RowsResponse } from './QueryModelLoader';
 import { renderWithAppContext } from '../../internal/test/reactTestLibraryHelpers';
+import { Container } from '../../internal/components/base/models/Container';
+import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../internal/containerFixtures';
 
 const SCHEMA_QUERY = new SchemaQuery('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;
@@ -41,7 +43,6 @@ class TestButtons extends PureComponent<RequiresModelAndActions> {
 beforeAll(() => {
     QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
     DATA = makeTestData(mixturesQuery);
-    LABKEY.user = TEST_USER_READER;
 });
 
 const CHART_MENU_SELECTOR = '.chart-menu';
@@ -58,7 +59,7 @@ const CLEAR_ALL_SELECTOR = '.selection-status__clear-all';
 const ERROR_SELECTOR = '.grid-panel__grid .alert-danger';
 
 describe('GridPanel', () => {
-    let actions;
+    let actions: Actions;
 
     beforeEach(() => {
         actions = makeTestActions(jest.fn);
@@ -362,7 +363,7 @@ describe('GridPanel', () => {
 
     test('FilterStatus from saved view', () => {
         // This test ensures that the filter status includes sorts/filters from the saved view
-        const nameSort = { fieldKey: 'Name', dir: '+' };
+        const nameSort = { fieldKey: 'Name', dir: '+' } as QuerySort;
         const nameFilter = { fieldKey: 'Name', value: 'DMXP', op: 'eq' };
         const expirFilter = { fieldKey: 'expirationTime', value: '1', op: 'eq' };
         const view = ViewInfo.fromJson({
@@ -391,6 +392,78 @@ describe('GridPanel', () => {
         expect(filterTags[1].classList).not.toContain('is-readonly');
         expect(filterTags[2]).toHaveTextContent('Name = DMXP');
         expect(filterTags[2].classList).toContain('is-readonly');
+    });
+
+    test('SaveViewModal lists the filters and sorts that will be saved', async () => {
+        const view = ViewInfo.fromJson({
+            name: ViewInfo.DEFAULT_NAME.toLowerCase(),
+            filter: [{ fieldKey: 'Name', value: 'DMXP', op: 'eq' }],
+            sort: [{ fieldKey: 'Name', dir: '+' }],
+            savable: true,
+            session: true,
+        });
+        const queryInfo = new QueryInfo({
+            columns: QUERY_INFO.columns,
+            views: new ExtendedMap({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+        });
+        const model = makeTestQueryModel(SCHEMA_QUERY, queryInfo, {}, [], 0).mutate({
+            filterArray: [Filter.create('expirationTime', '2')],
+            sorts: [new QuerySort({ fieldKey: 'expirationTime', dir: '-' })],
+        });
+        renderWithAppContext(<GridPanel actions={actions} model={model} />, {
+            serverContext: { user: TEST_USER_EDITOR },
+        });
+
+        await userEvent.click(document.querySelector('.view-header .btn-success'));
+
+        const sections = document.querySelectorAll('.save-view-modal__action-values');
+        expect(sections).toHaveLength(2);
+
+        // the view's saved filters and the user's ad hoc ones, both without the grid bar's read-only treatment
+        const filterTags = sections[0].querySelectorAll(FILTER_STATUS_VALUE);
+        expect(filterTags).toHaveLength(2);
+        expect(filterTags[0]).toHaveTextContent('Name = DMXP');
+        expect(filterTags[1]).toHaveTextContent('Expiration Time = 2');
+        expect(document.querySelectorAll('.save-view-modal .is-readonly')).toHaveLength(0);
+
+        const sortTags = sections[1].querySelectorAll(FILTER_STATUS_VALUE);
+        expect(sortTags).toHaveLength(2);
+        expect(sortTags[0]).toHaveTextContent('Expiration Time');
+        expect(sortTags[0].querySelectorAll('.fa-sort-amount-desc')).toHaveLength(1);
+        expect(sortTags[0].parentElement).toHaveAttribute('title', 'Sorted descending');
+        expect(sortTags[1]).toHaveTextContent('Name');
+        expect(sortTags[1].querySelectorAll('.fa-sort-amount-asc')).toHaveLength(1);
+        expect(sortTags[1].parentElement).toHaveAttribute('title', 'Sorted ascending');
+    });
+
+    // GitHub Issue #696: onSaveView persists filters and sorts whether or not the grid can resolve a column for them,
+    // so the dialog has to list them even though the filter status bar leaves them out.
+    test('SaveViewModal lists filters and sorts whose column no longer resolves', async () => {
+        const view = ViewInfo.fromJson({
+            name: ViewInfo.DEFAULT_NAME.toLowerCase(),
+            filter: [{ fieldKey: 'DeletedField', value: 'x', op: 'eq' }],
+            sort: [{ fieldKey: 'DeletedField', dir: '+' }],
+            savable: true,
+            session: true,
+        });
+        const queryInfo = new QueryInfo({
+            columns: QUERY_INFO.columns,
+            views: new ExtendedMap({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+        });
+        const model = makeTestQueryModel(SCHEMA_QUERY, queryInfo, {}, [], 0);
+        renderWithAppContext(<GridPanel actions={actions} model={model} />, {
+            serverContext: { user: TEST_USER_EDITOR },
+        });
+
+        expect(document.querySelectorAll(`${FILTER_STATUS_SELECTOR} ${FILTER_STATUS_VALUE}`)).toHaveLength(0);
+
+        await userEvent.click(document.querySelector('.view-header .btn-success'));
+
+        const sections = document.querySelectorAll('.save-view-modal__action-values');
+        expect(sections[0].querySelectorAll(FILTER_STATUS_VALUE)).toHaveLength(1);
+        expect(sections[0].querySelector(FILTER_STATUS_VALUE)).toHaveTextContent('DeletedField = x');
+        expect(sections[1].querySelectorAll(FILTER_STATUS_VALUE)).toHaveLength(1);
+        expect(sections[1].querySelector(FILTER_STATUS_VALUE)).toHaveTextContent('DeletedField');
     });
 
     const getCheckbox = (index: number): HTMLInputElement => {
@@ -732,7 +805,7 @@ describe('GridTitle', () => {
     });
 
     // GitHub Issue #899
-    const renderSaveCurrentView = (onSaveView: jest.Mock, path: string, type: string) => {
+    const renderSaveCurrentView = (onSaveView: jest.Mock, container: Container) => {
         const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
         const sessionQueryInfo = QUERY_INFO.mutate({
             views: QUERY_INFO.views.merge({
@@ -749,7 +822,7 @@ describe('GridTitle', () => {
             {
                 serverContext: {
                     user: TEST_USER_PROJECT_ADMIN,
-                    container: { path, type },
+                    container,
                     moduleContext: { query: { isProductFoldersEnabled: true } },
                 },
             }
@@ -758,7 +831,7 @@ describe('GridTitle', () => {
 
     test('save current view from a subfolder does not inherit', async () => {
         const onSaveView = jest.fn();
-        const { container } = renderSaveCurrentView(onSaveView, '/project/a', 'folder');
+        const { container } = renderSaveCurrentView(onSaveView, TEST_FOLDER_CONTAINER);
 
         await userEvent.click(container.querySelector('.split-button-dropdown__button'));
 
@@ -768,7 +841,7 @@ describe('GridTitle', () => {
 
     test('save current view from the home folder keeps inherit', async () => {
         const onSaveView = jest.fn();
-        const { container } = renderSaveCurrentView(onSaveView, '/project', 'project');
+        const { container } = renderSaveCurrentView(onSaveView, TEST_PROJECT_CONTAINER);
 
         await userEvent.click(container.querySelector('.split-button-dropdown__button'));
 

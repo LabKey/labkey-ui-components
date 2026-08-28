@@ -2,7 +2,7 @@
  * Copyright (c) 2022-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { PermissionTypes } from '@labkey/api';
 
@@ -16,6 +16,9 @@ import { RequiresPermission } from '../../internal/components/base/Permissions';
 import { canInheritGridView, isProductFoldersEnabled, userCanEditSharedViews } from '../../internal/app/utils';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 import { ViewInfo } from '../../internal/ViewInfo';
+
+import { ActionValue } from './grid/actions/Action';
+import { Value } from './grid/Value';
 
 const MAX_VIEW_NAME_LENGTH = 200;
 
@@ -116,15 +119,46 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
     );
 });
 
+// The sort pills' only cue for direction is their icon, so give it a tooltip
+const ICON_TITLES = {
+    'sort-amount-asc': 'Sorted ascending',
+    'sort-amount-desc': 'Sorted descending',
+};
+
+interface SavedActionValuesProps {
+    actionValues: ActionValue[];
+    emptyText: string;
+    label: string;
+}
+
+// GitHub Issue #696: show the filters and sorts a save will include the view; display only pills
+const SavedActionValues: FC<SavedActionValuesProps> = memo(({ actionValues, emptyText, label }) => (
+    <div className="save-view-modal__action-values">
+        <div className="bold-text">{label}</div>
+        {actionValues.length === 0 ? (
+            <div className="save-view-modal__no-action-values">{emptyText}</div>
+        ) : (
+            actionValues.map((actionValue, index) => (
+                <span key={index} title={ICON_TITLES[actionValue.action.iconCls]}>
+                    <Value actionValue={actionValue} index={index} />
+                </span>
+            ))
+        )}
+    </div>
+));
+SavedActionValues.displayName = 'SavedActionValues';
+
 interface Props {
     currentView: ViewInfo;
+    filterActionValues?: ActionValue[];
     gridLabel: string;
     onCancel: () => void;
     onConfirmSave: (viewName, canInherit, replace, shared) => Promise<any>;
+    sortActionValues?: ActionValue[];
 }
 
 export const SaveViewModal: FC<Props> = memo(props => {
-    const { onConfirmSave, currentView, onCancel, gridLabel } = props;
+    const { onConfirmSave, currentView, filterActionValues, onCancel, gridLabel, sortActionValues } = props;
     const { container, moduleContext, user } = useServerContext();
 
     const [viewName, setViewName] = useState<string>(
@@ -174,12 +208,25 @@ export const SaveViewModal: FC<Props> = memo(props => {
         setNameError(false);
     }, []);
 
+    const sortValues = useMemo(
+        () =>
+            sortActionValues?.map(actionValue => ({
+                ...actionValue,
+                action: {
+                    ...actionValue.action,
+                    iconCls: actionValue.valueObject?.dir === '-' ? 'sort-amount-desc' : 'sort-amount-asc',
+                },
+            })) ?? [],
+        [sortActionValues]
+    );
+
     const toggleInherit = useCallback((evt: ChangeEvent<HTMLInputElement>) => setCanInherit(evt.target.checked), []);
     const toggleShared = useCallback((evt: ChangeEvent<HTMLInputElement>) => setIsShared(evt.target.checked), []);
 
     return (
         <Modal
             canConfirm={(!!viewName && !nameError) || isDefaultView}
+            className="save-view-modal"
             isConfirming={isSubmitting}
             onCancel={onCancel}
             onConfirm={saveView}
@@ -189,8 +236,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
             <form onSubmit={saveView}>
                 <div className="form-group">
                     <div className="bottom-padding">
-                        Columns, sort order, and filters will be saved. Once saved, this view will be available for all{' '}
-                        {gridLabel} grids throughout the application.
+                        Once saved, this view will be available for all {gridLabel} grids throughout the application.
                     </div>
 
                     <RequiresPermission perms={PermissionTypes.Admin}>
@@ -265,6 +311,16 @@ export const SaveViewModal: FC<Props> = memo(props => {
                             </span>
                         </div>
                     )}
+                    <SavedActionValues
+                        actionValues={filterActionValues ?? []}
+                        emptyText="No filters applied"
+                        label="Filters included in view"
+                    />
+                    <SavedActionValues
+                        actionValues={sortValues}
+                        emptyText="No sort applied"
+                        label="Sort order for this view"
+                    />
                     <div className="top-padding">
                         Learn more about <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
                     </div>

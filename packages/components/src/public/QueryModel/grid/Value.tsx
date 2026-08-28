@@ -2,12 +2,14 @@
  * Copyright (c) 2018-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 
-import { useEnterEscape } from '../../useEnterEscape';
-
 import { ActionValue } from './actions/Action';
+import { useEnterEscape } from '../../useEnterEscape';
+import { OverlayTrigger } from '../../../internal/OverlayTrigger';
+import { Popover } from '../../../internal/Popover';
+import { generateId } from '../../../internal/util/utils';
 
 interface ValueProps {
     actionValue: ActionValue;
@@ -22,6 +24,7 @@ export const valueClassName = 'filter-status-value';
 export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyForDelete, onClick, onRemove }) => {
     const [isActive, setIsActive] = useState(false);
     const { action, value, displayValue, isReadOnly, isRemovable } = actionValue;
+    const popoverId = useMemo(() => generateId('filter-status-value-popover-'), []);
 
     const onIconClick = useCallback(
         (event: React.MouseEvent): void => {
@@ -79,7 +82,7 @@ export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyFor
         showRemoveIcon ? 'fa-close' : action.iconCls ? 'fa-' + action.iconCls : ''
     );
 
-    return (
+    const content = (
         <div
             className={className}
             onClick={onValueClick}
@@ -87,12 +90,27 @@ export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyFor
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             tabIndex={0}
-            title={isReadOnly}
         >
             {(!lockReadOnlyForDelete || !isReadOnly) && <i className={iconClassNames} onClick={onIconClick} />}
             {isReadOnly ? <i className="read-lock fa fa-lock" /> : null}
             <span>{displayValue ?? value}</span>
         </div>
     );
+
+    if (!!isReadOnly) {
+        return (
+            <OverlayTrigger
+                overlay={
+                    <Popover id={popoverId} placement="top">
+                        {isReadOnly}
+                    </Popover>
+                }
+            >
+                {content}
+            </OverlayTrigger>
+        );
+    }
+
+    return content;
 });
 Value.displayName = 'Value';

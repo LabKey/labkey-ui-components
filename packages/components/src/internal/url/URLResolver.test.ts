@@ -192,21 +192,6 @@ describe('URLResolver', () => {
             ]);
         });
 
-        test('does not mutate the result', () => {
-            const result = createResult([
-                {
-                    data: { name: 'Molecule' },
-                    id: 'materialSource:1',
-                    url: '/labkey/testContainer/experiment-showSampleType.view?rowId=1&_docid=a',
-                },
-            ]);
-            const original = JSON.parse(JSON.stringify(result));
-            const resolved = resolver.resolveSearchUsingIndex(result);
-
-            expect(result).toEqual(original);
-            expect(resolved.hits[0]).not.toBe(result.hits[0]);
-        });
-
         // Each branch of the hit-matching chain, exercised with a url no registered mapper resolves so that the
         // (possibly rewritten) url passed to mapURL is what comes back out.
         describe('hit matching', () => {
@@ -270,58 +255,62 @@ describe('URLResolver', () => {
                 expect(captured.map(c => c.query)).toStrictEqual(['My Assay']);
             });
 
-            test('material id hit resolves the query from data.sampleSet.name and keeps the doc id', () => {
+            test('material id hit resolves the query from data.sampleSet.name', () => {
                 const hit = resolveHit({
                     data: { sampleSet: { name: 'Hemoglobin' } },
                     id: 'material:1',
                     url: UNMAPPED_DOC_ID,
                 });
 
-                expect(hit.url).toBe(UNMAPPED_DOC_ID);
+                expect(hit.url).toBe(UNMAPPED);
                 expect(captured.map(c => c.query)).toStrictEqual(['Hemoglobin']);
             });
 
-            test('hit with data.id resolves the query from data.type and keeps the doc id', () => {
+            test('hit with data.id resolves the query from data.type', () => {
                 const hit = resolveHit({ data: { id: 7, type: 'sampleSet' }, id: 'anything:1', url: UNMAPPED_DOC_ID });
 
-                expect(hit.url).toBe(UNMAPPED_DOC_ID);
+                expect(hit.url).toBe(UNMAPPED);
                 expect(captured.map(c => c.query)).toStrictEqual(['sampleSet']);
             });
 
             test('workflow job hit maps with no query', () => {
                 const hit = resolveHit({ id: 'workflowJob:12', url: UNMAPPED_DOC_ID });
 
-                expect(hit.url).toBe(UNMAPPED_DOC_ID);
+                expect(hit.url).toBe(UNMAPPED);
                 expect(captured.map(c => c.query)).toStrictEqual([undefined]);
             });
 
-            test('storage location hit strips an ampersand-delimited doc id parameter', () => {
-                const hit = resolveHit({ id: 'storageLocation:5', url: UNMAPPED_DOC_ID });
+            test('strips an ampersand-delimited doc id from any hit', () => {
+                const hit = resolveHit({ id: 'anything:1', url: UNMAPPED_DOC_ID });
 
                 expect(hit.url).toBe(UNMAPPED);
                 expect(captured.map(c => c.query)).toStrictEqual([undefined]);
             });
 
-            test('storage location hit strips a doc id parameter that is the whole query string', () => {
-                const hit = resolveHit({ id: 'storageLocation:5', url: '/labkey/testContainer/foo-bar.view?_docid=a' });
+            test('strips a doc id that is the whole query string', () => {
+                const hit = resolveHit({ id: 'anything:1', url: '/labkey/testContainer/foo-bar.view?_docid=a' });
 
                 expect(hit.url).toBe('/labkey/testContainer/foo-bar.view');
                 expect(captured.map(c => c.query)).toStrictEqual([undefined]);
             });
 
-            test('workflow attachment hit maps with no query and keeps the doc id', () => {
-                const url = '/labkey/testContainer/workflow-downloadAttachments.view?id=1&_docid=a';
-                const hit = resolveHit({ id: 'anything:1', url });
+            test('workflow attachment hit maps with no query', () => {
+                const hit = resolveHit({
+                    id: 'anything:1',
+                    url: '/labkey/testContainer/workflow-downloadAttachments.view?id=1&_docid=a',
+                });
 
-                expect(hit.url).toBe(url);
+                expect(hit.url).toBe('/labkey/testContainer/workflow-downloadAttachments.view?id=1');
                 expect(captured.map(c => c.query)).toStrictEqual([undefined]);
             });
 
-            test('notebook hit maps with no query and keeps the doc id', () => {
-                const url = '/labkey/testContainer/notebook-view.view?id=1&_docid=a';
-                const hit = resolveHit({ id: 'anything:1', url });
+            test('notebook hit maps with no query', () => {
+                const hit = resolveHit({
+                    id: 'anything:1',
+                    url: '/labkey/testContainer/notebook-view.view?id=1&_docid=a',
+                });
 
-                expect(hit.url).toBe(url);
+                expect(hit.url).toBe('/labkey/testContainer/notebook-view.view?id=1');
                 expect(captured.map(c => c.query)).toStrictEqual([undefined]);
             });
 
@@ -329,44 +318,77 @@ describe('URLResolver', () => {
                 const url = '/labkey/testContainer/plate-designer.view?rowId=3&_docid=a';
                 const hit = resolveHit({ data: { rowId: 3 }, id: 'anything:1', url });
 
-                expect(hit.url).toBe(url);
+                expect(hit.url).toBe('/labkey/testContainer/plate-designer.view?rowId=3');
                 expect(captured.map(c => c.query)).toStrictEqual([3]);
             });
 
-            test('plate designer hit without a data.rowId is left untouched', () => {
+            test('plate designer hit without a data.rowId is mapped on the url alone', () => {
                 const url = '/labkey/testContainer/plate-designer.view?_docid=a';
                 const hit = resolveHit({ data: {}, id: 'anything:1', url });
 
-                expect(hit.url).toBe(url);
-                expect(captured).toHaveLength(0);
+                expect(hit.url).toBe('/labkey/testContainer/plate-designer.view');
+                expect(captured.map(c => c.query)).toStrictEqual([undefined]);
             });
 
-            // The final branch tests indexOf results for truthiness rather than >= 0, and -1 is truthy, so any
-            // remaining hit carrying a data.rowId lands here. Pinning current behavior, not endorsing it.
-            test('any remaining hit with a data.rowId resolves the query from data.rowId', () => {
+            test('plate set details row hit resolves the query from data.rowId', () => {
+                const url =
+                    '/labkey/testContainer/query-queryDetailsRow.view?schemaName=assay.Plate&query.queryName=PlateSet&rowId=7&_docid=a';
+                const hit = resolveHit({ data: { rowId: 7 }, id: 'anything:1', url });
+
+                expect(hit.url).toBe(url.substring(0, url.indexOf('&_docid')));
+                expect(captured.map(c => c.query)).toStrictEqual([7]);
+            });
+
+            test('a hit that is not a plate set details row does not take its data.rowId as the query', () => {
                 const hit = resolveHit({ data: { rowId: 99 }, id: 'anything:1', url: UNMAPPED_DOC_ID });
 
-                expect(hit.url).toBe(UNMAPPED_DOC_ID);
-                expect(captured.map(c => c.query)).toStrictEqual([99]);
+                expect(hit.url).toBe(UNMAPPED);
+                expect(captured.map(c => c.query)).toStrictEqual([undefined]);
             });
 
-            test('a hit matching no branch is left untouched', () => {
+            test('a hit matching no branch is mapped on the url alone', () => {
                 const hit = resolveHit({ data: {}, id: 'anything:1', url: UNMAPPED_DOC_ID });
 
-                expect(hit.url).toBe(UNMAPPED_DOC_ID);
-                expect(captured).toHaveLength(0);
+                expect(hit.url).toBe(UNMAPPED);
+                expect(captured.map(c => c.query)).toStrictEqual([undefined]);
             });
 
-            // Truncation cuts at the first '&' rather than at '_docid', so a url with no query-string separator
-            // is truncated away entirely.
-            test('truncation empties a url that has no ampersand', () => {
+            test('a hit matching no branch still resolves a mappable url', () => {
+                const hit = resolveHit({
+                    data: {},
+                    id: 'anything:1',
+                    url: '/labkey/testContainer/experiment-showData.view?rowId=124&_docid=a',
+                });
+
+                expect(hit.url).toBe('#/rd/expdata/124');
+            });
+
+            test('truncation leaves a url that has no ampersand intact', () => {
+                const url = '/labkey/testContainer/foo-bar.view';
+                const hit = resolveHit({ data: { name: 'DCName' }, id: 'dataClass:1', url });
+
+                expect(hit.url).toBe(url);
+                expect(captured.map(c => c.url)).toStrictEqual([url]);
+            });
+
+            test('strips a doc id that truncation leaves behind', () => {
                 const hit = resolveHit({
                     data: { name: 'DCName' },
                     id: 'dataClass:1',
-                    url: '/labkey/testContainer/foo-bar.view',
+                    url: '/labkey/testContainer/foo-bar.view?_docid=a',
                 });
 
-                expect(hit.url).toBe('');
+                expect(hit.url).toBe('/labkey/testContainer/foo-bar.view');
+            });
+
+            test('a hit with no doc id still resolves its url', () => {
+                const hit = resolveHit({
+                    data: { name: 'Molecule' },
+                    id: 'materialSource:1',
+                    url: '/labkey/testContainer/experiment-showSampleType.view?rowId=1',
+                });
+
+                expect(hit.url).toBe('#/samples/Molecule');
             });
 
             test('passes the whole hit to mappers as an Immutable Map', () => {

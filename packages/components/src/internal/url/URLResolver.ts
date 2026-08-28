@@ -556,11 +556,7 @@ export const URL_MAPPERS = {
     STORAGE_BOX_MAPPER,
 };
 
-// Search hit urls carry the docID after the first '&', so everything from there is dropped -- including a url that
-// has no '&' at all, which truncates to empty.
-const truncateAtDocId = (url: string): string => url.substring(0, url.indexOf('&'));
-
-// Storage location hit urls carry the docID as a _docid parameter instead.
+// Search hit urls carry the docID parameter. Strip it so that it does not propagate to application urls.
 const stripDocIdParam = (url: string): string => {
     let stripped = url;
     for (const separator of ['&_docid', '?_docid']) {
@@ -570,8 +566,7 @@ const stripDocIdParam = (url: string): string => {
     return stripped;
 };
 
-// A cell is either a primitive, null, an object, or -- for multi-value columns -- an array of those.
-const hasURL = (cell: unknown): boolean => cell !== null && typeof cell === 'object' && 'url' in cell;
+const hasURL = (cell: RowValue): boolean => !!cell?.hasOwnProperty('url');
 
 export class URLResolver {
     private mapURL = (mapper: MapURLOptions): string => {
@@ -719,49 +714,33 @@ export class URLResolver {
     resolveSearchUsingIndex(result: SearchResult): SearchResult {
         if (!result?.hits?.length) return result;
 
-        const hits = result.hits.map(hit => {
+        result.hits = result.hits.map(hit => {
             if (!hit || hit.url === undefined) return hit;
 
-            const { id } = hit;
-            let query;
-            let url = hit.url;
+            const { id, url } = hit;
+            let query: string;
 
             // TODO: This should be refactored to be based off hit.category (SearchCategory) matching
             if (hit.data?.dataClass) {
                 query = hit.data.dataClass.name;
-                url = truncateAtDocId(url);
-            } else if (id.indexOf('dataClass') >= 0) {
+            } else if (id.includes('dataClass') || id.includes('materialSource')) {
                 query = hit.data?.name;
-                url = truncateAtDocId(url);
-            } else if (id.indexOf('materialSource') >= 0) {
-                query = hit.data?.name;
-                url = truncateAtDocId(url);
-            } else if (id.indexOf('assay') >= 0) {
+            } else if (id.includes('assay')) {
                 query = hit.title;
-                url = truncateAtDocId(url);
-            } else if (id.indexOf('material') !== -1 && hit.data?.sampleSet) {
+            } else if (id.includes('material') && hit.data?.sampleSet) {
                 query = hit.data.sampleSet.name;
             } else if (hit.data?.id !== undefined) {
                 query = hit.data.type;
-            } else if (id.indexOf('workflowJob:') >= 0) {
-                // mapped on url alone
-            } else if (id.indexOf('torageLocation:') >= 0) {
-                url = stripDocIdParam(url);
-            } else if (url.indexOf('workflow-downloadAttachments') >= 0 || url.indexOf('notebook') >= 0) {
-                // mapped on url alone
-            } else if (url.indexOf('plate-designer') > -1) {
+            } else if (url.includes('plate-designer')) {
                 query = hit.data?.rowId;
-                if (!query) return hit;
-            } else if (url.indexOf('query-queryDetailsRow') && url.indexOf('.queryName=PlateSet&')) {
+            } else if (url.includes('query-queryDetailsRow') && url.includes('.queryName=PlateSet&')) {
                 query = hit.data?.rowId;
-                if (!query) return hit;
-            } else {
-                return hit;
             }
 
-            return { ...hit, url: this.mapURL({ url, row: fromJS(hit), query }) };
+            // Any hit that matched no case above is still mapped, on its url alone.
+            return { ...hit, url: this.mapURL({ url: stripDocIdParam(url), row: fromJS(hit), query }) };
         });
 
-        return { ...result, hits };
+        return result;
     }
 }

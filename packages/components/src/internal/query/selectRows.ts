@@ -11,6 +11,12 @@ import { URLResolver } from '../url/URLResolver';
 import { getContainerFilter, getQueryDetails, isSelectRowMetadataRequired } from './api';
 import { RequestHandler } from '../request';
 
+export interface SelectRowsMessage {
+    area?: string;
+    content: string;
+    type?: string;
+}
+
 export interface SelectRowsOptions
     extends Omit<
         Query.SelectRowsOptions,
@@ -29,7 +35,7 @@ export interface RowValue {
 export type Row = Record<string, RowValue>;
 
 export interface SelectRowsResponse {
-    messages: Record<string, string>[];
+    messages: SelectRowsMessage[];
     /** Only available when "includeMetadata" is set to true. */
     metaData: Query.ResponseMetadata | undefined;
     queryInfo: QueryInfo;

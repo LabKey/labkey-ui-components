@@ -27,8 +27,8 @@ import { QueryColumn } from '../QueryColumn';
 import { QueryInfo } from '../QueryInfo';
 import { naturalSortByProperty } from '../sort';
 
-import { GridMessage, QueryModel } from './QueryModel';
-import { Row, selectRows } from '../../internal/query/selectRows';
+import { QueryModel } from './QueryModel';
+import { Row, selectRows, SelectRowsMessage } from '../../internal/query/selectRows';
 
 export function bindColumnRenderers(columns: ExtendedMap<string, QueryColumn>): ExtendedMap<string, QueryColumn> {
     if (columns) {
@@ -53,7 +53,7 @@ export function bindColumnRenderers(columns: ExtendedMap<string, QueryColumn>): 
 }
 
 export interface RowsResponse {
-    messages: GridMessage[];
+    messages: SelectRowsMessage[];
     orderedRows: string[];
     rowCount: number;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -154,12 +154,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
             }
         });
 
-        return {
-            messages: messages as unknown as GridMessage[],
-            orderedRows,
-            rows,
-            rowCount,
-        };
+        return { messages, orderedRows, rows, rowCount };
     },
     // The selection related methods may seem like overly simple passthroughs, but by putting them on QueryModelLoader,
     // instead of in withQueryModels, it allows us to easily mock them or provide alternate implementations.

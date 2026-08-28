@@ -1946,7 +1946,13 @@ export type {
     ExecuteSqlResponseWithoutSession,
     ExecuteSqlResponseWithSession,
 } from './internal/query/executeSql';
-export type { Row, RowValue, SelectRowsOptions, SelectRowsResponse } from './internal/query/selectRows';
+export type {
+    Row,
+    RowValue,
+    SelectRowsMessage,
+    SelectRowsOptions,
+    SelectRowsResponse,
+} from './internal/query/selectRows';
 export type { IAttachment } from './internal/renderers/AttachmentCard';
 export type { RequestHandler, RequestOptions } from './internal/request';
 export type { AppContextTestProviderProps } from './internal/test/testHelpers';

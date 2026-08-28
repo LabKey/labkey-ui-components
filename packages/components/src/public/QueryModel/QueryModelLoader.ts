@@ -19,7 +19,7 @@ import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../internal/constan
 import { DataViewInfo, IDataViewInfo } from '../../internal/DataViewInfo';
 import { RequestHandler } from '../../internal/request';
 import { getQueryColumnRenderers } from '../../internal/global';
-import { getQueryDetails, selectRowsDeprecated } from '../../internal/query/api';
+import { getQueryDetails, resolveRowKey } from '../../internal/query/api';
 import { DefaultRenderer } from '../../internal/renderers/DefaultRenderer';
 import { ExtendedMap } from '../ExtendedMap';
 import { QueryColumn } from '../QueryColumn';
@@ -28,6 +28,7 @@ import { QueryInfo } from '../QueryInfo';
 import { naturalSortByProperty } from '../sort';
 
 import { GridMessage, QueryModel } from './QueryModel';
+import { Row, selectRows } from '../../internal/query/selectRows';
 
 export function bindColumnRenderers(columns: ExtendedMap<string, QueryColumn>): ExtendedMap<string, QueryColumn> {
     if (columns) {
@@ -124,20 +125,36 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
         return queryInfo.mutate({ columns: bindColumnRenderers(queryInfo.columns) });
     },
     async loadRows(model, requestHandler) {
-        const result = await selectRowsDeprecated({
+        const result = await selectRows({
             ...model.loadRowsConfig,
-            schemaName: model.schemaName,
-            queryName: model.queryName,
+            includeMetadata: true,
             includeTotalCount: false, // if requesting to includeTotalCount, it will be loaded separately via loadTotalCount
             includeStyle: true, // Issue 49100
             requestHandler,
         });
-        const { key, models, orderedModels, rowCount, messages } = result;
+
+        const { messages, metaData, queryInfo, rowCount } = result;
+        const { metadataAltKey, metadataKey } = resolveRowKey(metaData, queryInfo);
+        const orderedRows: string[] = [];
+        const rows: Record<string, Row> = {};
+
+        result.rows.forEach(row => {
+            if (metadataKey || metadataAltKey) {
+                const val = row[metadataKey] ?? row[metadataAltKey];
+                if (val !== undefined) {
+                    const value = val.value.toString();
+                    orderedRows.push(value);
+                    rows[value] = row;
+                } else {
+                    console.error('Missing entry', metadataKey, row, result.schemaQuery.toString(true));
+                }
+            }
+        });
 
         return {
-            messages: messages.toJS(),
-            rows: models[key],
-            orderedRows: orderedModels[key].toArray(),
+            messages: messages as unknown as GridMessage[],
+            orderedRows,
+            rows,
             rowCount,
         };
     },

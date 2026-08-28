@@ -512,20 +512,16 @@ export async function selectRowsDeprecated(options_: SelectRowsDeprecatedOptions
     };
 }
 
-export function handleSelectRowsResponse(response: Query.Response, queryInfo: QueryInfo): any {
-    const resolved = new URLResolver().resolveSelectRows(response, queryInfo);
+export function resolveRowKey(
+    metaData: Query.ResponseMetadata,
+    queryInfo: QueryInfo
+): { metadataAltKey: string; metadataKey: string } {
+    let metadataAltKey: string;
+    let metadataKey: string;
 
-    let count = 0,
-        hasRows = false,
-        models = {},
-        orderedModels = {},
-        qsKey = 'queries',
-        rowCount = response.rowCount || 0;
-
-    let metadataAltKey: string, metadataKey: string;
-    if (resolved.metaData) {
+    if (metaData) {
         // If metaData is present, then use its "id" value regardless of presence of a queryInfo
-        metadataKey = resolved.metaData.id;
+        metadataKey = metaData.id;
     } else if (queryInfo) {
         // Match ApiQueryResponse logic for determining "metaData.id"
         if (queryInfo.pkCols.length === 1) {
@@ -536,6 +532,21 @@ export function handleSelectRowsResponse(response: Query.Response, queryInfo: Qu
             }
         }
     }
+
+    return { metadataAltKey, metadataKey };
+}
+
+export function handleSelectRowsResponse(response: Query.Response, queryInfo: QueryInfo): any {
+    const resolved = new URLResolver().resolveSelectRows(response, queryInfo);
+
+    let count = 0,
+        hasRows = false,
+        models = {},
+        orderedModels = {},
+        qsKey = 'queries',
+        rowCount = response.rowCount || 0;
+
+    const { metadataAltKey, metadataKey } = resolveRowKey(resolved.metaData, queryInfo);
     const modelKey = resolveKeyFromJson(resolved);
 
     // ensure id -- unfortunately, with normalizr 3.x there doesn't seem to be a way to generate the id

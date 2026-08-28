@@ -33,7 +33,7 @@ beforeAll(() => {
 });
 
 describe('URLResolver', () => {
-    function resolveUrl(url: string, schemaName: string): AppURL | string | boolean {
+    function resolveUrl(url: string, schemaName: string): AppURL | boolean | string {
         return URLService.getUrlMappers()
             .toSeq()
             .map(m => m.resolve(url, fromJS({ url }), undefined, schemaName, undefined))
@@ -124,6 +124,266 @@ describe('URLResolver', () => {
             // Assert
             const [searchHit] = searchResult.hits;
             expect(searchHit.url).toEqual(`#/rd/assayrun/${assayRunRowId}`);
+        });
+
+        const UNMAPPED = '/labkey/testContainer/foo-bar.view?rowId=1';
+        const UNMAPPED_DOC_ID = `${UNMAPPED}&_docid=abc%3A1`;
+
+        function createResult(hits: unknown[], overrides: Record<string, unknown> = {}): any {
+            return {
+                hits,
+                metaData: { idProperty: 'id', root: 'hits', successProperty: 'success' },
+                q: 'searchQuery',
+                success: true,
+                totalHits: hits.length,
+                ...overrides,
+            };
+        }
+
+        test('returns the result as-is when there are no hits', () => {
+            const result = createResult([]);
+            expect(resolver.resolveSearchUsingIndex(result)).toEqual(result);
+        });
+
+        test('leaves hits without a url, and null hits, untouched', () => {
+            const result = createResult([{ container: 'c', id: 'materialSource:1', title: 'No url' }, null]);
+            const resolved = resolver.resolveSearchUsingIndex(result);
+
+            expect(resolved.hits[0]).toEqual({ container: 'c', id: 'materialSource:1', title: 'No url' });
+            expect(resolved.hits[1]).toBe(null);
+        });
+
+        test('preserves top-level result properties', () => {
+            const result = createResult(
+                [
+                    {
+                        data: { name: 'Molecule' },
+                        id: 'materialSource:1',
+                        url: '/labkey/testContainer/experiment-showSampleType.view?rowId=1&_docid=a',
+                    },
+                ],
+                { totalHits: 42 }
+            );
+            const resolved = resolver.resolveSearchUsingIndex(result);
+
+            expect(resolved.metaData).toEqual(result.metaData);
+            expect(resolved.q).toBe('searchQuery');
+            expect(resolved.success).toBe(true);
+            expect(resolved.totalHits).toBe(42);
+        });
+
+        test('maps every hit', () => {
+            const result = createResult([
+                {
+                    data: { name: 'Molecule' },
+                    id: 'materialSource:1',
+                    url: '/labkey/testContainer/experiment-showSampleType.view?rowId=1&_docid=a',
+                },
+                {
+                    data: { name: 'Protein' },
+                    id: 'materialSource:2',
+                    url: '/labkey/testContainer/experiment-showSampleType.view?rowId=2&_docid=b',
+                },
+            ]);
+
+            expect(resolver.resolveSearchUsingIndex(result).hits.map(hit => hit.url)).toEqual([
+                '#/samples/Molecule',
+                '#/samples/Protein',
+            ]);
+        });
+
+        test('does not mutate the result', () => {
+            const result = createResult([
+                {
+                    data: { name: 'Molecule' },
+                    id: 'materialSource:1',
+                    url: '/labkey/testContainer/experiment-showSampleType.view?rowId=1&_docid=a',
+                },
+            ]);
+            const original = JSON.parse(JSON.stringify(result));
+            const resolved = resolver.resolveSearchUsingIndex(result);
+
+            expect(result).toEqual(original);
+            expect(resolved.hits[0]).not.toBe(result.hits[0]);
+        });
+
+        // Each branch of the hit-matching chain, exercised with a url no registered mapper resolves so that the
+        // (possibly rewritten) url passed to mapURL is what comes back out.
+        describe('hit matching', () => {
+            interface CapturedHit {
+                query: string;
+                row: ImmutableMap<string, unknown>;
+                url: string;
+            }
+
+            const captured: CapturedHit[] = [];
+
+            beforeAll(() => {
+                // Registered after the default mappers and always returns undefined, so it records without
+                // affecting resolution. Mapper resolution is lazy, so it only sees urls no default mapper resolves.
+                URLService.registerURLMappers({
+                    resolve: (url, row, column, schemaName, queryName) => {
+                        captured.push({ query: queryName, row, url });
+                        return undefined;
+                    },
+                });
+            });
+
+            beforeEach(() => {
+                captured.length = 0;
+            });
+
+            function resolveHit(hit: Record<string, unknown>): any {
+                return resolver.resolveSearchUsingIndex(createResult([hit])).hits[0];
+            }
+
+            test('data class hit resolves the query from data.dataClass.name', () => {
+                const hit = resolveHit({
+                    data: { dataClass: { name: 'DC-1' } },
+                    id: 'anything:1',
+                    title: 'A title',
+                    url: UNMAPPED_DOC_ID,
+                });
+
+                expect(hit.url).toBe(UNMAPPED);
+                expect(captured.map(c => c.query)).toStrictEqual(['DC-1']);
+            });
+
+            test('dataClass id hit resolves the query from data.name', () => {
+                const hit = resolveHit({ data: { name: 'DCName' }, id: 'dataClass:1', url: UNMAPPED_DOC_ID });
+
+                expect(hit.url).toBe(UNMAPPED);
+                expect(captured.map(c => c.query)).toStrictEqual(['DCName']);
+            });
+
+            test('materialSource id hit resolves the query from data.name', () => {
+                const hit = resolveHit({ data: { name: 'STName' }, id: 'materialSource:1', url: UNMAPPED_DOC_ID });
+
+                expect(hit.url).toBe(UNMAPPED);
+                expect(captured.map(c => c.query)).toStrictEqual(['STName']);
+            });
+
+            test('assay id hit resolves the query from the title', () => {
+                const hit = resolveHit({ id: 'assayRun:1', title: 'My Assay', url: UNMAPPED_DOC_ID });
+
+                expect(hit.url).toBe(UNMAPPED);
+                expect(captured.map(c => c.query)).toStrictEqual(['My Assay']);
+            });
+
+            test('material id hit resolves the query from data.sampleSet.name and keeps the doc id', () => {
+                const hit = resolveHit({
+                    data: { sampleSet: { name: 'Hemoglobin' } },
+                    id: 'material:1',
+                    url: UNMAPPED_DOC_ID,
+                });
+
+                expect(hit.url).toBe(UNMAPPED_DOC_ID);
+                expect(captured.map(c => c.query)).toStrictEqual(['Hemoglobin']);
+            });
+
+            test('hit with data.id resolves the query from data.type and keeps the doc id', () => {
+                const hit = resolveHit({ data: { id: 7, type: 'sampleSet' }, id: 'anything:1', url: UNMAPPED_DOC_ID });
+
+                expect(hit.url).toBe(UNMAPPED_DOC_ID);
+                expect(captured.map(c => c.query)).toStrictEqual(['sampleSet']);
+            });
+
+            test('workflow job hit maps with no query', () => {
+                const hit = resolveHit({ id: 'workflowJob:12', url: UNMAPPED_DOC_ID });
+
+                expect(hit.url).toBe(UNMAPPED_DOC_ID);
+                expect(captured.map(c => c.query)).toStrictEqual([undefined]);
+            });
+
+            test('storage location hit strips an ampersand-delimited doc id parameter', () => {
+                const hit = resolveHit({ id: 'storageLocation:5', url: UNMAPPED_DOC_ID });
+
+                expect(hit.url).toBe(UNMAPPED);
+                expect(captured.map(c => c.query)).toStrictEqual([undefined]);
+            });
+
+            test('storage location hit strips a doc id parameter that is the whole query string', () => {
+                const hit = resolveHit({ id: 'storageLocation:5', url: '/labkey/testContainer/foo-bar.view?_docid=a' });
+
+                expect(hit.url).toBe('/labkey/testContainer/foo-bar.view');
+                expect(captured.map(c => c.query)).toStrictEqual([undefined]);
+            });
+
+            test('workflow attachment hit maps with no query and keeps the doc id', () => {
+                const url = '/labkey/testContainer/workflow-downloadAttachments.view?id=1&_docid=a';
+                const hit = resolveHit({ id: 'anything:1', url });
+
+                expect(hit.url).toBe(url);
+                expect(captured.map(c => c.query)).toStrictEqual([undefined]);
+            });
+
+            test('notebook hit maps with no query and keeps the doc id', () => {
+                const url = '/labkey/testContainer/notebook-view.view?id=1&_docid=a';
+                const hit = resolveHit({ id: 'anything:1', url });
+
+                expect(hit.url).toBe(url);
+                expect(captured.map(c => c.query)).toStrictEqual([undefined]);
+            });
+
+            test('plate designer hit resolves the query from data.rowId', () => {
+                const url = '/labkey/testContainer/plate-designer.view?rowId=3&_docid=a';
+                const hit = resolveHit({ data: { rowId: 3 }, id: 'anything:1', url });
+
+                expect(hit.url).toBe(url);
+                expect(captured.map(c => c.query)).toStrictEqual([3]);
+            });
+
+            test('plate designer hit without a data.rowId is left untouched', () => {
+                const url = '/labkey/testContainer/plate-designer.view?_docid=a';
+                const hit = resolveHit({ data: {}, id: 'anything:1', url });
+
+                expect(hit.url).toBe(url);
+                expect(captured).toHaveLength(0);
+            });
+
+            // The final branch tests indexOf results for truthiness rather than >= 0, and -1 is truthy, so any
+            // remaining hit carrying a data.rowId lands here. Pinning current behavior, not endorsing it.
+            test('any remaining hit with a data.rowId resolves the query from data.rowId', () => {
+                const hit = resolveHit({ data: { rowId: 99 }, id: 'anything:1', url: UNMAPPED_DOC_ID });
+
+                expect(hit.url).toBe(UNMAPPED_DOC_ID);
+                expect(captured.map(c => c.query)).toStrictEqual([99]);
+            });
+
+            test('a hit matching no branch is left untouched', () => {
+                const hit = resolveHit({ data: {}, id: 'anything:1', url: UNMAPPED_DOC_ID });
+
+                expect(hit.url).toBe(UNMAPPED_DOC_ID);
+                expect(captured).toHaveLength(0);
+            });
+
+            // Truncation cuts at the first '&' rather than at '_docid', so a url with no query-string separator
+            // is truncated away entirely.
+            test('truncation empties a url that has no ampersand', () => {
+                const hit = resolveHit({
+                    data: { name: 'DCName' },
+                    id: 'dataClass:1',
+                    url: '/labkey/testContainer/foo-bar.view',
+                });
+
+                expect(hit.url).toBe('');
+            });
+
+            test('passes the whole hit to mappers as an Immutable Map', () => {
+                const hit = {
+                    data: { name: 'DCName', nested: { deep: true } },
+                    id: 'dataClass:1',
+                    url: UNMAPPED_DOC_ID,
+                };
+                resolveHit(hit);
+
+                expect(captured).toHaveLength(1);
+                const [args] = captured;
+                expect(ImmutableMap.isMap(args.row)).toBe(true);
+                expect(args.row.toJS()).toEqual(hit);
+                expect(args.row.getIn(['data', 'nested', 'deep'])).toBe(true);
+                expect(args.url).toBe(UNMAPPED);
+            });
         });
     });
 

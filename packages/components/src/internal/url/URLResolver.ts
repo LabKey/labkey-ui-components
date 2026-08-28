@@ -556,6 +556,20 @@ export const URL_MAPPERS = {
     STORAGE_BOX_MAPPER,
 };
 
+// Search hit urls carry the docID after the first '&', so everything from there is dropped -- including a url that
+// has no '&' at all, which truncates to empty.
+const truncateAtDocId = (url: string): string => url.substring(0, url.indexOf('&'));
+
+// Storage location hit urls carry the docID as a _docid parameter instead.
+const stripDocIdParam = (url: string): string => {
+    let stripped = url;
+    for (const separator of ['&_docid', '?_docid']) {
+        const index = stripped.indexOf(separator);
+        if (index > -1) stripped = stripped.substring(0, index);
+    }
+    return stripped;
+};
+
 // A cell is either a primitive, null, an object, or -- for multi-value columns -- an array of those.
 const hasURL = (cell: unknown): boolean => cell !== null && typeof cell === 'object' && 'url' in cell;
 
@@ -703,72 +717,51 @@ export class URLResolver {
     }
 
     resolveSearchUsingIndex(result: SearchResult): SearchResult {
-        let resolved = fromJS(JSON.parse(JSON.stringify(result)));
+        if (!result?.hits?.length) return result;
 
-        if (resolved.get('hits').count()) {
-            const rows = resolved.get('hits').map(row => {
-                if (row && row.has('url')) {
-                    const id = row.get('id');
-                    let url = row.get('url');
-                    let query;
+        const hits = result.hits.map(hit => {
+            if (!hit || hit.url === undefined) return hit;
 
-                    // TODO: This should be refactored to be based off hit.category (SearchCategory) matching
-                    if (row.has('data') && row.hasIn(['data', 'dataClass'])) {
-                        query = row.getIn(['data', 'dataClass', 'name']);
-                        url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
-                        return row.set('url', this.mapURL({ url, row, query }));
-                    } else if (id.indexOf('dataClass') >= 0) {
-                        query = row.getIn(['data', 'name']);
-                        url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
-                        return row.set('url', this.mapURL({ url, row, query }));
-                    } else if (id.indexOf('materialSource') >= 0) {
-                        query = row.getIn(['data', 'name']);
-                        url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
-                        return row.set('url', this.mapURL({ url, row, query }));
-                    } else if (id.indexOf('assay') >= 0) {
-                        query = row.getIn(['title']);
-                        url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
-                        return row.set('url', this.mapURL({ url, row, query }));
-                    } else if (id.indexOf('material') !== -1 && row.hasIn(['data', 'sampleSet'])) {
-                        query = row.getIn(['data', 'sampleSet', 'name']);
-                        return row.set('url', this.mapURL({ url, row, query }));
-                    } else if (row.has('data') && row.hasIn(['data', 'id'])) {
-                        query = row.getIn(['data', 'type']);
-                        return row.set('url', this.mapURL({ url, row, query }));
-                    } else if (id.indexOf('workflowJob:') >= 0) {
-                        return row.set('url', this.mapURL({ url, row }));
-                    } else if (id.indexOf('torageLocation:') >= 0) {
-                        let index = url.indexOf('&_docid');
-                        if (index > -1) {
-                            url = url.substring(0, index);
-                        }
-                        index = url.indexOf('?_docid');
-                        if (index > -1) {
-                            url = url.substring(0, index);
-                        }
-                        return row.set('url', this.mapURL({ url, row }));
-                    } else if (url.indexOf('workflow-downloadAttachments') >= 0) {
-                        return row.set('url', this.mapURL({ url, row }));
-                    } else if (url.indexOf('notebook') >= 0) {
-                        return row.set('url', this.mapURL({ url, row }));
-                    } else if (url.indexOf('plate-designer') > -1) {
-                        const plateRowId = row.getIn(['data', 'rowId']);
-                        if (plateRowId) {
-                            return row.set('url', this.mapURL({ url, row, query: plateRowId }));
-                        }
-                    } else if (url.indexOf('query-queryDetailsRow') && url.indexOf('.queryName=PlateSet&')) {
-                        const plateSetRowId = row.getIn(['data', 'rowId']);
-                        if (plateSetRowId) {
-                            return row.set('url', this.mapURL({ url, row, query: plateSetRowId }));
-                        }
-                    }
-                }
-                return row;
-            });
+            const { id } = hit;
+            let query;
+            let url = hit.url;
 
-            resolved = resolved.set('hits', rows);
-        }
+            // TODO: This should be refactored to be based off hit.category (SearchCategory) matching
+            if (hit.data?.dataClass) {
+                query = hit.data.dataClass.name;
+                url = truncateAtDocId(url);
+            } else if (id.indexOf('dataClass') >= 0) {
+                query = hit.data?.name;
+                url = truncateAtDocId(url);
+            } else if (id.indexOf('materialSource') >= 0) {
+                query = hit.data?.name;
+                url = truncateAtDocId(url);
+            } else if (id.indexOf('assay') >= 0) {
+                query = hit.title;
+                url = truncateAtDocId(url);
+            } else if (id.indexOf('material') !== -1 && hit.data?.sampleSet) {
+                query = hit.data.sampleSet.name;
+            } else if (hit.data?.id !== undefined) {
+                query = hit.data.type;
+            } else if (id.indexOf('workflowJob:') >= 0) {
+                // mapped on url alone
+            } else if (id.indexOf('torageLocation:') >= 0) {
+                url = stripDocIdParam(url);
+            } else if (url.indexOf('workflow-downloadAttachments') >= 0 || url.indexOf('notebook') >= 0) {
+                // mapped on url alone
+            } else if (url.indexOf('plate-designer') > -1) {
+                query = hit.data?.rowId;
+                if (!query) return hit;
+            } else if (url.indexOf('query-queryDetailsRow') && url.indexOf('.queryName=PlateSet&')) {
+                query = hit.data?.rowId;
+                if (!query) return hit;
+            } else {
+                return hit;
+            }
 
-        return resolved.toJS();
+            return { ...hit, url: this.mapURL({ url, row: fromJS(hit), query }) };
+        });
+
+        return { ...result, hits };
     }
 }

@@ -859,12 +859,6 @@ import { FileAttachmentArea } from './internal/components/files/FileAttachmentAr
 import { Discussions } from './internal/announcements/Discussions';
 import { useModalState, useNotAuthorized, useNotFound, usePortalRef, useTimeout } from './internal/hooks';
 import {
-    useCanonicalQueryName,
-    UseCanonicalQueryName,
-    useSampleTypeParam,
-    useSourceTypeParam,
-} from './internal/components/entities/useEntityTypeParam';
-import {
     TEST_BIO_LIMS_ENTERPRISE_MODULE_CONTEXT,
     TEST_BIO_LIMS_STARTER_MODULE_CONTEXT,
     TEST_LK_LIMS_MODULE_CONTEXT,
@@ -1111,7 +1105,6 @@ const App = {
 
 const Hooks = {
     useAppContext,
-    useCanonicalQueryName,
     useContainerPath,
     useContainerUser,
     useEnterEscape,
@@ -1788,7 +1781,6 @@ export {
     useAdministrationSubNav,
     useAppContext,
     useAppNavigate,
-    useCanonicalQueryName,
     useContainerPath,
     useContainerUser,
     useDataChangeCommentsRequired,
@@ -1817,10 +1809,8 @@ export {
     UserProfile,
     UserSelectInput,
     UsersGridPanel,
-    useSampleTypeParam,
     useServerContext,
     useServerContextDispatch,
-    useSourceTypeParam,
     useSubNavTabsContext,
     useTimeout,
     useUserProperties,
@@ -1945,7 +1935,6 @@ export type { IDataViewInfo } from './internal/DataViewInfo';
 export type { BSStyle } from './internal/dropdowns';
 export type { MenuSectionItem } from './internal/DropdownSection';
 export type { UseTimeout } from './internal/hooks';
-export type { UseCanonicalQueryName } from './internal/components/entities/useEntityTypeParam';
 export type { ModalProps } from './internal/Modal';
 export type { AddEntitiesComplete, ModalRendererProps } from './internal/ModalRenderFactory';
 export type { TriggerType } from './internal/OverlayTrigger';

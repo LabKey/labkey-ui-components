@@ -127,7 +127,6 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
     async loadRows(model, requestHandler) {
         const result = await selectRows({
             ...model.loadRowsConfig,
-            includeMetadata: true,
             includeTotalCount: false, // if requesting to includeTotalCount, it will be loaded separately via loadTotalCount
             includeStyle: true, // Issue 49100
             requestHandler,
@@ -135,23 +134,24 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
 
         const { messages, metaData, queryInfo, rowCount } = result;
         const { metadataAltKey, metadataKey } = resolveRowKey(metaData, queryInfo);
+        const hasKeyColumn = !!metadataKey || !!metadataAltKey;
         const orderedRows: string[] = [];
         const rows: Record<string, Row> = {};
+        let fallbackKey = 0;
 
-        result.rows.forEach((row, index) => {
-            if (metadataKey || metadataAltKey) {
-                const val = row[metadataKey] ?? row[metadataAltKey];
-                if (val !== undefined) {
-                    const value = val.value.toString();
-                    orderedRows.push(value);
-                    rows[value] = row;
-                } else {
-                    console.error('Missing entry', result.schemaQuery.toString(true), metadataKey, metadataAltKey, row);
-                }
-            } else {
-                orderedRows.push(index.toString());
-                rows[index] = row;
+        result.rows.forEach(row => {
+            const val = hasKeyColumn ? (row[metadataKey] ?? row[metadataAltKey]) : undefined;
+
+            if (hasKeyColumn && val === undefined) {
+                console.error('Missing entry', result.schemaQuery.toString(true), metadataKey, metadataAltKey, row);
             }
+
+            // Repeated null keys collapse into a single entry here, as they did under normalizr
+            const key = String(val === undefined ? fallbackKey++ : val.value);
+            rows[key] = row;
+
+            // Null-keyed rows would all collide on one key, so leave them out of the sort order as normalizr did
+            if (val?.value !== null) orderedRows.push(key);
         });
 
         return { messages, orderedRows, rows, rowCount };

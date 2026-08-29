@@ -513,7 +513,7 @@ export async function selectRowsDeprecated(options_: SelectRowsDeprecatedOptions
 }
 
 export function resolveRowKey(
-    metaData: Query.ResponseMetadata,
+    metaData: Query.ResponseMetadata | undefined,
     queryInfo: QueryInfo
 ): { metadataAltKey: string; metadataKey: string } {
     let metadataAltKey: string;

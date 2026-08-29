@@ -715,7 +715,7 @@ export class URLResolver {
         if (!result?.hits?.length) return result;
 
         result.hits = result.hits.map(hit => {
-            if (!hit || hit.url === undefined) return hit;
+            if (!hit?.url) return hit;
 
             const { id, url } = hit;
             let query: string;

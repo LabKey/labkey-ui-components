@@ -11,7 +11,7 @@ import { FormsyTextArea, FormsyTextAreaProps } from './FormsyReactComponents';
 import { DisableableInputProps, useDisableableInput } from './DisableableInput';
 import { stringToHtmlId } from '../../../util/utils';
 
-export interface TextAreaInputProps extends DisableableInputProps, Omit<FormsyTextAreaProps, 'onChange'> {
+export interface TextAreaInputProps extends DisableableInputProps, Omit<FormsyTextAreaProps, 'name' | 'onChange'> {
     addLabelAsterisk?: boolean;
     onChange?: (name: string, value: any) => void;
     queryColumn: QueryColumn;
@@ -60,7 +60,7 @@ export const TextAreaInput: FC<TextAreaInputProps> = props => {
                 column={queryColumn}
                 isDisabled={isDisabled}
                 label={label}
-                labelOverlayProps={{ isFormsy: true, addLabelAsterisk }}
+                labelOverlayProps={{ addLabelAsterisk, isFormsy: true }}
                 showLabel={showLabel}
                 showToggle={allowDisable}
                 toggleProps={{ onClick: toggleDisabled }}
@@ -80,7 +80,6 @@ export const TextAreaInput: FC<TextAreaInputProps> = props => {
         <FormsyTextArea
             aria-label={showLabel ? undefined : queryColumn.caption}
             cols={50}
-            name={queryColumn.fieldKey}
             placeholder={
                 hasMixedValue && isDisabled_ ? MIXED_VALUE_DISPLAY : `Enter ${queryColumn.caption.toLowerCase()}`
             }
@@ -92,6 +91,7 @@ export const TextAreaInput: FC<TextAreaInputProps> = props => {
             id={id_}
             label={label_}
             labelClassName={showLabel ? labelClassName : 'hide-label'}
+            name={queryColumn.fieldKey}
             onChange={onChange_}
             value={inputValue}
         />

@@ -12,7 +12,7 @@ import { DisableableInputProps, useDisableableInput } from './DisableableInput';
 import { InternalSpacesWarning } from '../InternalSpacesWarning';
 import { stringToHtmlId } from '../../../util/utils';
 
-export interface TextInputProps extends DisableableInputProps, Omit<FormsyInputProps, 'onChange'> {
+export interface TextInputProps extends DisableableInputProps, Omit<FormsyInputProps, 'name' | 'onChange'> {
     addLabelAsterisk?: boolean;
     includeSpacesWarning?: boolean;
     isUpdate?: boolean;
@@ -76,7 +76,7 @@ export const TextInput: FC<TextInputProps> = props => {
                 column={queryColumn}
                 isDisabled={isDisabled}
                 label={label}
-                labelOverlayProps={{ isFormsy: true, addLabelAsterisk }}
+                labelOverlayProps={{ addLabelAsterisk, isFormsy: true }}
                 showLabel={showLabel}
                 showToggle={allowDisable}
                 toggleProps={{ onClick: toggleDisabled }}
@@ -102,7 +102,6 @@ export const TextInput: FC<TextInputProps> = props => {
         <>
             <FormsyInput
                 aria-label={showLabel ? undefined : queryColumn.caption}
-                name={queryColumn.fieldKey}
                 placeholder={
                     hasMixedValue && isDisabled_ ? MIXED_VALUE_DISPLAY : `Enter ${queryColumn.caption.toLowerCase()}`
                 }
@@ -115,6 +114,7 @@ export const TextInput: FC<TextInputProps> = props => {
                 id={id_}
                 label={label_}
                 labelClassName={showLabel ? labelClassName : 'hide-label'}
+                name={queryColumn.fieldKey}
                 onChange={onChange_}
                 value={inputValue}
             />

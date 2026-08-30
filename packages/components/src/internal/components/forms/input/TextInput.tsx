@@ -10,6 +10,7 @@ import { INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME, MIXED_VALUE_DISPLAY }
 import { FormsyInput, FormsyInputProps } from './FormsyReactComponents';
 import { DisableableInputProps, useDisableableInput } from './DisableableInput';
 import { InternalSpacesWarning } from '../InternalSpacesWarning';
+import { stringToHtmlId } from '../../../util/utils';
 
 export interface TextInputProps extends DisableableInputProps, Omit<FormsyInputProps, 'onChange'> {
     addLabelAsterisk?: boolean;
@@ -41,6 +42,7 @@ export const TextInput: FC<TextInputProps> = props => {
         queryColumn,
         showLabel = true,
         startFocused = false,
+        id,
         includeSpacesWarning,
         isUpdate,
         ...formsyInputProps
@@ -56,6 +58,8 @@ export const TextInput: FC<TextInputProps> = props => {
             setDidFocus(true);
         }
     }, [didFocus, queryColumn, startFocused]);
+
+    const id_ = useMemo(() => id ?? stringToHtmlId(queryColumn.fieldKey), [id, queryColumn]);
 
     const label_ = useMemo(() => {
         if (renderFieldLabel) {
@@ -99,7 +103,6 @@ export const TextInput: FC<TextInputProps> = props => {
         <>
             <FormsyInput
                 aria-label={showLabel ? undefined : queryColumn.caption}
-                id={queryColumn.fieldKey}
                 name={queryColumn.fieldKey}
                 placeholder={
                     hasMixedValue && isDisabled_ ? MIXED_VALUE_DISPLAY : `Enter ${queryColumn.caption.toLowerCase()}`
@@ -110,6 +113,7 @@ export const TextInput: FC<TextInputProps> = props => {
                 disabled={isDisabled_}
                 elementWrapperClassName={elementWrapperClassName}
                 help={help}
+                id={id_}
                 label={label_}
                 labelClassName={showLabel ? labelClassName : 'hide-label'}
                 onChange={onChange_}

@@ -50,8 +50,7 @@ export const TextAreaInput: FC<TextAreaInputProps> = props => {
             return renderFieldLabel(queryColumn);
         }
 
-        // This is here (at least for now) because of the use of the hide-label class below
-        // in place of sending showLabel=false???
+        // Control emits a <label> unless this is null, so FieldLabel's showLabel guard is too late
         if (showLabel === false) {
             return null;
         }

@@ -2,21 +2,17 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { ReactNode, RefObject } from 'react';
-
-import { FieldLabel } from '../FieldLabel';
+import React, { FC, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
-
+import { FieldLabel } from '../FieldLabel';
 import { INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME, MIXED_VALUE_DISPLAY } from '../constants';
-
 import { FormsyInput, FormsyInputProps } from './FormsyReactComponents';
-import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import { DisableableInputProps, useDisableableInput } from './DisableableInput';
 import { InternalSpacesWarning } from '../InternalSpacesWarning';
 
 export interface TextInputProps extends DisableableInputProps, Omit<FormsyInputProps, 'onChange'> {
     addLabelAsterisk?: boolean;
-    disableInput?: boolean;
     includeSpacesWarning?: boolean;
     isUpdate?: boolean;
     onChange?: (name: string, value: any) => void;
@@ -26,55 +22,42 @@ export interface TextInputProps extends DisableableInputProps, Omit<FormsyInputP
     startFocused?: boolean;
 }
 
-interface TextInputState extends DisableableInputState {
-    didFocus?: boolean;
-}
+export const TextInput: FC<TextInputProps> = props => {
+    // Extract DisableableInputProps, TextInputProps
+    const {
+        addLabelAsterisk,
+        allowDisable,
+        disabled,
+        elementWrapperClassName = INPUT_WRAPPER_CLASS_NAME,
+        hasMixedValue,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        initiallyDisabled,
+        label,
+        labelClassName = INPUT_LABEL_CLASS_NAME,
+        onChange,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        onToggleDisable,
+        renderFieldLabel,
+        queryColumn,
+        showLabel = true,
+        startFocused = false,
+        includeSpacesWarning,
+        isUpdate,
+        ...formsyInputProps
+    } = props;
+    const [didFocus, setDidFocus] = useState(false);
+    const { inputValue, isDisabled, setInputValue, toggleDisabled } = useDisableableInput<string>(props);
+    const textInputRef = useRef(null);
+    const isDisabled_ = isDisabled || disabled;
 
-export class TextInput extends DisableableInput<TextInputProps, TextInputState> {
-    static defaultProps = {
-        ...DisableableInput.defaultProps,
-        ...{
-            elementWrapperClassName: INPUT_WRAPPER_CLASS_NAME,
-            labelClassName: INPUT_LABEL_CLASS_NAME,
-            showLabel: true,
-            startFocused: false,
-        },
-    };
-
-    textInput: RefObject<any>;
-
-    constructor(props: TextInputProps) {
-        super(props);
-
-        this.toggleDisabled = this.toggleDisabled.bind(this);
-
-        this.state = {
-            didFocus: false,
-            isDisabled: props.initiallyDisabled,
-            inputValue: props.value,
-        };
-
-        this.textInput = React.createRef();
-    }
-
-    componentDidMount(): void {
-        const { queryColumn, startFocused } = this.props;
-        const { didFocus } = this.state;
-
-        if (startFocused && !didFocus && queryColumn && queryColumn.name) {
-            this.textInput.current?.focus();
-            this.setState({ didFocus: true });
+    useEffect(() => {
+        if (startFocused && !didFocus && queryColumn.name) {
+            textInputRef.current?.focus();
+            setDidFocus(true);
         }
-    }
+    }, [didFocus, queryColumn, startFocused]);
 
-    shouldComponentUpdate(nextProps: TextInputProps, nextState: TextInputState): boolean {
-        return this.state.didFocus === nextState.didFocus;
-    }
-
-    renderLabel() {
-        const { label, queryColumn, showLabel, allowDisable, addLabelAsterisk, renderFieldLabel } = this.props;
-        const { isDisabled } = this.state;
-
+    const label_ = useMemo(() => {
         if (renderFieldLabel) {
             return renderFieldLabel(queryColumn);
         }
@@ -93,66 +76,47 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
                 labelOverlayProps={{ isFormsy: true, addLabelAsterisk }}
                 showLabel={showLabel}
                 showToggle={allowDisable}
-                toggleProps={{
-                    onClick: this.toggleDisabled,
-                }}
+                toggleProps={{ onClick: toggleDisabled }}
             />
         );
+    }, [renderFieldLabel, showLabel, queryColumn, isDisabled, label, addLabelAsterisk, allowDisable, toggleDisabled]);
+
+    const onChange_ = useCallback(
+        (name, value) => {
+            setInputValue(value);
+            onChange?.(name, value);
+        },
+        [onChange, setInputValue]
+    );
+
+    let help: string;
+    // Issue 52367: Do not show the message if we have a name that can be edited
+    if (queryColumn.nameExpression && !isUpdate) {
+        help = `A ${queryColumn.caption} will be generated if one is not given.`;
     }
 
-    onChange = (name: string, value: any): void => {
-        this.setState({ inputValue: value });
-        this.props.onChange?.(name, value);
-    };
-
-    render() {
-        // Extract DisableableInputProps
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { allowDisable, initiallyDisabled, onToggleDisable, ...rest } = this.props;
-        // Extract TextInputProps
-        const {
-            addLabelAsterisk,
-            disableInput,
-            labelClassName,
-            renderFieldLabel,
-            queryColumn,
-            showLabel,
-            startFocused,
-            includeSpacesWarning,
-            isUpdate,
-            hasMixedValue,
-            ...inputProps
-        } = rest;
-
-        let help: string;
-        // Issue 52367: Don't show the message if we have a name that can be edited
-        if (queryColumn.nameExpression && !isUpdate) {
-            help = `A ${queryColumn.caption} will be generated if one is not given.`;
-        }
-
-        const isDisabled = this.state.isDisabled || disableInput;
-        return (
-            <>
-                <FormsyInput
-                    aria-label={showLabel ? undefined : queryColumn.caption}
-                    id={queryColumn.fieldKey}
-                    name={queryColumn.fieldKey}
-                    placeholder={
-                        hasMixedValue && isDisabled ? MIXED_VALUE_DISPLAY : `Enter ${queryColumn.caption.toLowerCase()}`
-                    }
-                    required={queryColumn.required}
-                    {...inputProps}
-                    componentRef={this.textInput}
-                    disabled={isDisabled}
-                    help={help}
-                    label={this.renderLabel()}
-                    labelClassName={showLabel ? labelClassName : 'hide-label'}
-                    onChange={this.onChange}
-                    type="text"
-                    value={this.getInputValue()}
-                />
-                {includeSpacesWarning && <InternalSpacesWarning value={this.state.inputValue} />}
-            </>
-        );
-    }
-}
+    return (
+        <>
+            <FormsyInput
+                aria-label={showLabel ? undefined : queryColumn.caption}
+                id={queryColumn.fieldKey}
+                name={queryColumn.fieldKey}
+                placeholder={
+                    hasMixedValue && isDisabled_ ? MIXED_VALUE_DISPLAY : `Enter ${queryColumn.caption.toLowerCase()}`
+                }
+                required={queryColumn.required}
+                {...formsyInputProps}
+                componentRef={textInputRef}
+                disabled={isDisabled_}
+                elementWrapperClassName={elementWrapperClassName}
+                help={help}
+                label={label_}
+                labelClassName={showLabel ? labelClassName : 'hide-label'}
+                onChange={onChange_}
+                value={inputValue}
+            />
+            {includeSpacesWarning && <InternalSpacesWarning value={inputValue} />}
+        </>
+    );
+};
+TextInput.displayName = 'TextInput';

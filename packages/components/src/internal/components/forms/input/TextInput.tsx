@@ -48,7 +48,7 @@ export const TextInput: FC<TextInputProps> = props => {
         ...formsyInputProps
     } = props;
     const [didFocus, setDidFocus] = useState(false);
-    const { inputValue, isDisabled, setInputValue, toggleDisabled } = useDisableableInput<string>(props);
+    const { inputValue, isDisabled, localValue, setInputValue, toggleDisabled } = useDisableableInput<string>(props);
     const textInputRef = useRef(null);
     const isDisabled_ = isDisabled || disabled;
 
@@ -118,7 +118,7 @@ export const TextInput: FC<TextInputProps> = props => {
                 onChange={onChange_}
                 value={inputValue}
             />
-            {includeSpacesWarning && <InternalSpacesWarning value={inputValue} />}
+            {includeSpacesWarning && <InternalSpacesWarning value={localValue} />}
         </>
     );
 };

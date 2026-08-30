@@ -60,6 +60,11 @@ export interface UseDisableableInput<V> {
     inputValue: V;
     isDisabled: boolean;
     /**
+     * The locally tracked value. Unlike inputValue this never falls back to props, so it still reflects what the user
+     * has typed into an input whose parent does not echo edits back through value.
+     */
+    localValue: V;
+    /**
      * Records the value as the user edits it so it can be reverted when the input is subsequently disabled.
      * Call this from the input's onChange handler.
      */
@@ -117,6 +122,7 @@ export function useDisableableInput<V>(props: DisableableInputProps<V>): UseDisa
     return {
         inputValue: !allowDisable || inputValue === undefined ? value : inputValue,
         isDisabled,
+        localValue: inputValue,
         setInputValue,
         toggleDisabled,
     };

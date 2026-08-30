@@ -185,16 +185,17 @@ describe('TextInput', () => {
 
     describe('internal spaces warning', () => {
         test('warns once the value contains repeated internal spaces', async () => {
-            const { container } = renderInForm({ includeSpacesWarning: true, allowDisable: true });
+            const { container } = renderInForm({ includeSpacesWarning: true });
             expect(container).not.toHaveTextContent('contains multiple spaces');
 
             await userEvent.type(textInput(), 'a  b');
 
+            expect(textInput()).toHaveValue('a  b');
             expect(container).toHaveTextContent('This name contains multiple spaces between words.');
         });
 
         test('stays silent when not requested', async () => {
-            const { container } = renderInForm({ allowDisable: true });
+            const { container } = renderInForm();
 
             await userEvent.type(textInput(), 'a  b');
 

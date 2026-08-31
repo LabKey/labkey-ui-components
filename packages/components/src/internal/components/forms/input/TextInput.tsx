@@ -10,7 +10,7 @@ import { INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME, MIXED_VALUE_DISPLAY }
 import { FormsyInput, FormsyInputProps } from './FormsyReactComponents';
 import { DisableableInputProps, useDisableableInput } from './DisableableInput';
 import { InternalSpacesWarning } from '../InternalSpacesWarning';
-import { stringToHtmlId } from '../../../util/utils';
+import { generateId } from '../../../util/utils';
 
 export interface TextInputProps extends DisableableInputProps, Omit<FormsyInputProps, 'name' | 'onChange'> {
     addLabelAsterisk?: boolean;
@@ -50,6 +50,7 @@ export const TextInput: FC<TextInputProps> = props => {
     const [didFocus, setDidFocus] = useState(false);
     const { inputValue, isDisabled, localValue, setInputValue, toggleDisabled } = useDisableableInput<string>(props);
     const textInputRef = useRef(null);
+    const [inputId] = useState(() => id ?? generateId('textInput-'));
     const isDisabled_ = isDisabled || disabled;
 
     useEffect(() => {
@@ -58,8 +59,6 @@ export const TextInput: FC<TextInputProps> = props => {
             setDidFocus(true);
         }
     }, [didFocus, queryColumn, startFocused]);
-
-    const id_ = useMemo(() => id ?? stringToHtmlId(queryColumn.fieldKey), [id, queryColumn]);
 
     const label_ = useMemo(() => {
         if (renderFieldLabel) {
@@ -111,7 +110,7 @@ export const TextInput: FC<TextInputProps> = props => {
                 disabled={isDisabled_}
                 elementWrapperClassName={elementWrapperClassName}
                 help={help}
-                id={id_}
+                id={inputId}
                 label={label_}
                 labelClassName={showLabel ? labelClassName : 'hide-label'}
                 name={queryColumn.fieldKey}

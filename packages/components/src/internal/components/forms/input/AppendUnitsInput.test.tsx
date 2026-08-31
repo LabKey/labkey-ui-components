@@ -22,7 +22,7 @@ describe('AppendUnitsInput', () => {
     test('without formsy', () => {
         // Without Formsy it should not crash the page
         renderWithAppContext(<AppendUnitsInput col={column} data={undefined} value={undefined} />);
-        expect(document.querySelector('#appendUnitsColumn')).toBeNull();
+        expect(document.querySelector('input[name="appendUnitsColumn"]')).not.toBeInTheDocument();
     });
 
     test('with formsy', () => {
@@ -31,6 +31,6 @@ describe('AppendUnitsInput', () => {
                 <AppendUnitsInput col={column} data={undefined} formsy value={undefined} />
             </Formsy>
         );
-        expect(document.querySelector('#appendUnitsColumn')).toBeInTheDocument();
+        expect(document.querySelector('input[name="appendUnitsColumn"]')).toBeInTheDocument();
     });
 });

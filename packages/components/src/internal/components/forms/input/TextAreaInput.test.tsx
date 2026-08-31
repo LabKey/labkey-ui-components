@@ -94,13 +94,10 @@ describe('TextAreaInput', () => {
     });
 
     describe('textarea attributes', () => {
-        test('derives id from the field key and leaves name unencoded', () => {
-            const column = COLUMN.mutate({ fieldKey: 'Lookup/Field', name: 'Lookup/Field' }) as QueryColumn;
-            const { container } = renderInForm({ queryColumn: column });
-
-            expect(textArea()).toHaveAttribute('id', 'Lookup-Field');
+        test('leaves name unencoded', () => {
+            const column = COLUMN.mutate({ fieldKey: 'Lookup/Field', name: 'Lookup/Field' });
+            renderInForm({ queryColumn: column });
             expect(textArea()).toHaveAttribute('name', 'Lookup/Field');
-            expect(container.querySelector('label')).toHaveAttribute('for', 'Lookup-Field');
         });
 
         test('honors a caller-supplied id', () => {

@@ -2,14 +2,14 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, ReactNode, useCallback, useMemo } from 'react';
+import React, { FC, ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { FieldLabel } from '../FieldLabel';
 import { INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME, MIXED_VALUE_DISPLAY } from '../constants';
 import { FormsyTextArea, FormsyTextAreaProps } from './FormsyReactComponents';
 import { DisableableInputProps, useDisableableInput } from './DisableableInput';
-import { stringToHtmlId } from '../../../util/utils';
+import { generateId } from '../../../util/utils';
 
 export interface TextAreaInputProps extends DisableableInputProps, Omit<FormsyTextAreaProps, 'name' | 'onChange'> {
     addLabelAsterisk?: boolean;
@@ -41,9 +41,8 @@ export const TextAreaInput: FC<TextAreaInputProps> = props => {
         ...formsyTextAreaProps
     } = props;
     const { inputValue, isDisabled, setInputValue, toggleDisabled } = useDisableableInput<string>(props);
+    const [inputId] = useState<string>(() => id ?? generateId('textAreaInput-'));
     const isDisabled_ = isDisabled || disabled;
-
-    const id_ = useMemo(() => id ?? stringToHtmlId(queryColumn.fieldKey), [id, queryColumn]);
 
     const label_ = useMemo(() => {
         if (renderFieldLabel) {
@@ -88,7 +87,7 @@ export const TextAreaInput: FC<TextAreaInputProps> = props => {
             {...formsyTextAreaProps}
             disabled={isDisabled_}
             elementWrapperClassName={elementWrapperClassName}
-            id={id_}
+            id={inputId}
             label={label_}
             labelClassName={showLabel ? labelClassName : 'hide-label'}
             name={queryColumn.fieldKey}

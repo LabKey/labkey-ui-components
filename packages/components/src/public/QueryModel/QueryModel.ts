@@ -540,11 +540,11 @@ export class QueryModel {
     }
 
     get schemaName(): string {
-        return this.schemaQuery.schemaName;
+        return (this.queryInfo?.schemaQuery ?? this.schemaQuery).schemaName;
     }
 
     get queryName(): string {
-        return this.schemaQuery.queryName;
+        return (this.queryInfo?.schemaQuery ?? this.schemaQuery).queryName;
     }
 
     get viewName(): string {

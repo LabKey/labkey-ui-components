@@ -140,23 +140,23 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
         let fallbackKey = 0;
 
         result.rows.forEach(row => {
-            const val = hasKeyColumn ? (row[metadataKey] ?? row[metadataAltKey]) : undefined;
+            const keyCell = hasKeyColumn ? (row[metadataKey] ?? row[metadataAltKey]) : undefined;
 
-            if (hasKeyColumn && val === undefined) {
+            if (hasKeyColumn && keyCell === undefined) {
                 console.error('Missing entry', result.schemaQuery.toString(true), metadataKey, metadataAltKey, row);
             }
 
-            // Repeated null keys collapse into a single entry here, as they did under normalizr
-            const key = String(val === undefined ? fallbackKey++ : val.value);
+            // A missing key column gets a positional key, so the row still renders
+            const key = String(keyCell === undefined ? fallbackKey++ : keyCell.value);
             rows[key] = row;
 
-            // Null-keyed rows would all collide on one key, so leave them out of the sort order as normalizr did
-            if (val?.value !== null) orderedRows.push(key);
+            // Every null key value stringifies to the same 'null', so drop those rows from the order as normalizr did
+            if (keyCell?.value !== null) orderedRows.push(key);
         });
 
         return { messages, orderedRows, rows, rowCount };
     },
-    // The selection related methods may seem like overly simple passthroughs, but by putting them on QueryModelLoader,
+    // The selection-related methods may seem like overly simple passthroughs, but by putting them on QueryModelLoader,
     // instead of in withQueryModels, it allows us to easily mock them or provide alternate implementations.
     clearSelections(model) {
         const { containerFilter, selectionKey, schemaQuery, filters, queryParameters, selectionContainerPath } = model;

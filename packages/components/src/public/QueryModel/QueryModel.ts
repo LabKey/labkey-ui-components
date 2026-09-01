@@ -19,7 +19,7 @@ import { QueryColumn } from '../QueryColumn';
 import { caseInsensitive } from '../../internal/util/utils';
 import { naturalSortByProperty } from '../sort';
 import { PaginationData } from '../../internal/components/pagination/Pagination';
-import { SelectRowsOptions } from '../../internal/query/selectRows';
+import { SelectRowsMessage, SelectRowsOptions } from '../../internal/query/selectRows';
 
 export function flattenValuesFromRow(
     row: any,
@@ -107,12 +107,6 @@ export function createQueryModelId(schemaQuery: SchemaQuery): string {
 }
 
 const sortStringMapper = (s: QuerySort): string => s.toRequestString();
-
-export interface GridMessage {
-    area?: string;
-    content: string;
-    type?: string;
-}
 
 export enum SavedSettings {
     all = 'all', // Restores filters, maxRows, sorts, and view
@@ -387,9 +381,9 @@ export class QueryModel {
     readonly filterArray: Filter.IFilter[];
     // QueryModel only fields
     /**
-     * Array of [[GridMessage]]. When used with a [[GridPanel]], these message will be shown above the table of data rows.
+     * Array of [[SelectRowsMessage]]. When used with a [[GridPanel]], these messages will be shown above the table of data rows.
      */
-    readonly messages?: GridMessage[];
+    readonly messages?: SelectRowsMessage[];
     /**
      * Array of row key values in sort order from the loaded data rows object.
      */

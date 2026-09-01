@@ -17,7 +17,7 @@ import { isLoading, LoadingState } from '../LoadingState';
 import { naturalSort } from '../sort';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 
-import { selectRows } from '../../internal/query/selectRows';
+import { selectRows, SelectRowsMessage } from '../../internal/query/selectRows';
 
 import { incrementClientSideMetricCount } from '../../internal/actions';
 
@@ -26,7 +26,6 @@ import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
 import { RequestHandler } from '../../internal/request';
 import {
     getSettingsFromLocalStorage,
-    GridMessage,
     locationHasQueryParamSettings,
     QueryConfig,
     QueryModel,
@@ -113,7 +112,7 @@ export interface UpdateChange extends BaseModelChange {
 export type ModelChange = AddChange | DeleteChange | UpdateChange;
 
 export interface Actions {
-    addMessage: (id: string, message: GridMessage, duration?: number) => void;
+    addMessage: (id: string, message: SelectRowsMessage, duration?: number) => void;
     addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
     clearSelectedReports: (id: string) => void;
     clearSelections: (id: string) => void;
@@ -1355,7 +1354,7 @@ export function withQueryModels<Props>(
             );
         };
 
-        addMessage = (id: string, message: GridMessage, duration?: number): void => {
+        addMessage = (id: string, message: SelectRowsMessage, duration?: number): void => {
             this.setState(
                 produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];
@@ -1373,7 +1372,7 @@ export function withQueryModels<Props>(
             );
         };
 
-        removeMessage = (id: string, message: GridMessage): void => {
+        removeMessage = (id: string, message: SelectRowsMessage): void => {
             this.setState(
                 produce<State>((draft: WritableDraft<State>) => {
                     const model = draft.queryModels[id];

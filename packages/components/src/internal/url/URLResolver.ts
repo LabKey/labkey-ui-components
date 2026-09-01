@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { fromJS, List, Map, OrderedSet } from 'immutable';
+import { fromJS, Map as ImmutableMap, List, OrderedSet } from 'immutable';
 import { ActionURL, Experiment, Filter, getServerContext, Query } from '@labkey/api';
 
 import { LineageLinkMetadata } from '../components/lineage/types';
@@ -22,6 +22,7 @@ import { SearchCategory } from '../components/search/constants';
 import { AppURL } from './AppURL';
 import { AppRouteResolver } from './models';
 import { encodeListResolverPath } from './utils';
+import { Row, RowValue } from '../query/selectRows';
 
 let resolvers = OrderedSet<AppRouteResolver>();
 
@@ -30,7 +31,7 @@ let urlMappers: List<URLMapper> = List<URLMapper>();
 export type URLMapperResolverValue = AppURL | boolean | string;
 export type URLMapperResolver = (
     url: string,
-    row: Map<string, any>,
+    row: ImmutableMap<string, any>,
     column: QueryColumn,
     schemaName: string,
     queryName: string
@@ -76,7 +77,7 @@ export namespace URLService {
 }
 
 export type LookupResolver = (
-    row: Map<string, any>,
+    row: ImmutableMap<string, any>,
     column?: QueryColumn,
     schemaName?: string,
     queryName?: string
@@ -555,6 +556,18 @@ export const URL_MAPPERS = {
     STORAGE_BOX_MAPPER,
 };
 
+// Search hit urls carry the docID parameter. Strip it so that it does not propagate to application urls.
+const stripDocIdParam = (url: string): string => {
+    let stripped = url;
+    for (const separator of ['&_docid', '?_docid']) {
+        const index = stripped.indexOf(separator);
+        if (index > -1) stripped = stripped.substring(0, index);
+    }
+    return stripped;
+};
+
+const hasURL = (cell: RowValue): boolean => !!cell?.hasOwnProperty('url');
+
 export class URLResolver {
     private mapURL = (mapper: MapURLOptions): string => {
         // Don't override URLs if the URL has a different container than the current container and is not in the folder
@@ -646,141 +659,88 @@ export class URLResolver {
     };
 
     /**
-     * Returns a Promise resolving a valid selectRowsResult with URLs replaced with those mapped by this
-     * URLResolver.
+     * Returns a valid selectRowsResult with URLs replaced with those mapped by this URLResolver.
      */
     resolveSelectRows(response: Query.Response, queryInfo: QueryInfo): any {
-        let resolved = fromJS(JSON.parse(JSON.stringify(response)));
+        // Callers pass a Query.Response, whose rows are Row instances and whose metadata field keys are
+        // FieldKey/SchemaKey instances. JSON.stringify() flattens those to the plain strings that the field lookup and
+        // QueryColumn below require.
+        const resolved = JSON.parse(JSON.stringify(response));
 
-        // If no url mappers defined then this is a noop. Using URLs as they are.
-        if (URLService.getUrlMappers()?.size > 0) {
-            if (resolved.get('rows').count()) {
-                const schema = resolved.get('schemaName').toJS().join('.');
-                const query = resolved.get('queryName');
+        // If no url mappers defined, then this is a noop. Using URLs as they are.
+        if (!URLService.getUrlMappers()?.size || !resolved.rows?.length) return resolved;
 
-                let fields: Map<string, QueryColumn> = Map();
-                if (resolved.hasIn(['metaData', 'fields'])) {
-                    fields = resolved
-                        .getIn(['metaData', 'fields'])
-                        .reduce((fs, col) => fs.set(col.get('fieldKey'), new QueryColumn(col.toJS())), Map());
-                }
+        const schema = resolved.schemaName.join('.');
+        const query = resolved.queryName;
 
-                const rows = resolved.get('rows').map(row => {
-                    return row.map((cell, fieldKey) => {
-                        // single-value cells
-                        if (Map.isMap(cell) && cell.has('url')) {
-                            return cell.set(
-                                'url',
-                                this.mapURL({
-                                    url: cell.get('url'),
-                                    row: cell,
-                                    column: fields.get(fieldKey) ?? queryInfo?.getColumn(fieldKey),
-                                    schema,
-                                    query,
-                                })
-                            );
-                        }
+        const fields = new Map<string, QueryColumn>(
+            resolved.metaData?.fields?.map(field => [field.fieldKey, new QueryColumn(field)]) ?? []
+        );
 
-                        // multi-value cells
-                        if (List.isList(cell) && cell.size > 0) {
-                            return cell
-                                .map(innerCell => {
-                                    if (Map.isMap(innerCell) && innerCell.has('url')) {
-                                        return innerCell.set(
-                                            'url',
-                                            this.mapURL({
-                                                url: innerCell.get('url'),
-                                                row: innerCell,
-                                                column: fields.get(fieldKey) ?? queryInfo?.getColumn(fieldKey),
-                                                schema,
-                                                query,
-                                            })
-                                        );
-                                    }
+        const mapCell = (cell: RowValue, fieldKey: string): RowValue => ({
+            ...cell,
+            url: this.mapURL({
+                url: cell.url,
+                // Mappers consume the cell through the Immutable API
+                row: fromJS(cell),
+                column: fields.get(fieldKey) ?? queryInfo?.getColumn(fieldKey),
+                schema,
+                query,
+            }),
+        });
 
-                                    return innerCell;
-                                })
-                                .toList();
-                        }
+        resolved.rows = (resolved.rows as Row[]).map(row =>
+            Object.fromEntries(
+                Object.entries(row).map(([fieldKey, cell]) => {
+                    // multi-value cells
+                    if (Array.isArray(cell)) {
+                        return [
+                            fieldKey,
+                            cell.map(innerCell => (hasURL(innerCell) ? mapCell(innerCell, fieldKey) : innerCell)),
+                        ];
+                    }
 
-                        return cell;
-                    });
-                });
+                    // single-value cells
+                    if (hasURL(cell)) return [fieldKey, mapCell(cell, fieldKey)];
 
-                resolved = resolved.set('rows', rows);
-            }
-        }
+                    return [fieldKey, cell];
+                })
+            )
+        );
 
-        return resolved.toJS();
+        return resolved;
     }
 
     resolveSearchUsingIndex(result: SearchResult): SearchResult {
-        let resolved = fromJS(JSON.parse(JSON.stringify(result)));
+        if (!result?.hits?.length) return result;
 
-        if (resolved.get('hits').count()) {
-            const rows = resolved.get('hits').map(row => {
-                if (row && row.has('url')) {
-                    const id = row.get('id');
-                    let url = row.get('url');
-                    let query;
+        result.hits = result.hits.map(hit => {
+            if (!hit?.url) return hit;
 
-                    // TODO: This should be refactored to be based off hit.category (SearchCategory) matching
-                    if (row.has('data') && row.hasIn(['data', 'dataClass'])) {
-                        query = row.getIn(['data', 'dataClass', 'name']);
-                        url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
-                        return row.set('url', this.mapURL({ url, row, query }));
-                    } else if (id.indexOf('dataClass') >= 0) {
-                        query = row.getIn(['data', 'name']);
-                        url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
-                        return row.set('url', this.mapURL({ url, row, query }));
-                    } else if (id.indexOf('materialSource') >= 0) {
-                        query = row.getIn(['data', 'name']);
-                        url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
-                        return row.set('url', this.mapURL({ url, row, query }));
-                    } else if (id.indexOf('assay') >= 0) {
-                        query = row.getIn(['title']);
-                        url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
-                        return row.set('url', this.mapURL({ url, row, query }));
-                    } else if (id.indexOf('material') !== -1 && row.hasIn(['data', 'sampleSet'])) {
-                        query = row.getIn(['data', 'sampleSet', 'name']);
-                        return row.set('url', this.mapURL({ url, row, query }));
-                    } else if (row.has('data') && row.hasIn(['data', 'id'])) {
-                        query = row.getIn(['data', 'type']);
-                        return row.set('url', this.mapURL({ url, row, query }));
-                    } else if (id.indexOf('workflowJob:') >= 0) {
-                        return row.set('url', this.mapURL({ url, row }));
-                    } else if (id.indexOf('torageLocation:') >= 0) {
-                        let index = url.indexOf('&_docid');
-                        if (index > -1) {
-                            url = url.substring(0, index);
-                        }
-                        index = url.indexOf('?_docid');
-                        if (index > -1) {
-                            url = url.substring(0, index);
-                        }
-                        return row.set('url', this.mapURL({ url, row }));
-                    } else if (url.indexOf('workflow-downloadAttachments') >= 0) {
-                        return row.set('url', this.mapURL({ url, row }));
-                    } else if (url.indexOf('notebook') >= 0) {
-                        return row.set('url', this.mapURL({ url, row }));
-                    } else if (url.indexOf('plate-designer') > -1) {
-                        const plateRowId = row.getIn(['data', 'rowId']);
-                        if (plateRowId) {
-                            return row.set('url', this.mapURL({ url, row, query: plateRowId }));
-                        }
-                    } else if (url.indexOf('query-queryDetailsRow') && url.indexOf('.queryName=PlateSet&')) {
-                        const plateSetRowId = row.getIn(['data', 'rowId']);
-                        if (plateSetRowId) {
-                            return row.set('url', this.mapURL({ url, row, query: plateSetRowId }));
-                        }
-                    }
-                }
-                return row;
-            });
+            const { id, url } = hit;
+            let query: string;
 
-            resolved = resolved.set('hits', rows);
-        }
+            // TODO: This should be refactored to be based off hit.category (SearchCategory) matching
+            if (hit.data?.dataClass) {
+                query = hit.data.dataClass.name;
+            } else if (id.includes('dataClass') || id.includes('materialSource')) {
+                query = hit.data?.name;
+            } else if (id.includes('assay')) {
+                query = hit.title;
+            } else if (id.includes('material') && hit.data?.sampleSet) {
+                query = hit.data.sampleSet.name;
+            } else if (hit.data?.id !== undefined) {
+                query = hit.data.type;
+            } else if (url.includes('plate-designer')) {
+                query = hit.data?.rowId;
+            } else if (url.includes('query-queryDetailsRow') && url.includes('.queryName=PlateSet&')) {
+                query = hit.data?.rowId;
+            }
 
-        return resolved.toJS();
+            // Any hit that matched no case above is still mapped, on its url alone.
+            return { ...hit, url: this.mapURL({ url: stripDocIdParam(url), row: fromJS(hit), query }) };
+        });
+
+        return result;
     }
 }

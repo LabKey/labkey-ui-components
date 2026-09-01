@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.61.1-fb-select-lineage.0",
+  "version": "7.61.1-fb-select-lineage.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

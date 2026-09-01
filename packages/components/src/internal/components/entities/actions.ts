@@ -894,7 +894,7 @@ export const getOriginalParentsFromLineage = async (
         containerPath
     );
 
-    const lineageRowIds: number[] = lineageRows.map(row => row.RowId.value);
+    const lineageRowIds = lineageRows.map<number>(row => caseInsensitive(row, 'RowId').value);
 
     // iterate through both Data Classes and Sample Types for finding sample parents
     parentDataTypes.forEach(dataType => {

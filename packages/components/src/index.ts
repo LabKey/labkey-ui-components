@@ -1918,6 +1918,7 @@ export type { PaginationData } from './internal/components/pagination/Pagination
 export type { UserLimitSettings } from './internal/components/permissions/actions';
 export type { PicklistDeletionData } from './internal/components/picklist/actions';
 export type { GroupedSampleDisplayColumns, SampleStorageData } from './internal/components/samples/actions';
+export type { SamplesAPIWrapper } from './internal/components/samples/APIWrapper';
 export type {
     EntityCreationTypeModel,
     GroupedSampleFields,

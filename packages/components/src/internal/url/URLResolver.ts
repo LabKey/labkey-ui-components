@@ -663,7 +663,7 @@ export class URLResolver {
      */
     resolveSelectRows(response: Query.Response, queryInfo: QueryInfo): any {
         // Callers pass a Query.Response, whose rows are Row instances and whose metadata field keys are
-        // FieldKey/SchemaKey instances. toJSON() flattens those to the plain strings that the field lookup and
+        // FieldKey/SchemaKey instances. JSON.stringify() flattens those to the plain strings that the field lookup and
         // QueryColumn below require.
         const resolved = JSON.parse(JSON.stringify(response));
 

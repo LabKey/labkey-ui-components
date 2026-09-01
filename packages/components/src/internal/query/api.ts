@@ -26,6 +26,7 @@ import { URLResolver } from '../url/URLResolver';
 import { ModuleContext } from '../components/base/ServerContext';
 import { handleRequestFailure, RequestHandler } from '../request';
 import { EDIT_METHOD } from '../constants';
+import { Row } from './selectRows';
 
 let queryDetailsCache: Record<string, Promise<QueryInfo>> = {};
 
@@ -442,9 +443,9 @@ export function isSelectRowMetadataRequired(includeMetadata?: boolean, columns?:
 export interface ISelectRowsResult {
     key: SchemaQueryKey;
     messages?: List<Map<string, string>>;
-    models: any;
-    orderedModels: List<any>;
-    queries: Record<string, QueryInfo>;
+    models: Record<SchemaQueryKey, Record<string, Row>>;
+    orderedModels: Record<SchemaQueryKey, List<string>>;
+    queries: Record<SchemaQueryKey, QueryInfo>;
     rowCount: number;
 }
 
@@ -536,22 +537,20 @@ export function resolveRowKey(
     return { metadataAltKey, metadataKey };
 }
 
-export function handleSelectRowsResponse(response: Query.Response, queryInfo: QueryInfo): any {
+export function handleSelectRowsResponse(response: Query.Response, queryInfo: QueryInfo): Partial<ISelectRowsResult> {
     const resolved = new URLResolver().resolveSelectRows(response, queryInfo);
-
-    let count = 0,
-        hasRows = false,
-        models = {},
-        orderedModels = {},
-        qsKey = 'queries',
-        rowCount = response.rowCount || 0;
-
     const { metadataAltKey, metadataKey } = resolveRowKey(resolved.metaData, queryInfo);
     const modelKey = resolveKeyFromJson(resolved);
+    const models: Record<SchemaQueryKey, Record<string, Row>> = {};
+    const orderedModels: Record<SchemaQueryKey, List<string>> = {};
+    const qsKey = 'queries';
+
+    let count = 0;
+    const idAttribute = '_id_';
 
     // ensure id -- unfortunately, with normalizr 3.x there doesn't seem to be a way to generate the id
     // without attaching directly to the object
-    resolved.rows.forEach((row: any) => {
+    resolved.rows.forEach(row => {
         if (metadataKey || metadataAltKey) {
             const val = row[metadataKey] ?? row[metadataAltKey];
             if (val !== undefined) {
@@ -561,30 +560,17 @@ export function handleSelectRowsResponse(response: Query.Response, queryInfo: Qu
                 console.error('Missing entry', metadataKey, row, resolved.schemaKey, resolved.queryName);
             }
         }
-        row._id_ = count++;
+        row[idAttribute] = count++;
     });
 
-    const modelSchema = new schema.Entity(
-        modelKey,
-        {},
-        {
-            idAttribute: '_id_',
-        }
-    );
+    const modelSchema = new schema.Entity(modelKey, {}, { idAttribute });
+    const querySchema = new schema.Entity(qsKey, {}, { idAttribute: queryJson => resolveKeyFromJson(queryJson) });
 
-    const querySchema = new schema.Entity(
-        qsKey,
-        {},
-        {
-            idAttribute: queryJson => resolveKeyFromJson(queryJson),
-        }
-    );
-
-    querySchema.define({
-        rows: new schema.Array(modelSchema),
-    });
+    querySchema.define({ rows: new schema.Array(modelSchema) });
 
     const instance = normalize(resolved, querySchema);
+    let hasRows = false;
+    let rowCount = response.rowCount || 0;
 
     Object.keys(instance.entities).forEach(key => {
         if (key !== qsKey) {
@@ -592,7 +578,7 @@ export function handleSelectRowsResponse(response: Query.Response, queryInfo: Qu
             const rows = instance.entities[key];
             // cleanup generated ids
             Object.keys(rows).forEach(rowKey => {
-                delete rows[rowKey]['_id_'];
+                delete rows[rowKey][idAttribute];
             });
             models[key] = rows;
             orderedModels[key] = fromJS(instance.entities[qsKey][key].rows)

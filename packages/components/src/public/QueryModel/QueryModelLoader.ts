@@ -19,7 +19,7 @@ import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../internal/constan
 import { DataViewInfo, IDataViewInfo } from '../../internal/DataViewInfo';
 import { RequestHandler } from '../../internal/request';
 import { getQueryColumnRenderers } from '../../internal/global';
-import { getQueryDetails, selectRowsDeprecated } from '../../internal/query/api';
+import { getQueryDetails, resolveRowKey } from '../../internal/query/api';
 import { DefaultRenderer } from '../../internal/renderers/DefaultRenderer';
 import { ExtendedMap } from '../ExtendedMap';
 import { QueryColumn } from '../QueryColumn';
@@ -27,7 +27,8 @@ import { QueryColumn } from '../QueryColumn';
 import { QueryInfo } from '../QueryInfo';
 import { naturalSortByProperty } from '../sort';
 
-import { GridMessage, QueryModel } from './QueryModel';
+import { QueryModel } from './QueryModel';
+import { Row, selectRows, SelectRowsMessage } from '../../internal/query/selectRows';
 
 export function bindColumnRenderers(columns: ExtendedMap<string, QueryColumn>): ExtendedMap<string, QueryColumn> {
     if (columns) {
@@ -52,7 +53,7 @@ export function bindColumnRenderers(columns: ExtendedMap<string, QueryColumn>): 
 }
 
 export interface RowsResponse {
-    messages: GridMessage[];
+    messages: SelectRowsMessage[];
     orderedRows: string[];
     rowCount: number;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -124,24 +125,38 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
         return queryInfo.mutate({ columns: bindColumnRenderers(queryInfo.columns) });
     },
     async loadRows(model, requestHandler) {
-        const result = await selectRowsDeprecated({
+        const result = await selectRows({
             ...model.loadRowsConfig,
-            schemaName: model.schemaName,
-            queryName: model.queryName,
             includeTotalCount: false, // if requesting to includeTotalCount, it will be loaded separately via loadTotalCount
             includeStyle: true, // Issue 49100
             requestHandler,
         });
-        const { key, models, orderedModels, rowCount, messages } = result;
 
-        return {
-            messages: messages.toJS(),
-            rows: models[key],
-            orderedRows: orderedModels[key].toArray(),
-            rowCount,
-        };
+        const { messages, metaData, queryInfo, rowCount } = result;
+        const { metadataAltKey, metadataKey } = resolveRowKey(metaData, queryInfo);
+        const hasKeyColumn = !!metadataKey || !!metadataAltKey;
+        const orderedRows: string[] = [];
+        const rows: Record<string, Row> = {};
+        let fallbackKey = 0;
+
+        result.rows.forEach(row => {
+            const keyCell = hasKeyColumn ? (row[metadataKey] ?? row[metadataAltKey]) : undefined;
+
+            if (hasKeyColumn && keyCell === undefined) {
+                console.error('Missing entry', result.schemaQuery.toString(true), metadataKey, metadataAltKey, row);
+            }
+
+            // A missing key column gets a positional key, so the row still renders
+            const key = String(keyCell === undefined ? fallbackKey++ : keyCell.value);
+            rows[key] = row;
+
+            // Every null key value stringifies to the same 'null', so drop those rows from the order as normalizr did
+            if (keyCell?.value !== null) orderedRows.push(key);
+        });
+
+        return { messages, orderedRows, rows, rowCount };
     },
-    // The selection related methods may seem like overly simple passthroughs, but by putting them on QueryModelLoader,
+    // The selection-related methods may seem like overly simple passthroughs, but by putting them on QueryModelLoader,
     // instead of in withQueryModels, it allows us to easily mock them or provide alternate implementations.
     clearSelections(model) {
         const { containerFilter, selectionKey, schemaQuery, filters, queryParameters, selectionContainerPath } = model;

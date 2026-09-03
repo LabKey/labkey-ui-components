@@ -11,13 +11,8 @@ import { ModuleContext, resolveModuleContext } from '../components/base/ServerCo
 // These ids should match what is used by the MenuProviders in the Java code, so we can avoid toLowerCase comparisons.
 export const LKS_PRODUCT_ID = 'LabKeyServer';
 export const BIOLOGICS_PRODUCT_ID = 'Biologics';
-export const BIOLOGICS_ENTERPRISE_PRODUCT_KEY = 'limsEnterprise';
-export const BIOLOGICS_STARTER_PRODUCT_KEY = 'limsStarter'
 export const LIMS_PRODUCT_ID = 'LIMS';
-export const LIMS_PRODUCT_KEY = 'labkeyLims';
 export const SAMPLE_MANAGER_PRODUCT_ID = 'SampleManager';
-export const SAMPLE_MANAGER_STARTER_PRODUCT_KEY = 'sampleManagerStarter';
-export const SAMPLE_MANAGER_PROFESSIONAL_PRODUCT_KEY = 'sampleManagerProfessional'
 export const FREEZER_MANAGER_PRODUCT_ID = 'FreezerManager';
 
 export function isFreezerManagementEnabled(moduleContext?: ModuleContext): boolean {

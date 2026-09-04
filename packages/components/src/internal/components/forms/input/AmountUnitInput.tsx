@@ -94,14 +94,13 @@ export const AmountUnitInput: FC<InputRendererProps> = memo(props => {
                 />
                 <TextInput
                     aria-label="Amount"
-                    disableInput={disabled}
+                    disabled={disabled}
                     elementWrapperClassName=""
                     hasMixedValue={hasMixedAmountValue}
                     onChange={onAmountChange}
                     queryColumn={amountCol}
                     rowClassName="col-sm-5 col-xs-6"
                     showLabel={false}
-                    type="number"
                     validations="sampleAmount"
                     value={amountValue ? String(amountValue) : amountValue}
                 />

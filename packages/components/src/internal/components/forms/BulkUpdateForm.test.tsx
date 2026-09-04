@@ -56,6 +56,8 @@ const QUERY_INFO = QueryInfo.fromJsonForTests({
 
 const DEFAULT_PROPS: BulkUpdateFormProps = {
     api: getTestAPIWrapper(jest.fn),
+    nounPlural: QUERY,
+    nounSingular: QUERY,
     onComplete: jest.fn(),
     onCancel: jest.fn(),
     queryInfo: QUERY_INFO,
@@ -105,8 +107,8 @@ describe('BulkUpdateForm', () => {
                 expect(document.querySelectorAll('.query-info-form')).toHaveLength(1);
             });
             expect(document.querySelectorAll('.toggle-group-icon')).toHaveLength(2);
-            expect(document.querySelectorAll('input#update')).toHaveLength(1);
-            expect(document.querySelector('input#update').getAttribute('value')).toBe('abc');
+            expect(document.querySelectorAll('input[name="update"]')).toHaveLength(1);
+            expect(document.querySelector('input[name="update"]')).toHaveValue('abc');
             expect(document.querySelectorAll('.attachment-card__name')).toHaveLength(1);
             expect(document.querySelector('.attachment-card__name')).toHaveTextContent('test.txt');
         });
@@ -118,7 +120,7 @@ describe('BulkUpdateForm', () => {
                 expect(document.querySelectorAll('.query-info-form')).toHaveLength(1);
             });
             expect(document.querySelectorAll('.toggle-group-icon')).toHaveLength(1);
-            expect(document.querySelectorAll('input#update')).toHaveLength(0);
+            expect(document.querySelectorAll('input[name="update"]')).toHaveLength(0);
             expect(document.querySelectorAll('.attachment-card__name')).toHaveLength(1);
         });
     });

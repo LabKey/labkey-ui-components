@@ -636,6 +636,7 @@ import {
 } from './public/QueryModel/grid/actions/Filter';
 
 import {
+    BACKGROUND_IMPORT_ASSAY_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,
@@ -1170,6 +1171,7 @@ export {
     AuditDetails,
     AuditDetailsModel,
     AutoForm,
+    BACKGROUND_IMPORT_ASSAY_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     BarTenderSettingsForm,

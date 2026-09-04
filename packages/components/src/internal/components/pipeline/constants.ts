@@ -16,4 +16,5 @@ export const DATA_IMPORT_FILE_SIZE_LIMITS = Map<string, FileSizeLimitProps>({
 });
 
 export const BACKGROUND_IMPORT_MIN_FILE_SIZE = 1024 * 100; // 100kb
+export const BACKGROUND_IMPORT_ASSAY_MIN_FILE_SIZE = 1024 * 500; // 500kb, File sizes chosen to have roughly the same max user wait time. Sample import with storage takes longer than assay import.
 export const BACKGROUND_IMPORT_MIN_ROW_SIZE = 1000;

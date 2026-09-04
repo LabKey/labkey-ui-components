@@ -31,6 +31,36 @@ describe('DisableableInput', () => {
             expect(notDisableable.result.current.inputValue).toBe('fromProps');
         });
 
+        test('localValue reports local edits whether or not allowDisable is set', () => {
+            const disableable = renderHook(() =>
+                useDisableableInput<string>({ allowDisable: true, value: 'fromProps' })
+            );
+            const notDisableable = renderHook(() => useDisableableInput<string>({ value: 'fromProps' }));
+
+            expect(disableable.result.current.localValue).toBe('fromProps');
+            expect(notDisableable.result.current.localValue).toBe('fromProps');
+
+            act(() => {
+                disableable.result.current.setInputValue('edited');
+            });
+            act(() => {
+                notDisableable.result.current.setInputValue('edited');
+            });
+
+            expect(disableable.result.current.localValue).toBe('edited');
+
+            // Where inputValue falls back to the value from props, localValue still reports the edit
+            expect(notDisableable.result.current.inputValue).toBe('fromProps');
+            expect(notDisableable.result.current.localValue).toBe('edited');
+
+            // Disabling discards the edit, so localValue tracks the value the input reverts to
+            act(() => {
+                disableable.result.current.toggleDisabled();
+            });
+
+            expect(disableable.result.current.localValue).toBe('fromProps');
+        });
+
         test('discards local edits when the input is disabled', () => {
             const { result } = renderHook(() =>
                 useDisableableInput<string>({ allowDisable: true, value: 'fromProps' })

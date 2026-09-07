@@ -18,3 +18,16 @@ Element.prototype.scrollTo = jest.fn();
 Object.defineProperty(window, 'CSS', {
     value: { supports: jest.fn().mockReturnValue(true) },
 });
+
+// Workaround for test failures in EditInlineField.test.tsx related to nwsapi 2.2.26
+const nativeMatches = Element.prototype.matches;
+let matching = false;
+Element.prototype.matches = function (selectors: string): boolean {
+    if (matching) return false;
+    matching = true;
+    try {
+        return nativeMatches.call(this, selectors);
+    } finally {
+        matching = false;
+    }
+};

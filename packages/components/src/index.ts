@@ -1939,6 +1939,7 @@ export type { MenuSectionItem } from './internal/DropdownSection';
 export type { UseTimeout } from './internal/hooks';
 export type { ModalProps } from './internal/Modal';
 export type { AddEntitiesComplete, ModalRendererProps } from './internal/ModalRenderFactory';
+export type { Primitive } from './internal/models';
 export type { TriggerType } from './internal/OverlayTrigger';
 export type { ISelectRowsResult } from './internal/query/api';
 export type {
@@ -1968,13 +1969,13 @@ export type { UseRequestHandler } from './internal/util/RequestHandler';
 export type { InjectedRouteLeaveProps, WrappedRouteLeaveProps } from './internal/util/RouteLeave';
 export type { QueryParams } from './internal/util/URL';
 export type { FileSizeLimitProps } from './public/files/models';
-export type { ImportTemplate } from './public/QueryInfo';
+export type { ImportTemplate, NamedParameter } from './public/QueryInfo';
 export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetailPanel';
 export type { Action, ActionValue } from './public/QueryModel/grid/actions/Action';
-export type { QueryConfig } from './public/QueryModel/QueryModel';
+export type { QueryConfig, QueryParameters } from './public/QueryModel/QueryModel';
 export type { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
-export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
 
+export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
 //  the typescript compiler option "isolatedModules", which do not export types from modules, so types must be exported
 //  separately.

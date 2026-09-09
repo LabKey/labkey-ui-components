@@ -17,6 +17,7 @@ import { SchemaQuery } from '../SchemaQuery';
 import { QueryInfo } from '../QueryInfo';
 import { LoadingState } from '../LoadingState';
 
+import { saveAsSessionView } from '../../internal/actions';
 import { ViewInfo } from '../../internal/ViewInfo';
 import { QuerySort } from '../QuerySort';
 import { GRID_CHECKBOX_OPTIONS } from '../../internal/constants';
@@ -29,6 +30,11 @@ import { RowsResponse } from './QueryModelLoader';
 import { renderWithAppContext } from '../../internal/test/reactTestLibraryHelpers';
 import { Container } from '../../internal/components/base/models/Container';
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../internal/containerFixtures';
+
+jest.mock('../../internal/actions', () => ({
+    ...jest.requireActual('../../internal/actions'),
+    saveAsSessionView: jest.fn().mockResolvedValue(undefined),
+}));
 
 const SCHEMA_QUERY = new SchemaQuery('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;
@@ -57,12 +63,15 @@ const FILTER_STATUS_VALUE = '.filter-status-value';
 const DISABLED_BUTTON_CLASS = 'disabled-button-with-tooltip';
 const CLEAR_ALL_SELECTOR = '.selection-status__clear-all';
 const ERROR_SELECTOR = '.grid-panel__grid .alert-danger';
+const HEADER_CELL_SELECTOR = '.grid-header-cell__body';
+const HEADER_MENU_SELECTOR = '.grid-header-cell__dropdown-menu';
 
 describe('GridPanel', () => {
     let actions: Actions;
 
     beforeEach(() => {
         actions = makeTestActions(jest.fn);
+        jest.mocked(saveAsSessionView).mockClear();
     });
 
     const expectChartMenu = (disabledState: boolean): void => {
@@ -134,6 +143,28 @@ describe('GridPanel', () => {
         const errorEl = document.querySelector(ERROR_SELECTOR);
         expect(errorEl).toBeInTheDocument();
         expect(errorEl).toHaveTextContent(error);
+    };
+
+    const findElementContainingText = (elements: NodeListOf<Element>, text: string): Element => {
+        return Array.from(elements).find(el => el.textContent.includes(text));
+    };
+
+    const openHeaderMenu = async (columnTitle: string): Promise<void> => {
+        const header = findElementContainingText(document.querySelectorAll(HEADER_CELL_SELECTOR), columnTitle);
+        expect(header).toBeInTheDocument();
+        await userEvent.click(header);
+    };
+
+    const clickHeaderMenuItem = async (text: string): Promise<void> => {
+        const menuItems = document.querySelectorAll(`${HEADER_MENU_SELECTOR}.open .lk-menu-item`);
+        const item = findElementContainingText(menuItems, text);
+        expect(item).toBeInTheDocument();
+        await userEvent.click(item.querySelector('a'));
+    };
+
+    const lastSetSorts = (): string[] => {
+        const calls = jest.mocked(actions.setSorts).mock.calls;
+        return calls.at(-1)[1].map(sort => sort.toRequestString());
     };
 
     test('Render GridPanel', () => {
@@ -392,6 +423,49 @@ describe('GridPanel', () => {
         expect(filterTags[1].classList).not.toContain('is-readonly');
         expect(filterTags[2]).toHaveTextContent('Name = DMXP');
         expect(filterTags[2].classList).toContain('is-readonly');
+    });
+
+    // GH Issue 1488: most recent sort is applied first
+    test('sorting a column applies the new sort ahead of the existing sorts', async () => {
+        const { rows, orderedRows, rowCount } = DATA;
+        const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount).mutate({
+            sorts: [
+                new QuerySort({ fieldKey: 'Name', dir: '+' }),
+                new QuerySort({ fieldKey: 'expirationTime', dir: '-' }),
+            ],
+        });
+        renderWithAppContext(<GridPanel actions={actions} model={model} />);
+
+        await openHeaderMenu('Extra Test Column');
+        await clickHeaderMenuItem('Sort ascending');
+        expect(lastSetSorts()).toEqual(['+extraTestColumn', '+Name', '-expirationTime']);
+
+        // re-sorting an already sorted column replaces its entry rather than adding a second one
+        await openHeaderMenu('Name');
+        await clickHeaderMenuItem('Sort descending');
+        expect(lastSetSorts()).toEqual(['-Name', '-expirationTime']);
+    });
+
+    test('sorting a column sorted by the view moves that sort to the front of the view sorts', async () => {
+        const { rows, orderedRows, rowCount } = DATA;
+        const view = QUERY_INFO.getView(ViewInfo.DEFAULT_NAME).mutate({
+            sorts: [
+                new QuerySort({ fieldKey: 'Name', dir: '+' }),
+                new QuerySort({ fieldKey: 'expirationTime', dir: '-' }),
+            ],
+        });
+        const queryInfo = QUERY_INFO.mutate({
+            views: new ExtendedMap({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+        });
+        const model = makeTestQueryModel(SCHEMA_QUERY, queryInfo, rows, orderedRows.slice(0, 20), rowCount);
+        renderWithAppContext(<GridPanel actions={actions} model={model} />);
+
+        await openHeaderMenu('Name');
+        await clickHeaderMenuItem('Sort descending');
+
+        expect(actions.setSorts).not.toHaveBeenCalled();
+        const savedView = jest.mocked(saveAsSessionView).mock.calls[0][2];
+        expect(savedView.sorts.map(sort => sort.toRequestString())).toEqual(['-Name', '-expirationTime']);
     });
 
     test('SaveViewModal lists the filters and sorts that will be saved', async () => {

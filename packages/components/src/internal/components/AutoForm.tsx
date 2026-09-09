@@ -6,6 +6,7 @@ import React, { ChangeEvent, FC, useCallback } from 'react';
 
 import { HelpIcon } from './HelpIcon';
 import { DateInput } from './DateInput';
+import { getDateFNSDateTimeFormat } from '../util/Date';
 
 const INPUT_CLASSES = {
     checkbox: 'form-check',
@@ -229,21 +230,28 @@ const RadioInput: FC<AutoFormFieldProps> = ({ field, inputClasses, onChange, val
 RadioInput.displayName = 'RadioInput';
 
 /**
- * A Date input component for AutoForm. Currently only supported by our Client, the server is not aware of this input
+ * A DateTime input component for AutoForm. Currently only supported by our Client, the server is not aware of this input
  * type. Expects a Date object as the value, sends a Date object to the onChange callback. Does not use id or
  * inputClasses props from AutoFormFieldProps because our underlying DateInput component does not support overriding the
  * id or input className.
  */
-const AutoFormDateInput: FC<AutoFormFieldProps<Date>> = ({ field, onChange, value }) => {
+const DateTimeInput: FC<AutoFormFieldProps<Date>> = ({ field, onChange, value }) => {
     const { name, placeholder } = field;
     const onDateChange = useCallback((date: Date) => onChange(name, date), [name, onChange]);
     return (
         <div className="auto-form-date-input">
-            <DateInput name={name} onChange={onDateChange} placeholderText={placeholder} selected={value} />
+            <DateInput
+                dateFormat={getDateFNSDateTimeFormat()}
+                name={name}
+                onChange={onDateChange}
+                placeholderText={placeholder}
+                selected={value}
+                showTimeSelect
+            />
         </div>
     );
 };
-AutoFormDateInput.displayName = 'AutoFormDateInput';
+DateTimeInput.displayName = 'DateTimeInput';
 
 const AutoFormField: FC<AutoFormFieldProps> = props => {
     const { field, id, inputWrapperCls, labelCls, labelWrapperCls, fieldWrapperCls } = props;
@@ -258,7 +266,7 @@ const AutoFormField: FC<AutoFormFieldProps> = props => {
                 {type === 'checkbox' && <CheckboxInput {...props} />}
                 {type === 'select' && <SelectInput {...props} />}
                 {type === 'radio' && <RadioInput {...props} />}
-                {type === 'datetime' && <AutoFormDateInput {...props} />}
+                {type === 'datetime' && <DateTimeInput {...props} />}
             </div>
         </div>
     );

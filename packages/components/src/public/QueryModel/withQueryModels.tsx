@@ -182,6 +182,7 @@ const resetQueryInfoState = (model: Draft<QueryModel>): void => {
  */
 const resetTotalCountState = (model: Draft<QueryModel>): void => {
     model.rowCount = undefined;
+    model.rowCountCapped = false;
     model.totalCountError = undefined;
     model.totalCountLoadingState = LoadingState.INITIALIZED;
 };
@@ -929,8 +930,14 @@ export function withQueryModels<Props>(
                 return;
             }
 
-            // if we've already loaded the totalCount, no need to load it again
-            if (!reloadTotalCount && this.state.queryModels[id].totalCountLoadingState === LoadingState.LOADED) {
+            const model = this.state.queryModels[id];
+            // Once the user pages to the last page within a capped count, there may be more rows beyond the cap. Re-fire
+            // the count once with an exact count (maxCount=0) so paging can continue past the cap.
+            const needsExactCount =
+                model.rowCountCapped && model.maxCount > 0 && model.offset + model.maxRows >= model.rowCount;
+
+            // if we've already loaded the totalCount, no need to load it again (unless we now need an exact count)
+            if (!reloadTotalCount && !needsExactCount && model.totalCountLoadingState === LoadingState.LOADED) {
                 return;
             }
 
@@ -961,13 +968,14 @@ export function withQueryModels<Props>(
                     queryInfo?.getPkCols()
                 );
 
-                const { rowCount } = await selectRows({
+                const { rowCount, rowCountCapped } = await selectRows({
                     ...loadRowsConfig,
                     columns,
                     includeDetailsColumn: false,
                     // includeMetadata: false, // TODO don't require metadata in selectRows response processing
                     includeTotalCount: true,
                     includeUpdateColumn: false,
+                    maxCount: needsExactCount ? 0 : model.maxCount,
                     maxRows: 1,
                     offset: 0,
                     sort: undefined,
@@ -978,6 +986,7 @@ export function withQueryModels<Props>(
                     produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
                         model.rowCount = rowCount;
+                        model.rowCountCapped = rowCountCapped ?? false;
                         model.totalCountLoadingState = LoadingState.LOADED;
                         model.totalCountError = undefined;
                     })

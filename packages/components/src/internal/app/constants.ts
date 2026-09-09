@@ -108,6 +108,7 @@ export const NOTIFICATION_TIMEOUT = 1000;
 
 export const SERVER_NOTIFICATION_MAX_ROWS = 8;
 
+export const EXPERIMENTAL_USE_LEGACY_EXACT_ROW_COUNTS = 'queryUseLegacyExactRowCounts';
 export const EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS = 'queryProductAllFolderLookups';
 export const EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED = 'queryProductProjectDataListingScoped';
 export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu';

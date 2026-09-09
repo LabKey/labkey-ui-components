@@ -40,6 +40,8 @@ export interface SelectRowsResponse {
     metaData: Query.ResponseMetadata | undefined;
     queryInfo: QueryInfo;
     rowCount: number;
+    /** True when rowCount was capped at maxCount rather than counted exactly. */
+    rowCountCapped?: boolean;
     rows: Row[];
     schemaQuery: SchemaQuery;
 }
@@ -99,6 +101,7 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
         queryInfo,
         rows: resolved.rows,
         rowCount: resolved.rowCount,
+        rowCountCapped: response.rowCountCapped,
         schemaQuery,
     };
 }

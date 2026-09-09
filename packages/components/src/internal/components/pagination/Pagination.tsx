@@ -21,6 +21,7 @@ export interface PaginationData {
     pageCount: number;
     pageSize: number;
     rowCount: number;
+    rowCountCapped?: boolean;
     totalCountLoadingState?: LoadingState;
 }
 
@@ -52,6 +53,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         pageSize,
         pageSizes = DEFAULT_PAGE_SIZES,
         rowCount,
+        rowCountCapped,
         setPageSize,
         totalCountLoadingState,
     } = props;
@@ -97,6 +99,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
                 offset={offset}
                 pageSize={pageSize}
                 rowCount={rowCount}
+                rowCountCapped={rowCountCapped}
                 totalCountLoadingState={totalCountLoadingState}
             />
 
@@ -116,6 +119,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
                         isFirstPage={isFirstPage}
                         isLastPage={isLastPage}
                         pageCount={pageCount}
+                        rowCountCapped={rowCountCapped}
                         loadFirstPage={onLoadFirstPage}
                         loadLastPage={onLoadLastPage}
                         pageSize={pageSize}

@@ -24,6 +24,7 @@ import {
     ARCHIVED_FOLDERS,
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
+    EXPERIMENTAL_USE_LEGACY_EXACT_ROW_COUNTS,
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
     EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED,
     EXPERIMENTAL_REQUESTS_MENU,
@@ -265,6 +266,10 @@ export function getPrimaryAppProperties(moduleContext?: ModuleContext): AppPrope
 
 export function isAllProductFoldersFilteringEnabled(moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.query?.[EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS] === true;
+}
+
+export function isCappedGridCountEnabled(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.query?.[EXPERIMENTAL_USE_LEGACY_EXACT_ROW_COUNTS] !== true;
 }
 
 export function isProductFoldersDataListingScopedToFolder(moduleContext?: ModuleContext): boolean {

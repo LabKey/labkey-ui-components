@@ -334,7 +334,6 @@ export class QueryModel {
     /**
      * Query parameters used as input to a parameterized query.
      */
-
     readonly queryParameters?: QueryParameters;
     /**
      * Array of column names to be explicitly included from the column list in the QueryModel data load.

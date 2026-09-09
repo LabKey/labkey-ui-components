@@ -652,7 +652,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const { model, actions } = this.props;
         const { actionValues } = this.state;
         const view = model.currentView;
-        let newSorts;
+        let newSorts: QuerySort[];
 
         if (change.type === ChangeType.remove) {
             const value = actionValues[change.index].valueObject;
@@ -670,7 +670,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             const viewSortIndex = view?.sorts.findIndex(sort => sort.fieldKey === newQuerySort.fieldKey) ?? -1;
             if (viewSortIndex > -1) {
                 const newViewSorts = view.sorts.filter((s, i) => viewSortIndex !== i);
-                newViewSorts.push(newQuerySort);
+                newViewSorts.unshift(newQuerySort);
                 this.saveAsSessionView({ sorts: newViewSorts });
                 return;
             }
@@ -678,7 +678,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             // remove any existing sorts on the given column (doesn't make sense to keep multiple)
             // before adding the new sort value
             newSorts = model.sorts.filter(sort => sort.fieldKey !== newQuerySort.fieldKey);
-            newSorts.push(newQuerySort);
+            newSorts.unshift(newQuerySort);
         }
 
         actions.setSorts(model.id, newSorts);

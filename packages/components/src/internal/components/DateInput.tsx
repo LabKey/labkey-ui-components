@@ -16,7 +16,7 @@ export interface DateInputProps {
 
 export const DateInput: FC<DateInputProps & DatePickerProps> = memo(props => {
     const { container, dateFormat, onSelect, timeFormat, ...pickerProps } = props;
-    const [id] = useState(() => generateId('date-input-'))
+    const [id] = useState(() => generateId('date-input-'));
 
     const input = useRef<DatePicker>(undefined);
     const formats = useMemo(() => {

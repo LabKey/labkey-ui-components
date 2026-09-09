@@ -5,6 +5,7 @@
 import React, { ChangeEvent, FC, useCallback } from 'react';
 
 import { HelpIcon } from './HelpIcon';
+import { DateInput } from './DateInput';
 
 const INPUT_CLASSES = {
     checkbox: 'form-check',
@@ -34,7 +35,7 @@ export interface Field<T = any> {
     label: string;
     name: string;
     // Options are used in Select and Radio fields.
-    options?: Array<Option<T>>;
+    options?: Option<T>[];
     placeholder?: string;
     required?: boolean;
     type: string;
@@ -48,16 +49,16 @@ export interface FormSchema {
 }
 
 export interface FieldClassProps {
+    // className for the div that wraps each field component
+    fieldWrapperCls?: string;
     // A map of input types to classNames (see INPUT_CLASSES for the default values)
     inputClasses?: Record<string, string>;
     // className for the div that wraps each input element
     inputWrapperCls?: string;
-    // className for the the label element
+    // className for the label element
     labelCls?: string;
     // className for the div that wraps the label element
     labelWrapperCls?: string;
-    // className for the div that wraps each field component
-    fieldWrapperCls?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -85,7 +86,7 @@ const Label: FC<LabelProps> = ({ cls, field, id, wrapperCls }) => {
         if (helpTextHref) {
             helpLink = (
                 <p>
-                    <a href={helpTextHref} target="_blank" rel="noopener noreferrer">
+                    <a href={helpTextHref} rel="noopener noreferrer" target="_blank">
                         More info
                     </a>
                 </p>
@@ -119,10 +120,10 @@ const TextInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange, 
             className={className}
             id={id}
             name={name}
+            onChange={_onChange}
             placeholder={placeholder}
             type="text"
             value={_value}
-            onChange={_onChange}
         />
     );
 };
@@ -139,11 +140,11 @@ const NumberInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange
             id={id}
             inputMode="numeric"
             name={name}
+            onChange={_onChange}
             pattern="[0-9]*"
             placeholder={placeholder}
             type="text"
             value={_value}
-            onChange={_onChange}
         />
     );
 };
@@ -156,7 +157,7 @@ const TextareaInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChan
     );
     const className = inputClasses.textarea ?? '';
     const _value = value === null || value === undefined ? '' : value;
-    return <textarea className={className} id={id} name={field.name} value={_value} onChange={_onChange} />;
+    return <textarea className={className} id={id} name={field.name} onChange={_onChange} value={_value} />;
 };
 TextareaInput.displayName = 'TextareaInput';
 
@@ -168,12 +169,12 @@ const CheckboxInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChan
     const className = inputClasses.checkbox ?? '';
     return (
         <input
+            checked={value === true}
             className={className}
             id={id}
             name={field.name}
-            type="checkbox"
             onChange={_onChange}
-            checked={value === true}
+            type="checkbox"
         />
     );
 };
@@ -192,7 +193,7 @@ const SelectInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange
     const className = inputClasses.select ?? '';
     const hasPlaceholder = placeholder !== null && placeholder !== undefined;
     return (
-        <select className={className} id={id} name={name} value={_value} onChange={_onChange}>
+        <select className={className} id={id} name={name} onChange={_onChange} value={_value}>
             {hasPlaceholder && <option value="">{placeholder}</option>}
             {options.map(option => (
                 <option key={option.value} value={option.value}>
@@ -213,11 +214,11 @@ const RadioInput: FC<AutoFormFieldProps> = ({ field, inputClasses, onChange, val
             {options.map(option => (
                 <label className={className} key={option.value}>
                     <input
-                        name={name}
-                        type="radio"
-                        onChange={_onChange}
-                        value={option.value}
                         checked={value === option.value}
+                        name={name}
+                        onChange={_onChange}
+                        type="radio"
+                        value={option.value}
                     />
                     {option.label}
                 </label>
@@ -227,12 +228,29 @@ const RadioInput: FC<AutoFormFieldProps> = ({ field, inputClasses, onChange, val
 };
 RadioInput.displayName = 'RadioInput';
 
+/**
+ * A Date input component for AutoForm. Currently only supported by our Client, the server is not aware of this input
+ * type. Expects a Date object as the value, sends a Date object to the onChange callback. Does not use id or
+ * inputClasses props from AutoFormFieldProps because our underlying DateInput component does not support overriding the
+ * id or input className.
+ */
+const AutoFormDateInput: FC<AutoFormFieldProps<Date>> = ({ field, onChange, value }) => {
+    const { name, placeholder } = field;
+    const onDateChange = useCallback((date: Date) => onChange(name, date), [name, onChange]);
+    return (
+        <div className="auto-form-date-input">
+            <DateInput name={name} onChange={onDateChange} placeholderText={placeholder} selected={value} />
+        </div>
+    );
+};
+AutoFormDateInput.displayName = 'AutoFormDateInput';
+
 const AutoFormField: FC<AutoFormFieldProps> = props => {
     const { field, id, inputWrapperCls, labelCls, labelWrapperCls, fieldWrapperCls } = props;
     const { type } = field;
     return (
         <div className={'auto-form-field ' + fieldWrapperCls}>
-            <Label cls={labelCls} wrapperCls={labelWrapperCls} field={field} id={id} />
+            <Label cls={labelCls} field={field} id={id} wrapperCls={labelWrapperCls} />
             <div className={inputWrapperCls}>
                 {type === 'text' && <TextInput {...props} />}
                 {type === 'textarea' && <TextareaInput {...props} />}
@@ -240,6 +258,7 @@ const AutoFormField: FC<AutoFormFieldProps> = props => {
                 {type === 'checkbox' && <CheckboxInput {...props} />}
                 {type === 'select' && <SelectInput {...props} />}
                 {type === 'radio' && <RadioInput {...props} />}
+                {type === 'datetime' && <AutoFormDateInput {...props} />}
             </div>
         </div>
     );
@@ -280,15 +299,15 @@ export const AutoForm: FC<Props> = props => {
         <div className={'auto-form ' + wrapperCls}>
             {formSchema.fields.map(field => (
                 <AutoFormField
-                    key={field.name}
                     field={field}
+                    fieldWrapperCls={fieldWrapperCls}
                     id={`auto-form-${field.name}`}
                     inputClasses={inputClasses}
                     inputWrapperCls={inputWrapperCls}
+                    key={field.name}
                     labelCls={labelCls}
                     labelWrapperCls={labelWrapperCls}
                     onChange={onChange}
-                    fieldWrapperCls={fieldWrapperCls}
                     value={values[field.name]}
                 />
             ))}

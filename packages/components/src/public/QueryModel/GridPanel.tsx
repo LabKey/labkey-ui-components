@@ -660,17 +660,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
             newSorts = model.sorts.filter(sort => !sortsEqual(sort, value));
         } else if (newQuerySort) {
-            // first check if we are changing a sort from the saved view
-            const viewSortIndex = view?.sorts.findIndex(sort => sort.fieldKey === newQuerySort.fieldKey) ?? -1;
-            if (viewSortIndex > -1) {
-                const newViewSorts = view.sorts.filter((s, i) => viewSortIndex !== i);
-                newViewSorts.unshift(newQuerySort);
-                this.saveAsSessionView({ sorts: newViewSorts });
-                return;
-            }
-
-            // remove any existing sorts on the given column (doesn't make sense to keep multiple)
-            // before adding the new sort value
+            // Leave the view alone even when it sorts this column, matching changeSort() in DataRegion.js: user sorts
+            // precede view sorts and the server's Sort keeps only the first entry per column, so this one wins anyway.
+            // Remove any existing sorts on the given column before adding the new sort value
             newSorts = model.sorts.filter(sort => sort.fieldKey !== newQuerySort.fieldKey);
             newSorts.unshift(newQuerySort);
         }

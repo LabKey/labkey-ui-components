@@ -446,7 +446,7 @@ describe('GridPanel', () => {
         expect(lastSetSorts()).toEqual(['-Name', '-expirationTime']);
     });
 
-    test('sorting a column sorted by the view moves that sort to the front of the view sorts', async () => {
+    test('sorting a column sorted by the view leaves the view untouched', async () => {
         const { rows, orderedRows, rowCount } = DATA;
         const view = QUERY_INFO.getView(ViewInfo.DEFAULT_NAME).mutate({
             sorts: [
@@ -457,15 +457,17 @@ describe('GridPanel', () => {
         const queryInfo = QUERY_INFO.mutate({
             views: new ExtendedMap({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
         });
-        const model = makeTestQueryModel(SCHEMA_QUERY, queryInfo, rows, orderedRows.slice(0, 20), rowCount);
+        const model = makeTestQueryModel(SCHEMA_QUERY, queryInfo, rows, orderedRows.slice(0, 20), rowCount).mutate({
+            sorts: [new QuerySort({ fieldKey: 'extraTestColumn', dir: '-' })],
+        });
         renderWithAppContext(<GridPanel actions={actions} model={model} />);
 
         await openHeaderMenu('Name');
         await clickHeaderMenuItem('Sort descending');
 
-        expect(actions.setSorts).not.toHaveBeenCalled();
-        const savedView = jest.mocked(saveAsSessionView).mock.calls[0][2];
-        expect(savedView.sorts.map(sort => sort.toRequestString())).toEqual(['-Name', '-expirationTime']);
+        // the sort stays a user sort; the server drops the view's now-shadowed entry for the same column
+        expect(lastSetSorts()).toEqual(['-Name', '-extraTestColumn']);
+        expect(saveAsSessionView).not.toHaveBeenCalled();
     });
 
     test('SaveViewModal lists the filters and sorts that will be saved', async () => {

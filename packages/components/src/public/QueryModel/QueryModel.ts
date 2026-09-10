@@ -92,8 +92,6 @@ export function locationHasQueryParamSettings(prefix: string, searchParams?: URL
     if (searchParams.get(`${prefix}.sort`) !== null) return true;
     // Page offset
     if (searchParams.get(`${prefix}.p`) !== null) return true;
-    // Row-count cap
-    if (searchParams.get(`${prefix}.maxCount`) !== null) return true;
     // Page size
     return searchParams.get(`${prefix}.pageSize`) !== null;
 }
@@ -1230,10 +1228,6 @@ export class QueryModel {
         let filterArray = columnFilters.concat(searchFilters);
         let maxRows = parseInt(searchParams.get(`${prefix}.pageSize`), 10);
         if (isNaN(maxRows)) maxRows = DEFAULT_MAX_ROWS;
-        // Used for selenium test
-        // Absent maxCount keeps the configured cap; 0 (exact count) is a valid override, so guard on isNaN not falsiness
-        let maxCount = parseInt(searchParams.get(`${prefix}.maxCount`), 10);
-        if (isNaN(maxCount)) maxCount = this.maxCount;
         let offset = offsetFromString(maxRows, searchParams.get(`${prefix}.p`)) ?? DEFAULT_OFFSET;
         let schemaQuery = new SchemaQuery(this.schemaName, this.queryName, viewName);
         let selectedReportIds = searchParams.get(`${prefix}.selectedReportIds`)?.split(';') ?? [];
@@ -1267,7 +1261,7 @@ export class QueryModel {
             }
         }
 
-        return { filterArray, maxCount, maxRows, offset, schemaQuery, selectedReportIds, sorts };
+        return { filterArray, maxRows, offset, schemaQuery, selectedReportIds, sorts };
     }
 
     /**
@@ -1284,7 +1278,7 @@ export class QueryModel {
 
 type QueryModelURLState = Pick<
     QueryModel,
-    'filterArray' | 'maxCount' | 'maxRows' | 'offset' | 'schemaQuery' | 'selectedReportIds' | 'sorts'
+    'filterArray' | 'maxRows' | 'offset' | 'schemaQuery' | 'selectedReportIds' | 'sorts'
 >;
 type QueryModelSettings = Partial<Pick<QueryModel, 'filterArray' | 'maxRows' | 'sorts' | 'viewName'>>;
 const LOCAL_STORAGE_PREFIX = 'QUERY_MODEL_SETTINGS';

@@ -462,7 +462,6 @@ describe('locationHasQueryParamSettings', () => {
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.sort': '1' }))).toBe(true);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.p': '1' }))).toBe(true);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.pageSize': '1' }))).toBe(true);
-        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.maxCount': '1' }))).toBe(true);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.col~eq=': '1' }))).toBe(true);
     });
 
@@ -473,7 +472,6 @@ describe('locationHasQueryParamSettings', () => {
         expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.sort': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.p': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.pageSize': '1' }))).toBe(false);
-        expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.maxCount': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.col~eq=': '1' }))).toBe(false);
     });
 
@@ -491,7 +489,6 @@ describe('attributesForURLQueryParams', () => {
     test('without useExistingValues', () => {
         const defaultExpected = {
             filterArray: [],
-            maxCount: DEFAULT_MAX_COUNT,
             maxRows: DEFAULT_MAX_ROWS,
             offset: DEFAULT_OFFSET,
             schemaQuery: SCHEMA_QUERY,
@@ -531,20 +528,6 @@ describe('attributesForURLQueryParams', () => {
             maxRows: 100,
             offset: 200,
         });
-
-        // maxCount should be honored, including 0 (request an exact count)
-        searchParams = new URLSearchParams({ 'query.maxCount': '2' });
-        values = model.attributesForURLQueryParams(searchParams);
-        expect(values).toEqual({ ...defaultExpected, maxCount: 2 });
-
-        searchParams = new URLSearchParams({ 'query.maxCount': '0' });
-        values = model.attributesForURLQueryParams(searchParams);
-        expect(values).toEqual({ ...defaultExpected, maxCount: 0 });
-
-        // a non-numeric maxCount falls back to the model's configured cap
-        searchParams = new URLSearchParams({ 'query.maxCount': 'bogus' });
-        values = model.attributesForURLQueryParams(searchParams);
-        expect(values).toEqual(defaultExpected);
 
         // reportId should be honored
         searchParams = new URLSearchParams({
@@ -605,7 +588,6 @@ describe('attributesForURLQueryParams', () => {
         values = model.attributesForURLQueryParams(searchParams);
         expect(values).toEqual({
             filterArray: expectedFilters,
-            maxCount: DEFAULT_MAX_COUNT,
             maxRows: 100,
             offset: 200,
             schemaQuery: new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'custom view'),
@@ -617,7 +599,6 @@ describe('attributesForURLQueryParams', () => {
     test('with useExistingValues', () => {
         const defaultExpected = {
             filterArray: [Filter.create('existingCol', 25)],
-            maxCount: DEFAULT_MAX_COUNT,
             maxRows: 10,
             offset: 60,
             schemaQuery: new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'existing custom view'),
@@ -720,17 +701,11 @@ describe('attributesForURLQueryParams', () => {
         values = model.attributesForURLQueryParams(searchParams, true);
         expect(values).toEqual({
             filterArray: expectedFilters,
-            maxCount: DEFAULT_MAX_COUNT,
             maxRows: 100,
             offset: 200,
             schemaQuery: new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'custom view'),
             selectedReportIds: ['db:99'],
             sorts: expectedSorts,
         });
-
-        // an explicit URL maxCount overrides the model's configured cap
-        searchParams = new URLSearchParams({ 'query.maxCount': '2' });
-        values = model.attributesForURLQueryParams(searchParams, true);
-        expect(values).toEqual({ ...defaultExpected, maxCount: 2 });
     });
 });

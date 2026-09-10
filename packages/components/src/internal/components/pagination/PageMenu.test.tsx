@@ -72,11 +72,12 @@ describe('PageMenu', () => {
         expectPageMenuItems(false, false, true, '34', '34 Total Pages');
     });
 
-    test('capped rowCount hides Last Page and total pages', () => {
+    test('capped rowCount jumps to the last known page instead of "Last Page"', () => {
         render(<PageMenu {...props} rowCountCapped />);
         expect(screen.getByText('First Page')).toBeInTheDocument();
-        // last-page navigation and the total-pages footer are meaningless when the count is only a floor
+        // the true last page is unknown, so offer the last page of the known (capped) range and drop the total-pages footer
         expect(screen.queryByText('Last Page')).not.toBeInTheDocument();
+        expect(screen.getByText('Page 34')).toBeInTheDocument();
         expect(screen.queryByText('34 Total Pages')).not.toBeInTheDocument();
     });
 

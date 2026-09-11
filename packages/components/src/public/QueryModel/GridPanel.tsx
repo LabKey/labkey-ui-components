@@ -154,6 +154,11 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
         actions.setMaxRows(model.id, pageSize);
     };
 
+    showTotalRowCount = (): void => {
+        const { model, actions } = this.props;
+        actions.loadTotalCount(model.id, true, true);
+    };
+
     render(): ReactNode {
         const {
             searchActionValues,
@@ -204,6 +209,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                 loadPreviousPage={this.loadPreviousPage}
                 pageSizes={pageSizes}
                 setPageSize={this.setPageSize}
+                showTotalRowCount={this.showTotalRowCount}
             />
         );
 

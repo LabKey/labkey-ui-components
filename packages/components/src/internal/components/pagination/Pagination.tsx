@@ -4,7 +4,7 @@
  */
 import React, { FC, memo, useCallback } from 'react';
 
-import { LoadingState } from '../../../public/LoadingState';
+import { isLoading, LoadingState } from '../../../public/LoadingState';
 
 import { incrementClientSideMetricCount } from '../../actions';
 
@@ -33,6 +33,7 @@ export interface PaginationProps extends PaginationData {
     // pageSizes is expected to be sorted (ascending)
     pageSizes?: number[];
     setPageSize: (pageSize) => void;
+    showTotalRowCount?: () => void;
 }
 
 const PAGINATION_METRIC_AREA = 'pagination';
@@ -55,6 +56,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         rowCount,
         rowCountCapped,
         setPageSize,
+        showTotalRowCount,
         totalCountLoadingState,
     } = props;
     const hasPages = rowCount > pageSizes[0];
@@ -92,6 +94,11 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         [setPageSize]
     );
 
+    const onShowTotalRowCount = useCallback(() => {
+        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, 'showTotalRowCount');
+        showTotalRowCount?.();
+    }, [showTotalRowCount]);
+
     // Use lk-pagination so we don't conflict with bootstrap pagination class.
     return (
         <div className="lk-pagination">
@@ -122,6 +129,8 @@ export const Pagination: FC<PaginationProps> = memo(props => {
                         rowCountCapped={rowCountCapped}
                         loadFirstPage={onLoadFirstPage}
                         loadLastPage={onLoadLastPage}
+                        loadingTotalCount={isLoading(totalCountLoadingState)}
+                        onShowTotalRowCount={showTotalRowCount ? onShowTotalRowCount : undefined}
                         pageSize={pageSize}
                         pageSizes={pageSizes}
                         setPageSize={onSetPageSize}

@@ -124,6 +124,7 @@ export interface Actions {
     loadNextPage: (id: string) => void;
     loadPreviousPage: (id: string) => void;
     loadRows: (id: string) => void;
+    loadTotalCount: (id: string, reloadTotalCount?: boolean, forceExact?: boolean) => void;
     onModelChange: (id: string, modelChange: ModelChange) => void;
     replaceSelections: (id: string, selections: string[]) => void;
     resetTotalCountState: () => void;
@@ -429,6 +430,7 @@ export function withQueryModels<Props>(
                 loadFirstPage: this.loadFirstPage,
                 loadLastPage: this.loadLastPage,
                 loadCharts: this.loadCharts,
+                loadTotalCount: this.loadTotalCount,
                 onModelChange: this.onModelChange,
                 replaceSelections: this.replaceSelections,
                 resetTotalCountState: this.resetTotalCountState,
@@ -924,7 +926,7 @@ export function withQueryModels<Props>(
             }
         };
 
-        loadTotalCount = async (id: string, reloadTotalCount = false): Promise<void> => {
+        loadTotalCount = async (id: string, reloadTotalCount = false, forceExact = false): Promise<void> => {
             // Issue 53192
             if (!this.state.queryModels[id].isQueryInfoLoaded) {
                 return;
@@ -932,9 +934,11 @@ export function withQueryModels<Props>(
 
             const model = this.state.queryModels[id];
             // Once the user pages to the last page within a capped count, there may be more rows beyond the cap. Re-fire
-            // the count once with an exact count (maxCount=0) so paging can continue past the cap.
+            // the count once with an exact count (maxCount=0) so paging can continue past the cap. forceExact does the
+            // same on explicit user request, regardless of the current page.
             const needsExactCount =
-                model.rowCountCapped && model.maxCount > 0 && model.offset + model.maxRows >= model.rowCount;
+                forceExact ||
+                (model.rowCountCapped && model.maxCount > 0 && model.offset + model.maxRows >= model.rowCount);
 
             // if we've already loaded the totalCount, no need to load it again (unless we now need an exact count)
             if (!reloadTotalCount && !needsExactCount && model.totalCountLoadingState === LoadingState.LOADED) {

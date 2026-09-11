@@ -96,15 +96,17 @@ describe('PageMenu', () => {
         expect(screen.queryByText('Count All Rows')).not.toBeInTheDocument();
     });
 
-    test('Count All Rows is disabled while counting and invokes the handler', async () => {
-        const onShowTotalRowCount = jest.fn();
-        const { rerender } = render(
-            <PageMenu {...props} rowCountCapped loadingTotalCount onShowTotalRowCount={onShowTotalRowCount} />
-        );
-        // while loading it shows the spinner rather than the label, and is disabled
+    test('Count All Rows shows a spinner and is disabled while counting', () => {
+        render(<PageMenu {...props} rowCountCapped loadingTotalCount onShowTotalRowCount={jest.fn()} />);
+        // the spinner replaces the label, and the item is present but disabled
         expect(screen.queryByText('Count All Rows')).not.toBeInTheDocument();
+        expect(screen.getByText('Counting…')).toBeInTheDocument();
+        expect(screen.getByText('Counting…').closest('li')).toHaveClass('disabled');
+    });
 
-        rerender(<PageMenu {...props} rowCountCapped onShowTotalRowCount={onShowTotalRowCount} />);
+    test('Count All Rows invokes the handler when clicked', async () => {
+        const onShowTotalRowCount = jest.fn();
+        render(<PageMenu {...props} rowCountCapped onShowTotalRowCount={onShowTotalRowCount} />);
         await userEvent.click(screen.getByText('Count All Rows'));
         expect(onShowTotalRowCount).toHaveBeenCalled();
     });

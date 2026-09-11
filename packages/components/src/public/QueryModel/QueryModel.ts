@@ -20,7 +20,6 @@ import { caseInsensitive } from '../../internal/util/utils';
 import { naturalSortByProperty } from '../sort';
 import { PaginationData } from '../../internal/components/pagination/Pagination';
 import { SelectRowsMessage, SelectRowsOptions } from '../../internal/query/selectRows';
-import { isCappedGridCountEnabled } from '../../internal/app/utils';
 
 export function flattenValuesFromRow(
     row: any,
@@ -516,8 +515,7 @@ export class QueryModel {
         this.includeUpdateColumn = queryConfig.includeUpdateColumn ?? false;
         this.includeTotalCount = queryConfig.includeTotalCount ?? false;
         this.keyValue = queryConfig.keyValue;
-        // Respect the opt-out experimental flag: when disabled, count exactly (0) instead of applying the default cap.
-        this.maxCount = queryConfig.maxCount ?? (isCappedGridCountEnabled() ? DEFAULT_MAX_COUNT : 0);
+        this.maxCount = queryConfig.maxCount ?? DEFAULT_MAX_COUNT;
         this.maxRows = queryConfig.maxRows ?? DEFAULT_MAX_ROWS;
         this.offset = queryConfig.offset ?? DEFAULT_OFFSET;
         this.omittedColumns = queryConfig.omittedColumns ?? [];

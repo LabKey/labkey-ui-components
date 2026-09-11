@@ -1155,7 +1155,11 @@ export function withQueryModels<Props>(
             );
         };
 
-        loadLastPage = (id: string): void => {
+        loadLastPage = async (id: string): Promise<void> => {
+            if (this.state.queryModels[id].rowCountCapped) {
+                await this.loadTotalCount(id, true, true);
+            }
+
             let shouldLoad = false;
             this.setState(
                 produce<State>((draft: WritableDraft<State>) => {

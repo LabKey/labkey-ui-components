@@ -55,7 +55,6 @@ import {
     isAssayQCEnabled,
     isAssayRequestsEnabled,
     isCalculatedFieldsEnabled,
-    isCappedGridCountEnabled,
     isCommunityDistribution,
     isConditionalFormattingEnabled,
     isELNEnabled,
@@ -1369,17 +1368,5 @@ describe('isSharedContainer', () => {
 
     test('Shared', () => {
         expect(isSharedContainer('/Shared')).toBe(true);
-    });
-});
-
-describe('isCappedGridCountEnabled', () => {
-    test('enabled by default', () => {
-        expect(isCappedGridCountEnabled({})).toBe(true);
-        expect(isCappedGridCountEnabled({ query: {} })).toBe(true);
-    });
-
-    test('disabled only when the legacy-exact-counts flag is explicitly true', () => {
-        expect(isCappedGridCountEnabled({ query: { queryUseLegacyExactRowCounts: true } })).toBe(false);
-        expect(isCappedGridCountEnabled({ query: { queryUseLegacyExactRowCounts: false } })).toBe(true);
     });
 });

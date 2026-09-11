@@ -72,16 +72,9 @@ export const PageMenu: FC<Props> = props => {
             <MenuItem disabled={disabled || isFirstPage} onClick={loadFirstPage}>
                 First Page
             </MenuItem>
-            {rowCountCapped ? (
-                // The true last page is unknown, so jump to the last page of the known (capped) range
-                <MenuItem disabled={disabled} onClick={loadLastPage}>
-                    {`Page ${pageCount.toLocaleString()}`}
-                </MenuItem>
-            ) : (
-                <MenuItem disabled={disabled || isLastPage} onClick={loadLastPage}>
-                    Last Page
-                </MenuItem>
-            )}
+            <MenuItem disabled={disabled || isLastPage} onClick={loadLastPage}>
+                Last Page
+            </MenuItem>
             {rowCountCapped && onShowTotalRowCount && (
                 <MenuItem disabled={disabled || loadingTotalCount} onClick={onShowTotalRowCount}>
                     {loadingTotalCount ? <LoadingSpinner msg="Counting…" /> : 'Count All Rows'}

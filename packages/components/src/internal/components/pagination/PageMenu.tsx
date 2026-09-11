@@ -77,7 +77,7 @@ export const PageMenu: FC<Props> = props => {
             </MenuItem>
             {rowCountCapped && onShowTotalRowCount && (
                 <MenuItem disabled={disabled || loadingTotalCount} onClick={onShowTotalRowCount}>
-                    {loadingTotalCount ? <LoadingSpinner msg="Counting…" /> : 'Count All Rows'}
+                    {loadingTotalCount ? <LoadingSpinner msg="Loading..." /> : 'Count All Rows'}
                 </MenuItem>
             )}
             {!rowCountCapped && <MenuHeader className="submenu-footer" text={totalPagesText} />}

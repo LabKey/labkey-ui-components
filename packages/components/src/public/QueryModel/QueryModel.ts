@@ -170,8 +170,8 @@ export interface QueryConfig {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     keyValue?: any;
     /**
-     * Cap the pagination row count at this many rows (defaults to DEFAULT_MAX_COUNT). Above the cap the grid shows
-     * "N+" and hides the last-page control. Set to 0 to count exactly.
+     * Cap the pagination row count at this many rows (defaults to DEFAULT_MAX_COUNT).
+     * When the grid has more that this number of rows it will show the max as N+. Set to 0 to count exactly.
      */
     maxCount?: number;
     /**

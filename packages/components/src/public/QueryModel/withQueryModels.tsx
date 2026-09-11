@@ -933,12 +933,11 @@ export function withQueryModels<Props>(
             }
 
             const model = this.state.queryModels[id];
-            // Once the user pages to the last page within a capped count, there may be more rows beyond the cap. Re-fire
-            // the count once with an exact count (maxCount=0) so paging can continue past the cap. forceExact does the
-            // same on explicit user request, regardless of the current page.
+
+             const haveExactCount = model.rowCount !== undefined && !model.rowCountCapped;
             const needsExactCount =
                 forceExact ||
-                (model.rowCountCapped && model.maxCount > 0 && model.offset + model.maxRows >= model.rowCount);
+                (!haveExactCount && model.maxCount > 0 && model.offset + model.maxRows >= model.maxCount);
 
             // if we've already loaded the totalCount, no need to load it again (unless we now need an exact count)
             if (!reloadTotalCount && !needsExactCount && model.totalCountLoadingState === LoadingState.LOADED) {

@@ -20,6 +20,9 @@ import { caseInsensitive } from '../../internal/util/utils';
 import { naturalSortByProperty } from '../sort';
 import { PaginationData } from '../../internal/components/pagination/Pagination';
 import { SelectRowsMessage, SelectRowsOptions } from '../../internal/query/selectRows';
+import { Primitive } from '../../internal/models';
+
+export type QueryParameters = Record<string, Primitive>;
 
 export function flattenValuesFromRow(
     row: any,
@@ -186,8 +189,7 @@ export interface QueryConfig {
     /**
      * Query parameters used as input to a parameterized query.
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    queryParameters?: Record<string, any>;
+    readonly queryParameters?: QueryParameters;
     /**
      * Array of column names to be explicitly included in the column list in the [[QueryModel]] data load.
      */
@@ -332,8 +334,7 @@ export class QueryModel {
     /**
      * Query parameters used as input to a parameterized query.
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    readonly queryParameters?: Record<string, any>;
+    readonly queryParameters?: QueryParameters;
     /**
      * Array of column names to be explicitly included from the column list in the QueryModel data load.
      */

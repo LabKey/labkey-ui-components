@@ -22,6 +22,13 @@ export enum QueryInfoStatus {
     unknown,
 }
 
+export interface NamedParameter {
+    defaultValue: boolean | number | string;
+    isRequired: boolean;
+    jdbcType: string;
+    name: string;
+}
+
 const QUERY_INFO_DEFAULTS = {
     disabledSystemFields: undefined,
     // canEdit: false,
@@ -41,6 +48,7 @@ const QUERY_INFO_DEFAULTS = {
     lastAction: undefined,
     // lastUpdate: undefined,
     name: undefined,
+    namedParameters: [],
     pkCols: [],
     schemaName: undefined,
     status: QueryInfoStatus.unknown,
@@ -96,6 +104,7 @@ export class QueryInfo {
     declare lastAction: LastActionStatus;
     // declare lastUpdate: Date;
     declare name: string;
+    declare namedParameters: NamedParameter[];
     declare pkCols: string[];
     declare plural: string;
     declare queryLabel: string;

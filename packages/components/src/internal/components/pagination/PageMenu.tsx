@@ -9,6 +9,7 @@ import { createPortal } from 'react-dom';
 import { DropdownButton, MenuDivider, MenuHeader, MenuItem } from '../../dropdowns';
 import { useOverlayTriggerState } from '../../OverlayTrigger';
 import { Tooltip } from '../../Tooltip';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 interface Props {
     currentPage: number;
@@ -17,9 +18,12 @@ interface Props {
     isLastPage: boolean;
     loadFirstPage: () => void;
     loadLastPage: () => void;
+    loadingTotalCount?: boolean;
+    onShowTotalRowCount?: () => void;
     pageCount: number;
     pageSize: number;
     pageSizes: number[];
+    rowCountCapped?: boolean;
     setPageSize: (size: number) => void;
 }
 
@@ -31,9 +35,12 @@ export const PageMenu: FC<Props> = props => {
         isLastPage,
         loadFirstPage,
         loadLastPage,
+        loadingTotalCount,
+        onShowTotalRowCount,
         pageCount,
         pageSize,
         pageSizes,
+        rowCountCapped,
         setPageSize,
     } = props;
     const totalPagesText = disabled ? '...' : `${pageCount.toLocaleString()} Total Pages`;
@@ -65,10 +72,15 @@ export const PageMenu: FC<Props> = props => {
             <MenuItem disabled={disabled || isFirstPage} onClick={loadFirstPage}>
                 First Page
             </MenuItem>
-            <MenuItem disabled={disabled || isLastPage} onClick={loadLastPage}>
+            <MenuItem disabled={disabled || (isLastPage && !rowCountCapped)} onClick={loadLastPage}>
                 Last Page
             </MenuItem>
-            <MenuHeader className="submenu-footer" text={totalPagesText} />
+            {rowCountCapped && onShowTotalRowCount && (
+                <MenuItem disabled={disabled || loadingTotalCount} onClick={onShowTotalRowCount}>
+                    {loadingTotalCount ? <LoadingSpinner msg="Loading..." /> : 'Count All Rows'}
+                </MenuItem>
+            )}
+            {!rowCountCapped && <MenuHeader className="submenu-footer" text={totalPagesText} />}
             <MenuDivider />
             <MenuHeader text="Page Size" />
             {pageSizes?.map(size => (

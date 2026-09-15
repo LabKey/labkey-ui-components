@@ -137,4 +137,39 @@ describe('SelectionStatus', () => {
         expect(document.querySelectorAll('.selection-status__select-all')).toHaveLength(1);
         expect(document.querySelector('.selection-status__select-all')).toHaveTextContent('Select first 100,000');
     });
+
+    test('capped rowCount offers "Select first" even when rowCount does not exceed maxSelectionSize', () => {
+        // rowCount equals the cap and is not > maxSelectionSize, so only rowCountCapped forces the "first N" label
+        const model = MODEL_LOADED.mutate({ rowCount: 100_000, rowCountCapped: true });
+        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />, APP_CONTEXT);
+        expect(document.querySelectorAll('.selection-status__select-all')).toHaveLength(1);
+        expect(document.querySelector('.selection-status__select-all')).toHaveTextContent('Select first 100,000');
+        // a capped total renders with a trailing "+"
+        expect(document.querySelector('.selection-status__count')).toHaveTextContent('1 of 100,000+ selected');
+    });
+
+    test('capped rowCount still offers select-all when selectionSize equals rowCount', () => {
+        // selectionSize === rowCount would normally read as "all selected", but with a cap more rows exist beyond it
+        const selectionSet = [];
+        for (let i = 0; i < 25; i++) selectionSet.push(i.toString());
+        const model = MODEL_LOADED.mutate({ rowCount: 25, rowCountCapped: true, selections: new Set(selectionSet) });
+        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />, APP_CONTEXT);
+        expect(document.querySelectorAll('.selection-status__select-all')).toHaveLength(1);
+        expect(document.querySelector('.selection-status__select-all')).toHaveTextContent('Select first 100,000');
+    });
+
+    test('exact rowCount exceeding maxSelectionSize shows no "+" in the count', () => {
+        // Once the exact total is known (rowCountCapped false), the total is precise even though it exceeds the
+        // selection cap, so the count must not render a trailing "+".
+        const smallLimitContext = { serverContext: { moduleContext: { query: { maxQuerySelection: 3 } } } };
+        const model = MODEL_LOADED.mutate({
+            rowCount: 5,
+            rowCountCapped: false,
+            selections: new Set(['1', '2', '3']),
+        });
+        renderWithAppContext(<SelectionStatus actions={ACTIONS} model={model} />, smallLimitContext);
+        expect(document.querySelector('.selection-status__count')).toHaveTextContent('3 of 5 selected');
+        // the whole selectable set is already selected, so no select-all button
+        expect(document.querySelectorAll('.selection-status__select-all')).toHaveLength(0);
+    });
 });

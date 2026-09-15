@@ -173,6 +173,11 @@ export interface QueryConfig {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     keyValue?: any;
     /**
+     * Cap the pagination row count at this many rows (defaults to DEFAULT_MAX_COUNT).
+     * When the grid has more that this number of rows it will show the max as N+. Set to 0 to count exactly.
+     */
+    maxCount?: number;
+    /**
      * The maximum number of rows to return from the server (defaults to 100000).
      * If you want to return all possible rows, set this config property to -1.
      */
@@ -237,6 +242,8 @@ export interface QueryConfig {
 
 export const DEFAULT_OFFSET = 0;
 export const DEFAULT_MAX_ROWS = 20;
+// Cap the pagination count so a large grid's COUNT(*) is fixed-cost; above this the grid shows "100,000+". 0 counts exactly.
+export const DEFAULT_MAX_COUNT = 100000;
 
 /**
  * An object that describes the current selection pivot row for shift-select behavior. When a single row is selected
@@ -317,6 +324,10 @@ export class QueryModel {
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly keyValue?: any;
+    /**
+     * Cap the pagination row count at this many rows (defaults to DEFAULT_MAX_COUNT). 0 counts exactly.
+     */
+    readonly maxCount: number;
     /**
      * The maximum number of rows to return from the server (defaults to 20).
      * If you want to return all possible rows, set this config property to -1.
@@ -413,6 +424,10 @@ export class QueryModel {
      */
     readonly rowCount?: number;
     /**
+     * True when rowCount was capped at maxCount rather than counted exactly, i.e. there are more than rowCount rows.
+     */
+    readonly rowCountCapped: boolean;
+    /**
      * Error message from API call to load the data rows.
      */
     readonly rowsError?: string;
@@ -501,6 +516,7 @@ export class QueryModel {
         this.includeUpdateColumn = queryConfig.includeUpdateColumn ?? false;
         this.includeTotalCount = queryConfig.includeTotalCount ?? false;
         this.keyValue = queryConfig.keyValue;
+        this.maxCount = queryConfig.maxCount ?? DEFAULT_MAX_COUNT;
         this.maxRows = queryConfig.maxRows ?? DEFAULT_MAX_ROWS;
         this.offset = queryConfig.offset ?? DEFAULT_OFFSET;
         this.omittedColumns = queryConfig.omittedColumns ?? [];
@@ -517,6 +533,7 @@ export class QueryModel {
         this.orderedRows = undefined;
         this.rows = undefined;
         this.rowCount = undefined;
+        this.rowCountCapped = false;
         this.rowsLoadingState = LoadingState.INITIALIZED;
         this.selectedReportIds = [];
         this.selectionPivot = undefined;
@@ -1033,12 +1050,14 @@ export class QueryModel {
      * Get the row selection state (ALL, SOME, or NONE) for the QueryModel.
      */
     get selectedState(): GRID_CHECKBOX_OPTIONS {
-        const { hasData, isLoading, maxRows, orderedRows, selections, rowCount } = this;
+        const { hasData, isLoading, maxRows, orderedRows, selections, rowCount, rowCountCapped } = this;
 
         if (!isLoading && hasData && selections) {
             const selectedOnPage = orderedRows.filter(rowId => selections.has(rowId)).length;
 
-            if ((selectedOnPage === rowCount || selectedOnPage === orderedRows.length) && rowCount > 0) {
+            // A capped rowCount is a floor, not the true total, so it can't establish that everything is selected.
+            const allByCount = !rowCountCapped && selectedOnPage === rowCount;
+            if ((allByCount || selectedOnPage === orderedRows.length) && rowCount > 0) {
                 return GRID_CHECKBOX_OPTIONS.ALL;
             } else if (selectedOnPage > 0) {
                 // if model has any selected on the page show checkbox as indeterminate
@@ -1101,6 +1120,8 @@ export class QueryModel {
      * True if the current page is the last page for the given QueryModel rows.
      */
     get isLastPage(): boolean {
+        // When the count is capped we don't know the real last page, so keep paging forward available.
+        if (this.rowCountCapped) return false;
         return this.currentPage === this.pageCount;
     }
 
@@ -1124,6 +1145,7 @@ export class QueryModel {
             pageCount: this.pageCount,
             pageSize: this.maxRows,
             rowCount: this.rowCount,
+            rowCountCapped: this.rowCountCapped,
             totalCountLoadingState: this.totalCountLoadingState,
         };
     }
@@ -1158,6 +1180,7 @@ export class QueryModel {
             id: this.id,
             includeDetailsColumn: this.includeDetailsColumn,
             keyValue: this.keyValue,
+            maxCount: this.maxCount,
             maxRows: this.maxRows,
             offset: this.offset,
             omittedColumns: Array.from(this.omittedColumns),

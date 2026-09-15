@@ -20,6 +20,7 @@ import { getQueryParams } from '../../internal/util/URL';
 
 import {
     createQueryModelId,
+    DEFAULT_MAX_COUNT,
     DEFAULT_MAX_ROWS,
     DEFAULT_OFFSET,
     flattenValuesFromRow,
@@ -115,6 +116,52 @@ describe('QueryModel', () => {
         model = model.mutate({ offset: 660 });
         expect(model.isFirstPage).toEqual(false);
         expect(model.isLastPage).toEqual(true);
+    });
+
+    test('maxCount', () => {
+        // defaults to the cap, and rowCountCapped starts false
+        let model = new QueryModel({ schemaQuery: SCHEMA_QUERY });
+        expect(model.maxCount).toEqual(DEFAULT_MAX_COUNT);
+        expect(model.rowCountCapped).toEqual(false);
+
+        // explicit config values pass through, including 0 to request an exact count
+        expect(new QueryModel({ schemaQuery: SCHEMA_QUERY, maxCount: 500 }).maxCount).toEqual(500);
+        expect(new QueryModel({ schemaQuery: SCHEMA_QUERY, maxCount: 0 }).maxCount).toEqual(0);
+    });
+
+    test('isLastPage with capped rowCount', () => {
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY }).mutate({
+            maxRows: 20,
+            offset: 660,
+            rowCount: 661,
+            rows: {},
+        });
+        // on the true last page normally
+        expect(model.isLastPage).toEqual(true);
+        // a capped rowCount is only a floor, so paging forward stays available
+        expect(model.mutate({ rowCountCapped: true }).isLastPage).toEqual(false);
+    });
+
+    test('selectedState with capped rowCount', () => {
+        // selectedOnPage (2) === rowCount (2) but not every visible row is selected
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY }).mutate({
+            rows: { '1': { test: 1 }, '2': { test: 2 }, '3': { test: 3 } },
+            orderedRows: ['1', '2', '3'],
+            selections: new Set(['1', '2']),
+            rowCount: 2,
+            maxRows: 20,
+            queryInfoLoadingState: LoadingState.LOADED,
+            rowsLoadingState: LoadingState.LOADED,
+        });
+        // an exact rowCount matching the selection count reads as ALL
+        expect(model.selectedState).toBe(GRID_CHECKBOX_OPTIONS.ALL);
+        // a capped rowCount is only a floor, so it can't establish ALL: 2 of 3 visible selected is SOME
+        expect(model.mutate({ rowCountCapped: true }).selectedState).toBe(GRID_CHECKBOX_OPTIONS.SOME);
+    });
+
+    test('paginationData includes rowCountCapped', () => {
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY }).mutate({ rowCountCapped: true });
+        expect(model.paginationData.rowCountCapped).toEqual(true);
     });
 
     test('Data', () => {

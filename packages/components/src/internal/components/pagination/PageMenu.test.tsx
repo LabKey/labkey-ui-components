@@ -72,6 +72,48 @@ describe('PageMenu', () => {
         expectPageMenuItems(false, false, true, '34', '34 Total Pages');
     });
 
+    test('capped rowCount keeps "Last Page" enabled and drops the total-pages footer', () => {
+        render(<PageMenu {...props} isLastPage rowCountCapped />);
+        expect(screen.getByText('First Page')).toBeInTheDocument();
+        // Last Page stays enabled while capped (even with isLastPage true) so there's always a way to reach the last row
+        const last = screen.getByText('Last Page').parentElement;
+        expect(last).not.toHaveClass('disabled');
+        // no fake "Page N" jump, and the total-pages footer is hidden because the true total is unknown
+        expect(screen.queryByText('Page 34')).not.toBeInTheDocument();
+        expect(screen.queryByText('34 Total Pages')).not.toBeInTheDocument();
+    });
+
+    test('capped rowCount shows "Count All Rows" only when a handler is provided', () => {
+        const { rerender } = render(<PageMenu {...props} rowCountCapped />);
+        expect(screen.queryByText('Count All Rows')).not.toBeInTheDocument();
+
+        const onShowTotalRowCount = jest.fn();
+        rerender(<PageMenu {...props} onShowTotalRowCount={onShowTotalRowCount} rowCountCapped />);
+        expect(screen.getByText('Count All Rows')).toBeInTheDocument();
+
+        // not shown when the count is exact
+        rerender(<PageMenu {...props} onShowTotalRowCount={onShowTotalRowCount} />);
+        expect(screen.queryByText('Count All Rows')).not.toBeInTheDocument();
+    });
+
+    test('Count All Rows shows a spinner and is disabled while counting', () => {
+        const { container } = render(
+            <PageMenu {...props} loadingTotalCount onShowTotalRowCount={jest.fn()} rowCountCapped />
+        );
+        // the spinner replaces the label, and the item is present but disabled
+        expect(screen.queryByText('Count All Rows')).not.toBeInTheDocument();
+        const spinner = container.querySelector('.fa-spinner');
+        expect(spinner).toBeInTheDocument();
+        expect(spinner.closest('li')).toHaveClass('disabled');
+    });
+
+    test('Count All Rows invokes the handler when clicked', async () => {
+        const onShowTotalRowCount = jest.fn();
+        render(<PageMenu {...props} onShowTotalRowCount={onShowTotalRowCount} rowCountCapped />);
+        await userEvent.click(screen.getByText('Count All Rows'));
+        expect(onShowTotalRowCount).toHaveBeenCalled();
+    });
+
     test('interactions', async () => {
         render(<PageMenu {...props} />);
 

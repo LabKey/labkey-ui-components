@@ -4,7 +4,7 @@
  */
 import React, { FC, memo, useCallback } from 'react';
 
-import { LoadingState } from '../../../public/LoadingState';
+import { isLoading, LoadingState } from '../../../public/LoadingState';
 
 import { incrementClientSideMetricCount } from '../../actions';
 
@@ -21,6 +21,7 @@ export interface PaginationData {
     pageCount: number;
     pageSize: number;
     rowCount: number;
+    rowCountCapped?: boolean;
     totalCountLoadingState?: LoadingState;
 }
 
@@ -32,6 +33,7 @@ export interface PaginationProps extends PaginationData {
     // pageSizes is expected to be sorted (ascending)
     pageSizes?: number[];
     setPageSize: (pageSize) => void;
+    showTotalRowCount?: () => void;
 }
 
 const PAGINATION_METRIC_AREA = 'pagination';
@@ -52,7 +54,9 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         pageSize,
         pageSizes = DEFAULT_PAGE_SIZES,
         rowCount,
+        rowCountCapped,
         setPageSize,
+        showTotalRowCount,
         totalCountLoadingState,
     } = props;
     const hasPages = rowCount > pageSizes[0];
@@ -90,6 +94,11 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         [setPageSize]
     );
 
+    const onShowTotalRowCount = useCallback(() => {
+        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, 'showTotalRowCount');
+        showTotalRowCount?.();
+    }, [showTotalRowCount]);
+
     // Use lk-pagination so we don't conflict with bootstrap pagination class.
     return (
         <div className="lk-pagination">
@@ -97,6 +106,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
                 offset={offset}
                 pageSize={pageSize}
                 rowCount={rowCount}
+                rowCountCapped={rowCountCapped}
                 totalCountLoadingState={totalCountLoadingState}
             />
 
@@ -116,8 +126,11 @@ export const Pagination: FC<PaginationProps> = memo(props => {
                         isFirstPage={isFirstPage}
                         isLastPage={isLastPage}
                         pageCount={pageCount}
+                        rowCountCapped={rowCountCapped}
                         loadFirstPage={onLoadFirstPage}
                         loadLastPage={onLoadLastPage}
+                        loadingTotalCount={isLoading(totalCountLoadingState)}
+                        onShowTotalRowCount={showTotalRowCount ? onShowTotalRowCount : undefined}
                         pageSize={pageSize}
                         pageSizes={pageSizes}
                         setPageSize={onSetPageSize}

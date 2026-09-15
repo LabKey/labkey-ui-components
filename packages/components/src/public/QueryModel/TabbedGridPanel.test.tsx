@@ -227,4 +227,26 @@ describe('TabbedGridPanel', () => {
         expect(tabs[0].textContent.trim()).toEqual(`${MIXTURES_TITLE} (1,242)`);
         expect(tabs[1].textContent.trim()).toEqual(`${AMINO_ACIDS_TITLE} (54,321)`);
     });
+
+    test('showRowCountOnTabs with a capped count', () => {
+        const cappedCountModels = {
+            mixtures: mixturesModel.mutate({ rowCount: 100000, rowCountCapped: true }),
+            aminoAcids: aminoAcidsModel.mutate({ rowCount: 54321 }),
+        };
+        const { container } = renderWithAppContext(
+            <TabbedGridPanel
+                actions={actions}
+                activeModelId="aminoAcids"
+                queryModels={cappedCountModels}
+                showRowCountOnTabs
+                tabOrder={tabOrder}
+            />
+        );
+
+        const tabs = container.querySelectorAll(TABS_SELECTOR);
+        expect(tabs.length).toEqual(2);
+        // a capped count is a floor, shown as "N+"; an exact count keeps no "+"
+        expect(tabs[0].textContent.trim()).toEqual(`${MIXTURES_TITLE} (100,000+)`);
+        expect(tabs[1].textContent.trim()).toEqual(`${AMINO_ACIDS_TITLE} (54,321)`);
+    });
 });

@@ -285,3 +285,139 @@ describe('withQueryModels request failures', () => {
         expect(textOf('.total-count-state')).toBe(LoadingState.LOADED);
     });
 });
+
+describe('withQueryModels capped total count', () => {
+    const SCHEMA_QUERY = new SchemaQuery('schema', 'query');
+    const QUERY_INFO = new QueryInfo({ schemaQuery: SCHEMA_QUERY });
+    const ROWS_RESPONSE: RowsResponse = { messages: [], orderedRows: [], rowCount: 0, rows: {} };
+    const MODEL_ID = 'model';
+
+    function testLoader(): QueryModelLoader {
+        return {
+            clearSelections: jest.fn().mockResolvedValue({ count: 0 }),
+            loadCharts: jest.fn().mockResolvedValue([]),
+            loadQueryInfo: jest.fn().mockResolvedValue(QUERY_INFO),
+            loadRows: jest.fn().mockResolvedValue(ROWS_RESPONSE),
+            loadSelections: jest.fn().mockResolvedValue(new Set<string>()),
+            replaceSelections: jest.fn().mockResolvedValue({ count: 0 }),
+            selectAllRows: jest.fn().mockResolvedValue(new Set<string>()),
+            setSelections: jest.fn().mockResolvedValue({ count: 0 }),
+        };
+    }
+
+    const ModelState: FC<InjectedQueryModels> = ({ actions, queryModels }) => {
+        const model = queryModels[MODEL_ID];
+        // Jump straight to the last page within the cap (offset + maxRows === rowCount)
+        const toCapEdge = useCallback(() => actions.setOffset(MODEL_ID, 80), [actions]);
+        const toLastPage = useCallback(() => actions.loadLastPage(MODEL_ID), [actions]);
+        const countAll = useCallback(() => actions.loadTotalCount(MODEL_ID, true, true), [actions]);
+
+        return (
+            <div>
+                <div className="row-count">{model.rowCount}</div>
+                <div className="row-count-capped">{String(model.rowCountCapped)}</div>
+                <div className="offset">{model.offset}</div>
+                <button className="to-cap-edge" onClick={toCapEdge} type="button" />
+                <button className="to-last-page" onClick={toLastPage} type="button" />
+                <button className="count-all" onClick={countAll} type="button" />
+            </div>
+        );
+    };
+    const ModelStateWithQueryModels = withQueryModels(ModelState);
+
+    function textOf(selector: string): string {
+        return document.querySelector(selector).textContent;
+    }
+
+    beforeEach(() => {
+        jest.mocked(selectRows).mockReset();
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
+    it('re-fires an exact count (maxCount=0) when the user pages to the edge of a capped count', async () => {
+        // First count comes back capped at 100; the exact re-fire finds the true total of 151
+        jest.mocked(selectRows)
+            .mockResolvedValueOnce({ rowCount: 100, rowCountCapped: true } as any)
+            .mockResolvedValue({ rowCount: 151, rowCountCapped: false } as any);
+
+        render(
+            <ModelStateWithQueryModels
+                autoLoad
+                modelLoader={testLoader()}
+                queryConfigs={{
+                    [MODEL_ID]: { id: MODEL_ID, includeTotalCount: true, maxCount: 100, maxRows: 20, schemaQuery: SCHEMA_QUERY },
+                }}
+            />
+        );
+
+        await waitFor(() => expect(textOf('.row-count-capped')).toBe('true'));
+        expect(textOf('.row-count')).toBe('100');
+        // The initial count request used the configured cap
+        expect(jest.mocked(selectRows).mock.calls[0][0]).toEqual(expect.objectContaining({ maxCount: 100 }));
+
+        await userEvent.click(document.querySelector('.to-cap-edge'));
+
+        // Paging to the cap edge re-fires with an exact count and the true total replaces the capped floor
+        await waitFor(() => expect(textOf('.row-count-capped')).toBe('false'));
+        expect(textOf('.row-count')).toBe('151');
+        expect(jest.mocked(selectRows).mock.calls[1][0]).toEqual(expect.objectContaining({ maxCount: 0 }));
+    });
+
+    it('Last Page resolves the exact count then jumps to the true last page when capped', async () => {
+        // Capped at 100; the exact count reveals 151 rows → last page offset is 140 (maxRows 20)
+        jest.mocked(selectRows)
+            .mockResolvedValueOnce({ rowCount: 100, rowCountCapped: true } as any)
+            .mockResolvedValue({ rowCount: 151, rowCountCapped: false } as any);
+
+        render(
+            <ModelStateWithQueryModels
+                autoLoad
+                modelLoader={testLoader()}
+                queryConfigs={{
+                    [MODEL_ID]: { id: MODEL_ID, includeTotalCount: true, maxCount: 100, maxRows: 20, schemaQuery: SCHEMA_QUERY },
+                }}
+            />
+        );
+
+        await waitFor(() => expect(textOf('.row-count-capped')).toBe('true'));
+        expect(textOf('.offset')).toBe('0');
+
+        await userEvent.click(document.querySelector('.to-last-page'));
+
+        // The exact count is fetched (maxCount=0) and the offset lands on the real last page (140, not the capped 80)
+        await waitFor(() => expect(textOf('.row-count-capped')).toBe('false'));
+        expect(textOf('.row-count')).toBe('151');
+        expect(textOf('.offset')).toBe('140');
+        expect(jest.mocked(selectRows).mock.calls[1][0]).toEqual(expect.objectContaining({ maxCount: 0 }));
+    });
+
+    it('Count All Rows fetches the exact count without navigating', async () => {
+        jest.mocked(selectRows)
+            .mockResolvedValueOnce({ rowCount: 100, rowCountCapped: true } as any)
+            .mockResolvedValue({ rowCount: 151, rowCountCapped: false } as any);
+
+        render(
+            <ModelStateWithQueryModels
+                autoLoad
+                modelLoader={testLoader()}
+                queryConfigs={{
+                    [MODEL_ID]: { id: MODEL_ID, includeTotalCount: true, maxCount: 100, maxRows: 20, schemaQuery: SCHEMA_QUERY },
+                }}
+            />
+        );
+
+        await waitFor(() => expect(textOf('.row-count-capped')).toBe('true'));
+
+        await userEvent.click(document.querySelector('.count-all'));
+
+        // Exact count replaces the capped floor, but the offset does not move
+        await waitFor(() => expect(textOf('.row-count-capped')).toBe('false'));
+        expect(textOf('.row-count')).toBe('151');
+        expect(textOf('.offset')).toBe('0');
+        expect(jest.mocked(selectRows).mock.calls[1][0]).toEqual(expect.objectContaining({ maxCount: 0 }));
+    });
+});

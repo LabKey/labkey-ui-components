@@ -11,24 +11,26 @@ export interface PaginationInfoProps {
     offset: number;
     pageSize: number;
     rowCount: number;
+    rowCountCapped?: boolean;
     totalCountLoadingState?: LoadingState;
 }
 export const PaginationInfo: FC<PaginationInfoProps> = memo(props => {
-    const { offset, pageSize, rowCount, totalCountLoadingState } = props;
+    const { offset, pageSize, rowCount, rowCountCapped, totalCountLoadingState } = props;
     const loading = isLoading(totalCountLoadingState);
     const outOfBounds = rowCount <= offset;
     const min = offset !== rowCount ? offset + 1 : offset;
     const max = offset + pageSize;
     const text = outOfBounds ? '' : `${min.toLocaleString()} - `;
     const showRowCount = !loading && !outOfBounds;
-    const showTotalCount = !loading && rowCount > max;
+    // When capped, rowCount equals the cap, so show it with a "+" even on the boundary page where rowCount === max.
+    const showTotalCount = !loading && !outOfBounds && (rowCount > max || rowCountCapped);
 
     return (
         <span className="pagination-info" data-min={min} data-max={max} data-total={rowCount}>
             {text}
             {loading && <LoadingSpinner msg="" />}
             {showRowCount && <span>{max > rowCount ? rowCount.toLocaleString() : max.toLocaleString()}</span>}
-            {showTotalCount && <span>{` of ${rowCount.toLocaleString()}`}</span>}
+            {showTotalCount && <span>{` of ${rowCount.toLocaleString()}${rowCountCapped ? '+' : ''}`}</span>}
         </span>
     );
 });

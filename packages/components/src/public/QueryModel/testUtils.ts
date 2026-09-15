@@ -75,6 +75,7 @@ export const makeTestActions = (mockFn = (): any => () => {}, overrides: Partial
         loadFirstPage: mockFn(),
         loadLastPage: mockFn(),
         loadCharts: mockFn(),
+        loadTotalCount: mockFn(),
         onModelChange: mockFn(),
         selectAllRows: mockFn(),
         selectRow: mockFn(),

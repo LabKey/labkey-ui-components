@@ -9,7 +9,7 @@ import { RequiresModelAndActions } from './withQueryModels';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 
 export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, model }) => {
-    const { isLoading, isLoadingSelections, isLoadingTotalCount, maxRows, rowCount, selections } = model;
+    const { isLoading, isLoadingSelections, isLoadingTotalCount, maxRows, rowCount, rowCountCapped, selections } = model;
     const selectionSize = selections?.size;
     const { moduleContext } = useServerContext();
     const maxSelectionSize = moduleContext?.query?.maxQuerySelection;
@@ -42,11 +42,19 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
     let clearAllButton;
     let selectAllButton;
 
+    const tooManyRows = rowCountCapped || rowCount > maxSelectionSize;
+
     if (selectionSize > 0) {
         selectionCount = (
             <span className="selection-status__count">
                 {selectionSize.toLocaleString()} of{' '}
-                {isLoadingTotalCount ? <LoadingSpinner msg="" /> : rowCount?.toLocaleString()} selected
+                {isLoadingTotalCount ? (
+                    <LoadingSpinner msg="" />
+                ) : (
+                    // "+" means the total is a capped floor; an exact count keeps no "+" even when it exceeds maxSelectionSize
+                    `${rowCount?.toLocaleString() ?? ''}${rowCountCapped ? '+' : ''}`
+                )}{' '}
+                selected
             </span>
         );
 
@@ -61,12 +69,11 @@ export const SelectionStatus: FC<RequiresModelAndActions> = memo(({ actions, mod
 
     if (
         rowCount > maxRows &&
-        selectionSize !== rowCount &&
+        (rowCountCapped || selectionSize !== rowCount) &&
         rowCount > 0 &&
         !isLoadingTotalCount &&
         selectionSize < maxSelectionSize
     ) {
-        const tooManyRows = rowCount > maxSelectionSize;
         selectAllButton = (
             <span className="selection-status__select-all">
                 <button className="btn btn-default btn-xs" onClick={selectAll} type="button">

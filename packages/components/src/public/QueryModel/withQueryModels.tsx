@@ -124,6 +124,7 @@ export interface Actions {
     loadNextPage: (id: string) => void;
     loadPreviousPage: (id: string) => void;
     loadRows: (id: string) => void;
+    loadTotalCount: (id: string, reloadTotalCount?: boolean, forceExact?: boolean) => void;
     onModelChange: (id: string, modelChange: ModelChange) => void;
     replaceSelections: (id: string, selections: string[]) => void;
     resetTotalCountState: () => void;
@@ -182,6 +183,7 @@ const resetQueryInfoState = (model: Draft<QueryModel>): void => {
  */
 const resetTotalCountState = (model: Draft<QueryModel>): void => {
     model.rowCount = undefined;
+    model.rowCountCapped = false;
     model.totalCountError = undefined;
     model.totalCountLoadingState = LoadingState.INITIALIZED;
 };
@@ -428,6 +430,7 @@ export function withQueryModels<Props>(
                 loadFirstPage: this.loadFirstPage,
                 loadLastPage: this.loadLastPage,
                 loadCharts: this.loadCharts,
+                loadTotalCount: this.loadTotalCount,
                 onModelChange: this.onModelChange,
                 replaceSelections: this.replaceSelections,
                 resetTotalCountState: this.resetTotalCountState,
@@ -923,14 +926,21 @@ export function withQueryModels<Props>(
             }
         };
 
-        loadTotalCount = async (id: string, reloadTotalCount = false): Promise<void> => {
+        loadTotalCount = async (id: string, reloadTotalCount = false, forceExact = false): Promise<void> => {
             // Issue 53192
             if (!this.state.queryModels[id].isQueryInfoLoaded) {
                 return;
             }
 
-            // if we've already loaded the totalCount, no need to load it again
-            if (!reloadTotalCount && this.state.queryModels[id].totalCountLoadingState === LoadingState.LOADED) {
+            const model = this.state.queryModels[id];
+
+             const haveExactCount = model.rowCount !== undefined && !model.rowCountCapped;
+            const needsExactCount =
+                forceExact ||
+                (!haveExactCount && model.maxCount > 0 && model.offset + model.maxRows >= model.maxCount);
+
+            // if we've already loaded the totalCount, no need to load it again (unless we now need an exact count)
+            if (!reloadTotalCount && !needsExactCount && model.totalCountLoadingState === LoadingState.LOADED) {
                 return;
             }
 
@@ -961,13 +971,14 @@ export function withQueryModels<Props>(
                     queryInfo?.getPkCols()
                 );
 
-                const { rowCount } = await selectRows({
+                const { rowCount, rowCountCapped } = await selectRows({
                     ...loadRowsConfig,
                     columns,
                     includeDetailsColumn: false,
                     // includeMetadata: false, // TODO don't require metadata in selectRows response processing
                     includeTotalCount: true,
                     includeUpdateColumn: false,
+                    maxCount: needsExactCount ? 0 : model.maxCount,
                     maxRows: 1,
                     offset: 0,
                     sort: undefined,
@@ -978,6 +989,7 @@ export function withQueryModels<Props>(
                     produce<State>((draft: WritableDraft<State>) => {
                         const model = draft.queryModels[id];
                         model.rowCount = rowCount;
+                        model.rowCountCapped = rowCountCapped ?? false;
                         model.totalCountLoadingState = LoadingState.LOADED;
                         model.totalCountError = undefined;
                     })
@@ -1142,7 +1154,11 @@ export function withQueryModels<Props>(
             );
         };
 
-        loadLastPage = (id: string): void => {
+        loadLastPage = async (id: string): Promise<void> => {
+            if (this.state.queryModels[id].rowCountCapped) {
+                await this.loadTotalCount(id, true, true);
+            }
+
             let shouldLoad = false;
             this.setState(
                 produce<State>((draft: WritableDraft<State>) => {

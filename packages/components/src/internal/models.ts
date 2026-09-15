@@ -12,3 +12,5 @@ export function createGridModelId(gridId: string, schemaQuery: SchemaQuery, keyV
 
     return parts.join('|').toLowerCase();
 }
+
+export type Primitive = boolean | null | number | string | undefined;

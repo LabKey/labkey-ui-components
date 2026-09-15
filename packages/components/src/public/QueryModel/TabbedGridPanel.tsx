@@ -27,7 +27,7 @@ interface GridTabProps {
 }
 
 const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, showRowCount, tabRowCount }) => {
-    const { id, queryInfo, rowCount, title } = model;
+    const { id, queryInfo, rowCount, rowCountCapped, title } = model;
     const className = classNames({
         active: isActive,
         'pull-right': pullRight,
@@ -37,8 +37,9 @@ const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight, 
 
     const rowCountDisplay = useMemo(() => {
         if (rowCount === undefined && !model.isActivelyLoadingTotalCount) return tabRowCount?.toLocaleString();
-        return rowCount?.toLocaleString();
-    }, [rowCount, tabRowCount, model]);
+        if (rowCount === undefined) return undefined;
+        return `${rowCount.toLocaleString()}${rowCountCapped ? '+' : ''}`;
+    }, [rowCount, rowCountCapped, tabRowCount, model]);
 
     return (
         <li className={className}>

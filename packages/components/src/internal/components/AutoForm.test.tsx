@@ -34,6 +34,13 @@ describe('AutoForm', () => {
             });
         } else if (field.type === 'checkbox') {
             expect(fieldEl.querySelectorAll('input[type="checkbox"]').length).toEqual(1);
+        } else if (field.type === 'datetime') {
+            expect(fieldEl.querySelectorAll('.auto-form-date-input').length).toEqual(1);
+            const input = fieldEl.querySelector('.react-datepicker__input-container input');
+            expect(input.getAttribute('name')).toEqual(field.name);
+            if (field.placeholder) {
+                expect(input.getAttribute('placeholder')).toEqual(field.placeholder);
+            }
         } else if (field.type === 'select') {
             expect(fieldEl.querySelectorAll('select').length).toEqual(1);
             const expectedOptions = field.placeholder ? field.options.length + 1 : field.options.length;
@@ -122,6 +129,17 @@ describe('AutoForm', () => {
                     ],
                     type: 'radio',
                 },
+                {
+                    label: 'datetime field',
+                    name: 'datetimeField',
+                    type: 'datetime',
+                },
+                {
+                    label: 'datetime field w/ placeholder',
+                    name: 'datetimeFieldPlaceholder',
+                    placeholder: 'datetime placeholder',
+                    type: 'datetime',
+                },
             ],
         };
         render(<AutoForm formSchema={formSchema} onChange={jest.fn()} values={{}} />);
@@ -160,6 +178,11 @@ describe('AutoForm', () => {
                     name: 'checkboxField',
                     type: 'checkbox',
                 },
+                {
+                    label: 'datetime field',
+                    name: 'datetimeField',
+                    type: 'datetime',
+                },
             ],
         };
 
@@ -173,5 +196,48 @@ describe('AutoForm', () => {
         expect(onChange).toHaveBeenLastCalledWith('radioField', 'option2');
         await userEvent.selectOptions(document.querySelectorAll('select')[0], 'option2');
         expect(onChange).toHaveBeenLastCalledWith('selectField', 'option2');
+        await userEvent.click(document.querySelectorAll('input[type="checkbox"]')[0]);
+        expect(onChange).toHaveBeenLastCalledWith('checkboxField', true);
+        await userEvent.type(
+            document.querySelector('.auto-form-date-input .react-datepicker__input-container input'),
+            '2024-03-15 13:45'
+        );
+        expect(onChange).toHaveBeenLastCalledWith('datetimeField', new Date(2024, 2, 15, 13, 45));
+    });
+
+    test('datetime value formatting', () => {
+        const formSchema: FormSchema = {
+            fields: [
+                {
+                    label: 'datetime field',
+                    name: 'datetimeField',
+                    type: 'datetime',
+                },
+            ],
+        };
+        render(
+            <AutoForm
+                formSchema={formSchema}
+                onChange={jest.fn()}
+                values={{ datetimeField: new Date(2024, 2, 15, 13, 45) }}
+            />
+        );
+        // DateTimeInput formats with the container dateTimeFormat, which is yyyy-MM-dd HH:mm in tests.
+        expect(document.querySelector('.react-datepicker__input-container input')).toHaveValue('2024-03-15 13:45');
+    });
+
+    test('datetime time select', async () => {
+        const formSchema: FormSchema = {
+            fields: [
+                {
+                    label: 'datetime field',
+                    name: 'datetimeField',
+                    type: 'datetime',
+                },
+            ],
+        };
+        render(<AutoForm formSchema={formSchema} onChange={jest.fn()} values={{}} />);
+        await userEvent.click(document.querySelector('.react-datepicker__input-container input'));
+        expect(document.querySelectorAll('.react-datepicker__time-container')).toHaveLength(1);
     });
 });

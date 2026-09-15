@@ -72,7 +72,7 @@ export const PageMenu: FC<Props> = props => {
             <MenuItem disabled={disabled || isFirstPage} onClick={loadFirstPage}>
                 First Page
             </MenuItem>
-            <MenuItem disabled={disabled || isLastPage} onClick={loadLastPage}>
+            <MenuItem disabled={disabled || (isLastPage && !rowCountCapped)} onClick={loadLastPage}>
                 Last Page
             </MenuItem>
             {rowCountCapped && onShowTotalRowCount && (

@@ -20,23 +20,22 @@ import { Filter } from '@labkey/api';
 import { createPortal } from 'react-dom';
 
 import { QueryColumn } from '../public/QueryColumn';
-
 import { useEnterEscape } from '../public/useEnterEscape';
-
 import { QueryModel } from '../public/QueryModel/QueryModel';
-
-import { HelpTipRenderer } from './components/forms/HelpTipRenderer';
-import { APP_FIELD_CANNOT_BE_REMOVED_MESSAGE, GRID_CHECKBOX_OPTIONS, GRID_HEADER_CELL_BODY } from './constants';
+import { SORT_ASC, SORT_DESC } from '../public/QuerySort';
 
 import { GridColumn } from './components/base/models/GridColumn';
-
 import { LabelHelpTip } from './components/base/LabelHelpTip';
-import { DisableableMenuItem } from './components/samples/DisableableMenuItem';
-import { usePortalRef } from './hooks';
-import { MenuDivider, MenuItem } from './dropdowns';
+import { HelpTipRenderer } from './components/forms/HelpTipRenderer';
 import { LabelOverlay } from './components/forms/LabelOverlay';
 import { DOMAIN_FIELD } from './components/forms/DomainFieldHelpTipContents';
-import { SORT_ASC, SORT_DESC } from '../public/QuerySort';
+import { DisableableMenuItem } from './components/samples/DisableableMenuItem';
+
+import { APP_FIELD_CANNOT_BE_REMOVED_MESSAGE, GRID_CHECKBOX_OPTIONS, GRID_HEADER_CELL_BODY } from './constants';
+import { usePortalRef } from './hooks';
+import { MenuDivider, MenuItem } from './dropdowns';
+import { useOverlayTriggerState } from './OverlayTrigger';
+import { Popover } from './Popover';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
@@ -131,6 +130,7 @@ interface HeaderCellDropdownMenuProps extends SharedHeaderCellProps {
     colFilters: Filter.IFilter[];
     isSortAsc: boolean;
     isSortDesc: boolean;
+    isViewSort: boolean;
     onEditTitleClicked?: () => void;
     open: boolean;
     queryColumn: QueryColumn;
@@ -148,6 +148,7 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
         handleSort,
         isSortAsc,
         isSortDesc,
+        isViewSort,
         model,
         onEditTitleClicked,
         open,
@@ -158,7 +159,15 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
     const toggleEl = useRef<HTMLSpanElement>(undefined);
     const menuEl = useRef<HTMLUListElement>(undefined);
     const portalRef = usePortalRef('header-cell-dropdown-menu-portal');
-    // Note: We need to make sure we cancel all events in our menu handlers or we also trigger the click handler in
+    const {
+        onMouseEnter: onClearSortMouseEnter,
+        onMouseLeave: onClearSortMouseLeave,
+        portalEl: clearSortPortalEl,
+        show: showClearSortPopover,
+        targetRef: clearSortRef,
+    } = useOverlayTriggerState<HTMLLIElement>('clear-view-sort', true, false);
+
+    // Note: We need to make sure we cancel all events in our menu handlers, or we also trigger the click handler in
     // HeaderCellDropdown, which will reset the open value to true, which will keep the menu open.
     const openFilterPanel = useCallback(() => {
         handleFilter(queryColumn, false);
@@ -256,6 +265,10 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
         };
     }, [updateMenuStyle, open]);
 
+    useEffect(() => {
+        if (!open) onClearSortMouseLeave();
+    }, [open, onClearSortMouseLeave]);
+
     // Technically we don't need to add and remove this open class because it doesn't affect visibility, we do that
     // above via the visibility css property. We need this class so tests can look for the currently open menu.
     const className = classNames('grid-header-cell__dropdown-menu dropdown-menu', { open });
@@ -287,9 +300,29 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
                     </MenuItem>
                     {/* Clear sort only applies for the grids that are backed by QueryModel */}
                     {model && (
-                        <MenuItem disabled={!isSortDesc && !isSortAsc} onClick={clearSort}>
+                        <MenuItem
+                            disabled={!isSortDesc && !isSortAsc}
+                            onClick={clearSort}
+                            onMouseEnter={isViewSort ? onClearSortMouseEnter : undefined}
+                            onMouseLeave={isViewSort ? onClearSortMouseLeave : undefined}
+                            ref={isViewSort ? clearSortRef : undefined}
+                        >
                             <span className="grid-panel__menu-icon-spacer" />
                             Clear sort
+                            {isViewSort &&
+                                showClearSortPopover &&
+                                createPortal(
+                                    <Popover
+                                        className="popover-message"
+                                        id="clear-view-sort-warning"
+                                        isFlexPlacement
+                                        placement="right"
+                                        targetRef={clearSortRef}
+                                    >
+                                        Removes sort applied from the view
+                                    </Popover>,
+                                    clearSortPortalEl
+                                )}
                         </MenuItem>
                     )}
                 </>
@@ -330,7 +363,7 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
 });
 HeaderCellDropdownMenu.displayName = 'HeaderCellDropdownMenu';
 
-interface HeaderCellDropdownProps extends SharedHeaderCellProps {
+export interface HeaderCellDropdownProps extends SharedHeaderCellProps {
     column: GridColumn;
     columnCount?: number;
     i: number;
@@ -388,6 +421,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const colQuerySortDir =
         model?.sorts?.find(sort => sort.fieldKey === queryColumn.resolveFieldKey())?.dir ??
         view?.sorts?.find(sort => sort.fieldKey === queryColumn.resolveFieldKey())?.dir;
+    const isViewSort = !!view?.sorts?.find(sort => sort.fieldKey === queryColumn.resolveFieldKey());
     const sortDir = queryColumn.sorts || colQuerySortDir;
     const isSortAsc = sortDir === SORT_ASC;
     const isSortDesc = sortDir === SORT_DESC;
@@ -436,6 +470,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                     handleSort={handleSort}
                     isSortAsc={isSortAsc}
                     isSortDesc={isSortDesc}
+                    isViewSort={isViewSort}
                     model={model}
                     onEditTitleClicked={editTitle}
                     open={open}

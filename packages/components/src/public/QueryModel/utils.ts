@@ -53,10 +53,6 @@ export function filterArrayToString(filterArray: Filter.IFilter[]): string {
     return filterArray.map(filterToString).sort().join(';');
 }
 
-export function sortsEqual(a: QuerySort, b: QuerySort): boolean {
-    return a.toRequestString() === b.toRequestString();
-}
-
 export function sortArraysEqual(a: QuerySort[], b: QuerySort[]): boolean {
     if (a.length !== b.length) {
         return false;

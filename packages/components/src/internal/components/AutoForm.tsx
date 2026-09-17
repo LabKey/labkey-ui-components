@@ -152,13 +152,23 @@ const NumberInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange
 NumberInput.displayName = 'NumberInput';
 
 const TextareaInput: FC<AutoFormFieldProps> = ({ field, id, inputClasses, onChange, value }) => {
+    const { name, placeholder } = field;
     const _onChange = useCallback(
-        (event: ChangeEvent<HTMLTextAreaElement>) => onChange(field.name, event.target.value),
-        [field.name]
+        (event: ChangeEvent<HTMLTextAreaElement>) => onChange(name, event.target.value),
+        [name, onChange]
     );
     const className = inputClasses.textarea ?? '';
     const _value = value === null || value === undefined ? '' : value;
-    return <textarea className={className} id={id} name={field.name} onChange={_onChange} value={_value} />;
+    return (
+        <textarea
+            className={className}
+            id={id}
+            name={field.name}
+            onChange={_onChange}
+            placeholder={placeholder}
+            value={_value}
+        />
+    );
 };
 TextareaInput.displayName = 'TextareaInput';
 

@@ -1179,7 +1179,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                             />
                         )}
 
-                        {(loadingMessage || allowSelections) && (
+                        {(loadingMessage || allowSelections || showFilterStatus) && (
                             <div className="grid-panel__info">
                                 {loadingMessage && (
                                     <div className="grid-panel__loading">

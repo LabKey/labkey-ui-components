@@ -525,16 +525,20 @@ describe('urlQueryParams', () => {
     test('query parameters', () => {
         expect(new QueryModel({ schemaQuery: SCHEMA_QUERY }).urlQueryParams).toEqual({});
 
-        const model = new QueryModel({
-            schemaQuery: SCHEMA_QUERY,
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY, urlPrefix: 'test' }).mutate({
             queryParameters: { Foo: 1, Bar: true, Baz: 'text', Empty: null, Missing: undefined },
-            urlPrefix: 'test',
         });
         expect(model.urlQueryParams).toEqual({
             'test.param.Foo': '1',
             'test.param.Bar': 'true',
             'test.param.Baz': 'text',
         });
+    });
+
+    test('config query parameters are not bound', () => {
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY, queryParameters: { Foo: 1 }, urlPrefix: 'test' });
+        expect(model.bindURLQueryParameters).toBe(false);
+        expect(model.urlQueryParams).toEqual({});
     });
 });
 
@@ -656,6 +660,11 @@ describe('attributesForURLQueryParams', () => {
         // Unlike other settings, the model's parameters are kept when the URL has none
         const paramModel = model.mutate({ queryParameters: { Foo: 1 } });
         values = paramModel.attributesForURLQueryParams(new URLSearchParams({ 'query.sort': 'Name' }));
+        expect(values.queryParameters).toEqual({ Foo: 1 });
+
+        // Parameters supplied by the config are not overridden by the URL
+        const configParamModel = new QueryModel({ schemaQuery: SCHEMA_QUERY, queryParameters: { Foo: 1 } });
+        values = configParamModel.attributesForURLQueryParams(searchParams);
         expect(values.queryParameters).toEqual({ Foo: 1 });
     });
 

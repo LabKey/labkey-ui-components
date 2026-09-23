@@ -254,6 +254,7 @@ const paramsEqual = (oldParams, newParams): boolean => {
 
 // Parameters aren't a saved setting, so they're bound from the URL even when saved settings are used.
 function applyURLQueryParameters(model: QueryModel, searchParams: URLSearchParams): QueryModel {
+    if (!model.bindURLQueryParameters) return model;
     const queryParameters = queryParametersFromSearchParams(model.urlPrefix, searchParams);
     return queryParameters ? model.mutate({ queryParameters }) : model;
 }
@@ -505,8 +506,12 @@ export function withQueryModels<Props>(
                     .filter(model => model.bindURL)
                     .forEach(model => {
                         const modelParamsFromURL = {};
+                        const paramPrefix = `${model.urlPrefix}.param.`.toLowerCase();
                         for (const [key, value] of currSearch.entries()) {
-                            if (key.startsWith(model.urlPrefix + '.')) {
+                            // Unbound parameters are absent from urlQueryParams, so they'd never compare equal
+                            const isUnboundParam =
+                                !model.bindURLQueryParameters && key.toLowerCase().startsWith(paramPrefix);
+                            if (key.startsWith(model.urlPrefix + '.') && !isUnboundParam) {
                                 modelParamsFromURL[key] = value;
                             }
                         }

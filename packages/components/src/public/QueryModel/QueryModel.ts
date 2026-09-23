@@ -367,6 +367,11 @@ export class QueryModel {
      */
     readonly queryParameters?: QueryParameters;
     /**
+     * True when queryParameters are read from and written to the URL (with bindURL). Parameters supplied by the
+     * QueryConfig are owned by the app, so they are never bound to the URL.
+     */
+    readonly bindURLQueryParameters: boolean;
+    /**
      * Array of column names to be explicitly included from the column list in the QueryModel data load.
      */
     readonly requiredColumns: string[];
@@ -541,6 +546,7 @@ export class QueryModel {
         this.offset = queryConfig.offset ?? DEFAULT_OFFSET;
         this.omittedColumns = queryConfig.omittedColumns ?? [];
         this.queryParameters = queryConfig.queryParameters;
+        this.bindURLQueryParameters = queryConfig.queryParameters === undefined;
         this.requiredColumns = queryConfig.requiredColumns ?? [];
         this.requiredColumnsAsQueryInfoFields = queryConfig.requiredColumnsAsQueryInfoFields ?? false;
         this.sorts = queryConfig.sorts ?? [];
@@ -880,11 +886,13 @@ export class QueryModel {
             modelParams[filter.getURLParameterName(urlPrefix)] = filter.getURLParameterValue();
         });
 
-        Object.entries(queryParameters ?? {}).forEach(([name, value]) => {
-            if (value !== undefined && value !== null) {
-                modelParams[`${urlPrefix}.param.${name}`] = String(value);
-            }
-        });
+        if (this.bindURLQueryParameters) {
+            Object.entries(queryParameters ?? {}).forEach(([name, value]) => {
+                if (value !== undefined && value !== null) {
+                    modelParams[`${urlPrefix}.param.${name}`] = String(value);
+                }
+            });
+        }
 
         return modelParams;
     }
@@ -1258,7 +1266,9 @@ export class QueryModel {
         let schemaQuery = new SchemaQuery(this.schemaName, this.queryName, viewName);
         let selectedReportIds = searchParams.get(`${prefix}.selectedReportIds`)?.split(';') ?? [];
         let sorts = querySortsFromString(searchParams.get(`${prefix}.sort`)) ?? [];
-        const queryParameters = queryParametersFromSearchParams(prefix, searchParams) ?? this.queryParameters;
+        const queryParameters =
+            (this.bindURLQueryParameters ? queryParametersFromSearchParams(prefix, searchParams) : undefined) ??
+            this.queryParameters;
 
         // If useExistingValues is true we'll assume any value not present on the URL can be overridden by the current
         // model value. This behavior is really only wanted when we are initializing the model.

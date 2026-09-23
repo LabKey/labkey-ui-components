@@ -621,7 +621,12 @@ import {
     wrapDraggable,
 } from './internal/test/testHelpers';
 import { renderWithAppContext } from './internal/test/reactTestLibraryHelpers';
-import { flattenValuesFromRow, QueryModel, SavedSettings } from './public/QueryModel/QueryModel';
+import {
+    flattenValuesFromRow,
+    QueryModel,
+    queryParametersFromSearchParams,
+    SavedSettings,
+} from './public/QueryModel/QueryModel';
 import { getExpandQueryInfo, includedColumnsForCustomizationFilter } from './public/QueryModel/CustomizeGridViewModal';
 import { ChangeType, withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
@@ -1635,6 +1640,7 @@ export {
     QueryInfoStatus,
     QueryLookup,
     QueryModel,
+    queryParametersFromSearchParams,
     QuerySelect,
     QuerySort,
     quoteValueWithDelimiters,

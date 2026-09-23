@@ -29,6 +29,7 @@ import {
     locationHasQueryParamSettings,
     QueryConfig,
     QueryModel,
+    queryParametersFromSearchParams,
     removeSettingsFromLocalStorage,
     SavedSettings,
     saveSettingsToLocalStorage,
@@ -251,6 +252,12 @@ const paramsEqual = (oldParams, newParams): boolean => {
     return false;
 };
 
+// Parameters aren't a saved setting, so they're bound from the URL even when saved settings are used.
+function applyURLQueryParameters(model: QueryModel, searchParams: URLSearchParams): QueryModel {
+    const queryParameters = queryParametersFromSearchParams(model.urlPrefix, searchParams);
+    return queryParameters ? model.mutate({ queryParameters }) : model;
+}
+
 function applySavedSettings(id: string, model: QueryModel): QueryModel {
     const settings = getSettingsFromLocalStorage(id, model.containerPath);
     if (settings !== undefined) {
@@ -402,6 +409,10 @@ export function withQueryModels<Props>(
                 }
             }
 
+            if (model.bindURL && !hasQueryParamSettings) {
+                model = applyURLQueryParameters(model, searchParams);
+            }
+
             models[id] = model;
             return models;
         }, {});
@@ -532,6 +543,7 @@ export function withQueryModels<Props>(
 
             const model = this.state.queryModels[id];
             const { urlPrefix, urlQueryParams } = model;
+            const paramPrefix = `${urlPrefix}.param.`.toLowerCase();
 
             setSearchParams(
                 currentParams => {
@@ -539,8 +551,8 @@ export function withQueryModels<Props>(
                     return Object.keys(queryParams).reduce(
                         (result, key) => {
                             // Only copy params that aren't related to the current model, we initialize the result with the
-                            // updated params below.
-                            if (!key.startsWith(urlPrefix + '.')) {
+                            // updated params below. Parameters are read case-insensitively, so drop them in any case.
+                            if (!key.startsWith(urlPrefix + '.') && !key.toLowerCase().startsWith(paramPrefix)) {
                                 result[key] = queryParams[key];
                             }
                             return result;
@@ -1227,6 +1239,10 @@ export function withQueryModels<Props>(
                         queryModel = queryModel.mutate(queryModel.attributesForURLQueryParams(searchParams));
                     } else if (queryModel.useSavedSettings && queryModel.containerPath) {
                         queryModel = applySavedSettings(id, queryModel);
+                    }
+
+                    if (queryModel.bindURL && !hasQueryParamSettings) {
+                        queryModel = applyURLQueryParameters(queryModel, searchParams);
                     }
 
                     draft.queryModels[queryModel.id] = queryModel;

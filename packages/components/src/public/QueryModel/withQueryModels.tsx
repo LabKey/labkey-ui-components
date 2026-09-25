@@ -951,10 +951,9 @@ export function withQueryModels<Props>(
 
             const model = this.state.queryModels[id];
 
-             const haveExactCount = model.rowCount !== undefined && !model.rowCountCapped;
+            const haveExactCount = model.rowCount !== undefined && !model.rowCountCapped;
             const needsExactCount =
-                forceExact ||
-                (!haveExactCount && model.maxCount > 0 && model.offset + model.maxRows >= model.maxCount);
+                forceExact || (!haveExactCount && model.maxCount > 0 && model.offset + model.maxRows >= model.maxCount);
 
             // if we've already loaded the totalCount, no need to load it again (unless we now need an exact count)
             if (!reloadTotalCount && !needsExactCount && model.totalCountLoadingState === LoadingState.LOADED) {

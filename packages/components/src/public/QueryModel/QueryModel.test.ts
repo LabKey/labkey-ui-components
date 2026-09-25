@@ -121,7 +121,7 @@ describe('QueryModel', () => {
 
     test('maxCount', () => {
         // defaults to the cap, and rowCountCapped starts false
-        let model = new QueryModel({ schemaQuery: SCHEMA_QUERY });
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY });
         expect(model.maxCount).toEqual(DEFAULT_MAX_COUNT);
         expect(model.rowCountCapped).toEqual(false);
 
@@ -456,8 +456,12 @@ describe('locationHasQueryParamSettings', () => {
     });
 
     test('with matching queryParams', () => {
-        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedReportIds': '1' }))).toBe(true);
-        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedReportIds': '1;2' }))).toBe(true);
+        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedReportIds': '1' }))).toBe(
+            true
+        );
+        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedReportIds': '1;2' }))).toBe(
+            true
+        );
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.view': '1' }))).toBe(true);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.q': '1' }))).toBe(true);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.sort': '1' }))).toBe(true);
@@ -467,7 +471,9 @@ describe('locationHasQueryParamSettings', () => {
     });
 
     test('with mismatched prefix', () => {
-        expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.selectedReportIds': '1' }))).toBe(false);
+        expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.selectedReportIds': '1' }))).toBe(
+            false
+        );
         expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.view': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.q': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.sort': '1' }))).toBe(false);
@@ -479,8 +485,12 @@ describe('locationHasQueryParamSettings', () => {
     test('with mismatched queryParams', () => {
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.reportid': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.reportIdd': '1' }))).toBe(false);
-        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedreportids': '1' }))).toBe(false);
-        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedReportIdss': '1' }))).toBe(false);
+        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedreportids': '1' }))).toBe(
+            false
+        );
+        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedReportIdss': '1' }))).toBe(
+            false
+        );
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.bogus': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.col~eq': '1' }))).toBe(true);
     });

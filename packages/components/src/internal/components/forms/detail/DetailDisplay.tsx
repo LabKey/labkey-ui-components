@@ -115,6 +115,7 @@ function processFields(
             fieldKey,
             new DetailField({
                 fieldKey: c.fieldKey,
+                multiline: c.inputType === 'textarea',
                 title: c.caption,
                 renderer:
                     detailRenderer?.(c, options, fileInputRenderer, onAdditionalFormDataChange) ?? _defaultRenderer(c),
@@ -127,6 +128,7 @@ function processFields(
 interface DetailFieldProps {
     fieldKey: string;
     index?: string;
+    multiline?: boolean;
     renderer: Renderer;
     title: string;
     titleRenderer: ReactNode;
@@ -136,6 +138,7 @@ interface DetailFieldProps {
 class DetailField {
     fieldKey: string;
     index?: string;
+    multiline?: boolean;
     title: string;
     renderer: Renderer;
     titleRenderer: ReactNode;
@@ -143,6 +146,7 @@ class DetailField {
     constructor(config: DetailFieldProps) {
         this.fieldKey = config.fieldKey;
         this.index = config.index;
+        this.multiline = config.multiline;
         this.title = config.title;
         this.renderer = config.renderer;
         this.titleRenderer = config.titleRenderer;
@@ -241,7 +245,9 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
                                                     )}
                                                 </td>
                                                 <td
-                                                    className="text__wrap"
+                                                    className={classNames('text__wrap', {
+                                                        'ws-pre-wrap': field.multiline,
+                                                    })}
                                                     data-caption={field.title}
                                                     data-fieldkey={field.fieldKey}
                                                 >

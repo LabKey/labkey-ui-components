@@ -73,12 +73,14 @@ export const EditInlineField: FC<Props> = memo(props => {
     const isTextArea = type === 'textarea';
     const isText = !isDate && !isTextArea;
     const isUser = QueryColumn.isUserLookup(column?.lookup);
+    const isLookupSelect = column?.isPublicLookup() === true && column?.displayAsLookup !== false;
     const inputType = type === 'int' || type === 'float' ? 'number' : 'text';
     const inputRef = useRef(null);
     const _value = typeof value === 'object' ? value?.value : value;
     const [dateValue, setDateValue] = useState<Date>(() => (isDate && _value ? new Date(_value) : undefined));
     const [timeJsonValue, setTimeJsonValue] = useState<string>(undefined);
     const [columnBasedValue, setColumnBasedValue] = useState();
+    const columnChangedRef = useRef(false);
 
     // Utilizing useReducer here so multiple state attributes can be updated at once
     const [state, setState] = useReducer((currentState, newState) => ({ ...currentState, ...newState }), {
@@ -133,6 +135,16 @@ export const EditInlineField: FC<Props> = memo(props => {
     }, []);
 
     const saveEdit = useCallback(() => {
+        // GH Issue 1583: Lookup selects report their edited state through Formsy. Only persist when Formsy saw an actual change;
+        // otherwise a focus-then-blur would commit the empty pristine model value and wipe the existing value.
+        if (isLookupSelect) {
+            if (columnChangedRef.current) {
+                onChange?.(name, getInputValue());
+            }
+            setState({ editing: false });
+            return;
+        }
+
         const inputValue = getInputValue();
 
         if (allowBlank === false && !isDate && isBlankValue(inputValue)) {
@@ -143,7 +155,7 @@ export const EditInlineField: FC<Props> = memo(props => {
             onChange?.(name, inputValue);
         }
         setState({ editing: false });
-    }, [allowBlank, getInputValue, isDate, name, onChange, _value]);
+    }, [allowBlank, getInputValue, isDate, isLookupSelect, name, onChange, _value]);
 
     const onBlur = useCallback((): void => {
         if (!state.ignoreBlur) {
@@ -178,7 +190,8 @@ export const EditInlineField: FC<Props> = memo(props => {
     );
 
     const onFormsyColumnChange = useCallback(
-        (data: Record<string, any>) => {
+        (data: Record<string, any>, isChanged: boolean) => {
+            columnChangedRef.current = isChanged;
             setColumnBasedValue(data[column.fieldKey] ?? data[column.name]);
         },
         [column]
@@ -193,6 +206,7 @@ export const EditInlineField: FC<Props> = memo(props => {
 
     const toggleEdit = useCallback(() => {
         if (allowEdit) {
+            if (!state.editing) columnChangedRef.current = false;
             setState({ editing: !state.editing });
         }
     }, [allowEdit, state.editing]);

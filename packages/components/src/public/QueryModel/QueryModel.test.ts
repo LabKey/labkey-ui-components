@@ -27,6 +27,7 @@ import {
     locationHasQueryParamSettings,
     QueryConfig,
     QueryModel,
+    queryParametersFromSearchParams,
 } from './QueryModel';
 import { makeTestQueryModel } from './testUtils';
 
@@ -120,7 +121,7 @@ describe('QueryModel', () => {
 
     test('maxCount', () => {
         // defaults to the cap, and rowCountCapped starts false
-        let model = new QueryModel({ schemaQuery: SCHEMA_QUERY });
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY });
         expect(model.maxCount).toEqual(DEFAULT_MAX_COUNT);
         expect(model.rowCountCapped).toEqual(false);
 
@@ -455,8 +456,12 @@ describe('locationHasQueryParamSettings', () => {
     });
 
     test('with matching queryParams', () => {
-        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedReportIds': '1' }))).toBe(true);
-        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedReportIds': '1;2' }))).toBe(true);
+        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedReportIds': '1' }))).toBe(
+            true
+        );
+        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedReportIds': '1;2' }))).toBe(
+            true
+        );
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.view': '1' }))).toBe(true);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.q': '1' }))).toBe(true);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.sort': '1' }))).toBe(true);
@@ -466,7 +471,9 @@ describe('locationHasQueryParamSettings', () => {
     });
 
     test('with mismatched prefix', () => {
-        expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.selectedReportIds': '1' }))).toBe(false);
+        expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.selectedReportIds': '1' }))).toBe(
+            false
+        );
         expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.view': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.q': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('bogus', new URLSearchParams({ 'test.sort': '1' }))).toBe(false);
@@ -478,10 +485,70 @@ describe('locationHasQueryParamSettings', () => {
     test('with mismatched queryParams', () => {
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.reportid': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.reportIdd': '1' }))).toBe(false);
-        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedreportids': '1' }))).toBe(false);
-        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedReportIdss': '1' }))).toBe(false);
+        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedreportids': '1' }))).toBe(
+            false
+        );
+        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.selectedReportIdss': '1' }))).toBe(
+            false
+        );
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.bogus': '1' }))).toBe(false);
         expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.col~eq': '1' }))).toBe(true);
+    });
+
+    test('query parameters are not settings', () => {
+        expect(locationHasQueryParamSettings('test', new URLSearchParams({ 'test.param.Foo': '1' }))).toBe(false);
+    });
+});
+
+describe('queryParametersFromSearchParams', () => {
+    test('no parameters', () => {
+        expect(queryParametersFromSearchParams('query', undefined)).toBeUndefined();
+        expect(queryParametersFromSearchParams('query', new URLSearchParams())).toBeUndefined();
+        expect(
+            queryParametersFromSearchParams('query', new URLSearchParams({ 'query.sort': 'Name', 'query.param.': '1' }))
+        ).toBeUndefined();
+    });
+
+    test('with parameters', () => {
+        const searchParams = new URLSearchParams({
+            'query.param.Foo': '1',
+            'query.param.Bar Baz': 'a;b',
+            'other.param.Foo': '2',
+            'query.Name~eq': 'x',
+        });
+        expect(queryParametersFromSearchParams('query', searchParams)).toEqual({ Foo: '1', 'Bar Baz': 'a;b' });
+        expect(queryParametersFromSearchParams('other', searchParams)).toEqual({ Foo: '2' });
+    });
+
+    test('prefix is case-insensitive', () => {
+        const searchParams = new URLSearchParams({ 'Query.Param.Foo': '1', 'QUERY.PARAM.bar': '2' });
+        expect(queryParametersFromSearchParams('query', searchParams)).toEqual({ Foo: '1', bar: '2' });
+    });
+
+    test('parameters are not filters', () => {
+        const searchParams = new URLSearchParams({ 'query.param.Foo': '1' });
+        expect(Filter.getFiltersFromParameters(getQueryParams(searchParams), 'query')).toEqual([]);
+    });
+});
+
+describe('urlQueryParams', () => {
+    test('query parameters', () => {
+        expect(new QueryModel({ schemaQuery: SCHEMA_QUERY }).urlQueryParams).toEqual({});
+
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY, urlPrefix: 'test' }).mutate({
+            queryParameters: { Foo: 1, Bar: true, Baz: 'text', Empty: null, Missing: undefined },
+        });
+        expect(model.urlQueryParams).toEqual({
+            'test.param.Foo': '1',
+            'test.param.Bar': 'true',
+            'test.param.Baz': 'text',
+        });
+    });
+
+    test('config query parameters are not bound', () => {
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY, queryParameters: { Foo: 1 }, urlPrefix: 'test' });
+        expect(model.bindURLQueryParameters).toBe(false);
+        expect(model.urlQueryParams).toEqual({});
     });
 });
 
@@ -594,6 +661,21 @@ describe('attributesForURLQueryParams', () => {
             selectedReportIds: ['db:99', 'db:100'],
             sorts: expectedSorts,
         });
+
+        // Parameters should be honored
+        searchParams = new URLSearchParams({ 'query.param.Foo': '1', 'query.param.Bar': 'b' });
+        values = model.attributesForURLQueryParams(searchParams);
+        expect(values).toEqual({ ...defaultExpected, queryParameters: { Foo: '1', Bar: 'b' } });
+
+        // Unlike other settings, the model's parameters are kept when the URL has none
+        const paramModel = model.mutate({ queryParameters: { Foo: 1 } });
+        values = paramModel.attributesForURLQueryParams(new URLSearchParams({ 'query.sort': 'Name' }));
+        expect(values.queryParameters).toEqual({ Foo: 1 });
+
+        // Parameters supplied by the config are not overridden by the URL
+        const configParamModel = new QueryModel({ schemaQuery: SCHEMA_QUERY, queryParameters: { Foo: 1 } });
+        values = configParamModel.attributesForURLQueryParams(searchParams);
+        expect(values.queryParameters).toEqual({ Foo: 1 });
     });
 
     test('with useExistingValues', () => {
@@ -707,5 +789,15 @@ describe('attributesForURLQueryParams', () => {
             selectedReportIds: ['db:99'],
             sorts: expectedSorts,
         });
+
+        // URL parameters replace the model's parameters wholesale
+        const paramModel = model.mutate({ queryParameters: { Foo: 1, Bar: 2 } });
+        searchParams = new URLSearchParams({ 'query.param.Foo': '3' });
+        values = paramModel.attributesForURLQueryParams(searchParams, true);
+        expect(values.queryParameters).toEqual({ Foo: '3' });
+
+        // The model's parameters are kept when the URL has none
+        values = paramModel.attributesForURLQueryParams(new URLSearchParams(), true);
+        expect(values.queryParameters).toEqual({ Foo: 1, Bar: 2 });
     });
 });

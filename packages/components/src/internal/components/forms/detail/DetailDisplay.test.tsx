@@ -139,6 +139,27 @@ describe('DetailDisplay', () => {
         expect(document.querySelectorAll('tr')).toHaveLength(3);
         expect(document.querySelectorAll('.label-help-target')).toHaveLength(2);
     });
+
+    test('preserves newlines for multi-line fields only', () => {
+        const data = [
+            fromJS({
+                NameExpression: { value: 'first\nsecond' },
+                AliquotNameExpression: { value: 'first\nsecond' },
+            }),
+        ];
+
+        render(
+            <DetailDisplay
+                asPanel
+                data={data}
+                displayColumns={List.of(namePatternCol, aliquotNamePatternCol)}
+                editingMode={false}
+            />
+        );
+
+        expect(document.querySelector('td[data-fieldkey="NameExpression"]')).toHaveClass('ws-pre-wrap');
+        expect(document.querySelector('td[data-fieldkey="AliquotNameExpression"]')).not.toHaveClass('ws-pre-wrap');
+    });
 });
 
 describe('defaultTitleRenderer', () => {

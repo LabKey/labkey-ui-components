@@ -99,6 +99,26 @@ export function locationHasQueryParamSettings(prefix: string, searchParams?: URL
 }
 
 /**
+ * Returns the parameterized query parameters bound to the URL as `<prefix>.param.<name>` (matching Data Region), or
+ * undefined if there are none.
+ * @param prefix the QueryModel prefix
+ * @param searchParams The URLSearchParams returned by the react-router useSearchParams hook
+ */
+export function queryParametersFromSearchParams(prefix: string, searchParams?: URLSearchParams): QueryParameters {
+    if (searchParams === undefined) return undefined;
+    const paramPrefix = `${prefix}.param.`.toLowerCase();
+    const queryParameters: QueryParameters = {};
+
+    searchParams.forEach((value, key) => {
+        if (key.toLowerCase().startsWith(paramPrefix) && key.length > paramPrefix.length) {
+            queryParameters[key.substring(paramPrefix.length)] = value;
+        }
+    });
+
+    return Object.keys(queryParameters).length > 0 ? queryParameters : undefined;
+}
+
+/**
  * Creates a QueryModel ID for a given SchemaQuery. The id is just the SchemaQuery snake-cased as encoded
  * schemaName.queryName.
  *
@@ -347,6 +367,11 @@ export class QueryModel {
      */
     readonly queryParameters?: QueryParameters;
     /**
+     * True when queryParameters are read from and written to the URL (with bindURL). Parameters supplied by the
+     * QueryConfig are owned by the app, so they are never bound to the URL.
+     */
+    readonly bindURLQueryParameters: boolean;
+    /**
      * Array of column names to be explicitly included from the column list in the QueryModel data load.
      */
     readonly requiredColumns: string[];
@@ -521,6 +546,7 @@ export class QueryModel {
         this.offset = queryConfig.offset ?? DEFAULT_OFFSET;
         this.omittedColumns = queryConfig.omittedColumns ?? [];
         this.queryParameters = queryConfig.queryParameters;
+        this.bindURLQueryParameters = queryConfig.queryParameters === undefined;
         this.requiredColumns = queryConfig.requiredColumns ?? [];
         this.requiredColumnsAsQueryInfoFields = queryConfig.requiredColumnsAsQueryInfoFields ?? false;
         this.sorts = queryConfig.sorts ?? [];
@@ -822,7 +848,8 @@ export class QueryModel {
      * true.
      */
     get urlQueryParams(): Record<string, string> {
-        const { currentPage, urlPrefix, filterArray, maxRows, selectedReportIds, sorts, viewName } = this;
+        const { currentPage, urlPrefix, filterArray, maxRows, queryParameters, selectedReportIds, sorts, viewName } =
+            this;
         const filters = filterArray.filter(f => f.getColumnName() !== '*');
         const searches = filterArray
             .filter(f => f.getColumnName() === '*')
@@ -858,6 +885,14 @@ export class QueryModel {
         filters.forEach((filter): void => {
             modelParams[filter.getURLParameterName(urlPrefix)] = filter.getURLParameterValue();
         });
+
+        if (this.bindURLQueryParameters) {
+            Object.entries(queryParameters ?? {}).forEach(([name, value]) => {
+                if (value !== undefined && value !== null) {
+                    modelParams[`${urlPrefix}.param.${name}`] = String(value);
+                }
+            });
+        }
 
         return modelParams;
     }
@@ -1231,6 +1266,9 @@ export class QueryModel {
         let schemaQuery = new SchemaQuery(this.schemaName, this.queryName, viewName);
         let selectedReportIds = searchParams.get(`${prefix}.selectedReportIds`)?.split(';') ?? [];
         let sorts = querySortsFromString(searchParams.get(`${prefix}.sort`)) ?? [];
+        const queryParameters =
+            (this.bindURLQueryParameters ? queryParametersFromSearchParams(prefix, searchParams) : undefined) ??
+            this.queryParameters;
 
         // If useExistingValues is true we'll assume any value not present on the URL can be overridden by the current
         // model value. This behavior is really only wanted when we are initializing the model.
@@ -1260,7 +1298,7 @@ export class QueryModel {
             }
         }
 
-        return { filterArray, maxRows, offset, schemaQuery, selectedReportIds, sorts };
+        return { filterArray, maxRows, offset, queryParameters, schemaQuery, selectedReportIds, sorts };
     }
 
     /**
@@ -1277,7 +1315,7 @@ export class QueryModel {
 
 type QueryModelURLState = Pick<
     QueryModel,
-    'filterArray' | 'maxRows' | 'offset' | 'schemaQuery' | 'selectedReportIds' | 'sorts'
+    'filterArray' | 'maxRows' | 'offset' | 'queryParameters' | 'schemaQuery' | 'selectedReportIds' | 'sorts'
 >;
 type QueryModelSettings = Partial<Pick<QueryModel, 'filterArray' | 'maxRows' | 'sorts' | 'viewName'>>;
 const LOCAL_STORAGE_PREFIX = 'QUERY_MODEL_SETTINGS';

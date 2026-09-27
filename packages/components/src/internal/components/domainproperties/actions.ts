@@ -207,7 +207,6 @@ export function fetchQueries(containerPath: string, schemaName: string): Promise
                 containerPath,
                 schemaName,
                 queryDetailColumns: true,
-                includeUserQueries: false, //GH Issue 1512
                 success: data => {
                     resolve(processQueries(data));
                 },

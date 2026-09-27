@@ -78,7 +78,9 @@ export const EditInlineField: FC<Props> = memo(props => {
     const inputRef = useRef(null);
     const _value = typeof value === 'object' ? value?.value : value;
     const [dateValue, setDateValue] = useState<Date>(() => (isDate && _value ? new Date(_value) : undefined));
-    const [timeJsonValue, setTimeJsonValue] = useState<string>(undefined);
+    const [timeJsonValue, setTimeJsonValue] = useState<string>(() =>
+        isTime && typeof _value === 'string' ? _value : undefined
+    );
     const [columnBasedValue, setColumnBasedValue] = useState();
     const columnChangedRef = useRef(false);
 

@@ -132,6 +132,25 @@ export const EditInlineField: FC<Props> = memo(props => {
         return inputRef.current?.value;
     }, [dateValue, timeJsonValue, isDate, isTime, columnBasedValue, column, useJsonDateFormat, isDateOnly]);
 
+    // GH Issue 1583: getInputValue() returns the input's own representation (a DOM string for text/number, a formatted/JSON value for dates)
+    // which won't strictly equal the raw _value.
+    // Without this a no-op blur on a number or date field fires a needless onChange (updateJob) call.
+    const hasInputChanged = useCallback(
+        (inputValue: any): boolean => {
+            if (isDate) {
+                const pristineDate = _value ? new Date(_value) : undefined;
+                const pristine = useJsonDateFormat
+                    ? isDateOnly
+                        ? getJsonDateFormatString(pristineDate)
+                        : getJsonDateTimeFormatString(pristineDate)
+                    : pristineDate?.valueOf();
+                return inputValue !== pristine;
+            }
+            return (inputValue ?? '') != (_value ?? ''); // don't check !==: int 1 vs '1' should be considered unchanged
+        },
+        [_value, isDate, isDateOnly, useJsonDateFormat]
+    );
+
     const onCancel = useCallback((): void => {
         setState({ editing: false, ignoreBlur: true });
     }, []);
@@ -153,11 +172,11 @@ export const EditInlineField: FC<Props> = memo(props => {
             return;
         }
 
-        if (inputValue !== _value) {
+        if (hasInputChanged(inputValue)) {
             onChange?.(name, inputValue);
         }
         setState({ editing: false });
-    }, [allowBlank, getInputValue, isDate, isLookupSelect, name, onChange, _value]);
+    }, [allowBlank, getInputValue, hasInputChanged, isDate, isLookupSelect, name, onChange]);
 
     const onBlur = useCallback((): void => {
         if (!state.ignoreBlur) {

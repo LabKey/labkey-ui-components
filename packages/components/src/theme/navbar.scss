@@ -1,4 +1,5 @@
 @use "sass:color";
+@use "sass:map";
 
 .app-navigation {
     position: fixed;
@@ -760,4 +761,57 @@
 
 .no-scroll {
     overflow: hidden;
+}
+
+// Mirrors $lk-page-header-bg-color, $lk-page-nav-bg-color, and $lk-page-header-text-color in packages/themes/themes/<theme>/_variables.scss
+// Seattle and Sky match the default app header.
+$navbar-themes: (
+    harvest: (bg: #f7862a, hover: #e86130, text: #381A00),
+    leaf: (bg: #789e47, hover: #64803C, text: #000000),
+    madison: (bg: #c5050c, hover: #9b0000, text: #f7f7f7),
+    mono: (bg: #757575, hover: #4c4c4c, text: #f7f7f7),
+    ocean: (bg: #288282, hover: #2F6B6B, text: #f7f7f7),
+    overcast: (bg: #116596, hover: $blue-dark, text: $white),
+);
+
+@each $name, $colors in $navbar-themes {
+    $text: map.get($colors, text);
+
+    .navbar-container.navbar-theme-#{$name} {
+        background-color: map.get($colors, bg);
+
+        .navbar-left-menu .product-menu-button:hover,
+        .navbar-left-menu .product-menu-button:focus {
+            background-color: map.get($colors, hover);
+        }
+    }
+
+    // Admin pages use the darker shade so they stay distinct from the rest of the app.
+    .admin-navbar-container.navbar-theme-#{$name} {
+        background-color: map.get($colors, hover);
+
+        .navbar-left-menu .product-menu-button:hover,
+        .navbar-left-menu .product-menu-button:focus {
+            background-color: map.get($colors, bg);
+        }
+    }
+
+    .navbar-theme-#{$name} {
+        .navbar-left-menu .product-menu-button {
+            color: $text !important;
+        }
+
+        .navbar-left-sub,
+        .navbar-header-icon,
+        .navbar__xs-search-icon,
+        .user-dropdown .caret,
+        .navbar__xs-find-dropdown .caret {
+            color: $text !important;
+        }
+
+        .navbar-menu-button:focus-visible,
+        .user-dropdown a:focus-visible {
+            outline-color: $text;
+        }
+    }
 }

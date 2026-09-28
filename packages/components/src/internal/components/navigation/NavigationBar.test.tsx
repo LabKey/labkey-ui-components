@@ -205,4 +205,26 @@ describe('NavigationBar', () => {
         validate({ UserMenu: 1, ProductNavigation: 1 });
         expect(document.querySelectorAll('.col-folders')).toHaveLength(0);
     });
+
+    test('applies server theme to header', async () => {
+        renderWithAppContext(<NavigationBar />, {
+            appContext: getDefaultAppContext(),
+            serverContext: { ...getDefaultServerContext(), extThemeName_42: 'harvest' },
+        });
+        await waitFor(() => {
+            expect(document.querySelectorAll('.app-navigation')).toHaveLength(1);
+        });
+        expect(document.querySelectorAll('.navbar-container.navbar-theme-harvest')).toHaveLength(1);
+    });
+
+    test('no theme class without server theme', async () => {
+        renderWithAppContext(<NavigationBar />, {
+            appContext: getDefaultAppContext(),
+            serverContext: getDefaultServerContext(),
+        });
+        await waitFor(() => {
+            expect(document.querySelectorAll('.app-navigation')).toHaveLength(1);
+        });
+        expect(document.querySelector('.navbar-container').className).not.toContain('navbar-theme-');
+    });
 });

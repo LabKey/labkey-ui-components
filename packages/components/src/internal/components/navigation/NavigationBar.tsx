@@ -63,7 +63,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         signOutUrl,
         user,
     } = props;
-    const { moduleContext } = useServerContext();
+    const { extThemeName_42: themeName, moduleContext } = useServerContext();
     const folderMenuContext = useFolderMenuContext();
     const location = useLocation();
     const isAdminPage = useMemo(() => isAdminRoute(location.pathname), [location.pathname]);
@@ -83,6 +83,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                 className={classNames('main-nav navbar test-loc-nav-header', {
                     'navbar-container': !isAdminPage,
                     'admin-navbar-container': isAdminPage,
+                    [`navbar-theme-${themeName}`]: !!themeName,
                 })}
             >
                 <div className="container">

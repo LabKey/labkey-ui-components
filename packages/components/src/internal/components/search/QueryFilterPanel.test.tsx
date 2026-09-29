@@ -4,6 +4,7 @@
  */
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 import { Filter } from '@labkey/api';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
@@ -264,5 +265,20 @@ describe('QueryFilterPanel', () => {
         expect(document.querySelectorAll('.field-modal__col-content-disabled')).toHaveLength(0);
 
         unmount();
+    });
+
+    test('preferFilterTabFieldKey opens the Filter tab for a facetable field', () => {
+        render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" preferFilterTabFieldKey="Text" />);
+        validate(10, true, false);
+    });
+
+    test('onActiveFieldChange', async () => {
+        const onActiveFieldChange = jest.fn();
+        render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" onActiveFieldChange={onActiveFieldChange} />);
+        expect(onActiveFieldChange).not.toHaveBeenCalled();
+
+        await userEvent.click(document.querySelectorAll('button.list-group-item')[0]);
+        expect(onActiveFieldChange).toHaveBeenCalledTimes(1);
+        expect(onActiveFieldChange.mock.calls[0][0]).toBeInstanceOf(QueryColumn);
     });
 });

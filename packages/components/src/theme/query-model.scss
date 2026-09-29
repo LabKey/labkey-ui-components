@@ -89,6 +89,71 @@
     }
 }
 
+.grid-panel__search-suggest {
+    position: relative;
+}
+
+.grid-panel__search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    min-width: 100%;
+    max-width: 520px;
+    margin: 2px 0 0;
+    padding: 4px 0;
+    list-style: none;
+    background-color: $white;
+    border: 1px solid $gray-border-light;
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
+
+.grid-panel__search-suggestion,
+.grid-panel__search-suggestion-loading {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    white-space: nowrap;
+}
+
+.grid-panel__search-suggestion {
+    cursor: pointer;
+
+    &.active {
+        background-color: rgba($brand-primary, 0.1);
+    }
+}
+
+.grid-panel__search-suggestion-icon {
+    width: 14px;
+    margin-right: 8px;
+    color: $text-color-light;
+}
+
+.grid-panel__search-suggestion-label {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.grid-panel__search-suggestion-hint {
+    margin-left: 12px;
+    padding: 0 4px;
+    font-size: 11px;
+    color: $text-color-light;
+    border: 1px solid $light-gray;
+    border-radius: 3px;
+}
+
+.grid-panel__search-suggestion-loading {
+    color: $text-color-light;
+
+    .fa {
+        margin-right: 8px;
+    }
+}
+
 // This is actually the default value for Bootstrap, but we have to set it again here because we override the default
 // value in the LKS themes.
 .input-group.grid-panel__input-group {

@@ -5,9 +5,12 @@
 import React from 'react';
 
 import { render } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
+import { Filter } from '@labkey/api';
 
 import { SchemaQuery } from '../SchemaQuery';
 import { QueryInfo } from '../QueryInfo';
+import { QueryColumn } from '../QueryColumn';
 import { getTestAPIWrapper } from '../../internal/APIWrapper';
 
 import { makeTestQueryModel } from './testUtils';
@@ -33,5 +36,105 @@ describe('GridFilterModal', () => {
         expect(document.querySelectorAll('button')).toHaveLength(3); // 2 in footer + close icon
         expect(document.querySelectorAll('button')[1].hasAttribute('disabled')).toBe(false); // cancel
         expect(document.querySelectorAll('button')[1].hasAttribute('disabled')).toBe(false); // apply
+    });
+
+    describe('initialDraft', () => {
+        const FIELDS = [
+            new QueryColumn({ caption: 'Tube Type', fieldKey: 'TubeType', jsonType: 'string', name: 'TubeType' }),
+            new QueryColumn({ caption: 'Blood Type', fieldKey: 'BloodType', jsonType: 'string', name: 'BloodType' }),
+        ];
+        const DRAFT = { ops: { BloodType: 'contains', TubeType: 'contains' }, value: 'Sod' };
+
+        const valueInput = (): HTMLInputElement => document.querySelector('input[aria-label="Filter 0 value 1"]');
+        const fieldButton = (caption: string): HTMLElement =>
+            Array.from(document.querySelectorAll<HTMLElement>('button.list-group-item')).find(
+                button => button.textContent === caption
+            );
+        const applyButton = (): HTMLElement =>
+            Array.from(document.querySelectorAll<HTMLElement>('.modal-footer button')).find(
+                button => button.textContent === 'Apply'
+            );
+        const appliedFilters = (onApply: jest.Mock): string[] =>
+            onApply.mock.calls[0][0].map(
+                (f: Filter.IFilter) => `${f.getColumnName()}~${f.getFilterType().getURLSuffix()}=${f.getValue()}`
+            );
+
+        test('seeds the first field and lists only the given fields', async () => {
+            const onApply = jest.fn();
+            render(
+                <GridFilterModal
+                    {...DEFAULT_PROPS}
+                    fieldKey="TubeType"
+                    fields={FIELDS}
+                    initialDraft={DRAFT}
+                    onApply={onApply}
+                />
+            );
+
+            expect(document.querySelectorAll('button.list-group-item')).toHaveLength(2);
+            expect(valueInput().value).toBe('Sod');
+
+            await userEvent.click(applyButton());
+            expect(appliedFilters(onApply)).toEqual(['TubeType~contains=Sod']);
+        });
+
+        test('the unedited draft follows the active field', async () => {
+            const onApply = jest.fn();
+            render(
+                <GridFilterModal
+                    {...DEFAULT_PROPS}
+                    fieldKey="TubeType"
+                    fields={FIELDS}
+                    initialDraft={DRAFT}
+                    onApply={onApply}
+                />
+            );
+
+            await userEvent.click(fieldButton('Blood Type'));
+            expect(valueInput().value).toBe('Sod');
+
+            await userEvent.click(applyButton());
+            expect(appliedFilters(onApply)).toEqual(['BloodType~contains=Sod']);
+        });
+
+        test('an edited draft stays on its field', async () => {
+            const onApply = jest.fn();
+            render(
+                <GridFilterModal
+                    {...DEFAULT_PROPS}
+                    fieldKey="TubeType"
+                    fields={FIELDS}
+                    initialDraft={DRAFT}
+                    onApply={onApply}
+                />
+            );
+
+            await userEvent.type(valueInput(), 'ium');
+            await userEvent.click(fieldButton('Blood Type'));
+            expect(valueInput().value).toBe('');
+
+            await userEvent.click(applyButton());
+            expect(appliedFilters(onApply)).toEqual(['TubeType~contains=Sodium']);
+        });
+
+        test('a field that already has a filter is not seeded', async () => {
+            const onApply = jest.fn();
+            render(
+                <GridFilterModal
+                    {...DEFAULT_PROPS}
+                    fieldKey="TubeType"
+                    fields={FIELDS}
+                    initFilters={[Filter.create('BloodType', 'A+')]}
+                    initialDraft={DRAFT}
+                    onApply={onApply}
+                />
+            );
+
+            await userEvent.click(fieldButton('Blood Type'));
+            expect(valueInput().value).toBe('A+');
+
+            await userEvent.click(applyButton());
+            expect(appliedFilters(onApply)).toEqual(['BloodType~eq=A+']);
+        });
     });
 });

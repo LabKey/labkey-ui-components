@@ -71,7 +71,10 @@ import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
 import { SearchBox } from './SearchBox';
 import { actionValuesToString, addSystemViewColumns, filterArraysEqual, filtersEqual } from './utils';
-import { GridFilterModal } from './GridFilterModal';
+import { FilterDraft, GridFilterModal } from './GridFilterModal';
+import { SearchSuggestInput } from './search/SearchSuggestInput';
+import { FilterSuggestion } from './search/models';
+import { isGridSearchSuggestionsEnabled, suggestionToFilter } from './search/utils';
 import { FiltersButton } from './FiltersButton';
 import { FilterStatus } from './FilterStatus';
 import { SaveViewModal } from './SaveViewModal';
@@ -110,6 +113,8 @@ export interface GridPanelProps<ButtonsComponentProps> {
     showHeader?: boolean;
     showPagination?: boolean;
     showSearchInput?: boolean;
+    // Offer targeted filters as the user types instead of applying a Q filter; defaults to the app-wide setting
+    showSearchSuggestions?: boolean;
     showViewMenu?: boolean;
     supportedExportTypes?: Set<EXPORT_TYPES>;
     title?: string;
@@ -119,6 +124,7 @@ type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
 
 interface GridBarProps<T> extends Props<T> {
     actionValues: ActionValue[];
+    onApplySuggestion: (suggestion: FilterSuggestion) => void;
     onCustomizeView: () => void;
     onFilter: () => void;
     onManageViews: () => void;
@@ -169,6 +175,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             ButtonsComponent,
             ButtonsComponentRight,
             hideEmptyViewMenu,
+            onApplySuggestion,
             onCustomizeView,
             onExport,
             onFilter,
@@ -182,6 +189,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             showFiltersButton,
             showPagination,
             showSearchInput,
+            showSearchSuggestions = isGridSearchSuggestionsEnabled(),
             showViewMenu,
             supportedExportTypes,
         } = this.props;
@@ -199,6 +207,17 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
         // otherwise the ResponsiveMenuButtonGroup will not be able to collapse buttons correctly.
         const showButtonsComponent = hasLeftButtonsComp && (hasData || rowsError);
         const hiddenWithLeftButtonsCls = classNames({ 'hidden-md hidden-sm hidden-xs': hasLeftButtonsComp });
+
+        const searchInput = showSearchSuggestions ? (
+            <SearchSuggestInput
+                actionValues={searchActionValues}
+                model={model}
+                onApplySuggestion={onApplySuggestion}
+                onSearch={onSearch}
+            />
+        ) : (
+            <SearchBox actionValues={searchActionValues} onSearch={onSearch} />
+        );
 
         const paginationComp = (
             <Pagination
@@ -224,7 +243,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 
                             <div className={'button-bar__filter-search ' + hiddenWithLeftButtonsCls}>
                                 {showFiltersButton && <FiltersButton onFilter={onFilter} />}
-                                {showSearchInput && <SearchBox actionValues={searchActionValues} onSearch={onSearch} />}
+                                {showSearchInput && searchInput}
                             </div>
                         </div>
                     </div>
@@ -274,7 +293,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                         <div className="grid-panel__button-bar-left">
                             <div className="button-bar__section">
                                 {showFiltersButton && <FiltersButton iconOnly onFilter={onFilter} />}
-                                {showSearchInput && <SearchBox actionValues={searchActionValues} onSearch={onSearch} />}
+                                {showSearchInput && searchInput}
                             </div>
                         </div>
                         <div className="grid-panel__button-bar-right">
@@ -383,10 +402,17 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     );
 });
 
+interface ComposeFilterState {
+    draft: FilterDraft;
+    fields: QueryColumn[];
+}
+
 interface State {
     // TODO: replace actionValues with individual properties tracking searches, sorts, filters, and views separately.
     //  actionValues is a vestigal structure left behind from OmniBox which required us to store everything together.
     actionValues: ActionValue[];
+    // Set while the filter modal is composing a filter from a search suggestion
+    composeFilter: ComposeFilterState;
     disableColumnDrag: boolean;
     errorMsg: React.ReactNode;
     isViewSaved: boolean;
@@ -436,6 +462,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         this.state = {
             actionValues: [],
+            composeFilter: undefined,
             searchActionValues: [],
             disableColumnDrag: false,
             showFilterModalFieldKey: undefined,
@@ -640,6 +667,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         this.setState(
             {
+                composeFilter: undefined,
                 showFilterModalFieldKey: undefined,
                 showSaveViewModal: false,
                 showManageViewsModal: false,
@@ -697,6 +725,42 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         actions.setFilters(model.id, newFilters, allowSelections);
     };
 
+    onApplySuggestion = (suggestion: FilterSuggestion): void => {
+        const { model, actions, allowSelections } = this.props;
+        incrementClientSideMetricCount('gridSearchSuggestions', suggestion.source);
+
+        if (suggestion.kind === 'search') {
+            this.onSearch(suggestion.value);
+        } else if (suggestion.kind === 'filter') {
+            const filter = suggestionToFilter(suggestion);
+            // The search box owns a single slot, so a targeted filter replaces any Q filter
+            const newFilters = model.filterArray
+                .filter(f => f.getColumnName() !== '*' && !filtersEqual(f, filter))
+                .concat(filter);
+            actions.setFilters(model.id, newFilters, allowSelections);
+        } else {
+            const fields = suggestion.fields
+                .map(field =>
+                    model.displayColumns.find(
+                        col => col.getDisplayFieldKey().toLowerCase() === field.fieldKey.toLowerCase()
+                    )
+                )
+                .filter(col => col !== undefined);
+            if (!fields.length) return;
+
+            const ops = suggestion.fields.reduce<Record<string, string>>((result, field) => {
+                const col = fields.find(f => f.getDisplayFieldKey().toLowerCase() === field.fieldKey.toLowerCase());
+                if (col) result[col.getDisplayFieldKey()] = field.op;
+                return result;
+            }, {});
+
+            this.setState({
+                composeFilter: { draft: { ops, value: suggestion.value }, fields },
+                showFilterModalFieldKey: fields[0].getDisplayFieldKey(),
+            });
+        }
+    };
+
     onRevertView = (): void => {
         this.setState({ errorMsg: undefined });
     };
@@ -706,7 +770,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             this.handleFilterRemove({ type: ChangeType.remove }, column);
         } else {
             const fieldKey = column.resolveFieldKey(); // resolveFieldKey because of Issue 34627
-            this.setState({ showFilterModalFieldKey: fieldKey });
+            this.setState({ composeFilter: undefined, showFilterModalFieldKey: fieldKey });
         }
     };
 
@@ -733,11 +797,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             : 0;
         const fieldKey = displayColumns[colIndex]?.resolveFieldKey();
 
-        this.setState({ showFilterModalFieldKey: fieldKey });
+        this.setState({ composeFilter: undefined, showFilterModalFieldKey: fieldKey });
     };
 
     closeFilterModal = (): void => {
-        this.setState({ showFilterModalFieldKey: undefined });
+        this.setState({ composeFilter: undefined, showFilterModalFieldKey: undefined });
     };
 
     sortColumn = (column: QueryColumn, direction?: SortDirection): void => {
@@ -1104,6 +1168,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             title,
         } = this.props;
         const {
+            composeFilter,
             selectedColumn,
             showCustomizeViewModal,
             showFilterModalFieldKey,
@@ -1168,6 +1233,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                             <ButtonBar
                                 {...this.props}
                                 actionValues={actionValues}
+                                onApplySuggestion={this.onApplySuggestion}
                                 onCustomizeView={this.toggleCustomizeView}
                                 onExport={onExport}
                                 onFilter={this.showFilterModal}
@@ -1229,7 +1295,12 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 {showFilterModalFieldKey && (
                     <GridFilterModal
                         fieldKey={showFilterModalFieldKey}
-                        initFilters={model.filterArray} // using filterArray to indicate user-defined filters only
+                        fields={composeFilter?.fields}
+                        // using filterArray to indicate user-defined filters only; a composed filter replaces Q
+                        initFilters={
+                            composeFilter ? model.filterArray.filter(f => f.getColumnName() !== '*') : model.filterArray
+                        }
+                        initialDraft={composeFilter?.draft}
                         model={model}
                         onApply={this.handleApplyFilters}
                         onCancel={this.closeFilterModal}

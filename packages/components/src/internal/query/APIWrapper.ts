@@ -71,6 +71,8 @@ import {
 import { executeSql, ExecuteSqlOptions, ExecuteSqlResponse } from './executeSql';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
 import { EDIT_METHOD } from '../constants';
+import { getFilterSuggestions } from '../../public/QueryModel/search/ClientFilterSuggestionEngine';
+import { FilterSuggestionsRequest, FilterSuggestionsResponse } from '../../public/QueryModel/search/models';
 
 export interface QueryAPIWrapper {
     clearSelected: (options: ClearSelectedOptions) => Promise<SelectResponse>;
@@ -91,6 +93,7 @@ export interface QueryAPIWrapper {
         dataTypeExclusions?: Record<string, number[]>,
         containerPath?: string
     ) => Promise<Map<string, List<IEntityTypeOption>>>;
+    getFilterSuggestions: (request: FilterSuggestionsRequest) => Promise<FilterSuggestionsResponse>;
     getFolderConfigurableEntityTypeOptions: (
         entityDataType: EntityDataType,
         containerPath?: string,
@@ -182,6 +185,8 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     executeSql = executeSql;
     getDataTypeFolderDataCount = getDataTypeFolderDataCount;
     getEntityTypeOptions = getEntityTypeOptionsWithExclusions;
+    getFilterSuggestions = (request: FilterSuggestionsRequest): Promise<FilterSuggestionsResponse> =>
+        getFilterSuggestions(request);
     getGridViews = getGridViews;
     getFolderConfigurableEntityTypeOptions = getFolderConfigurableEntityTypeOptions;
     getFolderDataTypeDataCount = getFolderDataTypeDataCount;
@@ -223,6 +228,7 @@ export function getQueryTestAPIWrapper(
         executeSql: mockFn(),
         getDataTypeFolderDataCount: mockFn(),
         getEntityTypeOptions: mockFn(),
+        getFilterSuggestions: mockFn(),
         getGridViews: mockFn(),
         getFolderConfigurableEntityTypeOptions: mockFn(),
         getFolderDataTypeDataCount: mockFn(),

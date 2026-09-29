@@ -42,6 +42,7 @@ import {
     addSourcesSectionConfig,
     canInheritGridView,
     freezerManagerIsCurrentApp,
+    getAppLogoImageUrls,
     getCurrentAppProperties,
     getMenuSectionConfigs,
     getPrimaryAppProperties,
@@ -1039,6 +1040,26 @@ describe('utils', () => {
         LABKEY.container = { folderType: 'LIMS' };
         expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {}, core: { primaryApplicationId: LIMS_PRODUCT_ID}  })).toStrictEqual(LIMS_APP_PROPERTIES);
         LABKEY.container = {};
+    });
+
+    test('getAppLogoImageUrls', () => {
+        __setController('project');
+        LABKEY.container = {};
+        const moduleContext = { inventory: {}, samplemanagement: {}, core: { primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID } };
+        const white = {
+            badge: SAMPLE_MANAGER_APP_PROPERTIES.logoBadgeImageUrl,
+            withText: SAMPLE_MANAGER_APP_PROPERTIES.logoWithTextImageUrl,
+        };
+        const black = {
+            badge: SAMPLE_MANAGER_APP_PROPERTIES.logoBadgeBlackImageUrl,
+            withText: SAMPLE_MANAGER_APP_PROPERTIES.logoWithTextBlackImageUrl,
+        };
+        expect(getAppLogoImageUrls('seattle', moduleContext)).toStrictEqual(white);
+        expect(getAppLogoImageUrls('overcast', moduleContext)).toStrictEqual(white);
+        expect(getAppLogoImageUrls(undefined, moduleContext)).toStrictEqual(white);
+        expect(getAppLogoImageUrls('harvest', moduleContext)).toStrictEqual(black);
+        expect(getAppLogoImageUrls('Leaf', moduleContext)).toStrictEqual(black);
+        expect(getAppLogoImageUrls('harvest', {})).toStrictEqual({ badge: undefined, withText: undefined });
     });
 
     test('isCalculatedFieldsEnabled', () => {

@@ -263,6 +263,26 @@ export function getPrimaryAppProperties(moduleContext?: ModuleContext): AppPrope
     return APPLICATION_PROPERTIES[getPrimaryAppProductId(moduleContext)];
 }
 
+// Keep in sync with TemplateResourceHandler.resolveLogoThemeName()
+const BLACK_LOGO_THEMES = ['harvest', 'leaf'];
+
+export interface AppLogoImageUrls {
+    badge: string;
+    withText: string;
+}
+
+export function getAppLogoImageUrls(
+    themeName: string = getServerContext().extThemeName_42,
+    moduleContext?: ModuleContext
+): AppLogoImageUrls {
+    const props = getPrimaryAppProperties(moduleContext);
+    const useBlack = BLACK_LOGO_THEMES.includes(themeName?.toLowerCase());
+    return {
+        badge: (useBlack && props?.logoBadgeBlackImageUrl) || props?.logoBadgeImageUrl,
+        withText: (useBlack && props?.logoWithTextBlackImageUrl) || props?.logoWithTextImageUrl,
+    };
+}
+
 export function isAllProductFoldersFilteringEnabled(moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.query?.[EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS] === true;
 }

@@ -6,9 +6,11 @@ import { Filter } from '@labkey/api';
 
 import {
     composeFieldToFilter,
+    getGridSearchSuggestionsBackend,
     getValueShape,
     isGridSearchSuggestionsEnabled,
     nameExpressionToRegExp,
+    setGridSearchSuggestionsBackend,
     setGridSearchSuggestionsEnabled,
     suggestionToFilter,
 } from './utils';
@@ -52,7 +54,12 @@ describe('nameExpressionToRegExp', () => {
 
 describe('suggestion filters', () => {
     test('search becomes a Q filter', () => {
-        const filter = suggestionToFilter({ kind: 'search', label: '', source: 'fallback', value: 'foo' });
+        const filter = suggestionToFilter({
+            kind: 'search',
+            label: '',
+            source: 'fallback',
+            value: 'foo',
+        });
         expect(filter.getColumnName()).toBe('*');
         expect(filter.getFilterType()).toBe(Filter.Types.Q);
         expect(filter.getValue()).toBe('foo');
@@ -86,5 +93,15 @@ describe('setGridSearchSuggestionsEnabled', () => {
         expect(isGridSearchSuggestionsEnabled()).toBe(true);
         setGridSearchSuggestionsEnabled(false);
         expect(isGridSearchSuggestionsEnabled()).toBe(false);
+    });
+});
+
+describe('setGridSearchSuggestionsBackend', () => {
+    test('defaults to the client engine', () => {
+        expect(getGridSearchSuggestionsBackend()).toBe('client');
+        setGridSearchSuggestionsBackend('server');
+        expect(getGridSearchSuggestionsBackend()).toBe('server');
+        setGridSearchSuggestionsBackend('client');
+        expect(getGridSearchSuggestionsBackend()).toBe('client');
     });
 });

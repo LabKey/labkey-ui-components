@@ -20,6 +20,22 @@ export function isGridSearchSuggestionsEnabled(): boolean {
     return searchSuggestionsEnabled;
 }
 
+export type GridSearchSuggestionsBackend = 'client' | 'server';
+
+let searchSuggestionsBackend: GridSearchSuggestionsBackend = 'client';
+
+/**
+ * Chooses where suggestions are computed: in the browser ('client', the default) or by query-getFilterSuggestions.api
+ * ('server'). Intended to be called once when an application starts.
+ */
+export function setGridSearchSuggestionsBackend(backend: GridSearchSuggestionsBackend): void {
+    searchSuggestionsBackend = backend;
+}
+
+export function getGridSearchSuggestionsBackend(): GridSearchSuggestionsBackend {
+    return searchSuggestionsBackend;
+}
+
 /** Letters become "A" and digits "9", so "SUBJ-028504" and "SUBJ-044304" share the shape "AAAA-999999". */
 export function getValueShape(value: string): string {
     return value.replace(/[A-Za-z]/g, 'A').replace(/\d/g, '9');

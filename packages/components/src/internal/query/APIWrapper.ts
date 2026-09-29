@@ -72,7 +72,9 @@ import { executeSql, ExecuteSqlOptions, ExecuteSqlResponse } from './executeSql'
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
 import { EDIT_METHOD } from '../constants';
 import { getFilterSuggestions } from '../../public/QueryModel/search/ClientFilterSuggestionEngine';
+import { fetchFilterSuggestions } from '../../public/QueryModel/search/fetchFilterSuggestions';
 import { FilterSuggestionsRequest, FilterSuggestionsResponse } from '../../public/QueryModel/search/models';
+import { getGridSearchSuggestionsBackend } from '../../public/QueryModel/search/utils';
 
 export interface QueryAPIWrapper {
     clearSelected: (options: ClearSelectedOptions) => Promise<SelectResponse>;
@@ -186,7 +188,9 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     getDataTypeFolderDataCount = getDataTypeFolderDataCount;
     getEntityTypeOptions = getEntityTypeOptionsWithExclusions;
     getFilterSuggestions = (request: FilterSuggestionsRequest): Promise<FilterSuggestionsResponse> =>
-        getFilterSuggestions(request);
+        getGridSearchSuggestionsBackend() === 'server'
+            ? fetchFilterSuggestions(request)
+            : getFilterSuggestions(request);
     getGridViews = getGridViews;
     getFolderConfigurableEntityTypeOptions = getFolderConfigurableEntityTypeOptions;
     getFolderDataTypeDataCount = getFolderDataTypeDataCount;

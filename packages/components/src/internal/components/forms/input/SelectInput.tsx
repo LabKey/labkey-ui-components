@@ -412,6 +412,12 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
             this.setState(state => ({ asyncKey: state.asyncKey + 1 }));
         }
 
+        // GH Issue 1583: A disabled react-select renders a non-focusable dummy input, so an initial "autoFocus" is dropped while the control
+        // is disabled (e.g. QuerySelect disables during preload).
+        if (this.props.autoFocus && prevProps.disabled && !this.props.disabled) {
+            this.reactSelect.current?.focus();
+        }
+
         this.CHANGE_LOCK = false;
     }
 

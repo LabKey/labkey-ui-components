@@ -73,12 +73,16 @@ export const EditInlineField: FC<Props> = memo(props => {
     const isTextArea = type === 'textarea';
     const isText = !isDate && !isTextArea;
     const isUser = QueryColumn.isUserLookup(column?.lookup);
+    const isLookupSelect = column?.isPublicLookup() === true && column?.displayAsLookup !== false;
     const inputType = type === 'int' || type === 'float' ? 'number' : 'text';
     const inputRef = useRef(null);
     const _value = typeof value === 'object' ? value?.value : value;
     const [dateValue, setDateValue] = useState<Date>(() => (isDate && _value ? new Date(_value) : undefined));
-    const [timeJsonValue, setTimeJsonValue] = useState<string>(undefined);
+    const [timeJsonValue, setTimeJsonValue] = useState<string>(() =>
+        isTime && typeof _value === 'string' ? _value : undefined
+    );
     const [columnBasedValue, setColumnBasedValue] = useState();
+    const columnChangedRef = useRef(false);
 
     // Utilizing useReducer here so multiple state attributes can be updated at once
     const [state, setState] = useReducer((currentState, newState) => ({ ...currentState, ...newState }), {
@@ -128,22 +132,51 @@ export const EditInlineField: FC<Props> = memo(props => {
         return inputRef.current?.value;
     }, [dateValue, timeJsonValue, isDate, isTime, columnBasedValue, column, useJsonDateFormat, isDateOnly]);
 
+    // GH Issue 1583: getInputValue() returns the input's own representation (a DOM string for text/number, a formatted/JSON value for dates)
+    // which won't strictly equal the raw _value.
+    // Without this a no-op blur on a number or date field fires a needless onChange (updateJob) call.
+    const hasInputChanged = useCallback(
+        (inputValue: any): boolean => {
+            if (isDate) {
+                const pristineDate = _value ? new Date(_value) : undefined;
+                const pristine = useJsonDateFormat
+                    ? isDateOnly
+                        ? getJsonDateFormatString(pristineDate)
+                        : getJsonDateTimeFormatString(pristineDate)
+                    : pristineDate?.valueOf();
+                return inputValue !== pristine;
+            }
+            return (inputValue ?? '') != (_value ?? ''); // don't check !==: int 1 vs '1' should be considered unchanged
+        },
+        [_value, isDate, isDateOnly, useJsonDateFormat]
+    );
+
     const onCancel = useCallback((): void => {
         setState({ editing: false, ignoreBlur: true });
     }, []);
 
     const saveEdit = useCallback(() => {
+        // GH Issue 1583: Lookup selects report their edited state through Formsy. Only persist when Formsy saw an actual change;
+        // otherwise a focus-then-blur would commit the empty pristine model value and wipe the existing value.
+        if (isLookupSelect) {
+            if (columnChangedRef.current) {
+                onChange?.(name, getInputValue());
+            }
+            setState({ editing: false });
+            return;
+        }
+
         const inputValue = getInputValue();
 
         if (allowBlank === false && !isDate && isBlankValue(inputValue)) {
             return;
         }
 
-        if (inputValue !== _value) {
+        if (hasInputChanged(inputValue)) {
             onChange?.(name, inputValue);
         }
         setState({ editing: false });
-    }, [allowBlank, getInputValue, isDate, name, onChange, _value]);
+    }, [allowBlank, getInputValue, hasInputChanged, isDate, isLookupSelect, name, onChange]);
 
     const onBlur = useCallback((): void => {
         if (!state.ignoreBlur) {
@@ -178,7 +211,8 @@ export const EditInlineField: FC<Props> = memo(props => {
     );
 
     const onFormsyColumnChange = useCallback(
-        (data: Record<string, any>) => {
+        (data: Record<string, any>, isChanged: boolean) => {
+            columnChangedRef.current = isChanged;
             setColumnBasedValue(data[column.fieldKey] ?? data[column.name]);
         },
         [column]
@@ -193,6 +227,7 @@ export const EditInlineField: FC<Props> = memo(props => {
 
     const toggleEdit = useCallback(() => {
         if (allowEdit) {
+            if (!state.editing) columnChangedRef.current = false;
             setState({ editing: !state.editing });
         }
     }, [allowEdit, state.editing]);

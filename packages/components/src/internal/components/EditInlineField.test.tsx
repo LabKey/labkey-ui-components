@@ -3,7 +3,7 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
 import { renderWithAppContext } from '../test/reactTestLibraryHelpers';
@@ -285,6 +285,84 @@ describe('EditInlineField', () => {
         validate(true, true, { text: 1 });
         expect(document.querySelectorAll('input[name="t$De$Sst"]')).toHaveLength(1);
         expect(document.querySelectorAll('input[name="t.e/st"]')).toHaveLength(0);
+    });
+
+    describe('blur without edit does not call onChange', () => {
+        test('text field', async () => {
+            const onChange = jest.fn();
+            renderWithAppContext(
+                <EditInlineField {...DEFAULT_PROPS} type="text" value="testing value" onChange={onChange} />,
+                { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
+            );
+            await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
+            fireEvent.blur(document.querySelector('input'));
+            expect(onChange).not.toHaveBeenCalled();
+        });
+
+        test('integer field', async () => {
+            const onChange = jest.fn();
+            renderWithAppContext(<EditInlineField {...DEFAULT_PROPS} type="int" value={150} onChange={onChange} />, {
+                serverContext: SERVER_CONTEXT,
+                appContext: APP_CONTEXT,
+            });
+            await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
+            fireEvent.blur(document.querySelector('input'));
+            expect(onChange).not.toHaveBeenCalled();
+        });
+
+        test('date field', async () => {
+            const onChange = jest.fn();
+            renderWithAppContext(
+                <EditInlineField
+                    {...DEFAULT_PROPS}
+                    type="date"
+                    useJsonDateFormat
+                    value="2022-08-11 18:00:00"
+                    onChange={onChange}
+                />,
+                { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
+            );
+            await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
+            fireEvent.blur(document.querySelector('.react-datepicker__input-container input'));
+            expect(onChange).not.toHaveBeenCalled();
+        });
+
+        test('time field', async () => {
+            const onChange = jest.fn();
+            renderWithAppContext(
+                <EditInlineField
+                    {...DEFAULT_PROPS}
+                    column={
+                        new QueryColumn({
+                            caption: 'TimeField',
+                            jsonType: 'time',
+                            rangeURI: TIME_RANGE_URI,
+                        })
+                    }
+                    useJsonDateFormat
+                    value="18:00:00"
+                    onChange={onChange}
+                />,
+                { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
+            );
+            await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
+            fireEvent.blur(document.querySelector('.react-datepicker__input-container input'));
+            expect(onChange).not.toHaveBeenCalled();
+        });
+
+        test('integer field still saves an actual change', async () => {
+            const onChange = jest.fn();
+            renderWithAppContext(<EditInlineField {...DEFAULT_PROPS} type="int" value={150} onChange={onChange} />, {
+                serverContext: SERVER_CONTEXT,
+                appContext: APP_CONTEXT,
+            });
+            await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
+            const input = document.querySelector('input');
+            await userEvent.clear(input);
+            await userEvent.type(input, '200');
+            fireEvent.blur(input);
+            expect(onChange).toHaveBeenCalledWith('name', '200');
+        });
     });
 
     test('pullRight', async () => {

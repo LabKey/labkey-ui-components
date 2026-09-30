@@ -922,10 +922,10 @@ export function withQueryModels<Props>(
                     ...loadRowsConfig,
                     columns,
                     includeDetailsColumn: false,
-                    // includeMetadata: false, // TODO don't require metadata in selectRows response processing
+                    includeMetadata: false,
                     includeTotalCount: true,
                     includeUpdateColumn: false,
-                    maxRows: 1,
+                    maxRows: 0, // GitHub Issue #1607: reduce server side queries with the combination of maxRows 0 and includeTotalCount true
                     offset: 0,
                     sort: undefined,
                     requestHandler: this.requestManager.getRequestHandler(id, 'loadTotalCount'),

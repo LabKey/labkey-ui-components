@@ -11,7 +11,7 @@ import { isLoading, LoadingState } from '../../../../public/LoadingState';
 
 export type DataChangeCommentsRequired = {
     canConfirm: boolean;
-    comment: string;
+    comment: string | undefined;
     loadingState: LoadingState;
     requiresUserComment: boolean;
     setComment: (comment: string) => void;

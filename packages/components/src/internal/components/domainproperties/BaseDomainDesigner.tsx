@@ -2,7 +2,7 @@
  * Copyright (c) 2020-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { ComponentType, FC, memo, PropsWithChildren, PureComponent, useCallback, useMemo } from 'react';
+import React, { ComponentType, FC, memo, PropsWithChildren, PureComponent, useCallback } from 'react';
 import { List } from 'immutable';
 
 import { getSubmitButtonClass, isApp } from '../../app/utils';
@@ -148,7 +148,7 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
         saveBtnText = 'Save',
         showUserComment,
     } = props;
-    const { canConfirm, comment, requiresUserComment, setComment } = useDataChangeCommentsRequired(showUserComment);
+    const { canConfirm, comment, requiresUserComment, setComment } = useDataChangeCommentsRequired(!!showUserComment);
     const canSubmit = !submitting && canConfirm;
 
     // get a list of the domain names that have errors

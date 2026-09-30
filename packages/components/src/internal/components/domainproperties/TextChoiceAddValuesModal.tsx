@@ -63,7 +63,8 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
             {tooLongValue && (
                 <div className="domain-text-choices-error" id="text-choice-length-error" role="alert">
                     Value exceeds maximum of {MAX_TEXT_CHOICE_VALUE_LENGTH} characters: &quot;
-                    {tooLongValue.substring(0, 50)}...&quot;
+                    {/* Slice by code point so an emoji or other surrogate pair is never split */}
+                    {Array.from(tooLongValue).slice(0, 50).join('')}...&quot;
                 </div>
             )}
         </Modal>

@@ -5,11 +5,11 @@
 import React from 'react';
 import { List } from 'immutable';
 
-import { render } from '@testing-library/react';
-
 import { BaseDomainDesigner } from './BaseDomainDesigner';
 import { DomainDesign } from './models';
 import { SEVERITY_LEVEL_ERROR } from './constants';
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+import { waitFor } from '@testing-library/react';
 
 const BASE_PROPS = {
     hasValidProperties: true,
@@ -23,23 +23,26 @@ const BASE_PROPS = {
 };
 
 describe('BaseDomainDesigner', () => {
-    function buttonValidation(saveBtnText: string, saveDisabled: boolean): void {
+    async function buttonValidation(saveBtnText: string, saveDisabled: boolean): Promise<void> {
         expect(document.querySelectorAll('.cancel-button')).toHaveLength(1);
-        expect(document.querySelector('.save-button').textContent).toBe(saveBtnText);
-        expect(document.querySelector('.save-button').hasAttribute('disabled')).toBe(saveDisabled);
+        expect(document.querySelector('.save-button')).toHaveTextContent(saveBtnText);
+
+        await waitFor(() => {
+            expect(document.querySelector('.save-button').hasAttribute('disabled')).toBe(saveDisabled);
+        });
     }
 
     test('without error', () => {
-        render(<BaseDomainDesigner {...BASE_PROPS} />);
+        renderWithAppContext(<BaseDomainDesigner {...BASE_PROPS} />);
         expect(document.querySelectorAll('.alert')).toHaveLength(0);
         expect(document.querySelectorAll('.form-buttons')).toHaveLength(1);
         buttonValidation('Save', false);
     });
 
     test('hasValidProperties', () => {
-        render(<BaseDomainDesigner {...BASE_PROPS} hasValidProperties={false} />);
+        renderWithAppContext(<BaseDomainDesigner {...BASE_PROPS} hasValidProperties={false} />);
         expect(document.querySelectorAll('.alert')).toHaveLength(1);
-        expect(document.querySelector('.alert').textContent).toBe(
+        expect(document.querySelector('.alert')).toHaveTextContent(
             'Please correct errors in the properties panel before saving.'
         );
         expect(document.querySelectorAll('.form-buttons')).toHaveLength(1);
@@ -47,15 +50,15 @@ describe('BaseDomainDesigner', () => {
     });
 
     test('exception', () => {
-        render(<BaseDomainDesigner {...BASE_PROPS} exception="Test exception text" />);
+        renderWithAppContext(<BaseDomainDesigner {...BASE_PROPS} exception="Test exception text" />);
         expect(document.querySelectorAll('.alert')).toHaveLength(1);
-        expect(document.querySelector('.alert').textContent).toBe('Test exception text');
+        expect(document.querySelector('.alert')).toHaveTextContent('Test exception text');
         expect(document.querySelectorAll('.form-buttons')).toHaveLength(1);
         buttonValidation('Save', false);
     });
 
     test('errorDomains', () => {
-        render(
+        renderWithAppContext(
             <BaseDomainDesigner
                 {...BASE_PROPS}
                 domains={List.of(
@@ -67,13 +70,13 @@ describe('BaseDomainDesigner', () => {
             />
         );
         expect(document.querySelectorAll('.alert')).toHaveLength(1);
-        expect(document.querySelector('.alert').textContent).toBe('Please correct errors in Test before saving.');
+        expect(document.querySelector('.alert')).toHaveTextContent('Please correct errors in Test before saving.');
         expect(document.querySelectorAll('.form-buttons')).toHaveLength(1);
         buttonValidation('Save', false);
     });
 
     test('submitting, saveBtnText', () => {
-        render(<BaseDomainDesigner {...BASE_PROPS} submitting={true} saveBtnText="Finish" />);
+        renderWithAppContext(<BaseDomainDesigner {...BASE_PROPS} saveBtnText="Finish" submitting />);
         expect(document.querySelectorAll('.alert')).toHaveLength(0);
         expect(document.querySelectorAll('.form-buttons')).toHaveLength(1);
         buttonValidation('Finish', true);

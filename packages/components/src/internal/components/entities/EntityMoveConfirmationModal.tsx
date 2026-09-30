@@ -13,7 +13,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { resolveErrorMessage } from '../../util/messaging';
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { AppContext, useAppContext } from '../../AppContext';
-import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
+import { SelectInput, SelectInputChange, SelectInputOption } from '../forms/input/SelectInput';
 import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 import { Container } from '../base/models/Container';
 
@@ -83,58 +83,44 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [containerOptions, setContainerOptions] = useState<SelectInputOption[]>();
     const [selectedContainerOption, setSelectedContainerOption] = useState<SelectInputOption>();
-    const [auditUserComment, setAuditUserComment] = useState<string>();
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext } = useServerContext();
     const container_ = currentContainer ?? container;
-    const hasValidUserComment = auditUserComment?.trim()?.length > 0;
-    const { requiresUserComment } = useDataChangeCommentsRequired();
+    const { canConfirm, comment, requiresUserComment, setComment } = useDataChangeCommentsRequired();
 
-    useEffect(
-        () => {
-            (async () => {
-                setLoading(LoadingState.LOADING);
-                setError(undefined);
+    useEffect(() => {
+        (async () => {
+            setLoading(LoadingState.LOADING);
+            setError(undefined);
 
-                try {
-                    const options = await getContainerOptions(
-                        api,
-                        container_,
-                        moduleContext,
-                        excludeCurrentAsTarget,
-                        dataType,
-                        dataTypeRowId,
-                        permissionType
-                    );
+            try {
+                const options = await getContainerOptions(
+                    api,
+                    container_,
+                    moduleContext,
+                    excludeCurrentAsTarget,
+                    dataType,
+                    dataTypeRowId,
+                    permissionType
+                );
 
-                    setContainerOptions(options);
-                } catch (e) {
-                    setError(`Error: ${resolveErrorMessage(e)}`);
-                } finally {
-                    setLoading(LoadingState.LOADED);
-                }
-            })();
-        },
-        [
-            /* on mount only */
-        ]
-    );
+                setContainerOptions(options);
+            } catch (e) {
+                setError(`Error: ${resolveErrorMessage(e)}`);
+            } finally {
+                setLoading(LoadingState.LOADED);
+            }
+        })();
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps -- on mount only
 
     const onConfirmCallback = useCallback(() => {
         if (selectedContainerOption) {
-            onConfirm(selectedContainerOption.value, selectedContainerOption.label, auditUserComment);
+            onConfirm(selectedContainerOption.value, selectedContainerOption.label, comment);
         }
-    }, [onConfirm, selectedContainerOption, auditUserComment]);
+    }, [comment, onConfirm, selectedContainerOption]);
 
-    const onContainerChange = useCallback(
-        (fieldName: string, chosenType: string, selectedOption: SelectInputOption) => {
-            setSelectedContainerOption(selectedOption);
-        },
-        []
-    );
-
-    const onCommentChange = useCallback(comment => {
-        setAuditUserComment(comment);
+    const onContainerChange = useCallback<SelectInputChange>((_, __, selectedOption: SelectInputOption) => {
+        setSelectedContainerOption(selectedOption);
     }, []);
 
     if (isLoading(loading)) {
@@ -164,7 +150,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
     return (
         <Modal
             {...confirmModalProps}
-            canConfirm={!!selectedContainerOption && (!requiresUserComment || hasValidUserComment)}
+            canConfirm={!!selectedContainerOption && canConfirm}
             onConfirm={onConfirmCallback}
         >
             {children}
@@ -178,7 +164,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                     required
                 />
             </div>
-            <CommentTextArea actionName="Moving" onChange={onCommentChange} requiresUserComment={requiresUserComment} />
+            <CommentTextArea actionName="Moving" onChange={setComment} requiresUserComment={requiresUserComment} />
         </Modal>
     );
 });

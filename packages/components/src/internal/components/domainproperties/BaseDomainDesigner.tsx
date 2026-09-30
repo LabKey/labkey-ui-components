@@ -2,16 +2,7 @@
  * Copyright (c) 2020-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, {
-    PureComponent,
-    ComponentType,
-    FC,
-    memo,
-    PropsWithChildren,
-    useState,
-    useCallback,
-    useMemo,
-} from 'react';
+import React, { ComponentType, FC, memo, PropsWithChildren, PureComponent, useCallback, useMemo } from 'react';
 import { List } from 'immutable';
 
 import { getSubmitButtonClass, isApp } from '../../app/utils';
@@ -48,7 +39,7 @@ interface State {
 }
 
 export function withBaseDomainDesigner<Props>(
-    ComponentToWrap: ComponentType<Props & InjectedBaseDomainDesignerProps>
+    ComponentToWrap: ComponentType<InjectedBaseDomainDesignerProps & Props>
 ): ComponentType<Props> {
     class ComponentWithBaseDomainDesigner extends PureComponent<Props, State> {
         state: Readonly<State> = {
@@ -118,9 +109,9 @@ export function withBaseDomainDesigner<Props>(
             return (
                 <ComponentToWrap
                     {...this.state}
-                    setSubmitting={this.setSubmitting}
-                    onTogglePanel={this.onTogglePanel}
                     onFinish={this.onFinish}
+                    onTogglePanel={this.onTogglePanel}
+                    setSubmitting={this.setSubmitting}
                     {...(this.props as Props)}
                 />
             );
@@ -157,9 +148,8 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
         saveBtnText = 'Save',
         showUserComment,
     } = props;
-    const [userComment, setUserComment] = useState<string>(undefined);
-    // skip useDataChangeCommentsRequired hook for LKS pages with showUserComment=false
-    const requiresUserComment = showUserComment ? useDataChangeCommentsRequired().requiresUserComment : false;
+    const { canConfirm, comment, requiresUserComment, setComment } = useDataChangeCommentsRequired(showUserComment);
+    const canSubmit = !submitting && canConfirm;
 
     // get a list of the domain names that have errors
     const errorDomains = domains
@@ -168,22 +158,16 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
         .toList();
     const bottomErrorMsg = getDomainBottomErrorMessage(exception, errorDomains, hasValidProperties, visitedPanels);
     const submitClassname = `save-button btn btn-${getSubmitButtonClass()}`;
-
     const onSave = useCallback(() => {
-        onFinish(userComment);
-    }, [userComment, onFinish]);
-
-    const canSubmit = useMemo(() => {
-        if (submitting) return false;
-        return !requiresUserComment || userComment?.trim()?.length > 0;
-    }, [requiresUserComment, userComment, submitting]);
+        onFinish(comment);
+    }, [comment, onFinish]);
 
     return (
         <div className="domain-designer">
             {children}
             {bottomErrorMsg && (
                 <div className="domain-form-panel" id={DOMAIN_ERROR_ID}>
-                    <Alert bsStyle="danger">{bottomErrorMsg}</Alert>
+                    <Alert>{bottomErrorMsg}</Alert>
                 </div>
             )}
             <FormButtons sticky={isApp()}>
@@ -194,9 +178,9 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
                     <CommentTextArea
                         actionName="Update"
                         containerClassName="inline-comment"
-                        onChange={setUserComment}
-                        requiresUserComment={requiresUserComment}
                         inline
+                        onChange={setComment}
+                        requiresUserComment={requiresUserComment}
                     />
                 )}
                 <button className={submitClassname} disabled={!canSubmit} onClick={onSave} type="button">

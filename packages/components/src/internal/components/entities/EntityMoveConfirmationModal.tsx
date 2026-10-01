@@ -2,7 +2,7 @@
  * Copyright (c) 2023-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 import { Security } from '@labkey/api';
 
 import { Modal, ModalProps } from '../../Modal';
@@ -10,8 +10,7 @@ import { Alert } from '../base/Alert';
 import { ModuleContext, useServerContext } from '../base/ServerContext';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import { resolveErrorMessage } from '../../util/messaging';
-import { isLoading, LoadingState } from '../../../public/LoadingState';
+import { isLoading } from '../../../public/LoadingState';
 import { AppContext, useAppContext } from '../../AppContext';
 import { SelectInput, SelectInputChange, SelectInputOption } from '../forms/input/SelectInput';
 import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
@@ -20,6 +19,7 @@ import { Container } from '../base/models/Container';
 import { CommentTextArea } from '../forms/input/CommentTextArea';
 import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 import { ComponentsAPIWrapper } from '../../APIWrapper';
+import { Loader, useLoadableState } from '../../useLoadableState';
 
 import { FolderConfigurableDataType } from './models';
 
@@ -79,39 +79,25 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
         permissionType,
         ...confirmModalProps
     } = props;
-    const [error, setError] = useState<string>();
-    const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
-    const [containerOptions, setContainerOptions] = useState<SelectInputOption[]>();
     const [selectedContainerOption, setSelectedContainerOption] = useState<SelectInputOption>();
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext } = useServerContext();
-    const container_ = currentContainer ?? container;
     const { canConfirm, comment, requiresUserComment, setComment } = useDataChangeCommentsRequired();
 
-    useEffect(() => {
-        (async () => {
-            setLoading(LoadingState.LOADING);
-            setError(undefined);
-
-            try {
-                const options = await getContainerOptions(
-                    api,
-                    container_,
-                    moduleContext,
-                    excludeCurrentAsTarget,
-                    dataType,
-                    dataTypeRowId,
-                    permissionType
-                );
-
-                setContainerOptions(options);
-            } catch (e) {
-                setError(`Error: ${resolveErrorMessage(e)}`);
-            } finally {
-                setLoading(LoadingState.LOADED);
-            }
-        })();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps -- on mount only
+    const loader = useCallback<Loader<SelectInputOption[]>>(
+        () =>
+            getContainerOptions(
+                api,
+                currentContainer ?? container,
+                moduleContext,
+                excludeCurrentAsTarget,
+                dataType,
+                dataTypeRowId,
+                permissionType
+            ),
+        [] // eslint-disable-line react-hooks/exhaustive-deps -- on mount only
+    );
+    const { error, loadingState, value: containerOptions } = useLoadableState(loader);
 
     const onConfirmCallback = useCallback(() => {
         if (selectedContainerOption) {
@@ -123,7 +109,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
         setSelectedContainerOption(selectedOption);
     }, []);
 
-    if (isLoading(loading)) {
+    if (isLoading(loadingState)) {
         return (
             <Modal onCancel={confirmModalProps.onCancel} title={confirmModalProps.title}>
                 <LoadingSpinner msg="Loading target folders..." />

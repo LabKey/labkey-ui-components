@@ -31,7 +31,7 @@ directory:
 - `premium-unused.txt` - The list of all exports that are not imported by any modules
 
 ## Future tools
-The dependency we used to implemement `findUnused`, `ts-morph`, is an AST toolkit for TypeScript. In the future we could
+The dependency we used to implement `findUnused`, `ts-morph`, is an AST toolkit for TypeScript. In the future we could
 leverage `ts-morph` to write tools to accomplish the following:
 
 - Sorting our exports

@@ -2,7 +2,7 @@
  * Copyright (c) 2023-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { caseInsensitive, isAllowedSampleAmount } from '../../util/utils';
@@ -56,18 +56,23 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
     const initStorageAmount = storedAmount?.value;
     const [amount, setStorageAmount] = useState<number>(initStorageAmount);
     const [storageUnits, setStorageUnits] = useState<string>(initStorageUnits ?? null);
-    const [comment, setComment] = useState<string>('');
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState();
     const [isDirty, setIsDirty] = useState(false);
-    const { requiresUserComment } = useDataChangeCommentsRequired();
-    const hasValidUserComment = comment?.trim()?.length > 0;
+    const { canConfirm, comment, requiresUserComment, setComment } = useDataChangeCommentsRequired();
+    const { unitModel, valid } = useMemo(
+        () => ({
+            unitModel: new UnitModel(amount, storageUnits),
+            valid: isValid(amount, storageUnits),
+        }),
+        [amount, storageUnits]
+    );
 
     const onCancel = useCallback(() => {
         onClose();
     }, [onClose]);
 
-    const handleUpdateSampleRow = (): Promise<any> => {
+    const handleUpdateSampleRow = useCallback(() => {
         const sampleData = [
             {
                 materialId: rowId?.value,
@@ -75,13 +80,14 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
                 [STORED_AMOUNT_FIELDS.UNITS]: storageUnits,
             },
         ];
+
         return updateSampleStorageData(sampleData, sampleContainer, comment);
-    };
+    }, [amount, comment, rowId, sampleContainer, storageUnits]);
 
     const onSubmit = useCallback(async () => {
         setSubmitting(true);
 
-        if (!isValid(amount, storageUnits)) {
+        if (!valid) {
             return;
         }
 
@@ -94,7 +100,7 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
             setSubmitting(false);
             setError(e);
         }
-    }, [amount, storageUnits, handleUpdateSampleRow, updateListener, onClose]);
+    }, [handleUpdateSampleRow, updateListener, onClose, valid]);
 
     const amountChangeHandler = useCallback(
         (newAmount: string) => {
@@ -120,24 +126,16 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
         [initStorageUnits]
     );
 
-    const commentChangeHandler = useCallback(_comment => {
-        setComment(_comment);
-    }, []);
-
-    let canConfirm = isDirty && isValid(amount, storageUnits);
-    if (requiresUserComment) canConfirm = canConfirm && hasValidUserComment;
-
-    const unitModel = new UnitModel(amount, storageUnits);
     return (
         <Modal
-            canConfirm={canConfirm}
+            canConfirm={canConfirm && isDirty && valid}
             confirmText={`Update ${noun}`}
             isConfirming={submitting}
             onCancel={onCancel}
             onConfirm={onSubmit}
             title="Edit Sample Amounts"
         >
-            <Alert bsStyle="danger">{error}</Alert>
+            <Alert>{error}</Alert>
             <StorageAmountInput
                 amountChangedHandler={amountChangeHandler}
                 label="Amount"
@@ -148,7 +146,7 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
             <CommentTextArea
                 actionName="Update"
                 containerClassName="form-group storage-action-form-group"
-                onChange={commentChangeHandler}
+                onChange={setComment}
                 requiresUserComment={requiresUserComment}
             />
         </Modal>

@@ -86,16 +86,14 @@ const EditingFormImpl: FC<EditingFormProps & InjectedQueryModels> = props => {
     const [canSubmit, setCanSubmit] = useState<boolean>(false);
     const [error, setError] = useState<string>(undefined);
     const [warning, setWarning] = useState<string>(undefined);
-    const [comment, setComment] = useState<string>();
-    const { requiresUserComment } = useDataChangeCommentsRequired();
-    const hasValidUserComment = comment?.trim()?.length > 0;
+    const { canConfirm, comment, requiresUserComment, setComment } = useDataChangeCommentsRequired();
 
     const _onCommentChange = useCallback(
         _comment => {
             setComment(_comment);
             onCommentChange?.(_comment);
         },
-        [onCommentChange]
+        [onCommentChange, setComment]
     );
 
     const disableSubmitButton = useCallback((): void => {
@@ -208,11 +206,7 @@ const EditingFormImpl: FC<EditingFormProps & InjectedQueryModels> = props => {
                     onChange={_onCommentChange}
                     requiresUserComment={requiresUserComment}
                 />
-                <button
-                    className="btn btn-success"
-                    disabled={!canSubmit || (requiresUserComment && !hasValidUserComment) || disabled}
-                    type="submit"
-                >
+                <button className="btn btn-success" disabled={!canSubmit || !canConfirm || disabled} type="submit">
                     {submitText}
                 </button>
             </FormButtons>

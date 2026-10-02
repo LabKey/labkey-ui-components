@@ -23,7 +23,7 @@ interface UserLinkProps {
 export const UserLink: FC<UserLinkProps> = props => {
     const { userId, userDisplayValue, unknown } = props;
     const [showDetails, setShowDetails] = useState<boolean>(false);
-    const [targetUserDisplayValue, setTargetUserDisplayValue] = useState<string>();
+    const [targetUserDisplayValue, setTargetUserDisplayValue] = useState<string>(userDisplayValue);
     const { user, container } = useServerContext();
     const { api } = useAppContext();
     const isSelf = userId === user.id;

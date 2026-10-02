@@ -117,25 +117,25 @@ export const NavigationBar: FC<Props> = memo(props => {
                                 <div className="navbar-item pull-right">
                                     <div className="hidden-md hidden-sm hidden-xs">
                                         <SearchBox
+                                            findNounPlural="samples"
+                                            onFindByIds={onFindByIds}
                                             onSearch={onSearch}
                                             placeholder={_searchPlaceholder}
-                                            onFindByIds={onFindByIds}
-                                            findNounPlural="samples"
                                         />
                                     </div>
                                     <div className="visible-md visible-sm visible-xs">
                                         {onFindByIds ? (
                                             <FindAndSearchDropdown
                                                 className="navbar__xs-find-dropdown"
+                                                findNounPlural="samples"
+                                                onFindByIds={onFindByIds}
+                                                onSearch={onSearchIconClick}
                                                 title={
                                                     <Icon
                                                         iconClass="fa fa-search navbar__xs-search-icon"
                                                         srText="Search and Find"
                                                     />
                                                 }
-                                                findNounPlural="samples"
-                                                onSearch={onSearchIconClick}
-                                                onFindByIds={onFindByIds}
                                             />
                                         ) : (
                                             <i

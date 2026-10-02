@@ -103,7 +103,7 @@ describe('NavigationBar', () => {
     });
 
     test('with notifications, guest user', async () => {
-        renderWithAppContext(<NavigationBar user={TEST_USER_GUEST} notificationsConfig={notificationsConfig} />, {
+        renderWithAppContext(<NavigationBar notificationsConfig={notificationsConfig} user={TEST_USER_GUEST} />, {
             appContext: getDefaultAppContext(),
             serverContext: getDefaultServerContext(),
         });
@@ -114,7 +114,7 @@ describe('NavigationBar', () => {
     });
 
     test('with notifications, non-guest user', async () => {
-        renderWithAppContext(<NavigationBar user={TEST_USER_READER} notificationsConfig={notificationsConfig} />, {
+        renderWithAppContext(<NavigationBar notificationsConfig={notificationsConfig} user={TEST_USER_READER} />, {
             appContext: getDefaultAppContext(),
             serverContext: getDefaultServerContext(),
         });
@@ -165,7 +165,7 @@ describe('NavigationBar', () => {
     });
 
     test('show ProductNavigation for hasPremiumModule, admin always', async () => {
-        renderWithAppContext(<NavigationBar showNavMenu showFolderMenu={false} user={TEST_USER_APP_ADMIN} />, {
+        renderWithAppContext(<NavigationBar showFolderMenu={false} showNavMenu user={TEST_USER_APP_ADMIN} />, {
             appContext: getDefaultAppContext(),
             serverContext: {
                 container: TEST_PROJECT_CONTAINER,
@@ -186,7 +186,7 @@ describe('NavigationBar', () => {
     });
 
     test('show ProductNavigation for hasPremiumModule, admin only', async () => {
-        renderWithAppContext(<NavigationBar showNavMenu showFolderMenu user={TEST_USER_APP_ADMIN} />, {
+        renderWithAppContext(<NavigationBar showFolderMenu showNavMenu user={TEST_USER_APP_ADMIN} />, {
             appContext: getDefaultAppContext(),
             serverContext: {
                 container: TEST_PROJECT_CONTAINER,

@@ -40,6 +40,7 @@ import {
     stringToHtmlId,
     styleStringToObj,
     toLowerSafe,
+    truncate,
     uncapitalizeFirstChar,
     unorderedEqual,
     withTransformedKeys,
@@ -105,6 +106,21 @@ describe('capitalizeFirstChar', () => {
         for (const [key, value] of Object.entries(testStrings)) {
             expect(capitalizeFirstChar(key)).toEqual(value);
         }
+    });
+});
+
+describe('truncate', () => {
+    test('short values unchanged', () => {
+        expect(truncate('', 5)).toBe('');
+        expect(truncate('abc', 5)).toBe('abc');
+        expect(truncate('abcde', 5)).toBe('abcde');
+    });
+
+    test('truncates by grapheme', () => {
+        expect(truncate('abcdef', 3)).toBe('abc');
+        expect(truncate('a👾b', 2)).toBe('a👾');
+        expect(truncate('a👨‍👩‍👧b', 2)).toBe('a👨‍👩‍👧');
+        expect(truncate('ae\u0301x', 2)).toBe('ae\u0301');
     });
 });
 

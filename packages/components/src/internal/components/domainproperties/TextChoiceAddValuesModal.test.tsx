@@ -4,7 +4,7 @@
  */
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
 import { TextChoiceAddValuesModal } from './TextChoiceAddValuesModal';
@@ -108,6 +108,17 @@ describe('TextChoiceAddValuesModal', () => {
         errorEls = document.querySelectorAll('.domain-text-choices-error');
         expect(errorEls).toHaveLength(1);
         expect(errorEls[0].textContent).toContain('Value exceeds maximum of 200 characters');
+    });
+
+    test('too long value truncation keeps surrogate pairs intact', () => {
+        render(<TextChoiceAddValuesModal {...DEFAULT_PROPS} />);
+        // 👾 occupies UTF-16 indices 49-50, straddling the 50-char truncation point
+        fireEvent.change(document.querySelector('textarea'), {
+            target: { value: 'a'.repeat(49) + '👾' + 'b'.repeat(200) },
+        });
+        const errorText = document.querySelector('.domain-text-choices-error').textContent;
+        expect(errorText).toContain('a'.repeat(49) + '👾...');
+        expect(errorText.isWellFormed()).toBeTruthy();
     });
 
     test('initial already equal to max', async () => {

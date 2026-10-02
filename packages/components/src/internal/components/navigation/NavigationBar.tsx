@@ -63,7 +63,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         signOutUrl,
         user,
     } = props;
-    const { moduleContext } = useServerContext();
+    const { extThemeName_42: themeName, moduleContext } = useServerContext();
     const folderMenuContext = useFolderMenuContext();
     const location = useLocation();
     const isAdminPage = useMemo(() => isAdminRoute(location.pathname), [location.pathname]);
@@ -83,6 +83,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                 className={classNames('main-nav navbar test-loc-nav-header', {
                     'navbar-container': !isAdminPage,
                     'admin-navbar-container': isAdminPage,
+                    [`navbar-theme-${themeName}`]: !!themeName,
                 })}
             >
                 <div className="container">
@@ -116,25 +117,25 @@ export const NavigationBar: FC<Props> = memo(props => {
                                 <div className="navbar-item pull-right">
                                     <div className="hidden-md hidden-sm hidden-xs">
                                         <SearchBox
+                                            findNounPlural="samples"
+                                            onFindByIds={onFindByIds}
                                             onSearch={onSearch}
                                             placeholder={_searchPlaceholder}
-                                            onFindByIds={onFindByIds}
-                                            findNounPlural="samples"
                                         />
                                     </div>
                                     <div className="visible-md visible-sm visible-xs">
                                         {onFindByIds ? (
                                             <FindAndSearchDropdown
                                                 className="navbar__xs-find-dropdown"
+                                                findNounPlural="samples"
+                                                onFindByIds={onFindByIds}
+                                                onSearch={onSearchIconClick}
                                                 title={
                                                     <Icon
                                                         iconClass="fa fa-search navbar__xs-search-icon"
                                                         srText="Search and Find"
                                                     />
                                                 }
-                                                findNounPlural="samples"
-                                                onSearch={onSearchIconClick}
-                                                onFindByIds={onFindByIds}
                                             />
                                         ) : (
                                             <i

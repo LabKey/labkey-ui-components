@@ -42,8 +42,10 @@ export interface AppProperties {
     controllerName: string;
     dataClassUrlPart?: string;
     excludedSamplesTemplateColumns?: string[];
+    logoBadgeBlackImageUrl?: string;
     logoBadgeColorImageUrl: string;
     logoBadgeImageUrl: string;
+    logoWithTextBlackImageUrl?: string;
     logoWithTextImageUrl: string;
     moduleName: string;
     name: string;

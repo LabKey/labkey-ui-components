@@ -42,6 +42,7 @@ import {
     addSourcesSectionConfig,
     canInheritGridView,
     freezerManagerIsCurrentApp,
+    getAppLogoImageUrls,
     getCurrentAppProperties,
     getMenuSectionConfigs,
     getPrimaryAppProperties,
@@ -794,13 +795,24 @@ describe('utils', () => {
         expect(isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId, {})).toBeFalsy();
         expect(isProductNavigationEnabled(FREEZER_MANAGER_APP_PROPERTIES.productId, {})).toBeFalsy();
         expect(
-            isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId, { samplemanagement: {}, core: { primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID} })
+            isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId, {
+                samplemanagement: {},
+                core: { primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID },
+            })
         ).toBeTruthy();
         expect(
-            isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId, { biologics: {}, samplemanagement: {}, core: { primaryApplicationId: BIOLOGICS_PRODUCT_ID} })
+            isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId, {
+                biologics: {},
+                samplemanagement: {},
+                core: { primaryApplicationId: BIOLOGICS_PRODUCT_ID },
+            })
         ).toBeFalsy();
         expect(
-            isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId, { biologics: {}, samplemanagement: {}, core: { primaryApplicationId: BIOLOGICS_PRODUCT_ID} })
+            isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId, {
+                biologics: {},
+                samplemanagement: {},
+                core: { primaryApplicationId: BIOLOGICS_PRODUCT_ID },
+            })
         ).toBeTruthy();
     });
 
@@ -950,10 +962,27 @@ describe('utils', () => {
     test('isPremiumApplication', () => {
         expect(isPremiumApplication({})).toBeFalsy();
         expect(isPremiumApplication({ inventory: {} })).toBeFalsy();
-        expect(isPremiumApplication({ samplemanagement: {}, inventory: {}, core: { primaryApplicationId: LIMS_PRODUCT_ID} })).toBeTruthy();
-        expect(isPremiumApplication({ biologics: {}, samplemanagement: {}, inventory: {}, core: { primaryApplicationId: BIOLOGICS_PRODUCT_ID} })).toBeTruthy();
-        expect(isPremiumApplication({ inventory: {}, core: { primaryApplicationId: FREEZER_MANAGER_PRODUCT_ID} })).toBeFalsy();
-        expect(isPremiumApplication({ samplemanagement: {}, core: { primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID} })).toBeTruthy();
+        expect(
+            isPremiumApplication({
+                samplemanagement: {},
+                inventory: {},
+                core: { primaryApplicationId: LIMS_PRODUCT_ID },
+            })
+        ).toBeTruthy();
+        expect(
+            isPremiumApplication({
+                biologics: {},
+                samplemanagement: {},
+                inventory: {},
+                core: { primaryApplicationId: BIOLOGICS_PRODUCT_ID },
+            })
+        ).toBeTruthy();
+        expect(
+            isPremiumApplication({ inventory: {}, core: { primaryApplicationId: FREEZER_MANAGER_PRODUCT_ID } })
+        ).toBeFalsy();
+        expect(
+            isPremiumApplication({ samplemanagement: {}, core: { primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID } })
+        ).toBeTruthy();
     });
 
     test('isAppHomeFolder', () => {
@@ -1029,16 +1058,57 @@ describe('utils', () => {
         LABKEY.container = {};
         expect(getPrimaryAppProperties({})).toBeUndefined();
         expect(getPrimaryAppProperties({ inventory: {} })).toBeUndefined();
-        expect(getPrimaryAppProperties({ inventory: {}, core: { primaryApplicationId: FREEZER_MANAGER_PRODUCT_ID} })).toStrictEqual(FREEZER_MANAGER_APP_PROPERTIES);
-        expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {}, core: { primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID}  })).toStrictEqual(
-            SAMPLE_MANAGER_APP_PROPERTIES
-        );
-        expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {}, biologics: {}, core: { primaryApplicationId: BIOLOGICS_PRODUCT_ID}  })).toStrictEqual(
-            BIOLOGICS_APP_PROPERTIES
-        );
+        expect(
+            getPrimaryAppProperties({ inventory: {}, core: { primaryApplicationId: FREEZER_MANAGER_PRODUCT_ID } })
+        ).toStrictEqual(FREEZER_MANAGER_APP_PROPERTIES);
+        expect(
+            getPrimaryAppProperties({
+                inventory: {},
+                samplemanagement: {},
+                core: { primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID },
+            })
+        ).toStrictEqual(SAMPLE_MANAGER_APP_PROPERTIES);
+        expect(
+            getPrimaryAppProperties({
+                inventory: {},
+                samplemanagement: {},
+                biologics: {},
+                core: { primaryApplicationId: BIOLOGICS_PRODUCT_ID },
+            })
+        ).toStrictEqual(BIOLOGICS_APP_PROPERTIES);
         LABKEY.container = { folderType: 'LIMS' };
-        expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {}, core: { primaryApplicationId: LIMS_PRODUCT_ID}  })).toStrictEqual(LIMS_APP_PROPERTIES);
+        expect(
+            getPrimaryAppProperties({
+                inventory: {},
+                samplemanagement: {},
+                core: { primaryApplicationId: LIMS_PRODUCT_ID },
+            })
+        ).toStrictEqual(LIMS_APP_PROPERTIES);
         LABKEY.container = {};
+    });
+
+    test('getAppLogoImageUrls', () => {
+        __setController('project');
+        LABKEY.container = {};
+        const moduleContext = {
+            inventory: {},
+            samplemanagement: {},
+            core: { primaryApplicationId: SAMPLE_MANAGER_PRODUCT_ID },
+        };
+        const white = {
+            badge: SAMPLE_MANAGER_APP_PROPERTIES.logoBadgeImageUrl,
+            withText: SAMPLE_MANAGER_APP_PROPERTIES.logoWithTextImageUrl,
+        };
+        const black = {
+            badge: SAMPLE_MANAGER_APP_PROPERTIES.logoBadgeBlackImageUrl,
+            withText: SAMPLE_MANAGER_APP_PROPERTIES.logoWithTextBlackImageUrl,
+        };
+        expect(getAppLogoImageUrls('seattle', moduleContext)).toStrictEqual(white);
+        expect(getAppLogoImageUrls('overcast', moduleContext)).toStrictEqual(white);
+        expect(getAppLogoImageUrls(undefined, moduleContext)).toStrictEqual(white);
+        expect(getAppLogoImageUrls('harvest', moduleContext)).toStrictEqual(black);
+        expect(getAppLogoImageUrls('Leaf', moduleContext)).toStrictEqual(black);
+        expect(getAppLogoImageUrls('harvest', {})).toStrictEqual({ badge: undefined, withText: undefined });
     });
 
     test('isCalculatedFieldsEnabled', () => {

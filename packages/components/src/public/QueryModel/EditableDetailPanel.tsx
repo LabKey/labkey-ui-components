@@ -206,11 +206,7 @@ const EditingFormImpl: FC<EditingFormProps & InjectedQueryModels> = props => {
                     onChange={_onCommentChange}
                     requiresUserComment={requiresUserComment}
                 />
-                <button
-                    className="btn btn-success"
-                    disabled={!canSubmit || !canConfirm || disabled}
-                    type="submit"
-                >
+                <button className="btn btn-success" disabled={!canSubmit || !canConfirm || disabled} type="submit">
                     {submitText}
                 </button>
             </FormButtons>

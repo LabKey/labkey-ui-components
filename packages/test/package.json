@@ -36,10 +36,10 @@
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {
     "properties-reader": "3.0.1",
-    "supertest": "7.3.0"
+    "supertest": "7.3.1"
   },
   "devDependencies": {
-    "@labkey/api": "1.52.6-fb-package-updates-1026.0",
+    "@labkey/api": "1.53.0",
     "@types/jest": "30.0.0",
     "@types/node": "26.1.2",
     "@types/supertest": "7.2.1",

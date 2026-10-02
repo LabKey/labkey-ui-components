@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 
 import { Modal } from '../../Modal';
+import { truncate } from '../../util/utils';
 
 import { MAX_TEXT_CHOICE_VALUE_LENGTH, MAX_VALID_TEXT_CHOICES } from './constants';
 import { getValidValuesFromArray } from './models';
@@ -63,7 +64,7 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
             {tooLongValue && (
                 <div className="domain-text-choices-error" id="text-choice-length-error" role="alert">
                     Value exceeds maximum of {MAX_TEXT_CHOICE_VALUE_LENGTH} characters: &quot;
-                    {tooLongValue.substring(0, 50)}...&quot;
+                    {truncate(tooLongValue, 50)}...&quot;
                 </div>
             )}
         </Modal>

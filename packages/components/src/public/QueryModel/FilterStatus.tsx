@@ -16,10 +16,12 @@ interface Props {
     onClick: (actionValue: ActionValue, event: any) => void;
     onRemove: (actionValueIndex: number, event: any) => void;
     onRemoveAll?: () => void;
+    onSearchClick?: (actionValue: ActionValue) => void;
 }
 
 export const FilterStatus: FC<Props> = memo(props => {
-    const { actionValues, onClick, onRemove, onRemoveAll, lockReadOnlyForDelete, onAddFilterClick } = props;
+    const { actionValues, onClick, onRemove, onRemoveAll, onSearchClick, lockReadOnlyForDelete, onAddFilterClick } =
+        props;
     const filterCount = actionValues?.filter(a => a.action.keyword === 'filter').length;
     const showRemoveAll = actionValues
         ? filterActionValuesByType(actionValues, 'filter', lockReadOnlyForDelete).length > 1
@@ -46,8 +48,13 @@ export const FilterStatus: FC<Props> = memo(props => {
                             return null;
                         }
 
-                        // only FilterActions can be edited via click
-                        const _onClick = actionValue.action.keyword === 'filter' ? onClick : undefined;
+                        // FilterActions open the filter modal; SearchActions are editable only when onSearchClick is given
+                        const _onClick =
+                            actionValue.action.keyword === 'filter'
+                                ? onClick
+                                : actionValue.action.keyword === 'search'
+                                  ? onSearchClick
+                                  : undefined;
                         // search and filter actions can be removed via click
                         const _onRemove =
                             actionValue.action.keyword === 'filter' || actionValue.action.keyword === 'search'

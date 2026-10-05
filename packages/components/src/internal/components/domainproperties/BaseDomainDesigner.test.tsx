@@ -5,11 +5,16 @@
 import React from 'react';
 import { List } from 'immutable';
 
-import { render } from '@testing-library/react';
-
 import { BaseDomainDesigner } from './BaseDomainDesigner';
 import { DomainDesign } from './models';
 import { SEVERITY_LEVEL_ERROR } from './constants';
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+import { waitFor } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
+import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
+import { COMMENT_FIELD_ID } from '../forms/input/CommentTextArea';
 
 const BASE_PROPS = {
     hasValidProperties: true,
@@ -23,39 +28,42 @@ const BASE_PROPS = {
 };
 
 describe('BaseDomainDesigner', () => {
-    function buttonValidation(saveBtnText: string, saveDisabled: boolean): void {
+    async function buttonValidation(saveBtnText: string, saveDisabled: boolean): Promise<void> {
         expect(document.querySelectorAll('.cancel-button')).toHaveLength(1);
-        expect(document.querySelector('.save-button').textContent).toBe(saveBtnText);
-        expect(document.querySelector('.save-button').hasAttribute('disabled')).toBe(saveDisabled);
+        expect(document.querySelector('.save-button')).toHaveTextContent(saveBtnText);
+
+        await waitFor(() => {
+            expect(document.querySelector('.save-button').hasAttribute('disabled')).toBe(saveDisabled);
+        });
     }
 
-    test('without error', () => {
-        render(<BaseDomainDesigner {...BASE_PROPS} />);
+    test('without error', async () => {
+        renderWithAppContext(<BaseDomainDesigner {...BASE_PROPS} />);
         expect(document.querySelectorAll('.alert')).toHaveLength(0);
         expect(document.querySelectorAll('.form-buttons')).toHaveLength(1);
-        buttonValidation('Save', false);
+        await buttonValidation('Save', false);
     });
 
-    test('hasValidProperties', () => {
-        render(<BaseDomainDesigner {...BASE_PROPS} hasValidProperties={false} />);
+    test('hasValidProperties', async () => {
+        renderWithAppContext(<BaseDomainDesigner {...BASE_PROPS} hasValidProperties={false} />);
         expect(document.querySelectorAll('.alert')).toHaveLength(1);
-        expect(document.querySelector('.alert').textContent).toBe(
+        expect(document.querySelector('.alert')).toHaveTextContent(
             'Please correct errors in the properties panel before saving.'
         );
         expect(document.querySelectorAll('.form-buttons')).toHaveLength(1);
-        buttonValidation('Save', false);
+        await buttonValidation('Save', false);
     });
 
-    test('exception', () => {
-        render(<BaseDomainDesigner {...BASE_PROPS} exception="Test exception text" />);
+    test('exception', async () => {
+        renderWithAppContext(<BaseDomainDesigner {...BASE_PROPS} exception="Test exception text" />);
         expect(document.querySelectorAll('.alert')).toHaveLength(1);
-        expect(document.querySelector('.alert').textContent).toBe('Test exception text');
+        expect(document.querySelector('.alert')).toHaveTextContent('Test exception text');
         expect(document.querySelectorAll('.form-buttons')).toHaveLength(1);
-        buttonValidation('Save', false);
+        await buttonValidation('Save', false);
     });
 
-    test('errorDomains', () => {
-        render(
+    test('errorDomains', async () => {
+        renderWithAppContext(
             <BaseDomainDesigner
                 {...BASE_PROPS}
                 domains={List.of(
@@ -67,15 +75,48 @@ describe('BaseDomainDesigner', () => {
             />
         );
         expect(document.querySelectorAll('.alert')).toHaveLength(1);
-        expect(document.querySelector('.alert').textContent).toBe('Please correct errors in Test before saving.');
+        expect(document.querySelector('.alert')).toHaveTextContent('Please correct errors in Test before saving.');
         expect(document.querySelectorAll('.form-buttons')).toHaveLength(1);
-        buttonValidation('Save', false);
+        await buttonValidation('Save', false);
     });
 
-    test('submitting, saveBtnText', () => {
-        render(<BaseDomainDesigner {...BASE_PROPS} submitting={true} saveBtnText="Finish" />);
+    test('submitting, saveBtnText', async () => {
+        renderWithAppContext(<BaseDomainDesigner {...BASE_PROPS} saveBtnText="Finish" submitting />);
         expect(document.querySelectorAll('.alert')).toHaveLength(0);
         expect(document.querySelectorAll('.form-buttons')).toHaveLength(1);
-        buttonValidation('Finish', true);
+        await buttonValidation('Finish', true);
+    });
+
+    describe('comments required', () => {
+        const REQUIRE_COMMENTS_CONTEXT = {
+            appContext: {
+                api: getTestAPIWrapper(jest.fn, {
+                    folder: getFolderTestAPIWrapper(jest.fn, {
+                        getAuditSettings: jest.fn().mockResolvedValue({ requireUserComments: true }),
+                    }),
+                }),
+            },
+            serverContext: { container: TEST_PROJECT_CONTAINER },
+        };
+
+        test('showUserComment omitted', async () => {
+            renderWithAppContext(<BaseDomainDesigner {...BASE_PROPS} />, REQUIRE_COMMENTS_CONTEXT);
+            await buttonValidation('Save', false);
+            expect(document.getElementById(COMMENT_FIELD_ID)).not.toBeInTheDocument();
+        });
+
+        test('showUserComment', async () => {
+            renderWithAppContext(<BaseDomainDesigner {...BASE_PROPS} showUserComment />, REQUIRE_COMMENTS_CONTEXT);
+            await waitFor(() => {
+                expect(document.getElementById(COMMENT_FIELD_ID)).toHaveAttribute(
+                    'placeholder',
+                    'Enter reason (required)'
+                );
+            });
+            expect(document.querySelector('.save-button')).toBeDisabled();
+
+            await userEvent.type(document.getElementById(COMMENT_FIELD_ID), 'Adding a field');
+            expect(document.querySelector('.save-button')).toBeEnabled();
+        });
     });
 });

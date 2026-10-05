@@ -12,7 +12,7 @@ import { UserLink, UserLinkList } from './UserLink';
 
 describe('UserLink', () => {
     test('unknown', () => {
-        const { container } = renderWithAppContext(<UserLink unknown />, {
+        const { container } = renderWithAppContext(<UserLink unknown userId={undefined} />, {
             serverContext: { user: TEST_USER_APP_ADMIN },
         });
         expect(container.querySelectorAll('a')).toHaveLength(0);
@@ -22,7 +22,7 @@ describe('UserLink', () => {
     });
 
     test('displayValue without userId', async () => {
-        const { container } = renderWithAppContext(<UserLink userDisplayValue="Test display" />, {
+        const { container } = renderWithAppContext(<UserLink userDisplayValue="Test display" userId={undefined} />, {
             serverContext: { user: TEST_USER_APP_ADMIN },
         });
         await waitFor(() => {

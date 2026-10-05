@@ -56,6 +56,17 @@ export function uncapitalizeFirstChar(value: string): string {
 }
 
 /**
+ * Truncates to at most maxLen user-perceived characters, never splitting a UTF-16-style character (emoji) into two.
+ * AKA surrogate pair or grapheme cluster.
+ */
+export function truncate(value: string, maxLen: number): string {
+    if (value.length <= maxLen) return value;
+    return Array.from(new Intl.Segmenter().segment(value), s => s.segment)
+        .slice(0, maxLen)
+        .join('');
+}
+
+/**
  * Util to format the keys in a record
  * Example: convert {capitalizedFirstKey: value} to {CapitalizedFirstKey: value} with capitalizeFirstChar fn
  * @param obj the original object to transform

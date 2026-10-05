@@ -13,6 +13,7 @@ import React, {
     useEffect,
     useId,
     useMemo,
+    useRef,
     useState,
 } from 'react';
 import classNames from 'classnames';
@@ -70,12 +71,19 @@ const SuggestionOption: FC<SuggestionOptionProps> = memo(props => {
 
 SuggestionOption.displayName = 'SuggestionOption';
 
+// A new id re-runs the restore even when the value is unchanged
+export interface SearchRestoreRequest {
+    id: number;
+    value: string;
+}
+
 interface Props {
     actionValues: ActionValue[];
     api?: ComponentsAPIWrapper;
     model: QueryModel;
     onApplySuggestion: (suggestion: FilterSuggestion) => void;
     onSearch: (value: string) => void;
+    restoreRequest?: SearchRestoreRequest;
 }
 
 /**
@@ -83,7 +91,8 @@ interface Props {
  * Implements the WAI-ARIA combobox pattern: focus stays in the input and aria-activedescendant tracks the option.
  */
 export const SearchSuggestInput: FC<Props> = memo(props => {
-    const { actionValues, api = getDefaultAPIWrapper(), model, onApplySuggestion, onSearch } = props;
+    const { actionValues, api = getDefaultAPIWrapper(), model, onApplySuggestion, onSearch, restoreRequest } = props;
+    const inputRef = useRef<HTMLInputElement>(null);
     const [text, setText] = useState('');
     const [open, setOpen] = useState(false);
     // -1 means nothing is explicitly highlighted, so Enter takes the top suggestion once it is known
@@ -100,6 +109,15 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
         setText(appliedSearch ?? '');
     }, [appliedSearch]);
 
+    useEffect(() => {
+        // The button bar renders a second, hidden copy of the input for narrow layouts
+        if (!restoreRequest || inputRef.current?.offsetParent === null) return;
+        setText(restoreRequest.value);
+        setActiveIndex(-1);
+        setOpen(true);
+        inputRef.current?.focus();
+    }, [restoreRequest]);
+
     // A highlight chosen from an earlier list would otherwise land on whatever now occupies that position
     useEffect(() => {
         setActiveIndex(-1);
@@ -110,8 +128,8 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
             setOpen(false);
             setPendingEnter(false);
             setActiveIndex(-1);
-            // A Q filter keeps its text in the box; other filters show as chips, so clear the box for them
-            if (suggestion.kind !== 'search') setText('');
+            // Every applied suggestion, Q included, shows as a filter pill
+            setText('');
             onApplySuggestion(suggestion);
         },
         [onApplySuggestion]
@@ -230,6 +248,7 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
                         onFocus={onFocus}
                         onKeyDown={onKeyDown}
                         placeholder="Search..."
+                        ref={inputRef}
                         role="combobox"
                         size={25}
                         type="text"

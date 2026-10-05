@@ -132,8 +132,8 @@ describe('SearchSuggestInput', () => {
             jest.advanceTimersByTime(PENDING_ENTER_TIMEOUT_MS);
         });
         expect(onApplySuggestion).toHaveBeenCalledWith(SEARCH);
-        // A Q filter keeps its text in the box
-        expect(input.value).toBe('Sodium');
+        // A Q filter shows as a pill, so the box clears
+        expect(input.value).toBe('');
     });
 
     test('arrow keys choose a suggestion', async () => {

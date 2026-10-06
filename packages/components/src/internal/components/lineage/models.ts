@@ -1422,6 +1422,30 @@ const DEFAULT_NODE_PROPS = {
     },
 };
 
+// GH Issue 1658: Ancestor-to-descendant links lie on neither directional walk, so draw every link whose ends are both in the graph.
+function addCrossEdges(
+    lineageNodes: LineageNodesRecord,
+    visNodes: VisNodesRecord,
+    visEdges: EdgesRecord,
+    nodesInCombinedNode: NodesInCombinedNode
+): void {
+    const graphIds = (lsid: string): string[] =>
+        nodesInCombinedNode[lsid] ?? (isBasicNode(visNodes[lsid] as VisGraphNodeType) ? [lsid] : []);
+
+    Object.values(lineageNodes).forEach(node => {
+        const fromIds = graphIds(node.lsid);
+        if (fromIds.length === 0) return;
+
+        node.children?.forEach(child => {
+            graphIds(child.lsid).forEach(toId => {
+                fromIds.forEach(fromId => {
+                    if (fromId !== toId) addEdge(visEdges, LINEAGE_DIRECTIONS.Children, fromId, toId);
+                });
+            });
+        });
+    });
+}
+
 export type NodesAndEdges = {
     edges: EdgesRecord;
     nodes: VisNodesRecord;
@@ -1468,6 +1492,8 @@ export function generateNodesAndEdges(result: LineageResult, options?: LineageOp
             nodesInCombinedNode
         );
     });
+
+    addCrossEdges(lineageNodes, nodes, edges, nodesInCombinedNode);
 
     return { edges, nodes };
 }

@@ -316,6 +316,7 @@ export class ServerLineageAPIWrapper implements LineageAPIWrapper {
         options?: LineageOptions
     ): Promise<LineageResult> => {
         const fetchOptions: Experiment.LineageOptions = {
+            includeCrossEdges: true,
             ...options?.request,
             lsid: seed,
             runProtocolLsid: options?.runProtocolLsid,

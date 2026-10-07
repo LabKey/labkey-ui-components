@@ -206,7 +206,12 @@ export function fetchQueries(containerPath: string, schemaName: string): Promise
             Query.getQueries({
                 containerPath,
                 schemaName,
+                // getLookupInfo needs per-column isKeyField + jsonType, which only the detail-columns path emits
                 queryDetailColumns: true,
+                // GH Issue 1512: skip user-defined queries except those with a PK (valid lookup targets), avoiding the
+                // expensive resolution of every user query when a schema has hundreds of them
+                includeUserQueries: false,
+                includeUserQueriesForLookups: true,
                 success: data => {
                     resolve(processQueries(data));
                 },

@@ -14,7 +14,7 @@ import React, {
     useState,
 } from 'react';
 import classNames from 'classnames';
-import { fromJS, List, Map, Set } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
 import { EXPORT_TYPES, GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
@@ -238,7 +238,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                     advancedOptions={advancedExportOptions}
                                     model={model}
                                     onExport={onExport}
-                                    supportedTypes={supportedExportTypes?.toJS()}
+                                    supportedTypes={supportedExportTypes}
                                 />
                             )}
                             {showChartMenu && <ChartMenu actions={actions} model={model} />}

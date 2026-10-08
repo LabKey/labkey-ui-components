@@ -299,7 +299,7 @@ SplitButton.displayName = 'SplitButton';
 
 interface MenuHeaderProps {
     className?: string;
-    text: string;
+    text: ReactNode;
 }
 
 /**

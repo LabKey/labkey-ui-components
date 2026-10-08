@@ -14,10 +14,10 @@ import React, {
     useState,
 } from 'react';
 import classNames from 'classnames';
-import { fromJS, List, Map, Set } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
-import { EXPORT_TYPES, GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
+import { EXPORT_TYPES, ExportHeaderTypes, GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
 import { HeaderCellDropdown, HeaderSelectionCell, isFilterColumnNameMatch } from '../../internal/renderers';
 
 import {
@@ -100,7 +100,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     hideEmptyViewMenu?: boolean;
     highlightLastSelectedRow?: boolean;
     loadOnMount?: boolean;
-    onExport?: Record<string, (modelId?: string) => any>;
+    onExport?: Record<string, (modelId?: string, headerType?: ExportHeaderTypes) => any>;
     pageSizes?: number[];
     showButtonBar?: boolean;
     showChartMenu?: boolean;
@@ -238,7 +238,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                     advancedOptions={advancedExportOptions}
                                     model={model}
                                     onExport={onExport}
-                                    supportedTypes={supportedExportTypes?.toJS()}
+                                    supportedTypes={supportedExportTypes}
                                 />
                             )}
                             {showChartMenu && <ChartMenu actions={actions} model={model} />}

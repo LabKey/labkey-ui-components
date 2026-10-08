@@ -16,7 +16,7 @@ import { ExportOptions, getExportParams, setSelected } from '../../internal/acti
 import { QuerySort } from '../QuerySort';
 
 import { QueryColumn } from '../QueryColumn';
-import { EXPORT_TYPES } from '../../internal/constants';
+import { EXPORT_TYPES, ExportHeaderTypes } from '../../internal/constants';
 
 import { SELECTION_SNAPSHOT_SEP } from '../SchemaQuery';
 import { getSelectedRows } from '../../internal/query/selectRows';
@@ -138,7 +138,31 @@ export function getQueryModelExportParams(
         selectionKey,
         showRows: hasSelections ? 'SELECTED' : 'ALL',
     };
-    return getExportParams(type, schemaQuery, exportOptions, advancedOptions, queryParameters);
+    const options =
+        advancedOptions?.headerType === ExportHeaderTypes.Caption
+            ? removeCustomLabelExportAliases(model, advancedOptions)
+            : advancedOptions;
+    return getExportParams(type, schemaQuery, exportOptions, options, queryParameters);
+}
+
+const EXPORT_ALIAS_PREFIX = 'exportAlias.';
+
+// A column's label from the view takes precedence over its default export alias
+function removeCustomLabelExportAliases(model: QueryModel, advancedOptions: Record<string, any>): Record<string, any> {
+    if (!advancedOptions) return advancedOptions;
+
+    const customLabelFieldKeys = new Set(
+        model.displayColumns.filter(col => model.getCustomViewTitleOverride(col)).map(col => col.fieldKey.toLowerCase())
+    );
+    if (customLabelFieldKeys.size === 0) return advancedOptions;
+
+    return Object.fromEntries(
+        Object.entries(advancedOptions).filter(
+            ([key]) =>
+                !key.startsWith(EXPORT_ALIAS_PREFIX) ||
+                !customLabelFieldKeys.has(key.substring(EXPORT_ALIAS_PREFIX.length).toLowerCase())
+        )
+    );
 }
 
 export function getSelectRowCountColumnsStr(

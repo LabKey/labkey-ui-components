@@ -163,6 +163,7 @@ const ExportMenuItem: FC<ExportMenuItemProps> = ({
                     text={
                         <React.Fragment>
                             <span>{headerTypeSection.dividerText}</span>
+                            <span className="sr-only">{headerTypeSection.toolTip}</span>
                             <OverlayTrigger
                                 id={popoverId}
                                 overlay={
@@ -171,7 +172,7 @@ const ExportMenuItem: FC<ExportMenuItemProps> = ({
                                     </Popover>
                                 }
                             >
-                                <i className="margin-left-small fa fa-question-circle" />
+                                <i aria-hidden="true" className="margin-left-small fa fa-question-circle" />
                             </OverlayTrigger>
                         </React.Fragment>
                     }
@@ -237,12 +238,12 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
         [exportHandler, id, onExport]
     );
 
-    const exportHeader = 'Export' + (hasSelections ? ' Selected' : ' All') + ' Data';
+    const caption = 'Export' + (hasSelections ? ' Selected' : ' All') + ' Data';
 
     return (
         hasData && (
             <div className="export-menu">
-                <Tip caption={exportHeader}>
+                <Tip caption={caption}>
                     <DropdownButton noCaret pullRight title={<Icon iconClass="fa fa-download" srText="Export" />}>
                         {exportOptions.map((option, i) => (
                             <ExportMenuItem

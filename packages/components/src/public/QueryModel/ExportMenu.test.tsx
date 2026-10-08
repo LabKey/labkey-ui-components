@@ -38,7 +38,9 @@ describe('ExportMenu', () => {
     );
 
     const getHeadings = (): string[] =>
-        Array.from(document.querySelectorAll('[role="heading"]')).map(heading => heading.textContent);
+        Array.from(document.querySelectorAll('[role="heading"]')).map(
+            heading => heading.querySelector('span:not(.sr-only)').textContent
+        );
 
     test('default', async () => {
         const exportFn = jest.fn();
@@ -47,6 +49,11 @@ describe('ExportMenu', () => {
         render(<ExportMenu actions={ACTIONS} exportRows={jest.fn()} model={MODEL} onExport={onExport} />);
 
         expect(getHeadings()).toEqual(['Grid View Labels', 'Field Names']);
+        expect(Array.from(document.querySelectorAll('[role="heading"] .sr-only')).map(el => el.textContent)).toEqual([
+            "Uses this view's field labels, which may not be recognized during import.",
+            'Uses database field names, which work better for import.',
+        ]);
+        expect(document.querySelectorAll('[role="heading"] .fa-question-circle[aria-hidden="true"]').length).toBe(2);
         expect(document.querySelectorAll('.export-menu-icon').length).toBe(6);
         expect(document.querySelectorAll('.divider').length).toBe(1);
         await userEvent.click(document.querySelector('[role="menuitem"]'));

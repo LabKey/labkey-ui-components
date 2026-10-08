@@ -27,7 +27,7 @@ interface ExportMenuProps {
     // exportRows needed for tests, defaults to exportRows imported from internal/actions
     exportRows?: (type: EXPORT_TYPES, exportParams: Record<string, any>, containerPath?: string) => void;
     model: QueryModel;
-    onExport?: Record<string, (modelId?: string) => void>;
+    onExport?: Record<string, (modelId?: string, headerType?: ExportHeaderTypes) => void>;
     supportedHeaderTypes?: Set<ExportHeaderTypes>;
     supportedTypes?: Set<EXPORT_TYPES>;
 }
@@ -86,7 +86,7 @@ interface HeaderTypeSection extends ExportMenuTypeData {
 interface ExportMenuItemProps {
     headerTypeSection?: HeaderTypeSection;
     model: QueryModel;
-    onExport: (option: ExportOption, headerType?: ExportHeaderTypes) => void;
+    onExport: (option: ExportOption) => void;
     option: ExportOption;
     supportedHeaderTypes?: Set<ExportHeaderTypes>;
     supportedTypes: Set<EXPORT_TYPES>;
@@ -188,7 +188,7 @@ const ExportMenuItem: FC<ExportMenuItemProps> = ({
 ExportMenuItem.displayName = 'ExportMenuItem';
 
 export interface ExportMenuImplProps extends ExportMenuProps {
-    exportHandler: (option: ExportOption, headerType?: ExportHeaderTypes) => void;
+    exportHandler: (option: ExportOption) => void;
     hasData: boolean;
     hasSelections?: boolean;
     id: string;
@@ -225,12 +225,12 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
     }, [_supportedHeaderTypes, supportedTypes]);
 
     const exportCallback = useCallback(
-        (option: ExportOption, headerType: ExportHeaderTypes) => {
-            const { type } = option;
+        (option: ExportOption) => {
+            const { headerType, type } = option;
             if (onExport?.[type]) {
-                onExport[type]?.(id);
+                onExport[type]?.(id, headerType);
             } else {
-                exportHandler(option, headerType);
+                exportHandler(option);
             }
         },
         [exportHandler, id, onExport]
@@ -267,16 +267,16 @@ ExportMenuImpl.displayName = 'ExportMenu';
 export class ExportMenu extends PureComponent<ExportMenuProps> {
     export = (option: ExportOption): void => {
         const { actions, advancedOptions, exportRows = exportRows_, model, onExport } = this.props;
-        const { type } = option;
+        const { headerType, type } = option;
 
         if (onExport?.[type]) {
-            onExport[type](model.id);
+            onExport[type](model.id, headerType);
         } else {
             // Issue 39332: add message about export start
             actions.addMessage(model.id, { type: 'success', content: option.label + ' export started.' }, 5000);
             exportRows(
                 type,
-                getQueryModelExportParams(model, type, { ...advancedOptions, headerType: option.headerType }),
+                getQueryModelExportParams(model, type, { ...advancedOptions, headerType }),
                 model.containerPath
             );
         }

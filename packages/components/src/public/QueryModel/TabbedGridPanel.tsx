@@ -6,7 +6,7 @@ import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 
 import { ExportModal } from '../../internal/components/gridbar/ExportModal';
-import { EXPORT_TYPES } from '../../internal/constants';
+import { EXPORT_TYPES, ExportHeaderTypes } from '../../internal/constants';
 import { exportTabsXlsx } from '../../internal/actions';
 
 import { useNotificationsContext } from '../../internal/components/notifications/NotificationsContext';
@@ -86,7 +86,7 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      */
     getGridPanelDisplay?: (
         activeGridId: string,
-        exportHandlers: { [key: string]: (modelId?: string) => any }
+        exportHandlers: { [key: string]: (modelId?: string, headerType?: ExportHeaderTypes) => any }
     ) => React.ReactNode;
     /**
      * return the showViewMenu value for an active tab
@@ -153,6 +153,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
     } = props;
     const [internalActiveId, setInternalActiveId] = useState<string>(activeModelId ?? tabOrder[0]);
     const [showExportModal, setShowExportModal] = useState<boolean>(false);
+    const [exportHeaderType, setExportHeaderType] = useState<ExportHeaderTypes>();
     const [canExport, setCanExport] = useState<boolean>(true);
     const onSelect = useCallback(
         (modelId: string) => {
@@ -182,7 +183,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
     const activeModel = queryModels[activeId];
 
     const exportTabs = useCallback(
-        async (selectedTabs: string[] | Set<string>) => {
+        async (selectedTabs: string[] | Set<string>, headerType: ExportHeaderTypes) => {
             try {
                 // set exporting blocker
                 setCanExport(false);
@@ -193,6 +194,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                     if (getAdvancedExportOptions) exportOptions = { ...getAdvancedExportOptions(selected) };
                     const tabForm = getQueryModelExportParams(selectedModel, EXPORT_TYPES.EXCEL, {
                         ...exportOptions,
+                        headerType,
                         sheetName: selectedModel.title,
                     });
                     models.push(tabForm);
@@ -226,18 +228,27 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         ]
     );
 
-    const excelExportHandler = useCallback(async () => {
-        if (Object.keys(tabOrder).length > 1) {
-            setShowExportModal(true);
-            return;
-        }
+    const excelExportHandler = useCallback(
+        async (modelId: string, headerType: ExportHeaderTypes) => {
+            if (Object.keys(tabOrder).length > 1) {
+                setExportHeaderType(headerType);
+                setShowExportModal(true);
+                return;
+            }
 
-        try {
-            await exportTabs([internalActiveId]);
-        } catch (e) {
-            console.error(e);
-        }
-    }, [tabOrder, exportTabs, internalActiveId]);
+            try {
+                await exportTabs([internalActiveId], headerType);
+            } catch (e) {
+                console.error(e);
+            }
+        },
+        [tabOrder, exportTabs, internalActiveId]
+    );
+
+    const exportSelectedTabs = useCallback(
+        (selectedTabs: Set<string>) => exportTabs(selectedTabs, exportHeaderType),
+        [exportTabs, exportHeaderType]
+    );
 
     const exportHandlers = { ...onExport, [EXPORT_TYPES.EXCEL]: excelExportHandler };
 
@@ -311,7 +322,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                     queryModels={queryModels}
                     tabOrder={tabOrder}
                     onClose={closeExportModal}
-                    onExport={exportTabs}
+                    onExport={exportSelectedTabs}
                     canExport={canExport}
                     tabRowCounts={tabRowCounts}
                 />

@@ -3,8 +3,10 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { fireEvent } from '@testing-library/react';
+import { act, fireEvent, screen } from '@testing-library/react';
 
+import { exportTabsXlsx } from '../../internal/actions';
+import { EXPORT_TYPES, ExportHeaderTypes } from '../../internal/constants';
 import { makeQueryInfo, makeTestData } from '../../internal/test/testHelpers';
 import { renderWithAppContext } from '../../internal/test/reactTestLibraryHelpers';
 import aminoAcidsQuery from '../../test/data/assayAminoAcidsData-getQuery.json';
@@ -19,6 +21,11 @@ import { QueryModel } from './QueryModel';
 import { RowsResponse } from './QueryModelLoader';
 import { TabbedGridPanel } from './TabbedGridPanel';
 import { makeTestActions, makeTestQueryModel } from './testUtils';
+
+jest.mock('../../internal/actions', () => ({
+    ...jest.requireActual('../../internal/actions'),
+    exportTabsXlsx: jest.fn().mockResolvedValue(undefined),
+}));
 
 let MIXTURES_QUERY_INFO: QueryInfo;
 let MIXTURES_DATA: RowsResponse;
@@ -150,6 +157,50 @@ describe('TabbedGridPanel', () => {
         // GridPanel receives the title when asPanel is false
         expect(container.querySelector('.panel-heading.view-header')).not.toBeNull();
         expect(container.querySelector('.panel-heading').textContent.trim()).toBe(title);
+    });
+
+    describe('excel export header type', () => {
+        let exportHandlers: Record<string, (modelId?: string, headerType?: ExportHeaderTypes) => any>;
+        const getGridPanelDisplay = (_: string, handlers: typeof exportHandlers) => {
+            exportHandlers = handlers;
+            return <div />;
+        };
+        const exportedHeaderTypes = (): string[] =>
+            (exportTabsXlsx as jest.Mock).mock.lastCall[1].map(form => form.headerType);
+
+        beforeEach(() => {
+            (exportTabsXlsx as jest.Mock).mockClear();
+        });
+
+        test('single tab', async () => {
+            renderWithAppContext(
+                <TabbedGridPanel
+                    actions={actions}
+                    getGridPanelDisplay={getGridPanelDisplay}
+                    queryModels={{ mixtures: mixturesModel }}
+                    tabOrder={['mixtures']}
+                />
+            );
+
+            await act(() => exportHandlers[EXPORT_TYPES.EXCEL]('mixtures', ExportHeaderTypes.ImportField));
+            expect(exportedHeaderTypes()).toEqual([ExportHeaderTypes.ImportField]);
+        });
+
+        test('multiple tabs', async () => {
+            renderWithAppContext(
+                <TabbedGridPanel
+                    actions={actions}
+                    getGridPanelDisplay={getGridPanelDisplay}
+                    queryModels={queryModels}
+                    tabOrder={tabOrder}
+                />
+            );
+
+            await act(() => exportHandlers[EXPORT_TYPES.EXCEL]('mixtures', ExportHeaderTypes.ImportField));
+            expect(exportTabsXlsx).not.toHaveBeenCalled();
+            await act(async () => fireEvent.click(screen.getByText('Export')));
+            expect(exportedHeaderTypes()).toEqual([ExportHeaderTypes.ImportField, ExportHeaderTypes.ImportField]);
+        });
     });
 
     test('single model', () => {

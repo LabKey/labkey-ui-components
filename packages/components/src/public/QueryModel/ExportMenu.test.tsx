@@ -85,6 +85,19 @@ describe('ExportMenu', () => {
         );
     });
 
+    test('onExport override receives option header type', async () => {
+        const exportFn = jest.fn();
+        const onExport = { [EXPORT_TYPES.EXCEL]: exportFn };
+        render(<ExportMenu actions={ACTIONS} exportRows={jest.fn()} model={MODEL} onExport={onExport} />);
+
+        const menuItems = document.querySelectorAll('[role="menuitem"]');
+        await userEvent.click(menuItems[1]);
+        expect(exportFn).toHaveBeenLastCalledWith('model', ExportHeaderTypes.Caption);
+
+        await userEvent.click(menuItems[4]);
+        expect(exportFn).toHaveBeenLastCalledWith('model', ExportHeaderTypes.ImportField);
+    });
+
     test('single supported header type', () => {
         const supportedHeaderTypes = new Set([ExportHeaderTypes.ImportField]);
 

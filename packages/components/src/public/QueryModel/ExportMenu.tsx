@@ -16,7 +16,6 @@ import { getQueryModelExportParams } from './utils';
 import { Actions } from './withQueryModels';
 import { SelectionMenuItem } from '../../internal/components/menus/SelectionMenuItem';
 import { Icon } from '../../internal/Icon';
-import { LabelOverlay } from '../../internal/components/forms/LabelOverlay';
 import { OverlayTrigger } from '../../internal/OverlayTrigger';
 import { Popover } from '../../internal/Popover';
 import { generateId } from '../../internal/util/utils';
@@ -101,7 +100,7 @@ const ExportMenuItem: FC<ExportMenuItemProps> = ({
     supportedTypes,
 }) => {
     const onClick = useCallback(() => {
-        incrementClientSideMetricCount('export' + option.label, option.headerType);
+        incrementClientSideMetricCount('export', option.label.toLowerCase() + option.headerType);
         onExport(option);
     }, [onExport, option]);
     const popoverId = useMemo(() => generateId('export-header-'), []);

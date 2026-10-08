@@ -235,7 +235,7 @@ describe('getQueryModelExportParams', () => {
         expect(params.includeColumn).toEqual(['Folder']);
     });
 
-    test('custom view label replaces export alias', () => {
+    test('ImportField header keeps export aliases', () => {
         const params = getQueryModelExportParams(model, EXPORT_TYPES.CSV, {
             'exportAlias.name': 'Sample ID',
             'exportAlias.storedAmount': 'Amount',

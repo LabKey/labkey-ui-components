@@ -243,8 +243,6 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
             <div className="export-menu">
                 <Tip caption={exportHeader}>
                     <DropdownButton noCaret pullRight title={<Icon iconClass="fa fa-download" srText="Export" />}>
-                        {/*<MenuHeader text={exportHeader} />*/}
-
                         {exportOptions.map((option, i) => (
                             <ExportMenuItem
                                 headerTypeSection={headerTypeSections[i]}

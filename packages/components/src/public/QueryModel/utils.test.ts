@@ -2,7 +2,10 @@ import { ViewInfo } from '../../internal/ViewInfo';
 import { QueryInfo } from '../QueryInfo';
 import { ExtendedMap } from '../ExtendedMap';
 import { QueryColumn } from '../QueryColumn';
-import { addSystemViewColumns } from './utils';
+import { EXPORT_TYPES, ExportHeaderTypes } from '../../internal/constants';
+import { SchemaQuery } from '../SchemaQuery';
+import { addSystemViewColumns, getQueryModelExportParams } from './utils';
+import { makeTestQueryModel } from './testUtils';
 
 describe('addSystemViewColumns', () => {
     test('default view', () => {
@@ -187,5 +190,64 @@ describe('addSystemViewColumns', () => {
                 title: 'System Col 1',
             },
         ]);
+    });
+});
+
+describe('getQueryModelExportParams', () => {
+    const queryInfo = QueryInfo.fromJsonForTests(
+        {
+            schemaName: 'samples',
+            name: 'Blood',
+            columns: {
+                name: { fieldKey: 'Name', name: 'Name', caption: 'Name' },
+                storedAmount: { fieldKey: 'StoredAmount', name: 'StoredAmount', caption: 'Stored Amount' },
+                sampleState: { fieldKey: 'SampleState', name: 'SampleState', caption: 'Status' },
+            },
+            views: [
+                {
+                    name: ViewInfo.DEFAULT_NAME,
+                    default: true,
+                    columns: [
+                        { fieldKey: 'Name' },
+                        { fieldKey: 'StoredAmount', title: 'Quantity' },
+                        { fieldKey: 'SampleState', title: 'Status' },
+                    ],
+                },
+            ],
+        },
+        true
+    );
+    const model = makeTestQueryModel(new SchemaQuery('samples', 'Blood'), queryInfo);
+
+    test('custom view label replaces export alias for Caption header', () => {
+        const params = getQueryModelExportParams(model, EXPORT_TYPES.CSV, {
+            'exportAlias.name': 'Sample ID',
+            'exportAlias.storedAmount': 'Amount',
+            'exportAlias.sampleState': 'Sample Status',
+            headerType: ExportHeaderTypes.Caption,
+            includeColumn: ['Folder'],
+        });
+
+        expect(params['exportAlias.storedAmount']).toBeUndefined();
+        expect(params['exportAlias.name']).toBe('Sample ID');
+        // view title matches the column caption, so it is not a custom label
+        expect(params['exportAlias.sampleState']).toBe('Sample Status');
+        expect(params.includeColumn).toEqual(['Folder']);
+    });
+
+    test('custom view label replaces export alias', () => {
+        const params = getQueryModelExportParams(model, EXPORT_TYPES.CSV, {
+            'exportAlias.name': 'Sample ID',
+            'exportAlias.storedAmount': 'Amount',
+            'exportAlias.sampleState': 'Sample Status',
+            headerType: ExportHeaderTypes.ImportField,
+            includeColumn: ['Folder'],
+        });
+
+        expect(params['exportAlias.storedAmount']).toBe('Amount');
+        expect(params['exportAlias.name']).toBe('Sample ID');
+        // view title matches the column caption, so it is not a custom label
+        expect(params['exportAlias.sampleState']).toBe('Sample Status');
+        expect(params.includeColumn).toEqual(['Folder']);
     });
 });

@@ -100,7 +100,9 @@ const ExportMenuItem: FC<ExportMenuItemProps> = ({
     supportedTypes,
 }) => {
     const onClick = useCallback(() => {
-        incrementClientSideMetricCount('export', option.label.toLowerCase() + option.headerType);
+        if (option.headerType) {
+            incrementClientSideMetricCount('export', (option.label + '-' + option.headerType).toLowerCase());
+        }
         onExport(option);
     }, [onExport, option]);
     const popoverId = useMemo(() => generateId('export-header-'), []);

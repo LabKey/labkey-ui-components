@@ -7,6 +7,7 @@ import { Filter } from '@labkey/api';
 
 import { IDomainField, LOOKUP_VALIDATOR } from '../domainproperties/models';
 import { SAMPLE_TYPE } from '../domainproperties/PropDescType';
+import { DATETIME_RANGE_URI, DOUBLE_RANGE_URI, INT_RANGE_URI, STRING_RANGE_URI } from '../domainproperties/constants';
 import { FindField, SampleStateType } from './models';
 
 export enum ALIQUOT_FILTER_MODE {
@@ -237,6 +238,7 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         Name: 'Name',
         Label: 'Sample ID',
         DataType: 'Text',
+        rangeURI: STRING_RANGE_URI,
         Required: true,
         // For user clarity, below text differs intentionally from schema browser
         Description: 'Unique ID generated from the Naming Pattern or Aliquot Naming Pattern',
@@ -246,6 +248,7 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         Name: 'SampleState',
         Label: 'Status',
         DataType: 'Integer',
+        rangeURI: INT_RANGE_URI,
         Required: false,
         Description: 'Represents the status of the sample',
         Disableable: false,
@@ -254,6 +257,7 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         Name: 'Description',
         Label: 'Description',
         DataType: 'Text',
+        rangeURI: STRING_RANGE_URI,
         Required: false,
         Description: 'Contains a Description for this sample',
         Disableable: true,
@@ -262,6 +266,7 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         Name: 'ExpMaterialColor',
         Label: 'Sample Color',
         DataType: 'Integer',
+        rangeURI: INT_RANGE_URI,
         Required: false,
         Description: 'Colors that can be applied to individual samples, overriding the sample type color',
         Disableable: false,
@@ -270,6 +275,7 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         Name: 'MaterialExpDate',
         Label: 'Expiration Date',
         DataType: 'DateTime',
+        rangeURI: DATETIME_RANGE_URI,
         Required: false,
         Description: 'The date that this sample expires on',
         Disableable: true,
@@ -278,6 +284,7 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         Name: 'StoredAmount',
         Label: 'Amount',
         DataType: 'Decimal (floating point)',
+        rangeURI: DOUBLE_RANGE_URI,
         Required: false,
         Description: 'The amount of this sample',
         Disableable: true,
@@ -286,6 +293,7 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         Name: 'Units',
         Label: 'Units',
         DataType: 'Text',
+        rangeURI: STRING_RANGE_URI,
         Required: false,
         Description: 'The units associated with the Amount value for this sample',
         Disableable: true,
@@ -294,6 +302,7 @@ export const SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS = [
         Name: 'AliquotCount',
         Label: 'Aliquots Created Count',
         DataType: 'Integer',
+        rangeURI: INT_RANGE_URI,
         Required: false,
         Description: '',
         Disableable: true,
@@ -306,6 +315,7 @@ export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
         Name: 'FreezeThawCount',
         Label: 'Freeze/Thaw Count',
         DataType: 'Integer',
+        rangeURI: INT_RANGE_URI,
         Required: false,
         Description: '',
         Disableable: true,
@@ -314,12 +324,29 @@ export const SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS = [
         Name: 'StorageLocation',
         Label: 'Storage Location',
         DataType: 'Text',
+        rangeURI: STRING_RANGE_URI,
         Required: false,
         Description: '',
         Disableable: true,
     },
-    { Name: 'StorageRow', Label: 'Storage Row', DataType: 'Text', Required: false, Description: '', Disableable: true },
-    { Name: 'StorageCol', Label: 'Storage Col', DataType: 'Text', Required: false, Description: '', Disableable: true },
+    {
+        Name: 'StorageRow',
+        Label: 'Storage Row',
+        DataType: 'Text',
+        rangeURI: STRING_RANGE_URI,
+        Required: false,
+        Description: '',
+        Disableable: true,
+    },
+    {
+        Name: 'StorageCol',
+        Label: 'Storage Col',
+        DataType: 'Text',
+        rangeURI: STRING_RANGE_URI,
+        Required: false,
+        Description: '',
+        Disableable: true,
+    },
 ];
 
 export const STORED_AMOUNT_FIELDS = {

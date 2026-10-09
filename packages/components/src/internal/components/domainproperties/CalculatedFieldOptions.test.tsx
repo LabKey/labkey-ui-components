@@ -19,8 +19,12 @@ import {
 } from './CalculatedFieldOptions';
 import { DomainField, SystemField } from './models';
 import {
+    DATETIME_RANGE_URI,
     DOMAIN_FIELD_PARTIALLY_LOCKED,
+    DOUBLE_RANGE_URI,
+    FLOAT_RANGE_URI,
     INT_RANGE_URI,
+    LONG_RANGE_URI,
     PHILEVEL_LIMITED_PHI,
     PHILEVEL_NOT_PHI,
     STRING_RANGE_URI,
@@ -105,38 +109,46 @@ describe('CalculatedFieldOptions', () => {
 
     test('getColumnTypeMap', () => {
         const defaultTypeMap = {
-            Created: 'DATETIME',
+            Created: 'TIMESTAMP',
             CreatedBy: 'INTEGER',
-            Modified: 'DATETIME',
+            Modified: 'TIMESTAMP',
             ModifiedBy: 'INTEGER',
         };
         expect(getColumnTypeMap()).toEqual({ ...defaultTypeMap });
         expect(getColumnTypeMap([], [])).toEqual({ ...defaultTypeMap });
         expect(
             getColumnTypeMap(
-                [{ name: 'b', dataType: { name: 'text' } } as DomainField],
-                [{ Name: 'a', DataType: 'integer' } as SystemField]
+                [{ name: 'b', dataType: { name: 'string' }, rangeURI: STRING_RANGE_URI } as DomainField],
+                [{ Name: 'a', DataType: 'Integer', rangeURI: INT_RANGE_URI } as SystemField]
             )
         ).toEqual({
             ...defaultTypeMap,
             a: 'INTEGER',
-            b: 'TEXT',
+            b: 'VARCHAR',
         });
         expect(
             getColumnTypeMap(
                 [
-                    { name: 'b', dataType: { name: 'text' } } as DomainField,
+                    { name: 'b', dataType: { name: 'textChoice' }, rangeURI: STRING_RANGE_URI } as DomainField,
                     { name: 'c', dataType: { name: 'calculation' } } as DomainField,
                     { name: 'c', dataType: { name: 'multiChoice' } } as DomainField,
-                    { name: 'd', dataType: { name: 'INT' } } as DomainField,
+                    { name: 'd', dataType: { name: 'lookup' }, rangeURI: INT_RANGE_URI } as DomainField,
+                    { name: 'e', dataType: { name: 'visitDate' }, rangeURI: DATETIME_RANGE_URI } as DomainField,
+                    { name: 'f', dataType: { name: 'long' }, rangeURI: LONG_RANGE_URI } as DomainField,
+                    { name: 'g', dataType: { name: 'float' }, rangeURI: FLOAT_RANGE_URI } as DomainField,
+                    { name: 'h', dataType: { name: 'unknown' }, rangeURI: 'urn:unknown' } as DomainField,
                 ],
-                [{ Name: 'a', DataType: 'integer' } as SystemField]
+                [{ Name: 'a', DataType: 'Decimal (floating point)', rangeURI: DOUBLE_RANGE_URI } as SystemField]
             )
         ).toEqual({
             ...defaultTypeMap,
-            a: 'INTEGER',
-            b: 'TEXT',
+            a: 'DOUBLE',
+            b: 'VARCHAR',
             d: 'INTEGER',
+            e: 'TIMESTAMP',
+            f: 'BIGINT',
+            g: 'REAL',
+            h: 'OTHER',
         });
     });
 

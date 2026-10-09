@@ -12,7 +12,25 @@ import { FIELD_EDITOR_CALC_COLS_TOPIC, HelpLink, LABKEY_SQL_TOPIC } from '../../
 import { resolveErrorMessage } from '../../util/messaging';
 
 import { createFormInputId, createFormInputName } from './utils';
-import { DOMAIN_FIELD_CLIENT_SIDE_ERROR, DOMAIN_FIELD_VALUE_EXPRESSION, SEVERITY_LEVEL_WARN } from './constants';
+import {
+    ATTACHMENT_RANGE_URI,
+    BINARY_RANGE_URI,
+    BOOLEAN_RANGE_URI,
+    DATE_RANGE_URI,
+    DATETIME_RANGE_URI,
+    DECIMAL_RANGE_URI,
+    DOMAIN_FIELD_CLIENT_SIDE_ERROR,
+    DOMAIN_FIELD_VALUE_EXPRESSION,
+    DOUBLE_RANGE_URI,
+    FILELINK_RANGE_URI,
+    FLOAT_RANGE_URI,
+    INT_RANGE_URI,
+    LONG_RANGE_URI,
+    MULTILINE_RANGE_URI,
+    SEVERITY_LEVEL_WARN,
+    STRING_RANGE_URI,
+    TIME_RANGE_URI,
+} from './constants';
 import { DomainField, DomainFieldError, GetDomainFields, SystemField } from './models';
 import { SectionHeading } from './SectionHeading';
 import { isFieldFullyLocked, isFieldPartiallyLocked } from './propertiesUtil';
@@ -40,6 +58,26 @@ export const typeToDisplay = (type: string): string => {
     return type;
 };
 
+// JdbcType of each storage type, matching the server's PropertyType
+const RANGE_URI_JDBC_TYPES: Record<string, string> = {
+    [ATTACHMENT_RANGE_URI]: 'VARCHAR',
+    [BINARY_RANGE_URI]: 'BINARY',
+    [BOOLEAN_RANGE_URI]: 'BOOLEAN',
+    [DATE_RANGE_URI]: 'DATE',
+    [DATETIME_RANGE_URI]: 'TIMESTAMP',
+    [DECIMAL_RANGE_URI]: 'DECIMAL',
+    [DOUBLE_RANGE_URI]: 'DOUBLE',
+    [FILELINK_RANGE_URI]: 'VARCHAR',
+    [FLOAT_RANGE_URI]: 'REAL',
+    [INT_RANGE_URI]: 'INTEGER',
+    [LONG_RANGE_URI]: 'BIGINT',
+    [MULTILINE_RANGE_URI]: 'VARCHAR',
+    [STRING_RANGE_URI]: 'VARCHAR',
+    [TIME_RANGE_URI]: 'TIME',
+};
+
+const toJdbcType = (rangeURI: string): string => RANGE_URI_JDBC_TYPES[rangeURI] ?? 'OTHER';
+
 // export for jest testing
 export const getColumnTypeMap = (
     domainFields?: DomainField[],
@@ -47,18 +85,18 @@ export const getColumnTypeMap = (
 ): Record<string, string> => {
     // Issue 51169: add some default system fields
     const colTypeMap = {
-        Created: 'DATETIME',
+        Created: 'TIMESTAMP',
         CreatedBy: 'INTEGER',
-        Modified: 'DATETIME',
+        Modified: 'TIMESTAMP',
         ModifiedBy: 'INTEGER',
     };
 
     systemFields?.forEach(df => {
-        colTypeMap[df.Name] = df.DataType.toUpperCase();
+        colTypeMap[df.Name] = toJdbcType(df.rangeURI);
     });
     domainFields?.forEach(df => {
         if (df.dataType.name !== CALCULATED_TYPE.name && df.dataType.name !== MULTI_CHOICE_TYPE.name) {
-            colTypeMap[df.name] = df.dataType.name.toLowerCase() === 'int' ? 'INTEGER' : df.dataType.name.toUpperCase();
+            colTypeMap[df.name] = toJdbcType(df.rangeURI);
         }
     });
     return colTypeMap;

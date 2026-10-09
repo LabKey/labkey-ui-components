@@ -928,24 +928,24 @@ describe('domain properties actions', () => {
 
     test('getCastStatement', () => {
         expect(getCastStatement('key', 'INTEGER')).toBe('CAST(1 AS INTEGER) AS "key"');
-        expect(getCastStatement('key', 'SAMPLE')).toBe('CAST(1 AS INTEGER) AS "key"');
-        expect(getCastStatement('key', 'USERS')).toBe('CAST(1 AS INTEGER) AS "key"');
+        expect(getCastStatement('key', 'BIGINT')).toBe('CAST(1 AS BIGINT) AS "key"');
         expect(getCastStatement('key', 'DOUBLE')).toBe('CAST(1.1 AS DOUBLE) AS "key"');
-        expect(getCastStatement('key', 'DECIMAL (FLOATING POINT)')).toBe('CAST(1.1 AS DOUBLE) AS "key"');
-        expect(getCastStatement('key', 'VISITID')).toBe('CAST(1.1 AS DOUBLE) AS "key"');
+        expect(getCastStatement('key', 'REAL')).toBe('CAST(1.1 AS REAL) AS "key"');
+        expect(getCastStatement('key', 'DECIMAL')).toBe('CAST(1.1 AS DECIMAL) AS "key"');
         expect(getCastStatement('key', 'BOOLEAN')).toBe('CAST(TRUE AS BOOLEAN) AS "key"');
-        expect(getCastStatement('key', 'DATETIME')).toBe('CAST(CURDATE() AS TIMESTAMP) AS "key"');
-        expect(getCastStatement('key', 'VISITDATE')).toBe('CAST(CURDATE() AS TIMESTAMP) AS "key"');
+        expect(getCastStatement('key', 'TIMESTAMP')).toBe('CAST(CURDATE() AS TIMESTAMP) AS "key"');
         expect(getCastStatement('key', 'DATE')).toBe('CAST(CURDATE() AS DATE) AS "key"');
         expect(getCastStatement('key', 'TIME')).toBe('CAST(\'13:00\' AS TIME) AS "key"');
-        expect(getCastStatement('key', 'TEXT')).toBe('CAST(\'1\' AS VARCHAR) AS "key"');
+        expect(getCastStatement('key', 'VARCHAR')).toBe('CAST(\'1\' AS VARCHAR) AS "key"');
         expect(getCastStatement('key', 'OTHER')).toBe('CAST(\'1\' AS VARCHAR) AS "key"');
     });
 
     // Issue 52608
     test('getCastStatement for special char field', () => {
-        expect(getCastStatement('a"key" with quotes', 'TEXT')).toBe('CAST(\'1\' AS VARCHAR) AS "a""key"" with quotes"');
-        expect(getCastStatement('a,./key with!@#$specCHARS', 'TEXT')).toBe(
+        expect(getCastStatement('a"key" with quotes', 'VARCHAR')).toBe(
+            'CAST(\'1\' AS VARCHAR) AS "a""key"" with quotes"'
+        );
+        expect(getCastStatement('a,./key with!@#$specCHARS', 'VARCHAR')).toBe(
             'CAST(\'1\' AS VARCHAR) AS "a,./key with!@#$specCHARS"'
         );
     });

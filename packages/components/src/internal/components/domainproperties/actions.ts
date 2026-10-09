@@ -411,21 +411,18 @@ export function getMaxPhiLevel(containerPath?: string): Promise<string> {
 export function getCastStatement(key: string, type: string): string {
     const quotedKey = key.replace(/"/g, '""'); // Issue 52608: escape double quotes in key
     switch (type) {
+        case 'BIGINT':
+        case 'INTEGER':
+            return `CAST(1 AS ${type}) AS "${quotedKey}"`;
         case 'BOOLEAN':
             return `CAST(TRUE AS BOOLEAN) AS "${quotedKey}"`;
         case 'DATE':
-            return `CAST(CURDATE() AS DATE) AS "${quotedKey}"`;
-        case 'DATETIME':
-        case 'VISITDATE':
-            return `CAST(CURDATE() AS TIMESTAMP) AS "${quotedKey}"`;
-        case 'DECIMAL (FLOATING POINT)':
+        case 'TIMESTAMP':
+            return `CAST(CURDATE() AS ${type}) AS "${quotedKey}"`;
+        case 'DECIMAL':
         case 'DOUBLE':
-        case 'VISITID':
-            return `CAST(1.1 AS DOUBLE) AS "${quotedKey}"`;
-        case 'INTEGER':
-        case 'SAMPLE':
-        case 'USERS':
-            return `CAST(1 AS INTEGER) AS "${quotedKey}"`;
+        case 'REAL':
+            return `CAST(1.1 AS ${type}) AS "${quotedKey}"`;
         case 'TIME':
             return `CAST('13:00' AS TIME) AS "${quotedKey}"`;
         default:

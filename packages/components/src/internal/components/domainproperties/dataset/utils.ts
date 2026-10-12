@@ -5,6 +5,7 @@
 import { useEffect, useState } from 'react';
 
 import { DomainField, SystemField } from '../models';
+import { DATETIME_RANGE_URI, DOUBLE_RANGE_URI, INT_RANGE_URI, STRING_RANGE_URI } from '../constants';
 import { selectRows } from '../../../query/selectRows';
 import { SchemaQuery } from '../../../../public/SchemaQuery';
 import { caseInsensitive } from '../../../util/utils';
@@ -59,6 +60,7 @@ export const getDatasetSystemFields = (studyProperties: StudyProperties): System
             Name: studyProperties.SubjectColumnName,
             Label: studyProperties.SubjectColumnName,
             DataType: 'Text',
+            rangeURI: STRING_RANGE_URI,
             Required: true,
             Description: 'Subject identifier',
             Disableable: false,
@@ -67,6 +69,7 @@ export const getDatasetSystemFields = (studyProperties: StudyProperties): System
             Name: 'SequenceNum',
             Label: 'Sequence Num',
             DataType: 'Decimal (floating point)',
+            rangeURI: DOUBLE_RANGE_URI,
             Required: isVisitBased,
             Description: '',
             Disableable: false,
@@ -78,6 +81,7 @@ export const getDatasetSystemFields = (studyProperties: StudyProperties): System
             Name: 'date',
             Label: 'Date',
             DataType: 'DateTime',
+            rangeURI: DATETIME_RANGE_URI,
             Required: true,
             Description: 'The day of the visit. Primarily used in date-based studies.',
             Disableable: false,
@@ -86,6 +90,7 @@ export const getDatasetSystemFields = (studyProperties: StudyProperties): System
             Name: 'Day',
             Label: 'Day',
             DataType: 'Integer',
+            rangeURI: INT_RANGE_URI,
             Required: false,
             Description: 'The day of the visit. Primarily used in date-based studies.',
             Disableable: false,
@@ -96,6 +101,7 @@ export const getDatasetSystemFields = (studyProperties: StudyProperties): System
         Name: 'DatasetId',
         Label: 'Dataset Id',
         DataType: 'Integer',
+        rangeURI: INT_RANGE_URI,
         Required: true,
         Description: '',
         Disableable: false,

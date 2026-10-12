@@ -98,7 +98,7 @@ import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId }
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
 import { executeSql } from '../../query/executeSql';
 import { getLegalIdentifier } from '../../query/filter';
-import { getColumnTypeMap, getPHIColumnNames } from './CalculatedFieldOptions';
+import { getColumnTypeMap, getPHIColumnNames, JdbcType, JdbcTypeRecord } from './CalculatedFieldOptions';
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -408,24 +408,21 @@ export function getMaxPhiLevel(containerPath?: string): Promise<string> {
 }
 
 // exported for jest testing
-export function getCastStatement(key: string, type: string): string {
+export function getCastStatement(key: string, type: JdbcType): string {
     const quotedKey = key.replace(/"/g, '""'); // Issue 52608: escape double quotes in key
     switch (type) {
+        case 'BIGINT':
+        case 'INTEGER':
+            return `CAST(1 AS ${type}) AS "${quotedKey}"`;
         case 'BOOLEAN':
             return `CAST(TRUE AS BOOLEAN) AS "${quotedKey}"`;
         case 'DATE':
-            return `CAST(CURDATE() AS DATE) AS "${quotedKey}"`;
-        case 'DATETIME':
-        case 'VISITDATE':
-            return `CAST(CURDATE() AS TIMESTAMP) AS "${quotedKey}"`;
-        case 'DECIMAL (FLOATING POINT)':
+        case 'TIMESTAMP':
+            return `CAST(CURDATE() AS ${type}) AS "${quotedKey}"`;
+        case 'DECIMAL':
         case 'DOUBLE':
-        case 'VISITID':
-            return `CAST(1.1 AS DOUBLE) AS "${quotedKey}"`;
-        case 'INTEGER':
-        case 'SAMPLE':
-        case 'USERS':
-            return `CAST(1 AS INTEGER) AS "${quotedKey}"`;
+        case 'REAL':
+            return `CAST(1.1 AS ${type}) AS "${quotedKey}"`;
         case 'TIME':
             return `CAST('13:00' AS TIME) AS "${quotedKey}"`;
         default:
@@ -496,9 +493,9 @@ function _sanitizeParseCalculatedColumnError(e: Record<string, string>): string 
     return error;
 }
 
-export function _parseCalculatedColumn(
+function _parseCalculatedColumn(
     expression: string,
-    columnMap: Record<string, string>,
+    columnMap: JdbcTypeRecord,
     phiColumns: string[],
     containerPath?: string
 ): Promise<ParseCalculatedColumnResponse> {
@@ -1517,7 +1514,7 @@ export function scrollDomainErrorIntoView(): void {
 }
 
 export interface ExpressionAssistOptions {
-    columnMap: Record<string, string>;
+    columnMap: JdbcTypeRecord;
     containerPath?: string;
     conversationId?: string;
     domainFields?: (DomainField | SystemField)[];

@@ -12,14 +12,12 @@ import React, {
     useCallback,
     useEffect,
     useId,
-    useMemo,
     useRef,
     useState,
 } from 'react';
 import classNames from 'classnames';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../internal/APIWrapper';
-import { ActionValue } from '../grid/actions/Action';
 import { QueryModel } from '../QueryModel';
 
 import { FilterSuggestion } from './models';
@@ -78,11 +76,9 @@ export interface SearchRestoreRequest {
 }
 
 interface Props {
-    actionValues: ActionValue[];
     api?: ComponentsAPIWrapper;
     model: QueryModel;
     onApplySuggestion: (suggestion: FilterSuggestion) => void;
-    onSearch: (value: string) => void;
     restoreRequest?: SearchRestoreRequest;
 }
 
@@ -91,23 +87,18 @@ interface Props {
  * Implements the WAI-ARIA combobox pattern: focus stays in the input and aria-activedescendant tracks the option.
  */
 export const SearchSuggestInput: FC<Props> = memo(props => {
-    const { actionValues, api = getDefaultAPIWrapper(), model, onApplySuggestion, onSearch, restoreRequest } = props;
+    const { api = getDefaultAPIWrapper(), model, onApplySuggestion, restoreRequest } = props;
     const inputRef = useRef<HTMLInputElement>(null);
     const [text, setText] = useState('');
     const [open, setOpen] = useState(false);
     // -1 means nothing is explicitly highlighted, so Enter takes the top suggestion once it is known
     const [activeIndex, setActiveIndex] = useState(-1);
     const [pendingEnter, setPendingEnter] = useState(false);
-    const appliedSearch = useMemo(() => actionValues?.[0]?.value, [actionValues]);
     const { loading, suggestions } = useSearchSuggestions(api, model, text, open);
     const baseId = useId();
     const listId = `${baseId}-suggestions`;
     const trimmed = text.trim();
     const showMenu = open && trimmed.length > 0;
-
-    useEffect(() => {
-        setText(appliedSearch ?? '');
-    }, [appliedSearch]);
 
     useEffect(() => {
         // The button bar renders a second, hidden copy of the input for narrow layouts
@@ -138,10 +129,7 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
     const applyIndex = useCallback((index: number) => apply(suggestions[index]), [apply, suggestions]);
 
     const submit = useCallback(() => {
-        if (!trimmed) {
-            if (appliedSearch) onSearch('');
-            return;
-        }
+        if (!trimmed) return;
 
         if (activeIndex >= 0 && suggestions[activeIndex]) {
             apply(suggestions[activeIndex]);
@@ -151,7 +139,7 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
         } else {
             apply(suggestions[0]);
         }
-    }, [activeIndex, appliedSearch, apply, loading, onSearch, suggestions, trimmed]);
+    }, [activeIndex, apply, loading, suggestions, trimmed]);
 
     useEffect(() => {
         if (!pendingEnter) return undefined;
@@ -221,11 +209,6 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
         [submit]
     );
 
-    const removeSearch = useCallback(() => {
-        onSearch('');
-        setText('');
-    }, [onSearch]);
-
     const optionId = useCallback((index: number) => `${baseId}-option-${index}`, [baseId]);
 
     return (
@@ -254,13 +237,6 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
                         type="text"
                         value={text}
                     />
-                    {appliedSearch?.length > 0 && (
-                        <span className="input-group-btn">
-                            <button className="btn btn-default" onClick={removeSearch} type="button">
-                                <span className="fa fa-remove" />
-                            </button>
-                        </span>
-                    )}
                 </span>
                 {showMenu && (
                     <ul className="grid-panel__search-suggestions" id={listId} role="listbox">

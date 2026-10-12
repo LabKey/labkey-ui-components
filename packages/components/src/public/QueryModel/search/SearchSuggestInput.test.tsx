@@ -3,7 +3,6 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { Filter } from '@labkey/api';
 import { act, render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
@@ -11,7 +10,6 @@ import { getTestAPIWrapper } from '../../../internal/APIWrapper';
 import { getQueryTestAPIWrapper } from '../../../internal/query/APIWrapper';
 import { QueryInfo } from '../../QueryInfo';
 import { SchemaQuery } from '../../SchemaQuery';
-import { SearchAction } from '../grid/actions/Search';
 import { makeTestQueryModel } from '../testUtils';
 
 import { FilterSuggestion, FilterSuggestionsResponse } from './models';
@@ -50,14 +48,12 @@ const MODEL = makeTestQueryModel(
 describe('SearchSuggestInput', () => {
     let getFilterSuggestions: jest.Mock;
     let onApplySuggestion: jest.Mock;
-    let onSearch: jest.Mock;
     let user: ReturnType<typeof userEvent.setup>;
 
     beforeEach(() => {
         jest.useFakeTimers();
         getFilterSuggestions = jest.fn().mockResolvedValue(RESPONSE);
         onApplySuggestion = jest.fn();
-        onSearch = jest.fn();
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
     });
 
@@ -65,16 +61,10 @@ describe('SearchSuggestInput', () => {
         jest.useRealTimers();
     });
 
-    function renderInput(actionValues = []): HTMLInputElement {
+    function renderInput(): HTMLInputElement {
         const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { getFilterSuggestions }) });
         render(
-            <SearchSuggestInput
-                actionValues={actionValues}
-                api={api}
-                model={MODEL}
-                onApplySuggestion={onApplySuggestion}
-                onSearch={onSearch}
-            />
+            <SearchSuggestInput api={api} model={MODEL} onApplySuggestion={onApplySuggestion} />
         );
         return document.querySelector('.grid-panel__search-input');
     }
@@ -173,29 +163,17 @@ describe('SearchSuggestInput', () => {
     });
 
     test('no request is made until the input is used', async () => {
-        const appliedSearch = {
-            action: new SearchAction(),
-            value: 'foo',
-            valueObject: Filter.create('*', 'foo', Filter.Types.Q),
-        };
-        const input = renderInput([appliedSearch]);
+        renderInput();
         await settle();
 
-        expect(input.value).toBe('foo');
         expect(getFilterSuggestions).not.toHaveBeenCalled();
     });
 
-    test('Enter on an empty box removes an applied search', async () => {
-        const appliedSearch = {
-            action: new SearchAction(),
-            value: 'foo',
-            valueObject: Filter.create('*', 'foo', Filter.Types.Q),
-        };
-        const input = renderInput([appliedSearch]);
-        await user.clear(input);
+    test('Enter on an empty box does nothing', async () => {
+        const input = renderInput();
+        await user.click(input);
         await user.keyboard('{Enter}');
 
-        expect(onSearch).toHaveBeenCalledWith('');
         expect(onApplySuggestion).not.toHaveBeenCalled();
     });
 });

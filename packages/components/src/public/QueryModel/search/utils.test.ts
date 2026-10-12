@@ -6,51 +6,9 @@ import { Filter } from '@labkey/api';
 
 import {
     composeFieldToFilter,
-    getGridSearchSuggestionsBackend,
-    getValueShape,
-    isGridSearchSuggestionsEnabled,
-    nameExpressionToRegExp,
-    setGridSearchSuggestionsBackend,
-    setGridSearchSuggestionsEnabled,
+    createSearchSuggestion,
     suggestionToFilter,
 } from './utils';
-
-describe('getValueShape', () => {
-    test('letters and digits', () => {
-        expect(getValueShape('SUBJ-028504')).toBe('AAAA-999999');
-        expect(getValueShape('PL-5000000-1')).toBe('AA-9999999-9');
-        expect(getValueShape('Freezer100 / Rack10')).toBe('AAAAAAA999 / AAAA99');
-    });
-});
-
-describe('nameExpressionToRegExp', () => {
-    test('substitutions match anything, constants are literal', () => {
-        const regExp = nameExpressionToRegExp('PL-${genId}');
-        expect(regExp.test('PL-5000000')).toBe(true);
-        expect(regExp.test('PL-5000000-1')).toBe(true);
-        expect(regExp.test('pl-12')).toBe(true);
-        expect(regExp.test('PL-')).toBe(false);
-        expect(regExp.test('XPL-1')).toBe(false);
-    });
-
-    test('nested substitutions', () => {
-        const regExp = nameExpressionToRegExp('S-${${AliquotedFrom}-:withCounter}.${genId}');
-        expect(regExp.test('S-parent-1.22')).toBe(true);
-        expect(regExp.test('S-parent-1-22')).toBe(false);
-    });
-
-    test('regular expression characters in constants are escaped', () => {
-        const regExp = nameExpressionToRegExp('A+(${genId})');
-        expect(regExp.test('A+(12)')).toBe(true);
-        expect(regExp.test('AA(12)')).toBe(false);
-    });
-
-    test('expressions without a meaningful constant are not usable', () => {
-        expect(nameExpressionToRegExp(undefined)).toBeUndefined();
-        expect(nameExpressionToRegExp('${genId}')).toBeUndefined();
-        expect(nameExpressionToRegExp('${Parent}-${genId}')).toBeUndefined();
-    });
-});
 
 describe('suggestion filters', () => {
     test('search becomes a Q filter', () => {
@@ -86,22 +44,13 @@ describe('suggestion filters', () => {
     });
 });
 
-describe('setGridSearchSuggestionsEnabled', () => {
-    test('toggles the app-wide default', () => {
-        expect(isGridSearchSuggestionsEnabled()).toBe(false);
-        setGridSearchSuggestionsEnabled(true);
-        expect(isGridSearchSuggestionsEnabled()).toBe(true);
-        setGridSearchSuggestionsEnabled(false);
-        expect(isGridSearchSuggestionsEnabled()).toBe(false);
-    });
-});
-
-describe('setGridSearchSuggestionsBackend', () => {
-    test('defaults to the client engine', () => {
-        expect(getGridSearchSuggestionsBackend()).toBe('client');
-        setGridSearchSuggestionsBackend('server');
-        expect(getGridSearchSuggestionsBackend()).toBe('server');
-        setGridSearchSuggestionsBackend('client');
-        expect(getGridSearchSuggestionsBackend()).toBe('client');
+describe('createSearchSuggestion', () => {
+    test('searches all columns for the raw term', () => {
+        expect(createSearchSuggestion('Sodium')).toEqual({
+            kind: 'search',
+            label: 'Search all columns for "Sodium"',
+            source: 'fallback',
+            value: 'Sodium',
+        });
     });
 });

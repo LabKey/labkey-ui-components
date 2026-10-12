@@ -7,8 +7,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ComponentsAPIWrapper } from '../../../internal/APIWrapper';
 import { QueryModel } from '../QueryModel';
 
-import { createSearchSuggestion } from './buildSuggestions';
 import { FilterSuggestion, FilterSuggestionsRequest } from './models';
+import { createSearchSuggestion } from './utils';
 
 export const SUGGESTION_DEBOUNCE_MS = 200;
 

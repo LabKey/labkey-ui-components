@@ -7,7 +7,14 @@ import { Filter } from '@labkey/api';
 import { ComposeField, FilterKindSuggestion, SearchSuggestion } from './models';
 
 export function createSearchSuggestion(raw: string): SearchSuggestion {
-    return { kind: 'search', label: `Search all columns for "${raw}"`, source: 'fallback', value: raw };
+    const prefix = 'Search all columns for ';
+    return {
+        kind: 'search',
+        label: prefix + raw,
+        match: { end: prefix.length + raw.length, start: prefix.length },
+        source: 'fallback',
+        value: raw,
+    };
 }
 
 function toFilterValue(filterType: Filter.IFilterType, value: string): string | string[] {

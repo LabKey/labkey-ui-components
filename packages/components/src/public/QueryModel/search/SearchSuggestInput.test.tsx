@@ -20,6 +20,7 @@ const TUBE_TYPE: FilterSuggestion = {
     fieldKey: 'TubeType',
     kind: 'filter',
     label: 'Tube Type is Sodium Citrate',
+    match: { end: 19, start: 13 },
     op: 'eq',
     source: 'partialValue',
     value: 'Sodium Citrate',
@@ -27,14 +28,15 @@ const TUBE_TYPE: FilterSuggestion = {
 const COMPOSE: FilterSuggestion = {
     fields: [{ fieldKey: 'TubeType', op: 'contains' }],
     kind: 'compose',
-    label: 'Compose a filter on Tube Type…',
+    label: 'Filter Tube Type…',
     source: 'compose',
     value: 'Sodium',
     valueType: 'string',
 };
 const SEARCH: FilterSuggestion = {
     kind: 'search',
-    label: 'Search all columns for "Sodium"',
+    label: 'Search all columns for Sodium',
+    match: { end: 29, start: 23 },
     source: 'fallback',
     value: 'Sodium',
 };
@@ -85,7 +87,7 @@ describe('SearchSuggestInput', () => {
 
         await user.type(input, 'Sodium');
         expect(input.getAttribute('aria-expanded')).toBe('true');
-        expect(optionLabels()).toEqual(['Search all columns for "Sodium"']);
+        expect(optionLabels()).toEqual(['Search all columns for Sodium']);
         expect(document.querySelectorAll('.grid-panel__search-suggestion-loading')).toHaveLength(1);
         expect(document.querySelector('[role="option"].active')).toBeNull();
 
@@ -101,6 +103,17 @@ describe('SearchSuggestInput', () => {
         const active = document.querySelector('[role="option"].active');
         expect(active.textContent).toContain(TUBE_TYPE.label);
         expect(input.getAttribute('aria-activedescendant')).toBe(active.id);
+    });
+
+    test('bolds the search term within each label', async () => {
+        const input = renderInput();
+        await user.type(input, 'Sodium');
+        await settle();
+
+        const bolded = Array.from(document.querySelectorAll('[role="option"]')).map(
+            option => option.querySelector('strong')?.textContent ?? null
+        );
+        expect(bolded).toEqual(['Sodium', null, 'Sodium']);
     });
 
     test('Enter while loading waits and applies the top suggestion, not the full search', async () => {

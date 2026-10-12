@@ -9,6 +9,7 @@ import React, {
     KeyboardEvent,
     memo,
     MouseEvent,
+    ReactNode,
     useCallback,
     useEffect,
     useId,
@@ -31,6 +32,19 @@ const KIND_ICONS: Record<FilterSuggestion['kind'], string> = {
     filter: 'fa-filter',
     search: 'fa-search',
 };
+
+function renderLabel(suggestion: FilterSuggestion): ReactNode {
+    const { label, match } = suggestion;
+    if (!match) return label;
+
+    return (
+        <>
+            {label.slice(0, match.start)}
+            <strong>{label.slice(match.start, match.end)}</strong>
+            {label.slice(match.end)}
+        </>
+    );
+}
 
 interface SuggestionOptionProps {
     active: boolean;
@@ -60,7 +74,7 @@ const SuggestionOption: FC<SuggestionOptionProps> = memo(props => {
             role="option"
         >
             <i className={classNames('fa', KIND_ICONS[suggestion.kind], 'grid-panel__search-suggestion-icon')} />
-            <span className="grid-panel__search-suggestion-label">{suggestion.label}</span>
+            <span className="grid-panel__search-suggestion-label">{renderLabel(suggestion)}</span>
         </li>
     );
 });

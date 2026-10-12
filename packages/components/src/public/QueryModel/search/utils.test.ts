@@ -4,11 +4,7 @@
  */
 import { Filter } from '@labkey/api';
 
-import {
-    composeFieldToFilter,
-    createSearchSuggestion,
-    suggestionToFilter,
-} from './utils';
+import { composeFieldToFilter, createSearchSuggestion, suggestionToFilter } from './utils';
 
 describe('suggestion filters', () => {
     test('search becomes a Q filter', () => {
@@ -48,7 +44,8 @@ describe('createSearchSuggestion', () => {
     test('searches all columns for the raw term', () => {
         expect(createSearchSuggestion('Sodium')).toEqual({
             kind: 'search',
-            label: 'Search all columns for "Sodium"',
+            label: 'Search all columns for Sodium',
+            match: { end: 29, start: 23 },
             source: 'fallback',
             value: 'Sodium',
         });

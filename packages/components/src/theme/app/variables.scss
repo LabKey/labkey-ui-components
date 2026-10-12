@@ -11,7 +11,7 @@ $brand-warning:   #f0ad4e;
 $brand-success: #238722;
 $link-color: #0F72C2;
 $cyan: #33e0ff;
-$text-muted: #767676;
+$text-muted: #6B6B6B; // GH Issue 1557: #767676 clears AA on white but not on $body-bg
 
 //== Scaffolding
 $body-bg:               #f3f3f4 !default;

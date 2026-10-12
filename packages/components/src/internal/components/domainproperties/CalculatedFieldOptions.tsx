@@ -58,8 +58,24 @@ export const typeToDisplay = (type: string): string => {
     return type;
 };
 
+// Subset of the server's org.labkey.api.data.JdbcType enum constant names
+export type JdbcType =
+    | 'BIGINT'
+    | 'BINARY'
+    | 'BOOLEAN'
+    | 'DATE'
+    | 'DECIMAL'
+    | 'DOUBLE'
+    | 'INTEGER'
+    | 'OTHER'
+    | 'REAL'
+    | 'TIME'
+    | 'TIMESTAMP'
+    | 'VARCHAR';
+export type JdbcTypeRecord = Record<string, JdbcType>;
+
 // JdbcType of each storage type, matching the server's PropertyType
-const RANGE_URI_JDBC_TYPES: Record<string, string> = {
+const RANGE_URI_JDBC_TYPES: JdbcTypeRecord = {
     [ATTACHMENT_RANGE_URI]: 'VARCHAR',
     [BINARY_RANGE_URI]: 'BINARY',
     [BOOLEAN_RANGE_URI]: 'BOOLEAN',
@@ -76,15 +92,11 @@ const RANGE_URI_JDBC_TYPES: Record<string, string> = {
     [TIME_RANGE_URI]: 'TIME',
 };
 
-const toJdbcType = (rangeURI: string): string => RANGE_URI_JDBC_TYPES[rangeURI] ?? 'OTHER';
+const toJdbcType = (rangeURI: string): JdbcType => RANGE_URI_JDBC_TYPES[rangeURI] ?? 'OTHER';
 
-// export for jest testing
-export const getColumnTypeMap = (
-    domainFields?: DomainField[],
-    systemFields?: SystemField[]
-): Record<string, string> => {
+export const getColumnTypeMap = (domainFields?: DomainField[], systemFields?: SystemField[]): JdbcTypeRecord => {
     // Issue 51169: add some default system fields
-    const colTypeMap = {
+    const colTypeMap: JdbcTypeRecord = {
         Created: 'TIMESTAMP',
         CreatedBy: 'INTEGER',
         Modified: 'TIMESTAMP',

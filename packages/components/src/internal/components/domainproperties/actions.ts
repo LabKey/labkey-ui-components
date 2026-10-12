@@ -98,7 +98,7 @@ import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId }
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
 import { executeSql } from '../../query/executeSql';
 import { getLegalIdentifier } from '../../query/filter';
-import { getColumnTypeMap, getPHIColumnNames } from './CalculatedFieldOptions';
+import { getColumnTypeMap, getPHIColumnNames, JdbcType, JdbcTypeRecord } from './CalculatedFieldOptions';
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -408,7 +408,7 @@ export function getMaxPhiLevel(containerPath?: string): Promise<string> {
 }
 
 // exported for jest testing
-export function getCastStatement(key: string, type: string): string {
+export function getCastStatement(key: string, type: JdbcType): string {
     const quotedKey = key.replace(/"/g, '""'); // Issue 52608: escape double quotes in key
     switch (type) {
         case 'BIGINT':
@@ -493,9 +493,9 @@ function _sanitizeParseCalculatedColumnError(e: Record<string, string>): string 
     return error;
 }
 
-export function _parseCalculatedColumn(
+function _parseCalculatedColumn(
     expression: string,
-    columnMap: Record<string, string>,
+    columnMap: JdbcTypeRecord,
     phiColumns: string[],
     containerPath?: string
 ): Promise<ParseCalculatedColumnResponse> {
@@ -1514,7 +1514,7 @@ export function scrollDomainErrorIntoView(): void {
 }
 
 export interface ExpressionAssistOptions {
-    columnMap: Record<string, string>;
+    columnMap: JdbcTypeRecord;
     containerPath?: string;
     conversationId?: string;
     domainFields?: (DomainField | SystemField)[];

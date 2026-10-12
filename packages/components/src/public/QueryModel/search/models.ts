@@ -20,7 +20,15 @@ export interface FilterSuggestionsRequest {
 }
 
 export type SuggestionSource =
-    'compose' | 'exactValue' | 'fallback' | 'identity' | 'integerValue' | 'key' | 'partialValue' | 'shape';
+    | 'compose'
+    | 'exactValue'
+    | 'fallback'
+    | 'identity'
+    | 'identityContains'
+    | 'integerValue'
+    | 'key'
+    | 'partialValue'
+    | 'shape';
 
 export type SuggestionValueType = 'date' | 'number' | 'string';
 

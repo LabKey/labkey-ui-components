@@ -36,14 +36,13 @@ interface SuggestionOptionProps {
     active: boolean;
     id: string;
     index: number;
-    isDefault: boolean;
     onApply: (index: number) => void;
     onHover: (index: number) => void;
     suggestion: FilterSuggestion;
 }
 
 const SuggestionOption: FC<SuggestionOptionProps> = memo(props => {
-    const { active, id, index, isDefault, onApply, onHover, suggestion } = props;
+    const { active, id, index, onApply, onHover, suggestion } = props;
 
     // Keep focus in the input so the click isn't lost to a blur that closes the menu
     const onMouseDown = useCallback((event: MouseEvent<HTMLLIElement>) => event.preventDefault(), []);
@@ -62,7 +61,6 @@ const SuggestionOption: FC<SuggestionOptionProps> = memo(props => {
         >
             <i className={classNames('fa', KIND_ICONS[suggestion.kind], 'grid-panel__search-suggestion-icon')} />
             <span className="grid-panel__search-suggestion-label">{suggestion.label}</span>
-            {isDefault && <span className="grid-panel__search-suggestion-hint">Enter</span>}
         </li>
     );
 });
@@ -99,6 +97,8 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
     const listId = `${baseId}-suggestions`;
     const trimmed = text.trim();
     const showMenu = open && trimmed.length > 0;
+    // The top suggestion is highlighted by default, but not while loading since Enter then waits for the final list
+    const highlightIndex = activeIndex >= 0 ? activeIndex : loading ? -1 : 0;
 
     useEffect(() => {
         // The button bar renders a second, hidden copy of the input for narrow layouts
@@ -165,11 +165,11 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
                 case 'ArrowDown':
                     event.preventDefault();
                     setOpen(true);
-                    setActiveIndex(index => Math.min(index + 1, suggestions.length - 1));
+                    setActiveIndex(Math.min(highlightIndex + 1, suggestions.length - 1));
                     break;
                 case 'ArrowUp':
                     event.preventDefault();
-                    setActiveIndex(index => Math.max(index - 1, 0));
+                    setActiveIndex(Math.max(highlightIndex - 1, 0));
                     break;
                 case 'Enter':
                     event.preventDefault();
@@ -188,7 +188,7 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
                     break;
             }
         },
-        [showMenu, submit, suggestions.length]
+        [highlightIndex, showMenu, submit, suggestions.length]
     );
 
     const onFocus = useCallback(() => {
@@ -219,7 +219,7 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
                         <i className="fa fa-search" />
                     </span>
                     <input
-                        aria-activedescendant={showMenu && activeIndex >= 0 ? optionId(activeIndex) : undefined}
+                        aria-activedescendant={showMenu && highlightIndex >= 0 ? optionId(highlightIndex) : undefined}
                         aria-autocomplete="list"
                         aria-controls={listId}
                         aria-expanded={showMenu}
@@ -242,10 +242,9 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
                     <ul className="grid-panel__search-suggestions" id={listId} role="listbox">
                         {suggestions.map((suggestion, index) => (
                             <SuggestionOption
-                                active={index === activeIndex}
+                                active={index === highlightIndex}
                                 id={optionId(index)}
                                 index={index}
-                                isDefault={index === 0 && activeIndex === -1 && !loading}
                                 key={optionId(index)}
                                 onApply={applyIndex}
                                 onHover={setActiveIndex}

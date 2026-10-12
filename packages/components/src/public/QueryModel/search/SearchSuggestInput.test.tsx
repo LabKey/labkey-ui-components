@@ -63,9 +63,7 @@ describe('SearchSuggestInput', () => {
 
     function renderInput(): HTMLInputElement {
         const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { getFilterSuggestions }) });
-        render(
-            <SearchSuggestInput api={api} model={MODEL} onApplySuggestion={onApplySuggestion} />
-        );
+        render(<SearchSuggestInput api={api} model={MODEL} onApplySuggestion={onApplySuggestion} />);
         return document.querySelector('.grid-panel__search-input');
     }
 
@@ -89,6 +87,7 @@ describe('SearchSuggestInput', () => {
         expect(input.getAttribute('aria-expanded')).toBe('true');
         expect(optionLabels()).toEqual(['Search all columns for "Sodium"']);
         expect(document.querySelectorAll('.grid-panel__search-suggestion-loading')).toHaveLength(1);
+        expect(document.querySelector('[role="option"].active')).toBeNull();
 
         await settle();
         expect(getFilterSuggestions).toHaveBeenCalledTimes(1);
@@ -99,7 +98,9 @@ describe('SearchSuggestInput', () => {
         });
         expect(optionLabels()).toEqual([TUBE_TYPE.label, COMPOSE.label, SEARCH.label]);
         expect(document.querySelectorAll('.grid-panel__search-suggestion-loading')).toHaveLength(0);
-        expect(document.querySelector('.grid-panel__search-suggestion-hint')).not.toBeNull();
+        const active = document.querySelector('[role="option"].active');
+        expect(active.textContent).toContain(TUBE_TYPE.label);
+        expect(input.getAttribute('aria-activedescendant')).toBe(active.id);
     });
 
     test('Enter while loading waits and applies the top suggestion, not the full search', async () => {
@@ -131,7 +132,7 @@ describe('SearchSuggestInput', () => {
         await user.type(input, 'Sodium');
         await settle();
 
-        await user.keyboard('{ArrowDown}{ArrowDown}');
+        await user.keyboard('{ArrowDown}');
         const active = document.querySelector('[role="option"].active');
         expect(active.textContent).toContain(COMPOSE.label);
         expect(input.getAttribute('aria-activedescendant')).toBe(active.id);

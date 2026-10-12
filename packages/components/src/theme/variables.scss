@@ -31,7 +31,7 @@ $gray-icon-background: #767676;
 $blue-dark:        #1e4f6f;
 $text-color-gray:  #9d9d9d;
 $text-color-light: #6B6B6B;
-$text-muted:       #6B6B6B; // GH Issue 1557: #767676 clears AA on white but not on $body-bg
+$text-muted:       $text-color-light; // GH Issue 1557: #767676 clears AA on white but not on the #f3f3f4 app background
 
 $text-color:       $gray-dark !default;
 $link-color:       #0F72C2;

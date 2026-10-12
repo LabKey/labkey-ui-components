@@ -32,10 +32,17 @@ export type SuggestionSource =
 
 export type SuggestionValueType = 'date' | 'number' | 'string';
 
+// Where the label shows the search term; end is exclusive
+export interface SuggestionMatch {
+    end: number;
+    start: number;
+}
+
 export interface FilterKindSuggestion {
     fieldKey: string;
     kind: 'filter';
     label: string;
+    match?: SuggestionMatch;
     op: string; // Filter type URL suffix
     source: SuggestionSource;
     value: string;
@@ -51,6 +58,7 @@ export interface ComposeSuggestion {
     fields: ComposeField[];
     kind: 'compose';
     label: string;
+    match?: SuggestionMatch;
     source: 'compose';
     value: string;
     valueType: SuggestionValueType;
@@ -59,6 +67,7 @@ export interface ComposeSuggestion {
 export interface SearchSuggestion {
     kind: 'search';
     label: string;
+    match?: SuggestionMatch;
     source: 'fallback';
     value: string;
 }

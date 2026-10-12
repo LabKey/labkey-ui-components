@@ -966,7 +966,7 @@ describe('GridPanel search suggestions', () => {
     const COMPOSE_SUGGESTION: FilterSuggestion = {
         fields: [{ fieldKey: 'Name', op: 'contains' }],
         kind: 'compose',
-        label: 'Compose a filter on Name…',
+        label: 'Filter Name…',
         source: 'compose',
         value: 'DMX',
         valueType: 'string',
@@ -983,9 +983,7 @@ describe('GridPanel search suggestions', () => {
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount).mutate({
             filterArray: [EXPIRATION_FILTER, Q_FILTER],
         });
-        renderWithAppContext(
-            <GridPanel actions={actions} model={model} />
-        );
+        renderWithAppContext(<GridPanel actions={actions} model={model} />);
     }
 
     const searchInput = (): HTMLInputElement => document.querySelector('.grid-panel__search-input');
@@ -1023,7 +1021,7 @@ describe('GridPanel search suggestions', () => {
         jest.mocked(fetchFilterSuggestions).mockResolvedValue({ complete: true, suggestions: [COMPOSE_SUGGESTION] });
         renderGrid();
 
-        await typeAndWaitFor('DMX', 'Compose a filter on Name…');
+        await typeAndWaitFor('DMX', 'Filter Name…');
         await userEvent.keyboard('{Enter}');
 
         expect(document.querySelectorAll('.modal button.list-group-item')).toHaveLength(1);

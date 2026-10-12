@@ -61,7 +61,6 @@ import { SearchAction } from './grid/actions/Search';
 import { SortAction } from './grid/actions/Sort';
 import { ViewAction } from './grid/actions/View';
 
-import { getSearchValueAction } from './grid/utils';
 import { Change, ChangeType } from './grid/model';
 
 import { createQueryModelId, QueryConfig, QueryModel } from './QueryModel';
@@ -69,12 +68,11 @@ import { ViewMenu } from './ViewMenu';
 import { ExportMenu } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
-import { SearchBox } from './SearchBox';
 import { actionValuesToString, addSystemViewColumns, filterArraysEqual, filtersEqual } from './utils';
 import { FilterDraft, GridFilterModal } from './GridFilterModal';
 import { SearchRestoreRequest, SearchSuggestInput } from './search/SearchSuggestInput';
 import { FilterSuggestion } from './search/models';
-import { isGridSearchSuggestionsEnabled, suggestionToFilter } from './search/utils';
+import { suggestionToFilter } from './search/utils';
 import { FiltersButton } from './FiltersButton';
 import { FilterStatus } from './FilterStatus';
 import { SaveViewModal } from './SaveViewModal';
@@ -113,8 +111,6 @@ export interface GridPanelProps<ButtonsComponentProps> {
     showHeader?: boolean;
     showPagination?: boolean;
     showSearchInput?: boolean;
-    // Offer targeted filters as the user types instead of applying a Q filter; defaults to the app-wide setting
-    showSearchSuggestions?: boolean;
     showViewMenu?: boolean;
     supportedExportTypes?: Set<EXPORT_TYPES>;
     title?: string;
@@ -129,9 +125,7 @@ interface GridBarProps<T> extends Props<T> {
     onFilter: () => void;
     onManageViews: () => void;
     onSaveView: () => void;
-    onSearch: (token: string) => void;
     onViewSelect: (viewName: string) => void;
-    searchActionValues: ActionValue[];
     searchRestore?: SearchRestoreRequest;
 }
 
@@ -168,7 +162,6 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 
     render(): ReactNode {
         const {
-            searchActionValues,
             allowViewCustomization,
             model,
             actions,
@@ -181,7 +174,6 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             onExport,
             onFilter,
             onManageViews,
-            onSearch,
             onSaveView,
             onViewSelect,
             pageSizes,
@@ -191,7 +183,6 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             showFiltersButton,
             showPagination,
             showSearchInput,
-            showSearchSuggestions = isGridSearchSuggestionsEnabled(),
             showViewMenu,
             supportedExportTypes,
         } = this.props;
@@ -210,16 +201,8 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
         const showButtonsComponent = hasLeftButtonsComp && (hasData || rowsError);
         const hiddenWithLeftButtonsCls = classNames({ 'hidden-md hidden-sm hidden-xs': hasLeftButtonsComp });
 
-        const searchInput = showSearchSuggestions ? (
-            <SearchSuggestInput
-                actionValues={searchActionValues}
-                model={model}
-                onApplySuggestion={onApplySuggestion}
-                onSearch={onSearch}
-                restoreRequest={searchRestore}
-            />
-        ) : (
-            <SearchBox actionValues={searchActionValues} onSearch={onSearch} />
+        const searchInput = (
+            <SearchSuggestInput model={model} onApplySuggestion={onApplySuggestion} restoreRequest={searchRestore} />
         );
 
         const paginationComp = (
@@ -419,7 +402,6 @@ interface State {
     disableColumnDrag: boolean;
     errorMsg: React.ReactNode;
     isViewSaved: boolean;
-    searchActionValues: ActionValue[];
     // Set when a search pill is clicked, to move its value back into the search input
     searchRestore: SearchRestoreRequest;
     selectedColumn: QueryColumn;
@@ -468,7 +450,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         this.state = {
             actionValues: [],
             composeFilter: undefined,
-            searchActionValues: [],
             searchRestore: undefined,
             disableColumnDrag: false,
             showFilterModalFieldKey: undefined,
@@ -501,19 +482,14 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         view: ViewAction;
     };
 
-    get showSearchSuggestions(): boolean {
-        return this.props.showSearchSuggestions ?? isGridSearchSuggestionsEnabled();
-    }
-
     createGridActionValues = (
         includeReadOnlyMessage = true,
         includeUnresolvedColumns = false
-    ): { actionValues: ActionValue[]; searchActionValues: ActionValue[] } => {
+    ): ActionValue[] => {
         const { model } = this.props;
         const { filterArray, sorts } = model;
         const view = model.currentView;
         const actionValues = [];
-        const searchActionValues = [];
 
         const _sorts = view ? sorts.concat(view.sorts) : sorts;
         _sorts.forEach((sort): void => {
@@ -543,10 +519,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         // handle the model.filterArray (user-defined filters)
         filterArray.forEach((filter): void => {
             if (filter.getColumnName() === '*') {
-                const searchAction = this.gridActions.search.actionValueFromFilter(filter);
-                // With suggestions, the search shows as a filter pill rather than staying in the search input
-                if (this.showSearchSuggestions) actionValues.push(searchAction);
-                else searchActionValues.push(searchAction);
+                actionValues.push(this.gridActions.search.actionValueFromFilter(filter));
             } else {
                 const filterColName = filter.getColumnName();
                 const column = model.getColumnByFieldKey(filterColName);
@@ -565,18 +538,15 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             }
         });
 
-        return {
-            actionValues,
-            searchActionValues,
-        };
+        return actionValues;
     };
 
     // GitHub Issue #696: what onSaveView will persist, so the save modal can show it. No read-only message. Unresolved columns are included.
     getSaveViewActionValues = (): { filterActionValues: ActionValue[]; sortActionValues: ActionValue[] } => {
-        const { actionValues, searchActionValues } = this.createGridActionValues(false, true);
-        const staticValues = actionValues
-            .concat(searchActionValues)
-            .map(actionValue => ({ ...actionValue, isRemovable: false }));
+        const staticValues = this.createGridActionValues(false, true).map(actionValue => ({
+            ...actionValue,
+            isRemovable: false,
+        }));
 
         return {
             filterActionValues: staticValues.filter(av => av.action.keyword !== 'sort'),
@@ -589,19 +559,12 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
      * so we can properly render Column and View labels.
      */
     populateGridActions = (): void => {
-        const { actionValues, searchActionValues } = this.createGridActionValues();
-        const modelActionValuesStr = actionValuesToString(actionValues);
-        const currentActionValuesStr = actionValuesToString(this.state.actionValues);
-        const searchActionsValuesStr = actionValuesToString(searchActionValues);
-        const currentSearchActionValuesStr = actionValuesToString(this.state.searchActionValues);
+        const actionValues = this.createGridActionValues();
 
-        if (
-            modelActionValuesStr !== currentActionValuesStr ||
-            searchActionsValuesStr !== currentSearchActionValuesStr
-        ) {
+        if (actionValuesToString(actionValues) !== actionValuesToString(this.state.actionValues)) {
             // The action values have changed due to external model changes (likely URL changes), so we need to
             // update the actionValues state with the newest values.
-            this.setState({ actionValues, searchActionValues, errorMsg: undefined });
+            this.setState({ actionValues, errorMsg: undefined });
         }
     };
 
@@ -662,10 +625,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     viewUpdates = { filters: view.filters.filter(filter => !isFilterColumnNameMatch(filter, column)) };
                 }
             } else {
-                // remove all filters, but keep the search that's not part of the view unless it shows as a pill
-                newFilters = this.showSearchSuggestions
-                    ? []
-                    : newFilters.filter(filter => filter.getFilterType() === Filter.Types.Q);
+                newFilters = [];
                 if (view?.filters.length) {
                     viewUpdates = { filters: [] };
                 }
@@ -716,27 +676,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }
 
         actions.setSorts(model.id, newSorts);
-    };
-
-    onSearch = (value: string): void => {
-        const { model, actions, allowSelections } = this.props;
-        const { searchActionValues } = this.state;
-
-        const change = getSearchValueAction(searchActionValues, value);
-        if (!change) return;
-
-        let newFilters = model.filterArray;
-        if (change.type === ChangeType.modify || change.type === ChangeType.remove) {
-            // Remove the filter with the value of oldValue
-            const oldValue = searchActionValues[change.index].valueObject;
-            newFilters = newFilters.filter(filter => !filtersEqual(filter, oldValue));
-        }
-
-        if (change.type === ChangeType.add || change.type === ChangeType.modify) {
-            newFilters = newFilters.concat(Filter.create('*', value, Filter.Types.Q));
-        }
-
-        actions.setFilters(model.id, newFilters, allowSelections);
     };
 
     onApplySuggestion = (suggestion: FilterSuggestion): void => {
@@ -1198,7 +1137,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showManageViewsModal,
             showSaveViewModal,
             actionValues,
-            searchActionValues,
             searchRestore,
             errorMsg,
             isViewSaved,
@@ -1263,9 +1201,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                 onFilter={this.showFilterModal}
                                 onManageViews={this.onManageViews}
                                 onSaveView={this.onSaveNewView}
-                                onSearch={this.onSearch}
                                 onViewSelect={this.onViewSelect}
-                                searchActionValues={searchActionValues}
                                 searchRestore={searchRestore}
                             />
                         )}
@@ -1284,7 +1220,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                         onClick={this.showFilterModal}
                                         onRemove={this.removeFilter}
                                         onRemoveAll={this.removeAllFilters}
-                                        onSearchClick={this.showSearchSuggestions ? this.onSearchPillClick : undefined}
+                                        onSearchClick={this.onSearchPillClick}
                                     />
                                 )}
                             </div>

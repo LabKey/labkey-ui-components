@@ -2,48 +2,10 @@
  * Copyright (c) 2022-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { QueryInfo } from '../../QueryInfo';
-
-import { filterActionValuesByType, getSearchValueAction } from './utils';
-import { ChangeType } from './model';
-import { FilterAction } from './actions/Filter';
-import { SearchAction } from './actions/Search';
+import { filterActionValuesByType } from './utils';
 import { ActionValue } from './actions/Action';
-
-const filterAction = {
-    action: new FilterAction(
-        'query',
-        () => List(),
-        () => new QueryInfo({})
-    ),
-    value: 'test',
-    valueObject: Filter.create('A', 'test', Filter.Types.EQUAL),
-};
-const searchAction = {
-    action: new SearchAction('query'),
-    value: 'foo',
-    valueObject: Filter.create('*', 'foo', Filter.Types.Q),
-};
-
-describe('replaceSearchValue', () => {
-    test('add', () => {
-        const change = getSearchValueAction([filterAction], 'bar');
-        expect(change.type).toBe(ChangeType.add);
-    });
-
-    test('modify', () => {
-        const change = getSearchValueAction([filterAction, searchAction], 'bar');
-        expect(change.type).toBe(ChangeType.modify);
-    });
-
-    test('remove', () => {
-        const change = getSearchValueAction([filterAction, searchAction], '');
-        expect(change.type).toBe(ChangeType.remove);
-    });
-});
 
 describe('filterActionValuesByType', () => {
     const mockActionValues: ActionValue[] = [

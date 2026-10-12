@@ -6,78 +6,8 @@ import { Filter } from '@labkey/api';
 
 import { ComposeField, FilterKindSuggestion, SearchSuggestion } from './models';
 
-let searchSuggestionsEnabled = false;
-
-/**
- * Opt every GridPanel into search suggestions unless a grid sets showSearchSuggestions explicitly. Intended to be
- * called once when an application starts.
- */
-export function setGridSearchSuggestionsEnabled(enabled: boolean): void {
-    searchSuggestionsEnabled = enabled;
-}
-
-export function isGridSearchSuggestionsEnabled(): boolean {
-    return searchSuggestionsEnabled;
-}
-
-export type GridSearchSuggestionsBackend = 'client' | 'server';
-
-let searchSuggestionsBackend: GridSearchSuggestionsBackend = 'client';
-
-/**
- * Chooses where suggestions are computed: in the browser ('client', the default) or by query-getFilterSuggestions.api
- * ('server'). Intended to be called once when an application starts.
- */
-export function setGridSearchSuggestionsBackend(backend: GridSearchSuggestionsBackend): void {
-    searchSuggestionsBackend = backend;
-}
-
-export function getGridSearchSuggestionsBackend(): GridSearchSuggestionsBackend {
-    return searchSuggestionsBackend;
-}
-
-/** Letters become "A" and digits "9", so "SUBJ-028504" and "SUBJ-044304" share the shape "AAAA-999999". */
-export function getValueShape(value: string): string {
-    return value.replace(/[A-Za-z]/g, 'A').replace(/\d/g, '9');
-}
-
-const escapeRegExp = (s: string): string => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
-/**
- * Compiles a name expression into a pattern where each ${...} substitution matches anything. Returns undefined when
- * the constant parts carry no letter or digit, since a bare separator (e.g. "${Parent}-${genId}") matches too much.
- */
-export function nameExpressionToRegExp(expression: string): RegExp {
-    if (!expression) return undefined;
-
-    let pattern = '';
-    let literal = '';
-    let i = 0;
-    while (i < expression.length) {
-        if (expression.startsWith('${', i)) {
-            let depth = 1;
-            let j = i + 2;
-            while (j < expression.length && depth > 0) {
-                if (expression.startsWith('${', j)) {
-                    depth++;
-                    j += 2;
-                } else {
-                    if (expression[j] === '}') depth--;
-                    j++;
-                }
-            }
-            pattern += '.+?';
-            i = j;
-        } else {
-            literal += expression[i];
-            pattern += escapeRegExp(expression[i]);
-            i++;
-        }
-    }
-
-    if (!/[A-Za-z0-9]/.test(literal)) return undefined;
-
-    return new RegExp('^' + pattern + '$', 'i');
+export function createSearchSuggestion(raw: string): SearchSuggestion {
+    return { kind: 'search', label: `Search all columns for "${raw}"`, source: 'fallback', value: raw };
 }
 
 function toFilterValue(filterType: Filter.IFilterType, value: string): string | string[] {

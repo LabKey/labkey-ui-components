@@ -7,7 +7,6 @@ import { List } from 'immutable';
 import { QueryColumn } from '../../QueryColumn';
 
 import { ActionValue } from './actions/Action';
-import { Change, ChangeType } from './model';
 
 /**
  * From the supplied columnName this method will determine which columns in the "columns" list
@@ -52,21 +51,6 @@ export function parseColumns(columns: QueryColumn[], columnName: string): QueryC
  */
 export function resolveFieldKey(columnName: string, column?: QueryColumn): string {
     return column?.resolveFieldKey() ?? columnName;
-}
-
-export function getSearchValueAction(actionValues: ActionValue[], value: string): Change {
-    const hasNewSearch = value?.length > 0;
-    const existingSearchIndex = actionValues.findIndex(actionValue => actionValue.action.keyword === 'search');
-
-    let change = hasNewSearch ? ({ type: ChangeType.add } as Change) : undefined;
-    if (existingSearchIndex > -1) {
-        if (hasNewSearch) {
-            change = { type: ChangeType.modify, index: existingSearchIndex };
-        } else {
-            change = { type: ChangeType.remove, index: existingSearchIndex };
-        }
-    }
-    return change;
 }
 
 export function filterActionValuesByType(

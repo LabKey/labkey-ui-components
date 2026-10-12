@@ -31,9 +31,8 @@ import { RowsResponse } from './QueryModelLoader';
 import { renderWithAppContext } from '../../internal/test/reactTestLibraryHelpers';
 import { Container } from '../../internal/components/base/models/Container';
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../internal/containerFixtures';
-import { getFilterSuggestions } from './search/ClientFilterSuggestionEngine';
+import { fetchFilterSuggestions } from './search/fetchFilterSuggestions';
 import { FilterSuggestion } from './search/models';
-import { setGridSearchSuggestionsEnabled } from './search/utils';
 
 // The filter modal's value list would otherwise make a real request
 jest.mock('../../internal/query/api', () => ({
@@ -41,9 +40,8 @@ jest.mock('../../internal/query/api', () => ({
     selectDistinctRows: jest.fn().mockResolvedValue({ values: [] }),
 }));
 
-jest.mock('./search/ClientFilterSuggestionEngine', () => ({
-    ...jest.requireActual('./search/ClientFilterSuggestionEngine'),
-    getFilterSuggestions: jest.fn(),
+jest.mock('./search/fetchFilterSuggestions', () => ({
+    fetchFilterSuggestions: jest.fn(),
 }));
 
 jest.mock('../../internal/actions', () => ({
@@ -398,7 +396,7 @@ describe('GridPanel', () => {
         rerender(<GridPanel actions={actions} model={model} />);
         filterStatus = document.querySelector(FILTER_STATUS_SELECTOR);
         expect(filterStatus.textContent).toContain('Expiration Time = 1');
-        expect(filterStatus.textContent).not.toContain('foobar');
+        expect(filterStatus.textContent).toContain('foobar');
 
         // Clear all
         model = model.mutate({ sorts: [], filterArray: [], schemaQuery: SCHEMA_QUERY });
@@ -977,16 +975,16 @@ describe('GridPanel search suggestions', () => {
 
     beforeEach(() => {
         actions = makeTestActions(jest.fn);
-        jest.mocked(getFilterSuggestions).mockReset();
+        jest.mocked(fetchFilterSuggestions).mockReset();
     });
 
-    function renderGrid(showSearchSuggestions?: boolean): void {
+    function renderGrid(): void {
         const { rows, orderedRows, rowCount } = DATA;
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount).mutate({
             filterArray: [EXPIRATION_FILTER, Q_FILTER],
         });
         renderWithAppContext(
-            <GridPanel actions={actions} model={model} showSearchSuggestions={showSearchSuggestions} />
+            <GridPanel actions={actions} model={model} />
         );
     }
 
@@ -1003,32 +1001,18 @@ describe('GridPanel search suggestions', () => {
             .mocked(actions.setFilters)
             .mock.lastCall[1].map(f => `${f.getColumnName()}~${f.getFilterType().getURLSuffix()}=${f.getValue()}`);
 
-    test('off by default, or on for every grid through the app-wide setting', () => {
-        renderGrid();
-        expect(document.querySelectorAll('[role="combobox"]')).toHaveLength(0);
-        document.body.innerHTML = '';
-
-        setGridSearchSuggestionsEnabled(true);
-        try {
-            renderGrid();
-            expect(document.querySelectorAll('[role="combobox"]').length).toBeGreaterThan(0);
-        } finally {
-            setGridSearchSuggestionsEnabled(false);
-        }
-    });
-
     test('a targeted filter replaces the Q filter', async () => {
-        jest.mocked(getFilterSuggestions).mockResolvedValue({
+        jest.mocked(fetchFilterSuggestions).mockResolvedValue({
             complete: true,
             suggestions: [NAME_SUGGESTION, { kind: 'search', label: 'Search', source: 'fallback', value: 'DMXP' }],
         });
-        renderGrid(true);
+        renderGrid();
 
         await typeAndWaitFor('DMXP', 'Name is DMXP');
         await userEvent.keyboard('{Enter}');
 
         expect(appliedFilters()).toEqual(['expirationTime~eq=1', 'Name~eq=DMXP']);
-        expect(jest.mocked(getFilterSuggestions).mock.calls[0][0]).toMatchObject({
+        expect(jest.mocked(fetchFilterSuggestions).mock.calls[0][0]).toMatchObject({
             queryName: 'Mixtures',
             schemaName: 'exp.data',
             term: 'DMXP',
@@ -1036,8 +1020,8 @@ describe('GridPanel search suggestions', () => {
     });
 
     test('compose opens the filter modal on the suggested fields, and applying drops the Q filter', async () => {
-        jest.mocked(getFilterSuggestions).mockResolvedValue({ complete: true, suggestions: [COMPOSE_SUGGESTION] });
-        renderGrid(true);
+        jest.mocked(fetchFilterSuggestions).mockResolvedValue({ complete: true, suggestions: [COMPOSE_SUGGESTION] });
+        renderGrid();
 
         await typeAndWaitFor('DMX', 'Compose a filter on Name…');
         await userEvent.keyboard('{Enter}');

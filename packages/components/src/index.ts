@@ -631,8 +631,6 @@ import {
 import { getExpandQueryInfo, includedColumnsForCustomizationFilter } from './public/QueryModel/CustomizeGridViewModal';
 import { ChangeType, withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
-import { setGridSearchSuggestionsBackend, setGridSearchSuggestionsEnabled } from './public/QueryModel/search/utils';
-import { invalidateFilterSuggestionCache } from './public/QueryModel/search/ClientFilterSuggestionEngine';
 import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
 import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
@@ -1509,7 +1507,6 @@ export {
     insertRows,
     InsufficientPermissionsAlert,
     InternalSpacesWarning,
-    invalidateFilterSuggestionCache,
     invalidateFullQueryDetailsCache,
     invalidateLineageResults,
     invalidateQueryDetailsCache,
@@ -1740,8 +1737,6 @@ export {
     ServerContextProvider,
     ServerNotificationModel,
     setDomainFields,
-    setGridSearchSuggestionsBackend,
-    setGridSearchSuggestionsEnabled,
     setSelected,
     setSnapshotSelections,
     Setting,
@@ -1995,7 +1990,6 @@ export type {
     FilterSuggestionsRequest,
     FilterSuggestionsResponse,
 } from './public/QueryModel/search/models';
-export type { GridSearchSuggestionsBackend } from './public/QueryModel/search/utils';
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
 //  the typescript compiler option "isolatedModules", which do not export types from modules, so types must be exported

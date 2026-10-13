@@ -27,6 +27,11 @@ export enum AssayUploadTabs {
     Files = 2,
 }
 
+export enum ExportHeaderTypes {
+    Caption = 'Caption',
+    ImportField = 'ImportField',
+}
+
 export enum EXPORT_TYPES {
     CSV,
     EXCEL,

@@ -78,7 +78,7 @@ describe('UsersGridPanel', () => {
         expect(document.querySelectorAll('.dropdown-toggle')[0].textContent.trim()).toEqual('Manage');
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
-        expect(menuItems).toHaveLength(10);
+        expect(menuItems).toHaveLength(13);
         expect(menuItems[0].textContent).toBe('Deactivate Users');
         expect(menuItems[1].textContent).toBe('Delete Users');
         expect(menuItems[2].textContent).toBe('View All Site Users');
@@ -104,7 +104,7 @@ describe('UsersGridPanel', () => {
         expect(dropdowns[1].textContent).toBe(' Views');
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
-        expect(menuItems).toHaveLength(6);
+        expect(menuItems).toHaveLength(9);
     });
 
     test('without create or manage users permission', () => {
@@ -120,7 +120,7 @@ describe('UsersGridPanel', () => {
         expect(buttons[1].textContent).toBe('Filters');
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
-        expect(menuItems).toHaveLength(6);
+        expect(menuItems).toHaveLength(9);
     });
 
     test('inactive users view', () => {
@@ -139,7 +139,7 @@ describe('UsersGridPanel', () => {
         expect(document.querySelectorAll('.dropdown-toggle')[0].textContent.trim()).toEqual('Manage');
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
-        expect(menuItems).toHaveLength(10);
+        expect(menuItems).toHaveLength(13);
         expect(menuItems[0].textContent).toBe('Delete Users');
         expect(menuItems[1].textContent).toBe('Reactivate Users');
         expect(menuItems[2].textContent).toBe('View All Application Users');
@@ -163,7 +163,7 @@ describe('UsersGridPanel', () => {
         expect(buttons[0].textContent).toBe('Create');
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
-        expect(menuItems).toHaveLength(6);
+        expect(menuItems).toHaveLength(9);
     });
 
     test('site users view', () => {
@@ -182,7 +182,7 @@ describe('UsersGridPanel', () => {
         expect(document.querySelectorAll('.dropdown-toggle')[0].textContent.trim()).toEqual('Manage');
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
-        expect(menuItems).toHaveLength(9);
+        expect(menuItems).toHaveLength(12);
         expect(menuItems[0].textContent).toBe('Delete Users');
         expect(menuItems[1].textContent).toBe('View All Application Users');
         expect(menuItems[2].textContent).toBe('View Inactive Site Users');
@@ -203,7 +203,7 @@ describe('UsersGridPanel', () => {
         expect(buttons[0].hasAttribute('disabled')).toBe(true);
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
-        expect(menuItems).toHaveLength(10);
+        expect(menuItems).toHaveLength(13);
         expect(menuItems[0].textContent).toBe('Delete Users');
         expect(menuItems[1].textContent).toBe('Reactivate Users');
         expect(menuItems[2].textContent).toBe('View All Application Users');
@@ -225,7 +225,7 @@ describe('UsersGridPanel', () => {
         expect(buttons[0].hasAttribute('disabled')).toBe(false);
 
         const menuItems = document.querySelectorAll('.lk-menu-item');
-        expect(menuItems).toHaveLength(10);
+        expect(menuItems).toHaveLength(13);
         expect(menuItems[0].textContent).toBe('Delete Users');
         expect(menuItems[1].textContent).toBe('Reactivate Users');
         expect(menuItems[2].textContent).toBe('View All Application Users');

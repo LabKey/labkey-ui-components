@@ -68,7 +68,7 @@ export interface EditorModelProps {
     // which are necessary when updating data. If you need the visible columns use orderedColumns.
     columnMap: Map<string, QueryColumn>; // TODO rename this to columnMapByFieldKey
     columnMetadata: Map<string, EditableColumnMetadata>;
-    deletedIds: Set<any>;
+    deletedIds: ReadonlySet<any>;
     focusColIdx: number;
     focusRowIdx: number;
     focusValue: List<ValueDescriptor>;
@@ -135,7 +135,7 @@ export class EditorModel
     declare cellValues: CellValues;
     declare columnMap: Map<string, QueryColumn>;
     declare columnMetadata: Map<string, EditableColumnMetadata>;
-    declare deletedIds: Set<any>;
+    declare deletedIds: ReadonlySet<any>;
     declare focusColIdx: number;
     declare focusRowIdx: number;
     declare focusValue: List<ValueDescriptor>;

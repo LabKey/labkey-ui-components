@@ -28,7 +28,8 @@ export type SuggestionSource =
     | 'integerValue'
     | 'key'
     | 'partialValue'
-    | 'shape';
+    | 'shape'
+    | 'shapeContains';
 
 export type SuggestionValueType = 'date' | 'number' | 'string';
 

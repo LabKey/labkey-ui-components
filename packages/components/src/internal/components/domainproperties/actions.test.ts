@@ -352,19 +352,19 @@ describe('domain properties actions', () => {
             allowMultiChoiceProperties: true,
         });
         const available = getAvailableTypes(domain);
-        expect(available.contains(FILE_TYPE)).toBeTruthy();
-        expect(available.contains(ATTACHMENT_TYPE)).toBeTruthy();
-        expect(available.contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
-        expect(available.contains(TEXT_TYPE)).toBeTruthy();
-        expect(available.contains(VISIT_DATE_TYPE)).toBeTruthy();
-        expect(available.contains(VISIT_ID_TYPE)).toBeTruthy();
-        expect(available.contains(VISIT_LABEL_TYPE)).toBeTruthy();
-        expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
-        expect(available.contains(TEXT_CHOICE_TYPE)).toBeTruthy();
-        expect(available.contains(SAMPLE_TYPE)).toBeTruthy();
-        expect(available.contains(PARTICIPANT_TYPE)).toBeTruthy();
-        expect(available.contains(CALCULATED_TYPE)).toBeFalsy();
-        expect(available.contains(MULTI_CHOICE_TYPE)).toBeTruthy();
+        expect(available.includes(FILE_TYPE)).toBeTruthy();
+        expect(available.includes(ATTACHMENT_TYPE)).toBeTruthy();
+        expect(available.includes(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
+        expect(available.includes(TEXT_TYPE)).toBeTruthy();
+        expect(available.includes(VISIT_DATE_TYPE)).toBeTruthy();
+        expect(available.includes(VISIT_ID_TYPE)).toBeTruthy();
+        expect(available.includes(VISIT_LABEL_TYPE)).toBeTruthy();
+        expect(available.includes(UNIQUE_ID_TYPE)).toBeFalsy();
+        expect(available.includes(TEXT_CHOICE_TYPE)).toBeTruthy();
+        expect(available.includes(SAMPLE_TYPE)).toBeTruthy();
+        expect(available.includes(PARTICIPANT_TYPE)).toBeTruthy();
+        expect(available.includes(CALCULATED_TYPE)).toBeFalsy();
+        expect(available.includes(MULTI_CHOICE_TYPE)).toBeTruthy();
     });
 
     test('getAvailableTypes, no optional allowed', () => {
@@ -380,19 +380,19 @@ describe('domain properties actions', () => {
             allowMultiChoiceProperties: false,
         });
         const available = getAvailableTypes(domain);
-        expect(available.contains(FILE_TYPE)).toBeFalsy();
-        expect(available.contains(ATTACHMENT_TYPE)).toBeFalsy();
-        expect(available.contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
-        expect(available.contains(TEXT_TYPE)).toBeTruthy();
-        expect(available.contains(VISIT_DATE_TYPE)).toBeFalsy();
-        expect(available.contains(VISIT_ID_TYPE)).toBeFalsy();
-        expect(available.contains(VISIT_LABEL_TYPE)).toBeFalsy();
-        expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
-        expect(available.contains(TEXT_CHOICE_TYPE)).toBeFalsy();
-        expect(available.contains(SAMPLE_TYPE)).toBeFalsy();
-        expect(available.contains(PARTICIPANT_TYPE)).toBeFalsy();
-        expect(available.contains(CALCULATED_TYPE)).toBeFalsy();
-        expect(available.contains(MULTI_CHOICE_TYPE)).toBeFalsy();
+        expect(available.includes(FILE_TYPE)).toBeFalsy();
+        expect(available.includes(ATTACHMENT_TYPE)).toBeFalsy();
+        expect(available.includes(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
+        expect(available.includes(TEXT_TYPE)).toBeTruthy();
+        expect(available.includes(VISIT_DATE_TYPE)).toBeFalsy();
+        expect(available.includes(VISIT_ID_TYPE)).toBeFalsy();
+        expect(available.includes(VISIT_LABEL_TYPE)).toBeFalsy();
+        expect(available.includes(UNIQUE_ID_TYPE)).toBeFalsy();
+        expect(available.includes(TEXT_CHOICE_TYPE)).toBeFalsy();
+        expect(available.includes(SAMPLE_TYPE)).toBeFalsy();
+        expect(available.includes(PARTICIPANT_TYPE)).toBeFalsy();
+        expect(available.includes(CALCULATED_TYPE)).toBeFalsy();
+        expect(available.includes(MULTI_CHOICE_TYPE)).toBeFalsy();
     });
 
     test('getAvailableTypes calculated fields, LKSM Starter', () => {
@@ -401,7 +401,7 @@ describe('domain properties actions', () => {
             allowCalculatedFields: true,
         });
         const available = getAvailableTypes(domain);
-        expect(available.contains(CALCULATED_TYPE)).toBeFalsy();
+        expect(available.includes(CALCULATED_TYPE)).toBeFalsy();
     });
 
     test('getAvailableTypes calculated fields, LKSM Professional', () => {
@@ -410,7 +410,7 @@ describe('domain properties actions', () => {
             allowCalculatedFields: true,
         });
         const available = getAvailableTypes(domain);
-        expect(available.contains(CALCULATED_TYPE)).toBeTruthy();
+        expect(available.includes(CALCULATED_TYPE)).toBeTruthy();
     });
 
     test('getAvailableTypesForOntology', async () => {
@@ -430,10 +430,10 @@ describe('domain properties actions', () => {
         });
         const domain = DomainDesign.create({});
         const types = await getAvailableTypesForOntology(api, domain);
-        expect(types.contains(FILE_TYPE)).toBeFalsy();
-        expect(types.contains(ATTACHMENT_TYPE)).toBeFalsy();
-        expect(types.contains(ONTOLOGY_LOOKUP_TYPE)).toBeTruthy();
-        expect(types.contains(TEXT_TYPE)).toBeTruthy();
+        expect(types.includes(FILE_TYPE)).toBeFalsy();
+        expect(types.includes(ATTACHMENT_TYPE)).toBeFalsy();
+        expect(types.includes(ONTOLOGY_LOOKUP_TYPE)).toBeTruthy();
+        expect(types.includes(TEXT_TYPE)).toBeTruthy();
     });
 
     test('getAvailableTypes, sampleType LKSM', () => {
@@ -447,7 +447,7 @@ describe('domain properties actions', () => {
             domainKindName: Domain.KINDS.SAMPLE_TYPE,
         });
         const available = getAvailableTypes(domain);
-        expect(available.contains(UNIQUE_ID_TYPE)).toBeTruthy();
+        expect(available.includes(UNIQUE_ID_TYPE)).toBeTruthy();
     });
 
     test('getAvailableTypes, sampleType Premium', () => {
@@ -459,8 +459,8 @@ describe('domain properties actions', () => {
             allowCalculatedFields: true,
         });
         const available = getAvailableTypes(domain);
-        expect(available.contains(UNIQUE_ID_TYPE)).toBeTruthy();
-        expect(available.contains(CALCULATED_TYPE)).toBeFalsy();
+        expect(available.includes(UNIQUE_ID_TYPE)).toBeTruthy();
+        expect(available.includes(CALCULATED_TYPE)).toBeFalsy();
     });
 
     test('getAvailableTypes, sampleType Professional', () => {
@@ -471,8 +471,8 @@ describe('domain properties actions', () => {
             allowCalculatedFields: true,
         });
         const available = getAvailableTypes(domain);
-        expect(available.contains(UNIQUE_ID_TYPE)).toBeTruthy();
-        expect(available.contains(CALCULATED_TYPE)).toBeTruthy();
+        expect(available.includes(UNIQUE_ID_TYPE)).toBeTruthy();
+        expect(available.includes(CALCULATED_TYPE)).toBeTruthy();
     });
 
     test('getAvailableTypes, sampleType community', () => {
@@ -482,8 +482,8 @@ describe('domain properties actions', () => {
             allowCalculatedFields: true,
         });
         const available = getAvailableTypes(domain);
-        expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
-        expect(available.contains(CALCULATED_TYPE)).toBeFalsy();
+        expect(available.includes(UNIQUE_ID_TYPE)).toBeFalsy();
+        expect(available.includes(CALCULATED_TYPE)).toBeFalsy();
     });
 
     test('updateOntologyFieldProperties', () => {

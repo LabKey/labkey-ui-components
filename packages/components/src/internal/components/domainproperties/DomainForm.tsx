@@ -72,6 +72,7 @@ import {
     DomainFieldIndexChange,
     DomainPanelStatus,
     FieldDetails,
+    GetDomainFields,
     HeaderRenderer,
     IDomainField,
     IDomainFormDisplayOptions,
@@ -245,7 +246,7 @@ export interface DomainFormProps extends PropsWithChildren {
 }
 
 interface State {
-    availableTypes: List<PropDescType>;
+    availableTypes: PropDescType[];
     bulkDeleteConfirmInfo: BulkDeleteConfirmInfo;
     collapsed: boolean;
     confirmDeleteRowIndex: number;
@@ -845,10 +846,9 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
             // set existing error row indexes with new row indexes
             const fieldsWithMovedErrorsUpdated = fieldsWithNewIndexesOnErrors
                 .map(error =>
-                    error.merge({
-                        rowIndexes: error.newRowIndexes ? error.newRowIndexes : error.rowIndexes,
-                        newRowIndexes: undefined, // reset newRowIndexes
-                    })
+                    error
+                        .set('rowIndexes', error.newRowIndexes ? error.newRowIndexes : error.rowIndexes)
+                        .set('newRowIndexes', undefined)
                 )
                 .toList();
 
@@ -881,16 +881,11 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
     ): List<DomainFieldError> => {
         return fieldErrors
             .map(fieldError => {
-                let newRowIndexes: List<number>;
-                if (fieldError.newRowIndexes === undefined) {
-                    newRowIndexes = List<number>();
-                } else {
-                    newRowIndexes = fieldError.get('newRowIndexes');
-                }
+                const newRowIndexes = [...(fieldError.newRowIndexes ?? [])];
 
                 fieldError.rowIndexes.forEach(val => {
                     if (val === oldIndex) {
-                        newRowIndexes = newRowIndexes.push(newIndex);
+                        newRowIndexes.push(newIndex);
                     }
                 });
 
@@ -1162,9 +1157,9 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
         return !collapsed;
     };
 
-    getDomainFields = (): { domainFields: List<DomainField>; systemFields: SystemField[] } => {
+    getDomainFields: GetDomainFields = () => {
         return {
-            domainFields: this.props.domain.fields,
+            domainFields: this.props.domain.fields.toArray(),
             systemFields: this.props.systemFields,
         };
     };

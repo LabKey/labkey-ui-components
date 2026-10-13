@@ -41,10 +41,10 @@ import {
     DomainField,
     DomainFieldError,
     DomainOnChange,
+    GetDomainFields,
     IDomainFormDisplayOptions,
     IFieldChange,
     resolveAvailableTypes,
-    SystemField,
 } from './models';
 import { PropDescType } from './PropDescType';
 import { getCheckedValue } from './actions';
@@ -66,9 +66,9 @@ export interface DomainRowProps {
     allowMultiChoiceField: boolean;
     allowUniqueConstraintProperties: boolean;
     appPropertiesOnly?: boolean;
-    availableTypes: List<PropDescType>;
+    availableTypes: PropDescType[];
     defaultDefaultValueType: string;
-    defaultValueOptions: List<string>;
+    defaultValueOptions: string[];
     domainContainerPath?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     domainId?: number;
@@ -78,7 +78,7 @@ export interface DomainRowProps {
     field: DomainField;
     fieldDetailsInfo?: Record<string, string>;
     fieldError?: DomainFieldError;
-    getDomainFields?: () => { domainFields: List<DomainField>; systemFields: SystemField[] };
+    getDomainFields?: GetDomainFields;
     helpNoun: string;
     index: number;
     isDragDisabled?: boolean;
@@ -214,6 +214,10 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         this.props.onChange(changes, this.props.index, true);
     };
 
+    onAdvancedSettingsApply = (changes: IFieldChange[]): void => {
+        this.onMultiFieldChange(List(changes));
+    };
+
     onNameChange = (evt: any): void => {
         const { index, domainIndex } = this.props;
 
@@ -240,7 +244,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                 fieldName: value,
                 propertyId: undefined,
                 severity: SEVERITY_LEVEL_WARN,
-                rowIndexes: List<number>([index]),
+                rowIndexes: [index],
             });
 
             // set value for field error
@@ -419,7 +423,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                     index={index}
                                     label={field.name}
                                     maxPhiLevel={maxPhiLevel}
-                                    onApply={this.onMultiFieldChange}
+                                    onApply={this.onAdvancedSettingsApply}
                                     onHide={this.onHideAdvanced}
                                     showDefaultValueSettings={showDefaultValueSettings}
                                 />
@@ -500,7 +504,6 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                                                 {type.display}
                                                             </option>
                                                         ))
-                                                        .toArray()
                                                 )}
                                             </select>
                                         </div>

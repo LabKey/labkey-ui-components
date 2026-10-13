@@ -44,7 +44,7 @@ const LEARN_MORE = (
 interface Props extends ITypeDependentProps {
     api?: DomainPropertiesAPIWrapper;
     domainContainerPath: string;
-    domainFields: List<DomainField>;
+    domainFields: DomainField[];
     field: DomainField;
     onMultiChange: (changes: List<IFieldChange>) => void;
 }
@@ -270,7 +270,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
 
 interface OntologyTextDomainFieldSelectProps {
     ariaLabelledBy?: string;
-    domainFields: List<DomainField>;
+    domainFields: DomainField[];
     field: DomainField;
     filterValue: string;
     id: string;
@@ -305,7 +305,7 @@ const OntologyTextDomainFieldSelect: FC<OntologyTextDomainFieldSelectProps> = me
                         {df.name}
                     </option>
                 );
-            }).toArray()}
+            })}
         </select>
     );
 });

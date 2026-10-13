@@ -3,7 +3,6 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { act } from 'react';
-import { List } from 'immutable';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
@@ -75,11 +74,7 @@ describe('AdvancedSettings', () => {
         showDefaultValueSettings: true,
         allowUniqueConstraintProperties: true,
         defaultDefaultValueType: DOMAIN_EDITABLE_DEFAULT,
-        defaultValueOptions: List<string>([
-            DOMAIN_EDITABLE_DEFAULT,
-            DOMAIN_LAST_ENTERED_DEFAULT,
-            DOMAIN_NON_EDITABLE_DEFAULT,
-        ]),
+        defaultValueOptions: [DOMAIN_EDITABLE_DEFAULT, DOMAIN_LAST_ENTERED_DEFAULT, DOMAIN_NON_EDITABLE_DEFAULT],
         helpNoun: 'domain',
     };
 

@@ -187,7 +187,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                     />
                 );
             case 'ontologyLookup':
-                const domainFields = getDomainFields ? getDomainFields().domainFields : List<DomainField>();
+                const domainFields = getDomainFields ? getDomainFields().domainFields : [];
 
                 return (
                     <OntologyLookupOptions

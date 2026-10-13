@@ -26,11 +26,10 @@ export interface FilterDraft {
     value: string;
 }
 
-function createDraftFilter(draft: FilterDraft, field: QueryColumn, filters: EntityFieldFilter[]): EntityFieldFilter {
+function createDraftFilter(draft: FilterDraft, field: QueryColumn): EntityFieldFilter {
     const fieldKey = field?.getDisplayFieldKey();
     const op = draft.ops[fieldKey];
-    // Leave fields that already carry a filter alone rather than silently adding a second condition
-    if (!op || filters.some(fieldFilter => fieldFilter.fieldKey === fieldKey)) return undefined;
+    if (!op) return undefined;
 
     return {
         fieldCaption: field.caption,
@@ -38,6 +37,28 @@ function createDraftFilter(draft: FilterDraft, field: QueryColumn, filters: Enti
         filter: composeFieldToFilter({ fieldKey, op }, draft.value),
         jsonType: field.getDisplayFieldJsonType(),
     } as EntityFieldFilter;
+}
+
+const isOnField = (fieldFilter: EntityFieldFilter, fieldKey: string): boolean =>
+    fieldFilter.fieldKey.toLowerCase() === fieldKey.toLowerCase();
+
+// The draft stands in for its field's filters, which come back once the draft moves to another field
+function placeDraft(
+    filters: EntityFieldFilter[],
+    initial: EntityFieldFilter[],
+    from: EntityFieldFilter,
+    to: EntityFieldFilter
+): EntityFieldFilter[] {
+    let placed = filters;
+    if (from) {
+        placed = placed
+            .filter(fieldFilter => !isOnField(fieldFilter, from.fieldKey))
+            .concat(initial.filter(fieldFilter => isOnField(fieldFilter, from.fieldKey)));
+    }
+    if (to) {
+        placed = placed.filter(fieldFilter => !isOnField(fieldFilter, to.fieldKey)).concat(to);
+    }
+    return placed;
 }
 
 interface Props {
@@ -79,11 +100,10 @@ export const GridFilterModal: FC<Props> = memo(props => {
         const draftFilter = initialDraft
             ? createDraftFilter(
                   initialDraft,
-                  fields?.find(field => field.getDisplayFieldKey() === fieldKey),
-                  initial
+                  fields?.find(field => field.getDisplayFieldKey() === fieldKey)
               )
             : undefined;
-        return { draftFilter, filters: draftFilter ? [...initial, draftFilter] : initial };
+        return { draftFilter, filters: placeDraft(initial, initial, undefined, draftFilter), initial };
     });
     const [filters, setFilters] = useState<EntityFieldFilter[]>(initialState.filters);
     // The unedited draft, which follows the active field; undefined once the user edits it or when there is none
@@ -160,15 +180,11 @@ export const GridFilterModal: FC<Props> = memo(props => {
         (field: QueryColumn) => {
             if (!draftActive || field.getDisplayFieldKey() === draftFilter?.fieldKey) return;
 
-            // Drafts are only seeded on fields with no other filter, so every filter on the draft's field is the draft
-            const withoutDraft = draftFilter
-                ? filters.filter(fieldFilter => fieldFilter.fieldKey !== draftFilter.fieldKey)
-                : filters;
-            const movedDraft = createDraftFilter(initialDraft, field, withoutDraft);
-            setFilters(movedDraft ? [...withoutDraft, movedDraft] : withoutDraft);
+            const movedDraft = createDraftFilter(initialDraft, field);
+            setFilters(placeDraft(filters, initialState.initial, draftFilter, movedDraft));
             setDraftFilter(movedDraft);
         },
-        [draftActive, draftFilter, filters, initialDraft]
+        [draftActive, draftFilter, filters, initialDraft, initialState]
     );
     const canConfirm = validFieldFilters && Object.keys(validFieldFilters).length > 0;
     return (

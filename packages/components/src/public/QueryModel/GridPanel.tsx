@@ -688,12 +688,20 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 .concat(Filter.create('*', suggestion.value, Filter.Types.Q));
             actions.setFilters(model.id, newFilters, allowSelections);
         } else if (suggestion.kind === 'filter') {
-            const filter = suggestionToFilter(suggestion);
+            const fieldKey = suggestion.fieldKey.toLowerCase();
+            const column = model.displayColumns.find(col => col.getDisplayFieldKey().toLowerCase() === fieldKey);
+            const onColumn = (f: Filter.IFilter): boolean =>
+                f.getColumnName().toLowerCase() === fieldKey || (!!column && isFilterColumnNameMatch(f, column));
+            const view = model.currentView;
+
             // The search box owns a single slot, so a targeted filter replaces any Q filter
             const newFilters = model.filterArray
-                .filter(f => f.getColumnName() !== '*' && !filtersEqual(f, filter))
-                .concat(filter);
+                .filter(f => f.getColumnName() !== '*' && !onColumn(f))
+                .concat(suggestionToFilter(suggestion));
             actions.setFilters(model.id, newFilters, allowSelections);
+            if (view?.filters.some(onColumn)) {
+                this.saveAsSessionView({ filters: view.filters.filter(f => !onColumn(f)) });
+            }
         } else {
             const fields = suggestion.fields
                 .map(field =>

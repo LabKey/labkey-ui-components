@@ -117,24 +117,25 @@ describe('GridFilterModal', () => {
             expect(appliedFilters(onApply)).toEqual(['TubeType~contains=Sodium']);
         });
 
-        test('a field that already has a filter is not seeded', async () => {
+        test("the draft replaces its field's filters until it moves on", async () => {
             const onApply = jest.fn();
             render(
                 <GridFilterModal
                     {...DEFAULT_PROPS}
                     fieldKey="TubeType"
                     fields={FIELDS}
-                    initFilters={[Filter.create('BloodType', 'A+')]}
+                    initFilters={[Filter.create('TubeType', 'EDTA'), Filter.create('BloodType', 'A+')]}
                     initialDraft={DRAFT}
                     onApply={onApply}
                 />
             );
+            expect(valueInput().value).toBe('Sod');
 
             await userEvent.click(fieldButton('Blood Type'));
-            expect(valueInput().value).toBe('A+');
+            expect(valueInput().value).toBe('Sod');
 
             await userEvent.click(applyButton());
-            expect(appliedFilters(onApply)).toEqual(['BloodType~eq=A+']);
+            expect(appliedFilters(onApply)).toEqual(['TubeType~eq=EDTA', 'BloodType~contains=Sod']);
         });
     });
 });

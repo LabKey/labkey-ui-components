@@ -978,10 +978,10 @@ describe('GridPanel search suggestions', () => {
         jest.mocked(fetchFilterSuggestions).mockReset();
     });
 
-    function renderGrid(): void {
+    function renderGrid(filterArray = [EXPIRATION_FILTER, Q_FILTER], queryInfo = QUERY_INFO): void {
         const { rows, orderedRows, rowCount } = DATA;
-        const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount).mutate({
-            filterArray: [EXPIRATION_FILTER, Q_FILTER],
+        const model = makeTestQueryModel(SCHEMA_QUERY, queryInfo, rows, orderedRows.slice(0, 20), rowCount).mutate({
+            filterArray,
         });
         renderWithAppContext(<GridPanel actions={actions} model={model} />);
     }
@@ -1015,6 +1015,32 @@ describe('GridPanel search suggestions', () => {
             schemaName: 'exp.data',
             term: 'DMXP',
         });
+    });
+
+    test('a targeted filter replaces the filters on its column', async () => {
+        jest.mocked(fetchFilterSuggestions).mockResolvedValue({ complete: true, suggestions: [NAME_SUGGESTION] });
+        const view = ViewInfo.fromJson({
+            filter: [
+                { fieldKey: 'Name', op: 'startswith', value: 'DM' },
+                { fieldKey: 'expirationTime', op: 'neqornull', value: '3' },
+            ],
+            name: ViewInfo.DEFAULT_NAME.toLowerCase(),
+        });
+        const queryInfo = new QueryInfo({
+            columns: QUERY_INFO.columns,
+            views: new ExtendedMap({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+        });
+        renderGrid(
+            [Filter.create('name', 'DMXA'), EXPIRATION_FILTER, Filter.create('Name', 'X', Filter.Types.CONTAINS)],
+            queryInfo
+        );
+
+        await typeAndWaitFor('DMXP', 'Name is DMXP');
+        await userEvent.keyboard('{Enter}');
+
+        expect(appliedFilters()).toEqual(['expirationTime~eq=1', 'Name~eq=DMXP']);
+        const savedView = jest.mocked(saveAsSessionView).mock.lastCall[2];
+        expect(savedView.filters.map(f => f.getColumnName())).toEqual(['expirationTime']);
     });
 
     test('compose opens the filter modal on the suggested fields, and applying drops the Q filter', async () => {

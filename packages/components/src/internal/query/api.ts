@@ -713,7 +713,7 @@ export interface InsertRowsOptions
         Omit<Query.QueryRequestOptions, 'apiVersion' | 'queryName' | 'rows' | 'schemaName'>,
         QueryRequestOptionsBase {
     fillEmptyFields?: boolean;
-    rows: List<any>; // TODO: convert to Array<Record<string, any>>
+    rows: Record<string, any>[];
     schemaQuery: SchemaQuery;
 }
 
@@ -770,7 +770,7 @@ export function insertRows(options: InsertRowsOptions): Promise<QueryCommandResp
             auditDetails: getRequestAuditDetail(editMethod),
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
-            rows: _rows.toArray(),
+            rows: _rows,
             skipReselectRows:
                 options.skipReselectRows === null || options.skipReselectRows === undefined
                     ? true
@@ -799,7 +799,7 @@ export function insertRows(options: InsertRowsOptions): Promise<QueryCommandResp
     });
 }
 
-// Ensures that the List of row objects are fully (as opposed to sparsely) populated. This avoids the server
+// Ensures that the row objects are fully (as opposed to sparsely) populated. This avoids the server
 // failing to map columns on sparsely populated data sets.
 // As an example:
 //
@@ -816,29 +816,17 @@ export function insertRows(options: InsertRowsOptions): Promise<QueryCommandResp
 //     {"columnA": "AA", "columnD": null},
 //     {"columnA": null, "columnD": "DD"}
 // ]
-// TODO: make this method take plain JS objects so we can convert insertRows to take a plain JS array, nearly every
-//  caller of insertRows is converting a plain JS array to an immutable object in the method call, and insertRows
-//  converts it back to an array after this method is used, so the conversion is pretty uneccessary.
-export function ensureAllFieldsInAllRows(rows: List<any>): List<any> {
-    let masterRecord = Map<string, any>().asMutable();
+export function ensureAllFieldsInAllRows(rows: Record<string, any>[]): Record<string, any>[] {
+    const keys = new Set<string>();
+    rows.forEach(row => Object.keys(row).forEach(key => keys.add(key)));
 
-    rows.forEach(row => {
-        row.keySeq().forEach(key => {
-            masterRecord.set(key, null);
-        });
-    });
-
-    masterRecord = masterRecord.asImmutable();
-
-    return rows.reduce(
-        (allFieldRows, row) => allFieldRows.push(ensureNullForUndefined(masterRecord.merge(row))),
-        List<Map<string, any>>()
+    // undefined is not a valid JSON value so the values must be mapped to null.
+    return rows.map(row =>
+        Array.from(keys).reduce((fullRow, key) => {
+            fullRow[key] = row[key] === undefined ? null : row[key];
+            return fullRow;
+        }, {})
     );
-}
-
-// undefined is not a valid JSON value so the values must be mapped to null.
-function ensureNullForUndefined(row: Map<string, any>): Map<string, any> {
-    return row.reduce((map, v, k) => map.set(k, v === undefined ? null : v), Map<string, any>());
 }
 
 export interface UpdateRowsOptions

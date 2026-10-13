@@ -3,7 +3,6 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { List } from 'immutable';
 import { getServerContext } from '@labkey/api';
 
 import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
@@ -209,7 +208,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
             } else {
                 const response = await api.query.insertRows({
                     schemaQuery: LABEL_TEMPLATE_SQ,
-                    rows: List([templateToSave]),
+                    rows: [templateToSave],
                     containerPath: container.path,
                 });
 

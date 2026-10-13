@@ -4,7 +4,6 @@
  */
 import { Domain, Filter, Query } from '@labkey/api';
 
-import { List } from 'immutable';
 
 import { insertRows, QueryCommandResponse } from '../../query/api';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -220,10 +219,10 @@ export async function getSamplesNotInList(listName: string, sampleIds: number[])
 
 export async function addSamplesToPicklist(listName: string, sampleIds: number[]): Promise<QueryCommandResponse> {
     const sampleIdsToAdd = await getSamplesNotInList(listName, sampleIds);
-    const rows = List(sampleIdsToAdd.map(id => ({ SampleId: id })));
+    const rows = sampleIdsToAdd.map(id => ({ SampleId: id }));
     const schemaQuery = new SchemaQuery(SCHEMAS.PICKLIST_TABLES.SCHEMA, listName);
 
-    if (rows.size > 0) {
+    if (rows.length > 0) {
         return await insertRows({ rows, schemaQuery });
     }
 

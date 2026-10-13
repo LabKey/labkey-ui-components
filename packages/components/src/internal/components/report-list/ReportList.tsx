@@ -147,9 +147,9 @@ export class ReportItemModal extends PureComponent<ReportItemModalProps> {
         const onClose = this.props.onClose;
         let BodyRenderer = UnsupportedReportBody;
 
-        if (GRID_REPORTS.contains(type as DataViewInfoTypes)) {
+        if (GRID_REPORTS.has(type as DataViewInfoTypes)) {
             BodyRenderer = GridReportBody;
-        } else if (VISUALIZATION_REPORTS.contains(type as DataViewInfoTypes)) {
+        } else if (VISUALIZATION_REPORTS.has(type as DataViewInfoTypes)) {
             BodyRenderer = ChartReportBody;
         }
 

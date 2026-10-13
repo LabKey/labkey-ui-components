@@ -4,7 +4,6 @@
  */
 import { Domain, Filter, Query } from '@labkey/api';
 
-
 import { insertRows, QueryCommandResponse } from '../../query/api';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { setSnapshotSelections } from '../../actions';

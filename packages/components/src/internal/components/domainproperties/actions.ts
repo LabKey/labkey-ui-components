@@ -782,7 +782,7 @@ export function removeFields(domain: DomainDesign, deletableSelectedFields: numb
     }
 }
 
-export function handleDomainUpdates(domain: DomainDesign, changes: List<IFieldChange>): DomainDesign {
+export function handleDomainUpdates(domain: DomainDesign, changes: IFieldChange[]): DomainDesign {
     changes.forEach(change => {
         if (getNameFromId(change.id) === DOMAIN_FIELD_CLIENT_SIDE_ERROR) {
             domain = updateDomainException(domain, getIndexFromId(change.id), change.value);

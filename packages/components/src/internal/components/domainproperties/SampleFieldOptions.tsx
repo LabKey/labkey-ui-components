@@ -33,7 +33,7 @@ import { DomainDesignerCheckbox } from './DomainDesignerCheckbox';
 interface SampleFieldProps extends ITypeDependentProps {
     container: string;
     field: DomainField;
-    onMultiChange: (changes: List<IFieldChange>) => void;
+    onMultiChange: (changes: IFieldChange[]) => void;
     original: Partial<IDomainField>;
     value?: string;
 }
@@ -88,7 +88,7 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
             this.setState({ validateLookup: false });
         }
 
-        this.props.onMultiChange(List<IFieldChange>([{ id: evt.target.id, value: newLookupValidator }]));
+        this.props.onMultiChange([{ id: evt.target.id, value: newLookupValidator }]);
     };
 
     render() {

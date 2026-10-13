@@ -98,7 +98,7 @@ export interface IFieldChange {
 }
 
 export type DomainOnChange = (
-    changes: List<IFieldChange>,
+    changes: IFieldChange[],
     index?: number,
     expand?: boolean,
     skipDirtyCheck?: boolean
@@ -502,7 +502,7 @@ export class DomainDesign
                 const selected = row.get('selected');
                 const formInputId = createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, fieldIndex);
 
-                const changes = List.of({ id: formInputId, value: !selected });
+                const changes = [{ id: formInputId, value: !selected }];
                 return (
                     <DomainDesignerCheckbox
                         checked={selected}
@@ -2222,7 +2222,7 @@ export interface IAppDomainHeader {
     domainIndex: number;
     modelDomains?: List<DomainDesign>;
     onAddField?: (fieldConfig: Partial<IDomainField>) => void;
-    onChange?: (changes: List<IFieldChange>, index: number, expand: boolean) => void;
+    onChange?: (changes: IFieldChange[], index: number, expand: boolean) => void;
     onDomainChange?: (index: number, updatedDomain: DomainDesign) => void;
 }
 

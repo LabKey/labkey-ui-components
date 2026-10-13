@@ -312,7 +312,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
         domain: DomainDesign,
         dirty: boolean,
         rowIndexChange?: DomainFieldIndexChange[],
-        changes?: List<IFieldChange>
+        changes?: IFieldChange[]
     ): void => {
         const { onChange } = this.props;
 

@@ -3,7 +3,6 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, PureComponent, ReactNode } from 'react';
-import { List } from 'immutable';
 
 import { ADVANCED_FIELD_EDITOR_TOPIC, HelpLink, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
 
@@ -46,7 +45,7 @@ interface Props extends ITypeDependentProps {
     domainContainerPath: string;
     domainFields: DomainField[];
     field: DomainField;
-    onMultiChange: (changes: List<IFieldChange>) => void;
+    onMultiChange: (changes: IFieldChange[]) => void;
 }
 
 interface State {
@@ -97,12 +96,13 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
     onOntologyFieldChange = (evt: any): void => {
         const { domainIndex, onMultiChange } = this.props;
         const { id, value } = evt.target;
-        let changes = List<IFieldChange>([{ id, value }]);
-        changes = changes.push({
-            id: createFormInputId(DOMAIN_FIELD_ONTOLOGY_SUBTREE_COL, domainIndex, getIndexFromId(id)),
-            value: undefined,
-        });
-        onMultiChange(changes);
+        onMultiChange([
+            { id, value },
+            {
+                id: createFormInputId(DOMAIN_FIELD_ONTOLOGY_SUBTREE_COL, domainIndex, getIndexFromId(id)),
+                value: undefined,
+            },
+        ]);
     };
 
     onOntologySubtreeChange = async (id: string, path: PathModel): Promise<void> => {
@@ -116,7 +116,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
 
     onFieldChange = (evt: any): void => {
         const val = evt.target.value;
-        let changes = List<IFieldChange>([{ id: evt.target.id, value: val }]);
+        const changes: IFieldChange[] = [{ id: evt.target.id, value: val }];
 
         const valFieldIdx = this.props.domainFields.findIndex(df => df.name === val);
         if (valFieldIdx > 0) {
@@ -130,7 +130,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                 this.props.domainIndex,
                 valFieldIdx
             );
-            changes = changes.push({ id: valFieldInsertId, value: false }, { id: valFieldUpdateId, value: false });
+            changes.push({ id: valFieldInsertId, value: false }, { id: valFieldUpdateId, value: false });
         }
 
         this.props.onMultiChange(changes);

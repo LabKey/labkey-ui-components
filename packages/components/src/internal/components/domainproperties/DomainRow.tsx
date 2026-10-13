@@ -3,7 +3,6 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { ReactNode, RefObject } from 'react';
-import { List } from 'immutable';
 import { Draggable } from '@hello-pangea/dnd';
 import classNames from 'classnames';
 
@@ -206,34 +205,24 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         expand?: boolean,
         skipDirtyCheck?: boolean
     ): void => {
-        const changes = List([{ id, value } as IFieldChange]);
-        this.props.onChange(changes, index, expand === true, skipDirtyCheck);
+        this.props.onChange([{ id, value }], index, expand === true, skipDirtyCheck);
     };
 
-    onMultiFieldChange = (changes: List<IFieldChange>): void => {
+    onMultiFieldChange = (changes: IFieldChange[]): void => {
         this.props.onChange(changes, this.props.index, true);
-    };
-
-    onAdvancedSettingsApply = (changes: IFieldChange[]): void => {
-        this.onMultiFieldChange(List(changes));
     };
 
     onNameChange = (evt: any): void => {
         const { index, domainIndex } = this.props;
 
         const value = evt.target.value;
-        let nameAndErrorList = List<IFieldChange>();
-
         // set value for the field
-        nameAndErrorList = nameAndErrorList.push({
-            id: createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index),
-            value,
-        });
+        const nameAndErrorList: IFieldChange[] = [{ id: createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index), value }];
 
         // TODO: Why don't we make isLegalName return false if there is a space?
         if (isLegalName(value) && !value.includes(' ')) {
             // set value to undefined for field error
-            nameAndErrorList = nameAndErrorList.push({
+            nameAndErrorList.push({
                 id: createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, domainIndex, index),
                 value: undefined,
             });
@@ -248,7 +237,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             });
 
             // set value for field error
-            nameAndErrorList = nameAndErrorList.push({
+            nameAndErrorList.push({
                 id: createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, domainIndex, index),
                 value: domainFieldError,
             });
@@ -423,7 +412,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                     index={index}
                                     label={field.name}
                                     maxPhiLevel={maxPhiLevel}
-                                    onApply={this.onAdvancedSettingsApply}
+                                    onApply={this.onMultiFieldChange}
                                     onHide={this.onHideAdvanced}
                                     showDefaultValueSettings={showDefaultValueSettings}
                                 />

@@ -4,7 +4,6 @@
  */
 import React, { ReactNode } from 'react';
 
-import { List } from 'immutable';
 
 import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
 
@@ -36,7 +35,7 @@ interface Props {
     handleDataTypeChange: (targetId: string, value: any) => void;
     index: number;
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean, skipDirtyCheck?: boolean) => void;
-    onMultiChange: (changes: List<IFieldChange>) => void;
+    onMultiChange: (changes: IFieldChange[]) => void;
     queryName?: string;
     schemaName?: string;
     showingModal: (boolean) => void;

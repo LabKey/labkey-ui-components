@@ -3,7 +3,6 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { List } from 'immutable';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
@@ -23,7 +22,7 @@ import { FolderSelect, SchemaSelect, TargetTableSelect } from './Lookup/Fields';
 interface LookupFieldProps extends ITypeDependentProps {
     field: DomainField;
     lookupContainer: string;
-    onMultiChange: (changes: List<IFieldChange>) => void;
+    onMultiChange: (changes: IFieldChange[]) => void;
 }
 
 export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, any> {
@@ -32,19 +31,18 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
         const index = getIndexFromId(evt.target.id);
         const name = getNameFromId(evt.target.id);
 
-        let changes = List<IFieldChange>();
-        changes = changes.push({ id: evt.target.id, value: evt.target.value } as IFieldChange);
+        const changes: IFieldChange[] = [{ id: evt.target.id, value: evt.target.value }];
 
         if (name === DOMAIN_FIELD_LOOKUP_CONTAINER) {
-            changes = changes.push({
+            changes.push({
                 id: createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, domainIndex, index),
                 value: '',
             });
-            changes = changes.push({ id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index), value: '' });
+            changes.push({ id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index), value: '' });
         }
 
         if (name === DOMAIN_FIELD_LOOKUP_SCHEMA) {
-            changes = changes.push({ id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index), value: '' });
+            changes.push({ id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, domainIndex, index), value: '' });
         }
 
         if (onMultiChange) {
@@ -61,9 +59,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                 newLookupValidator = LOOKUP_VALIDATOR;
             }
 
-            let changes = List<IFieldChange>();
-            changes = changes.push({ id: evt.target.id, value: newLookupValidator } as IFieldChange);
-            onMultiChange(changes);
+            onMultiChange([{ id: evt.target.id, value: newLookupValidator }]);
         }
     };
 

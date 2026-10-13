@@ -3,7 +3,6 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { PureComponent, ReactNode } from 'react';
-import { List } from 'immutable';
 
 import { HelpLink, URL_ENCODING_TOPIC } from '../../util/helpLinks';
 
@@ -34,7 +33,7 @@ interface NameAndLinkingProps {
     field: DomainField;
     index: number;
     onChange: (string, any) => void;
-    onMultiChange: (changes: List<IFieldChange>) => void;
+    onMultiChange: (changes: IFieldChange[]) => void;
 }
 
 export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
@@ -53,13 +52,10 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
 
         // make sure to uncheck the "open in new tab" option if URL is cleared out
         if (isEmpty) {
-            let changes = List<IFieldChange>();
-            changes = changes.push({ id: evt.target.id, value: null });
-            changes = changes.push({
-                id: createFormInputId(DOMAIN_FIELD_URL_TARGET, domainIndex, index),
-                value: false,
-            });
-            this.props.onMultiChange(changes);
+            this.props.onMultiChange([
+                { id: evt.target.id, value: null },
+                { id: createFormInputId(DOMAIN_FIELD_URL_TARGET, domainIndex, index), value: false },
+            ]);
         } else {
             this.onChange(evt.target.id, isEmpty ? null : val);
         }

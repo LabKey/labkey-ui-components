@@ -228,7 +228,7 @@ export interface DomainFormProps extends PropsWithChildren {
         newDomain: DomainDesign,
         dirty: boolean,
         rowIndexChange?: DomainFieldIndexChange[],
-        changes?: List<IFieldChange> // use this instead of newDomain for changes that should be applied to the domain but not trigger a dirty change
+        changes?: IFieldChange[] // use this instead of newDomain for changes that should be applied to the domain but not trigger a dirty change
         // TODO migrate more calls to onChange to pass through the changes instead of the newDomain
     ) => void;
     onToggle?: (collapsed: boolean, callback?: () => any) => void;
@@ -704,9 +704,9 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
         this.onDomainChange(updatedDomain);
     };
 
-    onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean, skipDirtyCheck = false): void => {
+    onFieldsChange = (changes: IFieldChange[], index: number, expand: boolean, skipDirtyCheck = false): void => {
         const { domain, onChange } = this.props;
-        const firstChange = changes.get(0);
+        const firstChange = changes[0];
         const rowSelectedChange = getNameFromId(firstChange?.id) === 'selected';
         const updatedDomain = handleDomainUpdates(domain, changes);
 

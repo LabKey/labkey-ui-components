@@ -4,7 +4,6 @@
  */
 import React, { act } from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { List } from 'immutable';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 import { AppContextTestProviderProps } from '../../test/testHelpers';
@@ -59,7 +58,7 @@ const CALC_FIELD = makeCalculatedField('SELECT 1');
 const DEFAULT_FIELDS = [makeField('A'), makeField('B', 'http://www.w3.org/2001/XMLSchema#int'), CALC_FIELD];
 function getDomainFields(fields = DEFAULT_FIELDS) {
     return () => ({
-        domainFields: List<DomainField>(fields),
+        domainFields: fields,
         systemFields: [] as any[],
     });
 }

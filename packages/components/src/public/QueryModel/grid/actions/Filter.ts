@@ -2,7 +2,7 @@
  * Copyright (c) 2022-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { Map, Set } from 'immutable';
+import { Map } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
 
 import { decodePart } from '../../../SchemaQuery';
@@ -30,7 +30,7 @@ let SYMBOL_MAP = Map<string /* symbol */, Map<string /* suffix */, Filter.IFilte
 let SUFFIX_MAP = Map<string /* suffix */, Filter.IFilterType>().asMutable();
 let TEXT_MAP = Map<string /* displayText */, Filter.IFilterType>().asMutable();
 
-let TYPE_SET = Set<string>().asMutable();
+let TYPE_SET = new Set<string>();
 const TYPE_MAP = Map<string, Filter.IFilterType>(Filter.Types);
 TYPE_MAP.valueSeq().forEach((type: Filter.IFilterType) => {
     // there are duplicates of the same filter in the type map (e.g. NEQ and NOT_EQUAL)

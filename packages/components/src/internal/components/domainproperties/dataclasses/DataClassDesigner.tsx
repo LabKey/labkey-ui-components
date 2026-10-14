@@ -180,7 +180,8 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
                     ' ids.';
             } else if (getDuplicateAlias(model.parentAliases, true).size > 0) {
                 exception =
-                    'Duplicate parent alias header found: ' + getDuplicateAlias(model.parentAliases, true).join(', ');
+                    'Duplicate parent alias header found: ' +
+                    Array.from(getDuplicateAlias(model.parentAliases, true)).join(', ');
             }
 
             setSubmitting(false, () => {
@@ -312,7 +313,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
         domain: DomainDesign,
         dirty: boolean,
         rowIndexChange?: DomainFieldIndexChange[],
-        changes?: List<IFieldChange>
+        changes?: IFieldChange[]
     ): void => {
         const { onChange } = this.props;
 

@@ -328,7 +328,7 @@ export function handleSchemas(payload: any): SchemaDetails[] {
 export async function getAvailableTypesForOntology(
     api: DomainPropertiesAPIWrapper,
     domain: DomainDesign
-): Promise<List<PropDescType>> {
+): Promise<PropDescType[]> {
     const ontologies = await api.fetchOntologies(domain.container);
     return getAvailableTypes(domain, ontologies);
 }
@@ -384,8 +384,8 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
     return true;
 }
 
-export function getAvailableTypes(domain: DomainDesign, ontologies = []): List<PropDescType> {
-    return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, ontologies)).toList();
+export function getAvailableTypes(domain: DomainDesign, ontologies = []): PropDescType[] {
+    return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, ontologies));
 }
 
 export function fetchOntologies(containerPath?: string): Promise<OntologyModel[]> {
@@ -681,7 +681,7 @@ export function processJsonImport(content: string, domain: DomainDesign): Simple
 
         if (
             field.defaultValueType &&
-            domain.defaultValueOptions.size > 0 &&
+            domain.defaultValueOptions.length > 0 &&
             !domain.hasDefaultValueOption(field.defaultValueType)
         ) {
             return {
@@ -782,7 +782,7 @@ export function removeFields(domain: DomainDesign, deletableSelectedFields: numb
     }
 }
 
-export function handleDomainUpdates(domain: DomainDesign, changes: List<IFieldChange>): DomainDesign {
+export function handleDomainUpdates(domain: DomainDesign, changes: IFieldChange[]): DomainDesign {
     changes.forEach(change => {
         if (getNameFromId(change.id) === DOMAIN_FIELD_CLIENT_SIDE_ERROR) {
             domain = updateDomainException(domain, getIndexFromId(change.id), change.value);
@@ -995,7 +995,7 @@ function clearFieldError(domain: DomainDesign, rowIndex: any): List<DomainFieldE
     // filter errors where rowIndexes size > 2
     const filteredErrors = allErrors.filter(error => {
         if (error.rowIndexes.includes(rowIndex)) {
-            return error.rowIndexes.size > 2;
+            return error.rowIndexes.length > 2;
         }
         return true;
     });

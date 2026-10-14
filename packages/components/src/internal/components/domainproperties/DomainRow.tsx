@@ -3,7 +3,6 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { ReactNode, RefObject } from 'react';
-import { List } from 'immutable';
 import { Draggable } from '@hello-pangea/dnd';
 import classNames from 'classnames';
 
@@ -41,10 +40,10 @@ import {
     DomainField,
     DomainFieldError,
     DomainOnChange,
+    GetDomainFields,
     IDomainFormDisplayOptions,
     IFieldChange,
     resolveAvailableTypes,
-    SystemField,
 } from './models';
 import { PropDescType } from './PropDescType';
 import { getCheckedValue } from './actions';
@@ -66,9 +65,9 @@ export interface DomainRowProps {
     allowMultiChoiceField: boolean;
     allowUniqueConstraintProperties: boolean;
     appPropertiesOnly?: boolean;
-    availableTypes: List<PropDescType>;
+    availableTypes: PropDescType[];
     defaultDefaultValueType: string;
-    defaultValueOptions: List<string>;
+    defaultValueOptions: string[];
     domainContainerPath?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     domainId?: number;
@@ -78,7 +77,7 @@ export interface DomainRowProps {
     field: DomainField;
     fieldDetailsInfo?: Record<string, string>;
     fieldError?: DomainFieldError;
-    getDomainFields?: () => { domainFields: List<DomainField>; systemFields: SystemField[] };
+    getDomainFields?: GetDomainFields;
     helpNoun: string;
     index: number;
     isDragDisabled?: boolean;
@@ -206,11 +205,10 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         expand?: boolean,
         skipDirtyCheck?: boolean
     ): void => {
-        const changes = List([{ id, value } as IFieldChange]);
-        this.props.onChange(changes, index, expand === true, skipDirtyCheck);
+        this.props.onChange([{ id, value }], index, expand === true, skipDirtyCheck);
     };
 
-    onMultiFieldChange = (changes: List<IFieldChange>): void => {
+    onMultiFieldChange = (changes: IFieldChange[]): void => {
         this.props.onChange(changes, this.props.index, true);
     };
 
@@ -218,18 +216,13 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         const { index, domainIndex } = this.props;
 
         const value = evt.target.value;
-        let nameAndErrorList = List<IFieldChange>();
-
         // set value for the field
-        nameAndErrorList = nameAndErrorList.push({
-            id: createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index),
-            value,
-        });
+        const nameAndErrorList: IFieldChange[] = [{ id: createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index), value }];
 
         // TODO: Why don't we make isLegalName return false if there is a space?
         if (isLegalName(value) && !value.includes(' ')) {
             // set value to undefined for field error
-            nameAndErrorList = nameAndErrorList.push({
+            nameAndErrorList.push({
                 id: createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, domainIndex, index),
                 value: undefined,
             });
@@ -240,11 +233,11 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                 fieldName: value,
                 propertyId: undefined,
                 severity: SEVERITY_LEVEL_WARN,
-                rowIndexes: List<number>([index]),
+                rowIndexes: [index],
             });
 
             // set value for field error
-            nameAndErrorList = nameAndErrorList.push({
+            nameAndErrorList.push({
                 id: createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, domainIndex, index),
                 value: domainFieldError,
             });
@@ -500,7 +493,6 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                                                 {type.display}
                                                             </option>
                                                         ))
-                                                        .toArray()
                                                 )}
                                             </select>
                                         </div>

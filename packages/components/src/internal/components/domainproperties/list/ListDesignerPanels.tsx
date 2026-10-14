@@ -76,7 +76,7 @@ export class ListDesignerPanelsImpl extends React.PureComponent<
         domain: DomainDesign,
         dirty: boolean,
         rowIndexChanges?: DomainFieldIndexChange[],
-        changes?: List<IFieldChange>
+        changes?: IFieldChange[]
     ): void => {
         const { model } = this.state;
 

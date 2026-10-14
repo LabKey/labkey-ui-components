@@ -393,7 +393,7 @@ export const CALCULATED_TYPE = new PropDescType({
     conceptURI: CALCULATED_CONCEPT_URI,
 });
 
-export const PROP_DESC_TYPES = List([
+export const PROP_DESC_TYPES = [
     TEXT_TYPE,
     MULTILINE_TYPE,
     BOOLEAN_TYPE,
@@ -417,7 +417,7 @@ export const PROP_DESC_TYPES = List([
     TEXT_CHOICE_TYPE,
     MULTI_CHOICE_TYPE,
     CALCULATED_TYPE,
-]);
+];
 
 export const READONLY_DESC_TYPES = List([
     BINARY_TYPE,

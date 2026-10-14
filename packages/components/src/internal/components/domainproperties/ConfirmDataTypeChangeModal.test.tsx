@@ -75,7 +75,7 @@ describe('ConfirmDataTypeChangeModal', () => {
             rangeURI: 'http://www.w3.org/2001/XMLSchema#boolean',
             dataType: BOOLEAN_TYPE,
         },
-        newDataType: PROP_DESC_TYPES.get(0),
+        newDataType: PROP_DESC_TYPES[0],
         onConfirm: jest.fn,
         onCancel: jest.fn,
     };

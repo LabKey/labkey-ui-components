@@ -15,7 +15,7 @@ import { QueryColumn } from '../../../QueryColumn';
 
 import { ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE } from '../../../../internal/query/filter';
 
-import { Action, ActionValue } from './Action';
+import { Action, ActionKeyword, ActionValue } from './Action';
 import { FilterProps } from '../../../../internal/components/entities/models';
 import { EntityFieldFilter } from '../../../../internal/components/search/models';
 import { filtersEqual } from '../../utils';
@@ -186,7 +186,7 @@ export function removeFilterValueForFilterProps(
 
 export class FilterAction implements Action {
     iconCls = 'filter';
-    keyword = 'filter';
+    keyword = ActionKeyword.Filter;
     getFilterDisplayValue: (columnName: string, rawValue: string) => string;
 
     constructor(getFilterDisplayValue?: (columnName: string, rawValue: string) => string) {

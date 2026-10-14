@@ -3,11 +3,10 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 
-import { Action } from './Action';
+import { Action, ActionKeyword } from './Action';
 
 export class ViewAction implements Action {
-    static NAME = 'view';
     iconCls = 'table';
-    param = ViewAction.NAME;
-    keyword = ViewAction.NAME;
+    param = ActionKeyword.View;
+    keyword = ActionKeyword.View;
 }

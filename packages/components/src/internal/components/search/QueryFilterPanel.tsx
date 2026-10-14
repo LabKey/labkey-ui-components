@@ -37,6 +37,8 @@ enum FieldFilterTabs {
 
 const DEFAULT_VIEW_NAME = ''; // always use default view for selection, if none provided
 
+export type OnFilterUpdate = (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => void;
+
 interface Props {
     allInQueryFilterLabel?: string;
     allowRelativeDateFilter?: boolean;
@@ -57,7 +59,7 @@ interface Props {
     metricFeatureArea?: string;
     onActiveFieldChange?: (field: QueryColumn) => void;
     onAllValuesInQueryChange?: (check: boolean) => void;
-    onFilterUpdate: (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => void;
+    onFilterUpdate: OnFilterUpdate;
     onHasNoValueInQueryChange?: (check: boolean) => void;
     // Open this field on the Filter tab even when it would otherwise default to Choose values
     preferFilterTabFieldKey?: string;

@@ -10,7 +10,7 @@ import { EntityFieldFilter } from '../../internal/components/search/models';
 import { QueryColumn } from '../QueryColumn';
 
 import { Alert } from '../../internal/components/base/Alert';
-import { QueryFilterPanel } from '../../internal/components/search/QueryFilterPanel';
+import { OnFilterUpdate, QueryFilterPanel } from '../../internal/components/search/QueryFilterPanel';
 import { NOT_ANY_FILTER_TYPE } from '../../internal/url/NotAnyFilterType';
 import { getFieldFiltersValidationResult, isValidFilterField } from '../../internal/components/search/utils';
 
@@ -91,18 +91,15 @@ export const GridFilterModal: FC<Props> = memo(props => {
     const { queryInfo } = model;
     const [filterError, setFilterError] = useState<string>(undefined);
     const [initialState] = useState(() => {
-        const initial = initFilters.map(filter => {
-            return {
-                fieldKey: filter.getColumnName(),
-                filter,
-            } as EntityFieldFilter;
-        });
-        const draftFilter = initialDraft
-            ? createDraftFilter(
-                  initialDraft,
-                  fields?.find(field => field.getDisplayFieldKey() === fieldKey)
-              )
-            : undefined;
+        const initial = initFilters.map<EntityFieldFilter>(filter => ({ fieldKey: filter.getColumnName(), filter }));
+
+        let draftFilter: EntityFieldFilter;
+        if (initialDraft) {
+            draftFilter = createDraftFilter(
+                initialDraft,
+                fields?.find(field => field.getDisplayFieldKey() === fieldKey)
+            );
+        }
         return { draftFilter, filters: placeDraft(initial, initial, undefined, draftFilter), initial };
     });
     const [filters, setFilters] = useState<EntityFieldFilter[]>(initialState.filters);
@@ -143,8 +140,8 @@ export const GridFilterModal: FC<Props> = memo(props => {
         }
     }, [filters, onApply, queryInfo, validFieldFilters]);
 
-    const onFilterUpdate = useCallback(
-        (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => {
+    const onFilterUpdate = useCallback<OnFilterUpdate>(
+        (field, newFilters) => {
             setFilterError(undefined);
 
             const activeFieldKey = field.getDisplayFieldKey();
@@ -186,11 +183,11 @@ export const GridFilterModal: FC<Props> = memo(props => {
         },
         [draftActive, draftFilter, filters, initialDraft, initialState]
     );
-    const canConfirm = validFieldFilters && Object.keys(validFieldFilters).length > 0;
+
     return (
         <Modal
             bsSize="lg"
-            canConfirm={canConfirm}
+            canConfirm={validFieldFilters && Object.keys(validFieldFilters).length > 0}
             confirmText="Apply"
             onCancel={closeModal}
             onConfirm={_onApply}

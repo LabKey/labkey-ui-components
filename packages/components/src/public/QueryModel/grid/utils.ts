@@ -6,7 +6,7 @@ import { List } from 'immutable';
 
 import { QueryColumn } from '../../QueryColumn';
 
-import { ActionValue } from './actions/Action';
+import { ActionKeyword, ActionValue } from './actions/Action';
 
 /**
  * From the supplied columnName this method will determine which columns in the "columns" list
@@ -55,7 +55,7 @@ export function resolveFieldKey(columnName: string, column?: QueryColumn): strin
 
 export function filterActionValuesByType(
     actionValues: ActionValue[],
-    keyword: string,
+    keyword: ActionKeyword,
     lockReadOnlyForDelete: boolean
 ): ActionValue[] {
     return actionValues

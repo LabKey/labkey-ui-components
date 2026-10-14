@@ -4,13 +4,13 @@
  */
 import { Filter } from '@labkey/api';
 
-import { Action, ActionValue } from './Action';
+import { Action, ActionKeyword, ActionValue } from './Action';
 
 export class SearchAction implements Action {
     isDefaultAction = true;
     iconCls = 'search';
     param = 'q';
-    keyword = 'search';
+    keyword = ActionKeyword.Search;
 
     actionValueFromFilter(filter: Filter.IFilter, isReadOnly?: string): ActionValue {
         return {

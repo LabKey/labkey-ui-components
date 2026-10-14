@@ -96,7 +96,6 @@ interface Props {
 
 /**
  * Search input that offers targeted filters for the typed term, with the Q filter ("Search all columns") last.
- * Implements the WAI-ARIA combobox pattern: focus stays in the input and aria-activedescendant tracks the option.
  */
 export const SearchSuggestInput: FC<Props> = memo(props => {
     const { api = getDefaultAPIWrapper(), model, onApplySuggestion, restoreRequest } = props;

@@ -393,7 +393,8 @@ export class SampleTypeDesignerImpl extends React.PureComponent<SampleTypeDesign
                 ' field name is reserved for imported or generated sample ids.';
         } else if (getDuplicateAlias(model.parentAliases, true).size > 0) {
             exception =
-                'Duplicate parent alias header found: ' + getDuplicateAlias(model.parentAliases, true).join(', ');
+                'Duplicate parent alias header found: ' +
+                Array.from(getDuplicateAlias(model.parentAliases, true)).join(', ');
         } else if (!model.isMetricUnitValid(metricUnitProps)) {
             exception = (metricUnitProps?.metricUnitLabel ?? 'Units') + ' field is required.';
         } else {

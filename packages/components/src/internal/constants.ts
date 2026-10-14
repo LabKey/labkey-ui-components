@@ -2,7 +2,6 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { Set } from 'immutable';
 import { getServerContext } from '@labkey/api';
 
 // We are currently accessing these vis and WebSocket namespaces off of the global context,
@@ -214,7 +213,7 @@ export enum DataViewInfoTypes {
     XYSeriesLinePlot = 'XY Series Line Plot',
 }
 
-export const GRID_REPORTS = Set([DataViewInfoTypes.Query, DataViewInfoTypes.Dataset]);
+export const GRID_REPORTS = new Set([DataViewInfoTypes.Query, DataViewInfoTypes.Dataset]);
 export const GENERIC_CHART_REPORTS = [
     DataViewInfoTypes.AutomaticPlot,
     DataViewInfoTypes.BarChart,
@@ -223,7 +222,7 @@ export const GENERIC_CHART_REPORTS = [
     DataViewInfoTypes.XYScatterPlot,
     DataViewInfoTypes.XYSeriesLinePlot,
 ];
-export const VISUALIZATION_REPORTS = Set([...GENERIC_CHART_REPORTS, DataViewInfoTypes.RReport]);
+export const VISUALIZATION_REPORTS = new Set([...GENERIC_CHART_REPORTS, DataViewInfoTypes.RReport]);
 
 export enum IMPORT_DATA_FORM_TYPES {
     GRID = 1, // This designates the starting point for the enum. By default it starts at 0, but since that is falsy, it makes the check "if (inputFormType)" problematic.

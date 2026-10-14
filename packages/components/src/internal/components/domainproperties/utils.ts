@@ -2,7 +2,7 @@
  * Copyright (c) 2022-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { OrderedMap, Set } from 'immutable';
+import { OrderedMap } from 'immutable';
 
 import { IParentAlias } from '../entities/models';
 
@@ -64,17 +64,17 @@ export function getParentAliasChangeResult(
  * returns a Set of ids corresponding to the aliases that have duplicate alias values
  */
 export function getDuplicateAlias(parentAliases: OrderedMap<string, IParentAlias>, returnAliases = false): Set<string> {
-    let uniqueAliases = Set<string>();
-    let dupeAliases = Set<string>();
-    let dupeIds = Set<string>();
+    const uniqueAliases = new Set<string>();
+    const dupeAliases = new Set<string>();
+    const dupeIds = new Set<string>();
 
     if (parentAliases) {
         parentAliases.forEach((alias: IParentAlias) => {
             if (uniqueAliases.has(alias.alias)) {
-                dupeIds = dupeIds.add(alias.id);
-                dupeAliases = dupeAliases.add(alias.alias);
+                dupeIds.add(alias.id);
+                dupeAliases.add(alias.alias);
             } else {
-                uniqueAliases = uniqueAliases.add(alias.alias);
+                uniqueAliases.add(alias.alias);
             }
         });
     }

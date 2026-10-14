@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { fromJS, Record as ImmutableRecord, Set as ImmutableSet, List, Map } from 'immutable';
+import { fromJS, Record as ImmutableRecord, List, Map } from 'immutable';
 import { immerable } from 'immer';
 import { normalize, schema } from 'normalizr';
 import { ActionURL, Ajax, AuditBehaviorTypes, Filter, Query, QueryDOM, Utils } from '@labkey/api';
@@ -397,11 +397,11 @@ export class Renderers {
     }
 
     static _applyDefaultRenderer(columnMetadata, rawColumn, metadata) {
-        const types = ImmutableSet.of(rawColumn.type.toLowerCase(), rawColumn.friendlyType.toLowerCase());
+        const types = [rawColumn.type.toLowerCase(), rawColumn.friendlyType.toLowerCase()];
 
         if (rawColumn.multiValue === true) {
             return 'MultiValueDetailRenderer';
-        } else if (types.contains('file')) {
+        } else if (types.includes('file')) {
             return 'FileColumnRenderer';
         } else if (QueryColumn.isUserLookup(rawColumn.lookup)) {
             return 'UserDetailsRenderer';

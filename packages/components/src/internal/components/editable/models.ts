@@ -3,7 +3,7 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { Filter, Query, Utils } from '@labkey/api';
-import { fromJS, Record as ImmutableRecord, Set as ImmutableSet, Iterable, List, Map } from 'immutable';
+import { fromJS, Record as ImmutableRecord, Iterable, List, Map } from 'immutable';
 import { ReactNode } from 'react';
 
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -68,7 +68,7 @@ export interface EditorModelProps {
     // which are necessary when updating data. If you need the visible columns use orderedColumns.
     columnMap: Map<string, QueryColumn>; // TODO rename this to columnMapByFieldKey
     columnMetadata: Map<string, EditableColumnMetadata>;
-    deletedIds: ImmutableSet<any>;
+    deletedIds: ReadonlySet<any>;
     focusColIdx: number;
     focusRowIdx: number;
     focusValue: List<ValueDescriptor>;
@@ -114,7 +114,7 @@ export class EditorModel
         cellValues: Map<string, List<ValueDescriptor>>(),
         columnMap: Map<string, QueryColumn>,
         columnMetadata: Map<string, EditableColumnMetadata>(),
-        deletedIds: ImmutableSet<any>(),
+        deletedIds: new Set<any>(),
         focusColIdx: -1,
         focusRowIdx: -1,
         focusValue: undefined,
@@ -135,7 +135,7 @@ export class EditorModel
     declare cellValues: CellValues;
     declare columnMap: Map<string, QueryColumn>;
     declare columnMetadata: Map<string, EditableColumnMetadata>;
-    declare deletedIds: ImmutableSet<any>;
+    declare deletedIds: ReadonlySet<any>;
     declare focusColIdx: number;
     declare focusRowIdx: number;
     declare focusValue: List<ValueDescriptor>;

@@ -209,7 +209,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
         const sortByName = naturalSortByProperty<IDataViewInfo>('name');
 
         let charts = await fetchCharts(schemaQuery, containerPath);
-        charts = charts.sort(sortByName).filter(report => VISUALIZATION_REPORTS.contains(report.type));
+        charts = charts.sort(sortByName).filter(report => VISUALIZATION_REPORTS.has(report.type));
 
         if (!isRReportsEnabled()) {
             charts = charts.filter(chart => chart.type !== DataViewInfoTypes.RReport);

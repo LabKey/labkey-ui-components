@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { PureComponent, ReactNode } from 'react';
-import { List, OrderedMap } from 'immutable';
+import { OrderedMap } from 'immutable';
 import { ActionURL, PermissionTypes } from '@labkey/api';
 
 import { QueryInfoForm } from '../forms/QueryInfoForm';
@@ -26,7 +26,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { getUserDetailsRowData } from './actions';
 
-const FIELDS_TO_EXCLUDE = List<string>([
+const FIELDS_TO_EXCLUDE = [
     'userid',
     'owner',
     'groups',
@@ -38,8 +38,8 @@ const FIELDS_TO_EXCLUDE = List<string>([
     'pager',
     'im',
     'avatar',
-]);
-const DISABLED_FIELDS = List<string>(['email']);
+];
+const DISABLED_FIELDS = ['email'];
 const USER_AVATAR_FILE = 'user_avatar_file';
 const DEFAULT_AVATAR_PATH = '/_images/defaultavatar.png';
 
@@ -105,7 +105,7 @@ export class UserProfile extends PureComponent<Props, State> {
         // make sure all columns are set as shownInInsertView and those that are marked as editable are not also readOnly.
         // Issue 47532 We want users to be able to update the fields on their own profile page, even if only readers
         const _col = col.mutate({ shownInInsertView: true, readOnly: !col.userEditable });
-        return insertColumnFilter(_col) && !FIELDS_TO_EXCLUDE.contains(_col.fieldKey.toLowerCase());
+        return insertColumnFilter(_col) && !FIELDS_TO_EXCLUDE.includes(_col.fieldKey.toLowerCase());
     };
 
     footer(): ReactNode {

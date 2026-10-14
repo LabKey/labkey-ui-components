@@ -3,7 +3,7 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, useCallback, useMemo } from 'react';
-import { List, Map } from 'immutable';
+import { Map } from 'immutable';
 
 import { getDefaultAPIWrapper } from '../../../APIWrapper';
 import { DomainPropertiesAPIWrapper } from '../APIWrapper';
@@ -59,7 +59,7 @@ interface AssayDomainFormProps extends Omit<
         updatedDomain: DomainDesign,
         dirty: boolean,
         rowIndexChange?: DomainFieldIndexChange[],
-        changes?: List<IFieldChange>
+        changes?: IFieldChange[]
     ) => void;
     protocolModel: AssayProtocolModel;
 }
@@ -206,7 +206,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
         updatedDomain: DomainDesign,
         dirty: boolean,
         rowIndexChange?: DomainFieldIndexChange[],
-        changes?: List<IFieldChange>
+        changes?: IFieldChange[]
     ): void => {
         const { onChange } = this.props;
 

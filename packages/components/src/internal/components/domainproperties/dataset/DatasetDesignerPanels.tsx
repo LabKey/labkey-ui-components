@@ -215,7 +215,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<
         domain: DomainDesign,
         dirty: boolean,
         rowIndexChanges: DomainFieldIndexChange[],
-        changes?: List<IFieldChange>
+        changes?: IFieldChange[]
     ): void => {
         const { onChange } = this.props;
         const { keyPropertyIndex, visitDatePropertyIndex } = this.state;

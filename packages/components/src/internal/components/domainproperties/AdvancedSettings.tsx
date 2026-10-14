@@ -3,7 +3,6 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { List } from 'immutable';
 import { ActionURL } from '@labkey/api';
 
 import { Modal } from '../../Modal';
@@ -52,7 +51,7 @@ import { redirect } from '../../url/ActionURL';
 interface AdvancedSettingsProps {
     allowUniqueConstraintProperties: boolean;
     defaultDefaultValueType: string;
-    defaultValueOptions: List<string>;
+    defaultValueOptions: string[];
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     domainId?: number;
     domainIndex: number;
@@ -61,7 +60,7 @@ interface AdvancedSettingsProps {
     index: number;
     label: string;
     maxPhiLevel: string;
-    onApply: (any) => any;
+    onApply: (changes: IFieldChange[]) => void;
     onHide: () => any;
     showDefaultValueSettings: boolean;
 }
@@ -145,19 +144,11 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         const { index, onApply, onHide, domainIndex } = this.props;
 
         if (onApply) {
-            const changes = List<IFieldChange>().asMutable();
+            const changes = Object.keys(this.state)
+                .filter(key => key !== 'phiLevels')
+                .map(key => ({ id: createFormInputId(key, domainIndex, index), value: this.state[key] }));
 
-            // Iterate over state values and put into list of changes
-            Object.keys(this.state).forEach(function (key, i) {
-                if (key !== 'phiLevels') {
-                    changes.push({
-                        id: createFormInputId(key, domainIndex, index),
-                        value: this.state[key],
-                    } as IFieldChange);
-                }
-            }, this);
-
-            onApply(changes.asImmutable());
+            onApply(changes);
         }
 
         if (onHide) {
@@ -293,7 +284,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         // Not shown for file types or calculated fields
         if (field.dataType.isFileType() || field.isCalculatedField()) return false;
 
-        return !this.props.defaultValueOptions.isEmpty();
+        return this.props.defaultValueOptions.length > 0;
     };
 
     renderDisplayOptions = () => {
@@ -363,13 +354,11 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             onChange={this.handleChange}
                             value={defaultValueType}
                         >
-                            {defaultValueOptions
-                                .map(level => (
-                                    <option key={level} value={level}>
-                                        {DOMAIN_DEFAULT_TYPES[level]}
-                                    </option>
-                                ))
-                                .toArray()}
+                            {defaultValueOptions.map(level => (
+                                <option key={level} value={level}>
+                                    {DOMAIN_DEFAULT_TYPES[level]}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <div className="col-xs-3" />

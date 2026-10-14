@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { Set as ImmutableSet, Iterable, List, Map } from 'immutable';
+import { Iterable, List, Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 import { ChangeEvent, CSSProperties } from 'react';
 import Papa from 'papaparse';
@@ -220,8 +220,8 @@ export function getCommonDataValues(
     fieldValues: Record<string, any>;
 } {
     let valueMap = Map<string, any>(); // map from fields to the value shared by all rows
-    let fieldsInConflict = ImmutableSet<string>();
-    let emptyFields = ImmutableSet<string>(); // those fields that are empty
+    const fieldsInConflict = new Set<string>();
+    const emptyFields = new Set<string>(); // those fields that are empty
     const fileMap = {};
     data.map((rowData, id) => {
         if (rowData) {
@@ -246,8 +246,8 @@ export function getCommonDataValues(
 
                     if (!currentValueEmpty) {
                         // non-empty value, so let's see if we have the same value
-                        if (emptyFields.contains(key)) {
-                            fieldsInConflict = fieldsInConflict.add(key);
+                        if (emptyFields.has(key)) {
+                            fieldsInConflict.add(key);
                         } else if (!havePreviousValue) {
                             valueMap = valueMap.set(key, value);
                             if (fileFields?.indexOf(key) > -1) {
@@ -261,19 +261,19 @@ export function getCommonDataValues(
                                 (!Array.isArray(valueMap.get(key)) || !unorderedEqual(valueMap.get(key), value));
 
                             if (arrayNotEqual) {
-                                fieldsInConflict = fieldsInConflict.add(key);
+                                fieldsInConflict.add(key);
                                 valueMap = valueMap.delete(key);
                             }
                         } else if (valueMap.get(key) !== value) {
-                            fieldsInConflict = fieldsInConflict.add(key);
+                            fieldsInConflict.add(key);
                             valueMap = valueMap.delete(key);
                         }
                     } else if (havePreviousValue) {
                         // some row had a value, but this row does not
-                        fieldsInConflict = fieldsInConflict.add(key);
+                        fieldsInConflict.add(key);
                         valueMap = valueMap.delete(key);
                     } else {
-                        emptyFields = emptyFields.add(key);
+                        emptyFields.add(key);
                     }
                 }
             });
@@ -289,7 +289,7 @@ export function getCommonDataValues(
 
     return {
         fieldValues: valueMap.toObject(),
-        fieldsInConflict: fieldsInConflict.toArray(),
+        fieldsInConflict: Array.from(fieldsInConflict),
     };
 }
 

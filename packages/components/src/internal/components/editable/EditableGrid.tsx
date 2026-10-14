@@ -4,7 +4,7 @@
  */
 import { Query } from '@labkey/api';
 import classNames from 'classnames';
-import { List, Map, OrderedMap, Set } from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 import React, { ChangeEvent, PureComponent, ReactNode } from 'react';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
@@ -364,11 +364,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             selectCell: this.selectCell,
         };
 
-        let selected = Set<number>();
+        const selected = new Set<number>();
         let selectedState = GRID_CHECKBOX_OPTIONS.NONE;
         if (props.activeEditTab === EditableGridTabs.BulkUpdate || props.hideCheckboxCol) {
             for (let i = 0; i < props.editorModel.rowCount; i++) {
-                selected = selected.add(i);
+                selected.add(i);
             }
             selectedState = GRID_CHECKBOX_OPTIONS.ALL;
         }
@@ -406,7 +406,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         this.setState(state => {
             const { editorModel } = this.props;
             const { selectionPivot } = state;
-            let { selected } = state;
+            const selected = new Set(state.selected);
             const key = row.get(GRID_EDIT_INDEX);
 
             if (isShiftSelect && selectionPivot) {
@@ -415,15 +415,15 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 const endIdx = Math.max(key, pivotIdx);
                 for (let i = beginIdx; i <= endIdx; i++) {
                     if (selectionPivot.checked) {
-                        selected = selected.add(i);
+                        selected.add(i);
                     } else {
-                        selected = selected.remove(i);
+                        selected.delete(i);
                     }
                 }
             } else if (checked) {
-                selected = selected.add(key);
+                selected.add(key);
             } else {
-                selected = selected.remove(key);
+                selected.delete(key);
             }
 
             let selectedState: GRID_CHECKBOX_OPTIONS;
@@ -451,11 +451,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         this.setState(state => {
             const selectAll = checked && state.selectedState !== GRID_CHECKBOX_OPTIONS.ALL;
-            let selected = Set<number>();
+            const selected = new Set<number>();
 
             if (selectAll) {
                 for (let i = 0; i < editorModel.rowCount; i++) {
-                    selected = selected.add(i);
+                    selected.add(i);
                 }
             }
 
@@ -759,12 +759,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         // Track all of the existing row indices that we want to keep in an array, their index in this array is their
         // updated index after we've deleted the existing rows.
         const rowIndicesToKeep = [];
-        let deletedIds = Set<string>();
+        const deletedIds = new Set<string>();
 
         for (let idx = 0; idx < editorModel.rowCount; idx++) {
             if (rowIndicesToDelete.has(idx)) {
                 const pkValue = editorModel.getPkValue(idx);
-                if (pkValue) deletedIds = deletedIds.add(pkValue.toString());
+                if (pkValue) deletedIds.add(pkValue.toString());
                 continue;
             }
 
@@ -783,7 +783,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const cellMessages = editorModel.cellMessages.reduce(cellReducer, Map<string, CellMessage>());
         const cellValues = editorModel.cellValues.reduce(cellReducer, Map<string, ValueDescriptor>());
         const editorModelChanges = {
-            deletedIds: editorModel.deletedIds.merge(deletedIds),
+            deletedIds: new Set([...editorModel.deletedIds, ...deletedIds]),
             focusColIdx: -1,
             focusRowIdx: -1,
             rowCount: editorModel.rowCount - rowIndicesToDelete.size,
@@ -797,7 +797,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         onChange(EditableGridEvent.REMOVE_ROWS, editorModelChanges);
 
         this.setState({
-            selected: Set<number>(),
+            selected: new Set<number>(),
             selectedState: GRID_CHECKBOX_OPTIONS.NONE,
             selectionPivot: undefined,
         });
@@ -825,7 +825,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 cell: (selected: boolean, row) => (
                     <input
                         aria-label="Select all rows on page"
-                        checked={this.state.selected.contains(row.get(GRID_EDIT_INDEX))}
+                        checked={this.state.selected.has(row.get(GRID_EDIT_INDEX))}
                         className="grid-panel__checkbox"
                         onChange={this.select.bind(this, row)}
                         type="checkbox"
@@ -1241,7 +1241,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     getSelectedRowIndices = (): List<number> => {
-        return this.state.selected.toList();
+        return List(this.state.selected);
     };
 
     restoreBulkInsertData = (data: Map<string, any>): Map<string, any> => {

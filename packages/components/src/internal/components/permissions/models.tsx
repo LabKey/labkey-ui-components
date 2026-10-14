@@ -109,13 +109,13 @@ export class SecurityRole extends Record({
     static filter(
         roles: SecurityRole[],
         policy: SecurityPolicy,
-        rolesToShow?: List<string>,
+        rolesToShow?: string[],
         rolesHidden?: string[]
     ): SecurityRole[] {
         return roles.filter(role => {
             return (
                 policy.relevantRoles.contains(role.uniqueName) &&
-                (!rolesToShow || rolesToShow.contains(role.uniqueName)) &&
+                (!rolesToShow || rolesToShow.includes(role.uniqueName)) &&
                 (!rolesHidden || rolesHidden.indexOf(role.uniqueName) === -1)
             );
         });

@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { fromJS, List } from 'immutable';
+import { fromJS } from 'immutable';
 import { PermissionRoles } from '@labkey/api';
 
 import policyJSON from '../../../test/data/security-getPolicy.json';
@@ -113,13 +113,13 @@ describe('SecurityRole model', () => {
         expect(relevantRoles.length).toBe(POLICY.relevantRoles.size);
 
         // check that we can filter for an explicit list
-        expect(SecurityRole.filter(ROLES, POLICY, List<string>()).length).toBe(0);
+        expect(SecurityRole.filter(ROLES, POLICY, []).length).toBe(0);
         let roleArr = [PermissionRoles.Editor, PermissionRoles.Author, PermissionRoles.Reader];
-        expect(SecurityRole.filter(ROLES, POLICY, List<string>(roleArr)).length).toBe(3);
+        expect(SecurityRole.filter(ROLES, POLICY, roleArr).length).toBe(3);
 
         // check that asking for a role which isn't relevant still won't be returned
         roleArr = [PermissionRoles.ApplicationAdmin, PermissionRoles.Reader];
-        const validRoles = SecurityRole.filter(ROLES, POLICY, List<string>(roleArr));
+        const validRoles = SecurityRole.filter(ROLES, POLICY, roleArr);
         expect(validRoles.length).toBe(1);
         expect(validRoles[0].uniqueName).toBe(PermissionRoles.Reader);
     });

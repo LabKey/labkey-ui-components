@@ -2,10 +2,16 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { Ajax, Query } from '@labkey/api';
+import { Query } from '@labkey/api';
 
-import { fetchFilterSuggestions } from './fetchFilterSuggestions';
+import { request } from '../../../internal/request';
+
+import { getFilterSuggestions } from './actions';
 import { FilterSuggestionsRequest, FilterSuggestionsResponse } from './models';
+
+jest.mock('../../../internal/request', () => ({
+    request: jest.fn(),
+}));
 
 const REQUEST: FilterSuggestionsRequest = {
     columns: ['Name', 'TubeType'],
@@ -38,30 +44,33 @@ const RESPONSE: FilterSuggestionsResponse = {
     ],
 };
 
-describe('fetchFilterSuggestions', () => {
+describe('getFilterSuggestions', () => {
+    beforeEach(() => {
+        jest.mocked(request).mockReset();
+    });
+
     test('posts the request to the endpoint in its container', async () => {
-        const request = jest.fn((config: Ajax.RequestOptions) => {
-            config.success({ responseJSON: RESPONSE } as unknown as XMLHttpRequest, config);
-            return undefined;
-        });
+        jest.mocked(request).mockResolvedValue(RESPONSE);
 
-        await expect(fetchFilterSuggestions(REQUEST, request)).resolves.toEqual(RESPONSE);
+        await expect(getFilterSuggestions(REQUEST)).resolves.toEqual(RESPONSE);
 
-        const config = request.mock.calls[0][0];
-        expect(config.method).toBe('POST');
-        expect(config.url).toContain('/Plasma/');
-        expect(config.url).toContain('query-getFilterSuggestions.api');
-        expect(config.jsonData).toEqual({ ...REQUEST, containerPath: undefined });
+        const options = jest.mocked(request).mock.calls[0][0];
+        expect(options.method).toBe('POST');
+        expect(options.url).toContain('/Plasma/');
+        expect(options.url).toContain('query-getFilterSuggestions.api');
+        expect(options.jsonData).toEqual({ ...REQUEST, containerPath: undefined });
+    });
+
+    test('defaults a response without suggestions to an empty, complete list', async () => {
+        jest.mocked(request).mockResolvedValue({});
+
+        await expect(getFilterSuggestions(REQUEST)).resolves.toEqual({ complete: true, suggestions: [] });
     });
 
     test('rejects on failure', async () => {
-        const request = jest.fn((config: Ajax.RequestOptions) => {
-            const response = { responseJSON: { exception: 'Query not found' }, status: 404 };
-            config.failure(response as unknown as XMLHttpRequest, config);
-            return undefined;
-        });
+        jest.mocked(request).mockRejectedValue({ exception: 'Query not found', status: 404 });
 
-        await expect(fetchFilterSuggestions(REQUEST, request)).rejects.toMatchObject({
+        await expect(getFilterSuggestions(REQUEST)).rejects.toMatchObject({
             exception: 'Query not found',
             status: 404,
         });

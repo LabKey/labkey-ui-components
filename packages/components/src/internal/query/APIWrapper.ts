@@ -71,7 +71,7 @@ import {
 import { executeSql, ExecuteSqlOptions, ExecuteSqlResponse } from './executeSql';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
 import { EDIT_METHOD } from '../constants';
-import { fetchFilterSuggestions } from '../../public/QueryModel/search/fetchFilterSuggestions';
+import { getFilterSuggestions } from '../../public/QueryModel/search/actions';
 import { FilterSuggestionsRequest, FilterSuggestionsResponse } from '../../public/QueryModel/search/models';
 
 export interface QueryAPIWrapper {
@@ -185,7 +185,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     executeSql = executeSql;
     getDataTypeFolderDataCount = getDataTypeFolderDataCount;
     getEntityTypeOptions = getEntityTypeOptionsWithExclusions;
-    getFilterSuggestions = fetchFilterSuggestions;
+    getFilterSuggestions = getFilterSuggestions;
     getGridViews = getGridViews;
     getFolderConfigurableEntityTypeOptions = getFolderConfigurableEntityTypeOptions;
     getFolderDataTypeDataCount = getFolderDataTypeDataCount;

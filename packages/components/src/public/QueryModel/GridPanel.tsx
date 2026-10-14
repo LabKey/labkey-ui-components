@@ -482,10 +482,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         view: ViewAction;
     };
 
-    createGridActionValues = (
-        includeReadOnlyMessage = true,
-        includeUnresolvedColumns = false
-    ): ActionValue[] => {
+    createGridActionValues = (includeReadOnlyMessage = true, includeUnresolvedColumns = false): ActionValue[] => {
         const { model } = this.props;
         const { filterArray, sorts } = model;
         const view = model.currentView;

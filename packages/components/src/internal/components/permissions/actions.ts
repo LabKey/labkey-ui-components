@@ -2,7 +2,8 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { fromJS, Map } from 'immutable';
+import { fromJS } from 'immutable';
+import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { ActionURL, Ajax, Filter, Security, Utils } from '@labkey/api';
 
@@ -27,11 +28,9 @@ export function processGetRolesResponse(rawRoles: any): SecurityRole[] {
     });
 }
 
-export function getRolesByUniqueName(roles: SecurityRole[]): Map<string, SecurityRole> {
-    let rolesByUniqueName = Map<string, SecurityRole>();
-    roles.forEach(role => {
-        rolesByUniqueName = rolesByUniqueName.set(role.uniqueName, role);
-    });
+export function getRolesByUniqueName(roles: SecurityRole[]): ExtendedMap<string, SecurityRole> {
+    const rolesByUniqueName = new ExtendedMap<string, SecurityRole>();
+    roles.forEach(role => rolesByUniqueName.set(role.uniqueName, role));
     return rolesByUniqueName;
 }
 
@@ -92,18 +91,16 @@ export function getInactiveUsers(): Promise<Principal[]> {
     });
 }
 
-export function getPrincipalsById(principals: Principal[]): Map<number, Principal> {
-    let principalsById = Map<number, Principal>();
-    principals.forEach(principal => {
-        principalsById = principalsById.set(principal.userId, principal);
-    });
+export function getPrincipalsById(principals: Principal[]): ExtendedMap<number, Principal> {
+    const principalsById = new ExtendedMap<number, Principal>();
+    principals.forEach(principal => principalsById.set(principal.userId, principal));
     return principalsById;
 }
 
 export function fetchContainerSecurityPolicy(
     containerId: string,
-    principalsById?: Map<number, Principal>,
-    inactiveUsersById?: Map<number, Principal>
+    principalsById?: ExtendedMap<number, Principal>,
+    inactiveUsersById?: ExtendedMap<number, Principal>
 ): Promise<SecurityPolicy> {
     return new Promise((resolve, reject) => {
         Security.getPolicy({

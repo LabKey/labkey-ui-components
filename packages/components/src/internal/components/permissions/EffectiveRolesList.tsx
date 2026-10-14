@@ -3,7 +3,8 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { List, Map } from 'immutable';
+import { List } from 'immutable';
+import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { User } from '../base/models/User';
 import { AppURL } from '../../url/AppURL';
@@ -17,7 +18,7 @@ import { SecurityAssignment, SecurityPolicy, SecurityRole } from './models';
 interface Props {
     currentUser: User;
     policy?: SecurityPolicy;
-    rolesByUniqueName?: Map<string, SecurityRole>;
+    rolesByUniqueName?: ExtendedMap<string, SecurityRole>;
     rootPolicy?: SecurityPolicy;
     showLinks?: boolean;
     userId: number;

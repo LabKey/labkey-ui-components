@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, ReactNode, useCallback, useEffect, useState } from 'react';
-import { Map } from 'immutable';
+import { ExtendedMap } from '../../../public/ExtendedMap';
 import { getServerContext, Utils } from '@labkey/api';
 
 import classNames from 'classnames';
@@ -77,7 +77,7 @@ interface Props {
     isSelf?: boolean;
     onUsersStateChangeComplete?: (response: any) => void;
     policy?: SecurityPolicy;
-    rolesByUniqueName?: Map<string, SecurityRole>;
+    rolesByUniqueName?: ExtendedMap<string, SecurityRole>;
     rootPolicy?: SecurityPolicy;
     showGroupListLinks?: boolean;
     showPermissionListLinks?: boolean;
@@ -107,7 +107,7 @@ export const UserDetailsPanel: FC<Props> = props => {
     const [loading, setLoading] = useState<boolean>(false);
     const [policyState, setPolicyState] = useState<SecurityPolicy | undefined>(undefined);
     const [principal, setPrincipal] = useState<Principal | undefined>(undefined);
-    const [rolesByUniqueNameState, setRolesByUniqueNameState] = useState<Map<string, SecurityRole> | undefined>(
+    const [rolesByUniqueNameState, setRolesByUniqueNameState] = useState<ExtendedMap<string, SecurityRole> | undefined>(
         undefined
     );
     const [showDialog, setShowDialog] = useState<string | undefined>(undefined);

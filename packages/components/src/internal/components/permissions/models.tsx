@@ -3,6 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map, Record } from 'immutable';
+import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import React from 'react';
 
@@ -242,7 +243,10 @@ export class SecurityPolicy extends Record({
         }) as SecurityPolicy;
     }
 
-    static updateAssignmentsData(policy: SecurityPolicy, principalsById: Map<number, Principal>): SecurityPolicy {
+    static updateAssignmentsData(
+        policy: SecurityPolicy,
+        principalsById: ExtendedMap<number, Principal>
+    ): SecurityPolicy {
         const assignments = policy.assignments
             .map(assignment => {
                 const principal = principalsById ? principalsById.get(assignment.userId) : undefined;
@@ -271,9 +275,9 @@ export class SecurityPolicy extends Record({
 
 export interface PermissionsProviderProps {
     error?: string;
-    inactiveUsersById?: Map<number, Principal>;
+    inactiveUsersById?: ExtendedMap<number, Principal>;
     principals?: Principal[];
-    principalsById?: Map<number, Principal>;
+    principalsById?: ExtendedMap<number, Principal>;
     roles?: SecurityRole[];
-    rolesByUniqueName?: Map<string, SecurityRole>;
+    rolesByUniqueName?: ExtendedMap<string, SecurityRole>;
 }

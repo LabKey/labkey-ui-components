@@ -2,7 +2,7 @@
  * Copyright (c) 2021-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { Map } from 'immutable';
+import { ExtendedMap } from '../../../public/ExtendedMap';
 import { ActionURL, Filter, Query, Security, User, Utils } from '@labkey/api';
 
 import { Container } from '../base/models/Container';
@@ -89,8 +89,8 @@ export interface SecurityAPIWrapper {
     ) => Promise<FetchedGroup[]>;
     fetchPolicy: (
         containerId: string,
-        principalsById?: Map<number, Principal>,
-        inactiveUsersById?: Map<number, Principal>
+        principalsById?: ExtendedMap<number, Principal>,
+        inactiveUsersById?: ExtendedMap<number, Principal>
     ) => Promise<SecurityPolicy>;
     fetchRoles: () => Promise<SecurityRole[]>;
     getAuditLogDate: (filterCol: string, filterVal: number | string) => Promise<string>;

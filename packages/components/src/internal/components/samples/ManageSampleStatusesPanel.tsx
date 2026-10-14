@@ -3,7 +3,6 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { List } from 'immutable';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
@@ -173,7 +172,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
             api.query
                 .insertRows({
                     schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
-                    rows: List([stateToSave]),
+                    rows: [{ ...stateToSave }],
                     containerPath: container?.path,
                 })
                 .then(() => {

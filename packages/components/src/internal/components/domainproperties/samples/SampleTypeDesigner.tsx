@@ -320,7 +320,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<SampleTypeDesign
         domain: DomainDesign,
         dirty: boolean,
         rowIndexChange?: DomainFieldIndexChange[],
-        changes?: List<IFieldChange>
+        changes?: IFieldChange[]
     ): void => {
         this.setState(
             state => ({

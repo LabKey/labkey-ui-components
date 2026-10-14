@@ -61,7 +61,7 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
         domain: DomainDesign,
         dirty: boolean,
         rowIndexChange?: DomainFieldIndexChange[],
-        changes?: List<IFieldChange>
+        changes?: IFieldChange[]
     ): void => {
         if (changes) {
             this.setState(

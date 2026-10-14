@@ -21,7 +21,7 @@ import { DomainDesign, DomainPropertiesGridColumn, IFieldChange } from './models
 
 interface DomainPropertiesGridProps {
     actions: {
-        onFieldsChange: (changes: List<IFieldChange>, index: number, expand: boolean) => void;
+        onFieldsChange: (changes: IFieldChange[], index: number, expand: boolean) => void;
         scrollFunction: (i: number) => void;
         toggleSelectAll: () => void;
     };

@@ -5,8 +5,6 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 
-import { List } from 'immutable';
-
 import { FIELD_EDITOR_CALC_COLS_TOPIC, HelpLink, LABKEY_SQL_TOPIC } from '../../util/helpLinks';
 
 import { resolveErrorMessage } from '../../util/messaging';
@@ -126,7 +124,7 @@ export const CalculatedFieldOptions: FC<CalculatedFieldOptionsProps> = memo(prop
             try {
                 const response = await api.domain.parseCalculatedColumn(
                     expression,
-                    domainFields.toArray(),
+                    domainFields,
                     systemFields
                 );
                 setError(response.error);
@@ -139,7 +137,7 @@ export const CalculatedFieldOptions: FC<CalculatedFieldOptionsProps> = memo(prop
                         fieldName: field.name,
                         propertyId: undefined,
                         severity: SEVERITY_LEVEL_WARN,
-                        rowIndexes: List<number>([index]),
+                        rowIndexes: [index],
                     });
                     onChange(warningId, domainFieldWarning, index, false, true);
                 } else if (isExpressionChange) {

@@ -3,7 +3,6 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { List } from 'immutable';
 import { waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
@@ -141,7 +140,7 @@ describe('CalculatedFieldOptions', () => {
     });
 
     describe('AI assistance (mcpReady)', () => {
-        const getDomainFields = () => ({ domainFields: List<DomainField>(), systemFields: [] as SystemField[] });
+        const getDomainFields = () => ({ domainFields: [] as DomainField[], systemFields: [] as SystemField[] });
 
         const renderWithAssistance = (
             mcpReady: boolean | undefined,

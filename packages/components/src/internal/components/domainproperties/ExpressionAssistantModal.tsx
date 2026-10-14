@@ -215,10 +215,7 @@ function useExpressionAssistance(
 
 export const ExpressionAssistantModal: FC<ExpressionAssistantModalProps> = memo(props => {
     const { field, fieldError, getDomainFields, onApplyExpression, onCancel } = props;
-    const { domainFields, systemFields } = useMemo(() => {
-        const { domainFields, systemFields } = getDomainFields();
-        return { domainFields: domainFields.toArray(), systemFields };
-    }, [getDomainFields]);
+    const { domainFields, systemFields } = useMemo(() => getDomainFields(), [getDomainFields]);
     const { isPending, messages, onInterrupt, sendPrompt } = useExpressionAssistance(
         domainFields,
         systemFields,

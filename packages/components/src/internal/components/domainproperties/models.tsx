@@ -98,7 +98,7 @@ export interface IFieldChange {
 }
 
 export type DomainOnChange = (
-    changes: List<IFieldChange>,
+    changes: IFieldChange[],
     index?: number,
     expand?: boolean,
     skipDirtyCheck?: boolean
@@ -142,7 +142,7 @@ interface IDomainDesign {
     allowUserProperties: boolean;
     container: string;
     defaultDefaultValueType: string;
-    defaultValueOptions: List<string>;
+    defaultValueOptions: string[];
     description?: string;
     disabledSystemFields?: string[];
     domainException?: DomainException;
@@ -178,7 +178,7 @@ export class DomainDesign
         allowCalculatedFields: false,
         showDefaultValueSettings: false,
         defaultDefaultValueType: undefined,
-        defaultValueOptions: List<string>(),
+        defaultValueOptions: [],
         fields: List<DomainField>(),
         indices: List<DomainIndex>(),
         domainException: undefined,
@@ -209,7 +209,7 @@ export class DomainDesign
     declare allowCalculatedFields: boolean;
     declare showDefaultValueSettings: boolean;
     declare defaultDefaultValueType: string;
-    declare defaultValueOptions: List<string>;
+    declare defaultValueOptions: string[];
     declare fields: List<DomainField>;
     declare indices: List<DomainIndex>;
     declare domainException: DomainException;
@@ -225,7 +225,7 @@ export class DomainDesign
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
         let indices = List<DomainIndex>();
-        let defaultValueOptions = List<DomainField>();
+        let defaultValueOptions: string[] = [];
         let mandatoryFieldNames = List<string>();
         let uniqueConstraintFieldNames = List<string>();
         let nonUniqueConstraintFieldNames = List<string>();
@@ -283,9 +283,7 @@ export class DomainDesign
             }
 
             if (rawModel.defaultValueOptions) {
-                for (let i = 0; i < rawModel.defaultValueOptions.length; i++) {
-                    defaultValueOptions = defaultValueOptions.push(rawModel.defaultValueOptions[i]);
-                }
+                defaultValueOptions = [...rawModel.defaultValueOptions];
             }
         }
 
@@ -504,7 +502,7 @@ export class DomainDesign
                 const selected = row.get('selected');
                 const formInputId = createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, fieldIndex);
 
-                const changes = List.of({ id: formInputId, value: !selected });
+                const changes = [{ id: formInputId, value: !selected }];
                 return (
                     <DomainDesignerCheckbox
                         checked={selected}
@@ -1562,9 +1560,8 @@ export class DomainField
     }
 }
 
-// TODO: Refactor List<DomainField> to DomainField[].
-//  Additionally, get rid of getDomainFields() in general and replace with domainField and systemField props.
-export type GetDomainFields = () => { domainFields: List<DomainField>; systemFields: SystemField[] };
+// TODO: get rid of getDomainFields() in general and replace with domainField and systemField props.
+export type GetDomainFields = () => { domainFields: DomainField[]; systemFields: SystemField[] };
 
 export function isValidTextChoiceValue(v: string): boolean {
     return v !== null && v !== undefined && v.trim() !== '';
@@ -1681,27 +1678,24 @@ function isFieldSaved(field: Partial<IDomainField>): boolean {
 
 export function resolveAvailableTypes(
     field: DomainField,
-    availableTypes: List<PropDescType>,
+    availableTypes: PropDescType[],
     appPropertiesOnly?: boolean,
     showStudyPropertyTypes?: boolean,
     showFilePropertyType?: boolean
-): List<PropDescType> {
+): PropDescType[] {
     // field has not been saved -- display all property types allowed by app
     // Issue 40795: need to check wrappedColumnName for alias field in query metadata editor and resolve the datatype fields
     if (field.isNew() && field.wrappedColumnName === undefined) {
-        return availableTypes
-            .filter(type =>
-                isPropertyTypeAllowed(appPropertiesOnly, type, showFilePropertyType, showStudyPropertyTypes)
-            )
-            .toList();
+        return availableTypes.filter(type =>
+            isPropertyTypeAllowed(appPropertiesOnly, type, showFilePropertyType, showStudyPropertyTypes)
+        );
     }
 
     // compare against original types as the field's values are volatile
     const { rangeURI, dataType } = field.original;
 
     // field has been saved -- display eligible propTypes
-    let filteredTypes = availableTypes
-        .filter(type => {
+    const filteredTypes = availableTypes.filter(type => {
             // Can always return to the original type for field
             if (type.name === dataType.name) return true;
 
@@ -1726,12 +1720,11 @@ export function resolveAvailableTypes(
             if (!acceptablePropertyType(type, rangeURI)) return false;
 
             return isPropertyTypeAllowed(appPropertiesOnly, type, showFilePropertyType, showStudyPropertyTypes);
-        })
-        .toList();
+        });
 
     // Issue 39341: if the field type is coming from the server as a type we don't support in new field creation, add it to the list
-    if (!filteredTypes.contains(dataType)) {
-        filteredTypes = filteredTypes.push(dataType);
+    if (!filteredTypes.includes(dataType)) {
+        filteredTypes.push(dataType);
     }
 
     return filteredTypes;
@@ -2074,7 +2067,7 @@ export class DomainException
                     propertyId: field.get('propertyId'),
                     severity: SEVERITY_LEVEL_ERROR,
                     serverError: false,
-                    rowIndexes: List<number>([index]),
+                    rowIndexes: [index],
                     newRowIndexes: undefined,
                 })
             );
@@ -2117,7 +2110,7 @@ export class DomainException
         let allFieldErrors = exceptionFromServer.get('errors');
 
         allFieldErrors = allFieldErrors.map(error => {
-            const indices = domain.fields.reduce((indexList, field, idx, iter): List<number> => {
+            const indices = domain.fields.reduce((indexList: number[], field, idx): number[] => {
                 if (
                     ((field.name === undefined || field.name === '') && error.get('fieldName') === undefined) ||
                     (field.propertyId !== 0 &&
@@ -2127,13 +2120,14 @@ export class DomainException
                         error.get('fieldName') !== undefined &&
                         field.name.toLowerCase() === error.get('fieldName').toLowerCase())
                 ) {
-                    indexList = indexList.push(idx);
+                    indexList.push(idx);
                 }
 
                 return indexList;
-            }, List<number>());
+            }, []);
 
-            return error.merge({ rowIndexes: indices });
+            // merge() would convert the array to a List
+            return error.set('rowIndexes', indices);
         });
 
         return exceptionFromServer.set('errors', allFieldErrors) as DomainException;
@@ -2162,9 +2156,9 @@ export class DomainException
 interface IDomainFieldError {
     fieldName: string;
     message: string;
-    newRowIndexes?: List<number>; // for drag and drop
+    newRowIndexes?: number[]; // for drag and drop
     propertyId?: number;
-    rowIndexes: List<number>;
+    rowIndexes: number[];
     severity?: string;
 }
 
@@ -2175,7 +2169,7 @@ export class DomainFieldError
         propertyId: undefined,
         severity: undefined,
         serverError: undefined,
-        rowIndexes: List<number>(),
+        rowIndexes: [],
         newRowIndexes: undefined,
         extraInfo: undefined,
     })
@@ -2186,8 +2180,8 @@ export class DomainFieldError
     declare propertyId?: number;
     declare severity?: string;
     declare serverError: boolean;
-    declare rowIndexes: List<number>;
-    declare newRowIndexes?: List<number>;
+    declare rowIndexes: number[];
+    declare newRowIndexes?: number[];
     declare extraInfo?: string;
 
     static fromJS(errors: any[], severityLevel: string): List<DomainFieldError> {
@@ -2212,7 +2206,7 @@ export class DomainFieldError
                 extraInfo: errors[i].extraInfo,
                 severity,
                 serverError: true,
-                rowIndexes: errors[i].rowIndexes ? errors[i].rowIndexes : List<number>(),
+                rowIndexes: errors[i].rowIndexes ? errors[i].rowIndexes : [],
             });
             fieldErrors = fieldErrors.push(domainFieldError);
         }
@@ -2228,7 +2222,7 @@ export interface IAppDomainHeader {
     domainIndex: number;
     modelDomains?: List<DomainDesign>;
     onAddField?: (fieldConfig: Partial<IDomainField>) => void;
-    onChange?: (changes: List<IFieldChange>, index: number, expand: boolean) => void;
+    onChange?: (changes: IFieldChange[], index: number, expand: boolean) => void;
     onDomainChange?: (index: number, updatedDomain: DomainDesign) => void;
 }
 

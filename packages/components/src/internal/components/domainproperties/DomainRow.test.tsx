@@ -3,7 +3,6 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { act } from 'react';
-import { List } from 'immutable';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
@@ -68,11 +67,7 @@ const wrapDraggable = element => {
     );
 };
 
-const DEFAULT_OPTIONS = List<string>([
-    DOMAIN_EDITABLE_DEFAULT,
-    DOMAIN_LAST_ENTERED_DEFAULT,
-    DOMAIN_NON_EDITABLE_DEFAULT,
-]);
+const DEFAULT_OPTIONS = [DOMAIN_EDITABLE_DEFAULT, DOMAIN_LAST_ENTERED_DEFAULT, DOMAIN_NON_EDITABLE_DEFAULT];
 
 describe('DomainRow', () => {
     function getDefaultProps(): DomainRowProps {

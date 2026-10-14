@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { List } from 'immutable';
 import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { User } from '../base/models/User';
@@ -28,18 +27,15 @@ export class EffectiveRolesList extends React.PureComponent<Props> {
     render() {
         const { userId, policy, rootPolicy, rolesByUniqueName, currentUser, showLinks = true } = this.props;
 
-        let assignments =
-            policy && rolesByUniqueName
-                ? policy.assignments.filter(assignment => assignment.userId === userId).toList()
-                : List<SecurityAssignment>();
-
+        const assignments: SecurityAssignment[] = [];
+        if (policy && rolesByUniqueName) {
+            assignments.push(...policy.assignments.filter(assignment => assignment.userId === userId).toArray());
+        }
         if (rootPolicy && rolesByUniqueName) {
-            assignments = assignments
-                .concat(rootPolicy.assignments.filter(assignment => assignment.userId === userId))
-                .toList();
+            assignments.push(...rootPolicy.assignments.filter(assignment => assignment.userId === userId).toArray());
         }
 
-        if (assignments.size === 0) {
+        if (assignments.length === 0) {
             return null;
         }
 
@@ -50,23 +46,21 @@ export class EffectiveRolesList extends React.PureComponent<Props> {
                     <div className="col-xs-4 principal-detail-label">Effective Roles</div>
                     <div className="col-xs-8 principal-detail-value">
                         <ul className="principal-detail-ul">
-                            {assignments
-                                .map(assignment => {
-                                    const role = rolesByUniqueName.get(assignment.role);
-                                    const roleDisplay = role ? role.displayName : assignment.role;
-                                    const url = AppURL.create(ADMIN_KEY, 'permissions').addParams({
-                                        expand: roleDisplay,
-                                    });
-                                    const showLink = currentUser.isAdmin && showLinks;
+                            {assignments.map(assignment => {
+                                const role = rolesByUniqueName.get(assignment.role);
+                                const roleDisplay = role ? role.displayName : assignment.role;
+                                const url = AppURL.create(ADMIN_KEY, 'permissions').addParams({
+                                    expand: roleDisplay,
+                                });
+                                const showLink = currentUser.isAdmin && showLinks;
 
-                                    return (
-                                        <li key={assignment.role} className="principal-detail-li">
-                                            {showLink && <AppLink to={url}>{roleDisplay}</AppLink>}
-                                            {!showLink && roleDisplay}
-                                        </li>
-                                    );
-                                })
-                                .toArray()}
+                                return (
+                                    <li key={assignment.role} className="principal-detail-li">
+                                        {showLink && <AppLink to={url}>{roleDisplay}</AppLink>}
+                                        {!showLink && roleDisplay}
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </div>
                 </div>

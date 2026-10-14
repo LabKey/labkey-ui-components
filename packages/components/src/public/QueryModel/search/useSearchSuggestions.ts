@@ -72,8 +72,7 @@ export function useSearchSuggestions(
             try {
                 const response = await api.query.getFilterSuggestions(request);
                 result = { ...response, term: request.term };
-            } catch (e) {
-                console.error('Unable to load search suggestions', e);
+            } catch {
                 result = { complete: false, suggestions: [createSearchSuggestion(request.term)], term: request.term };
             }
             if (id === requestId.current) setSettled(result);

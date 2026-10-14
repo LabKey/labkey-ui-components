@@ -713,7 +713,7 @@ export interface InsertRowsOptions
         Omit<Query.QueryRequestOptions, 'apiVersion' | 'queryName' | 'rows' | 'schemaName'>,
         QueryRequestOptionsBase {
     fillEmptyFields?: boolean;
-    rows: Record<string, any>[];
+    rows: Record<string, unknown>[];
     schemaQuery: SchemaQuery;
 }
 

@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, PureComponent, ReactNode } from 'react';
-import { List } from 'immutable';
 import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { Filter } from '@labkey/api';
@@ -250,8 +249,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                 model.queryParameters,
                 model.containerFilter
             ).then(response => {
-                const selectedUserId =
-                    response.selected.length > 0 ? parseInt(List.of(...response.selected).last()) : undefined;
+                const selectedUserId = response.selected.length > 0 ? parseInt(response.selected.at(-1)) : undefined;
                 this.updateSelectedUserId(selectedUserId);
             });
         }
@@ -411,3 +409,4 @@ export const UsersGridPanel: FC<PanelProps> = memo(props => {
     const [searchParams, setSearchParams] = useSearchParams();
     return <UsersGridPanelWithModels {...props} searchParams={searchParams} setSearchParams={setSearchParams} />;
 });
+UsersGridPanel.displayName = 'UsersGridPanel';

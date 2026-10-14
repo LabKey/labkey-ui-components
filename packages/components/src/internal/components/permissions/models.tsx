@@ -39,17 +39,13 @@ export class Principal extends Record({
         return new Principal({ userId, name, type, displayName });
     }
 
-    static filterAndSort(
-        principals: List<Principal>,
-        groupMembership: Groups,
-        excludeUserIds?: List<number>
-    ): List<Principal> {
+    static filterAndSort(principals: Principal[], groupMembership: Groups, excludeUserIds?: number[]): Principal[] {
         return (
             principals
                 // filter out any principals that are already members of this role, and built-in site groups
                 .filter(
                     principal =>
-                        (excludeUserIds === undefined || !excludeUserIds.contains(principal.userId)) &&
+                        (excludeUserIds === undefined || !excludeUserIds.includes(principal.userId)) &&
                         principal.userId > 0
                 )
                 // Supply information on whether a principal is a site group or not
@@ -61,7 +57,6 @@ export class Principal extends Record({
                 )
                 // finally sort by type (group or user) and then display name
                 .sort((p1, p2) => naturalSort(p1.displayName, p2.displayName))
-                .toList()
         );
     }
 
@@ -111,20 +106,18 @@ export class SecurityRole extends Record({
 
     // use the explicit set of roles, fall back to the relevant roles for the policy
     static filter(
-        roles: List<SecurityRole>,
+        roles: SecurityRole[],
         policy: SecurityPolicy,
         rolesToShow?: List<string>,
         rolesHidden?: string[]
-    ): List<SecurityRole> {
-        return roles
-            .filter(role => {
-                return (
-                    policy.relevantRoles.contains(role.uniqueName) &&
-                    (!rolesToShow || rolesToShow.contains(role.uniqueName)) &&
-                    (!rolesHidden || rolesHidden.indexOf(role.uniqueName) === -1)
-                );
-            })
-            .toList();
+    ): SecurityRole[] {
+        return roles.filter(role => {
+            return (
+                policy.relevantRoles.contains(role.uniqueName) &&
+                (!rolesToShow || rolesToShow.contains(role.uniqueName)) &&
+                (!rolesHidden || rolesHidden.indexOf(role.uniqueName) === -1)
+            );
+        });
     }
 }
 
@@ -279,8 +272,8 @@ export class SecurityPolicy extends Record({
 export interface PermissionsProviderProps {
     error?: string;
     inactiveUsersById?: Map<number, Principal>;
-    principals?: List<Principal>;
+    principals?: Principal[];
     principalsById?: Map<number, Principal>;
-    roles?: List<SecurityRole>;
+    roles?: SecurityRole[];
     rolesByUniqueName?: Map<string, SecurityRole>;
 }

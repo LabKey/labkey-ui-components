@@ -2332,5 +2332,6 @@ export interface SystemField {
     IsCalculated?: boolean;
     Label: string;
     Name: string;
+    rangeURI: string;
     Required: boolean;
 }

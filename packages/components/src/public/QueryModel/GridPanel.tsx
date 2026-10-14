@@ -55,7 +55,7 @@ import { MenuItem, SplitButton } from '../../internal/dropdowns';
 
 import { DOMAIN_FIELD } from '../../internal/components/forms/DomainFieldHelpTipContents';
 
-import { ActionValue } from './grid/actions/Action';
+import { ActionKeyword, ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
 import { SearchAction } from './grid/actions/Search';
 import { SortAction } from './grid/actions/Sort';
@@ -546,8 +546,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }));
 
         return {
-            filterActionValues: staticValues.filter(av => av.action.keyword !== 'sort'),
-            sortActionValues: staticValues.filter(av => av.action.keyword === 'sort'),
+            filterActionValues: staticValues.filter(av => av.action.keyword !== ActionKeyword.Sort),
+            sortActionValues: staticValues.filter(av => av.action.keyword === ActionKeyword.Sort),
         };
     };
 

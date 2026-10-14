@@ -5,18 +5,21 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 
-import { ActionValue } from './actions/Action';
+import { ActionKeyword, ActionValue } from './actions/Action';
 import { useEnterEscape } from '../../useEnterEscape';
 import { OverlayTrigger } from '../../../internal/OverlayTrigger';
 import { Popover } from '../../../internal/Popover';
 import { generateId } from '../../../internal/util/utils';
 
+export type OnClickValue = (actionValue: ActionValue, event?: React.MouseEvent<HTMLElement>) => void;
+export type OnRemoveValue = (actionValueIndex: number, event: React.MouseEvent<HTMLElement>) => void;
+
 interface ValueProps {
     actionValue: ActionValue;
     index: number;
     lockReadOnlyForDelete?: boolean;
-    onClick?: (actionValue: ActionValue, event: any) => void;
-    onRemove?: (actionValueIndex: number, event: any) => void;
+    onClick?: OnClickValue;
+    onRemove?: OnRemoveValue;
 }
 
 export const valueClassName = 'filter-status-value';
@@ -26,8 +29,8 @@ export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyFor
     const { action, value, displayValue, isReadOnly, isRemovable } = actionValue;
     const popoverId = useMemo(() => generateId('filter-status-value-popover-'), []);
 
-    const onIconClick = useCallback(
-        (event: React.MouseEvent): void => {
+    const onIconClick = useCallback<React.MouseEventHandler<HTMLElement>>(
+        (event): void => {
             event.stopPropagation();
             event.preventDefault();
             if (onRemove && isRemovable !== false) {
@@ -37,8 +40,8 @@ export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyFor
         [index, isRemovable, onRemove]
     );
 
-    const onValueClick = useCallback(
-        (event: React.MouseEvent<HTMLDivElement>): void => {
+    const onValueClick = useCallback<React.MouseEventHandler<HTMLDivElement>>(
+        (event): void => {
             // Issue 50449: Expand icon click area to remove filter value
             const target = event.target as HTMLElement;
             const filterBoundBoxClick = target.className?.indexOf('filter-status-value') > -1;
@@ -68,7 +71,7 @@ export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyFor
     const onMouseLeave = useCallback((): void => setIsActive(false), []);
     const onKeyDown = useEnterEscape(onValueEnter);
 
-    const showRemoveIcon = isActive && isRemovable !== false && action.keyword !== 'view';
+    const showRemoveIcon = isActive && isRemovable !== false && action.keyword !== ActionKeyword.View;
 
     const className = classNames(valueClassName, {
         'is-active': isActive,

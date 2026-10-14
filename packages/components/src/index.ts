@@ -1985,11 +1985,6 @@ export type { Action, ActionValue } from './public/QueryModel/grid/actions/Actio
 export type { QueryConfig, QueryParameters } from './public/QueryModel/QueryModel';
 export type { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
 
-export type {
-    FilterSuggestion,
-    FilterSuggestionsRequest,
-    FilterSuggestionsResponse,
-} from './public/QueryModel/search/models';
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
 //  the typescript compiler option "isolatedModules", which do not export types from modules, so types must be exported

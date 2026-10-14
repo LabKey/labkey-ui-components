@@ -208,7 +208,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
             } else {
                 const response = await api.query.insertRows({
                     schemaQuery: LABEL_TEMPLATE_SQ,
-                    rows: [templateToSave],
+                    rows: [{ ...templateToSave }],
                     containerPath: container.path,
                 });
 

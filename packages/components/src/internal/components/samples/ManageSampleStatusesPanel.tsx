@@ -172,7 +172,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
             api.query
                 .insertRows({
                     schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
-                    rows: [stateToSave],
+                    rows: [{ ...stateToSave }],
                     containerPath: container?.path,
                 })
                 .then(() => {

@@ -67,6 +67,8 @@ const SuggestionOption: FC<SuggestionOptionProps> = memo(props => {
         <li
             aria-selected={active}
             className={classNames('grid-panel__search-suggestion', { active })}
+            data-kind={suggestion.kind}
+            data-source={suggestion.source}
             id={id}
             onClick={onClick}
             onMouseDown={onMouseDown}

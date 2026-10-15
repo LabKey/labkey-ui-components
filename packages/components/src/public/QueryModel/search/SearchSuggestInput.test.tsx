@@ -103,6 +103,16 @@ describe('SearchSuggestInput', () => {
             term: 'Sodium',
         });
         expect(optionLabels()).toEqual([TUBE_TYPE.label, COMPOSE.label, SEARCH.label]);
+        expect(
+            Array.from(document.querySelectorAll('[role="option"]')).map(el => [
+                el.getAttribute('data-kind'),
+                el.getAttribute('data-source'),
+            ])
+        ).toEqual([
+            ['filter', 'partialValue'],
+            ['compose', 'compose'],
+            ['search', 'fallback'],
+        ]);
         expect(document.querySelectorAll('.grid-panel__search-suggestion-loading')).toHaveLength(0);
         const active = document.querySelector('[role="option"].active');
         expect(active.textContent).toContain(TUBE_TYPE.label);

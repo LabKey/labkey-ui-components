@@ -88,6 +88,7 @@ export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyFor
     const content = (
         <div
             className={className}
+            data-keyword={action.keyword}
             onClick={onValueClick}
             onKeyDown={onKeyDown}
             onMouseEnter={onMouseEnter}

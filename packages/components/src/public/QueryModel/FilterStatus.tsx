@@ -34,7 +34,9 @@ export const FilterStatus: FC<Props> = memo(props => {
                     .sort((a, b) => {
                         // sort the view actions to the front
                         if (a.action.keyword !== b.action.keyword) {
-                            return a.action.keyword === ActionKeyword.View ? -1 : b.action.keyword === ActionKeyword.View ? 1 : 0;
+                            if (a.action.keyword === ActionKeyword.View) return -1;
+                            if (b.action.keyword === ActionKeyword.View) return 1;
+                            return 0;
                         }
 
                         // then sort by filter display value

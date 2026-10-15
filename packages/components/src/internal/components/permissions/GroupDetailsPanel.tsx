@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, useEffect, useMemo, useState } from 'react';
-import { Map } from 'immutable';
+import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { resolveErrorMessage } from '../../util/messaging';
 import { Member, MemberType } from '../administration/models';
@@ -25,7 +25,7 @@ interface Props {
     members?: Member[];
     policy: SecurityPolicy;
     principal?: Principal;
-    rolesByUniqueName: Map<string, SecurityRole>;
+    rolesByUniqueName: ExtendedMap<string, SecurityRole>;
     showPermissionListLinks?: boolean;
 }
 

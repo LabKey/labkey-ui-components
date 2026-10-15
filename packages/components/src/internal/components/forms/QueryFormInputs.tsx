@@ -42,7 +42,7 @@ export interface QueryFormInputsProps {
     /** A container filter that will be applied to all query-based inputs in this form */
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
-    disabledFields?: List<string>;
+    disabledFields?: string[];
     fieldValues?: any;
     fieldWithMixedValues?: string[];
     fireQSChangeOnInit?: boolean;
@@ -81,7 +81,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         renderFileInputs: false,
         allowFieldDisable: false,
         initiallyDisableFields: false,
-        disabledFields: List<string>(),
+        disabledFields: [],
     };
 
     private _fieldEnabledCount = 0;
@@ -196,7 +196,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                 .filter(col => filter(col) && !col.removeFromFormInput)
                 .map(col => {
                     const { fieldKey, name, required } = col;
-                    const shouldDisableField = initiallyDisableFields || disabledFields.contains(name.toLowerCase());
+                    const shouldDisableField = initiallyDisableFields || disabledFields.includes(name.toLowerCase());
                     if (!shouldDisableField) {
                         this._fieldEnabledCount++;
                     }

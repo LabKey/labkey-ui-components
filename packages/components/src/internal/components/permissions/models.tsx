@@ -3,6 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map, Record } from 'immutable';
+import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import React from 'react';
 
@@ -39,17 +40,13 @@ export class Principal extends Record({
         return new Principal({ userId, name, type, displayName });
     }
 
-    static filterAndSort(
-        principals: List<Principal>,
-        groupMembership: Groups,
-        excludeUserIds?: List<number>
-    ): List<Principal> {
+    static filterAndSort(principals: Principal[], groupMembership: Groups, excludeUserIds?: number[]): Principal[] {
         return (
             principals
                 // filter out any principals that are already members of this role, and built-in site groups
                 .filter(
                     principal =>
-                        (excludeUserIds === undefined || !excludeUserIds.contains(principal.userId)) &&
+                        (excludeUserIds === undefined || !excludeUserIds.includes(principal.userId)) &&
                         principal.userId > 0
                 )
                 // Supply information on whether a principal is a site group or not
@@ -61,7 +58,6 @@ export class Principal extends Record({
                 )
                 // finally sort by type (group or user) and then display name
                 .sort((p1, p2) => naturalSort(p1.displayName, p2.displayName))
-                .toList()
         );
     }
 
@@ -111,20 +107,18 @@ export class SecurityRole extends Record({
 
     // use the explicit set of roles, fall back to the relevant roles for the policy
     static filter(
-        roles: List<SecurityRole>,
+        roles: SecurityRole[],
         policy: SecurityPolicy,
-        rolesToShow?: List<string>,
+        rolesToShow?: string[],
         rolesHidden?: string[]
-    ): List<SecurityRole> {
-        return roles
-            .filter(role => {
-                return (
-                    policy.relevantRoles.contains(role.uniqueName) &&
-                    (!rolesToShow || rolesToShow.contains(role.uniqueName)) &&
-                    (!rolesHidden || rolesHidden.indexOf(role.uniqueName) === -1)
-                );
-            })
-            .toList();
+    ): SecurityRole[] {
+        return roles.filter(role => {
+            return (
+                policy.relevantRoles.contains(role.uniqueName) &&
+                (!rolesToShow || rolesToShow.includes(role.uniqueName)) &&
+                (!rolesHidden || rolesHidden.indexOf(role.uniqueName) === -1)
+            );
+        });
     }
 }
 
@@ -249,7 +243,10 @@ export class SecurityPolicy extends Record({
         }) as SecurityPolicy;
     }
 
-    static updateAssignmentsData(policy: SecurityPolicy, principalsById: Map<number, Principal>): SecurityPolicy {
+    static updateAssignmentsData(
+        policy: SecurityPolicy,
+        principalsById: ExtendedMap<number, Principal>
+    ): SecurityPolicy {
         const assignments = policy.assignments
             .map(assignment => {
                 const principal = principalsById ? principalsById.get(assignment.userId) : undefined;
@@ -278,9 +275,9 @@ export class SecurityPolicy extends Record({
 
 export interface PermissionsProviderProps {
     error?: string;
-    inactiveUsersById?: Map<number, Principal>;
-    principals?: List<Principal>;
-    principalsById?: Map<number, Principal>;
-    roles?: List<SecurityRole>;
-    rolesByUniqueName?: Map<string, SecurityRole>;
+    inactiveUsersById?: ExtendedMap<number, Principal>;
+    principals?: Principal[];
+    principalsById?: ExtendedMap<number, Principal>;
+    roles?: SecurityRole[];
+    rolesByUniqueName?: ExtendedMap<string, SecurityRole>;
 }

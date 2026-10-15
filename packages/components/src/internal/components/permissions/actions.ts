@@ -2,7 +2,8 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { fromJS, List, Map } from 'immutable';
+import { fromJS } from 'immutable';
+import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { ActionURL, Ajax, Filter, Security, Utils } from '@labkey/api';
 
@@ -18,27 +19,22 @@ import { executeSql } from '../../query/executeSql';
 import { selectRows } from '../../query/selectRows';
 import { SCHEMAS } from '../../schemas';
 
-export function processGetRolesResponse(rawRoles: any): List<SecurityRole> {
-    let roles = List<SecurityRole>();
-    rawRoles.forEach(roleRaw => {
-        const role = roleRaw;
+export function processGetRolesResponse(rawRoles: any): SecurityRole[] {
+    return rawRoles.map(role => {
         if (APPLICATION_ROLES_LABELS[role?.uniqueName]) role.displayName = APPLICATION_ROLES_LABELS[role?.uniqueName];
         if (APPLICATION_ROLES_DESCRIPTIONS[role?.uniqueName])
             role.description = APPLICATION_ROLES_DESCRIPTIONS[role?.uniqueName];
-        roles = roles.push(SecurityRole.create(role));
+        return SecurityRole.create(role);
     });
-    return roles;
 }
 
-export function getRolesByUniqueName(roles: List<SecurityRole>): Map<string, SecurityRole> {
-    let rolesByUniqueName = Map<string, SecurityRole>();
-    roles.forEach(role => {
-        rolesByUniqueName = rolesByUniqueName.set(role.uniqueName, role);
-    });
+export function getRolesByUniqueName(roles: SecurityRole[]): ExtendedMap<string, SecurityRole> {
+    const rolesByUniqueName = new ExtendedMap<string, SecurityRole>();
+    roles.forEach(role => rolesByUniqueName.set(role.uniqueName, role));
     return rolesByUniqueName;
 }
 
-export async function getPrincipals(): Promise<List<Principal>> {
+export async function getPrincipals(): Promise<Principal[]> {
     const result = await executeSql({
         saveInSession: true, // needed so that we can call getQueryDetails
         schemaName: 'core',
@@ -46,7 +42,7 @@ export async function getPrincipals(): Promise<List<Principal>> {
         sql: "SELECT p.*, u.DisplayName FROM Principals p LEFT JOIN Users u ON p.type='u' AND p.UserId=u.UserId",
     });
 
-    return result.rows.reduce<List<Principal>>((p, row) => p.push(Principal.createFromSelectRow(fromJS(row))), List());
+    return result.rows.map(row => Principal.createFromSelectRow(fromJS(row)));
 }
 
 export async function getPrincipalById(principalId: number): Promise<Principal | undefined> {
@@ -63,7 +59,7 @@ export async function getPrincipalById(principalId: number): Promise<Principal |
     return undefined;
 }
 
-export function getInactiveUsers(): Promise<List<Principal>> {
+export function getInactiveUsers(): Promise<Principal[]> {
     return new Promise((resolve, reject) => {
         selectRowsDeprecated({
             schemaName: 'core',
@@ -73,21 +69,18 @@ export function getInactiveUsers(): Promise<List<Principal>> {
         })
             .then((data: ISelectRowsResult) => {
                 const models = fromJS(data.models[data.key]);
-                let principals = List<Principal>();
-
-                data.orderedModels[data.key].forEach(modelKey => {
+                const principals = data.orderedModels[data.key].toArray().map(modelKey => {
                     const row = models.get(modelKey);
                     const userId = row.getIn(['UserId', 'value']);
                     const name = row.getIn(['Email', 'value']);
                     const displayName = row.getIn(['DisplayName', 'value']);
-                    const principal = new Principal({
+                    return new Principal({
                         userId,
                         name,
                         type: 'u',
                         displayName: displayName ? name + ' (' + displayName + ')' : name,
                         active: false,
                     });
-                    principals = principals.push(principal);
                 });
 
                 resolve(principals);
@@ -98,18 +91,16 @@ export function getInactiveUsers(): Promise<List<Principal>> {
     });
 }
 
-export function getPrincipalsById(principals: List<Principal>): Map<number, Principal> {
-    let principalsById = Map<number, Principal>();
-    principals.forEach(principal => {
-        principalsById = principalsById.set(principal.userId, principal);
-    });
+export function getPrincipalsById(principals: Principal[]): ExtendedMap<number, Principal> {
+    const principalsById = new ExtendedMap<number, Principal>();
+    principals.forEach(principal => principalsById.set(principal.userId, principal));
     return principalsById;
 }
 
 export function fetchContainerSecurityPolicy(
     containerId: string,
-    principalsById?: Map<number, Principal>,
-    inactiveUsersById?: Map<number, Principal>
+    principalsById?: ExtendedMap<number, Principal>,
+    inactiveUsersById?: ExtendedMap<number, Principal>
 ): Promise<SecurityPolicy> {
     return new Promise((resolve, reject) => {
         Security.getPolicy({

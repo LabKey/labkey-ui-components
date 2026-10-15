@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { fromJS, List } from 'immutable';
+import { fromJS } from 'immutable';
 import { PermissionRoles } from '@labkey/api';
 
 import policyJSON from '../../../test/data/security-getPolicy.json';
@@ -74,23 +74,23 @@ describe('Principal model', () => {
     });
 
     test('filterAndSort', () => {
-        const principals = List<Principal>([GROUP, USER1, USER2]);
+        const principals = [GROUP, USER1, USER2];
         const groupMembership = {};
 
         // testing excludeUserIds param
-        expect(Principal.filterAndSort(principals, groupMembership, undefined).size).toBe(3);
-        expect(Principal.filterAndSort(principals, groupMembership, List<number>([1])).size).toBe(2);
-        expect(Principal.filterAndSort(principals, groupMembership, List<number>([2])).size).toBe(2);
-        expect(Principal.filterAndSort(principals, groupMembership, List<number>([3])).size).toBe(2);
-        expect(Principal.filterAndSort(principals, groupMembership, List<number>([1, 2])).size).toBe(1);
-        expect(Principal.filterAndSort(principals, groupMembership, List<number>([1, 2, 3])).size).toBe(0);
+        expect(Principal.filterAndSort(principals, groupMembership, undefined).length).toBe(3);
+        expect(Principal.filterAndSort(principals, groupMembership, [1]).length).toBe(2);
+        expect(Principal.filterAndSort(principals, groupMembership, [2]).length).toBe(2);
+        expect(Principal.filterAndSort(principals, groupMembership, [3]).length).toBe(2);
+        expect(Principal.filterAndSort(principals, groupMembership, [1, 2]).length).toBe(1);
+        expect(Principal.filterAndSort(principals, groupMembership, [1, 2, 3]).length).toBe(0);
 
         // testing sort
         const sortedPrincipals = Principal.filterAndSort(principals, groupMembership, undefined);
-        expect(sortedPrincipals.size).toBe(3);
-        expect(sortedPrincipals.get(0)).toBe(USER2);
-        expect(sortedPrincipals.get(1)).toBe(USER1);
-        expect(sortedPrincipals.get(2)).toBe(GROUP);
+        expect(sortedPrincipals.length).toBe(3);
+        expect(sortedPrincipals[0]).toBe(USER2);
+        expect(sortedPrincipals[1]).toBe(USER1);
+        expect(sortedPrincipals[2]).toBe(GROUP);
     });
 
     test('isGroup', () => {
@@ -110,18 +110,18 @@ describe('SecurityRole model', () => {
     test('filter', () => {
         // check that we default to filtering to the policy relevantRoles
         const relevantRoles = SecurityRole.filter(ROLES, POLICY);
-        expect(relevantRoles.size).toBe(POLICY.relevantRoles.size);
+        expect(relevantRoles.length).toBe(POLICY.relevantRoles.size);
 
         // check that we can filter for an explicit list
-        expect(SecurityRole.filter(ROLES, POLICY, List<string>()).size).toBe(0);
+        expect(SecurityRole.filter(ROLES, POLICY, []).length).toBe(0);
         let roleArr = [PermissionRoles.Editor, PermissionRoles.Author, PermissionRoles.Reader];
-        expect(SecurityRole.filter(ROLES, POLICY, List<string>(roleArr)).size).toBe(3);
+        expect(SecurityRole.filter(ROLES, POLICY, roleArr).length).toBe(3);
 
         // check that asking for a role which isn't relevant still won't be returned
         roleArr = [PermissionRoles.ApplicationAdmin, PermissionRoles.Reader];
-        const validRoles = SecurityRole.filter(ROLES, POLICY, List<string>(roleArr));
-        expect(validRoles.size).toBe(1);
-        expect(validRoles.first().uniqueName).toBe(PermissionRoles.Reader);
+        const validRoles = SecurityRole.filter(ROLES, POLICY, roleArr);
+        expect(validRoles.length).toBe(1);
+        expect(validRoles[0].uniqueName).toBe(PermissionRoles.Reader);
     });
 });
 

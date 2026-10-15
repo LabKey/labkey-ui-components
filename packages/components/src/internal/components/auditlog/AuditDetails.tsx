@@ -6,7 +6,7 @@ import React, { Component, PropsWithChildren, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 
 import { User } from '../base/models/User';
-import { capitalizeFirstChar, caseInsensitive } from '../../util/utils';
+import { caseInsensitive } from '../../util/utils';
 import { GridColumn } from '../base/models/GridColumn';
 import { Grid } from '../base/Grid';
 

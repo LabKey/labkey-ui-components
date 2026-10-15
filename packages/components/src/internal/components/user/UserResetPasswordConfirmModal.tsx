@@ -6,7 +6,6 @@ import React, { FC, memo, useCallback, useState } from 'react';
 
 import { resolveErrorMessage } from '../../util/messaging';
 import { Modal } from '../../Modal';
-import { Alert } from '../base/Alert';
 
 import { resetPassword, ResetPasswordResponse } from './actions';
 import { useNotificationsContext } from '../notifications/NotificationsContext';

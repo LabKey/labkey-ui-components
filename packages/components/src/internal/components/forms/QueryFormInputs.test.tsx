@@ -3,7 +3,6 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { List } from 'immutable';
 import { render, screen } from '@testing-library/react';
 
 import { makeQueryInfo } from '../../test/testHelpers';
@@ -80,10 +79,7 @@ describe('QueryFormInputs', () => {
     test('disabledFields', () => {
         render(
             <Formsy>
-                <QueryFormInputs
-                    disabledFields={List<string>(['date', 'ParticipantID', 'textarea'])}
-                    queryInfo={QUERY_INFO}
-                />
+                <QueryFormInputs disabledFields={['date', 'ParticipantID', 'textarea']} queryInfo={QUERY_INFO} />
             </Formsy>
         );
 
@@ -99,7 +95,7 @@ describe('QueryFormInputs', () => {
         render(
             <Formsy>
                 <QueryFormInputs
-                    disabledFields={List<string>(['date', 'healthy'])}
+                    disabledFields={['date', 'healthy']}
                     fieldWithMixedValues={['date', 'healthy', 'ParticipantID']}
                     queryInfo={QUERY_INFO}
                 />

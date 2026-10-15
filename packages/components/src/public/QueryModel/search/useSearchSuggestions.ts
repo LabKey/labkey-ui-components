@@ -8,7 +8,7 @@ import { ComponentsAPIWrapper } from '../../../internal/APIWrapper';
 import { QueryModel } from '../QueryModel';
 
 import { FilterSuggestion, FilterSuggestionsRequest } from './models';
-import { createSearchSuggestion } from './utils';
+import { applyColumnCaption, createSearchSuggestion, getColumnCaptions } from './utils';
 
 export const SUGGESTION_DEBOUNCE_MS = 200;
 
@@ -63,6 +63,12 @@ export function useSearchSuggestions(
         ]
     );
 
+    const captions = useMemo(
+        () => getColumnCaptions(model.displayColumns),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [model.queryInfo, model.viewName, model.omittedColumns]
+    );
+
     useEffect(() => {
         if (!enabled || !trimmed) return undefined;
 
@@ -83,8 +89,10 @@ export function useSearchSuggestions(
 
     return useMemo(() => {
         if (!trimmed) return { complete: true, loading: false, suggestions: [] };
-        if (settled.term === trimmed)
-            return { complete: settled.complete, loading: false, suggestions: settled.suggestions };
+        if (settled.term === trimmed) {
+            const suggestions = settled.suggestions.map(suggestion => applyColumnCaption(suggestion, captions));
+            return { complete: settled.complete, loading: false, suggestions };
+        }
         return { complete: false, loading: true, suggestions: [createSearchSuggestion(trimmed)] };
-    }, [settled, trimmed]);
+    }, [captions, settled, trimmed]);
 }

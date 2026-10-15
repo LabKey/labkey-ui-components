@@ -39,7 +39,13 @@ export interface SuggestionMatch {
     start: number;
 }
 
+// Where the label shows a column's caption; fieldKey is the grid column as the request named it
+export interface ColumnMatch extends SuggestionMatch {
+    fieldKey: string;
+}
+
 export interface FilterKindSuggestion {
+    colMatch?: ColumnMatch;
     fieldKey: string;
     kind: 'filter';
     label: string;
@@ -55,6 +61,7 @@ export interface ComposeField {
 }
 
 export interface ComposeSuggestion {
+    colMatch?: ColumnMatch;
     // Ordered best-first; the first is selected when the filter modal opens
     fields: ComposeField[];
     kind: 'compose';

@@ -8,7 +8,11 @@ import { userEvent } from '@testing-library/user-event';
 
 import { getTestAPIWrapper } from '../../../internal/APIWrapper';
 import { getQueryTestAPIWrapper } from '../../../internal/query/APIWrapper';
+import { ViewInfo } from '../../../internal/ViewInfo';
+import { ExtendedMap } from '../../ExtendedMap';
+import { QueryColumn } from '../../QueryColumn';
 import { QueryInfo } from '../../QueryInfo';
+import { QueryModel } from '../QueryModel';
 import { SchemaQuery } from '../../SchemaQuery';
 import { makeTestQueryModel } from '../testUtils';
 
@@ -63,9 +67,9 @@ describe('SearchSuggestInput', () => {
         jest.useRealTimers();
     });
 
-    function renderInput(): HTMLInputElement {
+    function renderInput(model: QueryModel = MODEL): HTMLInputElement {
         const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { getFilterSuggestions }) });
-        render(<SearchSuggestInput api={api} model={MODEL} onApplySuggestion={onApplySuggestion} />);
+        render(<SearchSuggestInput api={api} model={model} onApplySuggestion={onApplySuggestion} />);
         return document.querySelector('.grid-panel__search-input');
     }
 
@@ -114,6 +118,36 @@ describe('SearchSuggestInput', () => {
             option => option.querySelector('strong')?.textContent ?? null
         );
         expect(bolded).toEqual(['Sodium', null, 'Sodium']);
+    });
+
+    test('labels use the caption the grid shows', async () => {
+        const queryInfo = new QueryInfo({
+            columns: new ExtendedMap({
+                tubetype: new QueryColumn({ caption: 'Collection Tube', fieldKey: 'TubeType', name: 'TubeType' }),
+            }),
+            views: new ExtendedMap({
+                [ViewInfo.DEFAULT_NAME.toLowerCase()]: ViewInfo.fromJson({
+                    columns: [{ fieldKey: 'TubeType' }],
+                    name: ViewInfo.DEFAULT_NAME,
+                }),
+            }),
+        });
+        const model = makeTestQueryModel(new SchemaQuery('samples', 'Plasma'), queryInfo);
+        getFilterSuggestions.mockResolvedValue({
+            complete: true,
+            suggestions: [
+                { ...TUBE_TYPE, colMatch: { end: 9, fieldKey: 'TubeType', start: 0 } },
+                { ...COMPOSE, colMatch: { end: 16, fieldKey: 'TubeType', start: 7 } },
+                SEARCH,
+            ],
+        });
+
+        const input = renderInput(model);
+        await user.type(input, 'Sodium');
+        await settle();
+
+        expect(optionLabels()).toEqual(['Collection Tube is Sodium Citrate', 'Filter Collection Tube…', SEARCH.label]);
+        expect(document.querySelector('[role="option"] strong').textContent).toBe('Sodium');
     });
 
     test('Enter while loading waits and applies the top suggestion, not the full search', async () => {

@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { ReactElement } from 'react';
-import { List, Map } from 'immutable';
 
 import { ASSAYS_KEY, ProductFeature, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
 
@@ -103,23 +102,19 @@ describe('utils', () => {
         const data: any = { value: 'RawValue' };
 
         // Respects "value"
-        expect(getEventDataValueDisplay(Map(data), false)).toEqual(data.value);
         expect(getEventDataValueDisplay(data, false)).toEqual(data.value);
 
         data.displayValue = 'DefaultValue';
 
         // Respects "displayValue"
-        expect(getEventDataValueDisplay(Map(data), false)).toEqual(data.displayValue);
         expect(getEventDataValueDisplay(data, false)).toEqual(data.displayValue);
 
         data.formattedValue = 'NiceFormatValue';
 
         // Respects "formattedValue"
-        expect(getEventDataValueDisplay(Map(data), false)).toEqual(data.formattedValue);
         expect(getEventDataValueDisplay(data, false)).toEqual(data.formattedValue);
 
         // showLink -- without a URL
-        expect(getEventDataValueDisplay(Map(data), true)).toEqual(data.formattedValue);
         expect(getEventDataValueDisplay(data, true)).toEqual(data.formattedValue);
 
         data.urlType = SAMPLES_KEY;
@@ -135,14 +130,13 @@ describe('utils', () => {
         data.url = '#/some/location';
 
         // showLink -- with a URL
-        node = getEventDataValueDisplay(Map(data), true) as ReactElement;
+        node = getEventDataValueDisplay(data, true) as ReactElement;
         expect(node.type).toEqual('a');
         expect(node.props).toEqual({ children: data.formattedValue, href: data.url });
 
         data.hideLink = true;
 
         // hide url
-        expect(getEventDataValueDisplay(Map(data), true)).toEqual(data.formattedValue);
         expect(getEventDataValueDisplay(data, true)).toEqual(data.formattedValue);
     });
     test('getTimelineEntityUrl', () => {
@@ -158,9 +152,9 @@ describe('utils', () => {
             `#/${ASSAYS_KEY}/general/myassay/runs/13`
         );
 
-        expect(getTimelineEntityUrl(Map().toJS())).toEqual(undefined);
+        expect(getTimelineEntityUrl({})).toEqual(undefined);
         expect(
-            getTimelineEntityUrl(Map({ urlType: 'assayRun', value: List(['myassay', 44]) }).toJS()).toHref()
+            getTimelineEntityUrl({ urlType: 'assayRun', value: ['myassay', 44] }).toHref()
         ).toEqual(`#/${ASSAYS_KEY}/general/myassay/runs/44`);
 
         expect(getTimelineEntityUrl({ urlType: 'inventoryLocation', value: ['freezer1', 101] }).toHref()).toEqual(
@@ -173,45 +167,45 @@ describe('utils', () => {
 
     describe('getAuditDetailMap', () => {
         it('data is empty', () => {
-            expect(getAuditDetailMap(null).isEmpty()).toBe(true);
-            expect(getAuditDetailMap(undefined).isEmpty()).toBe(true);
-            expect(getAuditDetailMap({}).isEmpty()).toBe(true);
-            expect(getAuditDetailMap({}, ['field1']).isEmpty()).toBe(true);
+            expect(getAuditDetailMap(null).size).toBe(0);
+            expect(getAuditDetailMap(undefined).size).toBe(0);
+            expect(getAuditDetailMap({}).size).toBe(0);
+            expect(getAuditDetailMap({}, ['field1']).size).toBe(0);
         });
 
         it('when no inherited fields are provided', () => {
             const data = { field1: 'value1', field2: 'value2' };
             const result = getAuditDetailMap(data);
-            expect(result.toJS()).toEqual(data);
+            expect(Object.fromEntries(result)).toEqual(data);
         });
 
-        it('moves inherited fields to the bottom of the OrderedMap', () => {
+        it('moves inherited fields to the bottom of the map', () => {
             const data = { field1: 'value1', field2: null, field3: 'value3' };
             const inheritedFields = ['field2'];
             const result = getAuditDetailMap(data, inheritedFields);
-            expect(result.toJS()).toEqual({
-                field1: 'value1',
-                field3: 'value3',
-                field2: AUDIT_DETAIL_FIELD_VALUE_INHERITED,
-            });
+            expect(Array.from(result)).toEqual([
+                ['field1', 'value1'],
+                ['field3', 'value3'],
+                ['field2', AUDIT_DETAIL_FIELD_VALUE_INHERITED],
+            ]);
         });
 
         it('case-insensitive inherited fields', () => {
             const data = { Field1: 'value1', FIELD2: null, field3: 'value3' };
             const inheritedFields = ['field2'];
             const result = getAuditDetailMap(data, inheritedFields);
-            expect(result.toJS()).toEqual({
-                Field1: 'value1',
-                field3: 'value3',
-                FIELD2: AUDIT_DETAIL_FIELD_VALUE_INHERITED,
-            });
+            expect(Array.from(result)).toEqual([
+                ['Field1', 'value1'],
+                ['field3', 'value3'],
+                ['FIELD2', AUDIT_DETAIL_FIELD_VALUE_INHERITED],
+            ]);
         });
 
         it('absent inherited fields', () => {
             const data = { field1: 'value1', field2: 'value2' };
             const inheritedFields = ['field3'];
             const result = getAuditDetailMap(data, inheritedFields);
-            expect(result.toJS()).toEqual(data);
+            expect(Object.fromEntries(result)).toEqual(data);
         });
     });
 });

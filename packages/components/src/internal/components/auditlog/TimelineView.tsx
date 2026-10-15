@@ -221,8 +221,8 @@ export class TimelineView extends React.Component<Props, any> {
                     <div className="field-text-nowrap">
                         <UserLink
                             unknown={!user}
-                            userDisplayValue={user?.get('displayValue')}
-                            userId={user?.get('value')}
+                            userDisplayValue={user?.displayValue}
+                            userId={user?.value}
                         />
                     </div>{' '}
                     {this.renderComment(comment)}

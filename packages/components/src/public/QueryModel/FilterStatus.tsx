@@ -3,26 +3,28 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo } from 'react';
-
-import { ActionValue } from './grid/actions/Action';
-import { Value } from './grid/Value';
-import { filterActionValuesByType } from './grid/utils';
 import classNames from 'classnames';
+
+import { ActionKeyword, ActionValue } from './grid/actions/Action';
+import { OnClickValue, OnRemoveValue, Value } from './grid/Value';
+import { filterActionValuesByType } from './grid/utils';
 
 interface Props {
     actionValues: ActionValue[];
     lockReadOnlyForDelete?: boolean;
     onAddFilterClick?: () => void;
-    onClick: (actionValue: ActionValue, event: any) => void;
-    onRemove: (actionValueIndex: number, event: any) => void;
+    onClick: OnClickValue;
+    onRemove: OnRemoveValue;
     onRemoveAll?: () => void;
+    onSearchClick?: OnClickValue;
 }
 
 export const FilterStatus: FC<Props> = memo(props => {
-    const { actionValues, onClick, onRemove, onRemoveAll, lockReadOnlyForDelete, onAddFilterClick } = props;
-    const filterCount = actionValues?.filter(a => a.action.keyword === 'filter').length;
+    const { actionValues, onClick, onRemove, onRemoveAll, onSearchClick, lockReadOnlyForDelete, onAddFilterClick } =
+        props;
+    const filterCount = actionValues?.filter(a => a.action.keyword === ActionKeyword.Filter).length;
     const showRemoveAll = actionValues
-        ? filterActionValuesByType(actionValues, 'filter', lockReadOnlyForDelete).length > 1
+        ? filterActionValuesByType(actionValues, ActionKeyword.Filter, lockReadOnlyForDelete).length > 1
         : false;
 
     return (
@@ -32,7 +34,9 @@ export const FilterStatus: FC<Props> = memo(props => {
                     .sort((a, b) => {
                         // sort the view actions to the front
                         if (a.action.keyword !== b.action.keyword) {
-                            return a.action.keyword === 'view' ? -1 : b.action.keyword === 'view' ? 1 : 0;
+                            if (a.action.keyword === ActionKeyword.View) return -1;
+                            if (b.action.keyword === ActionKeyword.View) return 1;
+                            return 0;
                         }
 
                         // then sort by filter display value
@@ -42,17 +46,20 @@ export const FilterStatus: FC<Props> = memo(props => {
                     })
                     .map((actionValue, index) => {
                         // loop over all actionValues so that the index remains consistent, but don't show sort actions
-                        if (actionValue.action.keyword === 'sort') {
+                        if (actionValue.action.keyword === ActionKeyword.Sort) {
                             return null;
                         }
 
-                        // only FilterActions can be edited via click
-                        const _onClick = actionValue.action.keyword === 'filter' ? onClick : undefined;
-                        // search and filter actions can be removed via click
-                        const _onRemove =
-                            actionValue.action.keyword === 'filter' || actionValue.action.keyword === 'search'
-                                ? onRemove
-                                : undefined;
+                        // FilterActions open the filter modal; SearchActions are editable only when onSearchClick is given
+                        let _onClick: OnClickValue;
+                        let _onRemove: OnRemoveValue;
+                        if (actionValue.action.keyword === ActionKeyword.Filter) {
+                            _onClick = onClick;
+                            _onRemove = onRemove;
+                        } else if (actionValue.action.keyword === ActionKeyword.Search) {
+                            _onClick = onSearchClick;
+                            _onRemove = onRemove;
+                        }
 
                         return (
                             <Value

@@ -11,6 +11,7 @@ import { userEvent } from '@testing-library/user-event';
 
 import { Value } from './Value';
 import { FilterAction } from './actions/Filter';
+import { SearchAction } from './actions/Search';
 import { ViewAction } from './actions/View';
 
 const filterAction = {
@@ -33,6 +34,11 @@ const nonRemovableAction = {
 const viewAction = {
     action: new ViewAction(),
     value: 'view',
+};
+const searchAction = {
+    action: new SearchAction(),
+    value: 'test',
+    valueObject: Filter.create('*', 'test', Filter.Types.Q),
 };
 
 describe('Value', () => {
@@ -151,6 +157,18 @@ describe('Value', () => {
         await userEvent.hover(document.querySelector('.filter-status-value'));
         await waitFor(() => expect(document.querySelectorAll('.is-active')).toHaveLength(1));
         expect(document.querySelectorAll('.lk-popover')).toHaveLength(0);
+    });
+
+    test('data-keyword identifies the action type while the remove icon shows', async () => {
+        render(<Value {...DEFAULT_PROPS} actionValue={searchAction} />);
+        const pill = document.querySelector('.filter-status-value');
+        expect(pill.getAttribute('data-keyword')).toBe('search');
+        expect(document.querySelectorAll('.fa-search')).toHaveLength(1);
+
+        await userEvent.hover(pill);
+        validate(false, true, true);
+        expect(document.querySelectorAll('.fa-search')).toHaveLength(0);
+        expect(pill.getAttribute('data-keyword')).toBe('search');
     });
 
     test('do not showRemoveIcon for view action', async () => {

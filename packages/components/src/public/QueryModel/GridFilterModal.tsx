@@ -10,18 +10,64 @@ import { EntityFieldFilter } from '../../internal/components/search/models';
 import { QueryColumn } from '../QueryColumn';
 
 import { Alert } from '../../internal/components/base/Alert';
-import { QueryFilterPanel } from '../../internal/components/search/QueryFilterPanel';
+import { OnFilterUpdate, QueryFilterPanel } from '../../internal/components/search/QueryFilterPanel';
 import { NOT_ANY_FILTER_TYPE } from '../../internal/url/NotAnyFilterType';
 import { getFieldFiltersValidationResult, isValidFilterField } from '../../internal/components/search/utils';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../internal/APIWrapper';
 
 import { QueryModel } from './QueryModel';
+import { filtersEqual } from './utils';
+import { composeFieldToFilter } from './search/utils';
+
+/** A filter to pre-fill on whichever field is active, until the user edits it. Ops are keyed by display fieldKey. */
+export interface FilterDraft {
+    ops: Record<string, string>;
+    value: string;
+}
+
+function createDraftFilter(draft: FilterDraft, field: QueryColumn): EntityFieldFilter {
+    const fieldKey = field?.getDisplayFieldKey();
+    const op = draft.ops[fieldKey];
+    if (!op) return undefined;
+
+    return {
+        fieldCaption: field.caption,
+        fieldKey,
+        filter: composeFieldToFilter({ fieldKey, op }, draft.value),
+        jsonType: field.getDisplayFieldJsonType(),
+    } as EntityFieldFilter;
+}
+
+const isOnField = (fieldFilter: EntityFieldFilter, fieldKey: string): boolean =>
+    fieldFilter.fieldKey.toLowerCase() === fieldKey.toLowerCase();
+
+// The draft stands in for its field's filters, which come back once the draft moves to another field
+function placeDraft(
+    filters: EntityFieldFilter[],
+    initial: EntityFieldFilter[],
+    from: EntityFieldFilter,
+    to: EntityFieldFilter
+): EntityFieldFilter[] {
+    let placed = filters;
+    if (from) {
+        placed = placed
+            .filter(fieldFilter => !isOnField(fieldFilter, from.fieldKey))
+            .concat(initial.filter(fieldFilter => isOnField(fieldFilter, from.fieldKey)));
+    }
+    if (to) {
+        placed = placed.filter(fieldFilter => !isOnField(fieldFilter, to.fieldKey)).concat(to);
+    }
+    return placed;
+}
 
 interface Props {
     api?: ComponentsAPIWrapper;
     fieldKey?: string;
+    // Limits the field list, e.g. to the columns a search suggestion picked
+    fields?: QueryColumn[];
     initFilters: Filter.IFilter[];
+    initialDraft?: FilterDraft;
     model: QueryModel;
     onApply: (filters: Filter.IFilter[]) => void;
     onCancel: () => void;
@@ -37,19 +83,29 @@ export const GridFilterModal: FC<Props> = memo(props => {
         model,
         onApply,
         fieldKey,
+        fields,
+        initialDraft,
         selectDistinctOptions,
         skipDefaultViewCheck,
     } = props;
     const { queryInfo } = model;
     const [filterError, setFilterError] = useState<string>(undefined);
-    const [filters, setFilters] = useState<EntityFieldFilter[]>(
-        initFilters.map(filter => {
-            return {
-                fieldKey: filter.getColumnName(),
-                filter,
-            } as EntityFieldFilter;
-        })
-    );
+    const [initialState] = useState(() => {
+        const initial = initFilters.map<EntityFieldFilter>(filter => ({ fieldKey: filter.getColumnName(), filter }));
+
+        let draftFilter: EntityFieldFilter;
+        if (initialDraft) {
+            draftFilter = createDraftFilter(
+                initialDraft,
+                fields?.find(field => field.getDisplayFieldKey() === fieldKey)
+            );
+        }
+        return { draftFilter, filters: placeDraft(initial, initial, undefined, draftFilter), initial };
+    });
+    const [filters, setFilters] = useState<EntityFieldFilter[]>(initialState.filters);
+    // The unedited draft, which follows the active field; undefined once the user edits it or when there is none
+    const [draftFilter, setDraftFilter] = useState<EntityFieldFilter>(initialState.draftFilter);
+    const [draftActive, setDraftActive] = useState<boolean>(!!initialDraft);
 
     const closeModal = useCallback(() => {
         onCancel();
@@ -84,12 +140,20 @@ export const GridFilterModal: FC<Props> = memo(props => {
         }
     }, [filters, onApply, queryInfo, validFieldFilters]);
 
-    const onFilterUpdate = useCallback(
-        (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => {
+    const onFilterUpdate = useCallback<OnFilterUpdate>(
+        (field, newFilters) => {
             setFilterError(undefined);
 
             const activeFieldKey = field.getDisplayFieldKey();
             const updatedFilters = filters?.filter(fieldFilter => fieldFilter.fieldKey !== activeFieldKey) ?? [];
+
+            // Inputs may echo the seeded draft back on mount, which doesn't count as an edit
+            const isDraftEcho =
+                newFilters?.length === 1 && draftFilter && filtersEqual(newFilters[0], draftFilter.filter);
+            if (draftFilter?.fieldKey === activeFieldKey && !isDraftEcho) {
+                setDraftFilter(undefined);
+                setDraftActive(false);
+            }
 
             if (newFilters) {
                 newFilters
@@ -106,13 +170,24 @@ export const GridFilterModal: FC<Props> = memo(props => {
 
             setFilters(updatedFilters);
         },
-        [filters]
+        [draftFilter, filters]
     );
-    const canConfirm = validFieldFilters && Object.keys(validFieldFilters).length > 0;
+
+    const onActiveFieldChange = useCallback(
+        (field: QueryColumn) => {
+            if (!draftActive || field.getDisplayFieldKey() === draftFilter?.fieldKey) return;
+
+            const movedDraft = createDraftFilter(initialDraft, field);
+            setFilters(placeDraft(filters, initialState.initial, draftFilter, movedDraft));
+            setDraftFilter(movedDraft);
+        },
+        [draftActive, draftFilter, filters, initialDraft, initialState]
+    );
+
     return (
         <Modal
             bsSize="lg"
-            canConfirm={canConfirm}
+            canConfirm={validFieldFilters && Object.keys(validFieldFilters).length > 0}
             confirmText="Apply"
             onCancel={closeModal}
             onConfirm={_onApply}
@@ -123,9 +198,12 @@ export const GridFilterModal: FC<Props> = memo(props => {
                 api={api}
                 asRow
                 fieldKey={fieldKey}
+                fields={fields}
                 filters={{ [queryInfo.name.toLowerCase()]: filters }}
                 fullWidth
+                onActiveFieldChange={onActiveFieldChange}
                 onFilterUpdate={onFilterUpdate}
+                preferFilterTabFieldKey={draftFilter?.fieldKey}
                 queryInfo={queryInfo}
                 selectDistinctOptions={selectDistinctOptions}
                 skipDefaultViewCheck={skipDefaultViewCheck}

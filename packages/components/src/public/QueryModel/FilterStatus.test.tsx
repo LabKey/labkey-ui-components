@@ -3,11 +3,9 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { Filter } from '@labkey/api';
-
 import { userEvent } from '@testing-library/user-event';
-
 import { render } from '@testing-library/react';
+import { Filter } from '@labkey/api';
 
 import { SearchAction } from './grid/actions/Search';
 import { ViewAction } from './grid/actions/View';
@@ -84,11 +82,11 @@ describe('FilterStatus', () => {
         render(<FilterStatus {...DEFAULT_PROPS} actionValues={[viewAction, searchAction, filterAction1]} />);
         validate(3, 1);
         expect(document.querySelectorAll('.fa-table')).toHaveLength(1);
-        expect(document.querySelectorAll('.filter-status-value')[0].textContent).toBe('view');
+        expect(document.querySelectorAll('.filter-status-value')[0]).toHaveTextContent('view');
         expect(document.querySelectorAll('.fa-search')).toHaveLength(1);
-        expect(document.querySelectorAll('.filter-status-value')[1].textContent).toBe('foo');
+        expect(document.querySelectorAll('.filter-status-value')[1]).toHaveTextContent('foo');
         expect(document.querySelectorAll('.fa-filter')).toHaveLength(1);
-        expect(document.querySelectorAll('.filter-status-value')[2].textContent).toBe('test1');
+        expect(document.querySelectorAll('.filter-status-value')[2]).toHaveTextContent('test1');
         expect(document.querySelectorAll('.fa-close')).toHaveLength(0);
         expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(0);
     });
@@ -99,8 +97,8 @@ describe('FilterStatus', () => {
         expect(document.querySelectorAll('.fa-table')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-search')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-filter')).toHaveLength(2);
-        expect(document.querySelectorAll('.filter-status-value')[0].textContent).toBe('test1');
-        expect(document.querySelectorAll('.filter-status-value')[1].textContent).toBe('test2');
+        expect(document.querySelectorAll('.filter-status-value')[0]).toHaveTextContent('test1');
+        expect(document.querySelectorAll('.filter-status-value')[1]).toHaveTextContent('test2');
         expect(document.querySelectorAll('.fa-close')).toHaveLength(0);
         expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(1);
         expect(ON_REMOVE_ALL).toHaveBeenCalledTimes(0);
@@ -114,8 +112,8 @@ describe('FilterStatus', () => {
         expect(document.querySelectorAll('.fa-table')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-search')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-filter')).toHaveLength(2);
-        expect(document.querySelectorAll('.filter-status-value')[0].textContent).toBe('test1');
-        expect(document.querySelectorAll('.filter-status-value')[1].textContent).toBe('test2');
+        expect(document.querySelectorAll('.filter-status-value')[0]).toHaveTextContent('test1');
+        expect(document.querySelectorAll('.filter-status-value')[1]).toHaveTextContent('test2');
         expect(document.querySelectorAll('.fa-close')).toHaveLength(0);
         expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(1);
     });
@@ -132,8 +130,8 @@ describe('FilterStatus', () => {
         expect(document.querySelectorAll('.fa-search')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-filter')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-lock')).toHaveLength(2);
-        expect(document.querySelectorAll('.filter-status-value')[0].textContent).toBe('test1');
-        expect(document.querySelectorAll('.filter-status-value')[1].textContent).toBe('test2');
+        expect(document.querySelectorAll('.filter-status-value')[0]).toHaveTextContent('test1');
+        expect(document.querySelectorAll('.filter-status-value')[1]).toHaveTextContent('test2');
         expect(document.querySelectorAll('.fa-close')).toHaveLength(0);
         expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(0);
     });

@@ -37,6 +37,8 @@ enum FieldFilterTabs {
 
 const DEFAULT_VIEW_NAME = ''; // always use default view for selection, if none provided
 
+export type OnFilterUpdate = (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => void;
+
 interface Props {
     allInQueryFilterLabel?: string;
     allowRelativeDateFilter?: boolean;
@@ -55,9 +57,12 @@ interface Props {
     hasNotInQueryFilterLabel?: string;
     isAncestor?: boolean;
     metricFeatureArea?: string;
+    onActiveFieldChange?: (field: QueryColumn) => void;
     onAllValuesInQueryChange?: (check: boolean) => void;
-    onFilterUpdate: (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => void;
+    onFilterUpdate: OnFilterUpdate;
     onHasNoValueInQueryChange?: (check: boolean) => void;
+    // Open this field on the Filter tab even when it would otherwise default to Choose values
+    preferFilterTabFieldKey?: string;
     queryInfo: QueryInfo;
     selectDistinctOptions?: Partial<Query.SelectDistinctOptions>;
     skipDefaultViewCheck?: boolean;
@@ -90,6 +95,8 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         altQueryName,
         fields,
         isAncestor,
+        onActiveFieldChange,
+        preferFilterTabFieldKey,
     } = props;
     const [queryFields, setQueryFields] = useState<QueryColumn[]>(undefined);
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);
@@ -137,7 +144,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         (field: QueryColumn) => {
             if (field.isMultiChoice) return FieldFilterTabs.ChooseValues;
 
-            if (!allowFaceting(field)) {
+            if (!allowFaceting(field) || field.getDisplayFieldKey() === preferFilterTabFieldKey) {
                 return FieldFilterTabs.Filter;
             }
             if (!hasFilters(field)) {
@@ -153,7 +160,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                 ? FieldFilterTabs.ChooseValues
                 : FieldFilterTabs.Filter;
         },
-        [hasFilters, filters, filterQueryKey]
+        [hasFilters, filters, filterQueryKey, preferFilterTabFieldKey]
     );
 
     useEffect(() => {
@@ -229,9 +236,13 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         return valueFilters;
     }, [filters, filterQueryKey, activeField, activeFieldKey, selectDistinctOptions]);
 
-    const onFieldClick = useCallback((queryColumn: QueryColumn) => {
-        setActiveField(queryColumn);
-    }, []);
+    const onFieldClick = useCallback(
+        (queryColumn: QueryColumn) => {
+            setActiveField(queryColumn);
+            onActiveFieldChange?.(queryColumn);
+        },
+        [onActiveFieldChange]
+    );
 
     const onTabChange = useCallback(
         (tabKey: any) => {

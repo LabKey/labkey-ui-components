@@ -98,7 +98,7 @@ interface Props {
 }
 
 /**
- * Search input that offers targeted filters for the typed term, with the Q filter ("Search all columns") last.
+ * Search input that offers targeted filters for the typed term, with the Q filter ("Search all fields") last.
  */
 export const SearchSuggestInput: FC<Props> = memo(props => {
     const { api = getDefaultAPIWrapper(), model, onApplySuggestion, restoreRequest } = props;

@@ -23,6 +23,7 @@ import { QueryModel } from '../QueryModel';
 
 import { FilterSuggestion } from './models';
 import { useSearchSuggestions } from './useSearchSuggestions';
+import { getSuggestionMetrics, GRID_SEARCH_METRIC_AREA } from './utils';
 
 // Longest Enter waits for pending suggestions before applying the best one available
 export const PENDING_ENTER_TIMEOUT_MS = 1500;
@@ -107,6 +108,8 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
     // -1 means nothing is explicitly highlighted, so Enter takes the top suggestion once it is known
     const [activeIndex, setActiveIndex] = useState(-1);
     const [pendingEnter, setPendingEnter] = useState(false);
+    // Counted once per search attempt: set by the first non-blank text, cleared on apply or blur
+    const engaged = useRef(false);
     const { loading, suggestions } = useSearchSuggestions(api, model, text, open);
     const baseId = useId();
     const listId = `${baseId}-suggestions`;
@@ -131,6 +134,10 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
 
     const apply = useCallback(
         (suggestion: FilterSuggestion) => {
+            getSuggestionMetrics(suggestion, model.schemaName).forEach(metric =>
+                api.query.incrementClientSideMetricCount(GRID_SEARCH_METRIC_AREA, metric)
+            );
+            engaged.current = false;
             setOpen(false);
             setPendingEnter(false);
             setActiveIndex(-1);
@@ -138,7 +145,7 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
             setText('');
             onApplySuggestion(suggestion);
         },
-        [onApplySuggestion]
+        [api, model.schemaName, onApplySuggestion]
     );
 
     const applyIndex = useCallback((index: number) => apply(suggestions[index]), [apply, suggestions]);
@@ -167,12 +174,20 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
         return () => clearTimeout(timer);
     }, [apply, loading, pendingEnter, suggestions]);
 
-    const onChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-        setText(event.target.value);
-        setActiveIndex(-1);
-        setPendingEnter(false);
-        setOpen(true);
-    }, []);
+    const onChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            const { value } = event.target;
+            if (value.trim() && !engaged.current) {
+                engaged.current = true;
+                api.query.incrementClientSideMetricCount(GRID_SEARCH_METRIC_AREA, 'engaged');
+            }
+            setText(value);
+            setActiveIndex(-1);
+            setPendingEnter(false);
+            setOpen(true);
+        },
+        [api]
+    );
 
     const onKeyDown = useCallback(
         (event: KeyboardEvent<HTMLInputElement>) => {
@@ -211,6 +226,7 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
     }, [trimmed]);
 
     const onBlur = useCallback(() => {
+        engaged.current = false;
         setOpen(false);
         setActiveIndex(-1);
         setPendingEnter(false);

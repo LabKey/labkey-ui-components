@@ -677,7 +677,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     onApplySuggestion = (suggestion: FilterSuggestion): void => {
         const { model, actions, allowSelections } = this.props;
-        incrementClientSideMetricCount('gridSearchSuggestions', suggestion.source);
 
         if (suggestion.kind === 'search') {
             const newFilters = model.filterArray

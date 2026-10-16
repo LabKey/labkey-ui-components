@@ -4,9 +4,30 @@
  */
 import { Filter } from '@labkey/api';
 
+import { DATA_CLASSES, SAMPLE_SETS } from '../../../internal/schemas';
 import { QueryColumn } from '../../QueryColumn';
 
 import { ComposeField, FilterKindSuggestion, FilterSuggestion, SearchSuggestion } from './models';
+
+export const GRID_SEARCH_METRIC_AREA = 'gridSearch';
+
+const NAME_METRICS: Record<string, string> = {
+    [DATA_CLASSES.SCHEMA]: 'dataClassNameChosen',
+    [SAMPLE_SETS.SCHEMA]: 'sampleNameChosen',
+};
+
+export function getSuggestionMetrics(suggestion: FilterSuggestion, schemaName: string): string[] {
+    const metrics = [`${suggestion.kind}Chosen`];
+    // Compose and search each have a single source, so only filters count theirs
+    if (suggestion.kind === 'filter') {
+        metrics.push(suggestion.source);
+        if (suggestion.fieldKey === 'Name') {
+            const nameMetric = NAME_METRICS[schemaName?.toLowerCase()];
+            if (nameMetric) metrics.push(nameMetric);
+        }
+    }
+    return metrics;
+}
 
 export function createSearchSuggestion(raw: string): SearchSuggestion {
     const prefix = 'Search all columns for ';

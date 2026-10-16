@@ -53,12 +53,14 @@ const MODEL = makeTestQueryModel(
 
 describe('SearchSuggestInput', () => {
     let getFilterSuggestions: jest.Mock;
+    let incrementClientSideMetricCount: jest.Mock;
     let onApplySuggestion: jest.Mock;
     let user: ReturnType<typeof userEvent.setup>;
 
     beforeEach(() => {
         jest.useFakeTimers();
         getFilterSuggestions = jest.fn().mockResolvedValue(RESPONSE);
+        incrementClientSideMetricCount = jest.fn();
         onApplySuggestion = jest.fn();
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
     });
@@ -68,7 +70,9 @@ describe('SearchSuggestInput', () => {
     });
 
     function renderInput(model: QueryModel = MODEL): HTMLInputElement {
-        const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { getFilterSuggestions }) });
+        const api = getTestAPIWrapper(jest.fn, {
+            query: getQueryTestAPIWrapper(jest.fn, { getFilterSuggestions, incrementClientSideMetricCount }),
+        });
         render(<SearchSuggestInput api={api} model={model} onApplySuggestion={onApplySuggestion} />);
         return document.querySelector('.grid-panel__search-input');
     }
@@ -77,6 +81,8 @@ describe('SearchSuggestInput', () => {
         Array.from(document.querySelectorAll('[role="option"] .grid-panel__search-suggestion-label')).map(
             el => el.textContent
         );
+
+    const metrics = (): string[] => incrementClientSideMetricCount.mock.calls.map(([, metric]) => metric);
 
     async function settle(): Promise<void> {
         await act(async () => {
@@ -233,5 +239,36 @@ describe('SearchSuggestInput', () => {
         await user.keyboard('{Enter}');
 
         expect(onApplySuggestion).not.toHaveBeenCalled();
+    });
+
+    test('counts one engagement per search attempt', async () => {
+        const input = renderInput();
+        await user.click(input);
+        await user.type(input, ' ');
+        expect(metrics()).toEqual([]);
+
+        await user.type(input, 'Sodium');
+        expect(incrementClientSideMetricCount).toHaveBeenCalledWith('gridSearch', 'engaged');
+        await user.clear(input);
+        await user.type(input, 'Sodium');
+        await settle();
+        await user.keyboard('{Enter}');
+        await user.type(input, 'Hep');
+        expect(metrics()).toEqual(['engaged', 'filterChosen', 'partialValue', 'engaged']);
+
+        await user.tab();
+        await user.type(input, 'ium');
+        expect(metrics()).toEqual(['engaged', 'filterChosen', 'partialValue', 'engaged', 'engaged']);
+    });
+
+    test('counts a Name filter on a sample grid', async () => {
+        const name: FilterSuggestion = { ...TUBE_TYPE, fieldKey: 'Name', label: 'Name is S-1', source: 'identity' };
+        getFilterSuggestions.mockResolvedValue({ complete: true, suggestions: [name, SEARCH] });
+        const input = renderInput();
+        await user.type(input, 'S-1');
+        await settle();
+        await user.keyboard('{Enter}');
+
+        expect(metrics()).toEqual(['engaged', 'filterChosen', 'identity', 'sampleNameChosen']);
     });
 });

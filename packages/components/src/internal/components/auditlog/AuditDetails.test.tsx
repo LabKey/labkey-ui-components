@@ -46,11 +46,7 @@ describe('AuditDetails', () => {
 
     test('gridData', () => {
         renderWithAppContext(
-            <AuditDetails
-                gridData={[{ field: 'a', value: { value: 'test' } }]}
-                rowId={1}
-                user={TEST_USER_APP_ADMIN}
-            />,
+            <AuditDetails gridData={[{ field: 'a', value: { value: 'test' } }]} rowId={1} user={TEST_USER_APP_ADMIN} />,
             { serverContext: { user: TEST_USER_APP_ADMIN } }
         );
         expect(document.querySelectorAll('.table-responsive')).toHaveLength(1);
@@ -60,11 +56,7 @@ describe('AuditDetails', () => {
 
     test('gridData, isUser', () => {
         renderWithAppContext(
-            <AuditDetails
-                gridData={[{ field: 'a', value: 1, isUser: true }]}
-                rowId={1}
-                user={TEST_USER_APP_ADMIN}
-            />,
+            <AuditDetails gridData={[{ field: 'a', value: 1, isUser: true }]} rowId={1} user={TEST_USER_APP_ADMIN} />,
             { serverContext: { user: TEST_USER_APP_ADMIN } }
         );
         expect(document.querySelectorAll('.table-responsive')).toHaveLength(1);

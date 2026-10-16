@@ -153,9 +153,9 @@ describe('utils', () => {
         );
 
         expect(getTimelineEntityUrl({})).toEqual(undefined);
-        expect(
-            getTimelineEntityUrl({ urlType: 'assayRun', value: ['myassay', 44] }).toHref()
-        ).toEqual(`#/${ASSAYS_KEY}/general/myassay/runs/44`);
+        expect(getTimelineEntityUrl({ urlType: 'assayRun', value: ['myassay', 44] }).toHref()).toEqual(
+            `#/${ASSAYS_KEY}/general/myassay/runs/44`
+        );
 
         expect(getTimelineEntityUrl({ urlType: 'inventoryLocation', value: ['freezer1', 101] }).toHref()).toEqual(
             '#/rd/freezerLocation/101'

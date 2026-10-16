@@ -39,8 +39,8 @@ const COMPOSE: FilterSuggestion = {
 };
 const SEARCH: FilterSuggestion = {
     kind: 'search',
-    label: 'Search all columns for Sodium',
-    match: { end: 29, start: 23 },
+    label: 'Search all fields for Sodium',
+    match: { end: 28, start: 22 },
     source: 'fallback',
     value: 'Sodium',
 };
@@ -97,7 +97,7 @@ describe('SearchSuggestInput', () => {
 
         await user.type(input, 'Sodium');
         expect(input.getAttribute('aria-expanded')).toBe('true');
-        expect(optionLabels()).toEqual(['Search all columns for Sodium']);
+        expect(optionLabels()).toEqual(['Search all fields for Sodium']);
         expect(document.querySelectorAll('.grid-panel__search-suggestion-loading')).toHaveLength(1);
         expect(document.querySelector('[role="option"].active')).toBeNull();
 

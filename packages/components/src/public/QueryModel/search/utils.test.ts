@@ -51,11 +51,11 @@ describe('suggestion filters', () => {
 });
 
 describe('createSearchSuggestion', () => {
-    test('searches all columns for the raw term', () => {
+    test('searches all fields for the raw term', () => {
         expect(createSearchSuggestion('Sodium')).toEqual({
             kind: 'search',
-            label: 'Search all columns for Sodium',
-            match: { end: 29, start: 23 },
+            label: 'Search all fields for Sodium',
+            match: { end: 28, start: 22 },
             source: 'fallback',
             value: 'Sodium',
         });

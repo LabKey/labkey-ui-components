@@ -36,8 +36,8 @@ const RESPONSE: FilterSuggestionsResponse = {
         },
         {
             kind: 'search',
-            label: 'Search all columns for PL-1',
-            match: { end: 27, start: 23 },
+            label: 'Search all fields for PL-1',
+            match: { end: 26, start: 22 },
             source: 'fallback',
             value: 'PL-1',
         },

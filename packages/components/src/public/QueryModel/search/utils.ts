@@ -30,7 +30,7 @@ export function getSuggestionMetrics(suggestion: FilterSuggestion, schemaName: s
 }
 
 export function createSearchSuggestion(raw: string): SearchSuggestion {
-    const prefix = 'Search all columns for ';
+    const prefix = 'Search all fields for ';
     return {
         kind: 'search',
         label: prefix + raw,

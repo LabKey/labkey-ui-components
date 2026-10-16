@@ -6,11 +6,11 @@ import { AuditDetailsModel } from './models';
 
 describe('AuditDetailsModel', () => {
     const EMPTY_MODEL = AuditDetailsModel.create({});
-    const NEW_MODEL = AuditDetailsModel.create({ newData: [{ test: 1 }] });
-    const OLD_MODEL = AuditDetailsModel.create({ oldData: [{ test: 1 }] });
-    const BOTH_MODEL_OLD = AuditDetailsModel.create({ oldData: [{ test: 1 }], newData: [] });
-    const BOTH_MODEL_NEW = AuditDetailsModel.create({ oldData: [], newData: [{ test: 1 }] });
-    const BOTH_MODEL = AuditDetailsModel.create({ oldData: [{ test: 1 }], newData: [{ test: 1 }] });
+    const NEW_MODEL = AuditDetailsModel.create({ newData: { test: 1 } });
+    const OLD_MODEL = AuditDetailsModel.create({ oldData: { test: 1 } });
+    const BOTH_MODEL_OLD = AuditDetailsModel.create({ oldData: { test: 1 }, newData: {} });
+    const BOTH_MODEL_NEW = AuditDetailsModel.create({ oldData: {}, newData: { test: 1 } });
+    const BOTH_MODEL = AuditDetailsModel.create({ oldData: { test: 1 }, newData: { test: 1 } });
 
     test('isUpdate', () => {
         expect(EMPTY_MODEL.isUpdate()).toBeFalsy();

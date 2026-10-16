@@ -4,8 +4,6 @@
  */
 import React from 'react';
 
-import { fromJS } from 'immutable';
-
 import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
@@ -48,11 +46,7 @@ describe('AuditDetails', () => {
 
     test('gridData', () => {
         renderWithAppContext(
-            <AuditDetails
-                gridData={fromJS([{ field: 'a', value: { value: 'test' } }])}
-                rowId={1}
-                user={TEST_USER_APP_ADMIN}
-            />,
+            <AuditDetails gridData={[{ field: 'a', value: { value: 'test' } }]} rowId={1} user={TEST_USER_APP_ADMIN} />,
             { serverContext: { user: TEST_USER_APP_ADMIN } }
         );
         expect(document.querySelectorAll('.table-responsive')).toHaveLength(1);
@@ -62,11 +56,7 @@ describe('AuditDetails', () => {
 
     test('gridData, isUser', () => {
         renderWithAppContext(
-            <AuditDetails
-                gridData={fromJS([{ field: 'a', value: 1, isUser: true }])}
-                rowId={1}
-                user={TEST_USER_APP_ADMIN}
-            />,
+            <AuditDetails gridData={[{ field: 'a', value: 1, isUser: true }]} rowId={1} user={TEST_USER_APP_ADMIN} />,
             { serverContext: { user: TEST_USER_APP_ADMIN } }
         );
         expect(document.querySelectorAll('.table-responsive')).toHaveLength(1);
@@ -80,7 +70,7 @@ describe('AuditDetails', () => {
     test('gridData, urlType user', () => {
         renderWithAppContext(
             <AuditDetails
-                gridData={fromJS([{ field: 'a', value: { value: 1, displayValue: 'test', urlType: 'user' } }])}
+                gridData={[{ field: 'a', value: { value: 1, displayValue: 'test', urlType: 'user' } }]}
                 rowId={1}
                 user={TEST_USER_APP_ADMIN}
             />,
@@ -107,6 +97,23 @@ describe('AuditDetails', () => {
         expect(document.querySelectorAll('.user-link')).toHaveLength(0);
         expect(document.querySelector('.panel-body').textContent).toBe('a12');
     });
+
+    test('changeDetails, fields in both oldData and newData render once', () => {
+        renderWithAppContext(
+            <AuditDetails
+                changeDetails={AuditDetailsModel.create({
+                    oldData: { a: 1, b: 3 },
+                    newData: { a: 2, c: 4 },
+                })}
+                rowId={1}
+                user={TEST_USER_APP_ADMIN}
+            />,
+            { serverContext: { user: TEST_USER_APP_ADMIN } }
+        );
+        const labels = Array.from(document.querySelectorAll('.audit-detail-row-label')).map(el => el.textContent);
+        expect(labels).toEqual(['a', 'b', 'c']);
+    });
+
     test('provided data', () => {
         renderWithAppContext(
             <AuditDetails

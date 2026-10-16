@@ -28,7 +28,7 @@ interface Props extends PropsWithChildren {
     emptyMsg?: string;
     fieldValueRenderer?: (label: string, value: any, displayValue: any, hasProvidedValue?: boolean) => ReactNode;
     gridColumnRenderer?: (data: any, row: any, displayValue: any) => ReactNode;
-    gridData?: List<Map<string, any>>;
+    gridData?: Record<string, any>[];
     inheritedFieldMsg?: string;
     rowId?: number;
     summary?: string;
@@ -134,37 +134,28 @@ export class AuditDetails extends Component<Props> {
 
     renderChanges() {
         const { changeDetails } = this.props;
+        const { newData, oldData, providedDeltaValues, providedValues } = changeDetails;
         const isUpdate = changeDetails.isUpdate();
         const isInsert = changeDetails.isInsert();
-        const usedFields: string[] = [];
 
-        let newFields, oldFields;
-        if (changeDetails.oldData) {
-            oldFields = changeDetails.oldData.entrySeq().map(([field, value]) => {
-                let newValue;
-                if (changeDetails.newData) {
-                    newValue = changeDetails.newData.get(field);
-                    usedFields.push(field);
-                }
-                const providedValue = caseInsensitive(changeDetails.providedValues, field);
-                const providedDeltaValue = caseInsensitive(changeDetails.providedDeltaValues, field);
-                return this.renderRow(field, value, newValue, providedValue, providedDeltaValue, isUpdate, isInsert);
-            });
-        }
-
-        if (changeDetails.newData) {
-            newFields = changeDetails.newData.entrySeq().map(([field, value]) => {
-                if (usedFields.indexOf(field) >= 0) return null;
-                const providedValue = caseInsensitive(changeDetails.providedValues, field);
-                const providedDeltaValue = caseInsensitive(changeDetails.providedDeltaValues, field);
-                return this.renderRow(field, undefined, value, providedValue, providedDeltaValue, isUpdate, isInsert);
-            });
-        }
+        const renderField = (field: string, oldValue: string, newValue: string): ReactNode =>
+            this.renderRow(
+                field,
+                oldValue,
+                newValue,
+                caseInsensitive(providedValues, field),
+                caseInsensitive(providedDeltaValues, field),
+                isUpdate,
+                isInsert
+            );
 
         return (
             <>
-                {oldFields}
-                {newFields}
+                {oldData && Array.from(oldData, ([field, value]) => renderField(field, value, newData?.get(field)))}
+                {newData &&
+                    Array.from(newData, ([field, value]) =>
+                        oldData?.has(field) ? null : renderField(field, undefined, value)
+                    )}
             </>
         );
     }
@@ -188,7 +179,7 @@ export class AuditDetails extends Component<Props> {
                     } else if (Map.isMap(data) && data.get('urlType') === 'user') {
                         display = <UserLink userDisplayValue={data.get('displayValue')} userId={data.get('value')} />;
                     } else {
-                        display = getEventDataValueDisplay(data, user.isAdmin);
+                        display = getEventDataValueDisplay(Map.isMap(data) ? data.toJS() : data, user.isAdmin);
                     }
 
                     if (gridColumnRenderer) display = gridColumnRenderer(data, row, display);

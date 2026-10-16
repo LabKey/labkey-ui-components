@@ -12,6 +12,7 @@ import {
     composeFieldToFilter,
     createSearchSuggestion,
     getColumnCaptions,
+    getSuggestionMetrics,
     suggestionToFilter,
 } from './utils';
 
@@ -134,5 +135,43 @@ describe('applyColumnCaption', () => {
         expect(applyColumnCaption(search, { name: 'Sample ID' })).toBe(search);
         const noColMatch: FilterKindSuggestion = { ...FILTER, colMatch: undefined };
         expect(applyColumnCaption(noColMatch, { name: 'Sample ID' })).toBe(noColMatch);
+    });
+});
+
+describe('getSuggestionMetrics', () => {
+    const NAME: FilterKindSuggestion = {
+        fieldKey: 'Name',
+        kind: 'filter',
+        label: 'Sample ID is S-1',
+        op: 'eq',
+        source: 'identity',
+        value: 'S-1',
+    };
+
+    test('counts the kind, plus the source for filters', () => {
+        expect(getSuggestionMetrics(createSearchSuggestion('S-1'), 'samples')).toEqual(['searchChosen']);
+        expect(getSuggestionMetrics({ ...NAME, fieldKey: 'TubeType' }, 'samples')).toEqual([
+            'filterChosen',
+            'identity',
+        ]);
+    });
+
+    test('counts Name filters on sample and data class grids', () => {
+        expect(getSuggestionMetrics(NAME, 'samples')).toEqual(['filterChosen', 'identity', 'sampleNameChosen']);
+        expect(getSuggestionMetrics(NAME, 'Samples')).toEqual(['filterChosen', 'identity', 'sampleNameChosen']);
+        expect(getSuggestionMetrics(NAME, 'exp.data')).toEqual(['filterChosen', 'identity', 'dataClassNameChosen']);
+        expect(getSuggestionMetrics(NAME, 'lists')).toEqual(['filterChosen', 'identity']);
+    });
+
+    test('a compose on Name is not a Name filter', () => {
+        const compose: ComposeSuggestion = {
+            fields: [{ fieldKey: 'Name', op: 'eq' }],
+            kind: 'compose',
+            label: 'Filter Sample ID…',
+            source: 'compose',
+            value: 'S-1',
+            valueType: 'string',
+        };
+        expect(getSuggestionMetrics(compose, 'samples')).toEqual(['composeChosen']);
     });
 });

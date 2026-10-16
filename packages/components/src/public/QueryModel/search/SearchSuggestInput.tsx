@@ -90,7 +90,7 @@ export interface SearchRestoreRequest {
     value: string;
 }
 
-interface Props {
+interface SearchSuggestInputProps {
     api?: ComponentsAPIWrapper;
     model: QueryModel;
     onApplySuggestion: (suggestion: FilterSuggestion) => void;
@@ -100,7 +100,7 @@ interface Props {
 /**
  * Search input that offers targeted filters for the typed term, with the Q filter ("Search all fields") last.
  */
-export const SearchSuggestInput: FC<Props> = memo(props => {
+export const SearchSuggestInput: FC<SearchSuggestInputProps> = memo(props => {
     const { api = getDefaultAPIWrapper(), model, onApplySuggestion, restoreRequest } = props;
     const inputRef = useRef<HTMLInputElement>(null);
     const [text, setText] = useState('');
@@ -134,6 +134,10 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
 
     const apply = useCallback(
         (suggestion: FilterSuggestion) => {
+            if (!suggestion) {
+                setPendingEnter(false);
+                return;
+            }
             getSuggestionMetrics(suggestion, model.schemaName).forEach(metric =>
                 api.query.incrementClientSideMetricCount(GRID_SEARCH_METRIC_AREA, metric)
             );
@@ -206,6 +210,7 @@ export const SearchSuggestInput: FC<Props> = memo(props => {
                     submit();
                     break;
                 case 'Escape':
+                    setPendingEnter(false);
                     if (showMenu) {
                         setOpen(false);
                         setActiveIndex(-1);

@@ -706,7 +706,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     )
                 )
                 .filter(col => col !== undefined);
-            if (!fields.length) return;
+            // The search box has already cleared, so open the modal unseeded rather than doing nothing
+            if (!fields.length) {
+                this.showFilterModal();
+                return;
+            }
 
             const ops = suggestion.fields.reduce<Record<string, string>>((result, field) => {
                 const col = fields.find(f => f.getDisplayFieldKey().toLowerCase() === field.fieldKey.toLowerCase());

@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, useCallback, useMemo, useState } from 'react';
+import React, { FC, memo, MouseEvent, MouseEventHandler, useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 
 import { ActionKeyword, ActionValue } from './actions/Action';
@@ -11,8 +11,8 @@ import { OverlayTrigger } from '../../../internal/OverlayTrigger';
 import { Popover } from '../../../internal/Popover';
 import { generateId } from '../../../internal/util/utils';
 
-export type OnClickValue = (actionValue: ActionValue, event?: React.MouseEvent<HTMLElement>) => void;
-export type OnRemoveValue = (actionValueIndex: number, event: React.MouseEvent<HTMLElement>) => void;
+export type OnClickValue = (actionValue: ActionValue, event?: MouseEvent<HTMLElement>) => void;
+export type OnRemoveValue = (actionValueIndex: number, event: MouseEvent<HTMLElement>) => void;
 
 interface ValueProps {
     actionValue: ActionValue;
@@ -29,7 +29,7 @@ export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyFor
     const { action, value, displayValue, isReadOnly, isRemovable } = actionValue;
     const popoverId = useMemo(() => generateId('filter-status-value-popover-'), []);
 
-    const onIconClick = useCallback<React.MouseEventHandler<HTMLElement>>(
+    const onIconClick = useCallback<MouseEventHandler<HTMLElement>>(
         (event): void => {
             event.stopPropagation();
             event.preventDefault();
@@ -40,7 +40,7 @@ export const Value: FC<ValueProps> = memo(({ actionValue, index, lockReadOnlyFor
         [index, isRemovable, onRemove]
     );
 
-    const onValueClick = useCallback<React.MouseEventHandler<HTMLDivElement>>(
+    const onValueClick = useCallback<MouseEventHandler<HTMLDivElement>>(
         (event): void => {
             // Issue 50449: Expand icon click area to remove filter value
             const target = event.target as HTMLElement;

@@ -1059,4 +1059,19 @@ describe('GridPanel search suggestions', () => {
         await userEvent.click(apply);
         expect(appliedFilters()).toEqual(['expirationTime~eq=1', 'Name~contains=DMX']);
     });
+
+    test('compose on fields the grid no longer shows opens the filter modal unseeded', async () => {
+        jest.mocked(getFilterSuggestions).mockResolvedValue({
+            complete: true,
+            suggestions: [{ ...COMPOSE_SUGGESTION, fields: [{ fieldKey: 'NotShown', op: 'contains' }] }],
+        });
+        renderGrid();
+
+        await typeAndWaitFor('DMX', 'Filter Name…');
+        await userEvent.keyboard('{Enter}');
+
+        expect(document.querySelectorAll('.modal button.list-group-item').length).toBeGreaterThan(1);
+        expect(document.querySelector<HTMLInputElement>('input[aria-label="Filter 0 value 1"]')?.value ?? '').toBe('');
+        expect(actions.setFilters).not.toHaveBeenCalled();
+    });
 });

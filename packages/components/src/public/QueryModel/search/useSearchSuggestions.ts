@@ -21,8 +21,8 @@ export interface UseSearchSuggestions {
 
 interface SettledSuggestions {
     complete: boolean;
+    request: FilterSuggestionsRequest;
     suggestions: FilterSuggestion[];
-    term: string;
 }
 
 export function getFilterSuggestionsRequest(model: QueryModel, term: string): FilterSuggestionsRequest {
@@ -45,7 +45,7 @@ export function useSearchSuggestions(
     enabled: boolean
 ): UseSearchSuggestions {
     const trimmed = term?.trim() ?? '';
-    const [settled, setSettled] = useState<SettledSuggestions>({ complete: true, suggestions: [], term: '' });
+    const [settled, setSettled] = useState<SettledSuggestions>({ complete: true, request: undefined, suggestions: [] });
     const requestId = useRef(0);
     // A new request is only warranted when the term or the grid's shape changes, not on every model update
     const request = useMemo(
@@ -60,6 +60,7 @@ export function useSearchSuggestions(
             model.containerFilter,
             model.queryParameters,
             model.queryInfo,
+            model.omittedColumns,
         ]
     );
 
@@ -77,9 +78,9 @@ export function useSearchSuggestions(
             let result: SettledSuggestions;
             try {
                 const response = await api.query.getFilterSuggestions(request);
-                result = { ...response, term: request.term };
+                result = { ...response, request };
             } catch {
-                result = { complete: false, suggestions: [createSearchSuggestion(request.term)], term: request.term };
+                result = { complete: false, request, suggestions: [createSearchSuggestion(request.term)] };
             }
             if (id === requestId.current) setSettled(result);
         }, SUGGESTION_DEBOUNCE_MS);
@@ -89,10 +90,11 @@ export function useSearchSuggestions(
 
     return useMemo(() => {
         if (!trimmed) return { complete: true, loading: false, suggestions: [] };
-        if (settled.term === trimmed) {
+        // Suggestions for the same term on a different view or column set name fields the grid may no longer show
+        if (settled.request === request) {
             const suggestions = settled.suggestions.map(suggestion => applyColumnCaption(suggestion, captions));
             return { complete: settled.complete, loading: false, suggestions };
         }
         return { complete: false, loading: true, suggestions: [createSearchSuggestion(trimmed)] };
-    }, [captions, settled, trimmed]);
+    }, [captions, request, settled, trimmed]);
 }

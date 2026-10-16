@@ -226,6 +226,47 @@ describe('SearchSuggestInput', () => {
         expect(input.value).toBe('');
     });
 
+    test('Escape cancels an Enter pressed while loading', async () => {
+        const input = renderInput();
+        await user.type(input, 'Sodium{Enter}');
+
+        await user.keyboard('{Escape}');
+        await act(async () => {
+            jest.advanceTimersByTime(PENDING_ENTER_TIMEOUT_MS);
+        });
+        expect(onApplySuggestion).not.toHaveBeenCalled();
+        expect(input.value).toBe('Sodium');
+
+        await user.keyboard('{Escape}');
+        expect(onApplySuggestion).not.toHaveBeenCalled();
+        expect(input.value).toBe('');
+    });
+
+    test('Enter waits for fresh suggestions when the grid changes under the same term', async () => {
+        const api = getTestAPIWrapper(jest.fn, {
+            query: getQueryTestAPIWrapper(jest.fn, { getFilterSuggestions, incrementClientSideMetricCount }),
+        });
+        const { rerender } = render(
+            <SearchSuggestInput api={api} model={MODEL} onApplySuggestion={onApplySuggestion} />
+        );
+        const input = document.querySelector<HTMLInputElement>('.grid-panel__search-input');
+        await user.type(input, 'Sodium');
+        await settle();
+
+        getFilterSuggestions.mockResolvedValue({ complete: true, suggestions: [COMPOSE, SEARCH] });
+        const changed = MODEL.mutate({ queryParameters: { Threshold: 5 } });
+        rerender(<SearchSuggestInput api={api} model={changed} onApplySuggestion={onApplySuggestion} />);
+        expect(document.querySelectorAll('.grid-panel__search-suggestion-loading')).toHaveLength(1);
+
+        await user.keyboard('{Enter}');
+        expect(onApplySuggestion).not.toHaveBeenCalled();
+
+        await settle();
+        expect(getFilterSuggestions).toHaveBeenCalledTimes(2);
+        expect(getFilterSuggestions.mock.calls[1][0]).toMatchObject({ parameters: { Threshold: 5 }, term: 'Sodium' });
+        expect(onApplySuggestion).toHaveBeenCalledWith(COMPOSE);
+    });
+
     test('no request is made until the input is used', async () => {
         renderInput();
         await settle();

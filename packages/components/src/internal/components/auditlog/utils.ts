@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { ReactNode } from 'react';
-import { Map, OrderedMap } from 'immutable';
 import { QueryKey } from '@labkey/api';
 
 import { FREEZER_MANAGER_PRODUCT_ID, isSampleManagerEnabled } from '../../app/products';
@@ -19,6 +18,7 @@ import {
 import { ASSAYS_KEY, BOXES_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
 import { naturalSortByProperty } from '../../../public/sort';
 import { AppURL } from '../../url/AppURL';
+import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { ModuleContext } from '../base/ServerContext';
 
@@ -64,26 +64,6 @@ export function getEventDataValueDisplay(d: any, showLink = true): ReactNode {
             display = d;
         } else if (typeof d === 'boolean') {
             display = d ? 'true' : 'false';
-        } else if (Map.isMap(d)) {
-            if (d.has('formattedValue')) {
-                display = d.get('formattedValue');
-            } else {
-                const o = d.has('displayValue') ? d.get('displayValue') : d.get('value');
-                display = o?.toString() ?? null;
-            }
-
-            if (showLink) {
-                if (!d.get('hideLink')) {
-                    if (d.get('url')) {
-                        display = React.createElement('a', { href: d.get('url') }, display);
-                    } else {
-                        const url = getTimelineEntityUrl(d.toJS());
-                        if (url) {
-                            display = React.createElement('a', { href: url.toHref() }, display);
-                        }
-                    }
-                }
-            }
         } else {
             if (d.formattedValue) {
                 display = d.formattedValue;
@@ -92,7 +72,7 @@ export function getEventDataValueDisplay(d: any, showLink = true): ReactNode {
             }
 
             if (showLink && !d.hideLink) {
-                const href = d.url ?? getTimelineEntityUrl(d)?.toHref();
+                const href = d.url || getTimelineEntityUrl(d)?.toHref();
                 if (href) {
                     display = React.createElement('a', { href }, display);
                 }
@@ -155,7 +135,7 @@ export function getTimelineEntityUrl(d: Record<string, any>): AppURL {
 export function getAuditDetailMap(
     data: Record<string, string>,
     inheritedFieldKeys?: string[]
-): OrderedMap<string, string> {
+): ExtendedMap<string, string> {
     if (inheritedFieldKeys?.length > 0) {
         // sort fields.newData so that inherited fields are at the bottom
         const inheritedFieldsLc = inheritedFieldKeys.map(f => f.toLowerCase());
@@ -170,8 +150,8 @@ export function getAuditDetailMap(
             }
         }
         Object.assign(sortedNewData, last);
-        return OrderedMap(sortedNewData);
+        return new ExtendedMap<string, string>(sortedNewData);
     }
 
-    return OrderedMap(data);
+    return new ExtendedMap<string, string>(data);
 }

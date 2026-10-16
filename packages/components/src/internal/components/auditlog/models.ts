@@ -2,39 +2,37 @@
  * Copyright (c) 2020-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { fromJS, List, Map, Record } from 'immutable';
-
 import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
+import { ExtendedMap } from '../../../public/ExtendedMap';
+
 import { getAuditDetailMap } from './utils';
 
-export class AuditDetailsModel extends Record({
-    rowId: undefined,
-    comment: undefined,
-    eventUserId: undefined,
-    eventDateFormatted: undefined,
-    oldData: undefined,
-    newData: undefined,
-    providedValues: undefined,
-    providedDeltaValues: undefined,
-    userComment: undefined,
-}) {
-    declare rowId?: number;
-    declare comment?: string;
-    declare eventUserId?: number;
-    declare eventDateFormatted?: string;
-    declare oldData?: Map<string, string>;
-    declare newData?: Map<string, string>;
-    declare providedValues?: Record<string, string>;
-    declare providedDeltaValues?: Record<string, string>;
-    declare userComment?: string;
+export class AuditDetailsModel {
+    readonly comment?: string;
+    readonly eventDateFormatted?: string;
+    readonly eventUserId?: number;
+    readonly newData?: ExtendedMap<string, string>;
+    readonly oldData?: ExtendedMap<string, string>;
+    readonly providedDeltaValues?: Record<string, string>;
+    readonly providedValues?: Record<string, string>;
+    readonly rowId?: number;
+    readonly userComment?: string;
+
+    constructor(values?: Partial<AuditDetailsModel>) {
+        Object.assign(this, values);
+    }
 
     static create(raw: any): AuditDetailsModel {
         return new AuditDetailsModel({
-            ...raw,
-            oldData: raw.oldData ? fromJS(raw.oldData) : undefined,
-            newData: raw.newData ? fromJS(raw.newData) : undefined,
-            providedValues: raw.providedValues,
+            comment: raw.comment,
+            eventDateFormatted: raw.eventDateFormatted,
+            eventUserId: raw.eventUserId,
+            newData: raw.newData ? new ExtendedMap<string, string>(raw.newData) : undefined,
+            oldData: raw.oldData ? new ExtendedMap<string, string>(raw.oldData) : undefined,
             providedDeltaValues: raw.providedDeltaValues,
+            providedValues: raw.providedValues,
+            rowId: raw.rowId,
+            userComment: raw.userComment,
         });
     }
 
@@ -58,43 +56,32 @@ export class AuditDetailsModel extends Record({
     }
 }
 
-export class TimelineEventModel extends Record({
-    rowId: undefined,
-    eventType: undefined,
-    subEventType: undefined,
-    summary: undefined,
-    user: undefined,
-    eventUserId: undefined,
-    timestamp: undefined,
-    eventTimestamp: undefined,
-    entity: undefined,
-    entitySeparator: ' - ',
-    metadata: undefined,
-    oldData: undefined,
-    newData: undefined,
-    providedValues: undefined, // map from field name to user-provided values that were converted
-    providedDeltaValues: undefined, // map from field name to user-provided values that were used to alter the value
-    userComment: undefined,
-}) {
-    declare rowId?: number;
-    declare eventType?: string; // sample, assay, workflow, inventory, etc
-    declare subEventType?: string; // for example, inventory item vs inventory storage location
-    declare summary?: string;
-    declare user?: Map<string, any>;
-    declare eventUserId?: number;
-    declare timestamp?: Map<string, any>;
-    declare eventTimestamp?: any;
-    declare entity?: Map<string, any>;
-    declare entitySeparator?: string;
-    declare metadata?: List<Map<string, any>>;
-    declare oldData?: Map<string, string>;
-    declare newData?: Map<string, string>;
-    declare providedValues?: Map<string, string>;
-    declare providedDeltaValues?: Map<string, string>;
-    declare userComment?: string;
+export interface TimelineMetadataRow {
+    field: string;
+    value: any;
+}
 
-    constructor(values?: Record<string, any>) {
-        super(values);
+export class TimelineEventModel {
+    readonly entity?: Record<string, any>;
+    readonly entitySeparator?: string;
+    readonly eventTimestamp?: Date;
+    readonly eventType?: string; // sample, assay, workflow, inventory, etc
+    readonly eventUserId?: number;
+    readonly metadata?: TimelineMetadataRow[];
+    readonly newData?: ExtendedMap<string, string>;
+    readonly oldData?: ExtendedMap<string, string>;
+    readonly providedDeltaValues?: Record<string, string>; // field name to user-provided values used to alter the value
+    readonly providedValues?: Record<string, string>; // field name to user-provided values that were converted
+    readonly rowId?: number;
+    readonly subEventType?: string; // for example, inventory item vs inventory storage location
+    readonly summary?: string;
+    readonly timestamp?: Record<string, any>;
+    readonly user?: Record<string, any>;
+    readonly userComment?: string;
+
+    constructor(values?: Partial<TimelineEventModel>) {
+        Object.assign(this, values);
+        this.entitySeparator ??= ' - ';
     }
 
     getRowKey() {
@@ -103,36 +90,32 @@ export class TimelineEventModel extends Record({
 
     // timezoneStr used for jest test only, to accommodate teamcity timezone difference
     static create(raw: any, timezoneStr?: string, inheritedFieldKeys?: string[]): TimelineEventModel {
-        const fields = {} as TimelineEventModel;
-        fields.rowId = raw['rowId'];
-        fields.eventType = raw['eventType'];
-        fields.subEventType = raw['subEventType'];
-        fields.summary = raw['summary'];
-        fields.user = fromJS(raw['user']);
-        fields.eventUserId = raw['user']?.['value'];
-        fields.timestamp = fromJS(raw['timestamp']);
-        if (raw['timestamp']['value'])
-            fields.eventTimestamp = timezoneStr
-                ? new Date(raw['timestamp']['value'] + ' ' + timezoneStr)
-                : new Date(raw['timestamp']['value']);
-        fields.entity = fromJS(raw['entity']);
-        fields.entitySeparator = raw['entitySeparator'];
-        fields.userComment = raw['userComment'];
+        let eventTimestamp: Date;
+        if (raw.timestamp.value)
+            eventTimestamp = timezoneStr
+                ? new Date(raw.timestamp.value + ' ' + timezoneStr)
+                : new Date(raw.timestamp.value);
 
-        if (raw.metadata) {
-            const metaRows = [];
-            for (const [key, value] of Object.entries(raw.metadata)) {
-                metaRows.push({ field: key, value: fromJS(value) });
-            }
-            fields.metadata = fromJS(metaRows);
-        }
-
-        if (raw.oldData) fields.oldData = getAuditDetailMap(raw.oldData, inheritedFieldKeys);
-        if (raw.newData) fields.newData = getAuditDetailMap(raw.newData, inheritedFieldKeys);
-        if (raw.providedValues) fields.providedValues = raw.providedValues;
-        if (raw.providedDeltaValues) fields.providedDeltaValues = raw.providedDeltaValues;
-
-        return new TimelineEventModel(fields);
+        return new TimelineEventModel({
+            entity: raw.entity,
+            entitySeparator: raw.entitySeparator,
+            eventTimestamp,
+            eventType: raw.eventType,
+            eventUserId: raw.user?.value,
+            metadata: raw.metadata
+                ? Object.entries(raw.metadata).map(([field, value]) => ({ field, value }))
+                : undefined,
+            newData: raw.newData ? getAuditDetailMap(raw.newData, inheritedFieldKeys) : undefined,
+            oldData: raw.oldData ? getAuditDetailMap(raw.oldData, inheritedFieldKeys) : undefined,
+            providedDeltaValues: raw.providedDeltaValues,
+            providedValues: raw.providedValues,
+            rowId: raw.rowId,
+            subEventType: raw.subEventType,
+            summary: raw.summary,
+            timestamp: raw.timestamp,
+            user: raw.user,
+            userComment: raw.userComment,
+        });
     }
 
     getAuditDetailsModel(): AuditDetailsModel {
@@ -149,14 +132,11 @@ export class TimelineEventModel extends Record({
     }
 
     isSameEntity(event: TimelineEventModel): boolean {
-        return this.entity && event.entity && this.entity.get('value') === event.entity.get('value');
+        return !!this.entity && !!event.entity && this.entity.value === event.entity.value;
     }
 
     getComment(): string {
-        if (!this.metadata) return undefined;
-        const commentField = this.metadata.find(metadataRow => metadataRow.get('field').toLowerCase() === 'reason');
-        if (commentField) return commentField.get('value');
-        return undefined;
+        return this.metadata?.find(row => row.field.toLowerCase() === 'reason')?.value;
     }
 
     getIcon(): string {

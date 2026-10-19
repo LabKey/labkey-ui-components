@@ -27,6 +27,7 @@ export type SuggestionSource =
     | 'identityContains'
     | 'integerValue'
     | 'key'
+    | 'partialMatch'
     | 'partialValue'
     | 'shape'
     | 'shapeContains';

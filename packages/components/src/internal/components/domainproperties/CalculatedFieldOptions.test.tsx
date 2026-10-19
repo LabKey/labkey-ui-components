@@ -184,37 +184,37 @@ describe('CalculatedFieldOptions', () => {
             return { ...result, parseCalculatedColumn, onChange };
         };
 
-        test('renders AI Assistant button and hides examples table when mcpReady is true', () => {
+        test('renders LabKey Assistant button and hides examples table when mcpReady is true', () => {
             renderWithAssistance(true);
 
             const aiButtons = Array.from(document.querySelectorAll('button')).filter(b =>
-                b.textContent?.includes('AI Assistant')
+                b.textContent?.includes('LabKey Assistant')
             );
             expect(aiButtons).toHaveLength(1);
             expect(document.querySelector('.domain-field-calc-examples')).toBeNull();
         });
 
-        test('renders examples table and hides AI Assistant button when mcpReady is false', () => {
+        test('renders examples table and hides LabKey Assistant button when mcpReady is false', () => {
             renderWithAssistance(false);
 
             const aiButtons = Array.from(document.querySelectorAll('button')).filter(b =>
-                b.textContent?.includes('AI Assistant')
+                b.textContent?.includes('LabKey Assistant')
             );
             expect(aiButtons).toHaveLength(0);
             expect(document.querySelector('.domain-field-calc-examples')).not.toBeNull();
         });
 
-        test('renders examples table and hides AI Assistant button when mcpReady is undefined', () => {
+        test('renders examples table and hides LabKey Assistant button when mcpReady is undefined', () => {
             renderWithAssistance(undefined);
 
             const aiButtons = Array.from(document.querySelectorAll('button')).filter(b =>
-                b.textContent?.includes('AI Assistant')
+                b.textContent?.includes('LabKey Assistant')
             );
             expect(aiButtons).toHaveLength(0);
             expect(document.querySelector('.domain-field-calc-examples')).not.toBeNull();
         });
 
-        test('clicking AI Assistant button opens the ExpressionAssistantModal', async () => {
+        test('clicking LabKey Assistant button opens the ExpressionAssistantModal', async () => {
             renderWithAssistance(true);
 
             // The modal is not open yet
@@ -223,11 +223,11 @@ describe('CalculatedFieldOptions', () => {
             });
 
             const aiButton = Array.from(document.querySelectorAll('button')).find(b =>
-                b.textContent?.includes('AI Assistant')
+                b.textContent?.includes('LabKey Assistant')
             );
 
             await userEvent.click(aiButton!);
-            expect(document.querySelector('.modal-title')).toHaveTextContent('Expression AI Assistant');
+            expect(document.querySelector('.modal-title')).toHaveTextContent('LabKey Assistant - Expressions');
         });
 
         test('renders "Get help from AI" button next to error when mcpReady is true and validation fails', async () => {
@@ -245,7 +245,7 @@ describe('CalculatedFieldOptions', () => {
 
             // Clicking it should open the assistant modal
             await userEvent.click(helpBtn!);
-            expect(document.querySelector('.modal-title')).toHaveTextContent('Expression AI Assistant');
+            expect(document.querySelector('.modal-title')).toHaveTextContent('LabKey Assistant - Expressions');
         });
 
         test('does not render "Get help from AI" button on error when mcpReady is false', async () => {

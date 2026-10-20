@@ -184,33 +184,28 @@ describe('CalculatedFieldOptions', () => {
             return { ...result, parseCalculatedColumn, onChange };
         };
 
+        // Exact match so the "Get help from LabKey Assistant" error button isn't located by mistake
+        const getAssistantButtons = () =>
+            Array.from(document.querySelectorAll('button')).filter(b => b.textContent?.trim() === 'LabKey Assistant');
+
         test('renders LabKey Assistant button and hides examples table when mcpReady is true', () => {
             renderWithAssistance(true);
 
-            const aiButtons = Array.from(document.querySelectorAll('button')).filter(b =>
-                b.textContent?.includes('LabKey Assistant')
-            );
-            expect(aiButtons).toHaveLength(1);
+            expect(getAssistantButtons()).toHaveLength(1);
             expect(document.querySelector('.domain-field-calc-examples')).toBeNull();
         });
 
         test('renders examples table and hides LabKey Assistant button when mcpReady is false', () => {
             renderWithAssistance(false);
 
-            const aiButtons = Array.from(document.querySelectorAll('button')).filter(b =>
-                b.textContent?.includes('LabKey Assistant')
-            );
-            expect(aiButtons).toHaveLength(0);
+            expect(getAssistantButtons()).toHaveLength(0);
             expect(document.querySelector('.domain-field-calc-examples')).not.toBeNull();
         });
 
         test('renders examples table and hides LabKey Assistant button when mcpReady is undefined', () => {
             renderWithAssistance(undefined);
 
-            const aiButtons = Array.from(document.querySelectorAll('button')).filter(b =>
-                b.textContent?.includes('LabKey Assistant')
-            );
-            expect(aiButtons).toHaveLength(0);
+            expect(getAssistantButtons()).toHaveLength(0);
             expect(document.querySelector('.domain-field-calc-examples')).not.toBeNull();
         });
 
@@ -222,15 +217,11 @@ describe('CalculatedFieldOptions', () => {
                 expect(document.querySelector('.modal-title')).toBeNull();
             });
 
-            const aiButton = Array.from(document.querySelectorAll('button')).find(b =>
-                b.textContent?.includes('LabKey Assistant')
-            );
-
-            await userEvent.click(aiButton!);
+            await userEvent.click(getAssistantButtons()[0]);
             expect(document.querySelector('.modal-title')).toHaveTextContent('LabKey Assistant - Expressions');
         });
 
-        test('renders "Get help from AI" button next to error when mcpReady is true and validation fails', async () => {
+        test('renders "Get help from LabKey Assistant" button next to error when mcpReady is true and validation fails', async () => {
             renderWithAssistance(true, { propertyId: 1, valueExpression: 'bogus' }, { error: 'Invalid expression' });
 
             // Validation error should be displayed
@@ -238,17 +229,17 @@ describe('CalculatedFieldOptions', () => {
                 expect(document.querySelector('.error')).toHaveTextContent('Invalid expression');
             });
 
-            // "Get help from AI" button should be present alongside the error
+            // "Get help from LabKey Assistant" button should be present alongside the error
             const helpBtn = document.querySelector('button.validate-link-ai');
             expect(helpBtn).not.toBeNull();
-            expect(helpBtn).toHaveTextContent('Get help from AI');
+            expect(helpBtn).toHaveTextContent('Get help from LabKey Assistant');
 
             // Clicking it should open the assistant modal
             await userEvent.click(helpBtn!);
             expect(document.querySelector('.modal-title')).toHaveTextContent('LabKey Assistant - Expressions');
         });
 
-        test('does not render "Get help from AI" button on error when mcpReady is false', async () => {
+        test('does not render "Get help from LabKey Assistant" button on error when mcpReady is false', async () => {
             renderWithAssistance(false, { propertyId: 1, valueExpression: 'bogus' }, { error: 'Invalid expression' });
 
             await waitFor(() => {

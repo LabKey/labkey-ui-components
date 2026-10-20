@@ -277,7 +277,7 @@ export const CalculatedFieldOptions: FC<CalculatedFieldOptionsProps> = memo(prop
                                         onClick={onValidateAssistant}
                                         type="button"
                                     >
-                                        Get help from AI
+                                        Get help from LabKey Assistant
                                     </button>
                                 )}
                             </div>

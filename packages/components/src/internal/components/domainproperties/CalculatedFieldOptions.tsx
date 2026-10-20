@@ -277,7 +277,7 @@ export const CalculatedFieldOptions: FC<CalculatedFieldOptionsProps> = memo(prop
                                         onClick={onValidateAssistant}
                                         type="button"
                                     >
-                                        Get help from AI
+                                        Get help from LabKey Assistant
                                     </button>
                                 )}
                             </div>
@@ -296,7 +296,7 @@ export const CalculatedFieldOptions: FC<CalculatedFieldOptionsProps> = memo(prop
                 {assistanceEnabled && (
                     <div className="col-xs-12 col-md-5">
                         <div className="margin-bottom">
-                            The AI Assistant can help you create or validate an expression. You can describe the
+                            LabKey Assistant can help you create or validate an expression. You can describe the
                             calculation you want, or get help with an existing expression.
                         </div>
                         <div className="margin-bottom">
@@ -307,7 +307,7 @@ export const CalculatedFieldOptions: FC<CalculatedFieldOptionsProps> = memo(prop
                                     style={{ marginRight: '4px', marginTop: '-4px' }}
                                     width="16px"
                                 />
-                                AI Assistant
+                                LabKey Assistant
                             </button>
                         </div>
                         <HelpLink topic={FIELD_EDITOR_CALC_COLS_TOPIC}>See calculation examples</HelpLink>

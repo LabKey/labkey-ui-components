@@ -397,6 +397,6 @@ describe('ExpressionAssistantModal', () => {
 
         // Assert - onCancel is wired straight through to ChatModal, so closing the modal invokes the caller's handler
         expect(chatModalProps.onCancel).toBe(onCancel);
-        expect(chatModalProps.title).toBe('Expression AI Assistant');
+        expect(chatModalProps.title).toBe('LabKey Assistant - Expressions');
     });
 });

@@ -61,10 +61,10 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
     } else {
         body = (
             <ServerActivityList
-                serverActivity={serverActivity}
+                onRead={onRead_}
                 onViewAll={toggleMenu}
                 onViewClick={toggleMenu}
-                onRead={onRead_}
+                serverActivity={serverActivity}
             />
         );
     }
@@ -72,12 +72,16 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
         'fa-spinner fa-pulse': hasAnyInProgress,
         'fa-bell': !hasAnyInProgress,
     });
+    // TODO: is the has-unread necessary?
+    const connectorClassName = classNames('navbar-menu-connector', 'navbar-menu-connector--gray', {
+        'has-unread': unreadCount > 0,
+    });
     return (
-        <div className="navbar-item pull-right server-notifications navbar-menu">
+        <div className="navbar-dropdown">
             <button
-                aria-haspopup="true"
                 aria-expanded={show}
-                className="navbar-menu-button"
+                aria-haspopup="true"
+                className="navbar-menu-button server-notifications navbar-menu"
                 onClick={toggleMenu}
                 ref={toggleRef}
                 role="button"
@@ -90,7 +94,7 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
             {show && (
                 <div className="navbar-menu__content" ref={menuRef}>
                     <h3 className="navbar-menu-header">
-                        <div className={'navbar-icon-connector' + (unreadCount > 0 ? ' has-unread' : '')} />
+                        <div className={connectorClassName} />
                         Notifications
                         {unreadCount > 0 && (
                             <div className="pull-right clickable-text" onClick={markAllRead}>

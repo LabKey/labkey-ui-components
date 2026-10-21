@@ -3,9 +3,9 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import classNames from 'classnames';
-import React, { FC, memo, ReactNode, useCallback, useMemo } from 'react';
+import React, { FC, memo, useCallback, useMemo } from 'react';
 import { List, Map } from 'immutable';
-import { useLocation } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';
@@ -32,9 +32,45 @@ import { SEARCH_PLACEHOLDER } from './constants';
 import { useFolderMenuContext, useSubNavTabsContext } from './hooks';
 import { Icon } from '../../Icon';
 import { AssistantButton } from '../mcp/DocumentationAssistant';
+import { App as ComponentsApp } from '../../../index';
+
+const HeaderLogo: FC = memo(() => {
+    const { badge, withText } = ComponentsApp.getAppLogoImageUrls();
+    return (
+        <div className="header-logo">
+            <div className="hidden-xs hidden-sm">
+                <Link className="header-logo__link" to="/">
+                    <span className="sr-only">Home</span>
+                    <img
+                        alt={ComponentsApp.getPrimaryAppProperties().name + ' Dashboard'}
+                        className="header-logo__image"
+                        height="32px"
+                        src={withText}
+                        srcSet={withText}
+                        title="Dashboard"
+                    />
+                </Link>
+            </div>
+            <div className="hidden-md hidden-lg">
+                <Link className="header-logo__link" to="/">
+                    <span className="sr-only">Home</span>
+                    <img
+                        alt={ComponentsApp.getPrimaryAppProperties().name + 'Dashboard'}
+                        className="header-logo__image"
+                        height="36px"
+                        src={badge}
+                        srcSet={badge}
+                        title="Dashboard"
+                        width="36px"
+                    />
+                </Link>
+            </div>
+        </div>
+    );
+});
+HeaderLogo.displayName = 'AppLogo';
 
 interface NavigationBarProps {
-    brand?: ReactNode;
     menuSectionConfigs?: List<Map<string, MenuSectionConfig>>;
     notificationsConfig?: ServerNotificationsConfig;
     onChatStart?: () => void;
@@ -50,7 +86,6 @@ type Props = NavigationBarProps & UserMenuProps;
 
 export const NavigationBar: FC<Props> = memo(props => {
     const {
-        brand,
         extraDevItems,
         extraUserItems,
         menuSectionConfigs,
@@ -80,93 +115,73 @@ export const NavigationBar: FC<Props> = memo(props => {
     const { noun, tabs } = useSubNavTabsContext();
     const hasSubNav = noun !== undefined || tabs.length > 0;
     const assistantEnabled = mcpReady === true && isDocumentationAssistantEnabled(moduleContext);
+    const className = classNames('app-navigation', `app-navigation--${themeName}`, {
+        'with-sub-nav': hasSubNav,
+        'app-navigation--admin': isAdminPage,
+    });
 
     return (
-        <div className={classNames('app-navigation', { 'with-sub-nav': hasSubNav })}>
-            <nav
-                className={classNames('main-nav navbar test-loc-nav-header', {
-                    'navbar-container': !isAdminPage,
-                    'admin-navbar-container': isAdminPage,
-                    [`navbar-theme-${themeName}`]: !!themeName,
-                })}
-            >
-                <div className="container">
-                    <div className="row">
-                        <div className="navbar-left col-xs-6 col-md-6">
-                            <span className="navbar-item navbar-left-icon pull-left">{brand}</span>
-                            {showNavMenu && (
-                                <span className="navbar-item navbar-left-menu">
-                                    <ProductMenuButton
-                                        key={folderMenuContext.key} // re-render and reload folderItems when folder added
-                                        sectionConfigs={menuSectionConfigs}
-                                        showFolderMenu={showFolderMenu}
-                                    />
-                                </span>
-                            )}
-                        </div>
-                        <div className="navbar-right col-xs-6 col-md-6">
-                            {!!user && (
-                                <UserMenuGroup
-                                    extraDevItems={extraDevItems}
-                                    extraUserItems={extraUserItems}
-                                    onSignIn={onSignIn}
-                                    onSignOut={onSignOut}
-                                    signOutUrl={signOutUrl}
-                                    user={user}
-                                />
-                            )}
-                            {showNotifications && !isAdminPage && <ServerNotifications {...notificationsConfig} />}
-                            {showProductNav && <ProductNavigation />}
-                            {!isAdminPage && (
-                                <div className="navbar-item pull-right">
-                                    <div className="hidden-md hidden-sm hidden-xs">
-                                        <SearchBox
-                                            findNounPlural="samples"
-                                            onFindByIds={onFindByIds}
-                                            onSearch={onSearch}
-                                            placeholder={_searchPlaceholder}
-                                        />
-                                    </div>
-                                    <div className="visible-md visible-sm visible-xs">
-                                        {onFindByIds ? (
-                                            <FindAndSearchDropdown
-                                                className="navbar__xs-find-dropdown"
-                                                findNounPlural="samples"
-                                                onFindByIds={onFindByIds}
-                                                onSearch={onSearchIconClick}
-                                                title={
-                                                    <Icon
-                                                        iconClass="fa fa-search navbar__xs-search-icon"
-                                                        srText="Search and Find"
-                                                    />
-                                                }
-                                            />
-                                        ) : (
-                                            <i
-                                                className="fa fa-search navbar__xs-search-icon"
-                                                onClick={onSearchIconClick}
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-                            )}
-                            {assistantEnabled && (
-                                <span className="navbar-item">
-                                    <AssistantButton
-                                        iconSrc="ai_stars_icon_white"
-                                        label={'Documentation Assistant'}
-                                        onClick={onChatStart}
-                                    />
-                                </span>
-                            )}
-                        </div>
-                    </div>
+        <div className={className}>
+            <nav className="main-app-nav">
+                <div className="main-app-nav__menus">
+                    <HeaderLogo />
+
+                    {showNavMenu && (
+                        <ProductMenuButton
+                            key={folderMenuContext.key} // re-render and reload folderItems when folder added
+                            sectionConfigs={menuSectionConfigs}
+                            showFolderMenu={showFolderMenu}
+                        />
+                    )}
+                </div>
+
+                <div className="main-app-nav__buttons">
+                    {assistantEnabled && <AssistantButton label="Documentation Assistant" onClick={onChatStart} />}
+
+                    {!isAdminPage && (
+                        <SearchBox
+                            findNounPlural="samples"
+                            onFindByIds={onFindByIds}
+                            onSearch={onSearch}
+                            placeholder={_searchPlaceholder}
+                        />
+                    )}
+
+                    {!isAdminPage && !!onFindByIds && (
+                        <FindAndSearchDropdown
+                            className="visible-md visible-sm visible-xs"
+                            findNounPlural="samples"
+                            onFindByIds={onFindByIds}
+                            onSearch={onSearchIconClick}
+                            title={<Icon iconClass="fa fa-search navbar-header-icon" srText="Search and Find" />}
+                        />
+                    )}
+
+                    {!isAdminPage && !onFindByIds && (
+                        <i className="fa fa-search navbar__xs-search-icon" onClick={onSearchIconClick} />
+                    )}
+
+                    {showProductNav && <ProductNavigation />}
+
+                    {showNotifications && !isAdminPage && <ServerNotifications {...notificationsConfig} />}
+
+                    {!!user && (
+                        <UserMenuGroup
+                            extraDevItems={extraDevItems}
+                            extraUserItems={extraUserItems}
+                            onSignIn={onSignIn}
+                            onSignOut={onSignOut}
+                            signOutUrl={signOutUrl}
+                            user={user}
+                        />
+                    )}
                 </div>
             </nav>
 
-            <div className="sub-nav-wrapper">
+            {/* TODO: drop the sub-nav-wrapper altogether or at least put it in <SubNav /> */}
+            <nav className="sub-nav-wrapper">
                 <SubNav />
-            </div>
+            </nav>
         </div>
     );
 });

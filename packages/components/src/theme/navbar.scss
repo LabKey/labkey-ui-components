@@ -1,15 +1,10 @@
 @use "sass:color";
-@use "sass:map";
 
 .app-navigation {
     position: fixed;
     top: 0;
     width: 100%;
     z-index: $zindex-navbar;
-}
-
-.main-nav.navbar {
-    height: 56px;
 }
 
 .sub-nav-wrapper .navbar {
@@ -27,97 +22,49 @@
     margin-bottom: 0;
 }
 
-.navbar-container {
-  background-color: $brand-primary;
-  margin-bottom: 0;
-}
-
-.admin-navbar-container {
-    background-color: $blue-dark;
-    margin-bottom: 0;
-}
-
-.navbar-left {
-  padding: 0;
-
-    .navbar-left-sub{
-        background-color: transparent;
-        color: $white !important;
-        font-size: 14px;
-        font-weight: 400;
-        margin: 18px 0;
-        position: relative;
-        left: 40px;
-        display: inline-block;
-    }
-
-  .navbar-item {
-    margin-left: 20px;
-  }
-
-  .navbar-left-icon {
-      margin: 10px 0;
-  }
-}
-
-.navbar-right {
-  margin: 10px 0;
-  padding: 0;
-
-  .navbar-item {
-    margin-right: 20px;
-  }
-}
-
-.placeholder-with-icons {
-  font-family: FontAwesome, $font-family-sans-serif
-}
-
 .product-menu {
     position: relative;
     display: inline-block;
 }
 
-.navbar-left-menu {
-    .product-menu-button {
-        height: 54px;
-        min-width: 85px;
-        max-width: 300px; // ~40 characters plus text overflow and caret padding
-        padding-right: 28px; // for caret
-        text-align: left;
+.product-menu-button {
+    height: 54px;
+    min-width: 85px;
+    max-width: 300px; // ~40 characters plus text overflow and caret padding
+    padding-right: 28px; // for caret
+    text-align: left;
 
-        background-color: transparent;
-        color: $white !important;
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
+    background-color: unset;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
 
-        &:hover, &:focus {
-            background-color: $brand-secondary;
-        }
+    &:hover, &:focus {
+        background-color: $brand-secondary;
+    }
 
-        // Due to how we want the overflow handling of the text the caret is positioned
-        // using "absolute" and is provided spacing by the padding on the button itself.
-        .caret {
-            position: absolute;
-            top: 25px;
-            right: 15px;
-        }
+    // Due to how we want the overflow handling of the text the caret is positioned
+    // using "absolute" and is provided spacing by the padding on the button itself.
+    .caret {
+        position: absolute;
+        top: 25px;
+        right: 15px;
+    }
 
-        .title {
-            font-size: 12px;
-            font-weight: 500;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
+    .title {
+        font-size: 12px;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 
-        .subtitle {
-            font-size: 14px;
-            font-weight: 400;
-        }
+    .subtitle {
+        font-size: 14px;
+        font-weight: 400;
     }
 }
+
 .navbar-item .dropdown-menu {
     right: -22px;
 }
@@ -152,18 +99,13 @@
     }
 }
 
-.navbar-menu__content {
-    margin-top: 5px;
-    right: -21px;
-    top: 125%;
-}
-
 .product-menu-content,
 .navbar-menu__content {
     background-color: $white;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 4px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    color: $text-color;
     position: absolute;
     z-index: 1000;
 }
@@ -172,7 +114,6 @@
     top: 100%;
     left: -62px;
     width: 925px;
-    margin-top: 1px;
 
   .col-folders {
       background-color: $gray-shadow;
@@ -330,51 +271,6 @@
     vertical-align: middle;
 }
 
-@media (min-width: 992px) {
-    .product-menu-content {
-        width: 925px;
-        left: -156px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .product-menu-content {
-        width: 1082px;
-        left: -136px;
-    }
-}
-
-@media (min-width: 1418px) {
-    .product-menu-content {
-        width: 1320px;
-        left: -162px;
-    }
-}
-
-@media (max-width: 767px) { // $screen-xs-max
-    .product-menu-content {
-        max-width: 100vw;
-        left: -76px;
-    }
-
-    .navbar-left {
-        padding: 0 0 0 25px;
-
-        .navbar-item {
-            margin-left: 15px;
-        }
-    }
-
-    .navbar-right {
-        padding: 0 10px 0 0;
-
-        .navbar-item {
-            margin-right: 15px;
-        }
-    }
-}
-
-
 .empty-section {
   font-style: italic;
   color: $text-color-light;
@@ -384,61 +280,6 @@
   a {
     color: $link-color !important;
   }
-}
-
-.navbar {
-  .container {
-    padding: 0;
-  }
-
-  .navbar-left {
-    // Triangle pointing menu to header nav element
-    .navbar-connector {
-      position: absolute;
-      top: -10px;
-      left: 80px;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 0 10px 10px 10px;
-      border-color: transparent transparent #ffffff transparent;
-    }
-  }
-
-  .navbar-right {
-    // Triangle pointing menu to header nav element
-    .navbar-connector {
-      position: absolute;
-      right: 18px;
-      top: -10px;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 0 10px 10px 10px;
-      border-color: transparent transparent #ffffff transparent;
-    }
-
-    .open .dropdown-menu {
-      margin-top: 13px;
-    }
-  }
-}
-
-@media (min-width: 992px) {
-    .navbar .navbar-left .navbar-connector {
-        left: 175px;
-    }
-}
-@media (min-width: 1200px) {
-    .navbar .navbar-left .navbar-connector {
-        left: 155px;
-    }
-}
-
-@media (min-width: 1418px) {
-    .navbar .navbar-left .navbar-connector {
-        left: 180px;
-    }
 }
 
 .sub-nav {
@@ -596,67 +437,37 @@
   padding: 8px 12px 10px 12px;
 }
 
-.user-dropdown {
-  box-shadow: none;
-  text-decoration: none;
-
-    & .caret {
-        color: $white;
-    }
-
-    a:focus-visible {
-        outline: 1px solid $white;
-        outline-offset: 2px;
-    }
-}
-
 .user-name {
   font-family: FontAwesome, $font-family-sans-serif;
 }
 
 .navbar__search-form {
-  height: 34px;
-
-  .navbar__search-icon {
+    height: 34px;
     position: relative;
-    float: left;
-    left: 18px;
+}
+
+.navbar__search-icon {
+    position: absolute;
+    left: 0;
     top: 8px;
     margin-left: 5px;
     color: $text-color-light;
     z-index: 10;
-  }
+}
 
-  .navbar__search-input {
+.navbar__search-input {
     padding: 7px 4px 7px 22px;
     border-radius: 4px;
     border-style: none;
-  }
-
-  .navbar__input-group {
-      width: 251px;
-      display: table;
-  }
-  .navbar__find-and-search-button {
-      border-color: $white;
-  }
 }
 
-.navbar__xs-find-dropdown {
-    padding: 0;
-    background: none;
-    border: none;
-    &.btn-default:active,
-    &.btn-default:active:hover,
-    &.btn-default:active:focus,
-    &.btn-default:focus,
-    &:active:focus,
-    &:hover {
-        background: none;
-    }
-    & .caret {
-        color: $white;
-    }
+.navbar__input-group {
+    width: 251px;
+    display: table;
+}
+
+.navbar__find-and-search-button {
+    border-color: $white;
 }
 
 .navbar__xs-search-icon {
@@ -671,22 +482,7 @@
     margin-right: 15px;
 }
 
-.navbar-icon-connector {
-    position: absolute;
-    right: 18px;
-    top: -10px;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 0 10px 10px 10px;
-    border-color: transparent transparent $gray-lighter transparent;
-}
-.navbar-icon-connector.has-unread {
-    right: 28px;
-}
-
 .navbar-header-icon {
-    color: $white;
     line-height: 1em;
     vertical-align: -15%;
     font-size: 18px;
@@ -763,87 +559,194 @@
     overflow: hidden;
 }
 
-// Mirrors $lk-page-header-bg-color, $lk-page-nav-bg-color, and $lk-page-header-text-color in packages/themes/themes/<theme>/_variables.scss
-// Seattle and Sky match the default app header.
-$navbar-themes: (
-    harvest: (bg: #f7862a, hover: #e86130, text: #381A00),
-    leaf: (bg: #789e47, hover: #64803C, text: #000000),
-    madison: (bg: #c5050c, hover: #9b0000, text: #f7f7f7),
-    mono: (bg: #757575, hover: #4c4c4c, text: #f7f7f7),
-    ocean: (bg: #288282, hover: #2F6B6B, text: #f7f7f7),
-    overcast: (bg: #116596, hover: $blue-dark, text: $white),
-);
+.app-navigation--seattle {
+    // sass treats css vars specially, so we have to use interpolation to properly render them into vars
+    --theme-bg-color: #{$brand-primary};
+    --theme-hover-color: #{$brand-secondary};
+    --theme-text-color: #{$white};
+}
 
-@each $name, $colors in $navbar-themes {
-    $text: map.get($colors, text);
+.app-navigation--harvest {
+    --theme-bg-color: #f7862a;
+    --theme-hover-color: #e86130;
+    --theme-text-color: #381A00;
+}
 
-    .navbar-container.navbar-theme-#{$name} {
-        background-color: map.get($colors, bg);
+.app-navigation--leaf {
+    --theme-bg-color: #789e47;
+    --theme-hover-color: #64803C;
+    --theme-text-color: #000000;
+}
 
-        .navbar-left-menu .product-menu-button:hover,
-        .navbar-left-menu .product-menu-button:focus {
-            background-color: map.get($colors, hover);
-        }
-    }
+.app-navigation--madison {
+    --theme-bg-color: #c5050c;
+    --theme-hover-color: #9b0000;
+    --theme-text-color: #f7f7f7;
+}
 
+.app-navigation--mono {
+    --theme-bg-color: #757575;
+    --theme-hover-color: #4c4c4c;
+    --theme-text-color: #f7f7f7;
+}
+
+.app-navigation--ocean {
+    --theme-bg-color: #288282;
+    --theme-hover-color: #2F6B6B;
+    --theme-text-color: #f7f7f7;
+}
+
+.app-navigation--overcast {
+    --theme-bg-color: #116596;
+    --theme-hover-color: #{$blue-dark};
+    --theme-text-color: #{$white};
+}
+
+.product-menu-button:hover,
+.product-menu-button:hover {
+    background-color: var(--theme-hover-color);
+}
+
+.main-app-nav {
+    background-color: var(--theme-bg-color);
+    color: var(--theme-text-color);
+    display: flex;
+    padding: 0 2.5%;
+    height: 56px;
+}
+
+.app-navigation--admin .main-app-nav {
     // Admin pages use the darker shade so they stay distinct from the rest of the app.
-    .admin-navbar-container.navbar-theme-#{$name} {
-        background-color: map.get($colors, hover);
+    background-color: var(--theme-hover-color);
+}
 
-        .navbar-left-menu .product-menu-button:hover,
-        .navbar-left-menu .product-menu-button:focus {
-            background-color: map.get($colors, bg);
-        }
+.app-navigation .btn,
+.app-navigation .btn:focus,
+.app-navigation .btn.dropdown-toggle:focus,
+.app-navigation .btn.dropdown-toggle {
+    // Force any bootstrap buttons to inherit the color set in .main-app-nav
+    color: inherit;
+}
+
+// The caret on the right side of the search input should be the normal text color
+.app-navigation .btn.dropdown-toggle.navbar__find-and-search-button:focus,
+.app-navigation .btn.dropdown-toggle.navbar__find-and-search-button {
+    padding: 6px;
+    color: $text-color;
+}
+
+.main-app-nav__menus {
+    display: flex;
+    flex: 1;
+    gap: 20px;
+}
+
+.main-app-nav__buttons {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-logo .hidden-sm,
+.header-logo .hidden-md {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.navbar-button {
+    background: none;
+    border: none;
+    font-size: 14px;
+    padding: 6px;
+    text-align: center;
+    touch-action: manipulation;
+}
+
+.navbar-dropdown {
+    position: relative;
+}
+
+.navbar-dropdown .dropdown-menu-right {
+    top: calc(100% + 8px);
+}
+
+.navbar-menu__content {
+    top: calc(100% + 11px);
+}
+
+.navbar-menu__content,
+.navbar-dropdown .dropdown-menu-right {
+    // align the navbar-icon-connector with the dropdown button
+    right: -22px;
+}
+
+.user-dropdown .dropdown-menu-right,
+.product-navigation-container.navbar-menu__content {
+    right: -15px;
+}
+
+.navbar__search-form .dropdown-menu-right {
+    right: -18px;
+}
+
+.navbar-menu-connector {
+    position: absolute;
+    right: 18px;
+    top: -9px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent $white transparent;
+}
+
+.navbar-menu-connector--gray {
+    border-color: transparent transparent $gray-lighter transparent;
+}
+
+.product-menu-content .navbar-menu-connector {
+    right: unset;
+    left: 88px;
+}
+
+@media (min-width: 992px) {
+    .product-menu-content {
+        width: 925px;
+        left: -156px;
     }
 
-    .navbar-theme-#{$name} {
-        .navbar-left-menu .product-menu-button {
-            color: $text !important;
-        }
+    .product-menu-content .navbar-menu-connector {
+        left: 183px;
+    }
+}
+@media (min-width: 1200px) {
+    .product-menu-content {
+        width: 1082px;
+        left: -136px;
+    }
 
-        .navbar-left-sub,
-        .navbar-header-icon,
-        .navbar__xs-search-icon,
-        .user-dropdown .caret,
-        .navbar__xs-find-dropdown .caret {
-            color: $text !important;
-        }
-
-        .navbar-menu-button:focus-visible,
-        .user-dropdown a:focus-visible {
-            outline-color: $text;
-        }
+    .product-menu-content .navbar-menu-connector {
+        left: 160px;
     }
 }
 
-.navbar-item {
-    &:has(> .navbar-assistant) {
-        float: right;
-        margin-right: 0;
+@media (min-width: 1418px) {
+    .product-menu-content {
+        width: 1320px;
+        left: -162px;
     }
 
-    .navbar-assistant {
-        background-color: transparent;
-        border: none;
-        box-shadow: none;
-        padding: 6px;
-
-        &:active,
-        &:focus,
-        &:hover,
-        &:active:focus,
-        &:active:hover {
-            background-color: transparent;
-            border: none;
-            box-shadow: none;
-            outline: none;
-        }
-
-        // Keep a visible indicator for keyboard users only.
-        &:focus-visible {
-            outline: 1px solid $white;
-            outline-offset: 2px;
-        }
+    .product-menu-content .navbar-menu-connector {
+        left: 188px;
     }
 }
 
+@media (max-width: 767px) { // $screen-xs-max
+    .product-menu-content {
+        max-width: 100vw;
+        left: -76px;
+    }
+}

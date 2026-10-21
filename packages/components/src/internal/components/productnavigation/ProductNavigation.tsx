@@ -11,14 +11,15 @@ import { Icon } from '../../Icon';
 
 export const ProductNavigation: FC = memo(() => {
     const { show, setShow, menuRef, toggleRef } = useNavMenuState();
-    const onCloseMenu = useCallback(() => setShow(false), []);
-    const toggleMenu = useCallback(() => setShow(s => !s), []);
+    const onCloseMenu = useCallback(() => setShow(false), [setShow]);
+    const toggleMenu = useCallback(() => setShow(s => !s), [setShow]);
+
     return (
-        <div className="navbar-item pull-right product-navigation-menu navbar-menu">
+        <div className="navbar-dropdown">
             <button
-                aria-haspopup="true"
                 aria-expanded={show}
-                className="navbar-menu-button"
+                aria-haspopup="true"
+                className="navbar-button navbar-menu-button"
                 onClick={toggleMenu}
                 ref={toggleRef}
                 role="button"
@@ -26,8 +27,7 @@ export const ProductNavigation: FC = memo(() => {
             >
                 <Icon iconClass="fa fa-th-large navbar-header-icon" srText="Product Navigation" />
             </button>
-
-            {show && <ProductNavigationMenu onCloseMenu={onCloseMenu} menuRef={menuRef} />}
+            {show && <ProductNavigationMenu menuRef={menuRef} onCloseMenu={onCloseMenu} />}
         </div>
     );
 });

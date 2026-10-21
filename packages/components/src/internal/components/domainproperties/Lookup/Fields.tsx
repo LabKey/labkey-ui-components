@@ -309,6 +309,7 @@ interface ISchemaSelectProps {
     disabled?: boolean;
     id: string;
     onChange: (any) => any;
+    sameDataSourceAs?: string;
     value?: any;
 }
 
@@ -377,14 +378,14 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
     }
 
     loadData(): void {
-        const { containerPath, context } = this.props;
+        const { containerPath, context, sameDataSourceAs } = this.props;
 
         this.setState({
             loading: true,
             prevPath: containerPath,
         });
 
-        context.fetchSchemas(containerPath).then(allSchemas => {
+        context.fetchSchemas(containerPath, sameDataSourceAs).then(allSchemas => {
             const schemas = [];
             context.getExcludedSchemaQueryNames('assay', containerPath).then(excludedAssayNames => {
                 if (!excludedAssayNames || excludedAssayNames.length === 0) schemas.push(...allSchemas);

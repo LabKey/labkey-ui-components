@@ -288,19 +288,20 @@ export function processQueries(payload: any): QueryInfoLite[] {
     return payload.queries.map(qi => QueryInfoLite.create(qi, payload.schemaName)).sort(naturalSortByProperty('name'));
 }
 
-export function fetchSchemas(containerPath: string): Promise<SchemaDetails[]> {
+// GH Issue 438: sameDataSourceAs limits schemas to those a lookup can join to; Query.getSchemas() doesn't pass it
+export function fetchSchemas(containerPath: string, sameDataSourceAs?: string): Promise<SchemaDetails[]> {
     return cache<SchemaDetails[]>(
         'schema-cache',
-        containerPath,
+        [containerPath, sameDataSourceAs].join('|'),
         () =>
-            new Promise(resolve => {
-                Query.getSchemas({
-                    apiVersion: 17.1,
-                    containerPath,
-                    includeHidden: false,
-                    success: data => {
+            new Promise((resolve, reject) => {
+                Ajax.request({
+                    url: ActionURL.buildURL('query', 'getSchemas.api', containerPath),
+                    params: { apiVersion: 17.1, includeHidden: false, ...(sameDataSourceAs && { sameDataSourceAs }) },
+                    success: Utils.getCallbackWrapper(data => {
                         resolve(handleSchemas(data));
-                    },
+                    }),
+                    failure: handleRequestFailure(reject),
                 });
             })
     );

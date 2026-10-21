@@ -20,6 +20,7 @@ import { DomainField, IFieldChange, ITypeDependentProps, LOOKUP_VALIDATOR } from
 import { FolderSelect, SchemaSelect, TargetTableSelect } from './Lookup/Fields';
 
 interface LookupFieldProps extends ITypeDependentProps {
+    domainSchemaName?: string;
     field: DomainField;
     lookupContainer: string;
     onMultiChange: (changes: IFieldChange[]) => void;
@@ -64,7 +65,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
     };
 
     render() {
-        const { index, label, lookupContainer, lockType, domainIndex, field } = this.props;
+        const { index, label, lookupContainer, lockType, domainIndex, domainSchemaName, field } = this.props;
         const {
             lookupSchema,
             lookupQueryValue,
@@ -113,6 +114,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                             key={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, domainIndex, index)}
                             disabled={disabled}
                             onChange={this.onFieldChange}
+                            sameDataSourceAs={domainSchemaName}
                             value={lookupSchema}
                         />
                     </div>

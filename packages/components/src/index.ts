@@ -921,7 +921,7 @@ import { getQueryTestAPIWrapper } from './internal/query/APIWrapper';
 import { useLoadableState } from './internal/useLoadableState';
 import { UnidentifiedPill } from './internal/UnidentifiedPill';
 import { chatInProgress, startChat, stopChat } from './internal/components/mcp/utils';
-import { AssistantSidebar } from './internal/components/mcp/DocumentationAssistant';
+import { AssistantPanel } from './internal/components/mcp/AssistantPanel';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1178,7 +1178,7 @@ export {
     AssayStateModel,
     AssayUploadResultModel,
     AssayUploadTabs,
-    AssistantSidebar,
+    AssistantPanel,
     AttachmentCard,
     AUDIT_EVENT_TYPE_PARAM,
     AuditDetails,

@@ -38,7 +38,7 @@ import { EXPR_ASST_METRIC_FEATURE_AREA, ExpressionAssistantModal } from './Expre
 import { incrementClientSideMetricCount } from '../../actions';
 import { useAppContext } from '../../AppContext';
 import { useServerContext } from '../base/ServerContext';
-import { AssistantButton } from '../mcp/DocumentationAssistant';
+import { AssistantButton } from '../mcp/AssistantPanel';
 
 // export for jest testing
 export const typeToDisplay = (type: string): string => {

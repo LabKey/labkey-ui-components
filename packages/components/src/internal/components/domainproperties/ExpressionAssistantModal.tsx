@@ -251,7 +251,7 @@ export const ExpressionAssistantModal: FC<ExpressionAssistantModalProps> = memo(
             onInterrupt={onInterrupt}
             renderSegment={renderSegment}
             sendPrompt={sendPrompt}
-            title="Expression AI Assistant"
+            title="LabKey Assistant - Expressions"
         />
     );
 });

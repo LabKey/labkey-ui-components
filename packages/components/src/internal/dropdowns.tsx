@@ -91,6 +91,7 @@ interface DropdownMenuProps extends PropsWithChildren {
     asAnchor?: boolean;
     className?: string;
     label?: string;
+    noCaret?: boolean;
     pullRight?: boolean;
     title: ReactNode;
 }
@@ -99,7 +100,7 @@ interface DropdownMenuProps extends PropsWithChildren {
  * See docs in docs/dropdowns.md
  */
 export const DropdownMenu: FC<DropdownMenuProps> = props => {
-    const { children, label, pullRight, title, asAnchor = true } = props;
+    const { asAnchor = true, children, label, noCaret, pullRight, title } = props;
     const id = useMemo(() => generateId('dropdown-anchor-'), []);
     const { onClick, open, toggleRef } = useToggleState();
     const className = classNames('lk-dropdown', 'dropdown', props.className, { open });
@@ -124,7 +125,7 @@ export const DropdownMenu: FC<DropdownMenuProps> = props => {
             {asAnchor && (
                 <a aria-label={label} {...elemProps} href="#">
                     {title}
-                    <span className="caret" />
+                    {!noCaret && <span className="caret" />}
                 </a>
             )}
             {!asAnchor && (

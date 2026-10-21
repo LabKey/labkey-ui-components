@@ -15,6 +15,7 @@ import { DropdownButton, MenuItem } from '../../dropdowns';
 
 import { FindByIdsModal } from './FindByIdsModal';
 import { SAMPLE_FILTER_METRIC_AREA } from './utils';
+import classNames from 'classnames';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -26,15 +27,7 @@ interface Props {
 }
 
 export const FindAndSearchDropdown: FC<Props> = memo(props => {
-    const {
-        title = '',
-        findNounPlural = 'samples',
-        onFindByIds,
-        className,
-        onSearch,
-        api = getDefaultAPIWrapper(),
-    } = props;
-
+    const { title = '', findNounPlural = 'samples', onFindByIds, onSearch, api = getDefaultAPIWrapper() } = props;
     const [findField, setFindField] = useState<FindField>(undefined);
     const [showFindModal, setShowFindModal] = useState<boolean>(false);
 
@@ -63,14 +56,20 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
     const capNoun = capitalizeFirstChar(findNounPlural);
     const findByBarcodeClicked = useCallback(() => onShowFind(UNIQUE_ID_FIND_FIELD), [onShowFind]);
     const findByIdClicked = useCallback(() => onShowFind(SAMPLE_ID_FIND_FIELD), [onShowFind]);
+    const className = classNames('navbar-dropdown', props.className);
+    const buttonClassName = classNames({ 'navbar-menu-button': !!title, 'navbar__find-and-search-button': !title });
 
     return (
         <>
             <DropdownButton
                 aria-label="Find and Search Menu"
-                buttonClassName={'navbar__find-and-search-button ' + (className ?? '')}
+                buttonClassName={buttonClassName}
+                className={className}
+                noCaret={!!title}
+                pullRight
                 title={title}
             >
+                <div className="navbar-menu-connector" />
                 {!!onFindByIds && (
                     <>
                         <MenuItem onClick={findByBarcodeClicked}>
@@ -81,7 +80,7 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
                         </MenuItem>
                     </>
                 )}
-                <MenuItem onClick={onSampleFinder} href={FIND_SAMPLES_BY_FILTER_HREF}>
+                <MenuItem href={FIND_SAMPLES_BY_FILTER_HREF} onClick={onSampleFinder}>
                     <i className="fa fa-sitemap" /> Sample Finder
                 </MenuItem>
                 {!!onSearch && (
@@ -92,10 +91,10 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
             </DropdownButton>
             {!!onFindByIds && showFindModal && (
                 <FindByIdsModal
+                    initialField={findField}
+                    nounPlural={findNounPlural}
                     onCancel={onHideFindModal}
                     onFind={onFind}
-                    nounPlural={findNounPlural}
-                    initialField={findField}
                 />
             )}
         </>

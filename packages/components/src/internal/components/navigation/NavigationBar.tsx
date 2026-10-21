@@ -31,7 +31,7 @@ import { MenuSectionConfig } from './model';
 import { SEARCH_PLACEHOLDER } from './constants';
 import { useFolderMenuContext, useSubNavTabsContext } from './hooks';
 import { Icon } from '../../Icon';
-import { AssistantButton } from '../mcp/DocumentationAssistant';
+import { AssistantButton } from '../mcp/AssistantPanel';
 import { App as ComponentsApp } from '../../../index';
 
 const HeaderLogo: FC = memo(() => {

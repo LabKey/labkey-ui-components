@@ -42,7 +42,7 @@ export const AssistantButton: FC<ButtonProps> = memo(({ onClick, showLabel, labe
 ));
 AssistantButton.displayName = 'AssistantButton';
 
-const NEW_INTRO = "<div>How can I help?</div><div>I can answer questions about how to use LabKey.</div>";
+const NEW_INTRO = '<div>How can I help?</div><div>I can answer questions about how to use LabKey.</div>';
 
 function useDocumentationAssistance() {
     const [conversationId, setConversationId] = useState<string>();
@@ -50,7 +50,6 @@ function useDocumentationAssistance() {
         return [createChatMessage({ role: ChatRole.assistant, segments: [{ html: NEW_INTRO, type: 'html' }] })];
     });
     const [isPending, setIsPending] = useState(false);
-    const { api } = useAppContext();
     const { abortRequest, requestHandler, resetRequestHandler } = useRequestHandler();
 
     const pushMessage = useCallback((message: Partial<ChatMessage>) => {
@@ -75,14 +74,7 @@ function useDocumentationAssistance() {
             setIsPending(true);
             let aborted = false;
             try {
-                const response = await documentationAssistant({ prompt })
-                // const response = {
-                //     conversationId: 'id1',
-                //     success: true,
-                //     error: undefined,
-                //     segments: undefined,
-                //     text: 'In answer to your prompt: ' + prompt,
-                // };
+                const response = await documentationAssistant({ prompt });
                 resetRequestHandler();
 
                 if (response.conversationId !== conversationId) {
@@ -129,7 +121,7 @@ interface SidebarProps {
     onChatStop: () => void;
 }
 
-export const AssistantSidebar: FC<SidebarProps> = memo(props => {
+export const AssistantPanel: FC<SidebarProps> = memo(props => {
     const { onChatStop } = props;
     const { isPending, messages, onInterrupt, sendPrompt } = useDocumentationAssistance();
 
@@ -148,4 +140,4 @@ export const AssistantSidebar: FC<SidebarProps> = memo(props => {
         />
     );
 });
-AssistantSidebar.displayName = 'AssistantSidebar';
+AssistantPanel.displayName = 'AssistantSidebar';

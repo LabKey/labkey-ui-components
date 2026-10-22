@@ -59,6 +59,8 @@ interface Props {
     metricFeatureArea?: string;
     onActiveFieldChange?: (field: QueryColumn) => void;
     onAllValuesInQueryChange?: (check: boolean) => void;
+    // Called when the user opens the Choose values tab
+    onChooseValues?: () => void;
     onFilterUpdate: OnFilterUpdate;
     onHasNoValueInQueryChange?: (check: boolean) => void;
     // Open this field on the Filter tab even when it would otherwise default to Choose values
@@ -96,6 +98,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         fields,
         isAncestor,
         onActiveFieldChange,
+        onChooseValues,
         preferFilterTabFieldKey,
     } = props;
     const [queryFields, setQueryFields] = useState<QueryColumn[]>(undefined);
@@ -250,9 +253,10 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
 
             if (tabKey === FieldFilterTabs.ChooseValues) {
                 api.query.incrementClientSideMetricCount(metricFeatureArea, 'goToChooseValuesTab');
+                onChooseValues?.();
             }
         },
-        [api, metricFeatureArea]
+        [api, metricFeatureArea, onChooseValues]
     );
 
     const fieldFilters = useMemo(() => {

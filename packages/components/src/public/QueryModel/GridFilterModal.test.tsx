@@ -50,6 +50,10 @@ describe('GridFilterModal', () => {
             Array.from(document.querySelectorAll<HTMLElement>('button.list-group-item')).find(
                 button => button.textContent === caption
             );
+        const tab = (title: string): HTMLElement =>
+            Array.from(document.querySelectorAll<HTMLElement>('a[role="tab"]')).find(
+                element => element.textContent === title
+            );
         const applyButton = (): HTMLElement =>
             Array.from(document.querySelectorAll<HTMLElement>('.modal-footer button')).find(
                 button => button.textContent === 'Apply'
@@ -97,7 +101,7 @@ describe('GridFilterModal', () => {
             expect(appliedFilters(onApply)).toEqual(['BloodType~contains=Sod']);
         });
 
-        test('an edited draft stays on its field', async () => {
+        test('an edited draft follows the active field', async () => {
             const onApply = jest.fn();
             render(
                 <GridFilterModal
@@ -111,10 +115,29 @@ describe('GridFilterModal', () => {
 
             await userEvent.type(valueInput(), 'ium');
             await userEvent.click(fieldButton('Blood Type'));
-            expect(valueInput().value).toBe('');
+            expect(valueInput().value).toBe('Sodium');
 
             await userEvent.click(applyButton());
-            expect(appliedFilters(onApply)).toEqual(['TubeType~contains=Sodium']);
+            expect(appliedFilters(onApply)).toEqual(['BloodType~contains=Sodium']);
+        });
+
+        test('a draft taken to Choose values stays on its field', async () => {
+            const onApply = jest.fn();
+            render(
+                <GridFilterModal
+                    {...DEFAULT_PROPS}
+                    fieldKey="TubeType"
+                    fields={FIELDS.map(field => field.mutate({ facetingBehaviorType: 'ALWAYS_ON' }))}
+                    initialDraft={DRAFT}
+                    onApply={onApply}
+                />
+            );
+
+            await userEvent.click(tab('Choose values'));
+            await userEvent.click(fieldButton('Blood Type'));
+
+            await userEvent.click(applyButton());
+            expect(appliedFilters(onApply)).toEqual(['TubeType~contains=Sod']);
         });
 
         test("the draft replaces its field's filters until it moves on", async () => {

@@ -28,9 +28,7 @@ export function documentationAssistant(options: DocumentationAssistOptions): Pro
     return request<AssistanceResponse>({
         url: ActionURL.buildURL('core', 'documentationAssistantAgent.api', containerPath),
         method: 'POST',
-        jsonData: {
-            ...jsonData,
-        },
+        jsonData,
         errorLogMsg: 'Failed to assist',
         requestHandler,
     });

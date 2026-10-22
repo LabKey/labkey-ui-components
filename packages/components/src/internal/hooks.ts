@@ -153,7 +153,7 @@ export function useTimeout(): UseTimeout {
     return useMemo(() => ({ clear, set }), [clear, set]);
 }
 
-interface ModalState {
+export interface ModalState {
     close: () => void;
     open: () => void;
     show: boolean;

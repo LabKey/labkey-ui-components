@@ -214,7 +214,7 @@ ChatPrompt.displayName = 'ChatPrompt';
 export interface ChatSessionProps {
     isPending: boolean;
     messages: ChatMessage[];
-    onCancel: () => void;
+    onClose: () => void;
     onInterrupt: (isUser?: boolean) => void;
     renderSegment?: RenderSegment;
     sendPrompt: (prompt: string) => Promise<void>;
@@ -222,16 +222,16 @@ export interface ChatSessionProps {
 }
 
 export const ChatModal: FC<ChatSessionProps> = memo(props => {
-    const { isPending, messages, onCancel, onInterrupt, renderSegment, sendPrompt, title } = props;
+    const { isPending, messages, onClose, onInterrupt, renderSegment, sendPrompt, title } = props;
 
-    const handleCancel = useCallback(() => {
+    const handleClose = useCallback(() => {
         onInterrupt(false);
-        onCancel();
-    }, [onCancel, onInterrupt]);
+        onClose();
+    }, [onClose, onInterrupt]);
 
     const header = (
         <ModalHeader title={title}>
-            <button className="btn btn-sm btn-default" onClick={handleCancel} type="button">
+            <button className="btn btn-sm btn-default" onClick={handleClose} type="button">
                 End Chat
             </button>
         </ModalHeader>
@@ -266,13 +266,22 @@ interface ChatPositionIconProps {
 }
 
 const ChatPositionIcon: FC<ChatPositionIconProps> = memo(({ position }) => {
-    const x = position === ChatPosition.topRight || position === ChatPosition.bottomRight ? 8 : 3;
+    const x = position === ChatPosition.topRight || position === ChatPosition.bottomRight ? 6 : 2;
     const y = position === ChatPosition.bottomLeft || position === ChatPosition.bottomRight ? 6 : 3;
 
     return (
-        <svg height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
-            <rect fill="none" height="12" rx="1.5" stroke="currentColor" strokeWidth="1.5" width="14" x=".75" y=".75" />
-            <rect fill="currentColor" height="5" rx="0.5" width="5" x={x} y={y} />
+        <svg height="12" viewBox="0 -2 14 14" width="12" xmlns="http://www.w3.org/2000/svg">
+            <rect
+                fill="none"
+                height="10.5"
+                rx="1.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                width="10.5"
+                x=".75"
+                y=".75"
+            />
+            <rect fill="currentColor" height="4" rx="0.5" width="4" x={x} y={y} />
         </svg>
     );
 });
@@ -325,16 +334,19 @@ const ChatPositionMenu: FC<ChatPositionMenuProps> = memo(({ position, setPositio
 });
 ChatPositionMenu.displayName = 'ChatPositionMenu';
 
-export const ChatSidebar: FC<ChatSessionProps> = memo(props => {
-    const { isPending, messages, onCancel, onInterrupt, title, renderSegment, sendPrompt } = props;
+interface ChatSidebarProps extends ChatSessionProps {
+    startNewChat: () => void;
+}
+
+export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
+    const { isPending, messages, onClose, onInterrupt, title, renderSegment, sendPrompt, startNewChat } = props;
     const [position, setPosition] = useState(ChatPosition.bottomRight);
     const [minimized, setMinimized] = useState(false);
     const toggleMinimized = useCallback(() => setMinimized(current => !current), []);
-
-    const handleCancel = useCallback(() => {
+    const handleClose = useCallback(() => {
         onInterrupt(false);
-        onCancel();
-    }, [onCancel, onInterrupt]);
+        onClose();
+    }, [onClose, onInterrupt]);
 
     const className = classNames('chat-sidebar', position, { 'chat-sidebar--minimized': minimized });
     const minimizeClassName = classNames('fa', { 'fa-chevron-up': minimized, 'fa-minus': !minimized });
@@ -345,13 +357,17 @@ export const ChatSidebar: FC<ChatSessionProps> = memo(props => {
                 <div className="chat-sidebar__title">{title}</div>
 
                 <div className="chat-sidebar__buttons">
+                    <button className="btn btn-sm btn-default" onClick={startNewChat} type="button">
+                        <span className="fa fa-plus" />
+                    </button>
+
                     <ChatPositionMenu position={position} setPosition={setPosition} />
 
                     <button className="btn btn-sm btn-default" onClick={toggleMinimized} type="button">
                         <span className={minimizeClassName} />
                     </button>
 
-                    <button className="btn btn-sm btn-default" onClick={handleCancel} type="button">
+                    <button className="btn btn-sm btn-default" onClick={handleClose} type="button">
                         End Chat
                     </button>
                 </div>

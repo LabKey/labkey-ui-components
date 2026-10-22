@@ -20,7 +20,7 @@ export const ProductNavigationHeader: FC<ProductNavigationHeaderProps> = memo(pr
         event => {
             // stopImmediatePropagation in order to prevent the document click handler from closing the menu
             event.nativeEvent.stopImmediatePropagation();
-            props.onClick();
+            onClick();
         },
         [onClick]
     );

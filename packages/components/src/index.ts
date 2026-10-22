@@ -920,8 +920,8 @@ import { FilterCriteriaRenderer } from './internal/FilterCriteriaRenderer';
 import { getQueryTestAPIWrapper } from './internal/query/APIWrapper';
 import { useLoadableState } from './internal/useLoadableState';
 import { UnidentifiedPill } from './internal/UnidentifiedPill';
-import { chatInProgress, startChat, stopChat } from './internal/components/mcp/utils';
 import { AssistantPanel } from './internal/components/mcp/AssistantPanel';
+import { useAssistantService } from './internal/components/mcp/AssistantService';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1206,7 +1206,6 @@ export {
     changeColumn,
     ChangePasswordModal,
     ChangeType,
-    chatInProgress,
     CheckboxLK,
     ChoicesListItem,
     clearAssayDefinitionCache,
@@ -1756,12 +1755,10 @@ export {
     SplitButton,
     splitDateTimeFormat,
     splitMultiValueForImport,
-    startChat,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
     StorageAmountInput,
     StorageStatusRenderer,
     STORED_AMOUNT_FIELDS,
-    stopChat,
     stringToHtmlId,
     SVGIcon,
     Tab,
@@ -1801,6 +1798,7 @@ export {
     useAdministrationSubNav,
     useAppContext,
     useAppNavigate,
+    useAssistantService,
     useContainerPath,
     useContainerUser,
     useDataChangeCommentsRequired,

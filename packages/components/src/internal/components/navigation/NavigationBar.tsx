@@ -32,7 +32,7 @@ import { SEARCH_PLACEHOLDER } from './constants';
 import { useFolderMenuContext, useSubNavTabsContext } from './hooks';
 import { Icon } from '../../Icon';
 import { AssistantButton } from '../mcp/AssistantPanel';
-import { App as ComponentsApp } from '../../../index';
+import { useAssistantService } from '../mcp/AssistantService';
 
 const HeaderLogo: FC = memo(() => {
     const { badge, withText } = getAppLogoImageUrls();
@@ -73,7 +73,6 @@ HeaderLogo.displayName = 'AppLogo';
 interface NavigationBarProps {
     menuSectionConfigs?: List<Map<string, MenuSectionConfig>>;
     notificationsConfig?: ServerNotificationsConfig;
-    onChatStart?: () => void;
     onFindByIds?: (sessionkey: string) => void;
     onSearch?: (form: any) => void;
     searchPlaceholder?: string;
@@ -90,7 +89,6 @@ export const NavigationBar: FC<Props> = memo(props => {
         extraUserItems,
         menuSectionConfigs,
         notificationsConfig,
-        onChatStart,
         onSearch,
         onFindByIds,
         onSignIn,
@@ -101,7 +99,8 @@ export const NavigationBar: FC<Props> = memo(props => {
         signOutUrl,
         user,
     } = props;
-    const { extThemeName_42: themeName, moduleContext, mcpReady } = useServerContext();
+    const { extThemeName_42: themeName, moduleContext } = useServerContext();
+    const { enabled: assistantEnabled, open: openAssistant } = useAssistantService();
     const folderMenuContext = useFolderMenuContext();
     const location = useLocation();
     const isAdminPage = useMemo(() => isAdminRoute(location.pathname), [location.pathname]);
@@ -114,7 +113,6 @@ export const NavigationBar: FC<Props> = memo(props => {
     const showProductNav = shouldShowProductNavigation(user, moduleContext);
     const { noun, tabs } = useSubNavTabsContext();
     const hasSubNav = noun !== undefined || tabs.length > 0;
-    const assistantEnabled = mcpReady === true && isDocumentationAssistantEnabled(moduleContext);
     const className = classNames('app-navigation', `app-navigation--${themeName}`, {
         'with-sub-nav': hasSubNav,
         'app-navigation--admin': isAdminPage,
@@ -136,7 +134,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                 </div>
 
                 <div className="main-app-nav__buttons">
-                    {assistantEnabled && <AssistantButton label="Documentation Assistant" onClick={onChatStart} />}
+                    {assistantEnabled && <AssistantButton label="Documentation Assistant" onClick={openAssistant} />}
 
                     {!isAdminPage && (
                         <SearchBox

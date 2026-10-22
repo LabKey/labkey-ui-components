@@ -420,6 +420,9 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
         const isEmpty = schemas?.length === 0;
         const hasValue = !!value;
         const blankOption = !hasValue && !isEmpty;
+        // e.g., an existing lookup to a schema the data source filter removed
+        const unlistedValue =
+            !disabled && !loading && hasValue && schemas && !schemas.some(s => s.fullyQualifiedName === value);
 
         return (
             <select
@@ -433,6 +436,11 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
             >
                 {disabled && value && (
                     <option key="_disabled" value={value}>
+                        {value}
+                    </option>
+                )}
+                {unlistedValue && (
+                    <option disabled key="_unlisted" value={value}>
                         {value}
                     </option>
                 )}

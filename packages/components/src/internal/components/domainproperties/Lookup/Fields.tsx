@@ -385,28 +385,32 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
             prevPath: containerPath,
         });
 
-        context.fetchSchemas(containerPath, sameDataSourceAs).then(allSchemas => {
-            const schemas = [];
-            context.getExcludedSchemaQueryNames('assay', containerPath).then(excludedAssayNames => {
-                if (!excludedAssayNames || excludedAssayNames.length === 0) schemas.push(...allSchemas);
-                else {
-                    allSchemas.forEach(schema => {
-                        if (
-                            !(
+        context
+            .fetchSchemas(containerPath, sameDataSourceAs)
+            .then(allSchemas => {
+                const schemas = [];
+                return context.getExcludedSchemaQueryNames('assay', containerPath).then(excludedAssayNames => {
+                    if (!excludedAssayNames || excludedAssayNames.length === 0) schemas.push(...allSchemas);
+                    else {
+                        allSchemas.forEach(schema => {
+                            if (!(
                                 schema.fullyQualifiedName.indexOf('assay.') === 0 &&
                                 excludedAssayNames.indexOf(schema.schemaName.toLowerCase()) > -1
-                            )
-                        )
-                            schemas.push(schema);
-                    });
-                }
+                            ))
+                                schemas.push(schema);
+                        });
+                    }
 
-                this.setState({
-                    loading: false,
-                    schemas,
+                    this.setState({
+                        loading: false,
+                        schemas,
+                    });
                 });
+            })
+            .catch(e => {
+                console.error(e);
+                this.setState({ loading: false, schemas: [] });
             });
-        });
     }
 
     render() {

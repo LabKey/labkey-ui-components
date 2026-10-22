@@ -25,6 +25,10 @@ describe('FilterStatus', () => {
         onRemoveAll: ON_REMOVE_ALL,
     };
 
+    beforeEach(() => {
+        ON_REMOVE_ALL.mockClear();
+    });
+
     const filterAction1 = {
         action: new FilterAction(() => 'display'),
         value: 'test1',
@@ -78,9 +82,9 @@ describe('FilterStatus', () => {
         validate(0, 0);
     });
 
-    test('view, search and one filter actionValue', () => {
+    test('view, search and one filter actionValue', async () => {
         render(<FilterStatus {...DEFAULT_PROPS} actionValues={[viewAction, searchAction, filterAction1]} />);
-        validate(3, 1);
+        validate(3, 2);
         expect(document.querySelectorAll('.fa-table')).toHaveLength(1);
         expect(document.querySelectorAll('.filter-status-value')[0]).toHaveTextContent('view');
         expect(document.querySelectorAll('.fa-search')).toHaveLength(1);
@@ -88,7 +92,8 @@ describe('FilterStatus', () => {
         expect(document.querySelectorAll('.fa-filter')).toHaveLength(1);
         expect(document.querySelectorAll('.filter-status-value')[2]).toHaveTextContent('test1');
         expect(document.querySelectorAll('.fa-close')).toHaveLength(0);
-        expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(0);
+        await userEvent.click(document.querySelector('.remove-all-filters'));
+        expect(ON_REMOVE_ALL).toHaveBeenCalledTimes(1);
     });
 
     test('multiple filter actionValue', async () => {
@@ -149,6 +154,11 @@ describe('FilterStatus', () => {
         expect(document.querySelectorAll('.fa-search')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-filter')).toHaveLength(2);
         expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(0);
+    });
+
+    test('add filter is spaced from a search', () => {
+        render(<FilterStatus {...DEFAULT_PROPS} actionValues={[searchAction]} onAddFilterClick={jest.fn()} />);
+        expect(document.querySelector('.btn').classList).toContain('margin-left');
     });
 
     test('without actionValues, with add', async () => {

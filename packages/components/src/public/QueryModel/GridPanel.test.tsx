@@ -999,7 +999,7 @@ describe('GridPanel search suggestions', () => {
             .mocked(actions.setFilters)
             .mock.lastCall[1].map(f => `${f.getColumnName()}~${f.getFilterType().getURLSuffix()}=${f.getValue()}`);
 
-    test('a targeted filter replaces the Q filter', async () => {
+    test('a targeted filter keeps the Q filter', async () => {
         jest.mocked(getFilterSuggestions).mockResolvedValue({
             complete: true,
             suggestions: [NAME_SUGGESTION, { kind: 'search', label: 'Search', source: 'fallback', value: 'DMXP' }],
@@ -1009,7 +1009,7 @@ describe('GridPanel search suggestions', () => {
         await typeAndWaitFor('DMXP', 'Name is DMXP');
         await userEvent.keyboard('{Enter}');
 
-        expect(appliedFilters()).toEqual(['expirationTime~eq=1', 'Name~eq=DMXP']);
+        expect(appliedFilters()).toEqual(['expirationTime~eq=1', '*~q=foo', 'Name~eq=DMXP']);
         expect(jest.mocked(getFilterSuggestions).mock.calls[0][0]).toMatchObject({
             queryName: 'Mixtures',
             schemaName: 'exp.data',
@@ -1043,7 +1043,7 @@ describe('GridPanel search suggestions', () => {
         expect(savedView.filters.map(f => f.getColumnName())).toEqual(['expirationTime']);
     });
 
-    test('compose opens the filter modal on the suggested fields, and applying drops the Q filter', async () => {
+    test('compose opens the filter modal on the suggested fields, and applying keeps the Q filter', async () => {
         jest.mocked(getFilterSuggestions).mockResolvedValue({ complete: true, suggestions: [COMPOSE_SUGGESTION] });
         renderGrid();
 
@@ -1057,7 +1057,7 @@ describe('GridPanel search suggestions', () => {
             button => button.textContent === 'Apply'
         );
         await userEvent.click(apply);
-        expect(appliedFilters()).toEqual(['expirationTime~eq=1', 'Name~contains=DMX']);
+        expect(appliedFilters()).toEqual(['expirationTime~eq=1', '*~q=foo', 'Name~contains=DMX']);
     });
 
     test('compose on fields the grid no longer shows opens the filter modal unseeded', async () => {

@@ -22,10 +22,14 @@ interface Props {
 export const FilterStatus: FC<Props> = memo(props => {
     const { actionValues, onClick, onRemove, onRemoveAll, onSearchClick, lockReadOnlyForDelete, onAddFilterClick } =
         props;
-    const filterCount = actionValues?.filter(a => a.action.keyword === ActionKeyword.Filter).length;
-    const showRemoveAll = actionValues
-        ? filterActionValuesByType(actionValues, ActionKeyword.Filter, lockReadOnlyForDelete).length > 1
-        : false;
+    const filterCount = actionValues?.filter(
+        a => a.action.keyword === ActionKeyword.Filter || a.action.keyword === ActionKeyword.Search
+    ).length;
+    const removableCount = actionValues
+        ? filterActionValuesByType(actionValues, ActionKeyword.Filter, lockReadOnlyForDelete).length +
+          filterActionValuesByType(actionValues, ActionKeyword.Search, lockReadOnlyForDelete).length
+        : 0;
+    const showRemoveAll = removableCount > 1;
 
     return (
         <div className="grid-panel__filter-status">

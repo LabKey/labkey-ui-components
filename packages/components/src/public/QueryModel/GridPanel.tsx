@@ -690,10 +690,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 f.getColumnName().toLowerCase() === fieldKey || (!!column && isFilterColumnNameMatch(f, column));
             const view = model.currentView;
 
-            // The search box owns a single slot, so a targeted filter replaces any Q filter
-            const newFilters = model.filterArray
-                .filter(f => f.getColumnName() !== '*' && !onColumn(f))
-                .concat(suggestionToFilter(suggestion));
+            const newFilters = model.filterArray.filter(f => !onColumn(f)).concat(suggestionToFilter(suggestion));
             actions.setFilters(model.id, newFilters, allowSelections);
             if (view?.filters.some(onColumn)) {
                 this.saveAsSessionView({ filters: view.filters.filter(f => !onColumn(f)) });
@@ -1266,10 +1263,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     <GridFilterModal
                         fieldKey={showFilterModalFieldKey}
                         fields={composeFilter?.fields}
-                        // using filterArray to indicate user-defined filters only; a composed filter replaces Q
-                        initFilters={
-                            composeFilter ? model.filterArray.filter(f => f.getColumnName() !== '*') : model.filterArray
-                        }
+                        // using filterArray to indicate user-defined filters only
+                        initFilters={model.filterArray}
                         initialDraft={composeFilter?.draft}
                         model={model}
                         onApply={this.handleApplyFilters}

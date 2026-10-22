@@ -2,14 +2,17 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, ReactNode, useCallback, useState } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { ChatSidebar } from './ChatModal';
-import { chatInProgress, createChatMessage } from './utils';
+import { createChatMessage } from './utils';
 import { ChatMessage, ChatRole } from './models';
 import { useRequestHandler } from '../../util/RequestHandler';
 import { incrementClientSideMetricCount } from '../../actions';
 import { resolveErrorMessage } from '../../util/messaging';
 import { documentationAssistant } from './actions';
+import { getSavedConversationId, saveConversationId, useAssistantService } from './AssistantService';
+import { useLoadableState } from '../../useLoadableState';
+import { isLoading } from '../../../public/LoadingState';
 
 // Note: this was taken from ai_stars_icon.svg, but the fill values were stripped so we can apply styles via CSS.
 // We may no longer need ai_stars_icon.svg or ai_starts_icon_white.svg
@@ -43,18 +46,72 @@ export const AssistantButton: FC<ButtonProps> = memo(({ onClick, showLabel, labe
 AssistantButton.displayName = 'AssistantButton';
 
 const NEW_INTRO = '<div>How can I help?</div><div>I can answer questions about how to use LabKey.</div>';
+const createIntroMessage = () =>
+    createChatMessage({ role: ChatRole.assistant, segments: [{ html: NEW_INTRO, type: 'html' }] });
 
-function useDocumentationAssistance() {
+type VoidFn = () => void;
+
+interface DocumentationAssistantState {
+    isPending: boolean;
+    messages: ChatMessage[];
+    onClose: VoidFn;
+    onInterrupt: VoidFn;
+    sendPrompt: (prompt: string) => Promise<void>;
+    startNewChat: VoidFn;
+}
+
+function useDocumentationAssistance(): DocumentationAssistantState {
+    const { open, close } = useAssistantService();
     const [conversationId, setConversationId] = useState<string>();
-    const [messages, setMessages] = useState<ChatMessage[]>(() => {
-        return [createChatMessage({ role: ChatRole.assistant, segments: [{ html: NEW_INTRO, type: 'html' }] })];
-    });
+    const [messages, setMessages] = useState<ChatMessage[]>(() => []);
     const [isPending, setIsPending] = useState(false);
     const { abortRequest, requestHandler, resetRequestHandler } = useRequestHandler();
+    const resetState = useCallback(() => {
+        abortRequest();
+        setIsPending(false);
+        setConversationId(undefined);
+        setMessages([createIntroMessage()]);
+    }, [abortRequest]);
+    const onClose = useCallback(() => {
+        resetState();
+        close();
+    }, [close, resetState]);
+    // TODO: need to load the previous conversation history if getSavedConversationId returns anything
+    const { loadingState, value: savedConversationId } = useLoadableState(getSavedConversationId);
+    const loading = isLoading(loadingState);
+    const initialized = useRef(false);
 
     const pushMessage = useCallback((message: Partial<ChatMessage>) => {
         setMessages(prev => [...prev, createChatMessage(message)]);
     }, []);
+
+    useEffect(() => {
+        if (loading || (!loading && initialized.current)) return;
+        initialized.current = true;
+
+        if (savedConversationId) {
+            setConversationId(savedConversationId);
+            pushMessage(
+                createChatMessage({
+                    role: ChatRole.assistant,
+                    text: 'NEED TO LOAD IN-PROGRESS CONVERSATION',
+                })
+            );
+            open();
+        } else {
+            pushMessage(createIntroMessage());
+        }
+    }, [loading, open, pushMessage, savedConversationId]);
+
+    useEffect(() => {
+        const save = () => {
+            saveConversationId(conversationId);
+        };
+        window.addEventListener('pagehide', save);
+        return () => {
+            window.removeEventListener('pagehide', save);
+        };
+    }, [conversationId]);
 
     const onInterrupt = useCallback(
         (isUser?: boolean) => {
@@ -74,7 +131,7 @@ function useDocumentationAssistance() {
             setIsPending(true);
             let aborted = false;
             try {
-                const response = await documentationAssistant({ prompt });
+                const response = await documentationAssistant({ conversationId, prompt, requestHandler });
                 resetRequestHandler();
 
                 if (response.conversationId !== conversationId) {
@@ -103,7 +160,7 @@ function useDocumentationAssistance() {
                 }
             }
         },
-        [conversationId, pushMessage, resetRequestHandler]
+        [conversationId, pushMessage, requestHandler, resetRequestHandler]
     );
 
     const sendPrompt = useCallback(
@@ -114,29 +171,24 @@ function useDocumentationAssistance() {
         [pushMessage, runRequest]
     );
 
-    return { isPending, messages, onInterrupt, sendPrompt };
+    return { isPending, messages, onClose, onInterrupt, sendPrompt, startNewChat: resetState };
 }
 
-interface SidebarProps {
-    onChatStop: () => void;
-}
+export const AssistantPanel: FC = memo(() => {
+    const { show } = useAssistantService();
+    const { isPending, messages, onClose, onInterrupt, sendPrompt, startNewChat } = useDocumentationAssistance();
 
-export const AssistantPanel: FC<SidebarProps> = memo(props => {
-    const { onChatStop } = props;
-    const { isPending, messages, onInterrupt, sendPrompt } = useDocumentationAssistance();
-
-    if (!chatInProgress()) {
-        return null;
-    }
+    if (!show) return null;
 
     return (
         <ChatSidebar
             isPending={isPending}
             messages={messages}
-            onCancel={onChatStop}
+            onClose={onClose}
             onInterrupt={onInterrupt}
             sendPrompt={sendPrompt}
-            title={'AI Assistant'}
+            startNewChat={startNewChat}
+            title="AI Assistant"
         />
     );
 });

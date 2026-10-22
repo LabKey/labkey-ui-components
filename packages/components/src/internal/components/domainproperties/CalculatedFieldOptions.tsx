@@ -341,7 +341,7 @@ export const CalculatedFieldOptions: FC<CalculatedFieldOptionsProps> = memo(prop
                     fieldError={field.valueExpression ? error : undefined}
                     getDomainFields={getDomainFields}
                     onApplyExpression={handleApplyExpression}
-                    onCancel={close}
+                    onClose={close}
                 />
             )}
         </div>

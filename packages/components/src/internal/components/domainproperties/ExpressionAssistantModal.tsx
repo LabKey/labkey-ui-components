@@ -71,7 +71,7 @@ export interface ExpressionAssistantModalProps {
     fieldError?: string;
     getDomainFields: GetDomainFields;
     onApplyExpression?: (analysis: string) => void;
-    onCancel: () => void;
+    onClose: () => void;
 }
 
 function useExpressionAssistance(
@@ -206,7 +206,7 @@ function useExpressionAssistance(
 }
 
 export const ExpressionAssistantModal: FC<ExpressionAssistantModalProps> = memo(props => {
-    const { field, fieldError, getDomainFields, onApplyExpression, onCancel } = props;
+    const { field, fieldError, getDomainFields, onApplyExpression, onClose } = props;
     const { domainFields, systemFields } = useMemo(() => getDomainFields(), [getDomainFields]);
     const { isPending, messages, onInterrupt, sendPrompt } = useExpressionAssistance(
         domainFields,
@@ -239,7 +239,7 @@ export const ExpressionAssistantModal: FC<ExpressionAssistantModalProps> = memo(
         <ChatModal
             isPending={isPending}
             messages={messages}
-            onCancel={onCancel}
+            onClose={onClose}
             onInterrupt={onInterrupt}
             renderSegment={renderSegment}
             sendPrompt={sendPrompt}

@@ -18,7 +18,7 @@ import { SearchBox } from '../search/SearchBox';
 
 import { FindAndSearchDropdown } from '../search/FindAndSearchDropdown';
 
-import { getPrimaryAppProperties, isDocumentationAssistantEnabled } from '../../app/utils';
+import { getAppLogoImageUrls, getPrimaryAppProperties } from '../../app/utils';
 
 import { User } from '../base/models/User';
 
@@ -35,14 +35,14 @@ import { AssistantButton } from '../mcp/AssistantPanel';
 import { App as ComponentsApp } from '../../../index';
 
 const HeaderLogo: FC = memo(() => {
-    const { badge, withText } = ComponentsApp.getAppLogoImageUrls();
+    const { badge, withText } = getAppLogoImageUrls();
     return (
         <div className="header-logo">
             <div className="hidden-xs hidden-sm">
                 <Link className="header-logo__link" to="/">
                     <span className="sr-only">Home</span>
                     <img
-                        alt={ComponentsApp.getPrimaryAppProperties().name + ' Dashboard'}
+                        alt={getPrimaryAppProperties().name + ' Dashboard'}
                         className="header-logo__image"
                         height="32px"
                         src={withText}
@@ -55,7 +55,7 @@ const HeaderLogo: FC = memo(() => {
                 <Link className="header-logo__link" to="/">
                     <span className="sr-only">Home</span>
                     <img
-                        alt={ComponentsApp.getPrimaryAppProperties().name + 'Dashboard'}
+                        alt={getPrimaryAppProperties().name + 'Dashboard'}
                         className="header-logo__image"
                         height="36px"
                         src={badge}

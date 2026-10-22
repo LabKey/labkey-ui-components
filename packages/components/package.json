@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.72.3-fb-request-cancel-ws-2224.0",
+  "version": "7.72.3",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -48,16 +48,16 @@
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {
     "@hello-pangea/dnd": "18.0.1",
-    "@labkey/api": "1.53.2-fb-request-cancel-ws-2224.1",
+    "@labkey/api": "1.53.2",
     "@testing-library/dom": "~10.4.2",
     "@testing-library/jest-dom": "~7.0.1",
     "@testing-library/react": "~16.3.3",
-    "@testing-library/user-event": "~14.6.7",
+    "@testing-library/user-event": "~14.6.8",
     "classnames": "~2.5.1",
     "date-fns": "~3.6.0",
     "date-fns-tz": "~3.2.0",
     "font-awesome": "~4.7.0",
-    "immer": "~11.1.18",
+    "immer": "~11.2.3",
     "immutable": "~3.8.4",
     "normalizr": "~3.6.2",
     "numeral": "~2.0.6",
@@ -73,8 +73,8 @@
     "vis-network": "~10.1.2"
   },
   "devDependencies": {
-    "@labkey/build": "10.1.3",
-    "@labkey/eslint-config": "1.2.4",
+    "@labkey/build": "10.1.4",
+    "@labkey/eslint-config": "1.2.5",
     "@types/history": "4.7.11",
     "@types/jest": "30.0.0",
     "@types/node": "26.1.2",
@@ -84,12 +84,12 @@
     "blob-polyfill": "9.0.20240710",
     "bootstrap-sass": "3.4.3",
     "cross-env": "10.1.0",
-    "execa": "10.0.1",
+    "execa": "10.2.0",
     "jest": "30.5.2",
     "jest-cli": "30.5.2",
     "jest-environment-jsdom": "30.5.2",
     "jest-teamcity-reporter": "0.9.0",
-    "ts-jest": "29.4.14"
+    "ts-jest": "29.4.15"
   },
   "allowScripts": {
     "@parcel/watcher@2.6.0": true,

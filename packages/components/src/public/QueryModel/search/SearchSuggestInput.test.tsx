@@ -166,6 +166,59 @@ describe('SearchSuggestInput', () => {
         expect(document.querySelector('[role="option"] strong').textContent).toBe('Sodium');
     });
 
+    test('encoded fieldKeys are sent as-is and matched to their captions', async () => {
+        const queryInfo = new QueryInfo({
+            columns: new ExtendedMap({
+                tube$stype: new QueryColumn({ caption: 'Tube <b>& Type', fieldKey: 'Tube$SType', name: 'Tube/Type' }),
+                'samplestate/label': new QueryColumn({ fieldKey: 'SampleState/Label', name: 'Label' }),
+            }),
+            views: new ExtendedMap({
+                [ViewInfo.DEFAULT_NAME.toLowerCase()]: ViewInfo.fromJson({
+                    columns: [{ fieldKey: 'Tube$SType' }, { fieldKey: 'SampleState/Label', title: 'Sample <Status>' }],
+                    name: ViewInfo.DEFAULT_NAME,
+                }),
+            }),
+        });
+        const model = makeTestQueryModel(new SchemaQuery('samples', 'Plasma'), queryInfo);
+        getFilterSuggestions.mockResolvedValue({
+            complete: true,
+            suggestions: [
+                {
+                    colMatch: { end: 9, fieldKey: 'Tube$SType', start: 0 },
+                    fieldKey: 'Tube$SType',
+                    kind: 'filter',
+                    label: 'Tube/Type is A,B;C',
+                    match: { end: 16, start: 13 },
+                    op: 'eq',
+                    source: 'partialValue',
+                    value: 'A,B;C',
+                },
+                {
+                    colMatch: { end: 6, fieldKey: 'SampleState/Label', start: 0 },
+                    fieldKey: 'SampleState/Label',
+                    kind: 'filter',
+                    label: 'Status is A,B',
+                    match: { end: 13, start: 10 },
+                    op: 'eq',
+                    source: 'exactValue',
+                    value: 'A,B',
+                },
+            ],
+        });
+
+        const input = renderInput(model);
+        await user.type(input, 'A,B');
+        await settle();
+
+        expect(getFilterSuggestions.mock.calls[0][0].columns).toEqual(['Tube$SType', 'SampleState/Label']);
+        expect(optionLabels()).toEqual(['Tube <b>& Type is A,B;C', 'Sample <Status> is A,B']);
+        expect(Array.from(document.querySelectorAll('[role="option"] strong')).map(el => el.textContent)).toEqual([
+            'A,B',
+            'A,B',
+        ]);
+        expect(document.querySelector('[role="option"] b')).toBeNull();
+    });
+
     test('Enter while loading waits and applies the top suggestion, not the full search', async () => {
         const input = renderInput();
         await user.type(input, 'Sodium{Enter}');

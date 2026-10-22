@@ -43,6 +43,19 @@ describe('suggestion filters', () => {
         expect(filter.getValue()).toBe('Available');
     });
 
+    test('keeps an encoded fieldKey and does not split a single value', () => {
+        const filter = suggestionToFilter({
+            fieldKey: 'Tube$SType',
+            kind: 'filter',
+            label: '',
+            op: 'eq',
+            source: 'exactValue',
+            value: 'A,B;C',
+        });
+        expect(filter.getColumnName()).toBe('Tube$SType');
+        expect(filter.getValue()).toBe('A,B;C');
+    });
+
     test('multi-valued operators split the value', () => {
         const filter = composeFieldToFilter({ fieldKey: 'Collected', op: 'between' }, '2023-01-01,2023-12-31');
         expect(filter.getFilterType()).toBe(Filter.Types.BETWEEN);
@@ -69,6 +82,13 @@ describe('getColumnCaptions', () => {
             new QueryColumn({ fieldKey: 'SampleState', name: 'SampleState' }),
         ]);
         expect(captions).toEqual({ name: 'Sample ID', samplestate: 'SampleState' });
+    });
+
+    test('keys an encoded fieldKey by its encoded form', () => {
+        const captions = getColumnCaptions([
+            new QueryColumn({ caption: 'Tube/Type', fieldKey: 'Tube$SType', name: 'Tube/Type' }),
+        ]);
+        expect(captions).toEqual({ tube$stype: 'Tube/Type' });
     });
 
     test('no columns', () => {
@@ -109,6 +129,23 @@ describe('applyColumnCaption', () => {
         const applied = applyColumnCaption(suggestion, { samplestate: 'St' });
         expect(applied.label).toBe('St is Available');
         expect(applied.match).toEqual({ end: 11, start: 6 });
+    });
+
+    test('matches an encoded fieldKey and keeps the caption verbatim', () => {
+        const suggestion: FilterKindSuggestion = {
+            ...FILTER,
+            colMatch: { end: 9, fieldKey: 'Tube$SType', start: 0 },
+            fieldKey: 'Tube$SType',
+            label: 'Tube/Type is Sodium',
+            match: { end: 19, start: 13 },
+            value: 'Sodium',
+        };
+        expect(applyColumnCaption(suggestion, { tube$stype: 'Tube <b>& Type' })).toEqual({
+            ...suggestion,
+            colMatch: { end: 14, fieldKey: 'Tube$SType', start: 0 },
+            label: 'Tube <b>& Type is Sodium',
+            match: { end: 24, start: 18 },
+        });
     });
 
     test('compose label', () => {

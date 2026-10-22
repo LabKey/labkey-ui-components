@@ -11,6 +11,7 @@ export interface FilterSuggestionsRequest {
     columns: string[];
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
+    // Most suggestions the server should return; it defaults to 10 and caps this at 100
     maxSuggestions?: number;
     parameters?: Record<string, unknown>;
     queryName: string;

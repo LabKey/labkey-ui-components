@@ -18,7 +18,7 @@ import { SchemaQuery } from '../SchemaQuery';
 import { QueryInfo } from '../QueryInfo';
 import { LoadingState } from '../LoadingState';
 
-import { saveAsSessionView } from '../../internal/actions';
+import { getGridView, saveAsSessionView } from '../../internal/actions';
 import { ViewInfo } from '../../internal/ViewInfo';
 import { QuerySort } from '../QuerySort';
 import { GRID_CHECKBOX_OPTIONS } from '../../internal/constants';
@@ -46,6 +46,8 @@ jest.mock('./search/actions', () => ({
 
 jest.mock('../../internal/actions', () => ({
     ...jest.requireActual('../../internal/actions'),
+    getGridView: jest.fn(),
+    revertViewEdit: jest.fn().mockResolvedValue(undefined),
     saveAsSessionView: jest.fn().mockResolvedValue(undefined),
 }));
 
@@ -935,6 +937,51 @@ describe('GridTitle', () => {
         await userEvent.click(container.querySelector('.split-button-dropdown__button'));
 
         expect(onSaveView).toHaveBeenCalledWith(true, true);
+    });
+
+    describe('undo', () => {
+        const EXPIRATION_FILTER = Filter.create('expirationTime', '3', Filter.Types.NEQ_OR_NULL);
+        const SEARCH_FILTER = Filter.create('*', 'foo', Filter.Types.Q);
+        const SAVED_VIEW = ViewInfo.fromJson({
+            filter: [
+                { fieldKey: 'Name', op: 'startswith', value: 'DM' },
+                { fieldKey: 'expirationTime', op: 'neqornull', value: '3' },
+            ],
+            name: ViewInfo.DEFAULT_NAME.toLowerCase(),
+        });
+
+        async function undo(editedFilters: Filter.IFilter[]): Promise<string[]> {
+            jest.mocked(getGridView).mockResolvedValue(SAVED_VIEW);
+            const undoActions = makeTestActions(jest.fn);
+            const sessionQueryInfo = QUERY_INFO.mutate({
+                views: QUERY_INFO.views.merge({
+                    '~~default~~': SAVED_VIEW.mutate({ filters: editedFilters, revertable: true, session: true }),
+                }),
+            });
+            const model = makeTestQueryModel(SCHEMA_QUERY, sessionQueryInfo).mutate({
+                filterArray: [Filter.create('name', 'DMXA'), EXPIRATION_FILTER, SEARCH_FILTER],
+            });
+            const { container } = renderWithAppContext(
+                <GridTitle {...GRID_TITLE_PROPS} actions={undoActions} allowViewCustomization model={model} />,
+                { serverContext: { user: TEST_USER_EDITOR } }
+            );
+
+            const button = Array.from(container.querySelectorAll('button')).find(b => b.textContent === 'Undo');
+            await userEvent.click(button);
+            await waitFor(() => expect(undoActions.loadModel).toHaveBeenCalled());
+            expect(jest.mocked(getGridView).mock.lastCall[1]).toBe('');
+            return jest
+                .mocked(undoActions.setFilters)
+                .mock.lastCall[1].map(f => `${f.getColumnName()}~${f.getFilterType().getURLSuffix()}`);
+        }
+
+        test('drops the user filters that replaced a view filter', async () => {
+            expect(await undo([EXPIRATION_FILTER])).toEqual(['expirationTime~neqornull', '*~q']);
+        });
+
+        test('keeps the user filters when the edit left the view filters alone', async () => {
+            expect(await undo(SAVED_VIEW.filters)).toEqual(['name~eq', 'expirationTime~neqornull', '*~q']);
+        });
     });
 
     test('hidden view, not edited, no title', () => {

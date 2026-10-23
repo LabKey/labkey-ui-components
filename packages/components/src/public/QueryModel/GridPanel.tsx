@@ -292,6 +292,29 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
     }
 }
 
+/**
+ * Undoing a view edit restores the saved view's filters, so the user filters that replaced them go too: those on any
+ * column whose view filters the edit changed.
+ */
+function withoutReplacedViewFilters(
+    model: QueryModel,
+    editedFilters: Filter.IFilter[],
+    savedFilters: Filter.IFilter[]
+): Filter.IFilter[] {
+    // A lookup can be filtered by its key or its display field, so both resolve to the column
+    const columnKey = (filter: Filter.IFilter): string =>
+        (model.getColumnByFieldKey(filter.getColumnName())?.fieldKey ?? filter.getColumnName()).toLowerCase();
+    const onColumn = (filters: Filter.IFilter[], key: string): Filter.IFilter[] =>
+        filters.filter(filter => columnKey(filter) === key);
+    const changed = new Set(
+        editedFilters
+            .concat(savedFilters)
+            .map(columnKey)
+            .filter(key => !filterArraysEqual(onColumn(editedFilters, key), onColumn(savedFilters, key)))
+    );
+    return model.filterArray.filter(filter => !changed.has(columnKey(filter)));
+}
+
 interface GridTitleProps {
     actions: Actions;
     allowSelections: boolean;
@@ -340,14 +363,24 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     }
 
     const _revertViewEdit = useCallback(async () => {
+        let reverted = false;
         try {
             await revertViewEdit(model.schemaQuery, model.containerPath, model.viewName);
+            reverted = true;
         } catch (error) {
             setErrorMsg(error);
         }
+        if (reverted && currentView) {
+            // An empty name asks for the default view; omitting it returns every view
+            const savedView = await getGridView(model.schemaQuery, model.viewName ?? '', true).catch(() => undefined);
+            if (savedView) {
+                const filters = withoutReplacedViewFilters(model, currentView.filters, savedView.filters);
+                actions.setFilters(model.id, filters, allowSelections);
+            }
+        }
         await actions.loadModel(model.id, allowSelections, true);
         onRevertView?.();
-    }, [model, onRevertView, actions, allowSelections]);
+    }, [model, onRevertView, actions, allowSelections, currentView]);
 
     const _onSaveCurrentView = useCallback((): void => {
         onSaveView(userCanEditSharedViews(user as User), canInheritGridView(user as User, container, moduleContext));

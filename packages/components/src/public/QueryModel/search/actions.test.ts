@@ -2,7 +2,7 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { Query } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { request } from '../../../internal/request';
 
@@ -59,6 +59,25 @@ describe('getFilterSuggestions', () => {
         expect(options.url).toContain('/Plasma/');
         expect(options.url).toContain('query-getFilterSuggestions.api');
         expect(options.jsonData).toEqual({ ...REQUEST, containerPath: undefined });
+    });
+
+    test('sends filters in their URL form', async () => {
+        jest.mocked(request).mockResolvedValue(RESPONSE);
+
+        await getFilterSuggestions({
+            ...REQUEST,
+            filters: [
+                Filter.create('BoxId', 1),
+                Filter.create('Units/Value', ['mL', 'uL'], Filter.Types.IN),
+                Filter.create('Tube$SType', undefined, Filter.Types.NONBLANK),
+            ],
+        });
+
+        expect(jest.mocked(request).mock.calls[0][0].jsonData.filters).toEqual([
+            { fieldKey: 'BoxId', op: 'eq', value: '1' },
+            { fieldKey: 'Units/Value', op: 'in', value: 'mL;uL' },
+            { fieldKey: 'Tube$SType', op: 'isnonblank', value: '' },
+        ]);
     });
 
     test('defaults a response without suggestions to an empty, complete list', async () => {

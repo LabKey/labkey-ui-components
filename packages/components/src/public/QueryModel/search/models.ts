@@ -2,7 +2,7 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { Query } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 // Request/response shapes of query-getFilterSuggestions.api
 
@@ -11,6 +11,8 @@ export interface FilterSuggestionsRequest {
     columns: string[];
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
+    // The grid's base filters, which bound the rows suggestions are drawn from
+    filters?: Filter.IFilter[];
     // Most suggestions the server should return; it defaults to 10 and caps this at 100
     maxSuggestions?: number;
     parameters?: Record<string, unknown>;

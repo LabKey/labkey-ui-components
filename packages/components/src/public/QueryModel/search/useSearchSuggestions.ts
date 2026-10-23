@@ -5,6 +5,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { ComponentsAPIWrapper } from '../../../internal/APIWrapper';
+import { getContainerFilter } from '../../../internal/query/api';
 import { QueryModel } from '../QueryModel';
 
 import { FilterSuggestion, FilterSuggestionsRequest } from './models';
@@ -28,8 +29,11 @@ interface SettledSuggestions {
 export function getFilterSuggestionsRequest(model: QueryModel, term: string): FilterSuggestionsRequest {
     return {
         columns: model.displayColumns?.map(column => column.fieldKey) ?? [],
-        containerFilter: model.containerFilter,
+        // Same default as the grid's own rows request
+        containerFilter: model.containerFilter ?? getContainerFilter(model.containerPath),
         containerPath: model.containerPath,
+        // View filters are left out: the user edits them like their own, so suggestions may reach past them
+        filters: model.baseFilters,
         parameters: model.queryParameters,
         queryName: model.queryName,
         schemaName: model.schemaName,
@@ -58,6 +62,7 @@ export function useSearchSuggestions(
             model.viewName,
             model.containerPath,
             model.containerFilter,
+            model.baseFilters,
             model.queryParameters,
             model.queryInfo,
             model.omittedColumns,

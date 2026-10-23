@@ -46,10 +46,10 @@ export interface SearchResultCardData {
 }
 
 export interface EntityFieldFilter {
-    fieldCaption: string;
+    fieldCaption?: string;
     fieldKey: string;
     filter: Filter.IFilter;
-    jsonType: JsonType;
+    jsonType?: JsonType;
 }
 
 export interface FieldFilterOption {

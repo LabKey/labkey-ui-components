@@ -5,11 +5,11 @@
 import { decodePart } from '../../../SchemaQuery';
 import { QuerySort } from '../../../QuerySort';
 
-import { Action, ActionValue } from './Action';
+import { Action, ActionKeyword, ActionValue } from './Action';
 
 export class SortAction implements Action {
     iconCls = 'sort';
-    keyword = 'sort';
+    keyword = ActionKeyword.Sort;
     separator = ',';
 
     actionValueFromSort(sort: QuerySort, label: string): ActionValue {

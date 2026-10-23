@@ -3,11 +3,9 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { Filter } from '@labkey/api';
-
 import { userEvent } from '@testing-library/user-event';
-
 import { render } from '@testing-library/react';
+import { Filter } from '@labkey/api';
 
 import { SearchAction } from './grid/actions/Search';
 import { ViewAction } from './grid/actions/View';
@@ -26,6 +24,10 @@ describe('FilterStatus', () => {
         onRemove: ON_REMOVE,
         onRemoveAll: ON_REMOVE_ALL,
     };
+
+    beforeEach(() => {
+        ON_REMOVE_ALL.mockClear();
+    });
 
     const filterAction1 = {
         action: new FilterAction(() => 'display'),
@@ -80,17 +82,18 @@ describe('FilterStatus', () => {
         validate(0, 0);
     });
 
-    test('view, search and one filter actionValue', () => {
+    test('view, search and one filter actionValue', async () => {
         render(<FilterStatus {...DEFAULT_PROPS} actionValues={[viewAction, searchAction, filterAction1]} />);
-        validate(3, 1);
+        validate(3, 2);
         expect(document.querySelectorAll('.fa-table')).toHaveLength(1);
-        expect(document.querySelectorAll('.filter-status-value')[0].textContent).toBe('view');
+        expect(document.querySelectorAll('.filter-status-value')[0]).toHaveTextContent('view');
         expect(document.querySelectorAll('.fa-search')).toHaveLength(1);
-        expect(document.querySelectorAll('.filter-status-value')[1].textContent).toBe('foo');
+        expect(document.querySelectorAll('.filter-status-value')[1]).toHaveTextContent('foo');
         expect(document.querySelectorAll('.fa-filter')).toHaveLength(1);
-        expect(document.querySelectorAll('.filter-status-value')[2].textContent).toBe('test1');
+        expect(document.querySelectorAll('.filter-status-value')[2]).toHaveTextContent('test1');
         expect(document.querySelectorAll('.fa-close')).toHaveLength(0);
-        expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(0);
+        await userEvent.click(document.querySelector('.remove-all-filters'));
+        expect(ON_REMOVE_ALL).toHaveBeenCalledTimes(1);
     });
 
     test('multiple filter actionValue', async () => {
@@ -99,8 +102,8 @@ describe('FilterStatus', () => {
         expect(document.querySelectorAll('.fa-table')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-search')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-filter')).toHaveLength(2);
-        expect(document.querySelectorAll('.filter-status-value')[0].textContent).toBe('test1');
-        expect(document.querySelectorAll('.filter-status-value')[1].textContent).toBe('test2');
+        expect(document.querySelectorAll('.filter-status-value')[0]).toHaveTextContent('test1');
+        expect(document.querySelectorAll('.filter-status-value')[1]).toHaveTextContent('test2');
         expect(document.querySelectorAll('.fa-close')).toHaveLength(0);
         expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(1);
         expect(ON_REMOVE_ALL).toHaveBeenCalledTimes(0);
@@ -114,8 +117,8 @@ describe('FilterStatus', () => {
         expect(document.querySelectorAll('.fa-table')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-search')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-filter')).toHaveLength(2);
-        expect(document.querySelectorAll('.filter-status-value')[0].textContent).toBe('test1');
-        expect(document.querySelectorAll('.filter-status-value')[1].textContent).toBe('test2');
+        expect(document.querySelectorAll('.filter-status-value')[0]).toHaveTextContent('test1');
+        expect(document.querySelectorAll('.filter-status-value')[1]).toHaveTextContent('test2');
         expect(document.querySelectorAll('.fa-close')).toHaveLength(0);
         expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(1);
     });
@@ -132,8 +135,8 @@ describe('FilterStatus', () => {
         expect(document.querySelectorAll('.fa-search')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-filter')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-lock')).toHaveLength(2);
-        expect(document.querySelectorAll('.filter-status-value')[0].textContent).toBe('test1');
-        expect(document.querySelectorAll('.filter-status-value')[1].textContent).toBe('test2');
+        expect(document.querySelectorAll('.filter-status-value')[0]).toHaveTextContent('test1');
+        expect(document.querySelectorAll('.filter-status-value')[1]).toHaveTextContent('test2');
         expect(document.querySelectorAll('.fa-close')).toHaveLength(0);
         expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(0);
     });
@@ -151,6 +154,54 @@ describe('FilterStatus', () => {
         expect(document.querySelectorAll('.fa-search')).toHaveLength(0);
         expect(document.querySelectorAll('.fa-filter')).toHaveLength(2);
         expect(document.querySelectorAll('.remove-all-filters')).toHaveLength(0);
+    });
+
+    test('add filter is spaced from a search', () => {
+        render(<FilterStatus {...DEFAULT_PROPS} actionValues={[searchAction]} onAddFilterClick={jest.fn()} />);
+        expect(document.querySelector('.btn').classList).toContain('margin-left');
+    });
+
+    describe('keyboard removal moves focus', () => {
+        const search = (value: string) => ({
+            action: new SearchAction(),
+            value,
+            valueObject: Filter.create('*', value, Filter.Types.Q),
+        });
+        const [a, b, c] = [search('a'), search('b'), search('c')];
+        const focusedText = (): string => document.activeElement.textContent;
+
+        test('to the next pill', async () => {
+            const onRemove = jest.fn();
+            const { rerender } = render(
+                <FilterStatus {...DEFAULT_PROPS} actionValues={[a, b, c]} onRemove={onRemove} />
+            );
+            await userEvent.tab();
+            await userEvent.tab();
+            expect(focusedText()).toBe('b');
+
+            await userEvent.keyboard('{Delete}');
+            expect(onRemove).toHaveBeenCalledWith(1, expect.anything());
+            (document.activeElement as HTMLElement).blur();
+            rerender(<FilterStatus {...DEFAULT_PROPS} actionValues={[a, c]} onRemove={onRemove} />);
+            expect(focusedText()).toBe('c');
+        });
+
+        test('to the previous pill when the last is removed', async () => {
+            const { rerender } = render(<FilterStatus {...DEFAULT_PROPS} actionValues={[a, b]} />);
+            await userEvent.tab();
+            await userEvent.tab();
+            await userEvent.keyboard('{Backspace}');
+            rerender(<FilterStatus {...DEFAULT_PROPS} actionValues={[a]} />);
+            expect(focusedText()).toBe('a');
+        });
+
+        test('not on mouse removal', async () => {
+            const { rerender } = render(<FilterStatus {...DEFAULT_PROPS} actionValues={[a, b, c]} />);
+            await userEvent.click(document.querySelectorAll('.symbol')[1]);
+            (document.activeElement as HTMLElement).blur();
+            rerender(<FilterStatus {...DEFAULT_PROPS} actionValues={[a, c]} />);
+            expect(document.activeElement).toBe(document.body);
+        });
     });
 
     test('without actionValues, with add', async () => {

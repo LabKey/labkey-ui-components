@@ -4,6 +4,7 @@
  */
 import React, { PureComponent, ReactNode } from 'react';
 import userEvent from '@testing-library/user-event';
+import { act, waitFor } from '@testing-library/react';
 import { Filter } from '@labkey/api';
 
 import { makeQueryInfo, makeTestData } from '../../internal/test/testHelpers';
@@ -17,7 +18,7 @@ import { SchemaQuery } from '../SchemaQuery';
 import { QueryInfo } from '../QueryInfo';
 import { LoadingState } from '../LoadingState';
 
-import { saveAsSessionView } from '../../internal/actions';
+import { getGridView, saveAsSessionView } from '../../internal/actions';
 import { ViewInfo } from '../../internal/ViewInfo';
 import { QuerySort } from '../QuerySort';
 import { GRID_CHECKBOX_OPTIONS } from '../../internal/constants';
@@ -30,9 +31,24 @@ import { RowsResponse } from './QueryModelLoader';
 import { renderWithAppContext } from '../../internal/test/reactTestLibraryHelpers';
 import { Container } from '../../internal/components/base/models/Container';
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../internal/containerFixtures';
+import { getFilterSuggestions } from './search/actions';
+import { FilterSuggestion } from './search/models';
+import { SUGGESTION_DEBOUNCE_MS } from './search/useSearchSuggestions';
+
+// The filter modal's value list would otherwise make a real request
+jest.mock('../../internal/query/api', () => ({
+    ...jest.requireActual('../../internal/query/api'),
+    selectDistinctRows: jest.fn().mockResolvedValue({ values: [] }),
+}));
+
+jest.mock('./search/actions', () => ({
+    getFilterSuggestions: jest.fn(),
+}));
 
 jest.mock('../../internal/actions', () => ({
     ...jest.requireActual('../../internal/actions'),
+    getGridView: jest.fn(),
+    revertViewEdit: jest.fn().mockResolvedValue(undefined),
     saveAsSessionView: jest.fn().mockResolvedValue(undefined),
 }));
 
@@ -383,7 +399,7 @@ describe('GridPanel', () => {
         rerender(<GridPanel actions={actions} model={model} />);
         filterStatus = document.querySelector(FILTER_STATUS_SELECTOR);
         expect(filterStatus.textContent).toContain('Expiration Time = 1');
-        expect(filterStatus.textContent).not.toContain('foobar');
+        expect(filterStatus.textContent).toContain('foobar');
 
         // Clear all
         model = model.mutate({ sorts: [], filterArray: [], schemaQuery: SCHEMA_QUERY });
@@ -924,6 +940,51 @@ describe('GridTitle', () => {
         expect(onSaveView).toHaveBeenCalledWith(true, true);
     });
 
+    describe('undo', () => {
+        const EXPIRATION_FILTER = Filter.create('expirationTime', '3', Filter.Types.NEQ_OR_NULL);
+        const SEARCH_FILTER = Filter.create('*', 'foo', Filter.Types.Q);
+        const SAVED_VIEW = ViewInfo.fromJson({
+            filter: [
+                { fieldKey: 'Name', op: 'startswith', value: 'DM' },
+                { fieldKey: 'expirationTime', op: 'neqornull', value: '3' },
+            ],
+            name: ViewInfo.DEFAULT_NAME.toLowerCase(),
+        });
+
+        async function undo(editedFilters: Filter.IFilter[]): Promise<string[]> {
+            jest.mocked(getGridView).mockResolvedValue(SAVED_VIEW);
+            const undoActions = makeTestActions(jest.fn);
+            const sessionQueryInfo = QUERY_INFO.mutate({
+                views: QUERY_INFO.views.merge({
+                    '~~default~~': SAVED_VIEW.mutate({ filters: editedFilters, revertable: true, session: true }),
+                }),
+            });
+            const model = makeTestQueryModel(SCHEMA_QUERY, sessionQueryInfo).mutate({
+                filterArray: [Filter.create('name', 'DMXA'), EXPIRATION_FILTER, SEARCH_FILTER],
+            });
+            const { container } = renderWithAppContext(
+                <GridTitle {...GRID_TITLE_PROPS} actions={undoActions} allowViewCustomization model={model} />,
+                { serverContext: { user: TEST_USER_EDITOR } }
+            );
+
+            const button = Array.from(container.querySelectorAll('button')).find(b => b.textContent === 'Undo');
+            await userEvent.click(button);
+            await waitFor(() => expect(undoActions.loadModel).toHaveBeenCalled());
+            expect(jest.mocked(getGridView).mock.lastCall[1]).toBe('');
+            return jest
+                .mocked(undoActions.setFilters)
+                .mock.lastCall[1].map(f => `${f.getColumnName()}~${f.getFilterType().getURLSuffix()}`);
+        }
+
+        test('drops the user filters that replaced a view filter', async () => {
+            expect(await undo([EXPIRATION_FILTER])).toEqual(['expirationTime~neqornull', '*~q']);
+        });
+
+        test('keeps the user filters when the edit left the view filters alone', async () => {
+            expect(await undo(SAVED_VIEW.filters)).toEqual(['name~eq', 'expirationTime~neqornull', '*~q']);
+        });
+    });
+
     test('hidden view, not edited, no title', () => {
         const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
         const sessionQueryInfo = QUERY_INFO.mutate({
@@ -936,5 +997,141 @@ describe('GridTitle', () => {
             <GridTitle actions={actions} allowSelections allowViewCustomization={false} model={model} />
         );
         expect(container.querySelector('.view-header')).toBeNull();
+    });
+});
+
+describe('GridPanel search suggestions', () => {
+    const EXPIRATION_FILTER = Filter.create('expirationTime', '1', Filter.Types.EQUAL);
+    const Q_FILTER = Filter.create('*', 'foo', Filter.Types.Q);
+    const NAME_SUGGESTION: FilterSuggestion = {
+        fieldKey: 'Name',
+        kind: 'filter',
+        label: 'Name is DMXP',
+        op: 'eq',
+        source: 'identity',
+        value: 'DMXP',
+    };
+    const COMPOSE_SUGGESTION: FilterSuggestion = {
+        fields: [{ fieldKey: 'Name', op: 'contains' }],
+        kind: 'compose',
+        label: 'Filter Name…',
+        source: 'compose',
+        value: 'DMX',
+        valueType: 'string',
+    };
+    let actions: Actions;
+    let user: ReturnType<typeof userEvent.setup>;
+
+    beforeEach(() => {
+        jest.useFakeTimers();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+        actions = makeTestActions(jest.fn);
+        jest.mocked(getFilterSuggestions).mockReset();
+        jest.mocked(saveAsSessionView).mockClear();
+    });
+
+    afterEach(() => {
+        jest.useRealTimers();
+    });
+
+    function renderGrid(filterArray = [EXPIRATION_FILTER, Q_FILTER], queryInfo = QUERY_INFO): void {
+        const { rows, orderedRows, rowCount } = DATA;
+        const model = makeTestQueryModel(SCHEMA_QUERY, queryInfo, rows, orderedRows.slice(0, 20), rowCount).mutate({
+            filterArray,
+        });
+        renderWithAppContext(<GridPanel actions={actions} model={model} />);
+    }
+
+    const searchInput = (): HTMLInputElement => document.querySelector('.grid-panel__search-input');
+
+    async function typeAndSettle(term: string, label: string): Promise<void> {
+        await user.clear(searchInput());
+        await user.type(searchInput(), term);
+        await act(async () => {
+            jest.advanceTimersByTime(SUGGESTION_DEBOUNCE_MS);
+        });
+        expect(document.querySelector('[role="option"]:first-child')).toHaveTextContent(label);
+    }
+
+    const appliedFilters = (): string[] =>
+        jest
+            .mocked(actions.setFilters)
+            .mock.lastCall[1].map(f => `${f.getColumnName()}~${f.getFilterType().getURLSuffix()}=${f.getValue()}`);
+
+    test('a targeted filter keeps the Q filter', async () => {
+        jest.mocked(getFilterSuggestions).mockResolvedValue({
+            complete: true,
+            suggestions: [NAME_SUGGESTION, { kind: 'search', label: 'Search', source: 'fallback', value: 'DMXP' }],
+        });
+        renderGrid();
+
+        await typeAndSettle('DMXP', 'Name is DMXP');
+        await user.keyboard('{Enter}');
+
+        expect(appliedFilters()).toEqual(['expirationTime~eq=1', '*~q=foo', 'Name~eq=DMXP']);
+        expect(jest.mocked(getFilterSuggestions).mock.calls[0][0]).toMatchObject({
+            queryName: 'Mixtures',
+            schemaName: 'exp.data',
+            term: 'DMXP',
+        });
+    });
+
+    test('a targeted filter replaces the filters on its column', async () => {
+        jest.mocked(getFilterSuggestions).mockResolvedValue({ complete: true, suggestions: [NAME_SUGGESTION] });
+        const view = ViewInfo.fromJson({
+            filter: [
+                { fieldKey: 'Name', op: 'startswith', value: 'DM' },
+                { fieldKey: 'expirationTime', op: 'neqornull', value: '3' },
+            ],
+            name: ViewInfo.DEFAULT_NAME.toLowerCase(),
+        });
+        const queryInfo = new QueryInfo({
+            columns: QUERY_INFO.columns,
+            views: new ExtendedMap({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+        });
+        renderGrid(
+            [Filter.create('name', 'DMXA'), EXPIRATION_FILTER, Filter.create('Name', 'X', Filter.Types.CONTAINS)],
+            queryInfo
+        );
+
+        await typeAndSettle('DMXP', 'Name is DMXP');
+        await user.keyboard('{Enter}');
+
+        expect(appliedFilters()).toEqual(['expirationTime~eq=1', 'Name~eq=DMXP']);
+        expect(saveAsSessionView).toHaveBeenCalledTimes(1);
+        const savedView = jest.mocked(saveAsSessionView).mock.lastCall[2];
+        expect(savedView.filters.map(f => f.getColumnName())).toEqual(['expirationTime']);
+    });
+
+    test('compose opens the filter modal on the suggested fields, and applying keeps the Q filter', async () => {
+        jest.mocked(getFilterSuggestions).mockResolvedValue({ complete: true, suggestions: [COMPOSE_SUGGESTION] });
+        renderGrid();
+
+        await typeAndSettle('DMX', 'Filter Name…');
+        await user.keyboard('{Enter}');
+
+        expect(document.querySelectorAll('.modal button.list-group-item')).toHaveLength(1);
+        expect(document.querySelector<HTMLInputElement>('input[aria-label="Filter 0 value 1"]').value).toBe('DMX');
+
+        const apply = Array.from(document.querySelectorAll<HTMLElement>('.modal-footer button')).find(
+            button => button.textContent === 'Apply'
+        );
+        await user.click(apply);
+        expect(appliedFilters()).toEqual(['expirationTime~eq=1', '*~q=foo', 'Name~contains=DMX']);
+    });
+
+    test('compose on fields the grid no longer shows opens the filter modal unseeded', async () => {
+        jest.mocked(getFilterSuggestions).mockResolvedValue({
+            complete: true,
+            suggestions: [{ ...COMPOSE_SUGGESTION, fields: [{ fieldKey: 'NotShown', op: 'contains' }] }],
+        });
+        renderGrid();
+
+        await typeAndSettle('DMX', 'Filter Name…');
+        await user.keyboard('{Enter}');
+
+        expect(document.querySelectorAll('.modal button.list-group-item').length).toBeGreaterThan(1);
+        expect(document.querySelector<HTMLInputElement>('input[aria-label="Filter 0 value 1"]')?.value ?? '').toBe('');
+        expect(actions.setFilters).not.toHaveBeenCalled();
     });
 });

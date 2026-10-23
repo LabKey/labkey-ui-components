@@ -4,7 +4,7 @@
  */
 import React, { PureComponent, ReactNode } from 'react';
 import userEvent from '@testing-library/user-event';
-import { waitFor } from '@testing-library/react';
+import { act, waitFor } from '@testing-library/react';
 import { Filter } from '@labkey/api';
 
 import { makeQueryInfo, makeTestData } from '../../internal/test/testHelpers';
@@ -33,6 +33,7 @@ import { Container } from '../../internal/components/base/models/Container';
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../internal/containerFixtures';
 import { getFilterSuggestions } from './search/actions';
 import { FilterSuggestion } from './search/models';
+import { SUGGESTION_DEBOUNCE_MS } from './search/useSearchSuggestions';
 
 // The filter modal's value list would otherwise make a real request
 jest.mock('../../internal/query/api', () => ({
@@ -1019,10 +1020,18 @@ describe('GridPanel search suggestions', () => {
         valueType: 'string',
     };
     let actions: Actions;
+    let user: ReturnType<typeof userEvent.setup>;
 
     beforeEach(() => {
+        jest.useFakeTimers();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
         actions = makeTestActions(jest.fn);
         jest.mocked(getFilterSuggestions).mockReset();
+        jest.mocked(saveAsSessionView).mockClear();
+    });
+
+    afterEach(() => {
+        jest.useRealTimers();
     });
 
     function renderGrid(filterArray = [EXPIRATION_FILTER, Q_FILTER], queryInfo = QUERY_INFO): void {
@@ -1035,10 +1044,13 @@ describe('GridPanel search suggestions', () => {
 
     const searchInput = (): HTMLInputElement => document.querySelector('.grid-panel__search-input');
 
-    async function typeAndWaitFor(term: string, label: string): Promise<void> {
-        await userEvent.clear(searchInput());
-        await userEvent.type(searchInput(), term);
-        await waitFor(() => expect(document.querySelector('[role="option"]:first-child')).toHaveTextContent(label));
+    async function typeAndSettle(term: string, label: string): Promise<void> {
+        await user.clear(searchInput());
+        await user.type(searchInput(), term);
+        await act(async () => {
+            jest.advanceTimersByTime(SUGGESTION_DEBOUNCE_MS);
+        });
+        expect(document.querySelector('[role="option"]:first-child')).toHaveTextContent(label);
     }
 
     const appliedFilters = (): string[] =>
@@ -1053,8 +1065,8 @@ describe('GridPanel search suggestions', () => {
         });
         renderGrid();
 
-        await typeAndWaitFor('DMXP', 'Name is DMXP');
-        await userEvent.keyboard('{Enter}');
+        await typeAndSettle('DMXP', 'Name is DMXP');
+        await user.keyboard('{Enter}');
 
         expect(appliedFilters()).toEqual(['expirationTime~eq=1', '*~q=foo', 'Name~eq=DMXP']);
         expect(jest.mocked(getFilterSuggestions).mock.calls[0][0]).toMatchObject({
@@ -1082,10 +1094,11 @@ describe('GridPanel search suggestions', () => {
             queryInfo
         );
 
-        await typeAndWaitFor('DMXP', 'Name is DMXP');
-        await userEvent.keyboard('{Enter}');
+        await typeAndSettle('DMXP', 'Name is DMXP');
+        await user.keyboard('{Enter}');
 
         expect(appliedFilters()).toEqual(['expirationTime~eq=1', 'Name~eq=DMXP']);
+        expect(saveAsSessionView).toHaveBeenCalledTimes(1);
         const savedView = jest.mocked(saveAsSessionView).mock.lastCall[2];
         expect(savedView.filters.map(f => f.getColumnName())).toEqual(['expirationTime']);
     });
@@ -1094,8 +1107,8 @@ describe('GridPanel search suggestions', () => {
         jest.mocked(getFilterSuggestions).mockResolvedValue({ complete: true, suggestions: [COMPOSE_SUGGESTION] });
         renderGrid();
 
-        await typeAndWaitFor('DMX', 'Filter Name…');
-        await userEvent.keyboard('{Enter}');
+        await typeAndSettle('DMX', 'Filter Name…');
+        await user.keyboard('{Enter}');
 
         expect(document.querySelectorAll('.modal button.list-group-item')).toHaveLength(1);
         expect(document.querySelector<HTMLInputElement>('input[aria-label="Filter 0 value 1"]').value).toBe('DMX');
@@ -1103,7 +1116,7 @@ describe('GridPanel search suggestions', () => {
         const apply = Array.from(document.querySelectorAll<HTMLElement>('.modal-footer button')).find(
             button => button.textContent === 'Apply'
         );
-        await userEvent.click(apply);
+        await user.click(apply);
         expect(appliedFilters()).toEqual(['expirationTime~eq=1', '*~q=foo', 'Name~contains=DMX']);
     });
 
@@ -1114,8 +1127,8 @@ describe('GridPanel search suggestions', () => {
         });
         renderGrid();
 
-        await typeAndWaitFor('DMX', 'Filter Name…');
-        await userEvent.keyboard('{Enter}');
+        await typeAndSettle('DMX', 'Filter Name…');
+        await user.keyboard('{Enter}');
 
         expect(document.querySelectorAll('.modal button.list-group-item').length).toBeGreaterThan(1);
         expect(document.querySelector<HTMLInputElement>('input[aria-label="Filter 0 value 1"]')?.value ?? '').toBe('');

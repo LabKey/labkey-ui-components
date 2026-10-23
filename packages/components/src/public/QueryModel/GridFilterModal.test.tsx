@@ -2,7 +2,7 @@
  * Copyright (c) 2024-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { ComponentProps } from 'react';
 
 import { render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
@@ -40,8 +40,20 @@ describe('GridFilterModal', () => {
 
     describe('initialDraft', () => {
         const FIELDS = [
-            new QueryColumn({ caption: 'Tube Type', fieldKey: 'TubeType', jsonType: 'string', name: 'TubeType' }),
-            new QueryColumn({ caption: 'Blood Type', fieldKey: 'BloodType', jsonType: 'string', name: 'BloodType' }),
+            new QueryColumn({
+                caption: 'Tube Type',
+                fieldKey: 'TubeType',
+                fieldKeyPath: 'TubeType',
+                jsonType: 'string',
+                name: 'TubeType',
+            }),
+            new QueryColumn({
+                caption: 'Blood Type',
+                fieldKey: 'BloodType',
+                fieldKeyPath: 'BloodType',
+                jsonType: 'string',
+                name: 'BloodType',
+            }),
         ];
         const DRAFT = { ops: { BloodType: 'contains', TubeType: 'contains' }, value: 'Sod' };
 
@@ -58,12 +70,13 @@ describe('GridFilterModal', () => {
             Array.from(document.querySelectorAll<HTMLElement>('.modal-footer button')).find(
                 button => button.textContent === 'Apply'
             );
-        const appliedFilters = (onApply: jest.Mock): string[] =>
-            onApply.mock.calls[0][0].map(
+        const appliedFilters = (onApply: jest.Mock): string[] => {
+            expect(onApply).toHaveBeenCalledTimes(1);
+            return onApply.mock.calls[0][0].map(
                 (f: Filter.IFilter) => `${f.getColumnName()}~${f.getFilterType().getURLSuffix()}=${f.getValue()}`
             );
-
-        test('seeds the first field and lists only the given fields', async () => {
+        };
+        const renderModal = (props: Partial<ComponentProps<typeof GridFilterModal>> = {}): jest.Mock => {
             const onApply = jest.fn();
             render(
                 <GridFilterModal
@@ -72,8 +85,14 @@ describe('GridFilterModal', () => {
                     fields={FIELDS}
                     initialDraft={DRAFT}
                     onApply={onApply}
+                    {...props}
                 />
             );
+            return onApply;
+        };
+
+        test('seeds the first field and lists only the given fields', async () => {
+            const onApply = renderModal();
 
             expect(document.querySelectorAll('button.list-group-item')).toHaveLength(2);
             expect(valueInput().value).toBe('Sod');
@@ -83,16 +102,7 @@ describe('GridFilterModal', () => {
         });
 
         test('the unedited draft follows the active field', async () => {
-            const onApply = jest.fn();
-            render(
-                <GridFilterModal
-                    {...DEFAULT_PROPS}
-                    fieldKey="TubeType"
-                    fields={FIELDS}
-                    initialDraft={DRAFT}
-                    onApply={onApply}
-                />
-            );
+            const onApply = renderModal();
 
             await userEvent.click(fieldButton('Blood Type'));
             expect(valueInput().value).toBe('Sod');
@@ -102,16 +112,7 @@ describe('GridFilterModal', () => {
         });
 
         test('an edited draft follows the active field', async () => {
-            const onApply = jest.fn();
-            render(
-                <GridFilterModal
-                    {...DEFAULT_PROPS}
-                    fieldKey="TubeType"
-                    fields={FIELDS}
-                    initialDraft={DRAFT}
-                    onApply={onApply}
-                />
-            );
+            const onApply = renderModal();
 
             await userEvent.type(valueInput(), 'ium');
             await userEvent.click(fieldButton('Blood Type'));
@@ -122,16 +123,9 @@ describe('GridFilterModal', () => {
         });
 
         test('a draft taken to Choose values stays on its field', async () => {
-            const onApply = jest.fn();
-            render(
-                <GridFilterModal
-                    {...DEFAULT_PROPS}
-                    fieldKey="TubeType"
-                    fields={FIELDS.map(field => field.mutate({ facetingBehaviorType: 'ALWAYS_ON' }))}
-                    initialDraft={DRAFT}
-                    onApply={onApply}
-                />
-            );
+            const onApply = renderModal({
+                fields: FIELDS.map(field => field.mutate({ facetingBehaviorType: 'ALWAYS_ON' })),
+            });
 
             await userEvent.click(tab('Choose values'));
             await userEvent.click(fieldButton('Blood Type'));
@@ -141,17 +135,9 @@ describe('GridFilterModal', () => {
         });
 
         test("the draft replaces its field's filters until it moves on", async () => {
-            const onApply = jest.fn();
-            render(
-                <GridFilterModal
-                    {...DEFAULT_PROPS}
-                    fieldKey="TubeType"
-                    fields={FIELDS}
-                    initFilters={[Filter.create('TubeType', 'EDTA'), Filter.create('BloodType', 'A+')]}
-                    initialDraft={DRAFT}
-                    onApply={onApply}
-                />
-            );
+            const onApply = renderModal({
+                initFilters: [Filter.create('TubeType', 'EDTA'), Filter.create('BloodType', 'A+')],
+            });
             expect(valueInput().value).toBe('Sod');
 
             await userEvent.click(fieldButton('Blood Type'));

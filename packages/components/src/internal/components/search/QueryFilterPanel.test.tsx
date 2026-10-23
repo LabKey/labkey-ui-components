@@ -272,13 +272,18 @@ describe('QueryFilterPanel', () => {
         validate(10, true, false);
     });
 
-    test('onActiveFieldChange', async () => {
+    test('clicking a field reports it via onActiveFieldChange', async () => {
         const onActiveFieldChange = jest.fn();
         render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" onActiveFieldChange={onActiveFieldChange} />);
         expect(onActiveFieldChange).not.toHaveBeenCalled();
 
-        await userEvent.click(document.querySelectorAll('button.list-group-item')[0]);
+        const integerField = Array.from(document.querySelectorAll<HTMLElement>('button.list-group-item')).find(
+            button => button.textContent === 'Integer'
+        );
+        await userEvent.click(integerField);
         expect(onActiveFieldChange).toHaveBeenCalledTimes(1);
-        expect(onActiveFieldChange.mock.calls[0][0]).toBeInstanceOf(QueryColumn);
+        const column: QueryColumn = onActiveFieldChange.mock.calls[0][0];
+        expect(column).toBeInstanceOf(QueryColumn);
+        expect(column.caption).toBe('Integer');
     });
 });

@@ -69,12 +69,21 @@ describe('SearchSuggestInput', () => {
         jest.useRealTimers();
     });
 
-    function renderInput(model: QueryModel = MODEL): HTMLInputElement {
+    interface RenderedInput {
+        input: HTMLInputElement;
+        setModel: (model: QueryModel) => void;
+    }
+
+    function renderInput(model: QueryModel = MODEL): RenderedInput {
         const api = getTestAPIWrapper(jest.fn, {
             query: getQueryTestAPIWrapper(jest.fn, { getFilterSuggestions, incrementClientSideMetricCount }),
         });
-        render(<SearchSuggestInput api={api} model={model} onApplySuggestion={onApplySuggestion} />);
-        return document.querySelector('.grid-panel__search-input');
+        const { rerender } = render(
+            <SearchSuggestInput api={api} model={model} onApplySuggestion={onApplySuggestion} />
+        );
+        const setModel = (next: QueryModel): void =>
+            rerender(<SearchSuggestInput api={api} model={next} onApplySuggestion={onApplySuggestion} />);
+        return { input: document.querySelector('.grid-panel__search-input'), setModel };
     }
 
     const optionLabels = (): string[] =>
@@ -95,16 +104,18 @@ describe('SearchSuggestInput', () => {
     }
 
     test('shows the full search immediately, then the suggestions', async () => {
-        const input = renderInput();
+        const { input } = renderInput();
         expect(input.getAttribute('role')).toBe('combobox');
         expect(input.getAttribute('aria-expanded')).toBe('false');
 
+        // Before the debounce: only the full search, still loading, nothing highlighted
         await user.type(input, 'Sodium');
         expect(input.getAttribute('aria-expanded')).toBe('true');
         expect(optionLabels()).toEqual(['Search all fields for Sodium']);
         expect(document.querySelectorAll('.grid-panel__search-suggestion-loading')).toHaveLength(1);
         expect(document.querySelector('[role="option"].active')).toBeNull();
 
+        // After the debounce: one request, server order kept, top suggestion highlighted
         await settle();
         expect(getFilterSuggestions).toHaveBeenCalledTimes(1);
         expect(getFilterSuggestions.mock.calls[0][0]).toMatchObject({
@@ -130,7 +141,7 @@ describe('SearchSuggestInput', () => {
     });
 
     test('bolds the search term within each label', async () => {
-        const input = renderInput();
+        const { input } = renderInput();
         await user.type(input, 'Sodium');
         await settle();
 
@@ -162,7 +173,7 @@ describe('SearchSuggestInput', () => {
             ],
         });
 
-        const input = renderInput(model);
+        const { input } = renderInput(model);
         await user.type(input, 'Sodium');
         await settle();
 
@@ -210,7 +221,7 @@ describe('SearchSuggestInput', () => {
             ],
         });
 
-        const input = renderInput(model);
+        const { input } = renderInput(model);
         await user.type(input, 'A,B');
         await settle();
 
@@ -224,7 +235,7 @@ describe('SearchSuggestInput', () => {
     });
 
     test('Enter while loading waits and applies the top suggestion, not the full search', async () => {
-        const input = renderInput();
+        const { input } = renderInput();
         await user.type(input, 'Sodium{Enter}');
         expect(onApplySuggestion).not.toHaveBeenCalled();
 
@@ -236,7 +247,7 @@ describe('SearchSuggestInput', () => {
 
     test('Enter falls back to the best available suggestion when loading takes too long', async () => {
         getFilterSuggestions.mockReturnValue(new Promise(() => undefined));
-        const input = renderInput();
+        const { input } = renderInput();
         await user.type(input, 'Sodium{Enter}');
 
         await act(async () => {
@@ -248,7 +259,7 @@ describe('SearchSuggestInput', () => {
     });
 
     test('arrow keys choose a suggestion', async () => {
-        const input = renderInput();
+        const { input } = renderInput();
         await user.type(input, 'Sodium');
         await settle();
 
@@ -262,7 +273,7 @@ describe('SearchSuggestInput', () => {
     });
 
     test('clicking a suggestion applies it', async () => {
-        const input = renderInput();
+        const { input } = renderInput();
         await user.type(input, 'Sodium');
         await settle();
 
@@ -271,7 +282,7 @@ describe('SearchSuggestInput', () => {
     });
 
     test('Escape closes the menu, then clears the text', async () => {
-        const input = renderInput();
+        const { input } = renderInput();
         await user.type(input, 'Sodium');
         await settle();
 
@@ -284,7 +295,7 @@ describe('SearchSuggestInput', () => {
     });
 
     test('Escape cancels an Enter pressed while loading', async () => {
-        const input = renderInput();
+        const { input } = renderInput();
         await user.type(input, 'Sodium{Enter}');
 
         await user.keyboard('{Escape}');
@@ -300,19 +311,12 @@ describe('SearchSuggestInput', () => {
     });
 
     test('Enter waits for fresh suggestions when the grid changes under the same term', async () => {
-        const api = getTestAPIWrapper(jest.fn, {
-            query: getQueryTestAPIWrapper(jest.fn, { getFilterSuggestions, incrementClientSideMetricCount }),
-        });
-        const { rerender } = render(
-            <SearchSuggestInput api={api} model={MODEL} onApplySuggestion={onApplySuggestion} />
-        );
-        const input = document.querySelector<HTMLInputElement>('.grid-panel__search-input');
+        const { input, setModel } = renderInput();
         await user.type(input, 'Sodium');
         await settle();
 
         getFilterSuggestions.mockResolvedValue({ complete: true, suggestions: [COMPOSE, SEARCH] });
-        const changed = MODEL.mutate({ queryParameters: { Threshold: 5 } });
-        rerender(<SearchSuggestInput api={api} model={changed} onApplySuggestion={onApplySuggestion} />);
+        setModel(MODEL.mutate({ queryParameters: { Threshold: 5 } }));
         expect(document.querySelectorAll('.grid-panel__search-suggestion-loading')).toHaveLength(1);
 
         await user.keyboard('{Enter}');
@@ -332,7 +336,7 @@ describe('SearchSuggestInput', () => {
     });
 
     test('Enter on an empty box does nothing', async () => {
-        const input = renderInput();
+        const { input } = renderInput();
         await user.click(input);
         await user.keyboard('{Enter}');
 
@@ -340,11 +344,13 @@ describe('SearchSuggestInput', () => {
     });
 
     test('counts one engagement per search attempt', async () => {
-        const input = renderInput();
+        const { input } = renderInput();
+        // Whitespace alone is not an engagement
         await user.click(input);
         await user.type(input, ' ');
         expect(metrics()).toEqual([]);
 
+        // Retyping within an attempt counts once; applying a suggestion ends the attempt
         await user.type(input, 'Sodium');
         expect(incrementClientSideMetricCount).toHaveBeenCalledWith('gridSearch', 'engaged');
         await user.clear(input);
@@ -354,6 +360,7 @@ describe('SearchSuggestInput', () => {
         await user.type(input, 'Hep');
         expect(metrics()).toEqual(['engaged', 'filterChosen', 'partialValue', 'engaged']);
 
+        // Leaving the box ends the attempt
         await user.tab();
         await user.type(input, 'ium');
         expect(metrics()).toEqual(['engaged', 'filterChosen', 'partialValue', 'engaged', 'engaged']);
@@ -362,7 +369,7 @@ describe('SearchSuggestInput', () => {
     test('counts a Name filter on a sample grid', async () => {
         const name: FilterSuggestion = { ...TUBE_TYPE, fieldKey: 'Name', label: 'Name is S-1', source: 'identity' };
         getFilterSuggestions.mockResolvedValue({ complete: true, suggestions: [name, SEARCH] });
-        const input = renderInput();
+        const { input } = renderInput();
         await user.type(input, 'S-1');
         await settle();
         await user.keyboard('{Enter}');
@@ -387,7 +394,7 @@ describe('SearchSuggestInput', () => {
 
         test('polls while suggestions are incomplete', async () => {
             getFilterSuggestions.mockResolvedValueOnce(INCOMPLETE).mockResolvedValueOnce(INCOMPLETE);
-            const input = renderInput();
+            const { input } = renderInput();
             await user.type(input, 'Sodium');
             await settle();
             expect(getFilterSuggestions).toHaveBeenCalledTimes(1);
@@ -414,7 +421,7 @@ describe('SearchSuggestInput', () => {
 
         test('stops polling after the last delay', async () => {
             getFilterSuggestions.mockResolvedValue(INCOMPLETE);
-            const input = renderInput();
+            const { input } = renderInput();
             await user.type(input, 'Sodium');
             await settle();
 
@@ -430,7 +437,7 @@ describe('SearchSuggestInput', () => {
 
         test('a failed request is not polled', async () => {
             getFilterSuggestions.mockRejectedValue(new Error('failed'));
-            const input = renderInput();
+            const { input } = renderInput();
             await user.type(input, 'Sodium');
             await settle();
             expect(optionLabels()).toEqual([SEARCH.label]);
@@ -442,7 +449,7 @@ describe('SearchSuggestInput', () => {
 
         test('closing the menu ends polling', async () => {
             getFilterSuggestions.mockResolvedValue(INCOMPLETE);
-            const input = renderInput();
+            const { input } = renderInput();
             await user.type(input, 'Sodium');
             await settle();
 
@@ -455,7 +462,7 @@ describe('SearchSuggestInput', () => {
             getFilterSuggestions
                 .mockResolvedValueOnce({ complete: false, suggestions: [TUBE_TYPE, COMPOSE, SEARCH] })
                 .mockResolvedValueOnce({ complete: true, suggestions: [BLOOD_TYPE, TUBE_TYPE, COMPOSE, SEARCH] });
-            const input = renderInput();
+            const { input } = renderInput();
             await user.type(input, 'Sodium');
             await settle();
             await user.keyboard('{ArrowDown}');
@@ -474,7 +481,7 @@ describe('SearchSuggestInput', () => {
             getFilterSuggestions
                 .mockResolvedValueOnce({ ...RESPONSE, complete: false })
                 .mockResolvedValueOnce({ complete: true, suggestions: RESPONSE.suggestions.map(s => ({ ...s })) });
-            const input = renderInput();
+            const { input } = renderInput();
             await user.type(input, 'Sodium');
             await settle();
             await user.keyboard('{ArrowDown}');
@@ -489,7 +496,7 @@ describe('SearchSuggestInput', () => {
             getFilterSuggestions
                 .mockResolvedValueOnce({ ...RESPONSE, complete: false })
                 .mockResolvedValueOnce({ complete: true, suggestions: [BLOOD_TYPE, SEARCH] });
-            const input = renderInput();
+            const { input } = renderInput();
             await user.type(input, 'Sodium');
             await settle();
             await user.keyboard('{ArrowDown}');

@@ -18,7 +18,7 @@ import { makeTestQueryModel } from '../testUtils';
 
 import { FilterSuggestion, FilterSuggestionsResponse } from './models';
 import { PENDING_ENTER_TIMEOUT_MS, SearchSuggestInput } from './SearchSuggestInput';
-import { SUGGESTION_DEBOUNCE_MS } from './useSearchSuggestions';
+import { SUGGESTION_DEBOUNCE_MS, SUGGESTION_POLL_DELAYS_MS } from './useSearchSuggestions';
 
 const TUBE_TYPE: FilterSuggestion = {
     fieldKey: 'TubeType',
@@ -84,10 +84,14 @@ describe('SearchSuggestInput', () => {
 
     const metrics = (): string[] => incrementClientSideMetricCount.mock.calls.map(([, metric]) => metric);
 
-    async function settle(): Promise<void> {
+    async function advance(ms: number): Promise<void> {
         await act(async () => {
-            jest.advanceTimersByTime(SUGGESTION_DEBOUNCE_MS);
+            jest.advanceTimersByTime(ms);
         });
+    }
+
+    async function settle(): Promise<void> {
+        await advance(SUGGESTION_DEBOUNCE_MS);
     }
 
     test('shows the full search immediately, then the suggestions', async () => {
@@ -364,5 +368,137 @@ describe('SearchSuggestInput', () => {
         await user.keyboard('{Enter}');
 
         expect(metrics()).toEqual(['engaged', 'filterChosen', 'identity', 'sampleNameChosen']);
+    });
+
+    describe('polling', () => {
+        const BLOOD_TYPE: FilterSuggestion = {
+            ...TUBE_TYPE,
+            fieldKey: 'BloodType',
+            label: 'Blood Type is Sodium',
+            match: { end: 20, start: 14 },
+            value: 'Sodium',
+        };
+        const INCOMPLETE: FilterSuggestionsResponse = { complete: false, suggestions: [COMPOSE, SEARCH] };
+
+        const searchIcon = (): string => document.querySelector('.input-group-addon i').className;
+        const busy = (): string => document.querySelector('[role="listbox"]').getAttribute('aria-busy');
+        const activeLabel = (): string =>
+            document.querySelector('[role="option"].active .grid-panel__search-suggestion-label').textContent;
+
+        test('polls while suggestions are incomplete', async () => {
+            getFilterSuggestions.mockResolvedValueOnce(INCOMPLETE).mockResolvedValueOnce(INCOMPLETE);
+            const input = renderInput();
+            await user.type(input, 'Sodium');
+            await settle();
+            expect(getFilterSuggestions).toHaveBeenCalledTimes(1);
+            expect(optionLabels()).toEqual([COMPOSE.label, SEARCH.label]);
+            expect(searchIcon()).toContain('fa-spinner');
+            expect(busy()).toBe('true');
+
+            // Each wait counts from the previous response
+            await advance(SUGGESTION_POLL_DELAYS_MS[0] - 1);
+            expect(getFilterSuggestions).toHaveBeenCalledTimes(1);
+            await advance(1);
+            expect(getFilterSuggestions).toHaveBeenCalledTimes(2);
+            expect(searchIcon()).toContain('fa-spinner');
+
+            await advance(SUGGESTION_POLL_DELAYS_MS[1]);
+            expect(getFilterSuggestions).toHaveBeenCalledTimes(3);
+            expect(optionLabels()).toEqual([TUBE_TYPE.label, COMPOSE.label, SEARCH.label]);
+            expect(searchIcon()).toContain('fa-search');
+            expect(busy()).toBe('false');
+
+            await advance(SUGGESTION_POLL_DELAYS_MS.reduce((total, delay) => total + delay));
+            expect(getFilterSuggestions).toHaveBeenCalledTimes(3);
+        });
+
+        test('stops polling after the last delay', async () => {
+            getFilterSuggestions.mockResolvedValue(INCOMPLETE);
+            const input = renderInput();
+            await user.type(input, 'Sodium');
+            await settle();
+
+            for (const delay of SUGGESTION_POLL_DELAYS_MS) {
+                await advance(delay);
+            }
+            expect(getFilterSuggestions).toHaveBeenCalledTimes(SUGGESTION_POLL_DELAYS_MS.length + 1);
+            expect(searchIcon()).toContain('fa-search');
+
+            await advance(SUGGESTION_POLL_DELAYS_MS[SUGGESTION_POLL_DELAYS_MS.length - 1]);
+            expect(getFilterSuggestions).toHaveBeenCalledTimes(SUGGESTION_POLL_DELAYS_MS.length + 1);
+        });
+
+        test('a failed request is not polled', async () => {
+            getFilterSuggestions.mockRejectedValue(new Error('failed'));
+            const input = renderInput();
+            await user.type(input, 'Sodium');
+            await settle();
+            expect(optionLabels()).toEqual([SEARCH.label]);
+            expect(searchIcon()).toContain('fa-search');
+
+            await advance(SUGGESTION_POLL_DELAYS_MS[0]);
+            expect(getFilterSuggestions).toHaveBeenCalledTimes(1);
+        });
+
+        test('closing the menu ends polling', async () => {
+            getFilterSuggestions.mockResolvedValue(INCOMPLETE);
+            const input = renderInput();
+            await user.type(input, 'Sodium');
+            await settle();
+
+            await user.keyboard('{Escape}');
+            await advance(SUGGESTION_POLL_DELAYS_MS[0]);
+            expect(getFilterSuggestions).toHaveBeenCalledTimes(1);
+        });
+
+        test('the highlight follows its suggestion when a poll adds suggestions above it', async () => {
+            getFilterSuggestions
+                .mockResolvedValueOnce({ complete: false, suggestions: [TUBE_TYPE, COMPOSE, SEARCH] })
+                .mockResolvedValueOnce({ complete: true, suggestions: [BLOOD_TYPE, TUBE_TYPE, COMPOSE, SEARCH] });
+            const input = renderInput();
+            await user.type(input, 'Sodium');
+            await settle();
+            await user.keyboard('{ArrowDown}');
+            expect(activeLabel()).toBe(COMPOSE.label);
+
+            await advance(SUGGESTION_POLL_DELAYS_MS[0]);
+            expect(optionLabels()).toEqual([BLOOD_TYPE.label, TUBE_TYPE.label, COMPOSE.label, SEARCH.label]);
+            expect(activeLabel()).toBe(COMPOSE.label);
+
+            await user.keyboard('{Enter}');
+            expect(onApplySuggestion).toHaveBeenCalledWith(COMPOSE);
+        });
+
+        test('an unchanged poll keeps the highlight', async () => {
+            // Each response parses to new objects, even when nothing changed
+            getFilterSuggestions
+                .mockResolvedValueOnce({ ...RESPONSE, complete: false })
+                .mockResolvedValueOnce({ complete: true, suggestions: RESPONSE.suggestions.map(s => ({ ...s })) });
+            const input = renderInput();
+            await user.type(input, 'Sodium');
+            await settle();
+            await user.keyboard('{ArrowDown}');
+
+            await advance(SUGGESTION_POLL_DELAYS_MS[0]);
+            expect(getFilterSuggestions).toHaveBeenCalledTimes(2);
+            expect(activeLabel()).toBe(COMPOSE.label);
+            expect(searchIcon()).toContain('fa-search');
+        });
+
+        test('the highlight returns to the top when a poll drops its suggestion', async () => {
+            getFilterSuggestions
+                .mockResolvedValueOnce({ ...RESPONSE, complete: false })
+                .mockResolvedValueOnce({ complete: true, suggestions: [BLOOD_TYPE, SEARCH] });
+            const input = renderInput();
+            await user.type(input, 'Sodium');
+            await settle();
+            await user.keyboard('{ArrowDown}');
+
+            await advance(SUGGESTION_POLL_DELAYS_MS[0]);
+            expect(activeLabel()).toBe(BLOOD_TYPE.label);
+            expect(input.getAttribute('aria-activedescendant')).toBe(
+                document.querySelector('[role="option"].active').id
+            );
+        });
     });
 });

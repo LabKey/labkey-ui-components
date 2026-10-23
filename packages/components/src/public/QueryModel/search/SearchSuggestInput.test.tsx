@@ -107,10 +107,12 @@ describe('SearchSuggestInput', () => {
         const { input } = renderInput();
         expect(input.getAttribute('role')).toBe('combobox');
         expect(input.getAttribute('aria-expanded')).toBe('false');
+        expect(input.hasAttribute('aria-controls')).toBe(false);
 
         // Before the debounce: only the full search, still loading, nothing highlighted
         await user.type(input, 'Sodium');
         expect(input.getAttribute('aria-expanded')).toBe('true');
+        expect(document.getElementById(input.getAttribute('aria-controls')).getAttribute('role')).toBe('listbox');
         expect(optionLabels()).toEqual(['Search all fields for Sodium']);
         expect(document.querySelectorAll('.grid-panel__search-suggestion-loading')).toHaveLength(1);
         expect(document.querySelector('[role="option"].active')).toBeNull();
@@ -288,6 +290,7 @@ describe('SearchSuggestInput', () => {
 
         await user.keyboard('{Escape}');
         expect(input.getAttribute('aria-expanded')).toBe('false');
+        expect(input.hasAttribute('aria-controls')).toBe(false);
         expect(input.value).toBe('Sodium');
 
         await user.keyboard('{Escape}');

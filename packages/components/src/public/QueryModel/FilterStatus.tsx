@@ -2,11 +2,11 @@
  * Copyright (c) 2022-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useCallback, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 
 import { ActionKeyword, ActionValue } from './grid/actions/Action';
-import { OnClickValue, OnRemoveValue, Value } from './grid/Value';
+import { OnClickValue, OnRemoveValue, Value, valueClassName } from './grid/Value';
 import { filterActionValuesByType } from './grid/utils';
 
 interface Props {
@@ -30,9 +30,30 @@ export const FilterStatus: FC<Props> = memo(props => {
           filterActionValuesByType(actionValues, ActionKeyword.Search, lockReadOnlyForDelete).length
         : 0;
     const showRemoveAll = removableCount > 1;
+    const containerRef = useRef<HTMLDivElement>(null);
+    // Pill position of a keyboard removal; the removal applies asynchronously, so focus moves once the values change
+    const focusPosition = useRef<number>(undefined);
+
+    const onRemoveValue = useCallback<OnRemoveValue>(
+        (index, event): void => {
+            if (event.type === 'keydown') {
+                const pills = Array.from(containerRef.current.querySelectorAll(`.${valueClassName}`));
+                focusPosition.current = pills.indexOf(event.currentTarget);
+            }
+            onRemove(index, event);
+        },
+        [onRemove]
+    );
+
+    useEffect(() => {
+        if (focusPosition.current === undefined) return;
+        const pills = containerRef.current.querySelectorAll<HTMLElement>(`.${valueClassName}`);
+        pills[Math.min(focusPosition.current, pills.length - 1)]?.focus();
+        focusPosition.current = undefined;
+    }, [actionValues]);
 
     return (
-        <div className="grid-panel__filter-status">
+        <div className="grid-panel__filter-status" ref={containerRef}>
             {actionValues &&
                 actionValues
                     .sort((a, b) => {
@@ -59,10 +80,10 @@ export const FilterStatus: FC<Props> = memo(props => {
                         let _onRemove: OnRemoveValue;
                         if (actionValue.action.keyword === ActionKeyword.Filter) {
                             _onClick = onClick;
-                            _onRemove = onRemove;
+                            _onRemove = onRemoveValue;
                         } else if (actionValue.action.keyword === ActionKeyword.Search) {
                             _onClick = onSearchClick;
-                            _onRemove = onRemove;
+                            _onRemove = onRemoveValue;
                         }
 
                         return (

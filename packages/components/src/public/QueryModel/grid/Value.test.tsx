@@ -171,6 +171,55 @@ describe('Value', () => {
         expect(pill.getAttribute('data-keyword')).toBe('search');
     });
 
+    test('focus shows the remove icon', async () => {
+        render(<Value {...DEFAULT_PROPS} actionValue={filterAction} />);
+        await userEvent.tab();
+        validate(false, true, true);
+        await userEvent.tab();
+        validate(false, false, false);
+    });
+
+    test('Delete and Backspace remove the value', async () => {
+        const onRemove = jest.fn();
+        render(<Value {...DEFAULT_PROPS} actionValue={searchAction} index={2} onRemove={onRemove} />);
+        expect(document.querySelector('.filter-status-value').getAttribute('aria-keyshortcuts')).toBe(
+            'Delete Backspace'
+        );
+
+        await userEvent.tab();
+        await userEvent.keyboard('{Delete}');
+        await userEvent.keyboard('{Backspace}');
+        expect(onRemove).toHaveBeenCalledTimes(2);
+        expect(onRemove).toHaveBeenNthCalledWith(1, 2, expect.objectContaining({ type: 'keydown' }));
+        expect(onRemove).toHaveBeenNthCalledWith(2, 2, expect.objectContaining({ type: 'keydown' }));
+    });
+
+    test('Delete does not remove a value that cannot be removed', async () => {
+        const onRemove = jest.fn();
+        const { rerender } = render(<Value {...DEFAULT_PROPS} actionValue={nonRemovableAction} onRemove={onRemove} />);
+        expect(document.querySelector('.filter-status-value').hasAttribute('aria-keyshortcuts')).toBe(false);
+        await userEvent.tab();
+        await userEvent.keyboard('{Delete}');
+
+        rerender(<Value {...DEFAULT_PROPS} actionValue={readOnlyAction} lockReadOnlyForDelete onRemove={onRemove} />);
+        await userEvent.keyboard('{Delete}');
+        expect(onRemove).not.toHaveBeenCalled();
+    });
+
+    test('clickable values are named buttons', () => {
+        const { rerender } = render(<Value {...DEFAULT_PROPS} actionValue={searchAction} onClick={jest.fn()} />);
+        const pill = document.querySelector('.filter-status-value');
+        expect(pill.getAttribute('role')).toBe('button');
+        expect(pill.getAttribute('aria-label')).toBe('Edit search: test');
+
+        rerender(<Value {...DEFAULT_PROPS} actionValue={searchAction} onClick={undefined} />);
+        expect(pill.hasAttribute('role')).toBe(false);
+        expect(pill.hasAttribute('aria-label')).toBe(false);
+
+        rerender(<Value {...DEFAULT_PROPS} actionValue={readOnlyAction} onClick={jest.fn()} />);
+        expect(document.querySelector('.filter-status-value').hasAttribute('role')).toBe(false);
+    });
+
     test('do not showRemoveIcon for view action', async () => {
         render(<Value {...DEFAULT_PROPS} actionValue={viewAction} />);
         validate(false, false, false);

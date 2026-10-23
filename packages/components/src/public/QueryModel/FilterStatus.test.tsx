@@ -161,6 +161,49 @@ describe('FilterStatus', () => {
         expect(document.querySelector('.btn').classList).toContain('margin-left');
     });
 
+    describe('keyboard removal moves focus', () => {
+        const search = (value: string) => ({
+            action: new SearchAction(),
+            value,
+            valueObject: Filter.create('*', value, Filter.Types.Q),
+        });
+        const [a, b, c] = [search('a'), search('b'), search('c')];
+        const focusedText = (): string => document.activeElement.textContent;
+
+        test('to the next pill', async () => {
+            const onRemove = jest.fn();
+            const { rerender } = render(
+                <FilterStatus {...DEFAULT_PROPS} actionValues={[a, b, c]} onRemove={onRemove} />
+            );
+            await userEvent.tab();
+            await userEvent.tab();
+            expect(focusedText()).toBe('b');
+
+            await userEvent.keyboard('{Delete}');
+            expect(onRemove).toHaveBeenCalledWith(1, expect.anything());
+            (document.activeElement as HTMLElement).blur();
+            rerender(<FilterStatus {...DEFAULT_PROPS} actionValues={[a, c]} onRemove={onRemove} />);
+            expect(focusedText()).toBe('c');
+        });
+
+        test('to the previous pill when the last is removed', async () => {
+            const { rerender } = render(<FilterStatus {...DEFAULT_PROPS} actionValues={[a, b]} />);
+            await userEvent.tab();
+            await userEvent.tab();
+            await userEvent.keyboard('{Backspace}');
+            rerender(<FilterStatus {...DEFAULT_PROPS} actionValues={[a]} />);
+            expect(focusedText()).toBe('a');
+        });
+
+        test('not on mouse removal', async () => {
+            const { rerender } = render(<FilterStatus {...DEFAULT_PROPS} actionValues={[a, b, c]} />);
+            await userEvent.click(document.querySelectorAll('.symbol')[1]);
+            (document.activeElement as HTMLElement).blur();
+            rerender(<FilterStatus {...DEFAULT_PROPS} actionValues={[a, c]} />);
+            expect(document.activeElement).toBe(document.body);
+        });
+    });
+
     test('without actionValues, with add', async () => {
         render(
             <FilterStatus

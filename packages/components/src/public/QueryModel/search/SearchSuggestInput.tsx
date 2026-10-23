@@ -269,7 +269,7 @@ export const SearchSuggestInput: FC<SearchSuggestInputProps> = memo(props => {
                     <input
                         aria-activedescendant={showMenu && highlightIndex >= 0 ? optionId(highlightIndex) : undefined}
                         aria-autocomplete="list"
-                        aria-controls={listId}
+                        aria-controls={showMenu ? listId : undefined}
                         aria-expanded={showMenu}
                         aria-label="Search in grid"
                         autoComplete="off"

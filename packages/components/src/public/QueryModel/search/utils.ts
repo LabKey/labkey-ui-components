@@ -40,6 +40,14 @@ export function createSearchSuggestion(raw: string): SearchSuggestion {
     };
 }
 
+// Identifies a suggestion across responses; a compose keeps its key as its field count changes
+export function getSuggestionKey(suggestion: FilterSuggestion): string {
+    if (suggestion.kind === 'filter') {
+        return [suggestion.kind, suggestion.fieldKey.toLowerCase(), suggestion.op, suggestion.value].join('|');
+    }
+    return [suggestion.kind, suggestion.value].join('|');
+}
+
 // Keyed by lowercase fieldKey, with the caption the grid header shows
 export function getColumnCaptions(columns: QueryColumn[] = []): Record<string, string> {
     return columns.reduce<Record<string, string>>((captions, column) => {

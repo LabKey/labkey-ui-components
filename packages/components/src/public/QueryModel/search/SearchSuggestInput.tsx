@@ -23,7 +23,7 @@ import { QueryModel } from '../QueryModel';
 
 import { FilterSuggestion } from './models';
 import { useSearchSuggestions } from './useSearchSuggestions';
-import { getSuggestionMetrics, GRID_SEARCH_METRIC_AREA } from './utils';
+import { getSuggestionKey, getSuggestionMetrics, GRID_SEARCH_METRIC_AREA } from './utils';
 
 // Longest Enter waits for pending suggestions before applying the best one available
 export const PENDING_ENTER_TIMEOUT_MS = 1500;
@@ -110,11 +110,12 @@ export const SearchSuggestInput: FC<SearchSuggestInputProps> = memo(props => {
     const [pendingEnter, setPendingEnter] = useState(false);
     // Counted once per search attempt: set by the first non-blank text, cleared on apply or blur
     const engaged = useRef(false);
-    const { loading, suggestions } = useSearchSuggestions(api, model, text, open);
+    const { loading, polling, suggestions } = useSearchSuggestions(api, model, text, open);
     const baseId = useId();
     const listId = `${baseId}-suggestions`;
     const trimmed = text.trim();
     const showMenu = open && trimmed.length > 0;
+    const searching = showMenu && polling;
     // The top suggestion is highlighted by default, but not while loading since Enter then waits for the final list
     const highlightIndex = activeIndex >= 0 ? activeIndex : loading ? -1 : 0;
 
@@ -127,9 +128,16 @@ export const SearchSuggestInput: FC<SearchSuggestInputProps> = memo(props => {
         inputRef.current?.focus();
     }, [restoreRequest]);
 
-    // A highlight chosen from an earlier list would otherwise land on whatever now occupies that position
+    // A poll can add suggestions above the highlight, so it follows its suggestion rather than its position
+    const priorSuggestions = useRef(suggestions);
     useEffect(() => {
-        setActiveIndex(-1);
+        const prior = priorSuggestions.current;
+        priorSuggestions.current = suggestions;
+        setActiveIndex(index => {
+            if (index < 0 || !prior[index]) return -1;
+            const key = getSuggestionKey(prior[index]);
+            return suggestions.findIndex(suggestion => getSuggestionKey(suggestion) === key);
+        });
     }, [suggestions]);
 
     const apply = useCallback(
@@ -251,8 +259,12 @@ export const SearchSuggestInput: FC<SearchSuggestInputProps> = memo(props => {
         <form className="grid-panel__search-form grid-panel__search-suggest" onSubmit={onSubmit}>
             <div>
                 <span className="grid-panel__input-group input-group">
-                    <span className="input-group-addon" onClick={submit}>
-                        <i className="fa fa-search" />
+                    <span
+                        className="input-group-addon"
+                        onClick={submit}
+                        title={searching ? 'Checking for more suggestions' : undefined}
+                    >
+                        <i className={classNames('fa fa-fw', searching ? 'fa-spinner fa-pulse' : 'fa-search')} />
                     </span>
                     <input
                         aria-activedescendant={showMenu && highlightIndex >= 0 ? optionId(highlightIndex) : undefined}
@@ -275,7 +287,7 @@ export const SearchSuggestInput: FC<SearchSuggestInputProps> = memo(props => {
                     />
                 </span>
                 {showMenu && (
-                    <ul className="grid-panel__search-suggestions" id={listId} role="listbox">
+                    <ul aria-busy={searching} className="grid-panel__search-suggestions" id={listId} role="listbox">
                         {suggestions.map((suggestion, index) => (
                             <SuggestionOption
                                 active={index === highlightIndex}

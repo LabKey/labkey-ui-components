@@ -309,6 +309,7 @@ interface ISchemaSelectProps {
     disabled?: boolean;
     id: string;
     onChange: (any) => any;
+    sameDataSourceAs?: string;
     value?: any;
 }
 
@@ -377,35 +378,39 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
     }
 
     loadData(): void {
-        const { containerPath, context } = this.props;
+        const { containerPath, context, sameDataSourceAs } = this.props;
 
         this.setState({
             loading: true,
             prevPath: containerPath,
         });
 
-        context.fetchSchemas(containerPath).then(allSchemas => {
-            const schemas = [];
-            context.getExcludedSchemaQueryNames('assay', containerPath).then(excludedAssayNames => {
-                if (!excludedAssayNames || excludedAssayNames.length === 0) schemas.push(...allSchemas);
-                else {
-                    allSchemas.forEach(schema => {
-                        if (
-                            !(
+        context
+            .fetchSchemas(containerPath, sameDataSourceAs)
+            .then(allSchemas => {
+                const schemas = [];
+                return context.getExcludedSchemaQueryNames('assay', containerPath).then(excludedAssayNames => {
+                    if (!excludedAssayNames || excludedAssayNames.length === 0) schemas.push(...allSchemas);
+                    else {
+                        allSchemas.forEach(schema => {
+                            if (!(
                                 schema.fullyQualifiedName.indexOf('assay.') === 0 &&
                                 excludedAssayNames.indexOf(schema.schemaName.toLowerCase()) > -1
-                            )
-                        )
-                            schemas.push(schema);
-                    });
-                }
+                            ))
+                                schemas.push(schema);
+                        });
+                    }
 
-                this.setState({
-                    loading: false,
-                    schemas,
+                    this.setState({
+                        loading: false,
+                        schemas,
+                    });
                 });
+            })
+            .catch(e => {
+                console.error(e);
+                this.setState({ loading: false, schemas: [] });
             });
-        });
     }
 
     render() {
@@ -415,6 +420,9 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
         const isEmpty = schemas?.length === 0;
         const hasValue = !!value;
         const blankOption = !hasValue && !isEmpty;
+        // e.g., an existing lookup to a schema the data source filter removed
+        const unlistedValue =
+            !disabled && !loading && hasValue && schemas && !schemas.some(s => s.fullyQualifiedName === value);
 
         return (
             <select
@@ -428,6 +436,11 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
             >
                 {disabled && value && (
                     <option key="_disabled" value={value}>
+                        {value}
+                    </option>
+                )}
+                {unlistedValue && (
+                    <option disabled key="_unlisted" value={value}>
                         {value}
                     </option>
                 )}

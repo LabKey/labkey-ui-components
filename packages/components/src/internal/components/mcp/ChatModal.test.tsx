@@ -154,7 +154,7 @@ describe('ChatModal', () => {
 
             // Act
             await user.type(getTextarea(), '  hello world  ');
-            await user.click(screen.getByRole('button', { name: '' }).closest('.btn') as HTMLElement);
+            await user.click(screen.getByRole('button', { name: 'Submit' }).closest('.btn') as HTMLElement);
 
             // Assert - sendPrompt receives the trimmed value once and the textarea is reset
             expect(sendPrompt).toHaveBeenCalledTimes(1);

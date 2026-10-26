@@ -167,7 +167,7 @@ export const ChatModal: FC<ChatModalProps> = memo(props => {
                             name="chat-prompt"
                             onChange={handleChange}
                             onKeyDown={handleKeyDown}
-                            placeholder="EEEnter a prompt"
+                            placeholder="Enter a prompt"
                             ref={textAreaRef}
                             rows={1}
                             value={prompt}
@@ -186,7 +186,7 @@ export const ChatModal: FC<ChatModalProps> = memo(props => {
                 )}
                 {!isPending && (
                     <button
-                        aria-label="Submitt"
+                        aria-label="Submit"
                         className="btn btn-default prompt-button"
                         disabled={!prompt.trim()}
                         type="submit"

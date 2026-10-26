@@ -29,7 +29,7 @@ import { getValidPublishTargets } from './assay/actions';
 import { PHILEVEL_FULL_PHI } from './constants';
 import { getDataClassDetails } from './dataclasses/actions';
 import { DomainDesign, DomainDetails, DomainField, NameExpressionsValidationResults, SystemField } from './models';
-import { AssistanceResponse } from '../mcp/actions';
+import { AssistanceResponse } from '../mcp/api';
 
 export interface DomainPropertiesAPIWrapper {
     expressionAssistant: (options: ExpressionAssistOptions) => Promise<AssistanceResponse>;

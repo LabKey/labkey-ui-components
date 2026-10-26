@@ -9,7 +9,7 @@ import { ChatMessage, ChatRole } from './models';
 import { useRequestHandler } from '../../util/RequestHandler';
 import { incrementClientSideMetricCount } from '../../actions';
 import { resolveErrorMessage } from '../../util/messaging';
-import { documentationAssistant } from './actions';
+import { DocumentationAssistantAPIWrapper, DocumentationAssistantServerAPIWrapper } from './api';
 import { getSavedConversationId, saveConversationId, useAssistantService } from './AssistantService';
 import { useLoadableState } from '../../useLoadableState';
 import { isLoading } from '../../../public/LoadingState';
@@ -53,6 +53,7 @@ type VoidFn = () => void;
 
 interface DocumentationAssistantState {
     isPending: boolean;
+    loading: boolean;
     messages: ChatMessage[];
     onClose: VoidFn;
     onInterrupt: VoidFn;
@@ -60,7 +61,9 @@ interface DocumentationAssistantState {
     startNewChat: VoidFn;
 }
 
-function useDocumentationAssistance(): DocumentationAssistantState {
+function useDocumentationAssistance(
+    api: DocumentationAssistantAPIWrapper = DocumentationAssistantServerAPIWrapper
+): DocumentationAssistantState {
     const { open, close } = useAssistantService();
     const [conversationId, setConversationId] = useState<string>();
     const [messages, setMessages] = useState<ChatMessage[]>(() => []);
@@ -71,13 +74,26 @@ function useDocumentationAssistance(): DocumentationAssistantState {
         setIsPending(false);
         setConversationId(undefined);
         setMessages([createIntroMessage()]);
-    }, [abortRequest]);
+        // If we have an active conversation send the '/clear' prompt so the server can clean up the conversation
+        if (conversationId) api.documentationAssistant({ conversationId, prompt: '/clear' }).catch(() => undefined);
+    }, [abortRequest, api, conversationId]);
     const onClose = useCallback(() => {
         resetState();
         close();
     }, [close, resetState]);
-    // TODO: need to load the previous conversation history if getSavedConversationId returns anything
-    const { loadingState, value: savedConversationId } = useLoadableState(getSavedConversationId);
+    const loadSavedConversation = useCallback(async () => {
+        const savedId = await getSavedConversationId();
+
+        if (!savedId) return undefined;
+
+        try {
+            return await api.getChatHistory({ conversationId: savedId });
+        } catch (e) {
+            if (e?.status !== 404) console.error(e);
+            return undefined;
+        }
+    }, [api]);
+    const { loadingState, value: savedConversation } = useLoadableState(loadSavedConversation);
     const loading = isLoading(loadingState);
     const initialized = useRef(false);
 
@@ -89,19 +105,14 @@ function useDocumentationAssistance(): DocumentationAssistantState {
         if (loading || (!loading && initialized.current)) return;
         initialized.current = true;
 
-        if (savedConversationId) {
-            setConversationId(savedConversationId);
-            pushMessage(
-                createChatMessage({
-                    role: ChatRole.assistant,
-                    text: 'NEED TO LOAD IN-PROGRESS CONVERSATION',
-                })
-            );
+        if (savedConversation) {
+            setConversationId(savedConversation.conversationId);
+            setMessages([createIntroMessage(), ...savedConversation.messages]);
             open();
         } else {
             pushMessage(createIntroMessage());
         }
-    }, [loading, open, pushMessage, savedConversationId]);
+    }, [loading, open, pushMessage, savedConversation]);
 
     useEffect(() => {
         const save = () => {
@@ -131,19 +142,26 @@ function useDocumentationAssistance(): DocumentationAssistantState {
             setIsPending(true);
             let aborted = false;
             try {
-                const response = await documentationAssistant({ conversationId, prompt, requestHandler });
+                const response = await api.documentationAssistant({ conversationId, prompt, requestHandler });
                 resetRequestHandler();
 
-                if (response.conversationId !== conversationId) {
-                    setConversationId(response.conversationId);
-                }
+                if (response.reset) {
+                    // Not resetState(), which would send "/clear" again
+                    setConversationId(undefined);
+                    setMessages([createChatMessage({ role: ChatRole.assistant, text: response.text })]);
+                } else {
+                    // Failures without a conversationId keep the current conversation
+                    if (response.conversationId && response.conversationId !== conversationId) {
+                        setConversationId(response.conversationId);
+                    }
 
-                pushMessage({
-                    error: response.success ? response.error : (response.error ?? 'Request failed.'),
-                    role: ChatRole.assistant,
-                    segments: response.segments,
-                    text: response.text,
-                });
+                    pushMessage({
+                        error: response.success ? response.error : (response.error ?? 'Request failed.'),
+                        role: ChatRole.assistant,
+                        segments: response.segments,
+                        text: response.text,
+                    });
+                }
 
                 incrementClientSideMetricCount(DOCS_ASST_METRIC_FEATURE_AREA, 'submitPrompt');
             } catch (e) {
@@ -160,7 +178,7 @@ function useDocumentationAssistance(): DocumentationAssistantState {
                 }
             }
         },
-        [conversationId, pushMessage, requestHandler, resetRequestHandler]
+        [api, conversationId, pushMessage, requestHandler, resetRequestHandler]
     );
 
     const sendPrompt = useCallback(
@@ -171,14 +189,19 @@ function useDocumentationAssistance(): DocumentationAssistantState {
         [pushMessage, runRequest]
     );
 
-    return { isPending, messages, onClose, onInterrupt, sendPrompt, startNewChat: resetState };
+    return { isPending, loading, messages, onClose, onInterrupt, sendPrompt, startNewChat: resetState };
 }
 
-export const AssistantPanel: FC = memo(() => {
-    const { show } = useAssistantService();
-    const { isPending, messages, onClose, onInterrupt, sendPrompt, startNewChat } = useDocumentationAssistance();
+interface AssistantPanelProps {
+    api?: DocumentationAssistantAPIWrapper;
+}
 
-    if (!show) return null;
+export const AssistantPanel: FC<AssistantPanelProps> = memo(({ api }) => {
+    const { show } = useAssistantService();
+    const { isPending, loading, messages, onClose, onInterrupt, sendPrompt, startNewChat } =
+        useDocumentationAssistance(api);
+
+    if (!show || loading) return null;
 
     return (
         <ChatSidebar

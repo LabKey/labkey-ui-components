@@ -99,7 +99,7 @@ import { DomainPropertiesAPIWrapper } from './APIWrapper';
 import { executeSql } from '../../query/executeSql';
 import { getLegalIdentifier } from '../../query/filter';
 import { getColumnTypeMap, getPHIColumnNames, JdbcType, JdbcTypeRecord } from './CalculatedFieldOptions';
-import { AssistanceResponse } from '../mcp/actions';
+import { AssistanceResponse } from '../mcp/api';
 
 let sharedCache = Map<string, Promise<any>>();
 

@@ -174,7 +174,8 @@ i.e. `npm version prerelease --preid=fb-branch-name`.
 Note, it is recommended to use `-` in place of `_` as it is better supported in filesystems.
 1. This will update the version in the `package.json` and `package-lock.json`. Commit these changes using a message
 like `@labkey/components@X.Y.Z-fb-my-branch-name.N`.
-1. Run the `npm publish` command from the package root directory. This command will verify the build and publish the package.
+1. Run the `npm publish --tag prerelease` command from the package root directory. This command will verify the build
+and publish the alpha package.
 1. If you make further edits to your feature branch and need to push new alpha versions, you can simplify the
 prerelease command to `npm version prerelease` and it will bump the alpha version. Commit these changes the same
 way as before.
@@ -200,6 +201,7 @@ alpha versions of that package for this feature branch.
 1. Check on the [TeamCity](https://teamcity.labkey.org) build status and jest test status (also shown in the PR).
 1. Run the command to publish: `npm publish`.
 1. Merge the pull requests for `labkey-ui-components`.
+1. Update all dependent modules with the final published version, commit those changes, and merge their PRs (see below).
 1. Message the Frontend dev room chat that the merge is complete.
 
 ### LabKey modules

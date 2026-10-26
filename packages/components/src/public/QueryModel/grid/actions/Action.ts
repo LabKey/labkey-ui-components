@@ -3,6 +3,13 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 
+export enum ActionKeyword {
+    Filter = 'filter',
+    Search = 'search',
+    Sort = 'sort',
+    View = 'view',
+}
+
 /**
  * The Action interface specifies the functionality that must be implemented for an Action to participate
  * in the grid panel action framework. Actions are considered stateless so a given instance of a type of Action
@@ -25,7 +32,7 @@ export interface Action {
      * This is the keyword the user uses to activate this action. This should consist of one word
      * with no spaces.
      */
-    keyword: string;
+    keyword: ActionKeyword;
 }
 
 export interface Value {

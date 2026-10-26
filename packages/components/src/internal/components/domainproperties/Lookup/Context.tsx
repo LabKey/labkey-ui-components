@@ -15,7 +15,7 @@ export interface ILookupContext {
     activeContainer: Container;
     fetchContainers: () => Promise<List<Container>>;
     fetchQueries: (containerPath: string, schemaName: string) => Promise<QueryInfoLite[]>;
-    fetchSchemas: (containerPath: string) => Promise<SchemaDetails[]>;
+    fetchSchemas: (containerPath: string, sameDataSourceAs?: string) => Promise<SchemaDetails[]>;
     getExcludedSchemaQueryNames: (schemaName, queryContainerPath?: string) => Promise<string[]>;
 }
 

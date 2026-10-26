@@ -134,7 +134,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                 </div>
 
                 <div className="main-app-nav__buttons">
-                    {assistantEnabled && <AssistantButton label="Documentation Assistant" onClick={openAssistant} />}
+                    {assistantEnabled && <AssistantButton label="LabKey Assistant" onClick={openAssistant} />}
 
                     {!isAdminPage && (
                         <SearchBox

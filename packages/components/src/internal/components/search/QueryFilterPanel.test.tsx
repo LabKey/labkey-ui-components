@@ -4,6 +4,7 @@
  */
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 import { Filter } from '@labkey/api';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
@@ -264,5 +265,25 @@ describe('QueryFilterPanel', () => {
         expect(document.querySelectorAll('.field-modal__col-content-disabled')).toHaveLength(0);
 
         unmount();
+    });
+
+    test('preferFilterTabFieldKey opens the Filter tab for a facetable field', () => {
+        render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" preferFilterTabFieldKey="Text" />);
+        validate(10, true, false);
+    });
+
+    test('clicking a field reports it via onActiveFieldChange', async () => {
+        const onActiveFieldChange = jest.fn();
+        render(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" onActiveFieldChange={onActiveFieldChange} />);
+        expect(onActiveFieldChange).not.toHaveBeenCalled();
+
+        const integerField = Array.from(document.querySelectorAll<HTMLElement>('button.list-group-item')).find(
+            button => button.textContent === 'Integer'
+        );
+        await userEvent.click(integerField);
+        expect(onActiveFieldChange).toHaveBeenCalledTimes(1);
+        const column: QueryColumn = onActiveFieldChange.mock.calls[0][0];
+        expect(column).toBeInstanceOf(QueryColumn);
+        expect(column.caption).toBe('Integer');
     });
 });

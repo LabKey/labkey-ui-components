@@ -26,6 +26,7 @@ jest.mock('../actions', () => ({
     ...jest.requireActual('../actions'),
     fetchQueries: jest.fn().mockResolvedValue([]),
     fetchContainers: jest.fn().mockResolvedValue(List()),
+    fetchSchemas: jest.fn().mockResolvedValue([]),
 }));
 
 jest.mock('../../../query/selectRows', () => ({

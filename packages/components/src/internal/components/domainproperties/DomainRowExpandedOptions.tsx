@@ -143,6 +143,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                 return (
                     <LookupFieldOptions
                         domainIndex={domainIndex}
+                        domainSchemaName={schemaName}
                         field={field}
                         index={index}
                         label="Lookup Definition Options"

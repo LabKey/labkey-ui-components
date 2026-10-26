@@ -14,6 +14,7 @@ export enum Key {
     ARROW_RIGHT = 'ArrowRight',
     ARROW_UP = 'ArrowUp',
     BACKSPACE = 'Backspace',
+    DELETE = 'Delete',
     END = 'End',
     ENTER = 'Enter',
     ESCAPE = 'Escape',

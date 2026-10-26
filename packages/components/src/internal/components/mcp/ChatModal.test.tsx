@@ -13,6 +13,7 @@ import {
     ChatPrompt,
     ChatPromptProps,
     ChatSessionProps,
+    ChatSidebar,
     RenderSegment,
 } from './ChatModal';
 import { ChatMessage, ChatRole, ChatSegment } from './models';
@@ -50,7 +51,7 @@ function getSessionProps(overrides?: Partial<ChatSessionProps>): ChatSessionProp
     return {
         isPending: false,
         messages: [],
-        onCancel: jest.fn(),
+        onClose: jest.fn(),
         onInterrupt: jest.fn(),
         sendPrompt: jest.fn().mockResolvedValue(undefined),
         title: TITLE,
@@ -405,20 +406,114 @@ describe('ChatModal', () => {
         });
     });
 
-    describe('cancel behavior', () => {
-        test('End Chat calls onInterrupt(false) then onCancel', () => {
+    describe('close behavior', () => {
+        test('End Chat calls onInterrupt(false) then onClose', () => {
             // Arrange
-            const onCancel = jest.fn();
+            const onClose = jest.fn();
             const onInterrupt = jest.fn();
-            render(<ChatModal {...getSessionProps({ onCancel, onInterrupt })} />);
+            render(<ChatModal {...getSessionProps({ onClose, onInterrupt })} />);
 
             // Act
             fireEvent.click(screen.getByRole('button', { name: /end chat/i }));
 
-            // Assert - both handlers fire, interrupt receives false (non-user dismissal)
+            // Assert - both handlers fire in order, interrupt receives false (non-user dismissal)
             expect(onInterrupt).toHaveBeenCalledTimes(1);
             expect(onInterrupt).toHaveBeenCalledWith(false);
-            expect(onCancel).toHaveBeenCalledTimes(1);
+            expect(onClose).toHaveBeenCalledTimes(1);
+            expect(onInterrupt.mock.invocationCallOrder[0]).toBeLessThan(onClose.mock.invocationCallOrder[0]);
+        });
+    });
+});
+
+describe('ChatSidebar', () => {
+    function getHeaderButton(selector: string): HTMLButtonElement {
+        return document.querySelector(`.chat-sidebar__buttons ${selector}`).closest('button');
+    }
+
+    describe('rendering', () => {
+        test('renders the title, history and prompt in the default position', () => {
+            // Arrange
+            const messages = [makeMessage({ id: 'u1', role: ChatRole.user, text: 'Hello there' })];
+
+            // Act
+            render(<ChatSidebar {...getSessionProps({ messages })} startNewChat={jest.fn()} />);
+
+            // Assert
+            expect(document.querySelector('.chat-sidebar')).toHaveClass('chat-sidebar--br');
+            expect(document.querySelector('.chat-sidebar__title')).toHaveTextContent(TITLE);
+            expect(document.querySelector('.chat-history')).toHaveTextContent('Hello there');
+            expect(getTextarea()).toBeInTheDocument();
+        });
+    });
+
+    describe('header buttons', () => {
+        test('the new chat button calls startNewChat', () => {
+            // Arrange
+            const startNewChat = jest.fn();
+            const onClose = jest.fn();
+            render(<ChatSidebar {...getSessionProps({ onClose })} startNewChat={startNewChat} />);
+
+            // Act
+            fireEvent.click(getHeaderButton('.fa-plus'));
+
+            // Assert
+            expect(startNewChat).toHaveBeenCalledTimes(1);
+            expect(onClose).not.toHaveBeenCalled();
+        });
+
+        test('End Chat calls onInterrupt(false) then onClose', () => {
+            // Arrange
+            const onClose = jest.fn();
+            const onInterrupt = jest.fn();
+            render(<ChatSidebar {...getSessionProps({ onClose, onInterrupt })} startNewChat={jest.fn()} />);
+
+            // Act
+            fireEvent.click(screen.getByRole('button', { name: /end chat/i }));
+
+            // Assert
+            expect(onInterrupt).toHaveBeenCalledTimes(1);
+            expect(onInterrupt).toHaveBeenCalledWith(false);
+            expect(onClose).toHaveBeenCalledTimes(1);
+            expect(onInterrupt.mock.invocationCallOrder[0]).toBeLessThan(onClose.mock.invocationCallOrder[0]);
+        });
+
+        test('minimizing hides the history and prompt until restored', () => {
+            // Arrange
+            render(<ChatSidebar {...getSessionProps()} startNewChat={jest.fn()} />);
+
+            // Act
+            fireEvent.click(getHeaderButton('.fa-minus'));
+
+            // Assert - minimized
+            expect(document.querySelector('.chat-sidebar')).toHaveClass('chat-sidebar--minimized');
+            expect(document.querySelector('.chat-history')).not.toBeInTheDocument();
+            expect(screen.queryByLabelText(`${TITLE} Prompt`)).not.toBeInTheDocument();
+
+            // Act - restore
+            fireEvent.click(getHeaderButton('.fa-chevron-up'));
+
+            // Assert - restored
+            expect(document.querySelector('.chat-sidebar')).not.toHaveClass('chat-sidebar--minimized');
+            expect(document.querySelector('.chat-history')).toBeInTheDocument();
+            expect(getTextarea()).toBeInTheDocument();
+        });
+    });
+
+    describe('position', () => {
+        test('choosing a position moves the sidebar and marks the choice active', () => {
+            // Arrange
+            render(<ChatSidebar {...getSessionProps()} startNewChat={jest.fn()} />);
+
+            // Act
+            fireEvent.click(getHeaderButton('.dropdown-toggle'));
+            fireEvent.click(screen.getByText('Top Left'));
+
+            // Assert
+            const sidebar = document.querySelector('.chat-sidebar');
+            expect(sidebar).toHaveClass('chat-sidebar--tl');
+            expect(sidebar).not.toHaveClass('chat-sidebar--br');
+            expect(screen.getByText('Top Left').closest('li')).toHaveClass('active');
+            expect(screen.getByText('Bottom Right').closest('li')).not.toHaveClass('active');
         });
     });
 });

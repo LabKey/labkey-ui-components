@@ -443,6 +443,19 @@ describe('ChatSidebar', () => {
             expect(document.querySelector('.chat-sidebar__title')).toHaveTextContent(TITLE);
             expect(document.querySelector('.chat-history')).toHaveTextContent('Hello there');
             expect(getTextarea()).toBeInTheDocument();
+            expect(screen.queryByText('Loading chat history...')).not.toBeInTheDocument();
+        });
+
+        test('shows a loading spinner after the messages while loading', () => {
+            // Arrange
+            const messages = [makeMessage({ id: 'a1', text: 'How can I help?' })];
+
+            // Act
+            render(<ChatSidebar {...getSessionProps({ messages })} loading startNewChat={jest.fn()} />);
+
+            // Assert
+            expect(screen.getByText('How can I help?')).toBeInTheDocument();
+            expect(screen.getByText('Loading chat history...')).toBeInTheDocument();
         });
     });
 

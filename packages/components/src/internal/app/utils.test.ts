@@ -58,6 +58,7 @@ import {
     isCalculatedFieldsEnabled,
     isCommunityDistribution,
     isConditionalFormattingEnabled,
+    isDocumentationAssistantEnabled,
     isELNEnabled,
     isEnterpriseDistribution,
     isLKSSupportEnabled,
@@ -669,6 +670,31 @@ describe('utils', () => {
                 api: { moduleNames: ['recipe'] },
                 core: { productFeatures: [ProductFeature.Media] },
                 biologics: {},
+            })
+        ).toBeTruthy();
+    });
+
+    test('isDocumentationAssistantEnabled', () => {
+        expect(isDocumentationAssistantEnabled({ api: { moduleNames: [] } })).toBeFalsy();
+        expect(
+            isDocumentationAssistantEnabled({
+                api: { moduleNames: [] },
+                samplemanagement: { documentationAssistantEnabled: true },
+            })
+        ).toBeFalsy();
+        expect(
+            isDocumentationAssistantEnabled({ api: { moduleNames: ['samplemanagement'] }, samplemanagement: {} })
+        ).toBeFalsy();
+        expect(
+            isDocumentationAssistantEnabled({
+                api: { moduleNames: ['samplemanagement'] },
+                samplemanagement: { documentationAssistantEnabled: false },
+            })
+        ).toBeFalsy();
+        expect(
+            isDocumentationAssistantEnabled({
+                api: { moduleNames: ['samplemanagement'] },
+                samplemanagement: { documentationAssistantEnabled: true },
             })
         ).toBeTruthy();
     });

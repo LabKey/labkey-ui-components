@@ -207,4 +207,4 @@ export const AssistantPanel: FC<AssistantPanelProps> = memo(({ api }) => {
         />
     );
 });
-AssistantPanel.displayName = 'AssistantSidebar';
+AssistantPanel.displayName = 'AssistantPanel';

@@ -64,7 +64,7 @@ export const ChatHistory: FC<ChatHistoryProps> = memo(props => {
     const historyRef = useRef<HTMLDivElement>(null);
 
     return (
-        <div className="chat-history" ref={historyRef}>
+        <div aria-live="polite" className="chat-history" ref={historyRef} role="log">
             {messages.map(message => (
                 <ChatItem key={message.id} message={message} renderSegment={renderSegment} />
             ))}
@@ -265,7 +265,7 @@ const ChatPositionIcon: FC<ChatPositionIconProps> = memo(({ position }) => {
     const y = position === ChatPosition.bottomLeft || position === ChatPosition.bottomRight ? 6 : 3;
 
     return (
-        <svg height="12" viewBox="0 -2 14 14" width="12" xmlns="http://www.w3.org/2000/svg">
+        <svg aria-hidden="true" height="12" viewBox="0 -2 14 14" width="12" xmlns="http://www.w3.org/2000/svg">
             <rect
                 fill="none"
                 height="10.5"
@@ -292,7 +292,7 @@ const ChatPositionMenuItem: FC<ChatPositionMenuItemProps> = memo(({ currenPositi
     const active = currenPosition === position;
     const onClick = useCallback(() => setPosition(position), [position, setPosition]);
     return (
-        <MenuItem active={active} onClick={onClick}>
+        <MenuItem active={active} aria-label={POSITION_LABELS[position]} onClick={onClick}>
             <ChatPositionIcon position={position} /> {POSITION_LABELS[position]}
         </MenuItem>
     );
@@ -306,8 +306,9 @@ interface ChatPositionMenuProps {
 
 const ChatPositionMenu: FC<ChatPositionMenuProps> = memo(({ position, setPosition }) => {
     const icon = <ChatPositionIcon position={position} />;
+    const label = 'LabKey Assistant Chat Window Position Menu';
     return (
-        <DropdownButton buttonClassName="btn-sm" noCaret title={icon}>
+        <DropdownButton aria-label={label} buttonClassName="btn-sm" noCaret title={icon}>
             <ChatPositionMenuItem
                 currenPosition={position}
                 position={ChatPosition.bottomRight}
@@ -335,7 +336,8 @@ interface ChatSidebarProps extends ChatSessionProps {
 }
 
 export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
-    const { isPending, loading, messages, onClose, onInterrupt, title, renderSegment, sendPrompt, startNewChat } = props;
+    const { isPending, loading, messages, onClose, onInterrupt, title, renderSegment, sendPrompt, startNewChat } =
+        props;
     const [position, setPosition] = useState(ChatPosition.bottomRight);
     const [minimized, setMinimized] = useState(false);
     const toggleMinimized = useCallback(() => setMinimized(current => !current), []);
@@ -352,12 +354,14 @@ export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
         // Scroll the conversation to the bottom when new messages get appended
         const el = bodyRef.current;
         if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
-    }, [messages]);
+    }, [isPending, messages]);
 
     return (
-        <div className={className}>
+        <aside aria-labelledby="chat-sidebar-title" className={className}>
             <div className="chat-sidebar__header">
-                <div className="chat-sidebar__title">{title}</div>
+                <div className="chat-sidebar__title" id="chat-sidebar-title">
+                    {title}
+                </div>
 
                 <div className="chat-sidebar__buttons">
                     <button className="btn btn-sm btn-default" onClick={startNewChat} type="button">
@@ -392,7 +396,7 @@ export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
                     <ChatPrompt isPending={isPending} onInterrupt={onInterrupt} sendPrompt={sendPrompt} title={title} />
                 </div>
             )}
-        </div>
+        </aside>
     );
 });
 

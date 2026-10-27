@@ -63,11 +63,6 @@ export const ChatHistory: FC<ChatHistoryProps> = memo(props => {
     const { messages, isPending, renderSegment } = props;
     const historyRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const el = historyRef.current;
-        if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
-    }, [messages, isPending]);
-
     return (
         <div className="chat-history" ref={historyRef}>
             {messages.map(message => (
@@ -351,6 +346,13 @@ export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
 
     const className = classNames('chat-sidebar', position, { 'chat-sidebar--minimized': minimized });
     const minimizeClassName = classNames('fa', { 'fa-chevron-up': minimized, 'fa-minus': !minimized });
+    const bodyRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        // Scroll the conversation to the bottom when new messages get appended
+        const el = bodyRef.current;
+        if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+    }, [messages]);
 
     return (
         <div className={className}>
@@ -375,7 +377,7 @@ export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
             </div>
 
             {!minimized && (
-                <div className="chat-sidebar__body">
+                <div className="chat-sidebar__body" ref={bodyRef}>
                     <ChatHistory isPending={isPending} messages={messages} renderSegment={renderSegment} />
                     {loading && (
                         <div className="chat-history">

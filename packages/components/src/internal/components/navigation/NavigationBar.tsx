@@ -113,7 +113,8 @@ export const NavigationBar: FC<Props> = memo(props => {
     const showProductNav = shouldShowProductNavigation(user, moduleContext);
     const { noun, tabs } = useSubNavTabsContext();
     const hasSubNav = noun !== undefined || tabs.length > 0;
-    const className = classNames('app-navigation', `app-navigation--${themeName}`, {
+    const className = classNames('app-navigation', {
+        [`app-navigation--${themeName}`]: !!themeName,
         'with-sub-nav': hasSubNav,
         'app-navigation--admin': isAdminPage,
     });

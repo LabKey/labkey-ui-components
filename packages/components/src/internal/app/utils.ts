@@ -7,7 +7,7 @@ import { ActionURL, getServerContext, LabKey, PermissionTypes } from '@labkey/ap
 
 import { useMemo } from 'react';
 
-import { hasAllPermissions, hasPermissions, User } from '../components/base/models/User';
+import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from '../components/base/models/User';
 
 import { MenuSectionConfig } from '../components/navigation/model';
 import { imageURL } from '../url/ActionURL';
@@ -127,6 +127,10 @@ export function userCanDesignSourceTypes(user: User): boolean {
 
 export function userCanDesignLocations(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.DesignStorage], false);
+}
+
+export function userCanDesignTerminalStorage(user: User): boolean {
+    return hasAnyPermissions(user, [PermissionTypes.DesignStorage, PermissionTypes.DesignTerminalStorage], false);
 }
 
 export function userCanEditStorageData(user: User): boolean {

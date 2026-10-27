@@ -372,6 +372,23 @@ export const TEST_USER_STORAGE_DESIGNER = new User({
     permissionsList: [PermissionTypes.Read, PermissionTypes.DesignStorage],
 });
 
+export const TEST_USER_TERMINAL_STORAGE_DESIGNER = new User({
+    canDelete: false,
+    canDeleteOwn: false,
+    canInsert: false,
+    canUpdate: false,
+    canUpdateOwn: false,
+    isAdmin: false,
+    isAnalyst: false,
+    isDeveloper: false,
+    isGuest: true,
+    isRootAdmin: false,
+    isSignedIn: false,
+    isSystemAdmin: false,
+    isTrusted: false,
+    permissionsList: [PermissionTypes.Read, PermissionTypes.DesignTerminalStorage],
+});
+
 export const TEST_USER_STORAGE_EDITOR = new User({
     canDelete: false,
     canDeleteOwn: false,

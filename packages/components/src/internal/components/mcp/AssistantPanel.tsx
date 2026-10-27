@@ -192,11 +192,12 @@ export const AssistantPanel: FC<AssistantPanelProps> = memo(({ api }) => {
     const { isPending, loading, messages, onClose, onInterrupt, sendPrompt, startNewChat } =
         useDocumentationAssistance(api);
 
-    if (!show || loading) return null;
+    if (!show) return null;
 
     return (
         <ChatSidebar
             isPending={isPending}
+            loading={loading}
             messages={messages}
             onClose={onClose}
             onInterrupt={onInterrupt}

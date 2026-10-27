@@ -7,7 +7,7 @@
     z-index: $zindex-navbar;
 }
 
-.sub-nav-wrapper .navbar {
+nav.sub-nav {
     height: 41px;
 }
 
@@ -603,7 +603,6 @@
     --theme-text-color: #{$white};
 }
 
-.product-menu-button:hover,
 .product-menu-button:hover {
     background-color: var(--theme-hover-color);
 }

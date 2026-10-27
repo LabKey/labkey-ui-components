@@ -67,7 +67,7 @@ function defaultProps(overrides?: Partial<ExpressionAssistantModalProps>): Expre
     return {
         field: CALC_FIELD,
         getDomainFields: getDomainFields(),
-        onCancel: jest.fn(),
+        onClose: jest.fn(),
         ...overrides,
     };
 }
@@ -211,7 +211,7 @@ describe('ExpressionAssistantModal', () => {
                 <ExpressionAssistantModal
                     field={CALC_FIELD}
                     getDomainFields={getDomainFields(fields)}
-                    onCancel={jest.fn()}
+                    onClose={jest.fn()}
                 />,
                 makeApiContext(expressionAssistant)
             );
@@ -388,15 +388,15 @@ describe('ExpressionAssistantModal', () => {
         });
     });
 
-    test('passes through onCancel to the chat modal', () => {
+    test('passes through onClose to the chat modal', () => {
         // Arrange
-        const onCancel = jest.fn();
+        const onClose = jest.fn();
 
         // Act
-        renderWithAppContext(<ExpressionAssistantModal {...defaultProps()} onCancel={onCancel} />, makeApiContext());
+        renderWithAppContext(<ExpressionAssistantModal {...defaultProps()} onClose={onClose} />, makeApiContext());
 
-        // Assert - onCancel is wired straight through to ChatModal, so closing the modal invokes the caller's handler
-        expect(chatModalProps.onCancel).toBe(onCancel);
+        // Assert - onClose is wired straight through to ChatModal, so closing the modal invokes the caller's handler
+        expect(chatModalProps.onClose).toBe(onClose);
         expect(chatModalProps.title).toBe('LabKey Assistant - Expressions');
     });
 });

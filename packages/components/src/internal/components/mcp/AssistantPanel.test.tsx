@@ -59,19 +59,21 @@ describe('AssistantPanel', () => {
         expect(mockService.open).not.toHaveBeenCalled();
     });
 
-    test('renders nothing until the saved conversation loads', async () => {
+    test('shows a loading spinner until the saved conversation loads', async () => {
         jest.mocked(getSavedConversationId).mockResolvedValue(CONVERSATION_ID);
         let resolveHistory: (history: typeof HISTORY) => void;
-        const { api, container } = renderPanel({
+        const { api } = renderPanel({
             getChatHistory: jest.fn().mockReturnValue(new Promise(resolve => (resolveHistory = resolve))),
         });
 
         await waitFor(() => expect(api.getChatHistory).toHaveBeenCalled());
-        expect(container).toBeEmptyDOMElement();
+        expect(screen.getByText('Loading chat history...')).toBeInTheDocument();
+        expect(screen.queryByText('How can I help?')).not.toBeInTheDocument();
         expect(mockService.open).not.toHaveBeenCalled();
 
         resolveHistory(HISTORY);
         expect(await screen.findByText('How do I configure LDAP?')).toBeInTheDocument();
+        expect(screen.queryByText('Loading chat history...')).not.toBeInTheDocument();
     });
 
     test('replays a saved conversation, including errors', async () => {
@@ -164,7 +166,7 @@ describe('AssistantPanel', () => {
         expect(await screen.findByText("OK, let's start over.")).toBeInTheDocument();
         expect(screen.queryByText('How do I configure LDAP?')).not.toBeInTheDocument();
         expect(screen.queryByText('/clear')).not.toBeInTheDocument();
-        expect(screen.getByText('How can I help?')).toBeInTheDocument();
+        expect(screen.queryByText('How can I help?')).not.toBeInTheDocument();
         expect(documentationAssistant).toHaveBeenCalledTimes(1);
 
         await userEvent.type(prompt, 'Next{Enter}');

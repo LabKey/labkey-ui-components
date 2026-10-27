@@ -53,9 +53,9 @@ describe('NavigationBar', () => {
         expect(document.querySelectorAll('.product-menu')).toHaveLength(compCounts.ProductMenu ?? 1);
         expect(document.querySelectorAll('.user-dropdown')).toHaveLength(compCounts.UserMenu ?? 0);
         expect(document.querySelectorAll('.navbar__search-form')).toHaveLength(1);
-        expect(document.querySelectorAll('.navbar__xs-search-icon')).toHaveLength(1);
+        expect(document.querySelectorAll('.navbar__xs-search-icon')).toHaveLength(compCounts.XsSearchIcon ?? 1);
         expect(document.querySelectorAll('.server-notifications')).toHaveLength(compCounts.ServerNotifications ?? 0);
-        expect(document.querySelectorAll('.product-navigation-menu')).toHaveLength(compCounts.ProductNavigation ?? 0);
+        expect(document.querySelectorAll('.fa-th-large')).toHaveLength(compCounts.ProductNavigation ?? 0);
         expect(document.querySelectorAll('.navbar__find-and-search-button')).toHaveLength(
             compCounts.FindAndSearchDropdown ?? 0
         );
@@ -88,7 +88,7 @@ describe('NavigationBar', () => {
         await waitFor(() => {
             expect(document.querySelectorAll('.app-navigation')).toHaveLength(1);
         });
-        validate({ FindAndSearchDropdown: 2, SearchBox: 1 });
+        validate({ FindAndSearchDropdown: 1, SearchBox: 1, XsSearchIcon: 0 });
     });
 
     test('with notifications no user', async () => {
@@ -214,7 +214,7 @@ describe('NavigationBar', () => {
         await waitFor(() => {
             expect(document.querySelectorAll('.app-navigation')).toHaveLength(1);
         });
-        expect(document.querySelectorAll('.navbar-container.navbar-theme-harvest')).toHaveLength(1);
+        expect(document.querySelectorAll('.app-navigation.app-navigation--harvest')).toHaveLength(1);
     });
 
     test('no theme class without server theme', async () => {
@@ -225,6 +225,6 @@ describe('NavigationBar', () => {
         await waitFor(() => {
             expect(document.querySelectorAll('.app-navigation')).toHaveLength(1);
         });
-        expect(document.querySelector('.navbar-container').className).not.toContain('navbar-theme-');
+        expect(document.querySelector('.app-navigation').className).toBe('app-navigation');
     });
 });

@@ -2,9 +2,11 @@
  * Copyright (c) 2024-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { FC } from 'react';
 
-import { waitFor } from '@testing-library/dom';
+import { screen, waitFor } from '@testing-library/dom';
+import { userEvent } from '@testing-library/user-event';
+import * as rrd from 'react-router';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
 
@@ -18,13 +20,17 @@ import { AppContext } from '../../AppContext';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { ServerContext } from '../base/ServerContext';
 
-import { TEST_LKS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
+import { TEST_LKS_STARTER_MODULE_CONTEXT, TEST_LKSM_STARTER_MODULE_CONTEXT } from '../../productFixtures';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 import { NavigationBar } from './NavigationBar';
 import { getNavigationTestAPIWrapper } from './NavigationAPIWrapper';
 import { MenuSectionModel } from './model';
+import { AssistantService, useAssistantService } from '../mcp/AssistantService';
+
+const setPathname = (pathname: string): void =>
+    (rrd as unknown as { __setLocation: (location: Partial<Location>) => void }).__setLocation({ pathname });
 
 describe('NavigationBar', () => {
     function getDefaultAppContext(overrides?: Partial<SecurityAPIWrapper>): Partial<AppContext> {
@@ -226,5 +232,93 @@ describe('NavigationBar', () => {
             expect(document.querySelectorAll('.app-navigation')).toHaveLength(1);
         });
         expect(document.querySelector('.app-navigation').className).toBe('app-navigation');
+    });
+
+    describe('admin pages', () => {
+        afterEach(() => {
+            setPathname('');
+        });
+
+        test.each([
+            ['with findByIds', jest.fn()],
+            ['without findByIds', undefined],
+        ])('hide search and notifications, %s', async (_, onFindByIds) => {
+            setPathname('/admin/settings');
+            renderWithAppContext(
+                <NavigationBar
+                    notificationsConfig={notificationsConfig}
+                    onFindByIds={onFindByIds}
+                    user={TEST_USER_READER}
+                />,
+                {
+                    appContext: getDefaultAppContext(),
+                    serverContext: getDefaultServerContext(),
+                }
+            );
+            await waitFor(() => {
+                expect(document.querySelectorAll('.app-navigation')).toHaveLength(1);
+            });
+            expect(document.querySelector('.app-navigation')).toHaveClass('app-navigation--admin');
+            expect(document.querySelectorAll('.navbar__search-form')).toHaveLength(0);
+            expect(document.querySelectorAll('.navbar__xs-search-icon')).toHaveLength(0);
+            expect(screen.queryByRole('button', { name: 'Find and Search Menu' })).not.toBeInTheDocument();
+            expect(document.querySelectorAll('.server-notifications')).toHaveLength(0);
+            expect(document.querySelectorAll('.user-dropdown')).toHaveLength(1);
+        });
+    });
+
+    describe('LabKey Assistant', () => {
+        const ShowState: FC = () => <div>{useAssistantService().show ? 'assistant open' : 'assistant closed'}</div>;
+
+        function renderWithAssistant(mcpReady: boolean, documentationAssistantEnabled: boolean): void {
+            renderWithAppContext(
+                <AssistantService>
+                    <NavigationBar />
+                    <ShowState />
+                </AssistantService>,
+                {
+                    appContext: getDefaultAppContext(),
+                    serverContext: {
+                        container: TEST_PROJECT_CONTAINER,
+                        mcpReady,
+                        moduleContext: {
+                            ...TEST_LKSM_STARTER_MODULE_CONTEXT,
+                            samplemanagement: {
+                                ...TEST_LKSM_STARTER_MODULE_CONTEXT.samplemanagement,
+                                documentationAssistantEnabled,
+                            },
+                        },
+                    },
+                }
+            );
+        }
+
+        test('the assistant button opens the assistant', async () => {
+            renderWithAssistant(true, true);
+            await waitFor(() => {
+                expect(document.querySelectorAll('.app-navigation')).toHaveLength(1);
+            });
+            expect(screen.getByText('assistant closed')).toBeInTheDocument();
+
+            await userEvent.click(screen.getByRole('button', { name: 'LabKey Assistant' }));
+
+            expect(screen.getByText('assistant open')).toBeInTheDocument();
+        });
+
+        test('no assistant button when MCP is not ready', async () => {
+            renderWithAssistant(false, true);
+            await waitFor(() => {
+                expect(document.querySelectorAll('.app-navigation')).toHaveLength(1);
+            });
+            expect(document.querySelectorAll('.navbar-assistant-button')).toHaveLength(0);
+        });
+
+        test('no assistant button when the assistant is not enabled', async () => {
+            renderWithAssistant(true, false);
+            await waitFor(() => {
+                expect(document.querySelectorAll('.app-navigation')).toHaveLength(1);
+            });
+            expect(document.querySelectorAll('.navbar-assistant-button')).toHaveLength(0);
+        });
     });
 });

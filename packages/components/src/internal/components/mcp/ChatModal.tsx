@@ -59,18 +59,28 @@ export interface ChatHistoryProps {
     renderSegment?: RenderSegment;
 }
 
-export const ChatHistory: FC<ChatHistoryProps> = memo(({ messages, isPending, renderSegment }) => (
-    <div aria-live="polite" className="chat-history" role="log">
-        {messages.map(message => (
-            <ChatItem key={message.id} message={message} renderSegment={renderSegment} />
-        ))}
-        {isPending && (
-            <div className="chat-item assistant-response pending">
-                <LoadingSpinner msg="Thinking..." />
-            </div>
-        )}
-    </div>
-));
+export const ChatHistory: FC<ChatHistoryProps> = memo(({ messages, isPending, renderSegment }) => {
+    const historyRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        // Scroll the conversation to the bottom when new messages get appended
+        const el = historyRef.current;
+        if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+    }, [isPending, messages]);
+
+    return (
+        <div aria-live="polite" className="chat-history" ref={historyRef} role="log">
+            {messages.map(message => (
+                <ChatItem key={message.id} message={message} renderSegment={renderSegment} />
+            ))}
+            {isPending && (
+                <div className="chat-item assistant-response pending">
+                    <LoadingSpinner msg="Thinking..." />
+                </div>
+            )}
+        </div>
+    );
+});
 ChatHistory.displayName = 'ChatHistory';
 
 export interface ChatPromptProps {
@@ -347,13 +357,6 @@ export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
 
     const className = classNames('chat-sidebar', position, { 'chat-sidebar--minimized': minimized });
     const minimizeClassName = classNames('fa', { 'fa-chevron-up': minimized, 'fa-minus': !minimized });
-    const bodyRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        // Scroll the conversation to the bottom when new messages get appended
-        const el = bodyRef.current;
-        if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
-    }, [isPending, messages]);
 
     return (
         <aside aria-labelledby="chat-sidebar-title" className={className}>
@@ -380,7 +383,7 @@ export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
             </div>
 
             {!minimized && (
-                <div className="chat-sidebar__body" ref={bodyRef}>
+                <div className="chat-sidebar__body">
                     <ChatHistory isPending={isPending} messages={messages} renderSegment={renderSegment} />
                     {loading && (
                         <div className="chat-history">

@@ -68,7 +68,7 @@ const HeaderLogo: FC = memo(() => {
         </div>
     );
 });
-HeaderLogo.displayName = 'AppLogo';
+HeaderLogo.displayName = 'HeaderLogo';
 
 interface NavigationBarProps {
     menuSectionConfigs?: List<Map<string, MenuSectionConfig>>;

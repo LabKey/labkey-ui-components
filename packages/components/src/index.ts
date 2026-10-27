@@ -762,6 +762,7 @@ import {
     userCanDeletePublicPicklists,
     userCanDesignLocations,
     userCanDesignSourceTypes,
+    userCanDesignTerminalStorage,
     userCanEditSharedViews,
     userCanEditStorageData,
     userCanManagePicklists,
@@ -797,6 +798,7 @@ import {
     TEST_USER_READER,
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
+    TEST_USER_TERMINAL_STORAGE_DESIGNER,
     TEST_USER_WORKFLOW_EDITOR,
 } from './internal/userFixtures';
 import {
@@ -1010,6 +1012,7 @@ const App = {
     updateUser,
     updateUserDisplayName,
     userCanDesignLocations,
+    userCanDesignTerminalStorage,
     userCanEditStorageData,
     userCanDesignSourceTypes,
     userCanManagePicklists,
@@ -1078,6 +1081,7 @@ const App = {
     TEST_USER_APP_ADMIN,
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
+    TEST_USER_TERMINAL_STORAGE_DESIGNER,
     TEST_USER_QC_ANALYST,
     TEST_USER_WORKFLOW_EDITOR,
     TEST_BIO_LIMS_STARTER_MODULE_CONTEXT,

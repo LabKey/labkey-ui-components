@@ -157,7 +157,13 @@ export const NavigationBar: FC<Props> = memo(props => {
                     )}
 
                     {!isAdminPage && !onFindByIds && (
-                        <i className="fa fa-search navbar__xs-search-icon" onClick={onSearchIconClick} />
+                        <button
+                            className="navbar-button navbar-search-button"
+                            onClick={onSearchIconClick}
+                            type="button"
+                        >
+                            <Icon iconClass="fa fa-search navbar__xs-search-icon" srText="Search" />
+                        </button>
                     )}
 
                     {showProductNav && <ProductNavigation />}

@@ -80,11 +80,11 @@ function useDocumentationAssistance(
         close();
     }, [close, resetState]);
     const loadSavedConversation = useCallback(async () => {
-        const savedId = await getSavedConversationId();
-
-        if (!savedId) return undefined;
-
         try {
+            const savedId = await getSavedConversationId();
+
+            if (!savedId) return undefined;
+
             return await api.getChatHistory({ conversationId: savedId });
         } catch (e) {
             if (e?.status !== 404) console.error(e);
@@ -203,7 +203,7 @@ export const AssistantPanel: FC<AssistantPanelProps> = memo(({ api }) => {
             onInterrupt={onInterrupt}
             sendPrompt={sendPrompt}
             startNewChat={startNewChat}
-            title="AI Assistant"
+            title="LabKey Assistant"
         />
     );
 });

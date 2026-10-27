@@ -335,11 +335,12 @@ const ChatPositionMenu: FC<ChatPositionMenuProps> = memo(({ position, setPositio
 ChatPositionMenu.displayName = 'ChatPositionMenu';
 
 interface ChatSidebarProps extends ChatSessionProps {
+    loading: boolean;
     startNewChat: () => void;
 }
 
 export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
-    const { isPending, messages, onClose, onInterrupt, title, renderSegment, sendPrompt, startNewChat } = props;
+    const { isPending, loading, messages, onClose, onInterrupt, title, renderSegment, sendPrompt, startNewChat } = props;
     const [position, setPosition] = useState(ChatPosition.bottomRight);
     const [minimized, setMinimized] = useState(false);
     const toggleMinimized = useCallback(() => setMinimized(current => !current), []);
@@ -376,6 +377,11 @@ export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
             {!minimized && (
                 <div className="chat-sidebar__body">
                     <ChatHistory isPending={isPending} messages={messages} renderSegment={renderSegment} />
+                    {loading && (
+                        <div className="chat-history">
+                            <LoadingSpinner msg="Loading chat history..." />
+                        </div>
+                    )}
                 </div>
             )}
 

@@ -177,10 +177,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                 </div>
             </nav>
 
-            {/* TODO: drop the sub-nav-wrapper altogether or at least put it in <SubNav /> */}
-            <nav className="sub-nav-wrapper">
-                <SubNav />
-            </nav>
+            <SubNav />
         </div>
     );
 });

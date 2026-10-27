@@ -139,7 +139,9 @@ describe('AssistantPanel', () => {
     test('clears the conversation when ending the chat', async () => {
         jest.mocked(getSavedConversationId).mockResolvedValue(CONVERSATION_ID);
         const { api } = renderPanel({
-            documentationAssistant: jest.fn().mockResolvedValue({ reset: true, success: true, text: 'OK' }),
+            documentationAssistant: jest
+                .fn()
+                .mockResolvedValue({ reset: true, success: true, text: "OK, let's start over." }),
             getChatHistory: jest.fn().mockResolvedValue(HISTORY),
         });
         await screen.findByText('How do I configure LDAP?');
@@ -149,6 +151,7 @@ describe('AssistantPanel', () => {
         expect(api.documentationAssistant).toHaveBeenCalledWith({ conversationId: CONVERSATION_ID, prompt: '/clear' });
         expect(mockService.close).toHaveBeenCalled();
         expect(screen.queryByText('How do I configure LDAP?')).not.toBeInTheDocument();
+        expect(screen.queryByText("OK, let's start over.")).not.toBeInTheDocument();
     });
 
     test('clears the messages when the user sends /clear', async () => {
@@ -160,7 +163,7 @@ describe('AssistantPanel', () => {
         renderPanel({ documentationAssistant, getChatHistory: jest.fn().mockResolvedValue(HISTORY) });
         await screen.findByText('How do I configure LDAP?');
 
-        const prompt = screen.getByLabelText('AI Assistant Prompt');
+        const prompt = screen.getByLabelText('LabKey Assistant Prompt');
         await userEvent.type(prompt, '/clear{Enter}');
 
         expect(await screen.findByText("OK, let's start over.")).toBeInTheDocument();
@@ -183,7 +186,7 @@ describe('AssistantPanel', () => {
         renderPanel({ documentationAssistant, getChatHistory: jest.fn().mockResolvedValue(HISTORY) });
         await screen.findByText('How do I configure LDAP?');
 
-        const prompt = screen.getByLabelText('AI Assistant Prompt');
+        const prompt = screen.getByLabelText('LabKey Assistant Prompt');
         await userEvent.type(prompt, 'First{Enter}');
         expect(await screen.findByText('Boom')).toBeInTheDocument();
         await userEvent.type(prompt, 'Second{Enter}');

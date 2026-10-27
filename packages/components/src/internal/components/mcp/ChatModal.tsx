@@ -59,23 +59,18 @@ export interface ChatHistoryProps {
     renderSegment?: RenderSegment;
 }
 
-export const ChatHistory: FC<ChatHistoryProps> = memo(props => {
-    const { messages, isPending, renderSegment } = props;
-    const historyRef = useRef<HTMLDivElement>(null);
-
-    return (
-        <div aria-live="polite" className="chat-history" ref={historyRef} role="log">
-            {messages.map(message => (
-                <ChatItem key={message.id} message={message} renderSegment={renderSegment} />
-            ))}
-            {isPending && (
-                <div className="chat-item assistant-response pending">
-                    <LoadingSpinner msg="Thinking..." />
-                </div>
-            )}
-        </div>
-    );
-});
+export const ChatHistory: FC<ChatHistoryProps> = memo(({ messages, isPending, renderSegment }) => (
+    <div aria-live="polite" className="chat-history" role="log">
+        {messages.map(message => (
+            <ChatItem key={message.id} message={message} renderSegment={renderSegment} />
+        ))}
+        {isPending && (
+            <div className="chat-item assistant-response pending">
+                <LoadingSpinner msg="Thinking..." />
+            </div>
+        )}
+    </div>
+));
 ChatHistory.displayName = 'ChatHistory';
 
 export interface ChatPromptProps {
@@ -324,7 +319,11 @@ const ChatPositionMenu: FC<ChatPositionMenuProps> = memo(({ position, setPositio
                 position={ChatPosition.topRight}
                 setPosition={setPosition}
             />
-            <ChatPositionMenuItem currentPosition={position} position={ChatPosition.topLeft} setPosition={setPosition} />
+            <ChatPositionMenuItem
+                currentPosition={position}
+                position={ChatPosition.topLeft}
+                setPosition={setPosition}
+            />
         </DropdownButton>
     );
 });

@@ -603,6 +603,7 @@ nav.sub-nav {
     --theme-text-color: #{$white};
 }
 
+.product-menu-button:focus,
 .product-menu-button:hover {
     background-color: var(--theme-hover-color);
 }

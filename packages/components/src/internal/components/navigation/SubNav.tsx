@@ -77,7 +77,7 @@ const SubNavImpl: FC<Props> = ({ noun, tabs }) => {
     }, [calculateIsScrollable, tabs]);
 
     return (
-        <nav className="navbar navbar-inverse sub-nav">
+        <nav aria-label="Sub Navigation" className="navbar navbar-inverse sub-nav">
             <div className="sub-nav-container">
                 {noun && <ParentNavItem to={noun.url}>{noun.text}</ParentNavItem>}
 

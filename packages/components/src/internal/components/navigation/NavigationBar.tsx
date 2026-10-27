@@ -121,7 +121,7 @@ export const NavigationBar: FC<Props> = memo(props => {
 
     return (
         <div className={className}>
-            <nav className="main-app-nav">
+            <nav aria-label="Main Navigation" className="main-app-nav">
                 <div className="main-app-nav__menus">
                     <HeaderLogo />
 

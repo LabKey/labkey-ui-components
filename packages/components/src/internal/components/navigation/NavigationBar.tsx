@@ -55,7 +55,7 @@ const HeaderLogo: FC = memo(() => {
                 <Link className="header-logo__link" to="/">
                     <span className="sr-only">Home</span>
                     <img
-                        alt={getPrimaryAppProperties().name + 'Dashboard'}
+                        alt={getPrimaryAppProperties().name + ' Dashboard'}
                         className="header-logo__image"
                         height="36px"
                         src={badge}

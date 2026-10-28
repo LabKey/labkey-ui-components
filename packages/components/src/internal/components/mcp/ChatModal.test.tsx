@@ -154,7 +154,7 @@ describe('ChatModal', () => {
 
             // Act
             await user.type(getTextarea(), '  hello world  ');
-            await user.click(screen.getByRole('button', { name: '' }).closest('.btn') as HTMLElement);
+            await user.click(screen.getByRole('button', { name: 'Submit' }));
 
             // Assert - sendPrompt receives the trimmed value once and the textarea is reset
             expect(sendPrompt).toHaveBeenCalledTimes(1);
@@ -217,7 +217,7 @@ describe('ChatModal', () => {
             expect(document.querySelector('.chat-item.pending')).toBeInTheDocument();
             expect(sendPrompt).not.toHaveBeenCalled();
 
-            const stopBtn = document.querySelector('.prompt-button') as HTMLButtonElement;
+            const stopBtn = screen.getByRole('button', { name: 'Stop' });
             expect(stopBtn.querySelector('.fa-stop')).toBeInTheDocument();
             fireEvent.click(stopBtn);
             expect(onInterrupt).toHaveBeenCalledTimes(1);

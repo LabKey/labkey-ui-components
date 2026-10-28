@@ -10,6 +10,7 @@ import { cancelEvent } from '../../events';
 import { useTimeout } from '../../hooks';
 import classNames from 'classnames';
 import { DropdownButton, MenuItem } from '../../dropdowns';
+import { Icon } from '../../Icon';
 
 export type RenderSegment = (segment: ChatSegment, index: number) => ReactNode | undefined;
 
@@ -367,13 +368,13 @@ export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
 
                 <div className="chat-sidebar__buttons">
                     <button className="btn btn-sm btn-default" onClick={startNewChat} type="button">
-                        <span className="fa fa-plus" />
+                        <Icon iconClass="fa fa-plus" srText="Start new chat" />
                     </button>
 
                     <ChatPositionMenu position={position} setPosition={setPosition} />
 
                     <button className="btn btn-sm btn-default" onClick={toggleMinimized} type="button">
-                        <span className={minimizeClassName} />
+                        <Icon iconClass={minimizeClassName} srText={minimized ? 'Expand Chat' : 'Minimize Chat'} />
                     </button>
 
                     <button className="btn btn-sm btn-default" onClick={handleClose} type="button">

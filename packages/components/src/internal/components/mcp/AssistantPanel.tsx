@@ -9,7 +9,7 @@ import { ChatMessage, ChatRole } from './models';
 import { useRequestHandler } from '../../util/RequestHandler';
 import { incrementClientSideMetricCount } from '../../actions';
 import { resolveErrorMessage } from '../../util/messaging';
-import { DocumentationAssistantAPIWrapper, DocumentationAssistantServerAPIWrapper } from './api';
+import { LabKeyAssistantAPIWrapper, LabKeyAssistantServerAPIWrapper } from './api';
 import { getSavedConversationId, saveConversationId, useAssistantService } from './AssistantService';
 import { useLoadableState } from '../../useLoadableState';
 import { isLoading } from '../../../public/LoadingState';
@@ -21,7 +21,7 @@ const BIG_STAR =
 const LITTLE_STAR =
     'M14.1296 2.39505C14.2427 1.86836 14.9942 1.86836 15.1074 2.39506L15.2783 3.19099C15.3609 3.57566 15.6614 3.87615 16.046 3.95875L16.842 4.12967C17.3687 4.24277 17.3687 4.99428 16.842 5.10738L16.046 5.2783C15.6614 5.3609 15.3609 5.66139 15.2783 6.04606L15.1074 6.842C14.9942 7.36869 14.2427 7.36869 14.1296 6.84199L13.9587 6.04606C13.8761 5.66139 13.5756 5.3609 13.191 5.2783L12.395 5.10738C11.8683 4.99428 11.8683 4.24277 12.395 4.12967L13.191 3.95875C13.5756 3.87615 13.8761 3.57566 13.9587 3.19099L14.1296 2.39505Z';
 const AIStars = (
-    <svg fill="none" height="19" viewBox="0 -2 19 19" width="19" xmlns="http://www.w3.org/2000/svg">
+    <svg aria-hidden="true" fill="none" height="19" viewBox="0 -2 19 19" width="19" xmlns="http://www.w3.org/2000/svg">
         <path d={BIG_STAR} fill="currentColor" />
         <path d={LITTLE_STAR} fill="currentColor" />
     </svg>
@@ -49,7 +49,7 @@ const createIntroMessage = () =>
 
 type VoidFn = () => void;
 
-interface DocumentationAssistantState {
+interface LabkeyAssistantState {
     isPending: boolean;
     loading: boolean;
     messages: ChatMessage[];
@@ -59,9 +59,7 @@ interface DocumentationAssistantState {
     startNewChat: VoidFn;
 }
 
-function useDocumentationAssistance(
-    api: DocumentationAssistantAPIWrapper = DocumentationAssistantServerAPIWrapper
-): DocumentationAssistantState {
+function useLabKeyAssistant(api: LabKeyAssistantAPIWrapper = LabKeyAssistantServerAPIWrapper): LabkeyAssistantState {
     const { open, close } = useAssistantService();
     const [conversationId, setConversationId] = useState<string>();
     const [messages, setMessages] = useState<ChatMessage[]>(() => []);
@@ -73,7 +71,7 @@ function useDocumentationAssistance(
         setConversationId(undefined);
         setMessages([createIntroMessage()]);
         // If we have an active conversation send the '/clear' prompt so the server can clean up the conversation
-        if (conversationId) api.documentationAssistant({ conversationId, prompt: '/clear' }).catch(() => undefined);
+        if (conversationId) api.labkeyAssistant({ conversationId, prompt: '/clear' }).catch(() => undefined);
     }, [abortRequest, api, conversationId]);
     const onClose = useCallback(() => {
         resetState();
@@ -135,7 +133,7 @@ function useDocumentationAssistance(
             setIsPending(true);
             let aborted = false;
             try {
-                const response = await api.documentationAssistant({ conversationId, prompt, requestHandler });
+                const response = await api.labkeyAssistant({ conversationId, prompt, requestHandler });
                 resetRequestHandler();
 
                 if (response.reset) {
@@ -184,13 +182,12 @@ function useDocumentationAssistance(
 }
 
 interface AssistantPanelProps {
-    api?: DocumentationAssistantAPIWrapper;
+    api?: LabKeyAssistantAPIWrapper;
 }
 
 export const AssistantPanel: FC<AssistantPanelProps> = memo(({ api }) => {
     const { show } = useAssistantService();
-    const { isPending, loading, messages, onClose, onInterrupt, sendPrompt, startNewChat } =
-        useDocumentationAssistance(api);
+    const { isPending, loading, messages, onClose, onInterrupt, sendPrompt, startNewChat } = useLabKeyAssistant(api);
 
     if (!show) return null;
 

@@ -7,7 +7,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
 import { AssistantButton, AssistantPanel } from './AssistantPanel';
-import { DocumentationAssistantAPIWrapper, getDocumentationAssistantTestAPIWrapper } from './api';
+import { LabKeyAssistantAPIWrapper, getDocumentationAssistantTestAPIWrapper } from './api';
 import { getSavedConversationId, saveConversationId } from './AssistantService';
 import { ChatRole } from './models';
 
@@ -36,7 +36,7 @@ const HISTORY = {
     success: true,
 };
 
-function renderPanel(overrides: Partial<DocumentationAssistantAPIWrapper> = {}) {
+function renderPanel(overrides: Partial<LabKeyAssistantAPIWrapper> = {}) {
     const api = getDocumentationAssistantTestAPIWrapper(jest.fn, overrides);
     return { api, ...render(<AssistantPanel api={api} />) };
 }
@@ -118,20 +118,20 @@ describe('AssistantPanel', () => {
 
         await userEvent.click(container.querySelector('.fa-plus').closest('button'));
 
-        expect(api.documentationAssistant).not.toHaveBeenCalled();
+        expect(api.labkeyAssistant).not.toHaveBeenCalled();
     });
 
     test('clears the conversation when starting a new chat', async () => {
         jest.mocked(getSavedConversationId).mockResolvedValue(CONVERSATION_ID);
         const { api, container } = renderPanel({
-            documentationAssistant: jest.fn().mockRejectedValue({ status: 500 }),
+            labkeyAssistant: jest.fn().mockRejectedValue({ status: 500 }),
             getChatHistory: jest.fn().mockResolvedValue(HISTORY),
         });
         await screen.findByText('How do I configure LDAP?');
 
         await userEvent.click(container.querySelector('.fa-plus').closest('button'));
 
-        expect(api.documentationAssistant).toHaveBeenCalledWith({ conversationId: CONVERSATION_ID, prompt: '/clear' });
+        expect(api.labkeyAssistant).toHaveBeenCalledWith({ conversationId: CONVERSATION_ID, prompt: '/clear' });
         expect(screen.queryByText('How do I configure LDAP?')).not.toBeInTheDocument();
         expect(screen.getByText('How can I help?')).toBeInTheDocument();
     });
@@ -139,7 +139,7 @@ describe('AssistantPanel', () => {
     test('clears the conversation when ending the chat', async () => {
         jest.mocked(getSavedConversationId).mockResolvedValue(CONVERSATION_ID);
         const { api } = renderPanel({
-            documentationAssistant: jest
+            labkeyAssistant: jest
                 .fn()
                 .mockResolvedValue({ reset: true, success: true, text: "OK, let's start over." }),
             getChatHistory: jest.fn().mockResolvedValue(HISTORY),
@@ -148,7 +148,7 @@ describe('AssistantPanel', () => {
 
         await userEvent.click(screen.getByText('End Chat'));
 
-        expect(api.documentationAssistant).toHaveBeenCalledWith({ conversationId: CONVERSATION_ID, prompt: '/clear' });
+        expect(api.labkeyAssistant).toHaveBeenCalledWith({ conversationId: CONVERSATION_ID, prompt: '/clear' });
         expect(mockService.close).toHaveBeenCalled();
         expect(screen.queryByText('How do I configure LDAP?')).not.toBeInTheDocument();
         expect(screen.queryByText("OK, let's start over.")).not.toBeInTheDocument();
@@ -160,7 +160,7 @@ describe('AssistantPanel', () => {
             .fn()
             .mockResolvedValueOnce({ reset: true, success: true, text: "OK, let's start over." })
             .mockResolvedValueOnce({ conversationId: 'new-id', segments: [], success: true });
-        renderPanel({ documentationAssistant, getChatHistory: jest.fn().mockResolvedValue(HISTORY) });
+        renderPanel({ labkeyAssistant: documentationAssistant, getChatHistory: jest.fn().mockResolvedValue(HISTORY) });
         await screen.findByText('How do I configure LDAP?');
 
         const prompt = screen.getByLabelText('LabKey Assistant Prompt');
@@ -183,7 +183,7 @@ describe('AssistantPanel', () => {
             .fn()
             .mockResolvedValueOnce({ conversationId: undefined, error: 'Boom', success: false })
             .mockResolvedValueOnce({ conversationId: CONVERSATION_ID, segments: [], success: true });
-        renderPanel({ documentationAssistant, getChatHistory: jest.fn().mockResolvedValue(HISTORY) });
+        renderPanel({ labkeyAssistant: documentationAssistant, getChatHistory: jest.fn().mockResolvedValue(HISTORY) });
         await screen.findByText('How do I configure LDAP?');
 
         const prompt = screen.getByLabelText('LabKey Assistant Prompt');
@@ -212,7 +212,7 @@ describe('AssistantPanel', () => {
         const documentationAssistant = jest
             .fn()
             .mockResolvedValue({ conversationId: CONVERSATION_ID, segments: [], success: true });
-        renderPanel({ documentationAssistant });
+        renderPanel({ labkeyAssistant: documentationAssistant });
         await screen.findByText('How can I help?');
 
         const prompt = screen.getByLabelText('LabKey Assistant Prompt');
@@ -227,7 +227,7 @@ describe('AssistantPanel', () => {
 
     test('shows a generic error when an unsuccessful response has no error', async () => {
         jest.mocked(getSavedConversationId).mockResolvedValue(undefined);
-        renderPanel({ documentationAssistant: jest.fn().mockResolvedValue({ success: false }) });
+        renderPanel({ labkeyAssistant: jest.fn().mockResolvedValue({ success: false }) });
         await screen.findByText('How can I help?');
 
         await userEvent.type(screen.getByLabelText('LabKey Assistant Prompt'), 'Hello{Enter}');
@@ -238,7 +238,7 @@ describe('AssistantPanel', () => {
     test('shows the server error when the request fails', async () => {
         jest.mocked(getSavedConversationId).mockResolvedValue(undefined);
         renderPanel({
-            documentationAssistant: jest.fn().mockRejectedValue({ exception: 'Server exploded', status: 500 }),
+            labkeyAssistant: jest.fn().mockRejectedValue({ exception: 'Server exploded', status: 500 }),
         });
         await screen.findByText('How can I help?');
 
@@ -252,7 +252,7 @@ describe('AssistantPanel', () => {
         jest.mocked(getSavedConversationId).mockResolvedValue(undefined);
         let rejectRequest: (reason: unknown) => void;
         const { container } = renderPanel({
-            documentationAssistant: jest.fn().mockReturnValue(new Promise((_, reject) => (rejectRequest = reject))),
+            labkeyAssistant: jest.fn().mockReturnValue(new Promise((_, reject) => (rejectRequest = reject))),
         });
         await screen.findByText('How can I help?');
 

@@ -320,12 +320,15 @@ export const MenuDivider = (): ReactElement => <li className="divider" onClick={
 
 export interface MenuItemProps {
     active?: boolean;
+    'aria-description'?: string;
     'aria-label'?: string;
     children: ReactNode;
     className?: string;
     disabled?: boolean;
     href?: AppURL | string;
+    onBlur?: () => void;
     onClick?: () => void;
+    onFocus?: () => void;
     onKeyDown?: (e: React.KeyboardEvent<HTMLAnchorElement>) => void;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
@@ -344,7 +347,9 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
         children,
         disabled,
         href = '#',
+        onBlur,
         onClick,
+        onFocus,
         onKeyDown,
         onMouseEnter,
         onMouseLeave,
@@ -373,9 +378,19 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
     );
 
     return (
-        <li className={className} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref} role="presentation">
+        <li
+            className={className}
+            onBlur={onBlur}
+            onFocus={onFocus}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            ref={ref}
+            role="presentation"
+        >
             <AppLink
                 aria-checked={ariaChecked}
+                aria-description={props['aria-description']}
+                aria-disabled={disabled || undefined}
                 aria-label={props['aria-label']}
                 onClick={onClick_}
                 onKeyDown={onKeyDown}

@@ -18,7 +18,7 @@ export interface AssistanceResponse {
     text?: string;
 }
 
-interface DocumentationAssistOptions {
+interface LabKeyAssistantOptions {
     containerPath?: string;
     conversationId?: string;
     prompt: string;
@@ -36,23 +36,12 @@ export interface ChatHistoryResponse {
     success: boolean;
 }
 
-export interface DocumentationAssistantAPIWrapper {
-    documentationAssistant: (options: DocumentationAssistOptions) => Promise<AssistanceResponse>;
+export interface LabKeyAssistantAPIWrapper {
     getChatHistory: (options: ChatHistoryOptions) => Promise<ChatHistoryResponse>;
+    labkeyAssistant: (options: LabKeyAssistantOptions) => Promise<AssistanceResponse>;
 }
 
-export const DocumentationAssistantServerAPIWrapper: DocumentationAssistantAPIWrapper = {
-    documentationAssistant: (options: DocumentationAssistOptions): Promise<AssistanceResponse> => {
-        const { containerPath, requestHandler, ...jsonData } = options;
-
-        return request<AssistanceResponse>({
-            url: ActionURL.buildURL('core', 'documentationAssistantAgent.api', containerPath),
-            method: 'POST',
-            jsonData,
-            errorLogMsg: 'Failed to assist',
-            requestHandler,
-        });
-    },
+export const LabKeyAssistantServerAPIWrapper: LabKeyAssistantAPIWrapper = {
     getChatHistory: (options: ChatHistoryOptions): Promise<ChatHistoryResponse> => {
         const { containerPath, conversationId } = options;
 
@@ -64,14 +53,25 @@ export const DocumentationAssistantServerAPIWrapper: DocumentationAssistantAPIWr
             errorLogMsg: '',
         });
     },
+    labkeyAssistant: (options: LabKeyAssistantOptions): Promise<AssistanceResponse> => {
+        const { containerPath, requestHandler, ...jsonData } = options;
+
+        return request<AssistanceResponse>({
+            url: ActionURL.buildURL('core', 'labkeyAssistantAgent.api', containerPath),
+            method: 'POST',
+            jsonData,
+            errorLogMsg: 'Failed to assist',
+            requestHandler,
+        });
+    },
 };
 
 export function getDocumentationAssistantTestAPIWrapper(
-    mockFn = (): any => () => {},
-    overrides: Partial<DocumentationAssistantAPIWrapper>
+    mockFn = (): unknown => () => {},
+    overrides: Partial<LabKeyAssistantAPIWrapper>
 ) {
     return {
-        documentationAssistant: mockFn(),
+        labkeyAssistant: mockFn(),
         getChatHistory: mockFn(),
         ...overrides,
     };

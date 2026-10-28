@@ -60,9 +60,12 @@ export const DisableableMenuItem: FC<DisableableMenuItemProps> = memo(props => {
 
     return (
         <MenuItem
+            aria-description={typeof disabledMessage === 'string' ? disabledMessage : undefined}
             className={className}
             disabled
+            onBlur={onMouseLeave}
             onClick={onClick}
+            onFocus={onMouseEnter}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             ref={targetRef}

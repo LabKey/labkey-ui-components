@@ -91,6 +91,7 @@ interface DropdownMenuProps extends PropsWithChildren {
     asAnchor?: boolean;
     className?: string;
     label?: string;
+    noCaret?: boolean;
     pullRight?: boolean;
     title: ReactNode;
 }
@@ -99,7 +100,7 @@ interface DropdownMenuProps extends PropsWithChildren {
  * See docs in docs/dropdowns.md
  */
 export const DropdownMenu: FC<DropdownMenuProps> = props => {
-    const { children, label, pullRight, title, asAnchor = true } = props;
+    const { asAnchor = true, children, label, noCaret, pullRight, title } = props;
     const id = useMemo(() => generateId('dropdown-anchor-'), []);
     const { onClick, open, toggleRef } = useToggleState();
     const className = classNames('lk-dropdown', 'dropdown', props.className, { open });
@@ -124,7 +125,7 @@ export const DropdownMenu: FC<DropdownMenuProps> = props => {
             {asAnchor && (
                 <a aria-label={label} {...elemProps} href="#">
                     {title}
-                    <span className="caret" />
+                    {!noCaret && <span className="caret" />}
                 </a>
             )}
             {!asAnchor && (
@@ -319,6 +320,7 @@ export const MenuDivider = (): ReactElement => <li className="divider" onClick={
 
 export interface MenuItemProps {
     active?: boolean;
+    'aria-label'?: string;
     children: ReactNode;
     className?: string;
     disabled?: boolean;
@@ -328,6 +330,7 @@ export interface MenuItemProps {
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
     rel?: string;
+    role?: 'menuitem' | 'menuitemcheckbox' | 'menuitemradio';
     target?: string;
     title?: string;
 }
@@ -346,10 +349,12 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
         onMouseEnter,
         onMouseLeave,
         rel,
+        role = 'menuitem',
         target,
         title,
     } = props;
     const className = classNames('lk-menu-item', props.className, { active, disabled });
+    const ariaChecked = role === 'menuitemradio' || role === 'menuitemcheckbox' ? active : undefined;
     const onClick_ = useCallback(
         (e: MouseEvent<HTMLAnchorElement>) => {
             // If the user didn't override the href, then we prevent default in order to prevent the browser from
@@ -370,11 +375,12 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
     return (
         <li className={className} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref} role="presentation">
             <AppLink
+                aria-checked={ariaChecked}
                 aria-label={props['aria-label']}
                 onClick={onClick_}
                 onKeyDown={onKeyDown}
                 rel={rel}
-                role="menuitem"
+                role={role}
                 target={target}
                 title={title}
                 to={href}

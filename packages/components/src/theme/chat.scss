@@ -29,64 +29,69 @@
         flex-direction: column;
     }
 
-    .chat-history {
-        flex-grow: 1;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .chat-item {
-        word-wrap: break-word;
-    }
-
-    .user-prompt {
-        align-self: flex-end;
-        max-width: 80%;
-        padding: 8px 12px;
-        background-color: $alert-info-bg;
-        border: 1px solid $alert-info-border;
-        border-radius: 8px 8px 0 8px;
-        color: $alert-info-text;
-        white-space: pre-wrap;
-    }
-
-    .assistant-response {
-        align-self: stretch;
-        color: $text-color;
-    }
-
-    .assistant-response.pending {
-        color: $text-muted;
-    }
-
-    .assistant-text,
-    .assistant-expression {
-        margin-bottom: 8px;
-    }
-
-    .assistant-expression__type {
-        float: right;
-    }
-
-    .error-response {
-        color: $brand-danger;
-    }
-
     .modal-footer {
-        flex-shrink: 0;
         background-color: $body-bg;
         line-height: 20px;
         padding: 15px;
     }
+}
 
+.chat-history {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.chat-item {
+    word-wrap: break-word;
+}
+
+.user-prompt {
+    align-self: flex-end;
+    max-width: 80%;
+    padding: 8px 12px;
+    background-color: $alert-info-bg;
+    border: 1px solid $alert-info-border;
+    border-radius: 8px 8px 0 8px;
+    color: $alert-info-text;
+    white-space: pre-wrap;
+}
+
+.assistant-response {
+    align-self: stretch;
+    color: $text-color;
+}
+
+.assistant-response.pending {
+    color: $text-muted;
+}
+
+.assistant-text,
+.assistant-expression {
+    margin-bottom: 8px;
+}
+
+.assistant-expression__type {
+    float: right;
+}
+
+.error-response {
+    color: $brand-danger;
+}
+
+.lk-modal .chat-modal,
+.chat-sidebar__footer {
     .form-inline {
         display: flex;
         align-items: flex-end;
         gap: 10px;
         width: 100%;
 
+        // Neutralize the Bootstrap grid/inline-form wrappers so the textarea and
+        // button are direct flex items of the form.
         .form-group,
         .col-xs-12 {
             display: contents;
@@ -95,13 +100,10 @@
 
     .prompt-input {
         flex-grow: 1;
-        width: 0;
-
         field-sizing: content;
         line-height: 1.2;
         min-height: 1.2lh;
         max-height: 12lh;
-
         padding: 10px;
         box-sizing: border-box;
         resize: none;
@@ -109,23 +111,103 @@
         white-space: pre-wrap;
         word-wrap: break-word;
     }
+}
 
-    .prompt-button {
-        height: 38px;
-        flex-shrink: 0;
-        margin: 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: $text-color;
+.chat-modal__caution {
+    width: 100%;
+    text-align: center;
+    color: $text-muted;
+    font-size: 11px;
+    margin-top: 6px;
+}
+
+.prompt-button {
+    height: 38px;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: $text-color;
+}
+
+.chat-sidebar {
+    background-color: white;
+    border: 2px solid $blue-border-solid;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    position: fixed;
+    max-height: calc(100dvh - 86px);
+    z-index: 12; // has to be 12 to appear above react-datepicker
+
+    .app-body.with-sub-nav & {
+        max-height: calc(100dvh - 126px);
     }
+}
 
-    .chat-modal__caution {
-        width: 100%;
-        text-align: center;
-        color: $text-muted;
-        font-size: 11px;
-        margin-top: 12px;
+.chat-sidebar--tr,
+.chat-sidebar--tl {
+    top: 71px;
+
+    .app-body.with-sub-nav & {
+        top: 111px;
+    }
+}
+
+.chat-sidebar--br,
+.chat-sidebar--bl {
+    bottom: 15px;
+}
+
+.chat-sidebar--tr,
+.chat-sidebar--br {
+    right: 15px;
+}
+
+.chat-sidebar--tl,
+.chat-sidebar--bl {
+    left: 15px;
+}
+
+.chat-sidebar__header {
+    display: flex;
+    padding: 8px 15px;
+    border-bottom: 1px solid $gray-border-light;
+}
+
+.chat-sidebar__title {
+    flex: 1;
+    font-weight: bold;
+    font-size: $font-size-h4;
+    line-height: 32px;
+}
+
+.chat-sidebar__buttons .btn {
+    border: 1px solid transparent;
+    border-radius: 4px;
+
+    &:hover {
+        border: 1px solid $gray-light;
+    }
+}
+
+.chat-sidebar__body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.chat-sidebar__footer {
+    background: $gray-lighter;
+    border-top: 2px solid $gray-border-light;
+    color: $gray-light;
+    line-height: 20px;
+    padding: 15px;
+
+    .form-inline {
+        display: flex;
     }
 }
 

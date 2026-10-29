@@ -3,7 +3,7 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import classNames from 'classnames';
-import React, { FC, memo, ReactNode, useCallback, useMemo } from 'react';
+import React, { FC, memo, useCallback, useMemo } from 'react';
 import { List, Map } from 'immutable';
 import { useLocation } from 'react-router';
 
@@ -18,7 +18,7 @@ import { SearchBox } from '../search/SearchBox';
 
 import { FindAndSearchDropdown } from '../search/FindAndSearchDropdown';
 
-import { getPrimaryAppProperties } from '../../app/utils';
+import { getAppLogoImageUrls, getPrimaryAppProperties } from '../../app/utils';
 
 import { User } from '../base/models/User';
 
@@ -31,9 +31,48 @@ import { MenuSectionConfig } from './model';
 import { SEARCH_PLACEHOLDER } from './constants';
 import { useFolderMenuContext, useSubNavTabsContext } from './hooks';
 import { Icon } from '../../Icon';
+import { AssistantButton } from '../mcp/AssistantPanel';
+import { useAssistantService } from '../mcp/AssistantService';
+import { AppLink } from '../../url/AppLink';
+import { AppURL } from '../../url/AppURL';
+
+const HeaderLogo: FC = memo(() => {
+    const { badge, withText } = getAppLogoImageUrls();
+    return (
+        <div className="header-logo">
+            <div className="hidden-xs hidden-sm">
+                <AppLink className="header-logo__link" to={AppURL.create('home')}>
+                    <span className="sr-only">Home</span>
+                    <img
+                        alt={getPrimaryAppProperties().name + ' Dashboard'}
+                        className="header-logo__image"
+                        height="32px"
+                        src={withText}
+                        srcSet={withText}
+                        title="Dashboard"
+                    />
+                </AppLink>
+            </div>
+            <div className="hidden-md hidden-lg">
+                <AppLink className="header-logo__link" to={AppURL.create('home')}>
+                    <span className="sr-only">Home</span>
+                    <img
+                        alt={getPrimaryAppProperties().name + ' Dashboard'}
+                        className="header-logo__image"
+                        height="36px"
+                        src={badge}
+                        srcSet={badge}
+                        title="Dashboard"
+                        width="36px"
+                    />
+                </AppLink>
+            </div>
+        </div>
+    );
+});
+HeaderLogo.displayName = 'HeaderLogo';
 
 interface NavigationBarProps {
-    brand?: ReactNode;
     menuSectionConfigs?: List<Map<string, MenuSectionConfig>>;
     notificationsConfig?: ServerNotificationsConfig;
     onFindByIds?: (sessionkey: string) => void;
@@ -48,7 +87,6 @@ type Props = NavigationBarProps & UserMenuProps;
 
 export const NavigationBar: FC<Props> = memo(props => {
     const {
-        brand,
         extraDevItems,
         extraUserItems,
         menuSectionConfigs,
@@ -64,6 +102,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         user,
     } = props;
     const { extThemeName_42: themeName, moduleContext } = useServerContext();
+    const { enabled: assistantEnabled, open: openAssistant } = useAssistantService();
     const folderMenuContext = useFolderMenuContext();
     const location = useLocation();
     const isAdminPage = useMemo(() => isAdminRoute(location.pathname), [location.pathname]);
@@ -76,84 +115,83 @@ export const NavigationBar: FC<Props> = memo(props => {
     const showProductNav = shouldShowProductNavigation(user, moduleContext);
     const { noun, tabs } = useSubNavTabsContext();
     const hasSubNav = noun !== undefined || tabs.length > 0;
+    const className = classNames('app-navigation', {
+        [`app-navigation--${themeName}`]: !!themeName,
+        'with-sub-nav': hasSubNav,
+        'app-navigation--admin': isAdminPage,
+    });
 
     return (
-        <div className={classNames('app-navigation', { 'with-sub-nav': hasSubNav })}>
-            <nav
-                className={classNames('main-nav navbar test-loc-nav-header', {
-                    'navbar-container': !isAdminPage,
-                    'admin-navbar-container': isAdminPage,
-                    [`navbar-theme-${themeName}`]: !!themeName,
-                })}
-            >
-                <div className="container">
-                    <div className="row">
-                        <div className="navbar-left col-xs-6 col-md-6">
-                            <span className="navbar-item navbar-left-icon pull-left">{brand}</span>
-                            {showNavMenu && (
-                                <span className="navbar-item navbar-left-menu">
-                                    <ProductMenuButton
-                                        key={folderMenuContext.key} // re-render and reload folderItems when folder added
-                                        sectionConfigs={menuSectionConfigs}
-                                        showFolderMenu={showFolderMenu}
-                                    />
-                                </span>
-                            )}
-                        </div>
-                        <div className="navbar-right col-xs-6 col-md-6">
-                            {!!user && (
-                                <UserMenuGroup
-                                    extraDevItems={extraDevItems}
-                                    extraUserItems={extraUserItems}
-                                    onSignIn={onSignIn}
-                                    onSignOut={onSignOut}
-                                    signOutUrl={signOutUrl}
-                                    user={user}
-                                />
-                            )}
-                            {showNotifications && !isAdminPage && <ServerNotifications {...notificationsConfig} />}
-                            {showProductNav && <ProductNavigation />}
-                            {!isAdminPage && (
-                                <div className="navbar-item pull-right">
-                                    <div className="hidden-md hidden-sm hidden-xs">
-                                        <SearchBox
-                                            findNounPlural="samples"
-                                            onFindByIds={onFindByIds}
-                                            onSearch={onSearch}
-                                            placeholder={_searchPlaceholder}
-                                        />
-                                    </div>
-                                    <div className="visible-md visible-sm visible-xs">
-                                        {onFindByIds ? (
-                                            <FindAndSearchDropdown
-                                                className="navbar__xs-find-dropdown"
-                                                findNounPlural="samples"
-                                                onFindByIds={onFindByIds}
-                                                onSearch={onSearchIconClick}
-                                                title={
-                                                    <Icon
-                                                        iconClass="fa fa-search navbar__xs-search-icon"
-                                                        srText="Search and Find"
-                                                    />
-                                                }
-                                            />
-                                        ) : (
-                                            <i
-                                                className="fa fa-search navbar__xs-search-icon"
-                                                onClick={onSearchIconClick}
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
+        <div className={className}>
+            <nav aria-label="Main Navigation" className="main-app-nav">
+                <div className="main-app-nav__menus">
+                    <HeaderLogo />
+
+                    {showNavMenu && (
+                        <ProductMenuButton
+                            key={folderMenuContext.key} // re-render and reload folderItems when folder added
+                            sectionConfigs={menuSectionConfigs}
+                            showFolderMenu={showFolderMenu}
+                        />
+                    )}
+                </div>
+
+                <div className="main-app-nav__buttons">
+                    {assistantEnabled && (
+                        <AssistantButton
+                            className="navbar-button navbar-assistant-button"
+                            label="LabKey Assistant"
+                            onClick={openAssistant}
+                        />
+                    )}
+
+                    {!isAdminPage && (
+                        <SearchBox
+                            findNounPlural="samples"
+                            onFindByIds={onFindByIds}
+                            onSearch={onSearch}
+                            placeholder={_searchPlaceholder}
+                        />
+                    )}
+
+                    {!isAdminPage && !!onFindByIds && (
+                        <FindAndSearchDropdown
+                            className="visible-md visible-sm visible-xs"
+                            findNounPlural="samples"
+                            onFindByIds={onFindByIds}
+                            onSearch={onSearchIconClick}
+                            title={<Icon iconClass="fa fa-search navbar-header-icon" srText="Search and Find" />}
+                        />
+                    )}
+
+                    {!isAdminPage && !onFindByIds && (
+                        <button
+                            className="navbar-button navbar-search-button visible-md visible-sm visible-xs"
+                            onClick={onSearchIconClick}
+                            type="button"
+                        >
+                            <Icon iconClass="fa fa-search navbar__xs-search-icon" srText="Search" />
+                        </button>
+                    )}
+
+                    {showProductNav && <ProductNavigation />}
+
+                    {showNotifications && !isAdminPage && <ServerNotifications {...notificationsConfig} />}
+
+                    {!!user && (
+                        <UserMenuGroup
+                            extraDevItems={extraDevItems}
+                            extraUserItems={extraUserItems}
+                            onSignIn={onSignIn}
+                            onSignOut={onSignOut}
+                            signOutUrl={signOutUrl}
+                            user={user}
+                        />
+                    )}
                 </div>
             </nav>
 
-            <div className="sub-nav-wrapper">
-                <SubNav />
-            </div>
+            <SubNav />
         </div>
     );
 });

@@ -287,7 +287,7 @@ describe('ProductMenu', () => {
         await waitFor(() => {
             expect(document.querySelectorAll('.product-menu-content')).toHaveLength(1);
         });
-        expect(document.querySelectorAll('.navbar-connector')).toHaveLength(1);
+        expect(document.querySelectorAll('.navbar-menu-connector')).toHaveLength(1);
         expect(document.querySelectorAll('.alert')).toHaveLength(hasError ? 1 : 0);
         expect(document.querySelectorAll('.menu-section.col-folders')).toHaveLength(showFolderMenu ? 1 : 0);
         expect(document.querySelectorAll('.sections-content')).toHaveLength(1);

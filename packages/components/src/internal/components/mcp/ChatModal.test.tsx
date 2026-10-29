@@ -6,35 +6,68 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
-import { ChatModal, ChatModalProps, RenderSegment } from './ChatModal';
+import {
+    ChatHistory,
+    ChatHistoryProps,
+    ChatModal,
+    ChatPrompt,
+    ChatPromptProps,
+    ChatSessionProps,
+    ChatSidebar,
+    RenderSegment,
+} from './ChatModal';
 import { ChatMessage, ChatRole, ChatSegment } from './models';
+
+const TITLE = 'Test Chat';
 
 function makeMessage(overrides?: Partial<ChatMessage>): ChatMessage {
     return {
-        id: overrides.id ?? `msg-${Math.random()}`,
+        id: overrides?.id ?? `msg-${Math.random()}`,
         role: ChatRole.assistant,
         timestamp: 0,
         ...overrides,
     };
 }
 
-function getDefaultProps(overrides?: Partial<ChatModalProps>) {
+function getHistoryProps(overrides?: Partial<ChatHistoryProps>): ChatHistoryProps {
     return {
         isPending: false,
         messages: [],
-        onCancel: jest.fn(),
+        ...overrides,
+    };
+}
+
+function getPromptProps(overrides?: Partial<ChatPromptProps>): ChatPromptProps {
+    return {
+        isPending: false,
         onInterrupt: jest.fn(),
         sendPrompt: jest.fn().mockResolvedValue(undefined),
-        title: 'Test Chat',
+        title: TITLE,
+        ...overrides,
+    };
+}
+
+function getSessionProps(overrides?: Partial<ChatSessionProps>): ChatSessionProps {
+    return {
+        isPending: false,
+        messages: [],
+        onClose: jest.fn(),
+        onInterrupt: jest.fn(),
+        sendPrompt: jest.fn().mockResolvedValue(undefined),
+        title: TITLE,
         ...overrides,
     };
 }
 
 function getTextarea(): HTMLTextAreaElement {
-    return screen.getByLabelText('Test Chat Prompt') as HTMLTextAreaElement;
+    return screen.getByLabelText(`${TITLE} Prompt`) as HTMLTextAreaElement;
 }
 
-describe('ChatModal', () => {
+function getPromptButton(): HTMLButtonElement {
+    return document.querySelector('.prompt-button') as HTMLButtonElement;
+}
+
+describe('ChatHistory', () => {
     describe('message rendering', () => {
         test('renders user messages as user-prompt and assistant text', () => {
             // Arrange
@@ -44,7 +77,7 @@ describe('ChatModal', () => {
             ];
 
             // Act
-            render(<ChatModal {...getDefaultProps({ messages })} />);
+            render(<ChatHistory {...getHistoryProps({ messages })} />);
 
             // Assert - user message is in user-prompt bubble; assistant message is in assistant-response with its text
             const userBubble = document.querySelector('.chat-item.user-prompt');
@@ -67,13 +100,48 @@ describe('ChatModal', () => {
             ];
 
             // Act
-            render(<ChatModal {...getDefaultProps({ messages })} />);
+            render(<ChatHistory {...getHistoryProps({ messages })} />);
 
             // Assert - the error-response bubble shows the error and nothing else from text/segments
             const errorBubble = document.querySelector('.chat-item.assistant-response.error-response');
             expect(errorBubble).toHaveTextContent('Something broke');
             expect(screen.queryByText('should not be shown')).not.toBeInTheDocument();
             expect(screen.queryByText('also not shown')).not.toBeInTheDocument();
+        });
+
+        test('renders no chat items when there are no messages', () => {
+            // Act
+            render(<ChatHistory {...getHistoryProps()} />);
+
+            // Assert - the history container is present but empty
+            expect(document.querySelector('.chat-history')).toBeInTheDocument();
+            expect(document.querySelectorAll('.chat-item')).toHaveLength(0);
+        });
+    });
+
+    describe('pending state', () => {
+        test('appends a pending bubble after the messages while isPending', () => {
+            // Arrange
+            const messages = [makeMessage({ id: 'u1', role: ChatRole.user, text: 'Hello there' })];
+
+            // Act
+            render(<ChatHistory {...getHistoryProps({ isPending: true, messages })} />);
+
+            // Assert - the pending bubble renders the spinner and is the last chat item
+            const pending = document.querySelector('.chat-item.assistant-response.pending');
+            expect(pending).toBeInTheDocument();
+            expect(pending).toHaveTextContent('Thinking...');
+            const items = document.querySelectorAll('.chat-item');
+            expect(items).toHaveLength(2);
+            expect(items[1]).toBe(pending);
+        });
+
+        test('does not render a pending bubble when not pending', () => {
+            // Act
+            render(<ChatHistory {...getHistoryProps({ messages: [makeMessage({ id: 'a1', text: 'done' })] })} />);
+
+            // Assert
+            expect(document.querySelector('.chat-item.pending')).toBeNull();
         });
     });
 
@@ -91,7 +159,7 @@ describe('ChatModal', () => {
             ];
 
             // Act
-            render(<ChatModal {...getDefaultProps({ messages })} />);
+            render(<ChatHistory {...getHistoryProps({ messages })} />);
 
             // Assert - html segment renders via innerHTML; text segment renders as text node
             const htmlSegment = document.querySelector('.assistant-text strong');
@@ -118,7 +186,7 @@ describe('ChatModal', () => {
             ];
 
             // Act
-            render(<ChatModal {...getDefaultProps({ messages, renderSegment })} />);
+            render(<ChatHistory {...getHistoryProps({ messages, renderSegment })} />);
 
             // Assert - text segment uses custom renderer; html segment falls through to default
             expect(screen.getByTestId('custom')).toHaveTextContent('CUSTOM:one');
@@ -136,7 +204,7 @@ describe('ChatModal', () => {
             ];
 
             // Act
-            render(<ChatModal {...getDefaultProps({ messages })} />);
+            render(<ChatHistory {...getHistoryProps({ messages })} />);
 
             // Assert - assistant response bubble exists but has no segment content rendered
             const bubble = document.querySelector('.chat-item.assistant-response');
@@ -144,17 +212,19 @@ describe('ChatModal', () => {
             expect(bubble?.textContent).toBe('');
         });
     });
+});
 
+describe('ChatPrompt', () => {
     describe('send behavior', () => {
         test('submit calls sendPrompt with trimmed value and clears the textarea', async () => {
             // Arrange
             const sendPrompt = jest.fn().mockResolvedValue(undefined);
-            render(<ChatModal {...getDefaultProps({ sendPrompt })} />);
+            render(<ChatPrompt {...getPromptProps({ sendPrompt })} />);
             const user = userEvent.setup();
 
             // Act
             await user.type(getTextarea(), '  hello world  ');
-            await user.click(screen.getByRole('button', { name: 'Submit' }));
+            await user.click(getPromptButton());
 
             // Assert - sendPrompt receives the trimmed value once and the textarea is reset
             expect(sendPrompt).toHaveBeenCalledTimes(1);
@@ -162,10 +232,10 @@ describe('ChatModal', () => {
             expect(getTextarea()).toHaveValue('');
         });
 
-        test('Enter without shift submits, Shift+Enter does not', async () => {
+        test('Enter without shift submits, Shift+Enter does not', () => {
             // Arrange
             const sendPrompt = jest.fn().mockResolvedValue(undefined);
-            render(<ChatModal {...getDefaultProps({ sendPrompt })} />);
+            render(<ChatPrompt {...getPromptProps({ sendPrompt })} />);
             const textarea = getTextarea();
 
             // Act - Shift+Enter first (should not submit), then plain Enter (should submit)
@@ -185,11 +255,12 @@ describe('ChatModal', () => {
         test('empty / whitespace-only prompt does not send and submit is disabled', () => {
             // Arrange
             const sendPrompt = jest.fn().mockResolvedValue(undefined);
-            render(<ChatModal {...getDefaultProps({ sendPrompt })} />);
+            render(<ChatPrompt {...getPromptProps({ sendPrompt })} />);
             const textarea = getTextarea();
 
             // Act & Assert - with no input, the submit button is disabled
-            const submitBtn = document.querySelector('button[type="submit"]') as HTMLButtonElement;
+            const submitBtn = getPromptButton();
+            expect(submitBtn).toHaveAttribute('type', 'submit');
             expect(submitBtn).toBeDisabled();
 
             // Act - typing whitespace and pressing Enter should still not send
@@ -205,19 +276,19 @@ describe('ChatModal', () => {
             // Arrange
             const sendPrompt = jest.fn().mockResolvedValue(undefined);
             const onInterrupt = jest.fn();
-            render(<ChatModal {...getDefaultProps({ isPending: true, sendPrompt, onInterrupt })} />);
+            render(<ChatPrompt {...getPromptProps({ isPending: true, sendPrompt, onInterrupt })} />);
 
             // Act
             const textarea = getTextarea();
             fireEvent.change(textarea, { target: { value: 'queued prompt' } });
             fireEvent.keyDown(textarea, { key: 'Enter' });
 
-            // Assert - submit button absent; pending spinner shown; sendPrompt not called; stop button calls onInterrupt(true)
+            // Assert - submit button absent and sendPrompt not called
             expect(document.querySelector('button[type="submit"]')).toBeNull();
-            expect(document.querySelector('.chat-item.pending')).toBeInTheDocument();
             expect(sendPrompt).not.toHaveBeenCalled();
 
-            const stopBtn = screen.getByRole('button', { name: 'Stop' });
+            // Assert - the stop button is rendered in its place and calls onInterrupt(true)
+            const stopBtn = getPromptButton();
             expect(stopBtn.querySelector('.fa-stop')).toBeInTheDocument();
             fireEvent.click(stopBtn);
             expect(onInterrupt).toHaveBeenCalledTimes(1);
@@ -230,21 +301,19 @@ describe('ChatModal', () => {
             // Arrange
             const sendPrompt = jest.fn().mockResolvedValue(undefined);
             const onInterrupt = jest.fn();
-            const { rerender } = render(<ChatModal {...getDefaultProps({ sendPrompt, onInterrupt })} />);
-            const textarea = getTextarea();
+            const { rerender } = render(<ChatPrompt {...getPromptProps({ sendPrompt, onInterrupt })} />);
 
-            // Act - send a prompt, then simulate pending state, then click stop
-            fireEvent.change(textarea, { target: { value: 'first prompt' } });
-            fireEvent.keyDown(textarea, { key: 'Enter' });
+            // Act - send a prompt, then simulate the pending state, then click stop
+            fireEvent.change(getTextarea(), { target: { value: 'first prompt' } });
+            fireEvent.keyDown(getTextarea(), { key: 'Enter' });
             expect(sendPrompt).toHaveBeenCalledWith('first prompt');
             expect(getTextarea()).toHaveValue('');
 
-            rerender(<ChatModal {...getDefaultProps({ isPending: true, sendPrompt, onInterrupt })} />);
-            fireEvent.click(document.querySelector('.prompt-button') as HTMLButtonElement);
+            rerender(<ChatPrompt {...getPromptProps({ isPending: true, sendPrompt, onInterrupt })} />);
+            fireEvent.click(getPromptButton());
 
             // Assert - interrupt fired and the empty input is repopulated with the last sent value
             expect(onInterrupt).toHaveBeenCalledWith(true);
-            rerender(<ChatModal {...getDefaultProps({ isPending: false, sendPrompt, onInterrupt })} />);
             expect(getTextarea()).toHaveValue('first prompt');
         });
 
@@ -252,38 +321,212 @@ describe('ChatModal', () => {
             // Arrange
             const sendPrompt = jest.fn().mockResolvedValue(undefined);
             const onInterrupt = jest.fn();
-            const { rerender } = render(<ChatModal {...getDefaultProps({ sendPrompt, onInterrupt })} />);
-            const textarea = getTextarea();
+            const { rerender } = render(<ChatPrompt {...getPromptProps({ sendPrompt, onInterrupt })} />);
 
             // Act - send a prompt, transition to pending, then type a new prompt before clicking stop
-            fireEvent.change(textarea, { target: { value: 'first prompt' } });
-            fireEvent.keyDown(textarea, { key: 'Enter' });
+            fireEvent.change(getTextarea(), { target: { value: 'first prompt' } });
+            fireEvent.keyDown(getTextarea(), { key: 'Enter' });
 
-            rerender(<ChatModal {...getDefaultProps({ isPending: true, sendPrompt, onInterrupt })} />);
+            rerender(<ChatPrompt {...getPromptProps({ isPending: true, sendPrompt, onInterrupt })} />);
             fireEvent.change(getTextarea(), { target: { value: 'new draft' } });
-            fireEvent.click(document.querySelector('.prompt-button') as HTMLButtonElement);
+            fireEvent.click(getPromptButton());
 
             // Assert - interrupt fired and the user's in-progress text is not overwritten
             expect(onInterrupt).toHaveBeenCalledWith(true);
-            rerender(<ChatModal {...getDefaultProps({ isPending: false, sendPrompt, onInterrupt })} />);
             expect(getTextarea()).toHaveValue('new draft');
         });
     });
 
-    describe('cancel behavior', () => {
-        test('End Chat calls onInterrupt(false) then onCancel', () => {
+    describe('rendering', () => {
+        test('labels the textarea with the title and renders the caution message', () => {
+            // Act
+            render(<ChatPrompt {...getPromptProps({ title: 'Expression Assistant' })} />);
+
+            // Assert - the aria-label is derived from the title so callers get distinct labels
+            expect(screen.getByLabelText('Expression Assistant Prompt')).toBeInTheDocument();
+            expect(document.querySelector('.chat-modal__caution')).toHaveTextContent(
+                'AI can make mistakes. Double check any suggestions.'
+            );
+        });
+    });
+});
+
+describe('ChatModal', () => {
+    describe('composition', () => {
+        test('renders ChatHistory and ChatPrompt with the session props', () => {
             // Arrange
-            const onCancel = jest.fn();
+            const renderSegment: RenderSegment = (segment, index) =>
+                segment.type === 'text' ? (
+                    <span data-testid="custom" key={index}>
+                        CUSTOM:{segment.text}
+                    </span>
+                ) : undefined;
+            const messages = [
+                makeMessage({ id: 'u1', role: ChatRole.user, text: 'Hello there' }),
+                makeMessage({ id: 'a1', segments: [{ type: 'text', text: 'one' }] }),
+            ];
+
+            // Act
+            render(<ChatModal {...getSessionProps({ isPending: true, messages, renderSegment })} />);
+
+            // Assert - the history renders the messages, the pending state, and the caller's renderSegment
+            expect(document.querySelector('.chat-history')).toHaveTextContent('Hello there');
+            expect(document.querySelector('.chat-item.pending')).toBeInTheDocument();
+            expect(screen.getByTestId('custom')).toHaveTextContent('CUSTOM:one');
+
+            // Assert - the prompt renders in the modal footer, labeled from the title
+            expect(getTextarea()).toBeInTheDocument();
+        });
+
+        test('sendPrompt from the footer prompt reaches the caller', () => {
+            // Arrange
+            const sendPrompt = jest.fn().mockResolvedValue(undefined);
+            render(<ChatModal {...getSessionProps({ sendPrompt })} />);
+
+            // Act
+            fireEvent.change(getTextarea(), { target: { value: 'hello world' } });
+            fireEvent.keyDown(getTextarea(), { key: 'Enter' });
+
+            // Assert
+            expect(sendPrompt).toHaveBeenCalledTimes(1);
+            expect(sendPrompt).toHaveBeenCalledWith('hello world');
+        });
+
+        test('the footer stop button forwards onInterrupt(true)', () => {
+            // Arrange
             const onInterrupt = jest.fn();
-            render(<ChatModal {...getDefaultProps({ onCancel, onInterrupt })} />);
+            render(<ChatModal {...getSessionProps({ isPending: true, onInterrupt })} />);
+
+            // Act
+            fireEvent.click(getPromptButton());
+
+            // Assert
+            expect(onInterrupt).toHaveBeenCalledTimes(1);
+            expect(onInterrupt).toHaveBeenCalledWith(true);
+        });
+    });
+
+    describe('close behavior', () => {
+        test('End Chat calls onInterrupt(false) then onClose', () => {
+            // Arrange
+            const onClose = jest.fn();
+            const onInterrupt = jest.fn();
+            render(<ChatModal {...getSessionProps({ onClose, onInterrupt })} />);
 
             // Act
             fireEvent.click(screen.getByRole('button', { name: /end chat/i }));
 
-            // Assert - both handlers fire, interrupt receives false (non-user dismissal)
+            // Assert - both handlers fire in order, interrupt receives false (non-user dismissal)
             expect(onInterrupt).toHaveBeenCalledTimes(1);
             expect(onInterrupt).toHaveBeenCalledWith(false);
-            expect(onCancel).toHaveBeenCalledTimes(1);
+            expect(onClose).toHaveBeenCalledTimes(1);
+            expect(onInterrupt.mock.invocationCallOrder[0]).toBeLessThan(onClose.mock.invocationCallOrder[0]);
+        });
+    });
+});
+
+describe('ChatSidebar', () => {
+    function getHeaderButton(selector: string): HTMLButtonElement {
+        return document.querySelector(`.chat-sidebar__buttons ${selector}`).closest('button');
+    }
+
+    describe('rendering', () => {
+        test('renders the title, history and prompt in the default position', () => {
+            // Arrange
+            const messages = [makeMessage({ id: 'u1', role: ChatRole.user, text: 'Hello there' })];
+
+            // Act
+            render(<ChatSidebar {...getSessionProps({ messages })} startNewChat={jest.fn()} />);
+
+            // Assert
+            expect(document.querySelector('.chat-sidebar')).toHaveClass('chat-sidebar--br');
+            expect(document.querySelector('.chat-sidebar__title')).toHaveTextContent(TITLE);
+            expect(document.querySelector('.chat-history')).toHaveTextContent('Hello there');
+            expect(getTextarea()).toBeInTheDocument();
+            expect(screen.queryByText('Loading chat history...')).not.toBeInTheDocument();
+        });
+
+        test('shows a loading spinner after the messages while loading', () => {
+            // Arrange
+            const messages = [makeMessage({ id: 'a1', text: 'How can I help?' })];
+
+            // Act
+            render(<ChatSidebar {...getSessionProps({ messages })} loading startNewChat={jest.fn()} />);
+
+            // Assert
+            expect(screen.getByText('How can I help?')).toBeInTheDocument();
+            expect(screen.getByText('Loading chat history...')).toBeInTheDocument();
+        });
+    });
+
+    describe('header buttons', () => {
+        test('the new chat button calls startNewChat', () => {
+            // Arrange
+            const startNewChat = jest.fn();
+            const onClose = jest.fn();
+            render(<ChatSidebar {...getSessionProps({ onClose })} startNewChat={startNewChat} />);
+
+            // Act
+            fireEvent.click(getHeaderButton('.fa-plus'));
+
+            // Assert
+            expect(startNewChat).toHaveBeenCalledTimes(1);
+            expect(onClose).not.toHaveBeenCalled();
+        });
+
+        test('End Chat calls onInterrupt(false) then onClose', () => {
+            // Arrange
+            const onClose = jest.fn();
+            const onInterrupt = jest.fn();
+            render(<ChatSidebar {...getSessionProps({ onClose, onInterrupt })} startNewChat={jest.fn()} />);
+
+            // Act
+            fireEvent.click(screen.getByRole('button', { name: /end chat/i }));
+
+            // Assert
+            expect(onInterrupt).toHaveBeenCalledTimes(1);
+            expect(onInterrupt).toHaveBeenCalledWith(false);
+            expect(onClose).toHaveBeenCalledTimes(1);
+            expect(onInterrupt.mock.invocationCallOrder[0]).toBeLessThan(onClose.mock.invocationCallOrder[0]);
+        });
+
+        test('minimizing hides the history and prompt until restored', () => {
+            // Arrange
+            render(<ChatSidebar {...getSessionProps()} startNewChat={jest.fn()} />);
+
+            // Act
+            fireEvent.click(getHeaderButton('.fa-minus'));
+
+            // Assert - minimized
+            expect(document.querySelector('.chat-sidebar')).toHaveClass('chat-sidebar--minimized');
+            expect(document.querySelector('.chat-history')).not.toBeInTheDocument();
+            expect(screen.queryByLabelText(`${TITLE} Prompt`)).not.toBeInTheDocument();
+
+            // Act - restore
+            fireEvent.click(getHeaderButton('.fa-chevron-up'));
+
+            // Assert - restored
+            expect(document.querySelector('.chat-sidebar')).not.toHaveClass('chat-sidebar--minimized');
+            expect(document.querySelector('.chat-history')).toBeInTheDocument();
+            expect(getTextarea()).toBeInTheDocument();
+        });
+    });
+
+    describe('position', () => {
+        test('choosing a position moves the sidebar and marks the choice active', () => {
+            // Arrange
+            render(<ChatSidebar {...getSessionProps()} startNewChat={jest.fn()} />);
+
+            // Act
+            fireEvent.click(getHeaderButton('.dropdown-toggle'));
+            fireEvent.click(screen.getByText('Top Left'));
+
+            // Assert
+            const sidebar = document.querySelector('.chat-sidebar');
+            expect(sidebar).toHaveClass('chat-sidebar--tl');
+            expect(sidebar).not.toHaveClass('chat-sidebar--br');
+            expect(screen.getByText('Top Left').closest('li')).toHaveClass('active');
+            expect(screen.getByText('Bottom Right').closest('li')).not.toHaveClass('active');
         });
     });
 });

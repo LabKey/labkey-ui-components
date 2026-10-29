@@ -2,13 +2,29 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, {
+    Dispatch,
+    FC,
+    memo,
+    ReactNode,
+    SetStateAction,
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import { Modal, ModalHeader } from '../../Modal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ChatMessage, ChatRole, ChatSegment } from './models';
 import { cancelEvent } from '../../events';
 import { useTimeout } from '../../hooks';
+import classNames from 'classnames';
+import { DropdownButton, MenuItem } from '../../dropdowns';
+import { Icon } from '../../Icon';
 
+type SetPrompt = Dispatch<SetStateAction<string>>;
 export type RenderSegment = (segment: ChatSegment, index: number) => ReactNode | undefined;
 
 function renderSegmentDefault(segment: ChatSegment, index: number): ReactNode | undefined {
@@ -51,22 +67,49 @@ const ChatItem: FC<ChatBubbleProps> = memo(({ message, renderSegment }) => {
 });
 ChatItem.displayName = 'ChatItem';
 
-export interface ChatModalProps {
+export interface ChatHistoryProps {
     isPending: boolean;
     messages: ChatMessage[];
-    onCancel: () => void;
-    onInterrupt: (isUser?: boolean) => void;
     renderSegment?: RenderSegment;
+}
+
+export const ChatHistory: FC<ChatHistoryProps> = memo(({ messages, isPending, renderSegment }) => {
+    const historyRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        // Scroll the conversation to the bottom when new messages get appended
+        const el = historyRef.current;
+        if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+    }, [isPending, messages]);
+
+    return (
+        <div aria-live="polite" className="chat-history" ref={historyRef} role="log">
+            {messages.map(message => (
+                <ChatItem key={message.id} message={message} renderSegment={renderSegment} />
+            ))}
+            {isPending && (
+                <div className="chat-item assistant-response pending">
+                    <LoadingSpinner msg="Thinking..." />
+                </div>
+            )}
+        </div>
+    );
+});
+ChatHistory.displayName = 'ChatHistory';
+
+export interface ChatPromptProps {
+    isPending: boolean;
+    onInterrupt: (isUser?: boolean) => void;
+    prompt: string;
     sendPrompt: (prompt: string) => Promise<void>;
+    setPrompt: SetPrompt;
     title: ReactNode;
 }
 
-export const ChatModal: FC<ChatModalProps> = memo(props => {
-    const { isPending, messages, onCancel, onInterrupt, renderSegment, sendPrompt, title } = props;
-    const [prompt, setPrompt] = useState('');
-    const lastSentPromptRef = useRef('');
+export const ChatPrompt: FC<ChatPromptProps> = memo(props => {
+    const { isPending, prompt, sendPrompt, setPrompt, title, onInterrupt } = props;
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
-    const historyRef = useRef<HTMLDivElement>(null);
+    const lastSentPromptRef = useRef('');
     const timer = useTimeout();
 
     // Autofocus the prompt on mount
@@ -93,19 +136,21 @@ export const ChatModal: FC<ChatModalProps> = memo(props => {
         el.style.height = `${nextHeight}px`;
     }, [fieldSizingSupported, prompt]);
 
-    useEffect(() => {
-        const el = historyRef.current;
-        if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
-    }, [messages, isPending]);
+    const handleSend = useCallback(() => {
+        const trimmed = prompt.trim();
+        if (!trimmed || isPending) return;
+        lastSentPromptRef.current = trimmed;
+        setPrompt('');
+        sendPrompt(trimmed);
+    }, [prompt, isPending, setPrompt, sendPrompt]);
 
-    const handleCancel = useCallback(() => {
-        onInterrupt(false);
-        onCancel();
-    }, [onCancel, onInterrupt]);
-
-    const handleChange = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>(evt => {
-        setPrompt(evt.target.value);
-    }, []);
+    const handleSubmit = useCallback<React.FormEventHandler<HTMLFormElement>>(
+        evt => {
+            cancelEvent(evt);
+            handleSend();
+        },
+        [handleSend]
+    );
 
     const handleInterrupt = useCallback(() => {
         onInterrupt(true);
@@ -119,15 +164,14 @@ export const ChatModal: FC<ChatModalProps> = memo(props => {
             const end = el.value.length;
             el.setSelectionRange(end, end);
         });
-    }, [onInterrupt, timer]);
+    }, [onInterrupt, setPrompt, timer]);
 
-    const handleSend = useCallback(() => {
-        const trimmed = prompt.trim();
-        if (!trimmed || isPending) return;
-        lastSentPromptRef.current = trimmed;
-        setPrompt('');
-        sendPrompt(trimmed);
-    }, [prompt, isPending, sendPrompt]);
+    const handleChange = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>(
+        evt => {
+            setPrompt(evt.target.value);
+        },
+        [setPrompt]
+    );
 
     const handleKeyDown = useCallback<React.KeyboardEventHandler<HTMLTextAreaElement>>(
         evt => {
@@ -139,23 +183,7 @@ export const ChatModal: FC<ChatModalProps> = memo(props => {
         [handleSend]
     );
 
-    const handleSubmit = useCallback<React.FormEventHandler<HTMLFormElement>>(
-        evt => {
-            cancelEvent(evt);
-            handleSend();
-        },
-        [handleSend]
-    );
-
-    const header = (
-        <ModalHeader title={title}>
-            <button className="btn btn-sm btn-default" onClick={handleCancel} type="button">
-                End Chat
-            </button>
-        </ModalHeader>
-    );
-
-    const footer = (
+    return (
         <>
             <form className="form-inline" onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -198,20 +226,237 @@ export const ChatModal: FC<ChatModalProps> = memo(props => {
             <div className="chat-modal__caution">AI can make mistakes. Double check any suggestions.</div>
         </>
     );
+});
+ChatPrompt.displayName = 'ChatPrompt';
+
+export interface ChatSessionProps {
+    isPending: boolean;
+    messages: ChatMessage[];
+    onClose: () => void;
+    onInterrupt: (isUser?: boolean) => void;
+    renderSegment?: RenderSegment;
+    sendPrompt: (prompt: string) => Promise<void>;
+    title: ReactNode;
+}
+
+export const ChatModal: FC<ChatSessionProps> = memo(props => {
+    const { isPending, messages, onClose, onInterrupt, renderSegment, sendPrompt, title } = props;
+    const [prompt, setPrompt] = useState('');
+
+    const handleClose = useCallback(() => {
+        onInterrupt(false);
+        onClose();
+    }, [onClose, onInterrupt]);
+
+    const header = (
+        <ModalHeader title={title}>
+            <button className="btn btn-sm btn-default" onClick={handleClose} type="button">
+                End Chat
+            </button>
+        </ModalHeader>
+    );
+
+    const footer = (
+        <ChatPrompt
+            isPending={isPending}
+            onInterrupt={onInterrupt}
+            prompt={prompt}
+            sendPrompt={sendPrompt}
+            setPrompt={setPrompt}
+            title={title}
+        />
+    );
 
     return (
         <Modal className="chat-modal" footer={footer} header={header} title={title}>
-            <div className="chat-history" ref={historyRef}>
-                {messages.map(message => (
-                    <ChatItem key={message.id} message={message} renderSegment={renderSegment} />
-                ))}
-                {isPending && (
-                    <div className="chat-item assistant-response pending">
-                        <LoadingSpinner msg="Thinking..." />
-                    </div>
-                )}
-            </div>
+            <ChatHistory isPending={isPending} messages={messages} renderSegment={renderSegment} />
         </Modal>
     );
 });
 ChatModal.displayName = 'ChatModal';
+
+enum ChatPosition {
+    bottomLeft = 'chat-sidebar--bl',
+    bottomRight = 'chat-sidebar--br',
+    topLeft = 'chat-sidebar--tl',
+    topRight = 'chat-sidebar--tr',
+}
+
+const CHAT_POSITION_KEY = 'ASSISTANT_CHAT_POSITION';
+
+function saveChatPosition(position: ChatPosition) {
+    localStorage.setItem(CHAT_POSITION_KEY, position);
+}
+
+function getSavedChatPosition(): ChatPosition {
+    const position = localStorage.getItem(CHAT_POSITION_KEY) as ChatPosition;
+    return position === null ? ChatPosition.bottomRight : position;
+}
+
+const POSITION_LABELS = {
+    [ChatPosition.bottomLeft]: 'Bottom Left',
+    [ChatPosition.bottomRight]: 'Bottom Right',
+    [ChatPosition.topLeft]: 'Top Left',
+    [ChatPosition.topRight]: 'Top Right',
+};
+
+interface ChatPositionIconProps {
+    position: ChatPosition;
+}
+
+const ChatPositionIcon: FC<ChatPositionIconProps> = memo(({ position }) => {
+    const x = position === ChatPosition.topRight || position === ChatPosition.bottomRight ? 6 : 2;
+    const y = position === ChatPosition.bottomLeft || position === ChatPosition.bottomRight ? 6 : 3;
+
+    return (
+        <svg aria-hidden="true" height="12" viewBox="0 -2 14 14" width="12" xmlns="http://www.w3.org/2000/svg">
+            <rect
+                fill="none"
+                height="10.5"
+                rx="1.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                width="10.5"
+                x=".75"
+                y=".75"
+            />
+            <rect fill="currentColor" height="4" rx="0.5" width="4" x={x} y={y} />
+        </svg>
+    );
+});
+ChatPositionIcon.displayName = 'ChatPositionIcon';
+
+interface ChatPositionMenuItemProps {
+    currentPosition: ChatPosition;
+    position: ChatPosition;
+    setPosition: (position: ChatPosition) => void;
+}
+
+const ChatPositionMenuItem: FC<ChatPositionMenuItemProps> = memo(({ currentPosition, position, setPosition }) => {
+    const active = currentPosition === position;
+    const onClick = useCallback(() => setPosition(position), [position, setPosition]);
+    return (
+        <MenuItem active={active} onClick={onClick} role="menuitemradio">
+            <ChatPositionIcon position={position} /> {POSITION_LABELS[position]}
+        </MenuItem>
+    );
+});
+ChatPositionMenuItem.displayName = 'ChatPositionMenuItem';
+
+interface ChatPositionMenuProps {
+    position: ChatPosition;
+    setPosition: (position: ChatPosition) => void;
+}
+
+const ChatPositionMenu: FC<ChatPositionMenuProps> = memo(({ position, setPosition }) => {
+    const icon = <ChatPositionIcon position={position} />;
+    const label = 'LabKey Assistant Chat Window Position Menu';
+    return (
+        <DropdownButton aria-label={label} buttonClassName="btn-sm" noCaret title={icon}>
+            <ChatPositionMenuItem
+                currentPosition={position}
+                position={ChatPosition.bottomRight}
+                setPosition={setPosition}
+            />
+            <ChatPositionMenuItem
+                currentPosition={position}
+                position={ChatPosition.bottomLeft}
+                setPosition={setPosition}
+            />
+            <ChatPositionMenuItem
+                currentPosition={position}
+                position={ChatPosition.topRight}
+                setPosition={setPosition}
+            />
+            <ChatPositionMenuItem
+                currentPosition={position}
+                position={ChatPosition.topLeft}
+                setPosition={setPosition}
+            />
+        </DropdownButton>
+    );
+});
+ChatPositionMenu.displayName = 'ChatPositionMenu';
+
+interface ChatSidebarProps extends ChatSessionProps {
+    loading: boolean;
+    startNewChat: () => void;
+}
+
+export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
+    const { isPending, loading, messages, onClose, onInterrupt, title, renderSegment, sendPrompt, startNewChat } =
+        props;
+    const [prompt, setPrompt] = useState('');
+    const [position, setPosition_] = useState(() => getSavedChatPosition());
+    const setPosition = useCallback((pos: ChatPosition) => {
+        setPosition_(pos);
+        saveChatPosition(pos);
+    }, []);
+    const [minimized, setMinimized] = useState(false);
+    const toggleMinimized = useCallback(() => setMinimized(current => !current), []);
+    const handleClose = useCallback(() => {
+        onInterrupt(false);
+        onClose();
+    }, [onClose, onInterrupt]);
+
+    const className = classNames('chat-sidebar', position, { 'chat-sidebar--minimized': minimized });
+    const minimizeClassName = classNames('fa', { 'fa-chevron-up': minimized, 'fa-minus': !minimized });
+
+    return (
+        <aside aria-labelledby="chat-sidebar-title" className={className} id="chat-sidebar">
+            <div className="chat-sidebar__header">
+                <div className="chat-sidebar__title" id="chat-sidebar-title">
+                    {title}
+                </div>
+
+                <div className="chat-sidebar__buttons">
+                    <button className="btn btn-sm btn-default" onClick={startNewChat} type="button">
+                        <Icon iconClass="fa fa-plus" srText="Start new chat" />
+                    </button>
+
+                    <ChatPositionMenu position={position} setPosition={setPosition} />
+
+                    <button
+                        aria-controls="chat-sidebar"
+                        aria-expanded={!minimized}
+                        className="btn btn-sm btn-default"
+                        onClick={toggleMinimized}
+                        type="button"
+                    >
+                        <Icon iconClass={minimizeClassName} srText={minimized ? 'Expand Chat' : 'Minimize Chat'} />
+                    </button>
+
+                    <button className="btn btn-sm btn-default" onClick={handleClose} type="button">
+                        End Chat
+                    </button>
+                </div>
+            </div>
+
+            {!minimized && (
+                <div className="chat-sidebar__body">
+                    <ChatHistory isPending={isPending} messages={messages} renderSegment={renderSegment} />
+                    {loading && (
+                        <div className="chat-history">
+                            <LoadingSpinner msg="Loading chat history..." />
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {!minimized && (
+                <div className="chat-sidebar__footer">
+                    <ChatPrompt
+                        isPending={isPending}
+                        onInterrupt={onInterrupt}
+                        prompt={prompt}
+                        sendPrompt={sendPrompt}
+                        setPrompt={setPrompt}
+                        title={title}
+                    />
+                </div>
+            )}
+        </aside>
+    );
+});
+
+ChatSidebar.displayName = 'ChatSidebar';

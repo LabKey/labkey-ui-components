@@ -17,6 +17,13 @@ describe('DropdownMenu', () => {
         expect(document.querySelector('a').getAttribute('title')).toBe(null);
         expect(document.querySelectorAll('.dropdown-menu-right')).toHaveLength(0);
         expect(document.querySelector('.lk-dropdown').textContent).toContain('Test title');
+        expect(document.querySelectorAll('.caret')).toHaveLength(1);
+    });
+
+    test('noCaret', () => {
+        render(<DropdownMenu noCaret title="Test title" />);
+        expect(document.querySelectorAll('a')).toHaveLength(1);
+        expect(document.querySelectorAll('.caret')).toHaveLength(0);
     });
 
     test('asAnchor false', () => {

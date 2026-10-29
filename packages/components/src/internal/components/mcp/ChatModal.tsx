@@ -282,6 +282,17 @@ enum ChatPosition {
     topRight = 'chat-sidebar--tr',
 }
 
+const CHAT_POSITION_KEY = 'ASSISTANT_CHAT_POSITION';
+
+function saveChatPosition(position: ChatPosition) {
+    localStorage.setItem(CHAT_POSITION_KEY, position);
+}
+
+function getSavedChatPosition(): ChatPosition {
+    const position = localStorage.getItem(CHAT_POSITION_KEY) as ChatPosition;
+    return position === null ? ChatPosition.bottomRight : position;
+}
+
 const POSITION_LABELS = {
     [ChatPosition.bottomLeft]: 'Bottom Left',
     [ChatPosition.bottomRight]: 'Bottom Right',
@@ -376,7 +387,11 @@ export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
     const { isPending, loading, messages, onClose, onInterrupt, title, renderSegment, sendPrompt, startNewChat } =
         props;
     const [prompt, setPrompt] = useState('');
-    const [position, setPosition] = useState(ChatPosition.bottomRight);
+    const [position, setPosition_] = useState(() => getSavedChatPosition());
+    const setPosition = useCallback((pos: ChatPosition) => {
+        setPosition_(pos);
+        saveChatPosition(pos);
+    }, []);
     const [minimized, setMinimized] = useState(false);
     const toggleMinimized = useCallback(() => setMinimized(current => !current), []);
     const handleClose = useCallback(() => {

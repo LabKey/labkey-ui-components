@@ -172,11 +172,7 @@ export const CalculatedFieldOptions: FC<CalculatedFieldOptionsProps> = memo(prop
             setParsedType(undefined);
             const { domainFields, systemFields } = getDomainFields();
             try {
-                const response = await api.domain.parseCalculatedColumn(
-                    expression,
-                    domainFields,
-                    systemFields
-                );
+                const response = await api.domain.parseCalculatedColumn(expression, domainFields, systemFields);
                 setError(response.error);
                 setParsedType(response.type);
 

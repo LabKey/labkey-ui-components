@@ -175,12 +175,22 @@ export const ChatModal: FC<ChatModalProps> = memo(props => {
                     </div>
                 </div>
                 {isPending && (
-                    <button className="btn btn-default prompt-button" onClick={handleInterrupt} type="button">
+                    <button
+                        aria-label="Stop"
+                        className="btn btn-default prompt-button"
+                        onClick={handleInterrupt}
+                        type="button"
+                    >
                         <i className="fa fa-stop" />
                     </button>
                 )}
                 {!isPending && (
-                    <button className="btn btn-default prompt-button" disabled={!prompt.trim()} type="submit">
+                    <button
+                        aria-label="Submit"
+                        className="btn btn-default prompt-button"
+                        disabled={!prompt.trim()}
+                        type="submit"
+                    >
                         <i className="fa fa-arrow-up" />
                     </button>
                 )}

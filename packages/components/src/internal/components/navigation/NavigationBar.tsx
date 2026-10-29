@@ -5,7 +5,7 @@
 import classNames from 'classnames';
 import React, { FC, memo, useCallback, useMemo } from 'react';
 import { List, Map } from 'immutable';
-import { Link, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
 
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';
@@ -33,13 +33,15 @@ import { useFolderMenuContext, useSubNavTabsContext } from './hooks';
 import { Icon } from '../../Icon';
 import { AssistantButton } from '../mcp/AssistantPanel';
 import { useAssistantService } from '../mcp/AssistantService';
+import { AppLink } from '../../url/AppLink';
+import { AppURL } from '../../url/AppURL';
 
 const HeaderLogo: FC = memo(() => {
     const { badge, withText } = getAppLogoImageUrls();
     return (
         <div className="header-logo">
             <div className="hidden-xs hidden-sm">
-                <Link className="header-logo__link" to="/">
+                <AppLink className="header-logo__link" to={AppURL.create('home')}>
                     <span className="sr-only">Home</span>
                     <img
                         alt={getPrimaryAppProperties().name + ' Dashboard'}
@@ -49,10 +51,10 @@ const HeaderLogo: FC = memo(() => {
                         srcSet={withText}
                         title="Dashboard"
                     />
-                </Link>
+                </AppLink>
             </div>
             <div className="hidden-md hidden-lg">
-                <Link className="header-logo__link" to="/">
+                <AppLink className="header-logo__link" to={AppURL.create('home')}>
                     <span className="sr-only">Home</span>
                     <img
                         alt={getPrimaryAppProperties().name + ' Dashboard'}
@@ -63,7 +65,7 @@ const HeaderLogo: FC = memo(() => {
                         title="Dashboard"
                         width="36px"
                     />
-                </Link>
+                </AppLink>
             </div>
         </div>
     );

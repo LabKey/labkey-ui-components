@@ -84,6 +84,7 @@ describe('NavigationBar', () => {
         });
 
         validate();
+        expect(screen.getByRole('button', { name: 'Search' })).toHaveClass('visible-md', 'visible-sm', 'visible-xs');
     });
 
     test('with findByIds', async () => {

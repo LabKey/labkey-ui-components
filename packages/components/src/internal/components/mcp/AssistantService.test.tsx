@@ -47,11 +47,12 @@ describe('getSavedConversationId', () => {
 
     test('drops the saved id when another tab holds its lock', async () => {
         mockLocks(false);
-        jest.spyOn(console, 'log').mockReturnValue(undefined);
+        const log = jest.spyOn(console, 'log').mockReturnValue(undefined);
         saveConversationId('abc');
 
         expect(await getSavedConversationId()).toBeUndefined();
         expect(sessionStorage.getItem(STORAGE_KEY)).toBeNull();
+        expect(log).toHaveBeenCalledWith('Conversation id held by another tab, dropping conversation');
     });
 });
 

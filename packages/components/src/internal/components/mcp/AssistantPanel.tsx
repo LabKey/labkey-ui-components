@@ -57,7 +57,7 @@ interface LabkeyAssistantState {
     loading: boolean;
     messages: ChatMessage[];
     onClose: VoidFn;
-    onInterrupt: VoidFn;
+    onInterrupt: (stoppedByUser?: boolean) => void;
     sendPrompt: (prompt: string) => Promise<void>;
     startNewChat: VoidFn;
 }

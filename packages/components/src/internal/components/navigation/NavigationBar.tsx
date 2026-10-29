@@ -164,7 +164,7 @@ export const NavigationBar: FC<Props> = memo(props => {
 
                     {!isAdminPage && !onFindByIds && (
                         <button
-                            className="navbar-button navbar-search-button"
+                            className="navbar-button navbar-search-button visible-md visible-sm visible-xs"
                             onClick={onSearchIconClick}
                             type="button"
                         >

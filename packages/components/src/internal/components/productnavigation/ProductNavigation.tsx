@@ -15,7 +15,7 @@ export const ProductNavigation: FC = memo(() => {
     const toggleMenu = useCallback(() => setShow(s => !s), [setShow]);
 
     return (
-        <div className="navbar-dropdown">
+        <div className="navbar-dropdown product-navigation-menu">
             <button
                 aria-expanded={show}
                 aria-haspopup="true"

@@ -73,11 +73,11 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
         'fa-bell': !hasAnyInProgress,
     });
     return (
-        <div className="navbar-dropdown">
+        <div className="navbar-dropdown server-notifications">
             <button
                 aria-expanded={show}
                 aria-haspopup="true"
-                className="navbar-menu-button server-notifications navbar-menu"
+                className="navbar-menu-button navbar-menu"
                 onClick={toggleMenu}
                 ref={toggleRef}
                 role="button"

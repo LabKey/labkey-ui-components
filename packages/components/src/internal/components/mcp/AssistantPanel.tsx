@@ -30,15 +30,16 @@ const AIStars = (
 export const LABKEY_ASSISTANT_METRIC_FEATURE_AREA = 'labKeyAssistant';
 
 interface ButtonProps {
+    className?: string;
     label: ReactNode;
     onClick: () => void;
     showLabel?: boolean;
 }
 
-export const AssistantButton: FC<ButtonProps> = memo(({ onClick, showLabel, label }) => (
-    <button className="navbar-button navbar-assistant-button" onClick={onClick} type="button">
+export const AssistantButton: FC<ButtonProps> = memo(({ className = 'btn btn-default', onClick, showLabel, label }) => (
+    <button className={className} onClick={onClick} type="button">
         {AIStars}
-        <span className={showLabel ? '' : 'sr-only'}>{label}</span>
+        <span className={showLabel ? 'margin-left-small' : 'sr-only'}>{label}</span>
     </button>
 ));
 AssistantButton.displayName = 'AssistantButton';

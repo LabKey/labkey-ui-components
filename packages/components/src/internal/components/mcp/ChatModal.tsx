@@ -2,7 +2,19 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, {
+    Dispatch,
+    FC,
+    memo,
+    ReactNode,
+    SetStateAction,
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import { Modal, ModalHeader } from '../../Modal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ChatMessage, ChatRole, ChatSegment } from './models';
@@ -12,6 +24,7 @@ import classNames from 'classnames';
 import { DropdownButton, MenuItem } from '../../dropdowns';
 import { Icon } from '../../Icon';
 
+type SetPrompt = Dispatch<SetStateAction<string>>;
 export type RenderSegment = (segment: ChatSegment, index: number) => ReactNode | undefined;
 
 function renderSegmentDefault(segment: ChatSegment, index: number): ReactNode | undefined {
@@ -87,15 +100,16 @@ ChatHistory.displayName = 'ChatHistory';
 export interface ChatPromptProps {
     isPending: boolean;
     onInterrupt: (isUser?: boolean) => void;
+    prompt: string;
     sendPrompt: (prompt: string) => Promise<void>;
+    setPrompt: SetPrompt;
     title: ReactNode;
 }
 
 export const ChatPrompt: FC<ChatPromptProps> = memo(props => {
-    const { isPending, sendPrompt, title, onInterrupt } = props;
+    const { isPending, prompt, sendPrompt, setPrompt, title, onInterrupt } = props;
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const lastSentPromptRef = useRef('');
-    const [prompt, setPrompt] = useState('');
     const timer = useTimeout();
 
     // Autofocus the prompt on mount
@@ -128,7 +142,7 @@ export const ChatPrompt: FC<ChatPromptProps> = memo(props => {
         lastSentPromptRef.current = trimmed;
         setPrompt('');
         sendPrompt(trimmed);
-    }, [prompt, isPending, sendPrompt]);
+    }, [prompt, isPending, setPrompt, sendPrompt]);
 
     const handleSubmit = useCallback<React.FormEventHandler<HTMLFormElement>>(
         evt => {
@@ -150,11 +164,14 @@ export const ChatPrompt: FC<ChatPromptProps> = memo(props => {
             const end = el.value.length;
             el.setSelectionRange(end, end);
         });
-    }, [onInterrupt, timer]);
+    }, [onInterrupt, setPrompt, timer]);
 
-    const handleChange = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>(evt => {
-        setPrompt(evt.target.value);
-    }, []);
+    const handleChange = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>(
+        evt => {
+            setPrompt(evt.target.value);
+        },
+        [setPrompt]
+    );
 
     const handleKeyDown = useCallback<React.KeyboardEventHandler<HTMLTextAreaElement>>(
         evt => {
@@ -224,6 +241,7 @@ export interface ChatSessionProps {
 
 export const ChatModal: FC<ChatSessionProps> = memo(props => {
     const { isPending, messages, onClose, onInterrupt, renderSegment, sendPrompt, title } = props;
+    const [prompt, setPrompt] = useState('');
 
     const handleClose = useCallback(() => {
         onInterrupt(false);
@@ -238,7 +256,16 @@ export const ChatModal: FC<ChatSessionProps> = memo(props => {
         </ModalHeader>
     );
 
-    const footer = <ChatPrompt isPending={isPending} onInterrupt={onInterrupt} sendPrompt={sendPrompt} title={title} />;
+    const footer = (
+        <ChatPrompt
+            isPending={isPending}
+            onInterrupt={onInterrupt}
+            prompt={prompt}
+            sendPrompt={sendPrompt}
+            setPrompt={setPrompt}
+            title={title}
+        />
+    );
 
     return (
         <Modal className="chat-modal" footer={footer} header={header} title={title}>
@@ -348,6 +375,7 @@ interface ChatSidebarProps extends ChatSessionProps {
 export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
     const { isPending, loading, messages, onClose, onInterrupt, title, renderSegment, sendPrompt, startNewChat } =
         props;
+    const [prompt, setPrompt] = useState('');
     const [position, setPosition] = useState(ChatPosition.bottomRight);
     const [minimized, setMinimized] = useState(false);
     const toggleMinimized = useCallback(() => setMinimized(current => !current), []);
@@ -402,7 +430,14 @@ export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
 
             {!minimized && (
                 <div className="chat-sidebar__footer">
-                    <ChatPrompt isPending={isPending} onInterrupt={onInterrupt} sendPrompt={sendPrompt} title={title} />
+                    <ChatPrompt
+                        isPending={isPending}
+                        onInterrupt={onInterrupt}
+                        prompt={prompt}
+                        sendPrompt={sendPrompt}
+                        setPrompt={setPrompt}
+                        title={title}
+                    />
                 </div>
             )}
         </aside>

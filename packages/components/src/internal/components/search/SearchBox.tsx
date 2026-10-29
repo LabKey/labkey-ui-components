@@ -5,6 +5,7 @@
 import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useState } from 'react';
 
 import { FindAndSearchDropdown } from './FindAndSearchDropdown';
+import classNames from 'classnames';
 
 interface Props {
     findNounPlural?: string;
@@ -15,10 +16,9 @@ interface Props {
 
 export const SearchBox: FC<Props> = memo(props => {
     const { onSearch, placeholder, onFindByIds, findNounPlural } = props;
-
     const [searchValue, setSearchValue] = useState('');
-
     const showFindByIds = !!onFindByIds;
+    const inputClassName = classNames('navbar__input-group', { 'input-group': showFindByIds });
 
     const onChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +41,7 @@ export const SearchBox: FC<Props> = memo(props => {
     return (
         <form className="navbar__search-form hidden-md hidden-sm hidden-xs" onSubmit={onSubmit}>
             <span className="fa fa-search navbar__search-icon" />
-            <span className={'navbar__input-group ' + (showFindByIds ? 'input-group' : '')}>
+            <span className={inputClassName}>
                 <input
                     aria-label="Search in application"
                     className="form-control navbar__search-input"

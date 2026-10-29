@@ -270,7 +270,7 @@ describe('NavigationBar', () => {
     describe('LabKey Assistant', () => {
         const ShowState: FC = () => <div>{useAssistantService().show ? 'assistant open' : 'assistant closed'}</div>;
 
-        function renderWithAssistant(mcpReady: boolean, documentationAssistantEnabled: boolean): void {
+        function renderWithAssistant(mcpReady: boolean, labKeyAssistantEnabled: boolean): void {
             renderWithAppContext(
                 <AssistantService>
                     <NavigationBar />
@@ -285,7 +285,7 @@ describe('NavigationBar', () => {
                             ...TEST_LKSM_STARTER_MODULE_CONTEXT,
                             samplemanagement: {
                                 ...TEST_LKSM_STARTER_MODULE_CONTEXT.samplemanagement,
-                                documentationAssistantEnabled,
+                                labKeyAssistantEnabled,
                             },
                         },
                     },

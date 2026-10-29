@@ -437,10 +437,10 @@ export function isDataChangeCommentRequirementFeatureEnabled(moduleContext?: Mod
     return isFeatureEnabled(ProductFeature.DataChangeCommentRequirement, moduleContext);
 }
 
-export function isDocumentationAssistantEnabled(moduleContext?: ModuleContext): boolean {
+export function isLabKeyAssistantEnabled(moduleContext?: ModuleContext): boolean {
     return (
         hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName, moduleContext) &&
-        resolveModuleContext(moduleContext)?.samplemanagement?.documentationAssistantEnabled
+        resolveModuleContext(moduleContext)?.samplemanagement?.labKeyAssistantEnabled
     );
 }
 

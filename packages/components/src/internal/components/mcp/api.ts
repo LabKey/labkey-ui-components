@@ -38,7 +38,7 @@ export interface ChatHistoryResponse {
 
 export interface LabKeyAssistantAPIWrapper {
     getChatHistory: (options: ChatHistoryOptions) => Promise<ChatHistoryResponse>;
-    labkeyAssistant: (options: LabKeyAssistantOptions) => Promise<AssistanceResponse>;
+    labKeyAssistant: (options: LabKeyAssistantOptions) => Promise<AssistanceResponse>;
 }
 
 export const LabKeyAssistantServerAPIWrapper: LabKeyAssistantAPIWrapper = {
@@ -53,7 +53,7 @@ export const LabKeyAssistantServerAPIWrapper: LabKeyAssistantAPIWrapper = {
             errorLogMsg: '',
         });
     },
-    labkeyAssistant: (options: LabKeyAssistantOptions): Promise<AssistanceResponse> => {
+    labKeyAssistant: (options: LabKeyAssistantOptions): Promise<AssistanceResponse> => {
         const { containerPath, requestHandler, ...jsonData } = options;
 
         return request<AssistanceResponse>({
@@ -66,12 +66,12 @@ export const LabKeyAssistantServerAPIWrapper: LabKeyAssistantAPIWrapper = {
     },
 };
 
-export function getDocumentationAssistantTestAPIWrapper(
-    mockFn = (): unknown => () => {},
+export function getLabKeyAssistantTestAPIWrapper(
+    mockFn = (): any => () => {},
     overrides: Partial<LabKeyAssistantAPIWrapper>
 ) {
     return {
-        labkeyAssistant: mockFn(),
+        labKeyAssistant: mockFn(),
         getChatHistory: mockFn(),
         ...overrides,
     };

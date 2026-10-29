@@ -164,7 +164,7 @@ function useLabKeyAssistant(api: LabKeyAssistantAPIWrapper = LabKeyAssistantServ
                     });
                 }
             } finally {
-                if (!aborted) setIsPending(false);
+                setIsPending(false);
             }
         },
         [api, conversationId, pushMessage, requestHandler, resetRequestHandler]

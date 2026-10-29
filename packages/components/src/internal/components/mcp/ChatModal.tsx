@@ -360,7 +360,7 @@ export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
     const minimizeClassName = classNames('fa', { 'fa-chevron-up': minimized, 'fa-minus': !minimized });
 
     return (
-        <aside aria-labelledby="chat-sidebar-title" className={className}>
+        <aside aria-labelledby="chat-sidebar-title" className={className} id="chat-sidebar">
             <div className="chat-sidebar__header">
                 <div className="chat-sidebar__title" id="chat-sidebar-title">
                     {title}
@@ -373,7 +373,13 @@ export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
 
                     <ChatPositionMenu position={position} setPosition={setPosition} />
 
-                    <button className="btn btn-sm btn-default" onClick={toggleMinimized} type="button">
+                    <button
+                        aria-controls="chat-sidebar"
+                        aria-expanded={!minimized}
+                        className="btn btn-sm btn-default"
+                        onClick={toggleMinimized}
+                        type="button"
+                    >
                         <Icon iconClass={minimizeClassName} srText={minimized ? 'Expand Chat' : 'Minimize Chat'} />
                     </button>
 

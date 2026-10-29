@@ -72,10 +72,6 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
         'fa-spinner fa-pulse': hasAnyInProgress,
         'fa-bell': !hasAnyInProgress,
     });
-    // TODO: is the has-unread necessary?
-    const connectorClassName = classNames('navbar-menu-connector', 'navbar-menu-connector--gray', {
-        'has-unread': unreadCount > 0,
-    });
     return (
         <div className="navbar-dropdown">
             <button
@@ -94,7 +90,7 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
             {show && (
                 <div className="navbar-menu__content" ref={menuRef}>
                     <h3 className="navbar-menu-header">
-                        <div className={connectorClassName} />
+                        <div className="navbar-menu-connector navbar-menu-connector--gray" />
                         Notifications
                         {unreadCount > 0 && (
                             <div className="pull-right clickable-text" onClick={markAllRead}>

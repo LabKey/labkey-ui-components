@@ -298,7 +298,7 @@ const ChatPositionMenuItem: FC<ChatPositionMenuItemProps> = memo(({ currentPosit
     const active = currentPosition === position;
     const onClick = useCallback(() => setPosition(position), [position, setPosition]);
     return (
-        <MenuItem active={active} aria-label={POSITION_LABELS[position]} onClick={onClick}>
+        <MenuItem active={active} onClick={onClick} role="menuitemradio">
             <ChatPositionIcon position={position} /> {POSITION_LABELS[position]}
         </MenuItem>
     );

@@ -63,19 +63,6 @@ export const AssistantService: FC<PropsWithChildren> = ({ children }) => {
 AssistantServiceContext.displayName = 'AssistantServiceContext';
 
 export const useAssistantService = () => {
-    const state = useContext(AssistantServiceContext);
-    const disabledState = useMemo<AssistantServiceState>(
-        () => ({
-            close: voidFn,
-            enabled: false,
-            open: voidFn,
-            show: false,
-        }),
-        []
-    );
-
-    if (state !== undefined) return state;
-
-    // It is not a catastrophic failure if the AssistantServiceContext isn't available, return a disabled state
-    return disabledState;
+    // We set a default value above so we don't need to guard against undefined here like other useContext hooks we have
+    return useContext(AssistantServiceContext);
 };

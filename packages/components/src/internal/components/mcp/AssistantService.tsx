@@ -1,7 +1,7 @@
 import React, { createContext, FC, PropsWithChildren, useContext, useMemo } from 'react';
 import { ModalState, useModalState } from '../../hooks';
 import { useServerContext } from '../base/ServerContext';
-import { isDocumentationAssistantEnabled } from '../../app/utils';
+import { isLabKeyAssistantEnabled } from '../../app/utils';
 
 function holdConversationLock(id: string): Promise<boolean> {
     return new Promise(resolve => {
@@ -56,7 +56,7 @@ export const AssistantServiceContext = createContext<AssistantServiceState>({
 export const AssistantService: FC<PropsWithChildren> = ({ children }) => {
     const modalState = useModalState();
     const { moduleContext, mcpReady } = useServerContext();
-    const enabled = mcpReady === true && isDocumentationAssistantEnabled(moduleContext);
+    const enabled = mcpReady === true && isLabKeyAssistantEnabled(moduleContext);
     const state = useMemo(() => ({ ...modalState, enabled }), [enabled, modalState]);
     return <AssistantServiceContext.Provider value={state}>{children}</AssistantServiceContext.Provider>;
 };

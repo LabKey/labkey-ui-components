@@ -58,7 +58,7 @@ import {
     isCalculatedFieldsEnabled,
     isCommunityDistribution,
     isConditionalFormattingEnabled,
-    isDocumentationAssistantEnabled,
+    isLabKeyAssistantEnabled,
     isELNEnabled,
     isEnterpriseDistribution,
     isLKSSupportEnabled,
@@ -674,27 +674,27 @@ describe('utils', () => {
         ).toBeTruthy();
     });
 
-    test('isDocumentationAssistantEnabled', () => {
-        expect(isDocumentationAssistantEnabled({ api: { moduleNames: [] } })).toBeFalsy();
+    test('isLabKeyAssistantEnabled', () => {
+        expect(isLabKeyAssistantEnabled({ api: { moduleNames: [] } })).toBeFalsy();
         expect(
-            isDocumentationAssistantEnabled({
+            isLabKeyAssistantEnabled({
                 api: { moduleNames: [] },
-                samplemanagement: { documentationAssistantEnabled: true },
+                samplemanagement: { labKeyAssistantEnabled: true },
             })
         ).toBeFalsy();
         expect(
-            isDocumentationAssistantEnabled({ api: { moduleNames: ['samplemanagement'] }, samplemanagement: {} })
+            isLabKeyAssistantEnabled({ api: { moduleNames: ['samplemanagement'] }, samplemanagement: {} })
         ).toBeFalsy();
         expect(
-            isDocumentationAssistantEnabled({
+            isLabKeyAssistantEnabled({
                 api: { moduleNames: ['samplemanagement'] },
-                samplemanagement: { documentationAssistantEnabled: false },
+                samplemanagement: { labKeyAssistantEnabled: false },
             })
         ).toBeFalsy();
         expect(
-            isDocumentationAssistantEnabled({
+            isLabKeyAssistantEnabled({
                 api: { moduleNames: ['samplemanagement'] },
-                samplemanagement: { documentationAssistantEnabled: true },
+                samplemanagement: { labKeyAssistantEnabled: true },
             })
         ).toBeTruthy();
     });

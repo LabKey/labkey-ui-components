@@ -27,7 +27,7 @@ const AIStars = (
     </svg>
 );
 
-export const DOCS_ASST_METRIC_FEATURE_AREA = 'documentationAssistant';
+export const LABKEY_ASSISTANT_METRIC_FEATURE_AREA = 'labKeyAssistant';
 
 interface ButtonProps {
     label: ReactNode;
@@ -71,7 +71,7 @@ function useLabKeyAssistant(api: LabKeyAssistantAPIWrapper = LabKeyAssistantServ
         setConversationId(undefined);
         setMessages([createIntroMessage()]);
         // If we have an active conversation send the '/clear' prompt so the server can clean up the conversation
-        if (conversationId) api.labkeyAssistant({ conversationId, prompt: '/clear' }).catch(() => undefined);
+        if (conversationId) api.labKeyAssistant({ conversationId, prompt: '/clear' }).catch(() => undefined);
     }, [abortRequest, api, conversationId]);
     const onClose = useCallback(() => {
         resetState();
@@ -133,7 +133,7 @@ function useLabKeyAssistant(api: LabKeyAssistantAPIWrapper = LabKeyAssistantServ
             setIsPending(true);
             let aborted = false;
             try {
-                const response = await api.labkeyAssistant({ conversationId, prompt, requestHandler });
+                const response = await api.labKeyAssistant({ conversationId, prompt, requestHandler });
                 resetRequestHandler();
 
                 if (response.reset) {
@@ -154,7 +154,7 @@ function useLabKeyAssistant(api: LabKeyAssistantAPIWrapper = LabKeyAssistantServ
                     });
                 }
 
-                incrementClientSideMetricCount(DOCS_ASST_METRIC_FEATURE_AREA, 'submitPrompt');
+                incrementClientSideMetricCount(LABKEY_ASSISTANT_METRIC_FEATURE_AREA, 'submitPrompt');
             } catch (e) {
                 aborted = !e.status;
                 if (!aborted) {

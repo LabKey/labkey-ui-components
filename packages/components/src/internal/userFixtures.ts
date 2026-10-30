@@ -210,6 +210,7 @@ export const TEST_USER_FOLDER_ADMIN = new User({
         PermissionTypes.DesignDataClass,
         PermissionTypes.DesignSampleSet,
         PermissionTypes.DesignStorage,
+        PermissionTypes.DesignTerminalStorage,
         PermissionTypes.DesignAssay,
         PermissionTypes.Insert,
         PermissionTypes.Update,
@@ -250,6 +251,7 @@ export const TEST_USER_PROJECT_ADMIN = new User({
         PermissionTypes.DesignDataClass,
         PermissionTypes.DesignSampleSet,
         PermissionTypes.DesignStorage,
+        PermissionTypes.DesignTerminalStorage,
         PermissionTypes.DesignAssay,
         PermissionTypes.Insert,
         PermissionTypes.Update,
@@ -292,6 +294,7 @@ export const TEST_USER_SITE_ADMIN = new User({
         PermissionTypes.DesignSampleSet,
         PermissionTypes.DesignAssay,
         PermissionTypes.DesignStorage,
+        PermissionTypes.DesignTerminalStorage,
         PermissionTypes.Insert,
         PermissionTypes.Update,
         PermissionTypes.ManagePicklists,
@@ -335,6 +338,7 @@ export const TEST_USER_APP_ADMIN = new User({
         PermissionTypes.DesignSampleSet,
         PermissionTypes.DesignAssay,
         PermissionTypes.DesignStorage,
+        PermissionTypes.DesignTerminalStorage,
         PermissionTypes.Insert,
         PermissionTypes.Update,
         PermissionTypes.ManagePicklists,
@@ -369,7 +373,7 @@ export const TEST_USER_STORAGE_DESIGNER = new User({
     isSignedIn: false,
     isSystemAdmin: false,
     isTrusted: false,
-    permissionsList: [PermissionTypes.Read, PermissionTypes.DesignStorage],
+    permissionsList: [PermissionTypes.Read, PermissionTypes.DesignStorage, PermissionTypes.DesignTerminalStorage],
 });
 
 export const TEST_USER_TERMINAL_STORAGE_DESIGNER = new User({

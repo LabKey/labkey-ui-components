@@ -129,6 +129,10 @@ export function userCanDesignLocations(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.DesignStorage], false);
 }
 
+export function userCanDesignTerminalStorage(user: User): boolean {
+    return hasAllPermissions(user, [PermissionTypes.DesignTerminalStorage], false);
+}
+
 export function userCanEditStorageData(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.EditStorageData], false);
 }

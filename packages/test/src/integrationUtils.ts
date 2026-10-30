@@ -292,12 +292,19 @@ const init = async (ctx: ServerContext, projectName: string, containerOptions?: 
     console.log('container path:', ctx.containerPath);
 };
 
+// Node reports a refused connection to a dual-stack host as an AggregateError whose message is empty
+const describeError = (e: any): string => {
+    if (Array.isArray(e?.errors) && e.errors.length > 0) return e.errors.map(describeError).join('; ');
+    return e?.message ? `${e.name}: ${e.message}` : String(e);
+};
+
 const initRequestContext = async (
     ctx: ServerContext,
     options?: RequestOptions
 ): Promise<{ csrfToken: string, sessionId: string }> => {
     const MAX_RETRIES = 5;
     let lastResponse;
+    let lastError: unknown;
 
     for (let i = 0; i < MAX_RETRIES; i++) {
         try {
@@ -312,15 +319,15 @@ const initRequestContext = async (
                 lastResponse = whoAmIResponse;
             }
         } catch (e) {
-            /* continue retrying */
+            lastError = e;
         }
 
         await sleep(5000);
     }
 
-    successfulResponse(lastResponse);
+    if (lastResponse) successfulResponse(lastResponse);
 
-    throw new Error('Failed to initialize CSRF. Unable to make successful request to login-whoAmI.api.');
+    throw new Error(`Failed to initialize CSRF. Unable to make successful request to login-whoAmI.api: ${describeError(lastError)}`);
 };
 
 /**

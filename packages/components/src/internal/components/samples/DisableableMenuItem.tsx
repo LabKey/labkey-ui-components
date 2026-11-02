@@ -16,7 +16,7 @@ export interface DisableableMenuItemProps extends PropsWithChildren {
     className?: string;
     disabled?: boolean;
     disabledMessage?: ReactNode;
-    href?: string | AppURL;
+    href?: AppURL | string;
     onClick?: () => void;
     placement?: Placement;
 }
@@ -49,8 +49,8 @@ export const DisableableMenuItem: FC<DisableableMenuItemProps> = memo(props => {
 
     const overlay = (
         <Popover
-            id="disable-operation-warning"
             className="disabled-menu-item-popover popover-message"
+            id="disable-operation-warning"
             placement={placement}
             targetRef={targetRef}
         >

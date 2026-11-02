@@ -10,8 +10,7 @@ import * as rrd from 'react-router';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
 
-import { markAllNotificationsRead } from '../../../test/data/notificationData';
-import { ServerNotificationModel } from '../notifications/model';
+import { ServerNotificationModel, ServerNotificationsConfig } from '../notifications/model';
 
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
@@ -67,9 +66,7 @@ describe('NavigationBar', () => {
         );
     }
 
-    const notificationsConfig = {
-        maxRows: 1,
-        markAllNotificationsRead,
+    const notificationsConfig: ServerNotificationsConfig = {
         serverActivity: new ServerNotificationModel(),
         onRead: jest.fn(),
     };

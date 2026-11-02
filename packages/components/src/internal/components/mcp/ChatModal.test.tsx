@@ -2,7 +2,7 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { FC, useState } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
@@ -37,7 +37,9 @@ function getHistoryProps(overrides?: Partial<ChatHistoryProps>): ChatHistoryProp
     };
 }
 
-function getPromptProps(overrides?: Partial<ChatPromptProps>): ChatPromptProps {
+type PromptHarnessProps = Omit<ChatPromptProps, 'prompt' | 'setPrompt'>;
+
+function getPromptProps(overrides?: Partial<PromptHarnessProps>): PromptHarnessProps {
     return {
         isPending: false,
         onInterrupt: jest.fn(),
@@ -46,6 +48,11 @@ function getPromptProps(overrides?: Partial<ChatPromptProps>): ChatPromptProps {
         ...overrides,
     };
 }
+
+const PromptHarness: FC<PromptHarnessProps> = props => {
+    const [prompt, setPrompt] = useState('');
+    return <ChatPrompt {...props} prompt={prompt} setPrompt={setPrompt} />;
+};
 
 function getSessionProps(overrides?: Partial<ChatSessionProps>): ChatSessionProps {
     return {
@@ -219,7 +226,7 @@ describe('ChatPrompt', () => {
         test('submit calls sendPrompt with trimmed value and clears the textarea', async () => {
             // Arrange
             const sendPrompt = jest.fn().mockResolvedValue(undefined);
-            render(<ChatPrompt {...getPromptProps({ sendPrompt })} />);
+            render(<PromptHarness {...getPromptProps({ sendPrompt })} />);
             const user = userEvent.setup();
 
             // Act
@@ -235,7 +242,7 @@ describe('ChatPrompt', () => {
         test('Enter without shift submits, Shift+Enter does not', () => {
             // Arrange
             const sendPrompt = jest.fn().mockResolvedValue(undefined);
-            render(<ChatPrompt {...getPromptProps({ sendPrompt })} />);
+            render(<PromptHarness {...getPromptProps({ sendPrompt })} />);
             const textarea = getTextarea();
 
             // Act - Shift+Enter first (should not submit), then plain Enter (should submit)
@@ -255,7 +262,7 @@ describe('ChatPrompt', () => {
         test('empty / whitespace-only prompt does not send and submit is disabled', () => {
             // Arrange
             const sendPrompt = jest.fn().mockResolvedValue(undefined);
-            render(<ChatPrompt {...getPromptProps({ sendPrompt })} />);
+            render(<PromptHarness {...getPromptProps({ sendPrompt })} />);
             const textarea = getTextarea();
 
             // Act & Assert - with no input, the submit button is disabled
@@ -276,7 +283,7 @@ describe('ChatPrompt', () => {
             // Arrange
             const sendPrompt = jest.fn().mockResolvedValue(undefined);
             const onInterrupt = jest.fn();
-            render(<ChatPrompt {...getPromptProps({ isPending: true, sendPrompt, onInterrupt })} />);
+            render(<PromptHarness {...getPromptProps({ isPending: true, sendPrompt, onInterrupt })} />);
 
             // Act
             const textarea = getTextarea();
@@ -301,7 +308,7 @@ describe('ChatPrompt', () => {
             // Arrange
             const sendPrompt = jest.fn().mockResolvedValue(undefined);
             const onInterrupt = jest.fn();
-            const { rerender } = render(<ChatPrompt {...getPromptProps({ sendPrompt, onInterrupt })} />);
+            const { rerender } = render(<PromptHarness {...getPromptProps({ sendPrompt, onInterrupt })} />);
 
             // Act - send a prompt, then simulate the pending state, then click stop
             fireEvent.change(getTextarea(), { target: { value: 'first prompt' } });
@@ -309,7 +316,7 @@ describe('ChatPrompt', () => {
             expect(sendPrompt).toHaveBeenCalledWith('first prompt');
             expect(getTextarea()).toHaveValue('');
 
-            rerender(<ChatPrompt {...getPromptProps({ isPending: true, sendPrompt, onInterrupt })} />);
+            rerender(<PromptHarness {...getPromptProps({ isPending: true, sendPrompt, onInterrupt })} />);
             fireEvent.click(getPromptButton());
 
             // Assert - interrupt fired and the empty input is repopulated with the last sent value
@@ -321,13 +328,13 @@ describe('ChatPrompt', () => {
             // Arrange
             const sendPrompt = jest.fn().mockResolvedValue(undefined);
             const onInterrupt = jest.fn();
-            const { rerender } = render(<ChatPrompt {...getPromptProps({ sendPrompt, onInterrupt })} />);
+            const { rerender } = render(<PromptHarness {...getPromptProps({ sendPrompt, onInterrupt })} />);
 
             // Act - send a prompt, transition to pending, then type a new prompt before clicking stop
             fireEvent.change(getTextarea(), { target: { value: 'first prompt' } });
             fireEvent.keyDown(getTextarea(), { key: 'Enter' });
 
-            rerender(<ChatPrompt {...getPromptProps({ isPending: true, sendPrompt, onInterrupt })} />);
+            rerender(<PromptHarness {...getPromptProps({ isPending: true, sendPrompt, onInterrupt })} />);
             fireEvent.change(getTextarea(), { target: { value: 'new draft' } });
             fireEvent.click(getPromptButton());
 
@@ -340,7 +347,7 @@ describe('ChatPrompt', () => {
     describe('rendering', () => {
         test('labels the textarea with the title and renders the caution message', () => {
             // Act
-            render(<ChatPrompt {...getPromptProps({ title: 'Expression Assistant' })} />);
+            render(<PromptHarness {...getPromptProps({ title: 'Expression Assistant' })} />);
 
             // Assert - the aria-label is derived from the title so callers get distinct labels
             expect(screen.getByLabelText('Expression Assistant Prompt')).toBeInTheDocument();
@@ -436,7 +443,7 @@ describe('ChatSidebar', () => {
             const messages = [makeMessage({ id: 'u1', role: ChatRole.user, text: 'Hello there' })];
 
             // Act
-            render(<ChatSidebar {...getSessionProps({ messages })} startNewChat={jest.fn()} />);
+            render(<ChatSidebar {...getSessionProps({ messages })} loading={false} startNewChat={jest.fn()} />);
 
             // Assert
             expect(document.querySelector('.chat-sidebar')).toHaveClass('chat-sidebar--br');
@@ -464,7 +471,7 @@ describe('ChatSidebar', () => {
             // Arrange
             const startNewChat = jest.fn();
             const onClose = jest.fn();
-            render(<ChatSidebar {...getSessionProps({ onClose })} startNewChat={startNewChat} />);
+            render(<ChatSidebar {...getSessionProps({ onClose })} loading={false} startNewChat={startNewChat} />);
 
             // Act
             fireEvent.click(getHeaderButton('.fa-plus'));
@@ -478,7 +485,9 @@ describe('ChatSidebar', () => {
             // Arrange
             const onClose = jest.fn();
             const onInterrupt = jest.fn();
-            render(<ChatSidebar {...getSessionProps({ onClose, onInterrupt })} startNewChat={jest.fn()} />);
+            render(
+                <ChatSidebar {...getSessionProps({ onClose, onInterrupt })} loading={false} startNewChat={jest.fn()} />
+            );
 
             // Act
             fireEvent.click(screen.getByRole('button', { name: /end chat/i }));
@@ -492,7 +501,7 @@ describe('ChatSidebar', () => {
 
         test('minimizing hides the history and prompt until restored', () => {
             // Arrange
-            render(<ChatSidebar {...getSessionProps()} startNewChat={jest.fn()} />);
+            render(<ChatSidebar {...getSessionProps()} loading={false} startNewChat={jest.fn()} />);
 
             // Act
             fireEvent.click(getHeaderButton('.fa-minus'));
@@ -515,7 +524,7 @@ describe('ChatSidebar', () => {
     describe('position', () => {
         test('choosing a position moves the sidebar and marks the choice active', () => {
             // Arrange
-            render(<ChatSidebar {...getSessionProps()} startNewChat={jest.fn()} />);
+            render(<ChatSidebar {...getSessionProps()} loading={false} startNewChat={jest.fn()} />);
 
             // Act
             fireEvent.click(getHeaderButton('.dropdown-toggle'));

@@ -9,7 +9,7 @@ function holdConversationLock(id: string): Promise<boolean> {
             resolve(!!lock);
             if (!lock) return;
             // Return an unresolvable promise to prevent the lock from being released while the tab is alive
-            return new Promise(() => {});
+            return new Promise(() => {}); // eslint-disable-line @typescript-eslint/no-empty-function
         });
     });
 }

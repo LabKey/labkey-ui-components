@@ -83,7 +83,7 @@ interface NavigationBarProps {
     user?: User;
 }
 
-type Props = NavigationBarProps & UserMenuProps;
+type Props = NavigationBarProps & Omit<UserMenuProps, 'user'>;
 
 export const NavigationBar: FC<Props> = memo(props => {
     const {

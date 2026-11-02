@@ -37,7 +37,16 @@ function renderSegmentDefault(segment: ChatSegment, index: number): ReactNode | 
                 {segment.text}
             </div>
         );
+    } else if ((segment.type === 'sql' || segment.type === 'expression') && segment.sql) {
+        return (
+            <div className="assistant-expression">
+                <pre>
+                    <code className="language-sql">{segment.sql}</code>
+                </pre>
+            </div>
+        );
     }
+
     return undefined;
 }
 

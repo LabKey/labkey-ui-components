@@ -60,7 +60,7 @@ describe('DisableableMenuItem', () => {
         const content = 'Other test';
         const onClick = jest.fn();
         render(
-            <DisableableMenuItem onClick={onClick} disabled={true} placement="right">
+            <DisableableMenuItem disabled={true} onClick={onClick} placement="right">
                 {content}
             </DisableableMenuItem>
         );

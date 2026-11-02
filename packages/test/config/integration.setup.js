@@ -39,6 +39,12 @@ function getNetRC(machineName) {
     return auth;
 }
 
+// TeamCity writes Java .properties, which escape ':' and '=' with a backslash; properties-reader keeps the backslash
+function getProperty(properties, name) {
+    const value = properties.get(name);
+    return typeof value === 'string' ? value.replace(/\\(.)/g, '$1') : value;
+}
+
 function getTestProperties() {
     let props = {
         contextPath: DEFAULT_CONTEXT_PATH,
@@ -55,7 +61,7 @@ function getTestProperties() {
             const properties = propertiesReader({ sourceFile: propFile });
 
             const serverPropName = 'labkey.server';
-            const propServer = properties.get(serverPropName);
+            const propServer = getProperty(properties, serverPropName);
             if (propServer) {
                 const serverParts = propServer.split('://');
 
@@ -67,14 +73,14 @@ function getTestProperties() {
                 props.server = serverParts[1];
             }
 
-            const propContextPath = properties.get('labkey.contextpath');
+            const propContextPath = getProperty(properties, 'labkey.contextpath');
             if (propContextPath) {
                 props.contextPath = propContextPath;
             }
 
-            let propPort = properties.get('labkey.port');
+            let propPort = getProperty(properties, 'labkey.port');
             if (!propPort) {
-                propPort = properties.get('tomcat.port') // Property from TeamCity build agents
+                propPort = getProperty(properties, 'tomcat.port') // Property from TeamCity build agents
             }
             if (propPort) {
                 props.port = propPort;
@@ -135,6 +141,11 @@ if (npm_config_username || npm_config_pass) {
 }
 
 process.env.INTEGRATION_SERVER = `${protocol}://${server}:${port}`;
+try {
+    new URL(process.env.INTEGRATION_SERVER);
+} catch (e) {
+    throw new Error(`Invalid integration server URL "${process.env.INTEGRATION_SERVER}" built from protocol "${protocol}", server "${server}", port "${port}".`);
+}
 process.env.INTEGRATION_CONTEXT_PATH = contextPath;
 process.env.INTEGRATION_AUTH_USER = user;
 process.env.INTEGRATION_AUTH_PASS = pass;

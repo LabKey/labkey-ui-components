@@ -11,7 +11,7 @@ import { LabKeyAssistantAPIWrapper, getLabKeyAssistantTestAPIWrapper } from './a
 import { getSavedConversationId, saveConversationId } from './AssistantService';
 import { ChatRole } from './models';
 
-const mockService = { close: jest.fn(), enabled: true, open: jest.fn(), show: true };
+const mockService = { close: jest.fn(), enabled: true, focusOnMount: false, open: jest.fn(), show: true };
 
 jest.mock('./AssistantService', () => ({
     getSavedConversationId: jest.fn(),
@@ -285,6 +285,14 @@ describe('AssistantButton', () => {
         expect(screen.getByText('LabKey Assistant')).toHaveClass('sr-only');
         await userEvent.click(screen.getByRole('button', { name: 'LabKey Assistant' }));
         expect(onClick).toHaveBeenCalledTimes(1);
+    });
+
+    test('passes its id to onClick so focus can return to it', async () => {
+        const onClick = jest.fn();
+        render(<AssistantButton id="navbar-assistant-button" label="LabKey Assistant" onClick={onClick} />);
+
+        await userEvent.click(screen.getByRole('button', { name: 'LabKey Assistant' }));
+        expect(onClick).toHaveBeenCalledWith('navbar-assistant-button');
     });
 
     test('shows the label with showLabel', () => {

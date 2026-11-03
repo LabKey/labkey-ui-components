@@ -71,7 +71,17 @@ describe('AssistantService', () => {
     let state: ReturnType<typeof useAssistantService>;
     const Consumer: FC = () => {
         state = useAssistantService();
-        return <div>{state.show ? 'shown' : 'hidden'}</div>;
+        return (
+            <>
+                <div>{state.show ? 'shown' : 'hidden'}</div>
+                <button id="source-button" type="button">
+                    Source
+                </button>
+                <button id="other-button" type="button">
+                    Other
+                </button>
+            </>
+        );
     };
 
     function renderService(serverContext: Partial<ServerContext>): void {
@@ -110,9 +120,45 @@ describe('AssistantService', () => {
         expect(screen.getByText('hidden')).toBeInTheDocument();
     });
 
+    test('focusOnMount only when opened from a button', () => {
+        renderService({ mcpReady: true, moduleContext: ENABLED_MODULE_CONTEXT });
+        expect(state.focusOnMount).toBe(false);
+
+        act(() => state.open());
+        expect(state.focusOnMount).toBe(false);
+        act(() => state.close());
+
+        act(() => state.open('source-button'));
+        expect(state.focusOnMount).toBe(true);
+
+        act(() => state.close());
+        expect(state.focusOnMount).toBe(false);
+    });
+
+    test('close returns focus to the button that opened it', () => {
+        renderService({ mcpReady: true, moduleContext: ENABLED_MODULE_CONTEXT });
+        act(() => state.open('source-button'));
+        screen.getByRole('button', { name: 'Other' }).focus();
+
+        act(() => state.close());
+
+        expect(screen.getByRole('button', { name: 'Source' })).toHaveFocus();
+    });
+
+    test('close leaves focus alone when not opened from a button', () => {
+        renderService({ mcpReady: true, moduleContext: ENABLED_MODULE_CONTEXT });
+        act(() => state.open());
+        screen.getByRole('button', { name: 'Other' }).focus();
+
+        act(() => state.close());
+
+        expect(screen.getByRole('button', { name: 'Other' })).toHaveFocus();
+    });
+
     test('is disabled outside the provider', () => {
         render(<Consumer />);
         expect(state.enabled).toBe(false);
+        expect(state.focusOnMount).toBe(false);
         expect(state.show).toBe(false);
     });
 });

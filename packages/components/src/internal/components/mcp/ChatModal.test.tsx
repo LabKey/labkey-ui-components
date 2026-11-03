@@ -3,7 +3,7 @@
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, useState } from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
 import {
@@ -56,6 +56,7 @@ const PromptHarness: FC<PromptHarnessProps> = props => {
 
 function getSessionProps(overrides?: Partial<ChatSessionProps>): ChatSessionProps {
     return {
+        focusOnMount: false,
         isPending: false,
         messages: [],
         onClose: jest.fn(),
@@ -72,6 +73,11 @@ function getTextarea(): HTMLTextAreaElement {
 
 function getPromptButton(): HTMLButtonElement {
     return document.querySelector('.prompt-button') as HTMLButtonElement;
+}
+
+// The prompt focuses itself from a zero-delay timeout after mount
+function flushFocusTimer(): void {
+    act(() => jest.runOnlyPendingTimers());
 }
 
 describe('ChatHistory', () => {
@@ -344,6 +350,25 @@ describe('ChatPrompt', () => {
         });
     });
 
+    describe('focus', () => {
+        beforeEach(() => jest.useFakeTimers());
+        afterEach(() => jest.useRealTimers());
+
+        test('focuses the textarea on mount with focusOnMount', () => {
+            render(<PromptHarness {...getPromptProps({ focusOnMount: true })} />);
+            flushFocusTimer();
+
+            expect(getTextarea()).toHaveFocus();
+        });
+
+        test('does not take focus on mount without focusOnMount', () => {
+            render(<PromptHarness {...getPromptProps()} />);
+            flushFocusTimer();
+
+            expect(getTextarea()).not.toHaveFocus();
+        });
+    });
+
     describe('rendering', () => {
         test('labels the textarea with the title and renders the caution message', () => {
             // Act
@@ -410,6 +435,18 @@ describe('ChatModal', () => {
             // Assert
             expect(onInterrupt).toHaveBeenCalledTimes(1);
             expect(onInterrupt).toHaveBeenCalledWith(true);
+        });
+    });
+
+    describe('focus', () => {
+        beforeEach(() => jest.useFakeTimers());
+        afterEach(() => jest.useRealTimers());
+
+        test('focuses the prompt rather than the modal with focusOnMount', () => {
+            render(<ChatModal {...getSessionProps({ focusOnMount: true })} />);
+            flushFocusTimer();
+
+            expect(getTextarea()).toHaveFocus();
         });
     });
 
@@ -518,6 +555,41 @@ describe('ChatSidebar', () => {
             expect(document.querySelector('.chat-sidebar')).not.toHaveClass('chat-sidebar--minimized');
             expect(document.querySelector('.chat-history')).toBeInTheDocument();
             expect(getTextarea()).toBeInTheDocument();
+        });
+
+        test('keeps the drafted prompt across minimize and restore', () => {
+            render(<ChatSidebar {...getSessionProps()} loading={false} startNewChat={jest.fn()} />);
+            fireEvent.change(getTextarea(), { target: { value: 'unsent draft' } });
+
+            fireEvent.click(getHeaderButton('.fa-minus'));
+            fireEvent.click(getHeaderButton('.fa-chevron-up'));
+
+            expect(getTextarea()).toHaveValue('unsent draft');
+        });
+    });
+
+    describe('focus', () => {
+        beforeEach(() => jest.useFakeTimers());
+        afterEach(() => jest.useRealTimers());
+
+        test('focuses the prompt on mount and on restore with focusOnMount', () => {
+            render(
+                <ChatSidebar {...getSessionProps({ focusOnMount: true })} loading={false} startNewChat={jest.fn()} />
+            );
+            flushFocusTimer();
+            expect(getTextarea()).toHaveFocus();
+
+            fireEvent.click(getHeaderButton('.fa-minus'));
+            fireEvent.click(getHeaderButton('.fa-chevron-up'));
+            flushFocusTimer();
+            expect(getTextarea()).toHaveFocus();
+        });
+
+        test('does not take focus without focusOnMount', () => {
+            render(<ChatSidebar {...getSessionProps()} loading={false} startNewChat={jest.fn()} />);
+            flushFocusTimer();
+
+            expect(getTextarea()).not.toHaveFocus();
         });
     });
 

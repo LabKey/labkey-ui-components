@@ -263,7 +263,7 @@ describe('GridPanel', () => {
         // pageSizes should be different
         rerender(<GridPanel actions={actions} model={model} />);
         expect(document.querySelector(PAGINATION_SELECTOR + ' ul')).toHaveTextContent(
-            'Jump ToFirst PageLast Page...Page Size2040100250400'
+            'Jump ToFirst PageLast Page...Page Size20401002505001,000'
         );
         rerender(<GridPanel actions={actions} model={model} pageSizes={[5, 10, 15, 20]} />);
         expect(document.querySelector(PAGINATION_SELECTOR + ' ul')).toHaveTextContent(

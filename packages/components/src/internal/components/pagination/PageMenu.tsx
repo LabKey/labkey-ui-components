@@ -11,14 +11,14 @@ import { useOverlayTriggerState } from '../../OverlayTrigger';
 import { Tooltip } from '../../Tooltip';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-interface Props {
+export interface PageMenuProps {
     currentPage: number;
     disabled: boolean;
     isFirstPage: boolean;
     isLastPage: boolean;
     loadFirstPage: () => void;
-    loadLastPage: () => void;
     loadingTotalCount?: boolean;
+    loadLastPage: () => void;
     onShowTotalRowCount?: () => void;
     pageCount: number;
     pageSize: number;
@@ -27,7 +27,7 @@ interface Props {
     setPageSize: (size: number) => void;
 }
 
-export const PageMenu: FC<Props> = props => {
+export const PageMenu: FC<PageMenuProps> = props => {
     const {
         currentPage,
         disabled,

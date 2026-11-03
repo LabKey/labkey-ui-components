@@ -32,12 +32,12 @@ export interface PaginationProps extends PaginationData {
     loadPreviousPage: () => void;
     // pageSizes is expected to be sorted (ascending)
     pageSizes?: number[];
-    setPageSize: (pageSize) => void;
+    setPageSize: (pageSize: number) => void;
     showTotalRowCount?: () => void;
 }
 
 const PAGINATION_METRIC_AREA = 'pagination';
-const DEFAULT_PAGE_SIZES = [20, 40, 100, 250, 400];
+const DEFAULT_PAGE_SIZES = [20, 40, 100, 250, 500, 1000];
 
 export const Pagination: FC<PaginationProps> = memo(props => {
     const {
@@ -116,8 +116,8 @@ export const Pagination: FC<PaginationProps> = memo(props => {
                         className="pagination-button--previous"
                         disabled={disabled || isFirstPage}
                         iconClass="fa-chevron-left"
-                        tooltip="Previous Page"
                         onClick={onLoadPreviousPage}
+                        tooltip="Previous Page"
                     />
 
                     <PageMenu
@@ -125,14 +125,14 @@ export const Pagination: FC<PaginationProps> = memo(props => {
                         disabled={disabled}
                         isFirstPage={isFirstPage}
                         isLastPage={isLastPage}
-                        pageCount={pageCount}
-                        rowCountCapped={rowCountCapped}
                         loadFirstPage={onLoadFirstPage}
-                        loadLastPage={onLoadLastPage}
                         loadingTotalCount={isLoading(totalCountLoadingState)}
+                        loadLastPage={onLoadLastPage}
                         onShowTotalRowCount={showTotalRowCount ? onShowTotalRowCount : undefined}
+                        pageCount={pageCount}
                         pageSize={pageSize}
                         pageSizes={pageSizes}
+                        rowCountCapped={rowCountCapped}
                         setPageSize={onSetPageSize}
                     />
 
@@ -140,8 +140,8 @@ export const Pagination: FC<PaginationProps> = memo(props => {
                         className="pagination-button--next"
                         disabled={disabled || isLastPage || outOfBounds}
                         iconClass="fa-chevron-right"
-                        tooltip="Next Page"
                         onClick={onLoadNextPage}
+                        tooltip="Next Page"
                     />
                 </div>
             )}

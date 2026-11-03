@@ -107,7 +107,7 @@ export const ChatHistory: FC<ChatHistoryProps> = memo(({ messages, isPending, re
 ChatHistory.displayName = 'ChatHistory';
 
 export interface ChatPromptProps {
-    focusOnMount?: boolean;
+    focusOnMount: boolean;
     isPending: boolean;
     onInterrupt: (isUser?: boolean) => void;
     prompt: string;
@@ -240,6 +240,7 @@ export const ChatPrompt: FC<ChatPromptProps> = memo(props => {
 ChatPrompt.displayName = 'ChatPrompt';
 
 export interface ChatSessionProps {
+    focusOnMount: boolean;
     isPending: boolean;
     messages: ChatMessage[];
     onClose: () => void;
@@ -250,7 +251,7 @@ export interface ChatSessionProps {
 }
 
 export const ChatModal: FC<ChatSessionProps> = memo(props => {
-    const { isPending, messages, onClose, onInterrupt, renderSegment, sendPrompt, title } = props;
+    const { focusOnMount, isPending, messages, onClose, onInterrupt, renderSegment, sendPrompt, title } = props;
     const [prompt, setPrompt] = useState('');
 
     const handleClose = useCallback(() => {
@@ -268,6 +269,7 @@ export const ChatModal: FC<ChatSessionProps> = memo(props => {
 
     const footer = (
         <ChatPrompt
+            focusOnMount={focusOnMount}
             isPending={isPending}
             onInterrupt={onInterrupt}
             prompt={prompt}
@@ -389,7 +391,6 @@ const ChatPositionMenu: FC<ChatPositionMenuProps> = memo(({ position, setPositio
 ChatPositionMenu.displayName = 'ChatPositionMenu';
 
 interface ChatSidebarProps extends ChatSessionProps {
-    focusOnMount: boolean;
     loading: boolean;
     startNewChat: () => void;
 }

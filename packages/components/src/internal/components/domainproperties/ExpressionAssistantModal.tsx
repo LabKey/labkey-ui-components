@@ -237,6 +237,7 @@ export const ExpressionAssistantModal: FC<ExpressionAssistantModalProps> = memo(
 
     return (
         <ChatModal
+            focusOnMount
             isPending={isPending}
             messages={messages}
             onClose={onClose}

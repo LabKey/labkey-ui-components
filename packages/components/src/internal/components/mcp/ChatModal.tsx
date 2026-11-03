@@ -107,6 +107,7 @@ export const ChatHistory: FC<ChatHistoryProps> = memo(({ messages, isPending, re
 ChatHistory.displayName = 'ChatHistory';
 
 export interface ChatPromptProps {
+    focusOnMount?: boolean;
     isPending: boolean;
     onInterrupt: (isUser?: boolean) => void;
     prompt: string;
@@ -116,16 +117,17 @@ export interface ChatPromptProps {
 }
 
 export const ChatPrompt: FC<ChatPromptProps> = memo(props => {
-    const { isPending, prompt, sendPrompt, setPrompt, title, onInterrupt } = props;
+    const { focusOnMount, isPending, prompt, sendPrompt, setPrompt, title, onInterrupt } = props;
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const lastSentPromptRef = useRef('');
     const timer = useTimeout();
 
     // Autofocus the prompt on mount
     useEffect(() => {
+        if (!focusOnMount) return;
         timer.set(() => textAreaRef.current?.focus());
         return timer.clear;
-    }, [timer]);
+    }, [focusOnMount, timer]);
 
     const fieldSizingSupported = useMemo(() => CSS.supports('field-sizing', 'content'), []);
 
@@ -387,13 +389,24 @@ const ChatPositionMenu: FC<ChatPositionMenuProps> = memo(({ position, setPositio
 ChatPositionMenu.displayName = 'ChatPositionMenu';
 
 interface ChatSidebarProps extends ChatSessionProps {
+    focusOnMount: boolean;
     loading: boolean;
     startNewChat: () => void;
 }
 
 export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
-    const { isPending, loading, messages, onClose, onInterrupt, title, renderSegment, sendPrompt, startNewChat } =
-        props;
+    const {
+        focusOnMount,
+        isPending,
+        loading,
+        messages,
+        onClose,
+        onInterrupt,
+        title,
+        renderSegment,
+        sendPrompt,
+        startNewChat,
+    } = props;
     const [prompt, setPrompt] = useState('');
     const [position, setPosition_] = useState(() => getSavedChatPosition());
     const setPosition = useCallback((pos: ChatPosition) => {
@@ -454,6 +467,7 @@ export const ChatSidebar: FC<ChatSidebarProps> = memo(props => {
             {!minimized && (
                 <div className="chat-sidebar__footer">
                     <ChatPrompt
+                        focusOnMount={focusOnMount}
                         isPending={isPending}
                         onInterrupt={onInterrupt}
                         prompt={prompt}

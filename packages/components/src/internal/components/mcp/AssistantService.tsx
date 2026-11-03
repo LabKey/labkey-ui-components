@@ -1,4 +1,4 @@
-import React, { createContext, FC, PropsWithChildren, useContext, useMemo } from 'react';
+import React, { createContext, FC, PropsWithChildren, useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { ModalState, useModalState } from '../../hooks';
 import { useServerContext } from '../base/ServerContext';
 import { isLabKeyAssistantEnabled } from '../../app/utils';
@@ -40,6 +40,8 @@ export function saveConversationId(id: string): void {
 
 interface AssistantServiceState extends ModalState {
     enabled: boolean;
+    focusOnMount: boolean;
+    open: (sourceButtonId?: string) => void;
 }
 
 const voidFn = (): void => {}; // eslint-disable-line @typescript-eslint/no-empty-function
@@ -49,15 +51,37 @@ const voidFn = (): void => {}; // eslint-disable-line @typescript-eslint/no-empt
 export const AssistantServiceContext = createContext<AssistantServiceState>({
     close: voidFn,
     enabled: false,
+    focusOnMount: false,
     open: voidFn,
     show: false,
 });
 
 export const AssistantService: FC<PropsWithChildren> = ({ children }) => {
-    const modalState = useModalState();
+    const { close: closeModal, open: openModal, ...modalState } = useModalState();
+    const [sourceButtonId, setSourceButtonId] = useState<string>(undefined);
+    const open = useCallback(
+        (sourceButtonId_?: string) => {
+            if (sourceButtonId_) setSourceButtonId(sourceButtonId_);
+            openModal();
+        },
+        [openModal]
+    );
+    const close = useCallback(() => {
+        if (sourceButtonId) {
+            document.getElementById(sourceButtonId)?.focus();
+            setSourceButtonId(undefined);
+        }
+        closeModal();
+    }, [closeModal, sourceButtonId]);
     const { moduleContext, mcpReady } = useServerContext();
     const enabled = mcpReady === true && isLabKeyAssistantEnabled(moduleContext);
-    const state = useMemo(() => ({ ...modalState, enabled }), [enabled, modalState]);
+    // For accessibility reasons we only want to focus the prompt input on mount when the user opens it by clicking the
+    // menu. We shouldn't steal focus if the user navigates from one page to another.
+    const focusOnMount = !!sourceButtonId;
+    const state = useMemo(
+        () => ({ ...modalState, close, enabled, focusOnMount, open }),
+        [close, enabled, focusOnMount, modalState, open]
+    );
     return <AssistantServiceContext.Provider value={state}>{children}</AssistantServiceContext.Provider>;
 };
 AssistantServiceContext.displayName = 'AssistantServiceContext';

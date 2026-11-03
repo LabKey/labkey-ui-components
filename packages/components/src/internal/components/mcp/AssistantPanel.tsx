@@ -31,18 +31,23 @@ export const LABKEY_ASSISTANT_METRIC_FEATURE_AREA = 'labKeyAssistant';
 
 interface AssistantButtonProps {
     className?: string;
+    id?: string;
     label: ReactNode;
-    onClick: () => void;
+    onClick: (buttonId?: string) => void;
     showLabel?: boolean;
 }
 
 export const AssistantButton: FC<AssistantButtonProps> = memo(
-    ({ className = 'btn btn-default', onClick, showLabel, label }) => (
-        <button className={className} onClick={onClick} type="button">
-            {AIStars}
-            <span className={showLabel ? 'margin-left-small' : 'sr-only'}>{label}</span>
-        </button>
-    )
+    ({ className = 'btn btn-default', id, onClick, showLabel, label }) => {
+        const onClick_ = useCallback(() => onClick(id), [id, onClick]);
+
+        return (
+            <button className={className} id={id} onClick={onClick_} type="button">
+                {AIStars}
+                <span className={showLabel ? 'margin-left-small' : 'sr-only'}>{label}</span>
+            </button>
+        );
+    }
 );
 AssistantButton.displayName = 'AssistantButton';
 
@@ -63,7 +68,7 @@ interface LabkeyAssistantState {
 }
 
 function useLabKeyAssistant(api: LabKeyAssistantAPIWrapper = LabKeyAssistantServerAPIWrapper): LabkeyAssistantState {
-    const { open, close } = useAssistantService();
+    const { close, open } = useAssistantService();
     const [conversationId, setConversationId] = useState<string>();
     const [messages, setMessages] = useState<ChatMessage[]>(() => []);
     const [isPending, setIsPending] = useState(false);
@@ -189,13 +194,14 @@ interface AssistantPanelProps {
 }
 
 export const AssistantPanel: FC<AssistantPanelProps> = memo(({ api }) => {
-    const { show } = useAssistantService();
+    const { focusOnMount, show } = useAssistantService();
     const { isPending, loading, messages, onClose, onInterrupt, sendPrompt, startNewChat } = useLabKeyAssistant(api);
 
     if (!show) return null;
 
     return (
         <ChatSidebar
+            focusOnMount={focusOnMount}
             isPending={isPending}
             loading={loading}
             messages={messages}

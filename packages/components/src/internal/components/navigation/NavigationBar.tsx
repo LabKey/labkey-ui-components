@@ -140,6 +140,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                     {assistantEnabled && (
                         <AssistantButton
                             className="navbar-button navbar-assistant-button"
+                            id="navbar-assistant-button"
                             label="LabKey Assistant"
                             onClick={openAssistant}
                         />

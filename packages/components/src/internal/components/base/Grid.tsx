@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, Fragment, memo, PureComponent, ReactNode, RefObject } from 'react';
+import React, { FC, Fragment, memo, PureComponent, ReactNode, RefObject, useMemo } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
 
@@ -374,8 +374,12 @@ export const Grid: FC<GridProps> = memo(props => {
         highlightRowIndexes,
         gridId,
     } = props;
-    const gridData = processData(data);
-    const gridColumns = columns !== undefined ? processColumns(columns) : resolveColumns(gridData);
+    // Stable references let memoized GridRows skip re-rendering when only other props change
+    const gridData = useMemo(() => processData(data), [data]);
+    const gridColumns = useMemo(
+        () => (columns !== undefined ? processColumns(columns) : resolveColumns(gridData)),
+        [columns, gridData]
+    );
     const headerProps: GridHeaderProps = {
         columns: gridColumns,
         headerCell,

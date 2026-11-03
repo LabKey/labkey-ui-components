@@ -6,6 +6,7 @@ const rrd = jest.createMockFromModule('react-router') as any;
 export default rrd;
 
 export const Link = rrd.Link;
+export const UNSAFE_DataRouterContext = jest.requireActual('react-router').UNSAFE_DataRouterContext;
 export const unstable_usePrompt = () => {};
 
 let navigate = jest.fn();

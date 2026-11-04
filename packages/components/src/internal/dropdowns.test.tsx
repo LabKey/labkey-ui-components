@@ -27,7 +27,7 @@ describe('DropdownMenu', () => {
     });
 
     test('asAnchor false', () => {
-        render(<DropdownMenu title="Test title" asAnchor={false} />);
+        render(<DropdownMenu asAnchor={false} title="Test title" />);
         expect(document.querySelectorAll('.lk-dropdown')).toHaveLength(1);
         expect(document.querySelectorAll('.dropdown-menu')).toHaveLength(1);
         expect(document.querySelectorAll('a')).toHaveLength(0);
@@ -36,7 +36,7 @@ describe('DropdownMenu', () => {
     });
 
     test('custom props', () => {
-        render(<DropdownMenu title="Test title" className="test-class" label="Test label" pullRight />);
+        render(<DropdownMenu className="test-class" label="Test label" pullRight title="Test title" />);
         expect(document.querySelectorAll('.lk-dropdown')).toHaveLength(1);
         expect(document.querySelectorAll('.dropdown-menu')).toHaveLength(1);
         expect(document.querySelectorAll('a')).toHaveLength(1);

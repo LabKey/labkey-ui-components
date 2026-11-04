@@ -7,7 +7,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
 import { AssistantButton, AssistantPanel } from './AssistantPanel';
-import { LabKeyAssistantAPIWrapper, getLabKeyAssistantTestAPIWrapper } from './api';
+import { getLabKeyAssistantTestAPIWrapper, LabKeyAssistantAPIWrapper } from './api';
 import { getSavedConversationId, saveConversationId } from './AssistantService';
 import { ChatRole } from './models';
 
@@ -139,9 +139,7 @@ describe('AssistantPanel', () => {
     test('clears the conversation when ending the chat', async () => {
         jest.mocked(getSavedConversationId).mockResolvedValue(CONVERSATION_ID);
         const { api } = renderPanel({
-            labKeyAssistant: jest
-                .fn()
-                .mockResolvedValue({ reset: true, success: true, text: "OK, let's start over." }),
+            labKeyAssistant: jest.fn().mockResolvedValue({ reset: true, success: true, text: "OK, let's start over." }),
             getChatHistory: jest.fn().mockResolvedValue(HISTORY),
         });
         await screen.findByText('How do I configure LDAP?');

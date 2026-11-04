@@ -139,7 +139,7 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
 
     return (
         <div className="product-menu-content" onClick={onClick} ref={menuRef}>
-            <div className="navbar-connector" />
+            <div className="navbar-menu-connector navbar-menu-connector--gray" />
             {error && <Alert>{error}</Alert>}
             <div className="product-menu-content-body">
                 {showFolderMenu && (

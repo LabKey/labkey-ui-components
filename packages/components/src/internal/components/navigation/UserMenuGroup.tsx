@@ -169,7 +169,13 @@ export const UserMenuGroupImpl: FC<ImplProps & UserMenuProps> = props => {
                 </DropdownButton>
             )}
 
-            <DropdownMenu className="user-dropdown navbar-dropdown" label="User menu" noCaret pullRight title={userToggle}>
+            <DropdownMenu
+                className="user-dropdown navbar-dropdown"
+                label="User menu"
+                noCaret
+                pullRight
+                title={userToggle}
+            >
                 <div className="navbar-menu-connector" />
                 {userMenuItems}
                 {extraUserItems}

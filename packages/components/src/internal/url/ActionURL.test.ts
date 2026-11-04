@@ -66,7 +66,7 @@ describe('getRedirectUrl', () => {
         });
 
         test('javascript: URL has an opaque origin and is routed through safeRedirect', () => {
-            const url = 'javascript:alert(1)'; // eslint-disable-line no-script-url
+            const url = 'javascript:alert(1)';
             expect(getRedirectUrl(url)).toEqual(safeRedirectUrl(url));
         });
 

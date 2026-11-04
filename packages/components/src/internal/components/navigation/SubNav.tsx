@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, useRef, useState, useCallback, useEffect, memo, useMemo } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { getServerContext } from '@labkey/api';
 import { useLocation } from 'react-router';
@@ -87,8 +87,8 @@ const SubNavImpl: FC<Props> = ({ noun, tabs }) => {
                             .filter(tab => !!tab.text)
                             .map(({ text, url, isActive }, i) => (
                                 // neither "text" nor "url" are consistently unique
-                                // eslint-disable-next-line react/no-array-index-key
-                                <NavItem key={i} to={url} onActive={onItemActivate} isActive={isActive}>
+
+                                <NavItem isActive={isActive} key={i} onActive={onItemActivate} to={url}>
                                     {text}
                                 </NavItem>
                             ))}

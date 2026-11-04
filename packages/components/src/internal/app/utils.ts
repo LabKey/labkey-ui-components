@@ -437,6 +437,13 @@ export function isDataChangeCommentRequirementFeatureEnabled(moduleContext?: Mod
     return isFeatureEnabled(ProductFeature.DataChangeCommentRequirement, moduleContext);
 }
 
+export function isLabKeyAssistantEnabled(moduleContext?: ModuleContext): boolean {
+    return (
+        hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName, moduleContext) &&
+        resolveModuleContext(moduleContext)?.samplemanagement?.labKeyAssistantEnabled
+    );
+}
+
 // should be enabled via ProductFeature for LKSM Professional, LIMS, LKB AND via distribution for LKS Professional, LKS Enterprise
 export function isCalculatedFieldsEnabled(moduleContext?: ModuleContext): boolean {
     return isApp()

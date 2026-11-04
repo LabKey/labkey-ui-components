@@ -42,7 +42,7 @@ interface ImplProps {
 }
 
 // exported for jest testing
-export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
+export const UserMenuGroupImpl: FC<ImplProps & UserMenuProps> = props => {
     const {
         model,
         extraDevItems,
@@ -73,7 +73,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                     helpHref_ = item.getUrlString();
                 } else {
                     const menuItem = (
-                        <MenuItem key={item.key} href={item.getUrlString()} target="_self">
+                        <MenuItem href={item.getUrlString()} key={item.key} target="_self">
                             {item.label}
                         </MenuItem>
                     );
@@ -108,7 +108,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
     }
 
     const userToggle = user.avatar ? (
-        <img className="img-rounded" src={user.avatar} alt="User Avatar" height={32} width={32} />
+        <img alt="User Avatar" className="img-rounded" height={32} src={user.avatar} width={32} />
     ) : (
         <span className="navbar-item">
             <span className="user-name">
@@ -119,71 +119,64 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
 
     return (
         <>
-            <div className="navbar-item pull-right">
-                <DropdownMenu className="user-dropdown" label="User menu" pullRight title={userToggle} >
-                    <div className="navbar-connector" />
-                    {userMenuItems}
-                    {extraUserItems}
-                    {(userMenuItems?.length > 0 || extraUserItems) && <MenuDivider />}
-                    {user.isSignedIn ? (
-                        <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
-                    ) : (
-                        <MenuItem onClick={onSignIn}>Sign In</MenuItem>
-                    )}
-                </DropdownMenu>
-            </div>
-            {(adminMenuItems?.length > 0 || getServerContext().devMode) && (
-                <div className="navbar-item pull-right navbar-item__dropdown">
-                    <DropdownButton
-                        className="admin-dropdown"
-                        buttonClassName="navbar-menu-button"
-                        title={<Icon iconClass="fa fa-cog navbar-header-icon" srText="Admin"/>}
-                        noCaret
-                        pullRight
-                    >
-                        <div className="navbar-icon-connector" />
-                        {adminMenuItems}
-                        {adminMenuItems?.length > 0 && getServerContext().devMode && <MenuDivider />}
-                        {getServerContext().devMode && (
-                            <>
-                                <MenuHeader text="Dev Tools" />
-                                <MenuItem onClick={toggleDevTools}>
-                                    {devToolsActive() ? 'Disable' : 'Enable'} Redux Tools
-                                </MenuItem>
-                                {extraDevItems}
-                            </>
-                        )}
-                    </DropdownButton>
-                </div>
-            )}
             {(!!helpHref || !!releaseNoteHref) && (
-                <div className="navbar-item pull-right navbar-item__dropdown">
-                    <DropdownButton
-                        buttonClassName="navbar-menu-button"
-                        className="help-dropdown"
-                        noCaret
-                        pullRight
-                        title={<Icon iconClass="fa fa-question-circle navbar-header-icon" srText="Help" />}
-                    >
-                        <div className="navbar-icon-connector" />
-                        {helpHref && (
-                            <MenuItem href={helpHref} target="_blank" rel="noopener noreferrer" onClick={onHelpClick}>
-                                Help
-                            </MenuItem>
-                        )}
-                        {releaseNoteHref && (
-                            <MenuItem
-                                href={releaseNoteHref}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={onReleaseNotesClick}
-                            >
-                                Release Notes
-                            </MenuItem>
-                        )}
-                    </DropdownButton>
-                </div>
+                <DropdownButton
+                    buttonClassName="navbar-menu-button"
+                    className="help-dropdown navbar-dropdown"
+                    noCaret
+                    pullRight
+                    title={<Icon iconClass="fa fa-question-circle navbar-header-icon" srText="Help" />}
+                >
+                    <div className="navbar-menu-connector" />
+                    {helpHref && (
+                        <MenuItem href={helpHref} onClick={onHelpClick} rel="noopener noreferrer" target="_blank">
+                            Help
+                        </MenuItem>
+                    )}
+                    {releaseNoteHref && (
+                        <MenuItem
+                            href={releaseNoteHref}
+                            onClick={onReleaseNotesClick}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
+                            Release Notes
+                        </MenuItem>
+                    )}
+                </DropdownButton>
             )}
+
+            {(adminMenuItems?.length > 0 || getServerContext().devMode) && (
+                <DropdownButton
+                    buttonClassName="navbar-menu-button"
+                    className="admin-dropdown navbar-dropdown"
+                    noCaret
+                    pullRight
+                    title={<Icon iconClass="fa fa-cog navbar-header-icon" srText="Admin" />}
+                >
+                    <div className="navbar-menu-connector" />
+                    {adminMenuItems}
+                    {adminMenuItems?.length > 0 && getServerContext().devMode && <MenuDivider />}
+                    {getServerContext().devMode && (
+                        <>
+                            <MenuHeader text="Dev Tools" />
+                            <MenuItem onClick={toggleDevTools}>
+                                {devToolsActive() ? 'Disable' : 'Enable'} Redux Tools
+                            </MenuItem>
+                            {extraDevItems}
+                        </>
+                    )}
+                </DropdownButton>
+            )}
+
+            <DropdownMenu className="user-dropdown navbar-dropdown" label="User menu" noCaret pullRight title={userToggle}>
+                <div className="navbar-menu-connector" />
+                {userMenuItems}
+                {extraUserItems}
+                {(userMenuItems?.length > 0 || extraUserItems) && <MenuDivider />}
+                {user.isSignedIn && <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>}
+                {!user.isSignedIn && <MenuItem onClick={onSignIn}>Sign In</MenuItem>}
+            </DropdownMenu>
         </>
     );
 };

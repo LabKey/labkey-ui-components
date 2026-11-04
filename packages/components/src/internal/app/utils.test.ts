@@ -58,6 +58,7 @@ import {
     isCalculatedFieldsEnabled,
     isCommunityDistribution,
     isConditionalFormattingEnabled,
+    isLabKeyAssistantEnabled,
     isELNEnabled,
     isEnterpriseDistribution,
     isLKSSupportEnabled,
@@ -669,6 +670,31 @@ describe('utils', () => {
                 api: { moduleNames: ['recipe'] },
                 core: { productFeatures: [ProductFeature.Media] },
                 biologics: {},
+            })
+        ).toBeTruthy();
+    });
+
+    test('isLabKeyAssistantEnabled', () => {
+        expect(isLabKeyAssistantEnabled({ api: { moduleNames: [] } })).toBeFalsy();
+        expect(
+            isLabKeyAssistantEnabled({
+                api: { moduleNames: [] },
+                samplemanagement: { labKeyAssistantEnabled: true },
+            })
+        ).toBeFalsy();
+        expect(
+            isLabKeyAssistantEnabled({ api: { moduleNames: ['samplemanagement'] }, samplemanagement: {} })
+        ).toBeFalsy();
+        expect(
+            isLabKeyAssistantEnabled({
+                api: { moduleNames: ['samplemanagement'] },
+                samplemanagement: { labKeyAssistantEnabled: false },
+            })
+        ).toBeFalsy();
+        expect(
+            isLabKeyAssistantEnabled({
+                api: { moduleNames: ['samplemanagement'] },
+                samplemanagement: { labKeyAssistantEnabled: true },
             })
         ).toBeTruthy();
     });

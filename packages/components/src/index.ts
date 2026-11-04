@@ -740,6 +740,7 @@ import {
     isConditionalFormattingEnabled,
     isCustomImportTemplatesEnabled,
     isDataChangeCommentRequirementFeatureEnabled,
+    isLabKeyAssistantEnabled,
     isELNEnabled,
     isExperimentAliasEnabled,
     isLKSSupportEnabled,
@@ -919,6 +920,8 @@ import { FilterCriteriaRenderer } from './internal/FilterCriteriaRenderer';
 import { getQueryTestAPIWrapper } from './internal/query/APIWrapper';
 import { useLoadableState } from './internal/useLoadableState';
 import { UnidentifiedPill } from './internal/UnidentifiedPill';
+import { AssistantPanel } from './internal/components/mcp/AssistantPanel';
+import { useAssistantService } from './internal/components/mcp/AssistantService';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -953,6 +956,7 @@ const App = {
     isSourceTypeEnabled,
     isCustomImportTemplatesEnabled,
     isConditionalFormattingEnabled,
+    isLabKeyAssistantEnabled,
     isMediaEnabled,
     isWorkflowEnabled,
     isAdvancedWorkflowEnabled,
@@ -1174,6 +1178,7 @@ export {
     AssayStateModel,
     AssayUploadResultModel,
     AssayUploadTabs,
+    AssistantPanel,
     AttachmentCard,
     AUDIT_EVENT_TYPE_PARAM,
     AuditDetails,
@@ -1793,6 +1798,7 @@ export {
     useAdministrationSubNav,
     useAppContext,
     useAppNavigate,
+    useAssistantService,
     useContainerPath,
     useContainerUser,
     useDataChangeCommentsRequired,

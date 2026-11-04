@@ -1226,6 +1226,8 @@ export class DomainField
 
         // Issue 43254: trim field name leading and trailing spaces before saving
         json.name = df.name?.trim();
+        // GH Issue 1805: a cleared label must save as null, not "", or the column header renders blank
+        json.label = df.label?.trim() || null;
 
         if (!(df.dataType.isLookup() || df.dataType.isUser() || df.dataType.isSample())) {
             json.lookupContainer = null;

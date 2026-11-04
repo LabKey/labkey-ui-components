@@ -1170,6 +1170,14 @@ describe('DomainField', () => {
         expect(DomainField.serialize(DomainField.create({ name: 'test1 test2' })).name).toBe('test1 test2');
     });
 
+    test('serialize, label trim', () => {
+        expect(DomainField.serialize(DomainField.create({})).label).toBeNull();
+        expect(DomainField.serialize(DomainField.create({ label: '' })).label).toBeNull();
+        expect(DomainField.serialize(DomainField.create({ label: '  ' })).label).toBeNull();
+        expect(DomainField.serialize(DomainField.create({ label: ' My Label ' })).label).toBe('My Label');
+        expect(DomainField.serialize(DomainField.create({ label: 'My Label' })).label).toBe('My Label');
+    });
+
     test('hasRegExValidation', () => {
         expect(
             DomainField.hasRegExValidation(DomainField.create({ name: 'foo', rangeURI: INTEGER_TYPE.rangeURI }))

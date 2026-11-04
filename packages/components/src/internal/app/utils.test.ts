@@ -15,6 +15,7 @@ import {
     TEST_USER_READER,
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
+    TEST_USER_TERMINAL_STORAGE_DESIGNER,
 } from '../userFixtures';
 
 import {
@@ -77,6 +78,7 @@ import {
     setProductFolders,
     userCanDesignLocations,
     userCanDesignSourceTypes,
+    userCanDesignTerminalStorage,
     userCanEditStorageData,
     userCanReadGroupDetails,
     userCanReadUserDetails,
@@ -479,6 +481,20 @@ describe('utils', () => {
         expect(userCanDesignLocations(TEST_USER_APP_ADMIN)).toBeTruthy();
         expect(userCanDesignLocations(TEST_USER_STORAGE_DESIGNER)).toBeTruthy();
         expect(userCanDesignLocations(TEST_USER_STORAGE_EDITOR)).toBeFalsy();
+        expect(userCanDesignLocations(TEST_USER_TERMINAL_STORAGE_DESIGNER)).toBeFalsy();
+    });
+
+    test('userCanDesignTerminalStorage', () => {
+        expect(userCanDesignTerminalStorage(TEST_USER_GUEST)).toBeFalsy();
+        expect(userCanDesignTerminalStorage(TEST_USER_READER)).toBeFalsy();
+        expect(userCanDesignTerminalStorage(TEST_USER_AUTHOR)).toBeFalsy();
+        expect(userCanDesignTerminalStorage(TEST_USER_EDITOR)).toBeFalsy();
+        expect(userCanDesignTerminalStorage(TEST_USER_ASSAY_DESIGNER)).toBeFalsy();
+        expect(userCanDesignTerminalStorage(TEST_USER_FOLDER_ADMIN)).toBeTruthy();
+        expect(userCanDesignTerminalStorage(TEST_USER_APP_ADMIN)).toBeTruthy();
+        expect(userCanDesignTerminalStorage(TEST_USER_STORAGE_DESIGNER)).toBeTruthy();
+        expect(userCanDesignTerminalStorage(TEST_USER_STORAGE_EDITOR)).toBeFalsy();
+        expect(userCanDesignTerminalStorage(TEST_USER_TERMINAL_STORAGE_DESIGNER)).toBeTruthy();
     });
 
     test('userCanEditStorageData', () => {
@@ -491,6 +507,7 @@ describe('utils', () => {
         expect(userCanEditStorageData(TEST_USER_APP_ADMIN)).toBeFalsy();
         expect(userCanEditStorageData(TEST_USER_STORAGE_DESIGNER)).toBeFalsy();
         expect(userCanEditStorageData(TEST_USER_STORAGE_EDITOR)).toBeTruthy();
+        expect(userCanEditStorageData(TEST_USER_TERMINAL_STORAGE_DESIGNER)).toBeFalsy();
     });
 
     test('userCanReadUserDetails', () => {

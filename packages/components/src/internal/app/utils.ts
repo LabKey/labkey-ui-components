@@ -62,27 +62,27 @@ import {
     sampleManagerIsPrimaryApp,
 } from './products';
 
-declare var LABKEY: LabKey;
+declare let LABKEY: LabKey;
 
 // Type definition not provided for event codes so here we provide our own
 // Source: https://www.iana.org/assignments/websocket/websocket.xml#close-code-number
 export enum CloseEventCode {
-    ABNORMAL_CLOSURE = 1006,
-    BAD_GATEWAY = 1014,
+    NORMAL_CLOSURE = 1000,
     GOING_AWAY = 1001,
-    INTERNAL_ERROR = 1011,
+    PROTOCOL_ERROR = 1002,
+    UNSUPPORTED_DATA = 1003,
+    RESERVED = 1004,
+    NO_STATUS_RCVD = 1005,
+    ABNORMAL_CLOSURE = 1006,
     INVALID_FRAME_PAYLOAD_DATA = 1007,
+    POLICY_VIOLATION = 1008,
     MESSAGE_TOO_BIG = 1009,
     MISSING_EXT = 1010,
-    NO_STATUS_RCVD = 1005,
-    NORMAL_CLOSURE = 1000,
-    POLICY_VIOLATION = 1008,
-    PROTOCOL_ERROR = 1002,
-    RESERVED = 1004,
+    INTERNAL_ERROR = 1011,
     SERVICE_RESTART = 1012,
-    TLS_HANDSHAKE = 1015,
     TRY_AGAIN_LATER = 1013,
-    UNSUPPORTED_DATA = 1003,
+    BAD_GATEWAY = 1014,
+    TLS_HANDSHAKE = 1015,
 }
 
 export function userCanReadAssays(user: User): boolean {
@@ -127,6 +127,10 @@ export function userCanDesignSourceTypes(user: User): boolean {
 
 export function userCanDesignLocations(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.DesignStorage], false);
+}
+
+export function userCanDesignTerminalStorage(user: User): boolean {
+    return hasAllPermissions(user, [PermissionTypes.DesignTerminalStorage], false);
 }
 
 export function userCanEditStorageData(user: User): boolean {

@@ -2,17 +2,30 @@
  * Copyright (c) 2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, useCallback } from 'react';
-import { render, waitFor } from '@testing-library/react';
+import React, { FC, ReactNode, useCallback } from 'react';
+import { act, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Filter } from '@labkey/api';
 
 import { LoadingState } from '../LoadingState';
 import { QueryInfo } from '../QueryInfo';
+import { QuerySort, SORT_ASC, SORT_DESC } from '../QuerySort';
 import { SchemaQuery } from '../SchemaQuery';
 import { selectRows } from '../../internal/query/selectRows';
+import { makeQueryInfo, makeTestData } from '../../internal/test/testHelpers';
+import { MockQueryModelLoader } from '../../test/MockQueryModelLoader';
+import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
+import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
+import aminoAcidsQueryInfo from '../../test/data/assayAminoAcidsData-getQueryDetails.json';
+import aminoAcidsQuery from '../../test/data/assayAminoAcidsData-getQuery.json';
 
+import { QueryModel } from './QueryModel';
 import { QueryModelLoader, RowsResponse } from './QueryModelLoader';
-import { InjectedQueryModels, RequestManager, withQueryModels } from './withQueryModels';
+import { Actions, InjectedQueryModels, QueryModelMap, RequestManager, withQueryModels } from './withQueryModels';
+
+// require() returns the same __mocks__/react-router.ts instance withQueryModels uses; jest.requireMock does not
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const rrd = require('react-router');
 
 jest.mock('../../internal/query/selectRows', () => ({
     selectRows: jest.fn(),
@@ -419,5 +432,461 @@ describe('withQueryModels capped total count', () => {
         expect(textOf('.row-count')).toBe('151');
         expect(textOf('.offset')).toBe('0');
         expect(jest.mocked(selectRows).mock.calls[1][0]).toEqual(expect.objectContaining({ maxCount: 0 }));
+    });
+});
+
+describe('withQueryModels actions and URL binding', () => {
+    const MIXTURES_SCHEMA_QUERY = new SchemaQuery('exp.data', 'mixtures');
+    const AMINO_ACIDS_SCHEMA_QUERY = new SchemaQuery('assay.General.Amino Acids', 'Runs');
+    let MIXTURES_QUERY_INFO: QueryInfo;
+    let MIXTURES_DATA: RowsResponse;
+    let AMINO_ACIDS_QUERY_INFO: QueryInfo;
+    let AMINO_ACIDS_DATA: RowsResponse;
+
+    // Tests read state from these variables, which the wrapped component reassigns on every render
+    let injectedModels: QueryModelMap;
+    let injectedModel: QueryModel;
+    let injectedActions: Actions;
+
+    const ModelCapture: FC<InjectedQueryModels> = ({ actions, queryModels }) => {
+        injectedModels = queryModels;
+        injectedModel = queryModels.model;
+        injectedActions = actions;
+        return null;
+    };
+    const WrappedModelCapture = withQueryModels(ModelCapture);
+
+    // Model actions update state outside of React event handlers, so flush them with act. Some actions are async
+    // (e.g. loadLastPage); the braces keep act synchronous by discarding the returned promise.
+    function dispatch(fn: () => unknown): void {
+        act(() => {
+            fn();
+        });
+    }
+
+    async function waitForRowsLoaded(): Promise<void> {
+        await waitFor(() => {
+            expect(injectedModel.queryInfoLoadingState).toEqual(LoadingState.LOADED);
+            expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
+        });
+    }
+
+    async function renderLoadedModel(modelLoader: MockQueryModelLoader): Promise<void> {
+        render(
+            <WrappedModelCapture
+                autoLoad
+                modelLoader={modelLoader}
+                queryConfigs={{ model: { schemaQuery: MIXTURES_SCHEMA_QUERY } }}
+            />
+        );
+        await waitForRowsLoaded();
+    }
+
+    beforeAll(() => {
+        MIXTURES_QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
+        AMINO_ACIDS_QUERY_INFO = makeQueryInfo(aminoAcidsQueryInfo);
+        AMINO_ACIDS_DATA = makeTestData(aminoAcidsQuery);
+        MIXTURES_DATA = makeTestData(mixturesQuery);
+    });
+
+    beforeEach(() => {
+        rrd.__setSearchParams(new URLSearchParams());
+        rrd.__setSetSearchParams(jest.fn());
+    });
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
+    test('loadModel loads the QueryInfo before the rows', async () => {
+        // Arrange
+        const modelLoader = new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA);
+        render(
+            <WrappedModelCapture
+                modelLoader={modelLoader}
+                queryConfigs={{ model: { schemaQuery: MIXTURES_SCHEMA_QUERY } }}
+            />
+        );
+
+        // Assert - without autoLoad nothing has been fetched yet
+        expect(injectedModel.queryInfo).toEqual(undefined);
+        expect(injectedModel.queryInfoLoadingState).toEqual(LoadingState.LOADING);
+        expect(injectedModel.rows).toEqual(undefined);
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.INITIALIZED);
+
+        // Act
+        dispatch(() => injectedActions.loadModel(injectedModel.id));
+
+        // Assert - rows wait on the QueryInfo, then both load
+        expect(injectedModel.queryInfoLoadingState).toEqual(LoadingState.LOADING);
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.INITIALIZED);
+        await waitForRowsLoaded();
+        expect(injectedModel.queryInfo).toBe(MIXTURES_QUERY_INFO);
+        expect(injectedModel.orderedRows).toEqual(MIXTURES_DATA.orderedRows.slice(0, injectedModel.maxRows));
+    });
+
+    test('paging actions update the offset and reload rows', async () => {
+        // Arrange
+        await renderLoadedModel(new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA));
+        const { maxRows } = injectedModel;
+
+        // Act
+        dispatch(() => injectedActions.loadPreviousPage(injectedModel.id));
+
+        // Assert - previous page from the first page is a no-op
+        expect(injectedModel.offset).toEqual(0);
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
+
+        // Act
+        dispatch(() => injectedActions.loadNextPage(injectedModel.id));
+
+        // Assert - next page advances one page and reloads
+        expect(injectedModel.offset).toEqual(maxRows);
+        expect(injectedModel.currentPage).toEqual(2);
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        await waitForRowsLoaded();
+
+        // Act
+        dispatch(() => injectedActions.loadLastPage(injectedModel.id));
+
+        // Assert - last page jumps to the last page offset and reloads
+        expect(injectedModel.offset).toEqual(injectedModel.lastPageOffset);
+        expect(injectedModel.currentPage).toEqual(34);
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        await waitForRowsLoaded();
+
+        // Act
+        const lastPageOffset = injectedModel.offset;
+        dispatch(() => injectedActions.loadNextPage(injectedModel.id));
+
+        // Assert - next page from the last page is a no-op
+        expect(injectedModel.offset).toEqual(lastPageOffset);
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
+
+        // Act
+        dispatch(() => injectedActions.loadPreviousPage(injectedModel.id));
+
+        // Assert - previous page steps back one page and reloads
+        expect(injectedModel.offset).toEqual(lastPageOffset - maxRows);
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        await waitForRowsLoaded();
+
+        // Act
+        dispatch(() => injectedActions.loadFirstPage(injectedModel.id));
+
+        // Assert - first page resets the offset and reloads
+        expect(injectedModel.offset).toEqual(0);
+        expect(injectedModel.currentPage).toEqual(1);
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        await waitForRowsLoaded();
+
+        // Act
+        dispatch(() => injectedActions.setOffset(injectedModel.id, maxRows * 2));
+
+        // Assert - setOffset moves to the given page and reloads
+        expect(injectedModel.offset).toEqual(maxRows * 2);
+        expect(injectedModel.currentPage).toEqual(3);
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        await waitForRowsLoaded();
+
+        // Act
+        dispatch(() => injectedActions.setMaxRows(injectedModel.id, 40));
+
+        // Assert - setMaxRows changes the page size, resets the offset, and reloads
+        expect(injectedModel.maxRows).toEqual(40);
+        expect(injectedModel.offset).toEqual(0);
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        await waitForRowsLoaded();
+    });
+
+    test('setSchemaQuery and setView reset rows and reload', async () => {
+        // Arrange - start off the first page so the offset reset is observable
+        const modelLoader = new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA);
+        await renderLoadedModel(modelLoader);
+        dispatch(() => injectedActions.loadNextPage(injectedModel.id));
+        await waitForRowsLoaded();
+        modelLoader.queryInfo = AMINO_ACIDS_QUERY_INFO;
+        modelLoader.rowsResponse = AMINO_ACIDS_DATA;
+
+        // Act
+        dispatch(() => injectedActions.setSchemaQuery(injectedModel.id, AMINO_ACIDS_SCHEMA_QUERY));
+
+        // Assert - QueryInfo and row data are cleared, then reloaded for the new schemaQuery
+        expect(injectedModel.schemaQuery).toBe(AMINO_ACIDS_SCHEMA_QUERY);
+        expect(injectedModel.queryInfo).toEqual(undefined);
+        expect(injectedModel.queryInfoLoadingState).toBe(LoadingState.LOADING);
+        expect(injectedModel.offset).toEqual(0);
+        expect(injectedModel.rows).toEqual(undefined);
+        expect(injectedModel.orderedRows).toEqual(undefined);
+        expect(injectedModel.rowCount).toEqual(undefined);
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.INITIALIZED);
+        await waitForRowsLoaded();
+        expect(injectedModel.queryInfo).toBe(AMINO_ACIDS_QUERY_INFO);
+        expect(injectedModel.messages).toBe(AMINO_ACIDS_DATA.messages);
+
+        // Act
+        dispatch(() => injectedActions.setView(injectedModel.id, 'FakeView'));
+
+        // Assert - row data and messages are cleared and rows reload for the new view
+        expect(injectedModel.schemaQuery.viewName).toEqual('FakeView');
+        expect(injectedModel.offset).toEqual(0);
+        expect(injectedModel.rows).toEqual(undefined);
+        expect(injectedModel.orderedRows).toEqual(undefined);
+        expect(injectedModel.rowCount).toEqual(undefined);
+        expect(injectedModel.messages).toEqual(undefined);
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        await waitForRowsLoaded();
+    });
+
+    test('surfaces rows and QueryInfo load errors', async () => {
+        // Arrange
+        const consoleError = jest.spyOn(console, 'error').mockImplementation(jest.fn());
+        const modelLoader = new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA);
+        await renderLoadedModel(modelLoader);
+        const rowsError = 'Something really bad happened!';
+        modelLoader.rowsException = { exception: rowsError };
+
+        // Act
+        dispatch(() => injectedActions.loadRows(injectedModel.id));
+
+        // Assert - the resolved rows error is set and the model stops loading
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        await waitFor(() => expect(injectedModel.rowsError).toEqual(rowsError));
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
+        expect(consoleError).toHaveBeenCalledWith(expect.stringContaining('Error loading rows'), rowsError);
+
+        // Arrange
+        const queryInfoError = 'Error loading QueryInfo';
+        modelLoader.queryInfoException = { exception: queryInfoError };
+
+        // Act
+        dispatch(() => injectedActions.loadModel(injectedModel.id));
+
+        // Assert - the resolved QueryInfo error is set and the model stops loading
+        expect(injectedModel.queryInfoLoadingState).toEqual(LoadingState.LOADING);
+        await waitFor(() => expect(injectedModel.queryInfoError).toEqual(queryInfoError));
+        expect(injectedModel.queryInfoLoadingState).toEqual(LoadingState.LOADED);
+        expect(consoleError).toHaveBeenCalledWith(expect.stringContaining('Error loading QueryInfo'), queryInfoError);
+    });
+
+    test('addModel adds a model and loads it only when asked', async () => {
+        // Arrange
+        await renderLoadedModel(new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA));
+
+        // Act
+        dispatch(() => injectedActions.addModel({ id: 'model2', schemaQuery: MIXTURES_SCHEMA_QUERY }, false));
+
+        // Assert - model2 exists but is not loading
+        expect(injectedModels.model2.id).toEqual('model2');
+        expect(injectedModels.model2.schemaQuery).toBe(MIXTURES_SCHEMA_QUERY);
+        expect(injectedModels.model2.queryInfoLoadingState).toEqual(LoadingState.INITIALIZED);
+        expect(injectedModels.model2.rowsLoadingState).toEqual(LoadingState.INITIALIZED);
+
+        // Act
+        dispatch(() => injectedActions.addModel({ id: 'model3', schemaQuery: MIXTURES_SCHEMA_QUERY }, true));
+
+        // Assert - model3 starts loading immediately and finishes
+        expect(injectedModels.model3.id).toEqual('model3');
+        expect(injectedModels.model3.schemaQuery).toBe(MIXTURES_SCHEMA_QUERY);
+        expect(injectedModels.model3.queryInfoLoadingState).toEqual(LoadingState.LOADING);
+        expect(injectedModels.model3.rowsLoadingState).toEqual(LoadingState.INITIALIZED);
+        await waitFor(() => {
+            expect(injectedModels.model3.queryInfoLoadingState).toEqual(LoadingState.LOADED);
+            expect(injectedModels.model3.rowsLoadingState).toEqual(LoadingState.LOADED);
+        });
+
+        // Assert - model3's full load cycle has passed and model2 was still never loaded
+        expect(injectedModels.model2.queryInfoLoadingState).toEqual(LoadingState.INITIALIZED);
+        expect(injectedModels.model2.rowsLoadingState).toEqual(LoadingState.INITIALIZED);
+    });
+
+    test('selectRow selects single rows and ranges from the pivot', async () => {
+        // Arrange
+        await renderLoadedModel(new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA));
+        const selectionKey = injectedModel.orderedRows[0];
+        const rangeEndKey = injectedModel.orderedRows[5];
+
+        // Act
+        dispatch(() => injectedActions.selectRow(injectedModel.id, true, injectedModel.getRow(selectionKey)));
+
+        // Assert - the row is selected and becomes the pivot
+        await waitFor(() => expect(injectedModel.selections.has(selectionKey)).toBe(true));
+        expect(injectedModel.selections.size).toEqual(1);
+        expect(injectedModel.selectionPivot).toEqual({ checked: true, selection: selectionKey });
+
+        // Act
+        dispatch(() => injectedActions.selectRow(injectedModel.id, true, injectedModel.getRow(rangeEndKey), true));
+
+        // Assert - every row from the pivot through the clicked row is selected, and the pivot is unchanged
+        await waitFor(() => expect(injectedModel.selections.size).toEqual(6));
+        expect(injectedModel.selections).toEqual(new Set(injectedModel.orderedRows.slice(0, 6)));
+        expect(injectedModel.selectionPivot).toEqual({ checked: true, selection: selectionKey });
+
+        // Act
+        dispatch(() => injectedActions.clearSelections(injectedModel.id));
+
+        // Assert - selections and the pivot are cleared
+        await waitFor(() => expect(injectedModel.selections.size).toEqual(0));
+        expect(injectedModel.selectionPivot).toBeUndefined();
+    });
+
+    test('Bind from URL', async () => {
+        // Arrange
+        const modelLoader = new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA);
+        const queryConfigs = { model: { schemaQuery: MIXTURES_SCHEMA_QUERY, bindURL: true } };
+        // A fresh element each time, since rerendering an identical element is a no-op
+        const component = (): ReactNode => (
+            <WrappedModelCapture autoLoad modelLoader={modelLoader} queryConfigs={queryConfigs} />
+        );
+        rrd.__setSearchParams(new URLSearchParams({ 'query.p': '2' }));
+
+        // Act
+        const { rerender } = render(component());
+
+        // Assert - the initial load starts on the page from the URL
+        await waitForRowsLoaded();
+        expect(injectedModel.offset).toEqual(20);
+
+        // Act
+        rrd.__setSearchParams(new URLSearchParams({ 'query.view': 'noMixtures' }));
+        rerender(component());
+
+        // Assert - the view is applied and rows reload
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        await waitForRowsLoaded();
+        expect(injectedModel.schemaQuery.viewName).toEqual('noMixtures');
+
+        // Act
+        rrd.__setSearchParams(new URLSearchParams({ 'query.Name~eq': 'DMXP' }));
+        rerender(component());
+
+        // Assert - the filter is parsed onto the model and rows reload
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        expect(injectedModel.filterArray.length).toEqual(1);
+        const filter = injectedModel.filterArray[0];
+        expect(filter.getColumnName()).toEqual('Name');
+        expect(filter.getValue()).toEqual('DMXP');
+        expect(filter.getFilterType()).toEqual(Filter.Types.EQUAL);
+        await waitForRowsLoaded();
+
+        // Act
+        rrd.__setSearchParams(new URLSearchParams({ 'query.sort': 'Name' }));
+        rerender(component());
+
+        // Assert - an unprefixed sort is parsed as ascending and rows reload
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        expect(injectedModel.sorts.length).toEqual(1);
+        expect(injectedModel.sorts[0].fieldKey).toEqual('Name');
+        expect(injectedModel.sorts[0].dir).toEqual(SORT_ASC);
+        await waitForRowsLoaded();
+
+        // Act
+        rrd.__setSearchParams(new URLSearchParams({ 'query.sort': 'Name,-expirationTime' }));
+        rerender(component());
+
+        // Assert - multiple sorts are parsed in order with their directions and rows reload
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        expect(injectedModel.sorts.length).toEqual(2);
+        expect(injectedModel.sorts[1].fieldKey).toEqual('expirationTime');
+        expect(injectedModel.sorts[1].dir).toEqual(SORT_DESC);
+        await waitForRowsLoaded();
+
+        // Act
+        rrd.__setSearchParams(new URLSearchParams({ 'query.selectedReportIds': 'db:1;db:2' }));
+        rerender(component());
+
+        // Assert - the report ids are split onto the model
+        expect(injectedModel.selectedReportIds).toEqual(['db:1', 'db:2']);
+    });
+
+    test('Bind to URL', async () => {
+        // Arrange
+        const mockSetSearchParams = jest.fn();
+        rrd.__setSetSearchParams(mockSetSearchParams);
+        const modelLoader = new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA);
+        const queryConfigs = { model: { schemaQuery: MIXTURES_SCHEMA_QUERY, bindURL: true } };
+        render(<WrappedModelCapture autoLoad modelLoader={modelLoader} queryConfigs={queryConfigs} />);
+        await waitForRowsLoaded();
+
+        async function expectURLUpdate(
+            expected: Record<string, string>,
+            current = new URLSearchParams()
+        ): Promise<void> {
+            await waitFor(() => expect(mockSetSearchParams.mock.lastCall?.[0](current)).toEqual(expected));
+            expect(mockSetSearchParams.mock.lastCall[1]).toEqual({ replace: true });
+        }
+
+        // Act
+        dispatch(() => injectedActions.loadLastPage(injectedModel.id));
+
+        // Assert - the page is written to the URL and params without the model's prefix are kept
+        await expectURLUpdate({ 'query.p': '34', other: 'still here' }, new URLSearchParams({ other: 'still here' }));
+        await waitForRowsLoaded();
+
+        // Act
+        dispatch(() => injectedActions.loadFirstPage(injectedModel.id));
+
+        // Assert - page 1 removes the "p" param
+        await expectURLUpdate({});
+        await waitForRowsLoaded();
+
+        // Act
+        dispatch(() => injectedActions.loadNextPage(injectedModel.id));
+
+        // Assert - the next page is written to the URL
+        await expectURLUpdate({ 'query.p': '2' });
+        await waitForRowsLoaded();
+
+        // Act
+        const expectedQuery: Record<string, string> = { 'query.Name~eq': 'DMXP' };
+        dispatch(() =>
+            injectedActions.setFilters(injectedModel.id, [Filter.create('Name', 'DMXP', Filter.Types.EQUAL)])
+        );
+
+        // Assert - the filter is written and, since filtering resets the offset, "p" is dropped
+        await expectURLUpdate(expectedQuery);
+        await waitForRowsLoaded();
+
+        // Act
+        expectedQuery['query.sort'] = '-Name,+expirationTime';
+        dispatch(() =>
+            injectedActions.setSorts(injectedModel.id, [
+                new QuerySort({ fieldKey: 'Name', dir: SORT_DESC }),
+                new QuerySort({ fieldKey: 'expirationTime', dir: SORT_ASC }),
+            ])
+        );
+
+        // Assert - sorts are written with explicit directions
+        await expectURLUpdate(expectedQuery);
+        await waitForRowsLoaded();
+
+        // Act
+        expectedQuery['query.view'] = 'noMixtures';
+        dispatch(() => injectedActions.setView(injectedModel.id, 'noMixtures'));
+
+        // Assert - the view is written to the URL
+        await expectURLUpdate(expectedQuery);
+        await waitForRowsLoaded();
+
+        // Act
+        expectedQuery['query.selectedReportIds'] = 'db:1';
+        dispatch(() => injectedActions.selectReport(injectedModel.id, 'db:1', true));
+
+        // Assert - the selected report is written to the URL
+        await expectURLUpdate(expectedQuery);
+
+        // Act
+        expectedQuery['query.selectedReportIds'] = 'db:1;db:2';
+        dispatch(() => injectedActions.selectReport(injectedModel.id, 'db:2', true));
+
+        // Assert - additional reports are appended with ";"
+        await expectURLUpdate(expectedQuery);
+
+        // Act
+        expectedQuery['query.selectedReportIds'] = 'db:2';
+        dispatch(() => injectedActions.selectReport(injectedModel.id, 'db:1', false));
+
+        // Assert - unselecting a report removes only that id
+        await expectURLUpdate(expectedQuery);
     });
 });

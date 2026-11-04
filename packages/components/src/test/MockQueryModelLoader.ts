@@ -51,9 +51,8 @@ export class MockQueryModelLoader implements QueryModelLoader {
         });
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    loadSelections = (model: QueryModel): Promise<never> => {
-        return Promise.reject('Not implemented!');
+    loadSelections = (): Promise<Set<string>> => {
+        return Promise.resolve(new Set<string>());
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

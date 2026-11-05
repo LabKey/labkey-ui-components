@@ -67,6 +67,7 @@ export function getRunningPipelineJobStatuses(filters?: Filter.IFilter[]): Promi
     const statusFilter = Filter.create('Status', ['RUNNING', 'WAITING', 'SPLITWAITING'], Filter.Types.IN);
     return new Promise((resolve, reject) => {
         selectRows({
+            cancellable: false, // we want this query to survive a route change (since it is used in the app header)
             schemaQuery: new SchemaQuery('pipeline', 'job'),
             filterArray: [statusFilter].concat(filters ?? []),
             sort: 'Created',

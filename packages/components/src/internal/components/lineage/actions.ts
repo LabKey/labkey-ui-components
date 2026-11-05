@@ -368,6 +368,7 @@ export class ServerLineageAPIWrapper implements LineageAPIWrapper {
                 const { fieldKey } = node.pkFilters[0];
 
                 return selectRowsDeprecated({
+                    cancellable: false, // The lineage caches keep this result for later callers, so it must not be aborted on behalf of one
                     containerPath: node.containerPath,
                     schemaName: node.schemaName,
                     queryName: node.queryName,

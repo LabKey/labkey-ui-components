@@ -1161,7 +1161,8 @@ export const getFolderExcludedDataTypes = (dataType: string, excludedContainer?:
 export const getExcludedDataTypeNames = (
     listingSchemaQuery: SchemaQuery,
     dataType: string,
-    excludedContainerId?: string
+    excludedContainerId?: string,
+    cancellable?: boolean
 ): Promise<string[]> => {
     return new Promise((resolve, reject) => {
         getFolderExcludedDataTypes(dataType, excludedContainerId)
@@ -1171,6 +1172,7 @@ export const getExcludedDataTypeNames = (
                 }
                 const filterArray = [Filter.create('RowId', excludedRowIds, Filter.Types.IN)];
                 selectRows({
+                    cancellable,
                     columns: 'Name',
                     filterArray,
                     schemaQuery: listingSchemaQuery,

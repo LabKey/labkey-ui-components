@@ -149,6 +149,11 @@ export interface QueryConfig {
      */
     bindURL?: boolean;
     /**
+     * Set to false when the model's grid outlives the route it was loaded on so that leaving that route doesn't
+     * abort its loads. Defaults to true. Covers the rows and total count, not requests such as filter values.
+     */
+    cancellable?: boolean;
+    /**
      * One of the values of [Query.ContainerFilter](https://labkey.github.io/labkey-api-js/enums/Query.ContainerFilter.html)
      * that sets the scope of this query. Defaults to ContainerFilter.current, and is interpreted relative to
      * config.containerPath.
@@ -306,6 +311,11 @@ export class QueryModel {
      * Flag used to indicate whether or not filters/sorts/etc. should be persisted on the URL. Defaults to false.
      */
     readonly bindURL: boolean;
+    /**
+     * Set to false when the model's grid outlives the route it was loaded on so that leaving that route doesn't
+     * abort its loads. Defaults to true. Covers the rows and total count, not requests such as filter values.
+     */
+    readonly cancellable?: boolean;
     /**
      * One of the values of [Query.ContainerFilter](https://labkey.github.io/labkey-api-js/enums/Query.ContainerFilter.html)
      * that sets the scope of this query. Defaults to ContainerFilter.current, and is interpreted relative to
@@ -514,6 +524,7 @@ export class QueryModel {
     constructor(queryConfig: QueryConfig) {
         const { schemaQuery, keyValue } = queryConfig;
         this.baseFilters = queryConfig.baseFilters ?? [];
+        this.cancellable = queryConfig.cancellable;
         this.containerFilter = queryConfig.containerFilter;
         this.containerPath = queryConfig.containerPath;
         this.selectionContainerPath = queryConfig.selectionContainerPath ?? this.containerPath;
@@ -1209,6 +1220,7 @@ export class QueryModel {
         return {
             baseFilters: Array.from(this.baseFilters),
             bindURL: this.bindURL,
+            cancellable: this.cancellable,
             containerFilter: this.containerFilter,
             containerPath: this.containerPath,
             filterArray: Array.from(this.filterArray),
@@ -1232,6 +1244,7 @@ export class QueryModel {
 
     get loadRowsConfig(): SelectRowsOptions {
         return {
+            cancellable: this.cancellable,
             schemaQuery: this.schemaQuery,
             viewName: this.viewName,
             containerPath: this.containerPath,

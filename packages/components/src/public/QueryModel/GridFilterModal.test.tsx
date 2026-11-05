@@ -86,8 +86,8 @@ describe('GridFilterModal', () => {
             );
         };
 
-        // The size rules only decide anything once the facts have settled; until then the values tab wins so the
-        // tab doesn't move under the user, and the selector waits rather than querying.
+        // Which tab to open hinges on the size the first answer reports, so until it lands no tab is chosen at
+        // all; picking one and moving it a moment later is what this avoids.
         const settle = async (): Promise<void> => {
             releaseFacets();
             await waitFor(() => expect(activeTab()).toBeDefined());
@@ -100,9 +100,9 @@ describe('GridFilterModal', () => {
             await waitFor(() => expect(activeTab()).toBe('Filter'));
         });
 
-        test('a grid not known to be large waits on the values tab rather than moving it later', async () => {
+        test('a grid the answer reports small opens on the values tab', async () => {
             await renderModal(countedModel(20_000), false);
-            expect(activeTab()).toBe('Choose values');
+            expect(activeTab()).toBeUndefined();
             await settle();
             await waitFor(() => expect(activeTab()).toBe('Choose values'));
         });

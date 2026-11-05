@@ -51,6 +51,8 @@ interface Props {
     // What the server already knows about each column, so an expensive value list can be skipped or served from cache
     columnFacets?: ColumnFacets;
     // Those facts are still loading, so a column with none yet may still turn out cheap
+    // No facts response has arrived yet, so the grid's size is still unknown
+    columnFactsLoading?: boolean;
     columnFactsPending?: boolean;
     emptyMsg?: string;
     // used for Sample Finder use case
@@ -81,6 +83,10 @@ interface Props {
     viewName?: string;
 }
 
+// Undefined where valuesWorthOpening is: the tab stays unchosen rather than being chosen twice
+const chooseValuesIf = (worthOpening: boolean): FieldFilterTabs =>
+    worthOpening === undefined ? undefined : worthOpening ? FieldFilterTabs.ChooseValues : FieldFilterTabs.Filter;
+
 export const QueryFilterPanel: FC<Props> = memo(props => {
     const {
         allowRelativeDateFilter,
@@ -89,6 +95,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         asRow,
         api = getDefaultAPIWrapper(),
         columnFacets,
+        columnFactsLoading,
         columnFactsPending,
         queryInfo,
         emptyMsg,
@@ -192,18 +199,23 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         [getFacet]
     );
 
-    /** Whether opening this column's value list is worth what it costs, which doesn't depend on its own filters. */
+    /**
+     * Whether opening this column's value list is worth what it costs, which doesn't depend on its own filters.
+     * Undefined while the answer can still change: the first facts response reports the table's size, so deciding
+     * before it lands would read a large grid as small and move the tab under the user a moment later.
+     */
     const valuesWorthOpening = useCallback(
-        (field: QueryColumn) => {
+        (field: QueryColumn): boolean => {
             if (isFacetingForced(field)) return true;
             const cost = getFacetingCost(field);
             // Cheap only counts while the cached list can actually be used; otherwise the real query runs
             if (cost === 'cheap' && !hasOtherFieldFilters(field)) return true;
+            if (cost === 'unknown' && columnFactsLoading) return undefined;
             if (isLargeDataset) return false;
             // Not large, so nothing says the list is expensive yet; open the tab and let the selector wait
             return cost !== 'expensive';
         },
-        [isFacetingForced, getFacetingCost, hasOtherFieldFilters, isLargeDataset]
+        [isFacetingForced, getFacetingCost, hasOtherFieldFilters, columnFactsLoading, isLargeDataset]
     );
 
     const getDefaultActiveTab = useCallback(
@@ -214,7 +226,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                 return FieldFilterTabs.Filter;
             }
             if (!hasFilters(field)) {
-                return valuesWorthOpening(field) ? FieldFilterTabs.ChooseValues : FieldFilterTabs.Filter;
+                return chooseValuesIf(valuesWorthOpening(field));
             }
             const currentFieldFilters = filters[filterQueryKey].filter(
                 filterField => filterField.fieldKey === field.resolveFieldKey()
@@ -223,9 +235,8 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                 return FieldFilterTabs.Filter;
             }
             // An existing choose-values filter is edited on that tab, but only where opening it is worth the cost
-            return isChooseValuesFilter(currentFieldFilters[0].filter) && valuesWorthOpening(field)
-                ? FieldFilterTabs.ChooseValues
-                : FieldFilterTabs.Filter;
+            if (!isChooseValuesFilter(currentFieldFilters[0].filter)) return FieldFilterTabs.Filter;
+            return chooseValuesIf(valuesWorthOpening(field));
         },
         [hasFilters, filters, filterQueryKey, preferFilterTabFieldKey, valuesWorthOpening]
     );
@@ -273,7 +284,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
      * avoids, and the filter tab would be wrong for a column whose values are already cached. Waiting leaves the
      * panel briefly indeterminate, which is better than deciding twice and moving the tab under the user.
      */
-    const awaitingTabDecision = !!activeField && isLargeDataset && columnFactsPending;
+    const awaitingTabDecision = !!activeField && getDefaultActiveTab(activeField) === undefined;
 
     useEffect(() => {
         if (activeField && !awaitingTabDecision) setActiveTab(getDefaultActiveTab(activeField));
@@ -355,9 +366,12 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         [activeField, factsApply, getFacet]
     );
     // A truncated list is missing values, so it can't stand in for the query
-    const facetValues = activeFacet?.truncated ? undefined : activeFacet?.values;
-    // Cached lists never carry blanks, so whether to offer [blank] has to come from the facts
-    const facetHasBlank = !!facetValues && !!activeFacet.hasBlank;
+    const rawFacetValues = activeFacet?.truncated ? undefined : activeFacet?.values;
+    // Cached lists never carry blanks, so the facts say whether to offer one. A copy: the array is the cache's own.
+    const facetValues = useMemo(
+        () => (rawFacetValues && activeFacet.hasBlank ? [...rawFacetValues, null] : rawFacetValues),
+        [activeFacet, rawFacetValues]
+    );
 
     const facetSelectDistinctOptions = useMemo(() => {
         return {
@@ -491,7 +505,6 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                                 awaitingFacts={columnFactsPending}
                                                 canBeBlank={!activeField?.required && !activeField.nameExpression}
                                                 disabled={hasNotInQueryFilter}
-                                                facetHasBlank={facetHasBlank}
                                                 facetValues={facetValues}
                                                 field={activeField}
                                                 fieldFilters={fieldFilters}

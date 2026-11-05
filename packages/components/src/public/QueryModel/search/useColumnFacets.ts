@@ -21,8 +21,11 @@ export type ColumnFacets = Record<string, ColumnFacet>;
 
 export interface UseColumnFacets {
     facets: ColumnFacets;
-    // The table behind the query is too big to list values from speculatively. False until the facts arrive.
+    // The table behind the query is too big to list values from speculatively. False until the first answer.
     largeTable?: boolean;
+    // No answer has come back yet. The first one always carries largeTable, whatever the facts cost, so a caller
+    // deciding by table size waits only this long rather than for the facts themselves.
+    loading: boolean;
     // More facts may still arrive. False once the server reports them finished, once polling gives up, or on failure,
     // so a caller waiting on them is never left waiting forever.
     pending: boolean;
@@ -32,6 +35,7 @@ export function useColumnFacets(api: ComponentsAPIWrapper, request: ColumnFacets
     const [settled, setSettled] = useState<UseColumnFacets & { request: ColumnFacetsRequest }>({
         largeTable: false,
         facets: {},
+        loading: false,
         pending: true,
         request: undefined,
     });
@@ -62,13 +66,15 @@ export function useColumnFacets(api: ComponentsAPIWrapper, request: ColumnFacets
                 // Keep whatever earlier polls delivered; discarding it would send the caller back to querying for
                 // columns already answered. A failure is not retried.
                 if (!cancelled && id === requestId.current)
-                    setSettled(previous => ({ ...previous, pending: false, request }));
+                    setSettled(previous => ({ ...previous, loading: false, pending: false, request }));
                 return;
             }
             if (cancelled || id !== requestId.current) return;
 
-            const polling = !cancelled && !complete && attempt < FACTS_POLL_DELAYS_MS.length;
-            setSettled({ facets, largeTable, pending: polling, request });
+            // A large table's missing facts are scans that won't land inside this schedule, and the tab was decided
+            // by the answer already in hand, so waiting for them only delays the query the user will need anyway
+            const polling = !cancelled && !complete && !largeTable && attempt < FACTS_POLL_DELAYS_MS.length;
+            setSettled({ facets, largeTable, loading: false, pending: polling, request });
             if (polling) timer = setTimeout(() => load(attempt + 1), FACTS_POLL_DELAYS_MS[attempt]);
         };
 
@@ -82,9 +88,9 @@ export function useColumnFacets(api: ComponentsAPIWrapper, request: ColumnFacets
 
     return useMemo(() => {
         // Nothing to ask for, so nothing to wait for
-        if (!request?.queryName) return { facets: {}, pending: false };
+        if (!request?.queryName) return { facets: {}, loading: false, pending: false };
         // Facts for a different grid shape name columns this one may not show
-        if (settled.request !== request) return { facets: {}, pending: true };
-        return { facets: settled.facets, largeTable: settled.largeTable, pending: settled.pending };
+        if (settled.request !== request) return { facets: {}, loading: true, pending: true };
+        return { facets: settled.facets, largeTable: settled.largeTable, loading: false, pending: settled.pending };
     }, [request, settled]);
 }

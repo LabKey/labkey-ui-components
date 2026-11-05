@@ -58,6 +58,22 @@ describe('useColumnFacets', () => {
         expect(result.current.facets.name).toEqual(FACET);
     }, 20_000);
 
+    test('the first response settles largeTable, and a large table is not polled for the rest', async () => {
+        const getColumnFacets = jest.fn().mockResolvedValue({ columns: [], complete: false, largeTable: true });
+        const { result } = renderFacets(getColumnFacets, REQUEST);
+
+        expect(result.current.loading).toBe(true);
+        expect(result.current.largeTable).toBeUndefined();
+
+        await waitFor(() => expect(result.current.loading).toBe(false));
+        expect(result.current.largeTable).toBe(true);
+        // Facts the table is too big to have loaded in time won't arrive in the next few seconds either, so nothing
+        // waits on them: one request, and the caller is free to query
+        expect(result.current.pending).toBe(false);
+        await new Promise(resolve => setTimeout(resolve, 2_500));
+        expect(getColumnFacets).toHaveBeenCalledTimes(1);
+    }, 10_000);
+
     test('a failed request stops waiting at once and is not retried', async () => {
         const getColumnFacets = jest.fn().mockRejectedValue(new Error('nope'));
         const { result } = renderFacets(getColumnFacets, REQUEST);
@@ -91,6 +107,7 @@ describe('useColumnFacets', () => {
         const getColumnFacets = jest.fn();
         const { result } = renderFacets(getColumnFacets, undefined);
 
+        expect(result.current.loading).toBe(false);
         expect(result.current.pending).toBe(false);
         expect(getColumnFacets).not.toHaveBeenCalled();
     });

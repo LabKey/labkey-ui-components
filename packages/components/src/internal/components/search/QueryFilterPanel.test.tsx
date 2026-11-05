@@ -387,9 +387,9 @@ describe('QueryFilterPanel', () => {
             expect(selectDistinctRows).not.toHaveBeenCalled();
         });
 
-        test('a large grid waits for the facts before choosing a tab, then honours a cached list', () => {
+        test('a large grid waits for the first facts response, then honours a cached list', () => {
             const { rerender } = render(
-                <QueryFilterPanel {...DEFAULT_PROPS} columnFactsPending fieldKey="Text" isLargeDataset />
+                <QueryFilterPanel {...DEFAULT_PROPS} columnFactsLoading columnFactsPending fieldKey="Text" />
             );
             // No tab yet: choosing now would either run the scan or hide a list that is already cached
             expect(document.querySelectorAll('li[role="presentation"]')).toHaveLength(0);
@@ -400,11 +400,15 @@ describe('QueryFilterPanel', () => {
             validate(10, false, true);
         });
 
-        test('a large grid opens on Filter once the facts arrive with no usable list', () => {
+        test('a cold grid the first response reports large opens on Filter, not Choose values', () => {
             const { rerender } = render(
-                <QueryFilterPanel {...DEFAULT_PROPS} columnFactsPending fieldKey="Text" isLargeDataset />
+                <QueryFilterPanel {...DEFAULT_PROPS} columnFactsLoading columnFactsPending fieldKey="Text" />
             );
-            rerender(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" isLargeDataset />);
+            // Size unknown until that response: deciding here would read the grid's own count as small
+            expect(document.querySelectorAll('li[role="presentation"]')).toHaveLength(0);
+
+            // The response says the table is large and carries no values for the column yet
+            rerender(<QueryFilterPanel {...DEFAULT_PROPS} columnFactsPending fieldKey="Text" isLargeDataset />);
             validate(10, true, false);
         });
 

@@ -38,7 +38,6 @@ interface Props {
     awaitingFacts?: boolean;
     canBeBlank: boolean;
     disabled?: boolean;
-    facetHasBlank?: boolean;
     // Cached distinct values for this column, valid only when no other field is filtered
     facetValues?: string[];
     field?: QueryColumn;
@@ -60,7 +59,6 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         awaitingFacts,
         canBeBlank,
         disabled,
-        facetHasBlank,
         facetValues,
         selectDistinctOptions,
         fieldKey,
@@ -163,10 +161,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     distinctValues.splice(distinctValues.indexOf(EMPTY_VALUE_DISPLAY), 1);
                 }
                 // Issue 47544: don't show 'blank' if we have all the values and none are blank
-                if (
-                    toShow.length > 0 &&
-                    (hasBlank || facetHasBlank || (canBeBlank && allValues.length > MAX_DISTINCT_FILTER_OPTIONS))
-                ) {
+                if (toShow.length > 0 && (hasBlank || (canBeBlank && allValues.length > MAX_DISTINCT_FILTER_OPTIONS))) {
                     distinctValues.unshift(EMPTY_VALUE_DISPLAY);
                 }
 
@@ -210,7 +205,6 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
             selectDistinctOptions,
             timer,
             knownValues,
-            facetHasBlank,
         ]
     );
 

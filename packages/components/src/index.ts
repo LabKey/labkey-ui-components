@@ -742,6 +742,7 @@ import {
     isDataChangeCommentRequirementFeatureEnabled,
     isELNEnabled,
     isExperimentAliasEnabled,
+    isLabKeyAssistantEnabled,
     isLKSSupportEnabled,
     isMediaEnabled,
     isNonstandardAssayEnabled,
@@ -761,6 +762,7 @@ import {
     userCanDeletePublicPicklists,
     userCanDesignLocations,
     userCanDesignSourceTypes,
+    userCanDesignTerminalStorage,
     userCanEditSharedViews,
     userCanEditStorageData,
     userCanManagePicklists,
@@ -796,6 +798,7 @@ import {
     TEST_USER_READER,
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
+    TEST_USER_TERMINAL_STORAGE_DESIGNER,
     TEST_USER_WORKFLOW_EDITOR,
 } from './internal/userFixtures';
 import {
@@ -919,6 +922,8 @@ import { FilterCriteriaRenderer } from './internal/FilterCriteriaRenderer';
 import { getQueryTestAPIWrapper } from './internal/query/APIWrapper';
 import { useLoadableState } from './internal/useLoadableState';
 import { UnidentifiedPill } from './internal/UnidentifiedPill';
+import { AssistantPanel } from './internal/components/mcp/AssistantPanel';
+import { useAssistantService } from './internal/components/mcp/AssistantService';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -953,6 +958,7 @@ const App = {
     isSourceTypeEnabled,
     isCustomImportTemplatesEnabled,
     isConditionalFormattingEnabled,
+    isLabKeyAssistantEnabled,
     isMediaEnabled,
     isWorkflowEnabled,
     isAdvancedWorkflowEnabled,
@@ -1006,6 +1012,7 @@ const App = {
     updateUser,
     updateUserDisplayName,
     userCanDesignLocations,
+    userCanDesignTerminalStorage,
     userCanEditStorageData,
     userCanDesignSourceTypes,
     userCanManagePicklists,
@@ -1074,6 +1081,7 @@ const App = {
     TEST_USER_APP_ADMIN,
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
+    TEST_USER_TERMINAL_STORAGE_DESIGNER,
     TEST_USER_QC_ANALYST,
     TEST_USER_WORKFLOW_EDITOR,
     TEST_BIO_LIMS_STARTER_MODULE_CONTEXT,
@@ -1174,6 +1182,7 @@ export {
     AssayStateModel,
     AssayUploadResultModel,
     AssayUploadTabs,
+    AssistantPanel,
     AttachmentCard,
     AUDIT_EVENT_TYPE_PARAM,
     AuditDetails,
@@ -1793,6 +1802,7 @@ export {
     useAdministrationSubNav,
     useAppContext,
     useAppNavigate,
+    useAssistantService,
     useContainerPath,
     useContainerUser,
     useDataChangeCommentsRequired,

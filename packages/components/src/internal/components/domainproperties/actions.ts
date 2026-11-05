@@ -99,6 +99,7 @@ import { DomainPropertiesAPIWrapper } from './APIWrapper';
 import { executeSql } from '../../query/executeSql';
 import { getLegalIdentifier } from '../../query/filter';
 import { getColumnTypeMap, getPHIColumnNames, JdbcType, JdbcTypeRecord } from './CalculatedFieldOptions';
+import { AssistanceResponse } from '../mcp/api';
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -1536,21 +1537,7 @@ export interface ExpressionAssistOptions {
     requestHandler?: RequestHandler;
 }
 
-export interface ExpressionAssistSegment {
-    html?: string;
-    sql?: string;
-    type: 'expression' | 'html' | 'sql' | string;
-}
-
-export interface ExpressionAssistResponse {
-    conversationId: string;
-    error?: string;
-    segments?: ExpressionAssistSegment[];
-    success: boolean;
-    text?: string;
-}
-
-export function expressionAssistant(options: ExpressionAssistOptions): Promise<ExpressionAssistResponse> {
+export function expressionAssistant(options: ExpressionAssistOptions): Promise<AssistanceResponse> {
     const { containerPath, domainFields, field, requestHandler, ...jsonData } = options;
 
     const serializedField = field ? DomainField.serialize(field) : undefined;
@@ -1559,7 +1546,7 @@ export function expressionAssistant(options: ExpressionAssistOptions): Promise<E
         delete serializedField.valueExpression;
     }
 
-    return request<ExpressionAssistResponse>({
+    return request<AssistanceResponse>({
         url: ActionURL.buildURL('query', 'expressionAssistantAgent.api', containerPath),
         method: 'POST',
         jsonData: {

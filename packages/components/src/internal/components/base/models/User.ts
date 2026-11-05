@@ -69,7 +69,7 @@ export class User implements IUserProps {
 
     declare groups: number[];
 
-    constructor(props) {
+    constructor(props: Partial<IUserProps>) {
         Object.assign(this, defaultUser, props);
     }
 

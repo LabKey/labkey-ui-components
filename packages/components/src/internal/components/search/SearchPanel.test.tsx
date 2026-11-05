@@ -62,7 +62,7 @@ describe('SearchPanelImpl', () => {
         });
 
         const { container } = renderWithAppContext(
-            <SearchPanelImpl {...defaultProps()} searchTerm="see here" model={model} />
+            <SearchPanelImpl {...defaultProps()} model={model} searchTerm="see here" />
         );
 
         expect(container.querySelectorAll('.search-form')).toHaveLength(1);
@@ -85,10 +85,10 @@ describe('SearchPanelImpl', () => {
         const { container } = renderWithAppContext(
             <SearchPanelImpl
                 {...defaultProps()}
-                searchTerm="see here"
                 model={model}
-                pageSize={pageSize}
                 offset={pageSize}
+                pageSize={pageSize}
+                searchTerm="see here"
             />
         );
 
@@ -110,7 +110,7 @@ describe('SearchPanelImpl', () => {
         });
 
         const { container } = renderWithAppContext(
-            <SearchPanelImpl {...defaultProps()} searchTerm="see here" model={model} pageSize={pageSize} offset={0} />
+            <SearchPanelImpl {...defaultProps()} model={model} offset={0} pageSize={pageSize} searchTerm="see here" />
         );
 
         expect(container.querySelectorAll('.search-form')).toHaveLength(1);
@@ -135,10 +135,10 @@ describe('SearchPanelImpl', () => {
         const { container } = renderWithAppContext(
             <SearchPanelImpl
                 {...defaultProps()}
-                searchTerm="see here"
                 model={model}
-                pageSize={pageSize}
                 offset={offset}
+                pageSize={pageSize}
+                searchTerm="see here"
             />
         );
 

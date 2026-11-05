@@ -71,8 +71,13 @@ import {
 import { executeSql, ExecuteSqlOptions, ExecuteSqlResponse } from './executeSql';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
 import { EDIT_METHOD } from '../constants';
-import { getFilterSuggestions } from '../../public/QueryModel/search/actions';
-import { FilterSuggestionsRequest, FilterSuggestionsResponse } from '../../public/QueryModel/search/models';
+import { getColumnFacets, getFilterSuggestions } from '../../public/QueryModel/search/actions';
+import {
+    ColumnFacetsRequest,
+    ColumnFacetsResponse,
+    FilterSuggestionsRequest,
+    FilterSuggestionsResponse,
+} from '../../public/QueryModel/search/models';
 
 export interface QueryAPIWrapper {
     clearSelected: (options: ClearSelectedOptions) => Promise<SelectResponse>;
@@ -82,6 +87,7 @@ export interface QueryAPIWrapper {
     deleteRowsByContainer: (options: DeleteRowsOptions, containerField: string) => Promise<QueryCommandResponse>;
     deleteView: (schemaQuery: SchemaQuery, containerPath: string, viewName?: string, revert?: boolean) => Promise<void>;
     executeSql: <T extends ExecuteSqlOptions>(options: T) => Promise<ExecuteSqlResponse<T>>;
+    getColumnFacets: (request: ColumnFacetsRequest) => Promise<ColumnFacetsResponse>;
     getDataTypeFolderDataCount: (
         entityDataType: EntityDataType,
         dataTypeRowId: number,
@@ -185,6 +191,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     executeSql = executeSql;
     getDataTypeFolderDataCount = getDataTypeFolderDataCount;
     getEntityTypeOptions = getEntityTypeOptionsWithExclusions;
+    getColumnFacets = getColumnFacets;
     getFilterSuggestions = getFilterSuggestions;
     getGridViews = getGridViews;
     getFolderConfigurableEntityTypeOptions = getFolderConfigurableEntityTypeOptions;
@@ -227,6 +234,7 @@ export function getQueryTestAPIWrapper(
         executeSql: mockFn(),
         getDataTypeFolderDataCount: mockFn(),
         getEntityTypeOptions: mockFn(),
+        getColumnFacets: mockFn(),
         getFilterSuggestions: mockFn(),
         getGridViews: mockFn(),
         getFolderConfigurableEntityTypeOptions: mockFn(),

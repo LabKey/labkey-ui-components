@@ -55,14 +55,14 @@ export const SearchResultsPanel: FC<Props> = memo(({ emptyResultDisplay, iconUrl
                 <div className="top-padding">
                     {data.size > 0 &&
                         data.map((item, i) => (
-                            <div key={i} className="col-md-12 col-sm-12 search-results__margin-top">
+                            <div className="col-md-12 col-sm-12 search-results__margin-top" key={i}>
                                 <SearchResultCard
+                                    archived={archivedFolders?.indexOf(item.get('container')) > -1}
+                                    cardData={item.get('cardData').toJS()}
+                                    iconUrl={iconUrl}
+                                    isTopResult={offset === 0 && i === 0}
                                     summary={item.get('summary')}
                                     url={item.get('url')}
-                                    iconUrl={iconUrl}
-                                    cardData={item.get('cardData').toJS()}
-                                    isTopResult={offset === 0 && i === 0}
-                                    archived={archivedFolders?.indexOf(item.get('container')) > -1}
                                 />
                             </div>
                         ))}

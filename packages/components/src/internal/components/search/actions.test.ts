@@ -7,9 +7,9 @@ import { Ajax } from '@labkey/api';
 import {
     getProcessedSearchHits,
     getSearchResultCardData,
+    resolveIconDir,
     resolveIconSrc,
     resolveTypeName,
-    resolveIconDir,
     search,
     SearchOptions,
 } from './actions';

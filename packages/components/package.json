@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.74.4",
+  "version": "7.74.5-fb-route-backstop-2258.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

@@ -24,7 +24,7 @@ import { SCHEMAS } from './internal/schemas';
 import { isLoading, LoadingState } from './public/LoadingState';
 import { ExtendedMap } from './public/ExtendedMap';
 import { useContainerPath, useContainerUser } from './internal/components/container/actions';
-import { handleRequestFailure, request } from './internal/request';
+import { handleRequestFailure, isAbortedRequest, request } from './internal/request';
 
 import {
     ServerContextProvider,
@@ -549,6 +549,7 @@ import {
     runDetailsColumnsForQueryModel,
 } from './public/QueryModel/utils';
 import { CONFIRM_MESSAGE, useRouteLeave } from './internal/util/RouteLeave';
+import { installRouteBackstop } from './internal/util/routeBackstop';
 import { useRequestHandler } from './internal/util/RequestHandler';
 import { HorizontalBarSection } from './internal/components/chart/HorizontalBarSection';
 import { ItemsLegend } from './internal/components/chart/ItemsLegend';
@@ -1514,6 +1515,7 @@ export {
     InsertFormats,
     InsertOptions,
     insertRows,
+    installRouteBackstop,
     InsufficientPermissionsAlert,
     InternalSpacesWarning,
     invalidateFullQueryDetailsCache,
@@ -1521,6 +1523,7 @@ export {
     invalidateQueryDetailsCache,
     INVENTORY_AUDIT_QUERY,
     IS_ALIQUOT_COL,
+    isAbortedRequest,
     isAllSamplesSchema,
     isCtrlOrMetaKey,
     isDateBetween,

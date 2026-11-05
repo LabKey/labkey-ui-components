@@ -2,7 +2,7 @@
  * Copyright (c) 2025-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { Query } from '@labkey/api';
+import { Ajax, Query } from '@labkey/api';
 
 import { Row } from './selectRows';
 import { getContainerFilter, getQueryDetails } from './api';
@@ -82,8 +82,12 @@ export async function executeSql<T extends ExecuteSqlOptions>(options: T): Promi
                 }
             },
             failure: (data, request) => {
-                console.error('There was a problem retrieving the data', data);
+                const aborted = Ajax.isAborted(request);
+                if (!aborted) {
+                    console.error('There was a problem retrieving the data', data);
+                }
                 reject({
+                    aborted,
                     exceptionClass: data.exceptionClass,
                     message: data.exception,
                     status: request.status,

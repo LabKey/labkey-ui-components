@@ -25,8 +25,8 @@ export function handleRequestFailure(reject: (error: any) => void, logMsg?: stri
     return Utils.getCallbackWrapper(
         (error, response) => {
             // Appends the response's status code to the error object
-            const errorWithStatus = { ...error, status: response?.status };
-            if (logMsg && errorWithStatus.status !== 0) {
+            const errorWithStatus = { ...error, aborted: Ajax.isAborted(response), status: response?.status };
+            if (logMsg && !errorWithStatus.aborted) {
                 console.error(logMsg, errorWithStatus);
             }
             reject(errorWithStatus);
@@ -34,6 +34,14 @@ export function handleRequestFailure(reject: (error: any) => void, logMsg?: stri
         undefined,
         true
     );
+}
+
+/**
+ * Returns true if the rejection came from a request that was aborted, e.g., because the user left the page, rather
+ * than one that failed. Such a rejection is not an error to show or log.
+ */
+export function isAbortedRequest(reason: unknown): boolean {
+    return (reason as { aborted?: boolean })?.aborted === true;
 }
 
 export type SuccessDataResponse<T> = {

@@ -9,7 +9,7 @@ import { FindAndSearchDropdown } from './FindAndSearchDropdown';
 
 describe('FindAndSearchDropdown', () => {
     test('search but no find', () => {
-        render(<FindAndSearchDropdown title="Test title" onSearch={jest.fn} />);
+        render(<FindAndSearchDropdown onSearch={jest.fn} title="Test title" />);
         expect(document.querySelector('.dropdown-toggle')).toHaveTextContent('Test title');
         const items = document.querySelectorAll('.lk-menu-item');
         expect(items).toHaveLength(2);
@@ -19,7 +19,7 @@ describe('FindAndSearchDropdown', () => {
     });
 
     test('find but no search', () => {
-        render(<FindAndSearchDropdown title="Test title" findNounPlural="tests" onFindByIds={jest.fn} />);
+        render(<FindAndSearchDropdown findNounPlural="tests" onFindByIds={jest.fn} title="Test title" />);
         const items = document.querySelectorAll('.lk-menu-item');
         expect(items).toHaveLength(3);
         expect(items[0]).toHaveTextContent('Find Tests by Barcode');

@@ -16,7 +16,7 @@ import { getContainerFilter } from '../../query/api';
 
 import { ModuleContext } from '../base/ServerContext';
 
-import { getSearchScopeFromContainerFilter, escapeSearchQuery } from './utils';
+import { escapeSearchQuery, getSearchScopeFromContainerFilter } from './utils';
 import { GetCardDataFn, SearchIdData, SearchResultCardData } from './models';
 import { SearchCategory, SearchField, SearchScope } from './constants';
 
@@ -237,18 +237,18 @@ export function resolveIconSrc(data: any, category: SearchCategory): string {
             case SearchCategory.NotebookTemplate:
                 iconSrc = 'notebook_blue';
                 break;
-            case SearchCategory.PlateSet:
             case SearchCategory.Plate:
+            case SearchCategory.PlateSet:
                 iconSrc = 'plates';
-                break;
-            case SearchCategory.WorkflowJob:
-                iconSrc = 'workflow';
                 break;
             case SearchCategory.StorageLocation:
                 iconSrc = 'freezer';
                 break;
             case SearchCategory.TerminalStorageLocation:
                 iconSrc = 'terminal_unit';
+                break;
+            case SearchCategory.WorkflowJob:
+                iconSrc = 'workflow';
                 break;
             default:
         }

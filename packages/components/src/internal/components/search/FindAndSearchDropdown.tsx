@@ -81,7 +81,7 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
                         </MenuItem>
                     </>
                 )}
-                <MenuItem onClick={onSampleFinder} href={FIND_SAMPLES_BY_FILTER_HREF}>
+                <MenuItem href={FIND_SAMPLES_BY_FILTER_HREF} onClick={onSampleFinder}>
                     <i className="fa fa-sitemap" /> Sample Finder
                 </MenuItem>
                 {!!onSearch && (
@@ -92,10 +92,10 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
             </DropdownButton>
             {!!onFindByIds && showFindModal && (
                 <FindByIdsModal
+                    initialField={findField}
+                    nounPlural={findNounPlural}
                     onCancel={onHideFindModal}
                     onFind={onFind}
-                    nounPlural={findNounPlural}
-                    initialField={findField}
                 />
             )}
         </>

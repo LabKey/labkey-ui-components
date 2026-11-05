@@ -23,12 +23,15 @@ import { ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE } from '../../query/filter';
 
 import { Tab, Tabs } from '../../Tabs';
 
-import { FilterFacetedSelector } from './FilterFacetedSelector';
+import { FilterFacetedSelector, MAX_DISTINCT_FILTER_OPTIONS } from './FilterFacetedSelector';
+import { ColumnFacets } from '../../../public/QueryModel/search/useColumnFacets';
 import { FilterExpressionView } from './FilterExpressionView';
 import { EntityFieldFilter } from './models';
 import { isChooseValuesFilter } from './utils';
 import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE } from './constants';
 import { stringToHtmlId } from '../../util/utils';
+
+type FacetingCost = 'cheap' | 'expensive' | 'unknown';
 
 enum FieldFilterTabs {
     ChooseValues = 'ChooseValues',
@@ -45,6 +48,10 @@ interface Props {
     altQueryName?: string;
     api?: ComponentsAPIWrapper;
     asRow?: boolean;
+    // What the server already knows about each column, so an expensive value list can be skipped or served from cache
+    columnFacets?: ColumnFacets;
+    // Those facts are still loading, so a column with none yet may still turn out cheap
+    columnFactsPending?: boolean;
     emptyMsg?: string;
     // used for Sample Finder use case
     entityDataType?: EntityDataType;
@@ -56,6 +63,8 @@ interface Props {
     hasNotInQueryFilter?: boolean;
     hasNotInQueryFilterLabel?: string;
     isAncestor?: boolean;
+    // the grid has too many rows to list a column's distinct values speculatively
+    isLargeDataset?: boolean;
     metricFeatureArea?: string;
     onActiveFieldChange?: (field: QueryColumn) => void;
     onAllValuesInQueryChange?: (check: boolean) => void;
@@ -79,6 +88,8 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         hasAllValuesInQuery,
         asRow,
         api = getDefaultAPIWrapper(),
+        columnFacets,
+        columnFactsPending,
         queryInfo,
         emptyMsg,
         skipDefaultViewCheck,
@@ -97,6 +108,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         altQueryName,
         fields,
         isAncestor,
+        isLargeDataset,
         onActiveFieldChange,
         onChooseValues,
         preferFilterTabFieldKey,
@@ -143,6 +155,57 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         [filterStatus, filterQueryKey]
     );
 
+    const getFacet = useCallback(
+        (field: QueryColumn) =>
+            columnFacets?.[field?.getDisplayFieldKey()?.toLowerCase()] ??
+            columnFacets?.[field?.fieldKey?.toLowerCase()],
+        [columnFacets]
+    );
+
+    // Faceting was asked for on this column, so its cost doesn't decide the tab
+    const isFacetingForced = useCallback(
+        (field: QueryColumn) => field.isMultiChoice || field.facetingBehaviorType === 'ALWAYS_ON',
+        []
+    );
+
+    /**
+     * Cached facts are read over the grid's own filters, so another field's filter leaves them describing rows the
+     * user is no longer looking at. The values then can't be served from cache and the real query runs instead.
+     */
+    const hasOtherFieldFilters = useCallback(
+        (field: QueryColumn) =>
+            !!filters?.[filterQueryKey]?.some(fieldFilter => fieldFilter.fieldKey !== field?.getDisplayFieldKey()),
+        [filters, filterQueryKey]
+    );
+
+    /**
+     * What the server's facts say listing this column's values would cost. 'cheap' means the values are in hand;
+     * 'expensive' means more were counted than the list can show; 'unknown' means the facts can't answer.
+     */
+    const getFacetingCost = useCallback(
+        (field: QueryColumn): FacetingCost => {
+            const facet = getFacet(field);
+            if (facet?.values && !facet.truncated) return 'cheap';
+            if (facet?.distinctCount > MAX_DISTINCT_FILTER_OPTIONS) return 'expensive';
+            return 'unknown';
+        },
+        [getFacet]
+    );
+
+    /** Whether opening this column's value list is worth what it costs, which doesn't depend on its own filters. */
+    const valuesWorthOpening = useCallback(
+        (field: QueryColumn) => {
+            if (isFacetingForced(field)) return true;
+            const cost = getFacetingCost(field);
+            // Cheap only counts while the cached list can actually be used; otherwise the real query runs
+            if (cost === 'cheap' && !hasOtherFieldFilters(field)) return true;
+            if (isLargeDataset) return false;
+            // Not large, so nothing says the list is expensive yet; open the tab and let the selector wait
+            return cost !== 'expensive';
+        },
+        [isFacetingForced, getFacetingCost, hasOtherFieldFilters, isLargeDataset]
+    );
+
     const getDefaultActiveTab = useCallback(
         (field: QueryColumn) => {
             if (field.isMultiChoice) return FieldFilterTabs.ChooseValues;
@@ -151,7 +214,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                 return FieldFilterTabs.Filter;
             }
             if (!hasFilters(field)) {
-                return FieldFilterTabs.ChooseValues;
+                return valuesWorthOpening(field) ? FieldFilterTabs.ChooseValues : FieldFilterTabs.Filter;
             }
             const currentFieldFilters = filters[filterQueryKey].filter(
                 filterField => filterField.fieldKey === field.resolveFieldKey()
@@ -159,11 +222,12 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
             if (currentFieldFilters.length > 1) {
                 return FieldFilterTabs.Filter;
             }
-            return isChooseValuesFilter(currentFieldFilters[0].filter)
+            // An existing choose-values filter is edited on that tab, but only where opening it is worth the cost
+            return isChooseValuesFilter(currentFieldFilters[0].filter) && valuesWorthOpening(field)
                 ? FieldFilterTabs.ChooseValues
                 : FieldFilterTabs.Filter;
         },
-        [hasFilters, filters, filterQueryKey, preferFilterTabFieldKey]
+        [hasFilters, filters, filterQueryKey, preferFilterTabFieldKey, valuesWorthOpening]
     );
 
     useEffect(() => {
@@ -204,9 +268,18 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         fields,
     ]);
 
+    /**
+     * On a large grid neither tab can be chosen until the facts are in: the values tab would run the scan this
+     * avoids, and the filter tab would be wrong for a column whose values are already cached. Waiting leaves the
+     * panel briefly indeterminate, which is better than deciding twice and moving the tab under the user.
+     */
+    const awaitingTabDecision = !!activeField && isLargeDataset && columnFactsPending;
+
     useEffect(() => {
-        if (activeField) setActiveTab(getDefaultActiveTab(activeField));
-    }, [activeField]); // don't include getDefaultActiveTab as we only want this to be triggered when the field selection changes
+        if (activeField && !awaitingTabDecision) setActiveTab(getDefaultActiveTab(activeField));
+        // getDefaultActiveTab is left out so the tab is decided once per field, not revised as its inputs settle
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeField, awaitingTabDecision]);
 
     const activeFieldKey = useMemo(() => {
         return activeField?.getDisplayFieldKey();
@@ -273,6 +346,18 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         },
         [onFilterUpdate, activeField]
     );
+
+    // Cached facts are scoped to the grid's base filters, so they can't answer for a grid filtered on another field
+    const factsApply = !hasOtherFieldFilters(activeField);
+
+    const activeFacet = useMemo(
+        () => (factsApply ? getFacet(activeField) : undefined),
+        [activeField, factsApply, getFacet]
+    );
+    // A truncated list is missing values, so it can't stand in for the query
+    const facetValues = activeFacet?.truncated ? undefined : activeFacet?.values;
+    // Cached lists never carry blanks, so whether to offer [blank] has to come from the facts
+    const facetHasBlank = !!facetValues && !!activeFacet.hasBlank;
 
     const facetSelectDistinctOptions = useMemo(() => {
         return {
@@ -370,43 +455,56 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                             'field-modal__col-content-disabled': hasNotInQueryFilter,
                         })}
                     >
-                        <Tabs activeKey={activeTab} className="field-modal__tabs content-tabs" onSelect={onTabChange}>
-                            {!activeField.isMultiChoice && (
-                                <Tab eventKey={FieldFilterTabs.Filter} title="Filter">
-                                    <div className="field-modal__col-sub-title">
-                                        Find values for {activeField.caption}
-                                    </div>
-                                    {activeTab === FieldFilterTabs.Filter && (
-                                        <FilterExpressionView
-                                            allowRelativeDateFilter={allowRelativeDateFilter}
-                                            disabled={hasNotInQueryFilter}
-                                            field={activeField}
-                                            fieldFilters={fieldFilters}
-                                            includeAllAncestorFilter={includeAllAncestorFilter}
-                                            key={activeFieldKey}
-                                            onFieldFilterUpdate={onFieldFilterUpdate}
-                                        />
-                                    )}
-                                </Tab>
-                            )}
-                            {allowFaceting(activeField) && (
-                                <Tab eventKey={FieldFilterTabs.ChooseValues} title="Choose values">
-                                    <div className="field-modal__col-sub-title">
-                                        Find values for {activeField.caption}
-                                    </div>
-                                    <FilterFacetedSelector
-                                        canBeBlank={!activeField?.required && !activeField.nameExpression}
-                                        disabled={hasNotInQueryFilter}
-                                        field={activeField}
-                                        fieldFilters={fieldFilters}
-                                        fieldKey={activeFieldKey}
-                                        key={activeFieldKey}
-                                        onFieldFilterUpdate={onFieldFilterUpdate}
-                                        selectDistinctOptions={facetSelectDistinctOptions}
-                                    />
-                                </Tab>
-                            )}
-                        </Tabs>
+                        {awaitingTabDecision && <LoadingSpinner wrapperClassName="loading-spinner" />}
+                        {!awaitingTabDecision && (
+                            <Tabs
+                                activeKey={activeTab}
+                                className="field-modal__tabs content-tabs"
+                                onSelect={onTabChange}
+                            >
+                                {!activeField.isMultiChoice && (
+                                    <Tab eventKey={FieldFilterTabs.Filter} title="Filter">
+                                        <div className="field-modal__col-sub-title">
+                                            Find values for {activeField.caption}
+                                        </div>
+                                        {activeTab === FieldFilterTabs.Filter && (
+                                            <FilterExpressionView
+                                                allowRelativeDateFilter={allowRelativeDateFilter}
+                                                disabled={hasNotInQueryFilter}
+                                                field={activeField}
+                                                fieldFilters={fieldFilters}
+                                                includeAllAncestorFilter={includeAllAncestorFilter}
+                                                key={activeFieldKey}
+                                                onFieldFilterUpdate={onFieldFilterUpdate}
+                                            />
+                                        )}
+                                    </Tab>
+                                )}
+                                {allowFaceting(activeField) && (
+                                    <Tab eventKey={FieldFilterTabs.ChooseValues} title="Choose values">
+                                        <div className="field-modal__col-sub-title">
+                                            Find values for {activeField.caption}
+                                        </div>
+                                        {activeTab === FieldFilterTabs.ChooseValues && (
+                                            <FilterFacetedSelector
+                                                api={api}
+                                                awaitingFacts={columnFactsPending}
+                                                canBeBlank={!activeField?.required && !activeField.nameExpression}
+                                                disabled={hasNotInQueryFilter}
+                                                facetHasBlank={facetHasBlank}
+                                                facetValues={facetValues}
+                                                field={activeField}
+                                                fieldFilters={fieldFilters}
+                                                fieldKey={activeFieldKey}
+                                                key={activeFieldKey}
+                                                onFieldFilterUpdate={onFieldFilterUpdate}
+                                                selectDistinctOptions={facetSelectDistinctOptions}
+                                            />
+                                        )}
+                                    </Tab>
+                                )}
+                            </Tabs>
+                        )}
                     </div>
                 )}
             </div>

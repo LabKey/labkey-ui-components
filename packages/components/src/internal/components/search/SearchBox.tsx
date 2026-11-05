@@ -7,10 +7,10 @@ import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useState } from '
 import { FindAndSearchDropdown } from './FindAndSearchDropdown';
 
 interface Props {
+    findNounPlural?: string;
+    onFindByIds?: (sessionKey: string) => void;
     onSearch: (value: string) => void;
     placeholder?: string;
-    onFindByIds?: (sessionKey: string) => void;
-    findNounPlural?: string;
 }
 
 export const SearchBox: FC<Props> = memo(props => {
@@ -54,7 +54,7 @@ export const SearchBox: FC<Props> = memo(props => {
                     />
                     {showFindByIds && (
                         <span className="input-group-btn">
-                            <FindAndSearchDropdown title="" onFindByIds={onFindByIds} findNounPlural={findNounPlural} />
+                            <FindAndSearchDropdown findNounPlural={findNounPlural} onFindByIds={onFindByIds} title="" />
                         </span>
                     )}
                 </span>

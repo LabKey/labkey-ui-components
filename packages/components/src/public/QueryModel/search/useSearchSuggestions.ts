@@ -5,10 +5,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { ComponentsAPIWrapper } from '../../../internal/APIWrapper';
-import { getContainerFilter } from '../../../internal/query/api';
 import { QueryModel } from '../QueryModel';
 
 import { FilterSuggestion, FilterSuggestionsRequest } from './models';
+import { getGridShapeRequest, useGridShapeRequest } from './gridShape';
 import { applyColumnCaption, createSearchSuggestion, getColumnCaptions } from './utils';
 
 export const SUGGESTION_DEBOUNCE_MS = 200;
@@ -32,19 +32,7 @@ interface SettledSuggestions {
 }
 
 export function getFilterSuggestionsRequest(model: QueryModel, term: string): FilterSuggestionsRequest {
-    return {
-        columns: model.displayColumns?.map(column => column.fieldKey) ?? [],
-        // Same default as the grid's own rows request
-        containerFilter: model.containerFilter ?? getContainerFilter(model.containerPath),
-        containerPath: model.containerPath,
-        // View filters are left out: the user edits them like their own, so suggestions may reach past them
-        filters: model.baseFilters,
-        parameters: model.queryParameters,
-        queryName: model.queryName,
-        schemaName: model.schemaName,
-        term,
-        viewName: model.viewName,
-    };
+    return { ...getGridShapeRequest(model, 'base'), term };
 }
 
 export function useSearchSuggestions(
@@ -62,22 +50,8 @@ export function useSearchSuggestions(
     });
     const requestId = useRef(0);
     // A new request is only warranted when the term or the grid's shape changes, not on every model update
-    const request = useMemo(
-        () => getFilterSuggestionsRequest(model, trimmed),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [
-            trimmed,
-            model.schemaName,
-            model.queryName,
-            model.viewName,
-            model.containerPath,
-            model.containerFilter,
-            model.baseFilters,
-            model.queryParameters,
-            model.queryInfo,
-            model.omittedColumns,
-        ]
-    );
+    const shape = useGridShapeRequest(model, 'base');
+    const request = useMemo(() => (shape ? { ...shape, term: trimmed } : undefined), [shape, trimmed]);
 
     const captions = useMemo(
         () => getColumnCaptions(model.displayColumns),
@@ -86,7 +60,7 @@ export function useSearchSuggestions(
     );
 
     useEffect(() => {
-        if (!enabled || !trimmed) return undefined;
+        if (!enabled || !trimmed || !request) return undefined;
 
         const id = ++requestId.current;
         let cancelled = false;
@@ -143,6 +117,9 @@ export function useSearchSuggestions(
 
     return useMemo(() => {
         if (!trimmed) return { complete: true, loading: false, polling: false, suggestions: [] };
+        // No request yet, so nothing is settled. Checked before the comparison below, which two undefineds satisfy.
+        if (!request)
+            return { complete: false, loading: true, polling: false, suggestions: [createSearchSuggestion(trimmed)] };
         // Suggestions for the same term on a different view or column set name fields the grid may no longer show
         if (settled.request === request) {
             // Closing the menu cancels the next poll

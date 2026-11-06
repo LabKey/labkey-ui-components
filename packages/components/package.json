@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "7.74.2-fb-trimDomainLabel1805.0",
+  "version": "7.75.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

@@ -9,6 +9,7 @@ jest.mock('@labkey/api', () => {
     return { ...actual, Ajax: { ...actual.Ajax, getCancellableRequests: jest.fn() } };
 });
 
+import { createElement } from 'react';
 import { Ajax } from '@labkey/api';
 import { createMemoryRouter, DataRouter } from 'react-router';
 
@@ -29,6 +30,11 @@ global.Request = MockRequest as unknown as typeof Request;
 
 const mockXhr = (): XMLHttpRequest => ({ abort: jest.fn() }) as unknown as XMLHttpRequest;
 
+const HomePage = (): null => null;
+const PlatesPage = (): null => null;
+const SampleTypePage = (): null => null;
+const SampleTypesPage = (): null => null;
+
 describe('installRouteBackstop', () => {
     let inFlight: XMLHttpRequest[];
     let router: DataRouter;
@@ -40,9 +46,12 @@ describe('installRouteBackstop', () => {
         jest.mocked(Ajax.getCancellableRequests).mockImplementation(() => [...inFlight]);
         router = createMemoryRouter(
             [
-                { path: '/samples', element: null },
-                { path: '/samples/:sampleType', element: null },
-                { path: '/plates/*', element: null },
+                { path: '/', element: createElement(HomePage) },
+                { path: '/home', element: createElement(HomePage) },
+                { path: '/dashboard', element: createElement(HomePage, { key: 'dashboard' }) },
+                { path: '/samples', element: createElement(SampleTypesPage) },
+                { path: '/samples/:sampleType', element: createElement(SampleTypePage) },
+                { path: '/plates/*', element: createElement(PlatesPage) },
             ],
             { initialEntries: ['/samples'] }
         );
@@ -84,6 +93,28 @@ describe('installRouteBackstop', () => {
         await router.navigate('/samples/plasma');
         jest.runAllTimers();
         expect(xhr.abort).not.toHaveBeenCalled();
+    });
+
+    test('ignores a change between sibling routes that render the same page', async () => {
+        await router.navigate('/');
+        jest.runAllTimers();
+
+        const xhr = mockXhr();
+        inFlight.push(xhr);
+        await router.navigate('/home');
+        jest.runAllTimers();
+        expect(xhr.abort).not.toHaveBeenCalled();
+    });
+
+    test('aborts when the same page component is keyed differently, since React remounts it', async () => {
+        await router.navigate('/home');
+        jest.runAllTimers();
+
+        const xhr = mockXhr();
+        inFlight.push(xhr);
+        await router.navigate('/dashboard');
+        jest.runAllTimers();
+        expect(xhr.abort).toHaveBeenCalledTimes(1);
     });
 
     test('treats a splat section as one page', async () => {

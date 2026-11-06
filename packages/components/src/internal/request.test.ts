@@ -4,7 +4,7 @@
  */
 import { Ajax } from '@labkey/api';
 
-import { handleRequestFailure, isAbortedRequest } from './request';
+import { handleRequestFailure, isAbortedRequest, resolveRequestError } from './request';
 
 describe('handleRequestFailure', () => {
     test('handles failure', () => {
@@ -50,5 +50,17 @@ describe('aborted requests', () => {
         expect(isAbortedRequest({ status: 0 })).toBe(false);
         expect(isAbortedRequest(undefined)).toBe(false);
         expect(isAbortedRequest('Communication failure.')).toBe(false);
+    });
+
+    test('resolveRequestError passes an abort through unchanged and unlogged', () => {
+        const aborted = { aborted: true, exception: 'Request aborted' };
+        expect(resolveRequestError(aborted)).toBe(aborted);
+        expect(consoleError).not.toHaveBeenCalled();
+    });
+
+    test('resolveRequestError logs other failures and resolves their message', () => {
+        const failed = { exception: 'Query failed' };
+        expect(resolveRequestError(failed)).toBe('Query failed');
+        expect(consoleError).toHaveBeenCalledWith(failed);
     });
 });

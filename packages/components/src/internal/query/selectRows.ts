@@ -2,14 +2,14 @@
  * Copyright (c) 2022-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { Ajax, Filter, Query } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { SchemaQuery } from '../../public/SchemaQuery';
 import { QueryInfo } from '../../public/QueryInfo';
 import { URLResolver } from '../url/URLResolver';
 
 import { getContainerFilter, getQueryDetails, isSelectRowMetadataRequired } from './api';
-import { RequestHandler } from '../request';
+import { handleQueryFailure, RequestHandler } from '../request';
 
 export interface SelectRowsMessage {
     area?: string;
@@ -77,19 +77,7 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
                 success: response_ => {
                     resolve(response_);
                 },
-                failure: (data, request) => {
-                    const aborted = Ajax.isAborted(request);
-                    if (!aborted) {
-                        console.error('There was a problem retrieving the data', data);
-                    }
-                    reject({
-                        aborted,
-                        exceptionClass: data.exceptionClass,
-                        message: data.exception,
-                        schemaQuery,
-                        status: request.status,
-                    });
-                },
+                failure: handleQueryFailure(reject, schemaQuery),
             });
             requestHandler?.(request_);
         }),

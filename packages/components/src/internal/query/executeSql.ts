@@ -2,14 +2,14 @@
  * Copyright (c) 2025-2026 LabKey Corporation. All rights reserved. No portion of this work may be reproduced
  * in any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { Ajax, Query } from '@labkey/api';
+import { Query } from '@labkey/api';
 
 import { Row } from './selectRows';
 import { getContainerFilter, getQueryDetails } from './api';
 import { SchemaQuery } from '../../public/SchemaQuery';
 import { QueryInfo } from '../../public/QueryInfo';
 import { URLResolver } from '../url/URLResolver';
-import { RequestHandler } from '../request';
+import { handleQueryFailure, RequestHandler } from '../request';
 
 export interface ExecuteSqlOptions
     extends Omit<Query.ExecuteSqlOptions, 'failure' | 'requiredVersion' | 'scope' | 'success'> {
@@ -81,18 +81,7 @@ export async function executeSql<T extends ExecuteSqlOptions>(options: T): Promi
                     } as ExecuteSqlResponse<T>);
                 }
             },
-            failure: (data, request) => {
-                const aborted = Ajax.isAborted(request);
-                if (!aborted) {
-                    console.error('There was a problem retrieving the data', data);
-                }
-                reject({
-                    aborted,
-                    exceptionClass: data.exceptionClass,
-                    message: data.exception,
-                    status: request.status,
-                });
-            },
+            failure: handleQueryFailure(reject),
         });
         requestHandler?.(request_);
     });

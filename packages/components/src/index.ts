@@ -24,7 +24,7 @@ import { SCHEMAS } from './internal/schemas';
 import { isLoading, LoadingState } from './public/LoadingState';
 import { ExtendedMap } from './public/ExtendedMap';
 import { useContainerPath, useContainerUser } from './internal/components/container/actions';
-import { handleRequestFailure, isAbortedRequest, request } from './internal/request';
+import { handleRequestFailure, isAbortedRequest, request, resolveRequestError } from './internal/request';
 
 import {
     ServerContextProvider,
@@ -1687,6 +1687,7 @@ export {
     resolveDetailRenderer,
     resolveErrorMessage,
     resolveKey,
+    resolveRequestError,
     ResponsiveMenuButton,
     ResponsiveMenuButtonGroup,
     runDetailsColumnsForQueryModel,

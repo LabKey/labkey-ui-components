@@ -24,7 +24,7 @@ import { QueryColumn, QueryLookup } from '../../public/QueryColumn';
 import { ViewInfo, ViewInfoJson } from '../ViewInfo';
 import { URLResolver } from '../url/URLResolver';
 import { ModuleContext } from '../components/base/ServerContext';
-import { handleRequestFailure, RequestHandler } from '../request';
+import { handleQueryFailure, handleRequestFailure, RequestHandler } from '../request';
 import { EDIT_METHOD } from '../constants';
 import { Row } from './selectRows';
 
@@ -480,19 +480,7 @@ export async function selectRowsDeprecated(options_: SelectRowsDeprecatedOptions
                 success: response_ => {
                     resolve(response_);
                 },
-                failure: (data, request) => {
-                    const aborted = Ajax.isAborted(request);
-                    if (!aborted) {
-                        console.error('There was a problem retrieving the data', data);
-                    }
-                    reject({
-                        aborted,
-                        exceptionClass: data.exceptionClass,
-                        message: data.exception,
-                        schemaQuery,
-                        status: request.status,
-                    });
-                },
+                failure: handleQueryFailure(reject, schemaQuery),
             });
             requestHandler?.(request_);
         }),

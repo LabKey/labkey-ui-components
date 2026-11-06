@@ -9,7 +9,7 @@ import { getContainerFilter, getQueryDetails } from './api';
 import { SchemaQuery } from '../../public/SchemaQuery';
 import { QueryInfo } from '../../public/QueryInfo';
 import { URLResolver } from '../url/URLResolver';
-import { RequestHandler } from '../request';
+import { handleQueryFailure, RequestHandler } from '../request';
 
 export interface ExecuteSqlOptions
     extends Omit<Query.ExecuteSqlOptions, 'failure' | 'requiredVersion' | 'scope' | 'success'> {
@@ -81,14 +81,7 @@ export async function executeSql<T extends ExecuteSqlOptions>(options: T): Promi
                     } as ExecuteSqlResponse<T>);
                 }
             },
-            failure: (data, request) => {
-                console.error('There was a problem retrieving the data', data);
-                reject({
-                    exceptionClass: data.exceptionClass,
-                    message: data.exception,
-                    status: request.status,
-                });
-            },
+            failure: handleQueryFailure(reject),
         });
         requestHandler?.(request_);
     });

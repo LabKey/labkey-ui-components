@@ -264,6 +264,27 @@ describe('withQueryModels request failures', () => {
         expect(textOf('.rows-state')).toBe(LoadingState.LOADED);
     });
 
+    it('keeps the saved grid settings when another source aborted the rows request', async () => {
+        const removeItem = jest.spyOn(Storage.prototype, 'removeItem');
+        const aborted = { aborted: true, exception: 'Request aborted', status: 0 };
+        renderModel(testLoader({ loadRows: jest.fn().mockRejectedValue(aborted) }));
+
+        await waitFor(() => {
+            expect(textOf('.rows-state')).toBe(LoadingState.LOADED);
+        });
+        expect(removeItem).not.toHaveBeenCalled();
+    });
+
+    it('clears the saved grid settings when the rows request failed', async () => {
+        const removeItem = jest.spyOn(Storage.prototype, 'removeItem');
+        renderModel(testLoader({ loadRows: jest.fn().mockRejectedValue(TRANSPORT_FAILURE) }));
+
+        await waitFor(() => {
+            expect(textOf('.rows-state')).toBe(LoadingState.LOADED);
+        });
+        expect(removeItem).toHaveBeenCalled();
+    });
+
     it('surfaces a selections failure that was not a cancellation', async () => {
         renderModel(testLoader({ loadSelections: jest.fn().mockRejectedValue(TRANSPORT_FAILURE) }));
 

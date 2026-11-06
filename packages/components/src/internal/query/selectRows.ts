@@ -9,7 +9,7 @@ import { QueryInfo } from '../../public/QueryInfo';
 import { URLResolver } from '../url/URLResolver';
 
 import { getContainerFilter, getQueryDetails, isSelectRowMetadataRequired } from './api';
-import { RequestHandler } from '../request';
+import { handleQueryFailure, RequestHandler } from '../request';
 
 export interface SelectRowsMessage {
     area?: string;
@@ -77,17 +77,7 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
                 success: response_ => {
                     resolve(response_);
                 },
-                failure: (data, request) => {
-                    if (request.status !== 0) {
-                        console.error('There was a problem retrieving the data', data);
-                    }
-                    reject({
-                        exceptionClass: data.exceptionClass,
-                        message: data.exception,
-                        schemaQuery,
-                        status: request.status,
-                    });
-                },
+                failure: handleQueryFailure(reject, schemaQuery),
             });
             requestHandler?.(request_);
         }),

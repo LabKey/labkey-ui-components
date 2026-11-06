@@ -140,19 +140,39 @@
     position: fixed;
     max-height: calc(100dvh - 86px);
     z-index: 12; // has to be 12 to appear above react-datepicker
+}
 
-    .app-body.with-sub-nav & {
-        max-height: calc(100dvh - 126px);
-    }
+.app-body.with-sub-nav .chat-sidebar {
+    max-height: calc(100dvh - 126px);
+}
+
+.sdms-labkey-assistant .chat-sidebar {
+    max-height: calc(100dvh - 115px);
+}
+
+.sdms-labkey-assistant.sdms-labkey-assistant--scrolled .chat-sidebar {
+    max-height: calc(100dvh - 30px);
 }
 
 .chat-sidebar--tr,
 .chat-sidebar--tl {
     top: 71px;
+}
 
-    .app-body.with-sub-nav & {
-        top: 111px;
-    }
+.app-body.with-sub-nav .chat-sidebar--tr,
+.app-body.with-sub-nav .chat-sidebar--tl {
+    top: 111px;
+}
+
+
+.sdms-labkey-assistant .chat-sidebar--tr,
+.sdms-labkey-assistant .chat-sidebar--tl {
+    top: 100px;
+}
+
+.sdms-labkey-assistant.sdms-labkey-assistant--scrolled .chat-sidebar--tr,
+.sdms-labkey-assistant.sdms-labkey-assistant--scrolled .chat-sidebar--tl {
+    top: 15px;
 }
 
 .chat-sidebar--br,
@@ -184,6 +204,7 @@
 }
 
 .chat-sidebar__buttons .btn {
+    background-image: none; // SDMS styles add a background-image which looks awkward so we disable it here
     border: 1px solid transparent;
     border-radius: 4px;
 
@@ -227,4 +248,15 @@
 .bounce-effect {
     display: inline-block;
     animation: customBounce 0.6s ease-in-out;
+}
+
+.sdms-assistant-button {
+    border: none;
+    background-color: transparent;
+    color: $brand-secondary;
+    padding: 5px 8px;
+
+    &:hover {
+        color: #dadfe1;
+    }
 }

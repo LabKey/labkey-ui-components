@@ -281,8 +281,8 @@ describe('NavigationBar', () => {
                         mcpReady,
                         moduleContext: {
                             ...TEST_LKSM_STARTER_MODULE_CONTEXT,
-                            samplemanagement: {
-                                ...TEST_LKSM_STARTER_MODULE_CONTEXT.samplemanagement,
+                            core: {
+                                ...TEST_LKSM_STARTER_MODULE_CONTEXT.core,
                                 labKeyAssistantEnabled,
                             },
                         },

@@ -44,7 +44,7 @@ describe('aborted requests', () => {
         expect(consoleError).not.toHaveBeenCalled();
     });
 
-    test('isAbortedRequest', () => {
+    test('isAbortedRequest is true only for rejections flagged as aborted', () => {
         expect(isAbortedRequest({ aborted: true, status: 0 })).toBe(true);
         expect(isAbortedRequest({ aborted: false, status: 0 })).toBe(false);
         expect(isAbortedRequest({ status: 0 })).toBe(false);

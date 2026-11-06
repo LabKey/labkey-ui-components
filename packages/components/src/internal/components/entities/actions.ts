@@ -1169,6 +1169,7 @@ export const getExcludedDataTypeNames = (
             .then(excludedRowIds => {
                 if (!excludedRowIds || excludedRowIds.length === 0) {
                     resolve([]);
+                    return;
                 }
                 const filterArray = [Filter.create('RowId', excludedRowIds, Filter.Types.IN)];
                 selectRows({

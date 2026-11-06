@@ -200,7 +200,7 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
     };
 
     getLabelTemplates = async (containerPath?: string): Promise<LabelTemplate[]> => {
-        // LabelPrintingContextProvider loads this once for the whole app, so leaving a route must not abort it (cancellable: false)
+        // LabelPrintingContextProvider loads this once for the whole app, so leaving a route must not abort it
         const result = await selectRows({ cancellable: false, containerPath, schemaQuery: LABEL_TEMPLATE_SQ });
         return result.rows.map(row => LabelTemplate.create(row));
     };

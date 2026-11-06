@@ -1698,31 +1698,31 @@ export function resolveAvailableTypes(
 
     // field has been saved -- display eligible propTypes
     const filteredTypes = availableTypes.filter(type => {
-            // Can always return to the original type for field
-            if (type.name === dataType.name) return true;
+        // Can always return to the original type for field
+        if (type.name === dataType.name) return true;
 
-            // Issue 44511: Allow all types to be converted to string
-            // Issue 44711: Don't allow Attachment or FileLink field types to be converted
-            if (
-                STRING_CONVERT_URIS.indexOf(type.rangeURI) > -1 &&
-                !type.conceptURI &&
-                FILE_CONVERT_URIS.indexOf(rangeURI) === -1
-            ) {
-                return true;
-            }
+        // Issue 44511: Allow all types to be converted to string
+        // Issue 44711: Don't allow Attachment or FileLink field types to be converted
+        if (
+            STRING_CONVERT_URIS.indexOf(type.rangeURI) > -1 &&
+            !type.conceptURI &&
+            FILE_CONVERT_URIS.indexOf(rangeURI) === -1
+        ) {
+            return true;
+        }
 
-            // Issue 44511: Allow integer/long -> decimal/double/float
-            if (
-                NUMBER_CONVERT_URIS.indexOf(type.rangeURI) > -1 &&
-                (rangeURI === INT_RANGE_URI || rangeURI === LONG_RANGE_URI)
-            ) {
-                return true;
-            }
+        // Issue 44511: Allow integer/long -> decimal/double/float
+        if (
+            NUMBER_CONVERT_URIS.indexOf(type.rangeURI) > -1 &&
+            (rangeURI === INT_RANGE_URI || rangeURI === LONG_RANGE_URI)
+        ) {
+            return true;
+        }
 
-            if (!acceptablePropertyType(type, rangeURI)) return false;
+        if (!acceptablePropertyType(type, rangeURI)) return false;
 
-            return isPropertyTypeAllowed(appPropertiesOnly, type, showFilePropertyType, showStudyPropertyTypes);
-        });
+        return isPropertyTypeAllowed(appPropertiesOnly, type, showFilePropertyType, showStudyPropertyTypes);
+    });
 
     // Issue 39341: if the field type is coming from the server as a type we don't support in new field creation, add it to the list
     if (!filteredTypes.includes(dataType)) {

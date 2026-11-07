@@ -1225,6 +1225,33 @@ describe('insertPastedData', () => {
         );
     });
 
+    test('pasting multi-row block with a quoted multi-line cell keeps rows aligned', async () => {
+        const fkThree = 'field_three';
+        const fieldThree = new QueryColumn({ caption: 'Field Three', fieldKey: fkThree, inputType: 'string' });
+        // Excel/Google Sheets quote a cell containing an Alt+Enter line break
+        const value = 'a1\t"line one\nline two"\tc1\nb2a\tb2b\tb2c\n';
+        const em = baseEditorModel.merge({
+            orderedColumns: List([fkOne, fkTwo, fkThree]),
+            columnMap: baseEditorModel.columnMap.set(fkThree, fieldThree),
+            selectionCells: [],
+            selectedColIdx: 0,
+            selectedRowIdx: 0,
+        }) as EditorModel;
+        const changes = await validateAndInsertPastedData(em, value, undefined, true, true, undefined, true);
+        const cellValues = changes.cellValues;
+        expect(cellValues.get(genCellKey(fkOne, 0))).toEqual(List([{ display: 'a1', raw: 'a1' }]));
+        expect(cellValues.get(genCellKey(fkTwo, 0))).toEqual(
+            List([{ display: 'line one\nline two', raw: 'line one\nline two' }])
+        );
+        expect(cellValues.get(genCellKey(fkThree, 0))).toEqual(List([{ display: 'c1', raw: 'c1' }]));
+        expect(cellValues.get(genCellKey(fkOne, 1))).toEqual(List([{ display: 'b2a', raw: 'b2a' }]));
+        expect(cellValues.get(genCellKey(fkTwo, 1))).toEqual(List([{ display: 'b2b', raw: 'b2b' }]));
+        expect(cellValues.get(genCellKey(fkThree, 1))).toEqual(List([{ display: 'b2c', raw: 'b2c' }]));
+        // rows beyond the pasted block are untouched
+        expect(cellValues.get(genCellKey(fkOne, 2))).toEqual(List([{ display: 'zxcv', raw: 'zxcv' }]));
+        expect(cellValues.get(genCellKey(fkTwo, 2))).toEqual(List([{ display: 'nm', raw: 'nm' }]));
+    });
+
     test('pasting multi values', async () => {
         const em = baseEditorModel.applyChanges({
             selectionCells: [genCellKey(mvtc, 0)],

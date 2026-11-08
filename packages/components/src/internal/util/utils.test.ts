@@ -37,6 +37,7 @@ import {
     pronoun,
     quoteValueWithDelimiters,
     splitMultiValueForImport,
+    splitTsvKeepingCellQuotes,
     stringToHtmlId,
     styleStringToObj,
     toLowerSafe,
@@ -1041,6 +1042,84 @@ describe('isSimpleQuotedMultiLine', () => {
         expect(isSimpleQuotedMultiLine('"a""\nb"')).toBe(false);
         expect(isSimpleQuotedMultiLine('"a\n""b"')).toBe(false);
         expect(isSimpleQuotedMultiLine('"ok\na""b""c\nd"')).toBe(false);
+    });
+});
+
+describe('splitTsvKeepingCellQuotes', () => {
+    test('splits rows and cells', () => {
+        expect(splitTsvKeepingCellQuotes('')).toEqual([['']]);
+        expect(splitTsvKeepingCellQuotes('a\tb\nc\t')).toEqual([
+            ['a', 'b'],
+            ['c', ''],
+        ]);
+        expect(splitTsvKeepingCellQuotes('a\tb\r\nc\td')).toEqual([
+            ['a', 'b'],
+            ['c', 'd'],
+        ]);
+    });
+
+    test('keeps quotes of single-line cells', () => {
+        expect(splitTsvKeepingCellQuotes('"A,B",cD\tx\n"""A"""')).toEqual([['"A,B",cD', 'x'], ['"""A"""']]);
+        expect(splitTsvKeepingCellQuotes('say "hi"\t""')).toEqual([['say "hi"', '""']]);
+    });
+
+    test('unwraps quoted cells spanning a line break', () => {
+        expect(splitTsvKeepingCellQuotes('a1\t"line one\nline two"\tc1\nb2a\tb2b\tb2c')).toEqual([
+            ['a1', 'line one\nline two', 'c1'],
+            ['b2a', 'b2b', 'b2c'],
+        ]);
+        expect(splitTsvKeepingCellQuotes('"say ""hi""\r\nbye"\tx\r\n"A,B"\ty')).toEqual([
+            ['say "hi"\r\nbye', 'x'],
+            ['"A,B"', 'y'],
+        ]);
+    });
+
+    test('unwraps middle-column line-break cells even when the raw rows are rectangular', () => {
+        expect(splitTsvKeepingCellQuotes('a\t"x\ny"\tb\nc\t"p\nq"\td')).toEqual([
+            ['a', 'x\ny', 'b'],
+            ['c', 'p\nq', 'd'],
+        ]);
+        expect(splitTsvKeepingCellQuotes('a\t"x\ny"\tb')).toEqual([['a', 'x\ny', 'b']]);
+    });
+
+    test('splits raw when unwrapping does not yield rectangular rows', () => {
+        expect(splitTsvKeepingCellQuotes('"say ""hi""\r\nbye"\r\n"A,B"\tx')).toEqual([
+            ['"say ""hi""'],
+            ['bye"'],
+            ['"A,B"', 'x'],
+        ]);
+        expect(splitTsvKeepingCellQuotes('"a\nb"\tc\nd')).toEqual([['"a'], ['b"', 'c'], ['d']]);
+        expect(splitTsvKeepingCellQuotes('a\t"Hello\nworld"\tb\nc\td')).toEqual([
+            ['a', '"Hello'],
+            ['world"', 'b'],
+            ['c', 'd'],
+        ]);
+    });
+
+    test('splits raw when a single-column paste is ambiguous', () => {
+        expect(splitTsvKeepingCellQuotes('"Hello\nworld"\nfoo')).toEqual([['"Hello'], ['world"'], ['foo']]);
+    });
+
+    test('leaves a quote that does not close at a cell end', () => {
+        expect(splitTsvKeepingCellQuotes('"a\nb" c\td')).toEqual([['"a'], ['b" c', 'd']]);
+        expect(splitTsvKeepingCellQuotes('"a\nb')).toEqual([['"a'], ['b']]);
+        expect(splitTsvKeepingCellQuotes('x\t"a\nb\ty')).toEqual([
+            ['x', '"a'],
+            ['b', 'y'],
+        ]);
+    });
+
+    test('leaves a stray leading quote whose closing quote is in a later cell', () => {
+        expect(splitTsvKeepingCellQuotes('"Hello\tx\ny\tbolt 5"\nz\tw')).toEqual([
+            ['"Hello', 'x'],
+            ['y', 'bolt 5"'],
+            ['z', 'w'],
+        ]);
+        expect(splitTsvKeepingCellQuotes('"Hello\tx\ny\tbolt 5"\tq\nz\tw')).toEqual([
+            ['"Hello', 'x'],
+            ['y', 'bolt 5"', 'q'],
+            ['z', 'w'],
+        ]);
     });
 });
 

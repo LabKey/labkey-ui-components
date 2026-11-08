@@ -600,6 +600,68 @@ export function isSimpleQuotedMultiLine(value: any): boolean {
     return lines.every(line => (line.match(/"/g) || []).length <= 1);
 }
 
+const isRectangular = (rows: string[][]): boolean => rows.every(row => row.length === rows[0].length);
+
+/**
+ * Splits pasted TSV into rows of cells, keeping each cell's raw text (quotes included) for multi-value parsing.
+ * The one exception is a spreadsheet-style quoted cell spanning a line break, which is unwrapped and unescaped
+ * so its embedded newline doesn't split the row.
+ * Unwrapping applies only when its rows are rectangular, as spreadsheet output always is, and the raw rows are
+ * ragged or a different width; a single-column paste is ambiguous and stays raw.
+ */
+export function splitTsvKeepingCellQuotes(value: string): string[][] {
+    const raw = value.split(/\r?\n/).map(row => row.split('\t'));
+    const unwrapped = splitTsvUnwrappingQuotedLineBreaks(value);
+    if (!isRectangular(unwrapped)) return raw;
+    return !isRectangular(raw) || unwrapped[0].length !== raw[0].length ? unwrapped : raw;
+}
+
+function splitTsvUnwrappingQuotedLineBreaks(value: string): string[][] {
+    const lineBreakAt = (pos: number): number => (value[pos] === '\n' ? 1 : value.startsWith('\r\n', pos) ? 2 : 0);
+    const isCellEnd = (pos: number): boolean => pos >= value.length || value[pos] === '\t' || lineBreakAt(pos) > 0;
+    const rows: string[][] = [];
+    let row: string[] = [];
+    let i = 0;
+
+    while (i <= value.length) {
+        let cell: string;
+
+        if (value[i] === '"') {
+            let close = i + 1;
+            // Stop at a tab so a stray leading quote can't swallow later cells up to some other cell's trailing quote.
+            while (
+                close < value.length &&
+                value[close] !== '\t' &&
+                (value[close] !== '"' || value[close + 1] === '"')
+            ) {
+                close += value[close] === '"' ? 2 : 1;
+            }
+            const inner = value.substring(i + 1, close);
+            if (value[close] === '"' && isCellEnd(close + 1) && NEWLINE_CHARS.some(char => inner.indexOf(char) > -1)) {
+                cell = inner.replace(/""/g, '"');
+                i = close + 1;
+            }
+        }
+
+        if (cell === undefined) {
+            const start = i;
+            while (!isCellEnd(i)) i++;
+            cell = value.substring(start, i);
+        }
+
+        row.push(cell);
+        if (value[i] === '\t') {
+            i++;
+        } else {
+            rows.push(row);
+            row = [];
+            i += lineBreakAt(i) || 1;
+        }
+    }
+
+    return rows;
+}
+
 export function joinMultiValueForExport(values: string[], delimiter = ','): string {
     return Papa.unparse([values], { delimiter });
 }

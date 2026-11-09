@@ -25,7 +25,7 @@ describe('useColumnFacets', () => {
 
     const renderFacets = (getColumnFacets: jest.Mock, request: ColumnFacetsRequest) => {
         const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { getColumnFacets }) });
-        return renderHook(() => useColumnFacets(api, request));
+        return renderHook((props: ColumnFacetsRequest) => useColumnFacets(api, props), { initialProps: request });
     };
 
     const response = (complete: boolean): ColumnFacetsResponse => ({ columns: [FACET], complete, largeTable: false });
@@ -82,6 +82,20 @@ describe('useColumnFacets', () => {
         expect(getColumnFacets).toHaveBeenCalledTimes(1);
         expect(result.current.facets).toEqual({});
     });
+
+    test("a failure on a new grid shape drops the previous shape's facts", async () => {
+        const getColumnFacets = jest.fn().mockResolvedValueOnce(response(true)).mockRejectedValue(new Error('nope'));
+        const { rerender, result } = renderFacets(getColumnFacets, REQUEST);
+
+        await waitFor(() => expect(result.current.facets.name).toEqual(FACET));
+
+        // A different grid: its columns may be named the same but describe other rows
+        rerender({ columns: ['Name'], queryName: 'Other', schemaName: 'samples' });
+
+        await waitFor(() => expect(result.current.pending).toBe(false));
+        expect(result.current.facets).toEqual({});
+        expect(result.current.largeTable).toBeUndefined();
+    }, 10_000);
 
     test('a failure after a good poll keeps what that poll delivered', async () => {
         const getColumnFacets = jest.fn().mockResolvedValueOnce(response(false)).mockRejectedValue(new Error('nope'));

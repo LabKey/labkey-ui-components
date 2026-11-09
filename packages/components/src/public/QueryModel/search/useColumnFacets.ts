@@ -63,10 +63,15 @@ export function useColumnFacets(api: ComponentsAPIWrapper, request: ColumnFacets
                     return result;
                 }, {});
             } catch {
-                // Keep whatever earlier polls delivered; discarding it would send the caller back to querying for
-                // columns already answered. A failure is not retried.
+                // Keep whatever earlier polls delivered for this same request; discarding it would send the caller
+                // back to querying for columns already answered. Facts for an earlier request describe a different
+                // grid, so they are dropped rather than stamped with this one. A failure is not retried.
                 if (!cancelled && id === requestId.current)
-                    setSettled(previous => ({ ...previous, loading: false, pending: false, request }));
+                    setSettled(previous =>
+                        previous.request === request
+                            ? { ...previous, loading: false, pending: false }
+                            : { facets: {}, largeTable: undefined, loading: false, pending: false, request }
+                    );
                 return;
             }
             if (cancelled || id !== requestId.current) return;

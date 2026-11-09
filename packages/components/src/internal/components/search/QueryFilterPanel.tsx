@@ -51,9 +51,8 @@ interface Props {
     // What the server already knows about each column, so an expensive value list can be skipped or served from cache
     columnFacets?: ColumnFacets;
     // Those facts are still loading, so a column with none yet may still turn out cheap
-    // No facts response has arrived yet, so the grid's size is still unknown
+    // No facts response has arrived yet, so neither the grid's size nor any column's values are known
     columnFactsLoading?: boolean;
-    columnFactsPending?: boolean;
     emptyMsg?: string;
     // used for Sample Finder use case
     entityDataType?: EntityDataType;
@@ -96,7 +95,6 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         api = getDefaultAPIWrapper(),
         columnFacets,
         columnFactsLoading,
-        columnFactsPending,
         queryInfo,
         emptyMsg,
         skipDefaultViewCheck,
@@ -192,7 +190,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     const getFacetingCost = useCallback(
         (field: QueryColumn): FacetingCost => {
             const facet = getFacet(field);
-            if (facet?.values && !facet.truncated) return 'cheap';
+            if (facet?.values && !facet.truncated && facet.valuesFromData) return 'cheap';
             if (facet?.distinctCount > MAX_DISTINCT_FILTER_OPTIONS) return 'expensive';
             return 'unknown';
         },
@@ -365,8 +363,10 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         () => (factsApply ? getFacet(activeField) : undefined),
         [activeField, factsApply, getFacet]
     );
-    // A truncated list is missing values, so it can't stand in for the query
-    const rawFacetValues = activeFacet?.truncated ? undefined : activeFacet?.values;
+    // A truncated list is missing values, so it can't stand in for the query. Neither can a list the server didn't
+    // read from the grid's own rows: a column's declared options, and a multi-valued lookup's values, include values
+    // no row on screen has, and the grid's filters never narrowed them.
+    const rawFacetValues = activeFacet?.truncated || !activeFacet?.valuesFromData ? undefined : activeFacet?.values;
     // Cached lists never carry blanks, so the facts say whether to offer one. A copy: the array is the cache's own.
     const facetValues = useMemo(
         () => (rawFacetValues && activeFacet.hasBlank ? [...rawFacetValues, null] : rawFacetValues),
@@ -396,7 +396,11 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                 {!queryName && emptyMsg && <div className="field-modal__empty-msg">{emptyMsg}</div>}
                 {queryName && (
                     <div className="list-group field-modal__col-content filter-modal__fields-col-content">
-                        {!queryFields && <LoadingSpinner wrapperClassName="loading-spinner" />}
+                        {!queryFields && (
+                            <div aria-live="polite" role="status">
+                                <LoadingSpinner wrapperClassName="loading-spinner" />
+                            </div>
+                        )}
                         {entityDataType?.supportAllValueInQuery &&
                             altQueryName !== SAMPLE_PROPERTY_ALL_SAMPLE_TYPE.query && (
                                 <div className="form-check list-group-item">
@@ -469,7 +473,11 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                             'field-modal__col-content-disabled': hasNotInQueryFilter,
                         })}
                     >
-                        {awaitingTabDecision && <LoadingSpinner wrapperClassName="loading-spinner" />}
+                        {awaitingTabDecision && (
+                            <div aria-live="polite" role="status">
+                                <LoadingSpinner wrapperClassName="loading-spinner" />
+                            </div>
+                        )}
                         {!awaitingTabDecision && (
                             <Tabs
                                 activeKey={activeTab}
@@ -502,7 +510,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                         {activeTab === FieldFilterTabs.ChooseValues && (
                                             <FilterFacetedSelector
                                                 api={api}
-                                                awaitingFacts={columnFactsPending}
+                                                awaitingFacts={columnFactsLoading}
                                                 canBeBlank={!activeField?.required && !activeField.nameExpression}
                                                 disabled={hasNotInQueryFilter}
                                                 facetValues={facetValues}

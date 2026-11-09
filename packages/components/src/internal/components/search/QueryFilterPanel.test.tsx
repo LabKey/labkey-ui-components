@@ -299,6 +299,27 @@ describe('QueryFilterPanel', () => {
             validate(10, false, true);
         });
 
+        test("declared values are not the grid's values, so the column is queried like any other", async () => {
+            const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['a'] });
+            const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
+            // A Text Choice column's options arrive as values the server never read from the data
+            const facets = { text: { ...CHEAP_TEXT_FACET.text, valuesFromData: false } };
+            render(<QueryFilterPanel {...DEFAULT_PROPS} api={api} columnFacets={facets} fieldKey="Text" />);
+
+            // Not cheap, so a large grid would open on Filter; this one is small, so Choose values opens and queries
+            validate(10, false, true);
+            await act(async () => {
+                await Promise.resolve();
+            });
+            expect(selectDistinctRows).toHaveBeenCalledTimes(1);
+        });
+
+        test('declared values do not make a large grid worth opening on Choose values', () => {
+            const facets = { text: { ...CHEAP_TEXT_FACET.text, valuesFromData: false } };
+            render(<QueryFilterPanel {...DEFAULT_PROPS} columnFacets={facets} fieldKey="Text" isLargeDataset />);
+            validate(10, true, false);
+        });
+
         test('another field filtered puts the cached values out of date, so a large grid opens on Filter', () => {
             render(
                 <QueryFilterPanel
@@ -374,22 +395,31 @@ describe('QueryFilterPanel', () => {
             validate(10, true, false);
         });
 
-        test('facts still loading open on Choose values and wait, rather than moving the tab later', async () => {
+        test('nothing is queried while the first facts response is still outstanding', async () => {
             const selectDistinctRows = jest.fn().mockResolvedValue({ values: ['a'] });
             const api = getTestAPIWrapper(jest.fn, { query: getQueryTestAPIWrapper(jest.fn, { selectDistinctRows }) });
-            render(<QueryFilterPanel {...DEFAULT_PROPS} api={api} columnFactsPending fieldKey="Text" />);
-            // The grid is not large, so nothing yet says the list is expensive; wait rather than pick a tab to move
-            validate(10, false, true);
-            // and nothing is queried while the facts are still coming: flush pending work before concluding that
+            const { rerender } = render(
+                <QueryFilterPanel {...DEFAULT_PROPS} api={api} columnFactsLoading fieldKey="Text" />
+            );
+            // No tab, because that answer decides which one opens; flush pending work before concluding nothing ran
+            expect(document.querySelectorAll('li[role="presentation"]')).toHaveLength(0);
             await act(async () => {
                 await Promise.resolve();
             });
             expect(selectDistinctRows).not.toHaveBeenCalled();
+
+            // The answer carried no values for this column, so the query runs rather than waiting on later polls
+            rerender(<QueryFilterPanel {...DEFAULT_PROPS} api={api} fieldKey="Text" />);
+            validate(10, false, true);
+            await act(async () => {
+                await Promise.resolve();
+            });
+            expect(selectDistinctRows).toHaveBeenCalledTimes(1);
         });
 
         test('a large grid waits for the first facts response, then honours a cached list', () => {
             const { rerender } = render(
-                <QueryFilterPanel {...DEFAULT_PROPS} columnFactsLoading columnFactsPending fieldKey="Text" />
+                <QueryFilterPanel {...DEFAULT_PROPS} columnFactsLoading fieldKey="Text" />
             );
             // No tab yet: choosing now would either run the scan or hide a list that is already cached
             expect(document.querySelectorAll('li[role="presentation"]')).toHaveLength(0);
@@ -402,13 +432,13 @@ describe('QueryFilterPanel', () => {
 
         test('a cold grid the first response reports large opens on Filter, not Choose values', () => {
             const { rerender } = render(
-                <QueryFilterPanel {...DEFAULT_PROPS} columnFactsLoading columnFactsPending fieldKey="Text" />
+                <QueryFilterPanel {...DEFAULT_PROPS} columnFactsLoading fieldKey="Text" />
             );
             // Size unknown until that response: deciding here would read the grid's own count as small
             expect(document.querySelectorAll('li[role="presentation"]')).toHaveLength(0);
 
             // The response says the table is large and carries no values for the column yet
-            rerender(<QueryFilterPanel {...DEFAULT_PROPS} columnFactsPending fieldKey="Text" isLargeDataset />);
+            rerender(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" isLargeDataset />);
             validate(10, true, false);
         });
 

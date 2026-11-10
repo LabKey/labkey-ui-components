@@ -40,11 +40,19 @@ export function handleRequestFailure(reject: (error: any) => void, logMsg?: stri
     );
 }
 
+export type QueryFailure = {
+    aborted: boolean;
+    exceptionClass?: string;
+    message?: string;
+    schemaQuery?: SchemaQuery;
+    status: number;
+};
+
 /**
  * Handles a failed query API request (e.g., Query.selectRows): rejects with the error and whether the request was
  * aborted, and logs it unless it was.
  */
-export function handleQueryFailure(reject: (error: unknown) => void, schemaQuery?: SchemaQuery) {
+export function handleQueryFailure(reject: (failure: QueryFailure) => void, schemaQuery?: SchemaQuery) {
     return (data: { exception?: string; exceptionClass?: string }, request: XMLHttpRequest): void => {
         const aborted = Ajax.isAborted(request);
         if (!aborted) {

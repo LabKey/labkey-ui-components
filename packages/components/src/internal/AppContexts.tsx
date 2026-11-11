@@ -10,6 +10,7 @@ import { GlobalStateContextProvider } from './GlobalStateContext';
 import { ServerContextProvider, withAppUser } from './components/base/ServerContext';
 import { NotificationsContextProvider } from './components/notifications/NotificationsContext';
 import { LabelPrintingContextProvider } from './components/labelPrinting/LabelPrintingContextProvider';
+import { AssistantService } from './components/mcp/AssistantService';
 
 interface Props<T = {}> extends PropsWithChildren {
     /**
@@ -42,14 +43,16 @@ export const AppContexts: FC<Props> = props => {
     return (
         <ServerContextProvider initialContext={initialServerContext}>
             <AppContextProvider initialContext={initialAppContext}>
-                {includeGlobalState && (
-                    <GlobalStateContextProvider>
-                        <NotificationsContextProvider>
-                            <LabelPrintingContextProvider>{children}</LabelPrintingContextProvider>
-                        </NotificationsContextProvider>
-                    </GlobalStateContextProvider>
-                )}
-                {!includeGlobalState && <>{children}</>}
+                <AssistantService>
+                    {includeGlobalState && (
+                        <GlobalStateContextProvider>
+                            <NotificationsContextProvider>
+                                <LabelPrintingContextProvider>{children}</LabelPrintingContextProvider>
+                            </NotificationsContextProvider>
+                        </GlobalStateContextProvider>
+                    )}
+                    {!includeGlobalState && <>{children}</>}
+                </AssistantService>
             </AppContextProvider>
         </ServerContextProvider>
     );

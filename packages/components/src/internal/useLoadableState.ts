@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } f
 
 import { LoadingState } from '../public/LoadingState';
 
+import { isAbortedRequest } from './request';
 import { resolveErrorMessage } from './util/messaging';
 
 interface ResolveErrorArgs {
@@ -26,6 +27,10 @@ export interface LoadableState<T> {
 
 export type Loader<T> = () => Promise<T>;
 
+/**
+ * An aborted load is not an error: it leaves the state INITIALIZED without retrying, so a consumer that outlives the
+ * route it loaded on must use requests with `cancellable: false`.
+ */
 export function useLoadableState<T>(loader: Loader<T>, resolveErrorArgs?: ResolveErrorArgs): LoadableState<T> {
     const { nounPlural, nounSingular, verb } = resolveErrorArgs ?? {};
     const [error, setError] = useState<string>(undefined);
@@ -38,7 +43,14 @@ export function useLoadableState<T>(loader: Loader<T>, resolveErrorArgs?: Resolv
         try {
             const result = await loader();
             setValue(result);
+            setLoadingState(LoadingState.LOADED);
         } catch (e) {
+            // An aborted request didn't fail, it just never loaded
+            if (isAbortedRequest(e)) {
+                setLoadingState(LoadingState.INITIALIZED);
+                return;
+            }
+
             // Note: it's important to log the error here, because if consumers don't use the error object returned here
             // then you may not know an error happened, so this way we at least have some trace of an issue.
             console.error(e);
@@ -46,7 +58,6 @@ export function useLoadableState<T>(loader: Loader<T>, resolveErrorArgs?: Resolv
             // We set value to undefined here because it's possible we loaded something correctly once before, but the
             // loader changed and load got triggered again.
             setValue(undefined);
-        } finally {
             setLoadingState(LoadingState.LOADED);
         }
     }, [loader, nounPlural, nounSingular, verb]);

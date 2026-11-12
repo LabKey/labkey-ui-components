@@ -4,6 +4,10 @@
  */
 import { Ajax, Utils } from '@labkey/api';
 
+import type { SchemaQuery } from '../public/SchemaQuery';
+
+import { resolveErrorMessage } from './util/messaging';
+
 /**
  * Handles Ajax.request() failures. Calls the passed in "reject" handler with the error
  * from the request as determined by Utils.getCallbackWrapper(). The "reject" parameter can be a normal function
@@ -25,8 +29,8 @@ export function handleRequestFailure(reject: (error: any) => void, logMsg?: stri
     return Utils.getCallbackWrapper(
         (error, response) => {
             // Appends the response's status code to the error object
-            const errorWithStatus = { ...error, status: response?.status };
-            if (logMsg && errorWithStatus.status !== 0) {
+            const errorWithStatus = { ...error, aborted: Ajax.isAborted(response), status: response?.status };
+            if (logMsg && !errorWithStatus.aborted) {
                 console.error(logMsg, errorWithStatus);
             }
             reject(errorWithStatus);
@@ -34,6 +38,52 @@ export function handleRequestFailure(reject: (error: any) => void, logMsg?: stri
         undefined,
         true
     );
+}
+
+export type QueryFailure = {
+    aborted: boolean;
+    exceptionClass?: string;
+    message?: string;
+    schemaQuery?: SchemaQuery;
+    status: number;
+};
+
+/**
+ * Handles a failed query API request (e.g., Query.selectRows): rejects with the error and whether the request was
+ * aborted, and logs it unless it was.
+ */
+export function handleQueryFailure(reject: (failure: QueryFailure) => void, schemaQuery?: SchemaQuery) {
+    return (data: { exception?: string; exceptionClass?: string }, request: XMLHttpRequest): void => {
+        const aborted = Ajax.isAborted(request);
+        if (!aborted) {
+            console.error('There was a problem retrieving the data', data);
+        }
+        reject({
+            aborted,
+            exceptionClass: data.exceptionClass,
+            message: data.exception,
+            schemaQuery,
+            status: request.status,
+        });
+    };
+}
+
+/**
+ * Returns true if the rejection came from a request that was aborted, e.g., because the user left the page, rather
+ * than one that failed. Such a rejection is not an error to show or log.
+ */
+export function isAbortedRequest(reason: unknown): boolean {
+    return (reason as { aborted?: boolean })?.aborted === true;
+}
+
+/**
+ * Returns what a helper should reject with when its request fails: an aborted request's reason unchanged, so callers
+ * can still tell it apart with isAbortedRequest, or else the logged failure's error message.
+ */
+export function resolveRequestError(reason: unknown): unknown {
+    if (isAbortedRequest(reason)) return reason;
+    console.error(reason);
+    return resolveErrorMessage(reason);
 }
 
 export type SuccessDataResponse<T> = {

@@ -693,26 +693,18 @@ describe('utils', () => {
 
     test('isLabKeyAssistantEnabled', () => {
         expect(isLabKeyAssistantEnabled({ api: { moduleNames: [] } })).toBeFalsy();
+        expect(isLabKeyAssistantEnabled({ api: { moduleNames: [] }, core: {} })).toBeFalsy();
         expect(
-            isLabKeyAssistantEnabled({
-                api: { moduleNames: [] },
-                samplemanagement: { labKeyAssistantEnabled: true },
-            })
-        ).toBeFalsy();
-        expect(
-            isLabKeyAssistantEnabled({ api: { moduleNames: ['samplemanagement'] }, samplemanagement: {} })
-        ).toBeFalsy();
-        expect(
-            isLabKeyAssistantEnabled({
-                api: { moduleNames: ['samplemanagement'] },
-                samplemanagement: { labKeyAssistantEnabled: false },
-            })
+            isLabKeyAssistantEnabled({ api: { moduleNames: [] }, core: { labKeyAssistantEnabled: false } })
         ).toBeFalsy();
         expect(
             isLabKeyAssistantEnabled({
                 api: { moduleNames: ['samplemanagement'] },
                 samplemanagement: { labKeyAssistantEnabled: true },
             })
+        ).toBeFalsy();
+        expect(
+            isLabKeyAssistantEnabled({ api: { moduleNames: [] }, core: { labKeyAssistantEnabled: true } })
         ).toBeTruthy();
     });
 

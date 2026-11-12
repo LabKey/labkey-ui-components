@@ -922,8 +922,8 @@ import { FilterCriteriaRenderer } from './internal/FilterCriteriaRenderer';
 import { getQueryTestAPIWrapper } from './internal/query/APIWrapper';
 import { useLoadableState } from './internal/useLoadableState';
 import { UnidentifiedPill } from './internal/UnidentifiedPill';
-import { AssistantPanel } from './internal/components/mcp/AssistantPanel';
-import { useAssistantService } from './internal/components/mcp/AssistantService';
+import { AssistantButton, AssistantPanel } from './internal/components/mcp/AssistantPanel';
+import { AssistantService, useAssistantService } from './internal/components/mcp/AssistantService';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1182,7 +1182,9 @@ export {
     AssayStateModel,
     AssayUploadResultModel,
     AssayUploadTabs,
+    AssistantButton,
     AssistantPanel,
+    AssistantService,
     AttachmentCard,
     AUDIT_EVENT_TYPE_PARAM,
     AuditDetails,

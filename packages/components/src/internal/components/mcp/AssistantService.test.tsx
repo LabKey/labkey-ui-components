@@ -14,7 +14,7 @@ const STORAGE_KEY = 'ASSISTANT_CONVERSATION_ID';
 
 const ENABLED_MODULE_CONTEXT = {
     ...TEST_LKSM_STARTER_MODULE_CONTEXT,
-    samplemanagement: { ...TEST_LKSM_STARTER_MODULE_CONTEXT.samplemanagement, labKeyAssistantEnabled: true },
+    core: { ...TEST_LKSM_STARTER_MODULE_CONTEXT.core, labKeyAssistantEnabled: true },
 };
 
 function mockLocks(lockAvailable: boolean): jest.Mock {

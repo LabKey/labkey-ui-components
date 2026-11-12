@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "10.1.4",
+  "version": "10.1.5-fb-latest-node.0",
   "description": "LabKey client-side build assets",
   "files": [
     "configs/"

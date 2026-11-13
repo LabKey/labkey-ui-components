@@ -92,18 +92,39 @@ export function generateFieldName(length: number = 5, charset: string = FIELD_NA
     return generateRandomStr(length, charset);
 }
 
+function valueText(value: unknown): string {
+    if (value === null || value === undefined) return '';
+    // String(date) is locale-formatted; the server parses the ISO instant, Z included
+    if (value instanceof Date) return value.toISOString();
+    if (typeof value === 'object') {
+        throw new Error(`Can't write an object as a TSV value: ${JSON.stringify(value)}`);
+    }
+    return String(value);
+}
+
+// Quotes one element of a multi-value cell, which the server splits on commas outside quotes
+function listElement(value: unknown): string {
+    const str = valueText(value);
+    if (/[,"\r\n\\]/.test(str) || str !== str.trim()) {
+        return '"' + str.replace(/"/g, '""') + '"';
+    }
+    return str;
+}
+
 /**
- * Formats one value as a TSV cell, quoting it when the server would otherwise split, trim, or skip it as a comment.
- * Arrays are joined with commas; null and undefined become empty cells.
+ * Formats one value as a TSV cell, quoting it when the server would otherwise split, trim, skip it as a comment, or read
+ * it as null (a literal \N). Arrays become one multi-value cell, with each element quoted as needed and joined with
+ * ", "; dates are written as ISO-8601 instants; null and undefined become empty cells.
  * @param value the value to format.
+ * @throws if the value contains \r, which the server reads as a line break and stores as \n.
  */
 export function tsvValue(value: unknown): string {
-    let str: string;
-    if (value === null || value === undefined) str = '';
-    else if (Array.isArray(value)) str = value.join(',');
-    else str = String(value);
+    const str = Array.isArray(value) ? value.map(listElement).join(', ') : valueText(value);
 
-    if (/[\t\r\n"]/.test(str) || str.startsWith('#') || str !== str.trim()) {
+    if (str.includes('\r')) {
+        throw new Error(`Value ${JSON.stringify(str)} contains \\r, which the server would store as \\n`);
+    }
+    if (/[\t\n"]/.test(str) || str.startsWith('#') || str !== str.trim() || str === '\\N') {
         return '"' + str.replace(/"/g, '""') + '"';
     }
     return str;
@@ -112,15 +133,25 @@ export function tsvValue(value: unknown): string {
 /**
  * Builds TSV import text from rows of values, quoting cells as needed via {@link tsvValue}.
  * @param rows the rows to write, including any header row.
+ * @throws if every cell in a row is empty, since the server skips such rows on import however they're written.
  */
 export function tsvStringFromRows(rows: unknown[][]): string {
-    return rows.map(row => row.map(tsvValue).join('\t') + '\n').join('');
+    return rows
+        .map((row, i) => {
+            const cells = row.map(tsvValue);
+            if (cells.every(cell => cell === '')) {
+                throw new Error(`Row ${i} has no values, so the server would skip it on import`);
+            }
+            return cells.join('\t') + '\n';
+        })
+        .join('');
 }
 
 /**
  * Builds TSV import text, with a header row, from row maps, quoting cells as needed via {@link tsvValue}.
  * @param rowMaps the rows to write; a column a row lacks is written as an empty cell.
  * @param columns the columns to write, in order; defaults to every key found across the rows.
+ * @throws if every cell in a row is empty, since the server skips such rows on import however they're written.
  */
 export function tsvStringFromRowMaps(rowMaps: Record<string, unknown>[], columns?: string[]): string {
     const cols = columns ?? [...new Set(rowMaps.flatMap(row => Object.keys(row)))];

@@ -27,10 +27,12 @@ describe('utils', () => {
             expect(tsvValue([])).toBe('');
         });
 
-        test('quotes array elements the server would split or trim', () => {
+        test('quotes array elements like quoteValueWithDelimiters', () => {
             expect(tsvValue(['a,b', 'c'])).toBe('"""a,b"", c"');
+            expect(tsvValue(['S-1', 'a,b'])).toBe('"S-1, ""a,b"""');
+            expect(tsvValue(['a\nb', 'c'])).toBe('"""a\nb"", c"');
+            expect(tsvValue(['a\\b', 'c'])).toBe('"""a\\b"", c"');
             expect(tsvValue([' a', 'b'])).toBe('""" a"", b"');
-            expect(tsvValue(['a\\b'])).toBe('"""a\\b"""');
             expect(tsvValue([null, 'b'])).toBe(', b');
         });
 
@@ -132,6 +134,12 @@ describe('utils', () => {
 
         test('rejects a row with no values', () => {
             expect(() => tsvStringFromRowMaps([{ A: 'x' }, { A: null }])).toThrow('Row 2 has no values');
+        });
+
+        test('rejects having no columns', () => {
+            expect(() => tsvStringFromRowMaps([])).toThrow('No columns to write');
+            expect(() => tsvStringFromRowMaps([{}])).toThrow('No columns to write');
+            expect(() => tsvStringFromRowMaps([{ A: 'x' }], [])).toThrow('No columns to write');
         });
     });
 });

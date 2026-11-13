@@ -92,9 +92,13 @@ export function generateFieldName(length: number = 5, charset: string = FIELD_NA
     return generateRandomStr(length, charset);
 }
 
+/**
+ * Converts one value to text for a TSV cell or multi-value element: null and undefined to an empty string, a date to an
+ * ISO-8601 instant (String() would be locale-formatted), and anything else via String().
+ * @throws if the value is an object other than a date, arrays included.
+ */
 function valueText(value: unknown): string {
     if (value === null || value === undefined) return '';
-    // String(date) is locale-formatted; the server parses the ISO instant, Z included
     if (value instanceof Date) return value.toISOString();
     if (typeof value === 'object') {
         throw new Error(`Can't write an object as a TSV value: ${JSON.stringify(value)}`);
@@ -102,8 +106,11 @@ function valueText(value: unknown): string {
     return String(value);
 }
 
-// Quotes one element of a multi-value cell, which the server splits on commas outside quotes
-function listElement(value: unknown): string {
+/**
+ * Quotes one element of a multi-value cell, which the server splits on commas outside quotes. Same rules as
+ * quoteValueWithDelimiters(value, ',') in @labkey/components.
+ */
+function quoteMultiValueElement(value: unknown): string {
     const str = valueText(value);
     if (/[,"\r\n\\]/.test(str) || str !== str.trim()) {
         return '"' + str.replace(/"/g, '""') + '"';
@@ -112,14 +119,20 @@ function listElement(value: unknown): string {
 }
 
 /**
- * Formats one value as a TSV cell, quoting it when the server would otherwise split, trim, skip it as a comment, or read
- * it as null (a literal \N). Arrays become one multi-value cell, with each element quoted as needed and joined with
- * ", "; dates are written as ISO-8601 instants; null and undefined become empty cells.
+ * Formats one value as a TSV cell for server import.
+ * - Quotes the cell when the server would otherwise split it (tab, newline, `"`), trim it (surrounding whitespace),
+ *   skip it as a comment (leading `#`), or read it as null (a literal `\N`).
+ * - Writes an array as one multi-value cell: elements joined with ", ", each quoted if it holds a comma, `"`, line
+ *   break, or backslash, or has surrounding whitespace. Give a single-valued column, such as AliquotedFrom, a string
+ *   instead, since it won't unquote an element.
+ * - Writes a date as an ISO-8601 instant.
+ * - Writes null and undefined as an empty cell.
  * @param value the value to format.
  * @throws if the value contains \r, which the server reads as a line break and stores as \n.
+ * @throws if the value is an object other than a date or array, or is an array holding one.
  */
 export function tsvValue(value: unknown): string {
-    const str = Array.isArray(value) ? value.map(listElement).join(', ') : valueText(value);
+    const str = Array.isArray(value) ? value.map(quoteMultiValueElement).join(', ') : valueText(value);
 
     if (str.includes('\r')) {
         throw new Error(`Value ${JSON.stringify(str)} contains \\r, which the server would store as \\n`);
@@ -151,10 +164,14 @@ export function tsvStringFromRows(rows: unknown[][]): string {
  * Builds TSV import text, with a header row, from row maps, quoting cells as needed via {@link tsvValue}.
  * @param rowMaps the rows to write; a column a row lacks is written as an empty cell.
  * @param columns the columns to write, in order; defaults to every key found across the rows.
- * @throws if every cell in a row is empty, since the server skips such rows on import however they're written.
+ * @throws if there are no columns, or if every cell in a row is empty, since the server skips such rows on import
+ * however they're written.
  */
 export function tsvStringFromRowMaps(rowMaps: Record<string, unknown>[], columns?: string[]): string {
     const cols = columns ?? [...new Set(rowMaps.flatMap(row => Object.keys(row)))];
+    if (cols.length === 0) {
+        throw new Error('No columns to write; pass columns or a row with at least one key');
+    }
     return tsvStringFromRows([cols, ...rowMaps.map(row => cols.map(col => row[col]))]);
 }
 

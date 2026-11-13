@@ -92,6 +92,41 @@ export function generateFieldName(length: number = 5, charset: string = FIELD_NA
     return generateRandomStr(length, charset);
 }
 
+/**
+ * Formats one value as a TSV cell, quoting it when the server would otherwise split, trim, or skip it as a comment.
+ * Arrays are joined with commas; null and undefined become empty cells.
+ * @param value the value to format.
+ */
+export function tsvValue(value: unknown): string {
+    let str: string;
+    if (value === null || value === undefined) str = '';
+    else if (Array.isArray(value)) str = value.join(',');
+    else str = String(value);
+
+    if (/[\t\r\n"]/.test(str) || str.startsWith('#') || str !== str.trim()) {
+        return '"' + str.replace(/"/g, '""') + '"';
+    }
+    return str;
+}
+
+/**
+ * Builds TSV import text from rows of values, quoting cells as needed via {@link tsvValue}.
+ * @param rows the rows to write, including any header row.
+ */
+export function tsvStringFromRows(rows: unknown[][]): string {
+    return rows.map(row => row.map(tsvValue).join('\t') + '\n').join('');
+}
+
+/**
+ * Builds TSV import text, with a header row, from row maps, quoting cells as needed via {@link tsvValue}.
+ * @param rowMaps the rows to write; a column a row lacks is written as an empty cell.
+ * @param columns the columns to write, in order; defaults to every key found across the rows.
+ */
+export function tsvStringFromRowMaps(rowMaps: Record<string, unknown>[], columns?: string[]): string {
+    const cols = columns ?? [...new Set(rowMaps.flatMap(row => Object.keys(row)))];
+    return tsvStringFromRows([cols, ...rowMaps.map(row => cols.map(col => row[col]))]);
+}
+
 export function generateDomainName(length: number = 5) {
     let result = generateRandomStr(2, ALPHA + NUMERIC) + generateRandomStr(length, DOMAIN_SPECIAL_STRING + ALPHA + NUMERIC + ' ');
     result = result.trim();

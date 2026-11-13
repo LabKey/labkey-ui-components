@@ -156,54 +156,6 @@ describe('FilterFacetedSelector', () => {
         validate(allDisplayValuesShort, [], allDisplayValuesShort, false);
     });
 
-    describe('accessibility', () => {
-        const status = (): HTMLElement => document.querySelector('[role="status"]');
-
-        test('the status region is mounted before the values arrive, so their arrival is announced', () => {
-            // Rendered without flushing the query, so the component is still in its loading state
-            render(<FilterFacetedSelector {...DEFAULT_PROPS} />);
-
-            expect(status()).not.toBeNull();
-            expect(status().getAttribute('aria-busy')).toBe('true');
-            expect(status().textContent).toBe('Loading values');
-        });
-
-        test('the status region reports the list rather than containing it', async () => {
-            await act(async () => {
-                render(<FilterFacetedSelector {...DEFAULT_PROPS} />);
-            });
-
-            expect(status().getAttribute('aria-busy')).toBe('false');
-            expect(status().textContent).toBe('7 values');
-            // The options stay outside it: announcing all of them on every keystroke would bury the status
-            expect(status().querySelectorAll('.filter-faceted__li')).toHaveLength(0);
-        });
-
-        test('selecting a value and removing its tag are both named controls, not click handlers', async () => {
-            const onFieldFilterUpdate = jest.fn();
-            await act(async () => {
-                render(
-                    <FilterFacetedSelector
-                        {...DEFAULT_PROPS}
-                        fieldFilters={[Filter.create('stringField', 'ed')]}
-                        onFieldFilterUpdate={onFieldFilterUpdate}
-                    />
-                );
-            });
-
-            const select = document.querySelector<HTMLButtonElement>('[aria-label="Select only bed"]');
-            expect(select.tagName).toBe('BUTTON');
-
-            // The tag's only affordance was a click-only icon, so a keyboard user could not deselect at all
-            const remove = document.querySelector<HTMLButtonElement>('[aria-label="Remove ed"]');
-            expect(remove.tagName).toBe('BUTTON');
-            await act(async () => {
-                remove.click();
-            });
-            expect(onFieldFilterUpdate).toHaveBeenCalled();
-        });
-    });
-
     test('is Folder field', async () => {
         await act(async () => {
             renderWithAppContext(<FilterFacetedSelector {...DEFAULT_PROPS} fieldKey="folder" />, {

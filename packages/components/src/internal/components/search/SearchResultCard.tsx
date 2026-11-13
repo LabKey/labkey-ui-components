@@ -40,13 +40,13 @@ export const SearchResultCard: FC<SearchResultProps> = memo(
             <a href={url} onClick={onClick}>
                 <div className="row search-result__card-container">
                     <div className="hidden-xs search-result__card-icon__container">
-                        {iconUrl && <img alt={altText} className="search-result__card-icon" src={iconUrl} />}
+                        {iconUrl && <img className="search-result__card-icon" src={iconUrl} alt={altText} />}
                         {!iconUrl && (
                             <SVGIcon
-                                alt={altText}
-                                className="search-result__card-icon"
                                 iconDir={iconDir}
                                 iconSrc={iconSrc}
+                                alt={altText}
+                                className="search-result__card-icon"
                             />
                         )}
                     </div>

@@ -235,7 +235,7 @@ describe('FilterExpressionView', () => {
             />
         );
 
-        validate(Ops, 0, 2, 1, 0, 'gt', '1.23');
+        validate(Ops, 0, 2, 1, 0, 'gt', "1.23");
     });
 
     test('datetime field, not equal', () => {
@@ -330,7 +330,7 @@ describe('FilterExpressionView', () => {
             2,
             0,
             'gt',
-            '3.4'
+            "3.4"
         );
         const excludedOps = ['gt', 'eq', 'isblank'];
         validate(
@@ -340,7 +340,7 @@ describe('FilterExpressionView', () => {
             2,
             1,
             'lt',
-            '8.1'
+            "8.1"
         );
     });
 
@@ -357,9 +357,9 @@ describe('FilterExpressionView', () => {
     test('int field, between operator, disabled', () => {
         render(
             <FilterExpressionView
-                disabled={true}
                 field={intField}
                 fieldFilters={[Filter.create('IntField', '1,200', Filter.Types.BETWEEN)]}
+                disabled={true}
             />
         );
         validate(Ops, 0, 2, 2, 0, 'between', '1', '200', true);

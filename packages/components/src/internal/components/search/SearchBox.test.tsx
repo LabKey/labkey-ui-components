@@ -9,7 +9,7 @@ import { SearchBox } from './SearchBox';
 
 describe('SearchBox', () => {
     test('with Find', () => {
-        const { container } = render(<SearchBox findNounPlural="Items" onFindByIds={jest.fn} onSearch={jest.fn} />);
+        const { container } = render(<SearchBox onSearch={jest.fn} onFindByIds={jest.fn} findNounPlural="Items" />);
         expect(container.querySelectorAll('.lk-dropdown.btn-group')).toHaveLength(1);
         const menuItems = container.querySelectorAll('.lk-menu-item');
         expect(menuItems).toHaveLength(3);

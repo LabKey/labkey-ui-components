@@ -14,7 +14,7 @@ describe('<SearchResultCard/>', () => {
             title: 'my title',
             iconSrc: 'testsource',
         };
-        render(<SearchResultCard cardData={cardData} isTopResult={false} summary="Card Summary" url="#card" />);
+        render(<SearchResultCard cardData={cardData} summary="Card Summary" url="#card" isTopResult={false} />);
 
         // When there is no category or typeName the first card detail will be the summary
         expect(document.querySelectorAll('.search-result__summary')[0].textContent).toEqual(summary);
@@ -28,7 +28,7 @@ describe('<SearchResultCard/>', () => {
             iconSrc: 'testsource',
             category,
         };
-        render(<SearchResultCard cardData={cardData} isTopResult={false} summary="Card Summary" url="#card" />);
+        render(<SearchResultCard cardData={cardData} summary="Card Summary" url="#card" isTopResult={false} />);
 
         expect(document.querySelector('.status-pill').textContent).toEqual(category);
     });
@@ -41,7 +41,7 @@ describe('<SearchResultCard/>', () => {
             typeName,
         };
         const wrapper = render(
-            <SearchResultCard cardData={cardData} isTopResult={false} summary="Card Summary" url="#card" />
+            <SearchResultCard cardData={cardData} summary="Card Summary" url="#card" isTopResult={false} />
         );
 
         expect(document.querySelector('.status-pill').textContent).toEqual(typeName);
@@ -56,11 +56,11 @@ describe('<SearchResultCard/>', () => {
         };
         const wrapper = render(
             <SearchResultCard
-                archived={true}
                 cardData={cardData}
-                isTopResult={false}
                 summary="Card Summary"
                 url="#card"
+                isTopResult={false}
+                archived={true}
             />
         );
 
@@ -75,7 +75,7 @@ describe('<SearchResultCard/>', () => {
             iconDir: 'test/dir',
         };
         const wrapper = render(
-            <SearchResultCard cardData={cardData} isTopResult={false} summary="Card Summary" url="#card" />
+            <SearchResultCard cardData={cardData} summary="Card Summary" url="#card" isTopResult={false} />
         );
         expect(document.querySelector('img').getAttribute('src')).toBe('/labkey/test/dir/testsource.svg');
     });
@@ -90,22 +90,22 @@ describe('<SearchResultCard/>', () => {
         const wrapper = render(
             <SearchResultCard
                 cardData={cardData}
-                iconUrl={iconUrl}
-                isTopResult={false}
                 summary="Card Summary"
                 url="#card"
+                isTopResult={false}
+                iconUrl={iconUrl}
             />
         );
         expect(document.querySelector('img').getAttribute('src')).toBe(iconUrl);
     });
 
     test('no summary', () => {
-        render(<SearchResultCard cardData={{}} isTopResult={false} summary={undefined} url="#card" />);
+        render(<SearchResultCard cardData={{}} summary={undefined} url="#card" isTopResult={false} />);
         expect(document.querySelector('.search-result__summary').textContent).toEqual('No summary provided');
     });
 
     test('summary empty', () => {
-        render(<SearchResultCard cardData={{}} isTopResult={false} summary="" url="#card" />);
+        render(<SearchResultCard cardData={{}} summary="" url="#card" isTopResult={false} />);
 
         expect(document.querySelector('.search-result__summary').textContent).toEqual('No summary provided');
     });
@@ -113,14 +113,14 @@ describe('<SearchResultCard/>', () => {
     test('none empty summary', () => {
         const shortSummary = 'Short summary';
         const longSummary = 'This is a very long summary it should get truncated at some point';
-        render(<SearchResultCard cardData={{}} isTopResult={false} summary={shortSummary} url="#card" />);
+        render(<SearchResultCard cardData={{}} summary={shortSummary} url="#card" isTopResult={false} />);
 
         expect(document.querySelector('.search-result__summary').textContent).toEqual(shortSummary);
     });
 
     test('long summary', () => {
         const longSummary = 'This is a very long summary it should get truncated at some point';
-        render(<SearchResultCard cardData={{}} isTopResult={false} summary={longSummary} url="#card" />);
+        render(<SearchResultCard cardData={{}} summary={longSummary} url="#card" isTopResult={false} />);
 
         // Long summary should get truncated
         expect(document.querySelector('.search-result__summary').textContent).toEqual(longSummary);

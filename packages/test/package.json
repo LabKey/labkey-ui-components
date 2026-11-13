@@ -1,6 +1,6 @@
 {
   "name": "@labkey/test",
-  "version": "1.14.6",
+  "version": "1.14.7-fb-js-test-utils.1",
   "description": "Configurations and utilities for JavaScript-based testing",
   "main": "dist/test.js",
   "exports": {
@@ -19,6 +19,7 @@
     "cleanAll": "rimraf dist && rimraf node_modules",
     "prepublishOnly": "npm run clean && npm run setup && cross-env WEBPACK_STATS=errors-only && npm run build",
     "setup": "npm ci --legacy-peer-deps",
+    "test": "cross-env NODE_ENV=test jest",
     "test-integration": "cross-env NODE_ENV=test jest -c test/config/jest.config.integration.js"
   },
   "repository": {
